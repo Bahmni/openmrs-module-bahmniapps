@@ -13,10 +13,14 @@
                          <span class="patient-gender-age" ng-bind-html="getPatientGenderAndAge()"></span>
                          <span class="patient-estimated-text" ng-if="patient.birthdateEstimated"> (est.)</span>
                          <span class="patient-estimated-text" ng-if="patient.birthdateEstimated"> (est.)</span>
-                         <span class="patient-estimated-text" ng-bind-html="patient.birthtime"></span>
+                         <div ng-show="patient.birthtime">
+                             <span>Time of Birth</span>
+                             <span class="patient-estimated-text" ng-bind-html="patient.birthtime"></span>
+                         </div>
                          <span class="patient-address">
                              {{getAddress()}}
                          </span>
+
                          <i class="ipd-indication fa fa-bed" ng-if="visitSummary.hasBeenAdmitted()"></i>
                      </div>
                  </td>
