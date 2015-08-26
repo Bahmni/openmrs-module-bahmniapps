@@ -27,9 +27,6 @@ describe('EditPatientController', function () {
                 return {
                     getConfigValue: function () {
                         return ["caste", "primaryRelative"];
-                    },
-                    getExtensions: function () {
-                        return [{"showBirthTime": true}];
                     }
                 }
             };
