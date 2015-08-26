@@ -1,0 +1,8 @@
+<button ng-if="::observation.canHaveComment()" type="button" toggle="observation.showComment"
+        class="comment-toggle fr" tabindex="-1" ng-class="{'has-notes': observation.comment}">
+    <i class="fa fa-file-o" ng-hide="observation.comment">
+        <i class="fa fa-plus-circle" ng-hide="observation.showComment"></i>
+        <i class="fa fa-minus-circle" ng-show="observation.showComment"></i>
+    </i>
+    <i class="fa fa-file-text-o" ng-show="observation.comment"></i>
+</button>

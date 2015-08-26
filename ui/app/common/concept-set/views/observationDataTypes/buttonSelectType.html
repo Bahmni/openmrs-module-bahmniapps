@@ -1,0 +1,11 @@
+<div ng-if="::observation.primaryObs">
+    <div ng-class="{'illegalValue': !observation.isValid(atLeastOneValueIsSet, conceptSetRequired), 'is-abnormal': observation.abnormalObs.value}">
+        <button-select observation="::observation.primaryObs" abnormal-obs="observation.abnormalObs"></button-select>
+    </div>
+</div>
+
+<div ng-if="::!observation.primaryObs">
+    <div ng-class="{'illegalValue': !observation.isValid(atLeastOneValueIsSet, conceptSetRequired)}">
+         <button-select observation="::observation"></button-select>
+    </div>
+</div>

@@ -1,0 +1,4 @@
+<textarea id="{{::observation.uniqueId}}" ng-model="observation.value"
+          ng-class="{'illegalValue': !observation.isValid(atLeastOneValueIsSet,conceptSetRequired), 'computed-field': observation.isComputedAndEditable()}"
+          focus-me="observation.isFocused">
+</textarea>
