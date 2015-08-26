@@ -36,7 +36,7 @@ describe("Dashboard", function () {
         expect(dashboard.getSectionByName("vitals").title).toBe("Nutritional Values");
     });
 
-    iit("should only get disease template section with data", function () {
+    it("should only get disease template section with data", function () {
         var diseaseTemplates = [
             {
                 name: "Diabetes Template",
