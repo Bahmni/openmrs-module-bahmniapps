@@ -11,12 +11,36 @@ Bahmni.Common.DisplayControl.Dashboard = function (config) {
     };
 
     this.getSections = function (diseaseTemplates) {
-        return _.filter(this._sections, function (section) {
+        var sections = _.filter(this._sections, function (section) {
             return section.name !== "diseaseTemplate" || _.find(diseaseTemplates, function (diseaseTemplate) {
                 return diseaseTemplate.name === section.templateName && diseaseTemplate.obsTemplates.length > 0;
             });
         });
+        return this.groupSectionsByType(sections);
     };
+
+    this.groupSectionsByType = function(sections) {
+        var sectionGroups = [[]];
+        for(var sectionId in sections) {
+            var section = sections[sectionId];
+            var lastElement = sectionGroups.length-1;
+            if(this.isFullPageSection(section)) {
+                if(_.isEmpty(sectionGroups[lastElement])) {
+                    sectionGroups.pop();
+                }
+                sectionGroups.push([section]);
+                sectionGroups.push([]);
+            } else {
+                sectionGroups[lastElement].push(section);
+            }
+        }
+        return sectionGroups;
+    };
+
+    this.isFullPageSection = function(section) {
+        return section['displayType'] && section['displayType'] === 'Full-Page';
+    };
+
 };
 
 Bahmni.Common.DisplayControl.Dashboard.create = function (config) {
