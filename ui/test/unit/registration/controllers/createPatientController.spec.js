@@ -33,9 +33,6 @@ describe('CreatePatientController', function () {
         appServiceMock.getAppDescriptor = function () {
             return {
                 getConfigValue: function () {
-                },
-                getExtensions: function () {
-                    return [{"showBirthTime": true}];
                 }
             }
         };

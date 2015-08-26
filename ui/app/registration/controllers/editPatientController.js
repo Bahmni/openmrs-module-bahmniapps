@@ -10,9 +10,6 @@ angular.module('bahmni.registration')
             $scope.readOnlyFields = {};
             $scope.addressHierarchyConfigs = appService.getAppDescriptor().getConfigValue("addressHierarchy");
 
-            $scope.extensions = appService.getAppDescriptor().getExtensions("org.bahmni.patient.registration.birthTime", "config");
-            $scope.showBirthTime = $scope.extensions[0].showBirthTime;
-
             $scope.today = dateUtil.getDateWithoutTime(dateUtil.now());
 
             var setReadOnlyFields = function () {
