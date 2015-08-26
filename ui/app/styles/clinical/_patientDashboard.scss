@@ -21,7 +21,6 @@
   .dashboard-sections {
     width: 50%;
     margin: 0;
-    padding: 10px;
     box-sizing: border-box;
     float: left;
     @media screen and (max-width: 859px) {
@@ -31,37 +30,26 @@
       float: none;
     }
     &.dashboard-sections-left{
-      padding: 10px 10px 10px 0px;
+      padding: 0px 5px 0px 0px;
+    }
+    &.dashboard-section-fullpage{
+      width: 100%;
+      padding: 0;
+    }
+    &.dashboard-sections-right{
+      padding: 0px 0px 0px 5px;
     }
     .disease-date{
         font-family: OpenSansSemiBold;
         text-decoration: underline;
     }
-    &.dashboard-sections-right{
-      padding: 10px 0px 10px 5px;
-    }
+    
   }
-    @media screen and (min-width: 860px) {
-      margin: 5px 0;
-    }
-}
-.patient-dashboard.visit {padding: 0;}
-.dashboard-visit-summary {padding: 10px;}
-.dashboard-header {
-  width: 100%;
-  height: 52px;
-  background: $bahmniSecondaryColor;
-  h5 {
-    margin: 15px 0;
-    color: $lightestGray;
-    text-transform: capitalize;
-    display: inline-block;
-    font-size: 16px;
-  }
+   
 }
 .dashboard-section {
   margin: 0;
-  margin-bottom: 15px;
+  margin-bottom: 10px;
   font-size: 14px;
   position: relative;
   @include box-shadow-for-section();
@@ -167,6 +155,20 @@
   }
 }
 
+.patient-dashboard.visit {padding: 0;}
+.dashboard-visit-summary {padding: 10px;}
+.dashboard-header {
+  width: 100%;
+  height: 52px;
+  background: $bahmniSecondaryColor;
+  h5 {
+    margin: 15px 0;
+    color: $lightestGray;
+    text-transform: capitalize;
+    display: inline-block;
+    font-size: 16px;
+  }
+}
 .dashboard-treatment-section {
   table {
     margin: 0;

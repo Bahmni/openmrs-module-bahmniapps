@@ -1,29 +1,30 @@
 'use strict';
 
 angular.module('bahmni.common.displaycontrol.dashboard')
-    .directive('dashboard', [function () {
 
-        var controller = function ($scope) {
+    .directive('dashboard', [function() {
+        var controller = function($scope) {
 
-            var init = function () {
+            var init = function() {
                 $scope.dashboard = Bahmni.Common.DisplayControl.Dashboard.create($scope.config || {});
-                $scope.sections = $scope.dashboard.getSections($scope.diseaseTemplates);
+                $scope.sectionGroups = $scope.dashboard.getSections($scope.diseaseTemplates);
+            }
 
+            $scope.isFullPageSection = function(sections) {
+                return sections.length === 1 && sections[0]['displayType'] && sections[0]['displayType'] === 'Full-Page';
             };
 
-            $scope.getSectionLayout = function (section, index) {
-
-                if (section['displayType'] && section['displayType'] === 'Full-Page') {
-                    return "dashboard-section-fullpage";
-                }
-
-                if (index % 2 == 0) {
-                    return "dashboard-sections dashboard-sections-left";
-                } else {
-                    return "dashboard-sections dashboard-sections-right";
-                }
+            $scope.filterOdd = function(index) {
+                return function() {
+                    return index++ % 2 === 0;
+                };
             };
 
+            $scope.filterEven = function(index) {
+                return function() {
+                    return index++ % 2 === 1;
+                };
+            };
             var unbindWatch = $scope.$watch('config', init);
             $scope.$on("$stateChangeStart", unbindWatch);
         };
