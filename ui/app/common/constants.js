@@ -131,6 +131,7 @@ Bahmni.Common = Bahmni.Common || {};
         globalPropertyUrl: BAHMNI_CORE + "/sql/globalproperty",
         fulfillmentConfiguration: "fulfillment",
         fulfillmentFormSuffix:" Fulfillment Form",
-        noNavigationLinksMessage: "No navigation links available."
+        noNavigationLinksMessage: "No navigation links available.",
+        entityMappingUrl: RESTWS_V1 + "/entitymapping"
     };
 })();

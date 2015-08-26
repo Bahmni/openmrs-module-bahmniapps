@@ -1,6 +1,7 @@
 angular.module('bahmni.clinical')
     .controller('ConceptSetPageController', ['$scope', '$rootScope', '$stateParams', 'conceptSetService', 'clinicalAppConfigService', 'messagingService', 'configurations',
-        function ($scope, $rootScope, $stateParams, conceptSetService, clinicalAppConfigService, messagingService, configurations) {
+        '$state',
+        function ($scope, $rootScope, $stateParams, conceptSetService, clinicalAppConfigService, messagingService, configurations,$state) {
             $scope.consultation.selectedObsTemplate = $scope.consultation.selectedObsTemplate || [];
     $scope.scrollingEnabled = false;
     var extensions = clinicalAppConfigService.getAllConceptSetExtensions($stateParams.conceptSetGroupName);
@@ -11,7 +12,7 @@ angular.module('bahmni.clinical')
     var fields = ['uuid','name', 'names'];
     var customRepresentation = Bahmni.ConceptSet.CustomRepresentationBuilder.build(fields, 'setMembers', numberOfLevels);
 
-    if($scope.consultation.selectedObsTemplate.length == 0){
+    if($scope.consultation.selectedObsTemplate.length == 0 || !!$state.params.programUuid){
         conceptSetService.getConceptSetMembers({name:"All Observation Templates",v:"custom:"+customRepresentation}).success(function(response){
             var allTemplates = response.results[0].setMembers;
             var allConceptSections  = allTemplates.map(function(template){
@@ -21,11 +22,22 @@ angular.module('bahmni.clinical')
                 var conceptSetConfig = configs[template.name.name] || {};
                 return new Bahmni.ConceptSet.ConceptSetSection(conceptSetExtension, $rootScope.currentUser, conceptSetConfig, $scope.consultation.observations, template);
             });
+            if(!!$state.params.programUuid){
+                conceptSetService.getObsTemplatesForProgram($state.params.programUuid).success(function(data){
+                    var programSpecificObsTemplates = data.results[0].mappings;
+                    $scope.consultation.selectedObsTemplate = _.map(programSpecificObsTemplates, function (template) {
+                        var matchedTemplate = _.find(allConceptSections,{uuid:template.uuid});
+                        matchedTemplate.alwaysShow=true;
+                        return matchedTemplate;
+                    });
+                });
+            }else{
             $scope.consultation.selectedObsTemplate= allConceptSections.filter(function(conceptSet){
                 if(conceptSet.isAvailable($scope.context)){
                     return true;
                 }
             });
+            }
         });
     }
 
