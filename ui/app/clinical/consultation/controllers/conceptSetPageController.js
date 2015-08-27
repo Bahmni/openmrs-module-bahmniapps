@@ -24,23 +24,32 @@ angular.module('bahmni.clinical')
                     var conceptSetConfig = configs[template.name.name] || {};
                     return new Bahmni.ConceptSet.ConceptSetSection(conceptSetExtension, $rootScope.currentUser, conceptSetConfig, $scope.consultation.observations, template);
                 });
+                $scope.consultation.selectedObsTemplate = getSelectedObsTemplate(allConceptSections);
                 if (!!$state.params.programUuid) {
                     conceptSetService.getObsTemplatesForProgram($state.params.programUuid).success(function (data) {
-                        var programSpecificObsTemplates = data.results[0].mappings;
-                        $scope.consultation.selectedObsTemplate = _.map(programSpecificObsTemplates, function (template) {
-                            var matchedTemplate = _.find(allConceptSections, {uuid: template.uuid});
-                            matchedTemplate.alwaysShow = true;
-                            return matchedTemplate;
-                        });
-                    });
-                } else {
-                    $scope.consultation.selectedObsTemplate = allConceptSections.filter(function (conceptSet) {
-                        if (conceptSet.isAvailable($scope.context)) {
-                            return true;
+                        if(data.results.length>0 && data.results[0].mappings.length>0) {
+                            var programSpecificObsTemplates = _.map(data.results[0].mappings, function (template) {
+                                var matchedTemplate = _.find(allConceptSections, {uuid: template.uuid});
+                                if(matchedTemplate) {
+                                    matchedTemplate.alwaysShow = true;
+                                }
+                                return matchedTemplate;
+                            });
+                            if(programSpecificObsTemplates.length>0){
+                                $scope.consultation.selectedObsTemplate = programSpecificObsTemplates;
+                            }
                         }
                     });
                 }
             });
+
+            var getSelectedObsTemplate = function(allConceptSections){
+                return allConceptSections.filter(function (conceptSet) {
+                    if (conceptSet.isAvailable($scope.context)) {
+                        return true;
+                    }
+                });
+            };
 
             $scope.toggleTemplate = function (template) {
                 $scope.scrollingEnabled = true;
