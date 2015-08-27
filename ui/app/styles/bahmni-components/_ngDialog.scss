@@ -27,7 +27,7 @@
 
 .template-header {
     height: 52px;
-    background: $bahmniSecondaryColor;
+    background: #527A7A;
     border-radius: 0;
     margin-bottom: 15px;
     padding: 0 15px;
@@ -82,11 +82,13 @@
     }
 }
 
+
+
 .ngdialog-content {
     font-size: 14px!important;
     color: $darkGray;
     position: absolute;
-    top: 0;
+    top: 52px;
     bottom: 0;
     left: 0;
     right: 0;
@@ -127,7 +129,6 @@
     }
 }
 div.ngdialog-close {
-    color: transparent;
 }
 .dashboard-treatment-section, .dashboard-laborders-section, .dashboard-visits-section, .dashboard-more-info {
 

@@ -17,7 +17,7 @@
                 <span class="close" ng-click="closeDashboard(dashboard)">
                    <span class="close-icon">x</span>
                 </span>
-                <a ng-click="showDashboard(dashboard)">{{dashboard.dashboardName}}</a>
+                <a ng-click="showDashboard(dashboard)" ng-click="closeAllDialogs()">{{dashboard.dashboardName}}</a>
 
             </li>
             <li class="tab-item new-tab tab-active" bm-pop-over autoclose="true"
@@ -27,15 +27,12 @@
                 <div class="tab-submenu" bm-pop-over-target>
                     <ul>
                         <li ng-repeat="dashboard in clinicalDashboardConfig.getUnOpenedTabs()">
-                            <a class="submenu-item unOpenedDashboard" ng-click="showDashboard(dashboard);">{{dashboard.dashboardName}} </a>
+                            <a class="submenu-item unOpenedDashboard" ng-click="closeAllDialogs();showDashboard(dashboard);">{{dashboard.dashboardName}} </a>
                         </li>
                     </ul>
                 </div>
             </li>
         </ul>
-
-
-
 
         <div class="dashboard-header-right-wrapper">
             <button ng-if="clinicalDashboardConfig.showPrint()" class="dialog-button-group" ng-click="printDashboard()"
@@ -53,7 +50,7 @@
             <span class="grouped-buttons">
                 <a class=" btn--left btn--success "
                    ng-if="visitHistory.activeVisit || retrospectiveEntry.isRetrospective || allowConsultation()"
-                   ng-click="collapseControlPanel()" href="#{{consultationBoardLink}}">Consultation</a>
+                   ng-click="closeAllDialogs();collapseControlPanel()" href="#{{consultationBoardLink}}">Consultation</a>
                 <a class="btn--right btn--success " title="Open in new window"
                    ng-if="visitHistory.activeVisit || retrospectiveEntry.isRetrospective"
                    ng-click="openConsultationInNewTab()"><i class="fa fa-external-link"></i></a>

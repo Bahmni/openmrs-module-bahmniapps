@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('bahmni.clinical')
-    .controller('DashboardHeaderController', ['$window', '$scope', 'clinicalAppConfigService', 'patientContext', 'visitHistory', 'clinicalDashboardConfig','appService',
-        function ($window, $scope, clinicalAppConfigService, patientContext, visitHistory, clinicalDashboardConfig, appService) {
+    .controller('DashboardHeaderController', ['$window', '$scope', 'clinicalAppConfigService', 'patientContext', 'visitHistory', 'clinicalDashboardConfig','appService','ngDialog',
+        function ($window, $scope, clinicalAppConfigService, patientContext, visitHistory, clinicalDashboardConfig, appService, ngDialog) {
 
             $scope.patient = patientContext.patient;
             $scope.visitHistory = visitHistory;
@@ -34,4 +34,7 @@ angular.module('bahmni.clinical')
                 $scope.$parent.$parent.$broadcast("event:switchDashboard", clinicalDashboardConfig.currentTab);
             };
 
+            $scope.closeAllDialogs = function() {
+                ngDialog.closeAll();
+            };
         }]);
