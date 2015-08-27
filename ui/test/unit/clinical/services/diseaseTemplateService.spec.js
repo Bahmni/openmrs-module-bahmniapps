@@ -3,7 +3,9 @@
 describe("DiseaseTemplateService", function () {
     var _clinicalAppConfigService, _$http;
     var diseaseTemplateService;
-
+    var mockHttp = function(method,data){
+        _$http[method].and.returnValue(specUtil.createFakePromise(data));
+    };
     beforeEach(module('bahmni.clinical'));
     beforeEach(module('bahmni.common.appFramework'));
 
@@ -27,10 +29,8 @@ describe("DiseaseTemplateService", function () {
 
     describe("disease templates", function () {
         it('should fetch latest disease templates for a patient', function (done) {
-            _$http.post.and.callFake(function () {
-                return specUtil.respondWith({"data": diseaseTemplates});
-            });
-            
+            mockHttp('post',diseaseTemplates);
+
             this.diseaseTemplateService.getLatestDiseaseTemplates("patientuuid").then(function (response) {
                 expect(response.length).toBe(1);
                 expect(response[0].name).toBe("Breast Cancer");
@@ -40,10 +40,8 @@ describe("DiseaseTemplateService", function () {
         });
 
         it('should fetch all disease template for the patient', function (done) {
-            _$http.get.and.callFake(function () {
-                return specUtil.respondWith({"data": diseaseTemplates[0]});
-            });
-            
+            mockHttp('get',diseaseTemplates[0]);
+
             this.diseaseTemplateService.getAllDiseaseTemplateObs("patientuuid", "Breast Cancer").then(function (response) {
                 expect(response.name).toBe("Breast Cancer");
                 expect(response.obsTemplates.length).toBe(2);
