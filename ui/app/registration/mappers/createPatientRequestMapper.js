@@ -27,7 +27,7 @@ Bahmni.Registration.CreatePatientRequestMapper = (function () {
                     attributes: this.getMrsAttributes(patient, patientAttributeTypes),
                     dead:patient.dead,
                     deathDate: patient.deathDate,
-                    causeOfDeath: patient.causeOfDeath != null ? patient.causeOfDeath.display : ''
+                    causeOfDeath: patient.causeOfDeath != null ? patient.causeOfDeath.uuid : ''
                 },
                 identifiers: [
                     {
