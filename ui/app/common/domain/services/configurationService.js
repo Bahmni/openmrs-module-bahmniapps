@@ -119,7 +119,7 @@ angular.module('bahmni.common.domain')
             return $http.get(Bahmni.Common.Constants.globalPropertyUrl, {
                 method: "GET",
                 params: {
-                    property: 'bahmni.relationshipTypeMap'
+                    property: 'bahmnicore.relationshipTypeMap'
                 },
                 withCredentials: true
             });
