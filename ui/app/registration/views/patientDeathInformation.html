@@ -1,13 +1,15 @@
 <div class="death">
     <div class="row">
         <div class="col col1">
-            <strong class="till-text" >Date of death</strong>
+            <strong class="till-text">Date of death</strong>
             <input type="date" ng-model="patient.deathDate" ng-change="selectIsDead()" max="{{today}}"/>
         </div>
-        <div class="col col2" ng-init="getDeathConcepts()" >
+        <div class="col col2" ng-init="getDeathConcepts()">
             <strong class="till-text">Reason of death</strong>
             <span class="asterick" ng-if="patient.dead">*</span>
-            <select   ng-model="patient.causeOfDeath" ng-options="concept.display for concept in deathConcepts track by concept.display" ng-change="selectIsDead()" ng-required="patient.dead">
+            <select ng-model="patient.causeOfDeath"
+                    ng-options="concept.display for concept in deathConcepts track by concept.uuid"
+                    ng-change="selectIsDead()" ng-required="patient.dead">
                 <option value="">Choose value</option>
             </select>
         </div>
