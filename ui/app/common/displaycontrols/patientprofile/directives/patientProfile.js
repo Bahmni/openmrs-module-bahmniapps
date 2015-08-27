@@ -19,8 +19,8 @@ angular.module('bahmni.common.displaycontrol.patientprofile')
                 return $sce.trustAsHtml(patientAttributeTypes.join(", "));
             };
 
-            $scope.isProviderRelationship = function(relationship) {
-                if(!$rootScope.relationshipTypeMap.provider) { //if not configured assuming patient
+            $scope.isProviderRelationship = function (relationship) {
+                if (!$rootScope.relationshipTypeMap.provider) { //if not configured assuming patient
                     return false;
                 }
                 return $rootScope.relationshipTypeMap.provider.indexOf(relationship.relationshipType.aIsToB) > -1;
@@ -39,6 +39,10 @@ angular.module('bahmni.common.displaycontrol.patientprofile')
                     address.push(patient.address["cityVillage"]);
                 }
                 return address.join(", ");
+            };
+
+            $scope.openPatientDashboard = function (patientUuid) {
+                window.open("../clinical/#/patient/" + patientUuid + "/dashboard");
             };
             spinner.forPromise(init());
         };

@@ -35,7 +35,7 @@
             <tr ng-repeat="relationship in patient.relationships">
                 <td class="name" ng-if="relationship.personA.uuid === patient.uuid">{{relationship.relationshipType.aIsToB}}</td>
                 <td class="value" ng-if="relationship.personA.uuid === patient.uuid">
-                    <a ng-href="../clinical/#/patient/{{relationship.personB.uuid}}/dashboard"
+                    <a ng-click="openPatientDashboard(relationship.personB.uuid)"
                        title="Go to Clinical Dashboard" ng-if="!isProviderRelationship(relationship)">
                         {{relationship.personB.display}}
                     </a>
@@ -43,7 +43,7 @@
                 </td>
                 <td class="name" ng-if="relationship.personB.uuid === patient.uuid">{{relationship.relationshipType.bIsToA}}</td>
                 <td ng-if="relationship.personB.uuid === patient.uuid" class="value">
-                    <a ng-href="../clinical/#/patient/{{relationship.personA.uuid}}/dashboard"
+                    <a ng-click="openPatientDashboard(relationship.personA.uuid)"
                        title="Go to Clinical Dashboard">
                         {{relationship.personA.display}}
                     </a>
