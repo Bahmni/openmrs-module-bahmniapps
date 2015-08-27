@@ -27,18 +27,19 @@ angular.module('bahmni.registration')
             };
 
             $scope.isPatientRelationship = function (relationship) {
+                var relationshipType = getRelationshipType(relationship);
+                return relationshipType && (_.isUndefined(relationshipType.searchType) || relationshipType.searchType == "patient");
+            };
+
+            var getRelationshipType = function(relationship){
                 if (angular.isUndefined(relationship['relationshipType'])) {
                     return false;
                 }
-                var relationshipType = $scope.getRelationshipType(relationship.relationshipType.uuid);
-                return relationshipType && relationshipType.searchType == "patient";
+                return $scope.getRelationshipType(relationship.relationshipType.uuid);
             };
 
             $scope.isProviderRelationship = function (relationship) {
-                if (angular.isUndefined(relationship['relationshipType'])) {
-                    return false;
-                }
-                var relationshipType = $scope.getRelationshipType(relationship.relationshipType.uuid);
+                var relationshipType = getRelationshipType(relationship);
                 return relationshipType && relationshipType.searchType == "provider";
             };
 
