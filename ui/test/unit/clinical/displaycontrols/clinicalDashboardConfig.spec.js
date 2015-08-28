@@ -11,11 +11,15 @@ describe('Treatment Table DisplayControl', function () {
                 "name": "vitals"
             },
             {
+                "title": "Diabetes",
+                "name": "diseaseTemplate"
+            },
+            {
                 "title": "Diagnosis",
                 "name": "diagnosis"
             },
             {
-                "title": "Diabetes",
+                "title": "TB",
                 "name": "diseaseTemplate"
             }
         ]
@@ -41,8 +45,9 @@ describe('Treatment Table DisplayControl', function () {
     beforeEach(module('bahmni.clinical'));
 
     it("should get disease template sections for the current dashboard", function () {
-        expect(dashboardConfig.getDiseaseTemplateSections().length).toBe(1);
+        expect(dashboardConfig.getDiseaseTemplateSections().length).toBe(2);
         expect(dashboardConfig.getDiseaseTemplateSections()[0].title).toBe("Diabetes");
+        expect(dashboardConfig.getDiseaseTemplateSections()[1].title).toBe("TB");
     });
 
     it("should get max recently viewed patients", function () {
