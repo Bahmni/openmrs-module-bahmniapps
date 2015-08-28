@@ -13,7 +13,7 @@
     <div class="program-state-list" ng-if="program.editing">
         <table class="state-list">
             <tbody>
-            <tr ng-repeat="state in program.states" ng-if="state.voided != true">
+            <tr ng-repeat="state in program.states| orderBy:'auditInfo.dateCreated':true" ng-if="state.voided != true">
                 <td>{{state.state.concept.display}}</td>
                 <td ng-if="state.endDate">{{state.startDate | bahmniDate}} to {{state.endDate | bahmniDate}}</td>
                 <td ng-if="!state.endDate">Started on {{state.startDate | bahmniDate}}</td>
