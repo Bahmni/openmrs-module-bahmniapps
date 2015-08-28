@@ -1,4 +1,4 @@
-var customValidator = {
+Bahmni.Registration.customValidator = {
     "age.days": {},
     "name": {},
     "Telephone Number": {}
@@ -7,6 +7,7 @@ var customValidator = {
 describe('ValidationUtil', function () {
 
     var ValidationUtil = Bahmni.Common.Util.ValidationUtil;
+    var customValidator = Bahmni.Registration.customValidator;
     var complexObject, objectConfiguration;
     beforeEach(function () {
         complexObject = {
@@ -44,7 +45,7 @@ describe('ValidationUtil', function () {
         expect(msg).toEqual("Invalid Telephone Number");
     });
 
-    it("should return nothing when the custom validator is present", function () {
+    it("should return nothing when the custom validator is not present", function () {
         customValidator = undefined;
         var msg = ValidationUtil.validate(complexObject, objectConfiguration);
         expect(msg).toEqual('');

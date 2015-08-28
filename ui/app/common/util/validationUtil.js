@@ -30,13 +30,11 @@ Bahmni.Common.Util.ValidationUtil = (function () {
     //This will work only for patient attributes, since we are passing concept behind the attribute.
     //To have a generic one, we need to remove the concept dependency.. And concept will be null for non concept fields
     var validate = function (complexObject, objectConfiguration) {
-        var allCustomValidators;
+        var allCustomValidators = Bahmni.Registration.customValidator;
+        if(!allCustomValidators) return;
+
         var dataArray = flattenObject(complexObject);
         var errorMessages = [];
-        try{
-            allCustomValidators = eval("customValidator");
-        } catch (e){}
-        if(!allCustomValidators) return errorMessages.join(', ');
         _.every(dataArray,function(value,field){
             var isValid=true;
             var fieldSpecificValidator = allCustomValidators[field];
