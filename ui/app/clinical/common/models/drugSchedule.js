@@ -15,12 +15,16 @@
 
 		getDrugs: function() {
 			var drugOrders = this.drugOrders.map(Bahmni.Clinical.DrugOrder.create);
-			return drugOrders.reduce(function(drugs, drugOrder){
-						var drug = drugs.filter(function(drug) { return drug.name === drugOrder.drug.name && drug.uuid === drugOrder.drug.uuid; } )[0];
-						if(drug) { drug.orders.push(drugOrder); }
-						else { drugs.push(new Drug(drugOrder.drug.name, [drugOrder])); }
-						return drugs;
-					}, []);
+			var allOrderedDrugs = [];
+			_.each(drugOrders,function (order) {
+				var drugAlreadyOrdered = _.find(allOrderedDrugs,{name:order.drug.name,uuid:order.drug.uuid});
+				if (!drugAlreadyOrdered) {
+					drugAlreadyOrdered = new Drug(order.drug.name);
+					allOrderedDrugs.push(drugAlreadyOrdered);
+				}
+				drugAlreadyOrdered.orders.push(order);
+			});
+			return allOrderedDrugs;
 		},
 
 		hasDrugOrders: function() {
@@ -50,7 +54,7 @@
 		getStatusOnDate: function(date) {
 			var activeDrugOrders = _.filter(this.orders, function(order) { return order.isActiveOnDate(date); });
 			if(activeDrugOrders.length == 0) return 'inactive';
-			if(_.all(activeDrugOrders, function(order) { return order.getStatusOnDate(date) === 'stopped'}))
+			if(_.every(activeDrugOrders, function(order) { return order.getStatusOnDate(date) === 'stopped'}))
 			 return 'stopped';
 			return 'active';
 		},
