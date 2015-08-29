@@ -28,10 +28,7 @@ Bahmni.Clinical.VisitDrugOrder = (function () {
 
         var drugOrders = new Bahmni.Clinical.OrdersMapper(nameToSort).map(encounterTransactions, 'drugOrders');
 
-        var prescribedDrugOrders = [];
-        drugOrders.forEach(function (drugOrder) {
-            prescribedDrugOrders.push(Bahmni.Clinical.DrugOrderViewModel.createFromContract(drugOrder))
-        });
+        var prescribedDrugOrders = _.map(drugOrders,Bahmni.Clinical.DrugOrderViewModel.createFromContract);
 
         return this.createFromDrugOrders(prescribedDrugOrders, admissionDate, dischargeDate);
     };
