@@ -21,9 +21,7 @@ angular.module('bahmni.adt')
                 }
                 var defaultVisitTypeName = appService.getAppDescriptor().getConfigValue('defaultVisitType');
                 var visitTypes = encounterConfig.getVisitTypes();
-                var defaultVisitType = visitTypes.filter(function (visitType) {
-                    return visitType.name === defaultVisitTypeName
-                })[0];
+                var defaultVisitType = _.find(visitTypes,{name:defaultVisitTypeName});
                 return defaultVisitType && defaultVisitType.uuid || null;
             };
 
