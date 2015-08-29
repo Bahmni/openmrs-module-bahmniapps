@@ -180,7 +180,7 @@ angular.module('bahmni.common.conceptSet')
                             });
                             obs.previous = correspondingRecentObs.map(function (previousObs) {
                                 return {
-                                    value: new Bahmni.Common.Domain.ObservationValueMapper().map(previousObs),
+                                    value: Bahmni.Common.Domain.ObservationValueMapper.map(previousObs),
                                     date: previousObs.observationDateTime
                                 };
                             });
