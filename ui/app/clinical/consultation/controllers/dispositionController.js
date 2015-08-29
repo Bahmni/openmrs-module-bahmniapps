@@ -8,7 +8,10 @@ angular.module('bahmni.clinical')
         var getDispositionActionsPromise = function() {
             return dispositionService.getDispositionActions().then(function (response) {
                 $scope.dispositionActions = new Bahmni.Clinical.DispostionActionMapper().map(response.data.results[0].answers);
-                var previousDispositionNote = consultation.disposition ? consultation.disposition.additionalObs.filter(function(obs) { return !obs.voided && obs.concept.uuid === $scope.dispositionNoteConceptUuid; })[0] : null;
+                var previousDispositionNote = consultation.disposition &&
+                    _.find(consultation.disposition.additionalObs,function(obs) {
+                        return !obs.voided && obs.concept.uuid === $scope.dispositionNoteConceptUuid;
+                    });
                 $scope.dispositionNote =  previousDispositionNote || {concept: {uuid: $scope.dispositionNoteConceptUuid }};
                 $scope.dispositionCode = consultation.disposition ? consultation.disposition.code : null;
             });
@@ -33,13 +36,8 @@ angular.module('bahmni.clinical')
         };
 
         var getSelectedConceptName = function(dispositionCode){
-            var selectedDispositionConceptName;
-            $scope.dispositionActions.forEach(function(dispositionAction){
-                if(dispositionAction.code === dispositionCode){
-                    selectedDispositionConceptName = dispositionAction.name;
-                }
-            });
-            return selectedDispositionConceptName;
+            var selectedDispositionConceptName = _.findLast($scope.dispositionActions, {code: dispositionCode}) || {};
+            return selectedDispositionConceptName.name;
         };
 
         var getSelectedDisposition = function(){
