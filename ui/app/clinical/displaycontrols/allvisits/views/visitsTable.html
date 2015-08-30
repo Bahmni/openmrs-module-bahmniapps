@@ -4,7 +4,7 @@
             <span class="tree-list-item row-click">
                 <i class="fa fa-caret-right" ng-hide="visit.isOpen" ng-click="toggle(visit)"></i>
                 <i class="fa fa-caret-down" ng-show="visit.isOpen" ng-click="toggle(visit)"></i>
-                <a class="visit" ng-click="openVisit(visit)">
+                <a class="ngdialog-close visit" ng-click="openVisit(visit)">
                     <span>{{::visit.startDatetime | bahmniDate}}</span>
                     <span ng-if="::!visit.isActive()">- {{::visit.stopDatetime | bahmniDate }}</span>
                     <i class="fa fa-star current-visit-icon" id="currentVisitIcon" ng-if="::visit.isActive()"

@@ -1,4 +1,4 @@
-<!-- <header class="template-header">
+<header class="template-header">
     <button class="ngdialog-close back-btn" ng-click="closeThisDialog()">
     	<i class="fa fa-arrow-circle-left"></i>
     </button>
@@ -7,7 +7,7 @@
         <span>{{patient.name}} {{'(' + patient.identifier + ')'}}</span>
     </h5>
     <h6>All Lab Results</h6>
-</header> -->
+</header>
 <div class="template-container">
     <investigation-results params="allLabDetails"></investigation-results>
     <observation-graph visit-uuid="visit.uuid" params="allLabDetails.observationGraph" patient-uuid="patient.uuid"></observation-graph>
