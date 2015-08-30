@@ -3,7 +3,7 @@ describe("Program display control", function () {
 
     var compile, rootScope, programService;
     var DateUtil = Bahmni.Common.Util.DateUtil;
-    var element;
+    var element,data;
 
     beforeEach(function() {
         module('bahmni.common.displaycontrol.programs');
@@ -24,8 +24,9 @@ describe("Program display control", function () {
     var tenDaysAgo = DateUtil.addDays(today, -10);
     var fiveDaysFromToday = DateUtil.addDays(today, 5);
 
-    var data = {
-        results: [
+    beforeEach(function() {
+        data = {};
+        data.results = [
             {
                 "display": "Tuberculosis Program",
                 "dateEnrolled": DateUtil.formatDateWithoutTime(tenDaysAgo),
@@ -50,8 +51,8 @@ describe("Program display control", function () {
                 "dateCompleted": null,
                 "outcome": null
             }
-        ]
-    };
+        ];
+    });
 
     var compileAndDigest = function () {
         element = angular.element('<programs patient="patient"></programs>');
@@ -71,6 +72,27 @@ describe("Program display control", function () {
 
         expect(elementIsolatedScope.activePrograms.length).toBe(1);
         expect(elementIsolatedScope.activePrograms[0].display).toBe("End Fever Program");
+    });
+
+    it("Sort active programs by dateEnrolled in descending order", function () {
+        rootScope.patient = {
+            uuid: "uuid"
+        };
+
+        data.results.push({
+            "display": "End Sneeze Program",
+            "dateEnrolled": DateUtil.formatDateWithoutTime(fiveDaysFromToday),
+            "dateCompleted": null,
+            "outcome": null
+        });
+        programService.getPatientPrograms.and.returnValue(specUtil.createFakePromise(data));
+        compileAndDigest();
+
+        var elementIsolatedScope = element.isolateScope();
+
+        expect(elementIsolatedScope.activePrograms.length).toBe(2);
+        expect(elementIsolatedScope.activePrograms[0].display).toBe("End Fever Program");
+        expect(elementIsolatedScope.activePrograms[1].display).toBe("End Sneeze Program");
     });
 
     it("Shows past programs and sort by descending order of program end date when dateCompleted is not given", function () {
