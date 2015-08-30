@@ -25,11 +25,8 @@ Bahmni.Common.Obs.MultiSelectObservation = (function () {
         },
 
         getDisplayValue: function () {
-            var allValues = [];
-            this.groupMembers.forEach(function (member) {
-                allValues.push(member.value.shortName || member.value.name || member.value);
-            });
-            return allValues.join(", ");
+            var getName = Bahmni.Common.Domain.ObservationValueMapper.getNameFor["Object"];
+            return _.map(this.groupMembers, getName).join(", ");
         }
     };
 

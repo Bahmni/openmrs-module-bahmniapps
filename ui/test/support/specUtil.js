@@ -27,18 +27,19 @@ var specUtil = {
         return deferred.promise;
     }
 };
+
 specUtil.createFakePromise = function (data) {
-    var self = {
-        then: function (callback) {
-            callback({data: data});
-            return self;
-        },
-        success: function (resolve) {
-            resolve(data);
-        },
-        error: function (reject) {
-            reject(data);
-        }
+    var FakePromise = function(data){
+        this.data=data;
     };
-    return self;
+    FakePromise.prototype.then=function(callback){
+        return new FakePromise(callback({data:this.data}));
+    };
+    FakePromise.prototype.success=function(resolve){
+        resolve(this.data);
+    };
+    FakePromise.prototype.error=function(reject){
+        reject(this.data);
+    };
+    return new FakePromise(data);
 };

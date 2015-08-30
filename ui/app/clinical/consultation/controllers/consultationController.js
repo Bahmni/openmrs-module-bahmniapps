@@ -12,7 +12,7 @@ angular.module('bahmni.clinical').controller('ConsultationController',
 
             $scope.showBoard = function (label) {
                 $rootScope.collapseControlPanel();
-                var board = findBoardByLabel(label);
+                var board = _.find($scope.availableBoards,{label:label});
                 return buttonClickAction(board);
             };
 
@@ -32,13 +32,12 @@ angular.module('bahmni.clinical').controller('ConsultationController',
 
             var setCurrentBoardBasedOnPath = function () {
                 var currentPath = $location.path();
-                var board = findBoardByUrl(currentPath);
+                var board = _.find($scope.availableBoards,function (board) {
+                    return _.contains(currentPath, board.url);
+                });
                 $scope.currentBoard = board || $scope.availableBoards[0];
             };
 
-            var stringContains = function (sourceString, pattern) {
-                return (sourceString.search(pattern) >= 0);
-            };
 
             var initialize = function () {
                 var appExtensions = clinicalAppConfigService.getAllConsultationBoards();
@@ -50,19 +49,6 @@ angular.module('bahmni.clinical').controller('ConsultationController',
                 setCurrentBoardBasedOnPath();
             });
 
-            var findBoardByLabel = function (label) {
-                var boards = $scope.availableBoards.filter(function (board) {
-                    return board.label === label;
-                });
-                return boards.length > 0 ? boards[0] : null;
-            };
-
-            var findBoardByUrl = function (url) {
-                var boards = $scope.availableBoards.filter(function (board) {
-                    return stringContains(url, board.url);
-                });
-                return boards.length > 0 ? boards[0] : null;
-            };
 
             var getUrl = function (board) {
                 var urlPrefix = urlHelper.getPatientUrl();

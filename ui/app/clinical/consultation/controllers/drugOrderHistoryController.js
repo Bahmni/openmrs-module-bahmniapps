@@ -149,9 +149,7 @@ angular.module('bahmni.clinical')
 
             var saveTreatment = function () {
                 $scope.consultation.discontinuedDrugs.forEach(function (discontinuedDrug) {
-                    var removableOrder = _.find(activeDrugOrdersList, function (prescribedOrder) {
-                        return prescribedOrder.uuid === discontinuedDrug.uuid;
-                    });
+                    var removableOrder = _.find(activeDrugOrdersList, {uuid: discontinuedDrug.uuid});
                     if (removableOrder) {
                         removeOrder(removableOrder);
                     }
@@ -189,9 +187,7 @@ angular.module('bahmni.clinical')
                 drugOrderGroup[orderAttribute.name].selected = drugOrderGroup[orderAttribute.name].selected ? false : true;
 
                 drugOrderGroup.drugOrders.forEach(function (drugOrder) {
-                    var selectedOrderAttribute = drugOrder.orderAttributes.filter(function (orderAttributeInDrugOrder) {
-                        return orderAttribute.name === orderAttributeInDrugOrder.name;
-                    })[0];
+                    var selectedOrderAttribute = getAttribute(drugOrder,orderAttribute.name);
                     $scope.updateOrderAttribute(drugOrder, selectedOrderAttribute, drugOrderGroup[orderAttribute.name].selected);
                 });
             };
@@ -199,10 +195,9 @@ angular.module('bahmni.clinical')
             $scope.allOrderAttributesOfNameSet = function (drugOrderGroup, orderAttributeName) {
                 var allAttributesSelected = true;
                 drugOrderGroup.drugOrders.forEach(function (drugOrder) {
-                    var orderAttributeOfName = drugOrder.orderAttributes.filter(function (orderAttribute) {
-                        return orderAttributeName === orderAttribute.name;
-                    })[0];
-                    if (!$scope.shouldBeDisabled(drugOrder, orderAttributeOfName) && !orderAttributeOfName.value) allAttributesSelected = false;
+                    var orderAttributeOfName = getAttribute(drugOrder, orderAttributeName);
+                    if (!$scope.shouldBeDisabled(drugOrder, orderAttributeOfName) && !orderAttributeOfName.value)
+                        allAttributesSelected = false;
                 });
                 drugOrderGroup[orderAttributeName] = drugOrderGroup[orderAttributeName] || {};
                 drugOrderGroup[orderAttributeName].selected = allAttributesSelected;
@@ -211,12 +206,14 @@ angular.module('bahmni.clinical')
             $scope.canUpdateAtLeastOneOrderAttributeOfName = function (drugOrderGroup, orderAttributeName) {
                 var canBeUpdated = false;
                 drugOrderGroup.drugOrders.forEach(function (drugOrder) {
-                    var orderAttributeOfName = drugOrder.orderAttributes.filter(function (orderAttribute) {
-                        return orderAttributeName === orderAttribute.name;
-                    })[0];
+                    var orderAttributeOfName = getAttribute(drugOrder, orderAttributeName);
                     if (!$scope.shouldBeDisabled(drugOrder, orderAttributeOfName)) canBeUpdated = true;
                 });
                 return canBeUpdated;
+            };
+
+            var getAttribute = function (drugOrder, attributeName) {
+                return _.find(drugOrder.orderAttributes, {name: attributeName});
             };
 
             init();

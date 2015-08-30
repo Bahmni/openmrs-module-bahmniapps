@@ -17,13 +17,10 @@ Bahmni.Common.Obs.Observation = function () {
         },
 
         hasPDFAsValue: function(){
-            
             return (this.value.indexOf(".pdf") > 0);
         },
 
         getDisplayValue: function () {
-            var displayValue = "";
-            var allValues = [];
             if (this.type === "Boolean") {
                 return this.value === true ? "Yes" : "No";
             }
@@ -34,9 +31,8 @@ Bahmni.Common.Obs.Observation = function () {
             if(this.type === "Date") {
                 return this.value ? Bahmni.Common.Util.DateUtil.formatDateWithoutTime(this.value) : "";
             }
-            var shortName = this.value ? this.value.shortName : null;
-            var fullName = this.value ? this.value.name : null;
-            displayValue = shortName || fullName || this.value;
+            var value = this.value;
+            var displayValue = value && (value.shortName || value.name || value);
             if (this.duration) {
                 displayValue = displayValue + " " + this.getDurationDisplayValue();
             }
