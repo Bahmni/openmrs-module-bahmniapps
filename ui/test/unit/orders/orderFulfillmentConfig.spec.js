@@ -41,12 +41,17 @@ describe('OrderFulfillmentConfig Factory', function () {
 
     it("Should fetch concept set members", function () {
         var conceptSetName = "Viral Fever";
+        var representation = "custom:(uuid,name,names,conceptClass," +
+            "setMembers:(uuid,name,names,conceptClass," +
+            "setMembers:(uuid,name,names,conceptClass," +
+            "setMembers:(uuid,name,names,conceptClass))))";
+
         orderFulfillmentConfig(conceptSetName);
 
         expect(conceptSetServiceMock.getConceptSetMembers).toHaveBeenCalled();
         expect(conceptSetServiceMock.getConceptSetMembers).toHaveBeenCalledWith({
             name: conceptSetName,
-            v: Bahmni.Common.conceptSetRepresentationForOrderFulfillmentConfig
+            v: representation
         });
 
     });

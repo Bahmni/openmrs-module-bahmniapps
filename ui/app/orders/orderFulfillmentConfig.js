@@ -6,7 +6,7 @@ angular.module('bahmni.orders')
             return function (formName) {
                 return spinner.forPromise(conceptSetService.getConceptSetMembers({
                     name: formName,
-                    v: Bahmni.Common.conceptSetRepresentationForOrderFulfillmentConfig
+                    v: Bahmni.Common.Constants.conceptSetRepresentationForOrderFulfillmentConfig
                 }).then(function (response) {
                     var config = {};
                     var formMembers = response.data.results[0].setMembers;
