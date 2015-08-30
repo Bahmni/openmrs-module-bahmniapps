@@ -14,6 +14,11 @@ Bahmni.Common = Bahmni.Common || {};
         }
     ];
 
+    var representation = "custom:(uuid,name,names,conceptClass," +
+        "setMembers:(uuid,name,names,conceptClass," +
+        "setMembers:(uuid,name,names,conceptClass," +
+        "setMembers:(uuid,name,names,conceptClass))))";
+
     Bahmni.Common.Constants = {
         dateFormat: "dd/mm/yyyy",
         dateDisplayFormat: "DD-MMM-YYYY",
@@ -131,6 +136,7 @@ Bahmni.Common = Bahmni.Common || {};
         globalPropertyUrl: BAHMNI_CORE + "/sql/globalproperty",
         fulfillmentConfiguration: "fulfillment",
         fulfillmentFormSuffix:" Fulfillment Form",
-        noNavigationLinksMessage: "No navigation links available."
+        noNavigationLinksMessage: "No navigation links available.",
+        conceptSetRepresentationForOrderFulfillmentConfig: representation
     };
 })();

@@ -3,15 +3,10 @@
 angular.module('bahmni.orders')
     .factory('orderFulfillmentConfig', ['conceptSetService', 'spinner',
         function (conceptSetService, spinner) {
-            var representation = "custom:(uuid,name,names,conceptClass," +
-                "setMembers:(uuid,name,names,conceptClass," +
-                "setMembers:(uuid,name,names,conceptClass," +
-                "setMembers:(uuid,name,names,conceptClass))))";
-
             return function (formName) {
                 return spinner.forPromise(conceptSetService.getConceptSetMembers({
                     name: formName,
-                    v: representation
+                    v: Bahmni.Common.conceptSetRepresentationForOrderFulfillmentConfig
                 }).then(function (response) {
                     var config = {};
                     var formMembers = response.data.results[0].setMembers;
