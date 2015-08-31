@@ -96,9 +96,9 @@ describe("ManageProgramController", function () {
 
         });
 
-        it("should be able to remove program states when there are at lease 1 active state", function () {
+        it("should be able to remove program state when it is the active state", function () {
             scope.$apply(setUp);
-            expect(scope.canRemovePatientState(patientPrograms[0])).toBeTruthy();
+            expect(scope.canRemovePatientState(patientPrograms[0].states[1])).toBeTruthy();
         });
     });
 
