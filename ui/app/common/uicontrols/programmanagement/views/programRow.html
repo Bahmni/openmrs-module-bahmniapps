@@ -17,7 +17,7 @@
                     <td ng-if="state.endDate">{{state.startDate | bahmniDate}} to {{state.endDate | bahmniDate}}</td>
                     <td ng-if="!state.endDate">Started on {{state.startDate | bahmniDate}}</td>
                     <td>By {{state.auditInfo.creator.display}} on {{state.auditInfo.dateCreated | bahmniDate}}
-                        <i ng-class="{'fa fa-remove': !state.endDate}" ng-click="removePatientState(state)" class="fa fa-remove"></i>
+                        <i ng-class="{'fa fa-remove': !state.endDate}" ng-confirm-click="removePatientState(patientProgram)" confirm-message="Do you want to remove '{{state.state.concept.display}}'" ng-if="canRemovePatientState(patientProgram)" class="fa fa-remove"></i>
                     </td>
                 </tr>
             </tbody>
