@@ -17,7 +17,7 @@ angular.module('bahmni.clinical')
                 ngDialog.open({
                     template: 'dashboard/views/dashboardSections/treatmentSummary.html',
                     params: $scope.allTreatmentDetails,
-                    className: "ngdialog-theme-flat ngdialog-theme-custom",
+                    className: "ngdialog-theme-default ng-dialog-all-details-page",
                     scope: $scope
                 });
             };

@@ -1,4 +1,4 @@
-<header class="template-header">
+<!-- <header class="template-header">
     <button id="backButton" class="ngdialog-close back-btn" ng-click="closeThisDialog()">
         <i class="fa fa-arrow-circle-left"></i>
     </button>
@@ -7,7 +7,7 @@
         <span>{{patient.name}} {{'(' + patient.identifier + ')'}}</span>
     </h5>
     <h6>All {{section.title}}</h6>
-</header>
+</header> -->
 <div class="template-container">
 	<div pivot-table patient-uuid="patient.uuid" config="section.allObservationDetails.pivotTable" display-name="section.title"></div>
     <observation-graph visit-uuid="visit.uuid" params="section.allObservationDetails.observationGraph" patient-uuid="patient.uuid"></observation-graph>
