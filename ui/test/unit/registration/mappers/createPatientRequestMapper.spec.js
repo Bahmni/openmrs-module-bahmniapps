@@ -133,7 +133,7 @@ describe('patient mapper', function () {
 
         var openmrsPatient = new Bahmni.Registration.CreatePatientRequestMapper(date).mapFromPatient(patientAttributeTypes, patient);
         var dob = moment();
-        dob = dob.subtract(1, 'years').subtract(1, 'months').subtract(7, 'days');
+        dob = dob.subtract(7, 'days').subtract(1, 'months').subtract(1, 'years');
         expect(openmrsPatient.patient.person.birthdate).toBe(dob.format("YYYY-MM-DD"));
     });
 
