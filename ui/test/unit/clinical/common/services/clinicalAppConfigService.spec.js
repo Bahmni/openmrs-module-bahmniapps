@@ -233,7 +233,7 @@ describe("clinicalAppConfigService", function () {
         it('should fetch consultation board link', function (done) {
             appService.initApp('clinical', {'extension': true}).then(function () {
                 var result = clinicalAppConfigService.getConsultationBoardLink();
-                expect(result).toBe("/patient/undefined/concept-set-group/observations");
+                expect(result).toBe("/patient/undefined/concept-set-group/observations?encounterUuid=active");
                 done();
             });
         });

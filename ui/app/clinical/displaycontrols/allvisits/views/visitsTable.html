@@ -15,6 +15,7 @@
             <ul ng-show="visit.isOpen" class="ng-isolate-scope">
                 <li ng-repeat="encounter in visit.encounters"  class="ng-scope"><span>{{encounter.encounterDatetime | bahmniDateTime}}</span>
                     <span class="fr">{{encounter.provider.display}}</span>
+                    <i class="fa fa-pencil" ng-click="editConsultation(encounter)"></i>
                     <ul class="ng-isolate-scope">
                         <li ng-repeat="ob in filteredObservations(encounter.obs, observationTemplates)" class="ng-scope">
                             <span ng-if="!showObservationData">{{ob.concept.display}}</span>

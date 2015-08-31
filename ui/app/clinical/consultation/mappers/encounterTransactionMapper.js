@@ -23,6 +23,7 @@ Bahmni.Clinical.EncounterTransactionMapper = function () {
         encounterData.patientUuid = patient.uuid;
 
         if (retrospectiveEntry.isRetrospective) {
+            encounterData.encounterUuid = consultation.encounterUuid;
             encounterData.encounterDateTime = Bahmni.Common.Util.DateUtil.getDateWithoutHours(retrospectiveEntry.encounterDate);
             encounterData.visitType = defaultRetrospectiveVisitType || "OPD";
         }

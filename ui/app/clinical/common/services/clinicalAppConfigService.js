@@ -55,7 +55,7 @@ angular.module('bahmni.clinical')
             var allBoards = this.getAllConsultationBoards();
             var defaultBoard = _.find(allBoards, 'default');
             if (defaultBoard) {
-                return urlHelper.getPatientUrl() + "/" + defaultBoard.url
+                return urlHelper.getPatientUrl() + "/" + defaultBoard.url + "?encounterUuid=active";
             }
             return urlHelper.getConsultationUrl();
         };

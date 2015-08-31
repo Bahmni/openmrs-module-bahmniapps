@@ -45,7 +45,7 @@ angular.module('consultation')
                 }
             })
             .state('patient', {
-                url: '/patient/:patientUuid',
+                url: '/patient/:patientUuid?encounterUuid',
                 abstract: true,
                 data: {
                     backLinks: [patientSearchBackLink]
@@ -73,7 +73,10 @@ angular.module('consultation')
                         return visitHistoryInitialization($stateParams.patientUuid);
                     },
                     consultationContext: function (consultationInitialization, initialization, $stateParams) {
-                        return consultationInitialization($stateParams.patientUuid);
+                        if($stateParams.encounterUuid == 'active') {
+                            return consultationInitialization($stateParams.patientUuid);
+                        }
+                        return consultationInitialization($stateParams.patientUuid, $stateParams.encounterUuid);
                     }
                 }
             })

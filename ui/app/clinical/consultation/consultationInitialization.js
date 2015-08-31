@@ -3,7 +3,7 @@
 angular.module('bahmni.clinical').factory('consultationInitialization',
     ['diagnosisService', '$rootScope', 'encounterService', 'sessionService', 'configurations', '$bahmniCookieStore',
         function (diagnosisService, $rootScope, encounterService, sessionService, configurations, $bahmniCookieStore) {
-            return function (patientUuid) {
+            return function (patientUuid, encounterUuid) {
 
                 var getActiveEncounter = function () {
                     var currentProviderUuid = $rootScope.currentProvider ? $rootScope.currentProvider.uuid : null;
@@ -26,6 +26,11 @@ angular.module('bahmni.clinical').factory('consultationInitialization',
                     var consultationMapper = new Bahmni.ConsultationMapper(configurations.dosageFrequencyConfig(), configurations.dosageInstructionConfig(),
                         configurations.consultationNoteConcept(), configurations.labOrderNotesConcept());
                     var dateUtil = Bahmni.Common.Util.DateUtil;
+                    if(encounterUuid){
+                        return encounterService.findByEncounterUuid(encounterUuid).then(function(response){
+                            return consultationMapper.map(response.data);
+                        });
+                    }
                     var encounterDate = dateUtil.parseLongDateToServerFormat(dateUtil.getDateWithoutHours($rootScope.retrospectiveEntry.encounterDate));
                     return encounterService.find({
                         patientUuid: patientUuid,
@@ -39,8 +44,8 @@ angular.module('bahmni.clinical').factory('consultationInitialization',
                 };
 
                 var getEncounter = function () {
-                    if ($rootScope.retrospectiveEntry.isRetrospective) {
-                        return getRetrospectiveEncounter()
+                    if ($rootScope.retrospectiveEntry.isRetrospective || encounterUuid) {
+                        return getRetrospectiveEncounter();
                     }
                     return getActiveEncounter();
                 };
