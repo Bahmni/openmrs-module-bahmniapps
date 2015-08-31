@@ -22,8 +22,12 @@ angular.module('bahmni.common.displaycontrol.programs')
                             }
                         });
                     }
-                    $scope.activePrograms =  _.sortBy($scope.activePrograms, function(program){ return program.dateEnrolled }).reverse();
-                    $scope.pastPrograms = _.sortBy($scope.pastPrograms, function(program){ return program.dateCompleted }).reverse();
+                    $scope.activePrograms =  _.sortBy($scope.activePrograms, function(program){
+                        return moment(program.dateEnrolled)
+                    }).reverse();
+                    $scope.pastPrograms = _.sortBy($scope.pastPrograms, function(program){
+                        return moment(program.dateCompleted)
+                    }).reverse();
                 });
                 $scope.hasPatientAnyActivePrograms = function(){
                     return !_.isEmpty($scope.activePrograms);
