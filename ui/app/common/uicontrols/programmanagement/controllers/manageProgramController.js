@@ -93,6 +93,10 @@ angular.module('bahmni.common.uicontrols.programmanagment')
             };
 
             var objectDeepFind = function(obj, path) {
+                if(_.isUndefined(obj)){
+                    return undefined;
+                }
+
                 var paths = path.split('.')
                     , current = obj
                     , i;
@@ -236,6 +240,37 @@ angular.module('bahmni.common.uicontrols.programmanagment')
                 return states;
             };
 
+            var getActiveProgramStates = function(patientProgram){
+                return _.reject(patientProgram.states, function(st) {return st.voided});
+            };
+
+            $scope.canRemovePatientState = function(patientProgram){
+                return (getActiveProgramStates(patientProgram).length > 0);
+            };
+
+            $scope.removePatientState = function(patientProgram){
+                var currProgramState = _.find(getActiveProgramStates(patientProgram), {endDate: null});
+                var currProgramStateUuid = objectDeepFind(currProgramState, 'uuid');
+                spinner.forPromise(
+                    programService.deletePatientState(patientProgram.uuid, currProgramStateUuid)
+                        .then(successCallback, failureCallback)
+                );
+            };
+
+            $scope.getWorkflowStates = function(program){
+                $scope.programWorkflowStates = [];
+                if(program && program.allWorkflows.length ) {
+                    program.allWorkflows.forEach(function(workflow){
+                        if(!workflow.retired && workflow.states.length)
+                            workflow.states.forEach(function(state){
+                                if(!state.retired)
+                                    $scope.programWorkflowStates.push(state);
+                            });
+                    });
+                }
+                return states;
+            };
+
             $scope.hasStates = function(program){
                 return program && !_.isEmpty(program.allWorkflows) && !_.isEmpty($scope.programWorkflowStates)
             };
@@ -246,10 +281,6 @@ angular.module('bahmni.common.uicontrols.programmanagment')
 
             $scope.hasOutcomes = function(program){
                 return program.outcomesConcept &&!_.isEmpty(program.outcomesConcept.setMembers);
-            };
-
-            $scope.removePatientState = function(patientState){
-                patientState.voided = true;
             };
 
             init();

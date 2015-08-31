@@ -38,13 +38,14 @@ angular.module('bahmni.common.domain')
             return $http.get(req.url, {params: req.params});
         };
 
-        var constructStatesPayload = function(stateUuid, onDate){
+        var constructStatesPayload = function(stateUuid, onDate, currProgramStateUuid){
             var states =[];
             if (stateUuid) {
                 states.push({
                         state: {
                             uuid: stateUuid
                         },
+                        uuid: currProgramStateUuid,
                         startDate: onDate
                     }
                 );
@@ -52,11 +53,11 @@ angular.module('bahmni.common.domain')
             return states;
         };
 
-        var savePatientProgram = function(patientProgramUuid, stateUuid, onDate) {
+        var savePatientProgram = function(patientProgramUuid, stateUuid, onDate, currProgramStateUuid) {
             var req = {
                 url: Bahmni.Common.Constants.programEnrollPatientUrl + "/" + patientProgramUuid,
                 content: {
-                    states: constructStatesPayload(stateUuid, onDate)
+                    states: constructStatesPayload(stateUuid, onDate, currProgramStateUuid)
                 },
                 headers: {"Content-Type": "application/json"}
             };
@@ -75,12 +76,25 @@ angular.module('bahmni.common.domain')
             return $http.post(req.url, req.content, req.headers);
         };
 
+        var deletePatientState = function(patientProgramUuid, patientStateUuid) {
+            var req = {
+                url: Bahmni.Common.Constants.programEnrollPatientUrl + "/" + patientProgramUuid + "/state/" + patientStateUuid,
+                content: {
+                    "!purge": "",
+                    "reason": "User deleted the state."
+                },
+                headers: {"Content-Type": "application/json"}
+            };
+            return $http.delete(req.url, req.content, req.headers);
+        };
+
         return {
             getAllPrograms: getAllPrograms,
             enrollPatientToAProgram: enrollPatientToAProgram,
             getPatientPrograms: getPatientPrograms,
             endPatientProgram: endPatientProgram,
-            savePatientProgram: savePatientProgram
+            savePatientProgram: savePatientProgram,
+            deletePatientState: deletePatientState
         };
 
     }]);
