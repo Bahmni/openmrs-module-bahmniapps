@@ -154,7 +154,7 @@ angular.module('bahmni.common.uicontrols.programmanagment')
 
             var getCurrentState = function(states){
                 return _.find(states, function(state){
-                    return state.endDate == null;
+                    return state.endDate == null && !state.voided;
                 });
             };
 
@@ -244,8 +244,8 @@ angular.module('bahmni.common.uicontrols.programmanagment')
                 return _.reject(patientProgram.states, function(st) {return st.voided});
             };
 
-            $scope.canRemovePatientState = function(patientProgram){
-                return (getActiveProgramStates(patientProgram).length > 0);
+            $scope.canRemovePatientState = function(state){
+                return state.endDate == null;
             };
 
             $scope.removePatientState = function(patientProgram){
