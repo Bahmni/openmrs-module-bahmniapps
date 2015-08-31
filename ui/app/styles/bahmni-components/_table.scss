@@ -1,7 +1,7 @@
 /*old styles - visit - diagnosis, diagnosis tab*/
 .table{
   border: 0;
-  @include font-size(1);
+  @include font-size(0.9);
   .row{
     @include clearfix();
     border-bottom:1px solid $lightGray;
