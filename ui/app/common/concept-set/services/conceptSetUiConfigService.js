@@ -14,7 +14,7 @@ angular.module('bahmni.common.conceptSet')
                     }
                 });
             }
-        }
+        };
 
         var setExtraData = function(config) {
             Object.getOwnPropertyNames(config).forEach(function(conceptConfigKey) {
@@ -24,13 +24,13 @@ angular.module('bahmni.common.conceptSet')
                     setConceptUuidInsteadOfName(conceptConfig['freeTextAutocomplete'], 'conceptSetName', 'conceptSetUuid');
                 }
             })
-        }
+        };
 
         var getConfig = function() {
             var config = appService.getAppDescriptor().getConfigValue("conceptSetUI") || {};
             setExtraData(config);
             return config;
-        }
+        };
 
         return {
             getConfig: getConfig

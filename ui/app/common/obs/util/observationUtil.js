@@ -1,10 +1,10 @@
 'use strict';
 
-Bahmni.Common.Obs.ObservationUtil = {
-    sortSameConceptsWithObsDateTime: function (observation) {
+Bahmni.Common.Obs.ObservationUtil = (function () {
+
+    var sortSameConceptsWithObsDateTime = function (observation) {
         var sortedObservations = [];
         for (var i = 0; i < observation.length; i++) {
-
             if (i != observation.length - 1) {
                 if (observation[i].conceptUuid != observation[i + 1].conceptUuid) {
                     sortedObservations.push(observation[i]);
@@ -24,5 +24,38 @@ Bahmni.Common.Obs.ObservationUtil = {
             }
         }
         return _.flatten(sortedObservations);
-    }
-};
+    };
+
+    var disable = function (parentConceptSet, field, disable) {
+        var conceptElement = parentConceptSet.find("[data-concept-name='" + field + "']");
+        if (!_.isEmpty(conceptElement.children())) {
+            conceptElement.find("input").attr("disabled", disable);
+            conceptElement.find("textarea").attr("disabled", disable);
+            conceptElement.find("button").attr("disabled", disable);
+        } else {
+            conceptElement.attr("disabled", disable);
+        }
+    };
+
+    var flatten = function (observation) {
+        var flattenedObservation = {};
+        findLeafObservations(flattenedObservation, observation);
+        return flattenedObservation;
+    };
+
+    var findLeafObservations = function (flattenedObservations, observation) {
+        if (!_.isEmpty(observation.groupMembers)) {
+            _.each(observation.groupMembers, function (member) {
+                findLeafObservations(flattenedObservations, member);
+            });
+        } else {
+            flattenedObservations[observation.concept.name] = observation.value;
+        }
+    };
+
+    return {
+        sortSameConceptsWithObsDateTime: sortSameConceptsWithObsDateTime,
+        disable: disable,
+        flatten: flatten
+    };
+})();
