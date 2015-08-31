@@ -378,8 +378,11 @@ body pre {
 }  
 table{
     td,th{
-        padding:9px 8px 9px 8px;
+        padding:4px 8px 4px 8px;
         text-align:left;
+        @media screen and (max-width: 1024px){
+          padding:9px 8px 9px 8px;
+        }
     }
     tr:hover{
       background: $lightestGray;
@@ -391,16 +394,12 @@ table{
   .edit-col{
       width:160px;
       padding:2px 2px 2px 2px;
-      // .split-button-wrapper{
-      //     @include legacy-pie-clearfix();
-      //     position: relative;
-      //     height: 37px;
-      // }
-      // .split-button{
-      //   position:absolute;
-      //   top:2px;
-      //   left:10px;
-      // }
+       .split-button ul li button{
+         @media screen and (min-width: 1024px){
+           padding: 5px 20px;
+           margin: 0;
+         }
+       }
       a{
         background:image-url("edit.png") top left no-repeat;
         width:30px;
