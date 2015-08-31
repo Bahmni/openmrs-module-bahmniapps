@@ -28,16 +28,18 @@ angular.module('bahmni.clinical')
                 if (!!$state.params.programUuid) {
                     conceptSetService.getObsTemplatesForProgram($state.params.programUuid).success(function (data) {
                         if(data.results.length>0 && data.results[0].mappings.length>0) {
-                            var programSpecificObsTemplates = _.map(data.results[0].mappings, function (template) {
+                            _.map(allConceptSections, function(conceptSection) {
+                                conceptSection.isAdded = false;
+                                conceptSection.alwaysShow = false;
+                            });
+
+                            _.map(data.results[0].mappings, function (template) {
                                 var matchedTemplate = _.find(allConceptSections, {uuid: template.uuid});
                                 if(matchedTemplate) {
                                     matchedTemplate.alwaysShow = true;
                                 }
-                                return matchedTemplate;
+
                             });
-                            if(programSpecificObsTemplates.length>0){
-                                $scope.consultation.selectedObsTemplate = programSpecificObsTemplates;
-                            }
                         }
                     });
                 }
