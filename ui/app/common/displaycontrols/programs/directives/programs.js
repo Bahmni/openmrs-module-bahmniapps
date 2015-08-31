@@ -10,9 +10,24 @@ angular.module('bahmni.common.displaycontrol.programs')
 
             var controller = function ($scope) {
                 programService.getPatientPrograms($scope.patient.uuid).success(function (data) {
-                    var groupedPrograms = _.groupBy(data.results,isActive);
-                    $scope.activePrograms =  _.sortBy(groupedPrograms.true, "dateEnrolled").reverse();
-                    $scope.pastPrograms = _.sortBy(groupedPrograms.false, "dateCompleted").reverse();
+                    $scope.activePrograms = [];
+                    $scope.pastPrograms = [];
+                    if (data.results) {
+                        _.each(data.results, function (result) {
+                            if (isActive(result)){
+                                $scope.activePrograms.push(result);
+                            }
+                            else {
+                                $scope.pastPrograms.push(result);
+                            }
+                        });
+                    }
+                    $scope.activePrograms =  _.sortBy($scope.activePrograms, function(program){
+                        return moment(program.dateEnrolled)
+                    }).reverse();
+                    $scope.pastPrograms = _.sortBy($scope.pastPrograms, function(program){
+                        return moment(program.dateCompleted)
+                    }).reverse();
                 });
                 $scope.hasPatientAnyActivePrograms = function(){
                     return !_.isEmpty($scope.activePrograms);

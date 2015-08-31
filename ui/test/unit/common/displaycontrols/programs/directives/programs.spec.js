@@ -106,6 +106,6 @@ describe("Program display control", function () {
         var elementIsolatedScope = element.isolateScope();
 
         expect(elementIsolatedScope.pastPrograms.length).toBe(3);
-        expect(elementIsolatedScope.pastPrograms[0].display).toBe("HIV Program");
+        expect(elementIsolatedScope.pastPrograms[0].display).toBe("End TB Program");
     });
 });
