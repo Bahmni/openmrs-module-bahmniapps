@@ -3,7 +3,7 @@
         <span class="program-title">{{patientProgram.display}}</span>
         <span class="enrolled-info"> (Enrolled on {{patientProgram.dateEnrolled | bahmniDate}})</span>
         <button ng-click="toggleEdit(patientProgram)" ng-class="{'tab-selected': patientProgram.editing}" ng-if="hasProgramWorkflowStates(patientProgram)">Edit</button>
-        <a class="back-btn" ng-href="#/patient/{{patient.uuid}}/dashboard?programName={{patientProgram.display}}" class="big-anchor">Consultation</a>
+        <a class="back-btn" ng-href="#/patient/{{patient.uuid}}/concept-set-group/observations/program/{{patientProgram.program.uuid}}" class="big-anchor">Consultation</a>
 
         </div>
     <div class="program-timeline" ng-if="patientProgram.states.length!=0">

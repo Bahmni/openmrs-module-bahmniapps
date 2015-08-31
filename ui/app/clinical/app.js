@@ -261,10 +261,13 @@ angular.module('consultation')
                 templateUrl: 'consultation/views/disposition.html',
                 controller: 'DispositionController'
             })
-            .state('patient.consultation.conceptSet', {
+            .state('patient.consultation.observations', {
                 url: '/concept-set-group/:conceptSetGroupName',
                 templateUrl: 'consultation/views/conceptSet.html',
                 controller: 'ConceptSetPageController'
+            })
+            .state('patient.consultation.observations.program', {
+                url: '/program/:programUuid'
             })
             .state('patient.consultation.notes', {
                 url: '/notes',
