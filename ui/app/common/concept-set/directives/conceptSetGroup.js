@@ -2,7 +2,9 @@ angular.module('bahmni.common.conceptSet')
     .controller('ConceptSetGroupController', ['$scope', 'appService', 'contextChangeHandler', 'spinner',
         'conceptSetService', '$rootScope', 'sessionService', 'encounterService', 'treatmentConfig', 'messagingService',
         'retrospectiveEntryService', 'userService', 'conceptSetUiConfigService', '$timeout', 'clinicalAppConfigService',
-        function ($scope, appService, contextChangeHandler, spinner, conceptSetService, $rootScope, sessionService, encounterService, treatmentConfig, messagingService, retrospectiveEntryService, userService, conceptSetUiConfigService, $timeout, clinicalAppConfigService) {
+        function ($scope, appService, contextChangeHandler, spinner, conceptSetService, $rootScope, sessionService,
+                  encounterService, treatmentConfig, messagingService, retrospectiveEntryService, userService,
+                  conceptSetUiConfigService, $timeout, clinicalAppConfigService) {
 
             var conceptSetUIConfig = conceptSetUiConfigService.getConfig();
             $scope.togglePref = function (conceptSet, conceptName) {
@@ -53,6 +55,7 @@ angular.module('bahmni.common.conceptSet')
                     });
                 }));
             };
+
             var copyValues = function (existingObservations, modifiedObservations) {
                 existingObservations.forEach(function (observation, index) {
                     if (observation.groupMembers && observation.groupMembers.length > 0) {
@@ -66,6 +69,12 @@ angular.module('bahmni.common.conceptSet')
             contextChangeHandler.add($scope.validationHandler.validate);
         }])
     .directive('conceptSetGroup', function () {
+        var linkFn = function($scope, rootElement) {
+            rootElement.on('change', function(e) {
+                Bahmni.ConceptSet.EventHandler(e, $scope.consultation.observations, Bahmni.Common.Obs.ObservationUtil);
+            });
+        };
+
         return {
             restrict: 'EA',
             scope: {
@@ -79,7 +88,7 @@ angular.module('bahmni.common.conceptSet')
 
             },
             controller: 'ConceptSetGroupController',
+            link: linkFn,
             templateUrl: '../common/concept-set/views/conceptSetGroup.html'
-
         }
     });

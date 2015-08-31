@@ -26,7 +26,16 @@ angular.module('bahmni.clinical').factory('initialization',
                 return appService.initApp('clinical', {'app': true, 'extension': true },null,["dashboard","visit"]);
             };
 
-            return spinner.forPromise(authenticator.authenticateUser().then(initApp).then(loadConfigPromise).then(orderTypeService.loadAll()));
+            var loadFormConditions = function () {
+                var baseUrl = appService.configBaseUrl();
+                Bahmni.Common.Util.DynamicResourceLoader.includeJs(baseUrl + 'clinical/formConditions.js');
+            };
+
+            return spinner.forPromise(authenticator.authenticateUser()
+                .then(initApp)
+                .then(loadConfigPromise)
+                .then(loadFormConditions)
+                .then(orderTypeService.loadAll()));
         }
     ]
 );

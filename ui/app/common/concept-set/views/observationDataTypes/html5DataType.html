@@ -1,16 +1,17 @@
 <input id="{{::observation.uniqueId}}" obs-constraints obs="observation"
-       ng-model="observation.value"
+       ng-model="observation.value" data-concept-name="{{observation.concept.name}}"
        ng-if="::(observation.isNumeric() && !observation.isStepperControl())"
        ng-class="{'is-abnormal': observation.abnormalObs.value, 'illegalValue': !observation.isValid(atLeastOneValueIsSet,conceptSetRequired), 'computed-field': observation.isComputedAndEditable()}"
        integer="true" focus-me="observation.isFocused"/>
 
 <input id="{{::observation.uniqueId}}" obs-constraints obs="observation"
        ng-if="!observation.isNumeric()"
-       ng-model="observation.value"
+       ng-model="observation.value" data-concept-name="{{observation.concept.name}}"
        ng-class="{'is-abnormal': observation.abnormalObs.value, 'illegalValue': !observation.isValid(atLeastOneValueIsSet,conceptSetRequired), 'computed-field': observation.isComputedAndEditable()}"
        focus-me="observation.isFocused"/>
 
-<stepper id="{{::observation.uniqueId}}" ng-model="observation.value" obs="observation"
+<stepper id="{{::observation.uniqueId}}"
+         ng-model="observation.value" data-concept-name="{{observation.concept.name}}" obs="observation"
          ng-class="{'is-abnormal': observation.abnormalObs.value, 'illegalValue': !observation.isValid(atLeastOneValueIsSet, conceptSetRequired)}"
          focus-me="observation.isFocused"
          ng-if="::(observation.isNumeric() && observation.isStepperControl())"></stepper>

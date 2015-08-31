@@ -145,20 +145,19 @@
                         <div ng-include src="'../common/concept-set/views/observationDataTypes/buttonSelectType.html'"></div>
                     </div>
 
-
                     <div ng-switch-when="datetime">
-                        <datetimepicker model="observation.value" show-time="true"
-                                        illegal-value="!observation.isValid(atLeastOneValueIsSet, conceptSetRequired)"></datetimepicker>
+                        <datetimepicker model="observation.value" data-concept-name="{{observation.concept.name}}"
+                                        show-time="true" illegal-value="!observation.isValid(atLeastOneValueIsSet, conceptSetRequired)"></datetimepicker>
                     </div>
 
-                    <div ng-switch-when="grid">
+                    <div ng-switch-when="grid" data-concept-name="{{observation.concept.name}}">
                         <div ng-repeat="member in ::observation.groupMembers" class="grid-row"
                              ng-class="{'illegalValue': !observation.isValid(atLeastOneValueIsSet, conceptSetRequired)}">
                             <button-select observation="member"></button-select>
                         </div>
                     </div>
 
-                    <div ng-switch-when="image" class="consultation-image">
+                    <div ng-switch-when="image" class="consultation-image" data-concept-name="{{observation.concept.name}}">
                         <div class="file-remove">
                             <button type="button" ng-click="observation.toggleVoidingOfImage()"
                                     ng-if="observation.value" class="row-remover"><span
@@ -188,16 +187,15 @@
                             </button>
                         </div>
 
-
-                    <textarea class="consultation-img-comments" ng-show="observation.showComment" maxlength="255"
+                        <textarea class="consultation-img-comments" ng-show="observation.showComment" maxlength="255"
                               ng-model="observation.comment">
-                    </textarea>
+                        </textarea>
                     </div>
 
 
                     <div ng-switch-when="autocomplete"
                          ng-class="{'illegalValue': !observation.isValid(atLeastOneValueIsSet, conceptSetRequired), 'computed-field': observation.isComputedAndEditable()}"
-                         class="autocomplete">
+                         class="autocomplete" data-concept-name="{{observation.concept.name}}">
                         <input ng-if="::!observation.conceptUIConfig.answersConceptName" type="hidden"
                                ui-select2="selectOptions(observation.concept)" ng-model="observation.value"
                                style="width: 90%;" autofocus/>
@@ -215,6 +213,7 @@
                 <div ng-include src="'../common/concept-set/views/observationDataTypes/addMore.html'"></div>
 
                 <button ng-if="::observation.canHaveComment()" type="button" toggle="observation.showComment"
+                        data-concept-name="{{observation.concept.name}}"
                         class="comment-toggle fr" tabindex="-1" ng-class="{'has-notes': observation.comment}">
                     <i class="fa fa-file-o" ng-hide="observation.comment">
                         <i class="fa fa-plus-circle" ng-hide="observation.showComment"></i>
@@ -228,7 +227,6 @@
                           placeholder="Notes">
                     </textarea>
                 </div>
-
             </div>
         </fieldset>
 
