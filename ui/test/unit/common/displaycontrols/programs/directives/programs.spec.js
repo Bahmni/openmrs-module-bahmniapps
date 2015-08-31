@@ -91,8 +91,8 @@ describe("Program display control", function () {
         var elementIsolatedScope = element.isolateScope();
 
         expect(elementIsolatedScope.activePrograms.length).toBe(2);
-        expect(elementIsolatedScope.activePrograms[0].display).toBe("End Fever Program");
-        expect(elementIsolatedScope.activePrograms[1].display).toBe("End Sneeze Program");
+        expect(elementIsolatedScope.activePrograms[0].display).toBe("End Sneeze Program");
+        expect(elementIsolatedScope.activePrograms[1].display).toBe("End Fever Program");
     });
 
     it("Shows past programs and sort by descending order of program end date when dateCompleted is not given", function () {
