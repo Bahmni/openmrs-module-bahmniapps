@@ -1,14 +1,12 @@
-
 'use strict';
 
 angular.module('bahmni.common.conceptSet')
-    .factory('conceptSetService', ['$http', '$q', function ($http, $q) {
+    .factory('conceptSetService', ['$http', '$q', function ($http) {
         var getConceptSetMembers = function (params, cache) {
-            return $http.get(Bahmni.Common.Constants.conceptUrl, 
-            	{
-            		params: params,
-            		cache: cache
-            	});
+            return $http.get(Bahmni.Common.Constants.conceptUrl,{
+                params: params,
+                cache: cache
+            });
         };
 
         var getComputedValue = function(encounterData){
@@ -19,9 +17,21 @@ angular.module('bahmni.common.conceptSet')
             });
         };
 
+        var getObsTemplatesForProgram = function (programUuid) {
+            var url = Bahmni.Common.Constants.entityMappingUrl;
+            return $http.get(url,{
+                params:{
+                    entityUuid:programUuid,
+                    mappingType:'program_obstemplate',
+                    s:'byEntityAndMappingType'
+                }
+            });
+        };
+
         return {
             getConceptSetMembers: getConceptSetMembers,
-            getComputedValue: getComputedValue
+            getComputedValue: getComputedValue,
+            getObsTemplatesForProgram:getObsTemplatesForProgram
         };
 
     }]);
