@@ -22,7 +22,7 @@ Bahmni.Registration.CreatePatientRequestMapper = (function () {
                     birthdate: this.getBirthdate(patient.birthdate, patient.age),
                     birthdateEstimated: patient.birthdateEstimated ,
                     gender: patient.gender,
-                    birthtime: patient.birthtime === null ? undefined : patient.birthtime,
+                    birthtime: Bahmni.Common.Util.DateUtil.parseLongDateToServerFormat(patient.birthtime),
                     personDateCreated: patient.registrationDate,
                     attributes: this.getMrsAttributes(patient, patientAttributeTypes),
                     dead:patient.dead,
