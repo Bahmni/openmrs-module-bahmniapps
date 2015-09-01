@@ -3,7 +3,7 @@ describe("Program display control", function () {
 
     var compile, rootScope, programService;
     var DateUtil = Bahmni.Common.Util.DateUtil;
-    var element;
+    var element,q;
 
     beforeEach(function() {
         module('bahmni.common.displaycontrol.programs');
@@ -14,9 +14,10 @@ describe("Program display control", function () {
         $provide.value('programService', programService);
     }));
 
-    beforeEach(inject(function ($compile, $rootScope) {
+    beforeEach(inject(function ($compile, $rootScope, $q) {
         compile = $compile;
         rootScope = $rootScope;
+        q = $q;
     }));
 
     var today = DateUtil.endOfToday();
@@ -25,33 +26,32 @@ describe("Program display control", function () {
     var fiveDaysFromToday = DateUtil.addDays(today, 5);
 
     var data = {
-        results: [
-            {
-                "display": "Tuberculosis Program",
-                "dateEnrolled": DateUtil.formatDateWithoutTime(tenDaysAgo),
-                "dateCompleted": DateUtil.formatDateWithTime(yesterday),
-                "outcome": null
-            },
-            {
-                "display": "HIV Program",
-                "dateEnrolled": DateUtil.formatDateWithoutTime(tenDaysAgo),
-                "dateCompleted": DateUtil.formatDateWithoutTime(today),
-                "outcome": null
-            },
+        activePrograms: [{
+            "display": "End Fever Program",
+            "dateEnrolled": tenDaysAgo.toString(),
+            "dateCompleted": null,
+            "outcome": null
+        }],
+
+        endedPrograms: [{
+            "display": "Tuberculosis Program",
+            "dateEnrolled": tenDaysAgo.toString(),
+            "dateCompleted": fiveDaysFromToday.toString(),
+            "outcome": null
+        }, {
+            "display": "HIV Program",
+            "dateEnrolled": tenDaysAgo.toString(),
+            "dateCompleted": today.toString(),
+            "outcome": null
+        },
             {
                 "display": "End TB Program",
-                "dateEnrolled": DateUtil.formatDateWithoutTime(tenDaysAgo),
-                "dateCompleted": DateUtil.formatDateWithoutTime(fiveDaysFromToday),
+                "dateEnrolled": tenDaysAgo.toString(),
+                "dateCompleted": yesterday.toString(),
                 "outcome": null
             },
-            {
-                "display": "End Fever Program",
-                "dateEnrolled": DateUtil.formatDateWithoutTime(tenDaysAgo),
-                "dateCompleted": null,
-                "outcome": null
-            }
         ]
-    };
+    }
 
     var compileAndDigest = function () {
         element = angular.element('<programs patient="patient"></programs>');
@@ -59,31 +59,22 @@ describe("Program display control", function () {
         rootScope.$digest();
     };
 
-    it("Shows active programs", function () {
+    it("Shows active programs and ended programs", function () {
         rootScope.patient = {
             uuid: "uuid"
         };
 
-        programService.getPatientPrograms.and.returnValue(specUtil.createFakePromise(data));
+        var deferred;
+
+        programService.getPatientPrograms.and.callFake(function () {
+            deferred = q.defer();
+            deferred.resolve(data);
+            return deferred.promise;
+        });
         compileAndDigest();
-
         var elementIsolatedScope = element.isolateScope();
-
         expect(elementIsolatedScope.activePrograms.length).toBe(1);
         expect(elementIsolatedScope.activePrograms[0].display).toBe("End Fever Program");
-    });
 
-    it("Shows past programs and sort by descending order of program end date when dateCompleted is not given", function () {
-        rootScope.patient = {
-            uuid: "uuid"
-        };
-
-        programService.getPatientPrograms.and.returnValue(specUtil.createFakePromise(data));
-        compileAndDigest();
-
-        var elementIsolatedScope = element.isolateScope();
-
-        expect(elementIsolatedScope.pastPrograms.length).toBe(3);
-        expect(elementIsolatedScope.pastPrograms[0].display).toBe("End TB Program");
     });
 });
