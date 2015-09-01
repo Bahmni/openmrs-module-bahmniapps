@@ -11,64 +11,21 @@ angular.module('bahmni.common.uicontrols.programmanagment')
             $scope.outComesForProgram = [];
 
             var updateActiveProgramsList = function () {
-                spinner.forPromise(programService.getPatientPrograms($scope.patient.uuid).then(function (data) {
-                    $scope.activePrograms = [];
-                    $scope.endedPrograms = [];
-                    if (data.data.results) {
-                        var programs = filterRetiredPrograms(data.data.results);
-                        _.forEach(programs, function (program) {
-                            program.program.allWorkflows = filterRetiredWorkflowsAndStates(program.program.allWorkflows);
-                            if (program.dateCompleted) {
-                                $scope.endedPrograms.push(program);
-                            } else {
-                                $scope.activePrograms.push(program);
-                            }
-                        });
-                        $scope.activePrograms =  _.sortBy($scope.activePrograms, function(program){ return program.dateEnrolled }).reverse();
-                        $scope.endedPrograms = _.sortBy($scope.endedPrograms, function(program){ return program.dateCompleted }).reverse();
-                    }
-                }))
+                spinner.forPromise(programService.getPatientPrograms($scope.patient.uuid).then(function (programs) {
+                    $scope.activePrograms = programs.activePrograms;
+                    $scope.endedPrograms = programs.endedPrograms;
+                }));
             };
 
-            var getCurrentDate = function() {
+            var getCurrentDate = function () {
                 var currentDate = $bahmniCookieStore.get(Bahmni.Common.Constants.retrospectiveEntryEncounterDateCookieName);
                 return DateUtil.parse(currentDate || DateUtil.now());
             };
 
-            var filterRetiredPrograms = function (programs) {
-                return _.filter(programs, function (program) {
-                    return !program.retired;
-                });
-            };
-
-            var filterRetiredWorkflowsAndStates = function(workflows){
-                var allWorkflows = _.filter(workflows, function (workflow) {
-                    return !workflow.retired;
-                });
-                _.forEach(allWorkflows, function (workflow) {
-                    workflow.states = _.filter(workflow.states, function (state) {
-                        return !state.retired
-                    })
-                });
-                return allWorkflows;
-            };
-
-            var filterRetiredOutcomes = function(outcomes){
-                return _.filter(outcomes, function(outcome){
-                    return !outcome.retired;
-                })
-            };
-
             var init = function () {
                 $scope.programEnrollmentDate = getCurrentDate();
-                spinner.forPromise(programService.getAllPrograms().then(function (data) {
-                    $scope.allPrograms = filterRetiredPrograms(data.data.results);
-                    _.forEach($scope.allPrograms, function(program){
-                        program.allWorkflows = filterRetiredWorkflowsAndStates(program.allWorkflows);
-                        if(program.outcomesConcept){
-                          program.outcomesConcept.setMembers = filterRetiredOutcomes(program.outcomesConcept.setMembers);
-                        }
-                    })
+                spinner.forPromise(programService.getAllPrograms().then(function(programs) {
+                    $scope.allPrograms = programs;
                 }));
                 updateActiveProgramsList();
             };
@@ -82,11 +39,11 @@ angular.module('bahmni.common.uicontrols.programmanagment')
 
             var failureCallback = function (error) {
                 var fieldErrorMsg = findFieldErrorIfAny(error);
-                var errorMsg  = _.isUndefined(fieldErrorMsg) ? "Failed to Save" : fieldErrorMsg;
+                var errorMsg = _.isUndefined(fieldErrorMsg) ? "Failed to Save" : fieldErrorMsg;
                 messagingService.showMessage("error", errorMsg);
             };
 
-            var findFieldErrorIfAny = function(error) {
+            var findFieldErrorIfAny = function (error) {
                 var stateFieldError = objectDeepFind(error, "data.error.fieldErrors.states");
                 var errorField = stateFieldError && stateFieldError[0];
                 return errorField && errorField.message;
@@ -96,7 +53,6 @@ angular.module('bahmni.common.uicontrols.programmanagment')
                 if(_.isUndefined(obj)){
                     return undefined;
                 }
-
                 var paths = path.split('.')
                     , current = obj
                     , i;
@@ -111,8 +67,8 @@ angular.module('bahmni.common.uicontrols.programmanagment')
                 return current;
             };
 
-            var isThePatientAlreadyEnrolled = function() {
-                return _.pluck( $scope.activePrograms, function (program) {
+            var isThePatientAlreadyEnrolled = function () {
+                return _.pluck($scope.activePrograms, function (program) {
                         return program.program.uuid
                     }).indexOf($scope.programSelected.uuid) > -1;
             };
@@ -121,21 +77,22 @@ angular.module('bahmni.common.uicontrols.programmanagment')
                 return $scope.programSelected && $scope.programSelected.uuid;
             };
 
-            $scope.hasPatientEnrolledToSomePrograms = function(){
+            $scope.hasPatientEnrolledToSomePrograms = function () {
                 return !_.isEmpty($scope.activePrograms);
             };
-            $scope.hasPatientAnyPastPrograms = function(){
+
+            $scope.hasPatientAnyPastPrograms = function () {
                 return !_.isEmpty($scope.endedPrograms);
             };
 
             $scope.enrollPatient = function () {
-                if(!isProgramSelected()){
+                if (!isProgramSelected()) {
                     messagingService.showMessage("formError", "Please select a Program to Enroll the patient");
-                    return ;
+                    return;
                 }
                 if (isThePatientAlreadyEnrolled()) {
                     messagingService.showMessage("formError", "Patient already enrolled to the Program");
-                    return ;
+                    return;
                 }
                 var stateUuid = $scope.workflowStateSelected && $scope.workflowStateSelected.uuid ? $scope.workflowStateSelected.uuid : null;
                 spinner.forPromise(
@@ -144,12 +101,12 @@ angular.module('bahmni.common.uicontrols.programmanagment')
                 );
             };
 
-            var isProgramStateSelected = function(){
+            var isProgramStateSelected = function () {
                 return objectDeepFind($scope, "programEdited.selectedState.uuid");
             };
 
-            var isOutcomeSelected = function(patientProgram){
-              return !_.isEmpty(objectDeepFind(patientProgram, 'outcomeData.uuid'));
+            var isOutcomeSelected = function (patientProgram) {
+                return !_.isEmpty(objectDeepFind(patientProgram, 'outcomeData.uuid'));
             };
 
             var getCurrentState = function(states){
@@ -158,11 +115,13 @@ angular.module('bahmni.common.uicontrols.programmanagment')
                 });
             };
 
-             $scope.getWorkflowStatesWithoutCurrent = function(patientProgram){
+            $scope.getWorkflowStatesWithoutCurrent = function (patientProgram) {
                 var currentState = getCurrentState(patientProgram.states);
                 var states = getStates(patientProgram.program);
-                if(currentState){
-                    states = _.reject(states, function(state){ return state.uuid === currentState.state.uuid; });
+                if (currentState) {
+                    states = _.reject(states, function (state) {
+                        return state.uuid === currentState.state.uuid;
+                    });
                 }
                 return states;
             };
@@ -170,7 +129,7 @@ angular.module('bahmni.common.uicontrols.programmanagment')
             $scope.savePatientProgram = function (patientProgram) {
                 var startDate = getCurrentDate();
                 var currentState = getCurrentState(patientProgram.states);
-                var currentStateDate = currentState ? DateUtil.parse(currentState.startDate): null;
+                var currentStateDate = currentState ? DateUtil.parse(currentState.startDate) : null;
 
                 if (DateUtil.isBeforeDate(startDate, currentStateDate)) {
                     var formattedCurrentStateDate = DateUtil.formatDateWithoutTime(currentStateDate);
@@ -188,15 +147,15 @@ angular.module('bahmni.common.uicontrols.programmanagment')
                 );
             };
 
-            $scope.getOutcomes = function(program) {
+            $scope.getOutcomes = function (program) {
                 var currentProgram = _.findWhere($scope.allPrograms, {uuid: program.uuid});
                 return currentProgram.outcomesConcept ? currentProgram.outcomesConcept.setMembers : [];
             };
 
-            $scope.endPatientProgram = function(patientProgram) {
+            $scope.endPatientProgram = function (patientProgram) {
                 var dateCompleted = getCurrentDate();
                 var currentState = getCurrentState(patientProgram.states);
-                var currentStateDate = currentState ? DateUtil.parse(currentState.startDate): null;
+                var currentStateDate = currentState ? DateUtil.parse(currentState.startDate) : null;
 
 
                 if (currentState && DateUtil.isBeforeDate(dateCompleted, currentStateDate)) {
@@ -205,7 +164,7 @@ angular.module('bahmni.common.uicontrols.programmanagment')
                     return;
                 }
 
-                if(!isOutcomeSelected(patientProgram)){
+                if (!isOutcomeSelected(patientProgram)) {
                     messagingService.showMessage("formError", "Please select an outcome.");
                     return;
                 }
@@ -218,28 +177,27 @@ angular.module('bahmni.common.uicontrols.programmanagment')
                     }));
             };
 
-            $scope.toggleEdit = function(program) {
+            $scope.toggleEdit = function (program) {
                 program.ending = false;
                 program.editing = !program.editing;
             };
 
-            $scope.toggleEnd = function(program) {
+            $scope.toggleEnd = function (program) {
                 program.editing = false;
                 program.ending = !program.ending;
             };
 
-            $scope.setWorkflowStates = function(program){
+            $scope.setWorkflowStates = function (program) {
                 $scope.programWorkflowStates = getStates(program);
             };
 
-            var getStates = function(program){
+            var getStates = function (program) {
                 var states = [];
-                if(program && program.allWorkflows && program.allWorkflows.length && program.allWorkflows[0].states.length ) {
+                if (program && program.allWorkflows && program.allWorkflows.length && program.allWorkflows[0].states.length) {
                     states = program.allWorkflows[0].states;
                 }
                 return states;
             };
-
             var getActiveProgramStates = function(patientProgram){
                 return _.reject(patientProgram.states, function(st) {return st.voided});
             };
@@ -270,19 +228,17 @@ angular.module('bahmni.common.uicontrols.programmanagment')
                 }
                 return states;
             };
-
-            $scope.hasStates = function(program){
+            $scope.hasStates = function (program) {
                 return program && !_.isEmpty(program.allWorkflows) && !_.isEmpty($scope.programWorkflowStates)
             };
 
-            $scope.hasProgramWorkflowStates = function(patientProgram){
+            $scope.hasProgramWorkflowStates = function (patientProgram) {
                 return !_.isEmpty(getStates(patientProgram.program));
             };
 
-            $scope.hasOutcomes = function(program){
-                return program.outcomesConcept &&!_.isEmpty(program.outcomesConcept.setMembers);
+            $scope.hasOutcomes = function (program) {
+                return program.outcomesConcept && !_.isEmpty(program.outcomesConcept.setMembers);
             };
-
             init();
         }
     ]);

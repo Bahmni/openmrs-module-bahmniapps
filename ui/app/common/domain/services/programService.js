@@ -3,7 +3,16 @@ angular.module('bahmni.common.domain')
     .factory('programService', ['$http', function ($http) {
 
         var getAllPrograms = function () {
-            return $http.get(Bahmni.Common.Constants.programUrl, {params: {v: 'default'}});
+            return $http.get(Bahmni.Common.Constants.programUrl, {params: {v: 'default'}}).then(function (data) {
+                var allPrograms = filterRetiredPrograms(data.data.results);
+                _.forEach(allPrograms, function (program) {
+                    program.allWorkflows = filterRetiredWorkflowsAndStates(program.allWorkflows);
+                    if (program.outcomesConcept) {
+                        program.outcomesConcept.setMembers = filterRetiredOutcomes(program.outcomesConcept.setMembers);
+                    }
+                });
+                return allPrograms;
+            });
         };
 
         var enrollPatientToAProgram = function (patientUuid, programUuid, dateEnrolled, stateUuid) {
@@ -35,7 +44,53 @@ angular.module('bahmni.common.domain')
                     patient: patientUuid
                 }
             };
-            return $http.get(req.url, {params: req.params});
+            return $http.get(req.url, {params: req.params}).then(function(data) {
+                return groupPrograms(data.data.results);
+            });
+        };
+
+        var groupPrograms = function(patientPrograms) {
+                var activePrograms = [];
+                var endedPrograms = [];
+                var groupedPrograms = {};
+                if (patientPrograms) {
+                    var filteredPrograms = filterRetiredPrograms(patientPrograms);
+                    _.forEach(filteredPrograms, function (program) {
+                        program.program.allWorkflows = filterRetiredWorkflowsAndStates(program.program.allWorkflows);
+                        if (program.dateCompleted) {
+                            endedPrograms.push(program);
+                        } else {
+                            activePrograms.push(program);
+                        }
+                    });
+                    groupedPrograms.activePrograms =  _.sortBy(activePrograms, function(program){ return new Date(program.dateEnrolled) }).reverse();
+                    groupedPrograms.endedPrograms = _.sortBy(endedPrograms, function(program){ return new Date(program.dateCompleted) }).reverse();
+                }
+                return groupedPrograms;
+        };
+
+        var filterRetiredPrograms = function (programs) {
+            return _.filter(programs, function (program) {
+                return !program.retired;
+            });
+        };
+
+        var filterRetiredWorkflowsAndStates = function (workflows) {
+            var allWorkflows = _.filter(workflows, function (workflow) {
+                return !workflow.retired;
+            });
+            _.forEach(allWorkflows, function (workflow) {
+                workflow.states = _.filter(workflow.states, function (state) {
+                    return !state.retired
+                })
+            });
+            return allWorkflows;
+        };
+
+        var filterRetiredOutcomes = function (outcomes) {
+            return _.filter(outcomes, function (outcome) {
+                return !outcome.retired;
+            })
         };
 
         var constructStatesPayload = function(stateUuid, onDate, currProgramStateUuid){
