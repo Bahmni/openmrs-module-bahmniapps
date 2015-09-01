@@ -2,9 +2,9 @@
 angular
     .module('orders', ['ui.router', 'bahmni.orders', 'bahmni.common.domain', 'bahmni.common.patient', 'authentication', 'bahmni.common.config', 'bahmni.common.appFramework', 
         'httpErrorInterceptor', 'bahmni.common.routeErrorHandler', 'bahmni.common.uiHelper', 'bahmni.common.patientSearch', 'bahmni.common.util', 'bahmni.common.conceptSet', 
-        'RecursionHelper', 'infinite-scroll', 'bahmni.common.displaycontrol.patientprofile',  'bahmni.common.obs', 'bahmni.common.displaycontrol.orders',
-        'bahmni.common.displaycontrol.observation', 'bahmni.common.orders'])
-    .config(['$urlRouterProvider', '$stateProvider', '$httpProvider', function ($urlRouterProvider, $stateProvider, $httpProvider) {
+        'RecursionHelper', 'infinite-scroll', 'bahmni.common.displaycontrol.patientprofile',  'bahmni.common.obs', 'bahmni.common.displaycontrol.orders', 'bahmni.common.i18n',
+        'bahmni.common.displaycontrol.observation', 'bahmni.common.orders', 'pascalprecht.translate', 'ngCookies'])
+    .config(['$urlRouterProvider', '$stateProvider', '$httpProvider', '$bahmniTranslateProvider', function ($urlRouterProvider, $stateProvider, $httpProvider, $bahmniTranslateProvider) {
         $httpProvider.defaults.headers.common['Disable-WWW-Authenticate'] = true;
         $urlRouterProvider.otherwise('/search');
         $stateProvider
@@ -60,7 +60,10 @@ angular
                     }
                 }
             });
-}]).run(['backlinkService', function (backlinkService) {
+        $bahmniTranslateProvider.init('orders');
+}]
+
+).run(['backlinkService', function (backlinkService) {
     backlinkService.addUrl({label: "Patient Search", url: "../home/"});
 }]);
 

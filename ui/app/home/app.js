@@ -1,8 +1,8 @@
 'use strict';
 
-angular.module('bahmni.home', ['ui.router', 'httpErrorInterceptor', 'bahmni.common.domain', 'bahmni.common.uiHelper', 'bahmni.common.util',
-    'bahmni.common.appFramework', 'bahmni.common.logging', 'bahmni.common.routeErrorHandler'])
-.config(['$urlRouterProvider', '$stateProvider','$httpProvider', function ($urlRouterProvider, $stateProvider, $httpProvider) {
+angular.module('bahmni.home', ['ui.router', 'httpErrorInterceptor', 'bahmni.common.domain', 'bahmni.common.i18n', 'bahmni.common.uiHelper', 'bahmni.common.util',
+    'bahmni.common.appFramework', 'bahmni.common.logging', 'bahmni.common.routeErrorHandler', 'pascalprecht.translate', 'ngCookies'])
+    .config(['$urlRouterProvider', '$stateProvider','$httpProvider', '$bahmniTranslateProvider', function ($urlRouterProvider, $stateProvider, $httpProvider, $bahmniTranslateProvider) {
     $urlRouterProvider.otherwise('/dashboard');
     $stateProvider
     .state('dashboard',
@@ -24,6 +24,8 @@ angular.module('bahmni.home', ['ui.router', 'httpErrorInterceptor', 'bahmni.comm
         }
     });
     $httpProvider.defaults.headers.common['Disable-WWW-Authenticate'] = true;
+    $bahmniTranslateProvider.init('home');
+
 }]).run(function ($rootScope, $templateCache) {
         //Disable caching view template partials
         $rootScope.$on('$viewContentLoaded', function () {

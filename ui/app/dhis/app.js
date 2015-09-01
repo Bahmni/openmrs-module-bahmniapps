@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('dhis', ['httpErrorInterceptor', 'bahmni.common.uiHelper', 'bahmni.dhis', 'ngSanitize', 'bahmni.common.routeErrorHandler']).config(['$stateProvider', '$httpProvider', '$urlRouterProvider', function ($stateProvider, $httpProvider, $urlRouterProvider) {
+angular.module('dhis', ['httpErrorInterceptor', 'bahmni.common.uiHelper', 'bahmni.common.i18n', 'bahmni.dhis', 'ngSanitize', 'bahmni.common.routeErrorHandler', 'ngCookies']).config(['$stateProvider', '$httpProvider', '$urlRouterProvider', '$bahmniTranslateProvider', function ($stateProvider, $httpProvider, $urlRouterProvider, $bahmniTranslateProvider) {
     $urlRouterProvider.otherwise('/dashboard');
     $stateProvider
         .state('dhis', {
@@ -33,7 +33,7 @@ angular.module('dhis', ['httpErrorInterceptor', 'bahmni.common.uiHelper', 'bahmn
         });
 
     $httpProvider.defaults.headers.common['Disable-WWW-Authenticate'] = true;
-
+    $bahmniTranslateProvider.init('dhis');
 }]).run(function ($rootScope, $templateCache) {
     //Disable caching view template partials
     $rootScope.$on('$viewContentLoaded', function () {
