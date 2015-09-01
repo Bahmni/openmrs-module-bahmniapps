@@ -24,9 +24,10 @@ describe("formConditions", function () {
         var formValues = {'concept1': 'value1', 'concept2': 'value2'};
         obsUtil.flatten.and.returnValue(formValues);
         Bahmni.ConceptSet.FormConditions = {
-            'concept1': function(elementValue, flattenedObservations) {
-                expect(flattenedObservations).toEqual(formValues);
+            'concept1': function(formName, elementValue, flattenedObservations) {
+                expect(formName).toEqual("root-concept1");
                 expect(elementValue).toEqual('value1');
+                expect(flattenedObservations).toEqual(formValues);
                 return {
                     'disable': ['concept2'],
                     'enable' : ['concept1']
