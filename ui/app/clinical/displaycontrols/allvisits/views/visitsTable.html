@@ -16,7 +16,10 @@
                 <li ng-repeat="encounter in visit.encounters" class="ng-scope"><span>{{encounter.encounterDatetime | bahmniDateTime}}</span>
                     <span class="fr">{{encounter.provider.display}}</span>
                     <ul class="ng-isolate-scope">
-                        <li ng-repeat="ob in encounter.obs" class="ng-scope"><span>{{ob.concept.display}}</span></li>
+                        <li ng-repeat="ob in encounter.obs" class="ng-scope">
+                            <span ng-if="!showObservationData">{{ob.concept.display}}</span>
+                            <observation-data ng-if="showObservationData" observation="ob"></observation-data>
+                        </li>
                     </ul>
                 </li>
             </ul>

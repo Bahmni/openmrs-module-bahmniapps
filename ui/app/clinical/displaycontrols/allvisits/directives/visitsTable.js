@@ -6,7 +6,6 @@ angular.module('bahmni.clinical')
             spinner.forPromise(patientVisitHistoryService.getVisitHistory($scope.patientUuid).then(function (visitHistory) {
                 $scope.visits = visitHistory.visits;
             }));
-            
             $scope.openVisit = function(visit) {
                 if($scope.$parent.closeThisDialog){
                     $scope.$parent.closeThisDialog("closing modal");
@@ -35,7 +34,8 @@ angular.module('bahmni.clinical')
             templateUrl: "displaycontrols/allvisits/views/visitsTable.html",
             scope: {
                 params: "=",
-                patientUuid: "="
+                patientUuid: "=",
+                showObservationData: "="
             }
         };
     }]);

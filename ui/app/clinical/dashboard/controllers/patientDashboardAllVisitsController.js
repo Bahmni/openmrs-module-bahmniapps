@@ -14,5 +14,5 @@ angular.module('bahmni.clinical')
             $scope.params = angular.extend(defaultParams, $scope.params);
             $scope.params = angular.extend(sectionConfig, $scope.params);
             $scope.patientUuid = $stateParams.patientUuid;
-
+            $scope.showAllObservationsData = true;
         }]);

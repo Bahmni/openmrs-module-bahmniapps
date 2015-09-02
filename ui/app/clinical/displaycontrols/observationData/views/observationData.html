@@ -1,0 +1,11 @@
+<li ng-class="{'has-child' : observation.groupMembers.length > 0}">
+    <div class="tree-list-item">
+        <span>{{observation.concept.display}}</span>
+        <div ng-if="!hasGroupMembers()" class="testUnderPanel">
+            {{getDisplayValue()}}
+        </div>
+        <ul ng-if="hasGroupMembers()" ng-repeat="member in observation.groupMembers">
+            <observation-data observation="member"></observation-data>
+        </ul>
+    </div>
+</li>
