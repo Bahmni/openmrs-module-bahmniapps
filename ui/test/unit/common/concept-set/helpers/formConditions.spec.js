@@ -6,8 +6,8 @@ describe("formConditions", function () {
     });
 
     it("Should not do anything if there is no condition function configured", function () {
-        var e = {};
-        Bahmni.ConceptSet.EventHandler(e, [], obsUtil);
+        var e = $("<input data-concept-name='concept1'/>");
+        Bahmni.ConceptSet.FormConditions.eventHandler(e, [], obsUtil);
         expect(obsUtil.disable).not.toHaveBeenCalled();
     });
 
@@ -19,14 +19,12 @@ describe("formConditions", function () {
                 "<input data-concept-name='concept3'/>" +
             "</div>" +
         "</div>");
-        var e = {target: html.find('#targetElement')};
         var observations = [{concept: {name: 'root-concept1'}}];
         var formValues = {'concept1': 'value1', 'concept2': 'value2'};
         obsUtil.flatten.and.returnValue(formValues);
-        Bahmni.ConceptSet.FormConditions = {
-            'concept1': function(formName, elementValue, flattenedObservations) {
+        Bahmni.ConceptSet.FormConditions.rules = {
+            'concept1': function(formName, flattenedObservations) {
                 expect(formName).toEqual("root-concept1");
-                expect(elementValue).toEqual('value1');
                 expect(flattenedObservations).toEqual(formValues);
                 return {
                     'disable': ['concept2'],
@@ -35,7 +33,7 @@ describe("formConditions", function () {
             }
         };
 
-        Bahmni.ConceptSet.EventHandler(e, observations, obsUtil);
+        Bahmni.ConceptSet.FormConditions.eventHandler(html.find("#targetElement"), observations, obsUtil);
 
         expect(obsUtil.flatten).toHaveBeenCalledWith(observations[0]);
         expect(obsUtil.disable).toHaveBeenCalledWith(jasmine.any(Object), 'concept2', true);

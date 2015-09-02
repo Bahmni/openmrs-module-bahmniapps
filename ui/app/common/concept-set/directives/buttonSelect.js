@@ -28,10 +28,6 @@ angular.module('bahmni.common.conceptSet')
                     return shortName ? shortName.name : answer.displayString;
                 };
             },
-            template: '<div ng-class="{\'multi-select-widget\'' +
-            ': observation.isMultiSelect}" class="multi-select-button-group">' +
-            '<button type="button" class="grid-row-element" ng-class="{\'active\': isSet(answer), \'is-abnormal\': abnormalObs.value && isSet(answer)}"' +
-            'ng-click="select(answer)" ng-repeat="answer in ::observation.getPossibleAnswers()"><i class="fa fa-ok"></i>{{::getAnswerDisplayName(answer)}}' +
-            '</button></div>'
+            templateUrl: '../common/concept-set/views/buttonSelect.html'
         };
     });

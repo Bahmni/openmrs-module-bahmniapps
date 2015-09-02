@@ -18,13 +18,13 @@ angular.module('bahmni.common.conceptSet')
                 return conceptName.replace(/['\.\s\(\)\/,\\]+/g, "_");
             };
 
-            $scope.showPreviousButton = function(conceptSetName) {
+            $scope.showPreviousButton = function (conceptSetName) {
                 return conceptSetUIConfig[conceptSetName] && conceptSetUIConfig[conceptSetName].showPreviousButton;
             };
 
-            $scope.showPrevious = function(conceptSetName){
+            $scope.showPrevious = function (conceptSetName) {
                 event.stopPropagation();
-                $timeout(function() {
+                $timeout(function () {
                     $scope.$broadcast('event:showPrevious' + conceptSetName);
                 });
             };
@@ -40,9 +40,15 @@ angular.module('bahmni.common.conceptSet')
                 encounterData.drugOrders = [];
 
                 var conceptSetData = {name: conceptSet.conceptName, uuid: conceptSet.uuid};
-                var data = {encounterModifierObservations: encounterData.observations, drugOrders: encounterData.drugOrders, conceptSetData: conceptSetData, patientUuid: encounterData.patientUuid, encounterDateTime: encounterData.encounterDateTime};
+                var data = {
+                    encounterModifierObservations: encounterData.observations,
+                    drugOrders: encounterData.drugOrders,
+                    conceptSetData: conceptSetData,
+                    patientUuid: encounterData.patientUuid,
+                    encounterDateTime: encounterData.encounterDateTime
+                };
 
-                spinner.forPromise(treatmentConfig.then(function(treatmentConfig) {
+                spinner.forPromise(treatmentConfig.then(function (treatmentConfig) {
                     $scope.treatmentConfiguration = treatmentConfig;
                     return conceptSetService.getComputedValue(data);
                 }).then(function (response) {
@@ -70,8 +76,8 @@ angular.module('bahmni.common.conceptSet')
         }])
     .directive('conceptSetGroup', function () {
         var linkFn = function($scope, rootElement) {
-            rootElement.on('change', function(e) {
-                Bahmni.ConceptSet.EventHandler(e, $scope.consultation.observations, Bahmni.Common.Obs.ObservationUtil);
+            rootElement.on('focusout', function(e) {
+                Bahmni.ConceptSet.FormConditions.eventHandler($(e.target), $scope.consultation.observations, Bahmni.Common.Obs.ObservationUtil);
             });
         };
 
