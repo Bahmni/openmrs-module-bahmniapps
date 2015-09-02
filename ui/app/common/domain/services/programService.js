@@ -63,8 +63,8 @@ angular.module('bahmni.common.domain')
                             activePrograms.push(program);
                         }
                     });
-                    groupedPrograms.activePrograms =  _.sortBy(activePrograms, function(program){ return new Date(program.dateEnrolled) }).reverse();
-                    groupedPrograms.endedPrograms = _.sortBy(endedPrograms, function(program){ return new Date(program.dateCompleted) }).reverse();
+                    groupedPrograms.activePrograms =  _.sortBy(activePrograms, function(program){ return moment(program.dateEnrolled).toDate() }).reverse();
+                    groupedPrograms.endedPrograms = _.sortBy(endedPrograms, function(program){ return moment(program.dateCompleted).toDate() }).reverse();
                 }
                 return groupedPrograms;
         };
