@@ -7,8 +7,7 @@ angular.module('bahmni.common.displaycontrol.dashboard')
 
             var init = function() {
                 $scope.dashboard = Bahmni.Common.DisplayControl.Dashboard.create($scope.config || {});
-                $scope.sectionGroups = $scope.dashboard.getSections($scope.diseaseTemplates);
-            }
+            };
 
             $scope.isFullPageSection = function(sections) {
                 return sections.length === 1 && sections[0]['displayType'] && sections[0]['displayType'] === 'Full-Page';
@@ -37,6 +36,7 @@ angular.module('bahmni.common.displaycontrol.dashboard')
                 config: "=",
                 patient: "=",
                 diseaseTemplates: "=",
+                sectionGroups: "=",
                 visitHistory: "=",
                 activeVisitUuid: "=",
                 visitSummary: "="

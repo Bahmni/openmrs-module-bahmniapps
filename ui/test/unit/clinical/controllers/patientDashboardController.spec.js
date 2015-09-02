@@ -66,11 +66,26 @@ describe("patient dashboard controller", function () {
             encounterService: jasmine.createSpy(),
             clinicalAppConfigService: _clinicalAppConfigService,
             clinicalDashboardConfig: _clinicalDashboardConfig,
+            visitSummary :{},
             printer:{},
             $state : _state,
             spinner: spinner
         });
     }));
+
+    it("should init dashboard sections", function (done) {
+        fetchDiseaseTemplatePromise.then(function (data) {
+            expect(scope.diseaseTemplates.length).toBe(2);
+            expect(scope.diseaseTemplates[0].name).toBe("Breast Cancer");
+            expect(scope.diseaseTemplates[1].name).toBe("Diabetes");
+            expect(scope.sectionGroups[0].length).toBe(patientDashboardSections.length);
+            expect(scope.sectionGroups[0][0].title).toBe(patientDashboardSections[0].title);
+            expect(scope.sectionGroups[0][1].title).toBe(patientDashboardSections[1].title);
+            expect(scope.sectionGroups[0][2].title).toBe(patientDashboardSections[2].title);
+            expect(scope.sectionGroups[0][3].title).toBe(patientDashboardSections[3].title);
+            done();
+        });
+    });
 
 });
 

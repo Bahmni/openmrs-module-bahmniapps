@@ -23,6 +23,8 @@ angular.module('bahmni.clinical')
                 return diseaseTemplateService.getLatestDiseaseTemplates($scope.patient.uuid, clinicalDashboardConfig.getDiseaseTemplateSections())
                     .then(function (diseaseTemplates) {
                         $scope.diseaseTemplates = diseaseTemplates;
+                        $scope.dashboard = Bahmni.Common.DisplayControl.Dashboard.create(dashboard || {});
+                        $scope.sectionGroups =  $scope.dashboard.getSections($scope.diseaseTemplates);
                         $scope.currentDashboardTemplateUrl = $state.current.views.content.templateUrl;
                     });
             };
