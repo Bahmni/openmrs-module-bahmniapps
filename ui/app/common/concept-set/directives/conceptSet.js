@@ -1,107 +1,34 @@
 'use strict';
 
 angular.module('bahmni.common.conceptSet')
-    .directive('concept', ['RecursionHelper','spinner', 'conceptSetService', '$filter', '$location',function (RecursionHelper,spinner, conceptSetService, $filter, $location, scrollToService) {
-        var link = function (scope, element, attributes) {
-            var conceptMapper = new Bahmni.Common.Domain.ConceptMapper();
-            scope.showTitle = scope.showTitle === undefined ? true : scope.showTitle;
-
-            scope.cloneNew = function(observation, parentObservation) {
-                var newObs = observation.cloneNew();
-                var index = parentObservation.groupMembers.indexOf(observation);
-                parentObservation.groupMembers.splice(index+1, 0, newObs);
-                jQuery.scrollTo(element)
-            };
-
-            scope.getStringValue = function(observations) {
-                return observations.map(function(observation) {
-                    return observation.value + ' (' + $filter('bahmniDate')(observation.date) + ")";
-                }).join(", ");
-            };
-            scope.selectOptions = function (codedConcept) {
-                var answers = _.sortBy(_.uniq(codedConcept.answers, _.property('uuid')).map(conceptMapper.map), 'name');
-                return  {
-                    data: answers,
-                    query: function (options) {
-                        return options.callback({results: $filter('filter')(answers, {name: options.term})});
-                    },
-                    allowClear: true,
-                    placeholder: 'Select',
-                    formatResult: _.property('name'),
-                    formatSelection: _.property('name'),
-                    id: _.property('uuid')
-                };
-            };
-
-            scope.toggleSection = function () {
-                scope.collapse = !scope.collapse;
-            };
-
-            scope.isCollapsibleSet = function(){
-                return scope.showTitle;
-            };
-
-            scope.hasPDFAsValue = function(){
-              return scope.observation.value && (scope.observation.value.indexOf(".pdf") > 0);
-            };
-
-            scope.$watch('collapseInnerSections', function(){
-                scope.collapse = scope.collapseInnerSections;
-            });
-
-        };
-
-        var compile = function(element) {
-            return RecursionHelper.compile(element, link);
-        };
-
-        return {
-            restrict: 'E',
-            compile:compile,
-            scope: {
-                observation: "=",
-                atLeastOneValueIsSet : "=",
-                showTitle: "=",
-                conceptSetRequired: "=",
-                rootObservation: "=",
-                patient: "=",
-                collapseInnerSections: "="
-            },
-            templateUrl:'../common/concept-set/views/observation.html'
-        }
-    }]).directive('conceptSet', ['contextChangeHandler', 'appService', 'observationsService', function (contextChangeHandler, appService, observationsService) {
-        var template =
-            '<form novalidate>' +
-                '<div ng-show="showEmptyConceptSetMessage" class="placeholder-text">{{conceptSetName}} concept not found.</div>' +
-                '<concept concept-set-required="conceptSetRequired" root-observation="rootObservation" patient="patient" ' +
-                'observation="rootObservation" at-least-one-value-is-set="atLeastOneValueIsSet" ' +
-                'show-title="showTitleValue" collapse-inner-sections="collapseInnerSections" ng-if="!rootObservation.hidden">' +
-                '</concept>' +
-            '</form>';
-
+    .directive('conceptSet', ['contextChangeHandler', 'appService', 'observationsService', '$timeout', function (contextChangeHandler, appService, observationsService, $timeout) {
         var controller = function ($scope, conceptSetService, conceptSetUiConfigService, spinner) {
             var conceptSetName = $scope.conceptSetName;
             var conceptSetUIConfig = conceptSetUiConfigService.getConfig();
             var observationMapper = new Bahmni.ConceptSet.ObservationMapper();
             var validationHandler = $scope.validationHandler() || contextChangeHandler;
 
-            var focusFirstObs = function() {
-                if($scope.conceptSetFocused && $scope.rootObservation.groupMembers && $scope.rootObservation.groupMembers.length > 0) {
-                    var firstObs = _.find($scope.rootObservation.groupMembers, function(obs){
+            var focusFirstObs = function () {
+                if ($scope.conceptSetFocused && $scope.rootObservation.groupMembers && $scope.rootObservation.groupMembers.length > 0) {
+                    var firstObs = _.find($scope.rootObservation.groupMembers, function (obs) {
                         return obs.isFormElement && obs.isFormElement();
                     });
                     firstObs && (firstObs.isFocused = true);
                 }
             };
 
-            var init = function(){
-                return conceptSetService.getConceptSetMembers({name: conceptSetName, v: "bahmni"}).then(function (response) {
+            var init = function () {
+                return conceptSetService.getConceptSetMembers({
+                    name: conceptSetName,
+                    v: "bahmni"
+                }).then(function (response) {
                     $scope.conceptSet = response.data.results[0];
                     $scope.rootObservation = $scope.conceptSet ? observationMapper.map($scope.observations, $scope.conceptSet, conceptSetUIConfig) : null;
-                    if($scope.rootObservation) {
+                    if ($scope.rootObservation) {
                         $scope.rootObservation.conceptSetName = $scope.conceptSetName;
                         focusFirstObs();
                         updateObservationsOnRootScope();
+                        updateFormConditions();
                     } else {
                         $scope.showEmptyConceptSetMessage = true;
                     }
@@ -115,7 +42,7 @@ angular.module('bahmni.common.conceptSet')
             $scope.numberOfVisits = conceptSetUIConfig[conceptSetName] && conceptSetUIConfig[conceptSetName].numberOfVisits ? conceptSetUIConfig[conceptSetName].numberOfVisits : null;
 
             var updateObservationsOnRootScope = function () {
-                if($scope.rootObservation){
+                if ($scope.rootObservation) {
                     for (var i = 0; i < $scope.observations.length; i++) {
                         if ($scope.observations[i].concept.uuid === $scope.rootObservation.concept.uuid) {
                             $scope.observations[i] = $scope.rootObservation;
@@ -126,25 +53,48 @@ angular.module('bahmni.common.conceptSet')
                 }
             };
 
+            var updateFormConditions = function () {
+                var flattenedObs = flattenObs($scope.observations);
+                console.log("flattenedObs ", _.map(flattenedObs, function(o) { return o.label; }));
+                var flattenedObsValues = _.reduce(flattenedObs, function (flattenedObsValues, obs) {
+                    flattenedObsValues[obs.concept.name] = obs.value;
+                    return flattenedObsValues;
+                }, {});
+                if (Bahmni.ConceptSet.FormConditions.rules) {
+                    _.each(Bahmni.ConceptSet.FormConditions.rules, function (conditionFn, conceptName) {
+                        var conditions = conditionFn($scope.rootObservation.concept.name, flattenedObsValues);
+                        _.each(conditions.disable, function (field) {
+                            var observationToDisable = _.find(flattenedObs, function (observation) {
+                                return observation.concept.name === field;
+                            });
+                            console.log(observationToDisable);
+                            if(observationToDisable) {
+                                observationToDisable.disabled = true;
+                            }
+                        })
+                    })
+                }
+            };
+
             var contextChange = function () {
                 $scope.atLeastOneValueIsSet = $scope.rootObservation && $scope.rootObservation.atLeastOneValueSet();
-                $scope.conceptSetRequired = $scope.required? $scope.required: true;
+                $scope.conceptSetRequired = $scope.required ? $scope.required : true;
                 var errorMessage = null;
-                var invalidNodes = $scope.rootObservation && $scope.rootObservation.groupMembers.filter(function(childNode){
+                var invalidNodes = $scope.rootObservation && $scope.rootObservation.groupMembers.filter(function (childNode) {
                         //Other than Bahmni.ConceptSet.Observation  and Bahmni.ConceptSet.ObservationNode, other concepts does not have isValueInAbsoluteRange fn
-                    if(typeof childNode.isValueInAbsoluteRange == 'function'  && !childNode.isValueInAbsoluteRange()){
-                       errorMessage = "The value you entered (red field) is outside the range of allowable values for that record. Please check the value.";
-                       return true;
-                    }
-                    return !childNode.isValid($scope.atLeastOneValueIsSet, $scope.conceptSetRequired);
-                });
+                        if (typeof childNode.isValueInAbsoluteRange == 'function' && !childNode.isValueInAbsoluteRange()) {
+                            errorMessage = "The value you entered (red field) is outside the range of allowable values for that record. Please check the value.";
+                            return true;
+                        }
+                        return !childNode.isValid($scope.atLeastOneValueIsSet, $scope.conceptSetRequired);
+                    });
                 return {allow: !invalidNodes || invalidNodes.length === 0, errorMessage: errorMessage};
             };
             contextChangeHandler.add(contextChange);
             var validateObservationTree = function () {
-                if(!$scope.rootObservation) return true;
+                if (!$scope.rootObservation) return true;
                 $scope.atLeastOneValueIsSet = $scope.rootObservation.atLeastOneValueSet();
-                var invalidNodes = $scope.rootObservation.groupMembers.filter(function(childNode){
+                var invalidNodes = $scope.rootObservation.groupMembers.filter(function (childNode) {
                     return childNode.isObservationNode && !childNode.isValid($scope.atLeastOneValueIsSet);
                 });
                 return {allow: (!invalidNodes || invalidNodes.length === 0)};
@@ -152,11 +102,11 @@ angular.module('bahmni.common.conceptSet')
 
             validationHandler.add(validateObservationTree);
 
-            var flattenObs = function(observations) {
+            var flattenObs = function (observations) {
                 var flattened = [];
                 flattened.push.apply(flattened, observations);
-                observations.forEach(function(obs) {
-                    if(obs.groupMembers && obs.groupMembers.length > 0) {
+                observations.forEach(function (obs) {
+                    if (obs.groupMembers && obs.groupMembers.length > 0) {
                         flattened.push.apply(flattened, flattenObs(obs.groupMembers));
                     }
                 });
@@ -167,7 +117,7 @@ angular.module('bahmni.common.conceptSet')
 
                 return spinner.forPromise(observationsService.fetch($scope.patient.uuid, $scope.conceptSetName, null, $scope.numberOfVisits, null, true)).then(function (response) {
                     var recentObservations = flattenObs(response.data);
-                    var conceptSetObservation = $scope.observations.filter(function(observation){
+                    var conceptSetObservation = $scope.observations.filter(function (observation) {
                         return observation.conceptSetName === $scope.conceptSetName;
                     });
                     flattenObs(conceptSetObservation).forEach(function (obs) {
@@ -202,7 +152,7 @@ angular.module('bahmni.common.conceptSet')
                 conceptSetFocused: "=",
                 collapseInnerSections: "="
             },
-            template: template,
+            templateUrl: '../common/concept-set/views/conceptSet.html',
             controller: controller
         }
     }]);

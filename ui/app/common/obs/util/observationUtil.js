@@ -39,7 +39,9 @@ Bahmni.Common.Obs.ObservationUtil = (function () {
 
     var flatten = function (observation) {
         var flattenedObservation = {};
-        findLeafObservations(flattenedObservation, observation);
+        if(!_.isEmpty(observation)) {
+            findLeafObservations(flattenedObservation, observation);
+        }
         return flattenedObservation;
     };
 
