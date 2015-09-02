@@ -1,10 +1,10 @@
 'use strict';
 
 angular.module('documentupload', ['ui.router', 'bahmni.common.config', 'opd.documentupload', 'bahmni.common.patient', 
-    'authentication', 'bahmni.common.appFramework', 'ngDialog', 'httpErrorInterceptor', 'bahmni.common.domain', 'bahmni.common.i18n',
-    'bahmni.common.uiHelper', 'ngSanitize', 'bahmni.common.patientSearch', 'bahmni.common.util', 'bahmni.common.routeErrorHandler', 'pascalprecht.translate', 'ngCookies']);
-angular.module('documentupload').config(['$stateProvider', '$httpProvider', '$urlRouterProvider', '$bahmniTranslateProvider',
-        function ($stateProvider, $httpProvider, $urlRouterProvider, $bahmniTranslateProvider) {
+    'authentication', 'bahmni.common.appFramework', 'ngDialog', 'httpErrorInterceptor', 'bahmni.common.domain', 
+    'bahmni.common.uiHelper', 'ngSanitize', 'bahmni.common.patientSearch', 'bahmni.common.util', 'bahmni.common.routeErrorHandler']);
+angular.module('documentupload').config(['$stateProvider', '$httpProvider', '$urlRouterProvider', 
+        function ($stateProvider, $httpProvider, $urlRouterProvider) {
         $urlRouterProvider.otherwise('/search');
         var patientSearchBackLink = {label: "", state: "search", accessKey: "p", id: "patients-link", icon: "fa-users"};
         var homeBackLink = {label: "", url: "../home/", icon: "fa-home"};
@@ -56,8 +56,7 @@ angular.module('documentupload').config(['$stateProvider', '$httpProvider', '$ur
                 }
             });
 
-            $httpProvider.defaults.headers.common['Disable-WWW-Authenticate'] = true;
-            $bahmniTranslateProvider.init('clinical');
+        $httpProvider.defaults.headers.common['Disable-WWW-Authenticate'] = true;
     }]).run(['backlinkService', function (backlinkService) {
         FastClick.attach(document.body);
 

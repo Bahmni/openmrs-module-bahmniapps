@@ -1,8 +1,8 @@
 'use strict';
 
-angular.module('admin', ['httpErrorInterceptor', 'bahmni.admin', 'bahmni.common.routeErrorHandler', 'ngSanitize', 'bahmni.common.uiHelper', 'bahmni.common.config',  'bahmni.common.i18n', 'pascalprecht.translate', 'ngCookies', 'angularFileUpload'])
-    .config(['$stateProvider', '$httpProvider', '$urlRouterProvider', '$bahmniTranslateProvider', function ($stateProvider, $httpProvider, $urlRouterProvider, $bahmniTranslateProvider) {
-        $urlRouterProvider.otherwise('/dashboard');
+angular.module('admin', ['httpErrorInterceptor', 'bahmni.admin', 'bahmni.common.routeErrorHandler', 'ngSanitize', 'bahmni.common.uiHelper', 'bahmni.common.config'])
+    .config(['$stateProvider', '$httpProvider', '$urlRouterProvider', function ($stateProvider, $httpProvider, $urlRouterProvider) {
+    $urlRouterProvider.otherwise('/dashboard');
     $stateProvider.state('admin', {
         abstract: true,
         template: '<ui-view/>',
@@ -31,7 +31,6 @@ angular.module('admin', ['httpErrorInterceptor', 'bahmni.admin', 'bahmni.common.
 
         });
     $httpProvider.defaults.headers.common['Disable-WWW-Authenticate'] = true;
-    $bahmniTranslateProvider.init('admin');
 }]).
     run(function ($rootScope, $templateCache) {
         //Disable caching view template partials

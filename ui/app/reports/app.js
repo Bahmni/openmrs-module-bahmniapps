@@ -2,7 +2,7 @@
 
 angular
     .module('bahmni.reports')
-    .config(['$urlRouterProvider', '$stateProvider', '$httpProvider', '$bahmniTranslateProvider', function ($urlRouterProvider, $stateProvider, $httpProvider, $bahmniTranslateProvider) {
+    .config(['$urlRouterProvider', '$stateProvider', '$httpProvider', function ($urlRouterProvider, $stateProvider, $httpProvider) {
         $httpProvider.defaults.headers.common['Disable-WWW-Authenticate'] = true;
         $urlRouterProvider.otherwise('/dashboard');
         $stateProvider
@@ -26,7 +26,6 @@ angular
                     initialization: 'initialization'
                 }
             });
-        $bahmniTranslateProvider.init('reports');
     }]).run(function ($rootScope, $templateCache) {
 //                debugUiRouter($rootScope);
 //        Disable caching view template partials

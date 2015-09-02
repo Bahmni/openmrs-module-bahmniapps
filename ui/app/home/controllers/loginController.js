@@ -1,22 +1,12 @@
 'use strict';
 
 angular.module('bahmni.home')
-    .controller('LoginController', ['$rootScope', '$scope', '$window', '$location', 'sessionService', 'initialData', 'spinner', '$q', '$stateParams','$bahmniCookieStore', 'localeService','$translate',
-        function ($rootScope, $scope, $window, $location, sessionService, initialData, spinner, $q, $stateParams, $bahmniCookieStore, localeService, $translate) {
+    .controller('LoginController', ['$rootScope', '$scope', '$window', '$location', 'sessionService', 'initialData', 'spinner', '$q', '$stateParams','$bahmniCookieStore',
+        function ($rootScope, $scope, $window, $location, sessionService, initialData, spinner, $q, $stateParams, $bahmniCookieStore) {
             var landingPagePath = "/dashboard";
             var loginPagePath = "/login";
             $scope.locations = initialData.locations;
             $scope.loginInfo = {};
-
-            var promise = localeService.allowedLocalesList();
-            promise.then(function (response) {
-                $scope.locales = response.data.replace(/\s+/g, '').split(',');
-                $scope.selectedLocale = $translate.use()? $translate.use() : $scope.locales[0];
-            });
-
-            $scope.$watch('selectedLocale', function(){
-                $translate.use($scope.selectedLocale);
-            });
 
             var getLoginLocationUuid = function(){
                 return $bahmniCookieStore.get(Bahmni.Common.Constants.locationCookieName) ? $bahmniCookieStore.get(Bahmni.Common.Constants.locationCookieName).uuid : null;
