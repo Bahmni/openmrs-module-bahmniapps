@@ -11,11 +11,17 @@ angular.module('consultation', ['ui.router', 'bahmni.clinical', 'bahmni.common.c
 angular.module('consultation')
     .config(['$stateProvider', '$httpProvider', '$urlRouterProvider', function ($stateProvider, $httpProvider, $urlRouterProvider) {
         $urlRouterProvider.otherwise('/patient/search');
-        var patientSearchBackLink = {label: "", state: "patientsearch", accessKey: "p", id: "patients-link", icon: "fa-users"};
+        var patientSearchBackLink = {
+            label: "",
+            state: "patientsearch",
+            accessKey: "p",
+            id: "patients-link",
+            icon: "fa-users"
+        };
         var homeBackLink = {label: "", url: "../home/", icon: "fa-home"};
         $stateProvider
             .state('patientsearch', {
-                url: '/patient/search',
+                url: '/:config/patient/search',
                 views: {
                     'content': {
                         templateUrl: '../common/patient-search/views/patientsList.html',
@@ -30,7 +36,12 @@ angular.module('consultation')
                     backLinks: [homeBackLink]
                 },
                 resolve: {
-                    initialization: 'initialization'
+                    initialization: function (initialization, $stateParams) {
+                        var extensionConfig = $stateParams.config? $stateParams.config: "DEFAULT";
+                        patientSearchBackLink.state = '';
+                        patientSearchBackLink.url = '#/'+extensionConfig+'/patient/search';
+                        return initialization(extensionConfig);
+                    }
                 }
             })
             .state('patient', {
@@ -47,7 +58,7 @@ angular.module('consultation')
                         controller: function ($scope, patientContext, visitHistory, consultationContext) {
                             $scope.patient = patientContext.patient;
                             $scope.visitHistory = visitHistory;
-                                $scope.consultation = consultationContext;
+                            $scope.consultation = consultationContext;
                         }
                     }
                 },
@@ -64,8 +75,8 @@ angular.module('consultation')
                     }
                 }
             })
-            .state('patient.consultationContext',{
-                url:'/consultationContext',
+            .state('patient.consultationContext', {
+                url: '/consultationContext',
                 views: {
                     'content': {
                         templateUrl: 'common/views/consultationContext.html'
@@ -116,7 +127,7 @@ angular.module('consultation')
                     dashboardInitialization: function ($rootScope, initialization, patientContext, clinicalDashboardConfig, userService, $stateParams) {
                         return clinicalDashboardConfig.load().then(function (data) {
                             var tab = clinicalDashboardConfig.getTab($stateParams.tab);
-                            if(tab) {
+                            if (tab) {
                                 clinicalDashboardConfig.switchTab(tab);
                             } else {
                                 $rootScope.currentUser.addToRecentlyViewed(patientContext.patient, clinicalDashboardConfig.getMaxRecentlyViewedPatients());
@@ -192,8 +203,7 @@ angular.module('consultation')
                         template: '<ui-view/>'
                     }
                 },
-                resolve: {
-                }
+                resolve: {}
             })
             .state('patient.consultation.visit', {
                 url: '/visit/:visitUuid',
@@ -220,7 +230,7 @@ angular.module('consultation')
                 templateUrl: 'consultation/views/orders.html',
                 controller: 'OrderController',
                 resolve: {
-                    allOrderables: function (ordersTabInitialization){
+                    allOrderables: function (ordersTabInitialization) {
                         return ordersTabInitialization();
                     }
                 }
