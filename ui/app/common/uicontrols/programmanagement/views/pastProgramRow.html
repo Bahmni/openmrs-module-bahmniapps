@@ -2,15 +2,18 @@
     <div class="program-details">
         <a ng-href="#/patient/{{patient.uuid}}/dashboard" class="big-anchor">{{program.display}}</a>
         <span class="enrolled-info"> ({{program.dateEnrolled | bahmniDate}} - {{program.dateCompleted | bahmniDate}})</span>
-        <button ng-click="toggleEdit(program)" ng-class="{'tab-selected': patientProgram.editing}" >Details</button>
-        <div>
-            <label>Outcome:</label><span> {{program.outcome.display}}</span>
-        </div>
+        <label>Outcome:</label><span> {{program.outcome.display}}</span>
     </div>
-    <div class="program-timeline" ng-if="program.states.length!=0">
-        <timeline program="program"></timeline>
+    <div class="program-timeline-container" ng-if="program.states.length!=0">
+        <div class="program-timeline">
+            <timeline program="program"></timeline>
+        </div>
+        <button ng-click="toggleEdit(program)" ng-class="{'tab-selected': patientProgram.editing}" class="fr detail-btn" >Details</button>
     </div>
     <div class="program-state-list" ng-if="program.editing">
+        <div class="down-arrow-container">
+            <i class="fa fa-expand"></i>
+        </div>
         <table class="state-list">
             <tbody>
             <tr ng-repeat="state in program.states| orderBy:'auditInfo.dateCreated':true" ng-if="state.voided != true">

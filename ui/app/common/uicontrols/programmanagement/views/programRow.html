@@ -1,15 +1,28 @@
 <div class="program-row">
     <div class="program-details">
-        <span class="program-title">{{patientProgram.display}}</span>
+        <a ng-href="#/patient/{{patient.uuid}}/dashboard" class="big-anchor">{{patientProgram.display}}</a>
         <span class="enrolled-info"> (Enrolled on {{patientProgram.dateEnrolled | bahmniDate}})</span>
-        <button ng-click="toggleEdit(patientProgram)" ng-class="{'tab-selected': patientProgram.editing}" ng-if="hasProgramWorkflowStates(patientProgram)">Edit</button>
-        <a class="back-btn" ng-href="#/patient/{{patient.uuid}}/concept-set-group/observations/program/{{patientProgram.program.uuid}}" class="big-anchor">Consultation</a>
 
+        <a class="back-btn dashboard-link fr" id="dashboard-link" ng-href="#/patient/{{patient.uuid}}/concept-set-group/observations/program/{{patientProgram.program.uuid}}" title="Back to patient dashboard">
+            <img ng-src="{{patient.image}}" onerror="this.onerror=null;this.src='../images/blank-user.gif';">
+            <span class="patient-info">
+                <span class="patient-name" >{{patient.name}} </span>
+                <span class="patient-id">{{patient.identifier}}</span>
+            </span>
+        </a>
+
+        <!--<a class="back-btn" ng-href="#/patient/{{patient.uuid}}/concept-set-group/observations/program/{{patientProgram.program.uuid}}" class="big-anchor">Consultation</a>-->
+    </div>
+    <div class="program-timeline-container" ng-if="patientProgram.states.length!=0">
+        <div class="program-timeline">
+            <timeline program="patientProgram"></timeline>
         </div>
-    <div class="program-timeline" ng-if="patientProgram.states.length!=0">
-        <timeline program="patientProgram"></timeline>
+        <button ng-click="toggleEdit(patientProgram)" ng-class="{'tab-selected': patientProgram.editing}" ng-if="hasProgramWorkflowStates(patientProgram)" class="fr detail-btn">Details</button>
     </div>
     <div class="program-state-list"  ng-if="patientProgram.editing">
+        <div class="down-arrow-container">
+            <i class="fa fa-expand"></i>
+        </div>
         <table class="state-list">
             <tbody>
                 <tr ng-repeat="state in patientProgram.states| orderBy:'auditInfo.dateCreated':true" ng-if="state.voided != true">
@@ -29,9 +42,7 @@
                         ng-options="state.concept.display for state in workflowStatesWithoutCurrentState track by state.uuid">
                     <option value="">Choose State</option>
                 </select>
-                <div class="btn-grp fr">
-                    <button class="retro-widget-button ok_btn" ng-click="savePatientProgram(patientProgram)">Save</button>
-                </div>
+                <button class="fr ok_btn" ng-click="savePatientProgram(patientProgram)">Save</button>
             </div>
             <div class="program-action-container form" ng-init="outComesForProgram = getOutcomes(patientProgram.program)">
                 <label class="middle-align">Outcomes</label>
@@ -39,10 +50,7 @@
                         ng-options="outcomeSelected.display for outcomeSelected in outComesForProgram">
                     <option value="">Choose OutCome</option>
                 </select>
-
-                <div class="btn-grp fr">
-                    <button class="retro-widget-button ok_btn" ng-click="endPatientProgram(patientProgram)">End</button>
-                </div>
+                <button class="fr ok_btn" ng-click="endPatientProgram(patientProgram)">End</button>
             </div>
         </div>
     </div>
