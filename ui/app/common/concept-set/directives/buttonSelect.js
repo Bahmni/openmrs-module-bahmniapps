@@ -19,6 +19,7 @@ angular.module('bahmni.common.conceptSet')
 
                 $scope.select = function (answer) {
                     $scope.observation.toggleSelection(answer);
+                    $scope.$parent.handleUpdate();
                 };
 
                 $scope.getAnswerDisplayName = function (answer) {

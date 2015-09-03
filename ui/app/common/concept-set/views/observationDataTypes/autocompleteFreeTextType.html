@@ -1,8 +1,8 @@
 <div class="autocomplete">
     <input id="{{::observation.uniqueId}}" class="concept-name"
-           ng-model="observation.value" data-concept-name="{{observation.concept.name}}"
-           ng-disabled="::observation.disabled"
-           ng-change="::formValidate"
+           ng-model="observation.value"
+           ng-disabled="observation.disabled"
+           ng-blur="handleUpdate()"
            concept-autocomplete
            ng-class="{'illegalValue': !observation.isValid(atLeastOneValueIsSet,conceptSetRequired), 'computed-field': observation.isComputedAndEditable()}"
            coded-concept-name="observation.conceptUIConfig.answersConceptName"
@@ -10,8 +10,9 @@
 
     <div ng-if="observation.primaryObs">
         <button type="button" class="small-btn accept-btn grid-row-element"
-                ng-model="observation.markedAsNonCoded" data-concept-name="{{observation.concept.name}}"
-                ng-disabled="::observation.disabled"
+                ng-model="observation.markedAsNonCoded"
+                ng-blur="handleUpdate()"
+                ng-disabled="observation.disabled"
                 ng-click="observation.markAsNonCoded()"
                 ng-class="{'illegalValue': observation.primaryObs.value.length > 0 && !observation.markedAsNonCoded, active: observation.markedAsNonCoded}"
                 ng-disabled="observation.primaryObs.isCoded() && observation.primaryObs.value"><i

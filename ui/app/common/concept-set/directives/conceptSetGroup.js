@@ -75,12 +75,6 @@ angular.module('bahmni.common.conceptSet')
             contextChangeHandler.add($scope.validationHandler.validate);
         }])
     .directive('conceptSetGroup', function () {
-        var linkFn = function($scope, rootElement) {
-            rootElement.on('focusout', function(e) {
-                Bahmni.ConceptSet.FormConditions.eventHandler($(e.target), $scope.consultation.observations, Bahmni.Common.Obs.ObservationUtil);
-            });
-        };
-
         return {
             restrict: 'EA',
             scope: {
@@ -94,7 +88,6 @@ angular.module('bahmni.common.conceptSet')
 
             },
             controller: 'ConceptSetGroupController',
-            link: linkFn,
             templateUrl: '../common/concept-set/views/conceptSetGroup.html'
         }
     });

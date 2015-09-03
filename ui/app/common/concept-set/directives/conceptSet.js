@@ -55,7 +55,9 @@ angular.module('bahmni.common.conceptSet')
 
             var updateFormConditions = function () {
                 var flattenedObs = flattenObs($scope.observations);
-                console.log("flattenedObs ", _.map(flattenedObs, function(o) { return o.label; }));
+                console.log("flattenedObs ", _.map(flattenedObs, function (o) {
+                    return o.label;
+                }));
                 var flattenedObsValues = _.reduce(flattenedObs, function (flattenedObsValues, obs) {
                     flattenedObsValues[obs.concept.name] = obs.value;
                     return flattenedObsValues;
@@ -68,7 +70,7 @@ angular.module('bahmni.common.conceptSet')
                                 return observation.concept.name === field;
                             });
                             console.log(observationToDisable);
-                            if(observationToDisable) {
+                            if (observationToDisable) {
                                 observationToDisable.disabled = true;
                             }
                         })
@@ -138,6 +140,29 @@ angular.module('bahmni.common.conceptSet')
                     });
                 });
             });
+
+            $scope.$root.$on("event:observationUpdated-" + conceptSetName, function (event, conceptName) {
+                var formName = $scope.rootObservation.concept.name;
+                var allObsValues = Bahmni.Common.Obs.ObservationUtil.flatten($scope.rootObservation);
+                var formCondition = Bahmni.ConceptSet.FormConditions.rules && Bahmni.ConceptSet.FormConditions.rules[conceptName];
+                if(formCondition) {
+                    var flattenedObs = flattenObs([$scope.rootObservation]);
+                    var conditions = formCondition(formName, allObsValues);
+                    _.each(conditions.enable, function(field) {
+                        var matchingObs = _.find(flattenedObs, function(obs) {
+                            return obs.concept.name === field;
+                        });
+                        matchingObs.disabled = false;
+                    });
+                    _.each(conditions.disable, function(field) {
+                        var matchingObs = _.find(flattenedObs, function(obs) {
+                            return obs.concept.name === field;
+                        });
+                        matchingObs.disabled = true;
+                    });
+                }
+            });
+
         };
 
         return {
