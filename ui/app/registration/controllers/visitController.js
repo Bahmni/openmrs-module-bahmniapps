@@ -7,7 +7,7 @@ angular.module('bahmni.registration')
             var patientUuid = $stateParams.patientUuid;
             var extensions = appService.getAppDescriptor().getExtensions("org.bahmni.registration.conceptSetGroup.observations", "config");
             var locationUuid = sessionService.getLoginLocationUuid();
-            var selectedProvider = $rootScope.currentProvider.uuid;
+            var selectedProvider = $rootScope.currentProvider;
             $scope.conceptSets = extensions.map(function (extension) {
                 return new Bahmni.ConceptSet.ConceptSetSection(extension, $rootScope.currentUser, {}, [], {});
             });
