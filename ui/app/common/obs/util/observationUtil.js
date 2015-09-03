@@ -26,17 +26,6 @@ Bahmni.Common.Obs.ObservationUtil = (function () {
         return _.flatten(sortedObservations);
     };
 
-    var disable = function (parentConceptSet, field, disable) {
-        var conceptElement = parentConceptSet.find("[data-concept-name='" + field + "']");
-        if (!_.isEmpty(conceptElement.children())) {
-            conceptElement.find("input").attr("disabled", disable);
-            conceptElement.find("textarea").attr("disabled", disable);
-            conceptElement.find("button").attr("disabled", disable);
-        } else {
-            conceptElement.attr("disabled", disable);
-        }
-    };
-
     var flatten = function (observation) {
         var flattenedObservation = {};
         if(!_.isEmpty(observation)) {
@@ -57,7 +46,6 @@ Bahmni.Common.Obs.ObservationUtil = (function () {
 
     return {
         sortSameConceptsWithObsDateTime: sortSameConceptsWithObsDateTime,
-        disable: disable,
         flatten: flatten
     };
 })();

@@ -79,7 +79,7 @@
                 <div ng-if="::observation.abnormalObs && !observation.isComputed()" class="fl accept-btn-wrapper">
                     <button type="button" ng-model="observation.abnormalObs.value"
                             class="small-btn accept-btn grid-row-element"
-                            ng-disabled="!observation.primaryObs.hasValue()"
+                            ng-disabled="!observation.primaryObs.hasValue() || observation.disabled"
                             ng-class="{'active': observation.abnormalObs.value}"
                             ng-click="observation.toggleAbnormal()"><i class="fa fa-ok"></i>Abnormal
                     </button>

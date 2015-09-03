@@ -55,25 +55,16 @@ angular.module('bahmni.common.conceptSet')
 
             var updateFormConditions = function () {
                 var flattenedObs = flattenObs($scope.observations);
-                console.log("flattenedObs ", _.map(flattenedObs, function (o) {
-                    return o.label;
-                }));
-                var flattenedObsValues = _.reduce(flattenedObs, function (flattenedObsValues, obs) {
+                var conceptSetObsValues = _.reduce(flattenedObs, function (flattenedObsValues, obs) {
                     flattenedObsValues[obs.concept.name] = obs.value;
                     return flattenedObsValues;
                 }, {});
                 if (Bahmni.ConceptSet.FormConditions.rules) {
                     _.each(Bahmni.ConceptSet.FormConditions.rules, function (conditionFn, conceptName) {
-                        var conditions = conditionFn($scope.rootObservation.concept.name, flattenedObsValues);
-                        _.each(conditions.disable, function (field) {
-                            var observationToDisable = _.find(flattenedObs, function (observation) {
-                                return observation.concept.name === field;
-                            });
-                            console.log(observationToDisable);
-                            if (observationToDisable) {
-                                observationToDisable.disabled = true;
-                            }
-                        })
+                        if (_.has(conceptSetObsValues, conceptName)) {
+                            var conditions = conditionFn($scope.rootObservation.concept.name, conceptSetObsValues);
+                            processConditions(flattenedObs, conditions.disable, true);
+                        }
                     })
                 }
             };
@@ -145,24 +136,31 @@ angular.module('bahmni.common.conceptSet')
                 var formName = $scope.rootObservation.concept.name;
                 var allObsValues = Bahmni.Common.Obs.ObservationUtil.flatten($scope.rootObservation);
                 var formCondition = Bahmni.ConceptSet.FormConditions.rules && Bahmni.ConceptSet.FormConditions.rules[conceptName];
-                if(formCondition) {
+                if (formCondition) {
                     var flattenedObs = flattenObs([$scope.rootObservation]);
                     var conditions = formCondition(formName, allObsValues);
-                    _.each(conditions.enable, function(field) {
-                        var matchingObs = _.find(flattenedObs, function(obs) {
-                            return obs.concept.name === field;
-                        });
-                        matchingObs.disabled = false;
-                    });
-                    _.each(conditions.disable, function(field) {
-                        var matchingObs = _.find(flattenedObs, function(obs) {
-                            return obs.concept.name === field;
-                        });
-                        matchingObs.disabled = true;
-                    });
+                    processConditions(flattenedObs, conditions.enable, false);
+                    processConditions(flattenedObs, conditions.disable, true);
                 }
             });
 
+            var processConditions = function (flattenedObs, fields, disable) {
+                _.each(fields, function (field) {
+                    var matchingObs = _.find(flattenedObs, function (obs) {
+                        return obs.concept.name === field;
+                    });
+                    setObservationState(matchingObs, disable);
+                });
+            };
+
+            var setObservationState = function (obs, disable) {
+                obs.disabled = disable;
+                if (obs.groupMembers) {
+                    _.each(obs.groupMembers, function (groupMember) {
+                        setObservationState(groupMember, disable);
+                    });
+                }
+            };
         };
 
         return {
