@@ -1,6 +1,6 @@
-<span ng-if="observation.canAddMore && observation.canAddMore()" class="add-more" data-concept-name="{{observation.concept.name}}">
+<span ng-if="observation.canAddMore && observation.canAddMore()" class="add-more">
     <button id="{{observation.assignAddMoreButtonID()}}" type="button"
-            class="add-more-btn btn-small" ng-disabled="::observation.disabled"
+            class="add-more-btn btn-small" ng-disabled="observation.disabled"
             ng-click="cloneNew(observation, rootObservation)">
         <i class="fa fa-plus-circle"></i> Add More
     </button>

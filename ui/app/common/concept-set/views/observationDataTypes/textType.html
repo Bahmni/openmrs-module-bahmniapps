@@ -1,5 +1,5 @@
 <textarea id="{{::observation.uniqueId}}" ng-model="observation.value"
-          data-concept-name="{{observation.concept.name}}" ng-disabled="::observation.disabled"
+          ng-blur="handleUpdate()" ng-disabled="observation.disabled"
           ng-class="{'illegalValue': !observation.isValid(atLeastOneValueIsSet,conceptSetRequired), 'computed-field': observation.isComputedAndEditable()}"
           focus-me="observation.isFocused">
 </textarea>

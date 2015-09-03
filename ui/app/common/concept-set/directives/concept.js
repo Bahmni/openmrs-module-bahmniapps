@@ -47,10 +47,9 @@ angular.module('bahmni.common.conceptSet')
                 scope.collapse = scope.collapseInnerSections;
             });
 
-            scope.formValidate = function() {
-                console.log("Value changed!", scope.rootObservation);
+            scope.handleUpdate = function() {
+                scope.$root.$broadcast("event:observationUpdated-"+scope.conceptSetName, scope.observation.concept.name);
             }
-
         };
 
         var compile = function (element) {
@@ -61,6 +60,7 @@ angular.module('bahmni.common.conceptSet')
             restrict: 'E',
             compile: compile,
             scope: {
+                conceptSetName: "=",
                 observation: "=",
                 atLeastOneValueIsSet: "=",
                 showTitle: "=",

@@ -21,7 +21,7 @@ angular.module('consultation')
         var homeBackLink = {label: "", url: "../home/", icon: "fa-home"};
         $stateProvider
             .state('patientsearch', {
-                url: '/:config/patient/search',
+                url: '/:configName/patient/search',
                 views: {
                     'content': {
                         templateUrl: '../common/patient-search/views/patientsList.html',
@@ -37,10 +37,9 @@ angular.module('consultation')
                 },
                 resolve: {
                     initialization: function (initialization, $stateParams) {
-                        var extensionConfig = $stateParams.config? $stateParams.config: "DEFAULT";
-                        patientSearchBackLink.state = '';
-                        patientSearchBackLink.url = '#/'+extensionConfig+'/patient/search';
-                        return initialization(extensionConfig);
+                        $stateParams.configName = $stateParams.configName  || "DEFAULT";
+                        patientSearchBackLink.state = 'patientsearch({configName: \"' + $stateParams.configName + '\"})';
+                        return initialization($stateParams.configName);
                     }
                 }
             })
@@ -50,7 +49,6 @@ angular.module('consultation')
                 data: {
                     backLinks: [patientSearchBackLink]
                 },
-
                 views: {
                     'additional-header': {template: '<div ui-view="additional-header"></div>'},
                     'content': {
@@ -63,7 +61,10 @@ angular.module('consultation')
                     }
                 },
                 resolve: {
-                    initialization: 'initialization',
+                    initialization: function(initialization, $stateParams) {
+                        $stateParams.configName = $stateParams.configName  || "DEFAULT";
+                        return initialization($stateParams.configName);
+                    },
                     patientContext: function (initialization, patientInitialization, $stateParams) {
                         return patientInitialization($stateParams.patientUuid);
                     },

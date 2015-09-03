@@ -83,58 +83,6 @@ describe("ObservationUtil", function () {
         })
     });
 
-    describe("disable", function () {
-        it("should disable all the child editable fields", function () {
-            var html = "<div>" +
-                "<div data-concept-name='field1'>" +
-                "  <div><input id='first'/></div>" +
-                "  <textarea id='second'/>" +
-                "  <button id='third'/>" +
-                "</div>"+
-                "</div>";
-            var conceptElement = $(html);
-            Bahmni.Common.Obs.ObservationUtil.disable(conceptElement, 'field1', true);
-
-            expect(conceptElement.find('#first').attr("disabled")).toBeTruthy();
-            expect(conceptElement.find('#second').attr("disabled")).toBeTruthy();
-            expect(conceptElement.find('#third').attr("disabled")).toBeTruthy();
-        });
-
-        it("should disable if the passed element is input or button field", function () {
-            var html = "<div><input id='first' data-concept-name='field1'/></div>";
-            var conceptElement = $(html);
-            Bahmni.Common.Obs.ObservationUtil.disable(conceptElement, 'field1', true);
-
-            expect(conceptElement.find('#first').attr("disabled")).toBeTruthy();
-        });
-
-        it("should enable all the child editable fields", function () {
-            var html = "<div>" +
-                "<div data-concept-name='field1'>" +
-                "  <div><input id='first' disabled/></div>" +
-                "  <textarea id='second' disabled/>" +
-                "  <button id='third' disabled/>" +
-                "</div>"+
-                "</div>";
-            var conceptElement = $(html);
-            Bahmni.Common.Obs.ObservationUtil.disable(conceptElement, 'field1', false);
-
-            expect(conceptElement.find('#first').attr("disabled")).toBeFalsy();
-            expect(conceptElement.find('#second').attr("disabled")).toBeFalsy();
-            expect(conceptElement.find('#third').attr("disabled")).toBeFalsy();
-        });
-
-        it("should enable if the passed element is input or button field", function () {
-            var html = "<div>" +
-                "  <div><input id='first' data-concept-name='field1' disabled/></div>" +
-                "</div>";
-            var conceptElement = $(html);
-            Bahmni.Common.Obs.ObservationUtil.disable(conceptElement, 'field1', false);
-
-            expect(conceptElement.find('#first').attr("disabled")).toBeFalsy();
-        });
-    });
-
     describe("flatten", function () {
         it("should flatten the observation", function () {
             var observation = {

@@ -190,7 +190,13 @@ body.abc.ngdialog-open{
             margin-top: -52px;
             margin-bottom: 20px;
             .template-container {
-               padding: 40px 20px 20px;
+               padding:20px;
+               h6{
+                font-size: 1.5em;
+                color: #009384;
+                margin-bottom: 25px;
+                font-family: openSansSemiBold;
+               }
             }
         }
     }

@@ -56,13 +56,13 @@
                          class="autocomplete">
                         <input ng-if="!observation.conceptUIConfig.answersConceptName" type="hidden"
                                ui-select2="selectOptions(observation.primaryObs.concept)"
-                               data-concept-name="{{observation.concept.name}}"
-                               ng-disabled="::observation.disabled"
+                               ng-blur="handleUpdate()"
+                               ng-disabled="observation.disabled"
                                ng-model="observation.primaryObs.value" style="width: 90%;"/>
                         <input ng-if="observation.conceptUIConfig.answersConceptName" concept-autocomplete
                                coded-concept-name="observation.conceptUIConfig.answersConceptName"
-                               data-concept-name="{{observation.concept.name}}"
-                               ng-disabled="::observation.disabled"
+                               ng-blur="handleUpdate()"
+                               ng-disabled="observation.disabled"
                                ng-model="observation.value"/>
                     </div>
 
@@ -79,7 +79,7 @@
                 <div ng-if="::observation.abnormalObs && !observation.isComputed()" class="fl accept-btn-wrapper">
                     <button type="button" ng-model="observation.abnormalObs.value"
                             class="small-btn accept-btn grid-row-element"
-                            ng-disabled="!observation.primaryObs.hasValue()"
+                            ng-disabled="!observation.primaryObs.hasValue() || observation.disabled"
                             ng-class="{'active': observation.abnormalObs.value}"
                             ng-click="observation.toggleAbnormal()"><i class="fa fa-ok"></i>Abnormal
                     </button>
@@ -150,11 +150,13 @@
                     </div>
 
                     <div ng-switch-when="datetime">
-                        <datetimepicker model="observation.value" data-concept-name="{{observation.concept.name}}"
+                        <datetimepicker model="observation.value"
+                                        ng-blur="handleUpdate()"
+                                        ng-disabled="observation.disabled"
                                         show-time="true" illegal-value="!observation.isValid(atLeastOneValueIsSet, conceptSetRequired)"></datetimepicker>
                     </div>
 
-                    <div ng-switch-when="grid" data-concept-name="{{observation.concept.name}}">
+                    <div ng-switch-when="grid">
                         <div ng-repeat="member in ::observation.groupMembers" class="grid-row"
                              ng-class="{'illegalValue': !observation.isValid(atLeastOneValueIsSet, conceptSetRequired)}">
                             <button-select observation="member"></button-select>
@@ -199,15 +201,15 @@
 
                     <div ng-switch-when="autocomplete"
                          ng-class="{'illegalValue': !observation.isValid(atLeastOneValueIsSet, conceptSetRequired), 'computed-field': observation.isComputedAndEditable()}"
-                         class="autocomplete" data-concept-name="{{observation.concept.name}}">
+                         class="autocomplete">
                         <input ng-if="::!observation.conceptUIConfig.answersConceptName" type="hidden"
-                               data-concept-name="{{observation.concept.name}}"
-                               ng-disabled="::observation.disabled"
+                               ng-blur="handleUpdate()"
+                               ng-disabled="observation.disabled"
                                ui-select2="selectOptions(observation.concept)" ng-model="observation.value"
                                style="width: 90%;" autofocus/>
                         <input ng-if="::observation.conceptUIConfig.answersConceptName" concept-autocomplete
-                               data-concept-name="{{observation.concept.name}}"
-                               ng-disabled="::observation.disabled"
+                               ng-blur="handleUpdate()"
+                               ng-disabled="observation.disabled"
                                coded-concept-name="observation.conceptUIConfig.answersConceptName"
                                ng-model="observation.autocompleteValue" autofocus/>
                     </div>
@@ -221,7 +223,7 @@
                 <div ng-include src="'../common/concept-set/views/observationDataTypes/addMore.html'"></div>
 
                 <button ng-if="::observation.canHaveComment()" type="button" toggle="observation.showComment"
-                        data-concept-name="{{observation.concept.name}}"
+                        ng-blur="handleUpdate()" ng-disabled="observation.disabled"
                         class="comment-toggle fr" tabindex="-1" ng-class="{'has-notes': observation.comment}">
                     <i class="fa fa-file-o" ng-hide="observation.comment">
                         <i class="fa fa-plus-circle" ng-hide="observation.showComment"></i>
@@ -268,7 +270,7 @@
                         <concept collapse-inner-sections="collapseInnerSections" observation="member"
                                  root-observation="observation" at-least-one-value-is-set="atLeastOneValueIsSet"
                                  patient="patient" show-title="true"
-                                 concept-set-required="conceptSetRequired"></concept>
+                                 concept-set-required="conceptSetRequired" concept-set-name="conceptSetName"></concept>
                     </div>
                 </div>
             </div>
