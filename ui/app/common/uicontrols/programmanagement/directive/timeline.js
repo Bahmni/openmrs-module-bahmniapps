@@ -9,8 +9,8 @@ angular.module('bahmni.common.uicontrols.programmanagment')
             var elementDimension = $element[0].getBoundingClientRect();
             var sortedDates = _.pluck(data.states, 'date');
             var uniqueStates = _.uniq(_.pluck(data.states, 'state'));
-            var xMin = 25;
-            var xMax = elementDimension.width-50;
+            var xMin = 0;
+            var xMax = elementDimension.width-15;
             var endDate = $scope.program.dateCompleted ? dateUtil.parse($scope.program.dateCompleted) : new Date();
             var dateFormatter = d3.time.format("%_d %b%y");
 
