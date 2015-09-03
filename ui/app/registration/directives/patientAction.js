@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('bahmni.registration')
-    .directive('patientAction', ['$window', '$location', '$state', 'spinner', '$rootScope', '$stateParams', 'appService', 'visitService', 'sessionService', 'encounterService', 'messagingService',
-        function ($window, $location, $state, spinner, $rootScope, $stateParams, appService, visitService, sessionService, encounterService, messagingService) {
+    .directive('patientAction', ['$window', '$location', '$state', 'spinner', '$rootScope', '$stateParams', '$bahmniCookieStore', 'appService', 'visitService', 'sessionService', 'encounterService', 'messagingService',
+        function ($window, $location, $state, spinner, $rootScope, $stateParams, $bahmniCookieStore, appService, visitService, sessionService, encounterService, messagingService) {
             var controller = function ($scope) {
                 var self = this;
                 var uuid = $stateParams.patientUuid;
@@ -98,7 +98,8 @@ angular.module('bahmni.registration')
                         encounterTypeUuid: regEncounterTypeUuid
                     };
                     if ($rootScope.currentProvider && $rootScope.currentProvider.uuid) {
-                        encounter.providers.push({"uuid": $rootScope.currentProvider.uuid});
+                        $bahmniCookieStore.put(Bahmni.Common.Constants.grantProviderAccessDataCookieName, $rootScope.currentProvider, {path: '/', expires: 1});
+                        //encounter.providers.push({"uuid": $rootScope.currentProvider.uuid});
                     }
                     return encounter;
                 };
