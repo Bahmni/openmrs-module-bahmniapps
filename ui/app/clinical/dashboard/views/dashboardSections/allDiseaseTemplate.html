@@ -1,4 +1,4 @@
-<header class="template-header">
+<!-- <header class="template-header">
     <button class="ngdialog-close back-btn" ng-click="closeThisDialog()">
     	<i class="fa fa-arrow-circle-left"></i>
     </button>
@@ -6,8 +6,8 @@
         <i class="fa fa-user"></i>
         <span>{{patient.name}} {{'(' + patient.identifier + ')'}}</span>
     </h5>
-    <h6>{{diseaseName}}</h6>
-</header>
+    
+</header> -->
 <div class="template-container">
 	<div ng-if="diseaseTemplate.name" >
 	    <div pivot-table patient-uuid="patient.uuid" disease-name="diseaseTemplate.name" config="section.allDiseaseDetails.pivotTable" display-name="diseaseTemplate.label"></div>
