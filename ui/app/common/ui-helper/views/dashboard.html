@@ -28,14 +28,14 @@
                 </a>
             </li>
             <li>
-                <a log-out><i class="fa fa-power-off fa-white small"></i><span class="nav-link">Logout</span></a>
+                <a log-out><i class="fa fa-power-off fa-white small"></i><span class="nav-link">{{'HEADER_LABEL_LOGOUT_KEY' | translate}}</span></a>
             </li>
         </ul>
     </header>
     <div class="apps">
         <ul>
             <li ng-repeat="extn in appExtensions">
-                <a ng-href="{{extn.url}}" class="button app big" target="{{extn.target?extn.target:'_self'}}"><i class="fa {{extn.icon}}"></i>{{extn.label|translate}}</a>
+                <a ng-href="{{extn.url}}" class="button app big" target="{{extn.target?extn.target:'_self'}}"><i class="fa {{extn.icon}}"></i>{{extn.translationKey | translate}}</a>
             </li>
         </ul>
     </div>

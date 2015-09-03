@@ -30,8 +30,8 @@ angular.module('bahmni.home')
             $scope.loginInfo.currentLocation = getLastLoggedinLocation();
 
             if ($stateParams.showLoginMessage) {
-                $scope.errorMessage = "You are not authenticated or your session expired. Please login.";
-            }
+                $scope.errorMessageTranslateKey = "LOGIN_LABLE_LOGIN_ERROR_MESSAGE_KEY";
+            };
 
             var redirectToLandingPageIfAlreadyAuthenticated = function () {
                 sessionService.get().success(function (data) {
@@ -43,10 +43,10 @@ angular.module('bahmni.home')
 
             if ($location.path() === loginPagePath) {
                 redirectToLandingPageIfAlreadyAuthenticated();
-            }
+            };
 
             $scope.login = function () {
-                $scope.errorMessage = null;
+                $scope.errorMessageTranslateKey = null;
                 var deferrable = $q.defer();
                 sessionService.loginUser($scope.loginInfo.username, $scope.loginInfo.password, $scope.loginInfo.currentLocation).then(
                     function () {
@@ -58,13 +58,13 @@ angular.module('bahmni.home')
                                 deferrable.resolve();
                             },
                             function (error) {
-                                $scope.errorMessage = error;
+                                $scope.errorMessageTranslateKey = error;
                                 deferrable.reject(error);
                             }
                         )
                     },
                     function (error) {
-                        $scope.errorMessage = error;
+                        $scope.errorMessageTranslateKey = error;
                         deferrable.reject(error);
                     }
                 );

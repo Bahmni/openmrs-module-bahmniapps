@@ -1,55 +1,55 @@
 <div class="login">
 
     <header class="reg-header ">
-        {{'login'|translate}}
+        {{'LOGIN_LABEL_LOGIN_KEY' | translate}}
     </header>
 
     <form ng-submit="login()" name="loginForm" bm-form autofillable="true">
         <div class="login-body">
             <div class="note-container">
-                <div class="note error" ng-show="errorMessage">
+                <div class="note error" ng-show="errorMessageTranslateKey">
                     <div class="text">
-                        {{errorMessage}}
+                        {{errorMessageTranslateKey | translate}}
                     </div>
                 </div>
             </div>
             <div class="form-field">
                 <div class="field-attribute">
                     <label for="username">
-                        Username <span class="asterick">*</span>
+                        {{'LOGIN_LABEL_USERNAME_KEY' | translate}} <span class="asterick">*</span>
                     </label>
                 </div>
 
                 <div class="field-value">
-                    <input type="text" name="username" id="username" ng-model="loginInfo.username" autofocus="autofocus" required placeholder="Enter your username">
+                    <input type="text" name="username" id="username" ng-model="loginInfo.username" autofocus="autofocus" required placeholder="{{'LOGIN_MESSAGE_ENTER_USERNAME_KEY' | translate}}">
                 </div>
             </div>
             <div class="form-field">
                 <div class="field-attribute">
                     <label for="password">
-                        Password <span class="asterick">*</span>
+                        {{'LOGIN_LABEL_PASSWORD_KEY' | translate}} <span class="asterick">*</span>
                     </label>
                 </div>
                 <div class="field-value">
-                    <input type="password" id="password" name="password" ng-model="loginInfo.password" required placeholder="Enter your password">
+                    <input type="password" id="password" name="password" ng-model="loginInfo.password" required placeholder="{{'LOGIN_MESSAGE_ENTER_PASSWORD_KEY' | translate}}">
                 </div>
             </div>
 
             <div class="form-field">
                 <div class="field-attribute">
                     <label for="location">
-                        Location <span class="asterick">*</span>
+                        {{'LOGIN_LABEL_LOCATION_KEY' | translate}} <span class="asterick">*</span>
                     </label>
                 </div>
                 <div class="field-value">
                     <select id="location" ng-model="loginInfo.currentLocation" ng-options="item as item.display for item in locations" required>
-                        <option value="">Select Location</option>
+                        <option value="">{{'LOGIN_LABEL_SELECT_LOCATION_KEY' | translate}}</option>
                     </select>
                 </div>
             </div>
 
             <div class="form-footer">
-                <button type="submit" class="confirm">Login</button>
+                <button type="submit" class="confirm">{{'LOGIN_LABEL_LOGIN_KEY' | translate}}</button>
             </div>
         </div>
     </form>
