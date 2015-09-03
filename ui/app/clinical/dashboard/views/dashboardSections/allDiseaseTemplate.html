@@ -9,6 +9,7 @@
     
 </header> -->
 <div class="template-container">
+    <h6>{{diseaseName}}</h6>
 	<div ng-if="diseaseTemplate.name" >
 	    <div pivot-table patient-uuid="patient.uuid" disease-name="diseaseTemplate.name" config="section.allDiseaseDetails.pivotTable" display-name="diseaseTemplate.label"></div>
         <observation-graph visit-uuid="visit.uuid" params="section.allDiseaseDetails.observationGraph" patient-uuid="patient.uuid"></observation-graph>
@@ -17,4 +18,4 @@
         <h2 class="section-title">{{section.title}}</h2>
 	    <disease-template config="section.allDiseaseDetails" template="diseaseTemplate" patient="patient" show-date-time-for-intake="showDateTimeForIntake" show-time-for-progress="showTimeForProgress"></disease-template>
 	</section>
-</div>
+</div>  
