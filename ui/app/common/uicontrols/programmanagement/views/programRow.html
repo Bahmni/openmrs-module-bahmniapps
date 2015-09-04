@@ -6,51 +6,50 @@
         <a class="back-btn dashboard-link fr" id="dashboard-link" ng-href="#/patient/{{patient.uuid}}/concept-set-group/observations/program/{{patientProgram.program.uuid}}" title="Back to patient dashboard">
             <img ng-src="{{patient.image}}" onerror="this.onerror=null;this.src='../images/blank-user.gif';">
             <span class="patient-info">
-                <span class="patient-name" >{{patient.name}} </span>
+                <span class="patient-name" >{{patientProgram.display}}</span>
                 <span class="patient-id">{{patient.identifier}}</span>
             </span>
         </a>
-
-        <!--<a class="back-btn" ng-href="#/patient/{{patient.uuid}}/concept-set-group/observations/program/{{patientProgram.program.uuid}}" class="big-anchor">Consultation</a>-->
     </div>
     <div class="program-timeline-container" ng-if="patientProgram.states.length!=0">
         <div class="program-timeline">
             <timeline program="patientProgram"></timeline>
         </div>
-        <button ng-click="toggleEdit(patientProgram)" ng-class="{'tab-selected': patientProgram.editing}" ng-if="hasProgramWorkflowStates(patientProgram)" class="fr detail-btn">Details</button>
+        <button ng-click="toggleEdit(patientProgram)" ng-class="{'tab-selected': patientProgram.editing}" ng-if="hasProgramWorkflowStates(patientProgram)" class="fr detail-btn">
+            <span>Details</span>
+            <i class="fa fa-expand"></i>
+        </button>
     </div>
     <div class="program-state-list"  ng-if="patientProgram.editing">
         <div class="down-arrow-container">
-            <i class="fa fa-expand"></i>
         </div>
-        <table class="state-list">
-            <tbody>
-                <tr ng-repeat="state in patientProgram.states| orderBy:'auditInfo.dateCreated':true" ng-if="state.voided != true">
-                    <td>{{state.state.concept.display}}</td>
-                    <td ng-if="state.endDate">{{state.startDate | bahmniDate}} to {{state.endDate | bahmniDate}}</td>
-                    <td ng-if="!state.endDate">Started on {{state.startDate | bahmniDate}}</td>
-                    <td>By {{state.auditInfo.creator.display}} on {{state.auditInfo.dateCreated | bahmniDate}}
-                        <i ng-class="{'fa fa-remove': !state.endDate}" ng-confirm-click="removePatientState(patientProgram)" confirm-message="Do you want to remove '{{state.state.concept.display}}'" ng-if="canRemovePatientState(state)" class="fa fa-remove"></i>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
+        <div class="state-list">
+            <table>
+                <tbody>
+                    <tr ng-repeat="state in patientProgram.states| orderBy:'auditInfo.dateCreated':true" ng-if="state.voided != true">
+                        <td>{{state.state.concept.display}}</td>
+                        <td ng-if="state.endDate">{{state.startDate | bahmniDate}} to {{state.endDate | bahmniDate}}</td>
+                        <td ng-if="!state.endDate">Started on {{state.startDate | bahmniDate}}</td>
+                        <td>By {{state.auditInfo.creator.display}} on {{state.auditInfo.dateCreated | bahmniDate}}</td>
+                        <td><i ng-class="{'fa fa-remove': !state.endDate}" ng-confirm-click="removePatientState(patientProgram)" confirm-message="Do you want to remove '{{state.state.concept.display}}'" ng-if="canRemovePatientState(state)" class="fa fa-remove"></i></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
         <div class="program-actions">
             <div class="program-action-container form" ng-if="hasProgramWorkflowStates(patientProgram)" ng-init="workflowStatesWithoutCurrentState = getWorkflowStatesWithoutCurrent(patientProgram)">
-                <label class="middle-align">Change to</label>
                 <select ng-model="programEdited.selectedState"
                         ng-options="state.concept.display for state in workflowStatesWithoutCurrentState track by state.uuid">
                     <option value="">Choose State</option>
                 </select>
-                <button class="fr ok_btn" ng-click="savePatientProgram(patientProgram)">Save</button>
+                <button class="fr ok_btn" ng-click="savePatientProgram(patientProgram)">Change State</button>
             </div>
             <div class="program-action-container form" ng-init="outComesForProgram = getOutcomes(patientProgram.program)">
-                <label class="middle-align">Outcomes</label>
                 <select ng-model="patientProgram.outcomeData"
                         ng-options="outcomeSelected.display for outcomeSelected in outComesForProgram">
                     <option value="">Choose OutCome</option>
                 </select>
-                <button class="fr ok_btn" ng-click="endPatientProgram(patientProgram)">End</button>
+                <button class="fr ok_btn" ng-click="endPatientProgram(patientProgram)">End Program</button>
             </div>
         </div>
     </div>
