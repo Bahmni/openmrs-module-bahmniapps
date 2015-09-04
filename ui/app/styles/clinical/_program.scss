@@ -9,11 +9,11 @@
   }
   .program-action-container{
     margin-top: 4px;
-    width: 46.85%;
+    width: 45%;
     padding: 10px 15px;
     display: inline-block;
-    border: 1px #d0d0d0 solid;
     background-color: #F3F2F2;
+    margin-right: 10px;
     select{
       height: 33px;
       float: left;
@@ -91,6 +91,9 @@
   }
   button.detail-btn{
     margin-top: 20px;
+    i{
+      display: none;
+    }
   }
   .tab-selected{
     border-radius: 3px 3px 0 0;
@@ -99,6 +102,16 @@
     font-family: openSansBOld;
     padding: 8px 18px;
     border-color: #D0D0D0;
+    position: relative;
+    z-index: 999;
+    span{
+      display: none;
+    }
+    i{
+      display: block !important;
+      font-size: 30px;
+      padding: 15px 13px;
+    }
     &:hover{
       border-bottom: 1px #F3F2F2 solid;
     }
@@ -122,6 +135,12 @@
     font-size: 14px;
     &.back-btn{
       float: right;
+      margin-right: 0;
+    }
+    &.big-anchor{
+      font-size: 20px;
+      font-family: openSans;
+      display: inline-block;
     }
   }
   span{
@@ -140,7 +159,6 @@
 
 .program-state-list {
   width: auto;
-  padding: 20px;
   background-color: #fff;
   box-shadow: 3px 3px 10px #E4E0E0;
   border: 1px #d0d0d0 solid;
@@ -148,32 +166,51 @@
   margin-bottom: 15px;
   position: relative;
   div.down-arrow-container{
-    width: 85px;
-    height: 43px;
+    width: 88px;
+    height: 1px;
     background-color: #000;
     position: absolute;
     right: -1px;
-    top: -43px;
+    top: -1px;
     float: right;
     background-color: #fff;
-    box-shadow: 0;     border: 1px #d0d0d0 solid;
+    box-shadow: 0;
+    border: 1px #d0d0d0 solid;
     border-radius: 0;
     border-bottom-color: #fff;
     border-top: 0;
     border-bottom: 0;
-    i{
-      font-size: 30px;
-      padding: 6px 27px;
-      float: left;
-    }
   }
   .program-actions{
-    padding-top: 25px;
+    padding: 20px;
+    width: 75%;
+    margin: 0 auto;
     button{
       padding: 6px 15px !important;
       margin-top: 4px;
     }
   }
+  .state-list{
+    padding: 25px 20px 0;
+    table{
+      box-shadow: 1px 1px 5px rgba(0,0,0,.3);
+      tbody{
+        tr{
+          border: none;
+          &:nth-child(odd){
+            background: #F9F4E7
+          }
+          &:nth-child(even){
+            background: #FFF;
+          }
+          td{
+            border: none;
+          }
+        }
+      }
+    }
+  }
+
 }
 
 
