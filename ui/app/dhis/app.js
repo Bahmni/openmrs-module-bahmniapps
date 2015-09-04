@@ -33,7 +33,7 @@ angular.module('dhis', ['httpErrorInterceptor', 'bahmni.common.uiHelper', 'bahmn
         });
 
     $httpProvider.defaults.headers.common['Disable-WWW-Authenticate'] = true;
-    $bahmniTranslateProvider.init('dhis');
+    $bahmniTranslateProvider.init({app: 'dhis', shouldMerge: true});
 }]).run(function ($rootScope, $templateCache) {
     //Disable caching view template partials
     $rootScope.$on('$viewContentLoaded', function () {

@@ -60,7 +60,7 @@ angular
                     }
                 }
             });
-        $bahmniTranslateProvider.init('orders');
+        $bahmniTranslateProvider.init({app: 'orders', shouldMerge: true});
 }]
 
 ).run(['backlinkService', function (backlinkService) {

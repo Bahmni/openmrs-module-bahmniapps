@@ -8,18 +8,7 @@
     "LOGIN_MESSAGE_ENTER_USERNAME_KEY": "Enter your username",
     "LOGIN_MESSAGE_ENTER_PASSWORD_KEY": "Enter your password",
     "LOGIN_LABEL_SELECT_LOCATION_KEY": "Select Location",
-
-    "MODULE_LABEL_REGISTRATION_KEY": "Registration",
-    "MODULE_LABEL_CLINICAL_KEY": "Clinical",
-    "MODULE_LABEL_INPATIENT_KEY": "InPatient",
-    "MODULE_LABEL_RADIOLOGY_UPLOAD_KEY": "Radiology Upload",
-    "MODULE_LABEL_PATIENT_DOCUMENTS_KEY": "Patient Documents",
-    "MODULE_LABEL_ADMIN_KEY": "Admin",
-    "MODULE_LABEL_REPORTS_KEY": "Reports",
-    "MODULE_LABEL_APOOINTMENTS_KEY": "Appointments",
-    "MODULE_LABEL_ORDERS_KEY": "Orders",
-    "MODULE_LABEL_PROGRAMS_KEY": "Programs",
-    "MODULE_LABEL_DHIS_KEY": "Dhis",
+    "LOGIN_LABEL_SELECT_LOCALE_KEY": "Select Locale",
 
     "HEADER_LABEL_LOGOUT_KEY": "Logout"
 }

@@ -56,7 +56,7 @@ angular
                     'content@patient.printSticker': { templateUrl: 'views/notimplemented.html'}
                 }
             });
-        $bahmniTranslateProvider.init('registration');
+        $bahmniTranslateProvider.init({app: 'registration', shouldMerge: true});
     }]).run(function ($rootScope, $templateCache) {
         //Disable caching view template partials
         $rootScope.$on('$viewContentLoaded', function () {

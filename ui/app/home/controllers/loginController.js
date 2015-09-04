@@ -30,7 +30,7 @@ angular.module('bahmni.home')
             $scope.loginInfo.currentLocation = getLastLoggedinLocation();
 
             if ($stateParams.showLoginMessage) {
-                $scope.errorMessageTranslateKey = "LOGIN_LABLE_LOGIN_ERROR_MESSAGE_KEY";
+                $scope.errorMessageTranslateKey = "LOGIN_LABEL_LOGIN_ERROR_MESSAGE_KEY";
             };
 
             var redirectToLandingPageIfAlreadyAuthenticated = function () {

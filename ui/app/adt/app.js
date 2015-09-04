@@ -84,5 +84,5 @@ angular.module('adt').config(['$stateProvider', '$httpProvider', '$urlRouterProv
             controller: 'BedManagementController'
         });
 
-    $bahmniTranslateProvider.init('adt');
+    $bahmniTranslateProvider.init({app: 'adt', shouldMerge: true});
 }]);

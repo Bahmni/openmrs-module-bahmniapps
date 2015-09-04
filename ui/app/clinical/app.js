@@ -300,7 +300,7 @@ angular.module('consultation')
 
         $httpProvider.defaults.headers.common['Disable-WWW-Authenticate'] = true;
 
-        $bahmniTranslateProvider.init('clinical');
+        $bahmniTranslateProvider.init({app: 'clinical', shouldMerge: true});
     }]).run(['stateChangeSpinner', '$rootScope', function (stateChangeSpinner, $rootScope) {
         //debugUiRouter($rootScope);
         FastClick.attach(document.body);
