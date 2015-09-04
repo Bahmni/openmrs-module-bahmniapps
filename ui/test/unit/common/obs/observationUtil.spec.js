@@ -84,24 +84,65 @@ describe("ObservationUtil", function () {
     });
 
     describe("flatten", function () {
-        it("should flatten the observation", function () {
-            var observation = {
+        it("should flatten all the observations", function () {
+            var buttonObservation = {
+                concept: {name: "btnConcept"},
+                value: {displayString: "button1"}
+            };
+            var multiSelectObservation = {
                 groupMembers: [
-                    {concept: {name: "concept1"}, value: "1"},
                     {
-                        groupMembers: [
-                            {concept: {name: "concept2"}, value: "2"},
-                            {concept: {name: "concept3"}, value: "3"},
-                        ]
+                        concept: {name: "concept1"},
+                        selectedObs: {
+                            Systolic: {
+                                value: {
+                                    displayString: "Systolic"
+                                }
+                            },
+                            Diastolic: {
+                                value: {
+                                    displayString: "Diastolic"
+                                }
+                            }
+                        }
+                    },
+                    {
+                        concept: {name: "concept1"},
+                        value: {
+                            displayString: "Systolic"
+                        }
+                    },
+                    {
+                        concept: {name: "concept1"},
+                        value: {
+                            displayString: "Diastolic"
+                        }
                     }
                 ]
             };
-            var flattenedObservations = Bahmni.Common.Obs.ObservationUtil.flatten(observation);
+            var textObservation = {
+                concept: {name: "textConcept"},
+                value: "text1"
+            };
+            var blankObservation = {
+                concept: {name: "blankConcept"}
+            };
+            var parentObservation = {
+                groupMembers: [
+                    buttonObservation,
+                    multiSelectObservation,
+                    textObservation,
+                    blankObservation
+                ]
+            };
+
+            var flattenedObservations = Bahmni.Common.Obs.ObservationUtil.flatten(parentObservation);
 
             expect(flattenedObservations).toEqual({
-                "concept1": '1',
-                "concept2": '2',
-                "concept3": '3'
+                "btnConcept": 'button1',
+                "concept1": ["Systolic", "Diastolic"],
+                "textConcept": 'text1',
+                "blankConcept": undefined
             });
         });
 
@@ -112,6 +153,7 @@ describe("ObservationUtil", function () {
                 "concept1": '1'
             });
         });
+
     })
 
 });
