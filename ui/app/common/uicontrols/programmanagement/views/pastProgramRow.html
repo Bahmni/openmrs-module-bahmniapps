@@ -8,21 +8,24 @@
         <div class="program-timeline">
             <timeline program="program"></timeline>
         </div>
-        <button ng-click="toggleEdit(program)" ng-class="{'tab-selected': patientProgram.editing}" class="fr detail-btn" >Details</button>
+        <button ng-click="toggleEdit(program)" ng-class="{'tab-selected': program.editing}" class="fr detail-btn" >
+            <span>Details</span>
+            <i class="fa fa-expand"></i>
+        </button>
     </div>
     <div class="program-state-list" ng-if="program.editing">
-        <div class="down-arrow-container">
-            <i class="fa fa-expand"></i>
+        <div class="down-arrow-container"></div>
+        <div class="state-list">
+            <table>
+                <tbody>
+                <tr ng-repeat="state in program.states| orderBy:'auditInfo.dateCreated':true" ng-if="state.voided != true">
+                    <td>{{state.state.concept.display}}</td>
+                    <td ng-if="state.endDate">{{state.startDate | bahmniDate}} to {{state.endDate | bahmniDate}}</td>
+                    <td ng-if="!state.endDate">Started on {{state.startDate | bahmniDate}}</td>
+                    <td>By {{state.auditInfo.creator.display}} on {{state.auditInfo.dateCreated | bahmniDate}}</td>
+                </tr>
+                </tbody>
+            </table>
         </div>
-        <table class="state-list">
-            <tbody>
-            <tr ng-repeat="state in program.states| orderBy:'auditInfo.dateCreated':true" ng-if="state.voided != true">
-                <td>{{state.state.concept.display}}</td>
-                <td ng-if="state.endDate">{{state.startDate | bahmniDate}} to {{state.endDate | bahmniDate}}</td>
-                <td ng-if="!state.endDate">Started on {{state.startDate | bahmniDate}}</td>
-                <td>By {{state.auditInfo.creator.display}} on {{state.auditInfo.dateCreated | bahmniDate}}</td>
-            </tr>
-            </tbody>
-        </table>
     </div>
 </div>
