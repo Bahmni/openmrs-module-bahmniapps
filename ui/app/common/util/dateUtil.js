@@ -232,5 +232,9 @@ Bahmni.Common.Util.DateUtil = {
 
     parseLongDateToServerFormat: function(longDate){
         return longDate ? moment(longDate).format("YYYY-MM-DDTHH:mm:ss.SSS") : null;
+    },
+
+    parseServerDateToDate: function(longDate){
+        return longDate ? moment(longDate,"YYYY-MM-DDTHH:mm:ss.SSS").toDate() : null;
     }
 };
