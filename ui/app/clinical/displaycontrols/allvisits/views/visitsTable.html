@@ -13,10 +13,10 @@
                 <span class="visitType">{{::visit.visitType.name}}</span>
             </span>
             <ul ng-show="visit.isOpen" class="ng-isolate-scope">
-                <li ng-repeat="encounter in visit.encounters" class="ng-scope"><span>{{encounter.encounterDatetime | bahmniDateTime}}</span>
+                <li ng-repeat="encounter in visit.encounters"  class="ng-scope"><span>{{encounter.encounterDatetime | bahmniDateTime}}</span>
                     <span class="fr">{{encounter.provider.display}}</span>
                     <ul class="ng-isolate-scope">
-                        <li ng-repeat="ob in encounter.obs" class="ng-scope">
+                        <li ng-repeat="ob in filteredObservations(encounter.obs, observationTemplates)" class="ng-scope">
                             <span ng-if="!showObservationData">{{ob.concept.display}}</span>
                             <observation-data ng-if="showObservationData" observation="ob"></observation-data>
                         </li>
