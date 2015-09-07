@@ -12,11 +12,18 @@ angular.module('bahmni.common.displaycontrol.patientprofile')
             };
 
             $scope.getPatientAttributeTypes = function () {
+                getAgeTextForPatient();
                 var patientAttributeTypes = [patient.genderText, patient.ageText];
                 if (patient.bloodGroupText) {
                     patientAttributeTypes.push(patient.bloodGroupText);
                 }
                 return $sce.trustAsHtml(patientAttributeTypes.join(", "));
+            };
+
+            var getAgeTextForPatient = function(){
+                if($scope.config.hasOwnProperty("ageLimit") && patient.age >= $scope.config.ageLimit){
+                    patient.ageText = patient.age.toString()+ " <span> years </span>";
+                }
             };
 
             $scope.isProviderRelationship = function (relationship) {
