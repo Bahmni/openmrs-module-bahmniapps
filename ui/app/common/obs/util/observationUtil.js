@@ -28,7 +28,7 @@ Bahmni.Common.Obs.ObservationUtil = (function () {
 
     var flatten = function (observation) {
         var flattenedObservation = {};
-        if(!_.isEmpty(observation)) {
+        if (!_.isEmpty(observation)) {
             findLeafObservations(flattenedObservation, observation);
         }
         return flattenedObservation;
@@ -40,8 +40,22 @@ Bahmni.Common.Obs.ObservationUtil = (function () {
                 findLeafObservations(flattenedObservations, member);
             });
         } else {
-            flattenedObservations[observation.concept.name] = observation.value;
+            collect(flattenedObservations, observation.concept.name, getValue(observation));
         }
+    };
+
+    var collect = function (flattenedObservations, key, value) {
+        flattenedObservations[key] = flattenedObservations[key] ? _.union(flattenedObservations[key], value) : value;
+    };
+
+    var getValue = function (observation) {
+        if (observation.selectedObs) {
+            return _.map(observation.selectedObs, function (obs) {
+                return obs.value.displayString;
+            });
+        }
+        var obsValue = observation.value;
+        return obsValue ? (obsValue.displayString || obsValue) : undefined;
     };
 
     return {
