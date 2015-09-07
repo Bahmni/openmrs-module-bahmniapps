@@ -32,22 +32,32 @@ angular.module('bahmni.common.appFramework')
             return deferrable.promise;
         };
 
+        var setDefinition = function(baseResultData, customResultData){
+            if (customResultData && (_.keys(baseResultData).length > 0 || _.keys(customResultData.length > 0))) {
+                appDescriptor.setDefinition(baseResultData, customResultData);
+            }else if( _.keys(baseResultData).length > 0){
+                appDescriptor.setDefinition(baseResultData);
+            }
+        };
+
         var loadDefinition = function (appDescriptor) {
             var deferrable = $q.defer();
             loadConfig(baseUrl + appDescriptor.contextPath + "/app.json").then(
                 function (baseResult) {
-                    loadConfig(customUrl + appDescriptor.contextPath + "/app.json").then(function (customResult) {
-                            if (_.keys(customResult.data).length > 0 || _.keys(baseResult.data).length > 0) {
-                                appDescriptor.setDefinition(baseResult.data, customResult.data);
-                            }
-                            deferrable.resolve(appDescriptor);
-                        },
-                        function () {
-                            if (_.keys(baseResult.data).length > 0) {
-                                appDescriptor.setDefinition(baseResult.data);
-                            }
-                            deferrable.resolve(appDescriptor);
-                        });
+                    if (baseResult.data.shouldOverRideConfig) {
+                        loadConfig(customUrl + appDescriptor.contextPath + "/app.json").then(function (customResult) {
+                                setDefinition(baseResult.data, customResult.data);
+                                deferrable.resolve(appDescriptor);
+                            },
+                            function () {
+                                setDefinition(baseResult.data);
+                                deferrable.resolve(appDescriptor);
+                            });
+                    }else{
+                        setDefinition(baseResult.data);
+                        deferrable.resolve(appDescriptor);
+
+                    }
                 },function (error) {
                     if (error.status != 404) {
                         deferrable.reject(error);
@@ -58,18 +68,32 @@ angular.module('bahmni.common.appFramework')
             return deferrable.promise;
         };
 
+        var setExtensions = function(baseResultData, customResultData){
+            if(customResultData){
+                appDescriptor.setExtensions(baseResultData, customResultData);
+            }else{
+                appDescriptor.setExtensions(baseResultData);
+            }
+        };
         var loadExtensions = function (appDescriptor, extensionFileName) {
             var deferrable = $q.defer();
             loadConfig(baseUrl + appDescriptor.extensionPath + extensionFileName).then(function (baseResult) {
-                loadConfig(customUrl + appDescriptor.extensionPath + extensionFileName).then(
-                    function (customResult) {
-                        appDescriptor.setExtensions(baseResult.data, customResult.data);
-                        deferrable.resolve(appDescriptor);
-                    },
-                    function () {
-                        appDescriptor.setExtensions(baseResult.data);
-                        deferrable.resolve(appDescriptor);
-                    });
+                if (baseResult.data.shouldOverRideConfig) {
+                    loadConfig(customUrl + appDescriptor.extensionPath + extensionFileName).then(
+                        function (customResult) {
+                            setExtensions(baseResult.data, customResult.data);
+                            deferrable.resolve(appDescriptor);
+                        },
+                        function () {
+                            setExtensions(baseResult.data);
+                            deferrable.resolve(appDescriptor);
+
+                        });
+                }else{
+                    setExtensions(baseResult.data);
+                    deferrable.resolve(appDescriptor);
+
+                }
             }, function (error) {
                 if (error.status != 404) {
                     deferrable.reject(error);
@@ -80,23 +104,32 @@ angular.module('bahmni.common.appFramework')
             return deferrable.promise;
         };
 
+        var setDefaultPageConfig = function(pageName, baseResultData, customResultData){
+            if (customResultData && (_.keys(customResultData).length > 0 || _.keys(baseResultData).length > 0)) {
+                appDescriptor.addConfigForPage(pageName, baseResultData, customResultData);
+            }else if(_.keys(baseResultData).length > 0){
+                appDescriptor.addConfigForPage(pageName, baseResultData);
+            }
+        };
+
         var loadPageConfig = function (pageName, appDescriptor) {
             var deferrable = $q.defer();
             loadConfig(baseUrl + appDescriptor.contextPath + "/" + pageName + ".json").then(
                 function (baseResult) {
-                    loadConfig(customUrl + appDescriptor.contextPath + "/" + pageName + ".json").then(
-                        function (customResult) {
-                            if (_.keys(customResult.data).length > 0 || _.keys(baseResult.data).length > 0) {
-                                appDescriptor.addConfigForPage(pageName, baseResult.data, customResult.data);
-                            }
-                            deferrable.resolve(appDescriptor);
-                        },
-                        function () {
-                            if (_.keys(baseResult.data).length > 0) {
-                                appDescriptor.addConfigForPage(baseResult.data);
-                            }
-                            deferrable.resolve(appDescriptor);
-                        });
+                    if (baseResult.data.shouldOverRideConfig) {
+                        loadConfig(customUrl + appDescriptor.contextPath + "/" + pageName + ".json").then(
+                            function (customResult) {
+                                setDefaultPageConfig(pageName, baseResult.data, customResult.data);
+                                deferrable.resolve(appDescriptor);
+                            },
+                            function () {
+                                setDefaultPageConfig(pageName, baseResult.data);
+                                deferrable.resolve(appDescriptor);
+                            });
+                    }else{
+                        setDefaultPageConfig(pageName, baseResult.data);
+                        deferrable.resolve(appDescriptor);
+                    }
                 }, function (error) {
                     if (error.status != 404) {
                         deferrable.reject(error);
@@ -121,14 +154,18 @@ angular.module('bahmni.common.appFramework')
         this.loadConfig = function (name, shouldMerge) {
             return loadConfig(baseUrl + appDescriptor.contextPath + "/" + name).then(
                 function (baseResponse) {
-                    return loadConfig(customUrl + appDescriptor.contextPath + "/" + name).then(function (customResponse) {
-                        if (shouldMerge || shouldMerge === undefined) {
-                            return mergeService.merge(baseResponse.data, customResponse.data);
-                        }
-                        return [baseResponse.data, customResponse.data];
-                    }, function (error) {
+                    if (baseResponse.data.shouldOverRideConfig) {
+                        return loadConfig(customUrl + appDescriptor.contextPath + "/" + name).then(function (customResponse) {
+                            if (shouldMerge || shouldMerge === undefined) {
+                                return mergeService.merge(baseResponse.data, customResponse.data);
+                            }
+                            return [baseResponse.data, customResponse.data];
+                        }, function () {
+                            return baseResponse.data;
+                        });
+                    }else{
                         return baseResponse.data;
-                    });
+                    }
                 }
             );
         };
