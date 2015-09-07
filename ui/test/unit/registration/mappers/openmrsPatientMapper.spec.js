@@ -3,6 +3,7 @@
 describe('patientMapper', function () {
 
     var mapper, openmrsPatient, ageModule, patientConfiguration, date = new Date();
+    var dateUtil = Bahmni.Common.Util.DateUtil;
 
     beforeEach(function () {
         module('bahmni.registration');
@@ -112,10 +113,9 @@ describe('patientMapper', function () {
 
     it('should map birth date in dd-mm-yyyy format', function () {
         var date1 = new Date();
-        date1.setHours(0,0,0,0);
         openmrsPatient.patient.person.birthdate = moment(date1).format();
         var patient = mapper.map(openmrsPatient);
-        expect(patient.birthdate).toEqual(new Date(moment(date1).format()));
+        expect(dateUtil.getDateWithoutTime(patient.birthdate)).toEqual(dateUtil.getDateWithoutTime(date1));
     });
 
     it("should not fail when birthdate is null", function () {
@@ -128,7 +128,7 @@ describe('patientMapper', function () {
         var date1 = new Date();
         openmrsPatient.patient.person.personDateCreated = moment(date1).format();
         var patient = mapper.map(openmrsPatient);
-        expect(patient.registrationDate).toEqual(new Date(moment(date).format()));
+        expect(dateUtil.getDateWithoutTime(patient.registrationDate)).toEqual(dateUtil.getDateWithoutTime(date1));
     });
 
     it("should populate birthdate and age if birthdate is not estimated", function () {
@@ -143,7 +143,7 @@ describe('patientMapper', function () {
 
         var patient = mapper.map(openmrsPatient);
 
-        expect(patient.birthdate).toEqual(new Date(moment(dob).format()));
+        expect(dateUtil.getDateWithoutTime(patient.birthdate)).toEqual(dateUtil.getDateWithoutTime(dob));
         expect(patient.age).toBe(age);
     });
 

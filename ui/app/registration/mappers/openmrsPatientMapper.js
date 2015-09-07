@@ -25,7 +25,7 @@ angular.module('bahmni.registration').factory('openmrsPatientMapper', ['patient'
                 return number > 9 ? number.toString() : "0" + number.toString();
             },
             parseDate = function (dateStr) {
-                return dateStr ? new Date(dateStr) : dateStr;
+                return Bahmni.Common.Util.DateUtil.parseServerDateToDate(dateStr);
             },
             mapAddress = function (preferredAddress) {
                 return preferredAddress || {};
@@ -39,13 +39,13 @@ angular.module('bahmni.registration').factory('openmrsPatientMapper', ['patient'
                 var openmrsPatient = openmrsPatient.patient;
                 var openmrsPerson = openmrsPatient.person;
                 var patient = patientModel.create();
-                var birthdate = parseDate(openmrsPerson.birthdate);
+                var birthDate = parseDate(openmrsPerson.birthdate);
                 patient.uuid = openmrsPatient.uuid;
                 patient.givenName = openmrsPerson.preferredName.givenName;
                 patient.middleName = openmrsPerson.preferredName.middleName;
                 patient.familyName = openmrsPerson.preferredName.familyName;
-                patient.birthdate = !birthdate ? null : birthdate;
-                patient.age = birthdate ? age.fromBirthDate(openmrsPerson.birthdate) : null;
+                patient.birthdate = !birthDate ? null : birthDate;
+                patient.age = birthDate ? age.fromBirthDate(birthDate) : null;
                 patient.gender = openmrsPerson.gender;
                 patient.address = mapAddress(openmrsPerson.preferredAddress);
                 patient.birthtime = parseDate(openmrsPerson.birthtime);
