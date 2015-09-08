@@ -76,7 +76,7 @@ angular.module('bahmni.clinical')
             }
 
             $scope.getProviderDisplayName = function(encounter){
-                return encounter.encounterProviders[0].provider.display ;
+                return  encounter.encounterProviders.length > 0 ? encounter.encounterProviders[0].provider.display : null;
             }
         };
         return {
