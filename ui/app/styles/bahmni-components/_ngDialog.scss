@@ -1,11 +1,6 @@
 .touch {
     body.ngdialog-open {
-       #ClinicalController {
-            display: none !important;
-        }
-        .ngdialog{
-            position: absolute !important;
-        }
+        position: fixed;
         &.show-controller-back{
             //overflow: hidden !important;
             #ClinicalController {
@@ -46,7 +41,7 @@
         display: inline-block;
         width: auto;
         float: right;
-        margin: 17px 0px 13px; 
+        margin: 17px 0px 13px;
         border-bottom: 0!important;
         color: $white;
         font-size: 16px;
@@ -77,7 +72,7 @@
     }
     table.ipd-investigation td {
         display: block;
-        height: 2em;
+        height: 2.3em;
         text-align: left;
     }
 }
@@ -100,7 +95,7 @@
             background-image: none;
             color: $mediumGray;
             padding: 5px 10px;
-        }      
+        }
         tr:nth-child(even), tr:nth-child(odd) {
             background: $white;
         }
@@ -111,7 +106,7 @@
         }
         &.h-scroll, &.pivot-table {
             tr td, tr th {
-                border-bottom: 1px solid $lighterGray; 
+                border-bottom: 1px solid $lighterGray;
             }
         }
     }
@@ -140,22 +135,33 @@ div.ngdialog-close {
 }
 
 
-body{
+/*body{
     padding-right: 0 !important;
 }
 
 body.abc.ngdialog-open{
     overflow: auto !important;
     overflow-x: hidden !important;
-}
+}*/
 
 .ngdialog-theme-default{
     &.ng-dialog-all-details-page{
         padding-bottom: 10px;
-        padding-top: 10px;
-        margin-top:52px; 
+        padding-top: 0px;
+        top:52px;
+        @media (max-width :1024px) {
+            overflow: hidden;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,.4);
+        }
         .ngdialog-overlay{
             top: 52px;
+            right: 10px;
+            @media (max-width :1024px) {
+                right: 0px;
+                display: none;
+            }
         }
         .ngdialog-close {
             border-radius: 5px;
@@ -183,20 +189,30 @@ body.abc.ngdialog-open{
             }
         }
         .ngdialog-content{
-            max-width: 1150px;
+            max-width: 1180px;
             width: 100%;
-            padding: 0;
+            margin: 0 8% 0 9%;
             min-height: 98%;
             margin-top: -52px;
             margin-bottom: 20px;
+            padding: 0;
+            @media (max-width :1024px) {
+                margin-left:auto;
+                margin-right:auto;
+                max-width: 1000px;
+                height: 100%;
+                overflow: scroll;
+                box-sizing: border-box;
+                padding: 0 0px 10px;
+                color: #fff;
+            }
             .template-container {
-               padding:20px;
-               h6{
-                font-size: 1.5em;
-                color: #009384;
-                margin-bottom: 25px;
-                font-family: openSansSemiBold;
-               }
+                padding:10px 20px;
+                h6{
+                    font-size: 1.5em;
+                    color: #009384;
+                    font-family: openSansSemiBold;
+                }
             }
         }
     }
