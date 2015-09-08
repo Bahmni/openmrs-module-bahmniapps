@@ -2,7 +2,7 @@
     <div class="simple-form-ui new-patient">
         <form name="myForm" class="form-horizontal well" ng-submit="create()">
             <div class="box-container box-container-default">
-                <legend class="mylegend"><span><strong>NEW PATIENT</strong></span></legend>
+                <legend class="mylegend"><span><strong>{{'REGISTRATION_LABEL_NEW_PATIENT' | translate}}</strong></span></legend>
                 <section class="clearfix">
                     <div class="photo-container-wrapper">
                         <span class="pull-right photo-container">
@@ -14,7 +14,7 @@
                 <section>
                     <article class="form-field">
                         <div class="field-attribute">
-                            <label class="control-label" for="patientID">Patient Identifier </label>
+                            <label class="control-label" for="patientID">{{'REGISTRATION_LABEL_PATIENT_IDENTIFIER' | translate}}</label>
                         </div>
                         <div class="field-value" id="patientID">
                             <span>
@@ -24,13 +24,13 @@
                             </span>
                             <span>
                             <input type="text" id="registrationNumber" ng-model="patient.registrationNumber"
-                                   placeholder="Registration Number" non-blank="hasOldIdentifier" title="Enter patient's registration number" pattern-validate
+                                   placeholder="Registration Number" non-blank="hasOldIdentifier" title="{{'REGISTRATION_LABEL_PATIENT_ENTER_REGISTRATION' | translate}}" pattern-validate
                                    ng-change="patient.generateIdentifier()" ng-show="hasOldIdentifier" focus-on="hasOldIdentifier">
                             </span>
                             <span class="input-label-inline" ng-show="showEnterID">
                                 <input type="checkbox" id="hasOldIdentifier" ng-model="$parent.hasOldIdentifier"
                                    ng-change="patient.clearRegistrationNumber()">
-                                <label for="hasOldIdentifier" class="control-label">Enter ID</label>
+                                <label for="hasOldIdentifier" class="control-label">{{'REGISTRATION_LABEL_ENTER_ID' | translate}}</label>
                             </span>
                         </div>
                     </article>

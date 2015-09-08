@@ -16,7 +16,7 @@
       </article>
       <article class="form-field">
           <div class="field-attribute">
-              <label for="patientName">Patient Name <span class="asterick">*</span></label>
+              <label for="patientName">{{ 'REGISTRATION_LABEL_PATIENT_NAME' | translate}}<span class="asterick">*</span></label>
           </div>
 
           <div class="field-value" id="patientName">
@@ -26,11 +26,11 @@
                          type="text" id="givenName" ng-model="$parent.patient.givenName" non-blank pattern-validate
                          my-autocomplete source="getAutoCompleteList" response-map="getDataResults"
                          data-item-type="personName"
-                         placeholder="First Name" title="Enter patient's first name.">
+                         placeholder="{{ 'REGISTRATION_LABEL_PATIENT_FIRSTNAME' | translate}}" title="{{'REGISTRATION_LABEL_PATIENT_ENTER_NAME' | translate}}">
 
                   <input data-ng-switch-default
                          type="text" id="givenName" ng-model="patient.givenName" non-blank pattern-validate
-                         placeholder="First Name" title="Enter patient's first name.">
+                         placeholder="{{ 'REGISTRATION_LABEL_PATIENT_FIRSTNAME' | translate}}" title="{{'REGISTRATION_LABEL_PATIENT_ENTER_NAME' | translate}}">
               </span>
 
               <span data-ng-switch="isAutoComplete('givenName')" ng-if="!patientConfiguration.local()['showNameField']">
@@ -38,11 +38,11 @@
                          type="text" id="givenName" ng-model="$parent.patient.givenName" non-blank pattern-validate
                          my-autocomplete source="getAutoCompleteList" response-map="getDataResults"
                          data-item-type="personName"
-                         placeholder="First Name" title="Enter patient's first name." focus-me="true">
+                         placeholder="{{ 'REGISTRATION_LABEL_PATIENT_FIRSTNAME' | translate}}" title="{{'REGISTRATION_LABEL_PATIENT_ENTER_NAME' | translate}}" focus-me="true">
 
                   <input data-ng-switch-default
                          type="text" id="givenName" ng-model="patient.givenName" non-blank pattern-validate
-                         placeholder="First Name" title="Enter patient's first name." focus-me="true">
+                         placeholder="{{ 'REGISTRATION_LABEL_PATIENT_FIRSTNAME' | translate}}" title="{{'REGISTRATION_LABEL_PATIENT_ENTER_NAME' | translate}}" focus-me="true">
               </span>
 
               <span ng-show="showMiddleName" data-ng-switch="isAutoComplete('middleName')">
@@ -50,11 +50,11 @@
                          type="text" id="middleName" ng-model="$parent.patient.middleName" pattern-validate
                          my-autocomplete source="getAutoCompleteList" response-map="getDataResults"
                          data-item-type="personName"
-                         placeholder="Middle Name" title="Enter patient's middle name.">
+                         placeholder="{{ 'REGISTRATION_LABEL_PATIENT_MIDDLE_NAME' | translate}}" title="{{'REGISTRATION_LABEL_PATIENT_ENTER_MIDDLE_NAME' | translate}}">
 
                   <input data-ng-switch-default
                          type="text" id="middleName" ng-model="patient.middleName" pattern-validate
-                         placeholder="Middle Name" title="Enter patient's middle name.">
+                         placeholder="{{ 'REGISTRATION_LABEL_PATIENT_MIDDLE_NAME' | translate}}" title="{{'REGISTRATION_LABEL_PATIENT_ENTER_MIDDLE_NAME' | translate}}">
               </span>
 
               <span data-ng-switch="isAutoComplete('familyName')">
@@ -62,17 +62,17 @@
                          type="text" id="familyName" ng-model="$parent.patient.familyName" non-blank pattern-validate
                          my-autocomplete source="getAutoCompleteList" response-map="getDataResults"
                          data-item-type="personName"
-                         placeholder="Last Name" title="Enter patient's last name.">
+                         placeholder="{{ 'REGISTRATION_LABEL_PATIENT_LAST_NAME' | translate}}" title="{{'REGISTRATION_LABEL_PATIENT_ENTER_LAST_NAME' | translate}}">
 
                   <input data-ng-switch-default
                          type="text" id="familyName" ng-model="patient.familyName" non-blank pattern-validate
-                         placeholder="Last Name" title="Enter patient's last name.">
+                         placeholder="{{ 'REGISTRATION_LABEL_PATIENT_LAST_NAME' | translate}}" title="{{'REGISTRATION_LABEL_PATIENT_ENTER_LAST_NAME' | translate}}">
               </span>
 
               <span class="input-label-inline caste-lastname" ng-show="showCasteSameAsLastName()">
                   <input type="checkbox" id="casteSameAsLastNameCheck" ng-model="patient.sameAsLastName"
                          ng-change="setCasteAsLastName()">
-                  <label id="casteSameAsLastNameCheckLabel" for="casteSameAsLastNameCheck">Caste same as Last Name</label>
+                  <label id="casteSameAsLastNameCheckLabel" for="casteSameAsLastNameCheck">{{ 'REGISTRATION_LABEL_CASTE_SAME_LAST_NAME' | translate}}</label>
               </span>
           </div>
       </article>
@@ -80,13 +80,13 @@
   <section class="form-field-inline form-field-gender" ng-controller="PatientCommonController">
       <article class="form-field">
           <div class="field-attribute">
-              <label for="gender">Gender <span class="asterick">*</span></label>
+              <label for="gender">{{ 'REGISTRATION_LABEL_GENDER' | translate}} <span class="asterick">*</span></label>
           </div>
 
           <div class="field-value">
               <select id="gender" ng-model="patient.gender" required="required" title="Select Gender" required="required"
                       ng-options="genderMap[genderCode] for genderCode in genderCodes track by genderCode">
-                  <option value="">Select Gender</option>
+                  <option value="">{{ 'REGISTRATION_LABEL_SELECT_GENDER' | translate}}</option>
               </select>
           </div>
       </article>
@@ -94,26 +94,26 @@
   <section class="">
       <article class="form-field form-field-ipad">
           <div class="field-attribute">
-              <label for="ageYears">Age<span class="asterick">*</span></label>
+              <label for="ageYears">{{ 'REGISTRATION_LABEL_AGE' | translate}}<span class="asterick">*</span></label>
           </div>
 
           <div class="field-value age-field">
               <div class="input-prepend">
-                  <span class="add-on">Years</span>
+                  <span class="add-on">{{ 'REGISTRATION_LABEL_YEARS' | translate}}</span>
                   <input type="number" id="ageYears" name="ageYear" max="120" ng-model="patient.age.years" min="0"
-                         ng-required="patient.age.isEmpty()" title="Enter a numeric value for Years."
+                         ng-required="patient.age.isEmpty()" title="{{ 'REGISTRATION_LABEL_NUMERIC_YEARS' | translate}}"
                          ng-change="patient.calculateBirthDate()">
               </div>
               <div class="input-prepend">
-                  <span class="add-on">Months</span>
+                  <span class="add-on">{{ 'REGISTRATION_LABEL_MONTHS' | translate}}</span>
                   <input type="number" id="ageMonths" name="ageMonths" max="12" ng-model="patient.age.months" min="0"
-                         title="Enter a numeric value between 0 to 12"
+                         title="{{ 'REGISTRATION_LABEL_NUMERIC_MONTHS' | translate}}"
                          ng-change="patient.calculateBirthDate()">
               </div>
               <div class="input-prepend">
-                  <span class="add-on">Days</span>
+                  <span class="add-on">{{ 'REGISTRATION_LABEL_DAYS' | translate}}</span>
                   <input type="number" id="ageDays" name="ageDays" max="31" ng-model="patient.age.days" min="0"
-                         title="Enter a numeric value between 0 to 31"
+                         title="{{ 'REGISTRATION_LABEL_NUMERIC_DAYS' | translate}}"
                          ng-change="patient.calculateBirthDate()">
               </div>
 
@@ -122,7 +122,7 @@
       </article>
       <article class="form-field right-form-field">
        <div class="field-attribute">
-              <label for="birthdate" class="dob-label">Date of Birth</label>
+              <label for="birthdate" class="dob-label">{{ 'REGISTRATION_LABEL_DOB' | translate}}</label>
           </div>
           <div class="field-value">
               <input id="birthdate" type="date" ng-model="patient.birthdate"  max="{{today}}"
@@ -132,10 +132,10 @@
               <input type="checkbox" ng-model="patient.birthdateEstimated" class="estimate-check">
           </div>
           <div class="field-attribute estimated-label">
-              <label for="birthdate">Estimated</label>
+              <label for="birthdate">{{ 'REGISTRATION_LABEL_ESTIMATE' | translate}}</label>
           </div>
           <div class="field-attribute">
-              <label for="birthtime">Birth Time</label>
+              <label for="birthtime">{{ 'REGISTRATION_LABEL_BIRTH_TIME' | translate}}</label>
           </div>
           <div class="field-value">
               <input id="birthtime" type="time" ng-model="patient.birthtime">
@@ -144,7 +144,7 @@
   </section>
 
   <legend class="registraion_legend">
-      <span class="mylegend"> Address Information</span>
+      <span class="mylegend"> {{ 'REGISTRATION_LABEL_ADDRESS_INFO' | translate}}</span>
   </legend>
 
   <section address-fields data-address-levels="addressLevels" data-address="patient.address"
@@ -155,7 +155,7 @@
            free-text-address-fields="addressHierarchyConfigs.freeTextAddressFields"></section>
 
   <legend class="registraion_legend">
-      <span class="mylegend">Other Information</span>
+      <span class="mylegend">{{ 'REGISTRATION_LABEL_OTHER_INFO' | translate}}</span>
   </legend>
 
   <section class="form-field-inline" ng-repeat="attributeRow in patientConfiguration.customAttributeRows()">
@@ -170,7 +170,7 @@
           <span>
               <i class="fa fa-caret-right" ng-hide="displayAdditionalInformation"></i>
               <i class="fa fa-caret-down" ng-show="displayAdditionalInformation"></i>
-              <strong><a href accesskey="i">Additional Patient <u>I</u>nformation</a></strong>
+              <strong><a href accesskey="i" ng-bind-html="'REGISTRATION_TITLE_ADDITIONAL_PATIENT' | translate"></a></strong>
           </span>
   </legend>
   <section class="form-field-inline section-padding" ng-show="displayAdditionalInformation">
@@ -186,7 +186,7 @@
           <span>
               <i class="fa fa-caret-right" ng-hide="displayRelationshipInformation"></i>
               <i class="fa fa-caret-down" ng-show="displayRelationshipInformation"></i>
-              <strong><a href accesskey="l">Re<u>l</u>ationships</a></strong>
+              <strong><a href accesskey="l" ng-bind-html="'REGISTRATION_TITLE_RELATIONSHIPS' | translate"></a></strong>
           </span>
   </legend>
   <div patient-relationship patient="patient" ng-show="displayRelationshipInformation" ng-if="relationshipTypes"></div>
@@ -196,7 +196,7 @@
           <span>
               <i class="fa fa-caret-right" ng-hide="displayDeathInformation"></i>
               <i class="fa fa-caret-down" ng-show="displayDeathInformation"></i>
-              <strong>Death information</strong>
+              <strong>{{ 'REGISTRATION_LABEL_DEATH_INFO' | translate}}</strong>
           </span>
     </legend>
     <section class="form-field-inline section-padding" ng-show="displayDeathInformation">

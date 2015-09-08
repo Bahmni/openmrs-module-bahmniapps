@@ -2,17 +2,17 @@
     <section class="reg-search">
         <article class="search-seperator-l">
             <form name="searchByIdForm" ng-submit="searchById()" class="simple-form-ui" >
-                    <label for="registrationNumber"><strong>Patient ID</strong></label>
+                    <label for="registrationNumber"><strong>{{ 'REGISTRATION_LABEL_PATIENT_ID' | translate}}</strong></label>
 
                     <div class="search-patient-id left">
                         <select id="identifierPrefix" ng-model="searchParameters.identifierPrefix" ng-options="identifierSource.prefix for identifierSource in identifierSources"> </select>
                         <input type="text" id="registrationNumber" 
                         ng-model="searchParameters.registrationNumber" focus-me="true"
-                               placeholder="Enter ID">
+                               placeholder="{{ 'REGISTRATION_LABEL_ENTER_ID' | translate}}">
                     </div>
                 
                 <div class="reg-srch-btn left">
-                    <button type="submit" ng-disabled="!searchParameters.registrationNumber" >Search</button>
+                    <button type="submit" ng-disabled="!searchParameters.registrationNumber" >{{ 'REGISTRATION_LABEL_SEARCH' | translate}}</button>
                 </div>
             </form>
         </article>
@@ -20,8 +20,8 @@
             <form name="searchByNameForm" ng-submit="searchPatients()" class="simple-form-ui" >
 
                 <article class="left">
-                    <label for="name"><strong>Name</strong></label>
-                    <input type="text" id="name" ng-model="searchParameters.name" placeholder="Enter name">
+                    <label for="name"><strong>{{ 'REGISTRATION_LABEL_NAME' | translate}}</strong></label>
+                    <input type="text" id="name" ng-model="searchParameters.name" placeholder="{{ 'REGISTRATION_LABEL_ENTER_NAME' | translate}}">
                 </article>
                 <article class="left" ng-if="customAttributesSearchConfig.show">
                     <label for="name"><strong>{{customAttributesSearchConfig.label}}</strong></label>
@@ -33,7 +33,7 @@
                 </article>
                 <article class="left">
                     <div class="reg-srch-btn">
-                        <button type="submit" ng-disabled="disableSearchButton()">Search</button>
+                        <button type="submit" ng-disabled="disableSearchButton()">{{ 'REGISTRATION_LABEL_SEARCH' | translate}}</button>
                     </div>
                 </article>
             </form>
@@ -53,14 +53,14 @@
         <table ng-show="resultsPresent()" class="table table-hover">
             <thead>
             <tr>
-                <th class="slno_col"><strong>Sl.No</strong></th>
-                <th><strong>ID</strong></th>
-                <th><strong>Name</strong></th>
+                <th class="slno_col"><strong>{{ 'REGISTRATION_LABEL_SERIAL_NUM' | translate}}</strong></th>
+                <th><strong>{{ 'REGISTRATION_LABEL_ID' | translate}}</strong></th>
+                <th><strong>{{ 'REGISTRATION_LABEL_NAME' | translate}}</strong></th>
                 <th ng-repeat = "field in customAttributesSearchConfig.fields"><strong>{{convertToTableHeader(field)}}</strong></th>
-                <th><strong>Gender</strong></th>
-                <th><strong>Age</strong></th>
+                <th><strong>{{ 'REGISTRATION_LABEL_GENDER' | translate}}</strong></th>
+                <th><strong>{{ 'REGISTRATION_LABEL_AGE' | translate}}</strong></th>
                 <th><strong>{{addressSearchConfig.label}}</strong></th>
-                <th><strong>Registration Date</strong></th>
+                <th><strong>{{ 'REGISTRATION_LABEL_REGISTRATION_DATE' | translate}}</strong></th>
                 <th class="edit-col"></th>
             </tr>
             </thead>
@@ -90,7 +90,7 @@
     <div class="note-container" ng-show="noMoreResultsPresent">
         <div class="note warning">
             <div class="text">
-                    <p>No more results</p>
+                    <p>{{ 'REGISTRATION_LABEL_NO_RESULTS' | translate}}</p>
             </div>
         </div>
     </div>
