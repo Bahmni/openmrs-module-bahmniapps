@@ -93,6 +93,7 @@ describe("ObservationUtil", function () {
                 groupMembers: [
                     {
                         concept: {name: "concept1"},
+                        getValues: function() {return ["Systolic", "Diastolic"]},
                         selectedObs: {
                             Systolic: {
                                 value: {
@@ -118,7 +119,7 @@ describe("ObservationUtil", function () {
                             displayString: "Diastolic"
                         }
                     }
-                ]
+                ],
             };
             var textObservation = {
                 concept: {name: "textConcept"},

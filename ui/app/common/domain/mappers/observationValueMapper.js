@@ -9,7 +9,7 @@ Bahmni.Common.Domain.ObservationValueMapper = function () {
             return date != null ? Bahmni.Common.Util.DateUtil.formatDateWithTime(date) : "";
         }
         if(obs.isMultiSelect){
-            return obs.getValues();
+            return obs.getValues().join(", ");
         }
         if(type === 'Boolean') {
             return obs.value === true ? "Yes" : obs.value === false ? "No" : obs.value;

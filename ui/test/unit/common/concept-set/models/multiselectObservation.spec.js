@@ -130,4 +130,17 @@ describe("Multiselect Observation", function() {
         expect(clonedObs.groupMembers[1]).toEqual(jasmine.any(Bahmni.ConceptSet.MultiSelectObservation));
         expect(clonedObs.groupMembers[1].voided).toBeFalsy();
     });
+
+    it("should return array of selected values", function() {
+        var rootConcept = savedObs()[0].concept;
+        var mapper = new Bahmni.ConceptSet.ObservationMapper();
+        var mappedObs = mapper.map(savedObs(), rootConcept, {"Comorbidity": {multiSelect: true}});
+
+        expect(mappedObs.groupMembers.length).toBe(4);
+        expect(mappedObs.groupMembers[1]).toEqual(jasmine.any(Bahmni.ConceptSet.MultiSelectObservation));
+        expect(mappedObs.groupMembers[1].getValues()).toEqual(['HyperTension', 'Diabetes']);
+
+        mappedObs.groupMembers[1].toggleSelection({name: hivConcept.name.name, uuid: hivConcept.uuid});
+        expect(mappedObs.groupMembers[1].getValues()).toEqual(['HyperTension', 'Diabetes', 'HIV']);
+    })
 });

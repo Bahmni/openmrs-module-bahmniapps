@@ -14,7 +14,7 @@ describe("Observation Value Mapper", function () {
     it("should return multiselect values", function() {
         var obs = {type: "N/A", concept: {}, isMultiSelect: true, getValues: function() {return ["A", "B"]}};
         var mapper = new Bahmni.Common.Domain.ObservationValueMapper();
-        expect(mapper.map(obs)).toEqual(["A", "B"]);
+        expect(mapper.map(obs)).toEqual("A, B");
     });
 
     it("should return coded value", function() {
