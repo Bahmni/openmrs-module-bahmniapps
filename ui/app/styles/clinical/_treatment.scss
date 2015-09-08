@@ -78,6 +78,9 @@
                 display: inline-block;
                 float: left;
                 margin: 0 1%;
+                @media (max-width :1024px) {
+                    margin: 0 .5%;
+                }
             }
 
             /*Widget*/
