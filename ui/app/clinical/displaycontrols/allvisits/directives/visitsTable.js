@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('bahmni.clinical')
-    .directive('visitsTable', ['patientVisitHistoryService', 'conceptSetService', 'spinner', '$state', '$q', '$bahmniCookieStore', function (patientVisitHistoryService, conceptSetService, spinner, $state, $q, $bahmniCookieStore) {
+    .directive('visitsTable', ['patientVisitHistoryService', 'conceptSetService', 'spinner', '$state', '$q', '$bahmniCookieStore', '$rootScope', function (patientVisitHistoryService, conceptSetService, spinner, $state, $q, $bahmniCookieStore, $rootScope) {
         var controller = function ($scope) {
             var getVisits = function () {
                 return patientVisitHistoryService.getVisitHistory($scope.patientUuid);
@@ -64,9 +64,19 @@ angular.module('bahmni.clinical')
                 $bahmniCookieStore.remove(Bahmni.Common.Constants.retrospectiveEntryEncounterDateCookieName);
                 $bahmniCookieStore.put(Bahmni.Common.Constants.retrospectiveEntryEncounterDateCookieName,  encounter.encounterDatetime, {path: '/', expires: 1});
 
+                $bahmniCookieStore.remove(Bahmni.Common.Constants.grantProviderAccessDataCookieName);
+                $bahmniCookieStore.put(Bahmni.Common.Constants.grantProviderAccessDataCookieName, encounter.encounterProviders[0].provider, {path: '/', expires: 1});
+
                 $rootScope.retrospectiveEntry = Bahmni.Common.Domain.RetrospectiveEntry.createFrom(Bahmni.Common.Util.DateUtil.getDate(encounter.encounterDatetime));
 
-                $state.go('patient.consultation.conceptSet',{conceptSetGroupName: "observations", encounterUuid: encounter.uuid});
+                if ($scope.$parent.closeThisDialog) {
+                    $scope.$parent.closeThisDialog("closing modal");
+                }
+                $state.go('patient.consultation.observations',{conceptSetGroupName: "observations", encounterUuid: encounter.uuid});
+            }
+
+            $scope.getProviderDisplayName = function(encounter){
+                return encounter.encounterProviders[0].provider.display ;
             }
         };
         return {
