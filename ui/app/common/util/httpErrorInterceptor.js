@@ -58,7 +58,7 @@ angular.module('httpErrorInterceptor',[])
 
                     }
                 } else if (response.status === 404) {
-                    if(!_.contains(response.config.url, "implementation_config")) {
+                    if(!_.contains(response.config.url, "implementation_config") && !_.contains(response.config.url, "locale_")) {
                         showError("The requested information does not exist");
                     }
                 }
