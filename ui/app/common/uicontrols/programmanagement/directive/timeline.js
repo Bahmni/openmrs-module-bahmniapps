@@ -89,7 +89,6 @@ angular.module('bahmni.common.uicontrols.programmanagment')
 
 
         var getDataModel = function(program) {
-            console.log(program.dateEnrolled);
             var states = _.sortBy(_.map(getActiveProgramStates(program), function(stateObject) {
                 return {state: stateObject.state.concept.display, date: moment(stateObject.startDate).toDate()}
             }),'date');

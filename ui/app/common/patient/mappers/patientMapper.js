@@ -17,12 +17,12 @@ Bahmni.PatientMapper = function (patientConfig, $rootScope) {
         patient.familyName = openmrsPatient.person.preferredName.familyName;
         patient.name = patient.givenName + ' ' + patient.familyName;
         patient.age = openmrsPatient.person.age;
-        patient.ageText = calculateAge(openmrsPatient.person.birthdate);
+        patient.ageText = calculateAge(Bahmni.Common.Util.DateUtil.parseServerDateToDate(openmrsPatient.person.birthdate));
         patient.gender = openmrsPatient.person.gender;
         patient.genderText = mapGenderText(patient.gender);
         patient.address = mapAddress(openmrsPatient.person.preferredAddress);
         patient.birthdateEstimated = openmrsPatient.person.birthdateEstimated;
-        patient.birthtime = getBirthtime(openmrsPatient.person);
+        patient.birthtime = Bahmni.Common.Util.DateUtil.parseServerDateToDate(openmrsPatient.person.birthtime);
         patient.bloodGroupText = getPatientBloodGroupText(openmrsPatient);
 
         if(openmrsPatient.identifiers) {
@@ -39,12 +39,6 @@ Bahmni.PatientMapper = function (patientConfig, $rootScope) {
 
         patient.image = Bahmni.Common.Constants.patientImageUrl + openmrsPatient.uuid + ".jpeg";
         return patient;
-    };
-
-    var getBirthtime = function(person){
-        if(person.birthtime != null)
-          return new Date(person.birthtime).toLocaleTimeString();
-        return '';
     };
 
     this.getPatientConfigByUuid = function (patientConfig, attributeUuid) {
