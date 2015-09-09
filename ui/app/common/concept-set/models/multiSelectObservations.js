@@ -197,7 +197,7 @@ Bahmni.ConceptSet.MultiSelectObservation = function (concept, memberOfCollection
                 values.push(obs.value.shortName || obs.value.name);
             }
         });
-        return values.join(" , ");
+        return values;
     }
 
 };

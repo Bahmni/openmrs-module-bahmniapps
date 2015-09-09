@@ -50,9 +50,7 @@ Bahmni.Common.Obs.ObservationUtil = (function () {
 
     var getValue = function (observation) {
         if (observation.selectedObs) {
-            return _.map(observation.selectedObs, function (obs) {
-                return obs.value.displayString;
-            });
+            return observation.getValues();
         }
         var obsValue = observation.value;
         return obsValue ? (obsValue.displayString || obsValue) : undefined;

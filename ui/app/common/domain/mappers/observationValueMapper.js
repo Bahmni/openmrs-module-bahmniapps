@@ -17,7 +17,7 @@
             return nameFor.Coded(obs);
         },
         "MultiSelect": function (obs) {
-            return obs.getValues();
+            return obs.getValues().join(", ");
         },
         "Default": function (obs) {
             return obs.value;
