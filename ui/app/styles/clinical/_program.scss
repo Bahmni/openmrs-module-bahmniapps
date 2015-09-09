@@ -91,8 +91,13 @@
   }
   button.detail-btn{
     margin-top: 20px;
+    margin-bottom: 0px;
     i{
       display: none;
+    }
+    &.btn-noTimeline{
+      margin-top: 10px;
+      margin-bottom: 10px;
     }
   }
   .tab-selected{
@@ -104,6 +109,8 @@
     border-color: #D0D0D0;
     position: relative;
     z-index: 999;
+    margin-top: 20px !important;
+    margin-bottom: 0px !important;
     span{
       display: none;
     }
@@ -192,6 +199,10 @@
   }
   .state-list{
     padding: 25px 20px;
+    &.state-list-cutomPadding{
+      padding: 0;
+      padding-top: 20px;
+    }
     table{
       box-shadow: 1px 1px 5px rgba(0,0,0,.3);
       tbody{
