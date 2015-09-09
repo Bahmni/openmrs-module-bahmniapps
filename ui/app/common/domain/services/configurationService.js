@@ -21,7 +21,7 @@ angular.module('bahmni.common.domain')
 
         configurationFunctions.patientAttributesConfig = function () {
             return $http.get(Bahmni.Common.Constants.personAttributeTypeUrl, {
-                params: {v: "full"},
+                params: {v: 'custom:(uuid,name,sortWeight,description,format,concept)'},
                 withCredentials: true
             });
         };

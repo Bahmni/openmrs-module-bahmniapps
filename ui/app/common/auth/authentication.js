@@ -27,7 +27,7 @@ angular.module('authentication')
             });
         });
     }]).service('sessionService', ['$rootScope', '$http', '$q', '$bahmniCookieStore', 'userService', function ($rootScope, $http, $q, $bahmniCookieStore, userService) {
-        var sessionResourcePath = '/openmrs/ws/rest/v1/session';
+        var sessionResourcePath = '/openmrs/ws/rest/v1/session?v=custom:(uuid)';
 
         var createSession = function(username, password){
             return $http.get(sessionResourcePath, {

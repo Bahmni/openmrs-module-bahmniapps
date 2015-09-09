@@ -38,7 +38,7 @@ describe('configurationService', function () {
     it('should fetch patientAttributesConfig from backend', function () {
         configurationservice.getConfigurations(['patientAttributesConfig'])
         expect(_$http.get.calls.mostRecent().args[0]).toEqual(Bahmni.Common.Constants.personAttributeTypeUrl);
-        expect(_$http.get.calls.mostRecent().args[1].params.v).toEqual("full");
+        expect(_$http.get.calls.mostRecent().args[1].params.v).toEqual("custom:(uuid,name,sortWeight,description,format,concept)");
     });
 
     it('should fetch dosageFrequencyConfig from backend', function () {
