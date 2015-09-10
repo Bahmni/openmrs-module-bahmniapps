@@ -170,7 +170,7 @@
           <span>
               <i class="fa fa-caret-right" ng-hide="displayAdditionalInformation"></i>
               <i class="fa fa-caret-down" ng-show="displayAdditionalInformation"></i>
-              <strong><a href accesskey="i" ng-bind-html="'REGISTRATION_TITLE_ADDITIONAL_PATIENT' | translate"></a></strong>
+              <strong><a href accesskey="{{ 'REGISTRATION_ENTER_ADDITIONAL_PATIENT_DETAILS_ACCESS_KEY' | translate}}" ng-bind-html="'REGISTRATION_TITLE_ADDITIONAL_PATIENT' | translate"></a></strong>
           </span>
   </legend>
   <section class="form-field-inline section-padding" ng-show="displayAdditionalInformation">
@@ -186,7 +186,7 @@
           <span>
               <i class="fa fa-caret-right" ng-hide="displayRelationshipInformation"></i>
               <i class="fa fa-caret-down" ng-show="displayRelationshipInformation"></i>
-              <strong><a href accesskey="l" ng-bind-html="'REGISTRATION_TITLE_RELATIONSHIPS' | translate"></a></strong>
+              <strong><a href accesskey="{{ 'REGISTRATION_RELATIONSHIPS_ACCESS_KEY' | translate}}" ng-bind-html="'REGISTRATION_TITLE_RELATIONSHIPS' | translate"></a></strong>
           </span>
   </legend>
   <div patient-relationship patient="patient" ng-show="displayRelationshipInformation" ng-if="relationshipTypes"></div>

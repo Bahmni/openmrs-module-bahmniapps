@@ -67,5 +67,10 @@
   "REGISTRATION_VISIT_CANNOT_BE_CLOSED":"Admitted patient's visit cannot be closed. Discharge the patient and try again",
   "REGISTRATION_CONFIRM_CLOSE_VISIT":"Are you sure you want to close this visit?",
   "REGISTRATION_LABEL_CORRECT_ERRORS":"Please correct errors in the form. Information not saved",
-  "REGISTRATION_LABEL_ENTER_MANDATORY_FIELDS":"Please enter data into mandatory field(s)."
+  "REGISTRATION_LABEL_ENTER_MANDATORY_FIELDS":"Please enter data into mandatory field(s).",
+  "REGISTRATION_SAVE_ACCESS_KEY" : "s",
+  "REGISTRATION_ENTER_VISIT_DETAILS_ACCESS_KEY": "v",
+  "REGISTRATION_ENTER_ADDITIONAL_PATIENT_DETAILS_ACCESS_KEY" : "i",
+  "REGISTRATION_RELATIONSHIPS_ACCESS_KEY": "l",
+  "REGISTRATION_BACK_ACCESS_KEY" : "b"
 }

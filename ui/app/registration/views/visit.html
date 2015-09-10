@@ -52,8 +52,8 @@
                 <div class="submit-btn-container">
                     <button type="button" class="cancel" tabindex="-1" ng-show="canCloseVisit" ng-click="closeVisitIfDischarged()">{{ 'REGISTRATION_LABEL_CLOSE_VISIT' | translate}}</button>
                     <div class="right">
-                        <button type="button" ng-click="back()" accesskey="b" ng-bind-html="'REGISTRATION_LABEL_BACK' | translate"></button>
-                        <button type="submit" class="confirm" accesskey="s" ng-bind-html="'REGISTRATION_LABEL_SAVE' | translate"></button>
+                        <button type="button" ng-click="back()" accesskey="{{ 'REGISTRATION_BACK_ACCESS_KEY' | translate}}" ng-bind-html="'REGISTRATION_LABEL_BACK' | translate"></button>
+                        <button type="submit" class="confirm" accesskey="{{ 'REGISTRATION_SAVE_ACCESS_KEY' | translate}}" ng-bind-html="'REGISTRATION_LABEL_SAVE' | translate"></button>
                     </div>
                 </div>
             </form>

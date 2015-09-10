@@ -24,7 +24,7 @@ angular.module('bahmni.registration')
             };
 
             $scope.buttonText = function(option) {
-                return option && option.label;
+                return option && option.translationKey;
             }
         }
 

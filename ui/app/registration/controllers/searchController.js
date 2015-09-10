@@ -216,6 +216,6 @@ angular.module('bahmni.registration')
             };
 
             $scope.extensionActionText = function (extension) {
-                return extension.label;
+                return extension.translationKey;
             }
         }]);

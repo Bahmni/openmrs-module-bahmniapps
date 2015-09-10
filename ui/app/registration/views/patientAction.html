@@ -2,7 +2,7 @@
     <span ng-switch="forwardActionKey">
                     <span data-ng-switch-when="enterVisitDetails">
                         <button type="submit" class="right confirm" ng-click="setSubmitSource('enterVisitDetails')"
-                                accesskey="v" ng-bind-html="'REGISTRATION_LABEL_ENTER_VISIT' | translate"></button>
+                                accesskey="{{ 'REGISTRATION_ENTER_VISIT_DETAILS_ACCESS_KEY' | translate }}" ng-bind-html="'REGISTRATION_LABEL_ENTER_VISIT' | translate"></button>
                     </span>
     <span data-ng-switch-when="startVisit">
                         <div split-button options="visitControl.visitTypes"
@@ -17,5 +17,5 @@
                         </button>
                     </span>
     </span>
-    <button type="submit" class="right" ng-click="setSubmitSource('save')" accesskey="s" ng-bind-html="'REGISTRATION_LABEL_SAVE' | translate"></button>
+    <button type="submit" class="right" ng-click="setSubmitSource('save')" accesskey="{{ 'REGISTRATION_SAVE_ACCESS_KEY' | translate}}" ng-bind-html="'REGISTRATION_LABEL_SAVE' | translate"></button>
 </div>

@@ -17,7 +17,7 @@
         <ul class="top-nav">
             <a class="back-btn" href="../home/"><i class="fa fa-home"></i></a>  
             <li ng-repeat="extension in extensions">
-                <a ng-click="goTo(extension.url)" accesskey="{{extension.shortcutKey}}"><i class="{{extension.icon}} fa fa-white small"></i><span class="nav-link" ng-bind-html="htmlLabel(extension.label)"></span></a>
+                <a ng-click="goTo(extension.url)" accesskey="{{extension.shortcutKey | translate}}"><i class="{{extension.icon}} fa fa-white small"></i><span class="nav-link" ng-bind-html="extension.translationKey | translate"></span></a>
             </li>
         </ul>
         <div ui-view="headerExtension" class="print-action-items"></div>
