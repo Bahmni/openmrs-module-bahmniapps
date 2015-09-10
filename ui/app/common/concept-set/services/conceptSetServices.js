@@ -3,7 +3,7 @@
 angular.module('bahmni.common.conceptSet')
     .factory('conceptSetService', ['$http', '$q', function ($http) {
         var getConceptSetMembers = function (params, cache) {
-            return $http.get(Bahmni.Common.Constants.conceptUrl,{
+            return $http.get(Bahmni.Common.Constants.conceptSearchByFullNameUrl,{
                 params: params,
                 cache: cache
             });

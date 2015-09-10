@@ -27,7 +27,7 @@ angular.module('bahmni.common.domain')
         };
 
         configurationFunctions.dosageFrequencyConfig = function () {
-            var dosageFrequencyConfig = $http.get(Bahmni.Common.Constants.conceptUrl, {
+            var dosageFrequencyConfig = $http.get(Bahmni.Common.Constants.conceptSearchByFullNameUrl, {
                 method: "GET",
                 params: {v: 'custom:(uuid,name,answers)', name: Bahmni.Common.Constants.dosageFrequencyConceptName},
                 withCredentials: true
@@ -36,7 +36,7 @@ angular.module('bahmni.common.domain')
         };
 
         configurationFunctions.dosageInstructionConfig = function () {
-            var dosageInstructionConfig = $http.get(Bahmni.Common.Constants.conceptUrl, {
+            var dosageInstructionConfig = $http.get(Bahmni.Common.Constants.conceptSearchByFullNameUrl, {
                 method: "GET",
                 params: {v: 'custom:(uuid,name,answers)', name: Bahmni.Common.Constants.dosageInstructionConceptName},
                 withCredentials: true
@@ -45,7 +45,7 @@ angular.module('bahmni.common.domain')
         };
 
         configurationFunctions.consultationNoteConfig = function () {
-            var consultationNoteConfig = $http.get(Bahmni.Common.Constants.conceptUrl, {
+            var consultationNoteConfig = $http.get(Bahmni.Common.Constants.conceptSearchByFullNameUrl, {
                 method: "GET",
                 params: {v: 'custom:(uuid,name,answers)', name: Bahmni.Common.Constants.consultationNoteConceptName},
                 withCredentials: true
@@ -54,7 +54,7 @@ angular.module('bahmni.common.domain')
         };
 
         configurationFunctions.radiologyObservationConfig = function(){
-            var radiologyObservationConfig =  $http.get(Bahmni.Common.Constants.conceptUrl, {
+            var radiologyObservationConfig =  $http.get(Bahmni.Common.Constants.conceptSearchByFullNameUrl, {
                 method:"GET",
                 params: { v: 'custom:(uuid,name)', name: Bahmni.Common.Constants.radiologyResultConceptName },
                 withCredentials: true
@@ -63,7 +63,7 @@ angular.module('bahmni.common.domain')
         }
 
         configurationFunctions.labOrderNotesConfig = function () {
-            var labOrderNotesConfig = $http.get(Bahmni.Common.Constants.conceptUrl, {
+            var labOrderNotesConfig = $http.get(Bahmni.Common.Constants.conceptSearchByFullNameUrl, {
                 method: "GET",
                 params: {v: 'custom:(uuid,name)', name: Bahmni.Common.Constants.labOrderNotesConcept},
                 withCredentials: true
@@ -72,7 +72,7 @@ angular.module('bahmni.common.domain')
         }
 
         configurationFunctions.radiologyImpressionConfig = function () {
-            var radiologyImpressionConfig = $http.get(Bahmni.Common.Constants.conceptUrl, {
+            var radiologyImpressionConfig = $http.get(Bahmni.Common.Constants.conceptSearchByFullNameUrl, {
                 method: "GET",
                 params: {v: 'custom:(uuid,name)', name: Bahmni.Common.Constants.impressionConcept},
                 withCredentials: true
@@ -88,7 +88,7 @@ angular.module('bahmni.common.domain')
         };
 
         configurationFunctions.allTestsAndPanelsConcept = function () {
-            var allTestsAndPanelsConcept = $http.get(Bahmni.Common.Constants.conceptUrl, {
+            var allTestsAndPanelsConcept = $http.get(Bahmni.Common.Constants.conceptSearchByFullNameUrl, {
                 method: "GET",
                 params: {
                     v: 'custom:(uuid,name:(uuid,name),setMembers:(uuid,name:(uuid,name)))',
