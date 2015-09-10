@@ -1,7 +1,7 @@
 <div ng-controller="MessageController" class="messages">
     <ul>
         <li ng-repeat="info in messages.info">
-            <div class="info-message"><p>{{info.value}}</p></div>
+            <div class="info-message"><p>{{info.value | translate}}</p></div>
         </li>
     </ul>
     <ul>
@@ -23,7 +23,7 @@
     </ul>
     <ul>
         <li ng-repeat="error in messages.formError track by $index">
-            <div class="error-message"><p>{{error.value}}</p></div>
+            <div class="error-message"><p>{{error.value | translate}}</p></div>
         </li>
     </ul>
 </div>

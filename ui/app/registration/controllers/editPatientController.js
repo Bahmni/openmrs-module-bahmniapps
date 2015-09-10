@@ -85,7 +85,7 @@ angular.module('bahmni.registration')
             };
 
             $scope.afterSave = function () {
-                messagingService.showMessage("info", "Saved");
+                messagingService.showMessage("info", "REGISTRATION_LABEL_SAVED");
             }
 
         }]);

@@ -60,5 +60,12 @@
   "REGISTRATION_LABEL_ENTER_VISIT":"Enter <u>V</u>isit Details",
   "REGISTRATION_TITLE_ADDITIONAL_PATIENT":"Additional Patient <u>I</u>nformation",
   "REGISTRATION_TITLE_RELATIONSHIPS":"Re<u>l</u>ationships",
-  "REGISTRATION_CONTENT_ENTERING_ID":"You are entering an ID which is <strong>{{sizeOfTheJump}}</strong> ahead of the Sequence. It will create a gap of {{sizeOfTheJump}} in the Sequence. Do you want to continue?"
+  "REGISTRATION_CONTENT_ENTERING_ID":"You are entering an ID which is <strong>{{sizeOfTheJump}}</strong> ahead of the Sequence. It will create a gap of {{sizeOfTheJump}} in the Sequence. Do you want to continue?",
+  "REGISTRATION_LABEL_SAVED" : "Saved",
+  "REGISTRATION_NO_RESULTS_FOUND":"No results found",
+  "REGISTRATION_LABEL_COULD_NOT_FIND_PATIENT":"Could not find patient with identifier {{patientIdentifier}}. Please verify the patient ID entered or create a new patient record with this ID.",
+  "REGISTRATION_VISIT_CANNOT_BE_CLOSED":"Admitted patient's visit cannot be closed. Discharge the patient and try again",
+  "REGISTRATION_CONFIRM_CLOSE_VISIT":"Are you sure you want to close this visit?",
+  "REGISTRATION_LABEL_CORRECT_ERRORS":"Please correct errors in the form. Information not saved",
+  "REGISTRATION_LABEL_ENTER_MANDATORY_FIELDS":"Please enter data into mandatory field(s)."
 }

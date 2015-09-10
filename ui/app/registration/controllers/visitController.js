@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('bahmni.registration')
-    .controller('VisitController', ['$window', '$scope', '$rootScope', '$state', '$bahmniCookieStore', 'patientService', 'encounterService', '$stateParams', 'spinner', '$timeout', '$q', 'appService', 'openmrsPatientMapper', 'contextChangeHandler', 'messagingService', 'sessionService', 'visitService', '$location',
-        function ($window, $scope, $rootScope, $state, $bahmniCookieStore, patientService, encounterService, $stateParams, spinner, $timeout, $q, appService, patientMapper, contextChangeHandler, messagingService, sessionService, visitService, $location) {
+    .controller('VisitController', ['$window', '$scope', '$rootScope', '$state', '$bahmniCookieStore', 'patientService', 'encounterService', '$stateParams', 'spinner', '$timeout', '$q', 'appService', 'openmrsPatientMapper', 'contextChangeHandler', 'messagingService', 'sessionService', 'visitService', '$location', '$translate',
+        function ($window, $scope, $rootScope, $state, $bahmniCookieStore, patientService, encounterService, $stateParams, spinner, $timeout, $q, appService, patientMapper, contextChangeHandler, messagingService, sessionService, visitService, $location, $translate) {
             var self = this;
             var patientUuid = $stateParams.patientUuid;
             var extensions = appService.getAppDescriptor().getExtensions("org.bahmni.registration.conceptSetGroup.observations", "config");
@@ -87,7 +87,7 @@ angular.module('bahmni.registration')
                 visitService.getVisitSummary(self.visitUuid).then(function (response) {
                     var visitSummary = response.data;
                     if (visitSummary.admissionDetails != null && visitSummary.dischargeDetails === null) {
-                        messagingService.showMessage("formError", "Admitted patient's visit cannot be closed. Discharge the patient and try again");
+                        messagingService.showMessage("formError", 'REGISTRATION_VISIT_CANNOT_BE_CLOSED');
                     } else {
                         closeVisit();
                     }
@@ -95,7 +95,7 @@ angular.module('bahmni.registration')
             };
 
             var closeVisit = function () {
-                var confirmed = $window.confirm("Are you sure you want to close this visit?");
+                var confirmed = $window.confirm($translate.instant("REGISTRATION_CONFIRM_CLOSE_VISIT"));
                 if (confirmed) {
                     visitService.endVisit(self.visitUuid).then(function () {
                         $location.url(Bahmni.Registration.Constants.patientSearchURL);
@@ -112,12 +112,12 @@ angular.module('bahmni.registration')
                 var contxChange = contextChangeHandler.execute();
                 var allowContextChange = contxChange["allow"];
                 if (!allowContextChange) {
-                    var errorMessage = contxChange["errorMessage"] ? contxChange["errorMessage"] : "Please correct errors in the form. Information not saved";
+                    var errorMessage = contxChange["errorMessage"] ? contxChange["errorMessage"] : 'REGISTRATION_LABEL_CORRECT_ERRORS';
                     messagingService.showMessage('formError', errorMessage);
                     deferred.reject("Some fields are not valid");
                     return deferred.promise;
                 }else if(!mandatoryValidate()){ // This ELSE IF condition is to be deleted later.
-                    var errorMessage =  "Please enter data into mandatory field(s).";
+                    var errorMessage =  "REGISTRATION_LABEL_ENTER_MANDATORY_FIELDS";
                     messagingService.showMessage('formError', errorMessage);
                     deferred.reject("Some fields are not valid");
                     return deferred.promise;
@@ -164,7 +164,7 @@ angular.module('bahmni.registration')
                     inherit: false,
                     notify: true
                 });
-                messagingService.showMessage('info', 'Saved');
+                messagingService.showMessage('info', 'REGISTRATION_LABEL_SAVED');
             };
 
             $scope.submit = function () {

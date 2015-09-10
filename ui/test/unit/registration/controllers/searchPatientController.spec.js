@@ -12,10 +12,12 @@ describe('SearchPatientController', function () {
         loader,
         appDescriptor,
         preferences,
-        appService;
+        appService,
+        translate;
 
     beforeEach(angular.mock.module('bahmni.registration'));
     beforeEach(module('bahmni.common.routeErrorHandler'));
+    beforeEach(module('pascalprecht.translate'));
     beforeEach(angular.mock.inject(function ($injector) {
         $controller = $injector.get('$controller');
         rootScope = $injector.get('$rootScope');
@@ -152,7 +154,7 @@ describe('SearchPatientController', function () {
 
                 searchPromise.callThenCallBack({pageOfResults: results});
 
-                expect(scope.noResultsMessage).toMatch("No results");
+                expect(scope.noResultsMessage).toMatch("REGISTRATION_NO_RESULTS_FOUND");
             });
         });
     });
@@ -254,7 +256,7 @@ describe('SearchPatientController', function () {
             it("should show 'no patient found message' when patient is not found", function () {
                 searchPromise.callSuccessCallBack({pageOfResults: []});
 
-                expect(scope.noResultsMessage).toMatch("Could not find patient with identifier GAN20001");
+                expect(scope.noResultsMessage).toMatch("REGISTRATION_LABEL_COULD_NOT_FIND_PATIENT");
             });
         });
     });

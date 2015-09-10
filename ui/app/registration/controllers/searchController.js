@@ -69,7 +69,7 @@ angular.module('bahmni.registration')
                 if (searchPromise) {
                     searchPromise.then(function (data) {
                         $scope.results = data.pageOfResults;
-                        $scope.noResultsMessage = $scope.results.length === 0 ? "No results found" : null;
+                        $scope.noResultsMessage = $scope.results.length === 0 ? 'REGISTRATION_NO_RESULTS_FOUND' : null;
                     });
                 }
             };
@@ -135,7 +135,8 @@ angular.module('bahmni.registration')
                     } else if (data.pageOfResults.length > 1) {
                         $scope.results = data.pageOfResults;
                     } else {
-                        $scope.noResultsMessage = "Could not find patient with identifier " + patientIdentifier + ". Please verify the patient ID entered or create a new patient record with this ID."
+                        $scope.patientIdentifier = {'patientIdentifier': patientIdentifier};
+                        $scope.noResultsMessage = 'REGISTRATION_LABEL_COULD_NOT_FIND_PATIENT';
                     }
                 });
                 spinner.forPromise(searchPromise);

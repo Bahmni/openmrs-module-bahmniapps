@@ -85,7 +85,8 @@ describe('VisitController', function () {
 
     beforeEach(module('bahmni.registration'));
     beforeEach(module('stateMock'));
-    beforeEach(inject(['$injector', '$timeout', '$q', '$rootScope', '$state', function ($injector, timeout, $q, $rootScope, $state) {
+    beforeEach(module('pascalprecht.translate'))
+    beforeEach(inject(['$injector', '$timeout', '$q', '$rootScope', '$state', '$translate', function ($injector, timeout, $q, $rootScope, $state, $translate) {
         q = $q;
         location = jasmine.createSpyObj('$location', ['url']);
         rootScope = $rootScope;
@@ -183,7 +184,7 @@ describe('VisitController', function () {
             var submit = scope.submit();
             submit.then(function (response) {
                 expect(encounterService.create).toHaveBeenCalled();
-                expect(messagingService.showMessage).toHaveBeenCalledWith('info', 'Saved');
+                expect(messagingService.showMessage).toHaveBeenCalledWith('info', 'REGISTRATION_LABEL_SAVED');
                 state.ensureAllTransitionsHappened();
                 done();
             });
