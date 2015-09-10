@@ -130,7 +130,7 @@ angular.module('opd.documentupload')
                     topLevelConceptUuid = null;
                     return $q.when({});
                 }
-                return $http.get(Bahmni.Common.Constants.conceptUrl,
+                return $http.get(Bahmni.Common.Constants.conceptSearchByFullNameUrl,
                     {
                         params:{
                             name:$rootScope.appConfig.topLevelConcept,
