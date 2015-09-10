@@ -7,6 +7,7 @@ describe("Visits Table display control", function () {
     beforeEach(module('bahmni.clinical'));
     beforeEach(module(function($provide) {
         $provide.value('$state', {});
+        $provide.value('$bahmniCookieStore', {});
     }));
 
     beforeEach(inject(function (_$compile_, $rootScope, $httpBackend) {
@@ -19,7 +20,7 @@ describe("Visits Table display control", function () {
     }));
 
 
-    it("should get patient address in the order of config specified", function () {
+    it("should show visit tables", function () {
         element = angular.element('<visits-table></visits-table>');
         $compile(element)(scope);
         scope.$digest();
