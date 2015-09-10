@@ -21,6 +21,33 @@ angular.module('bahmni.common.domain')
         return encounter;
     };
 
+    var getDefaultEncounterType = function () {
+        var url = Bahmni.Common.Constants.encounterTypeUrl;
+        return  $http.get(url + '/' + configurations.defaultEncounterType()).then(function (response) {
+            return response.data;
+        });
+    };
+
+    this.getEncounterType = function (programUuid) {
+        if(programUuid == null) {
+            return getDefaultEncounterType();
+        }
+        return $http.get(Bahmni.Common.Constants.entityMappingUrl, {
+            params: {
+                entityUuid: programUuid,
+                mappingType: 'program_encountertype',
+                s: 'byEntityAndMappingType'
+            },
+            withCredentials: true
+        }).then(function (response) {
+            var encounterType=response.data.results[0].mappings[0];
+            if(!encounterType) {
+                encounterType = getDefaultEncounterType();
+            }
+            return encounterType;
+        });
+    };
+
     this.create = function (encounter) {
         encounter = this.buildEncounter(encounter);
 

@@ -2,7 +2,7 @@
 
 angular.module('bahmni.clinical').controller('ConsultationController',
     ['$scope', '$rootScope', '$state', '$location', 'clinicalAppConfigService', 'urlHelper', 'contextChangeHandler',
-        'spinner', 'encounterService', 'messagingService', 'sessionService', 'retrospectiveEntryService', 'patientContext', 'consultationContext', '$q','patientVisitHistoryService',
+        'spinner', 'encounterService', 'messagingService', 'sessionService', 'retrospectiveEntryService', 'patientContext', 'consultationContext', '$q', 'patientVisitHistoryService',
         function ($scope, $rootScope, $state, $location, clinicalAppConfigService, urlHelper, contextChangeHandler,
                   spinner, encounterService, messagingService, sessionService, retrospectiveEntryService, patientContext, consultationContext, $q, patientVisitHistoryService) {
             $scope.patient = patientContext.patient;
@@ -53,7 +53,17 @@ angular.module('bahmni.clinical').controller('ConsultationController',
             var getUrl = function (board) {
                 var urlPrefix = urlHelper.getPatientUrl();
                 var url = board.url ? urlPrefix + "/" + board.url : urlPrefix;
-                url = url + "?encounterUuid=" + $state.params.encounterUuid;
+                var queryParams = []
+                if($state.params.encounterUuid) {
+                    queryParams.push("encounterUuid="+$state.params.encounterUuid);
+                }
+                if($state.params.programUuid) {
+                    queryParams.push("programUuid="+$state.params.programUuid);
+                }
+                if(!_.isEmpty(queryParams)) {
+                    url = url + "?" + queryParams.join("&");
+                }
+
                 return $location.url(url);
             };
 
@@ -87,19 +97,22 @@ angular.module('bahmni.clinical').controller('ConsultationController',
                 deferred.resolve(encounterData);
                 return deferred.promise;
             };
+
             var isFormValid = function(){
                 var contxChange = contextChange();
-                var isThereAnError = contxChange["allow"];
-                if (!isThereAnError) {
+                var shouldAllow = contxChange["allow"];
+                if (!shouldAllow) {
                     var errorMessage = contxChange["errorMessage"] ? contxChange["errorMessage"] : "Please correct errors in the form. Information not saved";
                     messagingService.showMessage('formError', errorMessage);
                 }
-                return isThereAnError;
+                return shouldAllow;
             };
-            $scope.save = function () {
-                if(!isFormValid()) return;
 
-                spinner.forPromise(preSavePromise().then(function (encounterData) {
+            $scope.save = function () {
+                if (!isFormValid()) return;
+                spinner.forPromise($q.all([preSavePromise(), encounterService.getEncounterType($state.params.programUuid)]).then(function (results) {
+                   var encounterData = results[0];
+                    encounterData.encounterTypeUuid = results[1].uuid;
                     return encounterService.create(encounterData).then(function () {
                         return $state.transitionTo($state.current, $state.params, {
                             reload: true,

@@ -2,27 +2,30 @@
 
 describe("ConsultationController", function () {
 
-    var scope, rootScope;
+    var scope, rootScope, state, contextChangeHandler, urlHelper, location, clinicalAppConfigService;
 
     beforeEach(module('bahmni.clinical'));
 
     beforeEach(inject(function ($controller, $rootScope) {
         scope = $rootScope.$new();
         rootScope = $rootScope;
-        var clinicalAppConfigService = {};
-        clinicalAppConfigService.getAllConsultationBoards = function() {return []};
-        var location ={};
-        location.path =  function() {};
+        clinicalAppConfigService = {getAllConsultationBoards: function() {return []}};
+        location = {path: function() {}, url: function(url) {return url}};
+        state = {params: {encounterUuid: "someEncounterUuid", programUuid: "someProgramUuid", patientUuid: "somePatientUuid"}};
+        contextChangeHandler = {execute: function() {return {allow: true}}, reset: function() {}};
+        urlHelper = {getPatientUrl: function() {return "/patient/somePatientUuid"}};
+
+        rootScope.collapseControlPanel = function() {};
 
 
         $controller('ConsultationController', {
             $scope: scope,
             $rootScope: rootScope,
-            $state: null,
+            $state: state,
             $location:location,
             clinicalAppConfigService: clinicalAppConfigService,
-            urlHelper: null,
-            contextChangeHandler: null,
+            urlHelper: urlHelper,
+            contextChangeHandler: contextChangeHandler,
             spinner: {},
             encounterService: null,
             messagingService: null,
@@ -41,6 +44,32 @@ describe("ConsultationController", function () {
     it("should check if name is shorter", function () {
         expect(scope.getShorterName("hello")).toBe("hello");
         expect(scope.getShorterName("hello this is a long string")).toBe("hello this is a...");
+    });
+
+    it("should return proper URL when showing a different board", function() {
+        var obsBoard = {label: "Observations", url: "concept-set-obs/observations"};
+        var treatmentBoard = {label: "Treatment", url: "treatment"};
+        scope.availableBoards.push(obsBoard, treatmentBoard);
+        var newUrl = scope.showBoard("Treatment");
+        expect(newUrl).toEqual("/patient/somePatientUuid/treatment?encounterUuid=someEncounterUuid&programUuid=someProgramUuid");
+    });
+
+    it("should not append encounterUuid in query params if not available", function() {
+        var obsBoard = {label: "Observations", url: "concept-set-obs/observations"};
+        var treatmentBoard = {label: "Treatment", url: "treatment"};
+        scope.availableBoards.push(obsBoard, treatmentBoard);
+        state.params.encounterUuid = null;
+        var newUrl = scope.showBoard("Treatment");
+        expect(newUrl).toEqual("/patient/somePatientUuid/treatment?programUuid=someProgramUuid");
+    });
+
+    it("should not append programUuid in query params if not available", function() {
+        var obsBoard = {label: "Observations", url: "concept-set-obs/observations"};
+        var treatmentBoard = {label: "Treatment", url: "treatment"};
+        scope.availableBoards.push(obsBoard, treatmentBoard);
+        state.params.programUuid = null;
+        var newUrl = scope.showBoard("Treatment");
+        expect(newUrl).toEqual("/patient/somePatientUuid/treatment?encounterUuid=someEncounterUuid");
     });
 
 });

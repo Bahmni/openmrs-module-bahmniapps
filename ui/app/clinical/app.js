@@ -45,7 +45,7 @@ angular.module('consultation')
                 }
             })
             .state('patient', {
-                url: '/patient/:patientUuid?encounterUuid',
+                url: '/patient/:patientUuid?encounterUuid,programUuid',
                 abstract: true,
                 data: {
                     backLinks: [patientSearchBackLink]
@@ -73,10 +73,7 @@ angular.module('consultation')
                         return visitHistoryInitialization($stateParams.patientUuid);
                     },
                     consultationContext: function (consultationInitialization, initialization, $stateParams) {
-                        if($stateParams.encounterUuid == 'active') {
-                            return consultationInitialization($stateParams.patientUuid);
-                        }
-                        return consultationInitialization($stateParams.patientUuid, $stateParams.encounterUuid);
+                        return consultationInitialization($stateParams.patientUuid, $stateParams.encounterUuid, $stateParams.programUuid);
                     }
                 }
             })
@@ -280,9 +277,6 @@ angular.module('consultation')
                 url: '/concept-set-group/:conceptSetGroupName',
                 templateUrl: 'consultation/views/conceptSet.html',
                 controller: 'ConceptSetPageController'
-            })
-            .state('patient.consultation.observations.program', {
-                url: '/program/:programUuid'
             })
             .state('patient.consultation.notes', {
                 url: '/notes',

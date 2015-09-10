@@ -139,6 +139,7 @@ Bahmni.Common = Bahmni.Common || {};
         fulfillmentFormSuffix:" Fulfillment Form",
         noNavigationLinksMessage: "No navigation links available.",
         conceptSetRepresentationForOrderFulfillmentConfig: representation,
-        entityMappingUrl: RESTWS_V1 + "/entitymapping"
+        entityMappingUrl: RESTWS_V1 + "/entitymapping",
+        encounterTypeUrl: RESTWS_V1+"/encountertype"
     };
 })();

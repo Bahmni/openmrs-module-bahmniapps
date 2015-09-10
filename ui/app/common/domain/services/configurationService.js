@@ -69,7 +69,18 @@ angular.module('bahmni.common.domain')
                 withCredentials: true
             });
             return labOrderNotesConfig;
-        }
+        };
+
+        configurationFunctions.defaultEncounterType = function () {
+            return $http.get(Bahmni.Common.Constants.globalPropertyUrl, {
+                params: {
+                    property: 'bahmni.encounterType.default'
+                },
+                withCredentials: true,
+                transformResponse: [function(data){
+                    return data;}]
+            });
+        };
 
         configurationFunctions.radiologyImpressionConfig = function () {
             var radiologyImpressionConfig = $http.get(Bahmni.Common.Constants.conceptSearchByFullNameUrl, {

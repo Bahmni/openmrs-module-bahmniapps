@@ -3,7 +3,7 @@
         <a ng-href="#/patient/{{patient.uuid}}/dashboard" class="big-anchor">{{patientProgram.display}}</a>
         <span class="enrolled-info"> (Enrolled on {{patientProgram.dateEnrolled | bahmniDate}})</span>
 
-        <a class="back-btn dashboard-link fr" id="dashboard-link" ng-href="#/patient/{{patient.uuid}}/concept-set-group/observations/program/{{patientProgram.program.uuid}}" title="Back to patient dashboard">
+        <a class="back-btn dashboard-link fr" id="dashboard-link" ui-sref="patient.consultation.observations({patientUuid: patient.uuid,programUuid: patientProgram.program.uuid,conceptSetGroupName: 'observations'})" title="Back to patient dashboard">
             <img ng-src="{{patient.image}}" onerror="this.onerror=null;this.src='../images/blank-user.gif';">
             <span class="patient-info">
                 <span class="patient-name" >{{patientProgram.display}}</span>
