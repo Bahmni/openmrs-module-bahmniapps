@@ -24,6 +24,7 @@ angular.module('bahmni.clinical')
             $scope.hasVisits = function () {
                 return $scope.visits && $scope.visits.length > 0;
             };
+
             $scope.params = angular.extend(
                 {
                     maximumNoOfVisits: 4,
@@ -79,6 +80,7 @@ angular.module('bahmni.clinical')
                 return  encounter.encounterProviders.length > 0 ? encounter.encounterProviders[0].provider.display : null;
             }
         };
+
         return {
             restrict: 'E',
             controller: controller,
