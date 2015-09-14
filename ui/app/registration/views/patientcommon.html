@@ -196,10 +196,10 @@
           <span>
               <i class="fa fa-caret-right" ng-hide="displayDeathInformation"></i>
               <i class="fa fa-caret-down" ng-show="displayDeathInformation"></i>
-              <strong>{{ 'REGISTRATION_LABEL_DEATH_INFO' | translate}}</strong>
+              <strong><a href="javascript:void(0)">{{ 'REGISTRATION_LABEL_DEATH_INFO' | translate}}</a></strong>
           </span>
     </legend>
-    <section class="form-field-inline section-padding" ng-show="displayDeathInformation">
+    <section class="form-field-inline" ng-show="displayDeathInformation">
         <ng-include src="'views/patientDeathInformation.html'"></ng-include>
     </section>
 </div>

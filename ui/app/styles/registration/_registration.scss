@@ -1069,28 +1069,12 @@ button u, u {
   .row {
     float: left;
     width: 100%;
-    .col1 {
-      margin-top: 0;
-      label.add-new {
-        margin-top: 10px;
-        font-size: 12px;
-      }
-      width: 31%;
+    .col {
+      width: 33%;
       float: left;
-    }
-    .col2 {
-      width: 38%;
-      float: left;
-      text-align: center;
-    }
-    .col3 {
-      width: 15%;
-      float: left;
-      text-align: right;
-      .till-text {
-        display: inline-block;
-        padding-right: 20px;
-      }
     }
    }
+  .isDeadChkBox{
+    margin-top: 6px; margin-right: 5px;
   }
+}
