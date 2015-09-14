@@ -1,17 +1,23 @@
 <div class="order-list">
-    <div ng-repeat="tab in tabs" class="{{tab.klass}}">
-        <div class="order-grid"  ng-click="activateTab(tab)">
-            <h2 class="order-title">
-                <i class="fa fa-caret-right" ng-show="activeTab != tab"></i>
-                <i class="fa fa-caret-down ng-hide" ng-show="activeTab == tab"></i>
-                {{tab.name}}
-            </h2>
+    <div ng-class="{'disableOrdersInRetroMode':isRetrospectiveMode()}">
+        <div class="infoMsgRetrospectiveModeEnabled" ng-if="isRetrospectiveMode()">
+            <i class="fa fa-info-circle"></i>
+            <span> You can not change <strong>Orders</strong> in retrospective mode</span>
         </div>
-        <div ng-if="activeTab == tab" class="dashboard-section">
-            <!--ng-show="activeTab == tab"-->
+        <div ng-repeat="tab in tabs" class="{{tab.klass}}">
+            <div class="order-grid"  ng-click="activateTab(tab)">
+                <h2 class="order-title">
+                    <i class="fa fa-caret-right" ng-show="activeTab != tab"></i>
+                    <i class="fa fa-caret-down ng-hide" ng-show="activeTab == tab"></i>
+                    {{tab.name}}
+                </h2>
+            </div>
+            <div ng-if="activeTab == tab" class="dashboard-section">
+                <!--ng-show="activeTab == tab"-->
 
-            <div class="dashboard-section-wrapper">
-                <div ng-include="'consultation/views/orderTemplateViews/ordersTemplate.html'"></div>
+                <div class="dashboard-section-wrapper">
+                    <div ng-include="'consultation/views/orderTemplateViews/ordersTemplate.html'"></div>
+                </div>
             </div>
         </div>
     </div>

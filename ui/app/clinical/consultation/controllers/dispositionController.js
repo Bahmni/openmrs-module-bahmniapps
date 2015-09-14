@@ -1,9 +1,8 @@
 'use strict';
 
 angular.module('bahmni.clinical')
-    .controller('DispositionController', ['$scope', '$q', 'dispositionService', 'spinner', function ($scope, $q, dispositionService, spinner) {
+    .controller('DispositionController', ['$scope', '$q', 'dispositionService','retrospectiveEntryService', 'spinner', function ($scope, $q, dispositionService,retrospectiveEntryService, spinner) {
         var consultation = $scope.consultation;
-
 
         var getDispositionActionsPromise = function() {
             return dispositionService.getDispositionActions().then(function (response) {
@@ -17,9 +16,14 @@ angular.module('bahmni.clinical')
             });
         };
 
+        $scope.isRetrospectiveMode = function(){
+            return retrospectiveEntryService.getRetrospectiveEntry().isRetrospective;
+        };
+
         $scope.showWarningForEarlierDispositionNote = function(){
             return !$scope.dispositionCode && consultation.disposition;
         };
+
 
         var getDispositionNotePromise = function() {
             return dispositionService.getDispositionNoteConcept().then(function (response) {

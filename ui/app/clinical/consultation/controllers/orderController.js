@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('bahmni.clinical')
-    .controller('OrderController', ['$scope', 'allOrderables','ngDialog',
-        function ($scope, allOrderables, ngDialog) {
+    .controller('OrderController', ['$scope', 'allOrderables','ngDialog','retrospectiveEntryService',
+        function ($scope, allOrderables, ngDialog,retrospectiveEntryService) {
             $scope.consultation.orders = $scope.consultation.orders || [];
             $scope.consultation.childOrders = $scope.consultation.childOrders || [];
             $scope.allOrdersTemplates = allOrderables;
@@ -19,6 +19,10 @@ angular.module('bahmni.clinical')
                     $scope.activateTab($scope.tabs[0]);
                     initTestConceptToParentsMapping();
                 }
+            };
+
+            $scope.isRetrospectiveMode = function(){
+                return retrospectiveEntryService.getRetrospectiveEntry().isRetrospective;
             };
 
             $scope.activateTab = function(tab){

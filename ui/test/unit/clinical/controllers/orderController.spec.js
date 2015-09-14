@@ -7,20 +7,30 @@ describe("OrderController", function () {
     beforeEach(module('bahmni.common.conceptSet'));
     beforeEach(module('bahmni.clinical'));
 
-    beforeEach(inject(function ($controller, $rootScope, $q) {
+    beforeEach(inject(function ($controller, $rootScope) {
         scope = $rootScope.$new();
         rootScope = $rootScope;
         ngDialog = jasmine.createSpyObj('ngDialog', ['open', 'close']);
 
         scope.consultation = {orders: []};
+        var retrospectiveEntry = Bahmni.Common.Domain.RetrospectiveEntry.createFrom(Date.parse('2015-07-01'));
+        var retrospectiveEntryService = jasmine.createSpyObj('retrospectiveEntryService', ['getRetrospectiveEntry']);
+        retrospectiveEntryService.getRetrospectiveEntry.and.returnValue(retrospectiveEntry);
+
 
         $controller('OrderController', {
             $scope: scope,
             $rootScope: rootScope,
             allOrderables: allOrderables,
-            ngDialog: ngDialog
+            ngDialog: ngDialog,
+            retrospectiveEntryService: retrospectiveEntryService
+
         });
     }));
+
+    it("should return true if it is in retrospective mode", function() {
+        expect(scope.isRetrospectiveMode()).toBeTruthy();
+    });
 
     it("should fetch ordersConfig and set in tabs", function () {
         scope.$digest();

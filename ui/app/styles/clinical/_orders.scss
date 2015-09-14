@@ -2,6 +2,7 @@
     // padding: 10px;
     margin: 5px 0;
     width: 99.5%;
+
     .null-data-message {
         padding-left: 5px;
     }
@@ -78,6 +79,8 @@
         }
     }
 }
+
+
 
 .order-list {
     margin-top: 10px;
@@ -207,6 +210,19 @@
             }
         }
     }
+    .disableOrdersInRetroMode {
+        .dashboard-section-wrapper .order-section-container .orderBtn{
+            pointer-events: none;
+            background: #EEE;
+            border: #CCC 1px solid;
+            color: #999;
+        }
+        .fa-remove{
+            pointer-events: none;
+            background: #EEE;
+        }
+    }
+
 }
 
 .new-order-highlight {
