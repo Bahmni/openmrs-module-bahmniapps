@@ -119,21 +119,30 @@ describe("ObservationUtil", function () {
                             displayString: "Diastolic"
                         }
                     }
-                ],
+                ]
             };
+
             var textObservation = {
                 concept: {name: "textConcept"},
                 value: "text1"
             };
+
             var blankObservation = {
                 concept: {name: "blankConcept"}
             };
+
+            var booleanObservation = {
+                concept: {name: "booleanConcept"},
+                value: false
+            };
+
             var parentObservation = {
                 groupMembers: [
                     buttonObservation,
                     multiSelectObservation,
                     textObservation,
-                    blankObservation
+                    blankObservation,
+                    booleanObservation
                 ]
             };
 
@@ -143,7 +152,8 @@ describe("ObservationUtil", function () {
                 "btnConcept": 'button1',
                 "concept1": ["Systolic", "Diastolic"],
                 "textConcept": 'text1',
-                "blankConcept": undefined
+                "blankConcept": undefined,
+                "booleanConcept": false
             });
         });
 

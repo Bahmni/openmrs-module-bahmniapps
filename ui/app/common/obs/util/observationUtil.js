@@ -53,8 +53,7 @@ Bahmni.Common.Obs.ObservationUtil = (function () {
             return observation.getValues();
         }
         var obsValue = observation.value;
-        // NOTE: explicit check for undefined otherwise it will ignore boolean obs which has value: false
-        return obsValue == undefined ? undefined : (obsValue.displayString || obsValue);
+        return obsValue == undefined ? obsValue : (obsValue.displayString || obsValue);
     };
 
     return {
