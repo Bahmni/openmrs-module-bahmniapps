@@ -23,7 +23,7 @@ angular.module('bahmni.clinical').factory('consultationInitialization',
                         return encounterService.activeEncounter({
                             patientUuid: patientUuid,
                             encounterTypeUuid: encounterType.uuid,
-                            providerUuid: providerData ? providerData.uuid : currentProviderUuid,
+                            providerUuid: !_.isEmpty(providerData) ? providerData.uuid : currentProviderUuid,
                             includeAll: Bahmni.Common.Constants.includeAllObservations,
                             locationUuid: sessionService.getLoginLocationUuid(),
                             userUuid: $rootScope.currentUser.uuid
@@ -47,7 +47,7 @@ angular.module('bahmni.clinical').factory('consultationInitialization',
                     var encounterDate = dateUtil.parseLongDateToServerFormat(dateUtil.getDateWithoutHours($rootScope.retrospectiveEntry.encounterDate));
                     return encounterService.find({
                         patientUuid: patientUuid,
-                        providerUuids: providerData ? [providerData.uuid] : [currentProviderUuid],
+                        providerUuids: !_.isEmpty(providerData) ? [providerData.uuid] : [currentProviderUuid],
                         includeAll: Bahmni.Common.Constants.includeAllObservations,
                         encounterDateTimeFrom: encounterDate,
                         encounterDateTimeTo: encounterDate,
