@@ -81,7 +81,8 @@ angular.module('consultation')
                 url: '/consultationContext',
                 views: {
                     'content': {
-                        templateUrl: 'common/views/consultationContext.html'
+                        templateUrl: 'common/views/consultationContext.html',
+                        controller: 'consultationContextController'
                     },
                     'additional-header': {
                         templateUrl: '../common/ui-helper/header.html',
