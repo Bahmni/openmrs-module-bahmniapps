@@ -25,7 +25,8 @@ angular.module('bahmni.clinical').factory('consultationInitialization',
                             encounterTypeUuid: encounterType.uuid,
                             providerUuid: providerData ? providerData.uuid : currentProviderUuid,
                             includeAll: Bahmni.Common.Constants.includeAllObservations,
-                            locationUuid: sessionService.getLoginLocationUuid()
+                            locationUuid: sessionService.getLoginLocationUuid(),
+                            userUuid: $rootScope.currentUser.uuid
                         });
                     }).then(function (encounterTransactionResponse) {
                         return consultationMapper.map(encounterTransactionResponse.data);
@@ -49,7 +50,8 @@ angular.module('bahmni.clinical').factory('consultationInitialization',
                         providerUuids: providerData ? [providerData.uuid] : [currentProviderUuid],
                         includeAll: Bahmni.Common.Constants.includeAllObservations,
                         encounterDateTimeFrom: encounterDate,
-                        encounterDateTimeTo: encounterDate
+                        encounterDateTimeTo: encounterDate,
+                        userUuid: $rootScope.currentUser.uuid
                     }).then(function (encounterTransactionResponse) {
                         return consultationMapper.map(encounterTransactionResponse.data[0]);
                     });
