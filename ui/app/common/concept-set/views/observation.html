@@ -151,8 +151,8 @@
 
                     <div ng-switch-when="datetime">
                         <datetimepicker model="observation.value"
+                                        observation="observation"
                                         ng-blur="handleUpdate()"
-                                        ng-disabled="observation.disabled"
                                         show-time="true" illegal-value="!observation.isValid(atLeastOneValueIsSet, conceptSetRequired)"></datetimepicker>
                     </div>
 

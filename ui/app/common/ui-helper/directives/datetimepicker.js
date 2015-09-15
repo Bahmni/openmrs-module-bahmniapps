@@ -44,13 +44,14 @@ angular.module('bahmni.common.uiHelper')
             link: link,
             scope: {
                 model: '=',
+                observation: "=",
                 showTime: '=',
                 illegalValue: '='
             },
             template:
                 "<span>" +
-                    "<input type='date' ng-change='updateModel()' ng-model='selectedDate' ng-required='!isValid() || illegalValue'>" +
-                    "<input type='time' ng-change='updateModel()' ng-model='selectedTime' ng-required='!isValid() || illegalValue'>" +
+                    "<input type='date' ng-change='updateModel()' ng-model='selectedDate' ng-required='!isValid() || illegalValue' ng-disabled='observation.disabled' />" +
+                    "<input type='time' ng-change='updateModel()' ng-model='selectedTime' ng-required='!isValid() || illegalValue' ng-disabled='observation.disabled' />" +
                 "</span>"
         }
     });

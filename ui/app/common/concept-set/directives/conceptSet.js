@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('bahmni.common.conceptSet')
-    .directive('conceptSet', ['contextChangeHandler', 'appService', 'observationsService', '$timeout', function (contextChangeHandler, appService, observationsService, $timeout) {
+    .directive('conceptSet', ['contextChangeHandler', 'appService', 'observationsService', '$timeout', 'messagingService', function (contextChangeHandler, appService, observationsService, $timeout, messagingService) {
         var controller = function ($scope, conceptSetService, conceptSetUiConfigService, spinner) {
             var conceptSetName = $scope.conceptSetName;
             var conceptSetUIConfig = conceptSetUiConfigService.getConfig();
@@ -149,7 +149,11 @@ angular.module('bahmni.common.conceptSet')
                     var matchingObs = _.find(flattenedObs, function (obs) {
                         return obs.concept.name === field;
                     });
-                    setObservationState(matchingObs, disable);
+                    if(matchingObs) {
+                        setObservationState(matchingObs, disable);
+                    } else {
+                        messagingService.showMessage("error", "No element found with name : "+field);
+                    }
                 });
             };
 
