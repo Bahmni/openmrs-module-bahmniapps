@@ -31,7 +31,7 @@ angular.module('admin', ['httpErrorInterceptor', 'bahmni.admin', 'bahmni.common.
 
         });
     $httpProvider.defaults.headers.common['Disable-WWW-Authenticate'] = true;
-    $bahmniTranslateProvider.init({app: 'admin', shouldMerge: true});
+    // $bahmniTranslateProvider.init({app: 'admin', shouldMerge: true});
 }]).
     run(function ($rootScope, $templateCache) {
         //Disable caching view template partials
