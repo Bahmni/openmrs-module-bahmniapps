@@ -83,7 +83,8 @@ ul.table-mimic {
 		box-sizing: border-box;
 		@include clearfix();
 		&:last-child {
-			border-bottom: 1px solid darken($lightestGray, 5%);
+			//border-bottom: 1px solid darken($lightestGray, 5%);
+          border-bottom: none;
 		}
 	}
 }
