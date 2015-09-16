@@ -11,6 +11,8 @@
         margin-bottom: 25px;
         margin-left: 5px;
         margin-right: 5px;
+        border: 1px solid #b3b3b3;
+        border-bottom: none;
     }
     .new-diagnosis {
         border: 1px solid darken($lightGray, 10%);
