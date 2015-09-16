@@ -583,7 +583,11 @@ a.visit:before {
       }
       .patient-value {
         display: inline-block;
-        width: 90%;
+        width: 86%;
+        span{
+          font-size: 12px;
+          color: $darkGray;
+        }
         // float: left;
         .patient-name {
           font-weight: bold;
@@ -593,8 +597,7 @@ a.visit:before {
           // display: block;
         }
         .patient-gender-age {
-          font-size: 12px;
-          color: $darkGray;
+
           font-family: openSansBold;
           span{
             font-family: openSans;
@@ -605,9 +608,12 @@ a.visit:before {
           font-style: italic;
           color: #868686;
         }
+        .patient-birth-time{
+          display: inline-block;
+          margin-right: 5px;
+        }
         .patient-address {
-          display: block;
-          font-size: 11px;
+          display: inline-block;
           margin-top: 3px;
           color: $mediumGray;
         }

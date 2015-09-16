@@ -12,14 +12,13 @@
                             {{patient.name | titleCase}} ({{patient.identifier}})</span> -
                          <span class="patient-gender-age" ng-bind-html="getPatientAttributeTypes()"></span>
                          <span class="patient-estimated-text" ng-if="patient.birthdateEstimated"> (est.)</span>
-                         <div ng-show="patient.birthtime">
+                         <span class="patient-birth-time" ng-show="patient.birthtime">
                              <span>Time of Birth</span>
-                             <span class="patient-estimated-text" ng-bind-html="patient.birthtime | date:'hh:mm a'"></span>
-                         </div>
+                             <span ng-bind-html="patient.birthtime | date:'hh:mm a'"></span>
+                         </span>
                          <span class="patient-address">
                              {{getAddress()}}
                          </span>
-
                          <i class="ipd-indication fa fa-bed" ng-if="visitSummary.hasBeenAdmitted()"></i>
                      </div>
                  </td>
