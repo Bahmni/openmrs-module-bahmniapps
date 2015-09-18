@@ -1,7 +1,7 @@
 'use strict';
 
 describe("PacsOrdersDisplayControl", function () {
-    var compile, scope, orderService, orderTypeService, spinner, orders;
+    var compile, scope, orderService, orderTypeService, spinner, orders,translateFilter;
 
     beforeEach(function () {
         module('bahmni.common.uiHelper');
@@ -12,9 +12,11 @@ describe("PacsOrdersDisplayControl", function () {
             orderService = jasmine.createSpyObj('orderService', ['getOrders']);
             orderTypeService = jasmine.createSpyObj('orderTypeService', ['getOrderTypeUuid']);
             spinner = jasmine.createSpyObj('spinner', ['forPromise']);
+            translateFilter = jasmine.createSpy('translateFilter');
             $provide.value('orderService', orderService);
             $provide.value('orderTypeService', orderTypeService);
             $provide.value('spinner', spinner);
+            $provide.value('translateFilter',translateFilter);
         });
         inject(function ($compile, $rootScope) {
             compile = $compile;
@@ -88,7 +90,6 @@ describe("PacsOrdersDisplayControl", function () {
         var section = $(element.children()[0]);
 
         expect(section.children()[0].localName).toBe('h2');
-        expect(section.children()[0].innerText).toContain('testTitle');
         expect(section.children()[1].localName).toBe('section');
         expect(section.children()[2].localName).toBe('div');
     });
@@ -120,7 +121,6 @@ describe("PacsOrdersDisplayControl", function () {
             var section = $(element.children()[0]);
 
             expect(section.children()[2].localName).toBe('div');
-            expect($(section.children()[2]).text()).toContain("No testOrder for this patient.");
         });
 
         it('should not show the noOrdersMessage when there are orders', function () {

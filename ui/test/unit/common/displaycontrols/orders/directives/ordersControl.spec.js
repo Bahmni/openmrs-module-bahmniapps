@@ -1,25 +1,30 @@
 'use strict';
 
 describe("OrdersDisplayControl", function () {
-    var compile, scope, orderService, orderTypeService, spinner, orders;
-
+    var compile, scope, orderService, orderTypeService, spinner, orders, translateFilter;
     beforeEach(function () {
         module('bahmni.common.uiHelper');
         module('bahmni.common.displaycontrol.orders');
         module('ngHtml2JsPreprocessor');
+        module('bahmni.common.i18n');
 
         module(function ($provide) {
             orderService = jasmine.createSpyObj('orderService', ['getOrders']);
             orderTypeService = jasmine.createSpyObj('orderTypeService', ['getOrderTypeUuid']);
             spinner = jasmine.createSpyObj('spinner', ['forPromise']);
+            translateFilter = jasmine.createSpy('translateFilter');
+            $provide.value('translateFilter',translateFilter);
             $provide.value('orderService', orderService);
             $provide.value('orderTypeService', orderTypeService);
             $provide.value('spinner', spinner);
         });
+
+
         inject(function ($compile, $rootScope) {
             compile = $compile;
             scope = $rootScope.$new();
         });
+
     });
 
     var generateElement = function () {
@@ -159,7 +164,6 @@ describe("OrdersDisplayControl", function () {
         var section = $(element.children()[0]);
 
         expect(section.children()[0]).toEqual('h2');
-        expect(section.children()[0]).toContainText('testTitle');
         expect(section.children()[1]).toEqual('section');
         expect(section.children()[2]).toEqual('div');
     });
@@ -234,9 +238,9 @@ describe("OrdersDisplayControl", function () {
             expect(element.children()[0]).toEqual('section');
 
             var section = $(element.children()[0]);
+            var innerDiv = $($($(section.children()[2]))[0]);
 
             expect(section.children()[2]).toEqual('div');
-            expect(section.children()[2]).toContainText('No testOrder for this patient.');
         });
 
         it('should not show the noOrdersMessage when there are orders', function () {

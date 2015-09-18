@@ -1,5 +1,5 @@
 <section class="dashboard-section ng-scope">
-    <h2 class="section-title">{{section.title}}</h2>
+    <h2 class="section-title">{{section.translationKey | translate}}</h2>
     <section ng-hide="noOrdersMessage">
         <ul class="navigation-link-container">
             <li ng-repeat="bahmniOrder in ::bahmniOrders">
@@ -18,6 +18,6 @@
         </ul>
     </section>
     <div ng-show="noOrdersMessage">
-        <div class="placeholder-text">{{noOrdersMessage}}</div>
+        <div class="placeholder-text" ><p translate="DISPLAY_CONTROL_ERROR_MESSAGE_KEY" translate-values="{displayControl : '{{noOrdersMessage}}'}"></p></div>
     </div>
 </section>

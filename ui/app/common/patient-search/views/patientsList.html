@@ -4,7 +4,7 @@
             <li class="tab-item" ng-repeat="searchType in search.searchTypes"
                 ng-class="{'tab-selected': search.isSelectedSearch(searchType)}">
                 <a href="" ng-click="search.switchSearchType(searchType)">
-                    <span>{{searchType.display}}</span>
+                    <span>{{searchType.translationKey | translate}}</span>
                     <span ng-if="search.showPatientCountOnSearchParameter(searchType)">({{search.searchResults.length}})</span>
                     <span ng-if="searchType.handler && !search.showPatientCountOnSearchParameter(searchType)" scheduler
                           watch-on="search.searchParameter" refresh-time="searchType.refreshTime"
@@ -27,13 +27,13 @@
             <form name="searchPatientForm" ng-submit="searchPatients()" class="overflow-hidden">
                 <div class="search-patient-id left">
                     <input type="text" id="patientIdentifier" ng-model="search.searchParameter"
-                           focus-on="search.startPatientSearch" placeholder="Search Name/ID  ..."/>
+                           focus-on="search.startPatientSearch" placeholder="{{'SEARCH_NAME_PLACEHOLDER_KEY' | translate }}"/>
                 </div>
 
                 <div class="reg-srch-btn left">
                     <button type="submit" ng-disabled="!search.searchParameter">
                         <i class="fa fa-search"></i>
-                        Search
+                        {{'SEARCH_KEY' | translate }}
                     </button>
                 </div>
             </form>

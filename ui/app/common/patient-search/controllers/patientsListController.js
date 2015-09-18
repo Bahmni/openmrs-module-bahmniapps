@@ -72,7 +72,8 @@ angular.module('bahmni.common.patientSearch')
                     params:appExtn.extensionParams.searchParams,
                     refreshTime: appExtn.extensionParams.refreshTime || 0,
                     view: appExtn.extensionParams.view || Bahmni.Common.PatientSearch.Constants.searchExtensionTileViewType,
-                    additionalParams : appExtn.extensionParams.additionalParams
+                    additionalParams : appExtn.extensionParams.additionalParams,
+                    translationKey : appExtn.extensionParams.translationKey
             }
         };
 

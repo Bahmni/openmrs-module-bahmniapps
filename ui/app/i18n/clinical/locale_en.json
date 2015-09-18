@@ -1,8 +1,31 @@
 {
-    "userName": "Username",
-    "password": "Password",
-    "location": "Location",
-    "login": "Login",
-    "selectLocation": "Select Location",
-    "clinical_key": "Clinical"
+  "CONSULTATION_TAB_KEY": "Consultation",
+  "NO_ACTIVE_PASSIVE_PROGRAMS_MESSAGE": "No active/past programs for this patient.",
+  "NO_TREATMENTS_MESSAGE": "No treatments for this patient.",
+  "NO_ADMISSION_DETAILS_MESSAGE": "No Admission Details for this patient.",
+  "NO_DOCUMENTS_MESSAGE": "No documents for this patient.",
+  "NO_DISPOSTIONS_AVAILABLE_MESSAGE_KEY": "No dispositions available.",
+  "NO_LAB_ORDERS_FOR_PATIENT_MESSAGE_KEY": "No Lab Orders for this patient.",
+  "DISPLAY_CONTROL_ERROR_MESSAGE_KEY": "No {{ displayControl }} for this patient",
+  "NO_DIAGNOSIS_MESSAGE": "No diagnosis for this patient",
+
+  "PROGRAM_MANAGEMENT_SELECT_PROGRAM_KEY":"Select Program",
+  "PROGRAM_MANAGEMENT_ACTIVE_PROGRAM_KEY":"Active Programs",
+  "PROGRAM_MANAGEMENT_PAST_PROGRAM_KEY":"Past Programs",
+  "PROGRAM_MANAGEMENT_CHOOSE_PROGRAM_KEY": "Choose Program",
+  "PROGRAM_MANAGEMENT_CHOOSE_STATE_KEY": "Choose State",
+  "PROGRAM_MANAGEMENT_START_DATE_KEY":"Start Date:",
+  "PATIENT_NOT_ENROLLED_TO_PROGRAMS_MESSAGE_KEY": "The Patient has not enrolled to any programs",
+  "PATIENT_DOESNT_HAVE_PREVIOUS_PROGRAMS_MESSAGE_KEY": "The Patient doesn't have any previous programs",
+  "PROGRAM_MANAGEMENT_ENROLL_KEY": "Enroll",
+  "PROGRAM_MANAGEMENT_GENERAL_CONSULTATION_KEY": "General Consultation",
+
+  "TREATMENTS_SUMMARY_PRESCRIPTION_KEY": "Prescriptions",
+  "INVESTIGATION_CHART_KEY": "Investigation Chart",
+  "ALL_VISITS_KEY": "All Visits",
+  "ALL_KEY": "All",
+
+  "SEARCH_NAME_PLACEHOLDER_KEY": "Search Name/ID  ...",
+  "SEARCH_KEY": "Search"
+
 }

@@ -1,5 +1,5 @@
 <section class="block" ng-class="{'hidden-print':noDispositionsMessage}">
-    <h2 class="section-title">Disposition</h2>
+    <h2 class="section-title">{{params.translationKey | translate}}</h2>
 
     <table class="dashboard-table history-diagnosis">
         <tbody ng-repeat="disposition in dispositions" class="row">
@@ -32,6 +32,6 @@
         </tbody>
     </table>
     <div ng-show="noDispositionsMessage">
-        <div class="placeholder-text">{{noDispositionsMessage}}</div>
+        <div class="placeholder-text">{{'NO_DISPOSTIONS_AVAILABLE_MESSAGE_KEY' | translate}}</div>
     </div>
 </section>

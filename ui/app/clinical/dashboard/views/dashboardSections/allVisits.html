@@ -10,7 +10,7 @@
 </header> -->
 
 <div class="template-container">
-    <h6>All Visits</h6>
+    <h6>{{'ALL_KEY' | translate}} {{params.translationKey | translate}}</h6>
 	<section class="block dashboard-section">
        <visits-table params="params" patient-uuid="patientUuid" show-observation-data="showAllObservationsData"></visits-table>
     </section>

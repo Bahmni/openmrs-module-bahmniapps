@@ -5,10 +5,11 @@ angular.module('bahmni.clinical')
         var controller = function ($scope) {
 
             var defaultParams = {
-                    noLabOrdersMessage: "No Lab Orders for this patient.",
+                    noLabOrdersMessage: "NO_LAB_ORDERS_FOR_PATIENT_MESSAGE_KEY",
                     showNormalLabResults: true,
                     showAccessionNotes: true,
-                    title: "Lab Investigations"
+                    title: "Lab Investigations",
+                    translationKey: "LAB_INVESTIGATIONS_KEY"
                 },
                 hasAbnormalTests = function (labOrderResult) {
                     if (labOrderResult.isPanel) {

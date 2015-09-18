@@ -1,8 +1,4 @@
 {
-    "userName": "Username",
-    "password": "Password",
-    "location": "Location",
-    "login": "Login",
-    "selectLocation": "Select Location",
-    "clinical_key": "Clinical"
+    "SEARCH_NAME_PLACEHOLDER_KEY": "Search Name/ID  ...",
+    "SEARCH_KEY": "Search"
 }

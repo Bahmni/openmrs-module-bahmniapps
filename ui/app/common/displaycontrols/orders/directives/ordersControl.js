@@ -1,9 +1,10 @@
 'use strict';
 
 angular.module('bahmni.common.displaycontrol.orders')
-    .directive('ordersControl', ['orderService', 'orderTypeService', '$q','spinner', '$filter',
-        function (orderService, orderTypeService, $q, spinner, $filter) {
+    .directive('ordersControl', ['orderService', 'orderTypeService', '$q','spinner', '$filter','$translate',
+        function (orderService, orderTypeService, $q, spinner, $filter, $translate) {
             var controller = function($scope){
+
                 $scope.orderTypeUuid = orderTypeService.getOrderTypeUuid($scope.orderType);
                 if ($scope.config.showHeader === null || $scope.config.showHeader === undefined) {
                     $scope.config.showHeader = true;
@@ -33,7 +34,7 @@ angular.module('bahmni.common.displaycontrol.orders')
                             }
                         });
                         if (_.isEmpty($scope.bahmniOrders)) {
-                            $scope.noOrdersMessage = "No "+$scope.orderType+" for this patient.";
+                            $scope.noOrdersMessage = $scope.orderType;
                         }
                         else{
                             $scope.bahmniOrders[0].isOpen = true;
@@ -65,6 +66,9 @@ angular.module('bahmni.common.displaycontrol.orders')
 
                 $scope.getSectionTitle = function(){
                     return $scope.sectionTitle?$scope.sectionTitle:$scope.section.title;
+                };
+                $scope.getSectionTranslationKey = function(){
+                    return $scope.section.translationKey;
                 };
 
                 spinner.forPromise(init());

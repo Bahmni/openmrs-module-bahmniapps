@@ -1,7 +1,7 @@
 'use strict';
 
 describe("Radiology Display Control", function () {
-    var scope, element, $compile, encounterService, spinner, configurations, params;
+    var scope, element, $compile, encounterService, spinner, configurations, params, translateFilter;
     beforeEach(module('bahmni.common.displaycontrol.documents'));
     beforeEach(module('ngHtml2JsPreprocessor'));
 
@@ -21,10 +21,12 @@ describe("Radiology Display Control", function () {
         });
         spinner = jasmine.createSpyObj('spinner', ['forPromise']);
         encounterService = jasmine.createSpyObj('encounterService',['getEncountersForEncounterType']);
+        translateFilter = jasmine.createSpy('translateFilter')
 
         $provide.value('configurations', configurations);
         $provide.value('spinner', spinner);
         $provide.value('encounterService', encounterService);
+        $provide.value('translateFilter',translateFilter);
     }));
 
     beforeEach(inject(function (_$compile_, $rootScope) {

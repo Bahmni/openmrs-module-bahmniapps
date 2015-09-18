@@ -1,7 +1,7 @@
 'use strict';
 describe("Program display control", function () {
 
-    var compile, rootScope, programService;
+    var compile, rootScope, programService,translateFilter;
     var DateUtil = Bahmni.Common.Util.DateUtil;
     var element,q;
 
@@ -11,7 +11,9 @@ describe("Program display control", function () {
     });
     beforeEach(module(function ($provide) {
         programService = jasmine.createSpyObj('programService', ['getPatientPrograms']);
+        translateFilter = jasmine.createSpy('translateFilter');
         $provide.value('programService', programService);
+        $provide.value('translateFilter',translateFilter);
     }));
 
     beforeEach(inject(function ($compile, $rootScope, $q) {

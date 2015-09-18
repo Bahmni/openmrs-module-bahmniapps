@@ -7,7 +7,7 @@
         ng-dialog-data="{{dialogData}}"
         ng-dialog-class="ngdialog-theme-default ng-dialog-all-details-page"
         class="section-title has-link">
-            <span class="title-link"> {{title}} </span>
+            <span class="title-link"> {{section.translationKey | translate}} </span>
             <i class="fa fa-external-link"></i>
         </h2>
     </div>
@@ -29,7 +29,7 @@
             </li>
         </ul>
         <div ng-show="noObsMessage">
-            <div class="placeholder-text" ng-if="!message">No {{title}} for this patient.</div>
+            <div class="placeholder-text" ng-if="!message"><p translate="DISPLAY_CONTROL_ERROR_MESSAGE_KEY" translate-values="{displayControl : '{{section.translationKey | translate}}'}"></p></div>
             <div class="placeholder-text" ng-if="message">{{message}}</div>
         </div>
     </section>

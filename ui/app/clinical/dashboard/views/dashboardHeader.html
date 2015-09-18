@@ -17,7 +17,7 @@
                 <span class="close" ng-click="closeDashboard(dashboard)">
                    <span class="close-icon">x</span>
                 </span>
-                <a ng-click="showDashboard(dashboard)" ng-click="closeAllDialogs()">{{dashboard.dashboardName}}</a>
+                <a ng-click="showDashboard(dashboard)" ng-click="closeAllDialogs()">{{dashboard.translationKey | translate}} </a>
 
             </li>
             <li class="tab-item new-tab tab-active" bm-pop-over autoclose="true"
@@ -27,7 +27,7 @@
                 <div class="tab-submenu" bm-pop-over-target>
                     <ul>
                         <li ng-repeat="dashboard in clinicalDashboardConfig.getUnOpenedTabs()">
-                            <a class="submenu-item unOpenedDashboard" ng-click="closeAllDialogs();showDashboard(dashboard);">{{dashboard.dashboardName}} </a>
+                            <a class="submenu-item unOpenedDashboard" ng-click="closeAllDialogs();showDashboard(dashboard);">{{dashboard.translationKey | translate}} </a>
                         </li>
                     </ul>
                 </div>
@@ -50,7 +50,7 @@
             <span class="grouped-buttons">
                 <a class=" btn--left btn--success "
                    ng-if="visitHistory.activeVisit || retrospectiveEntry.isRetrospective || allowConsultation()"
-                   ng-click="closeAllDialogs();collapseControlPanel()" href="#{{consultationBoardLink}}">Consultation</a>
+                   ng-click="closeAllDialogs();collapseControlPanel()" href="#{{consultationBoardLink}}"> {{'CONSULTATION_TAB_KEY' | translate}}</a>
                 <a class="btn--right btn--success " title="Open in new window"
                    ng-if="visitHistory.activeVisit || retrospectiveEntry.isRetrospective"
                    ng-click="openConsultationInNewTab()"><i class="fa fa-external-link"></i></a>

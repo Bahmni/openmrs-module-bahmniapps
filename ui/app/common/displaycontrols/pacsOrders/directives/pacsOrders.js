@@ -25,7 +25,7 @@ angular.module('bahmni.common.displaycontrol.pacsOrders')
                 var init = function() {
                     return getOrders().then(function(){
                         if (_.isEmpty($scope.bahmniOrders)) {
-                            $scope.noOrdersMessage = "No "+$scope.orderType+" for this patient.";
+                            $scope.noOrdersMessage = $scope.orderType;
                         }
                     });
                 };

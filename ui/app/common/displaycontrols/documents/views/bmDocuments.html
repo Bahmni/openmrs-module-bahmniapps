@@ -1,5 +1,5 @@
 <section class="block">
-<h2 class="section-title">{{config.title}}</h2>
+<h2 class="section-title">{{config.translationKey | translate}} </h2>
     <ul>
         <li ng-repeat="recordGroup in recordGroups" class="radiology-doc-item"
             bm-gallery patient="patient" access-impression="true">
