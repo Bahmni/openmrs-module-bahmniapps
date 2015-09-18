@@ -5,10 +5,20 @@ angular.module('bahmni.clinical')
         function ($scope, appService) {
             var init = function () {
                 var programConfig = appService.getAppDescriptor().getConfigValue('program');
-                var patientConfig = !_.isUndefined(programConfig) ? programConfig.patientInformation : {};
-                if (patientConfig.hasOwnProperty("ageLimit") && $scope.patient.age >= patientConfig.ageLimit) {
-                    $scope.patient.ageText = $scope.patient.age.toString() + " <span> years </span>";
-                }
+                $scope.patientInfoSection = {
+                    "patientInformation": {
+                        "title": "Patient Information",
+                        "name": "patientInformation",
+                        "patientAttributes": [],
+                        "ageLimit": programConfig ? programConfig.patientInformation ? programConfig.patientInformation.ageLimit : undefined : undefined,
+                        "addressFields": [
+                            "address1",
+                            "address2",
+                            "cityVillage",
+                            "countryDistrict"
+                        ]
+                    }
+                };
             };
             init();
         }]);
