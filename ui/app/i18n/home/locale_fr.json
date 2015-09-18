@@ -1,0 +1,22 @@
+{
+"LOGIN_LABEL_USERNAME_KEY": "Nom d'utilisateur",
+"LOGIN_MESSAGE_ENTER_USERNAME_KEY": "Entrez votre nom d'utilisateur",
+"LOGIN_MESSAGE_ENTER_PASSWORD_KEY": "Entrez votre mot de passe",
+"LOGIN_LABEL_SELECT_LOCALE_KEY": "Choisissez le pays:",
+"LOGIN_LABEL_LOGIN_ERROR_MESSAGE_KEY": "Vous n'êtes pas authentifié ou votre session a expiré . Connectez vous s'il vous plait.",
+"LOGIN_LABEL_SELECT_LOCATION_KEY":"Choisir la localité",
+"LOGIN_LABEL_PASSWORD_KEY": "Mot de passe",
+"LOGIN_LABEL_LOCATION_KEY": "emplacement",
+"LOGIN_LABEL_LOGIN_KEY": "S'identifier",
+"HEADER_LABEL_LOGOUT_KEY": "Se déconnecter",
+"MODULE_LABEL_REGISTRATION_KEY": "Inscription",
+"MODULE_LABEL_CLINICAL_KEY": "clinique",
+"MODULE_LABEL_INPATIENT_KEY": "patients hospitalisés",
+"MODULE_LABEL_RADIOLOGY_UPLOAD_KEY": "Radiologie chargement",
+"MODULE_LABEL_PATIENT_DOCUMENTS_KEY": "Documents patients",
+"MODULE_LABEL_ADMIN_KEY": "Administrateur",
+"MODULE_LABEL_REPORTS_KEY": "rapports",
+"MODULE_LABEL_ORDERS_KEY": "ordres",
+"MODULE_LABEL_PROGRAMS_KEY": "programmes",
+"MODULE_LABEL_DHIS_KEY": "dhis"
+}
