@@ -1,13 +1,12 @@
 'use strict';
 
 angular.module('bahmni.clinical')
-    .controller('DashboardHeaderController', ['$window', '$scope', 'clinicalAppConfigService', 'patientContext', 'visitHistory', 'clinicalDashboardConfig','appService','ngDialog',
-        function ($window, $scope, clinicalAppConfigService, patientContext, visitHistory, clinicalDashboardConfig, appService, ngDialog) {
+    .controller('DashboardHeaderController', ['$window', '$scope', '$state','clinicalAppConfigService', 'patientContext', 'visitHistory', 'clinicalDashboardConfig','appService','ngDialog',
+        function ($window, $scope, $state, clinicalAppConfigService, patientContext, visitHistory, clinicalDashboardConfig, appService, ngDialog) {
 
             $scope.patient = patientContext.patient;
             $scope.visitHistory = visitHistory;
-
-            $scope.consultationBoardLink = clinicalAppConfigService.getConsultationBoardLink();
+            $scope.programUuid=$state.params.programUuid;
             $scope.showControlPanel = false;
             $scope.clinicalDashboardConfig = clinicalDashboardConfig;
 
@@ -20,6 +19,12 @@ angular.module('bahmni.clinical')
                     $scope.$parent.$parent.$broadcast("event:switchDashboard", dashboard);
                 }
             };
+
+            $scope.getConsultationURL = function () {
+               return clinicalAppConfigService.getConsultationBoardLink();
+            };
+
+            $scope.consultationBoardLink = $scope.getConsultationURL();
 
             $scope.printDashboard = function () {
                 $scope.$parent.$parent.$broadcast("event:printDashboard", clinicalDashboardConfig.currentTab.printing);
