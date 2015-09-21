@@ -7,6 +7,7 @@ describe("Patient Profile display control", function() {
     beforeEach(module(function($provide){
         provide = $provide;
         provide.value('$state', {});
+        provide.value('$stateParams', {configName: 'default'});
         provide.value('clinicalDashboardConfig', {getMaxRecentlyViewedPatients: function(){
             return 3;
         }});
@@ -90,7 +91,7 @@ describe("Patient Profile display control", function() {
         httpBackend.flush();
 
         scope.previous();
-        expect(state.go).toHaveBeenCalledWith('patient.dashboard', { patientUuid : 'def' });
+        expect(state.go).toHaveBeenCalledWith('patient.dashboard', { configName: 'default', patientUuid : 'def' });
     });
 
     it("should go to next patient in the list", function () {
@@ -108,7 +109,7 @@ describe("Patient Profile display control", function() {
         httpBackend.flush();
 
         scope.next();
-        expect(state.go).toHaveBeenCalledWith('patient.dashboard', { patientUuid : 'patient1' });
+        expect(state.go).toHaveBeenCalledWith('patient.dashboard', { configName: 'default', patientUuid : 'patient1' });
     });
 
 });

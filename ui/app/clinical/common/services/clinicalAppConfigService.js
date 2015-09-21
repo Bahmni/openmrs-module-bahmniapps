@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('bahmni.clinical')
-    .service('clinicalAppConfigService', ['appService', 'urlHelper', function (appService, urlHelper) {
+    .service('clinicalAppConfigService', ['appService', 'urlHelper', '$stateParams', function (appService, urlHelper, stateParams) {
 
         this.getTreatmentActionLink = function () {
             return appService.getAppDescriptor().getExtensions("org.bahmni.clinical.treatment.links", "link") || [];
@@ -55,7 +55,7 @@ angular.module('bahmni.clinical')
             var allBoards = this.getAllConsultationBoards();
             var defaultBoard = _.find(allBoards, 'default');
             if (defaultBoard) {
-                return urlHelper.getPatientUrl() + "/" + defaultBoard.url
+                return "/" + stateParams.configName + urlHelper.getPatientUrl() + "/" + defaultBoard.url + "?encounterUuid=active";
             }
             return urlHelper.getConsultationUrl();
         };

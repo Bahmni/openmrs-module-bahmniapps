@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('bahmni.clinical')
-    .controller('VisitHeaderController', ['$rootScope', '$scope', '$state', 'clinicalAppConfigService', 'patientContext', 'visitHistory', 'visitConfig', 'contextChangeHandler', '$location',
-        function ($rootScope, $scope, $state, clinicalAppConfigService, patientContext, visitHistory, visitConfig, contextChangeHandler, $location) {
+    .controller('VisitHeaderController', ['$rootScope', '$scope', '$state', 'clinicalAppConfigService', 'patientContext', 'visitHistory', 'visitConfig', 'contextChangeHandler', '$location', '$stateParams',
+        function ($rootScope, $scope, $state, clinicalAppConfigService, patientContext, visitHistory, visitConfig, contextChangeHandler, $location, $stateParams) {
             $scope.patient = patientContext.patient;
             $scope.visitHistory = visitHistory;
             $scope.consultationBoardLink = clinicalAppConfigService.getConsultationBoardLink();
@@ -16,7 +16,7 @@ angular.module('bahmni.clinical')
 
             $scope.gotoPatientDashboard = function () {
                 if(contextChangeHandler.execute()["allow"]) {
-                    $location.path("/patient/" + patientContext.patient.uuid + "/dashboard");
+                    $location.path($stateParams.configName+"/patient/" + patientContext.patient.uuid + "/dashboard");
                 }
             };
 

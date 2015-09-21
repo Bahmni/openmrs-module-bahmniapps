@@ -1,6 +1,6 @@
 <div class="program-row">
     <div class="program-details">
-        <a ng-href="#/patient/{{patient.uuid}}/dashboard" class="big-anchor">{{patientProgram.display}}</a>
+        <a ng-href="#/programs/patient/{{patient.uuid}}/dashboard" class="big-anchor">{{patientProgram.display}}</a>
         <span class="enrolled-info"> (Enrolled on {{patientProgram.dateEnrolled | bahmniDate}})</span>
 
         <a class="back-btn dashboard-link fr" id="dashboard-link" ng-href="#/patient/{{patient.uuid}}/concept-set-group/observations/program/{{patientProgram.program.uuid}}" title="Back to patient dashboard">
