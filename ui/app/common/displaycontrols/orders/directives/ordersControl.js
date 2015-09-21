@@ -2,7 +2,7 @@
 
 angular.module('bahmni.common.displaycontrol.orders')
     .directive('ordersControl', ['orderService', 'orderTypeService', '$q','spinner', '$filter','$translate',
-        function (orderService, orderTypeService, $q, spinner, $filter, $translate) {
+        function (orderService, orderTypeService, $q, spinner, $filter) {
             var controller = function($scope){
 
                 $scope.orderTypeUuid = orderTypeService.getOrderTypeUuid($scope.orderType);
@@ -59,14 +59,11 @@ angular.module('bahmni.common.displaycontrol.orders')
                 };
 
                 $scope.hasTitleToBeShown = function() {
-                    return !$scope.isClickable() && $scope.getSectionTitle();
+                    return !$scope.isClickable() && $scope.getSectionTranslationKey();
                 };
 
                 $scope.message = Bahmni.Common.Constants.messageForNoFulfillment;
 
-                $scope.getSectionTitle = function(){
-                    return $scope.sectionTitle?$scope.sectionTitle:$scope.section.title;
-                };
                 $scope.getSectionTranslationKey = function(){
                     return $scope.section.translationKey;
                 };
@@ -84,8 +81,7 @@ angular.module('bahmni.common.displaycontrol.orders')
                     orderUuid:"=",
                     config:"=",
                     isOnDashboard:"=",
-                    visitUuid:"=",
-                    sectionTitle:"="
+                    visitUuid:"="
                 }
             }
         }]);

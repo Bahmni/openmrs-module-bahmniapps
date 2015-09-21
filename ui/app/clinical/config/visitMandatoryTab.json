@@ -19,7 +19,7 @@
             "title": "Diagnosis",
             "displayOrder": 1,
             "config": {
-                "title": "Diagnoses",
+                "translationKey": "VISIT_TITLE_DIAGNOSIS_KEY",
                 "showCertainty": true,
                 "showOrder": true,
                 "showDetailsButton": true
@@ -44,18 +44,19 @@
         },
         "Disposition": {
             "type": "disposition",
-            "title": "Disposition",
+            "translationKey": "VISIT_TITLE_DISPOSITIONS_KEY",
             "displayOrder": 3,
             "config": {
+                "translationKey":"VISIT_TITLE_DISPOSITION_KEY",
                 "numberOfVisits": 1,
                 "showDetailsButton": true
             }
         },
         "Admission Details": {
             "type": "admissionDetails",
-            "title": "Admission Details",
             "displayOrder": 4,
             "config": {
+                "translationKey": "VISIT_TITLE_ADMISSION_DETAILS_KEY",
                 "showDetailsButton": true
             }
         },
@@ -64,7 +65,7 @@
             "title": "Investigation Result",
             "displayOrder": 5,
             "config": {
-                "title": "Lab Investigations",
+                "translationKey": "VISIT_TITLE_LAB_INVESTIGATIONS_KEY",
                 "showChart": true,
                 "showTable": true,
                 "showNormalLabResults": true,
@@ -78,7 +79,7 @@
             "title": "Treatments",
             "displayOrder": 6,
             "config": {
-                "title": "Treatments",
+                "translationKey": "VISIT_TITLE_TREATMENTS_KEY",
                 "showFlowSheet": true,
                 "showListView": true,
                 "showOtherActive": false,
@@ -91,14 +92,14 @@
             "type": "radiology",
             "displayOrder": 7,
             "config": {
-                "title": "Radiology"
+                "translationKey": "VISIT_TITLE_RADIOLOGY_KEY"
             }
         },
         "Patient Files": {
             "type": "patientFiles",
             "displayOrder": 8,
             "config": {
-                "title": "Patient Files"
+                "translationKey": "VISIT_TITLE_PATIENT_FILES_KEY"
             }
         }
     }

@@ -1,5 +1,5 @@
 <section class="block">
-<h2 class="section-title">{{config.translationKey | translate}} </h2>
+<h2 class="section-title">{{config.translationKey | translate}}</h2>
     <ul>
         <li ng-repeat="recordGroup in recordGroups" class="radiology-doc-item"
             bm-gallery patient="patient" access-impression="true">
@@ -12,6 +12,6 @@
         </li>
     </ul>
     <div ng-hide="recordGroups.length">
-        <div class="placeholder-text">No documents for this patient.</div>
+        <div class="placeholder-text">{{'NO_DOCUMENTS_MESSAGE' | translate}}</div>
     </div>
 </section>

@@ -26,6 +26,16 @@
   "ALL_KEY": "All",
 
   "SEARCH_NAME_PLACEHOLDER_KEY": "Search Name/ID  ...",
-  "SEARCH_KEY": "Search"
+  "SEARCH_KEY": "Search",
+
+
+  "VISIT_TITLE_DIAGNOSIS_KEY": "Diagnoses",
+  "VISIT_TITLE_DISPOSITIONS_KEY": "Dispositions",
+  "VISIT_TITLE_DISPOSITION_KEY": "Disposition",
+  "VISIT_TITLE_ADMISSION_DETAILS_KEY": "Admission Details",
+  "VISIT_TITLE_LAB_INVESTIGATIONS_KEY": "Lab Investigations",
+  "VISIT_TITLE_TREATMENTS_KEY": "Treatments",
+  "VISIT_TITLE_PATIENT_FILES_KEY": "Patient Files",
+  "VISIT_TITLE_RADIOLOGY_KEY": "Radiology"
 
 }
