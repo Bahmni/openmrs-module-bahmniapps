@@ -11,7 +11,7 @@ angular.module('bahmni.clinical').factory('consultationInitialization',
 
                 var getEncounterType = function() {
                     return encounterService.getEncounterType(programUuid);
-                }
+                };
 
                 var getActiveEncounter = function () {
                     var currentProviderUuid = $rootScope.currentProvider ? $rootScope.currentProvider.uuid : null;
@@ -25,8 +25,7 @@ angular.module('bahmni.clinical').factory('consultationInitialization',
                             encounterTypeUuid: encounterType.uuid,
                             providerUuid: !_.isEmpty(providerData) ? providerData.uuid : currentProviderUuid,
                             includeAll: Bahmni.Common.Constants.includeAllObservations,
-                            locationUuid: sessionService.getLoginLocationUuid(),
-                            userUuid: $rootScope.currentUser.uuid
+                            locationUuid: sessionService.getLoginLocationUuid()
                         });
                     }).then(function (encounterTransactionResponse) {
                         return consultationMapper.map(encounterTransactionResponse.data);
@@ -45,15 +44,17 @@ angular.module('bahmni.clinical').factory('consultationInitialization',
                         });
                     }
                     var encounterDate = dateUtil.parseLongDateToServerFormat(dateUtil.getDateWithoutHours($rootScope.retrospectiveEntry.encounterDate));
-                    return encounterService.find({
-                        patientUuid: patientUuid,
-                        providerUuids: !_.isEmpty(providerData) ? [providerData.uuid] : [currentProviderUuid],
-                        includeAll: Bahmni.Common.Constants.includeAllObservations,
-                        encounterDateTimeFrom: encounterDate,
-                        encounterDateTimeTo: encounterDate,
-                        userUuid: $rootScope.currentUser.uuid
-                    }).then(function (encounterTransactionResponse) {
-                        return consultationMapper.map(encounterTransactionResponse.data[0]);
+                    return getEncounterType().then(function(encounterType){
+                        return encounterService.find({
+                            patientUuid: patientUuid,
+                            providerUuids: !_.isEmpty(providerData) ? [providerData.uuid] : [currentProviderUuid],
+                            includeAll: Bahmni.Common.Constants.includeAllObservations,
+                            encounterDateTimeFrom: encounterDate,
+                            encounterDateTimeTo: encounterDate,
+                            encounterTypeUuids: [encounterType.uuid]
+                        }).then(function (encounterTransactionResponse) {
+                            return consultationMapper.map(encounterTransactionResponse.data[0]);
+                        });
                     });
                 };
 
