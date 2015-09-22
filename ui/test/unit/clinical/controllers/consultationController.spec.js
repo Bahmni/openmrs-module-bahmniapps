@@ -32,7 +32,8 @@ describe("ConsultationController", function () {
             sessionService: null,
             retrospectiveEntryService: null,
             patientContext: {patient:{}},
-            consultationContext: null
+            consultationContext: null,
+            $stateParams:null
         });
     }));
 

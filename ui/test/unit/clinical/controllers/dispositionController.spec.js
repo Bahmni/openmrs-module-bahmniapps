@@ -26,7 +26,6 @@ describe("DispositionController", function () {
     }));
 
     it("should return true if it is in retrospective mode", function () {
-        dump(scope.isRetrospectiveMode());
         expect(scope.isRetrospectiveMode()).toBeTruthy();
     });
 });
