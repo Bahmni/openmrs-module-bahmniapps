@@ -47,7 +47,7 @@ describe('patientControlPanelTest', function () {
     }));
 
     it('ensure links are correctly populated on patient consultation page', function () {
-        stateParams = {visitUuid: "12345"};
+        stateParams = {visitUuid: "12345", configName: "default"};
         state = {current: {name : "patient.consultation"}};
 
         _provide.value('$state',state);
@@ -75,11 +75,11 @@ describe('patientControlPanelTest', function () {
         scope.$digest();
 
         expect(compiledElementScope.links).not.toBeUndefined();
-        expect(compiledElementScope.links).toEqual([{text: "Dashboard", icon: "btn-summary dashboard-btn", href: "#/patient/patientUuid/dashboard"}]);
+        expect(compiledElementScope.links).toEqual([{text: "Dashboard", icon: "btn-summary dashboard-btn", href: "#/default/patient/patientUuid/dashboard"}]);
     });
 
     it('ensure links are correctly populated on patient visit page and without an active visit', function () {
-        stateParams = {visitUuid: "12345"};
+        stateParams = {visitUuid: "12345", configName: "default"};
         state = {current: {name : "patient.visit"}};
 
         _provide.value('$state',state);
@@ -107,7 +107,7 @@ describe('patientControlPanelTest', function () {
         scope.$digest();
 
         expect(compiledElementScope.links).not.toBeUndefined();
-        expect(compiledElementScope.links).toEqual([{text: "Dashboard", icon: "btn-summary dashboard-btn", href: "#/patient/patientUuid/dashboard"}]);
+        expect(compiledElementScope.links).toEqual([{text: "Dashboard", icon: "btn-summary dashboard-btn", href: "#/default/patient/patientUuid/dashboard"}]);
     });
 
     it('ensure links are correctly populated on patient dashboard page without an active visit', function () {

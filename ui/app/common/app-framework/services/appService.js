@@ -176,7 +176,7 @@ angular.module('bahmni.common.appFramework')
 
         this.initApp = function (appName, options, extensionFileSuffix, configPages) {
             var appLoader = $q.defer();
-            var extensionFileName = extensionFileSuffix ? "/extension-" + extensionFileSuffix + ".json" : "/extension.json";
+            var extensionFileName = (extensionFileSuffix && extensionFileSuffix.toLowerCase() !== 'default') ? "/extension-" + extensionFileSuffix + ".json" : "/extension.json";
             var promises = [];
             var opts = options || {'app': true, 'extension': true};
 

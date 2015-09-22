@@ -16,7 +16,7 @@ angular.module('bahmni.clinical')
 
             $scope.showDashboard = function (dashboard) {
                 if (!clinicalDashboardConfig.isCurrentTab(dashboard)) {
-                    $scope.$parent.$parent.$broadcast("event:switchDashboard", dashboard);
+                    $scope.$parent.$parent.$parent.$broadcast("event:switchDashboard", dashboard);
                 }
             };
 
@@ -27,7 +27,7 @@ angular.module('bahmni.clinical')
             $scope.consultationBoardLink = $scope.getConsultationURL();
 
             $scope.printDashboard = function () {
-                $scope.$parent.$parent.$broadcast("event:printDashboard", clinicalDashboardConfig.currentTab.printing);
+                $scope.$parent.$parent.$parent.$broadcast("event:printDashboard", clinicalDashboardConfig.currentTab.printing);
             };
 
             $scope.allowConsultation = function(){
@@ -36,7 +36,7 @@ angular.module('bahmni.clinical')
 
             $scope.closeDashboard = function (dashboard) {
                 clinicalDashboardConfig.closeTab(dashboard);
-                $scope.$parent.$parent.$broadcast("event:switchDashboard", clinicalDashboardConfig.currentTab);
+                $scope.$parent.$parent.$parent.$broadcast("event:switchDashboard", clinicalDashboardConfig.currentTab);
             };
 
             $scope.closeAllDialogs = function() {

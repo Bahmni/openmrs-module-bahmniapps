@@ -49,7 +49,7 @@ angular.module('bahmni.common.displaycontrol.patientprofile')
             };
 
             $scope.openPatientDashboard = function (patientUuid) {
-                window.open("../clinical/#/patient/" + patientUuid + "/dashboard");
+                window.open("../clinical/#/default/patient/" + patientUuid + "/dashboard");
             };
             spinner.forPromise(init());
         };

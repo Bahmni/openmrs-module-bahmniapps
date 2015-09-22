@@ -9,8 +9,8 @@ angular.module('consultation', ['ui.router', 'bahmni.clinical', 'bahmni.common.c
     'bahmni.common.orders', 'bahmni.common.displaycontrol.orders', 'bahmni.common.displaycontrol.prescription', 'bahmni.common.displaycontrol.navigationlinks', 'bahmni.common.displaycontrol.programs',
     'bahmni.common.displaycontrol.pacsOrders', 'bahmni.common.uicontrols.programmanagment', 'pascalprecht.translate', 'ngCookies']);
 angular.module('consultation')
-    .config(['$stateProvider', '$httpProvider', '$urlRouterProvider', '$bahmniTranslateProvider', function ($stateProvider, $httpProvider, $urlRouterProvider, $bahmniTranslateProvider) {
-        $urlRouterProvider.otherwise('/patient/search');
+    .config(['$stateProvider', '$httpProvider', '$urlRouterProvider','$bahmniTranslateProvider', function ($stateProvider, $httpProvider, $urlRouterProvider,$bahmniTranslateProvider) {
+        $urlRouterProvider.otherwise('/' + Bahmni.Clinical.Constants.defaultExtensionName + '/patient/search');
         var patientSearchBackLink = {
             label: "",
             state: "patientsearch",
@@ -21,6 +21,16 @@ angular.module('consultation')
         var homeBackLink = {label: "", url: "../home/", icon: "fa-home"};
 
         $stateProvider
+            .state('context', {
+                url: '/:configName',
+                abstract: true,
+                views: {
+                    'additional-header': {template: '<div ui-view="additional-header"></div>'},
+                    'content': {
+                        template: '<div ui-view="content"></div>'
+                    }
+                }
+            })
             .state('patientsearch', {
                 url: '/:configName/patient/search',
                 views: {
@@ -37,8 +47,8 @@ angular.module('consultation')
                     backLinks: [homeBackLink]
                 },
                 resolve: {
-                    initialization: function (initialization, $stateParams) {
-                        $stateParams.configName = $stateParams.configName  || "DEFAULT";
+                    initializeConfigs: function (initialization, $stateParams) {
+                        $stateParams.configName = $stateParams.configName || Bahmni.Clinical.Constants.defaultExtensionName;
                         patientSearchBackLink.state = 'patientsearch({configName: \"' + $stateParams.configName + '\"})';
                         return initialization($stateParams.configName);
                     }
@@ -47,6 +57,7 @@ angular.module('consultation')
             .state('patient', {
                 url: '/patient/:patientUuid?encounterUuid,programUuid',
                 abstract: true,
+                parent: 'context',
                 data: {
                     backLinks: [patientSearchBackLink]
                 },
@@ -62,8 +73,8 @@ angular.module('consultation')
                     }
                 },
                 resolve: {
-                    initialization: function(initialization, $stateParams) {
-                        $stateParams.configName = $stateParams.configName  || "DEFAULT";
+                    initialization: function (initialization, $stateParams) {
+                        $stateParams.configName = $stateParams.configName || Bahmni.Clinical.Constants.defaultExtensionName;
                         return initialization($stateParams.configName);
                     },
                     patientContext: function (initialization, patientInitialization, $stateParams) {

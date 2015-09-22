@@ -24,7 +24,7 @@ angular.module('bahmni.common.patient')
         $scope.today = DateUtil.getDateWithoutTime(DateUtil.now());
 
         $scope.getDashboardLink = function() {
-            return "#/patient/" + $scope.patient.uuid + "/dashboard";
+            return "#/"+$stateParams.configName+"/patient/" + $scope.patient.uuid + "/dashboard";
         };
 
         $scope.changeContext = function($event) {
@@ -50,7 +50,7 @@ angular.module('bahmni.common.patient')
                 if ($scope.activeVisit) {
                     links.push({text: "Consultation", icon: "btn-consultation dashboard-btn", href: "#" + clinicalAppConfigService.getConsultationBoardLink()});
                 } else if (state.match("patient.visit")) {
-                    links.push({text: "Dashboard", icon: "btn-summary dashboard-btn", href: "#/patient/" + $scope.patient.uuid + "/dashboard"});
+                    links.push({text: "Dashboard", icon: "btn-summary dashboard-btn", href: "#/"+$stateParams.configName+"/patient/" + $scope.patient.uuid + "/dashboard"});
                 }
                 return links;
             }

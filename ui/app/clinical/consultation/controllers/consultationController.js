@@ -2,13 +2,16 @@
 
 angular.module('bahmni.clinical').controller('ConsultationController',
     ['$scope', '$rootScope', '$state', '$location', 'clinicalAppConfigService', 'urlHelper', 'contextChangeHandler',
-        'spinner', 'encounterService', 'messagingService', 'sessionService', 'retrospectiveEntryService', 'patientContext', 'consultationContext', '$q', 'patientVisitHistoryService', '$stateParams',
+        'spinner', 'encounterService', 'messagingService', 'sessionService', 'retrospectiveEntryService', 'patientContext', 'consultationContext', '$q',
+        'patientVisitHistoryService', '$stateParams',
         function ($scope, $rootScope, $state, $location, clinicalAppConfigService, urlHelper, contextChangeHandler,
-                  spinner, encounterService, messagingService, sessionService, retrospectiveEntryService, patientContext, consultationContext, $q, patientVisitHistoryService, $stateParams) {
+                  spinner, encounterService, messagingService, sessionService, retrospectiveEntryService, patientContext, consultationContext, $q,
+                  patientVisitHistoryService, $stateParams) {
             $scope.patient = patientContext.patient;
             $scope.consultation = consultationContext;
 
             $scope.availableBoards = [];
+            $scope.configName = $stateParams.configName;
 
             $scope.showBoard = function (label) {
                 $rootScope.collapseControlPanel();
@@ -18,7 +21,7 @@ angular.module('bahmni.clinical').controller('ConsultationController',
 
             $scope.gotoPatientDashboard = function () {
                 if (contextChangeHandler.execute()["allow"]) {
-                    $state.go("patient.dashboard", {patientUuid: patientContext.patient.uuid, encounterUuid: "active"})
+                    $state.go("patient.dashboard", {configName: $scope.configName, patientUuid: patientContext.patient.uuid, encounterUuid: "active"});
                 }
             };
 
@@ -56,7 +59,7 @@ angular.module('bahmni.clinical').controller('ConsultationController',
 
             var getUrl = function (board) {
                 var urlPrefix = urlHelper.getPatientUrl();
-                var url = board.url ? urlPrefix + "/" + board.url : urlPrefix;
+                var url = "/" + $stateParams.configName + (board.url ? urlPrefix + "/" + board.url : urlPrefix);
                 var queryParams = []
                 if($state.params.encounterUuid) {
                     queryParams.push("encounterUuid="+$state.params.encounterUuid);

@@ -2,6 +2,7 @@
 describe("clinicalAppConfigService", function () {
     var _$http;
     var _sessionService;
+    var $stateParams;
 
     beforeEach(module('bahmni.clinical'));
     beforeEach(module('bahmni.common.appFramework'));
@@ -141,14 +142,19 @@ describe("clinicalAppConfigService", function () {
                 {"name": "app:billing"},
             ]});
         });
+        $stateParams = {configName: 'default'};
         _sessionService.loadProviders.and.callFake(function () {
             return  specUtil.respondWith({});
         });
+        var urlHelper = {getPatientUrl: function() {return "/patient/somePatientUuid"}};
+
 
 
         $provide.value('$http', _$http);
         $provide.value('sessionService', _sessionService);
         $provide.value('$q', Q);
+        $provide.value('$stateParams', $stateParams);
+        $provide.value('urlHelper', urlHelper);
     }));
 
 
@@ -233,7 +239,7 @@ describe("clinicalAppConfigService", function () {
         it('should fetch consultation board link', function (done) {
             appService.initApp('clinical', {'extension': true}).then(function () {
                 var result = clinicalAppConfigService.getConsultationBoardLink();
-                expect(result).toBe("/patient/undefined/concept-set-group/observations?encounterUuid=active");
+                expect(result).toBe("/default/patient/somePatientUuid/concept-set-group/observations?encounterUuid=active");
                 done();
             });
         });

@@ -8,7 +8,7 @@
     </div>
     <div class="recent-patients-panel" bm-pop-over-target>
         <div ng-repeat="recent in recentlyViewedPatients track by $index" ng-class ="{'currentPatient': recent.uuid == patient.uuid}">
-            <a ng-href="#/patient/{{recent.uuid}}/dashboard?encounterUuid=active" ng-click="closeAllDialogs()"> <span>{{recent.name}}</span> ({{recent.identifier}})</a>
+            <a ng-href="#/{{configName}}/patient/{{recent.uuid}}/dashboard?encounterUuid=active" ng-click="closeAllDialogs()"> <span>{{recent.name}}</span> ({{recent.identifier}})</a>
         </div>
     </div>
 </div>

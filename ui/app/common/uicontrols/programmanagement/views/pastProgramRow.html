@@ -1,6 +1,6 @@
 <div class="program-row">
     <div class="program-details">
-        <a ng-href="#/patient/{{patient.uuid}}/dashboard">{{program.display}}</a>
+        <a ng-href="#/programs/patient/{{patient.uuid}}/dashboard">{{program.display}}</a>
         <span class="enrolled-info"> ({{program.dateEnrolled | bahmniDate}} - {{program.dateCompleted | bahmniDate}})</span>
         <label>Outcome:</label><span> {{program.outcome.display}}</span>
     </div>

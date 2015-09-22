@@ -58,7 +58,9 @@ Bahmni.Clinical.Constants = (function () {
         concepts: concepts,
         otherActiveDrugOrders: "Other Active DrugOrders",
         dispensePrivilege: "bahmni:clinical:dispense",
-        mandatoryVisitConfigUrl: "config/visitMandatoryTab.json"
+        mandatoryVisitConfigUrl: "config/visitMandatoryTab.json",
+        defaultExtensionName: "default"
+
     };
 })();
 
