@@ -3,12 +3,12 @@
 describe("OrderFulfillmentController", function () {
 
     var scope, rootScope, deferred, deferred1, q;
-    var mockEncounterService = jasmine.createSpyObj('encounterService', ['activeEncounter']);
+    var mockEncounterService = jasmine.createSpyObj('encounterService', ['find']);
     var mockOrderObservationService = jasmine.createSpyObj('orderObservationService', ['save']);
     var mockOrderTypeService = jasmine.createSpyObj('orderTypeService', ['getOrderTypeUuid']);
     var mockOrderService = jasmine.createSpyObj('orderService', ['getOrders', 'then']);
 
-    mockEncounterService.activeEncounter.and.callFake(function(param) {
+    mockEncounterService.find.and.callFake(function(param) {
         deferred1 = q.defer();
         deferred1.resolve({
             data: {
@@ -62,10 +62,10 @@ describe("OrderFulfillmentController", function () {
     }));
 
         it('should get active encounter', function (done) {
-        expect(mockEncounterService.activeEncounter).toHaveBeenCalled();
-        expect(mockEncounterService.activeEncounter.calls.mostRecent().args[0].patientUuid).toEqual("somePatientUuid");
-        expect(mockEncounterService.activeEncounter.calls.mostRecent().args[0].locationUuid).toEqual("someLocationUuid");
-        expect(mockEncounterService.activeEncounter.calls.mostRecent().args[0].providerUuid).toEqual("someProviderUuid");
+        expect(mockEncounterService.find).toHaveBeenCalled();
+        expect(mockEncounterService.find.calls.mostRecent().args[0].patientUuid).toEqual("somePatientUuid");
+        expect(mockEncounterService.find.calls.mostRecent().args[0].locationUuid).toEqual("someLocationUuid");
+        expect(mockEncounterService.find.calls.mostRecent().args[0].providerUuids[0]).toEqual("someProviderUuid");
         done();
     });
 

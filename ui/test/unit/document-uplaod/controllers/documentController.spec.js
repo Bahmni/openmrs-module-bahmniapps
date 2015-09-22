@@ -128,12 +128,12 @@ describe("DocumentController", function () {
         appConfig = jasmine.createSpyObj('encounterConfig', ['encounterType']);
         visitDocumentService = jasmine.createSpyObj('visitDocumentService', ['save']);
         sessionService = jasmine.createSpyObj('sessionService', ['getLoginLocationUuid']);
-        encounterService = jasmine.createSpyObj('encounterService',['activeEncounter']);
+        encounterService = jasmine.createSpyObj('encounterService',['find']);
 
     }));
 
     var mockEncounterService = function (data) {
-        encounterService.activeEncounter.and.callFake(function () {
+        encounterService.find.and.callFake(function () {
             return {
                 then: function (callback) {
                     return callback({data: data})

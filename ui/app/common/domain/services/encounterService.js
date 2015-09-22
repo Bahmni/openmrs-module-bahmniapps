@@ -147,13 +147,6 @@ angular.module('bahmni.common.domain')
         return searchable.promise;
     };
 
-    this.activeEncounter = function (params) {
-        return $http.get(Bahmni.Common.Constants.bahmniEncounterUrl + '/active', {
-            params: params,
-            withCredentials : true
-        });
-    };
-
     this.find = function (params) {
         return $http.post(Bahmni.Common.Constants.bahmniEncounterUrl + '/find', params, {
             withCredentials: true

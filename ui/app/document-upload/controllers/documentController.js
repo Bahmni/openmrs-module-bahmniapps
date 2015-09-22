@@ -153,10 +153,10 @@ angular.module('opd.documentupload')
 
             var getActiveEncounter = function() {
                 var currentProviderUuid = $rootScope.currentProvider ? $rootScope.currentProvider.uuid : null;
-                return encounterService.activeEncounter({
+                return encounterService.find({
                     patientUuid : $stateParams.patientUuid,
-                    encounterTypeUuid : encounterTypeUuid,
-                    providerUuid: currentProviderUuid,
+                    encounterTypeUuids : [encounterTypeUuid],
+                    providerUuids: !_.isEmpty(currentProviderUuid) ? [currentProviderUuid] : null,
                     includeAll :  Bahmni.Common.Constants.includeAllObservations,
                     locationUuid : locationUuid
                 }).then(function (encounterTransactionResponse) {
