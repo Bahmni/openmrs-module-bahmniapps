@@ -17,12 +17,12 @@ angular.module('bahmni.clinical')
 
             $scope.showDashboard = function (dashboard) {
                 if (!clinicalDashboardConfig.isCurrentTab(dashboard)) {
-                    $scope.$parent.$parent.$broadcast("event:switchDashboard", dashboard);
+                    $scope.$parent.$parent.$parent.$broadcast("event:switchDashboard", dashboard);
                 }
             };
 
             $scope.printDashboard = function () {
-                $scope.$parent.$parent.$broadcast("event:printDashboard", clinicalDashboardConfig.currentTab.printing);
+                $scope.$parent.$parent.$parent.$broadcast("event:printDashboard", clinicalDashboardConfig.currentTab.printing);
             };
 
             $scope.allowConsultation = function(){
