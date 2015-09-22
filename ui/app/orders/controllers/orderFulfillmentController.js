@@ -16,9 +16,9 @@ app.controller('OrderFulfillmentController', ['$scope', '$rootScope', '$statePar
 
     var getActiveEncounter = function () {
         var currentProviderUuid = $rootScope.currentProvider ? $rootScope.currentProvider.uuid : null;
-        return encounterService.activeEncounter({
+        return encounterService.find({
             patientUuid: $scope.patient.uuid,
-            providerUuid: currentProviderUuid,
+            providerUuids: !_.isEmpty(currentProviderUuid) ? [currentProviderUuid] : null,
             includeAll: Bahmni.Common.Constants.includeAllObservations,
             locationUuid: sessionService.getLoginLocationUuid()
         }).then(function (encounterTransactionResponse) {

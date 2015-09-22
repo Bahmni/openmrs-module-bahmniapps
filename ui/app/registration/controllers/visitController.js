@@ -25,12 +25,12 @@ angular.module('bahmni.registration')
             };
 
             var getActiveEncounter = function () {
-                return encounterService.activeEncounter({
+                return encounterService.find({
                     "patientUuid": patientUuid,
-                    "providerUuid": $scope.currentProvider.uuid,
+                    "providerUuids": !_.isEmpty($scope.currentProvider.uuid) ? [$scope.currentProvider.uuid] : null,
                     "includeAll": false,
                     locationUuid: locationUuid,
-                    encounterTypeUuid: regEncounterTypeUuid
+                    encounterTypeUuids: [regEncounterTypeUuid]
                 })
                     .success(function (data) {
                         $scope.observations = data.observations;

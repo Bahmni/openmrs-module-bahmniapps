@@ -123,12 +123,12 @@ describe('VisitController', function () {
             return;
         });
         sessionService = jasmine.createSpyObj('sessionService', ['getLoginLocationUuid']);
-        encounterService = jasmine.createSpyObj('encounterService', ['create', 'activeEncounter']);
+        encounterService = jasmine.createSpyObj('encounterService', ['create', 'find']);
         window = jasmine.createSpyObj('window', ['confirm']);
         bahmniCookieStore = jasmine.createSpyObj('$bahmniCookieStore',['put']);
-        getEncounterPromise = specUtil.createServicePromise('activeEncounter');
+        getEncounterPromise = specUtil.createServicePromise('find');
         getPatientPromise = specUtil.createServicePromise('get');
-        encounterService.activeEncounter.and.returnValue(getEncounterPromise);
+        encounterService.find.and.returnValue(getEncounterPromise);
         patientService.get.and.returnValue(getPatientPromise);
         scope.currentProvider = {uuid: ''};
         patientMapper.map.and.returnValue(patient);

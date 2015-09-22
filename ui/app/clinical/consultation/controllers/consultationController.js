@@ -34,7 +34,7 @@ angular.module('bahmni.clinical').controller('ConsultationController',
             };
 
             $scope.editEncounterClass = function(){
-                return $stateParams.encounterUuid !== 'active';
+                return $stateParams.encounterUuid !== undefined && $stateParams.encounterUuid !== 'active';
             }
 
             var setCurrentBoardBasedOnPath = function () {
