@@ -2,9 +2,9 @@
 
 angular.module('bahmni.clinical').controller('ConsultationController',
     ['$scope', '$rootScope', '$state', '$location', 'clinicalAppConfigService', 'urlHelper', 'contextChangeHandler',
-        'spinner', 'encounterService', 'messagingService', 'sessionService', 'retrospectiveEntryService', 'patientContext', 'consultationContext', '$q', 'patientVisitHistoryService',
+        'spinner', 'encounterService', 'messagingService', 'sessionService', 'retrospectiveEntryService', 'patientContext', 'consultationContext', '$q', 'patientVisitHistoryService', '$stateParams',
         function ($scope, $rootScope, $state, $location, clinicalAppConfigService, urlHelper, contextChangeHandler,
-                  spinner, encounterService, messagingService, sessionService, retrospectiveEntryService, patientContext, consultationContext, $q, patientVisitHistoryService) {
+                  spinner, encounterService, messagingService, sessionService, retrospectiveEntryService, patientContext, consultationContext, $q, patientVisitHistoryService, $stateParams) {
             $scope.patient = patientContext.patient;
             $scope.consultation = consultationContext;
 
@@ -18,7 +18,7 @@ angular.module('bahmni.clinical').controller('ConsultationController',
 
             $scope.gotoPatientDashboard = function () {
                 if (contextChangeHandler.execute()["allow"]) {
-                    $location.path("/patient/" + patientContext.patient.uuid + "/dashboard");
+                    $state.go("patient.dashboard", {patientUuid: patientContext.patient.uuid, encounterUuid: "active"})
                 }
             };
 
@@ -29,6 +29,10 @@ angular.module('bahmni.clinical').controller('ConsultationController',
             $scope.getShorterName = function (value) {
                 return $scope.isLongerName(value) ? value.substring(0, 15) + "..." : value;
             };
+
+            $scope.editEncounterClass = function(){
+                return $stateParams.encounterUuid !== 'active';
+            }
 
             var setCurrentBoardBasedOnPath = function () {
                 var currentPath = $location.path();

@@ -62,14 +62,6 @@ angular.module('bahmni.clinical')
             spinner.forPromise(init());
 
             $scope.editConsultation = function(encounter){
-                $bahmniCookieStore.remove(Bahmni.Common.Constants.retrospectiveEntryEncounterDateCookieName);
-                $bahmniCookieStore.put(Bahmni.Common.Constants.retrospectiveEntryEncounterDateCookieName,  encounter.encounterDatetime, {path: '/', expires: 1});
-
-                $bahmniCookieStore.remove(Bahmni.Common.Constants.grantProviderAccessDataCookieName);
-                $bahmniCookieStore.put(Bahmni.Common.Constants.grantProviderAccessDataCookieName, encounter.encounterProviders[0].provider, {path: '/', expires: 1});
-
-                $rootScope.retrospectiveEntry = Bahmni.Common.Domain.RetrospectiveEntry.createFrom(Bahmni.Common.Util.DateUtil.getDate(encounter.encounterDatetime));
-
                 if ($scope.$parent.closeThisDialog) {
                     $scope.$parent.closeThisDialog("closing modal");
                 }
