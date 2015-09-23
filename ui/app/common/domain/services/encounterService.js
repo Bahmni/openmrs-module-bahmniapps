@@ -10,13 +10,15 @@ angular.module('bahmni.common.domain')
             stripExtraConceptInfo(obs);
         });
 
-        var providerData = $bahmniCookieStore.get(Bahmni.Common.Constants.grantProviderAccessDataCookieName);
         encounter.providers = encounter.providers || [];
 
-        if(providerData && providerData.uuid){
-            encounter.providers.push( {"uuid" : providerData.uuid});
-        }else if ($rootScope.currentProvider && $rootScope.currentProvider.uuid) {
-            encounter.providers.push( {"uuid" : $rootScope.currentProvider.uuid });
+        var providerData = $bahmniCookieStore.get(Bahmni.Common.Constants.grantProviderAccessDataCookieName);
+        if(_.isEmpty(encounter.providers)) {
+            if (providerData && providerData.uuid) {
+                encounter.providers.push({"uuid": providerData.uuid});
+            } else if ($rootScope.currentProvider && $rootScope.currentProvider.uuid) {
+                encounter.providers.push({"uuid": $rootScope.currentProvider.uuid });
+            }
         }
         return encounter;
     };
