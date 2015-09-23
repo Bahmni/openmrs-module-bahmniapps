@@ -2,7 +2,7 @@
 
 describe("DocumentController", function () {
 
-    var scope;
+    var scope, translate;
     var documentController;
     var encounterService;
     var stateParams = {patientUuid: 'pat-uuid', visitUuid: "abc"};
@@ -171,7 +171,8 @@ describe("DocumentController", function () {
                 $stateParams: stateParams,
                 visitDocumentService: visitDocumentService,
                 encounterService: encounterService,
-                sessionService: sessionService
+                sessionService: sessionService,
+                $translate: translate
             });
             scope.visits = [visit1, visit2];
 
