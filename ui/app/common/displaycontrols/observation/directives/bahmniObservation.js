@@ -40,7 +40,7 @@ angular.module('bahmni.common.displaycontrol.observation')
 
                 $scope.isClickable= function(){
                     return $scope.isOnDashboard && $scope.section.allObservationDetails &&
-                        ($scope.section.allObservationDetails.pivotTable || $scope.section.allObservationDetails.observationGraph);
+                        ($scope.section.allObservationDetails.pivotTable || $scope.sectio.allObservationDetails.observationGraph);
                 };
 
                 

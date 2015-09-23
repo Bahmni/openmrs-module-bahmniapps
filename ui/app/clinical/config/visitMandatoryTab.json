@@ -27,7 +27,7 @@
         },
         "Observations": {
             "type": "observation",
-            "title": "Observations",
+            "translationKey": "VISIT_TITLE_OBSERVATIONS_KEY",
             "displayOrder": 2,
             "config": {
                 "numberOfVisits": 1,

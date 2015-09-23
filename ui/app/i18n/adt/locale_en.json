@@ -1,4 +1,10 @@
 {
     "SEARCH_NAME_PLACEHOLDER_KEY": "Search Name/ID  ...",
-    "SEARCH_KEY": "Search"
+    "SEARCH_KEY": "Search",
+    "NO_ADMISSION_DETAILS_MESSAGE": "No Admission Details for this patient.",
+
+    "NO_DISPOSTIONS_AVAILABLE_MESSAGE_KEY": "No dispositions available.",
+    "DISPLAY_CONTROL_ERROR_MESSAGE_KEY": "No {{ displayControl }} for this patient"
+
+
 }
