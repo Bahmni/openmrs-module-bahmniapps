@@ -33,9 +33,9 @@
         </ul>
 
         <div class="dashboard-header-right-wrapper">
-            <button class="dialog-button-group" ng-if="showPrint()" ng-click="print()" accesskey="r">
+            <button class="dialog-button-group" ng-if="showPrint()" ng-click="print()" accesskey="{{'CLINICAL_PRINT_ACCESS_KEY'| translate}}" ng-bind-html="'CLINICAL_PRINT_TRANSLATION_KEY'|translate">
                 <i class="fa fa-print"></i>
-                P<u>r</u>int
+               
             </button>
             <span class="grouped-buttons" ng-if="visitHistory.activeVisit || retrospectiveEntry.isRetrospective">
                 <a class=" btn--left btn--success "  ng-click="collapseControlPanel()" href="#{{consultationBoardLink}}">Consultation</a>

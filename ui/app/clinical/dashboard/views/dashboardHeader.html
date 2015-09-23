@@ -36,9 +36,9 @@
 
         <div class="dashboard-header-right-wrapper">
             <button ng-if="clinicalDashboardConfig.showPrint()" class="dialog-button-group" ng-click="printDashboard()"
-                    accesskey="r">
+                    accesskey="{{'CLINICAL_PRINT_ACCESS_KEY'| translate}}" ng-bind-html="'CLINICAL_PRINT_TRANSLATION_KEY'|translate">
                 <i class="fa fa-print"></i>
-                P<u>r</u>int
+
             </button>
             <div class="dashboard-date-picker" ng-controller="PatientListHeaderController">
                 <div class="retro-date-widget-wrapper">

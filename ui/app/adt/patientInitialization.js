@@ -1,11 +1,11 @@
 'use strict';
 
-angular.module('bahmni.adt').factory('patientInitialization', ['$rootScope', '$q', 'patientService', 'initialization', 'bedService', 'spinner',
-    function ($rootScope, $q, patientService, initialization, bedService, spinner) {
+angular.module('bahmni.adt').factory('patientInitialization', ['$rootScope', '$q', 'patientService', 'initialization', 'bedService', 'spinner','$translate',
+    function ($rootScope, $q, patientService, initialization, bedService, spinner,$translate) {
         return function (patientUuid) {
 
             var getPatient = function () {
-                var patientMapper = new Bahmni.PatientMapper($rootScope.patientConfig, $rootScope);
+                var patientMapper = new Bahmni.PatientMapper($rootScope.patientConfig, $rootScope,$translate);
                 var patientPromise = $q.defer();
                 patientService.getPatient(patientUuid).then(function (response) {
                     $rootScope.patient = patientMapper.map(response.data);

@@ -1,13 +1,13 @@
 'use strict';
 
 angular.module('opd.documentupload')
-    .controller('DocumentController', ['$scope', '$stateParams', 'visitService', 'patientService', 'encounterService', 'spinner', 'visitDocumentService', '$rootScope', '$http', '$q', '$timeout', 'sessionService', '$anchorScroll',
-        function ($scope, $stateParams, visitService, patientService, encounterService, spinner, visitDocumentService, $rootScope, $http, $q, $timeout, sessionService, $anchorScroll) {
+    .controller('DocumentController', ['$scope', '$stateParams', 'visitService', 'patientService', 'encounterService', 'spinner', 'visitDocumentService', '$rootScope', '$http', '$q', '$timeout', 'sessionService', '$anchorScroll','$translate',
+        function ($scope, $stateParams, visitService, patientService, encounterService, spinner, visitDocumentService, $rootScope, $http, $q, $timeout, sessionService, $anchorScroll,$translate) {
             var encounterTypeUuid;
             var topLevelConceptUuid;
             var customVisitParams = Bahmni.DocumentUpload.Constants.visitRepresentation;
             var DateUtil = Bahmni.Common.Util.DateUtil;
-            var patientMapper = new Bahmni.PatientMapper($rootScope.patientConfig, $rootScope);
+            var patientMapper = new Bahmni.PatientMapper($rootScope.patientConfig, $rootScope,$translate);
             var activeEncounter = {};
             var locationUuid = sessionService.getLoginLocationUuid();
 
