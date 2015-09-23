@@ -3,12 +3,52 @@
 angular.module('bahmni.clinical').controller('ConsultationController',
     ['$scope', '$rootScope', '$state', '$location', 'clinicalAppConfigService', 'urlHelper', 'contextChangeHandler',
         'spinner', 'encounterService', 'messagingService', 'sessionService', 'retrospectiveEntryService', 'patientContext', 'consultationContext', '$q',
-        'patientVisitHistoryService', '$stateParams',
+        'patientVisitHistoryService', '$stateParams', '$window', 'visitHistory', 'clinicalDashboardConfig','appService','ngDialog',
         function ($scope, $rootScope, $state, $location, clinicalAppConfigService, urlHelper, contextChangeHandler,
                   spinner, encounterService, messagingService, sessionService, retrospectiveEntryService, patientContext, consultationContext, $q,
-                  patientVisitHistoryService, $stateParams) {
+                  patientVisitHistoryService, $stateParams, $window, visitHistory, clinicalDashboardConfig, appService, ngDialog) {
             $scope.patient = patientContext.patient;
             $scope.consultation = consultationContext;
+
+
+            $scope.stateChange = function(){
+                console.log($state.current.name);
+                return $state.current.name === 'patient.dashboard.show'
+            };
+
+            $scope.visitHistory = visitHistory;
+            $scope.consultationBoardLink = clinicalAppConfigService.getConsultationBoardLink();
+            $scope.showControlPanel = false;
+            $scope.clinicalDashboardConfig = clinicalDashboardConfig;
+
+            $scope.openConsultationInNewTab = function () {
+                $window.open('#' + $scope.consultationBoardLink, '_blank');
+            };
+
+            $scope.showDashboard = function (dashboard) {
+                if (!clinicalDashboardConfig.isCurrentTab(dashboard)) {
+                    $scope.$parent.$parent.$broadcast("event:switchDashboard", dashboard);
+                }
+            };
+
+            $scope.printDashboard = function () {
+                $scope.$parent.$parent.$broadcast("event:printDashboard", clinicalDashboardConfig.currentTab.printing);
+            };
+
+            $scope.allowConsultation = function(){
+                return appService.getAppDescriptor().getConfigValue('allowConsultationWhenNoOpenVisit');
+            };
+
+            $scope.closeDashboard = function (dashboard) {
+                clinicalDashboardConfig.closeTab(dashboard);
+                $scope.$parent.$parent.$broadcast("event:switchDashboard", clinicalDashboardConfig.currentTab);
+            };
+
+            $scope.closeAllDialogs = function() {
+                ngDialog.closeAll();
+            };
+
+
 
             $scope.availableBoards = [];
             $scope.configName = $stateParams.configName;
@@ -21,7 +61,7 @@ angular.module('bahmni.clinical').controller('ConsultationController',
 
             $scope.gotoPatientDashboard = function () {
                 if (contextChangeHandler.execute()["allow"]) {
-                    $state.go("patient.dashboard", {configName: $scope.configName, patientUuid: patientContext.patient.uuid, encounterUuid: "active"});
+                    $state.go("patient.dashboard.show", {configName: $scope.configName, patientUuid: patientContext.patient.uuid, encounterUuid: "active"});
                 }
             };
 

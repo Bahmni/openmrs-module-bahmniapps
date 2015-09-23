@@ -10,6 +10,10 @@ angular.module('bahmni.clinical')
             $scope.clinicalDashboardConfig = clinicalDashboardConfig;
             $scope.visitSummary = visitSummary;
 
+            $scope.stateChange = function(){
+                return $state.current.name === 'patient.dashboard.show'
+            };
+
             $scope.$on("event:switchDashboard", function (event, dashboard) {
                 $scope.init(dashboard);
             });
@@ -25,7 +29,7 @@ angular.module('bahmni.clinical')
                         $scope.diseaseTemplates = diseaseTemplates;
                         $scope.dashboard = Bahmni.Common.DisplayControl.Dashboard.create(dashboard || {});
                         $scope.sectionGroups =  $scope.dashboard.getSections($scope.diseaseTemplates);
-                        $scope.currentDashboardTemplateUrl = $state.current.views.content.templateUrl;
+                        //$scope.currentDashboardTemplateUrl = $state.current.views.content.templateUrl; TODO: vikachi
                     });
             };
 
