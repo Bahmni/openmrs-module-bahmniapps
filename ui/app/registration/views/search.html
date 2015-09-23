@@ -61,7 +61,7 @@
                 <th><strong>{{ 'REGISTRATION_LABEL_AGE' | translate}}</strong></th>
                 <th><strong>{{addressSearchConfig.label}}</strong></th>
                 <th><strong>{{ 'REGISTRATION_LABEL_REGISTRATION_DATE' | translate}}</strong></th>
-                <th class="edit-col"></th>
+                <th class="edit-col" ng-if="searchActions.length > 0"></th>
             </tr>
             </thead>
             <tbody>
@@ -74,7 +74,7 @@
                 <td>{{result.age}}</td>
                 <td>{{result.addressFieldValue}}</td>
                 <td>{{result.dateCreated | bahmniDate}}</td>
-                <td class="edit-col">
+                <td class="edit-col" ng-if="searchActions.length > 0">
                     <div split-button options="searchActions"
                             primary-option="searchActions[0]"
                              option-text="extensionActionText" option-click="forPatient(result).doExtensionAction" class="split-button-wrapper">
