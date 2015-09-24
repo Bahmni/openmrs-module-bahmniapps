@@ -16,6 +16,8 @@ angular.module('bahmni.adt')
 
             $scope.toggleExpandState = function () {
                 $scope.expanded = !$scope.expanded;
+                if(!$scope.expanded)
+                $scope.showWardList();
                 if($scope.readOnly) {
                     $rootScope.currentUser.toggleFavoriteWard($scope.ward.ward.name);
                     userService.savePreferences();
