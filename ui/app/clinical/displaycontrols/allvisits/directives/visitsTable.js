@@ -1,7 +1,8 @@
 'use strict';
 
 angular.module('bahmni.clinical')
-    .directive('visitsTable', ['patientVisitHistoryService', 'conceptSetService', 'spinner', '$state', '$q', '$bahmniCookieStore', '$rootScope', function (patientVisitHistoryService, conceptSetService, spinner, $state, $q, $bahmniCookieStore, $rootScope) {
+    .directive('visitsTable', ['patientVisitHistoryService', 'conceptSetService', 'spinner', '$state', '$q', '$bahmniCookieStore', '$rootScope', 'clinicalAppConfigService',
+        function (patientVisitHistoryService, conceptSetService, spinner, $state, $q, $bahmniCookieStore, $rootScope, clinicalAppConfigService) {
         var controller = function ($scope) {
             var getVisits = function () {
                 return patientVisitHistoryService.getVisitHistory($scope.patientUuid);
@@ -56,6 +57,9 @@ angular.module('bahmni.clinical')
                 return $q.all([getVisits(), getAllObservationTemplates()]).then(function (results) {
                     $scope.visits = results[0].visits;
                     $scope.observationTemplates = results[1].data.results[0].setMembers;
+                    $scope.patient = {uuid: $scope.patientUuid};
+                    var obsIgnoreList = clinicalAppConfigService.getObsIgnoreList();
+                    $scope.config = {showDetailsButton:false, obsIgnoreList:obsIgnoreList};
                 });
             };
 

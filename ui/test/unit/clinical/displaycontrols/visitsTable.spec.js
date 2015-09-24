@@ -8,6 +8,7 @@ describe("Visits Table display control", function () {
     beforeEach(module(function($provide) {
         $provide.value('$state', {});
         $provide.value('$bahmniCookieStore', {});
+        $provide.value('clinicalAppConfigService', {});
     }));
 
     beforeEach(inject(function (_$compile_, $rootScope, $httpBackend) {
