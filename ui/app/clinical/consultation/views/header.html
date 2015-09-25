@@ -16,8 +16,8 @@
            
 
         <ul class="header-tabs consultation-tabs">
-            <li class="tab-item" ng-repeat="board in availableBoards" ng-class="{'tab-selected':currentBoard.label==board.label}">
-                <a ng-click="showBoard(board.label)">{{board.translationKey|translate}}</a>
+            <li class="tab-item" ng-repeat="board in availableBoards" ng-class="{'tab-selected':currentBoard.translationKey==board.translationKey}">
+                <a ng-click="showBoard(board.translationKey)">{{ board.translationKey | translate }}</a>
             </li>
         </ul>
 
@@ -27,7 +27,7 @@
         </button>
         <button class="confirm save-consultation" ng-show="availableBoards" ng-click="save()" accesskey="{{'SAVE_ACCESS_KEY' | translate}}" class="confirm">
             <i class="fa fa-save"></i> 
-            <span class="text">{{"CLINICAL_SAVE_TRANSLATION_KEY"|translate}}</span>
+            <span class="text" ng-bind-html="'CLINICAL_SAVE_TRANSLATION_KEY'| translate"></span>
         </button>
     </div>
 </div>

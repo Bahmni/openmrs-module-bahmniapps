@@ -50,16 +50,16 @@ describe("ConsultationController", function () {
     });
 
     it("should return proper URL when showing a different board", function() {
-        var obsBoard = {label: "Observations", url: "concept-set-obs/observations"};
-        var treatmentBoard = {label: "Treatment", url: "treatment"};
+        var obsBoard = {translationKey: "Observations", url: "concept-set-obs/observations"};
+        var treatmentBoard = {translationKey: "Treatment", url: "treatment"};
         scope.availableBoards.push(obsBoard, treatmentBoard);
         var newUrl = scope.showBoard("Treatment");
         expect(newUrl).toEqual("/default/patient/somePatientUuid/treatment?encounterUuid=someEncounterUuid&programUuid=someProgramUuid");
     });
 
     it("should not append encounterUuid in query params if not available", function() {
-        var obsBoard = {label: "Observations", url: "concept-set-obs/observations"};
-        var treatmentBoard = {label: "Treatment", url: "treatment"};
+        var obsBoard = {translationKey: "Observations", url: "concept-set-obs/observations"};
+        var treatmentBoard = {translationKey: "Treatment", url: "treatment"};
         scope.availableBoards.push(obsBoard, treatmentBoard);
         state.params.encounterUuid = null;
         var newUrl = scope.showBoard("Treatment");
@@ -67,8 +67,8 @@ describe("ConsultationController", function () {
     });
 
     it("should not append programUuid in query params if not available", function() {
-        var obsBoard = {label: "Observations", url: "concept-set-obs/observations"};
-        var treatmentBoard = {label: "Treatment", url: "treatment"};
+        var obsBoard = {translationKey: "Observations", url: "concept-set-obs/observations"};
+        var treatmentBoard = {translationKey: "Treatment", url: "treatment"};
         scope.availableBoards.push(obsBoard, treatmentBoard);
         state.params.programUuid = null;
         var newUrl = scope.showBoard("Treatment");

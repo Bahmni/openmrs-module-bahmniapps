@@ -13,9 +13,9 @@ angular.module('bahmni.clinical').controller('ConsultationController',
             $scope.availableBoards = [];
             $scope.configName = $stateParams.configName;
 
-            $scope.showBoard = function (label) {
+            $scope.showBoard = function (translationKey) {
                 $rootScope.collapseControlPanel();
-                var board = _.find($scope.availableBoards,{label:label});
+                var board = _.find($scope.availableBoards,{translationKey:translationKey});
                 return buttonClickAction(board);
             };
 

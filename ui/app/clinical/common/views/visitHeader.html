@@ -16,7 +16,7 @@
                 <span class="close" ng-click="closeTab(tab)">
                    <span class="close-icon">x</span>
                 </span>
-                <a ng-click="switchTab(tab)">{{tab.title}}</a>
+                <a ng-click="switchTab(tab)">{{tab.translationKey | translate}}</a>
 
             </li>
             <li class="tab-item new-tab tab-active" bm-pop-over autoclose="true" ng-show="visitTabConfig.getUnOpenedTabs().length > 0">
@@ -25,7 +25,7 @@
                 <div class="tab-submenu" bm-pop-over-target>
                     <ul>
                         <li ng-repeat="tab in visitTabConfig.getUnOpenedTabs()">
-                            <a class="submenu-item unOpenedDashboard" ng-click="switchTab(tab);">{{tab.title}} </a>
+                            <a class="submenu-item unOpenedDashboard" ng-click="switchTab(tab);">{{tab.translationKey | translate }} </a>
                         </li>
                     </ul>
                 </div>
