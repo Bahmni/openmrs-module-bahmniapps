@@ -7,10 +7,6 @@
             <i class="fa fa-bed fa-white"></i>
         </a>
 
-
-        <!--<span class="retro-date-text" ng-if="$parent.retrospectiveEntry.isRetrospective"
-              ng-bind="$parent.retrospectiveEntry.encounterDate | date:'dd/MM/yyyy'"/> -->
-
         <ul class="header-tabs" ng-if="clinicalDashboardConfig.showTabs()">
             <li class="tab-item dashboard" ng-repeat="dashboard in clinicalDashboardConfig.visibleTabs"
                 ng-class="{'tab-selected' : clinicalDashboardConfig.isCurrentTab(dashboard), 'tab-removable': clinicalDashboardConfig.isCurrentTab(dashboard) && !dashboard.displayByDefault}">
@@ -49,12 +45,12 @@
             </div>
             <span class="grouped-buttons">
                  <a class=" btn--left btn--success "
-                    ng-if="visitHistory.activeVisit || retrospectiveEntry.isRetrospective || allowConsultation()"
+                    ng-if="visitHistory.activeVisit || retrospectiveEntry || allowConsultation()"
                     ng-click="openConsultation()" >
                      {{'CONSULTATION_TAB_KEY' | translate}}
                  </a>
                 <a class="btn--right btn--success " title="Open in new window"
-                   ng-if="visitHistory.activeVisit || retrospectiveEntry.isRetrospective"
+                   ng-if="visitHistory.activeVisit || retrospectiveEntry"
                    ng-click="openConsultationInNewTab()"><i class="fa fa-external-link"></i></a>
            </span>
 

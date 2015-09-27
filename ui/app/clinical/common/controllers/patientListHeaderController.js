@@ -1,11 +1,11 @@
 'use strict';
 
 angular.module('bahmni.clinical')
-    .controller('PatientListHeaderController', ['$scope', '$rootScope', '$bahmniCookieStore', 'providerService', 'spinner', 'locationService', '$window', 'ngDialog',
-        function ($scope, $rootScope, $bahmniCookieStore, providerService, spinner, locationService, $window, ngDialog) {
+    .controller('PatientListHeaderController', ['$scope', '$rootScope', '$bahmniCookieStore', 'providerService', 'spinner', 'locationService', '$window', 'ngDialog','retrospectiveEntryService',
+        function ($scope, $rootScope, $bahmniCookieStore, providerService, spinner, locationService, $window, ngDialog, retrospectiveEntryService) {
             var DateUtil = Bahmni.Common.Util.DateUtil;
+            $scope.maxStartDate = DateUtil.getDateWithoutTime(DateUtil.today());
             var selectedProvider = {};
-            $scope.today = DateUtil.endOfToday().toISOString().split("T")[0];
             $scope.retrospectivePrivilege = Bahmni.Common.Constants.retrospectivePrivilege;
             $scope.selectedLocationUuid = {};
 
@@ -66,7 +66,7 @@ angular.module('bahmni.clinical')
                 var title = [];
                 if(getCurrentCookieLocation()) title.push(getCurrentCookieLocation().name);
                 if(getCurrentProvider() && getCurrentProvider().value) title.push(getCurrentProvider().value);
-                if(getCurrentDate() && !DateUtil.isSameDate(getCurrentDate(), DateUtil.today())) title.push(DateUtil.formatDateWithoutTime(getCurrentDate()));
+                if(retrospectiveEntryService.getRetrospectiveDate()) title.push(DateUtil.formatDateWithoutTime(retrospectiveEntryService.getRetrospectiveDate()));
                 return title.join(',');
             };
 
@@ -78,10 +78,6 @@ angular.module('bahmni.clinical')
                 return $bahmniCookieStore.get(Bahmni.Common.Constants.grantProviderAccessDataCookieName);
             };
 
-            var getCurrentDate = function () {
-                return $bahmniCookieStore.get(Bahmni.Common.Constants.retrospectiveEntryEncounterDateCookieName);
-            };
-
             var getLocationFor = function(uuid){
                 return _.find($scope.locations, function(location){
                     return location.uuid == uuid;
@@ -89,14 +85,7 @@ angular.module('bahmni.clinical')
             };
 
             var changeCookieData = function() {
-                $rootScope.retrospectiveEntry = $scope.date ? Bahmni.Common.Domain.RetrospectiveEntry.createFrom(DateUtil.getDate($scope.date)) : Bahmni.Common.Domain.RetrospectiveEntry.createFrom(DateUtil.getDate(DateUtil.today()));
-                $bahmniCookieStore.remove(Bahmni.Common.Constants.retrospectiveEntryEncounterDateCookieName);
-                if($scope.date){
-                    $bahmniCookieStore.put(Bahmni.Common.Constants.retrospectiveEntryEncounterDateCookieName,  $scope.date, {path: '/', expires: 1});
-                }else{
-                    $bahmniCookieStore.put(Bahmni.Common.Constants.retrospectiveEntryEncounterDateCookieName,  DateUtil.now(), {path: '/', expires: 1});
-                }
-
+                retrospectiveEntryService.resetRetrospectiveEntry($scope.date);
                 $bahmniCookieStore.remove(Bahmni.Common.Constants.grantProviderAccessDataCookieName);
                 $bahmniCookieStore.put(Bahmni.Common.Constants.grantProviderAccessDataCookieName, selectedProvider, {path: '/', expires: 1});
 
@@ -106,20 +95,17 @@ angular.module('bahmni.clinical')
             };
 
             var init = function () {
-                var retrospectiveDate = getCurrentDate();
-                $scope.date = retrospectiveDate ? new Date(retrospectiveDate) : new Date($scope.today);
-                $rootScope.retrospectiveEntry = retrospectiveDate ? Bahmni.Common.Domain.RetrospectiveEntry.createFrom(DateUtil.getDate(retrospectiveDate)) : Bahmni.Common.Domain.RetrospectiveEntry.createFrom(DateUtil.getDate(DateUtil.today()));
-
+                var retrospectiveDate = retrospectiveEntryService.getRetrospectiveDate();
+                $scope.date = retrospectiveDate ? new Date(retrospectiveDate) : new Date($scope.maxStartDate);
                 $scope.encounterProvider = getCurrentProvider();
                 selectedProvider = getCurrentProvider();
 
                 return locationService.getAllByTag("Login Location").then(function (response) {
                         $scope.locations = response.data.results;
                         $scope.selectedLocationUuid = getCurrentCookieLocation().uuid;
-
                     }
                 );
             };
 
-            return init();
+            return  init();
         }]);

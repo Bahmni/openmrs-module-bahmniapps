@@ -22,7 +22,7 @@ angular.module('bahmni.clinical')
             };
 
             $scope.isRetrospectiveMode = function(){
-                return retrospectiveEntryService.getRetrospectiveEntry().isRetrospective;
+                return !_.isEmpty(retrospectiveEntryService.getRetrospectiveEntry());
             };
 
             $scope.activateTab = function(tab){

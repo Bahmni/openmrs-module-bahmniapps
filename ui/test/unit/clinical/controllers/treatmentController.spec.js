@@ -6,16 +6,16 @@ describe("TreatmentController", function () {
     beforeEach(module('bahmni.clinical'));
 
     var DateUtil = Bahmni.Common.Util.DateUtil;
-    var scope, rootScope, contextChangeHandler, newTreatment, editTreatment, clinicalAppConfigService, ngDialog, retrospectiveEntryService;
-
+    var scope, rootScope, contextChangeHandler, newTreatment, editTreatment, clinicalAppConfigService, ngDialog, encounterDateTime;
     beforeEach(inject(function ($controller, $rootScope) {
         scope = $rootScope.$new();
         rootScope = $rootScope;
-        scope.consultation = {saveHandler: new Bahmni.Clinical.SaveHandler(), activeAndScheduledDrugOrders: []};
+        encounterDateTime = moment("2014-03-02").toDate();
+        scope.consultation = {saveHandler: new Bahmni.Clinical.SaveHandler(), activeAndScheduledDrugOrders: [], encounterDateTime: encounterDateTime};
         var now = DateUtil.now();
         ngDialog = jasmine.createSpyObj('ngDialog', ['open', 'close']);
         spyOn(Bahmni.Common.Util.DateUtil, 'now').and.returnValue(now);
-        newTreatment = new Bahmni.Clinical.DrugOrderViewModel({}, {});
+        newTreatment = new Bahmni.Clinical.DrugOrderViewModel({}, {}, {}, encounterDateTime);
         editTreatment = new Bahmni.Clinical.DrugOrderViewModel(null, null);
         scope.currentBoard = {extension: {}, extensionParams: {}};
         contextChangeHandler = jasmine.createSpyObj('contextChangeHandler', ['add']);
@@ -24,10 +24,6 @@ describe("TreatmentController", function () {
         clinicalAppConfigService = jasmine.createSpyObj('clinicalAppConfigService', ['getTreatmentActionLink', 'getDrugOrderConfig']);
         clinicalAppConfigService.getTreatmentActionLink.and.returnValue([]);
         clinicalAppConfigService.getDrugOrderConfig.and.returnValue({});
-
-        var retrospectiveEntry = Bahmni.Common.Domain.RetrospectiveEntry.createFrom(now);
-        retrospectiveEntryService = jasmine.createSpyObj('retrospectiveEntryService', ['getRetrospectiveEntry']);
-        retrospectiveEntryService.getRetrospectiveEntry.and.returnValue(retrospectiveEntry);
 
         $controller('TreatmentController', {
             $scope: scope,
@@ -41,8 +37,7 @@ describe("TreatmentController", function () {
                     {name: "Day(s)", factor: 1},
                     {name: "Week(s)", factor: 7},
                     {name: "Month(s)", factor: 30}
-                ]},
-            retrospectiveEntryService: retrospectiveEntryService
+                ]}
         });
     }));
 
@@ -1090,8 +1085,9 @@ describe("TreatmentController", function () {
     describe("Clear Form", function () {
         var isSameAs = function (obj1, obj2) {
             for (var key in obj1) {
-                if (key !== "_effectiveStartDate" && key !== "effectiveStartDate" && typeof obj1[key] !== 'function') {
+                if (key !== "_effectiveStartDate" && key !== "effectiveStartDate" && key !== "isEditAllowed" && typeof obj1[key] !== 'function') {
                     if (!_.isEqual(obj1[key], obj2[key])) {
+                        dump(key, obj1[key], obj2[key])
                         return false;
                     }
                 }
@@ -1101,20 +1097,24 @@ describe("TreatmentController", function () {
         it("should do nothing if form is blank", function () {
             scope.treatment = newTreatment;
             scope.clearForm();
-            expect(isSameAs(scope.treatment[0], newTreatment)).toBeTruthy();
+            expect(isSameAs(scope.treatment, newTreatment)).toBeTruthy();
+            expect(scope.treatment.isEditAllowed).toBeFalsy();
         });
 
         it("should clear treatment object", function () {
             scope.treatment = {drug: {name: 'Calpol'}};
             scope.clearForm();
-            expect(isSameAs(scope.treatment[0], newTreatment)).toBeTruthy();
+            expect(isSameAs(scope.treatment, newTreatment)).toBeTruthy();
+            expect(scope.treatment.effectiveStartDate).toEqual(encounterDateTime);
+            expect(scope.treatment.isEditAllowed).toBeFalsy();
         });
 
         it("should reset the treatment being edited", function () {
             scope.treatments = [editTreatment, newTreatment, newTreatment];
             scope.edit(0);
             scope.clearForm();
-            expect(isSameAs(scope.treatment[2], newTreatment)).toBeTruthy();
+            expect(isSameAs(scope.treatment, newTreatment)).toBeTruthy();
+            expect(scope.treatment.isEditAllowed).toBeFalsy();
             expect(scope.treatments[0].isBeingEdited).toBeFalsy();
             expect(scope.treatments[0].isDiscontinuedAllowed).toBeTruthy();
         });

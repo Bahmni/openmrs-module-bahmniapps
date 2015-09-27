@@ -47,6 +47,9 @@ angular.module('consultation')
                         patientSearchBackLink.state = 'search.patientsearch({configName: \"' + $stateParams.configName + '\"})';
 
                         return initialization($stateParams.configName);
+                    },
+                    retrospectiveIntialization: function(retrospectiveEntryService){
+                        return retrospectiveEntryService.initializeRetrospectiveEntry();
                     }
                 }
             })
@@ -94,7 +97,7 @@ angular.module('consultation')
                 views: {
                     'content': {
                         template: '<div ui-view="dashboard-header"></div> <div ui-view="dashboard-content"></div>' +
-                                    '<patient-control-panel patient="patient" visit-history="visitHistory" visit="visit" show="showControlPanel"/>',
+                                    '<patient-control-panel patient="patient" visit-history="visitHistory" visit="visit" show="showControlPanel" consultation="consultation"/>',
                         controller: function($scope, visitHistory, consultationContext){
                             $scope.visitHistory = visitHistory;
                             $scope.consultation = consultationContext;
@@ -105,6 +108,9 @@ angular.module('consultation')
                 resolve: {
                     visitHistory: function (visitHistoryInitialization, $stateParams) {
                         return visitHistoryInitialization($stateParams.patientUuid);
+                    },
+                    retrospectiveIntialization: function(retrospectiveEntryService){
+                        return retrospectiveEntryService.initializeRetrospectiveEntry();
                     },
                     consultationContext: function (consultationInitialization, initialization, $stateParams) {
                         return consultationInitialization($stateParams.patientUuid, $stateParams.encounterUuid, $stateParams.programUuid);

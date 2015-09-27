@@ -47,10 +47,15 @@
             </li>
         </ul>
         <ul show-if-privilege="{{retrospectivePrivilege}}">
-            <li>
-                <label for="retro-date-widget" class="retro-date-widget" >{{"ENTERING_DATA_FOR_TRANSLATION_KEY"| translate}}</label>
+            <li ng-hide="isInEditEncounterMode()">
+                <label for="retro-date-widget"  class="retro-date-widget" >{{"ENTERING_DATA_FOR_TRANSLATION_KEY"| translate}}</label>
                 <br>
-                <label class="retro-date-widget disabled-date">{{$parent.retrospectiveEntry.encounterDate| bahmniDate}}</label>
+                <label class="retro-date-widget disabled-date">{{consultation.encounterDateTime| bahmniDate}}</label>
+            </li>
+            <li ng-show="isInEditEncounterMode()">
+                <label for="retro-date-widget"  class="retro-date-widget" >{{"EDITITNG_DATA_FOR_ENCOUNTER_TRANSLATION_KEY" | translate}}</label>
+                <br>
+                <label class="retro-date-widget disabled-date">{{consultation.encounterDateTime| bahmniDateTime}}</label>
             </li>
         </ul>
         <ul show-if-privilege="{{encounterProviderPrivilege}}" ng-if="isValidProvider()">

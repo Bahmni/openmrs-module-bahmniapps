@@ -5,8 +5,7 @@ angular.module('bahmni.clinical').controller('ClinicalController',
         function ($scope, retrospectiveEntryService, $rootScope) {
 
             $scope.retrospectiveClass = function () {
-                return (retrospectiveEntryService.getRetrospectiveEntry().isRetrospective);
-                
+                return !_.isEmpty(retrospectiveEntryService.getRetrospectiveEntry());
             };
 
             $rootScope.toggleControlPanel = function () {

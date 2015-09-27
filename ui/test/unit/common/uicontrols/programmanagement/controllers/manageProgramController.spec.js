@@ -2,8 +2,7 @@
 
 describe("ManageProgramController", function () {
 
-    var scope, rootScope, messageService, $bahmniCookieStore, i = 0, programService, _provide, deferred, q, _spinner;
-
+    var scope, rootScope, messageService, i = 0, programService, _provide, deferred, q, _spinner, retrospectiveEntryService;
     beforeEach(module('bahmni.common.uicontrols.programmanagment'));
 
     beforeEach(module(function ($provide) {
@@ -42,15 +41,15 @@ describe("ManageProgramController", function () {
         });
 
 
-        $bahmniCookieStore = jasmine.createSpyObj('$bahmniCookieStore', ['get']);
 
         _spinner = jasmine.createSpyObj('spinner', ['forPromise']);
         messageService = jasmine.createSpyObj('messageService', ['showMessage']);
+        retrospectiveEntryService = jasmine.createSpyObj('retrospectiveEntryService', ['getRetrospectiveDate']);
 
         $provide.value('programService', programService);
-        $provide.value('$bahmniCookieStore', $bahmniCookieStore);
         $provide.value('spinner', _spinner);
         $provide.value('messagingService', messageService);
+        $provide.value('retrospectiveEntryService', retrospectiveEntryService);
     }));
 
 
@@ -107,8 +106,7 @@ describe("ManageProgramController", function () {
         it("should validate if state to be transited is starting after the current running state", function () {
             scope.$apply(setUp);
             var programToBeUpdated = listOfPrograms.activePrograms[0];
-            $bahmniCookieStore.get.and.callFake(function(cookieName){
-                if(cookieName == Bahmni.Common.Constants.retrospectiveEntryEncounterDateCookieName)
+            retrospectiveEntryService.getRetrospectiveDate.and.callFake(function(){
                     return '2015-07-12';
             });
 
@@ -120,9 +118,8 @@ describe("ManageProgramController", function () {
         it("should validate if state to be transited not selected", function(){
             scope.$apply(setUp);
             var programToBeUpdated = listOfPrograms.activePrograms[0];
-            $bahmniCookieStore.get.and.callFake(function(cookieName){
-                if(cookieName == Bahmni.Common.Constants.retrospectiveEntryEncounterDateCookieName)
-                    return '2015-07-19';
+            retrospectiveEntryService.getRetrospectiveDate.and.callFake(function () {
+                return '2015-07-19';
 
             });
             scope.programEdited.selectedState = null;
@@ -135,8 +132,7 @@ describe("ManageProgramController", function () {
         it("should transit from one state to another successfully", function(){
             scope.$apply(setUp);
             var programToBeUpdated = listOfPrograms.activePrograms[0];
-            $bahmniCookieStore.get.and.callFake(function(cookieName){
-                if(cookieName == Bahmni.Common.Constants.retrospectiveEntryEncounterDateCookieName)
+            retrospectiveEntryService.getRetrospectiveDate.and.callFake(function(){
                     return '2015-07-19';
 
             });
@@ -150,8 +146,7 @@ describe("ManageProgramController", function () {
         it("should show failure message on any server error with state transition", function(){
             scope.$apply(setUp);
             var programToBeUpdated = listOfPrograms.activePrograms[0];
-            $bahmniCookieStore.get.and.callFake(function(cookieName){
-                if(cookieName == Bahmni.Common.Constants.retrospectiveEntryEncounterDateCookieName)
+            retrospectiveEntryService.getRetrospectiveDate.and.callFake(function(){
                     return '2015-07-19';
 
             });
@@ -174,8 +169,7 @@ describe("ManageProgramController", function () {
         it("should validate if program is ending before the current running state", function(){
             scope.$apply(setUp);
             var programToBeUpdated = listOfPrograms.activePrograms[0];
-            $bahmniCookieStore.get.and.callFake(function(cookieName){
-                if(cookieName == Bahmni.Common.Constants.retrospectiveEntryEncounterDateCookieName)
+            retrospectiveEntryService.getRetrospectiveDate.and.callFake(function(){
                     return '2015-07-12';
             });
 
@@ -187,8 +181,7 @@ describe("ManageProgramController", function () {
         it('should not end the program and validate if ouctome is not selected on ending the program', function(){
             scope.$apply(setUp);
             var programToBeUpdated = listOfPrograms.activePrograms[0];
-            $bahmniCookieStore.get.and.callFake(function(cookieName){
-                if(cookieName == Bahmni.Common.Constants.retrospectiveEntryEncounterDateCookieName)
+            retrospectiveEntryService.getRetrospectiveDate.and.callFake(function(){
                     return '2015-07-19';
             });
             programToBeUpdated.outcomeData = null;
@@ -201,8 +194,7 @@ describe("ManageProgramController", function () {
         it('should end a program successfully', function(){
             scope.$apply(setUp);
             var programToBeUpdated = listOfPrograms.activePrograms[0];
-            $bahmniCookieStore.get.and.callFake(function(cookieName){
-                if(cookieName == Bahmni.Common.Constants.retrospectiveEntryEncounterDateCookieName)
+            retrospectiveEntryService.getRetrospectiveDate.and.callFake(function(){
                     return '2015-07-19';
             });
             programToBeUpdated.outcomeData = {uuid: 'outcome-uuid'};

@@ -181,4 +181,71 @@ describe('patientControlPanelTest', function () {
         expect(compiledElementScope.links).not.toBeUndefined();
         expect(compiledElementScope.links).toEqual([{text: "Consultation", icon: "btn-consultation dashboard-btn", href: "#test"}]);
     });
+
+    it("isInEditEncounterMode() should return false for active encounter",function(){
+        stateParams = {encounterUuid: "active"};
+        mockBackend.expectGET('patientcontrolpanel/views/controlPanel.html').respond("<div>dummy</div>");
+
+
+        var _clinicalAppConfigService = jasmine.createSpyObj('clinicalAppConfigService',['getConsultationBoardLink']);
+        _clinicalAppConfigService.getConsultationBoardLink.and.returnValue("test");
+
+        _provide.value('$state',state);
+        _provide.value('$stateParams', stateParams);
+        _provide.value('clinicalAppConfigService',_clinicalAppConfigService);
+        var scope = rootScope.$new();
+        scope.visitHistory={
+            activeVisit: true
+        };
+        scope.section = {
+            numberOfVisits:1
+        };
+        scope.patient = {uuid: "patientUuid"};
+        scope.visitUuid= "1234";
+
+
+        var element = compile(simpleHtml)(scope);
+
+        scope.$digest();
+        mockBackend.flush();
+
+        var compiledElementScope = element.isolateScope();
+        scope.$digest();
+
+        expect(compiledElementScope.isInEditEncounterMode()).toBeFalsy();
+
+    });
+
+    it("isInEditEncounterMode() should return true on editing encounter",function(){
+        stateParams = {encounterUuid: "abcd-1234-efagksjk"};
+        mockBackend.expectGET('patientcontrolpanel/views/controlPanel.html').respond("<div>dummy</div>");
+
+
+        var _clinicalAppConfigService = jasmine.createSpyObj('clinicalAppConfigService',['getConsultationBoardLink']);
+        _clinicalAppConfigService.getConsultationBoardLink.and.returnValue("test");
+
+        _provide.value('$state',state);
+        _provide.value('$stateParams', stateParams);
+        _provide.value('clinicalAppConfigService',_clinicalAppConfigService);
+        var scope = rootScope.$new();
+        scope.visitHistory={
+            activeVisit: true
+        };
+        scope.section = {
+            numberOfVisits:1
+        };
+        scope.patient = {uuid: "patientUuid"};
+        scope.visitUuid= "1234";
+
+
+        var element = compile(simpleHtml)(scope);
+
+        scope.$digest();
+        mockBackend.flush();
+
+        var compiledElementScope = element.isolateScope();
+        scope.$digest();
+
+        expect(compiledElementScope.isInEditEncounterMode()).toBeTruthy();
+    })
 });

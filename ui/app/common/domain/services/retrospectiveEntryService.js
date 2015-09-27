@@ -3,31 +3,32 @@
 angular.module('bahmni.common.domain')
     .service('retrospectiveEntryService', ['$rootScope', '$bahmniCookieStore', function ($rootScope, $bahmniCookieStore) {
 
-        var self = this;
-        var hasRestrospectivePrivilege = function () {
-            _.find($bahmniCookieStore.get(Bahmni.Common.Constants.currentUser).privileges, function (privilege) {
-                return Bahmni.Common.Constants.retrospectivePrivilege === privilege.name;
-            });
-        };
-
+        var dateUtil = Bahmni.Common.Util.DateUtil;
 
         this.getRetrospectiveEntry = function () {
-            var dateUtil = Bahmni.Common.Util.DateUtil;
-            var retrospectiveEncounterDateCookie = $bahmniCookieStore.get(Bahmni.Common.Constants.retrospectiveEntryEncounterDateCookieName);
-
-            if (retrospectiveEncounterDateCookie) {
-                $rootScope.retrospectiveEntry = Bahmni.Common.Domain.RetrospectiveEntry.createFrom(dateUtil.getDate(retrospectiveEncounterDateCookie));
-                return $rootScope.retrospectiveEntry;
-            }
-
-            if ($rootScope.retrospectiveEntry && $rootScope.retrospectiveEntry.encounterDate)
-                return $rootScope.retrospectiveEntry;
-
-            $rootScope.retrospectiveEntry = Bahmni.Common.Domain.RetrospectiveEntry.createFrom(dateUtil.now());
             return $rootScope.retrospectiveEntry;
         };
 
-        self.getRetrospectiveEntry();
+        this.getRetrospectiveDate = function(){
+            return $rootScope.retrospectiveEntry && $rootScope.retrospectiveEntry.encounterDate;
+        };
+
+        this.initializeRetrospectiveEntry = function(){
+            var retrospectiveEncounterDateCookie = $bahmniCookieStore.get(Bahmni.Common.Constants.retrospectiveEntryEncounterDateCookieName);
+            if (retrospectiveEncounterDateCookie) {
+                $rootScope.retrospectiveEntry = Bahmni.Common.Domain.RetrospectiveEntry.createFrom(dateUtil.getDate(retrospectiveEncounterDateCookie));
+            }
+        };
+
+        this.resetRetrospectiveEntry = function(date){
+            $bahmniCookieStore.remove(Bahmni.Common.Constants.retrospectiveEntryEncounterDateCookieName, {path: '/', expires: 1});
+            $rootScope.retrospectiveEntry = undefined;
+
+            if(date && !dateUtil.isSameDate(date, dateUtil.today())){
+                $rootScope.retrospectiveEntry =   Bahmni.Common.Domain.RetrospectiveEntry.createFrom(dateUtil.getDate(date));
+                $bahmniCookieStore.put(Bahmni.Common.Constants.retrospectiveEntryEncounterDateCookieName,  date, {path: '/', expires: 1});
+            }
+        }
 
     }]
 );

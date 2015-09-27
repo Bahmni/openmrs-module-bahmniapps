@@ -41,6 +41,10 @@ angular.module('bahmni.common.patient')
             return $stateParams.visitUuid === visit.uuid;
         };
 
+        $scope.isInEditEncounterMode = function(){
+           return $stateParams.encounterUuid != undefined && $stateParams.encounterUuid != 'active';
+        };
+
         var getLinks = function () {
             var state = $state.current.name;
             if (state.match("patient.consultation")) {
@@ -80,7 +84,8 @@ angular.module('bahmni.common.patient')
         scope: {
             patient: "=",
             visitHistory: "=",
-            visit: "="
+            visit: "=",
+            consultation: "="
         }
     };
 }]);

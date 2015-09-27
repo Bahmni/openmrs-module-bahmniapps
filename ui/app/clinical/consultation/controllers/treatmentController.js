@@ -3,9 +3,9 @@
 angular.module('bahmni.clinical')
 
     .controller('TreatmentController', ['$scope', '$rootScope', 'contextChangeHandler', 'treatmentConfig', 'DrugService', '$timeout',
-        'clinicalAppConfigService','ngDialog', '$window', 'retrospectiveEntryService',
+        'clinicalAppConfigService','ngDialog', '$window',
         function ($scope, $rootScope, contextChangeHandler, treatmentConfig, drugService, $timeout,
-                  clinicalAppConfigService, ngDialog, $window, retrospectiveEntryService) {
+                  clinicalAppConfigService, ngDialog, $window) {
 
             var DateUtil = Bahmni.Common.Util.DateUtil;
 
@@ -34,14 +34,14 @@ angular.module('bahmni.clinical')
 
             var drugOrderHistory = null;
 
+            var encounterDate = DateUtil.parse($scope.consultation.encounterDateTime);
             var newTreatment = function () {
-
-                var newTreatment = new Bahmni.Clinical.DrugOrderViewModel(drugOrderAppConfig, $scope.treatmentConfig, null, retrospectiveEntryService.getRetrospectiveEntry().encounterDate);
+                var newTreatment = new Bahmni.Clinical.DrugOrderViewModel(drugOrderAppConfig, $scope.treatmentConfig, null, encounterDate);
                 newTreatment.isEditAllowed = false;
                 return newTreatment;
             };
 
-            $scope.today = retrospectiveEntryService.getRetrospectiveEntry().encounterDate;
+            $scope.minStartDate = encounterDate;
             $scope.treatment = $scope.consultation.incompleteTreatment || newTreatment();
             $scope.treatmentConfig.durationUnits.forEach(function (durationUnit) {
                 if (_.isEqual(durationUnit, $scope.treatment.durationUnit)) {

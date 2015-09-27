@@ -1,6 +1,6 @@
 angular.module('bahmni.common.uicontrols.programmanagment')
-    .controller('ManageProgramController', ['$scope', '$bahmniCookieStore', '$window', 'programService', 'spinner', 'messagingService',
-        function ($scope, $bahmniCookieStore, $window, programService, spinner, messagingService) {
+    .controller('ManageProgramController', ['$scope', 'retrospectiveEntryService', '$window', 'programService', 'spinner', 'messagingService',
+        function ($scope, retrospectiveEntryService, $window, programService, spinner, messagingService) {
             var DateUtil = Bahmni.Common.Util.DateUtil;
             $scope.programSelected = {};
             $scope.workflowStateSelected = {};
@@ -18,8 +18,8 @@ angular.module('bahmni.common.uicontrols.programmanagment')
             };
 
             var getCurrentDate = function () {
-                var currentDate = $bahmniCookieStore.get(Bahmni.Common.Constants.retrospectiveEntryEncounterDateCookieName);
-                return DateUtil.parse(currentDate || DateUtil.now());
+                var retrospectiveDate = retrospectiveEntryService.getRetrospectiveDate();
+                return DateUtil.parse(retrospectiveDate || DateUtil.now());
             };
 
             var init = function () {
