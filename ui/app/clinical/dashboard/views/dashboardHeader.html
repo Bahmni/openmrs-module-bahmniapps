@@ -48,9 +48,11 @@
                 </div>
             </div>
             <span class="grouped-buttons">
-                <a class=" btn--left btn--success "
-                   ng-if="visitHistory.activeVisit || retrospectiveEntry.isRetrospective || allowConsultation()"
-                   ng-click="closeAllDialogs();collapseControlPanel()" ui-sref="patient.consultation.observations({patientUuid: patient.uuid,programUuid: programUuid,conceptSetGroupName: 'observations'})"> {{'CONSULTATION_TAB_KEY' | translate}}</a>
+                 <a class=" btn--left btn--success "
+                    ng-if="visitHistory.activeVisit || retrospectiveEntry.isRetrospective || allowConsultation()"
+                    ng-click="openConsultation()" >
+                     {{'CONSULTATION_TAB_KEY' | translate}}
+                 </a>
                 <a class="btn--right btn--success " title="Open in new window"
                    ng-if="visitHistory.activeVisit || retrospectiveEntry.isRetrospective"
                    ng-click="openConsultationInNewTab()"><i class="fa fa-external-link"></i></a>

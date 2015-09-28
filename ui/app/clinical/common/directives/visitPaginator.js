@@ -12,7 +12,7 @@ angular.module('bahmni.clinical')
             $scope.visitHistoryEntry = visits[visitIndex];
 
             $scope.shouldBeShown = function () {
-                return $state.is('patient.visit');
+                return $state.is('patient.dashboard.visit');
             };
 
             $scope.hasNext = function () {

@@ -44,7 +44,7 @@ describe('VisitController', function () {
             }
         };
         state = $state;
-        state.current = state.current || {views: {content: {templateUrl: "/template/url"}}};
+        state.current = state.current || {views: {'dashboard-content': {templateUrl: "/template/url"}}};
         $controller = $injector.get('$controller');
         scope = $rootScope.$new();
         scope.patient = patient;
