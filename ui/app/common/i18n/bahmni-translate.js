@@ -25,9 +25,10 @@ angular.module('bahmni.common.i18n',['pascalprecht.translate'])
 
 function $bahmniTranslateProvider($translateProvider){
     this.init = function(options){
+        var preferredLanguage = window.localStorage["NG_TRANSLATE_LANG_KEY"] || "en";
         $translateProvider.useLoader('mergeLocaleFilesService', options);
         $translateProvider.useSanitizeValueStrategy('escaped');
-        $translateProvider.preferredLanguage('en');
+        $translateProvider.preferredLanguage(preferredLanguage);
         $translateProvider.useLocalStorage();
     };
     this.$get = [function () {
