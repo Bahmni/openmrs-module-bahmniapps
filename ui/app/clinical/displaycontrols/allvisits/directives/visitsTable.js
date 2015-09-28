@@ -18,7 +18,7 @@ angular.module('bahmni.clinical')
                 if ($scope.$parent.closeThisDialog) {
                     $scope.$parent.closeThisDialog("closing modal");
                 }
-                $state.go('patient.visit', {visitUuid: visit.uuid});
+                $state.go('patient.dashboard.visit', {visitUuid: visit.uuid});
             };
 
             $scope.hasVisits = function () {
@@ -65,7 +65,7 @@ angular.module('bahmni.clinical')
                 if ($scope.$parent.closeThisDialog) {
                     $scope.$parent.closeThisDialog("closing modal");
                 }
-                $state.go('patient.consultation.observations',{conceptSetGroupName: "observations", encounterUuid: encounter.uuid});
+                $state.go('patient.dashboard.show.observations',{conceptSetGroupName: "observations", encounterUuid: encounter.uuid});
             }
 
             $scope.getProviderDisplayName = function(encounter){

@@ -12,7 +12,6 @@ angular.module('bahmni.clinical').controller('ConsultationController',
 
 
             $scope.stateChange = function(){
-                console.log($state.current.name);
                 return $state.current.name === 'patient.dashboard.show'
             };
 
@@ -75,7 +74,7 @@ angular.module('bahmni.clinical').controller('ConsultationController',
 
             $scope.editEncounterClass = function(){
                 return $stateParams.encounterUuid !== undefined && $stateParams.encounterUuid !== 'active';
-            }
+            };
 
             var setCurrentBoardBasedOnPath = function () {
                 var currentPath = $location.path();
@@ -111,7 +110,23 @@ angular.module('bahmni.clinical').controller('ConsultationController',
                     url = url + "?" + queryParams.join("&");
                 }
 
+                $scope.lastConsultationTabUrl = url;
                 return $location.url(url);
+            };
+
+            $scope.openConsultation = function() {
+                $scope.closeAllDialogs();
+                $scope.collapseControlPanel();
+                switchToConsultationTab();
+            };
+
+            var switchToConsultationTab = function() {
+                if($scope.lastConsultationTabUrl) {
+                    $location.url($scope.lastConsultationTabUrl);
+                } else {
+                    //Default tab
+                    $state.go("patient.dashboard.show.observations", {patientUuid: $scope.patient.uuid, programUuid: $state.params.programUuid, conceptSetGroupName: 'observations'});
+                }
             };
 
             var contextChange = function () {
@@ -161,8 +176,8 @@ angular.module('bahmni.clinical').controller('ConsultationController',
                    var encounterData = results[0];
                     encounterData.encounterTypeUuid = results[1].uuid;
                     return encounterService.create(encounterData).then(function () {
+                        $scope.dashboardState.stale = true;
                         return $state.transitionTo($state.current, $state.params, {
-                            reload: true,
                             inherit: false,
                             notify: true
                         }).then(function () {

@@ -97,6 +97,7 @@ angular.module('consultation')
                         controller: function($scope, visitHistory, consultationContext){
                             $scope.visitHistory = visitHistory;
                             $scope.consultation = consultationContext;
+                            $scope.dashboardState = {stale: true};
                         }
                     }
                 },
@@ -134,38 +135,30 @@ angular.module('consultation')
             .state('patient.dashboard.show.observations', {
                 url: '/concept-set-group/:conceptSetGroupName',
                 views: {
-                    'dashboard-content': {
+                    'consultation-content': {
                         templateUrl: 'consultation/views/conceptSet.html',
                         controller: 'ConceptSetPageController'
                     }
                 }
             })
-            .state('patient.dashboard.diagnosis', {
+            .state('patient.dashboard.show.diagnosis', {
                 url: '/diagnosis',
                 views: {
-                    'dashboard-header': {
-                        templateUrl: 'dashboard/views/clinicalDashboardHeader.html',
-                        controller: 'ConsultationController'
-                    },
-                    'dashboard-content': {
+                    'consultation-content': {
                         templateUrl: 'consultation/views/diagnosis.html',
                         controller: 'DiagnosisController'
                     }
                 }
             })
-            .state('patient.dashboard.treatment', {
+            .state('patient.dashboard.show.treatment', {
                 abstract: true,
                 views: {
-                    'dashboard-header': {
-                        templateUrl: 'dashboard/views/clinicalDashboardHeader.html',
-                        controller: 'ConsultationController'
-                    },
-                    'dashboard-content': {
+                    'consultation-content': {
                         templateUrl: 'consultation/views/treatment.html'
                     }
                 }
             })
-            .state('patient.dashboard.treatment.page', {
+            .state('patient.dashboard.show.treatment.page', {
                 url: '/treatment',
                 views: {
                     "addTreatment": {
@@ -187,41 +180,29 @@ angular.module('consultation')
                     }
                 }
             })
-            .state('patient.dashboard.disposition', {
+            .state('patient.dashboard.show.disposition', {
                 url: '/disposition',
                 views: {
-                    'dashboard-header': {
-                        templateUrl: 'dashboard/views/clinicalDashboardHeader.html',
-                        controller: 'ConsultationController'
-                    },
-                    'dashboard-content': {
+                    'consultation-content': {
                         templateUrl: 'consultation/views/disposition.html',
                         controller: 'DispositionController'
                     }
                 }
 
             })
-            .state('patient.dashboard.summary', {
+            .state('patient.dashboard.show.summary', {
                 url: '/consultation',
                 views: {
-                    'dashboard-header': {
-                        templateUrl: 'dashboard/views/clinicalDashboardHeader.html',
-                        controller: 'ConsultationController'
-                    },
-                    'dashboard-content': {
+                    'consultation-content': {
                         templateUrl: 'consultation/views/consultation.html',
                         controller: 'ConsultationSummaryController'
                     }
                 }
             })
-            .state('patient.dashboard.orders', {
+            .state('patient.dashboard.show.orders', {
                 url: '/orders',
                 views: {
-                    'dashboard-header': {
-                        templateUrl: 'dashboard/views/clinicalDashboardHeader.html',
-                        controller: 'ConsultationController'
-                    },
-                    'dashboard-content': {
+                    'consultation-content': {
                         templateUrl: 'consultation/views/orders.html',
                         controller: 'OrderController'
                     }
@@ -232,26 +213,14 @@ angular.module('consultation')
                     }
                 }
             })
-            .state('patient.dashboard.investigation', {
+            .state('patient.dashboard.show.investigation', {
                 url: '/investigation',
                 views: {
-                    'dashboard-header': {
-                        templateUrl: 'dashboard/views/clinicalDashboardHeader.html',
-                        controller: 'ConsultationController'
-                    },
-                    'dashboard-content': {
+                    'consultation-content': {
                         templateUrl: 'consultation/views/investigations.html',
                         controller: 'InvestigationController'
                     }
                 }
-            })
-            .state('patient.dashboard.notes', {
-                url: '/notes',
-                templateUrl: 'consultation/views/notes.html'
-            })
-            .state('patient.dashboard.templates', {
-                url: '/templates',
-                templateUrl: 'views/comingSoon.html'
             })
             .state('patient.visitsummaryprint', {
                 url: '/latest-prescription-print',
@@ -262,34 +231,16 @@ angular.module('consultation')
                 }
             })
             .state('patient.dashboard.visit', {
-                url: '/visit/:visitUuid',
-                views: {
-                    'dashboard-header': {
-                        templateUrl: 'dashboard/views/clinicalDashboardHeader.html',
-                        controller: 'ConsultationController'
-                    },
-                    'dashboard-content': {
-                        templateUrl: 'common/views/visit.html',
-                        controller: 'VisitController'
-                    }
-                },
-                resolve: {
-                    visitSummary: function (visitSummaryInitialization, $stateParams) {
-                        return visitSummaryInitialization($stateParams.visitUuid);
-                    }
-                }
-            })
-            .state('patient.visit', {
                 url: '/dashboard/visit/:visitUuid/:tab',
                 data: {
                     backLinks: [patientSearchBackLink]
                 },
                 views: {
-                    'additional-header': {
+                    'dashboard-header': {
                         templateUrl: 'common/views/visitHeader.html',
                         controller: 'VisitHeaderController'
                     },
-                    'content': {
+                    'dashboard-content': {
                         templateUrl: 'common/views/visit.html',
                         controller: 'VisitController'
                     }
@@ -346,39 +297,11 @@ angular.module('consultation')
                         controller: 'PatientListHeaderController'
                     },
                     'patientProgram-content': {
-                        templateUrl: 'common/views/consultationContext.html'
+                        templateUrl: 'common/views/consultationContext.html',
+                        controller: 'consultationContextController'
                     }
                 }
             });
-        //.state('patient.dashboard.show.tab', {
-        //    url: '/:tab',
-        //    views: {
-        //        'additional-header': {
-        //            templateUrl: 'dashboard/views/dashboardHeader.html',
-        //            controller: 'DashboardHeaderController'
-        //        },
-        //        'content': {
-        //            templateUrl: 'dashboard/views/dashboard.html',
-        //            controller: 'PatientDashboardController'
-        //        }
-        //    },
-        //    resolve: {
-        //        dashboardInitialization: function ($rootScope, initialization, patientContext, clinicalDashboardConfig, userService, $stateParams) {
-        //            return clinicalDashboardConfig.load().then(function (data) {
-        //                var tab = clinicalDashboardConfig.getTab($stateParams.tab);
-        //                if (tab) {
-        //                    clinicalDashboardConfig.switchTab(tab);
-        //                } else {
-        //                    $rootScope.currentUser.addToRecentlyViewed(patientContext.patient, clinicalDashboardConfig.getMaxRecentlyViewedPatients());
-        //                    return userService.savePreferences();
-        //                }
-        //            });
-        //        },
-        //        visitSummary: function (visitSummaryInitialization, initialization, visitHistory) {
-        //            return visitHistory.activeVisit ? visitSummaryInitialization(visitHistory.activeVisit.uuid) : null;
-        //        }
-        //    }
-        //});
 
         $httpProvider.defaults.headers.common['Disable-WWW-Authenticate'] = true;
 
