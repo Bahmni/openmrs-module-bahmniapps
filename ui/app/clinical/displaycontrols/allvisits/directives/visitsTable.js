@@ -1,9 +1,10 @@
 'use strict';
 
 angular.module('bahmni.clinical')
-    .directive('visitsTable', ['patientVisitHistoryService', 'conceptSetService', 'spinner', '$state', '$q', '$bahmniCookieStore', '$rootScope', 'clinicalAppConfigService',
-        function (patientVisitHistoryService, conceptSetService, spinner, $state, $q, $bahmniCookieStore, $rootScope, clinicalAppConfigService) {
+    .directive('visitsTable', ['patientVisitHistoryService', 'conceptSetService', 'spinner', '$state', '$q', '$bahmniCookieStore', '$rootScope', 'clinicalAppConfigService', 'messagingService', 'retrospectiveEntryService',
+        function (patientVisitHistoryService, conceptSetService, spinner, $state, $q, $bahmniCookieStore, $rootScope, clinicalAppConfigService, messagingService, retrospectiveEntryService) {
         var controller = function ($scope) {
+            var DateUtil = Bahmni.Common.Util.DateUtil;
             var getVisits = function () {
                 return patientVisitHistoryService.getVisitHistory($scope.patientUuid);
             };
@@ -65,12 +66,29 @@ angular.module('bahmni.clinical')
 
             spinner.forPromise(init());
 
+            var getProviderFromCookie = function () {
+                return $bahmniCookieStore.get(Bahmni.Common.Constants.grantProviderAccessDataCookieName);
+            };
+
+            var showNotApplicablePopup = function(){
+                var providerFromCookie = getProviderFromCookie()? getProviderFromCookie().value: undefined;
+                var retrospectiveDate = retrospectiveEntryService.getRetrospectiveDate();
+                if( providerFromCookie || retrospectiveDate ){
+                    var titles = [];
+                    if(providerFromCookie) titles.push("provider '"+providerFromCookie+"' ");
+                    if(retrospectiveDate) titles.push("date '"+DateUtil.formatDateWithoutTime(retrospectiveDate)+"' ");
+                    var message = "Selected "+ titles.join(',')+ "wont be applicable for this encounter. This encounter's original location, provider, date wont be changed";
+                    messagingService.showMessage('info', message);
+                }
+            };
+
             $scope.editConsultation = function(encounter){
+                showNotApplicablePopup();
                 if ($scope.$parent.closeThisDialog) {
                     $scope.$parent.closeThisDialog("closing modal");
                 }
                 $state.go('patient.dashboard.show.observations',{conceptSetGroupName: "observations", encounterUuid: encounter.uuid});
-            }
+            };
 
             $scope.getProviderDisplayName = function(encounter){
                 return  encounter.encounterProviders.length > 0 ? encounter.encounterProviders[0].provider.display : null;

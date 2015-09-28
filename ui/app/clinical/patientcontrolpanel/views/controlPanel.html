@@ -58,7 +58,7 @@
                 <label class="retro-date-widget disabled-date">{{consultation.encounterDateTime| bahmniDateTime}}</label>
             </li>
         </ul>
-        <ul show-if-privilege="{{encounterProviderPrivilege}}" ng-if="isValidProvider()">
+        <ul show-if-privilege="{{encounterProviderPrivilege}}" ng-if="isValidProvider() && !isInEditEncounterMode()">
             <li>
                 <label class="retro-date-widget disabled-date">- {{"ON_BEHALF_OF_TRANSLATION_KEY"| translate}}</label>
                 <br>

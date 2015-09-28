@@ -72,7 +72,7 @@ angular.module('bahmni.clinical').controller('ConsultationController',
                 return $scope.isLongerName(value) ? value.substring(0, 15) + "..." : value;
             };
 
-            $scope.editEncounterClass = function(){
+            $scope.isInEditEncounterMode = function(){
                 return $stateParams.encounterUuid !== undefined && $stateParams.encounterUuid !== 'active';
             };
 
@@ -154,8 +154,8 @@ angular.module('bahmni.clinical').controller('ConsultationController',
                 var visitTypeForRetrospectiveEntries = clinicalAppConfigService.getVisitTypeForRetrospectiveEntries();
                 var defaultVisitType = clinicalAppConfigService.getDefaultVisitType();
                 var hasActiveVisit = patientVisitHistoryService.getVisitHistory().activeVisit;
-
-                var encounterData = new Bahmni.Clinical.EncounterTransactionMapper().map(tempConsultation, $scope.patient, sessionService.getLoginLocationUuid(), retrospectiveEntryService.getRetrospectiveEntry(), visitTypeForRetrospectiveEntries, defaultVisitType, hasActiveVisit);
+                var encounterData = new Bahmni.Clinical.EncounterTransactionMapper().map(tempConsultation, $scope.patient, sessionService.getLoginLocationUuid(), retrospectiveEntryService.getRetrospectiveEntry(),
+                    visitTypeForRetrospectiveEntries, defaultVisitType, hasActiveVisit, $scope.isInEditEncounterMode());
                 deferred.resolve(encounterData);
                 return deferred.promise;
             };

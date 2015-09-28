@@ -84,4 +84,13 @@ describe("ConsultationController", function () {
         expect(newUrl).toEqual("/default/patient/somePatientUuid/dashboard/treatment?encounterUuid=someEncounterUuid");
     });
 
+    it("should check whether app is in editEncounterMode", function(){
+        stateParams.encounterUuid = "active";
+        expect(scope.isInEditEncounterMode()).toBeFalsy();
+        stateParams.encounterUuid = undefined;
+        expect(scope.isInEditEncounterMode()).toBeFalsy();
+        stateParams.encounterUuid = "abdk-k1j2k3j2k-skfhsjfs";
+        expect(scope.isInEditEncounterMode()).toBeTruthy();
+    })
+
 });

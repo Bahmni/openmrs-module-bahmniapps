@@ -1,10 +1,10 @@
 angular.module('bahmni.common.conceptSet')
     .controller('ConceptSetGroupController', ['$scope', 'appService', 'contextChangeHandler', 'spinner',
         'conceptSetService', '$rootScope', 'sessionService', 'encounterService', 'treatmentConfig', 'messagingService',
-        'retrospectiveEntryService', 'userService', 'conceptSetUiConfigService', '$timeout', 'clinicalAppConfigService',
+        'retrospectiveEntryService', 'userService', 'conceptSetUiConfigService', '$timeout', 'clinicalAppConfigService', '$stateParams',
         function ($scope, appService, contextChangeHandler, spinner, conceptSetService, $rootScope, sessionService,
                   encounterService, treatmentConfig, messagingService, retrospectiveEntryService, userService,
-                  conceptSetUiConfigService, $timeout, clinicalAppConfigService) {
+                  conceptSetUiConfigService, $timeout, clinicalAppConfigService, $stateParams) {
 
             var conceptSetUIConfig = conceptSetUiConfigService.getConfig();
             $scope.togglePref = function (conceptSet, conceptName) {
@@ -28,6 +28,9 @@ angular.module('bahmni.common.conceptSet')
                     $scope.$broadcast('event:showPrevious' + conceptSetName);
                 });
             };
+            $scope.isInEditEncounterMode = function(){
+                return $stateParams.encounterUuid !== undefined && $stateParams.encounterUuid !== 'active';
+            };
 
             $scope.computeField = function (conceptSet) {
                 event.stopPropagation();
@@ -35,7 +38,7 @@ angular.module('bahmni.common.conceptSet')
                 var defaultRetrospectiveVisitType = clinicalAppConfigService.getVisitTypeForRetrospectiveEntries();
 
                 var encounterData = new Bahmni.Clinical.EncounterTransactionMapper().map(angular.copy($scope.consultation), $scope.patient, sessionService.getLoginLocationUuid(),
-                    retrospectiveEntryService.getRetrospectiveEntry(), defaultRetrospectiveVisitType);
+                    retrospectiveEntryService.getRetrospectiveEntry(), defaultRetrospectiveVisitType, $scope.isInEditEncounterMode());
                 encounterData = encounterService.buildEncounter(encounterData);
                 encounterData.drugOrders = [];
 

@@ -49,7 +49,8 @@ Bahmni.ConsultationMapper = function (dosageFrequencies, dosageInstructions, con
             disposition: encounterTransaction.disposition,
             encounterDateTime: encounterTransaction.encounterDateTime,
             orders: orders,
-            providers: encounterTransaction.providers
+            providers: encounterTransaction.providers,
+            locationUuid: encounterTransaction.locationUuid
         };
     };
 
