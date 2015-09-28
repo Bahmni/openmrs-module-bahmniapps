@@ -1,7 +1,11 @@
 <div class="login">
 
-    <header class="reg-header ">
-        {{'LOGIN_LABEL_LOGIN_KEY' | translate}}
+    <header class="reg-header">
+        <div class="left">{{'LOGIN_LABEL_LOGIN_KEY' | translate}}</div>
+        <div class="right locale-wrapper">
+            <span class="locale-text">{{'LOGIN_LABEL_SELECT_LOCALE_KEY' | translate}} </span>
+             <select id="locale" ng-model="selectedLocale" ng-options="item as item for item in locales" required/>
+        </div>
     </header>
 
     <form ng-submit="login()" name="loginForm" bm-form autofillable="true">
@@ -55,4 +59,3 @@
     </form>
 
 </div>
-{{'LOGIN_LABEL_SELECT_LOCALE_KEY' | translate}} : <select id="locale" ng-model="selectedLocale" ng-options="item as item for item in locales" required/>

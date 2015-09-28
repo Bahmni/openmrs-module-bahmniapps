@@ -298,11 +298,27 @@ body{
   }
   header {
     border-radius: 10px 10px 0 0;
-    color: $white;
-    font-size: 24px;
-    padding: 10px 20px;
     box-sizing: border-box;
+    color: $white;
     font-weight: bold;
+    font-size: 24px;
+    line-height: 52px;
+    padding: 0px 20px;
+    .locale-wrapper{
+      font-size: 14px;
+      .locale-text{
+        padding-right: 10px;
+      }
+      select{
+        background-color: #FFF;
+        border: 1px solid #DDD;
+        color: #363463;
+        height: 25px;
+        padding: 5px 10px;
+        margin: 0;
+
+      }
+    }
   }
 
   .login-body{
