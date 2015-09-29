@@ -81,9 +81,9 @@ angular.module('authentication')
             var deferrable = $q.defer();
             var currentUser = $bahmniCookieStore.get(Bahmni.Common.Constants.currentUser);
             if(!currentUser) {
-                this.destroy().then(function() {
+                this.destroy().finally(function() {
                     $rootScope.$broadcast('event:auth-loginRequired');
-                    deferrable.reject("No User in session. Please login again.")
+                    deferrable.reject("No User in session. Please login again.");
                 });
                 return deferrable.promise;
             }
