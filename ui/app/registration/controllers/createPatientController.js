@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('bahmni.registration')
-    .controller('CreatePatientController', ['$scope', '$rootScope', '$state', 'patientService', 'Preferences', 'patient', 'spinner', 'appService', 'messagingService', 'ngDialog', '$q',
-        function ($scope, $rootScope, $state, patientService, preferences, patientModel, spinner, appService, messagingService, ngDialog, $q) {
+    .controller('CreatePatientController', ['$scope', '$rootScope', '$state', 'patientService', 'Preferences', 'patient', 'spinner', 'appService', 'messagingService', 'ngDialog', '$q', '$bahmniCookieStore',
+        function ($scope, $rootScope, $state, patientService, preferences, patientModel, spinner, appService, messagingService, ngDialog, $q, $bahmniCookieStore) {
             var dateUtil = Bahmni.Common.Util.DateUtil;
             $scope.actions = {};
             var configValueForEnterId = appService.getAppDescriptor().getConfigValue('showEnterID');
@@ -17,6 +17,22 @@ angular.module('bahmni.registration')
                 $scope.patient.identifierPrefix = identifierPrefix || $scope.identifierSources[0];
                 $scope.hasOldIdentifier = preferences.hasOldIdentifier;
             })();
+
+            var prepopulateFields = function(){
+                var fieldsToPopulate = appService.getAppDescriptor().getConfigValue("prepopulateFields");
+                if(fieldsToPopulate){
+                    angular.forEach(fieldsToPopulate, function(field){
+                        var addressLevel = _.find($scope.addressLevels, function(level){ return  level.name == field})
+                        if(addressLevel){
+                            var cookie = $bahmniCookieStore.get(Bahmni.Common.Constants.locationCookieName);
+                            $scope.patient.address[addressLevel.addressField] = cookie[addressLevel.addressField];
+                        }
+                    });
+                }
+            };
+
+            prepopulateFields();
+
 
             var addNewRelationships = function () {
                 var newRelationships = _.filter($scope.patient.newlyAddedRelationships, function (relationship) {

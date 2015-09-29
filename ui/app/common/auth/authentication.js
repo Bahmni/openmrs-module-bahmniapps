@@ -61,7 +61,7 @@ angular.module('authentication')
                     $bahmniCookieStore.put(Bahmni.Common.Constants.currentUser, username, {path: '/', expires: 7});
                     if(location != undefined) {
                         $bahmniCookieStore.remove(Bahmni.Common.Constants.locationCookieName);
-                        $bahmniCookieStore.put(Bahmni.Common.Constants.locationCookieName, {name: location.display, uuid: location.uuid}, {path: '/', expires: 7});
+                        $bahmniCookieStore.put(Bahmni.Common.Constants.locationCookieName, location, {path: '/', expires: 7});
                     }
                     deferrable.resolve();
                 } else {
