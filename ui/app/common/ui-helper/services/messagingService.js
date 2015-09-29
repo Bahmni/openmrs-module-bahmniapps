@@ -7,18 +7,19 @@ angular.module('bahmni.common.uiHelper')
         var promise;
 
         $rootScope.$on('event:serverError', function(event, errorMessage) {
-            self.showMessage('error',  errorMessage, 'serverError');
+            self.showMessage('error',  errorMessage, null, 'serverError');
         });
 
-        this.showMessage = function(level, message, errorEvent) {
+        this.showMessage = function(level, message, timeout, errorEvent) {
             var messageObject = {'value':'', 'isServerError':false};
+            if(!timeout){ timeout = 4000}
             messageObject.value = message;
             if(errorEvent){
                 messageObject.isServerError = true;
             }
             this.messages[level].push(messageObject);
             if(this.messages[level].length === 1){
-                this.createTimeout(level, 4000);
+                this.createTimeout(level, timeout);
             }
         };
 

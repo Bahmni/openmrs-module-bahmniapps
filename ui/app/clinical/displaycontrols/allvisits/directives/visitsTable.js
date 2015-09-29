@@ -78,7 +78,7 @@ angular.module('bahmni.clinical')
                     if(providerFromCookie) titles.push("provider '"+providerFromCookie+"' ");
                     if(retrospectiveDate) titles.push("date '"+DateUtil.formatDateWithoutTime(retrospectiveDate)+"' ");
                     var message = "Selected "+ titles.join(',')+ "wont be applicable for this encounter. This encounter's original location, provider, date wont be changed";
-                    messagingService.showMessage('info', message);
+                    messagingService.showMessage('info', message, 8000);
                 }
             };
 
