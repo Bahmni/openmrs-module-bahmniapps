@@ -42,11 +42,6 @@ angular.module('consultation')
                     backLinks: [homeBackLink]
                 },
                 resolve: {
-                    initializeConfigs: function (initialization, $stateParams) {
-                        $stateParams.configName = $stateParams.configName || Bahmni.Clinical.Constants.defaultExtensionName;
-                        patientSearchBackLink.state = 'search.patientsearch({configName: \"' + $stateParams.configName + '\"})';
-                        return initialization($stateParams.configName);
-                    },
                     retrospectiveIntialization: function(retrospectiveEntryService){
                         return retrospectiveEntryService.initializeRetrospectiveEntry();
                     }
@@ -62,6 +57,13 @@ angular.module('consultation')
                     'dashboard-content': {
                         templateUrl: '../common/patient-search/views/patientsList.html',
                         controller: 'PatientsListController'
+                    }
+                },
+                resolve:{
+                    initializeConfigs: function (initialization, $stateParams) {
+                        $stateParams.configName = $stateParams.configName || Bahmni.Clinical.Constants.defaultExtensionName;
+                        patientSearchBackLink.state = 'search.patientsearch({configName: \"' + $stateParams.configName + '\"})';
+                        return initialization($stateParams.configName);
                     }
                 }
             })
@@ -276,7 +278,7 @@ angular.module('consultation')
                     }
                 }
             })
-            .state('patient.visit.tab', {
+            .state('patient.dahsboard.visit.tab', {
                 url: '/:tab',
                 data: {
                     backLinks: [patientSearchBackLink]
@@ -306,7 +308,7 @@ angular.module('consultation')
                     'content': {
                         template: '<div ui-view="patientProgram-header"></div> <div ui-view="patientProgram-content"></div>'
                     }
-                }
+                },
             })
             .state('patient.patientProgram.show', {
                 url: '/consultationContext',
