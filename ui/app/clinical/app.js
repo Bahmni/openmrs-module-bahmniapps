@@ -229,10 +229,26 @@ angular.module('consultation')
                     }
                 }
             })
-            .state('patient.visitsummaryprint', {
+            .state('patient.visit', {
+                abstract: true,
+                views: {
+                    'content': {
+                        template: '<div ui-view="visit-content"></div>',
+                        controller: function ($scope, visitHistory) {
+                            $scope.visitHistory = visitHistory;
+                        }
+                    }
+                },
+                resolve: {
+                    visitHistory: function (visitHistoryInitialization, $stateParams) {
+                        return visitHistoryInitialization($stateParams.patientUuid);
+                    }
+                }
+            })
+            .state('patient.visit.summaryprint', {
                 url: '/latest-prescription-print',
                 views: {
-                    content: {
+                    'visit-content': {
                         controller: 'LatestPrescriptionPrintController'
                     }
                 }
