@@ -1,13 +1,13 @@
 'use strict';
 
-Bahmni.Common.VisitControl = function(visitTypes, defaultVisitTypeName, encounterService){
+Bahmni.Common.VisitControl = function(visitTypes, defaultVisitTypeName, encounterService, $translate){
     var self = this;
     self.visitTypes = visitTypes;
     self.defaultVisitTypeName = defaultVisitTypeName;
     self.defaultVisitType = visitTypes.filter(function(visitType) { return visitType.name === defaultVisitTypeName})[0];
 
     self.startButtonText = function(visitType) {
-        return "Start " + visitType.name + " visit";
+        return $translate.instant('REGISTRATION_START_VISIT', {visitType : visitType.name});
     };
 
     self.startVisit = function(visitType) {

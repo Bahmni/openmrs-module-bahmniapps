@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('bahmni.registration')
-    .directive('patientAction', ['$window', '$location', '$state', 'spinner', '$rootScope', '$stateParams', '$bahmniCookieStore', 'appService', 'visitService', 'sessionService', 'encounterService', 'messagingService',
-        function ($window, $location, $state, spinner, $rootScope, $stateParams, $bahmniCookieStore, appService, visitService, sessionService, encounterService, messagingService) {
+    .directive('patientAction', ['$window', '$location', '$state', 'spinner', '$rootScope', '$stateParams', '$bahmniCookieStore', 'appService', 'visitService', 'sessionService', 'encounterService', 'messagingService', '$translate',
+        function ($window, $location, $state, spinner, $rootScope, $stateParams, $bahmniCookieStore, appService, visitService, sessionService, encounterService, messagingService, $translate) {
             var controller = function ($scope) {
                 var self = this;
                 var uuid = $stateParams.patientUuid;
@@ -37,7 +37,7 @@ angular.module('bahmni.registration')
                 $scope.visitControl = new Bahmni.Common.VisitControl(
                     $rootScope.regEncounterConfiguration.getVistTypesAsArray(),
                     appService.getAppDescriptor().getConfigValue('defaultVisitType'),
-                    encounterService
+                    encounterService, $translate
                 );
 
                 $scope.visitControl.onStartVisit = function () {

@@ -65,10 +65,10 @@ angular.module('authentication')
                     }
                     deferrable.resolve();
                 } else {
-                   deferrable.reject('Authentication failed. Please try again.');   
+                   deferrable.reject('LOGIN_LABEL_LOGIN_ERROR_MESSAGE_KEY');
                 }
             }).error(function(){
-                deferrable.reject('Authentication failed. Please try again.');   
+                deferrable.reject('LOGIN_LABEL_LOGIN_ERROR_MESSAGE_KEY');
             });
             return deferrable.promise;
         };
