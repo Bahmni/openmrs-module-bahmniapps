@@ -4,7 +4,7 @@ angular.module('bahmni.common.domain')
     .factory('locationService', ['$http', function ($http) {
         var getAllByTag = function (tags) {
             return $http.get(Bahmni.Common.Constants.locationUrl, {
-                params: {s: "byTags", q: tags || ""},
+                params: {s: "byTags", q: tags || "", v:"default"},
                 cache: true
             });
         };

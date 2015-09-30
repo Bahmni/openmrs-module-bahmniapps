@@ -45,7 +45,6 @@ angular.module('consultation')
                     initializeConfigs: function (initialization, $stateParams) {
                         $stateParams.configName = $stateParams.configName || Bahmni.Clinical.Constants.defaultExtensionName;
                         patientSearchBackLink.state = 'search.patientsearch({configName: \"' + $stateParams.configName + '\"})';
-
                         return initialization($stateParams.configName);
                     },
                     retrospectiveIntialization: function(retrospectiveEntryService){

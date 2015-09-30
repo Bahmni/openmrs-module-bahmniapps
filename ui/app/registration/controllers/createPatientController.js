@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('bahmni.registration')
-    .controller('CreatePatientController', ['$scope', '$rootScope', '$state', 'patientService', 'Preferences', 'patient', 'spinner', 'appService', 'messagingService', 'ngDialog', '$q',
-        function ($scope, $rootScope, $state, patientService, preferences, patientModel, spinner, appService, messagingService, ngDialog, $q) {
+    .controller('CreatePatientController', ['$scope', '$rootScope', '$state', 'patientService', 'Preferences', 'patient', 'spinner', 'appService', 'messagingService', 'ngDialog', '$q', '$bahmniCookieStore', 'locationService',
+        function ($scope, $rootScope, $state, patientService, preferences, patientModel, spinner, appService, messagingService, ngDialog, $q, $bahmniCookieStore, locationService) {
             var dateUtil = Bahmni.Common.Util.DateUtil;
             $scope.actions = {};
             var configValueForEnterId = appService.getAppDescriptor().getConfigValue('showEnterID');
@@ -17,6 +17,37 @@ angular.module('bahmni.registration')
                 $scope.patient.identifierPrefix = identifierPrefix || $scope.identifierSources[0];
                 $scope.hasOldIdentifier = preferences.hasOldIdentifier;
             })();
+
+            var prepopulateFields = function () {
+                var fieldsToPopulate = appService.getAppDescriptor().getConfigValue("prepopulateFields");
+                if (fieldsToPopulate) {
+                    locationService.getAllByTag("Login Location").then(
+                        function (response) {
+                            var locations = response.data.results;
+                            var cookie = $bahmniCookieStore.get(Bahmni.Common.Constants.locationCookieName);
+                            var loginLocation = _.find(locations, function(location){
+                                return location.uuid == cookie.uuid;
+                            });
+                            angular.forEach(fieldsToPopulate, function (field) {
+                                var addressLevel = _.find($scope.addressLevels, function (level) {
+                                    return level.name == field
+                                });
+                                if (addressLevel) {
+                                    $scope.patient.address[addressLevel.addressField] = loginLocation[addressLevel.addressField];
+                                }
+                            })
+                        },
+                        function () {
+                            messagingService.showMessage('error', 'Unable to fetch locations. Please reload the page.');
+                        }
+
+
+                );
+                }
+            };
+
+            prepopulateFields();
+
 
             var addNewRelationships = function () {
                 var newRelationships = _.filter($scope.patient.newlyAddedRelationships, function (relationship) {

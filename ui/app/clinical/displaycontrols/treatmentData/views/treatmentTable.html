@@ -1,6 +1,6 @@
 <section class="block treatment-section">
     <h2 class="has-toggle section-title" ng-if="params.translationKey">
-        {{ params.translationKey | translate }}
+        {{ params.translationKey | translate}}
     </h2>
     <p class="placeholder-text" ng-if="drugOrderSections && drugOrderSections.length == 0">{{'NO_TREATMENTS_MESSAGE' | translate}} </p>
     <table ng-repeat="drugOrderSection in drugOrderSections | orderBy: drugOrderSection.visitDate" class="repeated-table drug-order-table">

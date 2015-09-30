@@ -3,6 +3,7 @@
 describe("Radiology Display Control", function () {
     var scope, element, $compile, encounterService, spinner, configurations, params, translateFilter;
     beforeEach(module('bahmni.common.displaycontrol.documents'));
+    beforeEach(module('bahmni.common.i18n'));
     beforeEach(module('ngHtml2JsPreprocessor'));
 
     beforeEach(module(function ($provide) {
@@ -21,7 +22,7 @@ describe("Radiology Display Control", function () {
         });
         spinner = jasmine.createSpyObj('spinner', ['forPromise']);
         encounterService = jasmine.createSpyObj('encounterService',['getEncountersForEncounterType']);
-        translateFilter = jasmine.createSpy('translateFilter')
+        translateFilter = jasmine.createSpy('translateFilter');
 
         $provide.value('configurations', configurations);
         $provide.value('spinner', spinner);
