@@ -13,7 +13,7 @@
                 <span class="close" ng-click="closeDashboard(dashboard)">
                    <span class="close-icon">x</span>
                 </span>
-                <a ng-click="showDashboard(dashboard)" ng-click="closeAllDialogs()">{{dashboard.translationKey | translate}} </a>
+                <a ng-click="showDashboard(dashboard)" ng-click="closeAllDialogs()">{{dashboard | titleTranslate}} </a>
 
             </li>
             <li class="tab-item new-tab tab-active" bm-pop-over autoclose="true"
@@ -23,7 +23,7 @@
                 <div class="tab-submenu" bm-pop-over-target>
                     <ul>
                         <li ng-repeat="dashboard in clinicalDashboardConfig.getUnOpenedTabs()">
-                            <a class="submenu-item unOpenedDashboard" ng-click="closeAllDialogs();showDashboard(dashboard);">{{dashboard.translationKey | translate}} </a>
+                            <a class="submenu-item unOpenedDashboard" ng-click="closeAllDialogs();showDashboard(dashboard);">{{dashboard | titleTranslate}} </a>
                         </li>
                     </ul>
                 </div>
