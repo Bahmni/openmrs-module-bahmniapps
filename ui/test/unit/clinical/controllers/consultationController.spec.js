@@ -91,6 +91,5 @@ describe("ConsultationController", function () {
         expect(scope.isInEditEncounterMode()).toBeFalsy();
         stateParams.encounterUuid = "abdk-k1j2k3j2k-skfhsjfs";
         expect(scope.isInEditEncounterMode()).toBeTruthy();
-    })
-
+    });
 });
