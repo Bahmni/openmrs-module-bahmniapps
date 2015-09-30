@@ -1,6 +1,6 @@
 'use strict';
 
-var $aController, scopeMock, rootScopeMock, stateMock, patientServiceMock, preferencesMock, patientModelMock, spinnerMock,
+var $aController, scopeMock, rootScopeMock, stateMock, patientServiceMock, preferencesMock, patientModelMock, spinnerMock, locationServiceMock,
     appServiceMock, ngDialogMock, ngDialogLocalScopeMock, bahmniCookieMock;
 
 describe('CreatePatientController', function () {
@@ -24,6 +24,7 @@ describe('CreatePatientController', function () {
         spinnerMock = jasmine.createSpyObj('spinnerMock', ['forPromise']);
         appServiceMock = jasmine.createSpyObj('appServiceMock', ['getAppDescriptor']);
         bahmniCookieMock = jasmine.createSpyObj('$bahmniCookieStore', ['get']);
+        locationServiceMock = jasmine.createSpyObj('locationService', ['getAllByTag']);
 
         ngDialogMock = jasmine.createSpyObj('ngDialogMock', ['open', 'close']);
         ngDialogLocalScopeMock = scopeMock;
@@ -70,12 +71,17 @@ describe('CreatePatientController', function () {
         bahmniCookieMock.get = function(x){
             return {
                 name: "Bahmni1",
-                uuid: "bde6a6be-8997-4540-aca6-05a4552eb363",
+                uuid: "43922e67-506c-11e5-968f-0050568266ff",
                 stateProvince: "Dhaka",
                 countyDistrict: "Dhaka",
                 address5: "Dohar"
             };
         }
+        var loginLocation = "someLocation";
+        locationServiceMock.getAllByTag.and.returnValue(specUtil.createFakePromise({
+            "results":[{"uuid":"43922e67-506c-11e5-968f-0050568266ff","display":"Registration","name":"Registration", "stateProvince":"Dhaka"},{"uuid":"43922e67-506c-11e5-968f-0050568266fg","display":"OPD","name":"OPD","stateProvince":"India"}]}
+        ));
+
         $aController('CreatePatientController', {
             $scope: scopeMock,
             $rootScope: rootScopeMock,
@@ -86,7 +92,8 @@ describe('CreatePatientController', function () {
             spinner: spinnerMock,
             appService: appServiceMock,
             ngDialog: ngDialogMock,
-            $bahmniCookieStore: bahmniCookieMock
+            $bahmniCookieStore: bahmniCookieMock,
+            locationService: locationServiceMock
         });
 
 
