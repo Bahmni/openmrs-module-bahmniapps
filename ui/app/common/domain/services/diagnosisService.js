@@ -24,6 +24,18 @@ angular.module('bahmni.common.domain')
             });
         };
 
+        this.getDiagnosisConceptSet = function(){
+            return $http.get(Bahmni.Common.Constants.conceptUrl, {
+                method: "GET",
+                params: {
+                    v: 'custom:(uuid,name,setMembers)',
+                    code: Bahmni.Common.Constants.diagnosisConceptSet,
+                    source: Bahmni.Common.Constants.emrapiConceptMappingSource
+                },
+                withCredentials: true
+            });
+        };
+
         this.getPastAndCurrentDiagnoses = function (patientUuid, encounterUuid) {
             return self.getPastDiagnoses(patientUuid).then(function (response) {
                 var diagnosisMapper = new Bahmni.DiagnosisMapper();

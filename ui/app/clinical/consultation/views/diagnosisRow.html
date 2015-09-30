@@ -67,7 +67,7 @@
                        ng-class="{'illegalValue': !diagnosis.isValidCertainty()}"/>
     </div>
 
-    <div class="button-toggle status col col4">
+    <div class="button-toggle status col col4" ng-show="isStatusConfigured()">
         <buttons-radio class="small-btn status"
                        model='diagnosis.diagnosisStatus'
                        options='diagnosisStatuses' dirty-check-flag='diagnosis.isDirty'/>

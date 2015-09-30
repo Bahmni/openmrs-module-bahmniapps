@@ -7,7 +7,7 @@
                         <div class="col col1"><span>Diagnosis</span></div>
                         <div class="col col2"><span>Order</span></div>
                         <div class="col col3"><span>Certainty</span></div>
-                        <div class="col col4"><span>Status</span></div>
+                        <div class="col col4" ng-show="isStatusConfigured()"><span>Status</span></div>
                     </div>
 
                     <div ng-repeat="diagnosis in newlyAddedDiagnoses" ng-hide="diagnosis.voided" class="table-body">
@@ -45,7 +45,7 @@
                                                ng-class="{'illegalValue': !diagnosis.isValidCertainty()}"
                                                options='certaintyOptions'/>
                             </div>
-                            <div class="col col4">
+                            <div class="col col4" ng-show="isStatusConfigured()">
                                 <buttons-radio class="small-btn status" id="status-{{$index}}"
                                                model='diagnosis.diagnosisStatus'
                                                options='diagnosisStatuses'/>

@@ -54,9 +54,18 @@ angular.module('bahmni.clinical')
             var init = function () {
                 $scope.newlyAddedDiagnoses = $scope.consultation.newlyAddedDiagnoses;
                 $scope.canDeleteDiagnosis = findPrivilege(Bahmni.Common.Constants.deleteDiagnosisPrivilege);
-                $scope.allowOnlyCodedDiagnosis=appService.getAppDescriptor().getConfig("allowOnlyCodedDiagnosis") &&
-                    appService.getAppDescriptor().getConfig("allowOnlyCodedDiagnosis").value;
+                $scope.allowOnlyCodedDiagnosis = appService.getAppDescriptor().getConfig("allowOnlyCodedDiagnosis") &&
+                appService.getAppDescriptor().getConfig("allowOnlyCodedDiagnosis").value;
                 addPlaceHolderDiagnosis();
+                diagnosisService.getDiagnosisConceptSet().then(function (result) {
+                    $scope.diagnosisMetaData = result.data.results[0];
+                    $scope.isStatusConfigured = function(){
+                        var memberFound = _.find($scope.diagnosisMetaData.setMembers, function (member) {
+                            return member.name.name === 'Bahmni Diagnosis Status'
+                        });
+                        return memberFound != undefined;
+                    };
+                });
             };
 
             var contextChange = function () {
