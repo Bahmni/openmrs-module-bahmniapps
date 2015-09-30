@@ -92,7 +92,6 @@ angular.module('bahmni.common.patientSearch')
         $scope.forwardPatient = function (patient) {
             var options = $.extend({}, $stateParams);
             $.extend(options, { patientUuid: patient.uuid, visitUuid: patient.activeVisitUuid || null, encounterUuid: $stateParams.encounterUuid || 'active' });
-            console.log(appService.getAppDescriptor().formatUrl($scope.search.searchType.forwardUrl, options, true));
             $window.location = appService.getAppDescriptor().formatUrl($scope.search.searchType.forwardUrl, options, true);
         };
 

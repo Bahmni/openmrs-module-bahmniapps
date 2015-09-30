@@ -176,7 +176,6 @@ angular.module('bahmni.clinical').controller('ConsultationController',
                    var encounterData = results[0];
                     encounterData.encounterTypeUuid = results[1].uuid;
                     return encounterService.create(encounterData).then(function () {
-                        $scope.dashboardState.stale = true;
                         return $state.transitionTo($state.current, $state.params, {
                             reload: true,
                             inherit: false,

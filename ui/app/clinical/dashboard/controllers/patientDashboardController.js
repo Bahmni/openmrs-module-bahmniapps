@@ -30,18 +30,8 @@ angular.module('bahmni.clinical')
                         $scope.dashboard = Bahmni.Common.DisplayControl.Dashboard.create(dashboard || {});
                         $scope.sectionGroups = $scope.dashboard.getSections($scope.diseaseTemplates);
                         $scope.currentDashboardTemplateUrl = $state.current.views['dashboard-content'] ? $state.current.views['dashboard-content'].templateUrl : $state.current.views['dashboard-content'];
-                        $scope.dashboardState.stale = false;
                     });
             };
-
-            $rootScope.$on('$stateChangeStart',
-                function (event, toState, toParams, fromState, fromParams) {
-                    if ((toState.name === 'patient.dashboard.show') && $scope.dashboardState.stale) {
-                        //Reload the dashboard
-                        spinner.forPromise($scope.init(clinicalDashboardConfig.currentTab));
-                    }
-                }
-            );
 
             spinner.forPromise($scope.init(clinicalDashboardConfig.currentTab));
         }]);
