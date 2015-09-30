@@ -1,5 +1,5 @@
 <section id="admissionDetails" class="block">
-    <h2 class="section-title"> {{params.translationKey | translate}}</h2>
+    <h2 class="section-title"> {{params | titleTranslate}}</h2>
     <div ng-if="!visitSummary.admissionDetails && !visitSummary.dischargeDetails">
         <div class="placeholder-text">{{'NO_ADMISSION_DETAILS_MESSAGE' | translate}}</div>
     </div>
