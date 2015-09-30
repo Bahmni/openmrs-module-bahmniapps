@@ -1082,3 +1082,9 @@ button u, u {
     margin-top: 4px; margin-right: 10px;
   }
 }
+
+.print-action-items{
+  button.buttonClass{
+    min-width: 280px;
+  }
+}

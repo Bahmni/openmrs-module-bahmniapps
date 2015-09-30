@@ -1,7 +1,7 @@
 'use strict';
 
-var $aController, scopeMock, rootScopeMock, stateMock, patientServiceMock, preferencesMock, patientModelMock, spinnerMock,
-    appServiceMock, ngDialogMock, ngDialogLocalScopeMock;
+var $aController, scopeMock, rootScopeMock, stateMock, patientServiceMock, preferencesMock, patientModelMock, spinnerMock, locationServiceMock,
+    appServiceMock, ngDialogMock, ngDialogLocalScopeMock, bahmniCookieMock;
 
 describe('CreatePatientController', function () {
 
@@ -23,6 +23,8 @@ describe('CreatePatientController', function () {
         patientModelMock = jasmine.createSpyObj('patientModelMock', ['']);
         spinnerMock = jasmine.createSpyObj('spinnerMock', ['forPromise']);
         appServiceMock = jasmine.createSpyObj('appServiceMock', ['getAppDescriptor']);
+        bahmniCookieMock = jasmine.createSpyObj('$bahmniCookieStore', ['get']);
+        locationServiceMock = jasmine.createSpyObj('locationService', ['getAllByTag']);
 
         ngDialogMock = jasmine.createSpyObj('ngDialogMock', ['open', 'close']);
         ngDialogLocalScopeMock = scopeMock;
@@ -33,6 +35,7 @@ describe('CreatePatientController', function () {
         appServiceMock.getAppDescriptor = function () {
             return {
                 getConfigValue: function () {
+                    return ["Division", "Zilla", "Upazilla"];
                 }
             }
         };
@@ -48,7 +51,8 @@ describe('CreatePatientController', function () {
             patientModel: patientModelMock,
             spinner: spinnerMock,
             appService: appServiceMock,
-            ngDialog: ngDialogMock
+            ngDialog: ngDialogMock,
+            $bahmniCookieStore: bahmniCookieMock
         });
 
         scopeMock.actions = {
@@ -60,6 +64,42 @@ describe('CreatePatientController', function () {
         scopeMock.patientConfiguration = {identifierSources: []};
         scopeMock.patient = {identifierPrefix: {}, relationships: []};
     });
+
+    it("should populate patient address levels", function(){
+        scopeMock.addressLevels = [ {addressField: "stateProvince", name: "Division"}, {addressField: "countyDistrict" , name: "Zilla"}, {addressField: "address5", name: "Upazilla"}];
+
+        bahmniCookieMock.get = function(x){
+            return {
+                name: "Bahmni1",
+                uuid: "43922e67-506c-11e5-968f-0050568266ff",
+                stateProvince: "Dhaka",
+                countyDistrict: "Dhaka",
+                address5: "Dohar"
+            };
+        }
+        var loginLocation = "someLocation";
+        locationServiceMock.getAllByTag.and.returnValue(specUtil.createFakePromise({
+            "results":[{"uuid":"43922e67-506c-11e5-968f-0050568266ff","display":"Registration","name":"Registration", "stateProvince":"Dhaka"},{"uuid":"43922e67-506c-11e5-968f-0050568266fg","display":"OPD","name":"OPD","stateProvince":"India"}]}
+        ));
+
+        $aController('CreatePatientController', {
+            $scope: scopeMock,
+            $rootScope: rootScopeMock,
+            $state: stateMock,
+            patientService: patientServiceMock,
+            preferences: preferencesMock,
+            patientModel: patientModelMock,
+            spinner: spinnerMock,
+            appService: appServiceMock,
+            ngDialog: ngDialogMock,
+            $bahmniCookieStore: bahmniCookieMock,
+            locationService: locationServiceMock
+        });
+
+
+        expect(scopeMock.patient.address[scopeMock.addressLevels[0].addressField]).toBe("Dhaka");
+
+    })
 
     it("should set patient identifierPrefix details with the matching one", function () {
         rootScopeMock.patientConfiguration = {
@@ -78,7 +118,8 @@ describe('CreatePatientController', function () {
             patientModel: patientModelMock,
             spinner: spinnerMock,
             appService: appServiceMock,
-            ngDialog: ngDialogMock
+            ngDialog: ngDialogMock,
+            $bahmniCookieStore: bahmniCookieMock
         });
 
         expect(scopeMock.patient.identifierPrefix.prefix).toBe("GAN");
@@ -101,7 +142,8 @@ describe('CreatePatientController', function () {
             patientModel: patientModelMock,
             spinner: spinnerMock,
             appService: appServiceMock,
-            ngDialog: ngDialogMock
+            ngDialog: ngDialogMock,
+            $bahmniCookieStore: bahmniCookieMock
         });
 
         expect(scopeMock.patient.identifierPrefix.prefix).toBe("SEM");
