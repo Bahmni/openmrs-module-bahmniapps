@@ -17,7 +17,7 @@
 
         <ul class="header-tabs consultation-tabs">
             <li class="tab-item" ng-repeat="board in availableBoards" ng-class="{'tab-selected':currentBoard.translationKey==board.translationKey}">
-                <a ng-click="showBoard(board.translationKey)">{{ board | titleTranslate }}</a>
+                <a ng-click="showBoard(board.translationKey)">{{ board.translationKey | translate }}</a>
             </li>
         </ul>
 

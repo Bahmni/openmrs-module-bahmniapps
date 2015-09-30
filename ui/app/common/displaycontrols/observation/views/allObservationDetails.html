@@ -9,7 +9,7 @@
     
 </header> -->
 <div class="template-container">
-    <h6>{{ 'ALL_KEY' | translate }} {{section | titleTranslate}}</h6>
+    <h6>{{ 'ALL_KEY' | translate }} {{section.translationKey | translate}}</h6>
 	<div pivot-table patient-uuid="patient.uuid" config="section.allObservationDetails.pivotTable" display-name="section.title"></div>
     <observation-graph visit-uuid="visit.uuid" params="section.allObservationDetails.observationGraph" patient-uuid="patient.uuid"></observation-graph>
     <section id="observationControlSection" class="block observation dashboard-section" >

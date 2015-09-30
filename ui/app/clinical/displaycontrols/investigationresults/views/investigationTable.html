@@ -1,5 +1,5 @@
 <section class="block section-grid">
-    <h2 ng-if="params.title" class="section-title">{{params | titleTranslate}} </h2>
+    <h2 ng-if="params.title" class="section-title">{{params.translationKey | translate }} </h2>
     <p class="placeholder-text" ng-if="!hasLabOrders()">{{ params.noLabOrdersMessage  | translate }}</p>
     <ul ng-if="hasLabOrders()">
         <li ng-repeat="labOrderResults in accessions" bindonce="accessions" >

@@ -1,8 +1,8 @@
 <section>
-    <h2 class="section-title">{{params | titleTranslate}}</h2>
+    <h2 class="section-title">{{params.translationKey | translate}}</h2>
     <ul class="navigation-link-container">
     	<li ng-repeat="link in params.links">
-    		<a ng-click="getUrl(link)" target="_blank" ng-if="showUrl(link)" class="title-link">{{link | titleTranslate}}</a>
+    		<a ng-click="getUrl(link)" target="_blank" ng-if="showUrl(link)" class="title-link">{{link.translationKey|translate}}</a>
     	</li>
     </ul>
 </section>

@@ -1,27 +1,7 @@
 'use strict';
 
 angular.module('bahmni.common.i18n',['pascalprecht.translate'])
-    .provider('$bahmniTranslate', $bahmniTranslateProvider).
-    filter('titleTranslate', ['$translate', function ($translate) {
-        return function (input) {
-            if (!input) {
-                return input;
-            }
-            if (input.translationKey) {
-                return $translate.instant(input.translationKey);
-            }
-            if (input.dashboardName) {
-                return input.dashboardName;
-            }
-            if (input.title) {
-                return input.title;
-            }
-            if (input.label) {
-                return input.label;
-            }
-            return null;
-        }
-    }]);
+    .provider('$bahmniTranslate', $bahmniTranslateProvider);
 
 function $bahmniTranslateProvider($translateProvider){
     this.init = function(options){
