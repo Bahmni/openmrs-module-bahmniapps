@@ -6,6 +6,7 @@ describe("PacsOrdersDisplayControl", function () {
     beforeEach(function () {
         module('bahmni.common.uiHelper');
         module('bahmni.common.displaycontrol.pacsOrders');
+        module('bahmni.common.i18n');
         module('ngHtml2JsPreprocessor');
 
         module(function ($provide) {
