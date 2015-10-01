@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('bahmni.reports')
-    .controller('DashboardController', ['$scope', 'appService', 'reportService', function ($scope, appService, reportService) {
+    .controller('DashboardController', ['$scope', 'appService', 'reportService', 'messagingService', function ($scope, appService, reportService, messagingService) {
 
         appService.loadConfig('reports.json').then(function (response) {
             $scope.reportsRequiringDateRange = _.values(response).filter(function(report) {
@@ -24,9 +24,22 @@ angular.module('bahmni.reports')
             });
         };
 
+
+        var isDateRangeRequiredFor = function(report){
+            return _.findWhere($scope.reportsRequiringDateRange, {name: report.name});
+
+        };
+
         $scope.runReport = function (report) {
             report.startDate = Bahmni.Common.Util.DateUtil.getDateWithoutTime(report.startDate);
             report.stopDate = Bahmni.Common.Util.DateUtil.getDateWithoutTime(report.stopDate);
-            reportService.generateReport(report);
+            if (isDateRangeRequiredFor(report) && (!report.startDate || !report.stopDate)) {
+                var msg = [];
+                if (!report.startDate) msg.push("start date");
+                if (!report.stopDate) msg.push("end date");
+                messagingService.showMessage("formError", "Please select the " + msg.join(" and "))
+            } else {
+                reportService.generateReport(report);
+            }
         };
     }]);

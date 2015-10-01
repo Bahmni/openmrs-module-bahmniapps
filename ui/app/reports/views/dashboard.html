@@ -8,11 +8,13 @@
             <tr>
                 <th>Name</th>
                 <th class="reports-start-date">Start Date
+                    <span class="asterick">*</span>
                     <input ng-model="default.reportsRequiringDateRange.startDate" date-converter
                            class="form-field start-date" type="date"
                            ng-change="setDefault('startDate', 'reportsRequiringDateRange')">
                 </th>
-                <th class="reports-stop-date">Stop Date
+                <th class="reports-stop-date">End Date
+                    <span class="asterick">*</span>
                     <input ng-model="default.reportsRequiringDateRange.stopDate" date-converter
                            class="form-field start-date" type="date"
                            ng-change="setDefault('stopDate', 'reportsRequiringDateRange')">
@@ -36,7 +38,7 @@
                 <td>{{ report.name }}</td>
                 <td class="reports-start-date"><input date-converter class="form-field start-date" type="date"
                                                       ng-model="report.startDate"></td>
-                <td class="reports-stop-date"><input date-converter class="form-field stop-date" type="date"
+                <td class="reports-stop-date"><input date-converter class="form-field stop-date" type="date" min="{{report.startDate | date:'yyyy-MM-dd'}}"
                                                      ng-model="report.stopDate"></td>
                 <td class="reports-format">
                     <select ng-model="report.responseType" ng-init="report.responseType='application/vnd.ms-excel'">
