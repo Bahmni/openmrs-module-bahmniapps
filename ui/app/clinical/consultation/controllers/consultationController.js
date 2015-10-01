@@ -3,10 +3,10 @@
 angular.module('bahmni.clinical').controller('ConsultationController',
     ['$scope', '$rootScope', '$state', '$location', 'clinicalAppConfigService', 'urlHelper', 'contextChangeHandler',
         'spinner', 'encounterService', 'messagingService', 'sessionService', 'retrospectiveEntryService', 'patientContext', 'consultationContext', '$q',
-        'patientVisitHistoryService', '$stateParams', '$window', 'visitHistory', 'clinicalDashboardConfig','appService','ngDialog',
+        'patientVisitHistoryService', '$stateParams', '$window', 'visitHistory', 'clinicalDashboardConfig','appService','ngDialog','$filter',
         function ($scope, $rootScope, $state, $location, clinicalAppConfigService, urlHelper, contextChangeHandler,
                   spinner, encounterService, messagingService, sessionService, retrospectiveEntryService, patientContext, consultationContext, $q,
-                  patientVisitHistoryService, $stateParams, $window, visitHistory, clinicalDashboardConfig, appService, ngDialog) {
+                  patientVisitHistoryService, $stateParams, $window, visitHistory, clinicalDashboardConfig, appService, ngDialog,$filter) {
             $scope.patient = patientContext.patient;
             $scope.consultation = consultationContext;
 
@@ -52,10 +52,32 @@ angular.module('bahmni.clinical').controller('ConsultationController',
             $scope.availableBoards = [];
             $scope.configName = $stateParams.configName;
 
-            $scope.showBoard = function (translationKey) {
+            $scope.getTitle = function(board){
+                return $filter('titleTranslate')(board);
+            };
+
+            $scope.showBoard = function (board) {
                 $rootScope.collapseControlPanel();
-                var board = _.find($scope.availableBoards,{translationKey:translationKey});
-                return buttonClickAction(board);
+                return buttonClickAction(findBoard(board));
+            };
+
+            var findBoard = function(boardDetail){
+                var board = findBoardByTranslationKey(boardDetail);
+                if(!board){
+                    board = findBoardByTitle(boardDetail);
+                }
+                return board;
+            };
+
+            var findBoardByTranslationKey = function(boardDetail){
+                if(boardDetail.translationKey){
+                    return _.find($scope.availableBoards,{translationKey: boardDetail.translationKey});
+                }
+                return null;
+            };
+
+            var findBoardByTitle = function(boardDetail){
+                return _.find($scope.availableBoards,{label: boardDetail.label});
             };
 
             $scope.gotoPatientDashboard = function () {

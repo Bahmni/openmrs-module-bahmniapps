@@ -18,7 +18,7 @@
                         <ul bm-gallery access-impression="true">
                             <bahmni-observation patient="patient" visit-uuid="{{visitUuid}}"
                                                 config="section.config"
-                                                section-title="section.translationKey"></bahmni-observation>
+                                                section-title="section | titleTranslate"></bahmni-observation>
                         </ul>
                     </section>
                 </div>
@@ -32,7 +32,7 @@
             </div>
             <div ng-switch-when="pivotTable">
                 <div ng-if="section.config">
-                    <section pivot-table visit-uuid="visitUuid" config="section.config" patient-uuid="patient.uuid" display-name="section.title"></section>
+                    <section pivot-table visit-uuid="visitUuid" config="section.config" patient-uuid="patient.uuid" display-name="section | titleTranslate"></section>
                 </div>
             </div>
             <div data-ng-switch-when="investigationResult">
@@ -78,7 +78,7 @@
             <div data-ng-switch-when="order">
                 <section class="order dashboard-section">
                     <div ng-if="section.config">
-                        <orders-control visit-uuid="visitUuid" patient="patient" section="section.config" order-type="section.config.orderType" config="section.config" show-title="true" section-title="section.title"></orders-control>
+                        <orders-control visit-uuid="visitUuid" patient="patient" section="section.config" order-type="section.config.orderType" config="section.config" show-title="true" section-title="section | titleTranslate"></orders-control>
                     </div>
                 </section>
             </div>
