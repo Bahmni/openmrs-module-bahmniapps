@@ -74,6 +74,6 @@
   "REGISTRATION_RELATIONSHIPS_ACCESS_KEY": "l",
   "REGISTRATION_BACK_ACCESS_KEY" : "b",
   "REGISTRATON_LATEST_KEY" : "Latest",
-  "REGISTRATION_DC_ERROR_MESSAGE_KEY": "No {{ displayControl }} for this patient",
+  "DISPLAY_CONTROL_ERROR_MESSAGE_KEY": "No {{ displayControl }} for this patient",
   "REGISTRATION_START_VISIT": "Start {{ visitType }} visit"
 }
