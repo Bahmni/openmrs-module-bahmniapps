@@ -45,7 +45,8 @@ describe("DashboardController", function () {
             $scope: scope,
             appService: appServiceMock,
             reportService: reportServiceMock,
-            messagingService: messagingServiceMock
+            messagingService: messagingServiceMock,
+            FileUploader: function(){}
         });
     }));
 
@@ -146,4 +147,38 @@ describe("DashboardController", function () {
         expect(messagingServiceMock.showMessage).toHaveBeenCalledWith("formError", "Please select the end date");
         expect(reportServiceMock.generateReport).not.toHaveBeenCalled();
     });
+
+    it("should not generate report when macro template is not selected for custom excel", function(){
+        var report = {
+            config: {},
+            name: "Vitals",
+            startDate: '2015-02-01',
+            stopDate: null,
+            responseType: 'application/vnd.ms-excel-custom',
+            reportTemplateLocation: undefined
+        };
+        scope.reportsRequiringDateRange.push(report);
+
+        scope.runReport(report);
+
+        expect(messagingServiceMock.showMessage).toHaveBeenCalledWith("formError", "Workbook template should be selected for generating report: Vitals");
+        expect(reportServiceMock.generateReport).not.toHaveBeenCalled();
+    });
+
+    it("should reset report template after generating custom excel", function(){
+        var report = {
+            config: {},
+            name: "Vitals",
+            startDate: '2015-02-01',
+            stopDate: '2015-03-01',
+            responseType: 'application/vnd.ms-excel-custom',
+            reportTemplateLocation: "/tmp/"
+        };
+        scope.reportsRequiringDateRange.push(report);
+
+        scope.runReport(report);
+
+        expect(reportServiceMock.generateReport).toHaveBeenCalled();
+        expect(report.reportTemplateLocation).toBeUndefined();
+    })
 });

@@ -26,6 +26,7 @@ module.exports = function (config) {
             'app/components/ng-clip/src/ngClip.js',
             'app/components/zeroclipboard/dist/ZeroClipboard.js',
             'app/components/angular-translate/angular-translate.js',
+            'app/components/angular-file-upload/dist/angular-file-upload.min.js',
             'app/components/angular-cookies/angular-cookies.js',
             'app/components/angular-translate-storage-local/angular-translate-storage-local.js',
             'app/components/angular-translate-storage-cookie/angular-translate-storage-cookie.js',

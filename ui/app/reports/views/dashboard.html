@@ -44,9 +44,13 @@
                     <select ng-model="report.responseType" ng-init="report.responseType='application/vnd.ms-excel'">
                         <option value="text/html" selected="selected">HTML</option>
                         <option value="application/vnd.ms-excel">EXCEL</option>
-                        <option value="application/pdf" ONCHANGE="alert('fff')">PDF</option>
+                        <option value="application/pdf">PDF</option>
+                        <option value="application/vnd.ms-excel-custom">CUSTOM EXCEL</option>
                     </select>
+                    <input id="inputFileUpload{{report.name}}"  ng-if="report.responseType=='application/vnd.ms-excel-custom'" class="input-file-upload"
+                           type="file" accept=".xls" nv-file-select uploader="uploader"  options="{report: report}" />
                 </td>
+
                 <td class="reports-action">
                     <button type="submit" class="run-report confirm" ng-click="runReport(report)"> Run Report</button>
                 </td>
