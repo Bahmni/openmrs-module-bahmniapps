@@ -1,2 +1,102 @@
-<div ng-show="!stateChange()" ng-include="'consultation/views/header.html'"></div>
-<div ng-show="stateChange()" ng-include src="'dashboard/views/dashboardHeader.html'"></div>
+<!-- Note: The below html brought back from two sub-html into this one html because bm-back-link directive is not getting statechangesuccess event -->
+<div ng-show="!stateChange()">
+    <div class="opd-header-wrapper clinical-consultation" id="opd-tabs" ng-class="{'retro-mode':isInEditEncounterMode()}">
+
+        <div class="opd-header-bottom tabs">
+            <bm-back-links></bm-back-links>
+            <a show-if-privilege="app:adt" class="back-btn" ng-href="../adt/#/patient/{{patient.uuid}}/visit/{{consultation.visitUuid}}/"
+               title="Go to IPD dashboard">
+                <i class="fa fa-bed fa-white"></i>
+            </a>
+            <a class="back-btn-link" id="dashboard-link" ng-click="gotoPatientDashboard()" title="Back to {{patient.name}} Dashboard">
+                <img ng-src="{{patient.image}}" onerror="this.onerror=null;this.src='../images/blank-user.gif';">
+              <span class="patient-info">
+                <span class="patient-name" >{{patient.name}} </span>
+                <span class="patient-id">{{patient.identifier}}</span>
+            </span>
+            </a>
+
+
+            <ul class="header-tabs consultation-tabs">
+                <li class="tab-item" ng-repeat="board in availableBoards" ng-class="{'tab-selected':currentBoard.translationKey==board.translationKey}">
+                    <a ng-click="showBoard(board.translationKey)">{{ board | titleTranslate }}</a>
+                </li>
+            </ul>
+
+            <button class="toggle-patient" ng-click="toggleControlPanel()" ng-class="{'shift': showControlPanel, 'hide-ipad': availableBoards }">
+
+                <i class="fa fa-bars fa-white fa-large"></i>
+            </button>
+            <button class="confirm save-consultation" ng-show="availableBoards" ng-click="save()" accesskey="{{'SAVE_ACCESS_KEY' | translate}}" class="confirm">
+                <i class="fa fa-save"></i>
+                <span class="text" ng-bind-html="'CLINICAL_SAVE_TRANSLATION_KEY'| translate"></span>
+            </button>
+        </div>
+    </div>
+</div>
+
+
+<div ng-show="stateChange()">
+    <div bindonce class="dashboard-header opd-header-wrapper">
+        <div class="opd-header-bottom tabs">
+            <bm-back-links></bm-back-links>
+            <recent-patients></recent-patients>
+            <a show-if-privilege="app:adt" class="back-btn" ng-href="../adt/#/patient/{{patient.uuid}}/visit/{{visitHistory.activeVisit.uuid}}/"
+               title="Go to IPD Dashboard">
+                <i class="fa fa-bed fa-white"></i>
+            </a>
+
+            <ul class="header-tabs" ng-if="clinicalDashboardConfig.showTabs()">
+                <li class="tab-item dashboard" ng-repeat="dashboard in clinicalDashboardConfig.visibleTabs"
+                    ng-class="{'tab-selected' : clinicalDashboardConfig.isCurrentTab(dashboard), 'tab-removable': clinicalDashboardConfig.isCurrentTab(dashboard) && !dashboard.displayByDefault}">
+                <span class="close" ng-click="closeDashboard(dashboard)">
+                   <span class="close-icon">x</span>
+                </span>
+                    <a ng-click="showDashboard(dashboard)" ng-click="closeAllDialogs()">{{dashboard | titleTranslate}} </a>
+
+                </li>
+                <li class="tab-item new-tab tab-active" bm-pop-over autoclose="true"
+                    ng-show="clinicalDashboardConfig.getUnOpenedTabs().length > 0">
+                    <a id="addDashboardButton" bm-pop-over-trigger>+</a>
+
+                    <div class="tab-submenu" bm-pop-over-target>
+                        <ul>
+                            <li ng-repeat="dashboard in clinicalDashboardConfig.getUnOpenedTabs()">
+                                <a class="submenu-item unOpenedDashboard" ng-click="closeAllDialogs();showDashboard(dashboard);">{{dashboard | titleTranslate}} </a>
+                            </li>
+                        </ul>
+                    </div>
+                </li>
+            </ul>
+
+            <div class="dashboard-header-right-wrapper">
+                <button ng-if="clinicalDashboardConfig.showPrint()" class="dialog-button-group" ng-click="printDashboard()"
+                        accesskey="{{'CLINICAL_PRINT_ACCESS_KEY'| translate}}" ng-bind-html="'CLINICAL_PRINT_TRANSLATION_KEY'|translate">
+                    <i class="fa fa-print"></i>
+
+                </button>
+                <div class="dashboard-date-picker" ng-controller="PatientListHeaderController">
+                    <div class="retro-date-widget-wrapper">
+                        <div class="retro-date-widget-header">
+                            <button ng-click="popUpHandler()">{{ getTitle() }}</button>
+                        </div>
+                    </div>
+                </div>
+            <span class="grouped-buttons">
+                 <a class=" btn--left btn--success "
+                    ng-if="visitHistory.activeVisit || retrospectiveEntry || allowConsultation()"
+                    ng-click="openConsultation()" >
+                     {{'CONSULTATION_TAB_KEY' | translate}}
+                 </a>
+                <a class="btn--right btn--success " title="Open in new window"
+                   ng-if="visitHistory.activeVisit || retrospectiveEntry"
+                   ng-click="openConsultationInNewTab()"><i class="fa fa-external-link"></i></a>
+           </span>
+
+                <button class="toggle-patient" ng-click="toggleControlPanel()" ng-class="{'shift': showControlPanel}">
+                    <i class="fa fa-bars fa-white fa-large"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
