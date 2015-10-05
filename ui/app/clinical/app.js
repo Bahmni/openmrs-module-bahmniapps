@@ -84,6 +84,8 @@ angular.module('consultation')
                 },
                 resolve: {
                     initialization: function (initialization, $stateParams) {
+                        $stateParams.configName = $stateParams.configName || Bahmni.Clinical.Constants.defaultExtensionName;
+                        patientSearchBackLink.state = 'search.patientsearch({configName: \"' + $stateParams.configName + '\"})';
                         return initialization($stateParams.configName);
                     },
                     patientContext: function (initialization, patientInitialization, $stateParams) {
