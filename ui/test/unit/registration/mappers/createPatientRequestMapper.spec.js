@@ -20,7 +20,8 @@ describe('patient mapper', function () {
                 ]
             },
             {"uuid": "education-uuid", "sortWeight": 2.0, "name": "education", "description": "Caste", "format": "java.lang.String", "answers": []},
-            {"uuid": "isUrban-uuid", "sortWeight": 2.0, "name": "isUrban", "description": "isUrban", "format": "java.lang.Boolean", "answers": []}
+            {"uuid": "isUrban-uuid", "sortWeight": 2.0, "name": "isUrban", "description": "isUrban", "format": "java.lang.Boolean", "answers": []},
+            {"uuid": "testDate-uuid", "sortWeight": 2.0, "name": "testDate", "description": "Test Date", "format": "org.openmrs.util.AttributableDate", "answers": []}
         ];
 
     });
@@ -61,7 +62,8 @@ describe('patient mapper', function () {
             "secondaryIdentifier": "sec id",
             "isNew": "true",
             "isUrban":false,
-            "dead": true
+            "dead": true,
+            "testDate": "Fri Jan 01 1999 00:00:00 GMT+0530 (IST)"
         });
 
         var openmrsPatient = new Bahmni.Registration.CreatePatientRequestMapper(new Date()).mapFromPatient(patientAttributeTypes, patient);
@@ -119,6 +121,11 @@ describe('patient mapper', function () {
         expect(openmrsPatient.patient.person.attributes).toContain({
             value: "false",
             attributeType: { uuid: 'isUrban-uuid' }
+        });
+
+        expect(openmrsPatient.patient.person.attributes).toContain({
+            value: "1999-01-01",
+            attributeType: { uuid: 'testDate-uuid' }
         });
     });
 

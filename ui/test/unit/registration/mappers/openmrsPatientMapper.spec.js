@@ -10,6 +10,7 @@ describe('patientMapper', function () {
         
         patientConfiguration = new Bahmni.Registration.PatientConfig([
             {"uuid": "d3d93ab0-e796-11e2-852f-0800271c1b75", "sortWeight": 2.0, "name": "caste", "description": "Caste", "format": "java.lang.String", "answers": []},
+            {"uuid": "d3d93ab0-e796-11e2-852f-0800271c1999", "sortWeight": 2.0, "name": "date", "description": "Test Date", "format": "org.openmrs.util.AttributableDate"},
             {"uuid": "d3e6dc74-e796-11e2-852f-0800271c1b75", "sortWeight": 2.0, "name": "class", "description": "Class", "format": "org.openmrs.Concept",
                 "answers": [
                     {"description": "OBC", "uuid": "4da8141e-65d6-452e-9cfe-ce813bd11d52"}
@@ -66,6 +67,13 @@ describe('patientMapper', function () {
                         }
                     } ,
                     {
+                        "uuid": "2a71ee67-3446-4f66-8267-82446bda2999",
+                        "value": "1999-01-01",
+                        "attributeType": {
+                            "uuid": "d3d93ab0-e796-11e2-852f-0800271c1999"
+                        }
+                    } ,
+                    {
                         "uuid": "3da8141e-65d6-452e-9cfe-ce813bd11d52",
                         "value":  {
                             uuid : "4da8141e-65d6-452e-9cfe-ce813bd11d52"
@@ -101,6 +109,7 @@ describe('patientMapper', function () {
         expect(patient.address.cityVillage).toBe(openmrsPatient.patient.person.preferredAddress.cityVillage);
         expect(patient.address.countyDistrict).toBe(openmrsPatient.patient.person.preferredAddress.countyDistrict);
         expect(patient.address.stateProvince).toBe(openmrsPatient.patient.person.preferredAddress.stateProvince);
+        expect(patient.date.toString()).toBe("Fri Jan 01 1999 00:00:00 GMT+0530 (IST)");
         var urlParts = patient.image.split('?');
         expect(urlParts.length).toBe(2);
         expect(urlParts[0]).toBe("/patient_images/" + openmrsPatient.patient.uuid + ".jpeg");

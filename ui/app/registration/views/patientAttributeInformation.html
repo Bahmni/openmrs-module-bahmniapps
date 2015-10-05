@@ -31,4 +31,7 @@
     <div class="left" data-ng-switch-when="java.lang.Boolean">
         <input id="isUrban" type="checkbox" ng-model="patient[attribute.name]" ng-disabled="isReadOnly(attribute.name)" ng-required="{{attribute.required}}"/>
     </div>
+    <div class="left" data-ng-switch-when="org.openmrs.util.AttributableDate">
+        <input id="date" type="date" ng-model="patient[attribute.name]" ng-disabled="isReadOnly(attribute.name)" ng-required="{{attribute.required}}"/>
+    </div>
 </div>

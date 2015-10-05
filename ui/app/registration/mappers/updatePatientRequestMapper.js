@@ -60,6 +60,7 @@ Bahmni.Registration.UpdatePatientRequestMapper = (function () {
                 return attributeType.uuid === attribute.attributeType.uuid;
             })[0];
 
+
             if (savedAttribute) {
                 attr.uuid = savedAttribute.uuid;
                 setAttributeValue(attributeType, attr, patient[savedAttribute.attributeType.display]);
@@ -74,9 +75,15 @@ Bahmni.Registration.UpdatePatientRequestMapper = (function () {
     var setAttributeValue = function (attributeType, attr, value) {
         if (attributeType.format === "org.openmrs.Concept") {
             attr.hydratedObject = value;
-        } else if(value === "" || value === null || value === undefined) {
+        }
+        else if(value === "" || value === null || value === undefined) {
             attr.voided = true;
-        } else {
+        }
+        else if(attributeType.format == "org.openmrs.util.AttributableDate"){
+            var mnt = moment(value);
+            attr.value = mnt.format('YYYY-MM-DD');
+        }
+        else {
             attr.value = value.toString();
         }
     };
