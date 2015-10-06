@@ -51,6 +51,8 @@ describe("ManageProgramController", function () {
         $provide.value('$bahmniCookieStore', $bahmniCookieStore);
         $provide.value('spinner', _spinner);
         $provide.value('messagingService', messageService);
+        $provide.value('$stateParams', {configName: "default"});
+
     }));
 
 
