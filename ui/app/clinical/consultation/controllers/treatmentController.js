@@ -41,7 +41,7 @@ angular.module('bahmni.clinical')
                 return newTreatment;
             };
 
-            $scope.minStartDate = encounterDate;
+            $scope.minStartDate = encounterDate === null ? DateUtil.parse(Date.now()) : encounterDate;
             $scope.treatment = $scope.consultation.incompleteTreatment || newTreatment();
             $scope.treatmentConfig.durationUnits.forEach(function (durationUnit) {
                 if (_.isEqual(durationUnit, $scope.treatment.durationUnit)) {
