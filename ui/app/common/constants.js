@@ -129,7 +129,7 @@ Bahmni.Common = Bahmni.Common || {};
         messageForNoFulfillment: "No observations captured for this order.",
         reportsUrl: "/bahmnireports/report",
         uploadReportTemplateUrl: "/bahmnireports/upload",
-        diagnosisStatuses : {"RULED OUT" : "Ruled Out Diagnosis"},
+        ruledOutdiagnosisStatus : "Ruled Out Diagnosis",
         registartionConsultationPrivilege:'app:common:registration_consultation_link',
         manageIdentifierSequencePrivilege:"Manage Identifier Sequence",
         closeVisitPrivilege:'app:common:closeVisit',

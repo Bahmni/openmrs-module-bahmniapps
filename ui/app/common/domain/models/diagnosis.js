@@ -35,7 +35,7 @@ Bahmni.Common.Domain.Diagnosis = function (codedAnswer, order, certainty, existi
     };
 
     self.isRuledOut = function(){
-        return self.diagnosisStatus == $rootScope.diagnosisStatuses[0];
+        return self.diagnosisStatus == $rootScope.diagnosisStatus;
     };
 
     self.answerNotFilled = function () {
@@ -68,7 +68,7 @@ Bahmni.Common.Domain.Diagnosis = function (codedAnswer, order, certainty, existi
         set: function (newStatus) {
             if (newStatus) {
                 this.diagnosisStatusValue = newStatus;
-                this.diagnosisStatusConcept = { name: Bahmni.Common.Constants.diagnosisStatuses[newStatus]};
+                this.diagnosisStatusConcept = { name: Bahmni.Common.Constants.ruledOutdiagnosisStatus};
             } else {
                 this.diagnosisStatusValue = null;
                 this.diagnosisStatusConcept = null;
