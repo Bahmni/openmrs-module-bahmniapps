@@ -9,6 +9,9 @@ angular.module('bahmni.clinical')
               }
             },
             controller:function ($scope) {
+                if(!($scope.options instanceof Array)) { //in case a string is passed instead of array
+                    $scope.options = $scope.options.split(',');
+                }
                 $scope.activate = function (option) {
                     if ($scope.model === option) {
                         $scope.model = undefined;
