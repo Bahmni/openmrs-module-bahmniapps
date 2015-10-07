@@ -9,6 +9,7 @@ describe("Visits Table display control", function () {
         $provide.value('$state', {});
         $provide.value('$bahmniCookieStore', {});
         $provide.value('clinicalAppConfigService', {});
+        $provide.value('$bahmniTranslate', {use: function() {return "en"}});
     }));
 
     beforeEach(inject(function (_$compile_, $rootScope, $httpBackend) {

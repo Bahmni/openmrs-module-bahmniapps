@@ -33,7 +33,8 @@
                     <section class="observation-section" ng-if="context">
                         <div ng-repeat="conceptSet in availableConceptSets" class="concept-set-group">
                             <div class="registraion_legend">
-                                <span class="mylegend">{{conceptSet.options.conceptName}}</span>
+                                <span class="mylegend" ng-if="conceptSet.options.translationKey">{{conceptSet.options.translationKey | translate}}</span>
+                                <span class="mylegend" ng-if="!conceptSet.options.translationKey">{{conceptSet.label}}</span>
                             </div>
                             <div ng-if="conceptSet.options.showLatest" class="clearfix">
                                 <div class="obs-section right" style="width: 45%">

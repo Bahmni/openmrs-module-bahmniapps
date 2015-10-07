@@ -1,9 +1,10 @@
 'use strict';
 
 angular.module('bahmni.common.conceptSet')
-    .factory('conceptSetService', ['$http', '$q', function ($http) {
+    .factory('conceptSetService', ['$http', '$q', '$bahmniTranslate', function ($http, $q, $bahmniTranslate) {
         var getConceptSetMembers = function (params, cache) {
-            return $http.get(Bahmni.Common.Constants.conceptSearchByFullNameUrl,{
+            params['locale'] = params['locale'] || $bahmniTranslate.use();
+            return $http.get(Bahmni.Common.Constants.conceptSearchByFullNameUrl, {
                 params: params,
                 cache: cache
             });
