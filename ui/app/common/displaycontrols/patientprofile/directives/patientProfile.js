@@ -2,7 +2,7 @@
 
 angular.module('bahmni.common.displaycontrol.patientprofile')
     .directive('patientProfile', function () {
-        var controller = function ($scope, patientService, spinner, $sce, $rootScope) {
+        var controller = function ($scope, patientService, spinner, $sce, $rootScope, $stateParams, $window) {
 
             var patient = $scope.patient;
             var init = function () {
@@ -49,7 +49,8 @@ angular.module('bahmni.common.displaycontrol.patientprofile')
             };
 
             $scope.openPatientDashboard = function (patientUuid) {
-                window.open("../clinical/#/default/patient/" + patientUuid + "/dashboard");
+                var configName = $stateParams.configName || Bahmni.Common.Constants.defaultExtensionName;
+                $window.open("../clinical/#/"+configName+"/patient/" + patientUuid + "/dashboard");
             };
             spinner.forPromise(init());
         };
