@@ -81,7 +81,7 @@
                             class="small-btn accept-btn grid-row-element"
                             ng-disabled="!observation.primaryObs.hasValue() || observation.disabled"
                             ng-class="{'active': observation.abnormalObs.value}"
-                            ng-click="observation.toggleAbnormal()"><i class="fa fa-ok"></i>Abnormal
+                            ng-click="observation.toggleAbnormal()"><i class="fa fa-ok"></i>{{'OBS_ABNORMAL_TRANSLATE_KEY' | translate}}
                     </button>
                 </div>
                 <div class="checkbox-inline" ng-if="::observation.durationObs"

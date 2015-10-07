@@ -56,5 +56,6 @@
     "ON_BEHALF_OF_TRANSLATION_KEY": "On behalf of",
     "PATIENT_DOCUMENT_TRANSLATION_KEY": "Patient Documents",
     "BAHMNI_HOME_TRANSLATION_KEY": "Bahmni Home",
-    "LOGOUT_TRANSLATION_KEY": "Logout"
+    "LOGOUT_TRANSLATION_KEY": "Logout",
+    "OBS_ABNORMAL_TRANSLATE_KEY": "Abnormal"
 }
