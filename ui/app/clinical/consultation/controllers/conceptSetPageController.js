@@ -61,9 +61,9 @@ angular.module('bahmni.clinical')
                 } else {
                     template.toggle();
                     if (template.isAdded) {
-                        messagingService.showMessage("info", template.conceptName + " Added successfully");
+                        messagingService.showMessage("info", template.label + " Added successfully");
                     } else if (!template.isAdded) {
-                        messagingService.showMessage("info", template.conceptName + " Removed successfully");
+                        messagingService.showMessage("info", template.label + " Removed successfully");
                     }
                 }
             };
