@@ -12,6 +12,15 @@
                     <option value="">{{'PROGRAM_MANAGEMENT_CHOOSE_STATE_KEY' | translate}}</option>
                 </select>
                 <button type="submit" ng-click="enrollPatient()">{{'PROGRAM_MANAGEMENT_ENROLL_KEY' | translate}}</button>
+
+                <a class="back-btn dashboard-link fr" id="dashboard-link"
+                   ui-sref="patient.dashboard.show({patientUuid: patient.uuid,conceptSetGroupName: 'observations'})">
+                    <img ng-src="{{patient.image}}" onerror="this.onerror=null;this.src='../images/blank-user.gif';">
+                        <span class="patient-info">
+                         <span class="patient-name">{{patient.name}}</span>
+                         <span class="patient-id">{{patient.identifier}}</span>
+                        </span>
+                </a>
             </div>
         </section>
     </div>
