@@ -9,7 +9,6 @@ angular.module('bahmni.clinical')
 
             $scope.orderOptions = ['PRIMARY', 'SECONDARY'];
             $scope.certaintyOptions = ['CONFIRMED', 'PRESUMED'];
-            $scope.diagnosisStatuses = ['RULED OUT'];
 
             $scope.getDiagnosis = function (params) {
                 return diagnosisService.getAllFor(params.term);
