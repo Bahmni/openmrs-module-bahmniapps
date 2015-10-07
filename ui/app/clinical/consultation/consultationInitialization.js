@@ -22,7 +22,7 @@ angular.module('bahmni.clinical').factory('consultationInitialization',
                     var currentProviderUuid = $rootScope.currentProvider ? $rootScope.currentProvider.uuid : null;
                     var providerData = $bahmniCookieStore.get(Bahmni.Common.Constants.grantProviderAccessDataCookieName);
                     var encounterDate = dateUtil.parseLongDateToServerFormat(new Date());
-                    return findEncounter(providerData, currentProviderUuid, encounterDate, null);
+                    return findEncounter(providerData, currentProviderUuid, encounterDate);
                 };
 
                 var getRetrospectiveEncounter = function () {
@@ -30,11 +30,13 @@ angular.module('bahmni.clinical').factory('consultationInitialization',
                     var providerData = $bahmniCookieStore.get(Bahmni.Common.Constants.grantProviderAccessDataCookieName);
                     var encounterDateWithoutHours = dateUtil.getDateWithoutHours(retrospectiveEntryService.getRetrospectiveDate());
                     var encounterDate = dateUtil.parseLongDateToServerFormat(encounterDateWithoutHours);
-                    return findEncounter(providerData, currentProviderUuid, encounterDate, encounterDateWithoutHours);
-
+                    return findEncounter(providerData, currentProviderUuid, encounterDate).then(function(consultation){
+                        consultation.encounterDateTime = encounterDateWithoutHours;
+                        return consultation;
+                    });
                 };
 
-                var findEncounter= function(providerData, currentProviderUuid, encounterDate,retrospectiveDateTime ) {
+                var findEncounter= function(providerData, currentProviderUuid, encounterDate) {
                     return getEncounterType().then(function (encounterType) {
                         return encounterService.find({
                             patientUuid: patientUuid,
@@ -44,7 +46,7 @@ angular.module('bahmni.clinical').factory('consultationInitialization',
                             encounterDateTimeTo: encounterDate,
                             encounterTypeUuids: [encounterType.uuid]
                         }).then(function (encounterTransactionResponse) {
-                            return consultationMapper.map(encounterTransactionResponse.data, retrospectiveDateTime);
+                            return consultationMapper.map(encounterTransactionResponse.data);
                         });
                     });
                 };
@@ -52,7 +54,7 @@ angular.module('bahmni.clinical').factory('consultationInitialization',
                 var getEncounter = function () {
                      if(encounterUuid){
                          return encounterService.findByEncounterUuid(encounterUuid).then(function(response){
-                            return consultationMapper.map(response.data, null);
+                            return consultationMapper.map(response.data);
                         });
                     }else if(!_.isEmpty($rootScope.retrospectiveEntry)) {
                         return getRetrospectiveEncounter();

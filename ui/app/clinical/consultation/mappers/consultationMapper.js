@@ -8,10 +8,7 @@ Bahmni.ConsultationMapper = function (dosageFrequencies, dosageInstructions, con
         });
     };
 
-    var dateUtil = Bahmni.Common.Util.DateUtil;
-
-
-    this.map = function (encounterTransaction, retrospectiveDate) {
+    this.map = function (encounterTransaction) {
         var encounterUuid = encounterTransaction.encounterUuid;
         var specialObservationConceptUuids = [consultationNoteConcept.uuid, labOrderNoteConcept.uuid];
         var investigations = encounterTransaction.orders.filter(function (order) {
@@ -38,8 +35,6 @@ Bahmni.ConsultationMapper = function (dosageFrequencies, dosageInstructions, con
             return order.action != Bahmni.Clinical.Constants.orderActions.discontinue && !order.dateStopped;
         });
 
-        var encounterDateTime =  retrospectiveDate === null ? (encounterTransaction.encounterDateTime === null ?  dateUtil.today() : encounterTransaction.encounterDateTime ) : retrospectiveDate;
-
         return {
             visitUuid: encounterTransaction.visitUuid,
             visitTypeUuid: encounterTransaction.visitTypeUuid,
@@ -52,7 +47,7 @@ Bahmni.ConsultationMapper = function (dosageFrequencies, dosageInstructions, con
             labOrderNote: labOrderNote || emptyObservation(labOrderNoteConcept),
             observations: observations,
             disposition: encounterTransaction.disposition,
-            encounterDateTime:encounterDateTime,
+            encounterDateTime: encounterTransaction.encounterDateTime,
             orders: orders,
             providers: encounterTransaction.providers,
             locationUuid: encounterTransaction.locationUuid
