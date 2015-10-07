@@ -184,11 +184,8 @@ Bahmni.Clinical.DrugOrderViewModel = function (appConfig, config, proto, encount
     };
 
     this.getDescriptionWithQuantity = function(){
-        if(self.quantity){
-            return addDelimiter(blankIfFalsy(self.getDescription()), "(") +
-                addDelimiter(self.getQuantityWithUnit(), ")")
-        }
-        return blankIfFalsy(self.getDescription());
+        return addDelimiter(blankIfFalsy(self.getDescription()), "(") +
+        addDelimiter(self.getQuantityWithUnit(), ")")
     };
 
     this.getQuantityWithUnit = function () {
@@ -303,17 +300,17 @@ Bahmni.Clinical.DrugOrderViewModel = function (appConfig, config, proto, encount
     this.calculateQuantityAndUnit = function () {
         self.calculateDurationInDays();
         if (!this.doseUnits) return;
-        self.shouldUnitBeCalculated = true;
-        self.shouldUnitBeCalculated = allowedQuantityUnits.indexOf(this.doseUnits) > -1;
+        var shouldUnitBeCalculated = true;
+        shouldUnitBeCalculated = allowedQuantityUnits.indexOf(this.doseUnits) > -1;
 
         if (appConfig.calculateTotalUnits) {
-            self.shouldUnitBeCalculated = (self.shouldUnitBeCalculated || appConfig.calculateTotalUnits.indexOf(this.doseUnits) > -1);
+            shouldUnitBeCalculated = (shouldUnitBeCalculated || appConfig.calculateTotalUnits.indexOf(this.doseUnits) > -1);
         }
 
-        if (!self.shouldUnitBeCalculated) {
+        if (!shouldUnitBeCalculated) {
             self.quantity = 0;
         }
-        if (!self.quantityEnteredManually && !self.quantityEnteredViaEdit && self.shouldUnitBeCalculated) {
+        if (!self.quantityEnteredManually && !self.quantityEnteredViaEdit && shouldUnitBeCalculated) {
             if (self.frequencyType === Bahmni.Clinical.Constants.dosingTypes.uniform) {
                 self.quantity = self.uniformDosingType.dose * (self.uniformDosingType.frequency ? getFrequencyPerDay() : 0) * self.durationInDays;
             } else if (self.frequencyType == Bahmni.Clinical.Constants.dosingTypes.variable) {

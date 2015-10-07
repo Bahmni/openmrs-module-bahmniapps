@@ -63,7 +63,7 @@
 
 
             <div class="quantity-widget">
-                <input id="quantity" class="form-field quantity" type="number" min="treatment.shouldUnitBeCalculated ? 0.1 : 0" placeholder="Qty" step="any"
+                <input id="quantity" class="form-field quantity" type="number" min="0.1" placeholder="Qty" step="any"
                        ng-model="treatment.quantity" ng-change="treatment.setQuantityEnteredManually()" required/>
                 <span class="form-field quantity-unit">{{treatment.quantityUnit}}</span>
             </div>
