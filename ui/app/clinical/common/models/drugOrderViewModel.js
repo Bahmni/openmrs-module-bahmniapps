@@ -300,17 +300,17 @@ Bahmni.Clinical.DrugOrderViewModel = function (appConfig, config, proto, encount
     this.calculateQuantityAndUnit = function () {
         self.calculateDurationInDays();
         if (!this.doseUnits) return;
-        var shouldUnitBeCalculated = true;
-        shouldUnitBeCalculated = allowedQuantityUnits.indexOf(this.doseUnits) > -1;
+        self.shouldUnitBeCalculated = true;
+        self.shouldUnitBeCalculated = allowedQuantityUnits.indexOf(this.doseUnits) > -1;
 
         if (appConfig.calculateTotalUnits) {
-            shouldUnitBeCalculated = (shouldUnitBeCalculated || appConfig.calculateTotalUnits.indexOf(this.doseUnits) > -1);
+            self.shouldUnitBeCalculated = (self.shouldUnitBeCalculated || appConfig.calculateTotalUnits.indexOf(this.doseUnits) > -1);
         }
 
-        if (!shouldUnitBeCalculated) {
+        if (!self.shouldUnitBeCalculated) {
             self.quantity = 0;
         }
-        if (!self.quantityEnteredManually && !self.quantityEnteredViaEdit && shouldUnitBeCalculated) {
+        if (!self.quantityEnteredManually && !self.quantityEnteredViaEdit && self.shouldUnitBeCalculated) {
             if (self.frequencyType === Bahmni.Clinical.Constants.dosingTypes.uniform) {
                 self.quantity = self.uniformDosingType.dose * (self.uniformDosingType.frequency ? getFrequencyPerDay() : 0) * self.durationInDays;
             } else if (self.frequencyType == Bahmni.Clinical.Constants.dosingTypes.variable) {
