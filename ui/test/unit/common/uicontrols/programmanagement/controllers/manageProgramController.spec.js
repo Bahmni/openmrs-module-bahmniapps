@@ -50,6 +50,7 @@ describe("ManageProgramController", function () {
         $provide.value('spinner', _spinner);
         $provide.value('messagingService', messageService);
         $provide.value('retrospectiveEntryService', retrospectiveEntryService);
+        $provide.value('$stateParams', {configName: "default"});
     }));
 
 

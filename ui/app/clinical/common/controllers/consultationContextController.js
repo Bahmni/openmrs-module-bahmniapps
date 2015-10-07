@@ -1,9 +1,10 @@
 'use strict';
 
 angular.module('bahmni.clinical')
-    .controller('consultationContextController', ['$scope', 'appService',
-        function ($scope, appService) {
+    .controller('consultationContextController', ['$scope', 'appService', '$stateParams',
+        function ($scope, appService, $stateParams) {
             var init = function () {
+                $scope.configName = $stateParams.configName;
                 var programConfig = appService.getAppDescriptor().getConfigValue('program');
                 $scope.patientInfoSection = {
                     "patientInformation": {

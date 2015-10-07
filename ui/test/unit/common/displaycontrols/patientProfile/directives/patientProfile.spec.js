@@ -1,11 +1,20 @@
 'use strict';
 
 describe("Patient Profile display control", function () {
-    var element, scope, $compile, mockBackend;
+    var element, scope, $compile, mockBackend, $window;
 
     beforeEach(module('ngHtml2JsPreprocessor'));
     beforeEach(module('bahmni.common.patient'));
     beforeEach(module('bahmni.common.uiHelper'));
+    beforeEach(module(function($provide){
+        $provide.value('$stateParams', {configName: "programs"});
+        $window = jasmine.createSpyObj('$window', ['open']);
+        $window.open.and.callFake(function (param) {
+            return true;
+        });
+        $provide.value('$window', $window);
+    }));
+
     beforeEach(module('bahmni.common.displaycontrol.patientprofile'), function ($provide) {
         var patientService = jasmine.createSpyObj('patientService', ['getRelationships']);
         patientService.getRelationships.and.callFake(function (param) {
@@ -60,6 +69,12 @@ describe("Patient Profile display control", function () {
         var isoScope = createIsoScope({});
         var patientAttributeTypes = isoScope.getPatientAttributeTypes();
         expect(patientAttributeTypes.$$unwrapTrustedValue()).toBe("Female, 21 years");
+    });
+
+    it("should open patient dashboard with correct config Name", function () {
+        var isoScope = createIsoScope({});
+        isoScope.openPatientDashboard('1234');
+        expect($window.open).toHaveBeenCalledWith("../clinical/#/programs/patient/1234/dashboard");
     });
 
     it("should also get patient blood group attribute if it is directly specified", function () {

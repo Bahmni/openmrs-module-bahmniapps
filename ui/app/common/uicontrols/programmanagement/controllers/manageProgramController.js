@@ -1,6 +1,6 @@
 angular.module('bahmni.common.uicontrols.programmanagment')
-    .controller('ManageProgramController', ['$scope', 'retrospectiveEntryService', '$window', 'programService', 'spinner', 'messagingService',
-        function ($scope, retrospectiveEntryService, $window, programService, spinner, messagingService) {
+    .controller('ManageProgramController', ['$scope', 'retrospectiveEntryService', '$window', 'programService', 'spinner', 'messagingService', '$stateParams',
+        function ($scope, retrospectiveEntryService, $window, programService, spinner, messagingService, $stateParams) {
             var DateUtil = Bahmni.Common.Util.DateUtil;
             $scope.programSelected = {};
             $scope.workflowStateSelected = {};
@@ -9,6 +9,7 @@ angular.module('bahmni.common.uicontrols.programmanagment')
             $scope.programEdited = {selectedState: ""};
             $scope.workflowStatesWithoutCurrentState = [];
             $scope.outComesForProgram = [];
+            $scope.configName = $stateParams.configName;
 
             var updateActiveProgramsList = function () {
                 spinner.forPromise(programService.getPatientPrograms($scope.patient.uuid).then(function (programs) {
