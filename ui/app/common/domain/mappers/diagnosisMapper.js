@@ -1,4 +1,4 @@
-Bahmni.DiagnosisMapper = function (diagnosisStatus) {
+Bahmni.DiagnosisMapper = function () {
 
     var self = this;
 
@@ -18,15 +18,18 @@ Bahmni.DiagnosisMapper = function (diagnosisStatus) {
         }
 
         if (diagnosis.diagnosisStatusConcept) {
-            if (Bahmni.Common.Constants.ruledOutdiagnosisStatus === diagnosis.diagnosisStatusConcept.name) {
-                mappedDiagnosis.diagnosisStatus = diagnosisStatus;
+            for (var status in Bahmni.Common.Constants.diagnosisStatuses) {
+                if (Bahmni.Common.Constants.diagnosisStatuses[status] === diagnosis.diagnosisStatusConcept.name) {
+                    mappedDiagnosis.diagnosisStatus  = status;
+                }
             }
         }
+        
         return mappedDiagnosis;
     };
 
     self.mapDiagnosis = mapDiagnosis;
-
+    
     self.mapDiagnoses = function (diagnoses) {
         var mappedDiagnoses = [];
         diagnoses.forEach(function (diagnosis) {
@@ -34,7 +37,7 @@ Bahmni.DiagnosisMapper = function (diagnosisStatus) {
         });
         return mappedDiagnoses;
     };
-
+    
     self.mapPastDiagnosis = function (diagnoses, currentEncounterUuid) {
         var pastDiagnosesResponse = [];
         diagnoses.forEach(function (diagnosis) {

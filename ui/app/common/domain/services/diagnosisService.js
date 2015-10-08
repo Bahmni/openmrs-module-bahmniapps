@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('bahmni.common.domain')
-    .service('diagnosisService', ['$http','$rootScope', function ($http, $rootScope) {
+    .service('diagnosisService', ['$http', function ($http) {
         var self = this;
         this.getAllFor = function (searchTerm) {
             var url = Bahmni.Common.Constants.emrapiConceptUrl;
@@ -38,7 +38,7 @@ angular.module('bahmni.common.domain')
 
         this.getPastAndCurrentDiagnoses = function (patientUuid, encounterUuid) {
             return self.getPastDiagnoses(patientUuid).then(function (response) {
-                var diagnosisMapper = new Bahmni.DiagnosisMapper($rootScope.diagnosisStatus);
+                var diagnosisMapper = new Bahmni.DiagnosisMapper();
                 var allDiagnoses = diagnosisMapper.mapDiagnoses(response.data);
                 var pastDiagnoses = diagnosisMapper.mapPastDiagnosis(allDiagnoses, encounterUuid);
                 var savedDiagnosesFromCurrentEncounter = diagnosisMapper.mapSavedDiagnosesFromCurrentEncounter(allDiagnoses, encounterUuid);

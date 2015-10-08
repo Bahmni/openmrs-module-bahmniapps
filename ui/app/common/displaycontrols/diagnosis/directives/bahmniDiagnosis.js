@@ -7,10 +7,10 @@ angular.module('bahmni.common.displaycontrol.diagnosis')
             var controller = function ($scope) {
                 var getAllDiagnosis = function () {
                     return diagnosisService.getPastDiagnoses($scope.patientUuid, $scope.visitUuid).success(function (response) {
-                        var diagnosisMapper = new Bahmni.DiagnosisMapper($rootScope.diagnosisStatus);
+                        var diagnosisMapper = new Bahmni.DiagnosisMapper();
                         $scope.allDiagnoses = diagnosisMapper.mapDiagnoses(response);
                         var found = _.find($scope.allDiagnoses, function (diagnoses) {
-                            return diagnoses.diagnosisStatus !== $rootScope.diagnosisStatus;
+                            return diagnoses.diagnosisStatus !== $rootScope.diagnosisStatuses[0];
                         });
 
                     });

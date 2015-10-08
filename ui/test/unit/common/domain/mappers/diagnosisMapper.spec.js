@@ -6,7 +6,7 @@ describe("Diagnosis Mapper", function () {
     });
 
     it("should map diagnosis status", function() {
-        var mappedDiagnosis = new Bahmni.DiagnosisMapper("RULED OUT").mapDiagnosis({diagnosisStatusConcept: {name: "Ruled Out Diagnosis"}});
+        var mappedDiagnosis = new Bahmni.DiagnosisMapper().mapDiagnosis({diagnosisStatusConcept: {name: "Ruled Out Diagnosis"}});
         expect(mappedDiagnosis.diagnosisStatus).toEqual("RULED OUT");
     });
 

@@ -21,7 +21,8 @@ angular.module('bahmni.clinical').factory('initialization',
                 ]).then(function () {
                     $rootScope.genderMap = configurations.genderMap();
                     $rootScope.relationshipTypeMap = configurations.relationshipTypeMap();
-                    $rootScope.diagnosisStatus = (appService.getAppDescriptor().getConfig("diagnosisStatus") && appService.getAppDescriptor().getConfig("diagnosisStatus").value || "RULED OUT");
+                    $rootScope.diagnosisStatuses = (appService.getAppDescriptor().getConfig("diagnosisStatus") && appService.getAppDescriptor().getConfig("diagnosisStatus").value || "RULED OUT").split(',');
+                    Bahmni.Common.Constants.diagnosisStatuses[$rootScope.diagnosisStatuses[0]] = "Ruled Out Diagnosis";
                 });
             };
 
