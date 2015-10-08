@@ -63,7 +63,7 @@ describe('patient mapper', function () {
             "isNew": "true",
             "isUrban":false,
             "dead": true,
-            "testDate": "Fri Jan 01 1999 00:00:00 GMT+0530 (IST)"
+            "testDate": "Fri Jan 01 1999 00:00:00"
         });
 
         var openmrsPatient = new Bahmni.Registration.CreatePatientRequestMapper(new Date()).mapFromPatient(patientAttributeTypes, patient);
