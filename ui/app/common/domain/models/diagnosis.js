@@ -35,7 +35,7 @@ Bahmni.Common.Domain.Diagnosis = function (codedAnswer, order, certainty, existi
     };
 
     self.isRuledOut = function(){
-        return self.diagnosisStatus == $rootScope.diagnosisStatuses[0];
+        return self.diagnosisStatus == "RULED OUT";
     };
 
     self.answerNotFilled = function () {

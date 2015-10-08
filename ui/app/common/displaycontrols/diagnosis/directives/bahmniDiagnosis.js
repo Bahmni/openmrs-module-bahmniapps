@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('bahmni.common.displaycontrol.diagnosis')
-    .directive('bahmniDiagnosis', ['diagnosisService', '$q', 'spinner', '$rootScope',
-        function (diagnosisService, $q, spinner, $rootScope) {
+    .directive('bahmniDiagnosis', ['diagnosisService', '$q', 'spinner',
+        function (diagnosisService, $q, spinner) {
 
             var controller = function ($scope) {
                 var getAllDiagnosis = function () {
@@ -10,7 +10,7 @@ angular.module('bahmni.common.displaycontrol.diagnosis')
                         var diagnosisMapper = new Bahmni.DiagnosisMapper();
                         $scope.allDiagnoses = diagnosisMapper.mapDiagnoses(response);
                         var found = _.find($scope.allDiagnoses, function (diagnoses) {
-                            return diagnoses.diagnosisStatus !== $rootScope.diagnosisStatuses[0];
+                            return diagnoses.diagnosisStatus !== "RULED OUT"
                         });
 
                     });
