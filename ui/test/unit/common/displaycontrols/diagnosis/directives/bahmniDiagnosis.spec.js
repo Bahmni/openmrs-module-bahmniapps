@@ -1,33 +1,53 @@
 'use strict';
 
 describe('Diagnosis DisplayControl', function () {
-    var rootScope, scope, compiledElementScope, q, 
+    var rootScope, scope, compiledElementScope, q, _diagnosisService,
         compile, diagnosis,
         mockBackend,
-        spinner,
-        diagnosis,
         element,
-        directiveHtml='<bahmni-diagnosis patient-uuid="patient.uuid" config="section"></bahmni-diagnosis>';
+        directiveHtml = '<bahmni-diagnosis patient-uuid="patient.uuid" config="section" show-ruled-out-diagnoses="false"></bahmni-diagnosis>';
 
-    beforeEach(module('bahmni.common.domain'),function(){});
-    beforeEach(module('bahmni.common.uiHelper'), function(){});
+    beforeEach(module('bahmni.common.domain'));
+    beforeEach(module('bahmni.common.uiHelper'));
+    beforeEach(module('bahmni.common.displaycontrol.diagnosis'));
 
-
-    beforeEach(module('bahmni.common.displaycontrol.diagnosis'), function($provide){
-        var _spinner = jasmine.createSpyObj('spinner',['forPromise','then']);
-        _spinner.forPromise.and.callFake(function(){
+    beforeEach(module( function ($provide) {
+        var _spinner = jasmine.createSpyObj('spinner', ['forPromise', 'then']);
+        _spinner.forPromise.and.callFake(function () {
             var deferred = q.defer();
             deferred.resolve({data: {}});
             return deferred.promise;
         });
 
         _spinner.then.and.callThrough({data: {}});
-
-        var _diagnosisService = jasmine.createSpyObj('diagnosisService',['getPastDiagnoses']);
-
         $provide.value('spinner', _spinner);
-        $provide.value('diagnosisService', _diagnosisService);        
-    });
+
+        _diagnosisService = jasmine.createSpyObj('diagnosisService', ['getDiagnoses']);
+        var getDiagnosesPromise = specUtil.createServicePromise('getDiagnoses');
+        getDiagnosesPromise.success = function (successFn) {
+            successFn([{
+                    "order": "SECONDARY",
+                    "certainty": "PRESUMED",
+                    "diagnosisDateTime": "2015-10-08T11:33:24.000+0530",
+                    "diagnosisStatusConcept": {
+                        "uuid": "823051c4-3f10-11e4-adec-0800271c1b75",
+                        "name": "Ruled Out Diagnosis",
+                        "dataType": null,
+                        "shortName": null,
+                        "conceptClass": null,
+                        "set": false,
+                        "mappings": []
+                    },
+                    "latestDiagnosis": null,
+                    "encounterUuid": "b6818776-f3d1-4a01-8f26-87ab9b3b211f"
+                }]);
+            return getDiagnosesPromise;
+
+        };
+        _diagnosisService.getDiagnoses.and.returnValue(getDiagnosesPromise);
+        $provide.value('diagnosisService', _diagnosisService);
+    }));
+
 
     beforeEach(inject(function ($compile, $httpBackend, $rootScope, $q) {
         compile = $compile;
@@ -37,9 +57,9 @@ describe('Diagnosis DisplayControl', function () {
     }));
 
     function init() {
+        rootScope.diagnosisStatus = 'RULED OUT';
         scope = rootScope.$new();
         mockBackend.expectGET('../common/displaycontrols/diagnosis/views/diagnosisDisplayControl.html').respond("<div>dummy</div>");
-        mockBackend.expectGET('/openmrs/ws/rest/v1/bahmnicore/diagnosis/search').respond([]);
         scope.section = {
             title: "Diagnosis"
         };
@@ -51,12 +71,14 @@ describe('Diagnosis DisplayControl', function () {
         compiledElementScope = element.isolateScope();
         scope.$digest();
 
-        diagnosis = {showLatestDetails: false,
-                     showDetails: false,
-                     providers: [{name: "Super Woman"}]};
+        diagnosis = {
+            showLatestDetails: false,
+            showDetails: false,
+            providers: [{name: "Super Woman"}]
+        };
     }
 
-    it('should check diagnosis date toggle', function(){
+    it('should check diagnosis date toggle', function () {
         init();
         compiledElementScope.toggle(diagnosis, true);
 
@@ -68,5 +90,18 @@ describe('Diagnosis DisplayControl', function () {
         expect(diagnosis.showLatestDetails).toBeFalsy();
         expect(diagnosis.showDetails).toBeTruthy();
     });
+
+    it('should filter all ruled out diagnoses when showRuledOutDiagnoses flag is false', function () {
+        init();
+        expect(compiledElementScope.allDiagnoses.length).toBe(0);
+    });
+
+    it('should filter all ruled out diagnoses when showRuledOutDiagnoses flag is true', function () {
+        directiveHtml = '<bahmni-diagnosis patient-uuid="patient.uuid" config="section" show-ruled-out-diagnoses="undefined"></bahmni-diagnosis>';
+
+        init();
+        expect(compiledElementScope.allDiagnoses.length).toBe(1);
+    });
+
 
 });
