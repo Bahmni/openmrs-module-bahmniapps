@@ -3,7 +3,7 @@
     consult the documentation for more information on configuring canned reports</h2>
     <section class="section-grid" ng-if="reportsRequiringDateRange.length > 0">
         <h2 class="section-title">Reports</h2>
-        <table class="alt-row">
+        <table class="alt-row form">
             <thead>
             <tr>
                 <th>Name</th>
@@ -47,7 +47,7 @@
                         <option value="application/pdf">PDF</option>
                         <option value="application/vnd.ms-excel-custom">CUSTOM EXCEL</option>
                     </select>
-                    <input id="inputFileUpload{{report.name}}"  ng-if="report.responseType=='application/vnd.ms-excel-custom'" class="input-file-upload"
+                    <input ng-if="report.responseType=='application/vnd.ms-excel-custom'" class="input-file-upload custom-file"
                            type="file" accept=".xls" nv-file-select uploader="uploader"  options="{report: report}" />
                 </td>
 
