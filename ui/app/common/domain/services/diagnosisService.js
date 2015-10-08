@@ -10,7 +10,7 @@ angular.module('bahmni.common.domain')
             });
         };
 
-        this.getPastDiagnoses = function (patientUuid, visitUuid) {
+        this.getDiagnoses = function (patientUuid, visitUuid) {
             var url = Bahmni.Common.Constants.bahmniDiagnosisUrl;
             return $http.get(url, {
                 params: { patientUuid: patientUuid , visitUuid: visitUuid}
@@ -37,7 +37,7 @@ angular.module('bahmni.common.domain')
         };
 
         this.getPastAndCurrentDiagnoses = function (patientUuid, encounterUuid) {
-            return self.getPastDiagnoses(patientUuid).then(function (response) {
+            return self.getDiagnoses(patientUuid).then(function (response) {
                 var diagnosisMapper = new Bahmni.DiagnosisMapper($rootScope.diagnosisStatus);
                 var allDiagnoses = diagnosisMapper.mapDiagnoses(response.data);
                 var pastDiagnoses = diagnosisMapper.mapPastDiagnosis(allDiagnoses, encounterUuid);

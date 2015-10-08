@@ -47,6 +47,13 @@
   }
    
 }
+#diagnosisSection{
+  .ruled-out.diagnosis-name {
+    color: $mediumGray;
+    text-decoration: line-through;
+  }
+}
+
 .dashboard-section {
   margin: 0;
   margin-bottom: 10px;
@@ -61,11 +68,6 @@
       border-bottom: none;
     } 
   }
-  .ruled-out.diagnosis-name {
-    color: $mediumGray;
-    text-decoration: line-through;
-  }
-
   .placeholder-message {
     background: $lightGray;
     color: $mediumGray;
@@ -251,6 +253,9 @@ table.drug-order-table td.drug {
   text-align: center;
 }
 .dashboard-diagnosis-section {
+  .dashboard-table{
+    margin:0;
+  }
   .diagnosis .history-diagnosis .table-body {
     .row {background: $white;}
     .diagnosis-name {
