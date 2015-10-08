@@ -66,10 +66,15 @@ angular.module('bahmni.registration')
                 return createPromise;
             };
 
-            var findPrivilege = function (privilegeName) {
-                return _.find($rootScope.currentUser.privileges, function (privilege) {
-                    return privilegeName === privilege.name;
+            var isUserPrivilegedToCloseVisit = function() {
+                var applicablePrivs = [Bahmni.Common.Constants.closeVisitPrivilege, Bahmni.Common.Constants.deleteVisitsPrivilege];
+                var userPrivs = _.map($rootScope.currentUser.privileges, function(privilege) {
+                    return privilege.name;
                 });
+                var result = _.some(userPrivs, function(privName){
+                    return _.contains(applicablePrivs, privName);
+                });
+                return result;
             };
 
             var searchActiveVisitsPromise = function () {
@@ -78,7 +83,7 @@ angular.module('bahmni.registration')
                 }).success(function (data) {
                     var hasActiveVisit = data.results.length > 0;
                     self.visitUuid = hasActiveVisit ? data.results[0].uuid : "";
-                    $scope.canCloseVisit = findPrivilege(Bahmni.Common.Constants.closeVisitPrivilege) && hasActiveVisit;
+                    $scope.canCloseVisit = isUserPrivilegedToCloseVisit() && hasActiveVisit;
                 });
             };
 

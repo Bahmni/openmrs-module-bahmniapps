@@ -2,7 +2,8 @@
 
 angular.module('bahmni.registration')
     .controller('SearchPatientController', ['$rootScope', '$scope', '$location', '$window', 'spinner', 'patientService', 'appService', 'Preferences',
-        function ($rootScope, $scope, $location, $window, spinner, patientService, appService, preferences) {
+                'messagingService', '$translate',
+        function ($rootScope, $scope, $location, $window, spinner, patientService, appService, preferences, messagingService, $translate) {
             $scope.identifierSources = $rootScope.patientConfiguration.identifierSources;
             $scope.results = [];
             var searching = false;
@@ -16,6 +17,10 @@ angular.module('bahmni.registration')
             };
 
             var searchBasedOnQueryParameters = function (offset) {
+                if(! isUserPrivilegedForSearch()) {
+                    showInsufficientPrivMessage();
+                    return;
+                }
                 $scope.searchParameters.addressFieldValue = $location.search().addressFieldValue || '';
                 $scope.searchParameters.name = $location.search().name || '';
                 $scope.searchParameters.customAttribute = $location.search().customAttribute || '';
@@ -121,6 +126,10 @@ angular.module('bahmni.registration')
             });
 
             $scope.searchById = function () {
+                if(! isUserPrivilegedForSearch()) {
+                    showInsufficientPrivMessage();
+                    return;
+                }
                 if (!$scope.searchParameters.registrationNumber) return;
                 $scope.results = [];
                 var patientIdentifier = $scope.searchParameters.identifierPrefix.prefix + $scope.searchParameters.registrationNumber;
@@ -141,12 +150,32 @@ angular.module('bahmni.registration')
                 });
                 spinner.forPromise(searchPromise);
             };
+            var isUserPrivilegedForSearch = function() {
+                var applicablePrivs = [Bahmni.Common.Constants.viewPatientsPrivilege, Bahmni.Common.Constants.editPatientsPrivilege,
+                    Bahmni.Common.Constants.addVisitsPrivilege, Bahmni.Common.Constants.deleteVisitsPrivilege];
+                var userPrivs = _.map($rootScope.currentUser.privileges, function(privilege) {
+                    return privilege.name;
+                });
+                var result = _.some(userPrivs, function(privName){
+                    return _.contains(applicablePrivs, privName);
+                });
+                return result;
+            };
+
+            var showInsufficientPrivMessage = function(){
+                var message = $translate.instant("REGISTRATION_INSUFFICIENT_PRIVILEGE");
+                messagingService.showMessage('error', message);
+            };
 
             $scope.loadingMoreResults = function () {
                 return searching && !$scope.noMoreResultsPresent;
             };
 
             $scope.searchPatients = function () {
+                if(! isUserPrivilegedForSearch()) {
+                    showInsufficientPrivMessage();
+                    return;
+                }
                 var queryParams = {};
                  $scope.results = [];
                 if ($scope.searchParameters.name) {
