@@ -35,6 +35,7 @@
     "CONCEPT_SET_GROUP_COLLAPSE_ALL_KEY":"Collapse All",
 
 
+    "VISIT_TITLE_PATIENT_INFORMATION":"PatientInformation",
     "VISIT_TITLE_DIAGNOSIS_KEY": "Diagnoses",
     "VISIT_TITLE_DISPOSITIONS_KEY": "Dispositions",
     "VISIT_TITLE_DISPOSITION_KEY": "Disposition",
@@ -58,5 +59,6 @@
     "PATIENT_DOCUMENT_TRANSLATION_KEY": "Patient Documents",
     "BAHMNI_HOME_TRANSLATION_KEY": "Bahmni Home",
     "LOGOUT_TRANSLATION_KEY": "Logout",
-    "OBS_ABNORMAL_TRANSLATE_KEY": "Abnormal"
+    "OBS_ABNORMAL_TRANSLATE_KEY": "Abnormal",
+    "LAB_INVESTIGATIONS_KEY": "Lab Investigations"
 }

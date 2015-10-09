@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('bahmni.registration')
-    .directive('printOptions', ['$rootScope','registrationCardPrinter', 'spinner', 'appService',
-     function ($rootScope, registrationCardPrinter, spinner, appService) {
+    .directive('printOptions', ['$rootScope','registrationCardPrinter', 'spinner', 'appService','$filter',
+     function ($rootScope, registrationCardPrinter, spinner, appService,$filter) {
         var controller = function($scope) {
             $scope.printOptions = appService.getAppDescriptor().getConfigValue("printOptions");
             $scope.defaultPrint = $scope.printOptions && $scope.printOptions[0];
@@ -24,9 +24,9 @@ angular.module('bahmni.registration')
             };
 
             $scope.buttonText = function(option) {
-                return option && option.translationKey;
+                return option && $filter('titleTranslate')(option);
             }
-        }
+        };
 
         return {
             restrict: 'A',

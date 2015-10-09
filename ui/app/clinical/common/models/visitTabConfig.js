@@ -2,7 +2,7 @@
 
 Bahmni.Clinical.VisitTabConfig = function (tabs) {
 
-    angular.extend(this, new Bahmni.Clinical.TabConfig(tabs, "translationKey"));
+    angular.extend(this, new Bahmni.Clinical.TabConfig(tabs));
 
     this.setVisitUuidsAndPatientUuidToTheSections = function (visitUuids, patientUuid) {
         _.each(this.tabs, function (tab) {

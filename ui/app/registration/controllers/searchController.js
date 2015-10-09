@@ -2,8 +2,9 @@
 
 angular.module('bahmni.registration')
     .controller('SearchPatientController', ['$rootScope', '$scope', '$location', '$window', 'spinner', 'patientService', 'appService', 'Preferences',
-                'messagingService', '$translate',
-        function ($rootScope, $scope, $location, $window, spinner, patientService, appService, preferences, messagingService, $translate) {
+                'messagingService', '$translate','$filter',
+        function ($rootScope, $scope, $location, $window, spinner, patientService, appService, preferences, messagingService, $translate,$filter) {
+
             $scope.identifierSources = $rootScope.patientConfiguration.identifierSources;
             $scope.results = [];
             var searching = false;
@@ -245,6 +246,6 @@ angular.module('bahmni.registration')
             };
 
             $scope.extensionActionText = function (extension) {
-                return extension.translationKey;
+                return $filter('titleTranslate')(extension);
             }
         }]);
