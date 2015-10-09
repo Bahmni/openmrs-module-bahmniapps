@@ -19,6 +19,9 @@ angular.module('bahmni.common.i18n',['pascalprecht.translate'])
             if (input.label) {
                 return input.label;
             }
+            if (input.display) {
+                return input.display;
+            }
             return null;
         }
     }]);
