@@ -51,7 +51,7 @@ describe("tab config", function () {
     });
 
     it("should return false if there are no tabs to show", function() {
-        var emptyTabConfig = new Bahmni.Clinical.TabConfig([]);
+        var emptyTabConfig = new Bahmni.Clinical.TabConfig([], "title");
         expect(emptyTabConfig.showTabs()).toBe(false);
     });
 

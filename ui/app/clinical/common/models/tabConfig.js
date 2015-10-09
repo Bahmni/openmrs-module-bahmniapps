@@ -1,18 +1,13 @@
 'use strict';
 
-Bahmni.Clinical.TabConfig = function (tabs) {
+Bahmni.Clinical.TabConfig = function (tabs, identifierKey) {
     var self = this;
     this.tabs = tabs;
-    this.identifierKey = null;
+    this.identifierKey = identifierKey;
 
     var init = function(){
         initDisplayByDefaultTabs();
         self.currentTab = self.getFirstTab();
-        if(self.currentTab && self.currentTab.translationKey){
-            self.identifierKey = "translationKey";
-        }else{
-            self.identifierKey = "title";
-        }
     };
 
     var initDisplayByDefaultTabs = function(){

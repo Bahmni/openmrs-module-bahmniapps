@@ -3,10 +3,10 @@
 angular.module('bahmni.clinical').controller('ConsultationController',
     ['$scope', '$rootScope', '$state', '$location', 'clinicalAppConfigService', 'urlHelper', 'contextChangeHandler',
         'spinner', 'encounterService', 'messagingService', 'sessionService', 'retrospectiveEntryService', 'patientContext', 'consultationContext', '$q',
-        'patientVisitHistoryService', '$stateParams', '$window', 'visitHistory', 'clinicalDashboardConfig','appService','ngDialog','$filter',
+        'patientVisitHistoryService', '$stateParams', '$window', 'visitHistory', 'clinicalDashboardConfig','appService','ngDialog',
         function ($scope, $rootScope, $state, $location, clinicalAppConfigService, urlHelper, contextChangeHandler,
                   spinner, encounterService, messagingService, sessionService, retrospectiveEntryService, patientContext, consultationContext, $q,
-                  patientVisitHistoryService, $stateParams, $window, visitHistory, clinicalDashboardConfig, appService, ngDialog,$filter) {
+                  patientVisitHistoryService, $stateParams, $window, visitHistory, clinicalDashboardConfig, appService, ngDialog) {
             $scope.patient = patientContext.patient;
             $scope.consultation = consultationContext;
 
@@ -52,32 +52,10 @@ angular.module('bahmni.clinical').controller('ConsultationController',
             $scope.availableBoards = [];
             $scope.configName = $stateParams.configName;
 
-            $scope.getTitle = function(board){
-                return $filter('titleTranslate')(board);
-            };
-
-            $scope.showBoard = function (board) {
+            $scope.showBoard = function (translationKey) {
                 $rootScope.collapseControlPanel();
-                return buttonClickAction(findBoard(board));
-            };
-
-            var findBoard = function(boardDetail){
-                var board = findBoardByTranslationKey(boardDetail);
-                if(!board){
-                    board = findBoardByTitle(boardDetail);
-                }
-                return board;
-            };
-
-            var findBoardByTranslationKey = function(boardDetail){
-                if(boardDetail.translationKey){
-                    return _.find($scope.availableBoards,{translationKey: boardDetail.translationKey});
-                }
-                return null;
-            };
-
-            var findBoardByTitle = function(boardDetail){
-                return _.find($scope.availableBoards,{label: boardDetail.label});
+                var board = _.find($scope.availableBoards,{translationKey:translationKey});
+                return buttonClickAction(board);
             };
 
             $scope.gotoPatientDashboard = function () {

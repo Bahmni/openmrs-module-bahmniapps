@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('bahmni.common.displaycontrol.orders')
-    .directive('ordersControl', ['orderService', 'orderTypeService', '$q','spinner', '$filter',
+    .directive('ordersControl', ['orderService', 'orderTypeService', '$q','spinner', '$filter','$translate',
         function (orderService, orderTypeService, $q, spinner, $filter) {
             var controller = function($scope){
 
@@ -65,7 +65,7 @@ angular.module('bahmni.common.displaycontrol.orders')
                 $scope.message = Bahmni.Common.Constants.messageForNoFulfillment;
 
                 $scope.getSectionTranslationKey = function(){
-                    return $filter('titleTranslate')($scope.section);
+                    return $scope.section.translationKey;
                 };
 
                 spinner.forPromise(init());
