@@ -8,13 +8,13 @@
                 <i class="fa fa-caret-right" ng-hide="conceptSet.isOpen"></i>
                 <i class="fa fa-caret-down" ng-show="conceptSet.isOpen"></i>
                 <span class="section-label">{{conceptSet.label}}</span>
-                <button type="button" ng-if="conceptSet.showComputeButton() && conceptSet.isOpen" ng-click="computeField(conceptSet)"
+                <button type="button" ng-if="conceptSet.showComputeButton() && conceptSet.isOpen" ng-click="computeField(conceptSet, $event)"
                         class="fr btn-small">Compute
                 </button>
-                <button type="button" ng-if="showPreviousButton(conceptSet.conceptName) && conceptSet.isOpen" ng-click="showPrevious(conceptSet.conceptName)"
+                <button type="button" ng-if="showPreviousButton(conceptSet.conceptName) && conceptSet.isOpen" ng-click="showPrevious(conceptSet.conceptName, $event)"
                         class="fr btn-small">Previous
                 </button>
-                <button type="button" ng-show="conceptSet.isOpen" ng-click="conceptSet.toggleInnerSections()"
+                <button type="button" ng-show="conceptSet.isOpen" ng-click="conceptSet.toggleInnerSections($event)"
                         class="fr btn-small">
                      <span ng-show="conceptSet.collapseInnerSections">{{'CONCEPT_SET_GROUP_EXPAND_ALL_KEY' | translate}}</span>
                      <span ng-hide="conceptSet.collapseInnerSections">{{'CONCEPT_SET_GROUP_COLLAPSE_ALL_KEY' | translate}}</span>

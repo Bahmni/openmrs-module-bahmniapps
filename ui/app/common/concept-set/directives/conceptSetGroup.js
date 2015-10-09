@@ -22,7 +22,7 @@ angular.module('bahmni.common.conceptSet')
                 return conceptSetUIConfig[conceptSetName] && conceptSetUIConfig[conceptSetName].showPreviousButton;
             };
 
-            $scope.showPrevious = function (conceptSetName) {
+            $scope.showPrevious = function (conceptSetName, event) {
                 event.stopPropagation();
                 $timeout(function () {
                     $scope.$broadcast('event:showPrevious' + conceptSetName);
@@ -32,7 +32,7 @@ angular.module('bahmni.common.conceptSet')
                 return $stateParams.encounterUuid !== undefined && $stateParams.encounterUuid !== 'active';
             };
 
-            $scope.computeField = function (conceptSet) {
+            $scope.computeField = function (conceptSet, event) {
                 event.stopPropagation();
                 $scope.consultation.saveHandler.fire();
                 var defaultRetrospectiveVisitType = clinicalAppConfigService.getVisitTypeForRetrospectiveEntries();
