@@ -22,22 +22,22 @@ angular.module('bahmni.registration')
                 });
             };
 
-            var showOrHideAdditionalPatientInformation = function () {
-                var additionalPatientInfoConfig = appService.getAppDescriptor().getConfigValue("additionalPatientInformation");
-                angular.forEach(additionalPatientInfoConfig, function (attribute) {
-                    if ($scope.patient[attribute.name]) {
-                        $scope.displayAdditionalInformation = true;
-                    }
-                });
-            };
-
             var successCallBack = function(openmrsPatient){
                 $scope.openMRSPatient = openmrsPatient["patient"];
                 $scope.patient = patientMapper.map(openmrsPatient);
                 setReadOnlyFields();
-                showOrHideAdditionalPatientInformation();
+                buildSectionVisibilityMap();
             };
 
+            var buildSectionVisibilityMap = function () {
+                $scope.sectionVisibilityMap = {};
+                angular.forEach($rootScope.patientConfiguration && $rootScope.patientConfiguration.getPatientAttributesSections(), function(section, key) {
+                    var notNullAttribute = _.find(section && section.attributes, function (attribute) {
+                        return $scope.patient[attribute.name] !== undefined;
+                    });
+                    $scope.sectionVisibilityMap[key] = notNullAttribute ? true : false;
+                });
+            };
 
             (function () {
                 var getPatientPromise = patientService.get(uuid).success(successCallBack);

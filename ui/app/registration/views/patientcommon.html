@@ -164,21 +164,27 @@
       </article>
   </section>
 </div>
-<div class="box-container" ng-if="patientConfiguration.additionalAttributes().length">
-    <legend class="additional-attribute"
-          toggle="displayAdditionalInformation">
+<div ng-repeat="(key, section) in patientConfiguration.getPatientAttributesSections()">
+    <div class="box-container" ng-if="section.attributes.length > 0">
+        <legend class="additional-attribute" toggle="sectionVisibilityMap[key]">
           <span>
-              <i class="fa fa-caret-right" ng-hide="displayAdditionalInformation"></i>
-              <i class="fa fa-caret-down" ng-show="displayAdditionalInformation"></i>
-              <strong><a href accesskey="{{ 'REGISTRATION_ENTER_ADDITIONAL_PATIENT_DETAILS_ACCESS_KEY' | translate}}" ng-bind-html="'REGISTRATION_TITLE_ADDITIONAL_PATIENT' | translate"></a></strong>
+              <i class="fa fa-caret-right" ng-hide="sectionVisibilityMap[key]"></i>
+              <i class="fa fa-caret-down" ng-show="sectionVisibilityMap[key]"></i>
+              <strong>
+                  <a ng-if="section.translationKey" href accesskey="{{section.shortcutKey | translate}}"
+                     ng-bind-html="section.translationKey | translate">
+                  </a>
+                  <a ng-if="section.title" href>{{section.title}}</a>
+              </strong>
           </span>
-  </legend>
-  <section class="form-field-inline section-padding" ng-show="displayAdditionalInformation">
-      <article class="form-field" ng-repeat="attribute in patientConfiguration.additionalAttributes()"
-               ng-class="{'right-form-field' : $index%2 != 0}">
-          <ng-include src="'views/patientAttributeInformation.html'"></ng-include>
-      </article>
-  </section>
+        </legend>
+        <section class="form-field-inline section-padding" ng-show="sectionVisibilityMap[key]">
+            <article class="form-field" ng-repeat="attribute in section.attributes"
+                     ng-class="{'right-form-field' : $index%2 != 0}">
+                <ng-include src="'views/patientAttributeInformation.html'"></ng-include>
+            </article>
+        </section>
+    </div>
 </div>
 <div class="box-container" ng-if="relationshipTypes.length > 0">
   <legend class="additional-attribute" ng-show="relationshipTypes"
