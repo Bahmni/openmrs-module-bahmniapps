@@ -21,21 +21,11 @@ angular.module('consultation')
         var homeBackLink = {label: "", url: "../home/", icon: "fa-home"};
 
         $stateProvider
-            .state('context', {
-                url: '/:configName',
-                abstract: true,
-                views: {
-                    'additional-header': {template: '<div ui-view="additional-header"></div>'},
-                    'content': {
-                        template: '<div ui-view="content"></div>'
-                    }
-                }
-            })
             .state('search', {
                 abstract: true,
                 views: {
                     'content': {
-                        template: '<div ui-view="dashboard-header"></div> <div ui-view="dashboard-content"></div>'
+                        template: '<div ui-view="patientSearchPage-header"></div> <div ui-view="patientSearchPage-content"></div>'
                     }
                 },
                 data: {
@@ -50,11 +40,11 @@ angular.module('consultation')
             .state('search.patientsearch', {
                 url: '/:configName/patient/search',
                 views: {
-                    'dashboard-header': {
+                    'patientSearchPage-header': {
                         templateUrl: '../common/ui-helper/header.html',
                         controller: 'PatientListHeaderController'
                     },
-                    'dashboard-content': {
+                    'patientSearchPage-content': {
                         templateUrl: '../common/patient-search/views/patientsList.html',
                         controller: 'PatientsListController'
                     }
@@ -68,9 +58,8 @@ angular.module('consultation')
                 }
             })
             .state('patient', {
-                url: '/patient/:patientUuid?encounterUuid,programUuid',
+                url: '/:configName/patient/:patientUuid?encounterUuid,programUuid',
                 abstract: true,
-                parent: 'context',
                 data: {
                     backLinks: [patientSearchBackLink]
                 },
@@ -128,6 +117,9 @@ angular.module('consultation')
             })
             .state('patient.dashboard.show', {
                 url: '/dashboard',
+                params: {
+                    dashboardCachebuster: null
+                },
                 views: {
                     'dashboard-header': {
                         templateUrl: 'dashboard/views/clinicalDashboardHeader.html',
@@ -150,6 +142,9 @@ angular.module('consultation')
             })
             .state('patient.dashboard.show.diagnosis', {
                 url: '/diagnosis',
+                params: {
+                    cachebuster: null
+                },
                 views: {
                     'consultation-content': {
                         templateUrl: 'consultation/views/diagnosis.html',
@@ -167,6 +162,9 @@ angular.module('consultation')
             })
             .state('patient.dashboard.show.treatment.page', {
                 url: '/treatment',
+                params: {
+                  cachebuster: null
+                },
                 views: {
                     "addTreatment": {
                         controller: 'TreatmentController',
@@ -307,7 +305,7 @@ angular.module('consultation')
                     'content': {
                         template: '<div ui-view="patientProgram-header"></div> <div ui-view="patientProgram-content"></div>'
                     }
-                },
+                }
             })
             .state('patient.patientProgram.show', {
                 url: '/consultationContext',
@@ -330,7 +328,6 @@ angular.module('consultation')
 
         $bahmniTranslateProvider.init({app: 'clinical', shouldMerge: true});
     }]).run(['stateChangeSpinner', '$rootScope', function (stateChangeSpinner, $rootScope) {
-        //debugUiRouter($rootScope);
         FastClick.attach(document.body);
         stateChangeSpinner.activate();
 

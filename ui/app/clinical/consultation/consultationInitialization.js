@@ -63,13 +63,10 @@ angular.module('bahmni.clinical').factory('consultationInitialization',
                 };
 
                 return getEncounter().then(function (consultation) {
-                    return diagnosisService.getPastAndCurrentDiagnoses(patientUuid, consultation.encounterUuid).then(function (diagnosis) {
-                        consultation.pastDiagnoses = diagnosis.pastDiagnoses;
-                        consultation.savedDiagnosesFromCurrentEncounter = diagnosis.savedDiagnosesFromCurrentEncounter;
-                        consultation.preSaveHandler = new Bahmni.Clinical.Notifier();
-                        consultation.postSaveHandler = new Bahmni.Clinical.Notifier();
-                        return consultation;
-                    })
+                    return diagnosisService.populateDiagnosisInformation(patientUuid, consultation).then(function(diagnosisConsultation) {
+                        diagnosisConsultation.preSaveHandler = new Bahmni.Clinical.Notifier();
+                        return diagnosisConsultation;
+                    });
                 });
             }
         }]
