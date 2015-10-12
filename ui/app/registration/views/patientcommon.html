@@ -174,7 +174,7 @@
                   <a ng-if="section.translationKey" href accesskey="{{section.shortcutKey | translate}}"
                      ng-bind-html="section.translationKey | translate">
                   </a>
-                  <a ng-if="section.title" href>{{section.title}}</a>
+                  <a ng-if="section.title && !section.translationKey" href>{{section.title}}</a>
               </strong>
           </span>
         </legend>
