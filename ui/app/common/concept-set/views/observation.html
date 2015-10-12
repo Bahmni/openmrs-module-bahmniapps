@@ -1,5 +1,5 @@
 <div class="observations-tab">
-    <div class="vitals form-horizontal">
+    <div class="vitals form-horizontal" ng-if="!observation.voided">
        <fieldset class="leaf-observation-node" ng-if="::observation.isObservationNode">
             <div class="form-group bm-pop-over">
                 <div class=" concept-tooltip-description" bm-pop-over-target
@@ -90,6 +90,9 @@
                     <duration ng-model="observation.durationObs.value" disabled="!observation.primaryObs.hasValue()"
                               illegal-value="observation.isDurationRequired() && !observation.hasDuration()"></duration>
                 </div>
+
+                <div ng-include src="'../common/concept-set/views/observationDataTypes/removeClone.html'"></div>
+
 
                 <button ng-if="::observation.canHaveComment()" type="button" toggle="observation.showComment" class="comment-toggle fr" tabindex="-1"
                         ng-class="{'has-notes': observation.comment}">
@@ -222,6 +225,9 @@
 
                 <div ng-include src="'../common/concept-set/views/observationDataTypes/addMore.html'"></div>
 
+
+                <div ng-include src="'../common/concept-set/views/observationDataTypes/removeClone.html'"></div>
+
                 <button ng-if="::observation.canHaveComment()" type="button" toggle="observation.showComment"
                         ng-blur="handleUpdate()" ng-disabled="observation.disabled"
                         class="comment-toggle fr" tabindex="-1" ng-class="{'has-notes': observation.comment}">
@@ -246,6 +252,9 @@
                 <i ng-if="isCollapsibleSet() && collapse" class="fa fa-caret-right"></i>
                 <i ng-if="!(isCollapsibleSet() && collapse)" class="fa fa-caret-down"></i>
                 <strong>{{::observation.label}}</strong>
+
+                <div ng-include src="'../common/concept-set/views/observationDataTypes/removeClone.html'"></div>
+
             <span ng-if="observation.canAddMore && observation.canAddMore()" class="add-more">
                 <button id="{{observation.assignAddMoreButtonID()}}" type="button" class="add-more-btn btn-small" ng-click="cloneNew(observation, rootObservation)">
                     <i class="fa fa-plus-circle"></i> {{'ADD_MORE_KEY' | translate}}

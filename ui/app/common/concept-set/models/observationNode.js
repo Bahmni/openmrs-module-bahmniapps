@@ -250,6 +250,7 @@ Bahmni.ConceptSet.ObservationNode.prototype = {
     },
 
     isValid: function (checkRequiredFields, conceptSetRequired) {
+
         if (this.isGroup()) return this._hasValidChildren(checkRequiredFields, conceptSetRequired);
         if(checkRequiredFields){
             if (conceptSetRequired && this.isRequired() && !this.getPrimaryObs().hasValue()) return false;

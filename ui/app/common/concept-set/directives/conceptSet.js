@@ -74,6 +74,8 @@ angular.module('bahmni.common.conceptSet')
                 $scope.conceptSetRequired = $scope.required ? $scope.required : true;
                 var errorMessage = null;
                 var invalidNodes = $scope.rootObservation && $scope.rootObservation.groupMembers.filter(function (childNode) {
+                        if(childNode.voided)
+                            return false;
                         //Other than Bahmni.ConceptSet.Observation  and Bahmni.ConceptSet.ObservationNode, other concepts does not have isValueInAbsoluteRange fn
                         if (typeof childNode.isValueInAbsoluteRange == 'function' && !childNode.isValueInAbsoluteRange()) {
                             errorMessage = "The value you entered (red field) is outside the range of allowable values for that record. Please check the value.";

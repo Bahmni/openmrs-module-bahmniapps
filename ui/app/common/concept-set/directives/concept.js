@@ -11,6 +11,16 @@ angular.module('bahmni.common.conceptSet')
                 jQuery.scrollTo(element)
             };
 
+            scope.removeClonedObs = function (observation, parentObservation) {
+                var index = parentObservation.groupMembers.indexOf(observation);
+                parentObservation.groupMembers[index].voided = true;
+            };
+
+            scope.isClone = function(observation, parentObservation){
+                var index = parentObservation.groupMembers.indexOf(observation);
+                return (index != 0) ? parentObservation.groupMembers[index].label == parentObservation.groupMembers[index -1].label : false;
+            };
+
             scope.getStringValue = function (observations) {
                 return observations.map(function (observation) {
                     return observation.value + ' (' + $filter('bahmniDate')(observation.date) + ")";
