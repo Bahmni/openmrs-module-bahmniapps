@@ -10,6 +10,7 @@
     "CONCEPT_SET_GROUP_COLLAPSE_ALL_KEY":"Collapse All",
 
     "NO_DISPOSTIONS_AVAILABLE_MESSAGE_KEY": "No dispositions available.",
+    "ALL_DIAGNOSES_KEY": "All Diagnoses",
     "DISPLAY_CONTROL_ERROR_MESSAGE_KEY": "No {{ displayControl }} for this patient"
 
 
