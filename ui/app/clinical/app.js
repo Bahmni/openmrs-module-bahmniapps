@@ -133,6 +133,9 @@ angular.module('consultation')
             })
             .state('patient.dashboard.show.observations', {
                 url: '/concept-set-group/:conceptSetGroupName',
+                params: {
+                    cachebuster: null
+                },
                 views: {
                     'consultation-content': {
                         templateUrl: 'consultation/views/conceptSet.html',
@@ -187,6 +190,9 @@ angular.module('consultation')
             })
             .state('patient.dashboard.show.disposition', {
                 url: '/disposition',
+                params: {
+                    cachebuster: null
+                },
                 views: {
                     'consultation-content': {
                         templateUrl: 'consultation/views/disposition.html',
@@ -197,6 +203,9 @@ angular.module('consultation')
             })
             .state('patient.dashboard.show.summary', {
                 url: '/consultation',
+                params: {
+                    cachebuster: null
+                },
                 views: {
                     'consultation-content': {
                         templateUrl: 'consultation/views/consultation.html',
@@ -206,6 +215,9 @@ angular.module('consultation')
             })
             .state('patient.dashboard.show.orders', {
                 url: '/orders',
+                params: {
+                    cachebuster: null
+                },
                 views: {
                     'consultation-content': {
                         templateUrl: 'consultation/views/orders.html',
@@ -220,6 +232,9 @@ angular.module('consultation')
             })
             .state('patient.dashboard.show.investigation', {
                 url: '/investigation',
+                params: {
+                    cachebuster: null
+                },
                 views: {
                     'consultation-content': {
                         templateUrl: 'consultation/views/investigations.html',
