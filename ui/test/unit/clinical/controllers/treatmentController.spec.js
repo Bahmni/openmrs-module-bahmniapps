@@ -11,7 +11,7 @@ describe("TreatmentController", function () {
         scope = $rootScope.$new();
         rootScope = $rootScope;
         encounterDateTime = moment("2014-03-02").toDate();
-        scope.consultation = {saveHandler: new Bahmni.Clinical.SaveHandler(), activeAndScheduledDrugOrders: [], encounterDateTime: encounterDateTime};
+        scope.consultation = {preSaveHandler: new Bahmni.Clinical.Notifier(), activeAndScheduledDrugOrders: [], encounterDateTime: encounterDateTime};
         var now = DateUtil.now();
         ngDialog = jasmine.createSpyObj('ngDialog', ['open', 'close']);
         spyOn(Bahmni.Common.Util.DateUtil, 'now').and.returnValue(now);
@@ -1195,7 +1195,7 @@ describe("TreatmentController", function () {
 
         it("should not fail for empty treatments", function () {
             scope.consultation.newlyAddedTreatments = undefined;
-            scope.consultation.saveHandler.fire();
+            scope.consultation.preSaveHandler.fire();
         });
     })
 

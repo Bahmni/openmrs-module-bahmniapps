@@ -168,7 +168,7 @@ angular.module('bahmni.clinical').controller('ConsultationController',
                 var deferred = $q.defer();
 
                 var observationFilter = new Bahmni.Common.Domain.ObservationFilter();
-                $scope.consultation.saveHandler.fire();
+                $scope.consultation.preSaveHandler.fire();
                 var tempConsultation = angular.copy($scope.consultation);
                 tempConsultation.observations = observationFilter.filter(tempConsultation.observations);
                 tempConsultation.consultationNote = observationFilter.filter([tempConsultation.consultationNote])[0];
@@ -204,6 +204,7 @@ angular.module('bahmni.clinical').controller('ConsultationController',
                             notify: true
                         }).then(function () {
                             messagingService.showMessage('info', 'Saved');
+                            $scope.consultation.postSaveHandler.fire();
                         });
                     }).catch(function (error) {
                         var message = Bahmni.Clinical.Error.translate(error) || 'An error has occurred on the server. Information not saved.';

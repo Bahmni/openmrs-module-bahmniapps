@@ -172,8 +172,7 @@ angular.module('bahmni.clinical')
                 setDiagnosis();
             };
 
-            $scope.consultation.saveHandler.register(saveDiagnosis);
-            $scope.consultation.postSaveHandler.register(init);
+            $scope.consultation.preSaveHandler.register(saveDiagnosis);
 
             $scope.$on('$destroy', setDiagnosis);
 

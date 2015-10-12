@@ -72,7 +72,7 @@ angular.module('bahmni.clinical')
             }
         };
 
-        $scope.consultation.saveHandler.register(saveDispositions);
+        $scope.consultation.preSaveHandler.register(saveDispositions);
 
         $scope.$on('$destroy', saveDispositions);
     }]);

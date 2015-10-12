@@ -22,7 +22,7 @@ describe("DrugOrderHistoryController", function () {
     beforeEach(inject(function ($controller, $rootScope) {
         $rootScope.visit = {startDate: 1410322624000};
         scope = $rootScope.$new();
-        scope.consultation = {saveHandler: new Bahmni.Clinical.SaveHandler()};
+        scope.consultation = {preSaveHandler: new Bahmni.Clinical.Notifier()};
         scope.currentBoard = {extensionParams: {}};
         clinicalAppConfigService = jasmine.createSpyObj('clinicalAppConfigService', ['getDrugOrderConfig']);
         clinicalAppConfigService.getDrugOrderConfig.and.returnValue([]);
