@@ -1,0 +1,60 @@
+<h1>{{'BACTERIOLOGY_TAB_TITLE_KEY' | translate}}</h1>
+<div ng-repeat="newSpecimen in newSpecimens track by $index" style="border:1px solid black;">
+    <form ng-submit="addSpecimen()">
+        <label for="sample-date">{{'BACTERIOLOGY_SAMPLE_COLLECTION_DATE_KEY' | translate}} </label>
+        <input id="sample-date" type="date" ng-model="newSpecimen.dateCollected" required="required">
+
+        <label for="sample-type">{{'BACTERIOLOGY_SAMPLE_TYPE_KEY' | translate}} </label>
+        <select required="required" id="sample-type" class="form-field bulk-duration-unit" ng-model="newSpecimen.type"
+                ng-options="sample as sample.name for sample in allSamples">
+            <option></option>
+        </select>
+
+        <label for="sample-id">{{'BACTERIOLOGY_SAMPLE_ID_KEY' | translate}} </label>
+        <input id="sample-id" type="text" ng-model="newSpecimen.identifier">
+
+        <concept-set patient="patient" concept-set-name="additionalAttributesConceptName"
+                     observations="newSpecimen.sample.additionalAttributes"></concept-set>
+
+        <concept-set patient="patient" concept-set-name="resultsConceptName"
+                     observations="newSpecimen.report.results"></concept-set>
+
+    <span ng-if="$index == 0">
+        <input type="submit" value="{{'BACTERIOLOGY_BUTTON_ADD_SAMPLE_KEY' | translate}}">
+    </span>
+        <input type="button" value="{{'BACTERIOLOGY_BUTTON_CLEAR_KEY' | translate}}"
+               ng-click="clearSpecimen(newSpecimen)">
+    </form>
+</div>
+<!--<div ng-repeat="specimen in newSpecimens track by $index">-->
+<!--<span>{{specimen.type.name}}</span>-->
+<!--<span ng-if="specimen.sample.identifier">#{{specimen.identifier}}</span>-->
+<!--<span>Added on {{specimen.dateCollected | date:'dd/MM/yyyy'}}</span>-->
+<!--<button ng-click="editSpecimen(specimen)">{{'BACTERIOLOGY_BUTTON_EDIT_KEY' | translate}}</button>-->
+<!--<button ng-click="removeSpecimen(specimen)">X</button>-->
+
+<!--<section class="block hierarchy">-->
+<!--<ul class="form-field">-->
+<!--<li>-->
+<!--<ul>-->
+<!--<bahmni-observation patient="patient" config="config" section="section"-->
+<!--section-title="section.translationKey" is-on-dashboard="false"-->
+<!--observations="specimen.sample.additionalAttributes"></bahmni-observation>-->
+<!--</ul>-->
+<!--</li>-->
+<!--</ul>-->
+<!--</section>-->
+<!--<section class="block hierarchy">-->
+<!--<ul class="form-field">-->
+<!--<li>-->
+<!--<ul>-->
+<!--<bahmni-observation patient="patient" config="config" section="section"-->
+<!--section-title="section.translationKey" is-on-dashboard="false"-->
+<!--observations="specimen.report.results"></bahmni-observation>-->
+<!--</ul>-->
+<!--</li>-->
+<!--</ul>-->
+<!--</section>-->
+<!--</div>-->
+
+
