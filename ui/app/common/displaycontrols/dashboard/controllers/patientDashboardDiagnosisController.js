@@ -1,14 +1,13 @@
 'use strict';
 
-angular.module('bahmni.clinical')
+angular.module('bahmni.common.displaycontrol.dashboard')
     .controller('PatientDashboardDiagnosisController', ['$scope', 'ngDialog',
         function ($scope, ngDialog) {
-
             $scope.section =  $scope.dashboard.getSectionByName("diagnosis") || {};
 
             $scope.openSummaryDialog = function () {
                 ngDialog.open({
-                    template: 'dashboard/views/dashboardSections/diagnosisSummary.html',
+                    template: '../common/displaycontrols/dashboard/views/sections/diagnosisSummary.html',
                     className: "ngdialog-theme-default ng-dialog-all-details-page",
                     scope: $scope
                 });

@@ -5,6 +5,9 @@
         <link rel="stylesheet" href="../lib/jquery/jquery-ui-1.10.4.custom.min.css">
         <!-- build:css adt.min.css -->
         <link rel="stylesheet" href="../styles/clinical.css"/>
+        <link rel="stylesheet" href="../components/ngDialog/css/ngDialog.min.css"/>
+        <link rel="stylesheet" href="../components/ngDialog/css/ngDialog-theme-default.min.css"/>
+        <link rel="stylesheet" href="../components/ngDialog/css/ngDialog-theme-plain.min.css"/>
         <!-- endbuild -->
         <title>ADT</title>
     </head>
@@ -43,6 +46,7 @@
         <script src="../components/angular-translate-storage-local/angular-translate-storage-local.min.js"></script>
         <script src="../components/angular-translate-handler-log/angular-translate-handler-log.min.js"></script>
         <script src="../components/angular-file-upload/dist/angular-file-upload.min.js"></script>
+        <script src="../components/ngDialog/js/ngDialog.min.js"></script>
 
 
         <!-- build:js adt.min.js -->
@@ -150,11 +154,12 @@
         <script src="../common/obs/mappers/observationMapper.js"></script>
         <script src="../common/obs/directives/showObservation.js"></script>
         <script src="../common/obs/util/observationUtil.js"></script>
-        
+
         <script src="../common/displaycontrols/dashboard/init.js"></script>
         <script src="../common/displaycontrols/dashboard/directives/dashboard.js"></script>
         <script src="../common/displaycontrols/dashboard/models/dashboard.js"></script>
         <script src="../common/displaycontrols/dashboard/models/dashboardSection.js"></script>
+        <script src="../common/displaycontrols/dashboard/controllers/patientDashboardDiagnosisController.js"></script>
 
         <script src="../common/displaycontrols/observation/init.js"></script>
         <script src="../common/displaycontrols/observation/directives/bahmniObservation.js"></script>

@@ -34,7 +34,7 @@ angular.module('bahmni.common.conceptSet')
 
             $scope.computeField = function (conceptSet, event) {
                 event.stopPropagation();
-                $scope.consultation.saveHandler.fire();
+                $scope.consultation.preSaveHandler.fire();
                 var defaultRetrospectiveVisitType = clinicalAppConfigService.getVisitTypeForRetrospectiveEntries();
 
                 var encounterData = new Bahmni.Clinical.EncounterTransactionMapper().map(angular.copy($scope.consultation), $scope.patient, sessionService.getLoginLocationUuid(),

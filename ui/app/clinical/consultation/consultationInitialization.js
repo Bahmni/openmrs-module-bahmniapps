@@ -66,8 +66,8 @@ angular.module('bahmni.clinical').factory('consultationInitialization',
                     return diagnosisService.getPastAndCurrentDiagnoses(patientUuid, consultation.encounterUuid).then(function (diagnosis) {
                         consultation.pastDiagnoses = diagnosis.pastDiagnoses;
                         consultation.savedDiagnosesFromCurrentEncounter = diagnosis.savedDiagnosesFromCurrentEncounter;
-                        consultation.saveHandler = new Bahmni.Clinical.SaveHandler();
-                        consultation.postSaveHandler = new Bahmni.Clinical.SaveHandler();
+                        consultation.preSaveHandler = new Bahmni.Clinical.Notifier();
+                        consultation.postSaveHandler = new Bahmni.Clinical.Notifier();
                         return consultation;
                     })
                 });

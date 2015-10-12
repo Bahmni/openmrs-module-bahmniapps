@@ -155,7 +155,7 @@ angular.module('bahmni.clinical')
                     }
                 });
             };
-            $scope.consultation.saveHandler.register(saveTreatment);
+            $scope.consultation.preSaveHandler.register(saveTreatment);
 
             $scope.shouldBeDisabled = function (drugOrder, orderAttribute) {
                 var hasEncounterExpired = function () {

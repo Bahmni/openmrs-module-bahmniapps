@@ -1,6 +1,6 @@
 'use strict';
 
-Bahmni.Clinical.SaveHandler = function () {
+Bahmni.Clinical.Notifier = function () {
     var callBacks = [];
     this.register = function (callback) {
         callBacks.push(callback);
