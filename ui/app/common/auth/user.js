@@ -18,6 +18,10 @@ Bahmni.Auth.User = function (user) {
         return user;
     };
 
+    this.addDefaultLocale = function(locale) {
+        this.userProperties['defaultLocale'] = locale;
+    };
+
     this.addToRecentlyViewed = function (patient, maxPatients) {
         if (!_.any(this.recentlyViewedPatients, {'uuid': patient.uuid})) {
             this.recentlyViewedPatients.unshift({

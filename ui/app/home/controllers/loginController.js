@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('bahmni.home')
-    .controller('LoginController', ['$rootScope', '$scope', '$window', '$location', 'sessionService', 'initialData', 'spinner', '$q', '$stateParams','$bahmniCookieStore', 'localeService','$translate',
-        function ($rootScope, $scope, $window, $location, sessionService, initialData, spinner, $q, $stateParams, $bahmniCookieStore, localeService, $translate) {
+    .controller('LoginController', ['$rootScope', '$scope', '$window', '$location', 'sessionService', 'initialData', 'spinner', '$q', '$stateParams','$bahmniCookieStore', 'localeService', '$translate', 'userService',
+        function ($rootScope, $scope, $window, $location, sessionService, initialData, spinner, $q, $stateParams, $bahmniCookieStore, localeService, $translate, userService) {
             var landingPagePath = "/dashboard";
             var loginPagePath = "/login";
             $scope.locations = initialData.locations;
@@ -55,13 +55,18 @@ angular.module('bahmni.home')
                                 $bahmniCookieStore.remove(Bahmni.Common.Constants.retrospectiveEntryEncounterDateCookieName, {path: '/', expires: 1});
                                 $rootScope.$broadcast('event:auth-loggedin');
                                 $scope.loginInfo.currentLocation = getLastLoggedinLocation();
-                                deferrable.resolve();
                             },
                             function (error) {
                                 $scope.errorMessageTranslateKey = error;
                                 deferrable.reject(error);
                             }
-                        )
+                        ).then(function() {
+                            $rootScope.currentUser.addDefaultLocale($scope.selectedLocale);
+                            userService.savePreferences().then(
+                                function() {deferrable.resolve()},
+                                function(error) {deferrable.reject(error)}
+                            )
+                        })
                     },
                     function (error) {
                         $scope.errorMessageTranslateKey = error;
