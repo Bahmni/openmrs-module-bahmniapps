@@ -3,7 +3,7 @@
 angular.module('bahmni.clinical')
     .controller('BacteriologyController', ['$scope', '$rootScope', 'contextChangeHandler', 'spinner', 'conceptSetService', 'messagingService', 'bacteriologyConceptSet',
         function ($scope, $rootScope, contextChangeHandler, spinner, conceptSetService, messagingService, bacteriologyConceptSet) {
-            $scope.consultation.extension = $scope.consultation.extension ? $scope.consultation.extension : {mdrtbSpecimen: []};
+            $scope.consultation.extensions = $scope.consultation.extensions ? $scope.consultation.extensions : {mdrtbSpecimen: []};
             $scope.newSpecimens = $scope.consultation.newlyAddedSpecimens || [];
 
             var init = function () {
@@ -63,7 +63,7 @@ angular.module('bahmni.clinical')
                 });
 
                 $scope.consultation.newlyAddedSpecimens = savableSpecimens;
-                $scope.consultation.extension.mdrtbSpecimen = $scope.consultation.extension.mdrtbSpecimen.concat($scope.consultation.newlyAddedSpecimens);
+                $scope.consultation.extensions.mdrtbSpecimen = $scope.consultation.extensions.mdrtbSpecimen.concat($scope.consultation.newlyAddedSpecimens);
             };
 
             $scope.consultation.preSaveHandler.register(saveSpecimens);

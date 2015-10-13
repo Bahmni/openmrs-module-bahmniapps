@@ -17,8 +17,11 @@ angular.module('bahmni.common.conceptSet')
             };
 
             scope.isClone = function(observation, parentObservation){
-                var index = parentObservation.groupMembers.indexOf(observation);
-                return (index != 0) ? parentObservation.groupMembers[index].label == parentObservation.groupMembers[index -1].label : false;
+                if(parentObservation && parentObservation.groupMembers){
+                    var index = parentObservation.groupMembers.indexOf(observation);
+                    return (index > 0) ? parentObservation.groupMembers[index].label == parentObservation.groupMembers[index -1].label : false;
+                }
+                return false;
             };
 
             scope.getStringValue = function (observations) {
