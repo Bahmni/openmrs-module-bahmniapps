@@ -5,7 +5,7 @@ describe("Bacteriology Controller", function () {
 
     beforeEach(inject(function ($controller, $rootScope) {
         $scope = $rootScope.$new();
-        $scope.consultation = {mdrtbSpecimen: [], saveHandler: new Bahmni.Clinical.Notifier(), postSaveHandler: new Bahmni.Clinical.Notifier()};
+        $scope.consultation = {mdrtbSpecimen: [], preSaveHandler: new Bahmni.Clinical.Notifier(), postSaveHandler: new Bahmni.Clinical.Notifier()};
         rootScope = $rootScope;
         contextChangeHandler = {
             execute: function () {

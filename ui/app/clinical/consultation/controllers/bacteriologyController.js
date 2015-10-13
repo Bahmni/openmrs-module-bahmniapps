@@ -66,7 +66,7 @@ angular.module('bahmni.clinical')
                 $scope.consultation.extension.mdrtbSpecimen = $scope.consultation.extension.mdrtbSpecimen.concat($scope.consultation.newlyAddedSpecimens);
             };
 
-            $scope.consultation.saveHandler.register(saveSpecimens);
+            $scope.consultation.preSaveHandler.register(saveSpecimens);
             $scope.consultation.postSaveHandler.register(init);
 
             contextChangeHandler.add(contextChange);
