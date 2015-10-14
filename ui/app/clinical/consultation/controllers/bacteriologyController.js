@@ -8,7 +8,6 @@ angular.module('bahmni.clinical')
             $scope.newSpecimens = $scope.consultation.newlyAddedSpecimens || [];
 
             var init = function () {
-                console.log($scope.consultation);
                 createNewSpecimen();
 
                 var additionalAttributes = _.find(bacteriologyConceptSet.setMembers, function (member) {
