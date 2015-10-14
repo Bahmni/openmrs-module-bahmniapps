@@ -4,9 +4,11 @@ angular.module('bahmni.clinical')
     .controller('BacteriologyController', ['$scope', '$rootScope', 'contextChangeHandler', 'spinner', 'conceptSetService', 'messagingService', 'bacteriologyConceptSet',
         function ($scope, $rootScope, contextChangeHandler, spinner, conceptSetService, messagingService, bacteriologyConceptSet) {
             $scope.consultation.extensions = $scope.consultation.extensions ? $scope.consultation.extensions : {mdrtbSpecimen: []};
+            $scope.savedSpecimens = $scope.consultation.extensions.mdrtbSpecimen;
             $scope.newSpecimens = $scope.consultation.newlyAddedSpecimens || [];
 
             var init = function () {
+                console.log($scope.consultation);
                 createNewSpecimen();
 
                 var additionalAttributes = _.find(bacteriologyConceptSet.setMembers, function (member) {
@@ -58,11 +60,14 @@ angular.module('bahmni.clinical')
                     return !isEmptySpecimen(specimen);
                 });
                 _.each(savableSpecimens, function (specimen) {
-                    specimen.sample.additionalAttributes = specimen.sample.additionalAttributes[0];
-                    specimen.report.results = specimen.report.results[0];
+                    specimen.sample.additionalAttributes = specimen.sample.additionalAttributes ? specimen.sample.additionalAttributes[0] : [];
+                    specimen.report.results = specimen.report.results ? specimen.report.results[0] : [];
                 });
 
                 $scope.consultation.newlyAddedSpecimens = savableSpecimens;
+                if(!$scope.consultation.extensions.mdrtbSpecimen){
+                    $scope.consultation.extensions.mdrtbSpecimen = [];
+                }
                 $scope.consultation.extensions.mdrtbSpecimen = $scope.consultation.extensions.mdrtbSpecimen.concat($scope.consultation.newlyAddedSpecimens);
             };
 
