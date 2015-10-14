@@ -67,6 +67,7 @@ angular.module('bahmni.clinical')
                 if(!$scope.consultation.extensions.mdrtbSpecimen){
                     $scope.consultation.extensions.mdrtbSpecimen = [];
                 }
+                console.log($scope.consultation.newlyAddedSpecimens);
                 $scope.consultation.extensions.mdrtbSpecimen = $scope.consultation.extensions.mdrtbSpecimen.concat($scope.consultation.newlyAddedSpecimens);
             };
 

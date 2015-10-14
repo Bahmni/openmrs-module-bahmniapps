@@ -56,29 +56,26 @@
                     <concept-set patient="patient" concept-set-name="resultsConceptName" collapse-inner-sections="true"
                                  observations="newSpecimen.report.results"></concept-set>
                 </div>
-            <input type="button" value="{{'BACTERIOLOGY_BUTTON_CLEAR_KEY' | translate}}"
-                   ng-click="clearSpecimen(newSpecimen)" class="fr add-sample-btn">
+                <input type="button" value="{{'BACTERIOLOGY_BUTTON_CLEAR_KEY' | translate}}"
+                       ng-click="clearSpecimen(newSpecimen)" class="fr add-sample-btn">
 
-            <div ng-if="$index == 0">
-                <input type="submit" value="{{'BACTERIOLOGY_BUTTON_ADD_SAMPLE_KEY' | translate}}"
-                       class="fr secondary-button add-sample-btn">
-            </div>
+                <div ng-if="$index == 0">
+                    <input type="submit" value="{{'BACTERIOLOGY_BUTTON_ADD_SAMPLE_KEY' | translate}}"
+                           class="fr secondary-button add-sample-btn">
+                </div>
             </section>
         </form>
     </div>
-    <!--<div class="savedSpecimens-container clearfix">
-       <div class="fl savedSpecimens-text">
-           Sputum #3131 Added on 9/22/2015
-       </div>
+    <div ng-repeat="savedSpecimen in savedSpecimens" class="savedSpecimens-container clearfix">
+        <div class="fl savedSpecimens-text">
+            <span>{{savedSpecimen.type.name}}</span>
+            <span>#{{savedSpecimen.identifier}}</span>
+            <span>Added on {{savedSpecimen.dateCollected | date: 'MM/dd/yyyy'}}</span>
+        </div>
         <div class="fr savedSpecimens-action">
             <i class="fa fa-pencil"></i>
             <i class="fa fa-remove"></i>
         </div>
-    </div>-->
+    </div>
 </div>
 
-<div ng-repeat="savedSpecimen in savedSpecimens">
-    <span>{{savedSpecimen.type.name}}</span>
-    <span>#{{savedSpecimen.identifier}}</span>
-    <span>Added on {{savedSpecimen.dateCollected | date: 'MM/dd/yyyy'}}</span>
-</div>
