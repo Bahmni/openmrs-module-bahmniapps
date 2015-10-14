@@ -21,8 +21,7 @@ angular.module('bahmni.clinical').factory('consultationInitialization',
                 var getActiveEncounter = function () {
                     var currentProviderUuid = $rootScope.currentProvider ? $rootScope.currentProvider.uuid : null;
                     var providerData = $bahmniCookieStore.get(Bahmni.Common.Constants.grantProviderAccessDataCookieName);
-                    var encounterDate = dateUtil.parseLongDateToServerFormat(new Date());
-                    return findEncounter(providerData, currentProviderUuid, encounterDate);
+                    return findEncounter(providerData, currentProviderUuid, null);
                 };
 
                 var getRetrospectiveEncounter = function () {
