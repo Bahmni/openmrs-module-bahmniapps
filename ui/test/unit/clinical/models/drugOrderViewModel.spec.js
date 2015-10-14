@@ -75,6 +75,7 @@ describe("drugOrderViewModel", function () {
         treatment.uniformDosingType.frequency = "Once a day";
         treatment.frequencyType = Bahmni.Clinical.Constants.dosingTypes.uniform;
         expect(treatment.getDescription()).toBe("1 Capsule, Once a day, Before Meals, Orally - 10 Days");
+
         treatment.uniformDosingType.frequency = null;
         expect(treatment.getDescription()).toBe("1 Capsule, Before Meals, Orally - 10 Days");
     });
@@ -290,51 +291,51 @@ describe("drugOrderViewModel", function () {
         };
 
         it("should calculate for uniform dose, frequency and duration", function () {
-            var treatment = sampleTreatmentWithUniformDosing(3, "Capsule(s)", "Twice a Day", 5, "Day(s)");
+            var treatment = sampleTreatmentWithUniformDosing(3, "Capsule", "Twice a Day", 5, "Day(s)");
             treatment.calculateQuantityAndUnit();
             expect(treatment.quantity).toBe(30);
         });
 
         it("should convert duration units to days for calulation", function () {
-            var treatment = sampleTreatmentWithUniformDosing(3, "Capsule(s)", "Twice a Day", 5, "Week(s)", 7);
+            var treatment = sampleTreatmentWithUniformDosing(3, "Capsule", "Twice a Day", 5, "Week(s)", 7);
             treatment.calculateQuantityAndUnit();
             expect(treatment.quantity).toBe(210);
         });
 
         it("should calculate for variable dose and duration", function () {
-            var treatment = sampleTreatmentWithVariableDosing(1, 2, 1.5, "Capsule(s)", 4, "Day(s)");
+            var treatment = sampleTreatmentWithVariableDosing(1, 2, 1.5, "Capsule", 4, "Day(s)");
             treatment.calculateQuantityAndUnit();
             expect(treatment.quantity).toBe(18);
         });
 
         it("should result in 0 for uniform dose when dose is not available", function () {
-            var treatment = sampleTreatmentWithUniformDosing(null, "Capsule(s)", "Twice a Day", 5, "Day(s)");
+            var treatment = sampleTreatmentWithUniformDosing(null, "Capsule", "Twice a Day", 5, "Day(s)");
             treatment.calculateQuantityAndUnit();
             expect(treatment.quantity).toBe(0);
 
-            treatment = sampleTreatmentWithVariableDosing(0, 0, null, "Capsule calculateQuantityAndUnit should not calculate quantity if entered manually", 4, "Day(s)");
+            treatment = sampleTreatmentWithVariableDosing(0, 0, null, "Capsule", 4, "Day(s)");
             treatment.calculateQuantityAndUnit();
             expect(treatment.quantity).toBe(0);
         });
 
         it("should result in 0 for uniform dose when duration is not available", function () {
-            var treatment = sampleTreatmentWithUniformDosing(3, "Capsule(s)", "Twice a Day", null, "Day(s)");
+            var treatment = sampleTreatmentWithUniformDosing(3, "Capsule", "Twice a Day", null, "Day(s)");
             treatment.calculateQuantityAndUnit();
             expect(treatment.quantity).toBe(0);
 
-            treatment = sampleTreatmentWithVariableDosing(1, 0, 1, "Capsule(s)", null, "Day(s)");
+            treatment = sampleTreatmentWithVariableDosing(1, 0, 1, "Capsule", null, "Day(s)");
             treatment.calculateQuantityAndUnit();
             expect(treatment.quantity).toBe(0);
         });
 
         it("should result in 0 for uniform dose when frequency is not available", function () {
-            var treatment = sampleTreatmentWithUniformDosing(3, "Capsule(s)", null, 5, "Days");
+            var treatment = sampleTreatmentWithUniformDosing(3, "Capsule", null, 5, "Days");
             treatment.calculateQuantityAndUnit();
             expect(treatment.quantity).toBe(0);
         });
 
         it("should not calculate quantity if entered manually", function () {
-            var treatment = sampleTreatmentWithUniformDosing(3, "Capsule(s)", {name: "Twice a Day", frequencyPerDay: 2}, 5, "Days");
+            var treatment = sampleTreatmentWithUniformDosing(3, "Capsule", {name: "Twice a Day", frequencyPerDay: 2}, 5, "Days");
             treatment.quantity = 100;
             treatment.setQuantityEnteredManually();
             treatment.calculateQuantityAndUnit();
@@ -342,26 +343,11 @@ describe("drugOrderViewModel", function () {
         });
 
         it("should not calculate quantity if entered via edit", function () {
-            var treatment = sampleTreatmentWithUniformDosing(3, "Capsule(s)", {name: "Twice a Day", frequencyPerDay: 2}, 5, "Days");
+            var treatment = sampleTreatmentWithUniformDosing(3, "Capsule", {name: "Twice a Day", frequencyPerDay: 2}, 5, "Days");
             treatment.quantity = 100;
             treatment.quantityEnteredViaEdit = true;
             treatment.calculateQuantityAndUnit();
             expect(treatment.quantity).toBe(100);
-        });
-
-        it("should not calculate quantity if unit is not configured", function () {
-            var appConfig = {
-                "calculateTotalUnits": ["ml", "mg", "Teaspoon"]
-            };
-            var treatment = new Bahmni.Clinical.DrugOrderViewModel(appConfig, treatmentConfig, null, Bahmni.Common.Util.DateUtil.now());
-            treatment.quantity = 10;
-            treatment.uniformDosingType.dose = 3;
-            treatment.uniformDosingType.doseUnits = "IU";
-            treatment.uniformDosingType.frequency = {name: "Twice a Day", frequencyPerDay: 2};
-            treatment.duration = 5;
-            treatment.durationUnit = "Days";
-            treatment.calculateQuantityAndUnit();
-            expect(treatment.quantity).toBe(0);
         });
 
         it("should calculate quantity units all the time", function () {
@@ -373,31 +359,31 @@ describe("drugOrderViewModel", function () {
         });
 
         it("should be active if the effective stop date is in future", function () {
-            var treatment = sampleTreatmentWithUniformDosing(3, "Capsule(s)", {name: "Twice a Day", frequencyPerDay: 2}, 5, "Days");
+            var treatment = sampleTreatmentWithUniformDosing(3, "Capsule", {name: "Twice a Day", frequencyPerDay: 2}, 5, "Days");
             treatment.effectiveStopDate = getFutureDate();
             expect(treatment.isActive()).toBe(true);
         });
 
         it("should be active if the effective stop date is null", function () {
-            var treatment = sampleTreatmentWithUniformDosing(3, "Capsule(s)", {name: "Twice a Day", frequencyPerDay: 2}, 5, "Days");
+            var treatment = sampleTreatmentWithUniformDosing(3, "Capsule", {name: "Twice a Day", frequencyPerDay: 2}, 5, "Days");
             treatment.effectiveStopDate = undefined;
             expect(treatment.isActive()).toBe(true);
         });
 
         it("should not be active if the effective stop date is less than current datetime", function () {
-            var treatment = sampleTreatmentWithUniformDosing(3, "Capsule(s)", {name: "Twice a Day", frequencyPerDay: 2}, 5, "Days");
+            var treatment = sampleTreatmentWithUniformDosing(3, "Capsule", {name: "Twice a Day", frequencyPerDay: 2}, 5, "Days");
             treatment.effectiveStopDate = DateUtil.subtractSeconds(DateUtil.now(), 600);
             expect(treatment.isActive()).toBe(false);
         });
 
         it("should be active if the effective stop date is greater than current datetime", function () {
-            var treatment = sampleTreatmentWithUniformDosing(3, "Capsule(s)", {name: "Twice a Day", frequencyPerDay: 2}, 5, "Days");
+            var treatment = sampleTreatmentWithUniformDosing(3, "Capsule", {name: "Twice a Day", frequencyPerDay: 2}, 5, "Days");
             treatment.effectiveStopDate = DateUtil.addSeconds(DateUtil.now(), 600);
             expect(treatment.isActive()).toBe(true);
         });
 
         it("should be inActive if the date_stopped is set", function () {
-            var treatment = sampleTreatmentWithUniformDosing(3, "Capsule(s)", {name: "Twice a Day", frequencyPerDay: 2}, 5, "Days");
+            var treatment = sampleTreatmentWithUniformDosing(3, "Capsule", {name: "Twice a Day", frequencyPerDay: 2}, 5, "Days");
             treatment.dateStopped = new Date();
 
             expect(treatment.isActive()).toBe(false);
