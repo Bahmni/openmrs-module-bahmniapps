@@ -1,11 +1,10 @@
 <section class="dashboard-section ng-scope">
     <h2 class="section-title">{{section | titleTranslate}}</h2>
 
-    <div ng-repeat="specimen in ::specimens">
+    <div ng-repeat="specimen in ::specimens" >
         <span>{{specimen.specimenSource}} ................................................ {{specimen.specimenId}}................................................ {{specimen.specimenCollectionDate}} </span>
 
-        <bahmni-observation is-on-dashboard="false" patient="patient"
-                            observations="specimen.sampleResult" ></bahmni-observation>
+        <bahmni-observation is-on-dashboard="false" patient="patient" section="section" config="section.dashboardParams" observations="specimen.sampleResult"></bahmni-observation>
 
     </div>
 
