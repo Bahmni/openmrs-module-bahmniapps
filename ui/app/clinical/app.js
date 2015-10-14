@@ -8,7 +8,7 @@ angular.module('consultation', ['ui.router', 'bahmni.clinical', 'bahmni.common.c
     'httpErrorInterceptor', 'pasvaz.bindonce', 'infinite-scroll', 'bahmni.common.util', 'ngAnimate', 'ngDialog',
     'bahmni.common.displaycontrol.patientprofile', 'bahmni.common.displaycontrol.diagnosis', 'RecursionHelper', 'ngSanitize',
     'bahmni.common.orders', 'bahmni.common.displaycontrol.orders', 'bahmni.common.displaycontrol.prescription', 'bahmni.common.displaycontrol.navigationlinks', 'bahmni.common.displaycontrol.programs',
-    'bahmni.common.displaycontrol.pacsOrders', 'bahmni.common.uicontrols.programmanagment', 'pascalprecht.translate', 'ngCookies','monospaced.elastic']);
+    'bahmni.common.displaycontrol.pacsOrders', 'bahmni.common.uicontrols.programmanagment', 'pascalprecht.translate', 'ngCookies','monospaced.elastic','bahmni.common.bacteriologyresults','bahmni.common.displaycontrol.bacteriologyresults']);
 angular.module('consultation')
     .config(['$stateProvider', '$httpProvider', '$urlRouterProvider','$bahmniTranslateProvider', function ($stateProvider, $httpProvider, $urlRouterProvider,$bahmniTranslateProvider) {
         $urlRouterProvider.otherwise('/' + Bahmni.Clinical.Constants.defaultExtensionName + '/patient/search');

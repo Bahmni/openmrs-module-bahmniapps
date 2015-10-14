@@ -1,0 +1,16 @@
+<section class="dashboard-section ng-scope">
+    <h2 class="section-title">{{section | titleTranslate}}</h2>
+
+    <div ng-repeat="specimen in ::specimens">
+        <span>{{specimen.specimenSource}} ................................................ {{specimen.specimenId}}................................................ {{specimen.specimenCollectionDate}} </span>
+
+        <bahmni-observation is-on-dashboard="false" patient="patient"
+                            observations="specimen.sampleResult" ></bahmni-observation>
+
+    </div>
+
+    <div ng-show="noObservationsMessage">
+        <div class="placeholder-text" ng-if="!message"><p translate="DISPLAY_CONTROL_ERROR_MESSAGE_KEY" translate-values="{displayControl : '{{title | translate}}'}"></p></div>
+    </div>
+
+</section>

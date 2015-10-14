@@ -9,7 +9,7 @@
     
 </header> -->
 <div class="template-container">
-    <h6>All {{title}}</h6>
+    <h6> {{ 'ALL_KEY' | translate }} {{section | titleTranslate}}</h6>
     <section id="orderControlSection" class="block observation dashboard-section" >
         <orders-control patient="patient" order-type="section.orderType" config="section.allOrdersDetails" section="section" is-on-dashboard="false"></orders-control>
     </section>

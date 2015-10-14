@@ -6,6 +6,7 @@ Bahmni.Common = Bahmni.Common || {};
     var RESTWS_V1 = "/openmrs/ws/rest/v1";
     var BAHMNI_CORE = RESTWS_V1 + "/bahmnicore";
     var EMRAPI = RESTWS + "/emrapi";
+    var BACTERIOLOGY = RESTWS_V1;
 
     var serverErrorMessages = [
         {
@@ -147,6 +148,7 @@ Bahmni.Common = Bahmni.Common || {};
         conceptSetRepresentationForOrderFulfillmentConfig: representation,
         entityMappingUrl: RESTWS_V1 + "/entitymapping",
         encounterTypeUrl: RESTWS_V1+"/encountertype",
-        defaultExtensionName: "default"
+        defaultExtensionName: "default",
+        bahmniBacteriologyResultsUrl: BACTERIOLOGY + "/specimen"
     };
 })();
