@@ -1,31 +1,69 @@
-<h1>{{'BACTERIOLOGY_TAB_TITLE_KEY' | translate}}</h1>
-<div ng-repeat="newSpecimen in newSpecimens track by $index" style="border:1px solid black;">
-    <form ng-submit="addSpecimen()">
-        <label for="sample-date">{{'BACTERIOLOGY_SAMPLE_COLLECTION_DATE_KEY' | translate}} </label>
-        <input id="sample-date" type="date" ng-model="newSpecimen.dateCollected" required="required">
+<div class="bacteriology-container">
+    <div ng-repeat="newSpecimen in newSpecimens track by $index" class="sample-container">
+        <form ng-submit="addSpecimen()" class="form">
+            <section class="section-grid">
+                <h2 class="section-title">{{'BACTERIOLOGY_TAB_TITLE_KEY' | translate}}
+                </h2>
+                <div class="box">
+                    <section class="form-field-inline">
+                        <article class="form-field">
+                            <div class="field-attribute">
+                                <label for="sample-date">{{'BACTERIOLOGY_SAMPLE_COLLECTION_DATE_KEY' | translate}} </label>
+                            </div>
+                            <div class="field-value">
+                                <input id="sample-date" type="date" ng-model="newSpecimen.dateCollected" required="required">
+                            </div>
+                        </article>
+                    </section>
 
-        <label for="sample-type">{{'BACTERIOLOGY_SAMPLE_TYPE_KEY' | translate}} </label>
-        <select required="required" id="sample-type" class="form-field bulk-duration-unit" ng-model="newSpecimen.type"
-                ng-options="sample as sample.name for sample in allSamples">
-            <option></option>
-        </select>
+                    <section class="form-field-inline">
+                        <article class="form-field right-form-field">
+                            <div class="field-attribute">
+                                <label for="sample-type">{{'BACTERIOLOGY_SAMPLE_TYPE_KEY' | translate}} </label>
+                            </div>
+                            <div class="field-value">
+                                <select required="required" id="sample-type" class="form-field bulk-duration-unit" ng-model="newSpecimen.type"
+                                        ng-options="sample as sample.name for sample in allSamples">
+                                    <option></option>
+                                </select>
+                            </div>
+                        </article>
+                    </section>
+                    <section class="form-field-inline">
+                        <article class="form-field">
+                            <div class="field-attribute">
+                                <label for="sample-id">{{'BACTERIOLOGY_SAMPLE_ID_KEY' | translate}} </label>
+                            </div>
+                            <div class="field-value">
+                                <input id="sample-id" type="text" ng-model="newSpecimen.identifier">
+                            </div>
+                        </article>
+                    </section>
 
-        <label for="sample-id">{{'BACTERIOLOGY_SAMPLE_ID_KEY' | translate}} </label>
-        <input id="sample-id" type="text" ng-model="newSpecimen.identifier">
 
-        <concept-set patient="patient" concept-set-name="additionalAttributesConceptName"
-                     observations="newSpecimen.sample.additionalAttributes"></concept-set>
 
-        <concept-set patient="patient" concept-set-name="resultsConceptName"
-                     observations="newSpecimen.report.results"></concept-set>
+                </div>
 
-    <span ng-if="$index == 0">
-        <input type="submit" value="{{'BACTERIOLOGY_BUTTON_ADD_SAMPLE_KEY' | translate}}">
-    </span>
-        <input type="button" value="{{'BACTERIOLOGY_BUTTON_CLEAR_KEY' | translate}}"
-               ng-click="clearSpecimen(newSpecimen)">
-    </form>
+                <div class="box">
+                    <concept-set patient="patient" concept-set-name="additionalAttributesConceptName"
+                                 observations="newSpecimen.sample.additionalAttributes"></concept-set>
+                </div>
+
+                <div class="box">
+                    <concept-set patient="patient" concept-set-name="resultsConceptName"
+                                 observations="newSpecimen.report.results"></concept-set>
+                </div>
+            </section>
+            <input type="button" value="{{'BACTERIOLOGY_BUTTON_CLEAR_KEY' | translate}}"
+                   ng-click="clearSpecimen(newSpecimen)" class="fr add-sample-btn">
+            <div ng-if="$index == 0">
+                <input type="submit" value="{{'BACTERIOLOGY_BUTTON_ADD_SAMPLE_KEY' | translate}}"  class="fr secondary-button add-sample-btn">
+            </div>
+        </form>
+    </div>
 </div>
+
+
 <!--<div ng-repeat="specimen in newSpecimens track by $index">-->
 <!--<span>{{specimen.type.name}}</span>-->
 <!--<span ng-if="specimen.sample.identifier">#{{specimen.identifier}}</span>-->
