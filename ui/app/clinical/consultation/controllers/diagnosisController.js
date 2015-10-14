@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('bahmni.clinical')
-    .controller('DiagnosisController', ['$scope', '$rootScope', 'diagnosisService', 'contextChangeHandler', 'spinner', 'appService',
-        function ($scope, $rootScope, diagnosisService, contextChangeHandler, spinner, appService) {
+    .controller('DiagnosisController', ['$scope', '$rootScope', 'diagnosisService', 'messagingService', 'contextChangeHandler', 'spinner', 'appService',
+        function ($scope, $rootScope, diagnosisService, messagingService, contextChangeHandler, spinner, appService) {
 
             $scope.placeholder = "Add Diagnosis";
             $scope.hasAnswers = false;
@@ -16,7 +16,7 @@ angular.module('bahmni.clinical')
 
             var _canAdd = function (diagnosis) {
                 var canAdd = true;
-                $scope.newlyAddedDiagnoses.forEach(function (observation) {
+                $scope.consultation.newlyAddedDiagnoses.forEach(function (observation) {
                     if (observation.codedAnswer.uuid === diagnosis.codedAnswer.uuid) {
                         canAdd = false;
                     }
@@ -27,21 +27,21 @@ angular.module('bahmni.clinical')
             $scope.getAddNewDiagnosisMethod = function(index){
                 return function(item){
                     var concept = item.lookup;
-                    var diagnosisBeingEdited = $scope.newlyAddedDiagnoses[index];
+                    var diagnosisBeingEdited = $scope.consultation.newlyAddedDiagnoses[index];
                     var diagnosis = new Bahmni.Common.Domain.Diagnosis(concept, diagnosisBeingEdited.order,
                         diagnosisBeingEdited.certainty, diagnosisBeingEdited.existingObs);
                     if (_canAdd(diagnosis)) {
                         /*TODO:
                             change to say array[index]=newObj instead array.splice(index,1,newObj);
                         */
-                        $scope.newlyAddedDiagnoses.splice(index, 1, diagnosis);
+                        $scope.consultation.newlyAddedDiagnoses.splice(index, 1, diagnosis);
                     }
                 };
             };
 
             var addPlaceHolderDiagnosis = function () {
                 var diagnosis = new Bahmni.Common.Domain.Diagnosis('');
-                $scope.newlyAddedDiagnoses.push(diagnosis);
+                $scope.consultation.newlyAddedDiagnoses.push(diagnosis);
             };
 
              var findPrivilege = function(privilegeName) {
@@ -51,7 +51,6 @@ angular.module('bahmni.clinical')
             };
 
             var init = function () {
-                $scope.newlyAddedDiagnoses = $scope.consultation.newlyAddedDiagnoses;
                 $scope.canDeleteDiagnosis = findPrivilege(Bahmni.Common.Constants.deleteDiagnosisPrivilege);
                 $scope.allowOnlyCodedDiagnosis = appService.getAppDescriptor().getConfig("allowOnlyCodedDiagnosis") &&
                 appService.getAppDescriptor().getConfig("allowOnlyCodedDiagnosis").value;
@@ -68,7 +67,7 @@ angular.module('bahmni.clinical')
             };
 
             var contextChange = function () {
-                var invalidnewlyAddedDiagnoses = $scope.newlyAddedDiagnoses.filter(function (diagnosis) {
+                var invalidnewlyAddedDiagnoses = $scope.consultation.newlyAddedDiagnoses.filter(function (diagnosis) {
                     return !$scope.isValid(diagnosis);
                 });
                 var invalidSavedDiagnosesFromCurrentEncounter = $scope.consultation.savedDiagnosesFromCurrentEncounter.filter(function (diagnosis) {
@@ -122,7 +121,7 @@ angular.module('bahmni.clinical')
 
             var alreadyAddedToDiagnosis = function (diagnosis) {
                 var isPresent = false;
-                $scope.newlyAddedDiagnoses.forEach(function (d) {
+                $scope.consultation.newlyAddedDiagnoses.forEach(function (d) {
                     if (d.codedAnswer.uuid == diagnosis.concept.uuid) {
                         isPresent = true;
                     }
@@ -132,22 +131,20 @@ angular.module('bahmni.clinical')
 
             $scope.removeObservation = function (index) {
                 if (index >= 0) {
-                    $scope.newlyAddedDiagnoses.splice(index, 1);
+                    $scope.consultation.newlyAddedDiagnoses.splice(index, 1);
                 }
             };
 
             $scope.clearDiagnosis = function (index) {
-                var diagnosisBeingEdited = $scope.newlyAddedDiagnoses[index];
+                var diagnosisBeingEdited = $scope.consultation.newlyAddedDiagnoses[index];
                 diagnosisBeingEdited.clearCodedAnswerUuid();
             };
 
             var reloadDiagnosesSection = function (encounterUuid) {
-
                 return diagnosisService.getPastAndCurrentDiagnoses($scope.patient.uuid, encounterUuid).then(function (response) {
                     $scope.consultation.pastDiagnoses = response.pastDiagnoses;
                     $scope.consultation.savedDiagnosesFromCurrentEncounter = response.savedDiagnosesFromCurrentEncounter;
                 });
-
             };
 
             $scope.deleteDiagnosis = function (diagnosis) {
@@ -155,6 +152,7 @@ angular.module('bahmni.clinical')
 
                 spinner.forPromise(
                     diagnosisService.deleteDiagnosis(obsUUid).then(function (result) {
+                        messagingService.showMessage('info', 'Deleted');
                         var currentUuid = $scope.consultation.savedDiagnosesFromCurrentEncounter.length > 0 ?
                             $scope.consultation.savedDiagnosesFromCurrentEncounter[0].encounterUuid : "";
                         return reloadDiagnosesSection(currentUuid);
@@ -162,19 +160,14 @@ angular.module('bahmni.clinical')
                     .then(function () {});
             };
 
-            var setDiagnosis = function () {
-                $scope.consultation.newlyAddedDiagnoses = $scope.newlyAddedDiagnoses.filter(function (diagnosis) {
+            var removeBlankDiagnosis = function() {
+                $scope.consultation.newlyAddedDiagnoses = $scope.consultation.newlyAddedDiagnoses.filter(function (diagnosis) {
                     return !diagnosis.isEmpty();
                 });
             };
 
-            var saveDiagnosis = function () {
-                setDiagnosis();
-            };
-
-            $scope.consultation.preSaveHandler.register(saveDiagnosis);
-
-            $scope.$on('$destroy', setDiagnosis);
+            $scope.consultation.preSaveHandler.register(removeBlankDiagnosis);
+            $scope.$on('$destroy', removeBlankDiagnosis);
 
             $scope.processDiagnoses = function (data) {
                 data.map(
@@ -194,12 +187,12 @@ angular.module('bahmni.clinical')
             };
             $scope.clearEmptyRows = function (index) {
                 var iter;
-                for (iter = 0; iter < $scope.newlyAddedDiagnoses.length; iter++) {
-                    if ($scope.newlyAddedDiagnoses[iter].isEmpty() && iter !== index) {
-                        $scope.newlyAddedDiagnoses.splice(iter, 1)
+                for (iter = 0; iter < $scope.consultation.newlyAddedDiagnoses.length; iter++) {
+                    if ($scope.consultation.newlyAddedDiagnoses[iter].isEmpty() && iter !== index) {
+                        $scope.consultation.newlyAddedDiagnoses.splice(iter, 1)
                     }
                 }
-                var emptyRows = $scope.newlyAddedDiagnoses.filter(function (diagnosis) {
+                var emptyRows = $scope.consultation.newlyAddedDiagnoses.filter(function (diagnosis) {
                         return diagnosis.isEmpty();
                     }
                 );
