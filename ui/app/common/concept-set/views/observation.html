@@ -1,5 +1,5 @@
 <div class="observations-tab">
-    <div class="vitals form-horizontal" ng-if="!observation.voided">
+    <div class="vitals form-horizontal" ng-if="!observation.voided || (observation.getControlType() == 'image' && observation.value)">
        <fieldset class="leaf-observation-node" ng-if="::observation.isObservationNode">
             <div class="form-group bm-pop-over">
                 <div class=" concept-tooltip-description" bm-pop-over-target
@@ -226,7 +226,7 @@
                 <div ng-include src="'../common/concept-set/views/observationDataTypes/addMore.html'"></div>
 
 
-                <div ng-include src="'../common/concept-set/views/observationDataTypes/removeClone.html'"></div>
+                <div ng-if="isRemoveValid(observation)" ng-include src="'../common/concept-set/views/observationDataTypes/removeClone.html'"></div>
 
                 <button ng-if="::observation.canHaveComment()" type="button" toggle="observation.showComment"
                         ng-blur="handleUpdate()" ng-disabled="observation.disabled"

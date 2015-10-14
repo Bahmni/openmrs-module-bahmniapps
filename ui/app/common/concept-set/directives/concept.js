@@ -24,6 +24,13 @@ angular.module('bahmni.common.conceptSet')
                 return false;
             };
 
+            scope.isRemoveValid = function(observation){
+                if(observation.getControlType() == 'image'){
+                    return !observation.value;
+                }
+                return true;
+            };
+
             scope.getStringValue = function (observations) {
                 return observations.map(function (observation) {
                     return observation.value + ' (' + $filter('bahmniDate')(observation.date) + ")";
