@@ -22,5 +22,18 @@
       border-top:0 !important;
     }
   }
-
+  .savedSpecimens-container{
+    border: 2px #5B8989 solid;
+    padding: 10px;
+    border-radius: 3px;
+    .savedSpecimens-action{
+      font-size: 20px;
+    }
+    .savedSpecimens-text{
+      line-height: 1.5em;
+    }
+    .fa{
+      margin-right: 10px;
+    }
+  }
 }
