@@ -70,6 +70,21 @@ Bahmni.Clinical.DrugOrderViewModel = function (appConfig, config, proto, encount
     this.quantityEnteredManually = this.quantityEnteredManually || false;
     this.isBeingEdited = this.isBeingEdited || false;
     this.orderAttributes = [];
+    this.isNonCodedDrug = false;
+    this.changedBySelection = false;
+
+    this.setAsNonCodedDrug = function () {
+        this.isNonCodedDrug = !this.isNonCodedDrug;
+        if(this.isNonCodedDrug) this.drugNonCoded = this.drugNameDisplay;
+    };
+
+    this.clearCodedDrugUuid = function () {
+        if (this.changedBySelection) {
+            this.changedBySelection = false;
+            return;
+        }
+        if(this.drug) this.drug.uuid = undefined;
+    };
 
     this.overlappingScheduledWith = function(otherDrugOrder){
 

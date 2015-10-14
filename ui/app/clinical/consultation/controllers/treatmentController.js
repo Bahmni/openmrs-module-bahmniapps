@@ -115,6 +115,15 @@ angular.module('bahmni.clinical')
                     .addDays(
                     DateUtil.parse(newDrugOrder.effectiveStartDate), newDrugOrder.durationInDays);
 
+                if(newDrugOrder.isNonCodedDrug) {
+                    !newDrugOrder.drug && (
+                        newDrugOrder.drug = {
+                            name : newDrugOrder.drugNonCoded,
+                            form : newDrugOrder.doseUnits.replace("(s)", "")
+                        }
+                    );
+                }
+
                 var unsavedNotBeingEditedOrders = $scope.treatments
                     .filter(function(drugOrder) { return drugOrder.isBeingEdited == false});
 
@@ -272,6 +281,7 @@ angular.module('bahmni.clinical')
             };
 
             $scope.populateBackingFields = function (item) {
+                $scope.treatment.changedBySelection = true;
                 $scope.treatment.changeDrug({
                     name: item.drug.name,
                     form: item.drug.dosageForm.display,
