@@ -4,7 +4,7 @@
 		<button class="secondary-button fr bulk-toggle-btn" ng-if="!showBulkChangeToggle" ng-click="bulkChangeDuration()">Change Duration</button>
 		<div class="clear"></div>
 	</div>
-	<div ng-if="showBulkChangeToggle" class="bulk-edit-options-container">
+	<div ng-if="showBulkChangeToggle" class="bulk-edit-options-container clearfix">
 		<form name="updateBulkDuration" ng-submit="bulkDurationChangeDone()">
 			<input type="checkbox" class="select-all-chkBox" ng-model="bulkSelectCheckbox" ng-change="selectAllCheckbox()"/>
 			<div class="fr bulk-btn-container">
