@@ -1,22 +1,23 @@
 {
-  "manifest_version": 2,
-  "name": "Bahmni",
-  "description": "Bahmni is an easy to use, open source hospital system for healthcare providers in low-resource settings. Brought to you by ThoughtWorks.",
-  "version": "0.1",
-  "icons": {
-    "128": "bahmni-128.png"
-  },
-  "app": {
-    "urls": [
-      "https://emrdemo.bahmni.org/bahmni/home/"
+    "manifest_version": 2,
+    "name": "Bahmni",
+    "description": "Bahmni is an easy to use, open source hospital system for healthcare providers in low-resource settings. Brought to you by ThoughtWorks.",
+    "version": "0.1",
+    "icons": {
+        "128": "bahmni-128.png"
+    },
+    "app": {
+        "background": {
+            "scripts": [
+                "background.js"
+            ],
+            "persistent": false
+        }
+    },
+    "permissions": [
+        "unlimitedStorage",
+        "notifications",
+        "webview"
     ],
-    "launch": {
-      "web_url": "https://emrdemo.bahmni.org/bahmni/home/"
-    }
-  },
-  "permissions": [
-    "unlimitedStorage",
-    "notifications"
-  ],
-  "minimum_chrome_version": "28"
+    "minimum_chrome_version": "28"
 }

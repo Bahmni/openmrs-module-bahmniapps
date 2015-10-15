@@ -17,4 +17,6 @@ chrome.app.runtime.onLaunched.addListener(function() {
         bounds: { width: CONSTANTS.APP_WIDTH, height: CONSTANTS.APP_HEIGHT },
         resizable: true
     });
+
 });
+
