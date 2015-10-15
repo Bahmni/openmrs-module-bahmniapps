@@ -8,7 +8,7 @@ angular.module('bahmni.clinical')
             $scope.newSpecimens = $scope.consultation.newlyAddedSpecimens || [];
 
             var init = function () {
-                createNewSpecimen();
+                $scope.clearEmptySpecimens();
 
                 var additionalAttributes = _.find(bacteriologyConceptSet.setMembers, function (member) {
                     return member.conceptClass.name === "Bacteriology Attributes"
@@ -23,56 +23,67 @@ angular.module('bahmni.clinical')
                 var sampleSource = _.find(bacteriologyConceptSet.setMembers, function (member) {
                     return member.name.name === "Specimen Sample Source"
                 });
-                $scope.allSamples = sampleSource != undefined && _.map(sampleSource.answers, function (member) {
-                        return new Bahmni.Common.Domain.ConceptMapper().map(member);
+                $scope.allSamples = sampleSource != undefined && _.map(sampleSource.answers, function (answer) {
+                        return new Bahmni.Common.Domain.ConceptMapper().map(answer);
                     });
             };
 
             var createNewSpecimen = function () {
-                var newSpecimen = {"sample": {"additionalAttributes": []}, "report": {"results": []}};
-                $scope.newSpecimens.unshift(newSpecimen);
-            };
-
-            var isEmptySpecimen = function (specimen) {
-                return specimen == undefined || (!specimen.dateCollected && !specimen.type);
-            };
-
-            $scope.clearSpecimen = function (specimen) {
-                $scope.newSpecimens = _.without($scope.newSpecimens, specimen);
-            };
-
-            $scope.addSpecimen = function () {
-                createNewSpecimen();
-            };
-
-            $scope.removeSpecimen = function (specimen) {
-                $scope.newSpecimens = _.without($scope.newSpecimens, specimen);
+                var newSpecimen = new Bahmni.Clinical.Specimen();
+                $scope.newSpecimens.push(newSpecimen);
             };
 
             var contextChange = function () {
                 $scope.consultation.newlyAddedSpecimens = $scope.newSpecimens;
-                return {allow: isEmptySpecimen()};
+                var dirtySpecimen = _.find($scope.newSpecimens, function (specimen) {
+                    return specimen.isDirty();
+                });
+
+                return {allow: dirtySpecimen == undefined};
             };
 
             var saveSpecimens = function () {
                 var savableSpecimens = _.filter($scope.newSpecimens, function (specimen) {
-                    return !isEmptySpecimen(specimen);
+                    return !specimen.isEmpty();
                 });
                 _.each(savableSpecimens, function (specimen) {
-                    specimen.sample.additionalAttributes = specimen.sample.additionalAttributes ? specimen.sample.additionalAttributes[0] : [];
-                    specimen.report.results = specimen.report.results ? specimen.report.results[0] : [];
+                    specimen.sample.additionalAttributes = specimen.sample.additionalAttributes ? specimen.sample.additionalAttributes[0] : {};
+                    specimen.report.results = specimen.report.results ? specimen.report.results[0] : {};
                 });
 
                 $scope.consultation.newlyAddedSpecimens = savableSpecimens;
-                if(!$scope.consultation.extensions.mdrtbSpecimen){
+                if (!$scope.consultation.extensions.mdrtbSpecimen) {
                     $scope.consultation.extensions.mdrtbSpecimen = [];
                 }
-                console.log($scope.consultation.newlyAddedSpecimens);
-                $scope.consultation.extensions.mdrtbSpecimen = $scope.consultation.extensions.mdrtbSpecimen.concat($scope.consultation.newlyAddedSpecimens);
+            };
+
+            $scope.clearEmptySpecimens = function () {
+                var iter;
+                for (iter = 0; iter < $scope.newSpecimens.length; iter++) {
+                    if ($scope.newSpecimens[iter].isEmpty()) {
+                        $scope.newSpecimens.splice(iter, 1)
+                    }
+                }
+                var emptyRows = $scope.newSpecimens.filter(function (diagnosis) {
+                        return diagnosis.isEmpty();
+                    }
+                );
+                if (emptyRows.length == 0) {
+                    createNewSpecimen();
+                }
+            };
+
+            $scope.clearSpecimen = function (specimen) {
+                $scope.newSpecimens = _.without($scope.newSpecimens, specimen);
+                $scope.clearEmptySpecimens();
+            };
+
+            $scope.editSpecimen = function(specimen){
+                $scope.newSpecimens.push(specimen);
+                $scope.clearEmptySpecimens();
             };
 
             $scope.consultation.preSaveHandler.register(saveSpecimens);
-            $scope.consultation.postSaveHandler.register(init);
 
             contextChangeHandler.add(contextChange);
 

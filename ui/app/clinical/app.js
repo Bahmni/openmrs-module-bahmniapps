@@ -233,6 +233,9 @@ angular.module('consultation')
             })
             .state('patient.dashboard.show.bacteriology', {
                 url: '/bacteriology',
+                params: {
+                    cachebuster: null
+                },
                 views: {
                     'consultation-content': {
                         templateUrl: 'consultation/views/bacteriology.html',

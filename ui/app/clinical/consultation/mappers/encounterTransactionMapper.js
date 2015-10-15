@@ -25,7 +25,7 @@ Bahmni.Clinical.EncounterTransactionMapper = function () {
         encounterData.visitUuid = consultation.visitUuid;
         encounterData.providers = consultation.providers;
         encounterData.encounterDateTime = consultation.encounterDateTime;
-        encounterData.extensions = consultation.extensions;
+        encounterData.extensions = {mdrtbSpecimen: consultation.newlyAddedSpecimens};
 
         if (!_.isEmpty(retrospectiveEntry)) {
             encounterData.visitType = defaultRetrospectiveVisitType || "OPD";

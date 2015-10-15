@@ -35,6 +35,10 @@ Bahmni.ConsultationMapper = function (dosageFrequencies, dosageInstructions, con
             return order.action != Bahmni.Clinical.Constants.orderActions.discontinue && !order.dateStopped;
         });
 
+        encounterTransaction.extensions.mdrtbSpecimen = encounterTransaction.extensions.mdrtbSpecimen && encounterTransaction.extensions.mdrtbSpecimen.map(function(specimen){
+            return new Bahmni.Clinical.Specimen(specimen);
+        });
+
         return {
             visitUuid: encounterTransaction.visitUuid,
             visitTypeUuid: encounterTransaction.visitTypeUuid,

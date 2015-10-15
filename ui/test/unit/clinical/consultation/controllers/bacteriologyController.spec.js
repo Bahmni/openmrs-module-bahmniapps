@@ -5,7 +5,11 @@ describe("Bacteriology Controller", function () {
 
     beforeEach(inject(function ($controller, $rootScope) {
         $scope = $rootScope.$new();
-        $scope.consultation = {mdrtbSpecimen: [], preSaveHandler: new Bahmni.Clinical.Notifier(), postSaveHandler: new Bahmni.Clinical.Notifier()};
+        $scope.consultation = {
+            mdrtbSpecimen: [],
+            preSaveHandler: new Bahmni.Clinical.Notifier(),
+            postSaveHandler: new Bahmni.Clinical.Notifier()
+        };
         rootScope = $rootScope;
         contextChangeHandler = {
             execute: function () {
@@ -39,46 +43,39 @@ describe("Bacteriology Controller", function () {
         });
     }));
 
-    describe("Add Sample", function () {
-        it("should add sample", function () {
-            var newSpecimen = {
+    describe("Edit Specimen", function () {
+        it("should add sample to new specimens list", function () {
+            var existingSpecimen = new Bahmni.Clinical.Specimen({
                 dateCollected: "2015-10-01T18:30:00.000Z",
                 type: "Blood",
                 identifier: "1234",
                 sample: {
                     additionalAttributes: {}
                 }
-            };
-            $scope.newSpecimens = [newSpecimen];
+            });
+            $scope.newSpecimens = [];
 
-            $scope.addSpecimen();
+            $scope.editSpecimen(existingSpecimen);
 
-            expect($scope.newSpecimens[1]).toBe(newSpecimen);
+            expect($scope.newSpecimens[0]).toBe(existingSpecimen);
         });
     });
-    
-    describe("Remove Sample", function () {
-        var newSpecimen1 = {
+
+    describe("Clear Specimen should clear out specimen from new Specimen list", function () {
+        var newSpecimen1 = new Bahmni.Clinical.Specimen({
             dateCollected: "2015-10-01T18:30:00.000Z",
             type: "Urine",
             identifier: "1235",
             sample: {
                 additionalAttributes: []
             }
-        };
-        var newSpecimen2 = {
-            dateCollected: "2015-10-01T18:30:00.000Z",
-            type: "Blood",
-            identifier: "1236",
-            sample: {
-                additionalAttributes: []
-            }
-        };
+        });
+
         it("should remove sample", function () {
-            $scope.newSpecimens = [newSpecimen1, newSpecimen2];
-            $scope.removeSpecimen(newSpecimen1);
+            $scope.newSpecimens = [newSpecimen1];
+            $scope.clearSpecimen(newSpecimen1);
             expect($scope.newSpecimens.length).toBe(1);
-            expect($scope.newSpecimens[0]).toBe(newSpecimen2);
+            expect($scope.newSpecimens[0].isEmpty()).toBeTruthy();
         });
     });
 });
