@@ -1,13 +1,13 @@
 'use strict';
 
 Bahmni.Clinical.Notifier = function () {
-    var callBacks = [];
-    this.register = function (callback) {
-        callBacks.push(callback);
+    var callBacks = {};
+    this.register = function (key, callback) {
+        callBacks[key] = callback;
     };
 
     this.fire = function () {
-        callBacks.forEach(function (callback) {
+        _.each(callBacks, function (callback, key) {
             callback();
         });
     };

@@ -166,7 +166,7 @@ angular.module('bahmni.clinical')
                 });
             };
 
-            $scope.consultation.preSaveHandler.register(removeBlankDiagnosis);
+            $scope.consultation.preSaveHandler.register("diagnosisSaveHandlerKey", removeBlankDiagnosis);
             $scope.$on('$destroy', removeBlankDiagnosis);
 
             $scope.processDiagnoses = function (data) {
