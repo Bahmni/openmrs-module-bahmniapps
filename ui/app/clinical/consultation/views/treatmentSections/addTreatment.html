@@ -61,8 +61,7 @@
             <input id="start-date" date-converter class="form-field start-date" type="date"
                    ng-model="treatment.effectiveStartDate" min="{{minStartDate | date:'yyyy-MM-dd'}}">
 
-
-            <div class="quantity-widget">
+            <div ng-show="!treatment.simpleDrugForm" class="quantity-widget">
                 <input id="quantity" class="form-field quantity" type="number" min="0.1" placeholder="Qty" step="any"
                        ng-model="treatment.quantity" ng-change="treatment.setQuantityEnteredManually()" required/>
                 <span class="form-field quantity-unit">{{treatment.quantityUnit}}</span>

@@ -57,6 +57,7 @@ Bahmni.Clinical.DrugOrderViewModel = function (appConfig, config, proto, encount
     this.asNeeded = this.asNeeded || false;
     this.route = this.route || undefined;
     this.durationUnit = this.durationUnit || appConfig.defaultDurationUnit;
+    this.simpleDrugForm = this.simpleDrugForm || appConfig.simpleDrugForm || false;
     this.instructions = this.instructions || appConfig.defaultInstructions;
     this.effectiveStartDate = this.effectiveStartDate || this.encounterDate;
     this.autoExpireDate = this.autoExpireDate || undefined;
@@ -184,12 +185,19 @@ Bahmni.Clinical.DrugOrderViewModel = function (appConfig, config, proto, encount
     };
 
     this.getDescriptionWithQuantity = function(){
-        return addDelimiter(blankIfFalsy(self.getDescription()), "(") +
-        addDelimiter(self.getQuantityWithUnit(), ")")
+        var description = self.getDescription();
+        var qtywithUnit = self.getQuantityWithUnit();
+        if(_.isEmpty(qtywithUnit)){
+            return description;
+        }
+        return addDelimiter(description, "(") + addDelimiter(qtywithUnit, ")");
     };
 
     this.getQuantityWithUnit = function () {
-        return addDelimiter(blankIfFalsy(self.quantity), " ") + blankIfFalsy(quantityUnitsFrom(self.drug.form + "(s)"));
+        if(this.simpleDrugForm === true){
+            return "";
+        }
+        return addDelimiter(blankIfFalsy(self.quantity), " ") + blankIfFalsy(quantityUnitsFrom(self.doseUnits));
     };
 
     var getFrequencyPerDay = function(){
@@ -283,7 +291,7 @@ Bahmni.Clinical.DrugOrderViewModel = function (appConfig, config, proto, encount
     };
 
     var quantityUnitsFrom = function(doseUnit){
-        return inAllowedQuantityUnits(doseUnit) ? doseUnit: "Unit(s)";
+        return doseUnit;
     };
 
     var modifyForReverseSyncIfRequired = function(drugOrder) {
