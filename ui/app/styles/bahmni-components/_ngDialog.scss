@@ -165,7 +165,6 @@ body.abc.ngdialog-open{
         }
         .ngdialog-overlay{
             top: 52px;
-            right: 10px;
             @media (max-width :1024px) {
                 right: 0px;
                 display: none;
@@ -217,6 +216,12 @@ body.abc.ngdialog-open{
             }
             .template-container {
                 padding:10px 20px;
+                position: absolute;
+                width: 100%;
+                margin-bottom: 20px;
+                @media (max-width :1024px) {
+                    position: static;
+                }
                 h6{
                     font-size: 1.5em;
                     color: #009384;
