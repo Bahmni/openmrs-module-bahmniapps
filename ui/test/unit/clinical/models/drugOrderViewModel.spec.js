@@ -353,6 +353,7 @@ describe("drugOrderViewModel", function () {
         it("should calculate quantity units all the time", function () {
             var treatment = sampleTreatmentWithUniformDosing(3, "Capsule", {name: "Twice a Day", frequencyPerDay: 2}, 5, "Days");
             treatment.quantityUnit = "not Capsule";
+            treatment.doseUnits = "Unit(s)";
             treatment.setQuantityEnteredManually();
             treatment.calculateQuantityAndUnit();
             expect(treatment.quantityUnit).toBe("Unit(s)");
@@ -1089,7 +1090,8 @@ describe("drugOrderViewModel", function () {
     describe("getDescriptionWithQuantity", function(){
         it("should return drug form as quantity unit if drug form is tablet", function(){
             var treatment = sampleTreatment({}, {}, null, Bahmni.Common.Util.DateUtil.now());
-            expect(treatment.getDescriptionWithQuantity()).toBe("Before Meals, 1(12 Tablet(s))");
+            treatment.doseUnits = "Tablet(s)";
+            expect(treatment.getDescriptionWithQuantity()).toBe("Tablet(s), Before Meals, 1(12 Tablet(s))");
         })
     });
 
@@ -1097,7 +1099,8 @@ describe("drugOrderViewModel", function () {
         it("should return 'Units' as quantity unit if drug form is not a tablet or a capsule", function(){
             var treatment = sampleTreatment({}, {}, null, Bahmni.Common.Util.DateUtil.now());
             treatment.drug.form = "Inhaler";
-            expect(treatment.getDescriptionWithQuantity()).toBe("Before Meals, 1(12 Unit(s))");
+            treatment.doseUnits = "Unit(s)";
+            expect(treatment.getDescriptionWithQuantity()).toBe("Unit(s), Before Meals, 1(12 Unit(s))");
         })
     });
 
