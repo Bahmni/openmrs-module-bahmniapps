@@ -47,8 +47,8 @@ angular.module('bahmni.clinical')
                     return !specimen.isEmpty();
                 });
                 _.each(savableSpecimens, function (specimen) {
-                    specimen.sample.additionalAttributes = specimen.sample.additionalAttributes ? specimen.sample.additionalAttributes[0] : {};
-                    specimen.report.results = specimen.report.results ? specimen.report.results[0] : {};
+                    specimen.sample.additionalAttributes = Array.isArray(specimen.sample.additionalAttributes) ? specimen.sample.additionalAttributes[0] : specimen.sample.additionalAttributes;
+                    specimen.report.results = Array.isArray(specimen.report.results) ? specimen.report.results[0] : specimen.report.results;
                 });
 
                 $scope.consultation.newlyAddedSpecimens = savableSpecimens;
@@ -78,9 +78,20 @@ angular.module('bahmni.clinical')
                 $scope.clearEmptySpecimens();
             };
 
-            $scope.editSpecimen = function(specimen){
-                $scope.newSpecimens.push(specimen);
-                $scope.clearEmptySpecimens();
+            var isAlreadyBeingEdited = function (specimen) {
+                var specimenBeingEdited = _.find($scope.newSpecimens, function (newSpecimen) {
+                    return newSpecimen.existingObs === specimen.existingObs;
+                });
+                return specimenBeingEdited != undefined;
+            };
+
+            $scope.editSpecimen = function (specimen) {
+                if (!isAlreadyBeingEdited(specimen)) {
+                    $scope.newSpecimens.push(new Bahmni.Clinical.Specimen(specimen));
+                    $scope.clearEmptySpecimens();
+                } else {
+                    messagingService.showMessage("formError", "The specimen " + specimen.type.name + " with ID #" + specimen.identifier + " is already being edited.")
+                }
             };
 
             $scope.consultation.preSaveHandler.register(saveSpecimens);

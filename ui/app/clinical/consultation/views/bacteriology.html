@@ -53,12 +53,12 @@
 
                 </div>
 
-                <div class="box">
+                <div class="box" ng-if="newSpecimen.dateCollected">
                     <concept-set patient="patient" concept-set-name="additionalAttributesConceptName"
                                  observations="newSpecimen.sample.additionalAttributes"></concept-set>
                 </div>
 
-                <div class="box">
+                <div class="box" ng-if="newSpecimen.dateCollected">
                     <concept-set patient="patient" concept-set-name="resultsConceptName" collapse-inner-sections="true"
                                  observations="newSpecimen.report.results"></concept-set>
                 </div>
