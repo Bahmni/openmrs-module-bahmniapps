@@ -1,5 +1,5 @@
 <section ng-if="hasData" class="block dashboard-section">
-    <h2 class="section-title">{{::displayName || diseaseName}}</h2>
+    <h2 ng-if="displayName || diseaseName" class="section-title">{{::displayName || diseaseName}}</h2>
     <table class="h-scroll pivot-table">
         <thead>
         <tr>
