@@ -54,11 +54,11 @@ angular.module('bahmni.common.conceptSet')
             };
 
             var updateFormConditions = function () {
-                var flattenedObs = flattenObs($scope.observations);
-                var conceptSetObsValues = _.reduce(flattenedObs, function (flattenedObsValues, obs) {
-                    flattenedObsValues[obs.concept.name] = obs.value;
-                    return flattenedObsValues;
-                }, {});
+                var observationsOfCurrentTemplate = _.filter($scope.observations, function (observation) {
+                    return observation.conceptSetName === $scope.rootObservation.concept.name;
+                });
+                var flattenedObs = flattenObs(observationsOfCurrentTemplate);
+                var conceptSetObsValues = getFlattenedObsValues(flattenedObs);
                 if (Bahmni.ConceptSet.FormConditions.rules) {
                     _.each(Bahmni.ConceptSet.FormConditions.rules, function (conditionFn, conceptName) {
                         if (_.has(conceptSetObsValues, conceptName)) {
@@ -68,6 +68,28 @@ angular.module('bahmni.common.conceptSet')
                     })
                 }
             };
+
+            var getFlattenedObsValues = function(flattenedObs) {
+                    return _.reduce(flattenedObs, function (flattenedObsValues, obs) {
+                        if (flattenedObsValues[obs.concept.name] == undefined){
+                            if (obs.isMultiSelect) {
+                                var selectedObsConceptNames = [];
+                                _.each(obs.selectedObs, function (observation) {
+                                    selectedObsConceptNames.push(observation.value.name);
+                                });
+                                flattenedObsValues[obs.concept.name] = selectedObsConceptNames;
+                            }
+                            else if (obs.value instanceof Object) {
+                                flattenedObsValues[obs.concept.name] = obs.value.name;
+                            }
+                            else {
+                                flattenedObsValues[obs.concept.name] = obs.value;
+                            }
+                        }
+                        return flattenedObsValues;
+                }, {});
+            };
+
 
             var contextChange = function () {
                 $scope.atLeastOneValueIsSet = $scope.rootObservation && $scope.rootObservation.atLeastOneValueSet();
