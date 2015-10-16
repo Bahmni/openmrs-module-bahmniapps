@@ -94,7 +94,7 @@ angular.module('bahmni.clinical')
                 }
             };
 
-            $scope.consultation.preSaveHandler.register(saveSpecimens);
+            $scope.consultation.preSaveHandler.register("bacteriologySaveHandlerKey", saveSpecimens);
 
             contextChangeHandler.add(contextChange);
 

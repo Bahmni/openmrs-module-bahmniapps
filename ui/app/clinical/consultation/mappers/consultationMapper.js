@@ -36,8 +36,12 @@ Bahmni.ConsultationMapper = function (dosageFrequencies, dosageInstructions, con
         });
 
         var mdrtbSpecimen = encounterTransaction.extensions.mdrtbSpecimen && encounterTransaction.extensions.mdrtbSpecimen.map(function (specimen) {
-                specimen.sample.additionalAttributes = specimen.sample.additionalAttributes ? new Bahmni.Common.Obs.ObservationMapper().map([specimen.sample.additionalAttributes], {}) : [];
-                specimen.report.results = specimen.report.results ? new Bahmni.Common.Obs.ObservationMapper().map([specimen.report.results], {}): [];
+                if (specimen.sample) {
+                    specimen.sample.additionalAttributes = specimen.sample.additionalAttributes ? new Bahmni.Common.Obs.ObservationMapper().map([specimen.sample.additionalAttributes], {}) : [];
+                }
+                if (specimen.report) {
+                    specimen.report.results = specimen.report.results ? new Bahmni.Common.Obs.ObservationMapper().map([specimen.report.results], {}) : [];
+                }
 
                 return new Bahmni.Clinical.Specimen(specimen);
             });
