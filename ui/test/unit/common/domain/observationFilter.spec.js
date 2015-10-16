@@ -86,5 +86,19 @@ describe("Observation Filter", function () {
         expect(filteredObservations[0].groupMembers.length).toBe(1);
         expect(filteredObservations[0].groupMembers[0].value).toBe(10);
       });
+
+      it("should remove new member observations which are voided", function() {
+        var observation = buildObservation({ uuid: null,
+          groupMembers: [buildObservation({value: "something", uuid: null, voided: true}), buildObservation({value: 10, uuid: null})]
+        });
+
+        var observations = [observation];
+
+        var filteredObservations = observationFilter.filter(observations);
+
+        expect(filteredObservations.length).toBe(1);
+        expect(filteredObservations[0].groupMembers.length).toBe(1);
+        expect(filteredObservations[0].groupMembers[0].value).toBe(10);
+      })
     });
 });
