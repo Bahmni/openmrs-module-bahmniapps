@@ -44,6 +44,10 @@ use either a `<div>` or an `<section` element:
 	border-radius: 5px 5px 0 0;
 	background: $white;
 }
+.section-title-wrapper{
+  background: $bahmniSecondaryColor;
+  padding-right: 10px;
+}
 h2.section-title {
 	font-family: $OpenSansFont;
 	padding: $defaultSpacing;
