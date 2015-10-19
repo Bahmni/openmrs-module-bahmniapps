@@ -10,12 +10,39 @@ angular.module('bahmni.registration')
             $scope.showEnterID = configValueForEnterId === null ? true : configValueForEnterId;
             $scope.today = dateUtil.getDateWithoutTime(dateUtil.now());
 
+            var prepopulateDefaultsInFields = function () {
+
+                var personAttributeTypes = getPersonAttributeTypes();
+                var defaults = appService.getAppDescriptor().getConfigValue("patientInformation").defaults;
+                _.each(personAttributeTypes, function (personAttributeType) {
+                    var present = _.contains(Object.keys(defaults), personAttributeType.name);
+                    if (present) {
+                        if(personAttributeType.format == "org.openmrs.Concept") {
+                            var answers = personAttributeType.answers;
+                            var defaultAnswer = _.findWhere(answers, {description: defaults[personAttributeType.name]})
+                            if (defaultAnswer) {
+                                $scope.patient[personAttributeType.name] = defaultAnswer.conceptId;
+                            }
+                        }else {
+                            $scope.patient[personAttributeType.name] = defaults[personAttributeType.name];
+                        }
+                    }
+                });
+            };
+
+            var getPersonAttributeTypes = function () {
+                return $rootScope.patientConfiguration.personAttributeTypes;
+            };
+
+
             (function () {
                 $scope.patient = patientModel.create();
                 $scope.identifierSources = $rootScope.patientConfiguration.identifierSources;
                 var identifierPrefix = _.findWhere($scope.identifierSources, {prefix: preferences.identifierPrefix});
                 $scope.patient.identifierPrefix = identifierPrefix || $scope.identifierSources[0];
                 $scope.hasOldIdentifier = preferences.hasOldIdentifier;
+                prepopulateDefaultsInFields();
+
             })();
 
             var prepopulateFields = function () {
@@ -25,7 +52,7 @@ angular.module('bahmni.registration')
                         function (response) {
                             var locations = response.data.results;
                             var cookie = $bahmniCookieStore.get(Bahmni.Common.Constants.locationCookieName);
-                            var loginLocation = _.find(locations, function(location){
+                            var loginLocation = _.find(locations, function (location) {
                                 return location.uuid == cookie.uuid;
                             });
                             angular.forEach(fieldsToPopulate, function (field) {
@@ -40,9 +67,7 @@ angular.module('bahmni.registration')
                         function () {
                             messagingService.showMessage('error', 'Unable to fetch locations. Please reload the page.');
                         }
-
-
-                );
+                    );
                 }
             };
 

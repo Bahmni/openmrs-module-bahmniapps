@@ -66,10 +66,11 @@ Bahmni.Registration.CreatePatientRequestMapper = (function () {
     };
 
     var setAttributeValue = function (attributeType, attr, value) {
-        if (attributeType.format === "org.openmrs.Concept") {
-            attr.hydratedObject = value;
-        } else if (value === "" || value === null || value === undefined) {
+        if (value === "" || value === null || value === undefined) {
             attr.voided = true;
+        }
+        else if (attributeType.format === "org.openmrs.Concept") {
+            attr.hydratedObject = value;
         }
         else if(attributeType.format == "org.openmrs.util.AttributableDate"){
             var mnt = moment(value);

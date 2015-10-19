@@ -127,6 +127,7 @@ describe('patient mapper', function () {
             value: "1999-01-01",
             attributeType: { uuid: 'testDate-uuid' }
         });
+
     });
 
     it('should map age to birthdate', function () {
@@ -201,4 +202,5 @@ describe('patient mapper', function () {
 
         expect(mappedPatientData.image).toBeFalsy();
     });
+
 });

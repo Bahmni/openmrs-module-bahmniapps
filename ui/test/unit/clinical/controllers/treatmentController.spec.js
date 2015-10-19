@@ -1087,7 +1087,6 @@ describe("TreatmentController", function () {
             for (var key in obj1) {
                 if (key !== "_effectiveStartDate" && key !== "effectiveStartDate" && key !== "isEditAllowed" && typeof obj1[key] !== 'function') {
                     if (!_.isEqual(obj1[key], obj2[key])) {
-                        dump(key, obj1[key], obj2[key])
                         return false;
                     }
                 }

@@ -34,13 +34,40 @@ describe('CreatePatientController', function () {
 
         appServiceMock.getAppDescriptor = function () {
             return {
-                getConfigValue: function () {
+                getConfigValue: function (config) {
+                    if(config == 'patientInformation') {
+                        return {
+                            "defaults": {
+                                "education": "Uneducated"
+                            }
+                        };
+                    }
                     return ["Division", "Zilla", "Upazilla"];
                 }
+
             }
         };
 
         rootScopeMock.patientConfiguration = {identifierSources: []};
+
+        rootScopeMock.patientConfiguration.personAttributeTypes = [
+            {
+                uuid: "education-uuid",
+                name: "education",
+                description: "Education Details",
+                format: "org.openmrs.Concept",
+                answers :[
+                    {
+                        conceptId: "c2107f30-3f10-11e4-adec-0800271c1b75",
+                        description: "Uneducated"
+                    },
+                    {
+                        conceptId: "c211442b-3f10-11e4-adec-0800271c1b75",
+                        description: "5th Pass and Below"
+                    }]
+
+            }
+        ];
 
         $aController('CreatePatientController', {
             $scope: scopeMock,
@@ -63,6 +90,25 @@ describe('CreatePatientController', function () {
 
         scopeMock.patientConfiguration = {identifierSources: []};
         scopeMock.patient = {identifierPrefix: {}, relationships: []};
+    });
+
+    it("should populate default fields in registration form", function() {
+
+        $aController('CreatePatientController', {
+            $scope: scopeMock,
+            $rootScope: rootScopeMock,
+            $state: stateMock,
+            patientService: patientServiceMock,
+            preferences: preferencesMock,
+            patientModel: patientModelMock,
+            spinner: spinnerMock,
+            appService: appServiceMock,
+            ngDialog: ngDialogMock,
+            $bahmniCookieStore: bahmniCookieMock
+        });
+
+        expect(scopeMock.patient["education"]).toBe("c2107f30-3f10-11e4-adec-0800271c1b75");
+
     });
 
     it("should populate patient address levels", function(){
