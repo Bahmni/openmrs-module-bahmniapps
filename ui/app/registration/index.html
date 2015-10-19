@@ -2,6 +2,7 @@
 <html lang="en" ng-app="registration">
     <head>
         <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width" />
         <title>{{'REGISTRATION_TITLE_KEY' | translate}}</title>
         <link rel="stylesheet" href="../lib/jquery/jquery-ui-1.10.4.custom.min.css">
         <link rel="stylesheet" href="../components/select2/select2.css"/>
@@ -14,10 +15,8 @@
     </head>
     <body>
         <div class="reg-wrapper">
-            <div >
-                <div ng-include src="'../common/ui-helper/messages.html'"></div>
-                <div ui-view="layout" id="view-content"></div>
-            </div>
+            <div ng-include src="'../common/ui-helper/messages.html'"></div>
+            <div ui-view="layout" id="view-content"></div>
         </div>
         <script src="../components/lodash/dist/lodash.min.js"></script>
         <script src="../components/jquery/jquery.min.js"></script>

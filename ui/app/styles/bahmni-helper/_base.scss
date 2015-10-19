@@ -1,20 +1,24 @@
+html,body{
+  height:100%;
+}
+
 body {
   font-family: $OpenSansFont, Arial, sans-serif;
   -webkit-font-smoothing: subpixel-antialiased;
   background: $bahmniPageBg;
   color: $text;
-  font-size: 16px;
-  line-height: 1.1em;
+  font-size: 14px;
+  line-height: 1em;
+  margin : 0 auto;
+  pre{
+    background: none;
+    margin: 0;
+    padding: 0;
+  }
 }
 body.show-controller-back.ngdialog-open{
  overflow: auto !important;
   overflow-x: hidden !important;
-}
-body pre {
-  font-family: $OpenSansFont;
-  font-size: 14px;
-  background: none;
-  margin: 0; padding: 0;
 }
 
 ul, ol, li {
@@ -220,13 +224,13 @@ table {
   }
 }
 
-.left {
-  float: left;
+.fl, .left {float: left;}
+.fr, .right {float: right;}
+
+.overflow-hidden {
+  overflow: hidden;
 }
 
-.right {
-  float: right;
-}
 
 .align-center {
   text-align: center;
@@ -282,4 +286,18 @@ table {
     top: 0;
   }
 
+}
+
+.visible-desktop{
+  visibility: visible;
+  @media (max-width : 767px){
+    visibility: hidden;
+  }
+}
+
+.visible-small-screen{
+  display: none;
+  @media (max-width : 767px){
+    display: block;
+  }
 }

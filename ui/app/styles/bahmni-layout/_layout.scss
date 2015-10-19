@@ -1,20 +1,18 @@
 @charset "UTF-8";
 
-$column-width: 100;
-$gutter-width: 0;
-$columns: 12;
-
-
-.fa-white {
-    color: $white;
+.container{
+  max-width: 100%;
+  width: 1200px;
+  margin: 0 auto;
+  @media (max-width : 1024px){
+    width: 1024px;
+  }
+  @media (max-width : 767px){
+    width: 100%;
+  }
 }
 
-body {
-    font-family: $primaryFont, Arial, sans-serif;
-    max-width:none;
-    height:100%;
-    padding: 0; margin: 0;
-}
+
 .opd-header-wrapper{
         @include clearfix;
         position: fixed;

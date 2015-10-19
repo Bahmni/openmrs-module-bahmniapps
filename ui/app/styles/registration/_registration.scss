@@ -1,26 +1,20 @@
 
-$column-width: 100;
-$gutter-width: 0;
-$columns: 12;
-$total-width: 100%;
+@import "registrationSearch";
 
+.reg-wrapper{
 
-@import "compass";
-
-html,body{
-  height:100%;
 }
 /*** grid form elements css start ***/
 .form-field-inline{
   .form-field{
-      float:left;
-      @include column(6);
-      margin-bottom:0px;
-      &.form-field-ipad{
-        @media screen and (max-width: 1024px){
-          width: 53%;
-        }
+    float:left;
+    @include column(6);
+    margin-bottom:0px;
+    &.form-field-ipad{
+      @media screen and (max-width: 1024px){
+        width: 53%;
       }
+    }
   }
   @include clearfix();
 }
@@ -30,12 +24,12 @@ html,body{
   .field-attribute{
     float:left;
     label{
-        width:15em;
-        line-height:20px;
-        float:left;
-        text-align:right;
-        margin:8px 0.8em 8px 0px;
-        //opacity: 0.5;
+      width:15em;
+      line-height:20px;
+      float:left;
+      text-align:right;
+      margin:8px 0.8em 8px 0px;
+      //opacity: 0.5;
       &.dob-label{
         width: 9em;
       }
@@ -48,33 +42,33 @@ html,body{
     }
   }
   &.right-form-field{
-      .field-attribute label{
-        width: 18em;
-      }
-      &.right-form-field-ipad{
-        @media screen and (max-width: 1024px){
-          width: 47%;
-          .field-attribute label{
-            width: 15.9em;
-          }
+    .field-attribute label{
+      width: 18em;
+    }
+    &.right-form-field-ipad{
+      @media screen and (max-width: 1024px){
+        width: 47%;
+        .field-attribute label{
+          width: 15.9em;
         }
       }
     }
+  }
   .field-value{
     float:left;
-     input[type="text"],input[type="number"],input[type="password"],select,label{
-        float:left;
-        width:12.7em !important;
+    input[type="text"],input[type="number"],input[type="password"],select,label{
+      float:left;
+      width:12.7em !important;
     }
     input#isUrban{
       margin-top: 7px;
     }
     input[type="number"]{
-        width:8em;
+      width:8em;
     }
     span.text-only{
-       display:inline-block;
-       margin:8px 5px 8px 5px;
+      display:inline-block;
+      margin:8px 5px 8px 5px;
     }
     .estimate-check{
       margin-top: 10px;
@@ -85,15 +79,15 @@ html,body{
 .input-prepend{
   float:left;
   input{
-      display: inline-block;
-      margin-bottom: 0;
-      vertical-align: middle;
-      float:left;
-      margin:0px !important;
+    display: inline-block;
+    margin-bottom: 0;
+    vertical-align: middle;
+    float:left;
+    margin:0px !important;
   }
   .add-on{
     @extend input;
-    border-radius: 3px;  
+    border-radius: 3px;
     height: 21px;
     min-width: 17px;
     padding: 4px 5px;
@@ -120,8 +114,8 @@ input[disabled], select[disabled], textarea[disabled], input[readonly], select[r
   }
 }
 input[required],select[required]{
-    box-shadow:none;
-    &:focus{
+  box-shadow:none;
+  &:focus{
   }
 }
 
@@ -136,7 +130,7 @@ input[required],select[required]{
       background: $white;
       width: 100%;
     }
-  } 
+  }
   input, select, textarea, ul.select {
     min-width: 0;
   }
@@ -158,25 +152,18 @@ p.caution {
   padding: 7px 20px;
 }
 button[disabled], button[disabled]:hover, button.disabled, button.disabled:hover{
-    opacity: .65;
-    filter: alpha(opacity=65);
-    background: $lightestGray;
-    border:1px solid $lightGray;
-    color: $darkGray;
-    -webkit-box-shadow: none;
-    -moz-box-shadow: none;
-    box-shadow: none;
-    cursor:default;
+  opacity: .65;
+  filter: alpha(opacity=65);
+  background: $lightestGray;
+  border:1px solid $lightGray;
+  color: $darkGray;
+  -webkit-box-shadow: none;
+  -moz-box-shadow: none;
+  box-shadow: none;
+  cursor:default;
 }
 /*** grid form elements css end ***/
-body{   
-  width:100%;
-  max-width:100%;
-  margin:0px auto;
-  background: $lightestGray;
-  font-size:14px;
-  font-family: "OpenSans",Arial,sans-serif;
-}
+
 .reg-header-wrapper{
   background: $bahmniSecondaryColor;
 }
@@ -186,61 +173,48 @@ body{
   margin: 0 auto;
 }
 .remove-margin{
-  margin:0px !important; 
-}
-body pre {
-  font-family: "OpenSans";
-  font-size: 14px;
-  background: none;
-  margin: 0;
-  padding: 0;
+  margin:0px !important;
 }
 /*** login specific css start ***/
 .login{
-    bottom: 0px;
-    height: 300px;
-    left: 0px;
-    margin: auto;
-    position: absolute;
-    right: 0px;
-    top: 0px;
-    font-size:0.865em;
-    width: 500px;
+  bottom: 0px;
+  height: 300px;
+  left: 0px;
+  margin: auto;
+  position: absolute;
+  right: 0px;
+  top: 0px;
+  font-size:0.865em;
+  width: 500px;
 }
 .login-body{
-    @include clearfix();
-    padding-top:20px;
-    background: $white;
-    border:1px solid $lightestGray;
-    padding-bottom:10px;
-    p.caution{
-      padding:0px;
+  @include clearfix();
+  padding-top:20px;
+  background: $white;
+  border:1px solid $lightestGray;
+  padding-bottom:10px;
+  p.caution{
+    padding:0px;
+  }
+  .note-container .note{
+    margin:0px auto 18px auto;
+  }
+  .form-field .field-value{
+    input[type="text"],input[type="password"]{
+      width:15em;
     }
-    .note-container .note{
-      margin:0px auto 18px auto;
-    }
-    .form-field .field-value{
-      input[type="text"],input[type="password"]{
-        width:15em;
-      }
-    }
+  }
 
 }
 /*** login specific css end ***/
 /*** search page css start ****/
 .reg-wrapper{
-  .pg-container {
-    max-width: $max-page-width;
-    margin: 0px auto;
-
-  }
-
   .inline-element,select,input,button{
-      display:inline-block;
-      margin:2px;
+    display:inline-block;
+    margin:2px;
   }
   select{
-        height:25px;
+    height:29px;
   }
   header {
     position: relative;
@@ -299,7 +273,7 @@ body pre {
           a.disabled {
             color: $lightGray;
             .fa-user {
-                color: $lightGray;
+              color: $lightGray;
             }
           }
         }
@@ -307,7 +281,7 @@ body pre {
     }
     ul{
       li{
-        
+
         display:inline-block;
         a{
           color: $white;
@@ -319,109 +293,27 @@ body pre {
           .nav-link{
             padding-left:2px;
           }
-        &:hover {
-          background: lighten($bahmniPrimaryColor, 10%);
+          &:hover {
+            background: lighten($bahmniPrimaryColor, 10%);
+          }
         }
-       }
       }
     }
   }
-.reg-search-wrapper{
-    padding:10px;
-    margin-top:5px;
-    border:1px solid $lightestGray;
-    background: $white;
-    border-radius: 3px;
-    @include box-shadow-for-section();
-    .reg-search{
-        margin-bottom:10px;
-        @include clearfix;
-        .search-seperator-l{
-          @include column(5);
-          input[type="text"]{
-            margin-right:5px;
-            padding: 5px 10px;
-          }
-          border-right:2px dotted $lightGray;
-            select{
-              width:80px;
-              min-width:80px;
-          }
-        }
-        .search-seperator-r{
-          padding:0px 0px 10px 20px;
-          input[type="text"]{
-            margin-right:5px;
-            padding: 5px 10px;
-          }
-          button{
-            margin: 0px 2px 2px 2px;
-          }
-          .reg-srch-btn{
-            margin-top:25px;
-          }
-        }
-    }
-    .note-container{
-        text-align:left;
-       .note {
-           padding:6px 10px 6px 10px; 
-           .text{
-            p{
-              max-width:100%;
-              top:0px;
-              margin-left:0
-            }
-          }
-        }
-    }
-}  
-table{
-    td,th{
-        padding:4px 8px 4px 8px;
-        text-align:left;
-        @media screen and (max-width: 1024px){
-          padding:9px 8px 9px 8px;
-        }
-    }
-    tr:hover{
-      background: $lightestGray;
-    }
-  }
-  .slno_col{
-        width:40px;
-  }
-  .edit-col{
-      width:160px;
-      padding:2px 2px 2px 2px;
-       .split-button ul li button{
-         @media screen and (min-width: 1024px){
-           padding: 5px 20px;
-           margin: 0;
-         }
-       }
-      a{
-        background:image-url("edit.png") top left no-repeat;
-        width:30px;
-        height:24px;
-        display:inline-block;
-        margin-right:2px;
-        cursor:pointer;
-      }
-  }
- /*** search page css end ***/
 
- /****edit page css start ***/
- .reg-body-wrapper{
+  /*** search page css end ***/
+
+  /****edit page css start ***/
+  .reg-body-wrapper{
     padding:10px 0;
- }
- .edit-patient,.new-patient,.visit-patient{
-  position:relative;
- }
- .photocontainer-spacing{
+  }
+  .edit-patient,.new-patient,.visit-patient{
+    position:relative;
+  }
+  .photocontainer-spacing{
     margin-bottom:57px;
- }
-.photo-container-wrapper{
+  }
+  .photo-container-wrapper{
     position:absolute;
     top:50px;
     right:10px;
@@ -440,78 +332,78 @@ table{
 }
 
 .grid-row {
-    padding: 2px;
+  padding: 2px;
 }
 .grid-row-element {
-    font-size: 12px;
-    padding-left: 15px;
-    padding-right: 15px;
-    .fa-ok {
-        display: none;
-        padding-top: 0;
-        padding-bottom: 0;
-        font-size: 14px;
-        line-height: inherit;
-    }
+  font-size: 12px;
+  padding-left: 15px;
+  padding-right: 15px;
+  .fa-ok {
+    display: none;
+    padding-top: 0;
+    padding-bottom: 0;
+    font-size: 14px;
+    line-height: inherit;
+  }
 }
 .grid-row-element.active {
-    color: $bahmniTertiaryColor;
-    padding-left: 3px;
-    .fa-ok {
-        display: inline-block;
-    }
+  color: $bahmniTertiaryColor;
+  padding-left: 3px;
+  .fa-ok {
+    display: inline-block;
+  }
 }
 
 .mylegend {
-    background: $lightestGray;
-    font-size: 14px;
-    width:99.8%;
-    line-height: 16px;
-    margin-bottom:20px;
-    padding: 3px 0;
-    border-radius: 3px;
-    border:1px solid $lightGray;
-    span{
-        display:inline-block;
-        padding:2px 10px;
-        font-weight:bold;
-    }
-    &.registraion_Basic_info{
-      width: auto;
-    }
+  background: $lightestGray;
+  font-size: 14px;
+  width:99.8%;
+  line-height: 16px;
+  margin-bottom:20px;
+  padding: 3px 0;
+  border-radius: 3px;
+  border:1px solid $lightGray;
+  span{
+    display:inline-block;
+    padding:2px 10px;
+    font-weight:bold;
+  }
+  &.registraion_Basic_info{
+    width: auto;
+  }
 }
 .registraion_legend{
-      margin: 15px 0 15px 25px;
-      width:auto;
-      position: relative;
-      width:99.8%;
-      &:before{
-          content: "";
-          border-top:1px #ccc solid;
-          position: absolute;
-          top: 14px;
-          width: 96%;
-        }
-      span.mylegend{
-        display: inline-block;
-        width: auto;
-        margin-bottom: 0;
-        padding: 5px 6px;
-        margin-left: 25px;
-        position: relative;
-      }
-    }
+  margin: 15px 0 15px 25px;
+  width:auto;
+  position: relative;
+  width:99.8%;
+  &:before{
+    content: "";
+    border-top:1px #ccc solid;
+    position: absolute;
+    top: 14px;
+    width: 96%;
+  }
+  span.mylegend{
+    display: inline-block;
+    width: auto;
+    margin-bottom: 0;
+    padding: 5px 6px;
+    margin-left: 25px;
+    position: relative;
+  }
+}
 .asterick{
-    color:red;
+  color:red;
 }
 
 .input-label-inline{
-    margin-top:6px;
-    display:inline-block;
-    label{
-        display: inline-block;
-        margin-top:2px;
-        }
+  margin-top:6px;
+  display:inline-block;
+  label{
+    display: inline-block;
+    margin-top:2px;
+  }
 }
 @media screen and (max-width: 1100px) {
   .caste-lastname {
@@ -526,10 +418,10 @@ table{
 
 
 .submit-btn-container{
-    // padding:10px 20px 0px 20px;
-    // border-top: 1px solid $lightestGray;
-    margin-top: 20px;
-    overflow: hidden;
+  // padding:10px 20px 0px 20px;
+  // border-top: 1px solid $lightestGray;
+  margin-top: 20px;
+  overflow: hidden;
 }
 
 .obs-section section.block.hierarchy {
@@ -560,15 +452,15 @@ table{
 }
 .btn-secondary {
   float: right;
-}   
+}
 table{
-    tr{ 
-        th{
-            border:1px solid $lightGray;
-            background: $lightestGray;
-     
-        }
+  tr{
+    th{
+      border:1px solid $lightGray;
+      background: $lightestGray;
+
     }
+  }
 }
 
 #photo-canvas-container {
@@ -584,67 +476,59 @@ video{
   display:block;
 }
 .photoCaptureDialog{
-    .photo-video-container{
-        position:relative;
-        width:229px;
-        float:left;
-        .photoCapture-left-overlay{
-          position:absolute;
-          height:169px;
-          width:25px;
-          left:0px;
-          top:6px;
-          background: $lightestGray;
-        }
-        .photoCapture-right-overlay{
-          position:absolute;
-          height:169px;
-          width:31px;
-          right:0px;
-          top:6px;
-          background: $lightestGray;
-        }
-    }      
-    .photo-canvas-container{
-      float:left;
-      width:188px;
-      margin-top:6px;
-      margin-left:30px !important;
-      canvas{
-        border:2px solid $white;
-        height:167px;
-        width:175px;
-        background: $lightestGray;
-      }
-    } 
-    .take-photo-btn{
-      margin:10px 54px 5px 54px
+  .photo-video-container{
+    position:relative;
+    width:229px;
+    float:left;
+    .photoCapture-left-overlay{
+      position:absolute;
+      height:169px;
+      width:25px;
+      left:0px;
+      top:6px;
+      background: $lightestGray;
     }
-    .confirmImage{
-      margin:10px 5px 5px 55px;
+    .photoCapture-right-overlay{
+      position:absolute;
+      height:169px;
+      width:31px;
+      right:0px;
+      top:6px;
+      background: $lightestGray;
     }
-    .row-clear{
+  }
+  .photo-canvas-container{
+    float:left;
+    width:188px;
+    margin-top:6px;
+    margin-left:30px !important;
+    canvas{
+      border:2px solid $white;
+      height:167px;
+      width:175px;
+      background: $lightestGray;
+    }
+  }
+  .take-photo-btn{
+    margin:10px 54px 5px 54px
+  }
+  .confirmImage{
+    margin:10px 5px 5px 55px;
+  }
+  .row-clear{
     @include clearfix();
-    }
+  }
 
 }
 /***** photo dialog css end *****/
 
-/** responsive css **/
-@media screen and (max-width: 1024px){
-  .reg-wrapper{
-      width:1024px;
-      }
-}
-@media screen and (max-height: 800px) {
+
+/*@media screen and (max-height: 800px) {
   .reg-wrapper{
     .reg-search-wrapper .reg-search {
-      .search-seperator-l{
-        width:36%;
-    }
       .search-seperator-r{
         padding-left:10px;
-    }
+      }
     }
     .form-field-inline {
       &:last-child{
@@ -658,13 +542,13 @@ video{
       }
     }
     .form-field .field-attribute label{
-        margin:5px 0.8em 7px 0px;
+      margin:5px 0.8em 7px 0px;
     }
     .form-field .field-value span.text-only{
-        margin:5px 0.8em 7px 8px;
+      margin:5px 0.8em 7px 8px;
     }
   }
-}
+}*/
 
 .age-field {
   .input-prepend {
@@ -689,9 +573,9 @@ video{
       /* display: none; <- Crashes Chrome on hover */
       -webkit-appearance: none;
       margin: 0; /* <-- Apparently some margin are still there even though it's hidden */
+    }
   }
-}  
-  }
+}
 
 .field-attribute label {
   text-transform: capitalize;
@@ -820,7 +704,7 @@ video{
     width: 200px;
     font-size: 14px;
     line-height: 1.4em;
-  } 
+  }
 }
 form .vitals .form-field .field-value {
   input {
@@ -878,7 +762,7 @@ concept {
         border-bottom: 1px solid $lightGray;
         &:last-child {
           border-bottom: 0;
-        } 
+        }
       }
       div fieldset {
         padding: 0; margin: 0;
@@ -908,28 +792,28 @@ concept {
 //icon buttons
 
 .comment-toggle {
-    padding: 5px;
-    .fa-file {
-        position: relative;
-        font-size: 21px;
-        color: $mediumGray;
-        .fa-plus-sign, .fa-ok-sign, .fa-plus {
-            position: absolute;
-            right: 1px;
-            bottom: 2px;
-            font-size: 14px;
+  padding: 5px;
+  .fa-file {
+    position: relative;
+    font-size: 21px;
+    color: $mediumGray;
+    .fa-plus-sign, .fa-ok-sign, .fa-plus {
+      position: absolute;
+      right: 1px;
+      bottom: 2px;
+      font-size: 14px;
 
-            color: green;
-            background: $white;
-            border-radius: 8px;
-            padding: 0;
-        }
-
-    }        
-    .fa-file-alt {
-        font-size: 21px;
-        color: orange;
+      color: green;
+      background: $white;
+      border-radius: 8px;
+      padding: 0;
     }
+
+  }
+  .fa-file-alt {
+    font-size: 21px;
+    color: orange;
+  }
 }
 
 .hierarchy {
@@ -940,9 +824,9 @@ concept {
 .time.fr {float: right; margin-right: 5px;}
 
 button u, u {
-    text-decoration: none;
-    border-bottom: 1px solid;
-    font-family: $OpenSansBoldFont;
+  text-decoration: none;
+  border-bottom: 1px solid;
+  font-family: $OpenSansBoldFont;
 }
 
 .mylegend.additional-attribute {
@@ -965,7 +849,7 @@ button u, u {
 }
 .relationships {
   overflow: hidden;
-  margin: 20px 20px 10px; 
+  margin: 20px 20px 10px;
   .row{
     float: left;
     width: 100%;
@@ -1000,7 +884,7 @@ button u, u {
       float: left;
       margin-left: 2%;
       button{
-        padding: 2px 4px !important; 
+        padding: 2px 4px !important;
       }
     }
   }
@@ -1057,11 +941,8 @@ button u, u {
     }
   }
 }
-.registraition-search-results-container{
-  overflow-x: auto;
-}
 .placeholder-text{
-   padding: 5px;
+  padding: 5px;
 }
 .death {
   overflow: hidden;
@@ -1073,7 +954,7 @@ button u, u {
       width: 33%;
       float: left;
     }
-   }
+  }
   .till-text{
     margin: 5px 0.8em 7px 0px;
     display: inline-block;

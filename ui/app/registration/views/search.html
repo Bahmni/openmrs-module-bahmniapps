@@ -4,34 +4,34 @@
             <form name="searchByIdForm" ng-submit="searchById()" class="simple-form-ui" >
                     <label for="registrationNumber"><strong>{{ 'REGISTRATION_LABEL_PATIENT_ID' | translate}}</strong></label>
 
-                    <div class="search-patient-id left">
+                    <div class="search-patient-id fl">
                         <select id="identifierPrefix" ng-model="searchParameters.identifierPrefix" ng-options="identifierSource.prefix for identifierSource in identifierSources"> </select>
                         <input type="text" id="registrationNumber" 
                         ng-model="searchParameters.registrationNumber" focus-me="true"
                                placeholder="{{ 'REGISTRATION_LABEL_ENTER_ID' | translate}}">
                     </div>
                 
-                <div class="reg-srch-btn left">
+                <div class="reg-srch-btn fl">
                     <button type="submit" ng-disabled="!searchParameters.registrationNumber" >{{ 'REGISTRATION_LABEL_SEARCH' | translate}}</button>
                 </div>
             </form>
         </article>
-        <article class="search-seperator-r left">
+        <article class="search-seperator-r">
             <form name="searchByNameForm" ng-submit="searchPatients()" class="simple-form-ui" >
 
-                <article class="left">
+                <article class="fl">
                     <label for="name"><strong>{{ 'REGISTRATION_LABEL_NAME' | translate}}</strong></label>
                     <input type="text" id="name" ng-model="searchParameters.name" placeholder="{{ 'REGISTRATION_LABEL_ENTER_NAME' | translate}}">
                 </article>
-                <article class="left" ng-if="customAttributesSearchConfig.show">
+                <article class="fl" ng-if="customAttributesSearchConfig.show">
                     <label for="name"><strong>{{customAttributesSearchConfig.label}}</strong></label>
                     <input type="text" id="customAttribute" ng-model="searchParameters.customAttribute" placeholder="{{customAttributesSearchConfig.placeholder}}">
                 </article>
-                <article class="left">
+                <article class="fl">
                     <label for="name"><strong>{{addressSearchConfig.label}}</strong></label>
                     <input type="text" id="addressFieldValue" ng-model="searchParameters.addressFieldValue" placeholder="{{addressSearchConfig.placeholder}}">
                 </article>
-                <article class="left">
+                <article class="fl">
                     <div class="reg-srch-btn">
                         <button type="submit" ng-disabled="disableSearchButton()">{{ 'REGISTRATION_LABEL_SEARCH' | translate}}</button>
                     </div>
@@ -41,16 +41,16 @@
         </article>
     </section>
 
-    <div class="note-container" ng-show="noResultsMessage">
+    <div class="note-container no-search-results" ng-if="noResultsMessage">
         <div class="note warning">
             <div class="text">
-                    <p>{{noResultsMessage | translate:patientIdentifier }}</p>
+                <p>{{noResultsMessage | translate:patientIdentifier }}</p>
             </div>
         </div>
     </div>
     
     <div infinite-scroll="nextPage()" infinite-scroll-immediate-check="false" infinite-scroll-disabled="noMoreResultsPresent" class="registraition-search-results-container">
-        <table ng-show="resultsPresent()" class="table table-hover">
+        <table ng-show="resultsPresent()" class="table">
             <thead>
             <tr>
                 <th class="slno_col"><strong>{{ 'REGISTRATION_LABEL_SERIAL_NUM' | translate}}</strong></th>
@@ -61,7 +61,8 @@
                 <th><strong>{{ 'REGISTRATION_LABEL_AGE' | translate}}</strong></th>
                 <th><strong>{{addressSearchConfig.label}}</strong></th>
                 <th><strong>{{ 'REGISTRATION_LABEL_REGISTRATION_DATE' | translate}}</strong></th>
-                <th class="edit-col" ng-if="searchActions.length > 0"></th>
+                <th class="edit-col visible-desktop" ng-if="searchActions.length > 0"></th>
+                <th class="edit-col visible-small-screen" ng-if="searchActions.length > 0"></th>
             </tr>
             </thead>
             <tbody>
@@ -74,10 +75,16 @@
                 <td>{{result.age}}</td>
                 <td>{{result.addressFieldValue}}</td>
                 <td>{{result.dateCreated | bahmniDate}}</td>
-                <td class="edit-col" ng-if="searchActions.length > 0">
+                <td class="edit-col visible-desktop" ng-if="searchActions.length > 0">
                     <div split-button options="searchActions"
                             primary-option="searchActions[0]"
                              option-text="extensionActionText" option-click="forPatient(result).doExtensionAction" class="split-button-wrapper">
+                    </div>
+                </td>
+                <td class="edit-col visible-small-screen" ng-if="searchActions.length > 0">
+                    <div split-button options="searchActions"
+                         primary-option="searchActions[0]"
+                         option-text="extensionActionText" option-click="forPatient(result).doExtensionAction" class="split-button-wrapper">
                     </div>
                 </td>
             </tr>
@@ -87,7 +94,7 @@
 
     <div id="loader" ng-show="loadingMoreResults()"></div>
 
-    <div class="note-container" ng-show="noMoreResultsPresent">
+    <div class="note-container no-more-results" ng-if="noMoreResultsPresent">
         <div class="note warning">
             <div class="text">
                     <p>{{ 'REGISTRATION_LABEL_NO_RESULTS' | translate}}</p>

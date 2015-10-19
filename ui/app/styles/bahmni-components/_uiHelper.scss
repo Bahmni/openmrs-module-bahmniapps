@@ -31,12 +31,6 @@ use either a `<div>` or an `<section` element:
 
 
 /* helpers */
-.fl {float: left;}
-.fr {float: right;}
-.overflow-hidden {
-	overflow: hidden;
-}
-
 /* grid sections */
 .primary-section-grid {
 	border: 1px solid $primarySectionGridBorder;
