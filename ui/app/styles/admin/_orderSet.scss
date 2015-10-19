@@ -18,24 +18,51 @@
       }
     }
   }
+}
+.orderSet-container{
   .orderSet-form{
-    .orderSet-form-section{
-      @include column(3);
-      padding: 15px 0;
+    padding: 0 20px 20px;
+    .new-orderSet-wrapper{
+      padding: 20px;
     }
-    .orderSetMembers{
-      @include column(9);
-    }
-    /*.orderSet-form-article{
-      @include column(4);
-      .form-attribute,.form-value{
-        display: inline-block;
+    .form-field{
+      float: left;
+      input[type="text"]{
+        padding: 2px 10px;
       }
-    }*/
+      .field-attribute label{
+        width: 8em;
+      }
+    }
+  }
+  .orderSetMember-wrapper{
+    fieldset{
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      margin-bottom: 10px;
+      .form-field{
+        width: 100%;
+        .field-attribute label{
+          width: 15em;
+        }
+      }
+      .remove-orderSet{
+        margin-left: 60px;
+      }
+      legend{
+        border: 1px #999 solid;
+        border-radius: 20px;
+        padding: 2px 10px;
+        text-transform: none;
+        font-size: 12px;
+        font-family: openSansBold;
+        color: #666;
+        margin: 10px;
+      }
+    }
   }
 }
 
-/*
 .registraion_legend span.mylegend {
   display: inline-block;
   width: auto;
@@ -65,4 +92,6 @@
   padding: 3px 0;
   border-radius: 3px;
   border: 1px solid #ccc;
-}*/
+}
+
+
