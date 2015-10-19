@@ -1,0 +1,65 @@
+<section>
+    <h2 class="section-title">Order Set Details</h2>
+<form ng-submit="save()" class="orderSet-form">
+    <section>
+        <article>
+            <div>
+                <label>Name <span class="asterick">*</span>
+                </label>
+            </div>
+            <div>
+                <input type="text" ng-model="orderSet.name" required>
+            </div>
+        </article>
+        <article>
+            <div>
+                <label>Description <span class="asterick">*</span>
+                </label>
+            </div>
+            <div>
+                <input type="text" ng-model="orderSet.description" required>
+            </div>
+        </article>
+        <article>
+            <div>
+                <label>Operator <span class="asterick">*</span>
+                </label>
+            </div>
+            <div>
+                <select ng-model="orderSet.operator" ng-options="operator for operator in operators" required></select>
+            </div>
+        </article>
+    </section>
+    <!--<legend class="registraion_legend">
+        <span class="mylegend ng-binding"> Order Set Members</span>
+    </legend>-->
+    <div>
+        <h2>Order Set Members</h2>
+        <input type="button" ng-click="addOrderSetMembers($event)" value="+">
+        <div ng-repeat="orderSetMember in orderSet.orderSetMembers" ng-if="!orderSetMember.voided">
+            <div>
+                <label>Order Type <span class="asterick">*</span></label>
+            </div>
+            <div>
+                <select ng-model="orderSetMember.orderType.uuid" ng-change="clearConceptName(orderSetMember)" ng-options="orderType.uuid as orderType.display for orderType in orderTypes" required></select>
+            </div>
+            </article>
+            <article>
+            <div>
+                <label>Concept Name<span class="asterick">*</span></label>
+                </div>
+                <div>
+                <input class="enter-concept" type="text" name="conceptSet" ng-model="orderSetMember.concept.name" bahmni-autocomplete  strict-select="true"
+                       on-select="onSelect($index)" is-invalid="conceptNameInvalid" source="getConcepts" response-map=getDataResults(orderSetMember.orderType) required placeholder="Enter a concept name"/>
+            </div>
+            </article>
+            <div>
+                <div>
+                    <input type="button" ng-click="removeOrderSetMember($index)" value="-">
+                </div>
+            </div>
+        </div>
+    </div>
+    <input type="submit" value="Save"/>
+</form>
+    </section>

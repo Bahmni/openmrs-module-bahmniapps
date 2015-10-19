@@ -1,0 +1,68 @@
+.orderSet-dashboard-container{
+  .section-title-wrapper{
+    background-color: #669999;
+    padding: 5px 10px 1px;
+  }
+  ul.orderSet-list{
+    margin: 15px;
+    @include column(4);
+    li{
+      display: block;
+      a{
+        display: block;
+        padding-right: 15px;
+        padding-bottom: 5px;
+        &:hover{
+          text-decoration: underline;
+        }
+      }
+    }
+  }
+  .orderSet-form{
+    .orderSet-form-section{
+      @include column(3);
+      padding: 15px 0;
+    }
+    .orderSetMembers{
+      @include column(9);
+    }
+    /*.orderSet-form-article{
+      @include column(4);
+      .form-attribute,.form-value{
+        display: inline-block;
+      }
+    }*/
+  }
+}
+
+/*
+.registraion_legend span.mylegend {
+  display: inline-block;
+  width: auto;
+  margin-bottom: 0;
+  padding: 5px 6px;
+  margin-left: 25px;
+  position: relative;
+}
+.registraion_legend {
+  margin: 15px 0 15px 25px;
+  position: relative;
+  width: 99.8%;
+}
+.registraion_legend:before {
+  content: "";
+  border-top: 1px #ccc solid;
+  position: absolute;
+  top: 14px;
+  width: 96%;
+}
+.mylegend {
+  background: #eee;
+  font-size: 14px;
+  width: 99.8%;
+  line-height: 16px;
+  margin-bottom: 20px;
+  padding: 3px 0;
+  border-radius: 3px;
+  border: 1px solid #ccc;
+}*/

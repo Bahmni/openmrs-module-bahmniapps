@@ -147,6 +147,10 @@ Bahmni.Common = Bahmni.Common || {};
         conceptSetRepresentationForOrderFulfillmentConfig: representation,
         entityMappingUrl: RESTWS_V1 + "/entitymapping",
         encounterTypeUrl: RESTWS_V1+"/encountertype",
-        defaultExtensionName: "default"
+        defaultExtensionName: "default",
+
+        orderSet: RESTWS_V1 + "/orderset",
+        getOrderSet: RESTWS_V1 + "/orderset/",
+
     };
 })();

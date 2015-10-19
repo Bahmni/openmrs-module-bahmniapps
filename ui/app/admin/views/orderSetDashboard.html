@@ -1,0 +1,13 @@
+<section class="block section-grid orderSet-dashboard-container">
+    <div class="clearfix section-title-wrapper">
+        <h2 class="section-title fl">Order Set</h2>
+        <button class="fr small-btn grid-row-element" ng-click="createOrEditOrderSet()"> Create New</button>
+
+    </div>
+
+    <ul class="orderSet-list clearfix">
+        <li ng-repeat="orderSet in orderSets">
+            <a ng-click="createOrEditOrderSet(orderSet.uuid);">{{orderSet.name}}</a>
+        </li>
+    </ul>
+</section>
