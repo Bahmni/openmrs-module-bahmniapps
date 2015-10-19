@@ -19,6 +19,7 @@
                    ng-change="clearFields(addressLevel.addressField)"
                    min-length="1"
                    strict-select="true"
+                   initial-value="::address[addressLevel.addressField]"
                    is-invalid="addressFieldInvalid"
                    ng-class="{'illegalValue': addressFieldInvalid}"
                    ng-if="!isFreeTextAddressField(addressLevel.addressField)"

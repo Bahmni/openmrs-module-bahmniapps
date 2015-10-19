@@ -1,5 +1,5 @@
 angular.module('bahmni.common.uiHelper')
-.directive('bahmniAutocomplete', function ($parse) {
+.directive('bahmniAutocomplete', function () {
     var link = function (scope, element, attrs, ngModelCtrl) {
         var source = scope.source();
         var responseMap = scope.responseMap();
@@ -14,7 +14,12 @@ angular.module('bahmni.common.uiHelper')
             if (_.isEmpty(value)){
                 scope.isInvalid = false;
             }
-        }
+        };
+
+        scope.$watch('initialValue', function() {
+            scope.selectedValue = scope.initialValue;
+            scope.$apply();
+        });
 
         element.autocomplete({
             autofocus: true,
@@ -50,7 +55,9 @@ angular.module('bahmni.common.uiHelper')
             }
         });
 
-        $(element).on('change', function() { validateIfNeeded($(element).val()); });
+        $(element).on('change', function() {
+            validateIfNeeded($(element).val()); }
+        );
 
         $(element).keyup(function() {
             validateIfNeeded($(element).val());
@@ -75,7 +82,8 @@ angular.module('bahmni.common.uiHelper')
             blurOnSelect: '=',
             strictSelect: '=',
             validationMessage: '@',
-            isInvalid: "="
+            isInvalid: "=",
+            initialValue: "="
         }
-    }
+    };
 });
