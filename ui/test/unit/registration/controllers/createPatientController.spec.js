@@ -111,6 +111,38 @@ describe('CreatePatientController', function () {
 
     });
 
+    it("should do nothing if defaults are not specified", function() {
+
+        appServiceMock.getAppDescriptor = function () {
+            return {
+                getConfigValue: function (config) {
+                    if(config == 'patientInformation') {
+                        return {
+                            "defaults": {}
+                        };
+                    }
+                    return ["Division", "Zilla", "Upazilla"];
+                }
+
+            }
+        };
+        $aController('CreatePatientController', {
+            $scope: scopeMock,
+            $rootScope: rootScopeMock,
+            $state: stateMock,
+            patientService: patientServiceMock,
+            preferences: preferencesMock,
+            patientModel: patientModelMock,
+            spinner: spinnerMock,
+            appService: appServiceMock,
+            ngDialog: ngDialogMock,
+            $bahmniCookieStore: bahmniCookieMock
+        });
+
+        expect(scopeMock.patient["education"]).toBeUndefined();
+
+    });
+
     it("should populate patient address levels", function(){
         scopeMock.addressLevels = [ {addressField: "stateProvince", name: "Division"}, {addressField: "countyDistrict" , name: "Zilla"}, {addressField: "address5", name: "Upazilla"}];
 
@@ -122,7 +154,7 @@ describe('CreatePatientController', function () {
                 countyDistrict: "Dhaka",
                 address5: "Dohar"
             };
-        }
+        };
         var loginLocation = "someLocation";
         locationServiceMock.getAllByTag.and.returnValue(specUtil.createFakePromise({
             "results":[{"uuid":"43922e67-506c-11e5-968f-0050568266ff","display":"Registration","name":"Registration", "stateProvince":"Dhaka"},{"uuid":"43922e67-506c-11e5-968f-0050568266fg","display":"OPD","name":"OPD","stateProvince":"India"}]}
