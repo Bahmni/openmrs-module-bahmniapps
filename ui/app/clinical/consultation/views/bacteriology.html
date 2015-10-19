@@ -75,7 +75,8 @@
         </div>
         <div class="fr savedSpecimens-action">
             <i class="fa fa-pencil" ng-click="editSpecimen(savedSpecimen)"></i>
-            <i class="fa fa-remove"></i>
+
+            <i class="fa fa-remove" ng-confirm-click="deleteSpecimen(savedSpecimen)" confirm-message="Are you sure you want to remove?"></i>
         </div>
     </div>
 </div>

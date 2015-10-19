@@ -44,7 +44,7 @@ describe("Bacteriology Controller", function () {
     }));
 
     describe("Edit Specimen", function () {
-        it("should add sample to new specimens list", function () {
+        it("should add specimen to new specimens list", function () {
             var existingSpecimen = new Bahmni.Clinical.Specimen({
                 existingObs: "Existing Obs Uuid",
                 dateCollected: "2015-10-01T18:30:00.000Z",
@@ -59,6 +59,25 @@ describe("Bacteriology Controller", function () {
             $scope.editSpecimen(existingSpecimen);
 
             expect($scope.newSpecimens[0].existingObs).toBe(existingSpecimen.existingObs);
+        });
+    });
+
+    describe("Delete Specimen", function () {
+        it("should delete specimen from the existing specimen list", function () {
+            var existingSpecimen = new Bahmni.Clinical.Specimen({
+                existingObs: "Existing Obs Uuid",
+                dateCollected: "2015-10-01T18:30:00.000Z",
+                type: "Blood",
+                identifier: "1234",
+                sample: {
+                    additionalAttributes: {}
+                }
+            });
+            $scope.savedSpecimens = [existingSpecimen];
+
+            $scope.deleteSpecimen(existingSpecimen);
+
+            expect(existingSpecimen.voided).toBeTruthy();
         });
     });
 

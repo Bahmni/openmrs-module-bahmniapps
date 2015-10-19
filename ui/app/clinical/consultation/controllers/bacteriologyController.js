@@ -4,8 +4,9 @@ angular.module('bahmni.clinical')
     .controller('BacteriologyController', ['$scope', '$rootScope', 'contextChangeHandler', 'spinner', 'conceptSetService', 'messagingService', 'bacteriologyConceptSet',
         function ($scope, $rootScope, contextChangeHandler, spinner, conceptSetService, messagingService, bacteriologyConceptSet) {
             $scope.consultation.extensions = $scope.consultation.extensions ? $scope.consultation.extensions : {mdrtbSpecimen: []};
-            $scope.savedSpecimens = $scope.consultation.extensions.mdrtbSpecimen;
+            $scope.savedSpecimens = $scope.consultation.savedSpecimens || $scope.consultation.extensions.mdrtbSpecimen;
             $scope.newSpecimens = $scope.consultation.newlyAddedSpecimens || [];
+            $scope.deletedSpecimens = $scope.consultation.deletedSpecimens || [];
 
             var init = function () {
                 $scope.clearEmptySpecimens();
@@ -35,6 +36,8 @@ angular.module('bahmni.clinical')
 
             var contextChange = function () {
                 $scope.consultation.newlyAddedSpecimens = $scope.newSpecimens;
+                $scope.consultation.deletedSpecimens = $scope.deletedSpecimens;
+                $scope.consultation.savedSpecimens = $scope.savedSpecimens;
                 var dirtySpecimen = _.find($scope.newSpecimens, function (specimen) {
                     return specimen.isDirty();
                 });
@@ -46,6 +49,9 @@ angular.module('bahmni.clinical')
                 var savableSpecimens = _.filter($scope.newSpecimens, function (specimen) {
                     return !specimen.isEmpty();
                 });
+
+                savableSpecimens = savableSpecimens.concat($scope.deletedSpecimens);
+
                 _.each(savableSpecimens, function (specimen) {
                     specimen.sample.additionalAttributes = Array.isArray(specimen.sample.additionalAttributes) ? specimen.sample.additionalAttributes[0] : specimen.sample.additionalAttributes;
                     specimen.report.results = Array.isArray(specimen.report.results) ? specimen.report.results[0] : specimen.report.results;
@@ -88,6 +94,17 @@ angular.module('bahmni.clinical')
             $scope.editSpecimen = function (specimen) {
                 if (!isAlreadyBeingEdited(specimen)) {
                     $scope.newSpecimens.push(new Bahmni.Clinical.Specimen(specimen));
+                    $scope.clearEmptySpecimens();
+                } else {
+                    messagingService.showMessage("formError", "The specimen " + specimen.type.name + " with ID #" + specimen.identifier + " is already being edited.")
+                }
+            };
+
+            $scope.deleteSpecimen = function (specimen) {
+                if (!isAlreadyBeingEdited(specimen)) {
+                    specimen.voided = true;
+                    $scope.deletedSpecimens.push(specimen);
+                    $scope.savedSpecimens = _.without($scope.savedSpecimens, specimen);
                     $scope.clearEmptySpecimens();
                 } else {
                     messagingService.showMessage("formError", "The specimen " + specimen.type.name + " with ID #" + specimen.identifier + " is already being edited.")
