@@ -97,7 +97,7 @@ angular.module('bahmni.clinical')
                     $scope.newSpecimens.push(new Bahmni.Clinical.Specimen(specimen));
                     $scope.clearEmptySpecimens();
                 } else {
-                    messagingService.showMessage("formError", "The specimen " + specimen.type.name + " with ID #" + specimen.identifier + " is already being edited.")
+                    messagingService.showMessage("formError", "{{ 'BACTERIOLOGY_SAMPLE_BEING_EDITED_KEY' | translate}}" + specimen.type.name + " #" + specimen.identifier);
                 }
             };
 
@@ -108,7 +108,7 @@ angular.module('bahmni.clinical')
                     $scope.savedSpecimens = _.without($scope.savedSpecimens, specimen);
                     $scope.clearEmptySpecimens();
                 } else {
-                    messagingService.showMessage("formError", "The specimen " + specimen.type.name + " with ID #" + specimen.identifier + " is already being edited.")
+                    messagingService.showMessage("formError", "{{ 'BACTERIOLOGY_SAMPLE_BEING_EDITED_KEY' | translate}}" + specimen.type.name + " #" + specimen.identifier);
                 }
             };
 

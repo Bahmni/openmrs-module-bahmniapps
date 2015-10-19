@@ -188,7 +188,7 @@ angular.module('bahmni.clinical').controller('ConsultationController',
                 var contxChange = contextChange();
                 var shouldAllow = contxChange["allow"];
                 if (!shouldAllow) {
-                    var errorMessage = contxChange["errorMessage"] ? contxChange["errorMessage"] : "Please correct errors in the form. Information not saved";
+                    var errorMessage = contxChange["errorMessage"] ? contxChange["errorMessage"] : "{{'CLINICAL_FORM_ERRORS_MESSAGE_KEY' | translate }}";
                     messagingService.showMessage('formError', errorMessage);
                 }
                 return shouldAllow;
@@ -208,7 +208,7 @@ angular.module('bahmni.clinical').controller('ConsultationController',
                             return consultationMapper.map(saveResponse.data);
                         })
                         .then(function (savedConsulation) {
-                            messagingService.showMessage('info', 'Saved');
+                            messagingService.showMessage('info', "{{'CLINICAL_SAVE_SUCCESS_MESSAGE_KEY' | translate}}");
                             spinner.forPromise(diagnosisService.populateDiagnosisInformation($scope.patient.uuid, savedConsulation)
                                 .then(function (consultationWithDiagnosis) {
                                     consultationWithDiagnosis.preSaveHandler = $scope.consultation.preSaveHandler;
@@ -220,7 +220,7 @@ angular.module('bahmni.clinical').controller('ConsultationController',
                                     });
                                 }));
                         }).catch(function (error) {
-                            var message = Bahmni.Clinical.Error.translate(error) || 'An error has occurred on the server. Information not saved.';
+                            var message = Bahmni.Clinical.Error.translate(error) || "{{'CLINICAL_SAVE_FAILURE_MESSAGE_KEY' | translate}}";
                             messagingService.showMessage('formError', message);
                         })
                 }));
