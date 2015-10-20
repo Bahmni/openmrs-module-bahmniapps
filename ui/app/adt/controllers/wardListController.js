@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('bahmni.adt')
-    .controller('WardListController', ['$scope', 'QueryService', 'spinner', '$q', '$window', '$stateParams', 'appService',
-        function ($scope, queryService, spinner, $q, $window, $stateParams, appService) {
+    .controller('WardListController', ['$scope', 'QueryService', 'spinner', '$q', '$window', '$stateParams', 'appService', '$rootScope',
+        function ($scope, queryService, spinner, $q, $window, $stateParams, appService, $rootScope) {
 
             $scope.gotoPatientDashboard = function (patientUuid, visitUuid) {
                 var options = $.extend({}, $stateParams);
@@ -18,7 +18,7 @@ angular.module('bahmni.adt')
                 };
 
                 return queryService.getResponseFromQuery(params).then(function (response) {
-                    $scope.tableDetails = Bahmni.ADT.WardDetails.create(response.data);
+                    $scope.tableDetails = Bahmni.ADT.WardDetails.create(response.data, $rootScope.diagnosisStatus);
                     $scope.tableHeadings = $scope.tableDetails.length > 0 ? Object.keys($scope.tableDetails[0]) : [];
                 });
             };
