@@ -17,7 +17,7 @@ angular.module('bahmni.clinical')
                 $scope.additionalAttributesConceptName = additionalAttributes && additionalAttributes.name.name;
 
                 var results = _.find(bacteriologyConceptSet.setMembers, function (member) {
-                    return member.conceptClass.name === "Bacteriology Results"
+                    return member.conceptClass.name == "Bacteriology Results"
                 });
                 $scope.resultsConceptName = results && results.name.name;
 

@@ -5,13 +5,14 @@ angular.module('bahmni.common.bacteriologyresults')
 
         var getBacteriologyResults = function (data) {
             var params = {
-                concept: data.conceptNames,
-                includeObs: data.includeObs,
+                name: data.conceptNames,
                 patientUuid: data.patientUuid,
-                scope: data.scope
+                v:"full"
         };
 
-            return $http.get(Bahmni.Common.Constants.observationsUrl, {
+
+            return $http.get(Bahmni.Common.Constants.bahmniBacteriologyResultsUrl, {
+                method: "GET",
                 params: params,
                 withCredentials: true
             });

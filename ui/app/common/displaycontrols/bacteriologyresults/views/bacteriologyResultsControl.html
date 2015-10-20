@@ -1,15 +1,28 @@
 <section class="dashboard-section ng-scope">
     <h2 class="section-title">{{section | titleTranslate}}</h2>
 
-    <div ng-repeat="specimen in ::specimens" >
-        <span>{{specimen.specimenSource}} ................................................ {{specimen.specimenId}}................................................ {{specimen.specimenCollectionDate}} </span>
+    <section class="block hierarchy">
+        <ul class="form-field">
+            <li ng-repeat="specimen in ::specimens" toggle="specimen.isOpen">
+                <span class="tree-list-item">
+                    <i class="fa fa-caret-right" ng-hide="specimen.isOpen"></i>
+                    <i class="fa fa-caret-down" ng-show="specimen.isOpen"></i>
+                    <span>{{specimen.specimenSource}}............{{specimen.specimenId}}................</span>
+                    <span class="obs-date">
+                        {{specimen.specimenCollectionDate | bahmniDateTime}}
+                    </span>
+                </span>
 
-        <bahmni-observation is-on-dashboard="false" patient="patient" section="section" config="section.dashboardParams" observations="specimen.sampleResult"></bahmni-observation>
+                <ul ng-show="specimen.isOpen">
+                    <show-observation patient="patient" observation="obs" ng-repeat="obs in ::specimen.sampleResult.groupMembers"></show-observation>
+                </ul>
+                <div ng-show="!specimen.sampleResult.groupMembers&&specimen.isOpen">
+                    <div class="placeholder-text" ng-if="!message"><p translate="DISPLAY_CONTROL_ERROR_MESSAGE_KEY" translate-values="{displayControl : '{{title | translate}}'}"></p></div>
+                    <div class="placeholder-text" ng-if="message">{{message}}</div>
+                </div>
 
-    </div>
-
-    <div ng-show="noObservationsMessage">
-        <div class="placeholder-text" ng-if="!message"><p translate="DISPLAY_CONTROL_ERROR_MESSAGE_KEY" translate-values="{displayControl : '{{title | translate}}'}"></p></div>
-    </div>
+            </li>
+        </ul>
+    </section>
 
 </section>
