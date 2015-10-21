@@ -13,9 +13,12 @@ angular.module('bahmni.registration')
             var prepopulateDefaultsInFields = function () {
 
                 var personAttributeTypes = getPersonAttributeTypes();
-                var defaults = {}
-                if(appService.getAppDescriptor().getConfigValue("patientInformation"))
-                    defaults = appService.getAppDescriptor().getConfigValue("patientInformation").defaults;
+                var defaults = {};
+                var patientInformation = appService.getAppDescriptor().getConfigValue("patientInformation");
+                if(!patientInformation || !patientInformation.defaults){
+                    return
+                }
+                defaults = patientInformation.defaults;
 
                 _.each(personAttributeTypes, function (personAttributeType) {
                     var present = _.contains(Object.keys(defaults), personAttributeType.name);

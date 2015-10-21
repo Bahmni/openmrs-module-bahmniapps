@@ -118,7 +118,6 @@ describe('CreatePatientController', function () {
                 getConfigValue: function (config) {
                     if(config == 'patientInformation') {
                         return {
-                            "defaults": {}
                         };
                     }
                     return ["Division", "Zilla", "Upazilla"];
