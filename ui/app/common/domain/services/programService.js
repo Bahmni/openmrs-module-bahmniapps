@@ -56,6 +56,7 @@ angular.module('bahmni.common.domain')
                 if (patientPrograms) {
                     var filteredPrograms = filterRetiredPrograms(patientPrograms);
                     _.forEach(filteredPrograms, function (program) {
+                        program.dateEnrolled = Bahmni.Common.Util.DateUtil.parseServerDateToDate(program.dateEnrolled)
                         program.program.allWorkflows = filterRetiredWorkflowsAndStates(program.program.allWorkflows);
                         if (program.dateCompleted) {
                             endedPrograms.push(program);
