@@ -320,6 +320,14 @@ angular.module('consultation')
                     'content': {
                         template: '<div ui-view="patientProgram-header"></div> <div ui-view="patientProgram-content"></div>'
                     }
+                },
+                resolve:{
+                    retrospectiveIntialization: function(retrospectiveEntryService){
+                        return retrospectiveEntryService.initializeRetrospectiveEntry();
+                    }
+                    //consultationContext: function (consultationInitialization, initialization, $stateParams) {
+                    //    return consultationInitialization($stateParams.patientUuid, $stateParams.encounterUuid, $stateParams.programUuid);
+                    //}
                 }
             })
             .state('patient.patientProgram.show', {
