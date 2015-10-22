@@ -17,8 +17,10 @@ angular.module('bahmni.common.uiHelper')
         };
 
         scope.$watch('initialValue', function() {
-            scope.selectedValue = scope.initialValue;
-            scope.$apply();
+            if(scope.initialValue) {
+                scope.selectedValue = scope.initialValue;
+                scope.$apply();
+            }
         });
 
         element.autocomplete({
