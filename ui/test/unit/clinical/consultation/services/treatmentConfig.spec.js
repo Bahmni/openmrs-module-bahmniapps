@@ -7,7 +7,7 @@ describe('treatmentConfig', function() {
 
     beforeEach(module(function ($provide) {
         var treatmentService = jasmine.createSpyObj('treatmentService', ['getConfig']);
-        var config = specUtil.respondWith({data: {}});
+        var config = specUtil.respondWith({data: {frequencies: {}}});
         treatmentService.getConfig.and.returnValue(config);
         $provide.value('TreatmentService', treatmentService);
     }));
