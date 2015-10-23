@@ -149,6 +149,7 @@ Bahmni.Common = Bahmni.Common || {};
         entityMappingUrl: RESTWS_V1 + "/entitymapping",
         encounterTypeUrl: RESTWS_V1+"/encountertype",
         defaultExtensionName: "default",
-        bahmniBacteriologyResultsUrl: BACTERIOLOGY + "/specimen"
+        bahmniBacteriologyResultsUrl: BACTERIOLOGY + "/specimen",
+        formDataUrl: RESTWS_V1 + "/obs"
     };
 })();
