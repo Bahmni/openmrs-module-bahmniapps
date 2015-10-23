@@ -148,7 +148,7 @@ angular.module('bahmni.clinical')
             };
 
             var saveTreatment = function () {
-                $scope.consultation.discontinuedDrugs.forEach(function (discontinuedDrug) {
+                $scope.consultation.discontinuedDrugs && $scope.consultation.discontinuedDrugs.forEach(function (discontinuedDrug) {
                     var removableOrder = _.find(activeDrugOrdersList, {uuid: discontinuedDrug.uuid});
                     if (removableOrder) {
                         removeOrder(removableOrder);
