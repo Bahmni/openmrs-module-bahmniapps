@@ -5,22 +5,22 @@ describe("tab config", function () {
     var tabConfig;
     var config = [
         {
-            title: "visit",
+            dashboardName: "visit",
             displayByDefault: false
         },
         {
-            title: "disposition",
+            dashboardName: "disposition",
             displayByDefault: true
         },
         {
-            title: "trends",
+            dashboardName: "trends",
             displayByDefault: true,
             printing: {title: "Awesome"}
         }
     ];
 
     beforeEach(function() {
-        tabConfig = new Bahmni.Clinical.TabConfig(config, "title");
+        tabConfig = new Bahmni.Clinical.TabConfig(config);
     });
 
 
