@@ -91,6 +91,7 @@ angular.module('consultation')
                         controller: function($scope, visitHistory, consultationContext){
                             $scope.visitHistory = visitHistory;
                             $scope.consultation = consultationContext;
+                            $scope.lastConsultationTabUrl = {url : undefined};
                         }
                     }
                 },
