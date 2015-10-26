@@ -61,6 +61,7 @@ describe("ConsultationController", function () {
     it("should return proper URL when showing a different board", function() {
         var obsBoard = {translationKey: "Observations", url: "concept-set-obs/observations"};
         var treatmentBoard = {translationKey: "Treatment", url: "treatment"};
+        scope.lastConsultationTabUrl = {url : undefined};
         scope.availableBoards.push(obsBoard, treatmentBoard);
         var newUrl = scope.showBoard(treatmentBoard);
         expect(newUrl).toEqual("/default/patient/somePatientUuid/dashboard/treatment?encounterUuid=someEncounterUuid&programUuid=someProgramUuid");
@@ -69,6 +70,7 @@ describe("ConsultationController", function () {
     it("should not append encounterUuid in query params if not available", function() {
         var obsBoard = {translationKey: "Observations", url: "concept-set-obs/observations"};
         var treatmentBoard = {translationKey: "Treatment", url: "treatment"};
+        scope.lastConsultationTabUrl = {url : undefined};
         scope.availableBoards.push(obsBoard, treatmentBoard);
         state.params.encounterUuid = null;
         var newUrl = scope.showBoard(treatmentBoard);
