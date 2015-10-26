@@ -54,7 +54,8 @@ angular.module('bahmni.clinical')
 
                 _.each(savableSpecimens, function (specimen) {
                     specimen.sample.additionalAttributes = Array.isArray(specimen.sample.additionalAttributes) ? specimen.sample.additionalAttributes[0] : specimen.sample.additionalAttributes;
-                    specimen.report.results = Array.isArray(specimen.report.results) ? specimen.report.results[0] : specimen.report.results;
+                    var observationFilter = new Bahmni.Common.Domain.ObservationFilter();
+                    specimen.report.results = observationFilter.filter(specimen.report.results)[0];
                 });
 
                 $scope.consultation.newlyAddedSpecimens = savableSpecimens;
