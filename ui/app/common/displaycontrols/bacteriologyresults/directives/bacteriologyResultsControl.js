@@ -33,9 +33,7 @@ angular.module('bahmni.common.displaycontrol.bacteriologyresults')
                                 specimen.sampleResult = obs && obs.length > 0 ? obs[0] : obs;
 
                             }
-                            if (!report || !report.results) {
-                                $scope.noSpecimenMessage = Bahmni.Common.Constants.messageForNoObservation;
-                            }
+
                             specimen.specimenSource = observation.type.name;
                             specimen.specimenId = observation.identifier;
                             specimen.specimenCollectionDate = observation.dateCollected;
@@ -44,10 +42,11 @@ angular.module('bahmni.common.displaycontrol.bacteriologyresults')
                         });
                     }
 
-                    if (_.isEmpty(observations)) {
-                        $scope.noObservationsMessage = $scope.section.translationKey;
-                    }
                 };
+
+                $scope.hasResults = function (test){
+                    return test && test.groupMembers;
+                }
 
                 spinner.forPromise(init());
             };

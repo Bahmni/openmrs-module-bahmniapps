@@ -16,11 +16,12 @@
                 <ul ng-show="specimen.isOpen">
                     <show-observation patient="patient" observation="obs" ng-repeat="obs in ::specimen.sampleResult.groupMembers"></show-observation>
                 </ul>
-                <div ng-show="!specimen.sampleResult.groupMembers&&specimen.isOpen">
-                    <div class="placeholder-text" ng-if="!message"><p translate="DISPLAY_CONTROL_ERROR_MESSAGE_KEY" translate-values="{displayControl : '{{title | translate}}'}"></p></div>
-                    <div class="placeholder-text" ng-if="message">{{message}}</div>
+                <div ng-show="!hasResults(specimen.sampleResult) && specimen.isOpen">
+                    <div class="placeholder-text"><p translate="NO_SPECIMEN_RESULT_FOUND_MESSAGE"></p></div>
                 </div>
-
+            </li>
+            <li ng-show="!specimens">
+                <div class="placeholder-text"><p translate="NO_SPECIMEN_FOUND_MESSAGE"></p></div>
             </li>
         </ul>
     </section>
