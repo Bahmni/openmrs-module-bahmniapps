@@ -5,18 +5,18 @@ angular.module('bahmni.common.domain')
 
         this.fetch = function (patientUuid, conceptNames, scope, numberOfVisits, visitUuid, obsIgnoreList, filterObsWithOrders) {
             var params = {concept: conceptNames};
-            if(obsIgnoreList) {
+            if (obsIgnoreList) {
                 params.obsIgnoreList = obsIgnoreList
             }
-            if(filterObsWithOrders != null) {
+            if (filterObsWithOrders != null) {
                 params.filterObsWithOrders = filterObsWithOrders;
             }
 
-            if(visitUuid){
+            if (visitUuid) {
                 params.visitUuid = visitUuid;
                 params.scope = scope;
             }
-            else{
+            else {
                 params.patientUuid = patientUuid;
                 params.numberOfVisits = numberOfVisits;
                 params.scope = scope;
@@ -27,7 +27,7 @@ angular.module('bahmni.common.domain')
             });
         };
 
-        this.getObsRelationship = function(targetObsUuid){
+        this.getObsRelationship = function (targetObsUuid) {
             return $http.get(Bahmni.Common.Constants.obsRelationshipUrl, {
                 params: {
                     targetObsUuid: targetObsUuid
@@ -35,5 +35,19 @@ angular.module('bahmni.common.domain')
                 withCredentials: true
             });
         };
+
+        this.getObsInFlowSheet = function (patientUuid, conceptSet, groupByConcept, conceptNames, numberOfVisits) {
+            var params = {
+                patientUuid: patientUuid,
+                conceptSet: conceptSet,
+                groupByConcept: groupByConcept,
+                conceptNames: conceptNames,
+                numberOfVisits: numberOfVisits
+            };
+            return $http.get(Bahmni.Common.Constants.observationsUrl + "/flowSheet", {
+                params: params,
+                withCredentials: true
+            });
+        }
 
     }]);

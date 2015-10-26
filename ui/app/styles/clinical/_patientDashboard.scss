@@ -622,4 +622,10 @@ table.pivot-table {
       }
   }
 }
-
+.dashboard-tabular-obs-section{
+  .tabular-obs table tr td:first-child {
+    background: #eee;
+    background-image: none;
+    color: #333;
+  }
+}
