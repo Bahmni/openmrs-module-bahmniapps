@@ -5,6 +5,14 @@ body {
   color: $text;
   font-size: 16px;
   line-height: 1.1em;
+  margin : 0 auto;
+  pre{
+    background: none;
+    margin: 0;
+    padding: 0;
+    font-family: $OpenSansFont, Arial, sans-serif;
+    font-size: 14px;
+  }
 }
 body.show-controller-back.ngdialog-open{
  overflow: auto !important;
@@ -62,11 +70,11 @@ a {
   border-radius: 5px;
 }
 
-pre {
+/*pre {
   font-size: 16px;
   padding: 10px;
   background: rgb(253, 252, 223);
-}
+}*/
 
 table {
   margin: 0 auto;
