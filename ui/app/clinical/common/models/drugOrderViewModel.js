@@ -197,7 +197,7 @@ Bahmni.Clinical.DrugOrderViewModel = function (appConfig, config, proto, encount
         if(this.simpleDrugForm === true){
             return "";
         }
-        return addDelimiter(blankIfFalsy(self.quantity), " ") + blankIfFalsy(quantityUnitsFrom(self.doseUnits));
+        return addDelimiter(blankIfFalsy(self.quantity), " ") + blankIfFalsy(quantityUnitsFrom(self.quantityUnit));
     };
 
     var getFrequencyPerDay = function(){
@@ -319,8 +319,13 @@ Bahmni.Clinical.DrugOrderViewModel = function (appConfig, config, proto, encount
                 self.quantity = self.quantity - ( self.quantity % 1 ) + 1;
             }
         }
+        if(self.quantityEnteredViaEdit && self.quantityUnit) {
+            self.quantityUnit = quantityUnitsFrom(self.quantityUnit);
+        }
+        else {
+            self.quantityUnit = quantityUnitsFrom(self.doseUnits);
+        }
         self.quantityEnteredViaEdit = false;
-        self.quantityUnit = quantityUnitsFrom(self.doseUnits);
     };
 
     this.isStopped = function () {
@@ -415,9 +420,10 @@ Bahmni.Clinical.DrugOrderViewModel = function (appConfig, config, proto, encount
 
     var validateUniformDosingType = function () {
         if (self.uniformDosingType.frequency) {
-            if (self.uniformDosingType.dose && self.uniformDosingType.doseUnits && self.uniformDosingType.dose > 0) {
+            if (self.uniformDosingType.dose && self.uniformDosingType.doseUnits &&
+                    self.quantityUnit && self.uniformDosingType.dose > 0) {
                 return true;
-            } else if (self.uniformDosingType.dose == undefined && !self.uniformDosingType.doseUnits) {
+            } else if (self.uniformDosingType.dose == undefined && !self.uniformDosingType.doseUnits && !self.quantityUnit) {
                 return true;
             }
             return false
@@ -429,7 +435,8 @@ Bahmni.Clinical.DrugOrderViewModel = function (appConfig, config, proto, encount
         return !(self.variableDosingType.morningDose == undefined ||
             self.variableDosingType.afternoonDose == undefined ||
             self.variableDosingType.eveningDose == undefined ||
-            self.variableDosingType.doseUnits == undefined);
+            self.variableDosingType.doseUnits == undefined ||
+            self.quantityUnit == undefined);
     };
 
     this.validate = function(arg){

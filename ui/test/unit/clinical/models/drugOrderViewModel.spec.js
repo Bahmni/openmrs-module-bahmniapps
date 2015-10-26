@@ -897,6 +897,7 @@ describe("drugOrderViewModel", function () {
 
             it("should pass validation if dose and doseUnits are empty but frequency is not.", function () {
                 treatment.doseUnits = undefined;
+                treatment.quantityUnit = undefined;
                 treatment.uniformDosingType = {
                     dose: undefined,
                     frequency: "Once a day."
@@ -962,6 +963,7 @@ describe("drugOrderViewModel", function () {
                     frequency: "Once a day",
                     doseUnits: "Some"
                 };
+                treatment.quantityUnit = "Some";
 
                 expect(treatment.validate()).toBeTruthy();
             });
@@ -1091,7 +1093,8 @@ describe("drugOrderViewModel", function () {
         it("should return drug form as quantity unit if drug form is tablet", function(){
             var treatment = sampleTreatment({}, {}, null, Bahmni.Common.Util.DateUtil.now());
             treatment.doseUnits = "Tablet(s)";
-            expect(treatment.getDescriptionWithQuantity()).toBe("Tablet(s), Before Meals, 1(12 Tablet(s))");
+            treatment.quantityUnit = "Capsule(s)";
+            expect(treatment.getDescriptionWithQuantity()).toBe("Tablet(s), Before Meals, 1(12 Capsule(s))");
         })
     });
 
@@ -1100,6 +1103,7 @@ describe("drugOrderViewModel", function () {
             var treatment = sampleTreatment({}, {}, null, Bahmni.Common.Util.DateUtil.now());
             treatment.drug.form = "Inhaler";
             treatment.doseUnits = "Unit(s)";
+            treatment.quantityUnit = "Unit(s)";
             expect(treatment.getDescriptionWithQuantity()).toBe("Unit(s), Before Meals, 1(12 Unit(s))");
         })
     });

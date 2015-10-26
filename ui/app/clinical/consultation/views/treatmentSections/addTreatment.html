@@ -64,7 +64,10 @@
             <div ng-show="!treatment.simpleDrugForm" class="quantity-widget">
                 <input id="quantity" class="form-field quantity" type="number" min="0.1" placeholder="Qty" step="any"
                        ng-model="treatment.quantity" ng-change="treatment.setQuantityEnteredManually()" required/>
-                <span class="form-field quantity-unit">{{treatment.quantityUnit}}</span>
+                <select id="total-quantity-unit" class="form-field freq-dose-units" ng-model="treatment.quantityUnit"
+                        ng-options="item.name as item.name for item in treatmentConfig.doseUnits" ng-disabled="!treatment.isUniformDosingType()" ng-required="!treatment.validate()">
+                    <option value="">Choose Unit</option>
+                </select>
             </div>
         </fieldset>
 
