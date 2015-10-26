@@ -282,6 +282,10 @@ Bahmni.ConceptSet.ObservationNode.prototype = {
         return this.conceptUIConfig.durationRequired || false;
     },
 
+    isNumeric: function () {
+        return this.primaryObs.getDataTypeName() === "Numeric";
+    },
+
     _hasValidChildren: function (checkRequiredFields, conceptSetRequired) {
         return this.groupMembers.every(function (member) {
             return member.isValid(checkRequiredFields, conceptSetRequired)

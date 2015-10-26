@@ -429,6 +429,11 @@ concept-set {
 }
 
 .stepper {
+  &.illegalValue{
+    border: none !important;
+    background: none !important;
+  }
+
   .stepper__btn{
     padding: 7px 20px 7px !important;
     vertical-align: middle;
