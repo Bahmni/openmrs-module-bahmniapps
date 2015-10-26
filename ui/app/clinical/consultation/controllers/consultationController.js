@@ -80,7 +80,7 @@ angular.module('bahmni.clinical').controller('ConsultationController',
 
             $scope.gotoPatientDashboard = function () {
                 if (contextChangeHandler.execute()["allow"]) {
-                    var params = {configName: $scope.configName, patientUuid: patientContext.patient.uuid, encounterUuid: "active"};
+                    var params = {configName: $scope.configName, patientUuid: patientContext.patient.uuid, encounterUuid: undefined};
                     if($scope.dashboardDirty) {
                         params['dashboardCachebuster'] = Math.random();
                     }
