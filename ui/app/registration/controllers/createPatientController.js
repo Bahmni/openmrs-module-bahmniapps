@@ -40,6 +40,15 @@ angular.module('bahmni.registration')
                 return $rootScope.patientConfiguration.personAttributeTypes;
             };
 
+            var buildSectionVisibilityMap = function () {
+                $scope.sectionVisibilityMap = {};
+                angular.forEach($rootScope.patientConfiguration && $rootScope.patientConfiguration.getPatientAttributesSections(), function(section, key) {
+                    var notNullAttribute = _.find(section && section.attributes, function (attribute) {
+                        return $scope.patient[attribute.name] !== undefined;
+                    });
+                    $scope.sectionVisibilityMap[key] = notNullAttribute ? true : false;
+                });
+            };
 
             (function () {
                 $scope.patient = patientModel.create();
@@ -48,6 +57,7 @@ angular.module('bahmni.registration')
                 $scope.patient.identifierPrefix = identifierPrefix || $scope.identifierSources[0];
                 $scope.hasOldIdentifier = preferences.hasOldIdentifier;
                 prepopulateDefaultsInFields();
+                buildSectionVisibilityMap();
 
             })();
 

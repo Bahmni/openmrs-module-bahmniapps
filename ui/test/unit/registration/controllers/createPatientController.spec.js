@@ -68,6 +68,9 @@ describe('CreatePatientController', function () {
 
             }
         ];
+        rootScopeMock.patientConfiguration.getPatientAttributesSections = function(){
+            return {"additionalPatientInformation": { attributes: [{name: "education"}] }}
+        };
 
         $aController('CreatePatientController', {
             $scope: scopeMock,
@@ -108,6 +111,25 @@ describe('CreatePatientController', function () {
         });
 
         expect(scopeMock.patient["education"]).toBe("c2107f30-3f10-11e4-adec-0800271c1b75");
+
+    });
+
+    it("should expand the section when there are any default values specified for an attribute in that section", function() {
+
+        $aController('CreatePatientController', {
+            $scope: scopeMock,
+            $rootScope: rootScopeMock,
+            $state: stateMock,
+            patientService: patientServiceMock,
+            preferences: preferencesMock,
+            patientModel: patientModelMock,
+            spinner: spinnerMock,
+            appService: appServiceMock,
+            ngDialog: ngDialogMock,
+            $bahmniCookieStore: bahmniCookieMock
+        });
+
+        expect(scopeMock.sectionVisibilityMap["additionalPatientInformation"]).toBeTruthy();
 
     });
 
@@ -179,12 +201,10 @@ describe('CreatePatientController', function () {
     })
 
     it("should set patient identifierPrefix details with the matching one", function () {
-        rootScopeMock.patientConfiguration = {
-            identifierSources: [
+        rootScopeMock.patientConfiguration.identifierSources= [
                 {prefix: "GAN"},
                 {prefix: "SEM"}
-            ]
-        };
+            ];
         preferencesMock.identifierPrefix = "GAN";
         $aController('CreatePatientController', {
             $scope: scopeMock,
@@ -203,12 +223,10 @@ describe('CreatePatientController', function () {
     });
 
     it("should set patient identifierPrefix details with the first source details when it doesn't match", function () {
-        rootScopeMock.patientConfiguration = {
-            identifierSources: [
+        rootScopeMock.patientConfiguration.identifierSources= [
                 {prefix: "SEM"},
                 {prefix: "BAN"}
             ]
-        };
         preferencesMock.identifierPrefix = "GAN";
         $aController('CreatePatientController', {
             $scope: scopeMock,
