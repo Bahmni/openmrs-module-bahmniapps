@@ -1,8 +1,9 @@
 'use strict';
 
 angular.module('bahmni.common.patientSearch')
-.controller('PatientsListController', ['$scope', '$window', 'patientService', '$rootScope', 'appService', 'spinner', '$stateParams',
-    function ($scope, $window, patientService, $rootScope, appService, spinner, $stateParams) {
+.controller('PatientsListController', ['$scope', '$window', 'patientService', '$rootScope', 'appService', 'spinner',
+        '$stateParams', '$bahmniCookieStore',
+    function ($scope, $window, patientService, $rootScope, appService, spinner, $stateParams, $bahmniCookieStore) {
         var initialize = function () {
             var searchTypes = appService.getAppDescriptor().getExtensions("org.bahmni.patient.search", "config").map(mapExtensionToSearchType);
             $scope.search = new Bahmni.Common.PatientSearch.Search(searchTypes);
@@ -26,7 +27,9 @@ angular.module('bahmni.common.patientSearch')
         };
 
         $scope.getPatientCount = function (searchType) {
-            var params = { q: searchType.handler, v: "full", provider_uuid: $rootScope.currentProvider.uuid };
+            var params = { q: searchType.handler, v: "full",
+                           location_uuid: $bahmniCookieStore.get(Bahmni.Common.Constants.locationCookieName).uuid,
+                           provider_uuid: $rootScope.currentProvider.uuid };
             if(searchType.additionalParams){
                 params["additionalParams"] = searchType.additionalParams
             }
@@ -79,7 +82,9 @@ angular.module('bahmni.common.patientSearch')
 
         var fetchPatients = function () {
             if($scope.search.isCurrentSearchLookUp()) {
-                var params = { q: $scope.search.searchType.handler, v: "full", provider_uuid: $rootScope.currentProvider.uuid };
+                var params = { q: $scope.search.searchType.handler, v: "full",
+                               location_uuid: $bahmniCookieStore.get(Bahmni.Common.Constants.locationCookieName).uuid,
+                               provider_uuid: $rootScope.currentProvider.uuid };
                 if($scope.search.searchType.additionalParams){
                     params["additionalParams"] = $scope.search.searchType.additionalParams
                 }
