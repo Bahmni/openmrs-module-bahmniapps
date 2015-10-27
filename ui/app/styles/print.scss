@@ -662,3 +662,15 @@ h3 {
 .patient-gender-age, .patient-estimated-text, .patient-birth-time{
     display: none;
 }
+
+.treatment-section{
+    .notes .footer-note{
+        span{
+            font-size: 10px;
+            &.provider{
+                display: inline-block !important;
+                padding-bottom: 3px;
+            }
+        }
+    }
+}
