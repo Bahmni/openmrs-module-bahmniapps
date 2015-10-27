@@ -12,9 +12,9 @@
                 </a>
                 <span class="visitType">{{::visit.visitType.name}}</span>
             </span>
-            <ul ng-show="visit.isOpen" class="ng-isolate-scope">
+            <ul ng-show="visit.isOpen" class="formName-Dashboard">
                 <li ng-repeat="data in visit.formData">
-                    <span class="ng-isolate-scope">{{data.concept.display}}</span>
+                    <span>{{data.concept.display}}</span>
                     <span class="fr">{{data.obsDatetime | bahmniDateTime}}</span>
                      <span class="has-link"
                            ng-dialog="dashboard/views/dashboardSections/editObservationForm.html"
@@ -24,14 +24,18 @@
                     </span>
                 </li>
             </ul>
-            <bahmni-observation ng-if="showObservationData" visit-uuid="{{visit.uuid}}" patient="patient" config="config"></bahmni-observation>
+            <div ng-show="visit.isOpen">
+                <div ng-if="showObservationData && visit.cacheOpenedHtml">
+                    <bahmni-observation visit-uuid="{{visit.uuid}}" patient="patient" config="config"></bahmni-observation>
+                </div>
+            </div>
         </li>
 
         <li ng-if="!showFormDataGroupedByVisit && !showObservationData">
             <div>
                 <ul>
                     <li ng-repeat="data in formData">
-                        <span class="ng-isolate-scope">{{data.concept.display}}</span>
+                        <span>{{data.concept.display}}</span>
                         <span class="fr">{{data.obsDatetime | bahmniDateTime}}</span>
                      <span class="has-link"
                            ng-dialog="dashboard/views/dashboardSections/editObservationForm.html"
