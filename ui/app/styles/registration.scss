@@ -24,7 +24,6 @@
 
 
 @import "common/bahmniGlobal";
-@import "common/form";
 @import "common/notifications";
 @import "common/directives";
 @import "common/angularFix";
@@ -32,12 +31,12 @@
 
 
 
-@import "clinical/observations";
+//@import "clinical/observations";
 
 @import "registration/registration";
 
 
-@import "common/noTouch";
+//@import "common/noTouch";
 
 
 

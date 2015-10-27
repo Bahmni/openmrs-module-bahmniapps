@@ -14,6 +14,9 @@ p.caution{
 }
 .asterick {
     color:red;
+    display: inline-block;
+    padding-left: 5px;
+    //padding-top: 6px;
 }
 .strike-text {
   text-decoration: line-through;
@@ -241,4 +244,11 @@ u, .add-drug-btninput[value]:first-letter {
 
 .is-abnormal .select2-chosen {
   color: red!important;
+}
+
+.placeholder-text{
+  padding: 5px;
+  p{
+    margin-bottom: 0;
+  }
 }

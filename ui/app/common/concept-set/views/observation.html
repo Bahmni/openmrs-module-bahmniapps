@@ -95,7 +95,7 @@
 
                 <div class="offset-label" ng-show="observation.showComment">
                     <textarea class="obs-comment-section" maxlength="255" ng-model="observation.comment"
-                          placeholder="Notes">
+                          placeholder="Notes" msd-elastic>
                     </textarea>
                 </div>
             </div>
@@ -188,7 +188,7 @@
                         </div>
 
                         <textarea class="consultation-img-comments" ng-show="observation.showComment" maxlength="255"
-                              ng-model="observation.comment">
+                              ng-model="observation.comment" msd-elastic>
                         </textarea>
                     </div>
 
@@ -230,9 +230,12 @@
                 </button>
 
                 <div ng-if="::observation.canHaveComment()" class="offset-label" ng-show="observation.showComment">
-                    <textarea class="obs-comment-section" maxlength="255" ng-model="observation.comment"
-                          placeholder="Notes">
-                    </textarea>
+                    <label class="control-label"></label>
+                    <div class="field-value">
+                        <textarea class="obs-comment-section" maxlength="255" ng-model="observation.comment"
+                                  placeholder="Notes" msd-elastic>
+                        </textarea>
+                    </div>
                 </div>
             </div>
         </fieldset>

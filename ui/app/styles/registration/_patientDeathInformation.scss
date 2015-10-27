@@ -1,0 +1,28 @@
+.death {
+  margin: 20px 20px 10px !important;
+  @media (max-width : 768px){
+    margin: 20px 0px 10px !important;
+  }
+  .row {
+    float: left;
+    width: 100%;
+    .col {
+      width: 33%;
+      @media (max-width : 768px){
+        @include column(12)
+      }
+      float: left;
+    }
+  }
+  .till-text{
+    margin: 5px 0.8em 7px 0px;
+    display: inline-block;
+  }
+  .isDeadChkBox{
+    margin-top: 8px;
+    margin-right: 10px;
+    @media (max-width : 768px){
+      margin-left: 0;
+    }
+  }
+}

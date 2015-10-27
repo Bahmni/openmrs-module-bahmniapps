@@ -1,4 +1,13 @@
 <header class="reg-header" ng-controller="NavigationController">
+        <ul class="top-nav">
+            <a class="back-btn" href="../home/"><i class="fa fa-home"></i></a>
+            <li ng-repeat="extension in extensions">
+                <a ng-click="goTo(extension.url)" accesskey="{{extension.shortcutKey | translate}}"><i class="{{extension.icon}} fa fa-white small"></i>
+                    <span class="nav-link" ng-bind-html="extension | titleTranslate"></span></a>
+            </li>
+        </ul>
+        <div ui-view="headerExtension" class="print-action-items"></div>
+
         <button class="btn-user-info">
             <i class="fa fa-user-md fa-white small"></i>
             <i class="fa fa-caret-down fa-white mini"></i>
@@ -14,12 +23,4 @@
                 <a log-out><i class="fa fa-power-off fa-white small"></i><span class="nav-link">{{'REGISTRATION_LABEL_LOGOUT' | translate}}</span></a>
             </li>
         </ul>
-        <ul class="top-nav">
-            <a class="back-btn" href="../home/"><i class="fa fa-home"></i></a>  
-            <li ng-repeat="extension in extensions">
-                <a ng-click="goTo(extension.url)" accesskey="{{extension.shortcutKey | translate}}"><i class="{{extension.icon}} fa fa-white small"></i>
-                    <span class="nav-link" ng-bind-html="extension | titleTranslate"></span></a>
-            </li>
-        </ul>
-        <div ui-view="headerExtension" class="print-action-items"></div>
 </header>

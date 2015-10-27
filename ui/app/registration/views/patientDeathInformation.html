@@ -1,21 +1,37 @@
-<div class="death">
+<article class="form-field death">
     <div class="row">
         <div class="col col1">
-            <span class="till-text">{{ 'REGISTRATION_LABEL_DATE_DEATH' | translate}}</span>
-            <input type="date" ng-model="patient.deathDate" ng-change="selectIsDead()" max="{{today}}"/>
+            <div class="field-attribute">
+                <label class="till-text">{{ 'REGISTRATION_LABEL_DATE_DEATH' | translate}}</label>
+            </div>
+            <div class="field-value">
+                <input type="date" ng-model="patient.deathDate" ng-change="selectIsDead()" max="{{today}}"/>
+            </div>
         </div>
         <div class="col col2" ng-init="getDeathConcepts()">
-            <span class="till-text">{{ 'REGISTRATION_LABEL_REASON_FOR_DEATH' | translate}}</span>
-            <span class="asterick" ng-if="patient.dead">*</span>
-            <select ng-model="patient.causeOfDeath"
-                    ng-options="concept.display for concept in deathConcepts track by concept.uuid"
-                    ng-change="selectIsDead()" ng-required="patient.dead">
-                <option value="">{{ 'REGISTRATION_LABEL_CHOOSE_VALUE' | translate}}</option>
-            </select>
+            <div class="field-attribute">
+                <label class="till-text">{{ 'REGISTRATION_LABEL_REASON_FOR_DEATH' | translate}}</label>
+                <span class="asterick" ng-if="patient.dead">*</span>
+            </div>
+            <div class="field-value">
+                <select ng-model="patient.causeOfDeath"
+                        ng-options="concept.display for concept in deathConcepts track by concept.uuid"
+                        ng-change="selectIsDead()" ng-required="patient.dead">
+                    <option value="">{{ 'REGISTRATION_LABEL_CHOOSE_VALUE' | translate}}</option>
+                </select>
+            </div>
         </div>
         <div class="col col3">
-            <input type="checkbox" id="isDead" class="isDeadChkBox" ng-model="patient.dead" ng-disabled="disableIsDead()"/>
-            <label for="isDead" class="till-text"><span>{{ 'REGISTRATION_LABEL_IS_DEAD' | translate}}</span></label>
+            <div class="field-attribute showOn-small-screen">
+                <label for="isDead" class="till-text"><span>{{ 'REGISTRATION_LABEL_IS_DEAD' | translate}}</span></label>
+            </div>
+            <div class="field-value">
+                <input type="checkbox" id="isDead" class="isDeadChkBox" ng-model="patient.dead" ng-disabled="disableIsDead()"/>
+            </div>
+
+            <div class="field-attribute showOn-desktop">
+                <label for="isDead" class="till-text"><span>{{ 'REGISTRATION_LABEL_IS_DEAD' | translate}}</span></label>
+            </div>
         </div>
     </div>
-</div>
+</article>

@@ -1,4 +1,4 @@
-<div class="submit-btn-container">
+<div class="submit-btn-container clearfix">
     <span ng-switch="forwardActionKey">
                     <span data-ng-switch-when="enterVisitDetails">
                         <button type="submit" class="right confirm" ng-click="setSubmitSource('enterVisitDetails')"
@@ -17,5 +17,5 @@
                         </button>
                     </span>
     </span>
-    <button type="submit" class="right" ng-click="setSubmitSource('save')" accesskey="{{ 'REGISTRATION_SAVE_ACCESS_KEY' | translate}}" ng-bind-html="'REGISTRATION_LABEL_SAVE' | translate"></button>
+    <button type="submit" class="right submit-btn" ng-click="setSubmitSource('save')" accesskey="{{ 'REGISTRATION_SAVE_ACCESS_KEY' | translate}}" ng-bind-html="'REGISTRATION_LABEL_SAVE' | translate"></button>
 </div>

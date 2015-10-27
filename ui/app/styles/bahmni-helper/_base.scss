@@ -292,14 +292,29 @@ table {
 
 .visible-desktop{
   visibility: visible;
-  @media (max-width : 767px){
+  @media (max-width : 768px){
     visibility: hidden;
   }
 }
 
 .visible-small-screen{
   display: none;
-  @media (max-width : 767px){
+  @media (max-width : 768px){
     display: block;
+  }
+}
+
+
+.showOn-desktop{
+  display: block !important;
+  @media (max-width : 768px){
+    display: none !important;
+  }
+}
+
+.showOn-small-screen{
+  display: none !important;
+  @media (max-width : 768px){
+    display: block !important;
   }
 }

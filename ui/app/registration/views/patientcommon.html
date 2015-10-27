@@ -1,6 +1,6 @@
-<div class="box-container box-container-patient-info">
+<div class="box-container box-container-patient-info patient-common-info-container">
   <section ng-controller="PatientCommonController">
-      <article class="form-field" ng-if="patientConfiguration.local()['showNameField']">
+      <article class="form-field patient-name-wrapper" ng-if="patientConfiguration.local()['showNameField']">
           <div class="field-attribute">
               <label for="patientName">{{patientConfiguration.local()['labelForNameField']}}</label>
           </div>
@@ -14,7 +14,7 @@
                      placeholder="{{patientConfiguration.local()['placeholderForFamilyName']}}">
           </div>
       </article>
-      <article class="form-field">
+      <article class="form-field patient-name-wrapper">
           <div class="field-attribute">
               <label for="patientName">{{ 'REGISTRATION_LABEL_PATIENT_NAME' | translate}}<span class="asterick">*</span></label>
           </div>
@@ -77,7 +77,7 @@
           </div>
       </article>
   </section>
-  <section class="form-field-inline form-field-gender" ng-controller="PatientCommonController">
+  <section class="form-field form-field-gender" ng-controller="PatientCommonController">
       <article class="form-field">
           <div class="field-attribute">
               <label for="gender">{{ 'REGISTRATION_LABEL_GENDER' | translate}} <span class="asterick">*</span></label>
@@ -88,10 +88,17 @@
                       ng-options="genderMap[genderCode] for genderCode in genderCodes track by genderCode">
                   <option value="">{{ 'REGISTRATION_LABEL_SELECT_GENDER' | translate}}</option>
               </select>
+              <!--<div class="selectGender">
+                  <ul>
+                      <li><a href="javascript:void(0)">Male</a></li>
+                      <li><a href="javascript:void(0)">Female</a></li>
+                      <li><a href="javascript:void(0)">Other</a></li>
+                  </ul>
+              </div>-->
           </div>
       </article>
   </section>
-  <section class="">
+  <section class="age-wrapper">
       <article class="form-field form-field-ipad">
           <div class="field-attribute">
               <label for="ageYears">{{ 'REGISTRATION_LABEL_AGE' | translate}}<span class="asterick">*</span></label>
@@ -120,26 +127,36 @@
           </div>
 
       </article>
-      <article class="form-field">
-       <div class="field-attribute">
-              <label for="birthdate">{{ 'REGISTRATION_LABEL_DOB' | translate}}</label>
-          </div>
-          <div class="field-value">
-              <input id="birthdate" type="date" ng-model="patient.birthdate"  max="{{today}}"
-                     ng-change="patient.calculateAge()">
-          </div>
-          <div class="field-value">
-              <input type="checkbox" ng-model="patient.birthdateEstimated" class="estimate-check">
-          </div>
-          <div class="field-attribute estimated-label">
-              <label for="birthdate">{{ 'REGISTRATION_LABEL_ESTIMATE' | translate}}</label>
-          </div>
-          <div class="field-attribute">
-              <label for="birthtime">{{ 'REGISTRATION_LABEL_BIRTH_TIME' | translate}}</label>
-          </div>
-          <div class="field-value">
-              <input id="birthtime" type="time" ng-model="patient.birthtime">
-          </div>
+      <article class="form-field dob-birthtime-wrapper">
+           <div class="field-attribute">
+                  <label for="birthdate">{{ 'REGISTRATION_LABEL_DOB' | translate}}</label>
+              </div>
+              <div class="field-value">
+                  <input id="birthdate" type="date" ng-model="patient.birthdate"  max="{{today}}"
+                         ng-change="patient.calculateAge()">
+              </div>
+              <div class="showOn-desktop">
+                  <div class="field-value">
+                      <input type="checkbox" ng-model="patient.birthdateEstimated" class="estimate-check">
+                  </div>
+                  <div class="field-attribute estimated-label">
+                      <label for="birthdate">{{ 'REGISTRATION_LABEL_ESTIMATE' | translate}}</label>
+                  </div>
+              </div>
+              <div class="showOn-small-screen clearfix">
+                  <div class="field-attribute estimated-label">
+                      <label for="birthdate">{{ 'REGISTRATION_LABEL_ESTIMATE' | translate}}</label>
+                  </div>
+                  <div class="field-value">
+                      <input type="checkbox" ng-model="patient.birthdateEstimated" class="estimate-check">
+                  </div>
+              </div>
+              <div class="field-attribute">
+                  <label for="birthtime">{{ 'REGISTRATION_LABEL_BIRTH_TIME' | translate}}</label>
+              </div>
+              <div class="field-value">
+                  <input id="birthtime" type="time" ng-model="patient.birthtime">
+              </div>
       </article>
   </section>
 
@@ -158,14 +175,15 @@
       <span class="mylegend">{{ 'REGISTRATION_LABEL_OTHER_INFO' | translate}}</span>
   </legend>
 
-  <section class="form-field-inline" ng-repeat="attributeRow in patientConfiguration.customAttributeRows()">
+  <section class="form-field-inline clearfix" ng-repeat="attributeRow in patientConfiguration.customAttributeRows()">
       <article class="form-field" ng-repeat="attribute in attributeRow" ng-class="{'right-form-field' : $index%2 != 0}">
           <ng-include src="'views/patientAttributeInformation.html'"></ng-include>
       </article>
   </section>
 </div>
-<div ng-repeat="(key, section) in patientConfiguration.getPatientAttributesSections()">
-    <div class="box-container" ng-if="section.attributes.length > 0">
+
+<div ng-repeat="(key, section) in patientConfiguration.getPatientAttributesSections()" class="additional-info-wrapper">
+    <div class="box-container form" ng-if="section.attributes.length > 0">
         <legend class="additional-attribute" toggle="sectionVisibilityMap[key]">
           <span>
               <i class="fa fa-caret-right" ng-hide="sectionVisibilityMap[key]"></i>
@@ -178,7 +196,7 @@
               </strong>
           </span>
         </legend>
-        <section class="form-field-inline section-padding" ng-show="sectionVisibilityMap[key]">
+        <section class="form-field-inline clearfix" ng-show="sectionVisibilityMap[key]">
             <article class="form-field" ng-repeat="attribute in section.attributes"
                      ng-class="{'right-form-field' : $index%2 != 0}">
                 <ng-include src="'views/patientAttributeInformation.html'"></ng-include>
@@ -205,7 +223,7 @@
               <strong><a href="javascript:void(0)">{{ 'REGISTRATION_LABEL_DEATH_INFO' | translate}}</a></strong>
           </span>
     </legend>
-    <section class="form-field-inline" ng-show="displayDeathInformation">
+    <section class="form-field-inline form-field-inline-one-col clearfix" ng-show="displayDeathInformation">
         <ng-include src="'views/patientDeathInformation.html'"></ng-include>
     </section>
 </div>

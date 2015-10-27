@@ -6,6 +6,9 @@
   border-radius: 3px;
   @include box-shadow-for-section();
   .reg-search{
+    button{
+      padding: 7px 20px !important;
+    }
     @include clearfix;
     .search-seperator-l{
       border-right:2px dotted $lightGray;
@@ -17,13 +20,22 @@
         display: block;
         padding-bottom: 10px;
       }
+      .search-patient-id{
+        width: 100%;
+        .reg-srch-btn{
+          margin-top: 4px;
+        }
+      }
       input[type="text"]{
         margin-right:5px;
         padding: 5px 10px;
+        min-width: 40%;
+        margin-left: 5px;
       }
       select{
         width:80px;
         min-width:80px;
+        height: 32px;
       }
     }
     .search-seperator-r{
@@ -37,12 +49,15 @@
       input[type="text"]{
         margin-right:5px;
         padding: 5px 10px;
+        /*@media (max-width: 1024px) {
+          padding: 5px 10px;
+        }*/
       }
       button{
         margin: 0px 2px 2px 2px;
       }
       .reg-srch-btn{
-        margin-top:23px;
+        margin-top:25px;
       }
     }
   }

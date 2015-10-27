@@ -367,6 +367,10 @@ input[type="submit"].secondary-button:hover  {
 /* icon button */
 .comment-toggle {
     padding: 5px;
+    @media (max-width:1024px){
+      margin: 7px 10px 0 10px;
+      float: left;
+    }
     .fa-file-o {
         position: relative;
         font-size: 16px;

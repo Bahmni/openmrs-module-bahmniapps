@@ -37,12 +37,12 @@
                                 <span class="mylegend" ng-if="!conceptSet.options.translationKey">{{conceptSet.label}}</span>
                             </div>
                             <div ng-if="conceptSet.options.showLatest" class="clearfix">
-                                <div class="obs-section right" style="width: 45%">
-                                    <bahmni-observation patient="patient" config="{conceptNames: conceptSet.options.conceptNames, scope: 'latest'}" section-title="'REGISTRATON_LATEST_KEY'"></bahmni-observation>
-                                </div>
-                                <div class="left" style="width: 50%">
+                                <article class="fl">
                                     <concept-set concept-set-name="conceptSet.options.conceptName" required="conceptSet.options.required" patient="patient" observations="observations" obs-scope="conceptSet.options.scope" show-title="false" concept-set-focused="$index === 0"></concept-set>
-                                </div>
+                                </article>
+                                    <article class="obs-section fr">
+                                    <bahmni-observation patient="patient" config="{conceptNames: conceptSet.options.conceptNames, scope: 'latest'}" section-title="'REGISTRATON_LATEST_KEY'"></bahmni-observation>
+                                </article>
                             </div>
                             <div ng-if="!conceptSet.options.showLatest">
                                 <concept-set concept-set-name="conceptSet.options.conceptName" required="conceptSet.options.required" patient="patient" observations="observations" obs-scope="conceptSet.options.scope" show-title="false" concept-set-focused="$index === 0"></concept-set>

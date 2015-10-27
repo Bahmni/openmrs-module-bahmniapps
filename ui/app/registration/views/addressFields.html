@@ -2,8 +2,9 @@
     <article class="form-field" ng-repeat="addressLevel in addressLevels"
              ng-class="{'right-form-field': $index % 2 != 0 }">
         <div class="field-attribute">
-            <label for="{{addressLevel.addressField}}">{{addressLevel.name}}<span class="asterick"
-                                                                                  ng-show="addressLevel.required">*</span></label>
+            <label for="{{addressLevel.addressField}}">{{addressLevel.name}}
+                <span class="asterick" ng-show="addressLevel.required">*</span>
+            </label>
         </div>
         <div class="field-value">
             <input type="text" id="{{addressLevel.addressField}}" pattern-validate non-blank="addressLevel.required"

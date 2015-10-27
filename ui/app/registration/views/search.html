@@ -1,19 +1,18 @@
 <section class="reg-search-wrapper">
     <section class="reg-search">
         <article class="search-seperator-l">
-            <form name="searchByIdForm" ng-submit="searchById()" class="simple-form-ui" >
+            <form name="searchByIdForm" ng-submit="searchById()" class="simple-form-ui clearfix" >
                     <label for="registrationNumber"><strong>{{ 'REGISTRATION_LABEL_PATIENT_ID' | translate}}</strong></label>
-
                     <div class="search-patient-id fl">
-                        <select id="identifierPrefix" ng-model="searchParameters.identifierPrefix" ng-options="identifierSource.prefix for identifierSource in identifierSources"> </select>
-                        <input type="text" id="registrationNumber" 
+                        <select class="fl" id="identifierPrefix" ng-model="searchParameters.identifierPrefix" ng-options="identifierSource.prefix for identifierSource in identifierSources"> </select>
+                        <input class="fl" type="text" id="registrationNumber"
                         ng-model="searchParameters.registrationNumber" focus-me="true"
                                placeholder="{{ 'REGISTRATION_LABEL_ENTER_ID' | translate}}">
+                        <div class="reg-srch-btn fl">
+                            <button type="submit" ng-disabled="!searchParameters.registrationNumber" >{{ 'REGISTRATION_LABEL_SEARCH' | translate}}</button>
+                        </div>
                     </div>
-                
-                <div class="reg-srch-btn fl">
-                    <button type="submit" ng-disabled="!searchParameters.registrationNumber" >{{ 'REGISTRATION_LABEL_SEARCH' | translate}}</button>
-                </div>
+
             </form>
         </article>
         <article class="search-seperator-r">

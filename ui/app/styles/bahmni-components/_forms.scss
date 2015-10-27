@@ -10,13 +10,13 @@ form, .form {
         padding:0px;
         width:100%;
     }
-    &.form-field-inline {
+    /*&.form-field-inline {
     @include clearfix();
         .form-field {
             float: left;
             margin-right:15px;
         }
-    }
+    }*/
     .form-field {
         @include clearfix();
         .field-attribute{
@@ -25,12 +25,12 @@ form, .form {
                 width:15em;
                 float:left;
                 text-align:right;
-                margin:0.5em 0.8em 0em 0em;
+                margin:0.7em 0.8em 0em 0em;
             }
         }
         .field-value {
             float: left;
-            input[type="text"], input[type="password"] {
+            input[type="text"], input[type="password"],input[type="date"] {
                 float: left;
                 width: 12.5em;
             }
@@ -54,8 +54,7 @@ form, .form {
         }
         textarea {
            height: 35px;
-            width: 600px;
-            // width: 96%;
+            width: 600px;;
             transition: height 0.1s ease;
             box-sizing: border-box;
             margin-top: 5px;
@@ -67,21 +66,20 @@ form, .form {
             }
         }
     }
-    .form-field-inline {
+    /*.form-field-inline {
         .form-field {
             float: left;
             display: inline;
             float: left;
             width: 50%;
             margin: 0;
-            margin-bottom: 10px;
         }
         p {
             float:left;
             margin-left:20px;
             margin-top:10px;
         }
-    }
+    }*/
     .input-prepend {
         float:left;
 
@@ -126,6 +124,7 @@ form, .form {
     }
 }
 
+
 .transparent { opacity: 0.2; }
 .opaque { opacity: 1; }
 
@@ -138,13 +137,17 @@ form, .form {
   input, select, textarea, ul.select {
     min-width: 80%;
     color: $text;
-    display: block;
-    padding: 5px 10px;
+    padding: 2px 10px;
+    @media (max-width: 1024px) {
+      padding: 5px 10px;
+    }
+    @media (max-width: 768px) {
+      padding: 7px 10px;
+    }
     margin: 0;
     margin-top: 5px;
     background-color: #FFF;
     border: 1px solid #DDD;
-
     &:focus {
       outline: 2px solid $link;
       background: $focus;
@@ -152,7 +155,15 @@ form, .form {
   }
 
   select {
-    min-width: 200px;
+    min-width: 197px;
+    height: 25px;
+    @media (max-width : 1024px){
+      height: 32px;
+    }
+    @media (max-width : 768px){
+      width: 210px;
+    }
+    float: left;
   }
 
   select[disabled] {
@@ -225,7 +236,7 @@ form, .form {
 
   p {
     text-align: left;
-    margin-bottom: 15px;
+    //margin-bottom: 15px;
 
     strong {
       display: block;
@@ -307,3 +318,23 @@ form p strong, .form p strong { display: inline; }
 }
 
 .compute-btn, .btn-small {color: darken($bahmniPrimaryBtnColor, 15%);}
+
+
+
+/* form invalid error */
+form.submitted-with-error {
+  .ng-invalid:enabled, .ng-invalid:focus {
+    outline: none !important;
+    border: 2px solid darken($clinicalFormInvalid, 30%);
+    background: $clinicalFormInvalid;
+  }
+}
+
+.illegalValue, buttons-radio.illegalValue button, concept input:invalid.illegalValue {
+  &, &:focus {
+    border: 2px solid darken($clinicalFormInvalid, 30%);
+    background: $clinicalFormInvalid;
+    outline: 0;
+  }
+}
+buttons-radio.illegalValue { border: 0; background: none }

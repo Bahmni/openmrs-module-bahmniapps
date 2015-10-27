@@ -23,8 +23,12 @@ angular.module('bahmni.registration')
                 return registrationCardPrinter.print(option.templateUrl, $scope.patient, mapRegistrationObservations(), $scope.encounterDateTime);
             };
 
-            $scope.buttonText = function(option) {
-                return option && $filter('titleTranslate')(option);
+            $scope.buttonText = function(option,type) {
+                var printHtml = "";
+                var optionValue = option && $filter('titleTranslate')(option);
+                if(type)
+                    printHtml = '<i class="fa fa-print"></i>';
+                return '<span>'+ optionValue +'</span>' + printHtml;
             }
         };
 
