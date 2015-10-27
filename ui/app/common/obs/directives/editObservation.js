@@ -1,0 +1,33 @@
+angular.module('bahmni.common.obs')
+    .directive('editObservation', ['$q', 'spinner', '$state', 'ngDialog', 'messagingService', 'encounterService', 'conceptSetService', function ($q, spinner, $state, ngDialog, messagingService, encounterService, conceptSetService) {
+        var controller = function ($scope, $rootScope , $filter) {
+            var init = function() {
+                return encounterService.findByEncounterUuid($scope.observation.encounterUuid).then(function(reponse) {
+                    $scope.encounter = reponse.data;
+                    $scope.patient = {uuid: $scope.encounter.patientUuid};
+                });
+            };
+
+            spinner.forPromise(init());
+
+            $scope.save = function(){
+                $scope.encounter.observations = new Bahmni.Common.Domain.ObservationFilter().filter($scope.encounter.observations);
+                var createPromise = encounterService.create($scope.encounter);
+                spinner.forPromise(createPromise).then(function() {
+                    $state.go($state.current, {}, {reload: true});
+                    ngDialog.close();
+                    messagingService.showMessage('info', "{{'CLINICAL_SAVE_SUCCESS_MESSAGE_KEY' | translate}}");
+                });
+            }
+        };
+
+        return {
+            restrict: 'E',
+            scope: {
+                observation: "=",
+                conceptSetName: "@"
+            },
+            controller: controller,
+            template: '<ng-include src="\'../common/obs/views/editObservation.html\'" />'
+        };
+    }]);

@@ -112,6 +112,13 @@ angular.module('bahmni.clinical')
             };
 
             spinner.forPromise(init());
+
+            $scope.getEditObsData = function(observation) {
+                return {
+                    observation: {encounterUuid: observation.encounterUuid},
+                    conceptSetName: observation.concept.display
+                }
+            }
         };
 
         return {
