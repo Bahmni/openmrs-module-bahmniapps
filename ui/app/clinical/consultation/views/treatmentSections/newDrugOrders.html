@@ -31,7 +31,7 @@
 			<div class="button-group-wrapper" >
 				<div class="button-group">
                     <button ng-click="edit($index)" ng-disabled="showBulkChangeToggle"><i class="fa fa-edit"></i></button>
-                    <button ng-confirm-click="remove($index)" confirm-message="Are you sure you want to remove?" ng-disabled="showBulkChangeToggle"><i class="fa fa-remove"></i></button>
+                    <button ng-confirm-click="remove($index)" confirm-message="{{ 'REMOVE_CONFIRMATION_KEY' | translate }}" ng-disabled="showBulkChangeToggle"><i class="fa fa-remove"></i></button>
                     <button class="toggle" ng-class="{'has-notes': newTreatment.additionalInstructions}"
                     ng-click="toggleShowAdditionalInstructions(newTreatment)" ng-hide="newTreatment.showAdditionalInstructions" ng-disabled="showBulkChangeToggle"><i class="fa fa-plus-circle"></i></button>
                     <button class="toggle" ng-class="{'has-notes': newTreatment.additionalInstructions}"

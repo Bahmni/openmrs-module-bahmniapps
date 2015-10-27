@@ -1,0 +1,26 @@
+<div class="dashboard-tabular-obs-section" id="tabular-obs">
+    <h2 ng-if="!isClickable()" class="section-title">{{section | titleTranslate}}</h2>
+
+    <div ng-if="isClickable()" class="dashboard-tabular-obs-section">
+        <h2 ng-dialog="../common/displaycontrols/tabularview/views/allObsToObsFlowSheet.html"
+            ng-dialog-controller="AllObsToObsFlowSheetDetailsController"
+            ng-dialog-data="{{dialogData}}"
+            ng-dialog-class="ngdialog-theme-default ng-dialog-all-details-page"
+            class="section-title has-link">
+            <span class="title-link"> {{section | titleTranslate}} </span>
+            <i class="fa fa-external-link"></i>
+        </h2>
+    </div>
+
+    <section bindonce="obsTable" class="block tabular-obs dashboard-section">
+        <table>
+            <span ng-if="obsTable.rows.length == 0">{{'NO_DATA_MESSAGE' | translate}}</span>
+            <th ng-repeat="header in obsTable.headers" ng-if="obsTable.rows.length > 0">{{header}}</th>
+            <tr ng-repeat="row in obsTable.rows">
+                <td ng-repeat="header in obsTable.headers" ng-class="{'is-abnormal': row.columns[header].abnormal}">
+                    {{ row.columns[header].value.name || row.columns[header].value }}
+                </td>
+            </tr>
+        </table>
+    </section>
+</div>

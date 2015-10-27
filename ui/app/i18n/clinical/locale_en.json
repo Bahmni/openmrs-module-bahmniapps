@@ -10,6 +10,7 @@
     "NO_DIAGNOSIS_MESSAGE": "No diagnosis for this patient",
     "NO_SPECIMEN_RESULT_FOUND_MESSAGE": "No Result found for this specimen",
     "NO_SPECIMEN_FOUND_MESSAGE":"No specimen for this patient",
+    "NO_DATA_MESSAGE": "No data captured.",
 
     "PROGRAM_MANAGEMENT_SELECT_PROGRAM_KEY": "Select Program",
     "PROGRAM_MANAGEMENT_ACTIVE_PROGRAM_KEY": "Active Programs",
@@ -51,6 +52,9 @@
     "CONCEPT_SET_GROUP_COLLAPSE_ALL_KEY": "Collapse All",
     "ADD_MORE_KEY": "ADD MORE",
     "CLINICAL_SAVE_TRANSLATION_KEY":"<u>S</u>ave",
+    "CLINICAL_SAVE_SUCCESS_MESSAGE_KEY": "Saved",
+    "CLINICAL_SAVE_FAILURE_MESSAGE_KEY": "An error has occurred on the server. Information not saved.",
+    "CLINICAL_FORM_ERRORS_MESSAGE_KEY": "Please correct errors in the form. Information not saved",
     "SAVE_ACCESS_KEY": "s",
     "CLINICAL_PRINT_TRANSLATION_KEY": "P<u>r</u>int",
     "CLINICAL_PRINT_ACCESS_KEY": "r",
@@ -69,5 +73,9 @@
     "BACTERIOLOGY_TAB_TITLE_KEY" : "Sample Details",
     "BACTERIOLOGY_BUTTON_ADD_SAMPLE_KEY" : "Add Sample",
     "BACTERIOLOGY_BUTTON_CLEAR_KEY" : "Clear",
-    "BACTERIOLOGY_BUTTON_EDIT_KEY" : "Edit"
+    "BACTERIOLOGY_BUTTON_EDIT_KEY" : "Edit",
+    "BACTERIOLOGY_SAMPLE_BEING_EDITED_KEY": "The specimen is already being edited: ",
+    "BACTERIOLOGY_ADDED_ON_KEY": "Added on",
+
+    "REMOVE_CONFIRMATION_KEY": "Are you sure you want to remove?"
 }

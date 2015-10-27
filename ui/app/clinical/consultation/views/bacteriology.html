@@ -71,12 +71,12 @@
         <div class="fl savedSpecimens-text">
             <span>{{savedSpecimen.type.name}}</span>
             <span>#{{savedSpecimen.identifier}}</span>
-            <span>Added on {{savedSpecimen.dateCollected | date: 'MM/dd/yyyy'}}</span>
+            <span>{{ 'BACTERIOLOGY_ADDED_ON_KEY' | translate }} {{savedSpecimen.dateCollected | date: 'MM/dd/yyyy'}}</span>
         </div>
         <div class="fr savedSpecimens-action">
             <i class="fa fa-pencil" ng-click="editSpecimen(savedSpecimen)"></i>
 
-            <i class="fa fa-remove" ng-confirm-click="deleteSpecimen(savedSpecimen)" confirm-message="Are you sure you want to remove?"></i>
+            <i class="fa fa-remove" ng-confirm-click="deleteSpecimen(savedSpecimen)" confirm-message="{{ 'REMOVE_CONFIRMATION_KEY' | translate }}"></i>
         </div>
     </div>
 </div>
