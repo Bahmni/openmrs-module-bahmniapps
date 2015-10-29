@@ -52,6 +52,9 @@ angular.module('bahmni.common.displaycontrol.patientprofile')
                 var configName = $stateParams.configName || Bahmni.Common.Constants.defaultExtensionName;
                 $window.open("../clinical/#/"+configName+"/patient/" + patientUuid + "/dashboard");
             };
+
+            $scope.showBirthDate = $scope.config.showDOB != false && $scope.patient && $scope.patient.birthdate != undefined;
+
             spinner.forPromise(init());
         };
         return {
