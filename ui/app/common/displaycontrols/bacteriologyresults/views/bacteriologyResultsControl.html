@@ -8,8 +8,10 @@
                     <i class="fa fa-caret-right" ng-hide="specimen.isOpen"></i>
                     <i class="fa fa-caret-down" ng-show="specimen.isOpen"></i>
                     <span class="specimen-info">
-                        <span class="specimenSource">{{specimen.specimenSource}}</span>
-                        <span class="specimenId">#{{specimen.specimenId}}</span>
+                        <span class="specimenSource">
+                            {{specimen.specimenSource}} :
+                            <span class="specimenId">{{specimen.specimenId}}</span>
+                        </span>
                         <span class="specimenCollectionDate">
                             {{specimen.specimenCollectionDate | bahmniDateTime}}
                         </span>
