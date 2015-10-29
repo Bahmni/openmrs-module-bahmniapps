@@ -37,3 +37,24 @@
     }
   }
 }
+
+.bacteriology-dashboard{
+  .specimen-info{
+    span{
+      display: inline-block;
+      &.specimenSource{
+        width: 40%;
+      }
+      &.specimenId{
+        width: 15%;
+      }
+      &.specimenCollectionDate{
+        width: 38%;
+        text-align: right;
+      }
+    }
+  }
+  .hierarchy ul li ul li .tree-list-item{
+    padding-left: 40px;
+  }
+}

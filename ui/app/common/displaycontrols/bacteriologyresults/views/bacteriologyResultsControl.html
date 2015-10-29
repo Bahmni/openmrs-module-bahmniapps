@@ -1,4 +1,4 @@
-<section class="dashboard-section ng-scope">
+<section class="bacteriology-dashboard">
     <h2 class="section-title">{{section | titleTranslate}}</h2>
 
     <section class="block hierarchy">
@@ -7,9 +7,12 @@
                 <span class="tree-list-item">
                     <i class="fa fa-caret-right" ng-hide="specimen.isOpen"></i>
                     <i class="fa fa-caret-down" ng-show="specimen.isOpen"></i>
-                    <span>{{specimen.specimenSource}}............{{specimen.specimenId}}................</span>
-                    <span class="obs-date">
-                        {{specimen.specimenCollectionDate | bahmniDateTime}}
+                    <span class="specimen-info">
+                        <span class="specimenSource">{{specimen.specimenSource}}</span>
+                        <span class="specimenId">#{{specimen.specimenId}}</span>
+                        <span class="specimenCollectionDate">
+                            {{specimen.specimenCollectionDate | bahmniDateTime}}
+                        </span>
                     </span>
                 </span>
 
@@ -25,5 +28,4 @@
             </li>
         </ul>
     </section>
-
 </section>
