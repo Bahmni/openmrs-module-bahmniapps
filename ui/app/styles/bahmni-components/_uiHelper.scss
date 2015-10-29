@@ -48,6 +48,14 @@ use either a `<div>` or an `<section` element:
   background: $bahmniSecondaryColor;
   padding-right: 10px;
 }
+
+.section-title-wrapper{
+  background: $bahmniSecondaryColor;
+  button{
+	margin-top: 2px;
+  }
+}
+
 h2.section-title {
 	font-family: $OpenSansFont;
 	padding: $defaultSpacing;

@@ -1,20 +1,16 @@
-<section>
-    <div class="concept-set-title">
-        <div>
-            <h2 class="section-title">
-                <span class="section-label">{{conceptSetName}}</span>
-                <button class="confirm" ng-click="save()" accesskey="s">
-                    <i class="fa fa-save"></i>
-                    <span class="text" ng-bind-html="'CLINICAL_SAVE_TRANSLATION_KEY'| translate"></span>
-                </button>
-            </h2>
+<div class="template-container">
+    <h6>{{conceptSetName}}</h6>
+    <section class="dashboard-section">
+        <div class="section-title-wrapper clearfix">
+            <h2 class="section-title fl">{{conceptSetName}}</h2>
+            <button class="confirm fr" ng-click="save()" accesskey="s">
+                <!--<i class="fa fa-save"></i>-->
+                <span class="text" ng-bind-html="'CLINICAL_SAVE_TRANSLATION_KEY'| translate"></span>
+            </button>
         </div>
-
-    </div>
-
-    <concept-set  patient="patient"
-                  concept-set-name="conceptSetName"
-                  observations="encounter.observations" show-title="false" ng-if="encounter">
-    </concept-set>
-
-</section>
+        <concept-set  patient="patient"
+                      concept-set-name="conceptSetName"
+                      observations="encounter.observations" show-title="false" ng-if="encounter">
+        </concept-set>
+    </section>
+</div>

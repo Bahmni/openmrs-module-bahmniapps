@@ -15,12 +15,14 @@
             <ul ng-show="visit.isOpen" class="formName-Dashboard">
                 <li ng-repeat="data in visit.formData">
                     <span>{{data.concept.display}}</span>
-                    <span class="fr">{{data.obsDatetime | bahmniDateTime}}</span>
-                     <span class="has-link"
-                           ng-dialog="dashboard/views/dashboardSections/editObservationForm.html"
-                           ng-dialog-class="ngdialog-theme-default ng-dialog-all-details-page"
-                           ng-dialog-data="{{getEditObsData(data)}}">
-                           <i class="fa fa-pencil"></i>
+                    <span class="fr">
+                         <span class="has-link"
+                                   ng-dialog="dashboard/views/dashboardSections/editObservationForm.html"
+                                   ng-dialog-class="ngdialog-theme-default ng-dialog-all-details-page"
+                                   ng-dialog-data="{{getEditObsData(data)}}">
+                               <i class="fa fa-pencil"></i>
+                        </span>
+                        {{data.obsDatetime | bahmniDateTime}}
                     </span>
                 </li>
             </ul>
