@@ -31,7 +31,7 @@ form .form-field{
     }
   }
   &.form-field-gender{
-    margin-top: 5px;
+    //margin-top: 5px;
   }
 }
 
@@ -132,7 +132,7 @@ section.form-field-inline{
 .age-wrapper{
   .age-field{
     .input-prepend{
-      margin: 5px 2px;
+      margin: 5px 5px 0px 0px;
       .add-on{
         min-width: 0;
         background-color: #eee!important;
@@ -140,10 +140,7 @@ section.form-field-inline{
 
       }
       input[type="number"]{
-        width: 20px !important;
-        @media (max-width : 768px){
-          width: 40px !important;
-        }
+        width: 40px !important;
         &#ageMonths{
           @media (max-width : 768px){
             width: 53px !important;
@@ -214,5 +211,38 @@ section.form-field-inline{
       }
     }
   }
+}
 
+.new-patient{
+  form{
+    input[type="checkbox"]{
+      &#hasOldIdentifier{
+        margin-top: 9px;
+        margin-left: 0;
+        margin-bottom: 0;
+      }
+    }
+    .form-field{
+      &.existing-patient{
+        .field-attribute{
+          &.hasOldIdentifier-field-attribute{
+            label{
+              width: auto;
+              margin-left: 10px;
+              @media (max-width: 768px) {
+                margin-left: 0;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+  #registrationNumber{
+    margin-left: 10px;
+    &.registrationNumber-Mobile{
+      width: 11em;
+      margin-left: 0;
+    }
+  }
 }
