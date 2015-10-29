@@ -1,4 +1,4 @@
-<div class="dashboard-tabular-obs-section" id="tabular-obs">
+<section class="dashboard-tabular-obs-section dashboard-section" id="tabular-obs">
     <h2 ng-if="!isClickable()" class="section-title">{{section | titleTranslate}}</h2>
 
     <div ng-if="isClickable()" class="dashboard-tabular-obs-section">
@@ -12,10 +12,12 @@
         </h2>
     </div>
 
-    <section bindonce="obsTable" class="block tabular-obs dashboard-section">
-        <table>
-            <span ng-if="obsTable.rows.length == 0">{{'NO_DATA_MESSAGE' | translate}}</span>
-            <th ng-repeat="header in obsTable.headers" ng-if="obsTable.rows.length > 0">{{header}}</th>
+    <section bindonce="obsTable" class="tabular-obs">
+        <div class="placeholder-text" ng-if="obsTable.rows.length == 0">
+            <p>{{'NO_DATA_MESSAGE' | translate}}</p>
+        </div>
+        <table ng-if="obsTable.rows.length > 0">
+            <th ng-repeat="header in obsTable.headers">{{header}}</th>
             <tr ng-repeat="row in obsTable.rows">
                 <td ng-repeat="header in obsTable.headers" ng-class="{'is-abnormal': row.columns[header].abnormal}">
                     {{ row.columns[header].value.name || row.columns[header].value }}
@@ -23,4 +25,4 @@
             </tr>
         </table>
     </section>
-</div>
+</section>

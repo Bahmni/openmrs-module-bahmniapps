@@ -58,3 +58,27 @@
     padding-left: 40px;
   }
 }
+.dashboard-tabular-obs-section{
+  table{
+    tr{
+      th{
+        text-align: left;
+        font-family: OpenSansSemiBold;
+      }
+    }
+  }
+}
+.ngdialog-content {
+  .dashboard-tabular-obs-section{
+    table{
+      tr{
+        th{
+          border: 1px solid #DDD;
+        }
+        td{
+          border: 1px solid #DDD;
+        }
+      }
+    }
+  }
+}
