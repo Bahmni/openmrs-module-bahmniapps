@@ -10,7 +10,7 @@ rm -rf $webappDir
 mkdir -p $webappDir
 
 cd $codeBaseDir
-bower install --force-latest
+bower install --allow-root --force-latest
 npm install
 grunt dist
 cp -R $codeBaseDir/dist/ $webappDir
