@@ -10,8 +10,6 @@ Bahmni.Clinical.TabConfig = function (tabs) {
         self.currentTab = self.getFirstTab();
         if(self.currentTab && self.currentTab.translationKey){
             self.identifierKey = "translationKey";
-        }else{
-            self.identifierKey = "dashboardName";
         }
     };
 
