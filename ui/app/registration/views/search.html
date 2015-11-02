@@ -52,7 +52,6 @@
         <table ng-show="resultsPresent()" class="table">
             <thead>
             <tr>
-                <th class="slno_col"><strong>{{ 'REGISTRATION_LABEL_SERIAL_NUM' | translate}}</strong></th>
                 <th><strong>{{ 'REGISTRATION_LABEL_ID' | translate}}</strong></th>
                 <th><strong>{{ 'REGISTRATION_LABEL_NAME' | translate}}</strong></th>
                 <th ng-repeat = "field in customAttributesSearchConfig.fields"><strong>{{convertToTableHeader(field)}}</strong></th>
@@ -66,7 +65,6 @@
             </thead>
             <tbody>
             <tr ng-repeat="result in results">
-                <td>{{$index + 1}}</td>
                 <td>{{result.identifier}}</td>
                 <td>{{result.givenName}} {{result.middleName}} {{result.familyName}}</td>
                 <td ng-repeat = "field in customAttributesSearchConfig.fields">{{result.customAttribute[field]}}</td>
