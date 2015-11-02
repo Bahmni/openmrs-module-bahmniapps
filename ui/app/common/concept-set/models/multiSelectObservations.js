@@ -85,7 +85,7 @@ Bahmni.ConceptSet.MultiSelectObservation = function (concept, memberOfCollection
     };
 
     this.toggleSelection = function(answer) {
-        self.hasValueOf(answer) ? unselectAnswer(answer): selectAnswer(answer);
+        self.hasValueOf(answer) ? unselectAnswer(answer): self.selectAnswer(answer);
     };
 
     this.isFormElement = function(){
@@ -157,7 +157,7 @@ Bahmni.ConceptSet.MultiSelectObservation = function (concept, memberOfCollection
         });
     };
 
-    var selectAnswer =  function(answer) {
+    this.selectAnswer =  function(answer) {
         var obs = self.selectedObs[answer.name];
         if (obs) {
             obs.value = answer;
