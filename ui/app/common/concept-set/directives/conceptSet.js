@@ -29,6 +29,10 @@ angular.module('bahmni.common.conceptSet')
                         focusFirstObs();
                         updateObservationsOnRootScope();
                         updateFormConditions();
+                        var groupMembers = getObservationsOfCurrentTemplate()[0].groupMembers;
+                        var defaults = getDefaults();
+                        setDefaultsForGroupMembers(groupMembers, defaults);
+
                     } else {
                         $scope.showEmptyConceptSetMessage = true;
                     }
@@ -53,10 +57,14 @@ angular.module('bahmni.common.conceptSet')
                 }
             };
 
-            var updateFormConditions = function () {
-                var observationsOfCurrentTemplate = _.filter($scope.observations, function (observation) {
+            var getObservationsOfCurrentTemplate = function () {
+                return _.filter($scope.observations, function (observation) {
                     return observation.conceptSetName === $scope.rootObservation.concept.name;
                 });
+            };
+
+            var updateFormConditions = function () {
+                var observationsOfCurrentTemplate = getObservationsOfCurrentTemplate();
                 var flattenedObs = flattenObs(observationsOfCurrentTemplate);
                 var conceptSetObsValues = getFlattenedObsValues(flattenedObs);
                 if (Bahmni.ConceptSet.FormConditions.rules) {
@@ -69,24 +77,80 @@ angular.module('bahmni.common.conceptSet')
                 }
             };
 
-            var getFlattenedObsValues = function(flattenedObs) {
-                    return _.reduce(flattenedObs, function (flattenedObsValues, obs) {
-                        if (flattenedObsValues[obs.concept.name] == undefined){
-                            if (obs.isMultiSelect) {
-                                var selectedObsConceptNames = [];
-                                _.each(obs.selectedObs, function (observation) {
-                                    selectedObsConceptNames.push(observation.value.name);
-                                });
-                                flattenedObsValues[obs.concept.name] = selectedObsConceptNames;
-                            }
-                            else if (obs.value instanceof Object) {
-                                flattenedObsValues[obs.concept.name] = obs.value.name;
-                            }
-                            else {
-                                flattenedObsValues[obs.concept.name] = obs.value;
+            var getDefaults = function () {
+                var conceptSetUI = appService.getAppDescriptor().getConfigValue("conceptSetUI");
+                if (!conceptSetUI || !conceptSetUI.defaults) {
+                    return
+                }
+                return conceptSetUI.defaults || {};
+            };
+
+            var getCodedAnswerWithDefaultAnswerString = function (defaults, groupMember) {
+                var possibleAnswers = groupMember.possibleAnswers;
+                var defaultAnswer = defaults[groupMember.label];
+                var defaultCodedAnswer;
+                if (defaultAnswer instanceof Array) {
+                    defaultCodedAnswer = [];
+                    _.each(defaultAnswer, function (answer) {
+                        defaultCodedAnswer.push(_.findWhere(possibleAnswers, {displayString: answer}));
+                    });
+                }
+                else {
+                    defaultCodedAnswer = _.findWhere(possibleAnswers, {displayString: defaultAnswer});
+                }
+                return defaultCodedAnswer;
+            };
+
+            var setDefaultsForGroupMembers = function (groupMembers, defaults) {
+                if(defaults) {
+                    _.each(groupMembers, function (groupMember) {
+                        var present = _.contains(_.keys(defaults), groupMember.label);
+                        if (present && groupMember.value == undefined) {
+                            if (groupMember.concept.dataType == "Coded") {
+                                setDefaultsForCodedObservations(groupMember,defaults);
+                            } else {
+                                groupMember.value = defaults[groupMember.label];
                             }
                         }
-                        return flattenedObsValues;
+                        if (groupMember.groupMembers && groupMember.groupMembers.length > 0) {
+                            setDefaultsForGroupMembers(groupMember.groupMembers, defaults);
+                        }
+                    });
+                }
+            };
+
+            var setDefaultsForCodedObservations = function(observation, defaults){
+                var defaultCodedAnswer = getCodedAnswerWithDefaultAnswerString(defaults, observation);
+                if (observation.isMultiSelect) {
+                    if (!observation.hasValue()) {
+                        _.each(defaultCodedAnswer, function (answer) {
+                            observation.selectAnswer(answer);
+                        });
+                    }
+                }
+                else if(!(defaultCodedAnswer instanceof Array)) {
+                    observation.value = defaultCodedAnswer;
+                }
+            };
+
+            var getFlattenedObsValues = function (flattenedObs) {
+                return _.reduce(flattenedObs, function (flattenedObsValues, obs) {
+                    if (flattenedObsValues[obs.concept.name] == undefined) {
+                        if (obs.isMultiSelect) {
+                            var selectedObsConceptNames = [];
+                            _.each(obs.selectedObs, function (observation) {
+                                selectedObsConceptNames.push(observation.value.name);
+                            });
+                            flattenedObsValues[obs.concept.name] = selectedObsConceptNames;
+                        }
+                        else if (obs.value instanceof Object) {
+                            flattenedObsValues[obs.concept.name] = obs.value.name;
+                        }
+                        else {
+                            flattenedObsValues[obs.concept.name] = obs.value;
+                        }
+                    }
+                    return flattenedObsValues;
                 }, {});
             };
 
