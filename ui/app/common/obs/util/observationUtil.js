@@ -45,7 +45,7 @@ Bahmni.Common.Obs.ObservationUtil = (function () {
     };
 
     var collect = function (flattenedObservations, key, value) {
-        flattenedObservations[key] = flattenedObservations[key] ? _.union(flattenedObservations[key], value) : value;
+        flattenedObservations[key] = flattenedObservations[key] ? _.uniq(_.flatten(_.union([flattenedObservations[key]], [value]))) : value;
     };
 
     var getValue = function (observation) {
