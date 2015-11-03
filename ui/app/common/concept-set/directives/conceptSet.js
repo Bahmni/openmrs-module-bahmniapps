@@ -104,12 +104,16 @@ angular.module('bahmni.common.conceptSet')
             var setDefaultsForGroupMembers = function (groupMembers, defaults) {
                 if(defaults) {
                     _.each(groupMembers, function (groupMember) {
-                        var present = _.contains(_.keys(defaults), groupMember.label);
+                        var conceptFullName = groupMember.concept.name;
+                        var present = _.contains(_.keys(defaults), conceptFullName);
                         if (present && groupMember.value == undefined) {
                             if (groupMember.concept.dataType == "Coded") {
-                                setDefaultsForCodedObservations(groupMember,defaults);
-                            } else {
-                                groupMember.value = defaults[groupMember.label];
+                                setDefaultsForCodedObservations(groupMember, defaults);
+                            } else if (groupMember.concept.dataType == "Coded") {
+                                groupMember.value = defaults[conceptFullName]
+                            }
+                            else {
+                                groupMember.value = defaults[conceptFullName];
                             }
                         }
                         if (groupMember.groupMembers && groupMember.groupMembers.length > 0) {
