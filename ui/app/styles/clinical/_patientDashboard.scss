@@ -43,9 +43,9 @@
         font-family: OpenSansSemiBold;
         text-decoration: underline;
     }
-    
+
   }
-   
+
 }
 #diagnosisSection{
   .ruled-out.diagnosis-name {
@@ -66,7 +66,7 @@
     margin-bottom: 0;
     section .form-field{
       border-bottom: none;
-    } 
+    }
   }
   .placeholder-message {
     background: $lightGray;
@@ -627,5 +627,13 @@ table.pivot-table {
     background: #eee;
     background-image: none;
     color: #333;
+  }
+}
+
+.dashboard-regimen-section {
+  .regimen {
+    .stopped {
+      background-color: red;
+    }
   }
 }
