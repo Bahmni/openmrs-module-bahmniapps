@@ -109,10 +109,7 @@ angular.module('bahmni.common.conceptSet')
                         if (present && groupMember.value == undefined) {
                             if (groupMember.concept.dataType == "Coded") {
                                 setDefaultsForCodedObservations(groupMember, defaults);
-                            } else if (groupMember.concept.dataType == "Coded") {
-                                groupMember.value = defaults[conceptFullName]
-                            }
-                            else {
+                            } else {
                                 groupMember.value = defaults[conceptFullName];
                             }
                         }
