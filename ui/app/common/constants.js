@@ -151,6 +151,6 @@ Bahmni.Common = Bahmni.Common || {};
         defaultExtensionName: "default",
         bahmniBacteriologyResultsUrl: BACTERIOLOGY + "/specimen",
         formDataUrl: RESTWS_V1 + "/obs",
-        bedFromVisit: RESTWS_V1+ "/bedFromVisit"
+        bedFromVisit: RESTWS_V1+ "/beds"
     };
 })();
