@@ -1,9 +1,12 @@
 angular.module('bahmni.common.obs')
-    .directive('editObservation', ['$q', 'spinner', '$state', 'ngDialog', 'messagingService', 'encounterService', 'conceptSetService', function ($q, spinner, $state, ngDialog, messagingService, encounterService, conceptSetService) {
+    .directive('editObservation', ['$q', 'spinner', '$state', 'ngDialog', 'messagingService', 'encounterService', 'conceptSetService', 'configurations', function ($q, spinner, $state, ngDialog, messagingService, encounterService, conceptSetService,configurations) {
         var controller = function ($scope, $rootScope , $filter) {
             var init = function() {
+                var consultationMapper = new Bahmni.ConsultationMapper(configurations.dosageFrequencyConfig(), configurations.dosageInstructionConfig(),
+                    configurations.consultationNoteConcept(), configurations.labOrderNotesConcept());
+
                 return encounterService.findByEncounterUuid($scope.observation.encounterUuid).then(function(reponse) {
-                    $scope.encounter = reponse.data;
+                    $scope.encounter = consultationMapper.map(reponse.data);
                     $scope.patient = {uuid: $scope.encounter.patientUuid};
                 });
             };
