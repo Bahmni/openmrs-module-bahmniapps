@@ -6,4 +6,4 @@ Bahmni.Common.DisplayControl.DrugOGram = Bahmni.Common.DisplayControl.DrugOGram 
 
 
 angular.module('bahmni.common.displaycontrol', []);
-angular.module('bahmni.common.displaycontrol.drugOGram', []);
+angular.module('bahmni.common.displaycontrol.chronicTreatmentChart', []);

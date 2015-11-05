@@ -1,6 +1,6 @@
 'use strict';
-angular.module('bahmni.common.displaycontrol.drugOGram')
-    .controller('AllDrugOGramDetailsController', ['$scope',
+angular.module('bahmni.common.displaycontrol.chronicTreatmentChart')
+    .controller('AllChronicTreatmentChartController', ['$scope',
         function ($scope) {
             $scope.patient = $scope.ngDialogData.patient;
             $scope.section = $scope.ngDialogData.section;

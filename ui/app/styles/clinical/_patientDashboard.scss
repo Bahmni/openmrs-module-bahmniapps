@@ -630,10 +630,28 @@ table.pivot-table {
   }
 }
 
-.dashboard-regimen-section {
-  .regimen {
+.dashboard-chronic-treatment-section {
+  .chronic-treatment {
     .stopped {
       background-color: red;
+    }
+  }
+}
+
+.ngdialog-content {
+  .dashboard-chronic-treatment-section {
+    .chronic-treatment {
+      border-radius: 0;
+    }
+    table {
+      tr {
+        th {
+          border: 1px solid #DDD;
+        }
+        td {
+          border: 1px solid #DDD;
+        }
+      }
     }
   }
 }

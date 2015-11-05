@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('bahmni.common.displaycontrol.drugOGram').directive('drugOGram', [
+angular.module('bahmni.common.displaycontrol.chronicTreatmentChart').directive('chronicTreatmentChart', [
     function () {
         var controller = function ($scope, DrugService, spinner) {
             $scope.config = $scope.isOnDashboard ? $scope.section.dashboardParams : $scope.section.allDetailsParams;
@@ -31,6 +31,6 @@ angular.module('bahmni.common.displaycontrol.drugOGram').directive('drugOGram', 
                 section: "=",
                 isOnDashboard: "="
             },
-            templateUrl: '../common/displaycontrols/drugOGram/views/drugOGram.html'
+            templateUrl: '../common/displaycontrols/chronicTreatmentChart/views/chronicTreatmentChart.html'
         }
     }]);

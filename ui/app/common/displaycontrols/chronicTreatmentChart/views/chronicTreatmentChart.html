@@ -1,9 +1,9 @@
-<div class="dashboard-regimen-section" id="regimen">
+<div class="dashboard-chronic-treatment-section" id="regimen">
     <h2 ng-if="!isClickable()" class="section-title">{{section | titleTranslate}}</h2>
 
-    <div ng-if="isClickable()" class="dashboard-tabular-obs-section">
-        <h2 ng-dialog="../common/displaycontrols/drugOGram/views/allDrugOGram.html"
-            ng-dialog-controller="AllDrugOGramDetailsController"
+    <div ng-if="isClickable()" class="dashboard-chronic-treatment-section">
+        <h2 ng-dialog="../common/displaycontrols/chronicTreatmentChart/views/allChronicTreatmentChart.html"
+            ng-dialog-controller="AllChronicTreatmentChartController"
             ng-dialog-data="{{dialogData}}"
             ng-dialog-class="ngdialog-theme-default ng-dialog-all-details-page"
             class="section-title has-link">
@@ -12,7 +12,7 @@
         </h2>
     </div>
 
-    <section bindonce="regimen" class="block regimen dashboard-section">
+    <section bindonce="regimen" class="block chronic-treatment dashboard-section">
         <table>
             <th>Date</th>
             <th ng-repeat="header in regimen.headers">{{header.shortName || header.name}}</th>
