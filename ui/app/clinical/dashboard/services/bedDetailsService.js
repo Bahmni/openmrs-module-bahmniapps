@@ -16,9 +16,12 @@ angular.module('bahmni.clinical')
         this.getBedDetailsByVisit = function (visitUuid) {
             var url = Bahmni.Common.Constants.bedFromVisit;
             return $http.get(url, {
-                params: {"visitUuid": visitUuid}
+                params: {
+                    "s": "bedDetailsFromVisit",
+                    "visitUuid": visitUuid
+                }
             }).then(function (data) {
-                 return constructBedDetails(data)
+                return constructBedDetails(data)
             });
         };
 
