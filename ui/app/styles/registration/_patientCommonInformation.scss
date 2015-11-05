@@ -30,6 +30,10 @@ form .form-field{
       }
     }
   }
+  input[type="checkbox"]{
+    margin-top: 9px;
+    margin-left: 0;
+  }
   &.form-field-gender{
     //margin-top: 5px;
   }

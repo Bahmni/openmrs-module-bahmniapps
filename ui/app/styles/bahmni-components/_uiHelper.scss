@@ -234,6 +234,9 @@ table {
       margin-bottom: 0;
       padding: 15px;
       padding-bottom: 0;
+	  @media (max-width: 768px) {
+		padding: 15px 10px 15px 5px;
+	  }
     }
     section.section-padding{
       padding-top: 14px;
