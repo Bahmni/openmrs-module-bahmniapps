@@ -9,6 +9,8 @@ angular.module('bahmni.common.displaycontrol.pivottable')
                     patientUuid: patientUuid,
                     visit: visitUuid,
                     numberOfVisits: diseaseSummaryConfig["numberOfVisits"],
+                    initialCount: diseaseSummaryConfig["initialCount"],
+                    latestCount: diseaseSummaryConfig["latestCount"],
                     obsConcepts: diseaseSummaryConfig["obsConcepts"],
                     drugConcepts: diseaseSummaryConfig["drugConcepts"],
                     labConcepts: diseaseSummaryConfig["labConcepts"],
