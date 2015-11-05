@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+ 
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                  http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-2.0.xsd">
+ 
+    <!--
+        See http://www.liquibase.org/manual/home#available_database_refactorings
+        for a list of supported elements and attributes
+    -->
+ 
+    <changeSet id="bahmni-reg-1" author="tw" context="rel2">
+        <comment>rel2</comment>
+        <sqlFile path="V1_11__CreateConceptSetForRegistrationConcepts.sql" />
+    </changeSet>
+
+    <changeSet id="bahmni-reg-2" author="tw" context="rel2">
+        <comment>rel2</comment>
+        <sqlFile path="V1_22__AddConceptWordsForRegistrationConceptSet.sql" />
+    </changeSet>
+
+    <changeSet id="bahmni-reg-3" author="tw" context="rel2">
+        <comment>rel2</comment>
+        <sqlFile path="V1_25__RegistrationConceptSetFix.sql" />
+    </changeSet>
+
+    <changeSet id="bahmni-reg-4" author="tw" context="rel3">
+        <comment>rel3</comment>
+        <sqlFile path="V1_79__AddressTemplateWithAllFields.sql" />
+    </changeSet>
+
+    <changeSet id="bahmni-reg-5" author="vivek-tw" context="rel3">
+        <comment>rel3</comment>
+        <sql>update patient_identifier_type set name = 'Bahmni Id' where name = 'JSS'</sql>
+    </changeSet>
+
+    <changeSet id="bahmni-reg-201401171330" author="banka-tw" context="rel3">
+        <preConditions onFail="MARK_RAN">
+            <sqlCheck expectedResult="0">select count(*) from privilege where privilege = 'app:registration'</sqlCheck>
+        </preConditions>
+        <insert tableName="privilege">
+            <column name="privilege" value="app:registration"/>
+            <column name="description" value="Bahmni registration app access privilege"/>
+            <column name="uuid" valueComputed="uuid()"/>
+        </insert>
+    </changeSet>
+    <changeSet id="bahmni-reg-201402141455" author="neha" context="rel3">
+        <comment>Add emrgency app role</comment>
+        <sql>
+            INSERT INTO privilege(privilege, description, uuid) VALUES('app:emergency', 'bahmni emergency app access privilege', uuid()) ON DUPLICATE KEY UPDATE privilege = 'app:emergency';
+        </sql>
+    </changeSet>
+</databaseChangeLog>
