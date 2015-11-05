@@ -159,6 +159,7 @@ button.save-consultation {
 a.quick-links, a.btn--success {
   @include button($success, darken($success, 8%), white);
   padding: 10px 20px;
+  font-size: 16px;
 }
 
 
