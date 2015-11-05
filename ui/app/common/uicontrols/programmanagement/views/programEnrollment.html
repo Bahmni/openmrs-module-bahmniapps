@@ -25,7 +25,7 @@
         </section>
     </div>
 
-    <div class="active-program-container" id="activePrograms">
+    <div class="active-program-container" id="activePrograms" ng-show="hasPatientEnrolledToSomePrograms()">
         <section class="block dashboard-section">
             <h2 class="section-title ng-binding">{{'PROGRAM_MANAGEMENT_ACTIVE_PROGRAM_KEY' | translate}}</h2>
             <div ng-if="hasPatientEnrolledToSomePrograms()">
@@ -34,17 +34,17 @@
                 </div>
             </div>
 
-            <div class="note-container" ng-show="!hasPatientEnrolledToSomePrograms()">
+<!--            <div class="note-container" ng-show="!hasPatientEnrolledToSomePrograms()">
                 <div class="note warning">
                     <div class="text placholder-text">
                         <p>{{'PATIENT_NOT_ENROLLED_TO_PROGRAMS_MESSAGE_KEY' | translate}}</p>
                     </div>
                 </div>
-            </div>
+            </div>-->
         </section>
     </div>
 
-    <div class="inactive-program-container">
+    <div class="inactive-program-container" ng-show="hasPatientAnyPastPrograms()">
         <section class="block dashboard-section">
             <h2 class="section-title ng-binding">{{'PROGRAM_MANAGEMENT_PAST_PROGRAM_KEY' | translate}}</h2>
 
@@ -54,13 +54,13 @@
                 </div>
             </div>
 
-            <div class="note-container" ng-show="!hasPatientAnyPastPrograms()">
+            <!--<div class="note-container" ng-show="!hasPatientAnyPastPrograms()">
                 <div class="note warning">
                     <div class="text placeholder-text">
                         <p>{{'PATIENT_DOESNT_HAVE_PREVIOUS_PROGRAMS_MESSAGE_KEY' | translate}}</p>
                     </div>
                 </div>
-            </div>
+            </div>-->
         </section>
     </div>
 </div>
