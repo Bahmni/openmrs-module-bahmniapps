@@ -33,11 +33,8 @@
                                 </label>
                             </div>
                             <div class="field-value">
-                                <select required="required" id="sample-type" class="form-field bulk-duration-unit"
-                                        ng-model="newSpecimen.type"
-                                        ng-options="sample as sample.name for sample in allSamples track by sample.uuid">
-                                    <option></option>
-                                </select>
+                                <button-select observation="newSpecimen.typeObservation">
+                                </button-select>
                             </div>
                         </article>
                     </section>
