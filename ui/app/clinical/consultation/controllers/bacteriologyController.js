@@ -75,7 +75,7 @@ angular.module('bahmni.clinical')
                         return diagnosis.isEmpty();
                     }
                 );
-                if (emptyRows.length == 0) {
+                if (emptyRows.length == 0 && (!$scope.isOnDashboard ||  $scope.newSpecimens.length == 0)) {
                     createNewSpecimen();
                 }
             };

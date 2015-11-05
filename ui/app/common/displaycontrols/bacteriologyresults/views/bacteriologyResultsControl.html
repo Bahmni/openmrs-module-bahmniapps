@@ -1,4 +1,5 @@
 <section class="bacteriology-dashboard">
+    <div ng-include src="'../common/ui-helper/messages.html'"></div>
     <h2 class="section-title">{{section | titleTranslate}}</h2>
 
     <section class="block hierarchy">
@@ -13,9 +14,11 @@
                             <span class="specimenId">{{specimen.specimenId}}</span>
                         </span>
                         <span class="specimenCollectionDate">
-                            {{specimen.specimenCollectionDate | bahmniDateTime}}
+                            <i class="fa fa-pencil" ng-click="editBacteriologySample(specimen)"></i>
+                            {{specimen.specimenCollectionDate | bahmniDate}}
                         </span>
                     </span>
+
                 </span>
 
                 <ul ng-show="specimen.isOpen">

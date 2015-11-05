@@ -5,7 +5,10 @@
                 <div class="section-title-wrapper clearfix">
                     <h2 class="section-title fl">{{'BACTERIOLOGY_TAB_TITLE_KEY' | translate}}</h2>
                     <input type="button" value="{{'BACTERIOLOGY_BUTTON_CLEAR_KEY' | translate}}"
-                           ng-click="clearSpecimen(newSpecimen)" class="fr add-sample-btn">
+                           ng-click="clearSpecimen(newSpecimen)" class="fr add-sample-btn" ng-hide="isOnDashboard">
+                    <button class="confirm fr" ng-click="saveBacteriologySample()" accesskey="s" ng-hide="!isOnDashboard">
+                        <span class="text ng-binding" ng-bind-html="'CLINICAL_SAVE_TRANSLATION_KEY'| translate"></span>
+                    </button>
                 </div>
 
 
@@ -61,13 +64,13 @@
                 </div>
 
                 <div class="box" ng-if="newSpecimen.dateCollected">
-                    <concept-set patient="patient" concept-set-name="resultsConceptName" collapse-inner-sections="true"
+                    <concept-set patient="patient" concept-set-name="resultsConceptName" collapse-inner-sections="!isOnDashboard"
                                  observations="newSpecimen.report.results"></concept-set>
                 </div>
             </section>
         </form>
     </div>
-    <div ng-repeat="savedSpecimen in savedSpecimens" class="savedSpecimens-container clearfix">
+    <div ng-repeat="savedSpecimen in savedSpecimens" class="savedSpecimens-container clearfix" ng-hide="isOnDashboard">
         <div class="fl savedSpecimens-text">
             <span>{{savedSpecimen.type.name}}</span>
             <span>#{{savedSpecimen.identifier}}</span>
