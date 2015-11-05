@@ -64,8 +64,37 @@ Bahmni.ConceptSet.ObservationMapper = function () {
         }
 
         new Bahmni.ConceptSet.MultiSelectObservations(conceptSetConfig).map(mappedGroupMembers);
+        mapTabularObs(mappedGroupMembers, concept, obs, conceptSetConfig);
         return obs;
     };
+
+
+    function mapTabularObs(mappedGroupMembers, concept, obs, conceptSetConfig) {
+        var tabularObsGroups = _.filter(mappedGroupMembers, function (member) {
+            return conceptSetConfig[member.concept.name] && conceptSetConfig[member.concept.name]['isTabular']
+        });
+
+        if (tabularObsGroups.length > 0) {
+            var array = _.map(concept.setMembers, function (member) {
+                return member.name.name
+            });
+            tabularObsGroups.forEach(function (group) {
+                group.hidden = true;
+            });
+
+            var groupedObsGroups = _.groupBy(tabularObsGroups, function (group) {
+                return group.concept.name;
+            });
+
+            _.values(groupedObsGroups).forEach(function (groups) {
+                var tabularObservations = new Bahmni.ConceptSet.TabularObservations(groups, obs, conceptSetConfig);
+                obs.groupMembers.push(tabularObservations);
+            });
+            obs.groupMembers = _.sortBy(obs.groupMembers, function (observation) {
+                return array.indexOf(observation.concept.name);
+            });
+        }
+    }
 
     var mapObservationGroupMembers = function (observations, parentConcept, conceptSetConfig) {
         var observationGroupMembers = [];
@@ -110,29 +139,38 @@ Bahmni.ConceptSet.ObservationMapper = function () {
 
     function buildObservation(concept, savedObs, mappedGroupMembers) {
         var comment = savedObs ? savedObs.comment : null;
-        return { concept: conceptMapper.map(concept), units: concept.units, label: getLabel(concept), possibleAnswers: concept.answers, groupMembers: mappedGroupMembers, comment: comment};
+        return {
+            concept: conceptMapper.map(concept),
+            units: concept.units,
+            label: getLabel(concept),
+            possibleAnswers: concept.answers,
+            groupMembers: mappedGroupMembers,
+            comment: comment
+        };
     }
 
     var createObservationForDisplay = function (observation, concept) {
         if (observation.value == null) return;
         var observationValue = getObservationDisplayValue(observation);
         observationValue = observation.durationObs ? observationValue + " " + getDurationDisplayValue(observation.durationObs) : observationValue;
-        return { "value": observationValue, "abnormalObs": observation.abnormalObs, "duration": observation.durationObs,
+        return {
+            "value": observationValue, "abnormalObs": observation.abnormalObs, "duration": observation.durationObs,
             "provider": observation.provider, "label": getLabel(observation.concept), "foo": observation,
             "observationDateTime": observation.observationDateTime, "concept": concept,
-            "comment": observation.comment, "uuid": observation.uuid};
+            "comment": observation.comment, "uuid": observation.uuid
+        };
     };
 
     var getObservationDisplayValue = function (observation) {
         if (observation.isBoolean || observation.type === "Boolean") {
             return observation.value === true ? "Yes" : "No";
         }
-        if(!observation.value) return "";
-        if(typeof observation.value.name === 'object') {
+        if (!observation.value) return "";
+        if (typeof observation.value.name === 'object') {
             var valueConcept = conceptMapper.map(observation.value);
             return valueConcept.shortName || valueConcept.name;
         }
-        return observation.value.shortName || observation.value.name || observation.value ;
+        return observation.value.shortName || observation.value.name || observation.value;
     };
 
     var getDurationDisplayValue = function (duration) {
@@ -150,7 +188,7 @@ Bahmni.ConceptSet.ObservationMapper = function () {
         return memberValues.join(', ');
     };
 
-    var getLabel = function(concept) {
+    var getLabel = function (concept) {
         var mappedConcept = conceptMapper.map(concept);
         return mappedConcept.shortName || mappedConcept.name;
     }

@@ -1,6 +1,7 @@
+
 <div class="observations-tab">
     <div class="vitals form-horizontal" ng-if="!observation.voided || (observation.getControlType() == 'image' && observation.value)">
-       <fieldset class="leaf-observation-node" ng-if="::observation.isObservationNode">
+        <fieldset class="leaf-observation-node" ng-if="::observation.isObservationNode">
             <div class="form-group bm-pop-over">
                 <div class=" concept-tooltip-description" bm-pop-over-target
                      ng-if="::observation.primaryObs.concept.description">
@@ -9,14 +10,14 @@
                 </div>
 
 
-                <label class="control-label" for="{{::observation.uniqueId}}">
+                <label class="control-label" ng-if="showTitle" for="{{::observation.uniqueId}}">
                     <span ng-bind="::observation.label"></span>
                     <span ng-show="::observation.primaryObs.units"
                           ng-bind-html="::'(' + observation.primaryObs.units + ')'"></span>
                     <span ng-if="::observation.isRequired()" class="asterick">*</span>
                     <i class="fa fa-question-circle concept-tooltip-trigger" bm-pop-over-trigger
-                       ng-if="::observation.primaryObs.concept.description"></i>
-
+                       ng-if="::observation.primaryObs.concept.description">
+                    </i>
                 </label>
 
                 <div class="field-value" ng-if="observation.isComputed()">
@@ -109,13 +110,13 @@
                     <span class="details" ng-bind-html="::observation.concept.description"></span>
                 </div>
 
-                <label class="control-label" for="{{::observation.uniqueId}}">
+                <label class="control-label" ng-if="showTitle" for="{{::observation.uniqueId}}">
                     <span ng-bind="::observation.label"></span>
                     <span ng-show="::observation.units" ng-bind-html="::'(' + observation.units + ')'"></span>
                     <span ng-if="::observation.isRequired()" class="asterick">*</span>
                     <i class="fa fa-question-circle concept-tooltip-trigger" bm-pop-over-trigger
-                       ng-if="::observation.concept.description"></i>
-
+                       ng-if="::observation.concept.description">
+                    </i>
                 </label>
 
                 <div class="field-value" ng-switch="::observation.getControlType()">
@@ -240,7 +241,38 @@
             </div>
         </fieldset>
 
-        <fieldset ng-if="!observation.isObservationNode && !observation.isFormElement()" class="hasLegend"
+        <fieldset class="leaf-observation-node" ng-if="observation.getControlType() == 'tabular'" >
+            <div>
+                <table>
+                    <caption ng-bind="::observation.label"></caption>
+                    <thead>
+                    <tr>
+                        <th ng-repeat="column in observation.columns"><strong><span ng-bind="column"></span></strong></th>
+                        <th></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr ng-repeat="row in observation.rows">
+                        <td ng-repeat="obs in row.cells">
+                            <concept collapse-inner-sections="collapseInnerSections" observation="obs"
+                                     root-observation="row" at-least-one-value-is-set="atLeastOneValueIsSet"
+                                     patient="patient" show-title="false"
+                                     concept-set-required="conceptSetRequired" concept-set-name="conceptSetName"></concept>
+                        </td>
+                        <td>
+                            <button type="button" class="add-more-btn btn-small" ng-click="observation.addNew(row)">
+                                <i class="fa fa-plus-circle"></i> {{'ADD_MORE_KEY' | translate}}
+                            </button>
+                            <i class="fa fa-remove" ng-confirm-click="observation.remove(row)" confirm-message="{{ 'REMOVE_CONFIRMATION_KEY' | translate }}"></i>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </fieldset>
+
+
+        <fieldset ng-if="!observation.isObservationNode && !observation.isFormElement() && observation.getControlType()!='tabular'" class="hasLegend"
                   ng-class="{'collapsible-set': isCollapsibleSet(), 'collapsed': collapse}">
             <legend ng-if="showTitle && !observation.isComputed()" class="mylegend" ng-click="toggleSection()">
                 <i ng-if="isCollapsibleSet() && collapse" class="fa fa-caret-right"></i>
