@@ -153,6 +153,15 @@ form, .form {
       background: $focus;
     }
   }
+  input[type="date"]{
+    padding: 1px 10px;
+    @media (max-width: 1024px) {
+      padding: 4px 10px;
+    }
+    @media (max-width: 768px) {
+      padding: 6px 10px;
+    }
+  }
 
   select {
     min-width: 197px;
@@ -162,6 +171,7 @@ form, .form {
     }
     @media (max-width : 768px){
       width: 210px;
+      height: 36px;
     }
     float: left;
   }
