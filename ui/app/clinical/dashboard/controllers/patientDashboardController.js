@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('bahmni.clinical')
-    .controller('PatientDashboardController', ['$rootScope', '$scope', 'clinicalAppConfigService', 'diseaseTemplateService', 'clinicalDashboardConfig', 'printer', '$state', 'spinner', 'visitSummary',
-        function ($rootScope, $scope, clinicalAppConfigService, diseaseTemplateService, clinicalDashboardConfig, printer, $state, spinner, visitSummary) {
+    .controller('PatientDashboardController', ['$rootScope', '$scope', 'clinicalAppConfigService', 'clinicalDashboardConfig', 'printer', '$state', 'spinner', 'visitSummary', 'latestDiseaseTemplates',
+        function ($rootScope, $scope, clinicalAppConfigService, clinicalDashboardConfig, printer, $state, spinner, visitSummary, latestDiseaseTemplates) {
 
             $scope.activeVisit = $scope.visitHistory.activeVisit;
             $scope.activeVisitData = {};
@@ -24,14 +24,11 @@ angular.module('bahmni.clinical')
 
             $scope.init = function (dashboard) {
                 clinicalDashboardConfig.switchTab(dashboard);
-                return diseaseTemplateService.getLatestDiseaseTemplates($scope.patient.uuid, clinicalDashboardConfig.getDiseaseTemplateSections())
-                    .then(function (diseaseTemplates) {
-                        $scope.diseaseTemplates = diseaseTemplates;
-                        $scope.dashboard = Bahmni.Common.DisplayControl.Dashboard.create(dashboard || {});
-                        $scope.sectionGroups = $scope.dashboard.getSections($scope.diseaseTemplates);
-                        $scope.currentDashboardTemplateUrl = $state.current.views['dashboard-content'] ? $state.current.views['dashboard-content'].templateUrl : $state.current.views['dashboard-content'];
-                    });
+                $scope.diseaseTemplates = latestDiseaseTemplates;
+                $scope.dashboard = Bahmni.Common.DisplayControl.Dashboard.create(dashboard || {});
+                $scope.sectionGroups = $scope.dashboard.getSections($scope.diseaseTemplates);
+                $scope.currentDashboardTemplateUrl = $state.current.views['dashboard-content'] ? $state.current.views['dashboard-content'].templateUrl : $state.current.views['dashboard-content'];
             };
 
-            spinner.forPromise($scope.init(clinicalDashboardConfig.currentTab));
+            $scope.init(clinicalDashboardConfig.currentTab);
         }]);
