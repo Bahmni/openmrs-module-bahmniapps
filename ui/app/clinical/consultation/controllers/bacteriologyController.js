@@ -8,6 +8,8 @@ angular.module('bahmni.clinical')
             $scope.newSpecimens = $scope.consultation.newlyAddedSpecimens || [];
             $scope.deletedSpecimens = $scope.consultation.deletedSpecimens || [];
 
+            $scope.today = Bahmni.Common.Util.DateUtil.getDateWithoutTime(Bahmni.Common.Util.DateUtil.now());
+
             var init = function () {
                 $scope.clearEmptySpecimens();
 

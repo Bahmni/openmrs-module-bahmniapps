@@ -1,6 +1,9 @@
 angular.module('bahmni.common.uiHelper')
     .directive('datetimepicker', function () {
         var link = function ($scope) {
+            if(!$scope.allowFutureDates) {
+                $scope.maxDate = moment().format("YYYY-MM-DD");
+            }
             var getSelectedDateStr = function() {
                 return $scope.selectedDate != null ? moment($scope.selectedDate).format("YYYY-MM-DD"): "";
             };
@@ -46,11 +49,12 @@ angular.module('bahmni.common.uiHelper')
                 model: '=',
                 observation: "=",
                 showTime: '=',
-                illegalValue: '='
+                illegalValue: '=',
+                allowFutureDates: '='
             },
             template:
                 "<span>" +
-                    "<input type='date' ng-change='updateModel()' ng-model='selectedDate' ng-required='!isValid() || illegalValue' ng-disabled='observation.disabled' />" +
+                    "<input type='date' ng-change='updateModel()' max='{{maxDate}}' ng-model='selectedDate' ng-required='!isValid() || illegalValue' ng-disabled='observation.disabled' />" +
                     "<input type='time' ng-change='updateModel()' ng-model='selectedTime' ng-required='!isValid() || illegalValue' ng-disabled='observation.disabled' />" +
                 "</span>"
         }

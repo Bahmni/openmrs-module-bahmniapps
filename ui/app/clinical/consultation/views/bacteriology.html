@@ -22,7 +22,7 @@
                                 </label>
                             </div>
                             <div class="field-value">
-                                <input id="sample-date" date-converter type="date" ng-model="newSpecimen.dateCollected"
+                                <input id="sample-date"  date-converter type="date" max="{{::today}}" ng-model="newSpecimen.dateCollected"
                                        required="required" ng-change="clearEmptySpecimens()">
                             </div>
                         </article>
