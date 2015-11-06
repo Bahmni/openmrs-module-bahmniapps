@@ -30,7 +30,8 @@ $retroModeColor:  #0E74AF;
 	.tabs ul li.tab-item {
 	  a,  button {
 		background: darken($retroModeColor, 6%);
-		padding: 12px 15px;
+        padding-top: 13px;
+        padding-bottom: 12px
 	  }
 	  &.tab-selected a, &.tab-selected button {
 		background: white;
