@@ -55,7 +55,12 @@
                         <div class="field-value">
                             <input class="enter-concept" type="text" name="conceptSet" ng-model="orderSetMember.concept.name" bahmni-autocomplete strict-select="true" on-select="onSelect($index)" is-invalid="conceptNameInvalid" source="getConcepts" response-map=getDataResults(orderSetMember.orderType) required placeholder="Enter a concept name" />
                         </div>
+                        <label>{{primaryAttributeType.description}}</label>
+                        <div class="field-attribute">
+                            <input id="isPrimary" type="checkbox" ng-true-value="'true'" ng-false-value="'false'" ng-model="orderSetMember.orderSetMemberAttributes[0].value"  />
+                        </div>
                         <input class="fl remove-orderSet" type="button" ng-click="removeOrderSetMember($index)" value="-">
+
                     </article>
                 </div>
             </fieldset>

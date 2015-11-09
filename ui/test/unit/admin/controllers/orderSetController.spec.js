@@ -7,11 +7,17 @@ describe("OrderSetController", function () {
 
     beforeEach(module(function ($provide) {
         _provider = $provide;
-        orderSetService = jasmine.createSpyObj('orderSetService', ['getOrderSet', 'saveOrderSet']);
+        orderSetService = jasmine.createSpyObj('orderSetService', ['getOrderSet', 'saveOrderSet', 'getOrderSetMemberAttributeType']);
 
         orderSetService.getOrderSet.and.callFake(function () {
             deferred = q.defer();
             deferred.resolve(orderSetData);
+            return deferred.promise;
+        });
+
+        orderSetService.getOrderSetMemberAttributeType.and.callFake(function () {
+            deferred = q.defer();
+            deferred.resolve(orderSetMemberAttributeTypeData);
             return deferred.promise;
         });
 
@@ -53,6 +59,19 @@ describe("OrderSetController", function () {
             orderSetMembers:[
                 {orderType:{uuid: "some_uuid1"}, concept:{name: "concept_name1"}},
                 {orderType:{uuid: "some_uuid2"}, concept:{name: "concept_name2"}, voided: true}
+            ]
+        }
+    };
+
+    var orderSetMemberAttributeTypeData = {
+        data:{
+            results: [
+               {
+                orderSetMemberAttributeTypeId: 1,
+                name: "primary",
+                "description": "primary drug",
+                "uuid": "123df-fd56-967fg"
+                }
             ]
         }
     };
