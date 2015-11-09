@@ -28,10 +28,10 @@ angular.module('bahmni.common.conceptSet')
                         $scope.rootObservation.conceptSetName = $scope.conceptSetName;
                         focusFirstObs();
                         updateObservationsOnRootScope();
-                        updateFormConditions();
                         var groupMembers = getObservationsOfCurrentTemplate()[0].groupMembers;
                         var defaults = getDefaults();
                         setDefaultsForGroupMembers(groupMembers, defaults);
+                        updateFormConditions();
 
                     } else {
                         $scope.showEmptyConceptSetMessage = true;
@@ -102,7 +102,7 @@ angular.module('bahmni.common.conceptSet')
             };
 
             var setDefaultsForGroupMembers = function (groupMembers, defaults) {
-                if(defaults) {
+                if (defaults) {
                     _.each(groupMembers, function (groupMember) {
                         var conceptFullName = groupMember.concept.name;
                         var present = _.contains(_.keys(defaults), conceptFullName);
@@ -115,12 +115,15 @@ angular.module('bahmni.common.conceptSet')
                         }
                         if (groupMember.groupMembers && groupMember.groupMembers.length > 0) {
                             setDefaultsForGroupMembers(groupMember.groupMembers, defaults);
+                            if (groupMember instanceof Bahmni.ConceptSet.ObservationNode) {
+                                groupMember.onValueChanged(groupMember.value);
+                            }
                         }
                     });
                 }
             };
 
-            var setDefaultsForCodedObservations = function(observation, defaults){
+            var setDefaultsForCodedObservations = function (observation, defaults) {
                 var defaultCodedAnswer = getCodedAnswerWithDefaultAnswerString(defaults, observation);
                 if (observation.isMultiSelect) {
                     if (!observation.hasValue()) {
@@ -129,7 +132,7 @@ angular.module('bahmni.common.conceptSet')
                         });
                     }
                 }
-                else if(!(defaultCodedAnswer instanceof Array)) {
+                else if (!(defaultCodedAnswer instanceof Array)) {
                     observation.value = defaultCodedAnswer;
                 }
             };
@@ -161,7 +164,7 @@ angular.module('bahmni.common.conceptSet')
                 $scope.conceptSetRequired = $scope.required ? $scope.required : true;
                 var errorMessage = null;
                 var invalidNodes = $scope.rootObservation && $scope.rootObservation.groupMembers.filter(function (childNode) {
-                        if(childNode.voided)
+                        if (childNode.voided)
                             return false;
                         //Other than Bahmni.ConceptSet.Observation  and Bahmni.ConceptSet.ObservationNode, other concepts does not have isValueInAbsoluteRange fn
                         if (typeof childNode.isValueInAbsoluteRange == 'function' && !childNode.isValueInAbsoluteRange()) {
@@ -238,10 +241,10 @@ angular.module('bahmni.common.conceptSet')
                     var matchingObs = _.find(flattenedObs, function (obs) {
                         return obs.concept.name === field;
                     });
-                    if(matchingObs) {
+                    if (matchingObs) {
                         setObservationState(matchingObs, disable);
                     } else {
-                        messagingService.showMessage("error", "No element found with name : "+field);
+                        messagingService.showMessage("error", "No element found with name : " + field);
                     }
                 });
             };
