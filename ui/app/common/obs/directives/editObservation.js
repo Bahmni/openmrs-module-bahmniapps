@@ -15,6 +15,7 @@ angular.module('bahmni.common.obs')
 
             $scope.save = function(){
                 $scope.encounter.observations = new Bahmni.Common.Domain.ObservationFilter().filter($scope.encounter.observations);
+                $scope.encounter.orders = addOrdersToEncounter();
                 var createPromise = encounterService.create($scope.encounter);
                 spinner.forPromise(createPromise).then(function() {
                     $state.go($state.current, {}, {reload: true});
@@ -22,6 +23,23 @@ angular.module('bahmni.common.obs')
                     messagingService.showMessage('info', "{{'CLINICAL_SAVE_SUCCESS_MESSAGE_KEY' | translate}}");
                 });
             }
+
+            var addOrdersToEncounter = function () {
+                var modifiedOrders = _.filter($scope.encounter.orders, function(order){
+                    return order.hasBeenModified || order.isDiscontinued || !order.uuid
+                });
+                var tempOrders = modifiedOrders.map(function (order) {
+                    if(order.hasBeenModified && !order.isDiscontinued){
+                        return Bahmni.Clinical.Order.revise(order);
+                    }
+                    else if(order.isDiscontinued){
+                        return Bahmni.Clinical.Order.discontinue(order);
+                    }
+                    return { uuid: order.uuid, concept: {name: order.concept.name, uuid: order.concept.uuid },
+                        commentToFulfiller: order.commentToFulfiller};
+                });
+                return tempOrders;
+            };
         };
 
         return {
