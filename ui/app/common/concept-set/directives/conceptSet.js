@@ -28,11 +28,10 @@ angular.module('bahmni.common.conceptSet')
                         $scope.rootObservation.conceptSetName = $scope.conceptSetName;
                         focusFirstObs();
                         updateObservationsOnRootScope();
-                        updateFormConditions();
                         var groupMembers = getObservationsOfCurrentTemplate()[0].groupMembers;
                         var defaults = getDefaults();
                         setDefaultsForGroupMembers(groupMembers, defaults);
-
+                        updateFormConditions();
                     } else {
                         $scope.showEmptyConceptSetMessage = true;
                     }
@@ -115,6 +114,9 @@ angular.module('bahmni.common.conceptSet')
                         }
                         if (groupMember.groupMembers && groupMember.groupMembers.length > 0) {
                             setDefaultsForGroupMembers(groupMember.groupMembers, defaults);
+                            if(groupMember instanceof Bahmni.ConceptSet.ObservationNode) {
+                                  groupMember.onValueChanged(groupMember.value);
+                            }
                         }
                     });
                 }
