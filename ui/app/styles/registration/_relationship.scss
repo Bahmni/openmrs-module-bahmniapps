@@ -23,6 +23,9 @@
       width: 38%;
       float: left;
       text-align: left;
+      @media (max-width : 1024px){
+        width: 36%;
+      }
       @media (max-width : 768px){
         width: 100%;
       }
@@ -31,6 +34,9 @@
       width: 25%;
       float: left;
       text-align: right;
+      @media (max-width : 1024px){
+        width: 28%;
+      }
       @media (max-width : 768px){
         width: 100%;
       }
@@ -61,12 +67,24 @@
       color: red;
     }
   }
-}
-/*
-.relationships {
-
   .row{
+    .col4{
+       button{
+         @media (max-width : 768px) {
+           position: absolute;
+           top: 0;
+           right: 3px;
+         }
+       }
+    }
+    @media (max-width : 768px){
+      position: relative;
+    }
+  }
+}
 
+.relationships-container {
+  .row{
     select, input{
       min-width: 180px;
     }
@@ -87,9 +105,32 @@
       padding: 3px 3px 3px 8px;
       line-height: 30px;
       .col1{ width: 34% }
-      .col2{ width: 35.4%; text-align: left;}
-      .col3{ text-align: left; }
-      .col4{ margin-left: .5%; }
+      .col2{
+        width: 33.3%;
+        text-align: left;
+        @media (max-width : 1024px){
+          width: 31.3%;
+        }
+      }
+      .col3{
+        width: 26.4%;
+        text-align: left;
+        .till-text{
+          padding-top: 0;
+        }
+        @media (max-width : 1024px){
+          width: 29.4%;
+        }
+        @media (max-width : 768px){
+          width: 28.8%;
+        }
+      }
+      .col4{
+        margin-left: .5%;
+        button{
+          margin-top: 2px;
+        }
+      }
     }
   }
   .table-header {
@@ -102,4 +143,4 @@
       font-weight: normal;
     }
   }
-}*/
+}

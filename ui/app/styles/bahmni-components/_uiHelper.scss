@@ -48,6 +48,14 @@ use either a `<div>` or an `<section` element:
   background: $bahmniSecondaryColor;
   padding-right: 10px;
 }
+
+.section-title-wrapper{
+  background: $bahmniSecondaryColor;
+  button{
+	margin-top: 2px;
+  }
+}
+
 h2.section-title {
 	font-family: $OpenSansFont;
 	padding: $defaultSpacing;
@@ -226,6 +234,9 @@ table {
       margin-bottom: 0;
       padding: 15px;
       padding-bottom: 0;
+	  @media (max-width: 768px) {
+		padding: 15px 10px 15px 5px;
+	  }
     }
     section.section-padding{
       padding-top: 14px;

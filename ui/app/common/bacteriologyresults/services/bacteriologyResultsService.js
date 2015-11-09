@@ -18,7 +18,15 @@ angular.module('bahmni.common.bacteriologyresults')
             });
         };
 
+
+        var saveBacteriologyResults = function(specimen){
+            return $http.post(Bahmni.Common.Constants.bahmniBacteriologyResultsUrl, specimen, {
+                withCredentials: true
+            })
+        };
+
         return {
-            getBacteriologyResults: getBacteriologyResults
+            getBacteriologyResults: getBacteriologyResults,
+            saveBacteriologyResults: saveBacteriologyResults
         };
     }]);

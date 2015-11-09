@@ -22,7 +22,7 @@ body{
       width: 100%;
       article{
         @include column(5);
-        width: 48%;
+        width: 42%;
         margin-left: 0;
         @media (max-width : 768px){
           width: 100%;
@@ -67,6 +67,18 @@ body{
             }
           }
         }
+      }
+    }
+  }
+  .obs-section section{
+    .form-field{
+      padding: 0;
+      border-bottom: 0;
+    }
+    &.hierarchy{
+      .testUnderPanel{
+        width: 40%;
+        display: inline-block;
       }
     }
   }

@@ -2,7 +2,9 @@
     // padding: 10px;
     margin: 5px 0;
     width: 99.5%;
-
+    @media (max-width: 768px) {
+        width: 97.4%;
+    }
     .null-data-message {
         padding-left: 5px;
     }
@@ -58,6 +60,10 @@
                     @media (max-width: 1024px) {
                         width: 133px;
                     }
+                    @media (max-width: 768px) {
+                        width: 109px;
+                        padding: 8px 5px;
+                    }
                     &.voided{
                       text-decoration: line-through;
                     }
@@ -78,6 +84,7 @@
             }
         }
     }
+
 }
 
 
@@ -138,6 +145,9 @@
             width: 74%;
             float: right;
             margin-top: 2%;
+            @media (max-width: 1200px) {
+                width: 72%;
+            }
         }
         .order-section-container {
             float: left;
@@ -177,8 +187,14 @@
                                 background: #F2FAFF;
                                 border: 1px #C9DEEC solid;
                             }
+                            @media (max-width: 768px) {
+                                padding: 8px 15px !important;
+                            }
                         }
                     }
+                }
+                @media (max-width: 768px) {
+                    width: 94.6%;
                 }
             }
             .orderBtn {
@@ -192,7 +208,17 @@
                 white-space: nowrap;
                 height:14px;
                 @media (max-width: 1024px) {
-                    width: 191px;
+                    width: 185px;
+                    margin-bottom: 5px;
+                }
+                @media (max-width: 768px) {
+                    width: 42%;
+                }
+                @media (max-width: 650px) {
+                    width: 40%;
+                }
+                @media (max-width: 500px) {
+                    width: 260px;
                 }
                 &.noteditable {
                     cursor: default;

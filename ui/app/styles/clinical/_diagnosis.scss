@@ -1,4 +1,10 @@
 .diagnosis {
+    .col{
+      margin: 0 !important;
+    }
+    .comment-toggle{
+      margin: 0;
+    }
     .table {
         .row {
             border-bottom: 1px solid $lightGray;
@@ -9,14 +15,14 @@
     }
     .new-diagnosis, .current-diagnosis, .history-diagnosis {
         margin-bottom: 25px;
-        margin-left: 5px;
-        margin-right: 5px;
+        //margin-left: 5px;
+        //margin-right: 5px;
         border: 1px solid #b3b3b3;
         border-bottom: none;
     }
     .new-diagnosis {
         border: 1px solid darken($lightGray, 10%);
-        margin: 35px 5px 20px 5px;
+        //margin: 35px 5px 20px 5px;
         background: $white;
         @media screen and (max-width: 768px) {
             margin-top: 20px;
@@ -196,12 +202,12 @@
     }
     button:first-child {
       margin-left: 10px;
-      border-right: 1;
+      border-right: 1px;
       border-radius: 3px 3px 0 0;
     }
     button:last-child {
       border-radius: 0 0 3px 3px;
-      border-left: 1;
+      border-left: 1px;
       margin-left: 10px;
     }
     .view-past .message {

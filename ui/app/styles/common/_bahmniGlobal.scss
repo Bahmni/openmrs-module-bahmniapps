@@ -40,7 +40,7 @@ input[file-upload] {
         margin-left: 10px;
       }
       .offset-label {
-        padding-left: 230px;
+        padding-left:0px;
       }
     }
   }
@@ -159,6 +159,7 @@ button.save-consultation {
 a.quick-links, a.btn--success {
   @include button($success, darken($success, 8%), white);
   padding: 10px 20px;
+  font-size: 16px;
 }
 
 
@@ -182,14 +183,14 @@ pre.chief-notes {
 
 
 
-.accept-btn {
-    padding: 8px 7px;
-    font-size: 12px;
-    border-radius: 3px;
-    &:focus {
-        outline: 2;
-    }
-}
+//.accept-btn {
+//    padding: 8px 7px;
+//    font-size: 12px;
+//    border-radius: 3px;
+//    &:focus {
+//        outline: 2;
+//    }
+//}
 
 .accept-btn.active {
   color: $bahmniTertiaryColor;
@@ -247,8 +248,17 @@ u, .add-drug-btninput[value]:first-letter {
 }
 
 .placeholder-text{
+  background: #fff;
   padding: 5px;
   p{
     margin-bottom: 0;
   }
+}
+
+.fa-pencil{
+  cursor: pointer;
+}
+
+.clear-both{
+  clear: both;
 }

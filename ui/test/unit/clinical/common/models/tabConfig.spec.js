@@ -21,6 +21,7 @@ describe("tab config", function () {
 
     beforeEach(function() {
         tabConfig = new Bahmni.Clinical.TabConfig(config);
+        tabConfig.identifierKey = "dashboardName"
     });
 
 

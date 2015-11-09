@@ -2,6 +2,8 @@ angular.module('bahmni.common.conceptSet')
     .directive('concept', ['RecursionHelper', 'spinner', 'conceptSetService', '$filter', '$location', function (RecursionHelper, spinner, conceptSetService, $filter, $location, scrollToService) {
         var link = function (scope, element, attributes) {
             var conceptMapper = new Bahmni.Common.Domain.ConceptMapper();
+
+            scope.now = moment().format("YYYY-MM-DD hh:mm:ss");
             scope.showTitle = scope.showTitle === undefined ? true : scope.showTitle;
 
             scope.cloneNew = function (observation, parentObservation) {
@@ -45,7 +47,7 @@ angular.module('bahmni.common.conceptSet')
                     },
                     allowClear: true,
                     placeholder: 'Select',
-                    formatResult: _.property('name'),
+                    formatResult: _.property('shortName'),
                     formatSelection: _.property('name'),
                     id: _.property('uuid')
                 };

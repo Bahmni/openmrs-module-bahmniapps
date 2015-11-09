@@ -23,6 +23,10 @@
                      </div>
                  </td>
             </tr>
+            <tr ng-if="showBirthDate" >
+                <td class="name">Date of Birth</td>
+                <td class="value">{{patient.birthdate | bahmniDate}}</td>
+            </tr>
             <tr ng-repeat="attribute in config.patientAttributes" ng-if="patient[attribute]"
                 ng-show="config.patientAttributes.length" ng-class="attribute">
                 <td class="name">{{patient[attribute].label}}</td>

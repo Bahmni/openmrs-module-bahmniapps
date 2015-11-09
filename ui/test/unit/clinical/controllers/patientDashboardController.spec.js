@@ -4,9 +4,8 @@ describe("patient dashboard controller", function () {
 
     beforeEach(module('bahmni.clinical'));
 
-    var _diseaseTemplateService, scope, _clinicalDashboardConfig, _clinicalAppConfigService,_state;
-
-    var fetchDiseaseTemplatePromise;
+    var scope, _clinicalDashboardConfig, _clinicalAppConfigService, _state;
+    var diseaseTemplates;
 
     var patientDashboardSections = [
         {
@@ -35,13 +34,12 @@ describe("patient dashboard controller", function () {
         _clinicalDashboardConfig = new Bahmni.Clinical.ClinicalDashboardConfig([
             {dashboardName: "General", displayByDefault: true, sections: patientDashboardSections}
         ]);
-        _diseaseTemplateService = jasmine.createSpyObj('diseaseTemplateService', ['getLatestDiseaseTemplates']);
-        var diseaseTemplates = [new Bahmni.Clinical.DiseaseTemplate({name: "Breast Cancer"}, breastCancerDiseaseTemplate.observationTemplates),
-            new Bahmni.Clinical.DiseaseTemplate({name: "Diabetes"}, diabetesDiseaseTemplate.observationTemplates)];
-        fetchDiseaseTemplatePromise = specUtil.respondWith(diseaseTemplates);
-        _diseaseTemplateService.getLatestDiseaseTemplates.and.callFake(function () {
-            return fetchDiseaseTemplatePromise;
-        });
+
+        diseaseTemplates = [
+            new Bahmni.Clinical.DiseaseTemplate({name: "Breast Cancer"}, breastCancerDiseaseTemplate.observationTemplates),
+            new Bahmni.Clinical.DiseaseTemplate({name: "Diabetes"}, diabetesDiseaseTemplate.observationTemplates)
+        ];
+
         _state = {
             current:{
                 views:{
@@ -62,10 +60,10 @@ describe("patient dashboard controller", function () {
 
         $controller('PatientDashboardController', {
             $scope: scope,
-            diseaseTemplateService: _diseaseTemplateService,
             encounterService: jasmine.createSpy(),
             clinicalAppConfigService: _clinicalAppConfigService,
             clinicalDashboardConfig: _clinicalDashboardConfig,
+            latestDiseaseTemplates: diseaseTemplates,
             visitSummary :{},
             printer:{},
             $state : _state,
@@ -74,7 +72,6 @@ describe("patient dashboard controller", function () {
     }));
 
     it("should init dashboard sections", function (done) {
-        fetchDiseaseTemplatePromise.then(function (data) {
             expect(scope.diseaseTemplates.length).toBe(2);
             expect(scope.diseaseTemplates[0].name).toBe("Breast Cancer");
             expect(scope.diseaseTemplates[1].name).toBe("Diabetes");
@@ -84,9 +81,7 @@ describe("patient dashboard controller", function () {
             expect(scope.sectionGroups[0][2].title).toBe(patientDashboardSections[2].title);
             expect(scope.sectionGroups[0][3].title).toBe(patientDashboardSections[3].title);
             done();
-        });
     });
-
 });
 
 var breastCancerDiseaseTemplate =

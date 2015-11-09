@@ -64,6 +64,18 @@ describe('PatientAttributeTypeMapper', function () {
                                     "rel": "self",
                                     "uri": "NEED-TO-CONFIGURE/ws/rest/v1/concept/0a83bc2c-1481-11e3-937b-0800271c1b75"
                                 }
+                            ],
+                            name: {
+                                display: "OBC",
+                                conceptNameType: "FULLY_SPECIFIED"
+                            },
+                            names: [
+                                {
+                                    display: "OBC"
+                                },
+                                {
+                                    display: "OBC"
+                                }
                             ]
                         },
                         {

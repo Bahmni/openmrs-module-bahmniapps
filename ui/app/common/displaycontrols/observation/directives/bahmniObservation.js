@@ -6,6 +6,8 @@ angular.module('bahmni.common.displaycontrol.observation')
             
             var controller = function($scope){
 
+                $scope.showGroupDateTime = $scope.config.showGroupDateTime === false ? false : true;
+
                 var mapObservation = function(observations,config){
 
                     var conceptsConfig = appService.getAppDescriptor().getConfigValue("conceptSetUI") || {};
