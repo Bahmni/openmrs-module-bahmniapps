@@ -45,14 +45,20 @@ Bahmni.Common.Obs.ObservationUtil = (function () {
     };
 
     var collect = function (flattenedObservations, key, value) {
-        flattenedObservations[key] = flattenedObservations[key] ? _.uniq(_.flatten(_.union([flattenedObservations[key]], [value]))) : value;
+        if (value != undefined){
+            flattenedObservations[key] = flattenedObservations[key] ? _.uniq(_.flatten(_.union([flattenedObservations[key]], [value]))) : value;
+        }
     };
 
     var getValue = function (observation) {
         if (observation.selectedObs) {
             return observation.getValues();
         }
-        var obsValue = observation.value;
+        var obsValue;
+        if(observation.value instanceof Object && observation.value.name)
+            obsValue = observation.value.name;
+        else
+            obsValue = observation.value;
         return obsValue == undefined ? obsValue : (obsValue.displayString || obsValue);
     };
 

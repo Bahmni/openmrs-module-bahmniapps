@@ -231,29 +231,37 @@ angular.module('bahmni.common.conceptSet')
                 if (formCondition) {
                     var flattenedObs = flattenObs([$scope.rootObservation]);
                     var conditions = formCondition(formName, allObsValues);
+                    if (conditions.error && !_.isEmpty(conditions.error)){
+                        messagingService.showMessage('formError', conditions.error);
+                        processConditions(flattenedObs,[conceptName], false, true);
+                        return
+                    }else{
+                        processConditions(flattenedObs,[conceptName], false, false);
+                    }
                     processConditions(flattenedObs, conditions.enable, false);
                     processConditions(flattenedObs, conditions.disable, true);
                 }
             });
 
-            var processConditions = function (flattenedObs, fields, disable) {
+            var processConditions = function (flattenedObs, fields, disable, error) {
                 _.each(fields, function (field) {
                     var matchingObs = _.find(flattenedObs, function (obs) {
                         return obs.concept.name === field;
                     });
-                    if (matchingObs) {
-                        setObservationState(matchingObs, disable);
+                    if(matchingObs) {
+                        setObservationState(matchingObs, disable, error);
                     } else {
                         messagingService.showMessage("error", "No element found with name : " + field);
                     }
                 });
             };
 
-            var setObservationState = function (obs, disable) {
+            var setObservationState = function (obs, disable, error) {
                 obs.disabled = disable;
+                obs.error = error;
                 if (obs.groupMembers) {
                     _.each(obs.groupMembers, function (groupMember) {
-                        setObservationState(groupMember, disable);
+                        setObservationState(groupMember, disable, error);
                     });
                 }
             };
