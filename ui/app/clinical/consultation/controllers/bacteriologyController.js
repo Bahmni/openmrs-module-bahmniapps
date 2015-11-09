@@ -8,9 +8,9 @@ angular.module('bahmni.clinical')
             $scope.newSpecimens = $scope.consultation.newlyAddedSpecimens || [];
             $scope.deletedSpecimens = $scope.consultation.deletedSpecimens || [];
 
-            var init = function () {
-                $scope.clearEmptySpecimens();
+            $scope.today = Bahmni.Common.Util.DateUtil.getDateWithoutTime(Bahmni.Common.Util.DateUtil.now());
 
+            var init = function () {
                 var additionalAttributes = _.find(bacteriologyConceptSet.setMembers, function (member) {
                     return member.conceptClass.name === "Bacteriology Attributes"
                 });
@@ -27,10 +27,11 @@ angular.module('bahmni.clinical')
                 $scope.allSamples = sampleSource != undefined && _.map(sampleSource.answers, function (answer) {
                         return new Bahmni.Common.Domain.ConceptMapper().map(answer);
                     });
+                $scope.clearEmptySpecimens();
             };
 
             var createNewSpecimen = function () {
-                var newSpecimen = new Bahmni.Clinical.Specimen();
+                var newSpecimen = new Bahmni.Clinical.Specimen(null, $scope.allSamples);
                 $scope.newSpecimens.push(newSpecimen);
             };
 
@@ -53,8 +54,10 @@ angular.module('bahmni.clinical')
                 savableSpecimens = savableSpecimens.concat($scope.deletedSpecimens);
 
                 _.each(savableSpecimens, function (specimen) {
-                    specimen.sample.additionalAttributes = Array.isArray(specimen.sample.additionalAttributes) ? specimen.sample.additionalAttributes[0] : specimen.sample.additionalAttributes;
                     var observationFilter = new Bahmni.Common.Domain.ObservationFilter();
+                    specimen.sample.additionalAttributes = Array.isArray(specimen.sample.additionalAttributes) ? specimen.sample.additionalAttributes : [specimen.sample.additionalAttributes];
+                    specimen.sample.additionalAttributes=observationFilter.filter(specimen.sample.additionalAttributes)[0];
+                    specimen.report.results = Array.isArray(specimen.report.results) ? specimen.report.results : [specimen.report.results];
                     specimen.report.results = observationFilter.filter(specimen.report.results)[0];
                 });
 
@@ -75,7 +78,7 @@ angular.module('bahmni.clinical')
                         return diagnosis.isEmpty();
                     }
                 );
-                if (emptyRows.length == 0) {
+                if (emptyRows.length == 0 && (!$scope.isOnDashboard ||  $scope.newSpecimens.length == 0)) {
                     createNewSpecimen();
                 }
             };
@@ -94,12 +97,16 @@ angular.module('bahmni.clinical')
 
             $scope.editSpecimen = function (specimen) {
                 if (!isAlreadyBeingEdited(specimen)) {
-                    $scope.newSpecimens.push(new Bahmni.Clinical.Specimen(specimen));
+                    $scope.newSpecimens.push(new Bahmni.Clinical.Specimen(specimen,$scope.allSamples));
                     $scope.clearEmptySpecimens();
                 } else {
                     messagingService.showMessage("formError", "{{ 'BACTERIOLOGY_SAMPLE_BEING_EDITED_KEY' | translate}}" + specimen.type.name + " #" + specimen.identifier);
                 }
             };
+
+            $scope.handleUpdate = function() {
+              return;
+            }
 
             $scope.deleteSpecimen = function (specimen) {
                 if (!isAlreadyBeingEdited(specimen)) {

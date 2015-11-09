@@ -149,7 +149,7 @@ angular.module('bahmni.clinical').controller('ConsultationController',
                     $location.url($scope.lastConsultationTabUrl.url);
                 } else {
                     //Default tab
-                    $state.go("patient.dashboard.show.observations", {patientUuid: $scope.patient.uuid, programUuid: $state.params.programUuid, conceptSetGroupName: 'observations'});
+                    getUrl($scope.availableBoards[0]);
                 }
             };
 

@@ -12,7 +12,9 @@
     @include clearfix;
     .search-seperator-l{
       border-right:2px dotted $lightGray;
-      @include column(5);
+      width: 30.5%;
+      margin: 0 1.04167%;
+      float: left;
       @media (max-width: 767px) {
         @include column(12);
         border-right : 0;
@@ -39,7 +41,8 @@
       }
     }
     .search-seperator-r{
-      @include column(6.8);
+      width: 67%;
+      margin: 0;
       float: right;
       @media (max-width: 767px) {
         @include column(12);

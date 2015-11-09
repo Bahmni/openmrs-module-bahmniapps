@@ -219,6 +219,7 @@ body.abc.ngdialog-open{
                 position: absolute;
                 width: 100%;
                 margin-bottom: 20px;
+                margin-top: 20px;
                 @media (max-width :1024px) {
                     position: static;
                 }
@@ -226,6 +227,7 @@ body.abc.ngdialog-open{
                     font-size: 1.5em;
                     color: #009384;
                     font-family: openSansSemiBold;
+                    margin-top: 0;
                 }
             }
         }

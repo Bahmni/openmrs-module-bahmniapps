@@ -1,7 +1,7 @@
 'use strict';
 
 describe("PatientListController", function () {
-        var _spinner, _patientService, _appService;
+        var _spinner, _patientService, _appService, $bahmniCookieStore;
         var controller, scope, findPatientsPromise, searchPatientsPromise, retrospectiveEntryService;
         var stateParams = { location: "Ganiyari"};
 
@@ -45,6 +45,13 @@ describe("PatientListController", function () {
         ];
 
         beforeEach(function () {
+            $bahmniCookieStore = jasmine.createSpyObj('$bahmniCookieStore', ['remove', 'put', 'get']);
+            $bahmniCookieStore.get.and.callFake(function (cookie) {
+                if (cookie == Bahmni.Common.Constants.locationCookieName) {
+                    return {uuid: 1, display: "Location" };
+                }
+            });
+
             _spinner = jasmine.createSpyObj('spinner', ['forPromise']);
             _spinner.forPromise.and.callFake(function (promiseParam) {
                 return promiseParam;
@@ -80,7 +87,8 @@ describe("PatientListController", function () {
                     appService: _appService,
                     spinner: _spinner,
                     $stateParams: stateParams,
-                    retrospectiveEntryService: retrospectiveEntryService
+                    retrospectiveEntryService: retrospectiveEntryService,
+                    $bahmniCookieStore: $bahmniCookieStore
                 });
             });
         };

@@ -8,8 +8,11 @@ angular.module('bahmni.common.displaycontrol.obsVsObsFlowSheet')
             var init = function () {
                 return observationsService.getObsInFlowSheet(patient.uuid, $scope.config.templateName,
                     $scope.config.groupByConcept, $scope.config.conceptNames, $scope.config.numberOfVisits).success(function (data) {
-                        data.headers = _.without(data.headers, $scope.config.groupByConcept);
-                        data.headers.unshift($scope.config.groupByConcept);
+                        var foundElement = _.find(data.headers, function (header) {
+                            return header.name === $scope.config.groupByConcept;
+                        });
+                        data.headers = _.without(data.headers, foundElement);
+                        data.headers.unshift(foundElement);
                         $scope.obsTable = data;
                     });
             };

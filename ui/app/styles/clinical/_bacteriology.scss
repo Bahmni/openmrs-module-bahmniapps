@@ -3,9 +3,6 @@
   .sample-container{
     margin-bottom: 20px;
   }
-  #sample-id{
-    max-width: 80%;
-  }
   form{
     overflow: hidden;
   }
@@ -26,6 +23,7 @@
     border: 2px #5B8989 solid;
     padding: 10px;
     border-radius: 3px;
+    margin-bottom: 10px;
     .savedSpecimens-action{
       font-size: 20px;
     }
@@ -36,4 +34,54 @@
       margin-right: 10px;
     }
   }
+}
+
+.bacteriology-dashboard{
+  .specimen-info{
+    span{
+      display: inline-block;
+      cursor: pointer;
+      &.specimenSource{
+        width: 55%;
+      }
+      &.specimenId{
+        font-family: OpenSansSemiBold;
+      }
+      &.specimenCollectionDate{
+        width: 38%;
+        text-align: right;
+      }
+    }
+  }
+  .hierarchy ul li ul li .tree-list-item{
+    padding-left: 40px;
+  }
+}
+.dashboard-tabular-obs-section{
+  table{
+    tr{
+      th{
+        text-align: left;
+        font-family: OpenSansSemiBold;
+      }
+    }
+  }
+}
+.ngdialog-content {
+  .dashboard-tabular-obs-section{
+    table{
+      tr{
+        th{
+          border: 1px solid #DDD;
+        }
+        td{
+          border: 1px solid #DDD;
+        }
+      }
+    }
+  }
+}
+
+.edit-bacteriology-sample{
+  margin-top: 10px;
 }

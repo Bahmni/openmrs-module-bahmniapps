@@ -52,6 +52,7 @@ Bahmni.ConceptSet.BooleanObservation = function(observation, conceptUIConfig) {
         return this.value;
     };
     this.isValid = function(checkRequiredFields, conceptSetRequired) {
+        if(this.error) return false;
         var notYetSet = function(value) {
             return (typeof value == 'undefined'  || value == null);
         };

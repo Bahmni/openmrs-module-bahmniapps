@@ -102,5 +102,78 @@ describe("ConceptSetObservationMapper", function() {
         expect(mappedObs.groupMembers.length).toBe(2);
         expect(mappedObs).toEqual(jasmine.any(Bahmni.ConceptSet.ObservationNode));
         expect(mappedObs.value).toEqual(headache.name);
-    })
+    });
+
+    it("should map obsGroups as tabular observations if configured", function() {
+        var drug = buildConcept("Drug", [], []);
+        var concentration = buildConcept("Concentration", [], []);
+        var dstResult = buildConcept("DST Result", [drug, concentration], []);
+        var headache = buildConcept("Headache", [], []);
+        var dst = buildConcept("DST", [headache, dstResult], []);
+
+        var obs = [{
+            "concept": dst,
+            "label": "DST",
+            "comment": null,
+            "voided": false,
+            groupMembers: [{
+                "concept": dstResult,
+                "label": "DST Result",
+                "groupMembers": [{
+                    "concept": drug,
+                    "label": "Drug",
+                    "groupMembers": [],
+                    "value": "Paracetamol",
+                    "voided": false
+                }, {
+                    "concept": concentration,
+                    "label": "Concentration",
+                    "groupMembers": [],
+                    "value": "100mg",
+                    "voided": false
+                }],
+                "comment": null,
+                "voided": false
+            }, {
+                "concept": headache,
+                "label": "Headache",
+                "groupMembers": [],
+                "value": "Mild",
+                "comment": null,
+                "voided": false
+            }, {
+                "concept": dstResult,
+                "label": "DST Result",
+                "groupMembers": [{
+                    "concept": drug,
+                    "label": "Drug",
+                    "groupMembers": [],
+                    "value": "Asprine",
+                    "voided": false
+                }, {
+                    "concept": concentration,
+                    "label": "Concentration",
+                    "groupMembers": [],
+                    "value": "500mg",
+                    "voided": false
+                }],
+                "comment": null,
+                "voided": false
+            }]
+        }];
+
+        var rootConcept = obs[0].concept;
+        var mapper = new Bahmni.ConceptSet.ObservationMapper();
+        var mappedObs = mapper.map(obs, rootConcept, {"DST Result": {isTabular: true}});
+
+        expect(mappedObs.groupMembers.length).toBe(4);
+        expect(mappedObs.groupMembers[0].label).toEqual("Headache");
+
+        expect(mappedObs.groupMembers[1].label).toEqual("DST Result");
+        expect(mappedObs.groupMembers[1].hidden).toBeTruthy();
+
+        expect(mappedObs.groupMembers[2].label).toEqual("DST Result");
+        expect(mappedObs.groupMembers[3].label).toEqual("DST Result");
+    });
+
 });

@@ -241,6 +241,8 @@ Bahmni.ConceptSet.Observation.prototype = {
     },
 
     isValid: function (checkRequiredFields, conceptSetRequired) {
+
+        if (this.error) return false;
         if (this.hidden) return true;
         if (checkRequiredFields) {
             if (this.isGroup()) return this._hasValidChildren(checkRequiredFields, conceptSetRequired);
