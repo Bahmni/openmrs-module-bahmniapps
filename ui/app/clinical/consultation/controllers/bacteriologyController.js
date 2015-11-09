@@ -11,6 +11,8 @@ angular.module('bahmni.clinical')
             $scope.today = Bahmni.Common.Util.DateUtil.getDateWithoutTime(Bahmni.Common.Util.DateUtil.now());
 
             var init = function () {
+                $scope.clearEmptySpecimens();
+
                 var additionalAttributes = _.find(bacteriologyConceptSet.setMembers, function (member) {
                     return member.conceptClass.name === "Bacteriology Attributes"
                 });
@@ -27,11 +29,10 @@ angular.module('bahmni.clinical')
                 $scope.allSamples = sampleSource != undefined && _.map(sampleSource.answers, function (answer) {
                         return new Bahmni.Common.Domain.ConceptMapper().map(answer);
                     });
-                $scope.clearEmptySpecimens();
             };
 
             var createNewSpecimen = function () {
-                var newSpecimen = new Bahmni.Clinical.Specimen(null, $scope.allSamples);
+                var newSpecimen = new Bahmni.Clinical.Specimen();
                 $scope.newSpecimens.push(newSpecimen);
             };
 
@@ -54,10 +55,8 @@ angular.module('bahmni.clinical')
                 savableSpecimens = savableSpecimens.concat($scope.deletedSpecimens);
 
                 _.each(savableSpecimens, function (specimen) {
+                    specimen.sample.additionalAttributes = Array.isArray(specimen.sample.additionalAttributes) ? specimen.sample.additionalAttributes[0] : specimen.sample.additionalAttributes;
                     var observationFilter = new Bahmni.Common.Domain.ObservationFilter();
-                    specimen.sample.additionalAttributes = Array.isArray(specimen.sample.additionalAttributes) ? specimen.sample.additionalAttributes : [specimen.sample.additionalAttributes];
-                    specimen.sample.additionalAttributes=observationFilter.filter(specimen.sample.additionalAttributes)[0];
-                    specimen.report.results = Array.isArray(specimen.report.results) ? specimen.report.results : [specimen.report.results];
                     specimen.report.results = observationFilter.filter(specimen.report.results)[0];
                 });
 
@@ -97,16 +96,12 @@ angular.module('bahmni.clinical')
 
             $scope.editSpecimen = function (specimen) {
                 if (!isAlreadyBeingEdited(specimen)) {
-                    $scope.newSpecimens.push(new Bahmni.Clinical.Specimen(specimen,$scope.allSamples));
+                    $scope.newSpecimens.push(new Bahmni.Clinical.Specimen(specimen));
                     $scope.clearEmptySpecimens();
                 } else {
                     messagingService.showMessage("formError", "{{ 'BACTERIOLOGY_SAMPLE_BEING_EDITED_KEY' | translate}}" + specimen.type.name + " #" + specimen.identifier);
                 }
             };
-
-            $scope.handleUpdate = function() {
-              return;
-            }
 
             $scope.deleteSpecimen = function (specimen) {
                 if (!isAlreadyBeingEdited(specimen)) {
