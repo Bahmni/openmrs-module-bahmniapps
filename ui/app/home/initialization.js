@@ -12,9 +12,18 @@ angular.module('bahmni.home')
             };
         }
     ])
-    .factory('loginInitialization', ['$rootScope', '$q', 'locationService', 'spinner','messagingService',
-        function ($rootScope, $q, locationService, spinner, messagingService) {
+    .factory('loginInitialization', ['$rootScope', '$q', 'locationService', 'spinner','messagingService','$bahmniCookieStore',
+        function ($rootScope, $q, locationService, spinner, messagingService, $bahmniCookieStore) {
             var init = function () {
+                var platform = "chrome";
+                if(window.navigator.userAgent.match(/Android/i)){
+                    //if(navigator.platform.equals("Linux armv7l")){
+                    platform = "android";
+                }
+                else if (window.chrome && chrome.runtime && chrome.runtime.id) {
+                    platform = "chrome app"
+                }
+                $bahmniCookieStore.put(Bahmni.Common.Constants.platform, platform);
                 var deferrable = $q.defer();
                 locationService.getAllByTag("Login Location").then(
                     function(response) {deferrable.resolve({locations: response.data.results})},
