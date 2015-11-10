@@ -16,6 +16,7 @@ angular.module('bahmni.common.obs')
             $scope.save = function(){
                 $scope.encounter.observations = new Bahmni.Common.Domain.ObservationFilter().filter($scope.encounter.observations);
                 $scope.encounter.orders = addOrdersToEncounter();
+                $scope.encounter.extensions={};
                 var createPromise = encounterService.create($scope.encounter);
                 spinner.forPromise(createPromise).then(function() {
                     $state.go($state.current, {}, {reload: true});
