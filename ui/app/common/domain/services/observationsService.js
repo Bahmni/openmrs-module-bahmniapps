@@ -36,13 +36,15 @@ angular.module('bahmni.common.domain')
             });
         };
 
-        this.getObsInFlowSheet = function (patientUuid, conceptSet, groupByConcept, conceptNames, numberOfVisits) {
+        this.getObsInFlowSheet = function (patientUuid, conceptSet, groupByConcept, conceptNames, numberOfVisits, initialCount, latestCount) {
             var params = {
                 patientUuid: patientUuid,
                 conceptSet: conceptSet,
                 groupByConcept: groupByConcept,
                 conceptNames: conceptNames,
-                numberOfVisits: numberOfVisits
+                numberOfVisits: numberOfVisits,
+                initialCount: initialCount,
+                latestCount: latestCount
             };
             return $http.get(Bahmni.Common.Constants.observationsUrl + "/flowSheet", {
                 params: params,

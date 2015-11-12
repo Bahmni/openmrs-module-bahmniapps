@@ -7,7 +7,7 @@ angular.module('bahmni.common.displaycontrol.obsVsObsFlowSheet')
             var patient = $scope.patient;
             var init = function () {
                 return observationsService.getObsInFlowSheet(patient.uuid, $scope.config.templateName,
-                    $scope.config.groupByConcept, $scope.config.conceptNames, $scope.config.numberOfVisits).success(function (data) {
+                    $scope.config.groupByConcept, $scope.config.conceptNames, $scope.config.numberOfVisits, $scope.config.initialCount, $scope.config.latestCount).success(function (data) {
                         var foundElement = _.find(data.headers, function (header) {
                             return header.name === $scope.config.groupByConcept;
                         });
