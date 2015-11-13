@@ -91,11 +91,6 @@ angular.module('bahmni.common.domain')
                 }
             };
 
-            //var mapSavedFilter = function(orderSet) {
-            //    return filterOrderSetAttributes(orderSet);
-            //
-            //};
-
             var filterOrderSetAttributes = function (orderSet) {
                 orderSet.orderSetMembers.forEach(function (orderSetMember) {
                     if (!_.isNull(orderSetMember.orderSetMemberAttributes)) {
@@ -159,7 +154,6 @@ angular.module('bahmni.common.domain')
 
             var mapOrderSet = function (orderSet, mappedOrderSet) {
                 if (orderSet.orderSetMembers) {
-                    orderSet.orderSetMembers.orderSetMemberAttributes = [];
                     orderSet.orderSetMembers.forEach(function (orderSetMember) {
                         var orderSetMemberObj = {};
                         if (orderSetMember.orderSetMemberId) {
@@ -167,6 +161,7 @@ angular.module('bahmni.common.domain')
                             orderSetMemberObj.uuid = orderSetMember.uuid;
                         }
                         if (_.isEmpty(orderSetMember.orderSetMemberAttributes)) {
+                            orderSetMember.orderSetMemberAttributes = [];
                             var primaryAttribute = {};
                             primaryAttribute.orderSetMemberAttributeType = $scope.primaryAttributeType;
                             orderSetMember.orderSetMemberAttributes.push(primaryAttribute);

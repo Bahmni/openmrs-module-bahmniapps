@@ -298,6 +298,25 @@ angular.module('bahmni.clinical')
 
             };
 
+            $scope.$watch("treatment.drug",
+                function(newValue, oldValue) {
+                    if(newValue) {
+                        spinner.forPromise(orderSetService.getOrderSetWithAttributeNameAndValue(newValue.conceptUuid, "Primary", "true").then(function(response) {
+                            $scope.orderSetDrugs = filterOutVoidedOrderSet(response.data.results);
+                        }));
+                    }
+                }
+            );
+
+            var filterOutVoidedOrderSet = function (orderSetResults) {
+                _.forEach(orderSetResults, function(orderSetResult) {
+                    orderSetResult.orderSetMembers = _.filter(orderSetResult.orderSetMembers, function (orderSetMemberObj) {
+                        return !orderSetMemberObj.voided;
+                    });
+                });
+                return orderSetResults;
+            };
+
             $scope.clearForm = function () {
                 $scope.treatment = newTreatment();
                 $scope.formInvalid = false;

@@ -150,6 +150,9 @@
         .table-mimic li.active-drug .drug-details{
             padding-left: 5px;
         }
+        .inpage .tabs .inpage-tab-panel{
+            position: static;
+        }
     }
     .new-drug-order {
         margin: 0 5px;
@@ -324,6 +327,35 @@
 
 .revise-refill-modal-wrapper {
     outline: 0;
+}
+
+.medications-orderset-list{
+    box-sizing: border-box;
+    //border: 1px solid #f9f4e7;
+    border: 1px solid #f9edbe;
+    border-radius: 5px 5px 0 0;
+    background: #FFFFFF;
+    margin:0 5px 10px;
+    .medications{
+        //background:#f9f4e7;
+        background: #f9edbe;
+        .section-title{
+            color:#363463;
+            //background:#f9f4e7;
+            background: #f9edbe;
+        }
+    }
+    .drug-details{
+        width: 98.9%;
+        padding: 3px 10px;
+        div{
+            input[type="button"]{
+                float: right;
+                padding: 6px 20px;
+                margin-top: -4px;
+            }
+        }
+    }
 }
 
 
