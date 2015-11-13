@@ -1,0 +1,14 @@
+<section>
+    <div class="subheading-wrapper" ng-if="orderSetDrugs.length > 0">
+        <h2 class="section-title fl">OrderSet List</h2>
+    </div>
+    <ul class="table-mimic">
+        <li id="new-drug-orders" ng-repeat="orderSet in orderSetDrugs">
+            <div class="drug-details">
+                <div class="form">
+                    <strong class="drug-name">{{orderSet.name}}</strong>
+                </div>
+            </div>
+        </li>
+    </ul>
+</section>

@@ -1,7 +1,7 @@
 'use strict';
 
 
-angular.module('bahmni.admin')
+angular.module('bahmni.common.domain')
     .controller('OrderSetController', ['$scope', '$state', 'spinner', '$http', 'orderSetService', 'messagingService', 'orderTypeInitialization',
         function ($scope, $state, spinner, $http, orderSetService, messagingService, orderTypeInitialization) {
             $scope.operators = ['ALL', 'ANY', 'ONE'];
@@ -78,7 +78,7 @@ angular.module('bahmni.admin')
 
             $scope.save = function () {
                 if (validationSuccess()) {
-                    spinner.forPromise(orderSetService.saveOrderSet(map($scope.orderSet)).then(function (response) {
+                    spinner.forPromise(orderSetService.saveOrderSet(filterOrderSetAttributes($scope.orderSet)).then(function (response) {
                         $state.params.orderSetUuid = response.data.uuid;
                         return $state.transitionTo($state.current, $state.params, {
                             reload: true,
@@ -89,6 +89,24 @@ angular.module('bahmni.admin')
                         });
                     }));
                 }
+            };
+
+            //var mapSavedFilter = function(orderSet) {
+            //    return filterOrderSetAttributes(orderSet);
+            //
+            //};
+
+            var filterOrderSetAttributes = function (orderSet) {
+                orderSet.orderSetMembers.forEach(function (orderSetMember) {
+                    if (!_.isNull(orderSetMember.orderSetMemberAttributes)) {
+                        orderSetMember.orderSetMemberAttributes = _.filter(orderSetMember.orderSetMemberAttributes, function (orderSetMemberAttribute) {
+                            if(orderSetMemberAttribute.value) {
+                                return true;
+                            }
+                        });
+                    }
+                });
+                return orderSet;
             };
 
             var validationSuccess = function () {
@@ -104,7 +122,7 @@ angular.module('bahmni.admin')
 
                 }
                 return true;
-            }
+            };
 
             var countActiveOrderSetMembers = function (orderSetMembers) {
                 var countActive = 0;
@@ -130,6 +148,8 @@ angular.module('bahmni.admin')
                 return mappedOrderSet;
             };
 
+
+
             var filterOutOrderSet = function (orderSetResult) {
                 orderSetResult.orderSetMembers = _.filter(orderSetResult.orderSetMembers, function (orderSetMemberObj) {
                     return !orderSetMemberObj.voided;
@@ -139,19 +159,20 @@ angular.module('bahmni.admin')
 
             var mapOrderSet = function (orderSet, mappedOrderSet) {
                 if (orderSet.orderSetMembers) {
+                    orderSet.orderSetMembers.orderSetMemberAttributes = [];
                     orderSet.orderSetMembers.forEach(function (orderSetMember) {
                         var orderSetMemberObj = {};
                         if (orderSetMember.orderSetMemberId) {
                             orderSetMemberObj.orderSetMemberId = orderSetMember.orderSetMemberId;
                             orderSetMemberObj.uuid = orderSetMember.uuid;
                         }
-                        if (orderSetMember.orderSetMemberAttributes) {
-                            _.each(orderSetMember.orderSetMemberAttributes, function (orderSetMemberAttribute) {
-                                var orderSetMemberAttributeTypeId = orderSetMemberAttribute.orderSetMemberAttributeType.orderSetMemberAttributeTypeId;
-                                orderSetMemberAttribute.orderSetMemberAttributeType = {orderSetMemberAttributeTypeId: orderSetMemberAttributeTypeId};
-                            });
-                            orderSetMemberObj.orderSetMemberAttributes = orderSetMember.orderSetMemberAttributes;
+                        if (_.isEmpty(orderSetMember.orderSetMemberAttributes)) {
+                            var primaryAttribute = {};
+                            primaryAttribute.orderSetMemberAttributeType = $scope.primaryAttributeType;
+                            orderSetMember.orderSetMemberAttributes.push(primaryAttribute);
                         }
+                        orderSetMemberObj.orderSetMemberAttributes = orderSetMember.orderSetMemberAttributes;
+
                         orderSetMemberObj.orderType = {
                             uuid: orderSetMember.orderType.uuid
                         };
@@ -177,7 +198,6 @@ angular.module('bahmni.admin')
                     orderSetMemberAttributes: [attribute]
                 };
                 return orderSetMember;
-
             };
 
             var buildNewOrderSet = function () {

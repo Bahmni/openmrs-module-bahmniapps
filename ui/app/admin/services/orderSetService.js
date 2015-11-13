@@ -1,10 +1,10 @@
 'use strict';
 
-angular.module('bahmni.admin')
+angular.module('bahmni.common.domain')
     .service('orderSetService', ['$http',function ($http) {
         this.getAllOrderSets = function() {
             return $http.get(Bahmni.Common.Constants.orderSetUrl, {
-                params: {v:"custom:(uuid,name)"}
+                params: {v:"custom:(name,uuid)"}
             });
         };
 
@@ -28,5 +28,14 @@ angular.module('bahmni.admin')
                 headers: {"Accept": "application/json", "Content-Type": "application/json"}
             });
         };
+
+        this.getOrderSetWithAttributeNameAndValue = function(conceptUuid, attributeName, attributeValue) {
+            var url = Bahmni.Common.Constants.orderSetUrl;
+            return $http.get(url, {
+                params:{drugConceptUuid: conceptUuid, attributeType: attributeName,attributeValue: attributeValue, v:"custom:(name,uuid,orderSetMembers)"},
+                withCredentials: true,
+                headers: {"Accept": "application/json", "Content-Type": "application/json"}
+            });
+        }
 
     }]);

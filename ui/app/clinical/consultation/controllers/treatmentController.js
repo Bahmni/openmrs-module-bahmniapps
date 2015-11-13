@@ -2,10 +2,10 @@
 
 angular.module('bahmni.clinical')
 
-    .controller('TreatmentController', ['$scope', '$rootScope', 'contextChangeHandler', 'treatmentConfig', 'DrugService', '$timeout',
-        'clinicalAppConfigService','ngDialog', '$window',
-        function ($scope, $rootScope, contextChangeHandler, treatmentConfig, drugService, $timeout,
-                  clinicalAppConfigService, ngDialog, $window) {
+    .controller('TreatmentController', ['$scope', '$rootScope', 'contextChangeHandler', 'treatmentConfig', 'DrugService', '$timeout', 'orderSetService',
+        'clinicalAppConfigService','ngDialog', '$window', 'spinner',
+        function ($scope, $rootScope, contextChangeHandler, treatmentConfig, drugService, $timeout, orderSetService,
+                  clinicalAppConfigService, ngDialog, $window, spinner) {
 
             var DateUtil = Bahmni.Common.Util.DateUtil;
 
@@ -109,6 +109,7 @@ angular.module('bahmni.clinical')
             }, true);
 
             $scope.add = function () {
+                console.log("---------------------------", $scope.treatment);
                 $scope.treatment.dosingInstructionType = Bahmni.Clinical.Constants.flexibleDosingInstructionsClass;
                 var newDrugOrder = $scope.treatment;
                 newDrugOrder.effectiveStopDate = DateUtil
@@ -272,11 +273,29 @@ angular.module('bahmni.clinical')
             };
 
             $scope.populateBackingFields = function (item) {
+                fetchOrderSets(item);
                 $scope.treatment.changeDrug({
                     name: item.drug.name,
                     form: item.drug.dosageForm.display,
-                    uuid: item.drug.uuid
+                    uuid: item.drug.uuid,
+                    conceptUuid: item.drug.concept.uuid
                 });
+                console.log($scope.treatment);
+            };
+
+            $scope.$watch("treatment.drug",
+                function(newValue, oldValue) {
+                    if(newValue) {
+                        spinner.forPromise(orderSetService.getOrderSetWithAttributeNameAndValue(newValue.conceptUuid, "Primary", "true").then(function(response) {
+                            $scope.orderSetDrugs = response.data.results;
+                        }));
+                    }
+                }
+            );
+
+            var fetchOrderSets = function(item){
+                var conceptUuid = item.drug.concept.uuid;
+
             };
 
             $scope.clearForm = function () {

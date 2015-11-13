@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('bahmni.admin')
+angular.module('bahmni.common.domain')
     .controller('OrderSetDashboardController', ['$scope', '$state', 'spinner', 'appService', '$http', 'orderSetService', '$location', function ($scope, $state, spinner, appService, $http, orderSetService, $location) {
         $scope.appExtensions = appService.getAppDescriptor().getExtensions("bahmni.admin.orderSet", "link") || [];
 
