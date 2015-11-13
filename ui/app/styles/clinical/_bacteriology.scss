@@ -8,6 +8,11 @@
   }
   form{
     overflow: hidden;
+    .field-value{
+      #sample-date{
+        margin-bottom:5px;
+      }
+    }
   }
   .add-sample-btn{
     padding: 6px 15px !important;
