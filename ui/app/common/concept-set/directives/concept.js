@@ -45,8 +45,8 @@ angular.module('bahmni.common.conceptSet')
                     },
                     allowClear: true,
                     placeholder: 'Select',
-                    formatResult: _.property('shortName'),
-                    formatSelection: _.property('name'),
+                    formatResult: _.property('displayString'),
+                    formatSelection: _.property('displayString'),
                     id: _.property('uuid')
                 };
             };
