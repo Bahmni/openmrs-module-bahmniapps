@@ -153,15 +153,7 @@ form, .form {
       background: $focus;
     }
   }
-  input[type="date"]{
-    padding: 1px 10px;
-    @media (max-width: 1024px) {
-      padding: 4px 10px;
-    }
-    @media (max-width: 768px) {
-      padding: 6px 10px;
-    }
-  }
+
 
   select {
     min-width: 197px;
@@ -282,6 +274,15 @@ form, .form {
 
   input[type="checkbox"] {
     @include check-box;
+  }
+  input[type="date"]{
+    padding: 1px 10px !important;
+    @media (max-width: 1024px) {
+      padding: 4px 10px !important;
+    }
+    @media (max-width: 768px) {
+      padding: 6px 10px !important;
+    }
   }
 }
 
