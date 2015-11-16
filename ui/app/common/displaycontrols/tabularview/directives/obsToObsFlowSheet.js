@@ -26,6 +26,21 @@ angular.module('bahmni.common.displaycontrol.obsVsObsFlowSheet')
                 "section": $scope.section
             };
 
+            $scope.commafy = function (observations){
+                var list = [];
+                var unBoolean = function(boolValue) {
+                    return boolValue ? "Yes" : "No";
+                };
+
+                for (var index in observations) {
+                    var name =  observations[index].value.name || observations[index].value;
+                    if (observations[index].concept.dataType === "Boolean") name = unBoolean(name);
+                    list.push(name);
+                }
+
+                return list.join(', ');
+            };
+
             spinner.forPromise(init());
         };
         return {
