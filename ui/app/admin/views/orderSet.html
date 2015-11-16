@@ -57,21 +57,13 @@
                                 <input class="enter-concept" type="text" name="conceptSet" ng-model="orderSetMember.concept.name" bahmni-autocomplete strict-select="true" on-select="onSelect($index)" is-invalid="conceptNameInvalid" source="getConcepts" response-map=getDataResults(orderSetMember.orderType) required placeholder="Enter a concept name" />
                             </div>
                         </div>
-                        <div class="field-value">
-                            <input class="enter-concept" type="text" name="conceptSet" ng-model="orderSetMember.concept.name" bahmni-autocomplete strict-select="true" on-select="onSelect($index)" is-invalid="conceptNameInvalid" source="getConcepts" response-map=getDataResults(orderSetMember.orderType) required placeholder="Enter a concept name" />
-                        </div>
-                        <div ng-repeat="orderSetMemberAttribute in orderSetMember.orderSetMemberAttributes">
-                            <label>{{primaryAttributeType.description}}</label>
-                            <input class="field-attribute" id="isPrimary" type="checkbox" ng-true-value="'true'" ng-false-value="'false'" ng-model="orderSetMemberAttribute.value"  />
-                        </div>
-                        <input class="fl remove-orderSet" type="button" ng-click="removeOrderSetMember($index)" value="-">
 
                         <div class="col col3 form-field">
                             <span class="primaryDrug-text">{{primaryAttributeType.description}}</span>
                             <div class="field-attribute">
                                 <input id="isPrimary" type="checkbox" ng-true-value="'true'" ng-false-value="'false'" ng-model="orderSetMember.orderSetMemberAttributes[0].value"  />
                             </div>
-                            <input class="fl remove-orderSet" type="button" ng-click="removeOrderSetMember($index)" value="-">
+                            <input class="fl remove-orderSet" type="button" ng-click="removeOrderSetMember($index)" value="X">
 
                         </div>
                     </div>

@@ -109,7 +109,6 @@ angular.module('bahmni.clinical')
             }, true);
 
             $scope.add = function () {
-                console.log("---------------------------", $scope.treatment);
                 $scope.treatment.dosingInstructionType = Bahmni.Clinical.Constants.flexibleDosingInstructionsClass;
                 var newDrugOrder = $scope.treatment;
                 newDrugOrder.effectiveStopDate = DateUtil
@@ -280,7 +279,6 @@ angular.module('bahmni.clinical')
                     uuid: item.drug.uuid,
                     conceptUuid: item.drug.concept.uuid
                 });
-                console.log($scope.treatment);
             };
 
             $scope.$watch("treatment.drug",
