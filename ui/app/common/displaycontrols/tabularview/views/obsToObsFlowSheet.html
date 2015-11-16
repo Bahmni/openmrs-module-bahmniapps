@@ -17,10 +17,10 @@
             <p>{{'NO_DATA_MESSAGE' | translate}}</p>
         </div>
         <table ng-if="obsTable.rows.length > 0">
-            <th ng-repeat="header in obsTable.headers">{{header}}</th>
+            <th ng-repeat="header in obsTable.headers">{{header.shortName || header.name}}</th>
             <tr ng-repeat="row in obsTable.rows">
-                <td ng-repeat="header in obsTable.headers" ng-class="{'is-abnormal': row.columns[header].abnormal}">
-                    {{ row.columns[header].value.name || row.columns[header].value }}
+                <td ng-repeat="header in obsTable.headers" ng-class="{'is-abnormal': row.columns[header.name].abnormal}">
+                    {{ commafy(row.columns[header.name]) }}
                 </td>
             </tr>
         </table>
