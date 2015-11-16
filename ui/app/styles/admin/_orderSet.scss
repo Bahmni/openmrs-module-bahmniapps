@@ -3,27 +3,46 @@
     background-color: #669999;
     padding: 5px 10px 1px;
   }
-  ul.orderSet-list{
-    margin: 15px;
-    @include column(4);
-    li{
-      display: block;
-      a{
+  table.orderSet-list{
+    border: 0;
+    tr{
+      border: 0;
+      border-bottom: 1px solid #ddd;
+      th{
+        text-align: left;
+        border: 0;
+        border-bottom: 1px solid #ddd;
+        font-weight: 700;
+        background: #ddd;
+        color: #363463;
+        padding: 8px;
+      }
+      &:nth-child(even),&:nth-child(odd){
+        background:#fff!important;
+        padding:4px 8px;
+      }
+      td{
+        border: 0;
         display: block;
-        padding-right: 15px;
-        padding-bottom: 5px;
-        &:hover{
-          text-decoration: underline;
+        a{
+          display: block;
+          padding-right: 15px;
+          padding-bottom: 5px;
+          font-size: 16px;
+          &:hover{
+            text-decoration: underline;
+          }
         }
       }
     }
+
   }
 }
 .orderSet-container{
   .orderSet-form{
     padding: 0 20px 20px;
     .new-orderSet-wrapper{
-      padding: 20px;
+      padding: 20px 0;
     }
     .form-field{
       float: left;
@@ -31,67 +50,94 @@
         padding: 2px 10px;
       }
       .field-attribute label{
-        width: 8em;
+        width: auto;
       }
     }
+    .submit-btn-container{
+      margin: 0 20px;
+      input[type="submit"]{
+        margin-left:10px;
+        background: linear-gradient(to bottom, #A1D030 , #88af28 );
+        background-color: #88af28 ;
+        border: #88af28  1px solid;
+        &:hover {
+          background: #8eb82a ;
+          border-color: #779b23 ;
+        }
+      }
+    }
+
   }
   .orderSetMember-wrapper{
+    .add-more-btn{
+      margin: 0 0 20px;
+    }
     fieldset{
-      border: 1px solid #ccc;
-      border-radius: 5px;
       margin-bottom: 10px;
       .form-field{
-        width: 100%;
         .field-attribute label{
-          width: 15em;
+          width: auto;
+          float:left;
         }
       }
       .remove-orderSet{
         margin-left: 60px;
       }
       legend{
-        border: 1px #999 solid;
-        border-radius: 20px;
-        padding: 2px 10px;
-        text-transform: none;
-        font-size: 12px;
-        font-family: openSansBold;
-        color: #666;
-        margin: 10px;
+        background: #eee !important;
+        font-size: 14px;
+        width: 99.8%;
+        line-height: 16px;
+        margin-bottom: 20px;
+        padding: 3px 0;
+        border-radius: 3px;
+        border: 1px solid #ccc;
+        display: block;
+        span {
+          display: inline-block;
+          padding: 2px 10px;
+          font-weight: bold;
+        }
       }
     }
   }
 }
 
-.registraion_legend span.mylegend {
-  display: inline-block;
-  width: auto;
-  margin-bottom: 0;
-  padding: 5px 6px;
-  margin-left: 25px;
-  position: relative;
+.orderSetMember-wrapper ,.new-orderSet-wrapper{
+  overflow: hidden;
+  margin: 20px 20px 10px;
+  .row{
+    float: left;
+    width: 100%;
+    .col1 {
+      margin-top: 0;
+      label.add-new {margin-top: 10px; font-size: 12px;}
+      width: 30%;
+      float: left;
+    }
+    .col2 {
+      width: 33%;
+      float: left;
+      text-align: left;
+    }
+    .col3 {
+      width: 27%;
+      float: left;
+      text-align: right;
+      .primaryDrug-text{
+        display: inline-block;
+        float: left;
+        padding-right: 20px;
+        padding-top: 12px;
+      }
+      .field-attribute{
+        input[type="checkbox"]{
+          margin-top:12px;
+        }
+      }
+    }
+  }
 }
-.registraion_legend {
-  margin: 15px 0 15px 25px;
-  position: relative;
-  width: 99.8%;
-}
-.registraion_legend:before {
-  content: "";
-  border-top: 1px #ccc solid;
-  position: absolute;
-  top: 14px;
-  width: 96%;
-}
-.mylegend {
-  background: #eee;
-  font-size: 14px;
-  width: 99.8%;
-  line-height: 16px;
-  margin-bottom: 20px;
-  padding: 3px 0;
-  border-radius: 3px;
-  border: 1px solid #ccc;
-}
+
 
 

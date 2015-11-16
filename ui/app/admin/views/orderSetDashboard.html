@@ -5,9 +5,15 @@
 
     </div>
 
-    <ul class="orderSet-list clearfix">
-        <li ng-repeat="orderSet in orderSets">
-            <a ng-click="createOrEditOrderSet(orderSet.uuid);">{{orderSet.name}}</a>
-        </li>
-    </ul>
+    <table class="orderSet-list clearfix">
+        <tr>
+            <th><strong>Name</strong></th>
+        </tr>
+        <tr ng-repeat="orderSet in orderSets">
+           <td><a ng-click="createOrEditOrderSet(orderSet.uuid);">{{orderSet.name}}</a></td>
+        </tr>
+        <!--<li ng-repeat="orderSet in orderSets">-->
+            <!--<a ng-click="createOrEditOrderSet(orderSet.uuid);">{{orderSet.name}}</a>-->
+        <!--</li>-->
+    </table>
 </section>

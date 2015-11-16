@@ -150,7 +150,7 @@ use either a `<button>` or an `<a>` element:
   }
 }
 
-.button, button, input[type="submit"], input[type="button"], input[type="submit"], a.button {
+.button, button, input[type="submit"], input[type="button"],input[type="reset"], input[type="submit"], a.button {
   @include button;
 
   &.task {
