@@ -14,7 +14,7 @@
         <div class="program-timeline" ng-if="patientProgram.states.length!=0">
             <timeline program="patientProgram"></timeline>
         </div>
-        <button ng-click="toggleEdit(patientProgram)" ng-class="{'tab-selected': patientProgram.editing, 'btn-noTimeline':patientProgram.states.length==0}" ng-if="hasProgramWorkflowStates(patientProgram)" class="fr detail-btn">
+        <button ng-click="toggleEdit(patientProgram)" ng-class="{'tab-selected': patientProgram.editing, 'btn-noTimeline':patientProgram.states.length==0}" class="fr detail-btn">
             <span>Details</span>
             <i class="fa fa-expand"></i>
         </button>
