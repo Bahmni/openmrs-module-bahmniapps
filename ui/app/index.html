@@ -3,21 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <!--<meta http-equiv="refresh" content="10;url=/home">-->
-
-    <title>Page Redirection</title>
+    <title>Offline sync</title>
 </head>
 <body>
-    If you are not redirected automatically, follow the <a href='/bahmni/home/#/login?showLoginMessage=true'>link to bahmni</a>
-
+    Offline content is being synced. If you are here for a long time and not redirected automatically, follow the <a href='/bahmni/home/#/dashboard'>link to bahmni</a>
+    <script src="initWorker.js"></script>
     <script type="text/javascript">
-        if ('serviceWorker' in navigator) {
-            navigator.serviceWorker.register('worker.js').then(function (bahmni) {
-                console.log('Yo! service worker working.', bahmni.scope);
-            }).catch(function (err) {
-                alert('No Yo! service worker not working')
-                console.log('No Yo! service worker not working', err);
-            });
-        }
 //        window.location.href = "/home"
     </script>
 </body>
