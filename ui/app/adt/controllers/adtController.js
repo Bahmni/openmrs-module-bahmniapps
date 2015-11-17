@@ -21,7 +21,7 @@ angular.module('bahmni.adt')
                 }
                 var defaultVisitTypeName = appService.getAppDescriptor().getConfigValue('defaultVisitType');
                 var visitTypes = encounterConfig.getVisitTypes();
-                var defaultVisitType = _.find(visitTypes,{name:defaultVisitTypeName});
+                var defaultVisitType = _.find(visitTypes, {name: defaultVisitTypeName});
                 return defaultVisitType && defaultVisitType.uuid || null;
             };
 
@@ -179,8 +179,8 @@ angular.module('bahmni.adt')
                 encounterData.encounterTypeUuid = encounterTypeUuid;
                 encounterData.visitTypeUuid = visitTypeUuid;
                 encounterData.observations = $scope.adtObservations;
-                encounterData.observations = _.filter(encounterData.observations, function(observation) {
-                    return !_.isEmpty(observation.value) ;
+                encounterData.observations = _.filter(encounterData.observations, function (observation) {
+                    return !_.isEmpty(observation.value);
                 });
                 encounterData.locationUuid = locationUuid;
                 return encounterData;
@@ -203,6 +203,14 @@ angular.module('bahmni.adt')
 
 
             $scope.admit = function (visitTypeUuid) {
+                if ($scope.visitSummary && $scope.visitSummary.visitType != 'IPD') {
+                    var confirmed = $window.confirm("Patient Visit Type is "+$scope.visitSummary.visitType+", Do you want to close the Visit and start new IPD Visit?");
+                    if (confirmed) {
+                        visitService.endVisit($scope.visitSummary.uuid);
+                    }
+                    else
+                     return;
+                }
                 var encounterData = getEncounterData($scope.encounterConfig.getAdmissionEncounterTypeUuid(), defaultVisitTypeUuid);
                 encounterService.create(encounterData).success(function (response) {
                     forwardUrl(response, "onAdmissionForwardTo");
