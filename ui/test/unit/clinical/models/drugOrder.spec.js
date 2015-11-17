@@ -80,4 +80,58 @@ describe("DrugOrder", function() {
 			expect(drugOrder.isActive()).toBe(false);
 		});
 	});
+
+	describe("createFromUIObject", function() {
+		it("should create DrugOrder Object", function() {
+			var uiDrugObject = {
+				asNeeded: false,
+				autoExpireDate: undefined,
+				doseUnits: "Tablet(s)",
+				dosingInstructionType: "org.openmrs.module.bahmniemrapi.drugorder.dosinginstructions.FlexibleDosingInstructions",
+				drugNameDisplay: "abc 400mg Tablet",
+				drugNonCoded: "abc 400mg Tablet",
+				duration: 1,
+				durationInDays: 1,
+				durationUnit: "Day(s)",
+				frequencyType: "variable",
+				instructions: "As directed",
+				quantity: 3,
+				quantityUnit: "Tablet(s)",
+				route: "Topical",
+				scheduledDate: null,
+				uniformDosingType: {
+					dose: 1,
+					doseUnits: "Tablet(s)",
+					frequency: "Twice a day"
+				},
+				variableDosingType : {
+					afternoonDose: 1,
+					doseUnits: "Tablet(s)",
+					eveningDose: 1,
+					morningDose: 1
+				},
+				effectiveStartDate: '2014-04-10T15:52:59.000+0530',
+				effectiveStopDate: '2014-04-11T15:52:59.000+0530',
+				isUniformDosingType: function() {
+					return false;
+				}
+			};
+			var drugOrder = Bahmni.Clinical.DrugOrder.createFromUIObject(uiDrugObject);
+
+			expect(drugOrder.careSetting).toBe("OUTPATIENT");
+			expect(drugOrder.drugNonCoded).toBe(uiDrugObject.drugNonCoded);
+			expect(drugOrder.orderType).toBe("Drug Order");
+			expect(drugOrder.dosingInstructionType).toBe(uiDrugObject.dosingInstructionType);
+			var administrationInstructions = JSON.parse(drugOrder.dosingInstructions.administrationInstructions);
+			expect(administrationInstructions.morningDose).toBe(1);
+			expect(administrationInstructions.afternoonDose).toBe(1);
+			expect(administrationInstructions.eveningDose).toBe(1);
+			expect(drugOrder.dosingInstructions.quantity).toBe(uiDrugObject.quantity);
+			expect(drugOrder.dosingInstructions.quantityUnits).toBe(uiDrugObject.quantityUnit);
+			expect(drugOrder.dosingInstructions.route).toBe(uiDrugObject.route);
+			expect(drugOrder.dosingInstructions.frequency).toBe(false);
+			expect(drugOrder.duration).toBe(uiDrugObject.duration);
+			expect(drugOrder.durationUnits).toBe(uiDrugObject.durationUnit);
+		});
+	});
 });

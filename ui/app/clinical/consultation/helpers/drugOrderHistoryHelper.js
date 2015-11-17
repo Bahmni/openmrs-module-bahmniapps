@@ -7,7 +7,7 @@ angular.module('bahmni.clinical')
             var inactivePreviousVisitDrugs = [];
             _.each(previousVisitDrugs, function (previousVisitDrug) {
                 var presentInActiveAndScheduledDrugs = _.find(activeAndScheduledDrugs, function (activeAndScheduledDrug) {
-                    return activeAndScheduledDrug.drug.uuid == previousVisitDrug.drug.uuid;
+                    return activeAndScheduledDrug.drug ? activeAndScheduledDrug.drug.uuid == previousVisitDrug.drug.uuid : true;
                 });
                 if (!presentInActiveAndScheduledDrugs) {
                     inactivePreviousVisitDrugs.push(previousVisitDrug);
