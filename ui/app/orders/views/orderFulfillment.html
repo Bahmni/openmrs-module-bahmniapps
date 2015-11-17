@@ -5,7 +5,7 @@
                 <h2 class="section-title">
                     <i class="fa fa-caret-right" ng-hide="order.showForm"></i>
                     <i class="fa fa-caret-down" ng-show="order.showForm"></i>
-                    <span>{{order.conceptName}}</span>
+                    <span>{{order.concept.shortName || order.concept.name}}</span>
                     <span class="fr">
                         <span class="has-notes fa fa-file-text-o" ng-if="order.commentToFulfiller"></span>
                         <span class="order-provider-nane">{{order.provider}}</span>
