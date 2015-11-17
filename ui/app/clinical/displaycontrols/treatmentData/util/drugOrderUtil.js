@@ -13,7 +13,9 @@ Bahmni.Clinical.DrugOrder.Util = {
             };
 
             var foundDrugOrder = _.find(drugOrders, function (existingOrder) {
-                return areValuesEqual(existingOrder.drug.uuid, drugOrder.drug.uuid)
+                return areValuesEqual(existingOrder.drugNonCoded, drugOrder.drugNonCoded)
+                    && (existingOrder.drug && drugOrder.drug
+                    && areValuesEqual(existingOrder.drug.uuid, drugOrder.drug.uuid))
                     && areValuesEqual(existingOrder.instructions, drugOrder.instructions)
                     && areValuesEqual(existingOrder.getDoseInformation(), drugOrder.getDoseInformation())
                     && areValuesEqual(existingOrder.route, drugOrder.route)

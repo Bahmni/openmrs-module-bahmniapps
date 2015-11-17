@@ -71,6 +71,21 @@ Bahmni.Clinical.DrugOrderViewModel = function (appConfig, config, proto, encount
     this.quantityEnteredManually = this.quantityEnteredManually || false;
     this.isBeingEdited = this.isBeingEdited || false;
     this.orderAttributes = [];
+    this.isNonCodedDrug = this.isNonCodedDrug || false;
+    this.changedBySelection = false;
+
+    this.setAsNonCodedDrug = function () {
+        this.isNonCodedDrug = !this.isNonCodedDrug;
+        if(this.isNonCodedDrug) this.drugNonCoded = this.drugNameDisplay;
+    };
+
+    this.clearCodedDrugUuid = function () {
+        if (this.changedBySelection) {
+            this.changedBySelection = false;
+            return;
+        }
+        if(this.drug) this.drug.uuid = undefined;
+    };
 
     this.overlappingScheduledWith = function(otherDrugOrder){
 
@@ -155,11 +170,11 @@ Bahmni.Clinical.DrugOrderViewModel = function (appConfig, config, proto, encount
     };
 
     this.getDisplayName = function(){
-        return constructDrugNameDisplay(this.drug, this.drug.form).label;
+        return this.drugNameDisplay ? this.drugNameDisplay : constructDrugNameDisplay(this.drug, this.drug.form).label;
     };
 
     this.getDrugName = function(){
-        return constructDrugNameDisplay(self.drug, self.drug.form).value
+        return self.drugNameDisplay ? self.drugNameDisplay : constructDrugNameDisplay(self.drug, self.drug.form).value
     };
 
     this.getDescription = function () {
@@ -392,7 +407,7 @@ Bahmni.Clinical.DrugOrderViewModel = function (appConfig, config, proto, encount
         newDrugOrder.action = Bahmni.Clinical.Constants.orderActions.revise;
         newDrugOrder.uuid = undefined;
         newDrugOrder.dateActivated = undefined;
-        newDrugOrder.drugNameDisplay = constructDrugNameDisplay(self.drug, self.drug.form).value;
+        newDrugOrder.drugNameDisplay = self.drug ? constructDrugNameDisplay(self.drug, self.drug.form).value : self.drugNonCoded;
         //this field is just a flag that you turn on when revising the first time. It is turned off at the first
         //call of calculateQuantityAndUnit(). Bad code. Needs change.
         newDrugOrder.quantityEnteredViaEdit = true;
@@ -536,13 +551,16 @@ Bahmni.Clinical.DrugOrderViewModel.createFromContract = function (drugOrderRespo
     viewModel.provider = drugOrderResponse.provider;
     viewModel.creatorName = drugOrderResponse.creatorName;
     viewModel.action = drugOrderResponse.action;
+    viewModel.concept = drugOrderResponse.concept;
     viewModel.dateStopped = drugOrderResponse.dateStopped;
     viewModel.uuid = drugOrderResponse.uuid;
     viewModel.previousOrderUuid = drugOrderResponse.previousOrderUuid;
     viewModel.dateActivated = drugOrderResponse.dateActivated;
     viewModel.encounterUuid = drugOrderResponse.encounterUuid;
     viewModel.orderNumber = drugOrderResponse.orderNumber && parseInt(drugOrderResponse.orderNumber.replace("ORD-", ""));
-    viewModel.drugNameDisplay = drugOrderResponse.drug.name + " (" + drugOrderResponse.drug.form + ")";
+    viewModel.drugNonCoded = drugOrderResponse.drugNonCoded;
+    viewModel.isNonCodedDrug = drugOrderResponse.drugNonCoded ? true : false;
+    viewModel.drugNameDisplay = drugOrderResponse.drugNonCoded ? drugOrderResponse.drugNonCoded: drugOrderResponse.drug.name + " (" + drugOrderResponse.drug.form + ")";
     config ? viewModel.loadOrderAttributes(drugOrderResponse) : viewModel.orderAttributes = drugOrderResponse.orderAttributes;
     viewModel.visit = drugOrderResponse.visit;
     viewModel.voided = drugOrderResponse.voided;

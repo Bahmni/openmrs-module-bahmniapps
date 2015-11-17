@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('bahmni.clinical').factory('treatmentConfig',['TreatmentService', function (treatmentService) {
+angular.module('bahmni.clinical').factory('treatmentConfig',['TreatmentService', 'spinner', function (treatmentService, spinner) {
 
         function findIndexOfFrequency(frequencies, value) {
             var index;
@@ -32,7 +32,13 @@ angular.module('bahmni.clinical').factory('treatmentConfig',['TreatmentService',
                 {name: "Week(s)", factor: 7},
                 {name: "Month(s)", factor: 30}
             ];
-            return  config;
+            spinner.forPromise(treatmentService.getNonCodedDrugConcept().then(function (data) {
+                config.nonCodedDrugconcept = {
+                    uuid : data
+                };
+            }));
+
+            return config;
         });
     }]
 );

@@ -57,10 +57,29 @@ angular.module('bahmni.clinical')
             });
             return deferred.promise;
         };
+
+        var getNonCodedDrugConcept = function() {
+            var deferred = $q.defer();
+            $http.get(Bahmni.Common.Constants.globalPropertyUrl, {
+                method: "GET",
+                params: {
+                    property: 'drugOrder.drugOther'
+                },
+                withCredentials: true,
+                headers: {
+                    Accept: 'text/plain'
+                }
+            }).success(function (conceptUuid){
+                deferred.resolve(conceptUuid);
+            });
+            return deferred.promise;
+        };
+
         return {
             getActiveDrugOrders: getActiveDrugOrders,
             getConfig: getConfig,
             getPrescribedDrugOrders: getPrescribedDrugOrders,
-            getPrescribedAndActiveDrugOrders: getPrescribedAndActiveDrugOrders
+            getPrescribedAndActiveDrugOrders: getPrescribedAndActiveDrugOrders,
+            getNonCodedDrugConcept: getNonCodedDrugConcept
         };
     }]);
