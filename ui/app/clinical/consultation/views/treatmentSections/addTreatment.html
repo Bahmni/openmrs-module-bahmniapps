@@ -1,10 +1,26 @@
 <section class="edit-drug-order primary-section-grid">
     <form name="addForm" ng-class="{ 'show-invalid': formInvalid}"  ng-submit="add()" bm-form>
         <fieldset>
-            <input id="drug-name" class="form-field drug-name" type="text" placeholder="Drug Name" bahmni-autocomplete is-invalid="treatment.isDrugNameInvalid" focus-on="startNewDrugEntry"
-                   source="getDrugs" response-map="getDataResults" required  strict-select="true" validation-message="Please select a drug from auto complete"
-                   ng-model="treatment.drugNameDisplay" on-select="populateBackingFields" autofocus ng-disabled="treatment.previousOrderUuid" ng-readonly="treatment.isBeingEdited"/>
+            <input id="drug-name" class="form-field drug-name" type="text" placeholder="Drug Name" bahmni-autocomplete focus-on="startNewDrugEntry"
+                   source="getDrugs" response-map="getDataResults" ng-required="!treatment.drugNameDisplay"
+                   ng-class="{
+                        active: treatment.isNonCodedDrug
+                   }"
+                   ng-change="treatment.clearCodedDrugUuid()"
+                   ng-model="treatment.drugNameDisplay" on-select="populateBackingFields" autofocus
+                   ng-disabled="treatment.previousOrderUuid" ng-readonly="treatment.isBeingEdited"/>
 
+            <span ng-if="!allowOnlyCodedDiagnosis">
+                <button type="button" ng-model="treatment.isNonCodedDrug" style="float: left;margin-top: 4px;margin-right: 3px;"
+                    class="small-btn accept-btn" id="accept-button"
+                    ng-click="treatment.setAsNonCodedDrug()"
+                    ng-class="{
+                        illegalValue: treatment.drugNameDisplay && (!treatment.isNonCodedDrug),
+                        active: treatment.isNonCodedDrug
+                    }"
+                    ng-disabled="treatment.drug.uuid"><span>Accept</span>
+                </button>
+            </span>
             <div class="frequency-widget uniform-frequency" ng-click="treatment.setFrequencyType('uniform')" ng-class="{'is-disabled': !treatment.isUniformDosingType()}">
                 <input id="uniform-dose" class="form-field dose" integer="true" ng-focus="treatment.setFrequencyType('uniform')" type="number" min="0" step="any" placeholder="Dose"
                        ng-model="treatment.uniformDosingType.dose" ng-disabled="!treatment.isUniformDosingType()" ng-required="!treatment.validate()" focus-on="editDrugEntryUniformFrequency" />
