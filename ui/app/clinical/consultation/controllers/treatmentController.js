@@ -77,6 +77,12 @@ angular.module('bahmni.clinical')
                 });
             };
 
+            var setNonCodedDrugConcept = function(treatment) {
+                if (treatment.isNonCodedDrug) {
+                    treatment.concept = treatmentConfig.nonCodedDrugconcept;
+                }
+            };
+
             $scope.$on("event:refillDrugOrder", function (event, drugOrder, alreadyActiveSimilarOrder) {
                 var existingOrderStopDate = alreadyActiveSimilarOrder ? alreadyActiveSimilarOrder.effectiveStopDate : null;
                 var refill = drugOrder.refill(existingOrderStopDate);
@@ -111,9 +117,7 @@ angular.module('bahmni.clinical')
             $scope.add = function () {
                 $scope.treatment.dosingInstructionType = Bahmni.Clinical.Constants.flexibleDosingInstructionsClass;
                 var newDrugOrder = $scope.treatment;
-                if ($scope.treatment.isNonCodedDrug) {
-                    $scope.treatment.concept = treatmentConfig.nonCodedDrugconcept;
-                }
+                setNonCodedDrugConcept($scope.treatment);
 
                 newDrugOrder.effectiveStopDate = DateUtil
                     .addDays(
@@ -333,6 +337,7 @@ angular.module('bahmni.clinical')
             $scope.selectAllCheckbox = function(){
                 $scope.bulkSelectCheckbox = !$scope.bulkSelectCheckbox;
                 $scope.treatments.forEach(function (treatment) {
+                    setNonCodedDrugConcept(treatment);
                     treatment.durationUpdateFlag = $scope.bulkSelectCheckbox;
                 });
             };
