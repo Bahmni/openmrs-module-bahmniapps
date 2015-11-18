@@ -3,6 +3,7 @@
 angular.module('bahmni.home')
     .controller('LoginController', ['$rootScope', '$scope', '$window', '$location', 'sessionService', 'initialData', 'spinner', '$q', '$stateParams','$bahmniCookieStore', 'localeService','$translate',
         function ($rootScope, $scope, $window, $location, sessionService, initialData, spinner, $q, $stateParams, $bahmniCookieStore, localeService, $translate) {
+            var redirectUrl = $location.search()['from'];
             var landingPagePath = "/dashboard";
             var loginPagePath = "/login";
             $scope.locations = initialData.locations;
@@ -70,7 +71,11 @@ angular.module('bahmni.home')
                 );
                 spinner.forPromise(deferrable.promise).then(
                     function () {
-                        $location.path(landingPagePath);
+                        if (redirectUrl) {
+                            $window.location = redirectUrl;
+                        } else {
+                            $location.path(landingPagePath);
+                        }
                     }
                 )
             }
