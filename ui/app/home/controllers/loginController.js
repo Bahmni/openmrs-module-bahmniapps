@@ -46,6 +46,10 @@ angular.module('bahmni.home')
                 redirectToLandingPageIfAlreadyAuthenticated();
             };
 
+            $scope.log22in = function(){
+              var x = Android.search("test", 10);
+            };
+
             $scope.login = function () {
                 $scope.errorMessageTranslateKey = null;
                 var deferrable = $q.defer();

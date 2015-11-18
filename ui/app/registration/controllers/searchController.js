@@ -18,42 +18,50 @@ angular.module('bahmni.registration')
             };
 
             var searchBasedOnQueryParameters = function (offset) {
-                if(! isUserPrivilegedForSearch()) {
-                    showInsufficientPrivMessage();
-                    return;
-                }
-                $scope.searchParameters.addressFieldValue = $location.search().addressFieldValue || '';
-                $scope.searchParameters.name = $location.search().name || '';
-                $scope.searchParameters.customAttribute = $location.search().customAttribute || '';
-                var identifierPrefix = $location.search().identifierPrefix;
-                if (!identifierPrefix || identifierPrefix.length === 0) {
-                    identifierPrefix = preferences.identifierPrefix;
-                }
-                $scope.identifierSources.forEach(function (identifierSource) {
-                    if (identifierPrefix === identifierSource.prefix) {
-                        $scope.searchParameters.identifierPrefix = identifierSource;
-                    }
-                });
-                $scope.searchParameters.identifierPrefix = $scope.searchParameters.identifierPrefix || $scope.identifierSources[0];
-
-                $scope.searchParameters.registrationNumber = $location.search().registrationNumber || "";
-                if (hasSearchParameters()) {
-                    var searchPromise = patientService.search(
-                        $scope.searchParameters.name,
-                        $scope.addressSearchConfig.field,
-                        $scope.searchParameters.addressFieldValue,
-                        $scope.searchParameters.customAttribute,
-                        offset,
-                        $scope.customAttributesSearchConfig.fields
-                    ).then(function(response) {
-                         mapCustomAttributesSearchResults(response.data);
-                         return response.data;
-                    });
-                    searching = true;
-                    searchPromise['finally'](function () {
-                        searching = false;
-                    });
-                    return searchPromise;
+                //
+                //
+                //
+                //if(! isUserPrivilegedForSearch()) {
+                //    showInsufficientPrivMessage();
+                //    return;
+                //}
+                //$scope.searchParameters.addressFieldValue = $location.search().addressFieldValue || '';
+                //$scope.searchParameters.name = $location.search().name || '';
+                //$scope.searchParameters.customAttribute = $location.search().customAttribute || '';
+                //var identifierPrefix = $location.search().identifierPrefix;
+                //if (!identifierPrefix || identifierPrefix.length === 0) {
+                //    identifierPrefix = preferences.identifierPrefix;
+                //}
+                //$scope.identifierSources.forEach(function (identifierSource) {
+                //    if (identifierPrefix === identifierSource.prefix) {
+                //        $scope.searchParameters.identifierPrefix = identifierSource;
+                //    }
+                //});
+                //$scope.searchParameters.identifierPrefix = $scope.searchParameters.identifierPrefix || $scope.identifierSources[0];
+                //
+                //$scope.searchParameters.registrationNumber = $location.search().registrationNumber || "";
+                //if (hasSearchParameters()) {
+                //    var searchPromise = patientService.search(
+                //        $scope.searchParameters.name,
+                //        $scope.addressSearchConfig.field,
+                //        $scope.searchParameters.addressFieldValue,
+                //        $scope.searchParameters.customAttribute,
+                //        offset,
+                //        $scope.customAttributesSearchConfig.fields
+                //    ).then(function(response) {
+                //         mapCustomAttributesSearchResults(response.data);
+                //         return response.data;
+                //    });
+                //    searching = true;
+                //    searchPromise['finally'](function () {
+                //        searching = false;
+                //    });
+                //    return searchPromise;
+                //}
+                if($scope.searchParameters.name){
+                    var ajaxResult = JSON.parse(Android.search($scope.searchParameters.name, offset));
+                    $scope.results = ajaxResult.pageOfResults;
+                    return
                 }
             };
             $scope.convertToTableHeader = function(camelCasedText){
@@ -204,22 +212,22 @@ angular.module('bahmni.registration')
             };
 
             $scope.nextPage = function () {
-                if ($scope.nextPageLoading) {
-                    return;
-                }
-                $scope.nextPageLoading = true;
-                var promise = searchBasedOnQueryParameters($scope.results.length);
-                if (promise) {
-                    promise.then(function (data) {
-                        data.pageOfResults.forEach(function (result) {
-                            $scope.results.push(result)
-                        });
-                        $scope.noMoreResultsPresent = (data.pageOfResults.length === 0);
-                        $scope.nextPageLoading = false;
-                    }, function () {
-                        $scope.nextPageLoading = false;
-                    });
-                }
+                //if ($scope.nextPageLoading) {
+                //    return;
+                //}
+                //$scope.nextPageLoading = true;
+                //var promise = searchBasedOnQueryParameters($scope.results.length);
+                //if (promise) {
+                //    promise.then(function (data) {
+                //        data.pageOfResults.forEach(function (result) {
+                //            $scope.results.push(result)
+                //        });
+                //        $scope.noMoreResultsPresent = (data.pageOfResults.length === 0);
+                //        $scope.nextPageLoading = false;
+                //    }, function () {
+                //        $scope.nextPageLoading = false;
+                //    });
+                //}
             };
 
             $scope.forPatient = function (patient) {

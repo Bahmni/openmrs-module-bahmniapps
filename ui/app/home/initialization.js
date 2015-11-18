@@ -21,7 +21,7 @@ angular.module('bahmni.home')
                     platform = "android";
                 }
                 else if (window.chrome && chrome.runtime && chrome.runtime.id) {
-                    platform = "chrome app"
+                    platform = "chrome-app"
                 }
                 $bahmniCookieStore.put(Bahmni.Common.Constants.platform, platform);
                 var deferrable = $q.defer();
