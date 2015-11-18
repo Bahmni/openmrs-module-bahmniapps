@@ -171,7 +171,7 @@
            field-validation="fieldValidation" ng-if="addressHierarchyConfigs.showAddressFieldsTopDown"
            free-text-address-fields="addressHierarchyConfigs.freeTextAddressFields"></section>
 
-  <legend class="registraion_legend">
+  <legend class="registraion_legend" ng-if="patientConfiguration.customAttributeRows().length > 0">
       <span class="mylegend">{{ 'REGISTRATION_LABEL_OTHER_INFO' | translate}}</span>
   </legend>
 
