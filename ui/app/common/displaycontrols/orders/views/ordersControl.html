@@ -18,7 +18,7 @@
                 <span class="tree-list-item row-click" ng-click="toggle(bahmniOrder)">
                     <i class="fa fa-caret-right" ng-hide="bahmniOrder.isOpen"></i>
                     <i class="fa fa-caret-down" ng-show="bahmniOrder.isOpen"></i>
-                    <span class="obs-date">{{bahmniOrder.conceptName}}</span>
+                    <span class="obs-date">{{bahmniOrder.concept.name}}</span>
                     <span class="fr order-sub-heading-container">
                         <span class="order-sub-heading">
                               {{bahmniOrder.provider}} {{ bahmniOrder.orderDate | bahmniDateTime }}
