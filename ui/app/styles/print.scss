@@ -674,3 +674,58 @@ h3 {
         }
     }
 }
+
+.print-patient-summary{
+    .dashboard-section {
+        .hierarchy {
+            ul.print-observations {
+                .print-showObervation:nth-child(odd) {
+                    float: left;
+                    width: 50%;
+                }
+                .print-showObervation:nth-child(even) {
+                    float: right;
+                    width: 50%;
+                }
+                li.has-child{
+                    .print-showObervation:nth-child(odd),.print-showObervation:nth-child(even) {
+                        float: none;
+                        width: 100%;
+                    }
+                }
+            }
+            .value-text-only{
+                width: 16% !important;
+            }
+            .testUnderPanel{
+                width: 80% !important;
+            }
+        }
+        //table tr {
+        //    border: 1px solid #333 !Important;
+        //    th, td{
+        //        border: initial !Important;
+        //    }
+        //}
+        table{
+            thead {
+                tr {
+                    border: 1px solid $lighterGray;
+                    th {
+                        border: 1px solid $lighterGray;
+                    }
+
+                }
+            }
+            tbody {
+                tr {
+                    td, th {
+                        border: 1px solid $lighterGray;
+                        padding: 4px 1px;
+                    }
+                }
+            }
+        }
+
+    }
+}

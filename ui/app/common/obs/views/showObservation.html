@@ -1,4 +1,5 @@
-<li ng-class="{'is-text': observation.type == 'Text', 'has-child' : observation.groupMembers.length > 0}">
+<div class="print-showObervation">
+    <li ng-class="{'is-text': observation.type == 'Text', 'has-child' : observation.groupMembers.length > 0}">
     <div ng-class="{'is-abnormal': observation.abnormal}" class="tree-list-item" bm-gallery patient="patient">
         <span ng-if="!observation.isImageConcept() || (observation.isImageConcept() && !print)" class="testUnderPanel"><label>{{::observation.concept.shortName || observation.concept.name}}</label></span>
         <pre ng-class="{'text-only': (observation.concept.dataType ==='Text' && print), 'value-text-only': !(observation.concept.dataType ==='Text' && print)}" ng-if="observation.isFormElement() && !observation.isImageConcept()">{{::observation.getDisplayValue()}} <span class="label-add-on" ng-if="observation.concept.units" ng-bind-html="::observation.concept.units"></span></pre>
@@ -13,9 +14,9 @@
             <i class="fa fa-angle-down" ng-hide="observation.showDetails"></i>
             <i class="fa fa-angle-up" ng-show="observation.showDetails"></i>
         </button>
-    
 
-        <div ng-if="observation.comment" class="notes inline-comments" ng-class="{'print-notes': observation.comment}">   
+
+        <div ng-if="observation.comment" class="notes inline-comments" ng-class="{'print-notes': observation.comment}">
             <i class="fa fa-comments left"></i>
             <pre class="left">{{::observation.comment}}</pre>
             <div class="footer-note fr">
@@ -35,8 +36,9 @@
 
         </div>
     </div>
-    <ul>
+    <ul ng-if="!observation.isFormElement()">
         <show-observation  show-details-button="showDetailsButton" ng-if="!observation.isFormElement()" ng-repeat="member in observation.groupMembers" patient="patient"
                           observation="member" patient="patient" show-date="showDate" show-time="showTime"></show-observation>
     </ul>
-</li>
+    </li>
+</div>

@@ -21,7 +21,7 @@
                         {{obsGroup.date | bahmniDateTime}}
                     </span>
                 </span>
-                <ul bm-show="obsGroup.isOpen">
+                <ul bm-show="obsGroup.isOpen" class="print-observations">
                     <show-observation show-details-button="config.showDetailsButton" patient="patient"
                                       observation="observation" ng-repeat="observation in obsGroup.value"
                                       level="2"></show-observation>
