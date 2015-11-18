@@ -20,9 +20,9 @@ angular.module('bahmni.registration')
                     withCredentials: true,
                     transformResponse: [function(data){
                         deathConcept = data;
-                        $http.get(Bahmni.Common.Constants.conceptUrl, {
+                        $http.get(Bahmni.Common.Constants.conceptSearchByFullNameUrl, {
                             params: {
-                                q: deathConcept,
+                                name: deathConcept,
                                 v: "custom:(uuid,name,set,setMembers:(uuid,display,name:(uuid,name),retired))"
                             },
                             withCredentials: true
