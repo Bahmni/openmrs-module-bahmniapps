@@ -199,12 +199,12 @@
                          ng-class="{'illegalValue': !observation.isValid(atLeastOneValueIsSet, conceptSetRequired), 'computed-field': observation.isComputedAndEditable()}"
                          class="autocomplete">
                         <input ng-if="::!observation.conceptUIConfig.answersConceptName" type="hidden"
-                               ng-blur="handleUpdate()"
+                               ng-change="handleUpdate()"
                                ng-disabled="observation.disabled"
                                ui-select2="selectOptions(observation.concept)" ng-model="observation.value"
                                style="width: 90%;" autofocus/>
                         <input ng-if="::observation.conceptUIConfig.answersConceptName" concept-autocomplete
-                               ng-blur="handleUpdate()"
+                               ng-change="handleUpdate()"
                                ng-disabled="observation.disabled"
                                coded-concept-name="observation.conceptUIConfig.answersConceptName"
                                ng-model="observation.autocompleteValue" autofocus/>
