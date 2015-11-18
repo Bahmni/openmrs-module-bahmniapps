@@ -7,7 +7,13 @@ angular.module('bahmni.clinical')
             var inactivePreviousVisitDrugs = [];
             _.each(previousVisitDrugs, function (previousVisitDrug) {
                 var presentInActiveAndScheduledDrugs = _.find(activeAndScheduledDrugs, function (activeAndScheduledDrug) {
-                    return activeAndScheduledDrug.drug ? activeAndScheduledDrug.drug.uuid == previousVisitDrug.drug.uuid : true;
+                    if(activeAndScheduledDrug.drug && previousVisitDrug.drug) {
+                        return activeAndScheduledDrug.drug.uuid == previousVisitDrug.drug.uuid;
+                    }
+                    else if(activeAndScheduledDrug.drugNonCoded && previousVisitDrug.drugNonCoded){
+                        return activeAndScheduledDrug.drugNonCoded === previousVisitDrug.drugNonCoded;
+                    }
+                    return true;
                 });
                 if (!presentInActiveAndScheduledDrugs) {
                     inactivePreviousVisitDrugs.push(previousVisitDrug);
