@@ -139,7 +139,8 @@ describe("ObservationUtil", function () {
             var observation = {
                 concept: {name: "observationConcept"},
                 value: {
-                    "name": "someName"
+                    name: {
+                        name: "someName"}
                 }
             };
 

@@ -26,6 +26,10 @@ angular.module('bahmni.common.displaycontrol.obsVsObsFlowSheet')
                 "section": $scope.section
             };
 
+            var getName = function(obs){
+                var name =  (obs && obs.value && obs.value.shortName) || (obs && obs.value && obs.value.name) || obs.value;
+            };
+
             $scope.commafy = function (observations){
                 var list = [];
                 var unBoolean = function(boolValue) {
@@ -33,8 +37,14 @@ angular.module('bahmni.common.displaycontrol.obsVsObsFlowSheet')
                 };
 
                 for (var index in observations) {
-                    var name =  observations[index].value.name || observations[index].value;
+                    var name =  getName(observations[index]);
+
                     if (observations[index].concept.dataType === "Boolean") name = unBoolean(name);
+
+                    if(observations[index].concept.dataType === "Date"){
+                        name = Bahmni.Common.Util.DateUtil.formatDateWithoutTime(name);
+                    }
+
                     list.push(name);
                 }
 

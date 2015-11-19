@@ -55,10 +55,11 @@ Bahmni.Common.Obs.ObservationUtil = (function () {
             return observation.getValues();
         }
         var obsValue;
-        if(observation.value instanceof Object && observation.value.name)
-            obsValue = observation.value.name;
+        if(observation.value && observation.value.name && observation.value.name.name)
+            obsValue = observation.value.name.name;
         else
             obsValue = observation.value;
+
         return obsValue == undefined ? obsValue : (obsValue.displayString || obsValue);
     };
 
