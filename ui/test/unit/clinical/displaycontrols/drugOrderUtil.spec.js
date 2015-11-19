@@ -114,7 +114,7 @@ describe("DrugOrderUtil", function () {
 
     });
 
-    describe("sortDrugs", function () {
+    describe("sortDrugOrders", function () {
         it("should sort drugs by date desc and time asc", function () {
             var treatment1 = sampleTreatment("drug.uuid1", "instructions", 1, "doseUnits", "frequency", "route", undefined, new Date(), 3, "Day(s)", "addn2", true);
             var treatment2 = sampleTreatment("drug.uuid2", "instructions", 1, "doseUnits", "frequency", "route", undefined, new Date(), 3, "Day(s)", "addn2", true);
@@ -124,7 +124,7 @@ describe("DrugOrderUtil", function () {
             treatment2.effectiveStartDate = new Date(2015, 0, 1, 15, 30, 0);
             treatment3.effectiveStartDate = new Date(2015, 1, 1, 13, 30, 0);
             treatment4.effectiveStartDate = new Date(2015, 1, 1, 13, 0, 0);
-            var sortedArray = Bahmni.Clinical.DrugOrder.Util.sortDrugs([treatment1, treatment2, treatment3, treatment4]);
+            var sortedArray = Bahmni.Clinical.DrugOrder.Util.sortDrugOrders([treatment1, treatment2, treatment3, treatment4]);
 
             expect(sortedArray).toEqual([treatment4, treatment3, treatment1, treatment2]);
         });
@@ -137,7 +137,7 @@ describe("DrugOrderUtil", function () {
             treatment1.orderNumber = 1;
             treatment2.orderNumber = 2;
             treatment3.orderNumber = 3;
-            var sortedArray = Bahmni.Clinical.DrugOrder.Util.sortDrugs([treatment3, treatment1, treatment2]);
+            var sortedArray = Bahmni.Clinical.DrugOrder.Util.sortDrugOrders([treatment3, treatment1, treatment2]);
             expect(sortedArray).toEqual([treatment1, treatment2, treatment3]);
         });
 

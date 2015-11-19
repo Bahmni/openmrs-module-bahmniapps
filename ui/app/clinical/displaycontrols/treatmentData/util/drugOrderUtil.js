@@ -41,7 +41,7 @@ Bahmni.Clinical.DrugOrder.Util = {
         return drugOrders;
     },
 
-    sortDrugs: function(activeAndScheduledDrugOrders) {
+    sortDrugOrders: function(activeAndScheduledDrugOrders) {
         if(_.isEmpty(activeAndScheduledDrugOrders)) return [];
         var DateUtil = Bahmni.Common.Util.DateUtil;
         return activeAndScheduledDrugOrders.sort(function(drug1, drug2) {
