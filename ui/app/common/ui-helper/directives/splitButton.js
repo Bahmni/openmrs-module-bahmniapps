@@ -28,14 +28,14 @@ angular.module('bahmni.common.uiHelper')
         return {
             restrict: 'A',
             template: '<div class="split-button" bm-pop-over>'+
-                        '<button bm-pop-over-trigger class="toggle-button fa fa-caret-down" ng-show="hasMultipleOptions()" ng-click="scrollToBottom()" type="button"></button>' +
+                        '<button bm-pop-over-trigger class="toggle-button fa fa-caret-down" ng-show="hasMultipleOptions()" ng-click="scrollToBottom()" ng-disabled="optionDisabled" type="button"></button>' +
                         '<ul class="options">' +
                             '<li class="primaryOption">' +
-                                '<button class="buttonClass" ng-click="optionClick()(primaryOption)" accesskey="{{primaryOption.shortcutKey}}" ng-bind-html="optionText()(primaryOption,\'primary\') | translate "></button>' +
+                                '<button class="buttonClass" ng-click="optionClick()(primaryOption)" accesskey="{{primaryOption.shortcutKey}}" ng-disabled="optionDisabled" ng-bind-html="optionText()(primaryOption,\'primary\') | translate "></button>' +
                             '</li>' +
                             '<ul class="hidden-options">' +
                             '<li bm-pop-over-target ng-repeat="option in secondaryOptions" class="secondaryOption">' +
-                                '<button ng-class="buttonClass" ng-click="optionClick()(option)" accesskey="{{option.shortcutKey}}" ng-bind-html="optionText()(option) | translate"></button>' +
+                                '<button ng-class="buttonClass" ng-click="optionClick()(option)" accesskey="{{option.shortcutKey}}" ng-disabled="optionDisabled" ng-bind-html="optionText()(option) | translate"></button>' +
                             '</li>' +
                             '</ul>'+
                         '</ul>' +
@@ -46,7 +46,8 @@ angular.module('bahmni.common.uiHelper')
                 options: '=',
                 primaryOption: '=',
                 optionText: '&',
-                optionClick: '&'
+                optionClick: '&',
+                optionDisabled: '='
             }
         };
     }])
