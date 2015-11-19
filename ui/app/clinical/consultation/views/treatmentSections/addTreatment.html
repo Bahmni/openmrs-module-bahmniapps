@@ -15,10 +15,10 @@
                     class="small-btn accept-btn" id="accept-button"
                     ng-click="treatment.setAsNonCodedDrug()"
                     ng-class="{
-                        illegalValue: treatment.drugNameDisplay && (!treatment.isNonCodedDrug),
+                        illegalValue: treatment.drugNameDisplay && !treatment.isNonCodedDrug,
                         active: treatment.isNonCodedDrug
                     }"
-                    ng-disabled="treatment.drug.uuid"><span>Accept</span>
+                    ng-disabled="treatment.drug.uuid || (treatment.isBeingEdited && treatment.isNonCodedDrug)"><span>Accept</span>
                 </button>
             </span>
             <div class="frequency-widget uniform-frequency" ng-click="treatment.setFrequencyType('uniform')" ng-class="{'is-disabled': !treatment.isUniformDosingType()}">
@@ -89,7 +89,7 @@
 
         <fieldset>
             <textarea id="additional-instructions" class="form-field drug-order-notes" placeholder="Additional Instructions" ng-model="treatment.additionalInstructions"></textarea>
-            <button class="form-field add-drug-btn secondary-button" type="submit" accesskey="a"><u>A</u>dd</button>
+            <button class="form-field add-drug-btn secondary-button" type="submit" accesskey="a" ng-disabled="!treatment.drug.uuid && treatment.drugNameDisplay && !treatment.isNonCodedDrug"><u>A</u>dd</button>
             <button class="form-field add-drug-btn" type="button" ng-click="clearForm()" accesskey="c"><u>C</u>lear</button>
         </fieldset>
         <fieldset>
