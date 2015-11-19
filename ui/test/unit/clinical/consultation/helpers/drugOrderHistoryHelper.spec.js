@@ -12,6 +12,13 @@ describe("drug order history helper", function () {
         return drugOrderViewModel;
     };
 
+    var sampleNonCodedTreatment = function (startDate) {
+        var drugOrderViewModel = new Bahmni.Clinical.DrugOrderViewModel();
+        drugOrderViewModel.drugNonCoded = "nonCodedDrug";
+        drugOrderViewModel.effectiveStartDate = startDate;
+        return drugOrderViewModel;
+    };
+
     beforeEach(function () {
         module('bahmni.clinical');
 
@@ -21,7 +28,7 @@ describe("drug order history helper", function () {
 
     });
 
-    it('should return only the inactive drugs from the past', function () {
+    it('should return only the inactive drugorders from the past', function () {
         var drug1 = sampleTreatment("uuid1");
         var drug2 = sampleTreatment("uuid2");
         var drug3 = sampleTreatment("uuid3");
@@ -35,7 +42,20 @@ describe("drug order history helper", function () {
         expect(inactive).toEqual([drug4, drug5]);
     });
 
-    it("should return none if there are no inactive drugs", function () {
+    it('should return only the inactive drugorders from the past when there are noncoded drugorders', function () {
+        var drug1 = sampleTreatment("uuid1");
+        var drug2 = sampleNonCodedTreatment();
+        var drug3 = sampleTreatment("uuid3");
+        var drug4 = sampleTreatment("uuid4");
+        var drug5 = sampleNonCodedTreatment();
+        var activeDrugs = [drug1, drug2, drug3];
+        var inactiveDrugs = [drug3, drug4, drug5];
+
+        var inactive = drugOrderHistoryHelper.getInactiveDrugsFromPastVisit(activeDrugs, inactiveDrugs);
+        expect(inactive).toEqual([drug4]);
+    });
+
+    it("should return none if there are no inactive drugorders", function () {
         var drug1 = sampleTreatment("uuid1");
         var drug2 = sampleTreatment("uuid2");
         var inactive = drugOrderHistoryHelper.getInactiveDrugsFromPastVisit([drug1, drug2], undefined);
