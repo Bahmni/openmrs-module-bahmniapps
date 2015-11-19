@@ -23,7 +23,7 @@ angular.module('bahmni.home')
                 else if (window.chrome && chrome.runtime && chrome.runtime.id) {
                     platform = "chrome-app"
                 }
-                $bahmniCookieStore.put(Bahmni.Common.Constants.platform, platform);
+                $bahmniCookieStore.put(Bahmni.Common.Constants.platform, platform, {path: '/', expires: 365});
                 var deferrable = $q.defer();
                 locationService.getAllByTag("Login Location").then(
                     function(response) {deferrable.resolve({locations: response.data.results})},

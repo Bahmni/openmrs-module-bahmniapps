@@ -46,8 +46,13 @@ angular.module('bahmni.home')
                 redirectToLandingPageIfAlreadyAuthenticated();
             };
 
-            $scope.log22in = function(){
-              var x = Android.search("test", 10);
+            $scope.populateDb = function(){
+                Android.populateData();
+                Android.showToast("Populate Success");
+            };
+
+            $scope.getPatient = function(uuid){
+                Android.showToast(Android.getPatient(uuid));
             };
 
             $scope.login = function () {

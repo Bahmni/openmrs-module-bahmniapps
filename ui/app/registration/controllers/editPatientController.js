@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('bahmni.registration')
-    .controller('EditPatientController', ['$scope', 'patientService', 'encounterService', '$stateParams', 'openmrsPatientMapper', '$window', '$q', 'spinner', 'appService', 'messagingService', '$rootScope',
-        function ($scope, patientService, encounterService, $stateParams, patientMapper, $window, $q, spinner, appService, messagingService, $rootScope) {
+    .controller('EditPatientController', ['$scope', 'patientService', 'encounterService', '$stateParams', 'openmrsPatientMapper', '$window', '$q', 'spinner', 'appService', 'messagingService', '$rootScope','$bahmniCookieStore',
+        function ($scope, patientService, encounterService, $stateParams, patientMapper, $window, $q, spinner, appService, messagingService, $rootScope, $bahmniCookieStore) {
             var dateUtil = Bahmni.Common.Util.DateUtil;
             var uuid = $stateParams.patientUuid;
             $scope.patient = {};
@@ -40,7 +40,6 @@ angular.module('bahmni.registration')
             };
 
             (function () {
-                var getPatientPromise = patientService.get(uuid).success(successCallBack);
 
                 var isDigitized = encounterService.getDigitized(uuid);
                 isDigitized.success(function (data) {
@@ -50,7 +49,15 @@ angular.module('bahmni.registration')
                     $scope.isDigitized = encountersWithObservations.length > 0;
                 });
 
-                spinner.forPromise($q.all([getPatientPromise, isDigitized]));
+                var platform = $bahmniCookieStore.get(Bahmni.Common.Constants.platform);
+                if(platform == "android"){
+                    successCallBack(JSON.parse(Android.getPatient(uuid)));
+                    spinner.forPromise($q.all([isDigitized]));
+                }
+                else{
+                    var getPatientPromise = patientService.get(uuid).success(successCallBack);
+                    spinner.forPromise($q.all([getPatientPromise, isDigitized]));
+                }
             })();
 
             $scope.update = function () {

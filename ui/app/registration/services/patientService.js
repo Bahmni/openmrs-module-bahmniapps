@@ -1,11 +1,12 @@
 'use strict';
 
 angular.module('bahmni.registration')
-    .factory('patientService', ['$http', '$rootScope', function ($http, $rootScope) {
+    .factory('patientService', ['$http', '$rootScope','$bahmniCookieStore','$q', function ($http, $rootScope, $bahmniCookieStore, $q) {
         var openmrsUrl = Bahmni.Registration.Constants.openmrsUrl;
         var baseOpenMRSRESTURL = Bahmni.Registration.Constants.baseOpenMRSRESTURL;
 
         var search = function (query, addressFieldName, addressFieldValue, customAttributeValue, offset, customAttributeFields) {
+
             var url = Bahmni.Common.Constants.bahmniSearchUrl + "/patient";
             var config = {
                 params: {
@@ -31,6 +32,13 @@ angular.module('bahmni.registration')
         };
 
         var get = function (uuid) {
+            var platform = $bahmniCookieStore.get(Bahmni.Common.Constants.platform);
+            if(platform == "android"){
+                var deferred = $q.defer();
+                var patient = Android.getPatient(uuid);
+                deferred.resolve(patient);
+                return deferred.promise;
+            }
             var url = openmrsUrl + "/ws/rest/v1/patientprofile/" + uuid;
             var config = {
                 method: "GET",
