@@ -284,7 +284,6 @@ h3 {
             color: #000;
             font-size: 9.5pt;
             font-family: Arial, sans-serif;
-            ;
             font-weight: bold;
             line-height: normal;
             padding: 0;
@@ -688,22 +687,27 @@ h3 {
                         .obs-date{
                             background: #cecccc !important;
                             margin:0 0 3px!important;
+                            font-weight: normal;
                         }
                     }
                 }
                 .print-observations {
-                    .print-showObervation:nth-child(odd) {
+                    .print-showObervation{
                         float: left;
                         width: 50%;
                     }
-                    .print-showObervation:nth-child(even) {
-                        float: right;
-                        width: 50%;
+                    //.print-showObervation:nth-child(even)  {
+                    //    float: right;
+                    //    width: 50%;
+                    //}
+                    .print-showObervation:nth-child(n+1):nth-child(n+3){
+
                     }
                     li.has-child {
                         .print-showObervation:nth-child(odd), .print-showObervation:nth-child(even) {
                             float: none;
                             width: 100%;
+
                         }
                     }
                 }
