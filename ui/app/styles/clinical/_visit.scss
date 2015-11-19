@@ -541,6 +541,9 @@ a.visit:before {
     td.name {
        width: 35%;
     }
+    td.relationshipType{
+      text-indent: 10px;
+    }
     td.value {
       width: auto;
     }
@@ -613,7 +616,7 @@ a.visit:before {
           margin-right: 5px;
         }
         .patient-address {
-          display: inline-block;
+          display: block;
           margin-top: 3px;
           color: $mediumGray;
         }

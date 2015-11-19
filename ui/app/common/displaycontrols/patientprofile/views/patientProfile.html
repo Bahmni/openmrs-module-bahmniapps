@@ -37,7 +37,7 @@
                 <td>Relationships</td>
             </tr>
             <tr ng-repeat="relationship in patient.relationships">
-                <td class="name" ng-if="relationship.personA.uuid === patient.uuid">{{relationship.relationshipType.aIsToB}}</td>
+                <td class="name relationshipType" ng-if="relationship.personA.uuid === patient.uuid">{{relationship.relationshipType.aIsToB}}</td>
                 <td class="value" ng-if="relationship.personA.uuid === patient.uuid">
                     <a ng-click="openPatientDashboard(relationship.personB.uuid)"
                        title="Go to Clinical Dashboard" ng-if="!isProviderRelationship(relationship)">
