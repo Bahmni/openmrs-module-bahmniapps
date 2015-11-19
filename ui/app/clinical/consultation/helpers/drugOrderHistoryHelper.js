@@ -13,7 +13,7 @@ angular.module('bahmni.clinical')
                     else if(activeAndScheduledDrug.drugNonCoded && previousVisitDrug.drugNonCoded){
                         return activeAndScheduledDrug.drugNonCoded === previousVisitDrug.drugNonCoded;
                     }
-                    return true;
+                    return false;
                 });
                 if (!presentInActiveAndScheduledDrugs) {
                     inactivePreviousVisitDrugs.push(previousVisitDrug);
@@ -25,15 +25,15 @@ angular.module('bahmni.clinical')
         this.getRefillableDrugOrders = function (activeAndScheduledDrugOrders, previousVisitDrugOrders) {
             var drugOrderUtil = Bahmni.Clinical.DrugOrder.Util;
             var now = new Date();
-            var partitionedDrugOrders = _.groupBy(activeAndScheduledDrugOrders, function (drug) {
-                return (drug.effectiveStartDate > now) ? "scheduled" : "active";
+            var partitionedDrugOrders = _.groupBy(activeAndScheduledDrugOrders, function (drugOrder) {
+                return (drugOrder.effectiveStartDate > now) ? "scheduled" : "active";
             });
-            var sortedDrugs = [];
+            var sortedDrugOrders = [];
 
-            sortedDrugs.push(drugOrderUtil.sortDrugs(partitionedDrugOrders.scheduled));
-            sortedDrugs.push(drugOrderUtil.sortDrugs(partitionedDrugOrders.active));
-            sortedDrugs.push(drugOrderUtil.sortDrugs(this.getInactiveDrugsFromPastVisit(activeAndScheduledDrugOrders, previousVisitDrugOrders)));
-            return _.flatten(sortedDrugs);
+            sortedDrugOrders.push(drugOrderUtil.sortDrugOrders(partitionedDrugOrders.scheduled));
+            sortedDrugOrders.push(drugOrderUtil.sortDrugOrders(partitionedDrugOrders.active));
+            sortedDrugOrders.push(drugOrderUtil.sortDrugOrders(this.getInactiveDrugsFromPastVisit(activeAndScheduledDrugOrders, previousVisitDrugOrders)));
+            return _.flatten(sortedDrugOrders);
         };
 
     }]);
