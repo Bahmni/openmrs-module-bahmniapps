@@ -27,7 +27,7 @@ Bahmni.Registration.UpdatePatientRequestMapper = (function () {
                     gender: patient.gender,
                     attributes: this.getMrsAttributes(openMRSPatient, patient, patientAttributeTypes),
                     dead:patient.dead,
-                    deathDate: patient.deathDate,
+                    deathDate: Bahmni.Common.Util.DateUtil.getDateWithoutTime(patient.deathDate),
                     causeOfDeath: patient.causeOfDeath != null ? patient.causeOfDeath.uuid : ''
                 }
             }
@@ -90,6 +90,6 @@ Bahmni.Registration.UpdatePatientRequestMapper = (function () {
         }
         return mnt.format('YYYY-MM-DD');
     };
-
+    
     return UpdatePatientRequestMapper;
 })();
