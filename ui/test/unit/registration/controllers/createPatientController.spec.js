@@ -1,6 +1,6 @@
 'use strict';
 
-var $aController, scopeMock, rootScopeMock, stateMock, patientServiceMock, preferencesMock, patientModelMock, spinnerMock, locationServiceMock,
+var $aController, q, scopeMock, rootScopeMock, stateMock, patientServiceMock, preferencesMock, patientModelMock, spinnerMock, locationServiceMock,
     appServiceMock, ngDialogMock, ngDialogLocalScopeMock, bahmniCookieMock;
 
 describe('CreatePatientController', function () {
@@ -8,13 +8,15 @@ describe('CreatePatientController', function () {
     beforeEach(module('bahmni.registration'));
 
     beforeEach(
-        inject(function ($controller) {
+        inject(function ($controller, $rootScope, $q) {
             $aController = $controller;
+            rootScopeMock = $rootScope;
+            q = $q;
+            scopeMock = rootScopeMock.$new();
         })
     );
+
     beforeEach(function () {
-        scopeMock = jasmine.createSpyObj('scopeMock', ['actions']);
-        rootScopeMock = jasmine.createSpyObj('rootScopeMock', ['patientConfiguration']);
         stateMock = jasmine.createSpyObj('stateMock', ['go']);
         patientServiceMock = jasmine.createSpyObj('patientServiceMock',
             ['generateIdentifier', 'getLatestIdentifier', 'setLatestIdentifier', 'create']
@@ -28,6 +30,10 @@ describe('CreatePatientController', function () {
 
         ngDialogMock = jasmine.createSpyObj('ngDialogMock', ['open', 'close']);
         ngDialogLocalScopeMock = scopeMock;
+        spinnerMock.forPromise.and.returnValue(specUtil.createFakePromise({}));
+
+        rootScopeMock.patientConfiguration = {identifierSources: []};
+
         scopeMock.$new = function () {
             return ngDialogLocalScopeMock;
         };
@@ -40,9 +46,23 @@ describe('CreatePatientController', function () {
             }
         };
 
-        rootScopeMock.patientConfiguration = {identifierSources: []};
+        bahmniCookieMock.get = function(x){
+            return {
+                name: "Bahmni1",
+                uuid: "43922e67-506c-11e5-968f-0050568266ff",
+                stateProvince: "Dhaka",
+                countyDistrict: "Dhaka",
+                address5: "Dohar"
+            };
+        }
+
+        var loginLocation = "someLocation";
+        locationServiceMock.getAllByTag.and.returnValue(specUtil.createFakePromise({
+            "results":[{"uuid":"43922e67-506c-11e5-968f-0050568266ff","display":"Registration","name":"Registration", "stateProvince":"Dhaka"},{"uuid":"43922e67-506c-11e5-968f-0050568266fg","display":"OPD","name":"OPD","stateProvince":"India"}]}
+        ));
 
         $aController('CreatePatientController', {
+            $q: q,
             $scope: scopeMock,
             $rootScope: rootScopeMock,
             $state: stateMock,
@@ -52,7 +72,8 @@ describe('CreatePatientController', function () {
             spinner: spinnerMock,
             appService: appServiceMock,
             ngDialog: ngDialogMock,
-            $bahmniCookieStore: bahmniCookieMock
+            $bahmniCookieStore: bahmniCookieMock,
+            locationService: locationServiceMock
         });
 
         scopeMock.actions = {
@@ -68,20 +89,6 @@ describe('CreatePatientController', function () {
     it("should populate patient address levels", function(){
         scopeMock.addressLevels = [ {addressField: "stateProvince", name: "Division"}, {addressField: "countyDistrict" , name: "Zilla"}, {addressField: "address5", name: "Upazilla"}];
 
-        bahmniCookieMock.get = function(x){
-            return {
-                name: "Bahmni1",
-                uuid: "43922e67-506c-11e5-968f-0050568266ff",
-                stateProvince: "Dhaka",
-                countyDistrict: "Dhaka",
-                address5: "Dohar"
-            };
-        }
-        var loginLocation = "someLocation";
-        locationServiceMock.getAllByTag.and.returnValue(specUtil.createFakePromise({
-            "results":[{"uuid":"43922e67-506c-11e5-968f-0050568266ff","display":"Registration","name":"Registration", "stateProvince":"Dhaka"},{"uuid":"43922e67-506c-11e5-968f-0050568266fg","display":"OPD","name":"OPD","stateProvince":"India"}]}
-        ));
-
         $aController('CreatePatientController', {
             $scope: scopeMock,
             $rootScope: rootScopeMock,
@@ -96,9 +103,7 @@ describe('CreatePatientController', function () {
             locationService: locationServiceMock
         });
 
-
         expect(scopeMock.patient.address[scopeMock.addressLevels[0].addressField]).toBe("Dhaka");
-
     })
 
     it("should set patient identifierPrefix details with the matching one", function () {
@@ -150,18 +155,20 @@ describe('CreatePatientController', function () {
     });
 
     it("should create a patient and go to edit page", function () {
-
         scopeMock.patient.identifierPrefix.prefix = "GAN";
 
-        patientServiceMock.generateIdentifier.and.returnValue(specUtil.createFakePromise("uuid"));
-        patientServiceMock.create.and.returnValue(specUtil.createFakePromise({
-            patient: {uuid: "patientUuid", person: {names: [{display: "somename"}]}}
+        patientServiceMock.generateIdentifier.and.returnValue(specUtil.respondWithPromise(q, {data: "uuid"}));
+        patientServiceMock.create.and.returnValue(specUtil.respondWithPromise(q, {
+            data: {patient: {uuid: "patientUuid", person: {names: [{display: "somename"}]}}}
         }));
 
-        scopeMock.create();
+        scopeMock.create()
+        scopeMock.$apply();
+        expect(scopeMock.saveInProgress).toBeFalsy();
 
         expect(scopeMock.patient.identifier).toBe("uuid");
         expect(stateMock.go).toHaveBeenCalledWith("patient.edit", {patientUuid: 'patientUuid'});
+
     });
 
     it("should create a patient with custom id and go to edit page", function () {
@@ -175,6 +182,7 @@ describe('CreatePatientController', function () {
         }));
 
         scopeMock.create();
+        expect(scopeMock.saveInProgress).toBeFalsy();
 
         expect(stateMock.go).toHaveBeenCalledWith("patient.edit", {patientUuid: 'patientUuid'});
     });
@@ -191,6 +199,7 @@ describe('CreatePatientController', function () {
         }));
 
         scopeMock.create();
+        expect(scopeMock.saveInProgress).toBeFalsy();
 
         expect(patientServiceMock.getLatestIdentifier).toHaveBeenCalledWith("GAN");
         expect(ngDialogMock.open).toHaveBeenCalledWith({
@@ -212,6 +221,7 @@ describe('CreatePatientController', function () {
         }));
 
         scopeMock.create();
+        expect(scopeMock.saveInProgress).toBeFalsy();
 
         expect(patientServiceMock.getLatestIdentifier).toHaveBeenCalledWith("GAN");
         expect(ngDialogMock.open).not.toHaveBeenCalled();
@@ -225,13 +235,15 @@ describe('CreatePatientController', function () {
 
         scopeMock.hasOldIdentifier = true;
 
-        patientServiceMock.getLatestIdentifier.and.returnValue(specUtil.createFakePromise("1050"));
-        patientServiceMock.setLatestIdentifier.and.returnValue(specUtil.createFakePromise("1051"));
-        patientServiceMock.create.and.returnValue(specUtil.createFakePromise({
-            patient: {uuid: "patientUuid", person: {names: [{display: "somename"}]}}
+        patientServiceMock.getLatestIdentifier.and.returnValue(specUtil.respondWithPromise(q, {data: "1050"}));
+        patientServiceMock.setLatestIdentifier.and.returnValue(specUtil.respondWithPromise(q, {data: "1051"}));
+        patientServiceMock.create.and.returnValue(specUtil.respondWithPromise(q, {
+            data: {patient: {uuid: "patientUuid", person: {names: [{display: "somename"}]}}}
         }));
 
         scopeMock.create();
+        scopeMock.$apply();
+        expect(scopeMock.saveInProgress).toBeFalsy();
 
         expect(patientServiceMock.getLatestIdentifier).toHaveBeenCalledWith("GAN");
         expect(ngDialogMock.open).not.toHaveBeenCalled();
@@ -263,13 +275,14 @@ describe('CreatePatientController', function () {
 
         scopeMock.hasOldIdentifier = true;
 
-        patientServiceMock.getLatestIdentifier.and.returnValue(specUtil.createFakePromise("1000"));
-        patientServiceMock.setLatestIdentifier.and.returnValue(specUtil.createFakePromise("1051"));
-        patientServiceMock.create.and.returnValue(specUtil.createFakePromise({
-            patient: {uuid: "patientUuid", person: {names: [{display: "somename"}]}}
+        patientServiceMock.getLatestIdentifier.and.returnValue(specUtil.respondWithPromise(q, {data: "1000"}));
+        patientServiceMock.setLatestIdentifier.and.returnValue(specUtil.respondWithPromise(q, {data: "1051"}));
+        patientServiceMock.create.and.returnValue(specUtil.respondWithPromise(q, {
+            data: {patient: {uuid: "patientUuid", person: {names: [{display: "somename"}]}}}
         }));
 
         scopeMock.create();
+        scopeMock.$apply();
 
         expect(patientServiceMock.getLatestIdentifier).toHaveBeenCalledWith("GAN");
         expect(ngDialogMock.open).toHaveBeenCalledWith({
@@ -277,7 +290,9 @@ describe('CreatePatientController', function () {
             data: {sizeOfTheJump: 50},
             scope: ngDialogLocalScopeMock
         });
+
         ngDialogLocalScopeMock.yes();
+        scopeMock.$apply();
         expect(patientServiceMock.setLatestIdentifier).toHaveBeenCalledWith("GAN", 1051);
         expect(patientServiceMock.create).toHaveBeenCalledWith(scopeMock.patient);
     });
