@@ -78,7 +78,7 @@ angular.module('bahmni.clinical')
             };
 
             var setNonCodedDrugConcept = function(treatment) {
-                if (treatment.isNonCodedDrug) {
+                if (treatment.drugNonCoded) {
                     treatment.concept = treatmentConfig.nonCodedDrugconcept;
                 }
             };
@@ -86,6 +86,7 @@ angular.module('bahmni.clinical')
             $scope.$on("event:refillDrugOrder", function (event, drugOrder, alreadyActiveSimilarOrder) {
                 var existingOrderStopDate = alreadyActiveSimilarOrder ? alreadyActiveSimilarOrder.effectiveStopDate : null;
                 var refill = drugOrder.refill(existingOrderStopDate);
+                setNonCodedDrugConcept(refill);
                 drugOrderHistory = drugOrder;
                 $scope.treatments.push(refill);
                 markVariable("startNewDrugEntry");
@@ -93,6 +94,7 @@ angular.module('bahmni.clinical')
 
             $scope.$on("event:refillDrugOrders", function (event, drugOrders) {
                 drugOrders.forEach(function (drugOrder) {
+                    setNonCodedDrugConcept(drugOrder);
                     var refill = drugOrder.refill();
                     $scope.treatments.push(refill);
                 });
