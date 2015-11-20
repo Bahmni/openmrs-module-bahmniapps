@@ -566,6 +566,14 @@ Bahmni.Clinical.DrugOrderViewModel.createFromContract = function (drugOrderRespo
     viewModel.previousOrderUuid = drugOrderResponse.previousOrderUuid;
     viewModel.dateActivated = drugOrderResponse.dateActivated;
     viewModel.encounterUuid = drugOrderResponse.encounterUuid;
+    if(drugOrderResponse.orderReasonConcept != null){
+
+    viewModel.orderReasonConcept = {
+        name: drugOrderResponse.orderReasonConcept.name.name || drugOrderResponse.orderReasonConcept.name,
+        uuid: drugOrderResponse.orderReasonConcept.uuid
+    }
+    }
+    viewModel.orderReasonText = drugOrderResponse.orderReasonText;
     viewModel.orderNumber = drugOrderResponse.orderNumber && parseInt(drugOrderResponse.orderNumber.replace("ORD-", ""));
     viewModel.drugNonCoded = drugOrderResponse.drugNonCoded;
     viewModel.isNonCodedDrug = drugOrderResponse.drugNonCoded ? true : false;

@@ -15,6 +15,7 @@ angular.module('bahmni.clinical').factory('initialization',
                     'allTestsAndPanelsConcept',
                     'dosageFrequencyConfig',
                     'dosageInstructionConfig',
+                    'stoppedOrderReasonConfig',
                     'genderMap',
                     'relationshipTypeMap',
                     'defaultEncounterType'

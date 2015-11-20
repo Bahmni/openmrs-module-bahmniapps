@@ -16,6 +16,12 @@ angular.module('bahmni.common.config')
             return this.configs.dosageInstructionConfig || [];
         };
 
+
+        this.stoppedOrderReasonConfig = function () {
+            return this.configs.stoppedOrderReasonConfig || [];
+        };
+
+
         this.dosageFrequencyConfig = function () {
             return this.configs.dosageFrequencyConfig || [];
         };

@@ -44,6 +44,15 @@ angular.module('bahmni.common.domain')
             return dosageInstructionConfig;
         };
 
+        configurationFunctions.stoppedOrderReasonConfig = function () {
+            var stoppedOrderReasonConfig = $http.get(Bahmni.Common.Constants.conceptSearchByFullNameUrl, {
+                method: "GET",
+                params: {v: 'custom:(uuid,name,answers)', name: Bahmni.Common.Constants.stoppedOrderReasonConceptName},
+                withCredentials: true
+            });
+            return stoppedOrderReasonConfig;
+        };
+
         configurationFunctions.consultationNoteConfig = function () {
             var consultationNoteConfig = $http.get(Bahmni.Common.Constants.conceptSearchByFullNameUrl, {
                 method: "GET",

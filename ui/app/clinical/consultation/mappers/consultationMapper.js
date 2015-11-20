@@ -1,4 +1,4 @@
-Bahmni.ConsultationMapper = function (dosageFrequencies, dosageInstructions, consultationNoteConcept, labOrderNoteConcept) {
+Bahmni.ConsultationMapper = function (dosageFrequencies, dosageInstructions, consultationNoteConcept, labOrderNoteConcept, stoppedOrderReasonConfig) {
 
     var filterPreviousOrderOfRevisedOrders = function (orders) {
         return _.filter(orders, function (drugOrder) {
@@ -19,7 +19,6 @@ Bahmni.ConsultationMapper = function (dosageFrequencies, dosageInstructions, con
             return !order.voided && order.action != Bahmni.Clinical.Constants.orderActions.discontinue;
         });
         nonVoidedDrugOrders = filterPreviousOrderOfRevisedOrders(nonVoidedDrugOrders);
-
         var treatmentDrugs = nonVoidedDrugOrders.map(function (drugOrder) {
             return Bahmni.Clinical.DrugOrderViewModel.createFromContract(drugOrder);
         });

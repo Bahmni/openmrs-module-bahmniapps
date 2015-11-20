@@ -204,7 +204,7 @@ angular.module('bahmni.clinical').controller('ConsultationController',
                     return encounterService.create(encounterData)
                         .then(function (saveResponse) {
                             var consultationMapper = new Bahmni.ConsultationMapper(configurations.dosageFrequencyConfig(), configurations.dosageInstructionConfig(),
-                                configurations.consultationNoteConcept(), configurations.labOrderNotesConcept());
+                                configurations.consultationNoteConcept(), configurations.labOrderNotesConcept(), configurations.stoppedOrderReasonConfig());
                             return consultationMapper.map(saveResponse.data);
                         })
                         .then(function (savedConsulation) {

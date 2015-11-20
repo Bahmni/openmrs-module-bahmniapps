@@ -1,6 +1,13 @@
 'use strict';
 
-angular.module('bahmni.clinical').factory('treatmentConfig',['TreatmentService', 'spinner', function (treatmentService, spinner) {
+angular.module('bahmni.clinical').factory('treatmentConfig',['TreatmentService', 'spinner', 'configurationService', function (treatmentService, spinner, configurationService) {
+
+
+            var stoppedOrderReasonConfig = {};
+            configurationService.getConfigurations(['stoppedOrderReasonConfig']).then(function (configurations) {
+                stoppedOrderReasonConfig = configurations.stoppedOrderReasonConfig.results[0];
+            });
+
 
         function findIndexOfFrequency(frequencies, value) {
             var index;
@@ -38,6 +45,7 @@ angular.module('bahmni.clinical').factory('treatmentConfig',['TreatmentService',
                 };
             }));
 
+            config.stoppedOrderReasonConcepts = stoppedOrderReasonConfig.answers;
             return config;
         });
     }]

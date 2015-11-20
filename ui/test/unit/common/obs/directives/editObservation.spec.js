@@ -33,6 +33,9 @@ describe("ensure that the directive edit-observation works properly", function (
           },
         labOrderNotesConcept: function(){
             return {};
+        },
+        stoppedOrderReasonConfig: function(){
+            return {};
         }
     };
     beforeEach(module('bahmni.common.obs'));

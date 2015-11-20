@@ -55,6 +55,13 @@ describe('configurationService', function () {
         expect(_$http.get.calls.mostRecent().args[1].params.v).toEqual("custom:(uuid,name,answers)");
     });
 
+    it('should fetch stoppedOrderReasonConfig from backend', function () {
+        configurationservice.getConfigurations(['stoppedOrderReasonConfig'])
+        expect(_$http.get.calls.mostRecent().args[0]).toEqual(Bahmni.Common.Constants.conceptSearchByFullNameUrl);
+        expect(_$http.get.calls.mostRecent().args[1].params.name).toEqual(Bahmni.Common.Constants.stoppedOrderReasonConceptName);
+        expect(_$http.get.calls.mostRecent().args[1].params.v).toEqual("custom:(uuid,name,answers)");
+    });
+
     it('should fetch consultationNoteConfig from backend', function () {
         configurationservice.getConfigurations(['consultationNoteConfig'])
         expect(_$http.get.calls.mostRecent().args[0]).toEqual(Bahmni.Common.Constants.conceptSearchByFullNameUrl);

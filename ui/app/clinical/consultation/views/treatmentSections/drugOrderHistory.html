@@ -22,7 +22,7 @@
                         <ul class="table-mimic">
 							<li id="ordered-drug-orders" ng-repeat="drugOrder in drugOrderGroup.drugOrders" ng-class="{'active-drug' : drugOrder.isActive(), 'highlight' : drugOrder.isBeingEdited, 'scheduled-drug': drugOrder.isScheduled()}">
                                 <div class="drug-details" ng-class="{'strike-through': drugOrder.isDiscontinuedOrStopped()}">
-                                    <strong class="drug-name">{{drugOrder.getDisplayName()}}</strong> 
+                                    <strong class="drug-name">{{drugOrder.getDisplayName()}}</strong>
                                     {{drugOrder.getDescriptionWithQuantity()}}
                                 </div>
 								<div class="button-group-wrapper">
@@ -56,7 +56,11 @@
                                 <div class="start-date fr">
                                     <span ng-if="showEffectiveFromDate(drugOrderGroup.visitStartDate, drugOrder.effectiveStartDate)"> from {{drugOrder.effectiveStartDate | bahmniDate}}</span>
                                     <br/>
-                                    <span ng-if="drugOrder.isDiscontinuedOrStopped()">stopped {{drugOrder.effectiveStopDate | bahmniDate}}</span>
+                                    <span>
+                                    <div ng-if="drugOrder.isDiscontinuedOrStopped()">Stopped on {{drugOrder.effectiveStopDate | bahmniDate}}</div>
+                                    <div ng-if="drugOrder.orderReasonText">due to {{drugOrder.orderReasonText}}</div>
+                                    <div ng-if="getOrderReasonConcept(drugOrder)">({{getOrderReasonConcept(drugOrder)}})</div>
+                                        </span>
                                 </div>
                                 <div ng-show="drugOrder.showAdditionalInstructions" class="notes inline-notes">
                                     {{drugOrder.additionalInstructions}}
@@ -68,6 +72,16 @@
                                             <provider-directive creator-name="{{drugOrder.creatorName}}" provider-name="{{drugOrder.provider.name}}"></provider-directive>
                                         </span>
                                     </div>
+                                </div>
+                                <div ng-if="drugOrder.isMarkedForDiscontinue">
+                                    <fieldset>
+                                    <input id="date-stopped"  type="date" min="{{::minDateStopped}}"max="{{::scheduledDate}}" ng-model="drugOrder.dateStopped"
+                                           required="required">
+                                        <select id="stopped-reason" class="form-field instruction" ng-model="drugOrder.orderReasonConcept" ng-options="item as item.display for item in stoppedOrderReasons">
+                                            <option value="">Reason</option>
+                                        </select>
+                                        <textarea id="stopped-reason-non-coded" class="form-field drug-order-notes" placeholder="Reason for stopping" ng-model="drugOrder.orderReasonText"></textarea>
+                                    </fieldset>
                                 </div>
 							</li>
 						</ul>
