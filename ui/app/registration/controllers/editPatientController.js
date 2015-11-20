@@ -40,6 +40,7 @@ angular.module('bahmni.registration')
             };
 
             (function () {
+                var getPatientPromise = patientService.get(uuid).then(successCallBack);
 
                 var isDigitized = encounterService.getDigitized(uuid);
                 isDigitized.success(function (data) {
@@ -49,16 +50,9 @@ angular.module('bahmni.registration')
                     $scope.isDigitized = encountersWithObservations.length > 0;
                 });
 
-                var platform = $bahmniCookieStore.get(Bahmni.Common.Constants.platform);
-                if(platform == "android"){
-                    successCallBack(JSON.parse(Android.getPatient(uuid)));
-                    spinner.forPromise($q.all([isDigitized]));
-                }
-                else{
-                    var getPatientPromise = patientService.get(uuid).success(successCallBack);
-                    spinner.forPromise($q.all([getPatientPromise, isDigitized]));
-                }
+                spinner.forPromise($q.all([getPatientPromise, isDigitized]));
             })();
+
 
             $scope.update = function () {
                 addNewRelationships();

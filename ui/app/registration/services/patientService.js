@@ -4,13 +4,14 @@ angular.module('bahmni.registration')
     .factory('patientService', ['$http', '$rootScope','$bahmniCookieStore','$q', function ($http, $rootScope, $bahmniCookieStore, $q) {
         var openmrsUrl = Bahmni.Registration.Constants.openmrsUrl;
         var baseOpenMRSRESTURL = Bahmni.Registration.Constants.baseOpenMRSRESTURL;
+        var platform = $bahmniCookieStore.get(Bahmni.Common.Constants.platform);
 
-        var search = function (query, addressFieldName, addressFieldValue, customAttributeValue, offset, customAttributeFields) {
+        var search = function (query, identifier, addressFieldName, addressFieldValue, customAttributeValue, offset, customAttributeFields) {
 
-            var url = Bahmni.Common.Constants.bahmniSearchUrl + "/patient";
             var config = {
                 params: {
                     q: query,
+                    identifier:identifier,
                     s: "byIdOrNameOrVillage",
                     address_field_name: addressFieldName,
                     address_field_value: addressFieldValue,
@@ -20,7 +21,15 @@ angular.module('bahmni.registration')
                 },
                 withCredentials: true
             };
-            return $http.get(url, config);
+            if(platform == "android"){
+                return $q.when(JSON.parse(Android.search(JSON.stringify(config))));
+            }
+            var url = Bahmni.Common.Constants.bahmniSearchUrl + "/patient";
+            var defer = $q.defer();
+            $http.get(url, config).success(function(result) {
+                defer.resolve(result);
+            });
+            return defer.promise;
         };
 
         var searchByIdentifier = function(identifier){
@@ -32,12 +41,8 @@ angular.module('bahmni.registration')
         };
 
         var get = function (uuid) {
-            var platform = $bahmniCookieStore.get(Bahmni.Common.Constants.platform);
             if(platform == "android"){
-                var deferred = $q.defer();
-                var patient = Android.getPatient(uuid);
-                deferred.resolve(patient);
-                return deferred.promise;
+                return $q.when(JSON.parse(Android.getPatient(uuid)));
             }
             var url = openmrsUrl + "/ws/rest/v1/patientprofile/" + uuid;
             var config = {
@@ -45,7 +50,11 @@ angular.module('bahmni.registration')
                 params: {v: "full"},
                 withCredentials: true
             };
-            return $http.get(url, config);
+            var defer = $q.defer();
+            $http.get(url, config).success(function(result) {
+                defer.resolve(result);
+            });
+            return defer.promise;
         };
 
         var generateIdentifier = function (patient) {

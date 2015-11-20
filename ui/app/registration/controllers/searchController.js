@@ -18,14 +18,7 @@ angular.module('bahmni.registration')
             };
 
             var searchBasedOnQueryParameters = function (offset) {
-                var platform = $bahmniCookieStore.get(Bahmni.Common.Constants.platform);
-                if(platform == "android"){
-                    if($scope.searchParameters.name){
-                        var ajaxResult = JSON.parse(Android.search($scope.searchParameters.name, offset));
-                        $scope.results = ajaxResult.pageOfResults;
-                        return
-                    }
-                }
+
                 if(! isUserPrivilegedForSearch()) {
                     showInsufficientPrivMessage();
                     return;
@@ -48,14 +41,15 @@ angular.module('bahmni.registration')
                 if (hasSearchParameters()) {
                     var searchPromise = patientService.search(
                         $scope.searchParameters.name,
+                        null,
                         $scope.addressSearchConfig.field,
                         $scope.searchParameters.addressFieldValue,
                         $scope.searchParameters.customAttribute,
                         offset,
                         $scope.customAttributesSearchConfig.fields
                     ).then(function(response) {
-                         mapCustomAttributesSearchResults(response.data);
-                         return response.data;
+                         mapCustomAttributesSearchResults(response);
+                         return response;
                     });
                     searching = true;
                     searchPromise['finally'](function () {
@@ -136,24 +130,17 @@ angular.module('bahmni.registration')
             });
 
             $scope.searchById = function () {
-                var platform = $bahmniCookieStore.get(Bahmni.Common.Constants.platform);
-                if(platform == "android"){
-                    if($scope.searchParameters.registrationNumber){
-                        var ajaxResult = JSON.parse(Android.search($scope.searchParameters.name, 0));
-                        $scope.results = ajaxResult.pageOfResults;
-                        return
-                    }
-                }
                 if(! isUserPrivilegedForSearch()) {
                     showInsufficientPrivMessage();
                     return;
                 }
                 if (!$scope.searchParameters.registrationNumber) return;
                 $scope.results = [];
+
                 var patientIdentifier = $scope.searchParameters.identifierPrefix ? $scope.searchParameters.identifierPrefix.prefix + $scope.searchParameters.registrationNumber : $scope.searchParameters.registrationNumber;
                 preferences.identifierPrefix = $scope.searchParameters.identifierPrefix ? $scope.searchParameters.identifierPrefix.prefix : "";
                 $location.search({identifierPrefix: preferences.identifierPrefix, registrationNumber: $scope.searchParameters.registrationNumber});
-                var searchPromise = patientService.search(patientIdentifier, $scope.addressSearchConfig.field).success(function (data) {
+                var searchPromise = patientService.search(null, patientIdentifier, $scope.addressSearchConfig.field).then(function (data) {
                     mapCustomAttributesSearchResults(data);
                     if (data.pageOfResults.length === 1) {
                         var patient = data.pageOfResults[0];
