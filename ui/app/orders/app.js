@@ -7,14 +7,14 @@ angular
     .config(['$urlRouterProvider', '$stateProvider', '$httpProvider', '$bahmniTranslateProvider', function ($urlRouterProvider, $stateProvider, $httpProvider, $bahmniTranslateProvider) {
         $httpProvider.defaults.headers.common['Disable-WWW-Authenticate'] = true;
         $urlRouterProvider.otherwise('/search');
+        var homeBacklink = {label: "Home", url: "../home/", accessKey: "h", icon: "fa-home"};
+        var searchBacklink = {label: "Search", state: "search", accessKey: "p", icon: "fa-users"};
         $stateProvider
             .state('search', {
                 url: '/search',
                 data: {
                     extensionPointId: 'org.bahmni.orders.search',
-                    backLinks: [
-                        {label: "Home", url: "../home/", icon: "fa-home"}
-                    ]
+                    backLinks: [homeBacklink]
                 },
                 views: {
                     'content': {
@@ -27,10 +27,7 @@ angular
             .state('orderFulfillment', {
                 url: '/patient/:patientUuid/fulfillment/:orderType',
                 data: {
-                    backLinks: [
-                        {label: "Home", url: "../home/", icon: "fa-home"},
-                        {label: "Search", state: "search", icon: "fa-users"}
-                    ]
+                    backLinks: [homeBacklink, searchBacklink]
                 },
                 views: {
                     'additional-header': {
