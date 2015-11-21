@@ -19,7 +19,7 @@ angular
                 },
                 data: {
                     backLinks: [
-                        {label: "Home", url: "../home/", icon: "fa-home"}
+                        {label: "Home", url: "../home/", accessKey: "h", icon: "fa-home"}
                     ]
                 },
                 resolve: {

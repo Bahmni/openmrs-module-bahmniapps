@@ -19,7 +19,7 @@ angular.module('consultation')
             id: "patients-link",
             icon: "fa-users"
         };
-        var homeBackLink = {label: "", url: "../home/", icon: "fa-home"};
+        var homeBackLink = {label: "", url: "../home/", accessKey: "h", icon: "fa-home"};
 
         $stateProvider
             .state('search', {
