@@ -8,7 +8,7 @@
                title="Go to IPD dashboard">
                 <i class="fa fa-bed fa-white"></i>
             </a>
-            <a class="back-btn-link" id="dashboard-link" ng-click="gotoPatientDashboard()" title="Back to {{patient.name}} Dashboard">
+            <a class="back-btn-link" id="dashboard-link" accesskey="d" ng-click="gotoPatientDashboard()" title="Back to {{patient.name}} Dashboard">
                 <img ng-src="{{patient.image}}" onerror="this.onerror=null;this.src='../images/blank-user.gif';">
               <span class="patient-info">
                 <span class="patient-name" >{{patient.name}} </span>
@@ -85,8 +85,9 @@
             <span class="grouped-buttons">
                  <a class=" btn--left btn--success "
                     ng-if="visitHistory.activeVisit || retrospectiveEntry || allowConsultation()"
-                    ng-click="openConsultation()" >
-                     {{'CONSULTATION_TAB_KEY' | translate}}
+                    ng-click="openConsultation()"
+                    accesskey="{{'CONSULTATION_SHORTCUT_KEY' | translate}}"
+                    ng-bind-html="'CONSULTATION_TAB_KEY' | translate">
                  </a>
                 <a class="btn--right btn--success " title="Open in new window"
                    ng-if="visitHistory.activeVisit || retrospectiveEntry"
