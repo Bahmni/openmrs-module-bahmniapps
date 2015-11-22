@@ -8,7 +8,7 @@ angular.module('bahmni.common.conceptSet')
                 var newObs = observation.cloneNew();
                 var index = parentObservation.groupMembers.indexOf(observation);
                 parentObservation.groupMembers.splice(index + 1, 0, newObs);
-                jQuery.scrollTo(element)
+                jQuery.scrollTo(element, 300)
             };
 
             scope.removeClonedObs = function (observation, parentObservation) {
