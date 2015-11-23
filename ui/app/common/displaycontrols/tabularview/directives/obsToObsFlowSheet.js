@@ -27,7 +27,7 @@ angular.module('bahmni.common.displaycontrol.obsVsObsFlowSheet')
             };
 
             var getName = function(obs){
-                var name =  (obs && obs.value && obs.value.shortName) || (obs && obs.value && obs.value.name) || obs.value;
+                return (obs && obs.value && obs.value.shortName) || (obs && obs.value && obs.value.name) || obs.value;
             };
 
             $scope.commafy = function (observations){
