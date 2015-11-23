@@ -92,7 +92,7 @@ describe('patient mapper', function () {
 
         expect(openmrsPatient.patient.person.dead).toBe(true);
 
-        expect(openmrsPatient.patient.person.deathDate).toBe(undefined);
+        expect(openmrsPatient.patient.person.deathDate).toBe(null);
 
         expect(openmrsPatient.patient.person.causeOfDeath).toBe('');
 
