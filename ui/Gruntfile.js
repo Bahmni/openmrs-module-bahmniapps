@@ -62,7 +62,8 @@ module.exports = function (grunt) {
                 },
                 dir: 'coverage',
                 root: '.'
-            }},
+            }
+        },
         compass: {
             options: {
                 sassDir: '<%= yeoman.app %>/styles',
@@ -82,12 +83,12 @@ module.exports = function (grunt) {
         },
         // Renames files for browser caching purposes
         filerev: {
-          dist: {
-            src: [
-              '<%= yeoman.dist %>/**/*.js',
-              '<%= yeoman.dist %>/**/*.css'
-            ]
-          }
+            dist: {
+                src: [
+                    '<%= yeoman.dist %>/**/*.js',
+                    '<%= yeoman.dist %>/**/*.css'
+                ]
+            }
         },
         useminPrepare: {
             html: [
@@ -108,13 +109,13 @@ module.exports = function (grunt) {
             options: {
                 dest: '<%= yeoman.dist %>',
                 flow: {
-                  html: {
-                    steps: {
-                      js: ['concat'],
-                      css: ['cssmin']
-                    },
-                    post: {}
-                  }
+                    html: {
+                        steps: {
+                            js: ['concat'],
+                            css: ['cssmin']
+                        },
+                        post: {}
+                    }
                 }
             }
         },
@@ -134,7 +135,7 @@ module.exports = function (grunt) {
             ],
             css: '<%= yeoman.dist %>/styles/**/*.css',
             options: {
-                assetsDirs: ['<%= yeoman.dist %>','<%= yeoman.dist %>/images']
+                assetsDirs: ['<%= yeoman.dist %>', '<%= yeoman.dist %>/images']
             }
         },
         imagemin: {
@@ -164,7 +165,7 @@ module.exports = function (grunt) {
         htmlmin: {
             dist: {
                 options: {
-                    keepClosingSlash:true
+                    keepClosingSlash: true
                 },
                 files: [
                     {
@@ -212,26 +213,106 @@ module.exports = function (grunt) {
         rename: {
             minified: {
                 files: [
-                    {expand: true, cwd: '<%= yeoman.dist %>', src: ['patients.min.*.js'], dest: '<%= yeoman.dist %>/patients/'},
-                    {expand: true, cwd: '<%= yeoman.dist %>', src: ['clinical.min.*.js'], dest: '<%= yeoman.dist %>/clinical/'},
+                    {
+                        expand: true,
+                        cwd: '<%= yeoman.dist %>',
+                        src: ['patients.min.*.js'],
+                        dest: '<%= yeoman.dist %>/patients/'
+                    },
+                    {
+                        expand: true,
+                        cwd: '<%= yeoman.dist %>',
+                        src: ['clinical.min.*.js'],
+                        dest: '<%= yeoman.dist %>/clinical/'
+                    },
                     {expand: true, cwd: '<%= yeoman.dist %>', src: ['adt.min.*.js'], dest: '<%= yeoman.dist %>/adt/'},
-                    {expand: true, cwd: '<%= yeoman.dist %>', src: ['orders.min.*.js'], dest: '<%= yeoman.dist %>/orders/'},
+                    {
+                        expand: true,
+                        cwd: '<%= yeoman.dist %>',
+                        src: ['orders.min.*.js'],
+                        dest: '<%= yeoman.dist %>/orders/'
+                    },
                     {expand: true, cwd: '<%= yeoman.dist %>', src: ['home.min.*.js'], dest: '<%= yeoman.dist %>/home/'},
-                    {expand: true, cwd: '<%= yeoman.dist %>', src: ['admin.min.*.js'], dest: '<%= yeoman.dist %>/admin/'},
+                    {
+                        expand: true,
+                        cwd: '<%= yeoman.dist %>',
+                        src: ['admin.min.*.js'],
+                        dest: '<%= yeoman.dist %>/admin/'
+                    },
                     {expand: true, cwd: '<%= yeoman.dist %>', src: ['dhis.min.*.js'], dest: '<%= yeoman.dist %>/dhis/'},
-                    {expand: true, cwd: '<%= yeoman.dist %>', src: ['reports.min.*.js'], dest: '<%= yeoman.dist %>/reports/'},
-                    {expand: true, cwd: '<%= yeoman.dist %>', src: ['registration.min.*.js'], dest: '<%= yeoman.dist %>/registration/'},
-                    {expand: true, cwd: '<%= yeoman.dist %>', src: ['document-upload.min.*.js'], dest: '<%= yeoman.dist %>/document-upload/'},
-                    {expand: true, cwd: '<%= yeoman.dist %>', src: ['patients.min.*.css'], dest: '<%= yeoman.dist %>/patients/'},
-                    {expand: true, cwd: '<%= yeoman.dist %>', src: ['clinical.min.*.css'], dest: '<%= yeoman.dist %>/clinical/'},
+                    {
+                        expand: true,
+                        cwd: '<%= yeoman.dist %>',
+                        src: ['reports.min.*.js'],
+                        dest: '<%= yeoman.dist %>/reports/'
+                    },
+                    {
+                        expand: true,
+                        cwd: '<%= yeoman.dist %>',
+                        src: ['registration.min.*.js'],
+                        dest: '<%= yeoman.dist %>/registration/'
+                    },
+                    {
+                        expand: true,
+                        cwd: '<%= yeoman.dist %>',
+                        src: ['document-upload.min.*.js'],
+                        dest: '<%= yeoman.dist %>/document-upload/'
+                    },
+                    {
+                        expand: true,
+                        cwd: '<%= yeoman.dist %>',
+                        src: ['patients.min.*.css'],
+                        dest: '<%= yeoman.dist %>/patients/'
+                    },
+                    {
+                        expand: true,
+                        cwd: '<%= yeoman.dist %>',
+                        src: ['clinical.min.*.css'],
+                        dest: '<%= yeoman.dist %>/clinical/'
+                    },
                     {expand: true, cwd: '<%= yeoman.dist %>', src: ['adt.min.*.css'], dest: '<%= yeoman.dist %>/adt/'},
-                    {expand: true, cwd: '<%= yeoman.dist %>', src: ['orders.min.*.css'], dest: '<%= yeoman.dist %>/orders/'},
-                    {expand: true, cwd: '<%= yeoman.dist %>', src: ['home.min.*.css'], dest: '<%= yeoman.dist %>/home/'},
-                    {expand: true, cwd: '<%= yeoman.dist %>', src: ['admin.min.*.css'], dest: '<%= yeoman.dist %>/admin/'},
-                    {expand: true, cwd: '<%= yeoman.dist %>', src: ['dhis.min.*.css'], dest: '<%= yeoman.dist %>/dhis/'},
-                    {expand: true, cwd: '<%= yeoman.dist %>', src: ['reports.min.*.css'], dest: '<%= yeoman.dist %>/reports/'},
-                    {expand: true, cwd: '<%= yeoman.dist %>', src: ['registration.min.*.css'], dest: '<%= yeoman.dist %>/registration/'},
-                    {expand: true, cwd: '<%= yeoman.dist %>', src: ['document-upload.min.*.css'], dest: '<%= yeoman.dist %>/document-upload/'}
+                    {
+                        expand: true,
+                        cwd: '<%= yeoman.dist %>',
+                        src: ['orders.min.*.css'],
+                        dest: '<%= yeoman.dist %>/orders/'
+                    },
+                    {
+                        expand: true,
+                        cwd: '<%= yeoman.dist %>',
+                        src: ['home.min.*.css'],
+                        dest: '<%= yeoman.dist %>/home/'
+                    },
+                    {
+                        expand: true,
+                        cwd: '<%= yeoman.dist %>',
+                        src: ['admin.min.*.css'],
+                        dest: '<%= yeoman.dist %>/admin/'
+                    },
+                    {
+                        expand: true,
+                        cwd: '<%= yeoman.dist %>',
+                        src: ['dhis.min.*.css'],
+                        dest: '<%= yeoman.dist %>/dhis/'
+                    },
+                    {
+                        expand: true,
+                        cwd: '<%= yeoman.dist %>',
+                        src: ['reports.min.*.css'],
+                        dest: '<%= yeoman.dist %>/reports/'
+                    },
+                    {
+                        expand: true,
+                        cwd: '<%= yeoman.dist %>',
+                        src: ['registration.min.*.css'],
+                        dest: '<%= yeoman.dist %>/registration/'
+                    },
+                    {
+                        expand: true,
+                        cwd: '<%= yeoman.dist %>',
+                        src: ['document-upload.min.*.css'],
+                        dest: '<%= yeoman.dist %>/document-upload/'
+                    }
                 ]
             }
         },
@@ -268,12 +349,53 @@ module.exports = function (grunt) {
         'dist'
     ]);
 
+
     grunt.registerTask('default', ['build']);
 
-    grunt.registerTask('bower-install', 'install dependencies using bower', function() {
+    grunt.registerTask('pre-fetch', 'Generate files to pre-fetch for service worker', function() {
+            var preFetchList = [];
+            var preFetchDirs = ['./app/lib', './app/images', './app/home', './app/registration', './app/i18n/home', './app/i18n/registration'];
+            for (var i in preFetchDirs) {
+                preFetchList = preFetchList.concat(getFiles(preFetchDirs[i], preFetchList))
+            }
+            updatePrefetchList(preFetchList);
+        }
+    );
+
+    var getFiles = function (dir, files_) {
+        var fs = require('fs');
+        files_ = files_ || [];
+        var files = fs.readdirSync(dir);
+        for (var i in files){
+            var name = dir + '/' + files[i];
+            if (fs.statSync(name).isDirectory()){
+                getFiles(name, files_);
+            } else {
+                name = "'"+name.split("./app").join("/bahmni")+"'";
+                if(files_.indexOf(name) === -1) {
+                    files_.push(name);
+                }
+            }
+        }
+        return files_;
+    };
+
+    var updatePrefetchList = function(preFetchList){
+        var replace = require("replace");
+
+        replace({
+            regex: "{pre-fetch-list}",
+            replacement: preFetchList,
+            paths: ['./app/worker.js'],
+            recursive: false,
+            silent: true,
+        });
+    };
+
+    grunt.registerTask('bower-install', 'install dependencies using bower', function () {
         var exec = require('child_process').exec;
         var cb = this.async();
-        exec('bower install', function(err, stdout, stderr) {
+        exec('bower install', function (err, stdout, stderr) {
             console.log(stdout);
             cb();
         });
