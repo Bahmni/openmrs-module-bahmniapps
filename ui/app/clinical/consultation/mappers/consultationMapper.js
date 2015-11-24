@@ -60,6 +60,8 @@ Bahmni.ConsultationMapper = function (dosageFrequencies, dosageInstructions, con
             disposition: encounterTransaction.disposition,
             encounterDateTime: encounterTransaction.encounterDateTime,
             orders: orders,
+            patientUuid: encounterTransaction.patientUuid,
+            visitType: encounterTransaction.visitType,
             providers: encounterTransaction.providers,
             locationUuid: encounterTransaction.locationUuid,
             extensions: {mdrtbSpecimen: mdrtbSpecimen}
