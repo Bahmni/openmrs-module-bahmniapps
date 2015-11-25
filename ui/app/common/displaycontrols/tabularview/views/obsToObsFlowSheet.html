@@ -17,10 +17,12 @@
             <p>{{'NO_DATA_MESSAGE' | translate}}</p>
         </div>
         <table ng-if="obsTable.rows.length > 0">
-            <th ng-repeat="header in obsTable.headers">{{header.shortName || header.name}}</th>
+            <th ng-if="isMonthAvailable()"> Month </th>
+            <th ng-repeat="header in obsTable.headers" ng-if="header.name != 'Month'">{{header.shortName || header.name}}</th>
             <tr ng-repeat="row in obsTable.rows">
-                <td ng-repeat="header in obsTable.headers" ng-class="{'is-abnormal': row.columns[header.name].abnormal}">
-                    {{ commafy(row.columns[header.name]) }}
+                <td ng-if="isMonthAvailable()">{{row.columns['Month'][0].valueAsString}}</td>
+                <td ng-repeat="header in obsTable.headers" ng-if="header.name != 'Month'" ng-class="{'is-abnormal': row.columns[header.name].abnormal}">
+                    {{ row.columns[header.name][0].valueAsString }}
                 </td>
             </tr>
         </table>

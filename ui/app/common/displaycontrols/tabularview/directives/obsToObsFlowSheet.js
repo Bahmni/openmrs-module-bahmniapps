@@ -7,7 +7,7 @@ angular.module('bahmni.common.displaycontrol.obsVsObsFlowSheet')
             var patient = $scope.patient;
             var init = function () {
                 return observationsService.getObsInFlowSheet(patient.uuid, $scope.config.templateName,
-                    $scope.config.groupByConcept, $scope.config.conceptNames, $scope.config.numberOfVisits, $scope.config.initialCount, $scope.config.latestCount).success(function (data) {
+                    $scope.config.groupByConcept, $scope.config.conceptNames, $scope.config.numberOfVisits, $scope.config.initialCount, $scope.config.latestCount, $scope.config.name).success(function (data) {
                         var foundElement = _.find(data.headers, function (header) {
                             return header.name === $scope.config.groupByConcept;
                         });
@@ -50,6 +50,10 @@ angular.module('bahmni.common.displaycontrol.obsVsObsFlowSheet')
 
                 return list.join(', ');
             };
+
+            $scope.isMonthAvailable = function(){
+                return $scope.obsTable.rows[0].columns['Month'] != null
+            }
 
             spinner.forPromise(init());
         };
