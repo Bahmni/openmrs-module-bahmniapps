@@ -92,7 +92,7 @@
                               illegal-value="observation.isDurationRequired() && !observation.hasDuration()"></duration>
                 </div>
 
-                <div ng-include src="'../common/concept-set/views/observationDataTypes/removeClone.html'"></div>
+                <div class="fl" ng-include src="'../common/concept-set/views/observationDataTypes/removeClone.html'"></div>
 
                 <div class="offset-label" ng-show="observation.showComment">
                     <textarea class="obs-comment-section" maxlength="255" ng-model="observation.comment"
@@ -219,7 +219,7 @@
                 <div ng-include src="'../common/concept-set/views/observationDataTypes/addMore.html'"></div>
 
 
-                <div ng-if="isRemoveValid(observation)" ng-include src="'../common/concept-set/views/observationDataTypes/removeClone.html'"></div>
+                <div class="fl" ng-if="isRemoveValid(observation)" ng-include src="'../common/concept-set/views/observationDataTypes/removeClone.html'"></div>
 
                 <button ng-if="::observation.canHaveComment()" type="button" toggle="observation.showComment"
                         ng-blur="handleUpdate()" ng-disabled="observation.disabled"
@@ -280,7 +280,7 @@
                 <i ng-if="!(isCollapsibleSet() && collapse)" class="fa fa-caret-down"></i>
                 <strong>{{::observation.label}}</strong>
 
-                <span ng-include src="'../common/concept-set/views/observationDataTypes/removeClone.html'"></span>
+                <span class="fl" ng-include src="'../common/concept-set/views/observationDataTypes/removeClone.html'"></span>
 
             <span ng-if="observation.canAddMore && observation.canAddMore()" class="add-more">
                 <button id="{{observation.assignAddMoreButtonID()}}" type="button" class="add-more-btn btn-small" ng-click="cloneNew(observation, rootObservation)">
