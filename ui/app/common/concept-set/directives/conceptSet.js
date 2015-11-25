@@ -115,7 +115,7 @@ angular.module('bahmni.common.conceptSet')
                         }
                         if (groupMember.groupMembers && groupMember.groupMembers.length > 0) {
                             setDefaultsForGroupMembers(groupMember.groupMembers, defaults);
-                            if (groupMember instanceof Bahmni.ConceptSet.ObservationNode) {
+                            if (groupMember instanceof Bahmni.ConceptSet.ObservationNode && defaults[groupMember.label]) {
                                 groupMember.onValueChanged(groupMember.value);
                             }
                         }
