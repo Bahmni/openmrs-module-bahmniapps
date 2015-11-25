@@ -26,16 +26,19 @@
         '/bahmni/home',
         '/bahmni/registration/'
         ],
+        globalProperty = [
+            '/openmrs/ws/rest/v1/bahmnicore/sql/globalproperty?property=locale.allowed.list',
+            '/openmrs/ws/rest/v1/bahmnicore/sql/globalproperty?property=mrs.genders',
+            '/openmrs/ws/rest/v1/bahmnicore/sql/globalproperty?property=bahmni.relationshipTypeMap',
+            '/openmrs/ws/rest/v1/bahmnicore/sql/globalproperty?property=concept.reasonForDeath'
+        ],
         rest = [
         '/openmrs/ws/rest/v1/location?q=Login+Location&s=byTags&v=default',
-        '/openmrs/ws/rest/v1/bahmnicore/sql/globalproperty?property=concept.reasonForDeath',
         '/openmrs/ws/rest/v1/bahmnicore/config/bahmniencounter?callerContext=REGISTRATION_CONCEPTS',
         '/openmrs/ws/rest/v1/personattributetype?v=custom:(uuid,name,sortWeight,description,format,concept)',
         '/openmrs/ws/rest/v1/idgen/identifiersources',
         '/openmrs/module/addresshierarchy/ajax/getOrderedAddressHierarchyLevels.form',
-        '/openmrs/ws/rest/v1/bahmnicore/sql/globalproperty?property=mrs.genders',
-        '/openmrs/ws/rest/v1/relationshiptype?v=custom:(aIsToB,bIsToA,uuid)',
-        '/openmrs/ws/rest/v1/bahmnicore/sql/globalproperty?property=bahmni.relationshipTypeMap'
+        '/openmrs/ws/rest/v1/relationshiptype?v=custom:(aIsToB,bIsToA,uuid)'
         ],
         others = //home page
         [
@@ -177,7 +180,7 @@
             '/bahmni/common/photo-capture/views/photo.html',
             // end of registration cache
         ],
-        preFetchCompleteList = styles.concat(preFetchList.concat(configs.concat(modules.concat(others.concat(rest)))));
+        preFetchCompleteList = styles.concat(preFetchList.concat(configs.concat(modules.concat(globalProperty.concat(others.concat(rest))))));
 
     importScripts('./components/sw-toolbox/sw-toolbox.js');
 
