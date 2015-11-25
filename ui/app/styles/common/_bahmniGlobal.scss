@@ -258,3 +258,16 @@ u, .add-drug-btninput[value]:first-letter {
 .fa-pencil{
   cursor: pointer;
 }
+
+.clear-both{
+  clear: both;
+}
+.select2-drop{
+  z-index: 99999 !important;
+}
+.ng-dialog-all-details-page{
+
+  .select2-container .select2-choice{
+    height: 26px !important;
+  }
+}
