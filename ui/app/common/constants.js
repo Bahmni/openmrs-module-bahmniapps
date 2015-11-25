@@ -154,6 +154,12 @@ Bahmni.Common = Bahmni.Common || {};
         formDataUrl: RESTWS_V1 + "/obs",
         bedFromVisit: RESTWS_V1+ "/beds",
         patientAttributeDateFieldFormat: "org.openmrs.util.AttributableDate",
-        platform:"user.platform"
+        platform:"user.platform",
+        platformType: {
+            chrome: 'chrome',
+            android: 'android',
+            chromeApp: 'chrome-app',
+            other: 'other'
+        }
     };
 })();

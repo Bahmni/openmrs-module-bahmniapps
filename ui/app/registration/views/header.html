@@ -19,6 +19,11 @@
             <li>
                 <i class="fa fa-map-marker fa-white small"></i><span ng-bind="currentUser.currentLocation"></span>
             </li>
+            <li ng-if="isOfflineApp()">
+                <a href="/offline">
+                    <i class="fa fa-refresh small"></i><span class="nav-link">{{'REGISTRATION_LABEL_SYNC' | translate}}</span>
+                </a>
+            </li>
             <li>
                 <a log-out><i class="fa fa-power-off fa-white small"></i><span class="nav-link">{{'REGISTRATION_LABEL_LOGOUT' | translate}}</span></a>
             </li>

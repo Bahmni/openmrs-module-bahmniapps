@@ -4,7 +4,7 @@ angular.module('bahmni.registration')
     .factory('patientService', ['$http', '$rootScope','$bahmniCookieStore','$q', function ($http, $rootScope, $bahmniCookieStore, $q) {
         var openmrsUrl = Bahmni.Registration.Constants.openmrsUrl;
         var baseOpenMRSRESTURL = Bahmni.Registration.Constants.baseOpenMRSRESTURL;
-        var platform = $bahmniCookieStore.get(Bahmni.Common.Constants.platform);
+        var platform = $rootScope.getAppPlatform();
 
         var search = function (query, identifier, addressFieldName, addressFieldValue, customAttributeValue, offset, customAttributeFields) {
 
@@ -21,7 +21,7 @@ angular.module('bahmni.registration')
                 },
                 withCredentials: true
             };
-            if(platform == "android"){
+            if(platform === Bahmni.Common.Constants.platform.platformType.android){
                 return $q.when(JSON.parse(Android.search(JSON.stringify(config))));
             }
             var url = Bahmni.Common.Constants.bahmniSearchUrl + "/patient";
@@ -41,7 +41,7 @@ angular.module('bahmni.registration')
         };
 
         var get = function (uuid) {
-            if(platform == "android"){
+            if(platform === Bahmni.Common.Constants.platform.platformType.android){
                 return $q.when(JSON.parse(Android.getPatient(uuid)));
             }
             var url = openmrsUrl + "/ws/rest/v1/patientprofile/" + uuid;

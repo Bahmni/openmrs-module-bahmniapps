@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('bahmni.registration').factory('initialization',
-    ['$rootScope', '$q', 'configurations', 'authenticator', 'appService', 'spinner', 'Preferences',
-    function ($rootScope, $q, configurations, authenticator, appService, spinner, preferences) {
+    ['$rootScope', '$q', 'configurations', 'authenticator', 'appService', 'spinner', 'Preferences', '$bahmniCookieStore',
+    function ($rootScope, $q, configurations, authenticator, appService, spinner, preferences, $bahmniCookieStore) {
         var getConfigs = function() {
             var configNames = ['encounterConfig', 'patientAttributesConfig', 'identifierSourceConfig', 'addressLevels', 'genderMap', 'relationshipTypeConfig','relationshipTypeMap', 'loginLocationToVisitTypeMapping'];
             return configurations.load(configNames).then(function () {
@@ -19,6 +19,14 @@ angular.module('bahmni.registration').factory('initialization',
                 $rootScope.relationshipTypeMap = configurations.relationshipTypeMap();
                 $rootScope.relationshipTypes = configurations.relationshipTypes();
             });
+        };
+
+        $rootScope.getAppPlatform = function (){
+            return $bahmniCookieStore.get(Bahmni.Common.Constants.platform);
+        };
+
+        $rootScope.isOfflineApp = function (){
+            return $rootScope.getAppPlatform() !== Bahmni.Common.Constants.platformType.chrome;
         };
 
         var loadValidators = function (baseUrl,contextPath) {
