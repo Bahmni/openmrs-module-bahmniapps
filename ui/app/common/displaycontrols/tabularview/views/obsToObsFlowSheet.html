@@ -22,7 +22,7 @@
             <tr ng-repeat="row in obsTable.rows">
                 <td ng-if="isMonthAvailable()">{{row.columns['Month'][0].valueAsString}}</td>
                 <td ng-repeat="header in obsTable.headers" ng-if="header.name != 'Month'" ng-class="{'is-abnormal': row.columns[header.name].abnormal}">
-                    {{ row.columns[header.name][0].valueAsString }}
+                    {{commafy(row.columns[header.name])}}
                 </td>
             </tr>
         </table>
