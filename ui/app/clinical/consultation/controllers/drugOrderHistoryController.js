@@ -33,11 +33,12 @@ angular.module('bahmni.clinical')
             };
 
             var createRecentDrugOrderGroup = function (activeAndScheduledDrugOrders) {
+                var showOnlyActive = clinicalAppConfigService.getDrugOrderConfig().showOnlyActive;
                 var refillableGroup = {
                     label: 'Recent',
                     selected: true,
                     drugOrders: drugOrderHistoryHelper.getRefillableDrugOrders(activeAndScheduledDrugOrders,
-                        getPreviousVisitDrugOrders())
+                        getPreviousVisitDrugOrders(), showOnlyActive)
                 };
                 $scope.consultation.drugOrderGroups.unshift(refillableGroup);
             };

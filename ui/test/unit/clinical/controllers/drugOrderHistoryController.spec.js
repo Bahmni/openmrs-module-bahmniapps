@@ -41,7 +41,8 @@ describe("DrugOrderHistoryController", function () {
             retrospectiveEntryService: retrospectiveEntryService,
             $stateParams: {patientUuid: "patientUuid"},
             visitContext: {},
-            spinner : spinner
+            spinner : spinner,
+            visitHistory: []
         });
     }));
 

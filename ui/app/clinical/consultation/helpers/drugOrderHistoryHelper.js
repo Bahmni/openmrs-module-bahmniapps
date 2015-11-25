@@ -22,7 +22,7 @@ angular.module('bahmni.clinical')
             return inactivePreviousVisitDrugs;
         };
 
-        this.getRefillableDrugOrders = function (activeAndScheduledDrugOrders, previousVisitDrugOrders) {
+        this.getRefillableDrugOrders = function (activeAndScheduledDrugOrders, previousVisitDrugOrders, showOnlyActive) {
             var drugOrderUtil = Bahmni.Clinical.DrugOrder.Util;
             var now = new Date();
             var partitionedDrugOrders = _.groupBy(activeAndScheduledDrugOrders, function (drugOrder) {
@@ -32,7 +32,9 @@ angular.module('bahmni.clinical')
 
             sortedDrugOrders.push(drugOrderUtil.sortDrugOrders(partitionedDrugOrders.scheduled));
             sortedDrugOrders.push(drugOrderUtil.sortDrugOrders(partitionedDrugOrders.active));
-            sortedDrugOrders.push(drugOrderUtil.sortDrugOrders(this.getInactiveDrugsFromPastVisit(activeAndScheduledDrugOrders, previousVisitDrugOrders)));
+            if(!showOnlyActive){
+                sortedDrugOrders.push(drugOrderUtil.sortDrugOrders(this.getInactiveDrugsFromPastVisit(activeAndScheduledDrugOrders, previousVisitDrugOrders)));
+            }
             return _.flatten(sortedDrugOrders);
         };
 
