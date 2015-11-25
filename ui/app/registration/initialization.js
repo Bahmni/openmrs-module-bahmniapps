@@ -30,7 +30,7 @@ angular.module('bahmni.registration').factory('initialization',
             };
 
             $rootScope.isOfflineApp = function () {
-                return $rootScope.getAppPlatform() === Bahmni.Common.Constants.platformType.chrome;
+                return $rootScope.getAppPlatform() !== Bahmni.Common.Constants.platformType.chrome;
             };
 
             Offline.options = {
