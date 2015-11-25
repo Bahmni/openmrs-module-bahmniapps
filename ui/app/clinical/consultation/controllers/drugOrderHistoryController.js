@@ -2,14 +2,14 @@
 
 angular.module('bahmni.clinical')
     .controller('DrugOrderHistoryController', ['$scope', '$filter', '$stateParams', 'prescribedDrugOrders',
-        'treatmentConfig', 'TreatmentService', 'spinner', 'clinicalAppConfigService','drugOrderHistoryHelper',
+        'treatmentConfig', 'TreatmentService', 'spinner', 'clinicalAppConfigService','drugOrderHistoryHelper', 'visitHistory',
         function ($scope, $filter, $stateParams, prescribedDrugOrders, treatmentConfig, treatmentService, spinner,
-                  clinicalAppConfigService, drugOrderHistoryHelper) {
+                  clinicalAppConfigService, drugOrderHistoryHelper, visitHistory) {
 
             var DrugOrderViewModel = Bahmni.Clinical.DrugOrderViewModel;
             var DateUtil = Bahmni.Common.Util.DateUtil;
             var drugOrderUtil = Bahmni.Clinical.DrugOrder.Util;
-            var currentVisit = $scope.visit;
+            var currentVisit = visitHistory.activeVisit;
             var drugOrderAppConfig = clinicalAppConfigService.getDrugOrderConfig();
             var activeDrugOrdersList = [];
             $scope.dispensePrivilege = Bahmni.Clinical.Constants.dispensePrivilege;
@@ -58,7 +58,7 @@ angular.module('bahmni.clinical')
                         label: $filter("bahmniDate")(visitStartDate),
                         visitStartDate: DateUtil.parse(visitStartDate),
                         drugOrders: drugOrders.map(createDrugOrder),
-                        isCurrentVisit: currentVisit && DateUtil.isSameDateTime(visitStartDate, currentVisit.startDate)
+                        isCurrentVisit: currentVisit && DateUtil.isSameDateTime(visitStartDate, currentVisit.startDatetime)
                     }
                 });
                 $scope.consultation.drugOrderGroups = $scope.consultation.drugOrderGroups.concat(drugOrderGroups);
