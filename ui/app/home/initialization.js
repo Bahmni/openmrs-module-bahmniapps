@@ -18,20 +18,49 @@ angular.module('bahmni.home')
 
                 setPlatformCookie($bahmniCookieStore);
 
-                $rootScope.getAppPlatform = function (){
-                    return $bahmniCookieStore.get(Bahmni.Common.Constants.platform);
-                };
-
-                $rootScope.isOfflineApp = function (){
-                    return $rootScope.getAppPlatform() !== Bahmni.Common.Constants.platformType.chrome;
-                };
-
                 var deferrable = $q.defer();
                 locationService.getAllByTag("Login Location").then(
                     function(response) {deferrable.resolve({locations: response.data.results})},
                     function() {deferrable.reject(); messagingService.showMessage('error','Unable to fetch locations. Please reload the page.');}
                 );
+                initOffline();
                 return deferrable.promise;
+            };
+
+            var initOffline = function () {
+                $rootScope.offline = false;
+
+                $rootScope.getAppPlatform = function () {
+                    return $bahmniCookieStore.get(Bahmni.Common.Constants.platform);
+                };
+
+                $rootScope.isOfflineApp = function () {
+                    return $rootScope.getAppPlatform() === Bahmni.Common.Constants.platformType.chrome;
+                };
+
+                Offline.options = {
+                    game: false,
+                    checkOnLoad: true
+                };
+
+                Offline.on('up', function () {
+                    console.log("Internet is up.");
+                    $rootScope.offline = false;
+                    $rootScope.$broadcast('offline', $rootScope.offline);
+
+                });
+                Offline.on('down', function () {
+                    console.log("Internet is down.");
+                    $rootScope.offline = true;
+                    $rootScope.$broadcast('offline', $rootScope.offline);
+
+                });
+                var checkOfflineStatus = function () {
+                    if (Offline.state === 'up') {
+                        Offline.check();
+                    }
+                };
+                setInterval(checkOfflineStatus, 5000);
             };
 
             var setPlatformCookie = function($bahmniCookieStore) {

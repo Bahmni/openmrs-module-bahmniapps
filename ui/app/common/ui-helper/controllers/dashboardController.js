@@ -35,5 +35,9 @@ angular.module('bahmni.common.uiHelper')
                 $window.location.reload();
             };
 
+            $rootScope.$on('offline', function () {
+                $scope.$apply();
+            });
+
             return spinner.forPromise(init());
         }]);

@@ -21,12 +21,41 @@ angular.module('bahmni.registration').factory('initialization',
             });
         };
 
-        $rootScope.getAppPlatform = function (){
-            return $bahmniCookieStore.get(Bahmni.Common.Constants.platform);
-        };
+        var initOffline = function () {
 
-        $rootScope.isOfflineApp = function (){
-            return $rootScope.getAppPlatform() !== Bahmni.Common.Constants.platformType.chrome;
+            $rootScope.offline = false;
+
+            $rootScope.getAppPlatform = function () {
+                return $bahmniCookieStore.get(Bahmni.Common.Constants.platform);
+            };
+
+            $rootScope.isOfflineApp = function () {
+                return $rootScope.getAppPlatform() === Bahmni.Common.Constants.platformType.chrome;
+            };
+
+            Offline.options = {
+                game: false,
+                checkOnLoad: true
+            };
+
+            Offline.on('up', function () {
+                console.log("Internet is up.");
+                $rootScope.offline = false;
+                $rootScope.$broadcast('offline', $rootScope.offline);
+
+            });
+            Offline.on('down', function () {
+                console.log("Internet is down.");
+                $rootScope.offline = true;
+                $rootScope.$broadcast('offline', $rootScope.offline);
+
+            });
+            var checkOfflineStatus = function () {
+                if (Offline.state === 'up') {
+                    Offline.check();
+                }
+            };
+            setInterval(checkOfflineStatus, 5000);
         };
 
         var loadValidators = function (baseUrl,contextPath) {
@@ -57,9 +86,7 @@ angular.module('bahmni.registration').factory('initialization',
             });
         };
 
-
-
-        return spinner.forPromise(authenticator.authenticateUser().then(initApp).then(getConfigs).then(initAppConfigs)
+        return spinner.forPromise(authenticator.authenticateUser().then(initApp).then(getConfigs).then(initAppConfigs).then(initOffline)
             .then(mapRelationsTypeWithSearch)
             .then(loadValidators(appService.configBaseUrl(), "registration")));
     }]

@@ -22,4 +22,9 @@ angular.module('bahmni.registration')
                 }
             );
         };
+
+        $rootScope.$on('offline', function () {
+            $scope.$apply();
+        });
+
     }]);

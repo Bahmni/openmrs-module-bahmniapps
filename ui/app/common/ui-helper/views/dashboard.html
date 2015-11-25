@@ -11,7 +11,7 @@
         <!--<input class="retro-date-widget fr" type="date"/>-->
 
         <button class="btn-user-info">
-            <i class="fa fa-user-md fa-white small"></i>
+            <i ng-class="offline? 'fa fa-user-md fa-red small' : 'fa fa-user-md fa-green small'" id="user-icon"></i>
             <i class="fa fa-caret-down fa-white mini"></i>
         </button>
         <ul>
