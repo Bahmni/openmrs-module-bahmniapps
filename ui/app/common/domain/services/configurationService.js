@@ -143,6 +143,16 @@ angular.module('bahmni.common.domain')
             });
         };
 
+        configurationFunctions.loginLocationToVisitTypeMapping = function () {
+            var url = Bahmni.Common.Constants.entityMappingUrl;
+            return $http.get(url,{
+                params:{
+                    mappingType:'loginlocation_visittype',
+                    s:'byEntityAndMappingType'
+                }
+            });
+        };
+
         var existingPromises = {};
         var configurations = {};
 

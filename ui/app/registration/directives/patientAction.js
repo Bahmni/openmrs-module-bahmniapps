@@ -7,6 +7,10 @@ angular.module('bahmni.registration')
                 var self = this;
                 var uuid = $stateParams.patientUuid;
                 var editActionsConfig = appService.getAppDescriptor().getExtensions(Bahmni.Registration.Constants.nextStepConfigId, "config");
+                var loginLocationUuid = $bahmniCookieStore.get(Bahmni.Common.Constants.locationCookieName).uuid;
+                var defaultVisitType = $rootScope.regEncounterConfiguration.getDefaultVisitType(loginLocationUuid);
+                var defaultVisitType = defaultVisitType != null ? defaultVisitType : appService.getAppDescriptor().getConfigValue('defaultVisitType');
+
 
                 function setForwardActionKey() {
                     if (editActionsConfig.length == 0) {
@@ -34,9 +38,10 @@ angular.module('bahmni.registration')
                     }));
                 };
 
+
                 $scope.visitControl = new Bahmni.Common.VisitControl(
-                    $rootScope.regEncounterConfiguration.getVistTypesAsArray(),
-                    appService.getAppDescriptor().getConfigValue('defaultVisitType'),
+                    $rootScope.regEncounterConfiguration.getVisitTypesAsArray(),
+                    defaultVisitType,
                     encounterService, $translate
                 );
 

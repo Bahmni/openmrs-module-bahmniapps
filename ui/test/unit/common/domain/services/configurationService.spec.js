@@ -111,4 +111,11 @@ describe('configurationService', function () {
         expect(_$http.get.calls.mostRecent().args[0]).toEqual(Bahmni.Common.Constants.globalPropertyUrl);
         expect(_$http.get.calls.mostRecent().args[1].params.property).toEqual("mrs.genders");
     });
+
+    it('should fetch loginLocationToVisitTypeMapping from backend', function () {
+        configurationservice.getConfigurations(['loginLocationToVisitTypeMapping'])
+        expect(_$http.get.calls.mostRecent().args[0]).toEqual(Bahmni.Common.Constants.entityMappingUrl);
+        expect(_$http.get.calls.mostRecent().args[1].params.mappingType).toEqual("loginlocation_visittype");
+        expect(_$http.get.calls.mostRecent().args[1].params.s).toEqual("byEntityAndMappingType");
+    });
 });

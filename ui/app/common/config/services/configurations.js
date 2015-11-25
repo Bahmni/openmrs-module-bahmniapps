@@ -68,6 +68,10 @@ angular.module('bahmni.common.config')
             return this.configs.relationshipTypeMap || {};
         };
 
+        this.loginLocationToVisitTypeMapping = function() {
+            return this.configs.loginLocationToVisitTypeMapping || {};
+        };
+
         this.defaultEncounterType = function () {
             return this.configs.defaultEncounterType;
         };
