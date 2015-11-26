@@ -13,7 +13,8 @@ describe("Tabular Observations", function() {
 
     it("should have columns", function() {
         var tabularObservations = new Bahmni.ConceptSet.TabularObservations(obsGroups, parentObs, {});
-        expect(tabularObservations.columns).toEqual(["Drugs", "Concentration"]);
+        expect(tabularObservations.columns[0].shortName).toEqual("Drugs");
+        expect(tabularObservations.columns[1].shortName).toEqual("Concentration");
     });
 
     it("should add new row in the table", function() {
@@ -44,8 +45,13 @@ describe("Tabular Observations", function() {
         expect(tabularObservations.rows[0].cells[1].value).toEqual(undefined);
     });
 
+    it("canAddMore, should return true if configured to show", function() {
+        var tabularObservations = new Bahmni.ConceptSet.TabularObservations(obsGroups, parentObs, {"DST Result":{"allowAddMore": true}});
+        expect(tabularObservations.canAddMore()).toBeTruthy();
+    });
+
     var obsGroups = [{
-        concept: {shortName: "DST"},
+        concept: {name:"DST Result", shortName: "DST"},
         label: "DST Result",
         groupMembers: [{
             concept: {shortName: "Drugs"},

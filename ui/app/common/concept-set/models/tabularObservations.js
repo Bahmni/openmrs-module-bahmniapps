@@ -2,13 +2,14 @@ Bahmni.ConceptSet.TabularObservations = function(obsGroups, parentObs, conceptUI
     this.parentObs = parentObs;
     this.concept = obsGroups[0] && obsGroups[0].concept;
     this.label = obsGroups[0] && obsGroups[0].label;
+    this.conceptUIConfig = conceptUIConfig || {};
 
     this.rows = _.map(obsGroups, function(group) {
         return new Bahmni.ConceptSet.ObservationRow(group, conceptUIConfig);
     });
 
     this.columns = _.map(obsGroups[0].groupMembers, function(group) {
-        return group.concept.shortName;
+        return group.concept;
     });
 
     this.addNew = function(row) {
@@ -35,6 +36,14 @@ Bahmni.ConceptSet.TabularObservations = function(obsGroups, parentObs, conceptUI
 
     this.isValid = function() {
         return true;
+    };
+
+    this.getConceptUIConfig = function() {
+        return this.conceptUIConfig[this.concept.name] || {};
+    };
+
+    this.canAddMore = function() {
+        return this.getConceptUIConfig().allowAddMore == true;
     };
 };
 

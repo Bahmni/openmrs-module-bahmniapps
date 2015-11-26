@@ -248,7 +248,24 @@
                     <caption ng-bind="::observation.label"></caption>
                     <thead>
                     <tr>
-                        <th ng-repeat="column in observation.columns"><strong><span ng-bind="column"></span></strong></th>
+                        <th ng-repeat="column in observation.columns">
+                            <div class="form-group" bm-pop-over>
+                            <div class=" concept-tooltip-description" bm-pop-over-target ng-if="::column.description">
+                                <i class="fa fa-caret-down"></i>
+                                <span class="details" ng-bind-html="::column.description"></span>
+                            </div>
+
+                            <strong>
+                                <span ng-bind="column.shortName || column.name"></span>
+                                <span ng-show="::column.units"
+                                      ng-bind-html="::'(' + column.units + ')'"></span>
+                                <i class="fa fa-question-circle concept-tooltip-trigger" bm-pop-over-trigger
+                                   ng-if="::column.description">
+                                </i>
+                            </strong>
+                                </div>
+
+                        </th>
                         <th></th>
                     </tr>
                     </thead>
@@ -260,7 +277,7 @@
                                      patient="patient" show-title="false"
                                      concept-set-required="conceptSetRequired" concept-set-name="conceptSetName"></concept>
                         </td>
-                        <td>
+                        <td ng-if="observation.canAddMore()">
                             <button type="button" class="add-more-btn btn-small" ng-click="observation.addNew(row)">
                                 <i class="fa fa-plus-circle"></i> {{'ADD_MORE_KEY' | translate}}
                             </button>
