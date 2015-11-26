@@ -176,6 +176,9 @@
     margin: 0;
     border-left: 0;
     border-right: 0;
+    th,td{
+      padding: 5px;
+    }
     tr th {
       color: $mediumGray;
     }
@@ -195,7 +198,8 @@
     }
     td.days {
       font-size: 11px;
-      width: 15%;
+      width: 10%;
+      padding-right: 0;
       span {
         color: $mediumGray;
       }
@@ -226,15 +230,17 @@ table.drug-order-table td.drug {
     border-left: 3px solid green !important;
   }
   span.drug-attr-highlight{
-      background: #457FAC;
-      color: #fff;
-      border-radius: 4px;
-      width: 20px;
-      height: 20px;
-      display: inline-block;
-      text-align: center;
-      padding-top: 2px;
-      margin-right: 5px;
+    background: #457FAC;
+    color: #fff;
+    border-radius: 4px;
+    width: 16px;
+    height: 16px;
+    display: inline-block;
+    text-align: center;
+    padding-top: 2px;
+    margin-left: 0px;
+    font-size: 13px;
+    //margin-right: 5px;
   }
 }
 

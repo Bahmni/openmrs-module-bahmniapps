@@ -1,5 +1,4 @@
 <section class="drug-orders-history" xmlns="http://www.w3.org/1999/html" xmlns="http://www.w3.org/1999/html">
-
     <div ng-if="drugOrderGroupsEmpty()">
         <p class="placeholder-text">No prescriptions saved yet</p>
     </div>
@@ -61,6 +60,7 @@
                                     <div ng-if="drugOrder.orderReasonText">due to {{drugOrder.orderReasonText}}</div>
                                     <div ng-if="getOrderReasonConcept(drugOrder)">({{getOrderReasonConcept(drugOrder)}})</div>
                                         </span>
+                                    <span ng-if="drugOrder.isDiscontinuedOrStopped()" class="stop-date">stopped {{drugOrder.effectiveStopDate | bahmniDate}}</span>
                                 </div>
                                 <div ng-show="drugOrder.showAdditionalInstructions" class="notes inline-notes">
                                     {{drugOrder.additionalInstructions}}

@@ -153,6 +153,15 @@ form, .form {
       background: $focus;
     }
   }
+  input[type="date"]{
+    padding: 1px 10px;
+    @media (max-width: 1024px) {
+      padding: 5px 10px;
+    }
+    @media (max-width: 768px) {
+      padding: 7px 10px;
+    }
+  }
 
 
   select {

@@ -5,12 +5,12 @@ html.no-touch {
 		//(this is to differentiate from 1024px touch devices)*/
 
 
-		form input, form .input-prepend .add-on, form .form .input-prepend .add-on,
+		/*form input, form .input-prepend .add-on, form .form .input-prepend .add-on,
 		.form .input-prepend form .add-on, form select, form textarea, form ul.select,
 		.form input, form .input-prepend .form .add-on, .form .input-prepend .add-on,
 		.form select, .form textarea, .form ul.select {
 			padding: 2px 10px;
-		}
+		}*/
 
 	  form input[type="checkbox"], form .input-prepend [type="checkbox"].add-on, .input-prepend form [type="checkbox"].add-on,
 	  .form input[type="checkbox"], .form .input-prepend [type="checkbox"].add-on, .input-prepend .form [type="checkbox"].add-on {

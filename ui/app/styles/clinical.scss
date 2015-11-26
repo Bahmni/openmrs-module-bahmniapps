@@ -47,5 +47,11 @@
 
 @import "common/noTouch";
 
+@import "clinical/patientSearchDesktop";
+@import "clinical/observationsDesktop";
+//@import "clinical/treatmentDesktop";
+@import "clinical/drugOrderTemplate";
+
+
 
 @import "reports/reports";

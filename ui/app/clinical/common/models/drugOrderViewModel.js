@@ -86,6 +86,8 @@ Bahmni.Clinical.DrugOrderViewModel = function (appConfig, config, proto, encount
         }
         if(this.drug) this.drug.uuid = undefined;
     };
+    this.isUniformFrequency = true;
+    this.showExtraInfo = false;
 
     this.overlappingScheduledWith = function(otherDrugOrder){
 
@@ -281,6 +283,23 @@ Bahmni.Clinical.DrugOrderViewModel = function (appConfig, config, proto, encount
             self.variableDosingType = {};
         }
     };
+
+    this.toggleFrequency = function(){
+        if(this.isUniformFrequency){
+            self.frequencyType = Bahmni.Clinical.Constants.dosingTypes.variable;
+            self.setFrequencyType(self.frequencyType);
+            this.isUniformFrequency = false;
+        }
+        else{
+            self.frequencyType = Bahmni.Clinical.Constants.dosingTypes.uniform;
+            self.setFrequencyType(self.frequencyType);
+            this.isUniformFrequency = true;
+        }
+    };
+    
+    this.toggleExtraInfo = function () {
+        this.showExtraInfo = !this.showExtraInfo;
+    }
 
     this.isCurrentDosingTypeEmpty = function () {
         var dosingType = getDosingType();

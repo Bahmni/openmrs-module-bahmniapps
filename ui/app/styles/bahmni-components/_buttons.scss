@@ -21,7 +21,8 @@ use either a `<button>` or an `<a>` element:
   background: linear-gradient(to bottom, $tcolor, $bcolor);
   background-color: $bcolor;
   border: $bcolor 1px solid;
-  padding: 8px 20px;
+  //padding: 8px 20px;
+  padding: 6px 20px 7px;
   display: inline-block;
   line-height: 1.2em;
   color: $font;
@@ -199,8 +200,10 @@ use either a `<button>` or an `<a>` element:
 
 /* button states - lvha */
 button:hover { opacity: 0.8; }
-button:focus, a:focus, .btn:focus { outline: 2px solid #007FFF; }
-button[disabled] { opacity: 0.65; cursor: not-allowed; }
+button:focus, a:focus, .btn:focus {
+  outline: 2px solid $clinicalFormFocus;
+}
+button[disabled] { opacity: 0.4; cursor: not-allowed; }
 
 
 /*backButton:*/
@@ -362,6 +365,10 @@ input[type="submit"].secondary-button:hover  {
     background: linear-gradient(to bottom, $bahmniSecondaryColor, darken($bahmniSecondaryColor, 10%));
     color: $white;
     border:1px solid darken($bahmniSecondaryColor, 15%);
+}
+
+.icon-button{
+  padding: 6px 8px 7px;
 }
 
 /* icon button */

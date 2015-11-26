@@ -47,14 +47,11 @@ use either a `<div>` or an `<section` element:
 .section-title-wrapper{
   background: $bahmniSecondaryColor;
   padding-right: 10px;
-}
-
-.section-title-wrapper{
-  background: $bahmniSecondaryColor;
   button{
-	margin-top: 2px;
+	margin-top: 4px;
   }
 }
+
 
 h2.section-title {
 	font-family: $OpenSansFont;

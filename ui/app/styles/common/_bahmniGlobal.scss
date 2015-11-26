@@ -198,7 +198,7 @@ pre.chief-notes {
   span:before {
     font-family: FontAwesome;
     content: "\f00c";
-    font-size: 18px;
+    //font-size: 18px;
     margin-right: 5px;
   }
 }
@@ -209,6 +209,9 @@ pre.chief-notes {
 
 .has-notes {
     color: orange;
+    i{
+      color: orange !important;
+    }
 }
 /*home*/
 .bahmni-home {
@@ -258,6 +261,7 @@ u, .add-drug-btninput[value]:first-letter {
 .fa-pencil{
   cursor: pointer;
 }
+
 
 .clear-both{
   clear: both;
