@@ -272,7 +272,6 @@ angular.module('bahmni.clinical')
             };
 
             $scope.populateBackingFields = function (item) {
-                fetchOrderSets(item);
                 $scope.treatment.changeDrug({
                     name: item.drug.name,
                     form: item.drug.dosageForm.display,
@@ -285,23 +284,11 @@ angular.module('bahmni.clinical')
                 function(newValue, oldValue) {
                     if(newValue) {
                         spinner.forPromise(orderSetService.getOrderSetWithAttributeNameAndValue(newValue.conceptUuid, "Primary", "true").then(function(response) {
-                            $scope.orderSetDrugs = response.data.results;
+                            $scope.orderSets = filterOutVoidedOrderSet(response.data.results);
                         }));
-                    }
-                }
-            );
-
-            var fetchOrderSets = function(item){
-                var conceptUuid = item.drug.concept.uuid;
-
-            };
-
-            $scope.$watch("treatment.drug",
-                function(newValue, oldValue) {
-                    if(newValue) {
-                        spinner.forPromise(orderSetService.getOrderSetWithAttributeNameAndValue(newValue.conceptUuid, "Primary", "true").then(function(response) {
-                            $scope.orderSetDrugs = filterOutVoidedOrderSet(response.data.results);
-                        }));
+                        //spinner.forPromise(orderSetService.getUniqueOrderSetMembersWithoutPrimaryConcept(newValue.conceptUuid, "Primary", "true").then(function(response){
+                        //    $scope.orderSetMembers = response;
+                        //}))
                     }
                 }
             );
@@ -388,6 +375,24 @@ angular.module('bahmni.clinical')
                     $scope.bulkDurationData.bulkDuration = 0
                 }
                 $scope.bulkDurationData.bulkDuration += stepperValue;
+            };
+
+            //ToDo :: When regimen orderSet is implemented use the below method :: For now we are hard codding the JSON
+
+            var dummyResult = {name: "Paracetamol 120mg/5ml", form: "Syrup", uuid: "28d067a3-7e40-4331-9452-bd6b0e9bf201", conceptUuid: "4750370f-ad8e-49c5-80d2-b2136f59c3e9",
+                "dose": 1.0,"doseUnits":"Tablet(s)","frequency":"Once a day","duration":4,"route": "Oral"};
+
+            $scope.addOrderSetDrugs = function() {
+                var treatment = newTreatment();
+                treatment.uniformDosingType = {dose: dummyResult.dose, doseUnits: dummyResult.doseUnits, frequency: dummyResult.frequency};
+                treatment.duration = dummyResult.duration;
+                treatment.route = dummyResult.route;
+                treatment.drug = {name: dummyResult.name, form: dummyResult.form, uuid: dummyResult.uuid, conceptUuid: dummyResult.conceptUuid};
+                treatment.drugNameDisplay = dummyResult.name ? dummyResult.name + "(" + dummyResult.form + ")" : dummyResult.name;
+                treatment.orderSetUuid = "a2e15ab6-aed0-4849-9fa9-ac1dfe5ef825";
+                treatment.calculateQuantityAndUnit();
+                $scope.treatments.push(treatment);
+
             };
 
         }]);

@@ -36,6 +36,24 @@ angular.module('bahmni.common.domain')
                 withCredentials: true,
                 headers: {"Accept": "application/json", "Content-Type": "application/json"}
             });
-        }
+        };
 
+
+        this.getUniqueOrderSetMembersWithoutPrimaryConcept = function(conceptUuid, attributeName, attributeValue){
+            return this.getOrderSetWithAttributeNameAndValue(conceptUuid, attributeName, attributeValue).then(function(data){
+                return filterOrderSetMembers(conceptUuid, data.data.results);
+            })
+        };
+
+        var filterOrderSetMembers = function(primaryConceptUuid, orderSets){
+            var orderSetMembers = {};
+            _.forEach(orderSets, function(orderSet){
+                _.forEach(orderSet.orderSetMembers, function(orderSetMember){
+                    if(primaryConceptUuid !== orderSetMember.concept.uuid) {
+                        orderSetMembers[orderSetMember.concept.uuid] = orderSetMember;
+                    }
+                })
+            });
+            return _.values(orderSetMembers);
+        };
     }]);

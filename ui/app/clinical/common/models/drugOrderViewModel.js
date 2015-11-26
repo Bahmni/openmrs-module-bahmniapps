@@ -70,6 +70,8 @@ Bahmni.Clinical.DrugOrderViewModel = function (appConfig, config, proto, encount
     this.quantityEnteredManually = this.quantityEnteredManually || false;
     this.isBeingEdited = this.isBeingEdited || false;
     this.orderAttributes = [];
+    this.orderSetUuid = '';
+    this.orderGroupUuid = '';
 
     this.overlappingScheduledWith = function(otherDrugOrder){
 
@@ -213,6 +215,7 @@ Bahmni.Clinical.DrugOrderViewModel = function (appConfig, config, proto, encount
     };
 
     var getRoute = function (route) {
+        console.log(findAnElement(config.routes, route));
         return findAnElement(config.routes, route);
     };
 
@@ -396,6 +399,9 @@ Bahmni.Clinical.DrugOrderViewModel = function (appConfig, config, proto, encount
         newDrugOrder.quantityEnteredViaEdit = true;
         newDrugOrder.isBeingEdited = true;
 
+        newDrugOrder.orderSetUuid = self.orderSetUuid;
+        newDrugOrder.orderGroupUuid = self.orderGroupUuid;
+
         if (newDrugOrder.effectiveStartDate <= today()) {
             newDrugOrder.effectiveStartDate = today();
         }
@@ -412,6 +418,8 @@ Bahmni.Clinical.DrugOrderViewModel = function (appConfig, config, proto, encount
         editableDrugOrder.currentIndex = index;
         editableDrugOrder.isBeingEdited = true;
         editableDrugOrder.quantityEnteredViaEdit = true;
+        editableDrugOrder.orderSetUuid = self.orderSetUuid;
+        editableDrugOrder.orderGroupUuid = self.orderGroupUuid;
         defaultQuantityUnit(editableDrugOrder);
         return editableDrugOrder;
     };
@@ -542,5 +550,7 @@ Bahmni.Clinical.DrugOrderViewModel.createFromContract = function (drugOrderRespo
     config ? viewModel.loadOrderAttributes(drugOrderResponse) : viewModel.orderAttributes = drugOrderResponse.orderAttributes;
     viewModel.visit = drugOrderResponse.visit;
     viewModel.voided = drugOrderResponse.voided;
+    viewModel.orderSetUuid = drugOrderResponse.orderSetUuid;
+    viewModel.orderGroupUuid = drugOrderResponse.orderGroupUuid;
     return viewModel;
 };
