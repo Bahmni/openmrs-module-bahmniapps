@@ -54,13 +54,11 @@
 								</div>
                                 <div class="start-date fr">
                                     <span ng-if="showEffectiveFromDate(drugOrderGroup.visitStartDate, drugOrder.effectiveStartDate)"> from {{drugOrder.effectiveStartDate | bahmniDate}}</span>
-                                    <br/>
-                                    <span>
-                                    <div ng-if="drugOrder.isDiscontinuedOrStopped()">Stopped on {{drugOrder.effectiveStopDate | bahmniDate}}</div>
-                                    <div ng-if="drugOrder.orderReasonText">due to {{drugOrder.orderReasonText}}</div>
-                                    <div ng-if="getOrderReasonConcept(drugOrder)">({{getOrderReasonConcept(drugOrder)}})</div>
-                                        </span>
-                                    <span ng-if="drugOrder.isDiscontinuedOrStopped()" class="stop-date">stopped {{drugOrder.effectiveStopDate | bahmniDate}}</span>
+                                    <span class="stop-date">
+                                        <div ng-if="drugOrder.isDiscontinuedOrStopped()">Stopped on {{drugOrder.effectiveStopDate | bahmniDate}}</div>
+                                        <div ng-if="drugOrder.orderReasonText">due to {{drugOrder.orderReasonText}}</div>
+                                        <div ng-if="getOrderReasonConcept(drugOrder)">({{getOrderReasonConcept(drugOrder)}})</div>
+                                    </span>
                                 </div>
                                 <div ng-show="drugOrder.showAdditionalInstructions" class="notes inline-notes">
                                     {{drugOrder.additionalInstructions}}
@@ -74,14 +72,22 @@
                                     </div>
                                 </div>
                                 <div ng-if="drugOrder.isMarkedForDiscontinue">
-                                    <fieldset>
-                                    <input id="date-stopped"  type="date" min="{{::minDateStopped}}"max="{{::scheduledDate}}" ng-model="drugOrder.dateStopped"
-                                           required="required">
-                                        <select id="stopped-reason" class="form-field instruction" ng-model="drugOrder.orderReasonConcept" ng-options="item as item.display for item in stoppedOrderReasons">
-                                            <option value="">Reason</option>
-                                        </select>
-                                        <textarea id="stopped-reason-non-coded" class="form-field drug-order-notes" placeholder="Reason for stopping" ng-model="drugOrder.orderReasonText"></textarea>
-                                    </fieldset>
+                                    <div class="form fl drug-stop-container">
+                                        <article class="form-field">
+                                            <div class="field-value">
+                                                <input id="date-stopped"  type="date" min="{{::minDateStopped}}"max="{{::scheduledDate}}" ng-model="drugOrder.dateStopped"
+                                                       required="required">
+                                            </div>
+                                            <div class="field-value">
+                                                <select id="stopped-reason" class="form-field instruction" ng-model="drugOrder.orderReasonConcept" ng-options="item as item.display for item in stoppedOrderReasons">
+                                                    <option value="">Reason</option>
+                                                </select>
+                                            </div>
+                                            <div class="field-value">
+                                                <textarea rows="1" id="stopped-reason-non-coded" class="form-field drug-order-notes" placeholder="Reason for stopping" ng-model="drugOrder.orderReasonText"></textarea>
+                                            </div>
+                                        </article>
+                                    </div>
                                 </div>
 							</li>
 						</ul>

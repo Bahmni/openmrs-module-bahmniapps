@@ -4,7 +4,7 @@
         line-height: 1.5em;
         padding-left: 10px;
         margin-top: 5px;
-        width: 65%;
+        width: 63%;
         float: left;
     }
     div.start-date span {
@@ -13,10 +13,11 @@
         font-family: OpenSansItalic;
         font-size: 12px;
         color: $mediumGray;
-        display: inline-block;
-        width: 100px;
+        //display: inline-block;
+        display: block;
+        width: 130px;
         text-align: left;
-        float: left;
+        //float: left;
         &.stop-date{
             padding-bottom: 7px;
         }
@@ -187,6 +188,20 @@
 
     .drug-orders-history {
         margin: 10px 0 0;
+        .drug-stop-container{
+            font-size: 14px;
+            width: 100%;
+            padding-left: 10px;
+            box-sizing: border-box;
+            padding-right: 10px;
+            padding-bottom: 10px;
+            .field-value{
+                margin-right: 5px;
+                textarea{
+                    height: 25px;
+                }
+            }
+        }
     }
     .new-drug-order {
         margin: 10px 0 0;
