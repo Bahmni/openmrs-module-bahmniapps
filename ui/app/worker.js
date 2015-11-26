@@ -184,19 +184,38 @@
 
     importScripts('./components/sw-toolbox/sw-toolbox.js');
 
-    global.toolbox.options.debug = false;
-    global.toolbox.precache(preFetchCompleteList);
-    global.toolbox.router.get('/openmrs/(.*)', global.toolbox.networkFirst);
-    //global.toolbox.router.get('/openmrs/(.*)', function(request, values) {
-    //    console.log('Intercepted URL : '+request.url+ ' values : '+values);
-    //    return new Response('sample text');
-    //});
-    global.toolbox.router.get('/(.*)', global.toolbox.networkFirst, {
-        cache: {
-            name: 'bahmni-home-cache-v-1'
+    var updateCache = function(items) {
+        for(var i in items) {
+            global.toolbox.uncache(items[i]);
+            global.toolbox.cache(items[i]);
         }
+    }
+
+    //configuration
+    global.toolbox.router.default = global.toolbox.networkFirst;
+    global.toolbox.options.debug = false;
+    global.toolbox.options.cache = {
+        name: 'bahmni-home-cache-v-1',
+        maxAgeSeconds: null,
+        maxEntries: null
+    };
+    //this should be before any https calls
+    global.toolbox.precache(preFetchCompleteList);
+
+    //listeners for life cycle
+    global.addEventListener('install', function() {
+        console.log('Service worker installed.');
+    });
+    global.addEventListener('activate', function() {
+        console.log('Service worker activated.');
     });
 
-    global.toolbox.router.default = global.toolbox.networkFirst;
+    //routing
+    global.toolbox.router.get('/openmrs/(.*)', global.toolbox.networkFirst);
+    global.toolbox.router.get('/bahmni_config/(.*)', global.toolbox.networkOnly);
+    global.toolbox.router.get('/(.*)', global.toolbox.networkFirst);
+
+    //update caches
+    updateCache(configs);
 
 })(self);
