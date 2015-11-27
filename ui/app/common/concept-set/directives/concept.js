@@ -16,6 +16,7 @@ angular.module('bahmni.common.conceptSet')
             scope.removeClonedObs = function (observation, parentObservation) {
                 var index = parentObservation.groupMembers.indexOf(observation);
                 parentObservation.groupMembers[index].voided = true;
+                observation.hidden = true;
             };
 
             scope.isClone = function(observation, parentObservation){
