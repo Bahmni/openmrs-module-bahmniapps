@@ -328,6 +328,6 @@ Bahmni.ConceptSet.ObservationNode.prototype = {
     },
 
     canHaveComment : function() {
-        return true;
+        return this.conceptUIConfig.disableAddNotes ?  !this.conceptUIConfig.disableAddNotes : true;
     }
 };

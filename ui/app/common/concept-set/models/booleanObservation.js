@@ -64,7 +64,7 @@ Bahmni.ConceptSet.BooleanObservation = function(observation, conceptUIConfig) {
     };
 
     this.canHaveComment = function() {
-        return true;
+        return this.getConceptUIConfig().disableAddNotes ?  !this.getConceptUIConfig().disableAddNotes : true;
     };
 
     this.getConceptUIConfig = function() {

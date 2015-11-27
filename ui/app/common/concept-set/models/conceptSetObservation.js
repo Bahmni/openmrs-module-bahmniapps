@@ -156,7 +156,7 @@ Bahmni.ConceptSet.Observation.prototype = {
     },
 
     canHaveComment: function() {
-        return !this.isText() && !this.isImage();
+        return this.conceptUIConfig.disableAddNotes ? !this.conceptUIConfig.disableAddNotes : (!this.isText() && !this.isImage());
     },
 
     canAddMore: function() {
