@@ -32,7 +32,8 @@ describe('CreatePatientController', function () {
         ngDialogLocalScopeMock = scopeMock;
         spinnerMock.forPromise.and.returnValue(specUtil.createFakePromise({}));
 
-        rootScopeMock.patientConfiguration = {identifierSources: []};
+        rootScopeMock.patientConfiguration = {identifierSources: [{prefix: "SEM"},
+            {prefix: "GAN"}]};
 
         scopeMock.$new = function () {
             return ngDialogLocalScopeMock;
@@ -416,4 +417,29 @@ describe('CreatePatientController', function () {
         expect(patientServiceMock.setLatestIdentifier).not.toHaveBeenCalled();
         expect(patientServiceMock.create).not.toHaveBeenCalled();
     });
+
+    it("should create patient when the registration number is given without prefix", function () {
+        scopeMock.patient.registrationNumber = "1050";
+
+        scopeMock.identifierSources= [];
+
+        patientServiceMock.create.and.returnValue(specUtil.createFakePromise({
+            patient: {uuid: "patientUuid", person: {names: [{display: "somename"}]}}
+        }));
+
+        scopeMock.create();
+
+
+        expect(patientServiceMock.generateIdentifier).not.toHaveBeenCalled();
+        expect(patientServiceMock.getLatestIdentifier).not.toHaveBeenCalled();
+        expect(patientServiceMock.setLatestIdentifier).not.toHaveBeenCalled();
+
+        expect(patientServiceMock.create).toHaveBeenCalledWith(scopeMock.patient);
+    });
+
+    it("hasIdentifierSources, should return false if identifier sources are not present", function () {
+        scopeMock.identifierSources= [];
+        expect(scopeMock.hasIdentifierSources()).toBeFalsy();
+    });
+
 });

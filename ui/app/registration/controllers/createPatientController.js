@@ -159,7 +159,7 @@ angular.module('bahmni.registration')
                         return patientService.create($scope.patient).then(copyPatientProfileDataToScope);
                     }
                 });
-            }
+            };
 
             var createPromise = function () {
                 var deferred = $q.defer();
@@ -173,7 +173,10 @@ angular.module('bahmni.registration')
                     return deferred.resolve();
                 }
 
-                if (!$scope.hasOldIdentifier) {
+                if(!$scope.hasIdentifierSources()){
+                    createPatientWithOutIdentifierSource();
+                }
+                else if (!$scope.hasOldIdentifier) {
                     createPatientWithGeneratedIdentifier().finally(resolved)
                 }
                 else {
@@ -183,7 +186,7 @@ angular.module('bahmni.registration')
             };
 
             var setPreferences = function () {
-                preferences.identifierPrefix = $scope.patient.identifierPrefix.prefix;
+                preferences.identifierPrefix = $scope.patient.identifierPrefix ? $scope.patient.identifierPrefix.prefix : "";
             };
 
             var copyPatientProfileDataToScope = function (response) {
@@ -206,6 +209,14 @@ angular.module('bahmni.registration')
             $scope.afterSave = function () {
                 messagingService.showMessage("info", "REGISTRATION_LABEL_SAVED");
                 $state.go("patient.edit", {patientUuid: $scope.patient.uuid});
+            };
+
+            $scope.hasIdentifierSources = function(){
+                return $scope.identifierSources.length > 0;
+            };
+
+            var createPatientWithOutIdentifierSource = function(){
+                return patientService.create($scope.patient).then(copyPatientProfileDataToScope);
             };
         }
     ]);

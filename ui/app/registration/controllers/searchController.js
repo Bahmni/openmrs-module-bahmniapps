@@ -133,9 +133,9 @@ angular.module('bahmni.registration')
                 }
                 if (!$scope.searchParameters.registrationNumber) return;
                 $scope.results = [];
-                var patientIdentifier = $scope.searchParameters.identifierPrefix.prefix + $scope.searchParameters.registrationNumber;
-                preferences.identifierPrefix = $scope.searchParameters.identifierPrefix.prefix;
-                $location.search({identifierPrefix: $scope.searchParameters.identifierPrefix.prefix, registrationNumber: $scope.searchParameters.registrationNumber});
+                var patientIdentifier = $scope.searchParameters.identifierPrefix ? $scope.searchParameters.identifierPrefix.prefix + $scope.searchParameters.registrationNumber : $scope.searchParameters.registrationNumber;
+                preferences.identifierPrefix = $scope.searchParameters.identifierPrefix ? $scope.searchParameters.identifierPrefix.prefix : "";
+                $location.search({identifierPrefix: preferences.identifierPrefix, registrationNumber: $scope.searchParameters.registrationNumber});
                 var searchPromise = patientService.search(patientIdentifier, $scope.addressSearchConfig.field).success(function (data) {
                     mapCustomAttributesSearchResults(data);
                     if (data.pageOfResults.length === 1) {
@@ -247,5 +247,9 @@ angular.module('bahmni.registration')
 
             $scope.extensionActionText = function (extension) {
                 return $filter('titleTranslate')(extension);
+            }
+
+            $scope.hasIdentifierSources = function(){
+                return $scope.identifierSources.length > 0;
             }
         }]);
