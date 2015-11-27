@@ -86,7 +86,7 @@
                 </div>
                 <div class="checkbox-inline" ng-if="::observation.durationObs"
                      ng-class="{'duration': observation.durationObs, 'computed-field': observation.isComputedAndEditable()}">
-                    <span class="for-separator">for</span>
+                    <span class="for-separator fl">for</span>
                     <duration ng-model="observation.durationObs.value" disabled="!observation.primaryObs.hasValue()"
                               illegal-value="observation.isDurationRequired() && !observation.hasDuration()"></duration>
                 </div>
@@ -94,9 +94,13 @@
                 <div class="fl" ng-include src="'../common/concept-set/views/observationDataTypes/removeClone.html'"></div>
 
                 <div class="offset-label" ng-show="observation.showComment">
-                    <textarea class="obs-comment-section" maxlength="255" ng-model="observation.comment"
-                          placeholder="Notes" msd-elastic>
-                    </textarea>
+                    <label class="control-label"></label>
+                    <div class="field-value">
+                        <textarea class="obs-comment-section" maxlength="255" ng-model="observation.comment"
+                                  placeholder="Notes" msd-elastic>
+                        </textarea>
+                    </div>
+
                 </div>
             </div>
         </fieldset>
