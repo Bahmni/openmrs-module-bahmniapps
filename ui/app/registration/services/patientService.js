@@ -21,7 +21,7 @@ angular.module('bahmni.registration')
                 },
                 withCredentials: true
             };
-            if(platform === Bahmni.Common.Constants.platform.platformType.android){
+            if(platform === Bahmni.Common.Constants.platformType.android){
                 return $q.when(JSON.parse(Android.search(JSON.stringify(config))));
             }
             var url = Bahmni.Common.Constants.bahmniSearchUrl + "/patient";
@@ -41,7 +41,7 @@ angular.module('bahmni.registration')
         };
 
         var get = function (uuid) {
-            if(platform === Bahmni.Common.Constants.platform.platformType.android){
+            if(platform === Bahmni.Common.Constants.platformType.android){
                 return $q.when(JSON.parse(Android.getPatient(uuid)));
             }
             var url = openmrsUrl + "/ws/rest/v1/patientprofile/" + uuid;

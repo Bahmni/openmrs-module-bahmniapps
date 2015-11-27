@@ -41,7 +41,7 @@ angular.module('bahmni.registration')
                 if (hasSearchParameters()) {
                     var searchPromise = patientService.search(
                         $scope.searchParameters.name,
-                        null,
+                        undefined,
                         $scope.addressSearchConfig.field,
                         $scope.searchParameters.addressFieldValue,
                         $scope.searchParameters.customAttribute,
@@ -140,7 +140,7 @@ angular.module('bahmni.registration')
                 var patientIdentifier = $scope.searchParameters.identifierPrefix ? $scope.searchParameters.identifierPrefix.prefix + $scope.searchParameters.registrationNumber : $scope.searchParameters.registrationNumber;
                 preferences.identifierPrefix = $scope.searchParameters.identifierPrefix ? $scope.searchParameters.identifierPrefix.prefix : "";
                 $location.search({identifierPrefix: preferences.identifierPrefix, registrationNumber: $scope.searchParameters.registrationNumber});
-                var searchPromise = patientService.search(null, patientIdentifier, $scope.addressSearchConfig.field).then(function (data) {
+                var searchPromise = patientService.search(undefined, patientIdentifier, $scope.addressSearchConfig.field).then(function (data) {
                     mapCustomAttributesSearchResults(data);
                     if (data.pageOfResults.length === 1) {
                         var patient = data.pageOfResults[0];
@@ -208,22 +208,22 @@ angular.module('bahmni.registration')
             };
 
             $scope.nextPage = function () {
-                //if ($scope.nextPageLoading) {
-                //    return;
-                //}
-                //$scope.nextPageLoading = true;
-                //var promise = searchBasedOnQueryParameters($scope.results.length);
-                //if (promise) {
-                //    promise.then(function (data) {
-                //        data.pageOfResults.forEach(function (result) {
-                //            $scope.results.push(result)
-                //        });
-                //        $scope.noMoreResultsPresent = (data.pageOfResults.length === 0);
-                //        $scope.nextPageLoading = false;
-                //    }, function () {
-                //        $scope.nextPageLoading = false;
-                //    });
-                //}
+                if ($scope.nextPageLoading) {
+                    return;
+                }
+                $scope.nextPageLoading = true;
+                var promise = searchBasedOnQueryParameters($scope.results.length);
+                if (promise) {
+                    promise.then(function (data) {
+                        data.pageOfResults.forEach(function (result) {
+                            $scope.results.push(result)
+                        });
+                        $scope.noMoreResultsPresent = (data.pageOfResults.length === 0);
+                        $scope.nextPageLoading = false;
+                    }, function () {
+                        $scope.nextPageLoading = false;
+                    });
+                }
             };
 
             $scope.forPatient = function (patient) {
