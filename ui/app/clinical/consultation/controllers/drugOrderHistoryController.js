@@ -13,8 +13,8 @@ angular.module('bahmni.clinical')
             var drugOrderAppConfig = clinicalAppConfigService.getDrugOrderConfig();
             var activeDrugOrdersList = [];
             $scope.dispensePrivilege = Bahmni.Clinical.Constants.dispensePrivilege;
-            $scope.scheduledDate = DateUtil.getDateWithoutTime(DateUtil.now());
             $scope.minDateStopped = DateUtil.getDateWithoutTime(DateUtil.now());
+            $scope.scheduledDate = DateUtil.getDateWithoutTime(DateUtil.now());
 
             var createPrescriptionGroups = function (activeAndScheduledDrugOrders) {
                 $scope.consultation.drugOrderGroups = [];
@@ -92,12 +92,8 @@ angular.module('bahmni.clinical')
                 }
             };
             $scope.getOrderReasonConcept = function(drugOrder){
-                     if(drugOrder.orderReasonConcept && drugOrder.orderReasonConcept.name && drugOrder.orderReasonConcept.name){
-                      return drugOrder.orderReasonConcept.name;
-                     }
-                    else if(drugOrder.orderReasonConcept && drugOrder.orderReasonConcept.name){
-                         return drugOrder.orderReasonConcept.name;
-                     }
+               if(drugOrder.orderReasonConcept)
+                return drugOrder.orderReasonConcept.display||drugOrder.orderReasonConcept.name  ;
             };
 
 
@@ -135,9 +131,9 @@ angular.module('bahmni.clinical')
                 if (drugOrder.isDiscontinuedAllowed) {
                     drugOrder.isMarkedForDiscontinue = true;
                     drugOrder.isEditAllowed = false;
-                    drugOrder.dateStopped = DateUtil.parse(drugOrder.effectiveStopDate);
+                    drugOrder.dateStopped = DateUtil.now();
                     $scope.consultation.discontinuedDrugs.push(drugOrder);
-                    $scope.minDateStopped = DateUtil.getDateWithoutTime(drugOrder.effectiveStartDate);
+                    $scope.minDateStopped = DateUtil.getDateWithoutTime(drugOrder.effectiveStartDate<DateUtil.now()?drugOrder.effectiveStartDate:DateUtil.now());
                 }
             };
 
@@ -148,7 +144,9 @@ angular.module('bahmni.clinical')
                 $scope.consultation.removableDrugs = _.reject($scope.consultation.removableDrugs, function (removableOrder) {
                     return removableOrder.previousOrderUuid === drugOrder.uuid;
                 });
-
+                drugOrder.orderReasonConcept = null;
+                drugOrder.dateStopped = null;
+                drugOrder.orderReasonText=null;
                 drugOrder.isMarkedForDiscontinue = false;
                 drugOrder.isEditAllowed = true;
             };
@@ -158,7 +156,6 @@ angular.module('bahmni.clinical')
                 removableOrder.action = Bahmni.Clinical.Constants.orderActions.discontinue;
                 removableOrder.previousOrderUuid = removableOrder.uuid;
                 removableOrder.uuid = undefined;
-                removableOrder.dateActivated = null;
                 $scope.consultation.removableDrugs.push(removableOrder);
             };
 
@@ -167,10 +164,9 @@ angular.module('bahmni.clinical')
                     var removableOrder = _.find(activeDrugOrdersList, {uuid: discontinuedDrug.uuid});
                     if(discontinuedDrug != null) {
                     removableOrder.orderReasonText = discontinuedDrug.orderReasonText;
+                    removableOrder.dateActivated=discontinuedDrug.dateStopped;
                     removableOrder.dateStopped = discontinuedDrug.dateStopped;
-                        if(discontinuedDrug.dateStopped != null) {
-                            removableOrder.autoExpireDate = discontinuedDrug.dateStopped;
-                        }
+
                     if (discontinuedDrug.orderReasonConcept != null && discontinuedDrug.orderReasonConcept.name) {
                         removableOrder.orderReasonConcept = {
                             name: discontinuedDrug.orderReasonConcept.name.name,
