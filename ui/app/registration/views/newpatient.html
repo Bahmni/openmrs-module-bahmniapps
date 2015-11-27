@@ -16,7 +16,7 @@
                         <div class="field-attribute">
                             <label class="control-label" for="patientID">{{'REGISTRATION_LABEL_PATIENT_IDENTIFIER' | translate}}</label>
                         </div>
-                        <div ng-if="hasIdentifierSources()" class="field-value" id="patientID">
+                        <div ng-show="hasIdentifierSources()" class="field-value" id="patientID">
                             <select id="identifierPrefix" ng-model="patient.identifierPrefix"
                                     ng-options="identifierSource.prefix for identifierSource in identifierSources" ng-change="patient.generateIdentifier()"
                                     required>
@@ -27,9 +27,9 @@
                                    placeholder="Registration Number" non-blank="hasOldIdentifier" pattern-validate
                                    ng-change="patient.generateIdentifier()" ng-show="hasOldIdentifier || !hasIdentifierSources()" focus-on="hasOldIdentifier">
                         </div>
-                        <div ng-if="hasIdentifierSources()">
+                        <div ng-show="hasIdentifierSources()">
                         <div class="field-attribute hasOldIdentifier-field-attribute">
-                            <label for="hasOldIdentifier" class="control-label">{{'REGISTRATION_LABEL_ENTER_ID' | translate}}</label>
+                            <label for="hasOldIdentifier" class="control-label">{{'REGISTRATION_LABEL_ENTER_ID' | translate}}</label>{{hasOldIdentifier}}
                         </div>
                         <div class="field-value">
                             <input class="input-label-inline" ng-show="showEnterID" type="checkbox" id="hasOldIdentifier" ng-model="$parent.hasOldIdentifier"
