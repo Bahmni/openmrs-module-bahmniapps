@@ -2,7 +2,12 @@ angular.module('bahmni.common.uiHelper')
 .directive('conceptAutocomplete', function ($parse, $http) {
     var link = function (scope, element, attrs, ngModelCtrl) {
         var source =  function(request) {
-            return $http.get(Bahmni.Common.Constants.conceptUrl, { params: {s: "byQuestion", q: request.term, memberOf: scope.conceptSetUuid, question: scope.codedConceptName, v: "custom:(uuid,name)"}});
+            var params = {q: request.term, memberOf: scope.conceptSetUuid, answerTo: scope.codedConceptName, v: "custom:(uuid,name)"};
+            if(params.answerTo){
+                params.question=params.answerTo;
+                params.s="byQuestion";
+            }
+            return $http.get(Bahmni.Common.Constants.conceptUrl, { params: params});
         };
         var minLength = scope.minLength || 2;
 
