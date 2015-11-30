@@ -2,7 +2,7 @@
 
 Bahmni.Clinical.Specimen = function (specimen, allSamples) {
     var self = this;
-    self.dateCollected = specimen && specimen.dateCollected;
+    self.dateCollected = specimen && Bahmni.Common.Util.DateUtil.getDateWithoutTime(specimen.dateCollected);
     self.type = specimen && specimen.type;
     self.identifier = specimen && specimen.identifier;
     self.sample = specimen && specimen.sample && specimen.sample.additionalAttributes ? specimen.sample : {additionalAttributes: []};

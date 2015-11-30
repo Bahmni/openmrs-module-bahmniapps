@@ -11,8 +11,11 @@ angular.module('bahmni.common.displaycontrol.bacteriologyresults')
                         scope: $scope.scope,
                         conceptNames: "BACTERIOLOGY CONCEPT SET"
                     };
-                    return bacteriologyResultsService.getBacteriologyResults(params).then(function (response) {
-                        handleResponse(response);
+                    return bacteriologyTabInitialization().then(function (data) {
+                        $scope.bacteriologyTabData  = data;
+                        bacteriologyResultsService.getBacteriologyResults(params).then(function (response) {
+                            handleResponse(response);
+                        });
                     });
                 };
 
@@ -20,22 +23,16 @@ angular.module('bahmni.common.displaycontrol.bacteriologyresults')
                     $scope.observations = response.data.results;
                     if ($scope.observations && $scope.observations.length > 0) {
                         $scope.specimens = [];
-
+                        var sampleSource = _.find($scope.bacteriologyTabData.setMembers, function (member) {
+                            return member.name.name === "Specimen Sample Source"
+                        });
+                        $scope.allSamples = sampleSource != undefined && _.map(sampleSource.answers, function (answer) {
+                            return new Bahmni.Common.Domain.ConceptMapper().map(answer);
+                        });
+                        var specimenMapper = new Bahmni.Clinical.SpecimenMapper();
+                        var conceptsConfig = appService.getAppDescriptor().getConfigValue("conceptSetUI") || {};
                         _.forEach($scope.observations, function (observation) {
-                            var specimen = {};
-                            var report = observation.report;
-                            var testResults;
-                            if (report) {
-                                testResults = report.results;
-                                var conceptsConfig = appService.getAppDescriptor().getConfigValue("conceptSetUI") || {};
-                                var obs = new Bahmni.Common.Obs.ObservationMapper().map([testResults], conceptsConfig);
-                                specimen.sampleResult = obs && obs.length > 0 ? obs[0] : obs;
-
-                            }
-                            specimen.specimenSource = observation.type.name;
-                            specimen.specimenId = observation.identifier;
-                            specimen.specimenCollectionDate = observation.dateCollected;
-                            $scope.specimens.push(specimen);
+                            $scope.specimens.push(specimenMapper.mapObservationToSpecimen(observation, $scope.allSamples, conceptsConfig));
                         });
                     }
                 };
@@ -43,41 +40,32 @@ angular.module('bahmni.common.displaycontrol.bacteriologyresults')
                 $scope.editBacteriologySample = function(specimen){
                     consultationInitialization($scope.patient.uuid, null, null).then(function(consultationContext) {
                         $scope.consultation = consultationContext;
-
-                        var editableSpecimen = _.findWhere($scope.observations, {identifier:specimen.specimenId});
-                        if(editableSpecimen.report && editableSpecimen.report.results){
-                            editableSpecimen.report.results = (editableSpecimen.report.results) instanceof Array ? editableSpecimen.report.results : [editableSpecimen.report.results];
-                        }
-                        if(editableSpecimen.sample && editableSpecimen.sample.additionalAttributes) {
-                            editableSpecimen.sample.additionalAttributes = (editableSpecimen.sample.additionalAttributes) instanceof Array ? editableSpecimen.sample.additionalAttributes : [editableSpecimen.sample.additionalAttributes];
-                        }
-
                         $scope.consultation.newlyAddedSpecimens = [];
-                        $scope.consultation.newlyAddedSpecimens.push(new Bahmni.Clinical.Specimen(editableSpecimen));
+
                         $scope.isOnDashboard = true;
-                        bacteriologyTabInitialization().then(function(data){
-                            ngDialog.open({template: '../common/displaycontrols/bacteriologyresults/views/editBacteriologySample.html',
-                                scope: $scope,
-                                className: "ngdialog-theme-default ng-dialog-all-details-page",
-                                controller: $controller('BacteriologyController', {
-                                    $scope: $scope,
-                                    bacteriologyConceptSet: data
-                                })
-                            });
+                        $scope.consultation.newlyAddedSpecimens.push(specimen);
+                        ngDialog.open({
+                            template: '../common/displaycontrols/bacteriologyresults/views/editBacteriologySample.html',
+                            scope: $scope,
+                            className: "ngdialog-theme-default ng-dialog-all-details-page",
+                            controller: $controller('BacteriologyController', {
+                                $scope: $scope,
+                                bacteriologyConceptSet: $scope.bacteriologyTabData
+                            })
                         })
                     })
                 };
 
-                $scope.saveBacteriologySample = function(){
+                $scope.saveBacteriologySample = function(specimen){
                     var observationFilter = new Bahmni.Common.Domain.ObservationFilter();
-                    var specimen = $scope.newSpecimens[0];
                     if (specimen.isDirty()){
                         messagingService.showMessage('formError', "{{'CLINICAL_FORM_ERRORS_MESSAGE_KEY' | translate }}");
                     }else{
-                        specimen.sample.additionalAttributes = Array.isArray(specimen.sample.additionalAttributes) ? specimen.sample.additionalAttributes[0] : specimen.sample.additionalAttributes;
-                        specimen.report.results = observationFilter.filter(specimen.report.results)[0];
+                        //specimen.sample.additionalAttributes = Array.isArray(specimen.sample.additionalAttributes) ? specimen.sample.additionalAttributes[0] : specimen.sample.additionalAttributes;
+                        //specimen.report.results = observationFilter.filter(specimen.report.results)[0];
 
-                        var createPromise = bacteriologyResultsService.saveBacteriologyResults(specimen);
+                        var specimenMapper = new Bahmni.Clinical.SpecimenMapper();
+                        var createPromise = bacteriologyResultsService.saveBacteriologyResults(specimenMapper.mapSpecimenToObservation(specimen));
 
                         spinner.forPromise(createPromise).then(function() {
                             $state.go($state.current, {}, {reload: true});

@@ -52,16 +52,13 @@ angular.module('bahmni.clinical')
                 });
 
                 savableSpecimens = savableSpecimens.concat($scope.deletedSpecimens);
-
+                var specimenMapper = new Bahmni.Clinical.SpecimenMapper();
+                var specimens = [];
                 _.each(savableSpecimens, function (specimen) {
-                    var observationFilter = new Bahmni.Common.Domain.ObservationFilter();
-                    specimen.sample.additionalAttributes = Array.isArray(specimen.sample.additionalAttributes) ? specimen.sample.additionalAttributes : [specimen.sample.additionalAttributes];
-                    specimen.sample.additionalAttributes=observationFilter.filter(specimen.sample.additionalAttributes)[0];
-                    specimen.report.results = Array.isArray(specimen.report.results) ? specimen.report.results : [specimen.report.results];
-                    specimen.report.results = observationFilter.filter(specimen.report.results)[0];
+                    specimens.push(specimenMapper.mapSpecimenToObservation(specimen));
                 });
 
-                $scope.consultation.newlyAddedSpecimens = savableSpecimens;
+                $scope.consultation.newlyAddedSpecimens = specimens;
                 if (!$scope.consultation.extensions.mdrtbSpecimen) {
                     $scope.consultation.extensions.mdrtbSpecimen = [];
                 }
