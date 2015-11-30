@@ -341,7 +341,7 @@ button.back-btn {
 }
 /* multi select */
 .multi-select-button-group {
-    width: 600px;
+    max-width: 600px;
     overflow: auto;
     box-sizing: border-box;
     button {
@@ -355,7 +355,6 @@ button.back-btn {
         height: 32px !important;
     }
 }
-.multi-select-button-group { width: 600px; }
 .illegalValue .multi-select-button-group { width: auto; }
 
 .secondary-button, 
