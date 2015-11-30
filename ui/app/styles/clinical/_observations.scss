@@ -107,7 +107,8 @@
     font-size: 14px;
     line-height: 1.4em;
     margin-bottom: 0;
-  } 
+  }
+
 }
 
 div.duration.checkbox-inline {
@@ -462,4 +463,16 @@ concept-set {
     margin-left:9px;
     margin-right: 4px;
     color: #9D0101;
+}
+table{
+  caption{
+    text-align: left;
+    font-family: $primaryBoldFont;
+    font-size: 12px;
+    padding: 0 0 5px;
+    color:#666 ;
+  }
+  th{
+    font-size: 11px;
+  }
 }
