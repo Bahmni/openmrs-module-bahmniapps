@@ -17,7 +17,7 @@ Bahmni.Clinical.EncounterTransactionMapper = function () {
         });
     };
 
-    this.map = function (consultation, patient, locationUuid, retrospectiveEntry, defaultRetrospectiveVisitType, defaultVisitType, hasActiveVisit, isInEditEncounterMode) {
+    this.map = function (consultation, patient, locationUuid, retrospectiveEntry, defaultRetrospectiveVisitType, defaultVisitType, isInEditEncounterMode) {
         var encounterData = {};
         encounterData.locationUuid = isInEditEncounterMode? consultation.locationUuid : locationUuid;
         encounterData.patientUuid = patient.uuid;
@@ -29,7 +29,7 @@ Bahmni.Clinical.EncounterTransactionMapper = function () {
 
         if (!_.isEmpty(retrospectiveEntry)) {
             encounterData.visitType = defaultRetrospectiveVisitType || "OPD";
-        }else if(!hasActiveVisit){
+        }else if(!encounterData.visitUuid){
             encounterData.visitType = defaultVisitType;
         }
 
