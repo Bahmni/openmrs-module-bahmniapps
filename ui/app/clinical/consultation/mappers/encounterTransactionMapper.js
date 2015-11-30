@@ -88,7 +88,7 @@ Bahmni.Clinical.EncounterTransactionMapper = function () {
 
         var orderGroups = [];
         _.each(orderGroupMap, function(value, key) {
-            orderGroups.push({drugOrders : value, uuid: value[0].orderGroupUuid, orderSet : {uuid : key}});
+            orderGroups.push({drugOrders : value, uuid: value[0].orderGroupUuid, orderSet : {orderSetUuid : key}});
         });
 
         encounterData.orderGroups = orderGroups;

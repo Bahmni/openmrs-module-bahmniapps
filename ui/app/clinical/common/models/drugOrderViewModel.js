@@ -550,7 +550,7 @@ Bahmni.Clinical.DrugOrderViewModel.createFromContract = function (drugOrderRespo
     config ? viewModel.loadOrderAttributes(drugOrderResponse) : viewModel.orderAttributes = drugOrderResponse.orderAttributes;
     viewModel.visit = drugOrderResponse.visit;
     viewModel.voided = drugOrderResponse.voided;
-    viewModel.orderSetUuid = drugOrderResponse.orderSetUuid;
-    viewModel.orderGroupUuid = drugOrderResponse.orderGroupUuid;
+    viewModel.orderSetUuid = '';
+    viewModel.orderGroupUuid = '';
     return viewModel;
 };

@@ -389,7 +389,7 @@ angular.module('bahmni.clinical')
                 treatment.route = dummyResult.route;
                 treatment.drug = {name: dummyResult.name, form: dummyResult.form, uuid: dummyResult.uuid, conceptUuid: dummyResult.conceptUuid};
                 treatment.drugNameDisplay = dummyResult.name ? dummyResult.name + "(" + dummyResult.form + ")" : dummyResult.name;
-                treatment.orderSetUuid = "a2e15ab6-aed0-4849-9fa9-ac1dfe5ef825";
+                treatment.orderSetUuid = "afdea88d-4c61-4c12-893b-62a2b5b3411f";
                 treatment.calculateQuantityAndUnit();
                 $scope.treatments.push(treatment);
 
