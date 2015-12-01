@@ -69,7 +69,7 @@ angular.module('bahmni.home')
                     //if(navigator.platform.equals("Linux armv7l")){
                     platform = Bahmni.Common.Constants.platformType.android;
                 }
-                else if (window.chrome && chrome.runtime && chrome.runtime.id) {
+                else if ($rootScope.loginDevice) {
                     platform = Bahmni.Common.Constants.platformType.chromeApp;
                 }
                 $bahmniCookieStore.put(Bahmni.Common.Constants.platform, platform, {path: '/', expires: 365});

@@ -22,6 +22,15 @@ angular.module('bahmni.home', ['ui.router', 'httpErrorInterceptor', 'bahmni.comm
         resolve: {
             initialData: 'loginInitialization'
         }
+    }).state('device',
+    {  url: "/device/:deviceType",
+        templateUrl: 'views/login.html',
+        controller: function($stateParams,$rootScope,$state){
+            if($stateParams.deviceType === 'chrome-app'){
+               $rootScope.loginDevice = $stateParams.deviceType;
+            }
+            $state.go('dashboard');
+         }
     });
     $httpProvider.defaults.headers.common['Disable-WWW-Authenticate'] = true;
     $bahmniTranslateProvider.init({app: 'home', shouldMerge: true});
