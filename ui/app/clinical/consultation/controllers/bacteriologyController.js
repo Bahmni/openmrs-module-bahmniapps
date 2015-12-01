@@ -116,6 +116,10 @@ angular.module('bahmni.clinical')
                 }
             };
 
+            $scope.getDisplayName = function (specimen){
+                return specimen.shortName ? specimen.shortName : specimen.name;
+            };
+            
             $scope.consultation.preSaveHandler.register("bacteriologySaveHandlerKey", saveSpecimens);
 
             contextChangeHandler.add(contextChange);

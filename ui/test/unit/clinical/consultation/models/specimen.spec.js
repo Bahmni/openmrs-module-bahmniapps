@@ -68,4 +68,19 @@ describe("Specimen", function () {
             expect(specimen.isEmpty()).toBe(false);
         });
     })
+
+    describe("atLeastOneValueSet", function () {
+        it("Should return false if result has no value", function () {
+            var specimen = new Bahmni.Clinical.Specimen();
+
+            expect(specimen.atLeastOneResult()).toBe(false);
+        });
+
+        it("Should return true if result has value", function () {
+            var specimenData = { report :{results:[{value:"data"}]}}
+            var specimen = new Bahmni.Clinical.Specimen(specimenData);
+
+            expect(specimen.atLeastOneResult()).toBe(true);
+        });
+    });
 });

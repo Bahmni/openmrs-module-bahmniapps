@@ -98,4 +98,30 @@ describe("Bacteriology Controller", function () {
             expect($scope.newSpecimens[0].isEmpty()).toBeTruthy();
         });
     });
+
+    describe("Get Display Name", function () {
+        it("Should return the Specimen short name if it present", function () {
+            var specimenData = { shortName: "short Name", name: "name"};
+
+            expect($scope.getDisplayName(specimenData)).toBe(specimenData.shortName);
+        });
+
+        it("Should return the Specimen short name if it present, otherwise return Specimen name", function () {
+            var specimenData = {name: "name"};
+
+            expect($scope.getDisplayName(specimenData)).toBe(specimenData.name);
+        });
+
+        it("Should return the return Specimen name, if Specimen short name is null", function () {
+            var specimenData = {shortName:null ,name: "name"};
+
+            expect($scope.getDisplayName(specimenData)).toBe(specimenData.name);
+        });
+
+        it("Should return the return Specimen name, if Specimen short name is empty", function () {
+            var specimenData = {shortName:"" ,name: "name"};
+
+            expect($scope.getDisplayName(specimenData)).toBe(specimenData.name);
+        });
+    });
 });

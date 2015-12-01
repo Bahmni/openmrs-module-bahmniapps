@@ -17,4 +17,11 @@ Bahmni.Clinical.Specimen = function (specimen, allSamples) {
         return !self.dateCollected && !self.identifier && !self.type;
     };
 
+    function hasResults() {
+        return self && self.report && self.report.results && self.report.results.length > 0;
+    }
+
+    self.atLeastOneResult = function () {
+        return hasResults() && self.report.results[0].value != null;
+    };
 };

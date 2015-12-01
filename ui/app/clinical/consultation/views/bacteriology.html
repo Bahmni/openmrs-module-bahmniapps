@@ -61,7 +61,7 @@
                 </div>
 
                 <div class="box" ng-if="newSpecimen.dateCollected">
-                    <concept-set patient="patient" concept-set-name="resultsConceptName" collapse-inner-sections="!isOnDashboard"
+                    <concept-set patient="patient" concept-set-name="resultsConceptName" collapse-inner-sections="!newSpecimen.atLeastOneResult()"
                                  observations="newSpecimen.report.results"></concept-set>
                 </div>
             </section>
@@ -69,7 +69,7 @@
     </div>
     <div ng-repeat="savedSpecimen in savedSpecimens" class="savedSpecimens-container clearfix" ng-hide="isOnDashboard">
         <div class="fl savedSpecimens-text">
-            <span>{{savedSpecimen.type.name}}</span>
+            <span>{{getDisplayName(savedSpecimen.type)}}</span>
             <span>#{{savedSpecimen.identifier}}</span>
             <span>{{ 'BACTERIOLOGY_ADDED_ON_KEY' | translate }} {{savedSpecimen.dateCollected | date: 'MM/dd/yyyy'}}</span>
         </div>
