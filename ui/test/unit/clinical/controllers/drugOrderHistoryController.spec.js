@@ -85,6 +85,26 @@ describe("DrugOrderHistoryController", function () {
 
             expect(scope.consultation.discontinuedDrugs[0]).toBe(drugOrder);
         });
+
+        it("verify that the discontinued order is correctly created while saving", function(){
+            scope.consultation.discontinuedDrugs = [];
+            var drugOrder = Bahmni.Clinical.DrugOrderViewModel.createFromContract(activeDrugOrder);
+            scope.discontinue(drugOrder);
+
+            fetchActiveTreatmentsDeferred.promise.then().then(function(){
+                scope.consultation.preSaveHandler.fire();
+
+                expect(scope.consultation.removableDrugs.size()).toEqual(1);
+                var discontinuedDrugOrder = scope.consultation.removableDrugs[0];
+                expect(discontinuedDrugOrder.action).toEqual(Bahmni.Clinical.Constants.orderActions.discontinue);
+                expect(discontinuedDrugOrder.previousOrderUuid).toEqual(drugOrder.uuid);
+                expect(discontinuedDrugOrder.uuid).toEqual(undefined);
+                expect(discontinuedDrugOrder.scheduledDate).toEqual(drugOrder.dateStopped);
+                expect(discontinuedDrugOrder.dateActivated).toEqual(drugOrder.dateStopped);
+                done();
+            });
+
+        });
     });
 
     describe("when undo removing", function () {
