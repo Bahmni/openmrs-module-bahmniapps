@@ -165,7 +165,7 @@ angular.module('bahmni.clinical')
                     if(discontinuedDrug != null) {
                     removableOrder.orderReasonText = discontinuedDrug.orderReasonText;
                     removableOrder.dateActivated=discontinuedDrug.dateStopped;
-                    removableOrder.dateStopped = discontinuedDrug.dateStopped;
+                    removableOrder.scheduledDate = discontinuedDrug.dateStopped;
 
                     if (discontinuedDrug.orderReasonConcept != null && discontinuedDrug.orderReasonConcept.name) {
                         removableOrder.orderReasonConcept = {

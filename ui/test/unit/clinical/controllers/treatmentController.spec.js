@@ -231,7 +231,7 @@ describe("TreatmentController", function () {
                 var dec2_dec4orderAfterSave = scope.treatments[0];
                 expect(DateUtil.isSameDateTime(dec2_dec4orderAfterSave.effectiveStartDate, DateUtil.parse("2014-12-02"))).toBeTruthy();
                 expect(DateUtil.isSameDateTime(dec2_dec4orderAfterSave.effectiveStopDate, DateUtil.parse("2014-12-04"))).toBeTruthy();
-                expect(dec2_dec4orderAfterSave.scheduledDate).toBeNull();
+                expect(dec2_dec4orderAfterSave.scheduledDate).toEqual(dec2_dec4orderAfterSave.effectiveStartDate);
                 expect(dec2_dec4orderAfterSave.autoExpireDate).toBeUndefined();
 
                 scope.treatment = dec5_dec6order;
@@ -298,7 +298,7 @@ describe("TreatmentController", function () {
                 var dec2_dec4orderAfterSave = scope.treatments[0];
                 expect(DateUtil.isSameDateTime(dec2_dec4orderAfterSave.effectiveStartDate, DateUtil.parse("2014-12-02"))).toBeTruthy();
                 expect(DateUtil.isSameDateTime(dec2_dec4orderAfterSave.effectiveStopDate, DateUtil.parse("2014-12-04"))).toBeTruthy();
-                expect(dec2_dec4orderAfterSave.scheduledDate).toBeNull();
+                expect(dec2_dec4orderAfterSave.scheduledDate).toEqual(dec2_dec4orderAfterSave.effectiveStartDate);
                 expect(dec2_dec4orderAfterSave.autoExpireDate).toBeUndefined();
 
                 scope.treatment = dec4_dec5order;

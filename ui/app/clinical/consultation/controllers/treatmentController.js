@@ -41,7 +41,6 @@ angular.module('bahmni.clinical')
                 return newTreatment;
             };
 
-            $scope.minStartDate = encounterDate === null ? DateUtil.parse(Date.now()) : encounterDate;
             $scope.treatment = $scope.consultation.incompleteTreatment || newTreatment();
             $scope.treatmentConfig.durationUnits.forEach(function (durationUnit) {
                 if (_.isEqual(durationUnit, $scope.treatment.durationUnit)) {
@@ -174,6 +173,7 @@ angular.module('bahmni.clinical')
                 $scope.clearForm();
             };
             var setEffectiveDates = function (newDrugOrder, existingDrugOrders) {
+                newDrugOrder.scheduledDate = newDrugOrder.effectiveStartDate;
                 existingDrugOrders.forEach(function (existingDrugOrder) {
                     if (DateUtil.isSameDate(existingDrugOrder.effectiveStartDate, newDrugOrder.effectiveStopDate) && !DateUtil.isSameDate(existingDrugOrder.effectiveStopDate, newDrugOrder.effectiveStartDate)) {
                         if(!newDrugOrder.previousOrderUuid || newDrugOrder.previousOrderDurationInDays === newDrugOrder.durationInDays){

@@ -4,7 +4,7 @@ describe("DrugOrderHistoryController", function () {
 
     beforeEach(module('bahmni.clinical'));
 
-    var scope, prescribedDrugOrders, activeDrugOrder, _treatmentService, clinicalAppConfigService, retrospectiveEntryService;
+    var scope, prescribedDrugOrders, activeDrugOrder, _treatmentService, clinicalAppConfigService, retrospectiveEntryService, rootscope;
     var fetchActiveTreatmentsDeferred;
     var DateUtil = Bahmni.Common.Util.DateUtil;
 
@@ -76,8 +76,8 @@ describe("DrugOrderHistoryController", function () {
             scope.discontinue(drugOrder);
 
             expect(drugOrder.isMarkedForDiscontinue).toBe(true);
+            expect(drugOrder.dateStopped).not.toBeNull();
         });
-
         it("should add the drugOrder to removableDrugOrders", function () {
             var drugOrder = Bahmni.Clinical.DrugOrderViewModel.createFromContract(prescribedDrugOrders[0]);
 

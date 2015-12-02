@@ -7,7 +7,7 @@ Bahmni.Clinical.Notifier = function () {
     };
 
     this.fire = function () {
-        _.each(callBacks, function (callback, key) {
+        _.each(callBacks, function (callback) {
             callback();
         });
     };
