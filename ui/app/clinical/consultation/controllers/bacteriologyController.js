@@ -27,6 +27,9 @@ angular.module('bahmni.clinical')
                 $scope.allSamples = sampleSource != undefined && _.map(sampleSource.answers, function (answer) {
                         return new Bahmni.Common.Domain.ConceptMapper().map(answer);
                     });
+                if($scope.savedSpecimens) {
+                    $scope.savedSpecimens = _.sortBy($scope.savedSpecimens, 'dateCollected').reverse();
+                }
                 $scope.clearEmptySpecimens();
             };
 
