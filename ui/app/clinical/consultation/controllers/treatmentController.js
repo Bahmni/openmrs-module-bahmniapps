@@ -3,9 +3,9 @@
 angular.module('bahmni.clinical')
 
     .controller('TreatmentController', ['$scope', '$rootScope', 'contextChangeHandler', 'treatmentConfig', 'DrugService', '$timeout',
-        'clinicalAppConfigService','ngDialog', '$window',
+        'clinicalAppConfigService', 'ngDialog', '$window', 'messagingService',
         function ($scope, $rootScope, contextChangeHandler, treatmentConfig, drugService, $timeout,
-                  clinicalAppConfigService, ngDialog, $window) {
+                  clinicalAppConfigService, ngDialog, $window, messagingService) {
 
             var DateUtil = Bahmni.Common.Util.DateUtil;
 
@@ -95,8 +95,10 @@ angular.module('bahmni.clinical')
             $scope.$on("event:refillDrugOrders", function (event, drugOrders) {
                 drugOrders.forEach(function (drugOrder) {
                     setNonCodedDrugConcept(drugOrder);
-                    var refill = drugOrder.refill();
-                    $scope.treatments.push(refill);
+                    if (drugOrder.effectiveStopDate) {
+                        var refill = drugOrder.refill();
+                        $scope.treatments.push(refill);
+                    }
                 });
             });
 
@@ -156,6 +158,10 @@ angular.module('bahmni.clinical')
                     ngDialog.open({ template: 'consultation/views/treatmentSections/reviseRefillDrugOrderModal.html', scope: $scope});
                     $scope.popupActive = true;
                     return;
+                }
+
+                if (!$scope.treatment.quantity) {
+                    $scope.treatment.quantity = 0;
                 }
 
                 if ($scope.treatment.isBeingEdited) {
@@ -222,6 +228,10 @@ angular.module('bahmni.clinical')
                 markEitherVariableDrugOrUniformDrug($scope.treatments[index]);
                 $scope.treatments[index].isBeingEdited = true;
                 $scope.treatment = $scope.treatments[index].cloneForEdit(index, drugOrderAppConfig, $scope.treatmentConfig);
+                if($scope.treatment.quantity == 0){
+                    $scope.treatment.quantity = null;
+                    $scope.treatment.quantityEnteredManually = false;
+                }
             };
 
             $scope.incompleteDrugOrders = function(){
@@ -337,7 +347,23 @@ angular.module('bahmni.clinical')
                 $scope.showBulkChangeToggle = !$scope.showBulkChangeToggle;
                 clearBulkDurationChange();
                 $scope.selectAllCheckbox();
+                if($scope.showBulkChangeToggle){
+                    if(isDurationNullForAnyTreatment($scope.treatments)) {
+                        messagingService.showMessage("info", "There are drugs that do no have a duration specified." +
+                            "Updating duration will update for those drugs as well");
+                    }
+                }
             };
+
+            var isDurationNullForAnyTreatment = function (treatments) {
+                var isDurationNull = false;
+                treatments.forEach(function (treatment) {
+                    if(!treatment.duration) {
+                        isDurationNull = true;
+                    }
+                });
+                return isDurationNull;
+            }
 
             $scope.selectAllCheckbox = function(){
                 $scope.bulkSelectCheckbox = !$scope.bulkSelectCheckbox;
@@ -351,6 +377,9 @@ angular.module('bahmni.clinical')
                 if($scope.bulkDurationData.bulkDuration && $scope.bulkDurationData.bulkDurationUnit){
                     $scope.treatments.forEach(function (treatment) {
                         if(treatment.durationUpdateFlag){
+                            if(!treatment.duration) {
+                                treatment.quantityEnteredManually = false;
+                            }
                             treatment.duration = $scope.bulkDurationData.bulkDuration;
                             treatment.durationUnit = $scope.bulkDurationData.bulkDurationUnit;
                             treatment.calculateDurationInDays();

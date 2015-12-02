@@ -1268,7 +1268,7 @@ describe("drugOrderViewModel", function () {
                 "Day(s)": 2,
                 "Week(s)": 3
             };
-            expect(treatment.getSpanDetails()).toBe("2 Day(s) + 3 Week(s)");
+            expect(treatment.getSpanDetails()).toBe("- 2 Day(s) + 3 Week(s)");
         });
 
         it("should not concatenate if span details is only one.", function(){
@@ -1276,7 +1276,7 @@ describe("drugOrderViewModel", function () {
             treatment.span = {
                 "Week(s)": 3
             };
-            expect(treatment.getSpanDetails()).toBe("3 Week(s)");
+            expect(treatment.getSpanDetails()).toBe("- 3 Week(s)");
         });
 
         it("should return empty string if there is no span for the drug", function(){

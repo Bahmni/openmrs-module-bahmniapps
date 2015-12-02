@@ -112,7 +112,7 @@
 
             <div class="duration-widget fl">
                 <input id="duration" class="fl duration" type="number" min="1" placeholder="Duration"
-                       ng-model="treatment.duration" ng-change="treatment.calculateDurationInDays()" required ng-pattern="/^[0-9]+$/"/>
+                       ng-model="treatment.duration" ng-change="treatment.calculateDurationInDays()" ng-required="treatment.isDurationRequired" ng-pattern="/^[0-9]+$/"/>
                 <select id="duration-unit" class="fl duration-unit" ng-model="treatment.durationUnit"
                         ng-options="item.name as item.name for item in treatmentConfig.durationUnits" required>
                 </select>
@@ -125,7 +125,7 @@
 
             <div ng-show="!treatment.simpleDrugForm" class="quantity-widget fl">
                 <input id="quantity" class="quantity fl" type="number" min="0.1" placeholder="Qty" step="any"
-                       ng-model="treatment.quantity" ng-change="treatment.setQuantityEnteredManually()" required/>
+                       ng-model="treatment.quantity" ng-change="treatment.setQuantityEnteredManually()" ng-required="treatment.isDurationRequired"/>
                 <select id="total-quantity-unit" class="freq-dose-units fl" ng-model="treatment.quantityUnit"
                         ng-options="item.name as item.name for item in treatmentConfig.doseUnits" ng-disabled="!treatment.isUniformDosingType()" ng-required="!treatment.validate()">
                     <option value="">Choose Unit</option>

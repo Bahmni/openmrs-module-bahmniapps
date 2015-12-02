@@ -74,6 +74,12 @@ Bahmni.Clinical.DrugOrderViewModel = function (appConfig, config, proto, encount
     this.isNonCodedDrug = this.isNonCodedDrug || false;
     this.changedBySelection = false;
 
+    if(!appConfig.duration || (appConfig.duration && appConfig.duration.required == undefined)) {
+        this.isDurationRequired = true;
+    }else{
+        this.isDurationRequired = appConfig.duration.required;
+    }
+
     this.setAsNonCodedDrug = function () {
         this.isNonCodedDrug = !this.isNonCodedDrug;
         if(this.isNonCodedDrug) this.drugNonCoded = this.drugNameDisplay;
@@ -153,7 +159,8 @@ Bahmni.Clinical.DrugOrderViewModel = function (appConfig, config, proto, encount
             otherDescription = addDelimiter(blankIfFalsy(otherDescription), " - ");
         }
         if(withDuration){
-            otherDescription = otherDescription + addDelimiter(blankIfFalsy(self.duration), " ") + addDelimiter(blankIfFalsy(self.durationUnit), ", ")
+            if(self.duration && self.duration != 0)
+                otherDescription = otherDescription + addDelimiter(blankIfFalsy(self.duration), " ") + addDelimiter(blankIfFalsy(self.durationUnit), ", ")
         }
         otherDescription = otherDescription.substring(0, otherDescription.length - 2);
         return otherDescription;
@@ -220,7 +227,7 @@ Bahmni.Clinical.DrugOrderViewModel = function (appConfig, config, proto, encount
     };
 
     this.getQuantityWithUnit = function () {
-        if(this.simpleDrugForm === true){
+        if(this.simpleDrugForm === true || self.quantity == 0){
             return "";
         }
         return addDelimiter(blankIfFalsy(self.quantity), " ") + blankIfFalsy(quantityUnitsFrom(self.quantityUnit));
@@ -398,9 +405,10 @@ Bahmni.Clinical.DrugOrderViewModel = function (appConfig, config, proto, encount
     };
 
     this.getSpanDetails = function () {
-        var valueString = '';
+        var valueString = '- ';
         _.forEach(this.span, function (value, key, obj) {
-            valueString += value + " " + key + " + ";
+            if(value)
+                valueString +=  value + " " + key + " + ";
         });
         return valueString.substring(0, valueString.length - 3);
     };

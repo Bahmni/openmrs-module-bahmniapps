@@ -41,7 +41,7 @@
                                         <button class="stop-drug-btn" ng-if="!drugOrder.isMarkedForDiscontinue" ng-disabled="!drugOrder.isActive() || !drugOrder.isDiscontinuedAllowed" ng-click="discontinue(drugOrder)">
                                             Stop
                                         </button>
-                                        <button class="refill-btn" ng-click="refill(drugOrder)">
+                                        <button class="refill-btn" ng-disabled="!drugOrder.effectiveStopDate" ng-click="refill(drugOrder)">
                                             Refill
                                         </button>
                                         <button class="toggle" ng-class="{'has-notes': drugOrder.additionalInstructions}" ng-click="toggleShowAdditionalInstructions(drugOrder)" ng-hide="drugOrder.showAdditionalInstructions">
