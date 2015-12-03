@@ -1,0 +1,27 @@
+<section class="block hierarchy visit-dashboard">
+    <h2 class="section-title has-link"
+        ng-dialog="../common/displaycontrols/forms/views/allForms.html"
+        ng-dialog-class="ngdialog-theme-default ng-dialog-all-details-page"
+        ng-dialog-controller="patientDashboardAllFormsController" ng-dialog-data="{{dialogData}}">
+        <span class="title-link"> {{section | titleTranslate}}</span>
+        <i class="fa fa-external-link"></i>
+    </h2>
+    <ul class="form-field" class="ng-isolate-scope" id="visitDisplayTable">
+        <li>
+            <div>
+                <ul>
+                    <li ng-repeat="data in formData">
+                        <span>{{data.concept.display}}</span>
+                        <span class="fr">{{data.obsDatetime | bahmniDateTime}}</span>
+                     <span class="has-link"
+                           ng-dialog="dashboard/views/dashboardSections/editObservationForm.html"
+                           ng-dialog-class="ngdialog-theme-default ng-dialog-all-details-page"
+                           ng-dialog-data="{{getEditObsData(data)}}">
+                           <i class="fa fa-pencil"></i>
+                    </span>
+                    </li>
+                </ul>
+            </div>
+        </li>
+    </ul>
+</section>
