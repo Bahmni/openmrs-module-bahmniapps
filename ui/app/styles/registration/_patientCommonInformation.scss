@@ -235,22 +235,28 @@ section.form-field-inline{
           &.hasOldIdentifier-field-attribute{
             label{
               width: auto;
-              margin-left: 10px;
-              @media (max-width: 768px) {
-                margin-left: 0;
-              }
             }
           }
+        }
+        @media (max-width: 768px) {
+          padding-left: 10px;
+        }
+      }
+      #patientID{
+        margin-right: 10px;
+        @media (max-width: 768px) {
+          margin-right:0;
         }
       }
     }
   }
   #registrationNumber{
-    margin-left: 10px;
+    margin-right: 10px;
     &.registrationNumber-Mobile{
       width: 11em;
-      margin-left: 0;
+      margin-right: 0;
     }
   }
 }
+
 
