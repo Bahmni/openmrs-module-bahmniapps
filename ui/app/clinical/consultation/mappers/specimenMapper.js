@@ -3,7 +3,7 @@ Bahmni.Clinical.SpecimenMapper = function() {
     this.mapObservationToSpecimen = function(observation, allSamples, conceptsConfig) {
         var specimen = new Bahmni.Clinical.Specimen(observation, allSamples);
         specimen.specimenId = specimen.identifier;
-        specimen.specimenSource = specimen.type.name;
+        specimen.specimenSource = specimen.type.shortName? specimen.type.shortName: specimen.type.name;
         specimen.specimenCollectionDate = specimen.dateCollected;
 
         if (specimen.report && specimen.report.results) {
