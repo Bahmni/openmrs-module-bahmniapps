@@ -464,19 +464,15 @@ concept-set {
     margin-right: 4px;
     color: #9D0101;
 }
-table{
-  caption{
-    text-align: left;
-    font-family: $primaryBoldFont;
-    font-size: 12px;
-    padding: 0 0 5px;
-    color:#666 ;
-  }
-  th{
-    font-size: 11px;
-    padding: 7px 0!important;
-    div{
-      padding: 0 7px;
+.vitals table{
+    caption{
+        text-align: left;
+        font-family: $primaryBoldFont;
+        font-size: 12px;
+        padding: 0 0 5px;
+        color:#666 ;
     }
-  }
+    th{
+        font-size: 11px;
+    }
 }
