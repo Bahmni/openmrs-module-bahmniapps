@@ -234,6 +234,10 @@ Bahmni.ConceptSet.Observation.prototype = {
     isValidDate: function () {
         if (!this.hasValue()) return true;
         var date = Bahmni.Common.Util.DateUtil.parse(this.value);
+        if (!this.conceptUIConfig.allowFutureDates) {
+            var today = Bahmni.Common.Util.DateUtil.parse(moment().format("YYYY-MM-DD"));
+            if (today < date) return false;
+        }
         return date.getUTCFullYear() && date.getUTCFullYear().toString().length <= 4;
     },
 
@@ -251,7 +255,7 @@ Bahmni.ConceptSet.Observation.prototype = {
             if (this.isRequired() && !this.hasValue()) return false;
         }
         if (this._isDateDataType()) return this.isValidDate();
-        if (this._isDateTimeDataType()) return !this.hasInvalidDateTime();
+        if (this._isDateTimeDataType()) return this.isValidDate() && !this.hasInvalidDateTime();
         if (this.erroneousValue) return false;
         return true;
     },
