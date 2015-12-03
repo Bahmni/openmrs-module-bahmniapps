@@ -15,6 +15,7 @@
                     <article class="form-field existing-patient">
                         <div class="field-attribute">
                             <label class="control-label" for="patientID">{{'REGISTRATION_LABEL_PATIENT_IDENTIFIER' | translate}}</label>
+                            <span ng-show="!hasIdentifierSources()" class="asterick">*</span>
                         </div>
                         <div ng-show="hasIdentifierSources()" class="field-value" id="patientID">
                             <select id="identifierPrefix" ng-model="patient.identifierPrefix"
@@ -24,7 +25,7 @@
                         </div>
                         <div class="field-value showOn-desktop">
                             <input type="text" id="registrationNumber" ng-model="patient.registrationNumber"
-                                   placeholder="Registration Number" non-blank="hasOldIdentifier" pattern-validate
+                                   placeholder="Registration Number" non-blank="hasOldIdentifier || !hasIdentifierSources()" pattern-validate
                                    ng-change="patient.generateIdentifier()" ng-show="hasOldIdentifier || !hasIdentifierSources()" focus-on="hasOldIdentifier">
                         </div>
                         <div ng-show="hasIdentifierSources()">

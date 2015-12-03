@@ -174,7 +174,7 @@ angular.module('bahmni.registration')
                 }
 
                 if(!$scope.hasIdentifierSources()){
-                    createPatientWithOutIdentifierSource();
+                    createPatientWithOutIdentifierSource().finally(resolved);
                 }
                 else if (!$scope.hasOldIdentifier) {
                     createPatientWithGeneratedIdentifier().finally(resolved)
