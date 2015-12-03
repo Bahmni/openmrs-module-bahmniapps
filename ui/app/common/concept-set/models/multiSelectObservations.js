@@ -169,7 +169,7 @@ Bahmni.ConceptSet.MultiSelectObservation = function (concept, memberOfCollection
         }
     };
 
-    var unselectAnswer = function unselectAnswer(answer) {
+    var unselectAnswer = function(answer) {
         var obs = self.selectedObs[answer.name];
         if(obs && obs.uuid) {
             obs.value = null;

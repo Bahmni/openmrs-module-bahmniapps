@@ -115,7 +115,7 @@ angular.module('bahmni.common.conceptSet')
                         }
                         if (groupMember.groupMembers && groupMember.groupMembers.length > 0) {
                             setDefaultsForGroupMembers(groupMember.groupMembers, defaults);
-                            if (groupMember instanceof Bahmni.ConceptSet.ObservationNode && defaults[groupMember.label] && groupMember.abnormalObs &&  groupMember.abnormalObs.value == undefined) {
+                            if (groupMember instanceof Bahmni.ConceptSet.ObservationNode && defaults[groupMember.label] && groupMember.abnormalObs && groupMember.abnormalObs.value == undefined) {
                                 groupMember.onValueChanged(groupMember.value);
                             }
                         }
@@ -231,12 +231,13 @@ angular.module('bahmni.common.conceptSet')
                 if (formCondition) {
                     var flattenedObs = flattenObs([$scope.rootObservation]);
                     var conditions = formCondition(formName, allObsValues);
-                    if (conditions.error && !_.isEmpty(conditions.error)){
+                    console.log(conditions)
+                    if (conditions.error && !_.isEmpty(conditions.error)) {
                         messagingService.showMessage('formError', conditions.error);
-                        processConditions(flattenedObs,[conceptName], false, true);
+                        processConditions(flattenedObs, [conceptName], false, true);
                         return
-                    }else{
-                        processConditions(flattenedObs,[conceptName], false, false);
+                    } else {
+                        processConditions(flattenedObs, [conceptName], false, false);
                     }
                     processConditions(flattenedObs, conditions.enable, false);
                     processConditions(flattenedObs, conditions.disable, true);
@@ -248,7 +249,7 @@ angular.module('bahmni.common.conceptSet')
                     var matchingObs = _.find(flattenedObs, function (obs) {
                         return obs.concept.name === field;
                     });
-                    if(matchingObs) {
+                    if (matchingObs) {
                         setObservationState(matchingObs, disable, error);
                     } else {
                         messagingService.showMessage("error", "No element found with name : " + field);
@@ -259,12 +260,25 @@ angular.module('bahmni.common.conceptSet')
             var setObservationState = function (obs, disable, error) {
                 obs.disabled = disable;
                 obs.error = error;
+                if (obs.disabled) {
+                    clearFieldValuesOnDisabling(obs);
+                }
                 if (obs.groupMembers) {
                     _.each(obs.groupMembers, function (groupMember) {
                         setObservationState(groupMember, disable, error);
                     });
                 }
             };
+
+            var clearFieldValuesOnDisabling = function (obs) {
+                if (obs.value || obs.isBoolean) {
+                    obs.value = undefined;
+                } else if (obs.isMultiSelect) {
+                    for (var key in obs.selectedObs) {
+                        obs.unselectAnswer(obs.selectedObs[key].value);
+                    }
+                }
+            }
         };
 
         return {
