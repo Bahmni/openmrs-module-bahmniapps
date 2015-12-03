@@ -187,8 +187,8 @@ angular.module('consultation')
                         controller: 'DrugOrderHistoryController',
                         templateUrl: 'consultation/views/treatmentSections/drugOrderHistory.html',
                         resolve: {
-                            prescribedDrugOrders: function (TreatmentService, $stateParams) {
-                                return TreatmentService.getPrescribedDrugOrders($stateParams.patientUuid, true, 3);
+                            activeDrugOrders: function (TreatmentService, $stateParams) {
+                                return TreatmentService.getActiveDrugOrders($stateParams.patientUuid);
                             },
                             treatmentConfig: 'treatmentConfig'
                         }

@@ -12,10 +12,10 @@ describe("DrugOrderHistoryController", function () {
         $provide.value('$q', Q);
         fetchActiveTreatmentsDeferred = Q.defer();
 
-        _treatmentService = jasmine.createSpyObj('TreatmentService', ['getActiveDrugOrders']);
-        _treatmentService.getActiveDrugOrders.and.callFake(function () {
+        _treatmentService = jasmine.createSpyObj('TreatmentService', ['getPrescribedDrugOrders']);
+        _treatmentService.getPrescribedDrugOrders.and.callFake(function () {
             fetchActiveTreatmentsDeferred.resolve();
-            return specUtil.respondWith([activeDrugOrder, scheduledOrder]);
+            return specUtil.respondWith(prescribedDrugOrders);
         });
     }));
 
@@ -35,7 +35,7 @@ describe("DrugOrderHistoryController", function () {
 
         $controller('DrugOrderHistoryController', {
             $scope: scope,
-            prescribedDrugOrders: prescribedDrugOrders,
+            activeDrugOrders : [activeDrugOrder, scheduledOrder],
             TreatmentService: _treatmentService,
             clinicalAppConfigService: clinicalAppConfigService,
             retrospectiveEntryService: retrospectiveEntryService,
