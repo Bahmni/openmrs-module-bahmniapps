@@ -401,7 +401,7 @@ Bahmni.Clinical.DrugOrderViewModel = function (appConfig, config, proto, encount
     };
 
     this.isDiscontinuedOrStopped = function(){
-        return self.isStopped() || self.discontinued();
+        return (self.isStopped() || self.discontinued()) && self.isMarkedForDiscontinue === undefined;
     };
 
     var defaultQuantityUnit = function(drugOrder) {
@@ -436,7 +436,7 @@ Bahmni.Clinical.DrugOrderViewModel = function (appConfig, config, proto, encount
         newDrugOrder.effectiveStopDate = DateUtil.addDays(DateUtil.parse(newDrugOrder.effectiveStartDate), newDrugOrder.durationInDays);
         modifyForReverseSyncIfRequired(newDrugOrder);
         defaultQuantityUnit(newDrugOrder);
-
+        newDrugOrder.orderReasonText = null;
         return newDrugOrder;
     };
 

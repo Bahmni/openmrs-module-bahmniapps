@@ -132,7 +132,7 @@ angular.module('bahmni.clinical')
                 if (drugOrder.isDiscontinuedAllowed) {
                     drugOrder.isMarkedForDiscontinue = true;
                     drugOrder.isEditAllowed = false;
-                    drugOrder.dateStopped = DateUtil.now();
+                    drugOrder.dateStopped = DateUtil.getDateWithoutTime(DateUtil.now());
                     $scope.consultation.discontinuedDrugs.push(drugOrder);
                     $scope.minDateStopped = DateUtil.getDateWithoutTime(drugOrder.effectiveStartDate<DateUtil.now()?drugOrder.effectiveStartDate:DateUtil.now());
                 }
