@@ -15,12 +15,12 @@
                     <article class="form-field existing-patient">
                         <div class="field-attribute">
                             <label class="control-label" for="patientID">{{'REGISTRATION_LABEL_PATIENT_IDENTIFIER' | translate}}
-                                <span ng-show="!hasIdentifierSources()" class="asterick">*</span>
+                                <span ng-show="::!hasIdentifierSources()" class="asterick">*</span>
                             </label>
                         </div>
-                        <div ng-show="hasIdentifierSources()" class="field-value" id="patientID">
+                        <div ng-show="::hasIdentifierSources()" class="field-value" id="patientID">
                             <select id="identifierPrefix" ng-model="patient.identifierPrefix"
-                                    ng-options="identifierSource.prefix for identifierSource in identifierSources" ng-change="patient.generateIdentifier()"
+                                    ng-options="::identifierSource.prefix for identifierSource in identifierSources" ng-change="patient.generateIdentifier()"
                                     required>
                             </select>
                         </div>
