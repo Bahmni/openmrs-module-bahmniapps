@@ -69,6 +69,7 @@ Bahmni.Clinical.DrugOrderViewModel = function (appConfig, config, proto, encount
     this.isEditAllowed = this.isEditAllowed || true;
     this.quantityEnteredViaEdit = this.quantityEnteredViaEdit || false;
     this.quantityEnteredManually = this.quantityEnteredManually || false;
+    this.quantityUnitEnteredManually = this.quantityUnitEnteredManually || false;
     this.isBeingEdited = this.isBeingEdited || false;
     this.orderAttributes = [];
     this.isNonCodedDrug = this.isNonCodedDrug || false;
@@ -329,6 +330,10 @@ Bahmni.Clinical.DrugOrderViewModel = function (appConfig, config, proto, encount
         self.quantityEnteredManually = true;
     };
 
+    this.setQuantityUnitEnteredManually = function () {
+        self.quantityUnitEnteredManually = true;
+    };
+
     this.calculateDurationInDays = function () {
         var durationUnitFromConfig = _.find(durationUnits, function(unit) {
             return unit.name === self.durationUnit;
@@ -369,13 +374,14 @@ Bahmni.Clinical.DrugOrderViewModel = function (appConfig, config, proto, encount
                 self.quantity = self.quantity - ( self.quantity % 1 ) + 1;
             }
         }
-        if(self.quantityEnteredViaEdit && self.quantityUnit) {
+        if((self.quantityEnteredViaEdit && self.quantityUnit) || self.quantityUnitEnteredManually) {
             self.quantityUnit = quantityUnitsFrom(self.quantityUnit);
         }
         else {
             self.quantityUnit = quantityUnitsFrom(self.doseUnits);
         }
         self.quantityEnteredViaEdit = false;
+        self.quantityUnitEnteredViaEdit = false;
     };
 
     this.isStopped = function () {
