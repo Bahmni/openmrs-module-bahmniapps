@@ -18,7 +18,14 @@ angular.module('bahmni.common.displaycontrol.observation')
                         $scope.noObsMessage = Bahmni.Common.Constants.messageForNoObservation;
                     }
                     else{
-                        $scope.bahmniObservations[0].isOpen = true;
+                        if(!$scope.showGroupDateTime){
+                            _.forEach($scope.bahmniObservations, function(bahmniObs){
+                                bahmniObs.isOpen = true;
+                            });
+                        }
+                        else{
+                            $scope.bahmniObservations[0].isOpen = true;
+                        }
                     }
                 };
 
