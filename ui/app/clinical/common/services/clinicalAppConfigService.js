@@ -67,4 +67,14 @@ angular.module('bahmni.clinical')
         this.getVisitTypeForRetrospectiveEntries = function (){
             return appService.getAppDescriptor().getConfigValue("visitTypeForRetrospectiveEntries");
         }
+
+        this.getDrugOrderSections = function () {
+            return this.getDrugOrderConfig().sections;
+        };
+
+        this.getDrugOrderSectionByName = function (name) {
+            return _.find(this.getDrugOrderSections(), function (section) {
+                    return section.name === name;
+                }) || {};
+        };
     }]);

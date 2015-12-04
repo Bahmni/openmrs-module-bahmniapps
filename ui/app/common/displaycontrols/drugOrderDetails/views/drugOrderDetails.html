@@ -1,27 +1,35 @@
-<h2 class="has-toggle section-title" ng-if="params | titleTranslate">
-    {{ params | titleTranslate}}
+<h2 class="has-toggle section-title" ng-if="section | titleTranslate">
+    {{ section | titleTranslate}}
 </h2>
-<p class="placeholder-text" ng-if="drugOrders && drugOrders.length == 0">{{'NO_TREATMENTS_MESSAGE' | translate}} </p>
+<p class="placeholder-text" ng-if="drugOrders && drugOrders.length == 0 && isOnDashboard">{{'NO_TREATMENTS_MESSAGE' | translate}} </p>
 <table class="drug-order-table">
     <tbody ng-if="drugOrders.length > 0" ng-repeat="drugOrder in drugOrders | orderBy:'-effectiveStartDate' | orderBy:'action' | orderBy:'-isActive()' ">
         <tr ng-class="{active: drugOrder.isActive(), 'test-notes-parent': drugOrder.additionalInstructions, 'notes-open': showDetails}">
             <td class="drug">
                 <span>{{drugOrder.drug.name}}</span>
-                <span>{{drugOrder.drug.form}}</span>
             </td>
             <td class="dosage">
-                <span>- {{drugOrder.getDescriptionWithQuantity()}}</span>
-            <span ng-if="drugOrder.isDiscontinuedOrStopped()">Stopped on {{drugOrder.effectiveStopDate | bahmniDate}} </span>
-                <span ng-if="drugOrder.orderReasonText">due to {{drugOrder.orderReasonText}}</span>
-                <span ng-if="drugOrder.orderReasonConcept">{{drugOrder.orderReasonConcept.display || drugOrder.orderReasonConcept.name}} </span>
-
+                <span>{{drugOrder.getDoseInformation()}}</span>
+            </td>
+            <td>
+                <span>{{drugOrder.route}}</span>
             </td>
             <td class="days">
                 <span class="fr">from {{drugOrder.effectiveStartDate | bahmniDate}}</span>
             </td>
 
+            <td>
+                <span ng-if="drugOrder.isDiscontinuedOrStopped()">Stopped on {{drugOrder.effectiveStopDate | bahmniDate}} </span>
+            </td>
+            <td>
+                <span ng-if="drugOrder.orderReasonText">due to {{drugOrder.orderReasonText}}</span>
+            </td>
+            <td>
+                <span ng-if="drugOrder.orderReasonConcept">{{drugOrder.orderReasonConcept.display || drugOrder.orderReasonConcept.name}}</span>
+            </td>
+
             <td class="toggle-btn" ng-click="toggle(drugOrder)"
-                ng-if="params.showDetailsButton">
+                ng-if="section.dashboardParams.showDetailsButton">
                 <button class="toggle fr">
                     <i class="fa fa-angle-down" ng-hide="drugOrder.showDetails"></i>
                     <i class="fa fa-angle-up" ng-show="drugOrder.showDetails"></i>

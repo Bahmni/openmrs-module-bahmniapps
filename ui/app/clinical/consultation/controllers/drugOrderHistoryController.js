@@ -241,5 +241,9 @@ angular.module('bahmni.clinical')
                 return _.find(drugOrder.orderAttributes, {name: attributeName});
             };
 
+
+            $scope.dashboard = Bahmni.Common.DisplayControl.Dashboard.create(drugOrderAppConfig || {});
+            $scope.sectionGroups =  $scope.dashboard.getSections();
+
             init();
         }]);

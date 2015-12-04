@@ -5,12 +5,8 @@ describe('Drug Order Details DisplayControl', function () {
         $compile,
         mockBackend,
         scope,
-        params,
-        simpleHtml = '<drug-order-details id="dashboard-drug-order-details" params="params"></drug-order-details>';
-    var element;
-
-
-    beforeEach(module('bahmni.clinical'));
+        params,element,
+        simpleHtml = '<drug-order-details id="dashboard-drug-order-details" patient="patient" section="params"></drug-order-details>';
 
 
     drugOrderSections =[
@@ -29,16 +25,18 @@ describe('Drug Order Details DisplayControl', function () {
         }
     ];
 
+    beforeEach(module('bahmni.clinical'));
+    beforeEach(module('bahmni.common.displaycontrol.drugOrderDetails'));
 
 
     beforeEach(inject(function (_$compile_, $rootScope, $httpBackend) {
         scope = $rootScope;
         $compile = _$compile_;
-        scope.patientUuid = '123';
-        scope.params = {};
+        scope.patient= {uuid:'123'};
+        scope.params = {dashboardParams:{}};
         mockBackend = $httpBackend;
-        mockBackend.expectGET('displaycontrols/drugOrderDetails/views/drugOrderDetails.html').respond("<div>dummy</div>");
-        mockBackend.expectGET(Bahmni.Common.Constants.bahmniDrugOrderUrl + "/drugOrderDetails").respond(drugOrderSections);
+        mockBackend.expectGET('../common/displaycontrols/drugOrderDetails/views/drugOrderDetails.html').respond("<div>dummy</div>");
+        mockBackend.expectGET(Bahmni.Common.Constants.bahmniDrugOrderUrl + "/drugOrderDetails"+ "?patientUuid=123").respond(drugOrderSections);
         element = $compile(simpleHtml)(scope);
         scope.$digest();
         mockBackend.flush();

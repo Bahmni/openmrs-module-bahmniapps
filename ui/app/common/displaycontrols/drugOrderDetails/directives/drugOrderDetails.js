@@ -1,11 +1,11 @@
 'use strict';
 
-angular.module('bahmni.clinical')
+angular.module('bahmni.common.displaycontrol.drugOrderDetails')
     .directive('drugOrderDetails', ['TreatmentService', 'spinner', function (treatmentService, spinner) {
         var controller = function ($scope) {
 
             var init = function () {
-               return treatmentService.getAllDrugOrdersFor($scope.params.patientUuid, $scope.params.drugNames).then(function(response){
+               return treatmentService.getAllDrugOrdersFor($scope.patient.uuid, $scope.section.dashboardParams.drugNames).then(function(response){
                     $scope.drugOrders = response;
                 })
             };
@@ -21,8 +21,10 @@ angular.module('bahmni.clinical')
             restrict: 'E',
             controller: controller,
             scope: {
-                params: "="
+                section: "=",
+                patient: "=",
+                isOnDashboard: "="
             },
-            templateUrl: "displaycontrols/drugOrderDetails/views/drugOrderDetails.html"
+            templateUrl: "../common/displaycontrols/drugOrderDetails/views/drugOrderDetails.html"
         };
     }]);
