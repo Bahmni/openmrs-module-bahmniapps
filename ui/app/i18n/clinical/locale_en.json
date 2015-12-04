@@ -12,6 +12,7 @@
     "NO_SPECIMEN_RESULT_FOUND_MESSAGE": "No Result found for this specimen",
     "NO_SPECIMEN_FOUND_MESSAGE":"No specimen for this patient",
     "NO_DATA_MESSAGE": "No data captured.",
+    "NO_DRUG_DETAILS_MESSAGE": "No Drugs to show for this patient",
 
     "PROGRAM_MANAGEMENT_SELECT_PROGRAM_KEY": "Select Program",
     "PROGRAM_MANAGEMENT_ACTIVE_PROGRAM_KEY": "Active Programs",

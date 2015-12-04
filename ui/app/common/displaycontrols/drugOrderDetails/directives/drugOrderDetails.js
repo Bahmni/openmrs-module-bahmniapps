@@ -22,8 +22,7 @@ angular.module('bahmni.common.displaycontrol.drugOrderDetails')
             controller: controller,
             scope: {
                 section: "=",
-                patient: "=",
-                isOnDashboard: "="
+                patient: "="
             },
             templateUrl: "../common/displaycontrols/drugOrderDetails/views/drugOrderDetails.html"
         };

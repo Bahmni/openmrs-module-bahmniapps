@@ -1,7 +1,7 @@
 <h2 class="has-toggle section-title" ng-if="section | titleTranslate">
     {{ section | titleTranslate}}
 </h2>
-<p class="placeholder-text" ng-if="drugOrders && drugOrders.length == 0 && isOnDashboard">{{'NO_TREATMENTS_MESSAGE' | translate}} </p>
+<p class="placeholder-text" ng-if="drugOrders && drugOrders.length == 0">{{'NO_DRUG_DETAILS_MESSAGE' | translate}} </p>
 <table class="drug-order-table">
     <tbody ng-if="drugOrders.length > 0" ng-repeat="drugOrder in drugOrders | orderBy:'-effectiveStartDate' | orderBy:'action' | orderBy:'-isActive()' ">
         <tr ng-class="{active: drugOrder.isActive(), 'test-notes-parent': drugOrder.additionalInstructions, 'notes-open': showDetails}">
