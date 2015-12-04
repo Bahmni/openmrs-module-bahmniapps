@@ -90,7 +90,7 @@ Bahmni.Clinical.DrugOrderViewModel = function (appConfig, config, proto, encount
             this.changedBySelection = false;
             return;
         }
-        if(this.drug) this.drug.uuid = undefined;
+        if(this.drug) this.drug = undefined;
     };
     this.isUniformFrequency = true;
     this.showExtraInfo = false;

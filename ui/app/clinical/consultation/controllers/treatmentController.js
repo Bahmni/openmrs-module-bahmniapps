@@ -119,6 +119,9 @@ angular.module('bahmni.clinical')
 
             $scope.add = function () {
                 $scope.treatment.dosingInstructionType = Bahmni.Clinical.Constants.flexibleDosingInstructionsClass;
+                if($scope.treatment.isNonCodedDrug) {
+                    $scope.treatment.drugNonCoded = $scope.treatment.drugNameDisplay;
+                }
                 var newDrugOrder = $scope.treatment;
                 setNonCodedDrugConcept($scope.treatment);
 
@@ -296,6 +299,7 @@ angular.module('bahmni.clinical')
 
             $scope.populateBackingFields = function (item) {
                 $scope.treatment.changedBySelection = true;
+                $scope.treatment.isNonCodedDrug = false;
                 $scope.treatment.changeDrug({
                     name: item.drug.name,
                     form: item.drug.dosageForm.display,
