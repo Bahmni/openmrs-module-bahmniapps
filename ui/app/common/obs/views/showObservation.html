@@ -1,5 +1,4 @@
-<div class="print-showObervation">
-    <li ng-class="{'is-text': observation.type == 'Text', 'has-child' : observation.groupMembers.length > 0}">
+<li ng-class="{'is-text': observation.type == 'Text', 'has-child' : observation.groupMembers.length > 0}">
     <div ng-class="{'is-abnormal': observation.abnormal}" class="tree-list-item" bm-gallery patient="patient">
         <span ng-if="!observation.isImageConcept() || (observation.isImageConcept() && !print)" class="testUnderPanel"><label>{{::observation.concept.shortName || observation.concept.name}}</label></span>
         <pre ng-class="{'text-only': (observation.concept.dataType ==='Text' && print), 'value-text-only': !(observation.concept.dataType ==='Text' && print)}" ng-if="observation.isFormElement() && !observation.isImageConcept()">{{::observation.getDisplayValue()}} <span class="label-add-on" ng-if="observation.concept.units" ng-bind-html="::observation.concept.units"></span></pre>
@@ -40,5 +39,10 @@
         <show-observation  show-details-button="showDetailsButton" ng-if="!observation.isFormElement()" ng-repeat="member in observation.groupMembers" patient="patient"
                           observation="member" patient="patient" show-date="showDate" show-time="showTime"></show-observation>
     </ul>
-    </li>
-</div>
+    <!--<ul ng-if="!observation.isFormElement()" class="visible-print">
+        <li ng-repeat="member in observation.groupMembers">
+            <show-observation  show-details-button="showDetailsButton" ng-if="!observation.isFormElement()" patient="patient"
+                           observation="member" patient="patient" show-date="showDate" show-time="showTime"></show-observation>
+        </li>
+    </ul>-->
+</li>

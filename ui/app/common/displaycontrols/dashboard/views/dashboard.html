@@ -9,7 +9,7 @@
                     </section>
                 </div>
 
-                <div  ng-if="!isFullPageSection(sections)"class="dashboard-section-wrapper">
+                <div ng-if="!isFullPageSection(sections)"class="dashboard-section-wrapper">
                     <div class="dashboard-sections dashboard-sections-left">
                         <div ng-repeat="section in sections | filter:filterOdd(0)">
                             <section id="{{section.title.toValidId()}}" class="dashboard-section"

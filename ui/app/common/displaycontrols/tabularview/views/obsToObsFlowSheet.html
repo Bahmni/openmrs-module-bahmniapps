@@ -1,30 +1,32 @@
-<section class="dashboard-tabular-obs-section dashboard-section" id="tabular-obs">
-    <h2 ng-if="!isClickable()" class="section-title">{{section | titleTranslate}}</h2>
+<section class="dashboard-tabular-obs-section dashboard-section" id="tabular-obs" ng-class="{'noTable' :(obsTable.rows.length == 0),'hasTable' :(obsTable.rows.length > 0)}">
+    <div class="rotate">
+        <h2 ng-if="!isClickable()" class="section-title">{{section | titleTranslate}}</h2>
 
-    <div ng-if="isClickable()" class="dashboard-tabular-obs-section">
-        <h2 ng-dialog="../common/displaycontrols/tabularview/views/allObsToObsFlowSheet.html"
-            ng-dialog-controller="AllObsToObsFlowSheetDetailsController"
-            ng-dialog-data="{{dialogData}}"
-            ng-dialog-class="ngdialog-theme-default ng-dialog-all-details-page"
-            class="section-title has-link">
-            <span class="title-link"> {{section | titleTranslate}} </span>
-            <i class="fa fa-external-link"></i>
-        </h2>
-    </div>
-
-    <section bindonce="obsTable" class="tabular-obs">
-        <div class="placeholder-text" ng-if="obsTable.rows.length == 0">
-            <p>{{'NO_DATA_MESSAGE' | translate}}</p>
+        <div ng-if="isClickable()" class="dashboard-tabular-obs-section">
+            <h2 ng-dialog="../common/displaycontrols/tabularview/views/allObsToObsFlowSheet.html"
+                ng-dialog-controller="AllObsToObsFlowSheetDetailsController"
+                ng-dialog-data="{{dialogData}}"
+                ng-dialog-class="ngdialog-theme-default ng-dialog-all-details-page"
+                class="section-title has-link">
+                <span class="title-link"> {{section | titleTranslate}} </span>
+                <i class="fa fa-external-link"></i>
+            </h2>
         </div>
-        <table ng-if="obsTable.rows.length > 0">
-            <th ng-if="isMonthAvailable()"> Month </th>
-            <th ng-repeat="header in obsTable.headers" ng-if="header.name != 'Month'">{{header.shortName || header.name}}</th>
-            <tr ng-repeat="row in obsTable.rows">
-                <td ng-if="isMonthAvailable()">{{row.columns['Month'][0].valueAsString}}</td>
-                <td ng-repeat="header in obsTable.headers" ng-if="header.name != 'Month'" ng-class="{'is-abnormal': row.columns[header.name].abnormal}">
-                    {{commafy(row.columns[header.name])}}
-                </td>
-            </tr>
-        </table>
-    </section>
+
+        <section bindonce="obsTable" class="tabular-obs">
+            <div class="placeholder-text" ng-if="obsTable.rows.length == 0">
+                <p>{{'NO_DATA_MESSAGE' | translate}}</p>
+            </div>
+            <table ng-if="obsTable.rows.length > 0">
+                <th ng-if="isMonthAvailable()"> Month </th>
+                <th ng-repeat="header in obsTable.headers" ng-if="header.name != 'Month'">{{header.shortName || header.name}}</th>
+                <tr ng-repeat="row in obsTable.rows">
+                    <td ng-if="isMonthAvailable()">{{row.columns['Month'][0].valueAsString}}</td>
+                    <td ng-repeat="header in obsTable.headers" ng-if="header.name != 'Month'" ng-class="{'is-abnormal': row.columns[header.name].abnormal}">
+                        {{commafy(row.columns[header.name])}}
+                    </td>
+                </tr>
+            </table>
+        </section>
+    </div>
 </section>

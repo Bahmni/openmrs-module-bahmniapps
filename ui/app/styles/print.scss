@@ -3,19 +3,21 @@
 @page {
     margin-left: 0.5cm;
     margin-right: 0.5cm;
-    margin-top: 0.4cm;
+    margin-top: 0.3cm;
     margin-bottom: 0.3cm;
 }
 
-body,
-body pre {
+
+body{
     font-family: Arial, sans-serif;
     font-size: 9pt;
     color: #000;
     background: #fff;
 }
-
 body pre {
+    font-family: Arial, sans-serif;
+    font-size: 9pt;
+    color: #000;
     white-space: pre-wrap;
 }
 
@@ -132,6 +134,7 @@ h3 {
 .pgContainer {
     height: auto;
     min-height: initial;
+    overflow: hidden;
 }
 /** Print Style for dashboard **/
 
@@ -159,7 +162,7 @@ h3 {
         font-weight: bold;
     }
     .visible-print {
-        display: initial;
+        display: block;
     }
     .hidden-print {
         display: none;
@@ -676,39 +679,128 @@ h3 {
 
 .print-patient-summary{
     .dashboard-section {
-        h2.section-title{
-            font-size: 10.5pt;
-            margin:0 0 3px;
+        margin-bottom: 0px;
+        .dashboard-tabular-obs-section.hasTable{
+            height: 933px;
+            page-break-before: always;
+            position: relative;
+            .rotate{
+                transform: rotate(-90deg);
+                position: absolute;
+                margin-top: -286px;
+                bottom: 0px;
+                width: 100%;
+                top: 50%;
+                left: 50%;
+                margin-left: -300px;
+            }
         }
-        .hierarchy {
-            ul{
-                li{
-                    .tree-list-item{
-                        .obs-date{
-                            background: #cecccc !important;
-                            margin:0 0 3px!important;
-                            font-weight: normal;
+        .block, .dashboard-tabular-obs-section, #Laboratory-Monitoring, .dashboard-more-info {
+            margin: 0 0 25px;
+        }
+        .dashboard-patientInformation-section {
+            table {
+                /*td.name {
+                    width: 27% !important;
+                }*/
+                tr, td, th{
+                    border: none !important;
+                }
+                .patient-info{
+                    padding: 0;
+                    td{
+                        padding: 0;
+                    }
+                    .patient-value{
+                        .patient-address {
+                            display: inline-block;
                         }
                     }
                 }
-                .print-observations {
-                    .print-showObervation{
-                        float: left;
-                        width: 50%;
-                    }
-                    //.print-showObervation:nth-child(even)  {
-                    //    float: right;
-                    //    width: 50%;
-                    //}
-                    .print-showObervation:nth-child(n+1):nth-child(n+3){
-
-                    }
-                    li.has-child {
-                        .print-showObervation:nth-child(odd), .print-showObervation:nth-child(even) {
-                            float: none;
-                            width: 100%;
-
+            }
+        }
+        h2.section-title{
+            //margin:0 0 3px;
+            font-size: 13px;
+        }
+        .tabular-obs,.chronic-treatment, .dashboard-more-info .block{
+            margin-top: 4px;
+        }
+        .hierarchy {
+            ul{
+                padding-left: 0 !important;
+                li{
+                    overflow: auto;
+                    clear: none;
+                    background: #fff;
+                    .tree-list-item{
+                        padding: 3px 5px !important;
+                        &:first-child{
+                            padding-top:0 !important;
                         }
+                    }
+                    ul{
+                        overflow: hidden;
+                        padding-left: 0 !important;
+                        li{
+                            &:nth-of-type(odd){
+                                background: #fff;
+                            }
+                            &:nth-of-type(even){
+                               background: #D9D8D8;
+                            }
+                            ul{
+                                padding-left: 0 !important;
+                                li{
+                                    background: transparent !important;
+                                    ul{
+                                        li{
+                                            padding-left: 10px !important;
+                                            background: #fff !important;
+                                            .tree-list-item{
+                                                padding: 0px 5px 3px 5px !important;
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            .value-text-only{
+                width: 20% !important;
+                padding: 3px 0px 0px !important
+            }
+            .testUnderPanel{
+                width: 75% !important;
+                padding: 3px 0px 0px !important
+            }
+        }
+        /*.hierarchy {
+            ul{
+                li{
+                    overflow: auto;
+                    clear: none;
+                    background: #fff;
+                    ul{
+                        overflow: hidden;
+                      li{
+                          float: left;
+                          width: 50%;
+                          &:nth-of-type(odd){
+                              background: #fff;
+                          }
+                          &:nth-of-type(even){
+                              background: #D9D8D8;
+                          }
+                          ul{
+                              li{
+                                  width: 100%;
+                                  background: #fff !important;
+                              }
+                          }
+                      }
                     }
                 }
             }
@@ -718,51 +810,26 @@ h3 {
             .testUnderPanel{
                 width: 75% !important;
             }
-        }
-        table{
-            thead {
-                tr {
-                    border: 1px solid $lighterGray;
-                    th {
-                        border: 1px solid $lighterGray;
-                    }
+        }*/
 
+        table{
+            border: 1px #ccc solid !important;
+            border-collapse: collapse !important;
+            tr{
+                border: 1px #ccc solid !important;
+                th{
+                    background: #fff !important;
+                    border: 1px #ccc solid !important;
                 }
-            }
-            tbody {
-                tr {
-                    td, th {
-                        border: 1px solid $lighterGray;
-                        padding: 4px 1px;
-                    }
+                td{
+                    background: #fff !important;
+                    border: 1px #ccc solid !important;
                 }
+
             }
         }
 
     }
-    .dashboard-patientInformation-section {
-        table {
-            td.name {
-                width: 27% !important;
-            }
-            .patient-info{
-                .patient-value{
-                    .patient-address {
-                        display: inline-block;
-                    }
-                }
-            }
-        }
-    }
-    .chronic-treatment{
-        table{
-            tbody{
-                tr{
-                    th,td{
-                        border: 1px solid #ddd !important;
-                    }
-                }
-            }
-        }
-    }
+
+
 }
