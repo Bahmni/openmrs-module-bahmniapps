@@ -8,7 +8,8 @@ angular.module('bahmni.common.displaycontrol.pivottable').directive('pivotTable'
                 diseaseName: "=",
                 displayName: "=",
                 config: "=",
-                visitUuid:"="
+                visitUuid:"=",
+                status: "="
             },
             link: function (scope) {
 
@@ -39,6 +40,8 @@ angular.module('bahmni.common.displaycontrol.pivottable').directive('pivotTable'
                 pivotDataPromise.success(function (data) {
                     scope.result = data;
                     scope.hasData = !_.isEmpty(scope.result.tabularData);
+                    scope.status = scope.status || {};
+                    scope.status.data = scope.hasData;
                 })
             },
             templateUrl: '../common/displaycontrols/pivottable/views/pivotTable.html'
