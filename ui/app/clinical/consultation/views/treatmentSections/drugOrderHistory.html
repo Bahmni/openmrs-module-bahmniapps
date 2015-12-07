@@ -57,7 +57,7 @@
                                     <span class="stop-date">
                                         <div ng-if="drugOrder.isDiscontinuedOrStopped()">Stopped on {{drugOrder.dateStopped | bahmniDate}}</div>
                                         <div ng-if="drugOrder.orderReasonText && drugOrder.isDiscontinuedOrStopped()">due to {{drugOrder.orderReasonText}}</div>
-                                        <div ng-if="getOrderReasonConcept(drugOrder)">({{getOrderReasonConcept(drugOrder)}})</div>
+                                        <div ng-if="getOrderReasonConcept(drugOrder) && drugOrder.isDiscontinuedOrStopped()">({{getOrderReasonConcept(drugOrder)}})</div>
                                     </span>
                                 </div>
                                 <div ng-show="drugOrder.showAdditionalInstructions" class="notes inline-notes">
@@ -75,7 +75,7 @@
                                     <div class="form fl drug-stop-container">
                                         <article class="form-field">
                                             <div class="field-value">
-                                                <input id="date-stopped"  type="date" date-converter min="{{::minDateStopped}}" max="{{::scheduledDate}}" ng-model="drugOrder.dateStopped"
+                                                <input id="date-stopped"  type="date" date-converter min="{{::minDateStopped}}" max="{{::scheduledDate}}" ng-model="drugOrder.dateStopped" ng-change="dateChanged(drugOrder)"
                                                        required="required">
                                             </div>
                                             <div class="field-value">
