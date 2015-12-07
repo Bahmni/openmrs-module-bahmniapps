@@ -143,6 +143,9 @@
                         line-height: 1.3em;
                     }
                 }
+                &.exchange-btn{
+                    margin-right: 4px;
+                }
             }
             select, input[type="date"] {
                 min-width: auto;

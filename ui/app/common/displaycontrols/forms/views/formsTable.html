@@ -12,15 +12,13 @@
                 <ul>
                     <li ng-repeat="data in formData">
                         <span>{{data.concept.display}}</span>
-                        <span class="fr">
-                            <span class="has-link"
-                                                ng-dialog="dashboard/views/dashboardSections/editObservationForm.html"
-                                                ng-dialog-class="ngdialog-theme-default ng-dialog-all-details-page"
-                                                ng-dialog-data="{{getEditObsData(data)}}">
-                                <i class="fa fa-pencil"></i>
-                            </span>
-                            {{data.obsDatetime | bahmniDateTime}}
-                        </span>
+                        <span class="fr">{{data.obsDatetime | bahmniDateTime}}
+                                <span class="has-link fl"
+                                      ng-dialog="dashboard/views/dashboardSections/editObservationForm.html"
+                                      ng-dialog-class="ngdialog-theme-default ng-dialog-all-details-page"
+                                      ng-dialog-data="{{getEditObsData(data)}}">
+                               <i class="fa fa-pencil"></i>
+                            </span></span>
                     </li>
                 </ul>
             </div>
