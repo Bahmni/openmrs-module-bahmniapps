@@ -1,11 +1,9 @@
 'use strict';
 
 angular.module('bahmni.registration')
-    .factory('patientService', ['$http', '$rootScope','$bahmniCookieStore','$q', function ($http, $rootScope, $bahmniCookieStore, $q) {
+    .factory('patientService', ['$http', '$rootScope','$bahmniCookieStore','$q','patientServiceOffline', function ($http, $rootScope, $bahmniCookieStore, $q, patientServiceOffline) {
         var openmrsUrl = Bahmni.Registration.Constants.openmrsUrl;
         var baseOpenMRSRESTURL = Bahmni.Registration.Constants.baseOpenMRSRESTURL;
-        var platform = $rootScope.getAppPlatform();
-
         var search = function (query, identifier, addressFieldName, addressFieldValue, customAttributeValue, offset, customAttributeFields) {
 
             var config = {
@@ -21,8 +19,8 @@ angular.module('bahmni.registration')
                 },
                 withCredentials: true
             };
-            if(platform === Bahmni.Common.Constants.platformType.android){
-                return $q.when(JSON.parse(Android.search(JSON.stringify(config))));
+            if($rootScope.offline){
+                return patientServiceOffline.search(config.params);
             }
             var url = Bahmni.Common.Constants.bahmniSearchUrl + "/patient";
             var defer = $q.defer();
@@ -41,8 +39,8 @@ angular.module('bahmni.registration')
         };
 
         var get = function (uuid) {
-            if(platform === Bahmni.Common.Constants.platformType.android){
-                return $q.when(JSON.parse(Android.getPatient(uuid)));
+            if($rootScope.offline) {
+                return patientServiceOffline.get(uuid);
             }
             var url = openmrsUrl + "/ws/rest/v1/patientprofile/" + uuid;
             var config = {
@@ -50,6 +48,7 @@ angular.module('bahmni.registration')
                 params: {v: "full"},
                 withCredentials: true
             };
+
             var defer = $q.defer();
             $http.get(url, config).success(function(result) {
                 defer.resolve(result);

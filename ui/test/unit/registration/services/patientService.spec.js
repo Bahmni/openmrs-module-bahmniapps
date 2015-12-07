@@ -3,12 +3,18 @@
 describe('Patient resource', function () {
     var patientService;
     var patient;
+    var rootScopeMock = jasmine.createSpyObj('rootScope', ['getAppPlatform']);
+
     var openmrsUrl = "http://blah";
     var patientConfiguration;
 
     var mockHttp = {
         defaults: {headers: {common: {'X-Requested-With': 'present'}}},
-        get: jasmine.createSpy('Http get').and.returnValue({'name': 'john'}),
+        get: jasmine.createSpy('Http get').and.returnValue({
+            'success': function(onSuccess){
+                return onSuccess({name:"john"});
+            }
+        }),
         post: jasmine.createSpy('Http post').and.returnValue({
             'success': function (onSuccess) {
                 return {
@@ -35,7 +41,9 @@ describe('Patient resource', function () {
         module(function ($provide) {
             Bahmni.Registration.Constants.openmrsUrl = openmrsUrl;
             $provide.value('$http', mockHttp);
+            $provide.value('$rootScope', rootScopeMock);
         });
+
 
         patientConfiguration = new Bahmni.Registration.PatientConfig([
             {"uuid": "d3d93ab0-e796-11e2-852f-0800271c1b75", "sortWeight": 2.0, "name": "caste", "description": "Caste", "format": "java.lang.String", "answers": []},
@@ -45,10 +53,13 @@ describe('Patient resource', function () {
                 ]}
         ]);
 
-        inject(['patientService', '$rootScope', 'patient', function (patientServiceInjectted, $rootScope, patientFactory) {
+        inject(['patientService', '$rootScope', 'patient', '$q', function (patientServiceInjectted, $rootScope, patientFactory) {
             patient = patientFactory.create();
             patientService = patientServiceInjectted;
             $rootScope.patientConfiguration = patientConfiguration;
+            $rootScope.getAppPlatform = function(){
+                return "chrome";
+            };
         }]);
 
     });
@@ -60,7 +71,8 @@ describe('Patient resource', function () {
         expect(mockHttp.get).toHaveBeenCalled();
         expect(mockHttp.get.calls.mostRecent().args[0]).toBe(Bahmni.Common.Constants.bahmniSearchUrl + "/patient");
         expect(mockHttp.get.calls.mostRecent().args[1].params.q).toBe(query);
-        expect(results.name).toBe('john');
+        expect(results.$$state.value.name).toBe('john');
+
     });
 
     it('Should create a patient', function () {

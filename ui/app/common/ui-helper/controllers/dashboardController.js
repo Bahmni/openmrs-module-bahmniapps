@@ -28,6 +28,12 @@ angular.module('bahmni.common.uiHelper')
                 return getCurrentLocation().uuid === location.uuid;
             };
 
+            $scope.syncData = function(){
+                var token = spinner.show();
+                Android.populateData(window.location.origin);
+                spinner.hide(token);
+            };
+
             $scope.onLocationChange = function () {
                 var selectedLocation = getLocationFor($scope.selectedLocationUuid);
                 $bahmniCookieStore.remove(Bahmni.Common.Constants.locationCookieName);
