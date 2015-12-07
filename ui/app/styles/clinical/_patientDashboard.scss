@@ -87,6 +87,7 @@
     padding: 0!important;
     border: 0;
     background: $white;
+    overflow: auto;
   }
   table {
     margin: 0;
@@ -659,5 +660,27 @@ table.pivot-table {
         }
       }
     }
+  }
+}
+
+table.treatments-details-table{
+  font-size: 12px;
+      td{
+          border: none;
+          width: 18%;
+        padding: 10px 5px;
+          &.drug{
+            font-size: 14px !important;
+            padding: 10px;
+          }
+          &.toggle-btn{
+            width: 10%;
+          }
+      }
+    tr.test-notes-parent{
+      border-bottom: 1px solid #ddd;
+    }
+  tr.notes{
+    background: #EFF8FF;
   }
 }
