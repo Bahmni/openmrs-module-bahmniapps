@@ -1,4 +1,5 @@
-<section class="dashboard-tabular-obs-section dashboard-section" id="tabular-obs" ng-class="{'noTable' :(obsTable.rows.length == 0),'hasTable' :(obsTable.rows.length > 0)}">
+<section class="dashboard-tabular-obs-section dashboard-section" id="tabular-obs"
+         ng-class="{'noTable' :(obsTable.rows.length == 0),'hasTable' :(obsTable.rows.length > 0)}">
     <div class="rotate">
         <h2 ng-if="!isClickable()" class="section-title">{{section | titleTranslate}}</h2>
 
@@ -13,18 +14,38 @@
             </h2>
         </div>
 
-        <section bindonce="obsTable" class="tabular-obs">
+        <section bindonce="obsTable" class="tabular-obs" ng-if="getPivotOn() != 'column'">
             <div class="placeholder-text" ng-if="obsTable.rows.length == 0">
                 <p>{{'NO_DATA_MESSAGE' | translate}}</p>
             </div>
             <table ng-if="obsTable.rows.length > 0">
-                <th ng-if="isMonthAvailable()"> Month </th>
-                <th ng-repeat="header in obsTable.headers" ng-if="header.name != 'Month'">{{header.shortName || header.name}}</th>
+                <th ng-if="isMonthAvailable()"> Month</th>
+                <th ng-repeat="header in obsTable.headers" ng-if="header.name != 'Month'">{{header.shortName ||
+                    header.name}}
+                </th>
                 <tr ng-repeat="row in obsTable.rows">
                     <td ng-if="isMonthAvailable()">{{row.columns['Month'][0].valueAsString}}</td>
-                    <td ng-repeat="header in obsTable.headers" ng-if="header.name != 'Month'" ng-class="{'is-abnormal': row.columns[header.name].abnormal}">
+                    <td ng-repeat="header in obsTable.headers" ng-if="header.name != 'Month'"
+                        ng-class="{'is-abnormal': row.columns[header.name].abnormal}">
                         {{commafy(row.columns[header.name])}}
                     </td>
+                </tr>
+            </table>
+        </section>
+
+        <section bindonce="obsTable" class="tabular-obs" ng-if="getPivotOn() == 'column'">
+            <div class="placeholder-text" ng-if="obsTable.rows.length == 0">
+                <p>{{'NO_DATA_MESSAGE' | translate}}</p>
+            </div>
+            <table ng-if="obsTable.rows.length > 0">
+                <th ng-if="isMonthAvailable()"> Month</th>
+                <td ng-repeat="row in obsTable.rows">{{commafy(row.columns['Month'])}}</td>
+                <tr ng-repeat="header in obsTable.headers" ng-if="header.name != 'Month'">
+                    <th>{{header.shortName ||
+                        header.name}}
+                    </th>
+                    <td ng-repeat="row in obsTable.rows">{{commafy(row.columns[header.name])}}</td>
+
                 </tr>
             </table>
         </section>

@@ -26,6 +26,10 @@ angular.module('bahmni.common.displaycontrol.obsVsObsFlowSheet')
                 "section": $scope.section
             };
 
+            $scope.getPivotOn = function(){
+                return $scope.config.pivotOn;
+            }
+
             var getName = function(obs){
                 return (obs && obs.value && obs.value.shortName) || (obs && obs.value && obs.value.name) || obs.value;
             };
