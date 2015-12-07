@@ -34,7 +34,7 @@ angular.module('bahmni.common.displaycontrol.orders')
                             }
                         });
                         if (_.isEmpty($scope.bahmniOrders)) {
-                            $scope.noOrdersMessage = $scope.orderType;
+                            $scope.noOrdersMessage = $scope.getSectionTitle();
                         }
                         else{
                             $scope.bahmniOrders[0].isOpen = true;
