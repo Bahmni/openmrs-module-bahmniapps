@@ -1,6 +1,5 @@
-<div ng-class="{'noTable': !status.data, 'hasTable': status.data, 'dashboard-more-info': true, 'dashboard-tabular-obs-section': true}">
-<!--<div level="{{status.data}}">-->
-    <div class="rotate">
+<div class="dashboard-more-info dashboard-tabular-obs-section" ng-class="{'noTable': !status.data, 'hasTable': status.data && section.rotateInPrint}">
+    <div ng-class="{'rotate':section.rotateInPrint}">
         <h2 ng-dialog="dashboard/views/dashboardSections/flowSheetDetails.html"
             ng-dialog-class="ngdialog ngdialog-theme-default ng-dialog-all-details-page"
         ng-dialog-data='{"section": {{section}}, "patient": {{patient}} }'
@@ -8,9 +7,6 @@
             <span class="title-link">{{section.title}} </span>
             <i class="fa fa-external-link"></i>
         </h2>
-        <div class="placeholder-text" ng-if="!status.data">
-            <p>{{'NO_DATA_MESSAGE' | translate}}</p>
-        </div>
-        <div pivot-table patient-uuid="patient.uuid" config="section.dashboardParams" display-name="section.dashboardParams.label" status="status"></div>
+        <pivot-table patient-uuid="patient.uuid" config="section" display-name="section.dashboardParams.label" status="status"></pivot-table>
     </div>
 </div>

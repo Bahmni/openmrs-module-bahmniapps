@@ -35,14 +35,16 @@
 
         </div>
     </div>
-    <ul ng-if="!observation.isFormElement()">
+    <ul ng-if="!observation.isFormElement()" class="hidden-print">
         <show-observation  show-details-button="showDetailsButton" ng-if="!observation.isFormElement()" ng-repeat="member in observation.groupMembers" patient="patient"
                           observation="member" patient="patient" show-date="showDate" show-time="showTime"></show-observation>
     </ul>
-    <!--<ul ng-if="!observation.isFormElement()" class="visible-print">
+    <ul ng-if="!observation.isFormElement()" class="visible-print">
         <li ng-repeat="member in observation.groupMembers">
-            <show-observation  show-details-button="showDetailsButton" ng-if="!observation.isFormElement()" patient="patient"
-                           observation="member" patient="patient" show-date="showDate" show-time="showTime"></show-observation>
+            <ul>
+                <show-observation  show-details-button="showDetailsButton" ng-if="!observation.isFormElement()" patient="patient"
+                                   observation="member" patient="patient" show-date="showDate" show-time="showTime"></show-observation>
+            </ul>
         </li>
-    </ul>-->
+    </ul>
 </li>

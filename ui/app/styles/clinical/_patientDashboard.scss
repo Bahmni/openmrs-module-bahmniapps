@@ -487,8 +487,9 @@ table.pivot-table {
   thead th {
       font-family: OpenSans, Arial, sans-serif;
       font-weight: normal;
+      border-right: 0;
     &.row-header-group {
-      text-align: right;
+      //text-align: right;
     }
   }
   tr {
@@ -514,6 +515,7 @@ table.pivot-table {
         background: white;
         font-weight: bold;
         text-align: center;
+        border-right: none;
         .time {
           font-size: 12px;
           color: darken($lightGray, 8%);

@@ -1,6 +1,11 @@
-<section ng-if="hasData" class="block dashboard-section">
+<section ng-if="!hasData" class="dashboard-section">
+    <div class="placeholder-text">
+        <p>{{'NO_DATA_MESSAGE' | translate}}</p>
+    </div>
+</section>
+<section ng-if="hasData" class="dashboard-section">
     <h2 ng-if="displayName || diseaseName" class="section-title">{{::displayName || diseaseName}}</h2>
-    <table class="h-scroll pivot-table">
+    <table ng-class="{'h-scroll':showOnPrint, 'pivot-table':showOnPrint, 'h-scroll-print': !showOnPrint}">
         <thead>
         <tr>
             <th class="row-header-group">{{::groupBy}}</th>

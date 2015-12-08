@@ -1,6 +1,6 @@
 'use strict';
-angular.module('bahmni.common.displaycontrol.pivottable').directive('pivotTable', ['$filter','spinner','pivotTableService',
-    function ($filter,spinner,pivotTableService) {
+angular.module('bahmni.common.displaycontrol.pivottable').directive('pivotTable', ['$filter','spinner','pivotTableService','$rootScope',
+    function ($filter,spinner,pivotTableService, $rootScope) {
 
         return {
             scope: {
@@ -8,13 +8,14 @@ angular.module('bahmni.common.displaycontrol.pivottable').directive('pivotTable'
                 diseaseName: "=",
                 displayName: "=",
                 config: "=",
-                visitUuid:"="
+                visitUuid:"=",
+                status:"="
             },
             link: function (scope) {
 
-                if(!scope.config) return;
+                if(!scope.config.dashboardParams) return;
 
-                scope.groupBy = scope.config.groupBy || "visits";
+                scope.groupBy = scope.config.dashboardParams.groupBy || "visits";
                 scope.groupByEncounters = scope.groupBy === "encounters";
                 scope.groupByVisits = scope.groupBy === "visits";
                 
@@ -34,12 +35,15 @@ angular.module('bahmni.common.displaycontrol.pivottable').directive('pivotTable'
                     return scope.isLonger(value) ? value.substring(0,10)+"..." : value;
                 };
 
-                var pivotDataPromise = pivotTableService.getPivotTableFor(scope.patientUuid,scope.config, scope.visitUuid );
+                var pivotDataPromise = pivotTableService.getPivotTableFor(scope.patientUuid,scope.config.dashboardParams, scope.visitUuid );
                 spinner.forPromise(pivotDataPromise);
                 pivotDataPromise.success(function (data) {
                     scope.result = data;
                     scope.hasData = !_.isEmpty(scope.result.tabularData);
-                })
+                    scope.status = scope.status || {};
+                    scope.status.data = scope.hasData;
+                });
+                scope.showOnPrint = !$rootScope.isBeingPrinted
             },
             templateUrl: '../common/displaycontrols/pivottable/views/pivotTable.html'
         }

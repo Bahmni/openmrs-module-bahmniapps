@@ -1,10 +1,10 @@
 @charset "UTF-8";
 @import "bahmni-helper/variables";
 @page {
-    margin-left: 0.5cm;
-    margin-right: 0.5cm;
-    margin-top: 0.3cm;
-    margin-bottom: 0.3cm;
+    //margin-left: .5cm;
+    //margin-right: .5cm;
+    //margin-top: 10px;
+    //margin-bottom: 10px;
 }
 
 
@@ -13,6 +13,7 @@ body{
     font-size: 9pt;
     color: #000;
     background: #fff;
+    -webkit-print-color-adjust: exact;
 }
 body pre {
     font-family: Arial, sans-serif;
@@ -408,7 +409,7 @@ h3 {
                     .name,
                     .drug,
                     .testUnderPanel {
-                        width: 45%;
+                        width: 472px;
                     }
                     .value,
                     .dosage {
@@ -527,8 +528,10 @@ h3 {
                 display: block;
                 width: auto;
                 float: left;
+                padding-bottom: 2px;
                 .patient-name {
-                    font-size: 10pt;
+                    font-size: 11pt;
+                    text-decoration: underline;
                 }
                 .patient-gender-age {
                     font-size: 9pt;
@@ -680,6 +683,13 @@ h3 {
 .print-patient-summary{
     .dashboard-section {
         margin-bottom: 0px;
+        &.patientInformation{
+            //border: 1px #ccc solid;
+            //padding: 5px !important;
+            table{
+                border: none !important;
+            }
+        }
         .dashboard-tabular-obs-section.hasTable{
             height: 933px;
             page-break-before: always;
@@ -692,7 +702,18 @@ h3 {
                 width: 100%;
                 top: 50%;
                 left: 50%;
-                margin-left: -300px;
+                margin-left: -280px;
+                table{
+                    width: 120%;
+                    table-layout: fixed;
+                    tr{
+                        th{
+                            &:first-child{
+                                width: 140px;
+                            }
+                        }
+                    }
+                }
             }
         }
         .block, .dashboard-tabular-obs-section, #Laboratory-Monitoring, .dashboard-more-info {
@@ -756,9 +777,29 @@ h3 {
                                     ul{
                                         li{
                                             padding-left: 10px !important;
-                                            background: #fff !important;
                                             .tree-list-item{
                                                 padding: 0px 5px 3px 5px !important;
+                                                .testUnderPanel{
+                                                    //width: 64.4% !important;
+                                                    width: 463px !important;
+
+                                                }
+                                            }
+                                            &:nth-of-type(odd){
+                                                background: #fff !important;
+                                                ul{
+                                                    li{
+                                                        background: transparent !important;
+                                                    }
+                                                }
+                                            }
+                                            &:nth-of-type(even){
+                                                background: #D9D8D8 !important;
+                                                ul{
+                                                    li{
+                                                        background: transparent !important;
+                                                    }
+                                                }
                                             }
                                         }
                                     }
@@ -768,58 +809,26 @@ h3 {
                     }
                 }
             }
-            .value-text-only{
-                width: 20% !important;
-                padding: 3px 0px 0px !important
+            .value-text-only, .text-only{
+                width: auto !important;
+                padding: 3px 0px 0px !important;
+                display:inline-block;
             }
             .testUnderPanel{
-                width: 75% !important;
+                //width: 65% !important;
+                width: 484px !important;
                 padding: 3px 0px 0px !important
             }
         }
-        /*.hierarchy {
-            ul{
-                li{
-                    overflow: auto;
-                    clear: none;
-                    background: #fff;
-                    ul{
-                        overflow: hidden;
-                      li{
-                          float: left;
-                          width: 50%;
-                          &:nth-of-type(odd){
-                              background: #fff;
-                          }
-                          &:nth-of-type(even){
-                              background: #D9D8D8;
-                          }
-                          ul{
-                              li{
-                                  width: 100%;
-                                  background: #fff !important;
-                              }
-                          }
-                      }
-                    }
-                }
-            }
-            .value-text-only{
-                width: 20% !important;
-            }
-            .testUnderPanel{
-                width: 75% !important;
-            }
-        }*/
-
         table{
             border: 1px #ccc solid !important;
             border-collapse: collapse !important;
             tr{
                 border: 1px #ccc solid !important;
                 th{
-                    background: #fff !important;
+                    background: #EAEAEA !important;
                     border: 1px #ccc solid !important;
+                    vertical-align: middle;
                 }
                 td{
                     background: #fff !important;
@@ -827,6 +836,60 @@ h3 {
                 }
 
             }
+            &.h-scroll-print{
+                tr{
+                    th{
+                        font-weight: bold !important;
+                    }
+                }
+            }
+            //&.h-scroll{
+            //    border: none !important;
+            //    .time{
+            //        font-family: Arial, sans-serif !important;
+            //    }
+            //    //tr{
+            //    //    th{
+            //    //        border: none !important;
+            //    //        border-bottom: 1px #ccc solid !important;
+            //    //        font-weight: bold !important;
+            //    //        min-height: auto !important;
+            //    //        height: auto !important;
+            //    //        &:last-child{
+            //    //            border-bottom: none !important;
+            //    //        }
+            //    //        &:first-child{
+            //    //            text-align: left;
+            //    //        }
+            //    //        &.row-header-group{
+            //    //            min-height: 36px !important;
+            //    //            height: 36px !important;
+            //    //        }
+            //    //    }
+            //    //    td{
+            //    //        border-bottom: none !important;
+            //    //        border-left: none !important;
+            //    //        min-height: auto !important;
+            //    //        height: auto !important;
+            //    //        &:last-child{
+            //    //            border-right: none !important;
+            //    //        }
+            //    //    }
+            //    //}
+            //    //tbody{
+            //    //    tr{
+            //    //        border-left: none !important;
+            //    //        th{
+            //    //            border-bottom: none !important;
+            //    //        }
+            //    //        /*td{
+            //    //            &:first-child{
+            //    //                border-left: none !important;
+            //    //            }
+            //    //        }*/
+            //    //    }
+            //    //}
+            //}
         }
 
     }
