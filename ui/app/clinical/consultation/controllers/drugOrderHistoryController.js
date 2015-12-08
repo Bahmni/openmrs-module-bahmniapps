@@ -138,6 +138,12 @@ angular.module('bahmni.clinical')
                 }
             };
 
+            $scope.dateChanged = function (drugOrder) {
+                console.log(drugOrder.dateStopped);
+                if (drugOrder.dateStopped === undefined)
+                    drugOrder.dateStopped = null;
+            }
+
             $scope.undoDiscontinue = function (drugOrder) {
                 $scope.consultation.discontinuedDrugs = _.reject($scope.consultation.discontinuedDrugs, function (removableOrder) {
                     return removableOrder.uuid === drugOrder.uuid;
@@ -165,8 +171,8 @@ angular.module('bahmni.clinical')
                     var removableOrder = _.find(activeDrugOrdersList, {uuid: discontinuedDrug.uuid});
                     if(discontinuedDrug != null) {
                     removableOrder.orderReasonText = discontinuedDrug.orderReasonText;
-                    removableOrder.dateActivated=discontinuedDrug.dateStopped;
-                    removableOrder.scheduledDate = discontinuedDrug.dateStopped;
+                    removableOrder.dateActivated = DateUtil.getDateWithoutTime(discontinuedDrug.dateStopped);
+                    removableOrder.scheduledDate = DateUtil.getDateWithoutTime(discontinuedDrug.dateStopped);
 
                     if (discontinuedDrug.orderReasonConcept != null && discontinuedDrug.orderReasonConcept.name) {
                         removableOrder.orderReasonConcept = {

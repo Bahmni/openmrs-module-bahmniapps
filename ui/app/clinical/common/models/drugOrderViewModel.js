@@ -437,6 +437,7 @@ Bahmni.Clinical.DrugOrderViewModel = function (appConfig, config, proto, encount
         modifyForReverseSyncIfRequired(newDrugOrder);
         defaultQuantityUnit(newDrugOrder);
         newDrugOrder.orderReasonText = null;
+        newDrugOrder.orderReasonConcept = null;
         return newDrugOrder;
     };
 
