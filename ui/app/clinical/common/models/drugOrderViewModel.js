@@ -324,7 +324,7 @@ Bahmni.Clinical.DrugOrderViewModel = function (appConfig, config, proto, encount
         var durationUnitFromConfig = _.find(durationUnits, function(unit) {
             return unit.name === self.durationUnit;
         });
-        self.durationInDays = self.duration * (durationUnitFromConfig && durationUnitFromConfig.factor || 1);
+        self.durationInDays = self.duration ? self.duration * (durationUnitFromConfig && durationUnitFromConfig.factor || 1) : Number.NaN;
     };
 
     var inAllowedQuantityUnits = function(doseUnit){

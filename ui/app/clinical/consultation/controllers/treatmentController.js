@@ -113,6 +113,7 @@ angular.module('bahmni.clinical')
                 if($scope.treatment.frequencyType == Bahmni.Clinical.Constants.dosingTypes.variable) {
                     $scope.treatment.isUniformFrequency = false;
                 }
+                $scope.treatment.quantity = $scope.treatment.quantity ? $scope.treatment.quantity : null;
             });
 
             $scope.$watch(watchFunctionForQuantity, function () {
