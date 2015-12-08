@@ -17,7 +17,7 @@ angular.module('bahmni.registration')
             var regEncounterTypeUuid = $rootScope.regEncounterConfiguration.encounterTypes[Bahmni.Registration.Constants.registrationEncounterType];
 
             var getPatient = function () {
-                return patientService.get(patientUuid).success(function (openMRSPatient) {
+                return patientService.get(patientUuid).then(function (openMRSPatient) {
                     $scope.patient = patientMapper.map(openMRSPatient);
                     $scope.patient.name = openMRSPatient.patient.person.names[0].display;
                     $scope.patient.uuid = openMRSPatient.patient.uuid;
