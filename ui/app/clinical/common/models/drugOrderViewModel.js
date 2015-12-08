@@ -72,20 +72,16 @@ Bahmni.Clinical.DrugOrderViewModel = function (appConfig, config, proto, encount
     this.isBeingEdited = this.isBeingEdited || false;
     this.orderAttributes = [];
     this.isNonCodedDrug = this.isNonCodedDrug || false;
-    this.changedBySelection = false;
 
-    this.setAsNonCodedDrug = function () {
-        this.isNonCodedDrug = !this.isNonCodedDrug;
-        if(this.isNonCodedDrug) this.drugNonCoded = this.drugNameDisplay;
-    };
 
-    this.clearCodedDrugUuid = function () {
-        if (this.changedBySelection) {
-            this.changedBySelection = false;
-            return;
-        }
-        if(this.drug) this.drug.uuid = undefined;
-    };
+    if(!appConfig.duration || (appConfig.duration && appConfig.duration.required == undefined)) {
+        this.isDurationRequired = true;
+    }else{
+        this.isDurationRequired = appConfig.duration.required;
+    }
+
+    this.isUniformFrequency = true;
+    this.showExtraInfo = false;
 
     this.overlappingScheduledWith = function(otherDrugOrder){
 

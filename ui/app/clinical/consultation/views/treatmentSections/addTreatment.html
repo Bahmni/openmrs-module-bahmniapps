@@ -6,14 +6,14 @@
                    ng-class="{
                         active: treatment.isNonCodedDrug
                    }"
-                   ng-change="treatment.clearCodedDrugUuid()"
-                   ng-model="treatment.drugNameDisplay" on-select="populateBackingFields" autofocus
+                   ng-change="onChange()"
+                   ng-model="treatment.drugNameDisplay" on-select="onSelect" autofocus
                    ng-disabled="treatment.previousOrderUuid" ng-readonly="treatment.isBeingEdited"/>
 
             <span ng-if="!allowOnlyCodedDiagnosis">
                 <button type="button" ng-model="treatment.isNonCodedDrug" style="float: left;margin-top: 4px;margin-right: 3px;"
                     class="small-btn accept-btn" id="accept-button"
-                    ng-click="treatment.setAsNonCodedDrug()"
+                    ng-click="onAccept()"
                     ng-class="{
                         illegalValue: treatment.drugNameDisplay && !treatment.isNonCodedDrug,
                         active: treatment.isNonCodedDrug
