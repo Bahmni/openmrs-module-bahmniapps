@@ -87,7 +87,7 @@
                 <input id="quantity" class="quantity fl" type="number" min="0.1" placeholder="Qty" step="any"
                        ng-model="treatment.quantity" ng-change="treatment.setQuantityEnteredManually()" ng-required="treatment.isDurationRequired"/>
                 <select id="total-quantity-unit" class="freq-dose-units fl" ng-model="treatment.quantityUnit" ng-change="treatment.setQuantityUnitEnteredManually()"
-                        ng-options="item.name as item.name for item in treatmentConfig.doseUnits" ng-disabled="!treatment.isUniformDosingType()" ng-required="!treatment.validate()">
+                        ng-options="item.name as item.name for item in treatmentConfig.doseUnits" ng-required="!treatment.validate()">
                     <option value="">Choose Unit</option>
                 </select>
             </div>

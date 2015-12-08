@@ -105,12 +105,14 @@ angular.module('bahmni.clinical')
                 clearOtherDrugOrderActions(drugOrders);
                 drugOrder.isBeingEdited = true;
                 drugOrder.isDiscontinuedAllowed = false;
-
                 $scope.treatments.map(setIsNotBeingEdited);
                 drugOrderHistory = drugOrder;
                 $scope.treatment = drugOrder.revise();
                 markEitherVariableDrugOrUniformDrug($scope.treatment);
                 $scope.treatment.currentIndex = $scope.treatments.length + 1;
+                if($scope.treatment.frequencyType == Bahmni.Clinical.Constants.dosingTypes.variable) {
+                    $scope.treatment.isUniformFrequency = false;
+                }
             });
 
             $scope.$watch(watchFunctionForQuantity, function () {

@@ -460,6 +460,9 @@ Bahmni.Clinical.DrugOrderViewModel = function (appConfig, config, proto, encount
         editableDrugOrder.isBeingEdited = true;
         editableDrugOrder.quantityEnteredViaEdit = true;
         defaultQuantityUnit(editableDrugOrder);
+        if(editableDrugOrder.frequencyType == Bahmni.Clinical.Constants.dosingTypes.variable) {
+            editableDrugOrder.isUniformFrequency = false;
+        }
         return editableDrugOrder;
     };
 
