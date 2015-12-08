@@ -41,6 +41,57 @@ describe("TreatmentController", function () {
         });
     }));
 
+
+
+    describe("add treatment()", function(){
+        it("should save as a free text drug order on click of accept button", function(){
+            var treatment = {drugNameDisplay : "Some New Drug", drug: {name : "CodedDrug"}};
+            scope.treatment = treatment;
+            scope.onAccept();
+            expect(scope.treatment.selectedItem).toBeFalsy();
+            expect(scope.treatment.drug).toBeUndefined();
+            expect(scope.treatment.isNonCodedDrug).toBe(true);
+            expect(scope.treatment.drugNonCoded).toBe(treatment.drugNameDisplay);
+        })
+
+        it("should save as a coded-drug after the entered free text drug is edited to coded", function(){
+            var treatment = {drugNameDisplay : "Some New Drug", drug: {name : "CodedDrug"}};
+            scope.treatment = treatment;
+            treatment.changeDrug = jasmine.createSpy(treatment,'changeDrug');
+
+            scope.onSelect({
+                drug : {
+                    name:"CodedDrug",
+                    uuid:"CodedDrugUuid",
+                    dosageForm: {
+                        display: "Once"
+                    }
+                }
+            });
+
+            scope.onChange();
+            expect(treatment.changeDrug).toHaveBeenCalledWith({
+                name:"CodedDrug",
+                form:"Once",
+                uuid:"CodedDrugUuid"
+            });
+
+            expect(scope.treatment.selectedItem).toBeUndefined();
+        })
+
+        it("should remove the added coded-drug on changing the drug name", function () {
+            var treatment = {drugNameDisplay : "Some New Drug", drug: {name : "CodedDrug"}};
+            scope.treatment=treatment;
+
+            scope.onChange();
+
+            expect(scope.treatment).toEqual({
+                drugNameDisplay : "Some New Drug"
+            });
+        })
+    });
+
+
     describe("add()", function () {
         it("adds treatment object to list of treatments", function () {
             var treatment = {drug: {name: true}};
