@@ -44,6 +44,30 @@ describe("EncounterTransactionMapper", function () {
             expect(encounterData.locationUuid).toBe("logged-in-location-uuid");
 
         });
+
+        it('should update encounterData with default visit type if visit uuid is not set and not in retrospective mode either', function(){
+            var obs = {uuid: "obsUuid"};
+            var defaultVisitType = "OPD";
+            var consulation = { observations: obs, providers: [{uuid: "provider-uuid"}], locationUuid: "original-location-uuid" };
+            var patient = { uuid:"patientUuid"};
+
+            var encounterData = mapper.map(consulation, patient, "logged-in-location-uuid", {}, null, defaultVisitType, false, false);
+
+            expect(encounterData.visitType).toBe("OPD");
+
+        });
+
+        it('should update encounterData with default retrospective visit type if it is in retrospective mode either', function(){
+            var obs = {uuid: "obsUuid"};
+            var defaultRetrospectiveVisitType = "IPD";
+            var consulation = { observations: obs, providers: [{uuid: "provider-uuid"}], locationUuid: "original-location-uuid" };
+            var patient = { uuid:"patientUuid"};
+
+            var encounterData = mapper.map(consulation, patient, "logged-in-location-uuid", {encounterDate : "2015-04-01"}, defaultRetrospectiveVisitType, null, false, false);
+
+            expect(encounterData.visitType).toBe("IPD");
+
+        });
     });
 });
 

@@ -32,6 +32,9 @@ Bahmni.Clinical.EncounterTransactionMapper = function () {
         }else if(!encounterData.visitUuid){
             encounterData.visitType = defaultVisitType;
         }
+        else if(!encounterData.visitType){
+            encounterData.visitType = defaultVisitType;
+        }
 
         if (consultation.newlyAddedDiagnoses && consultation.newlyAddedDiagnoses.length > 0) {
             encounterData.bahmniDiagnoses = consultation.newlyAddedDiagnoses.map(function (diagnosis) {
