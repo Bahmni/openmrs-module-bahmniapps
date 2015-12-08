@@ -298,15 +298,34 @@ angular.module('bahmni.clinical')
             $scope.getDataResults = function (data) {
                 return data.map(constructDrugNameDisplay);
             };
+            $scope.onSelect =  function(item){
+                $scope.treatment.selectedItem = item;
+            };
+            $scope.onAccept = function(){
+                $scope.treatment.acceptedItem=$scope.treatment.drugNameDisplay;
+                $scope.onChange();
+            };
 
-            $scope.populateBackingFields = function (item) {
-                $scope.treatment.changedBySelection = true;
-                $scope.treatment.isNonCodedDrug = false;
-                $scope.treatment.changeDrug({
-                    name: item.drug.name,
-                    form: item.drug.dosageForm.display,
-                    uuid: item.drug.uuid
-                });
+            $scope.onChange = function (){
+                if($scope.treatment.selectedItem){
+                    $scope.treatment.isNonCodedDrug = false;
+                    delete  $scope.treatment.drugNonCoded;
+                    $scope.treatment.changeDrug({
+                        name: $scope.treatment.selectedItem.drug.name,
+                        form: $scope.treatment.selectedItem.drug.dosageForm.display,
+                        uuid: $scope.treatment.selectedItem.drug.uuid
+                    });
+                    delete $scope.treatment.selectedItem;
+                    return;
+                }
+                if($scope.treatment.acceptedItem){
+                    $scope.treatment.isNonCodedDrug = true;
+                    $scope.treatment.drugNonCoded = $scope.treatment.acceptedItem;
+                    delete $scope.treatment.drug;
+                    delete $scope.treatment.acceptedItem;
+                    return;
+                }
+                delete $scope.treatment.drug;
             };
 
             $scope.clearForm = function () {
