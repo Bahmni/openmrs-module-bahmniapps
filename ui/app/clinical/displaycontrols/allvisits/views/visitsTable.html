@@ -1,10 +1,10 @@
 <section class="block hierarchy visit-dashboard">
     <ul class="form-field" class="ng-isolate-scope" id="visitDisplayTable">
-        <li ng-if="showFormDataGroupedByVisit || showObservationData" ng-repeat="visit in ::visits | limitTo: params.maximumNoOfVisits" class="ng-scope eachVisit">
+        <li ng-repeat="visit in ::visits | limitTo: params.maximumNoOfVisits" class="ng-scope eachVisit">
             <span class="tree-list-item row-click">
                 <i class="fa fa-caret-right" ng-hide="visit.isOpen" ng-click="toggle(visit)"></i>
                 <i class="fa fa-caret-down" ng-show="visit.isOpen" ng-click="toggle(visit)"></i>
-                <a class="visit" ng-click="openVisit(visit)">
+                <a class="ngdialog-close visit" ng-click="openVisit(visit)">
                     <span>{{::visit.startDatetime | bahmniDate}}</span>
                     <span ng-if="::!visit.isActive()">- {{::visit.stopDatetime | bahmniDate }}</span>
                     <i class="fa fa-star current-visit-icon" id="currentVisitIcon" ng-if="::visit.isActive()"
@@ -12,43 +12,14 @@
                 </a>
                 <span class="visitType">{{::visit.visitType.name}}</span>
             </span>
-            <ul ng-show="visit.isOpen" class="formName-Dashboard">
-                <li ng-repeat="data in visit.formData">
-                    <span>{{getDisplayName(data)}}</span>
-                    <span class="fr">
-                         <span class="has-link"
-                                   ng-dialog="dashboard/views/dashboardSections/editObservationForm.html"
-                                   ng-dialog-class="ngdialog-theme-default ng-dialog-all-details-page"
-                                   ng-dialog-data="{{getEditObsData(data)}}">
-                               <i class="fa fa-pencil"></i>
-                        </span>
-                        {{data.obsDatetime | bahmniDateTime}}
-                    </span>
+            <ul ng-show="visit.isOpen" class="ng-isolate-scope">
+                <li ng-repeat="encounter in visit.encounters" class="ng-scope"><span>{{encounter.encounterDatetime | bahmniDateTime}}</span>
+                    <span ng-repeat="order in encounter.orders">{{order.type}}{{$last ? '' : ', '}}</span>
+                    <ul class="ng-isolate-scope">
+                        <li ng-repeat="ob in encounter.obs" class="ng-scope"><span>{{ob.concept.display}}</span></li>
+                    </ul>
                 </li>
             </ul>
-            <div ng-show="visit.isOpen">
-                <div ng-if="showObservationData && visit.cacheOpenedHtml">
-                    <bahmni-observation visit-uuid="{{visit.uuid}}" patient="patient" config="config"></bahmni-observation>
-                </div>
-            </div>
-        </li>
-
-        <li ng-if="!showFormDataGroupedByVisit && !showObservationData">
-            <div>
-                <ul>
-                    <li ng-repeat="data in formData">
-                        <span>{{data.concept.display}}</span>
-                        <span class="fr">{{data.obsDatetime | bahmniDateTime}}
-                            <span class="has-link fl"
-                                      ng-dialog="dashboard/views/dashboardSections/editObservationForm.html"
-                                      ng-dialog-class="ngdialog-theme-default ng-dialog-all-details-page"
-                                      ng-dialog-data="{{getEditObsData(data)}}">
-                               <i class="fa fa-pencil"></i>
-                            </span>
-                        </span>
-                    </li>
-                </ul>
-            </div>
         </li>
     </ul>
 </section>

@@ -151,7 +151,6 @@ Bahmni.Common = Bahmni.Common || {};
         encounterTypeUrl: RESTWS_V1+"/encountertype",
         defaultExtensionName: "default",
         bahmniBacteriologyResultsUrl: BACTERIOLOGY + "/specimen",
-        formDataUrl: RESTWS_V1 + "/obs",
         bedFromVisit: RESTWS_V1+ "/beds",
         patientAttributeDateFieldFormat: "org.openmrs.util.AttributableDate",
         platform:"user.platform",
