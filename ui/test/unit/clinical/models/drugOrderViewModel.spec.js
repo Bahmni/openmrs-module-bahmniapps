@@ -318,14 +318,14 @@ describe("drugOrderViewModel", function () {
             expect(treatment.quantity).toBe(0);
         });
 
-        it("should result in 0 for uniform dose when duration is not available", function () {
+        it("should result in NaN for uniform dose when duration is not available", function () {
             var treatment = sampleTreatmentWithUniformDosing(3, "Capsule", "Twice a Day", null, "Day(s)");
             treatment.calculateQuantityAndUnit();
-            expect(treatment.quantity).toBe(0);
+            expect(treatment.quantity).toBeNaN();
 
             treatment = sampleTreatmentWithVariableDosing(1, 0, 1, "Capsule", null, "Day(s)");
             treatment.calculateQuantityAndUnit();
-            expect(treatment.quantity).toBe(0);
+            expect(treatment.quantity).toBeNaN();
         });
 
         it("should result in 0 for uniform dose when frequency is not available", function () {

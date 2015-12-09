@@ -161,7 +161,7 @@ describe('VisitController', function () {
     describe('initialization', function () {
         it('should set the patient from patient data', function () {
             createController();
-            getPatientPromise.callSuccessCallBack(patient);
+            getPatientPromise.callThenCallBack(patient);
             getEncounterPromise.callSuccessCallBack(sampleEncounter);
 
             expect(scope.patient).toBe(patient);
@@ -172,7 +172,7 @@ describe('VisitController', function () {
     describe("submit", function () {
         beforeEach(function () {
             createController();
-            getPatientPromise.callSuccessCallBack(patient);
+            getPatientPromise.callThenCallBack(patient);
             getEncounterPromise.callSuccessCallBack(sampleEncounter);
 
             encounterService.create.and.callFake(stubOnePromise);
