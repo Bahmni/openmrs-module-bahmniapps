@@ -354,10 +354,6 @@ button.back-btn {
         text-align: left;
         height: 32px !important;
     }
-    button:focus, a:focus, .btn:focus {
-      border: 2px solid $clinicalFormFocus;
-      outline:0;
-    }
 }
 .illegalValue .multi-select-button-group { width: auto; }
 

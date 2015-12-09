@@ -666,26 +666,23 @@ table.pivot-table {
 }
 
 table.treatments-details-table{
-    font-size: 12px;
-    td{
-        border: none;
-        width: 12%;
-      padding: 10px 5px;
-        &.drug{
-          font-size: 14px !important;
-          padding: 10px;
-        }
-        &.toggle-btn{
-          width: 5%;
-        }
-    }
-    tr{
-      border-bottom: 1px solid #ddd;
-      .notes-open,.test-notes-parent {
-        border-bottom: none !important;
-        td {
-          background: #eff8ff;
-        }
+  font-size: 12px;
+      td{
+          border: none;
+          width: 18%;
+        padding: 10px 5px;
+          &.drug{
+            font-size: 14px !important;
+            padding: 10px;
+          }
+          &.toggle-btn{
+            width: 10%;
+          }
       }
+    tr.test-notes-parent{
+      border-bottom: 1px solid #ddd;
     }
+  tr.notes{
+    background: #EFF8FF;
+  }
 }
