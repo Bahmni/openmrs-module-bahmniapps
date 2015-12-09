@@ -9,14 +9,14 @@
 
 
 body{
-    font-family: Arial, sans-serif;
+    font-family: Arial, sans-serif !important;
     font-size: 9pt;
     color: #000;
     background: #fff;
     -webkit-print-color-adjust: exact;
 }
 body pre {
-    font-family: Arial, sans-serif;
+    font-family: Arial, sans-serif !important;
     font-size: 9pt;
     color: #000;
     white-space: pre-wrap;
@@ -176,6 +176,7 @@ h3 {
     .print-header {
         text-align: center;
         color: #000;
+        margin-bottom: 10px;
         .logo {
             width: 35px;
             vertical-align: middle;
@@ -190,13 +191,14 @@ h3 {
         }
         h2 {
             font-size: 10pt;
-            margin-bottom: 5px;
+            margin-top: 5px;
+            margin-bottom: 7px;
             color: #000;
-            text-transform: uppercase;
+            text-transform: capitalize;
             padding: 0;
             font-family: Arial, sans-serif;
-            text-decoration: underline;
-            font-weight: bold;
+            text-decoration: none;
+            font-weight: normal;
         }
     }
     .hierarchy ul li {
