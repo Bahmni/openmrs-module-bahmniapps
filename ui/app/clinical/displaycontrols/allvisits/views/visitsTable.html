@@ -14,7 +14,7 @@
             </span>
             <ul ng-show="visit.isOpen" class="formName-Dashboard">
                 <li ng-repeat="data in visit.formData">
-                    <span>{{data.concept.display}}</span>
+                    <span>{{getDisplayName(data)}}</span>
                     <span class="fr">
                          <span class="has-link"
                                    ng-dialog="dashboard/views/dashboardSections/editObservationForm.html"

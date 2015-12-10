@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('bahmni.clinical')
-    .directive('visitsTable', ['patientVisitHistoryService', 'conceptSetService', 'spinner', '$state', '$q', '$bahmniCookieStore', '$rootScope', 'clinicalAppConfigService', 'messagingService', 'retrospectiveEntryService', 'visitFormService',
-        function (patientVisitHistoryService, conceptSetService, spinner, $state, $q, $bahmniCookieStore, $rootScope, clinicalAppConfigService, messagingService, retrospectiveEntryService, visitFormService) {
+    .directive('visitsTable', ['patientVisitHistoryService', 'conceptSetService', 'spinner', '$state', '$q', '$bahmniCookieStore', '$rootScope', 'clinicalAppConfigService', 'messagingService', 'retrospectiveEntryService', 'visitFormService','$http',
+        function (patientVisitHistoryService, conceptSetService, spinner, $state, $q, $bahmniCookieStore, $rootScope, clinicalAppConfigService, messagingService, retrospectiveEntryService, visitFormService,$http) {
             var controller = function ($scope) {
                 $scope.openVisit = function (visit) {
                     if ($scope.$parent.closeThisDialog) {
@@ -52,6 +52,19 @@ angular.module('bahmni.clinical')
                         conceptSetGroupName: "observations",
                         encounterUuid: encounter.uuid
                     });
+                };
+
+                $scope.getDisplayName = function(data){
+                    var concept = data.concept;
+                    var displayName = data.concept.displayString;
+                    if(concept.names.length === 1 && concept.names[0].name != ""){
+                        displayName = concept.names[0].name;
+                    }
+                    else if(concept.names.length === 2){
+                        displayName = _.find(concept.names, {conceptNameType: "SHORT"}).name;
+                    }
+                    return displayName ;
+
                 };
 
                 $scope.getProviderDisplayName = function (encounter) {
@@ -128,7 +141,8 @@ angular.module('bahmni.clinical')
                 $scope.getEditObsData = function (observation) {
                     return {
                         observation: {encounterUuid: observation.encounterUuid},
-                        conceptSetName: observation.concept.display
+                        conceptSetName: observation.concept.displayString,
+                        conceptDisplayName: $scope.getDisplayName(observation)
                     }
                 }
             }
