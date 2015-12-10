@@ -119,10 +119,6 @@ angular.module('bahmni.adt')
                         $scope.dispositionActions = getDispositionActions(response.data.results[0].answers);
                         if ($scope.visitSummary) {
                             $scope.currentVisitType = $scope.visitSummary.visitType;
-                            var encounterTypeUuid = Bahmni.ADT.DispositionDisplayUtil.getEncounterToDisplay(encounterConfig, $scope.visitSummary);
-                            if (encounterTypeUuid) {
-                                $scope.dispositionAction = getAdtActionForEncounterType(encounterTypeUuid);
-                            }
                         }
                     }
                 });
