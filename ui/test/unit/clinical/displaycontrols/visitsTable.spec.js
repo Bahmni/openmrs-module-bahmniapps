@@ -81,56 +81,6 @@ describe("Visits Table display control", function () {
     });
 
 
-    it("should fetch short name if available with concept", function () {
-
-        var data ={
-            concept: {
-                names: [
-                    {name: "vitalsShort",conceptNameType :'SHORT'},
-                    {name: "vitalsFull", conceptNameType : 'FULLY_SPECIFIED'}
-                ],
-                displayString: "vitals"
-            }
-        };
-
-        var compiledElementScope = beforeEachExecute();
-
-        expect(compiledElementScope.getDisplayName(data)).toBe("vitalsShort");
-
-    });
-
-
-    it("should fetch locale specific fully specified name if short name is not available", function () {
-
-        var data ={
-            concept: {
-                names: [
-                    {name: "vitalsFull", conceptNameType : 'FULLY_SPECIFIED'}
-                ],
-                displayString: "vitals"
-            }
-        };
-        var compiledElementScope = beforeEachExecute();
-
-        expect(compiledElementScope.getDisplayName(data)).toBe("vitalsFull");
-
-    });
-
-    it("should fully specified name of english if locale specific short name and full name are not available", function () {
-
-        var data ={
-            concept: {
-                names: [
-                    {name: "", conceptNameType : 'FULLY_SPECIFIED'}
-                ],
-                displayString: "vitals"
-            }
-        };
-        var compiledElementScope = beforeEachExecute();
-
-        expect(compiledElementScope.getDisplayName(data)).toBe("vitals");
-
-    });
     var allObsTemplateData = {"data": {"results": [{"display":"Baseline Template"},{"display":"Medication log Template"},{"display":"Followup Template"},{"display":"Outcome End of Treatment Template"}]}};
     var formDataObj = {"data": {results: [
         {
