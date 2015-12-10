@@ -681,12 +681,17 @@ table.treatments-details-table{
         }
     }
     tr{
-      border-bottom: 1px solid #ddd;
-      .notes-open,.test-notes-parent {
+      &.test-notes-parent {
+        border-bottom: 1px solid #ddd;
+      }
+      &.notes-open{
         border-bottom: none !important;
         td {
           background: #eff8ff;
         }
+      }
+      &.notes{
+        border-bottom: 1px solid #ddd;
       }
     }
 }
