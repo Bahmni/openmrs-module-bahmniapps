@@ -23,7 +23,6 @@ describe("Visits Table display control", function () {
         $compile = _$compile_;
         scope.patientUuid = '123';
         scope.params = {};
-        scope.showObservationData = true;
         mockBackend = $httpBackend;
         mockBackend.expectGET("displaycontrols/allvisits/views/visitsTable.html").respond("<div></div>");
     }));
@@ -62,8 +61,7 @@ describe("Visits Table display control", function () {
         mockConceptSetService(allObsTemplateData);
         mockVisitFormService(formDataObj);
         mockPatientVisitHistoryService({});
-
-        var simpleHtml = '<visits-table params="params" patient-uuid="patientUuid" show-observation-data="showAllObservationsData"></visits-table>';
+        var simpleHtml = '<visits-table params="params" patient-uuid="patientUuid" ></visits-table>';
         var element = $compile(simpleHtml)(scope);
         scope.$digest();
         mockBackend.flush();

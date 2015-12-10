@@ -1,12 +1,8 @@
 'use strict';
 
 angular.module('bahmni.clinical')
-    .directive('visitsTable', ['patientVisitHistoryService', 'spinner', '$state', function (patientVisitHistoryService, spinner, $state) {
+    .directive('visitsTable', ['patientVisitHistoryService', 'spinner', '$state', '$q', function (patientVisitHistoryService, spinner, $state, $q) {
         var controller = function ($scope) {
-            spinner.forPromise(patientVisitHistoryService.getVisitHistory($scope.patientUuid).then(function (visitHistory) {
-                $scope.visits = visitHistory.visits;
-            }));
-
             $scope.openVisit = function(visit) {
                 if($scope.$parent.closeThisDialog){
                     $scope.$parent.closeThisDialog("closing modal");
@@ -17,6 +13,21 @@ angular.module('bahmni.clinical')
             $scope.hasVisits = function () {
                 return $scope.visits && $scope.visits.length > 0;
             };
+
+            var getVisits = function () {
+                return patientVisitHistoryService.getVisitHistory($scope.patientUuid);
+            };
+
+            var init = function () {
+                return $q.all([getVisits()]).then(function (results) {
+                    $scope.visits = results[0].visits;
+                    $scope.patient = {uuid: $scope.patientUuid};
+                });
+            };
+
+
+            spinner.forPromise(init());
+
             $scope.params = angular.extend(
                 {
                     maximumNoOfVisits: 4,
