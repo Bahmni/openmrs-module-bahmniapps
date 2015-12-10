@@ -29,6 +29,11 @@ angular.module('admin', ['httpErrorInterceptor', 'bahmni.admin', 'bahmni.common.
             templateUrl: 'views/csvexport.html',
             controller: 'CSVExportController'
 
+        })
+        .state('admin.formBuilder',
+        {   url: '/formBuilder',
+            templateUrl: 'views/formBuilder.html',
+            controller: ''
         });
     $httpProvider.defaults.headers.common['Disable-WWW-Authenticate'] = true;
     // $bahmniTranslateProvider.init({app: 'admin', shouldMerge: true});
