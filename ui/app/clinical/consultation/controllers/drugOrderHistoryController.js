@@ -132,17 +132,11 @@ angular.module('bahmni.clinical')
                 if (drugOrder.isDiscontinuedAllowed) {
                     drugOrder.isMarkedForDiscontinue = true;
                     drugOrder.isEditAllowed = false;
-                    drugOrder.dateStopped = DateUtil.getDateWithoutTime(DateUtil.now());
+                    drugOrder.dateStopped = DateUtil.now();
                     $scope.consultation.discontinuedDrugs.push(drugOrder);
                     $scope.minDateStopped = DateUtil.getDateWithoutTime(drugOrder.effectiveStartDate<DateUtil.now()?drugOrder.effectiveStartDate:DateUtil.now());
                 }
             };
-
-            $scope.dateChanged = function (drugOrder) {
-                console.log(drugOrder.dateStopped);
-                if (drugOrder.dateStopped === undefined)
-                    drugOrder.dateStopped = null;
-            }
 
             $scope.undoDiscontinue = function (drugOrder) {
                 $scope.consultation.discontinuedDrugs = _.reject($scope.consultation.discontinuedDrugs, function (removableOrder) {
@@ -169,17 +163,17 @@ angular.module('bahmni.clinical')
             var saveTreatment = function () {
                 $scope.consultation.discontinuedDrugs && $scope.consultation.discontinuedDrugs.forEach(function (discontinuedDrug) {
                     var removableOrder = _.find(activeDrugOrdersList, {uuid: discontinuedDrug.uuid});
-                    if(discontinuedDrug != null) {
-                    removableOrder.orderReasonText = discontinuedDrug.orderReasonText;
-                    removableOrder.dateActivated = DateUtil.getDateWithoutTime(discontinuedDrug.dateStopped);
-                    removableOrder.scheduledDate = DateUtil.getDateWithoutTime(discontinuedDrug.dateStopped);
+                    if (discontinuedDrug != null) {
+                        removableOrder.orderReasonText = discontinuedDrug.orderReasonText;
+                        removableOrder.dateActivated = discontinuedDrug.dateStopped;
+                        removableOrder.scheduledDate = discontinuedDrug.dateStopped;
 
-                    if (discontinuedDrug.orderReasonConcept != null && discontinuedDrug.orderReasonConcept.name) {
-                        removableOrder.orderReasonConcept = {
-                            name: discontinuedDrug.orderReasonConcept.name.name,
-                            uuid: discontinuedDrug.orderReasonConcept.uuid
-                        };
-                    }
+                        if (discontinuedDrug.orderReasonConcept != null && discontinuedDrug.orderReasonConcept.name) {
+                            removableOrder.orderReasonConcept = {
+                                name: discontinuedDrug.orderReasonConcept.name.name,
+                                uuid: discontinuedDrug.orderReasonConcept.uuid
+                            };
+                        }
                     }
                     if (removableOrder) {
                         removeOrder(removableOrder);
