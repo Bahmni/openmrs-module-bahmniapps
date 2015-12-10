@@ -12,7 +12,7 @@ angular.module('bahmni.common.appFramework')
             return $http.get(url, {withCredentials: true});
         };
 
-        var loadTemplate = function (appDescriptor) {
+        var loadTemplate = function (appDescriptor) {S
             var deferrable = $q.defer();
             loadConfig(baseUrl + appDescriptor.contextPath + "/appTemplate.json").then(
                 function (result) {
