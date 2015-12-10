@@ -73,6 +73,11 @@ angular.module('bahmni.common.conceptSet')
             scope.handleUpdate = function() {
                 scope.$root.$broadcast("event:observationUpdated-"+scope.conceptSetName, scope.observation.concept.name);
             }
+
+            scope.constructSearchResult = function(concept, searchString) {
+                var matchingName = concept.name.name.search(new RegExp(searchString, "i")) === -1 ? _.find(_.map(concept.names, 'name'), function(name){ return name.search(new RegExp(searchString, "i")) !== -1 }) : null;
+                return matchingName ? matchingName + " => " + concept.name.name : concept.name.name;
+            }
         };
 
         var compile = function (element) {
