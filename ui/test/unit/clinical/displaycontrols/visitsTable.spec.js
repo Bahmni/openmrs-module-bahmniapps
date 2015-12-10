@@ -58,6 +58,21 @@ describe("Visits Table display control", function () {
         });
     };
 
+    var beforeEachExecute = function(){
+        mockConceptSetService(allObsTemplateData);
+        mockVisitFormService(formDataObj);
+        mockPatientVisitHistoryService({});
+
+        var simpleHtml = '<visits-table params="params" patient-uuid="patientUuid" show-observation-data="showAllObservationsData"></visits-table>';
+        var element = $compile(simpleHtml)(scope);
+        scope.$digest();
+        mockBackend.flush();
+        var compiledElementScope = element.isolateScope();
+        scope.$digest();
+
+        return compiledElementScope;
+    };
+
 
     it("should show visit tables", function () {
         element = angular.element('<visits-table></visits-table>');
@@ -73,27 +88,51 @@ describe("Visits Table display control", function () {
         var data ={
             concept: {
                 names: [
-                    {display: "vitalsShort",conceptNameType :'SHORT'},
-                    {display: "vitalsFull"}
+                    {name: "vitalsShort",conceptNameType :'SHORT'},
+                    {name: "vitalsFull", conceptNameType : 'FULLY_SPECIFIED'}
                 ],
-                display: "vitals"
+                displayString: "vitals"
             }
         };
-        mockConceptSetService(allObsTemplateData);
-        mockVisitFormService(formDataObj);
-        mockPatientVisitHistoryService({});
 
-        var simpleHtml = '<visits-table params="params" patient-uuid="patientUuid" show-observation-data="showAllObservationsData"></visits-table>';
-        var element = $compile(simpleHtml)(scope);
-        scope.$digest();
-        mockBackend.flush();
-        var compiledElementScope = element.isolateScope();
-        scope.$digest();
+        var compiledElementScope = beforeEachExecute();
 
-       // expect(compiledElementScope.getDisplayName(data)).toBe("vitalsShort");
+        expect(compiledElementScope.getDisplayName(data)).toBe("vitalsShort");
 
     });
 
+
+    it("should fetch locale specific fully specified name if short name is not available", function () {
+
+        var data ={
+            concept: {
+                names: [
+                    {name: "vitalsFull", conceptNameType : 'FULLY_SPECIFIED'}
+                ],
+                displayString: "vitals"
+            }
+        };
+        var compiledElementScope = beforeEachExecute();
+
+        expect(compiledElementScope.getDisplayName(data)).toBe("vitalsFull");
+
+    });
+
+    it("should fully specified name of english if locale specific short name and full name are not available", function () {
+
+        var data ={
+            concept: {
+                names: [
+                    {name: "", conceptNameType : 'FULLY_SPECIFIED'}
+                ],
+                displayString: "vitals"
+            }
+        };
+        var compiledElementScope = beforeEachExecute();
+
+        expect(compiledElementScope.getDisplayName(data)).toBe("vitals");
+
+    });
     var allObsTemplateData = {"data": {"results": [{"display":"Baseline Template"},{"display":"Medication log Template"},{"display":"Followup Template"},{"display":"Outcome End of Treatment Template"}]}};
     var formDataObj = {"data": {results: [
         {
