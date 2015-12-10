@@ -47,7 +47,8 @@ angular.module('bahmni.common.obs')
             restrict: 'E',
             scope: {
                 observation: "=",
-                conceptSetName: "@"
+                conceptSetName: "@",
+                conceptDisplayName:"@"
             },
             controller: controller,
             template: '<ng-include src="\'../common/obs/views/editObservation.html\'" />'
