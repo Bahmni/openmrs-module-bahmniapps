@@ -38,7 +38,7 @@ angular.module('bahmni.common.displaycontrol.bacteriologyresults')
                 };
 
                 $scope.editBacteriologySample = function(specimen){
-                    var promise = consultationInitialization($scope.patient.uuid, null, null).then(function(consultationContext) {
+                    consultationInitialization($scope.patient.uuid, null, null).then(function(consultationContext) {
                         $scope.consultation = consultationContext;
                         $scope.consultation.newlyAddedSpecimens = [];
 
@@ -53,8 +53,7 @@ angular.module('bahmni.common.displaycontrol.bacteriologyresults')
                                 bacteriologyConceptSet: $scope.bacteriologyTabData
                             })
                         })
-                    });
-                    spinner.forPromise(promise);
+                    })
                 };
 
                 $scope.saveBacteriologySample = function(specimen){
