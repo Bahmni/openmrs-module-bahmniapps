@@ -48,13 +48,16 @@ describe("SpecimenMapper", function () {
                 specimenSource: "blood",
                 specimenCollectionDate: "30-11-2015",
                 sample: {additionalAttributes: []},
-                report: {results: []}
+                report: {results: []},
+                voided: true
             };
 
             var specimen = specimenMapper.mapSpecimenToObservation(specimenData);
             expect(specimen.specimenId).toBe(undefined);
             expect(specimen.specimenSource).toBe(undefined);
             expect(specimen.specimenCollectionDate).toBe(undefined);
+            expect(specimen.voided).toBeTruthy();
+
         });
     });
 
