@@ -695,6 +695,9 @@ h3 {
         .dashboard-tabular-obs-section.hasTable{
             height: 933px;
             page-break-before: always;
+            &:last-child{
+                //page-break-before: avoid;
+            }
             position: relative;
             .rotate{
                 transform: rotate(-90deg);
