@@ -45,6 +45,11 @@ section.form-field-inline{
   @media (max-width : 768px){
     margin-bottom: 0;
   }
+  .mylegend{
+    &.registraion_Basic_info{
+      width: auto;
+    }
+  }
   article{
     &.form-field{
       .field-attribute{
@@ -92,31 +97,6 @@ section.form-field-inline{
   }
   &.registraion_Basic_info{
     width: auto;
-  }
-}
-.registraion_legend{
-  margin: 15px 0 15px 25px;
-  width:auto;
-  position: relative;
-  @media (max-width : 768px){
-    margin: 20px 0;
-    float: left;
-    width: 100%;
-  }
-  &:before{
-    content: "";
-    border-top:1px #ccc solid;
-    position: absolute;
-    top: 14px;
-    width: 96%;
-  }
-  span.mylegend{
-    display: inline-block;
-    width: auto;
-    margin-bottom: 0;
-    padding: 5px 6px;
-    margin-left: 25px;
-    position: relative;
   }
 }
 

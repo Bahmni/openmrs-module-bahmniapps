@@ -36,7 +36,7 @@ $total-width: 100%;
      input[type="text"],input[type="password"]{
         float:left;
         width:12.5em;
-        padding: 5px 10px;
+        padding: 2px 10px;
     }
     input[type="number"]{
         width:8em;
@@ -518,3 +518,5 @@ body{
         border: 1px solid lighten($bahmniPrimaryColor, 5%)
     }
 }
+
+
