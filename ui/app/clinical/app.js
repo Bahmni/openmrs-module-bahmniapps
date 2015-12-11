@@ -60,7 +60,7 @@ angular.module('consultation')
                 }
             })
             .state('patient', {
-                url: '/:configName/patient/:patientUuid?encounterUuid,programUuid',
+                url: '/:configName/patient/:patientUuid?encounterUuid',
                 abstract: true,
                 data: {
                     backLinks: [patientSearchBackLink]
@@ -119,7 +119,7 @@ angular.module('consultation')
                 }
             })
             .state('patient.dashboard.show', {
-                url: '/dashboard',
+                url: '/dashboard?programUuid,dateEnrolled,dateCompleted',
                 params: {
                     dashboardCachebuster: null
                 },

@@ -21,7 +21,7 @@ angular.module('bahmni.common.domain')
                 content: {
                     patient: patientUuid,
                     program: programUuid,
-                    dateEnrolled: dateEnrolled
+                    dateEnrolled: moment(dateEnrolled).format()
                 },
                 headers: {"Content-Type": "application/json"}
             };
@@ -29,7 +29,7 @@ angular.module('bahmni.common.domain')
               req.content.states = [
                   {
                       state:stateUuid,
-                      startDate:dateEnrolled
+                      startDate:moment(dateEnrolled).format()
                   }
               ]
             }
@@ -56,7 +56,8 @@ angular.module('bahmni.common.domain')
                 if (patientPrograms) {
                     var filteredPrograms = filterRetiredPrograms(patientPrograms);
                     _.forEach(filteredPrograms, function (program) {
-                        program.dateEnrolled = Bahmni.Common.Util.DateUtil.parseServerDateToDate(program.dateEnrolled)
+                        program.dateEnrolled = Bahmni.Common.Util.DateUtil.parseServerDateToDate(program.dateEnrolled);
+                        program.dateCompleted = Bahmni.Common.Util.DateUtil.parseServerDateToDate(program.dateCompleted);
                         program.program.allWorkflows = filterRetiredWorkflowsAndStates(program.program.allWorkflows);
                         if (program.dateCompleted) {
                             endedPrograms.push(program);
@@ -124,7 +125,7 @@ angular.module('bahmni.common.domain')
             var req = {
                 url: Bahmni.Common.Constants.programEnrollPatientUrl + "/" + patientProgramUuid,
                 content: {
-                    dateCompleted: asOfDate,
+                    dateCompleted: moment(asOfDate).format(),
                     outcome: outcomeUuid
                 },
                 headers: {"Content-Type": "application/json"}

@@ -3,7 +3,7 @@
 angular.module('bahmni.common.domain')
     .service('observationsService', ['$http', function ($http) {
 
-        this.fetch = function (patientUuid, conceptNames, scope, numberOfVisits, visitUuid, obsIgnoreList, filterObsWithOrders) {
+        this.fetch = function (patientUuid, conceptNames, scope, numberOfVisits, visitUuid, obsIgnoreList, filterObsWithOrders, startDate, endDate) {
             var params = {concept: conceptNames};
             if (obsIgnoreList) {
                 params.obsIgnoreList = obsIgnoreList
@@ -20,6 +20,8 @@ angular.module('bahmni.common.domain')
                 params.patientUuid = patientUuid;
                 params.numberOfVisits = numberOfVisits;
                 params.scope = scope;
+                params.startDate = Bahmni.Common.Util.DateUtil.parseLongDateToServerFormat(startDate);
+                params.endDate = Bahmni.Common.Util.DateUtil.parseLongDateToServerFormat(endDate);
             }
             return $http.get(Bahmni.Common.Constants.observationsUrl, {
                 params: params,
