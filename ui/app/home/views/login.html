@@ -46,7 +46,7 @@
                     </label>
                 </div>
                 <div class="field-value">
-                    <select id="location" ng-model="loginInfo.currentLocation" ng-options="item as item.display for item in locations">
+                    <select id="location" ng-model="loginInfo.currentLocation" ng-options="item as item.display for item in locations" required>
                         <option value="">{{'LOGIN_LABEL_SELECT_LOCATION_KEY' | translate}}</option>
                     </select>
                 </div>
