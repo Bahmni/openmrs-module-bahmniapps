@@ -76,7 +76,7 @@
                                         <article class="form-field">
                                             <div class="field-value">
                                                 <input id="date-stopped"  type="date" date-converter min="{{::minDateStopped}}" max="{{::scheduledDate}}" ng-model="drugOrder.dateStopped"
-                                                       required="required" ng-change="dateChanged(drugOrder)">
+                                                       required="required">
                                             </div>
                                             <div class="field-value">
                                                 <select id="stopped-reason" class="form-field instruction" ng-model="drugOrder.orderReasonConcept" ng-options="item as item.display for item in stoppedOrderReasons">
