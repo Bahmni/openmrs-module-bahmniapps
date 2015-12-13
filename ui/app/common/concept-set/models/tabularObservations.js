@@ -45,6 +45,12 @@ Bahmni.ConceptSet.TabularObservations = function(obsGroups, parentObs, conceptUI
     this.canAddMore = function() {
         return this.getConceptUIConfig().allowAddMore == true;
     };
+
+    this.atLeastOneValueSet = function(){
+        return this.rows.some(function (childNode) {
+            return childNode.obsGroup.value;
+        })
+    };
 };
 
 

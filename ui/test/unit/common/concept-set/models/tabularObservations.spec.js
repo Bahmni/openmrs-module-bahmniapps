@@ -50,6 +50,17 @@ describe("Tabular Observations", function() {
         expect(tabularObservations.canAddMore()).toBeTruthy();
     });
 
+    it("atLeastOneValueSet, should return false if obsGroups has value", function() {
+        var tabularObservations = new Bahmni.ConceptSet.TabularObservations(obsGroups, parentObs, {"DST Result":{"allowAddMore": true}});
+        expect(tabularObservations.atLeastOneValueSet()).toBeFalsy();
+    });
+
+    it("atLeastOneValueSet, should return true if obsGroups has value", function() {
+        obsGroups[0].value = "something";
+        var tabularObservations = new Bahmni.ConceptSet.TabularObservations(obsGroups, parentObs, {"DST Result":{"allowAddMore": true}});
+        expect(tabularObservations.atLeastOneValueSet()).toBeTruthy();
+    });
+
     var obsGroups = [{
         concept: {name:"DST Result", shortName: "DST"},
         label: "DST Result",
