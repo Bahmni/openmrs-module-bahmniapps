@@ -56,6 +56,10 @@
                             ng-options="item.name as item.name for item in treatmentConfig.doseUnits" ng-required="!treatment.validate()">
                         <option value="">Choose Unit</option>
                     </select>
+                    <select id="route" class="route" ng-model="treatment.route"
+                            ng-options="item.name as item.name for item in treatmentConfig.routes">
+                        <option value="">Choose Route</option>
+                    </select>
                 </div>
                 <button id="SOS" tabindex="-1" type="button" class="grid-row-element fl" ng-class="{active: treatment.asNeeded}" ng-click="toggleAsNeeded(treatment)" accesskey="o">
                     <i class="fa fa-ok"></i>
