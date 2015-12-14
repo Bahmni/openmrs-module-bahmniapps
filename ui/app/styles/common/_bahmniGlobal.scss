@@ -34,6 +34,9 @@ input[file-upload] {
       float: left;
       width: 200px;
       margin-left: 20px;
+      @media screen and (max-width: 1024px) {
+        width: 170px;
+      }
     }
     &.hasLegend {
       label {
