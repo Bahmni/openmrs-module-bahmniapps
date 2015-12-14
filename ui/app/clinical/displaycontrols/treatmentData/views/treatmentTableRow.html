@@ -22,7 +22,7 @@
         </button>
     </td>
 </tr>
-<tr ng-show="drugOrder.additionalInstructions" ng-class="{'has-test-notes': drugOrder.additionalInstructions}">
+<tr ng-if="drugOrder.additionalInstructions" ng-class="{'has-test-notes': drugOrder.additionalInstructions}">
     <td colspan="4" class="notes test-notes">
         <i class="fa fa-comments left"></i>
         <pre class="left">{{drugOrder.additionalInstructions}}</pre>
@@ -33,7 +33,7 @@
         </div>
     </td>
 </tr>
-<tr bm-show="showDetails">
+<tr bm-show="showDetails" ng-if="!drugOrder.additionalInstructions">
     <td colspan="4" class="notes inline-notes">
         <div class="footer-note right">
             <span class="provider">
