@@ -683,6 +683,9 @@ h3 {
 }
 
 .print-patient-summary{
+    &.print-wrapper{
+      max-width: 100%;
+    }
     .dashboard-section {
         margin-bottom: 0px;
         &.patientInformation{
@@ -693,8 +696,9 @@ h3 {
             }
         }
         .dashboard-tabular-obs-section.hasTable{
-            height: 933px;
+            height: 970px;
             page-break-before: always;
+            page-break-after: always;
             &:last-child{
                 //page-break-before: avoid;
             }
@@ -702,15 +706,18 @@ h3 {
             .rotate{
                 transform: rotate(-90deg);
                 position: absolute;
-                margin-top: -286px;
+                margin-top: -470px;
                 bottom: 0px;
-                width: 100%;
+                width: 940px;
                 top: 50%;
                 left: 50%;
-                margin-left: -280px;
+                margin-left: -310px;
                 table{
-                    width: 120%;
+                    width: 100%;
                     table-layout: fixed;
+                    word-break: break-all;
+                    margin: 0;
+                    padding:0 ;
                     tr{
                         th{
                             &:first-child{
