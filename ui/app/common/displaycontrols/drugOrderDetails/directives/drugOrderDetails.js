@@ -10,6 +10,7 @@ angular.module('bahmni.common.displaycontrol.drugOrderDetails')
                 })
             };
 
+            $scope.columns = $scope.section.dashboardParams.columns ;
             $scope.showDetails = false;
             $scope.toggle = function (drugOrder) {
                 drugOrder.showDetails = !drugOrder.showDetails;
