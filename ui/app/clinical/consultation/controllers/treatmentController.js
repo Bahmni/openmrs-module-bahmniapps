@@ -83,6 +83,7 @@ angular.module('bahmni.clinical')
             };
 
             $scope.$on("event:refillDrugOrder", function (event, drugOrder, alreadyActiveSimilarOrder) {
+                $scope.bulkSelectCheckbox=false;
                 var existingOrderStopDate = alreadyActiveSimilarOrder ? alreadyActiveSimilarOrder.effectiveStopDate : null;
                 var refill = drugOrder.refill(existingOrderStopDate);
                 setNonCodedDrugConcept(refill);
@@ -92,6 +93,7 @@ angular.module('bahmni.clinical')
             });
 
             $scope.$on("event:refillDrugOrders", function (event, drugOrders) {
+                $scope.bulkSelectCheckbox=false;
                 drugOrders.forEach(function (drugOrder) {
                     setNonCodedDrugConcept(drugOrder);
                     if (drugOrder.effectiveStopDate) {

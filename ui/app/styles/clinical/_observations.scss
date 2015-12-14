@@ -1,21 +1,21 @@
 .vitals {
-	.form-field {
-        padding-top: 10px;
-	}
+  .form-field {
+    padding-top: 10px;
+  }
   .compuptedValue{
     padding: 10px 10px 10px 0;
   }
-	.field-attribute {
-		width:18em;
-		.label-add-on {
+  .field-attribute {
+    width:18em;
+    .label-add-on {
       float:left;
       text-align:left;
       margin:0.5em 0em 0em 0em;
     }
   }
   fieldset {
-  	position:relative;
-  	width: 100%;
+    position:relative;
+    width: 100%;
     fieldset {
       .form-group {
         label span {
@@ -60,29 +60,23 @@
       }
       .form-field-group {
         label.control-label {
-            margin-left: 0;
-        }
-        .comment-toggle {
-            margin-right: 0;
-        }
-        .offset-label {
-          //margin-left: -10px;
+          margin-left: 0;
         }
       }
     }
     &.collapsible-set{
-        &.collapsed legend + .form-group {
-          border: none;
-          border-top: 1px solid #ccc;
-          border-radius:0 ;
-          background: none !important;
-        }
-        &.collapsed legend{
-          background-color: #DCDCDC !important
-        }
-        legend{
-          cursor: pointer;
-        }
+      &.collapsed legend + .form-group {
+        border: none;
+        border-top: 1px solid #ccc;
+        border-radius:0 ;
+        background: none !important;
+      }
+      &.collapsed legend{
+        background-color: #DCDCDC !important
+      }
+      legend{
+        cursor: pointer;
+      }
     }
   }
 
@@ -151,7 +145,7 @@ form .vitals .form-field .field-value {
       box-sizing: border-box;
     }
     .accept-btn {
-        margin-top: 6px;
+      margin-top: 6px;
     }
   }
   .select2-drop-active, .select2-container-active .select2-choice, .select2-container-active .select2-choices, .select2-drop.select2-drop-above.select2-drop-active {
@@ -160,7 +154,7 @@ form .vitals .form-field .field-value {
 }
 form .observations-tab .vitals .form-field .field-value {
   .autocomplete {
-    width: 305px;
+    width: 300px;
   }
 }
 .form-horizontal {
@@ -271,110 +265,110 @@ concept-set {
 }
 
 .grid-row {
-    padding: 2px;
+  padding: 2px;
 }
 .grid-row-element {
-    font-size: 12px;
-    padding-left: 15px;
-    padding-right: 15px;
-    .fa-ok {
-        display: none;
-        padding-top: 0;
-        padding-bottom: 0;
-        font-size: 14px;
-        line-height: inherit;
-    }
+  font-size: 12px;
+  padding-left: 15px;
+  padding-right: 15px;
+  .fa-ok {
+    display: none;
+    padding-top: 0;
+    padding-bottom: 0;
+    font-size: 14px;
+    line-height: inherit;
+  }
 }
 .grid-row-element.active {
-    color: $bahmniTertiaryColor;
-    padding-left: 3px;
-    .fa-ok {
-        display: inline-block;
-    }
+  color: $bahmniTertiaryColor;
+  padding-left: 3px;
+  .fa-ok {
+    display: inline-block;
+  }
 }
 
 .vitals {
   &.form-horizontal {
     padding: 5px;
   }
-    .consultation-image {
-        width: 600px;
-        background: $lightestGray;
-        padding: 5px;
-        overflow: auto;
-        clear: both;
-        box-sizing: border-box;
-        .file{
-          .comment-toggle {
-              margin-right: 10px;
-              margin-bottom: 5px;
-              margin-top: 9px;
-          }
-        }
-        .placeholder.btn {
-            width: 30px;
-            height: 30px;
-            float: left;
-            margin: 0;
-            text-align: center;
-            border: 1px solid $lightGray;
-            @include button;
-            padding: 0;
-            i {
-              color: green;
-              font-size: 18px;
-              line-height: 30px;
-              width: 30px;
-            }
-        }
-        .file-browse {
-            position: absolute;
-            z-index: -999;
-            min-width: 1px;
-            width: 1px;
-        }
-
-        .file img.has-image {
-            width: 50px;
-            height: 50px;
-            border: 3px solid $lightGray;
-            &.voided {
-                opacity: 0.1;
-            }
-        }
-
-        .comment-toggle {
-            margin-right: 10px;
-            margin-bottom: 5px;
-        }
+  .consultation-image {
+    width: 600px;
+    background: $lightestGray;
+    padding: 5px;
+    overflow: auto;
+    clear: both;
+    box-sizing: border-box;
+    .file{
+      .comment-toggle {
+        margin-right: 10px;
+        margin-bottom: 5px;
+        margin-top: 9px;
+      }
     }
+    .placeholder.btn {
+      width: 30px;
+      height: 30px;
+      float: left;
+      margin: 0;
+      text-align: center;
+      border: 1px solid $lightGray;
+      @include button;
+      padding: 0;
+      i {
+        color: green;
+        font-size: 18px;
+        line-height: 30px;
+        width: 30px;
+      }
+    }
+    .file-browse {
+      position: absolute;
+      z-index: -999;
+      min-width: 1px;
+      width: 1px;
+    }
+
+    .file img.has-image {
+      width: 50px;
+      height: 50px;
+      border: 3px solid $lightGray;
+      &.voided {
+        opacity: 0.1;
+      }
+    }
+
+    .comment-toggle {
+      margin-right: 10px;
+      margin-bottom: 5px;
+    }
+  }
 }
 
 .leaf-observation-node {
-    .obs-comment-section {
-      padding-bottom: 30px;
-      display: inline-block;
-    }
+  .obs-comment-section {
+    padding-bottom: 30px;
+    display: inline-block;
+  }
 }
 
 .field-value .concept-description {
   margin: 0 10px 5px 0;
   display: inline-block;
-    ul, ol {margin-left: 20px;}
-    ul li {list-style-type: disc;}
-    ol li {list-style-type: decimal;}
-    span.description {
-        margin-top: 7px;
-    }
-    span.details, span.description {
-        font-size: 10px;
-        padding: 2px 10px;
-        border-radius: 20px;
-        background: $clinicalInfoMessageBg;
-        min-width: 30px;
-        display: inline-block;
-        line-height: 1.5em;
-    }
+  ul, ol {margin-left: 20px;}
+  ul li {list-style-type: disc;}
+  ol li {list-style-type: decimal;}
+  span.description {
+    margin-top: 7px;
+  }
+  span.details, span.description {
+    font-size: 10px;
+    padding: 2px 10px;
+    border-radius: 20px;
+    background: $clinicalInfoMessageBg;
+    min-width: 30px;
+    display: inline-block;
+    line-height: 1.5em;
+  }
   p {
     margin-bottom: 0;
   }
@@ -407,16 +401,16 @@ concept-set {
     font-size: 12px;
     padding: 5px;
     border-radius: 5px;
-    background: #000; 
+    background: #000;
     color: #fff;
   }
   i {
-   position: absolute;
-   bottom: -16px;
-   left: 1%;
-   font-size: 20px;
-   color: #000;
- }
+    position: absolute;
+    bottom: -16px;
+    left: 1%;
+    font-size: 20px;
+    color: #000;
+  }
   p {
     margin-bottom: 5px;
     line-height: 1.1;
@@ -459,21 +453,21 @@ concept-set {
 }
 
 #removeClonedObs.fa-remove {
-    margin-top:10px;
-    margin-bottom: 3px;
-    margin-left:9px;
-    margin-right: 4px;
-    color: #9D0101;
+  margin-top:10px;
+  margin-bottom: 3px;
+  margin-left:9px;
+  margin-right: 4px;
+  color: #9D0101;
 }
 .vitals table{
-    caption{
-        text-align: left;
-        font-family: $primaryBoldFont;
-        font-size: 12px;
-        padding: 0 0 5px;
-        color:#666 ;
-    }
-    th{
-        font-size: 11px;
-    }
+  caption{
+    text-align: left;
+    font-family: $primaryBoldFont;
+    font-size: 12px;
+    padding: 0 0 5px;
+    color:#666 ;
+  }
+  th{
+    font-size: 11px;
+  }
 }

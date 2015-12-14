@@ -77,6 +77,12 @@
 
                 <div ng-include src="'../common/concept-set/views/observationDataTypes/showComment.html'"></div>
 
+                <div class="checkbox-inline" ng-if="::observation.durationObs"
+                     ng-class="{'duration': observation.durationObs, 'computed-field': observation.isComputedAndEditable()}">
+                    <span class="for-separator fl">for</span>
+                    <duration ng-model="observation.durationObs.value" disabled="!observation.primaryObs.hasValue()"
+                              illegal-value="observation.isDurationRequired() && !observation.hasDuration()"></duration>
+                </div>
                 <div ng-if="::observation.abnormalObs && !observation.isComputed()" class="fl accept-btn-wrapper">
                     <button type="button" ng-model="observation.abnormalObs.value"
                             class="small-btn accept-btn grid-row-element"
@@ -85,13 +91,6 @@
                             ng-click="observation.toggleAbnormal()"><i class="fa fa-ok"></i>{{'OBS_ABNORMAL_TRANSLATE_KEY' | translate}}
                     </button>
                 </div>
-                <div class="checkbox-inline" ng-if="::observation.durationObs"
-                     ng-class="{'duration': observation.durationObs, 'computed-field': observation.isComputedAndEditable()}">
-                    <span class="for-separator fl">for</span>
-                    <duration ng-model="observation.durationObs.value" disabled="!observation.primaryObs.hasValue()"
-                              illegal-value="observation.isDurationRequired() && !observation.hasDuration()"></duration>
-                </div>
-
                 <div class="fl" ng-include src="'../common/concept-set/views/observationDataTypes/removeClone.html'"></div>
 
                 <div class="offset-label" ng-show="observation.showComment">
@@ -194,7 +193,7 @@
                         </div>
 
                         <textarea class="consultation-img-comments" ng-show="observation.showComment" maxlength="255"
-                              ng-model="observation.comment" msd-elastic>
+                                  ng-model="observation.comment" msd-elastic>
                         </textarea>
                     </div>
 
@@ -254,20 +253,20 @@
                     <tr>
                         <th ng-repeat="column in observation.columns">
                             <div class="form-group" bm-pop-over>
-                            <div class=" concept-tooltip-description" bm-pop-over-target ng-if="::column.description">
-                                <i class="fa fa-caret-down"></i>
-                                <span class="details" ng-bind-html="::column.description"></span>
-                            </div>
+                                <div class=" concept-tooltip-description" bm-pop-over-target ng-if="::column.description">
+                                    <i class="fa fa-caret-down"></i>
+                                    <span class="details" ng-bind-html="::column.description"></span>
+                                </div>
 
-                            <strong>
-                                <span ng-bind="column.shortName || column.name"></span>
+                                <strong>
+                                    <span ng-bind="column.shortName || column.name"></span>
                                 <span ng-show="::column.units"
                                       ng-bind-html="::'(' + column.units + ')'"></span>
-                                <i class="fa fa-question-circle concept-tooltip-trigger" bm-pop-over-trigger
-                                   ng-if="::column.description">
-                                </i>
-                            </strong>
-                                </div>
+                                    <i class="fa fa-question-circle concept-tooltip-trigger" bm-pop-over-trigger
+                                       ng-if="::column.description">
+                                    </i>
+                                </strong>
+                            </div>
 
                         </th>
                     </tr>
