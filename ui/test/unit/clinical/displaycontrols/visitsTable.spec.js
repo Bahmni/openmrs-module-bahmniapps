@@ -101,6 +101,18 @@ describe("Visits Table display control", function () {
 
     });
 
+    it("should not display any errors when concept has no names", function(){
+        var data ={
+            concept: {
+                displayString: "vitals"
+            }
+        };
+
+        var compiledElementScope = beforeEachExecute();
+
+        expect(compiledElementScope.getDisplayName(data)).toBe("vitals");
+    });
+
 
     it("should fetch locale specific fully specified name if short name is not available", function () {
 
