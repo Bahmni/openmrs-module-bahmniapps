@@ -35,7 +35,7 @@ angular.module('bahmni.home')
             };
 
             var redirectToLandingPageIfAlreadyAuthenticated = function () {
-                sessionService.get().success(function (data) {
+                sessionService.get().then(function (data) {
                     if (data.authenticated) {
                         $location.path(landingPagePath);
                     }

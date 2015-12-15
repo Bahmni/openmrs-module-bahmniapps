@@ -1,9 +1,9 @@
 'use strict';
 
 describe('Patient resource', function () {
-    var patientService;
+    var patientService, offlineService;
     var patient;
-    var rootScopeMock = jasmine.createSpyObj('rootScope', ['getAppPlatform']);
+    var _offlineService = jasmine.createSpyObj('offlineService', ['getAppPlatform']);
 
     var openmrsUrl = "http://blah";
     var patientConfiguration;
@@ -37,11 +37,12 @@ describe('Patient resource', function () {
 
     beforeEach(function () {
         module('bahmni.registration');
+        module('bahmni.offline');
 
         module(function ($provide) {
             Bahmni.Registration.Constants.openmrsUrl = openmrsUrl;
             $provide.value('$http', mockHttp);
-            $provide.value('$rootScope', rootScopeMock);
+            $provide.value('offlineService', _offlineService);
         });
 
 
@@ -57,12 +58,16 @@ describe('Patient resource', function () {
             patient = patientFactory.create();
             patientService = patientServiceInjectted;
             $rootScope.patientConfiguration = patientConfiguration;
-            $rootScope.getAppPlatform = function(){
-                return "chrome";
-            };
         }]);
 
     });
+
+    var mockOfflineService = function () {
+        _offlineService.getAppPlatform.and.callFake(function () {
+            return "chrome";
+        });
+    };
+
 
     it('Should call url for search', function () {
         var query = 'john';
@@ -76,6 +81,7 @@ describe('Patient resource', function () {
     });
 
     it('Should create a patient', function () {
+        mockOfflineService();
         angular.extend(patient, {
             "gender": "M",
             "givenName": "someGivenName",

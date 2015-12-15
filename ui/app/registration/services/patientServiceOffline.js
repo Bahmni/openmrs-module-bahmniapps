@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('bahmni.registration')
-    .factory('patientServiceOffline', ['$http', '$rootScope', '$bahmniCookieStore', '$q', function ($http, $rootScope, $bahmniCookieStore, $q) {
-        var platform = $rootScope.getAppPlatform();
+    .factory('patientServiceOffline', ['$http', '$rootScope', '$bahmniCookieStore', '$q', 'offlineService', function ($http, $rootScope, $bahmniCookieStore, $q, offlineService) {
+        var platform = offlineService.getAppPlatform();
 
         var createSql = function(params){
             var nameParts = null;

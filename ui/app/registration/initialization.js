@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('bahmni.registration').factory('initialization',
-    ['$rootScope', '$q', 'configurations', 'authenticator', 'appService', 'spinner', 'Preferences', '$bahmniCookieStore',
-    function ($rootScope, $q, configurations, authenticator, appService, spinner, preferences, $bahmniCookieStore) {
+    ['$rootScope', '$q', 'configurations', 'authenticator', 'appService', 'spinner', 'Preferences', 'offlineService',
+    function ($rootScope, $q, configurations, authenticator, appService, spinner, preferences, offlineService) {
         var getConfigs = function() {
             var configNames = ['encounterConfig', 'patientAttributesConfig', 'identifierSourceConfig', 'addressLevels', 'genderMap', 'relationshipTypeConfig','relationshipTypeMap', 'loginLocationToVisitTypeMapping'];
             return configurations.load(configNames).then(function () {
@@ -19,43 +19,6 @@ angular.module('bahmni.registration').factory('initialization',
                 $rootScope.relationshipTypeMap = configurations.relationshipTypeMap();
                 $rootScope.relationshipTypes = configurations.relationshipTypes();
             });
-        };
-
-        var initOffline = function () {
-
-            $rootScope.offline = false;
-
-            $rootScope.getAppPlatform = function () {
-                return $bahmniCookieStore.get(Bahmni.Common.Constants.platform);
-            };
-
-            $rootScope.isOfflineApp = function () {
-                return $rootScope.getAppPlatform() !== Bahmni.Common.Constants.platformType.chrome;
-            };
-
-            Offline.options = {
-                game: false,
-                checkOnLoad: true
-            };
-
-            Offline.on('up', function () {
-                console.log("Internet is up.");
-                $rootScope.offline = false;
-                $rootScope.$broadcast('offline', $rootScope.offline);
-
-            });
-            Offline.on('down', function () {
-                console.log("Internet is down.");
-                $rootScope.offline = true;
-                $rootScope.$broadcast('offline', $rootScope.offline);
-
-            });
-            var checkOfflineStatus = function () {
-                if (Offline.state === 'up') {
-                    Offline.check();
-                }
-            };
-            setInterval(checkOfflineStatus, 5000);
         };
 
         var loadValidators = function (baseUrl,contextPath) {
@@ -86,7 +49,15 @@ angular.module('bahmni.registration').factory('initialization',
             });
         };
 
-        return spinner.forPromise(authenticator.authenticateUser().then(initApp).then(getConfigs).then(initAppConfigs).then(initOffline)
+        $rootScope.isOfflineApp = function() {
+          return offlineService.isOfflineApp();
+        };
+
+        $rootScope.offline = function() {
+            return offlineService.offline();
+        };
+
+        return spinner.forPromise(authenticator.authenticateUser().then(initApp).then(getConfigs).then(initAppConfigs)
             .then(mapRelationsTypeWithSearch)
             .then(loadValidators(appService.configBaseUrl(), "registration")));
     }]
