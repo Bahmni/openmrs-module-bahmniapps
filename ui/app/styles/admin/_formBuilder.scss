@@ -35,22 +35,15 @@
     box-sizing: border-box;
     .formBuilder-Form-container-wrap {
       position: relative;
-      padding: 45px 0 0;
+      padding: 42px 0 0;
       ul.formBuilder-tabs {
         position: absolute;
         top: 0;
         li.tab-item {
           float: left;
           a {
-            padding: 15px 15px 14px;
-            background: #527a7a;
-            display: inline-block;
-            color: #fff;
-            margin: 0 3px 0 0;
-            border-radius: 5px 5px 0 0;
-            text-decoration: none;
-            line-height: 1.2em;
-            font-size: 14px;
+            padding: 10px 15px;
+            border-radius: 3px 3px 0 0;
           }
         }
       }
@@ -122,5 +115,8 @@
   }
   form{
     clear: both;
+  }
+  .form-field-radio-label h3{
+    margin: 12px 0;
   }
 }
