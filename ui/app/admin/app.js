@@ -34,6 +34,11 @@ angular.module('admin', ['httpErrorInterceptor', 'bahmni.admin', 'bahmni.common.
         {   url: '/formBuilder',
             templateUrl: 'views/formBuilder.html',
             controller: ''
+        })
+        .state('admin.formIndex',
+        {   url: '/formIndex',
+            templateUrl: 'views/formIndex.html',
+            controller: ''
         });
     $httpProvider.defaults.headers.common['Disable-WWW-Authenticate'] = true;
     // $bahmniTranslateProvider.init({app: 'admin', shouldMerge: true});
