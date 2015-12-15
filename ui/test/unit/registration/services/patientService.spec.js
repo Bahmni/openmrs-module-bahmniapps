@@ -58,6 +58,9 @@ describe('Patient resource', function () {
             patient = patientFactory.create();
             patientService = patientServiceInjectted;
             $rootScope.patientConfiguration = patientConfiguration;
+            $rootScope.offline = function(){
+                return false;
+            }
         }]);
 
     });

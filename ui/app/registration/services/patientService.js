@@ -19,7 +19,7 @@ angular.module('bahmni.registration')
                 },
                 withCredentials: true
             };
-            if($rootScope.offline){
+            if($rootScope.offline()){
                 return patientServiceOffline.search(config.params);
             }
             var url = Bahmni.Common.Constants.bahmniSearchUrl + "/patient";
@@ -39,7 +39,7 @@ angular.module('bahmni.registration')
         };
 
         var get = function (uuid) {
-            if($rootScope.offline) {
+            if($rootScope.offline()) {
                 return patientServiceOffline.get(uuid);
             }
             var url = openmrsUrl + "/ws/rest/v1/patientprofile/" + uuid;
