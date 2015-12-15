@@ -1,9 +1,6 @@
-<section class="dashboard-section">
-    <h2 ng-if="displayName || diseaseName && hasData" class="section-title">{{::displayName || diseaseName}}</h2>
-    <div ng-if="!hasData"  class="placeholder-text">
-        <p>{{'NO_DATA_MESSAGE' | translate}}</p>
-    </div>
-    <table ng-if="hasData"  ng-class="{'h-scroll':showOnPrint, 'pivot-table':showOnPrint, 'h-scroll-print': !showOnPrint}">
+<section class="dashboard-section" ng-if="hasData">
+    <h2 ng-if="displayName || diseaseName" class="section-title">{{::displayName || diseaseName}}</h2>
+    <table ng-class="{'h-scroll':showOnPrint, 'pivot-table':showOnPrint, 'h-scroll-print': !showOnPrint}">
         <thead>
         <tr>
             <th class="row-header-group">{{::groupBy}}</th>
