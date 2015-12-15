@@ -94,7 +94,7 @@
                 margin-right: 10px;
                 float: left;
                 @media screen and (max-width: 1024px) {
-                    min-width: 240px;
+                    min-width: 230px;
                 }
             }
             input[type="number"]{
@@ -148,8 +148,11 @@
                 }
             }
             select, input[type="date"] {
-                min-width: auto;
+                min-width: 110px;
                 margin-right: 2px;
+                @media screen and (max-width: 1024px) {
+                    height: 32px;
+                }
             }
             .frequency-widget-wrapper{
                 //background: lighten($lightestGray, 3%);
