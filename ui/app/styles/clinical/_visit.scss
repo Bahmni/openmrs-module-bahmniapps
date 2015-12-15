@@ -612,11 +612,6 @@ a.visit:before {
             font-family: openSans;
           }
         }
-        .patient-estimated-text{
-          font-size: 12px;
-          font-style: italic;
-          color: #868686;
-        }
         .patient-birth-time{
           display: inline-block;
           margin-right: 5px;
@@ -627,6 +622,11 @@ a.visit:before {
           color: $mediumGray;
         }
       }
+    }
+    .patient-estimated-text{
+      font-size: 12px;
+      font-style: italic;
+      color: #868686 !important;
     }
   }
 }
