@@ -107,7 +107,7 @@ describe("Forms Table display control", function () {
                     "uuid": "2625f662-a807-4682-844a-ccff002e669d",
                     "concept": {
                         "uuid": "288b0183-2c6a-4496-b038-5ea311dd3934",
-                        "display": "Medication log Template"
+                        "displayString": "Medication log Template"
                     },
                     "display": "Medication log Template: 2015-11-01, Not defined",
                     "obsDatetime": "2015-10-18T16:26:31.000+0000"
@@ -116,7 +116,7 @@ describe("Forms Table display control", function () {
                     "uuid": "2625f662-a807-4682-844a-ccff002e6111",
                     "concept": {
                         "uuid": "288b0183-2c6a-4496-b038-5ea311dd3934",
-                        "display": "Medication log Template"
+                        "displayString": "Medication log Template"
                     },
                     "display": "Medication log Template: 2015-11-01, Not defined",
                     "obsDatetime": "2015-11-18T16:26:31.000+0000"
@@ -125,12 +125,23 @@ describe("Forms Table display control", function () {
                     "uuid": "ace25383-0baf-4c52-96bd-224d8caca00e",
                     "concept": {
                         "uuid": "bb80d45d-e4c5-4ce0-bb7c-0a34d2635ea5",
-                        "display": "Outcome End of Treatment Template"
+                        "displayString": "Outcome End of Treatment Template"
                     },
                     "display": "Outcome End of Treatment Template: 2015-11-17",
                     "obsDatetime": "2015-11-18T16:26:30.000+0000"
                 }
             ]}};
+
+            var observation = {
+                "uuid": "2625f662-a807-4682-844a-ccff002e669d",
+                "encounterUuid":"encounterUuid",
+                "concept": {
+                    "uuid": "288b0183-2c6a-4496-b038-5ea311dd3934",
+                    "displayString": "Medication log Template"
+                },
+                "display": "Medication log Template: 2015-11-01, Not defined",
+                "obsDatetime": "2015-10-18T16:26:31.000+0000"
+            };
             var simpleHtml = '<forms-table section="section" patient="patient" is-on-dashboard="true"></forms-table>';
 
             mockConceptSetService(allObsTemplateData);
@@ -147,6 +158,8 @@ describe("Forms Table display control", function () {
             expected.push(formDataObj.data.results[1]);
             expected.push(formDataObj.data.results[2]);
             expect(compiledElementScope.formData).toEqual(expected);
+            expect(compiledElementScope.getEditObsData(observation).observation.encounterUuid).toEqual("encounterUuid");
+            expect(compiledElementScope.getEditObsData(observation).conceptSetName).toEqual("Medication log Template");
         });
 
         it("should get all obs templates to display for particular patient, on allForms page.", function () {
@@ -156,7 +169,7 @@ describe("Forms Table display control", function () {
                     "uuid": "2625f662-a807-4682-844a-ccff002e669d",
                     "concept": {
                         "uuid": "288b0183-2c6a-4496-b038-5ea311dd3934",
-                        "display": "Medication log Template"
+                        "displayString": "Medication log Template"
                     },
                     "display": "Medication log Template: 2015-11-01, Not defined",
                     "obsDatetime": "2015-10-18T16:26:31.000+0000"
@@ -165,7 +178,7 @@ describe("Forms Table display control", function () {
                     "uuid": "2625f662-a807-4682-844a-ccff002e6111",
                     "concept": {
                         "uuid": "288b0183-2c6a-4496-b038-5ea311dd3934",
-                        "display": "Medication log Template"
+                        "displayString": "Medication log Template"
                     },
                     "display": "Medication log Template: 2015-11-01, Not defined",
                     "obsDatetime": "2015-11-18T16:26:31.000+0000"
@@ -174,7 +187,7 @@ describe("Forms Table display control", function () {
                     "uuid": "ace25383-0baf-4c52-96bd-224d8caca00e",
                     "concept": {
                         "uuid": "bb80d45d-e4c5-4ce0-bb7c-0a34d2635ea5",
-                        "display": "Outcome End of Treatment Template"
+                        "displayString": "Outcome End of Treatment Template"
                     },
                     "display": "Outcome End of Treatment Template: 2015-11-17",
                     "obsDatetime": "2015-11-18T16:26:30.000+0000"
