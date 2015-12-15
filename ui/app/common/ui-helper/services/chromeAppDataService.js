@@ -2,28 +2,32 @@
 
 angular.module('bahmni.common.uiHelper')
     .service('chromeAppDataService', ['$http', '$q', function ($http, $q) {
+        var schemaBuilder;
+        var attributeTypeColumnNames = [
+            "attributeTypeId",
+            "attributeName"
+        ];
+        var patientColumnNames = [
+            "identifier",
+            "uuid",
+            "givenName",
+            "middleName",
+            "familyName",
+            "gender",
+            "age",
+            "dateCreated",
+            "patientJson"];
+        var attributeColumnNames = [
+            "attributeTypeId",
+            "attributeValue",
+            "patientId"
+        ];
+        var startIndex = 0;
 
         this.populateData = function () {
-            var attributeTypeColumnNames = [
-                "attributeTypeId",
-                "attributeName"
-            ];
-            var patientColumnNames = [
-                "identifier",
-                "uuid",
-                "givenName",
-                "middleName",
-                "familyName",
-                "gender",
-                "age",
-                "dateCreated",
-                "patientJson"];
-            var attributeColumnNames = [
-                "attributeTypeId",
-                "attributeValue",
-                "patientId"
-            ];
-            var schemaBuilder = lf.schema.create('Bahmni', 1);
+
+            schemaBuilder = lf.schema.create('BahmniX2', 2);
+
             createTable(schemaBuilder, 'patient_attribute_types', attributeTypeColumnNames);
             createTable(schemaBuilder, 'patient', patientColumnNames);
             createTable(schemaBuilder, 'patient_attributes', attributeColumnNames);
@@ -35,6 +39,134 @@ angular.module('bahmni.common.uiHelper')
                     insertPatients(db, addressColumns, 0)
                 });
             });
+
+        };
+
+        this.getPatient = function (uuid) {
+            var deferred = $q.defer();
+            schemaBuilder = lf.schema.create('BahmniX2', 2);
+            createTable(schemaBuilder, 'patient_attribute_types', attributeTypeColumnNames);
+            createTable(schemaBuilder, 'patient', patientColumnNames);
+            createTable(schemaBuilder, 'patient_attributes', attributeColumnNames);
+
+            getAddressColumns().then(function (addressColumns) {
+                createTable(schemaBuilder, 'patient_address', addressColumns);
+                schemaBuilder.connect().then(function (db) {
+                    var p = db.getSchema().table('patient');
+                    db.select(p.patientJson.as('patient'))
+                        .from(p)
+                        .where(p.uuid.eq(uuid)).exec()
+                        .then(function (result) {
+                            deferred.resolve(result[0]);
+                        });
+                })
+            });
+            return deferred.promise;
+        };
+
+        this.search = function (params) {
+            var deferred = $q.defer();
+            var nameParts = null;
+            if (params.q) {
+                nameParts = params.q.split(" ");
+            }
+
+            if (!params.patientAttributes) {
+                params.patientAttributes = "";
+            }
+
+            var addressFieldName = null;
+            if (params.address_field_name) {
+                addressFieldName = params.address_field_name.replace("_", "");
+            }
+
+            if (params.startIndex == 0) {
+                startIndex = 0;
+            }
+
+            schemaBuilder = lf.schema.create('BahmniX2', 2);
+            createTable(schemaBuilder, 'patient_attribute_types', attributeTypeColumnNames);
+            createTable(schemaBuilder, 'patient', patientColumnNames);
+            createTable(schemaBuilder, 'patient_attributes', attributeColumnNames);
+
+            getAddressColumns().then(function (addressColumns) {
+                createTable(schemaBuilder, 'patient_address', addressColumns);
+                schemaBuilder.connect().then(function (db) {
+                    var p = db.getSchema().table('patient');
+                    var pa = db.getSchema().table('patient_attributes');
+                    var pat = db.getSchema().table('patient_attribute_types');
+                    var padd = db.getSchema().table('patient_address');
+
+                    var query = db.select(p.identifier.as('identifier'), p.givenName.as('givenName'), p.middleName.as('middleName'), p.familyName.as('familyName'),
+                        p.dateCreated.as('dateCreated'), p.age.as('age'), p.gender.as('gender'), p.uuid.as('uuid'), padd[addressFieldName].as('addressFieldValue'),
+                        pat.attributeName.as('attributeName'), pa.attributeValue.as('attributeValue'))
+                        .from(p)
+                        .innerJoin(padd, p._id.eq(padd.patientId))
+                        .innerJoin(pa, p._id.eq(pa.patientId))
+                        .innerJoin(pat, pa.attributeTypeId.eq(pat.attributeTypeId));
+
+                    var predicates = [];
+
+                    if (!_.isEmpty(params.address_field_value)) {
+                        predicates.push(padd[addressFieldName].match(new RegExp(params.address_field_value, 'i')));
+                    }
+
+                    if (!_.isEmpty(params.identifier)) {
+                        predicates.push(p.identifier.eq(params.identifier));
+                    }
+                    if (!_.isEmpty(nameParts)) {
+                        var nameSearchCondition = [];
+                        if (!_.isEmpty(nameParts)) {
+                            angular.forEach(nameParts, function (namePart) {
+                                nameSearchCondition.push(lf.op.or(p.givenName.match(new RegExp(namePart, 'i')), p.middleName.match(new RegExp(namePart, 'i')), p.familyName.match(new RegExp(namePart, 'i'))));
+                            });
+                            predicates.push(lf.op.and.apply(null, nameSearchCondition));
+                        }
+                    }
+
+                    var whereCondition = lf.op.and.apply(null, predicates);
+
+                    if (!_.isEmpty(predicates))
+                        query = query.where(whereCondition);
+
+                    query.limit(50).skip(startIndex).orderBy(p.dateCreated, lf.Order.DESC).exec()
+                        .then(function (results) {
+                            var groupedResults = _.groupBy(results, function (res) {
+                                return res.identifier
+                            });
+                            var response = {
+                                pageOfResults: []
+                            };
+                            var patient;
+                            angular.forEach(groupedResults, function (groupedResult) {
+                                var customAttributes = {};
+                                patient = groupedResult[0];
+                                angular.forEach(groupedResult, function (result) {
+                                    if (result.attributeName)
+                                        customAttributes[result.attributeName] = result.attributeValue;
+                                });
+                                patient.customAttribute = JSON.stringify(customAttributes);
+                                if (!_.isEmpty(params.custom_attribute)) {
+                                    var matched = _.find(customAttributes, function (attributeValue, attributeName) {
+                                        return attributeValue.toString().toLowerCase().indexOf(params.custom_attribute.toLowerCase()) != -1 && _.contains(params.patientAttributes, attributeName);
+                                    });
+                                    if (matched) {
+                                        response.pageOfResults.push(groupedResult[0]);
+                                    }
+                                }
+                                else {
+                                    response.pageOfResults.push(patient);
+                                }
+                            });
+                            startIndex += 50;
+                            deferred.resolve(response);
+                        }, function (e) {
+                            console.log(e);
+                        });
+                });
+            });
+
+            return deferred.promise;
         };
 
         var createTable = function (schemaBuilder, tableName, columnNames) {
@@ -101,8 +233,8 @@ angular.module('bahmni.common.uiHelper')
 
         var insertAttributes = function (db, patientId, attributes, attributeTypeMap) {
             var attributeTable, value;
+            attributeTable = db.getSchema().table('patient_attributes');
             if (attributes != null && attributes.length > 0) {
-                attributeTable = db.getSchema().table('patient_attributes');
                 for (var j = 0; j < attributes.length; j++) {
                     (function () {
                         var personAttribute = attributes[j];
@@ -121,9 +253,15 @@ angular.module('bahmni.common.uiHelper')
                         });
                         db.insertOrReplace().into(attributeTable).values([row]).exec();
                     })();
-
                 }
-
+            }
+            else {
+                var row = attributeTable.createRow({
+                    'attributeTypeId': 99,
+                    'attributeValue': "dummy",
+                    'patientId': patientId
+                });
+                db.insertOrReplace().into(attributeTable).values([row]).exec();
             }
         };
 
@@ -153,8 +291,14 @@ angular.module('bahmni.common.uiHelper')
                     });
                     db.insertOrReplace().into(table).values([row]).exec();
                 }
+                row = table.createRow({
+                    'attributeTypeId': 99,
+                    'attributeName': "dummy"
+                });
+                db.insertOrReplace().into(table).values([row]).exec();
             });
         };
 
-    }])
+    }
+    ])
 ;
