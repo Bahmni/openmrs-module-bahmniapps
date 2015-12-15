@@ -26,7 +26,7 @@
             <tr ng-if="showBirthDate" >
                 <td class="name">Date of Birth</td>
                 <td class="value">{{patient.birthdate | bahmniDate}}
-                    <span ng-if="patient.birthdateEstimated"> (est.)</span>
+                    <span ng-if="patient.birthdateEstimated" class="patient-estimated-text"> (est.)</span>
                 </td>
             </tr>
             <tr ng-repeat="attribute in config.patientAttributes" ng-if="patient[attribute]"
