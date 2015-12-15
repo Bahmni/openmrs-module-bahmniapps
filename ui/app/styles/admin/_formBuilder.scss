@@ -81,12 +81,15 @@
         box-sizing: border-box;
       }
   }
-  .dashboard-section section .form-field {
+  .dashboard-section .form-field {
     clear: none;
     float: left;
     box-sizing: border-box;
     margin-bottom: 0;
     padding: 0 5px;
+  }
+  .form-field {
+    overflow: initial;
     .field-attribute{
         label {
           width: 12em;
@@ -98,7 +101,7 @@
             }
         }
     }
-    .form-field-radio{
+    input[type="radio"]{
         margin:13px 5px 0 0;
     }
     textarea{
@@ -113,5 +116,11 @@
       padding: 3px 10px;
       box-sizing: border-box;
     }
+  }
+  .box{
+     margin:0 20px 20px;
+  }
+  form{
+    clear: both;
   }
 }
