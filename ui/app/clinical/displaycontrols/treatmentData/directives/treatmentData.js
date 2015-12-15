@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('bahmni.clinical')
-    .directive('treatmentData', ['TreatmentService', 'spinner', function (treatmentService, spinner) {
+    .directive('treatmentData', ['TreatmentService', 'appService', 'spinner', '$stateParams', function (treatmentService, appService, spinner, $stateParams) {
         var controller = function ($scope) {
             var Constants = Bahmni.Clinical.Constants;
             var defaultParams = {
@@ -17,8 +17,19 @@ angular.module('bahmni.clinical')
                     return $scope.visitSummary.stopDateTime || Bahmni.Common.Util.DateUtil.now();
                 };
 
+                var programConfig = appService.getAppDescriptor().getConfigValue("program") || {};
+
+                var startDate = null, endDate = null, getOtherActive;
+                if (programConfig.showDashBoardWithinDateRange) {
+                    startDate = $stateParams.dateEnrolled;
+                    endDate = $stateParams.dateCompleted;
+                    if(startDate || endDate){
+                        $scope.params.showOtherActive=false;
+                    }
+                }
+
                 return treatmentService.getPrescribedAndActiveDrugOrders($scope.params.patientUuid, $scope.params.numberOfVisits,
-                    $scope.params.showOtherActive, $scope.params.visitUuids || [])
+                    $scope.params.showOtherActive, $scope.params.visitUuids || [], startDate, endDate)
                     .then(function (response) {
                         var groupedByVisit = _.groupBy(response.data.visitDrugOrders, function (drugOrder) {
                             return drugOrder.visit.startDateTime;

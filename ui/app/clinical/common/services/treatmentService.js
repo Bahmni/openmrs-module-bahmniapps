@@ -18,12 +18,19 @@ angular.module('bahmni.clinical')
             });
         };
 
-        var getPrescribedAndActiveDrugOrders = function (patientUuid, numberOfVisits, getOtherActive, visitUuids) {
+        var getPrescribedAndActiveDrugOrders = function (patientUuid, numberOfVisits, getOtherActive, visitUuids, startDate, endDate) {
             return $http.get(Bahmni.Common.Constants.bahmniDrugOrderUrl + "/prescribedAndActive", {
-                params: { patientUuid: patientUuid, numberOfVisits: numberOfVisits, getOtherActive: getOtherActive, visitUuids: visitUuids},
+                params: {
+                    patientUuid: patientUuid,
+                    numberOfVisits: numberOfVisits,
+                    getOtherActive: getOtherActive,
+                    visitUuids: visitUuids,
+                    startDate: Bahmni.Common.Util.DateUtil.parseLongDateToServerFormat(startDate),
+                    endDate: Bahmni.Common.Util.DateUtil.parseLongDateToServerFormat(endDate)
+                },
                 withCredentials: true
-            }).success(function(response){
-                for(var key in response){
+            }).success(function (response) {
+                for (var key in response) {
                     response[key] = response[key].map(createDrugOrder);
                     response[key] = response[key].map(createDrugOrderViewModel);
                 }
@@ -49,7 +56,11 @@ angular.module('bahmni.clinical')
             var deferred = $q.defer();
             $http.get(Bahmni.Common.Constants.bahmniDrugOrderUrl, {
                 method: "GET",
-                params: { patientUuid: patientUuid, numberOfVisits: numberOfVisits, includeActiveVisit: includeActiveVisit},
+                params: {
+                    patientUuid: patientUuid,
+                    numberOfVisits: numberOfVisits,
+                    includeActiveVisit: includeActiveVisit
+                },
                 withCredentials: true
             }).success(function (response) {
                 var activeDrugOrders = response.map(createDrugOrder);
@@ -58,7 +69,7 @@ angular.module('bahmni.clinical')
             return deferred.promise;
         };
 
-        var getNonCodedDrugConcept = function() {
+        var getNonCodedDrugConcept = function () {
             var deferred = $q.defer();
             $http.get(Bahmni.Common.Constants.globalPropertyUrl, {
                 method: "GET",
@@ -69,7 +80,7 @@ angular.module('bahmni.clinical')
                 headers: {
                     Accept: 'text/plain'
                 }
-            }).success(function (conceptUuid){
+            }).success(function (conceptUuid) {
                 deferred.resolve(conceptUuid);
             });
             return deferred.promise;
@@ -92,6 +103,6 @@ angular.module('bahmni.clinical')
             getPrescribedDrugOrders: getPrescribedDrugOrders,
             getPrescribedAndActiveDrugOrders: getPrescribedAndActiveDrugOrders,
             getNonCodedDrugConcept: getNonCodedDrugConcept,
-            getAllDrugOrdersFor:getAllDrugOrdersFor
+            getAllDrugOrdersFor: getAllDrugOrdersFor
         };
     }]);
