@@ -4,12 +4,15 @@ describe("DrugOrderHistoryController", function () {
 
     beforeEach(module('bahmni.clinical'));
 
-    var scope, prescribedDrugOrders, activeDrugOrder, _treatmentService, clinicalAppConfigService, retrospectiveEntryService, rootscope;
+    var scope, prescribedDrugOrders, activeDrugOrder, _treatmentService, clinicalAppConfigService, retrospectiveEntryService, translate;
     var fetchActiveTreatmentsDeferred;
     var DateUtil = Bahmni.Common.Util.DateUtil;
 
     beforeEach(module(function ($provide) {
+        translate = jasmine.createSpyObj('$translate',['instant']);
+
         $provide.value('$q', Q);
+        $provide.value('$translate',translate);
         fetchActiveTreatmentsDeferred = Q.defer();
 
         _treatmentService = jasmine.createSpyObj('TreatmentService', ['getPrescribedDrugOrders']);
@@ -48,6 +51,9 @@ describe("DrugOrderHistoryController", function () {
 
     describe("when initialized", function () {
         it("should setup scope variables", function (done) {
+            translate.instant.and.callFake(function(){
+                return "Recent";
+            });
             fetchActiveTreatmentsDeferred.promise.then().then(function(){
                 expect(scope.consultation.drugOrderGroups.length).toBe(3);
                 expect(scope.consultation.drugOrderGroups[0].label).toEqual("Recent");
