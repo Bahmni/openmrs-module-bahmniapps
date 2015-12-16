@@ -27,7 +27,7 @@
             </button>
             <div class="frequency-widget-wrapper">
                 <div class="frequency-widget uniform-frequency" ng-show="treatment.isUniformFrequency">
-                    <input id="uniform-dose" class="dose fl" integer="true" ng-focus="treatment.setFrequencyType('uniform')" type="number" min="0" step="any" placeholder="Dose"
+                    <input id="uniform-dose" class="dose fl" integer="true" ng-focus="treatment.setFrequencyType('uniform')" type="number" min="0" step="any" placeholder="{{ 'MEDICATION_TAB_DOSE' | translate}}"
                            ng-model="treatment.uniformDosingType.dose" ng-required="!treatment.validate()" focus-on="editDrugEntryUniformFrequency" />
                     <select id="uniform-dose-unit" class="form-field freq-dose-units" ng-model="treatment.uniformDosingType.doseUnits"
                             ng-options="item.name as item.name for item in treatmentConfig.doseUnits" ng-required="!treatment.validate()">

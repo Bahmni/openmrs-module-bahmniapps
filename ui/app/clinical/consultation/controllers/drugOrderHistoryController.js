@@ -2,9 +2,9 @@
 
 angular.module('bahmni.clinical')
     .controller('DrugOrderHistoryController', ['$scope', '$filter', '$stateParams', 'activeDrugOrders',
-        'treatmentConfig', 'TreatmentService', 'spinner', 'clinicalAppConfigService','drugOrderHistoryHelper', 'visitHistory',
+        'treatmentConfig', 'TreatmentService', 'spinner', 'clinicalAppConfigService','drugOrderHistoryHelper', 'visitHistory','$translate',
         function ($scope, $filter, $stateParams, activeDrugOrders, treatmentConfig, treatmentService, spinner,
-                  clinicalAppConfigService, drugOrderHistoryHelper, visitHistory) {
+                  clinicalAppConfigService, drugOrderHistoryHelper, visitHistory,$translate) {
 
             var DrugOrderViewModel = Bahmni.Clinical.DrugOrderViewModel;
             var DateUtil = Bahmni.Common.Util.DateUtil;
@@ -37,7 +37,7 @@ angular.module('bahmni.clinical')
             var createRecentDrugOrderGroup = function (activeAndScheduledDrugOrders) {
                 var showOnlyActive = clinicalAppConfigService.getDrugOrderConfig().showOnlyActive;
                 var refillableGroup = {
-                    label: 'Recent',
+                    label: $translate.instant("MEDICATION_RECENT_TAB"),
                     selected: true,
                     drugOrders: drugOrderHistoryHelper.getRefillableDrugOrders(activeAndScheduledDrugOrders,
                         getPreviousVisitDrugOrders(), showOnlyActive)
