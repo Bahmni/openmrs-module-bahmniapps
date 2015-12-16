@@ -7,7 +7,7 @@
             <span class="title-link">{{section.title}} </span>
             <i class="fa fa-external-link"></i>
         </h2>
-        <pivot-table patient-uuid="patient.uuid" config="section" display-name="section.dashboardParams.label" status="status"></pivot-table>
+        <pivot-table patient-uuid="patient.uuid" config="section.dashboardParams" display-name="section.dashboardParams.label" status="status"></pivot-table>
 
         <section class="dashboard-section" ng-if="!status.data">
             <div class="placeholder-text">

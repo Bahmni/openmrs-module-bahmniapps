@@ -9,13 +9,13 @@ angular.module('bahmni.common.displaycontrol.pivottable').directive('pivotTable'
                 displayName: "=",
                 config: "=",
                 visitUuid:"=",
-                status:"="
+                status:"=?"
             },
             link: function (scope) {
 
-                if(!scope.config.dashboardParams) return;
+                if(!scope.config) return;
 
-                scope.groupBy = scope.config.dashboardParams.groupBy || "visits";
+                scope.groupBy = scope.config.groupBy || "visits";
                 scope.groupByEncounters = scope.groupBy === "encounters";
                 scope.groupByVisits = scope.groupBy === "visits";
                 
@@ -35,7 +35,7 @@ angular.module('bahmni.common.displaycontrol.pivottable').directive('pivotTable'
                     return scope.isLonger(value) ? value.substring(0,10)+"..." : value;
                 };
 
-                var pivotDataPromise = pivotTableService.getPivotTableFor(scope.patientUuid,scope.config.dashboardParams, scope.visitUuid );
+                var pivotDataPromise = pivotTableService.getPivotTableFor(scope.patientUuid,scope.config, scope.visitUuid );
                 spinner.forPromise(pivotDataPromise);
                 pivotDataPromise.success(function (data) {
                     scope.result = data;
