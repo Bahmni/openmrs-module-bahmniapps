@@ -84,5 +84,14 @@
     "MEDICATION_RECENT_TAB_STOP_NOTES":"Notes",
     "MEDICATION_TAB_DOSE": "Dose",
 
-    "REMOVE_CONFIRMATION_KEY": "Are you sure you want to remove?"
+    "REMOVE_CONFIRMATION_KEY": "Are you sure you want to remove?",
+
+    "DRUG_DETAILS_DRUG_NAME": "TB drug",
+    "DRUG_DETAILS_DOSE_INFO": "Total daily dose",
+    "DRUG_DETAILS_ROUTE": "Route",
+    "DRUG_DETAILS_FREQUENCY":"Schedule",
+    "DRUG_DETAILS_START_DATE":"Start date ",
+    "DRUG_DETAILS_STOP_DATE": "Stop date",
+    "DRUG_DETAILS_ORDER_REASON_CODED": "Reason for medication change",
+    "DRUG_DETAILS_ORDER_REASON_TEXT": "AE Number"
 }
