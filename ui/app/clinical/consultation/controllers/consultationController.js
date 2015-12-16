@@ -45,8 +45,6 @@ angular.module('bahmni.clinical').controller('ConsultationController',
                 ngDialog.closeAll();
             };
 
-
-
             $scope.availableBoards = [];
             $scope.configName = $stateParams.configName;
 
@@ -194,7 +192,10 @@ angular.module('bahmni.clinical').controller('ConsultationController',
             };
 
             $scope.save = function () {
-                if (!isFormValid()) return;
+                if (!isFormValid()) {
+                    $scope.$parent.$parent.$broadcast("event:errorsOnForm");
+                    return;
+                }
                 spinner.forPromise($q.all([preSavePromise(), encounterService.getEncounterType($state.params.programUuid)]).then(function (results) {
                     var encounterData = results[0];
                     encounterData.encounterTypeUuid = results[1].uuid;

@@ -56,7 +56,7 @@
     "CLINICAL_SAVE_TRANSLATION_KEY":"<u>S</u>ave",
     "CLINICAL_SAVE_SUCCESS_MESSAGE_KEY": "Saved",
     "CLINICAL_SAVE_FAILURE_MESSAGE_KEY": "An error has occurred on the server. Information not saved.",
-    "CLINICAL_FORM_ERRORS_MESSAGE_KEY": "Please correct errors in the form. Information not saved",
+    "CLINICAL_FORM_ERRORS_MESSAGE_KEY": "Please enter a value in the mandatory fields or correct the value in the highlighted fields to proceed",
     "SAVE_ACCESS_KEY": "s",
     "CLINICAL_PRINT_TRANSLATION_KEY": "P<u>r</u>int",
     "CLINICAL_PRINT_ACCESS_KEY": "r",
