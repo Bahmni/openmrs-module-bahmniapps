@@ -19,17 +19,17 @@
                 <span>{{drugOrder.getFrequency()}}</span>
             </td>
             <td class="days">
-                <span>from {{drugOrder.effectiveStartDate | bahmniDate}}</span>
+                <span>{{drugOrder.effectiveStartDate | bahmniDate}}</span>
             </td>
 
             <td>
-                <span ng-if="drugOrder.isDiscontinuedOrStopped()">Stopped on {{drugOrder.effectiveStopDate | bahmniDate}} </span>
+                <span ng-if="drugOrder.isDiscontinuedOrStopped()">{{drugOrder.effectiveStopDate | bahmniDate}} </span>
             </td>
             <td>
                 <span ng-if="drugOrder.orderReasonConcept">{{drugOrder.orderReasonConcept.display || drugOrder.orderReasonConcept.name}}</span>
             </td>
             <td>
-                <span ng-if="drugOrder.orderReasonText">due to {{drugOrder.orderReasonText}}</span>
+                <span ng-if="drugOrder.orderReasonText">{{drugOrder.orderReasonText}}</span>
             </td>
             <td class="toggle-btn" ng-click="toggle(drugOrder)"
                 ng-if="section.dashboardParams.showDetailsButton">
