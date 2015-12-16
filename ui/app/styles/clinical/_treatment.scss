@@ -94,7 +94,8 @@
                 margin-right: 10px;
                 float: left;
                 @media screen and (max-width: 1024px) {
-                    min-width: 230px;
+                    width: 160px;
+                    min-width: 160px;
                 }
             }
             input[type="number"]{
@@ -109,6 +110,9 @@
                     margin: 0;
                 }
             }
+            #uniform-dose{
+                width: 105px;
+            }
             input[type="date"]{
                 padding-right: 0px;
                 padding-left: 5px;
@@ -119,6 +123,12 @@
                 &::-webkit-inner-spin-button, &::-webkit-outer-spin-button{
                     -webkit-appearance: none;
                     display: none;
+                }
+            }
+            .start-date-label{
+                padding: 0 5px 0 10px;
+                @media screen and (max-width: 1024px) {
+                    padding: 7px 5px 0 10px;
                 }
             }
             /*textarea.drug-order-notes{
@@ -201,10 +211,18 @@
             box-sizing: border-box;
             padding-right: 10px;
             padding-bottom: 10px;
+            .field-attribute{
+                &.stop-date-label{
+                    .control-label{
+                        width: auto;
+                    }
+                }
+            }
             .field-value{
                 margin-right: 5px;
                 textarea{
                     height: 25px;
+                    width: 540px;
                 }
             }
         }
