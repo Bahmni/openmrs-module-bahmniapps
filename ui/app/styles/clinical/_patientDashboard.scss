@@ -641,6 +641,7 @@ table.pivot-table {
 
 .dashboard-chronic-treatment-section {
   .chronic-treatment {
+    overflow: auto;
     .stopped {
       background-color: red;
     }
