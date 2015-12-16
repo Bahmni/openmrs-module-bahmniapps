@@ -3,16 +3,19 @@
 </h2>
 <p class="placeholder-text" ng-if="drugOrders && drugOrders.length == 0">{{'NO_DRUG_DETAILS_MESSAGE' | translate}} </p>
 <table class="drug-order-table treatments-details-table">
-    <tbody ng-if="drugOrders.length > 0" ng-repeat="drugOrder in drugOrders | orderBy:'-effectiveStartDate' | orderBy:'action' | orderBy:'-isActive()' ">
+    <tbody ng-if="drugOrders.length > 0" ng-repeat="drugOrder in drugOrders | orderBy:'-effectiveStartDate'  | orderBy:'-isActive()' ">
         <tr ng-class="{active: drugOrder.isActive(), 'test-notes-parent': drugOrder.additionalInstructions, 'notes-open': drugOrder.showDetails}">
             <td class="drug">
                 <span>{{drugOrder.drug.name}}</span>
             </td>
             <td class="dosage">
-                <span>{{drugOrder.getDoseInformation()}}</span>
+                <span>{{drugOrder.getDoseAndUnits()}}</span>
             </td>
             <td>
                 <span>{{drugOrder.route}}</span>
+            </td>
+            <td>
+                <span>{{drugOrder.getFrequency()}}</span>
             </td>
             <td class="days">
                 <span>from {{drugOrder.effectiveStartDate | bahmniDate}}</span>
