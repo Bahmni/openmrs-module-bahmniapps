@@ -3,7 +3,7 @@
 </h2>
 <p class="placeholder-text" ng-if="drugOrders && drugOrders.length == 0">{{'NO_DRUG_DETAILS_MESSAGE' | translate}} </p>
 <table class="drug-order-table treatments-details-table">
-    <th ng-repeat="columnName in columnHeaders">{{columnName | translate}}</th>
+    <th ng-if="drugOrders.length > 0" ng-repeat="columnName in columnHeaders">{{columnName | translate}}</th>
     <tbody ng-if="drugOrders.length > 0" ng-repeat="drugOrder in drugOrders">
         <tr ng-class="{active: drugOrder.isActive(), 'test-notes-parent': drugOrder.additionalInstructions, 'notes-open': drugOrder.showDetails}">
             <td class="drug">
