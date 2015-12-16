@@ -2,12 +2,19 @@
 
 angular.module('bahmni.common.displaycontrol.chronicTreatmentChart').directive('chronicTreatmentChart', [
     function () {
-        var controller = function ($scope, DrugService, spinner) {
+        var controller = function ($scope, spinner, $stateParams, DrugService, appService) {
             $scope.config = $scope.isOnDashboard ? $scope.section.dashboardParams : $scope.section.allDetailsParams;
             var patient = $scope.patient;
 
             var init = function () {
-                return DrugService.getRegimen(patient.uuid, $scope.config.drugs).success(function (data) {
+                var programConfig = appService.getAppDescriptor().getConfigValue("program") || {};
+                var startDate = null, endDate = null, getOtherActive;
+                if (programConfig.showDashBoardWithinDateRange) {
+                    startDate = $stateParams.dateEnrolled;
+                    endDate = $stateParams.dateCompleted;
+                }
+
+                return DrugService.getRegimen(patient.uuid, $scope.config.drugs, startDate, endDate).success(function (data) {
                     $scope.regimen = data;
                 });
             };
