@@ -26,7 +26,7 @@
                         </div>
                         <div class="field-value showOn-desktop">
                             <input type="text" id="registrationNumber" ng-model="patient.registrationNumber"
-                                   placeholder="Registration Number" non-blank="hasOldIdentifier || !hasIdentifierSources()" pattern-validate
+                                   placeholder="{{ 'REGISTRATION_LABEL_NUMBER' | translate}}" non-blank="hasOldIdentifier || !hasIdentifierSources()" pattern-validate
                                    ng-change="patient.generateIdentifier()" ng-show="hasOldIdentifier || !hasIdentifierSources()" focus-on="hasOldIdentifier">
                         </div>
                         <div ng-show="hasIdentifierSources()">
