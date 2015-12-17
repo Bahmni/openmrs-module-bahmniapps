@@ -3,10 +3,13 @@
 angular.module('bahmni.clinical')
     .service('diseaseTemplateService', ['$http', '$q', 'clinicalAppConfigService', function ($http, $q, clinicalAppConfigService) {
 
-        this.getLatestDiseaseTemplates = function (patientUuid, diseaseTemplates) {
+        this.getLatestDiseaseTemplates = function (patientUuid, diseaseTemplates, startDate, endDate) {
             var url = Bahmni.Common.Constants.diseaseTemplateUrl;
+            var params = {"patientUuid": patientUuid, "diseaseTemplateConfigList": diseaseTemplates};
+            params.startDate = startDate && moment(startDate).format();
+            params.endDate = endDate && moment(endDate).format();
             var deferred = $q.defer();
-            $http.post(url, {"patientUuid": patientUuid, "diseaseTemplateConfigList": diseaseTemplates},  {
+            $http.post(url, params,  {
                 withCredentials: true,
                 headers: {"Accept": "application/json", "Content-Type": "application/json"}
             }).then(function (response) {
@@ -16,12 +19,16 @@ angular.module('bahmni.clinical')
             return deferred.promise;
         };
 
-        this.getAllDiseaseTemplateObs = function (patientUuid, diseaseName) {
+        this.getAllDiseaseTemplateObs = function (patientUuid, diseaseName, startDate, endDate) {
             var url = Bahmni.Common.Constants.AllDiseaseTemplateUrl;
-
+            var params = {patientUuid: patientUuid, diseaseTemplateConfigList: [{"templateName":diseaseName}]};
+            params.startDate = startDate && moment(startDate).format();
+            params.endDate = endDate && moment(endDate).format();
             var deferred = $q.defer();
-            $http.get(url, {
-                params: {patientUuid: patientUuid, diseaseName: diseaseName}
+            $http.post(url,
+                params, {
+                withCredentials: true,
+                    headers: {"Accept": "application/json", "Content-Type": "application/json"}
             }).then(function (diseaseTemplateResponse) {
                     var diseaseTemplates = mapDiseaseTemplates([diseaseTemplateResponse.data], clinicalAppConfigService.getAllConceptsConfig());
                     deferred.resolve(diseaseTemplates[0]);

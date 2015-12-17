@@ -132,11 +132,6 @@ angular.module('consultation')
                         templateUrl: 'dashboard/views/dashboard.html',
                         controller: 'PatientDashboardController'
                     }
-                },
-                resolve: {
-                    latestDiseaseTemplates: function(dashboardInitialization, clinicalDashboardConfig, diseaseTemplateService, $stateParams) {
-                        return diseaseTemplateService.getLatestDiseaseTemplates($stateParams.patientUuid, clinicalDashboardConfig.getDiseaseTemplateSections())
-                    }
                 }
             })
             .state('patient.dashboard.show.observations', {
