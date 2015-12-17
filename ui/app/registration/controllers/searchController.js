@@ -39,6 +39,7 @@ angular.module('bahmni.registration')
 
                 $scope.searchParameters.registrationNumber = $location.search().registrationNumber || "";
                 if (hasSearchParameters()) {
+                    searching = true;
                     var searchPromise = patientService.search(
                         $scope.searchParameters.name,
                         undefined,
@@ -51,7 +52,6 @@ angular.module('bahmni.registration')
                          mapCustomAttributesSearchResults(response);
                          return response;
                     });
-                    searching = true;
                     searchPromise['finally'](function () {
                         searching = false;
                     });
@@ -66,8 +66,8 @@ angular.module('bahmni.registration')
             };
 
             var mapCustomAttributesSearchResults = function(data){
-                if($scope.customAttributesSearchConfig.fields){
-                    data.pageOfResults.map(function(result){
+                if($scope.customAttributesSearchConfig.fields && data != "Searching"){
+                    _.map(data.pageOfResults, function(result){
                         result.customAttribute = result.customAttribute && JSON.parse(result.customAttribute);
                     });
                 }
@@ -215,7 +215,7 @@ angular.module('bahmni.registration')
                 var promise = searchBasedOnQueryParameters($scope.results.length);
                 if (promise) {
                     promise.then(function (data) {
-                        data.pageOfResults.forEach(function (result) {
+                        angular.forEach(data.pageOfResults,function (result) {
                             $scope.results.push(result)
                         });
                         $scope.noMoreResultsPresent = (data.pageOfResults.length === 0);

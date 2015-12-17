@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('bahmni.registration')
-    .factory('patientService', ['$http', '$rootScope','$bahmniCookieStore','$q','patientServiceOffline', function ($http, $rootScope, $bahmniCookieStore, $q, patientServiceOffline) {
+    .factory('patientService', ['$http', '$rootScope','$bahmniCookieStore','$q','patientServiceOffline', 'offlineService', function ($http, $rootScope, $bahmniCookieStore, $q, patientServiceOffline, offlineService) {
         var openmrsUrl = Bahmni.Registration.Constants.openmrsUrl;
         var baseOpenMRSRESTURL = Bahmni.Registration.Constants.baseOpenMRSRESTURL;
         var search = function (query, identifier, addressFieldName, addressFieldValue, customAttributeValue, offset, customAttributeFields) {
@@ -19,11 +19,15 @@ angular.module('bahmni.registration')
                 },
                 withCredentials: true
             };
-            if($rootScope.offline()){
-                return patientServiceOffline.search(config.params);
+            var defer = $q.defer();
+
+            if(offlineService.offline()){
+                patientServiceOffline.search(config.params).then(function(result){
+                    defer.resolve(result);
+                });
+                return defer.promise;
             }
             var url = Bahmni.Common.Constants.bahmniSearchUrl + "/patient";
-            var defer = $q.defer();
             $http.get(url, config).success(function(result) {
                 defer.resolve(result);
             });

@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('bahmni.common.uiHelper')
-    .controller('DashboardController', ['$rootScope', '$scope', '$state', 'appService', 'locationService', 'spinner', '$bahmniCookieStore', '$window','chromeAppDataService',
-        function ($rootScope, $scope, $state, appService, locationService, spinner, $bahmniCookieStore, $window, chromeAppDataService) {
+    .controller('DashboardController', ['$rootScope', '$scope', '$state', 'appService', 'locationService', 'spinner', '$bahmniCookieStore', '$window','chromeAppDataService','offlineService',
+        function ($rootScope, $scope, $state, appService, locationService, spinner, $bahmniCookieStore, $window, chromeAppDataService, offlineService) {
             $scope.appExtensions = appService.getAppDescriptor().getExtensions($state.current.data.extensionPointId, "link") || [];
             $scope.selectedLocationUuid = {};
 
@@ -29,14 +29,15 @@ angular.module('bahmni.common.uiHelper')
             };
 
             $scope.syncData = function() {
-                var token = spinner.show();
-                if ($rootScope.getAppPlatform() === Bahmni.Common.Constants.platformType.android) {
+                if (offlineService.getAppPlatform() === Bahmni.Common.Constants.platformType.android) {
                     Android.populateData(window.location.origin);
                 }
                 else {
-                    chromeAppDataService.populateData();
+                    var token = spinner.show();
+                    chromeAppDataService.populateData().then(function(){
+                        spinner.hide(token);
+                    });
                 }
-                spinner.hide(token);
             };
 
             $scope.onLocationChange = function () {

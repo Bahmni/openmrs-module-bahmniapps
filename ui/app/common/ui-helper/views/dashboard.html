@@ -5,7 +5,7 @@
                 <option ng-repeat="location in locations" ng-selected="isCurrentLocation(location)" value="{{location.uuid}}">
                     {{location.display}}
                 </option>
-            </select> 
+            </select>
         </form>
         <!-- Mujir/Vikash - to be introduced when we do retrospective entry for registration and other modules -->
         <!--<input class="retro-date-widget fr" type="date"/>-->
@@ -27,8 +27,10 @@
                     <span ng-bind="currentUser.currentLocation"></span>
                 </a>
             </li>
-            <li ng-if="isOfflineApp()" ng-click="syncData()">
-                <i class="fa fa-refresh small"></i><span class="nav-link">{{'HEADER_LABEL_SYNC_KEY' | translate}}</span>
+            <li ng-if="isOfflineApp()">
+                <a ng-click="syncData()">
+                    <i class="fa fa-refresh small"></i><span nav-link>{{'HEADER_LABEL_SYNC_KEY' | translate}}</span>
+                </a>
             </li>
             <li>
                 <a log-out><i class="fa fa-power-off fa-white small"></i><span class="nav-link">{{'HEADER_LABEL_LOGOUT_KEY' | translate}}</span></a>

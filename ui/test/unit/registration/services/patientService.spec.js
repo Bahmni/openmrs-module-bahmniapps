@@ -3,7 +3,7 @@
 describe('Patient resource', function () {
     var patientService, offlineService;
     var patient;
-    var _offlineService = jasmine.createSpyObj('offlineService', ['getAppPlatform']);
+    var _offlineService = jasmine.createSpyObj('offlineService', ['offline']);
 
     var openmrsUrl = "http://blah";
     var patientConfiguration;
@@ -58,16 +58,13 @@ describe('Patient resource', function () {
             patient = patientFactory.create();
             patientService = patientServiceInjectted;
             $rootScope.patientConfiguration = patientConfiguration;
-            $rootScope.offline = function(){
-                return false;
-            }
         }]);
 
     });
 
     var mockOfflineService = function () {
-        _offlineService.getAppPlatform.and.callFake(function () {
-            return "chrome";
+        _offlineService.offline.and.callFake(function () {
+            return false;
         });
     };
 

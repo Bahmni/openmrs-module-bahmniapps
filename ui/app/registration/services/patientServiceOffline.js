@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('bahmni.registration')
-    .factory('patientServiceOffline', ['$http', '$rootScope', '$bahmniCookieStore', '$q', 'offlineService', 'chromeAppDataService', function ($http, $rootScope, $bahmniCookieStore, $q, offlineService,chromeAppDataService) {
+    .factory('patientServiceOffline', ['$http', '$q', 'offlineService', 'chromeAppDataService', function ($http, $q, offlineService,chromeAppDataService) {
 
         var createSql = function(params){
             var nameParts = null;
@@ -74,8 +74,11 @@ angular.module('bahmni.registration')
         };
 
         var search = function (params) {
-            if (platform === Bahmni.Common.Constants.platformType.android) {
-                return $q.when(JSON.parse(Android.search(createSql(params))));
+            //var token = spinner.show();
+            if (offlineService.getAppPlatform() === Bahmni.Common.Constants.platformType.android) {
+                var returnValue = JSON.parse(Android.search(createSql(params)));
+                //spinner.hide(token);
+                return $q.when(returnValue);
             }
             else {
                 return chromeAppDataService.search(params);
@@ -83,7 +86,7 @@ angular.module('bahmni.registration')
         };
 
         var get = function (uuid) {
-            if (platform === Bahmni.Common.Constants.platformType.android) {
+            if (offlineService.getAppPlatform() === Bahmni.Common.Constants.platformType.android) {
                 return $q.when(JSON.parse(Android.getPatient(uuid)));
             }
             else{

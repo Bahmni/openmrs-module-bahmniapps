@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('bahmni.common.uiHelper')
-    .service('chromeAppDataService', ['$http', '$q', function ($http, $q) {
+    .service('chromeAppDataService', ['$http', '$q','$rootScope', function ($http, $q, $rootScope) {
         var schemaBuilder;
         var attributeTypeColumnNames = [
             "attributeTypeId",
@@ -25,8 +25,8 @@ angular.module('bahmni.common.uiHelper')
         var startIndex = 0;
 
         this.populateData = function () {
-
-            schemaBuilder = lf.schema.create('BahmniX2', 2);
+            var deferred = $q.defer();
+            schemaBuilder = lf.schema.create('Bahmni', 2);
 
             createTable(schemaBuilder, 'patient_attribute_types', attributeTypeColumnNames);
             createTable(schemaBuilder, 'patient', patientColumnNames);
@@ -36,17 +36,27 @@ angular.module('bahmni.common.uiHelper')
                 createTable(schemaBuilder, 'patient_address', addressColumns);
                 schemaBuilder.connect().then(function (db) {
                     insertAttributeTypes(db);
-                    insertPatients(db, addressColumns, 0)
+                    insertPatients(db, addressColumns, 0);
+                    deferred.resolve("Populate Success")
                 });
             });
+            return deferred.promise;
 
         };
 
         this.getPatient = function (uuid) {
             var deferred = $q.defer();
-            schemaBuilder = lf.schema.create('BahmniX2', 2);
+            schemaBuilder = lf.schema.create('Bahmni', 2);
             createTable(schemaBuilder, 'patient_attribute_types', attributeTypeColumnNames);
-            createTable(schemaBuilder, 'patient', patientColumnNames);
+
+            var columnsToBeIndexed = {
+                'givenNameIndex': 'givenName',
+                'middleNameIndex': 'middleName',
+                'familyNameIndex': 'familyName',
+                'identifierIndex': 'identifier'
+            };
+            createTable(schemaBuilder, 'patient', patientColumnNames, columnsToBeIndexed);
+
             createTable(schemaBuilder, 'patient_attributes', attributeColumnNames);
 
             getAddressColumns().then(function (addressColumns) {
@@ -65,6 +75,14 @@ angular.module('bahmni.common.uiHelper')
         };
 
         this.search = function (params) {
+            var response = {
+                pageOfResults: []
+            };
+            if($rootScope.searching){
+                response.pageOfResults.push({});
+                return $q.when(response);
+            }
+            $rootScope.searching = true;
             var deferred = $q.defer();
             var nameParts = null;
             if (params.q) {
@@ -84,7 +102,7 @@ angular.module('bahmni.common.uiHelper')
                 startIndex = 0;
             }
 
-            schemaBuilder = lf.schema.create('BahmniX2', 2);
+            schemaBuilder = lf.schema.create('Bahmni', 2);
             createTable(schemaBuilder, 'patient_attribute_types', attributeTypeColumnNames);
             createTable(schemaBuilder, 'patient', patientColumnNames);
             createTable(schemaBuilder, 'patient_attributes', attributeColumnNames);
@@ -102,8 +120,8 @@ angular.module('bahmni.common.uiHelper')
                         pat.attributeName.as('attributeName'), pa.attributeValue.as('attributeValue'))
                         .from(p)
                         .innerJoin(padd, p._id.eq(padd.patientId))
-                        .innerJoin(pa, p._id.eq(pa.patientId))
-                        .innerJoin(pat, pa.attributeTypeId.eq(pat.attributeTypeId));
+                        .leftOuterJoin(pa, p._id.eq(pa.patientId))
+                        .leftOuterJoin(pat, pa.attributeTypeId.eq(pat.attributeTypeId));
 
                     var predicates = [];
 
@@ -129,14 +147,12 @@ angular.module('bahmni.common.uiHelper')
                     if (!_.isEmpty(predicates))
                         query = query.where(whereCondition);
 
-                    query.limit(50).skip(startIndex).orderBy(p.dateCreated, lf.Order.DESC).exec()
+                    query.limit(100).skip(startIndex).orderBy(p.dateCreated, lf.Order.DESC).exec()
                         .then(function (results) {
                             var groupedResults = _.groupBy(results, function (res) {
                                 return res.identifier
                             });
-                            var response = {
-                                pageOfResults: []
-                            };
+
                             var patient;
                             angular.forEach(groupedResults, function (groupedResult) {
                                 var customAttributes = {};
@@ -158,7 +174,8 @@ angular.module('bahmni.common.uiHelper')
                                     response.pageOfResults.push(patient);
                                 }
                             });
-                            startIndex += 50;
+                            startIndex += 100;
+                            $rootScope.searching = false;
                             deferred.resolve(response);
                         }, function (e) {
                             console.log(e);
@@ -169,22 +186,27 @@ angular.module('bahmni.common.uiHelper')
             return deferred.promise;
         };
 
-        var createTable = function (schemaBuilder, tableName, columnNames) {
+        var createTable = function (schemaBuilder, tableName, columnNames, columnsToBeIndexed) {
             var table = schemaBuilder.createTable(tableName).addColumn('_id', lf.Type.INTEGER).addPrimaryKey(['_id'], true);
             angular.forEach(columnNames, function (columnName) {
                 table.addColumn(columnName, lf.Type.STRING)
             });
             table.addNullable(columnNames);
+            if (columnsToBeIndexed) {
+                angular.forEach(Object.keys(columnsToBeIndexed), function (indexName) {
+                    table.addIndex(indexName, columnsToBeIndexed[indexName]);
+                });
+            }
         };
 
-        var insertPatients = function (db, addressColumnNames, startIndex) {
+        var insertPatients = function (db, addressColumnNames, nextIndex) {
             var pageSize = 1;
-            $http.get(window.location.origin + "/openmrs/ws/rest/v1/bahmnicore/patientData?startIndex=" + startIndex + "&limit=" + pageSize).then(function (patientJson) {
+            $http.get(window.location.origin + "/openmrs/ws/rest/v1/bahmnicore/patientData?startIndex=" + nextIndex + "&limit=" + pageSize).then(function (patientJson) {
                 if (patientJson.data.pageOfResults.length == 0) {
                     return;
                 }
                 insertPatientData(db, patientJson.data.pageOfResults[0].patient, addressColumnNames);
-                insertPatients(db, addressColumnNames, ++startIndex)
+                insertPatients(db, addressColumnNames, ++nextIndex)
             });
         };
 
@@ -207,6 +229,7 @@ angular.module('bahmni.common.uiHelper')
                 'patientJson': patient
             });
             db.insertOrReplace().into(patientTable).values([row]).exec();
+            console.log(patientIdentifier);
 
             db.select(patientTable._id).from(patientTable).where(patientTable.identifier.eq(patientIdentifier)).exec()
                 .then(function (results) {
@@ -255,14 +278,6 @@ angular.module('bahmni.common.uiHelper')
                     })();
                 }
             }
-            else {
-                var row = attributeTable.createRow({
-                    'attributeTypeId': 99,
-                    'attributeValue': "dummy",
-                    'patientId': patientId
-                });
-                db.insertOrReplace().into(attributeTable).values([row]).exec();
-            }
         };
 
         var getAddressColumns = function () {
@@ -291,10 +306,6 @@ angular.module('bahmni.common.uiHelper')
                     });
                     db.insertOrReplace().into(table).values([row]).exec();
                 }
-                row = table.createRow({
-                    'attributeTypeId': 99,
-                    'attributeName': "dummy"
-                });
                 db.insertOrReplace().into(table).values([row]).exec();
             });
         };
