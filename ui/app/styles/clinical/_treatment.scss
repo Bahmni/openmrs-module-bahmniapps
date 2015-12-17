@@ -90,7 +90,8 @@
                 padding: 6px 10px 7px;
             }
             .drug-name,textarea.drug-order-notes{
-                min-width: 370px;
+                min-width: 335px;
+                width: 335px;
                 margin-right: 10px;
                 float: left;
                 @media screen and (max-width: 1024px) {
