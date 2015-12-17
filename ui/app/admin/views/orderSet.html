@@ -66,6 +66,15 @@
                             <input class="fl remove-orderSet" type="button" ng-click="removeOrderSetMember($index)" value="X">
 
                         </div>
+
+                        <div class="col col4 form-field">
+                            <div class="field-attribute">
+                                <label>Sequence<span class="asterick">*</span></label>
+                            </div>
+                            <div class="field-value">
+                                <select ng-model="orderSetMember.sortWeight" ng-options="i for i in getNumber(orderSet.orderSetMembers.length)" ng-change="rearrangeSequence(orderSet, orderSetMember)" required></select>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </fieldset>

@@ -72,6 +72,7 @@ Bahmni.Clinical.DrugOrderViewModel = function (appConfig, config, proto, encount
     this.orderAttributes = [];
     this.orderSetUuid = '';
     this.orderGroupUuid = '';
+    this.sortWeight = '';
 
     this.overlappingScheduledWith = function(otherDrugOrder){
 

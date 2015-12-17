@@ -51,7 +51,8 @@ Bahmni.Clinical.DrugOrder = (function () {
                 previousOrderUuid: drugOrderData.previousOrderUuid,
                 action: drugOrderData.action,
                 orderSetUuid: '',
-                orderGroupUuid: ''
+                orderGroupUuid: '',
+                sortWeight: drugOrderData.sortWeight
             }
         );
         if (!drugOrder.dosingInstructions.quantityUnits) {

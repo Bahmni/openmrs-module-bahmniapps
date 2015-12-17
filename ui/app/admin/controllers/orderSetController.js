@@ -35,6 +35,14 @@ angular.module('bahmni.common.domain')
                 });
             };
 
+            $scope.getNumber = function (num) {
+                var sequence = [];
+                for (var i = 1; i <= num; i++) {
+                    sequence.push(i);
+                }
+                return sequence;
+            };
+
             $scope.getDataResults = function (selectedOrderType) {
                 return function (results) {
                     var orderType = $scope.orderTypes.filter(function (orderObj) {
@@ -52,7 +60,7 @@ angular.module('bahmni.common.domain')
             $scope.onSelect = function (index) {
                 return function (selectedConcept) {
                     $scope.orderSet.orderSetMembers[index].concept = selectedConcept.concept;
-                    $scope.orderSet.orderSetMembers[index].sequence = index + 1;
+                    $scope.orderSet.orderSetMembers[index].sortWeight = index + 1;
                 };
             };
 
@@ -63,6 +71,31 @@ angular.module('bahmni.common.domain')
             $scope.clearConceptName = function (orderSetMember) {
                 orderSetMember.concept = {};
             };
+
+            $scope.rearrangeSequence = function (orderSet, orderSetMember) {
+                var numberOfOrderSetMembers = orderSet.orderSetMembers.length;
+                var startIndex;
+                for(var i=0; i<numberOfOrderSetMembers; i++) {
+                    if(orderSet.orderSetMembers[i].uuid == orderSetMember.uuid) {
+                        startIndex = i+1;
+                    }
+                }
+                var endIndex = orderSetMember.sortWeight;
+                if(startIndex > endIndex) {
+                    orderSet.orderSetMembers.splice(endIndex-1, 0, orderSetMember);
+                    for(var i=endIndex; i<startIndex; i++) {
+                        orderSet.orderSetMembers[i].sortWeight+=1;
+                    }
+                    orderSet.orderSetMembers.splice(startIndex, 1);
+                }
+                else {
+                    orderSet.orderSetMembers.splice(endIndex, 0, orderSetMember);
+                    for(var i=startIndex; i<endIndex; i++) {
+                        orderSet.orderSetMembers[i].sortWeight-=1;
+                    }
+                    orderSet.orderSetMembers.splice(startIndex-1,1)
+                }
+            }
 
             var primaryAttributeCount = function () {
                 var count = 0;
@@ -128,7 +161,6 @@ angular.module('bahmni.common.domain')
                 });
                 return countActive;
             };
-
             var map = function (orderSet) {
                 var mappedOrderSet = {};
                 if (orderSet.orderSetId) {
@@ -175,12 +207,13 @@ angular.module('bahmni.common.domain')
                             name: orderSetMember.concept.name.display,
                             uuid: orderSetMember.concept.uuid
                         };
-                        orderSetMemberObj.sequence = orderSetMember.sequence;
+                        orderSetMemberObj.sortWeight = orderSetMember.sortWeight;
                         orderSetMemberObj.voided = orderSetMember.voided;
                         mappedOrderSet.orderSetMembers.push(orderSetMemberObj);
                     });
                 }
             };
+
 
             var buildOrderSetMember = function () {
                 var orderSetMemberAttributeTypeId = $scope.primaryAttributeType.orderSetMemberAttributeTypeId;
