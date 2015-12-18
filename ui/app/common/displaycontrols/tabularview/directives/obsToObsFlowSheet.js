@@ -2,12 +2,18 @@
 
 angular.module('bahmni.common.displaycontrol.obsVsObsFlowSheet')
     .directive('obsToObsFlowSheet', function () {
-        var controller = function ($scope, observationsService, spinner) {
+        var controller = function ($scope, $stateParams, spinner, appService, observationsService) {
             $scope.config = $scope.isOnDashboard ? $scope.section.dashboardParams : $scope.section.allDetailsParams;
             var patient = $scope.patient;
             var init = function () {
+                var programConfig = appService.getAppDescriptor().getConfigValue("program") || {};
+                var startDate = null, endDate = null, getOtherActive;
+                if (programConfig.showDashBoardWithinDateRange) {
+                    startDate = $stateParams.dateEnrolled;
+                    endDate = $stateParams.dateCompleted;
+                }
                 return observationsService.getObsInFlowSheet(patient.uuid, $scope.config.templateName,
-                    $scope.config.groupByConcept, $scope.config.conceptNames, $scope.config.numberOfVisits, $scope.config.initialCount, $scope.config.latestCount, $scope.config.name).success(function (data) {
+                    $scope.config.groupByConcept, $scope.config.conceptNames, $scope.config.numberOfVisits, $scope.config.initialCount, $scope.config.latestCount, $scope.config.name, startDate, endDate).success(function (data) {
                         var foundElement = _.find(data.headers, function (header) {
                             return header.name === $scope.config.groupByConcept;
                         });
@@ -57,7 +63,7 @@ angular.module('bahmni.common.displaycontrol.obsVsObsFlowSheet')
 
             $scope.isMonthAvailable = function(){
                 return $scope.obsTable.rows[0].columns['Month'] != null
-            }
+            };
 
             spinner.forPromise(init());
         };
