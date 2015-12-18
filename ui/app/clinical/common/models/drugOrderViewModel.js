@@ -59,7 +59,6 @@ Bahmni.Clinical.DrugOrderViewModel = function (appConfig, config, proto, encount
     this.durationUnit = this.durationUnit || appConfig.defaultDurationUnit;
     this.simpleDrugForm = this.simpleDrugForm || appConfig.simpleDrugForm || false;
     this.instructions = this.instructions || appConfig.defaultInstructions;
-    this.effectiveStartDate = this.effectiveStartDate || this.encounterDate;
     this.autoExpireDate = this.autoExpireDate || undefined;
     this.frequencyType = this.frequencyType || Bahmni.Clinical.Constants.dosingTypes.uniform;
     this.uniformDosingType = this.uniformDosingType || {};
@@ -73,6 +72,12 @@ Bahmni.Clinical.DrugOrderViewModel = function (appConfig, config, proto, encount
     this.isBeingEdited = this.isBeingEdited || false;
     this.orderAttributes = [];
     this.isNonCodedDrug = this.isNonCodedDrug || false;
+
+    if(appConfig.defaultStartDate === false && !this.effectiveStartDate)
+        this.effectiveStartDate = null;
+    else{
+        this.effectiveStartDate = this.effectiveStartDate || this.encounterDate;
+    }
 
     if (!appConfig.duration || (appConfig.duration && appConfig.duration.required == undefined)) {
         this.isDurationRequired = true;
