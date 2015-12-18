@@ -11,7 +11,7 @@
                    ng-model="treatment.drugNameDisplay" on-select="onSelect" autofocus
                    ng-disabled="treatment.previousOrderUuid" ng-readonly="treatment.isBeingEdited"/>
 
-            <span ng-if="!allowOnlyCodedDiagnosis">
+            <span ng-if="!allowOnlyCodedDrugs">
                 <button type="button" ng-model="treatment.isNonCodedDrug"
                         class="fl accept-btn" id="accept-button"
                         ng-click="onAccept()"

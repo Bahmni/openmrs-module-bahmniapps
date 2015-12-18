@@ -3,9 +3,9 @@
 angular.module('bahmni.clinical')
 
     .controller('TreatmentController', ['$scope', '$rootScope', 'contextChangeHandler', 'treatmentConfig', 'DrugService', '$timeout',
-        'clinicalAppConfigService', 'ngDialog', '$window', 'messagingService',
+        'clinicalAppConfigService', 'ngDialog', '$window', 'messagingService', 'appService',
         function ($scope, $rootScope, contextChangeHandler, treatmentConfig, drugService, $timeout,
-                  clinicalAppConfigService, ngDialog, $window, messagingService) {
+                  clinicalAppConfigService, ngDialog, $window, messagingService, appService) {
 
             var DateUtil = Bahmni.Common.Util.DateUtil;
 
@@ -13,6 +13,8 @@ angular.module('bahmni.clinical')
             $scope.treatmentConfig = treatmentConfig;
             $scope.treatmentActionLinks = clinicalAppConfigService.getTreatmentActionLink();
             var drugOrderAppConfig = clinicalAppConfigService.getDrugOrderConfig();
+            $scope.allowOnlyCodedDrugs = appService.getAppDescriptor().getConfig("allowOnlyCodedDrugs") &&
+                appService.getAppDescriptor().getConfig("allowOnlyCodedDrugs").value;
 
 
             function markVariable(variable){
