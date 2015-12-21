@@ -160,6 +160,10 @@ Bahmni.Common = Bahmni.Common || {};
             android: 'android',
             chromeApp: 'chrome-app',
             other: 'other'
-        }
+        },
+        encryptionType: {
+            SHA3: 'SHA3'
+        },
+        LoginInformation: 'LoginInformation'
     };
 })();
