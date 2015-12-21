@@ -204,7 +204,7 @@ angular.module('bahmni.registration')
                 spinner.forPromise(createPromise()).finally(function() {
                     $scope.saveInProgress = false;
                 });
-            }
+            };
 
             $scope.afterSave = function () {
                 messagingService.showMessage("info", "REGISTRATION_LABEL_SAVED");

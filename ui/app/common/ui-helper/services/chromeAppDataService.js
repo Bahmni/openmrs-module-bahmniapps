@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('bahmni.common.uiHelper')
-    .service('chromeAppDataService', ['$http', '$q','$rootScope', function ($http, $q, $rootScope) {
+    .service('chromeAppDataService', ['$http', '$q', '$rootScope', function ($http, $q, $rootScope) {
         var schemaBuilder;
         var attributeTypeColumnNames = [
             "attributeTypeId",
@@ -23,13 +23,19 @@ angular.module('bahmni.common.uiHelper')
             "patientId"
         ];
         var startIndex = 0;
+        var columnsToBeIndexed = {
+            'givenNameIndex': 'givenName',
+            'middleNameIndex': 'middleName',
+            'familyNameIndex': 'familyName',
+            'identifierIndex': 'identifier'
+        };
 
         this.populateData = function () {
             var deferred = $q.defer();
             schemaBuilder = lf.schema.create('Bahmni', 2);
 
             createTable(schemaBuilder, 'patient_attribute_types', attributeTypeColumnNames);
-            createTable(schemaBuilder, 'patient', patientColumnNames);
+            createTable(schemaBuilder, 'patient', patientColumnNames, columnsToBeIndexed);
             createTable(schemaBuilder, 'patient_attributes', attributeColumnNames);
 
             getAddressColumns().then(function (addressColumns) {
@@ -49,12 +55,7 @@ angular.module('bahmni.common.uiHelper')
             schemaBuilder = lf.schema.create('Bahmni', 2);
             createTable(schemaBuilder, 'patient_attribute_types', attributeTypeColumnNames);
 
-            var columnsToBeIndexed = {
-                'givenNameIndex': 'givenName',
-                'middleNameIndex': 'middleName',
-                'familyNameIndex': 'familyName',
-                'identifierIndex': 'identifier'
-            };
+
             createTable(schemaBuilder, 'patient', patientColumnNames, columnsToBeIndexed);
 
             createTable(schemaBuilder, 'patient_attributes', attributeColumnNames);
@@ -78,7 +79,7 @@ angular.module('bahmni.common.uiHelper')
             var response = {
                 pageOfResults: []
             };
-            if($rootScope.searching){
+            if ($rootScope.searching) {
                 response.pageOfResults.push({});
                 return $q.when(response);
             }
@@ -104,7 +105,7 @@ angular.module('bahmni.common.uiHelper')
 
             schemaBuilder = lf.schema.create('Bahmni', 2);
             createTable(schemaBuilder, 'patient_attribute_types', attributeTypeColumnNames);
-            createTable(schemaBuilder, 'patient', patientColumnNames);
+            createTable(schemaBuilder, 'patient', patientColumnNames, columnsToBeIndexed);
             createTable(schemaBuilder, 'patient_attributes', attributeColumnNames);
 
             getAddressColumns().then(function (addressColumns) {
@@ -115,71 +116,84 @@ angular.module('bahmni.common.uiHelper')
                     var pat = db.getSchema().table('patient_attribute_types');
                     var padd = db.getSchema().table('patient_address');
 
-                    var query = db.select(p.identifier.as('identifier'), p.givenName.as('givenName'), p.middleName.as('middleName'), p.familyName.as('familyName'),
-                        p.dateCreated.as('dateCreated'), p.age.as('age'), p.gender.as('gender'), p.uuid.as('uuid'), padd[addressFieldName].as('addressFieldValue'),
-                        pat.attributeName.as('attributeName'), pa.attributeValue.as('attributeValue'))
-                        .from(p)
-                        .innerJoin(padd, p._id.eq(padd.patientId))
-                        .leftOuterJoin(pa, p._id.eq(pa.patientId))
-                        .leftOuterJoin(pat, pa.attributeTypeId.eq(pat.attributeTypeId));
+                    db.select(pat.attributeTypeId.as("attributeTypeIds"))
+                        .from(pat)
+                        .where(pat.attributeName.in(params.patientAttributes)).exec()
+                        .then(function (attributeTypeIds) {
 
-                    var predicates = [];
 
-                    if (!_.isEmpty(params.address_field_value)) {
-                        predicates.push(padd[addressFieldName].match(new RegExp(params.address_field_value, 'i')));
-                    }
+                            var query = db.select(p.identifier.as('identifier'), p.givenName.as('givenName'), p.middleName.as('middleName'), p.familyName.as('familyName'),
+                                p.dateCreated.as('dateCreated'), p.age.as('age'), p.gender.as('gender'), p.uuid.as('uuid'), padd[addressFieldName].as('addressFieldValue'),
+                                pat.attributeName.as('attributeName'), pa.attributeValue.as('attributeValue'), pa.attributeTypeId.as('attributeTypeId'))
+                                .from(p)
+                                .innerJoin(padd, p._id.eq(padd.patientId))
+                                .leftOuterJoin(pa, p._id.eq(pa.patientId))
+                                .leftOuterJoin(pat, pa.attributeTypeId.eq(pat.attributeTypeId));
 
-                    if (!_.isEmpty(params.identifier)) {
-                        predicates.push(p.identifier.eq(params.identifier));
-                    }
-                    if (!_.isEmpty(nameParts)) {
-                        var nameSearchCondition = [];
-                        if (!_.isEmpty(nameParts)) {
-                            angular.forEach(nameParts, function (namePart) {
-                                nameSearchCondition.push(lf.op.or(p.givenName.match(new RegExp(namePart, 'i')), p.middleName.match(new RegExp(namePart, 'i')), p.familyName.match(new RegExp(namePart, 'i'))));
-                            });
-                            predicates.push(lf.op.and.apply(null, nameSearchCondition));
-                        }
-                    }
+                            var predicates = [];
 
-                    var whereCondition = lf.op.and.apply(null, predicates);
+                            if (!_.isEmpty(params.address_field_value)) {
+                                predicates.push(padd[addressFieldName].match(new RegExp(params.address_field_value, 'i')));
+                            }
 
-                    if (!_.isEmpty(predicates))
-                        query = query.where(whereCondition);
-
-                    query.limit(100).skip(startIndex).orderBy(p.dateCreated, lf.Order.DESC).exec()
-                        .then(function (results) {
-                            var groupedResults = _.groupBy(results, function (res) {
-                                return res.identifier
-                            });
-
-                            var patient;
-                            angular.forEach(groupedResults, function (groupedResult) {
-                                var customAttributes = {};
-                                patient = groupedResult[0];
-                                angular.forEach(groupedResult, function (result) {
-                                    if (result.attributeName)
-                                        customAttributes[result.attributeName] = result.attributeValue;
-                                });
-                                patient.customAttribute = JSON.stringify(customAttributes);
-                                if (!_.isEmpty(params.custom_attribute)) {
-                                    var matched = _.find(customAttributes, function (attributeValue, attributeName) {
-                                        return attributeValue.toString().toLowerCase().indexOf(params.custom_attribute.toLowerCase()) != -1 && _.contains(params.patientAttributes, attributeName);
+                            if (!_.isEmpty(params.identifier)) {
+                                predicates.push(p.identifier.eq(params.identifier));
+                            }
+                            if (!_.isEmpty(nameParts)) {
+                                var nameSearchCondition = [];
+                                if (!_.isEmpty(nameParts)) {
+                                    angular.forEach(nameParts, function (namePart) {
+                                        nameSearchCondition.push(lf.op.or(p.givenName.match(new RegExp(namePart, 'i')), p.middleName.match(new RegExp(namePart, 'i')), p.familyName.match(new RegExp(namePart, 'i'))));
                                     });
-                                    if (matched) {
-                                        response.pageOfResults.push(groupedResult[0]);
-                                    }
+                                    predicates.push(lf.op.and.apply(null, nameSearchCondition));
                                 }
-                                else {
-                                    response.pageOfResults.push(patient);
-                                }
-                            });
-                            startIndex += 100;
-                            $rootScope.searching = false;
-                            deferred.resolve(response);
-                        }, function (e) {
-                            console.log(e);
-                        });
+                            }
+
+                            if (!_.isEmpty(params.custom_attribute)) {
+                                predicates.push(pa.attributeTypeId.in(attributeTypeIds));
+                                //predicates.push(pa.attributeValue.match(new RegExp("a", 'i')));
+                            }
+
+                            var whereCondition = lf.op.and.apply(null, predicates);
+
+                            if (!_.isEmpty(predicates))
+                                query = query.where(whereCondition);
+
+                            query.limit(50).skip(startIndex).orderBy(p.dateCreated, lf.Order.DESC).exec()
+                                .then(function (results) {
+                                    var groupedResults = _.groupBy(results, function (res) {
+                                        return res.identifier
+                                    });
+
+                                    var patient;
+                                    angular.forEach(groupedResults, function (groupedResult) {
+                                        var customAttributes = {};
+                                        patient = groupedResult[0];
+                                        angular.forEach(groupedResult, function (result) {
+                                            if (result.attributeName)
+                                                customAttributes[result.attributeName] = result.attributeValue;
+                                        });
+                                        patient.customAttribute = JSON.stringify(customAttributes);
+                                        if (!_.isEmpty(params.custom_attribute)) {
+                                            var matched = _.find(customAttributes, function (attributeValue, attributeName) {
+                                                return attributeValue.toString().toLowerCase().indexOf(params.custom_attribute.toLowerCase()) != -1 && _.contains(params.patientAttributes, attributeName);
+                                            });
+                                            if (matched) {
+                                                response.pageOfResults.push(groupedResult[0]);
+                                            }
+                                        }
+                                        else {
+                                            response.pageOfResults.push(patient);
+                                        }
+                                    });
+                                    startIndex += 50;
+                                    $rootScope.searching = false;
+                                    deferred.resolve(response);
+                                }, function (e) {
+                                    console.log(e);
+                                });
+                        })
+
                 });
             });
 
@@ -194,7 +208,7 @@ angular.module('bahmni.common.uiHelper')
             table.addNullable(columnNames);
             if (columnsToBeIndexed) {
                 angular.forEach(Object.keys(columnsToBeIndexed), function (indexName) {
-                    table.addIndex(indexName, columnsToBeIndexed[indexName]);
+                    table.addIndex(indexName, [columnsToBeIndexed[indexName]]);
                 });
             }
         };

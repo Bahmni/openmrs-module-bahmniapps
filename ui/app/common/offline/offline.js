@@ -3,17 +3,6 @@
 angular.module('bahmni.offline').service('offlineService', ['$rootScope','$bahmniCookieStore', function ($rootScope, $bahmniCookieStore) {
     var offline = false;
 
-    var setPlatformCookie = function () {
-        var platform = Bahmni.Common.Constants.platformType.chrome;
-        if (window.navigator.userAgent.match(/Android/i)) {
-            platform = Bahmni.Common.Constants.platformType.android;
-        }
-        else if ($rootScope.loginDevice) {
-            platform = Bahmni.Common.Constants.platformType.chromeApp;
-        }
-        $bahmniCookieStore.put(Bahmni.Common.Constants.platform, platform, {path: '/', expires: 365});
-    };
-
     this.getAppPlatform = function () {
         return $bahmniCookieStore.get(Bahmni.Common.Constants.platform);
     };
@@ -48,7 +37,6 @@ angular.module('bahmni.offline').service('offlineService', ['$rootScope','$bahmn
     };
 
     var init = function() {
-        setPlatformCookie();
         setInterval(checkOfflineStatus, 5000);
     };
     init();

@@ -71,6 +71,7 @@ describe('Patient resource', function () {
 
     it('Should call url for search', function () {
         var query = 'john';
+        mockOfflineService();
         var results = patientService.search(query);
 
         expect(mockHttp.get).toHaveBeenCalled();
