@@ -3,8 +3,8 @@
         <span data-ng-switch-when="enterVisitDetails">
             <button type="submit" class="right confirm" ng-disabled="saveInProgress"
                 ng-click="setSubmitSource('enterVisitDetails')"
-                accesskey="{{ 'REGISTRATION_ENTER_VISIT_DETAILS_ACCESS_KEY' | translate }}"
-                ng-bind-html="'REGISTRATION_LABEL_ENTER_VISIT' | translate">
+                accesskey="{{ ::'REGISTRATION_ENTER_VISIT_DETAILS_ACCESS_KEY' | translate }}"
+                ng-bind-html="::'REGISTRATION_LABEL_ENTER_VISIT' | translate">
             </button>
         </span>
         <span data-ng-switch-when="startVisit">
@@ -18,10 +18,10 @@
         </span>
         <span data-ng-switch-when="configAction">
             <button type="submit" class="right confirm" ng-click="setSubmitSource('configAction')"
-                    accesskey="{{actionConfig.extensionParams.shortcutKey}}" ng-disabled="saveInProgress"
-                    ng-bind-html="actionConfig.extensionParams.display">
+                    accesskey="{{::actionConfig.extensionParams.shortcutKey}}" ng-disabled="saveInProgress"
+                    ng-bind-html="::actionConfig.extensionParams.display">
             </button>
         </span>
     </span>
-    <button type="submit" ng-disabled="saveInProgress" class="right submit-btn" ng-click="setSubmitSource('save')" accesskey="{{ 'REGISTRATION_SAVE_ACCESS_KEY' | translate}}" ng-bind-html="'REGISTRATION_LABEL_SAVE' | translate"></button>
+    <button type="submit" ng-disabled="saveInProgress" class="right submit-btn" ng-click="setSubmitSource('save')" accesskey="{{ ::'REGISTRATION_SAVE_ACCESS_KEY' | translate}}" ng-bind-html="::'REGISTRATION_LABEL_SAVE' | translate"></button>
 </div>

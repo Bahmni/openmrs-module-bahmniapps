@@ -4,8 +4,8 @@
         <div class="box-container box-container-default">
             <legend class="mylegend">
                 <span><strong>{{patient.identifier}}</strong></span>
-                <span ng-show= "isDigitized" class="right"><strong>{{'REGISTRATION_LABEL_SCANNED' | translate}}</strong></span>
-                <span ng-show= "!isDigitized" class="right"><strong>{{'REGISTRATION_LABEL_PAPER' | translate}}</strong></span>
+                <span ng-show= "isDigitized" class="right"><strong>{{::'REGISTRATION_LABEL_SCANNED' | translate}}</strong></span>
+                <span ng-show= "!isDigitized" class="right"><strong>{{::'REGISTRATION_LABEL_PAPER' | translate}}</strong></span>
             </legend>
             <div class="photo-container-wrapper">
                 <span class="photo-container">
@@ -16,7 +16,7 @@
             </div>
             <article class="form-field">
                     <div class="field-attribute">
-                    <label class="control-label">{{'REGISTRATION_LABEL_REGISTRATION_DATE' | translate}}</label>
+                    <label class="control-label">{{::'REGISTRATION_LABEL_REGISTRATION_DATE' | translate}}</label>
                     </div>
 
                     <div class="field-value">

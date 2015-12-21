@@ -2,7 +2,7 @@
     <div class="simple-form-ui new-patient">
         <form name="myForm" class="form-horizontal well" ng-submit="create()">
             <div class="box-container box-container-default">
-                <legend class="mylegend"><span><strong>{{'REGISTRATION_LABEL_NEW_PATIENT' | translate}}</strong></span></legend>
+                <legend class="mylegend"><span><strong>{{::'REGISTRATION_LABEL_NEW_PATIENT' | translate}}</strong></span></legend>
                 <section class="clearfix">
                     <div class="photo-container-wrapper">
                         <span class="pull-right photo-container">
@@ -14,7 +14,7 @@
                 <section>
                     <article class="form-field existing-patient">
                         <div class="field-attribute">
-                            <label class="control-label" for="patientID">{{'REGISTRATION_LABEL_PATIENT_IDENTIFIER' | translate}}
+                            <label class="control-label" for="patientID">{{::'REGISTRATION_LABEL_PATIENT_IDENTIFIER' | translate}}
                                 <span ng-show="::!hasIdentifierSources()" class="asterick">*</span>
                             </label>
                         </div>
@@ -26,17 +26,17 @@
                         </div>
                         <div class="field-value showOn-desktop">
                             <input type="text" id="registrationNumber" ng-model="patient.registrationNumber"
-                                   placeholder="{{ 'REGISTRATION_LABEL_NUMBER' | translate}}" non-blank="hasOldIdentifier || !hasIdentifierSources()" pattern-validate
+                                   placeholder="{{ ::'REGISTRATION_LABEL_NUMBER' | translate}}" non-blank="hasOldIdentifier || !hasIdentifierSources()" pattern-validate
                                    ng-change="patient.generateIdentifier()" ng-show="hasOldIdentifier || !hasIdentifierSources()" focus-on="hasOldIdentifier">
                         </div>
-                        <div ng-show="hasIdentifierSources()">
-                        <div class="field-attribute hasOldIdentifier-field-attribute">
-                            <label for="hasOldIdentifier" class="control-label">{{'REGISTRATION_LABEL_ENTER_ID' | translate}}</label>
-                        </div>
-                        <div class="field-value">
-                            <input class="input-label-inline" ng-show="showEnterID" type="checkbox" id="hasOldIdentifier" ng-model="$parent.hasOldIdentifier"
-                                   ng-change="patient.clearRegistrationNumber()">
-                        </div>
+                        <div ng-show="::hasIdentifierSources()">
+                            <div class="field-attribute hasOldIdentifier-field-attribute">
+                                <label for="hasOldIdentifier" class="control-label">{{::'REGISTRATION_LABEL_ENTER_ID' | translate}}</label>
+                            </div>
+                            <div class="field-value">
+                                <input class="input-label-inline" ng-show="::showEnterID" type="checkbox" id="::hasOldIdentifier" ng-model="$parent.hasOldIdentifier"
+                                       ng-change="patient.clearRegistrationNumber()">
+                            </div>
                         </div>
                         <div class="field-value showOn-small-screen">
                             <input ng-class="hasIdentifierSources()? 'registrationNumber-Mobile' : ''" type="text" id="registrationNumber" ng-model="patient.registrationNumber"

@@ -1,17 +1,17 @@
-<section class="form-field-inline" ng-repeat="addressLevels in addressLevelsChunks">
-    <article class="form-field" ng-repeat="addressLevel in addressLevels"
+<section class="form-field-inline" ng-repeat="addressLevels in ::addressLevelsChunks">
+    <article class="form-field" ng-repeat="addressLevel in ::addressLevels"
              ng-class="{'right-form-field': $index % 2 != 0 }">
-        <div class="field-attribute"><label for="{{addressLevel.addressField}}">{{addressLevel.name}}<span
+        <div class="field-attribute"><label for="{{::addressLevel.addressField}}">{{::addressLevel.name}}<span
                 class="asterick"
-                ng-show="addressLevel.required">*</span></label>
+                ng-show="::addressLevel.required">*</span></label>
         </div>
         <div class="field-value">
             <input type="text"
-                   id="{{addressLevel.addressField}}"
+                   id="{{::addressLevel.addressField}}"
                    pattern-validate
-                   non-blank="addressLevel.required"
+                   non-blank="::addressLevel.required"
                    ng-model="address[addressLevel.addressField]"
-                   ng-disabled="isReadOnly(addressLevel.addressField)"
+                   ng-disabled="::isReadOnly(addressLevel.addressField)"
                    bahmni-autocomplete
                    source="getAddressEntryList(addressLevel.addressField)"
                    response-map="getAddressDataResults"
@@ -22,14 +22,14 @@
                    initial-value="::address[addressLevel.addressField]"
                    is-invalid="addressFieldInvalid"
                    ng-class="{'illegalValue': addressFieldInvalid}"
-                   ng-if="!isFreeTextAddressField(addressLevel.addressField)"
+                   ng-if="::!isFreeTextAddressField(addressLevel.addressField)"
                    required/>
             <input type="text"
-                   id="{{addressLevel.addressField}}"
+                   id="{{::addressLevel.addressField}}"
                    pattern-validate
                    ng-model="address[addressLevel.addressField]"
-                   non-blank="addressLevel.required"
-                   ng-if="isFreeTextAddressField(addressLevel.addressField)"
+                   non-blank="::addressLevel.required"
+                   ng-if="::isFreeTextAddressField(addressLevel.addressField)"
                     />
         </div>
     </article>
