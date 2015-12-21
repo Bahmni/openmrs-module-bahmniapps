@@ -6,7 +6,7 @@ describe("TreatmentController", function () {
     beforeEach(module('bahmni.clinical'));
 
     var DateUtil = Bahmni.Common.Util.DateUtil;
-    var scope, rootScope, contextChangeHandler, newTreatment, editTreatment, clinicalAppConfigService, ngDialog, encounterDateTime;
+    var scope, rootScope, contextChangeHandler, newTreatment, editTreatment, clinicalAppConfigService, ngDialog, encounterDateTime, appService, appConfig;
     beforeEach(inject(function ($controller, $rootScope) {
         scope = $rootScope.$new();
         rootScope = $rootScope;
@@ -24,6 +24,10 @@ describe("TreatmentController", function () {
         clinicalAppConfigService = jasmine.createSpyObj('clinicalAppConfigService', ['getTreatmentActionLink', 'getDrugOrderConfig']);
         clinicalAppConfigService.getTreatmentActionLink.and.returnValue([]);
         clinicalAppConfigService.getDrugOrderConfig.and.returnValue({});
+        appService = jasmine.createSpyObj('appService', ['getAppDescriptor']);
+        appConfig = jasmine.createSpyObj('appConfig', ['getConfig']);
+
+        appService.getAppDescriptor.and.returnValue(appConfig);
 
         $controller('TreatmentController', {
             $scope: scope,
@@ -32,6 +36,7 @@ describe("TreatmentController", function () {
             contextChangeHandler: contextChangeHandler,
             clinicalAppConfigService: clinicalAppConfigService,
             ngDialog: ngDialog,
+            appService: appService,
             treatmentConfig: {
                 durationUnits: [
                     {name: "Day(s)", factor: 1},

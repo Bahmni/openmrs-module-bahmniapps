@@ -1,6 +1,6 @@
 'use strict';
-angular.module('bahmni.common.displaycontrol.pivottable').directive('pivotTable', ['$filter','spinner','pivotTableService','$rootScope',
-    function ($filter,spinner,pivotTableService, $rootScope) {
+angular.module('bahmni.common.displaycontrol.pivottable').directive('pivotTable', ['$rootScope', '$filter', '$stateParams' ,'spinner', 'pivotTableService', 'appService',
+    function ($rootScope, $filter, $stateParams, spinner, pivotTableService, appService) {
 
         return {
             scope: {
@@ -35,7 +35,15 @@ angular.module('bahmni.common.displaycontrol.pivottable').directive('pivotTable'
                     return scope.isLonger(value) ? value.substring(0,10)+"..." : value;
                 };
 
-                var pivotDataPromise = pivotTableService.getPivotTableFor(scope.patientUuid,scope.config, scope.visitUuid );
+                var programConfig = appService.getAppDescriptor().getConfigValue("program") || {};
+
+                var startDate = null, endDate = null, getOtherActive;
+                if (programConfig.showDashBoardWithinDateRange) {
+                    startDate = $stateParams.dateEnrolled;
+                    endDate = $stateParams.dateCompleted;
+                }
+
+                var pivotDataPromise = pivotTableService.getPivotTableFor(scope.patientUuid, scope.config, scope.visitUuid, startDate, endDate);
                 spinner.forPromise(pivotDataPromise);
                 pivotDataPromise.success(function (data) {
                     scope.result = data;
