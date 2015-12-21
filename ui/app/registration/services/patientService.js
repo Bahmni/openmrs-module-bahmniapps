@@ -43,7 +43,7 @@ angular.module('bahmni.registration')
         };
 
         var get = function (uuid) {
-            if($rootScope.offline()) {
+            if(offlineService.offline()) {
                 return patientServiceOffline.get(uuid);
             }
             var url = openmrsUrl + "/ws/rest/v1/patientprofile/" + uuid;

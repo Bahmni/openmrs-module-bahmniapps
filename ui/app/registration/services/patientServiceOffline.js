@@ -74,10 +74,8 @@ angular.module('bahmni.registration')
         };
 
         var search = function (params) {
-            //var token = spinner.show();
             if (offlineService.getAppPlatform() === Bahmni.Common.Constants.platformType.android) {
                 var returnValue = JSON.parse(Android.search(createSql(params)));
-                //spinner.hide(token);
                 return $q.when(returnValue);
             }
             else {
