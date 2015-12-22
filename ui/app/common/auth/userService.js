@@ -1,8 +1,7 @@
 angular.module('authentication')
-    .service('userService', ['$rootScope', '$http', '$q', 'offlineService', function ($rootScope, $http, $q, offlineService) {
-        var offlineApp = offlineService.isOfflineApp();
+    .service('userService', ['$rootScope', '$http', function ($rootScope, $http) {
 
-        var getUserFromServer = function(userName) {
+        this.getUser = function (userName) {
             return $http.get("/openmrs/ws/rest/v1/user", {
                 method: "GET",
                 params: {
@@ -13,38 +12,16 @@ angular.module('authentication')
             });
         };
 
-        this.getUser = function (userName) {
-            var deferrable = $q.defer(), cachedUserData = offlineService.getItem('userData');
-            if(offlineApp && cachedUserData){
-                deferrable.resolve(cachedUserData);
-            } else{
-                getUserFromServer(userName).success(function(data){
-                    deferrable.resolve(data);
-                    offlineService.setItem('userData', data);
-                }).error(function(){
-                    deferrable.reject('Unable to get user data');
-                });
-            }
-            return deferrable.promise;
-        };
-
         this.savePreferences = function () {
-            var deferrable = $q.defer(), cachedUserProperties = offlineService.getItem('userProperties');
-            if(offlineApp && cachedUserProperties){
-                $rootScope.currentUser.userProperties = cachedUserProperties;
-                return deferrable.promise;
-            }
             var user = $rootScope.currentUser.toContract();
-            var response = $http.post("/openmrs/ws/rest/v1/user/" + user.uuid, {"uuid": user.uuid, "userProperties": user.userProperties}, {
+            return $http.post("/openmrs/ws/rest/v1/user/" + user.uuid, {"uuid": user.uuid, "userProperties": user.userProperties}, {
                 withCredentials: true
             }).then(function (response) {
-                offlineService.setItem('userProperties', response.data.userProperties);
-                $rootScope.currentUser.userProperties = response.data.userProperties;
-            });
-            return deferrable.promise;
+                    $rootScope.currentUser.userProperties = response.data.userProperties;
+                });
         };
 
-        var getProviderFromServer = function(uuid) {
+        this.getProviderForUser = function (uuid) {
             return $http.get("/openmrs/ws/rest/v1/provider", {
                 method: "GET",
                 params: {
@@ -52,21 +29,6 @@ angular.module('authentication')
                 },
                 cache: false
             });
-        };
-
-        this.getProviderForUser = function (uuid) {
-            var deferrable = $q.defer(), cachedProviderData = offlineService.getItem('providerData');
-            if(offlineApp && cachedProviderData){
-                deferrable.resolve(cachedProviderData);
-            } else{
-                getProviderFromServer(uuid).success(function(data){
-                    offlineService.setItem('providerData', data);
-                    deferrable.resolve(data);
-                }).error(function(){
-                    deferrable.reject('Unable to get provider data');
-                });
-            }
-            return deferrable.promise;
         };
 
     }]);
