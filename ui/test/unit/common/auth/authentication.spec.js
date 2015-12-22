@@ -19,23 +19,28 @@ describe("Authentication", function () {
         var providers = {};
 
         var getUserPromise = specUtil.createServicePromise('getUser');
-        getUserPromise.success = function (successFn) {
+        getUserPromise.then = function (successFn) {
             successFn(userResponse);
             return getUserPromise;
         };
 
         var getProviderForUserPromise = specUtil.createServicePromise('getProviderForUser');
-        getProviderForUserPromise.success = function (successFn) {
-            successFn(providers);
-            return getProviderForUserPromise;
+        getProviderForUserPromise.then = function (successFn) {
+           successFn(providers);
+           return getProviderForUserPromise;
         };
+
         userService.getUser.and.returnValue(getUserPromise);
         userService.getProviderForUser.and.returnValue(getProviderForUserPromise);
 
+        var mockOfflineService = jasmine.createSpyObj('offlineService',['setPlatformCookie', 'getAppPlatform','isOfflineApp']);
+        mockOfflineService.getAppPlatform.and.returnValue('chrome');
+        mockOfflineService.isOfflineApp.and.returnValue(false);
 
         $provide.value('$bahmniCookieStore', $bahmniCookieStore);
         $provide.value('userService', userService);
         $provide.value('$q', $q);
+        $provide.value('offlineService', mockOfflineService);
     }));
 
 
