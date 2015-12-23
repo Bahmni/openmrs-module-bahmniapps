@@ -22,6 +22,20 @@ describe('Drug Order Details DisplayControl', function () {
                 "uuid": "191d09b9-fbcf-4333-8c00-d708ccd7ae88",
                 "name": "Ipratropium Pressurised"
             }
+        },
+        {
+            "action": "DISCONTINUE",
+            "uuid": "3279ccd2-9e57-4a4f-a79a-66e1538ea6c6",
+            "dosingInstructions": {
+                "administrationInstructions": "{\"instructions\":\"Immediately\"}"
+            },
+            "dateStopped":"21-05-2012",
+            "drug": {
+                "form": "Inhaler",
+                "strength": null,
+                "uuid": "191d09b9-fbcf-4333-8c00-d708ccd7ae88",
+                "name": "Paracetemol"
+            }
         }
     ];
 
@@ -56,5 +70,16 @@ describe('Drug Order Details DisplayControl', function () {
         expect(drugOrder.showDetails).toBeFalsy();
         compiledElementScope.toggle(drugOrder)
         expect(drugOrder.showDetails).toBeTruthy();
+    });
+
+    it("should filter inactive drug orders when configured to not show them", function(){
+        scope.params = {dashboardParams:{showOnlyActive:true}};
+        mockBackend.expectGET(Bahmni.Common.Constants.bahmniDrugOrderUrl + "/drugOrderDetails"+ "?patientUuid=123").respond(drugOrderSections);
+        element = $compile(simpleHtml)(scope);
+        scope.$digest();
+        mockBackend.flush();
+        var compiledElementScope = element.isolateScope();
+        scope.$digest();
+        expect(compiledElementScope.drugOrders.length).toBe(1);
     });
 });

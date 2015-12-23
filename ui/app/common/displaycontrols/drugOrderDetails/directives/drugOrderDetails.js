@@ -6,7 +6,7 @@ angular.module('bahmni.common.displaycontrol.drugOrderDetails')
 
             var init = function () {
                 return treatmentService.getAllDrugOrdersFor($scope.patient.uuid, $scope.section.dashboardParams.drugNames).then(function (response) {
-                    $scope.drugOrders = sortOrders(response);
+                    $scope.drugOrders = sortOrders(response).reverse();
                 });
             };
 
@@ -20,25 +20,20 @@ angular.module('bahmni.common.displaycontrol.drugOrderDetails')
 
             var sortOrders = function(response){
                 var drugOrderUtil = Bahmni.Clinical.DrugOrder.Util;
-                var now = new Date();
-                var activeAndScheduled = _.filter(response, function (order) {
-                    return order.isActive() || order.isScheduled();
-                });
-                var autoExpiredDrugs = _.filter(response, function(order){
-                    return order.effectiveStopDate && order.effectiveStopDate <= now && order.dateStopped === null;
-                });
-                var inActiveOrders = _.filter(response, function (order) {
-                    return order.isDiscontinuedOrStopped();
-                });
-
-                var partitionedDrugOrders = _.groupBy(activeAndScheduled, function (drugOrder) {
-                    return (drugOrder.effectiveStartDate > now) ? "scheduled" : "active";
-                });
                 var sortedDrugOrders = [];
-                sortedDrugOrders.push(drugOrderUtil.sortDrugOrders(partitionedDrugOrders.scheduled));
-                sortedDrugOrders.push(drugOrderUtil.sortDrugOrders(partitionedDrugOrders.active));
-                sortedDrugOrders.push(drugOrderUtil.sortDrugOrders(autoExpiredDrugs));
-                sortedDrugOrders.push(drugOrderUtil.sortDrugOrders(inActiveOrders));
+                if($scope.section.dashboardParams.showOnlyActive) {
+                    var now = new Date();
+                    var activeAndScheduled = _.filter(response, function (order) {
+                        return order.isActive() || order.isScheduled();
+                    });
+                    var partitionedDrugOrders = _.groupBy(activeAndScheduled, function (drugOrder) {
+                        return (drugOrder.effectiveStartDate > now) ? "scheduled" : "active";
+                    });
+                    sortedDrugOrders.push(drugOrderUtil.sortDrugOrders(partitionedDrugOrders.scheduled));
+                    sortedDrugOrders.push(drugOrderUtil.sortDrugOrders(partitionedDrugOrders.active));
+                }else{
+                    sortedDrugOrders.push(drugOrderUtil.sortDrugOrders(response));
+                }
                 return _.flatten(sortedDrugOrders);
             };
 
