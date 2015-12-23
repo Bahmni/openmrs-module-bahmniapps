@@ -32,6 +32,7 @@ angular.module('authentication')
             var deferrable = $q.defer(), cachedUserProperties = offlineService.getItem('userProperties');
             if(offlineApp && cachedUserProperties){
                 $rootScope.currentUser.userProperties = cachedUserProperties;
+                deferrable.resolve();
                 return deferrable.promise;
             }
             var user = $rootScope.currentUser.toContract();

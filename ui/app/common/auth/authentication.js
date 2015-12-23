@@ -44,7 +44,8 @@ angular.module('authentication')
             } else {
                 getAuthFromServer(username, password).success(function(data) {
                     if(offlineApp) {
-                        offlineService.setItem(authenticationResponse, data);
+                        if(authenticationResponse.authenticated == true)
+                            offlineService.setItem(authenticationResponse, data);
                     }
                     deferrable.resolve(data);
                 }).error(function(data){

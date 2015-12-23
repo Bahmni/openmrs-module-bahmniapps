@@ -24,7 +24,6 @@ angular.module('bahmni.home', ['ui.router', 'httpErrorInterceptor', 'bahmni.comm
         }
     }).state('device',
     {  url: "/device/:deviceType",
-        templateUrl: 'views/login.html',
         controller: function($stateParams,$rootScope,$state){
             if($stateParams.deviceType === 'chrome-app'){
                $rootScope.loginDevice = $stateParams.deviceType;

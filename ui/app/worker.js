@@ -189,7 +189,7 @@
             global.toolbox.uncache(items[i]);
             global.toolbox.cache(items[i]);
         }
-    }
+    };
 
     //configuration
     global.toolbox.router.default = global.toolbox.networkFirst;
@@ -217,5 +217,9 @@
 
     //update caches
     updateCache(configs);
+    //updateCache(globalProperty);
+    //updateCache(rest);
+    //updateCache(preFetchList);
+    //updateCache(others);
 
 })(self);

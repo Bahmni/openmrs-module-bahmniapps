@@ -8,6 +8,7 @@ angular.module('bahmni.offline').service('offlineService', ['$rootScope','$bahmn
     };
 
     this.isOfflineApp = function () {
+        return true;
         return this.getAppPlatform() !== Bahmni.Common.Constants.platformType.chrome;
     };
 
@@ -41,7 +42,8 @@ angular.module('bahmni.offline').service('offlineService', ['$rootScope','$bahmn
 
     Offline.options = {
         game: false,
-        checkOnLoad: true
+        checkOnLoad: true,
+        checks: {xhr: {url: '/bahmni/favicon.ico'}}
     };
 
     Offline.on('up', function () {
@@ -64,5 +66,6 @@ angular.module('bahmni.offline').service('offlineService', ['$rootScope','$bahmn
         setInterval(checkOfflineStatus, 5000);
     };
     init();
+    checkOfflineStatus();
 
 }]);
