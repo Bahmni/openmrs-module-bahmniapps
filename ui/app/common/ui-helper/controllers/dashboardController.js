@@ -33,10 +33,7 @@ angular.module('bahmni.common.uiHelper')
                     Android.populateData(window.location.origin);
                 }
                 else {
-                    var token = spinner.show();
-                    chromeAppDataService.populateData().then(function(){
-                        spinner.hide(token);
-                    });
+                    chromeAppDataService.populateData();
                 }
             };
 

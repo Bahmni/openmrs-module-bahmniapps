@@ -92,6 +92,9 @@ angular.module('bahmni.registration')
 
         var create = function (patient) {
             var data = new Bahmni.Registration.CreatePatientRequestMapper(moment()).mapFromPatient($rootScope.patientConfiguration.personAttributeTypes, patient);
+            if(offlineService.offline()) {
+                return patientServiceOffline.create(data);
+            }
             var url = baseOpenMRSRESTURL + "/patientprofile";
             var config = {
                 withCredentials: true,

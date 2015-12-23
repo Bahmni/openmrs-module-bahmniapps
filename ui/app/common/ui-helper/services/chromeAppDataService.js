@@ -1,11 +1,13 @@
 'use strict';
 
 angular.module('bahmni.common.uiHelper')
-    .service('chromeAppDataService', ['$http', '$q', '$rootScope', function ($http, $q, $rootScope) {
+    .service('chromeAppDataService', ['$http', '$q', '$rootScope','spinner', function ($http, $q, $rootScope, spinner) {
         var schemaBuilder;
         var attributeTypeColumnNames = [
             "attributeTypeId",
-            "attributeName"
+            "uuid",
+            "attributeName",
+            "format"
         ];
         var patientColumnNames = [
             "identifier",
@@ -22,7 +24,6 @@ angular.module('bahmni.common.uiHelper')
             "attributeValue",
             "patientId"
         ];
-        var startIndex = 0;
         var columnsToBeIndexed = {
             'givenNameIndex': 'givenName',
             'middleNameIndex': 'middleName',
@@ -31,7 +32,6 @@ angular.module('bahmni.common.uiHelper')
         };
 
         this.populateData = function () {
-            var deferred = $q.defer();
             schemaBuilder = lf.schema.create('Bahmni', 2);
 
             createTable(schemaBuilder, 'patient_attribute_types', attributeTypeColumnNames);
@@ -43,10 +43,8 @@ angular.module('bahmni.common.uiHelper')
                 schemaBuilder.connect().then(function (db) {
                     insertAttributeTypes(db);
                     insertPatients(db, addressColumns, 0);
-                    deferred.resolve("Populate Success")
                 });
             });
-            return deferred.promise;
 
         };
 
@@ -75,6 +73,28 @@ angular.module('bahmni.common.uiHelper')
             return deferred.promise;
         };
 
+        this.createPatient = function (postRequest) {
+            var deferred = $q.defer();
+
+            schemaBuilder = lf.schema.create('Bahmni', 2);
+            createTable(schemaBuilder, 'patient_attribute_types', attributeTypeColumnNames);
+
+
+            createTable(schemaBuilder, 'patient', patientColumnNames, columnsToBeIndexed);
+
+            createTable(schemaBuilder, 'patient_attributes', attributeColumnNames);
+
+            getAddressColumns().then(function (addressColumns) {
+                createTable(schemaBuilder, 'patient_address', addressColumns);
+                schemaBuilder.connect().then(function (db) {
+                    insertPatientData(db, postRequest.patient, addressColumns);
+                    deferred.resolve({data: postRequest});
+                });
+            });
+            return deferred.promise;
+
+        };
+
         this.search = function (params) {
             var response = {
                 pageOfResults: []
@@ -99,10 +119,6 @@ angular.module('bahmni.common.uiHelper')
                 addressFieldName = params.address_field_name.replace("_", "");
             }
 
-            if (params.startIndex == 0) {
-                startIndex = 0;
-            }
-
             schemaBuilder = lf.schema.create('Bahmni', 2);
             createTable(schemaBuilder, 'patient_attribute_types', attributeTypeColumnNames);
             createTable(schemaBuilder, 'patient', patientColumnNames, columnsToBeIndexed);
@@ -116,20 +132,17 @@ angular.module('bahmni.common.uiHelper')
                     var pat = db.getSchema().table('patient_attribute_types');
                     var padd = db.getSchema().table('patient_address');
 
-                    db.select(pat.attributeTypeId.as("attributeTypeIds"))
+                    db.select(pat.attributeTypeId)
                         .from(pat)
                         .where(pat.attributeName.in(params.patientAttributes)).exec()
                         .then(function (attributeTypeIds) {
 
 
-                            var query = db.select(p.identifier.as('identifier'), p.givenName.as('givenName'), p.middleName.as('middleName'), p.familyName.as('familyName'),
-                                p.dateCreated.as('dateCreated'), p.age.as('age'), p.gender.as('gender'), p.uuid.as('uuid'), padd[addressFieldName].as('addressFieldValue'),
-                                pat.attributeName.as('attributeName'), pa.attributeValue.as('attributeValue'), pa.attributeTypeId.as('attributeTypeId'))
+                            var query = db.select(p.identifier.as('identifier'))
                                 .from(p)
                                 .innerJoin(padd, p._id.eq(padd.patientId))
                                 .leftOuterJoin(pa, p._id.eq(pa.patientId))
                                 .leftOuterJoin(pat, pa.attributeTypeId.eq(pat.attributeTypeId));
-
                             var predicates = [];
 
                             if (!_.isEmpty(params.address_field_value)) {
@@ -143,15 +156,18 @@ angular.module('bahmni.common.uiHelper')
                                 var nameSearchCondition = [];
                                 if (!_.isEmpty(nameParts)) {
                                     angular.forEach(nameParts, function (namePart) {
-                                        nameSearchCondition.push(lf.op.or(p.givenName.match(new RegExp(namePart, 'i')), p.middleName.match(new RegExp(namePart, 'i')), p.familyName.match(new RegExp(namePart, 'i'))));
+                                        nameSearchCondition.push(lf.op.or(p.givenName.match(new RegExp(namePart, 'i')), p.middleName.match(new RegExp(namePart, 'i')),
+                                                                 p.familyName.match(new RegExp(namePart, 'i')), p.identifier.eq(namePart)));
                                     });
                                     predicates.push(lf.op.and.apply(null, nameSearchCondition));
                                 }
                             }
 
                             if (!_.isEmpty(params.custom_attribute)) {
-                                predicates.push(pa.attributeTypeId.in(attributeTypeIds));
-                                //predicates.push(pa.attributeValue.match(new RegExp("a", 'i')));
+                                predicates.push(pa.attributeTypeId.in(_.map(attributeTypeIds, function (attributeTypeId) {
+                                    return attributeTypeId.attributeTypeId;
+                                })));
+                                predicates.push(pa.attributeValue.match(new RegExp(params.custom_attribute, 'i')));
                             }
 
                             var whereCondition = lf.op.and.apply(null, predicates);
@@ -159,36 +175,38 @@ angular.module('bahmni.common.uiHelper')
                             if (!_.isEmpty(predicates))
                                 query = query.where(whereCondition);
 
-                            query.limit(50).skip(startIndex).orderBy(p.dateCreated, lf.Order.DESC).exec()
-                                .then(function (results) {
-                                    var groupedResults = _.groupBy(results, function (res) {
-                                        return res.identifier
-                                    });
-
-                                    var patient;
-                                    angular.forEach(groupedResults, function (groupedResult) {
-                                        var customAttributes = {};
-                                        patient = groupedResult[0];
-                                        angular.forEach(groupedResult, function (result) {
-                                            if (result.attributeName)
-                                                customAttributes[result.attributeName] = result.attributeValue;
-                                        });
-                                        patient.customAttribute = JSON.stringify(customAttributes);
-                                        if (!_.isEmpty(params.custom_attribute)) {
-                                            var matched = _.find(customAttributes, function (attributeValue, attributeName) {
-                                                return attributeValue.toString().toLowerCase().indexOf(params.custom_attribute.toLowerCase()) != -1 && _.contains(params.patientAttributes, attributeName);
+                            query.limit(50).skip(params.startIndex).orderBy(p.dateCreated, lf.Order.DESC).groupBy(p.identifier).exec()
+                                .then(function (tempResults) {
+                                    db.select(p.identifier.as('identifier'), p.givenName.as('givenName'), p.middleName.as('middleName'), p.familyName.as('familyName'),
+                                        p.dateCreated.as('dateCreated'), p.age.as('age'), p.gender.as('gender'), p.uuid.as('uuid'), padd[addressFieldName].as('addressFieldValue'),
+                                        pat.attributeName.as('attributeName'), pa.attributeValue.as('attributeValue'), pat.format.as('attributeFormat'))
+                                        .from(p)
+                                        .innerJoin(padd, p._id.eq(padd.patientId))
+                                        .leftOuterJoin(pa, p._id.eq(pa.patientId))
+                                        .leftOuterJoin(pat, pa.attributeTypeId.eq(pat.attributeTypeId))
+                                        .where(p.identifier.in(_.map(tempResults, function (tempResult) {
+                                            return tempResult.identifier;
+                                        }))).exec()
+                                        .then(function (results) {
+                                            var groupedResults = _.groupBy(results, function (res) {
+                                                return res.identifier
                                             });
-                                            if (matched) {
-                                                response.pageOfResults.push(groupedResult[0]);
-                                            }
-                                        }
-                                        else {
-                                            response.pageOfResults.push(patient);
-                                        }
-                                    });
-                                    startIndex += 50;
-                                    $rootScope.searching = false;
-                                    deferred.resolve(response);
+                                            var patient;
+                                            angular.forEach(groupedResults, function (groupedResult) {
+                                                var customAttributes = {};
+                                                patient = groupedResult[0];
+                                                angular.forEach(groupedResult, function (result) {
+                                                    if (result.attributeName){
+                                                        customAttributes[result.attributeName] = result.attributeValue;
+                                                    }
+                                                });
+                                                patient.customAttribute = JSON.stringify(customAttributes);
+                                                response.pageOfResults.push(patient);
+                                            });
+                                            $rootScope.searching = false;
+                                            deferred.resolve(response);
+                                        });
+
                                 }, function (e) {
                                     console.log(e);
                                 });
@@ -215,13 +233,13 @@ angular.module('bahmni.common.uiHelper')
 
         var insertPatients = function (db, addressColumnNames, nextIndex) {
             var pageSize = 1;
-            $http.get(window.location.origin + "/openmrs/ws/rest/v1/bahmnicore/patientData?startIndex=" + nextIndex + "&limit=" + pageSize).then(function (patientJson) {
+            spinner.forPromise($http.get(window.location.origin + "/openmrs/ws/rest/v1/bahmnicore/patientData?startIndex=" + nextIndex + "&limit=" + pageSize).then(function (patientJson) {
                 if (patientJson.data.pageOfResults.length == 0) {
                     return;
                 }
                 insertPatientData(db, patientJson.data.pageOfResults[0].patient, addressColumnNames);
                 insertPatients(db, addressColumnNames, ++nextIndex)
-            });
+            }));
         };
 
         var insertPatientData = function (db, patient, addressColumnNames) {
@@ -229,7 +247,7 @@ angular.module('bahmni.common.uiHelper')
             patientTable = db.getSchema().table('patient');
             attributeTypeTable = db.getSchema().table('patient_attribute_types');
             person = patient.person;
-            var personName = person.preferredName;
+            var personName = person.names[0];
             patientIdentifier = patient.identifiers[0].identifier;
             var row = patientTable.createRow({
                 'identifier': patientIdentifier,
@@ -239,20 +257,19 @@ angular.module('bahmni.common.uiHelper')
                 'familyName': personName.familyName,
                 'gender': person.gender,
                 'age': person.age,
-                'dateCreated': patient.auditInfo.dateCreated,
+                'dateCreated': patient.person.auditInfo.dateCreated,
                 'patientJson': patient
             });
             db.insertOrReplace().into(patientTable).values([row]).exec();
-            console.log(patientIdentifier);
 
             db.select(patientTable._id).from(patientTable).where(patientTable.identifier.eq(patientIdentifier)).exec()
                 .then(function (results) {
                     patientId = results[0]._id;
-                    return db.select(attributeTypeTable.attributeTypeId, attributeTypeTable.attributeName).from(attributeTypeTable).exec()
+                    return db.select(attributeTypeTable.attributeTypeId, attributeTypeTable.uuid, attributeTypeTable.attributeName).from(attributeTypeTable).exec()
                 })
                 .then(function (attributeTypeMap) {
                     insertAttributes(db, patientId, person.attributes, attributeTypeMap);
-                    insertAddress(db, patientId, person.preferredAddress, addressColumnNames);
+                    insertAddress(db, patientId, person.addresses[0], addressColumnNames);
                 });
         };
 
@@ -274,21 +291,23 @@ angular.module('bahmni.common.uiHelper')
             if (attributes != null && attributes.length > 0) {
                 for (var j = 0; j < attributes.length; j++) {
                     (function () {
-                        var personAttribute = attributes[j];
-                        var object = personAttribute.value;
-                        if (typeof(object) == "object") {
-                            value = object.display;
-                        } else
-                            value = object;
-                        var attributeTypeId = _.find(attributeTypeMap, function (attributeType) {
-                            return attributeType.attributeName === personAttribute.attributeType.display
-                        }).attributeTypeId;
-                        var row = attributeTable.createRow({
-                            'attributeTypeId': attributeTypeId,
-                            'attributeValue': value,
-                            'patientId': patientId
-                        });
-                        db.insertOrReplace().into(attributeTable).values([row]).exec();
+                        if (!attributes[j].voided) {
+                            var personAttribute = attributes[j];
+                            var object = personAttribute.value;
+                            if (typeof(object) == "object") {
+                                value = object.display;
+                            } else
+                                value = object;
+                            var attributeTypeId = _.find(attributeTypeMap, function (attributeType) {
+                                return attributeType.uuid === personAttribute.attributeType.uuid
+                            }).attributeTypeId;
+                            var row = attributeTable.createRow({
+                                'attributeTypeId': attributeTypeId,
+                                'attributeValue': value,
+                                'patientId': patientId
+                            });
+                            db.insertOrReplace().into(attributeTable).values([row]).exec();
+                        }
                     })();
                 }
             }
@@ -309,14 +328,16 @@ angular.module('bahmni.common.uiHelper')
         };
 
         var insertAttributeTypes = function (db) {
-            $http.get(window.location.origin + "/openmrs/ws/rest/v1/personattributetype?v=custom:(name)").then(function (attributesResponse) {
+            $http.get(window.location.origin + "/openmrs/ws/rest/v1/personattributetype?v=custom:(name,uuid,format)").then(function (attributesResponse) {
                 var personAttributeTypeList = attributesResponse.data.results;
                 var row, table;
                 table = db.getSchema().table('patient_attribute_types');
                 for (var i = 0; i < personAttributeTypeList.length; i++) {
                     row = table.createRow({
                         'attributeTypeId': i,
-                        'attributeName': personAttributeTypeList[i].name
+                        'uuid': personAttributeTypeList[i].uuid,
+                        'attributeName': personAttributeTypeList[i].name,
+                        'format': personAttributeTypeList[i].format
                     });
                     db.insertOrReplace().into(table).values([row]).exec();
                 }
