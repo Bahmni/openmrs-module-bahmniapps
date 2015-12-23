@@ -18,8 +18,7 @@ angular.module('bahmni.common.uiHelper')
             source: function (request, response) {
                 source({elementId: attrs.id, term: request.term, elementType: attrs.type}).then(function (resp) {
                     var results = resp.data.results.map(function (concept) {
-                        //todo : get rid of either 'value' or 'name' fields
-                        return {'value': responseMap(concept, request.term), 'concept': concept, uuid: concept.uuid, name:concept.name.name };
+                        return responseMap ? responseMap(concept, request.term.trim()) : concept;
                     });
                     response(results);
                 });
@@ -39,6 +38,7 @@ angular.module('bahmni.common.uiHelper')
                 }
             }
         });
+        
     }
     return {
         link: link,
