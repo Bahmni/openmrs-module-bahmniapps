@@ -15,30 +15,6 @@ angular.module('bahmni.offline').service('offlineService', ['$rootScope','$bahmn
         return offline;
     };
 
-    this.encrypt = function(value, encryptionType) {
-        if(encryptionType === Bahmni.Common.Constants.encryptionType.SHA3) {
-            return CryptoJS.SHA3(value);
-        }
-        return value;
-    };
-
-    this.setItem = function(key, value, encryptionType) {
-        localStorage.setItem(key, JSON.stringify(value));
-    };
-
-    this.getItem = function(key) {
-        var value = localStorage.getItem(key);
-        if(value) {
-            return JSON.parse(value);
-        }
-        return value;
-    };
-
-    this.validateLoginInfo = function (loginInfo) {
-        return (this.getItem(Bahmni.Common.Constants.LoginInformation)['username'] === loginInfo.username &&
-                JSON.stringify(this.getItem(Bahmni.Common.Constants.LoginInformation)['password']) === JSON.stringify(CryptoJS.SHA3(loginInfo.password)));
-    };
-
     Offline.options = {
         game: false,
         checkOnLoad: true
