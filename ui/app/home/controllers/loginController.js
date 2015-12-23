@@ -1,11 +1,12 @@
 'use strict';
 
 angular.module('bahmni.home')
-    .controller('LoginController', ['$rootScope', '$scope', '$window', '$location', 'sessionService', 'initialData', 'spinner', '$q', '$stateParams','$bahmniCookieStore', 'localeService', '$translate', 'userService',
-        function ($rootScope, $scope, $window, $location, sessionService, initialData, spinner, $q, $stateParams, $bahmniCookieStore, localeService, $translate, userService) {
+    .controller('LoginController', ['$rootScope', '$scope', '$window', '$location', 'sessionService', 'initialData', 'spinner', '$q', '$stateParams','$bahmniCookieStore', 'localeService', '$translate', 'userService', 'offlineService',
+        function ($rootScope, $scope, $window, $location, sessionService, initialData, spinner, $q, $stateParams, $bahmniCookieStore, localeService, $translate, userService, offlineService) {
             var redirectUrl = $location.search()['from'];
             var landingPagePath = "/dashboard";
             var loginPagePath = "/login";
+            var isOfflineApp = offlineService.isOfflineApp();
             $scope.locations = initialData.locations;
             $scope.loginInfo = {};
 
@@ -46,17 +47,34 @@ angular.module('bahmni.home')
                 redirectToLandingPageIfAlreadyAuthenticated();
             };
 
+            var onSuccessfulAuthentication = function () {
+                if (isOfflineApp) {
+                    var encryptedPassword = offlineService.encrypt($scope.loginInfo.password, Bahmni.Common.Constants.encryptionType.SHA3);
+                    $scope.loginInfo.password = encryptedPassword;
+                    offlineService.setItem(Bahmni.Common.Constants.LoginInformation, $scope.loginInfo);
+                }
+                $bahmniCookieStore.remove(Bahmni.Common.Constants.retrospectiveEntryEncounterDateCookieName, {
+                    path: '/',
+                    expires: 1
+                });
+                $rootScope.$broadcast('event:auth-loggedin');
+                $scope.loginInfo.currentLocation = getLastLoggedinLocation();
+            };
+
             $scope.login = function () {
                 $scope.errorMessageTranslateKey = null;
                 var deferrable = $q.defer();
+
+                if(isOfflineApp && offlineService.getItem(Bahmni.Common.Constants.LoginInformation)
+                    && !offlineService.validateLoginInfo($scope.loginInfo)) {
+                    $scope.errorMessageTranslateKey = "LOGIN_LABEL_LOGIN_ERROR_MESSAGE_KEY";
+                    return;
+                }
+
                 sessionService.loginUser($scope.loginInfo.username, $scope.loginInfo.password, $scope.loginInfo.currentLocation).then(
                     function () {
                         sessionService.loadCredentials().then(
-                            function () {
-                                $bahmniCookieStore.remove(Bahmni.Common.Constants.retrospectiveEntryEncounterDateCookieName, {path: '/', expires: 1});
-                                $rootScope.$broadcast('event:auth-loggedin');
-                                $scope.loginInfo.currentLocation = getLastLoggedinLocation();
-                            },
+                            onSuccessfulAuthentication,
                             function (error) {
                                 $scope.errorMessageTranslateKey = error;
                                 deferrable.reject(error);
@@ -66,7 +84,8 @@ angular.module('bahmni.home')
                             userService.savePreferences().then(
                                 function() {deferrable.resolve()},
                                 function(error) {deferrable.reject(error)}
-                            )
+                            );
+                                deferrable.resolve();
                         })
                     },
                     function (error) {

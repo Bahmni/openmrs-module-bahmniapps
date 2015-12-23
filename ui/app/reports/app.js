@@ -26,10 +26,7 @@ angular
                     initialization: 'initialization'
                 }
             });
-        // $bahmniTranslateProvider.init({app: 'reports', shouldMerge: true});
     }]).run(function ($rootScope, $templateCache) {
-//                debugUiRouter($rootScope);
-//        Disable caching view template partials
         $rootScope.$on('$viewContentLoaded', function () {
                 $templateCache.removeAll();
             }
