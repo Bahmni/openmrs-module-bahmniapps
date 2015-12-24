@@ -51,7 +51,6 @@ angular.module('bahmni.offline').service('offlineService', ['$rootScope','$bahmn
         $rootScope.$broadcast('offline', offline);
     });
     Offline.on('down', function () {
-        console.log("Internet is down.");
         offline = true;
         $rootScope.$broadcast('offline', offline);
     });
