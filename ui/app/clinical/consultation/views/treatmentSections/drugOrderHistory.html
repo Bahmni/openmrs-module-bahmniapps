@@ -82,12 +82,12 @@
                                                        required="required">
                                             </div>
                                             <div class="field-value">
-                                                <select id="stopped-reason" class="form-field instruction" ng-model="drugOrder.orderReasonConcept" ng-options="item as item.display for item in stoppedOrderReasons">
+                                                <select id="stopped-reason" class="form-field instruction" ng-change="updateFormConditions(drugOrder)" ng-model="drugOrder.orderReasonConcept" ng-options="item as item.display for item in stoppedOrderReasons">
                                                     <option value="">{{ 'MEDICATION_RECENT_TAB_STOP_REASON' | translate }}</option>
                                                 </select>
                                             </div>
                                             <div class="field-value">
-                                                <textarea rows="1" id="stopped-reason-non-coded" class="form-field drug-order-notes" placeholder="{{ 'MEDICATION_RECENT_TAB_STOP_NOTES' | translate}}"
+                                                <textarea ng-disabled="!drugOrder.orderReasonNotesEnabled" rows="1" id="stopped-reason-non-coded" class="form-field drug-order-notes" placeholder="{{ 'MEDICATION_RECENT_TAB_STOP_NOTES' | translate}}"
                                                           ng-model="drugOrder.orderReasonText"></textarea>
                                             </div>
                                         </article>

@@ -135,6 +135,7 @@ angular.module('bahmni.clinical')
                     drugOrder.dateStopped = DateUtil.now();
                     $scope.consultation.discontinuedDrugs.push(drugOrder);
                     $scope.minDateStopped = DateUtil.getDateWithoutTime(drugOrder.effectiveStartDate<DateUtil.now()?drugOrder.effectiveStartDate:DateUtil.now());
+                    $scope.updateFormConditions(drugOrder)
                 }
             };
 
@@ -244,6 +245,25 @@ angular.module('bahmni.clinical')
 
             $scope.dashboard = Bahmni.Common.DisplayControl.Dashboard.create(drugOrderAppConfig || {});
             $scope.sectionGroups =  $scope.dashboard.getSections();
+
+            $scope.updateFormConditions = function(drugOrder){
+                var formCondition = Bahmni.ConceptSet.FormConditions.rules ? Bahmni.ConceptSet.FormConditions.rules["Medication Stop Reason"] : undefined ;
+                if(formCondition){
+                    if(drugOrder.orderReasonConcept) {
+                        if (!formCondition(drugOrder, drugOrder.orderReasonConcept.name.name))
+                            disableAndClearReasonText(drugOrder);
+                    }
+                    else
+                        disableAndClearReasonText(drugOrder);
+                }else{
+                    drugOrder.orderReasonNotesEnabled = true;
+                }
+            };
+
+            var disableAndClearReasonText = function(drugOrder){
+                drugOrder.orderReasonText = null;
+                drugOrder.orderReasonNotesEnabled = false;
+            };
 
             init();
         }]);

@@ -152,6 +152,63 @@ describe("DrugOrderHistoryController", function () {
         })
     });
 
+
+    describe("when conditionally enable or disable order reason text for drug stoppage", function () {
+
+        it("should enable reason text for all concepts when nothing is configured", function () {
+            var drugOrder = Bahmni.Clinical.DrugOrderViewModel.createFromContract(prescribedDrugOrders[0]);
+
+            drugOrder.orderReasonConcept = {name:{name:"Other"}};
+            scope.discontinue(drugOrder);
+
+            expect(drugOrder.isMarkedForDiscontinue).toBe(true);
+            expect(drugOrder.orderReasonNotesEnabled).toBe(true);
+
+        });
+
+        it("should enable reason text only for configured reason concepts", function () {
+            var drugOrder = Bahmni.Clinical.DrugOrderViewModel.createFromContract(prescribedDrugOrders[0]);
+            Bahmni.ConceptSet.FormConditions.rules ={ "Medication Stop Reason":function (drugOrder, conceptName) {
+                if (conceptName == "Adverse event") {
+                    drugOrder.orderReasonNotesEnabled = true;
+                    return true;
+                }
+                else
+                    return false;
+            }
+           };
+            drugOrder.orderReasonConcept = {name:{name:"Adverse event"}};
+            scope.discontinue(drugOrder);
+
+            expect(drugOrder.isMarkedForDiscontinue).toBe(true);
+            expect(drugOrder.orderReasonNotesEnabled).toBe(true);
+
+        });
+
+        it("should disable reason text only for unconfigured reason concepts", function () {
+            var drugOrder = Bahmni.Clinical.DrugOrderViewModel.createFromContract(prescribedDrugOrders[0]);
+            Bahmni.ConceptSet.FormConditions.rules ={ "Medication Stop Reason":function (drugOrder, conceptName) {
+                if (conceptName == "Adverse event") {
+                    drugOrder.orderReasonNotesEnabled = true;
+                    return true;
+                }
+                else
+                    return false;
+            }
+            };
+            drugOrder.orderReasonConcept = {name:{name:"Adverse event"}};
+            scope.updateFormConditions(drugOrder);
+            expect(drugOrder.orderReasonNotesEnabled).toBe(true);
+
+            drugOrder.orderReasonConcept = {name:{name:"other event"}};
+            scope.updateFormConditions(drugOrder);
+            expect(drugOrder.orderReasonNotesEnabled).toBe(false);
+
+        });
+
+
+    });
+
     activeDrugOrder = {
         "uuid": "activeOrderUuid",
         "action": "NEW",
