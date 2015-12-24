@@ -16,21 +16,40 @@ angular.module('bahmni.clinical')
             $scope.allowOnlyCodedDrugs = appService.getAppDescriptor().getConfig("allowOnlyCodedDrugs") &&
             appService.getAppDescriptor().getConfig("allowOnlyCodedDrugs").value;
 
+            var extensionConfig = clinicalAppConfigService.getTreatmentTabExtension();
+            var conceptNameForDefaultDrugs = extensionConfig.extensionParams
+                && extensionConfig.extensionParams.conceptNameForDefaultDrugs;
+            conceptNameForDefaultDrugs && drugService.getSetMembersOfConcept(conceptNameForDefaultDrugs)
+                .then(function (result) {
+                    $scope.defaultDrugs = result.map(constructDrugNameDisplay);
+                });
 
-            function markVariable(variable){
+            $scope.isSelected = function(drug) {
+                var selectedDrug = $scope.treatment.drug;
+                return selectedDrug && drug.drug.name === selectedDrug.name;
+            };
+
+            $scope.selectFromDefaultDrugList = function(item) {
+                $scope.onSelect(item);
+                $scope.treatment.drugNameDisplay = item.value;
+                $scope.onChange();
+            };
+
+            var markVariable = function (variable){
                 $scope[variable] = true;
                 $timeout(function () {
                     $scope[variable] = false;
                 });
-            }
-            function markEitherVariableDrugOrUniformDrug(drug){
+            };
+
+            var markEitherVariableDrugOrUniformDrug = function(drug){
                 if(drug.isVariableDosingType()){
                     markVariable('editDrugEntryVariableFrequency');
                 }
                 else {
                     markVariable('editDrugEntryUniformFrequency');
                 }
-            }
+            };
 
             markVariable("startNewDrugEntry");
 

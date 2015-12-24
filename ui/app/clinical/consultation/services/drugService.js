@@ -1,5 +1,4 @@
 'use strict';
-
 angular.module('bahmni.clinical')
     .factory('DrugService', ['$http', function ($http) {
 
@@ -11,6 +10,22 @@ angular.module('bahmni.clinical')
                         v: 'custom:(uuid,name,doseStrength,units,dosageForm,concept:(uuid,name,names:(name)))',
                         q: drugName,
                         s: "ordered"
+                    },
+                    withCredentials: true
+                }
+            ).then(function (response) {
+                    return response.data.results;
+                });
+        };
+
+        var getSetMembersOfConcept = function (conceptSetFullySpecifiedName) {
+            return $http.get("/openmrs/ws/rest/v1/drug",
+                {
+                    method: "GET",
+                    params: {
+                        v: 'custom:(uuid,name,doseStrength,units,dosageForm,concept:(uuid,name,names:(name)))',
+                        q: conceptSetFullySpecifiedName,
+                        s: "byConceptSet"
                     },
                     withCredentials: true
                 }
@@ -35,6 +50,7 @@ angular.module('bahmni.clinical')
 
         return {
             search: search,
-            getRegimen: getRegimen
+            getRegimen: getRegimen,
+            getSetMembersOfConcept: getSetMembersOfConcept
         };
     }]);

@@ -6,7 +6,9 @@ describe("AddTreatmentController", function () {
     beforeEach(module('bahmni.clinical'));
 
     var DateUtil = Bahmni.Common.Util.DateUtil;
-    var scope, rootScope, contextChangeHandler, newTreatment, editTreatment, clinicalAppConfigService, ngDialog, encounterDateTime, appService, appConfig;
+    var scope, rootScope, contextChangeHandler, newTreatment,
+        editTreatment, clinicalAppConfigService, ngDialog, drugService, defaultDrugs,
+        encounterDateTime, appService, appConfig, defaultDrugsPromise;
     beforeEach(inject(function ($controller, $rootScope) {
         scope = $rootScope.$new();
         rootScope = $rootScope;
@@ -21,11 +23,26 @@ describe("AddTreatmentController", function () {
         contextChangeHandler = jasmine.createSpyObj('contextChangeHandler', ['add']);
         scope.addForm = {$invalid: false, $valid: true};
 
-        clinicalAppConfigService = jasmine.createSpyObj('clinicalAppConfigService', ['getTreatmentActionLink', 'getDrugOrderConfig']);
+        clinicalAppConfigService = jasmine.createSpyObj('clinicalAppConfigService', ['getTreatmentActionLink', 'getDrugOrderConfig', 'getTreatmentTabExtension']);
         clinicalAppConfigService.getTreatmentActionLink.and.returnValue([]);
         clinicalAppConfigService.getDrugOrderConfig.and.returnValue({});
+        clinicalAppConfigService.getTreatmentTabExtension.and.returnValue(
+            {
+                extensionParams: {
+                    "conceptNameForDefaultDrugs": "All TB Drugs"
+                }
+            });
         appService = jasmine.createSpyObj('appService', ['getAppDescriptor']);
         appConfig = jasmine.createSpyObj('appConfig', ['getConfig']);
+
+        drugService = jasmine.createSpyObj('drugService', ['getSetMembersOfConcept']);
+        defaultDrugs = [
+            {name: "T", dosageForm: {display: "something"}, uuid: "123-12321"},
+            {name: "A", dosageForm: {display: "something"}, uuid: "123-12321"},
+            {name: "P", dosageForm: {display: "something"}, uuid: "123-12321"}
+        ];
+        defaultDrugsPromise = specUtil.respondWith(defaultDrugs);
+        drugService.getSetMembersOfConcept.and.returnValue(defaultDrugsPromise);
 
         appService.getAppDescriptor.and.returnValue(appConfig);
 
@@ -37,6 +54,7 @@ describe("AddTreatmentController", function () {
             clinicalAppConfigService: clinicalAppConfigService,
             ngDialog: ngDialog,
             appService: appService,
+            DrugService: drugService,
             treatmentConfig: {
                 durationUnits: [
                     {name: "Day(s)", factor: 1},
@@ -46,7 +64,14 @@ describe("AddTreatmentController", function () {
         });
     }));
 
-
+    describe("drug service initialization", function() {
+        it("calls drugService to find all default drugs", function(done) {
+            defaultDrugsPromise.then(function() {
+                expect(scope.defaultDrugs.length).toBe(defaultDrugs.length);
+                done();
+            });
+        });
+    });
 
     describe("add treatment()", function(){
         it("should save as a free text drug order on click of accept button", function(){
