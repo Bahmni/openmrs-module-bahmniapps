@@ -5,7 +5,7 @@ angular.module('bahmni.common.displaycontrol.forms')
         function (conceptSetService, spinner, $q, visitFormService) {
             var controller = function ($scope) {
                 var getAllObservationTemplates = function () {
-                    return conceptSetService.getConceptSetMembers({
+                    return conceptSetService.getConcept({
                         name: "All Observation Templates",
                         v: "custom:(setMembers:(display))"
                     })

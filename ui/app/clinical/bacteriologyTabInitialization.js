@@ -4,7 +4,7 @@ angular.module('bahmni.clinical').factory('bacteriologyTabInitialization',
     ['conceptSetService', 'spinner', function (conceptSetService, spinner) {
         return function () {
             var conceptSetName = "BACTERIOLOGY CONCEPT SET";
-            return spinner.forPromise(conceptSetService.getConceptSetMembers({
+            return spinner.forPromise(conceptSetService.getConcept({
                 name: conceptSetName,
                 v: "custom:(uuid,setMembers:(uuid,name,conceptClass,answers:(uuid,name,mappings,names),setMembers:(uuid,name,conceptClass,answers:(uuid,name,mappings),setMembers:(uuid,name,conceptClass))))"
             }, true))
