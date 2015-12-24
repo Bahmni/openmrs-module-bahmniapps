@@ -4,15 +4,16 @@ angular.module('bahmni.common.displaycontrol.obsVsObsFlowSheet')
     .directive('obsToObsFlowSheet', function () {
         var controller = function ($scope, observationsService, spinner) {
             $scope.config = $scope.isOnDashboard ? $scope.section.dashboardParams : $scope.section.allDetailsParams;
+            $scope.isEditable = $scope.config.isEditable;
             var patient = $scope.patient;
             var init = function () {
                 return observationsService.getObsInFlowSheet(patient.uuid, $scope.config.templateName,
                     $scope.config.groupByConcept, $scope.config.conceptNames, $scope.config.numberOfVisits, $scope.config.initialCount, $scope.config.latestCount, $scope.config.name).success(function (data) {
-                        var foundElement = _.find(data.headers, function (header) {
+                        var groupByElement = _.find(data.headers, function (header) {
                             return header.name === $scope.config.groupByConcept;
                         });
-                        data.headers = _.without(data.headers, foundElement);
-                        data.headers.unshift(foundElement);
+                        data.headers = _.without(data.headers, groupByElement);
+                        data.headers.unshift(groupByElement);
                         $scope.obsTable = data;
                     });
             };
@@ -26,9 +27,22 @@ angular.module('bahmni.common.displaycontrol.obsVsObsFlowSheet')
                 "section": $scope.section
             };
 
+            $scope.getDisplayName = function(observation){
+                return observation.concept.shortName || observation.concept.name ;
+
+            };
+
+            $scope.getEditObsData = function (observation) {
+                return {
+                    observation: {encounterUuid: observation.encounterUuid, uuid: observation.obsGroupUuid},
+                    conceptSetName: $scope.config.templateName,
+                    conceptDisplayName: $scope.config.templateName
+                }
+            };
+
             $scope.getPivotOn = function(){
                 return $scope.config.pivotOn;
-            }
+            };
 
             var getName = function(obs){
                 return (obs && obs.value && obs.value.shortName) || (obs && obs.value && obs.value.name) || obs.value;

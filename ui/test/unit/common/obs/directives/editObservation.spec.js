@@ -8,16 +8,9 @@ describe("ensure that the directive edit-observation works properly", function (
     var obsDate = new Date();
 
     var observation = {
-        "value": 1,
-        encounter:{uuid: "encounter uuid one"},
-        patient:{identifier: 'GAN1234', name: 'Ram Singh', uuid: 'p-uuid-1', activeVisitUuid: 'v-uuid-1'},
-        "concept": {"shortName": null, "name": "Other", "set": true, "units": null, "conceptClass": "Misc", "dataType": "N/A"},
-        "conceptUuid" : "otherUuid",
-        "observationDateTime" : obsDate
+        encounterUuid: "encounter uuid one"
     };
 
-    var encounterServiceMock = jasmine.createSpyObj('encounterService', ['findByEncounterUuid']);
-    var spinnerMock = jasmine.createSpyObj('spinner', ['forPromise']);
     var messageServiceMock = jasmine.createSpyObj('messagingService', ['showMessage']);
     state = {params: {encounterUuid: "someEncounterUuid", programUuid: "someProgramUuid", patientUuid: "somePatientUuid"}};
     ngDialog = null;
@@ -58,14 +51,39 @@ describe("ensure that the directive edit-observation works properly", function (
             successFn({data:{
                 uuid: "encounter uuid one",
                 orders:[{uuid:"order1"}],
-                observations:[],
+                observations: [
+                    {
+                        uuid: 'root-obs-uuid',
+                        concept: {
+                            name: 'Adverse Events Template',
+                            uuid: 'root-concept-uuid'
+                        },
+                        groupMembers: [
+                            {
+                                uuid: 'child1-obs-uuid',
+                                concept: {
+                                    name: 'Adverse Event Details',
+                                    uuid: 'child1-concept-uuid'
+                                },
+                                groupMembers: []
+                            },
+                            {
+                                uuid: 'child2-obs-uuid',
+                                concept: {
+                                    name: 'Adverse Event Details',
+                                    uuid: 'child2-concept-uuid'
+                                },
+                                groupMembers: []
+                            }
+                        ]
+                    }],
                 drugOrders:[],
                 extensions:{mdrtbSpecimen: null}
             }});
             return encounterPromise;
 
         };
-       encounterServiceMock.findByEncounterUuid.and.returnValue(encounterPromise);
+        encounterServiceMock.findByEncounterUuid.and.returnValue(encounterPromise);
 
         $provide.value('$state', state);
         $provide.value('ngDialog', ngDialog);
@@ -100,12 +118,48 @@ describe("ensure that the directive edit-observation works properly", function (
 
         expect(compiledScope).not.toBeUndefined();
         expect(compiledScope.encounter.orders.length).toBe(1);
+        expect(compiledScope.editableObservations).toBe(compiledScope.encounter.observations);
 
         compiledScope.save();
 
         expect(compiledScope.encounter.orders.length).toBe(0);
     });
 
+    it("should update only specified observation in encounter observations before saving the encounter", function(){
+        scope = rootScope.$new();
+        scope.observation = _.extend(observation, {uuid: 'child2-obs-uuid'});
+
+        httpBackend.expectGET("../common/obs/views/editObservation.html").respond("<div>dummy</div>");
+
+        var compiledEle = compile(html)(scope);
+
+        scope.$digest();
+        httpBackend.flush();
+
+        var compiledScope = compiledEle.isolateScope();
+        scope.$digest();
+
+        expect(compiledScope.encounter.observations[0].groupMembers[0].groupMembers.length).toBe(0);
+        expect(compiledScope.encounter.observations[0].groupMembers[1].groupMembers.length).toBe(0);
+        expect(compiledScope.editableObservations[0].uuid).toBe("child2-obs-uuid");
+        expect(compiledScope.editableObservations[0].concept.name).toBe("Adverse Event Details");
+        expect(compiledScope).not.toBeUndefined();
+
+        compiledScope.editableObservations = [{uuid: 'child2-obs-uuid',
+            groupMembers: [
+                {
+                    uuid: 'obs1-uuid',
+                    value: 'adverse'
+                }
+            ]
+        }];
+
+
+        compiledScope.save();
+
+        expect(compiledScope.encounter.observations[0].groupMembers[0].groupMembers.length).toBe(0);
+        expect(compiledScope.encounter.observations[0].groupMembers[1].groupMembers.length).toBe(1);
+    })
 
 });
 
