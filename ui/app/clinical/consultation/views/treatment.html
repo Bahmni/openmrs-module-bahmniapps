@@ -1,4 +1,5 @@
 <div class="treatment-page treatment-page-container">
     <div ui-view="addTreatment"></div>
-    <div ui-view="viewHistory"></div>
+    <div ng-if="view === 'default'" ui-view="defaultHistoryView"></div>
+    <div ng-if="view === 'custom'" ui-view="customHistoryView"></div>
 </div>

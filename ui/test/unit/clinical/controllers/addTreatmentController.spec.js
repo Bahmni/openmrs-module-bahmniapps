@@ -1,6 +1,6 @@
 'use strict';
 
-describe("TreatmentController", function () {
+describe("AddTreatmentController", function () {
 
     beforeEach(module('bahmni.common.uiHelper'));
     beforeEach(module('bahmni.clinical'));
@@ -29,7 +29,7 @@ describe("TreatmentController", function () {
 
         appService.getAppDescriptor.and.returnValue(appConfig);
 
-        $controller('TreatmentController', {
+        $controller('AddTreatmentController', {
             $scope: scope,
             $rootScope: rootScope,
             treatmentService: null,

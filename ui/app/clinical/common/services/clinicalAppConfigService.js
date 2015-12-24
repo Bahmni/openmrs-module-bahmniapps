@@ -7,6 +7,12 @@ angular.module('bahmni.clinical')
             return appService.getAppDescriptor().getExtensions("org.bahmni.clinical.treatment.links", "link") || [];
         };
 
+        this.getTreatmentTabExtension = function(){
+            return _.find(this.getAllConsultationBoards(), function(board){
+                return board.url === 'treatment';
+            });
+        };
+
         this.getDrugOrderConfig = function () {
             return appService.getAppDescriptor().getConfigValue("drugOrder") || {};
         };

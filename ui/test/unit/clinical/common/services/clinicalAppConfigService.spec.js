@@ -118,6 +118,17 @@ describe("clinicalAppConfigService", function () {
             "url": "http://localhost:8069/quotations/latest?patient_ref={{patient_ref}}",
             "shortcutKey": "q",
             "requiredPrivilege": "app:billing"
+        },
+        {
+            "id": "bahmni.clinical.billing.treatment",
+            "extensionPointId": "org.bahmni.clinical.consultation.board",
+            "type": "link",
+            "label": "Medications",
+            "translationKey": "Medication",
+            "url": "treatment",
+            "icon": "fa-user-md",
+            "order": 8,
+            "requiredPrivilege": "app:clinical:consultationTab"
         }
     ]
     };
@@ -138,6 +149,7 @@ describe("clinicalAppConfigService", function () {
         _sessionService.loadCredentials.and.callFake(function () {
             return  specUtil.respondWith({"privileges": [
                 {"name": "app:clinical:observationTab"},
+                {"name": "app:clinical:consultationTab"},
                 {"name": "app:clinical:history"},
                 {"name": "app:billing"},
             ]});
@@ -231,7 +243,7 @@ describe("clinicalAppConfigService", function () {
         it('should fetch consultation boards', function (done) {
             appService.initApp('clinical', {'extension': true}).then(function () {
                 var result = clinicalAppConfigService.getAllConsultationBoards();
-                expect(result.length).toBe(1);
+                expect(result.length).toBe(2);
                 done();
             });
         });
@@ -260,4 +272,13 @@ describe("clinicalAppConfigService", function () {
             });
         })
     });
+
+    it('should fetch treatment board details from extensions', function(done){
+        appService.initApp('clinical', {'extension': true}).then(function () {
+            var result = clinicalAppConfigService.getTreatmentTabExtension();
+            expect(result.url).toBe("treatment");
+            expect(result.id).toBe("bahmni.clinical.billing.treatment");
+            done();
+        });
+    })
 });

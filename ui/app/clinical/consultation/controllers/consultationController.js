@@ -110,6 +110,7 @@ angular.module('bahmni.clinical').controller('ConsultationController',
             var initialize = function () {
                 var appExtensions = clinicalAppConfigService.getAllConsultationBoards();
                 $scope.availableBoards = $scope.availableBoards.concat(appExtensions);
+                console.log($scope.availableBoards);
                 setCurrentBoardBasedOnPath();
             };
 

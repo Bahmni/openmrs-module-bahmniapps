@@ -162,6 +162,7 @@ angular.module('consultation')
                 abstract: true,
                 views: {
                     'consultation-content': {
+                        controller: 'TreatmentController',
                         templateUrl: 'consultation/views/treatment.html'
                     }
                 }
@@ -173,13 +174,13 @@ angular.module('consultation')
                 },
                 views: {
                     "addTreatment": {
-                        controller: 'TreatmentController',
+                        controller: 'AddTreatmentController',
                         templateUrl: 'consultation/views/treatmentSections/addTreatment.html',
                         resolve: {
                             treatmentConfig: 'treatmentConfig'
                         }
                     },
-                    "viewHistory": {
+                    "defaultHistoryView": {
                         controller: 'DrugOrderHistoryController',
                         templateUrl: 'consultation/views/treatmentSections/drugOrderHistory.html',
                         resolve: {
@@ -188,6 +189,10 @@ angular.module('consultation')
                             },
                             treatmentConfig: 'treatmentConfig'
                         }
+                    },
+                    "customHistoryView": {
+                        controller: 'CustomDrugOrderHistoryController',
+                        templateUrl: 'consultation/views/treatmentSections/customDrugOrderHistory.html'
                     }
                 }
             })
