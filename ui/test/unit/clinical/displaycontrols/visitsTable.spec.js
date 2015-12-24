@@ -6,7 +6,7 @@ describe("Visits Table display control", function () {
     beforeEach(module('ngHtml2JsPreprocessor'));
     beforeEach(module('bahmni.clinical'));
     beforeEach(module(function($provide) {
-        conceptSetService = jasmine.createSpyObj('conceptSetService', ['getConcept']);
+        conceptSetService = jasmine.createSpyObj('conceptSetService', ['getConceptSetMembers']);
         visitFormService = jasmine.createSpyObj('visitFormService', ['formData']);
         patientVisitHistoryService= jasmine.createSpyObj('patientVisitHistoryService', ['getVisitHistory']);
         $provide.value('$state', {});
@@ -29,7 +29,7 @@ describe("Visits Table display control", function () {
     }));
 
     var mockConceptSetService = function (data) {
-        conceptSetService.getConcept.and.callFake(function () {
+        conceptSetService.getConceptSetMembers.and.callFake(function () {
             return {
                 then: function (callback) {
                     return callback(data)

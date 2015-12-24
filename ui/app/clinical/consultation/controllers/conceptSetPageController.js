@@ -11,7 +11,7 @@ angular.module('bahmni.clinical')
             var fields = ['uuid', 'name:(name,display)', 'names:(uuid,conceptNameType,name)'];
             var customRepresentation = Bahmni.ConceptSet.CustomRepresentationBuilder.build(fields, 'setMembers', numberOfLevels);
 
-            conceptSetService.getConcept({
+            conceptSetService.getConceptSetMembers({
                 name: "All Observation Templates",
                 v: "custom:" + customRepresentation
             }).success(function (response) {

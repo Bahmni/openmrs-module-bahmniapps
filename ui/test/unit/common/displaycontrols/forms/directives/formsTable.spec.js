@@ -8,7 +8,7 @@ describe("Forms Table display control", function () {
     beforeEach(module('bahmni.common.uiHelper'));
     beforeEach(module('bahmni.common.i18n'));
     beforeEach(module('bahmni.common.displaycontrol.forms', function ($provide) {
-        conceptSetService = jasmine.createSpyObj('conceptSetService', ['getConcept']);
+        conceptSetService = jasmine.createSpyObj('conceptSetService', ['getConceptSetMembers']);
         visitFormService = jasmine.createSpyObj('visitFormService', ['formData']);
         spinner = jasmine.createSpyObj('spinner', ['forPromise']);
 
@@ -43,7 +43,7 @@ describe("Forms Table display control", function () {
     }));
 
     var mockConceptSetService = function (data) {
-        conceptSetService.getConcept.and.callFake(function () {
+        conceptSetService.getConceptSetMembers.and.callFake(function () {
             return {
                 then: function (callback) {
                     return callback(data)

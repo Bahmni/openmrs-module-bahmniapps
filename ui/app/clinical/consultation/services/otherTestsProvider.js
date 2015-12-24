@@ -8,8 +8,8 @@ angular.module('bahmni.clinical')
 
   	this.getTests = function() {
 	  	var deferer = $q.defer();
-        var otherInvestigationsConceptPromise = conceptSetService.getConcept({name: Bahmni.Clinical.Constants.otherInvestigationsConceptSetName, v: "fullchildren"}, true);
-        var categoriesConceptPromise = conceptSetService.getConcept({name: Bahmni.Clinical.Constants.otherInvestigationCategoriesConceptSetName, v: "custom:(uuid,setMembers:(uuid,name,setMembers:(uuid,name)))"}, true);
+        var otherInvestigationsConceptPromise = conceptSetService.getConceptSetMembers({name: Bahmni.Clinical.Constants.otherInvestigationsConceptSetName, v: "fullchildren"}, true);
+        var categoriesConceptPromise = conceptSetService.getConceptSetMembers({name: Bahmni.Clinical.Constants.otherInvestigationCategoriesConceptSetName, v: "custom:(uuid,setMembers:(uuid,name,setMembers:(uuid,name)))"}, true);
         $q.all([otherInvestigationsConceptPromise, categoriesConceptPromise]).then(function(results){
             var otherInvestigationConcept = results[0].data.results[0];
             var labDepartmentsSet = results[1].data.results[0];
