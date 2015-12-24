@@ -43,26 +43,13 @@ angular.module('bahmni.common.displaycontrol.forms')
                         }
                     });
                 };
-                $scope.getDisplayName = function(data){
-                    var concept = data.concept;
-                    var displayName = data.concept.displayString;
-                    if(concept.names && concept.names.length === 1 && concept.names[0].name != ""){
-                        displayName = concept.names[0].name;
-                    }
-                    else if(concept.names && concept.names.length === 2){
-                        displayName = _.find(concept.names, {conceptNameType: "SHORT"}).name;
-                    }
-                    return displayName ;
-
-                };
 
                 spinner.forPromise(init());
 
                 $scope.getEditObsData = function (observation) {
                     return {
                         observation: {encounterUuid: observation.encounterUuid},
-                        conceptSetName: observation.concept.displayString,
-                        conceptDisplayName: $scope.getDisplayName(observation)
+                        conceptSetName: observation.concept.displayString
                     }
                 };
 
