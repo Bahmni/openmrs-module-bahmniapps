@@ -21,7 +21,7 @@
             <table ng-if="regimen.rows.length > 0">
                 <th ng-if="isMonthNumberRequired()">Month</th>
                 <th>Date</th>
-                <th ng-repeat="header in regimen.headers">{{header.shortName || header.name}}</th>
+                <th ng-repeat="header in regimen.headers">{{getAbbreviation(header)}}</th>
                 <tr ng-repeat="row in regimen.rows">
                     <td ng-if="isMonthNumberRequired()">{{row.month}}</td>
                     <td>{{row.date | bahmniDate}}</td>

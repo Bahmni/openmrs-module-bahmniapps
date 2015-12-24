@@ -96,6 +96,7 @@ Bahmni.Common = Bahmni.Common || {};
         dispositionNoteConcept : "Disposition Note",
         ruledOutDiagnosisConceptName : 'Ruled Out Diagnosis',
         emrapiConceptMappingSource :"org.openmrs.module.emrapi",
+        abbreviationConceptMappingSource: "Abbreviation",
         includeAllObservations: false,
         openmrsObsUrl :RESTWS_V1 + "/obs",
         openmrsObsRepresentation :"custom:(uuid,obsDatetime,value:(uuid,name:(uuid,name)))" ,
