@@ -8,7 +8,6 @@ angular.module('bahmni.offline').service('offlineService', ['$rootScope','$bahmn
     };
 
     this.isOfflineApp = function () {
-        return true;
         return this.getAppPlatform() !== Bahmni.Common.Constants.platformType.chrome;
     };
 
