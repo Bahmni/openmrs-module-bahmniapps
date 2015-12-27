@@ -62,7 +62,7 @@ angular.module('bahmni.registration')
                     return;
                 }
 
-                var patientUpdatePromise = patientService.update($scope.patient, $scope.openMRSPatient).success(function (patientProfileData) {
+                var patientUpdatePromise = patientService.update($scope.patient, $scope.openMRSPatient).then(function (patientProfileData) {
                     successCallBack(patientProfileData);
                     $scope.actions.followUpAction(patientProfileData);
                 });
