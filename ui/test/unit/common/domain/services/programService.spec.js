@@ -127,8 +127,8 @@ describe('programService', function () {
                 results: [
                     {
                         "display": "Tuberculosis Program",
-                        "dateEnrolled": DateUtil.formatDateWithoutTime(tenDaysAgo),
-                        "dateCompleted": DateUtil.formatDateWithTime(yesterday),
+                        "dateEnrolled": DateUtil.parseLongDateToServerFormat(tenDaysAgo),
+                        "dateCompleted": DateUtil.parseLongDateToServerFormat(yesterday),
                         "patient":{"uuid":"ad95e200-6196-4438-a078-16ad0506a473"},
                         "states": [
                             {
@@ -150,7 +150,7 @@ describe('programService', function () {
                                 {
                                     "uuid": "6a6c990f-01e2-464b-9452-2a97f0c05c7c",
                                     "retired": false,
-                                    "states": [],
+                                    "states": []
                                 }
                             ]
                         },
@@ -158,8 +158,8 @@ describe('programService', function () {
                     },
                     {
                         "display": "HIV Program",
-                        "dateEnrolled": DateUtil.formatDateWithoutTime(tenDaysAgo),
-                        "dateCompleted": DateUtil.formatDateWithoutTime(today),
+                        "dateEnrolled": DateUtil.parseLongDateToServerFormat(tenDaysAgo),
+                        "dateCompleted": DateUtil.parseLongDateToServerFormat(today),
                         "patient":{"uuid":"ad95e200-6196-4438-a078-16ad0506a473"},
                         "states": [
                             {
@@ -189,8 +189,8 @@ describe('programService', function () {
                     },
                     {
                         "display": "End TB Program",
-                        "dateEnrolled": DateUtil.formatDateWithoutTime(tenDaysAgo),
-                        "dateCompleted": DateUtil.formatDateWithoutTime(fiveDaysFromToday),
+                        "dateEnrolled": DateUtil.parseLongDateToServerFormat(tenDaysAgo),
+                        "dateCompleted": DateUtil.parseLongDateToServerFormat(fiveDaysFromToday),
                         "patient":{"uuid":"ad95e200-6196-4438-a078-16ad0506a473"},
                         "states": [
                             {
@@ -212,7 +212,7 @@ describe('programService', function () {
                                 {
                                     "uuid": "6a6c990f-01e2-464b-9452-2a97f0c05c7c",
                                     "retired": false,
-                                    "states": [],
+                                    "states": []
                                 }
                             ]
                         },
@@ -220,7 +220,7 @@ describe('programService', function () {
                     },
                     {
                         "display": "End Fever Program",
-                        "dateEnrolled": DateUtil.formatDateWithoutTime(tenDaysAgo),
+                        "dateEnrolled": DateUtil.parseLongDateToServerFormat(tenDaysAgo),
                         "dateCompleted": null,
                         "patient":{"uuid":"ad95e200-6196-4438-a078-16ad0506a473"},
                         "states": [
