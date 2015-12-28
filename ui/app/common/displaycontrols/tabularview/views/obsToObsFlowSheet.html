@@ -22,8 +22,7 @@
             <table ng-if="obsTable.rows.length > 0 && getPivotOn() != 'column'">
                 <tr>
                     <th ng-if="isMonthAvailable()"> Month</th>
-                    <th ng-repeat="header in obsTable.headers" ng-if="header.name != 'Month'">{{header.shortName ||
-                        header.name}}
+                    <th ng-repeat="header in obsTable.headers" ng-if="header.name != 'Month'">{{getAbbreviation(header)}}
                     </th>
                 </tr>
                 <tr ng-repeat="row in obsTable.rows">
@@ -52,8 +51,7 @@
                     </th>
                 </tr>
                 <tr ng-repeat="header in obsTable.headers" ng-if="header.name != 'Month'">
-                    <th>{{header.shortName ||
-                        header.name}}
+                    <th>{{getAbbreviation(header)}}
                     </th>
                     <td ng-repeat="row in obsTable.rows" ng-class="{'is-abnormal': row.columns[header.name].abnormal}">
                         {{commafy(row.columns[header.name])}}

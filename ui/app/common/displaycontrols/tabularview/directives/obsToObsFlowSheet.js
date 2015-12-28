@@ -1,8 +1,8 @@
 'use strict';
 
-angular.module('bahmni.common.displaycontrol.obsVsObsFlowSheet')
-    .directive('obsToObsFlowSheet', function () {
-        var controller = function ($scope, observationsService, spinner,appService, conceptSetService, $q, $stateParams) {
+angular.module('bahmni.common.displaycontrol.obsVsObsFlowSheet').directive('obsToObsFlowSheet', ['$translate','spinner','observationsService',
+        function ($translate, spinner, observationsService) {
+            var link = function ($scope, element, attrs) {
             $scope.config = $scope.isOnDashboard ? $scope.section.dashboardParams : $scope.section.allDetailsParams;
             $scope.isEditable = $scope.config.isEditable;
             var patient = $scope.patient;
@@ -25,26 +25,26 @@ angular.module('bahmni.common.displaycontrol.obsVsObsFlowSheet')
             };
 
             var getObsInFlowSheet = function () {
-                var programConfig = appService.getAppDescriptor().getConfigValue("program") || {};
-                var startDate = null, endDate = null, getOtherActive;
-                if (programConfig.showDashBoardWithinDateRange) {
-                    startDate = $stateParams.dateEnrolled;
-                    endDate = $stateParams.dateCompleted;
-                }
-
                 return observationsService.getObsInFlowSheet(patient.uuid, $scope.config.templateName,
-                        $scope.config.groupByConcept, $scope.config.conceptNames, $scope.config.numberOfVisits,
-                        $scope.config.initialCount, $scope.config.latestCount, $scope.config.name, startDate, endDate)
-                    .then(function (result) {
-                        var obsInFlowSheet = result.data;
-                        var groupByElement = _.find(obsInFlowSheet.headers, function (header) {
+                    $scope.config.groupByConcept, $scope.config.conceptNames, $scope.config.numberOfVisits, $scope.config.initialCount, $scope.config.latestCount, $scope.config.name, $scope.startDate, $scope.endDate).success(function (data) {
+                                var obsInFlowSheet = data;
+                                var groupByElement = _.find(obsInFlowSheet.headers, function (header) {
                             return header.name === $scope.config.groupByConcept;
                         });
                         obsInFlowSheet.headers = _.without(obsInFlowSheet.headers, groupByElement);
                         obsInFlowSheet.headers.unshift(groupByElement);
                         $scope.obsTable = obsInFlowSheet;
                     })
-            };
+            }
+            //var init = function () {
+            //    //var programConfig = appService.getAppDescriptor().getConfigValue("program") || {};
+            //    //var startDate = null, endDate = null, getOtherActive;
+            //    //if (programConfig.showDashBoardWithinDateRange) {
+            //    //    startDate = $stateParams.dateEnrolled;
+            //    //    endDate = $stateParams.dateCompleted;
+            //    //}
+            //
+            //};
 
             var init = function () {
                 return $q.all([getObsInFlowSheet(), getTemplateDisplayName()]).then(function (results) {
@@ -70,6 +70,16 @@ angular.module('bahmni.common.displaycontrol.obsVsObsFlowSheet')
 
             $scope.getPivotOn = function(){
                 return $scope.config.pivotOn;
+            };
+
+            $scope.getAbbreviation = function(concept){
+                var result;
+                if(concept && concept.mappings && concept.mappings.length > 0 && $scope.section.headingConceptSource){
+                    result = _.result(_.find(concept.mappings, {"source": $scope.section.headingConceptSource}),"code");
+                    result = $translate.instant(result);
+                }
+
+                return result || concept.shortName || concept.name;
             };
 
             var getName = function(obs){
@@ -105,13 +115,15 @@ angular.module('bahmni.common.displaycontrol.obsVsObsFlowSheet')
         };
         return {
             restrict: 'E',
-            controller: controller,
+            link: link,
             scope: {
                 patient: "=",
                 section: "=",
                 visitSummary: "=",
-                isOnDashboard: "="
+                isOnDashboard: "=",
+                startDate: "=",
+                endDate: "="
             },
             templateUrl: "../common/displaycontrols/tabularview/views/obsToObsFlowSheet.html"
         };
-    });
+    }]);
