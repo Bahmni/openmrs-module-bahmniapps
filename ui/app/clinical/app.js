@@ -11,6 +11,7 @@ angular.module('consultation', ['ui.router', 'bahmni.clinical', 'bahmni.common.c
 angular.module('consultation')
     .config(['$stateProvider', '$httpProvider', '$urlRouterProvider','$bahmniTranslateProvider', function ($stateProvider, $httpProvider, $urlRouterProvider,$bahmniTranslateProvider) {
         $urlRouterProvider.otherwise('/' + Bahmni.Clinical.Constants.defaultExtensionName + '/patient/search');
+
         var patientSearchBackLink = {
             label: "",
             state: "search.patientsearch",

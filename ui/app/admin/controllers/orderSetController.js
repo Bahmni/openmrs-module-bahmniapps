@@ -2,17 +2,12 @@
 
 
 angular.module('bahmni.common.domain')
-    .controller('OrderSetController', ['$scope', '$state', 'spinner', '$http', 'orderSetService', 'messagingService', 'orderTypeInitialization',
-        function ($scope, $state, spinner, $http, orderSetService, messagingService, orderTypeInitialization) {
+    .controller('OrderSetController', ['$scope', '$state', 'spinner', '$http', '$q', 'orderSetService', 'messagingService', 'orderTypeService',
+        function ($scope, $state, spinner, $http, $q, orderSetService, messagingService, orderTypeService) {
             $scope.operators = ['ALL', 'ANY', 'ONE'];
             $scope.conceptNameInvalid = false;
-            $scope.orderTypes = orderTypeInitialization;
-
             $scope.addOrderSetMembers = function (event) {
                 event.preventDefault();
-                if (!$scope.orderSet.orderSetMembers) {
-                    $scope.orderSet.orderSetMembers = [];
-                }
                 $scope.orderSet.orderSetMembers.push(buildOrderSetMember());
             };
 
@@ -57,10 +52,10 @@ angular.module('bahmni.common.domain')
                 }
             };
 
-            $scope.onSelect = function (index) {
+            $scope.onSelect = function (orderSetMember) {
                 return function (selectedConcept) {
-                    $scope.orderSet.orderSetMembers[index].concept = selectedConcept.concept;
-                    $scope.orderSet.orderSetMembers[index].sortWeight = index + 1;
+                    orderSetMember.concept.name = selectedConcept.concept.name;
+                    orderSetMember.concept.uuid = selectedConcept.concept.uuid;
                 };
             };
 
@@ -68,34 +63,35 @@ angular.module('bahmni.common.domain')
                 orderSetMember.voided = !orderSetMember.voided;
             };
 
-            $scope.clearConceptName = function (orderSetMember) {
+            $scope.clearConceptName = function (orderSetMember, orderSet) {
                 orderSetMember.concept = {};
             };
 
-            $scope.rearrangeSequence = function (orderSet, orderSetMember) {
+            $scope.rearrangeSequence = function (orderSet, orderSetMember, oldValue, newValue, startIndex) {
                 var numberOfOrderSetMembers = orderSet.orderSetMembers.length;
                 var startIndex;
-                for(var i=0; i<numberOfOrderSetMembers; i++) {
-                    if(orderSet.orderSetMembers[i].uuid == orderSetMember.uuid) {
-                        startIndex = i+1;
+                for (var i = 0; i < numberOfOrderSetMembers; i++) {
+                    if (orderSet.orderSetMembers[i] == orderSetMember) {
+                        startIndex = i + 1;
                     }
                 }
                 var endIndex = orderSetMember.sortWeight;
-                if(startIndex > endIndex) {
-                    orderSet.orderSetMembers.splice(endIndex-1, 0, orderSetMember);
-                    for(var i=endIndex; i<startIndex; i++) {
-                        orderSet.orderSetMembers[i].sortWeight+=1;
+                if (startIndex > endIndex) {
+                    orderSet.orderSetMembers.splice(endIndex - 1, 0, orderSetMember);
+                    for (var i = endIndex; i < startIndex; i++) {
+                        orderSet.orderSetMembers[i].sortWeight += 1;
                     }
                     orderSet.orderSetMembers.splice(startIndex, 1);
                 }
                 else {
+
                     orderSet.orderSetMembers.splice(endIndex, 0, orderSetMember);
-                    for(var i=startIndex; i<endIndex; i++) {
-                        orderSet.orderSetMembers[i].sortWeight-=1;
+                    for (var i = startIndex; i < endIndex; i++) {
+                        orderSet.orderSetMembers[i].sortWeight -= 1;
                     }
-                    orderSet.orderSetMembers.splice(startIndex-1,1)
+                    orderSet.orderSetMembers.splice(startIndex - 1, 1)
                 }
-            }
+            };
 
             var primaryAttributeCount = function () {
                 var count = 0;
@@ -111,6 +107,11 @@ angular.module('bahmni.common.domain')
 
             $scope.save = function () {
                 if (validationSuccess()) {
+                    _.each($scope.orderSet.orderSetMembers, function (orderSetMember) {
+                        if (orderSetMember.orderTemplate) {
+                            orderSetMember.orderTemplate = JSON.stringify(orderSetMember.orderTemplate);
+                        }
+                    });
                     spinner.forPromise(orderSetService.saveOrderSet(filterOrderSetAttributes($scope.orderSet)).then(function (response) {
                         $state.params.orderSetUuid = response.data.uuid;
                         return $state.transitionTo($state.current, $state.params, {
@@ -128,7 +129,7 @@ angular.module('bahmni.common.domain')
                 orderSet.orderSetMembers.forEach(function (orderSetMember) {
                     if (!_.isNull(orderSetMember.orderSetMemberAttributes)) {
                         orderSetMember.orderSetMemberAttributes = _.filter(orderSetMember.orderSetMemberAttributes, function (orderSetMemberAttribute) {
-                            if(orderSetMemberAttribute.value) {
+                            if (orderSetMemberAttribute.value) {
                                 return true;
                             }
                         });
@@ -161,59 +162,13 @@ angular.module('bahmni.common.domain')
                 });
                 return countActive;
             };
-            var map = function (orderSet) {
-                var mappedOrderSet = {};
-                if (orderSet.orderSetId) {
-                    mappedOrderSet.orderSetId = orderSet.orderSetId;
-                    mappedOrderSet.uuid = orderSet.uuid;
-                }
-                mappedOrderSet.name = orderSet.name;
-                mappedOrderSet.description = orderSet.description;
-                mappedOrderSet.operator = orderSet.operator;
-                mappedOrderSet.orderSetMembers = [];
-                mapOrderSet(orderSet, mappedOrderSet);
-                return mappedOrderSet;
-            };
 
-
-
-            var filterOutOrderSet = function (orderSetResult) {
+            var filterOutVoidedOrderSetMembers = function (orderSetResult) {
                 orderSetResult.orderSetMembers = _.filter(orderSetResult.orderSetMembers, function (orderSetMemberObj) {
                     return !orderSetMemberObj.voided;
                 });
                 return orderSetResult;
             };
-
-            var mapOrderSet = function (orderSet, mappedOrderSet) {
-                if (orderSet.orderSetMembers) {
-                    orderSet.orderSetMembers.forEach(function (orderSetMember) {
-                        var orderSetMemberObj = {};
-                        if (orderSetMember.orderSetMemberId) {
-                            orderSetMemberObj.orderSetMemberId = orderSetMember.orderSetMemberId;
-                            orderSetMemberObj.uuid = orderSetMember.uuid;
-                        }
-                        if (_.isEmpty(orderSetMember.orderSetMemberAttributes)) {
-                            orderSetMember.orderSetMemberAttributes = [];
-                            var primaryAttribute = {};
-                            primaryAttribute.orderSetMemberAttributeType = $scope.primaryAttributeType;
-                            orderSetMember.orderSetMemberAttributes.push(primaryAttribute);
-                        }
-                        orderSetMemberObj.orderSetMemberAttributes = orderSetMember.orderSetMemberAttributes;
-
-                        orderSetMemberObj.orderType = {
-                            uuid: orderSetMember.orderType.uuid
-                        };
-                        orderSetMemberObj.concept = {
-                            name: orderSetMember.concept.name.display,
-                            uuid: orderSetMember.concept.uuid
-                        };
-                        orderSetMemberObj.sortWeight = orderSetMember.sortWeight;
-                        orderSetMemberObj.voided = orderSetMember.voided;
-                        mappedOrderSet.orderSetMembers.push(orderSetMemberObj);
-                    });
-                }
-            };
-
 
             var buildOrderSetMember = function () {
                 var orderSetMemberAttributeTypeId = $scope.primaryAttributeType.orderSetMemberAttributeTypeId;
@@ -228,25 +183,31 @@ angular.module('bahmni.common.domain')
                 return orderSetMember;
             };
 
-            var buildNewOrderSet = function () {
-                $scope.orderSet = {
-                    operator: $scope.operators[0],
-                    orderSetMembers: [buildOrderSetMember(), buildOrderSetMember()] // Add 2 orderSet members by default
-                };
-            };
-
             var init = function () {
-                spinner.forPromise(orderSetService.getOrderSetMemberAttributeType(Bahmni.Common.Constants.primaryOrderSetMemberAttributeTypeName).then(function (response) {
-                    $scope.primaryAttributeType = response.data.results[0];
+                var init = $q.all([orderTypeService.loadAll(), orderSetService.getOrderSetMemberAttributeType(Bahmni.Common.Constants.primaryOrderSetMemberAttributeTypeName), orderSetService.getDrugConfig()]).then(function (results) {
+                    $scope.orderTypes = results[0];
+                    $scope.primaryAttributeType = results[1].data.results[0];
+                    $scope.treatmentConfig = results[2];
                     if ($state.params.orderSetUuid !== "new") {
                         spinner.forPromise(orderSetService.getOrderSet($state.params.orderSetUuid).then(function (response) {
-                            $scope.orderSet = map(filterOutOrderSet(response.data));
+                            $scope.orderSet = filterOutVoidedOrderSetMembers(new Bahmni.Common.OrderSet().create(response.data));
+                            _.each($scope.orderSet.orderSetMembers, function (orderSetMember) {
+                                if (orderSetMember.orderTemplate) {
+                                    orderSetMember.orderTemplate = JSON.parse(orderSetMember.orderTemplate);
+                                }
+                            });
                         }));
-                    } else {
-                        buildNewOrderSet();
                     }
-                }));
+                    else {
+                        $scope.orderSet = new Bahmni.Common.OrderSet().create();
+                        $scope.orderSet.operator = $scope.operators[0];
+                        $scope.orderSet.orderSetMembers.push(
+                            new Bahmni.Common.OrderSet.OrderSetMember().create(buildOrderSetMember()),
+                            new Bahmni.Common.OrderSet.OrderSetMember().create(buildOrderSetMember())
+                        );
+                    }
+                })
+                spinner.forPromise(init);
             };
-
             init();
         }]);

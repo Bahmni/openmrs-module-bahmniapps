@@ -1,10 +1,10 @@
 'use strict';
 
 angular.module('bahmni.common.domain')
-    .service('orderSetService', ['$http',function ($http) {
+    .service('orderSetService', ['$http', '$q', function ($http, $q) {
         this.getAllOrderSets = function() {
             return $http.get(Bahmni.Common.Constants.orderSetUrl, {
-                params: {v:"custom:(name,uuid)"}
+                params: {v:"full"}
             });
         };
 
@@ -55,5 +55,19 @@ angular.module('bahmni.common.domain')
                 })
             });
             return _.values(orderSetMembers);
+        };
+
+         this.getDrugConfig = function () {
+            return $http.get(Bahmni.Common.Constants.drugOrderConfigurationUrl, {
+                withCredentials: true
+            }).then(function(result){
+                var config = result.data;
+                config.durationUnits = [
+                    {name: "Day(s)", factor: 1},
+                    {name: "Week(s)", factor: 7},
+                    {name: "Month(s)", factor: 30}
+                ];
+                return  config;
+            });
         };
     }]);

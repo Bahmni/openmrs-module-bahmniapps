@@ -68,7 +68,7 @@ angular.module('bahmni.common.uiHelper')
         require: 'ngModel',
         scope: {
             source: '&',
-            responseMap: '&',
+            responseMap: '&?',
             onSelect: '&',
             onEdit: '&?',
             minLength: '=',

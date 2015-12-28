@@ -150,7 +150,8 @@ Bahmni.Common = Bahmni.Common || {};
         defaultExtensionName: "default",
         orderSetMemberAttributeTypeUrl: RESTWS_V1 + "/ordersetmemberattributetype",
         orderSetUrl: RESTWS_V1 + "/orderset",
-        primaryOrderSetMemberAttributeTypeName: "Primary"
+        primaryOrderSetMemberAttributeTypeName: "Primary",
+        drugUrl : RESTWS_V1 + "/drug?s=ordered"
 
     };
 })();

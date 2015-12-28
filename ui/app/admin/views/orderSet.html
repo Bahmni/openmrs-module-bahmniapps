@@ -1,87 +1,108 @@
-<section class="section-grid orderSet-container">
-    <h2 class="section-title">Order Set Details</h2>
-    <form ng-submit="save()" class="orderSet-form form clearfix">
-        <section class="new-orderSet-wrapper clearfix">
-            <div class="row">
-                <div class="col col1 form-field">
-                    <div class="field-attribute">
-                        <label>Name <span class="asterick">*</span></label>
+<div ng-controller="OrderSetController">
+    <section class="section-grid orderSet-container">
+        <h2 class="section-title">Order Set Details</h2>
+
+        <form ng-submit="save()" class="orderSet-form form clearfix">
+            <section class="new-orderSet-wrapper clearfix">
+                <div class="row">
+                    <div class="col col1 form-field">
+                        <div class="field-attribute">
+                            <label>Name <span class="asterick">*</span></label>
+                        </div>
+                        <div class="field-value">
+                            <input type="text" ng-model="orderSet.name" required>
+                        </div>
                     </div>
-                    <div class="field-value">
-                        <input type="text" ng-model="orderSet.name" required>
+                    <div class="col col2 form-field">
+                        <div class="field-attribute">
+                            <label>Description <span class="asterick">*</span>
+                            </label>
+                        </div>
+                        <div class="field-value">
+                            <input type="text" ng-model="orderSet.description" required>
+                        </div>
+                    </div>
+                    <div class="col col3 form-field">
+                        <div class="field-attribute">
+                            <label>Operator <span class="asterick">*</span>
+                            </label>
+                        </div>
+                        <div class="field-value">
+                            <select ng-model="orderSet.operator" ng-options="operator for operator in operators"
+                                    required></select>
+                        </div>
                     </div>
                 </div>
-                <div class="col col2 form-field">
-                    <div class="field-attribute">
-                        <label>Description <span class="asterick">*</span>
-                        </label>
+            </section>
+            <div class="orderSetMember-wrapper">
+
+                <input type="button" ng-click="addOrderSetMembers($event)" value="Add New Members"
+                       class="button add-more-btn btn-small fr">
+
+                <fieldset>
+                    <legend class="mylegend">
+                        <span> Order Set Members</span>
+                    </legend>
+                    <div ng-repeat="orderSetMember in orderSet.orderSetMembers" ng-if="!orderSetMember.voided">
+                        <div class="row">
+                            <div class="col col1 form-field">
+                                <div class="field-attribute">
+                                    <label>Order Type <span class="asterick">*</span></label>
+                                </div>
+                                <div class="field-value">
+                                    <select ng-model="orderSetMember.orderType.uuid"
+                                            ng-change="clearConceptName(orderSetMember, orderSet)"
+                                            ng-options="orderType.uuid as orderType.display for orderType in orderTypes"
+                                            required></select>
+                                </div>
+                            </div>
+                            <div class="col col2 form-field">
+                                <div class="field-attribute">
+                                    <label>Concept Name<span class="asterick">*</span></label>
+                                </div>
+                                <div class="field-value">
+                                    <input class="enter-concept" type="text" name="conceptSet"
+                                           ng-model="orderSetMember.concept.name"
+                                           bahmni-autocomplete strict-select="true" on-select="onSelect(orderSetMember)"
+                                           is-invalid="conceptNameInvalid"
+                                           source="getConcepts"
+                                           response-map=getDataResults(orderSetMember.orderType) required
+                                           placeholder="Enter a concept name"/>
+                                </div>
+                            </div>
+                            <div class="col col3 form-field">
+                                <span class="primaryDrug-text">{{primaryAttributeType.description}}</span>
+
+                                <div class="field-attribute">
+                                    <input id="isPrimary" type="checkbox" ng-true-value="'true'" ng-false-value="'false'"
+                                           ng-model="orderSetMember.orderSetMemberAttributes[0].value"/>
+                                </div>
+                                <input class="fl remove-orderSet" type="button" ng-click="removeOrderSetMember($index)"
+                                       value="X">
+                            </div>
+                            <div class="col col4 form-field">
+                                <div class="field-attribute">
+                                    <label>Sequence<span class="asterick">*</span></label>
+                                </div>
+                                <div class="field-value">
+                                    <select ng-init="orderSetMember.sortWeight = orderSetMember.sortWeight || $index+1"
+                                            ng-model="orderSetMember.sortWeight"
+                                            ng-options="i for i in getNumber(orderSet.orderSetMembers.length)"
+                                            ng-change="rearrangeSequence(orderSet, orderSetMember, {{orderSetMember.sortWeight}}, orderSetMember.sortWeight, $index)" required></select>
+                                </div>
+                            </div>
+
+                            <div ng-if="orderSetMember.concept.uuid" class="treatment-page">
+                                <ng-include src="'views/orderTemplate.html'"></ng-include>
+                            </div>
+                        </div>
                     </div>
-                    <div class="field-value">
-                        <input type="text" ng-model="orderSet.description" required>
-                    </div>
-                </div>
-                <div class="col col3 form-field">
-                    <div class="field-attribute">
-                        <label>Operator <span class="asterick">*</span>
-                        </label>
-                    </div>
-                    <div class="field-value">
-                        <select ng-model="orderSet.operator" ng-options="operator for operator in operators" required></select>
-                    </div>
-                </div>
+                </fieldset>
             </div>
-        </section>
-        <div class="orderSetMember-wrapper">
-
-                <input type="button" ng-click="addOrderSetMembers($event)" value="Add New Members" class="button add-more-btn btn-small fr">
-
-            <fieldset>
-                <legend class="mylegend">
-                    <span> Order Set Members</span>
-                </legend>
-                <div ng-repeat="orderSetMember in orderSet.orderSetMembers" ng-if="!orderSetMember.voided">
-                    <div class="row">
-                        <div class="col col1 form-field">
-                            <div class="field-attribute">
-                                <label>Order Type <span class="asterick">*</span></label>
-                            </div>
-                            <div class="field-value">
-                                <select ng-model="orderSetMember.orderType.uuid" ng-change="clearConceptName(orderSetMember)" ng-options="orderType.uuid as orderType.display for orderType in orderTypes" required></select>
-                            </div>
-                        </div>
-                        <div class="col col2 form-field">
-                            <div class="field-attribute">
-                                <label>Concept Name<span class="asterick">*</span></label>
-                            </div>
-                            <div class="field-value">
-                                <input class="enter-concept" type="text" name="conceptSet" ng-model="orderSetMember.concept.name" bahmni-autocomplete strict-select="true" on-select="onSelect($index)" is-invalid="conceptNameInvalid" source="getConcepts" response-map=getDataResults(orderSetMember.orderType) required placeholder="Enter a concept name" />
-                            </div>
-                        </div>
-
-                        <div class="col col3 form-field">
-                            <span class="primaryDrug-text">{{primaryAttributeType.description}}</span>
-                            <div class="field-attribute">
-                                <input id="isPrimary" type="checkbox" ng-true-value="'true'" ng-false-value="'false'" ng-model="orderSetMember.orderSetMemberAttributes[0].value"  />
-                            </div>
-                            <input class="fl remove-orderSet" type="button" ng-click="removeOrderSetMember($index)" value="X">
-
-                        </div>
-
-                        <div class="col col4 form-field">
-                            <div class="field-attribute">
-                                <label>Sequence<span class="asterick">*</span></label>
-                            </div>
-                            <div class="field-value">
-                                <select ng-model="orderSetMember.sortWeight" ng-options="i for i in getNumber(orderSet.orderSetMembers.length)" ng-change="rearrangeSequence(orderSet, orderSetMember)" required></select>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </fieldset>
-        </div>
-        <div class="submit-btn-container">
-            <input type="submit" value="Save" class="secondary-button fr" accesskey="s" />
-            <input type="reset" value="Cancel" class="secondary-button fr" accesskey="c"/>
-        </div>
-    </form>
-</section>
+            <div class="submit-btn-container">
+                <input type="submit" value="Save" class="secondary-button fr" accesskey="s"/>
+                <input type="reset" value="Cancel" class="secondary-button fr" accesskey="c"/>
+            </div>
+        </form>
+    </section>
+</div>

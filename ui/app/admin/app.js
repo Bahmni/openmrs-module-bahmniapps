@@ -9,10 +9,10 @@ angular.module('admin', ['httpErrorInterceptor', 'bahmni.admin', 'bahmni.common.
                 abstract: true,
                 template: '<ui-view/>',
                 resolve: {
-                    initialize: 'initialization',
-                    'orderTypeInitialization': function(orderTypeService) {
-                        return orderTypeService.loadAll();
-                    }
+                    initialize: 'initialization'
+                    //'orderTypeInitialization': function(orderTypeService) {
+                    //    return orderTypeService.loadAll();
+                    //}
                 }
             })
             .state('admin.dashboard', {
@@ -47,11 +47,17 @@ angular.module('admin', ['httpErrorInterceptor', 'bahmni.admin', 'bahmni.common.
             .state('admin.orderSet', {
                 url: '/orderset/:orderSetUuid',
                 templateUrl: 'views/orderSet.html',
-                controller: 'OrderSetController',
+                //controller: 'OrderSetController',
                 data: {
                     backLinks: [{label: "Home", state: "admin.orderSetDashboard", icon: "fa-users"}],
                 }
-            });
+                //resolve: {
+                //    initialize: 'initialization',
+                //    'orderTypeInitialization': function(orderTypeService) {
+                //        return orderTypeService.loadAll();
+                //    }
+                //}
+            })
         $httpProvider.defaults.headers.common['Disable-WWW-Authenticate'] = true;
     }]).
     run(function ($rootScope, $templateCache) {
