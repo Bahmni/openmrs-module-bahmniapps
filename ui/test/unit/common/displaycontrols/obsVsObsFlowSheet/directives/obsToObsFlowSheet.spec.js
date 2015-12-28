@@ -7,13 +7,14 @@ describe('obsToObsFlowSheet DisplayControl', function () {
         rootScope,
         deferred,
         observationsService,
+        conceptSetService,
         translate,
         simpleHtml = '<obs-to-obs-flow-sheet patient="patient" section="section" is-on-dashboard="true"></obs-to-obs-flow-sheet>';
 
-    beforeEach(module('ui.router.router', function(){}));
-    beforeEach(module('pascalprecht.translate', function(){}));
-    beforeEach(module('bahmni.common.uiHelper'), function(){});
-    beforeEach(module('bahmni.clinical'), function(){});
+    beforeEach(module('ngHtml2JsPreprocessor'));
+    beforeEach(module('bahmni.common.uiHelper'));
+    beforeEach(module('bahmni.common.i18n'));
+    beforeEach(module('bahmni.clinical'));
 
     beforeEach(module('bahmni.common.displaycontrol.obsVsObsFlowSheet'), function($provide){
         var _spinner = jasmine.createSpyObj('spinner',['forPromise','then']);
@@ -25,13 +26,15 @@ describe('obsToObsFlowSheet DisplayControl', function () {
 
         _spinner.then.and.callThrough({data: dispositions});
 
-        observationsService = jasmine.createSpyObj('observationsService',['getObsInFlowSheet']);
+        observationsService = jasmine.createSpyObj('observationsService',['getObsInFlowSheet', 'getTemplateDisplayName']);
 
         translate = jasmine.createSpyObj('$translate',['instant']);
 
+        conceptSetService = jasmine.createSpyObj('conceptSetService',['getConcept']);
+
+        $provide.value('observationsService', observationsService);
+        $provide.value('conceptSetService',conceptSetService);
         $provide.value('spinner', _spinner);
-        $provide.value('observationsService',observationsService);
-        $provide.value('$translate',translate);
     });
 
     beforeEach(inject(function ($compile, $httpBackend, $rootScope, $q) {
@@ -51,7 +54,7 @@ describe('obsToObsFlowSheet DisplayControl', function () {
             "dashboardParams": {
                 "conceptNames": [
                     "Bacteriology, Rifampicin result",
-                    "Bacteriology, Ethambutol result",
+                    "Bacteriology, Ethambutol result"
                 ]
             }
         };
@@ -60,8 +63,8 @@ describe('obsToObsFlowSheet DisplayControl', function () {
             "uuid":"patientUuid"
         };
 
-        mockBackend.expectGET('../common/displaycontrols/tabularview/views/obsToObsFlowSheet.html').respond("<div>dummy</div>");
         mockBackend.expectGET('/openmrs/ws/rest/v1/bahmnicore/observations/flowSheet?conceptNames=Bacteriology,+Rifampicin+result&conceptNames=Bacteriology,+Ethambutol+result&patientUuid=patientUuid').respond({});
+        mockBackend.expectGET('/openmrs/ws/rest/v1/concept?s=byFullySpecifiedName&v=custom:(uuid,names,displayString)').respond("<div>dummy</div>");
 
         var element = compile(simpleHtml)(scope);
 
@@ -103,7 +106,7 @@ describe('obsToObsFlowSheet DisplayControl', function () {
             "dashboardParams": {
                 "conceptNames": [
                     "Bacteriology, Rifampicin result",
-                    "Bacteriology, Ethambutol result",
+                    "Bacteriology, Ethambutol result"
                 ]
             }
         };
@@ -112,8 +115,8 @@ describe('obsToObsFlowSheet DisplayControl', function () {
             "uuid":"patientUuid"
         };
 
-        mockBackend.expectGET('../common/displaycontrols/tabularview/views/obsToObsFlowSheet.html').respond("<div>dummy</div>");
         mockBackend.expectGET('/openmrs/ws/rest/v1/bahmnicore/observations/flowSheet?conceptNames=Bacteriology,+Rifampicin+result&conceptNames=Bacteriology,+Ethambutol+result&patientUuid=patientUuid').respond({});
+        mockBackend.expectGET('/openmrs/ws/rest/v1/concept?s=byFullySpecifiedName&v=custom:(uuid,names,displayString)').respond("<div>dummy</div>");
 
         var element = compile(simpleHtml)(scope);
 
@@ -167,7 +170,7 @@ describe('obsToObsFlowSheet DisplayControl', function () {
             "dashboardParams": {
                 "conceptNames": [
                     "Bacteriology, Rifampicin result",
-                    "Bacteriology, Ethambutol result",
+                    "Bacteriology, Ethambutol result"
                 ]
             }
         };
@@ -176,8 +179,8 @@ describe('obsToObsFlowSheet DisplayControl', function () {
             "uuid":"patientUuid"
         };
 
-        mockBackend.expectGET('../common/displaycontrols/tabularview/views/obsToObsFlowSheet.html').respond("<div>dummy</div>");
         mockBackend.expectGET('/openmrs/ws/rest/v1/bahmnicore/observations/flowSheet?conceptNames=Bacteriology,+Rifampicin+result&conceptNames=Bacteriology,+Ethambutol+result&patientUuid=patientUuid').respond({});
+        mockBackend.expectGET('/openmrs/ws/rest/v1/concept?s=byFullySpecifiedName&v=custom:(uuid,names,displayString)').respond("<div>dummy</div>");
 
         var element = compile(simpleHtml)(scope);
 
@@ -216,7 +219,7 @@ describe('obsToObsFlowSheet DisplayControl', function () {
             "dashboardParams": {
                 "conceptNames": [
                     "Bacteriology, Rifampicin result",
-                    "Bacteriology, Ethambutol result",
+                    "Bacteriology, Ethambutol result"
                 ]
             }
         };
@@ -225,8 +228,8 @@ describe('obsToObsFlowSheet DisplayControl', function () {
             "uuid":"patientUuid"
         };
 
-        mockBackend.expectGET('../common/displaycontrols/tabularview/views/obsToObsFlowSheet.html').respond("<div>dummy</div>");
         mockBackend.expectGET('/openmrs/ws/rest/v1/bahmnicore/observations/flowSheet?conceptNames=Bacteriology,+Rifampicin+result&conceptNames=Bacteriology,+Ethambutol+result&patientUuid=patientUuid').respond({});
+        mockBackend.expectGET('/openmrs/ws/rest/v1/concept?s=byFullySpecifiedName&v=custom:(uuid,names,displayString)').respond("<div>dummy</div>");
 
         var element = compile(simpleHtml)(scope);
 
