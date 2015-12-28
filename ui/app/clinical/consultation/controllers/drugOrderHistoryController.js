@@ -115,16 +115,16 @@ angular.module('bahmni.clinical')
             };
 
             $scope.refill = function (drugOrder) {
-                $scope.$parent.$broadcast("event:refillDrugOrder", drugOrder);
+                $scope.$parent.$parent.$broadcast("event:refillDrugOrder", drugOrder);
             };
 
             $scope.refillAll = function (drugOrders) {
-                $scope.$parent.$broadcast("event:refillDrugOrders", drugOrders);
+                $scope.$parent.$parent.$broadcast("event:refillDrugOrders", drugOrders);
             };
 
             $scope.revise = function (drugOrder, drugOrders) {
                 if (drugOrder.isEditAllowed) {
-                    $scope.$parent.$broadcast("event:reviseDrugOrder", drugOrder, drugOrders);
+                    $scope.$parent.$parent.$broadcast("event:reviseDrugOrder", drugOrder, drugOrders);
                 }
             };
 
