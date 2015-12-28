@@ -2,7 +2,7 @@
 
 angular.module('bahmni.common.displaycontrol.obsVsObsFlowSheet')
     .directive('obsToObsFlowSheet', function () {
-        var controller = function ($scope, observationsService, spinner,appService, conceptSetService, $q) {
+        var controller = function ($scope, observationsService, spinner,appService, conceptSetService, $q, $stateParams) {
             $scope.config = $scope.isOnDashboard ? $scope.section.dashboardParams : $scope.section.allDetailsParams;
             $scope.isEditable = $scope.config.isEditable;
             var patient = $scope.patient;
