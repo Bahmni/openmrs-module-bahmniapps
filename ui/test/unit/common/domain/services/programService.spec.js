@@ -275,9 +275,9 @@ describe('programService', function () {
         expect(mockHttp.post.calls.mostRecent().args[0]).toEqual(Bahmni.Common.Constants.programEnrollPatientUrl);
         expect(mockHttp.post.calls.mostRecent().args[1].patient).toEqual(patientUuid);
         expect(mockHttp.post.calls.mostRecent().args[1].program).toEqual(programUuid);
-        expect(mockHttp.post.calls.mostRecent().args[1].dateEnrolled).toEqual("2015-12-11T12:04:23+05:30");
+        expect(mockHttp.post.calls.mostRecent().args[1].dateEnrolled).toEqual("2015-12-11T12:04:23+0530");
         expect(mockHttp.post.calls.mostRecent().args[1].states[0].state).toEqual(workflowUuid);
-        expect(mockHttp.post.calls.mostRecent().args[1].states[0].startDate).toEqual("2015-12-11T12:04:23+05:30");
+        expect(mockHttp.post.calls.mostRecent().args[1].states[0].startDate).toEqual("2015-12-11T12:04:23+0530");
     })
 
     it('should end patient program', function(){
@@ -287,7 +287,7 @@ describe('programService', function () {
         programService.endPatientProgram(patientProgramUuid, dateCompleted, outcome);
 
         expect(mockHttp.post.calls.mostRecent().args[0]).toEqual(Bahmni.Common.Constants.programEnrollPatientUrl + "/" + patientProgramUuid);
-        expect(mockHttp.post.calls.mostRecent().args[1].dateCompleted).toEqual("2015-12-11T12:04:23+05:30");
+        expect(mockHttp.post.calls.mostRecent().args[1].dateCompleted).toEqual("2015-12-11T12:04:23+0530");
         expect(mockHttp.post.calls.mostRecent().args[1].outcome).toEqual(outcome);
     })
 

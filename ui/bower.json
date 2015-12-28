@@ -22,7 +22,7 @@
     "jquery-ui": "1.10.2",
     "jquery.cookie": "1.4.0",
     "ngInfiniteScroll": "1.0.0",
-    "moment": "2.4.0",
+    "moment": "2.6.0",
     "purl": "2.3.1",
     "keyboardjs": "RobertWHurst/KeyboardJS",
     "angularjs-nvd3-directives": "v0.0.7",

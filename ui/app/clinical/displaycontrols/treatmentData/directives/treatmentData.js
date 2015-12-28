@@ -19,17 +19,18 @@ angular.module('bahmni.clinical')
 
                 var programConfig = appService.getAppDescriptor().getConfigValue("program") || {};
 
-                var startDate = null, endDate = null, getOtherActive;
+                var startDate = null, endDate = null, getOtherActive, getEffectiveOrdersOnly = false;
                 if (programConfig.showDashBoardWithinDateRange) {
                     startDate = $stateParams.dateEnrolled;
                     endDate = $stateParams.dateCompleted;
                     if(startDate || endDate){
                         $scope.params.showOtherActive=false;
                     }
+                    getEffectiveOrdersOnly = true;
                 }
 
                 return treatmentService.getPrescribedAndActiveDrugOrders($scope.params.patientUuid, $scope.params.numberOfVisits,
-                    $scope.params.showOtherActive, $scope.params.visitUuids || [], startDate, endDate)
+                    $scope.params.showOtherActive, $scope.params.visitUuids || [], startDate, endDate, getEffectiveOrdersOnly)
                     .then(function (response) {
                         var groupedByVisit = _.groupBy(response.data.visitDrugOrders, function (drugOrder) {
                             return drugOrder.visit.startDateTime;

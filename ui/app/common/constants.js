@@ -165,6 +165,7 @@ Bahmni.Common = Bahmni.Common || {};
         encryptionType: {
             SHA3: 'SHA3'
         },
-        LoginInformation: 'LoginInformation'
+        LoginInformation: 'LoginInformation',
+        ServerDateTimeFormat: 'YYYY-MM-DDTHH:mm:ssZZ'
     };
 })();

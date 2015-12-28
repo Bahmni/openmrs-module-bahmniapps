@@ -21,7 +21,7 @@ angular.module('bahmni.common.domain')
                 content: {
                     patient: patientUuid,
                     program: programUuid,
-                    dateEnrolled: moment(dateEnrolled).format()
+                    dateEnrolled: moment(dateEnrolled).format(Bahmni.Common.Constants.ServerDateTimeFormat)
                 },
                 headers: {"Content-Type": "application/json"}
             };
@@ -29,7 +29,7 @@ angular.module('bahmni.common.domain')
               req.content.states = [
                   {
                       state:stateUuid,
-                      startDate:moment(dateEnrolled).format()
+                      startDate:moment(dateEnrolled).format(Bahmni.Common.Constants.ServerDateTimeFormat)
                   }
               ]
             }
@@ -125,7 +125,7 @@ angular.module('bahmni.common.domain')
             var req = {
                 url: Bahmni.Common.Constants.programEnrollPatientUrl + "/" + patientProgramUuid,
                 content: {
-                    dateCompleted: moment(asOfDate).format(),
+                    dateCompleted: moment(asOfDate).format(Bahmni.Common.Constants.ServerDateTimeFormat),
                     outcome: outcomeUuid
                 },
                 headers: {"Content-Type": "application/json"}

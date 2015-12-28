@@ -6,8 +6,8 @@ angular.module('bahmni.clinical')
         this.getLatestDiseaseTemplates = function (patientUuid, diseaseTemplates, startDate, endDate) {
             var url = Bahmni.Common.Constants.diseaseTemplateUrl;
             var params = {"patientUuid": patientUuid, "diseaseTemplateConfigList": diseaseTemplates};
-            params.startDate = startDate && moment(startDate).format();
-            params.endDate = endDate && moment(endDate).format();
+            params.startDate = startDate && moment(startDate).format(Bahmni.Common.Constants.ServerDateTimeFormat);
+            params.endDate = endDate && moment(endDate).format(Bahmni.Common.Constants.ServerDateTimeFormat);
             var deferred = $q.defer();
             $http.post(url, params,  {
                 withCredentials: true,
@@ -22,8 +22,8 @@ angular.module('bahmni.clinical')
         this.getAllDiseaseTemplateObs = function (patientUuid, diseaseName, startDate, endDate) {
             var url = Bahmni.Common.Constants.AllDiseaseTemplateUrl;
             var params = {patientUuid: patientUuid, diseaseTemplateConfigList: [{"templateName":diseaseName}]};
-            params.startDate = startDate && moment(startDate).format();
-            params.endDate = endDate && moment(endDate).format();
+            params.startDate = startDate && moment(startDate).format(Bahmni.Constants.ServerDateTimeFormat);
+            params.endDate = endDate && moment(endDate).format(Bahmni.Constants.ServerDateTimeFormat);
             var deferred = $q.defer();
             $http.post(url,
                 params, {

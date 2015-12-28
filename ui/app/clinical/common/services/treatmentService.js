@@ -18,7 +18,7 @@ angular.module('bahmni.clinical')
             });
         };
 
-        var getPrescribedAndActiveDrugOrders = function (patientUuid, numberOfVisits, getOtherActive, visitUuids, startDate, endDate) {
+        var getPrescribedAndActiveDrugOrders = function (patientUuid, numberOfVisits, getOtherActive, visitUuids, startDate, endDate, getEffectiveOrdersOnly) {
             return $http.get(Bahmni.Common.Constants.bahmniDrugOrderUrl + "/prescribedAndActive", {
                 params: {
                     patientUuid: patientUuid,
@@ -26,7 +26,8 @@ angular.module('bahmni.clinical')
                     getOtherActive: getOtherActive,
                     visitUuids: visitUuids,
                     startDate: Bahmni.Common.Util.DateUtil.parseLongDateToServerFormat(startDate),
-                    endDate: Bahmni.Common.Util.DateUtil.parseLongDateToServerFormat(endDate)
+                    endDate: Bahmni.Common.Util.DateUtil.parseLongDateToServerFormat(endDate),
+                    getEffectiveOrdersOnly: getEffectiveOrdersOnly
                 },
                 withCredentials: true
             }).success(function (response) {
