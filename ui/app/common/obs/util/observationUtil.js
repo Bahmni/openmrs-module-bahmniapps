@@ -63,8 +63,20 @@ Bahmni.Common.Obs.ObservationUtil = (function () {
         return obsValue == undefined ? obsValue : (obsValue.displayString || obsValue);
     };
 
+    var flattenObsToArray = function (observations) {
+        var flattened = [];
+        flattened.push.apply(flattened, observations);
+        observations.forEach(function (obs) {
+            if (obs.groupMembers && obs.groupMembers.length > 0) {
+                flattened.push.apply(flattened, flattenObsToArray(obs.groupMembers));
+            }
+        });
+        return flattened;
+    };
+
     return {
         sortSameConceptsWithObsDateTime: sortSameConceptsWithObsDateTime,
-        flatten: flatten
+        flatten: flatten,
+        flattenObsToArray: flattenObsToArray
     };
 })();
