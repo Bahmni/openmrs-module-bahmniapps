@@ -4,7 +4,6 @@ angular.module('bahmni.common.conceptSet')
     .directive('conceptSet', ['contextChangeHandler', 'appService', 'observationsService', '$timeout', 'messagingService', function (contextChangeHandler, appService, observationsService, $timeout, messagingService) {
         var controller = function ($scope, conceptSetService, conceptSetUiConfigService, spinner) {
             var conceptSetName = $scope.conceptSetName;
-            var ObservationUtil = Bahmni.Common.Obs.ObservationUtil;
             var conceptSetUIConfig = conceptSetUiConfigService.getConfig();
             var observationMapper = new Bahmni.ConceptSet.ObservationMapper();
             var validationHandler = $scope.validationHandler() || contextChangeHandler;
@@ -19,7 +18,7 @@ angular.module('bahmni.common.conceptSet')
             };
 
             var init = function () {
-                return conceptSetService.getConcept({
+                return conceptSetService.getConceptSetMembers({
                     name: conceptSetName,
                     v: "bahmni"
                 }).then(function (response) {
@@ -66,7 +65,7 @@ angular.module('bahmni.common.conceptSet')
 
             var updateFormConditions = function () {
                 var observationsOfCurrentTemplate = getObservationsOfCurrentTemplate();
-                var flattenedObs = ObservationUtil.flattenObsToArray(observationsOfCurrentTemplate);
+                var flattenedObs = flattenObs(observationsOfCurrentTemplate);
                 var conceptSetObsValues = getFlattenedObsValues(flattenedObs);
                 if (Bahmni.ConceptSet.FormConditions.rules) {
                     _.each(Bahmni.ConceptSet.FormConditions.rules, function (conditionFn, conceptName) {
@@ -188,15 +187,25 @@ angular.module('bahmni.common.conceptSet')
 
             validationHandler.add(validateObservationTree);
 
+            var flattenObs = function (observations) {
+                var flattened = [];
+                flattened.push.apply(flattened, observations);
+                observations.forEach(function (obs) {
+                    if (obs.groupMembers && obs.groupMembers.length > 0) {
+                        flattened.push.apply(flattened, flattenObs(obs.groupMembers));
+                    }
+                });
+                return flattened;
+            };
 
             $scope.$on('event:showPrevious' + conceptSetName, function (event) {
 
                 return spinner.forPromise(observationsService.fetch($scope.patient.uuid, $scope.conceptSetName, null, $scope.numberOfVisits, null, true)).then(function (response) {
-                    var recentObservations = ObservationUtil.flattenObsToArray(response.data);
+                    var recentObservations = flattenObs(response.data);
                     var conceptSetObservation = $scope.observations.filter(function (observation) {
                         return observation.conceptSetName === $scope.conceptSetName;
                     });
-                    ObservationUtil.flattenObsToArray(conceptSetObservation).forEach(function (obs) {
+                    flattenObs(conceptSetObservation).forEach(function (obs) {
                         var correspondingRecentObs = _.filter(recentObservations, function (recentObs) {
                             return obs.concept.uuid === recentObs.concept.uuid;
                         });
@@ -220,8 +229,9 @@ angular.module('bahmni.common.conceptSet')
                 var allObsValues = Bahmni.Common.Obs.ObservationUtil.flatten($scope.rootObservation);
                 var formCondition = Bahmni.ConceptSet.FormConditions.rules && Bahmni.ConceptSet.FormConditions.rules[conceptName];
                 if (formCondition) {
-                    var flattenedObs = ObservationUtil.flattenObsToArray([$scope.rootObservation]);
+                    var flattenedObs = flattenObs([$scope.rootObservation]);
                     var conditions = formCondition(formName, allObsValues);
+                    console.log(conditions)
                     if (conditions.error && !_.isEmpty(conditions.error)) {
                         messagingService.showMessage('formError', conditions.error);
                         processConditions(flattenedObs, [conceptName], false, true);

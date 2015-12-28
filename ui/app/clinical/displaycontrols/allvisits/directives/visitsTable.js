@@ -76,7 +76,7 @@ angular.module('bahmni.clinical')
                 };
 
                 var getAllObservationTemplates = function () {
-                    return conceptSetService.getConcept({
+                    return conceptSetService.getConceptSetMembers({
                         name: "All Observation Templates",
                         v: "custom:(setMembers:(display))"
                     })

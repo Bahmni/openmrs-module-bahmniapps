@@ -24,7 +24,7 @@ angular.module('bahmni.clinical').directive('observationGraph', ['appService', '
             var numberOfLevels = 1;
             var fields = ['uuid', 'name', 'names', 'hiNormal', 'lowNormal', 'units', 'datatype'];
             var customRepresentation = Bahmni.ConceptSet.CustomRepresentationBuilder.build(fields, 'setMembers', numberOfLevels);
-            var conceptValue = conceptSetService.getConcept({
+            var conceptValue = conceptSetService.getConceptSetMembers({
                 name: config.getAllConcepts(),
                 v: "custom:" + customRepresentation
             });

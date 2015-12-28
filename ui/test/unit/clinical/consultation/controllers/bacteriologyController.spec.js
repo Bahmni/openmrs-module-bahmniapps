@@ -19,7 +19,7 @@ describe("Bacteriology Controller", function () {
         };
 
         var spinner = jasmine.createSpyObj('spinner', ['forPromise']);
-        conceptSetService = jasmine.createSpyObj('conceptSetService', ['getConcept']);
+        conceptSetService = jasmine.createSpyObj('conceptSetService', ['getConceptSetMembers']);
         contextChangeHandler = jasmine.createSpyObj('contextChangeHandler', ['add']);
 
         spinner.forPromise.and.callFake(function (param) {
@@ -31,7 +31,7 @@ describe("Bacteriology Controller", function () {
         });
 
 
-        conceptSetService.getConcept.and.returnValue({});
+        conceptSetService.getConceptSetMembers.and.returnValue({});
 
         $controller('BacteriologyController', {
             $scope: $scope,
