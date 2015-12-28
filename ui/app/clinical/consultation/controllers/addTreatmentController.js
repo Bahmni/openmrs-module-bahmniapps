@@ -30,9 +30,13 @@ angular.module('bahmni.clinical')
             };
 
             $scope.selectFromDefaultDrugList = function(item) {
-                $scope.onSelect(item);
-                $scope.treatment.drugNameDisplay = item.value;
-                $scope.onChange();
+                if ($scope.isSelected(item)) {
+                    $scope.clearForm();
+                } else {
+                    $scope.onSelect(item);
+                    $scope.treatment.drugNameDisplay = item.value;
+                    $scope.onChange();
+                }
             };
 
             var markVariable = function (variable){
