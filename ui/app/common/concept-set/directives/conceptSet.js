@@ -19,7 +19,7 @@ angular.module('bahmni.common.conceptSet')
             };
 
             var init = function () {
-                return conceptSetService.getConceptSetMembers({
+                return conceptSetService.getConcept({
                     name: conceptSetName,
                     v: "bahmni"
                 }).then(function (response) {
