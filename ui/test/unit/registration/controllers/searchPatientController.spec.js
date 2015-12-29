@@ -199,7 +199,7 @@ describe('SearchPatientController', function () {
             var defaultSearchAddressField = "city_village";
             scope.searchById();
 
-            expect(patientResource.search).toHaveBeenCalledWith(undefined, "GAN20001", defaultSearchAddressField);
+            expect(patientResource.search).toHaveBeenCalledWith(undefined, "20001", "GAN", defaultSearchAddressField);
         });
 
         it('should show the spinner while searching', function () {
