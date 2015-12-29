@@ -101,8 +101,9 @@ describe('SearchPatientController', function () {
             expect(patientResource.search).toHaveBeenCalled();
             expect(patientResource.search.calls.mostRecent().args[0]).toBe(searchParams.name);
             expect(patientResource.search.calls.mostRecent().args[1]).toBe(undefined);
-            expect(patientResource.search.calls.mostRecent().args[2]).toBe(scope.addressSearchConfig.field);
-            expect(patientResource.search.calls.mostRecent().args[3]).toBe(searchParams.addressFieldValue);
+            expect(patientResource.search.calls.mostRecent().args[2]).toBe(undefined);
+            expect(patientResource.search.calls.mostRecent().args[3]).toBe(scope.addressSearchConfig.field);
+            expect(patientResource.search.calls.mostRecent().args[4]).toBe(searchParams.addressFieldValue);
             expect(searchPromise.then).toHaveBeenCalled();
         });
 

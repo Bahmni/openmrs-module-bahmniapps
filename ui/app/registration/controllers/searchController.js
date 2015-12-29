@@ -43,6 +43,7 @@ angular.module('bahmni.registration')
                     var searchPromise = patientService.search(
                         $scope.searchParameters.name,
                         undefined,
+                        undefined,
                         $scope.addressSearchConfig.field,
                         $scope.searchParameters.addressFieldValue,
                         $scope.searchParameters.customAttribute,
