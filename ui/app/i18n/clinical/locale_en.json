@@ -68,6 +68,7 @@
     "BAHMNI_HOME_TRANSLATION_KEY": "Bahmni Home",
     "LOGOUT_TRANSLATION_KEY": "Logout",
     "OBS_ABNORMAL_TRANSLATE_KEY": "Abnormal",
+    "OBS_UNKNOWN_TRANSLATE_KEY": "Unknown",
     "LAB_INVESTIGATIONS_KEY": "Lab Investigations",
     "BACTERIOLOGY_SAMPLE_COLLECTION_DATE_KEY" : "Date of Sample Collection",
     "BACTERIOLOGY_SAMPLE_TYPE_KEY" : "Type of sample",

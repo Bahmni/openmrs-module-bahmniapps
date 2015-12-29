@@ -83,6 +83,15 @@
                             ng-click="observation.toggleAbnormal()"><i class="fa fa-ok"></i>{{'OBS_ABNORMAL_TRANSLATE_KEY' | translate}}
                     </button>
                 </div>
+
+                <div ng-if="::observation.unknownObs" class="fl accept-btn-wrapper">
+                    <button type="button" ng-model="observation.unknownObs.value"
+                            class="small-btn accept-btn grid-row-element"
+                            ng-disabled="observation.primaryObs.hasValue() && observation.primaryObs.atLeastOneValueSet() || observation.disabled"
+                            ng-class="{'active': observation.unknownObs.value}"
+                            ng-click="observation.toggleUnknown()"><i class="fa fa-ok"></i>{{'OBS_UNKNOWN_TRANSLATE_KEY' | translate}}
+                    </button>
+                </div>
                 <div class="checkbox-inline" ng-if="::observation.durationObs"
                      ng-class="{'duration': observation.durationObs, 'computed-field': observation.isComputedAndEditable()}">
                     <span class="for-separator fl">for</span>

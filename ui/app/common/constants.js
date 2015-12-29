@@ -114,6 +114,7 @@ Bahmni.Common = Bahmni.Common || {};
         documentsConceptName: 'Document',
         miscConceptClassName: 'Misc',
         abnormalConceptClassName: 'Abnormal',
+        unknownConceptClassName: 'Unknown',
         durationConceptClassName: 'Duration',
         conceptDetailsClassName: 'Concept Details',
         admissionEncounterTypeName: 'ADMISSION',

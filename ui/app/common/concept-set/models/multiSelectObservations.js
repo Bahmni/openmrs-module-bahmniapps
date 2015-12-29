@@ -199,6 +199,30 @@ Bahmni.ConceptSet.MultiSelectObservation = function (concept, memberOfCollection
             }
         });
         return values;
-    }
+    };
+
+    this.isComputed = function () {
+        return this.concept.conceptClass === "Computed";
+    };
+
+    this.getDataTypeName = function () {
+        return this.concept.dataType;
+    };
+
+    this._isDateTimeDataType = function () {
+        return (this.getDataTypeName()).indexOf('Datetime') != -1;
+    };
+
+    this.isNumeric = function () {
+        return this.getDataTypeName() === "Numeric";
+    };
+
+    this.isText = function () {
+        return this.getDataTypeName() === "Text";
+    };
+
+    this.isCoded = function () {
+        return this.getDataTypeName() === "Coded";
+    };
 
 };
