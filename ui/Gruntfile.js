@@ -322,6 +322,29 @@ module.exports = function (grunt) {
                     config: 'hologram_config.yml'
                 }
             }
+        },
+        ngAnnotate: {
+            options: {
+                remove: true,
+                add: true
+            },
+            files: {
+                expand: true,
+                cwd: '<%= yeoman.dist %>',
+                src: ['**/*.min.*.js'],
+                dest: '<%= yeoman.dist %>'
+            }
+        },
+        uglify:{
+            options: {
+                mangle: false
+            },
+            files:{
+                expand: true,
+                cwd: '<%= yeoman.dist %>',
+                src: ['**/*.min.*.js'],
+                dest: '<%= yeoman.dist %>'
+            }
         }
     });
 
@@ -333,6 +356,7 @@ module.exports = function (grunt) {
         'clean:dist',
         'compass:dist',
         'useminPrepare',
+        'ngAnnotate',
         'concat',
         'imagemin',
         'htmlmin',
@@ -340,6 +364,7 @@ module.exports = function (grunt) {
         'copy:dist',
         'filerev',
         'usemin',
+        'uglify',
         'rename:minified'
     ]);
 
