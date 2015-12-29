@@ -16,9 +16,9 @@ angular.module('bahmni.clinical')
             $scope.allowOnlyCodedDrugs = appService.getAppDescriptor().getConfig("allowOnlyCodedDrugs") &&
             appService.getAppDescriptor().getConfig("allowOnlyCodedDrugs").value;
 
-            var extensionConfig = clinicalAppConfigService.getTreatmentTabExtension();
-            var conceptNameForDefaultDrugs = extensionConfig.extensionParams
-                && extensionConfig.extensionParams.conceptNameForDefaultDrugs;
+            var medicationConfig = appService.getAppDescriptor().getConfigForPage('medication') || {};
+            var conceptNameForDefaultDrugs = medicationConfig.conceptNameForDefaultDrugs;
+
             conceptNameForDefaultDrugs && drugService.getSetMembersOfConcept(conceptNameForDefaultDrugs)
                 .then(function (result) {
                     $scope.defaultDrugs = result.map(constructDrugNameDisplay);

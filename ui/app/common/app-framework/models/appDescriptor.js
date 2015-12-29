@@ -215,7 +215,7 @@ Bahmni.Common.AppFramework.AppDescriptor = function (context, inheritContext, re
 
     this.getConfigForPage = function(pageName, shouldMerge){
         if(shouldMerge || shouldMerge === undefined){
-            return mergeService.merge(self.basePageConfigs, self.customPageConfigs)
+            return mergeService.merge(self.basePageConfigs[pageName], self.customPageConfigs[pageName])
         }
         return [_.values(self.basePageConfigs[pageName]), _.values(self.customPageConfigs[pageName])];
     }

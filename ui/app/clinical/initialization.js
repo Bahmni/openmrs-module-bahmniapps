@@ -30,7 +30,7 @@ angular.module('bahmni.clinical').factory('initialization',
                     return appService.initApp('clinical', {
                         'app': true,
                         'extension': true
-                    }, config, ["dashboard", "visit"]);
+                    }, config, ["dashboard", "visit", "medication"]);
                 };
 
                 var loadFormConditions = function () {

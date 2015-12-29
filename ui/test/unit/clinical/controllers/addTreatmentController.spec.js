@@ -26,14 +26,11 @@ describe("AddTreatmentController", function () {
         clinicalAppConfigService = jasmine.createSpyObj('clinicalAppConfigService', ['getTreatmentActionLink', 'getDrugOrderConfig', 'getTreatmentTabExtension']);
         clinicalAppConfigService.getTreatmentActionLink.and.returnValue([]);
         clinicalAppConfigService.getDrugOrderConfig.and.returnValue({});
-        clinicalAppConfigService.getTreatmentTabExtension.and.returnValue(
-            {
-                extensionParams: {
-                    "conceptNameForDefaultDrugs": "All TB Drugs"
-                }
-            });
         appService = jasmine.createSpyObj('appService', ['getAppDescriptor']);
-        appConfig = jasmine.createSpyObj('appConfig', ['getConfig']);
+        appConfig = jasmine.createSpyObj('appConfig', ['getConfig', 'getConfigForPage']);
+        appConfig.getConfigForPage.and.returnValue({
+            "conceptNameForDefaultDrugs": "All TB Drugs"
+        });
 
         drugService = jasmine.createSpyObj('drugService', ['getSetMembersOfConcept']);
         defaultDrugs = [
@@ -107,7 +104,7 @@ describe("AddTreatmentController", function () {
             });
 
             expect(scope.treatment.selectedItem).toBeUndefined();
-        })
+        });
 
         it("should remove the added coded-drug on changing the drug name", function () {
             var treatment = {drugNameDisplay : "Some New Drug", drug: {name : "CodedDrug"}};
