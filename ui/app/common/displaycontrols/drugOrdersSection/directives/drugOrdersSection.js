@@ -27,7 +27,7 @@ angular.module('bahmni.common.displaycontrol.drugOrdersSection')
 
             var init = function () {
                 initialiseColumnHeaders();
-                return treatmentService.getAllDrugOrdersFor($scope.patientUuid, $scope.config.conceptSetName, $scope.config.active).then(function (response) {
+                return treatmentService.getAllDrugOrdersFor($scope.patientUuid, $scope.config.includeConceptSet, $scope.config.excludeConceptSet, $scope.config.active).then(function (response) {
                     $scope.drugOrders = sortOrders(response);
                 });
             };

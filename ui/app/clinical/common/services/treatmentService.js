@@ -87,11 +87,14 @@ angular.module('bahmni.clinical')
             return deferred.promise;
         };
 
-        var getAllDrugOrdersFor = function (patientUuid, drugConceptSetName, isActive) {
+        var getAllDrugOrdersFor = function (patientUuid, conceptSetToBeIncluded, conceptSetToBeExcluded, isActive) {
             var deferred = $q.defer();
             var params= {patientUuid: patientUuid};
-            if(drugConceptSetName){
-                params.drugConceptSet = drugConceptSetName;
+            if(conceptSetToBeIncluded){
+                params.includeConceptSet = conceptSetToBeIncluded;
+            }
+            if(conceptSetToBeExcluded){
+                params.excludeConceptSet = conceptSetToBeExcluded;
             }
             if(isActive != undefined){
                 params.isActive=isActive;
