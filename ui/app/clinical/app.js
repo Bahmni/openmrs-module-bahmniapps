@@ -172,23 +172,20 @@ angular.module('consultation')
                 params: {
                   cachebuster: null
                 },
+                resolve: {
+                    activeDrugOrders: function (TreatmentService, $stateParams) {
+                        return TreatmentService.getActiveDrugOrders($stateParams.patientUuid);
+                    },
+                    treatmentConfig: 'treatmentConfig'
+                },
                 views: {
                     "addTreatment": {
                         controller: 'AddTreatmentController',
-                        templateUrl: 'consultation/views/treatmentSections/addTreatment.html',
-                        resolve: {
-                            treatmentConfig: 'treatmentConfig'
-                        }
+                        templateUrl: 'consultation/views/treatmentSections/addTreatment.html'
                     },
                     "defaultHistoryView": {
                         controller: 'DrugOrderHistoryController',
-                        templateUrl: 'consultation/views/treatmentSections/drugOrderHistory.html',
-                        resolve: {
-                            activeDrugOrders: function (TreatmentService, $stateParams) {
-                                return TreatmentService.getActiveDrugOrders($stateParams.patientUuid);
-                            },
-                            treatmentConfig: 'treatmentConfig'
-                        }
+                        templateUrl: 'consultation/views/treatmentSections/drugOrderHistory.html'
                     },
                     "customHistoryView": {
                         controller: 'CustomDrugOrderHistoryController',

@@ -25,7 +25,8 @@ describe("DrugOrderHistoryController", function () {
     beforeEach(inject(function ($controller, $rootScope) {
         $rootScope.visit = {startDate: 1410322624000};
         scope = $rootScope.$new();
-        scope.consultation = {preSaveHandler: new Bahmni.Clinical.Notifier()};
+        scope.consultation = {preSaveHandler: new Bahmni.Clinical.Notifier(), discontinuedDrugs: [],
+            activeAndScheduledDrugOrders: [Bahmni.Clinical.DrugOrderViewModel.createFromContract(scheduledOrder), Bahmni.Clinical.DrugOrderViewModel.createFromContract(activeDrugOrder)] };
         scope.currentBoard = {extensionParams: {}};
         clinicalAppConfigService = jasmine.createSpyObj('clinicalAppConfigService', ['getDrugOrderConfig']);
         clinicalAppConfigService.getDrugOrderConfig.and.returnValue([]);
@@ -93,7 +94,6 @@ describe("DrugOrderHistoryController", function () {
         });
 
         it("verify that the discontinued order is correctly created while saving", function(){
-            scope.consultation.discontinuedDrugs = [];
             var drugOrder = Bahmni.Clinical.DrugOrderViewModel.createFromContract(activeDrugOrder);
             scope.discontinue(drugOrder);
 
