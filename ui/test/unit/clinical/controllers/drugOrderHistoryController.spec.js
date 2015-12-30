@@ -4,7 +4,8 @@ describe("DrugOrderHistoryController", function () {
 
     beforeEach(module('bahmni.clinical'));
 
-    var scope, prescribedDrugOrders, activeDrugOrder, _treatmentService, clinicalAppConfigService, retrospectiveEntryService, translate;
+    var scope, prescribedDrugOrders, activeDrugOrder, _treatmentService,
+        clinicalAppConfigService, retrospectiveEntryService, translate, appService;
     var fetchActiveTreatmentsDeferred;
     var DateUtil = Bahmni.Common.Util.DateUtil;
 
@@ -13,6 +14,7 @@ describe("DrugOrderHistoryController", function () {
 
         $provide.value('$q', Q);
         $provide.value('$translate',translate);
+        $provide.value('appService',appService);
         fetchActiveTreatmentsDeferred = Q.defer();
 
         _treatmentService = jasmine.createSpyObj('TreatmentService', ['getPrescribedDrugOrders']);

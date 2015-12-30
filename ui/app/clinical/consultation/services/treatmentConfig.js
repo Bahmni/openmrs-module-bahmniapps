@@ -1,24 +1,36 @@
 'use strict';
 
-angular.module('bahmni.clinical').factory('treatmentConfig',['TreatmentService', 'spinner', 'configurationService', function (treatmentService, spinner, configurationService) {
+angular.module('bahmni.clinical').factory('treatmentConfig',['TreatmentService', 'spinner', 'configurationService', 'appService', 'DrugService', '$q', function (treatmentService, spinner, configurationService, appService, drugService, $q) {
 
+        var stoppedOrderReasonConfig = {};
+        var finalConfig = {
+            durationUnits : [
+                {name: "Day(s)", factor: 1},
+                {name: "Week(s)", factor: 7},
+                {name: "Month(s)", factor: 30}
+            ],
+            getDoseUnits: function(drug) {return this.drugOrderOptionsSet.getDoseUnits(drug)},
+            getRoutes: function(drug) {return this.drugOrderOptionsSet.getRoutes(drug)},
+            getDurationUnits: function(drug) {return this.drugOrderOptionsSet.getDurationUnits(drug)},
+            getDosingInstructions: function(drug) {return this.drugOrderOptionsSet.getDosingInstructions(drug)},
+            getDispensingUnits: function(drug) {return this.drugOrderOptionsSet.getDispensingUnits(drug)},
+            getFrequencies: function(drug) {return this.drugOrderOptionsSet.getFrequencies(drug)}
+        };
 
-            var stoppedOrderReasonConfig = {};
-            configurationService.getConfigurations(['stoppedOrderReasonConfig']).then(function (configurations) {
-                stoppedOrderReasonConfig = configurations.stoppedOrderReasonConfig.results[0];
-            });
+        configurationService.getConfigurations(['stoppedOrderReasonConfig']).then(function (configurations) {
+            stoppedOrderReasonConfig = configurations.stoppedOrderReasonConfig.results[0];
+        });
 
-
-        function findIndexOfFrequency(frequencies, value) {
+        var findIndexOfFrequency = function (frequencies, value) {
             var index;
             for (index = 0; index < frequencies.length; index++) {
                 if (frequencies[index].name == value)
                     break;
             }
             return index;
-        }
+        };
 
-        function bubbleValueToTop(frequencies, value) {
+        var bubbleValueToTop = function (frequencies, value) {
             var index = findIndexOfFrequency(frequencies, value);
             if (index == frequencies.length)
                 return;
@@ -27,26 +39,70 @@ angular.module('bahmni.clinical').factory('treatmentConfig',['TreatmentService',
                 frequencies[index] = frequencies[index - 1];
             }
             frequencies[index] = frequencyToBeBubbled;
-        }
+        };
 
-        return treatmentService.getConfig().then(function(result) {
-            var config = result.data;
-            var frequencies = config.frequencies;
-            bubbleValueToTop(frequencies, "Immediately");
-            bubbleValueToTop(frequencies, "SOS")
-            config.durationUnits = [
-                {name: "Day(s)", factor: 1},
-                {name: "Week(s)", factor: 7},
-                {name: "Month(s)", factor: 30}
-            ];
-            spinner.forPromise(treatmentService.getNonCodedDrugConcept().then(function (data) {
-                config.nonCodedDrugconcept = {
+        var configFromServer = function() {
+            return treatmentService.getConfig().then(function(result) {
+                finalConfig = angular.extend(finalConfig, result.data);
+                var frequencies = finalConfig.frequencies;
+                bubbleValueToTop(frequencies, "Immediately");
+                bubbleValueToTop(frequencies, "SOS")
+
+                finalConfig.stoppedOrderReasonConcepts = stoppedOrderReasonConfig.answers;
+                return finalConfig;
+            });
+        };
+
+        var drugOrderOptions = function (conceptName, masterConfig, inputConfig) {
+            if (conceptName === 'default') {
+                var deferred = $q.defer();
+                deferred.resolve(new Bahmni.Clinical.DrugOrderOptions(inputConfig, null, masterConfig));
+                return deferred.promise;
+            }
+
+            return drugService.getSetMembersOfConcept(conceptName)
+                .then(function (listOfDrugs) {
+                    return new Bahmni.Clinical.DrugOrderOptions(inputConfig, listOfDrugs, masterConfig);
+            });
+        };
+
+        var drugOrderOptionsSet = function() {
+            angular.extend(finalConfig, appService.getAppDescriptor().getConfigForPage('medication'));
+            var inputOptionsConfig = finalConfig.inputOptionsConfig,
+                conceptNames = _.keys(inputOptionsConfig),
+                options = [],
+                drugOrderOptionsPromises = [];
+            conceptNames.forEach(function(conceptName) {
+                drugOrderOptionsPromises.push(
+                    drugOrderOptions(conceptName, finalConfig, inputOptionsConfig[conceptName])
+                        .then(function(option) {
+                            options.push(option);
+                        }));
+            });
+            return $q.all(drugOrderOptionsPromises).then(function() {
+               finalConfig.drugOrderOptionsSet = new Bahmni.Clinical.DrugOrderOptionsSet(options, finalConfig);
+            });
+        };
+
+        var nonCodedDrugConcept = function(){
+            return treatmentService.getNonCodedDrugConcept().then(function (data) {
+                finalConfig.nonCodedDrugconcept = {
                     uuid : data
                 };
-            }));
+                return finalConfig;
+            })
+        };
 
-            config.stoppedOrderReasonConcepts = stoppedOrderReasonConfig.answers;
-            return config;
-        });
+        var configurations = function() {
+            return configFromServer().then(drugOrderOptionsSet);
+        };
+
+        var configurationWithNonCodedDrugConcept = function() {
+            return $q.all([nonCodedDrugConcept(), configurations()]).then(function() {
+                return finalConfig;
+            });
+        };
+
+        return configurationWithNonCodedDrugConcept();
     }]
 );

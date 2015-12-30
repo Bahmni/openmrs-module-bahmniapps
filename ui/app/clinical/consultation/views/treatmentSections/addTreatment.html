@@ -42,16 +42,16 @@
                         <input id="uniform-dose" class="dose fl" integer="true" ng-focus="treatment.setFrequencyType('uniform')" type="number" min="0" step="any" placeholder="{{ 'MEDICATION_TAB_DOSE' | translate}}"
                                ng-model="treatment.uniformDosingType.dose" ng-required="!treatment.validate()" focus-on="editDrugEntryUniformFrequency" />
                         <select id="uniform-dose-unit" class="form-field freq-dose-units" ng-model="treatment.uniformDosingType.doseUnits"
-                                ng-options="item.name as item.name for item in treatmentConfig.doseUnits" ng-required="!treatment.validate()">
+                                ng-options="item.name as item.name for item in treatmentConfig.getDoseUnits(treatment.drug)" ng-required="!treatment.validate()">
                             <option value="">Choose Unit</option>
                         </select>
 
                         <select id="frequency" class="fl frequency" ng-model="treatment.uniformDosingType.frequency" ng-change="treatment.calculateDurationUnit(treatmentConfig.durationUnits)"
-                                ng-options="item.name as item.name for item in treatmentConfig.frequencies" ng-disabled="!treatment.isUniformDosingType()" ng-required="!treatment.validate()">
+                                ng-options="item.name as item.name for item in treatmentConfig.getFrequencies(treatment.drug)" ng-disabled="!treatment.isUniformDosingType()" ng-required="!treatment.validate()">
                             <option value="">Choose frequency</option>
                         </select>
                         <select id="route" class="route" ng-model="treatment.route"
-                                ng-options="item.name as item.name for item in treatmentConfig.routes">
+                                ng-options="item.name as item.name for item in treatmentConfig.getRoutes(treatment.drug)">
                             <option value="">Choose Route</option>
                         </select>
                     </div>
@@ -65,11 +65,11 @@
                                    ng-required="!treatment.validate()" placeholder="&mdash;"/>
                         </div>
                         <select id="variable-dose-unit" class="fl freq-dose-units" ng-model="treatment.variableDosingType.doseUnits"
-                                ng-options="item.name as item.name for item in treatmentConfig.doseUnits" ng-required="!treatment.validate()">
+                                ng-options="item.name as item.name for item in treatmentConfig.getDoseUnits(treatment.drug)" ng-required="!treatment.validate()">
                             <option value="">Choose Unit</option>
                         </select>
                         <select id="route" class="route" ng-model="treatment.route"
-                                ng-options="item.name as item.name for item in treatmentConfig.routes">
+                                ng-options="item.name as item.name for item in treatmentConfig.getRoutes(treatment.drug)">
                             <option value="">Choose Route</option>
                         </select>
                     </div>
@@ -89,12 +89,12 @@
                     <input id="duration" class="fl duration" type="number" min="1" placeholder="Duration"
                            ng-model="treatment.duration" ng-change="treatment.calculateDurationInDays()" ng-required="treatment.isDurationRequired" ng-pattern="/^[0-9]+$/"/>
                     <select id="duration-unit" class="fl duration-unit" ng-model="treatment.durationUnit"
-                            ng-options="item.name as item.name for item in treatmentConfig.durationUnits" required>
+                            ng-options="item.name as item.name for item in treatmentConfig.getDurationUnits(treatment.drug)" required>
                     </select>
                 </div>
 
                 <select id="instructions" class="instruction" ng-model="treatment.instructions"
-                        ng-options="item.name as item.name for item in treatmentConfig.dosingInstructions">
+                        ng-options="item.name as item.name for item in treatmentConfig.getDosingInstructions(treatment.drug)">
                     <option value="">Choose Instruction</option>
                 </select>
 
@@ -102,7 +102,7 @@
                     <input id="quantity" class="quantity fl" type="number" min="0.1" placeholder="Qty" step="any"
                            ng-model="treatment.quantity" ng-change="treatment.setQuantityEnteredManually()" ng-required="treatment.isDurationRequired"/>
                     <select id="total-quantity-unit" class="freq-dose-units fl" ng-model="treatment.quantityUnit" ng-change="treatment.setQuantityUnitEnteredManually()"
-                            ng-options="item.name as item.name for item in treatmentConfig.doseUnits" ng-required="!treatment.validate()">
+                            ng-options="item.name as item.name for item in treatmentConfig.getDoseUnits(treatment.drug)" ng-required="!treatment.validate()">
                         <option value="">Choose Unit</option>
                     </select>
                 </div>

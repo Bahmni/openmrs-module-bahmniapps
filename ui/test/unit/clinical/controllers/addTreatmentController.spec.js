@@ -27,10 +27,7 @@ describe("AddTreatmentController", function () {
         clinicalAppConfigService.getTreatmentActionLink.and.returnValue([]);
         clinicalAppConfigService.getDrugOrderConfig.and.returnValue({});
         appService = jasmine.createSpyObj('appService', ['getAppDescriptor']);
-        appConfig = jasmine.createSpyObj('appConfig', ['getConfig', 'getConfigForPage']);
-        appConfig.getConfigForPage.and.returnValue({
-            "conceptNameForDefaultDrugs": "All TB Drugs"
-        });
+        appConfig = jasmine.createSpyObj('appConfig', ['getConfig']);
 
         drugService = jasmine.createSpyObj('drugService', ['getSetMembersOfConcept']);
         defaultDrugs = [
@@ -53,6 +50,7 @@ describe("AddTreatmentController", function () {
             appService: appService,
             DrugService: drugService,
             treatmentConfig: {
+                conceptNameForDefaultDrugs: "All TB Drugs",
                 durationUnits: [
                     {name: "Day(s)", factor: 1},
                     {name: "Week(s)", factor: 7},
