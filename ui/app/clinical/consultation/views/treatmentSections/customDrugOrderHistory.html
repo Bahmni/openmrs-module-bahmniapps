@@ -1,1 +1,3 @@
-<h2>Custom View of Treatment tab</h2>
+ <div ng-repeat="(key, section) in drugOrderHistorySections">
+     <drug-orders-section config="section" patient-uuid="patient.uuid"></drug-orders-section>
+ </div>

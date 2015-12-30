@@ -133,6 +133,15 @@ describe("clinicalAppConfigService", function () {
     ]
     };
 
+    var medicationJson = {data: {
+        view: "custom",
+        sections: {
+            "activeTBDrugs":{
+                title: "Active TB Drugs"
+            }
+        }
+    }
+    };
     beforeEach(module(function ($provide) {
         _$http = jasmine.createSpyObj('$http', ['get']);
         _$http.get.and.callFake(function (url) {
@@ -140,6 +149,8 @@ describe("clinicalAppConfigService", function () {
                 return specUtil.respondWith(appJson)
             } else if (url.indexOf("extension.json") > -1) {
                 return specUtil.respondWith(extensionJson);
+            } else if (url.indexOf("medication.json") > -1) {
+                return specUtil.respondWith(medicationJson);
             } else {
                 return specUtil.respondWith({});
             }
@@ -237,6 +248,18 @@ describe("clinicalAppConfigService", function () {
                 done();
             });
         });
+
+        it('should fetch medication config', function (done) {
+            appService.initApp('clinical', {'app': true}, null, ['medication']).then(function (result) {
+                var result = clinicalAppConfigService.getMedicationConfig();
+                expect(result.view).toBe("custom");
+                expect(result.sections['activeTBDrugs']).toEqual({
+                    title: "Active TB Drugs"
+                });
+                done();
+            });
+        })
+
     });
 
     describe("should fetch extension config", function () {
@@ -273,12 +296,4 @@ describe("clinicalAppConfigService", function () {
         })
     });
 
-    it('should fetch treatment board details from extensions', function(done){
-        appService.initApp('clinical', {'extension': true}).then(function () {
-            var result = clinicalAppConfigService.getTreatmentTabExtension();
-            expect(result.url).toBe("treatment");
-            expect(result.id).toBe("bahmni.clinical.billing.treatment");
-            done();
-        });
-    })
 });
