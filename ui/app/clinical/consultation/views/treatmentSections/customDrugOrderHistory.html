@@ -1,3 +1,7 @@
- <div ng-repeat="(key, section) in drugOrderHistorySections">
-     <drug-orders-section config="section" patient-uuid="patient.uuid"></drug-orders-section>
- </div>
+<div class="drugOrderHistorySectionContainer clearfix">
+    <div ng-repeat="(key, section) in drugOrderHistorySections">
+        <section class="dashboard-section">
+            <drug-orders-section config="section" patient-uuid="patient.uuid"></drug-orders-section>
+        </section>
+    </div>
+</div>
