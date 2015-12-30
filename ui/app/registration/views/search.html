@@ -59,31 +59,17 @@
                 <th><strong>{{ ::'REGISTRATION_LABEL_AGE' | translate}}</strong></th>
                 <th><strong>{{::addressSearchConfig.label}}</strong></th>
                 <th><strong>{{ ::'REGISTRATION_LABEL_REGISTRATION_DATE' | translate}}</strong></th>
-                <th class="edit-col visible-desktop" ng-if="::(searchActions.length > 0)"></th>
-                <th class="edit-col visible-small-screen" ng-if="::(searchActions.length > 0)"></th>
             </tr>
             </thead>
             <tbody>
             <tr ng-repeat="result in results">
-                <td>{{::result.identifier}}</td>
-                <td>{{::result.givenName}} {{::result.middleName}} {{::result.familyName}}</td>
+                <td><a ng-if="::(searchActions.length > 0)" ng-click="forPatient(result).doExtensionAction(searchActions[0])">{{::result.identifier}}</a></td>
+                <td><a ng-if="::(searchActions.length > 0)" ng-click="forPatient(result).doExtensionAction(searchActions[0])">{{::result.givenName}} {{::result.middleName}} {{::result.familyName}}</a></td>
                 <td ng-repeat = "field in ::customAttributesSearchConfig.fields">{{::result.customAttribute[field]}}</td>
                 <td>{{::result.gender}}</td>
                 <td>{{::result.age}}</td>
                 <td>{{::result.addressFieldValue}}</td>
                 <td>{{::result.dateCreated | bahmniDate}}</td>
-                <td class="edit-col visible-desktop" ng-if="::(searchActions.length > 0)">
-                    <div split-button options="searchActions"
-                         primary-option="searchActions[0]"
-                         option-text="extensionActionText" option-click="forPatient(result).doExtensionAction" class="split-button-wrapper">
-                    </div>
-                </td>
-                <td class="edit-col visible-small-screen" ng-if="::(searchActions.length > 0)">
-                    <div split-button options="searchActions"
-                         primary-option="searchActions[0]"
-                         option-text="extensionActionText" option-click="forPatient(result).doExtensionAction"class="split-button-wrapper">
-                    </div>
-                </td>
             </tr>
             </tbody>
         </table>
