@@ -1,9 +1,12 @@
 <h2 class="has-toggle section-title" ng-if="config | titleTranslate">
-    {{ config | titleTranslate}}
+    <span class="section-label">{{ config | titleTranslate}}</span>
 </h2>
 <p class="placeholder-text" ng-if="drugOrders && drugOrders.length == 0">{{'NO_DRUG_DETAILS_MESSAGE' | translate}} </p>
 <table class="drug-order-table treatments-details-table">
-    <th ng-if="drugOrders.length > 0" ng-repeat="columnName in columnHeaders">{{columnName | translate}}</th>
+    <tr>
+        <th ng-if="drugOrders.length > 0" ng-repeat="columnName in columnHeaders">{{columnName | translate}}</th>
+        <th ng-if="config.showDetails">&nbsp;</th>
+    </tr>
     <tbody ng-if="drugOrders.length > 0" ng-repeat="drugOrder in drugOrders">
         <tr ng-class="{active: drugOrder.isActive(), 'test-notes-parent': drugOrder.additionalInstructions, 'notes-open': drugOrder.showDetails}">
             <td ng-if="::shouldShow('drugName')" class="drug">
@@ -41,10 +44,10 @@
         <tr bm-show="drugOrder.showDetails" class="notes">
             <td colspan="8" class="notes inline-notes">
                 <div class="footer-note right">
-            <span class="provider">
-                <provider-directive creator-name="{{drugOrder.creatorName}}" provider-name="{{drugOrder.provider.name}}"
-                                    provider-date="drugOrder.effectiveStartDate"></provider-directive>
-            </span>
+                    <span class="provider">
+                        <provider-directive creator-name="{{drugOrder.creatorName}}" provider-name="{{drugOrder.provider.name}}"
+                                            provider-date="drugOrder.effectiveStartDate"></provider-directive>
+                    </span>
                 </div>
             </td>
         </tr>
