@@ -4,6 +4,12 @@ angular.module('bahmni.common.displaycontrol.drugOrdersSection')
     .directive('drugOrdersSection', ['TreatmentService', 'spinner', function (treatmentService, spinner) {
         var controller = function ($scope) {
 
+            //$scope.toggleDisplay = false
+
+            $scope.toggleDisplay = function () {
+                $scope.toggle = ! $scope.toggle
+            }
+
             var drugNames=[ ];
 
             var columnHeaderMappings = {
@@ -31,7 +37,6 @@ angular.module('bahmni.common.displaycontrol.drugOrdersSection')
                     $scope.drugOrders = sortOrders(response);
                 });
             };
-
 
             $scope.toggle = function (drugOrder) {
                 drugOrder.showDetails = !drugOrder.showDetails;

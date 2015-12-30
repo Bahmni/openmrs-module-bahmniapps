@@ -1,8 +1,10 @@
-<h2 class="has-toggle section-title" ng-if="config | titleTranslate">
+<h2 class="has-toggle section-title" ng-if="config | titleTranslate" ng-click="toggleDisplay()">
+    <i class="fa fa-caret-right" ng-hide="toggle"></i>
+    <i class="fa fa-caret-down ng-hide" ng-show="toggle"></i>
     <span class="section-label">{{ config | titleTranslate}}</span>
 </h2>
 <p class="placeholder-text" ng-if="drugOrders && drugOrders.length == 0">{{'NO_DRUG_DETAILS_MESSAGE' | translate}} </p>
-<table class="drug-order-table treatments-details-table">
+<table class="drug-order-table treatments-details-table" ng-show="toggle">
     <tr>
         <th ng-if="drugOrders.length > 0" ng-repeat="columnName in columnHeaders">{{columnName | translate}}</th>
         <th ng-if="config.showDetails">&nbsp;</th>
