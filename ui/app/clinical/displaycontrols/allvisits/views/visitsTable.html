@@ -7,7 +7,7 @@
         <tbody>
             <tr id="eachVisit" ng-repeat="visit in ::visits | limitTo: params.maximumNoOfVisits">
                 <td class="name" width="50%">
-                    <a class="ngdialog-close visit" ng-click="openVisit(visit)">
+                    <a class="visit" ng-click="openVisit(visit)">
                         <span>{{::visit.startDatetime | bahmniDate}}</span>
                         <span ng-if="::!visit.isActive()">- {{::visit.stopDatetime | bahmniDate }}</span>
                         <i class="fa fa-star current-visit-icon" id="currentVisitIcon" ng-if="::visit.isActive()" title="Current Visit"></i>
