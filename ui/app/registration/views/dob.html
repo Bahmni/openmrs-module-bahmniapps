@@ -1,0 +1,31 @@
+<article class="form-field dob-birthtime-wrapper" id="dob">
+    <div class="field-attribute">
+        <label for="birthdate">{{ ::'REGISTRATION_LABEL_DOB' | translate}}<span class="asterick" ng-show="::dobMandatory">*</span></label>
+    </div>
+    <div class="field-value">
+        <input id="birthdate" type="date" ng-model="patient.birthdate"  max="{{::today}}"
+               ng-change="patient.calculateAge()" ng-required="::dobMandatory">
+    </div>
+    <div class="showOn-desktop">
+        <div class="field-value">
+            <input type="checkbox" ng-model="patient.birthdateEstimated" class="estimate-check">
+        </div>
+        <div class="field-attribute estimated-label">
+            <label for="birthdate">{{ ::'REGISTRATION_LABEL_ESTIMATE' | translate}}</label>
+        </div>
+    </div>
+    <div class="showOn-small-screen clearfix">
+        <div class="field-attribute estimated-label">
+            <label for="birthdate">{{ ::'REGISTRATION_LABEL_ESTIMATE' | translate}}</label>
+        </div>
+        <div class="field-value">
+            <input type="checkbox" ng-model="patient.birthdateEstimated" class="estimate-check">
+        </div>
+    </div>
+    <div class="field-attribute">
+        <label for="birthtime">{{ ::'REGISTRATION_LABEL_BIRTH_TIME' | translate}}</label>
+    </div>
+    <div class="field-value">
+        <input id="birthtime" type="time" ng-model="patient.birthtime">
+    </div>
+</article>

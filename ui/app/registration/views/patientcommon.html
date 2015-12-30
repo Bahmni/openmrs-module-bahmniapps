@@ -107,67 +107,17 @@
           </div>
       </article>
   </section>
-  <section class="age-wrapper">
-      <article class="form-field form-field-ipad">
-          <div class="field-attribute">
-              <label for="ageYears">{{ ::'REGISTRATION_LABEL_AGE' | translate}}<span class="asterick">*</span></label>
-          </div>
 
-          <div class="field-value age-field">
-              <div class="input-prepend">
-                  <span class="add-on">{{ ::'REGISTRATION_LABEL_YEARS' | translate}}</span>
-                  <input type="number" id="ageYears" name="ageYear" max="120" ng-model="patient.age.years" min="0"
-                         ng-required="patient.age.isEmpty()" title="{{ ::'REGISTRATION_LABEL_NUMERIC_YEARS' | translate}}"
-                         ng-change="patient.calculateBirthDate()">
-              </div>
-              <div class="input-prepend">
-                  <span class="add-on">{{ ::'REGISTRATION_LABEL_MONTHS' | translate}}</span>
-                  <input type="number" id="ageMonths" name="ageMonths" max="12" ng-model="patient.age.months" min="0"
-                         title="{{ ::'REGISTRATION_LABEL_NUMERIC_MONTHS' | translate}}"
-                         ng-change="patient.calculateBirthDate()">
-              </div>
-              <div class="input-prepend">
-                  <span class="add-on">{{ ::'REGISTRATION_LABEL_DAYS' | translate}}</span>
-                  <input type="number" id="ageDays" name="ageDays" max="31" ng-model="patient.age.days" min="0"
-                         title="{{ ::'REGISTRATION_LABEL_NUMERIC_DAYS' | translate}}"
-                         ng-change="patient.calculateBirthDate()">
-              </div>
-
-          </div>
-
-      </article>
-      <article class="form-field dob-birthtime-wrapper">
-              <div class="field-attribute">
-                  <label for="birthdate">{{ ::'REGISTRATION_LABEL_DOB' | translate}}</label>
-              </div>
-              <div class="field-value">
-                  <input id="birthdate" type="date" ng-model="patient.birthdate"  max="{{::today}}"
-                         ng-change="patient.calculateAge()">
-              </div>
-              <div class="showOn-desktop">
-                  <div class="field-value">
-                      <input type="checkbox" ng-model="patient.birthdateEstimated" class="estimate-check">
-                  </div>
-                  <div class="field-attribute estimated-label">
-                      <label for="birthdate">{{ ::'REGISTRATION_LABEL_ESTIMATE' | translate}}</label>
-                  </div>
-              </div>
-              <div class="showOn-small-screen clearfix">
-                  <div class="field-attribute estimated-label">
-                      <label for="birthdate">{{ ::'REGISTRATION_LABEL_ESTIMATE' | translate}}</label>
-                  </div>
-                  <div class="field-value">
-                      <input type="checkbox" ng-model="patient.birthdateEstimated" class="estimate-check">
-                  </div>
-              </div>
-              <div class="field-attribute">
-                  <label for="birthtime">{{ ::'REGISTRATION_LABEL_BIRTH_TIME' | translate}}</label>
-              </div>
-              <div class="field-value">
-                  <input id="birthtime" type="time" ng-model="patient.birthtime">
-              </div>
-      </article>
-  </section>
+    <section class="age-wrapper" ng-controller="PatientCommonController">
+        <div ng-if="::!dobMandatory">
+            <ng-include src="'views/age.html'"></ng-include>
+            <ng-include src="'views/dob.html'"></ng-include>
+        </div>
+        <div ng-if="::dobMandatory">
+            <ng-include src="'views/dob.html'"></ng-include>
+            <ng-include src="'views/age.html'"></ng-include>
+        </div>
+    </section>
 
   <legend class="registraion_legend">
       <span class="mylegend"> {{ ::'REGISTRATION_LABEL_ADDRESS_INFO' | translate}}</span>

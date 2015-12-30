@@ -8,6 +8,7 @@ angular.module('bahmni.registration')
             var showCasteSameAsLastNameCheckbox = appService.getAppDescriptor().getConfigValue("showCasteSameAsLastNameCheckbox");
             $scope.showMiddleName = appService.getAppDescriptor().getConfigValue("showMiddleName");
             $scope.genderCodes = Object.keys($rootScope.genderMap);
+            $scope.dobMandatory = appService.getAppDescriptor().getConfigValue("dobMandatory") || false;
 
             $scope.getDeathConcepts = function () {
                 var deathConcept;
