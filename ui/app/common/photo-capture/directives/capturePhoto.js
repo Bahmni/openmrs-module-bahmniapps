@@ -92,7 +92,9 @@ angular.module('bahmni.common.photoCapture')
                 close: function(){
                     dialogOpen = false;
                     if (activeStream) {
-                        activeStream.stop();
+                        var activeStreamTrack = activeStream.getTracks();
+                        if(activeStreamTrack)
+                            activeStreamTrack[0].stop();
                     }
                 }
             });
