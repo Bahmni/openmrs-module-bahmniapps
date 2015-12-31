@@ -206,6 +206,21 @@ describe("AddTreatmentController", function () {
         })
     });
 
+    describe("DosingUnitsMantissa()", function() {
+        it("should return true if mantissa available", function () {
+            scope.dosingUnitsMantissa = [
+                {"value": 0.50, "label":"½"},
+                {"value": 0.33, "label":"⅓"},
+                {"value": 0.25, "label":"¼"},
+                {"value": 0.75, "label":"¾"}
+            ];
+            expect(scope.isDosingUnitsMantissaAvailable()).toBeTruthy();
+        });
+
+        it("should return false if mantissa not available", function () {
+            expect(scope.isDosingUnitsMantissaAvailable()).toBeFalsy();
+        });
+    });
 
     describe("add()", function () {
         it("adds treatment object to list of treatments", function () {

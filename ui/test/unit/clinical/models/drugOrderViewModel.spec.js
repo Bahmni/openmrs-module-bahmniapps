@@ -80,6 +80,64 @@ describe("drugOrderViewModel", function () {
         expect(treatment.getDescription()).toBe("1 Capsule, Before Meals, Orally - 10 Days");
     });
 
+    it("should get the same real number in the treatment list when dosingUnitsMantissa config is absent", function () {
+        var treatment = sampleTreatment({}, [], null, Bahmni.Common.Util.DateUtil.now());
+        treatment.durationUnit = "Days";
+        treatment.route = "Orally";
+        treatment.uniformDosingType.dose = "1.5";
+        treatment.uniformDosingType.doseUnits = "Capsule";
+        treatment.uniformDosingType.frequency = "Once a day";
+        treatment.frequencyType = Bahmni.Clinical.Constants.dosingTypes.uniform;
+        expect(treatment.getDescription()).toBe("1.5 Capsule, Once a day, Before Meals, Orally - 10 Days");
+
+        treatment.uniformDosingType.frequency = null;
+        expect(treatment.getDescription()).toBe("1.5 Capsule, Before Meals, Orally - 10 Days");
+    });
+
+    it("should get the mixed fraction text in the treatment list when dosingUnitsMantissa config is defined ", function () {
+        var appConfig = {
+            dosingUnitsMantissa: [
+                {"value": 0.50, "label": "½"},
+                {"value": 0.33, "label": "⅓"},
+                {"value": 0.25, "label": "¼"},
+                {"value": 0.75, "label": "¾"}
+            ]
+        };
+        var treatment = sampleTreatment(appConfig, [], null, Bahmni.Common.Util.DateUtil.now());
+        treatment.durationUnit = "Days";
+        treatment.route = "Orally";
+        treatment.uniformDosingType.dose = "1.50";
+        treatment.uniformDosingType.doseUnits = "Capsule";
+        treatment.uniformDosingType.frequency = "Once a day";
+        treatment.frequencyType = Bahmni.Clinical.Constants.dosingTypes.uniform;
+        expect(treatment.getDescription()).toBe("1½ Capsule, Once a day, Before Meals, Orally - 10 Days");
+
+        treatment.uniformDosingType.frequency = null;
+        expect(treatment.getDescription()).toBe("1½ Capsule, Before Meals, Orally - 10 Days");
+    });
+
+    it("should get the same real number in the treatment list when dosingUnitsMantissa is defined and it doesnt have entry for mantissa part of real number", function () {
+        var appConfig = {
+            dosingUnitsMantissa: [
+                {"value": 0.50, "label": "½"},
+                {"value": 0.33, "label": "⅓"},
+                {"value": 0.25, "label": "¼"},
+                {"value": 0.75, "label": "¾"}
+            ]
+        };
+        var treatment = sampleTreatment(appConfig, [], null, Bahmni.Common.Util.DateUtil.now());
+        treatment.durationUnit = "Days";
+        treatment.route = "Orally";
+        treatment.uniformDosingType.dose = "1.55";
+        treatment.uniformDosingType.doseUnits = "Capsule";
+        treatment.uniformDosingType.frequency = "Once a day";
+        treatment.frequencyType = Bahmni.Clinical.Constants.dosingTypes.uniform;
+        expect(treatment.getDescription()).toBe("1.55 Capsule, Once a day, Before Meals, Orally - 10 Days");
+
+        treatment.uniformDosingType.frequency = null;
+        expect(treatment.getDescription()).toBe("1.55 Capsule, Before Meals, Orally - 10 Days");
+    });
+
     it("should get the text to be displayed in the treatment list with dosage instructions", function () {
         var treatment = sampleTreatment({}, [], null, Bahmni.Common.Util.DateUtil.now());
         treatment.frequencyType = "variable";

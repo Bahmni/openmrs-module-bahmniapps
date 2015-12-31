@@ -105,9 +105,26 @@ Bahmni.Clinical.DrugOrderViewModel = function (appConfig, config, proto, encount
         return (dateUtil.diffInSeconds(this.effectiveStartDate, otherDrugOrder.effectiveStopDate) <= 0 && dateUtil.diffInSeconds(this.effectiveStopDate, otherDrugOrder.effectiveStartDate) > -1);
     };
 
+    var morphToMixedFraction = function(number) {
+        var mantissa = parseFloat((number - Math.floor(number)).toFixed(2)),
+            abscissa = number - mantissa;
+        if (!appConfig.dosingUnitsMantissa || mantissa === 0)
+            return number;
+
+        var result =  _.result(_.find(appConfig.dosingUnitsMantissa, function(item) {
+            return item.value === mantissa;
+        }), 'label');
+
+        if (!result)
+            return number;
+
+        return "" + abscissa + result;
+    };
+
     var simpleDoseAndFrequency = function () {
         var uniformDosingType = self.uniformDosingType;
-        var doseAndUnits = blankIfFalsy(uniformDosingType.dose) + " " + blankIfFalsy(self.doseUnits);
+        var doseAndUnits = blankIfFalsy(morphToMixedFraction(uniformDosingType.dose)) + " " + blankIfFalsy(self.doseUnits);
+
         return addDelimiter(blankIfFalsy(doseAndUnits), ", ") +
             addDelimiter(blankIfFalsy(uniformDosingType.frequency), ", ");
     };
@@ -295,7 +312,7 @@ Bahmni.Clinical.DrugOrderViewModel = function (appConfig, config, proto, encount
             this.isUniformFrequency = true;
         }
     };
-    
+
     this.toggleExtraInfo = function () {
         this.showExtraInfo = !this.showExtraInfo;
     }
@@ -355,7 +372,8 @@ Bahmni.Clinical.DrugOrderViewModel = function (appConfig, config, proto, encount
         self.calculateDurationInDays();
         if (!self.quantityEnteredManually && !self.quantityEnteredViaEdit) {
             if (self.frequencyType === Bahmni.Clinical.Constants.dosingTypes.uniform) {
-                self.quantity = self.uniformDosingType.dose * (self.uniformDosingType.frequency ? getFrequencyPerDay() : 0) * self.durationInDays;
+                var mantissa = self.uniformDosingType.dosingUnitMantissa ? self.uniformDosingType.dosingUnitMantissa.value : 0;
+                self.quantity = (self.uniformDosingType.dose + mantissa) * (self.uniformDosingType.frequency ? getFrequencyPerDay() : 0) * self.durationInDays;
             } else if (self.frequencyType == Bahmni.Clinical.Constants.dosingTypes.variable) {
                 var dose = self.variableDosingType;
                 self.quantity = (dose.morningDose + dose.afternoonDose + dose.eveningDose) * self.durationInDays;

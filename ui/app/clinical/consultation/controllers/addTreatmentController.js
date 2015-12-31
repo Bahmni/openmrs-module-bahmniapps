@@ -18,6 +18,14 @@ angular.module('bahmni.clinical')
                 appService.getAppDescriptor().getConfig("allowOnlyCodedDrugs").value;
 
             var conceptNameForDefaultDrugs = treatmentConfig.conceptNameForDefaultDrugs;
+            $scope.dosingUnitsMantissa = drugOrderAppConfig.dosingUnitsMantissa;
+            $scope.isDosingUnitsMantissaAvailable = function() {
+                return $scope.dosingUnitsMantissa ? true : false;
+            };
+
+            var medicationConfig = appService.getAppDescriptor().getConfigForPage('medication') || {};
+            var conceptNameForDefaultDrugs = medicationConfig.conceptNameForDefaultDrugs;
+
             conceptNameForDefaultDrugs && drugService.getSetMembersOfConcept(conceptNameForDefaultDrugs)
                 .then(function (result) {
                     $scope.defaultDrugs = result.map(constructDrugNameDisplay);

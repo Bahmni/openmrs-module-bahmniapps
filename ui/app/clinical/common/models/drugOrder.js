@@ -29,6 +29,7 @@ Bahmni.Clinical.DrugOrder = (function () {
 
         var route = drugOrderData.route;
 
+        var mantissa = drugOrderData.uniformDosingType.dosingUnitMantissa ? drugOrderData.uniformDosingType.dosingUnitMantissa.value : 0;
         var drugOrder = new DrugOrder({
                 careSetting: "OUTPATIENT",
                 drug: drugOrderData.drug,
@@ -36,7 +37,7 @@ Bahmni.Clinical.DrugOrder = (function () {
                 orderType: "Drug Order",
                 dosingInstructionType: Bahmni.Clinical.Constants.flexibleDosingInstructionsClass,
                 dosingInstructions: {
-                    dose: drugOrderData.uniformDosingType.dose,
+                    dose: (drugOrderData.uniformDosingType.dose + mantissa),
                     doseUnits: drugOrderData.doseUnits,
                     route: route,
                     frequency: frequency,

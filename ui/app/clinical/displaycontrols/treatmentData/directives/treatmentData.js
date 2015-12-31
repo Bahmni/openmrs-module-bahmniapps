@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('bahmni.clinical')
-    .directive('treatmentData', ['TreatmentService', 'appService', 'spinner', '$stateParams', function (treatmentService, appService, spinner, $stateParams) {
+    .directive('treatmentData', ['TreatmentService', 'appService', 'spinner', '$stateParams', 'clinicalAppConfigService', function (treatmentService, appService, spinner, $stateParams, clinicalAppConfigService) {
         var controller = function ($scope) {
             var Constants = Bahmni.Clinical.Constants;
             var defaultParams = {
@@ -27,8 +27,9 @@ angular.module('bahmni.clinical')
                     getEffectiveOrdersOnly = true;
                 }
 
+                var drugOrderAppConfig = clinicalAppConfigService.getDrugOrderConfig();
                 return treatmentService.getPrescribedAndActiveDrugOrders($scope.params.patientUuid, $scope.params.numberOfVisits,
-                    $scope.params.showOtherActive, $scope.params.visitUuids || [], startDate, endDate, getEffectiveOrdersOnly)
+                    $scope.params.showOtherActive, $scope.params.visitUuids || [], startDate, endDate, getEffectiveOrdersOnly, drugOrderAppConfig)
                     .then(function (response) {
                         var groupedByVisit = _.groupBy(response.data.visitDrugOrders, function (drugOrder) {
                             return drugOrder.visit.startDateTime;
