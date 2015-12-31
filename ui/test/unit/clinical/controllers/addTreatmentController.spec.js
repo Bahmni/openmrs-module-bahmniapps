@@ -4,8 +4,97 @@ describe("AddTreatmentController", function () {
 
     beforeEach(module('bahmni.common.uiHelper'));
     beforeEach(module('bahmni.clinical'));
-
     var DateUtil = Bahmni.Common.Util.DateUtil;
+
+    var activeDrugOrder = {
+        "uuid": "activeOrderUuid",
+        "action": "NEW",
+        "careSetting": "Outpatient",
+        "orderType": "Drug Order",
+        "orderNumber": "ORD-1234",
+        "autoExpireDate": null,
+        "scheduledDate": null,
+        "dateStopped": null,
+        "instructions": null,
+        "visit": {
+            "startDateTime": 1397028261000,
+            "uuid": "002efa33-4c4f-469f-968a-faedfe3a5e0c"
+        },
+        "drug": {
+            "form": "Injection",
+            "uuid": "8d7e3dc0-f4ad-400c-9468-5a9e2b1f4230",
+            "strength": null,
+            "name": "Methylprednisolone 2ml"
+        },
+        "dosingInstructions": {
+            "quantity": 100,
+            "route": "Intramuscular",
+            "frequency": "Twice a day",
+            "doseUnits": "Tablespoon",
+            "asNeeded": false,
+            "quantityUnits": "Tablet",
+            "dose": 5,
+            "administrationInstructions": "{\"instructions\":\"In the evening\",\"additionalInstructions\":\"helylo\"}",
+            "numberOfRefills": null
+        },
+        "durationUnits": "Days",
+        "dateActivated": 1410322624000,
+        "commentToFulfiller": null,
+        "effectiveStartDate": 1410322624000,
+        "effectiveStopDate": null,
+        "orderReasonConcept": null,
+        "dosingInstructionType": "org.openmrs.module.bahmniemrapi.drugorder.dosinginstructions.FlexibleDosingInstructions",
+        "previousOrderUuid": null,
+        "orderReasonText": null,
+        "duration": 10,
+        "provider": {name: "superman"}
+    };
+
+    var scheduledOrder = {
+        "uuid": "scheduledOrderUuid",
+        "action": "NEW",
+        "careSetting": "Outpatient",
+        "orderType": "Drug Order",
+        "orderNumber": "ORD-2345",
+        "autoExpireDate": null,
+        "scheduledDate": null,
+        "dateStopped": null,
+        "instructions": null,
+        "visit": {
+            "startDateTime": 1397028261000,
+            "uuid": "002efa33-4c4f-469f-968a-faedfe3a5e0c"
+        },
+        "drug": {
+            "form": "Injection",
+            "uuid": "8d7e3dc0-f4ad-400c-9468-5a9e2b1f4230",
+            "strength": null,
+            "name": "Methylprednisolone 200ml"
+        },
+        "dosingInstructions": {
+            "quantity": 100,
+            "route": "Intramuscular",
+            "frequency": "Twice a day",
+            "doseUnits": "Tablespoon",
+            "asNeeded": false,
+            "quantityUnits": "Tablet",
+            "dose": 5,
+            "administrationInstructions": "{\"instructions\":\"In the evening\",\"additionalInstructions\":\"helylo\"}",
+            "numberOfRefills": null
+        },
+        "durationUnits": "Days",
+        "dateActivated": DateUtil.addDays(new Date(), 2).valueOf(),
+        "commentToFulfiller": null,
+        "effectiveStartDate": DateUtil.addDays(new Date(), 2).valueOf(),
+        "effectiveStopDate": null,
+        "orderReasonConcept": null,
+        "dosingInstructionType": "org.openmrs.module.bahmniemrapi.drugorder.dosinginstructions.FlexibleDosingInstructions",
+        "previousOrderUuid": null,
+        "orderReasonText": null,
+        "duration": 10,
+        "provider": {name: "superman"}
+    };
+
+
     var scope, rootScope, contextChangeHandler, newTreatment,
         editTreatment, clinicalAppConfigService, ngDialog, drugService, defaultDrugs,
         encounterDateTime, appService, appConfig, defaultDrugsPromise;
@@ -13,7 +102,7 @@ describe("AddTreatmentController", function () {
         scope = $rootScope.$new();
         rootScope = $rootScope;
         encounterDateTime = moment("2014-03-02").toDate();
-        scope.consultation = {preSaveHandler: new Bahmni.Clinical.Notifier(), activeAndScheduledDrugOrders: [], encounterDateTime: encounterDateTime};
+        scope.consultation = {preSaveHandler: new Bahmni.Clinical.Notifier(), encounterDateTime: encounterDateTime};
         var now = DateUtil.now();
         ngDialog = jasmine.createSpyObj('ngDialog', ['open', 'close']);
         spyOn(Bahmni.Common.Util.DateUtil, 'now').and.returnValue(now);
@@ -23,7 +112,7 @@ describe("AddTreatmentController", function () {
         contextChangeHandler = jasmine.createSpyObj('contextChangeHandler', ['add']);
         scope.addForm = {$invalid: false, $valid: true};
 
-        clinicalAppConfigService = jasmine.createSpyObj('clinicalAppConfigService', ['getTreatmentActionLink', 'getDrugOrderConfig', 'getTreatmentTabExtension']);
+        clinicalAppConfigService = jasmine.createSpyObj('clinicalAppConfigService', ['getTreatmentActionLink', 'getDrugOrderConfig']);
         clinicalAppConfigService.getTreatmentActionLink.and.returnValue([]);
         clinicalAppConfigService.getDrugOrderConfig.and.returnValue({});
         appService = jasmine.createSpyObj('appService', ['getAppDescriptor']);
@@ -44,6 +133,7 @@ describe("AddTreatmentController", function () {
             $scope: scope,
             $rootScope: rootScope,
             treatmentService: null,
+            activeDrugOrders : [activeDrugOrder, scheduledOrder],
             contextChangeHandler: contextChangeHandler,
             clinicalAppConfigService: clinicalAppConfigService,
             ngDialog: ngDialog,
@@ -119,7 +209,7 @@ describe("AddTreatmentController", function () {
 
     describe("add()", function () {
         it("adds treatment object to list of treatments", function () {
-            var treatment = {drug: {name: true}};
+            var treatment = Bahmni.Tests.drugOrderViewModelMother.buildWith({}, [], {drug: {name: true}});
             scope.treatment = treatment;
             scope.add();
             expect(scope.treatments.length).toBe(1);
@@ -127,21 +217,23 @@ describe("AddTreatmentController", function () {
         });
 
         it("should empty treatment", function () {
-            scope.treatment = {drug: {name: true}};
+            scope.treatment = Bahmni.Tests.drugOrderViewModelMother.buildWith({}, [], {drug: {name: true}});
             scope.add();
             expect(scope.treatment.drug).toBeFalsy();
         });
 
         it("clears existing treatment object", function () {
-            scope.treatment = {drug: {name: true}};
+            scope.treatment = Bahmni.Tests.drugOrderViewModelMother.buildWith({}, [], {drug: {name: true}});
             scope.add();
             expect(scope.treatment.drug).toBeFalsy();
         });
 
         it("should set auto focus on drug name", function () {
+            scope.treatment = Bahmni.Tests.drugOrderViewModelMother.buildWith({}, [], {drug: {name: true}});
             scope.add();
             expect(scope.startNewDrugEntry).toBeTruthy();
         });
+
         it("should not allow to add new order if there is already existing order", function () {
             scope.treatment = Bahmni.Tests.drugOrderViewModelMother.buildWith({}, [], {
                 drug: {name: "abc"},

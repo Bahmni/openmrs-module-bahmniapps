@@ -9,7 +9,7 @@ angular.module('consultation', ['ui.router', 'bahmni.clinical', 'bahmni.common.c
     'bahmni.common.displaycontrol.patientprofile', 'bahmni.common.displaycontrol.diagnosis', 'RecursionHelper', 'ngSanitize',
     'bahmni.common.orders', 'bahmni.common.displaycontrol.orders', 'bahmni.common.displaycontrol.prescription', 'bahmni.common.displaycontrol.navigationlinks', 'bahmni.common.displaycontrol.programs',
     'bahmni.common.displaycontrol.pacsOrders', 'bahmni.common.uicontrols.programmanagment', 'pascalprecht.translate', 'ngCookies','monospaced.elastic','bahmni.common.bacteriologyresults','bahmni.common.displaycontrol.bacteriologyresults', 'bahmni.common.displaycontrol.obsVsObsFlowSheet',
-    'bahmni.common.displaycontrol.chronicTreatmentChart', 'bahmni.common.displaycontrol.forms', 'bahmni.common.displaycontrol.drugOrderDetails', 'bahmni.offline']);
+    'bahmni.common.displaycontrol.chronicTreatmentChart', 'bahmni.common.displaycontrol.forms', 'bahmni.common.displaycontrol.drugOrderDetails', 'bahmni.common.displaycontrol.drugOrdersSection', 'bahmni.offline']);
 angular.module('consultation')
     .config(['$stateProvider', '$httpProvider', '$urlRouterProvider','$bahmniTranslateProvider', function ($stateProvider, $httpProvider, $urlRouterProvider,$bahmniTranslateProvider) {
         $urlRouterProvider.otherwise('/' + Bahmni.Clinical.Constants.defaultExtensionName + '/patient/search');
@@ -172,23 +172,20 @@ angular.module('consultation')
                 params: {
                   cachebuster: null
                 },
+                resolve: {
+                    activeDrugOrders: function (TreatmentService, $stateParams) {
+                        return TreatmentService.getActiveDrugOrders($stateParams.patientUuid);
+                    },
+                    treatmentConfig: 'treatmentConfig'
+                },
                 views: {
                     "addTreatment": {
                         controller: 'AddTreatmentController',
-                        templateUrl: 'consultation/views/treatmentSections/addTreatment.html',
-                        resolve: {
-                            treatmentConfig: 'treatmentConfig'
-                        }
+                        templateUrl: 'consultation/views/treatmentSections/addTreatment.html'
                     },
                     "defaultHistoryView": {
                         controller: 'DrugOrderHistoryController',
-                        templateUrl: 'consultation/views/treatmentSections/drugOrderHistory.html',
-                        resolve: {
-                            activeDrugOrders: function (TreatmentService, $stateParams) {
-                                return TreatmentService.getActiveDrugOrders($stateParams.patientUuid);
-                            },
-                            treatmentConfig: 'treatmentConfig'
-                        }
+                        templateUrl: 'consultation/views/treatmentSections/drugOrderHistory.html'
                     },
                     "customHistoryView": {
                         controller: 'CustomDrugOrderHistoryController',

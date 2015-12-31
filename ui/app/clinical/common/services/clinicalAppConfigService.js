@@ -7,12 +7,6 @@ angular.module('bahmni.clinical')
             return appService.getAppDescriptor().getExtensions("org.bahmni.clinical.treatment.links", "link") || [];
         };
 
-        this.getTreatmentTabExtension = function(){
-            return _.find(this.getAllConsultationBoards(), function(board){
-                return board.url === 'treatment';
-            });
-        };
-
         this.getDrugOrderConfig = function () {
             return appService.getAppDescriptor().getConfigValue("drugOrder") || {};
         };
@@ -51,6 +45,10 @@ angular.module('bahmni.clinical')
 
         this.getVisitConfig = function(){
             return appService.getAppDescriptor().getConfigForPage("visit");
+        };
+
+        this.getMedicationConfig = function(){
+            return appService.getAppDescriptor().getConfigForPage('medication') || {}
         };
 
         this.getPrintConfig = function () {

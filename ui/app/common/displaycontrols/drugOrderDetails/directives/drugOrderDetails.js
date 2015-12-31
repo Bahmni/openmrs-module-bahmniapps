@@ -5,7 +5,7 @@ angular.module('bahmni.common.displaycontrol.drugOrderDetails')
         var controller = function ($scope) {
 
             var init = function () {
-                return treatmentService.getAllDrugOrdersFor($scope.patient.uuid, $scope.section.dashboardParams.drugNames).then(function (response) {
+                return treatmentService.getAllDrugOrdersFor($scope.patient.uuid, $scope.section.dashboardParams.drugConceptSet).then(function (response) {
                     $scope.drugOrders = sortOrders(response).reverse();
                 });
             };

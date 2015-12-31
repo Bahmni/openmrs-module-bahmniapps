@@ -1,0 +1,26 @@
+<h2 class="has-toggle section-title" ng-if="config | titleTranslate" ng-click="toggleDisplay()">
+    <i class="fa fa-caret-right" ng-hide="toggle"></i>
+    <i class="fa fa-caret-down ng-hide" ng-show="toggle"></i>
+    <span class="section-label">{{ config | titleTranslate }}</span>
+</h2>
+<p class="placeholder-text" ng-if="drugOrders && drugOrders.length == 0">{{'NO_DRUG_DETAILS_MESSAGE' | translate}} </p>
+<table class="drug-order-table treatments-details-table" ng-show="toggle">
+    <tr>
+        <th ng-if="drugOrders.length > 0" ng-repeat="columnName in columns">{{columnHeaders[columnName] | translate}}</th>
+    </tr>
+    <tbody ng-if="drugOrders.length > 0" ng-repeat="drugOrder in drugOrders">
+        <tr>
+            <td ng-repeat="columnName in columns">
+                <span ng-if="columnName === 'drugName'">{{::drugOrder.getDrugOrderName(false)}}</span>
+                <span ng-if="columnName === 'dosage'">{{::drugOrder.dosage}}</span>
+                <span ng-if="columnName === 'route'">{{::drugOrder.route}}</span>
+                <span ng-if="columnName === 'duration'">{{::drugOrder.getDurationAndDurationUnits()}}</span>
+                <span ng-if="columnName === 'frequency'">{{::drugOrder.getFrequency()}}</span>
+                <span ng-if="columnName === 'startDate'">{{::drugOrder.effectiveStartDate | bahmniDate}}</span>
+                <span ng-if="columnName === 'stopDate' && drugOrder.isDiscontinuedOrStopped()">{{::drugOrder.effectiveStopDate | bahmniDate}}</span>
+                <span ng-if="columnName === 'stopReason' && drugOrder.orderReasonConcept">{{::drugOrder.orderReasonConcept.display || drugOrder.orderReasonConcept.name}}</span>
+                <span ng-if="columnName === 'stopReasonNotes' && drugOrder.orderReasonText">{{::drugOrder.orderReasonText}}</span>
+            </td>
+        </tr>
+    </tbody>
+</table>

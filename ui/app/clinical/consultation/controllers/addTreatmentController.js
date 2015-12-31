@@ -3,11 +3,12 @@
 angular.module('bahmni.clinical')
 
     .controller('AddTreatmentController', ['$scope', '$rootScope', 'contextChangeHandler', 'treatmentConfig', 'DrugService', '$timeout',
-        'clinicalAppConfigService', 'ngDialog', '$window', 'messagingService', 'appService',
+        'clinicalAppConfigService', 'ngDialog', '$window', 'messagingService', 'appService', 'activeDrugOrders',
         function ($scope, $rootScope, contextChangeHandler, treatmentConfig, drugService, $timeout,
-                  clinicalAppConfigService, ngDialog, $window, messagingService, appService) {
+                  clinicalAppConfigService, ngDialog, $window, messagingService, appService, activeDrugOrders) {
 
             var DateUtil = Bahmni.Common.Util.DateUtil;
+            var DrugOrderViewModel = Bahmni.Clinical.DrugOrderViewModel;
 
             $scope.treatments = $scope.consultation.newlyAddedTreatments || [];
             $scope.treatmentConfig = treatmentConfig;
@@ -449,4 +450,18 @@ angular.module('bahmni.clinical')
                 $scope.bulkDurationData.bulkDuration += stepperValue;
             };
 
+            var getActiveDrugOrders = function (activeDrugOrders) {
+                var activeDrugOrdersList = activeDrugOrders || [];
+                return activeDrugOrdersList.map(function (drugOrder) {
+                    return DrugOrderViewModel.createFromContract(drugOrder, drugOrderAppConfig, treatmentConfig);
+                });
+            };
+
+            var init = function(){
+                $scope.consultation.removableDrugs = $scope.consultation.removableDrugs || [];
+                $scope.consultation.discontinuedDrugs = $scope.consultation.discontinuedDrugs || [];
+                $scope.consultation.drugOrdersWithUpdatedOrderAttributes = $scope.consultation.drugOrdersWithUpdatedOrderAttributes || {};
+                $scope.consultation.activeAndScheduledDrugOrders = getActiveDrugOrders(activeDrugOrders);
+            }
+            init();
         }]);
