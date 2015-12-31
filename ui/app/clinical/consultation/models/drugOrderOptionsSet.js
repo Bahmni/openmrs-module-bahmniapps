@@ -29,13 +29,14 @@ Bahmni.Clinical.DrugOrderOptionsSet = (function(){
     _proto = DrugOrderOptionsSet.prototype;
 
     var retrieveFromOptionsArray = function(getterFunction, fieldName) {
-        return function (drug) {
-            var result;
+        return function () {
+            var result = null;
+            var args = arguments;
             self.arrayOfDrugOrderOptions.forEach(function (drugOrderOptions) {
-                result = result || drugOrderOptions[getterFunction].call(drugOrderOptions, drug);
+                var responseFromOption = drugOrderOptions[getterFunction].apply(drugOrderOptions, args);
+                result = responseFromOption !== null ? responseFromOption : result;
             });
-
-            return result || self.masterConfig[fieldName];
+            return result !== null ? result: self.masterConfig[fieldName];
         }
     };
 
@@ -45,6 +46,11 @@ Bahmni.Clinical.DrugOrderOptionsSet = (function(){
     _proto.getDosingInstructions = retrieveFromOptionsArray('getDosingInstructions', 'dosingInstructions');
     _proto.getDispensingUnits = retrieveFromOptionsArray('getDispensingUnits', 'dispensingUnits');
     _proto.getFrequencies = retrieveFromOptionsArray('getFrequencies', 'frequencies');
+    var resultFromConfig = retrieveFromOptionsArray('showField', 'hideFields');
+    _proto.showField = function(drug, fieldName) {
+        var shouldShowField = resultFromConfig(drug, fieldName);
+        return shouldShowField !== null && shouldShowField !== undefined ? shouldShowField: true;
+    };
 
     return DrugOrderOptionsSet;
 })();

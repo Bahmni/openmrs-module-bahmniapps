@@ -23,7 +23,8 @@ describe("DrugOrderOptions", function () {
             "conceptSetName": "All TB Drugs",
             "doseUnits": ["mg"],
             "frequencies" :["Seven days a week"],
-            "routes" : ["Oral"]
+            "routes" : ["Oral"],
+            "hideFields": ["doseUnits", "frequencies"]
         };
 
         model = new Bahmni.Clinical.DrugOrderOptions(inputConfig, listOfDrugs, masterConfig);
@@ -93,6 +94,16 @@ describe("DrugOrderOptions", function () {
             expect(frequencies).toContain({ "uuid": "ca407cb0-3a91-11e5-b380-0050568236ae", "frequencyPerDay": 1, "name": "Seven days a week"});
         });
 
+    });
+    
+    it("should hidden elements on UI mentioned in inputConfig", function () {
+        expect(model.showField({name: "K"}, 'doseUnits')).toBe(false);
+        expect(model.showField({name: "K"}, 'durationUnits')).toBe(true);
+        expect(model.showField({name: "nonexistentDrug"}, 'durationUnits')).toBeNull();
+
+        inputConfig.hideFields = null;
+        model = new Bahmni.Clinical.DrugOrderOptions(inputConfig, listOfDrugs, masterConfig);
+        expect(model.showField({name: "K"}, 'doseUnits')).toBe(true);
     });
 
     it("should use masterConfig as input configuration when inputConfig not provided", function() {

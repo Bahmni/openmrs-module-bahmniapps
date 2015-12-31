@@ -1,6 +1,6 @@
 'use strict';
 describe("DrugOrderOptionsSet", function () {
-    var masterConfig, listOfDrugs, firstInputConfiguration, secondInputConfiguration, drugOrderOptions = [], model;
+    var masterConfig, listOfDrugs, anInputConfig, secondInputConfiguration, drugOrderOptions = [], model;
     beforeEach(function() {
         masterConfig = {
             "doseUnits": [{"name": "mg"}, {"name": "Tablet(s)"}],
@@ -18,21 +18,15 @@ describe("DrugOrderOptionsSet", function () {
             {name: "T"}
         ];
 
-        firstInputConfiguration = {
+        anInputConfig = {
             "conceptSetName": "All TB Drugs",
             "doseUnits": ["mg"],
             "frequencies" :["Seven days a week"],
-            "routes" : ["Oral"]
-        };
-        secondInputConfiguration = {
-            "conceptSetName": "All TB Drugs",
-            "doseUnits": ["mg"],
-            "frequencies" :["Seven days a week"],
-            "routes" : ["Oral"]
+            "routes" : ["Oral"],
+            "hideFields": ["doseUnits", "frequencies"]
         };
 
-        drugOrderOptions.push(new Bahmni.Clinical.DrugOrderOptions(firstInputConfiguration, listOfDrugs, masterConfig));
-        drugOrderOptions.push(new Bahmni.Clinical.DrugOrderOptions(secondInputConfiguration, listOfDrugs, masterConfig));
+        drugOrderOptions.push(new Bahmni.Clinical.DrugOrderOptions(anInputConfig, listOfDrugs, masterConfig));
         model = new Bahmni.Clinical.DrugOrderOptionsSet(drugOrderOptions, masterConfig);
     });
 
@@ -51,6 +45,24 @@ describe("DrugOrderOptionsSet", function () {
             model = new Bahmni.Clinical.DrugOrderOptionsSet(null, masterConfig);
             var doseUnits = model.getDoseUnits({name: "non existant drug"});
             expect(doseUnits.length).toBe(2);
-        })
+        });
+    });
+
+    describe("showField", function() {
+        it("returns false if field set as hidden", function() {
+            expect(model.showField({name: "K"}, "doseUnits")).toBe(false);
+        });
+
+        it("returns true if field not set as hidden", function() {
+            expect(model.showField({name: "K"}, "fieldNotPresentInHideList")).toBe(true);
+        });
+
+        it("returns true if drug not present in any config", function() {
+            expect(model.showField({name: "nonExistentDrug"}, "doseUnits")).toBe(true);
+        });
+
+        it("returns true if drug is null", function() {
+            expect(model.showField(null, "doseUnits")).toBe(true);
+        });
     });
 });

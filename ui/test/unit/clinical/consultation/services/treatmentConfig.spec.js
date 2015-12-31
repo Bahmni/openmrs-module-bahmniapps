@@ -14,11 +14,6 @@ describe('treatmentConfig', function() {
                     "doseUnits": ["mg"],
                     "frequency" :["Seven days a week"],
                     "route" : ["Oral"]
-                },
-                "default": {
-                    "doseUnits": ["Tablet(s)", "mg"],
-                    "frequency" :["Seven days a week"],
-                    "route" : ["Oral"]
                 }
             }
         };
