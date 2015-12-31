@@ -92,7 +92,7 @@ angular.module('bahmni.registration')
         };
 
         var create = function (patient) {
-            var data = new Bahmni.Registration.CreatePatientRequestMapper(moment()).mapFromPatient($rootScope.patientConfiguration.personAttributeTypes, patient);
+            var data = new Bahmni.Registration.CreatePatientRequestMapper(moment()).mapFromPatient($rootScope.patientConfiguration.attributeTypes, patient);
             if(offlineService.offline()) {
                 return patientServiceOffline.create(data);
             }
@@ -105,7 +105,7 @@ angular.module('bahmni.registration')
         };
 
         var update = function (patient, openMRSPatient) {
-            var data = new Bahmni.Registration.UpdatePatientRequestMapper(moment()).mapFromPatient($rootScope.patientConfiguration.personAttributeTypes, openMRSPatient, patient);
+            var data = new Bahmni.Registration.UpdatePatientRequestMapper(moment()).mapFromPatient($rootScope.patientConfiguration.attributeTypes, openMRSPatient, patient);
             var url = baseOpenMRSRESTURL + "/patientprofile/" + openMRSPatient.uuid;
             var config = {
                 withCredentials: true,

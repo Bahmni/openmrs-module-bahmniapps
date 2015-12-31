@@ -1,6 +1,6 @@
 'use strict';
 angular.module('bahmni.common.domain')
-    .factory('programService', ['$http', function ($http) {
+    .factory('programService', ['$http', 'appService', function ($http, appService) {
 
         var getAllPrograms = function () {
             return $http.get(Bahmni.Common.Constants.programUrl, {params: {v: 'default'}}).then(function (data) {
@@ -15,13 +15,15 @@ angular.module('bahmni.common.domain')
             });
         };
 
-        var enrollPatientToAProgram = function (patientUuid, programUuid, dateEnrolled, stateUuid) {
+        var enrollPatientToAProgram = function (patientUuid, programUuid, dateEnrolled, stateUuid, patientProgramAttributes, programAttributeTypes) {
+            var attributeFormatter = new Bahmni.Common.Domain.AttributeFormatter();
             var req = {
                 url: Bahmni.Common.Constants.programEnrollPatientUrl,
                 content: {
                     patient: patientUuid,
                     program: programUuid,
-                    dateEnrolled: moment(dateEnrolled).format(Bahmni.Common.Constants.ServerDateTimeFormat)
+                    dateEnrolled: moment(dateEnrolled).format(Bahmni.Common.Constants.ServerDateTimeFormat),
+                    attributes: attributeFormatter.removeUnfilledAttributes(attributeFormatter.getMrsAttributes(patientProgramAttributes, programAttributeTypes))
                 },
                 headers: {"Content-Type": "application/json"}
             };
@@ -145,13 +147,21 @@ angular.module('bahmni.common.domain')
             return $http.delete(req.url, req.content, req.headers);
         };
 
+        var getProgramAttributeTypes = function () {
+            return $http.get(Bahmni.Common.Constants.programAttributeTypes, {params: {v: 'custom:(uuid,name,description,datatypeClassname)'}}).then(function (response) {
+                var mandatoryProgramAttributes = appService.getAppDescriptor().getConfigValue("mandatoryProgramAttributes");
+                return new Bahmni.Common.Domain.AttributeTypeMapper().mapFromOpenmrsAttributeTypes(response.data.results, mandatoryProgramAttributes).attributeTypes;
+            });
+        };
+
         return {
             getAllPrograms: getAllPrograms,
             enrollPatientToAProgram: enrollPatientToAProgram,
             getPatientPrograms: getPatientPrograms,
             endPatientProgram: endPatientProgram,
             savePatientProgram: savePatientProgram,
-            deletePatientState: deletePatientState
+            deletePatientState: deletePatientState,
+            getProgramAttributeTypes : getProgramAttributeTypes
         };
 
     }]);

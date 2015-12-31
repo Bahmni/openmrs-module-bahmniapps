@@ -3,7 +3,8 @@
 describe('programService', function () {
 
     var rootScope,data;
-    var programService;
+
+    var programService, appService;
     var DateUtil = Bahmni.Common.Util.DateUtil;
 
     var mockHttp = {
@@ -24,10 +25,17 @@ describe('programService', function () {
                 }}})
     }
 
+    var mockAppDescriptor = jasmine.createSpyObj('appService', ['getConfigValue']);
+    mockAppDescriptor.getConfigValue.and.returnValue(undefined);
+
+    var mockAppService = jasmine.createSpyObj('appDescriptor', ['getAppDescriptor']);
+    mockAppService.getAppDescriptor.and.returnValue(mockAppDescriptor);
+
     beforeEach(function(){
         module('bahmni.common.domain');
         module(function ($provide){
             $provide.value('$http', mockHttp);
+            $provide.value('appService', mockAppService);
         })
 
         inject(function (_$rootScope_, _programService_) {
@@ -269,8 +277,18 @@ describe('programService', function () {
         var programUuid = "someProgramUuid";
         var dateEnrolled = "Fri Dec 11 2015 12:04:23 GMT+0530 (IST)";
         var workflowUuid = "someWorkflowUuid";
+        var patientProgramAttributes = {locationName: 'alps'};
+        var programAttributeTypes = [{
+            uuid: '82325788-3f10-11e4-adec-0800271c1b75',
+            sortWeight: 3,
+            name: 'locationName',
+            description: 'Location of the patient program',
+            format: 'java.lang.String',
+            answers: [],
+            required: false
+        }];
 
-        programService.enrollPatientToAProgram(patientUuid, programUuid, dateEnrolled, workflowUuid);
+        programService.enrollPatientToAProgram(patientUuid, programUuid, dateEnrolled, workflowUuid, patientProgramAttributes, programAttributeTypes);
 
         expect(mockHttp.post.calls.mostRecent().args[0]).toEqual(Bahmni.Common.Constants.programEnrollPatientUrl);
         expect(mockHttp.post.calls.mostRecent().args[1].patient).toEqual(patientUuid);
@@ -278,6 +296,7 @@ describe('programService', function () {
         expect(mockHttp.post.calls.mostRecent().args[1].dateEnrolled).toEqual("2015-12-11T12:04:23+0530");
         expect(mockHttp.post.calls.mostRecent().args[1].states[0].state).toEqual(workflowUuid);
         expect(mockHttp.post.calls.mostRecent().args[1].states[0].startDate).toEqual("2015-12-11T12:04:23+0530");
+        expect(mockHttp.post.calls.mostRecent().args[1].attributes).toEqual([ { attributeType : { uuid : '82325788-3f10-11e4-adec-0800271c1b75' }, value : 'alps' } ]);
     })
 
     it('should end patient program', function(){
@@ -303,5 +322,55 @@ describe('programService', function () {
 
         expect(mockHttp.post.calls.mostRecent().args[0]).toEqual(Bahmni.Common.Constants.programEnrollPatientUrl + "/" + patientProgramUuid);
         expect(mockHttp.post.calls.mostRecent().args[1].states).toEqual(constructedState);
+    })
+
+    it('should retrieve list of program attribute types', function(done) {
+        var programAttributeTypesJson = {
+            "results": [
+                {
+                    "uuid": "82325788-3f10-11e4-adec-0800271c1b75",
+                    "name": "locationName",
+                    "sortWeight": 3.0,
+                    "description": "Location of the patient program",
+                    "format": "java.lang.String",
+                    "concept": null
+                },
+                {
+                    "uuid": "82325788-3f10-11es-adec-0800271c1b75",
+                    "name": "mandatory",
+                    "sortWeight": 3.0,
+                    "description": "Is the program mandatory",
+                    "format": "java.lang.Boolean",
+                    "concept": null
+                }
+            ]
+        };
+
+        mockHttp.get.and.returnValue({
+            then: function (callback) {
+                var programAttributeTypes = callback({data : programAttributeTypesJson});
+                expect(programAttributeTypes.length).toEqual(2);
+                expect(programAttributeTypes).toEqual([{
+                    uuid: '82325788-3f10-11e4-adec-0800271c1b75',
+                    sortWeight: 3,
+                    name: 'locationName',
+                    description: 'Location of the patient program',
+                    format: 'java.lang.String',
+                    answers: [],
+                    required: false
+                }, {
+                    uuid: '82325788-3f10-11es-adec-0800271c1b75',
+                    sortWeight: 3,
+                    name: 'mandatory',
+                    description: 'Is the program mandatory',
+                    format: 'java.lang.Boolean',
+                    answers: [],
+                    required: false
+                }]);
+                done();
+            }
+        });
+
+        programService.getProgramAttributeTypes();
     })
 })

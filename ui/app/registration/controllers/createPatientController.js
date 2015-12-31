@@ -37,7 +37,7 @@ angular.module('bahmni.registration')
             };
 
             var getPersonAttributeTypes = function () {
-                return $rootScope.patientConfiguration.personAttributeTypes;
+                return $rootScope.patientConfiguration.attributeTypes;
             };
 
             var buildSectionVisibilityMap = function () {
@@ -167,7 +167,7 @@ angular.module('bahmni.registration')
 
                 setPreferences();
                 addNewRelationships();
-                var errMsg = Bahmni.Common.Util.ValidationUtil.validate($scope.patient, $scope.patientConfiguration.personAttributeTypes);
+                var errMsg = Bahmni.Common.Util.ValidationUtil.validate($scope.patient, $scope.patientConfiguration.attributeTypes);
                 if (errMsg) {
                     messagingService.showMessage('formError', errMsg);
                     return deferred.resolve();

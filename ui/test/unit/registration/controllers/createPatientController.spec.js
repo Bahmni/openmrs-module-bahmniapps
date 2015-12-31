@@ -70,7 +70,7 @@ describe('CreatePatientController', function () {
             "results":[{"uuid":"43922e67-506c-11e5-968f-0050568266ff","display":"Registration","name":"Registration", "stateProvince":"Dhaka"},{"uuid":"43922e67-506c-11e5-968f-0050568266fg","display":"OPD","name":"OPD","stateProvince":"India"}]}
         ));
 
-        rootScopeMock.patientConfiguration.personAttributeTypes = [
+        rootScopeMock.patientConfiguration.attributeTypes = [
             {
                 uuid: "education-uuid",
                 name: "education",

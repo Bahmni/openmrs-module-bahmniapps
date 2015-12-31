@@ -1,17 +1,17 @@
 'use strict';
 
-Bahmni.Registration.PatientAttributeTypeMapper = (function () {
+Bahmni.Common.Domain.AttributeTypeMapper = (function () {
 
-    function PatientAttributeTypeMapper() {
+    function AttributeTypeMapper() {
     }
 
-    PatientAttributeTypeMapper.prototype.mapFromOpenmrsPatientAttributeTypes = function (mrspatientAttributeTypes, mandatoryPersonAttributes) {
-        var patientAttributeTypes = [];
-        angular.forEach(mrspatientAttributeTypes, function(mrsAttributeType) {
+    AttributeTypeMapper.prototype.mapFromOpenmrsAttributeTypes = function (mrsAttributeTypes, mandatoryAttributes) {
+        var attributeTypes = [];
+        angular.forEach(mrsAttributeTypes, function(mrsAttributeType) {
 
             var isRequired = function(){
-                var element = _.find(mandatoryPersonAttributes, function (mandatoryPersonAttribute) {
-                    return mandatoryPersonAttribute == mrsAttributeType.name
+                var element = _.find(mandatoryAttributes, function (mandatoryAttribute) {
+                    return mandatoryAttribute == mrsAttributeType.name
                 });
                 return element ? true : false;
             };
@@ -21,7 +21,7 @@ Bahmni.Registration.PatientAttributeTypeMapper = (function () {
                 sortWeight: mrsAttributeType.sortWeight,
                 name: mrsAttributeType.name,
                 description: mrsAttributeType.description,
-                format: mrsAttributeType.format,
+                format: mrsAttributeType.format || mrsAttributeType.datatypeClassname,
                 answers: [],
                 required: isRequired()
             };
@@ -42,12 +42,12 @@ Bahmni.Registration.PatientAttributeTypeMapper = (function () {
                     });
                 });
             }
-            patientAttributeTypes.push(attributeType);
+            attributeTypes.push(attributeType);
         });
         return {
-            personAttributeTypes : patientAttributeTypes
+            attributeTypes : attributeTypes
         };
     };
 
-    return PatientAttributeTypeMapper;
+    return AttributeTypeMapper;
 })();

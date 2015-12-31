@@ -28,6 +28,14 @@ angular.module('bahmni.common.uicontrols.programmanagment')
                 spinner.forPromise(programService.getAllPrograms().then(function(programs) {
                     $scope.allPrograms = programs;
                 }));
+
+                spinner.forPromise(programService.getProgramAttributeTypes().then(function (programAttributeTypes) {
+                    $scope.programAttributeTypes = programAttributeTypes;
+                }));
+
+                $scope.programSelected = null;
+                $scope.patientProgramAttributes = {};
+
                 updateActiveProgramsList();
             };
 
@@ -36,6 +44,7 @@ angular.module('bahmni.common.uicontrols.programmanagment')
                 $scope.programEdited.selectedState = null;
                 $scope.programSelected = null;
                 $scope.workflowStateSelected = null;
+                $scope.patientProgramAttributes = null;
                 updateActiveProgramsList();
             };
 
@@ -97,7 +106,7 @@ angular.module('bahmni.common.uicontrols.programmanagment')
                 }
                 var stateUuid = $scope.workflowStateSelected && $scope.workflowStateSelected.uuid ? $scope.workflowStateSelected.uuid : null;
                 spinner.forPromise(
-                    programService.enrollPatientToAProgram($scope.patient.uuid, $scope.programSelected.uuid, $scope.programEnrollmentDate, stateUuid)
+                    programService.enrollPatientToAProgram($scope.patient.uuid, $scope.programSelected.uuid, $scope.programEnrollmentDate, stateUuid, $scope.patientProgramAttributes, $scope.programAttributeTypes)
                         .then(successCallback, failureCallback)
                 );
             };
