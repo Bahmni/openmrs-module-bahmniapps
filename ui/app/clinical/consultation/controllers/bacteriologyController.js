@@ -45,11 +45,15 @@ angular.module('bahmni.clinical')
                 var dirtySpecimen = _.find($scope.newSpecimens, function (specimen) {
                     return specimen.isDirty();
                 });
-
+                if(dirtySpecimen) {
+                    dirtySpecimen.hasIllegalDateCollected = !dirtySpecimen.dateCollected;
+                    dirtySpecimen.hasIllegalType = !dirtySpecimen.type;
+                }
                 return {allow: dirtySpecimen == undefined};
             };
 
             var saveSpecimens = function () {
+
                 var savableSpecimens = _.filter($scope.newSpecimens, function (specimen) {
                     return !specimen.isEmpty();
                 });

@@ -24,4 +24,12 @@ Bahmni.Clinical.Specimen = function (specimen, allSamples) {
     self.atLeastOneResult = function () {
         return hasResults() && self.report.results[0].value != null;
     };
+
+    self.isDateCollectedDirty = function(){
+        return !self.dateCollected && self.hasIllegalDateCollected;
+    };
+
+    self.isTypeDirty = function(){
+        return !self.type && self.hasIllegalType;
+    }
 };

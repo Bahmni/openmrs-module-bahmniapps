@@ -83,4 +83,32 @@ describe("Specimen", function () {
             expect(specimen.atLeastOneResult()).toBe(true);
         });
     });
+
+    describe("isDateCollectedDirty", function () {
+        it("Should return true if dateCollected has no value and hasIllegalDateCollected is true", function () {
+            var specimen = new Bahmni.Clinical.Specimen();
+            specimen.hasIllegalDateCollected = true;
+            expect(specimen.isDateCollectedDirty()).toBe(true);
+        });
+
+        it("Should return true if dateCollected has value and hasIllegalDateCollected is false", function () {
+            var specimen = new Bahmni.Clinical.Specimen();
+            specimen.hasIllegalDateCollected = false;
+            expect(specimen.isDateCollectedDirty()).toBe(false);
+        });
+    });
+
+    describe("isTypeDirty", function () {
+        it("Should return true if type has no value and hasIllegalType is true", function () {
+            var specimen = new Bahmni.Clinical.Specimen();
+            specimen.hasIllegalType = true;
+            expect(specimen.isTypeDirty()).toBe(true);
+        });
+
+        it("Should return true if type has value and hasIllegalType is false", function () {
+            var specimen = new Bahmni.Clinical.Specimen();
+            specimen.hasIllegalType = false;
+            expect(specimen.isTypeDirty()).toBe(false);
+        });
+    });
 });

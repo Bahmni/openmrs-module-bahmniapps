@@ -21,7 +21,7 @@
                                     <span class="asterick">*</span>
                                 </label>
                             </div>
-                            <div class="field-value">
+                            <div  ng-class="{'illegalValue': newSpecimen.isDateCollectedDirty()}"  class="field-value">
                                 <input id="sample-date"  date-converter type="date" max="{{::today}}" ng-model="newSpecimen.dateCollected"
                                        required="required" ng-change="clearEmptySpecimens()">
                             </div>
@@ -35,7 +35,7 @@
                                     <span class="asterick">*</span>
                                 </label>
                             </div>
-                            <div class="field-value">
+                            <div class="field-value" ng-class="{'illegalValue': newSpecimen.isTypeDirty()}">
                                 <button-select observation="newSpecimen.typeObservation">
                                 </button-select>
                             </div>
