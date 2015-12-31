@@ -2,55 +2,57 @@
     <span class="section-label">{{ section | titleTranslate}}</span>
 </h2>
 <p class="placeholder-text" ng-if="drugOrders && drugOrders.length == 0">{{'NO_DRUG_DETAILS_MESSAGE' | translate}} </p>
-<table class="drug-order-table treatments-details-table">
-    <tr>
-        <th ng-if="drugOrders.length > 0" ng-repeat="columnName in columnHeaders">{{columnName | translate}}</th>
-        <th ng-if="section.dashboardParams.showDetailsButton">&nbsp;</th>
-    </tr>
-    <tbody ng-if="drugOrders.length > 0" ng-repeat="drugOrder in drugOrders">
-        <tr ng-class="{active: drugOrder.isActive(), 'test-notes-parent': drugOrder.additionalInstructions, 'notes-open': drugOrder.showDetails}">
-            <td class="drug">
-                <span>{{::drugOrder.getDrugOrderName(false)}}</span>
-            </td>
-            <td class="dosage">
-                <span>{{drugOrder.getDoseAndUnits()}}</span>
-            </td>
-            <td>
-                <span>{{drugOrder.route}}</span>
-            </td>
-            <td>
-                <span>{{drugOrder.getFrequency()}}</span>
-            </td>
-            <td class="days">
-                <span>{{drugOrder.effectiveStartDate | bahmniDate}}</span>
-            </td>
+<div class="drug-order-table-container clearfix overflowAuto">
+    <table class="drug-order-table treatments-details-table">
+        <tr>
+            <th ng-if="drugOrders.length > 0" ng-repeat="columnName in columnHeaders">{{columnName | translate}}</th>
+            <th ng-if="section.dashboardParams.showDetailsButton">&nbsp;</th>
+        </tr>
+        <tbody ng-if="drugOrders.length > 0" ng-repeat="drugOrder in drugOrders">
+            <tr ng-class="{active: drugOrder.isActive(), 'test-notes-parent': drugOrder.additionalInstructions, 'notes-open': drugOrder.showDetails}">
+                <td class="drug">
+                    <span>{{::drugOrder.getDrugOrderName(false)}}</span>
+                </td>
+                <td class="dosage">
+                    <span>{{drugOrder.getDoseAndUnits()}}</span>
+                </td>
+                <td>
+                    <span>{{drugOrder.route}}</span>
+                </td>
+                <td>
+                    <span>{{drugOrder.getFrequency()}}</span>
+                </td>
+                <td class="days">
+                    <span>{{drugOrder.effectiveStartDate | bahmniDate}}</span>
+                </td>
 
-            <td>
-                <span ng-if="drugOrder.isDiscontinuedOrStopped()">{{drugOrder.effectiveStopDate | bahmniDate}} </span>
-            </td>
-            <td>
-                <span ng-if="drugOrder.orderReasonConcept">{{drugOrder.orderReasonConcept.display || drugOrder.orderReasonConcept.name}}</span>
-            </td>
-            <td>
-                <span ng-if="drugOrder.orderReasonText">{{drugOrder.orderReasonText}}</span>
-            </td>
-            <td class="toggle-btn" ng-click="toggle(drugOrder)"
-                ng-if="section.dashboardParams.showDetailsButton">
-                <button class="toggle fr">
-                    <i class="fa fa-angle-down" ng-hide="drugOrder.showDetails"></i>
-                    <i class="fa fa-angle-up" ng-show="drugOrder.showDetails"></i>
-                </button>
-            </td>
-        </tr>
-        <tr bm-show="drugOrder.showDetails" class="notes">
-            <td colspan="8" class="notes inline-notes">
-                <div class="footer-note right">
-            <span class="provider">
-                <provider-directive creator-name="{{drugOrder.creatorName}}" provider-name="{{drugOrder.provider.name}}"
-                                    provider-date="drugOrder.effectiveStartDate"></provider-directive>
-            </span>
-                </div>
-            </td>
-        </tr>
-    </tbody>
-</table>
+                <td>
+                    <span ng-if="drugOrder.isDiscontinuedOrStopped()">{{drugOrder.effectiveStopDate | bahmniDate}} </span>
+                </td>
+                <td>
+                    <span ng-if="drugOrder.orderReasonConcept">{{drugOrder.orderReasonConcept.display || drugOrder.orderReasonConcept.name}}</span>
+                </td>
+                <td>
+                    <span ng-if="drugOrder.orderReasonText">{{drugOrder.orderReasonText}}</span>
+                </td>
+                <td class="toggle-btn" ng-click="toggle(drugOrder)"
+                    ng-if="section.dashboardParams.showDetailsButton">
+                    <button class="toggle fr">
+                        <i class="fa fa-angle-down" ng-hide="drugOrder.showDetails"></i>
+                        <i class="fa fa-angle-up" ng-show="drugOrder.showDetails"></i>
+                    </button>
+                </td>
+            </tr>
+            <tr bm-show="drugOrder.showDetails" class="notes">
+                <td colspan="8" class="notes inline-notes">
+                    <div class="footer-note right">
+                <span class="provider">
+                    <provider-directive creator-name="{{drugOrder.creatorName}}" provider-name="{{drugOrder.provider.name}}"
+                                        provider-date="drugOrder.effectiveStartDate"></provider-directive>
+                </span>
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>

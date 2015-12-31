@@ -249,6 +249,9 @@ u, .add-drug-btninput[value]:first-letter {
   @include clearfix();
 }
 
+.overflowAuto{
+  overflow: auto;
+}
 .is-abnormal .select2-chosen {
   color: red!important;
 }
