@@ -11,7 +11,7 @@ Bahmni.Clinical.DrugOrderOptions = (function() {
         });
     };
     var drugMatches = function(drug) {
-        return self.listOfDrugs.length == 0 || drug && _.contains(self.listOfDrugs, drug.name);
+        return drug && _.contains(self.listOfDrugs, drug.name);
     };
 
     var DrugOrderOptions = function (inputConfig, listOfDrugs, masterConfig) {

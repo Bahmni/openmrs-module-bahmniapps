@@ -4,27 +4,9 @@ Bahmni.Clinical.DrugOrderOptionsSet = (function(){
     var self, _proto;
 
     var DrugOrderOptionsSet = function(arrayOfDrugOrderOptions, masterConfig) {
-        function findDefaultOptions() {
-            return _.filter(self.arrayOfDrugOrderOptions, function (drugOrderOption) {
-                return drugOrderOption.isDefaultDrugOrderOption();
-            });
-        }
-
-        function moveToEndOfArray(option) {
-            arrayOfDrugOrderOptions.splice(arrayOfDrugOrderOptions.indexOf(option), 1);
-            arrayOfDrugOrderOptions.push(option);
-        }
-
         self = this;
         self.arrayOfDrugOrderOptions = arrayOfDrugOrderOptions || [];
-
         self.masterConfig = masterConfig;
-
-        var defaultOptions = findDefaultOptions();
-
-        defaultOptions.forEach(function(option) {
-            moveToEndOfArray(option);
-        });
     };
     _proto = DrugOrderOptionsSet.prototype;
 

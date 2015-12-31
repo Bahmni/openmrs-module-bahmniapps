@@ -56,12 +56,6 @@ angular.module('bahmni.clinical').factory('treatmentConfig',['TreatmentService',
         };
 
         var drugOrderOptions = function (conceptName, masterConfig, inputConfig) {
-            if (conceptName === 'default') {
-                var deferred = $q.defer();
-                deferred.resolve(new Bahmni.Clinical.DrugOrderOptions(inputConfig, null, masterConfig));
-                return deferred.promise;
-            }
-
             return drugService.getSetMembersOfConcept(conceptName)
                 .then(function (listOfDrugs) {
                     return new Bahmni.Clinical.DrugOrderOptions(inputConfig, listOfDrugs, masterConfig);
