@@ -231,9 +231,6 @@ angular.module('bahmni.clinical')
             };
 
 
-            $scope.dashboard = Bahmni.Common.DisplayControl.Dashboard.create(drugOrderAppConfig || {});
-            $scope.sectionGroups =  $scope.dashboard.getSections();
-
             $scope.updateFormConditions = function(drugOrder){
                 var formCondition = Bahmni.ConceptSet.FormConditions.rules ? Bahmni.ConceptSet.FormConditions.rules["Medication Stop Reason"] : undefined ;
                 if(formCondition){
