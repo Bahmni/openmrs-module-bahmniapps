@@ -59,7 +59,7 @@ describe('treatmentConfig', function() {
         this.treatmentConfig = treatmentConfig;
     }]));
 
-/*    it('should initialize duration units', function(done) {
+    it('should initialize duration units', function(done) {
         this.treatmentConfig.then(function(data){
             expect(data.durationUnits).toEqual([
                 {name: "Day(s)", factor: 1},
@@ -68,7 +68,7 @@ describe('treatmentConfig', function() {
             ]);
             done();
         });
-    })*/
+    });
 
     it('should initialize dosage units', function(done) {
         this.treatmentConfig.then(function(config){
@@ -79,17 +79,17 @@ describe('treatmentConfig', function() {
         });
     });
 
-    //it('should retrieve dose Units for a specific concept name', function(done) {
-    //    this.treatmentConfig.then(function(config){
-    //        var doseUnits = config.getDoseUnits({name: 'K'});
-    //        expect(doseUnits.length).toEqual(1);
-    //        expect(doseUnits).toContain({"name": "mg"});
-    //
-    //        doseUnits = config.getDoseUnits({name: 'Not Present in list of drugs'});
-    //        expect(doseUnits.length).toEqual(2);
-    //        expect(doseUnits).toContain({"name": "mg"});
-    //        expect(doseUnits).toContain({"name": "Tablet(s)"});
-    //        done();
-    //    });
-    //});
+    it('should retrieve dose Units for a specific concept name', function(done) {
+        this.treatmentConfig.then(function(config){
+            var doseUnits = config.getDoseUnits({name: 'K'});
+            expect(doseUnits.length).toEqual(1);
+            expect(doseUnits).toContain({"name": "mg"});
+
+            doseUnits = config.getDoseUnits({name: 'Not Present in list of drugs'});
+            expect(doseUnits.length).toEqual(2);
+            expect(doseUnits).toContain({"name": "mg"});
+            expect(doseUnits).toContain({"name": "Tablet(s)"});
+            done();
+        });
+    });
 });

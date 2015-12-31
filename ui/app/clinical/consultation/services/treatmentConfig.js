@@ -4,11 +4,6 @@ angular.module('bahmni.clinical').factory('treatmentConfig',['TreatmentService',
 
         var stoppedOrderReasonConfig = {};
         var finalConfig = {
-            durationUnits : [
-                {name: "Day(s)", factor: 1},
-                {name: "Week(s)", factor: 7},
-                {name: "Month(s)", factor: 30}
-            ],
             getDoseUnits: function(drug) {return this.drugOrderOptionsSet.getDoseUnits(drug)},
             getRoutes: function(drug) {return this.drugOrderOptionsSet.getRoutes(drug)},
             getDurationUnits: function(drug) {return this.drugOrderOptionsSet.getDurationUnits(drug)},
@@ -44,6 +39,11 @@ angular.module('bahmni.clinical').factory('treatmentConfig',['TreatmentService',
         var configFromServer = function() {
             return treatmentService.getConfig().then(function(result) {
                 finalConfig = angular.extend(finalConfig, result.data);
+                finalConfig.durationUnits = [
+                    {name: "Day(s)", factor: 1},
+                    {name: "Week(s)", factor: 7},
+                    {name: "Month(s)", factor: 30}
+                ];
                 var frequencies = finalConfig.frequencies;
                 bubbleValueToTop(frequencies, "Immediately");
                 bubbleValueToTop(frequencies, "SOS")
