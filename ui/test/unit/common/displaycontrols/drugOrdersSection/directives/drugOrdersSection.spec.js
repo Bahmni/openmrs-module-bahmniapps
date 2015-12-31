@@ -48,45 +48,47 @@ describe('Drug Order Details DisplayControl', function () {
         scope.patientUuid = "abcd-1234"
         scope.params = {
             title: "Active TB Drugs",
-            fieldNames: ["drugName", "dosage", "route"]
+            columns: ["drugName", "dosage", "route"]
         };
         mockBackend = $httpBackend;
         mockBackend.expectGET('../common/displaycontrols/drugOrdersSection/views/drugOrdersSection.html').respond("<div>dummy</div>");
         mockBackend.expectGET(Bahmni.Common.Constants.bahmniDrugOrderUrl + "/drugOrderDetails"+ "?patientUuid=abcd-1234").respond(drugOrders);
-        element = $compile(simpleHtml)(scope);
-        scope.$digest();
-        mockBackend.flush();
     }));
 
 
     it("should return all configured drug orders taken by the patient", function () {
+        element = $compile(simpleHtml)(scope);
+        scope.$digest();
+        mockBackend.flush();
+
         var compiledElementScope = element.isolateScope();
         scope.$digest();
         expect(compiledElementScope.drugOrders.length).toBe(drugOrders.length);
     });
 
-    it("should toggle the showDetails when drugOrder is selected", function(){
+    it("should initialise columns if not specified in config", function(){
+        scope.params = {
+            title: "Active TB Drugs"
+        };
+        element = $compile(simpleHtml)(scope);
+        scope.$digest();
+        mockBackend.flush();
+
         var compiledElementScope = element.isolateScope();
         scope.$digest();
-        var drugOrder = {};
-        expect(drugOrder.showDetails).toBeFalsy();
-        compiledElementScope.toggle(drugOrder);
-        expect(drugOrder.showDetails).toBeTruthy();
+        expect(compiledElementScope.columns.length).toBe(9);
     });
 
-    it("should initialise column headers", function(){
-        var compiledElementScope = element.isolateScope();
+    it("should assign Drug Orders as default title if title is not specified in config", function(){
+        scope.params = {};
+        element = $compile(simpleHtml)(scope);
         scope.$digest();
-        expect(compiledElementScope.columnHeaders.length).toBe(3);
-        expect(compiledElementScope.columnHeaders[0]).toBe("DRUG_DETAILS_DRUG_NAME");
-        expect(compiledElementScope.columnHeaders[1]).toBe("DRUG_DETAILS_DOSE_INFO");
-        expect(compiledElementScope.columnHeaders[2]).toBe("DRUG_DETAILS_ROUTE");
-    });
+        mockBackend.flush();
 
-    it("should determine whether it should show a column", function(){
         var compiledElementScope = element.isolateScope();
         scope.$digest();
-        expect(compiledElementScope.shouldShow("drugName")).toBeTruthy();
-        expect(compiledElementScope.shouldShow("frequency")).toBeFalsy();
+        expect(compiledElementScope.config.title).toBe("Drug Orders");
+
     })
+
 });

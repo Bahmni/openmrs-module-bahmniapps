@@ -4,18 +4,15 @@ angular.module('bahmni.common.displaycontrol.drugOrdersSection')
     .directive('drugOrdersSection', ['TreatmentService', 'spinner', function (treatmentService, spinner) {
         var controller = function ($scope) {
 
-            //$scope.toggleDisplay = false
-
             $scope.toggleDisplay = function () {
                 $scope.toggle = ! $scope.toggle
-            }
+            };
 
-            var drugNames=[ ];
-
-            var columnHeaderMappings = {
+            $scope.columnHeaders = {
                 "drugName": "DRUG_DETAILS_DRUG_NAME",
                 "dosage": "DRUG_DETAILS_DOSE_INFO",
                 "route": "DRUG_DETAILS_ROUTE",
+                "duration": "DRUG_DETAILS_DURATION",
                 "frequency": "DRUG_DETAILS_FREQUENCY",
                 "startDate": "DRUG_DETAILS_START_DATE",
                 "stopDate": "DRUG_DETAILS_STOP_DATE",
@@ -23,23 +20,21 @@ angular.module('bahmni.common.displaycontrol.drugOrdersSection')
                 "stopReasonNotes": "DRUG_DETAILS_ORDER_REASON_TEXT"
             };
 
-            var initialiseColumnHeaders = function() {
-                $scope.columnHeaders = _.values(_.pick(columnHeaderMappings, $scope.config.fieldNames));
-            };
-
-            $scope.shouldShow= function(column){
-                return _.indexOf($scope.config.fieldNames, column) != -1;
+            var initialiseColumns = function() {
+                $scope.columns = $scope.config.columns;
+                if(!$scope.columns){
+                    $scope.columns = _.keys($scope.columnHeaders);
+                }
             };
 
             var init = function () {
-                initialiseColumnHeaders();
+                initialiseColumns();
+                if (_.isEmpty($scope.config.title) && _.isEmpty($scope.config.translationKey)){
+                    $scope.config.title = "Drug Orders";
+                }
                 return treatmentService.getAllDrugOrdersFor($scope.patientUuid, $scope.config.includeConceptSet, $scope.config.excludeConceptSet, $scope.config.active).then(function (response) {
                     $scope.drugOrders = sortOrders(response);
                 });
-            };
-
-            $scope.toggle = function (drugOrder) {
-                drugOrder.showDetails = !drugOrder.showDetails;
             };
 
             var sortOrders = function(drugOrders){
