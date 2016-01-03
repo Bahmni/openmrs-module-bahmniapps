@@ -23,9 +23,7 @@ angular.module('bahmni.clinical')
                 if (programConfig.showDashBoardWithinDateRange) {
                     startDate = $stateParams.dateEnrolled;
                     endDate = $stateParams.dateCompleted;
-                    if(startDate || endDate){
-                        $scope.params.showOtherActive=false;
-                    }
+                    $scope.params.showOtherActive=true;
                     getEffectiveOrdersOnly = true;
                 }
 
