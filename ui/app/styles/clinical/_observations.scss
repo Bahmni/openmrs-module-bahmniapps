@@ -453,11 +453,16 @@ concept-set {
 }
 
 #removeClonedObs.fa-remove {
-  margin-top:10px;
+  margin-top: 10px;
   margin-bottom: 3px;
-  margin-left:9px;
+  margin-left: 9px;
   margin-right: 4px;
   color: #9D0101;
+  border-radius: 3px;
+  background: #ddd;
+  border: 1px solid #ddd;
+  width: 10px;
+  cursor: pointer;
 }
 .vitals table{
   caption{
