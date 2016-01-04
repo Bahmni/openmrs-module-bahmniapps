@@ -637,6 +637,11 @@ table.pivot-table {
     background-image: none;
     color: #333;
   }
+  .tabular-obs table.tableAsColumn tr:first-child td {
+    background: #eee !important;
+    font-family: OpenSansSemiBold;
+    color: #333;
+  }
 }
 
 .dashboard-chronic-treatment-section {

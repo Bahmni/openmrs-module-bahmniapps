@@ -46,7 +46,7 @@
 
             </table>
 
-            <table ng-if="obsTable.rows.length > 0 && getPivotOn() == 'column'">
+            <table ng-if="obsTable.rows.length > 0 && getPivotOn() == 'column'" class="tableAsColumn">
                 <tr ng-if="isMonthAvailable()">
                     <th> Month</th>
                     <th ng-repeat="row in obsTable.rows">{{commafy(row.columns['Month'])}}
