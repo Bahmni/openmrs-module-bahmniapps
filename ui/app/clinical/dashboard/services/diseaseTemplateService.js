@@ -22,8 +22,8 @@ angular.module('bahmni.clinical')
         this.getAllDiseaseTemplateObs = function (patientUuid, diseaseName, startDate, endDate) {
             var url = Bahmni.Common.Constants.AllDiseaseTemplateUrl;
             var params = {patientUuid: patientUuid, diseaseTemplateConfigList: [{"templateName":diseaseName}]};
-            params.startDate = startDate && moment(startDate).format(Bahmni.Constants.ServerDateTimeFormat);
-            params.endDate = endDate && moment(endDate).format(Bahmni.Constants.ServerDateTimeFormat);
+            params.startDate = startDate && moment(startDate).format(Bahmni.Common.Constants.ServerDateTimeFormat);
+            params.endDate = endDate && moment(endDate).format(Bahmni.Common.Constants.ServerDateTimeFormat);
             var deferred = $q.defer();
             $http.post(url,
                 params, {
