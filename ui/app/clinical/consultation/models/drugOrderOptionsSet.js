@@ -21,13 +21,16 @@ Bahmni.Clinical.DrugOrderOptionsSet = (function(){
             return result !== null ? result: self.masterConfig[fieldName];
         }
     };
-
     _proto.getDoseUnits = retrieveFromOptionsArray('getDoseUnits', 'doseUnits');
     _proto.getRoutes = retrieveFromOptionsArray('getRoutes', 'routes');
     _proto.getDurationUnits = retrieveFromOptionsArray('getDurationUnits', 'durationUnits');
     _proto.getDosingInstructions = retrieveFromOptionsArray('getDosingInstructions', 'dosingInstructions');
     _proto.getDispensingUnits = retrieveFromOptionsArray('getDispensingUnits', 'dispensingUnits');
     _proto.getFrequencies = retrieveFromOptionsArray('getFrequencies', 'frequencies');
+    var dosePlaceHolder = retrieveFromOptionsArray('getDosePlaceHolder', 'dosePlaceHolder');
+    _proto.getDosePlaceHolder = function(drug) {
+        return dosePlaceHolder(drug) || "MEDICATION_TAB_DOSE";
+    };
     var resultFromConfig = retrieveFromOptionsArray('showField', 'hideFields');
     _proto.showField = function(drug, fieldName) {
         var shouldShowField = resultFromConfig(drug, fieldName);
