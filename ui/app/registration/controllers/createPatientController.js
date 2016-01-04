@@ -218,5 +218,6 @@ angular.module('bahmni.registration')
             var createPatientWithOutIdentifierSource = function(){
                 return patientService.create($scope.patient).then(copyPatientProfileDataToScope);
             };
+
         }
     ]);

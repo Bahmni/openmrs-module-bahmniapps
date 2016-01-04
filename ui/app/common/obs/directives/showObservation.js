@@ -1,6 +1,6 @@
 angular.module('bahmni.common.obs')
     .directive('showObservation', function () {
-        var controller = function ($scope, $rootScope , $filter) {
+        var controller = function ($scope, $rootScope, $filter) {
             $scope.toggle = function (observation) {
                 observation.showDetails = !observation.showDetails
             };
@@ -15,7 +15,7 @@ angular.module('bahmni.common.obs')
                 else if (!$scope.showDate && ($scope.showTime || $scope.showTime === undefined)) {
                     filterName = 'bahmniTime';
                 }
-                else{
+                else {
                     return null;
                 }
                 return $filter(filterName)(observation.observationDateTime);

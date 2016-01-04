@@ -22,7 +22,7 @@
                 </span>
 
                 <ul ng-show="specimen.isOpen">
-                    <show-observation patient="patient" observation="obs" ng-repeat="obs in ::specimen.sampleResult.groupMembers"></show-observation>
+                    <show-observation patient="patient" observation="specimen.sampleResult"></show-observation>
                 </ul>
                 <div ng-show="!hasResults(specimen.sampleResult) && specimen.isOpen">
                     <div class="placeholder-text"><p translate="NO_SPECIMEN_RESULT_FOUND_MESSAGE"></p></div>

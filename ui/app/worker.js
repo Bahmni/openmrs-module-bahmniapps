@@ -114,6 +114,7 @@
             '/bahmni/common/config/services/configurations.js',
             '/bahmni/common/domain/observationFilter.js',
             '/bahmni/common/domain/mappers/conceptMapper.js',
+            '/bahmni/common/domain/helpers/domainHelpers.js',
             '/bahmni/common/domain/services/visitService.js',
             '/bahmni/common/domain/services/encounterService.js',
             '/bahmni/common/domain/services/observationsService.js',

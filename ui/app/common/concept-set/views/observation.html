@@ -70,8 +70,7 @@
                     <p ng-switch-default class="field-value info fa fa-info-sign"> The concept data type
                         '::{{observation.dataTypeName}}' is not supported yet.</p>
                 </div>
-
-                <div ng-include src="'../common/concept-set/views/observationDataTypes/hint.html'"></div>
+                <hint concept-details="observation. primaryObs.concept"/>
 
                 <div ng-include src="'../common/concept-set/views/observationDataTypes/addMore.html'"></div>
 
@@ -224,8 +223,7 @@
                     <p ng-switch-default class="field-value info fa fa-info-sign"> The concept data type
                         '{{observation.dataTypeName}}' is not supported yet.</p>
                 </div>
-
-                <div ng-include src="'../common/concept-set/views/observationDataTypes/hint.html'"></div>
+                <hint concept-details="observation.concept"/>
 
                 <div ng-include src="'../common/concept-set/views/observationDataTypes/addMore.html'"></div>
 

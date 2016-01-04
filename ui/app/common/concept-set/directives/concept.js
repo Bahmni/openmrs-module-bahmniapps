@@ -1,5 +1,6 @@
 angular.module('bahmni.common.conceptSet')
-    .directive('concept', ['RecursionHelper', 'spinner', 'conceptSetService', '$filter', '$location', function (RecursionHelper, spinner, conceptSetService, $filter, $location, scrollToService) {
+    .directive('concept', ['RecursionHelper', 'spinner', 'conceptSetService', '$filter',
+        function (RecursionHelper, spinner, conceptSetService, $filter) {
         var link = function (scope, element, attributes) {
             var conceptMapper = new Bahmni.Common.Domain.ConceptMapper();
 
@@ -19,16 +20,16 @@ angular.module('bahmni.common.conceptSet')
                 observation.hidden = true;
             };
 
-            scope.isClone = function(observation, parentObservation){
-                if(parentObservation && parentObservation.groupMembers){
+            scope.isClone = function (observation, parentObservation) {
+                if (parentObservation && parentObservation.groupMembers) {
                     var index = parentObservation.groupMembers.indexOf(observation);
-                    return (index > 0) ? parentObservation.groupMembers[index].label == parentObservation.groupMembers[index -1].label : false;
+                    return (index > 0) ? parentObservation.groupMembers[index].label == parentObservation.groupMembers[index - 1].label : false;
                 }
                 return false;
             };
 
-            scope.isRemoveValid = function(observation){
-                if(observation.getControlType() == 'image'){
+            scope.isRemoveValid = function (observation) {
+                if (observation.getControlType() == 'image') {
                     return !observation.value;
                 }
                 return true;
@@ -70,8 +71,8 @@ angular.module('bahmni.common.conceptSet')
                 scope.collapse = scope.collapseInnerSections;
             });
 
-            scope.handleUpdate = function() {
-                scope.$root.$broadcast("event:observationUpdated-"+scope.conceptSetName, scope.observation.concept.name);
+            scope.handleUpdate = function () {
+                scope.$root.$broadcast("event:observationUpdated-" + scope.conceptSetName, scope.observation.concept.name);
             }
 
             scope.constructSearchResult = function(concept, searchString) {

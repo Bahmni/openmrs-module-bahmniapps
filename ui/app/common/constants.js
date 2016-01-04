@@ -163,6 +163,7 @@ Bahmni.Common = Bahmni.Common || {};
             chromeApp: 'chrome-app',
             other: 'other'
         },
+        numericDataType:"Numeric",
         encryptionType: {
             SHA3: 'SHA3'
         },
