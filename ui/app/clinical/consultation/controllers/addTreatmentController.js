@@ -18,18 +18,15 @@ angular.module('bahmni.clinical')
                 appService.getAppDescriptor().getConfig("allowOnlyCodedDrugs").value;
 
             var conceptNameForDefaultDrugs = treatmentConfig.conceptNameForDefaultDrugs;
-            $scope.dosingUnitsMantissa = drugOrderAppConfig.dosingUnitsMantissa;
-            $scope.isDosingUnitsMantissaAvailable = function() {
-                return $scope.dosingUnitsMantissa ? true : false;
-            };
-
-            var medicationConfig = appService.getAppDescriptor().getConfigForPage('medication') || {};
-            var conceptNameForDefaultDrugs = medicationConfig.conceptNameForDefaultDrugs;
-
             conceptNameForDefaultDrugs && drugService.getSetMembersOfConcept(conceptNameForDefaultDrugs)
                 .then(function (result) {
                     $scope.defaultDrugs = result.map(constructDrugNameDisplay);
                 });
+
+            $scope.dosingUnitsMantissa = drugOrderAppConfig.dosingUnitsMantissa;
+            $scope.isDosingUnitsMantissaAvailable = function() {
+                return $scope.dosingUnitsMantissa ? true : false;
+            };
 
             $scope.isSelected = function(drug) {
                 var selectedDrug = $scope.treatment.drug;
@@ -95,8 +92,8 @@ angular.module('bahmni.clinical')
                 var existingTreatment = false;
                 angular.forEach($scope.consultation.discontinuedDrugs, function(drugOrder){
                     existingTreatment = _.some($scope.treatments, function (treatment) {
-                        return treatment.getDrugName() === drugOrder.getDrugName();
-                    }) && drugOrder.isMarkedForDiscontinue;
+                            return treatment.getDrugName() === drugOrder.getDrugName();
+                        }) && drugOrder.isMarkedForDiscontinue;
                 });
                 return existingTreatment;
             };
@@ -164,7 +161,7 @@ angular.module('bahmni.clinical')
 
                 newDrugOrder.effectiveStopDate = DateUtil
                     .addDays(
-                    DateUtil.parse(newDrugOrder.effectiveStartDate), newDrugOrder.durationInDays);
+                        DateUtil.parse(newDrugOrder.effectiveStartDate), newDrugOrder.durationInDays);
 
                 var unsavedNotBeingEditedOrders = $scope.treatments
                     .filter(function(drugOrder) { return drugOrder.isBeingEdited == false});
@@ -410,7 +407,7 @@ angular.module('bahmni.clinical')
                 if($scope.showBulkChangeToggle){
                     if(isDurationNullForAnyTreatment($scope.treatments)) {
                         messagingService.showMessage("info", "There are drugs that do no have a duration specified." +
-                        "Updating duration will update for those drugs as well");
+                            "Updating duration will update for those drugs as well");
                     }
                 }
             };
