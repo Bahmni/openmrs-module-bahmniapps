@@ -15,9 +15,26 @@ angular.module('bahmni.common.displaycontrol.chronicTreatmentChart').directive('
                 //}
 
                 return DrugService.getRegimen(patient.uuid, $scope.config.drugs, $scope.startDate, $scope.endDate).success(function (data) {
+                    var filterNullRow = function(){
+                        for(var row in  $scope.regimen.rows){
+                            var nullFlag = true;
+                            for(var drug in $scope.regimen.rows[row].drugs){
+                                if($scope.regimen.rows[row].drugs[drug]){
+                                    nullFlag = false;
+                                    break;
+                                }
+                            }
+                            if(nullFlag){
+                                $scope.regimen.rows.splice(row, 1);
+                            }
+                        }
+                    }
                     $scope.regimen = data;
+                    filterNullRow();
                 });
             };
+
+
 
             $scope.getAbbreviation = function(concept){
                 var result;
