@@ -41,8 +41,8 @@
                     <div class="frequency-widget uniform-frequency" ng-show="treatment.isUniformFrequency">
                         <input id="uniform-dose" class="dose fl" integer="true" ng-focus="treatment.setFrequencyType('uniform')" type="number" min="0" step="any" placeholder="{{ treatmentConfig.getDosePlaceHolder(treatment.drug) | translate}}"
                                ng-model="treatment.uniformDosingType.dose" ng-required="!treatment.validate()" focus-on="editDrugEntryUniformFrequency" />
-                        <div ng-show="isDosingUnitsMantissaAvailable()">
-                            <label>and</label>
+                        <div ng-show="isDosingUnitsMantissaAvailable()" class="fl dosingUnitsMantissa-container">
+                            <label class="fl">and</label>
                             <select id="uniform-dose-mantissa" class="form-field freq-dose-units" ng-model="treatment.uniformDosingType.dosingUnitMantissa"
                                     ng-options="item.label for item in dosingUnitsMantissa track by item.value" ng-required="!treatment.validate()">
                                 <option value="">e.g. 1/2</option>

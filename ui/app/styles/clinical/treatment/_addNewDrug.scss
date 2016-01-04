@@ -103,6 +103,11 @@
       }
       .frequency-widget-wrapper{
         float: left;
+        .dosingUnitsMantissa-container{
+          label{
+            padding: 0 5px 0 3px;
+          }
+        }
       }
       .frequency-widget {
         width: auto;
