@@ -1,41 +1,26 @@
 <section class="program-dashboard">
-    <div ng-if="hasPatientAnyActivePrograms()">
-        <h3 class="program-title">
-            <span>Active Programs</span>
-        </h3>
-        <div ng-repeat="program in activePrograms" class="program-stuff">
-            <div class="program-row">
-                <div class="program-details">
-                    <span>{{program.display}}</span>
-                    <span class="enrolled-info enrolled-info-dash-board">( {{program.dateEnrolled | bahmniDate}}</span>
-                    <span class="enrolled-info enrolled-info-dash-board" ng-if="program.dateCompleted"> - {{program.dateCompleted | bahmniDate}}</span>
-                    <span class="enrolled-info enrolled-info-dash-board">)</span>
-                </div>
-                <div class="program-timeline">
-                    <timeline program="program"></timeline>
-                </div>
-            </div>
+    <table>
+        <div ng-if="hasPatientAnyActivePrograms()">
+            <th align="left">Active Programs</th>
+            <th>Start Date</th>
+            <th>______</th>
+            <tr ng-repeat="program in activePrograms">
+                <td>{{program.display}}</td>
+                <td align="center">{{program.dateEnrolled | bahmniDate}}</td>
+                <td align="center">_____</td>
+            </tr>
         </div>
-    </div>
-
-    <div ng-if="hasPatientAnyPastPrograms()">
-        <h3 class="program-title">
-            <span>Past Programs</span>
-        </h3>
-        <div ng-repeat="program in pastPrograms" class="program-stuff">
-            <div class="program-row">
-                <div class="program-details">
-                    <span>{{program.display}}</span>
-                    <span class="enrolled-info enrolled-info-dash-board">( {{program.dateEnrolled | bahmniDate}}</span>
-                    <span class="enrolled-info enrolled-info-dash-board" ng-if="program.dateCompleted"> - {{program.dateCompleted | bahmniDate}}</span>
-                    <span class="enrolled-info enrolled-info-dash-board">)</span>
-                </div>
-                <div class="program-timeline">
-                    <timeline program="program"></timeline>
-                </div>
-            </div>
+        <div ng-if="hasPatientAnyPastPrograms()">
+            <th align="left">InActive Programs</th>
+            <th>Start Date</th>
+            <th>Stop Date</th>
+            <tr ng-repeat="program in pastPrograms">
+                <td>{{program.display}}</td>
+                <td align="center">{{program.dateEnrolled | bahmniDate}}</td>
+                <td align="center">{{program.dateCompleted | bahmniDate}}</td>
+            </tr>
         </div>
-    </div>
+    </table>
 
     <div class="note-container" ng-show="!hasPatientAnyPrograms()">
         <div class="note warning">
