@@ -42,7 +42,7 @@ angular.module('bahmni.clinical').factory('initialization',
                     .then(initApp)
                     .then(loadConfigPromise)
                     .then(loadFormConditions)
-                    .then(orderTypeService.loadAll()));
+                    .then(orderTypeService.loadAll));
             };
         }
     ]

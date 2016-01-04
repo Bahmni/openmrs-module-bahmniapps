@@ -34,7 +34,7 @@
 
     <section class="edit-drug-order primary-section-grid clearfix">
             <div class="drug-options-wrapper clearfix">
-                <button type="button" class="icon-button exchange-btn fl" tabindex="-1" ng-click="treatment.toggleFrequency()">
+                <button ng-if="treatmentConfig.showField(treatment.drug, 'dosingTypeToggle')" type="button" class="icon-button exchange-btn fl" tabindex="-1" ng-click="treatment.toggleFrequency()">
                     <i class="fa fa-exchange"></i>
                 </button>
                 <div class="frequency-widget-wrapper">
@@ -98,12 +98,12 @@
                 <div class="duration-widget fl">
                     <input  ng-if="treatmentConfig.showField(treatment.drug, 'duration')" id="duration" class="fl duration" type="number" min="1" placeholder="Duration"
                            ng-model="treatment.duration" ng-change="treatment.calculateDurationInDays()" ng-required="treatment.isDurationRequired" ng-pattern="/^[0-9]+$/"/>
-                    <select  ng-if="treatmentConfig.showField(treatment.drug, 'durationUnit')" id="duration-unit" class="fl duration-unit" ng-model="treatment.durationUnit"
+                    <select  ng-if="treatmentConfig.showField(treatment.drug, 'durationUnits')" id="duration-unit" class="fl duration-unit" ng-model="treatment.durationUnit"
                             ng-options="item.name as item.name for item in treatmentConfig.getDurationUnits(treatment.drug)" required>
                     </select>
                 </div>
 
-                <select ng-if="treatmentConfig.showField(treatment.drug, 'dosingInstruction')" id="instructions" class="instruction" ng-model="treatment.instructions"
+                <select ng-if="treatmentConfig.showField(treatment.drug, 'dosingInstructions')" id="instructions" class="instruction" ng-model="treatment.instructions"
                         ng-options="item.name as item.name for item in treatmentConfig.getDosingInstructions(treatment.drug)">
                     <option value="">Choose Instruction</option>
                 </select>
@@ -111,7 +111,7 @@
                 <div ng-show="!treatment.simpleDrugForm" class="quantity-widget fl">
                     <input ng-if="treatmentConfig.showField(treatment.drug, 'quantity')" id="quantity" class="quantity fl" type="number" min="0.1" placeholder="Qty" step="any"
                            ng-model="treatment.quantity" ng-change="treatment.setQuantityEnteredManually()" ng-required="treatment.isDurationRequired"/>
-                    <select ng-if="treatmentConfig.showField(treatment.drug, 'doseUnits')" id="total-quantity-unit" class="freq-dose-units fl" ng-model="treatment.quantityUnit" ng-change="treatment.setQuantityUnitEnteredManually()"
+                    <select ng-if="treatmentConfig.showField(treatment.drug, 'quantityUnits')" id="total-quantity-unit" class="freq-dose-units fl" ng-model="treatment.quantityUnit" ng-change="treatment.setQuantityUnitEnteredManually()"
                             ng-options="item.name as item.name for item in treatmentConfig.getDoseUnits(treatment.drug)" ng-required="!treatment.validate()">
                         <option value="">Choose Unit</option>
                     </select>

@@ -176,7 +176,9 @@ angular.module('consultation')
                     activeDrugOrders: function (TreatmentService, $stateParams) {
                         return TreatmentService.getActiveDrugOrders($stateParams.patientUuid);
                     },
-                    treatmentConfig: 'treatmentConfig'
+                    treatmentConfig: function(initialization, treatmentConfig) {
+                        return treatmentConfig;
+                    }
                 },
                 views: {
                     "addTreatment": {
