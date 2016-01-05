@@ -7,10 +7,16 @@
       background-image: none;
       color: #333;
       width: 100px;
+      @media (max-width : 1024px){
+        width: 90px;
+      }
       font-family: openSansSemiBold;
       &.drugName{
         width: 300px;
         text-align: left;
+        @media (max-width : 1024px){
+          width: 170px;
+        }
       }
       &.empty-header{
         width: auto;
@@ -29,6 +35,9 @@
         button{
           i{
             font-size: 1.8em;
+            @media (max-width : 1024px){
+              font-size: 2.1em;
+            }
           }
         }
         .button-group{
