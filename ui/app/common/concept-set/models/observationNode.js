@@ -230,12 +230,13 @@ Bahmni.ConceptSet.ObservationNode.prototype = {
     },
 
     _isDateDataType: function () {
-        return 'Date'.indexOf(this.primaryObs.getDataTypeName()) != -1;
+        return "Date" === this.primaryObs.getDataTypeName();
     },
 
     _isDateTimeDataType: function () {
-        return (this.primaryObs.getDataTypeName()).indexOf('Datetime') != -1;
+        return "Datetime" === this.primaryObs.getDataTypeName();
     },
+
     getHighAbsolute: function () {
         return this.concept.hiAbsolute;
     },

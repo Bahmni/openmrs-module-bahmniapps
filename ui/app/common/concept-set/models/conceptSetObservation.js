@@ -271,11 +271,11 @@ Bahmni.ConceptSet.Observation.prototype = {
     },
 
     _isDateDataType: function () {
-        return 'Date'.indexOf(this.getDataTypeName()) != -1;
+        return 'Date' === this.getDataTypeName();
     },
 
     _isDateTimeDataType: function () {
-        return (this.getDataTypeName()).indexOf('Datetime') != -1;
+        return "Datetime" === this.getDataTypeName();
     },
 
     isRequired: function () {

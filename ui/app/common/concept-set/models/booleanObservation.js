@@ -105,6 +105,6 @@ Bahmni.ConceptSet.BooleanObservation = function(observation, conceptUIConfig) {
     };
 
     this._isDateTimeDataType = function () {
-        return (this.getDataTypeName()).indexOf('Datetime') != -1;
+        return "Datetime" === this.getDataTypeName();
     };
 };

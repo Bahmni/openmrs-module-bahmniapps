@@ -210,7 +210,7 @@ Bahmni.ConceptSet.MultiSelectObservation = function (concept, memberOfCollection
     };
 
     this._isDateTimeDataType = function () {
-        return (this.getDataTypeName()).indexOf('Datetime') != -1;
+        return "Datetime" === this.getDataTypeName();
     };
 
     this.isNumeric = function () {
