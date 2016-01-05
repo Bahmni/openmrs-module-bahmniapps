@@ -1,10 +1,40 @@
 .drugOrderHistorySectionContainer{
   margin-top: 15px;
-  table{
+  table.treatments-details-table{
+    table-layout: fixed;
     th{
       background: #eee;
       background-image: none;
       color: #333;
+      width: 100px;
+      font-family: openSansSemiBold;
+      &.drugName{
+        width: 300px;
+        text-align: left;
+      }
+      &.empty-header{
+        width: auto;
+      }
+    }
+    td{
+      text-align: center;
+      padding: 2px 5px 1px;
+      vertical-align: middle;
+      &.drugName{
+        text-align: left;
+        padding-left: 10px;
+      }
+      .button-group-wrapper{
+        width: auto;
+        button{
+          i{
+            font-size: 1.8em;
+          }
+        }
+        .button-group{
+          float: left;
+        }
+      }
     }
   }
 }

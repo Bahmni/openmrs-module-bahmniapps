@@ -6,12 +6,12 @@
 <p class="placeholder-text" ng-if="drugOrders && drugOrders.length == 0">{{'NO_DRUG_DETAILS_MESSAGE' | translate}} </p>
 <table ng-if="drugOrders && drugOrders.length > 0" class="drug-order-table treatments-details-table" ng-show="toggle">
     <tr>
-        <th ng-repeat="columnName in columns">{{columnHeaders[columnName] | translate}}</th>
-        <th ng-repeat="action in config.actions">&nbsp;</th>
+        <th ng-repeat="columnName in columns" ng-class="columnName">{{columnHeaders[columnName] | translate}}</th>
+        <th class="empty-header">&nbsp;</th>
     </tr>
     <tbody  ng-repeat="drugOrder in drugOrders">
         <tr ng-class="{'highlight' : drugOrder.isBeingEdited}">
-            <td ng-repeat="columnName in columns">
+            <td ng-repeat="columnName in columns" ng-class="columnName">
                 <span ng-if="columnName === 'drugName'">{{::drugOrder.getDrugOrderName(false)}}</span>
                 <span ng-if="columnName === 'dosage'">{{::drugOrder.dosage}}</span>
                 <span ng-if="columnName === 'route'">{{::drugOrder.route}}</span>
@@ -22,19 +22,23 @@
                 <span ng-if="columnName === 'stopReason' && drugOrder.orderReasonConcept">{{::drugOrder.orderReasonConcept.display || drugOrder.orderReasonConcept.name}}</span>
                 <span ng-if="columnName === 'stopReasonNotes' && drugOrder.orderReasonText">{{::drugOrder.orderReasonText}}</span>
             </td>
-            <td ng-repeat="actionName in config.actions">
-                <button ng-if="actionName=='revise'" ng-disabled="!drugOrder.isActive() || !drugOrder.isEditAllowed" ng-click="revise(drugOrder, drugOrders)">
-                    <i class="fa fa-edit"></i>
-                </button>
-                <button class="undo-btn" ng-if=" actionName=='stop' && drugOrder.isMarkedForDiscontinue" ng-disabled="!drugOrder.isActive() || !drugOrder.isDiscontinuedAllowed" ng-click="undoDiscontinue(drugOrder)">
-                    <i class="fa fa-undo"></i>
-                </button>
-                <button class="stop-drug-btn" ng-if="actionName=='stop' && !drugOrder.isMarkedForDiscontinue" ng-disabled="!drugOrder.isActive() || !drugOrder.isDiscontinuedAllowed" ng-click="discontinue(drugOrder)">
-                    Stop
-                </button>
-                <button class="refill-btn" ng-if="actionName=='refill'" ng-disabled="!drugOrder.effectiveStopDate" ng-click="refill(drugOrder)">
-                    Refill
-                </button>
+            <td>
+                <div class="button-group-wrapper">
+                    <div class="button-group"  ng-repeat="actionName in config.actions">
+                        <button ng-if="actionName=='revise'" ng-disabled="!drugOrder.isActive() || !drugOrder.isEditAllowed" ng-click="revise(drugOrder, drugOrders)">
+                            <i class="fa fa-edit"></i>
+                        </button>
+                        <button class="undo-btn" ng-if=" actionName=='stop' && drugOrder.isMarkedForDiscontinue" ng-disabled="!drugOrder.isActive() || !drugOrder.isDiscontinuedAllowed" ng-click="undoDiscontinue(drugOrder)">
+                            <i class="fa fa-undo"></i>
+                        </button>
+                        <button class="stop-drug-btn" ng-if="actionName=='stop' && !drugOrder.isMarkedForDiscontinue" ng-disabled="!drugOrder.isActive() || !drugOrder.isDiscontinuedAllowed" ng-click="discontinue(drugOrder)">
+                            Stop
+                        </button>
+                        <button class="refill-btn" ng-if="actionName=='refill'" ng-disabled="!drugOrder.effectiveStopDate" ng-click="refill(drugOrder)">
+                            Refill
+                        </button>
+                    </div>
+                </div>
             </td>
         </tr>
         <tr ng-if="drugOrder.isMarkedForDiscontinue">
