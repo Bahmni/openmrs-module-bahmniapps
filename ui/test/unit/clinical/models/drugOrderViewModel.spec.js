@@ -176,6 +176,66 @@ describe("drugOrderViewModel", function () {
         expect(treatment.getDescription()).toBe("1.55 Capsule, Before Meals, Orally - 10 Days");
     });
 
+    it("should display mixed fraction variable dosages if dosingUnitsFractions is present", function () {
+        var appConfig = {
+            dosingUnitsFractions: [
+                {"value": 0.50, "label": "½"},
+                {"value": 0.33, "label": "⅓"},
+                {"value": 0.25, "label": "¼"},
+                {"value": 0.75, "label": "¾"}
+            ]
+        };
+
+        var treatment = sampleTreatment(appConfig, [], null, Bahmni.Common.Util.DateUtil.now());
+        treatment.frequencyType = "variable";
+        treatment.route = "Orally";
+        treatment.durationUnit = "Days";
+        treatment.variableDosingType = {
+            morningDose: 1.5,
+            afternoonDose: 2.25,
+            eveningDose: 3.75
+        };
+
+        expect(treatment.getDescription()).toBe("1½-2¼-3¾, Before Meals, Orally - 10 Days")
+    });
+
+    it("should not display mixed fraction variable dosages if dosingUnitsFractions is absent", function () {
+        var treatment = sampleTreatment({}, [], null, Bahmni.Common.Util.DateUtil.now());
+        treatment.frequencyType = "variable";
+        treatment.route = "Orally";
+        treatment.durationUnit = "Days";
+        treatment.variableDosingType = {
+            morningDose: 1.5,
+            afternoonDose: 2.25,
+            eveningDose: 3.75
+        };
+
+        expect(treatment.getDescription()).toBe("1.5-2.25-3.75, Before Meals, Orally - 10 Days")
+    });
+
+    it("should display mixed fraction variable dosages if dosingUnitsFractions is present and in the list", function () {
+        var appConfig = {
+            dosingUnitsFractions: [
+                {"value": 0.50, "label": "½"},
+                {"value": 0.33, "label": "⅓"},
+                {"value": 0.25, "label": "¼"},
+                {"value": 0.75, "label": "¾"}
+            ]
+        };
+
+        var treatment = sampleTreatment(appConfig, [], null, Bahmni.Common.Util.DateUtil.now());
+        treatment.frequencyType = "variable";
+        treatment.route = "Orally";
+        treatment.durationUnit = "Days";
+        treatment.variableDosingType = {
+            morningDose: 1.5,
+            afternoonDose: 2,
+            eveningDose: 3.47
+        };
+
+        expect(treatment.getDescription()).toBe("1½-2-3.47, Before Meals, Orally - 10 Days")
+    });
+
     it("should get the text to be displayed in the treatment list with dosage instructions", function () {
         var treatment = sampleTreatment({}, [], null, Bahmni.Common.Util.DateUtil.now());
         treatment.frequencyType = "variable";
