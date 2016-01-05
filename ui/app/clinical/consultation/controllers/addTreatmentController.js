@@ -23,9 +23,9 @@ angular.module('bahmni.clinical')
                     $scope.defaultDrugs = result.map(constructDrugNameDisplay);
                 });
 
-            $scope.dosingUnitsMantissa = drugOrderAppConfig.dosingUnitsMantissa;
-            $scope.isDosingUnitsMantissaAvailable = function() {
-                return $scope.dosingUnitsMantissa ? true : false;
+            $scope.dosingUnitsFractions = drugOrderAppConfig.dosingUnitsFractions;
+            $scope.isDosingUnitsFractionsAvailable = function() {
+                return $scope.dosingUnitsFractions ? true : false;
             };
 
             $scope.isSelected = function(drug) {

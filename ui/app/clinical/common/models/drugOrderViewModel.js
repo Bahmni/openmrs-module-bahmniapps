@@ -108,10 +108,10 @@ Bahmni.Clinical.DrugOrderViewModel = function (appConfig, config, proto, encount
     var morphToMixedFraction = function(number) {
         var mantissa = parseFloat((number - Math.floor(number)).toFixed(2)),
             abscissa = number - mantissa;
-        if (!appConfig.dosingUnitsMantissa || mantissa === 0)
+        if (!appConfig.dosingUnitsFractions || mantissa === 0)
             return number;
 
-        var result =  _.result(_.find(appConfig.dosingUnitsMantissa, function(item) {
+        var result =  _.result(_.find(appConfig.dosingUnitsFractions, function(item) {
             return item.value === mantissa;
         }), 'label');
 

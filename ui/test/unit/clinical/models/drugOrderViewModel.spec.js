@@ -80,7 +80,7 @@ describe("drugOrderViewModel", function () {
         expect(treatment.getDescription()).toBe("1 Capsule, Before Meals, Orally - 10 Days");
     });
 
-    it("should get the decimal text sum of both dose and mantissa when dosingUnitsMantissa config is absent", function () {
+    it("should get the decimal text sum of both dose and mantissa when dosingUnitsFractions config is absent", function () {
         var treatment = sampleTreatment({}, [], null, Bahmni.Common.Util.DateUtil.now());
         treatment.durationUnit = "Days";
         treatment.route = "Orally";
@@ -95,9 +95,9 @@ describe("drugOrderViewModel", function () {
         expect(treatment.getDescription()).toBe("1.5 Capsule, Before Meals, Orally - 10 Days");
     });
 
-    it("should get the mixed fraction text sum of both dose and mantissa when dosingUnitsMantissa config is present", function () {
+    it("should get the mixed fraction text sum of both dose and mantissa when dosingUnitsFractions config is present", function () {
         var appConfig = {
-            dosingUnitsMantissa: [
+            dosingUnitsFractions: [
                 {"value": 0.50, "label": "½"},
                 {"value": 0.33, "label": "⅓"},
                 {"value": 0.25, "label": "¼"},
@@ -118,7 +118,7 @@ describe("drugOrderViewModel", function () {
         expect(treatment.getDescription()).toBe("1½ Capsule, Before Meals, Orally - 10 Days");
     });
 
-    it("should get the same real number in the treatment list when dosingUnitsMantissa config is absent", function () {
+    it("should get the same real number in the treatment list when dosingUnitsFractions config is absent", function () {
         var treatment = sampleTreatment({}, [], null, Bahmni.Common.Util.DateUtil.now());
         treatment.durationUnit = "Days";
         treatment.route = "Orally";
@@ -132,9 +132,9 @@ describe("drugOrderViewModel", function () {
         expect(treatment.getDescription()).toBe("1.5 Capsule, Before Meals, Orally - 10 Days");
     });
 
-    it("should get the mixed fraction text in the treatment list when dosingUnitsMantissa config is defined ", function () {
+    it("should get the mixed fraction text in the treatment list when dosingUnitsFractions config is defined ", function () {
         var appConfig = {
-            dosingUnitsMantissa: [
+            dosingUnitsFractions: [
                 {"value": 0.50, "label": "½"},
                 {"value": 0.33, "label": "⅓"},
                 {"value": 0.25, "label": "¼"},
@@ -154,9 +154,9 @@ describe("drugOrderViewModel", function () {
         expect(treatment.getDescription()).toBe("1½ Capsule, Before Meals, Orally - 10 Days");
     });
 
-    it("should get the same real number in the treatment list when dosingUnitsMantissa is defined and it doesnt have entry for mantissa part of real number", function () {
+    it("should get the same real number in the treatment list when dosingUnitsFractions is defined and it doesnt have entry for mantissa part of real number", function () {
         var appConfig = {
-            dosingUnitsMantissa: [
+            dosingUnitsFractions: [
                 {"value": 0.50, "label": "½"},
                 {"value": 0.33, "label": "⅓"},
                 {"value": 0.25, "label": "¼"},

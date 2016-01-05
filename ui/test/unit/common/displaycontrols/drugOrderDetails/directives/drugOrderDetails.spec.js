@@ -10,7 +10,7 @@ describe('Drug Order Details DisplayControl', function () {
 
     var clinicalAppConfigService;
 
-    var dosingUnitsMantissa = [
+    var dosingUnitsFractions = [
         {"value": 0.50, "label": "½"},
         {"value": 0.33, "label": "⅓"},
         {"value": 0.25, "label": "¼"},
@@ -50,7 +50,7 @@ describe('Drug Order Details DisplayControl', function () {
     beforeEach(module('bahmni.clinical'));
     beforeEach(module('bahmni.common.displaycontrol.drugOrderDetails', function($provide) {
         clinicalAppConfigService = jasmine.createSpyObj('clinicalAppConfigService', ['getDrugOrderConfig']);
-        clinicalAppConfigService.getDrugOrderConfig.and.returnValue(dosingUnitsMantissa);
+        clinicalAppConfigService.getDrugOrderConfig.and.returnValue(dosingUnitsFractions);
 
         $provide.value('clinicalAppConfigService', clinicalAppConfigService);
     }));
