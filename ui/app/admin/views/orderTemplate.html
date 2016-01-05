@@ -2,7 +2,6 @@
     <section class="edit-drug-order primary-section-grid">
         <form name="addForm" bm-form>
             <fieldset>
-                {{orderSetMember}}
                 <input class="enter-concept" type="text" name="conceptSetTemplate" ng-model="orderSetMember.orderTemplate.name"
                        bahmni-autocomplete strict-select="true" on-select="onSelectOfDrug($index)" is-invalid="conceptNameInvalid"
                        source="getDrugsOfAConcept(orderSetMember.concept)"
@@ -14,7 +13,6 @@
                             ng-options="item.name as item.name for item in treatmentConfig.doseUnits">
                         <option value="">Choose Unit</option>
                 </select>
-{{orderSetMember}}
                 <select id="frequency" class="form-field frequency" ng-model="orderSetMember.orderTemplate.frequency"
                             ng-options="item.name as item.name for item in treatmentConfig.frequencies">
                         <option value="">Choose frequency</option>

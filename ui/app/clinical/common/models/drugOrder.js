@@ -50,8 +50,8 @@ Bahmni.Clinical.DrugOrder = (function () {
                 autoExpireDate: dateUtil.parse(drugOrderData.autoExpireDate),
                 previousOrderUuid: drugOrderData.previousOrderUuid,
                 action: drugOrderData.action,
-                orderSetUuid: '',
-                orderGroupUuid: '',
+                orderSetUuid: drugOrderData.orderSetUuid,
+                orderGroupUuid: drugOrderData.orderGroupUuid,
                 sortWeight: drugOrderData.sortWeight
             }
         );
