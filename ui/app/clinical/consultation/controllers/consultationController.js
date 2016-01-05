@@ -157,8 +157,11 @@ angular.module('bahmni.clinical').controller('ConsultationController',
 
             var buttonClickAction = function (board) {
                 if ($scope.currentBoard === board) return;
-                if(!isFormValid()) return;
-
+                if(!isFormValid()) {
+                    $scope.$parent.$parent.$broadcast("event:errorsOnForm");
+                    return;
+                }
+                
                 contextChangeHandler.reset();
                 $scope.currentBoard = board;
                 return getUrl(board);
