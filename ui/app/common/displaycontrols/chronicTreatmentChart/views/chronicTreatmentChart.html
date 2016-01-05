@@ -27,7 +27,7 @@
                     <td>{{row.date | bahmniDate}}</td>
                     <td ng-repeat="header in regimen.headers" ng-class="{'stopped': row.drugs[header.name] == 'Stop'}">
                         <span ng-if="row.drugs[header.name] == 'Stop'">{{row.drugs[header.name]}}</span>
-                        <span ng-if="row.drugs[header.name] != 'Stop'">{{ row.drugs[header.name] | number:0 }}</span>
+                        <span ng-if="row.drugs[header.name] != 'Stop'">{{ row.drugs[header.name] | decimalFilter}}</span>
                     </td>
                 </tr>
             </table>
