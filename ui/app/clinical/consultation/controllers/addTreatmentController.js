@@ -132,6 +132,29 @@ angular.module('bahmni.clinical')
                 });
             });
 
+            $scope.$on("event:discontinueDrugOrder", function (event, drugOrder) {
+                drugOrder.isMarkedForDiscontinue = true;
+                drugOrder.isEditAllowed = false;
+                drugOrder.dateStopped = DateUtil.now();
+                $scope.consultation.discontinuedDrugs.push(drugOrder);
+                $scope.minDateStopped = DateUtil.getDateWithoutTime(drugOrder.effectiveStartDate<DateUtil.now()?drugOrder.effectiveStartDate:DateUtil.now());
+            });
+
+            $scope.$on("event:undoDiscontinueDrugOrder", function (event, drugOrder) {
+                $scope.consultation.discontinuedDrugs = _.reject($scope.consultation.discontinuedDrugs, function (removableOrder) {
+                    return removableOrder.uuid === drugOrder.uuid;
+                });
+                $scope.consultation.removableDrugs = _.reject($scope.consultation.removableDrugs, function (removableOrder) {
+                    return removableOrder.previousOrderUuid === drugOrder.uuid;
+                });
+                drugOrder.orderReasonConcept = null;
+                drugOrder.dateStopped = null;
+                drugOrder.orderReasonText=null;
+                drugOrder.isMarkedForDiscontinue = false;
+                drugOrder.isEditAllowed = true;
+            });
+
+
             $scope.$on("event:reviseDrugOrder", function (event, drugOrder, drugOrders) {
                 clearOtherDrugOrderActions(drugOrders);
                 drugOrder.isBeingEdited = true;
@@ -462,11 +485,41 @@ angular.module('bahmni.clinical')
                 });
             };
 
+            var removeOrder = function (removableOrder) {
+                removableOrder.action = Bahmni.Clinical.Constants.orderActions.discontinue;
+                removableOrder.previousOrderUuid = removableOrder.uuid;
+                removableOrder.uuid = undefined;
+                $scope.consultation.removableDrugs.push(removableOrder);
+            };
+
+            var saveTreatment = function () {
+                $scope.consultation.discontinuedDrugs && $scope.consultation.discontinuedDrugs.forEach(function (discontinuedDrug) {
+                    var removableOrder = _.find(activeDrugOrders, {uuid: discontinuedDrug.uuid});
+                    if (discontinuedDrug != null) {
+                        removableOrder.orderReasonText = discontinuedDrug.orderReasonText;
+                        removableOrder.dateActivated = discontinuedDrug.dateStopped;
+                        removableOrder.scheduledDate = discontinuedDrug.dateStopped;
+
+                        if (discontinuedDrug.orderReasonConcept != null && discontinuedDrug.orderReasonConcept.name) {
+                            removableOrder.orderReasonConcept = {
+                                name: discontinuedDrug.orderReasonConcept.name.name,
+                                uuid: discontinuedDrug.orderReasonConcept.uuid
+                            };
+                        }
+                    }
+                    if (removableOrder) {
+                        removeOrder(removableOrder);
+                    }
+                });
+            };
+            $scope.consultation.preSaveHandler.register("drugOrderSaveHandlerKey", saveTreatment);
+
+
             var init = function(){
                 $scope.consultation.removableDrugs = $scope.consultation.removableDrugs || [];
                 $scope.consultation.discontinuedDrugs = $scope.consultation.discontinuedDrugs || [];
                 $scope.consultation.drugOrdersWithUpdatedOrderAttributes = $scope.consultation.drugOrdersWithUpdatedOrderAttributes || {};
                 $scope.consultation.activeAndScheduledDrugOrders = getActiveDrugOrders(activeDrugOrders);
-            }
+            };
             init();
         }]);

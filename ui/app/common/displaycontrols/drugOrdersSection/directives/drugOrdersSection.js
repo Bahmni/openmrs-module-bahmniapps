@@ -1,9 +1,12 @@
 'use strict';
 
 angular.module('bahmni.common.displaycontrol.drugOrdersSection')
-    .directive('drugOrdersSection', ['TreatmentService', 'spinner', function (treatmentService, spinner) {
+    .directive('drugOrdersSection', ['TreatmentService', 'spinner', '$rootScope', 'treatmentConfig', '$q','clinicalAppConfigService',  function (treatmentService, spinner, $rootScope, treatmentConfig, $q, clinicalAppConfigService) {
         var controller = function ($scope) {
+            var DateUtil = Bahmni.Common.Util.DateUtil;
+            var drugOrderAppConfig = clinicalAppConfigService.getDrugOrderConfig();
 
+            $scope.toggle = true;
             $scope.toggleDisplay = function () {
                 $scope.toggle = ! $scope.toggle
             };
@@ -20,6 +23,9 @@ angular.module('bahmni.common.displaycontrol.drugOrdersSection')
                 "stopReasonNotes": "DRUG_DETAILS_ORDER_REASON_TEXT"
             };
 
+            $scope.minDateStopped = DateUtil.getDateWithoutTime(DateUtil.now());
+            $scope.scheduledDate = DateUtil.getDateWithoutTime(DateUtil.now());
+
             var initialiseColumns = function() {
                 $scope.columns = $scope.config.columns;
                 if(!$scope.columns){
@@ -32,8 +38,14 @@ angular.module('bahmni.common.displaycontrol.drugOrdersSection')
                 if (_.isEmpty($scope.config.title) && _.isEmpty($scope.config.translationKey)){
                     $scope.config.title = "Drug Orders";
                 }
-                return treatmentService.getAllDrugOrdersFor($scope.patientUuid, $scope.config.includeConceptSet, $scope.config.excludeConceptSet, $scope.config.active).then(function (response) {
-                    $scope.drugOrders = sortOrders(response);
+                var getDrugOrders = treatmentService.getAllDrugOrdersFor($scope.patientUuid, $scope.config.includeConceptSet, $scope.config.excludeConceptSet, $scope.config.active);
+
+                return $q.all([getDrugOrders, treatmentConfig]).then(function (results) {
+                    var createDrugOrder = function (drugOrder) {
+                        return Bahmni.Clinical.DrugOrderViewModel.createFromContract(drugOrder, drugOrderAppConfig, results[1]);
+                    };
+                    $scope.drugOrders = sortOrders(results[0].map(createDrugOrder));
+                    $scope.stoppedOrderReasons = results[1].stoppedOrderReasonConcepts;
                 });
             };
 
@@ -43,6 +55,60 @@ angular.module('bahmni.common.displaycontrol.drugOrdersSection')
                 sortedDrugOrders.push(drugOrderUtil.sortDrugOrders(drugOrders));
                 return _.flatten(sortedDrugOrders).reverse();
             };
+
+            var clearOtherDrugOrderActions = function(revisedDrugOrder) {
+                $scope.drugOrders.forEach(function (drugOrder) {
+                    if(drugOrder != revisedDrugOrder) {
+                        drugOrder.isDiscontinuedAllowed = true;
+                        drugOrder.isBeingEdited = false;
+                    }
+                });
+            };
+
+            $scope.$on("event:reviseDrugOrder", function (event, drugOrder) {
+                clearOtherDrugOrderActions(drugOrder);
+            });
+
+            $scope.refill = function (drugOrder) {
+                $rootScope.$broadcast("event:refillDrugOrder", drugOrder);
+            };
+
+            $scope.revise = function (drugOrder, drugOrders) {
+                if (drugOrder.isEditAllowed) {
+                    $rootScope.$broadcast("event:reviseDrugOrder", drugOrder, drugOrders);
+                }
+            };
+
+            $scope.discontinue = function (drugOrder) {
+                if (drugOrder.isDiscontinuedAllowed) {
+                    $rootScope.$broadcast("event:discontinueDrugOrder", drugOrder);
+                    $scope.updateFormConditions(drugOrder);
+                }
+            };
+
+            $scope.undoDiscontinue = function (drugOrder) {
+                $rootScope.$broadcast("event:undoDiscontinueDrugOrder", drugOrder);
+            };
+
+            $scope.updateFormConditions = function(drugOrder){
+                var formCondition = Bahmni.ConceptSet.FormConditions.rules ? Bahmni.ConceptSet.FormConditions.rules["Medication Stop Reason"] : undefined ;
+                if(formCondition){
+                    if(drugOrder.orderReasonConcept) {
+                        if (!formCondition(drugOrder, drugOrder.orderReasonConcept.name.name))
+                            disableAndClearReasonText(drugOrder);
+                    }
+                    else
+                        disableAndClearReasonText(drugOrder);
+                }else{
+                    drugOrder.orderReasonNotesEnabled = true;
+                }
+            };
+
+            var disableAndClearReasonText = function(drugOrder){
+                drugOrder.orderReasonText = null;
+                drugOrder.orderReasonNotesEnabled = false;
+            };
+
 
             spinner.forPromise(init());
         };

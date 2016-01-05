@@ -106,10 +106,7 @@ angular.module('bahmni.clinical')
                 params: params,
                 withCredentials: true
             }).success(function (response) {
-                var allDrugOrders = response.map(function(drugOrder){
-                    return createDrugOrderViewModel(drugOrder, drugOrderAppConfig);
-                });
-                deferred.resolve(allDrugOrders);
+                deferred.resolve(response);
             });
             return deferred.promise;
         };

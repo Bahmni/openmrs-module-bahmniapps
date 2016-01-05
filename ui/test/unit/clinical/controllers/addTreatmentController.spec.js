@@ -1426,4 +1426,82 @@ describe("AddTreatmentController", function () {
             expect(drugOrder.durationInDays).toBe(2);
         });
     });
+
+    describe("when discontinued", function () {
+        it("should mark the drug order for discontinue", function () {
+
+            var drugOrder = Bahmni.Clinical.DrugOrderViewModel.createFromContract(activeDrugOrder);
+
+            rootScope.$broadcast("event:discontinueDrugOrder", drugOrder);
+
+            expect(drugOrder.isMarkedForDiscontinue).toBe(true);
+            expect(drugOrder.dateStopped).not.toBeNull();
+        });
+
+        it("should add the drugOrder to discontinueDrugs", function () {
+            var drugOrder = Bahmni.Clinical.DrugOrderViewModel.createFromContract(activeDrugOrder);
+
+            rootScope.$broadcast("event:discontinueDrugOrder", drugOrder);
+
+            expect(scope.consultation.discontinuedDrugs[0]).toBe(drugOrder);
+        });
+
+        it("verify that the discontinued order is correctly created while saving", function(){
+            var drugOrder = Bahmni.Clinical.DrugOrderViewModel.createFromContract(activeDrugOrder);
+
+            rootScope.$broadcast("event:discontinueDrugOrder", drugOrder);
+            scope.consultation.preSaveHandler.fire();
+
+            expect(scope.consultation.removableDrugs.length).toEqual(1);
+            var discontinuedDrugOrder = scope.consultation.removableDrugs[0];
+            expect(discontinuedDrugOrder.action).toEqual(Bahmni.Clinical.Constants.orderActions.discontinue);
+            expect(discontinuedDrugOrder.previousOrderUuid).toEqual(drugOrder.uuid);
+            expect(discontinuedDrugOrder.uuid).toEqual(undefined);
+            expect(discontinuedDrugOrder.scheduledDate).toEqual(drugOrder.dateStopped);
+            expect(discontinuedDrugOrder.dateActivated).toEqual(drugOrder.dateStopped);
+        });
+    });
+
+    describe("when undo removing", function () {
+        it("should change the action to new", function () {
+            var drugOrder = Bahmni.Clinical.DrugOrderViewModel.createFromContract(activeDrugOrder);
+            drugOrder.orderReasonConcept = {
+                name: 'Adverse event'
+            };
+            drugOrder.orderReasonText = 'AE ID';
+
+            rootScope.$broadcast("event:discontinueDrugOrder", drugOrder);
+            rootScope.$broadcast("event:undoDiscontinueDrugOrder", drugOrder);
+
+            expect(drugOrder.isMarkedForDiscontinue).toBe(false);
+            expect(drugOrder.orderReasonConcept).toBe(null);
+            expect(drugOrder.orderReasonText).toBe(null);
+            expect(drugOrder.dateStopped).toBe(null);
+        });
+
+        it("should remove the drugOrder from discontinuedDrugs and removeableDrugs", function () {
+            var drugOrder = Bahmni.Clinical.DrugOrderViewModel.createFromContract(activeDrugOrder);
+
+            rootScope.$broadcast("event:discontinueDrugOrder", drugOrder);
+            expect(scope.consultation.discontinuedDrugs.length).toBe(1);
+            rootScope.$broadcast("event:undoDiscontinueDrugOrder", drugOrder);
+
+            expect(scope.consultation.discontinuedDrugs.length).toBe(0);
+        });
+
+        it("should remove the proper drugOrder from discontinuedDrugs", function () {
+            var drugOrder1 = Bahmni.Clinical.DrugOrderViewModel.createFromContract(activeDrugOrder);
+            var drugOrder2 = Bahmni.Clinical.DrugOrderViewModel.createFromContract(scheduledOrder);
+
+            rootScope.$broadcast("event:discontinueDrugOrder", drugOrder1);
+            rootScope.$broadcast("event:discontinueDrugOrder", drugOrder2);
+
+            expect(scope.consultation.discontinuedDrugs.length).toBe(2);
+
+            rootScope.$broadcast("event:undoDiscontinueDrugOrder", drugOrder2);
+
+            expect(scope.consultation.discontinuedDrugs.length).toBe(1);
+            expect(scope.consultation.discontinuedDrugs[0]).toBe(drugOrder1);
+        })
+    });
 });

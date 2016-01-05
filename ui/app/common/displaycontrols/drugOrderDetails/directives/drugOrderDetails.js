@@ -6,8 +6,12 @@ angular.module('bahmni.common.displaycontrol.drugOrderDetails')
 
             var init = function () {
                 var drugOrderAppConfig = clinicalAppConfigService.getDrugOrderConfig();
-                return treatmentService.getAllDrugOrdersFor($scope.patient.uuid, $scope.section.dashboardParams.drugConceptSet, null, null, drugOrderAppConfig).then(function (response) {
-                    $scope.drugOrders = sortOrders(response).reverse();
+                return treatmentService.getAllDrugOrdersFor($scope.patient.uuid, $scope.section.dashboardParams.drugConceptSet).then(function (response) {
+                    var createDrugOrder = function (drugOrder) {
+                        return Bahmni.Clinical.DrugOrderViewModel.createFromContract(drugOrder, drugOrderAppConfig, undefined);
+                    };
+                    var drugOrders = response.map(createDrugOrder);
+                    $scope.drugOrders = sortOrders(drugOrders).reverse();
                 });
             };
 

@@ -116,60 +116,38 @@ angular.module('bahmni.clinical')
                 }
             };
 
+            $scope.updateFormConditions = function(drugOrder){
+                var formCondition = Bahmni.ConceptSet.FormConditions.rules ? Bahmni.ConceptSet.FormConditions.rules["Medication Stop Reason"] : undefined ;
+                if(formCondition){
+                    if(drugOrder.orderReasonConcept) {
+                        if (!formCondition(drugOrder, drugOrder.orderReasonConcept.name.name))
+                            disableAndClearReasonText(drugOrder);
+                    }
+                    else
+                        disableAndClearReasonText(drugOrder);
+                }else{
+                    drugOrder.orderReasonNotesEnabled = true;
+                }
+            };
+
+            var disableAndClearReasonText = function(drugOrder){
+                drugOrder.orderReasonText = null;
+                drugOrder.orderReasonNotesEnabled = false;
+            };
+
+
             $scope.discontinue = function (drugOrder) {
                 if (drugOrder.isDiscontinuedAllowed) {
-                    drugOrder.isMarkedForDiscontinue = true;
-                    drugOrder.isEditAllowed = false;
-                    drugOrder.dateStopped = DateUtil.now();
-                    $scope.consultation.discontinuedDrugs.push(drugOrder);
-                    $scope.minDateStopped = DateUtil.getDateWithoutTime(drugOrder.effectiveStartDate<DateUtil.now()?drugOrder.effectiveStartDate:DateUtil.now());
-                    $scope.updateFormConditions(drugOrder)
+                    $rootScope.$broadcast("event:discontinueDrugOrder", drugOrder);
+                    $scope.updateFormConditions(drugOrder);
+
                 }
             };
 
             $scope.undoDiscontinue = function (drugOrder) {
-                $scope.consultation.discontinuedDrugs = _.reject($scope.consultation.discontinuedDrugs, function (removableOrder) {
-                    return removableOrder.uuid === drugOrder.uuid;
-                });
-                $scope.consultation.removableDrugs = _.reject($scope.consultation.removableDrugs, function (removableOrder) {
-                    return removableOrder.previousOrderUuid === drugOrder.uuid;
-                });
-                drugOrder.orderReasonConcept = null;
-                drugOrder.dateStopped = null;
-                drugOrder.orderReasonText=null;
-                drugOrder.isMarkedForDiscontinue = false;
-                drugOrder.isEditAllowed = true;
+                $rootScope.$broadcast("event:undoDiscontinueDrugOrder", drugOrder);
             };
 
-
-            var removeOrder = function (removableOrder) {
-                removableOrder.action = Bahmni.Clinical.Constants.orderActions.discontinue;
-                removableOrder.previousOrderUuid = removableOrder.uuid;
-                removableOrder.uuid = undefined;
-                $scope.consultation.removableDrugs.push(removableOrder);
-            };
-
-            var saveTreatment = function () {
-                $scope.consultation.discontinuedDrugs && $scope.consultation.discontinuedDrugs.forEach(function (discontinuedDrug) {
-                    var removableOrder = _.find(activeDrugOrdersList, {uuid: discontinuedDrug.uuid});
-                    if (discontinuedDrug != null) {
-                        removableOrder.orderReasonText = discontinuedDrug.orderReasonText;
-                        removableOrder.dateActivated = discontinuedDrug.dateStopped;
-                        removableOrder.scheduledDate = discontinuedDrug.dateStopped;
-
-                        if (discontinuedDrug.orderReasonConcept != null && discontinuedDrug.orderReasonConcept.name) {
-                            removableOrder.orderReasonConcept = {
-                                name: discontinuedDrug.orderReasonConcept.name.name,
-                                uuid: discontinuedDrug.orderReasonConcept.uuid
-                            };
-                        }
-                    }
-                    if (removableOrder) {
-                        removeOrder(removableOrder);
-                    }
-                });
-            };
-            $scope.consultation.preSaveHandler.register("drugOrderSaveHandlerKey", saveTreatment);
 
             $scope.shouldBeDisabled = function (drugOrder, orderAttribute) {
                 var hasEncounterExpired = function () {
@@ -230,25 +208,6 @@ angular.module('bahmni.clinical')
                 return _.find(drugOrder.orderAttributes, {name: attributeName});
             };
 
-
-            $scope.updateFormConditions = function(drugOrder){
-                var formCondition = Bahmni.ConceptSet.FormConditions.rules ? Bahmni.ConceptSet.FormConditions.rules["Medication Stop Reason"] : undefined ;
-                if(formCondition){
-                    if(drugOrder.orderReasonConcept) {
-                        if (!formCondition(drugOrder, drugOrder.orderReasonConcept.name.name))
-                            disableAndClearReasonText(drugOrder);
-                    }
-                    else
-                        disableAndClearReasonText(drugOrder);
-                }else{
-                    drugOrder.orderReasonNotesEnabled = true;
-                }
-            };
-
-            var disableAndClearReasonText = function(drugOrder){
-                drugOrder.orderReasonText = null;
-                drugOrder.orderReasonNotesEnabled = false;
-            };
-
+            
             init();
         }]);

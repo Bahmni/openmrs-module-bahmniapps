@@ -84,29 +84,30 @@
     @import "addNewDrug";
     .drug-orders-history {
         margin: 10px 0;
-        .drug-stop-container{
-            font-size: 14px;
-            width: 100%;
-            padding-left: 10px;
-            box-sizing: border-box;
-            padding-right: 10px;
-            padding-bottom: 10px;
-            .field-attribute{
-                &.stop-date-label{
-                    .control-label{
-                        width: auto;
-                    }
-                }
-            }
-            .field-value{
-                margin-right: 5px;
-                textarea{
-                    height: 25px;
-                    width: 540px;
+    }
+    .drug-stop-container{
+        font-size: 14px;
+        width: 100%;
+        padding-left: 10px;
+        box-sizing: border-box;
+        padding-right: 10px;
+        padding-bottom: 10px;
+        .field-attribute{
+            &.stop-date-label{
+                .control-label{
+                    width: auto;
                 }
             }
         }
+        .field-value{
+            margin-right: 5px;
+            textarea{
+                height: 25px;
+                width: 540px;
+            }
+        }
     }
+
     .new-drug-order {
         margin: 10px 0 0;
     }
