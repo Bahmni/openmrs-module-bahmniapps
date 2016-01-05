@@ -6,6 +6,11 @@
     margin-bottom: 5px;
     font-size: 15px;
   }
+  .type-of-drug-section{
+    @media (max-width : 1024px){
+      margin-left: 10px;
+    }
+  }
   .default-drug-container{
     margin-bottom: 25px;
     &.multi-select-button-group{
