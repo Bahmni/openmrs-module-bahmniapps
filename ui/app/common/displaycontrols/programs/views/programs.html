@@ -1,25 +1,33 @@
 <section class="program-dashboard">
     <table>
-        <div ng-if="hasPatientAnyActivePrograms()">
-            <th align="left">Active Programs</th>
-            <th>Start Date</th>
-            <th>______</th>
-            <tr ng-repeat="program in activePrograms">
-                <td>{{program.display}}</td>
-                <td align="center">{{program.dateEnrolled | bahmniDate}}</td>
-                <td align="center">_____</td>
-            </tr>
-        </div>
-        <div ng-if="hasPatientAnyPastPrograms()">
+        <thead ng-if="hasPatientAnyActivePrograms()">
+        <th>Active Programs</th>
+        <th style="text-align:center">Start Date</th>
+        <th style="text-align:center">______</th>
+        </thead>
+        <tbody>
+        <tr ng-repeat="program in activePrograms">
+            <td>{{program.display}}</td>
+            <td align="center">{{program.dateEnrolled | bahmniDate}}</td>
+            <td align="center">_____</td>
+        </tr>
+        </tbody>
+
+        <thead ng-if="hasPatientAnyPastPrograms()">
+        <tr>
             <th align="left">InActive Programs</th>
-            <th>Start Date</th>
-            <th>Stop Date</th>
-            <tr ng-repeat="program in pastPrograms">
-                <td>{{program.display}}</td>
-                <td align="center">{{program.dateEnrolled | bahmniDate}}</td>
-                <td align="center">{{program.dateCompleted | bahmniDate}}</td>
-            </tr>
-        </div>
+            <th style="text-align:center">Start Date</th>
+            <th style="text-align:center">Stop Date</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr ng-repeat="program in pastPrograms">
+            <td>{{program.display}}</td>
+            <td align="center">{{program.dateEnrolled | bahmniDate}}</td>
+            <td align="center">{{program.dateCompleted | bahmniDate}}</td>
+        </tr>
+        </tbody>
+
     </table>
 
     <div class="note-container" ng-show="!hasPatientAnyPrograms()">
