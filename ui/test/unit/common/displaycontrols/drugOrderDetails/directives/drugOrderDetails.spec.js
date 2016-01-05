@@ -8,6 +8,14 @@ describe('Drug Order Details DisplayControl', function () {
         params,element,
         simpleHtml = '<drug-order-details id="dashboard-drug-order-details" patient="patient" section="params"></drug-order-details>';
 
+    var clinicalAppConfigService;
+
+    var dosingUnitsMantissa = [
+        {"value": 0.50, "label": "½"},
+        {"value": 0.33, "label": "⅓"},
+        {"value": 0.25, "label": "¼"},
+        {"value": 0.75, "label": "¾"}
+    ];
 
     drugOrderSections =[
         {
@@ -40,7 +48,12 @@ describe('Drug Order Details DisplayControl', function () {
     ];
 
     beforeEach(module('bahmni.clinical'));
-    beforeEach(module('bahmni.common.displaycontrol.drugOrderDetails'));
+    beforeEach(module('bahmni.common.displaycontrol.drugOrderDetails', function($provide) {
+        clinicalAppConfigService = jasmine.createSpyObj('clinicalAppConfigService', ['getDrugOrderConfig']);
+        clinicalAppConfigService.getDrugOrderConfig.and.returnValue(dosingUnitsMantissa);
+
+        $provide.value('clinicalAppConfigService', clinicalAppConfigService);
+    }));
 
 
     beforeEach(inject(function (_$compile_, $rootScope, $httpBackend) {
