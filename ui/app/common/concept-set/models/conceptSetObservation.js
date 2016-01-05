@@ -275,7 +275,7 @@ Bahmni.ConceptSet.Observation.prototype = {
     },
 
     _isDateTimeDataType: function () {
-        return 'Datetime'.indexOf(this.getDataTypeName()) != -1;
+        return (this.getDataTypeName()).indexOf('Datetime') != -1;
     },
 
     isRequired: function () {
