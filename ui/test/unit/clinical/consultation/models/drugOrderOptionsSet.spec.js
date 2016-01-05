@@ -23,7 +23,7 @@ describe("DrugOrderOptionsSet", function () {
             "doseUnits": ["mg"],
             "frequencies" :["Seven days a week"],
             "routes" : ["Oral"],
-            "hideFields": ["doseUnits", "frequencies"]
+            "disableFields": ["doseUnits", "frequencies"]
         };
 
         drugOrderOptions.push(new Bahmni.Clinical.DrugOrderOptions(anInputConfig, listOfDrugs, masterConfig));
@@ -48,21 +48,21 @@ describe("DrugOrderOptionsSet", function () {
         });
     });
 
-    describe("showField", function() {
-        it("returns false if field set as hidden", function() {
-            expect(model.showField({name: "K"}, "doseUnits")).toBe(false);
+    describe("disableField", function() {
+        it("returns true if field set as disabled", function() {
+            expect(model.disableField({name: "K"}, "doseUnits")).toBe(true);
         });
 
-        it("returns true if field not set as hidden", function() {
-            expect(model.showField({name: "K"}, "fieldNotPresentInHideList")).toBe(true);
+        it("returns false if field not set as disabled", function() {
+            expect(model.disableField({name: "K"}, "fieldNotPresentInHideList")).toBe(false);
         });
 
-        it("returns true if drug not present in any config", function() {
-            expect(model.showField({name: "nonExistentDrug"}, "doseUnits")).toBe(true);
+        it("returns false if drug not present in any config", function() {
+            expect(model.disableField({name: "nonExistentDrug"}, "doseUnits")).toBe(false);
         });
 
-        it("returns true if drug is null", function() {
-            expect(model.showField(null, "doseUnits")).toBe(true);
+        it("returns false if drug is null", function() {
+            expect(model.disableField(null, "doseUnits")).toBe(false);
         });
     });
 });

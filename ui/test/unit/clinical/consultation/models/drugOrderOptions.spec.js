@@ -24,10 +24,14 @@ describe("DrugOrderOptions", function () {
             "doseUnits": ["mg"],
             "frequencies" :["Seven days a week"],
             "routes" : ["Oral"],
-            "hideFields": ["doseUnits", "frequencies"]
+            "disableFields": ["doseUnits", "frequencies"]
         };
 
         model = new Bahmni.Clinical.DrugOrderOptions(inputConfig, listOfDrugs, masterConfig);
+    });
+
+    it('should initialise fields from config', function () {
+        expect(model.disableFields.length).toBe(2);
     });
 
     describe("doseUnits", function() {
@@ -73,14 +77,14 @@ describe("DrugOrderOptions", function () {
         });
     });
     
-    it("should hidden elements on UI mentioned in inputConfig", function () {
-        expect(model.showField({name: "K"}, 'doseUnits')).toBe(false);
-        expect(model.showField({name: "K"}, 'durationUnits')).toBe(true);
-        expect(model.showField({name: "nonexistentDrug"}, 'durationUnits')).toBeNull();
+    it("should disable elements on UI mentioned in inputConfig", function () {
+        expect(model.disableField({name: "K"}, 'doseUnits')).toBe(true);
+        expect(model.disableField({name: "K"}, 'durationUnits')).toBe(false);
+        expect(model.disableField({name: "nonexistentDrug"}, 'durationUnits')).toBeNull();
 
-        inputConfig.hideFields = null;
+        inputConfig.disableFields = null;
         model = new Bahmni.Clinical.DrugOrderOptions(inputConfig, listOfDrugs, masterConfig);
-        expect(model.showField({name: "K"}, 'doseUnits')).toBe(true);
+        expect(model.disableField({name: "K"}, 'doseUnits')).toBe(false);
     });
 
     it("should use masterConfig as input configuration when fields missing in inputConfig", function() {

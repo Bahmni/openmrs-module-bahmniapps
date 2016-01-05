@@ -28,7 +28,7 @@ Bahmni.Clinical.DrugOrderOptions = (function() {
         this.dosingInstructions = itemsForInputConfig(masterConfig.dosingInstructions, inputConfig.dosingInstructions);
         this.dispensingUnits = itemsForInputConfig(masterConfig.dispensingUnits, inputConfig.dispensingUnits);
         this.dosePlaceHolder = inputConfig.dosePlaceHolder;
-        this.hiddenFields = inputConfig.hideFields || [];
+        this.disableFields = inputConfig.disableFields || [];
 
     };
     _proto = DrugOrderOptions.prototype;
@@ -56,8 +56,8 @@ Bahmni.Clinical.DrugOrderOptions = (function() {
     _proto.isDefaultDrugOrderOption = function() {
         return this.listOfDrugs.length == 0;
     };
-    _proto.showField = function(drug, fieldName) {
-        return drugMatches(drug)? !_.contains(this.hiddenFields, fieldName): null;
+    _proto.disableField = function(drug, fieldName) {
+        return drugMatches(drug)? _.contains(this.disableFields, fieldName): null;
     };
     _proto.getDosePlaceHolder = function(drug) {
         return drugMatches(drug) ? this.dosePlaceHolder : null;

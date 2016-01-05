@@ -31,10 +31,10 @@ Bahmni.Clinical.DrugOrderOptionsSet = (function(){
     _proto.getDosePlaceHolder = function(drug) {
         return dosePlaceHolder(drug) || "MEDICATION_TAB_DOSE";
     };
-    var resultFromConfig = retrieveFromOptionsArray('showField', 'hideFields');
-    _proto.showField = function(drug, fieldName) {
-        var shouldShowField = resultFromConfig(drug, fieldName);
-        return shouldShowField !== null && shouldShowField !== undefined ? shouldShowField: true;
+    var resultFromConfig = retrieveFromOptionsArray('disableField', 'disableFields');
+    _proto.disableField = function(drug, fieldName) {
+        var shouldDisableField = resultFromConfig(drug, fieldName);
+        return shouldDisableField !== null && shouldDisableField !== undefined ? shouldDisableField: false;
     };
 
     return DrugOrderOptionsSet;

@@ -11,7 +11,7 @@ angular.module('bahmni.clinical').factory('treatmentConfig',['TreatmentService',
             getDispensingUnits: function(drug) {return this.drugOrderOptionsSet.getDispensingUnits(drug)},
             getFrequencies: function(drug) {return this.drugOrderOptionsSet.getFrequencies(drug)},
             getDosePlaceHolder: function(drug) {return this.drugOrderOptionsSet.getDosePlaceHolder(drug)},
-            showField: function(drug, fieldName) {return this.drugOrderOptionsSet.showField(drug,fieldName)}
+            disableField: function(drug, fieldName) {return this.drugOrderOptionsSet.disableField(drug,fieldName)}
 
         };
 
