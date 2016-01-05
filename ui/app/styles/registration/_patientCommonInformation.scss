@@ -15,6 +15,9 @@
 form .form-field{
   @media (max-width : 768px) {
     .field-value {
+      @media (max-width : 580px) {
+        float: none;
+      }
       input{
         float: none !important;
         display: block;
@@ -22,10 +25,15 @@ form .form-field{
 
     }
     .field-attribute {
+      @media (max-width : 580px) {
+        float: none;
+      }
       label{
         width: 17em !important;
         @media (max-width : 580px) {
           text-align: left !important;
+          float: none;
+          //width: auto !important;
         }
       }
     }

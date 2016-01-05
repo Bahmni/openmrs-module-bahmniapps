@@ -230,9 +230,9 @@ table {
     &.box-container-default{
       margin-bottom: 0;
 	  padding: 0 15px;
-	  @media (max-width: 768px) {
+	  /*@media (max-width: 768px) {
 		padding: 15px 10px 15px 5px;
-	  }
+	  }*/
     }
     section.section-padding{
       padding-top: 14px;
@@ -243,6 +243,9 @@ table {
         color: $black;
         display: inline-block;
         width: 95%;
+		@media (max-width: 580px) {
+		  width: 92%;
+		}
       }
     }
 }
