@@ -23,7 +23,7 @@ angular.module('bahmni.clinical')
                     $scope.defaultDrugs = result.map(constructDrugNameDisplay);
                 });
 
-            $scope.dosingUnitsFractions = drugOrderAppConfig.dosingUnitsFractions;
+            $scope.dosingUnitsFractions = treatmentConfig.dosingUnitsFractions;
             $scope.isDosingUnitsFractionsAvailable = function() {
                 return $scope.dosingUnitsFractions ? true : false;
             };
