@@ -2,8 +2,8 @@
 <div class="edit-patient simple-form-ui">
     <form name="myForm"  ng-submit="update()">
         <div class="box-container box-container-default">
-            <legend class="mylegend">
-                <span><strong>{{patient.identifier}}</strong></span>
+            <legend class="registraion_legend">
+                <span class="mylegend">{{patient.identifier}}</span>
                 <span ng-show= "isDigitized" class="right"><strong>{{::'REGISTRATION_LABEL_SCANNED' | translate}}</strong></span>
                 <!--<span ng-show= "!isDigitized" class="right"><strong>{{::'REGISTRATION_LABEL_PAPER' | translate}}</strong></span>-->
             </legend>
