@@ -52,7 +52,7 @@
                         <label class="control-label">Stop Date</label>
                     </div>
                     <div class="field-value">
-                        <input id="date-stopped" type="date" min="{{::minDateStopped}}" max="{{::scheduledDate}}" ng-model="drugOrder.dateStopped"
+                        <input id="date-stopped" type="date" min="{{getMinDateForDiscontinue(drugOrder)}}" max="{{::scheduledDate}}" ng-model="drugOrder.dateStopped"
                                required="required">
                     </div>
                     <div class="field-value">

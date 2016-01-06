@@ -26,7 +26,6 @@ angular.module('bahmni.common.displaycontrol.drugOrdersSection')
                 "additionalInstructions": "DRUG_DETAILS_ADDITIONAL_INSTRUCTIONS_TEXT"
             };
 
-            $scope.minDateStopped = DateUtil.getDateWithoutTime(DateUtil.now());
             $scope.scheduledDate = DateUtil.getDateWithoutTime(DateUtil.now());
 
             var initialiseColumns = function() {
@@ -95,6 +94,14 @@ angular.module('bahmni.common.displaycontrol.drugOrdersSection')
 
             $scope.undoDiscontinue = function (drugOrder) {
                 $rootScope.$broadcast("event:undoDiscontinueDrugOrder", drugOrder);
+            };
+
+            $scope.getMinDateForDiscontinue = function(drugOrder) {
+                var minDate = DateUtil.today();
+                if(DateUtil.isBeforeDate(drugOrder.effectiveStartDate, minDate)) {
+                    minDate = drugOrder.effectiveStartDate;
+                }
+                return DateUtil.getDateWithoutTime(minDate);
             };
 
             $scope.updateFormConditions = function(drugOrder){
