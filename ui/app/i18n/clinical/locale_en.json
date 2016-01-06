@@ -79,6 +79,8 @@
     "BACTERIOLOGY_BUTTON_EDIT_KEY" : "Edit",
     "BACTERIOLOGY_SAMPLE_BEING_EDITED_KEY": "The specimen is already being edited: ",
     "BACTERIOLOGY_ADDED_ON_KEY": "Added on",
+    "BACTERIOLOGY_SAMPLE_TYPE_KEY_NON_CODED": "Other Sample Type",
+
 
     "MEDICATION_RECENT_TAB":"Recent",
     "MEDICATION_RECENT_TAB_STOP_REASON":"Stop Reason",

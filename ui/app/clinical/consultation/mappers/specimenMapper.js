@@ -27,6 +27,7 @@ Bahmni.Clinical.SpecimenMapper = function() {
         observation.report = {};
         observation.type = specimen.type;
         observation.voided = specimen.voided;
+        observation.typeFreeText = specimen.typeFreeText;
 
 
         var observationFilter = new Bahmni.Common.Domain.ObservationFilter();

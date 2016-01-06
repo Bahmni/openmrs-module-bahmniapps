@@ -36,11 +36,25 @@
                                 </label>
                             </div>
                             <div class="field-value" ng-class="{'illegalValue': newSpecimen.isTypeDirty()}">
-                                <button-select observation="newSpecimen.typeObservation">
+                                <button-select id="sample-type" ng-model="newSpecimen" observation="newSpecimen.typeObservation">
                                 </button-select>
                             </div>
                         </article>
                     </section>
+
+                    <section class="form-field-inline" ng-if="newSpecimen.showTypeFreeText">
+                        <article class="form-field right-form-field">
+                            <div class="field-attribute">
+                                <label for="txt-sample-type-free-text">{{'BACTERIOLOGY_SAMPLE_TYPE_KEY_NON_CODED' | translate}}
+                                    <span class="asterick">*</span>
+                                </label>
+                            </div>
+                            <div class="field-value" ng-class="{'illegalValue': newSpecimen.isTypeFreeTextDirty()}">
+                                <input id="txt-sample-type-free-text" required="required" type="text" ng-model="newSpecimen.typeFreeText">
+                            </div>
+                        </article>
+                    </section>
+
                     <section class="form-field-inline">
                         <article class="form-field">
                             <div class="field-attribute">
@@ -69,7 +83,7 @@
     </div>
     <div ng-repeat="savedSpecimen in savedSpecimens" class="savedSpecimens-container clearfix" ng-hide="isOnDashboard">
         <div class="fl savedSpecimens-text">
-            <span>{{getDisplayName(savedSpecimen.type)}}</span>
+            <span>{{getDisplayName(savedSpecimen)}}</span>
             <span>#{{savedSpecimen.identifier}}</span>
             <span>{{ 'BACTERIOLOGY_ADDED_ON_KEY' | translate }} {{savedSpecimen.dateCollected | date: 'MM/dd/yyyy'}}</span>
         </div>

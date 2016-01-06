@@ -24,7 +24,7 @@ angular.module('bahmni.common.displaycontrol.bacteriologyresults')
                     if ($scope.observations && $scope.observations.length > 0) {
                         $scope.specimens = [];
                         var sampleSource = _.find($scope.bacteriologyTabData.setMembers, function (member) {
-                            return member.name.name === "Specimen Sample Source"
+                            return member.name.name === Bahmni.Clinical.Constants.bacteriologyConstants.specimenSampleSourceConceptName;
                         });
                         $scope.allSamples = sampleSource != undefined && _.map(sampleSource.answers, function (answer) {
                             return new Bahmni.Common.Domain.ConceptMapper().map(answer);
@@ -62,9 +62,6 @@ angular.module('bahmni.common.displaycontrol.bacteriologyresults')
                     if (specimen.isDirty()){
                         messagingService.showMessage('formError', "{{'CLINICAL_FORM_ERRORS_MESSAGE_KEY' | translate }}");
                     }else{
-                        //specimen.sample.additionalAttributes = Array.isArray(specimen.sample.additionalAttributes) ? specimen.sample.additionalAttributes[0] : specimen.sample.additionalAttributes;
-                        //specimen.report.results = observationFilter.filter(specimen.report.results)[0];
-
                         var specimenMapper = new Bahmni.Clinical.SpecimenMapper();
                         var createPromise = bacteriologyResultsService.saveBacteriologyResults(specimenMapper.mapSpecimenToObservation(specimen));
 
@@ -74,6 +71,15 @@ angular.module('bahmni.common.displaycontrol.bacteriologyresults')
                             messagingService.showMessage('info', "{{'CLINICAL_SAVE_SUCCESS_MESSAGE_KEY' | translate}}");
                         });
                     }
+                };
+
+                $scope.getDisplayName = function (specimen){
+                    var type = specimen.type;
+                    var displayName = type.shortName ? type.shortName : type.name;
+                    if(displayName ===  Bahmni.Clinical.Constants.bacteriologyConstants.otherSampleType){
+                        displayName = specimen.typeFreeText;
+                    }
+                    return displayName;
                 };
 
                 $scope.hasResults = function (test){

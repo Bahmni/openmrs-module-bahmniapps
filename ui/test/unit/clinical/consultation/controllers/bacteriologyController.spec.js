@@ -101,27 +101,64 @@ describe("Bacteriology Controller", function () {
 
     describe("Get Display Name", function () {
         it("Should return the Specimen short name if it present", function () {
-            var specimenData = { shortName: "short Name", name: "name"};
+            var specimenData = { type: { shortName: "short Name", name: "name"}};
 
-            expect($scope.getDisplayName(specimenData)).toBe(specimenData.shortName);
+            expect($scope.getDisplayName(specimenData)).toBe(specimenData.type.shortName);
         });
 
         it("Should return the Specimen short name if it present, otherwise return Specimen name", function () {
-            var specimenData = {name: "name"};
+            var specimenData ={ type: {name: "name"}};
 
-            expect($scope.getDisplayName(specimenData)).toBe(specimenData.name);
+            expect($scope.getDisplayName(specimenData)).toBe(specimenData.type.name);
         });
 
         it("Should return the return Specimen name, if Specimen short name is null", function () {
-            var specimenData = {shortName:null ,name: "name"};
+            var specimenData = { type: {shortName:null ,name: "name"}};
 
-            expect($scope.getDisplayName(specimenData)).toBe(specimenData.name);
+            expect($scope.getDisplayName(specimenData)).toBe(specimenData.type.name);
         });
 
         it("Should return the return Specimen name, if Specimen short name is empty", function () {
-            var specimenData = {shortName:"" ,name: "name"};
+            var specimenData = { type: {shortName:"" ,name: "name"}};
 
-            expect($scope.getDisplayName(specimenData)).toBe(specimenData.name);
+            expect($scope.getDisplayName(specimenData)).toBe(specimenData.type.name);
         });
+
+        it("Should return freeText Type if sample type is Other", function(){
+            var specimenData = { type: {shortName:"" ,name: "Other"}, typeFreeText:"Other Sample Type"};
+            expect($scope.getDisplayName(specimenData)).toBe(specimenData.typeFreeText);
+        });
+    });
+
+    describe("Specimen type Others", function(){
+        var existingSpecimen = function () {
+            return new Bahmni.Clinical.Specimen({
+                existingObs: "Existing Obs Uuid",
+                dateCollected: "2015-10-01T18:30:00.000Z",
+                type: {name: "Other"},
+                identifier: "1234",
+                sample: {
+                    additionalAttributes: {}
+                }
+            });
+        };
+
+        it("should set showNonCodedSampleText to be true on call of editSpecimen", function () {
+            $scope.newSpecimens = [];
+            $scope.editSpecimen(existingSpecimen());
+            expect($scope.newSpecimens[0].showTypeFreeText).toBe(true);
+
+        });
+
+        it("should set showNonCodedSampleText to be true on call of handleUpdate", function () {
+
+            $scope.newSpecimens = [];
+            $scope.newSpecimens.push(existingSpecimen());
+            $scope.handleUpdate();
+
+            expect($scope.newSpecimens[0].showTypeFreeText).toBe(true);
+
+        });
+
     });
 });

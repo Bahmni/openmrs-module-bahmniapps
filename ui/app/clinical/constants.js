@@ -23,6 +23,11 @@ Bahmni.Clinical.Constants = (function () {
         invalidItems: "Highlighted items in New Prescription section are incomplete. Please edit or remove them to continue",
         conceptNotNumeric: "Concept ':conceptName''s datatype is not Numeric. At :placeErrorAccurred."
     };
+    var bacteriologyConstants = {
+        otherSampleType :"Other",
+        specimenSampleSourceConceptName: "Specimen Sample Source"
+
+    };
     return {
         patientsListUrl: "/patient/search",
         diagnosisObservationConceptName: "Visit Diagnoses",
@@ -59,7 +64,8 @@ Bahmni.Clinical.Constants = (function () {
         otherActiveDrugOrders: "Other Active DrugOrders",
         dispensePrivilege: "bahmni:clinical:dispense",
         mandatoryVisitConfigUrl: "config/visitMandatoryTab.json",
-        defaultExtensionName: "default"
+        defaultExtensionName: "default",
+        bacteriologyConstants: bacteriologyConstants
 
     };
 })();

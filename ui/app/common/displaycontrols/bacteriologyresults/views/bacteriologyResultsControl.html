@@ -10,7 +10,7 @@
                     <i class="fa fa-caret-down" ng-show="specimen.isOpen"></i>
                     <span class="specimen-info">
                         <span class="specimenSource" toggle="specimen.isOpen">
-                            {{specimen.specimenSource}} :
+                            {{getDisplayName(specimen)}} :
                             <span class="specimenId">{{specimen.specimenId}}</span>
                         </span>
                         <span class="specimenCollectionDate">

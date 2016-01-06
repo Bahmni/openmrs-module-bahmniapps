@@ -4,6 +4,7 @@ Bahmni.Clinical.Specimen = function (specimen, allSamples) {
     var self = this;
     self.dateCollected = specimen && Bahmni.Common.Util.DateUtil.getDateWithoutTime(specimen.dateCollected);
     self.type = specimen && specimen.type;
+    self.typeFreeText = specimen && specimen.typeFreeText;
     self.identifier = specimen && specimen.identifier;
     self.sample = specimen && specimen.sample && specimen.sample.additionalAttributes ? specimen.sample : {additionalAttributes: []};
     self.report = specimen && specimen.report && specimen.report.results ? specimen.report : {results: []};
@@ -14,7 +15,7 @@ Bahmni.Clinical.Specimen = function (specimen, allSamples) {
     };
 
     self.isEmpty = function () {
-        return !self.dateCollected && !self.identifier && !self.type;
+        return !self.dateCollected && !self.identifier && !self.type && !self.typeFreeText;
     };
 
     function hasResults() {
@@ -31,5 +32,9 @@ Bahmni.Clinical.Specimen = function (specimen, allSamples) {
 
     self.isTypeDirty = function(){
         return !self.type && self.hasIllegalType;
+    };
+
+    self.isTypeFreeTextDirty = function(){
+        return !self.typeFreeText && self.hasIllegalTypeFreeText;
     }
 };
