@@ -40,6 +40,12 @@ angular.module('bahmni.common.uiHelper')
                 targetElement.hide();
                 $scope.targetElements.push(targetElement);
             };
+            $(document).on('click','.reg-wrapper', function () {
+                if ($scope.isTargetOpen) {
+                    $scope.isTargetOpen = false;
+                    hideTargetElements(0);
+                }
+            });
         };
 
         return {
