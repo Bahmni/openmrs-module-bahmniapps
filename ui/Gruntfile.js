@@ -383,9 +383,15 @@ module.exports = function (grunt) {
             for (var i in preFetchDirs) {
                 preFetchList = preFetchList.concat(getFiles(preFetchDirs[i], preFetchList))
             }
-            updatePrefetchList(preFetchList);
+            updatePrefetchList(unique(preFetchList));
         }
     );
+
+    var unique = function(array) {
+        return array.filter(function(item, pos) {
+            return array.indexOf(item) == pos;
+        });
+    };
 
     var getFiles = function (dir, files_) {
         var fs = require('fs');
