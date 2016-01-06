@@ -192,7 +192,7 @@ describe("clinicalAppConfigService", function () {
 
     describe("should fetch app config", function () {
         it('should fetch drugorder config', function (done) {
-            appService.initApp('clinical', {'app': true}).then(function () {
+            appService.initApp('clinical', {'app': true}, "", ["medication"]).then(function () {
                 var result = clinicalAppConfigService.getDrugOrderConfig();
                 expect(result.defaultDurationUnit).toBe("Day(s)");
                 done();

@@ -8,7 +8,11 @@ angular.module('bahmni.clinical')
         };
 
         this.getDrugOrderConfig = function () {
-            return appService.getAppDescriptor().getConfigValue("drugOrder") || {};
+            var appDescriptor = appService.getAppDescriptor();
+            var medicationConfig = appDescriptor.getConfigForPage("medication") || {};
+            var drugOrderConfig = appDescriptor.getConfigValue("drugOrder") || {};
+
+            return _.merge(drugOrderConfig, medicationConfig);
         };
 
         this.getAllConceptsConfig = function () {
@@ -67,7 +71,7 @@ angular.module('bahmni.clinical')
         this.getDefaultVisitType = function (){
             return appService.getAppDescriptor().getConfigValue("defaultVisitType");
         };
-        
+
         this.getVisitTypeForRetrospectiveEntries = function (){
             return appService.getAppDescriptor().getConfigValue("visitTypeForRetrospectiveEntries");
         };
