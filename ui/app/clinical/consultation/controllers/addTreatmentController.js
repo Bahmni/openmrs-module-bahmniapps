@@ -232,6 +232,13 @@ angular.module('bahmni.clinical')
 
                 $scope.clearForm();
             };
+
+            var isEffectiveStartDateSameAsToday = function (newDrugOrder) {
+                return DateUtil.isSameDate(newDrugOrder.effectiveStartDate, DateUtil.parse(newDrugOrder.encounterDate))
+                    && DateUtil.isSameDate(newDrugOrder.effectiveStartDate, DateUtil.now());
+
+            };
+
             var setEffectiveDates = function (newDrugOrder, existingDrugOrders) {
                 newDrugOrder.scheduledDate = newDrugOrder.effectiveStartDate;
                 existingDrugOrders.forEach(function (existingDrugOrder) {
@@ -249,6 +256,9 @@ angular.module('bahmni.clinical')
                         newDrugOrder.effectiveStartDate = DateUtil.addSeconds(existingDrugOrder.effectiveStopDate, 1);
                     }
                 });
+                if(isEffectiveStartDateSameAsToday(newDrugOrder)) {
+                    newDrugOrder.scheduledDate = null;
+                }
             };
 
             $scope.refill = function (drugOrder, alreadyActiveSimilarOrder) {

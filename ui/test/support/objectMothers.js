@@ -106,6 +106,7 @@ Bahmni.Tests.drugOrderViewModelMother = {
         };
         defaultModel.uuid = drugOrderViewModelData.uuid || null;
         defaultModel.previousOrderUuid = drugOrderViewModelData.previousOrderUuid || null;
+        defaultModel.encounterDate = drugOrderViewModelData.encounterDate||null;
         return defaultModel;
     }
 };
