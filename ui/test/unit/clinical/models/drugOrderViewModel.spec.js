@@ -84,8 +84,7 @@ describe("drugOrderViewModel", function () {
         var treatment = sampleTreatment({}, [], null, Bahmni.Common.Util.DateUtil.now());
         treatment.durationUnit = "Days";
         treatment.route = "Orally";
-        treatment.uniformDosingType.dose = "1";
-        treatment.uniformDosingType.dosingUnitMantissa = {"value": 0.50, "label": "½"};
+        treatment.uniformDosingType.dose = "1.5";
         treatment.uniformDosingType.doseUnits = "Capsule";
         treatment.uniformDosingType.frequency = "Once a day";
         treatment.frequencyType = Bahmni.Clinical.Constants.dosingTypes.uniform;
@@ -107,8 +106,7 @@ describe("drugOrderViewModel", function () {
         var treatment = sampleTreatment(appConfig, [], null, Bahmni.Common.Util.DateUtil.now());
         treatment.durationUnit = "Days";
         treatment.route = "Orally";
-        treatment.uniformDosingType.dose = "1";
-        treatment.uniformDosingType.dosingUnitMantissa = {"value": 0.50, "label": "½"};
+        treatment.uniformDosingType.dose = "1.5";
         treatment.uniformDosingType.doseUnits = "Capsule";
         treatment.uniformDosingType.frequency = "Once a day";
         treatment.frequencyType = Bahmni.Clinical.Constants.dosingTypes.uniform;
@@ -1122,16 +1120,6 @@ describe("drugOrderViewModel", function () {
                 treatment.quantityUnit = "Some";
 
                 expect(treatment.validate()).toBeTruthy();
-            });
-
-            it("should fail validation if all are given but dose is 0", function () {
-                treatment.uniformDosingType = {
-                    dose: 0,
-                    frequency: "Once a day",
-                    doseUnits: "Some"
-                };
-
-                expect(treatment.validate()).toBeFalsy();
             });
 
             it("should fail validation if dose is 0 and dose units is not given", function () {

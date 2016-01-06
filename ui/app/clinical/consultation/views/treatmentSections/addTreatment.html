@@ -43,7 +43,7 @@
                                ng-model="treatment.uniformDosingType.dose" ng-required="!treatment.validate()" focus-on="editDrugEntryUniformFrequency" />
                         <div ng-show="isDosingUnitsFractionsAvailable()" class="fl dosingUnitsFractions-container">
                             <label class="fl">&nbsp;and&nbsp;</label>
-                            <select id="uniform-dose-mantissa" class="form-field freq-dose-units" ng-model="treatment.uniformDosingType.dosingUnitMantissa"
+                            <select id="uniform-dose-mantissa" class="form-field freq-dose-units" ng-model="treatment.uniformDosingType.dosingUnitsFraction"
                                     ng-options="item.label for item in dosingUnitsFractions track by item.value" ng-required="!treatment.validate()">
                                 <option value="">e.g. 1/2</option>
                             </select>
