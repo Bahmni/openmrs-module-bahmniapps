@@ -4,12 +4,13 @@
     <span class="section-label">{{ config | titleTranslate }}</span>
 </h2>
 <p class="placeholder-text" ng-if="drugOrders && drugOrders.length == 0">{{'NO_DRUG_DETAILS_MESSAGE' | translate}} </p>
-<table ng-if="drugOrders && drugOrders.length > 0" class="drug-order-table treatments-details-table" ng-show="toggle">
-    <tr>
-        <th ng-repeat="columnName in columns" ng-class="columnName">{{columnHeaders[columnName] | translate}}</th>
-        <th class="empty-header" ng-if="config.actions">&nbsp;</th>
-    </tr>
-    <tbody ng-repeat="drugOrder in drugOrders">
+<section class="overflowAuto">
+    <table ng-if="drugOrders && drugOrders.length > 0" class="drug-order-table treatments-details-table" ng-show="toggle">
+        <tr>
+            <th ng-repeat="columnName in columns" ng-class="columnName">{{columnHeaders[columnName] | translate}}</th>
+            <th class="empty-header" ng-if="config.actions" ng-class="{'custom-empty-header': columns.length > 9}">&nbsp;</th>
+        </tr>
+        <tbody ng-repeat="drugOrder in drugOrders">
         <tr ng-class="{'highlight' : drugOrder.isBeingEdited, 'edited' : drugOrder.isMarkedForDiscontinue}">
             <td ng-repeat="columnName in columns" class="{{columnName}}" ng-class="{'noActionColumn' :!config.actions}">
                 <span ng-if="columnName === 'drugName'">{{::drugOrder.getDrugOrderName(false)}}</span>
@@ -67,5 +68,6 @@
             </td>
         </tr>
 
-    </tbody>
-</table>
+        </tbody>
+    </table>
+</section>

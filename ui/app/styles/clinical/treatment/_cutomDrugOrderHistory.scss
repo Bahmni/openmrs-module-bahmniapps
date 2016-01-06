@@ -35,13 +35,13 @@
       background: #eee;
       background-image: none;
       color: #333;
-      width: 100px;
+      width: 83px;
       @media (max-width : 1024px){
         width: 90px;
       }
       font-family: openSansSemiBold;
       &.drugName{
-        width: 300px;
+        width: 210px;
         text-align: left;
         @media (max-width : 1024px){
           width: 170px;
@@ -49,6 +49,12 @@
       }
       &.empty-header{
         width: 100%;
+        @media (max-width : 1024px){
+          width: 125px;
+        }
+      }
+      &.empty-header.custom-empty-header{
+        width: 125px;
       }
     }
     td{
