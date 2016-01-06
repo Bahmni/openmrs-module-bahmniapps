@@ -5,7 +5,7 @@ angular.module('bahmni.common.displaycontrol.chronicTreatmentChart')
         return function(value){
             if(!isNaN(value)){
                 value=+(value);
-                return value.toPrecision(1);
+                return Math.floor(value);
             }
             return value;
         }
