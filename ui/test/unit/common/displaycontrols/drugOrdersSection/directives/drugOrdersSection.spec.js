@@ -146,7 +146,9 @@ describe('Drug Order Details DisplayControl', function () {
 
         var compiledElementScope = element.isolateScope();
         scope.$digest();
-        expect(compiledElementScope.columns.length).toBe(9);
+        var expectedColumns = ["drugName", "dosage", "startDate","frequency", "route"]
+        expect(compiledElementScope.columns.length).toBe(5);
+        expect(compiledElementScope.columns).toEqual(expectedColumns)
     });
 
     it("should assign Drug Orders as default title if title is not specified in config", function(){

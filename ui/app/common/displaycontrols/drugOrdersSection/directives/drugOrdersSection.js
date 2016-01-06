@@ -20,16 +20,23 @@ angular.module('bahmni.common.displaycontrol.drugOrdersSection')
                 "startDate": "DRUG_DETAILS_START_DATE",
                 "stopDate": "DRUG_DETAILS_STOP_DATE",
                 "stopReason": "DRUG_DETAILS_ORDER_REASON_CODED",
-                "stopReasonNotes": "DRUG_DETAILS_ORDER_REASON_TEXT"
+                "stopReasonNotes": "DRUG_DETAILS_ORDER_REASON_TEXT",
+                "instructions": "DRUG_DETAILS_INSTRUCTIONS_TEXT",
+                "quantity": "DRUG_DETAILS_QUANTITY_TEXT",
+                "additionalInstructions": "DRUG_DETAILS_ADDITIONAL_INSTRUCTIONS_TEXT"
             };
 
             $scope.minDateStopped = DateUtil.getDateWithoutTime(DateUtil.now());
             $scope.scheduledDate = DateUtil.getDateWithoutTime(DateUtil.now());
 
             var initialiseColumns = function() {
-                $scope.columns = $scope.config.columns;
-                if(!$scope.columns){
-                    $scope.columns = _.keys($scope.columnHeaders);
+                var mandatoryColumns = ["drugName", "dosage", "startDate"];
+                var defaultColumns = ["frequency", "route"];
+
+                if (_.isEmpty($scope.config.columns)) {
+                    $scope.columns = _.union(mandatoryColumns, defaultColumns);
+                } else {
+                    $scope.columns = _.union(mandatoryColumns, $scope.config.columns);
                 }
             };
 

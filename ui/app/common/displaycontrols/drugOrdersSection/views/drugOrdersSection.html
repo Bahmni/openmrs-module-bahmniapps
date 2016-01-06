@@ -21,6 +21,9 @@
                 <span ng-if="columnName === 'stopDate' && drugOrder.isDiscontinuedOrStopped()">{{::drugOrder.effectiveStopDate | bahmniDate}}</span>
                 <span ng-if="columnName === 'stopReason' && drugOrder.orderReasonConcept">{{::drugOrder.orderReasonConcept.display || drugOrder.orderReasonConcept.name}}</span>
                 <span ng-if="columnName === 'stopReasonNotes' && drugOrder.orderReasonText">{{::drugOrder.orderReasonText}}</span>
+                <span ng-if="columnName === 'additionalInstructions'">{{::drugOrder.additionalInstructions}}</span>
+                <span ng-if="columnName === 'instructions'">{{::drugOrder.instructions}}</span>
+                <span ng-if="columnName === 'quantity'">{{::drugOrder.getQuantityWithUnit()}}</span>
             </td>
             <td ng-if="config.actions">
                 <div class="button-group-wrapper">

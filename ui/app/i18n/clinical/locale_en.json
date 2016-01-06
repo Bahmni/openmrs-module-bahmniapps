@@ -97,5 +97,8 @@
     "DRUG_DETAILS_STOP_DATE": "Stop date",
     "DRUG_DETAILS_ORDER_REASON_CODED": "Stop Reason",
     "DRUG_DETAILS_ORDER_REASON_TEXT": "Because of",
+    "DRUG_DETAILS_INSTRUCTIONS_TEXT": "Instructions",
+    "DRUG_DETAILS_QUANTITY_TEXT": "Quantity",
+    "DRUG_DETAILS_ADDITIONAL_INSTRUCTIONS_TEXT": "Additional Instructions",
     "DRUG_DETAILS_DURATION": "Duration"
 }

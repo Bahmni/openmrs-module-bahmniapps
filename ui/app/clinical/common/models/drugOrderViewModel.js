@@ -430,8 +430,7 @@ Bahmni.Clinical.DrugOrderViewModel = function (appConfig, config, proto, encount
     };
 
     this.getDurationAndDurationUnits = function () {
-        return addDelimiter(blankIfFalsy(self.duration), " ") +
-        blankIfFalsy(self.durationUnit)
+        return self.duration ? self.duration + " " + self.durationUnit : "";
     };
 
     this.refill = function (existingOrderStopDate) {
