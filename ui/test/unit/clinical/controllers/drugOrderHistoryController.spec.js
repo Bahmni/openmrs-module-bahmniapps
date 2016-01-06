@@ -153,6 +153,20 @@ describe("DrugOrderHistoryController", function () {
         expect(scope.updateFormConditions).toHaveBeenCalled();
     });
 
+    describe("Min stop date", function() {
+        it("should be same as start date of drug order if past drug", function() {
+            var pastDrugOrder = Bahmni.Clinical.DrugOrderViewModel.createFromContract(activeDrugOrder);
+            var minDate = scope.getMinDateForDiscontinue(pastDrugOrder);
+            expect(minDate).toEqual("2014-09-10");
+        });
+
+        it("should be same as current date if scheduled drug", function() {
+            var pastDrugOrder = Bahmni.Clinical.DrugOrderViewModel.createFromContract(scheduledOrder);
+            var minDate = scope.getMinDateForDiscontinue(pastDrugOrder);
+            expect(minDate).toEqual(moment().format("YYYY-MM-DD"));
+        });
+    });
+
     activeDrugOrder = {
         "uuid": "activeOrderUuid",
         "action": "NEW",

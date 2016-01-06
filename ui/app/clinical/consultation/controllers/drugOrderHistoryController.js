@@ -13,7 +13,6 @@ angular.module('bahmni.clinical')
             var activeDrugOrdersList = [];
             var prescribedDrugOrders = [];
             $scope.dispensePrivilege = Bahmni.Clinical.Constants.dispensePrivilege;
-            $scope.minDateStopped = DateUtil.getDateWithoutTime(DateUtil.now());
             $scope.scheduledDate = DateUtil.getDateWithoutTime(DateUtil.now());
 
             var createPrescriptionGroups = function (activeAndScheduledDrugOrders) {
@@ -203,6 +202,14 @@ angular.module('bahmni.clinical')
                 });
                 return canBeUpdated;
             };
+
+            $scope.getMinDateForDiscontinue = function(drugOrder) {
+                var minDate = DateUtil.today();
+                if(DateUtil.isBeforeDate(drugOrder.effectiveStartDate, minDate)) {
+                    minDate = drugOrder.effectiveStartDate;
+                }
+                return DateUtil.getDateWithoutTime(minDate);
+            }
 
             var getAttribute = function (drugOrder, attributeName) {
                 return _.find(drugOrder.orderAttributes, {name: attributeName});
