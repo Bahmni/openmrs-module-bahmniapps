@@ -4,7 +4,7 @@
     <span class="section-label">{{ config | titleTranslate }}</span>
 </h2>
 <p class="placeholder-text" ng-if="drugOrders && drugOrders.length == 0">{{'NO_DRUG_DETAILS_MESSAGE' | translate}} </p>
-<section class="overflowAuto">
+<div class="overflowAuto">
     <table ng-if="drugOrders && drugOrders.length > 0" class="drug-order-table treatments-details-table" ng-show="toggle">
         <tr>
             <th ng-repeat="columnName in columns" ng-class="columnName">{{columnHeaders[columnName] | translate}}</th>
@@ -70,4 +70,4 @@
 
         </tbody>
     </table>
-</section>
+</div>
