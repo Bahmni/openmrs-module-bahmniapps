@@ -70,11 +70,6 @@ Bahmni.Registration.CreatePatientRequestMapper = (function () {
             attr.voided = true;
         }
         else if (attributeType.format === "org.openmrs.Concept") {
-            attr.value = _.find(attributeType.answers, function(answer){
-               if(answer.conceptId === value)
-                    return true;
-            }).description;
-
             attr.hydratedObject = value;
         }
         else if(attributeType.format == "org.openmrs.util.AttributableDate"){
