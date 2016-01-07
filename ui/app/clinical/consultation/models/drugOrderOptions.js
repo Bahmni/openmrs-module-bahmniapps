@@ -1,7 +1,7 @@
 'use strict';
 
 Bahmni.Clinical.DrugOrderOptions = (function() {
-    var self, _proto;
+    var _proto;
 
     var itemsForInputConfig = function(listOfObjects, filterStrings) {
         if (!filterStrings) return listOfObjects;
@@ -10,15 +10,15 @@ Bahmni.Clinical.DrugOrderOptions = (function() {
             return _.contains(filterStrings, object.name);
         });
     };
-    var drugMatches = function(drug) {
-        return drug && _.contains(self.listOfDrugs, drug.name);
-    };
+
 
     var DrugOrderOptions = function (inputConfig, listOfDrugs, masterConfig) {
-        self = this;
-        this.listOfDrugs = _.map(listOfDrugs, function(drug) {
+        var listOfDrugs = _.map(listOfDrugs, function(drug) {
             return drug.name;
         });
+        this._drugMatches = function(drug) {
+            return drug && _.contains(listOfDrugs, drug.name);
+        };
         inputConfig = inputConfig || {};
 
         this.doseUnits = itemsForInputConfig(masterConfig.doseUnits, inputConfig.doseUnits);
@@ -34,33 +34,33 @@ Bahmni.Clinical.DrugOrderOptions = (function() {
     _proto = DrugOrderOptions.prototype;
 
     _proto.getDoseUnits = function(drug) {
-        return drugMatches(drug)? this.doseUnits: null;
+        return this._drugMatches(drug)? this.doseUnits: null;
     };
 
     _proto.getRoutes = function (drug){
-        return drugMatches(drug)? this.routes: null;
+        return this._drugMatches(drug)? this.routes: null;
     };
 
     _proto.getFrequencies = function (drug){
-        return drugMatches(drug)? this.frequencies: null;
+        return this._drugMatches(drug)? this.frequencies: null;
     };
     _proto.getDurationUnits = function (drug){
-        return drugMatches(drug)? this.durationUnits: null;
+        return this._drugMatches(drug)? this.durationUnits: null;
     };
     _proto.getDosingInstructions = function (drug){
-        return drugMatches(drug)? this.dosingInstructions: null;
+        return this._drugMatches(drug)? this.dosingInstructions: null;
     };
     _proto.getDispensingUnits = function (drug){
-        return drugMatches(drug)? this.dispensingUnits: null;
+        return this._drugMatches(drug)? this.dispensingUnits: null;
     };
     _proto.isDefaultDrugOrderOption = function() {
         return this.listOfDrugs.length == 0;
     };
     _proto.disableField = function(drug, fieldName) {
-        return drugMatches(drug)? _.contains(this.disableFields, fieldName): null;
+        return this._drugMatches(drug)? _.contains(this.disableFields, fieldName): null;
     };
     _proto.getDosePlaceHolder = function(drug) {
-        return drugMatches(drug) ? this.dosePlaceHolder : null;
+        return this._drugMatches(drug) ? this.dosePlaceHolder : null;
     };
     return DrugOrderOptions;
 })();

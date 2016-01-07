@@ -1,6 +1,7 @@
 'use strict';
 describe("DrugOrderOptionsSet", function () {
-    var masterConfig, listOfDrugs, anInputConfig, secondInputConfiguration, drugOrderOptions = [], model;
+    var masterConfig, listOfDrugsForAnInputCOnfig,listOfDrugsForAnotherInputCOnfig,
+        anInputConfig, anotherInputConfig, drugOrderOptions = [], model;
     beforeEach(function() {
         masterConfig = {
             "doseUnits": [{"name": "mg"}, {"name": "Tablet(s)"}],
@@ -13,9 +14,12 @@ describe("DrugOrderOptionsSet", function () {
                 { "uuid": "18a35ec5-3a92-11e5-b380-0050568236ae", "frequencyPerDay": 0.857142857, "name": "Six days a week"}
             ]
         };
-        listOfDrugs = [
+        listOfDrugsForAnInputCOnfig = [
             {name: "K"},
             {name: "T"}
+        ];
+        listOfDrugsForAnotherInputCOnfig = [
+            {name: "L"}
         ];
 
         anInputConfig = {
@@ -26,7 +30,14 @@ describe("DrugOrderOptionsSet", function () {
             "disableFields": ["doseUnits", "frequencies"]
         };
 
-        drugOrderOptions.push(new Bahmni.Clinical.DrugOrderOptions(anInputConfig, listOfDrugs, masterConfig));
+        anotherInputConfig = {
+            "conceptSetName": "All NonTB Drugs",
+            "doseUnits": ["Tablet(s)"],
+            "disableFields": ["frequencies"]
+        };
+
+        drugOrderOptions.push(new Bahmni.Clinical.DrugOrderOptions(anInputConfig, listOfDrugsForAnInputCOnfig, masterConfig));
+        drugOrderOptions.push(new Bahmni.Clinical.DrugOrderOptions(anotherInputConfig,listOfDrugsForAnotherInputCOnfig , masterConfig));
         model = new Bahmni.Clinical.DrugOrderOptionsSet(drugOrderOptions, masterConfig);
     });
 
@@ -51,6 +62,8 @@ describe("DrugOrderOptionsSet", function () {
     describe("disableField", function() {
         it("returns true if field set as disabled", function() {
             expect(model.disableField({name: "K"}, "doseUnits")).toBe(true);
+            expect(model.disableField({name: "L"}, "doseUnits")).toBe(false);
+            expect(model.disableField({name: "L"}, "frequencies")).toBe(true);
         });
 
         it("returns false if field not set as disabled", function() {
