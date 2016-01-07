@@ -83,9 +83,8 @@ angular.module('bahmni.registration')
                     }
                     relationship.content = getPatientGenderAndAge(patients[0]);
                     var personUuid = patients[0]['uuid'];
-                    var personName = patients[0]['givenName'] + " " + patients[0]['familyName'];
 
-                    relationship.personB = {'display': personName, 'uuid': personUuid};
+                    relationship.personB = {'uuid': personUuid};
 
                 });
             };
@@ -116,7 +115,7 @@ angular.module('bahmni.registration')
             $scope.providerSelected = function (relationship) {
                 return function (providerData) {
                     relationship.providerName = providerData.identifier;
-                    relationship.personB = {'display': providerData.identifier, 'uuid': providerData.uuid};
+                    relationship.personB = {'uuid': providerData.uuid};
                 }
             };
 

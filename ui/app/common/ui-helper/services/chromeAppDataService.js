@@ -18,8 +18,7 @@ angular.module('bahmni.common.uiHelper')
             "gender",
             "age",
             "dateCreated",
-            "patientJson",
-            "relationships"];
+            "patientJson"];
         var attributeColumnNames = [
             "attributeTypeId",
             "attributeValue",
@@ -32,7 +31,7 @@ angular.module('bahmni.common.uiHelper')
             'identifierIndex': 'identifier'
         };
 
-        var populateData = function () {
+        this.populateData = function () {
             schemaBuilder = lf.schema.create('Bahmni', 2);
 
             createTable(schemaBuilder, 'patient_attribute_types', attributeTypeColumnNames);
@@ -46,9 +45,10 @@ angular.module('bahmni.common.uiHelper')
                     insertPatients(db, addressColumns, 0);
                 });
             });
+
         };
 
-        var getPatient = function (uuid) {
+        this.getPatient = function (uuid) {
             var deferred = $q.defer();
             schemaBuilder = lf.schema.create('Bahmni', 2);
             createTable(schemaBuilder, 'patient_attribute_types', attributeTypeColumnNames);
@@ -62,10 +62,11 @@ angular.module('bahmni.common.uiHelper')
                 createTable(schemaBuilder, 'patient_address', addressColumns);
                 schemaBuilder.connect().then(function (db) {
                     var p = db.getSchema().table('patient');
-                    db.select(p.patientJson.as('patient'), p.relationships.as('relationships'))
+                    db.select(p.patientJson.as('patient'))
                         .from(p)
                         .where(p.uuid.eq(uuid)).exec()
                         .then(function (result) {
+                            result[0].relationships = [];
                             deferred.resolve(result[0]);
                         });
                 })
@@ -73,25 +74,7 @@ angular.module('bahmni.common.uiHelper')
             return deferred.promise;
         };
 
-        var getPatientByIdentifier = function (patientIdentifier) {
-            var deferred = $q.defer();
-            schemaBuilder = lf.schema.create('Bahmni', 2);
-
-            createTable(schemaBuilder, 'patient', patientColumnNames, columnsToBeIndexed);
-
-            schemaBuilder.connect().then(function (db) {
-                var p = db.getSchema().table('patient');
-                db.select(p.identifier, p.givenName, p.familyName, p.gender, p.age, p.uuid)
-                    .from(p)
-                    .where(p.identifier.eq(patientIdentifier.toUpperCase())).exec()
-                    .then(function (result) {
-                        deferred.resolve({data: {pageOfResults: result}});
-                    });
-            });
-            return deferred.promise;
-        };
-
-        var createPatient = function (postRequest) {
+        this.createPatient = function (postRequest) {
             var deferred = $q.defer();
             schemaBuilder = lf.schema.create('Bahmni', 2);
             createTable(schemaBuilder, 'patient_attribute_types', attributeTypeColumnNames);
@@ -105,7 +88,7 @@ angular.module('bahmni.common.uiHelper')
                 createTable(schemaBuilder, 'patient_address', addressColumns);
                 schemaBuilder.connect().then(function (db) {
                     insertPatientData(db, postRequest, addressColumns, "POST")
-                        .then(function () {
+                        .then(function(){
                             deferred.resolve({data: postRequest});
                         });
                 });
@@ -114,7 +97,7 @@ angular.module('bahmni.common.uiHelper')
 
         };
 
-        var search = function (params) {
+        this.search = function (params) {
             var response = {
                 pageOfResults: []
             };
@@ -216,10 +199,10 @@ angular.module('bahmni.common.uiHelper')
                                                 patient = groupedResult[0];
                                                 angular.forEach(groupedResult, function (result) {
                                                     if (result.attributeName) {
-                                                        if (_.isObject(result.attributeValue)) {
+                                                        if(_.isObject(result.attributeValue)){
                                                             customAttributes[result.attributeName] = result.attributeValue.display;
                                                         }
-                                                        else {
+                                                        else{
                                                             customAttributes[result.attributeName] = result.attributeValue;
                                                         }
                                                     }
@@ -242,32 +225,6 @@ angular.module('bahmni.common.uiHelper')
             return deferred.promise;
         };
 
-        var deletePatientData = function (patientIdentifier) {
-            var deferred = $q.defer();
-            schemaBuilder = lf.schema.create('Bahmni', 2);
-            var queries = [];
-
-            schemaBuilder.connect().then(function (db) {
-                var patientTable = db.getSchema().table('patient');
-                var patientAddress = db.getSchema().table('patient_address');
-                var patientAttributes = db.getSchema().table('patient_attributes');
-
-                db.select(patientTable._id).from(patientTable).where(patientTable.identifier.eq(patientIdentifier)).exec()
-                    .then(function (results) {
-                        var patientId = results[0]._id;
-
-                        queries.push(db.delete().from(patientAttributes).where(patientAttributes.patientId.eq(patientId)));
-                        queries.push(db.delete().from(patientAddress).where(patientAddress.patientId.eq(patientId)));
-                        queries.push(db.delete().from(patientTable).where(patientTable._id.eq(patientId)));
-
-                        var tx = db.createTransaction();
-                        tx.exec(queries);
-                        deferred.resolve({});
-                    });
-            });
-            return deferred.promise;
-        };
-
         var createTable = function (schemaBuilder, tableName, columnNames, columnsToBeIndexed) {
             var table = schemaBuilder.createTable(tableName).addColumn('_id', lf.Type.INTEGER).addPrimaryKey(['_id'], true);
             angular.forEach(columnNames, function (columnName) {
@@ -287,7 +244,7 @@ angular.module('bahmni.common.uiHelper')
                 if (patientJson.data.pageOfResults.length == 0) {
                     return;
                 }
-                insertPatientData(db, patientJson.data.pageOfResults[0], addressColumnNames);
+                insertPatientData(db, patientJson.data.pageOfResults[0].patient, addressColumnNames);
                 insertPatients(db, addressColumnNames, ++nextIndex)
             }));
         };
@@ -305,22 +262,22 @@ angular.module('bahmni.common.uiHelper')
         //    });
         //};
 
-        var parseAttributeValues = function (attributes, attributeTypeMap) {
-            angular.forEach(attributes, function (attribute) {
-                if (!attribute.voided) {
-                    var format = _.find(attributeTypeMap, function (attributeType) {
-                        return attributeType.uuid === attribute.attributeType.uuid
-                    }).format;
-                    if ("java.lang.Integer" === format || "java.lang.Float" === format) {
-                        attribute.value = parseFloat(attribute.value);
-                    } else if ("java.lang.Boolean" === format) {
-                        attribute.value = (attribute.value === 'true');
-                    } else if ("org.openmrs.Concept" === format) {
-                        var value = attribute.value;
-                        attribute.value = {display: value, uuid: attribute.hydratedObject};
+        var parseAttributeValues = function(attributes, attributeTypeMap){
+            angular.forEach(attributes, function(attribute){
+               if(!attribute.voided){
+                   var format = _.find(attributeTypeMap, function (attributeType) {
+                       return attributeType.uuid === attribute.attributeType.uuid
+                   }).format;
+                   if("java.lang.Integer" === format || "java.lang.Float" === format){
+                       attribute.value = parseFloat(attribute.value);
+                   } else if("java.lang.Boolean" === format){
+                       attribute.value = (attribute.value === 'true');
+                   } else if("org.openmrs.Concept" === format){
+                       var value = attribute.value;
+                       attribute.value = { display : value, uuid: attribute.hydratedObject};
 
-                    }
-                }
+                   }
+               }
             });
         };
 
@@ -332,17 +289,6 @@ angular.module('bahmni.common.uiHelper')
             attributeTypeTable = db.getSchema().table('patient_attribute_types');
             person = patient.person;
             var personName = person.names[0];
-
-            var relationships = postRequest.relationships;
-            if (!_.isEmpty(relationships)) {
-                _.each(relationships, function (relationship) {
-                    relationship.personA = {
-                        display: personName.givenName + " " + personName.familyName,
-                        uuid: patient.uuid
-                    };
-                })
-            }
-
             patientIdentifier = patient.identifiers[0].identifier;
             return db.select(attributeTypeTable.attributeTypeId, attributeTypeTable.uuid, attributeTypeTable.attributeName, attributeTypeTable.format).from(attributeTypeTable).exec()
                 .then(function (attributeTypeMap) {
@@ -359,8 +305,7 @@ angular.module('bahmni.common.uiHelper')
                         'gender': person.gender,
                         'age': person.age,
                         'dateCreated': patient.person.auditInfo.dateCreated,
-                        'patientJson': patient,
-                        'relationships': relationships
+                        'patientJson': patient
                     });
                     db.insertOrReplace().into(patientTable).values([row]).exec();
 
@@ -447,16 +392,6 @@ angular.module('bahmni.common.uiHelper')
                 db.insertOrReplace().into(table).values([row]).exec();
             });
         };
-
-        return {
-            populateData: populateData,
-            getPatient: getPatient,
-            getPatientByIdentifier: getPatientByIdentifier,
-            createPatient: createPatient,
-            search: search,
-            deletePatientData: deletePatientData
-        }
-
 
     }
     ])
