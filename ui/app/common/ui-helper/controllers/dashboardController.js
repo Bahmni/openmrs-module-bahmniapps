@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('bahmni.common.uiHelper')
-    .controller('DashboardController', ['$rootScope', '$scope', '$state', 'appService', 'locationService', 'spinner', '$bahmniCookieStore', '$window','offlineCommonService','offlineService',
-        function ($rootScope, $scope, $state, appService, locationService, spinner, $bahmniCookieStore, $window, offlineCommonService, offlineService) {
+    .controller('DashboardController', ['$rootScope', '$scope', '$state', 'appService', 'locationService', 'spinner', '$bahmniCookieStore', '$window','chromeAppDataService','offlineService',
+        function ($rootScope, $scope, $state, appService, locationService, spinner, $bahmniCookieStore, $window, chromeAppDataService, offlineService) {
             $scope.appExtensions = appService.getAppDescriptor().getExtensions($state.current.data.extensionPointId, "link") || [];
             $scope.selectedLocationUuid = {};
 
@@ -33,7 +33,7 @@ angular.module('bahmni.common.uiHelper')
                     Android.populateData(window.location.origin);
                 }
                 else {
-                    offlineCommonService.populateData();
+                    chromeAppDataService.populateData();
                 }
             };
 

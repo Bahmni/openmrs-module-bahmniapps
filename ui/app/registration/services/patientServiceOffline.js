@@ -1,9 +1,9 @@
 'use strict';
 
 angular.module('bahmni.registration')
-    .factory('offlinePatientService', ['$http', '$q', 'offlineService', 'offlineCommonService','offlineSearchService', function ($http, $q, offlineService, offlineCommonService, offlineSearchService) {
+    .factory('patientServiceOffline', ['$http', '$q', 'offlineService', 'chromeAppDataService', function ($http, $q, offlineService, chromeAppDataService) {
 
-        var createSql = function (params) {
+        var createSql = function(params){
             var nameParts = null;
             if (params.q) {
                 nameParts = params.q.split(" ");
@@ -19,16 +19,16 @@ angular.module('bahmni.registration')
                 addressFieldName = params.address_field_name.replace("_", "");
             }
 
-            var sqlString = "SELECT identifier, givenName, middleName, familyName, dateCreated, birthDate, gender, p.uuid, " + addressFieldName + " as addressFieldValue " +
+            var sqlString = "SELECT identifier, givenName, middleName, familyName, dateCreated, age, gender, uuid, " + addressFieldName +" as addressFieldValue "  +
                 ", '{' || group_concat(DISTINCT (coalesce('\"' || pat.attributeName ||'\":\"' || pa1.attributeValue || '\"' , null))) || '}' as customAttribute" +
                 "  from patient p " +
                 " join patient_address padd " +
                 " on p._id = padd.patientId" +
                 " left outer join patient_attributes pa on p._id = pa.patientId" +
                 " and pa.attributeTypeId in (" +
-                "select " + "attributeTypeId from patient_attribute_types" +
+                "select "+ "attributeTypeId from patient_attribute_types" +
                 " where attributeName in (" + attributeNames + "))" +
-                " left outer join " + "patient_attributes pa1 on " +
+                " left outer join "+ "patient_attributes pa1 on " +
                 " pa1.patientId = p._id" +
                 " left outer join patient_attribute_types" +
                 " pat on pa1.attributeTypeId = pat.attributeTypeId and pat.attributeName in (" + attributeNames + ")";
@@ -47,14 +47,14 @@ angular.module('bahmni.registration')
                 sqlString += appender + " ( p.identifier = '" + params.identifier + "')";
                 appender = " AND ";
             }
-            if (!_.isEmpty(nameParts)) {
+            if(!_.isEmpty(nameParts)){
                 sqlString += appender + getNameSearchCondition(nameParts);
             }
             sqlString += " GROUP BY identifier ORDER BY dateCreated DESC LIMIT 50 OFFSET " + params.startIndex;
             return sqlString;
         };
 
-        var getNameSearchCondition = function (nameParts) {
+        var getNameSearchCondition = function(nameParts) {
             var BY_NAME_PARTS = " (coalesce(givenName" +
                 ", '') || coalesce(middleName" +
                 ", '') || coalesce(familyName, '')) like ";
@@ -62,7 +62,7 @@ angular.module('bahmni.registration')
                 return "";
             else {
                 var queryByNameParts = "";
-                angular.forEach(nameParts, function (part) {
+                angular.forEach(nameParts, function(part) {
                     if (!_.isEmpty(queryByNameParts)) {
                         queryByNameParts += " and " + BY_NAME_PARTS + " '%" + part + "%'";
                     } else {
@@ -79,7 +79,7 @@ angular.module('bahmni.registration')
                 return $q.when(returnValue);
             }
             else {
-                return offlineSearchService.search(params);
+                return chromeAppDataService.search(params);
             }
         };
 
@@ -87,49 +87,41 @@ angular.module('bahmni.registration')
             if (offlineService.getAppPlatform() === Bahmni.Common.Constants.platformType.android) {
                 return $q.when(JSON.parse(Android.getPatient(uuid)));
             }
-            else {
-                return offlineCommonService.getPatient(uuid);
+            else{
+                return chromeAppDataService.getPatient(uuid);
             }
         };
 
-        var getByIdentifier = function (patientIdentifier) {
+        var getByIdentifier = function(patientIdentifier) {
             if (offlineService.getAppPlatform() === Bahmni.Common.Constants.platformType.android) {
-                return $q.when(JSON.parse(Android.getPatientByIdentifier(patientIdentifier)));
+                //ToDo: Implement for Android
+                return "";
             }
-            else {
-                return offlineCommonService.getPatientByIdentifier(patientIdentifier);
+            else{
+                return chromeAppDataService.getPatientByIdentifier(patientIdentifier);
             }
         };
 
-        var create = function (postRequest) {
+        var create = function(postRequest){
             postRequest.patient.person.auditInfo = {dateCreated: new Date()};
-            if (postRequest.patient.identifiers)
+            if(postRequest.patient.identifiers)
                 postRequest.patient.uuid = postRequest.patient.identifiers[0].identifier;
             postRequest.patient.person.preferredName = postRequest.patient.person.names[0];
             postRequest.patient.person.preferredAddress = postRequest.patient.person.addresses[0];
             if (offlineService.getAppPlatform() === Bahmni.Common.Constants.platformType.android) {
-                return $q.when(JSON.parse(Android.createPatient(JSON.stringify(postRequest), window.location.origin)));
+                //ToDo: Implement for Android
             }
-            else {
-                return offlineCommonService.createPatient(postRequest);
+            else{
+                return chromeAppDataService.createPatient(postRequest);
             }
         };
 
-        var update = function (postRequest) {
-            if (offlineService.getAppPlatform() === Bahmni.Common.Constants.platformType.android) {
-                Android.deletePatientData(postRequest.patient.identifiers[0]['identifier']);
-                return create(postRequest).then(function(result){
-                    return result.data;
-                });
-            }
-            else {
-
-                return offlineCommonService.deletePatientData(postRequest.patient.identifiers[0]['identifier']).then(function (data) {
-                    return create(postRequest).then(function (result) {
-                        return result.data;
-                    });
-                });
-            }
+        var update = function(postRequest) {
+               return chromeAppDataService.deletePatientData(postRequest.patient.identifiers[0]['identifier']).then(function(data) {
+                   return create(postRequest).then(function(result){
+                       return result.data;
+                   });
+            });
         };
 
 
@@ -137,7 +129,7 @@ angular.module('bahmni.registration')
             search: search,
             get: get,
             getByIdentifier: getByIdentifier,
-            create: create,
+            create : create,
             update: update
         };
     }]);
