@@ -168,7 +168,7 @@ describe("AddTreatmentController", function () {
             expect(scope.treatment.drug).toBeUndefined();
             expect(scope.treatment.isNonCodedDrug).toBe(true);
             expect(scope.treatment.drugNonCoded).toBe(treatment.drugNameDisplay);
-        })
+        });
 
         it("should save as a coded-drug after the entered free text drug is edited to coded", function () {
             var treatment = {drugNameDisplay: "Some New Drug", drug: {name: "CodedDrug"}};
@@ -193,6 +193,7 @@ describe("AddTreatmentController", function () {
             });
 
             expect(scope.treatment.selectedItem).toBeUndefined();
+            expect(scope.treatment.isNonCodedDrug).toBeFalsy();
         });
 
         it("should remove the added coded-drug on changing the drug name", function () {
@@ -204,7 +205,25 @@ describe("AddTreatmentController", function () {
             expect(scope.treatment).toEqual({
                 drugNameDisplay: "Some New Drug"
             });
-        })
+        });
+
+        it("should enable accept button on editing an accepted drug", function () {
+            var treatment = {drugNameDisplay: "Some Coded Drug", drug: {name: "CodedDrug"}};
+            scope.treatment = treatment;
+            treatment.changeDrug = jasmine.createSpy(treatment, 'changeDrug');
+
+            scope.treatment.drugNameDisplay = "Some NonCoded Drug";
+            scope.onChange();
+
+            scope.onAccept();
+            expect(scope.treatment.isNonCodedDrug).toBeTruthy();
+
+            scope.treatment.drugNameDisplay = "Some another NonCoded Drug";
+            scope.onChange();
+
+            scope.onAccept();
+            expect(scope.treatment.isNonCodedDrug).toBeFalsy();
+        });
     });
 
     describe("DosingUnitsFractions()", function () {

@@ -365,6 +365,7 @@ angular.module('bahmni.clinical')
             };
             $scope.onSelect =  function(item){
                 $scope.treatment.selectedItem = item;
+                //$scope.onChange(); angular will call onChange after onSelect by default
             };
             $scope.onAccept = function(){
                 $scope.treatment.acceptedItem=$scope.treatment.drugNameDisplay;
@@ -384,7 +385,7 @@ angular.module('bahmni.clinical')
                     return;
                 }
                 if($scope.treatment.acceptedItem){
-                    $scope.treatment.isNonCodedDrug = true;
+                    $scope.treatment.isNonCodedDrug = !$scope.treatment.isNonCodedDrug;
                     $scope.treatment.drugNonCoded = $scope.treatment.acceptedItem;
                     delete $scope.treatment.drug;
                     delete $scope.treatment.acceptedItem;
