@@ -99,6 +99,9 @@
           margin-right: 4px;
         }
       }
+      select{
+        width: auto;
+      }
       select, input[type="date"] {
         min-width: 110px;
         margin-right: 2px;
@@ -121,8 +124,8 @@
         }
         &.variable-frequency {
           input[type="number"] {
-            min-width: 25px;
-            width: 25px;
+            min-width: 32px;
+            width: 32px;
             padding-right: 0;
           }
         }
