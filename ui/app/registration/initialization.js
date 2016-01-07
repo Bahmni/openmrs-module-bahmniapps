@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('bahmni.registration').factory('initialization',
-    ['$rootScope', '$q', 'configurations', 'authenticator', 'appService', 'spinner', 'Preferences', 'offlineService',
-    function ($rootScope, $q, configurations, authenticator, appService, spinner, preferences, offlineService) {
+    ['$rootScope', '$q', 'configurations', 'authenticator', 'appService', 'spinner', 'Preferences', 'offlineService','initializeOfflineSchema',
+    function ($rootScope, $q, configurations, authenticator, appService, spinner, preferences, offlineService, initializeOfflineSchema) {
         var getConfigs = function() {
             var configNames = ['encounterConfig', 'patientAttributesConfig', 'identifierSourceConfig', 'addressLevels', 'genderMap', 'relationshipTypeConfig','relationshipTypeMap', 'loginLocationToVisitTypeMapping'];
             return configurations.load(configNames).then(function () {
@@ -56,8 +56,8 @@ angular.module('bahmni.registration').factory('initialization',
         $rootScope.offline = function() {
             return offlineService.offline();
         };
-
-        return spinner.forPromise(authenticator.authenticateUser().then(initApp).then(getConfigs).then(initAppConfigs)
+        
+        return spinner.forPromise(authenticator.authenticateUser().then(initializeOfflineSchema.initSchema).then(initApp).then(getConfigs).then(initAppConfigs)
             .then(mapRelationsTypeWithSearch)
             .then(loadValidators(appService.configBaseUrl(), "registration")));
     }]
