@@ -1,8 +1,7 @@
 <section class="section-grid new-drug-order" ng-show="treatments.length > 0">
-	<div class="section-title-wrapper">
+	<div class="section-title-wrapper clearfix">
 		<h2 class="section-title fl">New Prescription</h2>
 		<button class="secondary-button fr bulk-toggle-btn" ng-if="!showBulkChangeToggle" ng-click="bulkChangeDuration()">Change Duration</button>
-		<div class="clear"></div>
 	</div>
 	<div ng-if="showBulkChangeToggle" class="bulk-edit-options-container clearfix">
 		<form name="updateBulkDuration" ng-submit="bulkDurationChangeDone()">
