@@ -182,9 +182,11 @@ angular.module('bahmni.clinical')
                 var newDrugOrder = $scope.treatment;
                 setNonCodedDrugConcept($scope.treatment);
 
-                newDrugOrder.effectiveStopDate = DateUtil
-                    .addDays(
+                if(newDrugOrder.durationInDays) {
+                    newDrugOrder.effectiveStopDate = DateUtil
+                        .addDays(
                         DateUtil.parse(newDrugOrder.effectiveStartDate), newDrugOrder.durationInDays);
+                }
 
                 var unsavedNotBeingEditedOrders = $scope.treatments
                     .filter(function(drugOrder) { return drugOrder.isBeingEdited == false});
@@ -214,7 +216,7 @@ angular.module('bahmni.clinical')
                 if (alreadyActiveSimilarOrders.length > 0) {
                     $scope.alreadyActiveSimilarOrder = _.sortBy(potentiallyOverlappingOrders, 'effectiveStartDate').reverse()[0];
                     $scope.conflictingIndex = _.findIndex($scope.treatments, $scope.alreadyActiveSimilarOrder);
-                    ngDialog.open({ template: 'consultation/views/treatmentSections/reviseRefillDrugOrderModal.html', scope: $scope});
+                    ngDialog.open({ template: 'consultation/views/treatmentSections/conflictingDrugOrderModal.html', scope: $scope});
                     $scope.popupActive = true;
                     return;
                 }
@@ -259,6 +261,10 @@ angular.module('bahmni.clinical')
                 if(isEffectiveStartDateSameAsToday(newDrugOrder)) {
                     newDrugOrder.scheduledDate = null;
                 }
+            };
+
+            $scope.closeDialog = function(){
+                ngDialog.close();
             };
 
             $scope.refill = function (drugOrder, alreadyActiveSimilarOrder) {

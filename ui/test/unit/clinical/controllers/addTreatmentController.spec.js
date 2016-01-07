@@ -251,6 +251,27 @@ describe("AddTreatmentController", function () {
             expect(scope.treatments[0]).toBe(treatment);
         });
 
+        it("should not set effective stop date when duration is not specified",function(){
+            var treatment = Bahmni.Tests.drugOrderViewModelMother.buildWith({}, [], {drug: {name: true}});
+            treatment.effectiveStopDate = null;
+            treatment.durationInDays = null;
+            scope.treatment = treatment;
+            scope.add();
+            expect(scope.treatments.length).toBe(1);
+            expect(scope.treatments[0].effectiveStopDate).toBe(null);
+        });
+
+        it("should set effective stop date when duration is specified",function(){
+            var treatment = Bahmni.Tests.drugOrderViewModelMother.buildWith({}, [], {drug: {name: true}});
+            treatment.effectiveStopDate = null;
+            treatment.durationInDays = 2;
+            treatment.effectiveStartDate = '2015-01-15';
+            scope.treatment = treatment;
+            scope.add();
+            expect(scope.treatments.length).toBe(1);
+            expect(scope.treatments[0].effectiveStopDate).toEqual(moment("2015-01-17").toDate());
+        });
+
         it("should empty treatment", function () {
             scope.treatment = Bahmni.Tests.drugOrderViewModelMother.buildWith({}, [], {drug: {name: true}});
             scope.add();
@@ -768,7 +789,7 @@ describe("AddTreatmentController", function () {
                 scope.add();
 
                 expect(scope.treatments.length).toEqual(1);
-                expect(ngDialog.open).toHaveBeenCalled();
+                expect(ngDialog.open).toHaveBeenCalledWith({ template: 'consultation/views/treatmentSections/conflictingDrugOrderModal.html', scope: scope});
             });
 
             it("new orders for dates 2-4 and 5-6 and 4-6", function () {
