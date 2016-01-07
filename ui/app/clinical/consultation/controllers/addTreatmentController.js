@@ -179,6 +179,11 @@ angular.module('bahmni.clinical')
                 if($scope.treatment.isNonCodedDrug) {
                     $scope.treatment.drugNonCoded = $scope.treatment.drugNameDisplay;
                 }
+
+                if ($scope.treatment.frequencyType === "uniform") {
+                    $scope.treatment.setDose($scope.treatment.getDose());
+                }
+
                 var newDrugOrder = $scope.treatment;
                 setNonCodedDrugConcept($scope.treatment);
 

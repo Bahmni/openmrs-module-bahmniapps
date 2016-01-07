@@ -53,6 +53,30 @@ Bahmni.Clinical.DrugOrderViewModel = function (appConfig, config, proto, encount
         return self.isUniformDosingType() ? self.uniformDosingType : self.variableDosingType;
     };
 
+    var destructureReal = function (number) {
+        var mantissa = parseFloat((number - Math.floor(number)).toFixed(2)),
+            abscissa = Math.ceil(number - mantissa);
+
+        var result = _.result(_.find(appConfig.dosingUnitsFractions, function (item) {
+            return item.value === mantissa;
+        }), 'label');
+
+        var response = {
+            dose: number,
+            fraction: null
+        };
+
+        if (result) {
+            response.dose = abscissa;
+            response.fraction = {
+                label: result,
+                value: mantissa
+            };
+        }
+
+        return response;
+    };
+
     this.encounterDate = encounterDate ? encounterDate : now;
     this.asNeeded = this.asNeeded || false;
     this.route = this.route || undefined;
@@ -62,6 +86,12 @@ Bahmni.Clinical.DrugOrderViewModel = function (appConfig, config, proto, encount
     this.autoExpireDate = this.autoExpireDate || undefined;
     this.frequencyType = this.frequencyType || Bahmni.Clinical.Constants.dosingTypes.uniform;
     this.uniformDosingType = this.uniformDosingType || {};
+    if (this.uniformDosingType.dose && appConfig.dosingUnitsFractions) {
+        var destructredNumber = destructureReal(this.uniformDosingType.dose);
+        this.uniformDosingType.dose = destructredNumber.dose === 0 ? "" : destructredNumber.dose;
+        if (destructredNumber.fraction)
+            this.uniformDosingType.dosingUnitsFraction = destructredNumber.fraction;
+    }
     this.variableDosingType = this.variableDosingType || {};
     this.durationInDays = this.durationInDays || 0;
     this.isDiscontinuedAllowed = this.isDiscontinuedAllowed || true;
@@ -107,11 +137,12 @@ Bahmni.Clinical.DrugOrderViewModel = function (appConfig, config, proto, encount
 
     var morphToMixedFraction = function(number) {
         var mantissa = parseFloat((number - Math.floor(number)).toFixed(2)),
-            abscissa = number - mantissa;
+            abscissa = Math.ceil(number - mantissa);
+
         if (!appConfig.dosingUnitsFractions || mantissa === 0)
             return number;
 
-        var result =  _.result(_.find(appConfig.dosingUnitsFractions, function(item) {
+        var result = _.result(_.find(appConfig.dosingUnitsFractions, function(item) {
             return item.value === mantissa;
         }), 'label');
 
@@ -125,7 +156,7 @@ Bahmni.Clinical.DrugOrderViewModel = function (appConfig, config, proto, encount
         var uniformDosingType = self.uniformDosingType;
         var mantissa = self.uniformDosingType.dosingUnitsFraction ? self.uniformDosingType.dosingUnitsFraction.value : 0;
         var dose = uniformDosingType.dose ? uniformDosingType.dose : 0;
-        var doseAndUnits = blankIfFalsy(morphToMixedFraction(parseFloat(dose) + parseFloat(mantissa))) + " " + blankIfFalsy(self.doseUnits);
+        var doseAndUnits = blankIfFalsy(morphToMixedFraction(parseFloat(dose))) + " " + blankIfFalsy(self.doseUnits);
 
         return addDelimiter(blankIfFalsy(doseAndUnits), ", ") +
             addDelimiter(blankIfFalsy(uniformDosingType.frequency), ", ");
@@ -563,13 +594,22 @@ Bahmni.Clinical.DrugOrderViewModel = function (appConfig, config, proto, encount
 
     this.loadOrderAttributes({});
 
+    this.getDose = function() {
+        var mantissa = self.uniformDosingType.dosingUnitsFraction ? self.uniformDosingType.dosingUnitsFraction.value : 0;
+        var dose = self.uniformDosingType.dose;
+
+        return dose + mantissa;
+    };
+
+    this.setDose = function(dose) {
+        self.uniformDosingType.dose = dose;
+    };
+
     this.getDoseAndUnits = function(){
         var variableDosingType = self.variableDosingType;
         var variableDosingString = addDelimiter((variableDosingType.morningDose || 0) + "-" + (variableDosingType.afternoonDose || 0) + "-" + (variableDosingType.eveningDose || 0), " ");
-        var uniformDosingType = self.uniformDosingType;
-        var mantissa = self.uniformDosingType.dosingUnitsFraction ? self.uniformDosingType.dosingUnitsFraction.value : 0;
 
-        return self.frequencyType === Bahmni.Clinical.Constants.dosingTypes.uniform ? blankIfFalsy(morphToMixedFraction(parseFloat(uniformDosingType.dose) + parseFloat(mantissa))) + " " + blankIfFalsy(self.doseUnits) : (variableDosingString + blankIfFalsy(self.doseUnits)).trim();
+        return self.frequencyType === Bahmni.Clinical.Constants.dosingTypes.uniform ? blankIfFalsy(morphToMixedFraction(this.getDose(true))) + " " + blankIfFalsy(self.doseUnits) : (variableDosingString + blankIfFalsy(self.doseUnits)).trim();
     };
 
     this.getFrequency = function(){
