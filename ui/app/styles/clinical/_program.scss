@@ -58,6 +58,29 @@
       margin: 0;
     }
   }
+  .program-details table.activeProgramTable{
+    tr{
+      border-bottom: none;
+    }
+    td{
+      border: none;
+      &.programName{
+        width: 30%;
+      }
+      &.programState{
+        width: 50%;
+      }
+      &.programDate{
+        width: 20%;
+        span{
+          padding: 0 10px;
+        }
+        .fa{
+          padding: 0;
+        }
+      }
+    }
+  }
 
 }
 

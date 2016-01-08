@@ -1,15 +1,18 @@
 <div class="program-row">
     <div class="program-details">
         <div>
-            <table>
+            <table class="activeProgramTable">
                 <tr>
-                    <td>
+                    <td class="programName">
                         <i class="fa fa-caret-right" ng-hide="patientProgram.isOpen" ng-click="showProgramAttributes(patientProgram)"></i>
                         <i class="fa fa-caret-down" ng-show="patientProgram.isOpen" ng-click="showProgramAttributes(patientProgram)"></i>
+                        {{patientProgram.display}}
                     </td>
-                    <td> {{patientProgram.display}}</td>
-                    <td ng-if="getCurrentStateDisplayName(patientProgram)">{{getCurrentStateDisplayName(patientProgram)}}</td>
-                    <td>Start Date  {{patientProgram.dateEnrolled | bahmniDate}}</td>
+                    <td class="programState" ng-if="getCurrentStateDisplayName(patientProgram)">{{getCurrentStateDisplayName(patientProgram)}}</td>
+                    <td class="programDate">Start Date:
+                        <span>{{patientProgram.dateEnrolled | bahmniDate}}</span>
+                        <i class="fa fa-pencil fr" ng-click=""></i>
+                    </td>
                 </tr>
             </table>
         </div>
