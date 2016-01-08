@@ -5,18 +5,19 @@
     <!--<meta http-equiv="refresh" content="10;url=/home">-->
     <title>Offline sync</title>
     <script>
-        var redirect = function(){
+        var redirect = function () {
             var urlHash = window.location.hash;
-            window.location.href = "/bahmni/home/" + urlHash;
+            window.location.href = "/bahmni/offline/#/" + urlHash;
         }
     </script>
     <style>
-        a{
+        a {
             text-decoration: none;
             display: inline-block;
             padding-left: 10px;
         }
-        a:hover{
+
+        a:hover {
             text-decoration: underline;
         }
     </style>
@@ -24,8 +25,8 @@
 <body>
 
 <div>
-    <span> Offline content is being synced. If you are here for a long time and not redirected automatically, follow the <a href="javascript:void(0)" onclick="redirect()">link to bahmni</a></span>
+    <span> Click <a href="javascript:void(0)" onclick="redirect()">here</a></span> to sync data.
 </div>
-    <script src="initWorker.js"></script>
+<script src="initWorker.js"></script>
 </body>
 </html>
