@@ -105,7 +105,12 @@ angular.module('bahmni.common.domain')
 
         var getProgramAttributeTypes = function () {
             return $http.get(Bahmni.Common.Constants.programAttributeTypes, {params: {v: 'custom:(uuid,name,description,datatypeClassname)'}}).then(function (response) {
-                var mandatoryProgramAttributes = appService.getAppDescriptor().getConfigValue("mandatoryProgramAttributes");
+                var programAttributesConfig = appService.getAppDescriptor().getConfigValue("program");
+                var mandatoryProgramAttributes = [];
+                for (var attributeName in programAttributesConfig) {
+                    if (programAttributesConfig[attributeName].required)
+                        mandatoryProgramAttributes.push(attributeName);
+                }
                 return new Bahmni.Common.Domain.AttributeTypeMapper().mapFromOpenmrsAttributeTypes(response.data.results, mandatoryProgramAttributes).attributeTypes;
             });
         };
