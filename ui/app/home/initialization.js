@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('bahmni.home')
-    .factory('dashboardInitialization', ['$rootScope', '$q', 'appService', 'spinner', 'offlineService', '$bahmniCookieStore',
-        function ($rootScope, $q, appService, spinner, offlineService, $bahmniCookieStore) {
+    .factory('dashboardInitialization', ['$rootScope', '$q', 'appService', 'spinner', 'offlineService', '$bahmniCookieStore','initializeOfflineSchema',
+        function ($rootScope, $q, appService, spinner, offlineService, $bahmniCookieStore, initializeOfflineSchema) {
             var setPlatformCookie = function () {
                 var platform = Bahmni.Common.Constants.platformType.chrome;
                 if (window.navigator.userAgent.match(/Android/i)) {
@@ -30,7 +30,7 @@ angular.module('bahmni.home')
             };
 
             return function() {
-                return spinner.forPromise(initApp());
+                return spinner.forPromise(initializeOfflineSchema.initSchema().then(initApp));
             };
         }
     ])

@@ -10,8 +10,7 @@ angular.module('bahmni.offline').service('offlineService', ['$rootScope','$bahmn
     };
 
     this.offline = function() {
-        //return offline;
-        return true;
+        return offline;
     };
 
     this.encrypt = function(value, encryptionType) {
