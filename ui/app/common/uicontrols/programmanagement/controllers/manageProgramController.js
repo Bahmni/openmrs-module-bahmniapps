@@ -44,7 +44,7 @@ angular.module('bahmni.common.uicontrols.programmanagment')
                 $scope.programEdited.selectedState = null;
                 $scope.programSelected = null;
                 $scope.workflowStateSelected = null;
-                $scope.patientProgramAttributes = null;
+                $scope.patientProgramAttributes = {};
                 updateActiveProgramsList();
             };
 

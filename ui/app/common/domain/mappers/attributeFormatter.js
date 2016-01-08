@@ -30,7 +30,7 @@ Bahmni.Common.Domain.AttributeFormatter = (function () {
         else if (attributeType.format === "org.openmrs.Concept") {
             attr.hydratedObject = value;
         }
-        else if (attributeType.format == "org.openmrs.util.AttributableDate") {
+        else if (attributeType.format == "org.openmrs.util.AttributableDate" || attributeType.format == "org.openmrs.customdatatype.datatype.DateDatatype") {
             var mnt = moment(value);
             attr.value = mnt.format('YYYY-MM-DD');
         }

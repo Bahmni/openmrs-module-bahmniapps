@@ -1,22 +1,26 @@
 <div class="field-attribute">
-    <label for="{{::attribute.name}}">{{::attribute.description}}<span class="asterick" ng-show="{{::attribute.required}}">*</span></label>
+    <label for="{{::attribute.name}}">{{::attribute.description}}<span class="asterick"
+                                                                       ng-show="{{::attribute.required}}">*</span></label>
 </div>
 <div class="field-value" data-ng-switch on="::attribute.format">
     <div data-ng-switch-when="java.lang.String">
         <span data-ng-switch="::isAutoComplete(attribute.name)">
             <input data-ng-switch-when="true"
-                   type="text" id="{{::$parent.attribute.name}}"                   
+                   type="text" id="{{::$parent.attribute.name}}"
                    ng-model="$parent.patient[$parent.attribute.name]" data-item-type="personAttribute"
-                   my-autocomplete source="getAutoCompleteList" response-map="getDataResults" ng-disabled="::isReadOnly($parent.attribute.name)" ng-required="{{::attribute.required}}">
+                   my-autocomplete source="getAutoCompleteList" response-map="getDataResults"
+                   ng-disabled="::isReadOnly($parent.attribute.name)" ng-required="{{::attribute.required}}">
 
             <input data-ng-switch-default
                    type="text" pattern-validate id="{{::attribute.name}}"
-                   ng-model="targetModel[attribute.name]" data-item-type="personAttribute" ng-disabled="::isReadOnly(attribute.name)" ng-required="{{::attribute.required}}">
+                   ng-model="targetModel[attribute.name]" data-item-type="personAttribute"
+                   ng-disabled="::isReadOnly(attribute.name)" ng-required="{{::attribute.required}}">
         </span>
     </div>
     <div class="left" data-ng-switch-when="org.openmrs.Concept">
         <select id="{{::attribute.name}}" ng-model="targetModel[attribute.name]"
-                ng-options="a.conceptId as a.description for a in attribute.answers" ng-disabled="::isReadOnly(attribute.name)" ng-required="{{::attribute.required}}">
+                ng-options="a.conceptId as a.description for a in attribute.answers"
+                ng-disabled="::isReadOnly(attribute.name)" ng-required="{{::attribute.required}}">
             <option value=""></option>
         </select>
     </div>
@@ -28,16 +32,31 @@
     </div>
     <div class="left" data-ng-switch-when="java.lang.Integer">
         <input id="{{::attribute.name}}" type="number" pattern-validate
-               ng-model="targetModel[attribute.name]" data-item-type="personAttribute" ng-disabled="::isReadOnly(attribute.name)" ng-required="{{::attribute.required}}"/>
+               ng-model="targetModel[attribute.name]" data-item-type="personAttribute"
+               ng-disabled="::isReadOnly(attribute.name)" ng-required="{{::attribute.required}}"/>
     </div>
     <div class="left" data-ng-switch-when="java.lang.Float">
         <input type="number" pattern-validate step="any" id="{{::attribute.name}}"
-               ng-model="targetModel[attribute.name]" data-item-type="personAttribute" ng-disabled="::isReadOnly(attribute.name)" ng-required="{{::attribute.required}}"/>
+               ng-model="targetModel[attribute.name]" data-item-type="personAttribute"
+               ng-disabled="::isReadOnly(attribute.name)" ng-required="{{::attribute.required}}"/>
     </div>
     <div class="left" data-ng-switch-when="java.lang.Boolean">
-        <input id="{{::attribute.name}}" type="checkbox" ng-model="targetModel[attribute.name]" ng-disabled="::isReadOnly(attribute.name)" ng-required="{{::attribute.required}}" class="secondary-identifier-check"/>
+        <input id="{{::attribute.name}}" type="checkbox" ng-model="targetModel[attribute.name]"
+               ng-disabled="::isReadOnly(attribute.name)" ng-required="{{::attribute.required}}"
+               class="secondary-identifier-check"/>
+    </div>
+    <div class="left" data-ng-switch-when="org.openmrs.customdatatype.datatype.BooleanDatatype">
+        <input id="{{::attribute.name}}" type="checkbox" ng-model="targetModel[attribute.name]"
+               ng-disabled="::isReadOnly(attribute.name)" ng-required="{{::attribute.required}}"
+               class="secondary-identifier-check"/>
+    </div>
+    <div class="left" data-ng-switch-when="org.openmrs.customdatatype.datatype.DateDatatype">
+        <input id="{{::attribute.name}}" type="date" ng-model="targetModel[attribute.name]"
+               ng-disabled="::isReadOnly(attribute.name)" ng-required="{{::attribute.required}}"
+               class="secondary-identifier-check"/>
     </div>
     <div class="left" data-ng-switch-when="org.openmrs.util.AttributableDate">
-        <input id="{{::attribute.name}}" type="date" ng-model="targetModel[attribute.name]" ng-disabled="::isReadOnly(attribute.name)" ng-required="{{::attribute.required}}"/>
+        <input id="{{::attribute.name}}" type="date" ng-model="targetModel[attribute.name]"
+               ng-disabled="::isReadOnly(attribute.name)" ng-required="{{::attribute.required}}"/>
     </div>
 </div>
