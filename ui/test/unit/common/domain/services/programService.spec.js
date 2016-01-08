@@ -40,6 +40,11 @@ describe('programService', function () {
                 return {
                     program: ""
                 }
+            },
+            getConfigValue: function(){
+                return{
+                    mandatoryProgramAttributes :""
+                }
             }
         });
 

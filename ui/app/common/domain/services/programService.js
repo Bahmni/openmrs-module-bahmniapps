@@ -1,6 +1,6 @@
 'use strict';
 angular.module('bahmni.common.domain')
-    .factory('programService', ['$http','programHelper', function ($http, programHelper) {
+    .factory('programService', ['$http','programHelper', 'appService',function ($http, programHelper, appService) {
 
         var getAllPrograms = function () {
             return $http.get(Bahmni.Common.Constants.programUrl, {params: {v: 'default'}}).then(function (data) {
