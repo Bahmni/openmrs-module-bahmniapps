@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('bahmni.common.domain')
-    .service('visitService', ['$http','offlineService','$q', function ($http, offlineService, $q) {
+    .service('visitService', ['$http','$q', function ($http, $q) {
 
         this.getVisit = function (uuid, params) {
             var parameters = params ? params : "custom:(uuid,visitId,visitType,patient,encounters:(uuid,encounterType,voided,orders:(uuid,orderType,voided,concept:(uuid,set,name),),obs:(uuid,value,concept,obsDatetime,groupMembers:(uuid,concept:(uuid,name),obsDatetime,value:(uuid,name),groupMembers:(uuid,concept:(uuid,name),value:(uuid,name),groupMembers:(uuid,concept:(uuid,name),value:(uuid,name)))))))";
@@ -43,9 +43,6 @@ angular.module('bahmni.common.domain')
         };
 
         this.search = function (parameters) {
-            if(offlineService.offline()){
-                return $q.when({results : {}});
-            }
             return $http.get(Bahmni.Common.Constants.visitUrl, {
                 params: parameters,
                 withCredentials: true

@@ -40,7 +40,7 @@ describe('EditPatientController', function () {
             };
             patientServiceMock.update = function (uuid) {
                 return {
-                    success: function (successFn) {
+                    then: function (successFn) {
                         successFn({data: "uuid"});
                     }
                 }
