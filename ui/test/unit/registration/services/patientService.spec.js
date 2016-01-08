@@ -37,7 +37,7 @@ describe('Patient resource', function () {
 
     beforeEach(function () {
         module('bahmni.registration');
-        module('bahmni.offline');
+        module('bahmni.common.offline');
 
         module(function ($provide) {
             Bahmni.Registration.Constants.openmrsUrl = openmrsUrl;

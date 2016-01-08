@@ -14,7 +14,7 @@ describe('patientControlPanelTest', function () {
         $bahmniCookieStore,
         simpleHtml = '<patient-control-panel patient="patient" visit-history="visitHistory" visit="visit" show="showControlPanel"/>';
 
-    beforeEach(module('bahmni.common.patient','bahmni.clinical','bahmni.common.appFramework','bahmni.common.util','bahmni.common.uiHelper', 'bahmni.offline'));
+    beforeEach(module('bahmni.common.patient','bahmni.clinical','bahmni.common.appFramework','bahmni.common.util','bahmni.common.uiHelper', 'bahmni.common.offline'));
 
     beforeEach(module(function($provide){
         _provide = $provide;

@@ -1,4 +1,4 @@
-angular.module('bahmni.offline').service('initializeOfflineSchema', ['$rootScope','$q','$http', function ($rootScope, $q, $http) {
+angular.module('bahmni.common.offline').service('initializeOfflineSchema', ['$rootScope','$q','$http', function ($rootScope, $q, $http) {
 
     var attributeTypeColumnNames = [
         "attributeTypeId",

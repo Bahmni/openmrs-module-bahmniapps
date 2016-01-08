@@ -46,7 +46,7 @@ describe("OrderFulfillmentController", function () {
     };
     var mockStateParams = {orderType: "someOrderType"};
 
-    beforeEach(module('bahmni.orders', 'bahmni.offline'));
+    beforeEach(module('bahmni.orders', 'bahmni.common.offline'));
 
     beforeEach(module(function ($provide) {
         $bahmniCookieStore = jasmine.createSpyObj('$bahmniCookieStore', ['get', 'remove', 'put']);

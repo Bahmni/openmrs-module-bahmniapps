@@ -1,5 +1,6 @@
 'use strict';
 var Bahmni = Bahmni || {};
-Bahmni.Offline = Bahmni.Offline || {};
+Bahmni.Common = Bahmni.Common || {};
+Bahmni.Common.Offine = Bahmni.Common.Offine || {};
 
-angular.module('bahmni.offline', []);
+angular.module('bahmni.common.offline', []);
