@@ -11,7 +11,7 @@ angular.module('bahmni.common.displaycontrol.drugOrderDetails')
                         return Bahmni.Clinical.DrugOrderViewModel.createFromContract(drugOrder, drugOrderAppConfig, undefined);
                     };
                     var drugOrders = response.map(createDrugOrder);
-                    $scope.drugOrders = sortOrders(drugOrders).reverse();
+                    $scope.drugOrders = sortOrders(drugOrders);
                 });
             };
 
@@ -34,10 +34,10 @@ angular.module('bahmni.common.displaycontrol.drugOrderDetails')
                     var partitionedDrugOrders = _.groupBy(activeAndScheduled, function (drugOrder) {
                         return (drugOrder.effectiveStartDate > now) ? "scheduled" : "active";
                     });
-                    sortedDrugOrders.push(drugOrderUtil.sortDrugOrders(partitionedDrugOrders.scheduled));
-                    sortedDrugOrders.push(drugOrderUtil.sortDrugOrders(partitionedDrugOrders.active));
+                    sortedDrugOrders.push(drugOrderUtil.sortDrugOrdersInChronologicalOrder(partitionedDrugOrders.scheduled));
+                    sortedDrugOrders.push(drugOrderUtil.sortDrugOrdersInChronologicalOrder(partitionedDrugOrders.active));
                 }else{
-                    sortedDrugOrders.push(drugOrderUtil.sortDrugOrders(response));
+                    sortedDrugOrders.push(drugOrderUtil.sortDrugOrdersInChronologicalOrder(response));
                 }
                 return _.flatten(sortedDrugOrders);
             };

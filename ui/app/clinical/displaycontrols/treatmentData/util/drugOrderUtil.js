@@ -40,16 +40,23 @@ Bahmni.Clinical.DrugOrder.Util = {
         });
         return drugOrders;
     },
-
-    sortDrugOrders: function(activeAndScheduledDrugOrders) {
-        if(_.isEmpty(activeAndScheduledDrugOrders)) return [];
+    sortDrugOrders: function (activeAndScheduledDrugOrders) {
+        var descendingOrderFactor = -1;
+        return Bahmni.Clinical.DrugOrder.Util.sortOrders(activeAndScheduledDrugOrders, descendingOrderFactor);
+    },
+    sortDrugOrdersInChronologicalOrder: function (activeAndScheduledDrugOrders) {
+        var ascendingOrderFactor = 1;
+        return Bahmni.Clinical.DrugOrder.Util.sortOrders(activeAndScheduledDrugOrders, ascendingOrderFactor);
+    },
+    sortOrders: function (drugOrders, sortOrderFactor) {
+        if (_.isEmpty(drugOrders)) return [];
         var DateUtil = Bahmni.Common.Util.DateUtil;
-        return activeAndScheduledDrugOrders.sort(function(drug1, drug2) {
+        return drugOrders.sort(function (drug1, drug2) {
             var timeDifference = DateUtil.diffInSeconds(drug1.effectiveStartDate, drug2.effectiveStartDate);
             if (DateUtil.isSameDate(drug1.effectiveStartDate, drug2.effectiveStartDate)) {
-                return (timeDifference == 0) ? (drug1.orderNumber - drug2.orderNumber) : timeDifference;
+                return (timeDifference == 0) ? (drug1.orderNumber - drug2.orderNumber) : timeDifference; //Ascending order
             } else {
-                return timeDifference * -1; //Descending order of date
+                return timeDifference * sortOrderFactor;
             }
         });
     }

@@ -143,4 +143,33 @@ describe("DrugOrderUtil", function () {
 
     });
 
+    describe("sortDrugOrdersInChronologicalOrder", function () {
+        it("should sort drugs by date and time asc ", function () {
+            var treatment1 = sampleTreatment("drug.uuid1", "instructions", 1, "doseUnits", "frequency", "route", undefined, new Date(), 3, "Day(s)", "addn2", true);
+            var treatment2 = sampleTreatment("drug.uuid2", "instructions", 1, "doseUnits", "frequency", "route", undefined, new Date(), 3, "Day(s)", "addn2", true);
+            var treatment3 = sampleTreatment("drug.uuid3", "instructions", 1, "doseUnits", "frequency", "route", undefined, new Date(), 3, "Day(s)", "addn2", true);
+            var treatment4 = sampleTreatment("drug.uuid4", "instructions", 1, "doseUnits", "frequency", "route", undefined, new Date(), 3, "Day(s)", "addn2", true);
+            treatment1.effectiveStartDate = new Date(2015, 0, 1, 10, 0, 0);
+            treatment2.effectiveStartDate = new Date(2015, 0, 1, 15, 30, 0);
+            treatment3.effectiveStartDate = new Date(2015, 1, 1, 13, 30, 0);
+            treatment4.effectiveStartDate = new Date(2015, 1, 1, 13, 0, 0);
+            var sortedArray = Bahmni.Clinical.DrugOrder.Util.sortDrugOrdersInChronologicalOrder([treatment1, treatment2, treatment3, treatment4]);
+
+            expect(sortedArray).toEqual([treatment1, treatment2, treatment4, treatment3]);
+        });
+
+        it("Same date and time objects should be ordered by order number asc", function () {
+            var date = new Date();
+            var treatment1 = sampleTreatment("drug.uuid1", "instructions", 1, "doseUnits", "frequency", "route", undefined, new Date(), 3, "Day(s)", "addn2", true);
+            var treatment2 = sampleTreatment("drug.uuid2", "instructions", 1, "doseUnits", "frequency", "route", undefined, new Date(), 3, "Day(s)", "addn2", true);
+            var treatment3 = sampleTreatment("drug.uuid3", "instructions", 1, "doseUnits", "frequency", "route", undefined, new Date(), 3, "Day(s)", "addn2", true);
+            treatment1.orderNumber = 1;
+            treatment2.orderNumber = 2;
+            treatment3.orderNumber = 3;
+            var sortedArray = Bahmni.Clinical.DrugOrder.Util.sortDrugOrdersInChronologicalOrder([treatment3, treatment1, treatment2]);
+            expect(sortedArray).toEqual([treatment1, treatment2, treatment3]);
+        });
+
+    });
+
 });
