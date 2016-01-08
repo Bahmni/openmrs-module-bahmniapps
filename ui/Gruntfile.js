@@ -86,7 +86,9 @@ module.exports = function (grunt) {
             dist: {
                 src: [
                     '<%= yeoman.dist %>/**/*.js',
-                    '<%= yeoman.dist %>/**/*.css'
+                    '<%= yeoman.dist %>/**/*.css',
+                    '!<%= yeoman.dist %>/initWorker.js',
+                    '!<%= yeoman.dist %>/worker.js'
                 ]
             }
         },
@@ -198,7 +200,7 @@ module.exports = function (grunt) {
                         cwd: '<%= yeoman.app %>',
                         dest: '<%= yeoman.dist %>',
                         src: [
-                            '*.{ico,txt}',
+                            '*.{ico,txt,html,js}',
                             '.htaccess',
                             'components/**/*',
                             'images/**/*.{gif,webp}',
