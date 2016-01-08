@@ -1,0 +1,12 @@
+
+<!--<section class="form-field-inline clearfix" >-->
+    <!--<article class="form-field" ng-repeat="attribute in attributes">-->
+        <!--<attribute-types target-model="patientProgramAttributes" attribute="attribute"></attribute-types>-->
+    <!--</article>-->
+<!--</section>-->
+<p>Program Attributes</p>
+<div ng-repeat="attribute in attributes">
+    <span class="asterick" ng-show="attribute.required">*</span>
+    <span>{{attribute.name}} : </span>
+    <span>{{attribute.value}}</span>
+</div>

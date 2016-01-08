@@ -4,7 +4,8 @@ describe('programService', function () {
 
     var rootScope,data;
 
-    var programService, appService;
+    var programService;
+    var appService = jasmine.createSpyObj('appService',['getAppDescriptor']);
     var DateUtil = Bahmni.Common.Util.DateUtil;
 
     var mockHttp = {
@@ -23,7 +24,9 @@ describe('programService', function () {
                         onError()
                     }
                 }}})
-    }
+    };
+
+
 
     var mockAppDescriptor = jasmine.createSpyObj('appService', ['getConfigValue']);
     mockAppDescriptor.getConfigValue.and.returnValue(undefined);
@@ -32,17 +35,30 @@ describe('programService', function () {
     mockAppService.getAppDescriptor.and.returnValue(mockAppDescriptor);
 
     beforeEach(function(){
+        appService.getAppDescriptor.and.returnValue({
+            getConfig: function () {
+                return {
+                    program: ""
+                }
+            }
+        });
+
         module('bahmni.common.domain');
+        module('bahmni.common.uicontrols.programmanagment');
         module(function ($provide){
             $provide.value('$http', mockHttp);
-            $provide.value('appService', mockAppService);
+            $provide.value('appService', appService);
         })
 
         inject(function (_$rootScope_, _programService_) {
             rootScope = _$rootScope_;
             programService = _programService_;
         })
-    })
+
+
+    });
+
+
 
     it('should fetch all programs from backend and filter programs containing retired workflows and outcomes', function(done){
         var allPrograms = [

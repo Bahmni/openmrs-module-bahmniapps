@@ -249,6 +249,16 @@ angular.module('bahmni.common.uicontrols.programmanagment')
             $scope.hasOutcomes = function (program) {
                 return program.outcomesConcept && !_.isEmpty(program.outcomesConcept.setMembers);
             };
+
+            $scope.getCurrentStateDisplayName = function(program){
+                var currentState = getCurrentState(program.states);
+                return currentState && currentState.state.concept.display;
+            };
+
+            $scope.showProgramAttributes = function(program){
+                program.isOpen = !program.isOpen;
+            };
+
             init();
         }
     ]);
