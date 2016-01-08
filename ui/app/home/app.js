@@ -7,7 +7,7 @@ angular.module('bahmni.home', ['ui.router', 'httpErrorInterceptor', 'bahmni.comm
     $stateProvider
     .state('dashboard',
     {   url: '/dashboard',
-        templateUrl: '../common/ui-helper/views/dashboard.html',
+        templateUrl: 'views/dashboard.html',
         controller: 'DashboardController',
         data: {extensionPointId: 'org.bahmni.home.dashboard'},
         resolve: {
