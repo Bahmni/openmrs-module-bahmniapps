@@ -1,15 +1,13 @@
-<section ng-if="hasData" class="block dashboard-section">
-    <h2 class="section-title">{{::displayName || diseaseName}}</h2>
-    <table class="h-scroll pivot-table">
+<section class="dashboard-section" ng-if="hasData">
+    <h2 ng-if="displayName || diseaseName" class="section-title">{{::displayName || diseaseName}}</h2>
+    <table ng-class="{'h-scroll':showOnPrint, 'pivot-table':showOnPrint, 'h-scroll-print': !showOnPrint}">
         <thead>
         <tr>
             <th class="row-header-group">{{::groupBy}}</th>
-            <th ng-repeat="conceptDetail in ::result.conceptDetails">
-                <span>{{::conceptDetail.name}}</span>
-                <span class="range" ng-if="::conceptDetail.lowNormal">
-                    <span>({{::conceptDetail.lowNormal}} - {{::conceptDetail.hiNormal}})</span>
-                    <span class="units">{{::conceptDetail.units}}</span>
-                </span>
+            <th ng-repeat="concept in ::result.concepts">
+                <span>{{concept.shortName}}</span>
+                <hint concept-details="concept"/>
+                <span class="units">{{::concept.units}}</span>
             </th>
         </tr>
         </thead>
@@ -19,7 +17,7 @@
                 <span class="date">{{getOnlyDate(startDate)}}</span>
                 <span ng-if="!groupByVisits" class="time">{{getOnlyTime(startDate)}}</span>
             </th>
-            <td ng-init="columnResult = result.tabularData[startDate][conceptDetail.name]"  bm-pop-over autoclose="true" ng-repeat="conceptDetail in ::result.conceptDetails"
+            <td ng-init="columnResult = result.tabularData[startDate][concept.name]"  bm-pop-over autoclose="true" ng-repeat="concept in ::result.concepts"
                 ng-class="{'is-abnormal': columnResult.abnormal}">
                 <span ng-class="{'popover-trigger': isLonger(columnResult.value), 'is-abnormal': columnResult.abnormal}" bm-pop-over-trigger>{{getColumnValue(columnResult.value)}}</span>
                  <span ng-if="isLonger(columnResult.value)" class="tooltip" bm-pop-over-target>

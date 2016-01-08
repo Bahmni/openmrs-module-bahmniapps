@@ -1,4 +1,4 @@
-Bahmni.ConsultationMapper = function (dosageFrequencies, dosageInstructions, consultationNoteConcept, labOrderNoteConcept) {
+Bahmni.ConsultationMapper = function (dosageFrequencies, dosageInstructions, consultationNoteConcept, labOrderNoteConcept, stoppedOrderReasonConfig) {
 
     var filterPreviousOrderOfRevisedOrders = function (orders) {
         return _.filter(orders, function (drugOrder) {
@@ -19,7 +19,6 @@ Bahmni.ConsultationMapper = function (dosageFrequencies, dosageInstructions, con
             return !order.voided && order.action != Bahmni.Clinical.Constants.orderActions.discontinue;
         });
         nonVoidedDrugOrders = filterPreviousOrderOfRevisedOrders(nonVoidedDrugOrders);
-
         var treatmentDrugs = nonVoidedDrugOrders.map(function (drugOrder) {
             return Bahmni.Clinical.DrugOrderViewModel.createFromContract(drugOrder);
         });
@@ -35,6 +34,17 @@ Bahmni.ConsultationMapper = function (dosageFrequencies, dosageInstructions, con
             return order.action != Bahmni.Clinical.Constants.orderActions.discontinue && !order.dateStopped;
         });
 
+        var mdrtbSpecimen = encounterTransaction.extensions.mdrtbSpecimen && encounterTransaction.extensions.mdrtbSpecimen.map(function (specimen) {
+                if (specimen.sample) {
+                    specimen.sample.additionalAttributes = specimen.sample.additionalAttributes ? new Bahmni.Common.Obs.ObservationMapper().map([specimen.sample.additionalAttributes], {}) : [];
+                }
+                if (specimen.report) {
+                    specimen.report.results = specimen.report.results ? new Bahmni.Common.Obs.ObservationMapper().map([specimen.report.results], {}) : [];
+                }
+
+                return new Bahmni.Clinical.Specimen(specimen);
+            });
+
         return {
             visitUuid: encounterTransaction.visitUuid,
             visitTypeUuid: encounterTransaction.visitTypeUuid,
@@ -49,8 +59,11 @@ Bahmni.ConsultationMapper = function (dosageFrequencies, dosageInstructions, con
             disposition: encounterTransaction.disposition,
             encounterDateTime: encounterTransaction.encounterDateTime,
             orders: orders,
+            patientUuid: encounterTransaction.patientUuid,
+            visitType: encounterTransaction.visitType,
             providers: encounterTransaction.providers,
-            locationUuid: encounterTransaction.locationUuid
+            locationUuid: encounterTransaction.locationUuid,
+            extensions: {mdrtbSpecimen: mdrtbSpecimen}
         };
     };
 

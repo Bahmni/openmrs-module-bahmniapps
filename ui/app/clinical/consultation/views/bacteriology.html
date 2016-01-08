@@ -1,0 +1,97 @@
+<div class="bacteriology-container" focus-on-input-errors>
+    <div ng-repeat="newSpecimen in newSpecimens track by $index" class="sample-container">
+        <form class="form">
+            <section class="section-grid">
+                <div class="section-title-wrapper clearfix">
+                    <h2 class="section-title fl">{{'BACTERIOLOGY_TAB_TITLE_KEY' | translate}}</h2>
+                    <input type="button" value="{{'BACTERIOLOGY_BUTTON_CLEAR_KEY' | translate}}"
+                           ng-click="clearSpecimen(newSpecimen)" class="fr add-sample-btn" ng-hide="isOnDashboard">
+                    <button class="confirm fr" ng-click="saveBacteriologySample(newSpecimen)" accesskey="s" ng-hide="!isOnDashboard">
+                        <span class="text ng-binding" ng-bind-html="'CLINICAL_SAVE_TRANSLATION_KEY'| translate"></span>
+                    </button>
+                </div>
+
+
+                <div class="box">
+                    <section class="form-field-inline">
+                        <article class="form-field">
+                            <div class="field-attribute">
+                                <label for="sample-date">{{'BACTERIOLOGY_SAMPLE_COLLECTION_DATE_KEY' |
+                                    translate}}
+                                    <span class="asterick">*</span>
+                                </label>
+                            </div>
+                            <div  ng-class="{'illegalValue': newSpecimen.isDateCollectedDirty()}"  class="field-value">
+                                <input id="sample-date"  date-converter type="date" max="{{::today}}" ng-model="newSpecimen.dateCollected"
+                                       required="required" ng-change="clearEmptySpecimens()">
+                            </div>
+                        </article>
+                    </section>
+
+                    <section class="form-field-inline">
+                        <article class="form-field right-form-field">
+                            <div class="field-attribute">
+                                <label for="sample-type">{{'BACTERIOLOGY_SAMPLE_TYPE_KEY' | translate}}
+                                    <span class="asterick">*</span>
+                                </label>
+                            </div>
+                            <div class="field-value" ng-class="{'illegalValue': newSpecimen.isTypeDirty()}">
+                                <button-select id="sample-type" ng-model="newSpecimen" observation="newSpecimen.typeObservation">
+                                </button-select>
+                            </div>
+                        </article>
+                    </section>
+
+                    <section class="form-field-inline" ng-if="newSpecimen.showTypeFreeText">
+                        <article class="form-field right-form-field">
+                            <div class="field-attribute">
+                                <label for="txt-sample-type-free-text">{{'BACTERIOLOGY_SAMPLE_TYPE_KEY_NON_CODED' | translate}}
+                                    <span class="asterick">*</span>
+                                </label>
+                            </div>
+                            <div class="field-value" ng-class="{'illegalValue': newSpecimen.isTypeFreeTextDirty()}">
+                                <input id="txt-sample-type-free-text" required="required" type="text" ng-model="newSpecimen.typeFreeText">
+                            </div>
+                        </article>
+                    </section>
+
+                    <section class="form-field-inline">
+                        <article class="form-field">
+                            <div class="field-attribute">
+                                <label for="sample-id">{{'BACTERIOLOGY_SAMPLE_ID_KEY' | translate}} </label>
+                            </div>
+                            <div class="field-value">
+                                <input id="sample-id" type="text" ng-model="newSpecimen.identifier">
+                            </div>
+                        </article>
+                    </section>
+
+
+                </div>
+
+                <div class="box" ng-if="newSpecimen.dateCollected">
+                    <concept-set patient="patient" concept-set-name="additionalAttributesConceptName"
+                                 observations="newSpecimen.sample.additionalAttributes"></concept-set>
+                </div>
+
+                <div class="box" ng-if="newSpecimen.dateCollected">
+                    <concept-set patient="patient" concept-set-name="resultsConceptName" collapse-inner-sections="!newSpecimen.atLeastOneResult()"
+                                 observations="newSpecimen.report.results"></concept-set>
+                </div>
+            </section>
+        </form>
+    </div>
+    <div ng-repeat="savedSpecimen in savedSpecimens" class="savedSpecimens-container clearfix" ng-hide="isOnDashboard">
+        <div class="fl savedSpecimens-text">
+            <span>{{getDisplayName(savedSpecimen)}}</span>
+            <span>#{{savedSpecimen.identifier}}</span>
+            <span>{{ 'BACTERIOLOGY_ADDED_ON_KEY' | translate }} {{savedSpecimen.dateCollected | date: 'MM/dd/yyyy'}}</span>
+        </div>
+        <div class="fr savedSpecimens-action">
+            <i class="fa fa-pencil" ng-click="editSpecimen(savedSpecimen)"></i>
+
+            <i class="fa fa-remove" ng-confirm-click="deleteSpecimen(savedSpecimen)" confirm-message="{{ 'REMOVE_CONFIRMATION_KEY' | translate }}"></i>
+        </div>
+    </div>
+</div>
+

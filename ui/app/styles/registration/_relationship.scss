@@ -1,0 +1,146 @@
+.relationships-container{
+  overflow: hidden;
+  margin: 20px 20px 10px;
+  @media (max-width: 768px) {
+    margin: 20px 0px 10px;
+  }
+  .row{
+    float: left;
+    width: 100%;
+    @media (max-width : 768px){
+      margin-bottom: 10px;
+    }
+    .col1 {
+      margin-top: 0;
+      label.add-new {margin-top: 10px; font-size: 12px;}
+      width: 30%;
+      float: left;
+      @media (max-width : 768px){
+        width: 100%;
+      }
+    }
+    .col2 {
+      width: 38%;
+      float: left;
+      text-align: left;
+      @media (max-width : 1024px){
+        width: 36%;
+      }
+      @media (max-width : 768px){
+        width: 100%;
+      }
+    }
+    .col3 {
+      width: 25%;
+      float: left;
+      text-align: right;
+      @media (max-width : 1024px){
+        width: 28%;
+      }
+      @media (max-width : 768px){
+        width: 100%;
+      }
+      .till-text{
+        display: inline-block;
+        float: left;
+        padding-right: 20px;
+        padding-top: 12px;
+        @media (max-width : 768px){
+          display: none;
+        }
+      }
+    }
+    .col4 {
+      width: 4%;
+      float: left;
+      margin-left: 2%;
+      button{
+        padding: 2px 4px !important;
+      }
+    }
+  }
+}
+.new-relationship{
+  overflow: hidden;
+  span {
+    &.no-person {
+      color: red;
+    }
+  }
+  .row{
+    .col4{
+       button{
+         @media (max-width : 768px) {
+           position: absolute;
+           top: 0;
+           right: 3px;
+         }
+       }
+    }
+    @media (max-width : 768px){
+      position: relative;
+    }
+  }
+}
+
+.relationships-container {
+  .row{
+    select, input{
+      min-width: 180px;
+    }
+
+  }
+  .history-relationship {
+    overflow: hidden;
+    margin-bottom: 15px;
+    border-bottom: 1px #ccc solid;
+    padding-bottom: 15px;
+    .row{
+      &:nth-child(odd) {
+        background-color: #EFEFEF;
+      }
+      &:nth-child(even) {
+        background-color: #fff;
+      }
+      padding: 3px 3px 3px 8px;
+      line-height: 30px;
+      .col1{ width: 34% }
+      .col2{
+        width: 33.3%;
+        text-align: left;
+        @media (max-width : 1024px){
+          width: 31.3%;
+        }
+      }
+      .col3{
+        width: 26.4%;
+        text-align: left;
+        .till-text{
+          padding-top: 0;
+        }
+        @media (max-width : 1024px){
+          width: 29.4%;
+        }
+        @media (max-width : 768px){
+          width: 28.8%;
+        }
+      }
+      .col4{
+        margin-left: .5%;
+        button{
+          margin-top: 2px;
+        }
+      }
+    }
+  }
+  .table-header {
+    border-radius: 5px 5px 0 0;
+    span {
+      font-size: 14px;
+      white-space: nowrap;
+      color: $mediumGray;
+      font-family: $OpenSansBoldFont;
+      font-weight: normal;
+    }
+  }
+}

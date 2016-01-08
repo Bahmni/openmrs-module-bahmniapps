@@ -55,7 +55,7 @@ Bahmni.PatientMapper = function (patientConfig, $rootScope,$translate) {
         if (this.patientConfig) {
             attributes.forEach(function (attribute) {
                 var x = self.getPatientConfigByUuid(patientConfig, attribute.attributeType.uuid);
-                patient[x.name] = {label: x.description, value: attribute.value};
+                patient[x.name] = {label: x.description, value: attribute.value, isDateField: checkIfDateField(x) };
             });
         }
     };
@@ -110,4 +110,8 @@ Bahmni.PatientMapper = function (patientConfig, $rootScope,$translate) {
             }
         }
     };
+
+    var checkIfDateField = function(x){
+        return x.format === Bahmni.Common.Constants.patientAttributeDateFieldFormat
+    }
 };

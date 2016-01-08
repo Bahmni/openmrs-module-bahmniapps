@@ -1,0 +1,189 @@
+.treatment-page-container{
+    font-size: 14px;
+    .drug-details {
+        line-height: 1.5em;
+        padding-left: 10px;
+        margin-top: 5px;
+        width: 63%;
+        float: left;
+    }
+    div.start-date span {
+        line-height: 1em;
+        padding-top: 7px;
+        font-family: OpenSansItalic;
+        font-size: 12px;
+        color: $mediumGray;
+        //display: inline-block;
+        display: block;
+        width: 130px;
+        text-align: left;
+        //float: left;
+        &.stop-date{
+            padding-bottom: 7px;
+        }
+    }
+    .table-mimic{
+        font-size: 12px;
+    }
+    .footer-note .time-stamp {
+        display: inline-block;
+        padding-right: 5px;
+    }
+    .button-group-wrapper {
+        float: right;
+        width: 215px;
+        padding: 3px 0;
+        .button-group {float: right;}
+        button, button:hover {
+            padding: 0; margin: 0;
+            float: left;
+            margin-right: 2px;
+
+            i {
+                font-size: 1.3em;
+                color: $mediumGray;
+                padding: 3px 0.2em;
+                @media screen and (max-width: 1024px){
+                    font-size: 1.8em;
+                }
+            }
+        }
+        .refill-btn, .stop-drug-btn {
+            padding: 6px!important;
+            @media screen and (max-width: 1024px){
+                padding:9px 6px !important
+            }
+        }
+        button.dispense-btn{
+            font-family: OpenSansBold;
+            color: #457fac;
+            padding: 0 7px;
+            width: auto;
+            height: 24px;
+            @media screen and (max-width: 1024px){
+                height: 27px;
+            }
+            &:hover{
+                padding: 0 7px;
+            }
+            i{
+                color: #457fac;
+                font-size: 1.2em;
+                padding: 0;
+            }
+        }
+    }
+    .add-drug-btn{
+        margin-top: 4px;
+        margin-left: 5px;
+        &.move-add-drug-btn{
+        margin-top: 52px;
+        }
+    }
+
+    @import "addNewDrug";
+    .drug-orders-history {
+        margin: 10px 0;
+    }
+    .drug-stop-container{
+        font-size: 14px;
+        width: 100%;
+        padding-left: 10px;
+        box-sizing: border-box;
+        padding-right: 10px;
+        padding-bottom: 10px;
+        .field-attribute{
+            &.stop-date-label{
+                .control-label{
+                    width: auto;
+                }
+            }
+        }
+        .field-value{
+            margin-right: 5px;
+            textarea{
+                height: 25px;
+                width: 540px;
+            }
+        }
+    }
+
+    .new-drug-order {
+        margin: 10px 0 0;
+    }
+    .highlight {
+        background: $clinicalHighlight;
+        border: 1px solid darken($clinicalHighlight, 10%);
+    }
+    .active-drug {
+        border-left: 5px solid orange;
+    }
+    .scheduled-drug {
+        border-left: 5px solid green;
+    }
+    .refill-drugs-btn,.dispense-all-btn {
+        font-size: 14px;
+        margin-right: 0;
+        display: none;
+        i{
+            padding: 0;
+            font-size: 14px;
+        }
+    }
+    .dispense-all-btn{
+        margin-right: 5px;
+    }
+
+    .bulk-edit-options-container{
+        padding: 10px 10px 10px 10px;
+        background-color: #EEEEEE;
+        border-bottom: 1px #bbb solid;
+        margin-bottom: 4px;
+        box-shadow: 1px 2px 7px #ccc;
+        .bulk-btn-container{
+            .stepper__btn{
+                height: 26px;
+            }
+        }
+        .select-all-chkBox{
+            top: 6px;
+        }
+        .duration.bulkDuration{
+            min-width: 80px;
+            display: inline-block;
+            width: 80px;
+            margin-top: 0;
+        }
+        select.bulk-duration-unit {
+            min-width: 110px;
+            display: inline-block;
+            margin-top: 0;
+            margin-right: 5px;
+        }
+        .bulk-update-btn{
+            margin-left: 15px;
+        }
+    }
+    .tabs .tab [type=radio]:checked~.dispense-all-btn,
+    .tabs .tab [type=radio]:checked~.refill-drugs-btn {
+        display: inline-block;
+        line-height: 14px;
+    }
+
+
+    .invalid {
+        background: lightcoral;
+        border: 1px solid #ff0000;
+    }
+    .show-invalid .ng-invalid:enabled {
+      border: 2px solid darken($clinicalFormInvalid, 30%);
+      background: $clinicalFormInvalid;
+    }
+    .revise-refill-modal-wrapper {
+        outline: 0;
+    }
+}
+
+@import "cutomDrugOrderHistory";
+
+

@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('bahmni.registration')
-    .controller('EditPatientController', ['$scope', 'patientService', 'encounterService', '$stateParams', 'openmrsPatientMapper', '$window', '$q', 'spinner', 'appService', 'messagingService', '$rootScope',
-        function ($scope, patientService, encounterService, $stateParams, patientMapper, $window, $q, spinner, appService, messagingService, $rootScope) {
+    .controller('EditPatientController', ['$scope', 'patientService', 'encounterService', '$stateParams', 'openmrsPatientMapper', '$window', '$q', 'spinner', 'appService', 'messagingService', '$rootScope','$bahmniCookieStore',
+        function ($scope, patientService, encounterService, $stateParams, patientMapper, $window, $q, spinner, appService, messagingService, $rootScope, $bahmniCookieStore) {
             var dateUtil = Bahmni.Common.Util.DateUtil;
             var uuid = $stateParams.patientUuid;
             $scope.patient = {};
@@ -22,25 +22,25 @@ angular.module('bahmni.registration')
                 });
             };
 
-            var showOrHideAdditionalPatientInformation = function () {
-                var additionalPatientInfoConfig = appService.getAppDescriptor().getConfigValue("additionalPatientInformation");
-                angular.forEach(additionalPatientInfoConfig, function (attribute) {
-                    if ($scope.patient[attribute.name]) {
-                        $scope.displayAdditionalInformation = true;
-                    }
-                });
-            };
-
             var successCallBack = function(openmrsPatient){
                 $scope.openMRSPatient = openmrsPatient["patient"];
                 $scope.patient = patientMapper.map(openmrsPatient);
                 setReadOnlyFields();
-                showOrHideAdditionalPatientInformation();
+                buildSectionVisibilityMap();
             };
 
+            var buildSectionVisibilityMap = function () {
+                $scope.sectionVisibilityMap = {};
+                angular.forEach($rootScope.patientConfiguration && $rootScope.patientConfiguration.getPatientAttributesSections(), function(section, key) {
+                    var notNullAttribute = _.find(section && section.attributes, function (attribute) {
+                        return $scope.patient[attribute.name] !== undefined;
+                    });
+                    $scope.sectionVisibilityMap[key] = notNullAttribute ? true : false;
+                });
+            };
 
             (function () {
-                var getPatientPromise = patientService.get(uuid).success(successCallBack);
+                var getPatientPromise = patientService.get(uuid).then(successCallBack);
 
                 var isDigitized = encounterService.getDigitized(uuid);
                 isDigitized.success(function (data) {
@@ -53,6 +53,7 @@ angular.module('bahmni.registration')
                 spinner.forPromise($q.all([getPatientPromise, isDigitized]));
             })();
 
+
             $scope.update = function () {
                 addNewRelationships();
                 var errMsg = Bahmni.Common.Util.ValidationUtil.validate($scope.patient, $scope.patientConfiguration.personAttributeTypes);
@@ -61,7 +62,7 @@ angular.module('bahmni.registration')
                     return;
                 }
 
-                var patientUpdatePromise = patientService.update($scope.patient, $scope.openMRSPatient).success(function (patientProfileData) {
+                var patientUpdatePromise = patientService.update($scope.patient, $scope.openMRSPatient).then(function (patientProfileData) {
                     successCallBack(patientProfileData);
                     $scope.actions.followUpAction(patientProfileData);
                 });

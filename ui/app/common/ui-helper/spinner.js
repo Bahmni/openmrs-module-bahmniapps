@@ -27,8 +27,15 @@ angular.module('bahmni.common.uiHelper')
             return promise;
         };
 
+        var forAjaxPromise = function(promise) {
+            var token = show();
+            promise.always(function() { hide(token); });
+            return promise;
+        };
+
         return {
             forPromise: forPromise,
+            forAjaxPromise: forAjaxPromise,
             show: show,
             hide: hide
         }

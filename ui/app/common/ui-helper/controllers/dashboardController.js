@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('bahmni.common.uiHelper')
-    .controller('DashboardController', ['$rootScope', '$scope', '$state', 'appService', 'locationService', 'spinner', '$bahmniCookieStore', '$window',
-        function ($rootScope, $scope, $state, appService, locationService, spinner, $bahmniCookieStore, $window) {
+    .controller('DashboardController', ['$rootScope', '$scope', '$state', 'appService', 'locationService', 'spinner', '$bahmniCookieStore', '$window','offlineCommonService','offlineService',
+        function ($rootScope, $scope, $state, appService, locationService, spinner, $bahmniCookieStore, $window, offlineCommonService, offlineService) {
             $scope.appExtensions = appService.getAppDescriptor().getExtensions($state.current.data.extensionPointId, "link") || [];
             $scope.selectedLocationUuid = {};
 
@@ -28,12 +28,25 @@ angular.module('bahmni.common.uiHelper')
                 return getCurrentLocation().uuid === location.uuid;
             };
 
+            $scope.syncData = function() {
+                if (offlineService.getAppPlatform() === Bahmni.Common.Constants.platformType.android) {
+                    Android.populateData(window.location.origin);
+                }
+                else {
+                    offlineCommonService.populateData();
+                }
+            };
+
             $scope.onLocationChange = function () {
                 var selectedLocation = getLocationFor($scope.selectedLocationUuid);
                 $bahmniCookieStore.remove(Bahmni.Common.Constants.locationCookieName);
                 $bahmniCookieStore.put(Bahmni.Common.Constants.locationCookieName, {name: selectedLocation.display, uuid: selectedLocation.uuid},{path: '/', expires: 7});
                 $window.location.reload();
             };
+
+            $rootScope.$on('offline', function () {
+                $scope.$apply();
+            });
 
             return spinner.forPromise(init());
         }]);

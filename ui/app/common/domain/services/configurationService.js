@@ -44,6 +44,15 @@ angular.module('bahmni.common.domain')
             return dosageInstructionConfig;
         };
 
+        configurationFunctions.stoppedOrderReasonConfig = function () {
+            var stoppedOrderReasonConfig = $http.get(Bahmni.Common.Constants.conceptSearchByFullNameUrl, {
+                method: "GET",
+                params: {v: 'custom:(uuid,name,answers)', name: Bahmni.Common.Constants.stoppedOrderReasonConceptName},
+                withCredentials: true
+            });
+            return stoppedOrderReasonConfig;
+        };
+
         configurationFunctions.consultationNoteConfig = function () {
             var consultationNoteConfig = $http.get(Bahmni.Common.Constants.conceptSearchByFullNameUrl, {
                 method: "GET",
@@ -140,6 +149,16 @@ angular.module('bahmni.common.domain')
             return $http.get(Bahmni.Common.Constants.relationshipTypesUrl, {
                 withCredentials: true,
                 params: {v: "custom:(aIsToB,bIsToA,uuid)"}
+            });
+        };
+
+        configurationFunctions.loginLocationToVisitTypeMapping = function () {
+            var url = Bahmni.Common.Constants.entityMappingUrl;
+            return $http.get(url,{
+                params:{
+                    mappingType:'loginlocation_visittype',
+                    s:'byEntityAndMappingType'
+                }
             });
         };
 

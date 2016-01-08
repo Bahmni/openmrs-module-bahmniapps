@@ -1,10 +1,12 @@
 'use strict';
 
 angular.module('bahmni.common.displaycontrol.observation')
-    .directive('bahmniObservation', ['observationsService', 'appService', '$q','spinner',
-        function (observationsService, appService, $q, spinner) {
+    .directive('bahmniObservation', ['observationsService', 'appService', '$q','spinner','$stateParams',
+        function (observationsService, appService, $q, spinner, $stateParams) {
             
             var controller = function($scope){
+
+                $scope.showGroupDateTime = $scope.config.showGroupDateTime === false ? false : true;
 
                 var mapObservation = function(observations,config){
 
@@ -16,22 +18,35 @@ angular.module('bahmni.common.displaycontrol.observation')
                         $scope.noObsMessage = Bahmni.Common.Constants.messageForNoObservation;
                     }
                     else{
-                        $scope.bahmniObservations[0].isOpen = true;
+                        if(!$scope.showGroupDateTime){
+                            _.forEach($scope.bahmniObservations, function(bahmniObs){
+                                bahmniObs.isOpen = true;
+                            });
+                        }
+                        else{
+                            $scope.bahmniObservations[0].isOpen = true;
+                        }
                     }
                 };
 
                 var fetchObservations = function () {
                     //$scope.removeObsWithNoOrderId = angular.isDefined($scope.removeObsWithNoOrderId) ? $scope.filterObsWithOrders : false;
+                    var programConfig = appService.getAppDescriptor().getConfigValue("program") || {};
                     if($scope.observations){
                         mapObservation($scope.observations, $scope.config);
                         $scope.isFulfilmentDisplayControl = true;
                     }
                     else {
+                        var startDate = null,endDate = null;
+                        if(programConfig.showDashBoardWithinDateRange){
+                            startDate = $stateParams.dateEnrolled;
+                            endDate = $stateParams.dateCompleted;
+                        }
                         spinner.forPromise(observationsService.fetch($scope.patient.uuid, $scope.config.conceptNames,
-                            $scope.config.scope, $scope.config.numberOfVisits, $scope.visitUuid, $scope.config.obsIgnoreList).then(function (response) {
+                            $scope.config.scope, $scope.config.numberOfVisits, $scope.visitUuid, $scope.config.obsIgnoreList,null, startDate, endDate).then(function (response) {
                                 mapObservation(response.data, $scope.config);
                             }));
-                    }
+                        }
                 };
 
                 $scope.toggle= function(element){

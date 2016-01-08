@@ -104,4 +104,14 @@ describe("Boolean Observation", function() {
         expect(requiredObservation.isValid(false, false)).toBeTruthy();
         expect(requiredObservation.isValid(false, true)).toBeTruthy();
     });
+
+    it("should hide notes button when configured to not show", function() {
+        var requiredObservation = new Bahmni.ConceptSet.BooleanObservation({concept: {name: "ABC"}},{"ABC":{"disableAddNotes" : true}})
+        expect(requiredObservation.canHaveComment()).toBeFalsy();
+    });
+
+    it("should by default show notes button when nothing configured", function() {
+        var requiredObservation = new Bahmni.ConceptSet.BooleanObservation({concept: {name: "ABC"}},{})
+        expect(requiredObservation.canHaveComment()).toBeTruthy();
+    });
 });

@@ -18,6 +18,7 @@ module.exports = function (config) {
             'app/components/nvd3/nv.d3.min.js',
             'app/components/angularjs-nvd3-directives/dist/*.js',
             'app/components/moment/moment.js',
+            'app/components/offline/offline.min.js',
             'app/components/angular-ui-router/release/angular-ui-router.js',
             'app/components/lodash/dist/lodash.min.js',
             'app/components/angular-ui-select2/src/select2.js',

@@ -17,9 +17,9 @@
 			var drugOrders = this.drugOrders.map(Bahmni.Clinical.DrugOrder.create);
 			var allOrderedDrugs = [];
 			_.each(drugOrders,function (order) {
-				var drugAlreadyOrdered = _.find(allOrderedDrugs,{name:order.drug.name,uuid:order.drug.uuid});
+				var drugAlreadyOrdered = _.find(allOrderedDrugs,order.drugNonCoded ? {name:order.drugNonCoded,uuid:null} : {name:order.drug.name,uuid:order.drug.uuid});
 				if (!drugAlreadyOrdered) {
-					drugAlreadyOrdered = new Drug(order.drug.name);
+					drugAlreadyOrdered = new Drug(order.drugNonCoded ? order.drugNonCoded : order.drug.name);
 					allOrderedDrugs.push(drugAlreadyOrdered);
 				}
 				drugAlreadyOrdered.orders.push(order);

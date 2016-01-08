@@ -18,7 +18,7 @@ angular.module('bahmni.registration')
 
             var generateIdentifier = function () {
                 if (this.registrationNumber && this.registrationNumber.length > 0) {
-                    this.identifier = this.identifierPrefix.name + this.registrationNumber;
+                    this.identifier = this.identifierPrefix ? this.identifierPrefix.name + this.registrationNumber : this.registrationNumber;
                 }
                 return this.identifier
             };

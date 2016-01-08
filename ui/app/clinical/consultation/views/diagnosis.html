@@ -1,6 +1,6 @@
 <form>
     <fieldset>
-        <div class="diagnosis">
+        <div class="diagnosis" focus-on-input-errors>
             <div id="selectedNodesArea">
                 <div class="table new-diagnosis primary-section-grid">
                     <div class="row table-header">
@@ -10,7 +10,7 @@
                         <div class="col col4" ng-show="isStatusConfigured()"><span>Status</span></div>
                     </div>
 
-                    <div ng-repeat="diagnosis in newlyAddedDiagnoses" ng-hide="diagnosis.voided" class="table-body">
+                    <div ng-repeat="diagnosis in consultation.newlyAddedDiagnoses" ng-hide="diagnosis.voided" class="table-body">
                         <div class="row">
                             <div class="col col1">
                                 <input ng-model="diagnosis.codedAnswer.name" type="text" name="name" id="name-{{$index}}"

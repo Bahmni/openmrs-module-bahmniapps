@@ -100,8 +100,10 @@ describe('SearchPatientController', function () {
             expect(scope.searchParameters.addressFieldValue).toBe(searchParams.addressFieldValue);
             expect(patientResource.search).toHaveBeenCalled();
             expect(patientResource.search.calls.mostRecent().args[0]).toBe(searchParams.name);
-            expect(patientResource.search.calls.mostRecent().args[1]).toBe(scope.addressSearchConfig.field);
-            expect(patientResource.search.calls.mostRecent().args[2]).toBe(searchParams.addressFieldValue);
+            expect(patientResource.search.calls.mostRecent().args[1]).toBe(undefined);
+            expect(patientResource.search.calls.mostRecent().args[2]).toBe(undefined);
+            expect(patientResource.search.calls.mostRecent().args[3]).toBe(scope.addressSearchConfig.field);
+            expect(patientResource.search.calls.mostRecent().args[4]).toBe(searchParams.addressFieldValue);
             expect(searchPromise.then).toHaveBeenCalled();
         });
 
@@ -198,7 +200,7 @@ describe('SearchPatientController', function () {
             var defaultSearchAddressField = "city_village";
             scope.searchById();
 
-            expect(patientResource.search).toHaveBeenCalledWith("GAN20001", defaultSearchAddressField);
+            expect(patientResource.search).toHaveBeenCalledWith(undefined, "20001", "GAN", defaultSearchAddressField);
         });
 
         it('should show the spinner while searching', function () {
@@ -246,7 +248,7 @@ describe('SearchPatientController', function () {
                 appDescriptor.getConfigValue.and.returnValue("/patient/patientUuid");
                 appDescriptor.formatUrl.and.returnValue("/patient/8989-90909");
 
-                searchPromise.callSuccessCallBack({pageOfResults: [
+                searchPromise.callThenCallBack({pageOfResults: [
                     {uuid: "8989-90909"}
                 ]});
 
@@ -255,7 +257,7 @@ describe('SearchPatientController', function () {
             });
 
             it("should show 'no patient found message' when patient is not found", function () {
-                searchPromise.callSuccessCallBack({pageOfResults: []});
+                searchPromise.callThenCallBack({pageOfResults: []});
 
                 expect(scope.noResultsMessage).toMatch("REGISTRATION_LABEL_COULD_NOT_FIND_PATIENT");
             });

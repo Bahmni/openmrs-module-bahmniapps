@@ -12,17 +12,35 @@
         </h2>
     </div>
     <section class="block hierarchy">
-        <ul class="form-field">
+        <ul class="form-field" ng-if="bahmniObservations.length > 0">
             <li ng-repeat="obsGroup in ::bahmniObservations">
-                <span class="tree-list-item row-click" ng-click="toggle(obsGroup)">
+                <span ng-if="showGroupDateTime" class="tree-list-item row-click" ng-click="toggle(obsGroup)">
                     <i class="fa fa-caret-right" ng-hide="obsGroup.isOpen"></i>
                     <i class="fa fa-caret-down" ng-show="obsGroup.isOpen"></i>
                     <span class="obs-date">
                         {{obsGroup.date | bahmniDateTime}}
                     </span>
                 </span>
-                <ul bm-show="obsGroup.isOpen">
-                    <show-observation show-details-button="config.showDetailsButton" patient="patient"
+                <!--<ul bm-show="obsGroup.isOpen" class="print-observations">
+                    <show-observation show-details-button="config.showDetailsButton" patient="entient"
+                                      observation="observation" ng-repeat="observation in obsGroup.value"
+                                      level="2"></show-observation>
+                </ul>-->
+
+
+
+
+                <ul bm-show="obsGroup.isOpen" class="print-observations visible-print">
+                    <li ng-repeat="observation in obsGroup.value">
+                        <ul>
+                            <show-observation show-details-button="config.showDetailsButton" patient="entient"
+                                              observation="observation"
+                                              level="2"></show-observation>
+                        </ul>
+                    </li>
+                </ul>
+                <ul bm-show="obsGroup.isOpen" class="print-observations hidden-print">
+                    <show-observation show-details-button="config.showDetailsButton" patient="entient"
                                       observation="observation" ng-repeat="observation in obsGroup.value"
                                       level="2"></show-observation>
                 </ul>

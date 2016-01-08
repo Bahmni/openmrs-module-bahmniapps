@@ -1,0 +1,26 @@
+@import "patientSearch";
+@import "visit";
+@import "consultation";
+@import "diagnosis";
+@import "disposition";
+@import "treatment/treatment";
+@import "observations";
+@import "patientDashboard";
+@import "charts";
+@import "orders";
+@import "program";
+@import "bacteriology";
+@import "patientSearchDesktop";
+@import "observationsDesktop";
+@import "treatmentDesktop";
+@import "drugOrderTemplate";
+
+body{
+  font-size: 14px;
+  @media (max-width : 768px){
+    font-size: 15px;
+  }
+}
+.consultation-content{
+  margin-top: 10px;
+}

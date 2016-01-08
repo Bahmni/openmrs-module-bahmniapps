@@ -1,3 +1,7 @@
+html,body{
+  height:100%;
+}
+
 body {
   font-family: $OpenSansFont, Arial, sans-serif;
   -webkit-font-smoothing: subpixel-antialiased;
@@ -5,16 +9,18 @@ body {
   color: $text;
   font-size: 16px;
   line-height: 1.1em;
+  margin : 0 auto;
+  pre{
+    background: none;
+    margin: 0;
+    padding: 0;
+    font-family: $OpenSansFont, Arial, sans-serif;
+    font-size: 14px;
+  }
 }
 body.show-controller-back.ngdialog-open{
  overflow: auto !important;
   overflow-x: hidden !important;
-}
-body pre {
-  font-family: $OpenSansFont;
-  font-size: 14px;
-  background: none;
-  margin: 0; padding: 0;
 }
 
 ul, ol, li {
@@ -62,11 +68,11 @@ a {
   border-radius: 5px;
 }
 
-pre {
+/*pre {
   font-size: 16px;
   padding: 10px;
   background: rgb(253, 252, 223);
-}
+}*/
 
 table {
   margin: 0 auto;
@@ -220,13 +226,13 @@ table {
   }
 }
 
-.left {
-  float: left;
+.fl, .left {float: left;}
+.fr, .right {float: right;}
+
+.overflow-hidden {
+  overflow: hidden;
 }
 
-.right {
-  float: right;
-}
 
 .align-center {
   text-align: center;
@@ -282,4 +288,33 @@ table {
     top: 0;
   }
 
+}
+
+.visible-desktop{
+  visibility: visible;
+  @media (max-width : 768px){
+    visibility: hidden;
+  }
+}
+
+.visible-small-screen{
+  display: none;
+  @media (max-width : 768px){
+    display: block;
+  }
+}
+
+
+.showOn-desktop{
+  display: block !important;
+  @media (max-width : 768px){
+    display: none !important;
+  }
+}
+
+.showOn-small-screen{
+  display: none !important;
+  @media (max-width : 768px){
+    display: block !important;
+  }
 }

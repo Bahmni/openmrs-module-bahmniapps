@@ -26,6 +26,8 @@ angular.module('bahmni.clinical')
             $scope.isIntakeTemplate = function (obsTemplate) {
                 return obsTemplate.conceptClass === Bahmni.Clinical.Constants.caseIntakeConceptClass;
             }
+
+            $scope.showGroupDateTime = $scope.config.showGroupDateTime === false ? false : true;
         };
 
         return {

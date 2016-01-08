@@ -2,7 +2,9 @@
 <html lang="en" ng-app="registration">
     <head>
         <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width" />
         <title>{{'REGISTRATION_TITLE_KEY' | translate}}</title>
+        <link rel="shortcut icon" type="image/x-icon" href="../favicon.ico">
         <link rel="stylesheet" href="../lib/jquery/jquery-ui-1.10.4.custom.min.css">
         <link rel="stylesheet" href="../components/select2/select2.css"/>
         <!-- build:css registration.min.css -->
@@ -14,11 +16,10 @@
     </head>
     <body>
         <div class="reg-wrapper">
-            <div >
-                <div ng-include src="'../common/ui-helper/messages.html'"></div>
-                <div ui-view="layout" id="view-content"></div>
-            </div>
+            <div ng-include src="'../common/ui-helper/messages.html'"></div>
+            <div ui-view="layout" id="view-content"></div>
         </div>
+        <script src="../components/offline/offline.min.js"></script>
         <script src="../components/lodash/dist/lodash.min.js"></script>
         <script src="../components/jquery/jquery.min.js"></script>
         <script src="../components/jquery.cookie/jquery.cookie.js"></script>
@@ -43,6 +44,8 @@
         <script src="../components/angular-translate-storage-cookie/angular-translate-storage-cookie.min.js"></script>
         <script src="../components/angular-translate-storage-local/angular-translate-storage-local.min.js"></script>
         <script src="../components/angular-translate-handler-log/angular-translate-handler-log.min.js"></script>
+        <script src="../components/angular-elastic/elastic.js"></script>
+        <script src="../components/lovefield/dist/lovefield.js"></script>
 
         <!-- build:js registration.min.js -->
         <script src="../common/constants.js"></script>
@@ -61,6 +64,7 @@
         <script src="../common/domain/init.js"></script>
         <script src="../common/domain/services/configurationService.js"></script>
         <script src="../common/domain/observationFilter.js"></script>
+        <script src="../common/domain/helpers/domainHelpers.js"></script>
         <script src="../common/domain/mappers/conceptMapper.js"></script>
         <script src="../common/domain/services/visitService.js"></script>
         <script src="../common/domain/services/encounterService.js"></script>
@@ -87,9 +91,15 @@
         <script src="../common/ui-helper/services/messagingService.js"></script>
         <script src="../common/ui-helper/directives/ngConfirmClick.js"></script>
         <script src="../common/ui-helper/directives/bmShow.js"></script>
+        <script src="../common/ui-helper/services/offlineCommonService.js"></script>
+        <script src="../common/ui-helper/services/offlineSearchService.js"></script>
 
         <script src="../common/photo-capture/init.js"></script>
         <script src="../common/photo-capture/directives/capturePhoto.js"></script>
+
+        <script src="../common/offline/init.js"></script>
+        <script src="../common/offline/offlineService.js"></script>
+        <script src="../common/offline/initializeOfflineSchema.js"></script>
 
         <script src="../common/auth/init.js"></script>
         <script src="../common/auth/user.js"></script>
@@ -118,6 +128,7 @@
         <script src="../common/concept-set/models/conceptSetObservation.js"></script>
         <script src="../common/concept-set/models/booleanObservation.js"></script>
         <script src="../common/concept-set/models/observationNode.js"></script>
+        <script src="../common/concept-set/models/tabularObservations.js"></script>
         <script src="../common/concept-set/models/multiSelectObservations.js"></script>
         <script src="../common/concept-set/models/customRepresentationBuilder.js"></script>
         <script src="../common/concept-set/models/conceptSetSection.js"></script>
@@ -147,6 +158,9 @@
         <script src="../common/obs/directives/showObservation.js"></script>
         <script src="../common/obs/util/observationUtil.js"></script>
 
+        <script src="../common/displaycontrols/hint/init.js"></script>
+        <script src="../common/displaycontrols/hint/directives/hint.js"></script>
+
         <script src="../common/i18n/init.js"></script>
         <script src="../common/i18n/bahmni-translate.js"></script>
         <script src="../common/i18n/services/mergeLocaleFilesService.js"></script>
@@ -170,6 +184,7 @@
         <script src="directives/patientAction.js"></script>
         <script src="controllers/visitController.js"></script>
         <script src="services/patientService.js"></script>
+        <script src="services/offlinePatientService.js"></script>
         <!--<script src="services/visitService.js"></script>-->
         <script src="services/patientAttributeService.js"></script>
         <script src="services/addressAttributeService.js"></script>

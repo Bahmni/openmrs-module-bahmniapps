@@ -13,7 +13,9 @@ describe("PivotTableService", function () {
             "obsConcepts": [],
             "drugConcepts": [],
             "labConcepts": [],
-            "groupBy": "encounters"
+            "groupBy": "encounters",
+            "startDate": "startDate",
+            "endDate": "endDate"
         };
         _$http = jasmine.createSpyObj('$http', ['get', 'post']);
 

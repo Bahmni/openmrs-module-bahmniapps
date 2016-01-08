@@ -127,8 +127,8 @@ describe('programService', function () {
                 results: [
                     {
                         "display": "Tuberculosis Program",
-                        "dateEnrolled": DateUtil.formatDateWithoutTime(tenDaysAgo),
-                        "dateCompleted": DateUtil.formatDateWithTime(yesterday),
+                        "dateEnrolled": DateUtil.parseLongDateToServerFormat(tenDaysAgo),
+                        "dateCompleted": DateUtil.parseLongDateToServerFormat(yesterday),
                         "patient":{"uuid":"ad95e200-6196-4438-a078-16ad0506a473"},
                         "states": [
                             {
@@ -150,7 +150,7 @@ describe('programService', function () {
                                 {
                                     "uuid": "6a6c990f-01e2-464b-9452-2a97f0c05c7c",
                                     "retired": false,
-                                    "states": [],
+                                    "states": []
                                 }
                             ]
                         },
@@ -158,8 +158,8 @@ describe('programService', function () {
                     },
                     {
                         "display": "HIV Program",
-                        "dateEnrolled": DateUtil.formatDateWithoutTime(tenDaysAgo),
-                        "dateCompleted": DateUtil.formatDateWithoutTime(today),
+                        "dateEnrolled": DateUtil.parseLongDateToServerFormat(tenDaysAgo),
+                        "dateCompleted": DateUtil.parseLongDateToServerFormat(today),
                         "patient":{"uuid":"ad95e200-6196-4438-a078-16ad0506a473"},
                         "states": [
                             {
@@ -189,8 +189,8 @@ describe('programService', function () {
                     },
                     {
                         "display": "End TB Program",
-                        "dateEnrolled": DateUtil.formatDateWithoutTime(tenDaysAgo),
-                        "dateCompleted": DateUtil.formatDateWithoutTime(fiveDaysFromToday),
+                        "dateEnrolled": DateUtil.parseLongDateToServerFormat(tenDaysAgo),
+                        "dateCompleted": DateUtil.parseLongDateToServerFormat(fiveDaysFromToday),
                         "patient":{"uuid":"ad95e200-6196-4438-a078-16ad0506a473"},
                         "states": [
                             {
@@ -212,7 +212,7 @@ describe('programService', function () {
                                 {
                                     "uuid": "6a6c990f-01e2-464b-9452-2a97f0c05c7c",
                                     "retired": false,
-                                    "states": [],
+                                    "states": []
                                 }
                             ]
                         },
@@ -220,7 +220,7 @@ describe('programService', function () {
                     },
                     {
                         "display": "End Fever Program",
-                        "dateEnrolled": DateUtil.formatDateWithoutTime(tenDaysAgo),
+                        "dateEnrolled": DateUtil.parseLongDateToServerFormat(tenDaysAgo),
                         "dateCompleted": null,
                         "patient":{"uuid":"ad95e200-6196-4438-a078-16ad0506a473"},
                         "states": [
@@ -267,7 +267,7 @@ describe('programService', function () {
     it('should enroll patient to a program', function(){
         var patientUuid = "somePatientUuid";
         var programUuid = "someProgramUuid";
-        var dateEnrolled = "someDateEnrolled";
+        var dateEnrolled = "Fri Dec 11 2015 12:04:23 GMT+0530 (IST)";
         var workflowUuid = "someWorkflowUuid";
 
         programService.enrollPatientToAProgram(patientUuid, programUuid, dateEnrolled, workflowUuid);
@@ -275,20 +275,19 @@ describe('programService', function () {
         expect(mockHttp.post.calls.mostRecent().args[0]).toEqual(Bahmni.Common.Constants.programEnrollPatientUrl);
         expect(mockHttp.post.calls.mostRecent().args[1].patient).toEqual(patientUuid);
         expect(mockHttp.post.calls.mostRecent().args[1].program).toEqual(programUuid);
-        expect(mockHttp.post.calls.mostRecent().args[1].dateEnrolled).toEqual(dateEnrolled);
+        expect(mockHttp.post.calls.mostRecent().args[1].dateEnrolled).toEqual("2015-12-11T12:04:23+0530");
         expect(mockHttp.post.calls.mostRecent().args[1].states[0].state).toEqual(workflowUuid);
-        expect(mockHttp.post.calls.mostRecent().args[1].states[0].startDate).toEqual(dateEnrolled);
+        expect(mockHttp.post.calls.mostRecent().args[1].states[0].startDate).toEqual("2015-12-11T12:04:23+0530");
     })
 
     it('should end patient program', function(){
         var patientProgramUuid = "somePatientProgramUuid";
         var outcome = "someOutcomeUuid";
-        var dateCompleted = "someDateCompleted";
-
+        var dateCompleted = "Fri Dec 11 2015 12:04:23 GMT+0530 (IST)";
         programService.endPatientProgram(patientProgramUuid, dateCompleted, outcome);
 
         expect(mockHttp.post.calls.mostRecent().args[0]).toEqual(Bahmni.Common.Constants.programEnrollPatientUrl + "/" + patientProgramUuid);
-        expect(mockHttp.post.calls.mostRecent().args[1].dateCompleted).toEqual(dateCompleted);
+        expect(mockHttp.post.calls.mostRecent().args[1].dateCompleted).toEqual("2015-12-11T12:04:23+0530");
         expect(mockHttp.post.calls.mostRecent().args[1].outcome).toEqual(outcome);
     })
 

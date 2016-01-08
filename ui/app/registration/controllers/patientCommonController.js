@@ -8,6 +8,7 @@ angular.module('bahmni.registration')
             var showCasteSameAsLastNameCheckbox = appService.getAppDescriptor().getConfigValue("showCasteSameAsLastNameCheckbox");
             $scope.showMiddleName = appService.getAppDescriptor().getConfigValue("showMiddleName");
             $scope.genderCodes = Object.keys($rootScope.genderMap);
+            $scope.dobMandatory = appService.getAppDescriptor().getConfigValue("dobMandatory") || false;
 
             $scope.getDeathConcepts = function () {
                 var deathConcept;
@@ -20,9 +21,9 @@ angular.module('bahmni.registration')
                     withCredentials: true,
                     transformResponse: [function(data){
                         deathConcept = data;
-                        $http.get(Bahmni.Common.Constants.conceptUrl, {
+                        $http.get(Bahmni.Common.Constants.conceptSearchByFullNameUrl, {
                             params: {
-                                q: deathConcept,
+                                name: deathConcept,
                                 v: "custom:(uuid,name,set,setMembers:(uuid,display,name:(uuid,name),retired))"
                             },
                             withCredentials: true

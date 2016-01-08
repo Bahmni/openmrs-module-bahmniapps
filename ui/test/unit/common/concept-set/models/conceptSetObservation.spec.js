@@ -55,4 +55,15 @@ describe("ConceptSetObservation", function() {
         expect(obs.isValueInAbsoluteRange()).toBeFalsy();
     });
 
+    it("should by default show notes button when nothing configured", function() {
+        var requiredObservation = new Bahmni.ConceptSet.Observation({concept: {name: "someConcept",dataType: "Numeric",hiAbsolute: 100,
+            lowAbsolute: 90, value:101}}, null, {})
+        expect(requiredObservation.canHaveComment()).toBeTruthy();
+    });
+
+    it("should hide notes button when configured to not show", function() {
+        var requiredObservation = new Bahmni.ConceptSet.Observation({concept: {name: "someConcept",dataType: "Numeric",hiAbsolute: 100,
+            lowAbsolute: 90, value:101}}, null, {"someConcept":{"disableAddNotes" : true}})
+        expect(requiredObservation.canHaveComment()).toBeFalsy();
+    });
 });

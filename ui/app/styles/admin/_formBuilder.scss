@@ -1,0 +1,122 @@
+.formBulider-container {
+  .formBulider-section-wrapper {
+      margin: 2% 0;
+      button.confirm{
+        clear: both;
+        margin: 10px;
+      }
+  }
+  section.formBuilder-left{
+    width: 22%;
+    float: left;
+    margin: 0 0 0 10px;
+  }
+  section.new-formElements {
+    border: 1px solid #C0C0C0;
+    border-radius: 5px;
+    padding: 10px;
+    margin: 0 0 10px;
+    box-sizing: border-box;
+    ul.formBuilder-lists {
+      li {
+        color: #fff;
+        display: block;
+        float: none;
+      }
+    }
+  }
+  section.formBuilder-right {
+    width: 74%;
+    float: right;
+    margin: 0 10px 0 0;
+    border: 1px solid silver;
+    border-radius: 5px;
+    padding: 10px;
+    box-sizing: border-box;
+    .formBuilder-Form-container-wrap {
+      position: relative;
+      padding: 42px 0 0;
+      ul.formBuilder-tabs {
+        position: absolute;
+        top: 0;
+        li.tab-item {
+          float: left;
+          a {
+            padding: 10px 15px;
+            border-radius: 3px 3px 0 0;
+          }
+        }
+      }
+    }
+  }
+  h2.formBuilder-title {
+    margin: 0;
+    padding: 7px 0;
+    font-family: $OpenSansBoldFont;
+    color: #666;
+    font-size: 14px;
+  }
+  .formBuilder-Form-container {
+    background: #ccc;
+    border-radius: 0px 5px 5px 5px;
+    padding: 30px 10px 20px;
+    overflow: auto;
+    button.save-formbuilder {
+      float: right;
+      margin: 6px 0;
+      padding: 10px 15px 9px;
+    }
+  }
+  .formBuilder-Form{
+      border-radius: 0 0 5px 5px;
+      form {
+        padding: 20px 10px;
+        box-sizing: border-box;
+      }
+  }
+  .dashboard-section .form-field {
+    clear: none;
+    float: left;
+    box-sizing: border-box;
+    margin-bottom: 0;
+    padding: 0 5px;
+  }
+  .form-field {
+    overflow: initial;
+    .field-attribute{
+        label {
+          width: 12em;
+        }
+        &.form-field-radio-label{
+            width:auto;
+            label{
+              width: auto;
+            }
+        }
+    }
+    input[type="radio"]{
+        margin:13px 5px 0 0;
+    }
+    textarea{
+      width: 197px;
+    }
+  }
+  legend{
+    width: 100%;
+    &.mylegend{
+      background: #eee !important;
+      margin: 10px 0;
+      padding: 3px 10px;
+      box-sizing: border-box;
+    }
+  }
+  .box{
+     margin:0 20px 20px;
+  }
+  form{
+    clear: both;
+  }
+  .form-field-radio-label h3{
+    margin: 12px 0;
+  }
+}

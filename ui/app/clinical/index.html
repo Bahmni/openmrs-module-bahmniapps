@@ -7,7 +7,7 @@
         <meta name="HandheldFriendly" content="true">
         <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=2.0, user-scalable=yes, minimal-ui" />
         <meta name="apple-mobile-web-app-capable" content="yes" />
-
+        <link rel="shortcut icon" type="image/x-icon" href="../favicon.ico">
         <link rel="stylesheet" href="../lib/jquery/jquery-ui-1.10.4.custom.min.css">
         <link rel="stylesheet" href="../lib/chart/c3-0.4.10.min.css">
         <link rel="stylesheet" href="../components/select2/select2.css"/>
@@ -27,6 +27,7 @@
                 <div ui-view="content" id="view-content" class="opd-content-wrapper"></div>
             </div>
         </div>
+        <script src="../components/offline/offline.min.js"></script>
         <script src="../components/jquery/jquery.min.js"></script>
         <script src="../lib/jquery/jquery-ui-1.10.4.custom.min.js"></script>
         <script src="../lib/modernizr.custom.80690.js"></script>
@@ -75,6 +76,9 @@
         <script src="../common/util/stringFormat.js"></script>
         <script src="../common/util/dynamicResourceLoader.js"></script>
 
+        <script src="../common/offline/init.js"></script>
+        <script src="../common/offline/offlineService.js"></script>
+
         <script src="../common/auth/init.js"></script>
         <script src="../common/auth/user.js"></script>
         <script src="../common/auth/userService.js"></script>
@@ -122,6 +126,7 @@
         <script src="../common/domain/services/programService.js"></script>
         <script src="../common/domain/services/providerService.js"></script>
 
+        <script src="../common/domain/helpers/domainHelpers.js"></script>
         <script src="../common/domain/mappers/providerMapper.js"></script>
         <script src="../common/domain/mappers/conceptMapper.js"></script>
         <script src="../common/domain/mappers/observationMapper.js"></script>
@@ -162,6 +167,7 @@
         <script src="../common/ui-helper/directives/compileHtml.js"></script>
         <script src="../common/ui-helper/controllers/messageController.js"></script>
         <script src="../common/ui-helper/services/messagingService.js"></script>
+        <script src="../common/ui-helper/directives/focusOnInputErrors.js"></script>
 
         <script src="../common/concept-set/init.js"></script>
         <script src="../common/concept-set/directives/conceptSetGroup.js"></script>
@@ -176,8 +182,10 @@
         <script src="../common/concept-set/models/conceptSetSection.js"></script>
         <script src="../common/concept-set/models/conceptSetObservation.js"></script>
         <script src="../common/concept-set/models/multiSelectObservations.js"></script>
+        <script src="../common/concept-set/models/specimenTypeObservation.js"></script>
         <script src="../common/concept-set/models/booleanObservation.js"></script>
         <script src="../common/concept-set/models/observationNode.js"></script>
+        <script src="../common/concept-set/models/tabularObservations.js"></script>
         <script src="../common/concept-set/models/customRepresentationBuilder.js"></script>
         <script src="../common/concept-set/mappers/observationMapper.js"></script>
         <script src="../common/concept-set/services/conceptSetServices.js"></script>
@@ -195,6 +203,7 @@
         <script src="../common/obs/util/observationUtil.js"></script>
 
         <script src="../common/obs/directives/showObservation.js"></script>
+        <script src="../common/obs/directives/editObservation.js"></script>
         <script src="../common/ui-helper/directives/autoScroll.js"></script>
 
         <script src="../common/models/documentImage.js"></script>
@@ -294,6 +303,7 @@
         <script src="dashboard/mappers/diseaseTemplateMapper.js"></script>
         <script src="dashboard/services/diseaseTemplateService.js"></script>
         <script src="dashboard/services/clinicalDashboardConfig.js"></script>
+        <script src="dashboard/services/bedDetailsService.js"></script>
         <script src="dashboard/directives/diseaseTemplate.js"></script>
         <script src="dashboard/directives/recentPatients.js"></script>
         <script src="dashboard/controllers/diseaseTemplateController.js"></script>
@@ -306,7 +316,6 @@
         <script src="dashboard/controllers/patientDashboardVisitsController.js"></script>
         <script src="dashboard/controllers/patientDashboardAllVisitsController.js"></script>
         <script src="dashboard/controllers/patientDashboardProgramsController.js"></script>
-        <script src="dashboard/controllers/patientDashboardDiagnosisController.js"></script>
 
         <!--All consultation includes-->
         <script src="consultation/uiError.js"></script>
@@ -315,6 +324,9 @@
         <script src="consultation/models/visitHistoryEntry.js"></script>
         <script src="consultation/models/category.js"></script>
         <script src="consultation/models/selectable.js"></script>
+        <script src="consultation/models/Specimen.js"></script>
+        <script src="consultation/models/drugOrderOptions.js"></script>
+        <script src="consultation/models/drugOrderOptionsSet.js"></script>
         <script src="consultation/helpers/urlHelper.js"></script>
         <script src="consultation/helpers/drugOrderHistoryHelper.js"></script>
         <script src="consultation/mappers/dispostionActionMapper.js"></script>
@@ -322,11 +334,12 @@
         <script src="consultation/mappers/consultationMapper.js"></script>
         <script src="consultation/mappers/labConceptsMapper.js"></script>
         <script src="consultation/mappers/encounterTransactionMapper.js"></script>
+        <script src="consultation/mappers/specimenMapper.js"></script>
         <script src="consultation/services/otherInvestigationsConceptsMapper.js"></script>
         <script src="consultation/services/patientVisitHistoryService.js"></script>
         <script src="consultation/services/labTestsProvider.js"></script>
         <script src="consultation/services/otherTestsProvider.js"></script>
-        <script src="consultation/services/saveHandler.js"></script>
+        <script src="consultation/services/Notifier.js"></script>
         <script src="consultation/services/drugService.js"></script>
         <script src="consultation/services/treatmentConfig.js"></script>
         <script src="consultation/filters/observationValue.js"></script>
@@ -340,11 +353,14 @@
         <script src="consultation/controllers/investigationController.js"></script>
         <script src="consultation/controllers/orderController.js"></script>
         <script src="consultation/controllers/treatmentController.js"></script>
+        <script src="consultation/controllers/addTreatmentController.js"></script>
         <script src="consultation/controllers/dispositionController.js"></script>
         <script src="consultation/controllers/consultationController.js"></script>
         <script src="consultation/controllers/conceptSetPageController.js"></script>
         <script src="consultation/controllers/drugOrderHistoryController.js"></script>
+        <script src="consultation/controllers/customDrugOrderHistoryController.js"></script>
         <script src="consultation/controllers/latestPrescriptionPrintController.js"></script>
+        <script src="consultation/controllers/bacteriologyController.js"></script>
 
 
         <!--All displaycontrols includes-->
@@ -370,22 +386,53 @@
         <script src="../common/displaycontrols/admissiondetails/init.js"></script>
         <script src="../common/displaycontrols/admissiondetails/directives/admissionDetails.js"></script>
 
+        <script src="../common/displaycontrols/drugOrderDetails/init.js"></script>
+        <script src="../common/displaycontrols/drugOrderDetails/directives/drugOrderDetails.js"></script>
+
+        <script src="../common/displaycontrols/drugOrdersSection/init.js"></script>
+        <script src="../common/displaycontrols/drugOrdersSection/directives/drugOrdersSection.js"></script>
+
         <script src="../common/displaycontrols/diagnosis/init.js"></script>
         <script src="../common/displaycontrols/diagnosis/filters/primaryDiagnosisFirst.js"></script>
         <script src="../common/displaycontrols/diagnosis/directives/bahmniDiagnosis.js"></script>
 
         <script src="../common/displaycontrols/orders/init.js"></script>
+        <script src="../common/displaycontrols/bacteriologyresults/init.js"></script>
+
         <script src="../common/displaycontrols/orders/directives/ordersControl.js"></script>
+        <script src="../common/displaycontrols/bacteriologyresults/directives/bacteriologyResultsControl.js"></script>
         <script src="../common/displaycontrols/orders/controllers/allOrdersDetailsController.js"></script>
 
         <script src="../common/displaycontrols/programs/init.js"></script>
         <script src="../common/displaycontrols/programs/directives/programs.js"></script>
+
+        <script src="../common/displaycontrols/tabularview/init.js"></script>
+        <script src="../common/displaycontrols/tabularview/directives/obsToObsFlowSheet.js"></script>
+        <script src="../common/displaycontrols/tabularview/controllers/allObsToObsFlowSheetDetailsController.js"></script>
+
+        <script src="../common/displaycontrols/chronicTreatmentChart/init.js"></script>
+        <script src="../common/displaycontrols/chronicTreatmentChart/directives/chronicTreatmentChart.js"></script>
+        <script src="../common/displaycontrols/chronicTreatmentChart/filters/decimalFilter.js"></script>
+        <script src="../common/displaycontrols/chronicTreatmentChart/controllers/allChronicTreatmentChartController.js"></script>
+
+        <script src="../common/displaycontrols/dashboard/controllers/patientDashboardDiagnosisController.js"></script>
+
+        <script src="../common/displaycontrols/forms/init.js"></script>
+        <script src="../common/displaycontrols/forms/controllers/patientDashboardAllFormsController.js"></script>
+        <script src="../common/displaycontrols/forms/directives/formsTable.js"></script>
+        <script src="../clinical/consultation/services/visitFormService.js"></script>
+
+        <script src="../common/displaycontrols/hint/init.js"></script>
+        <script src="../common/displaycontrols/hint/directives/hint.js"></script>
 
 
         <script src="../common/orders/init.js"></script>
         <script src="../common/orders/services/orderService.js"></script>
         <script src="../admin/services/orderSetService.js"></script>
         <script src="../common/orders/services/orderTypeService.js"></script>
+        <script src="../common/bacteriologyresults/init.js"></script>
+        <script src="../common/bacteriologyresults/services/bacteriologyResultsService.js"></script>
+
 
         <script src="../common/i18n/init.js"></script>
         <script src="../common/i18n/bahmni-translate.js"></script>
@@ -395,6 +442,7 @@
 
         <script src="initialization.js"></script>
         <script src="ordersTabInitialization.js"></script>
+        <script src="bacteriologyTabInitialization.js"></script>
         <script src="patientInitialization.js"></script>
         <script src="visitHistoryInitialization.js"></script>
         <script src="consultation/consultationInitialization.js"></script>

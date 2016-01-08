@@ -3,7 +3,7 @@
 Bahmni.ADT.WardDetails = {};
 
 
-Bahmni.ADT.WardDetails.create = function(details) {
+Bahmni.ADT.WardDetails.create = function(details, diagnosisStatus) {
     var detailsMap = {};
     var attributesToCopy = ["Bed", "Name", "Id", "Name", "Age", "District", "Village", "Admission By", "Admission Time", "Disposition By", "Disposition Time", "ADT Notes"];
     var diagnosisProperties = ["Diagnosis", "Diagnosis Certainty", "Diagnosis Order", "Diagnosis Status", "Diagnosis Provider", "Diagnosis Datetime"];
@@ -32,6 +32,9 @@ Bahmni.ADT.WardDetails.create = function(details) {
         if(detail.Diagnosis != null) {
             var diagnosis = copyProperties({}, detail, diagnosisProperties);
             diagnosis.ruledOut = diagnosis["Diagnosis Status"] == "Ruled Out Diagnosis";
+            if(diagnosis.ruledOut) {
+                diagnosis.diagnosisStatus = diagnosisStatus;
+            }
             detailsMap[detail.Id].Diagnosis.push(diagnosis);
         }
         var hiddenProperties = copyProperties({}, detail, hiddenAttributesToCopy);

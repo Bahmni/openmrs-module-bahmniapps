@@ -14,15 +14,14 @@ angular.module('bahmni.clinical').factory('consultationInitialization',
                 };
 
                 var consultationMapper = new Bahmni.ConsultationMapper(configurations.dosageFrequencyConfig(), configurations.dosageInstructionConfig(),
-                    configurations.consultationNoteConcept(), configurations.labOrderNotesConcept());
+                    configurations.consultationNoteConcept(), configurations.labOrderNotesConcept(), configurations.stoppedOrderReasonConfig());
 
                 var dateUtil = Bahmni.Common.Util.DateUtil;
 
                 var getActiveEncounter = function () {
                     var currentProviderUuid = $rootScope.currentProvider ? $rootScope.currentProvider.uuid : null;
                     var providerData = $bahmniCookieStore.get(Bahmni.Common.Constants.grantProviderAccessDataCookieName);
-                    var encounterDate = dateUtil.parseLongDateToServerFormat(new Date());
-                    return findEncounter(providerData, currentProviderUuid, encounterDate);
+                    return findEncounter(providerData, currentProviderUuid, null);
                 };
 
                 var getRetrospectiveEncounter = function () {
@@ -63,13 +62,10 @@ angular.module('bahmni.clinical').factory('consultationInitialization',
                 };
 
                 return getEncounter().then(function (consultation) {
-                    return diagnosisService.getPastAndCurrentDiagnoses(patientUuid, consultation.encounterUuid).then(function (diagnosis) {
-                        consultation.pastDiagnoses = diagnosis.pastDiagnoses;
-                        consultation.savedDiagnosesFromCurrentEncounter = diagnosis.savedDiagnosesFromCurrentEncounter;
-                        consultation.saveHandler = new Bahmni.Clinical.SaveHandler();
-                        consultation.postSaveHandler = new Bahmni.Clinical.SaveHandler();
-                        return consultation;
-                    })
+                    return diagnosisService.populateDiagnosisInformation(patientUuid, consultation).then(function(diagnosisConsultation) {
+                        diagnosisConsultation.preSaveHandler = new Bahmni.Clinical.Notifier();
+                        return diagnosisConsultation;
+                    });
                 });
             }
         }]

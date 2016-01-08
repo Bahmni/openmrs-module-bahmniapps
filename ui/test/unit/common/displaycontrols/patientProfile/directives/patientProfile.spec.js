@@ -125,6 +125,26 @@ describe("Patient Profile display control", function () {
         expect(isoScope.isProviderRelationship({relationshipType : {aIsToB : "Patient"}})).toBeFalsy();
     });
 
+    it("should return false if showDOB configured false", function () {
+        var config = {
+            "title": "Patient Information",
+            "name": "patientInformation",
+            "showDOB":false
+        };
+        var isoScope = createIsoScope(config);
+        expect(isoScope.showBirthDate).toBeFalsy();
+    });
+
+    it("should return true by default if showDOB is undefined", function () {
+        var config = {
+            "title": "Patient Information",
+            "name": "patientInformation"
+        };
+        scope.patient.birthdate = "20 Jun 15";
+        var isoScope = createIsoScope(config);
+        expect(isoScope.showBirthDate).toBeTruthy();
+    });
+
     var createIsoScope = function(config)  {
         scope.config = config;
         element = angular.element('<patient-profile patient="patient" config="config"></patient-profile>');

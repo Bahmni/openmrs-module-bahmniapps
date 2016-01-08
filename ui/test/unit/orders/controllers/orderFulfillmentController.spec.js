@@ -2,11 +2,12 @@
 
 describe("OrderFulfillmentController", function () {
 
-    var scope, rootScope, deferred, deferred1, q;
+    var scope, rootScope, deferred, deferred1, q, $bahmniCookieStore;
     var mockEncounterService = jasmine.createSpyObj('encounterService', ['find']);
     var mockOrderObservationService = jasmine.createSpyObj('orderObservationService', ['save']);
     var mockOrderTypeService = jasmine.createSpyObj('orderTypeService', ['getOrderTypeUuid']);
     var mockOrderService = jasmine.createSpyObj('orderService', ['getOrders', 'then']);
+    var mockOfflineService = jasmine.createSpyObj('offlineService',['getAppPlatform', 'isOfflineApp']);
 
     mockEncounterService.find.and.callFake(function(param) {
         deferred1 = q.defer();
@@ -31,6 +32,12 @@ describe("OrderFulfillmentController", function () {
     mockOrderTypeService.getOrderTypeUuid.and.callFake(function(params) {
         return "someOrderTypeUuid";
     });
+    mockOfflineService.getAppPlatform.and.callFake(function () {
+        return "chrome";
+    });
+    mockOfflineService.isOfflineApp.and.callFake(function () {
+        return false;
+    });
 
     var mockSessionService = {
         getLoginLocationUuid: function(){
@@ -39,7 +46,12 @@ describe("OrderFulfillmentController", function () {
     };
     var mockStateParams = {orderType: "someOrderType"};
 
-    beforeEach(module('bahmni.orders'));
+    beforeEach(module('bahmni.orders', 'bahmni.common.offline'));
+
+    beforeEach(module(function ($provide) {
+        $bahmniCookieStore = jasmine.createSpyObj('$bahmniCookieStore', ['get', 'remove', 'put']);
+        $provide.value('$bahmniCookieStore', $bahmniCookieStore);
+    }));
 
     beforeEach(inject(function ($controller, $rootScope, $q) {
         scope = $rootScope.$new();
@@ -56,6 +68,7 @@ describe("OrderFulfillmentController", function () {
             orderTypeService: mockOrderTypeService,
             $stateParams: mockStateParams,
             orderService: mockOrderService,
+            offlineService : mockOfflineService,
             $q :q,
             orderFulfillmentConfig: { conceptNames: ["Blood Pressure"]}
         });

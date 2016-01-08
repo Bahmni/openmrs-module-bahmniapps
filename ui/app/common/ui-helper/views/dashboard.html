@@ -5,13 +5,13 @@
                 <option ng-repeat="location in locations" ng-selected="isCurrentLocation(location)" value="{{location.uuid}}">
                     {{location.display}}
                 </option>
-            </select> 
+            </select>
         </form>
         <!-- Mujir/Vikash - to be introduced when we do retrospective entry for registration and other modules -->
         <!--<input class="retro-date-widget fr" type="date"/>-->
 
         <button class="btn-user-info">
-            <i class="fa fa-user-md fa-white small"></i>
+            <i ng-class="offline()? 'fa fa-user-md fa-red small' : 'fa fa-user-md fa-green small'" id="user-icon"></i>
             <i class="fa fa-caret-down fa-white mini"></i>
         </button>
         <ul>
@@ -25,6 +25,11 @@
                 <a class="disabled">
                     <i class="fa fa-map-marker fa-white small"></i>
                     <span ng-bind="currentUser.currentLocation"></span>
+                </a>
+            </li>
+            <li ng-if="isOfflineApp()">
+                <a ng-click="syncData()">
+                    <i class="fa fa-refresh small"></i><span nav-link>{{'HEADER_LABEL_SYNC_KEY' | translate}}</span>
                 </a>
             </li>
             <li>

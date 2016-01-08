@@ -109,7 +109,7 @@ describe('patientMapper', function () {
         expect(patient.address.cityVillage).toBe(openmrsPatient.patient.person.preferredAddress.cityVillage);
         expect(patient.address.countyDistrict).toBe(openmrsPatient.patient.person.preferredAddress.countyDistrict);
         expect(patient.address.stateProvince).toBe(openmrsPatient.patient.person.preferredAddress.stateProvince);
-        expect(patient.date.toString()).toBe("Fri Jan 01 1999 00:00:00 GMT+0530 (IST)");
+        expect(patient.date.toString()).toBe(moment("1999-01-01").toDate().toString());
         var urlParts = patient.image.split('?');
         expect(urlParts.length).toBe(2);
         expect(urlParts[0]).toBe("/patient_images/" + openmrsPatient.patient.uuid + ".jpeg");

@@ -2,7 +2,7 @@
 
 describe("ensure that the directive order-selector works properly", function () {
 
-    var element, scope, conceptClass, title,httpBackend,rootScope,compile,q;
+    var scope, conceptClass, title,httpBackend,rootScope,compile,q;
 
     var html = '<order-selector></order-selector>';
 
@@ -73,7 +73,7 @@ describe("ensure that the directive order-selector works properly", function () 
 
         httpBackend.expectGET("./consultation/views/orderSelector.html").respond("<div>dummy</div>");
 
-        var compiledEle = compile(html)(scope);
+        compile(html)(scope);
 
         scope.$digest();
         httpBackend.flush();

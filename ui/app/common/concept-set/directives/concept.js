@@ -1,14 +1,38 @@
 angular.module('bahmni.common.conceptSet')
-    .directive('concept', ['RecursionHelper', 'spinner', 'conceptSetService', '$filter', '$location', function (RecursionHelper, spinner, conceptSetService, $filter, $location, scrollToService) {
+    .directive('concept', ['RecursionHelper', 'spinner', 'conceptSetService', '$filter',
+        function (RecursionHelper, spinner, conceptSetService, $filter) {
         var link = function (scope, element, attributes) {
             var conceptMapper = new Bahmni.Common.Domain.ConceptMapper();
+
+            scope.now = moment().format("YYYY-MM-DD hh:mm:ss");
             scope.showTitle = scope.showTitle === undefined ? true : scope.showTitle;
 
             scope.cloneNew = function (observation, parentObservation) {
                 var newObs = observation.cloneNew();
                 var index = parentObservation.groupMembers.indexOf(observation);
                 parentObservation.groupMembers.splice(index + 1, 0, newObs);
-                jQuery.scrollTo(element)
+                jQuery.scrollTo(element, 300)
+            };
+
+            scope.removeClonedObs = function (observation, parentObservation) {
+                var index = parentObservation.groupMembers.indexOf(observation);
+                parentObservation.groupMembers[index].voided = true;
+                observation.hidden = true;
+            };
+
+            scope.isClone = function (observation, parentObservation) {
+                if (parentObservation && parentObservation.groupMembers) {
+                    var index = parentObservation.groupMembers.indexOf(observation);
+                    return (index > 0) ? parentObservation.groupMembers[index].label == parentObservation.groupMembers[index - 1].label : false;
+                }
+                return false;
+            };
+
+            scope.isRemoveValid = function (observation) {
+                if (observation.getControlType() == 'image') {
+                    return !observation.value;
+                }
+                return true;
             };
 
             scope.getStringValue = function (observations) {
@@ -17,7 +41,7 @@ angular.module('bahmni.common.conceptSet')
                 }).join(", ");
             };
             scope.selectOptions = function (codedConcept) {
-                var answers = _.sortBy(_.uniq(codedConcept.answers, _.property('uuid')).map(conceptMapper.map), 'name');
+                var answers = _.uniq(codedConcept.answers, _.property('uuid')).map(conceptMapper.map);
                 return {
                     data: answers,
                     query: function (options) {
@@ -25,8 +49,8 @@ angular.module('bahmni.common.conceptSet')
                     },
                     allowClear: true,
                     placeholder: 'Select',
-                    formatResult: _.property('name'),
-                    formatSelection: _.property('name'),
+                    formatResult: _.property('displayString'),
+                    formatSelection: _.property('displayString'),
                     id: _.property('uuid')
                 };
             };
@@ -47,8 +71,21 @@ angular.module('bahmni.common.conceptSet')
                 scope.collapse = scope.collapseInnerSections;
             });
 
-            scope.handleUpdate = function() {
-                scope.$root.$broadcast("event:observationUpdated-"+scope.conceptSetName, scope.observation.concept.name);
+            scope.handleUpdate = function () {
+                scope.$root.$broadcast("event:observationUpdated-" + scope.conceptSetName, scope.observation.concept.name);
+            }
+
+            scope.constructSearchResult = function(concept, searchString) {
+                var matchingName =_.find(_.map(concept.names, 'name'), function (name) {
+                    return (name != concept.name.name) && name.search(new RegExp(searchString, "i")) !== -1
+                });
+                return {
+                    label: matchingName ? matchingName + " => " + concept.name.name : concept.name.name,
+                    value: concept.name.name,
+                    concept: concept,
+                    uuid: concept.uuid,
+                    name: concept.name.name
+                }
             }
         };
 

@@ -20,7 +20,7 @@ angular.module('bahmni.common.uicontrols.programmanagment')
 
             var getCurrentDate = function () {
                 var retrospectiveDate = retrospectiveEntryService.getRetrospectiveDate();
-                return DateUtil.parse(retrospectiveDate || DateUtil.now());
+                return DateUtil.parseLongDateToServerFormat(retrospectiveDate) || DateUtil.parse(DateUtil.now()) ;
             };
 
             var init = function () {

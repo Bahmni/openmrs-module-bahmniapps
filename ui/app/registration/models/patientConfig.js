@@ -2,28 +2,60 @@
 
 Bahmni.Registration.PatientConfig = (function () {
 
-    function PatientConfig(patientAttributeTypes, identifierSources, additionalPatientInformation ) {
+    function PatientConfig(patientAttributeTypes, identifierSources, patientInformation ) {
         this.personAttributeTypes = patientAttributeTypes;
         this.identifierSources = identifierSources;
-        var additionalAttributes = [];
+        var patientAttributesSections = {};
         //Avoiding multiple calls from angular code. Side effect of the way angular does dirty check. [Shruti/ Sush]
         if ( !this.attributeRows && this.personAttributeTypes) {
-            var attributes = this.personAttributeTypes.filter(function (item) {
-                var find = _.find(additionalPatientInformation, function (attribute) {
-                        if(attribute.name === item.name){
-                            if(attribute.display){
-                                additionalAttributes.push(item);
-                            }
-                            return true;
-                        }
-                        return false;
-                    }
-                );
-                return item.name !== "healthCenter" && item.name !== "givenNameLocal" && item.name !== "middleNameLocal" && item.name !== "familyNameLocal" && (find ? false : true);
+            if(!patientInformation) {
+                this.attributeRows = this.splitAsRows(this.personAttributeTypes);
+                return;
+            }
+
+            var hiddenAttributes = patientInformation["hidden"] && patientInformation["hidden"].attributes;
+            delete patientInformation["hidden"];
+
+            var otherInformationAttributes = this.personAttributeTypes.filter(function (item) {
+                return !isHiddenPatientAttribute(hiddenAttributes, item)
+                    && !isItemAMandatoryField(item)
+                    && !isAttributeInOtherSection(patientInformation, patientAttributesSections, item);
             });
-            this.attributeRows = this.splitAsRows(attributes);
-            this.additionalAttributesTypes = additionalAttributes;
+
+            this.attributeRows = this.splitAsRows(otherInformationAttributes);
+            this.patientAttributesSections = patientAttributesSections;
         }
+    }
+
+    function isHiddenPatientAttribute(hiddenAttributes, item){ //Ignore hidden fields from patientInformation configuration
+        return hiddenAttributes && hiddenAttributes.indexOf(item.name) > -1;
+    }
+
+    function isAttributeInOtherSection(patientInformation, patientAttributesSections, item) {
+        return _.find(patientInformation, function (section, key) {
+            return _.find(section.attributes, function (attribute) {
+                if (attribute === item.name ) {
+                    var sectionObject = patientAttributesSections[key];
+                    if(!sectionObject) {
+                        sectionObject = {
+                            attributes: [],
+                            title: section.title,
+                            translationKey: section.translationKey,
+                            shortcutKey: section.shortcutKey
+                        }
+                    }
+                    sectionObject.attributes.push(item);
+                    patientAttributesSections[key] = sectionObject;
+                    return true;
+                }
+                return false;
+            });
+        });
+    }
+
+    function isItemAMandatoryField(item) {
+        var mandatoryPatientAttributes = ["healthCenter", "givenNameLocal", "middleNameLocal", "familyNameLocal"];
+        return mandatoryPatientAttributes.indexOf(item.name) > -1;
     }
 
     PatientConfig.prototype = {
@@ -37,8 +69,8 @@ Bahmni.Registration.PatientConfig = (function () {
             return this.attributeRows;
         },
 
-        additionalAttributes : function(){
-            return this.additionalAttributesTypes;
+        getPatientAttributesSections: function(){
+            return this.patientAttributesSections;
         },
 
         splitAsRows: function (attributes) {

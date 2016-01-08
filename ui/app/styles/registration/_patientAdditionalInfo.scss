@@ -1,0 +1,11 @@
+.additional-info-wrapper{
+  .form .form-field .field-value{
+    input[type="number"]{
+      width: 12.5em;
+    }
+    input[type="checkbox"]{
+      margin-top: 9px;
+      margin-left: 0;
+    }
+  }
+}

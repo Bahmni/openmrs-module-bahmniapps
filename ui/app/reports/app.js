@@ -19,17 +19,14 @@ angular
                 },
                 data: {
                     backLinks: [
-                        {label: "Home", url: "../home/", icon: "fa-home"}
+                        {label: "Home", url: "../home/", accessKey: "h", icon: "fa-home"}
                     ]
                 },
                 resolve: {
                     initialization: 'initialization'
                 }
             });
-        // $bahmniTranslateProvider.init({app: 'reports', shouldMerge: true});
     }]).run(function ($rootScope, $templateCache) {
-//                debugUiRouter($rootScope);
-//        Disable caching view template partials
         $rootScope.$on('$viewContentLoaded', function () {
                 $templateCache.removeAll();
             }

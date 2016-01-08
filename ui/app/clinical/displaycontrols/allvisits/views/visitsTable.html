@@ -1,30 +1,20 @@
-<section class="block hierarchy visit-dashboard">
-    <ul class="form-field" class="ng-isolate-scope" id="visitDisplayTable">
-        <li ng-repeat="visit in ::visits | limitTo: params.maximumNoOfVisits" class="ng-scope eachVisit">
-            <span class="tree-list-item row-click">
-                <i class="fa fa-caret-right" ng-hide="visit.isOpen" ng-click="toggle(visit)"></i>
-                <i class="fa fa-caret-down" ng-show="visit.isOpen" ng-click="toggle(visit)"></i>
-                <a class="visit" ng-click="openVisit(visit)">
-                    <span>{{::visit.startDatetime | bahmniDate}}</span>
-                    <span ng-if="::!visit.isActive()">- {{::visit.stopDatetime | bahmniDate }}</span>
-                    <i class="fa fa-star current-visit-icon" id="currentVisitIcon" ng-if="::visit.isActive()"
-                       title="Current Visit"></i>
-                </a>
-                <span class="visitType">{{::visit.visitType.name}}</span>
-            </span>
-            <ul ng-show="visit.isOpen" class="ng-isolate-scope">
-                <li ng-if="!showObservationData" ng-repeat="encounter in visit.encounters" class="ng-scope">
-                        <span>{{encounter.encounterDatetime | bahmniDateTime}}</span>
-                        <span class="fr">{{getProviderDisplayName(encounter)}}</span>
-                        <a href="javascript:void(0)"><i class="fa fa-pencil" ng-click="editConsultation(encounter)"></i></a>
-                    <ul class="ng-isolate-scope">
-                        <li class="ng-scope" ng-repeat="ob in filteredObservations(encounter.obs, observationTemplates)">
-                            <span>{{ob.concept.display}}</span>
-                        </li>
-                    </ul>
-                </li>
-            </ul>
-            <bahmni-observation ng-if="showObservationData" visit-uuid="{{visit.uuid}}" patient="patient" config="config"></bahmni-observation>
-        </li>
-    </ul>
+<section class="block patientInformation">
+    <h2 class="section-title" ng-if="params.title">
+        {{params.title}}
+    </h2>
+    <p class="placeholder-text" ng-if="!hasVisits()">{{::noVisitsMessage}}</p>
+    <table class="visits dashboard-table" id="visitDisplayTable" ng-if="::hasVisits()">
+        <tbody>
+            <tr id="eachVisit" ng-repeat="visit in ::visits | limitTo: params.maximumNoOfVisits">
+                <td class="name" width="50%">
+                    <a class="visit" ng-click="openVisit(visit)">
+                        <span>{{::visit.startDatetime | bahmniDate}}</span>
+                        <span ng-if="::!visit.isActive()">- {{::visit.stopDatetime | bahmniDate }}</span>
+                        <i class="fa fa-star current-visit-icon" id="currentVisitIcon" ng-if="::visit.isActive()" title="Current Visit"></i>
+                    </a>
+                </td>
+                <td class="value" id="visitType">{{::visit.visitType.name}}</td>
+            </tr>
+        </tbody>
+    </table>
 </section>

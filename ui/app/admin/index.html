@@ -5,6 +5,7 @@
         <title>Bahmni Admin</title>
 
         <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1, user-scalable=0, minimal-ui" />
+        <link rel="shortcut icon" type="image/x-icon" href="../favicon.ico">
         <link rel="stylesheet" href="../lib/jquery/jquery-ui-1.10.4.custom.min.css">
         <link rel="stylesheet" href="../styles/clinical.css"/>
 
@@ -18,6 +19,7 @@
         <div class="opd-wrapper">
             <div ui-view id="view-content" class="opd-content-wrapper"></div>
         </div>
+        <script src="../components/offline/offline.min.js"></script>
         <script src="../components/lodash/dist/lodash.min.js"></script>
         <script src="../components/jquery/jquery.min.js"></script>
         <script src="../lib/jquery/jquery-ui-1.10.4.custom.min.js"></script>
@@ -49,6 +51,9 @@
         <script src="../common/util/arrayUtil.js"></script>
         <script src="../common/util/dateUtil.js"></script>
         <script src="../common/constants.js"></script>
+
+        <script src="../common/offline/init.js"></script>
+        <script src="../common/offline/offlineService.js"></script>
 
         <script src="../common/auth/init.js"></script>
         <script src="../common/auth/user.js"></script>

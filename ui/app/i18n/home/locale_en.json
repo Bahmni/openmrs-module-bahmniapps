@@ -9,5 +9,6 @@
     "LOGIN_MESSAGE_ENTER_PASSWORD_KEY": "Enter your password",
     "LOGIN_LABEL_SELECT_LOCATION_KEY": "Select Location",
     "LOGIN_LABEL_SELECT_LOCALE_KEY": "Select Locale",
-    "HEADER_LABEL_LOGOUT_KEY": "Logout"
+    "HEADER_LABEL_LOGOUT_KEY": "Logout",
+    "HEADER_LABEL_SYNC_KEY": "Sync"
 }

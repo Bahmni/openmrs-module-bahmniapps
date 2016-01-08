@@ -1,6 +1,7 @@
 {
-    "CONSULTATION_TAB_KEY": "Consultation",
-    "NO_ACTIVE_PASSIVE_PROGRAMS_MESSAGE": "No active/past programs for this patient.",
+    "CONSULTATION_TAB_KEY": "<u>C</u>onsultation",
+    "CONSULTATION_SHORTCUT_KEY": "c",
+    "NO_ACTIVE_PASSIVE_PROGRAMS_MESSAGE": "No active/inactive programs for this patient.",
     "NO_TREATMENTS_MESSAGE": "No treatments for this patient.",
     "NO_ADMISSION_DETAILS_MESSAGE": "No Admission Details for this patient.",
     "NO_DOCUMENTS_MESSAGE": "No documents for this patient.",
@@ -8,6 +9,10 @@
     "NO_LAB_ORDERS_FOR_PATIENT_MESSAGE_KEY": "No Lab Orders for this patient.",
     "DISPLAY_CONTROL_ERROR_MESSAGE_KEY": "No {{ displayControl }} for this patient",
     "NO_DIAGNOSIS_MESSAGE": "No diagnosis for this patient",
+    "NO_SPECIMEN_RESULT_FOUND_MESSAGE": "No Result found for this specimen",
+    "NO_SPECIMEN_FOUND_MESSAGE":"No specimen for this patient",
+    "NO_DATA_MESSAGE": "No data captured.",
+    "NO_DRUG_DETAILS_MESSAGE": "No Drugs to show for this patient",
 
     "PROGRAM_MANAGEMENT_SELECT_PROGRAM_KEY": "Select Program",
     "PROGRAM_MANAGEMENT_ACTIVE_PROGRAM_KEY": "Active Programs",
@@ -35,6 +40,7 @@
     "CONCEPT_SET_GROUP_COLLAPSE_ALL_KEY":"Collapse All",
 
 
+    "VISIT_TITLE_PATIENT_INFORMATION":"PatientInformation",
     "VISIT_TITLE_DIAGNOSIS_KEY": "Diagnoses",
     "VISIT_TITLE_DISPOSITIONS_KEY": "Dispositions",
     "VISIT_TITLE_DISPOSITION_KEY": "Disposition",
@@ -48,6 +54,9 @@
     "CONCEPT_SET_GROUP_COLLAPSE_ALL_KEY": "Collapse All",
     "ADD_MORE_KEY": "ADD MORE",
     "CLINICAL_SAVE_TRANSLATION_KEY":"<u>S</u>ave",
+    "CLINICAL_SAVE_SUCCESS_MESSAGE_KEY": "Saved",
+    "CLINICAL_SAVE_FAILURE_MESSAGE_KEY": "An error has occurred on the server. Information not saved.",
+    "CLINICAL_FORM_ERRORS_MESSAGE_KEY": "Please enter a value in the mandatory fields or correct the value in the highlighted fields to proceed",
     "SAVE_ACCESS_KEY": "s",
     "CLINICAL_PRINT_TRANSLATION_KEY": "P<u>r</u>int",
     "CLINICAL_PRINT_ACCESS_KEY": "r",
@@ -58,5 +67,40 @@
     "PATIENT_DOCUMENT_TRANSLATION_KEY": "Patient Documents",
     "BAHMNI_HOME_TRANSLATION_KEY": "Bahmni Home",
     "LOGOUT_TRANSLATION_KEY": "Logout",
-    "OBS_ABNORMAL_TRANSLATE_KEY": "Abnormal"
+    "OBS_ABNORMAL_TRANSLATE_KEY": "Abnormal",
+    "OBS_UNKNOWN_TRANSLATE_KEY": "Unknown",
+    "LAB_INVESTIGATIONS_KEY": "Lab Investigations",
+    "BACTERIOLOGY_SAMPLE_COLLECTION_DATE_KEY" : "Date of Sample Collection",
+    "BACTERIOLOGY_SAMPLE_TYPE_KEY" : "Type of sample",
+    "BACTERIOLOGY_SAMPLE_ID_KEY" : "Sample Id",
+    "BACTERIOLOGY_TAB_TITLE_KEY" : "Sample Details",
+    "BACTERIOLOGY_BUTTON_ADD_SAMPLE_KEY" : "Add Sample",
+    "BACTERIOLOGY_BUTTON_CLEAR_KEY" : "Clear",
+    "BACTERIOLOGY_BUTTON_EDIT_KEY" : "Edit",
+    "BACTERIOLOGY_SAMPLE_BEING_EDITED_KEY": "The specimen is already being edited: ",
+    "BACTERIOLOGY_ADDED_ON_KEY": "Added on",
+    "BACTERIOLOGY_SAMPLE_TYPE_KEY_NON_CODED": "Other Sample Type",
+
+
+    "MEDICATION_RECENT_TAB":"Recent",
+    "MEDICATION_RECENT_TAB_STOP_REASON":"Stop Reason",
+    "MEDICATION_RECENT_TAB_STOP_NOTES":"Notes",
+    "MEDICATION_TAB_DOSE": "Dose",
+    "MEDICATION_DEFAULT_DRUGS_TITLE": "Frequently Used",
+    "MEDICATION_DRUG_NAME_TITLE": "Drug Name",
+
+    "REMOVE_CONFIRMATION_KEY": "Are you sure you want to remove?",
+
+    "DRUG_DETAILS_DRUG_NAME": "Drug",
+    "DRUG_DETAILS_DOSE_INFO": "Dose",
+    "DRUG_DETAILS_ROUTE": "Route",
+    "DRUG_DETAILS_FREQUENCY":"Schedule",
+    "DRUG_DETAILS_START_DATE":"Start date ",
+    "DRUG_DETAILS_STOP_DATE": "Stop date",
+    "DRUG_DETAILS_ORDER_REASON_CODED": "Stop Reason",
+    "DRUG_DETAILS_ORDER_REASON_TEXT": "Because of",
+    "DRUG_DETAILS_INSTRUCTIONS_TEXT": "Instructions",
+    "DRUG_DETAILS_QUANTITY_TEXT": "Quantity",
+    "DRUG_DETAILS_ADDITIONAL_INSTRUCTIONS_TEXT": "Additional Instructions",
+    "DRUG_DETAILS_DURATION": "Duration"
 }

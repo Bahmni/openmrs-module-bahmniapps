@@ -30,7 +30,8 @@ $retroModeColor:  #0E74AF;
 	.tabs ul li.tab-item {
 	  a,  button {
 		background: darken($retroModeColor, 6%);
-		padding: 12px 15px;
+        padding-top: 13px;
+        padding-bottom: 12px
 	  }
 	  &.tab-selected a, &.tab-selected button {
 		background: white;
@@ -80,6 +81,7 @@ $retroModeColor:  #0E74AF;
         color: $white;
         border: 1px solid darken($bahmniSecondaryColor, 15%);
         background: linear-gradient(to bottom, $bahmniSecondaryColor, darken($bahmniSecondaryColor, 10%));
+        font-size: 16px;
       }
       a{
         text-shadow: 0px 4px 6px rgba(0,0,0,.8);

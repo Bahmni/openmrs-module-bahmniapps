@@ -43,9 +43,9 @@
         font-family: OpenSansSemiBold;
         text-decoration: underline;
     }
-    
+
   }
-   
+
 }
 #diagnosisSection{
   .ruled-out.diagnosis-name {
@@ -66,7 +66,7 @@
     margin-bottom: 0;
     section .form-field{
       border-bottom: none;
-    } 
+    }
   }
   .placeholder-message {
     background: $lightGray;
@@ -87,6 +87,7 @@
     padding: 0!important;
     border: 0;
     background: $white;
+    overflow: auto !important;
   }
   table {
     margin: 0;
@@ -176,6 +177,9 @@
     margin: 0;
     border-left: 0;
     border-right: 0;
+    th,td{
+      padding: 5px;
+    }
     tr th {
       color: $mediumGray;
     }
@@ -195,7 +199,8 @@
     }
     td.days {
       font-size: 11px;
-      width: 15%;
+      width: 10%;
+      padding-right: 0;
       span {
         color: $mediumGray;
       }
@@ -226,15 +231,17 @@ table.drug-order-table td.drug {
     border-left: 3px solid green !important;
   }
   span.drug-attr-highlight{
-      background: #457FAC;
-      color: #fff;
-      border-radius: 4px;
-      width: 20px;
-      height: 20px;
-      display: inline-block;
-      text-align: center;
-      padding-top: 2px;
-      margin-right: 5px;
+    background: #457FAC;
+    color: #fff;
+    border-radius: 4px;
+    width: 16px;
+    height: 16px;
+    display: inline-block;
+    text-align: center;
+    padding-top: 2px;
+    margin-left: 0px;
+    font-size: 13px;
+    //margin-right: 5px;
   }
 }
 
@@ -480,8 +487,9 @@ table.pivot-table {
   thead th {
       font-family: OpenSans, Arial, sans-serif;
       font-weight: normal;
+      border-right: 0;
     &.row-header-group {
-      text-align: right;
+      //text-align: right;
     }
   }
   tr {
@@ -507,6 +515,7 @@ table.pivot-table {
         background: white;
         font-weight: bold;
         text-align: center;
+        border-right: none;
         .time {
           font-size: 12px;
           color: darken($lightGray, 8%);
@@ -622,4 +631,73 @@ table.pivot-table {
       }
   }
 }
+.dashboard-tabular-obs-section{
+  .tabular-obs table tr td:first-child {
+    background: #eee;
+    background-image: none;
+    color: #333;
+  }
+  .tabular-obs table.tableAsColumn tr:first-child td {
+    background: #eee !important;
+    font-family: OpenSansSemiBold;
+    color: #333;
+  }
+}
 
+.dashboard-chronic-treatment-section {
+  .chronic-treatment {
+    overflow: auto;
+    .stopped {
+      background-color: red;
+    }
+  }
+}
+
+.ngdialog-content {
+  .dashboard-chronic-treatment-section {
+    .chronic-treatment {
+      border-radius: 0;
+      overflow:auto !important;
+    }
+    table {
+      tr {
+        th {
+          border: 1px solid #DDD;
+        }
+        td {
+          border: 1px solid #DDD;
+        }
+      }
+    }
+  }
+}
+
+table.treatments-details-table{
+    font-size: 12px;
+    td{
+        border: none;
+        width: 12%;
+      padding: 10px 5px;
+        &.drug{
+          font-size: 14px !important;
+          padding: 10px;
+        }
+        &.toggle-btn{
+          width: 5%;
+        }
+    }
+    tr{
+      &.test-notes-parent {
+        border-bottom: 1px solid #ddd;
+      }
+      &.notes-open{
+        border-bottom: none !important;
+        td {
+          background: #eff8ff;
+        }
+      }
+      &.notes{
+        border-bottom: 1px solid #ddd;
+      }
+    }
+}

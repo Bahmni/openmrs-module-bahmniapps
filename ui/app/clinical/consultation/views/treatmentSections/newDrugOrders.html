@@ -1,10 +1,9 @@
 <section class="section-grid new-drug-order" ng-show="treatments.length > 0">
-	<div class="subheading-wrapper">
+	<div class="section-title-wrapper clearfix">
 		<h2 class="section-title fl">New Prescription</h2>
 		<button class="secondary-button fr bulk-toggle-btn" ng-if="!showBulkChangeToggle" ng-click="bulkChangeDuration()">Change Duration</button>
-		<div class="clear"></div>
 	</div>
-	<div ng-if="showBulkChangeToggle" class="bulk-edit-options-container">
+	<div ng-if="showBulkChangeToggle" class="bulk-edit-options-container clearfix">
 		<form name="updateBulkDuration" ng-submit="bulkDurationChangeDone()">
 			<input type="checkbox" class="select-all-chkBox" ng-model="bulkSelectCheckbox" ng-change="selectAllCheckbox()"/>
 			<div class="fr bulk-btn-container">
@@ -31,7 +30,7 @@
 			<div class="button-group-wrapper" >
 				<div class="button-group">
                     <button ng-click="edit($index)" ng-disabled="showBulkChangeToggle"><i class="fa fa-edit"></i></button>
-                    <button ng-confirm-click="remove($index)" confirm-message="Are you sure you want to remove?" ng-disabled="showBulkChangeToggle"><i class="fa fa-remove"></i></button>
+                    <button ng-confirm-click="remove($index)" confirm-message="{{ 'REMOVE_CONFIRMATION_KEY' | translate }}" ng-disabled="showBulkChangeToggle"><i class="fa fa-remove"></i></button>
                     <button class="toggle" ng-class="{'has-notes': newTreatment.additionalInstructions}"
                     ng-click="toggleShowAdditionalInstructions(newTreatment)" ng-hide="newTreatment.showAdditionalInstructions" ng-disabled="showBulkChangeToggle"><i class="fa fa-plus-circle"></i></button>
                     <button class="toggle" ng-class="{'has-notes': newTreatment.additionalInstructions}"

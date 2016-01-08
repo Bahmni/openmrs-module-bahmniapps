@@ -49,9 +49,10 @@ Bahmni.ConceptSet.BooleanObservation = function(observation, conceptUIConfig) {
     };
 
     this.atLeastOneValueSet = function() {
-        return this.value;
+        return (this.value == undefined ? false : true);
     };
     this.isValid = function(checkRequiredFields, conceptSetRequired) {
+        if(this.error) return false;
         var notYetSet = function(value) {
             return (typeof value == 'undefined'  || value == null);
         };
@@ -63,7 +64,7 @@ Bahmni.ConceptSet.BooleanObservation = function(observation, conceptUIConfig) {
     };
 
     this.canHaveComment = function() {
-        return true;
+        return this.getConceptUIConfig().disableAddNotes ?  !this.getConceptUIConfig().disableAddNotes : true;
     };
 
     this.getConceptUIConfig = function() {
@@ -72,5 +73,38 @@ Bahmni.ConceptSet.BooleanObservation = function(observation, conceptUIConfig) {
 
     this.canAddMore = function() {
         return this.getConceptUIConfig().allowAddMore == true;
+    };
+
+    this.isComputed = function() {
+        return this.concept.conceptClass === "Computed";
+    };
+
+    this.getDataTypeName = function() {
+        return this.concept.dataType;
+    };
+
+    this.hasValue = function() {
+        var value = this.value;
+        if (value === false) return true;
+        if (value === 0) return true; //!value ignores 0
+        if (value === '' || !value) return false;
+        if (value instanceof Array) return value.length > 0;
+        return true;
+    };
+
+    this.isNumeric = function() {
+        return this.getDataTypeName() === "Numeric";
+    };
+
+    this.isText = function() {
+        return this.getDataTypeName() === "Text";
+    };
+
+    this.isCoded = function() {
+        return this.getDataTypeName() === "Coded";
+    };
+
+    this._isDateTimeDataType = function () {
+        return "Datetime" === this.getDataTypeName();
     };
 };

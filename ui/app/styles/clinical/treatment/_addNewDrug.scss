@@ -1,0 +1,152 @@
+.edit-drug-order-container{
+  .drug-type-title{
+    color: #000;
+    margin: 0;
+    font-family: openSansSemiBold;
+    margin-bottom: 5px;
+    font-size: 15px;
+  }
+  .type-of-drug-section{
+    @media (max-width : 1024px){
+      margin-left: 10px;
+    }
+  }
+  .default-drug-container{
+    margin-bottom: 25px;
+    &.multi-select-button-group{
+      max-width: 100%;
+    }
+  }
+  .medication-drug-container{
+    margin-bottom: 25px;
+    .accept-btn{
+      margin-right: 5px;
+      margin-top: 4px;
+      padding: 6px 10px 7px;
+    }
+    .drug-name{
+      min-width: 330px;
+      width: 330px;
+      margin-right: 10px;
+      float: left;
+      @media screen and (max-width: 1024px) {
+        width: 160px;
+        min-width: 160px;
+      }
+    }
+  }
+  .edit-drug-order {
+    background: $white;
+    padding: 6px 5px 6px 8px;
+    .drug-options-wrapper{
+      textarea.drug-order-notes{
+        min-width: 330px;
+        width: 330px;
+        margin-right: 10px;
+        float: left;
+        @media screen and (max-width: 1024px) {
+          width: 160px;
+          min-width: 160px;
+        }
+      }
+      input[type="number"]{
+        width: 35px;
+        min-width: 35px;
+        margin-right: 2px;
+        padding-left: 5px;
+        padding-right: 5px;
+        margin-right: 2px;
+        &::-webkit-inner-spin-button, &::-webkit-outer-spin-button{
+          -webkit-appearance: none;
+          margin: 0;
+        }
+      }
+      #uniform-dose{
+        width: 105px;
+      }
+      input[type="date"]{
+        padding-right: 0px;
+        padding-left: 5px;
+        width: 123px;
+        &::-webkit-inner-spin-button, &::-webkit-outer-spin-button{
+          -webkit-appearance: none;
+          display: none;
+        }
+      }
+      .start-date-label{
+        padding: 0 5px 0 10px;
+        @media screen and (max-width: 1024px) {
+          padding: 7px 5px 0 10px;
+        }
+      }
+      button{
+        &.exchange-btn,&.showInfo-btn{
+          margin-top: 4px;
+          padding: 4px 8px 5px;
+          @media screen and (max-width: 1024px) {
+            padding: 6px 10px 7px;
+          }
+        }
+        &#SOS{
+          margin-right: 5px;
+          line-height: .9em;
+          margin-top: 4px;
+          @media screen and (max-width: 1024px) {
+            line-height: 1.3em;
+          }
+        }
+        &.exchange-btn{
+          margin-right: 4px;
+        }
+      }
+      select{
+        width: auto;
+      }
+      select, input[type="date"] {
+        min-width: 110px;
+        margin-right: 2px;
+        @media screen and (max-width: 1024px) {
+          height: 32px;
+        }
+      }
+      .frequency-widget-wrapper{
+        float: left;
+        .dosingUnitsFractions-container{
+          label{
+            padding: 0 5px 0 3px;
+          }
+        }
+      }
+      .frequency-widget {
+        width: auto;
+        float: left;
+        &.uniform-frequency {
+        }
+        &.variable-frequency {
+          input[type="number"] {
+            min-width: 32px;
+            width: 32px;
+            padding-right: 0;
+          }
+        }
+      }
+      .duration-widget{
+        float: left;
+        input[type="number"]{
+          width: 57px;
+          min-width: 57px;
+        }
+      }
+      .quantity-widget {
+        float: left;
+        input[type="number"]{
+          width: 35px;
+          min-width: 35px;
+        }
+      }
+
+
+    }
+
+  }
+}

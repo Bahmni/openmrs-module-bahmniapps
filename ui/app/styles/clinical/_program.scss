@@ -240,6 +240,14 @@
     font-family: openSansSemiBold;
     display: inline-block;
   }
+  .program-row{
+    &.no-past-program{
+      overflow: hidden;
+      a.back-btn{
+        margin-bottom:10px ;
+      }
+   }
+  }
 }
 .program-stuff {
   overflow: hidden;

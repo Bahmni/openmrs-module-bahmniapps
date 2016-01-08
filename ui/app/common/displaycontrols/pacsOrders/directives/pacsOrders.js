@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('bahmni.common.displaycontrol.pacsOrders')
-    .directive('pacsOrders', ['orderService', 'orderTypeService', 'spinner',
-        function(orderService, orderTypeService, spinner){
+    .directive('pacsOrders', ['orderService', 'orderTypeService', 'spinner','messagingService','$window',
+        function(orderService, orderTypeService, spinner, messagingService, $window){
             var controller = function($scope){
                 $scope.orderTypeUuid = orderTypeService.getOrderTypeUuid($scope.orderType);
 
@@ -19,8 +19,12 @@ angular.module('bahmni.common.displaycontrol.pacsOrders')
                         orderUuid:$scope.orderUuid
                     };
                     return orderService.getOrders(params).then(function (response) {
-                            $scope.bahmniOrders = response.data;
-                        });
+                        $scope.bahmniOrders = response.data;
+                        _.each($scope.bahmniOrders, function (order) {
+                            order.pacsImageUrl = ($scope.config.pacsImageUrl || "").replace('{{patientID}}',$scope.patient.identifier).replace('{{orderNumber}}', order.orderNumber);
+
+                        })
+                    });
                 };
                 var init = function() {
                     return getOrders().then(function(){
@@ -35,6 +39,16 @@ angular.module('bahmni.common.displaycontrol.pacsOrders')
                     return pacsImageTemplate
                         .replace('{{patientID}}',$scope.patient.identifier)
                         .replace('{{orderNumber}}',orderNumber);
+                };
+
+                $scope.openImage = function (bahmniOrder) {
+                    var url = bahmniOrder.pacsImageUrl;
+                    spinner.forAjaxPromise($.ajax({type: 'HEAD', url: url, async: false}).then(
+                        function () {
+                                $window.open(url, "_blank");
+                        }, function () {
+                                messagingService.showMessage("info", "No image available yet for order: " + bahmniOrder.conceptName)
+                        }));
                 };
 
                 spinner.forPromise(init());

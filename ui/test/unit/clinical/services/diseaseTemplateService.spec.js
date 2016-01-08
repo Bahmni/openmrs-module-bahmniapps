@@ -40,7 +40,7 @@ describe("DiseaseTemplateService", function () {
         });
 
         it('should fetch all disease template for the patient', function (done) {
-            mockHttp('get',diseaseTemplates[0]);
+            mockHttp('post',diseaseTemplates[0]);
 
             this.diseaseTemplateService.getAllDiseaseTemplateObs("patientuuid", "Breast Cancer").then(function (response) {
                 expect(response.name).toBe("Breast Cancer");

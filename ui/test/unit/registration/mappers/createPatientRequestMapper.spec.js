@@ -48,7 +48,7 @@ describe('patient mapper', function () {
             "gender": "M",
             "identifier": "GAN200011",
             "registrationDate": moment(date).format(),
-            "caste": "cast",
+            "caste": "10",
             "education": "16",
             "occupation": "23",
             "primaryContact": "primary cont",
@@ -63,7 +63,7 @@ describe('patient mapper', function () {
             "isNew": "true",
             "isUrban":false,
             "dead": true,
-            "testDate": "Fri Jan 01 1999 00:00:00 GMT+0530 (IST)"
+            "testDate": "Fri Jan 01 1999 00:00:00"
         });
 
         var openmrsPatient = new Bahmni.Registration.CreatePatientRequestMapper(new Date()).mapFromPatient(patientAttributeTypes, patient);
@@ -92,7 +92,7 @@ describe('patient mapper', function () {
 
         expect(openmrsPatient.patient.person.dead).toBe(true);
 
-        expect(openmrsPatient.patient.person.deathDate).toBe(undefined);
+        expect(openmrsPatient.patient.person.deathDate).toBe(null);
 
         expect(openmrsPatient.patient.person.causeOfDeath).toBe('');
 
@@ -109,9 +109,10 @@ describe('patient mapper', function () {
 
         expect(openmrsPatient.patient.person.personDateCreated).toBe(moment(date).format());
 
-        expect(openmrsPatient.patient.person.attributes).toContain({ 
-            attributeType: { uuid: 'caste-uuid' }, 
-            hydratedObject: 'cast' 
+        expect(openmrsPatient.patient.person.attributes).toContain({
+            attributeType: { uuid: 'caste-uuid' },
+            value : 'OBC',
+            hydratedObject: '10'
         });
         expect(openmrsPatient.patient.person.attributes).toContain({
             value: "10",
@@ -127,6 +128,7 @@ describe('patient mapper', function () {
             value: "1999-01-01",
             attributeType: { uuid: 'testDate-uuid' }
         });
+
     });
 
     it('should map age to birthdate', function () {
@@ -201,4 +203,5 @@ describe('patient mapper', function () {
 
         expect(mappedPatientData.image).toBeFalsy();
     });
+
 });

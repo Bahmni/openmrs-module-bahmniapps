@@ -20,7 +20,7 @@
                             <span>{{diagnosis.Diagnosis}}</span>
                             <span>{{diagnosis["Diagnosis Certainty"]}}</span>
                             <span>{{diagnosis["Diagnosis Order"]}}</span>
-                            <span>{{diagnosis["Diagnosis Status"]}}</span>
+                            <span ng-if="diagnosis.diagnosisStatus">{{diagnosis.diagnosisStatus}}</span>
                         </div>
                     </div>
                 </td>

@@ -18,6 +18,7 @@
 	    background: $clinicalFormInvalid;
 	    border: 1px solid darken($clinicalFormInvalid, 30%);
 	    color: #333;
+	  	z-index: 99999;
 		.copy-btn, .show-btn {
 			padding: 5px;
 			margin-left: 5px;

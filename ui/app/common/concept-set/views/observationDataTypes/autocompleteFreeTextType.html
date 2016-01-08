@@ -3,9 +3,11 @@
            ng-model="observation.value"
            ng-disabled="observation.disabled"
            ng-blur="handleUpdate()"
+           response-map="constructSearchResult"
            concept-autocomplete
            ng-class="{'illegalValue': !observation.isValid(atLeastOneValueIsSet,conceptSetRequired), 'computed-field': observation.isComputedAndEditable()}"
-           coded-concept-name="observation.conceptUIConfig.answersConceptName"
+           coded-concept-name="observation.conceptUIConfig.answersConceptName ||
+                    observation.codedPrimaryObs && observation.codedPrimaryObs.concept.name"
            blur-on-select="false" focus-me="observation.isFocused" />
 
     <div ng-if="observation.primaryObs">

@@ -2,10 +2,9 @@
     "sections": {
         "Patient Information": {
             "type": "patientInformation",
-            "title": "Patient Information",
             "displayOrder": 0,
             "config": {
-                "title": "PatientInformation",
+                "translationKey": "VISIT_TITLE_PATIENT_INFORMATION",
                 "patientAttributes": [
                     "caste",
                     "class",

@@ -1,4 +1,5 @@
 'use strict';
+'use strict';
 
 angular.module('consultation', ['ui.router', 'bahmni.clinical', 'bahmni.common.config', 'bahmni.common.patient', 'bahmni.common.uiHelper', 'bahmni.common.patientSearch', 'bahmni.common.obs', 'bahmni.common.i18n',
     'bahmni.common.domain', 'bahmni.common.conceptSet', 'authentication', 'bahmni.common.appFramework', 'bahmni.common.displaycontrol.documents', 'bahmni.common.displaycontrol.observation',
@@ -7,7 +8,8 @@ angular.module('consultation', ['ui.router', 'bahmni.clinical', 'bahmni.common.c
     'httpErrorInterceptor', 'pasvaz.bindonce', 'infinite-scroll', 'bahmni.common.util', 'ngAnimate', 'ngDialog',
     'bahmni.common.displaycontrol.patientprofile', 'bahmni.common.displaycontrol.diagnosis', 'RecursionHelper', 'ngSanitize',
     'bahmni.common.orders', 'bahmni.common.displaycontrol.orders', 'bahmni.common.displaycontrol.prescription', 'bahmni.common.displaycontrol.navigationlinks', 'bahmni.common.displaycontrol.programs',
-    'bahmni.common.displaycontrol.pacsOrders', 'bahmni.common.uicontrols.programmanagment', 'pascalprecht.translate', 'ngCookies','monospaced.elastic']);
+    'bahmni.common.displaycontrol.pacsOrders', 'bahmni.common.uicontrols.programmanagment', 'pascalprecht.translate', 'ngCookies','monospaced.elastic','bahmni.common.bacteriologyresults','bahmni.common.displaycontrol.bacteriologyresults', 'bahmni.common.displaycontrol.obsVsObsFlowSheet',
+    'bahmni.common.displaycontrol.chronicTreatmentChart', 'bahmni.common.displaycontrol.forms', 'bahmni.common.displaycontrol.drugOrderDetails', 'bahmni.common.offline', 'bahmni.common.displaycontrol.hint', 'bahmni.common.displaycontrol.drugOrdersSection']);
 angular.module('consultation')
     .config(['$stateProvider', '$httpProvider', '$urlRouterProvider','$bahmniTranslateProvider', function ($stateProvider, $httpProvider, $urlRouterProvider,$bahmniTranslateProvider) {
         $urlRouterProvider.otherwise('/' + Bahmni.Clinical.Constants.defaultExtensionName + '/patient/search');
@@ -19,24 +21,14 @@ angular.module('consultation')
             id: "patients-link",
             icon: "fa-users"
         };
-        var homeBackLink = {label: "", url: "../home/", icon: "fa-home"};
+        var homeBackLink = {label: "", url: "../home/", accessKey: "h", icon: "fa-home"};
 
         $stateProvider
-            .state('context', {
-                url: '/:configName',
-                abstract: true,
-                views: {
-                    'additional-header': {template: '<div ui-view="additional-header"></div>'},
-                    'content': {
-                        template: '<div ui-view="content"></div>'
-                    }
-                }
-            })
             .state('search', {
                 abstract: true,
                 views: {
                     'content': {
-                        template: '<div ui-view="dashboard-header"></div> <div ui-view="dashboard-content"></div>'
+                        template: '<div ui-view="patientSearchPage-header"></div> <div ui-view="patientSearchPage-content"></div>'
                     }
                 },
                 data: {
@@ -51,11 +43,11 @@ angular.module('consultation')
             .state('search.patientsearch', {
                 url: '/:configName/patient/search',
                 views: {
-                    'dashboard-header': {
+                    'patientSearchPage-header': {
                         templateUrl: '../common/ui-helper/header.html',
                         controller: 'PatientListHeaderController'
                     },
-                    'dashboard-content': {
+                    'patientSearchPage-content': {
                         templateUrl: '../common/patient-search/views/patientsList.html',
                         controller: 'PatientsListController'
                     }
@@ -69,9 +61,8 @@ angular.module('consultation')
                 }
             })
             .state('patient', {
-                url: '/patient/:patientUuid?encounterUuid,programUuid',
+                url: '/:configName/patient/:patientUuid?encounterUuid',
                 abstract: true,
-                parent: 'context',
                 data: {
                     backLinks: [patientSearchBackLink]
                 },
@@ -103,6 +94,7 @@ angular.module('consultation')
                         controller: function($scope, visitHistory, consultationContext){
                             $scope.visitHistory = visitHistory;
                             $scope.consultation = consultationContext;
+                            $scope.lastConsultationTabUrl = {url : undefined};
                         }
                     }
                 },
@@ -128,7 +120,10 @@ angular.module('consultation')
                 }
             })
             .state('patient.dashboard.show', {
-                url: '/dashboard',
+                url: '/dashboard?programUuid,dateEnrolled,dateCompleted',
+                params: {
+                    dashboardCachebuster: null
+                },
                 views: {
                     'dashboard-header': {
                         templateUrl: 'dashboard/views/clinicalDashboardHeader.html',
@@ -142,6 +137,9 @@ angular.module('consultation')
             })
             .state('patient.dashboard.show.observations', {
                 url: '/concept-set-group/:conceptSetGroupName',
+                params: {
+                    cachebuster: null
+                },
                 views: {
                     'consultation-content': {
                         templateUrl: 'consultation/views/conceptSet.html',
@@ -151,6 +149,9 @@ angular.module('consultation')
             })
             .state('patient.dashboard.show.diagnosis', {
                 url: '/diagnosis',
+                params: {
+                    cachebuster: null
+                },
                 views: {
                     'consultation-content': {
                         templateUrl: 'consultation/views/diagnosis.html',
@@ -162,34 +163,44 @@ angular.module('consultation')
                 abstract: true,
                 views: {
                     'consultation-content': {
+                        controller: 'TreatmentController',
                         templateUrl: 'consultation/views/treatment.html'
                     }
                 }
             })
             .state('patient.dashboard.show.treatment.page', {
                 url: '/treatment',
+                params: {
+                  cachebuster: null
+                },
+                resolve: {
+                    activeDrugOrders: function (TreatmentService, $stateParams) {
+                        return TreatmentService.getActiveDrugOrders($stateParams.patientUuid);
+                    },
+                    treatmentConfig: function(initialization, treatmentConfig) {
+                        return treatmentConfig;
+                    }
+                },
                 views: {
                     "addTreatment": {
-                        controller: 'TreatmentController',
-                        templateUrl: 'consultation/views/treatmentSections/addTreatment.html',
-                        resolve: {
-                            treatmentConfig: 'treatmentConfig'
-                        }
+                        controller: 'AddTreatmentController',
+                        templateUrl: 'consultation/views/treatmentSections/addTreatment.html'
                     },
-                    "viewHistory": {
+                    "defaultHistoryView": {
                         controller: 'DrugOrderHistoryController',
-                        templateUrl: 'consultation/views/treatmentSections/drugOrderHistory.html',
-                        resolve: {
-                            prescribedDrugOrders: function (TreatmentService, $stateParams) {
-                                return TreatmentService.getPrescribedDrugOrders($stateParams.patientUuid, true, 3);
-                            },
-                            treatmentConfig: 'treatmentConfig'
-                        }
+                        templateUrl: 'consultation/views/treatmentSections/drugOrderHistory.html'
+                    },
+                    "customHistoryView": {
+                        controller: 'CustomDrugOrderHistoryController',
+                        templateUrl: 'consultation/views/treatmentSections/customDrugOrderHistory.html'
                     }
                 }
             })
             .state('patient.dashboard.show.disposition', {
                 url: '/disposition',
+                params: {
+                    cachebuster: null
+                },
                 views: {
                     'consultation-content': {
                         templateUrl: 'consultation/views/disposition.html',
@@ -200,6 +211,9 @@ angular.module('consultation')
             })
             .state('patient.dashboard.show.summary', {
                 url: '/consultation',
+                params: {
+                    cachebuster: null
+                },
                 views: {
                     'consultation-content': {
                         templateUrl: 'consultation/views/consultation.html',
@@ -209,6 +223,9 @@ angular.module('consultation')
             })
             .state('patient.dashboard.show.orders', {
                 url: '/orders',
+                params: {
+                    cachebuster: null
+                },
                 views: {
                     'consultation-content': {
                         templateUrl: 'consultation/views/orders.html',
@@ -221,8 +238,28 @@ angular.module('consultation')
                     }
                 }
             })
+            .state('patient.dashboard.show.bacteriology', {
+                url: '/bacteriology',
+                params: {
+                    cachebuster: null
+                },
+                views: {
+                    'consultation-content': {
+                        templateUrl: 'consultation/views/bacteriology.html',
+                        controller: 'BacteriologyController'
+                    }
+                },
+                resolve: {
+                    bacteriologyConceptSet: function (bacteriologyTabInitialization) {
+                        return bacteriologyTabInitialization();
+                    }
+                }
+            })
             .state('patient.dashboard.show.investigation', {
                 url: '/investigation',
+                params: {
+                    cachebuster: null
+                },
                 views: {
                     'consultation-content': {
                         templateUrl: 'consultation/views/investigations.html',
@@ -309,6 +346,14 @@ angular.module('consultation')
                         template: '<div ui-view="patientProgram-header"></div> <div ui-view="patientProgram-content"></div>'
                     }
                 },
+                resolve:{
+                    retrospectiveIntialization: function(retrospectiveEntryService){
+                        return retrospectiveEntryService.initializeRetrospectiveEntry();
+                    }
+                    //consultationContext: function (consultationInitialization, initialization, $stateParams) {
+                    //    return consultationInitialization($stateParams.patientUuid, $stateParams.encounterUuid, $stateParams.programUuid);
+                    //}
+                }
             })
             .state('patient.patientProgram.show', {
                 url: '/consultationContext',
@@ -331,7 +376,6 @@ angular.module('consultation')
 
         $bahmniTranslateProvider.init({app: 'clinical', shouldMerge: true});
     }]).run(['stateChangeSpinner', '$rootScope', function (stateChangeSpinner, $rootScope) {
-        //debugUiRouter($rootScope);
         FastClick.attach(document.body);
         stateChangeSpinner.activate();
 

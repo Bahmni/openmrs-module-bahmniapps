@@ -7,8 +7,8 @@ angular.module('bahmni.clinical')
             return Bahmni.Clinical.DrugOrder.create(drugOrder);
         };
 
-        var createDrugOrderViewModel = function (drugOrder) {
-            return Bahmni.Clinical.DrugOrderViewModel.createFromContract(drugOrder, {}, undefined);
+        var createDrugOrderViewModel = function (drugOrder, drugOrderAppConfig) {
+            return Bahmni.Clinical.DrugOrderViewModel.createFromContract(drugOrder, drugOrderAppConfig, undefined);
         };
 
         var getActiveDrugOrdersFromServer = function (patientUuid) {
@@ -18,14 +18,24 @@ angular.module('bahmni.clinical')
             });
         };
 
-        var getPrescribedAndActiveDrugOrders = function (patientUuid, numberOfVisits, getOtherActive, visitUuids) {
+        var getPrescribedAndActiveDrugOrders = function (patientUuid, numberOfVisits, getOtherActive, visitUuids, startDate, endDate, getEffectiveOrdersOnly, drugOrderAppConfig) {
             return $http.get(Bahmni.Common.Constants.bahmniDrugOrderUrl + "/prescribedAndActive", {
-                params: { patientUuid: patientUuid, numberOfVisits: numberOfVisits, getOtherActive: getOtherActive, visitUuids: visitUuids},
+                params: {
+                    patientUuid: patientUuid,
+                    numberOfVisits: numberOfVisits,
+                    getOtherActive: getOtherActive,
+                    visitUuids: visitUuids,
+                    startDate: Bahmni.Common.Util.DateUtil.parseLongDateToServerFormat(startDate),
+                    endDate: Bahmni.Common.Util.DateUtil.parseLongDateToServerFormat(endDate),
+                    getEffectiveOrdersOnly: getEffectiveOrdersOnly
+                },
                 withCredentials: true
-            }).success(function(response){
-                for(var key in response){
+            }).success(function (response) {
+                for (var key in response) {
                     response[key] = response[key].map(createDrugOrder);
-                    response[key] = response[key].map(createDrugOrderViewModel);
+                    response[key] = response[key].map(function(drugOrder){
+                        return createDrugOrderViewModel(drugOrder, drugOrderAppConfig);
+                    });
                 }
             });
         };
@@ -49,7 +59,11 @@ angular.module('bahmni.clinical')
             var deferred = $q.defer();
             $http.get(Bahmni.Common.Constants.bahmniDrugOrderUrl, {
                 method: "GET",
-                params: { patientUuid: patientUuid, numberOfVisits: numberOfVisits, includeActiveVisit: includeActiveVisit},
+                params: {
+                    patientUuid: patientUuid,
+                    numberOfVisits: numberOfVisits,
+                    includeActiveVisit: includeActiveVisit
+                },
                 withCredentials: true
             }).success(function (response) {
                 var activeDrugOrders = response.map(createDrugOrder);
@@ -57,10 +71,51 @@ angular.module('bahmni.clinical')
             });
             return deferred.promise;
         };
+
+        var getNonCodedDrugConcept = function () {
+            var deferred = $q.defer();
+            $http.get(Bahmni.Common.Constants.globalPropertyUrl, {
+                method: "GET",
+                params: {
+                    property: 'drugOrder.drugOther'
+                },
+                withCredentials: true,
+                headers: {
+                    Accept: 'text/plain'
+                }
+            }).success(function (conceptUuid) {
+                deferred.resolve(conceptUuid);
+            });
+            return deferred.promise;
+        };
+
+        var getAllDrugOrdersFor = function (patientUuid, conceptSetToBeIncluded, conceptSetToBeExcluded, isActive, drugOrderAppConfig) {
+            var deferred = $q.defer();
+            var params= {patientUuid: patientUuid};
+            if(conceptSetToBeIncluded){
+                params.includeConceptSet = conceptSetToBeIncluded;
+            }
+            if(conceptSetToBeExcluded){
+                params.excludeConceptSet = conceptSetToBeExcluded;
+            }
+            if(isActive != undefined){
+                params.isActive=isActive;
+            }
+
+            $http.get(Bahmni.Common.Constants.bahmniDrugOrderUrl + "/drugOrderDetails", {
+                params: params,
+                withCredentials: true
+            }).success(function (response) {
+                deferred.resolve(response);
+            });
+            return deferred.promise;
+        };
         return {
             getActiveDrugOrders: getActiveDrugOrders,
             getConfig: getConfig,
             getPrescribedDrugOrders: getPrescribedDrugOrders,
-            getPrescribedAndActiveDrugOrders: getPrescribedAndActiveDrugOrders
+            getPrescribedAndActiveDrugOrders: getPrescribedAndActiveDrugOrders,
+            getNonCodedDrugConcept: getNonCodedDrugConcept,
+            getAllDrugOrdersFor: getAllDrugOrdersFor
         };
     }]);

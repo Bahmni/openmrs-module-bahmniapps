@@ -4,25 +4,33 @@ describe("DrugOrderHistoryController", function () {
 
     beforeEach(module('bahmni.clinical'));
 
-    var scope, prescribedDrugOrders, activeDrugOrder, _treatmentService, clinicalAppConfigService, retrospectiveEntryService;
+    var scope, prescribedDrugOrders, activeDrugOrder, _treatmentService,
+        clinicalAppConfigService, retrospectiveEntryService, translate, appService, rootScope;
     var fetchActiveTreatmentsDeferred;
     var DateUtil = Bahmni.Common.Util.DateUtil;
 
     beforeEach(module(function ($provide) {
+        translate = jasmine.createSpyObj('$translate',['instant']);
+
         $provide.value('$q', Q);
+        $provide.value('$translate',translate);
+        $provide.value('appService',appService);
         fetchActiveTreatmentsDeferred = Q.defer();
 
-        _treatmentService = jasmine.createSpyObj('TreatmentService', ['getActiveDrugOrders']);
-        _treatmentService.getActiveDrugOrders.and.callFake(function () {
+        _treatmentService = jasmine.createSpyObj('TreatmentService', ['getPrescribedDrugOrders']);
+        _treatmentService.getPrescribedDrugOrders.and.callFake(function () {
             fetchActiveTreatmentsDeferred.resolve();
-            return specUtil.respondWith([activeDrugOrder, scheduledOrder]);
+            return specUtil.respondWith(prescribedDrugOrders);
         });
     }));
 
     beforeEach(inject(function ($controller, $rootScope) {
+        rootScope = $rootScope;
+        spyOn($rootScope, '$broadcast');
         $rootScope.visit = {startDate: 1410322624000};
         scope = $rootScope.$new();
-        scope.consultation = {saveHandler: new Bahmni.Clinical.SaveHandler()};
+        scope.consultation = {preSaveHandler: new Bahmni.Clinical.Notifier(), discontinuedDrugs: [],
+            activeAndScheduledDrugOrders: [Bahmni.Clinical.DrugOrderViewModel.createFromContract(scheduledOrder), Bahmni.Clinical.DrugOrderViewModel.createFromContract(activeDrugOrder)] };
         scope.currentBoard = {extensionParams: {}};
         clinicalAppConfigService = jasmine.createSpyObj('clinicalAppConfigService', ['getDrugOrderConfig']);
         clinicalAppConfigService.getDrugOrderConfig.and.returnValue([]);
@@ -35,18 +43,23 @@ describe("DrugOrderHistoryController", function () {
 
         $controller('DrugOrderHistoryController', {
             $scope: scope,
-            prescribedDrugOrders: prescribedDrugOrders,
+            activeDrugOrders : [activeDrugOrder, scheduledOrder],
             TreatmentService: _treatmentService,
             clinicalAppConfigService: clinicalAppConfigService,
             retrospectiveEntryService: retrospectiveEntryService,
             $stateParams: {patientUuid: "patientUuid"},
             visitContext: {},
-            spinner : spinner
+            spinner : spinner,
+            visitHistory: []
         });
+
     }));
 
     describe("when initialized", function () {
         it("should setup scope variables", function (done) {
+            translate.instant.and.callFake(function(){
+                return "Recent";
+            });
             fetchActiveTreatmentsDeferred.promise.then().then(function(){
                 expect(scope.consultation.drugOrderGroups.length).toBe(3);
                 expect(scope.consultation.drugOrderGroups[0].label).toEqual("Recent");
@@ -67,62 +80,91 @@ describe("DrugOrderHistoryController", function () {
         });
     });
 
-    describe("when discontinued", function () {
-        it("should mark the drug order for discontinue", function () {
+    describe("when conditionally enable or disable order reason text for drug stoppage", function () {
 
+        it("should enable reason text for all concepts when nothing is configured", function () {
             var drugOrder = Bahmni.Clinical.DrugOrderViewModel.createFromContract(prescribedDrugOrders[0]);
 
+            drugOrder.orderReasonConcept = {name:{name:"Other"}};
             scope.discontinue(drugOrder);
 
-            expect(drugOrder.isMarkedForDiscontinue).toBe(true);
+            expect(drugOrder.orderReasonNotesEnabled).toBe(true);
+
         });
 
-        it("should add the drugOrder to removableDrugOrders", function () {
+        it("should enable reason text only for configured reason concepts", function () {
             var drugOrder = Bahmni.Clinical.DrugOrderViewModel.createFromContract(prescribedDrugOrders[0]);
-
+            Bahmni.ConceptSet.FormConditions.rules ={ "Medication Stop Reason":function (drugOrder, conceptName) {
+                if (conceptName == "Adverse event") {
+                    drugOrder.orderReasonNotesEnabled = true;
+                    return true;
+                }
+                else
+                    return false;
+            }
+           };
+            drugOrder.orderReasonConcept = {name:{name:"Adverse event"}};
             scope.discontinue(drugOrder);
 
-            expect(scope.consultation.discontinuedDrugs[0]).toBe(drugOrder);
+            expect(drugOrder.orderReasonNotesEnabled).toBe(true);
+
         });
+
+        it("should disable reason text only for unconfigured reason concepts", function () {
+            var drugOrder = Bahmni.Clinical.DrugOrderViewModel.createFromContract(prescribedDrugOrders[0]);
+            Bahmni.ConceptSet.FormConditions.rules ={ "Medication Stop Reason":function (drugOrder, conceptName) {
+                if (conceptName == "Adverse event") {
+                    drugOrder.orderReasonNotesEnabled = true;
+                    return true;
+                }
+                else
+                    return false;
+            }
+            };
+            drugOrder.orderReasonConcept = {name:{name:"Adverse event"}};
+            scope.updateFormConditions(drugOrder);
+            expect(drugOrder.orderReasonNotesEnabled).toBe(true);
+
+            drugOrder.orderReasonConcept = {name:{name:"other event"}};
+            scope.updateFormConditions(drugOrder);
+            expect(drugOrder.orderReasonNotesEnabled).toBe(false);
+
+        });
+
     });
 
-    describe("when undo removing", function () {
-        it("should change the action to new", function () {
-            var drugOrder = Bahmni.Clinical.DrugOrderViewModel.createFromContract(prescribedDrugOrders[0]);
+    it('should broadcast refillDrugOrder event on refill', function(){
+        var drugOrder = Bahmni.Clinical.DrugOrderViewModel.createFromContract(prescribedDrugOrders[0]);
+        scope.refill(drugOrder);
+        expect(rootScope.$broadcast).toHaveBeenCalledWith('event:refillDrugOrder', drugOrder);
+    });
 
-            scope.discontinue(drugOrder);
-            scope.undoDiscontinue(drugOrder);
+    it('should broadcast reviseDrugOrder event on revise', function(){
+        var drugOrder = Bahmni.Clinical.DrugOrderViewModel.createFromContract(prescribedDrugOrders[0]);
+        scope.revise(drugOrder, prescribedDrugOrders);
+        expect(rootScope.$broadcast).toHaveBeenCalledWith('event:reviseDrugOrder', drugOrder, prescribedDrugOrders);
+    });
 
-            expect(drugOrder.isMarkedForDiscontinue).toBe(false);
+    it('should broadcast discontinueDrugOrder event on discontinue and update form conditions', function(){
+        var drugOrder = Bahmni.Clinical.DrugOrderViewModel.createFromContract(prescribedDrugOrders[0]);
+        spyOn(scope, 'updateFormConditions');
+        scope.discontinue(drugOrder);
+        expect(rootScope.$broadcast).toHaveBeenCalledWith('event:discontinueDrugOrder', drugOrder);
+        expect(scope.updateFormConditions).toHaveBeenCalled();
+    });
+
+    describe("Min stop date", function() {
+        it("should be same as start date of drug order if past drug", function() {
+            var pastDrugOrder = Bahmni.Clinical.DrugOrderViewModel.createFromContract(activeDrugOrder);
+            var minDate = scope.getMinDateForDiscontinue(pastDrugOrder);
+            expect(minDate).toEqual("2014-09-10");
         });
 
-        it("should discontinue the drugOrder from removableDrugOrders", function () {
-            var drugOrder = Bahmni.Clinical.DrugOrderViewModel.createFromContract(prescribedDrugOrders[0]);
-
-            scope.discontinue(drugOrder);
-            scope.undoDiscontinue(drugOrder);
-
-            expect(0).toBe(scope.consultation.discontinuedDrugs.length);
+        it("should be same as current date if scheduled drug", function() {
+            var pastDrugOrder = Bahmni.Clinical.DrugOrderViewModel.createFromContract(scheduledOrder);
+            var minDate = scope.getMinDateForDiscontinue(pastDrugOrder);
+            expect(minDate).toEqual(moment().format("YYYY-MM-DD"));
         });
-
-        it("should discontinue the proper drugOrder from removableDrugOrders", function (done) {
-            var drugOrder1 = Bahmni.Clinical.DrugOrderViewModel.createFromContract(prescribedDrugOrders[0]);
-            var drugOrder2 = Bahmni.Clinical.DrugOrderViewModel.createFromContract(prescribedDrugOrders[1]);
-
-            scope.discontinue(drugOrder1);
-            scope.discontinue(drugOrder2);
-
-            fetchActiveTreatmentsDeferred.promise.then(function () {
-
-                expect(2).toBe(scope.consultation.discontinuedDrugs.length);
-
-                scope.undoDiscontinue(drugOrder2);
-
-                expect(1).toBe(scope.consultation.discontinuedDrugs.length);
-                expect(drugOrder1).toBe(scope.consultation.discontinuedDrugs[0]);
-                done();
-            });
-        })
     });
 
     activeDrugOrder = {

@@ -20,7 +20,7 @@ describe("BedManagementService", function() {
              rowNumber: 2, 
              status: "AVAILABLE"
             }];
-    
+
     beforeEach(module('bahmni.adt'));
 
     beforeEach(inject(['BedManagementService', function (bedManagementServiceInjected) {

@@ -7,7 +7,7 @@
         <meta name="HandheldFriendly" content="true">
         <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=2.0, user-scalable=yes, minimal-ui" />
         <meta name="apple-mobile-web-app-capable" content="yes" />
-
+        <link rel="shortcut icon" type="image/x-icon" href="../favicon.ico">
         <link rel="stylesheet" href="../lib/jquery/jquery-ui-1.10.4.custom.min.css">
 
         <!-- build:css home.min.css -->
@@ -21,6 +21,8 @@
                 <div ui-view id="view-content"></div>
             </div>
         </div>
+        <script src="../components/offline/offline.min.js"></script>
+        <script src="../components/crypto-js/crypto-js.js"></script>
         <script src="../components/lodash/dist/lodash.min.js"></script>
         <script src="../components/jquery/jquery.min.js"></script>
         <script src="../lib/jquery/jquery-ui-1.10.4.custom.min.js"></script>
@@ -37,6 +39,7 @@
         <script src="../components/angular-translate-storage-cookie/angular-translate-storage-cookie.min.js"></script>
         <script src="../components/angular-translate-storage-local/angular-translate-storage-local.min.js"></script>
         <script src="../components/angular-translate-handler-log/angular-translate-handler-log.min.js"></script>
+        <script src="../components/lovefield/dist/lovefield.js"></script>
 
 
         <!-- build:js home.min.js -->
@@ -73,6 +76,7 @@
         <script src="../common/ui-helper/directives.js"></script>
         <script src="../common/ui-helper/controllers/messageController.js"></script>
         <script src="../common/ui-helper/services/messagingService.js"></script>
+        <script src="../common/ui-helper/services/offlineCommonService.js"></script>
 
         <script src="../common/logging/init.js"></script>
         <script src="../common/logging/exceptionHandler.js"></script>
@@ -80,6 +84,10 @@
         <script src="../common/i18n/init.js"></script>
         <script src="../common/i18n/bahmni-translate.js"></script>
         <script src="../common/i18n/services/mergeLocaleFilesService.js"></script>
+
+        <script src="../common/offline/init.js"></script>
+        <script src="../common/offline/offlineService.js"></script>
+        <script src="../common/offline/initializeOfflineSchema.js"></script>
 
         <script src="app.js"></script>
         <script src="initialization.js"></script>

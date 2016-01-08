@@ -2,6 +2,7 @@
 <html lang="en">
     <head>
         <meta charset="utf-8">
+        <link rel="shortcut icon" type="image/x-icon" href="../favicon.ico">
         <link rel="stylesheet" href="../lib/jquery/jquery-ui-1.10.4.custom.min.css">
         <!-- build:css orders.min.css -->
         <link rel="stylesheet" href="../styles/clinical.css"/>
@@ -16,6 +17,7 @@
                 <div ui-view="content" id="view-content" class="opd-content-wrapper"></div>
             </div>
         </div>
+        <script src="../components/offline/offline.min.js"></script>
         <script src="../components/lodash/dist/lodash.min.js"></script>
         <script src="../components/jquery/jquery.min.js"></script>
         <script src="../lib/jquery/jquery-ui-1.10.4.custom.min.js"></script>
@@ -51,6 +53,9 @@
         <script src="../common/util/arrayUtil.js"></script>
         <script src="../common/util/httpErrorInterceptor.js"></script>
 
+        <script src="../common/offline/init.js"></script>
+        <script src="../common/offline/offlineService.js"></script>
+
         <script src="../common/auth/init.js"></script>
         <script src="../common/auth/user.js"></script>
         <script src="../common/auth/userService.js"></script>
@@ -80,6 +85,7 @@
 
 
         <script src="../common/domain/mappers/providerMapper.js"></script>
+        <script src="../common/domain/helpers/domainHelpers.js"></script>
         <script src="../common/domain/mappers/conceptMapper.js"></script>
         <script src="../common/domain/mappers/observationMapper.js"></script>
         <script src="../common/domain/mappers/observationValueMapper.js"></script>
@@ -102,6 +108,7 @@
         <script src="../common/concept-set/models/multiSelectObservations.js"></script>
         <script src="../common/concept-set/models/booleanObservation.js"></script>
         <script src="../common/concept-set/models/observationNode.js"></script>
+        <script src="../common/concept-set/models/tabularObservations.js"></script>
         <script src="../common/concept-set/models/customRepresentationBuilder.js"></script>
         <script src="../common/concept-set/mappers/observationMapper.js"></script>
         <script src="../common/concept-set/services/conceptSetServices.js"></script>

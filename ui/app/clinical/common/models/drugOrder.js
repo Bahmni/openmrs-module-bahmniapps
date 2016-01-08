@@ -32,6 +32,7 @@ Bahmni.Clinical.DrugOrder = (function () {
         var drugOrder = new DrugOrder({
                 careSetting: "OUTPATIENT",
                 drug: drugOrderData.drug,
+                drugNonCoded: drugOrderData.drugNonCoded,
                 orderType: "Drug Order",
                 dosingInstructionType: Bahmni.Clinical.Constants.flexibleDosingInstructionsClass,
                 dosingInstructions: {
@@ -43,13 +44,18 @@ Bahmni.Clinical.DrugOrder = (function () {
                     administrationInstructions: getDosingInstructions(drugOrderData),
                     quantity: drugOrderData.quantity,
                     quantityUnits: drugOrderData.quantityUnit,
-                    numberOfRefills: 0},
+                    numberOfRefills: 0
+                },
                 duration: drugOrderData.duration,
                 durationUnits: drugOrderData.durationUnit,
                 scheduledDate: dateUtil.parse(drugOrderData.scheduledDate),
                 autoExpireDate: dateUtil.parse(drugOrderData.autoExpireDate),
                 previousOrderUuid: drugOrderData.previousOrderUuid,
                 action: drugOrderData.action,
+                orderReasonConcept: drugOrderData.orderReasonConcept,
+                orderReasonText: drugOrderData.orderReasonText,
+                dateStopped: dateUtil.parse(drugOrderData.dateStopped),
+                concept: drugOrderData.concept,
                 orderSetUuid: drugOrderData.orderSetUuid,
                 orderGroupUuid: drugOrderData.orderGroupUuid,
                 sortWeight: drugOrderData.sortWeight
@@ -57,7 +63,7 @@ Bahmni.Clinical.DrugOrder = (function () {
         );
         if (!drugOrder.dosingInstructions.quantityUnits) {
             drugOrder.dosingInstructions.quantityUnits = "Unit(s)";
-        } 
+        }
         return drugOrder;
     };
 

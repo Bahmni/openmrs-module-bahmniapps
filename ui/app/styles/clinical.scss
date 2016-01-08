@@ -25,8 +25,9 @@
 @import "bahmni-components/table";
 @import "bahmni-components/typography";
 
+@import "clinical/clinicalIndex";
+
 @import "common/bahmniGlobal";
-@import "common/form";
 @import "common/notifications";
 @import "common/directives";
 @import "common/angularFix";
@@ -35,17 +36,6 @@
 @import "bahmni-layout/layout";
 @import "bahmni-layout/retroMode";
 
-@import "clinical/patientSearch";
-@import "clinical/visit";
-@import "clinical/consultation";
-@import "clinical/diagnosis";
-@import "clinical/disposition";
-@import "clinical/treatment";
-@import "clinical/observations";
-@import "clinical/patientDashboard";
-@import "clinical/charts";
-@import "clinical/orders";
-@import "clinical/program";
 
 @import "document-upload/upload";
 
@@ -53,13 +43,16 @@
 @import "adt/wardLayout";
 
 @import "admin/admin";
+@import "admin/formBuilder";
 @import "dhis/dhis";
 
 @import "common/noTouch";
+
 @import "clinical/patientSearchDesktop";
 @import "clinical/observationsDesktop";
-@import "clinical/treatmentDesktop";
+//@import "clinical/treatmentDesktop";
 @import "clinical/drugOrderTemplate";
 
-@import "reports/reports";
 
+
+@import "reports/reports";

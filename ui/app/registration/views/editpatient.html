@@ -2,23 +2,21 @@
 <div class="edit-patient simple-form-ui">
     <form name="myForm"  ng-submit="update()">
         <div class="box-container box-container-default">
-            <legend class="mylegend">
-                <span><strong>{{patient.identifier}}</strong></span>
-                <span ng-show= "isDigitized" class="right"><strong>{{'REGISTRATION_LABEL_SCANNED' | translate}}</strong></span>
-                <span ng-show= "!isDigitized" class="right"><strong>{{'REGISTRATION_LABEL_PAPER' | translate}}</strong></span>
+            <legend class="registraion_legend">
+                <span class="mylegend">{{patient.identifier}}</span>
+                <span ng-show= "isDigitized" class="right"><strong>{{::'REGISTRATION_LABEL_SCANNED' | translate}}</strong></span>
+                <!--<span ng-show= "!isDigitized" class="right"><strong>{{::'REGISTRATION_LABEL_PAPER' | translate}}</strong></span>-->
             </legend>
-            <div>
-                <span class="photo-container-wrapper">
-                    <span class="photo-container">
-                            <img id="patient-image" ng-src="{{patient.image}}"
-                                 onerror="this.onerror=null;this.src='../images/blank-user.gif';"/>
-                            <div ng-model="patient.image" capture-photo class="capture-photo-btn"></div>
-                     </span>
-                </span>
+            <div class="photo-container-wrapper">
+                <span class="photo-container">
+                        <img id="patient-image" ng-src="{{patient.image}}"
+                             onerror="this.onerror=null;this.src='../images/blank-user.gif';"/>
+                        <div ng-model="patient.image" capture-photo class="capture-photo-btn"></div>
+                 </span>
             </div>
             <article class="form-field">
                     <div class="field-attribute">
-                    <label class="control-label">{{'REGISTRATION_LABEL_REGISTRATION_DATE' | translate}}</label>
+                    <label class="control-label">{{::'REGISTRATION_LABEL_REGISTRATION_DATE' | translate}}</label>
                     </div>
 
                     <div class="field-value">

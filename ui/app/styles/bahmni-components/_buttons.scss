@@ -21,7 +21,8 @@ use either a `<button>` or an `<a>` element:
   background: linear-gradient(to bottom, $tcolor, $bcolor);
   background-color: $bcolor;
   border: $bcolor 1px solid;
-  padding: 8px 20px;
+  //padding: 8px 20px;
+  padding: 6px 20px 7px;
   display: inline-block;
   line-height: 1.2em;
   color: $font;
@@ -69,7 +70,7 @@ use either a `<button>` or an `<a>` element:
   &.disabled, &:disabled {
     background: #EEE;
     border: #CCC 1px solid;
-    color: #CCC;
+    color: #333;
     cursor: default;
   }
 
@@ -199,7 +200,9 @@ use either a `<button>` or an `<a>` element:
 
 /* button states - lvha */
 button:hover { opacity: 0.8; }
-button:focus, a:focus, .btn:focus { outline:none; border-color: #007FFF; }
+button:focus, a:focus, .btn:focus {
+  outline: 2px solid $clinicalFormFocus;
+}
 button[disabled] { opacity: 0.4; cursor: not-allowed; }
 
 
@@ -338,7 +341,7 @@ button.back-btn {
 }
 /* multi select */
 .multi-select-button-group {
-    width: 600px;
+    max-width: 600px;
     overflow: auto;
     box-sizing: border-box;
     button {
@@ -349,9 +352,13 @@ button.back-btn {
         overflow: hidden;
         text-overflow: ellipsis;
         text-align: left;
+        height: 32px !important;
+    }
+    button:focus, a:focus, .btn:focus {
+      border: 2px solid $clinicalFormFocus;
+      outline:0;
     }
 }
-.multi-select-button-group { width: 600px; }
 .illegalValue .multi-select-button-group { width: auto; }
 
 .secondary-button, 
@@ -363,9 +370,17 @@ input[type="submit"].secondary-button:hover  {
     border:1px solid darken($bahmniSecondaryColor, 15%);
 }
 
+.icon-button{
+  padding: 6px 8px 7px;
+}
+
 /* icon button */
 .comment-toggle {
     padding: 5px;
+    @media (max-width:1024px){
+      margin: 7px 10px 0 10px;
+      //float: left;
+    }
     .fa-file-o {
         position: relative;
         font-size: 16px;

@@ -14,6 +14,9 @@ p.caution{
 }
 .asterick {
     color:red;
+    display: inline-block;
+    padding-left: 5px;
+    //padding-top: 6px;
 }
 .strike-text {
   text-decoration: line-through;
@@ -31,13 +34,16 @@ input[file-upload] {
       float: left;
       width: 200px;
       margin-left: 20px;
+      @media screen and (max-width: 1024px) {
+        width: 170px;
+      }
     }
     &.hasLegend {
       label {
         margin-left: 10px;
       }
       .offset-label {
-        padding-left: 230px;
+        padding-left:0px;
       }
     }
   }
@@ -123,7 +129,25 @@ button.save-consultation {
   padding: 10px 15px 9px;
 }
 button.save-consultation {
-  .text {
+  &.hideSaveText{
+    .fa-save {
+      display: none;
+    }
+    .text{
+      display: block;
+    }
+    @media screen and (max-width: 1024px) {
+      padding: 19px 10px 13px;
+      .text {
+        display: none;
+      }
+      .fa-save {
+        display: block;
+      }
+    }
+
+  }
+  /*.text {
     display: none;
   }
   @media screen and (min-width: 860px) {
@@ -133,11 +157,12 @@ button.save-consultation {
     .fa-save {
       display: none;
     }
-  }
+  }*/
 }
 a.quick-links, a.btn--success {
   @include button($success, darken($success, 8%), white);
   padding: 10px 20px;
+  font-size: 16px;
 }
 
 
@@ -161,14 +186,14 @@ pre.chief-notes {
 
 
 
-.accept-btn {
-    padding: 8px 7px;
-    font-size: 12px;
-    border-radius: 3px;
-    &:focus {
-        outline: 2;
-    }
-}
+//.accept-btn {
+//    padding: 8px 7px;
+//    font-size: 12px;
+//    border-radius: 3px;
+//    &:focus {
+//        outline: 2;
+//    }
+//}
 
 .accept-btn.active {
   color: $bahmniTertiaryColor;
@@ -176,7 +201,7 @@ pre.chief-notes {
   span:before {
     font-family: FontAwesome;
     content: "\f00c";
-    font-size: 18px;
+    //font-size: 18px;
     margin-right: 5px;
   }
 }
@@ -187,6 +212,9 @@ pre.chief-notes {
 
 .has-notes {
     color: orange;
+    i{
+      color: orange !important;
+    }
 }
 /*home*/
 .bahmni-home {
@@ -221,6 +249,79 @@ u, .add-drug-btninput[value]:first-letter {
   @include clearfix();
 }
 
+.overflowAuto{
+  overflow: auto;
+}
 .is-abnormal .select2-chosen {
   color: red!important;
 }
+
+.placeholder-text{
+  background: #fff;
+  padding: 5px;
+  color: #444 !important;
+  p{
+    margin-bottom: 0;
+    color: #444 !important;
+  }
+}
+
+.fa-pencil{
+  cursor: pointer;
+}
+
+
+.clear-both{
+  clear: both;
+}
+.select2-drop{
+  z-index: 99999 !important;
+}
+.ng-dialog-all-details-page{
+
+  .select2-container .select2-choice{
+    height: 26px !important;
+  }
+}
+
+
+.mylegend {
+  background: $lightestGray;
+  line-height: 16px;
+  margin-bottom:20px;
+  padding: 3px 0;
+  border-radius: 3px;
+  border:1px solid $lightGray;
+  span{
+    display:inline-block;
+    padding:2px 10px;
+    font-weight:bold;
+  }
+}
+
+.registraion_legend{
+  margin: 15px 0 15px 25px;
+  width:auto;
+  position: relative;
+  @media (max-width : 768px){
+    margin: 20px 0;
+    float: left;
+    width: 100%;
+  }
+  &:before{
+    content: "";
+    border-top:1px #ccc solid;
+    position: absolute;
+    top: 14px;
+    width: 96%;
+  }
+  span.mylegend{
+    display: inline-block;
+    width: auto;
+    margin-bottom: 0;
+    padding: 5px 6px;
+    margin-left: 25px;
+    position: relative;
+  }
+}
+

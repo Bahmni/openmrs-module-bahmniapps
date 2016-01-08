@@ -5,22 +5,23 @@ describe("tab config", function () {
     var tabConfig;
     var config = [
         {
-            title: "visit",
+            dashboardName: "visit",
             displayByDefault: false
         },
         {
-            title: "disposition",
+            dashboardName: "disposition",
             displayByDefault: true
         },
         {
-            title: "trends",
+            dashboardName: "trends",
             displayByDefault: true,
             printing: {title: "Awesome"}
         }
     ];
 
     beforeEach(function() {
-        tabConfig = new Bahmni.Clinical.TabConfig(config, "title");
+        tabConfig = new Bahmni.Clinical.TabConfig(config);
+        tabConfig.identifierKey = "dashboardName"
     });
 
 
@@ -51,7 +52,7 @@ describe("tab config", function () {
     });
 
     it("should return false if there are no tabs to show", function() {
-        var emptyTabConfig = new Bahmni.Clinical.TabConfig([], "title");
+        var emptyTabConfig = new Bahmni.Clinical.TabConfig([]);
         expect(emptyTabConfig.showTabs()).toBe(false);
     });
 

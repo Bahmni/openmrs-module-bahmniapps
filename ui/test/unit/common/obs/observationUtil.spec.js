@@ -136,13 +136,22 @@ describe("ObservationUtil", function () {
                 value: false
             };
 
+            var observation = {
+                concept: {name: "observationConcept"},
+                value: {
+                    name: {
+                        name: "someName"}
+                }
+            };
+
             var parentObservation = {
                 groupMembers: [
                     buttonObservation,
                     multiSelectObservation,
                     textObservation,
                     blankObservation,
-                    booleanObservation
+                    booleanObservation,
+                    observation
                 ]
             };
 
@@ -152,8 +161,8 @@ describe("ObservationUtil", function () {
                 "btnConcept": 'button1',
                 "concept1": ["Systolic", "Diastolic"],
                 "textConcept": 'text1',
-                "blankConcept": undefined,
-                "booleanConcept": false
+                "booleanConcept": false,
+                "observationConcept": "someName"
             });
         });
 

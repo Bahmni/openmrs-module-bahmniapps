@@ -10,7 +10,7 @@ describe("DispositionController", function () {
         scope = $rootScope.$new();
         rootScope = $rootScope;
 
-        scope.consultation = {saveHandler: new Bahmni.Clinical.SaveHandler()};
+        scope.consultation = {preSaveHandler: new Bahmni.Clinical.Notifier()};
 
         var retrospectiveEntry = Bahmni.Common.Domain.RetrospectiveEntry.createFrom(Date.parse('2015-07-01'));
         var retrospectiveEntryService = jasmine.createSpyObj('retrospectiveEntryService', ['getRetrospectiveEntry']);
@@ -21,7 +21,7 @@ describe("DispositionController", function () {
         $controller('DispositionController', {
             $scope: scope,
             $rootScope: rootScope,
-            retrospectiveEntryService: retrospectiveEntryService,
+            retrospectiveEntryService: retrospectiveEntryService
         });
     }));
 

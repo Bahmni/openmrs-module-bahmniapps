@@ -33,14 +33,14 @@ describe('EditPatientController', function () {
 
             patientServiceMock.get = function (uuid) {
                 return {
-                    success: function (successFn) {
+                    then: function (successFn) {
                         successFn({data: "uuid"});
                     }
                 }
             };
             patientServiceMock.update = function (uuid) {
                 return {
-                    success: function (successFn) {
+                    then: function (successFn) {
                         successFn({data: "uuid"});
                     }
                 }

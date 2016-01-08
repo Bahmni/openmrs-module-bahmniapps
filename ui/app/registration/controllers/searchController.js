@@ -2,8 +2,9 @@
 
 angular.module('bahmni.registration')
     .controller('SearchPatientController', ['$rootScope', '$scope', '$location', '$window', 'spinner', 'patientService', 'appService', 'Preferences',
-                'messagingService', '$translate',
-        function ($rootScope, $scope, $location, $window, spinner, patientService, appService, preferences, messagingService, $translate) {
+                'messagingService', '$translate','$filter','$bahmniCookieStore',
+        function ($rootScope, $scope, $location, $window, spinner, patientService, appService, preferences, messagingService, $translate,$filter, $bahmniCookieStore) {
+
             $scope.identifierSources = $rootScope.patientConfiguration.identifierSources;
             $scope.results = [];
             var searching = false;
@@ -17,6 +18,7 @@ angular.module('bahmni.registration')
             };
 
             var searchBasedOnQueryParameters = function (offset) {
+
                 if(! isUserPrivilegedForSearch()) {
                     showInsufficientPrivMessage();
                     return;
@@ -37,23 +39,26 @@ angular.module('bahmni.registration')
 
                 $scope.searchParameters.registrationNumber = $location.search().registrationNumber || "";
                 if (hasSearchParameters()) {
+                    searching = true;
                     var searchPromise = patientService.search(
                         $scope.searchParameters.name,
+                        undefined,
+                        undefined,
                         $scope.addressSearchConfig.field,
                         $scope.searchParameters.addressFieldValue,
                         $scope.searchParameters.customAttribute,
                         offset,
                         $scope.customAttributesSearchConfig.fields
                     ).then(function(response) {
-                         mapCustomAttributesSearchResults(response.data);
-                         return response.data;
+                         mapCustomAttributesSearchResults(response);
+                         return response;
                     });
-                    searching = true;
                     searchPromise['finally'](function () {
                         searching = false;
                     });
                     return searchPromise;
                 }
+
             };
             $scope.convertToTableHeader = function(camelCasedText){
                 return camelCasedText.replace(/[A-Z]|^[a-z]/g,function (str, group1, group2) {
@@ -62,8 +67,8 @@ angular.module('bahmni.registration')
             };
 
             var mapCustomAttributesSearchResults = function(data){
-                if($scope.customAttributesSearchConfig.fields){
-                    data.pageOfResults.map(function(result){
+                if($scope.customAttributesSearchConfig.fields && data != "Searching"){
+                    _.map(data.pageOfResults, function(result){
                         result.customAttribute = result.customAttribute && JSON.parse(result.customAttribute);
                     });
                 }
@@ -132,10 +137,11 @@ angular.module('bahmni.registration')
                 }
                 if (!$scope.searchParameters.registrationNumber) return;
                 $scope.results = [];
-                var patientIdentifier = $scope.searchParameters.identifierPrefix.prefix + $scope.searchParameters.registrationNumber;
-                preferences.identifierPrefix = $scope.searchParameters.identifierPrefix.prefix;
-                $location.search({identifierPrefix: $scope.searchParameters.identifierPrefix.prefix, registrationNumber: $scope.searchParameters.registrationNumber});
-                var searchPromise = patientService.search(patientIdentifier, $scope.addressSearchConfig.field).success(function (data) {
+
+                var patientIdentifier = $scope.searchParameters.registrationNumber;
+                preferences.identifierPrefix = $scope.searchParameters.identifierPrefix ? $scope.searchParameters.identifierPrefix.prefix : "";
+                $location.search({identifierPrefix: preferences.identifierPrefix, registrationNumber: $scope.searchParameters.registrationNumber});
+                var searchPromise = patientService.search(undefined, patientIdentifier, $scope.searchParameters.identifierPrefix.prefix, $scope.addressSearchConfig.field).then(function (data) {
                     mapCustomAttributesSearchResults(data);
                     if (data.pageOfResults.length === 1) {
                         var patient = data.pageOfResults[0];
@@ -210,7 +216,7 @@ angular.module('bahmni.registration')
                 var promise = searchBasedOnQueryParameters($scope.results.length);
                 if (promise) {
                     promise.then(function (data) {
-                        data.pageOfResults.forEach(function (result) {
+                        angular.forEach(data.pageOfResults,function (result) {
                             $scope.results.push(result)
                         });
                         $scope.noMoreResultsPresent = (data.pageOfResults.length === 0);
@@ -245,6 +251,10 @@ angular.module('bahmni.registration')
             };
 
             $scope.extensionActionText = function (extension) {
-                return extension.translationKey;
+                return $filter('titleTranslate')(extension);
+            }
+
+            $scope.hasIdentifierSources = function(){
+                return $scope.identifierSources.length > 0;
             }
         }]);

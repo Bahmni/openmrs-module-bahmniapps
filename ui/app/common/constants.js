@@ -6,6 +6,7 @@ Bahmni.Common = Bahmni.Common || {};
     var RESTWS_V1 = "/openmrs/ws/rest/v1";
     var BAHMNI_CORE = RESTWS_V1 + "/bahmnicore";
     var EMRAPI = RESTWS + "/emrapi";
+    var BACTERIOLOGY = RESTWS_V1;
 
     var serverErrorMessages = [
         {
@@ -80,6 +81,7 @@ Bahmni.Common = Bahmni.Common || {};
         allTestsAndPanelsConceptName : 'All_Tests_and_Panels',
         dosageFrequencyConceptName : 'Dosage Frequency',
         dosageInstructionConceptName : 'Dosage Instructions',
+        stoppedOrderReasonConceptName :'Stopped Order Reason',
         consultationNoteConceptName : 'Consultation Note',
         diagnosisConceptSet : 'Diagnosis Concept Set',
         radiologyOrderType : 'Radiology Order',
@@ -94,6 +96,7 @@ Bahmni.Common = Bahmni.Common || {};
         dispositionNoteConcept : "Disposition Note",
         ruledOutDiagnosisConceptName : 'Ruled Out Diagnosis',
         emrapiConceptMappingSource :"org.openmrs.module.emrapi",
+        abbreviationConceptMappingSource: "Abbreviation",
         includeAllObservations: false,
         openmrsObsUrl :RESTWS_V1 + "/obs",
         openmrsObsRepresentation :"custom:(uuid,obsDatetime,value:(uuid,name:(uuid,name)))" ,
@@ -111,6 +114,7 @@ Bahmni.Common = Bahmni.Common || {};
         documentsConceptName: 'Document',
         miscConceptClassName: 'Misc',
         abnormalConceptClassName: 'Abnormal',
+        unknownConceptClassName: 'Unknown',
         durationConceptClassName: 'Duration',
         conceptDetailsClassName: 'Concept Details',
         admissionEncounterTypeName: 'ADMISSION',
@@ -151,8 +155,24 @@ Bahmni.Common = Bahmni.Common || {};
         orderSetMemberAttributeTypeUrl: RESTWS_V1 + "/ordersetmemberattributetype",
         orderSetUrl: RESTWS_V1 + "/orderset",
         primaryOrderSetMemberAttributeTypeName: "Primary",
-        drugUrl : RESTWS_V1 + "/drug?s=ordered"
-
+        drugUrl : RESTWS_V1 + "/drug?s=ordered",
+        bahmniBacteriologyResultsUrl: BACTERIOLOGY + "/specimen",
+        bedFromVisit: RESTWS_V1+ "/beds",
+        formDataUrl: RESTWS_V1 + "/obs",
+        patientAttributeDateFieldFormat: "org.openmrs.util.AttributableDate",
+        platform:"user.platform",
+        platformType: {
+            chrome: 'chrome',
+            android: 'android',
+            chromeApp: 'chrome-app',
+            other: 'other'
+        },
+        numericDataType:"Numeric",
+        encryptionType: {
+            SHA3: 'SHA3'
+        },
+        LoginInformation: 'LoginInformation',
+        ServerDateTimeFormat: 'YYYY-MM-DDTHH:mm:ssZZ'
     };
 })();
 

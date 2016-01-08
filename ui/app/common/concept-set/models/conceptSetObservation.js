@@ -34,6 +34,7 @@ Bahmni.ConceptSet.Observation = function (observation, savedObs, conceptUIConfig
                     if(self._value!=null){
                         return self._value;
                     }
+                    savedObs && savedObs.value ? savedObs.value['displayString'] = (savedObs.value.shortName ? savedObs.value.shortName : savedObs.value.name) : '';
                     return savedObs ? savedObs.value : undefined;
                 },
                 set: function (newValue) {
@@ -155,7 +156,7 @@ Bahmni.ConceptSet.Observation.prototype = {
     },
 
     canHaveComment: function() {
-        return !this.isText() && !this.isImage();
+        return this.conceptUIConfig.disableAddNotes ? !this.conceptUIConfig.disableAddNotes : (!this.isText() && !this.isImage());
     },
 
     canAddMore: function() {
@@ -233,14 +234,24 @@ Bahmni.ConceptSet.Observation.prototype = {
     isValidDate: function () {
         if (!this.hasValue()) return true;
         var date = Bahmni.Common.Util.DateUtil.parse(this.value);
+        if (!this.conceptUIConfig.allowFutureDates) {
+            var today = Bahmni.Common.Util.DateUtil.parse(moment().format("YYYY-MM-DD"));
+            if (today < date) return false;
+        }
         return date.getUTCFullYear() && date.getUTCFullYear().toString().length <= 4;
     },
 
     hasInvalidDateTime: function () {
+        var date = Bahmni.Common.Util.DateUtil.parse(this.value);
+        if (!this.conceptUIConfig.allowFutureDates) {
+            if (moment() < date) return true;
+        }
         return this.value === "Invalid Datetime";
     },
 
     isValid: function (checkRequiredFields, conceptSetRequired) {
+
+        if (this.error) return false;
         if (this.hidden) return true;
         if (checkRequiredFields) {
             if (this.isGroup()) return this._hasValidChildren(checkRequiredFields, conceptSetRequired);
@@ -248,7 +259,7 @@ Bahmni.ConceptSet.Observation.prototype = {
             if (this.isRequired() && !this.hasValue()) return false;
         }
         if (this._isDateDataType()) return this.isValidDate();
-        if (this._isDateTimeDataType()) return !this.hasInvalidDateTime();
+        if (this._isDateTimeDataType()) {   return !this.hasInvalidDateTime();}
         if (this.erroneousValue) return false;
         return true;
     },
@@ -260,11 +271,11 @@ Bahmni.ConceptSet.Observation.prototype = {
     },
 
     _isDateDataType: function () {
-        return 'Date'.indexOf(this.getDataTypeName()) != -1;
+        return 'Date' === this.getDataTypeName();
     },
 
     _isDateTimeDataType: function () {
-        return 'Datetime'.indexOf(this.getDataTypeName()) != -1;
+        return "Datetime" === this.getDataTypeName();
     },
 
     isRequired: function () {

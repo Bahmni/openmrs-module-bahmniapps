@@ -55,6 +55,32 @@ describe("TreamentService", function () {
             });
         });
 
+        it('should fetch drug order details for given concept set', function(done){
+            _$http.get.and.callFake(function () {
+                return {success: function(fn) {return fn(drugOrders)}};
+            });
+
+            this.treatmentService.getAllDrugOrdersFor("patientUuid", "All TB Drugs").then(function(response){
+                expect(_$http.get).toHaveBeenCalledWith(Bahmni.Common.Constants.bahmniDrugOrderUrl + "/drugOrderDetails",
+                    { params : { patientUuid : 'patientUuid', includeConceptSet : 'All TB Drugs' }, withCredentials : true });
+                done();
+            })
+
+        });
+
+        it('should fetch drug order details excluding given concept set', function(done){
+            _$http.get.and.callFake(function () {
+                return {success: function(fn) {return fn(drugOrders)}};
+            });
+
+            this.treatmentService.getAllDrugOrdersFor("patientUuid", null,  "All TB Drugs").then(function(response){
+                expect(_$http.get).toHaveBeenCalledWith(Bahmni.Common.Constants.bahmniDrugOrderUrl + "/drugOrderDetails",
+                    { params : { patientUuid : 'patientUuid', excludeConceptSet : 'All TB Drugs' }, withCredentials : true });
+                done();
+            })
+
+        })
+
     });
 
     var drugOrders = [

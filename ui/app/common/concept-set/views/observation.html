@@ -1,7 +1,8 @@
+
 <div class="observations-tab">
-    <div class="vitals form-horizontal">
-       <fieldset class="leaf-observation-node" ng-if="::observation.isObservationNode">
-            <div class="form-group bm-pop-over">
+    <div class="vitals form-horizontal" ng-if="!observation.voided || (observation.getControlType() == 'image' && observation.value)">
+        <fieldset class="leaf-observation-node" ng-if="::observation.isObservationNode">
+            <div class="form-group" bm-pop-over>
                 <div class=" concept-tooltip-description" bm-pop-over-target
                      ng-if="::observation.primaryObs.concept.description">
                     <i class="fa fa-caret-down"></i>
@@ -9,14 +10,14 @@
                 </div>
 
 
-                <label class="control-label" for="{{::observation.uniqueId}}">
+                <label class="control-label" ng-if="showTitle" for="{{::observation.uniqueId}}">
                     <span ng-bind="::observation.label"></span>
                     <span ng-show="::observation.primaryObs.units"
                           ng-bind-html="::'(' + observation.primaryObs.units + ')'"></span>
                     <span ng-if="::observation.isRequired()" class="asterick">*</span>
                     <i class="fa fa-question-circle concept-tooltip-trigger" bm-pop-over-trigger
-                       ng-if="::observation.primaryObs.concept.description"></i>
-
+                       ng-if="::observation.primaryObs.concept.description">
+                    </i>
                 </label>
 
                 <div class="field-value" ng-if="observation.isComputed()">
@@ -69,12 +70,9 @@
                     <p ng-switch-default class="field-value info fa fa-info-sign"> The concept data type
                         '::{{observation.dataTypeName}}' is not supported yet.</p>
                 </div>
-
-                <div ng-include src="'../common/concept-set/views/observationDataTypes/hint.html'"></div>
+                <hint concept-details="observation. primaryObs.concept"/>
 
                 <div ng-include src="'../common/concept-set/views/observationDataTypes/addMore.html'"></div>
-
-                <div ng-include src="'../common/concept-set/views/observationDataTypes/showComment.html'"></div>
 
                 <div ng-if="::observation.abnormalObs && !observation.isComputed()" class="fl accept-btn-wrapper">
                     <button type="button" ng-model="observation.abnormalObs.value"
@@ -84,25 +82,32 @@
                             ng-click="observation.toggleAbnormal()"><i class="fa fa-ok"></i>{{'OBS_ABNORMAL_TRANSLATE_KEY' | translate}}
                     </button>
                 </div>
+
+                <div ng-if="::observation.unknownObs" class="fl accept-btn-wrapper">
+                    <button type="button" ng-model="observation.unknownObs.value"
+                            class="small-btn accept-btn grid-row-element"
+                            ng-disabled="observation.primaryObs.hasValue() && observation.primaryObs.atLeastOneValueSet() || observation.disabled"
+                            ng-class="{'active': observation.unknownObs.value}"
+                            ng-click="observation.toggleUnknown()"><i class="fa fa-ok"></i>{{'OBS_UNKNOWN_TRANSLATE_KEY' | translate}}
+                    </button>
+                </div>
                 <div class="checkbox-inline" ng-if="::observation.durationObs"
                      ng-class="{'duration': observation.durationObs, 'computed-field': observation.isComputedAndEditable()}">
-                    <span class="for-separator">for</span>
+                    <span class="for-separator fl">for</span>
                     <duration ng-model="observation.durationObs.value" disabled="!observation.primaryObs.hasValue()"
                               illegal-value="observation.isDurationRequired() && !observation.hasDuration()"></duration>
                 </div>
+                <div ng-include src="'../common/concept-set/views/observationDataTypes/showComment.html'"></div>
+                <div class="fl" ng-include src="'../common/concept-set/views/observationDataTypes/removeClone.html'"></div>
 
-                <button ng-if="::observation.canHaveComment()" type="button" toggle="observation.showComment" class="comment-toggle fr" tabindex="-1"
-                        ng-class="{'has-notes': observation.comment}">
-                    <i class="fa fa-file-o" ng-hide="observation.comment">
-                        <i class="fa fa-plus-circle" ng-hide="observation.showComment"></i>
-                        <i class="fa fa-minus-circle" ng-show="observation.showComment"></i>
-                    </i>
-                    <i class="fa fa-file-text-o" ng-show="observation.comment"></i>
-                </button>
                 <div class="offset-label" ng-show="observation.showComment">
-                    <textarea class="obs-comment-section" maxlength="255" ng-model="observation.comment"
-                          placeholder="Notes">
-                    </textarea>
+                    <label class="control-label"></label>
+                    <div class="field-value">
+                        <textarea class="obs-comment-section" maxlength="255" ng-model="observation.comment"
+                                  placeholder="Notes" msd-elastic>
+                        </textarea>
+                    </div>
+
                 </div>
             </div>
         </fieldset>
@@ -115,13 +120,13 @@
                     <span class="details" ng-bind-html="::observation.concept.description"></span>
                 </div>
 
-                <label class="control-label" for="{{::observation.uniqueId}}">
+                <label class="control-label" ng-if="showTitle" for="{{::observation.uniqueId}}">
                     <span ng-bind="::observation.label"></span>
                     <span ng-show="::observation.units" ng-bind-html="::'(' + observation.units + ')'"></span>
                     <span ng-if="::observation.isRequired()" class="asterick">*</span>
                     <i class="fa fa-question-circle concept-tooltip-trigger" bm-pop-over-trigger
-                       ng-if="::observation.concept.description"></i>
-
+                       ng-if="::observation.concept.description">
+                    </i>
                 </label>
 
                 <div class="field-value" ng-switch="::observation.getControlType()">
@@ -153,6 +158,7 @@
                         <datetimepicker model="observation.value"
                                         observation="observation"
                                         ng-blur="handleUpdate()"
+                                        allow-future-dates="(observation.conceptUIConfig && observation.conceptUIConfig.allowFutureDates)"
                                         show-time="true" illegal-value="!observation.isValid(atLeastOneValueIsSet, conceptSetRequired)"></datetimepicker>
                     </div>
 
@@ -194,7 +200,7 @@
                         </div>
 
                         <textarea class="consultation-img-comments" ng-show="observation.showComment" maxlength="255"
-                              ng-model="observation.comment">
+                                  ng-model="observation.comment" msd-elastic>
                         </textarea>
                     </div>
 
@@ -203,12 +209,12 @@
                          ng-class="{'illegalValue': !observation.isValid(atLeastOneValueIsSet, conceptSetRequired), 'computed-field': observation.isComputedAndEditable()}"
                          class="autocomplete">
                         <input ng-if="::!observation.conceptUIConfig.answersConceptName" type="hidden"
-                               ng-blur="handleUpdate()"
+                               ng-change="handleUpdate()"
                                ng-disabled="observation.disabled"
                                ui-select2="selectOptions(observation.concept)" ng-model="observation.value"
-                               style="width: 90%;" autofocus/>
+                               style="width: 90%;"/>
                         <input ng-if="::observation.conceptUIConfig.answersConceptName" concept-autocomplete
-                               ng-blur="handleUpdate()"
+                               ng-change="handleUpdate()"
                                ng-disabled="observation.disabled"
                                coded-concept-name="observation.conceptUIConfig.answersConceptName"
                                ng-model="observation.autocompleteValue" autofocus/>
@@ -217,10 +223,12 @@
                     <p ng-switch-default class="field-value info fa fa-info-sign"> The concept data type
                         '{{observation.dataTypeName}}' is not supported yet.</p>
                 </div>
-
-                <div ng-include src="'../common/concept-set/views/observationDataTypes/hint.html'"></div>
+                <hint concept-details="observation.concept"/>
 
                 <div ng-include src="'../common/concept-set/views/observationDataTypes/addMore.html'"></div>
+
+
+                <div class="fl" ng-if="isRemoveValid(observation)" ng-include src="'../common/concept-set/views/observationDataTypes/removeClone.html'"></div>
 
                 <button ng-if="::observation.canHaveComment()" type="button" toggle="observation.showComment"
                         ng-blur="handleUpdate()" ng-disabled="observation.disabled"
@@ -233,19 +241,71 @@
                 </button>
 
                 <div ng-if="::observation.canHaveComment()" class="offset-label" ng-show="observation.showComment">
-                    <textarea class="obs-comment-section" maxlength="255" ng-model="observation.comment"
-                          placeholder="Notes">
-                    </textarea>
+                    <label class="control-label"></label>
+                    <div class="field-value">
+                        <textarea class="obs-comment-section" maxlength="255" ng-model="observation.comment"
+                                  placeholder="Notes" msd-elastic>
+                        </textarea>
+                    </div>
                 </div>
             </div>
         </fieldset>
 
-        <fieldset ng-if="!observation.isObservationNode && !observation.isFormElement()" class="hasLegend"
+        <fieldset class="leaf-observation-node" ng-if="observation.getControlType() == 'tabular'" >
+            <div>
+                <table>
+                    <caption ng-bind="::observation.label"></caption>
+                    <thead>
+                    <tr>
+                        <th ng-repeat="column in observation.columns">
+                            <div class="form-group" bm-pop-over>
+                                <div class=" concept-tooltip-description" bm-pop-over-target ng-if="::column.description">
+                                    <i class="fa fa-caret-down"></i>
+                                    <span class="details" ng-bind-html="::column.description"></span>
+                                </div>
+
+                                <strong>
+                                    <span ng-bind="column.shortName || column.name"></span>
+                                <span ng-show="::column.units"
+                                      ng-bind-html="::'(' + column.units + ')'"></span>
+                                    <i class="fa fa-question-circle concept-tooltip-trigger" bm-pop-over-trigger
+                                       ng-if="::column.description">
+                                    </i>
+                                </strong>
+                            </div>
+
+                        </th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr ng-repeat="row in observation.rows">
+                        <td ng-repeat="obs in row.cells">
+                            <concept collapse-inner-sections="collapseInnerSections" observation="obs"
+                                     root-observation="row" at-least-one-value-is-set="atLeastOneValueIsSet"
+                                     patient="patient" show-title="false"
+                                     concept-set-required="conceptSetRequired" concept-set-name="conceptSetName"></concept>
+                        </td>
+                        <td ng-if="observation.canAddMore()">
+                            <button type="button" class="add-more-btn btn-small" ng-click="observation.addNew(row)">
+                                <i class="fa fa-plus-circle"></i> {{'ADD_MORE_KEY' | translate}}
+                            </button>
+                            <i class="fa fa-remove" ng-confirm-click="observation.remove(row)" confirm-message="{{ 'REMOVE_CONFIRMATION_KEY' | translate }}"></i>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </fieldset>
+
+
+        <fieldset ng-if="!observation.isObservationNode && !observation.isFormElement() && observation.getControlType()!='tabular'" class="hasLegend"
                   ng-class="{'collapsible-set': isCollapsibleSet(), 'collapsed': collapse}">
             <legend ng-if="showTitle && !observation.isComputed()" class="mylegend" ng-click="toggleSection()">
                 <i ng-if="isCollapsibleSet() && collapse" class="fa fa-caret-right"></i>
                 <i ng-if="!(isCollapsibleSet() && collapse)" class="fa fa-caret-down"></i>
                 <strong>{{::observation.label}}</strong>
+                <span class="fl" ng-include src="'../common/concept-set/views/observationDataTypes/removeClone.html'"></span>
+
             <span ng-if="observation.canAddMore && observation.canAddMore()" class="add-more">
                 <button id="{{observation.assignAddMoreButtonID()}}" type="button" class="add-more-btn btn-small" ng-click="cloneNew(observation, rootObservation)">
                     <i class="fa fa-plus-circle"></i> {{'ADD_MORE_KEY' | translate}}

@@ -163,8 +163,9 @@ describe("OrdersDisplayControl", function () {
         expect(element.children()[0]).toEqual('section');
         var section = $(element.children()[0]);
 
-        expect(section.children()[0]).toEqual('section');
-        expect(section.children()[1]).toEqual('div');
+        expect(section.children()[0]).toEqual('h2');
+        expect(section.children()[1]).toEqual('section');
+        expect(section.children()[2]).toEqual('div');
     });
 
     it('should open the first and close the rest', function () {
@@ -237,9 +238,9 @@ describe("OrdersDisplayControl", function () {
             expect(element.children()[0]).toEqual('section');
 
             var section = $(element.children()[0]);
-            var innerDiv = $($($(section.children()[1]))[0]);
+            var innerDiv = $($($(section.children()[2]))[0]);
 
-            expect(section.children()[1]).toEqual('div');
+            expect(section.children()[2]).toEqual('div');
         });
 
         it('should not show the noOrdersMessage when there are orders', function () {

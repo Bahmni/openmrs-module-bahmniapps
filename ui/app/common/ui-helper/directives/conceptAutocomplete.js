@@ -1,8 +1,14 @@
 angular.module('bahmni.common.uiHelper')
 .directive('conceptAutocomplete', function ($parse, $http) {
     var link = function (scope, element, attrs, ngModelCtrl) {
+        var responseMap = scope.responseMap();
         var source =  function(request) {
-            return $http.get(Bahmni.Common.Constants.conceptUrl, { params: {q: request.term, memberOf: scope.conceptSetUuid, answerTo: scope.codedConceptName, v: "custom:(uuid,name)"}});
+            var params = {q: request.term, memberOf: scope.conceptSetUuid, answerTo: scope.codedConceptName, v: "custom:(uuid,name,names:(name))"};
+            if(params.answerTo){
+                params.question=params.answerTo;
+                params.s="byQuestion";
+            }
+            return $http.get(Bahmni.Common.Constants.conceptUrl, { params: params});
         };
         var minLength = scope.minLength || 2;
 
@@ -12,8 +18,7 @@ angular.module('bahmni.common.uiHelper')
             source: function (request, response) {
                 source({elementId: attrs.id, term: request.term, elementType: attrs.type}).then(function (resp) {
                     var results = resp.data.results.map(function (concept) {
-                        //todo : get rid of either 'value' or 'name' fields
-                        return {'value': concept.name.name, 'concept': concept, uuid: concept.uuid,name:concept.name.name };
+                        return responseMap ? responseMap(concept, request.term.trim()) : concept;
                     });
                     response(results);
                 });
@@ -33,6 +38,7 @@ angular.module('bahmni.common.uiHelper')
                 }
             }
         });
+        
     }
     return {
         link: link,
@@ -41,7 +47,8 @@ angular.module('bahmni.common.uiHelper')
             conceptSetUuid: '=',
             codedConceptName: '=',
             minLength: '=',
-            blurOnSelect: '='
+            blurOnSelect: '=',
+            responseMap: '&'
         }
     }
 });

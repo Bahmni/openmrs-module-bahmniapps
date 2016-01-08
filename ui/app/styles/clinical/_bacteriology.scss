@@ -1,0 +1,98 @@
+.bacteriology-container{
+  font-size: 14px;
+  .sample-container{
+    margin-bottom: 20px;
+  }
+  form{
+    overflow: hidden;
+    .field-value{
+      #sample-date{
+        margin-bottom:5px;
+      }
+    }
+  }
+  .add-sample-btn{
+    padding: 6px 15px !important;
+    margin: 5px 0 5px 5px;
+  }
+  .box{
+    margin: 20px;
+    .vitals fieldset.collapsible-set.collapsed legend{
+      background: #fff !important;
+    }
+    .vitals fieldset.collapsible-set.collapsed legend + .form-group{
+      border-top:0 !important;
+    }
+  }
+  .savedSpecimens-container{
+    border: 2px #5B8989 solid;
+    padding: 10px;
+    border-radius: 3px;
+    margin-bottom: 10px;
+    .savedSpecimens-action{
+      font-size: 20px;
+    }
+    .savedSpecimens-text{
+      line-height: 1.5em;
+    }
+    .fa{
+      margin-right: 10px;
+    }
+  }
+}
+
+.bacteriology-dashboard{
+  .specimen-info{
+    span{
+      display: inline-block;
+      cursor: pointer;
+      &.specimenSource{
+        width: 55%;
+      }
+      &.specimenId{
+        font-family: OpenSansSemiBold;
+      }
+      &.specimenCollectionDate{
+        width: 38%;
+        text-align: right;
+      }
+    }
+  }
+  .hierarchy ul li ul li .tree-list-item{
+    padding-left: 40px;
+  }
+}
+.dashboard-tabular-obs-section{
+  .tabular-obs{
+    overflow: auto;
+  }
+  table{
+    tr{
+      th{
+        text-align: left;
+        font-family: OpenSansSemiBold;
+      }
+    }
+  }
+}
+.ngdialog-content {
+  .dashboard-tabular-obs-section{
+    .tabular-obs{
+      overflow: auto;
+    }
+    table{
+      tr{
+        th{
+          border: 1px solid #DDD;
+        }
+        td{
+          border: 1px solid #DDD;
+        }
+      }
+    }
+  }
+}
+
+.edit-bacteriology-sample{
+  margin-top: 10px;
+}

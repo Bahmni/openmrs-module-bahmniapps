@@ -1,6 +1,6 @@
 'use strict';
 
-var $aController, scopeMock, rootScopeMock, stateMock, patientServiceMock, preferencesMock, patientModelMock, spinnerMock, locationServiceMock,
+var $aController, q, scopeMock, rootScopeMock, stateMock, patientServiceMock, preferencesMock, patientModelMock, spinnerMock, locationServiceMock,
     appServiceMock, ngDialogMock, ngDialogLocalScopeMock, bahmniCookieMock;
 
 describe('CreatePatientController', function () {
@@ -8,13 +8,15 @@ describe('CreatePatientController', function () {
     beforeEach(module('bahmni.registration'));
 
     beforeEach(
-        inject(function ($controller) {
+        inject(function ($controller, $rootScope, $q) {
             $aController = $controller;
+            rootScopeMock = $rootScope;
+            q = $q;
+            scopeMock = rootScopeMock.$new();
         })
     );
+
     beforeEach(function () {
-        scopeMock = jasmine.createSpyObj('scopeMock', ['actions']);
-        rootScopeMock = jasmine.createSpyObj('rootScopeMock', ['patientConfiguration']);
         stateMock = jasmine.createSpyObj('stateMock', ['go']);
         patientServiceMock = jasmine.createSpyObj('patientServiceMock',
             ['generateIdentifier', 'getLatestIdentifier', 'setLatestIdentifier', 'create']
@@ -28,19 +30,94 @@ describe('CreatePatientController', function () {
 
         ngDialogMock = jasmine.createSpyObj('ngDialogMock', ['open', 'close']);
         ngDialogLocalScopeMock = scopeMock;
+        spinnerMock.forPromise.and.returnValue(specUtil.createFakePromise({}));
+
+        rootScopeMock.patientConfiguration = {identifierSources: [{prefix: "SEM"},
+            {prefix: "GAN"}]};
+
         scopeMock.$new = function () {
             return ngDialogLocalScopeMock;
         };
 
         appServiceMock.getAppDescriptor = function () {
             return {
-                getConfigValue: function () {
+                getConfigValue: function (config) {
+                    if(config == 'patientInformation') {
+                        return {
+                            "defaults": {
+                                "education": "Uneducated"
+                            }
+                        };
+                    }
                     return ["Division", "Zilla", "Upazilla"];
                 }
+
             }
         };
 
-        rootScopeMock.patientConfiguration = {identifierSources: []};
+        bahmniCookieMock.get = function(x){
+            return {
+                name: "Bahmni1",
+                uuid: "43922e67-506c-11e5-968f-0050568266ff",
+                stateProvince: "Dhaka",
+                countyDistrict: "Dhaka",
+                address5: "Dohar"
+            };
+        }
+
+        var loginLocation = "someLocation";
+        locationServiceMock.getAllByTag.and.returnValue(specUtil.createFakePromise({
+            "results":[{"uuid":"43922e67-506c-11e5-968f-0050568266ff","display":"Registration","name":"Registration", "stateProvince":"Dhaka"},{"uuid":"43922e67-506c-11e5-968f-0050568266fg","display":"OPD","name":"OPD","stateProvince":"India"}]}
+        ));
+
+        rootScopeMock.patientConfiguration.personAttributeTypes = [
+            {
+                uuid: "education-uuid",
+                name: "education",
+                description: "Education Details",
+                format: "org.openmrs.Concept",
+                answers :[
+                    {
+                        conceptId: "c2107f30-3f10-11e4-adec-0800271c1b75",
+                        description: "Uneducated"
+                    },
+                    {
+                        conceptId: "c211442b-3f10-11e4-adec-0800271c1b75",
+                        description: "5th Pass and Below"
+                    }]
+
+            }
+        ];
+        rootScopeMock.patientConfiguration.getPatientAttributesSections = function(){
+            return {"additionalPatientInformation": { attributes: [{name: "education"}] }}
+        };
+
+        $aController('CreatePatientController', {
+            $q: q,
+            $scope: scopeMock,
+            $rootScope: rootScopeMock,
+            $state: stateMock,
+            patientService: patientServiceMock,
+            preferences: preferencesMock,
+            patientModel: patientModelMock,
+            spinner: spinnerMock,
+            appService: appServiceMock,
+            ngDialog: ngDialogMock,
+            $bahmniCookieStore: bahmniCookieMock,
+            locationService: locationServiceMock
+        });
+
+        scopeMock.actions = {
+            followUpAction: function () {
+                scopeMock.afterSave()
+            }
+        };
+
+        scopeMock.patientConfiguration = {identifierSources: []};
+        scopeMock.patient = {identifierPrefix: {}, relationships: []};
+    });
+
+    it("should populate default fields in registration form", function() {
 
         $aController('CreatePatientController', {
             $scope: scopeMock,
@@ -55,32 +132,62 @@ describe('CreatePatientController', function () {
             $bahmniCookieStore: bahmniCookieMock
         });
 
-        scopeMock.actions = {
-            followUpAction: function () {
-                scopeMock.afterSave()
+        expect(scopeMock.patient["education"]).toBe("c2107f30-3f10-11e4-adec-0800271c1b75");
+
+    });
+
+    it("should expand the section when there are any default values specified for an attribute in that section", function() {
+
+        $aController('CreatePatientController', {
+            $scope: scopeMock,
+            $rootScope: rootScopeMock,
+            $state: stateMock,
+            patientService: patientServiceMock,
+            preferences: preferencesMock,
+            patientModel: patientModelMock,
+            spinner: spinnerMock,
+            appService: appServiceMock,
+            ngDialog: ngDialogMock,
+            $bahmniCookieStore: bahmniCookieMock
+        });
+
+        expect(scopeMock.sectionVisibilityMap["additionalPatientInformation"]).toBeTruthy();
+
+    });
+
+    it("should do nothing if defaults are not specified", function() {
+
+        appServiceMock.getAppDescriptor = function () {
+            return {
+                getConfigValue: function (config) {
+                    if(config == 'patientInformation') {
+                        return {
+                        };
+                    }
+                    return ["Division", "Zilla", "Upazilla"];
+                }
+
             }
         };
+        $aController('CreatePatientController', {
+            $scope: scopeMock,
+            $rootScope: rootScopeMock,
+            $state: stateMock,
+            patientService: patientServiceMock,
+            preferences: preferencesMock,
+            patientModel: patientModelMock,
+            spinner: spinnerMock,
+            appService: appServiceMock,
+            ngDialog: ngDialogMock,
+            $bahmniCookieStore: bahmniCookieMock
+        });
 
-        scopeMock.patientConfiguration = {identifierSources: []};
-        scopeMock.patient = {identifierPrefix: {}, relationships: []};
+        expect(scopeMock.patient["education"]).toBeUndefined();
+
     });
 
     it("should populate patient address levels", function(){
         scopeMock.addressLevels = [ {addressField: "stateProvince", name: "Division"}, {addressField: "countyDistrict" , name: "Zilla"}, {addressField: "address5", name: "Upazilla"}];
-
-        bahmniCookieMock.get = function(x){
-            return {
-                name: "Bahmni1",
-                uuid: "43922e67-506c-11e5-968f-0050568266ff",
-                stateProvince: "Dhaka",
-                countyDistrict: "Dhaka",
-                address5: "Dohar"
-            };
-        }
-        var loginLocation = "someLocation";
-        locationServiceMock.getAllByTag.and.returnValue(specUtil.createFakePromise({
-            "results":[{"uuid":"43922e67-506c-11e5-968f-0050568266ff","display":"Registration","name":"Registration", "stateProvince":"Dhaka"},{"uuid":"43922e67-506c-11e5-968f-0050568266fg","display":"OPD","name":"OPD","stateProvince":"India"}]}
-        ));
 
         $aController('CreatePatientController', {
             $scope: scopeMock,
@@ -96,18 +203,14 @@ describe('CreatePatientController', function () {
             locationService: locationServiceMock
         });
 
-
         expect(scopeMock.patient.address[scopeMock.addressLevels[0].addressField]).toBe("Dhaka");
-
     })
 
     it("should set patient identifierPrefix details with the matching one", function () {
-        rootScopeMock.patientConfiguration = {
-            identifierSources: [
+        rootScopeMock.patientConfiguration.identifierSources= [
                 {prefix: "GAN"},
                 {prefix: "SEM"}
-            ]
-        };
+            ];
         preferencesMock.identifierPrefix = "GAN";
         $aController('CreatePatientController', {
             $scope: scopeMock,
@@ -126,12 +229,10 @@ describe('CreatePatientController', function () {
     });
 
     it("should set patient identifierPrefix details with the first source details when it doesn't match", function () {
-        rootScopeMock.patientConfiguration = {
-            identifierSources: [
+        rootScopeMock.patientConfiguration.identifierSources= [
                 {prefix: "SEM"},
                 {prefix: "BAN"}
             ]
-        };
         preferencesMock.identifierPrefix = "GAN";
         $aController('CreatePatientController', {
             $scope: scopeMock,
@@ -150,18 +251,20 @@ describe('CreatePatientController', function () {
     });
 
     it("should create a patient and go to edit page", function () {
-
         scopeMock.patient.identifierPrefix.prefix = "GAN";
 
-        patientServiceMock.generateIdentifier.and.returnValue(specUtil.createFakePromise("uuid"));
-        patientServiceMock.create.and.returnValue(specUtil.createFakePromise({
-            patient: {uuid: "patientUuid", person: {names: [{display: "somename"}]}}
+        patientServiceMock.generateIdentifier.and.returnValue(specUtil.respondWithPromise(q, {data: "uuid"}));
+        patientServiceMock.create.and.returnValue(specUtil.respondWithPromise(q, {
+            data: {patient: {uuid: "patientUuid", person: {names: [{display: "somename"}]}}}
         }));
 
-        scopeMock.create();
+        scopeMock.create()
+        scopeMock.$apply();
+        expect(scopeMock.saveInProgress).toBeFalsy();
 
         expect(scopeMock.patient.identifier).toBe("uuid");
         expect(stateMock.go).toHaveBeenCalledWith("patient.edit", {patientUuid: 'patientUuid'});
+
     });
 
     it("should create a patient with custom id and go to edit page", function () {
@@ -175,6 +278,7 @@ describe('CreatePatientController', function () {
         }));
 
         scopeMock.create();
+        expect(scopeMock.saveInProgress).toBeFalsy();
 
         expect(stateMock.go).toHaveBeenCalledWith("patient.edit", {patientUuid: 'patientUuid'});
     });
@@ -191,6 +295,7 @@ describe('CreatePatientController', function () {
         }));
 
         scopeMock.create();
+        expect(scopeMock.saveInProgress).toBeFalsy();
 
         expect(patientServiceMock.getLatestIdentifier).toHaveBeenCalledWith("GAN");
         expect(ngDialogMock.open).toHaveBeenCalledWith({
@@ -212,6 +317,7 @@ describe('CreatePatientController', function () {
         }));
 
         scopeMock.create();
+        expect(scopeMock.saveInProgress).toBeFalsy();
 
         expect(patientServiceMock.getLatestIdentifier).toHaveBeenCalledWith("GAN");
         expect(ngDialogMock.open).not.toHaveBeenCalled();
@@ -225,13 +331,15 @@ describe('CreatePatientController', function () {
 
         scopeMock.hasOldIdentifier = true;
 
-        patientServiceMock.getLatestIdentifier.and.returnValue(specUtil.createFakePromise("1050"));
-        patientServiceMock.setLatestIdentifier.and.returnValue(specUtil.createFakePromise("1051"));
-        patientServiceMock.create.and.returnValue(specUtil.createFakePromise({
-            patient: {uuid: "patientUuid", person: {names: [{display: "somename"}]}}
+        patientServiceMock.getLatestIdentifier.and.returnValue(specUtil.respondWithPromise(q, {data: "1050"}));
+        patientServiceMock.setLatestIdentifier.and.returnValue(specUtil.respondWithPromise(q, {data: "1051"}));
+        patientServiceMock.create.and.returnValue(specUtil.respondWithPromise(q, {
+            data: {patient: {uuid: "patientUuid", person: {names: [{display: "somename"}]}}}
         }));
 
         scopeMock.create();
+        scopeMock.$apply();
+        expect(scopeMock.saveInProgress).toBeFalsy();
 
         expect(patientServiceMock.getLatestIdentifier).toHaveBeenCalledWith("GAN");
         expect(ngDialogMock.open).not.toHaveBeenCalled();
@@ -263,13 +371,14 @@ describe('CreatePatientController', function () {
 
         scopeMock.hasOldIdentifier = true;
 
-        patientServiceMock.getLatestIdentifier.and.returnValue(specUtil.createFakePromise("1000"));
-        patientServiceMock.setLatestIdentifier.and.returnValue(specUtil.createFakePromise("1051"));
-        patientServiceMock.create.and.returnValue(specUtil.createFakePromise({
-            patient: {uuid: "patientUuid", person: {names: [{display: "somename"}]}}
+        patientServiceMock.getLatestIdentifier.and.returnValue(specUtil.respondWithPromise(q, {data: "1000"}));
+        patientServiceMock.setLatestIdentifier.and.returnValue(specUtil.respondWithPromise(q, {data: "1051"}));
+        patientServiceMock.create.and.returnValue(specUtil.respondWithPromise(q, {
+            data: {patient: {uuid: "patientUuid", person: {names: [{display: "somename"}]}}}
         }));
 
         scopeMock.create();
+        scopeMock.$apply();
 
         expect(patientServiceMock.getLatestIdentifier).toHaveBeenCalledWith("GAN");
         expect(ngDialogMock.open).toHaveBeenCalledWith({
@@ -277,7 +386,9 @@ describe('CreatePatientController', function () {
             data: {sizeOfTheJump: 50},
             scope: ngDialogLocalScopeMock
         });
+
         ngDialogLocalScopeMock.yes();
+        scopeMock.$apply();
         expect(patientServiceMock.setLatestIdentifier).toHaveBeenCalledWith("GAN", 1051);
         expect(patientServiceMock.create).toHaveBeenCalledWith(scopeMock.patient);
     });
@@ -306,4 +417,29 @@ describe('CreatePatientController', function () {
         expect(patientServiceMock.setLatestIdentifier).not.toHaveBeenCalled();
         expect(patientServiceMock.create).not.toHaveBeenCalled();
     });
+
+    it("should create patient when the registration number is given without prefix", function () {
+        scopeMock.patient.registrationNumber = "1050";
+
+        scopeMock.identifierSources= [];
+
+        patientServiceMock.create.and.returnValue(specUtil.createFakePromise({
+            patient: {uuid: "patientUuid", person: {names: [{display: "somename"}]}}
+        }));
+
+        scopeMock.create();
+
+
+        expect(patientServiceMock.generateIdentifier).not.toHaveBeenCalled();
+        expect(patientServiceMock.getLatestIdentifier).not.toHaveBeenCalled();
+        expect(patientServiceMock.setLatestIdentifier).not.toHaveBeenCalled();
+
+        expect(patientServiceMock.create).toHaveBeenCalledWith(scopeMock.patient);
+    });
+
+    it("hasIdentifierSources, should return false if identifier sources are not present", function () {
+        scopeMock.identifierSources= [];
+        expect(scopeMock.hasIdentifierSources()).toBeFalsy();
+    });
+
 });

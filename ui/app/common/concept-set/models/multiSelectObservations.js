@@ -85,7 +85,7 @@ Bahmni.ConceptSet.MultiSelectObservation = function (concept, memberOfCollection
     };
 
     this.toggleSelection = function(answer) {
-        self.hasValueOf(answer) ? unselectAnswer(answer): selectAnswer(answer);
+        self.hasValueOf(answer) ? unselectAnswer(answer): self.selectAnswer(answer);
     };
 
     this.isFormElement = function(){
@@ -118,6 +118,7 @@ Bahmni.ConceptSet.MultiSelectObservation = function (concept, memberOfCollection
     }
 
     this.isValid = function (checkRequiredFields, conceptSetRequired) {
+        if(this.error) return false;
         if(checkRequiredFields) {
             if (conceptSetRequired && this.isRequired() && !this.hasNonVoidedValue()) return false;
             if (this.isRequired() && !this.hasNonVoidedValue()) return false;
@@ -157,7 +158,7 @@ Bahmni.ConceptSet.MultiSelectObservation = function (concept, memberOfCollection
         });
     };
 
-    var selectAnswer =  function(answer) {
+    this.selectAnswer =  function(answer) {
         var obs = self.selectedObs[answer.name];
         if (obs) {
             obs.value = answer;
@@ -168,7 +169,7 @@ Bahmni.ConceptSet.MultiSelectObservation = function (concept, memberOfCollection
         }
     };
 
-    var unselectAnswer = function unselectAnswer(answer) {
+    var unselectAnswer = function(answer) {
         var obs = self.selectedObs[answer.name];
         if(obs && obs.uuid) {
             obs.value = null;
@@ -198,6 +199,30 @@ Bahmni.ConceptSet.MultiSelectObservation = function (concept, memberOfCollection
             }
         });
         return values;
-    }
+    };
+
+    this.isComputed = function () {
+        return this.concept.conceptClass === "Computed";
+    };
+
+    this.getDataTypeName = function () {
+        return this.concept.dataType;
+    };
+
+    this._isDateTimeDataType = function () {
+        return "Datetime" === this.getDataTypeName();
+    };
+
+    this.isNumeric = function () {
+        return this.getDataTypeName() === "Numeric";
+    };
+
+    this.isText = function () {
+        return this.getDataTypeName() === "Text";
+    };
+
+    this.isCoded = function () {
+        return this.getDataTypeName() === "Coded";
+    };
 
 };

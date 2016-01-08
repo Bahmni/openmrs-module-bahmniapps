@@ -59,4 +59,14 @@ describe('Treatment Table DisplayControl', function () {
         expect(anotherDashboardConfig.getMaxRecentlyViewedPatients()).toBe(10);
     });
 
+    it("should have identifierkey as dashboardName when there is no translation key", function(){
+        expect(dashboardConfig.identifierKey).toBe("dashboardName");
+    })
+
+    it("should not have identifierkey as dashboardName when there is translation key", function(){
+        ANOTHER_DASHBOARD.translationKey = 'another_dasboard_translation_key';
+        var anotherDashboardConfig = new Bahmni.Clinical.ClinicalDashboardConfig([ANOTHER_DASHBOARD]);
+        expect(anotherDashboardConfig.identifierKey).toBe("translationKey");
+    })
+
 });

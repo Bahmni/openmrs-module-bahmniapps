@@ -6,13 +6,26 @@ Bahmni.Common.DisplayControl.Dashboard.Section = function (section) {
     this.data = section.data || {};
     this.isObservation = section.isObservation || false;
     this.patientAttributes = section.patientAttributes || [];
-    var commonDisplayControlNames = ["disposition", "admissionDetails", "patientInformation", "diagnosis", "observationGraph","custom","pacsOrders"];
+    var commonDisplayControlNames = [
+        "admissionDetails",
+        "bacteriologyResultsControl",
+        "chronicTreatmentChart",
+        "custom",
+        "diagnosis",
+        "disposition",
+        "drugOrderDetails",
+        "forms",
+        "observationGraph",
+        "obsToObsFlowSheet",
+        "pacsOrders",
+        "patientInformation"
+    ];
     if (this.isObservation === true) {
         this.viewName = "../common/displaycontrols/dashboard/views/sections/observationSection.html";
     } else if (commonDisplayControlNames.some(function (name) {
             return name == section.name
-	    })) {
-               this.viewName = "../common/displaycontrols/dashboard/views/sections/" + this.name + ".html";
+        })) {
+        this.viewName = "../common/displaycontrols/dashboard/views/sections/" + this.name + ".html";
     } else {
         this.viewName = "../clinical/dashboard/views/dashboardSections/" + this.name + ".html";
     }

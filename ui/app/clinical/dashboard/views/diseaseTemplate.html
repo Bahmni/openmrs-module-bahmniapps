@@ -23,7 +23,7 @@
 
                 <ul>
                     <li ng-repeat="encounter in obsTemplate.encounters">
-                        <span class="tree-list-item disease-date" ng-if="!isIntakeTemplate(obsTemplate)">
+                        <span ng-if="showGroupDateTime" class="tree-list-item disease-date" ng-if="!isIntakeTemplate(obsTemplate)">
                             <span>
                                 {{encounter.encounterDateTime | bahmniDate}}
                             </span>

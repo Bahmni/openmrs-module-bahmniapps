@@ -1,0 +1,87 @@
+.drugOrderHistorySectionContainer{
+  margin-top: 15px;
+  table.treatments-details-table{
+    table-layout: fixed;
+    tr{
+      &.edited{
+        border-bottom: none;
+      }
+      &.formStopReason{
+        td{ padding: 0px 5px 7px; }
+        .form-field .field-attribute label{
+          margin-top: 3px !important;
+          @media (max-width: 1024px) {
+            margin-top: 7px !important;
+          }
+        }
+        .form-field .field-value {
+          input[type="date"], select, textarea{
+            margin-top: 0 !important;
+          }
+          @media (max-width: 1024px) {
+            textarea{
+              width: 400px !important;
+              height: 32px !important;
+            }
+            select{
+              width: 197px !important;
+            }
+          }
+        }
+      }
+
+    }
+    th{
+      background: #eee;
+      background-image: none;
+      color: #333;
+      width: 83px;
+      @media (max-width : 1024px){
+        width: 90px;
+      }
+      font-family: openSansSemiBold;
+      &.drugName{
+        width: 210px;
+        text-align: left;
+        @media (max-width : 1024px){
+          width: 170px;
+        }
+      }
+      &.empty-header{
+        width: 100%;
+        @media (max-width : 1024px){
+          width: 125px;
+        }
+      }
+      &.empty-header.custom-empty-header{
+        width: 125px;
+      }
+    }
+    td{
+      text-align: center;
+      padding: 2px 5px 1px;
+      vertical-align: middle;
+      &.drugName{
+        text-align: left;
+        padding-left: 10px;
+      }
+      &.noActionColumn{
+        padding: 9px 5px 9px 10px;
+      }
+      .button-group-wrapper{
+        width: auto;
+        button{
+          i{
+            font-size: 1.8em;
+            @media (max-width : 1024px){
+              font-size: 2.1em;
+            }
+          }
+        }
+        .button-group{
+          float: left;
+        }
+      }
+    }
+  }
+}

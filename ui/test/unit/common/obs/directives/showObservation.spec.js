@@ -19,6 +19,11 @@ describe("ensure that the directive show-observation works properly", function (
     beforeEach(module('bahmni.common.obs'));
     beforeEach(module('bahmni.common.uiHelper'));
 
+    beforeEach(module(function($provide) {
+        var conceptSetService = jasmine.createSpyObj('conceptSetService', ['getConceptSetMembers']);
+        $provide.value('conceptSetService', conceptSetService);
+    }));
+
     beforeEach(inject(function($filter, $compile, $httpBackend, $rootScope, $q){
         filter = $filter;
         compile = $compile;

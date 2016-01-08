@@ -26,7 +26,7 @@ Bahmni.Registration.CreatePatientRequestMapper = (function () {
                     personDateCreated: patient.registrationDate,
                     attributes: this.getMrsAttributes(patient, patientAttributeTypes),
                     dead:patient.dead,
-                    deathDate: patient.deathDate,
+                    deathDate: Bahmni.Common.Util.DateUtil.getDateWithoutTime(patient.deathDate),
                     causeOfDeath: patient.causeOfDeath != null ? patient.causeOfDeath.uuid : ''
                 },
                 identifiers: [
@@ -66,10 +66,16 @@ Bahmni.Registration.CreatePatientRequestMapper = (function () {
     };
 
     var setAttributeValue = function (attributeType, attr, value) {
-        if (attributeType.format === "org.openmrs.Concept") {
-            attr.hydratedObject = value;
-        } else if (value === "" || value === null || value === undefined) {
+        if (value === "" || value === null || value === undefined) {
             attr.voided = true;
+        }
+        else if (attributeType.format === "org.openmrs.Concept") {
+            attr.value = _.find(attributeType.answers, function(answer){
+               if(answer.conceptId === value)
+                    return true;
+            }).description;
+
+            attr.hydratedObject = value;
         }
         else if(attributeType.format == "org.openmrs.util.AttributableDate"){
             var mnt = moment(value);

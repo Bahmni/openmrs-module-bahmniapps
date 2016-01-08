@@ -1,22 +1,22 @@
 'use strict';
 
 angular.module('bahmni.clinical')
-    .controller('DrugOrderHistoryController', ['$scope', '$filter', '$stateParams', 'prescribedDrugOrders',
-        'treatmentConfig', 'TreatmentService', 'spinner', 'clinicalAppConfigService','drugOrderHistoryHelper',
-        function ($scope, $filter, $stateParams, prescribedDrugOrders, treatmentConfig, treatmentService, spinner,
-                  clinicalAppConfigService, drugOrderHistoryHelper) {
+    .controller('DrugOrderHistoryController', ['$scope', '$filter', '$stateParams', 'activeDrugOrders',
+        'treatmentConfig', 'TreatmentService', 'spinner', 'clinicalAppConfigService','drugOrderHistoryHelper', 'visitHistory','$translate', '$rootScope',
+        function ($scope, $filter, $stateParams, activeDrugOrders, treatmentConfig, treatmentService, spinner,
+                  clinicalAppConfigService, drugOrderHistoryHelper, visitHistory,$translate, $rootScope) {
 
             var DrugOrderViewModel = Bahmni.Clinical.DrugOrderViewModel;
             var DateUtil = Bahmni.Common.Util.DateUtil;
-            var drugOrderUtil = Bahmni.Clinical.DrugOrder.Util;
-            var currentVisit = $scope.visit;
+            var currentVisit = visitHistory.activeVisit;
             var drugOrderAppConfig = clinicalAppConfigService.getDrugOrderConfig();
             var activeDrugOrdersList = [];
+            var prescribedDrugOrders = [];
             $scope.dispensePrivilege = Bahmni.Clinical.Constants.dispensePrivilege;
+            $scope.scheduledDate = DateUtil.getDateWithoutTime(DateUtil.now());
 
             var createPrescriptionGroups = function (activeAndScheduledDrugOrders) {
                 $scope.consultation.drugOrderGroups = [];
-
                 createPrescribedDrugOrderGroups();
                 createRecentDrugOrderGroup(activeAndScheduledDrugOrders);
             };
@@ -33,13 +33,16 @@ angular.module('bahmni.clinical')
             };
 
             var createRecentDrugOrderGroup = function (activeAndScheduledDrugOrders) {
+                var showOnlyActive = clinicalAppConfigService.getDrugOrderConfig().showOnlyActive;
                 var refillableGroup = {
-                    label: 'Recent',
+                    label: $translate.instant("MEDICATION_RECENT_TAB"),
                     selected: true,
                     drugOrders: drugOrderHistoryHelper.getRefillableDrugOrders(activeAndScheduledDrugOrders,
-                        getPreviousVisitDrugOrders())
+                        getPreviousVisitDrugOrders(), showOnlyActive)
                 };
                 $scope.consultation.drugOrderGroups.unshift(refillableGroup);
+                if(drugOrderAppConfig.numberOfVisits != undefined && drugOrderAppConfig.numberOfVisits == 0)
+                    $scope.consultation.drugOrderGroups = [$scope.consultation.drugOrderGroups[0]];
             };
 
             var createPrescribedDrugOrderGroups = function () {
@@ -58,34 +61,29 @@ angular.module('bahmni.clinical')
                         label: $filter("bahmniDate")(visitStartDate),
                         visitStartDate: DateUtil.parse(visitStartDate),
                         drugOrders: drugOrders.map(createDrugOrder),
-                        isCurrentVisit: currentVisit && DateUtil.isSameDateTime(visitStartDate, currentVisit.startDate)
+                        isCurrentVisit: currentVisit && DateUtil.isSameDateTime(visitStartDate, currentVisit.startDatetime)
                     }
                 });
                 $scope.consultation.drugOrderGroups = $scope.consultation.drugOrderGroups.concat(drugOrderGroups);
                 $scope.consultation.drugOrderGroups = _.sortBy($scope.consultation.drugOrderGroups, 'visitStartDate').reverse();
             };
 
-            var getActiveDrugOrders = function () {
-                return treatmentService.getActiveDrugOrders($stateParams.patientUuid).then(function (drugOrders) {
-                    activeDrugOrdersList = drugOrders || [];
-                    return activeDrugOrdersList.map(function (drugOrder) {
-                        return DrugOrderViewModel.createFromContract(drugOrder, drugOrderAppConfig, treatmentConfig);
-                    });
-                });
-            };
+            $scope.stoppedOrderReasons = treatmentConfig.stoppedOrderReasonConcepts;
 
             var init = function () {
-                $scope.consultation.removableDrugs = $scope.consultation.removableDrugs || [];
-                $scope.consultation.discontinuedDrugs = $scope.consultation.discontinuedDrugs || [];
-                $scope.consultation.drugOrdersWithUpdatedOrderAttributes = $scope.consultation.drugOrdersWithUpdatedOrderAttributes || {};
-
-                if (!$scope.consultation.drugOrderGroups) {
-                    spinner.forPromise(getActiveDrugOrders().then(function (data) {
-                        $scope.consultation.activeAndScheduledDrugOrders = data;
-                        createPrescriptionGroups(data)
+                activeDrugOrdersList = activeDrugOrders || [];
+                var numberOfVisits = drugOrderAppConfig.numberOfVisits ? drugOrderAppConfig.numberOfVisits : 3;
+                spinner.forPromise(treatmentService.getPrescribedDrugOrders(
+                    $stateParams.patientUuid, true, numberOfVisits).then(function (data) {
+                        prescribedDrugOrders = data;
+                        createPrescriptionGroups($scope.consultation.activeAndScheduledDrugOrders);
                     }));
-                }
             };
+            $scope.getOrderReasonConcept = function(drugOrder){
+               if(drugOrder.orderReasonConcept)
+                return drugOrder.orderReasonConcept.display||drugOrder.orderReasonConcept.name  ;
+            };
+
 
             $scope.toggleShowAdditionalInstructions = function (line) {
                 line.showAdditionalInstructions = !line.showAdditionalInstructions;
@@ -104,58 +102,51 @@ angular.module('bahmni.clinical')
             };
 
             $scope.refill = function (drugOrder) {
-                $scope.$parent.$broadcast("event:refillDrugOrder", drugOrder);
+                $rootScope.$broadcast("event:refillDrugOrder", drugOrder);
             };
 
             $scope.refillAll = function (drugOrders) {
-                $scope.$parent.$broadcast("event:refillDrugOrders", drugOrders);
+                $rootScope.$broadcast("event:refillDrugOrders", drugOrders);
             };
 
             $scope.revise = function (drugOrder, drugOrders) {
                 if (drugOrder.isEditAllowed) {
-                    $scope.$parent.$broadcast("event:reviseDrugOrder", drugOrder, drugOrders);
+                    $rootScope.$broadcast("event:reviseDrugOrder", drugOrder, drugOrders);
                 }
             };
 
+            $scope.updateFormConditions = function(drugOrder){
+                var formCondition = Bahmni.ConceptSet.FormConditions.rules ? Bahmni.ConceptSet.FormConditions.rules["Medication Stop Reason"] : undefined ;
+                if(formCondition){
+                    if(drugOrder.orderReasonConcept) {
+                        if (!formCondition(drugOrder, drugOrder.orderReasonConcept.name.name))
+                            disableAndClearReasonText(drugOrder);
+                    }
+                    else
+                        disableAndClearReasonText(drugOrder);
+                }else{
+                    drugOrder.orderReasonNotesEnabled = true;
+                }
+            };
+
+            var disableAndClearReasonText = function(drugOrder){
+                drugOrder.orderReasonText = null;
+                drugOrder.orderReasonNotesEnabled = false;
+            };
+
+
             $scope.discontinue = function (drugOrder) {
                 if (drugOrder.isDiscontinuedAllowed) {
-                    drugOrder.isMarkedForDiscontinue = true;
-                    drugOrder.isEditAllowed = false;
-                    $scope.consultation.discontinuedDrugs.push(drugOrder);
+                    $rootScope.$broadcast("event:discontinueDrugOrder", drugOrder);
+                    $scope.updateFormConditions(drugOrder);
+
                 }
             };
 
             $scope.undoDiscontinue = function (drugOrder) {
-                $scope.consultation.discontinuedDrugs = _.reject($scope.consultation.discontinuedDrugs, function (removableOrder) {
-                    return removableOrder.uuid === drugOrder.uuid;
-                });
-                $scope.consultation.removableDrugs = _.reject($scope.consultation.removableDrugs, function (removableOrder) {
-                    return removableOrder.previousOrderUuid === drugOrder.uuid;
-                });
-
-                drugOrder.isMarkedForDiscontinue = false;
-                drugOrder.isEditAllowed = true;
+                $rootScope.$broadcast("event:undoDiscontinueDrugOrder", drugOrder);
             };
 
-
-
-            var removeOrder = function (removableOrder) {
-                removableOrder.action = Bahmni.Clinical.Constants.orderActions.discontinue;
-                removableOrder.previousOrderUuid = removableOrder.uuid;
-                removableOrder.uuid = undefined;
-                removableOrder.dateActivated = null;
-                $scope.consultation.removableDrugs.push(removableOrder);
-            };
-
-            var saveTreatment = function () {
-                $scope.consultation.discontinuedDrugs.forEach(function (discontinuedDrug) {
-                    var removableOrder = _.find(activeDrugOrdersList, {uuid: discontinuedDrug.uuid});
-                    if (removableOrder) {
-                        removeOrder(removableOrder);
-                    }
-                });
-            };
-            $scope.consultation.saveHandler.register(saveTreatment);
 
             $scope.shouldBeDisabled = function (drugOrder, orderAttribute) {
                 var hasEncounterExpired = function () {
@@ -187,7 +178,7 @@ angular.module('bahmni.clinical')
                 drugOrderGroup[orderAttribute.name].selected = drugOrderGroup[orderAttribute.name].selected ? false : true;
 
                 drugOrderGroup.drugOrders.forEach(function (drugOrder) {
-                    var selectedOrderAttribute = getAttribute(drugOrder,orderAttribute.name);
+                    var selectedOrderAttribute = getAttribute(drugOrder, orderAttribute.name);
                     $scope.updateOrderAttribute(drugOrder, selectedOrderAttribute, drugOrderGroup[orderAttribute.name].selected);
                 });
             };
@@ -212,9 +203,18 @@ angular.module('bahmni.clinical')
                 return canBeUpdated;
             };
 
+            $scope.getMinDateForDiscontinue = function(drugOrder) {
+                var minDate = DateUtil.today();
+                if(DateUtil.isBeforeDate(drugOrder.effectiveStartDate, minDate)) {
+                    minDate = drugOrder.effectiveStartDate;
+                }
+                return DateUtil.getDateWithoutTime(minDate);
+            }
+
             var getAttribute = function (drugOrder, attributeName) {
                 return _.find(drugOrder.orderAttributes, {name: attributeName});
             };
 
+            
             init();
         }]);

@@ -4,7 +4,11 @@ Bahmni.Clinical.ClinicalDashboardConfig = function (config) {
 
     var self = this;
 
-    angular.extend(self, new Bahmni.Clinical.TabConfig(config, "translationKey"));
+    var tabConfig = new Bahmni.Clinical.TabConfig(config);
+    if(!tabConfig.identifierKey){
+        tabConfig.identifierKey= "dashboardName"
+    }
+    angular.extend(self, tabConfig);
 
     this.getDiseaseTemplateSections = function () {
         return _.filter(_.values(this.currentTab.sections), function (section) {

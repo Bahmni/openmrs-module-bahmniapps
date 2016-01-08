@@ -1,21 +1,27 @@
-<div class="submit-btn-container">
+<div class="submit-btn-container clearfix">
     <span ng-switch="forwardActionKey">
-                    <span data-ng-switch-when="enterVisitDetails">
-                        <button type="submit" class="right confirm" ng-click="setSubmitSource('enterVisitDetails')"
-                                accesskey="{{ 'REGISTRATION_ENTER_VISIT_DETAILS_ACCESS_KEY' | translate }}" ng-bind-html="'REGISTRATION_LABEL_ENTER_VISIT' | translate"></button>
-                    </span>
-    <span data-ng-switch-when="startVisit">
-                        <div split-button options="visitControl.visitTypes"
-                             primary-option="visitControl.defaultVisitType"
-                             option-text="visitControl.startButtonText" option-click="visitControl.startVisit"
-                             class="right"></div>
-                    </span>
-    <span data-ng-switch-when="configAction">
-                        <button type="submit" class="right confirm" ng-click="setSubmitSource('configAction')"
-                                accesskey="{{actionConfig.extensionParams.shortcutKey}}"
-                                ng-bind-html="actionConfig.extensionParams.display">
-                        </button>
-                    </span>
+        <span data-ng-switch-when="enterVisitDetails">
+            <button type="submit" class="right confirm" ng-disabled="saveInProgress"
+                ng-click="setSubmitSource('enterVisitDetails')"
+                accesskey="{{ ::'REGISTRATION_ENTER_VISIT_DETAILS_ACCESS_KEY' | translate }}"
+                ng-bind-html="::'REGISTRATION_LABEL_ENTER_VISIT' | translate">
+            </button>
+        </span>
+        <span data-ng-switch-when="startVisit">
+            <div split-button options="visitControl.visitTypes"
+                 primary-option="visitControl.defaultVisitType"
+                 option-text="visitControl.startButtonText"
+                 option-click="visitControl.startVisit"
+                 option-disabled="saveInProgress"
+                 class="right" ng-disabled="saveInProgress">
+             </div>
+        </span>
+        <span data-ng-switch-when="configAction">
+            <button type="submit" class="right confirm" ng-click="setSubmitSource('configAction')"
+                    accesskey="{{::actionConfig.extensionParams.shortcutKey}}" ng-disabled="saveInProgress"
+                    ng-bind-html="::actionConfig.extensionParams.display">
+            </button>
+        </span>
     </span>
-    <button type="submit" class="right" ng-click="setSubmitSource('save')" accesskey="{{ 'REGISTRATION_SAVE_ACCESS_KEY' | translate}}" ng-bind-html="'REGISTRATION_LABEL_SAVE' | translate"></button>
+    <button type="submit" ng-disabled="saveInProgress" class="right submit-btn" ng-click="setSubmitSource('save')" accesskey="{{ ::'REGISTRATION_SAVE_ACCESS_KEY' | translate}}" ng-bind-html="::'REGISTRATION_LABEL_SAVE' | translate"></button>
 </div>

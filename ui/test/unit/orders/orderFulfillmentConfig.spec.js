@@ -13,11 +13,11 @@ describe('OrderFulfillmentConfig Factory', function () {
 
             spinnerMock.forPromise.and.callFake(function(promise){return promise;});
 
-            conceptSetServiceMock = jasmine.createSpyObj('conceptSetService',['getConceptSetMembers']);
+            conceptSetServiceMock = jasmine.createSpyObj('conceptSetService',['getConcept']);
             $provide.value('conceptSetService',conceptSetServiceMock);
 
             var defaultMockData = {results:[{setMembers:[]}]};
-            conceptSetServiceMock.getConceptSetMembers.and.returnValue(specUtil.createFakePromise(defaultMockData));
+            conceptSetServiceMock.getConcept.and.returnValue(specUtil.createFakePromise(defaultMockData));
 
         });
 
@@ -48,8 +48,8 @@ describe('OrderFulfillmentConfig Factory', function () {
 
         orderFulfillmentConfig(conceptSetName);
 
-        expect(conceptSetServiceMock.getConceptSetMembers).toHaveBeenCalled();
-        expect(conceptSetServiceMock.getConceptSetMembers).toHaveBeenCalledWith({
+        expect(conceptSetServiceMock.getConcept).toHaveBeenCalled();
+        expect(conceptSetServiceMock.getConcept).toHaveBeenCalledWith({
             name: conceptSetName,
             v: representation
         });
@@ -61,7 +61,7 @@ describe('OrderFulfillmentConfig Factory', function () {
             setMembers:[{name:{name:"member1"}},{name:{name:"member2"}}]
         }]};
 
-        conceptSetServiceMock.getConceptSetMembers.and.returnValue(specUtil.createFakePromise(data));
+        conceptSetServiceMock.getConcept.and.returnValue(specUtil.createFakePromise(data));
 
         orderFulfillmentConfig("Viral Fever").then(function(response){
             var config=response.data;

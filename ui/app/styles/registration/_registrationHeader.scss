@@ -1,0 +1,100 @@
+.reg-header-wrapper{
+  .reg-header{
+    position: relative;
+    ul.top-nav{
+      float: left;
+      li{
+        display: inline-block;
+        a{
+          color: #fff;
+          font-weight: 700;
+          cursor: pointer;
+          text-decoration: none;
+          display: block;
+          padding: 14px 15px 15px 0;
+        }
+      }
+    }
+    .btn-user-info {
+      background: lighten($bahmniPrimaryColor, 10%);
+      padding: 17px 16px;
+      border: none;
+      border-radius: 0;
+      margin: 0;
+      color: $white;
+      float: right;
+      &:focus {outline:0;}
+      i.mini {
+        font-size: .9em;
+      }
+      & + ul {
+        display: none;
+        &.active {
+          background: lighten($bahmniPrimaryColor, 10%);
+          display: block;
+          position: absolute;
+          right: 0;
+          top: 50px;
+          z-index: 1000;
+        }
+        li {
+          float: left;
+          clear: both;
+          text-align: left;
+          padding-left: 10px;
+          border-bottom: 1px solid lighten($bahmniPrimaryColor, 10%);
+          margin: 0;
+          padding: 10px 10px 10px 5px;
+          color: $lightGray;
+          a{
+            color: $white;
+            &.disabled {
+              color: $lightGray;
+              .fa-user {
+                color: $lightGray;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+  .split-button ul{
+    &.hidden-options{
+      @media (max-width: 768px) {
+        width: 300px;
+        li {
+          margin-left: 50px;
+        }
+      }
+    }
+    li{
+      &.primaryOption{
+        i{
+          display: none;
+          @media (max-width: 768px) {
+            display: inline-block;
+          }
+        }
+        span{
+          @media (max-width: 768px) {
+            display: none;
+          }
+        }
+        .buttonClass{
+          @media (max-width: 768px) {
+            max-width: 60px;
+            float: right;
+            margin-right: 100px;
+            height: 36px;
+            padding: 0;
+            i.fa-print{
+              font-size: 23px;
+              padding-top: 5px;
+            }
+          }
+        }
+      }
+    }
+  }
+}

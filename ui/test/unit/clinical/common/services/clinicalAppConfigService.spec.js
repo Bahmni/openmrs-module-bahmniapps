@@ -118,10 +118,30 @@ describe("clinicalAppConfigService", function () {
             "url": "http://localhost:8069/quotations/latest?patient_ref={{patient_ref}}",
             "shortcutKey": "q",
             "requiredPrivilege": "app:billing"
+        },
+        {
+            "id": "bahmni.clinical.billing.treatment",
+            "extensionPointId": "org.bahmni.clinical.consultation.board",
+            "type": "link",
+            "label": "Medications",
+            "translationKey": "Medication",
+            "url": "treatment",
+            "icon": "fa-user-md",
+            "order": 8,
+            "requiredPrivilege": "app:clinical:consultationTab"
         }
     ]
     };
 
+    var medicationJson = {data: {
+        view: "custom",
+        sections: {
+            "activeTBDrugs":{
+                title: "Active TB Drugs"
+            }
+        }
+    }
+    };
     beforeEach(module(function ($provide) {
         _$http = jasmine.createSpyObj('$http', ['get']);
         _$http.get.and.callFake(function (url) {
@@ -129,6 +149,8 @@ describe("clinicalAppConfigService", function () {
                 return specUtil.respondWith(appJson)
             } else if (url.indexOf("extension.json") > -1) {
                 return specUtil.respondWith(extensionJson);
+            } else if (url.indexOf("medication.json") > -1) {
+                return specUtil.respondWith(medicationJson);
             } else {
                 return specUtil.respondWith({});
             }
@@ -138,6 +160,7 @@ describe("clinicalAppConfigService", function () {
         _sessionService.loadCredentials.and.callFake(function () {
             return  specUtil.respondWith({"privileges": [
                 {"name": "app:clinical:observationTab"},
+                {"name": "app:clinical:consultationTab"},
                 {"name": "app:clinical:history"},
                 {"name": "app:billing"},
             ]});
@@ -169,7 +192,7 @@ describe("clinicalAppConfigService", function () {
 
     describe("should fetch app config", function () {
         it('should fetch drugorder config', function (done) {
-            appService.initApp('clinical', {'app': true}).then(function () {
+            appService.initApp('clinical', {'app': true}, "", ["medication"]).then(function () {
                 var result = clinicalAppConfigService.getDrugOrderConfig();
                 expect(result.defaultDurationUnit).toBe("Day(s)");
                 done();
@@ -225,13 +248,25 @@ describe("clinicalAppConfigService", function () {
                 done();
             });
         });
+
+        it('should fetch medication config', function (done) {
+            appService.initApp('clinical', {'app': true}, null, ['medication']).then(function (result) {
+                var result = clinicalAppConfigService.getMedicationConfig();
+                expect(result.view).toBe("custom");
+                expect(result.sections['activeTBDrugs']).toEqual({
+                    title: "Active TB Drugs"
+                });
+                done();
+            });
+        })
+
     });
 
     describe("should fetch extension config", function () {
         it('should fetch consultation boards', function (done) {
             appService.initApp('clinical', {'extension': true}).then(function () {
                 var result = clinicalAppConfigService.getAllConsultationBoards();
-                expect(result.length).toBe(1);
+                expect(result.length).toBe(2);
                 done();
             });
         });
@@ -260,4 +295,5 @@ describe("clinicalAppConfigService", function () {
             });
         })
     });
+
 });

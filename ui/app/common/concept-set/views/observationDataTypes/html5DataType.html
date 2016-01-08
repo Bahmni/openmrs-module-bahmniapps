@@ -5,7 +5,7 @@
        integer="true" focus-me="observation.isFocused"/>
 
 <input id="{{::observation.uniqueId}}" obs-constraints obs="observation"
-       ng-if="!observation.isNumeric()" ng-disabled="observation.disabled"
+       ng-if="!observation.isNumeric() && !observation._isDateTimeDataType()" ng-disabled="observation.disabled"
        ng-model="observation.value" ng-blur="handleUpdate()"
        ng-class="{'is-abnormal': observation.abnormalObs.value, 'illegalValue': !observation.isValid(atLeastOneValueIsSet,conceptSetRequired), 'computed-field': observation.isComputedAndEditable()}"
        focus-me="observation.isFocused"/>
@@ -15,3 +15,10 @@
          ng-class="{'is-abnormal': observation.abnormalObs.value, 'illegalValue': !observation.isValid(atLeastOneValueIsSet, conceptSetRequired)}"
          focus-me="observation.isFocused"
          ng-if="::(observation.isNumeric() && observation.isStepperControl())"></stepper>
+
+<datetimepicker model="observation.value"
+                observation="observation"
+                ng-blur="handleUpdate()"
+                allow-future-dates="(observation.conceptUIConfig && observation.conceptUIConfig.allowFutureDates)"
+                show-time="true" illegal-value="!observation.isValid(atLeastOneValueIsSet, conceptSetRequired)"
+                ng-if="::(observation._isDateTimeDataType())"></datetimepicker>

@@ -23,12 +23,24 @@ Bahmni.Registration.PatientAttributeTypeMapper = (function () {
                 description: mrsAttributeType.description,
                 format: mrsAttributeType.format,
                 answers: [],
-                required: isRequired()
+                required: isRequired(),
+                concept:mrsAttributeType.concept||{}
             };
+            attributeType.concept.dataType = attributeType.concept.datatype && attributeType.concept.datatype.name;
+
             if (mrsAttributeType.concept && mrsAttributeType.concept.answers) {
                 angular.forEach(mrsAttributeType.concept.answers, function(mrsAnswer) {
+                    var displayName = mrsAnswer.display;
+                    if (mrsAnswer.names && mrsAnswer.names.length == 2) {
+                        if (mrsAnswer.name.conceptNameType == 'FULLY_SPECIFIED') {
+                            if (mrsAnswer.names[0].display == displayName)
+                                displayName = mrsAnswer.names[1].display;
+                            else
+                                displayName = mrsAnswer.names[0].display;
+                        }
+                    }
                     attributeType.answers.push({
-                        description: mrsAnswer.display,
+                        description: displayName,
                         conceptId: mrsAnswer.uuid
                     });
                 });

@@ -1,0 +1,132 @@
+.reg-search-wrapper{
+  padding:5px;
+  margin-top:5px;
+  border:1px solid $lightestGray;
+  background: $white;
+  border-radius: 3px;
+  @include box-shadow-for-section();
+  .reg-search{
+    button{
+      padding: 7px 20px !important;
+    }
+    @include clearfix;
+    .search-seperator-l{
+      border-right:2px dotted $lightGray;
+      width: 30.5%;
+      margin: 0 1.04167%;
+      float: left;
+      @media (max-width: 767px) {
+        @include column(12);
+        border-right : 0;
+        border-bottom:2px dotted $lightGray;
+        display: block;
+        padding-bottom: 10px;
+      }
+      .search-patient-id{
+        width: 100%;
+        .reg-srch-btn{
+          margin-top: 4px;
+        }
+      }
+      input[type="text"]{
+        margin-right:5px;
+        padding: 5px 10px;
+        min-width: 40%;
+        margin-left: 5px;
+      }
+      select{
+        width:80px;
+        min-width:80px;
+        height: 32px;
+      }
+    }
+    .search-seperator-r{
+      width: 67%;
+      margin: 0;
+      float: right;
+      @media (max-width: 767px) {
+        @include column(12);
+        display: block;
+        padding-top: 5px;
+      }
+      input[type="text"]{
+        margin-right:5px;
+        padding: 5px 10px;
+        /*@media (max-width: 1024px) {
+          padding: 5px 10px;
+        }*/
+      }
+      button{
+        margin: 0px 2px 2px 2px;
+      }
+      .reg-srch-btn{
+        margin-top:25px;
+      }
+    }
+  }
+  .note-container{
+    text-align:left;
+    .note {
+      padding:20px 10px 6px 10px;
+      .text{
+        p{
+          max-width:100%;
+          top:0px;
+          margin-left:0
+        }
+      }
+    }
+  }
+}
+.registraition-search-results-container{
+  padding: 5px;
+  overflow-x: auto;
+  table{
+    margin-top: 20px;
+    tr{
+      border: none;
+    }
+    td,th{
+      padding:4px 8px 4px 8px;
+      text-align:left;
+      @media screen and (max-width: 1024px){
+        padding:9px 8px 9px 8px;
+      }
+    }
+    tr:hover{
+      background: $lightestGray;
+    }
+  }
+  .slno_col{
+    width:40px;
+  }
+  .edit-col{
+    width:160px;
+    padding:2px 2px 2px 2px;
+    .split-button ul li button{
+      @media screen and (min-width: 1024px){
+        padding: 5px 20px;
+        margin: 0;
+      }
+    }
+    a{
+      background:url("edit.png") top left no-repeat;
+      width:30px;
+      height:24px;
+      display:inline-block;
+      margin-right:2px;
+      cursor:pointer;
+    }
+    &.visible-small-screen{
+      position: absolute;
+      top: auto;
+      right: 6px;
+      width: 104px;
+      border-bottom: 0;
+      .split-button ul li button{
+        margin-right:0 ;
+        width: 98%;
+      }
+    }
+  }
+}

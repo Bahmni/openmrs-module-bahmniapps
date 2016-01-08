@@ -1,15 +1,16 @@
 'use strict';
 
 angular.module('bahmni.registration')
-    .factory('patientService', ['$http', '$rootScope', function ($http, $rootScope) {
+    .factory('patientService', ['$http', '$rootScope','$bahmniCookieStore','$q','offlinePatientService', 'offlineService', function ($http, $rootScope, $bahmniCookieStore, $q, offlinePatientService, offlineService) {
         var openmrsUrl = Bahmni.Registration.Constants.openmrsUrl;
         var baseOpenMRSRESTURL = Bahmni.Registration.Constants.baseOpenMRSRESTURL;
+        var search = function (query, identifier, identifierPrefix, addressFieldName, addressFieldValue, customAttributeValue, offset, customAttributeFields) {
 
-        var search = function (query, addressFieldName, addressFieldValue, customAttributeValue, offset, customAttributeFields) {
-            var url = Bahmni.Common.Constants.bahmniSearchUrl + "/patient";
             var config = {
                 params: {
                     q: query,
+                    identifier:identifier,
+                    identifierPrefix: identifierPrefix,
                     s: "byIdOrNameOrVillage",
                     address_field_name: addressFieldName,
                     address_field_value: addressFieldValue,
@@ -19,10 +20,25 @@ angular.module('bahmni.registration')
                 },
                 withCredentials: true
             };
-            return $http.get(url, config);
+            var defer = $q.defer();
+
+            if(offlineService.offline()){
+                offlinePatientService.search(config.params).then(function(result){
+                    defer.resolve(result);
+                });
+                return defer.promise;
+            }
+            var url = Bahmni.Common.Constants.bahmniSearchUrl + "/patient";
+            $http.get(url, config).success(function(result) {
+                defer.resolve(result);
+            });
+            return defer.promise;
         };
 
         var searchByIdentifier = function(identifier){
+            if(offlineService.offline()){
+                return offlinePatientService.getByIdentifier(identifier);
+            }
             return $http.get(Bahmni.Common.Constants.bahmniSearchUrl + "/patient", {
                 method: "GET",
                 params: {identifier: identifier},
@@ -31,17 +47,25 @@ angular.module('bahmni.registration')
         };
 
         var get = function (uuid) {
+            if(offlineService.offline()){
+                return offlinePatientService.get(uuid);
+            }
             var url = openmrsUrl + "/ws/rest/v1/patientprofile/" + uuid;
             var config = {
                 method: "GET",
                 params: {v: "full"},
                 withCredentials: true
             };
-            return $http.get(url, config);
+
+            var defer = $q.defer();
+            $http.get(url, config).success(function(result) {
+                defer.resolve(result);
+            });
+            return defer.promise;
         };
 
         var generateIdentifier = function (patient) {
-            var data = {"identifierSourceName": patient.identifierPrefix.prefix};
+            var data = {"identifierSourceName": patient.identifierPrefix ? patient.identifierPrefix.prefix : ""};
             var url = openmrsUrl + "/ws/rest/v1/idgen";
             var config = {
                 withCredentials: true,
@@ -72,6 +96,9 @@ angular.module('bahmni.registration')
 
         var create = function (patient) {
             var data = new Bahmni.Registration.CreatePatientRequestMapper(moment()).mapFromPatient($rootScope.patientConfiguration.personAttributeTypes, patient);
+            if(offlineService.offline()){
+                return offlinePatientService.create(data);
+            }
             var url = baseOpenMRSRESTURL + "/patientprofile";
             var config = {
                 withCredentials: true,
@@ -81,6 +108,10 @@ angular.module('bahmni.registration')
         };
 
         var update = function (patient, openMRSPatient) {
+            if(offlineService.offline()){
+                var data = new Bahmni.Registration.CreatePatientRequestMapper(moment()).mapFromPatient($rootScope.patientConfiguration.personAttributeTypes, patient);
+                return offlinePatientService.update(data);
+            }
             var data = new Bahmni.Registration.UpdatePatientRequestMapper(moment()).mapFromPatient($rootScope.patientConfiguration.personAttributeTypes, openMRSPatient, patient);
             var url = baseOpenMRSRESTURL + "/patientprofile/" + openMRSPatient.uuid;
             var config = {

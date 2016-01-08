@@ -25,7 +25,14 @@ var specUtil = {
         var deferred = Q.defer();
         deferred.resolve(data);
         return deferred.promise;
+    },
+
+    respondWithPromise: function($q, data) {
+        var deferred = $q.defer();
+        deferred.resolve(data);
+        return deferred.promise;
     }
+
 };
 
 specUtil.createFakePromise = function (data) {
@@ -40,6 +47,12 @@ specUtil.createFakePromise = function (data) {
     };
     FakePromise.prototype.error=function(reject){
         reject(this.data);
+    };
+    FakePromise.prototype.finally=function(callback){
+        callback();
+    };
+    FakePromise.prototype.catch=function(errorCallBack){
+        errorCallBack(this.data);
     };
     return new FakePromise(data);
 };

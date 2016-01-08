@@ -4,7 +4,7 @@ angular.module('bahmni.orders')
     .factory('orderFulfillmentConfig', ['conceptSetService', 'spinner',
         function (conceptSetService, spinner) {
             return function (formName) {
-                return spinner.forPromise(conceptSetService.getConceptSetMembers({
+                return spinner.forPromise(conceptSetService.getConcept({
                     name: formName,
                     v: Bahmni.Common.Constants.conceptSetRepresentationForOrderFulfillmentConfig
                 }).then(function (response) {

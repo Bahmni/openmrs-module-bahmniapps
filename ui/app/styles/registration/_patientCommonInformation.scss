@@ -1,0 +1,250 @@
+@import "patientPhoto";
+
+.edit-patient,.new-patient,.visit-patient{
+  position:relative;
+}
+.edit-patient{
+  span{
+    &.text-only{
+      display:inline-block;
+      margin:8px 5px 8px 5px;
+    }
+  }
+}
+
+form .form-field{
+  @media (max-width : 768px) {
+    .field-value {
+      @media (max-width : 580px) {
+        float: none;
+      }
+      input{
+        float: none !important;
+        display: block;
+      }
+
+    }
+    .field-attribute {
+      @media (max-width : 580px) {
+        float: none;
+      }
+      label{
+        width: 17em !important;
+        @media (max-width : 580px) {
+          text-align: left !important;
+          float: none;
+          //width: auto !important;
+        }
+      }
+    }
+  }
+  input[type="checkbox"]{
+    margin-top: 9px;
+    margin-left: 0;
+  }
+  &.form-field-gender{
+    //margin-top: 5px;
+  }
+}
+
+section.form-field-inline{
+  @include clearfix();
+  //margin-bottom: 2px;
+  @media (max-width : 768px){
+    margin-bottom: 0;
+  }
+  .mylegend{
+    &.registraion_Basic_info{
+      width: auto;
+    }
+  }
+  article{
+    &.form-field{
+      .field-attribute{
+        label{
+          width: 17em;
+          @media (max-width : 580px) {
+            text-align: left;
+          }
+        }
+      }
+    }
+    @include column(6);
+    @media (max-width : 768px){
+      @include column(12);
+    }
+  }
+  &.form-field-inline-one-col{
+    article{
+      @include column(12);
+      &.form-field{
+        .field-attribute{
+          label{
+            width: auto;
+            @media (max-width : 768px){
+              width: 17em;
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+.mylegend {
+  background: $lightestGray;
+  line-height: 16px;
+  margin-bottom:20px;
+  padding: 3px 0;
+  border-radius: 3px;
+  border:1px solid $lightGray;
+  span{
+    display:inline-block;
+    padding:2px 10px;
+    font-weight:bold;
+  }
+  &.registraion_Basic_info{
+    width: auto;
+  }
+}
+
+.patient-common-info-container{
+  input, textarea, ul.select{
+    min-width: 0;
+  }
+  .patient-name-wrapper{
+    @include clearfix();
+    //margin-bottom: 2px;
+    input[type="text"]{
+      margin-right: 5px;
+    }
+    label#casteSameAsLastNameCheckLabel{
+      width: auto;
+    }
+  }
+}
+
+.age-wrapper{
+  .age-field{
+    .input-prepend{
+      margin: 5px 5px 0px 0px;
+      .add-on{
+        min-width: 0;
+        background-color: #eee!important;
+        height: 19px;
+
+      }
+      input[type="number"]{
+        width: 40px !important;
+        &#ageMonths{
+          @media (max-width : 768px){
+            width: 53px !important;
+          }
+        }
+      }
+    }
+  }
+  .dob-birthtime-wrapper{
+    .estimate-check {
+      margin-top: 10px;
+      margin-left: 7px;
+      @media (max-width : 768px){
+        margin-left: 0px;
+      }
+    }
+    .estimated-label{
+      label{
+        @media (min-width : 768px) {
+          width: auto !important;
+          margin-top: 1em;
+        }
+      }
+    }
+    .showOn-small-screen{
+      @media (max-width : 768px){
+        float: left;
+        width: 100%;
+
+      }
+    }
+    #birthtime{
+      @media (max-width : 768px) {
+        width: 12.5em;
+      }
+    }
+  }
+}
+
+.submit-btn-container{
+  margin-top: 20px;
+  .submit-btn{
+    margin-right: 10px;
+  }
+}
+
+.selectGender{
+  border: 1px solid #DDD;
+  border-radius: 5px;
+  ul{
+    li{
+      display: inline-block;
+      a{
+        padding: 5px 20px;
+        display: block;
+        border-right: 1px #ddd solid;
+        color: #363463;
+        &:hover ,&:active{
+          background: #EEEEEE;
+        }
+        &:focus{
+          outline: 2px solid #007FFF;
+          background: #EEEEEE;
+        }
+      }
+      &:last-child a{
+        border-right: none;
+      }
+    }
+  }
+}
+
+.new-patient{
+  form{
+    input[type="checkbox"]{
+      &#hasOldIdentifier{
+        margin-top: 9px;
+        margin-left: 0;
+        margin-bottom: 0;
+      }
+    }
+    .form-field{
+      &.existing-patient{
+        .field-attribute{
+          &.hasOldIdentifier-field-attribute{
+            label{
+              width: auto;
+            }
+          }
+        }
+        @media (max-width: 768px) {
+          padding-left: 10px;
+        }
+      }
+      #patientID{
+        margin-right: 10px;
+        @media (max-width: 768px) {
+          margin-right:0;
+        }
+      }
+    }
+  }
+  #registrationNumber{
+    margin-right: 10px;
+    &.registrationNumber-Mobile{
+      width: 11em;
+      margin-right: 0;
+    }
+  }
+}
+
+

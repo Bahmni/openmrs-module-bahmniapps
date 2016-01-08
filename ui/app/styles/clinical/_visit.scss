@@ -61,21 +61,20 @@
 		
 	}
 }
-.visit-dashboard{
+.visit {
+  .hierarchy ul li{ overflow: hidden;}
+  .visit-dashboard{
     span.visitType {
       display: inline-block;
-      margin-right: 10px;
+      margin-right: 10%;
       float: right;
-      font-family: openSansSemiBold;
     }
     &.hierarchy ul li ul li{
-      background: #EFF8FF;
       span{
         padding: 3px 10px !important;
         display: inline-block;
       }
       ul li{
-        background: #fff;
         span{
           padding: 3px 20px !important;
           display: inline-block;
@@ -83,9 +82,6 @@
       }
     }
   }
-.visit {
-  .hierarchy ul li{ overflow: hidden;}
-
   table tr th {
     background: $lightestGray;
     background-image: none;
@@ -250,12 +246,21 @@
 
 
 
-.drug-name, .dosage-days {width: 340px;}
+.drug-name, .dosage-days {
+  width: 340px;
+  @media screen and (max-width: 1024px) {
+    width: 160px;
+  }
+}
 
 .treatment-section {
   table {
     margin-top: 0;
-    margin-bottom: 10px;
+    margin-bottom: 0px;
+    //margin-bottom: 10px;
+    td,th{
+      border: 0;
+    }
     tr.title th {
       background: $bahmniTableHeaderBg;
       font-size: 14px;
@@ -267,7 +272,11 @@
       .discontinued-text {
         display: block;
         color: $mediumGray;
+        font-size: 12px;
       }
+    }
+    tr td.toggle-btn{
+      width: 36px !important;
     }
     .drugorder-date {
       text-transform: uppercase;
@@ -541,6 +550,9 @@ a.visit:before {
     td.name {
        width: 35%;
     }
+    td.relationshipType{
+      text-indent: 10px;
+    }
     td.value {
       width: auto;
     }
@@ -603,21 +615,21 @@ a.visit:before {
             font-family: openSans;
           }
         }
-        .patient-estimated-text{
-          font-size: 12px;
-          font-style: italic;
-          color: #868686;
-        }
         .patient-birth-time{
           display: inline-block;
           margin-right: 5px;
         }
         .patient-address {
-          display: inline-block;
+          display: block;
           margin-top: 3px;
           color: $mediumGray;
         }
       }
+    }
+    .patient-estimated-text{
+      font-size: 12px;
+      font-style: italic;
+      color: #868686 !important;
     }
   }
 }

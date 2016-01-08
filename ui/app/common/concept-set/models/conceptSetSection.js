@@ -8,7 +8,7 @@ Bahmni.ConceptSet.ConceptSetSection = function (extensions, user, config, observ
         self.conceptName = conceptSet.name ? conceptSet.name.name : self.options.conceptName;
         var conceptName = _.find(conceptSet.names, {conceptNameType: "SHORT"}) || _.find(conceptSet.names, {conceptNameType: "FULLY_SPECIFIED"});
         conceptName = conceptName ? conceptName.name : conceptName;
-        self.label = conceptName || conceptSet.name || self.options.conceptName;
+        self.label = conceptName || self.conceptName || self.options.conceptName;
         self.isLoaded = self.isOpen;
         self.collapseInnerSections = false;
         self.uuid = conceptSet.uuid;
@@ -68,7 +68,7 @@ Bahmni.ConceptSet.ConceptSetSection = function (extensions, user, config, observ
             self.show();
         }
     };
-    self.toggleInnerSections = function(){
+    self.toggleInnerSections = function(event){
         event.stopPropagation();
         self.collapseInnerSections = !self.collapseInnerSections;
     };

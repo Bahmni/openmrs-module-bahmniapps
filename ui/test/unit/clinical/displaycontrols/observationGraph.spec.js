@@ -8,7 +8,7 @@ describe("Observation Graph", function () {
     beforeEach(module(function ($provide) {
         observationsService = jasmine.createSpyObj('observationsService', ['fetch']);
         patientService = jasmine.createSpyObj('patientService', ['getPatient']);
-        conceptSetService = jasmine.createSpyObj('conceptSetService', ['getConceptSetMembers']);
+        conceptSetService = jasmine.createSpyObj('conceptSetService', ['getConcept']);
         appService = jasmine.createSpyObj('appService', ['loadCsvFileFromConfig']);
         $provide.value('observationsService', observationsService);
         $provide.value('patientService', patientService);
@@ -34,7 +34,7 @@ describe("Observation Graph", function () {
     };
 
     var mockConceptSetService = function (data) {
-        conceptSetService.getConceptSetMembers.and.callFake(function () {
+        conceptSetService.getConcept.and.callFake(function () {
             return {
                 then: function (callback) {
                     return callback({data: data})

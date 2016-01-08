@@ -64,6 +64,18 @@ describe('PatientAttributeTypeMapper', function () {
                                     "rel": "self",
                                     "uri": "NEED-TO-CONFIGURE/ws/rest/v1/concept/0a83bc2c-1481-11e3-937b-0800271c1b75"
                                 }
+                            ],
+                            name: {
+                                display: "OBC",
+                                conceptNameType: "FULLY_SPECIFIED"
+                            },
+                            names: [
+                                {
+                                    display: "OBC"
+                                },
+                                {
+                                    display: "OBC"
+                                }
                             ]
                         },
                         {
@@ -152,25 +164,24 @@ describe('PatientAttributeTypeMapper', function () {
 
         var patientConfigs = new Bahmni.Registration.PatientAttributeTypeMapper().mapFromOpenmrsPatientAttributeTypes(mrspatientAttributeTypes, mandatoryPersonAttributes);
 
-        expect(patientConfigs).toEqual({ personAttributeTypes: [
-            {
-                uuid: "2a6e96f6-9d21-11e2-8137-0800271c1b75",
-                sortWeight: 3,
-                name: "class",
-                description: "Class description",
-                format: "org.openmrs.Concept",
-                answers: [
-                    {
-                        description: "OBC",
-                        conceptId: "0a83bc2c-1481-11e3-937b-0800271c1b75"
-                    },
-                    {
-                        description: "General",
-                        conceptId: "0a843350-1481-11e3-937b-0800271c1b75"
-                    }
-                ],
-                required: true
-            }
-        ]});
+        expect(patientConfigs.personAttributeTypes.length).toBe(1);
+        expect(patientConfigs.personAttributeTypes[0]).toEqual(jasmine.objectContaining({
+            uuid: "2a6e96f6-9d21-11e2-8137-0800271c1b75",
+            sortWeight: 3,
+            name: "class",
+            description: "Class description",
+            format: "org.openmrs.Concept",
+            answers: [
+                {
+                    description: "OBC",
+                    conceptId: "0a83bc2c-1481-11e3-937b-0800271c1b75"
+                },
+                {
+                    description: "General",
+                    conceptId: "0a843350-1481-11e3-937b-0800271c1b75"
+                }
+            ],
+            required: true
+        }));
     });
 });

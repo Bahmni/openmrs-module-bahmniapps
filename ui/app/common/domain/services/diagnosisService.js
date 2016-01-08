@@ -49,4 +49,12 @@ angular.module('bahmni.common.domain')
             });
         };
 
+        this.populateDiagnosisInformation = function(patientUuid, consultation) {
+            return this.getPastAndCurrentDiagnoses(patientUuid, consultation.encounterUuid).then(function (diagnosis) {
+                consultation.pastDiagnoses = diagnosis.pastDiagnoses;
+                consultation.savedDiagnosesFromCurrentEncounter = diagnosis.savedDiagnosesFromCurrentEncounter;
+                return consultation;
+            })
+        }
+
     }]);

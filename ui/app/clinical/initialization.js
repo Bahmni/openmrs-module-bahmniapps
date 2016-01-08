@@ -15,6 +15,7 @@ angular.module('bahmni.clinical').factory('initialization',
                     'allTestsAndPanelsConcept',
                     'dosageFrequencyConfig',
                     'dosageInstructionConfig',
+                    'stoppedOrderReasonConfig',
                     'genderMap',
                     'relationshipTypeMap',
                     'defaultEncounterType'
@@ -29,7 +30,7 @@ angular.module('bahmni.clinical').factory('initialization',
                     return appService.initApp('clinical', {
                         'app': true,
                         'extension': true
-                    }, config, ["dashboard", "visit"]);
+                    }, config, ["dashboard", "visit", "medication"]);
                 };
 
                 var loadFormConditions = function () {
@@ -41,7 +42,7 @@ angular.module('bahmni.clinical').factory('initialization',
                     .then(initApp)
                     .then(loadConfigPromise)
                     .then(loadFormConditions)
-                    .then(orderTypeService.loadAll()));
+                    .then(orderTypeService.loadAll));
             };
         }
     ]

@@ -75,8 +75,163 @@ describe("drugOrderViewModel", function () {
         treatment.uniformDosingType.frequency = "Once a day";
         treatment.frequencyType = Bahmni.Clinical.Constants.dosingTypes.uniform;
         expect(treatment.getDescription()).toBe("1 Capsule, Once a day, Before Meals, Orally - 10 Days");
+
         treatment.uniformDosingType.frequency = null;
         expect(treatment.getDescription()).toBe("1 Capsule, Before Meals, Orally - 10 Days");
+    });
+
+    it("should get the decimal text sum of both dose and mantissa when dosingUnitsFractions config is absent", function () {
+        var treatment = sampleTreatment({}, [], null, Bahmni.Common.Util.DateUtil.now());
+        treatment.durationUnit = "Days";
+        treatment.route = "Orally";
+        treatment.uniformDosingType.dose = "1.5";
+        treatment.uniformDosingType.doseUnits = "Capsule";
+        treatment.uniformDosingType.frequency = "Once a day";
+        treatment.frequencyType = Bahmni.Clinical.Constants.dosingTypes.uniform;
+        expect(treatment.getDescription()).toBe("1.5 Capsule, Once a day, Before Meals, Orally - 10 Days");
+
+        treatment.uniformDosingType.frequency = null;
+        expect(treatment.getDescription()).toBe("1.5 Capsule, Before Meals, Orally - 10 Days");
+    });
+
+    it("should get the mixed fraction text sum of both dose and mantissa when dosingUnitsFractions config is present", function () {
+        var appConfig = {
+            dosingUnitsFractions: [
+                {"value": 0.50, "label": "½"},
+                {"value": 0.33, "label": "⅓"},
+                {"value": 0.25, "label": "¼"},
+                {"value": 0.75, "label": "¾"}
+            ]
+        };
+        var treatment = sampleTreatment(appConfig, [], null, Bahmni.Common.Util.DateUtil.now());
+        treatment.durationUnit = "Days";
+        treatment.route = "Orally";
+        treatment.uniformDosingType.dose = "1.5";
+        treatment.uniformDosingType.doseUnits = "Capsule";
+        treatment.uniformDosingType.frequency = "Once a day";
+        treatment.frequencyType = Bahmni.Clinical.Constants.dosingTypes.uniform;
+        expect(treatment.getDescription()).toBe("1½ Capsule, Once a day, Before Meals, Orally - 10 Days");
+
+        treatment.uniformDosingType.frequency = null;
+        expect(treatment.getDescription()).toBe("1½ Capsule, Before Meals, Orally - 10 Days");
+    });
+
+    it("should get the same real number in the treatment list when dosingUnitsFractions config is absent", function () {
+        var treatment = sampleTreatment({}, [], null, Bahmni.Common.Util.DateUtil.now());
+        treatment.durationUnit = "Days";
+        treatment.route = "Orally";
+        treatment.uniformDosingType.dose = "1.5";
+        treatment.uniformDosingType.doseUnits = "Capsule";
+        treatment.uniformDosingType.frequency = "Once a day";
+        treatment.frequencyType = Bahmni.Clinical.Constants.dosingTypes.uniform;
+        expect(treatment.getDescription()).toBe("1.5 Capsule, Once a day, Before Meals, Orally - 10 Days");
+
+        treatment.uniformDosingType.frequency = null;
+        expect(treatment.getDescription()).toBe("1.5 Capsule, Before Meals, Orally - 10 Days");
+    });
+
+    it("should get the mixed fraction text in the treatment list when dosingUnitsFractions config is defined ", function () {
+        var appConfig = {
+            dosingUnitsFractions: [
+                {"value": 0.50, "label": "½"},
+                {"value": 0.33, "label": "⅓"},
+                {"value": 0.25, "label": "¼"},
+                {"value": 0.75, "label": "¾"}
+            ]
+        };
+        var treatment = sampleTreatment(appConfig, [], null, Bahmni.Common.Util.DateUtil.now());
+        treatment.durationUnit = "Days";
+        treatment.route = "Orally";
+        treatment.uniformDosingType.dose = "1.50";
+        treatment.uniformDosingType.doseUnits = "Capsule";
+        treatment.uniformDosingType.frequency = "Once a day";
+        treatment.frequencyType = Bahmni.Clinical.Constants.dosingTypes.uniform;
+        expect(treatment.getDescription()).toBe("1½ Capsule, Once a day, Before Meals, Orally - 10 Days");
+
+        treatment.uniformDosingType.frequency = null;
+        expect(treatment.getDescription()).toBe("1½ Capsule, Before Meals, Orally - 10 Days");
+    });
+
+    it("should get the same real number in the treatment list when dosingUnitsFractions is defined and it doesnt have entry for mantissa part of real number", function () {
+        var appConfig = {
+            dosingUnitsFractions: [
+                {"value": 0.50, "label": "½"},
+                {"value": 0.33, "label": "⅓"},
+                {"value": 0.25, "label": "¼"},
+                {"value": 0.75, "label": "¾"}
+            ]
+        };
+        var treatment = sampleTreatment(appConfig, [], null, Bahmni.Common.Util.DateUtil.now());
+        treatment.durationUnit = "Days";
+        treatment.route = "Orally";
+        treatment.uniformDosingType.dose = "1.55";
+        treatment.uniformDosingType.doseUnits = "Capsule";
+        treatment.uniformDosingType.frequency = "Once a day";
+        treatment.frequencyType = Bahmni.Clinical.Constants.dosingTypes.uniform;
+        expect(treatment.getDescription()).toBe("1.55 Capsule, Once a day, Before Meals, Orally - 10 Days");
+
+        treatment.uniformDosingType.frequency = null;
+        expect(treatment.getDescription()).toBe("1.55 Capsule, Before Meals, Orally - 10 Days");
+    });
+
+    it("should display mixed fraction variable dosages if dosingUnitsFractions is present", function () {
+        var appConfig = {
+            dosingUnitsFractions: [
+                {"value": 0.50, "label": "½"},
+                {"value": 0.33, "label": "⅓"},
+                {"value": 0.25, "label": "¼"},
+                {"value": 0.75, "label": "¾"}
+            ]
+        };
+
+        var treatment = sampleTreatment(appConfig, [], null, Bahmni.Common.Util.DateUtil.now());
+        treatment.frequencyType = "variable";
+        treatment.route = "Orally";
+        treatment.durationUnit = "Days";
+        treatment.variableDosingType = {
+            morningDose: 1.5,
+            afternoonDose: 2.25,
+            eveningDose: 3.75
+        };
+
+        expect(treatment.getDescription()).toBe("1½-2¼-3¾, Before Meals, Orally - 10 Days")
+    });
+
+    it("should not display mixed fraction variable dosages if dosingUnitsFractions is absent", function () {
+        var treatment = sampleTreatment({}, [], null, Bahmni.Common.Util.DateUtil.now());
+        treatment.frequencyType = "variable";
+        treatment.route = "Orally";
+        treatment.durationUnit = "Days";
+        treatment.variableDosingType = {
+            morningDose: 1.5,
+            afternoonDose: 2.25,
+            eveningDose: 3.75
+        };
+
+        expect(treatment.getDescription()).toBe("1.5-2.25-3.75, Before Meals, Orally - 10 Days")
+    });
+
+    it("should display mixed fraction variable dosages if dosingUnitsFractions is present and in the list", function () {
+        var appConfig = {
+            dosingUnitsFractions: [
+                {"value": 0.50, "label": "½"},
+                {"value": 0.33, "label": "⅓"},
+                {"value": 0.25, "label": "¼"},
+                {"value": 0.75, "label": "¾"}
+            ]
+        };
+
+        var treatment = sampleTreatment(appConfig, [], null, Bahmni.Common.Util.DateUtil.now());
+        treatment.frequencyType = "variable";
+        treatment.route = "Orally";
+        treatment.durationUnit = "Days";
+        treatment.variableDosingType = {
+            morningDose: 1.5,
+            afternoonDose: 2,
+            eveningDose: 3.47
+        };
+
+        expect(treatment.getDescription()).toBe("1½-2-3.47, Before Meals, Orally - 10 Days")
     });
 
     it("should get the text to be displayed in the treatment list with dosage instructions", function () {
@@ -290,51 +445,51 @@ describe("drugOrderViewModel", function () {
         };
 
         it("should calculate for uniform dose, frequency and duration", function () {
-            var treatment = sampleTreatmentWithUniformDosing(3, "Capsule(s)", "Twice a Day", 5, "Day(s)");
+            var treatment = sampleTreatmentWithUniformDosing(3, "Capsule", "Twice a Day", 5, "Day(s)");
             treatment.calculateQuantityAndUnit();
             expect(treatment.quantity).toBe(30);
         });
 
         it("should convert duration units to days for calulation", function () {
-            var treatment = sampleTreatmentWithUniformDosing(3, "Capsule(s)", "Twice a Day", 5, "Week(s)", 7);
+            var treatment = sampleTreatmentWithUniformDosing(3, "Capsule", "Twice a Day", 5, "Week(s)", 7);
             treatment.calculateQuantityAndUnit();
             expect(treatment.quantity).toBe(210);
         });
 
         it("should calculate for variable dose and duration", function () {
-            var treatment = sampleTreatmentWithVariableDosing(1, 2, 1.5, "Capsule(s)", 4, "Day(s)");
+            var treatment = sampleTreatmentWithVariableDosing(1, 2, 1.5, "Capsule", 4, "Day(s)");
             treatment.calculateQuantityAndUnit();
             expect(treatment.quantity).toBe(18);
         });
 
         it("should result in 0 for uniform dose when dose is not available", function () {
-            var treatment = sampleTreatmentWithUniformDosing(null, "Capsule(s)", "Twice a Day", 5, "Day(s)");
+            var treatment = sampleTreatmentWithUniformDosing(null, "Capsule", "Twice a Day", 5, "Day(s)");
             treatment.calculateQuantityAndUnit();
             expect(treatment.quantity).toBe(0);
 
-            treatment = sampleTreatmentWithVariableDosing(0, 0, null, "Capsule calculateQuantityAndUnit should not calculate quantity if entered manually", 4, "Day(s)");
+            treatment = sampleTreatmentWithVariableDosing(0, 0, null, "Capsule", 4, "Day(s)");
             treatment.calculateQuantityAndUnit();
             expect(treatment.quantity).toBe(0);
         });
 
-        it("should result in 0 for uniform dose when duration is not available", function () {
-            var treatment = sampleTreatmentWithUniformDosing(3, "Capsule(s)", "Twice a Day", null, "Day(s)");
+        it("should result in NaN for uniform dose when duration is not available", function () {
+            var treatment = sampleTreatmentWithUniformDosing(3, "Capsule", "Twice a Day", null, "Day(s)");
             treatment.calculateQuantityAndUnit();
-            expect(treatment.quantity).toBe(0);
+            expect(treatment.quantity).toBeNaN();
 
-            treatment = sampleTreatmentWithVariableDosing(1, 0, 1, "Capsule(s)", null, "Day(s)");
+            treatment = sampleTreatmentWithVariableDosing(1, 0, 1, "Capsule", null, "Day(s)");
             treatment.calculateQuantityAndUnit();
-            expect(treatment.quantity).toBe(0);
+            expect(treatment.quantity).toBeNaN();
         });
 
         it("should result in 0 for uniform dose when frequency is not available", function () {
-            var treatment = sampleTreatmentWithUniformDosing(3, "Capsule(s)", null, 5, "Days");
+            var treatment = sampleTreatmentWithUniformDosing(3, "Capsule", null, 5, "Days");
             treatment.calculateQuantityAndUnit();
             expect(treatment.quantity).toBe(0);
         });
 
         it("should not calculate quantity if entered manually", function () {
-            var treatment = sampleTreatmentWithUniformDosing(3, "Capsule(s)", {name: "Twice a Day", frequencyPerDay: 2}, 5, "Days");
+            var treatment = sampleTreatmentWithUniformDosing(3, "Capsule", {name: "Twice a Day", frequencyPerDay: 2}, 5, "Days");
             treatment.quantity = 100;
             treatment.setQuantityEnteredManually();
             treatment.calculateQuantityAndUnit();
@@ -342,62 +497,48 @@ describe("drugOrderViewModel", function () {
         });
 
         it("should not calculate quantity if entered via edit", function () {
-            var treatment = sampleTreatmentWithUniformDosing(3, "Capsule(s)", {name: "Twice a Day", frequencyPerDay: 2}, 5, "Days");
+            var treatment = sampleTreatmentWithUniformDosing(3, "Capsule", {name: "Twice a Day", frequencyPerDay: 2}, 5, "Days");
             treatment.quantity = 100;
             treatment.quantityEnteredViaEdit = true;
             treatment.calculateQuantityAndUnit();
             expect(treatment.quantity).toBe(100);
         });
 
-        it("should not calculate quantity if unit is not configured", function () {
-            var appConfig = {
-                "calculateTotalUnits": ["ml", "mg", "Teaspoon"]
-            };
-            var treatment = new Bahmni.Clinical.DrugOrderViewModel(appConfig, treatmentConfig, null, Bahmni.Common.Util.DateUtil.now());
-            treatment.quantity = 10;
-            treatment.uniformDosingType.dose = 3;
-            treatment.uniformDosingType.doseUnits = "IU";
-            treatment.uniformDosingType.frequency = {name: "Twice a Day", frequencyPerDay: 2};
-            treatment.duration = 5;
-            treatment.durationUnit = "Days";
-            treatment.calculateQuantityAndUnit();
-            expect(treatment.quantity).toBe(0);
-        });
-
         it("should calculate quantity units all the time", function () {
             var treatment = sampleTreatmentWithUniformDosing(3, "Capsule", {name: "Twice a Day", frequencyPerDay: 2}, 5, "Days");
             treatment.quantityUnit = "not Capsule";
+            treatment.doseUnits = "Unit(s)";
             treatment.setQuantityEnteredManually();
             treatment.calculateQuantityAndUnit();
             expect(treatment.quantityUnit).toBe("Unit(s)");
         });
 
         it("should be active if the effective stop date is in future", function () {
-            var treatment = sampleTreatmentWithUniformDosing(3, "Capsule(s)", {name: "Twice a Day", frequencyPerDay: 2}, 5, "Days");
+            var treatment = sampleTreatmentWithUniformDosing(3, "Capsule", {name: "Twice a Day", frequencyPerDay: 2}, 5, "Days");
             treatment.effectiveStopDate = getFutureDate();
             expect(treatment.isActive()).toBe(true);
         });
 
         it("should be active if the effective stop date is null", function () {
-            var treatment = sampleTreatmentWithUniformDosing(3, "Capsule(s)", {name: "Twice a Day", frequencyPerDay: 2}, 5, "Days");
+            var treatment = sampleTreatmentWithUniformDosing(3, "Capsule", {name: "Twice a Day", frequencyPerDay: 2}, 5, "Days");
             treatment.effectiveStopDate = undefined;
             expect(treatment.isActive()).toBe(true);
         });
 
         it("should not be active if the effective stop date is less than current datetime", function () {
-            var treatment = sampleTreatmentWithUniformDosing(3, "Capsule(s)", {name: "Twice a Day", frequencyPerDay: 2}, 5, "Days");
+            var treatment = sampleTreatmentWithUniformDosing(3, "Capsule", {name: "Twice a Day", frequencyPerDay: 2}, 5, "Days");
             treatment.effectiveStopDate = DateUtil.subtractSeconds(DateUtil.now(), 600);
             expect(treatment.isActive()).toBe(false);
         });
 
         it("should be active if the effective stop date is greater than current datetime", function () {
-            var treatment = sampleTreatmentWithUniformDosing(3, "Capsule(s)", {name: "Twice a Day", frequencyPerDay: 2}, 5, "Days");
+            var treatment = sampleTreatmentWithUniformDosing(3, "Capsule", {name: "Twice a Day", frequencyPerDay: 2}, 5, "Days");
             treatment.effectiveStopDate = DateUtil.addSeconds(DateUtil.now(), 600);
             expect(treatment.isActive()).toBe(true);
         });
 
         it("should be inActive if the date_stopped is set", function () {
-            var treatment = sampleTreatmentWithUniformDosing(3, "Capsule(s)", {name: "Twice a Day", frequencyPerDay: 2}, 5, "Days");
+            var treatment = sampleTreatmentWithUniformDosing(3, "Capsule", {name: "Twice a Day", frequencyPerDay: 2}, 5, "Days");
             treatment.dateStopped = new Date();
 
             expect(treatment.isActive()).toBe(false);
@@ -910,6 +1051,7 @@ describe("drugOrderViewModel", function () {
 
             it("should pass validation if dose and doseUnits are empty but frequency is not.", function () {
                 treatment.doseUnits = undefined;
+                treatment.quantityUnit = undefined;
                 treatment.uniformDosingType = {
                     dose: undefined,
                     frequency: "Once a day."
@@ -975,18 +1117,9 @@ describe("drugOrderViewModel", function () {
                     frequency: "Once a day",
                     doseUnits: "Some"
                 };
+                treatment.quantityUnit = "Some";
 
                 expect(treatment.validate()).toBeTruthy();
-            });
-
-            it("should fail validation if all are given but dose is 0", function () {
-                treatment.uniformDosingType = {
-                    dose: 0,
-                    frequency: "Once a day",
-                    doseUnits: "Some"
-                };
-
-                expect(treatment.validate()).toBeFalsy();
             });
 
             it("should fail validation if dose is 0 and dose units is not given", function () {
@@ -1103,7 +1236,9 @@ describe("drugOrderViewModel", function () {
     describe("getDescriptionWithQuantity", function(){
         it("should return drug form as quantity unit if drug form is tablet", function(){
             var treatment = sampleTreatment({}, {}, null, Bahmni.Common.Util.DateUtil.now());
-            expect(treatment.getDescriptionWithQuantity()).toBe("Before Meals, 1(12 Tablet(s))");
+            treatment.doseUnits = "Tablet(s)";
+            treatment.quantityUnit = "Capsule(s)";
+            expect(treatment.getDescriptionWithQuantity()).toBe("Tablet(s), Before Meals, 1(12 Capsule(s))");
         })
     });
 
@@ -1111,7 +1246,9 @@ describe("drugOrderViewModel", function () {
         it("should return 'Units' as quantity unit if drug form is not a tablet or a capsule", function(){
             var treatment = sampleTreatment({}, {}, null, Bahmni.Common.Util.DateUtil.now());
             treatment.drug.form = "Inhaler";
-            expect(treatment.getDescriptionWithQuantity()).toBe("Before Meals, 1(12 Unit(s))");
+            treatment.doseUnits = "Unit(s)";
+            treatment.quantityUnit = "Unit(s)";
+            expect(treatment.getDescriptionWithQuantity()).toBe("Unit(s), Before Meals, 1(12 Unit(s))");
         })
     });
 
@@ -1275,7 +1412,7 @@ describe("drugOrderViewModel", function () {
                 "Day(s)": 2,
                 "Week(s)": 3
             };
-            expect(treatment.getSpanDetails()).toBe("2 Day(s) + 3 Week(s)");
+            expect(treatment.getSpanDetails()).toBe("- 2 Day(s) + 3 Week(s)");
         });
 
         it("should not concatenate if span details is only one.", function(){
@@ -1283,7 +1420,7 @@ describe("drugOrderViewModel", function () {
             treatment.span = {
                 "Week(s)": 3
             };
-            expect(treatment.getSpanDetails()).toBe("3 Week(s)");
+            expect(treatment.getSpanDetails()).toBe("- 3 Week(s)");
         });
 
         it("should return empty string if there is no span for the drug", function(){

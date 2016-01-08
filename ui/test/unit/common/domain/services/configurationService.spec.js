@@ -55,6 +55,13 @@ describe('configurationService', function () {
         expect(_$http.get.calls.mostRecent().args[1].params.v).toEqual("custom:(uuid,name,answers)");
     });
 
+    it('should fetch stoppedOrderReasonConfig from backend', function () {
+        configurationservice.getConfigurations(['stoppedOrderReasonConfig'])
+        expect(_$http.get.calls.mostRecent().args[0]).toEqual(Bahmni.Common.Constants.conceptSearchByFullNameUrl);
+        expect(_$http.get.calls.mostRecent().args[1].params.name).toEqual(Bahmni.Common.Constants.stoppedOrderReasonConceptName);
+        expect(_$http.get.calls.mostRecent().args[1].params.v).toEqual("custom:(uuid,name,answers)");
+    });
+
     it('should fetch consultationNoteConfig from backend', function () {
         configurationservice.getConfigurations(['consultationNoteConfig'])
         expect(_$http.get.calls.mostRecent().args[0]).toEqual(Bahmni.Common.Constants.conceptSearchByFullNameUrl);
@@ -110,5 +117,12 @@ describe('configurationService', function () {
         configurationservice.getConfigurations(['genderMap'])
         expect(_$http.get.calls.mostRecent().args[0]).toEqual(Bahmni.Common.Constants.globalPropertyUrl);
         expect(_$http.get.calls.mostRecent().args[1].params.property).toEqual("mrs.genders");
+    });
+
+    it('should fetch loginLocationToVisitTypeMapping from backend', function () {
+        configurationservice.getConfigurations(['loginLocationToVisitTypeMapping'])
+        expect(_$http.get.calls.mostRecent().args[0]).toEqual(Bahmni.Common.Constants.entityMappingUrl);
+        expect(_$http.get.calls.mostRecent().args[1].params.mappingType).toEqual("loginlocation_visittype");
+        expect(_$http.get.calls.mostRecent().args[1].params.s).toEqual("byEntityAndMappingType");
     });
 });
