@@ -1,5 +1,3 @@
-'use strict';
-
 angular.module('bahmni.offline').service('offlineService', ['$rootScope','$bahmniCookieStore', function ($rootScope, $bahmniCookieStore) {
     var offline = false;
 
@@ -12,7 +10,8 @@ angular.module('bahmni.offline').service('offlineService', ['$rootScope','$bahmn
     };
 
     this.offline = function() {
-        return offline;
+        //return offline;
+        return true;
     };
 
     this.encrypt = function(value, encryptionType) {

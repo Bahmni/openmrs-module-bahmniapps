@@ -32,7 +32,7 @@ angular.module('bahmni.registration')
                         includeInactive: false,
                         v: "custom:(uuid)"
                     };
-                    spinner.forPromise(visitService.search(searchParams).success(function (data) {
+                    spinner.forPromise(visitService.search(searchParams).then(function (data) {
                         self.hasActiveVisit = data.results.length > 0;
                         setForwardActionKey();
                     }));

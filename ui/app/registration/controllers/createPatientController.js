@@ -133,7 +133,7 @@ angular.module('bahmni.registration')
                     return patientService.create($scope.patient)
                 })
                 .then(copyPatientProfileDataToScope);
-            }
+            };
 
             var createPatientWithGivenIdentifier = function() {
                 var sourceName = $scope.patient.identifierPrefix.prefix;
