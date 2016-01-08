@@ -50,7 +50,7 @@
 
                         <input type="text" ng-if="isProviderRelationship(newRelationship)" bahmni-autocomplete is-invalid="!newRelationship.personB.uuid" validation-message="{{ ::'REGISTRATION_LABEL_PROVIDER_AUTOCOMPLETE_LIST' | translate}}" on-edit="onEditProviderName(newRelationship)"
                                ng-model="newRelationship.providerName" response-map="getProviderDataResults" source="getProviderList(relationship)" ng-change="clearProvider(newRelationship)" on-select="providerSelected(newRelationship)" placeholder="{{ ::'REGISTRATION_LABEL_ENTER_NAME' | translate}}" />
-                        <input type="hidden" ng-model="newRelationship.personB.uuid"/>
+                        <input type="hidden" ng-model="newRelationship.personB"/>
                     </div>
                     <span class="asterick showOn-desktop">*</span>
                     <span class="no-person" ng-show="showPersonNotFound(newRelationship)">{{ ::'REGISTRATION_LABEL_PERSON_NOT_FOUND' | translate}}</span>

@@ -33,7 +33,7 @@ angular.module('bahmni.registration')
                         v: "custom:(uuid)"
                     };
                     spinner.forPromise(visitService.search(searchParams).then(function (data) {
-                        self.hasActiveVisit = data.results.length > 0;
+                        self.hasActiveVisit = data.results && (data.results.length > 0);
                         setForwardActionKey();
                     }));
                 };

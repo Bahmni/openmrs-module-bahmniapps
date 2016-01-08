@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('bahmni.registration')
-    .factory('patientServiceOffline', ['$http', '$q', 'offlineService', 'chromeAppDataService', function ($http, $q, offlineService,chromeAppDataService) {
+    .factory('patientServiceOffline', ['$http', '$q', 'offlineService', 'chromeAppDataService', function ($http, $q, offlineService, chromeAppDataService) {
 
         var createSql = function(params){
             var nameParts = null;
@@ -92,6 +92,16 @@ angular.module('bahmni.registration')
             }
         };
 
+        var getByIdentifier = function(patientIdentifier) {
+            if (offlineService.getAppPlatform() === Bahmni.Common.Constants.platformType.android) {
+                //ToDo: Implement for Android
+                return "";
+            }
+            else{
+                return chromeAppDataService.getPatientByIdentifier(patientIdentifier);
+            }
+        };
+
         var create = function(postRequest){
             postRequest.patient.person.auditInfo = {dateCreated: new Date()};
             if(postRequest.patient.identifiers)
@@ -99,16 +109,27 @@ angular.module('bahmni.registration')
             postRequest.patient.person.preferredName = postRequest.patient.person.names[0];
             postRequest.patient.person.preferredAddress = postRequest.patient.person.addresses[0];
             if (offlineService.getAppPlatform() === Bahmni.Common.Constants.platformType.android) {
+                //ToDo: Implement for Android
             }
             else{
                 return chromeAppDataService.createPatient(postRequest);
             }
         };
 
+        var update = function(postRequest) {
+               return chromeAppDataService.deletePatientData(postRequest.patient.identifiers[0]['identifier']).then(function(data) {
+                   return create(postRequest).then(function(result){
+                       return result.data;
+                   });
+            });
+        };
+
 
         return {
             search: search,
             get: get,
-            create : create
+            getByIdentifier: getByIdentifier,
+            create : create,
+            update: update
         };
     }]);
