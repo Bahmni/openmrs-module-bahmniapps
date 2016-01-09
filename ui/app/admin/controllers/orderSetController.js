@@ -184,13 +184,17 @@ angular.module('bahmni.common.domain')
             };
 
             var init = function () {
-                var init = $q.all([orderTypeService.loadAll(), orderSetService.getOrderSetMemberAttributeType(Bahmni.Common.Constants.primaryOrderSetMemberAttributeTypeName), orderSetService.getDrugConfig()]).then(function (results) {
+                var init = $q.all([
+                    orderTypeService.loadAll(),
+                    orderSetService.getOrderSetMemberAttributeType(Bahmni.Common.Constants.primaryOrderSetMemberAttributeTypeName),
+                    orderSetService.getDrugConfig()
+                ]).then(function (results) {
                     $scope.orderTypes = results[0];
                     $scope.primaryAttributeType = results[1].data.results[0];
                     $scope.treatmentConfig = results[2];
                     if ($state.params.orderSetUuid !== "new") {
                         spinner.forPromise(orderSetService.getOrderSet($state.params.orderSetUuid).then(function (response) {
-                            $scope.orderSet = filterOutVoidedOrderSetMembers(new Bahmni.Common.OrderSet().create(response.data));
+                            $scope.orderSet = filterOutVoidedOrderSetMembers(Bahmni.Common.OrderSet.create(response.data));
                             _.each($scope.orderSet.orderSetMembers, function (orderSetMember) {
                                 if (orderSetMember.orderTemplate) {
                                     orderSetMember.orderTemplate = JSON.parse(orderSetMember.orderTemplate);
@@ -199,11 +203,11 @@ angular.module('bahmni.common.domain')
                         }));
                     }
                     else {
-                        $scope.orderSet = new Bahmni.Common.OrderSet().create();
+                        $scope.orderSet = Bahmni.Common.OrderSet.create();
                         $scope.orderSet.operator = $scope.operators[0];
                         $scope.orderSet.orderSetMembers.push(
-                            new Bahmni.Common.OrderSet.OrderSetMember().create(buildOrderSetMember()),
-                            new Bahmni.Common.OrderSet.OrderSetMember().create(buildOrderSetMember())
+                            Bahmni.Common.OrderSet.createOrderSetMember(buildOrderSetMember()),
+                            Bahmni.Common.OrderSet.createOrderSetMember(buildOrderSetMember())
                         );
                     }
                 })

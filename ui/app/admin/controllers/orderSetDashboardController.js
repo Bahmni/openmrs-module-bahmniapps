@@ -13,7 +13,7 @@ angular.module('bahmni.common.domain')
         };
 
         $scope.removeOrderSet = function(orderSet){
-            var orderSetObj = Bahmni.Common.OrderSet().create(orderSet);
+            var orderSetObj = Bahmni.Common.OrderSet.create(orderSet);
             orderSetObj.retired = true;
             spinner.forPromise(orderSetService.saveOrderSet(orderSetObj)).then(function(response){
                 init();
