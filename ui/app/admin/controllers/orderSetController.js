@@ -146,7 +146,7 @@ angular.module('bahmni.common.domain')
 
                 var primaryAttrCount = primaryAttributeCount();
                 if (primaryAttrCount === 0) {
-                    messagingService.showMessage('error', 'Please select atleast one member as Primary.');
+                    messagingService.showMessage('error', 'Please select at least one member as Primary.');
                     return false;
 
                 }
@@ -163,6 +163,9 @@ angular.module('bahmni.common.domain')
                 return countActive;
             };
 
+            //TODO:
+            //    move this logic to service side
+
             var filterOutVoidedOrderSetMembers = function (orderSetResult) {
                 orderSetResult.orderSetMembers = _.filter(orderSetResult.orderSetMembers, function (orderSetMemberObj) {
                     return !orderSetMemberObj.voided;
@@ -171,16 +174,20 @@ angular.module('bahmni.common.domain')
             };
 
             var buildOrderSetMember = function () {
-                var orderSetMemberAttributeTypeId = $scope.primaryAttributeType.orderSetMemberAttributeTypeId;
-                var attribute = {
-                    orderSetMemberAttributeType: {orderSetMemberAttributeTypeId: orderSetMemberAttributeTypeId},
+                return {
+                    orderType: {uuid: $scope.orderTypes[0].uuid},
+                    orderSetMemberAttributes: [getOrderSetMemberAttr_primary()]
+                };
+            };
+
+            var getOrderSetMemberAttr_primary = function(){
+                var attr_primary = {
+                    orderSetMemberAttributeType: {
+                        orderSetMemberAttributeTypeId: $scope.primaryAttributeType.orderSetMemberAttributeTypeId
+                    },
                     value: ""
                 };
-                var orderSetMember = {
-                    orderType: {uuid: $scope.orderTypes[0].uuid},
-                    orderSetMemberAttributes: [attribute]
-                };
-                return orderSetMember;
+                return attr_primary;
             };
 
             var init = function () {
@@ -196,8 +203,9 @@ angular.module('bahmni.common.domain')
                         spinner.forPromise(orderSetService.getOrderSet($state.params.orderSetUuid).then(function (response) {
                             $scope.orderSet = filterOutVoidedOrderSetMembers(Bahmni.Common.OrderSet.create(response.data));
                             _.each($scope.orderSet.orderSetMembers, function (orderSetMember) {
-                                if (orderSetMember.orderTemplate) {
-                                    orderSetMember.orderTemplate = JSON.parse(orderSetMember.orderTemplate);
+                                orderSetMember.orderTemplate = JSON.parse(orderSetMember.orderTemplate || null);
+                                if(_.isEmpty(orderSetMember.orderSetMemberAttributes)){
+                                    orderSetMember.orderSetMemberAttributes.push(getOrderSetMemberAttr_primary());
                                 }
                             });
                         }));
@@ -210,7 +218,7 @@ angular.module('bahmni.common.domain')
                             Bahmni.Common.OrderSet.createOrderSetMember(buildOrderSetMember())
                         );
                     }
-                })
+                });
                 spinner.forPromise(init);
             };
             init();

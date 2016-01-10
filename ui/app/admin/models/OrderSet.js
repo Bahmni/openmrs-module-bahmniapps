@@ -21,7 +21,7 @@ Bahmni.Common.OrderSet = (function () {
             orderTemplate: member.orderTemplate,
             orderSetMemberAttributes: member.orderSetMemberAttributes,
             concept: {
-                name: member.concept.name,
+                name: member.concept.name.display,
                 uuid: member.concept.uuid
             },
             sortWeight: member.sortWeight,
@@ -33,7 +33,7 @@ Bahmni.Common.OrderSet = (function () {
         var member = orderSetMember || {};
         member.orderType = member.orderType || {};
         member.concept = member.concept || {};
-        member.concept.name = member.concept.name && member.concept.name.display;
+        member.concept.name = member.concept.name || {};
         return new OrderSetMember(member);
     };
 
