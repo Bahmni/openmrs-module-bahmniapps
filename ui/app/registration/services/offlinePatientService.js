@@ -103,7 +103,7 @@ angular.module('bahmni.registration')
 
         var create = function (postRequest) {
             postRequest.patient.person.auditInfo = {dateCreated: new Date()};
-            if(!postRequest.patient.uuid)
+            if (postRequest.patient.identifiers)
                 postRequest.patient.uuid = postRequest.patient.identifiers[0].identifier;
             postRequest.patient.person.preferredName = postRequest.patient.person.names[0];
             postRequest.patient.person.preferredAddress = postRequest.patient.person.addresses[0];
