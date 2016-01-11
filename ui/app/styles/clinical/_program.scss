@@ -419,10 +419,19 @@
 .program-enrollment-container {
   .programAttributeFields{
       clear: both;
+      margin: 15px 0;
       .form-field{
         width: 43%;
         display: inline-block;
         border-bottom: none;
       }
+    h2.programAttribute-title{
+      color: #000;
+      font-size: 14px;
+      clear: both;
+      border-bottom: 1px solid #ccc;
+      padding: 5px 0;
+      font-family: openSansSemiBold;;
+    }
   }
 }

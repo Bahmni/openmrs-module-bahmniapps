@@ -2,8 +2,8 @@
     <div class="select-program-container form">
         <section class="block dashboard-section">
             <h2 class="section-title ng-binding">
-                <i class="fa fa-caret-right"></i>
-                <!--<i class="fa fa-caret-down"></i>-->
+                <!--<i class="fa fa-caret-right"></i>-->
+                <i class="fa fa-caret-down"></i>
                 {{'PROGRAM_MANAGEMENT_SELECT_PROGRAM_KEY' | translate}}
             </h2>
 
@@ -27,6 +27,8 @@
                         </span>
                 </a>
                 <section ng-hide="programSelected == null" class="programAttributeFields">
+                    <h2 class="programAttribute-title" ng-if="programAttributeTypes.length>0">Program Attributes</h2>
+
                     <attribute-types target-model="patientProgramAttributes" attribute="attribute"
                                      ng-repeat="attribute in programAttributeTypes"
                                      class="form-field clearfix"></attribute-types>
