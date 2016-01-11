@@ -3,7 +3,7 @@
     <form name="myForm"  ng-submit="update()">
         <div class="box-container box-container-default">
             <legend class="registraion_legend first-registraion_legend">
-                <span class="mylegend"><strong>Patient ID : {{patient.identifier}}</strong></span>
+                <span class="mylegend"><strong>Patient ID : <span>{{patient.identifier}}</span></strong></span>
                 <span ng-show= "isDigitized" class="right"><strong>{{::'REGISTRATION_LABEL_SCANNED' | translate}}</strong></span>
             </legend>
             <div class="photo-container-wrapper">
