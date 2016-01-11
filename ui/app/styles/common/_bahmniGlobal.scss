@@ -323,5 +323,12 @@ u, .add-drug-btninput[value]:first-letter {
     margin-left: 25px;
     position: relative;
   }
+  &.first-registraion_legend{
+    margin-left: 0;
+    margin-right: 0;
+    &:before{
+      width: 100%;
+    }
+  }
 }
 
