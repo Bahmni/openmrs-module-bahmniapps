@@ -378,7 +378,6 @@ angular.module('bahmni.clinical')
             };
             $scope.onSelect =  function(item){
                 $scope.treatment.selectedItem = item;
-                console.log($scope.treatment.selectedItem);
                 //$scope.onChange(); angular will call onChange after onSelect by default
             };
             $scope.onAccept = function(){
@@ -579,7 +578,6 @@ angular.module('bahmni.clinical')
             };
 
             $scope.addOrderSetDrugs = function(orderSet){
-                console.log(orderSet);
                 $scope.selectedOrderSets = [];
                 $scope.selectedOrderSets.push(orderSet);
                 var orderTemplates = getSelectedOrderTemplates();

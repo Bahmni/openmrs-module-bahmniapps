@@ -147,6 +147,7 @@ describe("AddTreatmentController", function () {
                     {name: "Month(s)", factor: 30}
                 ]
             }
+            ,allOrderSets:[]
         });
     }));
 
@@ -181,6 +182,9 @@ describe("AddTreatmentController", function () {
                     uuid: "CodedDrugUuid",
                     dosageForm: {
                         display: "Once"
+                    },
+                    concept:{
+                        uuid:"ConceptUUID"
                     }
                 }
             });
@@ -189,7 +193,8 @@ describe("AddTreatmentController", function () {
             expect(treatment.changeDrug).toHaveBeenCalledWith({
                 name: "CodedDrug",
                 form: "Once",
-                uuid: "CodedDrugUuid"
+                uuid: "CodedDrugUuid",
+                conceptUuid:"ConceptUUID"
             });
 
             expect(scope.treatment.selectedItem).toBeUndefined();
