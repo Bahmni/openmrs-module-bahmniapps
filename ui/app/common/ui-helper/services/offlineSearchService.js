@@ -50,7 +50,7 @@ angular.module('bahmni.common.uiHelper')
                     }
 
                     if (!_.isEmpty(params.identifier)) {
-                        predicates.push(p.identifier.eq(params.identifierPrefix + params.identifier));
+                        predicates.push(p.identifier.eq(params.identifier));
                     }
                     if (!_.isEmpty(nameParts)) {
                         var nameSearchCondition = [];
