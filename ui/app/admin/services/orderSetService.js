@@ -71,7 +71,25 @@ angular.module('bahmni.common.domain')
             });
         };
 
-        this.getCalculatedDose=function(){
+        this.getCalculatedDose=function(patientUuid, baseDose, doseUnits){
+            var hasSpecialDoseUnit = function (doseUnits) {
+                return -1 < ["mg/kg", "mg/m2"].indexOf(doseUnits);
+            };
+            if (hasSpecialDoseUnit(doseUnits)) {
+                return $http.get(someUrl, {
+                    params: {
+                        patientUuid: patientUuid,
+                        baseDose: baseDose
+                    },
+                    withCredentials: true,
+                    headers: {"Accept": "application/json", "Content-Type": "application/json"}
+                }).then(function (calculatedDose) {
+                    return calculatedDose;
+                });
+            }
+            var deferred = $q.defer();
+            deferred.resolve(baseDose);
+            return deferred.promise;
 
         };
     }]);

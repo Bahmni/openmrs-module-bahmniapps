@@ -573,30 +573,12 @@ angular.module('bahmni.clinical')
                 treatment.calculateQuantityAndUnit();
                 return treatment;
             };
-            var hasSpecialDoseUnit = function (orderTemplate) {
-                return -1 < ["mg/kg", "mg/m2"].indexOf(orderTemplate.doseUnits);
-            };
 
             $scope.addOrderSetDrugs = function(orderSet){
                 $scope.selectedOrderSets = [];
                 $scope.selectedOrderSets.push(orderSet);
                 var orderTemplates = getSelectedOrderTemplates();
-                var setDoseForSpecialDoseUnit = function (orderTemplate) {
-                    /*TODO:
-                     move the logic hasSpecialDoseUnit in service side
-                    */
-                    if (hasSpecialDoseUnit(orderTemplate)) {
-                        return orderSetService.getCalculatedDose($scope.patient.uuid, orderTemplate.dose).then(function (calculatedDose) {
-                            orderTemplate.dose = calculatedDose;
-                            return orderTemplate;
-                        });
-                    }
-                    var deferred = $q.defer();
-                    deferred.resolve(orderTemplate);
-                    return deferred.promise;
-                };
-
-                var addOrderSetDrugsPromise = $q.all(_.map(orderTemplates,setDoseForSpecialDoseUnit));
+                var addOrderSetDrugsPromise = $q.all(_.map(orderTemplates,getCalculatedDose));
                 spinner.forPromise(addOrderSetDrugsPromise);
 
                 addOrderSetDrugsPromise.then(function(orderTemplates){
@@ -605,6 +587,14 @@ angular.module('bahmni.clinical')
                 });
 
             };
+
+            var getCalculatedDose = function (orderTemplate) {
+                return orderSetService.getCalculatedDose($scope.patient.uuid, orderTemplate.dose,orderTemplate.doseUnits).then(function (calculatedDose) {
+                    orderTemplate.dose = calculatedDose;
+                    return orderTemplate;
+                });
+            };
+
             var saveTreatment = function () {
                 $scope.consultation.discontinuedDrugs && $scope.consultation.discontinuedDrugs.forEach(function (discontinuedDrug) {
                     var removableOrder = _.find(activeDrugOrders, {uuid: discontinuedDrug.uuid});
