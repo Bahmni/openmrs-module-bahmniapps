@@ -120,11 +120,6 @@
                     <i class="fa fa-eraser"></i>
                 </button>
             </div>
-        <fieldset>
-            <textarea id="additional-instructions" class="form-field drug-order-notes" placeholder="Additional Instructions" ng-model="treatment.additionalInstructions"></textarea>
-            <button class="form-field add-drug-btn secondary-button" type="submit" accesskey="a"><u>A</u>dd</button>
-            <button class="form-field add-drug-btn" type="button" ng-click="clearForm()" accesskey="c"><u>C</u>lear</button>
-        </fieldset>
         <div class="drug-options-wrapper" ng-if="treatmentActionLinks.length > 0">
             <button ng-repeat="extension in treatmentActionLinks" type="button" class="form-field secondary-button" ng-click="openActionLink(extension)" accesskey="{{extension.shortcutKey}}" ng-bind-html="extension.label"></button>
         </div>

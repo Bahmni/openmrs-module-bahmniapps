@@ -6,7 +6,14 @@ angular.module('bahmni.common.domain')
         $scope.getDrugResults = function () {
             return function (results) {
                 return results.map(function (drug) {
-                    return {'template': {'name': drug.name, 'uuid': drug.uuid}, 'value': drug.name}
+                    return {
+                        'template': {
+                            'name': drug.name,
+                            'uuid': drug.uuid,
+                            'form': drug.dosageForm.display
+                        },
+                        'value': drug.dosageForm ? drug.name + " (" + drug.dosageForm.display + ")" : drug.name
+                    }
                 });
             }
         };
@@ -31,6 +38,7 @@ angular.module('bahmni.common.domain')
             return function (selectedDrug) {
                 $scope.orderSet.orderSetMembers[index].orderTemplate.name = selectedDrug.template.name;
                 $scope.orderSet.orderSetMembers[index].orderTemplate.uuid = selectedDrug.template.uuid;
+                $scope.orderSet.orderSetMembers[index].orderTemplate.form = selectedDrug.template.form;
             };
         };
     }]

@@ -3,9 +3,9 @@
 angular.module('bahmni.clinical')
 
     .controller('AddTreatmentController', ['$scope', '$rootScope', 'contextChangeHandler', 'treatmentConfig', 'DrugService', '$timeout', 'orderSetService',
-        'clinicalAppConfigService', 'ngDialog', '$window', 'spinner', 'messagingService', 'appService', 'activeDrugOrders',
+        'clinicalAppConfigService', 'ngDialog', '$window', 'spinner', 'messagingService', 'appService', 'activeDrugOrders', 'allOrderSets','$q',
         function ($scope, $rootScope, contextChangeHandler, treatmentConfig, drugService, $timeout, orderSetService,
-                  clinicalAppConfigService, ngDialog, $window, spinner, messagingService, appService, activeDrugOrders) {
+                  clinicalAppConfigService, ngDialog, $window, spinner, messagingService, appService, activeDrugOrders, allOrderSets,$q) {
 
             var DateUtil = Bahmni.Common.Util.DateUtil;
             var DrugOrderViewModel = Bahmni.Clinical.DrugOrderViewModel;
@@ -378,6 +378,7 @@ angular.module('bahmni.clinical')
             };
             $scope.onSelect =  function(item){
                 $scope.treatment.selectedItem = item;
+                console.log($scope.treatment.selectedItem);
                 //$scope.onChange(); angular will call onChange after onSelect by default
             };
             $scope.onAccept = function(){
@@ -392,7 +393,8 @@ angular.module('bahmni.clinical')
                     $scope.treatment.changeDrug({
                         name: $scope.treatment.selectedItem.drug.name,
                         form: $scope.treatment.selectedItem.drug.dosageForm.display,
-                        uuid: $scope.treatment.selectedItem.drug.uuid
+                        uuid: $scope.treatment.selectedItem.drug.uuid,
+                        conceptUuid: $scope.treatment.selectedItem.drug.concept.uuid
                     });
                     delete $scope.treatment.selectedItem;
                     return;
@@ -412,9 +414,6 @@ angular.module('bahmni.clinical')
                         spinner.forPromise(orderSetService.getOrderSetWithAttributeNameAndValue(newValue.conceptUuid, "Primary", "true").then(function(response) {
                             $scope.orderSets = filterOutVoidedOrderSet(response.data.results);
                         }));
-                        //spinner.forPromise(orderSetService.getUniqueOrderSetMembersWithoutPrimaryConcept(newValue.conceptUuid, "Primary", "true").then(function(response){
-                        //    $scope.orderSetMembers = response;
-                        //}))
                     }
                 }
             );
@@ -531,7 +530,27 @@ angular.module('bahmni.clinical')
                     return DrugOrderViewModel.createFromContract(drugOrder, drugOrderAppConfig, treatmentConfig);
                 });
             };
+            /*TODO:
+                $scope.selectedOrderSets=[];
+                selectedOrderSets has To be populated by the check boxes of 'Order an order set' section
+                mocking: selecting allOrderSets by default
+            */
+            $scope.allOrderedSets=allOrderSets;
+            //$scope.selectedOrderSets=allOrderSets;
 
+            var getOrderTemplatesForGivenSet = function (orderSet) {
+                return _.map(orderSet.orderSetMembers, function (orderSetMember) {
+                    var orderTemplate = JSON.parse(orderSetMember.orderTemplate);
+                    orderTemplate.orderSetUuid = orderSet.uuid;
+                    orderTemplate.sortWeight = orderSetMember.sortWeight;
+                    return orderTemplate;
+                });
+            };
+
+            var getSelectedOrderTemplates = function () {
+                var orderTemplateGroups = _.map($scope.selectedOrderSets, getOrderTemplatesForGivenSet);
+                return _.flatten(orderTemplateGroups);
+            };
             var removeOrder = function (removableOrder) {
                 removableOrder.action = Bahmni.Clinical.Constants.orderActions.discontinue;
                 removableOrder.previousOrderUuid = removableOrder.uuid;
@@ -539,23 +558,55 @@ angular.module('bahmni.clinical')
                 $scope.consultation.removableDrugs.push(removableOrder);
             };
 
-            var dummyResult = {name: "Paracetamol 120mg/5ml", form: "Syrup", uuid: "28d067a3-7e40-4331-9452-bd6b0e9bf201", conceptUuid: "4750370f-ad8e-49c5-80d2-b2136f59c3e9",
-                "dose": 1.0,"doseUnits":"Tablet(s)","frequency":"Once a day","duration":4,"route": "Oral"};
-
-            $scope.addOrderSetDrugs = function() {
+            var mapOrderTemplateToTreatment = function(orderTemplate){
                 var treatment = newTreatment();
-                treatment.uniformDosingType = {dose: dummyResult.dose, doseUnits: dummyResult.doseUnits, frequency: dummyResult.frequency};
-                treatment.duration = dummyResult.duration;
-                treatment.route = dummyResult.route;
-                treatment.drug = {name: dummyResult.name, form: dummyResult.form, uuid: dummyResult.uuid, conceptUuid: dummyResult.conceptUuid};
-                treatment.drugNameDisplay = dummyResult.name ? dummyResult.name + "(" + dummyResult.form + ")" : dummyResult.name;
-                treatment.orderSetUuid = "832ea186-b9cb-45d2-bd24-ace7420dfa3b";
-                treatment.sortWeight = 1;
+                treatment.uniformDosingType = {dose: orderTemplate.dose, doseUnits: orderTemplate.doseUnits, frequency: orderTemplate.frequency};
+                treatment.duration = orderTemplate.duration;
+                treatment.durationUnit = orderTemplate.durationUnit;
+                treatment.route = orderTemplate.route;
+                treatment.drug = {name: orderTemplate.name,
+                                  form: orderTemplate.form,
+                                  uuid: orderTemplate.uuid,
+                                  conceptUuid: orderTemplate.conceptUuid};
+                treatment.drugNameDisplay = orderTemplate.name ? orderTemplate.name + "(" + orderTemplate.form + ")" : orderTemplate.name;
+                treatment.orderSetUuid=orderTemplate.orderSetUuid;
+                treatment.sortWeight = orderTemplate.sortWeight;
                 treatment.calculateQuantityAndUnit();
-                $scope.treatments.push(treatment);
-
+                return treatment;
+            };
+            var hasSpecialDoseUnit = function (orderTemplate) {
+                return -1 < ["mg/kg", "mg/m2"].indexOf(orderTemplate.doseUnits);
             };
 
+            $scope.addOrderSetDrugs = function(orderSet){
+                console.log(orderSet);
+                $scope.selectedOrderSets = [];
+                $scope.selectedOrderSets.push(orderSet);
+                var orderTemplates = getSelectedOrderTemplates();
+                var setDoseForSpecialDoseUnit = function (orderTemplate) {
+                    /*TODO:
+                     move the logic hasSpecialDoseUnit in service side
+                    */
+                    if (hasSpecialDoseUnit(orderTemplate)) {
+                        return orderSetService.getCalculatedDose($scope.patient.uuid, orderTemplate.dose).then(function (calculatedDose) {
+                            orderTemplate.dose = calculatedDose;
+                            return orderTemplate;
+                        });
+                    }
+                    var deferred = $q.defer();
+                    deferred.resolve(orderTemplate);
+                    return deferred.promise;
+                };
+
+                var addOrderSetDrugsPromise = $q.all(_.map(orderTemplates,setDoseForSpecialDoseUnit));
+                spinner.forPromise(addOrderSetDrugsPromise);
+
+                addOrderSetDrugsPromise.then(function(orderTemplates){
+                    var selectedTreatments = _.map(orderTemplates,mapOrderTemplateToTreatment);
+                    $scope.treatments=$scope.treatments.concat(selectedTreatments);
+                });
+
+            };
             var saveTreatment = function () {
                 $scope.consultation.discontinuedDrugs && $scope.consultation.discontinuedDrugs.forEach(function (discontinuedDrug) {
                     var removableOrder = _.find(activeDrugOrders, {uuid: discontinuedDrug.uuid});

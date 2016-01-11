@@ -2,7 +2,7 @@
     <section class="edit-drug-order primary-section-grid">
         <form name="addForm" bm-form>
             <fieldset>
-                <input class="enter-concept" type="text" name="conceptSetTemplate" ng-model="orderSetMember.orderTemplate.name"
+                <input class="enter-concept" type="text" name="conceptSetTemplate" ng-model="orderSetMember.orderTemplate.drugName"
                        bahmni-autocomplete strict-select="true" on-select="onSelectOfDrug($index)" is-invalid="conceptNameInvalid"
                        source="getDrugsOfAConcept(orderSetMember.concept)"
                        response-map=getDrugResults() required placeholder="Enter a drug name" />

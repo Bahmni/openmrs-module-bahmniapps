@@ -184,7 +184,15 @@ angular.module('consultation')
                 views: {
                     "addTreatment": {
                         controller: 'AddTreatmentController',
-                        templateUrl: 'consultation/views/treatmentSections/addTreatment.html'
+                        templateUrl: 'consultation/views/treatmentSections/addTreatment.html',
+                        resolve: {
+                            treatmentConfig: 'treatmentConfig',
+                            allOrderSets:function(orderSetService){
+                                return orderSetService.getAllOrderSets().then(function(response){
+                                    return response.data.results;
+                                });
+                            }
+                        }
                     },
                     "defaultHistoryView": {
                         controller: 'DrugOrderHistoryController',

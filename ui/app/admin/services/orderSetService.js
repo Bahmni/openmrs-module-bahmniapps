@@ -70,4 +70,8 @@ angular.module('bahmni.common.domain')
                 return  config;
             });
         };
+
+        this.getCalculatedDose=function(){
+
+        };
     }]);

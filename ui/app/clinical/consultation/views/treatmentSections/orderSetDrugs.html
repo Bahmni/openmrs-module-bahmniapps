@@ -1,9 +1,10 @@
-<section class="medications-orderset-list" ng-if="orderSets.length > 0">
+<section class="medications-orderset-list" ng-if="allOrderedSets.length > 0">
     <div class="subheading-wrapper medications">
-        <h2 class="section-title fl">The selected drug {{treatment.drugNameDisplay}} is a part of {{orderSets.length}} order set(s)</h2>
+        <!--<h2 class="section-title fl">The selected drug {{treatment.drugNameDisplay}} is a part of {{orderSets.length}} order set(s)</h2>-->
+        <h2 class="section-title fl">List of Order Sets</h2>
     </div>
     <ul class="table-mimic">
-        <li id="new-drug-orders" ng-repeat="orderSet in orderSets">
+        <li id="new-drug-orders" ng-repeat="orderSet in allOrderedSets">
             <div class="drug-details">
                 <div class="form">
                     <strong class="drug-name">{{orderSet.name}}</strong>
@@ -13,7 +14,7 @@
                         <span ng-if="!$last">,</span>
                     </span>
                     <span>)</span>
-                    <input type="button" value="Use" ng-click="addOrderSetDrugs()"/>
+                    <input type="button" value="Use" ng-click="addOrderSetDrugs(orderSet)"/>
                 </div>
             </div>
         </li>
