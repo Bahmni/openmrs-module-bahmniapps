@@ -4,59 +4,79 @@
     border-radius: 3px;
     position: relative;
     ul {
-        width: 350px;
         border-radius: 3px 0 0 3px;
         border-right:none;
         float:left;
+        position: relative;
+        margin-bottom: 5px;
+        &.hidden-options{
+            width: 250px;
+            margin-top: 1px;
+            box-shadow:1px 2px 2px #6B6969;
+            float: none;
+            z-index: 9999;
+            background: #8eb82a;
+            border-bottom: none;
+            color: #fff;
+            clear: both;
+            border-right: 0;
+        }
         li {
             font-size:.9em;
+            &.primaryOption{
+                width: 250px;
+                button{
+                    text-align: left;
+                }
+            }
             &.secondaryOption {
                 display: none;
-                border: 1px solid $lightGray;
-                border-bottom: 0;
-                background: $white;
-                width: 250px;
+                border-bottom: 1px solid #699007;
+                background: none;
                 &:last-child {
                     border-bottom: 1px solid $lightGray;
                     border-radius: 0 0 3px 3px;
                 }
                 button {
-                    background: $white;
-                    color: $black;
-                    position:relative;
-                    z-index:99;
-                    border-radius: 3px 0 0 3px;
+                    //background: $white;
+                    //color: $black;
+                    //position:relative;
+                    //z-index:99;
+                    border-radius: 0;
                     text-align: left;
                     border: 0;
-                    width: 99%;
+                    margin: 2px 0;
+                    background: none;
+                    color: #fff;
                     &:hover {
-                        background: $lightestGray;
+                        background: #A1D030;
                     }
                 }                    
                 &:hover {
-                    background: $lightestGray;
+                    background: #A1D030;
                 }
             }
-            button {
-                width: 100%;
-                margin: 2px;
+            button{
+                margin: 0;
                 font-size: 14px;
-                border-radius: 3px 0 0 3px;
+                width: 100%;
+                margin-right: 0 !important;
                 &:focus {
                     outline: 2px solid $clinicalFormFocus;
                 }
             }
+           /* button {
+
+                margin: 0px;
+                font-size: 14px;
+                border-radius: 3px 0 0 3px;
+
+            }*/
         }
     }
     .toggle-button {
-        float:left;
-        margin: 2px;
-        border-radius:0px 3px 3px 0;
-        border-left:none;
-        padding: 5.5px 10px;
-        position: absolute;
-        z-index: 1;
-        right: 38px;
+        margin-top: 0;
+        margin-right: 0 !important;
         &:focus{
             outline: 2px solid $clinicalFormFocus;
         }
@@ -70,32 +90,27 @@
 }
 
 
-.reg-search-wrapper .split-button li{
+/*.reg-search-wrapper .split-button li{
     width:auto;
 }
 .reg-body-wrapper .split-button{
     ul{
-        width: 250px;
         li{
             &.primaryOption{
+                width: 300px;
                 .buttonClass{
                     text-align: left;
-                    margin: 0 10px 0 0;
                 }
-            }
-            &.secondaryOption {
-                width: 248px;
             }
         }
         
     }
     .toggle-button {
-        right: 1px;
         margin-right: 0 !important;
     }
-}
+}*/
 
-.edit-col {
+/*.edit-col {
     .split-button {
         position: relative;
         ul {
@@ -116,14 +131,14 @@
             right: 3px;
         }
     }
-}
+}*/
 
 .print-action-items {
     position: absolute;
-    top: 5px;
-    right: 25px;
-    .secondaryOption {
+    top: 8px;
+    right: 80px;
+    /*.secondaryOption {
         position: relative;
         z-index: 99;
-    }
+    }*/
 }
