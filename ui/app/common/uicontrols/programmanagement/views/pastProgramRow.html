@@ -1,20 +1,20 @@
 <div class="program-row"  ng-class='{"no-past-program":program.states.length==0}'>
     <div class="program-details">
         <div>
-            <table>
+            <table class="programTable">
                 <tr>
-                    <td>
+                    <td  class="programName">
                         <i class="fa fa-caret-right" ng-hide="program.isOpen" ng-click="showProgramAttributes(program)"></i>
                         <i class="fa fa-caret-down" ng-show="program.isOpen" ng-click="showProgramAttributes(program)"></i>
+                        {{program.display}}
                     </td>
-                    <td> {{program.display}}</td>
-                    <td ng-if="getCurrentStateDisplayName(program)">{{getCurrentStateDisplayName(program)}}</td>
-                    <td>Start Date  {{program.dateEnrolled | bahmniDate}}</td>
-                    <td>Stop Date  {{program.dateCompleted | bahmniDate}}</td>
+                    <td ng-if="getCurrentStateDisplayName(program)" class="pastProgramState">{{getCurrentStateDisplayName(program)}}</td>
+                    <td class="programStartDate">Start Date: <span> {{program.dateEnrolled | bahmniDate}} </span></td>
+                    <td class="programStopDate">Stop Date: <span> {{program.dateCompleted | bahmniDate}} </span></td>
                 </tr>
             </table>
         </div>
-        <div ng-if="program.isOpen">
+        <div ng-if="program.isOpen" class="programDescription">
             <program-attributes attributes="program.attributes"></program-attributes>
             <span>{{program.display}}</span>
             <span class="enrolled-info"> ({{program.dateEnrolled | bahmniDate}} - {{program.dateCompleted | bahmniDate}})</span>
@@ -32,17 +32,16 @@
                 <span class="patient-id">{{patient.identifier}}</span>
             </span>
             </a>
+            <div class="program-timeline-container" ng-if="program.states.length!=0 && program.isOpen">
+                <div class="program-timeline">
+                    <timeline program="program"></timeline>
+                </div>
+                <button ng-click="toggleEdit(program)" ng-class="{'tab-selected': program.editing}" class="fr detail-btn" >
+                    <span>Details</span>
+                    <i class="fa fa-expand"></i>
+                </button>
+            </div>
         </div>
-
-    </div>
-    <div class="program-timeline-container" ng-if="program.states.length!=0 && program.isOpen">
-        <div class="program-timeline">
-            <timeline program="program"></timeline>
-        </div>
-        <button ng-click="toggleEdit(program)" ng-class="{'tab-selected': program.editing}" class="fr detail-btn" >
-            <span>Details</span>
-            <i class="fa fa-expand"></i>
-        </button>
     </div>
     <div class="program-state-list" ng-if="program.editing">
         <div class="down-arrow-container"></div>

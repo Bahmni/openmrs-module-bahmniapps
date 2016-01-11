@@ -1,7 +1,11 @@
 <div class="program-enrollment-container">
     <div class="select-program-container form">
         <section class="block dashboard-section">
-            <h2 class="section-title ng-binding">{{'PROGRAM_MANAGEMENT_SELECT_PROGRAM_KEY' | translate}}</h2>
+            <h2 class="section-title ng-binding">
+                <i class="fa fa-caret-right"></i>
+                <!--<i class="fa fa-caret-down"></i>-->
+                {{'PROGRAM_MANAGEMENT_SELECT_PROGRAM_KEY' | translate}}
+            </h2>
 
             <form class="select-program-option" ng-submit="enrollPatient()">
                 <select ng-model="programSelected" ng-options="program.name for program in allPrograms" data-ng-change="setWorkflowStates(programSelected)">
@@ -22,7 +26,7 @@
                          <span class="patient-id">{{patient.identifier}}</span>
                         </span>
                 </a>
-                <section ng-hide="programSelected == null">
+                <section ng-hide="programSelected == null" class="programAttributeFields">
                     <attribute-types target-model="patientProgramAttributes" attribute="attribute"
                                      ng-repeat="attribute in programAttributeTypes"
                                      class="form-field clearfix"></attribute-types>
@@ -33,7 +37,11 @@
 
     <div class="active-program-container" id="activePrograms" ng-show="hasPatientEnrolledToSomePrograms()">
         <section class="block dashboard-section">
-            <h2 class="section-title ng-binding">{{'PROGRAM_MANAGEMENT_ACTIVE_PROGRAM_KEY' | translate}}</h2>
+            <h2 class="section-title ng-binding">
+                <i class="fa fa-caret-right"></i>
+                <!--<i class="fa fa-caret-down"></i>-->
+                {{'PROGRAM_MANAGEMENT_ACTIVE_PROGRAM_KEY' | translate}}
+            </h2>
             <div ng-if="hasPatientEnrolledToSomePrograms()">
                 <div ng-repeat="patientProgram in activePrograms" class="program-stuff">
                     <ng-include src="'../common/uicontrols/programmanagement/views/programRow.html'" ng-init="active=true"></ng-include>
@@ -52,7 +60,11 @@
 
     <div class="inactive-program-container" ng-show="hasPatientAnyPastPrograms()">
         <section class="block dashboard-section">
-            <h2 class="section-title ng-binding">{{'PROGRAM_MANAGEMENT_PAST_PROGRAM_KEY' | translate}}</h2>
+            <h2 class="section-title ng-binding">
+                <i class="fa fa-caret-right" ></i>
+                <!--<i class="fa fa-caret-down"></i>-->
+                {{'PROGRAM_MANAGEMENT_PAST_PROGRAM_KEY' | translate}}
+            </h2>
 
             <div ng-if="hasPatientAnyPastPrograms()">
                 <div ng-repeat="program in endedPrograms" class="program-stuff">
