@@ -299,7 +299,6 @@ Bahmni.Clinical.DrugOrderViewModel = function (appConfig, config, proto, encount
     };
 
     var getRoute = function (route) {
-        console.log(findAnElement(config.routes, route));
         return findAnElement(config.routes, route);
     };
 
