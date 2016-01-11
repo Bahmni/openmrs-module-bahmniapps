@@ -41,7 +41,8 @@ Bahmni.Registration.PatientConfig = (function () {
                             attributes: [],
                             title: section.title,
                             translationKey: section.translationKey,
-                            shortcutKey: section.shortcutKey
+                            shortcutKey: section.shortcutKey,
+                            order: section.order
                         }
                     }
                     sectionObject.attributes.push(item);
