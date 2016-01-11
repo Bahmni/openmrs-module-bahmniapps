@@ -118,7 +118,11 @@ angular.module('bahmni.registration')
                 withCredentials: true,
                 headers: {"Accept": "application/json", "Content-Type": "application/json"}
             };
-            return $http.post(url, data, config);
+            var deferred = $q.defer();
+             $http.post(url, data, config).success(function(result){
+                deferred.resolve(result);
+            });
+            return deferred.promise;
         };
 
         var updateImage = function (uuid, image) {
