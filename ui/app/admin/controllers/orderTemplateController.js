@@ -3,6 +3,7 @@
 angular.module('bahmni.common.domain')
     .controller('OrderTemplateController', ['$scope', '$state', '$http', 'orderSetService', 'spinner', function ($scope, $state, $http, orderSetService, spinner) {
 
+        console.log($scope);
         $scope.getDrugResults = function () {
             return function (results) {
                 return results.map(function (drug) {

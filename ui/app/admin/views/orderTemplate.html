@@ -1,40 +1,69 @@
 <div ng-controller="OrderTemplateController">
-    <section class="edit-drug-order primary-section-grid">
+    <section class="edit-drug-order">
         <form name="addForm" bm-form>
-            <fieldset>
-                <input class="enter-concept" type="text" name="conceptSetTemplate" ng-model="orderSetMember.orderTemplate.drugName"
-                       bahmni-autocomplete strict-select="true" on-select="onSelectOfDrug($index)" is-invalid="conceptNameInvalid"
-                       source="getDrugsOfAConcept(orderSetMember.concept)"
-                       response-map=getDrugResults() required placeholder="Enter a drug name" />
-
-                <input id="uniform-dose" class="form-field dose" integer="true" type="number" min="0" step="any" placeholder="Dose"
-                           ng-model="orderSetMember.orderTemplate.dose" />
-                <select id="uniform-dose-unit" class="form-field freq-dose-units" ng-model="orderSetMember.orderTemplate.doseUnits"
-                            ng-options="item.name as item.name for item in treatmentConfig.doseUnits">
-                        <option value="">Choose Unit</option>
-                </select>
-                <select id="frequency" class="form-field frequency" ng-model="orderSetMember.orderTemplate.frequency"
-                            ng-options="item.name as item.name for item in treatmentConfig.frequencies">
-                        <option value="">Choose frequency</option>
-                </select>
-
-                <select ng-model="orderSetMember.orderTemplate.instructions"
-                        ng-options="item.name as item.name for item in treatmentConfig.dosingInstructions">
-                    <option value="">Choose Instruction</option>
-                </select>
-
-                <div>
-                    <input type="number" min="1" placeholder="Duration"
-                           ng-model="orderSetMember.orderTemplate.duration" ng-change="treatment.calculateDurationInDays()" required ng-pattern="/^[0-9]+$/"/>
-                    <select ng-model="orderSetMember.orderTemplate.durationUnit"
-                            ng-options="item.name as item.name for item in treatmentConfig.durationUnits" required>
-                    </select>
-                    <select ng-model="orderSetMember.orderTemplate.route"
-                            ng-options="item.name as item.name for item in treatmentConfig.routes">
-                        <option value="">Choose Route</option>
-                    </select>
+            <div class="clearfix">
+                <div class="form-field">
+                    <div class="field-value">
+                        <input class="enter-concept" type="text" name="conceptSetTemplate" ng-model="orderSetMember.orderTemplate.drugName"
+                               bahmni-autocomplete strict-select="true" on-select="onSelectOfDrug($index)" is-invalid="conceptNameInvalid"
+                               source="getDrugsOfAConcept(orderSetMember.concept)"
+                               response-map=getDrugResults() required placeholder="Enter a drug name" />
+                    </div>
                 </div>
-            </fieldset>
+                <div class="form-field">
+                    <div class="field-value">
+                        <input id="uniform-dose" class="form-field dose" integer="true" type="number" min="0" step="any" placeholder="Dose"
+                               ng-model="orderSetMember.orderTemplate.dose" />
+                    </div>
+                </div>
+                <div class="form-field">
+                    <div class="field-value">
+                        <select id="uniform-dose-unit" class="form-field freq-dose-units" ng-model="orderSetMember.orderTemplate.doseUnits"
+                                ng-options="item.name as item.name for item in treatmentConfig.doseUnits">
+                            <option value="">Choose Unit</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-field">
+                    <div class="field-value">
+                        <select id="frequency" class="form-field frequency" ng-model="orderSetMember.orderTemplate.frequency"
+                                ng-options="item.name as item.name for item in treatmentConfig.frequencies">
+                            <option value="">Choose frequency</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="clearfix">
+                <div class="form-field">
+                    <div class="field-value">
+                        <select ng-model="orderSetMember.orderTemplate.instructions"
+                                ng-options="item.name as item.name for item in treatmentConfig.dosingInstructions">
+                            <option value="">Choose Instruction</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-field">
+                    <div class="field-value">
+                        <input type="number" min="1" placeholder="Duration"
+                               ng-model="orderSetMember.orderTemplate.duration" ng-change="treatment.calculateDurationInDays()" required ng-pattern="/^[0-9]+$/"/>
+                    </div>
+                </div>
+                <div class="form-field">
+                    <div class="field-value">
+                        <select ng-model="orderSetMember.orderTemplate.durationUnit"
+                                ng-options="item.name as item.name for item in treatmentConfig.durationUnits" required>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-field">
+                    <div class="field-value">
+                        <select ng-model="orderSetMember.orderTemplate.route"
+                                ng-options="item.name as item.name for item in treatmentConfig.routes">
+                            <option value="">Choose Route</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
         </form>
     </section>
 </div>
