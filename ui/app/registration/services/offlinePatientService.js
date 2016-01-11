@@ -123,8 +123,7 @@ angular.module('bahmni.registration')
                 });
             }
             else {
-
-                return offlineCommonService.deletePatientData(postRequest.patient.identifiers[0]['identifier']).then(function (data) {
+                return offlineCommonService.deletePatientData(postRequest.patient.identifiers[0]['identifier']).then(function () {
                     return create(postRequest).then(function (result) {
                         return result.data;
                     });
