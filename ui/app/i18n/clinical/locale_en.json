@@ -102,5 +102,8 @@
     "DRUG_DETAILS_INSTRUCTIONS_TEXT": "Instructions",
     "DRUG_DETAILS_QUANTITY_TEXT": "Quantity",
     "DRUG_DETAILS_ADDITIONAL_INSTRUCTIONS_TEXT": "Additional Instructions",
-    "DRUG_DETAILS_DURATION": "Duration"
+    "DRUG_DETAILS_DURATION": "Duration",
+    "MONTHS": "January, February, March, April, May, June, July, August, September, October, November, December",
+    "CHOOSE_MONTH_KEY": "Choose month",
+    "CHOOSE_YEAR_KEY": "Choose year"
 }

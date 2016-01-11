@@ -19,7 +19,7 @@
             </th>
             <td ng-init="columnResult = result.tabularData[startDate][concept.name]"  bm-pop-over autoclose="true" ng-repeat="concept in ::result.concepts"
                 ng-class="{'is-abnormal': columnResult.abnormal}">
-                <span ng-class="{'popover-trigger': isLonger(columnResult.value), 'is-abnormal': columnResult.abnormal}" bm-pop-over-trigger>{{getColumnValue(columnResult.value)}}</span>
+                <span ng-class="{'popover-trigger': isLonger(columnResult.value), 'is-abnormal': columnResult.abnormal}" bm-pop-over-trigger>{{getColumnValue(columnResult.value, concept.name)}}</span>
                  <span ng-if="isLonger(columnResult.value)" class="tooltip" bm-pop-over-target>
                      <i class="fa fa-caret-down"></i>
                      <span class="details">{{::columnResult.value}}</span>

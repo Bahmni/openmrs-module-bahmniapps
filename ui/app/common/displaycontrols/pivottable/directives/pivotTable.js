@@ -1,6 +1,6 @@
 'use strict';
-angular.module('bahmni.common.displaycontrol.pivottable').directive('pivotTable', ['$rootScope', '$filter', '$stateParams' ,'spinner', 'pivotTableService', 'appService',
-    function ($rootScope, $filter, $stateParams, spinner, pivotTableService, appService) {
+angular.module('bahmni.common.displaycontrol.pivottable').directive('pivotTable', ['$rootScope', '$filter', '$stateParams' ,'spinner', 'pivotTableService', 'appService','conceptSetUiConfigService',
+    function ($rootScope, $filter, $stateParams, spinner, pivotTableService, appService, conceptSetUiConfigService) {
 
         return {
             scope: {
@@ -31,7 +31,10 @@ angular.module('bahmni.common.displaycontrol.pivottable').directive('pivotTable'
                    return value ? value.length > 13 : false;
                 };
 
-                scope.getColumnValue = function(value){
+                scope.getColumnValue = function(value, conceptName){
+                    if(conceptName && conceptSetUiConfigService.getConfig()[conceptName] && conceptSetUiConfigService.getConfig()[conceptName].displayMonthAndYear == true) {
+                        return Bahmni.Common.Util.DateUtil.getDateInMonthsAndYears(value);
+                    }
                     return scope.isLonger(value) ? value.substring(0,10)+"..." : value;
                 };
 
