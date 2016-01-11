@@ -43,7 +43,6 @@ angular.module('bahmni.common.offline').service('initializeOfflineSchema', ['$ro
             createTable(schemaBuilder, 'patient_address', addressColumns);
             schemaBuilder.connect().then(function (database) {
                 $rootScope.db = database;
-                console.log("Hello!!!");
             });
         });
     };
