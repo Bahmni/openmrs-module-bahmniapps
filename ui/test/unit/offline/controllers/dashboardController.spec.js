@@ -24,7 +24,7 @@ describe('Offline - DashboardController', function () {
         it('should get all events by catchment number and save', function () {
             var promiseForGetEvents = _$q.defer();
             spyOn(_eventLogService, 'getEventsFor').and.returnValue(promiseForGetEvents.promise);
-            promiseForGetEvents.resolve([{object: 'url to get patient object', category: 'patient'}]);
+            promiseForGetEvents.resolve({data: [{object: 'url to get patient object', category: 'patient'}]});
 
             var promiseForGetpatient = _$q.defer();
             spyOn(_eventLogService, 'getDataForUrl').and.returnValue(promiseForGetpatient.promise);
@@ -43,7 +43,7 @@ describe('Offline - DashboardController', function () {
         it('should not make a call to get event data if there are no events exists', function () {
             var promiseForGetEvents = _$q.defer();
             spyOn(_eventLogService, 'getEventsFor').and.returnValue(promiseForGetEvents.promise);
-            promiseForGetEvents.resolve([]);
+            promiseForGetEvents.resolve({data: []});
 
             var promiseForGetpatient = _$q.defer();
             spyOn(_eventLogService, 'getDataForUrl').and.returnValue(promiseForGetpatient.promise);

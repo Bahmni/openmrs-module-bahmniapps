@@ -6,8 +6,8 @@ angular.module('bahmni.offline')
             $scope.catchmentNumber = 202020;
 
             $scope.sync = function () {
-                eventLogService.getEventsFor($scope.catchmentNumber).then(function (events) {
-                    readEvent(events, 0);
+                eventLogService.getEventsFor($scope.catchmentNumber).then(function (response) {
+                    readEvent(response.data, 0);
                 });
             };
 
@@ -17,7 +17,7 @@ angular.module('bahmni.offline')
                     return;
 
                 var event = events[index];
-                eventLogService.getDataForUrl(event.object).then(function (data) {
+                eventLogService.getDataForUrl(event.object).then(function (response) {
                     switch (event.category) {
                         case 'patient':
                             break;
