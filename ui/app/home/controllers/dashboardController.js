@@ -2,7 +2,7 @@
 
 angular.module('bahmni.home')
     .controller('DashboardController', ['$rootScope', '$scope', '$state', 'appService', 'locationService', 'spinner', '$bahmniCookieStore', '$window','offlineCommonService','offlineService',
-        function ($rootScope, $scope, $state, appService, locationService, spinner, $bahmniCookieStore, $window, chromeAppDataService, offlineService) {
+        function ($rootScope, $scope, $state, appService, locationService, spinner, $bahmniCookieStore, $window, offlineCommonService, offlineService) {
             $scope.appExtensions = appService.getAppDescriptor().getExtensions($state.current.data.extensionPointId, "link") || [];
             $scope.selectedLocationUuid = {};
 
