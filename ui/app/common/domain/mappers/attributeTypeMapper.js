@@ -20,7 +20,7 @@ Bahmni.Common.Domain.AttributeTypeMapper = (function () {
                 uuid: mrsAttributeType.uuid,
                 sortWeight: mrsAttributeType.sortWeight,
                 name: mrsAttributeType.name,
-                description: mrsAttributeType.description,
+                description: mrsAttributeType.description || mrsAttributeType.name,
                 format: mrsAttributeType.format || mrsAttributeType.datatypeClassname,
                 answers: [],
                 required: isRequired()
