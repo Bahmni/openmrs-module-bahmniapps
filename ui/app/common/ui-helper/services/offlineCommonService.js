@@ -9,7 +9,18 @@ angular.module('bahmni.common.uiHelper')
                 addressColumns = addressColumnsList;
                 insertAttributeTypes();
                 insertPatients(addressColumns, 0);
+                insertIntoIdgen();
             });
+        };
+
+        var insertIntoIdgen = function(result) {
+            result = result || 1;
+            var idgen = $rootScope.db.getSchema().table('idgen');
+            var row = idgen.createRow({
+                '_id': 1,
+                'identifier': ++result
+            });
+            $rootScope.db.insertOrReplace().into(idgen).values([row]).exec()
         };
 
         var getPatient = function (uuid) {
@@ -197,7 +208,8 @@ angular.module('bahmni.common.uiHelper')
         var insertAttributeTypes = function () {
             $http.get(window.location.origin + "/openmrs/ws/rest/v1/personattributetype?v=custom:(name,uuid,format)").then(function (attributesResponse) {
                 var personAttributeTypeList = attributesResponse.data.results;
-                var table = $rootScope.db.getSchema().table('patient_attribute_types');
+                var row, table, queries = [];
+                table = $rootScope.db.getSchema().table('patient_attribute_types');
                 for (var i = 0; i < personAttributeTypeList.length; i++) {
                     var row = table.createRow({
                         'attributeTypeId': i,
@@ -205,9 +217,25 @@ angular.module('bahmni.common.uiHelper')
                         'attributeName': personAttributeTypeList[i].name,
                         'format': personAttributeTypeList[i].format
                     });
-                    $rootScope.db.insertOrReplace().into(table).values([row]).exec();
+                    queries.push($rootScope.db.insertOrReplace().into(table).values([row]));
                 }
+                var tx = $rootScope.db.createTransaction();
+                tx.exec(queries);
+                //$rootScope.db.insertOrReplace().into(table).values([row]).exec();
             });
+        };
+
+        var generateOfflineIdentifier = function() {
+            var deferred = $q.defer();
+            var idgen = $rootScope.db.getSchema().table('idgen');
+            $rootScope.db.select(idgen.identifier.as('identifier'))
+                .from(idgen).exec()
+                .then(function (result) {
+                    insertIntoIdgen(result[0].identifier);
+                    deferred.resolve({data: "TMP-" + result[0].identifier});
+                });
+
+            return deferred.promise;
         };
 
 
@@ -216,6 +244,7 @@ angular.module('bahmni.common.uiHelper')
             getPatient: getPatient,
             getPatientByIdentifier: getPatientByIdentifier,
             createPatient: createPatient,
-            deletePatientData: deletePatientData
+            deletePatientData: deletePatientData,
+            generateOfflineIdentifier: generateOfflineIdentifier
         }
     }]);

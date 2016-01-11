@@ -1,8 +1,7 @@
 'use strict';
 
 angular.module('bahmni.common.domain')
-    .service('visitService', ['$http', function ($http) {
-
+    .service('visitService', ['$http','$q', 'offlineService', function ($http, $q, offlineService) {
         this.getVisit = function (uuid, params) {
             var parameters = params ? params : "custom:(uuid,visitId,visitType,patient,encounters:(uuid,encounterType,voided,orders:(uuid,orderType,voided,concept:(uuid,set,name),),obs:(uuid,value,concept,obsDatetime,groupMembers:(uuid,concept:(uuid,name),obsDatetime,value:(uuid,name),groupMembers:(uuid,concept:(uuid,name),value:(uuid,name),groupMembers:(uuid,concept:(uuid,name),value:(uuid,name)))))))";
             return $http.get(Bahmni.Common.Constants.visitUrl + '/' + uuid,

@@ -131,12 +131,21 @@ angular.module('bahmni.registration')
             }
         };
 
+        var generateOfflineIdentifier = function() {
+            if(offlineService.getAppPlatform() === Bahmni.Common.Constants.platformType.android) {
+                return $q.when(JSON.parse(Android.generateOfflineIdentifier()));
+            } else {
+                return offlineCommonService.generateOfflineIdentifier();
+            }
+        };
+
 
         return {
             search: search,
             get: get,
             getByIdentifier: getByIdentifier,
             create: create,
-            update: update
+            update: update,
+            generateOfflineIdentifier: generateOfflineIdentifier
         };
     }]);

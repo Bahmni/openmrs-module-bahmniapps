@@ -37,6 +37,7 @@ angular.module('bahmni.common.offline').service('initializeOfflineSchema', ['$ro
         createTable(schemaBuilder, 'patient_attribute_types', attributeTypeColumnNames);
         createTable(schemaBuilder, 'patient', patientColumnNames, columnsToBeIndexed);
         createTable(schemaBuilder, 'patient_attributes', attributeColumnNames);
+        createIdgenTable(schemaBuilder, 'idgen');
 
         return getAddressColumns().then(function (listOfAddressColumns) {
             addressColumns = listOfAddressColumns;
@@ -58,6 +59,12 @@ angular.module('bahmni.common.offline').service('initializeOfflineSchema', ['$ro
                 table.addIndex(indexName, [columnsToBeIndexed[indexName]]);
             });
         }
+    };
+
+    var createIdgenTable = function(schemaBuilder, tableName) {
+        var table = schemaBuilder.createTable(tableName)
+            .addColumn('_id', lf.Type.INTEGER).addPrimaryKey(['_id'], true)
+            .addColumn('identifier', lf.Type.INTEGER);
     };
 
     var getAddressColumns = function () {
