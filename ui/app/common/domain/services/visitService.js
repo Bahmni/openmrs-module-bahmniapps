@@ -42,14 +42,10 @@ angular.module('bahmni.common.domain')
         };
 
         this.search = function (parameters) {
-            var defer = $q.defer();
-            $http.get(Bahmni.Common.Constants.visitUrl, {
+            return $http.get(Bahmni.Common.Constants.visitUrl, {
                 params: parameters,
                 withCredentials: true
-            }).success(function(result) {
-                defer.resolve(result);
             });
-            return defer.promise;
         };
 
         this.getVisitType = function () {
