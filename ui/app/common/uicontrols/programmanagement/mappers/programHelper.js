@@ -36,7 +36,7 @@ angular.module('bahmni.common.uicontrols.programmanagment')
     };
 
     var mapAttributes = function(attribute){
-        attribute.name = attribute.attributeType.display;
+        attribute.name = attribute.attributeType.description ? attribute.attributeType.description : attribute.attributeType.display;
         attribute.value = attribute.value;
         attribute.required = isAttributeRequired(attribute);
 
