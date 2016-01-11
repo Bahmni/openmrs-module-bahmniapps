@@ -38,7 +38,8 @@ Bahmni.Registration.CreatePatientRequestMapper = (function () {
                         "preferred": true,
                         "voided": false
                     }
-                ]
+                ],
+                uuid: patient.uuid,
             }
         };
 
