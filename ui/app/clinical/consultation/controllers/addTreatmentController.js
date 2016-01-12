@@ -589,7 +589,11 @@ angular.module('bahmni.clinical')
             };
 
             var getCalculatedDose = function (orderTemplate) {
-                return orderSetService.getCalculatedDose($scope.patient.uuid, orderTemplate.dose,orderTemplate.doseUnits).then(function (calculatedDose) {
+                return orderSetService.getCalculatedDose(
+                    $scope.patient.uuid,
+                    orderTemplate.dose,
+                    orderTemplate.doseUnits
+                ).then(function (calculatedDose) {
                     orderTemplate.dose = calculatedDose;
                     return orderTemplate;
                 });

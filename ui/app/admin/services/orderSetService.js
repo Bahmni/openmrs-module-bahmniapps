@@ -67,24 +67,32 @@ angular.module('bahmni.common.domain')
                     {name: "Week(s)", factor: 7},
                     {name: "Month(s)", factor: 30}
                 ];
+                Array.prototype.push.apply(config.doseUnits, Bahmni.Common.Constants.orderSetSpecialUnits,"name");
                 return  config;
             });
         };
 
-        this.getCalculatedDose=function(patientUuid, baseDose, doseUnits){
-            var hasSpecialDoseUnit = function (doseUnits) {
-                return -1 < ["mg/kg", "mg/m2"].indexOf(doseUnits);
-            };
+        var hasSpecialDoseUnit = function (doseUnits) {
+            return _.some(Bahmni.Common.Constants.orderSetSpecialUnits,{name:doseUnits});
+        };
+
+        var getRuleForUnits = function (doseUnits) {
+            return (_.find(Bahmni.Common.Constants.orderSetSpecialUnits,{name:doseUnits})).rule;
+        };
+
+        this.getCalculatedDose = function (patientUuid, baseDose, doseUnits) {
             if (hasSpecialDoseUnit(doseUnits)) {
-                return $http.get(someUrl, {
+                var rule = getRuleForUnits(doseUnits);
+                return $http.get(Bahmni.Common.Constants.calculateDose, {
                     params: {
                         patientUuid: patientUuid,
-                        baseDose: baseDose
+                        baseDose: baseDose,
+                        rule:rule
                     },
                     withCredentials: true,
                     headers: {"Accept": "application/json", "Content-Type": "application/json"}
-                }).then(function (calculatedDose) {
-                    return calculatedDose;
+                }).then(function (response) {
+                    return response.data;
                 });
             }
             var deferred = $q.defer();
