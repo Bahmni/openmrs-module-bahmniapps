@@ -81,6 +81,13 @@
         } 
       }
     }
+    .formDataTime{
+      width:27%;
+      text-align: right;
+      .formDataEdit{
+        padding:0 !important;
+      }
+    }
   }
   table tr th {
     background: $lightestGray;
