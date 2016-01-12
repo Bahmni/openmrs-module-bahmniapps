@@ -10,7 +10,7 @@ angular.module('bahmni.clinical').factory('consultationInitialization',
                 }
 
                 var getEncounterType = function() {
-                    return encounterService.getEncounterType(programUuid);
+                    return encounterService.getEncounterType(programUuid, sessionService.getLoginLocationUuid());
                 };
 
                 var consultationMapper = new Bahmni.ConsultationMapper(configurations.dosageFrequencyConfig(), configurations.dosageInstructionConfig(),
