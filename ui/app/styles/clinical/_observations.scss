@@ -14,56 +14,57 @@
     }
   }
   fieldset {
-    position:relative;
-    width: 100%;
-    fieldset {
-      .form-group {
-        label span {
-          text-transform: capitalize;
-        }
-      }
-      legend + .form-group {
-        padding: 10px;
-        border: 1px solid $lightGray;
-        margin-top: 20px;
-        border-radius: 5px;
-        legend {
-          color: #8E8D8D;
-          top: 8px;
-          left: 30px;
-        }
-        legend + .form-group {
-          padding: 10px 0;
-          background: $lightestGray;
-        }
-      }
-      legend {
-        position:absolute;
-        top:7px;
-        left:20px;
-        padding:5px 10px;
-        font-family: $OpenSansBoldFont;
-        font-size: 14px;
-        color: $mediumGray;
-        border: 1px solid lighten($mediumGray, 20%);
-        border-radius: 20px;
-        text-transform: none;
-        .add-more {
-          padding-left: 10px;
-          margin-left: 10px;
-          border-left: 1px solid #ccc;
-        }
-        .add-more-btn {
-          font-size: 10px;
-          padding: 3px;
-        }
-      }
-      .form-field-group {
-        label.control-label {
-          margin-left: 0;
-        }
+    .form-group {
+      label span {
+        text-transform: capitalize;
       }
     }
+    legend + .form-group {
+      padding: 10px;
+      border: 1px solid $lightGray;
+      margin-top: 20px;
+      border-radius: 5px;
+      legend {
+        color: #8E8D8D;
+        top: 8px;
+        left: 30px;
+      }
+      legend + .form-group {
+        padding: 10px 0;
+        background: $lightestGray;
+      }
+    }
+    legend {
+      position:absolute;
+      top:7px;
+      left:20px;
+      padding:5px 10px;
+      font-family: $OpenSansBoldFont;
+      font-size: 14px;
+      color: $mediumGray;
+      border: 1px solid lighten($mediumGray, 20%);
+      border-radius: 20px;
+      text-transform: none;
+      font-size: 12px;
+      .add-more {
+        padding-left: 10px;
+        margin-left: 10px;
+        border-left: 1px solid #ccc;
+      }
+      .add-more-btn {
+        font-size: 10px;
+        padding: 3px;
+      }
+    }
+    .form-field-group {
+      label.control-label {
+        margin-left: 0;
+      }
+    }
+  }
+  fieldset {
+    position:relative;
+    width: 100%;
     &.collapsible-set{
       &.collapsed legend + .form-group {
         border: none;

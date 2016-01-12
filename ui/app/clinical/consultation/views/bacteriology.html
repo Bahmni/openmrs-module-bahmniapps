@@ -66,17 +66,10 @@
                         </article>
                     </section>
 
-
-                </div>
-
-                <div class="box" ng-if="newSpecimen.dateCollected">
-                    <concept-set patient="patient" concept-set-name="additionalAttributesConceptName"
+                    <concept-set show-title="false" patient="patient" concept-set-name="additionalAttributesConceptName"
                                  observations="newSpecimen.sample.additionalAttributes"></concept-set>
-                </div>
-
-                <div class="box" ng-if="newSpecimen.dateCollected">
-                    <concept-set patient="patient" concept-set-name="resultsConceptName" collapse-inner-sections="!newSpecimen.atLeastOneResult()"
-                                 observations="newSpecimen.report.results"></concept-set>
+                    <concept-set  patient="patient" concept-set-name="resultsConceptName" collapse-inner-sections="!newSpecimen.atLeastOneResult()"
+                                      observations="newSpecimen.report.results"></concept-set>
                 </div>
             </section>
         </form>
