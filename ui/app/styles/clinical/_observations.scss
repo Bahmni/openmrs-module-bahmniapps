@@ -376,6 +376,7 @@ concept-set {
 }
 .concept-set-description {
   font-size: 12px;
+  margin-top:15px;
 }
 .concept-tooltip-trigger {
   cursor: pointer;
@@ -475,5 +476,10 @@ concept-set {
   }
   th{
     font-size: 11px;
+  }
+}
+.vitals {
+  .mylegend #removeClonedObs.fa-remove {
+    margin-top: 0;
   }
 }
