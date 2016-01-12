@@ -8,7 +8,7 @@ angular.module('bahmni.common.uicontrols.programmanagment')
 
     var isAttributeRequired = function(attribute){
         var attributeName = attribute.attributeType.display;
-        return programConfiguration[attributeName] && programConfiguration[attributeName].required;
+        return programConfiguration && programConfiguration[attributeName] && programConfiguration[attributeName].required;
     };
 
     this.filterRetiredPrograms = function (programs) {
@@ -36,8 +36,8 @@ angular.module('bahmni.common.uicontrols.programmanagment')
     };
 
     var mapAttributes = function(attribute){
-        attribute.name = attribute.attributeType.description ? attribute.attributeType.description : attribute.attributeType.display;
-        attribute.value = attribute.value;
+        attribute.name = attribute.attributeType.description ? attribute.attributeType.description : attribute.name;
+        attribute.value = isNaN(Date.parse(attribute.value) )? attribute.value :  Bahmni.Common.Util.DateUtil.formatDateWithoutTime(attribute.value);
         attribute.required = isAttributeRequired(attribute);
 
     };

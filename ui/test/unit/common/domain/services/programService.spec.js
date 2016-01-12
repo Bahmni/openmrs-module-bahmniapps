@@ -394,4 +394,110 @@ describe('programService', function () {
 
         programService.getProgramAttributeTypes();
     })
-})
+
+    describe("Program attributes",function(){
+        var programResponse = [
+            {
+                "uuid": "someProgram1Uuid",
+                "name": "Test Program 1",
+                "retired": false,
+                "outcomesConcept": {},
+                "allWorkflows": [],
+                "attributes":[]
+            }];
+
+            var today = DateUtil.endOfToday();
+            var tenDaysAgo = DateUtil.addDays(today, -10);
+            var data = {
+                data: {
+                    results: [
+                        {
+                            "display": "Tuberculosis Program",
+                            "dateEnrolled": DateUtil.parseLongDateToServerFormat(tenDaysAgo),
+                            "dateCompleted": null,
+                            "patient":{"uuid":"ad95e200-6196-4438-a078-16ad0506a473"},
+                            "states": [],
+                            "program": {
+                                "name": "program",
+                                "uuid": "1209df07-b3a5-4295-875f-2f7bae20f86e",
+                                "retired": false,
+                                "allWorkflows": []
+                            },
+                            "attributes": [{
+                                "attributeType": {
+                                    "description": "sample att description",
+                                    "display": "endtbName",
+                                    "links": Array[1],
+                                    "retired": false,
+                                    "uuid": "4131c8cf-bf60-47c5-a46c-9142c554ab85"
+                                },
+                                "display": "endtbName: bmn",
+                                "links": Array[2],
+                                "name": "sample att name",
+                                "resourceVersion": "1.9",
+                                "uuid": "79f68f3e-a2b2-4680-bf9d-86cb3124d6e5",
+                                "value": "bmn",
+                                "voided": false
+                            }],
+                            "outcome": null
+                        }
+                    ]
+                }
+            };
+
+            var patientUuid = "somePatientUuid";
+
+        it("should have attributes field in the response even though attributes are not registered", function(){
+            spyOn(programService, 'savePatientProgram').and.returnValue(programResponse);
+
+            expect(programService.savePatientProgram()[0].attributes).toEqual([]);
+
+        });
+
+        it("should have attribute representation", function(done){
+
+            mockHttp.get.and.returnValue({
+                then: function(callback){
+                    var groupedPrograms= callback(data);
+                    expect(groupedPrograms.activePrograms[0].attributes[0].name).toEqual("sample att description");
+                    done();
+                }
+            });
+
+            programService.getPatientPrograms(patientUuid);
+
+
+        });
+
+        it("should have attribute name if description is not available", function(done){
+            data.data.results[0].attributes =  [{
+                "attributeType": {
+                    "description":null,
+                    "display": "endtbName",
+                    "links": Array[1],
+                    "retired": false,
+                    "uuid": "4131c8cf-bf60-47c5-a46c-9142c554ab85"
+                },
+                "display": "endtbName: bmn",
+                "links": Array[2],
+                "name": "sample att name",
+                "resourceVersion": "1.9",
+                "uuid": "79f68f3e-a2b2-4680-bf9d-86cb3124d6e5",
+                "value": "bmn",
+                "voided": false
+            }];
+            
+            mockHttp.get.and.returnValue({
+                then: function(callback){
+                    var groupedPrograms= callback(data);
+                    expect(groupedPrograms.activePrograms[0].attributes[0].name).toEqual("sample att name");
+                    done();
+                }
+            });
+
+            programService.getPatientPrograms(patientUuid);
+
+
+        })
+    })
+});
