@@ -3,25 +3,6 @@
 angular.module('bahmni.registration')
     .factory('offlinePatientService', ['$http', '$q', 'offlineService', 'offlineCommonService','offlineSearchService', function ($http, $q, offlineService, offlineCommonService, offlineSearchService) {
 
-        var getNameSearchCondition = function (nameParts) {
-            var BY_NAME_PARTS = " (coalesce(givenName" +
-                ", '') || coalesce(middleName" +
-                ", '') || coalesce(familyName, '')) like ";
-            if (nameParts.length == 0)
-                return "";
-            else {
-                var queryByNameParts = "";
-                angular.forEach(nameParts, function (part) {
-                    if (!_.isEmpty(queryByNameParts)) {
-                        queryByNameParts += " and " + BY_NAME_PARTS + " '%" + part + "%'";
-                    } else {
-                        queryByNameParts += BY_NAME_PARTS + " '%" + part + "%'";
-                    }
-                });
-                return queryByNameParts;
-            }
-        };
-
         var search = function (params) {
             if (offlineService.getAppPlatform() === Bahmni.Common.Constants.platformType.android) {
                 var returnValue = JSON.parse(Android.search(JSON.stringify(params)));
