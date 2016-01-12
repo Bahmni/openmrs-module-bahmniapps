@@ -6,7 +6,7 @@ describe('EventLogService', function () {
     var mockHttp = jasmine.createSpyObj('$http', ['get']);
 
     beforeEach(function () {
-        module('bahmni.offline');
+        module('bahmni.common.offline');
         module(function ($provide) {
             $provide.value('$http', mockHttp);
         });

@@ -1,12 +1,13 @@
 'use strict';
 
-angular.module('bahmni.offline')
-    .controller('DashboardController', ['$scope', 'eventLogService',
-        function ($scope, eventLogService) {
-            $scope.catchmentNumber = 202020;
+angular.module('bahmni.common.offline')
+    .service('offlineSyncService', ['eventLogService', 'offlineCommonService',
+        function (eventLogService, offlineCommonService) {
 
-            $scope.sync = function () {
-                eventLogService.getEventsFor($scope.catchmentNumber).then(function (response) {
+            var sync = function () {
+                //todo: Hemanth|Santhosh get catchment number from login location
+                eventLogService.getEventsFor(202020).then(function (response) {
+                    console.log(response);
                     readEvent(response.data, 0);
                 });
             };
@@ -20,12 +21,17 @@ angular.module('bahmni.offline')
                 eventLogService.getDataForUrl(event.object).then(function (response) {
                     switch (event.category) {
                         case 'patient':
+                            offlineCommonService.createPatient({patient: response.data});
                             break;
                         case 'Encounter':
                             break;
                     }
                     readEvent(events, ++index);
                 });
+            };
+
+            return {
+                sync: sync
             }
         }
     ]);

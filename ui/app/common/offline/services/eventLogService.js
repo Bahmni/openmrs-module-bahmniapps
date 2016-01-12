@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('bahmni.offline')
+angular.module('bahmni.common.offline')
     .factory('eventLogService', ['$http', function ($http) {
         var getEventsFor = function (catchmentNumber) {
             return $http.get('/event-log-service/rest/eventlog/getevents', {

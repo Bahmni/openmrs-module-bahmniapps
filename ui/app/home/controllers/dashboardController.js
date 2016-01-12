@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('bahmni.home')
-    .controller('DashboardController', ['$rootScope', '$scope', '$state', 'appService', 'locationService', 'spinner', '$bahmniCookieStore', '$window','offlineCommonService','offlineService',
-        function ($rootScope, $scope, $state, appService, locationService, spinner, $bahmniCookieStore, $window, offlineCommonService, offlineService) {
+    .controller('DashboardController', ['$rootScope', '$scope', '$state', 'appService', 'locationService', 'spinner', '$bahmniCookieStore', '$window', 'offlineCommonService', 'offlineService', 'offlineSyncService', 'offlineDb',
+        function ($rootScope, $scope, $state, appService, locationService, spinner, $bahmniCookieStore, $window, offlineCommonService, offlineService, offlineSyncService, offlineDb) {
             $scope.appExtensions = appService.getAppDescriptor().getExtensions($state.current.data.extensionPointId, "link") || [];
             $scope.selectedLocationUuid = {};
 
@@ -11,6 +11,10 @@ angular.module('bahmni.home')
             };
 
             var init = function () {
+                offlineCommonService.init(offlineDb);
+                offlineCommonService.populateData();
+                offlineSyncService.sync();
+
                 return locationService.getAllByTag("Login Location").then(function (response) {
                         $scope.locations = response.data.results;
                         $scope.selectedLocationUuid = getCurrentLocation().uuid;
@@ -18,8 +22,8 @@ angular.module('bahmni.home')
                 );
             };
 
-            var getLocationFor = function(uuid){
-                return _.find($scope.locations, function(location){
+            var getLocationFor = function (uuid) {
+                return _.find($scope.locations, function (location) {
                     return location.uuid == uuid;
                 })
             };
@@ -28,19 +32,13 @@ angular.module('bahmni.home')
                 return getCurrentLocation().uuid === location.uuid;
             };
 
-            $scope.syncData = function() {
-                if (offlineService.getAppPlatform() === Bahmni.Common.Constants.platformType.android) {
-                    Android.populateData(window.location.origin);
-                }
-                else {
-                    offlineCommonService.populateData();
-                }
-            };
-
             $scope.onLocationChange = function () {
                 var selectedLocation = getLocationFor($scope.selectedLocationUuid);
                 $bahmniCookieStore.remove(Bahmni.Common.Constants.locationCookieName);
-                $bahmniCookieStore.put(Bahmni.Common.Constants.locationCookieName, {name: selectedLocation.display, uuid: selectedLocation.uuid},{path: '/', expires: 7});
+                $bahmniCookieStore.put(Bahmni.Common.Constants.locationCookieName, {
+                    name: selectedLocation.display,
+                    uuid: selectedLocation.uuid
+                }, {path: '/', expires: 7});
                 $window.location.reload();
             };
 

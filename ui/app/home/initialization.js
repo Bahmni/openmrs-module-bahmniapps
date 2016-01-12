@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('bahmni.home')
-    .factory('dashboardInitialization', ['$rootScope', '$q', 'appService', 'spinner', 'offlineService', '$bahmniCookieStore','initializeOfflineSchema',
+    .factory('offlineDbInitialization', ['$rootScope', '$q', 'appService', 'spinner', 'offlineService', '$bahmniCookieStore','initializeOfflineSchema',
         function ($rootScope, $q, appService, spinner, offlineService, $bahmniCookieStore, initializeOfflineSchema) {
             var setPlatformCookie = function () {
                 var platform = Bahmni.Common.Constants.platformType.chrome;
@@ -30,7 +30,11 @@ angular.module('bahmni.home')
             };
 
             return function() {
-                return spinner.forPromise(initializeOfflineSchema.initSchema().then(initApp));
+                return initializeOfflineSchema.initSchema().then(function(db){
+                    return initApp().then(function(){
+                        return db;
+                    })
+                });
             };
         }
     ])
