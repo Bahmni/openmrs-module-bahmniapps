@@ -15,7 +15,7 @@
     background-color: #F3F2F2;
     margin-right: 10px;
     select{
-      height: 33px;
+      //height: 33px;
       float: left;
       max-width: 200px;
     }
@@ -37,7 +37,7 @@
       min-width: 0;
       width: 200px;
       display: inline-block;
-      margin-top: 0;
+      //margin-top: 0;
       margin-right: 10px;
     }
     label.start-date-label {
@@ -46,10 +46,10 @@
       margin-left: 10px;
     }
     input {
-      padding: 5px 10px !important;
+      //padding: 5px 10px !important;
     }
     select {
-      height: 33px;
+      //height: 33px;
     }
     .select-program-option {
       padding: 10px 15px;
@@ -424,6 +424,8 @@
         width: 43%;
         display: inline-block;
         border-bottom: none;
+        padding: 0;
+        padding-left: 0;
       }
     h2.programAttribute-title{
       color: #000;
@@ -432,6 +434,10 @@
       border-bottom: 1px solid #ccc;
       padding: 5px 0;
       font-family: openSansSemiBold;;
+    }
+    section .form-field{
+      padding: 0;
+      padding-left: 0;
     }
   }
 }
