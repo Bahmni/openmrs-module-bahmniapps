@@ -90,7 +90,7 @@ angular.module('opd.documentupload')
 
             var getVisits = function () {
                 return visitService.search({patient: $rootScope.patient.uuid, v: customVisitParams, includeInactive: true}).then(function (response) {
-                    var visits = response.results;
+                    var visits = response.data.results;
                     if (visits.length > 0) {
                         if (!visits[0].stopDatetime){
                             $scope.currentVisit = visits[0];

@@ -44,7 +44,7 @@ describe('VisitController', function () {
 
     var searchActiveVisits = function (data) {
         return {
-            then: function (successFn) {
+            success: function (successFn) {
                 successFn({results: data});
             }
         };
@@ -55,7 +55,7 @@ describe('VisitController', function () {
                 successFn({data: summaryData});
             }
         };
-    };
+    }
 
 
     var sampleConfig = {
