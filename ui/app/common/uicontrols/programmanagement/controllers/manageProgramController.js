@@ -14,7 +14,10 @@ angular.module('bahmni.common.uicontrols.programmanagment')
             var updateActiveProgramsList = function () {
                 spinner.forPromise(programService.getPatientPrograms($scope.patient.uuid).then(function (programs) {
                     $scope.activePrograms = programs.activePrograms;
+                    $scope.activePrograms.showProgramSection = true;
+
                     $scope.endedPrograms = programs.endedPrograms;
+                    $scope.endedPrograms.showProgramSection = true;
                 }));
             };
 
@@ -27,6 +30,7 @@ angular.module('bahmni.common.uicontrols.programmanagment')
                 $scope.programEnrollmentDate = getCurrentDate();
                 spinner.forPromise(programService.getAllPrograms().then(function(programs) {
                     $scope.allPrograms = programs;
+                    $scope.allPrograms.showProgramSection = true;
                 }));
 
                 spinner.forPromise(programService.getProgramAttributeTypes().then(function (programAttributeTypes) {

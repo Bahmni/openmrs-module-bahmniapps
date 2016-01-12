@@ -1,13 +1,13 @@
 <div class="program-enrollment-container">
     <div class="select-program-container form">
         <section class="block dashboard-section">
-            <h2 class="section-title ng-binding">
-                <!--<i class="fa fa-caret-right"></i>-->
-                <i class="fa fa-caret-down"></i>
+            <h2 class="section-title" toggle="allPrograms.showProgramSection">
+                <i class="fa fa-caret-right" ng-show="!allPrograms.showProgramSection"></i>
+                <i class="fa fa-caret-down" ng-show="allPrograms.showProgramSection"></i>
                 {{'PROGRAM_MANAGEMENT_SELECT_PROGRAM_KEY' | translate}}
             </h2>
 
-            <form class="select-program-option" ng-submit="enrollPatient()">
+            <form class="select-program-option" ng-submit="enrollPatient()" ng-show="allPrograms.showProgramSection">
                 <select ng-model="programSelected" ng-options="program.name for program in allPrograms" data-ng-change="setWorkflowStates(programSelected)">
                     <option value="">{{'PROGRAM_MANAGEMENT_CHOOSE_PROGRAM_KEY' | translate}}</option>
                 </select>
@@ -39,48 +39,32 @@
 
     <div class="active-program-container" id="activePrograms" ng-show="hasPatientEnrolledToSomePrograms()">
         <section class="block dashboard-section">
-            <h2 class="section-title ng-binding">
-                <i class="fa fa-caret-right"></i>
-                <!--<i class="fa fa-caret-down"></i>-->
+            <h2 class="section-title" toggle="activePrograms.showProgramSection">
+                <i class="fa fa-caret-right" ng-show="!activePrograms.showProgramSection"></i>
+                <i class="fa fa-caret-down" ng-show="activePrograms.showProgramSection"></i>
                 {{'PROGRAM_MANAGEMENT_ACTIVE_PROGRAM_KEY' | translate}}
             </h2>
             <div ng-if="hasPatientEnrolledToSomePrograms()">
-                <div ng-repeat="patientProgram in activePrograms" class="program-stuff">
+                <div ng-repeat="patientProgram in activePrograms" class="program-stuff" ng-show="activePrograms.showProgramSection">
                     <ng-include src="'../common/uicontrols/programmanagement/views/programRow.html'" ng-init="active=true"></ng-include>
                 </div>
             </div>
-
-<!--            <div class="note-container" ng-show="!hasPatientEnrolledToSomePrograms()">
-                <div class="note warning">
-                    <div class="text placholder-text">
-                        <p>{{'PATIENT_NOT_ENROLLED_TO_PROGRAMS_MESSAGE_KEY' | translate}}</p>
-                    </div>
-                </div>
-            </div>-->
         </section>
     </div>
 
     <div class="inactive-program-container" ng-show="hasPatientAnyPastPrograms()">
         <section class="block dashboard-section">
-            <h2 class="section-title ng-binding">
-                <i class="fa fa-caret-right" ></i>
-                <!--<i class="fa fa-caret-down"></i>-->
+            <h2 class="section-title" toggle="endedPrograms.showProgramSection">
+                <i class="fa fa-caret-right" ng-show="!endedPrograms.showProgramSection"></i>
+                <i class="fa fa-caret-down" ng-show="endedPrograms.showProgramSection"></i>
                 {{'PROGRAM_MANAGEMENT_PAST_PROGRAM_KEY' | translate}}
             </h2>
 
             <div ng-if="hasPatientAnyPastPrograms()">
-                <div ng-repeat="program in endedPrograms" class="program-stuff">
+                <div ng-repeat="program in endedPrograms" class="program-stuff" ng-show="endedPrograms.showProgramSection">
                     <ng-include src="'../common/uicontrols/programmanagement/views/pastProgramRow.html'" ng-init="active=false"></ng-include>
                 </div>
             </div>
-
-            <!--<div class="note-container" ng-show="!hasPatientAnyPastPrograms()">
-                <div class="note warning">
-                    <div class="text placeholder-text">
-                        <p>{{'PATIENT_DOESNT_HAVE_PREVIOUS_PROGRAMS_MESSAGE_KEY' | translate}}</p>
-                    </div>
-                </div>
-            </div>-->
         </section>
     </div>
 </div>
