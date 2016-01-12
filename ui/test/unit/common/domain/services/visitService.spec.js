@@ -7,7 +7,13 @@ describe('Registration Visit Service', function () {
     var uuid = "9e23a1bb-0615-4066-97b6-db309c9c6447";
 
     var mockHttp = {
-        get: jasmine.createSpy('Http get').and.returnValue({'results': [{'uuid': uuid}]}),
+        get: jasmine.createSpy('Http get').and.returnValue({
+            'success' : function(){
+                return {
+                    'results': [{'uuid': uuid}]
+                }
+            }
+        }),
         post: jasmine.createSpy('Http post').and.returnValue({
             'success': function (onSuccess) {
                 return {

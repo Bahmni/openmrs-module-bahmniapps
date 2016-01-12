@@ -37,7 +37,7 @@ angular.module('bahmni.common.uiHelper')
             var p = $rootScope.db.getSchema().table('patient');
             return $rootScope.db.select(p.identifier, p.givenName, p.familyName, p.gender, p.birthdate, p.uuid)
                 .from(p)
-                .where(p.identifier.eq(patientIdentifier.toUpperCase())).exec().th
+                .where(p.identifier.eq(patientIdentifier.toUpperCase())).exec()
                 .then(function (result) {
                     return {data: {pageOfResults: result}};
                 });
@@ -188,9 +188,9 @@ angular.module('bahmni.common.uiHelper')
                         }
                     })();
                 }
+                var tx = $rootScope.db.createTransaction();
+                tx.exec(queries);
             }
-            var tx = $rootScope.db.createTransaction();
-            tx.exec(queries);
         };
 
         var getAddressColumns = function () {
