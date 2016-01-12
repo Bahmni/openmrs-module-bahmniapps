@@ -5,7 +5,7 @@ angular.module('bahmni.clinical')
         this.getVisitHistory = function (patientUuid) {
             return visitService.search({patient: patientUuid, v: 'custom:(uuid,visitType,startDatetime,stopDatetime,encounters:(uuid))', includeInactive: true})
                 .then(function (data) {
-                    var visits = data.results.map(function (visitData) {
+                    var visits = data.data.results.map(function (visitData) {
                         return new Bahmni.Clinical.VisitHistoryEntry(visitData);
                     });
                     var activeVisit = visits.filter(function (visit) {

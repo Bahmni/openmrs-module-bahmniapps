@@ -48,8 +48,6 @@ angular.module('bahmni.common.domain')
             return $http.get(Bahmni.Common.Constants.visitUrl, {
                 params: parameters,
                 withCredentials: true
-            }).success(function(result){
-                return result.data;
             });
         };
 
