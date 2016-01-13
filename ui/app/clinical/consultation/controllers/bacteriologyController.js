@@ -43,7 +43,7 @@ angular.module('bahmni.clinical')
                 $scope.consultation.deletedSpecimens = $scope.deletedSpecimens;
                 $scope.consultation.savedSpecimens = $scope.savedSpecimens;
                 var dirtySpecimen = _.find($scope.newSpecimens, function (specimen) {
-                    return specimen.isDirty();
+                    return (specimen.isDirty());
                 });
                 if(dirtySpecimen) {
                     dirtySpecimen.hasIllegalDateCollected = !dirtySpecimen.dateCollected;
