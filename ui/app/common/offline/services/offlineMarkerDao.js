@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('bahmni.common.uiHelper')
+angular.module('bahmni.common.offline')
     .service('offlineMarkerDao', [function () {
         var db;
 

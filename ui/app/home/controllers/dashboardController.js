@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('bahmni.home')
-    .controller('DashboardController', ['$rootScope', '$scope', '$state', 'appService', 'locationService', 'spinner', '$bahmniCookieStore', '$window', 'offlinePatientDao', 'offlineService', 'offlineSyncService', 'offlineDb',
-        function ($rootScope, $scope, $state, appService, locationService, spinner, $bahmniCookieStore, $window, offlinePatientDao, offlineService, offlineSyncService, offlineDb) {
+    .controller('DashboardController', ['$rootScope', '$scope', '$state', 'appService', 'locationService', 'spinner', '$bahmniCookieStore', '$window',
+        function ($rootScope, $scope, $state, appService, locationService, spinner, $bahmniCookieStore, $window) {
             $scope.appExtensions = appService.getAppDescriptor().getExtensions($state.current.data.extensionPointId, "link") || [];
             $scope.selectedLocationUuid = {};
 
