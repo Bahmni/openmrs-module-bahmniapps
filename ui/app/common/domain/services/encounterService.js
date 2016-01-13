@@ -30,10 +30,18 @@ angular.module('bahmni.common.domain')
         });
     };
 
-    this.getEncounterType = function (programUuid) {
-        if(programUuid == null) {
-            return getDefaultEncounterType();
-        }
+    var getEncounterTypeBasedOnLoginLocation = function (loginLocationUuid) {
+        return $http.get(Bahmni.Common.Constants.entityMappingUrl, {
+            params: {
+                entityUuid: loginLocationUuid,
+                mappingType: 'location_encountertype',
+                s: 'byEntityAndMappingType'
+            },
+            withCredentials: true
+        });
+    };
+
+    var getEncounterTypeBasedOnProgramUuid = function (programUuid) {
         return $http.get(Bahmni.Common.Constants.entityMappingUrl, {
             params: {
                 entityUuid: programUuid,
@@ -41,14 +49,34 @@ angular.module('bahmni.common.domain')
                 s: 'byEntityAndMappingType'
             },
             withCredentials: true
-        }).then(function (response) {
-            var encounterType=response.data.results[0].mappings[0];
-            if(!encounterType) {
-                encounterType = getDefaultEncounterType();
-            }
-            return encounterType;
         });
     };
+
+    var  getDefaultEncounterTypeIfMappingNotFound = function(entityMappings){
+        var encounterType = entityMappings.data.results[0].mappings[0];
+        if (!encounterType) {
+            encounterType = getDefaultEncounterType();
+        }
+        return encounterType;
+
+    };
+
+    this.getEncounterType = function (programUuid, loginLocationUuid) {
+        if (programUuid) {
+            return getEncounterTypeBasedOnProgramUuid(programUuid).then(function (response) {
+                return getDefaultEncounterTypeIfMappingNotFound(response);
+            });
+        }
+        else if (loginLocationUuid) {
+            return getEncounterTypeBasedOnLoginLocation(loginLocationUuid).then(function (response) {
+                return getDefaultEncounterTypeIfMappingNotFound(response);
+            });
+        } else {
+            return getDefaultEncounterType();
+        }
+
+    };
+
 
     this.create = function (encounter) {
         encounter = this.buildEncounter(encounter);

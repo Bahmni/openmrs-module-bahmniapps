@@ -65,6 +65,10 @@ angular.module('bahmni.registration')
         };
 
         var generateIdentifier = function (patient) {
+            if(offlineService.offline()) {
+                return offlinePatientService.generateOfflineIdentifier();
+            }
+
             var data = {"identifierSourceName": patient.identifierPrefix ? patient.identifierPrefix.prefix : ""};
             var url = openmrsUrl + "/ws/rest/v1/idgen";
             var config = {
@@ -118,7 +122,11 @@ angular.module('bahmni.registration')
                 withCredentials: true,
                 headers: {"Accept": "application/json", "Content-Type": "application/json"}
             };
-            return $http.post(url, data, config);
+            var deferred = $q.defer();
+             $http.post(url, data, config).success(function(result){
+                deferred.resolve(result);
+            });
+            return deferred.promise;
         };
 
         var updateImage = function (uuid, image) {

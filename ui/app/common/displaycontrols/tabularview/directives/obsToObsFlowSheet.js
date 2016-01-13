@@ -1,7 +1,7 @@
 'use strict';
 
-angular.module('bahmni.common.displaycontrol.obsVsObsFlowSheet').directive('obsToObsFlowSheet', ['$translate','spinner','observationsService','conceptSetService', '$q',
-        function ($translate, spinner, observationsService, conceptSetService, $q) {
+angular.module('bahmni.common.displaycontrol.obsVsObsFlowSheet').directive('obsToObsFlowSheet', ['$translate','spinner','observationsService','conceptSetService', '$q','conceptSetUiConfigService',
+        function ($translate, spinner, observationsService, conceptSetService, $q, conceptSetUiConfigService) {
             var link = function ($scope, element, attrs) {
             $scope.config = $scope.isOnDashboard ? $scope.section.dashboardParams : $scope.section.allDetailsParams;
             $scope.isEditable = $scope.config.isEditable;
@@ -88,8 +88,15 @@ angular.module('bahmni.common.displaycontrol.obsVsObsFlowSheet').directive('obsT
 
                     if (observations[index].concept.dataType === "Boolean") name = unBoolean(name);
 
-                    if(observations[index].concept.dataType === "Date"){
-                        name = Bahmni.Common.Util.DateUtil.formatDateWithoutTime(name);
+                    if (observations[index].concept.dataType === "Date") {
+                        var conceptName = observations[index].concept.name;
+                        if (conceptName && conceptSetUiConfigService.getConfig()[conceptName] && conceptSetUiConfigService.getConfig()[conceptName].displayMonthAndYear == true) {
+                            name = Bahmni.Common.Util.DateUtil.getDateInMonthsAndYears(name);
+                        }
+                        else {
+                            name = Bahmni.Common.Util.DateUtil.formatDateWithoutTime(name);
+                        }
+
                     }
 
                     list.push(name);

@@ -16,22 +16,28 @@ Bahmni.Common.Obs.Observation = function () {
             return this.concept.conceptClass === "Image";
         },
 
-        hasPDFAsValue: function(){
+        hasPDFAsValue: function () {
             return (this.value.indexOf(".pdf") > 0);
         },
 
         getDisplayValue: function () {
+            var value;
             if (this.type === "Boolean") {
                 return this.value === true ? "Yes" : "No";
             }
-            if(this.type === "Datetime") {
+            if (this.type === "Datetime") {
+
                 var date = Bahmni.Common.Util.DateUtil.parseDatetime(this.value);
                 return date != null ? Bahmni.Common.Util.DateUtil.formatDateWithTime(date) : "";
             }
-            if(this.type === "Date") {
+            if (this.conceptConfig && this.conceptConfig.displayMonthAndYear) {
+                value = Bahmni.Common.Util.DateUtil.getDateInMonthsAndYears(this.value);
+                if (value != null) return value;
+            }
+            if (this.type === "Date") {
                 return this.value ? Bahmni.Common.Util.DateUtil.formatDateWithoutTime(this.value) : "";
             }
-            var value = this.value;
+            value = this.value;
             var displayValue = value && (value.shortName || value.name || value);
             if (this.duration) {
                 displayValue = displayValue + " " + this.getDurationDisplayValue();
@@ -42,11 +48,11 @@ Bahmni.Common.Obs.Observation = function () {
         getDurationDisplayValue: function () {
             var durationForDisplay = Bahmni.Common.Util.DateUtil.convertToUnits(this.duration);
             return "since " + durationForDisplay["value"] + " " + durationForDisplay["unitName"];
-        }};
-
+        }
+    };
 
 
     return Observation;
-    
+
 }();
 

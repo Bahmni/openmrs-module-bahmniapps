@@ -55,10 +55,10 @@ module.exports = function (grunt) {
         coverage: {
             options: {
                 thresholds: {
-                    'statements': 58.5,
-                    'branches': 48.1,
-                    'functions': 49.7,
-                    'lines': 58.8
+                    'statements': 58.9,
+                    'branches': 48.3,
+                    'functions': 50.0,
+                    'lines': 59.2
                 },
                 dir: 'coverage',
                 root: '.'
@@ -88,6 +88,7 @@ module.exports = function (grunt) {
                     '<%= yeoman.dist %>/**/*.js',
                     '<%= yeoman.dist %>/**/*.css',
                     '!<%= yeoman.dist %>/initWorker.js',
+                    '!<%= yeoman.dist %>/components/sw-toolbox/sw-toolbox.js',
                     '!<%= yeoman.dist %>/worker.js'
                 ]
             }

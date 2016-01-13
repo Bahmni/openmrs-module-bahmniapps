@@ -13,6 +13,7 @@ describe("DocumentController", function () {
     var visit1, visit2;
     var visitDocument;
     var sessionService;
+    var visitService;
 
     var createVisit = function (startDateTime, stopDateTime, uuid) {
         var visit = new Bahmni.DocumentUpload.Visit();
@@ -129,7 +130,7 @@ describe("DocumentController", function () {
         visitDocumentService = jasmine.createSpyObj('visitDocumentService', ['save']);
         sessionService = jasmine.createSpyObj('sessionService', ['getLoginLocationUuid']);
         encounterService = jasmine.createSpyObj('encounterService',['find']);
-
+        visitService = jasmine.createSpyObj('visitService',['getVisitType']);
     }));
 
     var mockEncounterService = function (data) {
@@ -142,8 +143,19 @@ describe("DocumentController", function () {
         });
     };
 
+    var mockVisitService = function(data) {
+        visitService.getVisitType.and.callFake(function () {
+            return {
+                then: function (callback) {
+                    return callback({data: data})
+                }
+            }
+        });
+    };
+
     var setUp = function () {
         mockEncounterService([]);
+        mockVisitService([]);
         inject(function ($controller, $rootScope) {
             scope = $rootScope.$new();
 
@@ -172,7 +184,8 @@ describe("DocumentController", function () {
                 visitDocumentService: visitDocumentService,
                 encounterService: encounterService,
                 sessionService: sessionService,
-                $translate: translate
+                $translate: translate,
+                visitService: visitService
             });
             scope.visits = [visit1, visit2];
 

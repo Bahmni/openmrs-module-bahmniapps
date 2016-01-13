@@ -142,7 +142,7 @@
 </div>
 
 <div ng-repeat="(key, section) in ::patientConfiguration.getPatientAttributesSections()" class="additional-info-wrapper">
-    <div class="box-container form" ng-if="::(section.attributes.length > 0)">
+    <div class="box-container form" ng-if="::(section.attributes.length > 0 && section.title)">
         <legend class="additional-attribute" toggle="sectionVisibilityMap[key]">
           <span>
               <i class="fa fa-caret-right" ng-hide="sectionVisibilityMap[key]"></i>

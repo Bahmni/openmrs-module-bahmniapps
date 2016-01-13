@@ -3,29 +3,25 @@
         <div>
             <form name="myForm" ng-init="disableFormSubmitOnEnter()" class="visit-patient" ng-submit="submit()">
                 <div class="box-container">
-                    <div class="mylegend"><span><strong>{{ ::'REGISTRATION_LABEL_SUMMARY' | translate}}</strong></span></div>
-                    <div class="photo-container-wrapper">
-                        <span class="pull-right photo-container">
-                                <img id="patient-image" ng-src="{{patient.image}}"
-                                     onerror="this.onerror=null;this.src='../images/blank-user.gif';"/>
-                                <div ng-model="patient.image" capture-photo="updatePatientImage" class="capture-photo-btn"></div>
-                         </span>
-                    </div>
+
+                    <legend class="registraion_legend first-registraion_legend">
+                        <span class="mylegend"><strong>{{ ::'REGISTRATION_LABEL_SUMMARY' | translate}}</strong></span>
+                    </legend>
                     <section>
-                        <div class="form-field">
+                        <div class="form-field fl">
                             <div class="field-attribute">
-                                <label for="patientId">{{ ::'REGISTRATION_LABEL_PATIENT_IDENTIFIER' | translate}}</label>
+                                <label for="patientId">{{ ::'REGISTRATION_LABEL_PATIENT_IDENTIFIER' | translate}} : </label>
                             </div>
                             <div class="field-value">
-                                <input id="patientId" ng-model="patient.identifier" readonly type="text">
+                                <label class="control-label"><strong>{{patient.identifier}}</strong></label>
                             </div>
                         </div>
-                        <div class="form-field photocontainer-spacing">
+                        <div class="form-field photocontainer-spacing clearfix">
                             <div class="field-attribute">
-                                <label class="control-label" for="patientName">{{ ::'REGISTRATION_LABEL_PATIENT_NAME' | translate}}</label>
+                                <label class="control-label" for="patientName">{{ ::'REGISTRATION_LABEL_PATIENT_NAME' | translate}} : </label>
                             </div>
                             <div class="field-value">
-                                <input id="patientName" ng-model="patient.name" readonly type="text">
+                                <label class="control-label"><strong>{{patient.name}}</strong></label>
                             </div>
                         </div>
                     </section>
@@ -40,13 +36,13 @@
                                 <article class="fl">
                                     <concept-set concept-set-name="::conceptSet.options.conceptName" required="::conceptSet.options.required" patient="patient" observations="observations" obs-scope="::conceptSet.options.scope" show-title="false" concept-set-focused="$index === 0"></concept-set>
                                 </article>
-                                    <article class="obs-section fr">
+                                <article class="obs-section fr">
                                     <bahmni-observation patient="patient" config="{conceptNames: conceptSet.options.conceptNames, scope: 'latest'}" section-title="'REGISTRATON_LATEST_KEY'"></bahmni-observation>
                                 </article>
                             </div>
-                            <div ng-if="::!conceptSet.options.showLatest">
+                            <article class="fl" ng-if="::!conceptSet.options.showLatest">
                                 <concept-set concept-set-name="::conceptSet.options.conceptName" required="::conceptSet.options.required" patient="patient" observations="observations" obs-scope="::conceptSet.options.scope" show-title="false" concept-set-focused="$index === 0"></concept-set>
-                            </div>
+                            </article>
                         </div>
                     </section>
                 </div>

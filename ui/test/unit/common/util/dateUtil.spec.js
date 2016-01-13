@@ -309,4 +309,10 @@ describe('DateUtil', function () {
             expect(dateUtil.getDateWithoutTime(null)).toBe(null);
         });
     });
+
+    describe("getDateWithMonthsAndYears", function(){
+        it("should return date with months and years", function(){
+           expect(dateUtil.getDateInMonthsAndYears(new Date('2014', '7', '15', '12','30','25'))).toBe('Aug 14');
+        });
+    });
 });

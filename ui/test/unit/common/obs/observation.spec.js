@@ -42,7 +42,16 @@ describe("Observation", function () {
             var observation = new Observation({"type": "Date", "value": "2012-12-10"});
             expect(observation.getDisplayValue()).toBe("10 Dec 12");
         });
+        it("should format date in months and years if config is set to display in months and years", function(){
+            var observation = new Observation({"type": "Date", "value": "2012-12-10"},{"displayMonthAndYear": true});
+            expect((observation.getDisplayValue())).toBe("Dec 12");
+        });
+        it("should format date in text to months and years if config is set to display in months and years", function(){
+            var observation = new Observation({"type": "text", "value": "2012-12-10"},{"displayMonthAndYear": true});
+            expect((observation.getDisplayValue())).toBe("Dec 12");
+        });
     });
+
 
     describe("is Image Concept", function(){
         it("should return concept is image", function(){

@@ -16,12 +16,13 @@
     margin: 5px 0 5px 5px;
   }
   .box{
-    margin: 20px;
-    .vitals fieldset.collapsible-set.collapsed legend{
-      background: #fff !important;
-    }
-    .vitals fieldset.collapsible-set.collapsed legend + .form-group{
-      border-top:0 !important;
+    margin: 10px;
+    border: none;
+    border-radius: 0;
+    .leaf-observation-node{
+      .control-label{
+        width: 16em !important;
+      }
     }
   }
   .savedSpecimens-container{

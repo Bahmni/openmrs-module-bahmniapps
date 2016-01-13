@@ -9,12 +9,19 @@ describe('obsToObsFlowSheet DisplayControl', function () {
         observationsService,
         conceptSetService,
         translate,
+        conceptSetUiConfigService,
         simpleHtml = '<obs-to-obs-flow-sheet patient="patient" section="section" is-on-dashboard="true"></obs-to-obs-flow-sheet>';
 
     beforeEach(module('ngHtml2JsPreprocessor'));
     beforeEach(module('bahmni.common.uiHelper'));
     beforeEach(module('bahmni.common.i18n'));
     beforeEach(module('bahmni.clinical'));
+    beforeEach(module('bahmni.common.conceptSet'));
+
+    beforeEach(module(function($provide){
+        conceptSetUiConfigService = jasmine.createSpyObj('conceptSetUiConfigService',['getConfig']);
+        $provide.value('conceptSetUiConfigService',conceptSetUiConfigService);
+    }));
 
     beforeEach(module('bahmni.common.displaycontrol.obsVsObsFlowSheet'), function($provide){
         var _spinner = jasmine.createSpyObj('spinner',['forPromise','then']);
