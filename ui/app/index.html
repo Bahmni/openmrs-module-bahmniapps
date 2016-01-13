@@ -2,14 +2,8 @@
 <html lang="en-US">
 <head>
     <meta charset="UTF-8">
-    <!--<meta http-equiv="refresh" content="10;url=/home">-->
+    <meta http-equiv="refresh" content="5;url=/home">
     <title>Offline sync</title>
-    <script>
-        var redirect = function () {
-            var urlHash = window.location.hash;
-            window.location.href = "/bahmni/home/#/" + urlHash;
-        }
-    </script>
     <style>
         a {
             text-decoration: none;
@@ -27,6 +21,17 @@
 <div>
     <span> Click <a href="javascript:void(0)" onclick="redirect()">here</a></span> to sync data.
 </div>
-<script src="initWorker.js"></script>
+    <script src="components/offline/offline.min.js"></script>
+    <script src="initWorker.js"></script>
+    <script>
+        var redirect = function(){
+            window.location.href = "/home";
+        }
+
+        //when offline need not wait for sync
+        if(Offline.state == "down") {
+            redirect();
+        }
+    </script>
 </body>
 </html>

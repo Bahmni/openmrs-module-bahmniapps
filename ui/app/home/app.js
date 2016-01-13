@@ -25,13 +25,17 @@ angular.module('bahmni.home', ['ui.router', 'httpErrorInterceptor', 'bahmni.comm
         resolve: {
             initialData: 'loginInitialization'
         }
+    }).state('offline',
+        {   url: '/',
+            templateUrl: '../index.html'
     }).state('device',
     {  url: "/device/:deviceType",
-        controller: function($stateParams,$rootScope,$state){
+        controller: function($stateParams,$rootScope,$state, offlineService){
             if($stateParams.deviceType === 'chrome-app'){
-               $rootScope.loginDevice = $stateParams.deviceType;
+                $rootScope.loginDevice = $stateParams.deviceType;
+                offlineService.setAppPlatform(Bahmni.Common.Constants.platformType.chromeApp);
             }
-            $state.go('dashboard');
+            $state.go('offline');
          }
     });
     $httpProvider.defaults.headers.common['Disable-WWW-Authenticate'] = true;
