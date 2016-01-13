@@ -262,25 +262,37 @@
 }
 
 .order-created-date{
-    margin-right: 35px;
-    margin-top: 4px;
+    //margin-right: 35px;
+    //margin-top: 4px;
 }
 .order-provider-nane{
   margin-right: 10px;
 }
-.order-fullfilment-contianer{
-    .dashboard-section{
+.order-fullfilment-contianer {
+    .dashboard-section {
         border-right: 0;
         border-radius: 0;
-        .hierarchy ul li{
-            border-top: 0;
+        .hierarchy ul li {
+            //border-top: 0;
         }
     }
-    .concept-set-title{
-        .has-notes{
+    .concept-set-title {
+        .has-notes {
             position: relative;
             top: 2px;
             padding-right: 5px;
+        }
+    }
+    .hierarchy ul li ul li span {
+        background: #ddd;
+    }
+    .hierarchy ul li ul li ul li{
+        font-size: 14px;
+        span {
+            background: #fff;
+        }
+        ul li{
+            font-size: 13px;
         }
     }
 }
