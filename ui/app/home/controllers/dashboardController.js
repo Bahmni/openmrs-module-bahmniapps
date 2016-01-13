@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('bahmni.home')
-    .controller('DashboardController', ['$rootScope', '$scope', '$state', 'appService', 'locationService', 'spinner', '$bahmniCookieStore', '$window', 'offlineCommonService', 'offlineService', 'offlineSyncService', 'offlineDb',
-        function ($rootScope, $scope, $state, appService, locationService, spinner, $bahmniCookieStore, $window, offlineCommonService, offlineService, offlineSyncService, offlineDb) {
+    .controller('DashboardController', ['$rootScope', '$scope', '$state', 'appService', 'locationService', 'spinner', '$bahmniCookieStore', '$window', 'offlinePatientDao', 'offlineService', 'offlineSyncService', 'offlineDb',
+        function ($rootScope, $scope, $state, appService, locationService, spinner, $bahmniCookieStore, $window, offlinePatientDao, offlineService, offlineSyncService, offlineDb) {
             $scope.appExtensions = appService.getAppDescriptor().getExtensions($state.current.data.extensionPointId, "link") || [];
             $scope.selectedLocationUuid = {};
 
@@ -11,8 +11,8 @@ angular.module('bahmni.home')
             };
 
             var init = function () {
-                offlineCommonService.init(offlineDb);
-                offlineCommonService.populateData();
+                offlinePatientDao.init(offlineDb);
+                offlinePatientDao.populateData();
                 offlineSyncService.sync();
 
                 return locationService.getAllByTag("Login Location").then(function (response) {

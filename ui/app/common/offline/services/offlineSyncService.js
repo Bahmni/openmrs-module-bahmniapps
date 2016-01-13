@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('bahmni.common.offline')
-    .service('offlineSyncService', ['eventLogService', 'offlineCommonService',
-        function (eventLogService, offlineCommonService) {
+    .service('offlineSyncService', ['eventLogService', 'offlinePatientDao',
+        function (eventLogService, offlinePatientDao) {
 
             var sync = function () {
                 //todo: Hemanth|Santhosh get catchment number from login location
@@ -21,7 +21,7 @@ angular.module('bahmni.common.offline')
                 eventLogService.getDataForUrl(event.object).then(function (response) {
                     switch (event.category) {
                         case 'patient':
-                            offlineCommonService.createPatient({patient: response.data});
+                            offlinePatientDao.createPatient({patient: response.data});
                             break;
                         case 'Encounter':
                             break;

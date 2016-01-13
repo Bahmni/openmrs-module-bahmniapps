@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('bahmni.common.uiHelper')
-    .service('offlineCommonService', ['$http', '$rootScope', 'spinner', '$q', function ($http, $rootScope, spinner, $q) {
+    .service('offlinePatientDao', ['$http', '$rootScope', 'spinner', '$q', function ($http, $rootScope, spinner, $q) {
         var db;
 
         var populateData = function () {

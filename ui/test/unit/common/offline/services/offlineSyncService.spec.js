@@ -1,14 +1,14 @@
 'use strict';
 
-var $scope, _eventLogService, _$q, offlineCommonService, eventLogService, offlineSyncService;
+var $scope, _eventLogService, _$q, offlinePatientDao, eventLogService, offlineSyncService;
 
 describe('Offline - DashboardController', function () {
 
     beforeEach(function () {
         module('bahmni.common.offline');
-        offlineCommonService = jasmine.createSpyObj('offlineCommonService', ['populateData', 'createPatient']);
+        offlinePatientDao = jasmine.createSpyObj('offlinePatientDao', ['populateData', 'createPatient']);
         module(function ($provide) {
-            $provide.value('offlineCommonService', offlineCommonService);
+            $provide.value('offlinePatientDao', offlinePatientDao);
         });
     });
 

@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('bahmni.registration')
-    .factory('offlinePatientService', ['$http', '$q', 'offlineService', 'offlineCommonService','offlineSearchService', function ($http, $q, offlineService, offlineCommonService, offlineSearchService) {
+    .factory('offlinePatientService', ['$http', '$q', 'offlineService', 'offlinePatientDao','offlineSearch', function ($http, $q, offlineService, offlinePatientDao, offlineSearch) {
 
         var search = function (params) {
             if (offlineService.getAppPlatform() === Bahmni.Common.Constants.platformType.android) {
@@ -9,7 +9,7 @@ angular.module('bahmni.registration')
                 return $q.when(returnValue);
             }
             else {
-                return offlineSearchService.search(params);
+                return offlineSearch.search(params);
             }
         };
 
@@ -18,7 +18,7 @@ angular.module('bahmni.registration')
                 return $q.when(JSON.parse(Android.getPatient(uuid)));
             }
             else {
-                return offlineCommonService.getPatient(uuid);
+                return offlinePatientDao.getPatient(uuid);
             }
         };
 
@@ -27,7 +27,7 @@ angular.module('bahmni.registration')
                 return $q.when(JSON.parse(Android.getPatientByIdentifier(patientIdentifier)));
             }
             else {
-                return offlineCommonService.getPatientByIdentifier(patientIdentifier);
+                return offlinePatientDao.getPatientByIdentifier(patientIdentifier);
             }
         };
 
@@ -41,7 +41,7 @@ angular.module('bahmni.registration')
                 return $q.when(JSON.parse(Android.createPatient(JSON.stringify(postRequest), window.location.origin)));
             }
             else {
-                return offlineCommonService.createPatient(postRequest);
+                return offlinePatientDao.createPatient(postRequest);
             }
         };
 
@@ -53,7 +53,7 @@ angular.module('bahmni.registration')
                 });
             }
             else {
-                return offlineCommonService.deletePatientData(postRequest.patient.identifiers[0]['identifier']).then(function () {
+                return offlinePatientDao.deletePatientData(postRequest.patient.identifiers[0]['identifier']).then(function () {
                     return create(postRequest).then(function (result) {
                         return result.data;
                     });
@@ -65,7 +65,7 @@ angular.module('bahmni.registration')
             if(offlineService.getAppPlatform() === Bahmni.Common.Constants.platformType.android) {
                 return $q.when(JSON.parse(Android.generateOfflineIdentifier()));
             } else {
-                return offlineCommonService.generateOfflineIdentifier();
+                return offlinePatientDao.generateOfflineIdentifier();
             }
         };
 
