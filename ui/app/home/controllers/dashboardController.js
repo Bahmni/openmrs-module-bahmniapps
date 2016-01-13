@@ -11,10 +11,6 @@ angular.module('bahmni.home')
             };
 
             var init = function () {
-                offlinePatientDao.init(offlineDb);
-                offlinePatientDao.populateData();
-                offlineSyncService.sync();
-
                 return locationService.getAllByTag("Login Location").then(function (response) {
                         $scope.locations = response.data.results;
                         $scope.selectedLocationUuid = getCurrentLocation().uuid;

@@ -22,6 +22,13 @@ angular.module('bahmni.common.offline').service('initializeOfflineSchema', ['$ro
         "attributeValue",
         "patientId"
     ];
+
+    var markerColumnNames = [
+        "lastReadUuid",
+        "catchmentNumber",
+        "lastReadTime"
+    ];
+
     var columnsToBeIndexed = {
         'givenNameIndex': 'givenName',
         'middleNameIndex': 'middleName',
@@ -37,6 +44,7 @@ angular.module('bahmni.common.offline').service('initializeOfflineSchema', ['$ro
         createTable(schemaBuilder, 'patient_attribute_types', attributeTypeColumnNames);
         createTable(schemaBuilder, 'patient', patientColumnNames, columnsToBeIndexed);
         createTable(schemaBuilder, 'patient_attributes', attributeColumnNames);
+        createTable(schemaBuilder, 'event_log_marker', markerColumnNames);
         createIdgenTable(schemaBuilder, 'idgen');
 
         return getAddressColumns().then(function (listOfAddressColumns) {

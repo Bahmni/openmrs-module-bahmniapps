@@ -2,9 +2,9 @@
 
 angular.module('bahmni.common.offline')
     .factory('eventLogService', ['$http', function ($http) {
-        var getEventsFor = function (catchmentNumber) {
+        var getEventsFor = function (catchmentNumber, lastReadUuid) {
             return $http.get('/event-log-service/rest/eventlog/getevents', {
-                params: {filterBy: catchmentNumber}
+                params: {filterBy: catchmentNumber, uuid: lastReadUuid}
             })
         };
 
