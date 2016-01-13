@@ -29,6 +29,14 @@ angular.module('bahmni.common.offline').service('initializeOfflineSchema', ['$ro
         "lastReadTime"
     ];
 
+    var addressHierarchyEntryColumnNames = [
+        "name",
+        "level_id",
+        "parent_id",
+        "user_generated_id",
+        "uuid"
+    ];
+
     var columnsToBeIndexed = {
         'givenNameIndex': 'givenName',
         'middleNameIndex': 'middleName',
@@ -45,6 +53,7 @@ angular.module('bahmni.common.offline').service('initializeOfflineSchema', ['$ro
         createTable(schemaBuilder, 'patient', patientColumnNames, columnsToBeIndexed);
         createTable(schemaBuilder, 'patient_attributes', attributeColumnNames);
         createTable(schemaBuilder, 'event_log_marker', markerColumnNames);
+        createTable(schemaBuilder, 'address_hierarchy_entry', addressHierarchyEntryColumnNames);
         createIdgenTable(schemaBuilder, 'idgen');
 
         return getAddressColumns().then(function (listOfAddressColumns) {

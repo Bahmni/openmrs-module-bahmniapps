@@ -1,11 +1,11 @@
 'use strict';
 
 angular.module('bahmni.common.offline')
-    .service('offlineSyncService', ['eventLogService', 'offlinePatientDao', '$interval', '$q',
-        function (eventLogService, offlinePatientDao, $interval, $q) {
+    .service('offlineSyncService', ['eventLogService', 'offlinePatientDao', '$interval', '$q', 'offlineMarkerDao',
+        function (eventLogService, offlinePatientDao, $interval, $q, offlineMarkerDao) {
             var scheduler;
             var sync = function () {
-                offlinePatientDao.getMarker().then(function (marker) {
+                offlineMarkerDao.getMarker().then(function (marker) {
                     if (marker == undefined) {
                         //todo: Hemanth|Santhosh get catchment number from login location
                         marker = {catchmentNumber: 202020}
@@ -54,13 +54,18 @@ angular.module('bahmni.common.offline')
                     case 'Encounter':
                         deferrable.resolve();
                         break;
+                    case 'addressHierarchy':
+                        deferrable.resolve();
+                        break;
+                    default:
+                        deferrable.resolve();
+                        break;
                 }
-                deferrable.resolve();
                 return deferrable.promise;
             };
 
             var updateMarker = function (event) {
-                return offlinePatientDao.insertMarker(event.uuid, 202020);
+                return offlineMarkerDao.insertMarker(event.uuid, 202020);
             };
 
             return {

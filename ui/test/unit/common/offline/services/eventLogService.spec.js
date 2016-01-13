@@ -28,7 +28,7 @@ describe('EventLogService', function () {
         });
 
         expect(mockHttp.get).toHaveBeenCalledWith('/event-log-service/rest/eventlog/getevents', {
-            params: {filterBy: 111}
+            params: {filterBy: 111, uuid: undefined}
         });
     });
 

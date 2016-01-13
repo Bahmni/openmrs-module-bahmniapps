@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('bahmni.common.uiHelper')
-    .service('offlinePatientDao', ['$http', '$rootScope', 'spinner', '$q', function ($http, $rootScope, spinner, $q) {
+    .service('offlinePatientDao', ['$http', '$q', function ($http, $q) {
         var db;
 
         var populateData = function () {
@@ -175,7 +175,7 @@ angular.module('bahmni.common.uiHelper')
                     })();
                 }
             }
-            var tx = $rootScope.db.createTransaction();
+            var tx = db.createTransaction();
             tx.exec(queries);
         };
 
@@ -216,38 +216,6 @@ angular.module('bahmni.common.uiHelper')
             db = _db;
         };
 
-        var getMarkers = function (markerTable) {
-            return db.select().from(markerTable).exec();
-        };
-
-        function insertOrUpdateMarker(markerTable, row) {
-            return db.insertOrReplace().into(markerTable).values([row]).exec();
-        }
-
-        var insertMarker = function (eventUuid, catchmentNumber) {
-            var markerTable = db.getSchema().table('event_log_marker');
-            return getMarkers(markerTable)
-                .then(function (markers) {
-                    var row = markerTable.createRow({
-                        lastReadUuid: eventUuid,
-                        catchmentNumber: catchmentNumber,
-                        lastReadTime: new Date().toString(),
-                        _id: markers[0] ? markers[0]._id : undefined
-                    });
-
-                    return insertOrUpdateMarker(markerTable, row).then(function () {
-                        return eventUuid;
-                    });
-                });
-        };
-
-        var getMarker = function () {
-            var markerTable = db.getSchema().table('event_log_marker');
-            return getMarkers(markerTable).then(function (markers) {
-                return markers[0]
-            })
-        };
-
         return {
             populateData: populateData,
             getPatient: getPatient,
@@ -255,8 +223,6 @@ angular.module('bahmni.common.uiHelper')
             createPatient: createPatient,
             deletePatientData: deletePatientData,
             generateOfflineIdentifier: generateOfflineIdentifier,
-            init: init,
-            insertMarker: insertMarker,
-            getMarker: getMarker
+            init: init
         }
     }]);
