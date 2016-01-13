@@ -68,7 +68,7 @@ describe('patientMapper', function () {
                     } ,
                     {
                         "uuid": "2a71ee67-3446-4f66-8267-82446bda2999",
-                        "value": "1999-01-01",
+                        "value": "1998-12-31T18:30:00.000+0000",
                         "attributeType": {
                             "uuid": "d3d93ab0-e796-11e2-852f-0800271c1999"
                         }
