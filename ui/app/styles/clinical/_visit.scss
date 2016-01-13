@@ -647,3 +647,25 @@ a.visit:before {
     width: auto;
   }
 }
+
+.visit-dashboard{
+  ul li{
+    background: #fff;
+    ul li {
+      span {
+        padding: 3px 10px !important;
+        &.formDataTime{
+          width:15%;
+          text-align: right;
+          .formDataEdit{
+            padding:0 !important;
+          }
+        }
+      }
+    }
+  }
+}
+
+
+
+
