@@ -11,12 +11,12 @@
                 <select ng-model="programSelected" ng-options="program.name for program in allPrograms" data-ng-change="setWorkflowStates(programSelected)">
                     <option value="">{{'PROGRAM_MANAGEMENT_CHOOSE_PROGRAM_KEY' | translate}}</option>
                 </select>
-                <label class="start-date-label"><strong>{{'PROGRAM_MANAGEMENT_START_DATE_KEY' | translate}}</strong> <span class="value">{{programEnrollmentDate | bahmniDate}}</span></label>
+                <label class="start-date-label"><strong>{{'PROGRAM_MANAGEMENT_START_DATE_KEY' | translate}}</strong> <span class="asterick">*</span> <input type="date" max="{{today}}" ng-model="programEnrollmentDate" ng-required="true"></label>
+
                 <select ng-if="hasStates(programSelected)" ng-model="$parent.workflowStateSelected" ng-options="state.concept.display for state in programWorkflowStates">
                     <option value="">{{'PROGRAM_MANAGEMENT_CHOOSE_STATE_KEY' | translate}}</option>
                 </select>
-
-                <input type="submit" value="{{'PROGRAM_MANAGEMENT_ENROLL_KEY' | translate}}"/>
+                <input type="submit" value="{{'PROGRAM_MANAGEMENT_ENROLL_KEY' | translate}}" />
 
                 <a class="back-btn dashboard-link fr" id="dashboard-link"
                    ui-sref="patient.dashboard.show({patientUuid: patient.uuid,conceptSetGroupName: 'observations'})">
@@ -26,6 +26,7 @@
                          <span class="patient-id">{{patient.identifier}}</span>
                         </span>
                 </a>
+
                 <section ng-hide="programSelected == null" class="programAttributeFields">
                     <h2 class="programAttribute-title" ng-if="programAttributeTypes.length>0">Program Attributes</h2>
 
