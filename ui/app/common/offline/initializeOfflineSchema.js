@@ -57,7 +57,7 @@ angular.module('bahmni.common.offline').service('initializeOfflineSchema', ['$ro
 
     this.initSchema = function () {
 
-        if (!offlineService.offline()) {
+        if (!offlineService.isOfflineApp()) {
             return $q.when({});
         }
 
