@@ -44,6 +44,7 @@
       display: inline-block;
       margin-right: 20px;
       margin-left: 10px;
+      margin-top: 0;
     }
     input {
       //padding: 5px 10px !important;
@@ -420,6 +421,14 @@
   .programAttributeFields{
       clear: both;
       margin: 15px 0;
+      h2.programAttribute-title{
+        color: #000;
+        font-size: 14px;
+        clear: both;
+        border-bottom: 1px solid #ccc;
+        padding: 5px 0;
+        font-family: openSansSemiBold;;
+      }
       .form-field{
         width: 43%;
         display: inline-block;
@@ -427,17 +436,28 @@
         padding: 0;
         padding-left: 0;
       }
-    h2.programAttribute-title{
-      color: #000;
-      font-size: 14px;
-      clear: both;
-      border-bottom: 1px solid #ccc;
-      padding: 5px 0;
-      font-family: openSansSemiBold;;
-    }
-    section .form-field{
-      padding: 0;
-      padding-left: 0;
+      section .form-field{
+        padding: 0;
+        padding-left: 0;
+        .field-attribute{
+          float: left;
+          text-align: right;
+          label{
+            width: 15em;
+            margin: 0 0.8em 0em 0em;
+          }
+        }
+        .field-value{
+          float: left;
+        }
+      }
+  }
+  .activeProgramAttributeFields {
+    .form-field{
+      width: 30%;
+      label{
+        width:10em;
+      }
     }
   }
 }
