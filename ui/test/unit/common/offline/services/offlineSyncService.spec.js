@@ -8,7 +8,7 @@ describe('OfflineSyncService', function () {
             module('bahmni.common.offline');
             module(function ($provide) {
                 $provide.value('offlineAddressHierarchyDao', {
-                    insertAddressHierarchyEntry: function () {
+                    insertAddressHierarchy: function () {
                         return {
                             then: function (callback) {
                                 return callback({});
@@ -113,7 +113,7 @@ describe('OfflineSyncService', function () {
             spyOn(eventLogService, 'getDataForUrl').and.callThrough();
             spyOn(offlinePatientDao, 'createPatient').and.callThrough();
             spyOn(offlineMarkerDao, 'insertMarker').and.callThrough();
-            spyOn(offlineAHDao, 'insertAddressHierarchyEntry').and.callThrough();
+            spyOn(offlineAHDao, 'insertAddressHierarchy').and.callThrough();
 
             offlineSyncService.sync();
 
@@ -123,7 +123,7 @@ describe('OfflineSyncService', function () {
             expect(eventLogService.getEventsFor.calls.count()).toBe(1);
             expect(eventLogService.getDataForUrl).toHaveBeenCalledWith('url to get addressHierarchy object');
             expect(eventLogService.getDataForUrl.calls.count()).toBe(1);
-            expect(offlineAHDao.insertAddressHierarchyEntry).toHaveBeenCalledWith({uuid: 'dataUuid'});
+            expect(offlineAHDao.insertAddressHierarchy).toHaveBeenCalledWith({uuid: 'dataUuid'});
             expect(offlinePatientDao.createPatient.calls.count()).toBe(0);
             expect(offlineMarkerDao.insertMarker).toHaveBeenCalledWith('eventuuid', 202020);
             expect(offlineMarkerDao.insertMarker.calls.count()).toBe(1);

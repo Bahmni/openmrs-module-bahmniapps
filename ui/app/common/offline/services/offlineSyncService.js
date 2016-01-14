@@ -56,7 +56,7 @@ angular.module('bahmni.common.offline')
                         deferrable.resolve();
                         break;
                     case 'addressHierarchy':
-                        offlineAddressHierarchyDao.insertAddressHierarchyEntry(response.data).then(function () {
+                        offlineAddressHierarchyDao.insertAddressHierarchy(response.data).then(function () {
                             deferrable.resolve();
                         });
                         break;
