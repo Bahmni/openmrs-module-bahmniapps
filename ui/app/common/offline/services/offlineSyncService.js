@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('bahmni.common.offline')
-    .service('offlineSyncService', ['eventLogService', 'offlinePatientDao', '$interval', '$q', 'offlineMarkerDao',
-        function (eventLogService, offlinePatientDao, $interval, $q, offlineMarkerDao) {
+    .service('offlineSyncService', ['eventLogService', 'offlinePatientDao', '$interval', '$q', 'offlineMarkerDao', 'offlineAddressHierarchyDao',
+        function (eventLogService, offlinePatientDao, $interval, $q, offlineMarkerDao, offlineAddressHierarchyDao) {
             var scheduler;
             var sync = function () {
                 offlineMarkerDao.getMarker().then(function (marker) {
@@ -56,7 +56,9 @@ angular.module('bahmni.common.offline')
                         deferrable.resolve();
                         break;
                     case 'addressHierarchy':
-                        deferrable.resolve();
+                        offlineAddressHierarchyDao.insertAddressHierarchyEntry(response.data).then(function () {
+                            deferrable.resolve();
+                        });
                         break;
                     default:
                         deferrable.resolve();
