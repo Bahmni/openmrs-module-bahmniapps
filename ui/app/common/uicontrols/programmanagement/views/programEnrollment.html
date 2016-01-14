@@ -39,7 +39,7 @@
     </div>
 
     <div class="active-program-container" id="activePrograms" ng-show="hasPatientEnrolledToSomePrograms()">
-        <section class="block dashboard-section">
+        <section class="block dashboard-section programAttributeFields" >
             <h2 class="section-title" toggle="activePrograms.showProgramSection">
                 <i class="fa fa-caret-right" ng-show="!activePrograms.showProgramSection"></i>
                 <i class="fa fa-caret-down" ng-show="activePrograms.showProgramSection"></i>
@@ -54,7 +54,7 @@
     </div>
 
     <div class="inactive-program-container" ng-show="hasPatientAnyPastPrograms()">
-        <section class="block dashboard-section">
+        <section class="block dashboard-section programAttributeFields">
             <h2 class="section-title" toggle="endedPrograms.showProgramSection">
                 <i class="fa fa-caret-right" ng-show="!endedPrograms.showProgramSection"></i>
                 <i class="fa fa-caret-down" ng-show="endedPrograms.showProgramSection"></i>
