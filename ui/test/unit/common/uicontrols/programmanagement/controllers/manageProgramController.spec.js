@@ -8,7 +8,7 @@ describe("ManageProgramController", function () {
     beforeEach(module(function ($provide) {
         _provide = $provide;
         programService = jasmine.createSpyObj('programService', ['getPatientPrograms', 'getAllPrograms',
-            'savePatientProgram', 'endPatientProgram', 'deletePatientState']);
+            'savePatientProgram', 'endPatientProgram', 'deletePatientState', 'getProgramAttributeTypes']);
 
         programService.getPatientPrograms.and.callFake(function () {
             deferred = q.defer();
@@ -37,6 +37,12 @@ describe("ManageProgramController", function () {
         programService.deletePatientState.and.callFake(function () {
             deferred = q.defer();
             deferred.resolve({data: {results: listOfPrograms}});
+            return deferred.promise;
+        });
+
+        programService.getProgramAttributeTypes.and.callFake(function() {
+            deferred = q.defer();
+            deferred.resolve(programAttributeTypes);
             return deferred.promise;
         });
 
@@ -75,6 +81,9 @@ describe("ManageProgramController", function () {
         expect(scope.allPrograms.length).toBe(1);
         expect(scope.activePrograms.length).toBe(1);
         expect(scope.endedPrograms.length).toBe(1);
+        expect(scope.programAttributeTypes.length).toEqual(2);
+        expect(scope.programSelected).toEqual(null);
+        expect(scope.patientProgramAttributes).toEqual({});
     });
 
 
@@ -437,5 +446,22 @@ describe("ManageProgramController", function () {
                 ]
             }
         }]
-    }
+    };
+    var programAttributeTypes = [{
+        uuid: '82325788-3f10-11e4-adec-0800271c1b75',
+        sortWeight: 3,
+        name: 'locationName',
+        description: 'Location of the patient program',
+        format: 'java.lang.String',
+        answers: [],
+        required: false
+    }, {
+        uuid: '82325788-3f10-11es-adec-0800271c1b75',
+        sortWeight: 3,
+        name: 'mandatory',
+        description: 'Is the program mandatory',
+        format: 'java.lang.Boolean',
+        answers: [],
+        required: false
+    }];
 });

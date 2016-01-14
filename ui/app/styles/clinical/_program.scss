@@ -15,7 +15,7 @@
     background-color: #F3F2F2;
     margin-right: 10px;
     select{
-      height: 33px;
+      //height: 33px;
       float: left;
       max-width: 200px;
     }
@@ -37,7 +37,7 @@
       min-width: 0;
       width: 200px;
       display: inline-block;
-      margin-top: 0;
+      //margin-top: 0;
       margin-right: 10px;
     }
     label.start-date-label {
@@ -46,10 +46,10 @@
       margin-left: 10px;
     }
     input {
-      padding: 5px 10px !important;
+      //padding: 5px 10px !important;
     }
     select {
-      height: 33px;
+      //height: 33px;
     }
     .select-program-option {
       padding: 10px 15px;
@@ -58,11 +58,46 @@
       margin: 0;
     }
   }
+  .program-details table.programTable{
+    tr{
+      border-bottom: none;
+    }
+    td{
+      border: none;
+      &.programName{
+        width: 20%;
+      }
+      &.programState{
+        width: 60%;
+      }
+      &.programDate{
+        width: 16%;
+        span{
+          padding-left:10px;
+        }
+        .fa{
+          padding: 0;
+        }
+      }
+      &.pastProgramState{
+        width: 42%;
+      }
+      &.programStartDate ,&.programStopDate{
+        width: 19%;
+        span{
+          padding-left: 10px;
+        }
+      }
+    }
+  }
+  .programDescription{
+    padding: 10px 11px 0 26px;
+  }
 
 }
 
 .program-row {
-  padding: 5px 15px;
+  padding: 5px 15px 5px 0;
   border-bottom: 1px solid #669999;
 }
 .remove-state-container{
@@ -374,6 +409,35 @@
         margin-top: 10px;
         margin-right: 29px;
       }
+    }
+  }
+}
+
+
+//Style for New Program Enrollment
+
+.program-enrollment-container {
+  .programAttributeFields{
+      clear: both;
+      margin: 15px 0;
+      .form-field{
+        width: 43%;
+        display: inline-block;
+        border-bottom: none;
+        padding: 0;
+        padding-left: 0;
+      }
+    h2.programAttribute-title{
+      color: #000;
+      font-size: 14px;
+      clear: both;
+      border-bottom: 1px solid #ccc;
+      padding: 5px 0;
+      font-family: openSansSemiBold;;
+    }
+    section .form-field{
+      padding: 0;
+      padding-left: 0;
     }
   }
 }

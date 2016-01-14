@@ -10,11 +10,15 @@ angular.module('bahmni.common.uicontrols.programmanagment')
             $scope.workflowStatesWithoutCurrentState = [];
             $scope.outComesForProgram = [];
             $scope.configName = $stateParams.configName;
+            $scope.today = DateUtil.getDateWithoutTime(DateUtil.now());
 
             var updateActiveProgramsList = function () {
                 spinner.forPromise(programService.getPatientPrograms($scope.patient.uuid).then(function (programs) {
                     $scope.activePrograms = programs.activePrograms;
+                    $scope.activePrograms.showProgramSection = true;
+
                     $scope.endedPrograms = programs.endedPrograms;
+                    $scope.endedPrograms.showProgramSection = true;
                 }));
             };
 
@@ -24,10 +28,19 @@ angular.module('bahmni.common.uicontrols.programmanagment')
             };
 
             var init = function () {
-                $scope.programEnrollmentDate = getCurrentDate();
                 spinner.forPromise(programService.getAllPrograms().then(function(programs) {
                     $scope.allPrograms = programs;
+                    $scope.allPrograms.showProgramSection = true;
                 }));
+
+                spinner.forPromise(programService.getProgramAttributeTypes().then(function (programAttributeTypes) {
+                    $scope.programAttributeTypes = programAttributeTypes;
+                }));
+
+                $scope.programSelected = null;
+                $scope.patientProgramAttributes = {};
+                $scope.programEnrollmentDate = null;
+
                 updateActiveProgramsList();
             };
 
@@ -36,6 +49,8 @@ angular.module('bahmni.common.uicontrols.programmanagment')
                 $scope.programEdited.selectedState = null;
                 $scope.programSelected = null;
                 $scope.workflowStateSelected = null;
+                $scope.patientProgramAttributes = {};
+                $scope.programEnrollmentDate = null;
                 updateActiveProgramsList();
             };
 
@@ -97,7 +112,7 @@ angular.module('bahmni.common.uicontrols.programmanagment')
                 }
                 var stateUuid = $scope.workflowStateSelected && $scope.workflowStateSelected.uuid ? $scope.workflowStateSelected.uuid : null;
                 spinner.forPromise(
-                    programService.enrollPatientToAProgram($scope.patient.uuid, $scope.programSelected.uuid, $scope.programEnrollmentDate, stateUuid)
+                    programService.enrollPatientToAProgram($scope.patient.uuid, $scope.programSelected.uuid, $scope.programEnrollmentDate, stateUuid, $scope.patientProgramAttributes, $scope.programAttributeTypes)
                         .then(successCallback, failureCallback)
                 );
             };
@@ -240,6 +255,16 @@ angular.module('bahmni.common.uicontrols.programmanagment')
             $scope.hasOutcomes = function (program) {
                 return program.outcomesConcept && !_.isEmpty(program.outcomesConcept.setMembers);
             };
+
+            $scope.getCurrentStateDisplayName = function(program){
+                var currentState = getCurrentState(program.states);
+                return currentState && currentState.state.concept.display;
+            };
+
+            $scope.showProgramAttributes = function(program){
+                program.isOpen = !program.isOpen;
+            };
+
             init();
         }
     ]);
