@@ -9,7 +9,7 @@
                         {{patientProgram.display}}
                     </td>
                     <td class="programState" ng-if="getCurrentStateDisplayName(patientProgram)">{{getCurrentStateDisplayName(patientProgram)}}</td>
-                    <td class="programDate">Start Date:
+                    <td class="programDate">Start Date<span class="asterick">*</span>
                         <span>{{patientProgram.dateEnrolled | bahmniDate}}</span>
                         <i class="fa fa-pencil-square-o fr" ng-click=""></i>
                     </td>
