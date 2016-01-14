@@ -48,16 +48,8 @@ angular.module('bahmni.registration').factory('initialization',
                 relationshipType.searchType = (relationshipTypeMap.provider.indexOf(relationshipType.aIsToB) > -1) ? "provider":"patient";
             });
         };
-
-        $rootScope.isOfflineApp = function() {
-          return offlineService.isOfflineApp();
-        };
-
-        $rootScope.offline = function() {
-            return offlineService.offline();
-        };
         
-        return spinner.forPromise(authenticator.authenticateUser().then(initializeOfflineSchema.initSchema).then(initApp).then(getConfigs).then(initAppConfigs)
+        return spinner.forPromise(authenticator.authenticateUser().then(initApp).then(getConfigs).then(initAppConfigs)
             .then(mapRelationsTypeWithSearch)
             .then(loadValidators(appService.configBaseUrl(), "registration")));
     }]

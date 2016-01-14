@@ -18,7 +18,16 @@ angular
                     'layout': { templateUrl: 'views/layout.html', controller: 'SearchPatientController'},
                     'content@search': { templateUrl: 'views/search.html'}
                 },
-                resolve: { initialization: 'initialization' }
+                resolve: {
+                    initialization: 'initialization',
+                    offlineDb: function(offlineDbInitialization) {
+                        return offlineDbInitialization();
+
+                    },
+                    offlineRegistrationInitialization : function(offlineRegistrationInitialization, offlineDb){
+                        return offlineRegistrationInitialization(offlineDb);
+                    }
+                }
             })
             .state('newpatient', {
                 url: '/patient/new',

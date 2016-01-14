@@ -11,6 +11,7 @@ angular.module('bahmni.home', ['ui.router', 'httpErrorInterceptor', 'bahmni.comm
         controller: 'DashboardController',
         data: {extensionPointId: 'org.bahmni.home.dashboard'},
         resolve: {
+            initialization : 'initialization',
             offlineDb: function(offlineDbInitialization) {
                 return offlineDbInitialization();
             },
