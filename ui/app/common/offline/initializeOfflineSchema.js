@@ -1,4 +1,4 @@
-angular.module('bahmni.common.offline').service('initializeOfflineSchema', ['$rootScope','$q','$http', function ($rootScope, $q, $http) {
+angular.module('bahmni.common.offline').service('initializeOfflineSchema', ['$rootScope', '$q', '$http', 'offlineService', function ($rootScope, $q, $http, offlineService) {
 
     var attributeTypeColumnNames = [
         "attributeTypeId",
@@ -46,7 +46,12 @@ angular.module('bahmni.common.offline').service('initializeOfflineSchema', ['$ro
 
     var addressColumns;
 
-    this.initSchema = function(){
+    this.initSchema = function () {
+
+        if (!offlineService.offline()) {
+            return $q.when({});
+        }
+
         var schemaBuilder = lf.schema.create('Bahmni', 2);
 
         createTable(schemaBuilder, 'patient_attribute_types', attributeTypeColumnNames);
@@ -78,7 +83,7 @@ angular.module('bahmni.common.offline').service('initializeOfflineSchema', ['$ro
         }
     };
 
-    var createIdgenTable = function(schemaBuilder, tableName) {
+    var createIdgenTable = function (schemaBuilder, tableName) {
         var table = schemaBuilder.createTable(tableName)
             .addColumn('_id', lf.Type.INTEGER).addPrimaryKey(['_id'], true)
             .addColumn('identifier', lf.Type.INTEGER);
