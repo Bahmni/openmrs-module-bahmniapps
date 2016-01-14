@@ -5,6 +5,10 @@ angular.module('bahmni.common.offline').service('offlineService', ['$rootScope',
         return $bahmniCookieStore.get(Bahmni.Common.Constants.platform);
     };
 
+    this.setAppPlatform = function (platform) {
+        $bahmniCookieStore.put(Bahmni.Common.Constants.platform, platform, {path: '/', expires: 365});
+    };
+
     this.isOfflineApp = function () {
         return this.getAppPlatform() !== Bahmni.Common.Constants.platformType.chrome;
     };
@@ -20,7 +24,7 @@ angular.module('bahmni.common.offline').service('offlineService', ['$rootScope',
         return value;
     };
 
-    this.setItem = function(key, value, encryptionType) {
+    this.setItem = function(key, value) {
         localStorage.setItem(key, JSON.stringify(value));
     };
 

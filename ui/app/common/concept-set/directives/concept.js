@@ -76,9 +76,12 @@ angular.module('bahmni.common.conceptSet')
             }
 
             scope.constructSearchResult = function(concept, searchString) {
-                var matchingName =_.find(_.map(concept.names, 'name'), function (name) {
-                    return (name != concept.name.name) && name.search(new RegExp(searchString, "i")) !== -1
-                });
+                var matchingName = null;
+                if (concept.name.name.toLowerCase().indexOf(searchString) != 0) {
+                    matchingName = _.find(_.map(concept.names, 'name'), function (name) {
+                        return (name != concept.name.name) && name.search(new RegExp(searchString, "i")) !== -1
+                    });
+                }
                 return {
                     label: matchingName ? matchingName + " => " + concept.name.name : concept.name.name,
                     value: concept.name.name,

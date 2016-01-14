@@ -10,13 +10,19 @@ Bahmni.Clinical.Specimen = function (specimen, allSamples) {
     self.report = specimen && specimen.report && specimen.report.results ? specimen.report : {results: []};
     self.existingObs = specimen && specimen.existingObs;
     self.typeObservation =  new Bahmni.ConceptSet.SpecimenTypeObservation(self, allSamples);
+
+    var isDirtyRuleForFreeText= function(){
+        return (self.type && self.type.name=="Other" && !self.typeFreeText);
+    }
+
     self.isDirty = function () {
-        return (self.dateCollected && !self.type) || (!self.dateCollected && self.type) || (!self.dateCollected && !self.type && self.identifier) ? true : false
+        return (self.dateCollected && !self.type) || (!self.dateCollected && self.type) || (!self.dateCollected && !self.type && self.identifier) || isDirtyRuleForFreeText() ? true : false
     };
 
     self.isEmpty = function () {
         return !self.dateCollected && !self.identifier && !self.type && !self.typeFreeText;
     };
+
 
     function hasResults() {
         return self && self.report && self.report.results && self.report.results.length > 0;

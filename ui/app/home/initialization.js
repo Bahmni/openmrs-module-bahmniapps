@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('bahmni.home')
-    .factory('dashboardInitialization', ['$rootScope', '$q', 'appService', 'spinner', 'offlineService', '$bahmniCookieStore','initializeOfflineSchema',
+    .factory('offlineDbInitialization', ['$rootScope', '$q', 'appService', 'spinner', 'offlineService', '$bahmniCookieStore', 'initializeOfflineSchema',
         function ($rootScope, $q, appService, spinner, offlineService, $bahmniCookieStore, initializeOfflineSchema) {
             var setPlatformCookie = function () {
                 var platform = Bahmni.Common.Constants.platformType.chrome;
@@ -11,7 +11,7 @@ angular.module('bahmni.home')
                 else if ($rootScope.loginDevice) {
                     platform = Bahmni.Common.Constants.platformType.chromeApp;
                 }
-                if (_.isEmpty(offlineService.getAppPlatform())){
+                if (_.isEmpty(offlineService.getAppPlatform())) {
                     $bahmniCookieStore.put(Bahmni.Common.Constants.platform, platform, {path: '/', expires: 365});
                 }
             };
@@ -21,31 +21,20 @@ angular.module('bahmni.home')
                 return appService.initApp('home');
             };
 
-            $rootScope.offline = function() {
+            $rootScope.offline = function () {
                 return offlineService.offline();
             };
 
-            $rootScope.isOfflineApp = function() {
+            $rootScope.isOfflineApp = function () {
                 return offlineService.isOfflineApp();
             };
 
-            return function() {
-                return spinner.forPromise(initializeOfflineSchema.initSchema().then(initApp));
+            return function () {
+                return spinner.forPromise(initializeOfflineSchema.initSchema().then(function (db) {
+                    return initApp().then(function () {
+                        return db;
+                    })
+                }));
             };
-        }
-    ])
-    .factory('loginInitialization', ['$rootScope', '$q', 'locationService', 'spinner','messagingService',
-        function ($rootScope, $q, locationService, spinner, messagingService) {
-            var init = function () {
-
-                var deferrable = $q.defer();
-                locationService.getAllByTag("Login Location").then(
-                    function(response) {deferrable.resolve({locations: response.data.results})},
-                    function() {deferrable.reject(); messagingService.showMessage('error','Unable to fetch locations. Please reload the page.');}
-                );
-                return deferrable.promise;
-            };
-
-            return spinner.forPromise(init());
         }
     ]);

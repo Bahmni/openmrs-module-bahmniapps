@@ -80,7 +80,7 @@ angular.module('bahmni.registration')
             var searchActiveVisitsPromise = function () {
                 return visitService.search({
                     patient: patientUuid, includeInactive: false, v: "custom:(uuid)"
-                }).then(function (data) {
+                }).success(function (data) {
                     var hasActiveVisit = data.results.length > 0;
                     self.visitUuid = hasActiveVisit ? data.results[0].uuid : "";
                     $scope.canCloseVisit = isUserPrivilegedToCloseVisit() && hasActiveVisit;

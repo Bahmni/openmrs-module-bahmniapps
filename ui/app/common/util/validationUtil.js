@@ -39,7 +39,7 @@ Bahmni.Common.Util.ValidationUtil = (function () {
             var isValid=true;
             var fieldSpecificValidator = allCustomValidators[field];
             if (!fieldSpecificValidator) return isValid;
-            if (typeof fieldSpecificValidator.method == 'function') {
+            if (typeof fieldSpecificValidator.method == 'function' && value) {
                 var personAttributeTypeConfig = _.find(objectConfiguration,{name:field});
                 isValid = fieldSpecificValidator.method(field, value, personAttributeTypeConfig);
                 if (!isValid){

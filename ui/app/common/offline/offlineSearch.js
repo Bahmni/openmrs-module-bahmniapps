@@ -1,7 +1,7 @@
 'use strict';
 
-angular.module('bahmni.common.uiHelper')
-    .service('offlineSearchService', ['$http', '$q', '$rootScope', 'age', function ($http, $q, $rootScope, age) {
+angular.module('bahmni.common.offline')
+    .service('offlineSearch', ['$http', '$q', '$rootScope', 'age', function ($http, $q, $rootScope, age) {
 
         var search = function (params) {
             var response = {

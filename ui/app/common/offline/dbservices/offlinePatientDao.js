@@ -1,31 +1,27 @@
 'use strict';
 
-angular.module('bahmni.common.uiHelper')
-    .service('offlineCommonService', ['$http', '$rootScope', 'spinner','$q', function ($http, $rootScope, spinner, $q) {
-        var addressColumns;
+angular.module('bahmni.common.offline')
+    .service('offlinePatientDao', ['$http', '$q', function ($http, $q) {
+        var db;
 
         var populateData = function () {
-            getAddressColumns().then(function (addressColumnsList) {
-                addressColumns = addressColumnsList;
-                insertAttributeTypes();
-                insertPatients(addressColumns, 0);
-                insertIntoIdgen();
-            });
+            insertAttributeTypes();
+            insertIntoIdgen();
         };
 
-        var insertIntoIdgen = function(result) {
+        var insertIntoIdgen = function (result) {
             result = result || 1;
-            var idgen = $rootScope.db.getSchema().table('idgen');
+            var idgen = db.getSchema().table('idgen');
             var row = idgen.createRow({
                 '_id': 1,
                 'identifier': ++result
             });
-            $rootScope.db.insertOrReplace().into(idgen).values([row]).exec()
+            db.insertOrReplace().into(idgen).values([row]).exec()
         };
 
         var getPatient = function (uuid) {
-            var p = $rootScope.db.getSchema().table('patient');
-            return $rootScope.db.select(p.patientJson.as('patient'), p.relationships.as('relationships'))
+            var p = db.getSchema().table('patient');
+            return db.select(p.patientJson.as('patient'), p.relationships.as('relationships'))
                 .from(p)
                 .where(p.uuid.eq(uuid)).exec()
                 .then(function (result) {
@@ -34,16 +30,17 @@ angular.module('bahmni.common.uiHelper')
         };
 
         var getPatientByIdentifier = function (patientIdentifier) {
-            var p = $rootScope.db.getSchema().table('patient');
-            return $rootScope.db.select(p.identifier, p.givenName, p.familyName, p.gender, p.birthdate, p.uuid)
+            var p = db.getSchema().table('patient');
+            return db.select(p.identifier, p.givenName, p.familyName, p.gender, p.birthdate, p.uuid)
                 .from(p)
-                .where(p.identifier.eq(patientIdentifier.toUpperCase())).exec()
+                .where(p.identifier.eq(patientIdentifier.toUpperCase())).exec().th
                 .then(function (result) {
                     return {data: {pageOfResults: result}};
                 });
         };
 
         var createPatient = function (postRequest) {
+            var addressColumns = [];
             return insertPatientData(postRequest, addressColumns, "POST")
                 .then(function () {
                     return {data: postRequest};
@@ -55,34 +52,23 @@ angular.module('bahmni.common.uiHelper')
             var deferred = $q.defer();
             var queries = [];
 
-            var patientTable = $rootScope.db.getSchema().table('patient');
-            var patientAddress = $rootScope.db.getSchema().table('patient_address');
-            var patientAttributes = $rootScope.db.getSchema().table('patient_attributes');
+            var patientTable = db.getSchema().table('patient');
+            var patientAddress = db.getSchema().table('patient_address');
+            var patientAttributes = db.getSchema().table('patient_attributes');
 
-            $rootScope.db.select(patientTable._id).from(patientTable).where(patientTable.identifier.eq(patientIdentifier)).exec()
+            db.select(patientTable._id).from(patientTable).where(patientTable.identifier.eq(patientIdentifier)).exec()
                 .then(function (results) {
                     var patientId = results[0]._id;
 
-                    queries.push($rootScope.db.delete().from(patientAttributes).where(patientAttributes.patientId.eq(patientId)));
-                    queries.push($rootScope.db.delete().from(patientAddress).where(patientAddress.patientId.eq(patientId)));
-                    queries.push($rootScope.db.delete().from(patientTable).where(patientTable._id.eq(patientId)));
+                    queries.push(db.delete().from(patientAttributes).where(patientAttributes.patientId.eq(patientId)));
+                    queries.push(db.delete().from(patientAddress).where(patientAddress.patientId.eq(patientId)));
+                    queries.push(db.delete().from(patientTable).where(patientTable._id.eq(patientId)));
 
-                    var tx = $rootScope.db.createTransaction();
+                    var tx = db.createTransaction();
                     tx.exec(queries);
                     deferred.resolve({});
                 });
             return deferred.promise;
-        };
-
-        var insertPatients = function (addressColumnNames, nextIndex) {
-            var pageSize = 1;
-            spinner.forPromise($http.get(window.location.origin + "/openmrs/ws/rest/v1/bahmnicore/patientData?startIndex=" + nextIndex + "&limit=" + pageSize).then(function (patientJson) {
-                if (patientJson.data.pageOfResults.length == 0) {
-                    return;
-                }
-                insertPatientData(patientJson.data.pageOfResults[0], addressColumnNames);
-                insertPatients(addressColumnNames, ++nextIndex)
-            }));
         };
 
         var parseAttributeValues = function (attributes, attributeTypeMap) {
@@ -107,8 +93,8 @@ angular.module('bahmni.common.uiHelper')
         var insertPatientData = function (patientData, addressColumnNames, requestType) {
             var patient = patientData.patient;
             var patientTable, patientIdentifier, person, patientId, attributeTypeTable;
-            patientTable = $rootScope.db.getSchema().table('patient');
-            attributeTypeTable = $rootScope.db.getSchema().table('patient_attribute_types');
+            patientTable = db.getSchema().table('patient');
+            attributeTypeTable = db.getSchema().table('patient_attribute_types');
             person = patient.person;
             var personName = person.names[0];
 
@@ -122,7 +108,7 @@ angular.module('bahmni.common.uiHelper')
                 })
             }
             patientIdentifier = patient.identifiers[0].identifier;
-            return $rootScope.db.select(attributeTypeTable.attributeTypeId, attributeTypeTable.uuid, attributeTypeTable.attributeName, attributeTypeTable.format).from(attributeTypeTable).exec()
+            return db.select(attributeTypeTable.attributeTypeId, attributeTypeTable.uuid, attributeTypeTable.attributeName, attributeTypeTable.format).from(attributeTypeTable).exec()
                 .then(function (attributeTypeMap) {
                     if ("POST" === requestType) {
                         parseAttributeValues(patient.person.attributes, attributeTypeMap);
@@ -139,8 +125,8 @@ angular.module('bahmni.common.uiHelper')
                         'patientJson': patient,
                         'relationships': relationships
                     });
-                    return $rootScope.db.insertOrReplace().into(patientTable).values([row]).exec().then(function () {
-                        $rootScope.db.select(patientTable._id).from(patientTable).where(patientTable.identifier.eq(patientIdentifier)).exec()
+                    return db.insertOrReplace().into(patientTable).values([row]).exec().then(function () {
+                        db.select(patientTable._id).from(patientTable).where(patientTable.identifier.eq(patientIdentifier)).exec()
                             .then(function (results) {
                                 patientId = results[0]._id;
                                 insertAttributes(patientId, person.attributes, attributeTypeMap);
@@ -151,7 +137,7 @@ angular.module('bahmni.common.uiHelper')
         };
 
         var insertAddress = function (patientId, address, addressColumnNames) {
-            var patientAddressTable = $rootScope.db.getSchema().table('patient_address');
+            var patientAddressTable = db.getSchema().table('patient_address');
             var constructedRow = {};
             angular.forEach(addressColumnNames, function (addressColumn) {
                 constructedRow[addressColumn] = address[addressColumn]
@@ -159,12 +145,12 @@ angular.module('bahmni.common.uiHelper')
             constructedRow["patientId"] = patientId;
             var row = patientAddressTable.createRow(constructedRow);
 
-            return $rootScope.db.insertOrReplace().into(patientAddressTable).values([row]).exec()
+            return db.insertOrReplace().into(patientAddressTable).values([row]).exec()
         };
 
         var insertAttributes = function (patientId, attributes, attributeTypeMap) {
             var attributeTable, value;
-            attributeTable = $rootScope.db.getSchema().table('patient_attributes');
+            attributeTable = db.getSchema().table('patient_attributes');
             var queries = [];
             if (attributes != null && attributes.length > 0) {
                 for (var j = 0; j < attributes.length; j++) {
@@ -184,32 +170,20 @@ angular.module('bahmni.common.uiHelper')
                                 'attributeValue': value,
                                 'patientId': patientId
                             });
-                            queries.push($rootScope.db.insertOrReplace().into(attributeTable).values([row]));
+                            queries.push(db.insertOrReplace().into(attributeTable).values([row]));
                         }
                     })();
                 }
-                var tx = $rootScope.db.createTransaction();
-                tx.exec(queries);
             }
-        };
-
-        var getAddressColumns = function () {
-            return $http.get(window.location.origin + "/openmrs/module/addresshierarchy/ajax/getOrderedAddressHierarchyLevels.form").then(function (addressHierarchyFields) {
-                var addressColumnNames = [];
-                var addressColumns = addressHierarchyFields.data;
-                for (var i = 0; i < addressColumns.length; i++) {
-                    addressColumnNames[i] = addressColumns[i].addressField;
-                }
-                addressColumnNames[addressColumns.length] = "patientId";
-                return addressColumnNames;
-            });
+            var tx = db.createTransaction();
+            tx.exec(queries);
         };
 
         var insertAttributeTypes = function () {
             $http.get(window.location.origin + "/openmrs/ws/rest/v1/personattributetype?v=custom:(name,uuid,format)").then(function (attributesResponse) {
                 var personAttributeTypeList = attributesResponse.data.results;
                 var row, table, queries = [];
-                table = $rootScope.db.getSchema().table('patient_attribute_types');
+                table = db.getSchema().table('patient_attribute_types');
                 for (var i = 0; i < personAttributeTypeList.length; i++) {
                     var row = table.createRow({
                         'attributeTypeId': i,
@@ -217,18 +191,18 @@ angular.module('bahmni.common.uiHelper')
                         'attributeName': personAttributeTypeList[i].name,
                         'format': personAttributeTypeList[i].format
                     });
-                    queries.push($rootScope.db.insertOrReplace().into(table).values([row]));
+                    queries.push(db.insertOrReplace().into(table).values([row]));
                 }
-                var tx = $rootScope.db.createTransaction();
+                var tx = db.createTransaction();
                 tx.exec(queries);
-                //$rootScope.db.insertOrReplace().into(table).values([row]).exec();
+                //db.insertOrReplace().into(table).values([row]).exec();
             });
         };
 
-        var generateOfflineIdentifier = function() {
+        var generateOfflineIdentifier = function () {
             var deferred = $q.defer();
-            var idgen = $rootScope.db.getSchema().table('idgen');
-            $rootScope.db.select(idgen.identifier.as('identifier'))
+            var idgen = db.getSchema().table('idgen');
+            db.select(idgen.identifier.as('identifier'))
                 .from(idgen).exec()
                 .then(function (result) {
                     insertIntoIdgen(result[0].identifier);
@@ -238,6 +212,9 @@ angular.module('bahmni.common.uiHelper')
             return deferred.promise;
         };
 
+        var init = function (_db) {
+            db = _db;
+        };
 
         return {
             populateData: populateData,
@@ -245,6 +222,7 @@ angular.module('bahmni.common.uiHelper')
             getPatientByIdentifier: getPatientByIdentifier,
             createPatient: createPatient,
             deletePatientData: deletePatientData,
-            generateOfflineIdentifier: generateOfflineIdentifier
+            generateOfflineIdentifier: generateOfflineIdentifier,
+            init: init
         }
     }]);

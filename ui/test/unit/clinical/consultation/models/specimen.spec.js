@@ -111,4 +111,29 @@ describe("Specimen", function () {
             expect(specimen.isTypeDirty()).toBe(false);
         });
     });
+
+    describe("Dirty Rules for typeFreeText", function () {
+        var specimen;
+
+        beforeEach(function () {
+            specimen = new Bahmni.Clinical.Specimen();
+            specimen.dateCollected = "2016-01-13";
+        });
+
+        it("Should return true when typeFreeText is not set and specimen.type.name is Other", function () {
+            specimen.type = {name: "Other"};
+            expect(specimen.isDirty()).toBe(true);
+        });
+
+        it("Should return false when typeFreeText is set and specimen.type.name is Other", function () {
+            specimen.type = {name: "Other"};
+            specimen.typeFreeText = "Blood";
+            expect(specimen.isDirty()).toBe(false);
+        });
+
+        it("Should return false when typeFree specimen.type.name is not Other and typeFreeText is not set", function () {
+            specimen.type = {name: "Specimen, Urine"};
+            expect(specimen.isDirty()).toBe(false);
+        });
+    });
 });
