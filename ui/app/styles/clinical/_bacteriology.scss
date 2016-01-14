@@ -19,11 +19,20 @@
     margin: 10px;
     border: none;
     border-radius: 0;
-    .leaf-observation-node{
-      .control-label{
-        width: 16em !important;
+    .additionalAttributes{
+      .vitals .form-field{
+        padding-top: 0 !important;
+      }
+      .vitals.form-horizontal{
+        padding: 0;
+        .leaf-observation-node{
+          .control-label{
+            font-size: 14px;
+          }
+        }
       }
     }
+
   }
   .savedSpecimens-container{
     border: 2px #5B8989 solid;

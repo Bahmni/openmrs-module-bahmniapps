@@ -363,3 +363,11 @@ form.submitted-with-error {
   }
 }
 buttons-radio.illegalValue { border: 0; background: none }
+
+.illegalValue{
+  &, &:focus {
+    border: 2px solid darken($clinicalFormInvalid, 30%) !important;
+    background: $clinicalFormInvalid !important;
+    outline: 0 !important;
+  }
+}
