@@ -30,15 +30,15 @@ angular.module('bahmni.common.offline')
 
             var patientTable = db.getSchema().table('patient');
             var patientAddress = db.getSchema().table('patient_address');
-            var patientAttributes = db.getSchema().table('patient_attributes');
+            var patientAttributes = db.getSchema().table('patient_attribute');
 
-            db.select(patientTable._id).from(patientTable).where(patientTable.identifier.eq(patientIdentifier)).exec()
+            db.select(patientTable).from(patientTable).where(patientTable.identifier.eq(patientIdentifier)).exec()
                 .then(function (results) {
-                    var patientId = results[0]._id;
+                    var patientUuid = results[0].uuid;
 
-                    queries.push(db.delete().from(patientAttributes).where(patientAttributes.patientId.eq(patientId)));
-                    queries.push(db.delete().from(patientAddress).where(patientAddress.patientId.eq(patientId)));
-                    queries.push(db.delete().from(patientTable).where(patientTable._id.eq(patientId)));
+                    queries.push(db.delete().from(patientAttributes).where(patientAttributes.patientId.eq(patientUuid)));
+                    queries.push(db.delete().from(patientAddress).where(patientAddress.patientId.eq(patientUuid)));
+                    queries.push(db.delete().from(patientTable).where(patientTable._id.eq(patientUuid)));
 
                     var tx = db.createTransaction();
                     tx.exec(queries);
@@ -50,16 +50,16 @@ angular.module('bahmni.common.offline')
         var insertPatientData = function (patientData, addressColumnNames, requestType) {
             var patient = patientData.patient;
             var person = patient.person;
-            var attributeTypeTable = db.getSchema().table('patient_attribute_types');
+            var attributeTypeTable = db.getSchema().table('patient_attribute_type');
 
             return db.select(attributeTypeTable.attributeTypeId, attributeTypeTable.uuid, attributeTypeTable.attributeName, attributeTypeTable.format).from(attributeTypeTable).exec()
                 .then(function (attributeTypeMap) {
                     if ("POST" === requestType) {
                         parseAttributeValues(person.attributes, attributeTypeMap);
                     }
-                    return patientDao.insertPatientData(db, patientData).then(function (patientId) {
-                        patientAttributeDao.insertAttributes(db, patientId, person.attributes, attributeTypeMap);
-                        patientAddressDao.insertAddress(db, patientId, person.addresses[0], addressColumnNames);
+                    return patientDao.insertPatientData(db, patientData).then(function (patientUuid) {
+                        patientAttributeDao.insertAttributes(db, patientUuid, person.attributes, attributeTypeMap);
+                        patientAddressDao.insertAddress(db, patientUuid, person.addresses[0], addressColumnNames);
                     });
                 });
 

@@ -82,5 +82,116 @@ Bahmni.Common.Offline.SchemaDefinitions = {
         ],
         nullableColumns: [],
         primaryKeyColumns: ['identifier']
+    },
+
+    PatientAttributeType: {
+        tableName: 'patient_attribute_type',
+        columns: [
+            {
+                name: 'attributeTypeId',
+                type: 'INTEGER'
+            },
+            {
+                name: 'attributeName',
+                type: 'STRING'
+            },
+            {
+                name: 'format',
+                type: 'STRING'
+            },
+            {
+                name: 'uuid',
+                type: 'STRING'
+            }
+        ],
+        nullableColumns: ['format'],
+        primaryKeyColumns: ['uuid']
+    },
+
+    PatientAttribute: {
+        tableName: 'patient_attribute',
+        columns: [
+            {
+                name: 'attributeTypeId',
+                type: 'INTEGER'
+            },
+            {
+                name: 'attributeValue',
+                type: 'STRING'
+            },
+            {
+                name: 'patientUuid',
+                type: 'STRING'
+            },
+            {
+                name: 'uuid',
+                type: 'STRING'
+            }
+        ],
+        nullableColumns: [],
+        primaryKeyColumns: ['uuid']
+    },
+
+    Patient: {
+        tableName: 'patient',
+        columns: [
+            {
+                name: 'identifier',
+                type: 'INTEGER'
+            },
+            {
+                name: 'givenName',
+                type: 'STRING'
+            },
+            {
+                name: 'middleName',
+                type: 'STRING'
+            },
+            {
+                name: 'familyName',
+                type: 'STRING'
+            },
+            {
+                name: 'gender',
+                type: 'STRING'
+            },
+            {
+                name: 'birthdate',
+                type: 'DATE_TIME'
+            },
+            {
+                name: 'dateCreated',
+                type: 'DATE_TIME'
+            },
+            {
+                name: 'patientJson',
+                type: 'OBJECT'
+            },
+            {
+                name: 'relationships',
+                type: 'ARRAY_BUFFER'
+            },
+            {
+                name: 'uuid',
+                type: 'STRING'
+            }
+        ],
+        nullableColumns: ['gender', 'birthdate', 'givenName', 'middleName', 'familyName'],
+        primaryKeyColumns: ['uuid'],
+        indexes: [
+            {
+                indexName: 'givenNameIndex',
+                columnNames: ['givenName']
+            }, {
+                indexName: 'middleNameIndex',
+                columnNames: ['middleName']
+            }, {
+                indexName: 'familyNameIndex',
+                columnNames: ['familyName']
+            }, {
+                indexName: 'identifierIndex',
+                columnNames: ['identifier']
+            }
+        ]
     }
 };

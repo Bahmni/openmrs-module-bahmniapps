@@ -1,41 +1,14 @@
 angular.module('bahmni.common.offline').service('initializeOfflineSchema', ['$rootScope', '$q', '$http', 'offlineService', function ($rootScope, $q, $http, offlineService) {
 
-    var attributeTypeColumnNames = [
-        "attributeTypeId",
-        "uuid",
-        "attributeName",
-        "format"
-    ];
-    var patientColumnNames = [
-        "identifier",
-        "uuid",
-        "givenName",
-        "middleName",
-        "familyName",
-        "gender",
-        "birthdate",
-        "dateCreated",
-        "patientJson",
-        "relationships"];
-    var attributeColumnNames = [
-        "attributeTypeId",
-        "attributeValue",
-        "patientId"
-    ];
-
-    var columnsToBeIndexed = {
-        'givenNameIndex': 'givenName',
-        'middleNameIndex': 'middleName',
-        'familyNameIndex': 'familyName',
-        'identifierIndex': 'identifier'
-    };
 
     var addressColumns;
 
     var dataTypes = {
         "INTEGER": lf.Type.INTEGER,
         "STRING": lf.Type.STRING,
-        "DATE_TIME": lf.Type.DATE_TIME
+        "DATE_TIME": lf.Type.DATE_TIME,
+        "OBJECT": lf.Type.OBJECT,
+        "ARRAY_BUFFER": lf.Type.ARRAY_BUFFER
     };
 
     this.initSchema = function () {
@@ -45,10 +18,9 @@ angular.module('bahmni.common.offline').service('initializeOfflineSchema', ['$ro
         }
 
         var schemaBuilder = lf.schema.create('Bahmni', 2);
-
-        createTable(schemaBuilder, 'patient_attribute_types', attributeTypeColumnNames);
-        createTable(schemaBuilder, 'patient', patientColumnNames, columnsToBeIndexed);
-        createTable(schemaBuilder, 'patient_attributes', attributeColumnNames);
+        createTableGeneric(schemaBuilder, Bahmni.Common.Offline.SchemaDefinitions.Patient);
+        createTableGeneric(schemaBuilder, Bahmni.Common.Offline.SchemaDefinitions.PatientAttribute);
+        createTableGeneric(schemaBuilder, Bahmni.Common.Offline.SchemaDefinitions.PatientAttributeType);
         createTableGeneric(schemaBuilder, Bahmni.Common.Offline.SchemaDefinitions.EventLogMarker);
         createTableGeneric(schemaBuilder, Bahmni.Common.Offline.SchemaDefinitions.AddressHierarchyEntry);
         createTableGeneric(schemaBuilder, Bahmni.Common.Offline.SchemaDefinitions.AddressHierarchyLevel);
@@ -72,19 +44,17 @@ angular.module('bahmni.common.offline').service('initializeOfflineSchema', ['$ro
 
         table.addNullable(tableDefinition.nullableColumns);
         table.addPrimaryKey(tableDefinition.primaryKeyColumns);
+        _.each(tableDefinition.indexes, function (index) {
+            table.addIndex(index.indexName, index.columnNames);
+        })
     };
 
-    var createTable = function (schemaBuilder, tableName, columnNames, columnsToBeIndexed) {
+    var createTable = function (schemaBuilder, tableName, columnNames) {
         var table = schemaBuilder.createTable(tableName).addColumn('_id', lf.Type.INTEGER).addPrimaryKey(['_id'], true);
         angular.forEach(columnNames, function (columnName) {
             table.addColumn(columnName, lf.Type.STRING)
         });
         table.addNullable(columnNames);
-        if (columnsToBeIndexed) {
-            angular.forEach(Object.keys(columnsToBeIndexed), function (indexName) {
-                table.addIndex(indexName, [columnsToBeIndexed[indexName]]);
-            });
-        }
     };
 
     var getAddressColumns = function () {
@@ -92,10 +62,10 @@ angular.module('bahmni.common.offline').service('initializeOfflineSchema', ['$ro
         $http.get(window.location.origin + "/openmrs/module/addresshierarchy/ajax/getOrderedAddressHierarchyLevels.form").then(function (addressHierarchyFields) {
             var addressColumnNames = [];
             var addressColumns = addressHierarchyFields.data;
-            for (var i = 0; i < addressColumns.length; i++) {
-                addressColumnNames[i] = addressColumns[i].addressField;
-            }
-            addressColumnNames[addressColumns.length] = "patientId";
+            _.each(addressColumns, function (addressColumn) {
+                addressColumnNames.push(addressColumn.addressField);
+            });
+            addressColumnNames.push("patientUuid");
             deferred.resolve(addressColumnNames);
         });
         return deferred.promise;

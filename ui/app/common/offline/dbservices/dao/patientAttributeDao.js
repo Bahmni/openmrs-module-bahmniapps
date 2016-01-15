@@ -6,7 +6,7 @@ angular.module('bahmni.common.offline')
             $http.get(window.location.origin + "/openmrs/ws/rest/v1/personattributetype?v=custom:(name,uuid,format)").then(function (attributesResponse) {
                 var personAttributeTypeList = attributesResponse.data.results;
                 var table, queries = [];
-                table = db.getSchema().table('patient_attribute_types');
+                table = db.getSchema().table('patient_attribute_type');
                 for (var i = 0; i < personAttributeTypeList.length; i++) {
                     var row = table.createRow({
                         'attributeTypeId': i,
@@ -21,9 +21,9 @@ angular.module('bahmni.common.offline')
             });
         };
 
-        var insertAttributes = function (db, patientId, attributes, attributeTypeMap) {
+        var insertAttributes = function (db, patientUuid, attributes, attributeTypeMap) {
             var attributeTable, value;
-            attributeTable = db.getSchema().table('patient_attributes');
+            attributeTable = db.getSchema().table('patient_attribute');
             var queries = [];
             if (attributes != null && attributes.length > 0) {
                 for (var j = 0; j < attributes.length; j++) {
@@ -40,7 +40,8 @@ angular.module('bahmni.common.offline')
                             var row = attributeTable.createRow({
                                 'attributeTypeId': attributeTypeId,
                                 'attributeValue': value,
-                                'patientId': patientId
+                                'patientUuid': patientUuid,
+                                'uuid': personAttribute.uuid
                             });
                             queries.push(db.insertOrReplace().into(attributeTable).values([row]));
                         }

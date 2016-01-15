@@ -61,7 +61,6 @@ angular.module('bahmni.common.offline')
                 })
             }
             patientIdentifier = patient.identifiers[0].identifier;
-
             var row = patientTable.createRow({
                 'identifier': patientIdentifier,
                 'uuid': patient.uuid,
@@ -69,16 +68,13 @@ angular.module('bahmni.common.offline')
                 'middleName': personName.middleName,
                 'familyName': personName.familyName,
                 'gender': person.gender,
-                'birthdate': person.birthdate,
-                'dateCreated': patient.person.auditInfo.dateCreated,
+                'birthdate': new Date(person.birthdate),
+                'dateCreated': new Date(patient.person.auditInfo.dateCreated),
                 'patientJson': patient,
                 'relationships': relationships
             });
             return db.insertOrReplace().into(patientTable).values([row]).exec().then(function () {
-                return db.select(patientTable._id).from(patientTable).where(patientTable.identifier.eq(patientIdentifier)).exec()
-                    .then(function (results) {
-                        return results[0]._id;
-                    })
+                return patient.uuid;
             });
         };
 

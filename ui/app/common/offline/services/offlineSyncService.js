@@ -16,7 +16,7 @@ angular.module('bahmni.common.offline')
             };
 
             var syncForMarker = function (marker) {
-                eventLogService.getEventsFor(marker.catchmentNumber, marker.lastReadUuid).then(function (response) {
+                eventLogService.getEventsFor(marker.catchmentNumber, marker.lastReadEventUuid).then(function (response) {
                     if (response.data == undefined || response.data.length == 0) {
                         scheduleSync();
                         return;

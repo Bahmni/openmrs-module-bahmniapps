@@ -147,7 +147,7 @@ describe('OfflineSyncService', function () {
                     getMarker: function () {
                         return {
                             then: function (callback) {
-                                return callback({lastReadUuid: 'lastReadUuid', catchmentNumber: 202020});
+                                return callback({lastReadEventUuid: 'lastReadUuid', catchmentNumber: 202020});
                             }
                         };
                     },

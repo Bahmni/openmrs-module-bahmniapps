@@ -30,8 +30,8 @@ angular.module('bahmni.common.offline')
             }
 
             var p = db.getSchema().table('patient');
-            var pa = db.getSchema().table('patient_attributes');
-            var pat = db.getSchema().table('patient_attribute_types');
+            var pa = db.getSchema().table('patient_attribute');
+            var pat = db.getSchema().table('patient_attribute_type');
             var padd = db.getSchema().table('patient_address');
 
             db.select(pat.attributeTypeId)
@@ -42,8 +42,8 @@ angular.module('bahmni.common.offline')
 
                     var query = db.select(p.identifier.as('identifier'))
                         .from(p)
-                        .innerJoin(padd, p._id.eq(padd.patientId))
-                        .leftOuterJoin(pa, p._id.eq(pa.patientId))
+                        .innerJoin(padd, p.uuid.eq(padd.patientUuid))
+                        .leftOuterJoin(pa, p.uuid.eq(pa.patientUuid))
                         .leftOuterJoin(pat, pa.attributeTypeId.eq(pat.attributeTypeId));
                     var predicates = [];
 
@@ -83,8 +83,8 @@ angular.module('bahmni.common.offline')
                                 p.dateCreated.as('dateCreated'), p.birthdate.as('birthdate'), p.gender.as('gender'), p.uuid.as('uuid'), padd[addressFieldName].as('addressFieldValue'),
                                 pat.attributeName.as('attributeName'), pa.attributeValue.as('attributeValue'), pat.format.as('attributeFormat'))
                                 .from(p)
-                                .innerJoin(padd, p._id.eq(padd.patientId))
-                                .leftOuterJoin(pa, p._id.eq(pa.patientId))
+                                .innerJoin(padd, p.uuid.eq(padd.patientUuid))
+                                .leftOuterJoin(pa, p.uuid.eq(pa.patientUuid))
                                 .leftOuterJoin(pat, pa.attributeTypeId.eq(pat.attributeTypeId))
                                 .where(p.identifier.in(_.map(tempResults, function (tempResult) {
                                     return tempResult.identifier;
