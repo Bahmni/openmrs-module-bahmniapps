@@ -27,7 +27,7 @@ describe("DrugOrderOptions", function () {
             "disableFields": ["doseUnits", "frequencies"]
         };
 
-        model = new Bahmni.Clinical.DrugOrderOptions(inputConfig, listOfDrugs, masterConfig);
+        model = new Bahmni.Clinical.DrugOrderOptions(inputConfig, masterConfig);
     });
 
     it('should initialise fields from config', function () {

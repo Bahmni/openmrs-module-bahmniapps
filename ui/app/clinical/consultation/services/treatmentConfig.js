@@ -1,18 +1,34 @@
 'use strict';
 
-angular.module('bahmni.clinical').factory('treatmentConfig',['TreatmentService', 'spinner', 'configurationService', 'appService', 'DrugService', '$q', function (treatmentService, spinner, configurationService, appService, drugService, $q) {
+angular.module('bahmni.clinical').factory('treatmentConfig', ['TreatmentService', 'spinner', 'configurationService', 'appService', 'DrugService', '$q', function (treatmentService, spinner, configurationService, appService, drugService, $q) {
 
+        var drugOrderOptions;
         var stoppedOrderReasonConfig = {};
-        var finalConfig = {
-            getDoseUnits: function(drug) {return this.drugOrderOptionsSet.getDoseUnits(drug)},
-            getRoutes: function(drug) {return this.drugOrderOptionsSet.getRoutes(drug)},
-            getDurationUnits: function(drug) {return this.drugOrderOptionsSet.getDurationUnits(drug)},
-            getDosingInstructions: function(drug) {return this.drugOrderOptionsSet.getDosingInstructions(drug)},
-            getDispensingUnits: function(drug) {return this.drugOrderOptionsSet.getDispensingUnits(drug)},
-            getFrequencies: function(drug) {return this.drugOrderOptionsSet.getFrequencies(drug)},
-            getDosePlaceHolder: function(drug) {return this.drugOrderOptionsSet.getDosePlaceHolder(drug)},
-            disableField: function(drug, fieldName) {return this.drugOrderOptionsSet.disableField(drug,fieldName)}
-
+        var medicationTabConfig = {
+            getDoseUnits: function () {
+                return drugOrderOptions.getDoseUnits()
+            },
+            getRoutes: function () {
+                return drugOrderOptions.getRoutes()
+            },
+            getDurationUnits: function () {
+                return drugOrderOptions.getDurationUnits()
+            },
+            getDosingInstructions: function () {
+                return drugOrderOptions.getDosingInstructions()
+            },
+            getDispensingUnits: function () {
+                return drugOrderOptions.getDispensingUnits()
+            },
+            getFrequencies: function () {
+                return drugOrderOptions.getFrequencies()
+            },
+            getDosePlaceHolder: function () {
+                return drugOrderOptions.getDosePlaceHolder()
+            },
+            disableField: function (fieldName) {
+                return _.contains(drugOrderOptions.getDisabledFields(), fieldName)
+            }
         };
 
         configurationService.getConfigurations(['stoppedOrderReasonConfig']).then(function (configurations) {
@@ -39,64 +55,44 @@ angular.module('bahmni.clinical').factory('treatmentConfig',['TreatmentService',
             frequencies[index] = frequencyToBeBubbled;
         };
 
-        var configFromServer = function() {
-            return treatmentService.getConfig().then(function(result) {
-                finalConfig = angular.extend(finalConfig, result.data);
-                finalConfig.durationUnits = [
+        var configFromServer = function () {
+            return treatmentService.getConfig().then(function (result) {
+                medicationTabConfig = angular.extend(medicationTabConfig, result.data);
+                medicationTabConfig.durationUnits = [
                     {name: "Day(s)", factor: 1},
                     {name: "Week(s)", factor: 7},
                     {name: "Month(s)", factor: 30}
                 ];
-                var frequencies = finalConfig.frequencies;
+                var frequencies = medicationTabConfig.frequencies;
                 bubbleValueToTop(frequencies, "Immediately");
                 bubbleValueToTop(frequencies, "SOS")
 
-                finalConfig.stoppedOrderReasonConcepts = stoppedOrderReasonConfig.answers;
-                return finalConfig;
+                medicationTabConfig.stoppedOrderReasonConcepts = stoppedOrderReasonConfig.answers;
+                return medicationTabConfig;
             });
         };
 
-        var drugOrderOptions = function (conceptName, masterConfig, inputConfig) {
-            return drugService.getSetMembersOfConcept(conceptName)
-                .then(function (listOfDrugs) {
-                    return new Bahmni.Clinical.DrugOrderOptions(inputConfig, listOfDrugs, masterConfig);
-            });
+        var initializeInputConfig = function () {
+            angular.extend(medicationTabConfig, appService.getAppDescriptor().getConfigForPage('medication'));
+            drugOrderOptions = new Bahmni.Clinical.DrugOrderOptions(medicationTabConfig.inputOptionsConfig, medicationTabConfig);
         };
 
-        var drugOrderOptionsSet = function() {
-            angular.extend(finalConfig, appService.getAppDescriptor().getConfigForPage('medication'));
-            var inputOptionsConfig = finalConfig.inputOptionsConfig,
-                conceptNames = _.keys(inputOptionsConfig),
-                options = [],
-                drugOrderOptionsPromises = [];
-            conceptNames.forEach(function(conceptName) {
-                drugOrderOptionsPromises.push(
-                    drugOrderOptions(conceptName, finalConfig, inputOptionsConfig[conceptName])
-                        .then(function(option) {
-                            options.push(option);
-                        }));
-            });
-            return $q.all(drugOrderOptionsPromises).then(function() {
-               finalConfig.drugOrderOptionsSet = new Bahmni.Clinical.DrugOrderOptionsSet(options, finalConfig);
-            });
-        };
-
-        var nonCodedDrugConcept = function(){
+        var nonCodedDrugConcept = function () {
             return treatmentService.getNonCodedDrugConcept().then(function (data) {
-                finalConfig.nonCodedDrugconcept = {
-                    uuid : data
+                medicationTabConfig.nonCodedDrugconcept = {
+                    uuid: data
                 };
-                return finalConfig;
+                return medicationTabConfig;
             })
         };
 
-        var configurations = function() {
-            return configFromServer().then(drugOrderOptionsSet);
+        var configurations = function () {
+            return configFromServer().then(initializeInputConfig);
         };
 
-        var configurationWithNonCodedDrugConcept = function() {
-            return $q.all([nonCodedDrugConcept(), configurations()]).then(function() {
-                return finalConfig;
+        var configurationWithNonCodedDrugConcept = function () {
+            return $q.all([nonCodedDrugConcept(), configurations()]).then(function () {
+                return medicationTabConfig;
             });
         };
 

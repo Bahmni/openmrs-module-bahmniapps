@@ -11,14 +11,7 @@ Bahmni.Clinical.DrugOrderOptions = (function() {
         });
     };
 
-
-    var DrugOrderOptions = function (inputConfig, listOfDrugs, masterConfig) {
-        var listOfDrugs = _.map(listOfDrugs, function(drug) {
-            return drug.name;
-        });
-        this._drugMatches = function(drug) {
-            return drug && _.contains(listOfDrugs, drug.name);
-        };
+    var DrugOrderOptions = function (inputConfig, masterConfig) {
         inputConfig = inputConfig || {};
 
         this.doseUnits = itemsForInputConfig(masterConfig.doseUnits, inputConfig.doseUnits);
@@ -33,34 +26,29 @@ Bahmni.Clinical.DrugOrderOptions = (function() {
     };
     _proto = DrugOrderOptions.prototype;
 
-    _proto.getDoseUnits = function(drug) {
-        return this._drugMatches(drug)? this.doseUnits: null;
+    _proto.getDoseUnits = function() {
+        return this.doseUnits;
     };
-
-    _proto.getRoutes = function (drug){
-        return this._drugMatches(drug)? this.routes: null;
+    _proto.getRoutes = function (){
+        return this.routes;
     };
-
-    _proto.getFrequencies = function (drug){
-        return this._drugMatches(drug)? this.frequencies: null;
+    _proto.getFrequencies = function (){
+        return this.frequencies;
     };
-    _proto.getDurationUnits = function (drug){
-        return this._drugMatches(drug)? this.durationUnits: null;
+    _proto.getDurationUnits = function (){
+        return this.durationUnits;
     };
-    _proto.getDosingInstructions = function (drug){
-        return this._drugMatches(drug)? this.dosingInstructions: null;
+    _proto.getDosingInstructions = function (){
+        return this.dosingInstructions;
     };
-    _proto.getDispensingUnits = function (drug){
-        return this._drugMatches(drug)? this.dispensingUnits: null;
+    _proto.getDispensingUnits = function (){
+        return this.dispensingUnits;
     };
-    _proto.isDefaultDrugOrderOption = function() {
-        return this.listOfDrugs.length == 0;
+    _proto.getDisabledFields = function() {
+        return this.disableFields;
     };
-    _proto.disableField = function(drug, fieldName) {
-        return this._drugMatches(drug)? _.contains(this.disableFields, fieldName): null;
-    };
-    _proto.getDosePlaceHolder = function(drug) {
-        return this._drugMatches(drug) ? this.dosePlaceHolder : null;
+    _proto.getDosePlaceHolder = function() {
+        return this.dosePlaceHolder;
     };
     return DrugOrderOptions;
 })();
