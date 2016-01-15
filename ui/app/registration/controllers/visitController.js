@@ -80,9 +80,9 @@ angular.module('bahmni.registration')
             var searchActiveVisitsPromise = function () {
                 return visitService.search({
                     patient: patientUuid, includeInactive: false, v: "custom:(uuid)"
-                }).success(function (data) {
-                    var hasActiveVisit = data.results.length > 0;
-                    self.visitUuid = hasActiveVisit ? data.results[0].uuid : "";
+                }).then(function (data) {
+                    var hasActiveVisit = data.data.results.length > 0;
+                    self.visitUuid = hasActiveVisit ? data.data.results[0].uuid : "";
                     $scope.canCloseVisit = isUserPrivilegedToCloseVisit() && hasActiveVisit;
                 });
             };

@@ -32,8 +32,8 @@ angular.module('bahmni.registration')
                         includeInactive: false,
                         v: "custom:(uuid)"
                     };
-                    spinner.forPromise(visitService.search(searchParams).success(function (data) {
-                        self.hasActiveVisit = data.results && (data.results.length > 0);
+                    spinner.forPromise(visitService.search(searchParams).then(function (data) {
+                        self.hasActiveVisit = data.data.results && (data.data.results.length > 0);
                         setForwardActionKey();
                     }));
                 };
