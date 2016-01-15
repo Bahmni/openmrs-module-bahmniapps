@@ -1,12 +1,5 @@
 <form name="addForm" ng-class="{ 'show-invalid': formInvalid}"  ng-submit="add()" bm-form class="edit-drug-order-container">
     <section class="type-of-drug-section clearfix">
-        <div class="default-drug-container multi-select-button-group" ng-if="defaultDrugs.length > 0">
-            <h4 class="drug-type-title">{{ ::'MEDICATION_DEFAULT_DRUGS_TITLE' | translate}}</h4>
-            <button class="default-drug-btn grid-row-element fl" type="button" ng-class="{active: isSelected(defaultDrug)}" ng-repeat="defaultDrug in defaultDrugs" ng-click="selectFromDefaultDrugList(defaultDrug)">
-                   <i class="fa fa-ok"></i>
-                    {{defaultDrug.drug.name}}
-            </button>
-        </div>
         <div class="medication-drug-container clearfix">
             <h4 class="drug-type-title">{{ ::'MEDICATION_DRUG_NAME_TITLE' | translate}}</h4>
             <input id="drug-name" class="fl drug-name" type="text" placeholder="Drug Name" bahmni-autocomplete focus-on="startNewDrugEntry"
@@ -16,9 +9,14 @@
                        }"
                    ng-change="onChange()"
                    ng-model="treatment.drugNameDisplay" on-select="onSelect" autofocus
-                   ng-disabled="treatment.previousOrderUuid" ng-readonly="treatment.isBeingEdited"/>
+                   ng-disabled="treatment.previousOrderUuid" ng-readonly="treatment.isBeingEdited" ng-if="!treatmentConfig.isDropDown"/>
 
-                <span ng-if="!allowOnlyCodedDrugs">
+            <select ng-if="treatmentConfig.isDropDown" ng-options="item as item.drug.name for item in drugs"
+                    ng-model="selectedItem" ng-change="selectFromDefaultDrugList(selectedItem)">
+                <option value="">Choose Drug</option>
+            </select>
+
+                <span ng-if="!allowOnlyCodedDrugs && !treatmentConfig.isDropDown">
                     <button type="button" ng-model="treatment.isNonCodedDrug"
                             class="fl accept-btn" id="accept-button"
                             ng-click="onAccept()"

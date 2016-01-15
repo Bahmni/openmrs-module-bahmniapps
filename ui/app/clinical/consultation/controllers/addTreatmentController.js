@@ -34,13 +34,8 @@ angular.module('bahmni.clinical')
             };
 
             $scope.selectFromDefaultDrugList = function(item) {
-                if ($scope.isSelected(item)) {
-                    $scope.clearForm();
-                } else {
-                    $scope.onSelect(item);
-                    $scope.treatment.drugNameDisplay = item.value;
-                    $scope.onChange();
-                }
+                $scope.onSelect(item);
+                $scope.onChange();
             };
 
             var markVariable = function (variable){
@@ -376,7 +371,7 @@ angular.module('bahmni.clinical')
             };
             $scope.onSelect =  function(item){
                 $scope.treatment.selectedItem = item;
-                //$scope.onChange(); angular will call onChange after onSelect by default
+                //$scope.onChange(); angular will call onChange after onSelect by default if it is bahmni-autocomplete
             };
             $scope.onAccept = function(){
                 $scope.treatment.acceptedItem=$scope.treatment.drugNameDisplay;
