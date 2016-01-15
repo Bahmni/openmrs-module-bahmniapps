@@ -47,7 +47,7 @@ angular.module('bahmni.registration')
             };
 
             $scope.showCasteSameAsLastName = function() {
-                var personAttributeHasCaste = (_.find($rootScope.patientConfiguration.personAttributeTypes, {name: 'caste'}) != null);
+                var personAttributeHasCaste = (_.find($rootScope.patientConfiguration.attributeTypes, {name: 'caste'}) != null);
                 return showCasteSameAsLastNameCheckbox && personAttributeHasCaste;
             };
 

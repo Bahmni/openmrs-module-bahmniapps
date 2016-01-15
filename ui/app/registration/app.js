@@ -6,7 +6,7 @@ angular
         'bahmni.common.displaycontrol.observation',  'bahmni.common.i18n', 'bahmni.common.displaycontrol.custom',
         'bahmni.common.routeErrorHandler', 'bahmni.common.displaycontrol.pivottable','RecursionHelper','ngSanitize',
         'bahmni.common.uiHelper', 'bahmni.common.domain', 'ngDialog', 'pascalprecht.translate', 'ngCookies',
-        'monospaced.elastic', 'bahmni.common.offline', 'bahmni.common.displaycontrol.hint'])
+        'monospaced.elastic', 'bahmni.common.offline', 'bahmni.common.displaycontrol.hint',  'bahmni.common.attributeTypes'])
     .config(['$urlRouterProvider', '$stateProvider', '$httpProvider', '$bahmniTranslateProvider', function ($urlRouterProvider, $stateProvider, $httpProvider, $bahmniTranslateProvider) {
         $httpProvider.defaults.headers.common['Disable-WWW-Authenticate'] = true;
         $urlRouterProvider.otherwise('/search');
@@ -18,7 +18,16 @@ angular
                     'layout': { templateUrl: 'views/layout.html', controller: 'SearchPatientController'},
                     'content@search': { templateUrl: 'views/search.html'}
                 },
-                resolve: { initialization: 'initialization' }
+                resolve: {
+                    initialization: 'initialization',
+                    offlineDb: function(offlineDbInitialization) {
+                        return offlineDbInitialization();
+
+                    },
+                    offlineRegistrationInitialization : function(offlineRegistrationInitialization, offlineDb){
+                        return offlineRegistrationInitialization(offlineDb);
+                    }
+                }
             })
             .state('newpatient', {
                 url: '/patient/new',
@@ -26,7 +35,15 @@ angular
                     'layout': { templateUrl: 'views/layout.html', controller: 'CreatePatientController'},
                     'content@newpatient': { templateUrl: 'views/newpatient.html'}
                 },
-                resolve: { initialization: 'initialization' }
+                resolve: {
+                    initialization: 'initialization',
+                    offlineDb: function(offlineDbInitialization) {
+                        return offlineDbInitialization();
+
+                    },
+                    offlineRegistrationInitialization : function(offlineRegistrationInitialization, offlineDb){
+                        return offlineRegistrationInitialization(offlineDb);
+                    }}
             })
             .state('patient', {
                 url: '/patient/:patientUuid',
@@ -34,7 +51,15 @@ angular
                 views: {
                     'layout': { template: '<div ui-view="layout"></div>' }
                 },
-                resolve: {initialization: 'initialization'}
+                resolve: {
+                    initialization: 'initialization',
+                    offlineDb: function(offlineDbInitialization) {
+                        return offlineDbInitialization();
+
+                    },
+                    offlineRegistrationInitialization : function(offlineRegistrationInitialization, offlineDb){
+                        return offlineRegistrationInitialization(offlineDb);
+                    }}
             })
             .state('patient.edit', {
                 url: '?serverError',

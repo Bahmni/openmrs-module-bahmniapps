@@ -1,5 +1,5 @@
 <div class="bacteriology-container" focus-on-input-errors>
-    <div ng-repeat="newSpecimen in newSpecimens track by $index" class="sample-container">
+    <div ng-repeat="newSpecimen in newSpecimens" class="sample-container">
         <form class="form">
             <section class="section-grid">
                 <div class="section-title-wrapper clearfix">
@@ -21,8 +21,8 @@
                                     <span class="asterick">*</span>
                                 </label>
                             </div>
-                            <div  ng-class="{'illegalValue': newSpecimen.isDateCollectedDirty()}"  class="field-value">
-                                <input id="sample-date"  date-converter type="date" max="{{::today}}" ng-model="newSpecimen.dateCollected"
+                            <div class="field-value">
+                                <input ng-class="{'illegalValue': newSpecimen.isDateCollectedDirty()}" id="sample-date"  date-converter type="date" max="{{::today}}" ng-model="newSpecimen.dateCollected"
                                        required="required" ng-change="clearEmptySpecimens()">
                             </div>
                         </article>
@@ -66,10 +66,14 @@
                         </article>
                     </section>
 
-                    <concept-set show-title="false" patient="patient" concept-set-name="additionalAttributesConceptName"
-                                 observations="newSpecimen.sample.additionalAttributes"></concept-set>
-                    <concept-set  patient="patient" concept-set-name="resultsConceptName" collapse-inner-sections="!newSpecimen.atLeastOneResult()"
+                    <div class="additionalAttributes">
+                        <concept-set show-title="false" patient="patient" concept-set-name="additionalAttributesConceptName"
+                                     observations="newSpecimen.sample.additionalAttributes"></concept-set>
+                    </div>
+                    <div ng-if="newSpecimen.dateCollected">
+                        <concept-set  patient="patient" concept-set-name="resultsConceptName" collapse-inner-sections="!newSpecimen.atLeastOneResult()"
                                       observations="newSpecimen.report.results"></concept-set>
+                    </div>
                 </div>
             </section>
         </form>

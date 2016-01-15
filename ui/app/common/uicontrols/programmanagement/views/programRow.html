@@ -1,31 +1,53 @@
 <div class="program-row">
     <div class="program-details">
-        <span>{{patientProgram.display}}</span>
-        <span class="enrolled-info"> (Enrolled on {{patientProgram.dateEnrolled | bahmniDate}})</span>
-        <a class="back-btn dashboard-link fr" id="dashboard-link"
-           ui-sref="patient.dashboard.show({
+        <div>
+            <table class="programTable">
+                <tr>
+                    <td class="programName">
+                        <i class="fa fa-caret-right" ng-hide="patientProgram.isOpen" ng-click="showProgramAttributes(patientProgram)"></i>
+                        <i class="fa fa-caret-down" ng-show="patientProgram.isOpen" ng-click="showProgramAttributes(patientProgram)"></i>
+                        {{patientProgram.display}}
+                    </td>
+                    <td class="programState">{{getCurrentStateDisplayName(patientProgram)}}</td>
+                    <td class="programDate">Start Date:
+                        <span>{{patientProgram.dateEnrolled | bahmniDate}}</span>
+                        <i class="fa fa-pencil-square-o fr" ng-click=""></i>
+                    </td>
+                </tr>
+            </table>
+        </div>
+        <div ng-if="patientProgram.isOpen" class="programDescription">
+            <section class="programAttributeFields activeProgramAttributeFields"  ng-if="patientProgram.attributes.length!=0">
+                <h2 class="programAttribute-title">Program Attributes</h2>
+                <a class="back-btn dashboard-link fr" id="dashboard-link"
+                   ui-sref="patient.dashboard.show({
            patientUuid: patient.uuid,
            programUuid: patientProgram.program.uuid,
            conceptSetGroupName: 'observations',
            dateEnrolled: patientProgram.dateEnrolled,
            dateCompleted: patientProgram.dateCompleted})">
-            <img ng-src="{{patient.image}}" onerror="this.onerror=null;this.src='../images/blank-user.gif';">
+                    <img ng-src="{{patient.image}}" onerror="this.onerror=null;this.src='../images/blank-user.gif';">
             <span class="patient-info">
                 <span class="patient-name" >{{patientProgram.display}}</span>
                 <span class="patient-id">{{patient.identifier}}</span>
             </span>
-        </a>
-    </div>
-    <div class="program-timeline-container">
-        <div class="program-timeline" ng-if="patientProgram.states.length!=0">
-            <timeline program="patientProgram"></timeline>
+                </a>
+                <program-attributes attributes="patientProgram.attributes"></program-attributes>
+            </section>
+            <div class="program-timeline-container">
+                <h2 class="programAttribute-title">Program States</h2>
+                <div class="program-timeline">
+                    <timeline program="patientProgram"></timeline>
+                </div>
+                <button ng-click="toggleEdit(patientProgram)" ng-class="{'tab-selected': patientProgram.editing, 'btn-noTimeline':patientProgram.states.length==0}" class="fr detail-btn">
+                    <span>Details</span>
+                    <i class="fa fa-expand"></i>
+                </button>
+            </div>
         </div>
-        <button ng-click="toggleEdit(patientProgram)" ng-class="{'tab-selected': patientProgram.editing, 'btn-noTimeline':patientProgram.states.length==0}" class="fr detail-btn">
-            <span>Details</span>
-            <i class="fa fa-expand"></i>
-        </button>
     </div>
-    <div class="program-state-list"  ng-if="patientProgram.editing">
+
+    <div class="program-state-list"  ng-if="patientProgram.editing && patientProgram.isOpen">
         <div class="down-arrow-container">
         </div>
         <div class="state-list" ng-class="{'state-list-cutomPadding':patientProgram.states.length == 0}">

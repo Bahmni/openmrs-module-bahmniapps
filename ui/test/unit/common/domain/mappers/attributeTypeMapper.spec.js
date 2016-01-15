@@ -1,11 +1,7 @@
 'use strict';
 
-describe('PatientAttributeTypeMapper', function () {
-
-    beforeEach(function () {
-        module('bahmni.registration');
-    });
-
+describe('AttributeTypeMapper', function () {
+    
     it('should map values from the openmrs patientAttributeTypes to our patientConfig', function () {
         var mrspatientAttributeTypes = [
             {
@@ -162,10 +158,9 @@ describe('PatientAttributeTypeMapper', function () {
 
         var mandatoryPersonAttributes = ["class"];
 
-        var patientConfigs = new Bahmni.Registration.PatientAttributeTypeMapper().mapFromOpenmrsPatientAttributeTypes(mrspatientAttributeTypes, mandatoryPersonAttributes);
-
-        expect(patientConfigs.personAttributeTypes.length).toBe(1);
-        expect(patientConfigs.personAttributeTypes[0]).toEqual(jasmine.objectContaining({
+        var patientConfigs = new Bahmni.Common.Domain.AttributeTypeMapper().mapFromOpenmrsAttributeTypes(mrspatientAttributeTypes, mandatoryPersonAttributes);
+        expect(patientConfigs.attributeTypes.length).toBe(1);
+        expect(patientConfigs.attributeTypes[0]).toEqual(jasmine.objectContaining({
             uuid: "2a6e96f6-9d21-11e2-8137-0800271c1b75",
             sortWeight: 3,
             name: "class",

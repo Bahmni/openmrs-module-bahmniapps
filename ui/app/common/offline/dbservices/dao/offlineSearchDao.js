@@ -1,7 +1,9 @@
 'use strict';
 
 angular.module('bahmni.common.offline')
-    .service('offlineSearch', ['$http', '$q', '$rootScope', 'age', function ($http, $q, $rootScope, age) {
+    .service('offlineSearchDao', ['$http', '$q', '$rootScope', 'age', function ($http, $q, $rootScope, age) {
+
+        var db;
 
         var search = function (params) {
             var response = {
@@ -27,18 +29,18 @@ angular.module('bahmni.common.offline')
                 addressFieldName = params.address_field_name.replace("_", "");
             }
 
-            var p = $rootScope.db.getSchema().table('patient');
-            var pa = $rootScope.db.getSchema().table('patient_attributes');
-            var pat = $rootScope.db.getSchema().table('patient_attribute_types');
-            var padd = $rootScope.db.getSchema().table('patient_address');
+            var p = db.getSchema().table('patient');
+            var pa = db.getSchema().table('patient_attributes');
+            var pat = db.getSchema().table('patient_attribute_types');
+            var padd = db.getSchema().table('patient_address');
 
-            $rootScope.db.select(pat.attributeTypeId)
+            db.select(pat.attributeTypeId)
                 .from(pat)
                 .where(pat.attributeName.in(params.patientAttributes)).exec()
                 .then(function (attributeTypeIds) {
 
 
-                    var query = $rootScope.db.select(p.identifier.as('identifier'))
+                    var query = db.select(p.identifier.as('identifier'))
                         .from(p)
                         .innerJoin(padd, p._id.eq(padd.patientId))
                         .leftOuterJoin(pa, p._id.eq(pa.patientId))
@@ -77,7 +79,7 @@ angular.module('bahmni.common.offline')
 
                     query.limit(50).skip(params.startIndex).orderBy(p.dateCreated, lf.Order.DESC).groupBy(p.identifier).exec()
                         .then(function (tempResults) {
-                            $rootScope.db.select(p.identifier.as('identifier'), p.givenName.as('givenName'), p.middleName.as('middleName'), p.familyName.as('familyName'),
+                            db.select(p.identifier.as('identifier'), p.givenName.as('givenName'), p.middleName.as('middleName'), p.familyName.as('familyName'),
                                 p.dateCreated.as('dateCreated'), p.birthdate.as('birthdate'), p.gender.as('gender'), p.uuid.as('uuid'), padd[addressFieldName].as('addressFieldValue'),
                                 pat.attributeName.as('attributeName'), pa.attributeValue.as('attributeValue'), pat.format.as('attributeFormat'))
                                 .from(p)
@@ -116,7 +118,12 @@ angular.module('bahmni.common.offline')
             return deferred.promise;
         };
 
+        var init = function(_db){
+            db = _db;
+        };
+
         return {
-            search: search
+            search: search,
+            init: init
         }
     }]);

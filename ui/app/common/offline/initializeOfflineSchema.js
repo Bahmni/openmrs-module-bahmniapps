@@ -29,14 +29,6 @@ angular.module('bahmni.common.offline').service('initializeOfflineSchema', ['$ro
         "lastReadTime"
     ];
 
-    var addressHierarchyEntryColumnNames = [
-        "name",
-        "level_id",
-        "parent_id",
-        "user_generated_id",
-        "uuid"
-    ];
-
     var columnsToBeIndexed = {
         'givenNameIndex': 'givenName',
         'middleNameIndex': 'middleName',
@@ -46,9 +38,15 @@ angular.module('bahmni.common.offline').service('initializeOfflineSchema', ['$ro
 
     var addressColumns;
 
+    var dataTypes = {
+        "INTEGER": lf.Type.INTEGER,
+        "STRING": lf.Type.STRING,
+        "DATE_TIME": lf.Type.DATE_TIME
+    };
+
     this.initSchema = function () {
 
-        if (!offlineService.offline()) {
+        if (!offlineService.isOfflineApp()) {
             return $q.when({});
         }
 
@@ -57,8 +55,9 @@ angular.module('bahmni.common.offline').service('initializeOfflineSchema', ['$ro
         createTable(schemaBuilder, 'patient_attribute_types', attributeTypeColumnNames);
         createTable(schemaBuilder, 'patient', patientColumnNames, columnsToBeIndexed);
         createTable(schemaBuilder, 'patient_attributes', attributeColumnNames);
-        createTable(schemaBuilder, 'event_log_marker', markerColumnNames);
-        createTable(schemaBuilder, 'address_hierarchy_entry', addressHierarchyEntryColumnNames);
+        createTableGeneric(schemaBuilder, Bahmni.Common.Offline.SchemaDefinitions.EventLogMarker);
+        createTableGeneric(schemaBuilder, Bahmni.Common.Offline.SchemaDefinitions.AddressHierarchyEntry);
+        createTableGeneric(schemaBuilder, Bahmni.Common.Offline.SchemaDefinitions.AddressHierarchyLevel);
         createIdgenTable(schemaBuilder, 'idgen');
 
         return getAddressColumns().then(function (listOfAddressColumns) {
@@ -68,6 +67,17 @@ angular.module('bahmni.common.offline').service('initializeOfflineSchema', ['$ro
                 return database;
             });
         });
+    };
+
+
+    var createTableGeneric = function (schemaBuilder, tableDefinition) {
+        var table = schemaBuilder.createTable(tableDefinition.tableName);
+        _.map(tableDefinition.columns, function (column) {
+            table.addColumn(column.name, dataTypes[column.type]);
+        });
+
+        table.addNullable(tableDefinition.nullableColumns);
+        table.addPrimaryKey(tableDefinition.primaryKeyColumns);
     };
 
     var createTable = function (schemaBuilder, tableName, columnNames, columnsToBeIndexed) {

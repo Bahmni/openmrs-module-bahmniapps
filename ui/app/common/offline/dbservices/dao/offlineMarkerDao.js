@@ -12,25 +12,22 @@ angular.module('bahmni.common.offline')
             return db.select().from(markerTable).exec();
         };
 
-        var insertOrUpdateMarker = function(markerTable, row) {
+        var insertOrUpdateMarker = function (markerTable, row) {
             return db.insertOrReplace().into(markerTable).values([row]).exec();
         };
 
         var insertMarker = function (eventUuid, catchmentNumber) {
             var markerTable = db.getSchema().table('event_log_marker');
-            return getMarkers(markerTable)
-                .then(function (markers) {
-                    var row = markerTable.createRow({
-                        lastReadUuid: eventUuid,
-                        catchmentNumber: catchmentNumber,
-                        lastReadTime: new Date().toString(),
-                        _id: markers[0] ? markers[0]._id : undefined
-                    });
 
-                    return insertOrUpdateMarker(markerTable, row).then(function () {
-                        return eventUuid;
-                    });
-                });
+            var row = markerTable.createRow({
+                lastReadEventUuid: eventUuid,
+                catchmentNumber: catchmentNumber,
+                lastReadTime: new Date()
+            });
+
+            return insertOrUpdateMarker(markerTable, row).then(function () {
+                return eventUuid;
+            });
         };
 
         var getMarker = function () {

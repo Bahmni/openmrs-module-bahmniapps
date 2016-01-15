@@ -3,20 +3,20 @@
 Bahmni.Registration.PatientConfig = (function () {
 
     function PatientConfig(patientAttributeTypes, identifierSources, patientInformation ) {
-        this.personAttributeTypes = patientAttributeTypes;
+        this.attributeTypes = patientAttributeTypes;
         this.identifierSources = identifierSources;
         var patientAttributesSections = {};
         //Avoiding multiple calls from angular code. Side effect of the way angular does dirty check. [Shruti/ Sush]
-        if ( !this.attributeRows && this.personAttributeTypes) {
+        if ( !this.attributeRows && this.attributeTypes) {
             if(!patientInformation) {
-                this.attributeRows = this.splitAsRows(this.personAttributeTypes);
+                this.attributeRows = this.splitAsRows(this.attributeTypes);
                 return;
             }
 
             var hiddenAttributes = patientInformation["hidden"] && patientInformation["hidden"].attributes;
             delete patientInformation["hidden"];
 
-            var otherInformationAttributes = this.personAttributeTypes.filter(function (item) {
+            var otherInformationAttributes = this.attributeTypes.filter(function (item) {
                 return !isHiddenPatientAttribute(hiddenAttributes, item)
                     && !isItemAMandatoryField(item)
                     && !isAttributeInOtherSection(patientInformation, patientAttributesSections, item);
@@ -61,7 +61,7 @@ Bahmni.Registration.PatientConfig = (function () {
 
     PatientConfig.prototype = {
         get: function (attributeUuid) {
-            return this.personAttributeTypes.filter(function (item) {
+            return this.attributeTypes.filter(function (item) {
                 return item.uuid === attributeUuid
             })[0];
         },
@@ -92,19 +92,19 @@ Bahmni.Registration.PatientConfig = (function () {
         },
 
         heathCentreAttribute: function () {
-            return this.personAttributeTypes.filter(function (item) {
+            return this.attributeTypes.filter(function (item) {
                 return item.name === "healthCenter";
             })[0];
         },
 
         local: function () {
-            var givenName = this.personAttributeTypes.filter(function (item) {
+            var givenName = this.attributeTypes.filter(function (item) {
                 return item.name === "givenNameLocal";
             })[0];
-            var middleName = this.personAttributeTypes.filter(function (item) {
+            var middleName = this.attributeTypes.filter(function (item) {
                 return item.name === "middleNameLocal";
             })[0];
-            var familyName = this.personAttributeTypes.filter(function (item) {
+            var familyName = this.attributeTypes.filter(function (item) {
                 return item.name === "familyNameLocal";
             })[0];
 

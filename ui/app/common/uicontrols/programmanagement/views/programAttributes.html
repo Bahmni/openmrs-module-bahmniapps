@@ -1,0 +1,19 @@
+<!--<section class="form-field-inline clearfix" >-->
+    <!--<article class="form-field" ng-repeat="attribute in attributes">-->
+        <!--<attribute-types target-model="patientProgramAttributes" attribute="attribute"></attribute-types>-->
+    <!--</article>-->
+<!--</section>-->
+<!--<div ng-repeat="attribute in attributes">-->
+    <!--<span class="asterick" ng-show="attribute.required">*</span>-->
+    <!--<span>{{attribute.name}} : </span>-->
+    <!--<span>{{attribute.value}}</span>-->
+<!--</div>-->
+
+<div class="form-field" ng-repeat="attribute in attributes">
+    <div class="field-attribute">
+        <label>{{attribute.name}} : <span class="asterick" ng-show="attribute.required">*</span></label>
+    </div>
+    <div class="field-value">
+        {{attribute.value}}
+    </div>
+</div>

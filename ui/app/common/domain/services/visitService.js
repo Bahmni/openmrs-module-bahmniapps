@@ -42,6 +42,9 @@ angular.module('bahmni.common.domain')
         };
 
         this.search = function (parameters) {
+            if(offlineService.offline()){
+                return $q.when({data : {}});
+            }
             return $http.get(Bahmni.Common.Constants.visitUrl, {
                 params: parameters,
                 withCredentials: true

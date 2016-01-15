@@ -89,6 +89,7 @@ Bahmni.Clinical.DrugOrderViewModel = function (appConfig, config, proto, encount
     if (this.uniformDosingType.dose && appConfig.dosingUnitsFractions) {
         var destructredNumber = destructureReal(this.uniformDosingType.dose);
         this.uniformDosingType.dose = destructredNumber.dose === 0 ? "" : destructredNumber.dose;
+
         if (destructredNumber.fraction)
             this.uniformDosingType.dosingUnitsFraction = destructredNumber.fraction;
     }
@@ -604,7 +605,8 @@ Bahmni.Clinical.DrugOrderViewModel = function (appConfig, config, proto, encount
 
     this.getDose = function() {
         var mantissa = self.uniformDosingType.dosingUnitsFraction ? self.uniformDosingType.dosingUnitsFraction.value : 0;
-        var dose = self.uniformDosingType.dose;
+        var dose = self.uniformDosingType.dose ? self.uniformDosingType.dose : 0;
+        self.uniformDosingType.dosingUnitsFraction = void 0;
 
         return dose + mantissa;
     };
