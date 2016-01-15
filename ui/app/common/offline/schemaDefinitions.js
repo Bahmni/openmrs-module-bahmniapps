@@ -70,5 +70,17 @@ Bahmni.Common.Offline.SchemaDefinitions = {
         ],
         nullableColumns: [],
         primaryKeyColumns: ['catchmentNumber']
+    },
+
+    Idgen: {
+        tableName: 'idgen',
+        columns: [
+            {
+                name: 'identifier',
+                type: 'INTEGER'
+            }
+        ],
+        nullableColumns: [],
+        primaryKeyColumns: ['identifier']
     }
 };

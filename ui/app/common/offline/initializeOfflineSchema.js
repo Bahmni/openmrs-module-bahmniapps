@@ -23,12 +23,6 @@ angular.module('bahmni.common.offline').service('initializeOfflineSchema', ['$ro
         "patientId"
     ];
 
-    var markerColumnNames = [
-        "lastReadUuid",
-        "catchmentNumber",
-        "lastReadTime"
-    ];
-
     var columnsToBeIndexed = {
         'givenNameIndex': 'givenName',
         'middleNameIndex': 'middleName',
@@ -58,7 +52,7 @@ angular.module('bahmni.common.offline').service('initializeOfflineSchema', ['$ro
         createTableGeneric(schemaBuilder, Bahmni.Common.Offline.SchemaDefinitions.EventLogMarker);
         createTableGeneric(schemaBuilder, Bahmni.Common.Offline.SchemaDefinitions.AddressHierarchyEntry);
         createTableGeneric(schemaBuilder, Bahmni.Common.Offline.SchemaDefinitions.AddressHierarchyLevel);
-        createIdgenTable(schemaBuilder, 'idgen');
+        createTableGeneric(schemaBuilder, Bahmni.Common.Offline.SchemaDefinitions.Idgen);
 
         return getAddressColumns().then(function (listOfAddressColumns) {
             addressColumns = listOfAddressColumns;
@@ -91,12 +85,6 @@ angular.module('bahmni.common.offline').service('initializeOfflineSchema', ['$ro
                 table.addIndex(indexName, [columnsToBeIndexed[indexName]]);
             });
         }
-    };
-
-    var createIdgenTable = function (schemaBuilder, tableName) {
-        var table = schemaBuilder.createTable(tableName)
-            .addColumn('_id', lf.Type.INTEGER).addPrimaryKey(['_id'], true)
-            .addColumn('identifier', lf.Type.INTEGER);
     };
 
     var getAddressColumns = function () {

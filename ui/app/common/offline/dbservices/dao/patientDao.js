@@ -39,7 +39,6 @@ angular.module('bahmni.common.offline')
         var insertIntoIdgen = function (db, result) {
             var idgen = db.getSchema().table('idgen');
             var row = idgen.createRow({
-                '_id': 1,
                 'identifier': ++result
             });
             db.insertOrReplace().into(idgen).values([row]).exec()
