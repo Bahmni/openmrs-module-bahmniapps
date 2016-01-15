@@ -96,7 +96,7 @@ describe("AddTreatmentController", function () {
 
 
     var scope, rootScope, contextChangeHandler, newTreatment,
-        editTreatment, clinicalAppConfigService, ngDialog, drugService, defaultDrugs,
+        editTreatment, clinicalAppConfigService, ngDialog, drugService, drugs,
         encounterDateTime, appService, appConfig, defaultDrugsPromise;
     beforeEach(inject(function ($controller, $rootScope) {
         scope = $rootScope.$new();
@@ -119,12 +119,12 @@ describe("AddTreatmentController", function () {
         appConfig = jasmine.createSpyObj('appConfig', ['getConfig']);
 
         drugService = jasmine.createSpyObj('drugService', ['getSetMembersOfConcept']);
-        defaultDrugs = [
+        drugs = [
             {name: "T", dosageForm: {display: "something"}, uuid: "123-12321"},
             {name: "A", dosageForm: {display: "something"}, uuid: "123-12321"},
             {name: "P", dosageForm: {display: "something"}, uuid: "123-12321"}
         ];
-        defaultDrugsPromise = specUtil.respondWith(defaultDrugs);
+        defaultDrugsPromise = specUtil.respondWith(drugs);
         drugService.getSetMembersOfConcept.and.returnValue(defaultDrugsPromise);
 
         appService.getAppDescriptor.and.returnValue(appConfig);
@@ -140,7 +140,7 @@ describe("AddTreatmentController", function () {
             appService: appService,
             DrugService: drugService,
             treatmentConfig: {
-                conceptNameForDefaultDrugs: "All TB Drugs",
+                drugConceptSet: "All TB Drugs",
                 durationUnits: [
                     {name: "Day(s)", factor: 1},
                     {name: "Week(s)", factor: 7},
@@ -153,7 +153,7 @@ describe("AddTreatmentController", function () {
     describe("drug service initialization", function () {
         it("calls drugService to find all default drugs", function (done) {
             defaultDrugsPromise.then(function () {
-                expect(scope.defaultDrugs.length).toBe(defaultDrugs.length);
+                expect(scope.drugs.length).toBe(drugs.length);
                 done();
             });
         });
