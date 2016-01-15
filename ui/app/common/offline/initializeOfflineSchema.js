@@ -40,7 +40,8 @@ angular.module('bahmni.common.offline').service('initializeOfflineSchema', ['$ro
 
     var dataTypes = {
         "INTEGER": lf.Type.INTEGER,
-        "STRING": lf.Type.STRING
+        "STRING": lf.Type.STRING,
+        "DATE_TIME": lf.Type.DATE_TIME
     };
 
     this.initSchema = function () {
@@ -54,7 +55,7 @@ angular.module('bahmni.common.offline').service('initializeOfflineSchema', ['$ro
         createTable(schemaBuilder, 'patient_attribute_types', attributeTypeColumnNames);
         createTable(schemaBuilder, 'patient', patientColumnNames, columnsToBeIndexed);
         createTable(schemaBuilder, 'patient_attributes', attributeColumnNames);
-        createTable(schemaBuilder, 'event_log_marker', markerColumnNames);
+        createTableGeneric(schemaBuilder, Bahmni.Common.Offline.SchemaDefinitions.EventLogMarker);
         createTableGeneric(schemaBuilder, Bahmni.Common.Offline.SchemaDefinitions.AddressHierarchyEntry);
         createTableGeneric(schemaBuilder, Bahmni.Common.Offline.SchemaDefinitions.AddressHierarchyLevel);
         createIdgenTable(schemaBuilder, 'idgen');

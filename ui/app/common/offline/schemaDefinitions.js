@@ -52,5 +52,23 @@ Bahmni.Common.Offline.SchemaDefinitions = {
         ],
         nullableColumns: ['name', 'parent_id', 'user_generated_id'],
         primaryKeyColumns: ['uuid']
+    },
+
+    EventLogMarker: {
+        tableName: 'event_log_marker',
+        columns: [
+            {
+                name: 'lastReadEventUuid',
+                type: 'STRING'
+            }, {
+                name: 'catchmentNumber',
+                type: 'STRING'
+            }, {
+                name: 'lastReadTime',
+                type: 'DATE_TIME'
+            }
+        ],
+        nullableColumns: [],
+        primaryKeyColumns: ['catchmentNumber']
     }
 };
