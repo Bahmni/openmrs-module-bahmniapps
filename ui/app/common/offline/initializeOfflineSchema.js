@@ -38,6 +38,11 @@ angular.module('bahmni.common.offline').service('initializeOfflineSchema', ['$ro
 
     var addressColumns;
 
+    var dataTypes = {
+        "INTEGER": lf.Type.INTEGER,
+        "STRING": lf.Type.STRING
+    };
+
     this.initSchema = function () {
 
         if (!offlineService.isOfflineApp()) {
@@ -67,7 +72,7 @@ angular.module('bahmni.common.offline').service('initializeOfflineSchema', ['$ro
     var createTableGeneric = function (schemaBuilder, tableDefinition) {
         var table = schemaBuilder.createTable(tableDefinition.tableName);
         _.map(tableDefinition.columns, function (column) {
-            table.addColumn(column.name, column.type);
+            table.addColumn(column.name, dataTypes[column.type]);
         });
 
         table.addNullable(tableDefinition.nullableColumns);

@@ -8,22 +8,22 @@ Bahmni.Common.Offline.SchemaDefinitions = {
         columns: [
             {
                 name: 'address_hierarchy_level_id',
-                type: lf.Type.INTEGER
+                type: 'INTEGER'
             }, {
                 name: 'name',
-                type: lf.Type.STRING
+                type: 'STRING'
             }, {
                 name: 'parent_level_id',
-                type: lf.Type.INTEGER
+                type: 'INTEGER'
             }, {
                 name: 'address_field',
-                type: lf.Type.STRING
+                type: 'STRING'
             }, {
                 name: 'uuid',
-                type: lf.Type.STRING
+                type: 'STRING'
             }, {
                 name: 'required',
-                type: lf.Type.INTEGER
+                type: 'INTEGER'
             }
         ],
         nullableColumns: ['name', 'parent_level_id', 'address_field'],
@@ -35,19 +35,19 @@ Bahmni.Common.Offline.SchemaDefinitions = {
         columns: [
             {
                 name: 'name',
-                type: lf.Type.STRING
+                type: 'STRING'
             }, {
                 name: 'level_id',
-                type: lf.Type.INTEGER
+                type: 'INTEGER'
             }, {
                 name: 'parent_id',
-                type: lf.Type.INTEGER
+                type: 'INTEGER'
             }, {
                 name: 'user_generated_id',
-                type: lf.Type.STRING
+                type: 'STRING'
             }, {
                 name: 'uuid',
-                type: lf.Type.STRING
+                type: 'STRING'
             }
         ],
         nullableColumns: ['name', 'parent_id', 'user_generated_id'],
