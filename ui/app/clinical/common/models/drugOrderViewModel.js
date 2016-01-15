@@ -609,7 +609,7 @@ Bahmni.Clinical.DrugOrderViewModel = function (appConfig, config, proto, encount
 
     this.getDoseAndUnits = function(){
         var variableDosingType = self.variableDosingType;
-        var variableDosingString = addDelimiter((variableDosingType.morningDose || 0) + "-" + (variableDosingType.afternoonDose || 0) + "-" + (variableDosingType.eveningDose || 0), " ");
+        var variableDosingString = addDelimiter(morphToMixedFraction(variableDosingType.morningDose || 0) + "-" + morphToMixedFraction(variableDosingType.afternoonDose || 0) + "-" + morphToMixedFraction(variableDosingType.eveningDose || 0), " ");
 
         return self.frequencyType === Bahmni.Clinical.Constants.dosingTypes.uniform ? blankIfFalsy(morphToMixedFraction(this.getDose(true))) + " " + blankIfFalsy(self.doseUnits) : (variableDosingString + blankIfFalsy(self.doseUnits)).trim();
     };
