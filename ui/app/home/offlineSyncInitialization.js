@@ -1,14 +1,14 @@
 'use strict';
 
 angular.module('bahmni.common.offline')
-        .factory('offlineSyncInitialization', ['offlinePatientDao', 'offlineSyncService', 'offlineService', 'offlineMarkerDao', 'offlineAddressHierarchyDao',
-        function (offlinePatientDao, offlineSyncService, offlineService, offlineMarkerDao, offlineAddressHierarchyDao) {
+        .factory('offlineSyncInitialization', ['offlineDao', 'offlineSyncService', 'offlineService', 'offlineMarkerDao', 'offlineAddressHierarchyDao',
+        function (offlineDao, offlineSyncService, offlineService, offlineMarkerDao, offlineAddressHierarchyDao) {
             return function (offlineDb) {
                 if (offlineService.isOfflineApp()) {
-                    offlinePatientDao.init(offlineDb);
+                    offlineDao.init(offlineDb);
                     offlineMarkerDao.init(offlineDb);
                     offlineAddressHierarchyDao.init(offlineDb);
-                    offlinePatientDao.populateData();
+                    offlineDao.populateData();
                     offlineSyncService.sync();
                 }
             };

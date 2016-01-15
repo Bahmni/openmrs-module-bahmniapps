@@ -35,7 +35,15 @@ angular
                     'layout': { templateUrl: 'views/layout.html', controller: 'CreatePatientController'},
                     'content@newpatient': { templateUrl: 'views/newpatient.html'}
                 },
-                resolve: { initialization: 'initialization' }
+                resolve: {
+                    initialization: 'initialization',
+                    offlineDb: function(offlineDbInitialization) {
+                        return offlineDbInitialization();
+
+                    },
+                    offlineRegistrationInitialization : function(offlineRegistrationInitialization, offlineDb){
+                        return offlineRegistrationInitialization(offlineDb);
+                    }}
             })
             .state('patient', {
                 url: '/patient/:patientUuid',
@@ -43,7 +51,15 @@ angular
                 views: {
                     'layout': { template: '<div ui-view="layout"></div>' }
                 },
-                resolve: {initialization: 'initialization'}
+                resolve: {
+                    initialization: 'initialization',
+                    offlineDb: function(offlineDbInitialization) {
+                        return offlineDbInitialization();
+
+                    },
+                    offlineRegistrationInitialization : function(offlineRegistrationInitialization, offlineDb){
+                        return offlineRegistrationInitialization(offlineDb);
+                    }}
             })
             .state('patient.edit', {
                 url: '?serverError',

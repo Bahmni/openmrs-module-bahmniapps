@@ -19,7 +19,7 @@ describe('AttributeFormatter', function () {
                 "description": "Class",
                 "format": "org.openmrs.Concept",
                 "answers": [
-                    {"description": "OBC", "conceptId": "10"}
+                    {"description": "Caste", "conceptId": "10"}
                 ]
             },
             {
@@ -49,7 +49,7 @@ describe('AttributeFormatter', function () {
         ];
 
         var model = {
-            "caste": "cast",
+            "caste": "10",
             "class": "10",
             "testDate": "Fri Jan 01 1999 00:00:00",
             "isUrban": false
@@ -60,7 +60,8 @@ describe('AttributeFormatter', function () {
 
         expect(attributes).toContain({
             attributeType: {uuid: 'caste-uuid'},
-            hydratedObject: 'cast'
+            value: 'Caste',
+            hydratedObject: '10'
         });
         expect(attributes).toContain({
             value: "10",

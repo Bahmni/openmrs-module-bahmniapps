@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('bahmni.registration').factory('initialization',
-    ['$rootScope', '$q', 'configurations', 'authenticator', 'appService', 'spinner', 'Preferences', 'offlineService','initializeOfflineSchema',
-    function ($rootScope, $q, configurations, authenticator, appService, spinner, preferences, offlineService, initializeOfflineSchema) {
+    ['$rootScope', '$q', 'configurations', 'authenticator', 'appService', 'spinner', 'Preferences',
+    function ($rootScope, $q, configurations, authenticator, appService, spinner, preferences) {
         var getConfigs = function() {
             var configNames = ['encounterConfig', 'patientAttributesConfig', 'identifierSourceConfig', 'addressLevels', 'genderMap', 'relationshipTypeConfig','relationshipTypeMap', 'loginLocationToVisitTypeMapping'];
             return configurations.load(configNames).then(function () {
