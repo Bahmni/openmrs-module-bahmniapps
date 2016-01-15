@@ -17,7 +17,7 @@
     select{
       //height: 33px;
       float: left;
-      max-width: 200px;
+      max-width: 197px;
     }
     label{
       float: left;
@@ -25,7 +25,6 @@
       margin-top: 10px;
     }
     .btn-grp{
-      //margin-top: 10px;
       button{
         padding: 6px 15px;
       }
@@ -33,30 +32,30 @@
   }
 
   .select-program-container {
+    .dashboard-section{
+      overflow: hidden;
+      padding-bottom: 10px;
+    }
     input, select {
       min-width: 0;
-      width: 200px;
+      width: 197px;
       display: inline-block;
-      //margin-top: 0;
       margin-right: 10px;
+      box-sizing: border-box;
+      float: none;
     }
     label.start-date-label {
       display: inline-block;
-      margin-right: 20px;
-      margin-left: 10px;
       margin-top: 0;
-    }
-    input {
-      //padding: 5px 10px !important;
-    }
-    select {
-      //height: 33px;
     }
     .select-program-option {
       padding: 10px 15px;
     }
     .back-btn {
       margin: 0;
+    }
+    input[type="submit"]{
+      float: right;
     }
   }
   .program-details table.programTable{
@@ -72,12 +71,12 @@
         width: 60%;
       }
       &.programDate{
-        width: 16%;
+        width: 17%;
         span{
           padding-left:10px;
         }
         .fa{
-          padding: 0;
+          padding: 1px 0 0;
         }
       }
       &.pastProgramState{
@@ -273,8 +272,9 @@
 .inactive-program-container{
   label{
     padding: 2px 5px 2px 0;
-    font-family: openSansSemiBold;
+    //font-family: openSansSemiBold;
     display: inline-block;
+    float: left;
   }
   .program-row{
     &.no-past-program{
@@ -423,7 +423,7 @@
       margin: 15px 0;
       h2.programAttribute-title{
         color: #000;
-        font-size: 14px;
+        font-size: 13px;
         clear: both;
         border-bottom: 1px solid #ccc;
         padding: 5px 0;
@@ -454,9 +454,9 @@
   }
   .activeProgramAttributeFields {
     .form-field{
-      width: 30%;
+      line-height: 1.5em;
       label{
-        width:10em;
+        width:13em;
       }
     }
   }

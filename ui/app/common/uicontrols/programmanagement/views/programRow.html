@@ -8,8 +8,8 @@
                         <i class="fa fa-caret-down" ng-show="patientProgram.isOpen" ng-click="showProgramAttributes(patientProgram)"></i>
                         {{patientProgram.display}}
                     </td>
-                    <td class="programState" ng-if="getCurrentStateDisplayName(patientProgram)">{{getCurrentStateDisplayName(patientProgram)}}</td>
-                    <td class="programDate">Start Date<span class="asterick">*</span>
+                    <td class="programState">{{getCurrentStateDisplayName(patientProgram)}}</td>
+                    <td class="programDate">Start Date:
                         <span>{{patientProgram.dateEnrolled | bahmniDate}}</span>
                         <i class="fa fa-pencil-square-o fr" ng-click=""></i>
                     </td>
@@ -17,9 +17,7 @@
             </table>
         </div>
         <div ng-if="patientProgram.isOpen" class="programDescription">
-            <!--<span>{{patientProgram.display}}</span>-->
-            <!--<span class="enrolled-info"> (Enrolled on {{patientProgram.dateEnrolled | bahmniDate}})</span>-->
-            <section class="programAttributeFields activeProgramAttributeFields">
+            <section class="programAttributeFields activeProgramAttributeFields"  ng-if="patientProgram.attributes.length!=0">
                 <h2 class="programAttribute-title">Program Attributes</h2>
                 <a class="back-btn dashboard-link fr" id="dashboard-link"
                    ui-sref="patient.dashboard.show({
@@ -38,7 +36,7 @@
             </section>
             <div class="program-timeline-container">
                 <h2 class="programAttribute-title">Program States</h2>
-                <div class="program-timeline" ng-if="patientProgram.states.length!=0">
+                <div class="program-timeline">
                     <timeline program="patientProgram"></timeline>
                 </div>
                 <button ng-click="toggleEdit(patientProgram)" ng-class="{'tab-selected': patientProgram.editing, 'btn-noTimeline':patientProgram.states.length==0}" class="fr detail-btn">
