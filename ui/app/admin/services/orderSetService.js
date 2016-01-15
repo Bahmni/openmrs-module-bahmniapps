@@ -2,26 +2,26 @@
 
 angular.module('bahmni.common.domain')
     .service('orderSetService', ['$http', '$q', function ($http, $q) {
-        this.getAllOrderSets = function() {
+        this.getAllOrderSets = function () {
             return $http.get(Bahmni.Common.Constants.orderSetUrl, {
-                params: {v:"full"}
+                params: {v: "full"}
             });
         };
 
-        this.getOrderSet = function(uuid) {
+        this.getOrderSet = function (uuid) {
             return $http.get(Bahmni.Common.Constants.orderSetUrl + "/" + uuid, {
-                params: {v:"full"}
+                params: {v: "full"}
             });
         };
 
-        this.getOrderSetMemberAttributeType = function(name) {
+        this.getOrderSetMemberAttributeType = function (name) {
             return $http.get(Bahmni.Common.Constants.orderSetMemberAttributeTypeUrl, {
-                params: {name : name}
+                params: {name: name}
             });
         };
 
 
-        this.saveOrderSet = function(orderSet){
+        this.saveOrderSet = function (orderSet) {
             var url = Bahmni.Common.Constants.orderSetUrl;
             return $http.post(url, orderSet, {
                 withCredentials: true,
@@ -29,27 +29,32 @@ angular.module('bahmni.common.domain')
             });
         };
 
-        this.getOrderSetWithAttributeNameAndValue = function(conceptUuid, attributeName, attributeValue) {
+        this.getOrderSetWithAttributeNameAndValue = function (conceptUuid, attributeName, attributeValue) {
             var url = Bahmni.Common.Constants.orderSetUrl;
             return $http.get(url, {
-                params:{drugConceptUuid: conceptUuid, attributeType: attributeName,attributeValue: attributeValue, v:"custom:(name,uuid,orderSetMembers)"},
+                params: {
+                    drugConceptUuid: conceptUuid,
+                    attributeType: attributeName,
+                    attributeValue: attributeValue,
+                    v: "custom:(name,uuid,orderSetMembers)"
+                },
                 withCredentials: true,
                 headers: {"Accept": "application/json", "Content-Type": "application/json"}
             });
         };
 
 
-        this.getUniqueOrderSetMembersWithoutPrimaryConcept = function(conceptUuid, attributeName, attributeValue){
-            return this.getOrderSetWithAttributeNameAndValue(conceptUuid, attributeName, attributeValue).then(function(data){
+        this.getUniqueOrderSetMembersWithoutPrimaryConcept = function (conceptUuid, attributeName, attributeValue) {
+            return this.getOrderSetWithAttributeNameAndValue(conceptUuid, attributeName, attributeValue).then(function (data) {
                 return filterOrderSetMembers(conceptUuid, data.data.results);
             })
         };
 
-        var filterOrderSetMembers = function(primaryConceptUuid, orderSets){
+        var filterOrderSetMembers = function (primaryConceptUuid, orderSets) {
             var orderSetMembers = {};
-            _.forEach(orderSets, function(orderSet){
-                _.forEach(orderSet.orderSetMembers, function(orderSetMember){
-                    if(primaryConceptUuid !== orderSetMember.concept.uuid) {
+            _.forEach(orderSets, function (orderSet) {
+                _.forEach(orderSet.orderSetMembers, function (orderSetMember) {
+                    if (primaryConceptUuid !== orderSetMember.concept.uuid) {
                         orderSetMembers[orderSetMember.concept.uuid] = orderSetMember;
                     }
                 })
@@ -57,46 +62,54 @@ angular.module('bahmni.common.domain')
             return _.values(orderSetMembers);
         };
 
-         this.getDrugConfig = function () {
+        this.getDrugConfig = function () {
             return $http.get(Bahmni.Common.Constants.drugOrderConfigurationUrl, {
                 withCredentials: true
-            }).then(function(result){
+            }).then(function (result) {
                 var config = result.data;
                 config.durationUnits = [
                     {name: "Day(s)", factor: 1},
                     {name: "Week(s)", factor: 7},
                     {name: "Month(s)", factor: 30}
                 ];
-                Array.prototype.push.apply(config.doseUnits, Bahmni.Common.Constants.orderSetSpecialUnits,"name");
-                return  config;
+                _.each(Bahmni.Common.Constants.orderSetSpecialUnits, function (doseUnit) {
+                    config.doseUnits.push({name: doseUnit});
+                });
+                return config;
             });
         };
 
         var hasSpecialDoseUnit = function (doseUnits) {
-            return _.some(Bahmni.Common.Constants.orderSetSpecialUnits,{name:doseUnits});
+            return _.contains(Bahmni.Common.Constants.orderSetSpecialUnits, doseUnits);
         };
 
         var getRuleForUnits = function (doseUnits) {
-            return (_.find(Bahmni.Common.Constants.orderSetSpecialUnits,{name:doseUnits})).rule;
+            return (_.find(Bahmni.Common.Constants.orderSetSpecialUnits, {name: doseUnits})).rule;
         };
 
-        this.getCalculatedDose = function (patientUuid, baseDose, doseUnits) {
-            if (hasSpecialDoseUnit(doseUnits)) {
-                var rule = getRuleForUnits(doseUnits);
+        this.getCalculatedDose = function (patientUuid, baseDose, doseUnit) {
+            if (hasSpecialDoseUnit(doseUnit)) {
                 return $http.get(Bahmni.Common.Constants.calculateDose, {
                     params: {
                         patientUuid: patientUuid,
                         baseDose: baseDose,
-                        rule:rule
+                        doseUnit: doseUnit
                     },
                     withCredentials: true,
                     headers: {"Accept": "application/json", "Content-Type": "application/json"}
                 }).then(function (response) {
-                    return response.data;
+                    var dosage = {dose: response.data};
+                    return {
+                        dose: response.data.value,
+                        doseUnit: response.data.doseUnit
+                    };
                 });
             }
             var deferred = $q.defer();
-            deferred.resolve(baseDose);
+            deferred.resolve({
+                dose: baseDose,
+                doseUnit: doseUnit
+            });
             return deferred.promise;
 
         };

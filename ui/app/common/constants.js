@@ -173,7 +173,7 @@ Bahmni.Common = Bahmni.Common || {};
         },
         LoginInformation: 'LoginInformation',
         ServerDateTimeFormat: 'YYYY-MM-DDTHH:mm:ssZZ'
-        ,orderSetSpecialUnits:[{name:"mg/kg",rule:"WeightBasedDose"},{name:"mg/m2",rule:"BSA"}]
+        ,orderSetSpecialUnits:["mg/kg","mg/m2"]
         ,calculateDose: BAHMNI_CORE+ "/calculateDose"
     };
 })();

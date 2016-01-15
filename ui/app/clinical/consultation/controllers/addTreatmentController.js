@@ -578,7 +578,7 @@ angular.module('bahmni.clinical')
                 $scope.selectedOrderSets = [];
                 $scope.selectedOrderSets.push(orderSet);
                 var orderTemplates = getSelectedOrderTemplates();
-                var addOrderSetDrugsPromise = $q.all(_.map(orderTemplates,getCalculatedDose));
+                var addOrderSetDrugsPromise = $q.all(_.map(orderTemplates,putCalculatedDose));
                 spinner.forPromise(addOrderSetDrugsPromise);
 
                 addOrderSetDrugsPromise.then(function(orderTemplates){
@@ -588,13 +588,14 @@ angular.module('bahmni.clinical')
 
             };
 
-            var getCalculatedDose = function (orderTemplate) {
+            var putCalculatedDose = function (orderTemplate) {
                 return orderSetService.getCalculatedDose(
                     $scope.patient.uuid,
                     orderTemplate.dose,
                     orderTemplate.doseUnits
-                ).then(function (calculatedDose) {
-                    orderTemplate.dose = calculatedDose;
+                ).then(function (calculatedDosage) {
+                    orderTemplate.dose = calculatedDosage.dose;
+                    orderTemplate.doseUnits = calculatedDosage.doseUnit;
                     return orderTemplate;
                 });
             };
