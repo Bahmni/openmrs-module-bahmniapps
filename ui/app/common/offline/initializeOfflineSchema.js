@@ -29,23 +29,6 @@ angular.module('bahmni.common.offline').service('initializeOfflineSchema', ['$ro
         "lastReadTime"
     ];
 
-    var addressHierarchyEntryColumnNames = [
-        "name",
-        "level_id",
-        "parent_id",
-        "user_generated_id",
-        "uuid"
-    ];
-
-    var addressHierarchyLevelColumnNames = [
-        "address_hierarchy_level_id",
-        "name",
-        "parent_level_id",
-        "address_field",
-        "uuid",
-        "required"
-    ];
-
     var columnsToBeIndexed = {
         'givenNameIndex': 'givenName',
         'middleNameIndex': 'middleName',
@@ -67,8 +50,8 @@ angular.module('bahmni.common.offline').service('initializeOfflineSchema', ['$ro
         createTable(schemaBuilder, 'patient', patientColumnNames, columnsToBeIndexed);
         createTable(schemaBuilder, 'patient_attributes', attributeColumnNames);
         createTable(schemaBuilder, 'event_log_marker', markerColumnNames);
-        createTable(schemaBuilder, 'address_hierarchy_entry', addressHierarchyEntryColumnNames);
-        createTable(schemaBuilder, 'address_hierarchy_level', addressHierarchyLevelColumnNames);
+        createTableGeneric(schemaBuilder, Bahmni.Common.Offline.SchemaDefinitions.AddressHierarchyEntry);
+        createTableGeneric(schemaBuilder, Bahmni.Common.Offline.SchemaDefinitions.AddressHierarchyLevel);
         createIdgenTable(schemaBuilder, 'idgen');
 
         return getAddressColumns().then(function (listOfAddressColumns) {
@@ -78,6 +61,17 @@ angular.module('bahmni.common.offline').service('initializeOfflineSchema', ['$ro
                 return database;
             });
         });
+    };
+
+
+    var createTableGeneric = function (schemaBuilder, tableDefinition) {
+        var table = schemaBuilder.createTable(tableDefinition.tableName);
+        _.map(tableDefinition.columns, function (column) {
+            table.addColumn(column.name, column.type);
+        });
+
+        table.addNullable(tableDefinition.nullableColumns);
+        table.addPrimaryKey(tableDefinition.primaryKeyColumns);
     };
 
     var createTable = function (schemaBuilder, tableName, columnNames, columnsToBeIndexed) {
