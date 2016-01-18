@@ -44,6 +44,10 @@
       box-sizing: border-box;
       float: none;
     }
+    input[type="checkbox"], input[type="radio"]{
+      width: auto;
+      margin: 8px 5px 0 0;
+    }
     label.start-date-label {
       display: inline-block;
       margin-top: 0;
@@ -56,7 +60,7 @@
     }
     input[type="submit"]{
       float: right;
-      margin-right: 0;;
+      margin-right: 0;
     }
   }
   .program-details table.programTable{
