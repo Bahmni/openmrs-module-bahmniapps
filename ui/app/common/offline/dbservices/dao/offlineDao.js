@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('bahmni.common.offline')
-    .service('offlineDao', ['$http', '$q', 'patientDao', 'patientAddressDao', 'patientAttributeDao', function ($http, $q, patientDao, patientAddressDao, patientAttributeDao) {
+    .service('offlineDao', ['$http', '$q', 'patientDao', 'patientAddressDao', 'patientAttributeDao', 'offlineMarkerDao', 'offlineAddressHierarchyDao', function ($http, $q, patientDao, patientAddressDao, patientAttributeDao, offlineMarkerDao, offlineAddressHierarchyDao) {
         var db;
 
         var populateData = function () {
@@ -93,6 +93,18 @@ angular.module('bahmni.common.offline')
             return patientDao.generateOfflineIdentifier(db);
         };
 
+        var getMarker = function () {
+            return offlineMarkerDao.getMarker();
+        };
+
+        var insertMarker = function (eventUuid, catchmentNumber) {
+            return offlineMarkerDao.insertMarker(eventUuid, catchmentNumber);
+        };
+
+        var insertAddressHierarchy = function (data) {
+            return offlineAddressHierarchyDao.insertAddressHierarchy(data)
+        };
+
         return {
             populateData: populateData,
             getPatientByUuid: getPatientByUuid,
@@ -100,6 +112,9 @@ angular.module('bahmni.common.offline')
             createPatient: createPatient,
             deletePatientData: deletePatientData,
             generateOfflineIdentifier: generateOfflineIdentifier,
+            getMarker: getMarker,
+            insertMarker: insertMarker,
+            insertAddressHierarchy: insertAddressHierarchy,
             init: init
         }
     }]);

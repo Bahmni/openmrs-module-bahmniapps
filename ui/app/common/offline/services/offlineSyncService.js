@@ -1,11 +1,15 @@
 'use strict';
 
 angular.module('bahmni.common.offline')
-    .service('offlineSyncService', ['eventLogService', 'offlineDao', '$interval', '$q', 'offlineMarkerDao', 'offlineAddressHierarchyDao',
-        function (eventLogService, offlineDao, $interval, $q, offlineMarkerDao, offlineAddressHierarchyDao) {
+    .service('offlineSyncService', ['eventLogService', 'offlineDao', '$interval', '$q', 'offlineService',
+        function (eventLogService, offlineDao, $interval, $q, offlineService) {
             var scheduler;
+            if (offlineService.getAppPlatform() === Bahmni.Common.Constants.platformType.android) {
+                offlineDao = Android;
+            }
+
             var sync = function () {
-                offlineMarkerDao.getMarker().then(function (marker) {
+                offlineDao.getMarker().then(function (marker) {
                     if (marker == undefined) {
                         //todo: Hemanth|Santhosh get catchment number from login location
                         marker = {catchmentNumber: 202020}
@@ -56,7 +60,7 @@ angular.module('bahmni.common.offline')
                         deferrable.resolve();
                         break;
                     case 'addressHierarchy':
-                        offlineAddressHierarchyDao.insertAddressHierarchy(response.data).then(function () {
+                        offlineDao.insertAddressHierarchy(response.data).then(function () {
                             deferrable.resolve();
                         });
                         break;
@@ -68,7 +72,7 @@ angular.module('bahmni.common.offline')
             };
 
             var updateMarker = function (event) {
-                return offlineMarkerDao.insertMarker(event.uuid, 202020);
+                return offlineDao.insertMarker(event.uuid, 202020);
             };
 
             return {
