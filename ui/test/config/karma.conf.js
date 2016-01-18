@@ -2,7 +2,7 @@ module.exports = function (config) {
     config.set({
         basePath: '../..',
         frameworks: ['jasmine'],
-        browsers: ['PhantomJS'],
+        browsers: ['Firefox'],
         autoWatch: false,
         singleRun: true,
         files: [
@@ -50,7 +50,6 @@ module.exports = function (config) {
             'app/orders/**/*.js',
             'app/reports/**/*.js',
             'app/registration/**/*.js',
-            'app/offline/**/*.js',
             'test/support/**/*.js',
             'test/unit/**/*.js'
         ],
@@ -63,7 +62,6 @@ module.exports = function (config) {
             'app/dhis/**/*.js': ['coverage'],
             'app/document-upload/**/*.js': ['coverage'],
             'app/home/**/*.js': ['coverage'],
-            'app/offline/**/*.js': ['coverage'],
             'app/orders/**/*.js': ['coverage'],
             'app/registration/**/*.js': ['coverage'],
             'app/common/displaycontrols/**/views/*.html':['ng-html2js']
