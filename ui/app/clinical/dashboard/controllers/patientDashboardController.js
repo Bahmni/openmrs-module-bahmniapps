@@ -26,15 +26,16 @@ angular.module('bahmni.clinical')
             });
 
             $scope.init = function (dashboard) {
-                var startDate = null, endDate = null;
+                dashboard.startDate = null;
+                dashboard.endDate = null;
+                if (programConfig.showDashBoardWithinDateRange) {
+                    dashboard.startDate = $stateParams.dateEnrolled;
+                    dashboard.endDate = $stateParams.dateCompleted;
+                }
                 clinicalDashboardConfig.switchTab(dashboard);
                 $scope.dashboard = Bahmni.Common.DisplayControl.Dashboard.create(dashboard || {});
-                if (programConfig.showDashBoardWithinDateRange) {
-                    startDate = $stateParams.dateEnrolled;
-                    endDate = $stateParams.dateCompleted;
-                }
                 spinner.forPromise(diseaseTemplateService.getLatestDiseaseTemplates(
-                    $stateParams.patientUuid, clinicalDashboardConfig.getDiseaseTemplateSections(), startDate, endDate).then(function (diseaseTemplate) {
+                    $stateParams.patientUuid, clinicalDashboardConfig.getDiseaseTemplateSections(), dashboard.startDate, dashboard.endDate).then(function (diseaseTemplate) {
                         $scope.diseaseTemplates = diseaseTemplate;
                         $scope.sectionGroups = $scope.dashboard.getSections($scope.diseaseTemplates);
                     }));

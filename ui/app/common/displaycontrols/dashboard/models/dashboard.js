@@ -2,6 +2,13 @@
 
 Bahmni.Common.DisplayControl.Dashboard = function (config) {
 
+    if(config.startDate || config.endDate){
+        _.each(config.sections, function(section){
+            section.startDate = config.startDate;
+            section.endDate = config.endDate;
+        });
+    }
+
     this._sections = _.sortBy(_.map(config.sections, Bahmni.Common.DisplayControl.Dashboard.Section.create),function(section) { return section.displayOrder; });
 
     this.getSectionByName = function (name) {

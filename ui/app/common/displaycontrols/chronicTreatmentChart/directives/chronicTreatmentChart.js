@@ -7,14 +7,7 @@ angular.module('bahmni.common.displaycontrol.chronicTreatmentChart').directive('
             var patient = $scope.patient;
 
             var init = function () {
-                //var programConfig = appService.getAppDescriptor().getConfigValue("program") || {};
-                //var startDate = null, endDate = null, getOtherActive;
-                //if (programConfig.showDashBoardWithinDateRange) {
-                //    startDate = $stateParams.dateEnrolled;
-                //    endDate = $stateParams.dateCompleted;
-                //}
-
-                return DrugService.getRegimen(patient.uuid, $scope.config.drugs, $scope.startDate, $scope.endDate).success(function (data) {
+                return DrugService.getRegimen(patient.uuid, $scope.config.drugs, $scope.section.startDate, $scope.section.endDate).success(function (data) {
                     var filterNullRow = function(){
                         for(var row in  $scope.regimen.rows){
                             var nullFlag = true;
