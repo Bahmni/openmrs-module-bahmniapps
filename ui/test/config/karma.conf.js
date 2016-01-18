@@ -2,7 +2,7 @@ module.exports = function (config) {
     config.set({
         basePath: '../..',
         frameworks: ['jasmine'],
-        browsers: ['Firefox'],
+        browsers: ['PhantomJS'],
         autoWatch: false,
         singleRun: true,
         files: [
