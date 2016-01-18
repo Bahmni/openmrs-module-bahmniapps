@@ -17,11 +17,23 @@ angular.module('bahmni.clinical')
             $scope.allowOnlyCodedDrugs = appService.getAppDescriptor().getConfig("allowOnlyCodedDrugs") &&
                 appService.getAppDescriptor().getConfig("allowOnlyCodedDrugs").value;
 
-            var drugConceptSet = treatmentConfig.getDrugConceptSet();
-            if(drugConceptSet){
-                drugService.getSetMembersOfConcept(drugConceptSet).then(function (result) {
+            var preFetchDrugsForGivenConceptSet = function () {
+                drugService.getSetMembersOfConcept(treatmentConfig.getDrugConceptSet()).then(function (result) {
                     $scope.drugs = result.map(constructDrugNameDisplay);
                 });
+            };
+            if(treatmentConfig.isDropDownForGivenConceptSet()) {
+                preFetchDrugsForGivenConceptSet();
+            }
+            if(treatmentConfig.isAutoCompleteForAllConcepts()){
+                $scope.getDrugs = function (request) {
+                    return drugService.search(request.term);
+                };
+            }
+            if(treatmentConfig.isAutoCompleteForGivenConceptSet()){
+                $scope.getDrugs = function (request) {
+                    return drugService.getSetMembersOfConcept(treatmentConfig.getDrugConceptSet(),request.term);
+                };
             }
 
             $scope.dosingUnitsFractions = treatmentConfig.dosingUnitsFractions;
@@ -347,10 +359,6 @@ angular.module('bahmni.clinical')
 
             $scope.remove = function (index) {
                 $scope.treatments.splice(index, 1);
-            };
-
-            $scope.getDrugs = function (request) {
-                return drugService.search(request.term);
             };
 
             var setIsNotBeingEdited = function (treatment) {

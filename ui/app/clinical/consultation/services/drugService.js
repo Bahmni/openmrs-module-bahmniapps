@@ -18,14 +18,15 @@ angular.module('bahmni.clinical')
                 });
         };
 
-        var getSetMembersOfConcept = function (conceptSetFullySpecifiedName) {
+        var getSetMembersOfConcept = function (conceptSetFullySpecifiedName,searchTerm) {
             return $http.get("/openmrs/ws/rest/v1/drug",
                 {
                     method: "GET",
                     params: {
                         v: 'custom:(uuid,name,doseStrength,units,dosageForm,concept:(uuid,name,names:(name)))',
                         q: conceptSetFullySpecifiedName,
-                        s: "byConceptSet"
+                        s: "byConceptSet",
+                        searchTerm: searchTerm
                     },
                     withCredentials: true
                 }

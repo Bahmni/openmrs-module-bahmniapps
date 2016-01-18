@@ -30,13 +30,22 @@ angular.module('bahmni.clinical').factory('treatmentConfig', ['TreatmentService'
                 return _.contains(drugOrderOptions.disableFields, fieldName)
             },
             isDropDown: function () {
-                return drugOrderOptions.isDropDown;
+                return drugOrderOptions.isDropDown && drugOrderOptions.drugConceptSet;
             },
             isAutoComplete: function () {
-                return !drugOrderOptions.isDropDown;
+                return !this.isDropDown();
             },
             getDrugConceptSet: function () {
                 return drugOrderOptions.drugConceptSet;
+            },
+            isDropDownForGivenConceptSet: function () {
+                return this.isDropDown() && this.getDrugConceptSet();
+            },
+            isAutoCompleteForGivenConceptSet: function () {
+                return this.isAutoComplete() && this.getDrugConceptSet();
+            },
+            isAutoCompleteForAllConcepts: function () {
+                return !(this.getDrugConceptSet());
             }
         };
 
