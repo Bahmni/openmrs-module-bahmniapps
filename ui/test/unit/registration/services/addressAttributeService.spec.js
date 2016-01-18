@@ -6,12 +6,16 @@ describe('addressAttributeService', function () {
             "name": "Semi",
             "parent": {
                 "name": "Bilaspur",
+                "uuid": "uuid-for-bilaspur",
                 "parent": {
                     "name": "Distr",
+                    "uuid": "uuid-for-distr",
                     "parent": {
                         "name": "Chattisgarh",
+                        "uuid": "uuid-for-chattisgarh",
                         "parent": {
-                            "name": "India"
+                            "name": "India",
+                            "uuid": "uuid-for-India"
                         }
                     }
                 }
@@ -19,14 +23,19 @@ describe('addressAttributeService', function () {
         },
         {
             "name": "Semi",
+            "uuid": "uuid-for-semi",
             "parent": {
                 "name": "Semariya",
+                "uuid": "uuid-for-semariya",
                 "parent": {
                     "name": "Distr",
+                    "uuid": "uuid-for-distr",
                     "parent": {
                         "name": "Chattisgarh",
+                        "uuid": "uuid-for-chattisgarh",
                         "parent": {
-                            "name": "India"
+                            "name": "India",
+                            "uuid": "uuid-for-india"
                         }
                     }
                 }

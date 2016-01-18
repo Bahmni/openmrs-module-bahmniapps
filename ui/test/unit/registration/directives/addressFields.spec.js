@@ -7,7 +7,7 @@ describe('AddressFieldsDirectiveController', function () {
     var scope;
 
     beforeEach(angular.mock.module('bahmni.registration'));
-    beforeEach(angular.mock.inject(function ($injector) {
+    beforeEach(angular.mock.inject(function () {
         success = jasmine.createSpy('Successful');
         patientAttributeService = jasmine.createSpyObj('patientAttributeService', ['search']);
         patientAttributeService.search.and.returnValue({success:success});
@@ -17,20 +17,19 @@ describe('AddressFieldsDirectiveController', function () {
         inject(function ($controller, $rootScope) {
             scope = $rootScope.$new();
             scope.address = {};
-            var autocompletedFields = ["cityVillage", "address3", "countyDistrict", "stateProvince"];
             scope.addressLevels = [
               {"name": "State", "addressField": "stateProvince", "required": false },
               {"name": "District", "addressField": "countyDistrict", "required": false },
               {"name": "Tehsil", "addressField": "address3", "required": false },
               {"name": "Village", "addressField": "cityVillage", "required": true },
               {"name": "House No., Street", "addressField": "address1", "required": false },
-            ]
+            ];
             controller = $controller('AddressFieldsDirectiveController', {
                 $scope: scope,
                 patientAttributeService: patientAttributeService
             });
         });
-    }
+    };
 
     describe("village selection", function(){
         beforeEach(setupController);

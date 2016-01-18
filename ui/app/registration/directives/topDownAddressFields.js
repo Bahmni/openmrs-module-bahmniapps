@@ -16,16 +16,17 @@ angular.module('bahmni.registration')
     })
     .controller('TopDownAddressFieldsDirectiveController', function ($scope, addressAttributeService) {
         $scope.addressFieldInvalid = false;
+        var selectedAddressUuids = {};
 
         var addressLevelsCloneInDescendingOrder = $scope.addressLevels.slice(0).reverse();
         var addressLevelUIOrderBasedOnConfig = $scope.addressLevels;
-        $scope.addressLevelsChunks = Bahmni.Common.Util.ArrayUtil.chunk(addressLevelUIOrderBasedOnConfig, 2)
+        $scope.addressLevelsChunks = Bahmni.Common.Util.ArrayUtil.chunk(addressLevelUIOrderBasedOnConfig, 2);
         var addressLevelsNamesInDescendingOrder = addressLevelsCloneInDescendingOrder.map(function (addressLevel) {
             return addressLevel.addressField;
         });
-        var autocompletedFields = [];
         $scope.addressFieldSelected = function (fieldName) {
             return function (addressFieldItem) {
+                selectedAddressUuids[fieldName] = addressFieldItem.addressField.uuid;
                 var parentFields = addressLevelsNamesInDescendingOrder.slice(addressLevelsNamesInDescendingOrder.indexOf(fieldName) + 1);
                 var parent = addressFieldItem.addressField.parent;
                 parentFields.forEach(function (parentField) {
@@ -33,9 +34,6 @@ angular.module('bahmni.registration')
                     $scope.address[parentField] = parent.name;
                     parent = parent.parent;
                 });
-                autocompletedFields = [];
-                autocompletedFields.push(fieldName);
-                autocompletedFields = autocompletedFields.concat(parentFields);
             }
         };
 
@@ -70,11 +68,14 @@ angular.module('bahmni.registration')
             return angular.element($("#" + parentId)).hasClass('illegalValue');
         };
 
+        var parentUuid = function(field) {
+            return selectedAddressUuids[$scope.findParentField(field)];
+        };
+
         $scope.getAddressEntryList = function (field) {
             return function (searchAttrs) {
-                var parentField = $scope.findParentField(field);
-                var parentName = $scope.address[parentField];
-                return addressAttributeService.search(field, searchAttrs.term, parentField, parentName);
+                var response = addressAttributeService.search(field, searchAttrs.term, parentUuid(field));
+                return response;
             };
         };
 
@@ -101,6 +102,7 @@ angular.module('bahmni.registration')
             childFields.forEach(function (childField) {
                 if (!$scope.isFreeTextAddressField(childField)) {
                     $scope.address[childField] = "";
+                    selectedAddressUuids[childField] = null;
                 }
             });
         };
