@@ -1,8 +1,8 @@
 'use strict';
 
 describe("DrugOrderOptions", function () {
-    var masterConfig, listOfDrugs, inputConfig, model;
-    beforeEach(function() {
+    var masterConfig, inputConfig, model;
+    beforeEach(function () {
         masterConfig = {
             "doseUnits": [{"name": "mg"}, {"name": "Tablet(s)"}],
             "routes": [{"name": "Oral"}, {"name": "Inhalation"}],
@@ -10,20 +10,24 @@ describe("DrugOrderOptions", function () {
             "dosingInstructions": [{"name": "Before meals"}, {"name": "As directed"}],
             "dispensingUnits": [{"name": "Tablet(s)"}, {"name": "Unit(s)"}],
             "frequencies": [
-                { "uuid": "ca407cb0-3a91-11e5-b380-0050568236ae", "frequencyPerDay": 1, "name": "Seven days a week"},
-                { "uuid": "18a35ec5-3a92-11e5-b380-0050568236ae", "frequencyPerDay": 0.857142857, "name": "Six days a week"}
+                {
+                    "uuid": "ca407cb0-3a91-11e5-b380-0050568236ae",
+                    "frequencyPerDay": 1,
+                    "name": "Seven days a week"
+                },
+                {
+                    "uuid": "18a35ec5-3a92-11e5-b380-0050568236ae",
+                    "frequencyPerDay": 0.857142857,
+                    "name": "Six days a week"
+                }
             ]
         };
-        listOfDrugs = [
-            {name: "K"},
-            {name: "T"}
-        ];
 
         inputConfig = {
             "conceptSetName": "All TB Drugs",
             "doseUnits": ["mg"],
-            "frequencies" :["Seven days a week"],
-            "routes" : ["Oral"],
+            "frequencies": ["Seven days a week"],
+            "routes": ["Oral"],
             "disableFields": ["doseUnits", "frequencies"]
         };
 
@@ -34,63 +38,32 @@ describe("DrugOrderOptions", function () {
         expect(model.disableFields.length).toBe(2);
     });
 
-    describe("doseUnits", function() {
-        it("provides filtered dose units when a drug matches the list of drugs provided during initialization", function() {
-            var doseUnits = model.getDoseUnits({name: "K"});
-            expect(doseUnits.length).toBe(1);
-            expect(doseUnits).toContain({"name": "mg"});
-        });
+    it("picks the dose units that are configured from all dose units", function () {
+        var doseUnits = model.doseUnits;
+        expect(doseUnits.length).toBe(1);
+        expect(doseUnits).toContain({"name": "mg"});
+    });
 
-        it("returns null if drug does not match list of drugs provided during initialization", function() {
-            var doseUnits = model.getDoseUnits({name: "non existing drug"});
-            expect(doseUnits).toBeNull();
-        });
+    it("picks the routes that are configured from all routes", function () {
+        var routes = model.routes;
+        expect(routes.length).toBe(1);
+        expect(routes).toContain({"name": "Oral"});
+    });
 
-        it("returns null if no drugs passed in", function() {
-            expect(model.getDoseUnits()).toBeNull();
+    it("picks the frequencies that are configured from all frequencies", function () {
+        var frequencies = model.frequencies;
+        expect(frequencies.length).toBe(1);
+        expect(frequencies).toContain({
+            "uuid": "ca407cb0-3a91-11e5-b380-0050568236ae",
+            "frequencyPerDay": 1,
+            "name": "Seven days a week"
         });
     });
 
-    describe("routes", function () {
-        it("provides filtered routes when a drug matches the list of drugs provided during initialization", function() {
-            var routes = model.getRoutes({name: "K"});
-            expect(routes.length).toBe(1);
-            expect(routes).toContain({"name": "Oral"});
-        });
-
-        it("returns null if drug does not match list of drugs provided during initialization", function() {
-            var routes = model.getRoutes({name: "non existing drug"});
-            expect(routes).toBeNull();
-        });
-    });
-
-    describe('frequencies', function (){
-        it("provides filtered frequencies when a drug matches the list of drugs provided during initialization", function() {
-            var frequencies = model.getFrequencies({name: "K"});
-            expect(frequencies.length).toBe(1);
-            expect(frequencies).toContain({ "uuid": "ca407cb0-3a91-11e5-b380-0050568236ae", "frequencyPerDay": 1, "name": "Seven days a week"});
-        });
-
-        it("returns null if drug does not match list of drugs provided during initialization", function() {
-            var frequencies = model.getFrequencies({name: "non existing drug"});
-            expect(frequencies).toBeNull();
-        });
-    });
-    
-    it("should disable elements on UI mentioned in inputConfig", function () {
-        expect(model.disableField({name: "K"}, 'doseUnits')).toBe(true);
-        expect(model.disableField({name: "K"}, 'durationUnits')).toBe(false);
-        expect(model.disableField({name: "nonexistentDrug"}, 'durationUnits')).toBeNull();
-
-        inputConfig.disableFields = null;
-        model = new Bahmni.Clinical.DrugOrderOptions(inputConfig, listOfDrugs, masterConfig);
-        expect(model.disableField({name: "K"}, 'doseUnits')).toBe(false);
-    });
-
-    it("should use masterConfig as input configuration when fields missing in inputConfig", function() {
+    it("should use masterConfig as input configuration when fields missing in inputConfig", function () {
         inputConfig.doseUnits = null;
-        model = new Bahmni.Clinical.DrugOrderOptions(inputConfig, listOfDrugs, masterConfig);
+        model = new Bahmni.Clinical.DrugOrderOptions(inputConfig, masterConfig);
 
-        expect(model.getDoseUnits({name: "K"}).length).toBe(2);
+        expect(model.doseUnits.length).toBe(2);
     });
 });

@@ -6,28 +6,37 @@ angular.module('bahmni.clinical').factory('treatmentConfig', ['TreatmentService'
         var stoppedOrderReasonConfig = {};
         var medicationTabConfig = {
             getDoseUnits: function () {
-                return drugOrderOptions.getDoseUnits()
+                return drugOrderOptions.doseUnits
             },
             getRoutes: function () {
-                return drugOrderOptions.getRoutes()
+                return drugOrderOptions.routes
             },
             getDurationUnits: function () {
-                return drugOrderOptions.getDurationUnits()
+                return drugOrderOptions.durationUnits
             },
             getDosingInstructions: function () {
-                return drugOrderOptions.getDosingInstructions()
+                return drugOrderOptions.dosingInstructions
             },
             getDispensingUnits: function () {
-                return drugOrderOptions.getDispensingUnits()
+                return drugOrderOptions.dispensingUnits
             },
             getFrequencies: function () {
-                return drugOrderOptions.getFrequencies()
+                return drugOrderOptions.frequencies
             },
             getDosePlaceHolder: function () {
-                return drugOrderOptions.getDosePlaceHolder()
+                return drugOrderOptions.dosePlaceHolder
             },
             disableField: function (fieldName) {
-                return _.contains(drugOrderOptions.getDisabledFields(), fieldName)
+                return _.contains(drugOrderOptions.disableFields, fieldName)
+            },
+            isDropDown: function () {
+                return drugOrderOptions.isDropDown;
+            },
+            isAutoComplete: function () {
+                return !drugOrderOptions.isDropDown;
+            },
+            getDrugConceptSet: function () {
+                return drugOrderOptions.drugConceptSet;
             }
         };
 

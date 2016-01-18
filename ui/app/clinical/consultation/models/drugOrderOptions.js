@@ -1,7 +1,6 @@
 'use strict';
 
 Bahmni.Clinical.DrugOrderOptions = (function() {
-    var _proto;
 
     var itemsForInputConfig = function(listOfObjects, filterStrings) {
         if (!filterStrings) return listOfObjects;
@@ -11,8 +10,8 @@ Bahmni.Clinical.DrugOrderOptions = (function() {
         });
     };
 
-    var DrugOrderOptions = function (inputConfig, masterConfig) {
-        inputConfig = inputConfig || {};
+    return function (_inputConfig, masterConfig) {
+        var inputConfig = _inputConfig || {};
 
         this.doseUnits = itemsForInputConfig(masterConfig.doseUnits, inputConfig.doseUnits);
         this.routes =  itemsForInputConfig(masterConfig.routes, inputConfig.routes);
@@ -22,33 +21,7 @@ Bahmni.Clinical.DrugOrderOptions = (function() {
         this.dispensingUnits = itemsForInputConfig(masterConfig.dispensingUnits, inputConfig.dispensingUnits);
         this.dosePlaceHolder = inputConfig.dosePlaceHolder;
         this.disableFields = inputConfig.disableFields || [];
-
+        this.isDropDown = inputConfig.isDropDown;
+        this.drugConceptSet = inputConfig.drugConceptSet;
     };
-    _proto = DrugOrderOptions.prototype;
-
-    _proto.getDoseUnits = function() {
-        return this.doseUnits;
-    };
-    _proto.getRoutes = function (){
-        return this.routes;
-    };
-    _proto.getFrequencies = function (){
-        return this.frequencies;
-    };
-    _proto.getDurationUnits = function (){
-        return this.durationUnits;
-    };
-    _proto.getDosingInstructions = function (){
-        return this.dosingInstructions;
-    };
-    _proto.getDispensingUnits = function (){
-        return this.dispensingUnits;
-    };
-    _proto.getDisabledFields = function() {
-        return this.disableFields;
-    };
-    _proto.getDosePlaceHolder = function() {
-        return this.dosePlaceHolder;
-    };
-    return DrugOrderOptions;
 })();

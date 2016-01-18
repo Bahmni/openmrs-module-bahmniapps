@@ -2,21 +2,22 @@
     <section class="type-of-drug-section clearfix">
         <div class="medication-drug-container clearfix">
             <h4 class="drug-type-title">{{ ::'MEDICATION_DRUG_NAME_TITLE' | translate}}</h4>
-            <input id="drug-name" class="fl drug-name" type="text" placeholder="Drug Name" bahmni-autocomplete focus-on="startNewDrugEntry"
-                   source="getDrugs" response-map="getDataResults" ng-required="!treatment.drugNameDisplay"
-                   ng-class="{
-                            active: treatment.isNonCodedDrug
-                       }"
-                   ng-change="onChange()"
-                   ng-model="treatment.drugNameDisplay" on-select="onSelect" autofocus
-                   ng-disabled="treatment.previousOrderUuid" ng-readonly="treatment.isBeingEdited" ng-if="!treatmentConfig.isDropDown"/>
 
-            <select ng-if="treatmentConfig.isDropDown" ng-options="item as item.drug.name for item in drugs"
+            <select ng-if="treatmentConfig.isDropDown()" ng-options="item as item.drug.name for item in drugs"
                     ng-model="selectedItem" ng-change="selectFromDefaultDrugList(selectedItem)">
                 <option value="">Choose Drug</option>
             </select>
 
-                <span ng-if="!allowOnlyCodedDrugs && !treatmentConfig.isDropDown">
+            <div ng-if="treatmentConfig.isAutoComplete()">
+                <input id="drug-name" class="fl drug-name" type="text" placeholder="Drug Name" bahmni-autocomplete focus-on="startNewDrugEntry"
+                       source="getDrugs" response-map="getDataResults" ng-required="!treatment.drugNameDisplay"
+                       ng-class="{
+                                active: treatment.isNonCodedDrug
+                           }"
+                       ng-change="onChange()"
+                       ng-model="treatment.drugNameDisplay" on-select="onSelect" autofocus
+                       ng-disabled="treatment.previousOrderUuid" ng-readonly="treatment.isBeingEdited"/>
+                <span ng-if="!allowOnlyCodedDrugs">
                     <button type="button" ng-model="treatment.isNonCodedDrug"
                             class="fl accept-btn" id="accept-button"
                             ng-click="onAccept()"
@@ -27,6 +28,7 @@
                             ng-disabled="treatment.drug.uuid || (treatment.isBeingEdited && treatment.isNonCodedDrug)"><span>Accept</span>
                     </button>
                 </span>
+            </div>
         </div>
     </section>
 

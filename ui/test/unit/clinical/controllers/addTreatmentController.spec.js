@@ -140,7 +140,7 @@ describe("AddTreatmentController", function () {
             appService: appService,
             DrugService: drugService,
             treatmentConfig: {
-                drugConceptSet: "All TB Drugs",
+                getDrugConceptSet: function(){ return "All TB Drugs";},
                 durationUnits: [
                     {name: "Day(s)", factor: 1},
                     {name: "Week(s)", factor: 7},
