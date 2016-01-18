@@ -13,7 +13,7 @@ angular.module('bahmni.common.offline').service('initializeOfflineSchema', ['$ro
 
     this.initSchema = function () {
 
-        if (!offlineService.isOfflineApp()) {
+        if (offlineService.getAppPlatform() !== Bahmni.Common.Constants.platformType.chromeApp) {
             return $q.when({});
         }
 

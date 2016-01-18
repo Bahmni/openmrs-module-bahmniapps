@@ -36,6 +36,10 @@ angular.module('bahmni.home', ['ui.router', 'httpErrorInterceptor', 'bahmni.comm
                 $rootScope.loginDevice = $stateParams.deviceType;
                 offlineService.setAppPlatform(Bahmni.Common.Constants.platformType.chromeApp);
             }
+            if($stateParams.deviceType === 'android'){
+                $rootScope.loginDevice = $stateParams.deviceType;
+                offlineService.setAppPlatform(Bahmni.Common.Constants.platformType.chromeApp);
+            }
             $state.go('offline');
          }
     });
