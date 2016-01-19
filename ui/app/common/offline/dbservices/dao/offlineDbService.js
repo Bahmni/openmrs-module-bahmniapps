@@ -58,11 +58,9 @@ angular.module('bahmni.common.offline')
                         parseAttributeValues(person.attributes, attributeTypeMap);
                     }
                     return patientDao.insertPatientData(db, patientData).then(function (patientUuid) {
-                        return patientAttributeDao.insertAttributes(db, patientUuid, person.attributes, attributeTypeMap).then(function(){
-                            return patientAddressDao.insertAddress(db, patientUuid, person.addresses[0], addressColumnNames).then(function(){
-                                return patientData;
-                            });
-                        });
+                        patientAttributeDao.insertAttributes(db, patientUuid, person.attributes, attributeTypeMap);
+                        patientAddressDao.insertAddress(db, patientUuid, person.addresses[0], addressColumnNames);
+                        return patientData;
                     });
                 });
 
