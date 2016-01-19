@@ -24,6 +24,21 @@ angular.module('bahmni.registration')
         var addressLevelsNamesInDescendingOrder = addressLevelsCloneInDescendingOrder.map(function (addressLevel) {
             return addressLevel.addressField;
         });
+
+        var populateSelectedAddressUuids = function(levelIndex) {
+            var fieldName = $scope.addressLevels[levelIndex].addressField;
+            var addressValue = $scope.address[fieldName];
+            if (addressValue) {
+                addressAttributeService.search(fieldName, addressValue).then(function(response) {
+                    var address = response.data[0];
+                    selectedAddressUuids[fieldName] = address.uuid;
+                    populateSelectedAddressUuids(levelIndex + 1);
+                });
+            }
+        };
+        populateSelectedAddressUuids(0);
+
+
         $scope.addressFieldSelected = function (fieldName) {
             return function (addressFieldItem) {
                 selectedAddressUuids[fieldName] = addressFieldItem.addressField.uuid;
