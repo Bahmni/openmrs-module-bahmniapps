@@ -10,11 +10,13 @@ angular.module('bahmni.common.offline').service('offlineService', ['$rootScope',
     };
 
     this.isOfflineApp = function () {
-        return this.getAppPlatform() !== Bahmni.Common.Constants.platformType.chrome;
+        return true;
+        //return this.getAppPlatform() !== Bahmni.Common.Constants.platformType.chrome;
     };
 
     this.offline = function() {
-        return offline;
+        //return offline;
+        return true;
     };
 
     this.encrypt = function(value, encryptionType) {

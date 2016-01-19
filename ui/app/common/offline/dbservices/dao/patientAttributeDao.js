@@ -27,30 +27,31 @@ angular.module('bahmni.common.offline')
             var queries = [];
             if (attributes != null && attributes.length > 0) {
                 for (var j = 0; j < attributes.length; j++) {
-                        if (!attributes[j].voided) {
-                            var personAttribute = attributes[j];
-                            var attributeValue = personAttribute.value;
-                            if (typeof(attributeValue) == "object") {
-                                value = attributeValue.display;
-                            } else
-                                value = attributeValue;
-                            var attributeTypeId = _.find(attributeTypeMap, function (attributeType) {
-                                return attributeType.uuid === personAttribute.attributeType.uuid
-                            }).attributeTypeId;
+                    if (!attributes[j].voided) {
+                        var personAttribute = attributes[j];
+                        var attributeValue = personAttribute.value;
+                        if (typeof(attributeValue) == "object") {
+                            value = attributeValue.display;
+                        } else
+                            value = attributeValue;
+                        var foundAttribute = _.find(attributeTypeMap, function (attributeType) {
+                            return attributeType.uuid === personAttribute.attributeType.uuid
+                        });
+                        if (foundAttribute != undefined) {
                             var row = attributeTable.createRow({
-                                'attributeTypeId': attributeTypeId,
+                                'attributeTypeId': foundAttribute.attributeTypeId,
                                 'attributeValue': value,
                                 'patientUuid': patientUuid,
                                 'uuid': personAttribute.uuid
                             });
                             queries.push(db.insertOrReplace().into(attributeTable).values([row]));
                         }
+                    }
                 }
             }
             var tx = db.createTransaction();
             tx.exec(queries);
         };
-
 
 
         return {

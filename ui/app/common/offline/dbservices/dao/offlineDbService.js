@@ -58,8 +58,11 @@ angular.module('bahmni.common.offline')
                         parseAttributeValues(person.attributes, attributeTypeMap);
                     }
                     return patientDao.insertPatientData(db, patientData).then(function (patientUuid) {
-                        patientAttributeDao.insertAttributes(db, patientUuid, person.attributes, attributeTypeMap);
-                        patientAddressDao.insertAddress(db, patientUuid, person.addresses[0], addressColumnNames);
+                        return patientAttributeDao.insertAttributes(db, patientUuid, person.attributes, attributeTypeMap).then(function(){
+                            return patientAddressDao.insertAddress(db, patientUuid, person.addresses[0], addressColumnNames).then(function(){
+                                return patientData;
+                            });
+                        });
                     });
                 });
 
@@ -68,17 +71,19 @@ angular.module('bahmni.common.offline')
         var parseAttributeValues = function (attributes, attributeTypeMap) {
             angular.forEach(attributes, function (attribute) {
                 if (!attribute.voided) {
-                    var format = _.find(attributeTypeMap, function (attributeType) {
+                    var foundAttribute = _.find(attributeTypeMap, function (attributeType) {
                         return attributeType.uuid === attribute.attributeType.uuid
-                    }).format;
-                    if ("java.lang.Integer" === format || "java.lang.Float" === format) {
-                        attribute.value = parseFloat(attribute.value);
-                    } else if ("java.lang.Boolean" === format) {
-                        attribute.value = (attribute.value === 'true');
-                    } else if ("org.openmrs.Concept" === format) {
-                        var value = attribute.value;
-                        attribute.value = {display: value, uuid: attribute.hydratedObject};
+                    });
+                    if (foundAttribute != undefined && foundAttribute.format != undefined) {
+                        if ("java.lang.Integer" === foundAttribute || "java.lang.Float" === foundAttribute) {
+                            attribute.value = parseFloat(attribute.value);
+                        } else if ("java.lang.Boolean" === foundAttribute) {
+                            attribute.value = (attribute.value === 'true');
+                        } else if ("org.openmrs.Concept" === foundAttribute) {
+                            var value = attribute.value;
+                            attribute.value = {display: value, uuid: attribute.hydratedObject};
 
+                        }
                     }
                 }
             });
