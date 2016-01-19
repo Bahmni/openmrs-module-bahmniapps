@@ -1,6 +1,10 @@
 .drugOrderHistorySectionContainer{
   margin-top: 15px;
   table.treatments-details-table{
+    u{
+      border: none !important;
+      font-family: openSans !important;
+    }
     table-layout: fixed;
     tr{
       &.edited{
