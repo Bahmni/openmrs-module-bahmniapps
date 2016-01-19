@@ -13,7 +13,7 @@ angular.module('bahmni.common.offline').service('initializeOfflineSchema', ['$ro
 
     this.initSchema = function () {
 
-        if (offlineService.getAppPlatform() !== Bahmni.Common.Constants.platformType.chromeApp) {
+        if (!offlineService.isOfflineApp()) {
             return $q.when({});
         }
 
@@ -38,6 +38,7 @@ angular.module('bahmni.common.offline').service('initializeOfflineSchema', ['$ro
 
     var createTableGeneric = function (schemaBuilder, tableDefinition) {
         var table = schemaBuilder.createTable(tableDefinition.tableName);
+
         _.map(tableDefinition.columns, function (column) {
             table.addColumn(column.name, dataTypes[column.type]);
         });
