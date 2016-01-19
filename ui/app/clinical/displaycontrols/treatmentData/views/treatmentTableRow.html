@@ -27,7 +27,7 @@
         <i class="fa fa-comments left"></i>
         <pre class="left">{{drugOrder.additionalInstructions}}</pre>
         <div class="footer-note right">
-            <span class="provider">
+            <span class="provider" ng-if="params.showProvider">
                 <provider-directive creator-name="{{drugOrder.creatorName}}" provider-name="{{drugOrder.provider.name}}" provider-date="drugOrder.effectiveStartDate"></provider-directive>
             </span>
         </div>
@@ -36,7 +36,7 @@
 <tr bm-show="showDetails" ng-if="!drugOrder.additionalInstructions">
     <td colspan="4" class="notes inline-notes">
         <div class="footer-note right">
-            <span class="provider">
+            <span class="provider" ng-if="params.showProvider">
                 <provider-directive creator-name="{{drugOrder.creatorName}}" provider-name="{{drugOrder.provider.name}}" provider-date="drugOrder.effectiveStartDate"></provider-directive>
             </span>
         </div>
