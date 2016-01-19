@@ -11,7 +11,7 @@
                     <td class="programState">{{getCurrentStateDisplayName(patientProgram)}}</td>
                     <td class="programDate">Start Date:
                         <span>{{patientProgram.dateEnrolled | bahmniDate}}</span>
-                        <i class="fa fa-pencil-square-o fr" ng-click=""></i>
+                        <i class="fa fa-pencil-square-o fr" ng-click="toggleEdit(patientProgram)"></i>
                     </td>
                 </tr>
             </table>
@@ -21,25 +21,27 @@
                 <h2 class="programAttribute-title" ng-if="patientProgram.attributes.length!=0">Program Attributes</h2>
                 <a class="back-btn dashboard-link fr" id="dashboard-link"
                    ui-sref="patient.dashboard.show({
-           patientUuid: patient.uuid,
-           programUuid: patientProgram.program.uuid,
-           conceptSetGroupName: 'observations',
-           dateEnrolled: patientProgram.dateEnrolled,
-           dateCompleted: patientProgram.dateCompleted})">
+                           patientUuid: patient.uuid,
+                           programUuid: patientProgram.program.uuid,
+                           conceptSetGroupName: 'observations',
+                           dateEnrolled: patientProgram.dateEnrolled,
+                           dateCompleted: patientProgram.dateCompleted})">
                     <img ng-src="{{patient.image}}" onerror="this.onerror=null;this.src='../images/blank-user.gif';">
                     <span class="patient-info">
                         <span class="patient-name" >{{patientProgram.display}}</span>
                         <span class="patient-id">{{patient.identifier}}</span>
                     </span>
                 </a>
-                <program-attributes attributes="patientProgram.attributes"   ng-if="patientProgram.attributes.length!=0"></program-attributes>
+                <form class="select-program-option" ng-submit="updatePatientProgram(patientProgram)" >
+                <program-attributes program="patientProgram" program-attribute-types = "programAttributeTypes"></program-attributes>
+                </form>
             </section>
             <div class="program-timeline-container">
                 <h2 class="programAttribute-title">Program States</h2>
                 <div class="program-timeline">
                     <timeline program="patientProgram"></timeline>
                 </div>
-                <button ng-click="toggleEdit(patientProgram)" ng-class="{'tab-selected': patientProgram.editing, 'btn-noTimeline':patientProgram.states.length==0}" class="fr detail-btn">
+                <button ng-click="toggleDetail(patientProgram)" ng-class="{'tab-selected': patientProgram.showDetail, 'btn-noTimeline':patientProgram.states.length==0}" class="fr detail-btn">
                     <span>Details</span>
                     <i class="fa fa-expand"></i>
                 </button>
@@ -47,7 +49,7 @@
         </div>
     </div>
 
-    <div class="program-state-list"  ng-if="patientProgram.editing && patientProgram.isOpen">
+    <div class="program-state-list"  ng-if="patientProgram.showDetail && patientProgram.isOpen">
         <div class="down-arrow-container">
         </div>
         <div class="state-list" ng-class="{'state-list-cutomPadding':patientProgram.states.length == 0}">
@@ -69,7 +71,7 @@
                         ng-options="state.concept.display for state in workflowStatesWithoutCurrentState track by state.uuid">
                     <option value="">Choose State</option>
                 </select>
-                <button class="fr ok_btn" ng-click="savePatientProgram(patientProgram)">Change State</button>
+                <button class="fr ok_btn" ng-click="savePatientProgramStates(patientProgram)">Change State</button>
             </div>
             <div class="program-action-container form" ng-init="outComesForProgram = getOutcomes(patientProgram.program)">
                 <select ng-model="patientProgram.outcomeData"

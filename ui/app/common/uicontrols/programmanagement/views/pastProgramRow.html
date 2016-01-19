@@ -29,13 +29,13 @@
                 <span class="patient-id">{{patient.identifier}}</span>
             </span>
             </a>
-            <program-attributes attributes="program.attributes"></program-attributes>
+            <program-attributes program="program" program-attribute-types = "programAttributeTypes"></program-attributes>
             <div class="program-timeline-container" ng-if="program.states.length!=0 && program.isOpen">
                 <h2 class="programAttribute-title">Program States</h2>
                 <div class="program-timeline">
                     <timeline program="program"></timeline>
                 </div>
-                <button ng-click="toggleEdit(program)" ng-class="{'tab-selected': program.editing}" class="fr detail-btn" >
+                <button ng-click="toggleDetail(program)" ng-class="{'tab-selected': program.editing}" class="fr detail-btn" >
                     <span>Details</span>
                     <i class="fa fa-expand"></i>
                 </button>

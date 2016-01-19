@@ -8,7 +8,7 @@ describe("ManageProgramController", function () {
     beforeEach(module(function ($provide) {
         _provide = $provide;
         programService = jasmine.createSpyObj('programService', ['getPatientPrograms', 'getAllPrograms',
-            'savePatientProgram', 'endPatientProgram', 'deletePatientState', 'getProgramAttributeTypes']);
+            'savePatientProgramStates', 'endPatientProgram', 'deletePatientState', 'getProgramAttributeTypes', 'updatePatientProgram']);
 
         programService.getPatientPrograms.and.callFake(function () {
             deferred = q.defer();
@@ -16,7 +16,7 @@ describe("ManageProgramController", function () {
             return deferred.promise;
         });
 
-        programService.savePatientProgram.and.callFake(function () {
+        programService.savePatientProgramStates.and.callFake(function () {
             deferred = q.defer();
             deferred.resolve({data: {results: listOfPrograms}});
             return deferred.promise;
@@ -43,6 +43,12 @@ describe("ManageProgramController", function () {
         programService.getProgramAttributeTypes.and.callFake(function() {
             deferred = q.defer();
             deferred.resolve(programAttributeTypes);
+            return deferred.promise;
+        });
+
+        programService.updatePatientProgram.and.callFake(function() {
+            deferred = q.defer();
+            deferred.resolve({data: {results: listOfPrograms}});
             return deferred.promise;
         });
 
@@ -112,7 +118,23 @@ describe("ManageProgramController", function () {
     });
 
 
-    describe("savePatientProgram", function () {
+
+    describe("updatePatientProgram", function () {
+        it("should validate if state to be transited is starting after the current running state", function () {
+            scope.$apply(setUp);
+            var programToBeUpdated = listOfPrograms.activePrograms[0];
+            programToBeUpdated.patientProgramAttributes = {"locationName":"Loc1"};
+
+
+            scope.updatePatientProgram(programToBeUpdated);
+
+            expect(programService.updatePatientProgram).toHaveBeenCalledWith(programToBeUpdated, scope.programAttributeTypes);
+        });
+
+    });
+
+
+    describe("savePatientProgramStates", function () {
         it("should validate if state to be transited is starting after the current running state", function () {
             scope.$apply(setUp);
             var programToBeUpdated = listOfPrograms.activePrograms[0];
@@ -120,7 +142,7 @@ describe("ManageProgramController", function () {
                     return '2015-07-12';
             });
 
-            scope.savePatientProgram(programToBeUpdated);
+            scope.savePatientProgramStates(programToBeUpdated);
 
             expect(messageService.showMessage).toHaveBeenCalledWith("formError", "State cannot be started earlier than current state (15 Jul 15)");
         });
@@ -134,7 +156,7 @@ describe("ManageProgramController", function () {
             });
             scope.programEdited.selectedState = null;
 
-            scope.savePatientProgram(programToBeUpdated);
+            scope.savePatientProgramStates(programToBeUpdated);
 
             expect(messageService.showMessage).toHaveBeenCalledWith("formError", "Please select a state to change.");
         });
@@ -148,7 +170,7 @@ describe("ManageProgramController", function () {
             });
             scope.programEdited={selectedState : {uuid: '1317ab09-52b4-4573-aefa-7f6e7bdf6d61'}};
 
-            scope.savePatientProgram(programToBeUpdated);
+            scope.savePatientProgramStates(programToBeUpdated);
             scope.$digest();
             expect(messageService.showMessage).toHaveBeenCalledWith("info", "Saved");
         });
@@ -160,7 +182,7 @@ describe("ManageProgramController", function () {
                     return '2015-07-19';
 
             });
-            programService.savePatientProgram.and.callFake(function () {
+            programService.savePatientProgramStates.and.callFake(function () {
                 deferred = q.defer();
                 deferred.reject({data: {error: ''}});
                 return deferred.promise;
@@ -168,7 +190,7 @@ describe("ManageProgramController", function () {
 
             scope.programEdited={selectedState : {uuid: '1317ab09-52b4-4573-aefa-7f6e7bdf6d61'}};
 
-            scope.savePatientProgram(programToBeUpdated);
+            scope.savePatientProgramStates(programToBeUpdated);
             scope.$digest();
             expect(messageService.showMessage).toHaveBeenCalledWith("error", "Failed to Save");
         });

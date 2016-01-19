@@ -23,10 +23,13 @@ describe('programService', function () {
                     'error': function (onError) {
                         onError()
                     }
-                }}})
+                }}}),
+        delete: jasmine.createSpy('Http delete').and.returnValue({
+            then: function(callback){
+                return callback({data:{results:[]}})
+            }
+        })
     };
-
-
 
     var mockAppDescriptor = jasmine.createSpyObj('appService', ['getConfigValue']);
     mockAppDescriptor.getConfigValue.and.returnValue(undefined);
@@ -62,8 +65,6 @@ describe('programService', function () {
 
 
     });
-
-
 
     it('should fetch all programs from backend and filter programs containing retired workflows and outcomes', function(done){
         var allPrograms = [
@@ -329,7 +330,16 @@ describe('programService', function () {
         expect(mockHttp.post.calls.mostRecent().args[0]).toEqual(Bahmni.Common.Constants.programEnrollPatientUrl + "/" + patientProgramUuid);
         expect(mockHttp.post.calls.mostRecent().args[1].dateCompleted).toEqual("2015-12-11T12:04:23+0530");
         expect(mockHttp.post.calls.mostRecent().args[1].outcome).toEqual(outcome);
-    })
+    });
+
+    it('should delete patient state', function(){
+        var patientProgramUuid = "somePatientProgramUuid";
+        var patientStateUuid = "someStateUuid";
+        programService.deletePatientState(patientProgramUuid, patientStateUuid);
+
+        expect(mockHttp.delete.calls.mostRecent().args[0]).toEqual(Bahmni.Common.Constants.programEnrollPatientUrl + "/" + patientProgramUuid + "/state/" + patientStateUuid);
+        expect(mockHttp.delete.calls.mostRecent().args[1].reason).toEqual("User deleted the state.");
+    });
 
     it('should save patient program with states', function(){
         var patientProgramUuid = "somePatientProgramUuid";
@@ -339,11 +349,11 @@ describe('programService', function () {
 
         var constructedState = [{ state: {uuid : uuid},  uuid : programStateUuid , startDate : onDate}];
 
-        programService.savePatientProgram(patientProgramUuid, uuid, onDate, programStateUuid);
+        programService.savePatientProgramStates(patientProgramUuid, uuid, onDate, programStateUuid);
 
         expect(mockHttp.post.calls.mostRecent().args[0]).toEqual(Bahmni.Common.Constants.programEnrollPatientUrl + "/" + patientProgramUuid);
         expect(mockHttp.post.calls.mostRecent().args[1].states).toEqual(constructedState);
-    })
+    });
 
     it('should retrieve list of program attribute types', function(done) {
         var programAttributeTypesJson = {
@@ -395,7 +405,7 @@ describe('programService', function () {
         });
 
         programService.getProgramAttributeTypes();
-    })
+    });
 
     describe("Program attributes",function(){
         var programResponse = [
@@ -467,8 +477,6 @@ describe('programService', function () {
             });
 
             programService.getPatientPrograms(patientUuid);
-
-
         });
 
         it("should have attribute name if description is not available", function(done){
@@ -501,5 +509,59 @@ describe('programService', function () {
 
 
         })
-    })
+    });
+
+    it('test savePatientProgram', function(){
+        var patientProgramUuid = "somePatientProgramUuid";
+        var content = "SampleContent";
+        programService.savePatientProgram(patientProgramUuid,content);
+        expect(mockHttp.post.calls.mostRecent().args[0]).toEqual(Bahmni.Common.Constants.programEnrollPatientUrl + "/" + patientProgramUuid);
+        expect(mockHttp.post.calls.mostRecent().args[1]).toEqual(content);
+    });
+
+    it('test updatePatientProgram', function(){
+
+        var programAttributes = {"Sample Regex attribute": "123" , "Sample date attribute":"2016-01-12T00:00:00.000+0000"};
+        var programAttributeTypes = [
+            {
+                "uuid":  "079b73c6-b854-11e5-9584-0800274a5156",
+                "name" : "Sample Regex attribute"
+            },
+            {
+                "uuid": "07ae82e4-b854-11e5-9584-0800274a5156",
+                "name" : "Sample date attribute"
+            }
+        ];
+        var attributes = [
+            {
+                "uuid": "6ccf5c9c-9f8c-4e46-b40b-c203b033f6d7",
+                "attributeType": {
+                    "uuid": "079b73c6-b854-11e5-9584-0800274a5156",
+                },
+                "value": "123"
+            },
+            {
+                "uuid": "12cac096-ac84-419f-88c3-f140a3c13d98",
+                "attributeType": {
+                    "uuid": "07ae82e4-b854-11e5-9584-0800274a5156",
+                },
+                "value": "2016-01-12T00:00:00.000+0000"
+            }
+        ];
+
+        var patientProgram = {
+            "uuid" : "Some UUID",
+            "patientProgramAttributes" : programAttributes,
+            "attributes": attributes
+        };
+
+        var content = {
+            "attributes": attributes
+        };
+
+        programService.updatePatientProgram(patientProgram,programAttributeTypes);
+        expect(mockHttp.post.calls.mostRecent().args[0]).toEqual(Bahmni.Common.Constants.programEnrollPatientUrl + "/" + patientProgram.uuid);
+        expect(mockHttp.post.calls.mostRecent().args[1]).toEqual(content);
+    });
+
 });

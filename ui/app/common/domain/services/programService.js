@@ -68,27 +68,28 @@ angular.module('bahmni.common.domain')
             return states;
         };
 
-        var savePatientProgram = function(patientProgramUuid, stateUuid, onDate, currProgramStateUuid) {
+        var savePatientProgram = function(patientProgramUuid, content){
             var req = {
                 url: Bahmni.Common.Constants.programEnrollPatientUrl + "/" + patientProgramUuid,
-                content: {
-                    states: constructStatesPayload(stateUuid, onDate, currProgramStateUuid)
-                },
+                content: content,
                 headers: {"Content-Type": "application/json"}
             };
             return $http.post(req.url, req.content, req.headers);
         };
 
-        var endPatientProgram = function (patientProgramUuid, asOfDate, outcomeUuid){
-            var req = {
-                url: Bahmni.Common.Constants.programEnrollPatientUrl + "/" + patientProgramUuid,
-                content: {
-                    dateCompleted: moment(asOfDate).format(Bahmni.Common.Constants.ServerDateTimeFormat),
-                    outcome: outcomeUuid
-                },
-                headers: {"Content-Type": "application/json"}
+        var savePatientProgramStates = function(patientProgramUuid, stateUuid, onDate, currProgramStateUuid) {
+            var content = {
+                states: constructStatesPayload(stateUuid, onDate, currProgramStateUuid)
             };
-            return $http.post(req.url, req.content, req.headers);
+            return savePatientProgram(patientProgramUuid, content);
+        };
+
+        var endPatientProgram = function (patientProgramUuid, asOfDate, outcomeUuid){
+            var content = {
+                dateCompleted: moment(asOfDate).format(Bahmni.Common.Constants.ServerDateTimeFormat),
+                outcome: outcomeUuid
+            };
+            return savePatientProgram(patientProgramUuid, content);
         };
 
         var deletePatientState = function(patientProgramUuid, patientStateUuid) {
@@ -104,8 +105,9 @@ angular.module('bahmni.common.domain')
         };
 
         var getProgramAttributeTypes = function () {
-            return $http.get(Bahmni.Common.Constants.programAttributeTypes, {params: {v: 'custom:(uuid,name,description,datatypeClassname)'}}).then(function (response) {
+            return $http.get(Bahmni.Common.Constants.programAttributeTypes, {params: {v: 'custom:(uuid,name,description,datatypeClassname,datatypeConfig)'}}).then(function (response) {
                 var programAttributesConfig = appService.getAppDescriptor().getConfigValue("program");
+
                 var mandatoryProgramAttributes = [];
                 for (var attributeName in programAttributesConfig) {
                     if (programAttributesConfig[attributeName].required)
@@ -115,12 +117,19 @@ angular.module('bahmni.common.domain')
             });
         };
 
+        var updatePatientProgram = function (patientProgram, programAttributeTypes){
+            var attributeFormatter = new Bahmni.Common.Domain.AttributeFormatter();
+            var content = { attributes: attributeFormatter.getMrsAttributesForUpdate(patientProgram.patientProgramAttributes, programAttributeTypes, patientProgram.attributes)};
+            return savePatientProgram(patientProgram.uuid,content);
+        };
         return {
             getAllPrograms: getAllPrograms,
             enrollPatientToAProgram: enrollPatientToAProgram,
             getPatientPrograms: getPatientPrograms,
             endPatientProgram: endPatientProgram,
             savePatientProgram: savePatientProgram,
+            updatePatientProgram: updatePatientProgram,
+            savePatientProgramStates: savePatientProgramStates,
             deletePatientState: deletePatientState,
             getProgramAttributeTypes : getProgramAttributeTypes
         };

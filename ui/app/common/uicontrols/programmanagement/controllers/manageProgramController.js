@@ -142,7 +142,7 @@ angular.module('bahmni.common.uicontrols.programmanagment')
                 return states;
             };
 
-            $scope.savePatientProgram = function (patientProgram) {
+            $scope.savePatientProgramStates = function (patientProgram) {
                 var startDate = getCurrentDate();
                 var currentState = getCurrentState(patientProgram.states);
                 var currentStateDate = currentState ? DateUtil.parse(currentState.startDate) : null;
@@ -158,7 +158,14 @@ angular.module('bahmni.common.uicontrols.programmanagment')
                     return;
                 }
                 spinner.forPromise(
-                    programService.savePatientProgram(patientProgram.uuid, $scope.programEdited.selectedState.uuid, startDate)
+                    programService.savePatientProgramStates(patientProgram.uuid, $scope.programEdited.selectedState.uuid, startDate)
+                        .then(successCallback, failureCallback)
+                );
+            };
+
+            $scope.updatePatientProgram = function (patientProgram){
+                spinner.forPromise(
+                    programService.updatePatientProgram(patientProgram, $scope.programAttributeTypes)
                         .then(successCallback, failureCallback)
                 );
             };
@@ -193,13 +200,18 @@ angular.module('bahmni.common.uicontrols.programmanagment')
                     }));
             };
 
-            $scope.toggleEdit = function (program) {
+            $scope.toggleDetail = function (program) {
                 program.ending = false;
-                program.editing = !program.editing;
+                program.showDetail = !program.showDetail;
+            };
+
+            $scope.toggleEdit = function (program) {
+                program.isOpen = true;
+                program.editing = true;
             };
 
             $scope.toggleEnd = function (program) {
-                program.editing = false;
+                program.showDetail = false;
                 program.ending = !program.ending;
             };
 
@@ -259,6 +271,15 @@ angular.module('bahmni.common.uicontrols.programmanagment')
             $scope.getCurrentStateDisplayName = function(program){
                 var currentState = getCurrentState(program.states);
                 return currentState && currentState.state.concept.display;
+            };
+
+            $scope.getProgramAttributeMap = function(programAttributes){
+                var programAttributeMap={};
+                _.forEach(programAttributes, function (programAttribute) {
+                    programAttributeMap[programAttribute.name]=programAttribute.value;
+                });
+                return programAttributeMap;
+
             };
 
             $scope.showProgramAttributes = function(program){

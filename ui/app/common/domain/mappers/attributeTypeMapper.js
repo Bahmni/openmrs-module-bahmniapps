@@ -45,6 +45,10 @@ Bahmni.Common.Domain.AttributeTypeMapper = (function () {
                     });
                 });
             }
+            if (attributeType.format == "org.openmrs.customdatatype.datatype.RegexValidatedTextDatatype"){
+                attributeType.pattern = mrsAttributeType.datatypeConfig;
+            }
+
             attributeTypes.push(attributeType);
         });
         return {

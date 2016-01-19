@@ -37,7 +37,7 @@ angular.module('bahmni.common.uicontrols.programmanagment')
 
     var mapAttributes = function(attribute){
         attribute.name = attribute.attributeType.description ? attribute.attributeType.description : attribute.name;
-        attribute.value = isNaN(Date.parse(attribute.value) )? attribute.value :  Bahmni.Common.Util.DateUtil.formatDateWithoutTime(attribute.value);
+        attribute.value = attribute.value;
         attribute.required = isAttributeRequired(attribute);
 
     };
