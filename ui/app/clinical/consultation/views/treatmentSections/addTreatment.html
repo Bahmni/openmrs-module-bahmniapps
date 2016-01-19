@@ -80,9 +80,8 @@
                             <option value="">Choose Route</option>
                         </select>
                     </div>
-                    <button ng-hide="treatmentConfig.isHiddenField('sos')"  id="SOS" tabindex="-1" type="button" class="grid-row-element fl" ng-class="{active: treatment.asNeeded}" ng-click="toggleAsNeeded(treatment)" accesskey="o">
+                    <button ng-hide="treatmentConfig.isHiddenField('sos')" ng-bind-html="'MEDICATION_SOS_BUTTON_TEXT' | translate"  id="SOS" tabindex="-1" type="button" class="grid-row-element fl" ng-class="{active: treatment.asNeeded}" ng-click="toggleAsNeeded(treatment)" accesskey="o">
                         <i class="fa fa-ok"></i>
-                        S<u>O</u>S
                     </button>
                     <label class="start-date-label fl">Start Date</label>
                     <input id="start-date" date-converter class="start-date fl" type="date"

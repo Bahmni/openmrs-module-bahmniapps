@@ -20,10 +20,8 @@ angular.module('bahmni.common.displaycontrol.drugOrdersSection')
                 "startDate": "DRUG_DETAILS_START_DATE",
                 "stopDate": "DRUG_DETAILS_STOP_DATE",
                 "stopReason": "DRUG_DETAILS_ORDER_REASON_CODED",
-                "stopReasonNotes": "DRUG_DETAILS_ORDER_REASON_TEXT",
                 "instructions": "DRUG_DETAILS_INSTRUCTIONS_TEXT",
-                "quantity": "DRUG_DETAILS_QUANTITY_TEXT",
-                "additionalInstructions": "DRUG_DETAILS_ADDITIONAL_INSTRUCTIONS_TEXT"
+                "quantity": "DRUG_DETAILS_QUANTITY_TEXT"
             };
 
             $scope.scheduledDate = DateUtil.getDateWithoutTime(DateUtil.now());
@@ -83,6 +81,10 @@ angular.module('bahmni.common.displaycontrol.drugOrdersSection')
                 if (drugOrder.isEditAllowed) {
                     $rootScope.$broadcast("event:reviseDrugOrder", drugOrder, drugOrders);
                 }
+            };
+
+            $scope.toggleShowAdditionalInstructions = function (line) {
+                line.showAdditionalInstructions = !line.showAdditionalInstructions;
             };
 
             $scope.discontinue = function (drugOrder) {

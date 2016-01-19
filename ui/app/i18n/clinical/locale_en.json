@@ -90,6 +90,7 @@
     "MEDICATION_TAB_DOSE": "Dose",
     "MEDICATION_DEFAULT_DRUGS_TITLE": "Frequently Used",
     "MEDICATION_DRUG_NAME_TITLE": "Drug Name",
+    "MEDICATION_SOS_BUTTON_TEXT" : "S<u>O</u>S",
 
     "REMOVE_CONFIRMATION_KEY": "Are you sure you want to remove?",
 
@@ -100,10 +101,8 @@
     "DRUG_DETAILS_START_DATE":"Start date ",
     "DRUG_DETAILS_STOP_DATE": "Stop date",
     "DRUG_DETAILS_ORDER_REASON_CODED": "Stop Reason",
-    "DRUG_DETAILS_ORDER_REASON_TEXT": "Because of",
     "DRUG_DETAILS_INSTRUCTIONS_TEXT": "Instructions",
     "DRUG_DETAILS_QUANTITY_TEXT": "Quantity",
-    "DRUG_DETAILS_ADDITIONAL_INSTRUCTIONS_TEXT": "Additional Instructions",
     "DRUG_DETAILS_DURATION": "Duration",
     "MONTHS": "January, February, March, April, May, June, July, August, September, October, November, December",
     "CHOOSE_MONTH_KEY": "Choose month",
