@@ -157,7 +157,7 @@ Bahmni.Clinical.DrugOrderViewModel = function (appConfig, config, proto, encount
         var uniformDosingType = self.uniformDosingType;
         var mantissa = self.uniformDosingType.dosingUnitsFraction ? self.uniformDosingType.dosingUnitsFraction.value : 0;
         var dose = uniformDosingType.dose ? uniformDosingType.dose : 0;
-        var doseAndUnits = blankIfFalsy(morphToMixedFraction(parseFloat(dose))) + " " + blankIfFalsy(self.doseUnits);
+        var doseAndUnits = blankIfFalsy(morphToMixedFraction(parseFloat(dose) + mantissa)) + " " + blankIfFalsy(self.doseUnits);
 
         return addDelimiter(blankIfFalsy(doseAndUnits), ", ") +
             addDelimiter(blankIfFalsy(uniformDosingType.frequency), ", ");

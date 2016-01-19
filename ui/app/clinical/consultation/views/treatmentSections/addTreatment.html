@@ -40,11 +40,11 @@
                 <div class="frequency-widget-wrapper">
                     <div class="frequency-widget uniform-frequency" ng-show="treatment.isUniformFrequency">
                         <input id="uniform-dose" class="dose fl" integer="true" ng-focus="treatment.setFrequencyType('uniform')" type="number" min="0" step="any" placeholder="{{ treatmentConfig.getDosePlaceHolder(treatment.drug) | translate}}"
-                               ng-model="treatment.uniformDosingType.dose" ng-required="!treatment.uniformDosingType.dosingUnitsFraction" focus-on="editDrugEntryUniformFrequency" />
+                               ng-model="treatment.uniformDosingType.dose" ng-required="treatment.isUniformFrequency && !treatment.uniformDosingType.dosingUnitsFraction" focus-on="editDrugEntryUniformFrequency" />
                         <div ng-show="isDosingUnitsFractionsAvailable()" class="fl dosingUnitsFractions-container">
                             <label class="fl">&nbsp;and&nbsp;</label>
                             <select id="uniform-dose-mantissa" class="form-field freq-dose-units" ng-model="treatment.uniformDosingType.dosingUnitsFraction"
-                                    ng-options="item.label for item in dosingUnitsFractions track by item.value" ng-required="!treatment.uniformDosingType.dose">
+                                    ng-options="item.label for item in dosingUnitsFractions track by item.value" ng-required="treatment.isUniformFrequency && !treatment.uniformDosingType.dose">
                                 <option value="">e.g. 1/2</option>
                             </select>
                         </div>
