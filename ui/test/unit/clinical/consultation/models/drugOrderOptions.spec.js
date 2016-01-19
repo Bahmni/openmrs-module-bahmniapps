@@ -28,14 +28,14 @@ describe("DrugOrderOptions", function () {
             "doseUnits": ["mg"],
             "frequencies": ["Seven days a week"],
             "routes": ["Oral"],
-            "disableFields": ["doseUnits", "frequencies"]
+            "hiddenFields": ["doseUnits", "frequencies"]
         };
 
         model = new Bahmni.Clinical.DrugOrderOptions(inputConfig, masterConfig);
     });
 
     it('should initialise fields from config', function () {
-        expect(model.disableFields.length).toBe(2);
+        expect(model.hiddenFields.length).toBe(2);
     });
 
     it("picks the dose units that are configured from all dose units", function () {

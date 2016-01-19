@@ -20,7 +20,7 @@ Bahmni.Clinical.DrugOrderOptions = (function() {
         this.dosingInstructions = itemsForInputConfig(masterConfig.dosingInstructions, inputConfig.dosingInstructions);
         this.dispensingUnits = itemsForInputConfig(masterConfig.dispensingUnits, inputConfig.dispensingUnits);
         this.dosePlaceHolder = inputConfig.dosePlaceHolder;
-        this.disableFields = inputConfig.disableFields || [];
+        this.hiddenFields = inputConfig.hiddenFields || [];
         this.isDropDown = inputConfig.isDropDown;
         this.drugConceptSet = inputConfig.drugConceptSet;
     };

@@ -26,8 +26,8 @@ angular.module('bahmni.clinical').factory('treatmentConfig', ['TreatmentService'
             getDosePlaceHolder: function () {
                 return drugOrderOptions.dosePlaceHolder
             },
-            disableField: function (fieldName) {
-                return _.contains(drugOrderOptions.disableFields, fieldName)
+            isHiddenField: function (fieldName) {
+                return _.contains(drugOrderOptions.hiddenFields, fieldName)
             },
             isDropDown: function () {
                 return drugOrderOptions.isDropDown && drugOrderOptions.drugConceptSet;

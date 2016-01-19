@@ -10,7 +10,7 @@ describe('treatmentConfig', function() {
             "doseUnits": ["mg"],
             "frequency" :["Seven days a week"],
             "route" : ["Oral"],
-            "disableFields": ["additionalInstructions"]
+            "hiddenFields": ["additionalInstructions"]
         }
     };
     var masterConfig = {
@@ -94,14 +94,15 @@ describe('treatmentConfig', function() {
     it("should disable elements on UI mentioned in inputConfig", function (done) {
         injectTreatmentConfig();
         treatmentConfig.then(function (config) {
-            expect(config.disableField('additionalInstructions')).toBe(true);
-            expect(config.disableField('frequencies')).toBe(false);
+            expect(config.isHiddenField('additionalInstructions')).toBe(true);
+            expect(config.isHiddenField('frequencies')).toBe(false);
             done();
         });
     });
 
     it("drug name field should be dropdown if configured as dropdown",function(done){
         medicationConfig.inputOptionsConfig.isDropDown=true;
+        medicationConfig.inputOptionsConfig.drugConceptSet="Some Drug set";
         injectTreatmentConfig();
         treatmentConfig.then(function(config){
             expect(config.isDropDown()).toBeTruthy();

@@ -34,7 +34,7 @@
 
     <section class="edit-drug-order primary-section-grid clearfix">
             <div class="drug-options-wrapper clearfix">
-                <button ng-hide="treatmentConfig.disableField('dosingTypeToggle')" type="button" class="icon-button exchange-btn fl" tabindex="-1" ng-click="treatment.toggleFrequency()">
+                <button ng-hide="treatmentConfig.isHiddenField('dosingTypeToggle')" type="button" class="icon-button exchange-btn fl" tabindex="-1" ng-click="treatment.toggleFrequency()">
                     <i class="fa fa-exchange"></i>
                 </button>
                 <div class="frequency-widget-wrapper">
@@ -80,7 +80,7 @@
                             <option value="">Choose Route</option>
                         </select>
                     </div>
-                    <button ng-hide="treatmentConfig.disableField('sos')"  id="SOS" tabindex="-1" type="button" class="grid-row-element fl" ng-class="{active: treatment.asNeeded}" ng-click="toggleAsNeeded(treatment)" accesskey="o">
+                    <button ng-hide="treatmentConfig.isHiddenField('sos')"  id="SOS" tabindex="-1" type="button" class="grid-row-element fl" ng-class="{active: treatment.asNeeded}" ng-click="toggleAsNeeded(treatment)" accesskey="o">
                         <i class="fa fa-ok"></i>
                         S<u>O</u>S
                     </button>
@@ -93,25 +93,25 @@
                 </div>
             </div>
             <div class="drug-options-wrapper">
-                <textarea ng-hide="treatmentConfig.disableField('additionalInstructions')" id="additional-instructions" rows="1" msd-elastic class="drug-order-notes" placeholder="Additional Instructions" ng-model="treatment.additionalInstructions"></textarea>
+                <textarea ng-hide="treatmentConfig.isHiddenField('additionalInstructions')" id="additional-instructions" rows="1" msd-elastic class="drug-order-notes" placeholder="Additional Instructions" ng-model="treatment.additionalInstructions"></textarea>
 
                 <div class="duration-widget fl">
-                    <input  ng-hide="treatmentConfig.disableField('duration')" id="duration" class="fl duration" type="number" min="1" placeholder="Duration"
+                    <input  ng-hide="treatmentConfig.isHiddenField('duration')" id="duration" class="fl duration" type="number" min="1" placeholder="Duration"
                            ng-model="treatment.duration" ng-change="treatment.calculateDurationInDays()" ng-required="treatment.isDurationRequired" ng-pattern="/^[0-9]+$/"/>
-                    <select  ng-hide="treatmentConfig.disableField('durationUnits')" id="duration-unit" class="fl duration-unit" ng-model="treatment.durationUnit"
+                    <select  ng-hide="treatmentConfig.isHiddenField('durationUnits')" id="duration-unit" class="fl duration-unit" ng-model="treatment.durationUnit"
                             ng-options="item.name as item.name for item in treatmentConfig.getDurationUnits(treatment.drug)" required>
                     </select>
                 </div>
 
-                <select ng-hide="treatmentConfig.disableField('dosingInstructions')" id="instructions" class="instruction" ng-model="treatment.instructions"
+                <select ng-hide="treatmentConfig.isHiddenField('dosingInstructions')" id="instructions" class="instruction" ng-model="treatment.instructions"
                         ng-options="item.name as item.name for item in treatmentConfig.getDosingInstructions(treatment.drug)">
                     <option value="">Choose Instruction</option>
                 </select>
 
                 <div ng-show="!treatment.simpleDrugForm" class="quantity-widget fl">
-                    <input ng-hide="treatmentConfig.disableField('quantity')" id="quantity" class="quantity fl" type="number" min="0.1" placeholder="Qty" step="any"
+                    <input ng-hide="treatmentConfig.isHiddenField('quantity')" id="quantity" class="quantity fl" type="number" min="0.1" placeholder="Qty" step="any"
                            ng-model="treatment.quantity" ng-change="treatment.setQuantityEnteredManually()" ng-required="treatment.isDurationRequired"/>
-                    <select ng-hide="treatmentConfig.disableField('quantityUnits')" id="total-quantity-unit" class="freq-dose-units fl" ng-model="treatment.quantityUnit" ng-change="treatment.setQuantityUnitEnteredManually()"
+                    <select ng-hide="treatmentConfig.isHiddenField('quantityUnits')" id="total-quantity-unit" class="freq-dose-units fl" ng-model="treatment.quantityUnit" ng-change="treatment.setQuantityUnitEnteredManually()"
                             ng-options="item.name as item.name for item in treatmentConfig.getDoseUnits(treatment.drug)" ng-required="!treatment.validate()">
                         <option value="">Choose Unit</option>
                     </select>
