@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('bahmni.home')
-    .controller('DashboardController', ['$rootScope', '$scope', '$state', 'appService', 'locationService', 'spinner', '$bahmniCookieStore', '$window',
-        function ($rootScope, $scope, $state, appService, locationService, spinner, $bahmniCookieStore, $window) {
+    .controller('DashboardController', ['$rootScope', '$scope', '$state', 'appService', 'locationService', 'spinner', '$bahmniCookieStore', '$window', 'offlineService',
+        function ($rootScope, $scope, $state, appService, locationService, spinner, $bahmniCookieStore, $window, offlineService) {
             $scope.appExtensions = appService.getAppDescriptor().getExtensions($state.current.data.extensionPointId, "link") || [];
             $scope.selectedLocationUuid = {};
 
@@ -41,6 +41,10 @@ angular.module('bahmni.home')
             $rootScope.$on('offline', function () {
                 $scope.$apply();
             });
+
+            $scope.isOffline = function(){
+                return offlineService.offline();
+            } ;
 
             return spinner.forPromise(init());
         }]);
