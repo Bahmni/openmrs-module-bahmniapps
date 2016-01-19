@@ -353,6 +353,25 @@ button.back-btn {
         text-overflow: ellipsis;
         text-align: left;
         height: 32px !important;
+      &.grid-row-element{
+        font-size: 12px;
+        padding-left: 15px;
+        padding-right: 15px;
+        .fa-ok{
+          display: none;
+          padding-top: 0;
+          padding-bottom: 0;
+          font-size: 14px;
+          line-height: inherit;
+        }
+        &.active{
+          color: #457FAC;
+          padding-left: 3px;
+          .fa-ok {
+            display: inline-block;
+          }
+        }
+      }
     }
     button:focus, a:focus, .btn:focus {
       border: 2px solid $clinicalFormFocus;
