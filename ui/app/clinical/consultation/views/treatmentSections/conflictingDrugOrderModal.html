@@ -7,7 +7,7 @@
 	</div>
 
 	<div class="drug-details" ng-if="!alreadyActiveSimilarOrder.effectiveStopDate">
-	    <p><strong class="drug-name">{{alreadyActiveSimilarOrder.getDisplayName()}}</strong> from <strong>{{alreadyActiveSimilarOrder.effectiveStartDate | bahmniDate}}</strong> to <strong>{{alreadyActiveSimilarOrder.effectiveStopDate | bahmniDate}}</strong> is conflicting with drug order you are trying to add. You can stop the active drug order and create a new one.</p>
+	    <p><strong class="drug-name">{{alreadyActiveSimilarOrder.getDisplayName()}}</strong> from <strong>{{alreadyActiveSimilarOrder.effectiveStartDate | bahmniDate}}</strong> is conflicting with drug order you are trying to add. You can stop the active drug order and create a new one.</p>
 	</div>
 
 	<div class="dialog-button-group" ng-if="alreadyActiveSimilarOrder.effectiveStopDate">
