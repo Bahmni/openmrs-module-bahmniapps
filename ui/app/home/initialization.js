@@ -20,7 +20,8 @@ angular.module('bahmni.home')
                 setPlatformCookie();
                 return appService.initApp('home');
             };
-
-            return spinner.forPromise(initApp());
+            return function () {
+                return spinner.forPromise(initApp());
+            }
         }
     ]);
