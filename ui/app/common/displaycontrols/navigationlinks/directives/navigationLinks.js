@@ -24,7 +24,7 @@ angular.module('bahmni.common.displaycontrol.navigationlinks')
                     "url": "../adt/#/patient/{{patientUuid}}/visit/{{visitUuid}}/"
                 },
                 {
-                    "name" :"enrollment",
+                    "name" :"enrolment",
                     "translationKey":"PROGRAM_MANAGEMENT_PAGE_KEY",
                     "url": "../clinical/#/programs/patient/{{patientUuid}}/consultationContext"
                 },

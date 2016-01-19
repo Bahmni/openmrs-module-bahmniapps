@@ -25,8 +25,8 @@ describe('NavigationalLinks DisplayControl', function () {
             "icon": "I"
         },
         {
-            "name" :"enrollment",
-            "title":"Enrollment",
+            "name" :"enrolment",
+            "title":"Enrolment",
             "url": "../clinical/#/programs/patient/{{patientUuid}}/consultationContext",
             "icon": "E"
         },
