@@ -6,11 +6,11 @@
   min-height: 860px;
   right: 0;
   padding-bottom: 10px;
-    @media screen and (min-width: 860px) {
-      .patient-dashboard.visit & {
-        //margin: 0 -10px;
-      }
+  @media screen and (min-width: 860px) {
+    .patient-dashboard.visit & {
+      //margin: 0 -10px;
     }
+  }
 }
 .dashboard-date-picker {
   float: left;
@@ -40,8 +40,8 @@
       padding: 0px 0px 0px 5px;
     }
     .disease-date{
-        font-family: OpenSansSemiBold;
-        text-decoration: underline;
+      font-family: OpenSansSemiBold;
+      text-decoration: underline;
     }
 
   }
@@ -111,13 +111,58 @@
       color: $mediumGray;
     }
     ul.navigation-link-container{
-        margin: 5px 0 0 5px;
-        padding: 5px 10px;
+      margin: 0;
+      padding: 0;
       li{
-          display: block;
+        display: block;
+        border-bottom: 1px #ccc solid;
         a{
+          display: inline-block;
+          padding: 8px 10px 7px;
+          line-height: 1;
           &:hover{
             text-decoration: underline;
+          }
+        }
+        .order-sub-heading-container .order-sub-heading{
+          padding-top: 7px;
+          padding-right: 9px;
+        }
+      }
+    }
+    &.navigation-links-wrapper{
+      ul.navigation-link-container{
+        li{
+          float: left;
+          border-bottom: none;
+          border-right: 1px #ccc solid;
+          padding: 0 6px;
+          margin: 5px 0;
+          &:last-child{
+            border-right: 0;
+          }
+          a{
+            padding: 4px 7px;
+            display: block;
+            border-radius: 4px;
+            text-transform: capitalize;
+            /*.icon-text {
+              margin-right: 5px;
+              background: #898585;
+              border-radius: 5px;
+              text-align: center;
+              color: #fff;
+              display: inline-block;
+              width: 22px;
+              height: 18px;
+              padding-top: 4px;
+
+            }*/
+            &:hover{
+              text-decoration: none;
+              background: #97C32D;
+              color: #fff;
+            }
           }
         }
       }
@@ -142,9 +187,9 @@
         width: 45%;
         display: inline-block;
       }
-    .value-text-only {
+      .value-text-only {
         display: inline-block;
-    }
+      }
       .time {
         font-size: 11px;
         color: $mediumGray;
@@ -209,18 +254,18 @@
 }
 
 table.dashboard-table {
-      margin: 0;
-      border-left: 0;
-      border-right: 0;
-      font-size: 14px;
-      tr th {
-        color: $mediumGray;
-        background: $lightestGray;
-      }
-      tr, td {
-        border-left: 0!important;
-        border-right: 0!important;
-      }
+  margin: 0;
+  border-left: 0;
+  border-right: 0;
+  font-size: 14px;
+  tr th {
+    color: $mediumGray;
+    background: $lightestGray;
+  }
+  tr, td {
+    border-left: 0!important;
+    border-right: 0!important;
+  }
 }
 
 table.drug-order-table td.drug {
@@ -370,40 +415,40 @@ table.drug-order-table td.drug {
 }
 
 .dashboard-section section .form-field.is-text {
-    overflow: auto;
-    clear: both;
-    padding-left: 10px;
-    .value-text-only {
-        line-height: 1.3em;
-    }
+  overflow: auto;
+  clear: both;
+  padding-left: 10px;
+  .value-text-only {
+    line-height: 1.3em;
+  }
 }
 
 
 
 .dashboard-section section.block.hierarchy {
-    .field-attribute {vertical-align: top;}
-    .testUnderPanel, .value-text-only, .date-text-only {display: inline-block; vertical-align: top;}
-    .testUnderPanel, .value-text-only {width: 35%;}
-    .testUnderPanel {padding:0;}
-    .date-text-only {width: 15%;}
-    .toggle i {padding: 0};
-    .img-concept {
-      border: 1px solid rgba($bahmniLinkColor, 0.5);
-      display: inline-block;
-      padding: 4px;
-      border-radius: 2px;
-      background: #fff;
-      margin: 0 3px;
+  .field-attribute {vertical-align: top;}
+  .testUnderPanel, .value-text-only, .date-text-only {display: inline-block; vertical-align: top;}
+  .testUnderPanel, .value-text-only {width: 35%;}
+  .testUnderPanel {padding:0;}
+  .date-text-only {width: 15%;}
+  .toggle i {padding: 0};
+  .img-concept {
+    border: 1px solid rgba($bahmniLinkColor, 0.5);
+    display: inline-block;
+    padding: 4px;
+    border-radius: 2px;
+    background: #fff;
+    margin: 0 3px;
+    transition: all .2s ease-in-out;
+    img {
+      vertical-align: top;
+      margin: 0;
+      padding: 0;
+      border: 1px solid #ddd;
+      width: 40px;
+      box-shadow: 0px 0px 3px #ccc;
+      height: auto;
       transition: all .2s ease-in-out;
-      img {
-        vertical-align: top;
-        margin: 0;
-        padding: 0;
-        border: 1px solid #ddd;
-        width: 40px;
-        box-shadow: 0px 0px 3px #ccc;
-        height: auto;
-        transition: all .2s ease-in-out;
     }
     &:hover {
       border: 1px solid rgba($bahmniLinkColor, 1);
@@ -471,9 +516,9 @@ table.pivot-table {
     }
   }
   &, * {
-      -webkit-box-sizing: border-box;
-      -moz-box-sizing: border-box;
-      box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
   }
   span.range {
     font-size: 11px;
@@ -485,22 +530,22 @@ table.pivot-table {
     font-family: $OpenSansBoldFont;
   }
   thead th {
-      font-family: OpenSans, Arial, sans-serif;
-      font-weight: normal;
-      border-right: 0;
+    font-family: OpenSans, Arial, sans-serif;
+    font-weight: normal;
+    border-right: 0;
     &.row-header-group {
       //text-align: right;
     }
   }
   tr {
-     td, th {
-       line-height: 1.2em;
-       text-transform: capitalize;
-       height: 36px;
-       max-height: 36px;
-       vertical-align: middle;
-       padding: 5px 10px;
-     }
+    td, th {
+      line-height: 1.2em;
+      text-transform: capitalize;
+      height: 36px;
+      max-height: 36px;
+      vertical-align: middle;
+      padding: 5px 10px;
+    }
   }
   tbody {
     white-space: normal;
@@ -537,7 +582,7 @@ table.pivot-table {
 }
 
 .recent-patients {
-//  width: 15%;
+  //  width: 15%;
   display: inline-block;
   //padding-top: 7px;
   position: relative;
@@ -558,7 +603,7 @@ table.pivot-table {
       cursor: pointer;
       padding: 10px 15px 6px 15px;
       float: left;
-      display: none; // As discussed with Vivek, hidden 
+      display: none; // As discussed with Vivek, hidden
       &:hover {
         text-decoration: none;
         color: darken($success, 5%);
@@ -581,54 +626,54 @@ table.pivot-table {
   }
 
   .recent-patients-panel {
-      position: absolute;
-      z-index: 1;
-      left: 0px;
-      top: 47px;
-      background: $white;
-      border: 1px solid #ccc;
-      width: 330px;
-      max-height: 250px;
-      overflow-y: auto;
-      font-size: 14px;
-      color: $text;
-      border-radius: 0px 5px 5px 5px;
-      box-shadow: 2px 2px 20px rgba(0, 0, 0, .50);
-      &::-webkit-scrollbar {
-        -webkit-appearance: none;
-          width: 2px;
-          height: 2px;
-      }
+    position: absolute;
+    z-index: 1;
+    left: 0px;
+    top: 47px;
+    background: $white;
+    border: 1px solid #ccc;
+    width: 330px;
+    max-height: 250px;
+    overflow-y: auto;
+    font-size: 14px;
+    color: $text;
+    border-radius: 0px 5px 5px 5px;
+    box-shadow: 2px 2px 20px rgba(0, 0, 0, .50);
+    &::-webkit-scrollbar {
+      -webkit-appearance: none;
+      width: 2px;
+      height: 2px;
+    }
 
-      &::-webkit-scrollbar-thumb {
-          border-radius: 4px;
-          background-color: rgba(0,0,0,.5);
-          -webkit-box-shadow: 0 0 1px rgba(255,255,255,.5);
+    &::-webkit-scrollbar-thumb {
+      border-radius: 4px;
+      background-color: rgba(0,0,0,.5);
+      -webkit-box-shadow: 0 0 1px rgba(255,255,255,.5);
+    }
+    a{
+      color: $black;
+      font-size: 14px;
+      border-bottom: 1px solid #ccc;
+      padding: 13px 5px 12px 10px;
+      display: block;
+      &:hover{
+        text-decoration: underline;
       }
+      span{
+        max-width: 220px;
+        display: inline-block;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        overflow: hidden;
+        padding-right: 5px;
+        float: left;
+      }
+    }
+    .currentPatient{
       a{
-        color: $black;
-        font-size: 14px;
-        border-bottom: 1px solid #ccc;
-        padding: 13px 5px 12px 10px;
-        display: block;
-        &:hover{
-          text-decoration: underline;
-        }
-        span{
-          max-width: 220px;
-          display: inline-block;
-          text-overflow: ellipsis;
-          white-space: nowrap;
-          overflow: hidden;
-          padding-right: 5px;
-          float: left;
-        }
+        background: #ddd;
       }
-      .currentPatient{
-        a{
-          background: #ddd;
-        }
-      }
+    }
   }
 }
 .dashboard-tabular-obs-section{
@@ -673,33 +718,33 @@ table.pivot-table {
 }
 
 table.treatments-details-table{
-    font-size: 12px;
-    td{
-        border: none;
-        width: 12%;
-      padding: 10px 5px;
-        &.drug{
-          font-size: 14px !important;
-          padding: 10px;
-        }
-        &.toggle-btn{
-          width: 5%;
-        }
+  font-size: 12px;
+  td{
+    border: none;
+    width: 12%;
+    padding: 10px 5px;
+    &.drug{
+      font-size: 14px !important;
+      padding: 10px;
     }
-    tr{
-      &.test-notes-parent {
-        border-bottom: 1px solid #ddd;
-      }
-      &.notes-open{
-        border-bottom: none !important;
-        td {
-          background: #eff8ff;
-        }
-      }
-      &.notes{
-        border-bottom: 1px solid #ddd;
+    &.toggle-btn{
+      width: 5%;
+    }
+  }
+  tr{
+    &.test-notes-parent {
+      border-bottom: 1px solid #ddd;
+    }
+    &.notes-open{
+      border-bottom: none !important;
+      td {
+        background: #eff8ff;
       }
     }
+    &.notes{
+      border-bottom: 1px solid #ddd;
+    }
+  }
 }
 .patient-dashboard small.hint{
   padding-left: 3px;

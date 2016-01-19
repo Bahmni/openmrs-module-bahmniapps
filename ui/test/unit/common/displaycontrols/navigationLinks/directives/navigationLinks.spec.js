@@ -1,9 +1,59 @@
 'use strict';
 
 describe('NavigationalLinks DisplayControl', function () {
-    var scope, rootScope, filter, httpBackend, compile, q, compiledScope, appService;
+    var scope, rootScope, filter, httpBackend, compile, q, compiledScope, appService, compileDirective;
     var html = '<navigation-links params="section" link-params="{patientUuid: patient.uuid, visitUuid: visitSummary.uuid}"></navigation-links>';
     var mandatoryConfig = { sections: [{type: "General"}, {type: "Discharge Summary"}] };
+
+    var standardLinks = [
+        {
+            "name": "home",
+            "title":"Home",
+            "url": "../home/#/dashboard",
+            "icon": "H"
+        },
+        {
+            "name": "visit",
+            "url": "../clinical/#/default/patient/{{patientUuid}}/dashboard/visit/{{visitUuid}}/?encounterUuid=active",
+            "title":"Visit",
+            "icon": "V"
+        },
+        {
+            "name": "inpatient",
+            "title":"Inpatient",
+            "url": "../adt/#/patient/{{patientUuid}}/visit/{{visitUuid}}/",
+            "icon": "I"
+        },
+        {
+            "name" :"enrollment",
+            "title":"Enrollment",
+            "url": "../clinical/#/programs/patient/{{patientUuid}}/consultationContext",
+            "icon": "E"
+        },
+        {
+            "name" :"documents",
+            "title":"Documents",
+            "url": "../clinical/#/default/patient/{{patientUuid}}/dashboard",
+            "icon": "D"
+        },
+        {
+            "name" :"visitAttribute",
+            "title":"Visit Attributes",
+            "url": "../clinical/#/programs/patient/{{patientUuid}}/consultationContext",
+            "icon": "A"
+        }
+    ];
+    var showLinks = ["home", "visit", "inpatient"];
+    var customLinks = [
+        {
+            "title":"CONSULTATION_PAGE_KEY",
+            "url": "../clinical/#/consultation/patient/{{patientUuid}}/concept-set-group/observations/",
+            "icon": "C"
+        }
+    ];
+
+    var appDescriptor = {};
+    appDescriptor.formatUrl = function(){};
 
     beforeEach(module('bahmni.common.displaycontrol.navigationlinks'));
 
@@ -21,67 +71,70 @@ describe('NavigationalLinks DisplayControl', function () {
         appService.getAppDescriptor.and.returnValue(appDescriptor);
         q = $q;
 
-        scope = rootScope.$new();
-        scope.section = {params: {links: links}};
 
-        httpBackend.expectGET("../common/displaycontrols/navigationlinks/views/navigationLinks.html").respond("<div>dummy</div>");
-
-        var compiledEle = compile(html)(scope);
-
-        scope.$digest();
-        httpBackend.flush();
-
-        compiledScope = compiledEle.isolateScope();
-        scope.$digest();
+        compileDirective = function (section) {
+            scope = rootScope.$new();
+            scope.section = section;
+            httpBackend.expectGET("../common/displaycontrols/navigationlinks/views/navigationLinks.html").respond("<div>dummy</div>");
+            var compiledEle = compile(html)(scope);
+            scope.$digest();
+            httpBackend.flush();
+            compiledScope = compiledEle.isolateScope();
+            scope.$digest();
+        }
     }));
 
 
     it('should get the navigationLinks html', function () {
+        var params = {standardLinks: standardLinks, showLinks: showLinks, customLinks: customLinks};
+        compileDirective(params);
         expect(compiledScope).not.toBeUndefined();
     });
 
     it('should show url for existing parameters', function () {
-        expect(compiledScope.showUrl(links[0])).toBeTruthy();
+        var params = {standardLinks: standardLinks, showLinks: showLinks, customLinks: customLinks};
+        compileDirective(params);
+        expect(compiledScope.showUrl(standardLinks[0])).toBeTruthy();
     });
 
     it('should not show url for non-existing parameters', function () {
+        var params = {standardLinks: standardLinks, showLinks: showLinks, customLinks: customLinks};
+        compileDirective(params);
         expect(compiledScope.showUrl({
             "title": "Patient ADT Page",
             "url": "../adt/#/patient/{{patientUuid}}/visit/{{visit}}/"
         })).toBeFalsy();
     });
+
+    it('should show only links configured under showLinks config', function () {
+        var params = {standardLinks: standardLinks, showLinks: showLinks};
+        compileDirective(params);
+        expect(compiledScope.getLinks().length).toBe(showLinks.length);
+    });
+
+    it('should show only links configured under customLinks config', function () {
+        var params = {standardLinks: standardLinks, customLinks: customLinks};
+        compileDirective(params);
+        expect(compiledScope.getLinks().length).toBe(customLinks.length);
+    });
+
+    it('should show collection of links configured under customLinks and showLinks config', function () {
+        var params = {standardLinks: standardLinks, showLinks: showLinks, customLinks: customLinks};
+        compileDirective(params);
+        expect(compiledScope.getLinks().length).toBe(customLinks.length + showLinks.length);
+    });
+
+    it('should not show any link if both customLinks and showLinks config are not configured', function () {
+        var params = {standardLinks: standardLinks};
+        compileDirective(params);
+        expect(compiledScope.getLinks().length).toBe(0);
+    });
+
+    it('should not show any link if both customLinks and showLinks config are not configured', function () {
+        showLinks = ["home", "visit", "inpatient"];
+        var params = {standardLinks: standardLinks};
+        compileDirective(params);
+        expect(compiledScope.getLinks().length).toBe(0);
+    });
+
 });
-
-var links = [
-    {
-        "title": "Home Dashboard",
-        "url": "../home/#/dashboard"
-    },
-    {
-        "title": "Patient Visit Page",
-        "url": "../clinical/#/patient/{{patientUuid}}/dashboard/visit/{{visitUuid}}"
-    },
-    {
-        "title": "Patient ADT Page",
-        "url": "../adt/#/patient/{{patientUuid}}/visit/{{visitUuid}}/"
-    },
-    {
-        "title": "Patient Dashboard",
-        "url": "../clinical/#/patient/{{patientUuid}}/dashboard"
-    },
-    {
-        "title": "Discharge Summary Page",
-        "url": "../clinical/#/patient/{{patientUuid}}/dashboard/visit/{{visitUuid}}"
-    },
-    {
-        "title": "Program Management Page",
-        "url": "../clinical/#/patient/{{patientUuid}}/consultationContext"
-    },
-    {
-        "title": "Consultation",
-        "url": "../clinical/#/patient/{{patientUuid}}/concept-set-group/observations"
-    }
-];
-
-var appDescriptor = {};
-appDescriptor.formatUrl = function(){};

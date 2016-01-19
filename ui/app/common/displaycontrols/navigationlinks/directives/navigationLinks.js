@@ -3,9 +3,60 @@
 angular.module('bahmni.common.displaycontrol.navigationlinks')
     .directive('navigationLinks', ['$state', 'appService', function ($state, appService) {
         var controller = function ($scope) {
-            if (_.isEmpty($scope.params.links)) {
+            if (_.isEmpty($scope.params.showLinks && $scope.params.showLinks.length  < 0 || $scope.params.customLinks)) {
                 $scope.noNavigationLinksMessage = Bahmni.Common.Constants.noNavigationLinksMessage;
             }
+
+            $scope.standardLinks = [
+                {
+                    "name": "home",
+                    "translationKey":"HOME_DASHBOARD_KEY",
+                    "url": "../home/#/dashboard"
+                },
+                {
+                    "name": "visit",
+                    "url": "../clinical/#/default/patient/{{patientUuid}}/dashboard/visit/{{visitUuid}}/?encounterUuid=active",
+                    "translationKey":"PATIENT_VISIT_PAGE_KEY"
+                },
+                {
+                    "name": "inpatient",
+                    "translationKey":"PATIENT_ADT_PAGE_KEY",
+                    "url": "../adt/#/patient/{{patientUuid}}/visit/{{visitUuid}}/"
+                },
+                {
+                    "name" :"enrollment",
+                    "translationKey":"PROGRAM_MANAGEMENT_PAGE_KEY",
+                    "url": "../clinical/#/programs/patient/{{patientUuid}}/consultationContext"
+                },
+                {
+                    "name" :"visitAttribute",
+                    "translationKey":"PATIENT_VISIT_ATTRIBUTES_PAGE_KEY",
+                    "url": "../registration/#/patient/{{patientUuid}}/visit"
+                },
+                {
+                    "name" :"registration",
+                    "translationKey":"PATIENT_REGISTRATION_PAGE_KEY",
+                    "url": "../registration/#/patient/{{patientUuid}}"
+                }
+
+            ];
+
+            var filterLinks = function(links, showLinks){
+                var linksSpecifiedInShowLinks = function () {
+                    return _.filter(links, function (link) {
+                        return showLinks.indexOf(link.name) > -1;
+                    });
+                };
+
+                return showLinks  && linksSpecifiedInShowLinks();
+            };
+
+            $scope.getLinks = function (){
+                return $scope.links = _.union(
+                    filterLinks($scope.standardLinks, $scope.params.showLinks),
+                    $scope.params.customLinks
+                );
+            };
 
             $scope.getUrl = function (link) {
                 var url = getFormattedURL(link);

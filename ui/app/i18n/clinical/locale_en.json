@@ -104,7 +104,15 @@
     "DRUG_DETAILS_INSTRUCTIONS_TEXT": "Instructions",
     "DRUG_DETAILS_QUANTITY_TEXT": "Quantity",
     "DRUG_DETAILS_DURATION": "Duration",
+
     "MONTHS": "January, February, March, April, May, June, July, August, September, October, November, December",
     "CHOOSE_MONTH_KEY": "Choose month",
-    "CHOOSE_YEAR_KEY": "Choose year"
+    "CHOOSE_YEAR_KEY": "Choose year",
+
+    "HOME_DASHBOARD_KEY":"Home",
+    "PATIENT_VISIT_PAGE_KEY":"Visit",
+    "PATIENT_ADT_PAGE_KEY":"Inpatient",
+    "PROGRAM_MANAGEMENT_PAGE_KEY" : "Enrollment",
+    "PATIENT_VISIT_ATTRIBUTES_PAGE_KEY":"Visit Attributes",
+    "PATIENT_REGISTRATION_PAGE_KEY" : "Registration"
 }
