@@ -1,15 +1,15 @@
 'use strict';
 
 angular.module('bahmni.common.offline')
-    .service('offlineSyncService', ['eventLogService', 'offlineDao', '$interval', '$q', 'offlineService',
-        function (eventLogService, offlineDao, $interval, $q, offlineService) {
+    .service('offlineSyncService', ['eventLogService', 'offlineDbService', '$interval', '$q', 'offlineService',
+        function (eventLogService, offlineDbService, $interval, $q, offlineService) {
             var scheduler;
             if (offlineService.getAppPlatform() === Bahmni.Common.Constants.platformType.android) {
-                offlineDao = Android;
+                offlineDbService = AndroidOfflineService;
             }
 
             var sync = function () {
-                offlineDao.getMarker().then(function (marker) {
+                offlineDbService.getMarker().then(function (marker) {
                     if (marker == undefined) {
                         //todo: Hemanth|Santhosh get catchment number from login location
                         marker = {catchmentNumber: 202020}
@@ -52,7 +52,7 @@ angular.module('bahmni.common.offline')
                 var deferrable = $q.defer();
                 switch (event.category) {
                     case 'patient':
-                        offlineDao.createPatient({patient: response.data}).then(function () {
+                        offlineDbService.createPatient({patient: response.data}).then(function () {
                             deferrable.resolve();
                         });
                         break;
@@ -60,7 +60,7 @@ angular.module('bahmni.common.offline')
                         deferrable.resolve();
                         break;
                     case 'addressHierarchy':
-                        offlineDao.insertAddressHierarchy(response.data).then(function () {
+                        offlineDbService.insertAddressHierarchy(response.data).then(function () {
                             deferrable.resolve();
                         });
                         break;
@@ -72,7 +72,7 @@ angular.module('bahmni.common.offline')
             };
 
             var updateMarker = function (event) {
-                return offlineDao.insertMarker(event.uuid, 202020);
+                return offlineDbService.insertMarker(event.uuid, 202020);
             };
 
             return {

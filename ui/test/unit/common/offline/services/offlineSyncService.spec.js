@@ -1,13 +1,13 @@
 'use strict';
 
-var $scope, offlineDao, eventLogService, offlineSyncService, offlineService;
+var $scope, offlineDbService, eventLogService, offlineSyncService, offlineService;
 
 describe('OfflineSyncService', function () {
     describe('initial sync ', function () {
         beforeEach(function () {
             module('bahmni.common.offline');
             module(function ($provide) {
-                $provide.value('offlineDao', {
+                $provide.value('offlineDbService', {
                     insertAddressHierarchy: function () {
                         return {
                             then: function (callback) {
@@ -73,37 +73,37 @@ describe('OfflineSyncService', function () {
             });
         });
 
-        beforeEach(inject(['offlineSyncService', 'eventLogService', 'offlineDao', function (offlineSyncServiceInjected, eventLogServiceInjected, offlineDaoInjected) {
+        beforeEach(inject(['offlineSyncService', 'eventLogService', 'offlineDbService', function (offlineSyncServiceInjected, eventLogServiceInjected, offlineDbServiceInjected) {
             offlineSyncService = offlineSyncServiceInjected;
             eventLogService = eventLogServiceInjected;
-            offlineDao = offlineDaoInjected;
+            offlineDbService = offlineDbServiceInjected;
         }]));
 
 
         it('should read patient events from the beginning for the catchment', function () {
-            spyOn(offlineDao, 'getMarker').and.callThrough();
+            spyOn(offlineDbService, 'getMarker').and.callThrough();
             spyOn(eventLogService, 'getEventsFor').and.callThrough();
             spyOn(eventLogService, 'getDataForUrl').and.callThrough();
-            spyOn(offlineDao, 'createPatient').and.callThrough();
-            spyOn(offlineDao, 'insertMarker').and.callThrough();
+            spyOn(offlineDbService, 'createPatient').and.callThrough();
+            spyOn(offlineDbService, 'insertMarker').and.callThrough();
 
             offlineSyncService.sync();
 
-            expect(offlineDao.getMarker).toHaveBeenCalled();
-            expect(offlineDao.getMarker.calls.count()).toBe(1);
+            expect(offlineDbService.getMarker).toHaveBeenCalled();
+            expect(offlineDbService.getMarker.calls.count()).toBe(1);
             expect(eventLogService.getEventsFor).toHaveBeenCalledWith(202020, undefined);
             expect(eventLogService.getEventsFor.calls.count()).toBe(1);
             expect(eventLogService.getDataForUrl).toHaveBeenCalledWith('url to get patient object');
             expect(eventLogService.getDataForUrl.calls.count()).toBe(1);
-            expect(offlineDao.createPatient).toHaveBeenCalledWith({patient: {uuid: 'dataUuid'}});
-            expect(offlineDao.createPatient.calls.count()).toBe(1);
-            expect(offlineDao.insertMarker).toHaveBeenCalledWith('eventuuid', 202020);
-            expect(offlineDao.insertMarker.calls.count()).toBe(1);
+            expect(offlineDbService.createPatient).toHaveBeenCalledWith({patient: {uuid: 'dataUuid'}});
+            expect(offlineDbService.createPatient.calls.count()).toBe(1);
+            expect(offlineDbService.insertMarker).toHaveBeenCalledWith('eventuuid', 202020);
+            expect(offlineDbService.insertMarker.calls.count()).toBe(1);
         });
 
 
         it('should read address hierarchy entry from the beginning for the catchment', function () {
-            spyOn(offlineDao, 'getMarker').and.callThrough();
+            spyOn(offlineDbService, 'getMarker').and.callThrough();
             spyOn(eventLogService, 'getEventsFor').and.callFake(function(){
                 return {
                     then: function(callback) { return callback({
@@ -116,22 +116,22 @@ describe('OfflineSyncService', function () {
                 };
             });
             spyOn(eventLogService, 'getDataForUrl').and.callThrough();
-            spyOn(offlineDao, 'createPatient').and.callThrough();
-            spyOn(offlineDao, 'insertMarker').and.callThrough();
-            spyOn(offlineDao, 'insertAddressHierarchy').and.callThrough();
+            spyOn(offlineDbService, 'createPatient').and.callThrough();
+            spyOn(offlineDbService, 'insertMarker').and.callThrough();
+            spyOn(offlineDbService, 'insertAddressHierarchy').and.callThrough();
 
             offlineSyncService.sync();
 
-            expect(offlineDao.getMarker).toHaveBeenCalled();
-            expect(offlineDao.getMarker.calls.count()).toBe(1);
+            expect(offlineDbService.getMarker).toHaveBeenCalled();
+            expect(offlineDbService.getMarker.calls.count()).toBe(1);
             expect(eventLogService.getEventsFor).toHaveBeenCalledWith(202020, undefined);
             expect(eventLogService.getEventsFor.calls.count()).toBe(1);
             expect(eventLogService.getDataForUrl).toHaveBeenCalledWith('url to get addressHierarchy object');
             expect(eventLogService.getDataForUrl.calls.count()).toBe(1);
-            expect(offlineDao.insertAddressHierarchy).toHaveBeenCalledWith({uuid: 'dataUuid'});
-            expect(offlineDao.createPatient.calls.count()).toBe(0);
-            expect(offlineDao.insertMarker).toHaveBeenCalledWith('eventuuid', 202020);
-            expect(offlineDao.insertMarker.calls.count()).toBe(1);
+            expect(offlineDbService.insertAddressHierarchy).toHaveBeenCalledWith({uuid: 'dataUuid'});
+            expect(offlineDbService.createPatient.calls.count()).toBe(0);
+            expect(offlineDbService.insertMarker).toHaveBeenCalledWith('eventuuid', 202020);
+            expect(offlineDbService.insertMarker.calls.count()).toBe(1);
         });
     });
 
@@ -139,7 +139,7 @@ describe('OfflineSyncService', function () {
         beforeEach(function () {
             module('bahmni.common.offline');
             module(function ($provide) {
-                $provide.value('offlineDao', {
+                $provide.value('offlineDbService', {
                     createPatient: function () {
                         return {
                             then: function (callback) {
@@ -198,32 +198,32 @@ describe('OfflineSyncService', function () {
             });
         });
 
-        beforeEach(inject(['offlineSyncService', 'eventLogService', 'offlineDao', function (offlineSyncServiceInjected, eventLogServiceInjected, offlineDaoInjected) {
+        beforeEach(inject(['offlineSyncService', 'eventLogService', 'offlineDbService', function (offlineSyncServiceInjected, eventLogServiceInjected, offlineDbServiceInjected) {
             offlineSyncService = offlineSyncServiceInjected;
             eventLogService = eventLogServiceInjected;
-            offlineDao = offlineDaoInjected;
+            offlineDbService = offlineDbServiceInjected;
         }]));
 
 
         it('should read events from the last read uuid for the catchment', function () {
-            spyOn(offlineDao, 'getMarker').and.callThrough();
+            spyOn(offlineDbService, 'getMarker').and.callThrough();
             spyOn(eventLogService, 'getEventsFor').and.callThrough();
             spyOn(eventLogService, 'getDataForUrl').and.callThrough();
-            spyOn(offlineDao, 'createPatient').and.callThrough();
-            spyOn(offlineDao, 'insertMarker').and.callThrough();
+            spyOn(offlineDbService, 'createPatient').and.callThrough();
+            spyOn(offlineDbService, 'insertMarker').and.callThrough();
 
             offlineSyncService.sync();
 
-            expect(offlineDao.getMarker).toHaveBeenCalled();
-            expect(offlineDao.getMarker.calls.count()).toBe(1);
+            expect(offlineDbService.getMarker).toHaveBeenCalled();
+            expect(offlineDbService.getMarker.calls.count()).toBe(1);
             expect(eventLogService.getEventsFor).toHaveBeenCalledWith(202020, 'lastReadUuid');
             expect(eventLogService.getEventsFor.calls.count()).toBe(1);
             expect(eventLogService.getDataForUrl).toHaveBeenCalledWith('url to get patient object');
             expect(eventLogService.getDataForUrl.calls.count()).toBe(1);
-            expect(offlineDao.createPatient).toHaveBeenCalledWith({patient: {uuid: 'patientUuid'}});
-            expect(offlineDao.createPatient.calls.count()).toBe(1);
-            expect(offlineDao.insertMarker).toHaveBeenCalledWith('eventuuid', 202020);
-            expect(offlineDao.insertMarker.calls.count()).toBe(1);
+            expect(offlineDbService.createPatient).toHaveBeenCalledWith({patient: {uuid: 'patientUuid'}});
+            expect(offlineDbService.createPatient.calls.count()).toBe(1);
+            expect(offlineDbService.insertMarker).toHaveBeenCalledWith('eventuuid', 202020);
+            expect(offlineDbService.insertMarker.calls.count()).toBe(1);
         });
     })
 });

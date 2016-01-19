@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('bahmni.common.offline')
-    .service('offlineDao', ['$http', '$q', 'patientDao', 'patientAddressDao', 'patientAttributeDao', 'offlineMarkerDao', 'offlineAddressHierarchyDao', function ($http, $q, patientDao, patientAddressDao, patientAttributeDao, offlineMarkerDao, offlineAddressHierarchyDao) {
+    .service('offlineDbService', ['$http', '$q', 'patientDao', 'patientAddressDao', 'patientAttributeDao', 'offlineMarkerDao', 'offlineAddressHierarchyDao', function ($http, $q, patientDao, patientAddressDao, patientAttributeDao, offlineMarkerDao, offlineAddressHierarchyDao) {
         var db;
 
         var populateData = function () {
