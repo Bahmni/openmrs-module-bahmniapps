@@ -34,8 +34,7 @@ describe("ensure that the directive program-attributes works properly", function
                 "datatypeClassname" : "org.openmrs.customdatatype.datatype.DateDatatype",
                 "format" : "org.openmrs.customdatatype.datatype.DateDatatype"
         };
-
-        expect(dateUtil.isSameDateTime(scope.getValueForAttributeType(attributeType),Bahmni.Common.Util.DateUtil.formatDateWithoutTime("2016-01-13T00:00:00.000+0000"))).toBeTruthy();
+        expect(scope.getValueForAttributeType(attributeType) === Bahmni.Common.Util.DateUtil.formatDateWithoutTime("2016-01-13T00:00:00.000+0000")).toBeTruthy();
     });
 
     it("Get the value for an Attribute Type", function (){
@@ -47,7 +46,7 @@ describe("ensure that the directive program-attributes works properly", function
             "format" : "org.openmrs.customdatatype.datatype.RegexValidationDatatype"
         };
 
-        expect(dateUtil.isSameDateTime(scope.getValueForAttributeType(attributeType),"123")).toBeTruthy();
+        expect(scope.getValueForAttributeType(attributeType) === "123").toBeTruthy();
     });
 
     var program = {
