@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('bahmni.common.offline')
-    .service('offlineDbService', ['$http', '$q', 'patientDao', 'patientAddressDbService', 'patientAttributeDbService', 'offlineMarkerDbService', 'offlineAddressHierarchyDao', function ($http, $q, patientDao, patientAddressDbService, patientAttributeDbService, offlineMarkerDbService, offlineAddressHierarchyDao) {
+    .service('offlineDbService', ['$http', '$q', 'patientDbService', 'patientAddressDbService', 'patientAttributeDbService', 'offlineMarkerDbService', 'offlineAddressHierarchyDao', function ($http, $q, patientDbService, patientAddressDbService, patientAttributeDbService, offlineMarkerDbService, offlineAddressHierarchyDao) {
         var db;
 
         var populateData = function () {
@@ -9,7 +9,7 @@ angular.module('bahmni.common.offline')
         };
 
         var getPatientByIdentifier = function (patientIdentifier) {
-            return {data: {pageOfResults: patientDao.getPatientByIdentifier(db, patientIdentifier)}};
+            return {data: {pageOfResults: patientDbService.getPatientByIdentifier(db, patientIdentifier)}};
         };
 
         var createPatient = function (postRequest) {
@@ -21,7 +21,7 @@ angular.module('bahmni.common.offline')
         };
 
         var getPatientByUuid = function (uuid) {
-            return patientDao.getPatientByUuid(db, uuid);
+            return patientDbService.getPatientByUuid(db, uuid);
         };
 
         var deletePatientData = function (patientIdentifier) {
@@ -58,7 +58,7 @@ angular.module('bahmni.common.offline')
                     if ("POST" === requestType) {
                         parseAttributeValues(person.attributes, attributeTypeMap);
                     }
-                    return patientDao.insertPatientData(db, patientData).then(function (patientUuid) {
+                    return patientDbService.insertPatientData(db, patientData).then(function (patientUuid) {
                         patientAttributeDbService.insertAttributes(db, patientUuid, person.attributes, attributeTypeMap);
                         patientAddressDbService.insertAddress(db, patientUuid, person.addresses[0], addressColumnNames);
                         return patientData;
@@ -94,7 +94,7 @@ angular.module('bahmni.common.offline')
         };
 
         var generateOfflineIdentifier = function () {
-            return patientDao.generateOfflineIdentifier(db);
+            return patientDbService.generateOfflineIdentifier(db);
         };
 
         var getMarker = function () {

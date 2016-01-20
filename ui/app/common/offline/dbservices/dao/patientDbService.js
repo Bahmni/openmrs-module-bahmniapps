@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('bahmni.common.offline')
-    .service('patientDao', ['$http', '$q', function ($http, $q) {
+    .service('patientDbService', ['$http', '$q', function ($http, $q) {
         var getPatientByIdentifier = function (db, patientIdentifier) {
             var p = db.getSchema().table('patient');
             return db.select(p.identifier, p.givenName, p.familyName, p.gender, p.birthdate, p.uuid)
