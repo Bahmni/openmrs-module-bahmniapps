@@ -40,6 +40,7 @@ angular.module('bahmni.clinical')
             };
 
             var contextChange = function () {
+                console.log("bacteriology gets called");
                 $scope.consultation.newlyAddedSpecimens = $scope.newSpecimens;
                 $scope.consultation.deletedSpecimens = $scope.deletedSpecimens;
                 $scope.consultation.savedSpecimens = $scope.savedSpecimens;
