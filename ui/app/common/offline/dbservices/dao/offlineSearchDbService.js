@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('bahmni.common.offline')
-    .service('offlineSearchDao', ['$http', '$q', '$rootScope', 'age', function ($http, $q, $rootScope, age) {
+    .service('offlineSearchDbService', ['$http', '$q', '$rootScope', 'age', function ($http, $q, $rootScope, age) {
 
         var db;
 

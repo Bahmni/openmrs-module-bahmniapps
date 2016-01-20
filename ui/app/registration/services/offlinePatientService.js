@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('bahmni.registration')
-    .factory('offlinePatientService', ['$http', '$q', 'offlineService', 'offlineDbService', 'offlineSearchDao',
-        function ($http, $q, offlineService, offlineDbService, offlineSearchDao) {
+    .factory('offlinePatientService', ['$http', '$q', 'offlineService', 'offlineDbService', 'offlineSearchDbService',
+        function ($http, $q, offlineService, offlineDbService, offlineSearchDbService) {
 
             var search = function (params) {
                 if (offlineService.getAppPlatform() === Bahmni.Common.Constants.platformType.android) {
@@ -10,7 +10,7 @@ angular.module('bahmni.registration')
                     return $q.when(returnValue);
                 }
                 else {
-                    return offlineSearchDao.search(params);
+                    return offlineSearchDbService.search(params);
                 }
             };
 
