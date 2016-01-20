@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('bahmni.common.offline')
-    .service('patientAttributeDao', ['$http', function ($http) {
+    .service('patientAttributeDbService', ['$http', function ($http) {
         var insertAttributeTypes = function (db) {
             $http.get(window.location.origin + "/openmrs/ws/rest/v1/personattributetype?v=custom:(name,uuid,format)").then(function (attributesResponse) {
                 var personAttributeTypeList = attributesResponse.data.results;

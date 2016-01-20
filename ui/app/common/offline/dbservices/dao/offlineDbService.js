@@ -1,11 +1,11 @@
 'use strict';
 
 angular.module('bahmni.common.offline')
-    .service('offlineDbService', ['$http', '$q', 'patientDao', 'patientAddressDbService', 'patientAttributeDao', 'offlineMarkerDbService', 'offlineAddressHierarchyDao', function ($http, $q, patientDao, patientAddressDbService, patientAttributeDao, offlineMarkerDbService, offlineAddressHierarchyDao) {
+    .service('offlineDbService', ['$http', '$q', 'patientDao', 'patientAddressDbService', 'patientAttributeDbService', 'offlineMarkerDbService', 'offlineAddressHierarchyDao', function ($http, $q, patientDao, patientAddressDbService, patientAttributeDbService, offlineMarkerDbService, offlineAddressHierarchyDao) {
         var db;
 
         var populateData = function () {
-            patientAttributeDao.insertAttributeTypes(db);
+            patientAttributeDbService.insertAttributeTypes(db);
         };
 
         var getPatientByIdentifier = function (patientIdentifier) {
@@ -59,7 +59,7 @@ angular.module('bahmni.common.offline')
                         parseAttributeValues(person.attributes, attributeTypeMap);
                     }
                     return patientDao.insertPatientData(db, patientData).then(function (patientUuid) {
-                        patientAttributeDao.insertAttributes(db, patientUuid, person.attributes, attributeTypeMap);
+                        patientAttributeDbService.insertAttributes(db, patientUuid, person.attributes, attributeTypeMap);
                         patientAddressDbService.insertAddress(db, patientUuid, person.addresses[0], addressColumnNames);
                         return patientData;
                     });
