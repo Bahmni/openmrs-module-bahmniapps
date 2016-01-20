@@ -4,7 +4,7 @@ angular.module('bahmni.common.offline')
     .service('offlineSyncService', ['eventLogService', 'offlineDbService', '$interval', '$q', 'offlineService',
         function (eventLogService, offlineDbService, $interval, $q, offlineService) {
             var scheduler;
-            if (offlineService.getAppPlatform() === Bahmni.Common.Constants.platformType.android) {
+            if (offlineService.isAndroidApp()) {
                 offlineDbService = AndroidOfflineService;
             }
 

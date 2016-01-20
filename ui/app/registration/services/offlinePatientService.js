@@ -5,8 +5,8 @@ angular.module('bahmni.registration')
         function ($http, $q, offlineService, offlineDbService, offlineSearchDao) {
 
             var search = function (params) {
-                if (offlineService.getAppPlatform() === Bahmni.Common.Constants.platformType.android) {
-                    var returnValue = JSON.parse(Android.search(JSON.stringify(params)));
+                if (offlineService.isAndroidApp()) {
+                    var returnValue = JSON.parse(AndroidOfflineService.search(JSON.stringify(params)));
                     return $q.when(returnValue);
                 }
                 else {
@@ -15,8 +15,8 @@ angular.module('bahmni.registration')
             };
 
             var get = function (uuid) {
-                if (offlineService.getAppPlatform() === Bahmni.Common.Constants.platformType.android) {
-                    return $q.when(JSON.parse(Android.getPatient(uuid)));
+                if (offlineService.isAndroidApp()) {
+                    return $q.when(JSON.parse(AndroidOfflineService.getPatient(uuid)));
                 }
                 else {
                     return offlineDbService.getPatientByUuid(uuid);
@@ -24,8 +24,8 @@ angular.module('bahmni.registration')
             };
 
             var getByIdentifier = function (patientIdentifier) {
-                if (offlineService.getAppPlatform() === Bahmni.Common.Constants.platformType.android) {
-                    return $q.when(JSON.parse(Android.getPatientByIdentifier(patientIdentifier)));
+                if (offlineService.isAndroidApp()) {
+                    return $q.when(JSON.parse(AndroidOfflineService.getPatientByIdentifier(patientIdentifier)));
                 }
                 else {
                     return offlineDbService.getPatientByIdentifier(patientIdentifier);
@@ -38,8 +38,8 @@ angular.module('bahmni.registration')
                     postRequest.patient.uuid = postRequest.patient.identifiers[0].identifier;
                 postRequest.patient.person.preferredName = postRequest.patient.person.names[0];
                 postRequest.patient.person.preferredAddress = postRequest.patient.person.addresses[0];
-                if (offlineService.getAppPlatform() === Bahmni.Common.Constants.platformType.android) {
-                    return $q.when(JSON.parse(Android.createPatient(JSON.stringify(postRequest), window.location.origin)));
+                if (offlineService.isAndroidApp()) {
+                    return $q.when(JSON.parse(AndroidOfflineService.createPatient(JSON.stringify(postRequest), window.location.origin)));
                 }
                 else {
                     return offlineDbService.createPatient(postRequest);
@@ -47,8 +47,8 @@ angular.module('bahmni.registration')
             };
 
             var update = function (postRequest) {
-                if (offlineService.getAppPlatform() === Bahmni.Common.Constants.platformType.android) {
-                    Android.deletePatientData(postRequest.patient.identifiers[0]['identifier']);
+                if (offlineService.isAndroidApp()) {
+                    AndroidOfflineService.deletePatientData(postRequest.patient.identifiers[0]['identifier']);
                     return create(postRequest).then(function (result) {
                         return result.data;
                     });
@@ -63,8 +63,8 @@ angular.module('bahmni.registration')
             };
 
             var generateOfflineIdentifier = function () {
-                if (offlineService.getAppPlatform() === Bahmni.Common.Constants.platformType.android) {
-                    return $q.when(JSON.parse(Android.generateOfflineIdentifier()));
+                if (offlineService.isAndroidApp()) {
+                    return $q.when(JSON.parse(AndroidOfflineService.generateOfflineIdentifier()));
                 } else {
                     return offlineDbService.generateOfflineIdentifier();
                 }
