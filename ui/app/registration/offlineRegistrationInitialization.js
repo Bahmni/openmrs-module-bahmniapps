@@ -1,13 +1,13 @@
 'use strict';
 
 angular.module('bahmni.common.offline')
-    .factory('offlineRegistrationInitialization', ['$q','offlineService', 'offlineSearchDbService','offlineDbService','offlineMarkerDbService','offlineAddressHierarchyDao',
-        function ($q, offlineService, offlineSearchDbService, offlineDbService, offlineMarkerDbService, offlineAddressHierarchyDao) {
+    .factory('offlineRegistrationInitialization', ['$q','offlineService', 'offlineSearchDbService','offlineDbService','offlineMarkerDbService','offlineAddressHierarchyDbService',
+        function ($q, offlineService, offlineSearchDbService, offlineDbService, offlineMarkerDbService, offlineAddressHierarchyDbService) {
             return function (offlineDb) {
                 if (offlineService.isOfflineApp()) {
                     offlineDbService.init(offlineDb);
                     offlineMarkerDbService.init(offlineDb);
-                    offlineAddressHierarchyDao.init(offlineDb);
+                    offlineAddressHierarchyDbService.init(offlineDb);
                     offlineSearchDbService.init(offlineDb);
                 }
             };

@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('bahmni.common.offline')
-    .service('offlineAddressHierarchyDao', ['$http', '$q', function ($http, $q) {
+    .service('offlineAddressHierarchyDbService', ['$http', '$q', function ($http, $q) {
         var db;
 
         var init = function (_db) {
