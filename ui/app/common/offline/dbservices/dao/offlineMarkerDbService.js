@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('bahmni.common.offline')
-    .service('offlineMarkerDao', [function () {
+    .service('offlineMarkerDbService', [function () {
         var db;
 
         var init = function (_db) {
