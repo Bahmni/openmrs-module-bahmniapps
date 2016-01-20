@@ -42,7 +42,7 @@ angular.module('bahmni.common.offline')
                                 'attributeTypeId': foundAttribute.attributeTypeId,
                                 'attributeValue': value,
                                 'patientUuid': patientUuid,
-                                'uuid': personAttribute.uuid
+                                'uuid': foundAttribute.uuid
                             });
                             queries.push(db.insertOrReplace().into(attributeTable).values([row]));
                         }
