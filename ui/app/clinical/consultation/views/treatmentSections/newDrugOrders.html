@@ -1,4 +1,4 @@
-<section class="section-grid new-drug-order" ng-show="treatments.length > 0">
+<section class="section-grid new-drug-order" ng-show="tabTreatments.length > 0">
 	<div class="section-title-wrapper clearfix">
 		<h2 class="section-title fl">New Prescription</h2>
 		<button class="secondary-button fr bulk-toggle-btn" ng-if="!showBulkChangeToggle" ng-click="bulkChangeDuration()">Change Duration</button>
@@ -20,7 +20,7 @@
 		</form>
 	</div>
 	<ul class="table-mimic">
-		<li id="new-drug-orders" ng-repeat="newTreatment in treatments" ng-class="{highlight : newTreatment.isBeingEdited, invalid: !newTreatment.validate()}">
+		<li id="new-drug-orders" ng-repeat="newTreatment in tabTreatments" ng-class="{highlight : newTreatment.isBeingEdited, invalid: !newTreatment.validate()}">
 			<div class="drug-details">
 				<div class="form">
 				<input type="checkbox" ng-show="showBulkChangeToggle" ng-model="newTreatment.durationUpdateFlag" class="treatmentChkBox"/>

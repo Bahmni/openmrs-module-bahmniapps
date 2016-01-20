@@ -18,8 +18,8 @@
 
 
             <ul class="header-tabs consultation-tabs">
-                <li class="tab-item" ng-repeat="board in availableBoards" ng-class="{'tab-selected':getTitle(currentBoard)===getTitle(board)}">
-                    <a ng-click="showBoard(board)">{{ board | titleTranslate }}</a>
+                <li class="tab-item" ng-repeat="board in availableBoards track by $index" ng-class="{'tab-selected':board.isSelectedTab}">
+                    <a ng-click="showBoard($index)">{{ board | titleTranslate }}</a>
                 </li>
             </ul>
 

@@ -3,14 +3,21 @@
 angular.module('bahmni.clinical')
 
     .controller('AddTreatmentController', ['$scope', '$rootScope', 'contextChangeHandler', 'treatmentConfig', 'DrugService', '$timeout',
-        'clinicalAppConfigService', 'ngDialog', '$window', 'messagingService', 'appService', 'activeDrugOrders',
+        'clinicalAppConfigService', 'ngDialog', '$window', 'messagingService', 'appService', 'activeDrugOrders', '$stateParams',
         function ($scope, $rootScope, contextChangeHandler, treatmentConfig, drugService, $timeout,
-                  clinicalAppConfigService, ngDialog, $window, messagingService, appService, activeDrugOrders) {
+                  clinicalAppConfigService, ngDialog, $window, messagingService, appService, activeDrugOrders, $stateParams) {
 
             var DateUtil = Bahmni.Common.Util.DateUtil;
             var DrugOrderViewModel = Bahmni.Clinical.DrugOrderViewModel;
-
             $scope.treatments = $scope.consultation.newlyAddedTreatments || [];
+
+            var setTabSpecificTreatments = function(){
+                $scope.tabTreatments =  _.filter($scope.treatments, function(treatment){
+                    return treatment.tabName === $stateParams.tabConfigName
+                });
+            };
+
+            setTabSpecificTreatments();
             $scope.treatmentConfig = treatmentConfig;
             $scope.treatmentActionLinks = clinicalAppConfigService.getTreatmentActionLink();
             var drugOrderAppConfig = clinicalAppConfigService.getDrugOrderConfig();
@@ -183,6 +190,7 @@ angular.module('bahmni.clinical')
             }, true);
 
             $scope.add = function () {
+                $scope.treatment.tabName = $stateParams.tabConfigName;
                 $scope.treatment.dosingInstructionType = Bahmni.Clinical.Constants.flexibleDosingInstructionsClass;
                 if($scope.treatment.isNonCodedDrug) {
                     $scope.treatment.drugNonCoded = $scope.treatment.drugNameDisplay;
@@ -243,9 +251,11 @@ angular.module('bahmni.clinical')
                     $scope.treatment.isBeingEdited = false;
                 } else {
                     $scope.treatments.push($scope.treatment);
+                    setTabSpecificTreatments()
                 }
 
                 $scope.clearForm();
+
             };
 
             var isEffectiveStartDateSameAsToday = function (newDrugOrder) {
@@ -335,6 +345,7 @@ angular.module('bahmni.clinical')
             };
 
             var contextChange = function () {
+                console.log("context change called");
                 var errorMessages = Bahmni.Clinical.Constants.errorMessages;
                 if(isSameDrugBeingDiscontinuedAndOrdered()) {
                     return {allow: false, errorMessage: errorMessages.discontinuingAndOrderingSameDrug};
@@ -533,6 +544,7 @@ angular.module('bahmni.clinical')
                     }
                 });
             };
+
             $scope.consultation.preSaveHandler.register("drugOrderSaveHandlerKey", saveTreatment);
 
             var init = function(){

@@ -1629,4 +1629,5 @@ describe("AddTreatmentController", function () {
             expect(scope.consultation.discontinuedDrugs[0]).toBe(drugOrder1);
         })
     });
+
 });

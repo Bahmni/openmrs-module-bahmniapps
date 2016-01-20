@@ -51,9 +51,12 @@ angular.module('bahmni.clinical').controller('ConsultationController',
                 return $filter('titleTranslate')(board);
             };
 
-            $scope.showBoard = function (board) {
+            $scope.showBoard = function (boardIndex) {
                 $rootScope.collapseControlPanel();
-                return buttonClickAction(findBoard(board));
+                _.map($scope.availableBoards, function(board){
+                    board.isSelectedTab = false;
+                });
+                return buttonClickAction($scope.availableBoards[boardIndex]);
             };
 
             var findBoard = function(boardDetail){
@@ -103,6 +106,7 @@ angular.module('bahmni.clinical').controller('ConsultationController',
                     return _.contains(currentPath, board.url);
                 });
                 $scope.currentBoard = board || $scope.availableBoards[0];
+                $scope.currentBoard.isSelectedTab = true;
             };
 
 
@@ -198,8 +202,6 @@ angular.module('bahmni.clinical').controller('ConsultationController',
                     url = url + "?" + queryParams.join("&");
                 }
 
-                $state.params.extensionParams = board.extensionParams
-
                 $scope.lastConsultationTabUrl.url = url;
                 return $location.url(url);
             };
@@ -233,7 +235,9 @@ angular.module('bahmni.clinical').controller('ConsultationController',
 
                 contextChangeHandler.reset();
                 $scope.currentBoard = board;
+                $scope.currentBoard.isSelectedTab = true;
                 return getUrl(board);
+
             };
 
             var preSavePromise = function () {

@@ -6,7 +6,7 @@
 # -f option will be used to pass a full qualified file that contains commands
 #####################################################################################################
 
-MACHINE_IP=192.168.33.10
+MACHINE_IP=192.168.33.11
 KEY_FILE=~/.vagrant.d/insecure_private_key
 TIMEOUT="-o ConnectTimeout=5"
 
