@@ -31,7 +31,8 @@
     "karma-ng-html2js-preprocessor": "^0.1.2",
     "karma-phantomjs-launcher": "^0.1.4",
     "matchdep": "^0.3.0",
-    "phantomjs": "^1.9.7-9"
+    "phantomjs": "^1.9.7-9",
+    "karma-firefox-launcher": "~0.1.7"
   },
   "scripts": {
     "test": "karma start test/config/karma.conf.js"
