@@ -19,7 +19,7 @@ angular.module('bahmni.clinical')
 
             var preFetchDrugsForGivenConceptSet = function () {
                 drugService.getSetMembersOfConcept(treatmentConfig.getDrugConceptSet()).then(function (result) {
-                    $scope.drugs = result.map(constructDrugNameDisplay);
+                    $scope.drugs = result.map(Bahmni.Clinical.DrugSearchResult.create);
                 });
             };
             if(treatmentConfig.isDropDownForGivenConceptSet()) {
@@ -366,17 +366,12 @@ angular.module('bahmni.clinical')
                 return treatment;
             };
 
-            var constructDrugNameDisplay = function (drug) {
-                var drugSearchResult = new Bahmni.Clinical.DrugSearchResult(drug, $scope.treatment.drugNameDisplay);
-                return {
-                    label: drugSearchResult.getLabel(),
-                    value: drugSearchResult.getValue(),
-                    drug: drug
-                };
-            };
-
-            $scope.getDataResults = function (data) {
-                return data.map(constructDrugNameDisplay);
+            $scope.getDataResults = function (drugs) {
+                var searchString = $scope.treatment.drugNameDisplay;
+                var listOfDrugSynonyms = _.map(drugs, function(drug){
+                    return Bahmni.Clinical.DrugSearchResult.getAllMatchingSynonyms(drug,searchString);
+                });
+                return _.flatten(listOfDrugSynonyms);
             };
             $scope.onSelect =  function(item){
                 $scope.treatment.selectedItem = item;
