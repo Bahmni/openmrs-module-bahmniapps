@@ -4,12 +4,12 @@
             <form name="searchByIdForm" ng-submit="searchById()" class="simple-form-ui clearfix" >
                     <label for="registrationNumber"><strong>{{ ::'REGISTRATION_LABEL_PATIENT_ID' | translate}}</strong></label>
                     <div class="search-patient-id fl">
-                        <select ng-if="::hasIdentifierSources()" class="fl" id="identifierPrefix" ng-model="searchParameters.identifierPrefix" ng-options="identifierSource.prefix for identifierSource in identifierSources"> </select>
-                        <input class="fl" type="text" id="registrationNumber"
+                        <select tabindex="1" ng-if="::hasIdentifierSources()" class="fl" id="identifierPrefix" ng-model="searchParameters.identifierPrefix" ng-options="identifierSource.prefix for identifierSource in identifierSources"> </select>
+                        <input tabindex="2" class="fl" type="text" id="registrationNumber"
                         ng-model="searchParameters.registrationNumber" focus-me="true"
                                placeholder="{{ ::'REGISTRATION_LABEL_ENTER_ID' | translate}}">
                         <div class="reg-srch-btn fl">
-                            <button type="submit" ng-disabled="!searchParameters.registrationNumber" >{{ ::'REGISTRATION_LABEL_SEARCH' | translate}}</button>
+                            <button tabindex="3" type="submit" ng-disabled="!searchParameters.registrationNumber" >{{ ::'REGISTRATION_LABEL_SEARCH' | translate}}</button>
                         </div>
                     </div>
 
@@ -20,19 +20,19 @@
 
                 <article class="fl">
                     <label for="name"><strong>{{ ::'REGISTRATION_LABEL_NAME' | translate}}</strong></label>
-                    <input type="text" id="name" ng-model="searchParameters.name" placeholder="{{ ::'REGISTRATION_LABEL_ENTER_NAME' | translate}}">
+                    <input tabindex="4" type="text" id="name" ng-model="searchParameters.name" placeholder="{{ ::'REGISTRATION_LABEL_ENTER_NAME' | translate}}">
                 </article>
                 <article class="fl" ng-if="::customAttributesSearchConfig.show">
                     <label for="name"><strong>{{::customAttributesSearchConfig.label}}</strong></label>
-                    <input type="text" id="customAttribute" ng-model="searchParameters.customAttribute" placeholder="{{::customAttributesSearchConfig.placeholder}}">
+                    <input tabindex="5" type="text" id="customAttribute" ng-model="searchParameters.customAttribute" placeholder="{{::customAttributesSearchConfig.placeholder}}">
                 </article>
                 <article class="fl">
                     <label for="name"><strong>{{::addressSearchConfig.label}}</strong></label>
-                    <input type="text" id="addressFieldValue" ng-model="searchParameters.addressFieldValue" placeholder="{{::addressSearchConfig.placeholder}}">
+                    <input tabindex="6" type="text" id="addressFieldValue" ng-model="searchParameters.addressFieldValue" placeholder="{{::addressSearchConfig.placeholder}}">
                 </article>
                 <article class="fl">
                     <div class="reg-srch-btn">
-                        <button type="submit" ng-disabled="disableSearchButton()">{{ ::'REGISTRATION_LABEL_SEARCH' | translate}}</button>
+                        <button tabindex="7" type="submit" ng-disabled="disableSearchButton()">{{ ::'REGISTRATION_LABEL_SEARCH' | translate}}</button>
                     </div>
                 </article>
             </form>
@@ -63,8 +63,12 @@
             </thead>
             <tbody>
             <tr ng-repeat="result in results">
-                <td><a ng-if="::(searchActions.length > 0)" ng-click="forPatient(result).doExtensionAction(searchActions[0])">{{::result.identifier}}</a></td>
-                <td><a ng-if="::(searchActions.length > 0)" ng-click="forPatient(result).doExtensionAction(searchActions[0])">{{::result.givenName}} {{::result.middleName}} {{::result.familyName}}</a></td>
+                <td>
+                    <a href="javascript:void(0)" tabindex="{{ 7 + $index + 1 }}" ng-if="::(searchActions.length > 0)" ng-click="forPatient(result).doExtensionAction(searchActions[0])">
+                        {{::result.identifier}}
+                    </a>
+                </td>
+                <td>{{::result.givenName}} {{::result.middleName}} {{::result.familyName}}</td>
                 <td ng-repeat = "field in ::customAttributesSearchConfig.fields">{{::result.customAttribute[field]}}</td>
                 <td>{{::result.gender}}</td>
                 <td>{{::result.age}}</td>
