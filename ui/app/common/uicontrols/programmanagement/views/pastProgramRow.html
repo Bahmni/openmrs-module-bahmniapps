@@ -15,7 +15,7 @@
             </table>
         </div>
         <div ng-if="program.isOpen" class="programDescription activeProgramAttributeFields">
-            <h2 class="programAttribute-title">Program Attributes</h2>
+            <h2 class="programAttribute-title">{{'PROGRAM_MANAGEMENT_LABEL_PROGRAM' | translate}} Attributes</h2>
             <a class="back-btn dashboard-link fr" id="dashboard-link"
                ui-sref="patient.dashboard.show({
            patientUuid: patient.uuid,
@@ -31,7 +31,7 @@
             </a>
             <program-attributes program="program" program-attribute-types = "programAttributeTypes"></program-attributes>
             <div class="program-timeline-container" ng-if="program.states.length!=0 && program.isOpen">
-                <h2 class="programAttribute-title">Program States</h2>
+                <h2 class="programAttribute-title">{{'PROGRAM_MANAGEMENT_PROGRAM_STATES_KEY' | translate}}</h2>
                 <div class="program-timeline">
                     <timeline program="program"></timeline>
                 </div>

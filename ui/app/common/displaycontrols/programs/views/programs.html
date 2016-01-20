@@ -1,7 +1,7 @@
 <section class="program-dashboard">
     <table>
         <thead ng-if="hasPatientAnyActivePrograms()">
-        <th>Active Programs</th>
+        <th>{{'PROGRAM_MANAGEMENT_ACTIVE_PROGRAM_KEY' | translate}}</th>
         <th style="text-align:center">Start Date</th>
         <th style="text-align:center">______</th>
         </thead>
@@ -15,7 +15,7 @@
 
         <thead ng-if="hasPatientAnyPastPrograms()">
         <tr>
-            <th align="left">InActive Programs</th>
+            <th align="left">{{'PROGRAM_MANAGEMENT_INACTIVE_PROGRAM_KEY' | translate}}</th>
             <th style="text-align:center">Start Date</th>
             <th style="text-align:center">Stop Date</th>
         </tr>

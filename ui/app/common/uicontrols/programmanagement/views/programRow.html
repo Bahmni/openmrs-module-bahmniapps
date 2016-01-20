@@ -18,7 +18,7 @@
         </div>
         <div ng-if="patientProgram.isOpen" class="programDescription">
             <section class="programAttributeFields activeProgramAttributeFields">
-                <h2 class="programAttribute-title" ng-if="patientProgram.attributes.length!=0">Program Attributes</h2>
+                <h2 class="programAttribute-title" ng-if="patientProgram.attributes.length!=0">{{'PROGRAM_MANAGEMENT_LABEL_PROGRAM' | translate}} Attributes</h2>
                 <a class="back-btn dashboard-link fr" id="dashboard-link"
                    ui-sref="patient.dashboard.show({
                            patientUuid: patient.uuid,
@@ -37,7 +37,7 @@
                 </form>
             </section>
             <div class="program-timeline-container">
-                <h2 class="programAttribute-title">Program States</h2>
+                <h2 class="programAttribute-title">{{'PROGRAM_MANAGEMENT_PROGRAM_STATES_KEY' | translate}}</h2>
                 <div class="program-timeline">
                     <timeline program="patientProgram"></timeline>
                 </div>
@@ -69,16 +69,16 @@
             <div class="program-action-container form" ng-if="hasProgramWorkflowStates(patientProgram)" ng-init="workflowStatesWithoutCurrentState = getWorkflowStatesWithoutCurrent(patientProgram)">
                 <select ng-model="programEdited.selectedState"
                         ng-options="state.concept.display for state in workflowStatesWithoutCurrentState track by state.uuid">
-                    <option value="">Choose State</option>
+                    <option value="">{{'PROGRAM_MANAGEMENT_CHOOSE_STATE_KEY' | translate}}</option>
                 </select>
-                <button class="fr ok_btn" ng-click="savePatientProgramStates(patientProgram)">Change State</button>
+                <button class="fr ok_btn" ng-click="savePatientProgramStates(patientProgram)">Change {{'PROGRAM_MANAGEMENT_LABEL_PROGRAM_STATE' | translate}}</button>
             </div>
             <div class="program-action-container form" ng-init="outComesForProgram = getOutcomes(patientProgram.program)">
                 <select ng-model="patientProgram.outcomeData"
                         ng-options="outcomeSelected.display for outcomeSelected in outComesForProgram">
-                    <option value="">Choose OutCome</option>
+                    <option value="">Choose {{'PROGRAM_MANAGEMENT_LABEL_PROGRAM_OUTCOME' | translate}}</option>
                 </select>
-                <button class="fr ok_btn" ng-click="endPatientProgram(patientProgram)">End Program</button>
+                <button class="fr ok_btn" ng-click="endPatientProgram(patientProgram)">End {{'PROGRAM_MANAGEMENT_LABEL_PROGRAM' | translate}}</button>
             </div>
         </div>
     </div>
