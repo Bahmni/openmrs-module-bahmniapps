@@ -22,7 +22,7 @@ angular.module('bahmni.common.offline').service('offlineService', ['$rootScope',
     };
 
     this.isChromeBrowser = function () {
-        return this.getAppPlatform() !== Bahmni.Common.Constants.platformType.chrome;
+        return this.getAppPlatform() === Bahmni.Common.Constants.platformType.chrome;
     };
 
     this.encrypt = function (value, encryptionType) {
