@@ -90,8 +90,8 @@ angular.module('bahmni.clinical').factory('treatmentConfig', ['TreatmentService'
             });
         };
 
-        var initializeInputConfig = function () {
-            angular.extend(medicationTabConfig, appService.getAppDescriptor().getConfigForPage('medication'));
+        var initializeInputConfig = function (tabConfigName) {
+            angular.extend(medicationTabConfig, appService.getAppDescriptor().getConfigForPage('medication')[tabConfigName]);
             drugOrderOptions = new Bahmni.Clinical.DrugOrderOptions(medicationTabConfig.inputOptionsConfig, medicationTabConfig);
         };
 
@@ -104,16 +104,16 @@ angular.module('bahmni.clinical').factory('treatmentConfig', ['TreatmentService'
             })
         };
 
-        var configurations = function () {
-            return configFromServer().then(initializeInputConfig);
+        var configurations = function (tabConfigName) {
+            return configFromServer().then(function () {
+                initializeInputConfig(tabConfigName);
+            })
         };
 
-        var configurationWithNonCodedDrugConcept = function () {
-            return $q.all([nonCodedDrugConcept(), configurations()]).then(function () {
+        return function (tabConfigName) {
+            return $q.all([nonCodedDrugConcept(), configurations(tabConfigName)]).then(function () {
                 return medicationTabConfig;
             });
         };
-
-        return configurationWithNonCodedDrugConcept();
     }]
 );

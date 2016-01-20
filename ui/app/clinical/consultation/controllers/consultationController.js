@@ -188,9 +188,17 @@ angular.module('bahmni.clinical').controller('ConsultationController',
                 if($state.params.programUuid) {
                     queryParams.push("programUuid="+$state.params.programUuid);
                 }
+
+                var extensionParams = board.extensionParams;
+                angular.forEach(extensionParams, function(extensionParamValue, extensionParamKey){
+                    queryParams.push(extensionParamKey + "=" + extensionParamValue)
+                });
+
                 if(!_.isEmpty(queryParams)) {
                     url = url + "?" + queryParams.join("&");
                 }
+
+                $state.params.extensionParams = board.extensionParams
 
                 $scope.lastConsultationTabUrl.url = url;
                 return $location.url(url);

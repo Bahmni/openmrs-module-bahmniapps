@@ -72,6 +72,17 @@ describe("ConsultationController", function () {
         expect(newUrl).toEqual("/default/patient/somePatientUuid/dashboard/treatment?encounterUuid=someEncounterUuid&programUuid=someProgramUuid");
     });
 
+    it("should return proper URL with extension params as parameters with url", function() {
+        var obsBoard = {translationKey: "Observations", url: "concept-set-obs/observations"};
+        var treatmentBoard = {translationKey: "Treatment", url: "treatment", extensionParams: {
+            "tabConfigName": "tbTabConfig"
+        }};
+        scope.lastConsultationTabUrl = {url : undefined};
+        scope.availableBoards.push(obsBoard, treatmentBoard);
+        var newUrl = scope.showBoard(treatmentBoard);
+        expect(newUrl).toEqual("/default/patient/somePatientUuid/dashboard/treatment?encounterUuid=someEncounterUuid&programUuid=someProgramUuid&tabConfigName=tbTabConfig");
+    });
+
     it("should not append encounterUuid in query params if not available", function() {
         var obsBoard = {translationKey: "Observations", url: "concept-set-obs/observations"};
         var treatmentBoard = {translationKey: "Treatment", url: "treatment"};

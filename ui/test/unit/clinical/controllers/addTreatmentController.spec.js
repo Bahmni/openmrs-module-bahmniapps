@@ -95,7 +95,7 @@ describe("AddTreatmentController", function () {
     };
 
 
-    var scope, rootScope, contextChangeHandler, newTreatment,
+    var scope, stateParams, rootScope, contextChangeHandler, newTreatment,
         editTreatment, clinicalAppConfigService, ngDialog, drugService, drugs,
         encounterDateTime, appService, appConfig, defaultDrugsPromise;
 
@@ -153,6 +153,7 @@ describe("AddTreatmentController", function () {
 
             $controller('AddTreatmentController', {
                 $scope: scope,
+                $stateParams : stateParams,
                 $rootScope: rootScope,
                 treatmentService: null,
                 activeDrugOrders: [activeDrugOrder, scheduledOrder],

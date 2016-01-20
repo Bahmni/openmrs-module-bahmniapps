@@ -1,5 +1,5 @@
 angular.module('bahmni.clinical')
-    .controller('CustomDrugOrderHistoryController', ['$scope', 'clinicalAppConfigService', function ($scope, clinicalAppConfigService) {
-        var drugOrderHistoryConfig = clinicalAppConfigService.getMedicationConfig().drugOrderHistoryConfig || {};
+    .controller('CustomDrugOrderHistoryController', ['$scope', 'treatmentConfig', function ($scope, treatmentConfig) {
+        var drugOrderHistoryConfig = treatmentConfig.drugOrderHistoryConfig || {};
         $scope.drugOrderHistorySections = _.values(drugOrderHistoryConfig.sections);
     }]);
