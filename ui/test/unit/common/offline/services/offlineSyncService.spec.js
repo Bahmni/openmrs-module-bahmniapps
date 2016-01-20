@@ -60,14 +60,8 @@ describe('OfflineSyncService', function () {
                     }
                 });
                 $provide.value('offlineService', {
-                    getAppPlatform: function () {
-                        return {
-                            then: function (callback) {
-                                return callback({
-                                    data: true
-                                });
-                            }
-                        };
+                    isAndroidApp: function () {
+                        return false;
                     }
                 });
             });
@@ -185,14 +179,8 @@ describe('OfflineSyncService', function () {
                     }
                 });
                 $provide.value('offlineService', {
-                    getAppPlatform: function () {
-                        return {
-                            then: function (callback) {
-                                return callback({
-                                    data: true
-                                });
-                            }
-                        };
+                    isAndroidApp: function () {
+                        return false;
                     }
                 });
             });
