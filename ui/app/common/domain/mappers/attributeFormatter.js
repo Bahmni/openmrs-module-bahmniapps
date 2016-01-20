@@ -30,9 +30,7 @@ Bahmni.Common.Domain.AttributeFormatter = (function () {
     };
 
     AttributeFormatter.prototype.removeUnfilledAttributes = function(formattedAttributes) {
-        return _.filter(formattedAttributes, function(attribute){
-            return isAttributeChanged(attribute);
-        });
+        return _.filter(formattedAttributes, isAttributeChanged);
     };
 
     function isAttributeChanged(attribute) {
