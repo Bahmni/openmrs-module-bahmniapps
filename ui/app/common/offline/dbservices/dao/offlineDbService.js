@@ -32,16 +32,17 @@ angular.module('bahmni.common.offline')
             var patientAddress = db.getSchema().table('patient_address');
             var patientAttributes = db.getSchema().table('patient_attribute');
 
-            db.select(patientTable).from(patientTable).where(patientTable.identifier.eq(patientIdentifier)).exec()
+            db.select().from(patientTable).where(patientTable.identifier.eq(patientIdentifier)).exec()
                 .then(function (results) {
                     var patientUuid = results[0].uuid;
+                    if (results[0] != undefined && results[0].uuid != undefined) {
+                        queries.push(db.delete().from(patientAttributes).where(patientAttributes.patientUuid.eq(patientUuid)));
+                        queries.push(db.delete().from(patientAddress).where(patientAddress.patientUuid.eq(patientUuid)));
+                        queries.push(db.delete().from(patientTable).where(patientTable.uuid.eq(patientUuid)));
 
-                    queries.push(db.delete().from(patientAttributes).where(patientAttributes.patientId.eq(patientUuid)));
-                    queries.push(db.delete().from(patientAddress).where(patientAddress.patientId.eq(patientUuid)));
-                    queries.push(db.delete().from(patientTable).where(patientTable._id.eq(patientUuid)));
-
-                    var tx = db.createTransaction();
-                    tx.exec(queries);
+                        var tx = db.createTransaction();
+                        tx.exec(queries);
+                    }
                     deferred.resolve({});
                 });
             return deferred.promise;
