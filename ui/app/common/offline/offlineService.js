@@ -1,4 +1,4 @@
-angular.module('bahmni.common.offline').service('offlineService', ['$rootScope', '$bahmniCookieStore', function ($rootScope, $bahmniCookieStore) {
+angular.module('bahmni.common.offline').service('offlineService', ['$rootScope','$bahmniCookieStore', function ($rootScope, $bahmniCookieStore) {
     var offline = false;
 
     this.getAppPlatform = function () {
@@ -10,35 +10,27 @@ angular.module('bahmni.common.offline').service('offlineService', ['$rootScope',
     };
 
     this.isOfflineApp = function () {
-        return !this.isChromeBrowser();
-    };
-
-    this.offline = function () {
-        return offline;
-    };
-
-    this.isAndroidApp = function () {
-        return this.getAppPlatform() === Bahmni.Common.Constants.platformType.android
-    };
-
-    this.isChromeBrowser = function () {
         return this.getAppPlatform() !== Bahmni.Common.Constants.platformType.chrome;
     };
 
-    this.encrypt = function (value, encryptionType) {
-        if (encryptionType === Bahmni.Common.Constants.encryptionType.SHA3) {
+    this.offline = function() {
+        return offline;
+    };
+
+    this.encrypt = function(value, encryptionType) {
+        if(encryptionType === Bahmni.Common.Constants.encryptionType.SHA3) {
             return CryptoJS.SHA3(value);
         }
         return value;
     };
 
-    this.setItem = function (key, value) {
+    this.setItem = function(key, value) {
         localStorage.setItem(key, JSON.stringify(value));
     };
 
-    this.getItem = function (key) {
+    this.getItem = function(key) {
         var value = localStorage.getItem(key);
-        if (value) {
+        if(value) {
             return JSON.parse(value);
         }
         return value;
@@ -46,7 +38,7 @@ angular.module('bahmni.common.offline').service('offlineService', ['$rootScope',
 
     this.validateLoginInfo = function (loginInfo) {
         return (this.getItem(Bahmni.Common.Constants.LoginInformation)['username'] === loginInfo.username &&
-        JSON.stringify(this.getItem(Bahmni.Common.Constants.LoginInformation)['password']) === JSON.stringify(CryptoJS.SHA3(loginInfo.password)));
+                JSON.stringify(this.getItem(Bahmni.Common.Constants.LoginInformation)['password']) === JSON.stringify(CryptoJS.SHA3(loginInfo.password)));
     };
 
     Offline.options = {
@@ -70,7 +62,7 @@ angular.module('bahmni.common.offline').service('offlineService', ['$rootScope',
         }
     };
 
-    var init = function () {
+    var init = function() {
         setInterval(checkOfflineStatus, 5000);
     };
     init();
