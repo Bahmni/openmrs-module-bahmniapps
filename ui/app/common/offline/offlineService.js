@@ -21,6 +21,10 @@ angular.module('bahmni.common.offline').service('offlineService', ['$rootScope',
         return this.getAppPlatform() === Bahmni.Common.Constants.platformType.android
     };
 
+    this.isChromeApp = function () {
+        return this.getAppPlatform() === Bahmni.Common.Constants.platformType.chromeApp
+    };
+
     this.isChromeBrowser = function () {
         return this.getAppPlatform() === Bahmni.Common.Constants.platformType.chrome;
     };
