@@ -8,7 +8,6 @@ angular.module('bahmni.clinical').controller('ConsultationController',
                   spinner, encounterService, messagingService, sessionService, retrospectiveEntryService, patientContext, consultationContext, $q,
                   patientVisitHistoryService, $stateParams, $window, visitHistory, clinicalDashboardConfig, appService, ngDialog, $filter, configurations) {
             $scope.patient = patientContext.patient;
-
             $scope.stateChange = function(){
                 return $state.current.name === 'patient.dashboard.show'
             };
@@ -110,13 +109,74 @@ angular.module('bahmni.clinical').controller('ConsultationController',
             var initialize = function () {
                 var appExtensions = clinicalAppConfigService.getAllConsultationBoards();
                 $scope.availableBoards = $scope.availableBoards.concat(appExtensions);
+                $scope.showSaveConfirmDialogConfig = appService.getAppDescriptor().getConfigValue('showSaveConfirmDialog');
                 setCurrentBoardBasedOnPath();
             };
 
-            $scope.$on('$stateChangeStart', function () {
+            $scope.shouldDisplaySaveConfirmDialogForStateChange = function(toState, toParams, fromState, fromParams) {
+                if((toState.name === fromState.name) && (fromState.name === "patient.dashboard.show"))
+                    return true;
+
+                if (toState.name.match(/patient.dashboard.show.*/))
+                    return false;
+                return true;
+            };
+
+            $scope.$on('$stateChangeStart', function (event, toState, toParams, fromState, fromParams ) {
+                if ($scope.showSaveConfirmDialogConfig) {
+                    if ($rootScope.hasVisitedConsultation && $scope.shouldDisplaySaveConfirmDialogForStateChange(toState, toParams, fromState, fromParams)) {
+                        if (!$scope.stateChangeTriggedByDialog) {
+                            $scope.stateChangeTriggedByDialog = true;
+                            event.preventDefault();
+                            spinner.hide(toState.spinnerToken);
+                            $scope.toState = toState;
+                            $scope.toParams = toParams;
+                            $scope.displayConfirmationDialog();
+                        }
+                    }
+                }
                 setCurrentBoardBasedOnPath();
             });
 
+
+            $scope.displayConfirmationDialog = function (event) {
+                if ($rootScope.hasVisitedConsultation && $scope.showSaveConfirmDialogConfig) {
+                    if (event) {
+                        event.preventDefault();
+                        $scope.targetUrl = event.currentTarget.getAttribute('href');
+                    }
+                    ngDialog.openConfirm({template: 'consultation/views/saveConfirmation.html', scope: $scope});
+                }
+            };
+
+            $scope.$on('$stateChangeSuccess', function (event, toState, toParams, fromState) {
+                $scope.stateChangeTriggedByDialog = false;
+                if (toState.name.match(/patient.dashboard.show.+/))
+                    $rootScope.hasVisitedConsultation = true;
+                if ((toState.name === fromState.name) && (fromState.name === "patient.dashboard.show"))
+                    $rootScope.hasVisitedConsultation = false;
+            });
+
+            $scope.cancelTransition = function() {
+                $scope.stateChangeTriggedByDialog = false;
+                ngDialog.close();
+                delete $scope.targetUrl;
+            };
+
+            $scope.saveAndContinue = function() {
+                ngDialog.close();
+                $state.current = $scope.toState || $state.current;
+                $state.params = $scope.toParams || $state.params;
+                $scope.save(true);
+            };
+
+            $scope.continueWithoutSaving = function() {
+                ngDialog.close();
+                if ($scope.targetUrl) {
+                    $window.open($scope.targetUrl, "_self");
+                }
+                $state.go($scope.toState, $scope.toParams);
+            };
 
             var getUrl = function (board) {
                 var urlPrefix = urlHelper.getPatientUrl();
@@ -139,6 +199,7 @@ angular.module('bahmni.clinical').controller('ConsultationController',
             $scope.openConsultation = function() {
                 $scope.closeAllDialogs();
                 $scope.collapseControlPanel();
+                $rootScope.hasVisitedConsultation = true;
                 switchToConsultationTab();
             };
 
@@ -161,7 +222,7 @@ angular.module('bahmni.clinical').controller('ConsultationController',
                     $scope.$parent.$parent.$broadcast("event:errorsOnForm");
                     return;
                 }
-                
+
                 contextChangeHandler.reset();
                 $scope.currentBoard = board;
                 return getUrl(board);
@@ -194,12 +255,12 @@ angular.module('bahmni.clinical').controller('ConsultationController',
                 return shouldAllow;
             };
 
-            $scope.save = function () {
+            $scope.save = function (shouldReloadPage) {
                 if (!isFormValid()) {
                     $scope.$parent.$parent.$broadcast("event:errorsOnForm");
                     return;
                 }
-                spinner.forPromise($q.all([preSavePromise(), encounterService.getEncounterType($state.params.programUuid, sessionService.getLoginLocationUuid())]).then(function (results) {
+                return spinner.forPromise($q.all([preSavePromise(), encounterService.getEncounterType($state.params.programUuid, sessionService.getLoginLocationUuid())]).then(function (results) {
                     var encounterData = results[0];
                     encounterData.encounterTypeUuid = results[1].uuid;
                     var params = angular.copy($state.params);
@@ -217,9 +278,13 @@ angular.module('bahmni.clinical').controller('ConsultationController',
                                     consultationWithDiagnosis.preSaveHandler = $scope.consultation.preSaveHandler;
                                     $scope.$parent.consultation = consultationWithDiagnosis;
                                     $scope.dashboardDirty = true;
+                                    if($scope.targetUrl) {
+                                        return $window.open($scope.targetUrl, "_self");
+                                    }
                                     return $state.transitionTo($state.current, params, {
                                         inherit: false,
-                                        notify: true
+                                        notify: true,
+                                        reload: shouldReloadPage
                                     });
                                 }));
                         }).catch(function (error) {

@@ -117,5 +117,9 @@
     "PATIENT_ADT_PAGE_KEY":"Inpatient",
     "PROGRAM_MANAGEMENT_PAGE_KEY" : "Enrollment",
     "PATIENT_VISIT_ATTRIBUTES_PAGE_KEY":"Visit Attributes",
-    "PATIENT_REGISTRATION_PAGE_KEY" : "Registration"
+    "PATIENT_REGISTRATION_PAGE_KEY" : "Registration",
+    "SAVE_CONFIRMATION_DIALOG_MESSAGE_KEY": "You may have unsaved changes, please choose an option.",
+    "SAVE_CONFIRMATION_OPTION_DONT_SAVE_KEY" : "Don't Save",
+    "SAVE_CONFIRMATION_OPTION_SAVE_KEY" : "Save",
+    "SAVE_CONFIRMATION_OPTION_CANCEL_KEY" : "Cancel"
 }
