@@ -141,7 +141,7 @@ angular.module('bahmni.registration')
                 var patientIdentifier = $scope.searchParameters.registrationNumber;
                 preferences.identifierPrefix = $scope.searchParameters.identifierPrefix ? $scope.searchParameters.identifierPrefix.prefix : "";
                 $location.search({identifierPrefix: preferences.identifierPrefix, registrationNumber: $scope.searchParameters.registrationNumber});
-                var searchPromise = patientService.search(undefined, patientIdentifier, $scope.searchParameters.identifierPrefix.prefix, $scope.addressSearchConfig.field).then(function (data) {
+                var searchPromise = patientService.search(undefined, patientIdentifier, preferences.identifierPrefix, $scope.addressSearchConfig.field).then(function (data) {
                     mapCustomAttributesSearchResults(data);
                     if (data.pageOfResults.length === 1) {
                         var patient = data.pageOfResults[0];
