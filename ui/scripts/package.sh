@@ -13,13 +13,5 @@ rm -rf $ROOT_DIR/target/$ZIP_FILE_NAME
 npm install
 bower install
 
-pids=$(pgrep Xvfb)
-if [ -n "$pids" ]; then
-    export DISPLAY=:99
-    Xvfb :99 &
-else
-    echo "Xvfb running"
-fi
-
 grunt build
 cd $ROOT_DIR/dist && zip -r ../target/$ZIP_FILE_NAME *
