@@ -4,7 +4,7 @@ angular.module('bahmni.common.uicontrols.programmanagment')
     .service('programHelper', ['appService',function (appService) {
 
     var self = this;
-    var programConfiguration = appService.getAppDescriptor().getConfig("program").value;
+    var programConfiguration = appService.getAppDescriptor().getConfig("program") && appService.getAppDescriptor().getConfig("program").value;
 
     var isAttributeRequired = function(attribute){
         var attributeName = attribute.attributeType.display;
