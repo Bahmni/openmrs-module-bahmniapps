@@ -2,58 +2,139 @@
 
 describe("ConsultationController", function () {
 
-    var scope, rootScope, state, contextChangeHandler, urlHelper, location, clinicalAppConfigService, stateParams, appService, ngDialog, q, appDescriptor;
+//<<<<<<< HEAD
+//    var scope, rootScope, state, contextChangeHandler, urlHelper, location, clinicalAppConfigService, stateParams, appService, ngDialog, q, appDescriptor;
+//
+//    beforeEach(module('bahmni.clinical'));
+//
+//    beforeEach(inject(function ($controller, $rootScope) {
+//        scope = $rootScope.$new();
+//
+//        rootScope = $rootScope;
+//        clinicalAppConfigService = {getAllConsultationBoards: function() {return []}, getConsultationBoardLink: function() {return []}};
+//
+//        stateParams = {configName: 'default'};
+//        location = {path: function() {}, url: function(url) {return url}};
+//        contextChangeHandler = {execute: function() {return {allow: true}}, reset: function() {}};
+//        urlHelper = {getPatientUrl: function() {return "/patient/somePatientUuid/dashboard"}};
+//        rootScope.collapseControlPanel = function() {};
+//
+//        appService = jasmine.createSpyObj('appService', ['getAppDescriptor']);
+//        appDescriptor = jasmine.createSpyObj('appDescriptor', ['getConfigValue']);
+//        appService.getAppDescriptor.and.returnValue(appDescriptor);
+//        appDescriptor.getConfigValue.and.returnValue(true);
+//
+//        q = jasmine.createSpyObj('q', ['all', 'defer']);
+//
+//        $controller('ConsultationController', {
+//            $scope: scope,
+//            $rootScope: rootScope,
+//            $state: state,
+//            $location:location,
+//            clinicalAppConfigService: clinicalAppConfigService,
+//            urlHelper: urlHelper,
+//            contextChangeHandler: contextChangeHandler,
+//            spinner: {},
+//            encounterService: null,
+//            messagingService: null,
+//            sessionService: null,
+//            retrospectiveEntryService: null,
+//            patientContext: {patient:{}},
+//            consultationContext: null,
+//            $q: q,
+//            patientVisitHistoryService: null,
+//            $stateParams: stateParams,
+//            $window: null,
+//            visitHistory: null,
+//            appService: appService,
+//            clinicalDashboardConfig: null,
+//            ngDialog: ngDialog
+//=======
+    var scope, rootScope, state, contextChangeHandler, urlHelper, location, clinicalAppConfigService, stateParams, appService, appDescriptor, ngDialog;
+    location = {path: function() {}, url: function(url) {return url}};
+    var boards = [
+        {
+            default: true,
+            extensionPointId: "org.bahmni.clinical.consultation.board",
+            icon: "fa-user-md",
+            id: "bahmni.clinical.consultation.observations",
+            order: 1,
+            requiredPrivilege: "app:clinical:observationTab",
+            translationKey: "OBSERVATIONS_BOARD_LABEL_KEY",
+            type: "link",
+            url: "concept-set-group/observations"
+        },
+        {
+            extensionPointId: "org.bahmni.clinical.consultation.board",
+            icon: "icon-user-md",
+            id: "bahmni.clinical.billing.treatment",
+            label: "Treatment",
+            order: 7,
+            extensionParams: {
+                "tabConfigName": "tbTabConfig"
+            },
+            requiredPrivilege: "app:clinical:consultationTab",
+            translationKey: "Treatment",
+            type: "link",
+            url: "treatment"
+        }
+    ];
 
     beforeEach(module('bahmni.clinical'));
 
-    beforeEach(inject(function ($controller, $rootScope) {
-        scope = $rootScope.$new();
+    var injectConsultationController = function(){
+        inject(function ($controller, $rootScope) {
+            scope = $rootScope.$new();
+            rootScope = $rootScope;
+            clinicalAppConfigService = {getAllConsultationBoards: function() {
+                return boards}, getConsultationBoardLink: function() {return []}};
 
-        rootScope = $rootScope;
-        clinicalAppConfigService = {getAllConsultationBoards: function() {return []}, getConsultationBoardLink: function() {return []}};
+            stateParams = {configName: 'default'};
+            state = {name: "patient.dashboard.show", params: {encounterUuid: "someEncounterUuid", programUuid: "someProgramUuid", patientUuid: "somePatientUuid"}, go: function() {}};
+            contextChangeHandler = {execute: function() {return {allow: true}}, reset: function() {}};
+            urlHelper = {getPatientUrl: function() {return "/patient/somePatientUuid/dashboard"}};
 
-        stateParams = {configName: 'default'};
-        location = {path: function() {}, url: function(url) {return url}};
-        state = {name: "patient.dashboard.show", params: {encounterUuid: "someEncounterUuid", programUuid: "someProgramUuid", patientUuid: "somePatientUuid"}, go: function() {}};
-        contextChangeHandler = {execute: function() {return {allow: true}}, reset: function() {}};
-        urlHelper = {getPatientUrl: function() {return "/patient/somePatientUuid/dashboard"}};
-        ngDialog = jasmine.createSpyObj('ngDialog',['close']);
-        rootScope.collapseControlPanel = function() {};
+            rootScope.collapseControlPanel = function() {};
 
-        appService = jasmine.createSpyObj('appService', ['getAppDescriptor']);
-        appDescriptor = jasmine.createSpyObj('appDescriptor', ['getConfigValue']);
-        appService.getAppDescriptor.and.returnValue(appDescriptor);
-        appDescriptor.getConfigValue.and.returnValue(true);
+            appService = jasmine.createSpyObj('appService', ['getAppDescriptor']);
+            appDescriptor = jasmine.createSpyObj('appDescriptor', ['getConfigValue']);
+            appService.getAppDescriptor.and.returnValue(appDescriptor);
+            appDescriptor.getConfigValue.and.returnValue(true);
+            ngDialog = jasmine.createSpyObj('ngDialog',['close']);
 
-        q = jasmine.createSpyObj('q', ['all', 'defer']);
-
-        $controller('ConsultationController', {
-            $scope: scope,
-            $rootScope: rootScope,
-            $state: state,
-            $location:location,
-            clinicalAppConfigService: clinicalAppConfigService,
-            urlHelper: urlHelper,
-            contextChangeHandler: contextChangeHandler,
-            spinner: {},
-            encounterService: null,
-            messagingService: null,
-            sessionService: null,
-            retrospectiveEntryService: null,
-            patientContext: {patient:{}},
-            consultationContext: null,
-            $q: q,
-            patientVisitHistoryService: null,
-            $stateParams: stateParams,
-            $window: null,
-            visitHistory: null,
-            appService: appService,
-            clinicalDashboardConfig: null,
-            ngDialog: ngDialog
+            $controller('ConsultationController', {
+                $scope: scope,
+                $rootScope: rootScope,
+                $state: state,
+                $location:location,
+                clinicalAppConfigService: clinicalAppConfigService,
+                urlHelper: urlHelper,
+                contextChangeHandler: contextChangeHandler,
+                spinner: {},
+                encounterService: null,
+                messagingService: null,
+                sessionService: null,
+                retrospectiveEntryService: null,
+                patientContext: {patient:{}},
+                consultationContext: null,
+                $q: null,
+                patientVisitHistoryService: null,
+                $stateParams: stateParams,
+                $window: null,
+                visitHistory: null,
+                appService: appService,
+                clinicalDashboardConfig: null,
+                ngDialog: ngDialog
+            });
+//>>>>>>> Chethan, Achinta | #654 | Fixing switching between treatment tabs that was not working. Fixed retaining of drug orders between two tabs.
         });
-    }));
+
+    };
+
+    beforeEach(injectConsultationController);
 
     it("should check if name is longer", function () {
+
         expect(scope.isLongerName("hello")).toBeFalsy();
         expect(scope.isLongerName("hello this is a long string")).toBeTruthy();
     });
@@ -64,33 +145,22 @@ describe("ConsultationController", function () {
     });
 
     it("should return proper URL when showing a different board", function() {
-        var obsBoard = {translationKey: "Observations", url: "concept-set-obs/observations"};
-        var treatmentBoard = {translationKey: "Treatment", url: "treatment"};
         scope.lastConsultationTabUrl = {url : undefined};
-        scope.availableBoards.push(obsBoard, treatmentBoard);
-        var newUrl = scope.showBoard(treatmentBoard);
-        expect(newUrl).toEqual("/default/patient/somePatientUuid/dashboard/treatment?encounterUuid=someEncounterUuid&programUuid=someProgramUuid");
+        var newUrl = scope.showBoard(1);
+        expect(newUrl).toEqual("/default/patient/somePatientUuid/dashboard/treatment?encounterUuid=someEncounterUuid&programUuid=someProgramUuid&tabConfigName=tbTabConfig");
     });
 
     it("should return proper URL with extension params as parameters with url", function() {
-        var obsBoard = {translationKey: "Observations", url: "concept-set-obs/observations"};
-        var treatmentBoard = {translationKey: "Treatment", url: "treatment", extensionParams: {
-            "tabConfigName": "tbTabConfig"
-        }};
         scope.lastConsultationTabUrl = {url : undefined};
-        scope.availableBoards.push(obsBoard, treatmentBoard);
-        var newUrl = scope.showBoard(treatmentBoard);
+        var newUrl = scope.showBoard(1);
         expect(newUrl).toEqual("/default/patient/somePatientUuid/dashboard/treatment?encounterUuid=someEncounterUuid&programUuid=someProgramUuid&tabConfigName=tbTabConfig");
     });
 
     it("should not append encounterUuid in query params if not available", function() {
-        var obsBoard = {translationKey: "Observations", url: "concept-set-obs/observations"};
-        var treatmentBoard = {translationKey: "Treatment", url: "treatment"};
         scope.lastConsultationTabUrl = {url : undefined};
-        scope.availableBoards.push(obsBoard, treatmentBoard);
         state.params.encounterUuid = null;
-        var newUrl = scope.showBoard(treatmentBoard);
-        expect(newUrl).toEqual("/default/patient/somePatientUuid/dashboard/treatment?programUuid=someProgramUuid");
+        var newUrl = scope.showBoard(1);
+        expect(newUrl).toEqual("/default/patient/somePatientUuid/dashboard/treatment?programUuid=someProgramUuid&tabConfigName=tbTabConfig");
     });
 
     it("should check whether app is in editEncounterMode", function(){
@@ -102,6 +172,7 @@ describe("ConsultationController", function () {
         expect(scope.isInEditEncounterMode()).toBeTruthy();
     });
 
+//<<<<<<< HEAD
     it("should stay in current state if 'cancel' is selected", function(){
         expect(state.name).toEqual("patient.dashboard.show");
         scope.cancelTransition();
@@ -171,4 +242,51 @@ describe("ConsultationController", function () {
 
         expect(scope.shouldDisplaySaveConfirmDialogForStateChange).not.toHaveBeenCalled();
     });
+//=======
+    it("should set current tab based on url", function(){
+        location = {path: function() {}, url: function(url) {return "/default/patient/somePatientUuid/dashboard/treatment?programUuid=someProgramUuid&tabConfigName=tbTabConfig"}};
+        injectConsultationController();
+
+        expect(scope.currentBoard).toEqual({
+                extensionPointId: "org.bahmni.clinical.consultation.board",
+                icon: "icon-user-md",
+                id: "bahmni.clinical.billing.treatment",
+                label: "Treatment",
+                order: 7,
+                extensionParams: {
+                    "tabConfigName": "tbTabConfig"
+                },
+                requiredPrivilege: "app:clinical:consultationTab",
+                translationKey: "Treatment",
+                type: "link",
+                url: "treatment",
+                isSelectedTab: true
+            }
+        )
+    });
+
+    it("should set current tab based on the tab config provided", function(){
+        location = {path: function() {}, url: function(url) {return "/default/patient/somePatientUuid/dashboard/treatment?programUuid=someProgramUuid&tabConfigName=nonTbTabConfig"}};
+        var nonTbTab = {
+            extensionPointId: "org.bahmni.clinical.consultation.board",
+            icon: "icon-user-md",
+            id: "bahmni.clinical.billing.treatment",
+            label: "Treatment",
+            order: 7,
+            extensionParams: {
+                "tabConfigName": "nonTbTabConfig"
+            },
+            requiredPrivilege: "app:clinical:consultationTab",
+            translationKey: "Treatment",
+            type: "link",
+            url: "treatment"
+        };
+
+        boards.push(nonTbTab);
+        injectConsultationController();
+        var expectedCurrentBoard = nonTbTab;
+        expectedCurrentBoard.isSelectedTab = true;
+        expect(scope.currentBoard).toEqual(expectedCurrentBoard)
+    });
+//>>>>>>> Chethan, Achinta | #654 | Fixing switching between treatment tabs that was not working. Fixed retaining of drug orders between two tabs.
 });

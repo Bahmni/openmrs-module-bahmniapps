@@ -133,7 +133,9 @@ describe("AddTreatmentController", function () {
             scope.currentBoard = {extension: {}, extensionParams: {}};
             contextChangeHandler = jasmine.createSpyObj('contextChangeHandler', ['add']);
             scope.addForm = {$invalid: false, $valid: true};
-
+            stateParams = {
+                tabConfigName: null
+            }
             clinicalAppConfigService = jasmine.createSpyObj('clinicalAppConfigService', ['getTreatmentActionLink', 'getDrugOrderConfig']);
             clinicalAppConfigService.getTreatmentActionLink.and.returnValue([]);
             clinicalAppConfigService.getDrugOrderConfig.and.returnValue({});

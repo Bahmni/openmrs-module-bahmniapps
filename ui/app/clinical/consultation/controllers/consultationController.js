@@ -53,9 +53,6 @@ angular.module('bahmni.clinical').controller('ConsultationController',
 
             $scope.showBoard = function (boardIndex) {
                 $rootScope.collapseControlPanel();
-                _.map($scope.availableBoards, function(board){
-                    board.isSelectedTab = false;
-                });
                 return buttonClickAction($scope.availableBoards[boardIndex]);
             };
 
@@ -101,8 +98,11 @@ angular.module('bahmni.clinical').controller('ConsultationController',
             };
 
             var setCurrentBoardBasedOnPath = function () {
-                var currentPath = $location.path();
+                var currentPath = $location.url();
                 var board = _.find($scope.availableBoards,function (board) {
+                    if(board.url === "treatment") {
+                        return _.contains(currentPath, board.extensionParams ? board.extensionParams.tabConfigName: board.url)
+                    }
                     return _.contains(currentPath, board.url);
                 });
                 $scope.currentBoard = board || $scope.availableBoards[0];
@@ -185,7 +185,7 @@ angular.module('bahmni.clinical').controller('ConsultationController',
             var getUrl = function (board) {
                 var urlPrefix = urlHelper.getPatientUrl();
                 var url = "/" + $stateParams.configName + (board.url ? urlPrefix + "/" + board.url : urlPrefix);
-                var queryParams = []
+                var queryParams = [];
                 if($state.params.encounterUuid) {
                     queryParams.push("encounterUuid="+$state.params.encounterUuid);
                 }
@@ -234,6 +234,10 @@ angular.module('bahmni.clinical').controller('ConsultationController',
                 }
 
                 contextChangeHandler.reset();
+                _.map($scope.availableBoards, function(board){
+                    board.isSelectedTab = false;
+                });
+
                 $scope.currentBoard = board;
                 $scope.currentBoard.isSelectedTab = true;
                 return getUrl(board);
