@@ -2,7 +2,7 @@
 <html lang="en-US">
 <head>
     <meta charset="UTF-8">
-    <meta http-equiv="refresh" content="5;url=/home">
+    <meta http-equiv="refresh" content="5;url=/bahmni/home">
     <title>Offline sync</title>
     <style>
         a {
@@ -14,18 +14,43 @@
         a:hover {
             text-decoration: underline;
         }
+        .mask {
+            position: fixed;
+            left: 0px;
+            top: 0px;
+            bottom: 0px;
+            right: 0px;
+            background: rgba(0, 0, 0, 0.8);
+        }
+        .overlay {
+            position: absolute;
+            left: 0px;
+            top: 0px;
+            bottom: 0px;
+            right: 0px;
+            margin: auto;
+            color: white;
+            text-align: center;
+        }
+        .message {
+            margin-top: 20px;
+        }
     </style>
 </head>
 <body>
 
-<div>
-    <span> Click <a href="javascript:void(0)" onclick="redirect()">here</a></span> to sync data.
+<div class="mask">
+    <div class="overlay">
+        <p class="message">Offline content is being synced. If you are here for a long time and not redirected automatically,<a href="javascript:void(0)" onclick="redirect()">click here</a>.</p>
+        <img src="/bahmni/images/spinner.gif" style="margin-top: 20px;"/>
+    </div>
 </div>
+
     <script src="components/offline/offline.min.js"></script>
     <script src="initWorker.js"></script>
     <script>
         var redirect = function(){
-            window.location.href = "/home";
+            window.location.href = "/bahmni/home";
         }
 
         //when offline need not wait for sync

@@ -34,14 +34,10 @@ angular.module('bahmni.home', ['ui.router', 'httpErrorInterceptor', 'bahmni.comm
     }).state('device',
     {  url: "/device/:deviceType",
         controller: function($stateParams,$rootScope,$state, offlineService){
-            if($stateParams.deviceType === 'chrome-app'){
-                $rootScope.loginDevice = $stateParams.deviceType;
-                offlineService.setAppPlatform(Bahmni.Common.Constants.platformType.chromeApp);
+            if($stateParams.deviceType === 'chrome-app' || $stateParams.deviceType === 'android'){
+                offlineService.setAppPlatform($stateParams.deviceType);
             }
-            if($stateParams.deviceType === 'android'){
-                $rootScope.loginDevice = $stateParams.deviceType;
-                offlineService.setAppPlatform(Bahmni.Common.Constants.platformType.chromeApp);
-            }
+            $rootScope.loginDevice = $stateParams.deviceType;
             $state.go('offline');
          }
     });
