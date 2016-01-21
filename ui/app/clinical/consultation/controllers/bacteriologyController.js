@@ -31,6 +31,7 @@ angular.module('bahmni.clinical')
                     $scope.savedSpecimens = _.sortBy($scope.savedSpecimens, 'dateCollected').reverse();
                 }
                 $scope.clearEmptySpecimens();
+                handleSampleTypeOther();
             };
 
             var createNewSpecimen = function () {
@@ -140,8 +141,15 @@ angular.module('bahmni.clinical')
                 for(var specimen in $scope.newSpecimens){
                     if($scope.newSpecimens[specimen].type && $scope.newSpecimens[specimen].type.name == Bahmni.Clinical.Constants.bacteriologyConstants.otherSampleType){
                         $scope.newSpecimens[specimen].showTypeFreeText = true;
+                        if($scope.freeText) {
+                            $scope.newSpecimens[specimen].typeFreeText = $scope.freeText;
+                        }
                     }else{
                         $scope.newSpecimens[specimen].showTypeFreeText = false;
+                        if($scope.newSpecimens[specimen].type) {
+                            $scope.freeText = $scope.newSpecimens[specimen].typeFreeText;
+                            $scope.newSpecimens[specimen].typeFreeText = null;
+                        }
                     }
                 }
             };
