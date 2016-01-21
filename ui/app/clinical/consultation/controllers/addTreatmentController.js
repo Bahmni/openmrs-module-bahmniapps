@@ -85,7 +85,7 @@ angular.module('bahmni.clinical')
                 return newTreatment;
             };
 
-            $scope.treatment = $scope.consultation.incompleteTreatment || newTreatment();
+            $scope.treatment = newTreatment();
             $scope.treatmentConfig.durationUnits.forEach(function (durationUnit) {
                 if (_.isEqual(durationUnit, $scope.treatment.durationUnit)) {
                     $scope.treatment.durationUnit = durationUnit;
@@ -345,7 +345,6 @@ angular.module('bahmni.clinical')
             };
 
             var contextChange = function () {
-                console.log("context change called");
                 var errorMessages = Bahmni.Clinical.Constants.errorMessages;
                 if(isSameDrugBeingDiscontinuedAndOrdered()) {
                     return {allow: false, errorMessage: errorMessages.discontinuingAndOrderingSameDrug};
@@ -364,7 +363,6 @@ angular.module('bahmni.clinical')
                     return {allow: false, errorMessage: errorMessages.invalidItems};
                 }
                 $scope.consultation.newlyAddedTreatments = $scope.treatments || [];
-                $scope.consultation.incompleteTreatment = $scope.treatment;
                 return {allow: true};
             };
 
