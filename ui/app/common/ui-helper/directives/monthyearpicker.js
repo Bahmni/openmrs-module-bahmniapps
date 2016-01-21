@@ -43,6 +43,16 @@ angular.module('bahmni.common.uiHelper')
             $scope.isValid = function () {
                 return valueNotFilled() || valueCompletelyFilled();
             };
+
+            $scope.illegalMonth = function() {
+                return $scope.selectedMonth === null && $scope.selectedYear !== null;
+            };
+
+            $scope.illegalYear = function(){
+                return $scope.selectedMonth !== null && $scope.selectedYear === null;
+            };
+
+
             if ($scope.model) {
                 var date = moment($scope.model).toDate();
                 $scope.selectedMonth = date.getMonth();
@@ -62,9 +72,9 @@ angular.module('bahmni.common.uiHelper')
                 illegalValue: '=',
                 model: "="
             },
-            template: '<span><select ng-model=\'selectedMonth\'  ng-class=\"{\'illegalValue\': illegalValue}\" ng-change="updateModel()" ng-options="monthNames.indexOf(month) as month for month in monthNames" ><option value="">{{\'CHOOSE_MONTH_KEY\' | translate}}</option>>' +
+            template: '<span><select ng-model=\'selectedMonth\'  ng-class=\"{\'illegalValue\': illegalMonth() || illegalValue}\" ng-change="updateModel()" ng-options="monthNames.indexOf(month) as month for month in monthNames" ><option value="">{{\'CHOOSE_MONTH_KEY\' | translate}}</option>>' +
             '</select></span>' +
-            '<span><select ng-model=\'selectedYear\'   ng-class=\"{\'illegalValue\': illegalValue}\" ng-change="updateModel()" ng-options="year as year for year in years"><option value="">{{\'CHOOSE_YEAR_KEY\' | translate}}</option>>' +
+            '<span><select ng-model=\'selectedYear\'   ng-class=\"{\'illegalValue\': illegalYear() || illegalValue}\" ng-change="updateModel()" ng-options="year as year for year in years"><option value="">{{\'CHOOSE_YEAR_KEY\' | translate}}</option>>' +
             '</select></span>'
         }
     });
