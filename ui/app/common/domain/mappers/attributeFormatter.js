@@ -33,11 +33,11 @@ Bahmni.Common.Domain.AttributeFormatter = (function () {
         return _.filter(formattedAttributes, isAttributeChanged);
     };
 
-    function isAttributeChanged(attribute) {
+    var isAttributeChanged = function(attribute) {
         return attribute.value || attribute.uuid;
     }
 
-    function setAttributeValue(attributeType, attr, value) {
+    var setAttributeValue = function setAttributeValue(attributeType, attr, value) {
         if (value === "" || value === null || value === undefined) {
             attr.voided = true;
         }
