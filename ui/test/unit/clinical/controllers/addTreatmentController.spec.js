@@ -99,6 +99,11 @@ describe("AddTreatmentController", function () {
         editTreatment, clinicalAppConfigService, ngDialog, drugService, drugs,
         encounterDateTime, appService, appConfig, defaultDrugsPromise;
 
+    stateParams = {
+        tabConfigName: null
+    };
+
+
     var treatmentConfig = {
         getDrugConceptSet: function () {
             return "All TB Drugs";
@@ -127,15 +132,11 @@ describe("AddTreatmentController", function () {
             scope.consultation = {preSaveHandler: new Bahmni.Clinical.Notifier(), encounterDateTime: encounterDateTime};
             var now = DateUtil.now();
             ngDialog = jasmine.createSpyObj('ngDialog', ['open', 'close']);
-            spyOn(Bahmni.Common.Util.DateUtil, 'now').and.returnValue(now);
             newTreatment = new Bahmni.Clinical.DrugOrderViewModel({}, {}, {}, encounterDateTime);
             editTreatment = new Bahmni.Clinical.DrugOrderViewModel(null, null);
             scope.currentBoard = {extension: {}, extensionParams: {}};
             contextChangeHandler = jasmine.createSpyObj('contextChangeHandler', ['add']);
             scope.addForm = {$invalid: false, $valid: true};
-            stateParams = {
-                tabConfigName: null
-            }
             clinicalAppConfigService = jasmine.createSpyObj('clinicalAppConfigService', ['getTreatmentActionLink', 'getDrugOrderConfig']);
             clinicalAppConfigService.getTreatmentActionLink.and.returnValue([]);
             clinicalAppConfigService.getDrugOrderConfig.and.returnValue({});
@@ -169,18 +170,6 @@ describe("AddTreatmentController", function () {
         })
     };
     beforeEach(initController);
-
-    //describe("drug service initialization", function () {
-    //    it("calls drugService to find all drugs when dropdown is configured", function (done) {
-    //        treatmentConfig.isDropDownForGivenConceptSet=function(){return true};
-    //        treatmentConfig.isAutoCompleteForAllConcepts=function(){return false};
-    //        initController();
-    //        defaultDrugsPromise.then(function () {
-    //            expect(scope.drugs.length).toBe(drugs.length);
-    //            done();
-    //        });
-    //    });
-    //});
 
     describe("add treatment()", function () {
         it("should save as a free text drug order on click of accept button", function () {
@@ -220,8 +209,7 @@ describe("AddTreatmentController", function () {
         });
 
         it("should remove the added coded-drug on changing the drug name", function () {
-            var treatment = {drugNameDisplay: "Some New Drug", drug: {name: "CodedDrug"}};
-            scope.treatment = treatment;
+            scope.treatment = {drugNameDisplay: "Some New Drug", drug: {name: "CodedDrug"}};
 
             scope.onChange();
 
@@ -247,6 +235,28 @@ describe("AddTreatmentController", function () {
             scope.onAccept();
             expect(scope.treatment.isNonCodedDrug).toBeFalsy();
         });
+    });
+
+    describe("Tab Specific Treatments", function(){
+
+        it("should put all treatments as tab specific treatments if no tabConfig is specified", function(){
+            stateParams.tabConfigName = null;
+            initController();
+            scope.treatment = Bahmni.Tests.drugOrderViewModelMother.buildWith({}, [], {drug: {name: "NotATabSpecificDrug"}});
+            scope.add();
+            expect(scope.tabTreatments).toBe(scope.treatments);
+            expect(scope.treatment.tabName).toBe(undefined);
+        });
+
+        it("should filter treatments if a specific tabName is provided as a config", function(){
+            stateParams.tabConfigName = "TbTabConfig";
+
+            initController();
+            scope.treatment = Bahmni.Tests.drugOrderViewModelMother.buildWith({}, [], {drug: {name: "ATabSpecificDrug"}});
+            scope.add();
+            expect(scope.tabTreatments[0].tabName).toBe("TbTabConfig");
+        });
+
     });
 
     describe("DosingUnitsFractions()", function () {

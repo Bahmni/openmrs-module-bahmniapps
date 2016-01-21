@@ -2,54 +2,6 @@
 
 describe("ConsultationController", function () {
 
-//<<<<<<< HEAD
-//    var scope, rootScope, state, contextChangeHandler, urlHelper, location, clinicalAppConfigService, stateParams, appService, ngDialog, q, appDescriptor;
-//
-//    beforeEach(module('bahmni.clinical'));
-//
-//    beforeEach(inject(function ($controller, $rootScope) {
-//        scope = $rootScope.$new();
-//
-//        rootScope = $rootScope;
-//        clinicalAppConfigService = {getAllConsultationBoards: function() {return []}, getConsultationBoardLink: function() {return []}};
-//
-//        stateParams = {configName: 'default'};
-//        location = {path: function() {}, url: function(url) {return url}};
-//        contextChangeHandler = {execute: function() {return {allow: true}}, reset: function() {}};
-//        urlHelper = {getPatientUrl: function() {return "/patient/somePatientUuid/dashboard"}};
-//        rootScope.collapseControlPanel = function() {};
-//
-//        appService = jasmine.createSpyObj('appService', ['getAppDescriptor']);
-//        appDescriptor = jasmine.createSpyObj('appDescriptor', ['getConfigValue']);
-//        appService.getAppDescriptor.and.returnValue(appDescriptor);
-//        appDescriptor.getConfigValue.and.returnValue(true);
-//
-//        q = jasmine.createSpyObj('q', ['all', 'defer']);
-//
-//        $controller('ConsultationController', {
-//            $scope: scope,
-//            $rootScope: rootScope,
-//            $state: state,
-//            $location:location,
-//            clinicalAppConfigService: clinicalAppConfigService,
-//            urlHelper: urlHelper,
-//            contextChangeHandler: contextChangeHandler,
-//            spinner: {},
-//            encounterService: null,
-//            messagingService: null,
-//            sessionService: null,
-//            retrospectiveEntryService: null,
-//            patientContext: {patient:{}},
-//            consultationContext: null,
-//            $q: q,
-//            patientVisitHistoryService: null,
-//            $stateParams: stateParams,
-//            $window: null,
-//            visitHistory: null,
-//            appService: appService,
-//            clinicalDashboardConfig: null,
-//            ngDialog: ngDialog
-//=======
     var scope, rootScope, state, contextChangeHandler, urlHelper, location, clinicalAppConfigService, stateParams, appService, appDescriptor, ngDialog;
     location = {path: function() {}, url: function(url) {return url}};
     var boards = [
@@ -126,7 +78,6 @@ describe("ConsultationController", function () {
                 clinicalDashboardConfig: null,
                 ngDialog: ngDialog
             });
-//>>>>>>> Chethan, Achinta | #654 | Fixing switching between treatment tabs that was not working. Fixed retaining of drug orders between two tabs.
         });
 
     };
@@ -172,7 +123,6 @@ describe("ConsultationController", function () {
         expect(scope.isInEditEncounterMode()).toBeTruthy();
     });
 
-//<<<<<<< HEAD
     it("should stay in current state if 'cancel' is selected", function(){
         expect(state.name).toEqual("patient.dashboard.show");
         scope.cancelTransition();
@@ -242,7 +192,7 @@ describe("ConsultationController", function () {
 
         expect(scope.shouldDisplaySaveConfirmDialogForStateChange).not.toHaveBeenCalled();
     });
-//=======
+
     it("should set current tab based on url", function(){
         location = {path: function() {}, url: function(url) {return "/default/patient/somePatientUuid/dashboard/treatment?programUuid=someProgramUuid&tabConfigName=tbTabConfig"}};
         injectConsultationController();
@@ -288,5 +238,4 @@ describe("ConsultationController", function () {
         expectedCurrentBoard.isSelectedTab = true;
         expect(scope.currentBoard).toEqual(expectedCurrentBoard)
     });
-//>>>>>>> Chethan, Achinta | #654 | Fixing switching between treatment tabs that was not working. Fixed retaining of drug orders between two tabs.
 });
