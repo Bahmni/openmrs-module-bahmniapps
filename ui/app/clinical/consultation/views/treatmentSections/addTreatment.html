@@ -1,19 +1,19 @@
 <form name="addForm" ng-class="{ 'show-invalid': formInvalid}"  ng-submit="add()" bm-form class="edit-drug-order-container">
-    <section class="type-of-drug-section clearfix">
-        <div class="medication-drug-container clearfix">
-            <h4 class="drug-type-title">{{ ::'MEDICATION_DRUG_NAME_TITLE' | translate}}</h4>
-
+    <article class="form-field">
+        <div class="field-attribute">
+            <label>{{ ::'MEDICATION_DRUG_NAME_TITLE' | translate}}</label>
+        </div>
+        <div class="field-value">
             <select ng-if="treatmentConfig.isDropDown()" ng-options="item as item.drug.name for item in drugs"
                     ng-model="selectedItem" ng-change="selectFromDefaultDrugList(selectedItem)">
                 <option value="">Choose Drug</option>
             </select>
-
             <div ng-if="treatmentConfig.isAutoComplete()">
                 <input id="drug-name" class="fl drug-name" type="text" placeholder="Drug Name" bahmni-autocomplete focus-on="startNewDrugEntry"
                        source="getDrugs" response-map="getDataResults" ng-required="!treatment.drugNameDisplay"
                        ng-class="{
-                                active: treatment.isNonCodedDrug
-                           }"
+                            active: treatment.isNonCodedDrug
+                       }"
                        ng-change="onChange()"
                        ng-model="treatment.drugNameDisplay" on-select="onSelect" autofocus
                        ng-disabled="treatment.previousOrderUuid" ng-readonly="treatment.isBeingEdited"/>
@@ -30,98 +30,177 @@
                 </span>
             </div>
         </div>
-    </section>
-
-    <section class="edit-drug-order primary-section-grid clearfix">
-            <div class="drug-options-wrapper clearfix">
-                <button ng-hide="treatmentConfig.isHiddenField('dosingTypeToggle')" type="button" class="icon-button exchange-btn fl" tabindex="-1" ng-click="treatment.toggleFrequency()">
-                    <i class="fa fa-exchange"></i>
-                </button>
-                <div class="frequency-widget-wrapper">
-                    <div class="frequency-widget uniform-frequency" ng-show="treatment.isUniformFrequency">
+    </article>
+    <div class="unit-wrap clearfix">
+        <button ng-hide="treatmentConfig.isHiddenField('dosingTypeToggle')" type="button" class="icon-button exchange-btn fl" tabindex="-1" ng-click="treatment.toggleFrequency()">
+            <i class="fa fa-exchange"></i>
+        </button>
+        <div class="frequency-widget uniform-frequency fl" ng-show="treatment.isUniformFrequency">
+            <section class="form-field-inline">
+                <article class="form-field">
+                    <div class="field-attribute">
+                        <span class="fl unit-text">{{ ::'MEDICATION_LABEL_QUANTITY' | translate }} </span>
                         <input id="uniform-dose" class="dose fl" integer="true" ng-focus="treatment.setFrequencyType('uniform')" type="number" min="0" step="any" placeholder="{{ treatmentConfig.getDosePlaceHolder(treatment.drug) | translate}}"
-                               ng-model="treatment.uniformDosingType.dose" ng-required="treatment.isUniformFrequency && !treatment.uniformDosingType.dosingUnitsFraction" focus-on="editDrugEntryUniformFrequency" />
-                        <div ng-show="isDosingUnitsFractionsAvailable()" class="fl dosingUnitsFractions-container">
-                            <label class="fl">&nbsp;and&nbsp;</label>
-                            <select id="uniform-dose-mantissa" class="form-field freq-dose-units" ng-model="treatment.uniformDosingType.dosingUnitsFraction"
-                                    ng-options="item.label for item in dosingUnitsFractions track by item.value" ng-required="treatment.isUniformFrequency && !treatment.uniformDosingType.dose">
-                                <option value="">e.g. 1/2</option>
-                            </select>
-                        </div>
+                               ng-model="treatment.uniformDosingType.dose" ng-required="!treatment.uniformDosingType.dosingUnitsFraction" focus-on="editDrugEntryUniformFrequency" />
+
+                    </div>
+                    <div class="field-value">
+                        <span class="fl unit-text">{{ ::'MEDICATION_LABEL_UNIT' | translate }}</span>
                         <select id="uniform-dose-unit" class="form-field freq-dose-units" ng-model="treatment.uniformDosingType.doseUnits"
                                 ng-options="item.name as item.name for item in treatmentConfig.getDoseUnits(treatment.drug)" ng-required="!treatment.validate()">
                             <option value="">Choose Unit</option>
                         </select>
-
-                        <select id="frequency" class="fl frequency" ng-model="treatment.uniformDosingType.frequency" ng-change="treatment.calculateDurationUnit(treatmentConfig.durationUnits)"
-                                ng-options="item.name as item.name for item in treatmentConfig.getFrequencies(treatment.drug)" ng-disabled="!treatment.isUniformDosingType()" ng-required="!treatment.validate()">
-                            <option value="">Choose frequency</option>
-                        </select>
-                        <select id="route" class="route" ng-model="treatment.route"
-                                ng-options="item.name as item.name for item in treatmentConfig.getRoutes(treatment.drug)">
-                            <option value="">Choose Route</option>
+                    </div>
+                </article>
+            </section>
+            <div ng-show="isDosingUnitsFractionsAvailable()" class="fl dosingUnitsFractions-container">
+                <article class="form-field">
+                    <div class="field-attribute">
+                        <label class="fl">&nbsp;and&nbsp;</label>
+                    </div>
+                    <div class="field-attribute">
+                        <select id="uniform-dose-mantissa" class="form-field freq-dose-units" ng-model="treatment.uniformDosingType.dosingUnitsFraction"
+                                ng-options="item.label for item in dosingUnitsFractions track by item.value" ng-required="!treatment.uniformDosingType.dose">
+                            <option value="">e.g. 1/2</option>
                         </select>
                     </div>
-                    <div class="frequency-widget variable-frequency" ng-show="!treatment.isUniformFrequency">
-                        <div class="fl dose-cell">
-                            <input id="morning-dose" type="number" min="0" step="any" ng-model="treatment.variableDosingType.morningDose" integer="true" ng-focus="treatment.setFrequencyType('variable')"
-                                   ng-required="!treatment.validate()" focus-on="editDrugEntryVariableFrequency" placeholder="&mdash;"/>
-                            <input id="afternoon-dose" type="number" min="0" step="any" ng-model="treatment.variableDosingType.afternoonDose" integer="true"
-                                   ng-required="!treatment.validate()" placeholder="&mdash;"/>
-                            <input id="evening-dose" type="number" min="0" step="any" ng-model="treatment.variableDosingType.eveningDose" integer="true"
-                                   ng-required="!treatment.validate()" placeholder="&mdash;"/>
-                        </div>
-                        <select id="variable-dose-unit" class="fl freq-dose-units" ng-model="treatment.variableDosingType.doseUnits"
-                                ng-options="item.name as item.name for item in treatmentConfig.getDoseUnits(treatment.drug)" ng-required="!treatment.validate()">
-                            <option value="">Choose Unit</option>
-                        </select>
-                        <select id="route" class="route" ng-model="treatment.route"
-                                ng-options="item.name as item.name for item in treatmentConfig.getRoutes(treatment.drug)">
-                            <option value="">Choose Route</option>
-                        </select>
-                    </div>
-                    <button ng-hide="treatmentConfig.isHiddenField('sos')" ng-bind-html="'MEDICATION_SOS_BUTTON_TEXT' | translate"  id="SOS" tabindex="-1" type="button" class="grid-row-element fl" ng-class="{active: treatment.asNeeded}" ng-click="toggleAsNeeded(treatment)" accesskey="o">
-                        <i class="fa fa-ok"></i>
-                    </button>
-                    <label class="start-date-label fl">Start Date</label>
-                    <input id="start-date" date-converter class="start-date fl" type="date"
-                           ng-model="treatment.effectiveStartDate" required>
-                </div>
-                <div class="operations fr">
-                    <button class="add-drug-btn secondary-button fl" type="submit" accesskey="a" ng-disabled="!treatment.drug.uuid && treatment.drugNameDisplay && !treatment.isNonCodedDrug"><u>A</u>dd</button>
-                </div>
+                </article>
             </div>
-            <div class="drug-options-wrapper">
-                <textarea ng-hide="treatmentConfig.isHiddenField('additionalInstructions')" id="additional-instructions" rows="1" msd-elastic class="drug-order-notes" placeholder="Additional Instructions" ng-model="treatment.additionalInstructions"></textarea>
-
-                <div class="duration-widget fl">
-                    <input  ng-hide="treatmentConfig.isHiddenField('duration')" id="duration" class="fl duration" type="number" min="1" placeholder="Duration"
-                           ng-model="treatment.duration" ng-change="treatment.calculateDurationInDays()" ng-required="treatment.isDurationRequired" ng-pattern="/^[0-9]+$/"/>
-                    <select  ng-hide="treatmentConfig.isHiddenField('durationUnits')" id="duration-unit" class="fl duration-unit" ng-model="treatment.durationUnit"
-                            ng-options="item.name as item.name for item in treatmentConfig.getDurationUnits(treatment.drug)" required>
+            <article class="form-field clearfix">
+                <div class="field-attribute">
+                    <label>{{ :: "MEDICATION_LABEL_FREQUENCY" | translate }}</label>
+                </div>
+                <div class="field-value">
+                    <select id="frequency" class="fl frequency" ng-model="treatment.uniformDosingType.frequency" ng-change="treatment.calculateDurationUnit(treatmentConfig.durationUnits)"
+                            ng-options="item.name as item.name for item in treatmentConfig.getFrequencies(treatment.drug)" ng-disabled="!treatment.isUniformDosingType()" ng-required="!treatment.validate()">
+                        <option value="">Choose frequency</option>
                     </select>
                 </div>
-
-                <select ng-hide="treatmentConfig.isHiddenField('dosingInstructions')" id="instructions" class="instruction" ng-model="treatment.instructions"
-                        ng-options="item.name as item.name for item in treatmentConfig.getDosingInstructions(treatment.drug)">
-                    <option value="">Choose Instruction</option>
+            </article>
+            <article class="form-field clearfix">
+                <div class="field-attribute">
+                    <label>{{ :: "MEDICATION_LABEL_ROUTE" | translate }}</label>
+                </div>
+                <div class="field-value">
+                    <select id="route" class="route" ng-model="treatment.route"
+                            ng-options="item.name as item.name for item in treatmentConfig.getRoutes(treatment.drug)">
+                        <option value="">Choose Route</option>
+                    </select>
+                </div>
+            </article>
+        </div>
+        <div class="frequency-widget variable-frequency fl" ng-show="!treatment.isUniformFrequency">
+            <section class="form-field-inline">
+                <div class="fl dose-cell">
+                    <input id="morning-dose" type="number" min="0" step="any" ng-model="treatment.variableDosingType.morningDose" integer="true" ng-focus="treatment.setFrequencyType('variable')"
+                           ng-required="!treatment.validate()" focus-on="editDrugEntryVariableFrequency" placeholder="&mdash;"/>
+                    <input id="afternoon-dose" type="number" min="0" step="any" ng-model="treatment.variableDosingType.afternoonDose" integer="true"
+                           ng-required="!treatment.validate()" placeholder="&mdash;"/>
+                    <input id="evening-dose" type="number" min="0" step="any" ng-model="treatment.variableDosingType.eveningDose" integer="true"
+                           ng-required="!treatment.validate()" placeholder="&mdash;"/>
+                </div>
+                <span class="fl unit-text">{{ ::'MEDICATION_LABEL_UNIT' | translate }}</span>
+                <select id="variable-dose-unit" class="fl freq-dose-units" ng-model="treatment.variableDosingType.doseUnits"
+                        ng-options="item.name as item.name for item in treatmentConfig.getDoseUnits(treatment.drug)" ng-required="!treatment.validate()">
+                    <option value="">Choose Unit</option>
                 </select>
-
-                <div ng-show="!treatment.simpleDrugForm" class="quantity-widget fl">
-                    <input ng-hide="treatmentConfig.isHiddenField('quantity')" id="quantity" class="quantity fl" type="number" min="0.1" placeholder="Qty" step="any"
-                           ng-model="treatment.quantity" ng-change="treatment.setQuantityEnteredManually()" ng-required="treatment.isDurationRequired"/>
-                    <select ng-hide="treatmentConfig.isHiddenField('quantityUnits')" id="total-quantity-unit" class="freq-dose-units fl" ng-model="treatment.quantityUnit" ng-change="treatment.setQuantityUnitEnteredManually()"
-                            ng-options="item.name as item.name for item in treatmentConfig.getDoseUnits(treatment.drug)" ng-required="!treatment.validate()">
-                        <option value="">Choose Unit</option>
+            </section>
+            <article class="form-field clearfix">
+                <div class="field-attribute">
+                    <label>{{ :: "MEDICATION_LABEL_ROUTE" | translate }}</label>
+                </div>
+                <div class="field-value">
+                    <select id="route" class="route" ng-model="treatment.route"
+                            ng-options="item.name as item.name for item in treatmentConfig.getRoutes(treatment.drug)">
+                        <option value="">Choose Route</option>
                     </select>
                 </div>
-                <button type="button" class="icon-button showInfo-btn fr" tabindex="-1" ng-click="clearForm()" title="Clear">
-                    <i class="fa fa-eraser"></i>
-                </button>
+            </article>
+        </div>
+    </div>
+    <article class="form-field clearfix">
+        <div class="field-attribute">
+            <label class="duration-label">{{ :: "MEDICATION_LABEL_DURATION" | translate }}</label>
+        </div>
+        <div class="field-value">
+            <div class="duration-widget fl">
+                <input  ng-hide="treatmentConfig.isHiddenField('duration')" id="duration" class="fl duration" type="number" min="1" placeholder="Duration"
+                        ng-model="treatment.duration" ng-change="treatment.calculateDurationInDays()" ng-required="treatment.isDurationRequired" ng-pattern="/^[0-9]+$/"/>
+                <span class="fl unit-text">Days</span>
+                <select  ng-hide="treatmentConfig.isHiddenField('durationUnits')" id="duration-unit" class="fl duration-unit" ng-model="treatment.durationUnit"
+                         ng-options="item.name as item.name for item in treatmentConfig.getDurationUnits(treatment.drug)" required>
+                </select>
             </div>
-            <div class="drug-options-wrapper" ng-if="treatmentActionLinks.length > 0">
-                <button ng-repeat="extension in treatmentActionLinks" type="button" class="form-field secondary-button" ng-click="openActionLink(extension)" accesskey="{{extension.shortcutKey}}" ng-bind-html="extension.label"></button>
+        </div>
+    </article>
+    <article class="form-field">
+        <div class="field-attribute">
+            <label class="start-date-label fl">{{ :: "MEDICATION_LABEL_START_DATE" | translate }}</label>
+        </div>
+        <div class="field-value">
+            <input id="start-date" date-converter class="start-date fl" type="date"
+                   ng-model="treatment.effectiveStartDate" required>
+        </div>
+    </article>
+    <article class="form-field">
+        <div ng-show="!treatment.simpleDrugForm" class="quantity-widget fl">
+            <div class="field-attribute">
+                <label class="start-date-label fl">{{ :: "MEDICATION_LABEL_TOTAL_QUANTITY" | translate }}</label>
             </div>
+            <div class="field-value">
+                <input ng-hide="treatmentConfig.isHiddenField('quantity')" id="quantity" class="quantity fl" type="number" min="0.1" placeholder="Qty" step="any"
+                       ng-model="treatment.quantity" ng-change="treatment.setQuantityEnteredManually()" ng-required="treatment.isDurationRequired"/>
+                <span class="fl unit-text">{{ ::'MEDICATION_LABEL_UNIT' | translate }}</span>
+                <select ng-hide="treatmentConfig.isHiddenField('quantityUnits')" id="total-quantity-unit" class="freq-dose-units fl" ng-model="treatment.quantityUnit" ng-change="treatment.setQuantityUnitEnteredManually()"
+                        ng-options="item.name as item.name for item in treatmentConfig.getDoseUnits(treatment.drug)" ng-required="!treatment.validate()">
+                    <option value="">Choose Unit</option>
+                </select>
+            </div>
+        </div>
+    </article>
+    <h3 class="orderSet-additional-info">Additional Information</h3>
+    <article class="form-field">
+        <div class="field-attribute">
+            <label  class="start-date-label fl"> {{ ::"MEDICATION_LABEL_AS_NEEDED" | translate }} </label>
+        </div>
+        <div class="field-value">
+            <button ng-hide="treatmentConfig.isHiddenField('sos')"  id="SOS" tabindex="-1" type="button" class="grid-row-element fl" ng-class="{active: treatment.asNeeded}" ng-click="toggleAsNeeded(treatment)" accesskey="o">
+                <i class="fa fa-ok"></i>
+                S<u>O</u>S
+            </button>
+        </div>
+    </article>
+    <article class="form-field">
+        <div class="field-attribute">
+            <label  class="start-date-label fl">Reason For Administration</label>
+        </div>
+        <div class="field-value">
+            <select ng-hide="treatmentConfig.isHiddenField('dosingInstructions')" id="instructions" class="instruction" ng-model="treatment.instructions"
+                    ng-options="item.name as item.name for item in treatmentConfig.getDosingInstructions(treatment.drug)">
+                <option value="">Choose Instruction</option>
+            </select>
+        </div>
+    </article>
+    <article class="form-field">
+        <div class="field-attribute">
+            <label  class="start-date-label fl">Notes</label>
+        </div>
+        <div class="field-value">
+            <textarea ng-hide="treatmentConfig.isHiddenField('additionalInstructions')" id="additional-instructions" rows="1" msd-elastic class="drug-order-notes" placeholder="Additional Instructions" ng-model="treatment.additionalInstructions"></textarea>
+        </div>
+    </article>
+    <div class="operations fr">
+        <button class="add-drug-btn secondary-button fl" type="submit" accesskey="a" ng-disabled="!treatment.drug.uuid && treatment.drugNameDisplay && !treatment.isNonCodedDrug"><u>A</u>dd</button>
+        <button type="button" class="icon-button showInfo-btn fr reset-drug-form" tabindex="-1" ng-click="clearForm()" title="Clear">
+            Clear
+        </button>
+    </div>
+    <div class="drug-options-wrapper clearfix">
+
+        </div>
+        <div class="drug-options-wrapper" ng-if="treatmentActionLinks.length > 0">
+            <button ng-repeat="extension in treatmentActionLinks" type="button" class="form-field secondary-button" ng-click="openActionLink(extension)" accesskey="{{extension.shortcutKey}}" ng-bind-html="extension.label"></button>
+        </div>
     </section>
 </form>
 <ng-include src="'consultation/views/treatmentSections/newDrugOrders.html'"></ng-include>

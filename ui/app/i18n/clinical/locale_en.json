@@ -94,6 +94,16 @@
     "MEDICATION_DEFAULT_DRUGS_TITLE": "Frequently Used",
     "MEDICATION_DRUG_NAME_TITLE": "Drug Name",
     "MEDICATION_SOS_BUTTON_TEXT" : "S<u>O</u>S",
+    "MEDICATION_ADD_DRUG_FORM_TITLE": "Order Drug",
+    "MEDICATION_LABEL_QUANTITY" :"Quantity",
+    "MEDICATION_LABEL_UNIT" :"Units",
+    "MEDICATION_LABEL_FREQUENCY" :"Frequency",
+    "MEDICATION_LABEL_ROUTE" :"Route",
+    "MEDICATION_LABEL_DURATION" :"Duration",
+    "MEDICATION_LABEL_DAYS" :"Days",
+    "MEDICATION_LABEL_START_DATE" :"Start Date",
+    "MEDICATION_LABEL_TOTAL_QUANTITY" :"Total Quantity",
+    "MEDICATION_LABEL_AS_NEEDED" :"As Needed",
 
     "REMOVE_CONFIRMATION_KEY": "Are you sure you want to remove?",
 

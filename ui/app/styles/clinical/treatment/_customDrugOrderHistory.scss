@@ -1,5 +1,5 @@
 .drugOrderHistorySectionContainer{
-  margin-top: 15px;
+  //margin-top: 15px;
   table.treatments-details-table{
     u{
       border: none !important;
@@ -45,7 +45,7 @@
       }
       font-family: openSansSemiBold;
       &.drugName{
-        width: 210px;
+        width: 200px;
         text-align: left;
         @media (max-width : 1024px){
           width: 170px;

@@ -1,10 +1,10 @@
 .treatment-page-container{
-    font-size: 14px;
+    font-size: 12px;
     .drug-details {
         line-height: 1.5em;
         padding-left: 10px;
         margin-top: 5px;
-        width: 63%;
+        width: 58%;
         float: left;
     }
     div.start-date span {
@@ -73,7 +73,7 @@
             }
         }
     }
-    .add-drug-btn{
+    .add-drug-btn,.reset-drug-form{
         margin-top: 4px;
         margin-left: 5px;
         &.move-add-drug-btn{
@@ -181,6 +181,89 @@
     }
     .revise-refill-modal-wrapper {
         outline: 0;
+    }
+    .orders-section-left{
+        width: 31% !important;
+        margin: 0 !important;
+        background: #fff;
+        border-radius:3px;
+        box-sizing: border-box;
+        @include box-shadow-for-section();
+        .order-section-container{
+            padding: 10px;
+            box-sizing: border-box;
+            .Order-section-orderDrug{
+                margin: 0 0 30px;
+                h2.section-title{
+                    margin: 0 0 10px;
+                }
+                .drug-name{
+                    width:210px;
+                }
+                .edit-drug-order-container .accept-btn{
+                    margin-left: 5px;
+                    margin-top: 4px;
+                    padding: 6px 10px 7px;
+                }
+                input[type="number"]{
+                    width:135px;
+                    box-sizing: border-box;
+                }
+                input[type="date"]{
+                    width:9.5em;
+                }
+                .unit-text{
+                    display: inline-block;
+                    padding: 8px 10px 0;
+                }
+                select{
+                    min-width: 135px;
+                    width:135px;
+                    &.freq-dose-units, &.duration-unit{
+                        min-width: 95px;
+                        width: 95px;
+                    }
+                }
+                .exchange-btn{
+                    padding: 3px 2px;
+                    line-height: initial;
+                    margin-top:5px;
+                }
+                textarea{
+                    width:275px;
+                }
+                .dose-cell {
+                    margin-left: 5px;
+                    input[type="number"] {
+                        min-width: 64px;
+                        width: 64px;
+                    }
+                }
+            }
+
+            h3.orderSet-additional-info{
+                font-family: OpenSansBold;
+                color: #333;
+                font-size: 13px;
+                border-bottom: 1px solid #ccc;
+                padding: 20px 0 5px;
+                margin: 0 0 10px;
+            }
+        }
+    }
+    form .form-field .field-attribute label{
+        width: 5.5em;
+        &.duration-label ,&.start-date-label{
+            width:7.8em;
+        }
+    }
+    .orders-section-right{
+        width: 68% !important;
+        margin-top: 0 !important;
+        .dashboard-section{
+            margin-top:0;
+            border-radius: 3px 3px 0 0;
+        }
     }
 }
 

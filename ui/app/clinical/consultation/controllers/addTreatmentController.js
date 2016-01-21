@@ -535,7 +535,6 @@ angular.module('bahmni.clinical')
             };
             $scope.consultation.preSaveHandler.register("drugOrderSaveHandlerKey", saveTreatment);
 
-
             var init = function(){
                 $scope.consultation.removableDrugs = $scope.consultation.removableDrugs || [];
                 $scope.consultation.discontinuedDrugs = $scope.consultation.discontinuedDrugs || [];

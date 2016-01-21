@@ -1,5 +1,21 @@
-<div class="treatment-page treatment-page-container">
-    <div ui-view="addTreatment"></div>
-    <div ng-if="drugOrderHistoryView === 'default'" ui-view="defaultHistoryView"></div>
-    <div ng-if="drugOrderHistoryView === 'custom'" ui-view="customHistoryView"></div>
+<div class="treatment-page treatment-page-container order-list">
+    <div class="dashboard-section-wrapper">
+        <section class="orders-section-left">
+            <h2 class="section-title">
+                <!--<i class="fa fa-caret-right ng-hide" ng-hide="conceptSet.isOpen"></i>-->
+                <!--<i class="fa fa-caret-down" ng-show="conceptSet.isOpen"></i>-->
+                <i class="fa fa-caret-down"></i>
+                <span class="section-label">{{ ::'MEDICATION_ADD_DRUG_FORM_TITLE' | translate}}</span>
+            </h2>
+            <div class="order-section-container">
+                <div class="Order-section-orderDrug clearfix">
+                    <div ui-view="addTreatment"></div>
+                </div>
+            </div>
+        </section>
+        <section class="orders-section-right">
+            <div ng-if="drugOrderHistoryView === 'default'" ui-view="defaultHistoryView"></div>
+            <div ng-if="drugOrderHistoryView === 'custom'" ui-view="customHistoryView"></div>
+        </section>
+    </div>
 </div>
