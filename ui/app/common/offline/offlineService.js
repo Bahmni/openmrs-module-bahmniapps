@@ -1,3 +1,5 @@
+'use strict';
+
 angular.module('bahmni.common.offline').service('offlineService', ['$rootScope', '$bahmniCookieStore', function ($rootScope, $bahmniCookieStore) {
     var offline = false;
 
