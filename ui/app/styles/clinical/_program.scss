@@ -30,7 +30,10 @@
       }
     }
   }
-
+  input[type="checkbox"], input[type="radio"]{
+    width: auto !important;
+    margin: 8px 5px 0 0;
+  }
   .select-program-container {
     .dashboard-section{
       overflow: hidden;
@@ -43,10 +46,6 @@
       margin-right: 10px;
       box-sizing: border-box;
       float: none;
-    }
-    input[type="checkbox"], input[type="radio"]{
-      width: auto;
-      margin: 8px 5px 0 0;
     }
     label.start-date-label {
       display: inline-block;
@@ -61,6 +60,9 @@
     input[type="submit"]{
       float: right;
       margin-right: 0;
+    }
+    form .form-field .field-attribute label{
+      width:17em;
     }
   }
   .program-details table.programTable{
@@ -195,6 +197,7 @@
   }
   span{
     display: inline-block;
+    padding-right: 5px;
     &.enrolled-info {
       display: inline-block;
       font-size: 12px;
@@ -448,7 +451,7 @@
           float: left;
           text-align: right;
           label{
-            width: 15em;
+            width: 18.5em;
             margin: 0 0.8em 0em 0em;
           }
         }
@@ -456,13 +459,21 @@
           float: left;
         }
       }
+      .programEditing .form-field .field-attribute label{
+        margin: 0.5em 0.8em 0em 0em;
+      }
   }
   .activeProgramAttributeFields {
     .form-field{
       line-height: 1.5em;
+      .field-attribute{
+        width:50%;
+      }
       label{
-        width:13em;
+        width:18.5em !important;
+        text-align: right;
       }
     }
   }
+
 }
