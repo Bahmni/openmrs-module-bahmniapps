@@ -31,7 +31,7 @@
                         </span>
                 </a>
                 <section ng-hide="programSelected == null" class="programAttributeFields">
-                    <h2 class="programAttribute-title" ng-if="programAttributeTypes.length>0">{{'PROGRAM_MANAGEMENT_LABEL_PROGRAM' | translate}} Attributes</h2>
+                    <h2 class="programAttribute-title" ng-if="programAttributeTypes.length>0">{{'PROGRAM_MANAGEMENT_PROGRAM_ATTRIBUTES_KEY' | translate}}</h2>
 
                     <attribute-types target-model="patientProgramAttributes" attribute="attribute"
                                      ng-repeat="attribute in programAttributeTypes"
