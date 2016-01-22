@@ -28,12 +28,13 @@ Bahmni.Clinical.DrugSearchResult = (function () {
         var doesMatchSearchString = getMatcher(searchString);
         var createSynonym = getSynonymCreator(drug);
 
+        if (doesMatchSearchString(drug.name)) return [createSynonym()];
+
         var conceptNames = drug && drug.concept && drug.concept.names;
         var uniqConceptNames = _.uniq(_.pluck(conceptNames, 'name'));
         var namesThatMatches = _.filter(uniqConceptNames, doesMatchSearchString);
         namesThatMatches = _.sortBy(namesThatMatches);
         var allMatchingResults = _.map(namesThatMatches, createSynonym);
-        if (doesMatchSearchString(drug.name)) allMatchingResults.push(createSynonym());
 
         return allMatchingResults;
     };
