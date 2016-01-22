@@ -190,6 +190,10 @@ angular.module('consultation')
                         controller: 'AddTreatmentController',
                         templateUrl: 'consultation/views/treatmentSections/addTreatment.html'
                     },
+                    "newlyAddedTreatmentsSection": {
+                        controller: 'NewlyAddedTreatmentsController',
+                        templateUrl: 'consultation/views/treatmentSections/newlyAddedTreatments.html'
+                    },
                     "defaultHistoryView": {
                         controller: 'DrugOrderHistoryController',
                         templateUrl: 'consultation/views/treatmentSections/drugOrderHistory.html'
