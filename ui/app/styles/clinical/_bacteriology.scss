@@ -1,5 +1,10 @@
 .bacteriology-container{
   font-size: 14px;
+  .illegalValue{
+    border: 2px solid darken($clinicalFormInvalid, 30%) !important;
+    background: $clinicalFormInvalid !important;
+    outline: 0 !important;
+  }
   .sample-container{
     margin-bottom: 20px;
   }

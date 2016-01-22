@@ -34,6 +34,14 @@ angular.module('bahmni.common.uiHelper')
                 return valueNotFilled() || valueCompletelyFilled();
             };
 
+            $scope.illegalTime = function() {
+                return $scope.selectedDate !== null && ($scope.selectedTime === null || $scope.selectedTime === undefined);
+            }
+
+            $scope.illegalDate = function() {
+                return ($scope.selectedDate === null || $scope.selectedDate === undefined) && $scope.selectedTime !== null;
+            }
+
             if($scope.model) {
                 var date = moment($scope.model).toDate();
                 $scope.selectedDate = date;
@@ -54,8 +62,8 @@ angular.module('bahmni.common.uiHelper')
             },
             template:
                 "<span>" +
-                    "<input type='date' ng-change='updateModel()' ng-class=\"{'illegalValue': illegalValue}\" ng-attr-max='{{maxDate || undefined}}' ng-model='selectedDate' ng-required='!isValid() || illegalValue' ng-disabled='observation.disabled' />" +
-                    "<input type='time' ng-change='updateModel()' ng-class= \"{'illegalValue': !isValid()}\" ng-model='selectedTime'  ng-required='!isValid() || illegalValue' ng-disabled='observation.disabled' />" +
+                    "<input type='date' ng-change='updateModel()' ng-class=\"{'illegalValue': illegalValue && illegalDate()}\" ng-attr-max='{{maxDate || undefined}}' ng-model='selectedDate' ng-required='!isValid() || illegalValue' ng-disabled='observation.disabled' />" +
+                    "<input type='time' ng-change='updateModel()' ng-class= \"{'illegalValue': illegalValue && illegalTime()}\" ng-model='selectedTime'  ng-required='!isValid() || illegalValue' ng-disabled='observation.disabled' />" +
                 "</span>"
         }
     });
