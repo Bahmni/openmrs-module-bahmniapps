@@ -141,7 +141,7 @@ describe('treatmentConfig', function() {
         });
     });
 
-    it("drugConceptSet should be part of inputOptionsConfig",function () {
+    it("drugConceptSet should be part of inputOptionsConfig",function (done) {
         var allTBDrugs = 'All TB Drugs';
         var configName = "tbTab";
         medicationConfig[configName].inputOptionsConfig.drugConceptSet=allTBDrugs;
@@ -151,4 +151,24 @@ describe('treatmentConfig', function() {
             done();
         });
     });
+
+    it("show additional information only if sos or dosing instructions or additional instructions are configured to be shown", function(done){
+        var configName = "tbTab";
+        medicationConfig[configName].inputOptionsConfig.hiddenFields = ["additionalInstructions", "sos"];
+        injectTreatmentConfig(configName);
+        treatmentConfig.then(function(config){
+            expect(config.showAdditionalInformation()).toBeTruthy();
+            done();
+        })
+    });
+
+    it("hide additional information only if sos, dosing instructions, additional instructions are hidden", function(done){
+        var configName = "tbTab";
+        medicationConfig[configName].inputOptionsConfig.hiddenFields = ["additionalInstructions", "sos", "dosingInstructions"];
+        injectTreatmentConfig(configName);
+        treatmentConfig.then(function(config){
+            expect(config.showAdditionalInformation()).toBeFalsy();
+            done();
+        })
+    })
 });
