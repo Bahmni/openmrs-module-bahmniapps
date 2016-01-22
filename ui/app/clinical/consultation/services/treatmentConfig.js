@@ -46,6 +46,11 @@ angular.module('bahmni.clinical').factory('treatmentConfig', ['TreatmentService'
             },
             isAutoCompleteForAllConcepts: function () {
                 return !(this.getDrugConceptSet());
+            },
+            showAdditionalInformation: function() {
+                var additionalInformationFields = ["sos", "additionalInstructions", "dosingInstructions"];
+                var hiddenAdditionalInformationFields = _.intersection(additionalInformationFields, drugOrderOptions.hiddenFields)
+                return hiddenAdditionalInformationFields.length < additionalInformationFields.length;
             }
         };
 
@@ -83,7 +88,7 @@ angular.module('bahmni.clinical').factory('treatmentConfig', ['TreatmentService'
                 ];
                 var frequencies = medicationTabConfig.frequencies;
                 bubbleValueToTop(frequencies, "Immediately");
-                bubbleValueToTop(frequencies, "SOS")
+                bubbleValueToTop(frequencies, "SOS");
 
                 medicationTabConfig.stoppedOrderReasonConcepts = stoppedOrderReasonConfig.answers;
                 return medicationTabConfig;
