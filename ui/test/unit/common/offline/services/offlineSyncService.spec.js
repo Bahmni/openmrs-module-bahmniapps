@@ -62,6 +62,9 @@ describe('OfflineSyncService', function () {
                 $provide.value('offlineService', {
                     isAndroidApp: function () {
                         return false;
+                    },
+                    offline: function () {
+                        return false;
                     }
                 });
             });
@@ -98,15 +101,17 @@ describe('OfflineSyncService', function () {
 
         it('should read address hierarchy entry from the beginning for the catchment', function () {
             spyOn(offlineDbService, 'getMarker').and.callThrough();
-            spyOn(eventLogService, 'getEventsFor').and.callFake(function(){
+            spyOn(eventLogService, 'getEventsFor').and.callFake(function () {
                 return {
-                    then: function(callback) { return callback({
-                        data: [{
-                            object: 'url to get addressHierarchy object',
-                            category: 'addressHierarchy',
-                            uuid: 'eventuuid'
-                        }]
-                    }); }
+                    then: function (callback) {
+                        return callback({
+                            data: [{
+                                object: 'url to get addressHierarchy object',
+                                category: 'addressHierarchy',
+                                uuid: 'eventuuid'
+                            }]
+                        });
+                    }
                 };
             });
             spyOn(eventLogService, 'getDataForUrl').and.callThrough();
@@ -180,6 +185,9 @@ describe('OfflineSyncService', function () {
                 });
                 $provide.value('offlineService', {
                     isAndroidApp: function () {
+                        return false;
+                    },
+                    offline: function () {
                         return false;
                     }
                 });
