@@ -25,7 +25,7 @@
                 </span>
                 <span ng-if="columnName === 'startDate'">{{::drugOrder.effectiveStartDate | bahmniDate}}</span>
                 <span ng-if="columnName === 'stopDate' && drugOrder.isDiscontinuedOrStopped()">{{::drugOrder.effectiveStopDate | bahmniDate}}</span>
-                <span ng-if="columnName === 'stopReason' && drugOrder.orderReasonConcept">
+                <span ng-if="columnName === 'stopReason' && drugOrder.orderReasonConcept && drugOrder.isDiscontinuedOrStopped()">
                     {{::drugOrder.orderReasonConcept.display || drugOrder.orderReasonConcept.name}}
                     <span ng-if="drugOrder.orderReasonText"> - {{::drugOrder.orderReasonText}}</span>
                 </span>
