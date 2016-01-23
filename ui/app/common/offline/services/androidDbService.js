@@ -14,14 +14,14 @@ angular.module('bahmni.common.offline')
             var insertMarker = function (uuid, catchmentNumber) {
                 var deferred = $q.defer();
                 var value = AndroidOfflineService.insertMarker(uuid, catchmentNumber);
-                value = value != undefined ? JSON.parse(value) : value;
                 deferred.resolve(value);
                 return deferred.promise;
             };
 
             var createPatient = function (patient) {
                 var deferred = $q.defer();
-                var value = AndroidOfflineService.createPatient(patient);
+                var patientString = JSON.stringify(patient);
+                var value = AndroidOfflineService.createPatient(patientString);
                 value = value != undefined ? JSON.parse(value) : value;
                 deferred.resolve(value);
                 return deferred.promise;
@@ -29,7 +29,8 @@ angular.module('bahmni.common.offline')
 
             var insertAddressHierarchy = function (addressHierarchy) {
                 var deferred = $q.defer();
-                var value = AndroidOfflineService.insertAddressHierarchy(addressHierarchy);
+                var addressHierarchyString = JSON.stringify(addressHierarchy);
+                var value = AndroidOfflineService.insertAddressHierarchy(addressHierarchyString);
                 value = value != undefined ? JSON.parse(value) : value;
                 deferred.resolve(value);
                 return deferred.promise;
