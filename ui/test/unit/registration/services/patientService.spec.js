@@ -3,7 +3,7 @@
 describe('Patient resource', function () {
     var patientService, offlineService;
     var patient;
-    var _offlineService = jasmine.createSpyObj('offlineService', ['offline']);
+    var _offlineService = jasmine.createSpyObj('offlineService', ['offline', 'isAndroidApp']);
 
     var openmrsUrl = "http://blah";
     var patientConfiguration;
@@ -64,6 +64,9 @@ describe('Patient resource', function () {
 
     var mockOfflineService = function () {
         _offlineService.offline.and.callFake(function () {
+            return false;
+        });
+        _offlineService.isAndroidApp.and.callFake(function () {
             return false;
         });
     };

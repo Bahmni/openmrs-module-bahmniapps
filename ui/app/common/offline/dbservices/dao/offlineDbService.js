@@ -13,8 +13,7 @@ angular.module('bahmni.common.offline')
         };
 
         var createPatient = function (postRequest) {
-            var addressColumns = [];
-            return insertPatientData(postRequest, addressColumns, "POST")
+            return insertPatientData(postRequest, "POST")
                 .then(function () {
                     return {data: postRequest};
                 });
@@ -48,7 +47,7 @@ angular.module('bahmni.common.offline')
             return deferred.promise;
         };
 
-        var insertPatientData = function (patientData, addressColumnNames, requestType) {
+        var insertPatientData = function (patientData, requestType) {
             var patient = patientData.patient;
             var person = patient.person;
             var attributeTypeTable = db.getSchema().table('patient_attribute_type');
@@ -60,7 +59,7 @@ angular.module('bahmni.common.offline')
                     }
                     return patientDbService.insertPatientData(db, patientData).then(function (patientUuid) {
                         patientAttributeDbService.insertAttributes(db, patientUuid, person.attributes, attributeTypeMap);
-                        patientAddressDbService.insertAddress(db, patientUuid, person.addresses[0], addressColumnNames);
+                        patientAddressDbService.insertAddress(db, patientUuid, person.addresses[0]);
                         return patientData;
                     });
                 });

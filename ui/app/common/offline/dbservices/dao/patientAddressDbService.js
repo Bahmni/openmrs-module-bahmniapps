@@ -1,20 +1,31 @@
 'use strict';
 
 angular.module('bahmni.common.offline')
-    .service('patientAddressDbService', ['$http', '$q', function ($http, $q) {
-        var insertAddress = function (db, patientUuid, address, addressColumnNames) {
+    .service('patientAddressDbService', [function () {
+        var insertAddress = function (db, patientUuid, address) {
             var patientAddressTable = db.getSchema().table('patient_address');
-            var constructedRow = {};
-            _.each(addressColumnNames, function (addressColumn) {
-                constructedRow[addressColumn] = address[addressColumn]
+            var row = patientAddressTable.createRow({
+                address1: address['address1'],
+                address2: address['address2'],
+                address3: address['address3'],
+                address4: address['address4'],
+                address5: address['address5'],
+                address6: address['address6'],
+                cityVillage: address['cityVillage'],
+                stateProvince: address['stateProvince'],
+                postalCode: address['postalCode'],
+                country: address['country'],
+                countyDistrict: address['countyDistrict'],
+                patientUuid: patientUuid
             });
-            constructedRow["patientUuid"] = patientUuid;
-            var row = patientAddressTable.createRow(constructedRow);
+
+            console.log(address);
+            console.log(row);
 
             return db.insertOrReplace().into(patientAddressTable).values([row]).exec()
         };
 
         return {
-            insertAddress : insertAddress
+            insertAddress: insertAddress
         }
     }]);

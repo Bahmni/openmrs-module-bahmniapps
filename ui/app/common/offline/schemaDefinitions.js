@@ -189,19 +189,19 @@ Bahmni.Common.Offline.SchemaDefinitions = {
                 name: 'address2',
                 type: 'STRING'
             }, {
-                name: 'city_village',
+                name: 'cityVillage',
                 type: 'STRING'
             }, {
-                name: 'state_province',
+                name: 'stateProvince',
                 type: 'STRING'
             }, {
-                name: 'postal_code',
+                name: 'postalCode',
                 type: 'STRING'
             }, {
                 name: 'country',
                 type: 'STRING'
             }, {
-                name: 'county_district',
+                name: 'countyDistrict',
                 type: 'STRING'
             }, {
                 name: 'address3',
@@ -220,7 +220,7 @@ Bahmni.Common.Offline.SchemaDefinitions = {
                 type: 'STRING'
             }
         ],
-        nullableColumns: ['address1', 'address2', 'city_village', 'state_province', 'postal_code', 'country', 'county_district', 'address3', 'address4', 'address5', 'address6'],
+        nullableColumns: ['address1', 'address2', 'cityVillage', 'stateProvince', 'postalCode', 'country', 'countyDistrict', 'address3', 'address4', 'address5', 'address6'],
         primaryKeyColumns: ['patientUuid']
     }
 };
