@@ -7,16 +7,16 @@ Bahmni.Common.Offline.SchemaDefinitions = {
         tableName: 'address_hierarchy_level',
         columns: [
             {
-                name: 'address_hierarchy_level_id',
+                name: 'addressHierarchyLevelId',
                 type: 'INTEGER'
             }, {
                 name: 'name',
                 type: 'STRING'
             }, {
-                name: 'parent_level_id',
+                name: 'parentLevelId',
                 type: 'INTEGER'
             }, {
-                name: 'address_field',
+                name: 'addressField',
                 type: 'STRING'
             }, {
                 name: 'uuid',
@@ -26,7 +26,7 @@ Bahmni.Common.Offline.SchemaDefinitions = {
                 type: 'INTEGER'
             }
         ],
-        nullableColumns: ['name', 'parent_level_id', 'address_field'],
+        nullableColumns: ['name', 'parentLevelId', 'addressField'],
         primaryKeyColumns: ['uuid']
     },
 
@@ -37,20 +37,20 @@ Bahmni.Common.Offline.SchemaDefinitions = {
                 name: 'name',
                 type: 'STRING'
             }, {
-                name: 'level_id',
+                name: 'levelId',
                 type: 'INTEGER'
             }, {
-                name: 'parent_id',
+                name: 'parentId',
                 type: 'INTEGER'
             }, {
-                name: 'user_generated_id',
+                name: 'userGeneratedId',
                 type: 'STRING'
             }, {
                 name: 'uuid',
                 type: 'STRING'
             }
         ],
-        nullableColumns: ['name', 'parent_id', 'user_generated_id'],
+        nullableColumns: ['name', 'parentId', 'userGeneratedId'],
         primaryKeyColumns: ['uuid']
     },
 
