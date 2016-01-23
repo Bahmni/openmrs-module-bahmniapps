@@ -48,9 +48,9 @@ angular.module('bahmni.common.offline')
                         }
                     }
                 }
+                var tx = db.createTransaction();
+                tx.exec(queries);
             }
-            var tx = db.createTransaction();
-            tx.exec(queries);
         };
 
 
