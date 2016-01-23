@@ -14,6 +14,7 @@ angular.module('bahmni.common.offline')
             var insertMarker = function (uuid, catchmentNumber) {
                 var deferred = $q.defer();
                 var value = AndroidOfflineService.insertMarker(uuid, catchmentNumber);
+                value = value != undefined ? JSON.parse(value) : value;
                 deferred.resolve(value);
                 return deferred.promise;
             };
@@ -21,6 +22,7 @@ angular.module('bahmni.common.offline')
             var createPatient = function (patient) {
                 var deferred = $q.defer();
                 var value = AndroidOfflineService.createPatient(patient);
+                value = value != undefined ? JSON.parse(value) : value;
                 deferred.resolve(value);
                 return deferred.promise;
             };
@@ -28,6 +30,7 @@ angular.module('bahmni.common.offline')
             var insertAddressHierarchy = function (addressHierarchy) {
                 var deferred = $q.defer();
                 var value = AndroidOfflineService.insertAddressHierarchy(addressHierarchy);
+                value = value != undefined ? JSON.parse(value) : value;
                 deferred.resolve(value);
                 return deferred.promise;
             };
@@ -51,6 +54,7 @@ angular.module('bahmni.common.offline')
             var generateOfflineIdentifier = function () {
                 var deferred = $q.defer();
                 var value = AndroidOfflineService.generateOfflineIdentifier();
+                value = value != undefined ? JSON.parse(value) : value;
                 deferred.resolve(value);
                 return deferred.promise;
             };
@@ -58,6 +62,7 @@ angular.module('bahmni.common.offline')
             var getPatientByUuid = function (uuid) {
                 var deferred = $q.defer();
                 var value = AndroidOfflineService.getPatientByUuid(uuid);
+                value = value != undefined ? JSON.parse(value) : value;
                 deferred.resolve(value);
                 return deferred.promise;
             };
@@ -65,6 +70,7 @@ angular.module('bahmni.common.offline')
             var getPatientByIdentifier = function (identifier) {
                 var deferred = $q.defer();
                 var value = AndroidOfflineService.getPatientByIdentifier(identifier);
+                value = value != undefined ? JSON.parse(value) : value;
                 deferred.resolve(value);
                 return deferred.promise;
             };
