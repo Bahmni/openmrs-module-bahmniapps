@@ -110,6 +110,7 @@ angular.module('bahmni.common.offline')
         };
 
         return {
+            init: init,
             populateData: populateData,
             getPatientByUuid: getPatientByUuid,
             getPatientByIdentifier: getPatientByIdentifier,
@@ -118,7 +119,6 @@ angular.module('bahmni.common.offline')
             generateOfflineIdentifier: generateOfflineIdentifier,
             getMarker: getMarker,
             insertMarker: insertMarker,
-            insertAddressHierarchy: insertAddressHierarchy,
-            init: init
+            insertAddressHierarchy: insertAddressHierarchy
         }
     }]);

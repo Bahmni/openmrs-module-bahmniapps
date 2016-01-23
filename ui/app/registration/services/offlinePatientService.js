@@ -1,8 +1,12 @@
 'use strict';
 
 angular.module('bahmni.registration')
-    .factory('offlinePatientService', ['$http', '$q', 'offlineService', 'offlineDbService', 'offlineSearchDbService',
-        function ($http, $q, offlineService, offlineDbService, offlineSearchDbService) {
+    .factory('offlinePatientService', ['$http', '$q', 'offlineService', 'offlineDbService', 'offlineSearchDbService', 'androidDbService',
+        function ($http, $q, offlineService, offlineDbService, offlineSearchDbService, androidDbService) {
+
+            if (offlineService.isAndroidApp()) {
+                offlineDbService = androidDbService;
+            }
 
             var search = function (params) {
                 if (offlineService.isAndroidApp()) {
@@ -15,21 +19,11 @@ angular.module('bahmni.registration')
             };
 
             var get = function (uuid) {
-                if (offlineService.isAndroidApp()) {
-                    return $q.when(JSON.parse(AndroidOfflineService.getPatient(uuid)));
-                }
-                else {
-                    return offlineDbService.getPatientByUuid(uuid);
-                }
+                return offlineDbService.getPatientByUuid(uuid);
             };
 
             var getByIdentifier = function (patientIdentifier) {
-                if (offlineService.isAndroidApp()) {
-                    return $q.when(JSON.parse(AndroidOfflineService.getPatientByIdentifier(patientIdentifier)));
-                }
-                else {
-                    return offlineDbService.getPatientByIdentifier(patientIdentifier);
-                }
+                return offlineDbService.getPatientByIdentifier(patientIdentifier);
             };
 
             var create = function (postRequest) {
@@ -38,38 +32,20 @@ angular.module('bahmni.registration')
                     postRequest.patient.uuid = postRequest.patient.identifiers[0].identifier;
                 postRequest.patient.person.preferredName = postRequest.patient.person.names[0];
                 postRequest.patient.person.preferredAddress = postRequest.patient.person.addresses[0];
-                if (offlineService.isAndroidApp()) {
-                    return $q.when(JSON.parse(AndroidOfflineService.createPatient(JSON.stringify(postRequest), window.location.origin)));
-                }
-                else {
-                    return offlineDbService.createPatient(postRequest);
-                }
+                return offlineDbService.createPatient(postRequest);
             };
 
             var update = function (postRequest) {
-                if (offlineService.isAndroidApp()) {
-                    AndroidOfflineService.deletePatientData(postRequest.patient.identifiers[0]['identifier']);
+                return offlineDbService.deletePatientData(postRequest.patient.identifiers[0]['identifier']).then(function () {
                     return create(postRequest).then(function (result) {
                         return result.data;
                     });
-                }
-                else {
-                    return offlineDbService.deletePatientData(postRequest.patient.identifiers[0]['identifier']).then(function () {
-                        return create(postRequest).then(function (result) {
-                            return result.data;
-                        });
-                    });
-                }
+                });
             };
 
             var generateOfflineIdentifier = function () {
-                if (offlineService.isAndroidApp()) {
-                    return $q.when(JSON.parse(AndroidOfflineService.generateOfflineIdentifier()));
-                } else {
-                    return offlineDbService.generateOfflineIdentifier();
-                }
+                return offlineDbService.generateOfflineIdentifier();
             };
-
 
             return {
                 search: search,
