@@ -19,9 +19,6 @@ angular.module('bahmni.common.offline')
                 patientUuid: patientUuid
             });
 
-            console.log(address);
-            console.log(row);
-
             return db.insertOrReplace().into(patientAddressTable).values([row]).exec()
         };
 
