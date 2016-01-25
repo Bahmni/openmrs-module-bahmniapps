@@ -78,7 +78,7 @@
         width: 60%;
       }
       &.programDate{
-        width: 17%;
+        width: 14%;
         span{
           padding-left:10px;
         }
@@ -87,13 +87,19 @@
         }
       }
       &.pastProgramState{
-        width: 42%;
+        width: 27%;
+      }
+      &.pastProgramOutcome{
+        width:25%;
       }
       &.programStartDate ,&.programStopDate{
-        width: 19%;
+        width: 14%;
         span{
           padding-left: 10px;
         }
+      }
+      &.programStopDate{
+        text-align: right;
       }
     }
   }
@@ -367,7 +373,7 @@
     color: #4B4B4B;
     font-size: 14px;
   }
-  .programs-table {
+  .programs-table ,.pastProgramTable{
     strong {
       font-family: "OpenSans";
       font-weight: 400;
@@ -435,7 +441,7 @@
         clear: both;
         border-bottom: 1px solid #ccc;
         padding: 5px 0;
-        font-family: openSansSemiBold;;
+        font-family: openSansBold;;
       }
       .form-field{
         width: 43%;
