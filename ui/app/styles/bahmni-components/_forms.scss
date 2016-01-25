@@ -371,3 +371,8 @@ buttons-radio.illegalValue { border: 0 !important; background: none !important;}
     outline: 0 !important;
   }
 }
+
+input[type="time"]{
+  padding: 1px 10px;
+  margin-left: 2px;
+}
