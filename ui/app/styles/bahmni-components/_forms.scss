@@ -362,7 +362,7 @@ form.submitted-with-error {
     outline: 0;
   }
 }
-buttons-radio.illegalValue { border: 0; background: none }
+buttons-radio.illegalValue { border: 0 !important; background: none !important;}
 
 .illegalValue{
   &:focus {
