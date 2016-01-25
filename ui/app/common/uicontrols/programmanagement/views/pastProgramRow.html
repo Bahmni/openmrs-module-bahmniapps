@@ -1,17 +1,17 @@
 <div class="program-row"  ng-class='{"no-past-program":program.states.length==0}'>
     <div class="program-details">
         <div>
-            <table class="programTable">
+            <table class=" programTable">
                 <tr>
-                    <td  class="programName">
+                    <td  class="pastProgramName">
                         <i class="fa fa-caret-right" ng-hide="program.isOpen" ng-click="showProgramAttributes(program)"></i>
                         <i class="fa fa-caret-down" ng-show="program.isOpen" ng-click="showProgramAttributes(program)"></i>
                         {{program.display}}
                     </td>
-                    <td class="pastProgramState">{{'PROGRAM_MANAGEMENT_LABEL_PROGRAM_STATE' | translate}} : {{getCurrentStateDisplayName(program)}}</td>
-                    <td class="pastProgramOutcome">{{'PROGRAM_MANAGEMENT_LABEL_PROGRAM_OUTCOME' | translate}} : {{program.outcome.display}}</td>
-                    <td class="programStartDate">{{'PROGRAM_MANAGEMENT_START_DATE_KEY' | translate}} :<span> {{program.dateEnrolled | bahmniDate}} </span></td>
-                    <td class="programStopDate">{{'PROGRAM_MANAGEMENT_STOP_DATE_KEY' | translate}} :<span> {{program.dateCompleted | bahmniDate}} </span></td>
+                    <td class="pastProgramState"><strong>{{'PROGRAM_MANAGEMENT_LABEL_PROGRAM_STATE' | translate}} : </strong>{{getCurrentStateDisplayName(program)}}</td>
+                    <td class="pastProgramOutcome"><strong>{{'PROGRAM_MANAGEMENT_LABEL_PROGRAM_OUTCOME' | translate}} : </strong>{{program.outcome.display}}</td>
+                    <td class="programStartDate"><strong>{{'PROGRAM_MANAGEMENT_START_DATE_KEY' | translate}} :</strong><span> {{program.dateEnrolled | bahmniDate}} </span></td>
+                    <td class="programStopDate"><strong>{{'PROGRAM_MANAGEMENT_STOP_DATE_KEY' | translate}} :</strong><span> {{program.dateCompleted | bahmniDate}} </span></td>
                 </tr>
             </table>
         </div>
