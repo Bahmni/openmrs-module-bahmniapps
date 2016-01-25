@@ -41,7 +41,7 @@
             <section class="form-field-inline">
                 <article class="form-field">
                     <div class="field-attribute">
-                        <label>{{ ::'MEDICATION_LABEL_QUANTITY' | translate }} </label>
+                        <label>{{ ::'MEDICATION_LABEL_DOSE' | translate }} </label>
                         <input id="uniform-dose" class="dose fl" integer="true" ng-focus="treatment.setFrequencyType('uniform')"
                                type="number" min="0" step="any" placeholder="{{ treatmentConfig.getDosePlaceHolder() | translate}}"
                                ng-model="treatment.uniformDosingType.dose"
@@ -229,6 +229,3 @@
             </button>
         </div>
 </form>
-<!--<new-drug-orders></new-drug-orders>-->
-<!--&ndash;&gt;-->
-<ng-include src="'consultation/views/treatmentSections/newDrugOrders.html'"></ng-include>

@@ -13,11 +13,11 @@ angular.module('bahmni.clinical')
 
             var setTabSpecificTreatments = function(){
                 if($stateParams.tabConfigName){
-                    $scope.consultation.tabTreatments = _.filter($scope.treatments, function(treatment){
+                    $scope.tabTreatments = _.filter($scope.treatments, function(treatment){
                         return treatment.tabName === $stateParams.tabConfigName
                     });
                 } else {
-                    $scope.consultation.tabTreatments = $scope.treatments;
+                    $scope.tabTreatments = $scope.treatments;
                 }
             };
 
@@ -327,7 +327,7 @@ angular.module('bahmni.clinical')
                 }
             };
 
-            $scope.toggleShowAdditionalInstructions = function (line) {  //TODO : Removable
+            $scope.toggleShowAdditionalInstructions = function (line) {
                 line.showAdditionalInstructions = !line.showAdditionalInstructions;
             };
 
@@ -335,17 +335,13 @@ angular.module('bahmni.clinical')
                 treatment.asNeeded = !treatment.asNeeded;
             };
 
-            $scope.edit = function(index){
-                $rootScope.$broadcast("event:editNewlyAddedDrugOrders", index);
-            }
-
             var clearHighlights = function(){
                 $scope.treatments.map(setIsNotBeingEdited);
                 drugOrderHistory ? drugOrderHistory.isBeingEdited = false : null;
                 drugOrderHistory ? drugOrderHistory.isDiscontinuedAllowed = true : null;
             };
 
-            $scope.edit = function (index) {   //TODO : Removable
+            $scope.edit = function (index) {
                 clearHighlights();
                 var treatment = $scope.treatments[index];
                 markEitherVariableDrugOrUniformDrug(treatment);
@@ -397,7 +393,7 @@ angular.module('bahmni.clinical')
                 return {allow: true};
             };
 
-            $scope.remove = function (index) { //TODO : Removable
+            $scope.remove = function (index) {
                 $scope.treatments.splice(index, 1);
                 setTabSpecificTreatments();
             };
@@ -474,23 +470,22 @@ angular.module('bahmni.clinical')
             $scope.toggleDrugOrderAttribute = function(orderAttribute){
                 orderAttribute.value = orderAttribute.value ? false : true;
             };
-
             contextChangeHandler.add(contextChange);
 
-            var defaultBulkDuration = function() {    //TODO : Removable
+            var defaultBulkDuration = function() {
                 return {
                     bulkDurationUnit : treatmentConfig.durationUnits ? treatmentConfig.durationUnits[0].name : ""
                 };
             };
 
-            var clearBulkDurationChange = function() {    //TODO : Removable
+            var clearBulkDurationChange = function() {
                 $scope.bulkDurationData = defaultBulkDuration();
                 $scope.bulkSelectCheckbox = false;
             };
 
-            $scope.bulkDurationData = defaultBulkDuration(); //TODO : Removable
+            $scope.bulkDurationData = defaultBulkDuration();
 
-            $scope.bulkChangeDuration = function() {   //TODO : Removable
+            $scope.bulkChangeDuration = function() {
                 $scope.showBulkChangeToggle = !$scope.showBulkChangeToggle;
                 clearBulkDurationChange();
                 $scope.selectAllCheckbox();
@@ -501,7 +496,8 @@ angular.module('bahmni.clinical')
                     }
                 }
             };
-            var isDurationNullForAnyTreatment = function (treatments) {   //TODO : Removable
+
+            var isDurationNullForAnyTreatment = function (treatments) {
                 var isDurationNull = false;
                 treatments.forEach(function (treatment) {
                     if(!treatment.duration) {
@@ -511,7 +507,7 @@ angular.module('bahmni.clinical')
                 return isDurationNull;
             };
 
-            $scope.selectAllCheckbox = function(){   //TODO : Removable
+            $scope.selectAllCheckbox = function(){
                 $scope.bulkSelectCheckbox = !$scope.bulkSelectCheckbox;
                 $scope.treatments.forEach(function (treatment) {
                     setNonCodedDrugConcept(treatment);
@@ -519,7 +515,7 @@ angular.module('bahmni.clinical')
                 });
             };
 
-            $scope.bulkDurationChangeDone = function() {    //TODO : Removable
+            $scope.bulkDurationChangeDone = function() {
                 if($scope.bulkDurationData.bulkDuration && $scope.bulkDurationData.bulkDurationUnit){
                     $scope.treatments.forEach(function (treatment) {
                         if(treatment.durationUpdateFlag){
@@ -537,7 +533,7 @@ angular.module('bahmni.clinical')
                 $scope.bulkChangeDuration();
             };
 
-            $scope.updateDuration = function(stepperValue) {   //TODO : Removable
+            $scope.updateDuration = function(stepperValue) {
                 if(!$scope.bulkDurationData.bulkDuration && isNaN($scope.bulkDurationData.bulkDuration)){
                     $scope.bulkDurationData.bulkDuration = 0
                 }
@@ -582,7 +578,6 @@ angular.module('bahmni.clinical')
             $scope.consultation.preSaveHandler.register("drugOrderSaveHandlerKey", saveTreatment);
 
             var init = function(){
-                $scope.consultation.tabTreatments = $scope.consultation.tabTreatments || [];
                 $scope.consultation.removableDrugs = $scope.consultation.removableDrugs || [];
                 $scope.consultation.discontinuedDrugs = $scope.consultation.discontinuedDrugs || [];
                 $scope.consultation.drugOrdersWithUpdatedOrderAttributes = $scope.consultation.drugOrdersWithUpdatedOrderAttributes || {};

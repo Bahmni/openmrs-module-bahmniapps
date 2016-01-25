@@ -247,7 +247,7 @@ describe("AddTreatmentController", function () {
             initController();
             scope.treatment = Bahmni.Tests.drugOrderViewModelMother.buildWith({}, {drug: {name: "NotATabSpecificDrug"}});
             scope.add();
-            expect(scope.consultation.tabTreatments).toBe(scope.treatments);
+            expect(scope.tabTreatments).toBe(scope.treatments);
             expect(scope.treatment.tabName).toBe(undefined);
         });
 
@@ -257,7 +257,7 @@ describe("AddTreatmentController", function () {
             initController();
             scope.treatment = Bahmni.Tests.drugOrderViewModelMother.buildWith({}, {drug: {name: "ATabSpecificDrug"}});
             scope.add();
-            expect(scope.consultation.tabTreatments[0].tabName).toBe("TbTabConfig");
+            expect(scope.tabTreatments[0].tabName).toBe("TbTabConfig");
         });
 
     });
