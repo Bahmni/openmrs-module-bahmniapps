@@ -44,7 +44,7 @@
                     <div class="field-attribute">
                         <label>{{ ::'MEDICATION_LABEL_QUANTITY' | translate }} </label>
                         <input id="uniform-dose" class="dose fl" integer="true" ng-focus="treatment.setFrequencyType('uniform')"
-                               type="number" min="0" step="any" placeholder="{{ treatmentConfig.getDosePlaceHolder(treatment.drug) | translate}}"
+                               type="number" min="0" step="any" placeholder="{{ treatmentConfig.getDosePlaceHolder() | translate}}"
                                ng-model="treatment.uniformDosingType.dose"
                                ng-required="treatment.isUniformFrequency && !treatment.uniformDosingType.dosingUnitsFraction"
                                focus-on="editDrugEntryUniformFrequency" />
@@ -52,7 +52,7 @@
                     <div class="field-value">
                         <span class="fl unit-text">{{ ::'MEDICATION_LABEL_UNIT' | translate }}</span>
                         <select id="uniform-dose-unit" class="form-field freq-dose-units" ng-model="treatment.uniformDosingType.doseUnits"
-                                ng-options="item.name as item.name for item in treatmentConfig.getDoseUnits(treatment.drug)"
+                                ng-options="item.name as item.name for item in treatmentConfig.getDoseUnits()"
                                 ng-required="!treatment.validate()">
                             <option value="">Choose Unit</option>
                         </select>
@@ -81,7 +81,7 @@
                 <div class="field-value">
                     <select id="frequency" class="fl frequency" ng-model="treatment.uniformDosingType.frequency"
                             ng-change="treatment.calculateDurationUnit(treatmentConfig.durationUnits)"
-                            ng-options="item.name as item.name for item in treatmentConfig.getFrequencies(treatment.drug)"
+                            ng-options="item.name as item.name for item in treatmentConfig.getFrequencies()"
                             ng-disabled="!treatment.isUniformDosingType()" ng-required="!treatment.validate()">
                         <option value="">Choose frequency</option>
                     </select>
@@ -93,7 +93,7 @@
                 </div>
                 <div class="field-value">
                     <select id="route" class="route" ng-model="treatment.route"
-                            ng-options="item.name as item.name for item in treatmentConfig.getRoutes(treatment.drug)">
+                            ng-options="item.name as item.name for item in treatmentConfig.getRoutes()">
                         <option value="">Choose Route</option>
                     </select>
                 </div>
@@ -114,7 +114,7 @@
                 </div>
                 <span class="fl unit-text">{{ ::'MEDICATION_LABEL_UNIT' | translate }}</span>
                 <select id="variable-dose-unit" class="fl freq-dose-units" ng-model="treatment.variableDosingType.doseUnits"
-                        ng-options="item.name as item.name for item in treatmentConfig.getDoseUnits(treatment.drug)"
+                        ng-options="item.name as item.name for item in treatmentConfig.getDoseUnits()"
                         ng-required="!treatment.validate()">
                     <option value="">Choose Unit</option>
                 </select>
@@ -125,7 +125,7 @@
                 </div>
                 <div class="field-value">
                     <select id="route" class="route" ng-model="treatment.route"
-                            ng-options="item.name as item.name for item in treatmentConfig.getRoutes(treatment.drug)">
+                            ng-options="item.name as item.name for item in treatmentConfig.getRoutes()">
                         <option value="">Choose Route</option>
                     </select>
                 </div>
@@ -145,7 +145,7 @@
                 <span class="fl unit-text">Days</span>
                 <select  ng-hide="treatmentConfig.isHiddenField('durationUnits')" id="duration-unit"
                          class="fl duration-unit" ng-model="treatment.durationUnit"
-                         ng-options="item.name as item.name for item in treatmentConfig.getDurationUnits(treatment.drug)"
+                         ng-options="item.name as item.name for item in treatmentConfig.getDurationUnits()"
                          required>
                 </select>
             </div>
@@ -173,7 +173,7 @@
                 <span class="fl unit-text">{{ ::'MEDICATION_LABEL_UNIT' | translate }}</span>
                 <select ng-hide="treatmentConfig.isHiddenField('quantityUnits')" id="total-quantity-unit"
                         class="freq-dose-units fl" ng-model="treatment.quantityUnit" ng-change="treatment.setQuantityUnitEnteredManually()"
-                        ng-options="item.name as item.name for item in treatmentConfig.getDoseUnits(treatment.drug)"
+                        ng-options="item.name as item.name for item in treatmentConfig.getDoseUnits()"
                         ng-required="!treatment.validate()">
                     <option value="">Choose Unit</option>
                 </select>
@@ -201,7 +201,7 @@
         <div class="field-value">
             <select ng-hide="treatmentConfig.isHiddenField('dosingInstructions')" id="instructions"
                     class="instruction" ng-model="treatment.instructions"
-                    ng-options="item.name as item.name for item in treatmentConfig.getDosingInstructions(treatment.drug)">
+                    ng-options="item.name as item.name for item in treatmentConfig.getDosingInstructions()">
                 <option value="">Choose Instruction</option>
             </select>
         </div>
