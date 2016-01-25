@@ -284,6 +284,8 @@ angular.module('bahmni.common.uicontrols.programmanagment')
 
             $scope.showProgramAttributes = function(program){
                 program.isOpen = !program.isOpen;
+                program.showDetail = false;
+                program.editing = false;
             };
 
             init();

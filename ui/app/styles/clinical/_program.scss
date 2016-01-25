@@ -37,7 +37,7 @@
   .select-program-container {
     .dashboard-section{
       overflow: hidden;
-      padding-bottom: 10px;
+      //padding-bottom: 10px;
     }
     input, select {
       min-width: 0;
@@ -60,6 +60,7 @@
     input[type="submit"]{
       float: right;
       margin-right: 0;
+      margin-bottom: 10px;
     }
     form .form-field .field-attribute label{
       width:17em;
@@ -71,6 +72,9 @@
     }
     td{
       border: none;
+      strong{
+        font-size: 12px;
+      }
       &.programName{
         width: 20%;
       }
@@ -86,14 +90,11 @@
           padding: 1px 0 0;
         }
       }
-      &.pastProgramState{
-        width: 27%;
-      }
       &.pastProgramOutcome{
-        width:25%;
+        width:48%;
       }
       &.programStartDate ,&.programStopDate{
-        width: 14%;
+        width: 16%;
         span{
           padding-left: 10px;
         }
@@ -285,9 +286,7 @@
 
 .inactive-program-container{
   label{
-    padding: 2px 5px 2px 0;
-    //font-family: openSansSemiBold;
-    display: inline-block;
+    margin: 0 .8em 0 0;
     float: left;
   }
   .program-row{
@@ -377,6 +376,7 @@
     strong {
       font-family: "OpenSans";
       font-weight: 400;
+      font-size: 12px;
     }
   }
 }
@@ -480,6 +480,9 @@
         text-align: right;
       }
     }
+  }
+  .newProgramEnrollmentDashboard{
+    margin-bottom: 10px !important;
   }
 
 }
