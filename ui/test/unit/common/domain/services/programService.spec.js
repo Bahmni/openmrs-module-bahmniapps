@@ -315,9 +315,9 @@ describe('programService', function () {
         expect(mockHttp.post.calls.mostRecent().args[0]).toEqual(Bahmni.Common.Constants.programEnrollPatientUrl);
         expect(mockHttp.post.calls.mostRecent().args[1].patient).toEqual(patientUuid);
         expect(mockHttp.post.calls.mostRecent().args[1].program).toEqual(programUuid);
-        expect(mockHttp.post.calls.mostRecent().args[1].dateEnrolled).toEqual("2015-12-11T12:04:23+0530");
+        expect(moment(mockHttp.post.calls.mostRecent().args[1].dateEnrolled).isSame(moment("2015-12-11T12:04:23+0530"))).toBe(true);
         expect(mockHttp.post.calls.mostRecent().args[1].states[0].state).toEqual(workflowUuid);
-        expect(mockHttp.post.calls.mostRecent().args[1].states[0].startDate).toEqual("2015-12-11T12:04:23+0530");
+        expect(moment(mockHttp.post.calls.mostRecent().args[1].states[0].startDate).isSame(moment("2015-12-11T12:04:23+0530"))).toBe(true);
         expect(mockHttp.post.calls.mostRecent().args[1].attributes).toEqual([ { attributeType : { uuid : '82325788-3f10-11e4-adec-0800271c1b75' }, value : 'alps' } ]);
     })
 
@@ -328,7 +328,7 @@ describe('programService', function () {
         programService.endPatientProgram(patientProgramUuid, dateCompleted, outcome);
 
         expect(mockHttp.post.calls.mostRecent().args[0]).toEqual(Bahmni.Common.Constants.programEnrollPatientUrl + "/" + patientProgramUuid);
-        expect(mockHttp.post.calls.mostRecent().args[1].dateCompleted).toEqual("2015-12-11T12:04:23+0530");
+        expect(moment(mockHttp.post.calls.mostRecent().args[1].dateCompleted).isSame(moment("2015-12-11T12:04:23+0530"))).toBe(true);
         expect(mockHttp.post.calls.mostRecent().args[1].outcome).toEqual(outcome);
     });
 

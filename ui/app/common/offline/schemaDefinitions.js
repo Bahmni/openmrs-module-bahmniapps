@@ -7,16 +7,16 @@ Bahmni.Common.Offline.SchemaDefinitions = {
         tableName: 'address_hierarchy_level',
         columns: [
             {
-                name: 'address_hierarchy_level_id',
+                name: 'addressHierarchyLevelId',
                 type: 'INTEGER'
             }, {
                 name: 'name',
                 type: 'STRING'
             }, {
-                name: 'parent_level_id',
+                name: 'parentLevelId',
                 type: 'INTEGER'
             }, {
-                name: 'address_field',
+                name: 'addressField',
                 type: 'STRING'
             }, {
                 name: 'uuid',
@@ -26,7 +26,7 @@ Bahmni.Common.Offline.SchemaDefinitions = {
                 type: 'INTEGER'
             }
         ],
-        nullableColumns: ['name', 'parent_level_id', 'address_field'],
+        nullableColumns: ['name', 'parentLevelId', 'addressField'],
         primaryKeyColumns: ['uuid']
     },
 
@@ -37,20 +37,20 @@ Bahmni.Common.Offline.SchemaDefinitions = {
                 name: 'name',
                 type: 'STRING'
             }, {
-                name: 'level_id',
+                name: 'levelId',
                 type: 'INTEGER'
             }, {
-                name: 'parent_id',
+                name: 'parentId',
                 type: 'INTEGER'
             }, {
-                name: 'user_generated_id',
+                name: 'userGeneratedId',
                 type: 'STRING'
             }, {
                 name: 'uuid',
                 type: 'STRING'
             }
         ],
-        nullableColumns: ['name', 'parent_id', 'user_generated_id'],
+        nullableColumns: ['name', 'parentId', 'userGeneratedId'],
         primaryKeyColumns: ['uuid']
     },
 
@@ -90,16 +90,13 @@ Bahmni.Common.Offline.SchemaDefinitions = {
             {
                 name: 'attributeTypeId',
                 type: 'INTEGER'
-            },
-            {
+            }, {
                 name: 'attributeName',
                 type: 'STRING'
-            },
-            {
+            }, {
                 name: 'format',
                 type: 'STRING'
-            },
-            {
+            }, {
                 name: 'uuid',
                 type: 'STRING'
             }
@@ -114,16 +111,13 @@ Bahmni.Common.Offline.SchemaDefinitions = {
             {
                 name: 'attributeTypeId',
                 type: 'INTEGER'
-            },
-            {
+            }, {
                 name: 'attributeValue',
                 type: 'STRING'
-            },
-            {
+            }, {
                 name: 'patientUuid',
                 type: 'STRING'
-            },
-            {
+            }, {
                 name: 'uuid',
                 type: 'STRING'
             }
@@ -138,40 +132,31 @@ Bahmni.Common.Offline.SchemaDefinitions = {
             {
                 name: 'identifier',
                 type: 'INTEGER'
-            },
-            {
+            }, {
                 name: 'givenName',
                 type: 'STRING'
-            },
-            {
+            }, {
                 name: 'middleName',
                 type: 'STRING'
-            },
-            {
+            }, {
                 name: 'familyName',
                 type: 'STRING'
-            },
-            {
+            }, {
                 name: 'gender',
                 type: 'STRING'
-            },
-            {
+            }, {
                 name: 'birthdate',
                 type: 'DATE_TIME'
-            },
-            {
+            }, {
                 name: 'dateCreated',
                 type: 'DATE_TIME'
-            },
-            {
+            }, {
                 name: 'patientJson',
                 type: 'OBJECT'
-            },
-            {
+            }, {
                 name: 'relationships',
                 type: 'ARRAY_BUFFER'
-            },
-            {
+            }, {
                 name: 'uuid',
                 type: 'STRING'
             }
@@ -193,5 +178,49 @@ Bahmni.Common.Offline.SchemaDefinitions = {
                 columnNames: ['identifier']
             }
         ]
+    },
+    PatientAddress: {
+        tableName: 'patient_address',
+        columns: [
+            {
+                name: 'address1',
+                type: 'STRING'
+            }, {
+                name: 'address2',
+                type: 'STRING'
+            }, {
+                name: 'cityVillage',
+                type: 'STRING'
+            }, {
+                name: 'stateProvince',
+                type: 'STRING'
+            }, {
+                name: 'postalCode',
+                type: 'STRING'
+            }, {
+                name: 'country',
+                type: 'STRING'
+            }, {
+                name: 'countyDistrict',
+                type: 'STRING'
+            }, {
+                name: 'address3',
+                type: 'STRING'
+            }, {
+                name: 'address4',
+                type: 'STRING'
+            }, {
+                name: 'address5',
+                type: 'STRING'
+            }, {
+                name: 'address6',
+                type: 'STRING'
+            }, {
+                name: 'patientUuid',
+                type: 'STRING'
+            }
+        ],
+        nullableColumns: ['address1', 'address2', 'cityVillage', 'stateProvince', 'postalCode', 'country', 'countyDistrict', 'address3', 'address4', 'address5', 'address6'],
+        primaryKeyColumns: ['patientUuid']
     }
 };

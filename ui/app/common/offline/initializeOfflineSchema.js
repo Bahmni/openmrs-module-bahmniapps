@@ -1,7 +1,6 @@
-angular.module('bahmni.common.offline').service('initializeOfflineSchema', ['$rootScope', '$q', '$http', 'offlineService', function ($rootScope, $q, $http, offlineService) {
+'use strict';
 
-
-    var addressColumns;
+angular.module('bahmni.common.offline').service('initializeOfflineSchema', ['$q', 'offlineService', function ($q, offlineService) {
 
     var dataTypes = {
         "INTEGER": lf.Type.INTEGER,
@@ -18,25 +17,22 @@ angular.module('bahmni.common.offline').service('initializeOfflineSchema', ['$ro
         }
 
         var schemaBuilder = lf.schema.create('Bahmni', 2);
-        createTableGeneric(schemaBuilder, Bahmni.Common.Offline.SchemaDefinitions.Patient);
-        createTableGeneric(schemaBuilder, Bahmni.Common.Offline.SchemaDefinitions.PatientAttribute);
-        createTableGeneric(schemaBuilder, Bahmni.Common.Offline.SchemaDefinitions.PatientAttributeType);
-        createTableGeneric(schemaBuilder, Bahmni.Common.Offline.SchemaDefinitions.EventLogMarker);
-        createTableGeneric(schemaBuilder, Bahmni.Common.Offline.SchemaDefinitions.AddressHierarchyEntry);
-        createTableGeneric(schemaBuilder, Bahmni.Common.Offline.SchemaDefinitions.AddressHierarchyLevel);
-        createTableGeneric(schemaBuilder, Bahmni.Common.Offline.SchemaDefinitions.Idgen);
+        createTable(schemaBuilder, Bahmni.Common.Offline.SchemaDefinitions.Patient);
+        createTable(schemaBuilder, Bahmni.Common.Offline.SchemaDefinitions.PatientAttribute);
+        createTable(schemaBuilder, Bahmni.Common.Offline.SchemaDefinitions.PatientAttributeType);
+        createTable(schemaBuilder, Bahmni.Common.Offline.SchemaDefinitions.EventLogMarker);
+        createTable(schemaBuilder, Bahmni.Common.Offline.SchemaDefinitions.AddressHierarchyEntry);
+        createTable(schemaBuilder, Bahmni.Common.Offline.SchemaDefinitions.AddressHierarchyLevel);
+        createTable(schemaBuilder, Bahmni.Common.Offline.SchemaDefinitions.Idgen);
+        createTable(schemaBuilder, Bahmni.Common.Offline.SchemaDefinitions.PatientAddress);
 
-        return getAddressColumns().then(function (listOfAddressColumns) {
-            addressColumns = listOfAddressColumns;
-            createTable(schemaBuilder, 'patient_address', addressColumns);
-            return schemaBuilder.connect().then(function (database) {
-                return database;
-            });
+        return schemaBuilder.connect().then(function (database) {
+            return database;
         });
     };
 
 
-    var createTableGeneric = function (schemaBuilder, tableDefinition) {
+    var createTable = function (schemaBuilder, tableDefinition) {
         var table = schemaBuilder.createTable(tableDefinition.tableName);
 
         _.map(tableDefinition.columns, function (column) {
@@ -48,27 +44,5 @@ angular.module('bahmni.common.offline').service('initializeOfflineSchema', ['$ro
         _.each(tableDefinition.indexes, function (index) {
             table.addIndex(index.indexName, index.columnNames);
         })
-    };
-
-    var createTable = function (schemaBuilder, tableName, columnNames) {
-        var table = schemaBuilder.createTable(tableName).addColumn('_id', lf.Type.INTEGER).addPrimaryKey(['_id'], true);
-        angular.forEach(columnNames, function (columnName) {
-            table.addColumn(columnName, lf.Type.STRING)
-        });
-        table.addNullable(columnNames);
-    };
-
-    var getAddressColumns = function () {
-        var deferred = $q.defer();
-        $http.get(window.location.origin + "/openmrs/module/addresshierarchy/ajax/getOrderedAddressHierarchyLevels.form").then(function (addressHierarchyFields) {
-            var addressColumnNames = [];
-            var addressColumns = addressHierarchyFields.data;
-            _.each(addressColumns, function (addressColumn) {
-                addressColumnNames.push(addressColumn.addressField);
-            });
-            addressColumnNames.push("patientUuid");
-            deferred.resolve(addressColumnNames);
-        });
-        return deferred.promise;
     };
 }]);

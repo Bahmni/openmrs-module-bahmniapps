@@ -19,9 +19,9 @@ angular.module('bahmni.common.offline')
 
             var row = addressHierarchyEntryTable.createRow({
                 name: entry.name,
-                level_id: entry.level.levelId,
-                parent_id: entry.parent,
-                user_generated_id: entry.userGeneratedId,
+                levelId: entry.level.levelId,
+                parentId: entry.parent,
+                userGeneratedId: entry.userGeneratedId,
                 uuid: entry.uuid
             });
 
@@ -34,10 +34,10 @@ angular.module('bahmni.common.offline')
             var addressHierarchyLevelTable = db.getSchema().table('address_hierarchy_level');
 
             var row = addressHierarchyLevelTable.createRow({
-                address_hierarchy_level_id: level.levelId,
+                addressHierarchyLevelId: level.levelId,
                 name: level.name,
-                parent_level_id: level.parent,
-                address_field: level.addressField,
+                parentLevelId: level.parent,
+                addressField: level.addressField,
                 uuid: level.uuid,
                 required: level.required
             });

@@ -206,7 +206,7 @@
                     padding: 6px 10px 7px;
                 }
                 input[type="number"]{
-                    width:135px;
+                    width:100px;
                     box-sizing: border-box;
                 }
                 input[type="date"]{
@@ -220,8 +220,8 @@
                     min-width: 135px;
                     width:135px;
                     &.freq-dose-units, &.duration-unit{
-                        min-width: 95px;
-                        width: 95px;
+                        min-width: 120px;
+                        width: 120px;
                     }
                 }
                 .exchange-btn{
@@ -235,8 +235,8 @@
                 .dose-cell {
                     margin-left: 5px;
                     input[type="number"] {
-                        min-width: 64px;
-                        width: 64px;
+                        min-width: 55px;
+                        width: 55px;
                     }
                 }
             }

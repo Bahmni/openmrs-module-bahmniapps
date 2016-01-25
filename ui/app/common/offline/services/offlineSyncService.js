@@ -1,14 +1,18 @@
 'use strict';
 
 angular.module('bahmni.common.offline')
-    .service('offlineSyncService', ['eventLogService', 'offlineDbService', '$interval', '$q', 'offlineService',
-        function (eventLogService, offlineDbService, $interval, $q, offlineService) {
+    .service('offlineSyncService', ['eventLogService', 'offlineDbService', '$interval', '$q', 'offlineService', 'androidDbService',
+        function (eventLogService, offlineDbService, $interval, $q, offlineService, androidDbService) {
             var scheduler;
             if (offlineService.isAndroidApp()) {
-                offlineDbService = AndroidOfflineService;
+                offlineDbService = androidDbService;
             }
 
             var sync = function () {
+                if (offlineService.offline()) {
+                    scheduleSync();
+                    return;
+                }
                 offlineDbService.getMarker().then(function (marker) {
                     if (marker == undefined) {
                         //todo: Hemanth|Santhosh get catchment number from login location

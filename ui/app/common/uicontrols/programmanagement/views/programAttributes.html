@@ -6,9 +6,11 @@
         {{getValueForAttributeType(attributeType)}}
     </div>
 </div>
-<div  ng-show="program.editing">
+<div  ng-show="program.editing" class="programEditing">
     <article class="form-field" ng-repeat="attributeType in programAttributeTypes">
         <attribute-types target-model="program.patientProgramAttributes" attribute="attributeType"></attribute-types>
     </article>
-    <input type="submit" value="Save"/>
+    <div class="clearfix">
+        <input type="submit" value="Save" class="fr"/>
+    </div>
 </div>

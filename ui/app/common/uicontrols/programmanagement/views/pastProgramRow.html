@@ -8,14 +8,15 @@
                         <i class="fa fa-caret-down" ng-show="program.isOpen" ng-click="showProgramAttributes(program)"></i>
                         {{program.display}}
                     </td>
-                    <td class="pastProgramState">{{getCurrentStateDisplayName(program)}}</td>
-                    <td class="programStartDate">Start Date: <span> {{program.dateEnrolled | bahmniDate}} </span></td>
-                    <td class="programStopDate">Stop Date: <span> {{program.dateCompleted | bahmniDate}} </span></td>
+                    <td class="pastProgramState">{{'PROGRAM_MANAGEMENT_LABEL_PROGRAM_STATE' | translate}} : {{getCurrentStateDisplayName(program)}}</td>
+                    <td class="pastProgramOutcome">{{'PROGRAM_MANAGEMENT_LABEL_PROGRAM_OUTCOME' | translate}} : {{program.outcome.display}}</td>
+                    <td class="programStartDate">{{'PROGRAM_MANAGEMENT_START_DATE_KEY' | translate}} :<span> {{program.dateEnrolled | bahmniDate}} </span></td>
+                    <td class="programStopDate">{{'PROGRAM_MANAGEMENT_STOP_DATE_KEY' | translate}} :<span> {{program.dateCompleted | bahmniDate}} </span></td>
                 </tr>
             </table>
         </div>
         <div ng-if="program.isOpen" class="programDescription activeProgramAttributeFields">
-            <h2 class="programAttribute-title">{{'PROGRAM_MANAGEMENT_LABEL_PROGRAM' | translate}} Attributes</h2>
+            <h2 class="programAttribute-title">{{'PROGRAM_MANAGEMENT_PROGRAM_ATTRIBUTES_KEY' | translate}}</h2>
             <a class="back-btn dashboard-link fr" id="dashboard-link"
                ui-sref="patient.dashboard.show({
            patientUuid: patient.uuid,
@@ -35,23 +36,23 @@
                 <div class="program-timeline">
                     <timeline program="program"></timeline>
                 </div>
-                <button ng-click="toggleDetail(program)" ng-class="{'tab-selected': program.editing}" class="fr detail-btn" >
-                    <span>Details</span>
+                <button ng-click="toggleDetail(program)" ng-class="{'tab-selected': program.showDetail}" class="fr detail-btn" >
+                    <span>{{'PROGRAM_MANAGEMENT_DETAILS_KEY' | translate}}</span>
                     <i class="fa fa-expand"></i>
                 </button>
             </div>
         </div>
     </div>
-    <div class="program-state-list" ng-if="program.editing">
+    <div class="program-state-list" ng-if="program.showDetail">
         <div class="down-arrow-container"></div>
         <div class="state-list">
             <table>
                 <tbody>
                 <tr ng-repeat="state in program.states| orderBy:'auditInfo.dateCreated':true" ng-if="state.voided != true">
                     <td>{{state.state.concept.display}}</td>
-                    <td ng-if="state.endDate">{{state.startDate | bahmniDate}} to {{state.endDate | bahmniDate}}</td>
-                    <td ng-if="!state.endDate">Started on {{state.startDate | bahmniDate}}</td>
-                    <td>By {{state.auditInfo.creator.display}} on {{state.auditInfo.dateCreated | bahmniDate}}</td>
+                    <td ng-if="state.endDate">{{state.startDate | bahmniDate}} {{'PROGRAM_MANAGEMENT_TO_KEY' | translate}} {{state.endDate | bahmniDate}}</td>
+                    <td ng-if="!state.endDate">{{'PROGRAM_MANAGEMENT_STARTED_ON_KEY' | translate}} {{state.startDate | bahmniDate}}</td>
+                    <td>{{'PROGRAM_MANAGEMENT_BY_KEY' | translate}} {{state.auditInfo.creator.display}} {{'PROGRAM_MANAGEMENT_ON_KEY' | translate}} {{state.auditInfo.dateCreated | bahmniDate}}</td>
                 </tr>
                 </tbody>
             </table>

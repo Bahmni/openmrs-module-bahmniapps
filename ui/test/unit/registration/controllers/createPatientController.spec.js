@@ -1,7 +1,7 @@
 'use strict';
 
 var $aController, q, scopeMock, rootScopeMock, stateMock, patientServiceMock, preferencesMock, patientModelMock, spinnerMock, locationServiceMock,
-    appServiceMock, ngDialogMock, ngDialogLocalScopeMock, bahmniCookieMock;
+    appServiceMock, ngDialogMock, ngDialogLocalScopeMock;
 
 describe('CreatePatientController', function () {
 
@@ -25,8 +25,6 @@ describe('CreatePatientController', function () {
         patientModelMock = jasmine.createSpyObj('patientModelMock', ['']);
         spinnerMock = jasmine.createSpyObj('spinnerMock', ['forPromise']);
         appServiceMock = jasmine.createSpyObj('appServiceMock', ['getAppDescriptor']);
-        bahmniCookieMock = jasmine.createSpyObj('$bahmniCookieStore', ['get']);
-        locationServiceMock = jasmine.createSpyObj('locationService', ['getAllByTag']);
 
         ngDialogMock = jasmine.createSpyObj('ngDialogMock', ['open', 'close']);
         ngDialogLocalScopeMock = scopeMock;
@@ -55,20 +53,7 @@ describe('CreatePatientController', function () {
             }
         };
 
-        bahmniCookieMock.get = function(x){
-            return {
-                name: "Bahmni1",
-                uuid: "43922e67-506c-11e5-968f-0050568266ff",
-                stateProvince: "Dhaka",
-                countyDistrict: "Dhaka",
-                address5: "Dohar"
-            };
-        }
-
-        var loginLocation = "someLocation";
-        locationServiceMock.getAllByTag.and.returnValue(specUtil.createFakePromise({
-            "results":[{"uuid":"43922e67-506c-11e5-968f-0050568266ff","display":"Registration","name":"Registration", "stateProvince":"Dhaka"},{"uuid":"43922e67-506c-11e5-968f-0050568266fg","display":"OPD","name":"OPD","stateProvince":"India"}]}
-        ));
+        rootScopeMock.loggedInLocation = {"uuid":"43922e67-506c-11e5-968f-0050568266ff","display":"Registration","name":"Registration", "stateProvince":"Dhaka"};
 
         rootScopeMock.patientConfiguration.attributeTypes = [
             {
@@ -102,9 +87,7 @@ describe('CreatePatientController', function () {
             patientModel: patientModelMock,
             spinner: spinnerMock,
             appService: appServiceMock,
-            ngDialog: ngDialogMock,
-            $bahmniCookieStore: bahmniCookieMock,
-            locationService: locationServiceMock
+            ngDialog: ngDialogMock
         });
 
         scopeMock.actions = {
@@ -128,8 +111,7 @@ describe('CreatePatientController', function () {
             patientModel: patientModelMock,
             spinner: spinnerMock,
             appService: appServiceMock,
-            ngDialog: ngDialogMock,
-            $bahmniCookieStore: bahmniCookieMock
+            ngDialog: ngDialogMock
         });
 
         expect(scopeMock.patient["education"]).toBe("c2107f30-3f10-11e4-adec-0800271c1b75");
@@ -147,8 +129,7 @@ describe('CreatePatientController', function () {
             patientModel: patientModelMock,
             spinner: spinnerMock,
             appService: appServiceMock,
-            ngDialog: ngDialogMock,
-            $bahmniCookieStore: bahmniCookieMock
+            ngDialog: ngDialogMock
         });
 
         expect(scopeMock.sectionVisibilityMap["additionalPatientInformation"]).toBeTruthy();
@@ -178,8 +159,7 @@ describe('CreatePatientController', function () {
             patientModel: patientModelMock,
             spinner: spinnerMock,
             appService: appServiceMock,
-            ngDialog: ngDialogMock,
-            $bahmniCookieStore: bahmniCookieMock
+            ngDialog: ngDialogMock
         });
 
         expect(scopeMock.patient["education"]).toBeUndefined();
@@ -188,6 +168,7 @@ describe('CreatePatientController', function () {
 
     it("should populate patient address levels", function(){
         scopeMock.addressLevels = [ {addressField: "stateProvince", name: "Division"}, {addressField: "countyDistrict" , name: "Zilla"}, {addressField: "address5", name: "Upazilla"}];
+        rootScopeMock.loggedInLocation =
 
         $aController('CreatePatientController', {
             $scope: scopeMock,
@@ -198,13 +179,11 @@ describe('CreatePatientController', function () {
             patientModel: patientModelMock,
             spinner: spinnerMock,
             appService: appServiceMock,
-            ngDialog: ngDialogMock,
-            $bahmniCookieStore: bahmniCookieMock,
-            locationService: locationServiceMock
+            ngDialog: ngDialogMock
         });
 
         expect(scopeMock.patient.address[scopeMock.addressLevels[0].addressField]).toBe("Dhaka");
-    })
+    });
 
     it("should set patient identifierPrefix details with the matching one", function () {
         rootScopeMock.patientConfiguration.identifierSources= [
@@ -221,8 +200,7 @@ describe('CreatePatientController', function () {
             patientModel: patientModelMock,
             spinner: spinnerMock,
             appService: appServiceMock,
-            ngDialog: ngDialogMock,
-            $bahmniCookieStore: bahmniCookieMock
+            ngDialog: ngDialogMock
         });
 
         expect(scopeMock.patient.identifierPrefix.prefix).toBe("GAN");
@@ -243,8 +221,7 @@ describe('CreatePatientController', function () {
             patientModel: patientModelMock,
             spinner: spinnerMock,
             appService: appServiceMock,
-            ngDialog: ngDialogMock,
-            $bahmniCookieStore: bahmniCookieMock
+            ngDialog: ngDialogMock
         });
 
         expect(scopeMock.patient.identifierPrefix.prefix).toBe("SEM");
