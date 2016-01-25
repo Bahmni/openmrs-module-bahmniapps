@@ -58,8 +58,8 @@ angular.module('bahmni.clinical')
                 return selectedDrug && drug.drug.name === selectedDrug.name;
             };
 
-            $scope.selectFromDefaultDrugList = function(item) {
-                $scope.onSelect(item);
+            $scope.selectFromDefaultDrugList = function() {
+                $scope.onSelect($scope.treatment.selectedItem);
                 $scope.onChange();
             };
 
@@ -177,6 +177,14 @@ angular.module('bahmni.clinical')
             });
 
 
+            var selectDrugFromDropdown = function(drug_){
+                if (treatmentConfig.isDropDownForGivenConceptSet()){
+                    $scope.treatment.selectedItem = _.find($scope.drugs, function(drug){
+                        return drug.drug.uuid === drug_.uuid
+                    })
+                }
+            };
+
             $scope.$on("event:reviseDrugOrder", function (event, drugOrder, drugOrders) {
                 clearOtherDrugOrderActions(drugOrders);
                 drugOrder.isBeingEdited = true;
@@ -184,6 +192,7 @@ angular.module('bahmni.clinical')
                 $scope.treatments.map(setIsNotBeingEdited);
                 drugOrderHistory = drugOrder;
                 $scope.treatment = drugOrder.revise();
+                selectDrugFromDropdown(drugOrder.drug);
                 markEitherVariableDrugOrUniformDrug($scope.treatment);
                 $scope.treatment.currentIndex = $scope.treatments.length + 1;
                 if($scope.treatment.frequencyType == Bahmni.Clinical.Constants.dosingTypes.variable) {
@@ -336,27 +345,17 @@ angular.module('bahmni.clinical')
                 drugOrderHistory ? drugOrderHistory.isDiscontinuedAllowed = true : null;
             };
 
-            $scope.edit = function (index) {   //TODO : Removable
-                clearHighlights();
-                markEitherVariableDrugOrUniformDrug($scope.treatments[index]);
-                $scope.treatments[index].isBeingEdited = true;
-                $scope.treatment = $scope.treatments[index].cloneForEdit(index, drugOrderAppConfig, $scope.treatmentConfig);
-                if($scope.treatment.quantity == 0){
-                    $scope.treatment.quantity = null;
-                    $scope.treatment.quantityEnteredManually = false;
-                }
-                setTabSpecificTreatments();
-            };
-
             $scope.$on("event:editNewlyAddedDrugOrders", function (event, index) {
                 clearHighlights();
-                markEitherVariableDrugOrUniformDrug($scope.treatments[index]);
-                $scope.treatments[index].isBeingEdited = true;
-                $scope.treatment = $scope.treatments[index].cloneForEdit(index, drugOrderAppConfig, $scope.treatmentConfig);
+                var treatment = $scope.treatments[index];
+                markEitherVariableDrugOrUniformDrug(treatment);
+                treatment.isBeingEdited = true;
+                $scope.treatment = treatment.cloneForEdit(index, drugOrderAppConfig, $scope.treatmentConfig);
                 if($scope.treatment.quantity == 0){
                     $scope.treatment.quantity = null;
                     $scope.treatment.quantityEnteredManually = false;
                 }
+                selectDrugFromDropdown(treatment.drug);
                 setTabSpecificTreatments();
             });
 
@@ -410,36 +409,40 @@ angular.module('bahmni.clinical')
                 });
                 return _.flatten(listOfDrugSynonyms);
             };
-            $scope.onSelect =  function(item){
-                $scope.treatment.selectedItem = item;
-                //$scope.onChange(); angular will call onChange after onSelect by default if it is bahmni-autocomplete
-            };
-            $scope.onAccept = function(){
-                $scope.treatment.acceptedItem=$scope.treatment.drugNameDisplay;
-                $scope.onChange();
-            };
 
-            $scope.onChange = function (){
-                if($scope.treatment.selectedItem){
-                    $scope.treatment.isNonCodedDrug = false;
-                    delete  $scope.treatment.drugNonCoded;
-                    $scope.treatment.changeDrug({
-                        name: $scope.treatment.selectedItem.drug.name,
-                        form: $scope.treatment.selectedItem.drug.dosageForm.display,
-                        uuid: $scope.treatment.selectedItem.drug.uuid
-                    });
-                    delete $scope.treatment.selectedItem;
-                    return;
-                }
-                if($scope.treatment.acceptedItem){
-                    $scope.treatment.isNonCodedDrug = !$scope.treatment.isNonCodedDrug;
-                    $scope.treatment.drugNonCoded = $scope.treatment.acceptedItem;
+            (function(){
+                var selectedItem;
+                $scope.onSelect =  function(item){
+                    selectedItem = item;
+                    //$scope.onChange(); angular will call onChange after onSelect by default if it is bahmni-autocomplete
+                };
+                $scope.onAccept = function(){
+                    $scope.treatment.acceptedItem=$scope.treatment.drugNameDisplay;
+                    $scope.onChange();
+                };
+
+                $scope.onChange = function (){
+                    if(selectedItem){
+                        $scope.treatment.isNonCodedDrug = false;
+                        delete  $scope.treatment.drugNonCoded;
+                        $scope.treatment.changeDrug({
+                            name: selectedItem.drug.name,
+                            form: selectedItem.drug.dosageForm.display,
+                            uuid: selectedItem.drug.uuid
+                        });
+                        selectedItem = null;
+                        return;
+                    }
+                    if($scope.treatment.acceptedItem){
+                        $scope.treatment.isNonCodedDrug = !$scope.treatment.isNonCodedDrug;
+                        $scope.treatment.drugNonCoded = $scope.treatment.acceptedItem;
+                        delete $scope.treatment.drug;
+                        delete $scope.treatment.acceptedItem;
+                        return;
+                    }
                     delete $scope.treatment.drug;
-                    delete $scope.treatment.acceptedItem;
-                    return;
-                }
-                delete $scope.treatment.drug;
-            };
+                };
+            })();
 
             $scope.clearForm = function () {
                 $scope.treatment = newTreatment();

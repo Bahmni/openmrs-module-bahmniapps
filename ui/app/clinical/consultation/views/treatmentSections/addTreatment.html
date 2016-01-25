@@ -5,7 +5,7 @@
         </div>
         <div class="field-value">
             <select ng-if="treatmentConfig.isDropDown()" ng-options="item as item.drug.name for item in drugs"
-                    ng-model="selectedItem" ng-change="selectFromDefaultDrugList(selectedItem)">
+                    ng-model="treatment.selectedItem" ng-change="selectFromDefaultDrugList()">
                 <option value="">Choose Drug</option>
             </select>
             <div ng-if="treatmentConfig.isAutoComplete()">
@@ -228,6 +228,6 @@
         </div>
 </form>
 <!--<new-drug-orders></new-drug-orders>-->
-<!--
+<!--&lt;!&ndash;-->
 <ng-include src="'consultation/views/treatmentSections/newDrugOrders.html'"></ng-include>
--->
+<!--&ndash;&gt;-->
