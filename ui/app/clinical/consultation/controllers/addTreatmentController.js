@@ -25,7 +25,6 @@ angular.module('bahmni.clinical')
 
             $scope.treatmentConfig = treatmentConfig;
             $scope.treatmentActionLinks = clinicalAppConfigService.getTreatmentActionLink();
-            var drugOrderAppConfig = clinicalAppConfigService.getDrugOrderConfig();
             $scope.allowOnlyCodedDrugs = appService.getAppDescriptor().getConfig("allowOnlyCodedDrugs") &&
                 appService.getAppDescriptor().getConfig("allowOnlyCodedDrugs").value;
 
@@ -48,9 +47,9 @@ angular.module('bahmni.clinical')
                 };
             }
 
-            $scope.dosingUnitsFractions = treatmentConfig.dosingUnitsFractions;
+            $scope.dosingUnitsFractions = treatmentConfig.getDosingUnitsFractions();
             $scope.isDosingUnitsFractionsAvailable = function() {
-                return $scope.dosingUnitsFractions ? true : false;
+                return $scope.dosingUnitsFractions && !_.isEmpty($scope.dosingUnitsFractions) ? true : false;
             };
 
             $scope.isSelected = function(drug) {
@@ -85,7 +84,7 @@ angular.module('bahmni.clinical')
 
             var encounterDate = DateUtil.parse($scope.consultation.encounterDateTime);
             var newTreatment = function () {
-                var newTreatment = new Bahmni.Clinical.DrugOrderViewModel(drugOrderAppConfig, $scope.treatmentConfig, null, encounterDate);
+                var newTreatment = new Bahmni.Clinical.DrugOrderViewModel($scope.treatmentConfig, null, encounterDate);
                 newTreatment.isEditAllowed = false;
                 return newTreatment;
             };
@@ -345,19 +344,24 @@ angular.module('bahmni.clinical')
                 drugOrderHistory ? drugOrderHistory.isDiscontinuedAllowed = true : null;
             };
 
-            $scope.$on("event:editNewlyAddedDrugOrders", function (event, index) {
+            $scope.edit = function (index) {   //TODO : Removable
                 clearHighlights();
                 var treatment = $scope.treatments[index];
                 markEitherVariableDrugOrUniformDrug(treatment);
                 treatment.isBeingEdited = true;
-                $scope.treatment = treatment.cloneForEdit(index, drugOrderAppConfig, $scope.treatmentConfig);
+                $scope.treatment = treatment.cloneForEdit(index, $scope.treatmentConfig);
+                if($scope.treatment.quantity == 0){
+                    $scope.treatment.quantity = null;
+                    $scope.treatment.quantityEnteredManually = false;
+                }
+                setTabSpecificTreatments();
                 if($scope.treatment.quantity == 0){
                     $scope.treatment.quantity = null;
                     $scope.treatment.quantityEnteredManually = false;
                 }
                 selectDrugFromDropdown(treatment.drug);
                 setTabSpecificTreatments();
-            });
+            };
 
             $scope.incompleteDrugOrders = function(){
                 var anyValuesFilled =  $scope.treatment.drug || $scope.treatment.uniformDosingType.dose ||
@@ -542,7 +546,7 @@ angular.module('bahmni.clinical')
             var getActiveDrugOrders = function (activeDrugOrders) {
                 var activeDrugOrdersList = activeDrugOrders || [];
                 return activeDrugOrdersList.map(function (drugOrder) {
-                    return DrugOrderViewModel.createFromContract(drugOrder, drugOrderAppConfig, treatmentConfig);
+                    return DrugOrderViewModel.createFromContract(drugOrder, treatmentConfig);
                 });
             };
 

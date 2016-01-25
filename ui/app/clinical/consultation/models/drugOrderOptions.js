@@ -23,5 +23,6 @@ Bahmni.Clinical.DrugOrderOptions = (function() {
         this.hiddenFields = inputConfig.hiddenFields || [];
         this.isDropDown = inputConfig.isDropDown;
         this.drugConceptSet = inputConfig.drugConceptSet;
+        this.dosingUnitsFractions = inputConfig.dosingUnitsFractions;
     };
 })();

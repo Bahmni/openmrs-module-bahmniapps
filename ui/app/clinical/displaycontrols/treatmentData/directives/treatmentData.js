@@ -29,9 +29,8 @@ angular.module('bahmni.clinical')
                     getEffectiveOrdersOnly = true;
                 }
 
-                var drugOrderAppConfig = clinicalAppConfigService.getDrugOrderConfig();
                 return treatmentService.getPrescribedAndActiveDrugOrders($scope.params.patientUuid, $scope.params.numberOfVisits,
-                    $scope.params.showOtherActive, $scope.params.visitUuids || [], startDate, endDate, getEffectiveOrdersOnly, drugOrderAppConfig)
+                    $scope.params.showOtherActive, $scope.params.visitUuids || [], startDate, endDate, getEffectiveOrdersOnly)
                     .then(function (response) {
                         var groupedByVisit = _.groupBy(response.data.visitDrugOrders, function (drugOrder) {
                             return drugOrder.visit.startDateTime;

@@ -1,14 +1,13 @@
 'use strict';
 
 angular.module('bahmni.common.displaycontrol.drugOrderDetails')
-    .directive('drugOrderDetails', ['TreatmentService', 'spinner', 'clinicalAppConfigService', function (treatmentService, spinner, clinicalAppConfigService) {
+    .directive('drugOrderDetails', ['TreatmentService', 'spinner', function (treatmentService, spinner) {
         var controller = function ($scope) {
 
             var init = function () {
-                var drugOrderAppConfig = clinicalAppConfigService.getDrugOrderConfig();
                 return treatmentService.getAllDrugOrdersFor($scope.patient.uuid, $scope.section.dashboardParams.drugConceptSet).then(function (response) {
                     var createDrugOrder = function (drugOrder) {
-                        return Bahmni.Clinical.DrugOrderViewModel.createFromContract(drugOrder, drugOrderAppConfig, undefined);
+                        return Bahmni.Clinical.DrugOrderViewModel.createFromContract(drugOrder);
                     };
                     var drugOrders = response.map(createDrugOrder);
                     $scope.drugOrders = sortOrders(drugOrders);

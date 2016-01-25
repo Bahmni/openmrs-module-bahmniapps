@@ -2,72 +2,82 @@
 
 describe("drugOrderViewModel", function () {
     var DateUtil = Bahmni.Common.Util.DateUtil;
-    var sampleTreatment = function (extensionParams, treatmentConfig, defaults, encounterDate) {
-        return Bahmni.Tests.drugOrderViewModelMother.build(extensionParams, treatmentConfig, defaults, encounterDate);
+    var sampleTreatment = function ( treatmentConfig, defaults, encounterDate) {
+        return Bahmni.Tests.drugOrderViewModelMother.build(treatmentConfig, defaults, encounterDate);
     };
 
-    var treatmentConfig = {
-        frequencies: [
-            {
-                name: "Every Hour",
-                frequencyPerDay: 24
-            },
-            {
-                name: "Every Two Hour",
-                frequencyPerDay: 12
-            },
-            {
-                name: "Five times a Day",
-                frequencyPerDay: 5
-            },
-            {
-                name: "Every Six Hour",
-                frequencyPerDay: 4
-            },
-            {
-                name: "Four times a Day",
-                frequencyPerDay: 4
-            },
-            {
-                name: "Twice a Day",
-                frequencyPerDay: 2
-            },
-            {
-                name: "Once a Day",
-                frequencyPerDay: 1
-            },
-            {
-                name: "Once a Week",
-                frequencyPerDay: 1/7
-            },
-            {
-                name: "Twice a Week",
-                frequencyPerDay: 2/7
-            },
-            {
-                name: "Once a Month",
-                frequencyPerDay: 1/30
+    var treatmentConfig;
+    beforeEach(function(){
+        treatmentConfig = {
+            frequencies: [
+                {
+                    name: "Every Hour",
+                    frequencyPerDay: 24
+                },
+                {
+                    name: "Every Two Hour",
+                    frequencyPerDay: 12
+                },
+                {
+                    name: "Five times a Day",
+                    frequencyPerDay: 5
+                },
+                {
+                    name: "Every Six Hour",
+                    frequencyPerDay: 4
+                },
+                {
+                    name: "Four times a Day",
+                    frequencyPerDay: 4
+                },
+                {
+                    name: "Twice a Day",
+                    frequencyPerDay: 2
+                },
+                {
+                    name: "Once a Day",
+                    frequencyPerDay: 1
+                },
+                {
+                    name: "Once a Week",
+                    frequencyPerDay: 1/7
+                },
+                {
+                    name: "Twice a Week",
+                    frequencyPerDay: 2/7
+                },
+                {
+                    name: "Once a Month",
+                    frequencyPerDay: 1/30
+                }
+            ],
+            routes: [
+                {name: "Intramuscular"},
+                {name: "Orally"},
+                {name: "Oral"}
+            ],
+            durationUnits: [
+                {name: "Hour(s)", factor: 1 / 24},
+                {name: "Day(s)", factor: 1},
+                {name: "Week(s)", factor: 7},
+                {name: "Month(s)", factor: 30}
+            ],
+            doseUnits: [
+                {name:"Tablet(s)"},
+                {name:"Teaspoon"}
+            ],
+            inputOptionsConfig: {
+                dosingUnitsFractions: [
+                    {"value": 0.50, "label": "½"},
+                    {"value": 0.33, "label": "⅓"},
+                    {"value": 0.25, "label": "¼"},
+                    {"value": 0.75, "label": "¾"}
+                ]
             }
-        ],
-        routes: [
-            {name: "Intramuscular"},
-            {name: "Orally"},
-            {name: "Oral"}
-        ],
-        durationUnits: [
-            {name: "Hour(s)", factor: 1 / 24},
-            {name: "Day(s)", factor: 1},
-            {name: "Week(s)", factor: 7},
-            {name: "Month(s)", factor: 30}
-        ],
-        doseUnits: [
-            {name:"Tablet(s)"},
-            {name:"Teaspoon"}
-        ]
-    };
-
+        };
+    });
     it("should get the text to be displayed in the treatment list", function () {
-        var treatment = sampleTreatment({}, [], null, Bahmni.Common.Util.DateUtil.now());
+        var treatment = sampleTreatment([], null, Bahmni.Common.Util.DateUtil.now());
         treatment.durationUnit = "Days";
         treatment.route = "Orally";
         treatment.uniformDosingType.dose = "1";
@@ -81,7 +91,7 @@ describe("drugOrderViewModel", function () {
     });
 
     it("should get the decimal text sum of both dose and mantissa when dosingUnitsFractions config is absent", function () {
-        var treatment = sampleTreatment({}, [], null, Bahmni.Common.Util.DateUtil.now());
+        var treatment = sampleTreatment([], null, Bahmni.Common.Util.DateUtil.now());
         treatment.durationUnit = "Days";
         treatment.route = "Orally";
         treatment.uniformDosingType.dose = "1.5";
@@ -95,15 +105,7 @@ describe("drugOrderViewModel", function () {
     });
 
     it("should get the mixed fraction text sum of both dose and mantissa when dosingUnitsFractions config is present", function () {
-        var appConfig = {
-            dosingUnitsFractions: [
-                {"value": 0.50, "label": "½"},
-                {"value": 0.33, "label": "⅓"},
-                {"value": 0.25, "label": "¼"},
-                {"value": 0.75, "label": "¾"}
-            ]
-        };
-        var treatment = sampleTreatment(appConfig, [], null, Bahmni.Common.Util.DateUtil.now());
+        var treatment = sampleTreatment(treatmentConfig, null, Bahmni.Common.Util.DateUtil.now());
         treatment.durationUnit = "Days";
         treatment.route = "Orally";
         treatment.uniformDosingType.dose = "1.5";
@@ -117,7 +119,7 @@ describe("drugOrderViewModel", function () {
     });
 
     it("should get the same real number in the treatment list when dosingUnitsFractions config is absent", function () {
-        var treatment = sampleTreatment({}, [], null, Bahmni.Common.Util.DateUtil.now());
+        var treatment = sampleTreatment({}, null, Bahmni.Common.Util.DateUtil.now());
         treatment.durationUnit = "Days";
         treatment.route = "Orally";
         treatment.uniformDosingType.dose = "1.5";
@@ -131,15 +133,7 @@ describe("drugOrderViewModel", function () {
     });
 
     it("should get the mixed fraction text in the treatment list when dosingUnitsFractions config is defined ", function () {
-        var appConfig = {
-            dosingUnitsFractions: [
-                {"value": 0.50, "label": "½"},
-                {"value": 0.33, "label": "⅓"},
-                {"value": 0.25, "label": "¼"},
-                {"value": 0.75, "label": "¾"}
-            ]
-        };
-        var treatment = sampleTreatment(appConfig, [], null, Bahmni.Common.Util.DateUtil.now());
+        var treatment = sampleTreatment(treatmentConfig, null, Bahmni.Common.Util.DateUtil.now());
         treatment.durationUnit = "Days";
         treatment.route = "Orally";
         treatment.uniformDosingType.dose = "1.50";
@@ -153,15 +147,7 @@ describe("drugOrderViewModel", function () {
     });
 
     it("should get the same real number in the treatment list when dosingUnitsFractions is defined and it doesnt have entry for mantissa part of real number", function () {
-        var appConfig = {
-            dosingUnitsFractions: [
-                {"value": 0.50, "label": "½"},
-                {"value": 0.33, "label": "⅓"},
-                {"value": 0.25, "label": "¼"},
-                {"value": 0.75, "label": "¾"}
-            ]
-        };
-        var treatment = sampleTreatment(appConfig, [], null, Bahmni.Common.Util.DateUtil.now());
+        var treatment = sampleTreatment(treatmentConfig, null, Bahmni.Common.Util.DateUtil.now());
         treatment.durationUnit = "Days";
         treatment.route = "Orally";
         treatment.uniformDosingType.dose = "1.55";
@@ -175,16 +161,7 @@ describe("drugOrderViewModel", function () {
     });
 
     it("should display mixed fraction variable dosages if dosingUnitsFractions is present", function () {
-        var appConfig = {
-            dosingUnitsFractions: [
-                {"value": 0.50, "label": "½"},
-                {"value": 0.33, "label": "⅓"},
-                {"value": 0.25, "label": "¼"},
-                {"value": 0.75, "label": "¾"}
-            ]
-        };
-
-        var treatment = sampleTreatment(appConfig, [], null, Bahmni.Common.Util.DateUtil.now());
+        var treatment = sampleTreatment(treatmentConfig, null, Bahmni.Common.Util.DateUtil.now());
         treatment.frequencyType = "variable";
         treatment.route = "Orally";
         treatment.durationUnit = "Days";
@@ -198,7 +175,7 @@ describe("drugOrderViewModel", function () {
     });
 
     it("should not display mixed fraction variable dosages if dosingUnitsFractions is absent", function () {
-        var treatment = sampleTreatment({}, [], null, Bahmni.Common.Util.DateUtil.now());
+        var treatment = sampleTreatment([], null, Bahmni.Common.Util.DateUtil.now());
         treatment.frequencyType = "variable";
         treatment.route = "Orally";
         treatment.durationUnit = "Days";
@@ -212,16 +189,7 @@ describe("drugOrderViewModel", function () {
     });
 
     it("should display mixed fraction variable dosages if dosingUnitsFractions is present and in the list", function () {
-        var appConfig = {
-            dosingUnitsFractions: [
-                {"value": 0.50, "label": "½"},
-                {"value": 0.33, "label": "⅓"},
-                {"value": 0.25, "label": "¼"},
-                {"value": 0.75, "label": "¾"}
-            ]
-        };
-
-        var treatment = sampleTreatment(appConfig, [], null, Bahmni.Common.Util.DateUtil.now());
+        var treatment = sampleTreatment(treatmentConfig, null, Bahmni.Common.Util.DateUtil.now());
         treatment.frequencyType = "variable";
         treatment.route = "Orally";
         treatment.durationUnit = "Days";
@@ -235,7 +203,7 @@ describe("drugOrderViewModel", function () {
     });
 
     it("should get the text to be displayed in the treatment list with dosage instructions", function () {
-        var treatment = sampleTreatment({}, [], null, Bahmni.Common.Util.DateUtil.now());
+        var treatment = sampleTreatment({}, null, Bahmni.Common.Util.DateUtil.now());
         treatment.frequencyType = "variable";
         treatment.route = "Orally";
         treatment.durationUnit = "Days";
@@ -249,7 +217,7 @@ describe("drugOrderViewModel", function () {
     });
 
     it("should get the text to be displayed in the treatment list without dosage instructions if the instruction is as directed", function () {
-        var treatment = sampleTreatment({}, [], null, Bahmni.Common.Util.DateUtil.now());
+        var treatment = sampleTreatment({}, null, Bahmni.Common.Util.DateUtil.now());
         treatment.frequencyType = "variable";
         treatment.route = "Orally";
         treatment.durationUnit = "Days";
@@ -264,7 +232,7 @@ describe("drugOrderViewModel", function () {
     });
 
     it("should get the text to be displayed in the treatment list without route", function () {
-        var treatment = sampleTreatment({}, [], null, Bahmni.Common.Util.DateUtil.now());
+        var treatment = sampleTreatment({}, null, Bahmni.Common.Util.DateUtil.now());
         treatment.durationUnit = "Days";
         treatment.route = "Orally";
         treatment.uniformDosingType.dose = "1";
@@ -286,7 +254,8 @@ describe("drugOrderViewModel", function () {
     });
 
     it("should get default durationUnit from config if available", function () {
-        var treatment = sampleTreatment({defaultDurationUnit: "Month(s)"}, treatmentConfig, null, Bahmni.Common.Util.DateUtil.now());
+        treatmentConfig.inputOptionsConfig.defaultDurationUnit = "Month(s)";
+        var treatment = sampleTreatment( treatmentConfig, null, Bahmni.Common.Util.DateUtil.now());
         expect(treatment.durationUnit).toEqual("Month(s)");
     });
 
@@ -314,14 +283,14 @@ describe("drugOrderViewModel", function () {
     });
 
     it("should change duration unit based on frequency factor for uniform frequency type", function () {
-        var appConfig = {"frequencyDefaultDurationUnitsMap": [
+       treatmentConfig.inputOptionsConfig.frequencyDefaultDurationUnitsMap = [
             {"minFrequency":5, "maxFrequency": null, "defaultDurationUnit": "Hour(s)"},
             {"minFrequency":"1/7", "maxFrequency": 5, "defaultDurationUnit": "Day(s)"},
             {"minFrequency":"1/30", "maxFrequency": "1/7", "defaultDurationUnit": "Week(s)"},
             {"minFrequency":null, "maxFrequency": "1/30", "defaultDurationUnit": "Month(s)"}
-        ]};
+        ];
 
-        var sampleTreatment = new Bahmni.Clinical.DrugOrderViewModel(appConfig, treatmentConfig);
+        var sampleTreatment = new Bahmni.Clinical.DrugOrderViewModel(treatmentConfig);
 
         sampleTreatment.frequencyType = Bahmni.Clinical.Constants.dosingTypes.uniform;
 
@@ -363,11 +332,11 @@ describe("drugOrderViewModel", function () {
     });
 
     it("should not change duration units for non-uniform frequency type", function() {
-        var appConfig = {"frequencyDefaultDurationUnitsMap": [
+        treatmentConfig.inputOptionsConfig.frequencyDefaultDurationUnitsMap =[
             {"minFrequency":5, "maxFrequency": null, "defaultDurationUnit": "Hour(s)"},
             {"minFrequency":null, "maxFrequency": "1/30", "defaultDurationUnit": "Month(s)"}
-        ]};
-        var sampleTreatment = new Bahmni.Clinical.DrugOrderViewModel(appConfig, treatmentConfig);
+        ];
+        var sampleTreatment = new Bahmni.Clinical.DrugOrderViewModel(treatmentConfig);
         sampleTreatment.frequencyType = "some frequency type";
         sampleTreatment.durationUnit = "someUnit";
         sampleTreatment.calculateDurationUnit();
@@ -386,7 +355,7 @@ describe("drugOrderViewModel", function () {
 
     describe("calculateDurationInDays", function () {
         it("should convert duration to days", function () {
-            var treatment = sampleTreatment({}, treatmentConfig, null, Bahmni.Common.Util.DateUtil.now());
+            var treatment = sampleTreatment(treatmentConfig, null, Bahmni.Common.Util.DateUtil.now());
             treatment.duration = 6;
             treatment.durationUnit = "Week(s)";
             treatment.calculateDurationInDays();
@@ -416,7 +385,7 @@ describe("drugOrderViewModel", function () {
 
     describe("calculateQuantityAndUnit", function () {
         var sampleTreatmentWithUniformDosing = function (dose, doseUnits, frequency, duration, durationUnit, factor) {
-            var treatment = sampleTreatment({}, treatmentConfig, null, Bahmni.Common.Util.DateUtil.now());
+            var treatment = sampleTreatment(treatmentConfig, null, Bahmni.Common.Util.DateUtil.now());
             treatment.quantity = null;
             treatment.quantityUnit = null;
             treatment.uniformDosingType.dose = dose;
@@ -645,7 +614,7 @@ describe("drugOrderViewModel", function () {
                 "orderReasonText": null,
                 "duration": 10,
                 "provider": {name: "superman"},
-                "orderAttributes":[{name:"dispensed",value:"true"},{name:"administered",value:"false"}]
+                "orderAttributes":[{name:"dispensed",value:true},{name:"administered",value:false}]
             };
             this.create = function() {
                 return drugOrderContract;
@@ -770,7 +739,7 @@ describe("drugOrderViewModel", function () {
                     }
                 ]
             };
-            var drugOrderViewModel = Bahmni.Clinical.DrugOrderViewModel.createFromContract(drugOrderContract,null,config);
+            var drugOrderViewModel = Bahmni.Clinical.DrugOrderViewModel.createFromContract(drugOrderContract,config);
             var orderAttributesAsObs = drugOrderViewModel.getOrderAttributesAsObs();
             expect(orderAttributesAsObs.length).toBe(2);
             expect(orderAttributesAsObs[0].uuid).toBe("dispensed-obs-uuid");
@@ -854,7 +823,7 @@ describe("drugOrderViewModel", function () {
     describe("refill", function () {
         it("should refill an inactive drug order", function () {
             var now = Bahmni.Common.Util.DateUtil.now();
-            var treatment = sampleTreatment({}, [], null, now);
+            var treatment = sampleTreatment({}, null, now);
             var today = DateUtil.today();
 
             treatment.previousOrderUuid = "prev-uuid";
@@ -930,8 +899,8 @@ describe("drugOrderViewModel", function () {
         });
 
         it("should set doseUnits and route based on drug form for reverse synced drug orders", function(){
-            var appConfig = {"drugFormDefaults" : {"Tablet": { "doseUnits": "Tablet(s)", "route": "Oral" }}};
-            var treatment = sampleTreatment(appConfig, treatmentConfig, null, Bahmni.Common.Util.DateUtil.now());
+            treatmentConfig.inputOptionsConfig.drugFormDefaults =  {"Tablet": { "doseUnits": "Tablet(s)", "route": "Oral" }};
+            var treatment = sampleTreatment(treatmentConfig, null, Bahmni.Common.Util.DateUtil.now());
             treatment.reverseSynced = true;
             treatment.frequencyType = Bahmni.Clinical.Constants.dosingTypes.uniform;
             treatment.uniformDosingType = {
@@ -1005,7 +974,7 @@ describe("drugOrderViewModel", function () {
         });
 
         it("should clear scheduledDate if date is equals now", function () {
-            var treatment = sampleTreatment({}, [], null, Bahmni.Common.Util.DateUtil.now());
+            var treatment = sampleTreatment({}, null, Bahmni.Common.Util.DateUtil.now());
 
             treatment.effectiveStartDate = moment(DateUtil.now()).format(isoDateTimeFormat);
 
@@ -1013,7 +982,7 @@ describe("drugOrderViewModel", function () {
         });
 
         it("should clear scheduledDate if date is today few seconds ago", function () {
-            var treatment = sampleTreatment({}, [], null, Bahmni.Common.Util.DateUtil.now());
+            var treatment = sampleTreatment({}, null, Bahmni.Common.Util.DateUtil.now());
 
             treatment.effectiveStartDate = moment(DateUtil.addSeconds(DateUtil.now(), -1)).format(isoDateTimeFormat);
 
@@ -1021,7 +990,7 @@ describe("drugOrderViewModel", function () {
         });
 
         it("should clear scheduledDate if date is past date", function () {
-            var treatment = sampleTreatment({}, [], null, Bahmni.Common.Util.DateUtil.now());
+            var treatment = sampleTreatment({}, null, Bahmni.Common.Util.DateUtil.now());
             var now = DateUtil.now();
 
             treatment.effectiveStartDate = moment(DateUtil.subtractDays(now, 2)).format(isoDateTimeFormat);
@@ -1254,8 +1223,8 @@ describe("drugOrderViewModel", function () {
 
     describe("changeDrug", function(){
         it("should set default dose units if units available in config", function(){
-            var appConfig = {"drugFormDefaults" : {"Ayurvedic" : {"doseUnits": "Teaspoon", "route": "Orally" }}};
-            var treatment = sampleTreatment(appConfig, treatmentConfig, null, Bahmni.Common.Util.DateUtil.now());
+            treatmentConfig.inputOptionsConfig.drugFormDefaults = {"Ayurvedic" : {"doseUnits": "Teaspoon", "route": "Orally" }};
+            var treatment = sampleTreatment(treatmentConfig, null, Bahmni.Common.Util.DateUtil.now());
             treatment.changeDrug({form : "Ayurvedic"});
 
             expect(treatment.doseUnits).toBe("Teaspoon");
@@ -1263,8 +1232,8 @@ describe("drugOrderViewModel", function () {
         });
 
         it("should not set dose units if units not available in config", function(){
-            var appConfig = {"drugFormDefaults" : {"Ayurvedic" : {"doseUnits": "ml", "route": "Mouth" }}};
-            var treatment = sampleTreatment(appConfig, treatmentConfig, null, Bahmni.Common.Util.DateUtil.now());
+            treatmentConfig.inputOptionsConfig.drugFormDefaults = {"Ayurvedic" : {"doseUnits": "ml", "route": "Mouth" }};
+            var treatment = sampleTreatment(treatmentConfig, null, Bahmni.Common.Util.DateUtil.now());
             treatment.changeDrug({form : "Ayurvedic"});
 
             expect(treatment.doseUnits).toBe(undefined);
@@ -1272,8 +1241,8 @@ describe("drugOrderViewModel", function () {
         });
 
         it("should not fail when drugFormDefaults is not define for drug form", function(){
-            var appConfig = {"drugFormDefaults" : {"Ayurvedic" : {"doseUnits": "Teaspoon", "route": "Mouth" }}};
-            var treatment = sampleTreatment(appConfig, {}, null, Bahmni.Common.Util.DateUtil.now());
+            treatmentConfig.inputOptionsConfig.drugFormDefaults = {"Ayurvedic" : {"doseUnits": "TeaSpoon", "route": "Mouth" }};
+            var treatment = sampleTreatment({}, null, Bahmni.Common.Util.DateUtil.now());
 
             treatment.changeDrug({form : "Capsule"});
 
@@ -1282,7 +1251,7 @@ describe("drugOrderViewModel", function () {
         })
 
         it("should not fail when app config does not have drugFormDefaults", function(){
-            var treatment = sampleTreatment({}, {}, null, Bahmni.Common.Util.DateUtil.now());
+            var treatment = sampleTreatment( {}, null, Bahmni.Common.Util.DateUtil.now());
 
             treatment.changeDrug({form : "Ayurvedic"});
 

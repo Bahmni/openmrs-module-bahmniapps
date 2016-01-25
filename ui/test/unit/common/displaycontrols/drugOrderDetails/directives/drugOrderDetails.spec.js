@@ -48,12 +48,7 @@ describe('Drug Order Details DisplayControl', function () {
     ];
 
     beforeEach(module('bahmni.clinical'));
-    beforeEach(module('bahmni.common.displaycontrol.drugOrderDetails', function($provide) {
-        clinicalAppConfigService = jasmine.createSpyObj('clinicalAppConfigService', ['getDrugOrderConfig']);
-        clinicalAppConfigService.getDrugOrderConfig.and.returnValue(dosingUnitsFractions);
-
-        $provide.value('clinicalAppConfigService', clinicalAppConfigService);
-    }));
+    beforeEach(module('bahmni.common.displaycontrol.drugOrderDetails'));
 
 
     beforeEach(inject(function (_$compile_, $rootScope, $httpBackend) {

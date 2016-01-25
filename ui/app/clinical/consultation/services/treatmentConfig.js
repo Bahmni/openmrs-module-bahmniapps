@@ -26,6 +26,9 @@ angular.module('bahmni.clinical').factory('treatmentConfig', ['TreatmentService'
             getDosePlaceHolder: function () {
                 return drugOrderOptions.dosePlaceHolder
             },
+            getDosingUnitsFractions: function () {
+                return drugOrderOptions.dosingUnitsFractions;
+            },
             isHiddenField: function (fieldName) {
                 return _.contains(drugOrderOptions.hiddenFields, fieldName)
             },

@@ -51,16 +51,15 @@ angular.module('bahmni.common.conceptSet')
                     encounterDateTime: encounterData.encounterDateTime
                 };
 
-                spinner.forPromise(treatmentConfig.then(function (treatmentConfig) {
+                spinner.forPromise(treatmentConfig().then(function (treatmentConfig) {
                     $scope.treatmentConfiguration = treatmentConfig;
                     return conceptSetService.getComputedValue(data);
                 }).then(function (response) {
                     response = response.data;
                     copyValues($scope.consultation.observations, response.encounterModifierObservations);
-                    var drugOrderAppConfig = appService.getAppDescriptor().getConfigValue("drugOrder") || {};
                     $scope.consultation.newlyAddedTreatments = $scope.consultation.newlyAddedTreatments || [];
                     response.drugOrders.forEach(function (drugOrder) {
-                        $scope.consultation.newlyAddedTreatments.push(Bahmni.Clinical.DrugOrderViewModel.createFromContract(drugOrder, drugOrderAppConfig, $scope.treatmentConfiguration));
+                        $scope.consultation.newlyAddedTreatments.push(Bahmni.Clinical.DrugOrderViewModel.createFromContract(drugOrder, $scope.treatmentConfiguration));
                     });
                 }));
             };
