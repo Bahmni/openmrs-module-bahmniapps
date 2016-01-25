@@ -15,8 +15,14 @@ angular.module('bahmni.common.displaycontrol.drugOrderDetails')
                 });
             };
 
-            $scope.columnHeaders = ["DRUG_DETAILS_DRUG_NAME", "DRUG_DETAILS_DOSE_INFO", "DRUG_DETAILS_ROUTE", "DRUG_DETAILS_FREQUENCY",
-                "DRUG_DETAILS_START_DATE", "DRUG_DETAILS_STOP_DATE", "DRUG_DETAILS_ORDER_REASON_CODED", "DRUG_DETAILS_ORDER_REASON_TEXT"];
+            $scope.columnHeaders = [
+                "DRUG_DETAILS_DRUG_NAME",
+                "DRUG_DETAILS_DOSE_INFO",
+                "DRUG_DETAILS_ROUTE",
+                "DRUG_DETAILS_FREQUENCY",
+                "DRUG_DETAILS_START_DATE",
+                "DRUG_DETAILS_ADDITIONAL_INSTRUCTIONS"
+            ];
 
             $scope.showDetails = false;
             $scope.toggle = function (drugOrder) {

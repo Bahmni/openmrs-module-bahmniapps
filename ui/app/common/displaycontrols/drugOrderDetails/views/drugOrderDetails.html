@@ -27,14 +27,9 @@
                 </td>
 
                 <td>
-                    <span ng-if="drugOrder.isDiscontinuedOrStopped()">{{drugOrder.effectiveStopDate | bahmniDate}} </span>
+                    <span>{{drugOrder.additionalInstructions}}</span>
                 </td>
-                <td>
-                    <span ng-if="drugOrder.orderReasonConcept">{{drugOrder.orderReasonConcept.display || drugOrder.orderReasonConcept.name}}</span>
-                </td>
-                <td>
-                    <span ng-if="drugOrder.orderReasonText">{{drugOrder.orderReasonText}}</span>
-                </td>
+
                 <td class="toggle-btn" ng-click="toggle(drugOrder)"
                     ng-if="section.dashboardParams.showDetailsButton">
                     <button class="toggle fr">
