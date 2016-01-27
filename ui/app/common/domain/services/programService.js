@@ -3,8 +3,8 @@ angular.module('bahmni.common.domain')
     .factory('programService', ['$http','programHelper', 'appService',function ($http, programHelper, appService) {
 
         var getAllPrograms = function () {
-            return $http.get(Bahmni.Common.Constants.programUrl, {params: {v: 'default'}}).then(function (data) {
-                var allPrograms = programHelper.filterRetiredPrograms(data.data.results);
+            return $http.get(Bahmni.Common.Constants.programUrl, {params: {v: 'default'}}).then(function (response) {
+                var allPrograms = programHelper.filterRetiredPrograms(response.data.results);
                 _.forEach(allPrograms, function (program) {
                     program.allWorkflows = programHelper.filterRetiredWorkflowsAndStates(program.allWorkflows);
                     if (program.outcomesConcept) {
@@ -46,12 +46,15 @@ angular.module('bahmni.common.domain')
                     patient: patientUuid
                 }
             };
-            return $http.get(req.url, {params: req.params}).then(function(data) {
-                return programHelper.groupPrograms(data.data.results);
+            return $http.get(req.url, {params: req.params}).then(function (response) {
+                var patientPrograms = [];
+                return getProgramAttributeTypes().then(function (programAttributeTypes) {
+                    patientPrograms = programHelper.filterProgramAttributes(response.data.results, programAttributeTypes);
+
+                    return programHelper.groupPrograms(patientPrograms);
+                })
             });
         };
-
-
 
         var constructStatesPayload = function(stateUuid, onDate, currProgramStateUuid){
             var states =[];
@@ -106,6 +109,7 @@ angular.module('bahmni.common.domain')
 
         var getProgramAttributeTypes = function () {
             return $http.get(Bahmni.Common.Constants.programAttributeTypes, {params: {v: 'custom:(uuid,name,description,datatypeClassname,datatypeConfig)'}}).then(function (response) {
+
                 var programAttributesConfig = appService.getAppDescriptor().getConfigValue("program");
 
                 var mandatoryProgramAttributes = [];
@@ -122,6 +126,12 @@ angular.module('bahmni.common.domain')
             var content = { attributes: attributeFormatter.getMrsAttributesForUpdate(patientProgram.patientProgramAttributes, programAttributeTypes, patientProgram.attributes)};
             return savePatientProgram(patientProgram.uuid,content);
         };
+
+        var getProgramStateConfig = function () {
+            var config = appService.getAppDescriptor().getConfigValue('programDisplayControl');
+            return config ? config.showProgramStateInTimeline : false;
+        };
+
         return {
             getAllPrograms: getAllPrograms,
             enrollPatientToAProgram: enrollPatientToAProgram,
@@ -131,7 +141,7 @@ angular.module('bahmni.common.domain')
             updatePatientProgram: updatePatientProgram,
             savePatientProgramStates: savePatientProgramStates,
             deletePatientState: deletePatientState,
-            getProgramAttributeTypes : getProgramAttributeTypes
+            getProgramAttributeTypes: getProgramAttributeTypes,
+            getProgramStateConfig: getProgramStateConfig
         };
-
     }]);

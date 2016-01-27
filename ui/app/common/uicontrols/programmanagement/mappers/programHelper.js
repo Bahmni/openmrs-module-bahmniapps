@@ -50,6 +50,46 @@ angular.module('bahmni.common.uicontrols.programmanagment')
         });
     };
 
+    this.filterProgramAttributes = function (patientPrograms, programAttributeTypes) {
+        var programDisplayControlConfig = appService.getAppDescriptor().getConfigValue('programDisplayControl');
+        var config = programDisplayControlConfig ? programDisplayControlConfig['programAttributes'] : [];
+        var configAttrList = programAttributeTypes.filter(function (each) {
+            return config && config.indexOf(each.name) !== -1;
+        });
+
+        if (config && config.length === 0 && programDisplayControlConfig) {
+            return patientPrograms.map(function (patientProgram) {
+                patientProgram.attributes = [];
+                return patientProgram;
+            });
+        }
+
+        if (programDisplayControlConfig && configAttrList.length) {
+            patientPrograms.forEach(function (program) {
+                var attrsToBeDisplayed = [];
+
+                configAttrList.forEach(function (configAttr) {
+                    var attr = _.find(program.attributes, function (progAttr) {
+                        return progAttr.attributeType.display === configAttr.name;
+                    });
+
+                    attr = attr ? attr : {
+                        attributeType: {
+                            display: configAttr.name,
+                            description : configAttr.description
+                        },
+                        value: ""
+                    };
+
+                    attrsToBeDisplayed.push(attr);
+                });
+
+                program.attributes = attrsToBeDisplayed;
+            });
+        }
+        return patientPrograms;
+    };
+
     this.groupPrograms = function(patientPrograms) {
         var activePrograms = [];
         var endedPrograms = [];
