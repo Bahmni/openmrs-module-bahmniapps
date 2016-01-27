@@ -10,7 +10,7 @@ describe("Program display control", function () {
         module('ngHtml2JsPreprocessor');
     });
     beforeEach(module(function ($provide) {
-        programService = jasmine.createSpyObj('programService', ['getPatientPrograms']);
+        programService = jasmine.createSpyObj('programService', ['getPatientPrograms', 'getProgramStateConfig']);
         translateFilter = jasmine.createSpy('translateFilter');
         $provide.value('programService', programService);
         $provide.value('translateFilter',translateFilter);
@@ -72,6 +72,10 @@ describe("Program display control", function () {
             deferred = q.defer();
             deferred.resolve(data);
             return deferred.promise;
+        });
+
+        programService.getProgramStateConfig.and.callFake(function() {
+           return true;
         });
         compileAndDigest();
         var elementIsolatedScope = element.isolateScope();

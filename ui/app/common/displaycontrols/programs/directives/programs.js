@@ -16,6 +16,12 @@ angular.module('bahmni.common.displaycontrol.programs')
                 $scope.hasPatientAnyPrograms = function(){
                     return $scope.hasPatientAnyPastPrograms() || $scope.hasPatientAnyActivePrograms();
                 };
+                $scope.showProgramStateInTimeline = function () {
+                    return programService.getProgramStateConfig();
+                };
+                $scope.hasStates = function (program) {
+                    return !_.isEmpty(program.states);
+                };
             };
             return {
                 restrict: 'E',

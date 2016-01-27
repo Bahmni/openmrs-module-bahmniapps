@@ -2,34 +2,11 @@
 
 describe('programService', function () {
 
-    var rootScope,data;
+    var rootScope, mockBackend;
 
     var programService;
-    var appService = jasmine.createSpyObj('appService',['getAppDescriptor']);
+    var appService = jasmine.createSpyObj('appService', ['getAppDescriptor']);
     var DateUtil = Bahmni.Common.Util.DateUtil;
-
-    var mockHttp = {
-        get: jasmine.createSpy('Http get').and.returnValue({
-            then: function(callback){
-                return callback({data:{results:[]}});
-            }
-        }),
-        post: jasmine.createSpy('Http post').and.returnValue({
-            'success': function (onSuccess) {
-                return {
-                    'then': function (thenMethod) {
-                        thenMethod()
-                    },
-                    'error': function (onError) {
-                        onError()
-                    }
-                }}}),
-        delete: jasmine.createSpy('Http delete').and.returnValue({
-            then: function(callback){
-                return callback({data:{results:[]}})
-            }
-        })
-    };
 
     var mockAppDescriptor = jasmine.createSpyObj('appService', ['getConfigValue']);
     mockAppDescriptor.getConfigValue.and.returnValue(undefined);
@@ -37,36 +14,34 @@ describe('programService', function () {
     var mockAppService = jasmine.createSpyObj('appDescriptor', ['getAppDescriptor']);
     mockAppService.getAppDescriptor.and.returnValue(mockAppDescriptor);
 
-    beforeEach(function(){
+    beforeEach(function () {
         appService.getAppDescriptor.and.returnValue({
             getConfig: function () {
                 return {
                     program: ""
                 }
             },
-            getConfigValue: function(){
-                return{
-                    mandatoryProgramAttributes :""
+            getConfigValue: function () {
+                return {
+                    mandatoryProgramAttributes: ""
                 }
             }
         });
 
         module('bahmni.common.domain');
         module('bahmni.common.uicontrols.programmanagment');
-        module(function ($provide){
-            $provide.value('$http', mockHttp);
+        module(function ($provide) {
             $provide.value('appService', appService);
-        })
+        });
 
-        inject(function (_$rootScope_, _programService_) {
+        inject(function (_$rootScope_, _programService_, $httpBackend) {
             rootScope = _$rootScope_;
             programService = _programService_;
-        })
-
-
+            mockBackend = $httpBackend
+        });
     });
 
-    it('should fetch all programs from backend and filter programs containing retired workflows and outcomes', function(done){
+    it('should fetch all programs from backend and filter programs containing retired workflows and outcomes', function () {
         var allPrograms = [
             {
                 "uuid": "someProgram1Uuid",
@@ -94,10 +69,10 @@ describe('programService', function () {
                         "retired": false,
                         "states": [{
                             "uuid": "state1Uuid",
-                            "retired":false
-                        },{
+                            "retired": false
+                        }, {
                             "uuid": "state2Uuid",
-                            "retired":true
+                            "retired": true
                         }]
                     }
                 ]
@@ -116,35 +91,27 @@ describe('programService', function () {
                         "retired": true,
                         "states": [{
                             "uuid": "state1Uuid",
-                            "retired":false
-                        },{
+                            "retired": false
+                        }, {
                             "uuid": "state2Uuid",
-                            "retired":false
+                            "retired": false
                         }]
                     }
                 ]
             }
         ];
 
-        var data = {
-                data: {
-                    results: allPrograms
-                }
-        };
+        mockBackend.expectGET('/openmrs/ws/rest/v1/program?v=default').respond({results: allPrograms});
 
-        mockHttp.get.and.returnValue({
-            then: function(callback){
-                var allPrograms= callback(data);
-                expect(allPrograms.length).toBe(1);
-                expect(allPrograms[0].allWorkflows[0].states.length).toBe(1);
-                done();
-            }
+        programService.getAllPrograms().then(function (response) {
+            expect(response.length).toBe(1);
+            expect(response[0].allWorkflows[0].states.length).toBe(1);
         });
 
-        programService.getAllPrograms();
-    })
+        mockBackend.flush();
+    });
 
-    it("should group all programs into active/ended programs and sort them according to their dateEnrolled/dateCompleted respectively",function(done){
+    it("should group all programs into active/ended programs and sort them according to their dateEnrolled/dateCompleted respectively", function () {
         var patientUuid = "somePatientUuid";
 
         var today = DateUtil.endOfToday();
@@ -159,15 +126,15 @@ describe('programService', function () {
                         "display": "Tuberculosis Program",
                         "dateEnrolled": DateUtil.parseLongDateToServerFormat(tenDaysAgo),
                         "dateCompleted": DateUtil.parseLongDateToServerFormat(yesterday),
-                        "patient":{"uuid":"ad95e200-6196-4438-a078-16ad0506a473"},
+                        "patient": {"uuid": "ad95e200-6196-4438-a078-16ad0506a473"},
                         "states": [
                             {
-                                state:{ uuid: '1911a3ef-cfab-43c5-8810-7f594bfa8995'},
+                                state: {uuid: '1911a3ef-cfab-43c5-8810-7f594bfa8995'},
                                 startDate: "2015-07-01",
                                 endDate: "2015-07-15"
                             },
                             {
-                                state:{ uuid: '1317ab09-52b4-4573-aefa-7f6e7bdf6d61'},
+                                state: {uuid: '1317ab09-52b4-4573-aefa-7f6e7bdf6d61'},
                                 startDate: "2015-07-15",
                                 endDate: null
                             }
@@ -190,15 +157,15 @@ describe('programService', function () {
                         "display": "HIV Program",
                         "dateEnrolled": DateUtil.parseLongDateToServerFormat(tenDaysAgo),
                         "dateCompleted": DateUtil.parseLongDateToServerFormat(today),
-                        "patient":{"uuid":"ad95e200-6196-4438-a078-16ad0506a473"},
+                        "patient": {"uuid": "ad95e200-6196-4438-a078-16ad0506a473"},
                         "states": [
                             {
-                                state:{ uuid: '1911a3ef-cfab-43c5-8810-7f594bfa8995'},
+                                state: {uuid: '1911a3ef-cfab-43c5-8810-7f594bfa8995'},
                                 startDate: "2015-07-01",
                                 endDate: "2015-07-15"
                             },
                             {
-                                state:{ uuid: '1317ab09-52b4-4573-aefa-7f6e7bdf6d61'},
+                                state: {uuid: '1317ab09-52b4-4573-aefa-7f6e7bdf6d61'},
                                 startDate: "2015-07-15",
                                 endDate: null
                             }
@@ -221,15 +188,15 @@ describe('programService', function () {
                         "display": "End TB Program",
                         "dateEnrolled": DateUtil.parseLongDateToServerFormat(tenDaysAgo),
                         "dateCompleted": DateUtil.parseLongDateToServerFormat(fiveDaysFromToday),
-                        "patient":{"uuid":"ad95e200-6196-4438-a078-16ad0506a473"},
+                        "patient": {"uuid": "ad95e200-6196-4438-a078-16ad0506a473"},
                         "states": [
                             {
-                                state:{ uuid: '1911a3ef-cfab-43c5-8810-7f594bfa8995'},
+                                state: {uuid: '1911a3ef-cfab-43c5-8810-7f594bfa8995'},
                                 startDate: "2015-07-01",
                                 endDate: "2015-07-15"
                             },
                             {
-                                state:{ uuid: '1317ab09-52b4-4573-aefa-7f6e7bdf6d61'},
+                                state: {uuid: '1317ab09-52b4-4573-aefa-7f6e7bdf6d61'},
                                 startDate: "2015-07-15",
                                 endDate: null
                             }
@@ -252,15 +219,15 @@ describe('programService', function () {
                         "display": "End Fever Program",
                         "dateEnrolled": DateUtil.parseLongDateToServerFormat(tenDaysAgo),
                         "dateCompleted": null,
-                        "patient":{"uuid":"ad95e200-6196-4438-a078-16ad0506a473"},
+                        "patient": {"uuid": "ad95e200-6196-4438-a078-16ad0506a473"},
                         "states": [
                             {
-                                state:{ uuid: '1911a3ef-cfab-43c5-8810-7f594bfa8995'},
+                                state: {uuid: '1911a3ef-cfab-43c5-8810-7f594bfa8995'},
                                 startDate: "2015-07-01",
                                 endDate: "2015-07-15"
                             },
                             {
-                                state:{ uuid: '1317ab09-52b4-4573-aefa-7f6e7bdf6d61'},
+                                state: {uuid: '1317ab09-52b4-4573-aefa-7f6e7bdf6d61'},
                                 startDate: "2015-07-15",
                                 endDate: null
                             }
@@ -282,19 +249,60 @@ describe('programService', function () {
             }
         };
 
-        mockHttp.get.and.returnValue({
-            then: function(callback){
-                var groupedPrograms= callback(data);
-                expect(groupedPrograms.activePrograms[0].display).toEqual("End Fever Program");
-                expect(groupedPrograms.endedPrograms[0].display).toEqual("End TB Program");
-                done();
+        var attributeType = {
+            "data": {
+                "results": [
+                    {
+                        "uuid": "79d8bac8-bf47-11e5-8023-005056821b69",
+                        "name": "Id",
+                        "description": "Enrolment Id",
+                        "datatypeClassname": "org.openmrs.customdatatype.datatype.RegexValidatedTextDatatype",
+                        "datatypeConfig": "[0-9]*"
+                    },
+                    {
+                        "uuid": "c4e52116-bf47-11e5-8023-005056821b69",
+                        "name": "Treatment_Date",
+                        "description": "Treatment Start Date",
+                        "datatypeClassname": "org.openmrs.customdatatype.datatype.DateDatatype",
+                        "datatypeConfig": null
+                    },
+                    {
+                        "uuid": "f855b376-bf47-11e5-8023-005056821b69",
+                        "name": "Doctor",
+                        "description": "Doctor-In-Charge",
+                        "datatypeClassname": "org.openmrs.customdatatype.datatype.FreeTextDatatype",
+                        "datatypeConfig": null
+                    },
+                    {
+                        "uuid": "06bec1e2-bf48-11e5-8023-005056821b69",
+                        "name": "Enrollment",
+                        "description": "Enrolled in Any Other Program",
+                        "datatypeClassname": "org.openmrs.customdatatype.datatype.BooleanDatatype",
+                        "datatypeConfig": null
+                    }
+                ]
             }
+        };
+
+
+        mockBackend.whenGET('/openmrs/ws/rest/v1/programattributetype?v=custom:(uuid,name,description,datatypeClassname,datatypeConfig)').respond(attributeType.data);
+        mockBackend.whenGET('/openmrs/ws/rest/v1/programenrollment?patient=somePatientUuid&v=full').respond(data.data);
+
+        programService.getProgramAttributeTypes().then(function (response) {
+            expect(response.length).toBe(4);
         });
 
-        programService.getPatientPrograms(patientUuid);
+        programService.getPatientPrograms(patientUuid).then(function (response) {
+
+            expect(response.activePrograms[0].display).toEqual("End Fever Program");
+            expect(response.endedPrograms[0].display).toEqual("End TB Program");
+        });
+
+        mockBackend.flush();
+
     });
 
-    it('should enroll patient to a program', function(){
+    it('should enroll patient to a program', function () {
         var patientUuid = "somePatientUuid";
         var programUuid = "someProgramUuid";
         var dateEnrolled = "Fri Dec 11 2015 12:04:23 GMT+0530 (IST)";
@@ -310,52 +318,89 @@ describe('programService', function () {
             required: false
         }];
 
+        mockBackend.whenPOST('/openmrs/ws/rest/v1/programenrollment').respond(function (method, url, data, headers) {
+            expect(method).toEqual('POST');
+            data = JSON.parse(data);
+            expect(url).toEqual(Bahmni.Common.Constants.programEnrollPatientUrl);
+            expect(data.patient).toEqual(patientUuid);
+            expect(data.program).toEqual(programUuid);
+            expect(moment(data.dateEnrolled).isSame(moment("2015-12-11T12:04:23+0530"))).toBe(true);
+
+            expect(data.states[0].state).toEqual(workflowUuid);
+            expect(moment(data.states[0].startDate).isSame(moment("2015-12-11T12:04:23+0530"))).toBe(true);
+
+            expect(data.attributes).toEqual([{
+                attributeType: {uuid: '82325788-3f10-11e4-adec-0800271c1b75'},
+                value: 'alps'
+            }]);
+
+            return [200, {}, {}];
+        });
+
         programService.enrollPatientToAProgram(patientUuid, programUuid, dateEnrolled, workflowUuid, patientProgramAttributes, programAttributeTypes);
 
-        expect(mockHttp.post.calls.mostRecent().args[0]).toEqual(Bahmni.Common.Constants.programEnrollPatientUrl);
-        expect(mockHttp.post.calls.mostRecent().args[1].patient).toEqual(patientUuid);
-        expect(mockHttp.post.calls.mostRecent().args[1].program).toEqual(programUuid);
-        expect(moment(mockHttp.post.calls.mostRecent().args[1].dateEnrolled).isSame(moment("2015-12-11T12:04:23+0530"))).toBe(true);
-        expect(mockHttp.post.calls.mostRecent().args[1].states[0].state).toEqual(workflowUuid);
-        expect(moment(mockHttp.post.calls.mostRecent().args[1].states[0].startDate).isSame(moment("2015-12-11T12:04:23+0530"))).toBe(true);
-        expect(mockHttp.post.calls.mostRecent().args[1].attributes).toEqual([ { attributeType : { uuid : '82325788-3f10-11e4-adec-0800271c1b75' }, value : 'alps' } ]);
-    })
+        mockBackend.flush();
 
-    it('should end patient program', function(){
+    });
+
+    it('should end patient program', function () {
         var patientProgramUuid = "somePatientProgramUuid";
         var outcome = "someOutcomeUuid";
         var dateCompleted = "Fri Dec 11 2015 12:04:23 GMT+0530 (IST)";
+
+        mockBackend.whenPOST('/openmrs/ws/rest/v1/programenrollment/somePatientProgramUuid').respond(function (method, url, data, headers) {
+            data = JSON.parse(data);
+            expect(url).toEqual(Bahmni.Common.Constants.programEnrollPatientUrl + "/" + patientProgramUuid);
+            expect(moment(data.dateCompleted).isSame(moment("2015-12-11T12:04:23+0530"))).toBe(true);
+            expect(data.outcome).toEqual(outcome);
+            return [200, {}, {}];
+        });
+
         programService.endPatientProgram(patientProgramUuid, dateCompleted, outcome);
 
-        expect(mockHttp.post.calls.mostRecent().args[0]).toEqual(Bahmni.Common.Constants.programEnrollPatientUrl + "/" + patientProgramUuid);
-        expect(moment(mockHttp.post.calls.mostRecent().args[1].dateCompleted).isSame(moment("2015-12-11T12:04:23+0530"))).toBe(true);
-        expect(mockHttp.post.calls.mostRecent().args[1].outcome).toEqual(outcome);
+        mockBackend.flush();
+
     });
 
-    it('should delete patient state', function(){
+    it('should delete patient state', function () {
         var patientProgramUuid = "somePatientProgramUuid";
         var patientStateUuid = "someStateUuid";
-        programService.deletePatientState(patientProgramUuid, patientStateUuid);
+        programService.deletePatientState(patientProgramUuid, patientStateUuid).success(function (response) {
+            expect(response.reason).toEqual("User deleted the state.");
+        });
+        mockBackend.when('DELETE', '/openmrs/ws/rest/v1/programenrollment/somePatientProgramUuid/state/someStateUuid').respond(function (method, url) {
+            expect(url).toEqual(Bahmni.Common.Constants.programEnrollPatientUrl + "/" + patientProgramUuid + "/state/" + patientStateUuid);
+            return [200, {"reason": "User deleted the state."}, {}];
 
-        expect(mockHttp.delete.calls.mostRecent().args[0]).toEqual(Bahmni.Common.Constants.programEnrollPatientUrl + "/" + patientProgramUuid + "/state/" + patientStateUuid);
-        expect(mockHttp.delete.calls.mostRecent().args[1].reason).toEqual("User deleted the state.");
+        });
+        mockBackend.flush();
+
+
     });
 
-    it('should save patient program with states', function(){
+    it('should save patient program with states', function () {
         var patientProgramUuid = "somePatientProgramUuid";
         var uuid = "someStateUuid";
         var onDate = "someOnDateOfTheState";
         var programStateUuid = "someProgramStateUuid";
 
-        var constructedState = [{ state: {uuid : uuid},  uuid : programStateUuid , startDate : onDate}];
+        var constructedState = [{state: {uuid: uuid}, uuid: programStateUuid, startDate: onDate}];
+
+
+        mockBackend.whenPOST('/openmrs/ws/rest/v1/programenrollment/somePatientProgramUuid').respond(function (method, url, data, headers) {
+            data = JSON.parse(data);
+            expect(url).toEqual(Bahmni.Common.Constants.programEnrollPatientUrl + "/" + patientProgramUuid);
+            expect(data.states).toEqual(constructedState);
+            return [200, {}, {}];
+        });
 
         programService.savePatientProgramStates(patientProgramUuid, uuid, onDate, programStateUuid);
 
-        expect(mockHttp.post.calls.mostRecent().args[0]).toEqual(Bahmni.Common.Constants.programEnrollPatientUrl + "/" + patientProgramUuid);
-        expect(mockHttp.post.calls.mostRecent().args[1].states).toEqual(constructedState);
+        mockBackend.flush();
+
     });
 
-    it('should retrieve list of program attribute types', function(done) {
+    it('should retrieve list of program attribute types', function () {
         var programAttributeTypesJson = {
             "results": [
                 {
@@ -377,37 +422,37 @@ describe('programService', function () {
             ]
         };
 
-        mockHttp.get.and.returnValue({
-            then: function (callback) {
-                var programAttributeTypes = callback({data : programAttributeTypesJson});
-                expect(programAttributeTypes.length).toEqual(2);
-                expect(programAttributeTypes).toEqual([{
-                    uuid: '82325788-3f10-11e4-adec-0800271c1b75',
-                    sortWeight: 3,
-                    name: 'locationName',
-                    description: 'Location of the patient program',
-                    format: 'java.lang.String',
-                    answers: [],
-                    required: false,
-                    concept : { dataType : undefined }
-                }, {
-                    uuid: '82325788-3f10-11es-adec-0800271c1b75',
-                    sortWeight: 3,
-                    name: 'mandatory',
-                    description: 'Is the program mandatory',
-                    format: 'java.lang.Boolean',
-                    answers: [],
-                    required: false,
-                    concept : { dataType : undefined }
-                }]);
-                done();
-            }
-        });
+        mockBackend.whenGET('/openmrs/ws/rest/v1/programattributetype?v=custom:(uuid,name,description,datatypeClassname,datatypeConfig)').respond(programAttributeTypesJson);
 
-        programService.getProgramAttributeTypes();
+
+        programService.getProgramAttributeTypes().then(function (programAttributeTypes) {
+            expect(programAttributeTypes.length).toBe(2);
+            expect(programAttributeTypes).toEqual([{
+                uuid: '82325788-3f10-11e4-adec-0800271c1b75',
+                sortWeight: 3,
+                name: 'locationName',
+                description: 'Location of the patient program',
+                format: 'java.lang.String',
+                answers: [],
+                required: false,
+                concept: {dataType: undefined}
+            }, {
+                uuid: '82325788-3f10-11es-adec-0800271c1b75',
+                sortWeight: 3,
+                name: 'mandatory',
+                description: 'Is the program mandatory',
+                format: 'java.lang.Boolean',
+                answers: [],
+                required: false,
+                concept: {dataType: undefined}
+            }]);
+
+        });
+        mockBackend.flush();
+
     });
 
-    describe("Program attributes",function(){
+    describe("Program attributes", function () {
         var programResponse = [
             {
                 "uuid": "someProgram1Uuid",
@@ -415,74 +460,72 @@ describe('programService', function () {
                 "retired": false,
                 "outcomesConcept": {},
                 "allWorkflows": [],
-                "attributes":[]
+                "attributes": []
             }];
 
-            var today = DateUtil.endOfToday();
-            var tenDaysAgo = DateUtil.addDays(today, -10);
-            var data = {
-                data: {
-                    results: [
-                        {
-                            "display": "Tuberculosis Program",
-                            "dateEnrolled": DateUtil.parseLongDateToServerFormat(tenDaysAgo),
-                            "dateCompleted": null,
-                            "patient":{"uuid":"ad95e200-6196-4438-a078-16ad0506a473"},
-                            "states": [],
-                            "program": {
-                                "name": "program",
-                                "uuid": "1209df07-b3a5-4295-875f-2f7bae20f86e",
+        var today = DateUtil.endOfToday();
+        var tenDaysAgo = DateUtil.addDays(today, -10);
+        var data = {
+            data: {
+                results: [
+                    {
+                        "display": "Tuberculosis Program",
+                        "dateEnrolled": DateUtil.parseLongDateToServerFormat(tenDaysAgo),
+                        "dateCompleted": null,
+                        "patient": {"uuid": "ad95e200-6196-4438-a078-16ad0506a473"},
+                        "states": [],
+                        "program": {
+                            "name": "program",
+                            "uuid": "1209df07-b3a5-4295-875f-2f7bae20f86e",
+                            "retired": false,
+                            "allWorkflows": []
+                        },
+                        "attributes": [{
+                            "attributeType": {
+                                "description": "sample att description",
+                                "display": "endtbName",
+                                "links": Array[1],
                                 "retired": false,
-                                "allWorkflows": []
+                                "uuid": "4131c8cf-bf60-47c5-a46c-9142c554ab85"
                             },
-                            "attributes": [{
-                                "attributeType": {
-                                    "description": "sample att description",
-                                    "display": "endtbName",
-                                    "links": Array[1],
-                                    "retired": false,
-                                    "uuid": "4131c8cf-bf60-47c5-a46c-9142c554ab85"
-                                },
-                                "display": "endtbName: bmn",
-                                "links": Array[2],
-                                "name": "sample att name",
-                                "resourceVersion": "1.9",
-                                "uuid": "79f68f3e-a2b2-4680-bf9d-86cb3124d6e5",
-                                "value": "bmn",
-                                "voided": false
-                            }],
-                            "outcome": null
-                        }
-                    ]
-                }
-            };
+                            "display": "endtbName: bmn",
+                            "links": Array[2],
+                            "name": "sample att name",
+                            "resourceVersion": "1.9",
+                            "uuid": "79f68f3e-a2b2-4680-bf9d-86cb3124d6e5",
+                            "value": "bmn",
+                            "voided": false
+                        }],
+                        "outcome": null
+                    }
+                ]
+            }
+        };
 
-            var patientUuid = "somePatientUuid";
+        var patientUuid = "somePatientUuid";
 
-        it("should have attributes field in the response even though attributes are not registered", function(){
+        it("should have attributes field in the response even though attributes are not registered", function () {
             spyOn(programService, 'savePatientProgram').and.returnValue(programResponse);
 
             expect(programService.savePatientProgram()[0].attributes).toEqual([]);
-
         });
 
-        it("should have attribute representation", function(done){
+        it("should have attribute representation", function () {
+            mockBackend.whenGET('/openmrs/ws/rest/v1/programenrollment?patient=somePatientUuid&v=full').respond(data.data);
+            mockBackend.whenGET('/openmrs/ws/rest/v1/programattributetype?v=custom:(uuid,name,description,datatypeClassname,datatypeConfig)').respond({});
 
-            mockHttp.get.and.returnValue({
-                then: function(callback){
-                    var groupedPrograms= callback(data);
-                    expect(groupedPrograms.activePrograms[0].attributes[0].name).toEqual("sample att description");
-                    done();
-                }
+
+            programService.getPatientPrograms(patientUuid).then(function (response) {
+                expect(response.activePrograms[0].attributes[0].name).toEqual("sample att description");
             });
 
-            programService.getPatientPrograms(patientUuid);
+            mockBackend.flush();
         });
 
-        it("should have attribute name if description is not available", function(done){
-            data.data.results[0].attributes =  [{
+        it("should have attribute name if description is not available", function () {
+            data.data.results[0].attributes = [{
                 "attributeType": {
-                    "description":null,
+                    "description": null,
                     "display": "endtbName",
                     "links": Array[1],
                     "retired": false,
@@ -496,40 +539,49 @@ describe('programService', function () {
                 "value": "bmn",
                 "voided": false
             }];
-            
-            mockHttp.get.and.returnValue({
-                then: function(callback){
-                    var groupedPrograms= callback(data);
-                    expect(groupedPrograms.activePrograms[0].attributes[0].name).toEqual("sample att name");
-                    done();
-                }
+
+            mockBackend.whenGET('/openmrs/ws/rest/v1/programenrollment?patient=somePatientUuid&v=full').respond(data.data);
+            mockBackend.whenGET('/openmrs/ws/rest/v1/programattributetype?v=custom:(uuid,name,description,datatypeClassname,datatypeConfig)').respond({});
+
+
+            programService.getPatientPrograms(patientUuid).then(function (response) {
+                expect(response.activePrograms[0].attributes[0].name).toEqual("sample att name");
             });
 
-            programService.getPatientPrograms(patientUuid);
+            mockBackend.flush();
 
 
         })
     });
 
-    it('test savePatientProgram', function(){
+    it('test savePatientProgram', function () {
         var patientProgramUuid = "somePatientProgramUuid";
         var content = "SampleContent";
-        programService.savePatientProgram(patientProgramUuid,content);
-        expect(mockHttp.post.calls.mostRecent().args[0]).toEqual(Bahmni.Common.Constants.programEnrollPatientUrl + "/" + patientProgramUuid);
-        expect(mockHttp.post.calls.mostRecent().args[1]).toEqual(content);
+
+        mockBackend.whenPOST('/openmrs/ws/rest/v1/programenrollment/somePatientProgramUuid').respond(function (method, url, data, headers) {
+            expect(url).toEqual(Bahmni.Common.Constants.programEnrollPatientUrl + "/" + patientProgramUuid);
+            expect(data).toEqual(content);
+            return [200, {}, {}];
+        });
+        programService.savePatientProgram(patientProgramUuid, content);
+        mockBackend.flush();
+
     });
 
-    it('test updatePatientProgram', function(){
+    it('test updatePatientProgram', function () {
 
-        var programAttributes = {"Sample Regex attribute": "123" , "Sample date attribute":"2016-01-12T00:00:00.000+0000"};
+        var programAttributes = {
+            "Sample Regex attribute": "123",
+            "Sample date attribute": "2016-01-12T00:00:00.000+0000"
+        };
         var programAttributeTypes = [
             {
-                "uuid":  "079b73c6-b854-11e5-9584-0800274a5156",
-                "name" : "Sample Regex attribute"
+                "uuid": "079b73c6-b854-11e5-9584-0800274a5156",
+                "name": "Sample Regex attribute"
             },
             {
                 "uuid": "07ae82e4-b854-11e5-9584-0800274a5156",
-                "name" : "Sample date attribute"
+                "name": "Sample date attribute"
             }
         ];
         var attributes = [
@@ -550,8 +602,8 @@ describe('programService', function () {
         ];
 
         var patientProgram = {
-            "uuid" : "Some UUID",
-            "patientProgramAttributes" : programAttributes,
+            "uuid": "Some UUID",
+            "patientProgramAttributes": programAttributes,
             "attributes": attributes
         };
 
@@ -559,9 +611,16 @@ describe('programService', function () {
             "attributes": attributes
         };
 
-        programService.updatePatientProgram(patientProgram,programAttributeTypes);
-        expect(mockHttp.post.calls.mostRecent().args[0]).toEqual(Bahmni.Common.Constants.programEnrollPatientUrl + "/" + patientProgram.uuid);
-        expect(mockHttp.post.calls.mostRecent().args[1]).toEqual(content);
+        mockBackend.whenPOST('/openmrs/ws/rest/v1/programenrollment/Some UUID').respond(function (method, url, data, headers) {
+            data = JSON.parse(data);
+            expect(url).toEqual(Bahmni.Common.Constants.programEnrollPatientUrl + "/" + patientProgram.uuid);
+            expect(data).toEqual(content);
+            return [200, {}, {}];
+        });
+
+        programService.updatePatientProgram(patientProgram, programAttributeTypes);
+
+        mockBackend.flush();
     });
 
 });
