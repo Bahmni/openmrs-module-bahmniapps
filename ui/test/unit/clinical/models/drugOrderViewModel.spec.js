@@ -66,14 +66,14 @@ describe("drugOrderViewModel", function () {
                 {name:"Tablet(s)"},
                 {name:"Teaspoon"}
             ],
-            inputOptionsConfig: {
-                dosingUnitsFractions: [
+            getDoseFractions: function(){
+                return [
                     {"value": 0.50, "label": "½"},
                     {"value": 0.33, "label": "⅓"},
                     {"value": 0.25, "label": "¼"},
                     {"value": 0.75, "label": "¾"}
-                ]
-            }
+            ]},
+            inputOptionsConfig: {}
         };
     });
     it("should get the text to be displayed in the treatment list", function () {
@@ -90,35 +90,7 @@ describe("drugOrderViewModel", function () {
         expect(treatment.getDescription()).toBe("1 Capsule, Before Meals, Orally - 10 Days");
     });
 
-    it("should get the decimal text sum of both dose and mantissa when dosingUnitsFractions config is absent", function () {
-        var treatment = sampleTreatment([], null, Bahmni.Common.Util.DateUtil.now());
-        treatment.durationUnit = "Days";
-        treatment.route = "Orally";
-        treatment.uniformDosingType.dose = "1.5";
-        treatment.uniformDosingType.doseUnits = "Capsule";
-        treatment.uniformDosingType.frequency = "Once a day";
-        treatment.frequencyType = Bahmni.Clinical.Constants.dosingTypes.uniform;
-        expect(treatment.getDescription()).toBe("1.5 Capsule, Once a day, Before Meals, Orally - 10 Days");
-
-        treatment.uniformDosingType.frequency = null;
-        expect(treatment.getDescription()).toBe("1.5 Capsule, Before Meals, Orally - 10 Days");
-    });
-
-    it("should get the mixed fraction text sum of both dose and mantissa when dosingUnitsFractions config is present", function () {
-        var treatment = sampleTreatment(treatmentConfig, null, Bahmni.Common.Util.DateUtil.now());
-        treatment.durationUnit = "Days";
-        treatment.route = "Orally";
-        treatment.uniformDosingType.dose = "1.5";
-        treatment.uniformDosingType.doseUnits = "Capsule";
-        treatment.uniformDosingType.frequency = "Once a day";
-        treatment.frequencyType = Bahmni.Clinical.Constants.dosingTypes.uniform;
-        expect(treatment.getDescription()).toBe("1½ Capsule, Once a day, Before Meals, Orally - 10 Days");
-
-        treatment.uniformDosingType.frequency = null;
-        expect(treatment.getDescription()).toBe("1½ Capsule, Before Meals, Orally - 10 Days");
-    });
-
-    it("should get the same real number in the treatment list when dosingUnitsFractions config is absent", function () {
+    it("should get the decimal text sum of both dose and mantissa when doseFractions config is absent", function () {
         var treatment = sampleTreatment({}, null, Bahmni.Common.Util.DateUtil.now());
         treatment.durationUnit = "Days";
         treatment.route = "Orally";
@@ -132,7 +104,35 @@ describe("drugOrderViewModel", function () {
         expect(treatment.getDescription()).toBe("1.5 Capsule, Before Meals, Orally - 10 Days");
     });
 
-    it("should get the mixed fraction text in the treatment list when dosingUnitsFractions config is defined ", function () {
+    it("should get the mixed fraction text sum of both dose and mantissa when doseFractions config is present", function () {
+        var treatment = sampleTreatment(treatmentConfig, null, Bahmni.Common.Util.DateUtil.now());
+        treatment.durationUnit = "Days";
+        treatment.route = "Orally";
+        treatment.uniformDosingType.dose = "1.5";
+        treatment.uniformDosingType.doseUnits = "Capsule";
+        treatment.uniformDosingType.frequency = "Once a day";
+        treatment.frequencyType = Bahmni.Clinical.Constants.dosingTypes.uniform;
+        expect(treatment.getDescription()).toBe("1½ Capsule, Once a day, Before Meals, Orally - 10 Days");
+
+        treatment.uniformDosingType.frequency = null;
+        expect(treatment.getDescription()).toBe("1½ Capsule, Before Meals, Orally - 10 Days");
+    });
+
+    it("should get the same real number in the treatment list when doseFractions config is absent", function () {
+        var treatment = sampleTreatment({}, null, Bahmni.Common.Util.DateUtil.now());
+        treatment.durationUnit = "Days";
+        treatment.route = "Orally";
+        treatment.uniformDosingType.dose = "1.5";
+        treatment.uniformDosingType.doseUnits = "Capsule";
+        treatment.uniformDosingType.frequency = "Once a day";
+        treatment.frequencyType = Bahmni.Clinical.Constants.dosingTypes.uniform;
+        expect(treatment.getDescription()).toBe("1.5 Capsule, Once a day, Before Meals, Orally - 10 Days");
+
+        treatment.uniformDosingType.frequency = null;
+        expect(treatment.getDescription()).toBe("1.5 Capsule, Before Meals, Orally - 10 Days");
+    });
+
+    it("should get the mixed fraction text in the treatment list when doseFractions config is defined ", function () {
         var treatment = sampleTreatment(treatmentConfig, null, Bahmni.Common.Util.DateUtil.now());
         treatment.durationUnit = "Days";
         treatment.route = "Orally";
@@ -146,7 +146,7 @@ describe("drugOrderViewModel", function () {
         expect(treatment.getDescription()).toBe("1½ Capsule, Before Meals, Orally - 10 Days");
     });
 
-    it("should get the same real number in the treatment list when dosingUnitsFractions is defined and it doesnt have entry for mantissa part of real number", function () {
+    it("should get the same real number in the treatment list when doseFractions is defined and it doesnt have entry for mantissa part of real number", function () {
         var treatment = sampleTreatment(treatmentConfig, null, Bahmni.Common.Util.DateUtil.now());
         treatment.durationUnit = "Days";
         treatment.route = "Orally";
@@ -160,7 +160,7 @@ describe("drugOrderViewModel", function () {
         expect(treatment.getDescription()).toBe("1.55 Capsule, Before Meals, Orally - 10 Days");
     });
 
-    it("should display mixed fraction variable dosages if dosingUnitsFractions is present", function () {
+    it("should display mixed fraction variable dosages if doseFractions is present", function () {
         var treatment = sampleTreatment(treatmentConfig, null, Bahmni.Common.Util.DateUtil.now());
         treatment.frequencyType = "variable";
         treatment.route = "Orally";
@@ -174,7 +174,7 @@ describe("drugOrderViewModel", function () {
         expect(treatment.getDescription()).toBe("1½-2¼-3¾, Before Meals, Orally - 10 Days")
     });
 
-    it("should not display mixed fraction variable dosages if dosingUnitsFractions is absent", function () {
+    it("should not display mixed fraction variable dosages if doseFractions is absent", function () {
         var treatment = sampleTreatment([], null, Bahmni.Common.Util.DateUtil.now());
         treatment.frequencyType = "variable";
         treatment.route = "Orally";
@@ -188,7 +188,7 @@ describe("drugOrderViewModel", function () {
         expect(treatment.getDescription()).toBe("1.5-2.25-3.75, Before Meals, Orally - 10 Days")
     });
 
-    it("should display mixed fraction variable dosages if dosingUnitsFractions is present and in the list", function () {
+    it("should display mixed fraction variable dosages if doseFractions is present and in the list", function () {
         var treatment = sampleTreatment(treatmentConfig, null, Bahmni.Common.Util.DateUtil.now());
         treatment.frequencyType = "variable";
         treatment.route = "Orally";

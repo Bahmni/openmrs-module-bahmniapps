@@ -103,7 +103,7 @@ describe('Drug Order Details DisplayControl', function () {
     beforeEach(module('bahmni.clinical'));
     beforeEach(module('bahmni.common.displaycontrol.drugOrdersSection'));
     beforeEach(module(function ($provide) {
-        $provide.value('treatmentConfig', function (tabConfigName) {
+        $provide.value('treatmentConfig', function () {
             return {};
         });
 

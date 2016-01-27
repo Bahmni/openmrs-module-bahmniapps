@@ -26,8 +26,8 @@ angular.module('bahmni.clinical').factory('treatmentConfig', ['TreatmentService'
             getDosePlaceHolder: function () {
                 return drugOrderOptions.dosePlaceHolder
             },
-            getDosingUnitsFractions: function () {
-                return drugOrderOptions.dosingUnitsFractions;
+            getDoseFractions: function () {
+                return drugOrderOptions.doseFractions;
             },
             isHiddenField: function (fieldName) {
                 return _.contains(drugOrderOptions.hiddenFields, fieldName)
@@ -99,7 +99,9 @@ angular.module('bahmni.clinical').factory('treatmentConfig', ['TreatmentService'
         };
 
         var initializeInputConfig = function (tabConfigName) {
-            angular.extend(medicationTabConfig, appService.getAppDescriptor().getConfigForPage('medication')[tabConfigName]);
+            var commonConfig = appService.getAppDescriptor().getConfigForPage('medication')["commonConfig"];
+            var tabConfig = appService.getAppDescriptor().getConfigForPage('medication')["tabConfig"][tabConfigName];
+            angular.extend(medicationTabConfig, commonConfig, tabConfig);
             drugOrderOptions = new Bahmni.Clinical.DrugOrderOptions(medicationTabConfig.inputOptionsConfig, medicationTabConfig);
         };
 

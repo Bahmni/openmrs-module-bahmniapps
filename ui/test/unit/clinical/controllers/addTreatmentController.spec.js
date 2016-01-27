@@ -117,7 +117,7 @@ describe("AddTreatmentController", function () {
         isAutoCompleteForAllConcepts: function () {
             return true;
         },
-        getDosingUnitsFractions: function () {
+        getDoseFractions: function () {
             return [{"value": 0.50, "label": "½" }];
         },
         durationUnits: [
@@ -261,20 +261,20 @@ describe("AddTreatmentController", function () {
 
     });
 
-    describe("DosingUnitsFractions()", function () {
+    describe("DoseFractions()", function () {
         it("should return true if mantissa available", function () {
-            scope.dosingUnitsFractions = [
+            scope.doseFractions = [
                 {"value": 0.50, "label": "½"},
                 {"value": 0.33, "label": "⅓"},
                 {"value": 0.25, "label": "¼"},
                 {"value": 0.75, "label": "¾"}
             ];
-            expect(scope.isDosingUnitsFractionsAvailable()).toBeTruthy();
+            expect(scope.isDoseFractionsAvailable()).toBeTruthy();
         });
 
         it("should return false if mantissa not available", function () {
-            scope.dosingUnitsFractions = undefined;
-            expect(scope.isDosingUnitsFractionsAvailable()).toBeFalsy();
+            scope.doseFractions = undefined;
+            expect(scope.isDoseFractionsAvailable()).toBeFalsy();
         });
     });
 

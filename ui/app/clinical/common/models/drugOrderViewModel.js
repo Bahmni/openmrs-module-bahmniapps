@@ -57,7 +57,7 @@ Bahmni.Clinical.DrugOrderViewModel = function (config, proto, encounterDate) {
         var mantissa = parseFloat((number - Math.floor(number)).toFixed(2)),
             abscissa = Math.ceil(number - mantissa);
 
-        var result = _.result(_.find(inputOptionsConfig.dosingUnitsFractions, function (item) {
+        var result = _.result(_.find(config.getDoseFractions(), function (item) {
             return item.value === mantissa;
         }), 'label');
 
@@ -86,12 +86,12 @@ Bahmni.Clinical.DrugOrderViewModel = function (config, proto, encounterDate) {
     this.autoExpireDate = this.autoExpireDate || undefined;
     this.frequencyType = this.frequencyType || Bahmni.Clinical.Constants.dosingTypes.uniform;
     this.uniformDosingType = this.uniformDosingType || {};
-    if (this.uniformDosingType.dose && inputOptionsConfig.dosingUnitsFractions) {
+    if (this.uniformDosingType.dose && config.getDoseFractions && !_.isEmpty(config.getDoseFractions())) {
         var destructredNumber = destructureReal(this.uniformDosingType.dose);
         this.uniformDosingType.dose = destructredNumber.dose === 0 ? "" : destructredNumber.dose;
 
         if (destructredNumber.fraction)
-            this.uniformDosingType.dosingUnitsFraction = destructredNumber.fraction;
+            this.uniformDosingType.doseFraction = destructredNumber.fraction;
     }
     this.variableDosingType = this.variableDosingType || {};
     this.durationInDays = this.durationInDays || 0;
@@ -140,10 +140,10 @@ Bahmni.Clinical.DrugOrderViewModel = function (config, proto, encounterDate) {
         var mantissa = parseFloat((number - Math.floor(number)).toFixed(2)),
             abscissa = Math.ceil(number - mantissa);
 
-        if (!inputOptionsConfig.dosingUnitsFractions || mantissa === 0)
+        if (!config.getDoseFractions || _.isEmpty(config.getDoseFractions()) || mantissa === 0)
             return number;
 
-        var result = _.result(_.find(inputOptionsConfig.dosingUnitsFractions, function(item) {
+        var result = _.result(_.find(config.getDoseFractions(), function(item) {
             return item.value === mantissa;
         }), 'label');
 
@@ -155,7 +155,7 @@ Bahmni.Clinical.DrugOrderViewModel = function (config, proto, encounterDate) {
 
     var simpleDoseAndFrequency = function () {
         var uniformDosingType = self.uniformDosingType;
-        var mantissa = self.uniformDosingType.dosingUnitsFraction ? self.uniformDosingType.dosingUnitsFraction.value : 0;
+        var mantissa = self.uniformDosingType.doseFraction ? self.uniformDosingType.doseFraction.value : 0;
         var dose = uniformDosingType.dose ? uniformDosingType.dose : 0;
         var doseAndUnits = blankIfFalsy(morphToMixedFraction(parseFloat(dose) + mantissa)) + " " + blankIfFalsy(self.doseUnits);
 
@@ -406,7 +406,7 @@ Bahmni.Clinical.DrugOrderViewModel = function (config, proto, encounterDate) {
         self.calculateDurationInDays();
         if (!self.quantityEnteredManually && !self.quantityEnteredViaEdit) {
             if (self.frequencyType === Bahmni.Clinical.Constants.dosingTypes.uniform) {
-                var mantissa = self.uniformDosingType.dosingUnitsFraction ? self.uniformDosingType.dosingUnitsFraction.value : 0;
+                var mantissa = self.uniformDosingType.doseFraction ? self.uniformDosingType.doseFraction.value : 0;
                 var dose = self.uniformDosingType.dose ? self.uniformDosingType.dose : 0;
                 self.quantity = (dose + mantissa) * (self.uniformDosingType.frequency ? getFrequencyPerDay() : 0) * self.durationInDays;
             } else if (self.frequencyType == Bahmni.Clinical.Constants.dosingTypes.variable) {
@@ -524,7 +524,7 @@ Bahmni.Clinical.DrugOrderViewModel = function (config, proto, encounterDate) {
 
     var validateUniformDosingType = function () {
         if (self.uniformDosingType.frequency) {
-            var dose = self.uniformDosingType.dosingUnitsFraction && !self.uniformDosingType.dose ? 0 : self.uniformDosingType.dose;
+            var dose = self.uniformDosingType.doseFraction && !self.uniformDosingType.dose ? 0 : self.uniformDosingType.dose;
 
             if (dose !== void 0 && self.uniformDosingType.doseUnits && self.quantityUnit) {
                 return true;
@@ -596,9 +596,9 @@ Bahmni.Clinical.DrugOrderViewModel = function (config, proto, encounterDate) {
     this.loadOrderAttributes({});
 
     this.getDose = function() {
-        var mantissa = self.uniformDosingType.dosingUnitsFraction ? self.uniformDosingType.dosingUnitsFraction.value : 0;
+        var mantissa = self.uniformDosingType.doseFraction ? self.uniformDosingType.doseFraction.value : 0;
         var dose = self.uniformDosingType.dose ? self.uniformDosingType.dose : 0;
-        self.uniformDosingType.dosingUnitsFraction = void 0;
+        self.uniformDosingType.doseFraction = void 0;
 
         return dose + mantissa;
     };

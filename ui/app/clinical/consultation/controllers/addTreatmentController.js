@@ -47,9 +47,9 @@ angular.module('bahmni.clinical')
                 };
             }
 
-            $scope.dosingUnitsFractions = treatmentConfig.getDosingUnitsFractions();
-            $scope.isDosingUnitsFractionsAvailable = function() {
-                return $scope.dosingUnitsFractions && !_.isEmpty($scope.dosingUnitsFractions) ? true : false;
+            $scope.doseFractions = treatmentConfig.getDoseFractions();
+            $scope.isDoseFractionsAvailable = function() {
+                return $scope.doseFractions && !_.isEmpty($scope.doseFractions) ? true : false;
             };
 
             $scope.isSelected = function(drug) {

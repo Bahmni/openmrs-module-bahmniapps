@@ -4,24 +4,27 @@ describe('treatmentConfig', function() {
 
     var treatmentConfig;
     var medicationConfig = {
-        "tbTab": {
-            "inputOptionsConfig": {
-                "drugConceptSet": "All TB Drugs",
-                "isDropDown":true,
-                "doseUnits": ["mg"],
-                "frequency" :["Seven days a week"],
-                "route" : ["Oral"],
-                "hiddenFields": ["additionalInstructions"]
-            }
-        },
-        "nonTbTab": {
-            "inputOptionsConfig": {
-                "drugConceptSet": "Non TB Drugs",
-                "isDropDown":true,
-                "doseUnits": ["mg"],
-                "frequency" :["Seven days a week"],
-                "route" : ["Intramuscular"],
-                "hiddenFields": ["instructions"]
+        "commonConfig": {},
+        "tabConfig": {
+            "tbTab": {
+                "inputOptionsConfig": {
+                    "drugConceptSet": "All TB Drugs",
+                    "isDropDown": true,
+                    "doseUnits": ["mg"],
+                    "frequency": ["Seven days a week"],
+                    "route": ["Oral"],
+                    "hiddenFields": ["additionalInstructions"]
+                }
+            },
+            "nonTbTab": {
+                "inputOptionsConfig": {
+                    "drugConceptSet": "Non TB Drugs",
+                    "isDropDown": true,
+                    "doseUnits": ["mg"],
+                    "frequency": ["Seven days a week"],
+                    "route": ["Intramuscular"],
+                    "hiddenFields": ["instructions"]
+                }
             }
         }
     };
@@ -122,8 +125,8 @@ describe('treatmentConfig', function() {
 
     it("drug name field should be dropdown if configured as dropdown",function(done){
         var configName = "tbTab";
-        medicationConfig[configName].inputOptionsConfig.isDropDown=true;
-        medicationConfig[configName].inputOptionsConfig.drugConceptSet="Some Drug set";
+        medicationConfig['tabConfig'][configName].inputOptionsConfig.isDropDown=true;
+        medicationConfig['tabConfig'][configName].inputOptionsConfig.drugConceptSet="Some Drug set";
         injectTreatmentConfig(configName);
         treatmentConfig.then(function(config){
             expect(config.isDropDown()).toBeTruthy();
@@ -133,7 +136,7 @@ describe('treatmentConfig', function() {
 
     it("drug name field should be autocomplete if dropdown is not configured",function(done){
         var configName = "tbTab";
-        medicationConfig[configName].inputOptionsConfig.isDropDown=false;
+        medicationConfig['tabConfig'][configName].inputOptionsConfig.isDropDown=false;
         injectTreatmentConfig(configName);
         treatmentConfig.then(function(config){
             expect(config.isAutoComplete()).toBeTruthy();
@@ -144,7 +147,7 @@ describe('treatmentConfig', function() {
     it("drugConceptSet should be part of inputOptionsConfig",function (done) {
         var allTBDrugs = 'All TB Drugs';
         var configName = "tbTab";
-        medicationConfig[configName].inputOptionsConfig.drugConceptSet=allTBDrugs;
+        medicationConfig['tabConfig'][configName].inputOptionsConfig.drugConceptSet=allTBDrugs;
         injectTreatmentConfig(configName);
         treatmentConfig.then(function(config){
             expect(config.getDrugConceptSet()).toBe(allTBDrugs);
@@ -154,7 +157,7 @@ describe('treatmentConfig', function() {
 
     it("show additional information only if sos or dosing instructions or additional instructions are configured to be shown", function(done){
         var configName = "tbTab";
-        medicationConfig[configName].inputOptionsConfig.hiddenFields = ["additionalInstructions", "sos"];
+        medicationConfig['tabConfig'][configName].inputOptionsConfig.hiddenFields = ["additionalInstructions", "sos"];
         injectTreatmentConfig(configName);
         treatmentConfig.then(function(config){
             expect(config.showAdditionalInformation()).toBeTruthy();
@@ -164,7 +167,7 @@ describe('treatmentConfig', function() {
 
     it("hide additional information only if sos, dosing instructions, additional instructions are hidden", function(done){
         var configName = "tbTab";
-        medicationConfig[configName].inputOptionsConfig.hiddenFields = ["additionalInstructions", "sos", "dosingInstructions"];
+        medicationConfig['tabConfig'][configName].inputOptionsConfig.hiddenFields = ["additionalInstructions", "sos", "dosingInstructions"];
         injectTreatmentConfig(configName);
         treatmentConfig.then(function(config){
             expect(config.showAdditionalInformation()).toBeFalsy();
