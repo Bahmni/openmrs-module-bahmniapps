@@ -211,7 +211,7 @@ describe("Forms Table display control", function () {
             expected.push(formDataObj.data.results[0]);
             expect(compiledElementScope.formData).toEqual(expected);
         });
-        it("should not set shouldPromptBrowserReload", function () {
+        it("should set shouldPromptBrowserReload", function () {
             var allObsTemplateData = {"data": {"results": [{"display":"Followup Template"}]}};
             var formDataObj = {"data": {results: [
                 {
@@ -235,6 +235,7 @@ describe("Forms Table display control", function () {
             scope.$digest();
 
             expect(compiledElementScope.shouldPromptBrowserReload).toBeTruthy();
+            expect(compiledElementScope.shouldPromptBeforeClose).toBeTruthy();
         });
     });
 });
