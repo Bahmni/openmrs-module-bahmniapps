@@ -81,6 +81,14 @@ describe('treatmentConfig', function() {
         });
     });
 
+    it("should initialise drugOrderHistoryConfig if it is not available", function(){
+        injectTreatmentConfig("tbTab");
+        treatmentConfig.then(function(config){
+            expect(config.drugOrderHistoryConfig).toEqual({});
+            done();
+        });
+    });
+
     it('should initialize duration units', function(done) {
         injectTreatmentConfig("tbTab");
         treatmentConfig.then(function(data){
