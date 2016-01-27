@@ -2,7 +2,7 @@
 
 describe("ConsultationController", function () {
 
-    var scope, rootScope, state, contextChangeHandler, urlHelper, location, clinicalAppConfigService, stateParams, appService, ngDialog, q, appDescriptor;
+    var scope, rootScope, state, contextChangeHandler, urlHelper, location, clinicalAppConfigService, stateParams, appService, ngDialog, q, appDescriptor, controller;
 
     beforeEach(module('bahmni.clinical'));
 
@@ -17,9 +17,9 @@ describe("ConsultationController", function () {
         state = {name: "patient.dashboard.show", params: {encounterUuid: "someEncounterUuid", programUuid: "someProgramUuid", patientUuid: "somePatientUuid"}, go: function() {}};
         contextChangeHandler = {execute: function() {return {allow: true}}, reset: function() {}};
         urlHelper = {getPatientUrl: function() {return "/patient/somePatientUuid/dashboard"}};
-        ngDialog = jasmine.createSpyObj('ngDialog',['close']);
+        ngDialog = jasmine.createSpyObj('ngDialog',['close','closeAll']);
         rootScope.collapseControlPanel = function() {};
-
+        scope.lastConsultationTabUrl = {url:{}};
         appService = jasmine.createSpyObj('appService', ['getAppDescriptor']);
         appDescriptor = jasmine.createSpyObj('appDescriptor', ['getConfigValue']);
         appService.getAppDescriptor.and.returnValue(appDescriptor);
@@ -27,6 +27,7 @@ describe("ConsultationController", function () {
 
         q = jasmine.createSpyObj('q', ['all', 'defer']);
 
+        controller= $controller;
         $controller('ConsultationController', {
             $scope: scope,
             $rootScope: rootScope,
@@ -159,5 +160,61 @@ describe("ConsultationController", function () {
         scope.$broadcast("$stateChangeStart", toState, null, fromState, null);
 
         expect(scope.shouldDisplaySaveConfirmDialogForStateChange).not.toHaveBeenCalled();
+    });
+
+    var createController = function (appService) {
+        return controller('ConsultationController', {
+            $scope: scope,
+            $rootScope: rootScope,
+            $state: state,
+            $location: location,
+            clinicalAppConfigService: clinicalAppConfigService,
+            urlHelper: urlHelper,
+            contextChangeHandler: contextChangeHandler,
+            spinner: {},
+            encounterService: null,
+            messagingService: null,
+            sessionService: null,
+            retrospectiveEntryService: null,
+            patientContext: {patient: {}},
+            consultationContext: null,
+            $q: q,
+            patientVisitHistoryService: null,
+            $stateParams: stateParams,
+            $window: null,
+            visitHistory: null,
+            appService: appService,
+            clinicalDashboardConfig: null,
+            ngDialog: ngDialog
+        });
+    };
+
+    describe("open consultation", function () {
+
+        it("should not broadcast page unload event if not configured to reload", function () {
+            appService.getAppDescriptor.and.returnValue({
+                getConfigValue: function () {
+                    return false;
+                }
+            });
+            spyOn(rootScope, '$broadcast');
+
+            createController(appService);
+            scope.openConsultation();
+            expect(rootScope.$broadcast).not.toHaveBeenCalledWith('event:pageUnload');
+        });
+
+        it("should broadcast page unload event if configured to reload", function () {
+            appService.getAppDescriptor.and.returnValue({
+                getConfigValue: function () {
+                    return true;
+                }
+            });
+            spyOn(rootScope, '$broadcast');
+
+            createController(appService);
+            scope.openConsultation();
+            expect(rootScope.$broadcast).toHaveBeenCalledWith('event:pageUnload');
+        });
     });
 });

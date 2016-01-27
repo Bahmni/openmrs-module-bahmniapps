@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('bahmni.clinical')
-    .controller('BacteriologyController', ['$scope', '$rootScope', 'contextChangeHandler', 'spinner', 'conceptSetService', 'messagingService', 'bacteriologyConceptSet',
-        function ($scope, $rootScope, contextChangeHandler, spinner, conceptSetService, messagingService, bacteriologyConceptSet) {
+    .controller('BacteriologyController', ['$scope', '$rootScope', 'contextChangeHandler', 'spinner', 'conceptSetService', 'messagingService', 'bacteriologyConceptSet','appService',
+        function ($scope, $rootScope, contextChangeHandler, spinner, conceptSetService, messagingService, bacteriologyConceptSet, appService) {
             $scope.consultation.extensions = $scope.consultation.extensions ? $scope.consultation.extensions : {mdrtbSpecimen: []};
             $scope.savedSpecimens = $scope.consultation.savedSpecimens || $scope.consultation.extensions.mdrtbSpecimen;
             $scope.newSpecimens = $scope.consultation.newlyAddedSpecimens || [];
@@ -11,6 +11,9 @@ angular.module('bahmni.clinical')
             $scope.today = Bahmni.Common.Util.DateUtil.getDateWithoutTime(Bahmni.Common.Util.DateUtil.now());
 
             var init = function () {
+                if( appService.getAppDescriptor().getConfigValue("showSaveConfirmDialog")){
+                    $scope.$broadcast("event:pageUnload");
+                }
                 var additionalAttributes = _.find(bacteriologyConceptSet.setMembers, function (member) {
                     return member.conceptClass.name === "Bacteriology Attributes"
                 });

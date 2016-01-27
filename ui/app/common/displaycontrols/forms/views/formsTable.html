@@ -16,7 +16,10 @@
                                 <span class="has-link fl formDataEdit"
                                       ng-dialog="dashboard/views/dashboardSections/editObservationForm.html"
                                       ng-dialog-class="ngdialog-theme-default ng-dialog-all-details-page"
-                                      ng-dialog-data="{{getEditObsData(data)}}">
+                                      ng-dialog-data="{{getEditObsData(data)}}"
+                                      ng-dialog-scope="this"
+                                      ng-dialog-controller="EditObservationFormController"
+                                      ng-dialog-pre-close-callback="directivePreCloseCallback">
                                <i class="fa fa-pencil"></i>
                             </span></span>
                     </li>
