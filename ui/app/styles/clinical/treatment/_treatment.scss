@@ -210,15 +210,15 @@
                     box-sizing: border-box;
                 }
                 input[type="date"]{
-                    width:9.5em;
+                    width:10.5em;
                 }
                 .unit-text{
                     display: inline-block;
                     padding: 8px 10px 0;
                 }
                 select{
-                    min-width: 135px;
-                    width:135px;
+                    min-width: 148px;
+                    width:148px;
                     &.freq-dose-units, &.duration-unit{
                         min-width: 120px;
                         width: 120px;
