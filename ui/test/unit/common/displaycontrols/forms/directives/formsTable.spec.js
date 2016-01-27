@@ -211,5 +211,30 @@ describe("Forms Table display control", function () {
             expected.push(formDataObj.data.results[0]);
             expect(compiledElementScope.formData).toEqual(expected);
         });
+        it("should not set shouldPromptBrowserReload", function () {
+            var allObsTemplateData = {"data": {"results": [{"display":"Followup Template"}]}};
+            var formDataObj = {"data": {results: [
+                {
+                    "uuid": "ace25383-0baf-4c52-96bd-224d8caca00e",
+                    "concept": {
+                        "uuid": "bb80d45d-e4c5-4ce0-bb7c-0a34d2635ea5",
+                        "displayString": "Outcome End of Treatment Template"
+                    },
+                    "display": "Outcome End of Treatment Template: 2015-11-17",
+                    "obsDatetime": "2015-11-18T16:26:30.000+0000"
+                }
+            ]}};
+            var simpleHtml = '<forms-table section="section" patient="patient" is-on-dashboard="false"></forms-table>';
+
+            mockConceptSetService(allObsTemplateData);
+            mockVisitFormService(formDataObj);
+
+            var element = $compile(simpleHtml)(scope);
+            scope.$digest();
+            var compiledElementScope = element.isolateScope();
+            scope.$digest();
+
+            expect(compiledElementScope.shouldPromptBrowserReload).toBeTruthy();
+        });
     });
 });

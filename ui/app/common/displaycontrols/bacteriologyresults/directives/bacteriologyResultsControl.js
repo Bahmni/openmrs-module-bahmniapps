@@ -4,6 +4,7 @@ angular.module('bahmni.common.displaycontrol.bacteriologyresults')
     .directive('bacteriologyResultsControl', ['bacteriologyResultsService', 'appService', '$q', 'spinner', '$filter',  'ngDialog', 'bacteriologyTabInitialization', '$controller','consultationInitialization', '$state','messagingService',
         function (bacteriologyResultsService, appService, $q, spinner, $filter,ngDialog, bacteriologyTabInitialization, $controller, consultationInitialization, $state, messagingService) {
             var controller = function ($scope) {
+                var shouldPromptBeforeClose = true;
                 var init = function () {
                     $scope.title = "bacteriology results";
                     var params = {
@@ -38,6 +39,7 @@ angular.module('bahmni.common.displaycontrol.bacteriologyresults')
                 };
 
                 $scope.editBacteriologySample = function(specimen){
+                    var configForPrompt = appService.getAppDescriptor().getConfigValue('showSaveConfirmDialog');
                     var promise = consultationInitialization($scope.patient.uuid, null, null).then(function(consultationContext) {
                         $scope.consultation = consultationContext;
                         $scope.consultation.newlyAddedSpecimens = [];
@@ -51,7 +53,16 @@ angular.module('bahmni.common.displaycontrol.bacteriologyresults')
                             controller: $controller('BacteriologyController', {
                                 $scope: $scope,
                                 bacteriologyConceptSet: $scope.bacteriologyTabData
-                            })
+                            }),
+                            preCloseCallback: function() {
+                                if(configForPrompt && shouldPromptBeforeClose) {
+                                    if(confirm('You might lose unsaved data. Are you sure you want to leave this page?')) {
+                                        window.onbeforeunload = null;
+                                        return true;
+                                    }
+                                    return false;
+                                }
+                            }
                         })
                     });
                     spinner.forPromise(promise);
@@ -62,6 +73,7 @@ angular.module('bahmni.common.displaycontrol.bacteriologyresults')
                     if (specimen.isDirty()){
                         messagingService.showMessage('formError', "{{'CLINICAL_FORM_ERRORS_MESSAGE_KEY' | translate }}");
                     }else{
+                        shouldPromptBeforeClose = false;
                         var specimenMapper = new Bahmni.Clinical.SpecimenMapper();
                         var createPromise = bacteriologyResultsService.saveBacteriologyResults(specimenMapper.mapSpecimenToObservation(specimen));
 

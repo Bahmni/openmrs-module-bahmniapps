@@ -4,6 +4,7 @@ angular.module('bahmni.common.displaycontrol.forms')
     .directive('formsTable', ['conceptSetService', 'spinner', '$q', 'visitFormService',
         function (conceptSetService, spinner, $q, visitFormService) {
             var controller = function ($scope) {
+                $scope.shouldPromptBrowserReload = true;
                 var getAllObservationTemplates = function () {
                     return conceptSetService.getConcept({
                         name: "All Observation Templates",
@@ -65,7 +66,7 @@ angular.module('bahmni.common.displaycontrol.forms')
                         conceptDisplayName: $scope.getDisplayName(observation)
                     }
                 };
-
+                $scope.shouldPromptBeforeReload = true;
                 $scope.dialogData = {
                     "patient": $scope.patient,
                     "section": $scope.section

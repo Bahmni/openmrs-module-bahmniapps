@@ -197,6 +197,9 @@ angular.module('bahmni.clinical').controller('ConsultationController',
             };
 
             $scope.openConsultation = function() {
+                if( appService.getAppDescriptor().getConfigValue('showSaveConfirmDialog')){
+                    $rootScope.$broadcast("event:pageUnload");
+                }
                 $scope.closeAllDialogs();
                 $scope.collapseControlPanel();
                 $rootScope.hasVisitedConsultation = true;

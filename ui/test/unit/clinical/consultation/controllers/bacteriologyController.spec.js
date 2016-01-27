@@ -1,5 +1,5 @@
 describe("Bacteriology Controller", function () {
-    var $scope, rootScope, contextChangeHandler, spinner, conceptSetService;
+    var $scope, rootScope, contextChangeHandler, spinner, conceptSetService, appService, appDescriptor, controller;
     var existingSpecimen = new Bahmni.Clinical.Specimen({
         existingObs: "Existing Obs Uuid",
         dateCollected: "2015-10-01T18:30:00.000Z",
@@ -42,13 +42,22 @@ describe("Bacteriology Controller", function () {
 
         conceptSetService.getConcept.and.returnValue({});
 
+        appService = jasmine.createSpyObj('appService', ['getAppDescriptor']);
+        appDescriptor = jasmine.createSpyObj('appDescriptor', ['getConfigValue']);
+        appService.getAppDescriptor.and.returnValue(appDescriptor);
+        appDescriptor.getConfigValue.and.returnValue(true);
+
+        spyOn($scope, '$broadcast');
+        controller = $controller;
+
         $controller('BacteriologyController', {
             $scope: $scope,
             $rootScope: rootScope,
             contextChangeHandler: contextChangeHandler,
             spinner: spinner,
             conceptSetService: conceptSetService,
-            bacteriologyConceptSet: {}
+            bacteriologyConceptSet: {},
+            appService:appService
         });
     }));
 
@@ -162,5 +171,13 @@ describe("Bacteriology Controller", function () {
 
         });
 
+    });
+
+
+
+    describe("initialization", function () {
+        it("should broadcast event:pageUnload if configured to show popUp", function () {
+            expect($scope.$broadcast).toHaveBeenCalledWith('event:pageUnload');
+        });
     });
 });
