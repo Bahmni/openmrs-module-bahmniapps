@@ -66,7 +66,7 @@ angular.module('bahmni.common.displaycontrol.forms')
                         conceptDisplayName: $scope.getDisplayName(observation)
                     }
                 };
-                $scope.shouldPromptBeforeReload = true;
+                $scope.shouldPromptBeforeClose = true;
                 $scope.dialogData = {
                     "patient": $scope.patient,
                     "section": $scope.section

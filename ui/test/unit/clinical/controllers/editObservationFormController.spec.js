@@ -2,12 +2,13 @@
 
 describe("EditObservationFormController", function () {
 
-    var scope, appService, appDescriptor, controller,_$window;
+    var scope, appService, appDescriptor, controller,_$window, rootScope;
 
     beforeEach(module('bahmni.clinical'));
 
     beforeEach(inject(function ($controller, $rootScope) {
         scope = $rootScope.$new();
+        rootScope = $rootScope;
         scope.shouldPromptBrowserReload = true;
         controller = $controller;
         appDescriptor = jasmine.createSpyObj('appDescriptor', ['getConfigValue']);
@@ -20,39 +21,57 @@ describe("EditObservationFormController", function () {
         return controller('EditObservationFormController', {
             $scope: scope,
             appService: appService,
-            $window:_$window
+            $window:_$window,
+            $rootScope:rootScope
         });
     };
 
-    describe("directivePreCloseCallback", function(){
-        it("should return true  and set shouldPromptBrowserReload if both shouldPromptReload and config are set to true", function () {
-            appDescriptor.getConfigValue.and.returnValue({"showSaveConfirmDialog":true});
+    describe("directivePreCloseCallback : when shouldPromptBeforeClose,config and hasVisitedConsultation are set to true", function () {
+        it("if confirm return true then should return true and set shouldPromptBrowserReload to true ", function () {
+            appDescriptor.getConfigValue.and.returnValue(true);
             appService.getAppDescriptor.and.returnValue(appDescriptor);
             createController(appService);
+            rootScope.hasVisitedConsultation = true;
             _$window.confirm.and.returnValue(true);
-            scope.shouldPromptBeforeReload = true;
+            scope.shouldPromptBeforeClose = true;
             expect(scope.shouldPromptBrowserReload).toBeTruthy();
+            expect(scope.directivePreCloseCallback()).toBeTruthy();
+            expect(scope.shouldPromptBrowserReload).toBeTruthy();
+        });
+    });
+    describe("directivePreCloseCallback :  when shouldPromptBeforeClose,config are true and hasVisitedConsultation is false", function () {
+        it("if confirm return true then should return true and set shouldPromptBrowserReload to false ", function () {
+            appDescriptor.getConfigValue.and.returnValue(true);
+            appService.getAppDescriptor.and.returnValue(appDescriptor);
+            createController(appService);
+            rootScope.hasVisitedConsultation = false;
+            _$window.confirm.and.returnValue(true);
+            scope.shouldPromptBeforeClose = true;
             expect(scope.directivePreCloseCallback()).toBeTruthy();
             expect(scope.shouldPromptBrowserReload).toBeFalsy();
         });
-        it("should return false if both shouldPromptReload and config are set to true and confirm returns false", function () {
-            appDescriptor = jasmine.createSpyObj('appDescriptor', ['getConfigValue']);
+    });
+    describe("directivePreCloseCallback :  when shouldPromptBeforeClose,config are true and hasVisitedConsultation is false", function () {
+        it("if confirm return false then should return false and set shouldPromptBrowserReload to true ", function () {
             appDescriptor.getConfigValue.and.returnValue(true);
-            appService = jasmine.createSpyObj('appService', ['getAppDescriptor']);
             appService.getAppDescriptor.and.returnValue(appDescriptor);
             createController(appService);
+            rootScope.hasVisitedConsultation = false;
             _$window.confirm.and.returnValue(false);
-            scope.shouldPromptBeforeReload = true;
-            expect(scope.directivePreCloseCallback()).toBe(false);
+            scope.shouldPromptBeforeClose = true;
+            expect(scope.directivePreCloseCallback()).toBeFalsy();
+            expect(scope.shouldPromptBrowserReload).toBeTruthy();
         });
-        it("should return true if both shouldPromptReload and config are set to true", function () {
-            appDescriptor = jasmine.createSpyObj('appDescriptor', ['getConfigValue']);
+    });
+    describe("directivePreCloseCallback :  when either shouldPromptBeforeClose or config are false", function () {
+        it("should return undefined and set shouldPromptBrowserReload to true ", function () {
             appDescriptor.getConfigValue.and.returnValue(false);
-            appService = jasmine.createSpyObj('appService', ['getAppDescriptor']);
             appService.getAppDescriptor.and.returnValue(appDescriptor);
             createController(appService);
-            scope.shouldPromptBeforeReload = false;
+            rootScope.hasVisitedConsultation = false;
+            scope.shouldPromptBeforeClose = true;
             expect(scope.directivePreCloseCallback()).toBe(undefined);
+            expect(scope.shouldPromptBrowserReload).toBeTruthy();
         });
     });
 
