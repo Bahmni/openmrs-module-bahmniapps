@@ -12,6 +12,12 @@
       }
       &.medicationDrugNotes{
         border-top: 2px solid #EFF8FF;
+        td{
+          text-align: right;
+          .footer-note{
+            padding-left:20px;
+          }
+        }
       }
       &.formStopReason{
         td{ padding: 0px 5px 7px; }
