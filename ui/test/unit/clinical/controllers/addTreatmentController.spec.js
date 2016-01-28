@@ -240,29 +240,7 @@ describe("AddTreatmentController", function () {
         });
     });
 
-    describe("Tab Specific Treatments", function(){
-
-        it("should put all treatments as tab specific treatments if no tabConfig is specified", function(){
-            stateParams.tabConfigName = null;
-            initController();
-            scope.treatment = Bahmni.Tests.drugOrderViewModelMother.buildWith({}, {drug: {name: "NotATabSpecificDrug"}});
-            scope.add();
-            expect(scope.tabTreatments).toBe(scope.treatments);
-            expect(scope.treatment.tabName).toBe(undefined);
-        });
-
-        it("should filter treatments if a specific tabName is provided as a config", function(){
-            stateParams.tabConfigName = "TbTabConfig";
-
-            initController();
-            scope.treatment = Bahmni.Tests.drugOrderViewModelMother.buildWith({}, {drug: {name: "ATabSpecificDrug"}});
-            scope.add();
-            expect(scope.tabTreatments[0].tabName).toBe("TbTabConfig");
-        });
-
-    });
-
-    describe("DoseFractions()", function () {
+    describe("DosingUnitsFractions()", function () {
         it("should return true if mantissa available", function () {
             scope.doseFractions = [
                 {"value": 0.50, "label": "½"},
@@ -280,6 +258,10 @@ describe("AddTreatmentController", function () {
     });
 
     describe("add()", function () {
+        beforeEach(function(){
+            scope.treatments = [];
+        })
+
         it("adds treatment object to list of treatments", function () {
             var treatment = Bahmni.Tests.drugOrderViewModelMother.buildWith({}, {drug: {name: true}});
             scope.treatment = treatment;
@@ -322,6 +304,7 @@ describe("AddTreatmentController", function () {
         });
 
         it("should set auto focus on drug name", function () {
+            scope.treatments = [];
             scope.treatment = Bahmni.Tests.drugOrderViewModelMother.buildWith({}, {drug: {name: true}});
             scope.add();
             expect(scope.startNewDrugEntry).toBeTruthy();
@@ -519,6 +502,10 @@ describe("AddTreatmentController", function () {
         describe("should allow potentially overlapping order whose dates can be set and be resolved", function () {
 
             var encounterDate = DateUtil.parse("2014-12-02");
+
+            beforeEach(function(){
+                scope.treatments = [];
+            })
 
             it("new drug orders for dates 2-4 and 5-6 and 4-5 in this order", function () {
                 var dec2_dec4order = Bahmni.Tests.drugOrderViewModelMother.buildWith({},
@@ -727,6 +714,10 @@ describe("AddTreatmentController", function () {
         describe("should allow potentially overlapping order whose dates can be set and be resolved", function () {
             var encounterDate = DateUtil.parse("2014-12-02");
 
+            beforeEach(function(){
+                scope.treatments = [];
+            })
+
             it("existing drug orders for dates 2-3 and 3-4 and revised drug order for 2-3", function () {
                 var dec2_dec3order = Bahmni.Tests.drugOrderViewModelMother.buildWith({},  {
                     drug: {
@@ -797,6 +788,10 @@ describe("AddTreatmentController", function () {
 
         describe("should not allow overlapping order", function () {
             var encounterDate = DateUtil.parse("2014-12-02");
+
+            beforeEach(function(){
+                scope.treatments = []
+            })
 
             it("new orders for dates 2-4 and 3-6", function () {
 
@@ -1305,6 +1300,9 @@ describe("AddTreatmentController", function () {
 
     describe("After selection from ng-dialog", function () {
 
+        beforeEach(function () {
+            scope.treatments = [];
+        })
         it("should edit the drug order if conflicting order is unsaved when revise is selected", function () {
             var encounterDate = DateUtil.parse("2014-12-02");
 
@@ -1417,6 +1415,11 @@ describe("AddTreatmentController", function () {
             }
             return true;
         };
+
+        beforeEach(function(){
+            scope.treatments = []
+        });
+
         it("should do nothing if form is blank", function () {
             scope.treatment = newTreatment;
             scope.clearForm();
@@ -1434,7 +1437,7 @@ describe("AddTreatmentController", function () {
 
         it("should reset the treatment being edited", function () {
             scope.treatments = [editTreatment, newTreatment, newTreatment];
-            scope.edit(0);
+            rootScope.$broadcast("event:editDrugOrder", 0);
             scope.clearForm();
             expect(isSameAs(scope.treatment, newTreatment)).toBeTruthy();
             expect(scope.treatment.isEditAllowed).toBeFalsy();
@@ -1455,7 +1458,7 @@ describe("AddTreatmentController", function () {
             var drugOrder = Bahmni.Tests.drugOrderViewModelMother.build({}, []);
             drugOrder.frequencyType = Bahmni.Clinical.Constants.dosingTypes.uniform;
             scope.treatments = [drugOrder];
-            scope.edit(0);
+            rootScope.$broadcast("event:editDrugOrder", 0);
             expect(scope.editDrugEntryUniformFrequency).toBeTruthy();
         });
 
@@ -1463,7 +1466,7 @@ describe("AddTreatmentController", function () {
             var drugOrder = Bahmni.Tests.drugOrderViewModelMother.build({}, []);
             drugOrder.frequencyType = Bahmni.Clinical.Constants.dosingTypes.variable;
             scope.treatments = [drugOrder];
-            scope.edit(0);
+            rootScope.$broadcast("event:editDrugOrder", 0);
             expect(scope.editDrugEntryVariableFrequency).toBeTruthy();
         });
     });
@@ -1472,12 +1475,14 @@ describe("AddTreatmentController", function () {
         it("should set editDrugEntryUniformFrequency to true on revise of uniform dosing type drug", function () {
             var drugOrder = Bahmni.Tests.drugOrderViewModelMother.build({}, []);
             drugOrder.frequencyType = Bahmni.Clinical.Constants.dosingTypes.uniform;
+            scope.treatments = [];
             rootScope.$broadcast("event:reviseDrugOrder", drugOrder, []);
             expect(scope.editDrugEntryUniformFrequency).toBeTruthy();
         });
 
         it("should set editDrugEntryVariableFrequency to true on revise of variable dosing type drug", function () {
             var drugOrder = Bahmni.Tests.drugOrderViewModelMother.build({}, []);
+            scope.treatments = [];
             drugOrder.frequencyType = Bahmni.Clinical.Constants.dosingTypes.variable;
             rootScope.$broadcast("event:reviseDrugOrder", drugOrder, []);
             expect(scope.editDrugEntryVariableFrequency).toBeTruthy();
@@ -1519,52 +1524,6 @@ describe("AddTreatmentController", function () {
         it("should not fail for empty treatments", function () {
             scope.consultation.newlyAddedTreatments = undefined;
             scope.consultation.preSaveHandler.fire();
-        });
-    })
-
-    describe("selectAllCheckbox()", function () {
-        it("should add additional attribute with the name as durationUpdateFlag", function () {
-            var drugOrder = Bahmni.Tests.drugOrderViewModelMother.build({}, []);
-            drugOrder.durationUnit = {name: "Days"};
-            drugOrder.route = {name: "Orally"};
-            drugOrder.uniformDosingType.dose = "1";
-            drugOrder.doseUnits = "Capsule";
-            drugOrder.uniformDosingType.frequency = {name: "Once a day"};
-            drugOrder.frequencyType = Bahmni.Clinical.Constants.dosingTypes.uniform;
-            drugOrder.durationInDays = 1;
-
-            scope.treatments = [];
-            scope.treatments.push(drugOrder);
-            scope.showBulkChangeToggle = true;
-
-            scope.selectAllCheckbox();
-            expect(scope.treatments.length).toBe(1);
-            expect(scope.treatments[0].durationUpdateFlag).toBeTruthy();
-        });
-    });
-
-    describe("bulkDurationChangeDone()", function () {
-        it("should modify durationInDays and amount of drug units as per the new input", function () {
-            var drugOrder = Bahmni.Tests.drugOrderViewModelMother.build({});
-            drugOrder.durationUnit = {name: "Days"};
-            drugOrder.route = {name: "Orally"};
-            drugOrder.uniformDosingType.dose = "1";
-            drugOrder.doseUnits = "Capsule";
-            drugOrder.uniformDosingType.frequency = {name: "Once a day"};
-            drugOrder.frequencyType = Bahmni.Clinical.Constants.dosingTypes.uniform;
-            drugOrder.durationInDays = 1;
-            drugOrder.durationUpdateFlag = true;
-
-            scope.treatments = [];
-            scope.treatments.push(drugOrder);
-            scope.showBulkChangeToggle = true;
-
-            scope.bulkDurationData.bulkDuration = 2;
-            scope.bulkDurationData.bulkDurationUnit = "Day(s)";
-
-            scope.bulkDurationChangeDone();
-
-            expect(drugOrder.durationInDays).toBe(2);
         });
     });
 

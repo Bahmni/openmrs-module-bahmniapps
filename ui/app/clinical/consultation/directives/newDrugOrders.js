@@ -93,7 +93,7 @@ angular.module('bahmni.clinical')
 
         };
         return {
-            templateUrl: 'consultation/views/treatmentSections/newDrugOrders.html',
+            templateUrl: 'consultation/views/newDrugOrders.html',
             scope: {
                 treatments: "=",
                 treatmentConfig: "="

@@ -103,6 +103,7 @@ Bahmni.Clinical.DrugOrderViewModel = function (config, proto, encounterDate) {
     this.isBeingEdited = this.isBeingEdited || false;
     this.orderAttributes = [];
     this.isNonCodedDrug = this.isNonCodedDrug || false;
+    this.isDurationRequired = (inputOptionsConfig.duration && inputOptionsConfig.duration.required) || false;
 
     if(inputOptionsConfig.defaultStartDate === false && !this.effectiveStartDate)
         this.effectiveStartDate = null;
@@ -110,11 +111,6 @@ Bahmni.Clinical.DrugOrderViewModel = function (config, proto, encounterDate) {
         this.effectiveStartDate = this.effectiveStartDate || this.encounterDate;
     }
 
-    if (!inputOptionsConfig.duration || (inputOptionsConfig.duration && inputOptionsConfig.duration.required == undefined)) {
-        this.isDurationRequired = true;
-    } else {
-        this.isDurationRequired = inputOptionsConfig.duration.required;
-    }
     this.isUniformFrequency = true;
     this.showExtraInfo = false;
 

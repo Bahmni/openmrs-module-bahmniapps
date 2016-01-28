@@ -6,6 +6,14 @@ angular.module('bahmni.clinical')
             $scope.drugOrderHistoryView = drugOrderHistoryConfig.view || 'default';
             $scope.tabConfigName = $stateParams.tabConfigName || "default";
 
+            var initializeTreatments = function(){
+                $scope.consultation.newlyAddedTabTreatments = $scope.consultation.newlyAddedTabTreatments || {};
+                $scope.consultation.newlyAddedTabTreatments[$scope.tabConfigName] = $scope.consultation.newlyAddedTabTreatments[$scope.tabConfigName] || [];
+                $scope.treatments = $scope.consultation.newlyAddedTabTreatments[$scope.tabConfigName];
+            };
+
+            $scope.$watch('consultation.newlyAddedTabTreatments', initializeTreatments);
+
             $scope.treatmentConfig = treatmentConfig;
         };
         init();

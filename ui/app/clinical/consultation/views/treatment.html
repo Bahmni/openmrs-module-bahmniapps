@@ -14,7 +14,7 @@
             </div>
         </section>
         <section class="orders-section-right">
-            <new-drug-orders treatments="consultation.newlyAddedTabTreatments[tabConfigName]"
+            <new-drug-orders treatments="treatments"
                              treatment-config="treatmentConfig"></new-drug-orders>
             <div ng-if="drugOrderHistoryView === 'default'" ui-view="defaultHistoryView"></div>
             <div ng-if="drugOrderHistoryView === 'custom'" ui-view="customHistoryView"></div>

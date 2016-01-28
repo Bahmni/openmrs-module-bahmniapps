@@ -10,9 +10,6 @@ angular.module('bahmni.clinical')
             var DateUtil = Bahmni.Common.Util.DateUtil;
             var DrugOrderViewModel = Bahmni.Clinical.DrugOrderViewModel;
 
-            $scope.consultation.newlyAddedTabTreatments = $scope.consultation.newlyAddedTabTreatments || {};
-            $scope.treatments = $scope.consultation.newlyAddedTabTreatments[$scope.tabConfigName] || [];
-
             $scope.treatmentActionLinks = clinicalAppConfigService.getTreatmentActionLink();
             $scope.allowOnlyCodedDrugs = appService.getAppDescriptor().getConfig("allowOnlyCodedDrugs") &&
                 appService.getAppDescriptor().getConfig("allowOnlyCodedDrugs").value;
@@ -478,7 +475,7 @@ angular.module('bahmni.clinical')
             };
 
             var saveTreatment = function () {
-                var tabNames = Object.keys($scope.consultation.newlyAddedTabTreatments);
+                var tabNames = Object.keys($scope.consultation.newlyAddedTabTreatments || {});
                 var allTreatmentsAcrossTabs = _.map(tabNames,function(tabName){
                     return $scope.consultation.newlyAddedTabTreatments[tabName];
                 });
