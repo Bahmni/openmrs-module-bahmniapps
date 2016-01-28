@@ -1,10 +1,9 @@
 'use strict';
 
 angular.module('bahmni.common.displaycontrol.drugOrdersSection')
-    .directive('drugOrdersSection', ['TreatmentService', 'spinner', '$rootScope', 'treatmentConfig', '$q','clinicalAppConfigService',  function (treatmentService, spinner, $rootScope, treatmentConfig, $q, clinicalAppConfigService) {
+    .directive('drugOrdersSection', ['TreatmentService', 'spinner', '$rootScope', 'treatmentConfig', '$q',  function (treatmentService, spinner, $rootScope, treatmentConfig, $q) {
         var controller = function ($scope) {
             var DateUtil = Bahmni.Common.Util.DateUtil;
-            var drugOrderAppConfig = clinicalAppConfigService.getDrugOrderConfig();
 
             $scope.toggle = true;
             $scope.toggleDisplay = function () {
@@ -44,9 +43,9 @@ angular.module('bahmni.common.displaycontrol.drugOrdersSection')
                 }
                 var getDrugOrders = treatmentService.getAllDrugOrdersFor($scope.patientUuid, $scope.config.includeConceptSet, $scope.config.excludeConceptSet, $scope.config.active);
 
-                return $q.all([getDrugOrders, treatmentConfig]).then(function (results) {
+                return $q.all([getDrugOrders, treatmentConfig()]).then(function (results) {
                     var createDrugOrder = function (drugOrder) {
-                        return Bahmni.Clinical.DrugOrderViewModel.createFromContract(drugOrder, drugOrderAppConfig, results[1]);
+                        return Bahmni.Clinical.DrugOrderViewModel.createFromContract(drugOrder, results[1]);
                     };
                     $scope.drugOrders = sortOrders(results[0].map(createDrugOrder));
                     $scope.stoppedOrderReasons = results[1].stoppedOrderReasonConcepts;

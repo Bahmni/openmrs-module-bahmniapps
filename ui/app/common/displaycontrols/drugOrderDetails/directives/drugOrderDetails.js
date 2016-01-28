@@ -1,18 +1,21 @@
 'use strict';
 
 angular.module('bahmni.common.displaycontrol.drugOrderDetails')
-    .directive('drugOrderDetails', ['TreatmentService', 'spinner', 'clinicalAppConfigService', function (treatmentService, spinner, clinicalAppConfigService) {
+    .directive('drugOrderDetails', ['TreatmentService', 'spinner', 'treatmentConfig', '$q', function (treatmentService, spinner, treatmentConfig, $q) {
         var controller = function ($scope) {
 
             var init = function () {
-                var drugOrderAppConfig = clinicalAppConfigService.getDrugOrderConfig();
-                return treatmentService.getAllDrugOrdersFor($scope.patient.uuid, $scope.section.dashboardParams.drugConceptSet).then(function (response) {
-                    var createDrugOrder = function (drugOrder) {
-                        return Bahmni.Clinical.DrugOrderViewModel.createFromContract(drugOrder, drugOrderAppConfig, undefined);
-                    };
-                    var drugOrders = response.map(createDrugOrder);
-                    $scope.drugOrders = sortOrders(drugOrders);
-                });
+                return $q.all([treatmentService.getAllDrugOrdersFor($scope.patient.uuid, $scope.section.dashboardParams.drugConceptSet),
+                    treatmentConfig()])
+                    .then(function (results) {
+                        var createDrugOrder = function (drugOrder) {
+                            var treatmentConfig = results[1];
+                            return Bahmni.Clinical.DrugOrderViewModel.createFromContract(drugOrder, treatmentConfig);
+                        };
+                        var drugOrderResponse = results[0];
+                        var drugOrders = drugOrderResponse.map(createDrugOrder);
+                        $scope.drugOrders = sortOrders(drugOrders);
+                    });
             };
 
             $scope.columnHeaders = [

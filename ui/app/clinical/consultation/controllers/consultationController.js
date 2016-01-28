@@ -51,9 +51,9 @@ angular.module('bahmni.clinical').controller('ConsultationController',
                 return $filter('titleTranslate')(board);
             };
 
-            $scope.showBoard = function (board) {
+            $scope.showBoard = function (boardIndex) {
                 $rootScope.collapseControlPanel();
-                return buttonClickAction(findBoard(board));
+                return buttonClickAction($scope.availableBoards[boardIndex]);
             };
 
             var findBoard = function(boardDetail){
@@ -98,11 +98,15 @@ angular.module('bahmni.clinical').controller('ConsultationController',
             };
 
             var setCurrentBoardBasedOnPath = function () {
-                var currentPath = $location.path();
+                var currentPath = $location.url();
                 var board = _.find($scope.availableBoards,function (board) {
+                    if(board.url === "treatment") {
+                        return _.contains(currentPath, board.extensionParams ? board.extensionParams.tabConfigName: board.url)
+                    }
                     return _.contains(currentPath, board.url);
                 });
                 $scope.currentBoard = board || $scope.availableBoards[0];
+                $scope.currentBoard.isSelectedTab = true;
             };
 
 
@@ -181,13 +185,19 @@ angular.module('bahmni.clinical').controller('ConsultationController',
             var getUrl = function (board) {
                 var urlPrefix = urlHelper.getPatientUrl();
                 var url = "/" + $stateParams.configName + (board.url ? urlPrefix + "/" + board.url : urlPrefix);
-                var queryParams = []
+                var queryParams = [];
                 if($state.params.encounterUuid) {
                     queryParams.push("encounterUuid="+$state.params.encounterUuid);
                 }
                 if($state.params.programUuid) {
                     queryParams.push("programUuid="+$state.params.programUuid);
                 }
+
+                var extensionParams = board.extensionParams;
+                angular.forEach(extensionParams, function(extensionParamValue, extensionParamKey){
+                    queryParams.push(extensionParamKey + "=" + extensionParamValue)
+                });
+
                 if(!_.isEmpty(queryParams)) {
                     url = url + "?" + queryParams.join("&");
                 }
@@ -227,8 +237,14 @@ angular.module('bahmni.clinical').controller('ConsultationController',
                 }
 
                 contextChangeHandler.reset();
+                _.map($scope.availableBoards, function(board){
+                    board.isSelectedTab = false;
+                });
+
                 $scope.currentBoard = board;
+                $scope.currentBoard.isSelectedTab = true;
                 return getUrl(board);
+
             };
 
             var preSavePromise = function () {

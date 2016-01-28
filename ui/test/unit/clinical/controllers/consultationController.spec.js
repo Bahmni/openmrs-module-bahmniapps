@@ -3,58 +3,120 @@
 describe("ConsultationController", function () {
 
     var scope, rootScope, state, contextChangeHandler, urlHelper, location, clinicalAppConfigService, stateParams, appService, ngDialog, q, appDescriptor, controller;
+    location = {
+        path: function () {
+        }, url: function (url) {
+            return url
+        }
+    };
+    var boards = [
+        {
+            default: true,
+            extensionPointId: "org.bahmni.clinical.consultation.board",
+            icon: "fa-user-md",
+            id: "bahmni.clinical.consultation.observations",
+            order: 1,
+            requiredPrivilege: "app:clinical:observationTab",
+            translationKey: "OBSERVATIONS_BOARD_LABEL_KEY",
+            type: "link",
+            url: "concept-set-group/observations"
+        },
+        {
+            extensionPointId: "org.bahmni.clinical.consultation.board",
+            icon: "icon-user-md",
+            id: "bahmni.clinical.billing.treatment",
+            label: "Treatment",
+            order: 7,
+            extensionParams: {
+                "tabConfigName": "tbTabConfig"
+            },
+            requiredPrivilege: "app:clinical:consultationTab",
+            translationKey: "Treatment",
+            type: "link",
+            url: "treatment"
+        }
+    ];
 
     beforeEach(module('bahmni.clinical'));
 
-    beforeEach(inject(function ($controller, $rootScope) {
-        scope = $rootScope.$new();
+    var injectConsultationController = function () {
+        inject(function ($controller, $rootScope) {
+            scope = $rootScope.$new();
+            rootScope = $rootScope;
+            clinicalAppConfigService = {
+                getAllConsultationBoards: function () {
+                    return boards
+                }, getConsultationBoardLink: function () {
+                    return []
+                }
+            };
 
-        rootScope = $rootScope;
-        clinicalAppConfigService = {getAllConsultationBoards: function() {return []}, getConsultationBoardLink: function() {return []}};
+            stateParams = {configName: 'default'};
+            state = {
+                name: "patient.dashboard.show",
+                params: {
+                    encounterUuid: "someEncounterUuid",
+                    programUuid: "someProgramUuid",
+                    patientUuid: "somePatientUuid"
+                },
+                go: function () {
+                }
+            };
+            contextChangeHandler = {
+                execute: function () {
+                    return {allow: true}
+                }, reset: function () {
+                }
+            };
+            urlHelper = {
+                getPatientUrl: function () {
+                    return "/patient/somePatientUuid/dashboard"
+                }
+            };
+            ngDialog = jasmine.createSpyObj('ngDialog', ['close', 'closeAll']);
+            rootScope.collapseControlPanel = function () {
+            };
+            scope.lastConsultationTabUrl = {url: {}};
+            appService = jasmine.createSpyObj('appService', ['getAppDescriptor']);
+            appDescriptor = jasmine.createSpyObj('appDescriptor', ['getConfigValue']);
+            appService.getAppDescriptor.and.returnValue(appDescriptor);
+            appDescriptor.getConfigValue.and.returnValue(true);
 
-        stateParams = {configName: 'default'};
-        location = {path: function() {}, url: function(url) {return url}};
-        state = {name: "patient.dashboard.show", params: {encounterUuid: "someEncounterUuid", programUuid: "someProgramUuid", patientUuid: "somePatientUuid"}, go: function() {}};
-        contextChangeHandler = {execute: function() {return {allow: true}}, reset: function() {}};
-        urlHelper = {getPatientUrl: function() {return "/patient/somePatientUuid/dashboard"}};
-        ngDialog = jasmine.createSpyObj('ngDialog',['close','closeAll']);
-        rootScope.collapseControlPanel = function() {};
-        scope.lastConsultationTabUrl = {url:{}};
-        appService = jasmine.createSpyObj('appService', ['getAppDescriptor']);
-        appDescriptor = jasmine.createSpyObj('appDescriptor', ['getConfigValue']);
-        appService.getAppDescriptor.and.returnValue(appDescriptor);
-        appDescriptor.getConfigValue.and.returnValue(true);
+            q = jasmine.createSpyObj('q', ['all', 'defer']);
 
-        q = jasmine.createSpyObj('q', ['all', 'defer']);
-
-        controller= $controller;
-        $controller('ConsultationController', {
-            $scope: scope,
-            $rootScope: rootScope,
-            $state: state,
-            $location:location,
-            clinicalAppConfigService: clinicalAppConfigService,
-            urlHelper: urlHelper,
-            contextChangeHandler: contextChangeHandler,
-            spinner: {},
-            encounterService: null,
-            messagingService: null,
-            sessionService: null,
-            retrospectiveEntryService: null,
-            patientContext: {patient:{}},
-            consultationContext: null,
-            $q: q,
-            patientVisitHistoryService: null,
-            $stateParams: stateParams,
-            $window: null,
-            visitHistory: null,
-            appService: appService,
-            clinicalDashboardConfig: null,
-            ngDialog: ngDialog
+            controller = $controller;
+            $controller('ConsultationController', {
+                $scope: scope,
+                $rootScope: rootScope,
+                $state: state,
+                $location: location,
+                clinicalAppConfigService: clinicalAppConfigService,
+                urlHelper: urlHelper,
+                contextChangeHandler: contextChangeHandler,
+                spinner: {},
+                encounterService: null,
+                messagingService: null,
+                sessionService: null,
+                retrospectiveEntryService: null,
+                patientContext: {patient: {}},
+                consultationContext: null,
+                $q: q,
+                patientVisitHistoryService: null,
+                $stateParams: stateParams,
+                $window: null,
+                visitHistory: null,
+                appService: appService,
+                clinicalDashboardConfig: null,
+                ngDialog: ngDialog
+            });
         });
-    }));
+
+    };
+
+    beforeEach(injectConsultationController);
 
     it("should check if name is longer", function () {
+
         expect(scope.isLongerName("hello")).toBeFalsy();
         expect(scope.isLongerName("hello this is a long string")).toBeTruthy();
     });
@@ -64,26 +126,26 @@ describe("ConsultationController", function () {
         expect(scope.getShorterName("hello this is a long string")).toBe("hello this is a...");
     });
 
-    it("should return proper URL when showing a different board", function() {
-        var obsBoard = {translationKey: "Observations", url: "concept-set-obs/observations"};
-        var treatmentBoard = {translationKey: "Treatment", url: "treatment"};
-        scope.lastConsultationTabUrl = {url : undefined};
-        scope.availableBoards.push(obsBoard, treatmentBoard);
-        var newUrl = scope.showBoard(treatmentBoard);
-        expect(newUrl).toEqual("/default/patient/somePatientUuid/dashboard/treatment?encounterUuid=someEncounterUuid&programUuid=someProgramUuid");
+    it("should return proper URL when showing a different board", function () {
+        scope.lastConsultationTabUrl = {url: undefined};
+        var newUrl = scope.showBoard(1);
+        expect(newUrl).toEqual("/default/patient/somePatientUuid/dashboard/treatment?encounterUuid=someEncounterUuid&programUuid=someProgramUuid&tabConfigName=tbTabConfig");
     });
 
-    it("should not append encounterUuid in query params if not available", function() {
-        var obsBoard = {translationKey: "Observations", url: "concept-set-obs/observations"};
-        var treatmentBoard = {translationKey: "Treatment", url: "treatment"};
-        scope.lastConsultationTabUrl = {url : undefined};
-        scope.availableBoards.push(obsBoard, treatmentBoard);
+    it("should return proper URL with extension params as parameters with url", function () {
+        scope.lastConsultationTabUrl = {url: undefined};
+        var newUrl = scope.showBoard(1);
+        expect(newUrl).toEqual("/default/patient/somePatientUuid/dashboard/treatment?encounterUuid=someEncounterUuid&programUuid=someProgramUuid&tabConfigName=tbTabConfig");
+    });
+
+    it("should not append encounterUuid in query params if not available", function () {
+        scope.lastConsultationTabUrl = {url: undefined};
         state.params.encounterUuid = null;
-        var newUrl = scope.showBoard(treatmentBoard);
-        expect(newUrl).toEqual("/default/patient/somePatientUuid/dashboard/treatment?programUuid=someProgramUuid");
+        var newUrl = scope.showBoard(1);
+        expect(newUrl).toEqual("/default/patient/somePatientUuid/dashboard/treatment?programUuid=someProgramUuid&tabConfigName=tbTabConfig");
     });
 
-    it("should check whether app is in editEncounterMode", function(){
+    it("should check whether app is in editEncounterMode", function () {
         stateParams.encounterUuid = "active";
         expect(scope.isInEditEncounterMode()).toBeFalsy();
         stateParams.encounterUuid = undefined;
@@ -92,15 +154,15 @@ describe("ConsultationController", function () {
         expect(scope.isInEditEncounterMode()).toBeTruthy();
     });
 
-    it("should stay in current state if 'cancel' is selected", function(){
+    it("should stay in current state if 'cancel' is selected", function () {
         expect(state.name).toEqual("patient.dashboard.show");
         scope.cancelTransition();
         expect(state.name).toEqual("patient.dashboard.show");
         expect(ngDialog.close).toHaveBeenCalled();
     });
 
-    it("should save and go to target state if 'save and continue' is selected", function() {
-        scope.toState = {name : "patient.search"};
+    it("should save and go to target state if 'save and continue' is selected", function () {
+        scope.toState = {name: "patient.search"};
         scope.toParams = {config: 'default'};
         expect(state.name).toEqual("patient.dashboard.show");
         scope.save = jasmine.createSpy('save');
@@ -109,8 +171,8 @@ describe("ConsultationController", function () {
         expect(ngDialog.close).toHaveBeenCalled();
     });
 
-    it("should not save and go to target state if 'don't save' is selected", function() {
-        scope.toState = {name : "patient.search"};
+    it("should not save and go to target state if 'don't save' is selected", function () {
+        scope.toState = {name: "patient.search"};
         scope.toParams = {config: 'default'};
         expect(state.name).toEqual("patient.dashboard.show");
         state.go = jasmine.createSpy('go');
@@ -120,27 +182,27 @@ describe("ConsultationController", function () {
 
     });
 
-    it("should allow all transitions where the target state falls within consultation", function() {
-        var toState = {name : "patient.dashboard.show.diagnosis"};
-        var fromState = {name : "some.state"};
+    it("should allow all transitions where the target state falls within consultation", function () {
+        var toState = {name: "patient.dashboard.show.diagnosis"};
+        var fromState = {name: "some.state"};
         expect(scope.shouldDisplaySaveConfirmDialogForStateChange(toState, null, fromState)).toEqual(false);
 
-        toState = {name : "patient.search"};
+        toState = {name: "patient.search"};
         expect(scope.shouldDisplaySaveConfirmDialogForStateChange(toState, null, fromState)).toEqual(true);
 
-        toState = {name : "patient.dashboard.show"};
+        toState = {name: "patient.dashboard.show"};
         expect(scope.shouldDisplaySaveConfirmDialogForStateChange(toState, null, fromState)).toEqual(false);
     });
 
-    it("should not allow transition between same states", function() {
-        var fromState = {name : "patient.dashboard.show"};
-        var toState = {name : "patient.dashboard.show"};
+    it("should not allow transition between same states", function () {
+        var fromState = {name: "patient.dashboard.show"};
+        var toState = {name: "patient.dashboard.show"};
         expect(scope.shouldDisplaySaveConfirmDialogForStateChange(toState, null, fromState)).toEqual(true);
     });
 
-    it("should display save confirm dialog if the config is set", function(){
-        var fromState = {name : "patient.dashboard.show"};
-        var toState = {name : "patient.dashboard.show.observations"};
+    it("should display save confirm dialog if the config is set", function () {
+        var fromState = {name: "patient.dashboard.show"};
+        var toState = {name: "patient.dashboard.show.observations"};
         rootScope.hasVisitedConsultation = true;
 
         scope.shouldDisplaySaveConfirmDialogForStateChange = jasmine.createSpy('shouldDisplaySaveConfirmDialogForStateChange');
@@ -150,9 +212,9 @@ describe("ConsultationController", function () {
         expect(scope.shouldDisplaySaveConfirmDialogForStateChange).toHaveBeenCalled();
     });
 
-    it("should not display save confirm dialog if the config is not set", function(){
-        var fromState = {name : "patient.dashboard.show"};
-        var toState = {name : "patient.dashboard.show.observations"};
+    it("should not display save confirm dialog if the config is not set", function () {
+        var fromState = {name: "patient.dashboard.show"};
+        var toState = {name: "patient.dashboard.show.observations"};
         rootScope.hasVisitedConsultation = true;
         scope.showSaveConfirmDialogConfig = false;
         scope.shouldDisplaySaveConfirmDialogForStateChange = jasmine.createSpy('shouldDisplaySaveConfirmDialogForStateChange');
@@ -162,7 +224,7 @@ describe("ConsultationController", function () {
         expect(scope.shouldDisplaySaveConfirmDialogForStateChange).not.toHaveBeenCalled();
     });
 
-    var createController = function (appService) {
+    var createController = function () {
         return controller('ConsultationController', {
             $scope: scope,
             $rootScope: rootScope,
@@ -216,5 +278,60 @@ describe("ConsultationController", function () {
             scope.openConsultation();
             expect(rootScope.$broadcast).toHaveBeenCalledWith('event:pageUnload');
         });
+    });
+    it("should set current tab based on url", function () {
+        location = {
+            path: function () {
+            }, url: function (url) {
+                return "/default/patient/somePatientUuid/dashboard/treatment?programUuid=someProgramUuid&tabConfigName=tbTabConfig"
+            }
+        };
+        injectConsultationController();
+
+        expect(scope.currentBoard).toEqual({
+                extensionPointId: "org.bahmni.clinical.consultation.board",
+                icon: "icon-user-md",
+                id: "bahmni.clinical.billing.treatment",
+                label: "Treatment",
+                order: 7,
+                extensionParams: {
+                    "tabConfigName": "tbTabConfig"
+                },
+                requiredPrivilege: "app:clinical:consultationTab",
+                translationKey: "Treatment",
+                type: "link",
+                url: "treatment",
+                isSelectedTab: true
+            }
+        )
+    });
+
+    it("should set current tab based on the tab config provided", function () {
+        location = {
+            path: function () {
+            }, url: function (url) {
+                return "/default/patient/somePatientUuid/dashboard/treatment?programUuid=someProgramUuid&tabConfigName=nonTbTabConfig"
+            }
+        };
+        var nonTbTab = {
+            extensionPointId: "org.bahmni.clinical.consultation.board",
+            icon: "icon-user-md",
+            id: "bahmni.clinical.billing.treatment",
+            label: "Treatment",
+            order: 7,
+            extensionParams: {
+                "tabConfigName": "nonTbTabConfig"
+            },
+            requiredPrivilege: "app:clinical:consultationTab",
+            translationKey: "Treatment",
+            type: "link",
+            url: "treatment"
+        };
+
+        boards.push(nonTbTab);
+        injectConsultationController();
+        var expectedCurrentBoard = nonTbTab;
+        expectedCurrentBoard.isSelectedTab = true;
+        expect(scope.currentBoard).toEqual(expectedCurrentBoard)
     });
 });

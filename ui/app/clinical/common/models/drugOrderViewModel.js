@@ -1,12 +1,12 @@
-Bahmni.Clinical.DrugOrderViewModel = function (appConfig, config, proto, encounterDate) {
+Bahmni.Clinical.DrugOrderViewModel = function (config, proto, encounterDate) {
     angular.copy(proto, this);
 
     var allowedQuantityUnits = ["Tablet(s)","Capsule(s)"];
     var DateUtil = Bahmni.Common.Util.DateUtil;
     var self = this;
     var config = config || {};
-    var appConfig = appConfig || {};
-    var drugFormDefaults = appConfig.drugFormDefaults || {};
+    var inputOptionsConfig = config.inputOptionsConfig || {};
+    var drugFormDefaults = inputOptionsConfig.drugFormDefaults || {};
     var durationUnits = config.durationUnits || [];
     var now = DateUtil.now();
 
@@ -57,7 +57,7 @@ Bahmni.Clinical.DrugOrderViewModel = function (appConfig, config, proto, encount
         var mantissa = parseFloat((number - Math.floor(number)).toFixed(2)),
             abscissa = Math.ceil(number - mantissa);
 
-        var result = _.result(_.find(appConfig.dosingUnitsFractions, function (item) {
+        var result = _.result(_.find(config.getDoseFractions(), function (item) {
             return item.value === mantissa;
         }), 'label');
 
@@ -80,18 +80,18 @@ Bahmni.Clinical.DrugOrderViewModel = function (appConfig, config, proto, encount
     this.encounterDate = encounterDate ? encounterDate : now;
     this.asNeeded = this.asNeeded || false;
     this.route = this.route || undefined;
-    this.durationUnit = this.durationUnit || appConfig.defaultDurationUnit;
-    this.simpleDrugForm = this.simpleDrugForm || appConfig.simpleDrugForm || false;
-    this.instructions = this.instructions || appConfig.defaultInstructions;
+    this.durationUnit = this.durationUnit || inputOptionsConfig.defaultDurationUnit;
+    this.simpleDrugForm = this.simpleDrugForm || inputOptionsConfig.simpleDrugForm || false;
+    this.instructions = this.instructions || inputOptionsConfig.defaultInstructions;
     this.autoExpireDate = this.autoExpireDate || undefined;
     this.frequencyType = this.frequencyType || Bahmni.Clinical.Constants.dosingTypes.uniform;
     this.uniformDosingType = this.uniformDosingType || {};
-    if (this.uniformDosingType.dose && appConfig.dosingUnitsFractions) {
+    if (this.uniformDosingType.dose && config.getDoseFractions && !_.isEmpty(config.getDoseFractions())) {
         var destructredNumber = destructureReal(this.uniformDosingType.dose);
         this.uniformDosingType.dose = destructredNumber.dose === 0 ? "" : destructredNumber.dose;
 
         if (destructredNumber.fraction)
-            this.uniformDosingType.dosingUnitsFraction = destructredNumber.fraction;
+            this.uniformDosingType.doseFraction = destructredNumber.fraction;
     }
     this.variableDosingType = this.variableDosingType || {};
     this.durationInDays = this.durationInDays || 0;
@@ -103,18 +103,14 @@ Bahmni.Clinical.DrugOrderViewModel = function (appConfig, config, proto, encount
     this.isBeingEdited = this.isBeingEdited || false;
     this.orderAttributes = [];
     this.isNonCodedDrug = this.isNonCodedDrug || false;
+    this.isDurationRequired = (inputOptionsConfig.duration && inputOptionsConfig.duration.required) || false;
 
-    if(appConfig.defaultStartDate === false && !this.effectiveStartDate)
+    if(inputOptionsConfig.defaultStartDate === false && !this.effectiveStartDate)
         this.effectiveStartDate = null;
     else{
         this.effectiveStartDate = this.effectiveStartDate || this.encounterDate;
     }
 
-    if (!appConfig.duration || (appConfig.duration && appConfig.duration.required == undefined)) {
-        this.isDurationRequired = true;
-    } else {
-        this.isDurationRequired = appConfig.duration.required;
-    }
     this.isUniformFrequency = true;
     this.showExtraInfo = false;
 
@@ -140,10 +136,10 @@ Bahmni.Clinical.DrugOrderViewModel = function (appConfig, config, proto, encount
         var mantissa = parseFloat((number - Math.floor(number)).toFixed(2)),
             abscissa = Math.ceil(number - mantissa);
 
-        if (!appConfig.dosingUnitsFractions || mantissa === 0)
+        if (!config.getDoseFractions || _.isEmpty(config.getDoseFractions()) || mantissa === 0)
             return number;
 
-        var result = _.result(_.find(appConfig.dosingUnitsFractions, function(item) {
+        var result = _.result(_.find(config.getDoseFractions(), function(item) {
             return item.value === mantissa;
         }), 'label');
 
@@ -155,7 +151,7 @@ Bahmni.Clinical.DrugOrderViewModel = function (appConfig, config, proto, encount
 
     var simpleDoseAndFrequency = function () {
         var uniformDosingType = self.uniformDosingType;
-        var mantissa = self.uniformDosingType.dosingUnitsFraction ? self.uniformDosingType.dosingUnitsFraction.value : 0;
+        var mantissa = self.uniformDosingType.doseFraction ? self.uniformDosingType.doseFraction.value : 0;
         var dose = uniformDosingType.dose ? uniformDosingType.dose : 0;
         var doseAndUnits = blankIfFalsy(morphToMixedFraction(parseFloat(dose) + mantissa)) + " " + blankIfFalsy(self.doseUnits);
 
@@ -312,7 +308,7 @@ Bahmni.Clinical.DrugOrderViewModel = function (appConfig, config, proto, encount
 
     this.calculateDurationUnit = function () {
         if (self.frequencyType === Bahmni.Clinical.Constants.dosingTypes.uniform && self.uniformDosingType.frequency != null) {
-            var defaultDurationUnitMap = appConfig.frequencyDefaultDurationUnitsMap || [];
+            var defaultDurationUnitMap = inputOptionsConfig.frequencyDefaultDurationUnitsMap || [];
 
             defaultDurationUnitMap.forEach(function(range) {
                 var minFrequency = eval(range.minFrequency);
@@ -406,7 +402,7 @@ Bahmni.Clinical.DrugOrderViewModel = function (appConfig, config, proto, encount
         self.calculateDurationInDays();
         if (!self.quantityEnteredManually && !self.quantityEnteredViaEdit) {
             if (self.frequencyType === Bahmni.Clinical.Constants.dosingTypes.uniform) {
-                var mantissa = self.uniformDosingType.dosingUnitsFraction ? self.uniformDosingType.dosingUnitsFraction.value : 0;
+                var mantissa = self.uniformDosingType.doseFraction ? self.uniformDosingType.doseFraction.value : 0;
                 var dose = self.uniformDosingType.dose ? self.uniformDosingType.dose : 0;
                 self.quantity = (dose + mantissa) * (self.uniformDosingType.frequency ? getFrequencyPerDay() : 0) * self.durationInDays;
             } else if (self.frequencyType == Bahmni.Clinical.Constants.dosingTypes.variable) {
@@ -468,7 +464,7 @@ Bahmni.Clinical.DrugOrderViewModel = function (appConfig, config, proto, encount
     };
 
     this.refill = function (existingOrderStopDate) {
-        var newDrugOrder = new Bahmni.Clinical.DrugOrderViewModel(appConfig, config, this);
+        var newDrugOrder = new Bahmni.Clinical.DrugOrderViewModel(config, this);
         newDrugOrder.previousOrderUuid = undefined;
         newDrugOrder.action = Bahmni.Clinical.Constants.orderActions.new;
         newDrugOrder.uuid = undefined;
@@ -485,7 +481,7 @@ Bahmni.Clinical.DrugOrderViewModel = function (appConfig, config, proto, encount
     };
 
     this.revise = function () {
-        var newDrugOrder = new Bahmni.Clinical.DrugOrderViewModel(appConfig, config, this);
+        var newDrugOrder = new Bahmni.Clinical.DrugOrderViewModel(config, this);
 
         newDrugOrder.previousOrderUuid = self.uuid;
         self.calculateDurationInDays();
@@ -510,8 +506,8 @@ Bahmni.Clinical.DrugOrderViewModel = function (appConfig, config, proto, encount
         return newDrugOrder;
     };
 
-    this.cloneForEdit = function (index, appConfig, config) {
-        var editableDrugOrder = new Bahmni.Clinical.DrugOrderViewModel(appConfig, config, this);
+    this.cloneForEdit = function (index, config) {
+        var editableDrugOrder = new Bahmni.Clinical.DrugOrderViewModel(config, this);
         editableDrugOrder.currentIndex = index;
         editableDrugOrder.isBeingEdited = true;
         editableDrugOrder.quantityEnteredViaEdit = true;
@@ -524,7 +520,7 @@ Bahmni.Clinical.DrugOrderViewModel = function (appConfig, config, proto, encount
 
     var validateUniformDosingType = function () {
         if (self.uniformDosingType.frequency) {
-            var dose = self.uniformDosingType.dosingUnitsFraction && !self.uniformDosingType.dose ? 0 : self.uniformDosingType.dose;
+            var dose = self.uniformDosingType.doseFraction && !self.uniformDosingType.dose ? 0 : self.uniformDosingType.dose;
 
             if (dose !== void 0 && self.uniformDosingType.doseUnits && self.quantityUnit) {
                 return true;
@@ -596,9 +592,9 @@ Bahmni.Clinical.DrugOrderViewModel = function (appConfig, config, proto, encount
     this.loadOrderAttributes({});
 
     this.getDose = function() {
-        var mantissa = self.uniformDosingType.dosingUnitsFraction ? self.uniformDosingType.dosingUnitsFraction.value : 0;
+        var mantissa = self.uniformDosingType.doseFraction ? self.uniformDosingType.doseFraction.value : 0;
         var dose = self.uniformDosingType.dose ? self.uniformDosingType.dose : 0;
-        self.uniformDosingType.dosingUnitsFraction = void 0;
+        self.uniformDosingType.doseFraction = void 0;
 
         return dose + mantissa;
     };
@@ -619,10 +615,10 @@ Bahmni.Clinical.DrugOrderViewModel = function (appConfig, config, proto, encount
     }
 };
 
-Bahmni.Clinical.DrugOrderViewModel.createFromContract = function (drugOrderResponse, appConfig, config) {
+Bahmni.Clinical.DrugOrderViewModel.createFromContract = function (drugOrderResponse, config) {
     var DateUtil = Bahmni.Common.Util.DateUtil;
     var administrationInstructions = JSON.parse(drugOrderResponse.dosingInstructions.administrationInstructions) || {};
-    var viewModel = new Bahmni.Clinical.DrugOrderViewModel(appConfig, config);
+    var viewModel = new Bahmni.Clinical.DrugOrderViewModel(config);
     viewModel.asNeeded = drugOrderResponse.dosingInstructions.asNeeded;
     viewModel.route = drugOrderResponse.dosingInstructions.route;
 

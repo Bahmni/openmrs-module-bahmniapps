@@ -7,10 +7,6 @@ angular.module('bahmni.clinical')
             return Bahmni.Clinical.DrugOrder.create(drugOrder);
         };
 
-        var createDrugOrderViewModel = function (drugOrder, drugOrderAppConfig) {
-            return Bahmni.Clinical.DrugOrderViewModel.createFromContract(drugOrder, drugOrderAppConfig, undefined);
-        };
-
         var getActiveDrugOrdersFromServer = function (patientUuid) {
             return $http.get(Bahmni.Common.Constants.bahmniDrugOrderUrl + "/active", {
                 params: { patientUuid: patientUuid  },
@@ -18,7 +14,7 @@ angular.module('bahmni.clinical')
             });
         };
 
-        var getPrescribedAndActiveDrugOrders = function (patientUuid, numberOfVisits, getOtherActive, visitUuids, startDate, endDate, getEffectiveOrdersOnly, drugOrderAppConfig) {
+        var getPrescribedAndActiveDrugOrders = function (patientUuid, numberOfVisits, getOtherActive, visitUuids, startDate, endDate, getEffectiveOrdersOnly) {
             return $http.get(Bahmni.Common.Constants.bahmniDrugOrderUrl + "/prescribedAndActive", {
                 params: {
                     patientUuid: patientUuid,
@@ -33,9 +29,6 @@ angular.module('bahmni.clinical')
             }).success(function (response) {
                 for (var key in response) {
                     response[key] = response[key].map(createDrugOrder);
-                    response[key] = response[key].map(function(drugOrder){
-                        return createDrugOrderViewModel(drugOrder, drugOrderAppConfig);
-                    });
                 }
             });
         };
@@ -89,7 +82,7 @@ angular.module('bahmni.clinical')
             return deferred.promise;
         };
 
-        var getAllDrugOrdersFor = function (patientUuid, conceptSetToBeIncluded, conceptSetToBeExcluded, isActive, drugOrderAppConfig) {
+        var getAllDrugOrdersFor = function (patientUuid, conceptSetToBeIncluded, conceptSetToBeExcluded, isActive) {
             var deferred = $q.defer();
             var params= {patientUuid: patientUuid};
             if(conceptSetToBeIncluded){
