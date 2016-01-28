@@ -277,6 +277,13 @@
 
 }
 
+
+.program-dashboard{
+  .program-timeline, .program-details {
+    width: 100%;
+  }
+}
+
 .inactive-program-container{
   label{
     margin: 0 .8em 0 0;
@@ -477,6 +484,5 @@
   .newProgramEnrollmentDashboard{
     margin-bottom: 10px !important;
   }
-}
 
-@import "programDisplayControl";
+}
