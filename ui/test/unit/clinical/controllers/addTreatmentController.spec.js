@@ -124,7 +124,8 @@ describe("AddTreatmentController", function () {
             {name: "Day(s)", factor: 1},
             {name: "Week(s)", factor: 7},
             {name: "Month(s)", factor: 30}
-        ]
+        ],
+        inputOptionsConfig: {}
     };
 
     var initController = function(){

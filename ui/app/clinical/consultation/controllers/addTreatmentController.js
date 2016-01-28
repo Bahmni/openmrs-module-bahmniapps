@@ -48,6 +48,7 @@ angular.module('bahmni.clinical')
             }
 
             $scope.doseFractions = treatmentConfig.getDoseFractions();
+            $scope.showDoseFractions = treatmentConfig.inputOptionsConfig.showDoseFractions;
             $scope.isDoseFractionsAvailable = function() {
                 return $scope.doseFractions && !_.isEmpty($scope.doseFractions) ? true : false;
             };

@@ -98,14 +98,16 @@ angular.module('bahmni.clinical').factory('treatmentConfig', ['TreatmentService'
                 });
             };
 
-            var initializeInputConfig = function (tabConfigName) {
-                var commonConfig = appService.getAppDescriptor().getConfigForPage('medication')["commonConfig"] || {};
-                var tabConfig = appService.getAppDescriptor().getConfigForPage('medication')["tabConfig"][tabConfigName] || {};
-                tabConfig.inputOptionsConfig = tabConfig.inputOptionsConfig || {};
-                tabConfig.drugOrderHistoryConfig = tabConfig.drugOrderHistoryConfig || {};
-                angular.extend(medicationTabConfig, commonConfig, tabConfig);
-                drugOrderOptions = new Bahmni.Clinical.DrugOrderOptions(medicationTabConfig.inputOptionsConfig, medicationTabConfig);
-            };
+        var initializeInputConfig = function (tabConfigName) {
+            var commonConfig = appService.getAppDescriptor().getConfigForPage('medication')["commonConfig"] || {};
+            var tabConfig = appService.getAppDescriptor().getConfigForPage('medication')["tabConfig"][tabConfigName] || {};
+            tabConfig.inputOptionsConfig = tabConfig.inputOptionsConfig || {};
+            var showDoseFractions = tabConfig.inputOptionsConfig.showDoseFractions;
+            tabConfig.inputOptionsConfig.showDoseFractions = showDoseFractions ? showDoseFractions : false;
+            tabConfig.drugOrderHistoryConfig = tabConfig.drugOrderHistoryConfig || {};
+            angular.extend(medicationTabConfig, commonConfig, tabConfig);
+            drugOrderOptions = new Bahmni.Clinical.DrugOrderOptions(medicationTabConfig.inputOptionsConfig, medicationTabConfig);
+        };
 
             var nonCodedDrugConcept = function () {
                 return treatmentService.getNonCodedDrugConcept().then(function (data) {
