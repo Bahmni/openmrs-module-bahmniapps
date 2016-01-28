@@ -1,5 +1,5 @@
 angular.module('bahmni.common.obs')
-    .directive('editObservation', ['$q', 'spinner', '$state', 'ngDialog', 'messagingService', 'encounterService', 'configurations', function ($q, spinner, $state, ngDialog, messagingService, encounterService,configurations) {
+    .directive('editObservation', ['$q', 'spinner', '$state','$rootScope', 'ngDialog', 'messagingService', 'encounterService', 'configurations', function ($q, spinner, $state, $rootScope, ngDialog, messagingService, encounterService,configurations) {
         var controller = function ($scope) {
 
             var ObservationUtil = Bahmni.Common.Obs.ObservationUtil;
@@ -48,6 +48,7 @@ angular.module('bahmni.common.obs')
                 $scope.encounter.extensions={};
                 var createPromise = encounterService.create($scope.encounter);
                 spinner.forPromise(createPromise).then(function() {
+                    $rootScope.hasVisitedConsultation = false;
                     $state.go($state.current, {}, {reload: true});
                     ngDialog.close();
                     messagingService.showMessage('info', "{{'CLINICAL_SAVE_SUCCESS_MESSAGE_KEY' | translate}}");

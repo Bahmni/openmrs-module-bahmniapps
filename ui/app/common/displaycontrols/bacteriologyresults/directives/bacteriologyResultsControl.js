@@ -60,6 +60,7 @@ angular.module('bahmni.common.displaycontrol.bacteriologyresults')
                                         if(!$rootScope.hasVisitedConsultation) {
                                             window.onbeforeunload = null;
                                         }
+                                        spinner.forPromise(init());
                                         return true;
                                     }
                                     return false;
@@ -80,6 +81,7 @@ angular.module('bahmni.common.displaycontrol.bacteriologyresults')
                         var createPromise = bacteriologyResultsService.saveBacteriologyResults(specimenMapper.mapSpecimenToObservation(specimen));
 
                         spinner.forPromise(createPromise).then(function() {
+                            $rootScope.hasVisitedConsultation = false;
                             $state.go($state.current, {}, {reload: true});
                             ngDialog.close();
                             messagingService.showMessage('info', "{{'CLINICAL_SAVE_SUCCESS_MESSAGE_KEY' | translate}}");
