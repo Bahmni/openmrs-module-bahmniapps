@@ -1,10 +1,10 @@
 angular.module('bahmni.common.uiHelper')
     .directive('confirmOnExit', function() {
     return {
-        link: function($scope) {
+        link: function($scope, $translate) {
             $scope.$on("event:pageUnload", function () {
                 window.onbeforeunload = function() {
-                    return "You might lose unsaved data";
+                    return $translate.instant("BROWSER_CLOSE_DIALOG_MESSAGE_KEY");
                 }
             });
         }

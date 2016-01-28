@@ -2,7 +2,7 @@
 
 describe("EditObservationFormController", function () {
 
-    var scope, appService, appDescriptor, controller,_$window, rootScope;
+    var scope, appService, appDescriptor, controller,_$window, rootScope, _$translate;
 
     beforeEach(module('bahmni.clinical'));
 
@@ -14,6 +14,7 @@ describe("EditObservationFormController", function () {
         appDescriptor = jasmine.createSpyObj('appDescriptor', ['getConfigValue']);
         appService = jasmine.createSpyObj('appService', ['getAppDescriptor']);
         _$window = jasmine.createSpyObj('$window', ['confirm']);
+        _$translate = jasmine.createSpyObj('$translate', ['instant']);
     }));
 
 
@@ -22,7 +23,8 @@ describe("EditObservationFormController", function () {
             $scope: scope,
             appService: appService,
             $window:_$window,
-            $rootScope:rootScope
+            $rootScope:rootScope,
+            $translate:_$translate
         });
     };
 

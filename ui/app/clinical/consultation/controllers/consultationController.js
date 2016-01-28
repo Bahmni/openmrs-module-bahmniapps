@@ -155,8 +155,11 @@ angular.module('bahmni.clinical').controller('ConsultationController',
 
             $scope.$on('$stateChangeSuccess', function (event, toState, toParams, fromState) {
                 $scope.stateChangeTriggedByDialog = false;
-                if (toState.name.match(/patient.dashboard.show.+/))
+                if (toState.name.match(/patient.dashboard.show.+/)) {
                     $rootScope.hasVisitedConsultation = true;
+                    if($scope.showSaveConfirmDialogConfig)
+                        $rootScope.$broadcast("event:pageUnload");
+                }
                 if ((toState.name === fromState.name) && (fromState.name === "patient.dashboard.show"))
                     $rootScope.hasVisitedConsultation = false;
             });
@@ -207,7 +210,7 @@ angular.module('bahmni.clinical').controller('ConsultationController',
             };
 
             $scope.openConsultation = function() {
-                if( appService.getAppDescriptor().getConfigValue('showSaveConfirmDialog')){
+                if($scope.showSaveConfirmDialogConfig){
                     $rootScope.$broadcast("event:pageUnload");
                 }
                 $scope.closeAllDialogs();
