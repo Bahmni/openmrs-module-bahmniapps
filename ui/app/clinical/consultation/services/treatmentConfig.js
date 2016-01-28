@@ -99,8 +99,10 @@ angular.module('bahmni.clinical').factory('treatmentConfig', ['TreatmentService'
             };
 
         var initializeInputConfig = function (tabConfigName) {
-            var commonConfig = appService.getAppDescriptor().getConfigForPage('medication')["commonConfig"] || {};
-            var tabConfig = appService.getAppDescriptor().getConfigForPage('medication')["tabConfig"][tabConfigName] || {};
+            var medicationJson = appService.getAppDescriptor().getConfigForPage('medication') || {};
+            var commonConfig = medicationJson.commonConfig || {};
+            var allTabConfigs = medicationJson.tabConfig || {};
+            var tabConfig = allTabConfigs[tabConfigName] || {};
             tabConfig.inputOptionsConfig = tabConfig.inputOptionsConfig || {};
             var showDoseFractions = tabConfig.inputOptionsConfig.showDoseFractions;
             tabConfig.inputOptionsConfig.showDoseFractions = showDoseFractions ? showDoseFractions : false;
