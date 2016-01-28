@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('bahmni.common.displaycontrol.drugOrdersSection')
-    .directive('drugOrdersSection', ['TreatmentService', 'spinner', '$rootScope', 'treatmentConfig', '$q',  function (treatmentService, spinner, $rootScope, treatmentConfig, $q) {
+    .directive('drugOrdersSection', ['TreatmentService', 'spinner', '$rootScope',  function (treatmentService, spinner, $rootScope) {
         var controller = function ($scope) {
             var DateUtil = Bahmni.Common.Util.DateUtil;
 
@@ -41,14 +41,12 @@ angular.module('bahmni.common.displaycontrol.drugOrdersSection')
                 if (_.isEmpty($scope.config.title) && _.isEmpty($scope.config.translationKey)){
                     $scope.config.title = "Drug Orders";
                 }
-                var getDrugOrders = treatmentService.getAllDrugOrdersFor($scope.patientUuid, $scope.config.includeConceptSet, $scope.config.excludeConceptSet, $scope.config.active);
-
-                return $q.all([getDrugOrders, treatmentConfig()]).then(function (results) {
+                return treatmentService.getAllDrugOrdersFor($scope.patientUuid, $scope.config.includeConceptSet, $scope.config.excludeConceptSet, $scope.config.active).then(function (drugOrderResponse) {
                     var createDrugOrder = function (drugOrder) {
-                        return Bahmni.Clinical.DrugOrderViewModel.createFromContract(drugOrder, results[1]);
+                        return Bahmni.Clinical.DrugOrderViewModel.createFromContract(drugOrder, $scope.treatmentConfig);
                     };
-                    $scope.drugOrders = sortOrders(results[0].map(createDrugOrder));
-                    $scope.stoppedOrderReasons = results[1].stoppedOrderReasonConcepts;
+                    $scope.drugOrders = sortOrders(drugOrderResponse.map(createDrugOrder));
+                    $scope.stoppedOrderReasons = $scope.treatmentConfig.stoppedOrderReasonConcepts;
                 });
             };
 
@@ -132,7 +130,8 @@ angular.module('bahmni.common.displaycontrol.drugOrdersSection')
             controller: controller,
             scope: {
                 config: "=",
-                patientUuid: "="
+                patientUuid: "=",
+                treatmentConfig: "="
             },
             templateUrl: "../common/displaycontrols/drugOrdersSection/views/drugOrdersSection.html"
         };
