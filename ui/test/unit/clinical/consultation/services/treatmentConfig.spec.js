@@ -181,5 +181,15 @@ describe('treatmentConfig', function() {
             expect(config.showAdditionalInformation()).toBeFalsy();
             done();
         })
+    });
+
+    it("should return default config for medication if not configured", function(done){
+        medicationConfig = null;
+        injectTreatmentConfig();
+        treatmentConfig.then(function(config){
+            expect(config).toBeTruthy();
+            expect(config.getDoseUnits()).toEqual(masterConfig.doseUnits);
+            done();
+        })
     })
 });
