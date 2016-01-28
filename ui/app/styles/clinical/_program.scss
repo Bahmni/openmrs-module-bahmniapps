@@ -276,13 +276,6 @@
 
 }
 
-
-.program-dashboard{
-  .program-timeline, .program-details {
-    width: 100%;
-  }
-}
-
 .inactive-program-container{
   label{
     padding: 2px 5px 2px 0;
@@ -481,5 +474,9 @@
       }
     }
   }
-
+  .newProgramEnrollmentDashboard{
+    margin-bottom: 10px !important;
+  }
 }
+
+@import "programDisplayControl";
