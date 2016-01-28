@@ -253,7 +253,7 @@ describe("ConsultationController", function () {
 
     describe("open consultation", function () {
 
-        it("should not broadcast page unload event if not configured to reload", function () {
+        it("should not broadcast page unload event if not configured to prompt", function () {
             appService.getAppDescriptor.and.returnValue({
                 getConfigValue: function () {
                     return false;
@@ -266,7 +266,7 @@ describe("ConsultationController", function () {
             expect(rootScope.$broadcast).not.toHaveBeenCalledWith('event:pageUnload');
         });
 
-        it("should broadcast page unload event if configured to reload", function () {
+        it("should broadcast page unload event if configured to prompt", function () {
             appService.getAppDescriptor.and.returnValue({
                 getConfigValue: function () {
                     return true;

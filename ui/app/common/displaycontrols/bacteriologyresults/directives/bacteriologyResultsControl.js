@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('bahmni.common.displaycontrol.bacteriologyresults')
-    .directive('bacteriologyResultsControl', ['bacteriologyResultsService', 'appService', '$q', 'spinner', '$filter',  'ngDialog', 'bacteriologyTabInitialization', '$controller','consultationInitialization', '$state','messagingService','$rootScope',
-        function (bacteriologyResultsService, appService, $q, spinner, $filter,ngDialog, bacteriologyTabInitialization, $controller, consultationInitialization, $state, messagingService,$rootScope) {
+    .directive('bacteriologyResultsControl', ['bacteriologyResultsService', 'appService', '$q', 'spinner', '$filter',  'ngDialog', 'bacteriologyTabInitialization', '$controller','consultationInitialization', '$state','messagingService','$rootScope','$translate',
+        function (bacteriologyResultsService, appService, $q, spinner, $filter,ngDialog, bacteriologyTabInitialization, $controller, consultationInitialization, $state, messagingService,$rootScope, $translate) {
             var controller = function ($scope) {
                 var shouldPromptBeforeClose = true;
                 var init = function () {
@@ -56,7 +56,7 @@ angular.module('bahmni.common.displaycontrol.bacteriologyresults')
                             }),
                             preCloseCallback: function() {
                                 if(configForPrompt && shouldPromptBeforeClose) {
-                                    if(confirm('You might lose unsaved data. Are you sure you want to leave this page?')) {
+                                    if(confirm($translate.instant("POP_UP_CLOSE_DIALOG_MESSAGE_KEY"))) {
                                         if(!$rootScope.hasVisitedConsultation) {
                                             window.onbeforeunload = null;
                                         }
