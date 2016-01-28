@@ -41,37 +41,33 @@
             <section class="form-field-inline">
                 <article class="form-field">
                     <div class="field-attribute">
-                        <label>{{ ::'MEDICATION_LABEL_DOSE' | translate }} </label>
+                        <label class="dose-label">{{ ::'MEDICATION_LABEL_DOSE' | translate }} </label>
                         <input id="uniform-dose" class="dose fl" integer="true" ng-focus="treatment.setFrequencyType('uniform')"
                                type="number" min="0" step="any" placeholder="{{ treatmentConfig.getDosePlaceHolder() | translate}}"
                                ng-model="treatment.uniformDosingType.dose"
                                ng-required="treatment.isUniformFrequency && !treatment.uniformDosingType.doseFraction"
-                               focus-on="editDrugEntryUniformFrequency" />
+                               focus-on="editDrugEntryUniformFrequency"
+                               ng-class="{'noFractionOptions' : !isDoseFractionsAvailable()}"/>
+                        <div ng-show="isDoseFractionsAvailable() && showDoseFractions" class="fl dosingUnitsFractions-container">
+                               <span class="fl unit-text">&nbsp;and&nbsp;</span>
+                               <select id="uniform-dose-mantissa" class="form-field freq-dose-units"
+                                            ng-model="treatment.uniformDosingType.doseFraction"
+                                            ng-options="item.label for item in doseFractions track by item.value"
+                                            ng-required="treatment.isUniformFrequency && !treatment.uniformDosingType.dose">
+                                        <option value="">e.g. 1/2</option>
+                               </select>
+                        </div>
                     </div>
                     <div class="field-value">
                         <span class="fl unit-text">{{ ::'MEDICATION_LABEL_UNITS' | translate }}</span>
-                        <select id="uniform-dose-unit" class="form-field freq-dose-units" ng-model="treatment.uniformDosingType.doseUnits"
-                                ng-options="item.name as item.name for item in treatmentConfig.getDoseUnits()" ng-required="!treatment.validate()">
+                        <select id="uniform-dose-unit" class="form-field freq-choose-units" ng-model="treatment.uniformDosingType.doseUnits"
+                                ng-options="item.name as item.name for item in treatmentConfig.getDoseUnits()" ng-required="!treatment.validate()"
+                                ng-class="{'noFractionOptions' : !isDoseFractionsAvailable()}">
                             <option value="">{{ ::'MEDICATION_DOSE_UNIT_PLACEHOLDER' | translate }}</option>
                         </select>
                     </div>
                 </article>
             </section>
-            <div ng-show="isDoseFractionsAvailable() && showDoseFractions" class="fl dosingUnitsFractions-container">
-                <article class="form-field">
-                    <div class="field-attribute">
-                        <label class="fl">&nbsp;and&nbsp;</label>
-                    </div>
-                    <div class="field-attribute">
-                        <select id="uniform-dose-mantissa" class="form-field freq-dose-units"
-                                ng-model="treatment.uniformDosingType.doseFraction"
-                                ng-options="item.label for item in doseFractions track by item.value"
-                                ng-required="treatment.isUniformFrequency && !treatment.uniformDosingType.dose">
-                            <option value="">e.g. 1/2</option>
-                        </select>
-                    </div>
-                </article>
-            </div>
             <article class="form-field clearfix frequencyField">
                 <div class="field-attribute">
                     <label>{{ :: "MEDICATION_LABEL_FREQUENCY" | translate }}</label>
@@ -169,7 +165,7 @@
                        ng-required="treatment.isDurationRequired"/>
                 <span class="fl unit-text">{{ ::'MEDICATION_LABEL_UNITS' | translate }}</span>
                 <select ng-hide="treatmentConfig.isHiddenField('quantityUnits')" id="total-quantity-unit"
-                        class="freq-dose-units fl" ng-model="treatment.quantityUnit" ng-change="treatment.setQuantityUnitEnteredManually()"
+                        class="fl" ng-model="treatment.quantityUnit" ng-change="treatment.setQuantityUnitEnteredManually()"
                         ng-options="item.name as item.name for item in treatmentConfig.getDoseUnits()"
                         ng-required="!treatment.validate()">
                     <option value="">Choose Unit</option>
@@ -211,7 +207,7 @@
                       ng-model="treatment.additionalInstructions"/>
         </div>
     </article>
-    <div class="operations fr">
+    <div class="operations fr clearfix">
         <button class="add-drug-btn secondary-button fl" type="submit" accesskey="a"
                 ng-disabled="!treatment.drug.uuid && treatment.drugNameDisplay && !treatment.isNonCodedDrug">
             <u>A</u>dd
