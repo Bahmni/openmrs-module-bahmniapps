@@ -196,6 +196,14 @@ angular.module('bahmni.clinical').controller('ConsultationController',
                     queryParams.push("programUuid="+$state.params.programUuid);
                 }
 
+                if($state.params.dateEnrolled) {
+                    queryParams.push("dateEnrolled="+$state.params.dateEnrolled);
+                }
+
+                if($state.params.dateCompleted) {
+                    queryParams.push("dateCompleted="+$state.params.dateCompleted);
+                }
+
                 var extensionParams = board.extensionParams;
                 angular.forEach(extensionParams, function(extensionParamValue, extensionParamKey){
                     queryParams.push(extensionParamKey + "=" + extensionParamValue)
