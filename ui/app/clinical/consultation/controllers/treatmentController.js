@@ -1,9 +1,20 @@
 angular.module('bahmni.clinical')
-    .controller('TreatmentController', ['$scope', 'clinicalAppConfigService', function($scope, clinicalAppConfigService){
-        var init = function(){
-            var drugOrderHistoryConfig = clinicalAppConfigService.getMedicationConfig().drugOrderHistoryConfig || {};
+    .controller('TreatmentController', ['$scope', 'clinicalAppConfigService', 'treatmentConfig', '$stateParams',
+        function ($scope, clinicalAppConfigService, treatmentConfig, $stateParams) {
+        var init = function () {
+            var drugOrderHistoryConfig = treatmentConfig.drugOrderHistoryConfig || {};
             $scope.drugOrderHistoryView = drugOrderHistoryConfig.view || 'default';
-        };
+            $scope.tabConfigName = $stateParams.tabConfigName || "default";
 
+            var initializeTreatments = function(){
+                $scope.consultation.newlyAddedTabTreatments = $scope.consultation.newlyAddedTabTreatments || {};
+                $scope.consultation.newlyAddedTabTreatments[$scope.tabConfigName] = $scope.consultation.newlyAddedTabTreatments[$scope.tabConfigName] || [];
+                $scope.treatments = $scope.consultation.newlyAddedTabTreatments[$scope.tabConfigName];
+            };
+
+            $scope.$watch('consultation.newlyAddedTabTreatments', initializeTreatments);
+
+            $scope.treatmentConfig = treatmentConfig;
+        };
         init();
     }]);

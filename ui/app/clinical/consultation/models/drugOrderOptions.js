@@ -2,11 +2,12 @@
 
 Bahmni.Clinical.DrugOrderOptions = (function() {
 
-    var itemsForInputConfig = function(listOfObjects, filterStrings) {
+    var itemsForInputConfig = function(listOfObjects, filterStrings, filterKey) {
+        filterKey = filterKey || 'name';
         if (!filterStrings) return listOfObjects;
 
         return _.filter(listOfObjects, function(object) {
-            return _.contains(filterStrings, object.name);
+            return _.contains(filterStrings, object[filterKey]);
         });
     };
 
@@ -23,5 +24,6 @@ Bahmni.Clinical.DrugOrderOptions = (function() {
         this.hiddenFields = inputConfig.hiddenFields || [];
         this.isDropDown = inputConfig.isDropDown;
         this.drugConceptSet = inputConfig.drugConceptSet;
+        this.doseFractions = inputConfig.showDoseFractions ? itemsForInputConfig(masterConfig.doseFractions, inputConfig.doseFractions, 'label') : undefined;
     };
 })();

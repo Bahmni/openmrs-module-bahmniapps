@@ -160,6 +160,14 @@ angular.module('consultation')
             })
             .state('patient.dashboard.show.treatment', {
                 abstract: true,
+                params: {
+                    tabConfigName: null
+                },
+                resolve: {
+                    treatmentConfig: function(initialization, treatmentConfig, $stateParams) {
+                        return treatmentConfig($stateParams.tabConfigName);
+                    }
+                },
                 views: {
                     'consultation-content': {
                         controller: 'TreatmentController',
@@ -168,16 +176,13 @@ angular.module('consultation')
                 }
             })
             .state('patient.dashboard.show.treatment.page', {
-                url: '/treatment',
+                url: "/treatment?tabConfigName",
                 params: {
                   cachebuster: null
                 },
                 resolve: {
                     activeDrugOrders: function (TreatmentService, $stateParams) {
                         return TreatmentService.getActiveDrugOrders($stateParams.patientUuid);
-                    },
-                    treatmentConfig: function(initialization, treatmentConfig) {
-                        return treatmentConfig;
                     }
                 },
                 views: {
