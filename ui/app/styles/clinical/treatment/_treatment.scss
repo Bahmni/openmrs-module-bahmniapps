@@ -194,16 +194,40 @@
             box-sizing: border-box;
             .Order-section-orderDrug{
                 margin: 0 0 30px;
+                .unit-wrap{
+                    position: relative;
+                    .exchange-btn{
+                        position: absolute;
+                        padding: 3px 2px;
+                        line-height: initial;
+                        margin-top:5px;
+                    }
+                }
+                .variable-frequency{
+                    .dose-cell{
+                        margin-left: 88px;
+                    }
+                }
                 h2.section-title{
                     margin: 0 0 10px;
                 }
-                .drug-name{
-                    width:210px;
+                form .form-field{
+                    input[type="text"], input[type="number"]{
+                        padding: 4px 10px 3px;
+                    }
+                    .field-attribute label{
+                        width: 6.6em;
+                    }
+                    .drug-name{
+                        width:185px;
+                    }
                 }
+
                 .edit-drug-order-container .accept-btn{
                     margin-left: 5px;
                     margin-top: 4px;
-                    padding: 6px 10px 7px;
+                    padding: 8px 10px 7px;
+                    width: 77px;
                 }
                 input[type="number"]{
                     width:100px;
@@ -212,25 +236,42 @@
                 input[type="date"]{
                     width:9.5em;
                 }
-                .unit-text{
-                    display: inline-block;
-                    padding: 8px 10px 0;
+                .dose{
+                    width:50px !important;
+                    &.noFractionOptions{
+                        width: 100px !important;
+                    }
                 }
                 select{
                     min-width: 135px;
                     width:135px;
-                    &.freq-dose-units, &.duration-unit{
-                        min-width: 120px;
-                        width: 120px;
+                }
+                .freq-dose-units{
+                    width:75px;
+                    min-width: 75px;
+                }
+                .freq-choose-units{
+                    width:90px;
+                    min-width: 90px;
+                    &.noFractionOptions{
+                        width: 150px;
+                        min-width: 150px;
                     }
                 }
-                .exchange-btn{
-                    padding: 3px 2px;
-                    line-height: initial;
-                    margin-top:5px;
+                .unit-text{
+                    display: inline-block;
+                    padding: 8px 5px 0;
+                    float: left;
+                }
+
+                .frequencyFields{
+                    clear:both;
                 }
                 textarea{
                     width:275px;
+                }
+                .operations{
+                    margin-top: 10px;
                 }
                 .dose-cell {
                     margin-left: 5px;
@@ -251,12 +292,7 @@
             }
         }
     }
-    form .form-field .field-attribute label{
-        width: 5.5em;
-        &.duration-label ,&.start-date-label{
-            width:7.8em;
-        }
-    }
+
     .orders-section-right{
         width: 68% !important;
         margin-top: 0 !important;

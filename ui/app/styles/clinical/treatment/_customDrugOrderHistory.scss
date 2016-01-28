@@ -10,6 +10,9 @@
       &.edited{
         border-bottom: none;
       }
+      &.medicationDrugNotes{
+            border-top: 2px solid #EFF8FF;
+      }
       &.formStopReason{
         td{ padding: 0px 5px 7px; }
         .form-field .field-attribute label{
@@ -58,7 +61,7 @@
         }
       }
       &.empty-header.custom-empty-header{
-        width: 125px;
+        width: 145px;
       }
     }
     td{

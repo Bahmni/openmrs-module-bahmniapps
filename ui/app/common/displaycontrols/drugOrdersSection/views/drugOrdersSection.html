@@ -8,7 +8,7 @@
     <table ng-if="drugOrders && drugOrders.length > 0" class="drug-order-table treatments-details-table" ng-show="toggle">
         <tr>
             <th ng-repeat="columnName in columns" ng-class="columnName">{{columnHeaders[columnName] | translate}}</th>
-            <th class="empty-header" ng-if="config.actions" ng-class="{'custom-empty-header': columns.length > 9}">&nbsp;</th>
+            <th class="empty-header custom-empty-header" ng-if="config.actions">&nbsp;</th>
         </tr>
         <tbody ng-repeat="drugOrder in drugOrders">
         <tr ng-class="{'highlight' : drugOrder.isBeingEdited, 'edited' : drugOrder.isMarkedForDiscontinue}">
@@ -57,7 +57,7 @@
                 </div>
             </td>
         </tr>
-        <tr ng-if="drugOrder.showAdditionalInstructions">
+        <tr ng-if="drugOrder.showAdditionalInstructions" class="medicationDrugNotes">
             <td colspan="48" class="form drug-stop-container">
                 <div ng-show="drugOrder.showAdditionalInstructions" class="notes inline-notes">
                     {{::drugOrder.additionalInstructions}}
