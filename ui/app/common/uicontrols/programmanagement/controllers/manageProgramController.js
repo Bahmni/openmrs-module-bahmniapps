@@ -54,6 +54,10 @@ angular.module('bahmni.common.uicontrols.programmanagment')
                 updateActiveProgramsList();
             };
 
+            var successCallBackForEditProgram = function(){
+                messagingService.showMessage("info", "Saved");
+            };
+
             var failureCallback = function (error) {
                 var fieldErrorMsg = findFieldErrorIfAny(error);
                 var errorMsg = _.isUndefined(fieldErrorMsg) ? "Failed to Save" : fieldErrorMsg;
@@ -166,8 +170,9 @@ angular.module('bahmni.common.uicontrols.programmanagment')
             $scope.updatePatientProgram = function (patientProgram){
                 spinner.forPromise(
                     programService.updatePatientProgram(patientProgram, $scope.programAttributeTypes)
-                        .then(successCallback, failureCallback)
+                        .then(successCallBackForEditProgram, failureCallback)
                 );
+                patientProgram.editing = false;
             };
 
             $scope.getOutcomes = function (program) {
