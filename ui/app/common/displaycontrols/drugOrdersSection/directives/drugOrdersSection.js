@@ -56,8 +56,8 @@ angular.module('bahmni.common.displaycontrol.drugOrdersSection')
             var sortOrders = function(drugOrders){
                 var drugOrderUtil = Bahmni.Clinical.DrugOrder.Util;
                 var sortedDrugOrders = [];
-                sortedDrugOrders.push(drugOrderUtil.sortDrugOrders(drugOrders));
-                return _.flatten(sortedDrugOrders).reverse();
+                sortedDrugOrders.push(drugOrderUtil.sortDrugOrdersInChronologicalOrder(drugOrders));
+                return _.flatten(sortedDrugOrders)
             };
 
             var clearOtherDrugOrderActions = function(revisedDrugOrder) {
