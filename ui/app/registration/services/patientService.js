@@ -36,9 +36,6 @@ angular.module('bahmni.registration')
         };
 
         var searchByIdentifier = function(identifier){
-            if(offlineService.offline()){
-                return offlinePatientService.getByIdentifier(identifier);
-            }
             return $http.get(Bahmni.Common.Constants.bahmniSearchUrl + "/patient", {
                 method: "GET",
                 params: {identifier: identifier},

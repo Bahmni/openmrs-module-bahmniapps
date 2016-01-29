@@ -46,9 +46,15 @@ describe('addressAttributeService', function () {
         get:jasmine.createSpy('Http get').and.returnValue(resultList)
     };
 
+    var mockofflineService = jasmine.createSpyObj('offlineService', ['offline']);
+    mockofflineService.offline.and.returnValue(false);
+
+
     beforeEach(module('bahmni.registration'));
     beforeEach(module(function ($provide) {
         $provide.value('$http', mockHttp);
+        $provide.value('offlineService', mockofflineService);
+        $provide.value('$q', {});
     }));
 
     describe("search", function () {

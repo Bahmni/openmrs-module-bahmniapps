@@ -1,7 +1,7 @@
 'use strict';
 
 describe('AddressFieldsDirectiveController', function () {
-    var patientAttributeService;
+    var addressAttributeService;
     var success;
     var controller;
     var scope;
@@ -9,8 +9,7 @@ describe('AddressFieldsDirectiveController', function () {
     beforeEach(angular.mock.module('bahmni.registration'));
     beforeEach(angular.mock.inject(function () {
         success = jasmine.createSpy('Successful');
-        patientAttributeService = jasmine.createSpyObj('patientAttributeService', ['search']);
-        patientAttributeService.search.and.returnValue({success:success});
+        addressAttributeService = jasmine.createSpyObj('addressAttributeService', ['search']);
     }));
 
     var setupController = function () {
@@ -26,7 +25,7 @@ describe('AddressFieldsDirectiveController', function () {
             ];
             controller = $controller('AddressFieldsDirectiveController', {
                 $scope: scope,
-                patientAttributeService: patientAttributeService
+                addressAttributeService: addressAttributeService,
             });
         });
     };

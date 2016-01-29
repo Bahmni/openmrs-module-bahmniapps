@@ -161,7 +161,7 @@ Bahmni.Common.Offline.SchemaDefinitions = {
                 type: 'STRING'
             }
         ],
-        nullableColumns: ['gender', 'birthdate', 'givenName', 'middleName', 'familyName'],
+        nullableColumns: ['gender', 'birthdate', 'givenName', 'middleName', 'familyName','identifier'],
         primaryKeyColumns: ['uuid'],
         indexes: [
             {

@@ -38,7 +38,7 @@ angular.module('bahmni.home', ['ui.router', 'httpErrorInterceptor', 'bahmni.comm
                 offlineService.setAppPlatform($stateParams.deviceType);
             }
             $rootScope.loginDevice = $stateParams.deviceType;
-            $state.go('offline');
+            $state.go('login');
          }
     });
     $httpProvider.defaults.headers.common['Disable-WWW-Authenticate'] = true;

@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('bahmni.common.offline')
-    .service('patientDbService', ['$http', '$q', function ($http, $q) {
+    .service('patientDbService', function () {
         var getPatientByIdentifier = function (db, patientIdentifier) {
             var p = db.getSchema().table('patient');
             return db.select(p.identifier, p.givenName, p.familyName, p.gender, p.birthdate, p.uuid)
@@ -23,17 +23,14 @@ angular.module('bahmni.common.offline')
         };
 
         var generateOfflineIdentifier = function (db) {
-            var deferred = $q.defer();
             var idgen = db.getSchema().table('idgen');
-            db.select(idgen.identifier.as('identifier'))
+            return db.select(idgen.identifier.as('identifier'))
                 .from(idgen).exec()
                 .then(function (result) {
                     var identifier = (result[0] && result[0].identifier) ? result[0].identifier : 1;
                     insertIntoIdgen(db, identifier);
-                    deferred.resolve({data: "TMP-" + identifier});
+                    return {data: "TMP-" + identifier};
                 });
-
-            return deferred.promise;
         };
 
         var insertIntoIdgen = function (db, result) {
@@ -85,4 +82,4 @@ angular.module('bahmni.common.offline')
             insertPatientData : insertPatientData,
             insertIntoIdgen : insertIntoIdgen
     }
-    }]);
+    });

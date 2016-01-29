@@ -4,36 +4,28 @@ angular.module('bahmni.common.offline')
     .service('androidDbService', ['$q',
         function ($q) {
             var getMarker = function () {
-                var deferred = $q.defer();
                 var value = AndroidOfflineService.getMarker();
                 value = value != undefined ? JSON.parse(value) : value;
-                deferred.resolve(value);
-                return deferred.promise;
+                return $q.when(value);
             };
 
             var insertMarker = function (uuid, catchmentNumber) {
-                var deferred = $q.defer();
-                var value = AndroidOfflineService.insertMarker(uuid, catchmentNumber);
-                deferred.resolve(value);
-                return deferred.promise;
+                return $q.when(AndroidOfflineService.insertMarker(uuid, catchmentNumber));
+
             };
 
-            var createPatient = function (patient) {
-                var deferred = $q.defer();
+            var createPatient = function (patient, requestType) {
                 var patientString = JSON.stringify(patient);
-                var value = AndroidOfflineService.createPatient(patientString);
+                var value = AndroidOfflineService.createPatient(patientString, requestType);
                 value = value != undefined ? JSON.parse(value) : value;
-                deferred.resolve(value);
-                return deferred.promise;
+                return $q.when(value);
             };
 
             var insertAddressHierarchy = function (addressHierarchy) {
-                var deferred = $q.defer();
                 var addressHierarchyString = JSON.stringify(addressHierarchy);
                 var value = AndroidOfflineService.insertAddressHierarchy(addressHierarchyString);
                 value = value != undefined ? JSON.parse(value) : value;
-                deferred.resolve(value);
-                return deferred.promise;
+                return $q.when(value);
             };
 
             var init = function () {
@@ -46,34 +38,27 @@ angular.module('bahmni.common.offline')
             };
 
             var deletePatientData = function (identifier) {
-                var deferred = $q.defer();
                 AndroidOfflineService.deletePatientData(identifier);
-                deferred.resolve();
-                return deferred.promise;
+                return $q.when({});
+
             };
 
             var generateOfflineIdentifier = function () {
-                var deferred = $q.defer();
                 var value = AndroidOfflineService.generateOfflineIdentifier();
                 value = value != undefined ? JSON.parse(value) : value;
-                deferred.resolve(value);
-                return deferred.promise;
+                return $q.when(value);
             };
 
             var getPatientByUuid = function (uuid) {
-                var deferred = $q.defer();
                 var value = AndroidOfflineService.getPatientByUuid(uuid);
                 value = value != undefined ? JSON.parse(value) : value;
-                deferred.resolve(value);
-                return deferred.promise;
+                return $q.when(value);
             };
 
             var getPatientByIdentifier = function (identifier) {
-                var deferred = $q.defer();
                 var value = AndroidOfflineService.getPatientByIdentifier(identifier);
                 value = value != undefined ? JSON.parse(value) : value;
-                deferred.resolve(value);
-                return deferred.promise;
+                return $q.when(value);
             };
 
             return {

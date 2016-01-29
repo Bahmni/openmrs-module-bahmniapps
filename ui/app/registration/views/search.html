@@ -65,7 +65,7 @@
             <tr ng-repeat="result in results">
                 <td>
                     <a href="javascript:void(0)" tabindex="{{ 7 + $index + 1 }}" ng-if="::(searchActions.length > 0)" ng-click="forPatient(result).doExtensionAction(searchActions[0])">
-                        {{::result.identifier}}
+                        {{::result.identifier || 'Not Assigned'}}
                     </a>
                 </td>
                 <td>{{::result.givenName}} {{::result.middleName}} {{::result.familyName}}</td>

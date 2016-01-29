@@ -2,7 +2,6 @@
 <html lang="en-US">
 <head>
     <meta charset="UTF-8">
-    <meta http-equiv="refresh" content="5;url=/bahmni/home">
     <title>Offline sync</title>
     <style>
         a {
@@ -50,13 +49,15 @@
     <script src="initWorker.js"></script>
     <script>
         var redirect = function(){
-            window.location.href = "/bahmni/home";
-        }
+            window.location.href = "/bahmni/home/" + window.location.hash;
+        };
 
         //when offline need not wait for sync
         if(Offline.state == "down") {
             redirect();
         }
+
+        setTimeout(function(){ redirect(); }, 5000);
     </script>
 </body>
 </html>

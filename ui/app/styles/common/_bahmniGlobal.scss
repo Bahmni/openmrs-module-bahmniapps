@@ -330,5 +330,14 @@ u, .add-drug-btninput[value]:first-letter {
       width: 100%;
     }
   }
+  &.removeLegend{
+    &:before{
+      display: none;
+    }
+    span.mylegend{
+      display: none;
+    }
+  }
+
 }
 

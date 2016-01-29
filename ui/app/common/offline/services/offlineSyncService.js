@@ -56,7 +56,7 @@ angular.module('bahmni.common.offline')
                 var deferrable = $q.defer();
                 switch (event.category) {
                     case 'patient':
-                        offlineDbService.createPatient({patient: response.data}).then(function () {
+                        offlineDbService.createPatient({patient: response.data}, "GET").then(function () {
                             deferrable.resolve();
                         });
                         break;

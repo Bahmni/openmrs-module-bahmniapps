@@ -40,7 +40,7 @@ angular.module('bahmni.common.offline')
                 .then(function (attributeTypeIds) {
 
 
-                    var query = db.select(p.identifier.as('identifier'))
+                    var query = db.select(p.uuid.as('uuid'))
                         .from(p)
                         .innerJoin(padd, p.uuid.eq(padd.patientUuid))
                         .leftOuterJoin(pa, p.uuid.eq(pa.patientUuid))
@@ -77,7 +77,7 @@ angular.module('bahmni.common.offline')
                     if (!_.isEmpty(predicates))
                         query = query.where(whereCondition);
 
-                    query.limit(50).skip(params.startIndex).orderBy(p.dateCreated, lf.Order.DESC).groupBy(p.identifier).exec()
+                    query.limit(50).skip(params.startIndex).orderBy(p.dateCreated, lf.Order.DESC).groupBy(p.uuid).exec()
                         .then(function (tempResults) {
                             db.select(p.identifier.as('identifier'), p.givenName.as('givenName'), p.middleName.as('middleName'), p.familyName.as('familyName'),
                                 p.dateCreated.as('dateCreated'), p.birthdate.as('birthdate'), p.gender.as('gender'), p.uuid.as('uuid'), padd[addressFieldName].as('addressFieldValue'),
@@ -86,12 +86,12 @@ angular.module('bahmni.common.offline')
                                 .innerJoin(padd, p.uuid.eq(padd.patientUuid))
                                 .leftOuterJoin(pa, p.uuid.eq(pa.patientUuid))
                                 .leftOuterJoin(pat, pa.attributeTypeId.eq(pat.attributeTypeId))
-                                .where(p.identifier.in(_.map(tempResults, function (tempResult) {
-                                    return tempResult.identifier;
+                                .where(p.uuid.in(_.map(tempResults, function (tempResult) {
+                                    return tempResult.uuid;
                                 }))).exec()
                                 .then(function (results) {
                                     var groupedResults = _.groupBy(results, function (res) {
-                                        return res.identifier
+                                        return res.uuid
                                     });
                                     var patient;
                                     angular.forEach(groupedResults, function (groupedResult) {

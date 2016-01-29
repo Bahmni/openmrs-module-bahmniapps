@@ -29,28 +29,27 @@ angular.module('bahmni.registration')
             var create = function (postRequest) {
                 postRequest.patient.person.auditInfo = {dateCreated: new Date()};
                 if (!postRequest.patient.uuid)
-                    postRequest.patient.uuid = postRequest.patient.identifiers[0].identifier;
+                    postRequest.patient.uuid = Bahmni.Common.Offline.UUID.generateUuid();
                 postRequest.patient.person.preferredName = postRequest.patient.person.names[0];
                 postRequest.patient.person.preferredAddress = postRequest.patient.person.addresses[0];
-                return offlineDbService.createPatient(postRequest);
+                return offlineDbService.createPatient(postRequest, "POST");
             };
 
             var update = function (postRequest) {
-                return offlineDbService.deletePatientData(postRequest.patient.identifiers[0]['identifier']).then(function () {
-                    return create(postRequest).then(function (result) {
+                return offlineDbService.deletePatientData(postRequest.patient.uuid).then(function () {
+                    return create(postRequest, "POST").then(function (result) {
                         return result.data;
                     });
                 });
             };
 
             var generateOfflineIdentifier = function () {
-                return offlineDbService.generateOfflineIdentifier();
+                return $q.when({});
             };
 
             return {
                 search: search,
                 get: get,
-                getByIdentifier: getByIdentifier,
                 create: create,
                 update: update,
                 generateOfflineIdentifier: generateOfflineIdentifier
