@@ -36,15 +36,10 @@ angular.module('bahmni.common.displaycontrol.drugOrderDetails')
                 var drugOrderUtil = Bahmni.Clinical.DrugOrder.Util;
                 var sortedDrugOrders = [];
                 if($scope.section.dashboardParams.showOnlyActive) {
-                    var now = new Date();
                     var activeAndScheduled = _.filter(response, function (order) {
                         return order.isActive() || order.isScheduled();
                     });
-                    var partitionedDrugOrders = _.groupBy(activeAndScheduled, function (drugOrder) {
-                        return (drugOrder.effectiveStartDate > now) ? "scheduled" : "active";
-                    });
-                    sortedDrugOrders.push(drugOrderUtil.sortDrugOrdersInChronologicalOrder(partitionedDrugOrders.scheduled));
-                    sortedDrugOrders.push(drugOrderUtil.sortDrugOrdersInChronologicalOrder(partitionedDrugOrders.active));
+                    sortedDrugOrders.push(drugOrderUtil.sortDrugOrdersInChronologicalOrder(activeAndScheduled));
                 }else{
                     sortedDrugOrders.push(drugOrderUtil.sortDrugOrdersInChronologicalOrder(response));
                 }
