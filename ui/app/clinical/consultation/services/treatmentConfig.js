@@ -1,6 +1,8 @@
 'use strict';
 
-angular.module('bahmni.clinical').factory('treatmentConfig', ['TreatmentService', 'spinner', 'configurationService', 'appService', 'DrugService', '$q', function (treatmentService, spinner, configurationService, appService, drugService, $q) {
+angular.module('bahmni.clinical').factory('treatmentConfig',
+    ['TreatmentService', 'spinner', 'configurationService', 'appService', 'DrugService', '$q', '$translate',
+        function (treatmentService, spinner, configurationService, appService, drugService, $q, $translate) {
 
         return function (tabConfigName) {
             var drugOrderOptions;
@@ -55,6 +57,14 @@ angular.module('bahmni.clinical').factory('treatmentConfig', ['TreatmentService'
                     var additionalInformationFields = ["sos", "additionalInstructions", "dosingInstructions"];
                     var hiddenAdditionalInformationFields = _.intersection(additionalInformationFields, drugOrderOptions.hiddenFields)
                     return hiddenAdditionalInformationFields.length < additionalInformationFields.length;
+                },
+                translate: function (field, defaultKey) {
+                    var labelKey = drugOrderOptions.labels[field];
+                    var labelValue = $translate.instant(labelKey);
+                    if (labelValue === labelKey){
+                        labelValue = $translate.instant(defaultKey)
+                    }
+                    return labelValue;
                 }
             };
             configurationService.getConfigurations(['stoppedOrderReasonConfig']).then(function (configurations) {
