@@ -130,6 +130,7 @@
     "MEDICATION_LABEL_ADDITIONAL_INSTRUCTIONS" :"Additional Instructions",
     "MEDICATION_ADDITIONAL_INFORMATION_LABEL" :"Additional Information",
     "MEDICATION_DRUG_NAME_PLACEHOLDER" :"Choose Drug",
+    "MEDICATION_CHANGE_DURATION_BUTTON" :"Change Duration",
 
     "REMOVE_CONFIRMATION_KEY": "Are you sure you want to remove?",
 
