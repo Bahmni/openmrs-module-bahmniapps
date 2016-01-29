@@ -65,6 +65,9 @@ angular.module('bahmni.clinical').factory('treatmentConfig',
                         labelValue = $translate.instant(defaultKey)
                     }
                     return labelValue;
+                },
+                showBulkChangeDuration: function () {
+                    return !this.hideBulkChangeDurationButton;
                 }
             };
             configurationService.getConfigurations(['stoppedOrderReasonConfig']).then(function (configurations) {

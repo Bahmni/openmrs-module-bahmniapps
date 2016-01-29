@@ -84,6 +84,9 @@ angular.module('bahmni.clinical')
                 }
             };
 
+            $scope.showBulkChangeDuration = $scope.treatmentConfig.showBulkChangeDuration();
+
+
             $scope.updateDuration = function(stepperValue) {
                 if(!$scope.bulkDurationData.bulkDuration && isNaN($scope.bulkDurationData.bulkDuration)){
                     $scope.bulkDurationData.bulkDuration = 0

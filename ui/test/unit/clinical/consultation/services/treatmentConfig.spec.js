@@ -2,45 +2,46 @@
 
 describe('treatmentConfig', function() {
 
-    var translate;
-    var treatmentConfig;
-    var medicationConfig = {
-        "commonConfig": {},
-        "tabConfig": {
-            "tbTab": {
-                "inputOptionsConfig": {
-                    "drugConceptSet": "All TB Drugs",
-                    "isDropDown": true,
-                    "doseUnits": ["mg"],
-                    "frequency": ["Seven days a week"],
-                    "route": ["Oral"],
-                    "hiddenFields": ["additionalInstructions"]
-                }
-            },
-            "nonTbTab": {
-                "inputOptionsConfig": {
-                    "drugConceptSet": "Non TB Drugs",
-                    "isDropDown": true,
-                    "doseUnits": ["mg"],
-                    "frequency": ["Seven days a week"],
-                    "route": ["Intramuscular"],
-                    "hiddenFields": ["instructions"]
+    var treatmentConfig,medicationConfig, masterConfig, translate;
+    beforeEach(function(){
+        medicationConfig = {
+            "commonConfig": {},
+            "tabConfig": {
+                "tbTab": {
+                    "inputOptionsConfig": {
+                        "drugConceptSet": "All TB Drugs",
+                        "isDropDown": true,
+                        "doseUnits": ["mg"],
+                        "frequency": ["Seven days a week"],
+                        "route": ["Oral"],
+                        "hiddenFields": ["additionalInstructions"]
+                    }
+                },
+                "nonTbTab": {
+                    "inputOptionsConfig": {
+                        "drugConceptSet": "Non TB Drugs",
+                        "isDropDown": true,
+                        "doseUnits": ["mg"],
+                        "frequency": ["Seven days a week"],
+                        "route": ["Intramuscular"],
+                        "hiddenFields": ["instructions"]
+                    }
                 }
             }
-        }
-    };
-    var masterConfig = {
-        "doseUnits": [{"name": "mg"}, {"name": "Tablet(s)"}],
-        "routes": [{"name": "Oral"}, {"name": "Inhalation"}],
-        "durationUnits": [{"name": "Day(s)"}, {"name": "Minute(s)"}],
-        "dosingInstructions": [{"name": "Before meals"}, {"name": "As directed"}],
-        "dispensingUnits": [{"name": "Tablet(s)"}, {"name": "Unit(s)"}],
-        "frequencies": [
-            { "uuid": "ca407cb0-3a91-11e5-b380-0050568236ae", "frequencyPerDay": 1, "name": "Seven days a week"},
-            { "uuid": "18a35ec5-3a92-11e5-b380-0050568236ae", "frequencyPerDay": 0.857142857, "name": "Six days a week"}
-        ]
-    };
+        };
+        masterConfig = {
+            "doseUnits": [{"name": "mg"}, {"name": "Tablet(s)"}],
+            "routes": [{"name": "Oral"}, {"name": "Inhalation"}],
+            "durationUnits": [{"name": "Day(s)"}, {"name": "Minute(s)"}],
+            "dosingInstructions": [{"name": "Before meals"}, {"name": "As directed"}],
+            "dispensingUnits": [{"name": "Tablet(s)"}, {"name": "Unit(s)"}],
+            "frequencies": [
+                { "uuid": "ca407cb0-3a91-11e5-b380-0050568236ae", "frequencyPerDay": 1, "name": "Seven days a week"},
+                { "uuid": "18a35ec5-3a92-11e5-b380-0050568236ae", "frequencyPerDay": 0.857142857, "name": "Six days a week"}
+            ]
+        };
 
+    });
     beforeEach(module('bahmni.clinical'));
     beforeEach(module('bahmni.common.appFramework'));
 
@@ -193,6 +194,42 @@ describe('treatmentConfig', function() {
             expect(config).toBeTruthy();
             expect(config.getDoseUnits()).toEqual(masterConfig.doseUnits);
             done();
+        })
+    });
+
+    it("showBulkChangeDuration should return true if it is not hidden via config", function(done){
+        var configName = "tbTab";
+        medicationConfig.tabConfig[configName].hideBulkChangeDurationButton = false;
+
+        injectTreatmentConfig(configName);
+
+        treatmentConfig.then(function(config){
+            expect(config.showBulkChangeDuration()).toBeTruthy();
+            done()
+        })
+    });
+
+    it("showBulkChangeDuration should return true if it is not configured", function(done){
+        var configName = "tbTab";
+        medicationConfig.tabConfig[configName].hideBulkChangeDurationButton = null;
+
+        injectTreatmentConfig(configName);
+
+        treatmentConfig.then(function(config){
+            expect(config.showBulkChangeDuration()).toBeTruthy();
+            done()
+        })
+    });
+
+    it("showBulkChangeDuration should return false if it is hidden via config", function(done){
+        var configName = "tbTab";
+        medicationConfig.tabConfig[configName].hideBulkChangeDurationButton = true;
+
+        injectTreatmentConfig(configName);
+
+        treatmentConfig.then(function(config){
+            expect(config.showBulkChangeDuration()).toBeFalsy();
+            done()
         })
     })
 });
