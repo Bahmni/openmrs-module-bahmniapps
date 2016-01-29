@@ -49,7 +49,7 @@
     "healthcare"
   ],
   "author": "bahmni@thoughtworks.com",
-  "license": "Apache v2.0",
+  "license": "Apache-2.0",
   "gitHead": "d292a992ce359f79a807fd7d75505e45cb631b80",
   "readmeFilename": "README.md",
   "bugs": {
