@@ -166,7 +166,7 @@ describe("DrugOrderHistoryController", function () {
         it("should be same as start date of drug order if past drug", function() {
             var pastDrugOrder = Bahmni.Clinical.DrugOrderViewModel.createFromContract(activeDrugOrder);
             var minDate = scope.getMinDateForDiscontinue(pastDrugOrder);
-            expect(minDate).toEqual("2014-09-10");
+            expect(minDate).toEqual(moment(pastDrugOrder.effectiveStartDate).format("YYYY-MM-DD"));
         });
 
         it("should be same as current date if scheduled drug", function() {
