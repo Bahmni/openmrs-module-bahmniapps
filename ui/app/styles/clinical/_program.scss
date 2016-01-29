@@ -37,7 +37,6 @@
   .select-program-container {
     .dashboard-section{
       overflow: hidden;
-      //padding-bottom: 10px;
     }
     input, select {
       min-width: 0;
@@ -68,7 +67,7 @@
   }
   .program-details table.programTable{
     tr{
-      border-bottom: none;
+      border-bottom: none
     }
     td{
       border: none;
