@@ -23,7 +23,8 @@ describe('programService', function () {
             },
             getConfigValue: function () {
                 return {
-                    mandatoryProgramAttributes: ""
+                    mandatoryProgramAttributes: "",
+                    showProgramStateInTimeline: true
                 }
             }
         });
@@ -151,6 +152,7 @@ describe('programService', function () {
                                 }
                             ]
                         },
+                        "attributes":[],
                         "outcome": null
                     },
                     {
@@ -182,6 +184,7 @@ describe('programService', function () {
                                 }
                             ]
                         },
+                        "attributes":[],
                         "outcome": null
                     },
                     {
@@ -213,6 +216,7 @@ describe('programService', function () {
                                 }
                             ]
                         },
+                        "attributes":[],
                         "outcome": null
                     },
                     {
@@ -243,6 +247,7 @@ describe('programService', function () {
                                 }
                             ]
                         },
+                        "attributes":[],
                         "outcome": null
                     }
                 ]
@@ -285,7 +290,7 @@ describe('programService', function () {
         };
 
 
-        mockBackend.whenGET('/openmrs/ws/rest/v1/programattributetype?v=custom:(uuid,name,description,datatypeClassname,datatypeConfig)').respond(attributeType.data);
+        mockBackend.whenGET('/openmrs/ws/rest/v1/programattributetype?v=custom:(uuid,name,description,datatypeClassname,datatypeConfig,concept)').respond(attributeType.data);
         mockBackend.whenGET('/openmrs/ws/rest/v1/programenrollment?patient=somePatientUuid&v=full').respond(data.data);
 
         programService.getProgramAttributeTypes().then(function (response) {
@@ -422,7 +427,7 @@ describe('programService', function () {
             ]
         };
 
-        mockBackend.whenGET('/openmrs/ws/rest/v1/programattributetype?v=custom:(uuid,name,description,datatypeClassname,datatypeConfig)').respond(programAttributeTypesJson);
+        mockBackend.whenGET('/openmrs/ws/rest/v1/programattributetype?v=custom:(uuid,name,description,datatypeClassname,datatypeConfig,concept)').respond(programAttributeTypesJson);
 
 
         programService.getProgramAttributeTypes().then(function (programAttributeTypes) {
@@ -512,7 +517,19 @@ describe('programService', function () {
 
         it("should have attribute representation", function () {
             mockBackend.whenGET('/openmrs/ws/rest/v1/programenrollment?patient=somePatientUuid&v=full').respond(data.data);
-            mockBackend.whenGET('/openmrs/ws/rest/v1/programattributetype?v=custom:(uuid,name,description,datatypeClassname,datatypeConfig)').respond({});
+            mockBackend.whenGET('/openmrs/ws/rest/v1/programattributetype?v=custom:(uuid,name,description,datatypeClassname,datatypeConfig,concept)').respond(
+                {
+                    "results":[
+                        {
+                            "description": "sample att description",
+                            "display": "endtbName",
+                            "links": Array[1],
+                            "retired": false,
+                            "uuid": "4131c8cf-bf60-47c5-a46c-9142c554ab85",
+                            "datatypeClassname": "org.bahmni.module.bahmnicore.customdatatype.datatype.CodedConceptDatatype"
+                        }
+                    ]
+                });
 
 
             programService.getPatientPrograms(patientUuid).then(function (response) {
@@ -541,8 +558,18 @@ describe('programService', function () {
             }];
 
             mockBackend.whenGET('/openmrs/ws/rest/v1/programenrollment?patient=somePatientUuid&v=full').respond(data.data);
-            mockBackend.whenGET('/openmrs/ws/rest/v1/programattributetype?v=custom:(uuid,name,description,datatypeClassname,datatypeConfig)').respond({});
-
+            mockBackend.whenGET('/openmrs/ws/rest/v1/programattributetype?v=custom:(uuid,name,description,datatypeClassname,datatypeConfig,concept)').respond({
+                "results":[
+                    {
+                        "description": null,
+                        "display": "endtbName",
+                        "links": Array[1],
+                        "retired": false,
+                        "uuid": "4131c8cf-bf60-47c5-a46c-9142c554ab85",
+                        "datatypeClassname": "org.bahmni.module.bahmnicore.customdatatype.datatype.CodedConceptDatatype"
+                    }
+                ]
+            });
 
             programService.getPatientPrograms(patientUuid).then(function (response) {
                 expect(response.activePrograms[0].attributes[0].name).toEqual("sample att name");
@@ -621,6 +648,10 @@ describe('programService', function () {
         programService.updatePatientProgram(patientProgram, programAttributeTypes);
 
         mockBackend.flush();
+    });
+
+    it('test getProgramStateConfig', function() {
+        expect(programService.getProgramStateConfig()).toBeTruthy();
     });
 
 });

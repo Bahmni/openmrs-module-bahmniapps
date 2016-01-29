@@ -23,10 +23,10 @@ describe("ensure that the directive program-attributes works properly", function
         var programAtrributeMap = scope.program.patientProgramAttributes;
         expect(programAtrributeMap["Sample regex attribute"]).toBe("123");
         expect(dateUtil.isSameDateTime(programAtrributeMap["Sample date attribute"], dateUtil.parseServerDateToDate("2016-01-13T00:00:00.000+0000"))).toBeTruthy();
+        expect(programAtrributeMap["Sample concept attribute"]).toBe("c2107f30-3f10-11e4-adec-0800271c1b75");
     });
 
     it("Get the converted Date value for an Attribute Type of Date", function (){
-        var dateUtil = Bahmni.Common.Util.DateUtil;
         var attributeType = {
                 "uuid" : "uuid1",
                 "name" : "Sample date attribute",
@@ -37,8 +37,7 @@ describe("ensure that the directive program-attributes works properly", function
         expect(scope.getValueForAttributeType(attributeType) === Bahmni.Common.Util.DateUtil.formatDateWithoutTime("2016-01-13T00:00:00.000+0000")).toBeTruthy();
     });
 
-    it("Get the value for an Attribute Type", function (){
-        var dateUtil = Bahmni.Common.Util.DateUtil;
+    it("Get the value for an Attribute Type of Regex", function (){
         var attributeType = {
             "uuid" : "uuid2",
             "description" : "Sample regex attribute",
@@ -47,6 +46,17 @@ describe("ensure that the directive program-attributes works properly", function
         };
 
         expect(scope.getValueForAttributeType(attributeType) === "123").toBeTruthy();
+    });
+
+    it("Get the value as Short Name of Answer selected for an Attribute Type of CodedConcept", function (){
+        var attributeType = {
+            "uuid" : "uuid3",
+            "description" : "Sample concept attribute",
+            "name" : "Sample concept attribute",
+            "format" : "org.bahmni.module.bahmnicore.customdatatype.datatype.CodedConceptDatatype"
+        };
+
+        expect(scope.getValueForAttributeType(attributeType)).toBe("UneducatedShort");
     });
 
     var program = {
@@ -82,6 +92,29 @@ describe("ensure that the directive program-attributes works properly", function
                 "attributeType" : {
                     "uuid" : "uuid1"
                 }
+            },
+            {
+                "uuid": "12cac096-ac84-419f-88c3-f140a3c13d99",
+                "name": "Sample concept attribute",
+                "value": {
+                    "uuid": "c2107f30-3f10-11e4-adec-0800271c1b75",
+                    "display": "UneducatedFull",
+                    "name": {
+                        "conceptNameType": "FULLY_SPECIFIED",
+                        "display": "UneducatedFull"
+                    },
+                    "names": [
+                        {
+                            "display": "UneducatedFull"
+                        },
+                        {
+                            "display": "UneducatedShort"
+                        }
+                    ]
+                },
+                "attributeType" : {
+                    "uuid" : "uuid3"
+                }
             }
         ],
     };
@@ -98,6 +131,12 @@ describe("ensure that the directive program-attributes works properly", function
             "description" : "Sample regex attribute",
             "name" : "Sample regex attribute",
             "format" : "org.openmrs.customdatatype.datatype.RegexValidationDatatype"
+        },
+        {
+            "uuid" : "uuid3",
+            "description" : "Sample concept attribute",
+            "name" : "Sample concept attribute",
+            "format" : "org.bahmni.module.bahmnicore.customdatatype.datatype.CodedConceptDatatype"
         }
     ];
 

@@ -14,7 +14,7 @@
                     <span class="program-attribute-tilte">
                         <strong>{{attribute.attributeType.description || attribute.attributeType.display}}</strong> :
                     </span>
-                    <span class="program-attribute-value">{{attribute.value | formatOnlyNonMillisecondDate}} </span>
+                    <span class="program-attribute-value">{{getAttributeValue(attribute)}}</span>
                 </div>
                 <div class="program-attribute" ng-if="program.location">
                     <strong>{{'PROGRAM_DISPLAY_CONTROL_FACILITY_OF_ENROLLMENT_KEY' | translate}}</strong> : {{program.location}}
@@ -67,7 +67,7 @@
                 <div class="program-attributes">
                     <div class="program-attribute" ng-repeat="attribute in program.attributes">
                         <span>
-                            <strong>{{attribute.attributeType.description || attribute.attributeType.display}}</strong> : {{attribute.value | formatOnlyNonMillisecondDate}}
+                            <strong>{{attribute.attributeType.description || attribute.attributeType.display}}</strong> : {{getAttributeValue(attribute)}}
                         </span>
                     </div>
                     <div class="program-attribute" ng-if="program.location">

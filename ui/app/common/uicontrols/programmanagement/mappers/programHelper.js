@@ -80,11 +80,20 @@ angular.module('bahmni.common.uicontrols.programmanagment')
                         },
                         value: ""
                     };
-
+                    attr.attributeType.format = configAttr.format
                     attrsToBeDisplayed.push(attr);
                 });
 
                 program.attributes = attrsToBeDisplayed;
+            });
+        }
+        else {
+            patientPrograms.forEach(function (program) {
+               program.attributes.forEach(function (attribute) {
+                   attribute.attributeType = _.find(programAttributeTypes, function (attributeType) {
+                       return attribute.attributeType.uuid == attributeType.uuid;
+                   });
+               });
             });
         }
         return patientPrograms;
