@@ -11,11 +11,6 @@ angular.module('bahmni.clinical')
                 $rootScope.$broadcast("event:removeDrugOrder", index);
             };
 
-            $scope.toggleShowAdditionalInstructions = function (treatment) {
-                treatment.showAdditionalInstructions = !treatment.showAdditionalInstructions;
-            };
-
-
             var defaultBulkDuration = function() {
                 return {
                     bulkDurationUnit : $scope.treatmentConfig.durationUnits ? $scope.treatmentConfig.durationUnits[0].name : ""

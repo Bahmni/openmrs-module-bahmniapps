@@ -40,13 +40,11 @@
                             confirm-message="{{ 'REMOVE_CONFIRMATION_KEY' | translate }}"
                             ng-disabled="showBulkChangeToggle"><i class="fa fa-remove"></i></button>
                     <button class="toggle" ng-class="{'has-notes': newTreatment.additionalInstructions}"
-                            ng-click="toggleShowAdditionalInstructions(newTreatment)"
-                            ng-hide="newTreatment.showAdditionalInstructions" ng-disabled="showBulkChangeToggle"><i
-                            class="fa fa-plus-circle"></i></button>
-                    <button class="toggle" ng-class="{'has-notes': newTreatment.additionalInstructions}"
-                            ng-click="toggleShowAdditionalInstructions(newTreatment)"
-                            ng-show="newTreatment.showAdditionalInstructions" ng-disabled="showBulkChangeToggle"><i
-                            class="fa fa-minus-circle"></i></button>
+                            toggle="newTreatment.showAdditionalInstructions"
+                             ng-disabled="showBulkChangeToggle">
+                        <i class="fa fa-minus-circle" ng-show="newTreatment.showAdditionalInstructions"></i>
+                        <i class="fa fa-plus-circle" ng-hide="newTreatment.showAdditionalInstructions"></i>
+                    </button>
                 </div>
             </div>
             <div class="start-date fr">
