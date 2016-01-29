@@ -205,7 +205,7 @@
                 }
                 .variable-frequency{
                     .dose-cell{
-                        margin-left: 88px;
+                        margin-left: 0px;
                     }
                 }
                 h2.section-title{
@@ -279,6 +279,8 @@
                     input[type="number"] {
                         min-width: 55px;
                         width: 55px;
+                        padding: 4px 0px 4px 8px !important;
+                        text-align: center;
                     }
                 }
             }
@@ -290,6 +292,14 @@
                 border-bottom: 1px solid #ccc;
                 padding: 20px 0 5px;
                 margin: 0 0 10px;
+            }
+            #SOS{
+                margin-right: 5px;
+                line-height: .9em;
+                margin-top: 4px;
+                @media screen and (max-width: 1024px) {
+                    line-height: 1.3em;
+                }
             }
         }
     }
