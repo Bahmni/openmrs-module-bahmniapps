@@ -8,7 +8,7 @@
                         <i class="fa fa-caret-down" ng-show="patientProgram.isOpen"></i>
                         {{patientProgram.display}}
                     </td>
-                    <td class="programState"><strong  ng-show="getCurrentStateDisplayName(patientProgram)">{{'PROGRAM_MANAGEMENT_LABEL_PROGRAM_STATE' | translate}} : </strong>{{getCurrentStateDisplayName(patientProgram)}}</td>
+                    <td class="programState"><strong ng-show="getCurrentStateDisplayName(patientProgram)">{{'PROGRAM_MANAGEMENT_LABEL_PROGRAM_STATE' | translate}} : </strong>{{getCurrentStateDisplayName(patientProgram)}}</td>
                     <td class="programDate"><strong>{{'PROGRAM_MANAGEMENT_START_DATE_KEY' | translate}} : </strong>{{patientProgram.dateEnrolled | bahmniDate}}
                         <i class="fa fa-pencil-square-o fr" ng-click="toggleEdit(patientProgram)"></i>
                     </td>

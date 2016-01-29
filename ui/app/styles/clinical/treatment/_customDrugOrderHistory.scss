@@ -12,6 +12,7 @@
       }
       &.medicationDrugNotes{
         border-top: 2px solid #EFF8FF;
+        background: #EFF8FF;
         td{
           text-align: right;
           .footer-note{
@@ -20,7 +21,10 @@
         }
       }
       &.formStopReason{
-        td{ padding: 0px 5px 7px; }
+        td{
+          padding: 0px 5px 7px;
+          font-size: 12px;
+        }
         .form-field .field-attribute label{
           margin-top: 3px !important;
           @media (max-width: 1024px) {
@@ -30,6 +34,16 @@
         .form-field .field-value {
           input[type="date"], select, textarea{
             margin-top: 0 !important;
+          }
+          input[type="date"]{
+            width: 120px;
+          }
+          select{
+            width: 140px;
+            min-width: 140px;
+          }
+          textarea{
+            width: 490px !important;
           }
           @media (max-width: 1024px) {
             textarea{

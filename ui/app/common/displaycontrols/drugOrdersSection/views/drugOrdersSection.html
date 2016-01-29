@@ -58,7 +58,7 @@
             </td>
         </tr>
         <tr ng-if="drugOrder.showAdditionalInstructions" class="medicationDrugNotes">
-            <td colspan="48" class="form drug-stop-container">
+            <td colspan="{{columns.length + 1}}" class="form drug-stop-container">
                 <div ng-show="drugOrder.showAdditionalInstructions" class="notes inline-notes">
                     {{::drugOrder.additionalInstructions}}
                     <div class="footer-note fr">
@@ -73,7 +73,7 @@
             </td>
         </tr>
         <tr ng-if="drugOrder.isMarkedForDiscontinue" ng-class="{'formStopReason' : drugOrder.isMarkedForDiscontinue}">
-            <td colspan="48" class="form drug-stop-container">
+            <td colspan="{{columns.length + 1}}" class="form drug-stop-container">
                 <article class="form-field">
                     <div class="field-attribute stop-date-label">
                         <label class="control-label">Stop Date</label>
