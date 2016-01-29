@@ -35,7 +35,7 @@ Bahmni.Common.Domain.AttributeFormatter = (function () {
 
     var isAttributeChanged = function(attribute) {
         return attribute.value || attribute.uuid;
-    }
+    };
 
     var setAttributeValue = function setAttributeValue(attributeType, attr, value) {
         if (value === "" || value === null || value === undefined) {
@@ -55,7 +55,7 @@ Bahmni.Common.Domain.AttributeFormatter = (function () {
         else {
             attr.value = value.toString();
         }
-    }
+    };
 
     return AttributeFormatter;
 })();
