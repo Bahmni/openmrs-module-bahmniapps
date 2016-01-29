@@ -2,7 +2,7 @@
 
 describe("Forms Table display control", function () {
     var element, scope, $compile, mockBackend, conceptSetService, visitFormService, q, spinner;
-    
+
     beforeEach(module('ngHtml2JsPreprocessor'));
     beforeEach(module('bahmni.common.patient'));
     beforeEach(module('bahmni.common.uiHelper'));
@@ -36,7 +36,7 @@ describe("Forms Table display control", function () {
         scope = $rootScope;
         $compile = _$compile_;
         q = $q;
-        scope.patient = {uuid :'123'};
+        scope.patient = {uuid: '123'};
         scope.section = {dashboardParams: {maximumNoOfVisits: 10}};
         mockBackend = $httpBackend;
         mockBackend.expectGET('../common/displaycontrols/forms/views/formsTable.html').respond("<div>dummy</div>");
@@ -65,27 +65,31 @@ describe("Forms Table display control", function () {
     describe("Initialization", function () {
 
         it("should get all obs templates to display for particular patient, on dashboard.", function () {
-            var allObsTemplateData = {"data": {"results": [{"display":"Baseline Template"},{"display":"Medication log Template"},{"display":"Followup Template"},{"display":"Outcome End of Treatment Template"}]}};
-            var formDataObj = {"data": {results: [
-                {
-                    "uuid": "2625f662-a807-4682-844a-ccff002e669d",
-                    "concept": {
-                        "uuid": "288b0183-2c6a-4496-b038-5ea311dd3934",
-                        "display": "Medication log Template"
-                    },
-                    "display": "Medication log Template: 2015-11-01, Not defined",
-                    "obsDatetime": "2015-12-18T16:26:31.000+0000"
-                },
-                {
-                    "uuid": "ace25383-0baf-4c52-96bd-224d8caca00e",
-                    "concept": {
-                        "uuid": "bb80d45d-e4c5-4ce0-bb7c-0a34d2635ea5",
-                        "display": "Outcome End of Treatment Template"
-                    },
-                    "display": "Outcome End of Treatment Template: 2015-11-17",
-                    "obsDatetime": "2015-11-18T16:26:30.000+0000"
+            var allObsTemplateData = {"data": {"results": [{"display": "Baseline Template"}, {"display": "Medication log Template"}, {"display": "Followup Template"}, {"display": "Outcome End of Treatment Template"}]}};
+            var formDataObj = {
+                "data": {
+                    results: [
+                        {
+                            "uuid": "2625f662-a807-4682-844a-ccff002e669d",
+                            "concept": {
+                                "uuid": "288b0183-2c6a-4496-b038-5ea311dd3934",
+                                "display": "Medication log Template"
+                            },
+                            "display": "Medication log Template: 2015-11-01, Not defined",
+                            "obsDatetime": "2015-12-18T16:26:31.000+0000"
+                        },
+                        {
+                            "uuid": "ace25383-0baf-4c52-96bd-224d8caca00e",
+                            "concept": {
+                                "uuid": "bb80d45d-e4c5-4ce0-bb7c-0a34d2635ea5",
+                                "display": "Outcome End of Treatment Template"
+                            },
+                            "display": "Outcome End of Treatment Template: 2015-11-17",
+                            "obsDatetime": "2015-11-18T16:26:30.000+0000"
+                        }
+                    ]
                 }
-            ]}};
+            };
 
             mockConceptSetService(allObsTemplateData);
             mockVisitFormService(formDataObj);
@@ -101,40 +105,44 @@ describe("Forms Table display control", function () {
         });
 
         it("should get only latest obs templates to display for particular patient.", function () {
-            var allObsTemplateData = {"data": {"results": [{"display":"Baseline Template"},{"display":"Medication log Template"},{"display":"Followup Template"},{"display":"Outcome End of Treatment Template"}]}};
-            var formDataObj = {"data": {results: [
-                {
-                    "uuid": "2625f662-a807-4682-844a-ccff002e669d",
-                    "concept": {
-                        "uuid": "288b0183-2c6a-4496-b038-5ea311dd3934",
-                        "displayString": "Medication log Template"
-                    },
-                    "display": "Medication log Template: 2015-11-01, Not defined",
-                    "obsDatetime": "2015-10-18T16:26:31.000+0000"
-                },
-                {
-                    "uuid": "2625f662-a807-4682-844a-ccff002e6111",
-                    "concept": {
-                        "uuid": "288b0183-2c6a-4496-b038-5ea311dd3934",
-                        "displayString": "Medication log Template"
-                    },
-                    "display": "Medication log Template: 2015-11-01, Not defined",
-                    "obsDatetime": "2015-11-18T16:26:31.000+0000"
-                },
-                {
-                    "uuid": "ace25383-0baf-4c52-96bd-224d8caca00e",
-                    "concept": {
-                        "uuid": "bb80d45d-e4c5-4ce0-bb7c-0a34d2635ea5",
-                        "displayString": "Outcome End of Treatment Template"
-                    },
-                    "display": "Outcome End of Treatment Template: 2015-11-17",
-                    "obsDatetime": "2015-11-18T16:26:30.000+0000"
+            var allObsTemplateData = {"data": {"results": [{"display": "Baseline Template"}, {"display": "Medication log Template"}, {"display": "Followup Template"}, {"display": "Outcome End of Treatment Template"}]}};
+            var formDataObj = {
+                "data": {
+                    results: [
+                        {
+                            "uuid": "2625f662-a807-4682-844a-ccff002e669d",
+                            "concept": {
+                                "uuid": "288b0183-2c6a-4496-b038-5ea311dd3934",
+                                "displayString": "Medication log Template"
+                            },
+                            "display": "Medication log Template: 2015-11-01, Not defined",
+                            "obsDatetime": "2015-10-18T16:26:31.000+0000"
+                        },
+                        {
+                            "uuid": "2625f662-a807-4682-844a-ccff002e6111",
+                            "concept": {
+                                "uuid": "288b0183-2c6a-4496-b038-5ea311dd3934",
+                                "displayString": "Medication log Template"
+                            },
+                            "display": "Medication log Template: 2015-11-01, Not defined",
+                            "obsDatetime": "2015-11-18T16:26:31.000+0000"
+                        },
+                        {
+                            "uuid": "ace25383-0baf-4c52-96bd-224d8caca00e",
+                            "concept": {
+                                "uuid": "bb80d45d-e4c5-4ce0-bb7c-0a34d2635ea5",
+                                "displayString": "Outcome End of Treatment Template"
+                            },
+                            "display": "Outcome End of Treatment Template: 2015-11-17",
+                            "obsDatetime": "2015-11-18T16:26:30.000+0000"
+                        }
+                    ]
                 }
-            ]}};
+            };
 
             var observation = {
                 "uuid": "2625f662-a807-4682-844a-ccff002e669d",
-                "encounterUuid":"encounterUuid",
+                "encounterUuid": "encounterUuid",
                 "concept": {
                     "uuid": "288b0183-2c6a-4496-b038-5ea311dd3934",
                     "displayString": "Medication log Template"
@@ -163,36 +171,40 @@ describe("Forms Table display control", function () {
         });
 
         it("should get all obs templates to display for particular patient, on allForms page.", function () {
-            var allObsTemplateData = {"data": {"results": [{"display":"Baseline Template"},{"display":"Medication log Template"},{"display":"Followup Template"},{"display":"Outcome End of Treatment Template"}]}};
-            var formDataObj = {"data": {results: [
-                {
-                    "uuid": "2625f662-a807-4682-844a-ccff002e669d",
-                    "concept": {
-                        "uuid": "288b0183-2c6a-4496-b038-5ea311dd3934",
-                        "displayString": "Medication log Template"
-                    },
-                    "display": "Medication log Template: 2015-11-01, Not defined",
-                    "obsDatetime": "2015-10-18T16:26:31.000+0000"
-                },
-                {
-                    "uuid": "2625f662-a807-4682-844a-ccff002e6111",
-                    "concept": {
-                        "uuid": "288b0183-2c6a-4496-b038-5ea311dd3934",
-                        "displayString": "Medication log Template"
-                    },
-                    "display": "Medication log Template: 2015-11-01, Not defined",
-                    "obsDatetime": "2015-11-18T16:26:31.000+0000"
-                },
-                {
-                    "uuid": "ace25383-0baf-4c52-96bd-224d8caca00e",
-                    "concept": {
-                        "uuid": "bb80d45d-e4c5-4ce0-bb7c-0a34d2635ea5",
-                        "displayString": "Outcome End of Treatment Template"
-                    },
-                    "display": "Outcome End of Treatment Template: 2015-11-17",
-                    "obsDatetime": "2015-11-18T16:26:30.000+0000"
+            var allObsTemplateData = {"data": {"results": [{"display": "Baseline Template"}, {"display": "Medication log Template"}, {"display": "Followup Template"}, {"display": "Outcome End of Treatment Template"}]}};
+            var formDataObj = {
+                "data": {
+                    results: [
+                        {
+                            "uuid": "2625f662-a807-4682-844a-ccff002e669d",
+                            "concept": {
+                                "uuid": "288b0183-2c6a-4496-b038-5ea311dd3934",
+                                "displayString": "Medication log Template"
+                            },
+                            "display": "Medication log Template: 2015-11-01, Not defined",
+                            "obsDatetime": "2015-10-18T16:26:31.000+0000"
+                        },
+                        {
+                            "uuid": "2625f662-a807-4682-844a-ccff002e6111",
+                            "concept": {
+                                "uuid": "288b0183-2c6a-4496-b038-5ea311dd3934",
+                                "displayString": "Medication log Template"
+                            },
+                            "display": "Medication log Template: 2015-11-01, Not defined",
+                            "obsDatetime": "2015-11-18T16:26:31.000+0000"
+                        },
+                        {
+                            "uuid": "ace25383-0baf-4c52-96bd-224d8caca00e",
+                            "concept": {
+                                "uuid": "bb80d45d-e4c5-4ce0-bb7c-0a34d2635ea5",
+                                "displayString": "Outcome End of Treatment Template"
+                            },
+                            "display": "Outcome End of Treatment Template: 2015-11-17",
+                            "obsDatetime": "2015-11-18T16:26:30.000+0000"
+                        }
+                    ]
                 }
-            ]}};
+            };
             var simpleHtml = '<forms-table section="section" patient="patient" is-on-dashboard="false"></forms-table>';
 
             mockConceptSetService(allObsTemplateData);
@@ -238,4 +250,200 @@ describe("Forms Table display control", function () {
             expect(compiledElementScope.shouldPromptBeforeClose).toBeTruthy();
         });
     });
+
+    describe("getEditObsData", function () {
+        it("should get observation information to edit", function () {
+            var allObsTemplateData = {"data": {"results": [{}]}};
+            var formDataObj = {"data": {results: []}};
+            var observation = {
+                "uuid": "2625f662-a807-4682-844a-ccff002e669d",
+                "encounterUuid": "encounterUuid",
+                "concept": {
+                    "uuid": "288b0183-2c6a-4496-b038-5ea311dd3934",
+                    "displayString": "Medication log Template"
+                },
+                "display": "Medication log Template: 2015-11-01, Not defined",
+                "obsDatetime": "2015-10-18T16:26:31.000+0000"
+            };
+
+
+            var simpleHtml = '<forms-table section="section" patient="patient" is-on-dashboard="false"></forms-table>';
+
+            mockConceptSetService(allObsTemplateData);
+            mockVisitFormService(formDataObj);
+
+            var element = $compile(simpleHtml)(scope);
+            scope.$digest();
+            var compiledElementScope = element.isolateScope();
+            scope.$digest();
+
+            expect(compiledElementScope).not.toBeUndefined();
+            expect(compiledElementScope.getEditObsData(observation).observation.encounterUuid).toEqual(observation.encounterUuid);
+            expect(compiledElementScope.getEditObsData(observation).conceptSetName).toEqual(observation.concept.displayString);
+            expect(compiledElementScope.getEditObsData(observation).conceptDisplayName).toEqual(observation.concept.displayString);
+        })
+    });
+
+    describe("getConfigToFetchDataAndShow", function () {
+        it("should get observation observation information to show", function () {
+            var allObsTemplateData = {"data": {"results": [{}]}};
+            var formDataObj = {"data": {results: []}};
+            var observation = {
+                "uuid": "2625f662-a807-4682-844a-ccff002e669d",
+                "encounterUuid": "encounterUuid",
+                "concept": {
+                    "uuid": "288b0183-2c6a-4496-b038-5ea311dd3934",
+                    "displayString": "Medication log Template"
+                },
+                "display": "Medication log Template: 2015-11-01, Not defined",
+                "obsDatetime": "2015-10-18T16:26:31.000+0000"
+            };
+
+
+            var simpleHtml = '<forms-table section="section" patient="patient" is-on-dashboard="false"></forms-table>';
+
+            mockConceptSetService(allObsTemplateData);
+            mockVisitFormService(formDataObj);
+
+            var element = $compile(simpleHtml)(scope);
+            scope.$digest();
+            var compiledElementScope = element.isolateScope();
+            scope.$digest();
+
+            expect(compiledElementScope).not.toBeUndefined();
+            expect(compiledElementScope.getConfigToFetchDataAndShow(observation).patient).toEqual(scope.patient);
+            expect(compiledElementScope.getConfigToFetchDataAndShow(observation).config.conceptNames).toEqual([observation.concept.displayString]);
+            expect(compiledElementScope.getConfigToFetchDataAndShow(observation).config.encounterUuid).toEqual(observation.encounterUuid);
+            expect(compiledElementScope.getConfigToFetchDataAndShow(observation).config.showGroupDateTime).toEqual(false);
+        })
+    });
+
+    describe("getDisplayName", function () {
+        it("should return displayString if there are no multiple names", function () {
+            var allObsTemplateData = {"data": {"results": [{}]}};
+            var formDataObj = {"data": {results: []}};
+            var observation = {
+                "uuid": "2625f662-a807-4682-844a-ccff002e669d",
+                "encounterUuid": "encounterUuid",
+                "concept": {
+                    "uuid": "288b0183-2c6a-4496-b038-5ea311dd3934",
+                    "displayString": "Medication log Template"
+                },
+                "display": "Medication log Template: 2015-11-01, Not defined",
+                "obsDatetime": "2015-10-18T16:26:31.000+0000"
+            };
+
+
+            var simpleHtml = '<forms-table section="section" patient="patient" is-on-dashboard="false"></forms-table>';
+
+            mockConceptSetService(allObsTemplateData);
+            mockVisitFormService(formDataObj);
+
+            var element = $compile(simpleHtml)(scope);
+            scope.$digest();
+            var compiledElementScope = element.isolateScope();
+            scope.$digest();
+
+            expect(compiledElementScope).not.toBeUndefined();
+            expect(compiledElementScope.getDisplayName(observation)).toEqual(observation.concept.displayString);
+        });
+
+        it("should return first name istance if there is only one name for concept.", function () {
+            var allObsTemplateData = {"data": {"results": [{}]}};
+            var formDataObj = {"data": {results: []}};
+            var observation = {
+                "uuid": "2625f662-a807-4682-844a-ccff002e669d",
+                "encounterUuid": "encounterUuid",
+                "concept": {
+                    "uuid": "288b0183-2c6a-4496-b038-5ea311dd3934",
+                    "displayString": "Medication log Template",
+                    "names": [
+                        {name: "Full Name of Medication log template", conceptNameType: "FULLY_SPECIFIED"}
+                    ]
+                },
+                "display": "Medication log Template: 2015-11-01, Not defined",
+                "obsDatetime": "2015-10-18T16:26:31.000+0000"
+            };
+
+
+            var simpleHtml = '<forms-table section="section" patient="patient" is-on-dashboard="false"></forms-table>';
+
+            mockConceptSetService(allObsTemplateData);
+            mockVisitFormService(formDataObj);
+
+            var element = $compile(simpleHtml)(scope);
+            scope.$digest();
+            var compiledElementScope = element.isolateScope();
+            scope.$digest();
+
+            expect(compiledElementScope).not.toBeUndefined();
+            expect(compiledElementScope.getDisplayName(observation)).toEqual(observation.concept.names[0].name);
+        });
+
+        it("should return short name if there are more than one name for concept.", function () {
+            var allObsTemplateData = {"data": {"results": [{}]}};
+            var formDataObj = {"data": {results: []}};
+            var observation = {
+                "uuid": "2625f662-a807-4682-844a-ccff002e669d",
+                "encounterUuid": "encounterUuid",
+                "concept": {
+                    "uuid": "288b0183-2c6a-4496-b038-5ea311dd3934",
+                    "displayString": "Medication log Template",
+                    "names": [
+                        {name: "Full Name of Medication log template", conceptNameType: "FULLY_SPECIFIED"},
+                        {name: "short Name of Medication log template", conceptNameType: "SHORT"}
+                    ]
+                },
+                "display": "Medication log Template: 2015-11-01, Not defined",
+                "obsDatetime": "2015-10-18T16:26:31.000+0000"
+            };
+
+
+            var simpleHtml = '<forms-table section="section" patient="patient" is-on-dashboard="false"></forms-table>';
+
+            mockConceptSetService(allObsTemplateData);
+            mockVisitFormService(formDataObj);
+
+            var element = $compile(simpleHtml)(scope);
+            scope.$digest();
+            var compiledElementScope = element.isolateScope();
+            scope.$digest();
+
+            expect(compiledElementScope).not.toBeUndefined();
+            expect(compiledElementScope.getDisplayName(observation)).toEqual(observation.concept.names[1].name);
+        });
+
+        it("should return displayString if there are more than one name for concept and no short name.", function () {
+            var allObsTemplateData = {"data": {"results": [{}]}};
+            var formDataObj = {"data": {results: []}};
+            var observation = {
+                "uuid": "2625f662-a807-4682-844a-ccff002e669d",
+                "encounterUuid": "encounterUuid",
+                "concept": {
+                    "uuid": "288b0183-2c6a-4496-b038-5ea311dd3934",
+                    "displayString": "Medication log Template",
+                    "names": [
+                        {name: "Full Name of Medication log template", conceptNameType: "FULLY_SPECIFIED"},
+                        {name: "short Name of Medication log template", conceptNameType: "SOME TYPE"}
+                    ]
+                },
+                "display": "Medication log Template: 2015-11-01, Not defined",
+                "obsDatetime": "2015-10-18T16:26:31.000+0000"
+            };
+
+
+            var simpleHtml = '<forms-table section="section" patient="patient" is-on-dashboard="false"></forms-table>';
+
+            mockConceptSetService(allObsTemplateData);
+            mockVisitFormService(formDataObj);
+
+            var element = $compile(simpleHtml)(scope);
+            scope.$digest();
+            var compiledElementScope = element.isolateScope();
+            scope.$digest();
+
+            expect(compiledElementScope).not.toBeUndefined();
+            expect(compiledElementScope.getDisplayName(observation)).toEqual(observation.concept.displayString);
+        })
+    })
 });

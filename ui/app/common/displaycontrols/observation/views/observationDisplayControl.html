@@ -1,12 +1,14 @@
 <div class="block " ng-class="{'hidden-print': noObsMessage}">
-    <h2 ng-if="!isClickable() && title" ng-class="{'section-title': !isFulfilmentDisplayControl, 'form-field': isFulfilmentDisplayControl}">{{title | translate}}</h2>
+    <h2 ng-if="!isClickable() && title"
+        ng-class="{'section-title': !isFulfilmentDisplayControl, 'form-field': isFulfilmentDisplayControl}">{{title |
+        translate}}</h2>
 
     <div ng-if="isClickable()" class="dashboard-observations-section">
-    <h2 ng-dialog="../common/displaycontrols/observation/views/allObservationDetails.html"
-        ng-dialog-controller="AllObservationDetailsController"
-        ng-dialog-data="{{dialogData}}"
-        ng-dialog-class="ngdialog-theme-default ng-dialog-all-details-page"
-        class="section-title has-link">
+        <h2 ng-dialog="../common/displaycontrols/observation/views/allObservationDetails.html"
+            ng-dialog-controller="AllObservationDetailsController"
+            ng-dialog-data="{{dialogData}}"
+            ng-dialog-class="ngdialog-theme-default ng-dialog-all-details-page"
+            class="section-title has-link">
             <span class="title-link"> {{section | titleTranslate}} </span>
             <i class="fa fa-external-link"></i>
         </h2>
@@ -28,8 +30,6 @@
                 </ul>-->
 
 
-
-
                 <ul bm-show="obsGroup.isOpen" class="print-observations visible-print">
                     <li ng-repeat="observation in obsGroup.value">
                         <ul>
@@ -47,7 +47,9 @@
             </li>
         </ul>
         <div ng-show="noObsMessage">
-            <div class="placeholder-text" ng-if="!message"><p translate="DISPLAY_CONTROL_ERROR_MESSAGE_KEY" translate-values="{displayControl : '{{title | translate}}'}"></p></div>
+            <div class="placeholder-text" ng-if="!message"><p translate="DISPLAY_CONTROL_ERROR_MESSAGE_KEY"
+                                                              translate-values="{displayControl : '{{title | translate}}'}"></p>
+            </div>
             <div class="placeholder-text" ng-if="message">{{message}}</div>
         </div>
     </section>

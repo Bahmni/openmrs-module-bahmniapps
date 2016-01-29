@@ -15,8 +15,7 @@ angular.module('bahmni.common.domain')
             if (visitUuid) {
                 params.visitUuid = visitUuid;
                 params.scope = scope;
-            }
-            else {
+            } else {
                 params.patientUuid = patientUuid;
                 params.numberOfVisits = numberOfVisits;
                 params.scope = scope;
@@ -25,6 +24,13 @@ angular.module('bahmni.common.domain')
             }
             return $http.get(Bahmni.Common.Constants.observationsUrl, {
                 params: params,
+                withCredentials: true
+            });
+        };
+
+        this.fetchForEncounter = function (encounterUuid, conceptNames) {
+            return $http.get(Bahmni.Common.Constants.observationsUrl, {
+                params: {encounterUuid: encounterUuid, concept: conceptNames},
                 withCredentials: true
             });
         };

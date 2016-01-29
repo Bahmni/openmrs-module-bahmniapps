@@ -2,7 +2,8 @@
     <h2 class="section-title has-link"
         ng-dialog="../common/displaycontrols/forms/views/allForms.html"
         ng-dialog-class="ngdialog-theme-default ng-dialog-all-details-page"
-        ng-dialog-controller="patientDashboardAllFormsController" ng-dialog-data="{{dialogData}}" ng-show="isOnDashboard">
+        ng-dialog-controller="patientDashboardAllFormsController" ng-dialog-data="{{dialogData}}"
+        ng-show="isOnDashboard">
         <span class="title-link"> {{section | titleTranslate}}</span>
         <i class="fa fa-external-link"></i>
     </h2>
@@ -13,15 +14,22 @@
                     <li ng-repeat="data in formData">
                         <span>{{data.concept.displayString}}</span>
                         <span class="fr formDataTime">{{data.obsDatetime | bahmniDateTime}}
-                                <span class="has-link fl formDataEdit"
-                                      ng-dialog="dashboard/views/dashboardSections/editObservationForm.html"
-                                      ng-dialog-class="ngdialog-theme-default ng-dialog-all-details-page"
-                                      ng-dialog-data="{{getEditObsData(data)}}"
-                                      ng-dialog-scope="this"
-                                      ng-dialog-controller="EditObservationFormController"
-                                      ng-dialog-pre-close-callback="directivePreCloseCallback">
-                               <i class="fa fa-pencil"></i>
-                            </span></span>
+                            <span class="has-link fl formDataEdit"
+                                  ng-dialog="../common/displaycontrols/forms/views/showObservationFormData.html"
+                                  ng-dialog-class="ngdialog-theme-default ng-dialog-all-details-page"
+                                  ng-dialog-data="{{getConfigToFetchDataAndShow(data)}}">
+                                <i class="fa fa-eye"></i>
+                            </span>
+                            <span class="has-link fl formDataEdit"
+                                  ng-dialog="dashboard/views/dashboardSections/editObservationForm.html"
+                                  ng-dialog-class="ngdialog-theme-default ng-dialog-all-details-page"
+                                  ng-dialog-data="{{getEditObsData(data)}}"
+                                  ng-dialog-scope="this"
+                                  ng-dialog-controller="EditObservationFormController"
+                                  ng-dialog-pre-close-callback="directivePreCloseCallback">
+                                <i class="fa fa-pencil"></i>
+                            </span>
+                        </span>
                     </li>
                 </ul>
             </div>
