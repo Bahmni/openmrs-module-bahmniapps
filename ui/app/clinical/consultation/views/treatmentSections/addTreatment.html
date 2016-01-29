@@ -1,12 +1,12 @@
 <form name="addForm" ng-class="{ 'show-invalid': formInvalid}"  ng-submit="add()" bm-form class="edit-drug-order-container">
     <article class="form-field">
         <div class="field-attribute">
-            <label>{{ ::'MEDICATION_DRUG_NAME_TITLE' | translate}}</label>
+            <label>{{ ::treatmentConfig.translate('drugName', 'MEDICATION_DRUG_NAME_TITLE') }} </label>
         </div>
         <div class="field-value">
             <select ng-if="treatmentConfig.isDropDown()" ng-options="item as item.drug.name for item in drugs"
                     ng-model="treatment.selectedItem" ng-change="selectFromDefaultDrugList()">
-                <option value="">Choose Drug</option>
+                <option value="">{{ ::treatmentConfig.translate('drugNamePlaceHolder', 'MEDICATION_DRUG_NAME_PLACEHOLDER') }} </option>
             </select>
             <div ng-if="treatmentConfig.isAutoComplete()">
                 <input id="drug-name" class="fl drug-name" type="text" bahmni-autocomplete focus-on="startNewDrugEntry"
@@ -41,7 +41,7 @@
             <section class="form-field-inline">
                 <article class="form-field">
                     <div class="field-attribute">
-                        <label class="dose-label">{{ ::'MEDICATION_LABEL_DOSE' | translate }} </label>
+                        <label class="dose-label">{{ ::treatmentConfig.translate('dose', 'MEDICATION_LABEL_DOSE') }} </label>
                         <input id="uniform-dose" class="dose fl" integer="true" ng-focus="treatment.setFrequencyType('uniform')"
                                type="number" min="0" step="any" placeholder="{{ treatmentConfig.getDosePlaceHolder() | translate}}"
                                ng-model="treatment.uniformDosingType.dose"
@@ -59,36 +59,36 @@
                         </div>
                     </div>
                     <div class="field-value">
-                        <span class="fl unit-text">{{ ::'MEDICATION_LABEL_UNITS' | translate }}</span>
+                        <span class="fl unit-text">{{ ::treatmentConfig.translate('units', 'MEDICATION_LABEL_UNITS') }} </span>
                         <select id="uniform-dose-unit" class="form-field freq-choose-units" ng-model="treatment.uniformDosingType.doseUnits"
                                 ng-options="item.name as item.name for item in treatmentConfig.getDoseUnits()" ng-required="!treatment.validate()"
                                 ng-class="{'noFractionOptions' : !isDoseFractionsAvailable()}">
-                            <option value="">{{ ::'MEDICATION_DOSE_UNIT_PLACEHOLDER' | translate }}</option>
+                            <option value="">{{ ::treatmentConfig.translate('doseUnitsPlaceHolder', 'MEDICATION_DOSE_UNIT_PLACEHOLDER') }} </option>
                         </select>
                     </div>
                 </article>
             </section>
             <article class="form-field clearfix frequencyFields">
                 <div class="field-attribute">
-                    <label>{{ :: "MEDICATION_LABEL_FREQUENCY" | translate }}</label>
+                    <label>{{ ::treatmentConfig.translate('frequency', 'MEDICATION_LABEL_FREQUENCY') }} </label>
                 </div>
                 <div class="field-value">
                     <select id="frequency" class="fl frequency" ng-model="treatment.uniformDosingType.frequency"
                             ng-change="treatment.calculateDurationUnit(treatmentConfig.durationUnits)"
                             ng-options="item.name as item.name for item in treatmentConfig.getFrequencies()"
                             ng-disabled="!treatment.isUniformDosingType()" ng-required="!treatment.validate()">
-                        <option value="">{{ ::'MEDICATION_FREQUENCY_UNIT_PLACEHOLDER' | translate }}</option>
+                        <option value="">{{ ::treatmentConfig.translate('frequencyUnitsPlaceHolder', 'MEDICATION_FREQUENCY_UNIT_PLACEHOLDER') }} </option>
                     </select>
                 </div>
             </article>
             <article class="form-field clearfix">
                 <div class="field-attribute">
-                    <label>{{ :: "MEDICATION_LABEL_ROUTE" | translate }}</label>
+                    <label>{{ ::treatmentConfig.translate('route', 'MEDICATION_LABEL_ROUTE') }} </label>
                 </div>
                 <div class="field-value">
                     <select id="route" class="route" ng-model="treatment.route"
                             ng-options="item.name as item.name for item in treatmentConfig.getRoutes()">
-                        <option value="">{{ ::'MEDICATION_ROUTE_PLACEHOLDER' | translate }}</option>
+                        <option value="">{{ ::treatmentConfig.translate('routePlaceHolder', 'MEDICATION_ROUTE_PLACEHOLDER') }} </option>
                     </select>
                 </div>
             </article>
@@ -106,21 +106,21 @@
                            ng-model="treatment.variableDosingType.eveningDose" integer="true"
                            ng-required="!treatment.validate()" placeholder="&mdash;"/>
                 </div>
-                <span class="fl unit-text">{{ ::'MEDICATION_LABEL_UNITS' | translate }}</span>
+                <span class="fl unit-text">{{ ::treatmentConfig.translate('units', 'MEDICATION_LABEL_UNITS') }} </span>
                 <select id="variable-dose-unit" class="fl freq-dose-units" ng-model="treatment.variableDosingType.doseUnits"
                         ng-options="item.name as item.name for item in treatmentConfig.getDoseUnits()"
                         ng-required="!treatment.validate()">
-                    <option value="">{{ ::'MEDICATION_DOSE_UNIT_PLACEHOLDER' | translate }}</option>
+                    <option value="">{{ ::treatmentConfig.translate('doseUnitsPlaceHolder', 'MEDICATION_DOSE_UNIT_PLACEHOLDER') }} </option>
                 </select>
             </section>
             <article class="form-field clearfix">
                 <div class="field-attribute">
-                    <label>{{ :: "MEDICATION_LABEL_ROUTE" | translate }}</label>
+                    <label>{{ ::treatmentConfig.translate('route', 'MEDICATION_LABEL_ROUTE') }} </label>
                 </div>
                 <div class="field-value">
                     <select id="route" class="route" ng-model="treatment.route"
                             ng-options="item.name as item.name for item in treatmentConfig.getRoutes()">
-                        <option value="">Choose Route</option>
+                        <option value="">{{ ::treatmentConfig.translate('routePlaceHolder', 'MEDICATION_ROUTE_PLACEHOLDER') }} </option>
                     </select>
                 </div>
             </article>
@@ -128,7 +128,7 @@
     </div>
     <article class="form-field">
         <div class="field-attribute">
-            <label class="start-date-label fl">{{ :: "MEDICATION_LABEL_START_DATE" | translate }}</label>
+            <label class="start-date-label fl">{{ ::treatmentConfig.translate('startDate', 'MEDICATION_LABEL_START_DATE') }} </label>
         </div>
         <div class="field-value">
             <input id="start-date" date-converter class="start-date fl" type="date"
@@ -137,7 +137,7 @@
     </article>
     <article class="form-field clearfix" ng-hide="treatmentConfig.isHiddenField('duration')">
         <div class="field-attribute">
-            <label class="duration-label">{{ :: "MEDICATION_LABEL_DURATION" | translate }}</label>
+            <label class="duration-label">{{ ::treatmentConfig.translate('duration', 'MEDICATION_LABEL_DURATION') }} </label>
         </div>
         <div class="field-value">
             <div class="duration-widget fl">
@@ -145,7 +145,7 @@
                        type="number" min="1"
                        ng-model="treatment.duration" ng-change="treatment.calculateDurationInDays()"
                        ng-required="treatment.isDurationRequired" ng-pattern="/^[0-9]+$/"/>
-                <span class="fl unit-text">{{ ::'MEDICATION_LABEL_UNITS' | translate }}</span>
+                <span class="fl unit-text">{{ ::treatmentConfig.translate('units', 'MEDICATION_LABEL_UNITS') }} </span>
                 <select  ng-hide="treatmentConfig.isHiddenField('durationUnits')" id="duration-unit"
                          class="fl duration-unit" ng-model="treatment.durationUnit"
                          ng-options="item.name as item.name for item in treatmentConfig.getDurationUnits()"
@@ -157,50 +157,50 @@
     <article class="form-field" ng-hide="treatmentConfig.isHiddenField('quantity')">
         <div ng-show="!treatment.simpleDrugForm" class="quantity-widget fl">
             <div class="field-attribute">
-                <label class="start-date-label fl">{{ :: "MEDICATION_LABEL_TOTAL_QUANTITY" | translate }}</label>
+                <label class="start-date-label fl">{{ ::treatmentConfig.translate('quantity', 'MEDICATION_LABEL_TOTAL_QUANTITY') }} </label>
             </div>
             <div class="field-value">
                 <input id="quantity" class="quantity fl" type="number" min="0.1" step="any"
                        ng-model="treatment.quantity" ng-change="treatment.setQuantityEnteredManually()"
                        ng-required="treatment.isDurationRequired"/>
-                <span class="fl unit-text">{{ ::'MEDICATION_LABEL_UNITS' | translate }}</span>
+                <span class="fl unit-text">{{ ::treatmentConfig.translate('units', 'MEDICATION_LABEL_UNITS') }} </span>
                 <select ng-hide="treatmentConfig.isHiddenField('quantityUnits')" id="total-quantity-unit"
                         class="fl" ng-model="treatment.quantityUnit" ng-change="treatment.setQuantityUnitEnteredManually()"
                         ng-options="item.name as item.name for item in treatmentConfig.getDoseUnits()"
                         ng-required="!treatment.validate()">
-                    <option value="">Choose Unit</option>
+                    <option value="">{{ ::treatmentConfig.translate('quantityUnitsPlaceHolder', 'MEDICATION_CHOOSE_QUANTITY_UNIT_PLACEHOLDER') }} </option>
                 </select>
             </div>
         </div>
     </article>
-    <h3 class="orderSet-additional-info" ng-show="treatmentConfig.showAdditionalInformation()">Additional Information</h3>
+    <h3 class="orderSet-additional-info" ng-show="treatmentConfig.showAdditionalInformation()">{{ ::treatmentConfig.translate('additionalInformation', 'MEDICATION_ADDITIONAL_INFORMATION_LABEL') }} </h3>
     <article class="form-field" ng-hide="treatmentConfig.isHiddenField('sos')">
         <div class="field-attribute">
-            <label  class="start-date-label fl"> {{ ::"MEDICATION_LABEL_AS_NEEDED" | translate }} </label>
+            <label  class="start-date-label fl">{{ ::treatmentConfig.translate('asNeeded', 'MEDICATION_LABEL_AS_NEEDED') }} </label>
         </div>
         <div class="field-value">
             <button id="SOS" tabindex="-1" type="button" class="grid-row-element fl"
                     ng-class="{active: treatment.asNeeded}" ng-click="toggleAsNeeded(treatment)"
-                    accesskey="{{ ::'MEDICATION_AS_NEEDED_ACCESS_KEY' | translate }}">
+                    accesskey="{{ ::treatmentConfig.translate('asNeededButtonAccessKey', 'MEDICATION_AS_NEEDED_ACCESS_KEY') }} ">
                 <i class="fa fa-ok"></i>
-                <div ng-bind-html="::'MEDICATION_AS_NEEDED' | translate"></div>
+                <div ng-bind-html="::treatmentConfig.translate('asNeededButton', 'MEDICATION_AS_NEEDED')"></div>
             </button>
         </div>
     </article>
     <article class="form-field" ng-hide="treatmentConfig.isHiddenField('dosingInstructions')">
         <div class="field-attribute">
-            <label  class="start-date-label fl"> {{ ::"MEDICATION_LABEL_INSTRUCTIONS" | translate }} </label>
+            <label  class="start-date-label fl">{{::treatmentConfig.translate('dosingInstructions', 'MEDICATION_LABEL_DOSING_INSTRUCTIONS')}}</label>
         </div>
         <div class="field-value">
             <select id="instructions" class="instruction" ng-model="treatment.instructions"
                     ng-options="item.name as item.name for item in treatmentConfig.getDosingInstructions()">
-                <option value=""> {{ ::"MEDICATION_INSTRUCTIONS_PLACEHOLDER" | translate }} </option>
+                <option value="">{{::treatmentConfig.translate('dosingInstructionsPlaceHolder', 'MEDICATION_DOSING_INSTRUCTIONS_PLACEHOLDER')}}</option>
             </select>
         </div>
     </article>
     <article class="form-field" ng-hide="treatmentConfig.isHiddenField('additionalInstructions')">
         <div class="field-attribute">
-            <label  class="start-date-label fl"> {{ ::"MEDICATION_LABEL_ADDITIONAL_INSTRUCTIONS" | translate }} </label>
+            <label  class="start-date-label fl">{{::treatmentConfig.translate('additionalInstructions', 'MEDICATION_LABEL_ADDITIONAL_INSTRUCTIONS')}}</label>
         </div>
         <div class="field-value">
             <textarea id="additional-instructions" rows="1" msd-elastic class="drug-order-notes"
