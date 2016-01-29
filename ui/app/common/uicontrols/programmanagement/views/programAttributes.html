@@ -2,7 +2,7 @@
     <div class="field-attribute">
         <label>{{attributeType.description}} <span class="asterick" ng-show="attributeType.required">*</span> : </label>
     </div>
-    <div class="field-value">
+    <div class="field-value fieldNonFormValue">
         {{getValueForAttributeType(attributeType)}}
     </div>
 </div>
@@ -10,7 +10,7 @@
     <article class="form-field" ng-repeat="attributeType in programAttributeTypes">
         <attribute-types target-model="program.patientProgramAttributes" attribute="attributeType"></attribute-types>
     </article>
-    <div class="clearfix">
-        <input type="submit" value="Save" class="fr"/>
+    <div class="button-group-wrapper clearfix">
+        <input type="submit" value="Save"/>
     </div>
 </div>

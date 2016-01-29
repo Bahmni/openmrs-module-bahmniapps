@@ -1,13 +1,13 @@
 <div class="program-enrollment-container">
     <div class="select-program-container form">
         <section class="block dashboard-section">
-            <h2 class="section-title" toggle="allPrograms.showProgramSection">
+            <h2 class="section-title program-title" toggle="allPrograms.showProgramSection">
                 <i class="fa fa-caret-right" ng-show="!allPrograms.showProgramSection"></i>
                 <i class="fa fa-caret-down" ng-show="allPrograms.showProgramSection"></i>
                 {{'PROGRAM_MANAGEMENT_SELECT_PROGRAM_KEY' | translate}}
             </h2>
 
-            <form class="select-program-option" ng-submit="enrollPatient()" ng-show="allPrograms.showProgramSection">
+            <form class="select-program-option  clearfix" ng-submit="enrollPatient()" ng-show="allPrograms.showProgramSection">
                 <label class="start-date-label">
                    <span> {{'PROGRAM_MANAGEMENT_LABEL_PROGRAM' | translate}} </span>
                     <select ng-model="programSelected" ng-options="program.name for program in allPrograms" data-ng-change="setWorkflowStates(programSelected)">
@@ -22,7 +22,7 @@
                 </label>
                 <label class="start-date-label"><strong>{{'PROGRAM_MANAGEMENT_START_DATE_KEY' | translate}}</strong> <span class="asterick">*</span> <input type="date" max="{{today}}" ng-model="programEnrollmentDate" ng-required="true"></label>
 
-                <a class="back-btn dashboard-link fr newProgramEnrollmentDashboard" id="dashboard-link"
+                <a class="back-btn dashboard-link fr" id="dashboard-link"
                    ui-sref="patient.dashboard.show({patientUuid: patient.uuid,conceptSetGroupName: 'observations'})">
                     <img ng-src="{{patient.image}}" onerror="this.onerror=null;this.src='../images/blank-user.gif';">
                         <span class="patient-info">
@@ -30,13 +30,15 @@
                          <span class="patient-id">{{patient.identifier}}</span>
                         </span>
                 </a>
-                <section ng-hide="programSelected == null" class="programAttributeFields">
+                <section ng-hide="programSelected == null" class="programAttributeFields clearfix">
                     <h2 class="programAttribute-title" ng-if="programAttributeTypes.length>0">{{'PROGRAM_MANAGEMENT_PROGRAM_ATTRIBUTES_KEY' | translate}}</h2>
 
                     <attribute-types target-model="patientProgramAttributes" attribute="attribute"
                                      ng-repeat="attribute in programAttributeTypes"
                                      class="form-field clearfix"></attribute-types>
-                    <input type="submit" value="{{'PROGRAM_MANAGEMENT_ENROLL_KEY' | translate}}" class="fr"/>
+                    <div class="button-group-wrapper clearfix">
+                        <input type="submit" value="{{'PROGRAM_MANAGEMENT_ENROLL_KEY' | translate}}"/>
+                    </div>
                 </section>
             </form>
         </section>
@@ -44,7 +46,7 @@
 
     <div class="active-program-container" id="activePrograms" ng-show="hasPatientEnrolledToSomePrograms()">
         <section class="block dashboard-section programAttributeFields" >
-            <h2 class="section-title" toggle="activePrograms.showProgramSection">
+            <h2 class="section-title program-title" toggle="activePrograms.showProgramSection">
                 <i class="fa fa-caret-right" ng-show="!activePrograms.showProgramSection"></i>
                 <i class="fa fa-caret-down" ng-show="activePrograms.showProgramSection"></i>
                 {{'PROGRAM_MANAGEMENT_ACTIVE_PROGRAM_KEY' | translate}}
@@ -59,7 +61,7 @@
 
     <div class="inactive-program-container" ng-show="hasPatientAnyPastPrograms()">
         <section class="block dashboard-section programAttributeFields">
-            <h2 class="section-title" toggle="endedPrograms.showProgramSection">
+            <h2 class="section-title program-title" toggle="endedPrograms.showProgramSection">
                 <i class="fa fa-caret-right" ng-show="!endedPrograms.showProgramSection"></i>
                 <i class="fa fa-caret-down" ng-show="endedPrograms.showProgramSection"></i>
                 {{'PROGRAM_MANAGEMENT_PAST_PROGRAM_KEY' | translate}}

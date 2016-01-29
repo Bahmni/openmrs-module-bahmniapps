@@ -1,81 +1,102 @@
-.program-enrollment-container {
-  .placholder-text {
-    padding: 10px;
-  }
-  .program-title {
-    text-decoration: none;
-    font-size: 16px;
-    color: #2b95ff;
-  }
-  .program-action-container{
-    margin-top: 4px;
-    width: 45%;
+.program-enrollment-container{
+  .select-program-option {
     padding: 10px 15px;
-    display: inline-block;
-    background-color: #F3F2F2;
-    margin-right: 10px;
-    select{
-      //height: 33px;
-      float: left;
-      max-width: 197px;
+  }
+  h2.program-title{
+    cursor: pointer;
+  }
+  .programAttributeFields {
+    clear: both;
+    position: relative;
+    h2.programAttribute-title {
+      color: #000;
+      font-size: 13px;
+      clear: both;
+      border-bottom: 1px solid #ccc;
+      padding: 5px 0;
+      font-family: openSansBold;;
     }
-    label{
-      float: left;
-      padding-right: 9px;
-      margin-top: 10px;
+    .pastProgramNoState{
+      margin-bottom: 10px;
     }
-    .btn-grp{
-      button{
-        padding: 6px 15px;
+  }
+  label{
+    float: left;
+    padding: 10px 10px 0 0;
+    &.start-date-label {
+      display: inline-block;
+      padding-top: 0;
+      span,strong{
+        padding:8px 10px 0 0;
+        display: inline-block;
+        float: left;
+        .asterick{
+          float: none;
+        }
       }
     }
   }
-  input[type="checkbox"], input[type="radio"]{
-    width: auto !important;
-    margin: 8px 5px 0 0;
+  input{
+    float: left;
+    max-width: 197px;
+    box-sizing: border-box;
+    width: 197px !important;
   }
-  .select-program-container {
-    .dashboard-section{
-      overflow: hidden;
-    }
-    input, select {
-      min-width: 0;
-      width: 197px;
-      display: inline-block;
-      margin-right: 10px;
-      box-sizing: border-box;
-      float: none;
-    }
-    label.start-date-label {
-      display: inline-block;
-      margin-top: 0;
-    }
-    .select-program-option {
-      padding: 10px 15px;
-    }
-    .back-btn {
+  .button-group-wrapper{
+    clear:both;
+    width: auto;
+  }
+  input[type="submit"]{
+    width:149px !important;
+    float: right;
+  }
+  a {
+    &.back-btn{
+      float: right;
       margin: 0;
     }
-    input[type="submit"]{
-      float: right;
-      margin-right: 0;
-      margin-bottom: 10px;
-    }
-    form .form-field .field-attribute label{
-      width:17em;
+    &.newProgramEnrollmentDashboard{
+      position: absolute;
+      right:0;
     }
   }
-  .program-details table.programTable{
+  .programDescription{
+    margin: 0 10px 0 15px;
+  }
+  .dashboard-section section .form-field{
+    width: 43%;
+    border-bottom: none !important;
+    padding: 0;
+    float: left;
+    clear: none;
+    .field-attribute{
+      width:45.5%;
+      label{
+        width: 17em;
+        padding: 0;
+      }
+    }
+    input[type="checkbox"], input[type="radio"]{
+      margin: 8px 0 0 0;
+      width:auto !important;
+    }
+    .fieldNonFormValue{
+      padding-top: 10px;
+    }
+  }
+  .program-row{
+    border-bottom: 1px solid #699;
+    padding: 5px 5px 5px 0;
+  }
+  table.programTable{
     tr{
       border-bottom: none
     }
     td{
       border: none;
-      strong{
-        font-size: 12px;
-      }
       &.programName{
         width: 20%;
+        cursor: pointer;
       }
       &.programState{
         width: 60%;
@@ -86,7 +107,13 @@
           padding-left:10px;
         }
         .fa{
-          padding: 1px 0 0;
+          padding:0;
+          font-size:1.2em;
+          cursor: pointer;
+          &:hover ,&:focus{
+            box-shadow: 2px 1px 5px #ccc;
+
+          }
         }
       }
       &.pastProgramOutcome{
@@ -101,381 +128,226 @@
       &.programStopDate{
         text-align: right;
       }
-    }
-  }
-  .programDescription{
-    padding: 10px 11px 0 26px;
-  }
-
-}
-
-.program-row {
-  padding: 5px 15px 5px 0;
-  border-bottom: 1px solid #669999;
-}
-.remove-state-container{
-  overflow: hidden;
-  border-bottom: 1px #ccc solid;
-  padding-bottom: 10px;
-  margin-bottom: 10px;
-  .current-state-name{
-    max-width: 135px;
-    overflow: hidden;
-    padding-right: 0 !important;
-    span{
-      font-family: openSansSemiBold;
-      font-size: 12px;
-    }
-  }
-  .row-remover{
-    padding: 2px 4px !important;
-  }
-}
-
-.program-timeline-container{
-  width: 100%;
-  overflow: hidden;
-  .program-timeline {
-    width: 91%;
-    float: left;
-    padding: 0px 0px 5px;
-  }
-  button.detail-btn{
-    margin-top: 20px;
-    margin-bottom: 0px;
-    i{
-      display: none;
-    }
-    &.btn-noTimeline{
-      margin-top: 10px;
-      margin-bottom: 10px;
-    }
-  }
-  .tab-selected{
-    border-radius: 3px 3px 0 0;
-    background: #fff;
-    border-bottom: 0;
-    font-family: openSansBOld;
-    padding: 8px 18px;
-    border-color: #D0D0D0;
-    position: relative;
-    z-index: 999;
-    margin-top: 20px !important;
-    margin-bottom: 0px !important;
-    span{
-      display: none;
-    }
-    i{
-      display: block !important;
-      font-size: 30px;
-      padding: 15px 13px;
-    }
-    &:hover{
-      border-bottom: 1px #F3F2F2 solid;
-    }
-    &:focus{
-      outline: none;
-      border-color: #d0d0d0;
-      border-bottom:none;
-    }
-  }
-}
-
-
-
-.program-enrollment-container {
-  display: inline-block;
-  vertical-align: top;
-  width: 100%;
-  a {
-    line-height: 25px;
-    float: none;
-    font-size: 14px;
-    &.back-btn{
-      float: right;
-      margin-right: 0;
-    }
-    &.big-anchor{
-      font-size: 20px;
-      font-family: openSans;
-      display: inline-block;
-    }
-  }
-  span{
-    display: inline-block;
-    padding-right: 5px;
-    &.enrolled-info {
-      display: inline-block;
-      font-size: 12px;
-      color: #666666;
-      padding: 5px 25px 5px 5px;
-      &.enrolled-info-dash-board{
-        padding: 0;
+      strong{
+        font-size: 12px;
       }
     }
   }
-}
 
-.program-state-list {
-  width: auto;
-  background-color: #fff;
-  box-shadow: 3px 3px 10px #E4E0E0;
-  border: 1px #d0d0d0 solid;
-  border-radius: 0 0 3px 3px;
-  margin: 0 11px 15px 26px;
-  position: relative;
-  div.down-arrow-container{
-    width: 88px;
-    height: 1px;
-    background-color: #000;
-    position: absolute;
-    right: -1px;
-    top: -1px;
-    float: right;
+  //Program State
+
+  .program-state-list {
+    width: auto;
     background-color: #fff;
-    box-shadow: 0;
+    box-shadow: 3px 3px 10px #E4E0E0;
     border: 1px #d0d0d0 solid;
-    border-radius: 0;
-    border-bottom-color: #fff;
-    border-top: 0;
-    border-bottom: 0;
-  }
-  .program-actions{
-    padding: 0px 20px 20px;
-    width: 75%;
-    margin: 0 auto;
-    button{
-      padding: 6px 15px !important;
-      margin-top: 4px;
-    }
-  }
-  .state-list{
-    padding: 25px 20px;
-    &.state-list-cutomPadding{
-      padding: 0;
-      padding-top: 20px;
-    }
-    table{
-      box-shadow: 1px 1px 5px rgba(0,0,0,.3);
-      tbody{
-        tr{
-          border: none;
-          &:nth-child(odd){
-            background: #F9F4E7
-          }
-          &:nth-child(even){
-            background: #FFF;
-          }
-          td{
-            border: none;
-          }
-        }
-      }
-    }
-  }
-
-}
-
-.inactive-program-container{
-  label{
-    margin: 0 .8em 0 0;
-    float: left;
-  }
-  .program-row{
-    &.no-past-program{
-      overflow: hidden;
-      a.back-btn{
-        margin-bottom:10px ;
-      }
-   }
-  }
-}
-.program-stuff {
-  overflow: hidden;
-}
-
-.program-timeline {
-  .tool-tip {
+    border-radius: 0 0 3px 3px;
+    margin: 0 10px 15px 15px;
     position: relative;
-    display: inline-block;
-    visibility: hidden;
-    padding: 2px 6px;
-    background: #E4E4E4;
-    border-radius: 5px;
-    font-size: 11px;
-    font-family: openSansSemiBold;
-  }
-
-  .timeline-view {
-    svg {
-      width: 100%;
-      height: 65px;
-
-      .xaxis {
-        text {
-          font-size: 12px;
-        }
-        line {
-          fill: none;
-          stroke: black;
-        }
-        path {
-          display: none;
+    div.down-arrow-container{
+      width: 88px;
+      height: 1px;
+      background-color: #000;
+      position: absolute;
+      right: -1px;
+      top: -1px;
+      float: right;
+      background-color: #fff;
+      box-shadow: 0;
+      border: 1px #d0d0d0 solid;
+      border-radius: 0;
+      border-bottom-color: #fff;
+      border-top: 0;
+      border-bottom: 0;
+    }
+    .program-actions{
+      padding: 0px 20px 20px;
+      width: 75%;
+      margin: 0 auto;
+      button{
+        padding: 6px 15px !important;
+        margin-top: 4px;
+      }
+    }
+    .state-list{
+      padding: 25px 20px;
+      &.state-list-cutomPadding{
+        padding: 0;
+        padding-top: 20px;
+      }
+      table{
+        box-shadow: 1px 1px 5px rgba(0,0,0,.3);
+        tbody{
+          tr{
+            border: none;
+            &:nth-child(odd){
+              background: #F9F4E7
+            }
+            &:nth-child(even){
+              background: #FFF;
+            }
+            td{
+              border: none;
+            }
+          }
         }
       }
+    }
+  }
+  .remove-state-container{
+    overflow: hidden;
+    border-bottom: 1px #ccc solid;
+    padding-bottom: 10px;
+    margin-bottom: 10px;
+    .current-state-name{
+      max-width: 135px;
+      overflow: hidden;
+      padding-right: 0 !important;
+      span{
+        font-family: openSansSemiBold;
+        font-size: 12px;
+      }
+    }
+    .row-remover{
+      padding: 2px 4px !important;
+    }
+  }
 
-      .states {
-        text {
-          font-size: 12px;
-          pointer-events: none;
+  .program-timeline-container{
+    width: 100%;
+    overflow: hidden;
+    .program-timeline {
+      width: 91%;
+      float: left;
+      padding: 0px 0px 5px;
+    }
+    button.detail-btn{
+      margin-top: 20px;
+      margin-bottom: 0px;
+      i{
+        display: none;
+      }
+      &.btn-noTimeline{
+        margin-top: 10px;
+        margin-bottom: 10px;
+      }
+      &:focus{
+        border:2px solid #007fff;
+        outline:0;
+      }
+    }
+    .tab-selected{
+      border-radius: 3px 3px 0 0;
+      background: #fff;
+      border-bottom: 0;
+      font-family: openSansBOld;
+      padding: 8px 18px;
+      border-color: #D0D0D0;
+      position: relative;
+      z-index: 999;
+      margin-top: 20px !important;
+      margin-bottom: 0px !important;
+      span{
+        display: none;
+      }
+      i{
+        display: block !important;
+        font-size: 30px;
+        padding: 15px 13px;
+      }
+      &:hover{
+        border-bottom: 1px #F3F2F2 solid;
+      }
+      &:focus{
+        outline: none;
+        border-color: #d0d0d0;
+        border-bottom:none;
+      }
+    }
+  }
+  .program-timeline {
+    .tool-tip {
+      position: relative;
+      display: inline-block;
+      visibility: hidden;
+      padding: 2px 6px;
+      background: #E4E4E4;
+      border-radius: 5px;
+      font-size: 11px;
+      font-family: openSansSemiBold;
+    }
+
+    .timeline-view {
+      svg {
+        width: 100%;
+        height: 65px;
+
+        .xaxis {
+          text {
+            font-size: 12px;
+          }
+          line {
+            fill: none;
+            stroke: black;
+          }
+          path {
+            display: none;
+          }
         }
-        .label-bg {
+
+        .states {
+          text {
+            font-size: 12px;
+            pointer-events: none;
+          }
+          .label-bg {
+            fill: #ABA8A8;
+          }
+          .label {
+            fill: #FFFFFF;
+          }
+          .date {
+            fill: #000000;
+          }
+          .date-line {
+            stroke-width: 2px;
+            stroke: #000000;
+          }
+          .date-bg {
+            fill: #FFFFFF;
+          }
+        }
+
+        polygon {
           fill: #ABA8A8;
         }
-        .label {
-          fill: #FFFFFF;
-        }
-        .date {
-          fill: #000000;
-        }
-        .date-line {
-          stroke-width: 2px;
-          stroke: #000000;
-        }
-        .date-bg {
-          fill: #FFFFFF;
-        }
-      }
-
-      polygon {
-        fill: #ABA8A8;
       }
     }
   }
-}
-
-
-.dashboard-program-section {
-  .program-title {
-    background: #E4E4E4;
-    margin: 0;
-    padding: 7px;
-    font-family: "OpenSansBold";
-    color: #4B4B4B;
-    font-size: 14px;
-  }
-  .programs-table ,.pastProgramTable{
-    strong {
-      font-family: "OpenSans";
-      font-weight: 400;
-      font-size: 12px;
+  .program-action-container{
+    margin-top: 4px;
+    width: 45%;
+    padding: 10px 15px;
+    display: inline-block;
+    background-color: #F3F2F2;
+    margin-right: 10px;
+    select{
+      float: left;
+      max-width: 197px;
     }
-  }
-}
-
-.ngdialog.ngdialog-theme-default {
-  &.end-program-dialog {
-    .ngdialog-content {
-      padding: 30px 20px;
+    label{
+      float: left;
+      padding-right: 9px;
+      margin-top: 10px;
     }
-    .end-program-wrapper {
-      overflow: hidden;
-      input {
-        min-width: 0;
-        padding: 5px 10px;
-        width: 200px;
-      }
-      select {
-        height: 31px;
-        min-width: 0;
-        width: 200px;
-      }
-      .end-program-container {
-        overflow: hidden;
-        margin-bottom: 5px;
-        padding: 0 6%;
-        label.middle-align {
-          padding-top: 10px;
-        }
-        .left-container {
-          float: left;
-          width: 43%;
-          label {
-            margin-top: 0;
-          }
-        }
-        .right-container {
-          float: right;
-          width: 56%;
-          label {
-            margin-top: 0;
-          }
-        }
-      }
-      .btn-grp {
-        margin-top: 10px;
-        margin-right: 29px;
+    .btn-grp{
+      button{
+        padding: 6px 15px;
       }
     }
-  }
-}
-
-
-//Style for New Program Enrollment
-
-.program-enrollment-container {
-  .programAttributeFields{
-      clear: both;
-      margin: 15px 0;
-      h2.programAttribute-title{
-        color: #000;
-        font-size: 13px;
-        clear: both;
-        border-bottom: 1px solid #ccc;
-        padding: 5px 0;
-        font-family: openSansBold;;
-      }
-      .form-field{
-        width: 43%;
-        display: inline-block;
-        border-bottom: none;
-        padding: 0;
-        padding-left: 0;
-      }
-      section .form-field{
-        padding: 0;
-        padding-left: 0;
-        .field-attribute{
-          float: left;
-          text-align: right;
-          label{
-            width: 18.5em;
-            margin: 0 0.8em 0em 0em;
-          }
-        }
-        .field-value{
-          float: left;
-        }
-      }
-      .programEditing .form-field .field-attribute label{
-        margin: 0.5em 0.8em 0em 0em;
-      }
-  }
-  .activeProgramAttributeFields {
-    .form-field{
-      line-height: 1.5em;
-      .field-attribute{
-        width:50%;
-      }
-      label{
-        width:18.5em !important;
-        text-align: right;
-      }
-    }
-  }
-  .newProgramEnrollmentDashboard{
-    margin-bottom: 10px !important;
   }
 }
 
 @import "programDisplayControl";
+
+

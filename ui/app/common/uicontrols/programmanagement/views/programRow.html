@@ -3,12 +3,12 @@
         <div>
             <table class="programTable">
                 <tr>
-                    <td class="programName">
-                        <i class="fa fa-caret-right" ng-hide="patientProgram.isOpen" ng-click="showProgramAttributes(patientProgram)"></i>
-                        <i class="fa fa-caret-down" ng-show="patientProgram.isOpen" ng-click="showProgramAttributes(patientProgram)"></i>
+                    <td class="programName" toggle="patientProgram.isOpen">
+                        <i class="fa fa-caret-right" ng-hide="patientProgram.isOpen"></i>
+                        <i class="fa fa-caret-down" ng-show="patientProgram.isOpen"></i>
                         {{patientProgram.display}}
                     </td>
-                    <td class="programState"><strong>{{'PROGRAM_MANAGEMENT_LABEL_PROGRAM_STATE' | translate}} : </strong>{{getCurrentStateDisplayName(patientProgram)}}</td>
+                    <td class="programState"><strong  ng-show="getCurrentStateDisplayName(patientProgram)">{{'PROGRAM_MANAGEMENT_LABEL_PROGRAM_STATE' | translate}} : </strong>{{getCurrentStateDisplayName(patientProgram)}}</td>
                     <td class="programDate"><strong>{{'PROGRAM_MANAGEMENT_START_DATE_KEY' | translate}} : </strong>{{patientProgram.dateEnrolled | bahmniDate}}
                         <i class="fa fa-pencil-square-o fr" ng-click="toggleEdit(patientProgram)"></i>
                     </td>
@@ -17,8 +17,8 @@
         </div>
         <div ng-if="patientProgram.isOpen" class="programDescription">
             <section class="programAttributeFields activeProgramAttributeFields">
-                <h2 class="programAttribute-title" ng-if="patientProgram.attributes.length!=0">{{'PROGRAM_MANAGEMENT_PROGRAM_ATTRIBUTES_KEY' | translate}}</h2>
-                <a class="back-btn dashboard-link fr" id="dashboard-link"
+                <h2 class="programAttribute-title">{{'PROGRAM_MANAGEMENT_PROGRAM_ATTRIBUTES_KEY' | translate}}</h2>
+                <a class="back-btn dashboard-link fr  newProgramEnrollmentDashboard" id="dashboard-link"
                    ui-sref="patient.dashboard.show({
                            patientUuid: patient.uuid,
                            programUuid: patientProgram.program.uuid,
@@ -31,7 +31,7 @@
                         <span class="patient-id">{{patient.identifier}}</span>
                     </span>
                 </a>
-                <form class="select-program-option" ng-submit="updatePatientProgram(patientProgram)" >
+                <form class="clearfix" ng-submit="updatePatientProgram(patientProgram)" >
                 <program-attributes program="patientProgram" program-attribute-types = "programAttributeTypes"></program-attributes>
                 </form>
             </section>
