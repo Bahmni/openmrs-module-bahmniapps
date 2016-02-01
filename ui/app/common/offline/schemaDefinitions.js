@@ -131,7 +131,7 @@ Bahmni.Common.Offline.SchemaDefinitions = {
         columns: [
             {
                 name: 'identifier',
-                type: 'INTEGER'
+                type: 'STRING'
             }, {
                 name: 'givenName',
                 type: 'STRING'

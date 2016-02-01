@@ -7,7 +7,7 @@
                 ng-bind-html="::'REGISTRATION_LABEL_ENTER_VISIT' | translate">
             </button>
         </span>
-        <span data-ng-switch-when="startVisit">
+        <span ng-if="showStartVisitButton()" data-ng-switch-when="startVisit">
             <div split-button options="visitControl.visitTypes"
                  primary-option="visitControl.defaultVisitType"
                  option-text="visitControl.startButtonText"

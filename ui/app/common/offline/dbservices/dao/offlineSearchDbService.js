@@ -18,6 +18,9 @@ angular.module('bahmni.common.offline')
             var nameParts = null;
             if (params.q) {
                 nameParts = params.q.split(" ");
+                for(var i = 0; i < nameParts.length; i++){
+                    nameParts[i] = nameParts[i].replace('%', '.');
+                }
             }
 
             if (!params.patientAttributes) {
@@ -48,24 +51,27 @@ angular.module('bahmni.common.offline')
                     var predicates = [];
 
                     if (!_.isEmpty(params.address_field_value)) {
+                        params.address_field_value = params.address_field_value.replace('%','.');
                         predicates.push(padd[addressFieldName].match(new RegExp(params.address_field_value, 'i')));
                     }
 
                     if (!_.isEmpty(params.identifier)) {
-                        predicates.push(p.identifier.eq(params.identifierPrefix + params.identifier));
+                        params.identifier = params.identifier.replace('%','.');
+                        predicates.push(p.identifier.match(new RegExp(params.identifierPrefix + params.identifier, 'i')));
                     }
                     if (!_.isEmpty(nameParts)) {
                         var nameSearchCondition = [];
                         if (!_.isEmpty(nameParts)) {
                             angular.forEach(nameParts, function (namePart) {
                                 nameSearchCondition.push(lf.op.or(p.givenName.match(new RegExp(namePart, 'i')), p.middleName.match(new RegExp(namePart, 'i')),
-                                    p.familyName.match(new RegExp(namePart, 'i')), p.identifier.eq(namePart.toUpperCase())));
+                                    p.familyName.match(new RegExp(namePart, 'i')), p.identifier.match(new RegExp(namePart, 'i'))));
                             });
                             predicates.push(lf.op.and.apply(null, nameSearchCondition));
                         }
                     }
 
                     if (!_.isEmpty(params.custom_attribute)) {
+                        params.custom_attribute = params.custom_attribute.replace('%','.');
                         predicates.push(pa.attributeTypeId.in(_.map(attributeTypeIds, function (attributeTypeId) {
                             return attributeTypeId.attributeTypeId;
                         })));

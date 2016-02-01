@@ -43,7 +43,7 @@ angular.module('bahmni.registration')
                 var getPatientPromise = patientService.get(uuid).then(successCallBack);
 
                 var isDigitized = encounterService.getDigitized(uuid);
-                isDigitized.success(function (data) {
+                isDigitized.then(function (data) {
                     var encountersWithObservations = data.results.filter(function (encounter) {
                         return encounter.obs.length > 0
                     });
