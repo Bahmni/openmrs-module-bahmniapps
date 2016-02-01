@@ -136,7 +136,7 @@
 
   <section class="form-field-inline clearfix" ng-repeat="attributeRow in ::patientConfiguration.customAttributeRows()">
       <article class="form-field" ng-repeat="attribute in ::attributeRow" ng-class="{'right-form-field' : $index%2 != 0}">
-          <attribute-types target-model="patient" attribute="attribute"></attribute-types>
+          <attribute-types target-model="patient" attribute="attribute" field-validation="fieldValidation"></attribute-types>
       </article>
   </section>
 </div>
@@ -158,7 +158,7 @@
         <section class="form-field-inline clearfix" ng-show="sectionVisibilityMap[key]">
             <article class="form-field" ng-repeat="attribute in ::section.attributes"
                      ng-class="{'right-form-field' : $index%2 != 0}">
-                <attribute-types target-model="patient" attribute="attribute"></attribute-types>
+                <attribute-types target-model="patient" attribute="attribute" field-validation="fieldValidation"></attribute-types>
             </article>
         </section>
     </div>

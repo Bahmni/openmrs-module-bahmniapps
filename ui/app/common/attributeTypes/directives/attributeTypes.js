@@ -4,7 +4,8 @@ angular.module('bahmni.common.attributeTypes', []).directive('attributeTypes', [
     return {
         scope : {
             targetModel : '=',
-            attribute : '='
+            attribute : '=',
+            fieldValidation : '='
         },
         templateUrl : '../common/attributeTypes/views/attributeInformation.html',
         restrict : 'E'
