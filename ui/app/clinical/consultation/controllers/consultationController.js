@@ -175,6 +175,7 @@ angular.module('bahmni.clinical').controller('ConsultationController',
                 $state.current = $scope.toState || $state.current;
                 $state.params = $scope.toParams || $state.params;
                 $scope.save(true);
+                $window.onbeforeunload = null;
             };
 
             $scope.continueWithoutSaving = function() {
@@ -182,6 +183,7 @@ angular.module('bahmni.clinical').controller('ConsultationController',
                 if ($scope.targetUrl) {
                     $window.open($scope.targetUrl, "_self");
                 }
+                $window.onbeforeunload = null;
                 $state.go($scope.toState, $scope.toParams);
             };
 
