@@ -29,7 +29,8 @@ angular.module('bahmni.common.obs')
 
             $scope.save = function(){
               $scope.$parent.shouldPromptBeforeClose = false;
-              var updateEditedObservation =   function(observations) {
+                $scope.$parent.shouldPromptBrowserReload = false;
+                var updateEditedObservation =   function(observations) {
                     return _.map(observations, function (obs) {
                         if (obs.uuid == $scope.editableObservations[0].uuid) {
                             return $scope.editableObservations[0];

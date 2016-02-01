@@ -40,7 +40,7 @@ describe("ConsultationController", function () {
     beforeEach(module('bahmni.clinical'));
 
     var injectConsultationController = function () {
-        inject(function ($controller, $rootScope) {
+        inject(function ($controller, $rootScope, _$window_) {
             scope = $rootScope.$new();
             rootScope = $rootScope;
             clinicalAppConfigService = {
@@ -103,7 +103,7 @@ describe("ConsultationController", function () {
                 $q: q,
                 patientVisitHistoryService: null,
                 $stateParams: stateParams,
-                $window: null,
+                $window: _$window_,
                 visitHistory: null,
                 appService: appService,
                 clinicalDashboardConfig: null,
