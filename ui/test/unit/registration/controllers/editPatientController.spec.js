@@ -51,8 +51,8 @@ describe('EditPatientController', function () {
 
             encounterServiceMock.getDigitized = function (uuid) {
                 return {
-                    success: function (successFn) {
-                        return ({data: true});
+                    then: function (successFn) {
+                        return ({data : {data: true}});
                     }
                 }
             };

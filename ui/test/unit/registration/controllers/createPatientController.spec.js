@@ -87,7 +87,8 @@ describe('CreatePatientController', function () {
             patientModel: patientModelMock,
             spinner: spinnerMock,
             appService: appServiceMock,
-            ngDialog: ngDialogMock
+            ngDialog: ngDialogMock,
+            offlineService : {}
         });
 
         scopeMock.actions = {
@@ -111,7 +112,8 @@ describe('CreatePatientController', function () {
             patientModel: patientModelMock,
             spinner: spinnerMock,
             appService: appServiceMock,
-            ngDialog: ngDialogMock
+            ngDialog: ngDialogMock,
+            offlineService : {}
         });
 
         expect(scopeMock.patient["education"]).toBe("c2107f30-3f10-11e4-adec-0800271c1b75");
@@ -129,7 +131,8 @@ describe('CreatePatientController', function () {
             patientModel: patientModelMock,
             spinner: spinnerMock,
             appService: appServiceMock,
-            ngDialog: ngDialogMock
+            ngDialog: ngDialogMock,
+            offlineService : {}
         });
 
         expect(scopeMock.sectionVisibilityMap["additionalPatientInformation"]).toBeTruthy();
@@ -159,7 +162,8 @@ describe('CreatePatientController', function () {
             patientModel: patientModelMock,
             spinner: spinnerMock,
             appService: appServiceMock,
-            ngDialog: ngDialogMock
+            ngDialog: ngDialogMock,
+            offlineService : {}
         });
 
         expect(scopeMock.patient["education"]).toBeUndefined();
@@ -179,7 +183,8 @@ describe('CreatePatientController', function () {
             patientModel: patientModelMock,
             spinner: spinnerMock,
             appService: appServiceMock,
-            ngDialog: ngDialogMock
+            ngDialog: ngDialogMock,
+            offlineService : {}
         });
 
         expect(scopeMock.patient.address[scopeMock.addressLevels[0].addressField]).toBe("Dhaka");
@@ -200,7 +205,8 @@ describe('CreatePatientController', function () {
             patientModel: patientModelMock,
             spinner: spinnerMock,
             appService: appServiceMock,
-            ngDialog: ngDialogMock
+            ngDialog: ngDialogMock,
+            offlineService : {}
         });
 
         expect(scopeMock.patient.identifierPrefix.prefix).toBe("GAN");
@@ -221,7 +227,8 @@ describe('CreatePatientController', function () {
             patientModel: patientModelMock,
             spinner: spinnerMock,
             appService: appServiceMock,
-            ngDialog: ngDialogMock
+            ngDialog: ngDialogMock,
+            offlineService : {}
         });
 
         expect(scopeMock.patient.identifierPrefix.prefix).toBe("SEM");

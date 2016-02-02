@@ -44,7 +44,7 @@ angular.module('bahmni.registration')
 
                 var isDigitized = encounterService.getDigitized(uuid);
                 isDigitized.then(function (data) {
-                    var encountersWithObservations = data.results.filter(function (encounter) {
+                    var encountersWithObservations = data.data.results.filter(function (encounter) {
                         return encounter.obs.length > 0
                     });
                     $scope.isDigitized = encountersWithObservations.length > 0;
