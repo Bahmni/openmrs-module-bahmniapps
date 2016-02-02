@@ -50,21 +50,30 @@ angular.module('bahmni.common.uicontrols.programmanagment')
         });
     };
 
-    this.filterProgramAttributes = function (patientPrograms, programAttributeTypes) {
+        function shouldDisplayAllAttributes(programDisplayControlConfig) {
+            return (programDisplayControlConfig && programDisplayControlConfig['programAttributes'] == undefined) || programDisplayControlConfig == undefined;
+        }
+
+        this.filterProgramAttributes = function (patientPrograms, programAttributeTypes) {
         var programDisplayControlConfig = appService.getAppDescriptor().getConfigValue('programDisplayControl');
         var config = programDisplayControlConfig ? programDisplayControlConfig['programAttributes'] : [];
-        var configAttrList = programAttributeTypes.filter(function (each) {
+        var configAttrList = [];
+        if(shouldDisplayAllAttributes(programDisplayControlConfig)){
+            configAttrList = programAttributeTypes;
+        }
+        else {
+         configAttrList = programAttributeTypes.filter(function (each) {
             return config && config.indexOf(each.name) !== -1;
         });
+        }
 
-        if (config && config.length === 0 && programDisplayControlConfig) {
+        if (_.isEmpty(configAttrList)) {
             return patientPrograms.map(function (patientProgram) {
                 patientProgram.attributes = [];
                 return patientProgram;
             });
         }
 
-        if (programDisplayControlConfig && configAttrList.length) {
             patientPrograms.forEach(function (program) {
                 var attrsToBeDisplayed = [];
 
@@ -74,28 +83,15 @@ angular.module('bahmni.common.uicontrols.programmanagment')
                     });
 
                     attr = attr ? attr : {
-                        attributeType: {
-                            display: configAttr.name,
-                            description : configAttr.description
-                        },
                         value: ""
                     };
-                    attr.attributeType.format = configAttr.format
+                    attr.attributeType =  configAttr;
+                    attr.attributeType.display = configAttr.name;
                     attrsToBeDisplayed.push(attr);
                 });
 
                 program.attributes = attrsToBeDisplayed;
             });
-        }
-        else {
-            patientPrograms.forEach(function (program) {
-               program.attributes.forEach(function (attribute) {
-                   attribute.attributeType = _.find(programAttributeTypes, function (attributeType) {
-                       return attribute.attributeType.uuid == attributeType.uuid;
-                   });
-               });
-            });
-        }
         return patientPrograms;
     };
 
