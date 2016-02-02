@@ -232,9 +232,9 @@
         }
     };
     updateCache(configs);
-    updateCache(globalProperty);
-    updateCache(rest);
-    updateCache(preFetchList);
-    updateCache(others);
+    //updateCache(globalProperty);
+    //updateCache(rest);
+    //updateCache(preFetchList);
+    //updateCache(others);
 
 })(self);

@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('bahmni.registration')
-    .controller('CreatePatientController', ['$scope', '$rootScope', '$state', 'patientService', 'Preferences', 'patient', 'spinner', 'appService', 'messagingService', 'ngDialog', '$q', '$bahmniCookieStore', 'locationService',
-        function ($scope, $rootScope, $state, patientService, preferences, patientModel, spinner, appService, messagingService, ngDialog, $q, $bahmniCookieStore, locationService) {
+    .controller('CreatePatientController', ['$scope', '$rootScope', '$state', 'patientService', 'Preferences', 'patient', 'spinner', 'appService', 'messagingService', 'ngDialog', '$q', 'offlineService',
+        function ($scope, $rootScope, $state, patientService, preferences, patientModel, spinner, appService, messagingService, ngDialog, $q, offlineService) {
             var dateUtil = Bahmni.Common.Util.DateUtil;
             $scope.actions = {};
             var configValueForEnterId = appService.getAppDescriptor().getConfigValue('showEnterID');
@@ -185,6 +185,10 @@ angular.module('bahmni.registration')
                 $scope.patient.registrationDate = dateUtil.now();
                 $scope.patient.newlyAddedRelationships = [{}];
                 $scope.actions.followUpAction(patientProfileData);
+            };
+
+            $scope.isOffline = function(){
+                return offlineService.offline();
             };
 
             $scope.create = function() {
