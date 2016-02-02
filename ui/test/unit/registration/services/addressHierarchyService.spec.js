@@ -46,8 +46,8 @@ describe('addressHierarchyService', function () {
         get:jasmine.createSpy('Http get').and.returnValue(resultList)
     };
 
-    var mockofflineService = jasmine.createSpyObj('offlineService', ['offline']);
-    mockofflineService.offline.and.returnValue(false);
+    var mockofflineService = jasmine.createSpyObj('offlineService', ['isOfflineApp']);
+    mockofflineService.isOfflineApp.and.returnValue(false);
 
 
     beforeEach(module('bahmni.registration'));

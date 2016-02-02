@@ -14,7 +14,7 @@ angular.module('bahmni.registration')
     init();
 
     var search = function(fieldName, query, type){
-        if(offlineService.offline()){
+        if(offlineService.isOfflineApp()){
             return $q.when({ data : {} });
         }
         var url = urlMap[type];

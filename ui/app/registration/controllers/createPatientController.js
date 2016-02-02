@@ -188,7 +188,7 @@ angular.module('bahmni.registration')
             };
 
             $scope.isOffline = function(){
-                return offlineService.offline();
+                return offlineService.isOfflineApp();
             };
 
             $scope.create = function() {

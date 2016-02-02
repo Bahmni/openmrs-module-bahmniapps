@@ -42,7 +42,7 @@ angular.module('bahmni.common.domain')
         };
 
         this.search = function (parameters) {
-            if(offlineService.offline()){
+            if(offlineService.isOfflineApp()){
                 return $q.when({data : {}});
             }
             return $http.get(Bahmni.Common.Constants.visitUrl, {

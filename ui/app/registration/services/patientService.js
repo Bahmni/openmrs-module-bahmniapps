@@ -22,7 +22,7 @@ angular.module('bahmni.registration')
             };
             var defer = $q.defer();
 
-            if(offlineService.offline()){
+            if(offlineService.isOfflineApp()){
                 offlinePatientService.search(config.params).then(function(result){
                     defer.resolve(result);
                 });
@@ -44,7 +44,7 @@ angular.module('bahmni.registration')
         };
 
         var get = function (uuid) {
-            if(offlineService.offline()){
+            if(offlineService.isOfflineApp()){
                 return offlinePatientService.get(uuid);
             }
             var url = openmrsUrl + "/ws/rest/v1/patientprofile/" + uuid;
@@ -62,7 +62,7 @@ angular.module('bahmni.registration')
         };
 
         var generateIdentifier = function (patient) {
-            if(offlineService.offline()) {
+            if(offlineService.isOfflineApp()) {
                 return $q.when({});
             }
 
@@ -97,7 +97,7 @@ angular.module('bahmni.registration')
 
         var create = function (patient) {
             var data = new Bahmni.Registration.CreatePatientRequestMapper(moment()).mapFromPatient($rootScope.patientConfiguration.attributeTypes, patient);
-            if(offlineService.offline()){
+            if(offlineService.isOfflineApp()){
                 return offlinePatientService.create(data);
             }
             var url = baseOpenMRSRESTURL + "/patientprofile";
@@ -109,7 +109,7 @@ angular.module('bahmni.registration')
         };
 
         var update = function (patient, openMRSPatient) {
-            if(offlineService.offline()){
+            if(offlineService.isOfflineApp()){
                 var data = new Bahmni.Registration.CreatePatientRequestMapper(moment()).mapFromPatient($rootScope.patientConfiguration.attributeTypes, patient);
                 return offlinePatientService.update(data);
             }

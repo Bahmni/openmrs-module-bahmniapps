@@ -57,7 +57,8 @@ angular.module('bahmni.common.offline')
 
                     if (!_.isEmpty(params.identifier)) {
                         params.identifier = params.identifier.replace('%','.');
-                        predicates.push(p.identifier.match(new RegExp(params.identifierPrefix + params.identifier, 'i')));
+                        predicates.push(p.identifier.match(new RegExp(params.identifier, 'i')));
+                        predicates.push(p.identifier.match(new RegExp(params.identifierPrefix,'i')));
                     }
                     if (!_.isEmpty(nameParts)) {
                         var nameSearchCondition = [];

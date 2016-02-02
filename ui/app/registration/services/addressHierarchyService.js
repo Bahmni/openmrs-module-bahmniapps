@@ -4,7 +4,7 @@ angular.module('bahmni.registration')
     .factory('addressHierarchyService', ['$http', 'offlineService', '$q', function ($http, offlineService, $q) {
         var search = function(fieldName, query, parentUuid){
 
-            if(offlineService.offline()){
+            if(offlineService.isOfflineApp()){
                 return $q.when({data : []});
             }
             var url = Bahmni.Registration.Constants.openmrsUrl + "/module/addresshierarchy/ajax/getPossibleAddressHierarchyEntriesWithParents.form";
