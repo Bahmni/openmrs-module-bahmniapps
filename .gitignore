@@ -25,3 +25,4 @@ ui/.idea/
 coverage
 ui/style-guide
 node_modules
+*.tern-port
