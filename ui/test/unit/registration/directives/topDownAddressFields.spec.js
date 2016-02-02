@@ -9,7 +9,7 @@ describe('TopDownAddressFieldsDirectiveController', function () {
     beforeEach(angular.mock.module('bahmni.registration'));
     beforeEach(angular.mock.inject(function () {
         success = jasmine.createSpy('Successful');
-        addressHierarchyService = jasmine.createSpyObj('addressHierarchyService', ['search', 'asd']);
+        addressHierarchyService = jasmine.createSpyObj('addressHierarchyService', ['search', 'getNextAvailableParentName','getAddressDataResults']);
     }));
 
     var setupController = function () {
@@ -53,42 +53,6 @@ describe('TopDownAddressFieldsDirectiveController', function () {
             expect(scope.address.address3).toBe("");
             expect(scope.address.countyDistrict).toBe("");
             expect(scope.address.stateProvince).toBe("");
-        });
-    });
-
-    describe("getAddressDataResults", function () {
-        it("should map address field to value and label for fields with parent", function () {
-            var addresses = {data: [{name: "someVillage", parent: {name: "someTehsil"}}]};
-
-            var addressDataResults = scope.getAddressDataResults(addresses);
-
-            expect(addressDataResults.length).toBe(1);
-            expect(addressDataResults[0].value).toBe("someVillage");
-            expect(addressDataResults[0].label).toBe("someVillage, someTehsil");
-            expect(addressDataResults[0].addressField).toBe(addresses.data[0]);
-        });
-
-        it("should map address field to value and label for fields without parent", function () {
-            var addresses = {data: [{name: "someVillage"}]};
-
-            var addressDataResults = scope.getAddressDataResults(addresses);
-
-            expect(addressDataResults.length).toBe(1);
-            expect(addressDataResults[0].value).toBe("someVillage");
-            expect(addressDataResults[0].label).toBe("someVillage");
-            expect(addressDataResults[0].addressField).toBe(addresses.data[0]);
-        });
-
-        it("should map address field to value and label for fields with blank parent and grand parent", function () {
-            var blankTehsil = {name: "", parent: {name: "someDistrict"}};
-            var addresses = {data: [{name: "someVillage", parent: blankTehsil}]};
-
-            var addressDataResults = scope.getAddressDataResults(addresses);
-
-            expect(addressDataResults.length).toBe(1);
-            expect(addressDataResults[0].value).toBe("someVillage");
-            expect(addressDataResults[0].label).toBe("someVillage, someDistrict");
-            expect(addressDataResults[0].addressField).toBe(addresses.data[0]);
         });
     });
 

@@ -32,7 +32,7 @@ angular.module('bahmni.registration')
                 autocompletedFields = [];
                 autocompletedFields.push(fieldName);
                 autocompletedFields = autocompletedFields.concat(parentFields);
-            }
+            };
         };
 
         $scope.getAddressEntryList = function (field) {
@@ -41,24 +41,8 @@ angular.module('bahmni.registration')
             };
         };
 
-        var getNextAvailableParentName = function (addressField) {
-            var parent = addressField.parent;
-            while (parent) {
-                if (parent.name) return parent.name;
-                else parent = parent.parent;
-            }
-        };
+        $scope.getAddressDataResults = addressHierarchyService.getAddressDataResults;
 
-        $scope.getAddressDataResults = function (data) {
-            return data.data.map(function (addressField) {
-                var parentName = getNextAvailableParentName(addressField);
-                return {
-                    'value': addressField.name,
-                    'label': addressField.name + ( parentName ? ", " + parentName : "" ),
-                    addressField: addressField
-                }
-            });
-        };
         $scope.clearFields = function (fieldName) {
             if(_.contains(autocompletedFields, fieldName)) {
                 var childFields = autocompletedFields.slice(0, autocompletedFields.indexOf(fieldName));

@@ -72,5 +72,39 @@ describe('addressHierarchyService', function () {
             expect(results).toBe(resultList);
         }]));
     });
+    describe("getAddressDataResults", function(){
+        it("should map address field to value and label for fields with parent", inject([ 'addressHierarchyService', function(addressHierarchyService){
+           var addresses ={data: [{ name : "someVillage" , parent : { name : "someTehsil"}}]};
+
+           var addressDataResults = addressHierarchyService.getAddressDataResults(addresses);
+
+           expect(addressDataResults.length).toBe(1);
+           expect(addressDataResults[0].value).toBe("someVillage");
+           expect(addressDataResults[0].label).toBe("someVillage, someTehsil");
+           expect(addressDataResults[0].addressField).toBe(addresses.data[0]);
+        }]));
+
+        it("should map address field to value and label for fields without parent", inject([ 'addressHierarchyService', function(addressHierarchyService){
+           var addresses = {data:[{ name : "someVillage"}]};
+
+           var addressDataResults = addressHierarchyService.getAddressDataResults(addresses);
+
+           expect(addressDataResults.length).toBe(1);
+           expect(addressDataResults[0].value).toBe("someVillage");
+           expect(addressDataResults[0].label).toBe("someVillage");
+           expect(addressDataResults[0].addressField).toBe(addresses.data[0]);
+        }]));
+
+        it ("should map address field to value and label for fields with blank parent and grand parent", inject([ 'addressHierarchyService', function(addressHierarchyService){
+           var blankTehsil = {name: "", parent: {name: "someDistrict"}};
+           var addresses = {data:[{ name : "someVillage", parent: blankTehsil}]};
+
+           var addressDataResults = addressHierarchyService.getAddressDataResults(addresses);
+
+           expect(addressDataResults.length).toBe(1);
+           expect(addressDataResults[0].value).toBe("someVillage");
+           expect(addressDataResults[0].label).toBe("someVillage, someDistrict");
+           expect(addressDataResults[0].addressField).toBe(addresses.data[0]);
+        }]));
+    });
 });
- 

@@ -49,7 +49,7 @@ angular.module('bahmni.registration')
                     $scope.address[parentField] = parent.name;
                     parent = parent.parent;
                 });
-            }
+            };
         };
 
         $scope.findParentField = function (fieldName) {
@@ -66,7 +66,7 @@ angular.module('bahmni.registration')
 
         $scope.isReadOnly = function (fieldName) {
             if(!$scope.address)
-              return;
+              return false;
             var parentFieldName = $scope.findParentField(fieldName);
             var parentValue = $scope.address[parentFieldName];
             var parentValueInvalid = isParentValueInvalid(parentFieldName);
@@ -89,29 +89,12 @@ angular.module('bahmni.registration')
 
         $scope.getAddressEntryList = function (field) {
             return function (searchAttrs) {
-                var response = addressHierarchyService.search(field, searchAttrs.term, parentUuid(field));
-                return response;
+                return addressHierarchyService.search(field, searchAttrs.term, parentUuid(field));
             };
         };
 
-        var getNextAvailableParentName = function (addressField) {
-            var parent = addressField.parent;
-            while (parent) {
-                if (parent.name) return parent.name;
-                else parent = parent.parent;
-            }
-        };
+        $scope.getAddressDataResults = addressHierarchyService.getAddressDataResults;
 
-        $scope.getAddressDataResults = function (data) {
-            return data.data.map(function (addressField) {
-                var parentName = getNextAvailableParentName(addressField);
-                return {
-                    'value': addressField.name,
-                    'label': addressField.name + ( parentName ? ", " + parentName : "" ),
-                    addressField: addressField
-                }
-            });
-        };
         $scope.clearFields = function (fieldName) {
             var childFields = addressLevelsNamesInDescendingOrder.slice(0, addressLevelsNamesInDescendingOrder.indexOf(fieldName));
             childFields.forEach(function (childField) {
@@ -123,6 +106,6 @@ angular.module('bahmni.registration')
         };
 
         $scope.isFreeTextAddressField = function (field) {
-            return $scope.freeTextAddressFields && _.contains($scope.freeTextAddressFields, field)
-        }
+            return $scope.freeTextAddressFields && _.contains($scope.freeTextAddressFields, field);
+        };
     });
