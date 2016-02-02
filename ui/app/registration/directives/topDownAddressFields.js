@@ -14,7 +14,7 @@ angular.module('bahmni.registration')
             }
         };
     })
-    .controller('TopDownAddressFieldsDirectiveController', function ($scope, addressAttributeService) {
+    .controller('TopDownAddressFieldsDirectiveController', function ($scope, addressHierarchyService) {
         $scope.addressFieldInvalid = false;
         var selectedAddressUuids = {};
 
@@ -29,7 +29,7 @@ angular.module('bahmni.registration')
             var fieldName = $scope.addressLevels[levelIndex].addressField;
             var addressValue = $scope.address[fieldName];
             if (addressValue) {
-                addressAttributeService.search(fieldName, addressValue).then(function(response) {
+                addressHierarchyService.search(fieldName, addressValue).then(function(response) {
                     var address = response.data[0];
                     selectedAddressUuids[fieldName] = address.uuid;
                     populateSelectedAddressUuids(levelIndex + 1);
@@ -89,7 +89,7 @@ angular.module('bahmni.registration')
 
         $scope.getAddressEntryList = function (field) {
             return function (searchAttrs) {
-                var response = addressAttributeService.search(field, searchAttrs.term, parentUuid(field));
+                var response = addressHierarchyService.search(field, searchAttrs.term, parentUuid(field));
                 return response;
             };
         };

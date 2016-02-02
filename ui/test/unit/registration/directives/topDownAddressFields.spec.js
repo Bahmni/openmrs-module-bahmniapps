@@ -4,12 +4,12 @@ describe('TopDownAddressFieldsDirectiveController', function () {
     var success;
     var controller;
     var scope;
-    var addressAttributeService;
+    var addressHierarchyService;
 
     beforeEach(angular.mock.module('bahmni.registration'));
     beforeEach(angular.mock.inject(function () {
         success = jasmine.createSpy('Successful');
-        addressAttributeService = jasmine.createSpyObj('addressAttributeService', ['search', 'asd']);
+        addressHierarchyService = jasmine.createSpyObj('addressHierarchyService', ['search', 'asd']);
     }));
 
     var setupController = function () {
@@ -25,7 +25,7 @@ describe('TopDownAddressFieldsDirectiveController', function () {
             ];
             controller = $controller('TopDownAddressFieldsDirectiveController', {
                 $scope: scope,
-                addressAttributeService: addressAttributeService
+                addressHierarchyService: addressHierarchyService
             });
         });
     };
@@ -125,7 +125,7 @@ describe('TopDownAddressFieldsDirectiveController', function () {
         beforeEach(setupController);
 
         it("should retrieve addresses based on parent uuid when parent has been specified", function(done) {
-            addressAttributeService.search.and.returnValue(specUtil.respondWith([
+            addressHierarchyService.search.and.returnValue(specUtil.respondWith([
                 {
                     "name": "Bagerhat",
                     "uuid": "e12e5566-73b7-476e-8bc1-d6bce6df7fb5",
@@ -144,13 +144,13 @@ describe('TopDownAddressFieldsDirectiveController', function () {
             });
 
             scope.getAddressEntryList("countyDistrict")({term: "khul"}).then(function () {
-                expect(addressAttributeService.search).toHaveBeenCalledWith("countyDistrict", "khul", "e12e5566-73b7-476e-8bc1-d6bce6df7fb5");
+                expect(addressHierarchyService.search).toHaveBeenCalledWith("countyDistrict", "khul", "e12e5566-73b7-476e-8bc1-d6bce6df7fb5");
                 done();
             });
         });
 
         it("should work with parent uuid when fields are cleared in between", function(done) {
-            addressAttributeService.search.and.returnValue(specUtil.respondWith([
+            addressHierarchyService.search.and.returnValue(specUtil.respondWith([
                 {
                     "name": "Patharghata",
                     "uuid": "4b24",
@@ -192,7 +192,7 @@ describe('TopDownAddressFieldsDirectiveController', function () {
             scope.clearFields("countyDistrict");
 
             scope.getAddressEntryList("countyDistrict")({term: "khul"}).then(function () {
-                expect(addressAttributeService.search).toHaveBeenCalledWith("countyDistrict", "khul", "17d5d37b-7b74-4053-82ba-d041691f0585");
+                expect(addressHierarchyService.search).toHaveBeenCalledWith("countyDistrict", "khul", "17d5d37b-7b74-4053-82ba-d041691f0585");
                 done();
             });
         });

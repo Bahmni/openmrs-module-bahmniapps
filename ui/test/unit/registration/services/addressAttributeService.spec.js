@@ -1,6 +1,6 @@
 'use strict';
 
-describe('addressAttributeService', function () {
+describe('addressHierarchyService', function () {
     var resultList = [
         {
             "name": "Semi",
@@ -58,12 +58,12 @@ describe('addressAttributeService', function () {
     }));
 
     describe("search", function () {
-        it('Should get list of addresses from address hierarchy service', inject(['addressAttributeService', function (addressAttributeService) {
+        it('Should get list of addresses from address hierarchy service', inject(['addressHierarchyService', function (addressHierarchyService) {
             Bahmni.Registration.Constants.openmrsUrl = 'http://blah.com/openmrs';
             var query = "bilas";
             var fieldName = "Village";
 
-            var results = addressAttributeService.search(fieldName,query);
+            var results = addressHierarchyService.search(fieldName,query);
 
             expect(mockHttp.get).toHaveBeenCalled();
             expect(mockHttp.get.calls.mostRecent().args[0]).toBe('http://blah.com/openmrs/module/addresshierarchy/ajax/getPossibleAddressHierarchyEntriesWithParents.form');
