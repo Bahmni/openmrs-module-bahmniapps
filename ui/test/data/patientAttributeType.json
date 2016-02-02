@@ -1,0 +1,96 @@
+{
+  "data": {
+    "results": [
+      {
+        "name": "givenNameLocal",
+        "uuid": "82325788-3f10-11e4-adec-0800271c1b75",
+        "format": "java.lang.String"
+      },
+      {
+        "name": "familyNameLocal",
+        "uuid": "8233a58a-3f10-11e4-adec-0800271c1b75",
+        "format": "java.lang.String"
+      },
+      {
+        "name": "middleNameLocal",
+        "uuid": "8234e7b0-3f10-11e4-adec-0800271c1b75",
+        "format": "java.lang.String"
+      },
+      {
+        "name": "caste",
+        "uuid": "c1f4239f-3f10-11e4-adec-0800271c1b75",
+        "format": "java.lang.String"
+      },
+      {
+        "name": "class",
+        "uuid": "c1f455e7-3f10-11e4-adec-0800271c1b75",
+        "format": "org.openmrs.Concept"
+      },
+      {
+        "name": "education",
+        "uuid": "c1f4a004-3f10-11e4-adec-0800271c1b75",
+        "format": "org.openmrs.Concept"
+      },
+      {
+        "name": "occupation",
+        "uuid": "c1f7d1f1-3f10-11e4-adec-0800271c1b75",
+        "format": "org.openmrs.Concept"
+      },
+      {
+        "name": "primaryContact",
+        "uuid": "c1f7fd17-3f10-11e4-adec-0800271c1b75",
+        "format": "java.lang.String"
+      },
+      {
+        "name": "secondaryContact",
+        "uuid": "c1f825c9-3f10-11e4-adec-0800271c1b75",
+        "format": "java.lang.String"
+      },
+      {
+        "name": "primaryRelative",
+        "uuid": "c1f84df3-3f10-11e4-adec-0800271c1b75",
+        "format": "java.lang.String"
+      },
+      {
+        "name": "secondaryIdentifier",
+        "uuid": "c1f8880d-3f10-11e4-adec-0800271c1b75",
+        "format": "java.lang.String"
+      },
+      {
+        "name": "landHolding",
+        "uuid": "3dfdc176-17fd-42b1-b5be-c7e25b78b602",
+        "format": "java.lang.Integer"
+      },
+      {
+        "name": "debt",
+        "uuid": "fb3c00b1-81c8-40fe-89e8-6b3344688a13",
+        "format": "java.lang.String"
+      },
+      {
+        "name": "distanceFromCenter",
+        "uuid": "d1314f0f-c2d9-4223-88d9-ec4d2827c9da",
+        "format": "java.lang.Float"
+      },
+      {
+        "name": "isUrban",
+        "uuid": "9234695b-0f68-4970-aeb7-3b32d4a2b346",
+        "format": "java.lang.Boolean"
+      },
+      {
+        "name": "cluster",
+        "uuid": "35e98d04-3981-4257-a593-fadd81bfc109",
+        "format": "org.openmrs.Concept"
+      },
+      {
+        "name": "RationCard",
+        "uuid": "6f32179b-c6b9-465e-a278-c15da2637630",
+        "format": "org.openmrs.Concept"
+      },
+      {
+        "name": "familyIncome",
+        "uuid": "a10fe690-1c44-4ba8-a244-8fe51f9e61f7",
+        "format": "org.openmrs.Concept"
+      }
+    ]
+  }
+}

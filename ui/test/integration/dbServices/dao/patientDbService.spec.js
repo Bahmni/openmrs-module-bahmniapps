@@ -16,31 +16,9 @@ describe('patientDbService', function () {
         patientDbService = patientDbServiceInjected
     }]));
 
-    var dataTypes = {
-        "INTEGER": lf.Type.INTEGER,
-        "STRING": lf.Type.STRING,
-        "DATE_TIME": lf.Type.DATE_TIME,
-        "OBJECT": lf.Type.OBJECT,
-        "ARRAY_BUFFER": lf.Type.ARRAY_BUFFER
-    };
-
-    var createTable = function (schemaBuilder, tableDefinition) {
-        var table = schemaBuilder.createTable(tableDefinition.tableName);
-
-        _.map(tableDefinition.columns, function (column) {
-            table.addColumn(column.name, dataTypes[column.type]);
-        });
-
-        table.addNullable(tableDefinition.nullableColumns);
-        table.addPrimaryKey(tableDefinition.primaryKeyColumns);
-        _.each(tableDefinition.indexes, function (index) {
-            table.addIndex(index.indexName, index.columnNames);
-        })
-    };
-
     it("insert patient and get from lovefield database", function(done){
         var schemaBuilder = lf.schema.create('BahmniTest', 1);
-        createTable(schemaBuilder, Bahmni.Common.Offline.SchemaDefinitions.Patient);
+        Bahmni.Tests.OfflineDbUtils.createTable(schemaBuilder, Bahmni.Common.Offline.SchemaDefinitions.Patient);
         jasmine.getFixtures().fixturesPath = 'base/test/data';
         var patientJson = JSON.parse(readFixtures('patient.json'));
         schemaBuilder.connect().then(function(db){
@@ -50,7 +28,6 @@ describe('patientDbService', function () {
                     expect(result.patient.uuid).toBe(uuid);
                     done();
                 });
-                var identifier = 'GAN200076';
             });
         });
     });

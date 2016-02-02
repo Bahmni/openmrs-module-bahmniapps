@@ -1,6 +1,7 @@
 'use strict';
 
 angular.module('bahmni.common.offline').service('offlineService', ['$rootScope', '$bahmniCookieStore', function ($rootScope, $bahmniCookieStore) {
+
     var offline = false;
 
     this.getAppPlatform = function () {
@@ -62,10 +63,10 @@ angular.module('bahmni.common.offline').service('offlineService', ['$rootScope',
     };
 
     Offline.on('up', function () {
-        console.log("Internet is up.");
         offline = false;
         $rootScope.$broadcast('offline', offline);
     });
+
     Offline.on('down', function () {
         offline = true;
         $rootScope.$broadcast('offline', offline);

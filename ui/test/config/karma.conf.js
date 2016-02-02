@@ -55,6 +55,7 @@ module.exports = function (config) {
             'test/support/**/*.js',
             'test/unit/**/*.js',
             'test/integration/**/*.js',
+            'test/integration/utils/*.js',
             {pattern: 'test/data/*.json', watched: true, served: true, included: false}
         ],
         reporters: ['junit', 'progress', 'coverage'],

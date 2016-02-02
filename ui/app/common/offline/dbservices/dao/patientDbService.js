@@ -2,15 +2,6 @@
 
 angular.module('bahmni.common.offline')
     .service('patientDbService', function () {
-        var getPatientByIdentifier = function (db, patientIdentifier) {
-            var p = db.getSchema().table('patient');
-            return db.select(p.identifier, p.givenName, p.familyName, p.gender, p.birthdate, p.uuid)
-                .from(p)
-                .where(p.identifier.eq(patientIdentifier.toUpperCase())).exec().th
-                .then(function (result) {
-                    return result;
-                });
-        };
 
         var getPatientByUuid = function (db, uuid) {
             var p = db.getSchema().table('patient');
@@ -20,25 +11,6 @@ angular.module('bahmni.common.offline')
                 .then(function (result) {
                     return result[0];
                 });
-        };
-
-        var generateOfflineIdentifier = function (db) {
-            var idgen = db.getSchema().table('idgen');
-            return db.select(idgen.identifier.as('identifier'))
-                .from(idgen).exec()
-                .then(function (result) {
-                    var identifier = (result[0] && result[0].identifier) ? result[0].identifier : 1;
-                    insertIntoIdgen(db, identifier);
-                    return {data: "TMP-" + identifier};
-                });
-        };
-
-        var insertIntoIdgen = function (db, result) {
-            var idgen = db.getSchema().table('idgen');
-            var row = idgen.createRow({
-                'identifier': ++result
-            });
-            db.insertOrReplace().into(idgen).values([row]).exec()
         };
 
         var insertPatientData = function (db, patientData) {
@@ -76,10 +48,7 @@ angular.module('bahmni.common.offline')
         };
 
         return {
-            getPatientByIdentifier: getPatientByIdentifier,
             getPatientByUuid: getPatientByUuid,
-            generateOfflineIdentifier: generateOfflineIdentifier,
-            insertPatientData : insertPatientData,
-            insertIntoIdgen : insertIntoIdgen
-    }
+            insertPatientData: insertPatientData
+        }
     });

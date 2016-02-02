@@ -10,8 +10,7 @@ angular.module('bahmni.registration')
 
             var search = function (params) {
                 if (offlineService.isAndroidApp()) {
-                    var returnValue = JSON.parse(AndroidOfflineService.search(JSON.stringify(params)));
-                    return $q.when(returnValue);
+                    return $q.when(JSON.parse(AndroidOfflineService.search(JSON.stringify(params))));
                 }
                 else {
                     return offlineSearchDbService.search(params);
@@ -20,10 +19,6 @@ angular.module('bahmni.registration')
 
             var get = function (uuid) {
                 return offlineDbService.getPatientByUuid(uuid);
-            };
-
-            var getByIdentifier = function (patientIdentifier) {
-                return offlineDbService.getPatientByIdentifier(patientIdentifier);
             };
 
             var create = function (postRequest) {
@@ -43,15 +38,10 @@ angular.module('bahmni.registration')
                 });
             };
 
-            var generateOfflineIdentifier = function () {
-                return $q.when({});
-            };
-
             return {
                 search: search,
                 get: get,
                 create: create,
-                update: update,
-                generateOfflineIdentifier: generateOfflineIdentifier
+                update: update
             };
         }]);

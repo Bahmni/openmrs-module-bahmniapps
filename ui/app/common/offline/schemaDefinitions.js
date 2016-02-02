@@ -72,18 +72,6 @@ Bahmni.Common.Offline.SchemaDefinitions = {
         primaryKeyColumns: ['catchmentNumber']
     },
 
-    Idgen: {
-        tableName: 'idgen',
-        columns: [
-            {
-                name: 'identifier',
-                type: 'INTEGER'
-            }
-        ],
-        nullableColumns: [],
-        primaryKeyColumns: ['identifier']
-    },
-
     PatientAttributeType: {
         tableName: 'patient_attribute_type',
         columns: [

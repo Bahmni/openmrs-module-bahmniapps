@@ -23,7 +23,6 @@ angular.module('bahmni.common.offline').service('initializeOfflineSchema', ['$q'
         createTable(schemaBuilder, Bahmni.Common.Offline.SchemaDefinitions.EventLogMarker);
         createTable(schemaBuilder, Bahmni.Common.Offline.SchemaDefinitions.AddressHierarchyEntry);
         createTable(schemaBuilder, Bahmni.Common.Offline.SchemaDefinitions.AddressHierarchyLevel);
-        createTable(schemaBuilder, Bahmni.Common.Offline.SchemaDefinitions.Idgen);
         createTable(schemaBuilder, Bahmni.Common.Offline.SchemaDefinitions.PatientAddress);
 
         return schemaBuilder.connect().then(function (database) {

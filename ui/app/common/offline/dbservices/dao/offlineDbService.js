@@ -8,10 +8,6 @@ angular.module('bahmni.common.offline')
             patientAttributeDbService.insertAttributeTypes(db);
         };
 
-        var getPatientByIdentifier = function (patientIdentifier) {
-            return {data: {pageOfResults: patientDbService.getPatientByIdentifier(db, patientIdentifier)}};
-        };
-
         var createPatient = function (postRequest, requestType) {
             var uuid = postRequest.patient.uuid;
             return insertPatientData(postRequest, requestType)
@@ -90,10 +86,6 @@ angular.module('bahmni.common.offline')
             db = _db;
         };
 
-        var generateOfflineIdentifier = function () {
-            return patientDbService.generateOfflineIdentifier(db);
-        };
-
         var getMarker = function () {
             return offlineMarkerDbService.getMarker();
         };
@@ -110,10 +102,8 @@ angular.module('bahmni.common.offline')
             init: init,
             populateData: populateData,
             getPatientByUuid: getPatientByUuid,
-            getPatientByIdentifier: getPatientByIdentifier,
             createPatient: createPatient,
             deletePatientData: deletePatientData,
-            generateOfflineIdentifier: generateOfflineIdentifier,
             getMarker: getMarker,
             insertMarker: insertMarker,
             insertAddressHierarchy: insertAddressHierarchy

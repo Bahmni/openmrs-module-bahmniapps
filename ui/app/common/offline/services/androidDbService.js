@@ -43,20 +43,8 @@ angular.module('bahmni.common.offline')
 
             };
 
-            var generateOfflineIdentifier = function () {
-                var value = AndroidOfflineService.generateOfflineIdentifier();
-                value = value != undefined ? JSON.parse(value) : value;
-                return $q.when(value);
-            };
-
             var getPatientByUuid = function (uuid) {
                 var value = AndroidOfflineService.getPatientByUuid(uuid);
-                value = value != undefined ? JSON.parse(value) : value;
-                return $q.when(value);
-            };
-
-            var getPatientByIdentifier = function (identifier) {
-                var value = AndroidOfflineService.getPatientByIdentifier(identifier);
                 value = value != undefined ? JSON.parse(value) : value;
                 return $q.when(value);
             };
@@ -65,10 +53,8 @@ angular.module('bahmni.common.offline')
                 init: init,
                 populateData: populateData,
                 getPatientByUuid: getPatientByUuid,
-                getPatientByIdentifier: getPatientByIdentifier,
                 createPatient: createPatient,
                 deletePatientData: deletePatientData,
-                generateOfflineIdentifier: generateOfflineIdentifier,
                 getMarker: getMarker,
                 insertMarker: insertMarker,
                 insertAddressHierarchy: insertAddressHierarchy

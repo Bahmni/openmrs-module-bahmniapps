@@ -63,7 +63,7 @@ angular.module('bahmni.registration')
 
         var generateIdentifier = function (patient) {
             if(offlineService.offline()) {
-                return offlinePatientService.generateOfflineIdentifier();
+                return $q.when({});
             }
 
             var data = {"identifierSourceName": patient.identifierPrefix ? patient.identifierPrefix.prefix : ""};

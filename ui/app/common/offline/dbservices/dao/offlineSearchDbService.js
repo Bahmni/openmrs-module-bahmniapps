@@ -37,7 +37,7 @@ angular.module('bahmni.common.offline')
             var pat = db.getSchema().table('patient_attribute_type');
             var padd = db.getSchema().table('patient_address');
 
-            db.select(pat.attributeTypeId)
+            return db.select(pat.attributeTypeId)
                 .from(pat)
                 .where(pat.attributeName.in(params.patientAttributes)).exec()
                 .then(function (attributeTypeIds) {
@@ -75,6 +75,7 @@ angular.module('bahmni.common.offline')
                         predicates.push(pa.attributeTypeId.in(_.map(attributeTypeIds, function (attributeTypeId) {
                             return attributeTypeId.attributeTypeId;
                         })));
+
                         predicates.push(pa.attributeValue.match(new RegExp(params.custom_attribute, 'i')));
                     }
 
@@ -83,9 +84,10 @@ angular.module('bahmni.common.offline')
                     if (!_.isEmpty(predicates))
                         query = query.where(whereCondition);
 
-                    query.limit(50).skip(params.startIndex).orderBy(p.dateCreated, lf.Order.DESC).groupBy(p.uuid).exec()
+
+                    return query.limit(50).skip(params.startIndex).orderBy(p.dateCreated, lf.Order.DESC).groupBy(p.uuid).exec()
                         .then(function (tempResults) {
-                            db.select(p.identifier.as('identifier'), p.givenName.as('givenName'), p.middleName.as('middleName'), p.familyName.as('familyName'),
+                            return db.select(p.identifier.as('identifier'), p.givenName.as('givenName'), p.middleName.as('middleName'), p.familyName.as('familyName'),
                                 p.dateCreated.as('dateCreated'), p.birthdate.as('birthdate'), p.gender.as('gender'), p.uuid.as('uuid'), padd[addressFieldName].as('addressFieldValue'),
                                 pat.attributeName.as('attributeName'), pa.attributeValue.as('attributeValue'), pat.format.as('attributeFormat'))
                                 .from(p)
@@ -96,15 +98,18 @@ angular.module('bahmni.common.offline')
                                     return tempResult.uuid;
                                 }))).exec()
                                 .then(function (results) {
+
                                     var groupedResults = _.groupBy(results, function (res) {
                                         return res.uuid
                                     });
                                     var patient;
+
                                     angular.forEach(groupedResults, function (groupedResult) {
                                         var customAttributes = {};
                                         patient = groupedResult[0];
                                         //ToDo:: Dependency of age factory in Admin page
                                         patient.age = age.fromBirthDate(patient.birthdate).years;
+
                                         angular.forEach(groupedResult, function (result) {
                                             if (result.attributeName) {
                                                 customAttributes[result.attributeName] = result.attributeValue;
@@ -114,14 +119,15 @@ angular.module('bahmni.common.offline')
                                         response.pageOfResults.push(patient);
                                     });
                                     $rootScope.searching = false;
-                                    deferred.resolve(response);
+
+                                    return response;
+
                                 });
 
                         }, function (e) {
                             console.log(e);
                         });
                 });
-            return deferred.promise;
         };
 
         var init = function(_db){
