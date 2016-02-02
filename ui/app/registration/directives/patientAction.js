@@ -10,7 +10,7 @@ angular.module('bahmni.registration')
                 var loginLocationUuid = $bahmniCookieStore.get(Bahmni.Common.Constants.locationCookieName).uuid;
                 var defaultVisitType = $rootScope.regEncounterConfiguration.getDefaultVisitType(loginLocationUuid);
                 var defaultVisitType = defaultVisitType != null ? defaultVisitType : appService.getAppDescriptor().getConfigValue('defaultVisitType');
-                var showStartVisitButton = appService.getAppDescriptor().getConfigValue("showStartVisitButton");
+                var showStartVisitButton = appService.getAppDescriptor().getConfigValue("showStartVisitButton") || true;
 
 
                 function setForwardActionKey() {
