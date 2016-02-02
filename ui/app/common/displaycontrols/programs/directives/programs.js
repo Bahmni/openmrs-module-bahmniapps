@@ -3,7 +3,7 @@ angular.module('bahmni.common.displaycontrol.programs')
         function (programService) {
             'use strict';
             var controller = function ($scope) {
-                programService.getPatientPrograms($scope.patient.uuid).then(function (patientPrograms) {
+                programService.getPatientPrograms($scope.patient.uuid, true).then(function (patientPrograms) {
                     $scope.activePrograms = patientPrograms.activePrograms;
                     $scope.pastPrograms = patientPrograms.endedPrograms;
                 });

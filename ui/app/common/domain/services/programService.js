@@ -38,7 +38,7 @@ angular.module('bahmni.common.domain')
             return $http.post(req.url, req.content, req.headers);
         };
 
-        var getPatientPrograms = function (patientUuid) {
+        var getPatientPrograms = function (patientUuid,filterAttributesForProgramDisplayControl) {
             var req = {
                 url: Bahmni.Common.Constants.programEnrollPatientUrl,
                 params: {
@@ -47,9 +47,11 @@ angular.module('bahmni.common.domain')
                 }
             };
             return $http.get(req.url, {params: req.params}).then(function (response) {
-                var patientPrograms = [];
+                var patientPrograms = response.data.results;
                 return getProgramAttributeTypes().then(function (programAttributeTypes) {
+                    if(filterAttributesForProgramDisplayControl) {
                     patientPrograms = programHelper.filterProgramAttributes(response.data.results, programAttributeTypes);
+                    }
 
                     return programHelper.groupPrograms(patientPrograms);
                 });
