@@ -30,7 +30,7 @@
                 <tr ng-repeat="row in obsTable.rows">
                     <td ng-if="isMonthAvailable()">{{row.columns['Month'][0].valueAsString}}</td>
                     <td ng-repeat="header in obsTable.headers" ng-if="header.name != 'Month'"
-                        ng-class="{'is-abnormal': row.columns[header.name].abnormal}">
+                        ng-class="{'is-abnormal': row.columns[header.name][0].abnormal}">
                         {{commafy(row.columns[header.name])}}
                         <span class="fr" ng-if="header.name === config.groupByConcept && isEditable" >
 
@@ -57,7 +57,7 @@
                         {{getAbbreviation(header)}}
                         <hint concept-details="header"/>
                     </td>
-                    <td ng-repeat="row in obsTable.rows" ng-class="{'is-abnormal': row.columns[header.name].abnormal}">
+                    <td ng-repeat="row in obsTable.rows" ng-class="{'is-abnormal': row.columns[header.name][0].abnormal}">
                         {{commafy(row.columns[header.name])}}
                         <span class="fr" ng-if="header.name === config.groupByConcept && isEditable" >
                                 <span class="has-link fl"
