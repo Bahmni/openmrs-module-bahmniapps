@@ -105,8 +105,10 @@ angular.module('bahmni.clinical').controller('ConsultationController',
                     }
                     return _.contains(currentPath, board.url);
                 });
-                $scope.currentBoard = board || $scope.availableBoards[0];
-                $scope.currentBoard.isSelectedTab = true;
+                if(board) {
+                    $scope.currentBoard = board;
+                    $scope.currentBoard.isSelectedTab = true;
+                }
             };
 
 

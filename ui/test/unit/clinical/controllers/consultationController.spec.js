@@ -306,6 +306,18 @@ describe("ConsultationController", function () {
         )
     });
 
+    it("current board should not be set if dashboard is clicked", function () {
+        location = {
+            path: function () {
+            }, url: function (url) {
+                return "/default/patient/somePatientUuid/dashboard"
+            }
+        };
+        injectConsultationController();
+
+        expect(scope.currentBoard).toBeFalsy();
+    });
+
     it("should set current tab based on the tab config provided", function () {
         location = {
             path: function () {
