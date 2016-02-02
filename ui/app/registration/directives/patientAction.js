@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('bahmni.registration')
-    .directive('patientAction', ['$window', '$location', '$state', 'spinner', '$rootScope', '$stateParams', '$bahmniCookieStore', 'appService', 'visitService', 'sessionService', 'encounterService', 'messagingService', '$translate','offlineService',
-        function ($window, $location, $state, spinner, $rootScope, $stateParams, $bahmniCookieStore, appService, visitService, sessionService, encounterService, messagingService, $translate, offlineService) {
+    .directive('patientAction', ['$window', '$location', '$state', 'spinner', '$rootScope', '$stateParams', '$bahmniCookieStore', 'appService', 'visitService', 'sessionService', 'encounterService', 'messagingService', '$translate',
+        function ($window, $location, $state, spinner, $rootScope, $stateParams, $bahmniCookieStore, appService, visitService, sessionService, encounterService, messagingService, $translate) {
             var controller = function ($scope) {
                 var self = this;
                 var uuid = $stateParams.patientUuid;
@@ -10,7 +10,6 @@ angular.module('bahmni.registration')
                 var loginLocationUuid = $bahmniCookieStore.get(Bahmni.Common.Constants.locationCookieName).uuid;
                 var defaultVisitType = $rootScope.regEncounterConfiguration.getDefaultVisitType(loginLocationUuid);
                 var defaultVisitType = defaultVisitType != null ? defaultVisitType : appService.getAppDescriptor().getConfigValue('defaultVisitType');
-                var showStartVisitButton = appService.getAppDescriptor().getConfigValue("showStartVisitButton");
 
 
                 function setForwardActionKey() {
@@ -52,14 +51,6 @@ angular.module('bahmni.registration')
 
                 $scope.setSubmitSource = function (source) {
                     $scope.actions.submitSource = source;
-                };
-
-                $scope.isOffline = function(){
-                    return offlineService.offline();
-                };
-
-                $scope.showStartVisitButton = function(){
-                    return showStartVisitButton;
                 };
 
                 $scope.actions.followUpAction = function (patientProfileData) {
