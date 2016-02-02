@@ -33,6 +33,9 @@
         float: right;
         width: 215px;
         padding: 3px 0;
+        button.toggle.has-notes{
+            background: none !important;
+        }
         .button-group {float: right;}
         button, button:hover {
             padding: 0; margin: 0;
