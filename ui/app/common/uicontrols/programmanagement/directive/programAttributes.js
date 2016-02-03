@@ -28,7 +28,10 @@ angular.module('bahmni.common.uicontrols.programmanagment')
                 return programAttributesMap[attributeType.name] ? Bahmni.Common.Util.DateUtil.formatDateWithoutTime(programAttributesMap[attributeType.name]) : "";
             }
             else if(isCodedConceptFormat(attributeType.format)) {
-                var mrsAnswer = getProgramAttributeByType($scope.program.attributes, attributeType).value;
+                var programAttribute = getProgramAttributeByType($scope.program.attributes, attributeType);
+                if (programAttribute == undefined)
+                    return "";
+                var mrsAnswer = programAttribute.value;
                 var displayName = mrsAnswer.display;
                 if (mrsAnswer.names && mrsAnswer.names.length == 2) {
                     if (mrsAnswer.name.conceptNameType == 'FULLY_SPECIFIED') {
