@@ -53,7 +53,13 @@ describe("ensure that the directive program-attributes works properly", function
             "uuid" : "uuid3",
             "description" : "Sample concept attribute",
             "name" : "Sample concept attribute",
-            "format" : "org.bahmni.module.bahmnicore.customdatatype.datatype.CodedConceptDatatype"
+            "format" : "org.bahmni.module.bahmnicore.customdatatype.datatype.CodedConceptDatatype",
+            "answers" : [
+                {
+                    "conceptId": "c2107f30-3f10-11e4-adec-0800271c1b75",
+                    "description": "UneducatedShort"
+                }
+            ]
         };
 
         expect(scope.getValueForAttributeType(attributeType)).toBe("UneducatedShort");
