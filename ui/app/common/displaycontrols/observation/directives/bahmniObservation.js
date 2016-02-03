@@ -37,7 +37,7 @@ angular.module('bahmni.common.displaycontrol.observation')
                     }
                     else {
                         var startDate = null, endDate = null;
-                        if (programConfig.showDashBoardWithinDateRange) {
+                        if (programConfig.showDetailsWithinDateRange) {
                             startDate = $stateParams.dateEnrolled;
                             endDate = $stateParams.dateCompleted;
                         }

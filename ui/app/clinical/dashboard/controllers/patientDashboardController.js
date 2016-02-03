@@ -28,7 +28,7 @@ angular.module('bahmni.clinical')
             $scope.init = function (dashboard) {
                 dashboard.startDate = null;
                 dashboard.endDate = null;
-                if (programConfig.showDashBoardWithinDateRange) {
+                if (programConfig.showDetailsWithinDateRange) {
                     dashboard.startDate = $stateParams.dateEnrolled;
                     dashboard.endDate = $stateParams.dateCompleted;
                 }

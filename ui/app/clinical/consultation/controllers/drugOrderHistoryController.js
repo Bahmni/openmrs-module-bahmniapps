@@ -73,7 +73,7 @@ angular.module('bahmni.clinical')
                 activeDrugOrdersList = activeDrugOrders || [];
                 var numberOfVisits = treatmentConfig.drugOrderHistoryConfig.numberOfVisits ? treatmentConfig.drugOrderHistoryConfig.numberOfVisits : 3;
                 spinner.forPromise(treatmentService.getPrescribedDrugOrders(
-                    $stateParams.patientUuid, true, numberOfVisits).then(function (data) {
+                    $stateParams.patientUuid, true, numberOfVisits, $stateParams.dateEnrolled, $stateParams.dateCompleted).then(function (data) {
                         prescribedDrugOrders = data;
                         createPrescriptionGroups($scope.consultation.activeAndScheduledDrugOrders);
                     }));

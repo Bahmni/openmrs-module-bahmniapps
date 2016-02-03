@@ -4,7 +4,7 @@ describe('Drug Order Details DisplayControl', function () {
     var drugOrderSections,
         $compile,
         mockBackend,
-        scope,
+        scope, q,treatmentService,
         params,element,
         simpleHtml = '<drug-order-details id="dashboard-drug-order-details" patient="patient" section="params"></drug-order-details>';
 
@@ -48,20 +48,23 @@ describe('Drug Order Details DisplayControl', function () {
     beforeEach(module('bahmni.clinical'));
     beforeEach(module('bahmni.common.displaycontrol.drugOrderDetails'));
     beforeEach(module(function ($provide) {
+        treatmentService = jasmine.createSpyObj('treatmentService', ['getAllDrugOrdersFor']);
+        $provide.value('TreatmentService', treatmentService);
         $provide.value('treatmentConfig', function () {
             return {};
         });
     }));
 
 
-    beforeEach(inject(function (_$compile_, $rootScope, $httpBackend) {
+    beforeEach(inject(function (_$compile_, $rootScope, $httpBackend, $q) {
+        q= $q;
         scope = $rootScope;
         $compile = _$compile_;
         scope.patient= {uuid:'123'};
         scope.params = {dashboardParams:{}};
         mockBackend = $httpBackend;
         mockBackend.expectGET('../common/displaycontrols/drugOrderDetails/views/drugOrderDetails.html').respond("<div>dummy</div>");
-        mockBackend.expectGET(Bahmni.Common.Constants.bahmniDrugOrderUrl + "/drugOrderDetails"+ "?patientUuid=123").respond(drugOrderSections);
+        treatmentService.getAllDrugOrdersFor.and.returnValue(specUtil.respondWithPromise(q, drugOrderSections));
         element = $compile(simpleHtml)(scope);
         scope.$digest();
         mockBackend.flush();
@@ -85,10 +88,8 @@ describe('Drug Order Details DisplayControl', function () {
 
     it("should filter inactive drug orders when configured to not show them", function(){
         scope.params = {dashboardParams:{showOnlyActive:true}};
-        mockBackend.expectGET(Bahmni.Common.Constants.bahmniDrugOrderUrl + "/drugOrderDetails"+ "?patientUuid=123").respond(drugOrderSections);
         element = $compile(simpleHtml)(scope);
         scope.$digest();
-        mockBackend.flush();
         var compiledElementScope = element.isolateScope();
         scope.$digest();
         expect(compiledElementScope.drugOrders.length).toBe(1);

@@ -1,15 +1,18 @@
 'use strict';
 
 angular.module('bahmni.clinical')
-    .factory('TreatmentService', ['$http', '$q', function ($http, $q) {
+    .factory('TreatmentService', ['$http', '$q', 'appService', function ($http, $q, appService) {
 
         var createDrugOrder = function (drugOrder) {
             return Bahmni.Clinical.DrugOrder.create(drugOrder);
         };
-
-        var getActiveDrugOrdersFromServer = function (patientUuid) {
+        var getActiveDrugOrdersFromServer = function (patientUuid, startDate, endDate) {
             return $http.get(Bahmni.Common.Constants.bahmniDrugOrderUrl + "/active", {
-                params: { patientUuid: patientUuid  },
+                params: {
+                    patientUuid: patientUuid,
+                    startDate: startDate,
+                    endDate: endDate
+                },
                 withCredentials: true
             });
         };
@@ -21,8 +24,8 @@ angular.module('bahmni.clinical')
                     numberOfVisits: numberOfVisits,
                     getOtherActive: getOtherActive,
                     visitUuids: visitUuids,
-                    startDate: Bahmni.Common.Util.DateUtil.parseLongDateToServerFormat(startDate),
-                    endDate: Bahmni.Common.Util.DateUtil.parseLongDateToServerFormat(endDate),
+                    startDate: startDate,
+                    endDate: endDate,
                     getEffectiveOrdersOnly: getEffectiveOrdersOnly
                 },
                 withCredentials: true
@@ -39,23 +42,38 @@ angular.module('bahmni.clinical')
             });
         };
 
-        var getActiveDrugOrders = function (patientUuid) {
+        var getProgramConfig = function () {
+            var programConfig = appService.getAppDescriptor() ? appService.getAppDescriptor().getConfigValue("program") : {};
+            return programConfig;
+        }
+
+        var getActiveDrugOrders = function (patientUuid, fromDate, toDate) {
+            var programConfig = getProgramConfig();
+            var startDate = programConfig.showDetailsWithinDateRange ? fromDate : null;
+            var endDate = programConfig.showDetailsWithinDateRange ? toDate : null;
+
             var deferred = $q.defer();
-            getActiveDrugOrdersFromServer(patientUuid).success(function (response) {
+            getActiveDrugOrdersFromServer(patientUuid,startDate,endDate).success(function (response) {
                 var activeDrugOrders = response.map(createDrugOrder);
                 deferred.resolve(activeDrugOrders);
             });
             return deferred.promise;
         };
 
-        var getPrescribedDrugOrders = function(patientUuid, includeActiveVisit, numberOfVisits) {
+        var getPrescribedDrugOrders = function(patientUuid, includeActiveVisit, numberOfVisits, fromDate, toDate) {
+            var programConfig = getProgramConfig();
+            var startDate = programConfig.showDetailsWithinDateRange ? fromDate : null;
+            var endDate = programConfig.showDetailsWithinDateRange ? toDate : null;
+
             var deferred = $q.defer();
             $http.get(Bahmni.Common.Constants.bahmniDrugOrderUrl, {
                 method: "GET",
                 params: {
                     patientUuid: patientUuid,
                     numberOfVisits: numberOfVisits,
-                    includeActiveVisit: includeActiveVisit
+                    includeActiveVisit: includeActiveVisit,
+                    startDate: startDate,
+                    endDate: endDate
                 },
                 withCredentials: true
             }).success(function (response) {

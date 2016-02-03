@@ -85,7 +85,7 @@ describe("DrugOrderHistoryController", function () {
 
         });
         it("should get prescribed and active Drugorders with correct no of visits ", function () {
-                expect( _treatmentService.getPrescribedDrugOrders).toHaveBeenCalledWith("patientUuid", true, 4);
+                expect( _treatmentService.getPrescribedDrugOrders).toHaveBeenCalledWith("patientUuid", true, 4, undefined,undefined);
             });
     });
 

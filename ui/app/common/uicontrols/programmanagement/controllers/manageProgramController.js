@@ -19,8 +19,21 @@ angular.module('bahmni.common.uicontrols.programmanagment')
 
                     $scope.endedPrograms = programs.endedPrograms;
                     $scope.endedPrograms.showProgramSection = true;
+                }).then(function() {
+                    formatProgramDates();
                 }));
             };
+
+            var formatProgramDates = function() {
+                _.each($scope.activePrograms, function(activeProgram) {
+                    activeProgram.fromDate = Bahmni.Common.Util.DateUtil.parseLongDateToServerFormat(activeProgram.dateEnrolled);
+                    activeProgram.toDate = Bahmni.Common.Util.DateUtil.parseLongDateToServerFormat(activeProgram.dateCompleted);
+                });
+                _.each($scope.endedPrograms, function(endedProgram) {
+                    endedProgram.fromDate = Bahmni.Common.Util.DateUtil.parseLongDateToServerFormat(endedProgram.dateEnrolled);
+                    endedProgram.toDate = Bahmni.Common.Util.DateUtil.parseLongDateToServerFormat(endedProgram.dateCompleted);
+                })
+            }
 
             var getCurrentDate = function () {
                 var retrospectiveDate = retrospectiveEntryService.getRetrospectiveDate();

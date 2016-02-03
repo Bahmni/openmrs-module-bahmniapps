@@ -6,6 +6,7 @@ describe('DrugOrdersSection DisplayControl', function () {
         mockBackend,
         scope,
         params, element, q,
+        treatmentService,
         simpleHtml = '<drug-orders-section patient-uuid="patientUuid" config="params" treatment-config="treatmentConfig"></drug-orders-section>';
     var DateUtil = Bahmni.Common.Util.DateUtil;
 
@@ -102,6 +103,13 @@ describe('DrugOrdersSection DisplayControl', function () {
 
     beforeEach(module('bahmni.clinical'));
     beforeEach(module('bahmni.common.displaycontrol.drugOrdersSection'));
+
+    beforeEach(module(function ($provide) {
+        treatmentService = jasmine.createSpyObj('treatmentService', ['getAllDrugOrdersFor']);
+        $provide.value('TreatmentService', treatmentService);
+
+    }));
+
     beforeEach(inject(function (_$compile_, $rootScope, $httpBackend, $q) {
         scope = $rootScope;
         q = $q;
@@ -112,9 +120,10 @@ describe('DrugOrdersSection DisplayControl', function () {
             columns: ["drugName", "dosage", "route"]
         };
         scope.treatmentConfig = {};
+        treatmentService.getAllDrugOrdersFor.and.returnValue(specUtil.respondWithPromise(q, drugOrders));
+
         mockBackend = $httpBackend;
         mockBackend.expectGET('../common/displaycontrols/drugOrdersSection/views/drugOrdersSection.html').respond("<div>dummy</div>");
-        mockBackend.expectGET(Bahmni.Common.Constants.bahmniDrugOrderUrl + "/drugOrderDetails" + "?patientUuid=abcd-1234").respond(drugOrders);
     }));
 
     it("should return all configured drug orders taken by the patient", function () {

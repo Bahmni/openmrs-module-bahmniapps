@@ -97,7 +97,7 @@ describe("BahmniObservation", function () {
             appService.getAppDescriptor.and.returnValue({
                 getConfigValue: function () {
                     return {
-                        showDashBoardWithinDateRange: true
+                        showDetailsWithinDateRange: true
                     }
                 }, getExtensions: function (a, b) {
                     return {

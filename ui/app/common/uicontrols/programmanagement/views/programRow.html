@@ -27,8 +27,8 @@
                            patientUuid: patient.uuid,
                            programUuid: patientProgram.program.uuid,
                            conceptSetGroupName: 'observations',
-                           dateEnrolled: patientProgram.dateEnrolled,
-                           dateCompleted: patientProgram.dateCompleted})">
+                           dateEnrolled: patientProgram.fromDate,
+                           dateCompleted: patientProgram.toDate})">
                     <img ng-src="{{patient.image}}" onerror="this.onerror=null;this.src='../images/blank-user.gif';">
                     <span class="patient-info">
                         <span class="patient-name" >{{patientProgram.display}}</span>

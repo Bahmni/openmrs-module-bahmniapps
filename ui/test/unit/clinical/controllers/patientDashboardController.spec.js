@@ -73,7 +73,7 @@ describe("patient dashboard controller", function () {
 
     it("should init dashboard sections", function (done) {
 
-        _appConfig.getConfigValue.and.returnValue({showDashBoardWithinDateRange: false});
+        _appConfig.getConfigValue.and.returnValue({showDetailsWithinDateRange: false});
 
         diseaseTemplates = [
             new Bahmni.Clinical.DiseaseTemplate({name: "Breast Cancer"}, breastCancerDiseaseTemplate.observationTemplates),
@@ -105,7 +105,7 @@ describe("patient dashboard controller", function () {
 
     it("should init dashboard sections for given date range", function (done) {
 
-        _appConfig.getConfigValue.and.returnValue({showDashBoardWithinDateRange: true});
+        _appConfig.getConfigValue.and.returnValue({showDetailsWithinDateRange: true});
 
         diseaseTemplates = [
             new Bahmni.Clinical.DiseaseTemplate({name: "Breast Cancer"}, breastCancerDiseaseTemplate.observationTemplates),

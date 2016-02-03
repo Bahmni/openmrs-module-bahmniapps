@@ -3,17 +3,23 @@
 describe("TreamentService", function () {
     var _$http;
     var treatmentService;
+    var appService;
 
     beforeEach(module('bahmni.clinical'));
     
     beforeEach(module(function () {
         _$http = jasmine.createSpyObj('$http', ['get']);
-        
+
     }));
 
     beforeEach(module(function ($provide) {
+        var appService = jasmine.createSpyObj('appService', ['getAppDescriptor']);
+        var appDescriptor = jasmine.createSpyObj('appDescriptor', ['getConfigValue']);
+        appDescriptor.getConfigValue.and.returnValue({showDetailsWithinDateRange: false});
+        appService.getAppDescriptor.and.returnValue(appDescriptor);
         $provide.value('$http', _$http);
         $provide.value('$q', Q);
+        $provide.value('appService',appService);
     }));
 
 
@@ -27,7 +33,7 @@ describe("TreamentService", function () {
                 return {success: function(fn) {return fn(drugOrders)}};
             });
 
-            this.treatmentService.getActiveDrugOrders("123").then(function (response) {
+            this.treatmentService.getActiveDrugOrders("123", null, null).then(function (response) {
                 expect(response).toEqual(drugOrders);
                 done();
             });
