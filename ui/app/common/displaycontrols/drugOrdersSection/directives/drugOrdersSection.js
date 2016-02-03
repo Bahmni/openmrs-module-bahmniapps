@@ -10,17 +10,18 @@ angular.module('bahmni.common.displaycontrol.drugOrdersSection')
                 $scope.toggle = ! $scope.toggle
             };
 
+            var treatmentConfigColumnHeaders = $scope.config.columnHeaders;
             $scope.columnHeaders = {
-                "drugName": "DRUG_DETAILS_DRUG_NAME",
-                "dosage": "DRUG_DETAILS_DOSE_INFO",
-                "route": "DRUG_DETAILS_ROUTE",
-                "duration": "DRUG_DETAILS_DURATION",
-                "frequency": "DRUG_DETAILS_FREQUENCY",
-                "startDate": "DRUG_DETAILS_START_DATE",
-                "stopDate": "DRUG_DETAILS_STOP_DATE",
-                "stopReason": "DRUG_DETAILS_ORDER_REASON_CODED",
-                "instructions": "DRUG_DETAILS_INSTRUCTIONS_TEXT",
-                "quantity": "DRUG_DETAILS_QUANTITY_TEXT"
+                "drugName": (treatmentConfigColumnHeaders && treatmentConfigColumnHeaders.drugName) || "DRUG_DETAILS_DRUG_NAME",
+                "dosage": (treatmentConfigColumnHeaders && treatmentConfigColumnHeaders.dosage) || "DRUG_DETAILS_DOSE_INFO",
+                "route": (treatmentConfigColumnHeaders && treatmentConfigColumnHeaders.route) || "DRUG_DETAILS_ROUTE",
+                "duration": (treatmentConfigColumnHeaders && treatmentConfigColumnHeaders.duration) || "DRUG_DETAILS_DURATION",
+                "frequency": (treatmentConfigColumnHeaders && treatmentConfigColumnHeaders.frequency) || "DRUG_DETAILS_FREQUENCY",
+                "startDate": (treatmentConfigColumnHeaders && treatmentConfigColumnHeaders.startDate) || "DRUG_DETAILS_START_DATE",
+                "stopDate": (treatmentConfigColumnHeaders && treatmentConfigColumnHeaders.stopDate) || "DRUG_DETAILS_STOP_DATE",
+                "stopReason": (treatmentConfigColumnHeaders && treatmentConfigColumnHeaders.stopReason) || "DRUG_DETAILS_ORDER_REASON_CODED",
+                "instructions": (treatmentConfigColumnHeaders && treatmentConfigColumnHeaders.instructions) || "DRUG_DETAILS_INSTRUCTIONS_TEXT",
+                "quantity": (treatmentConfigColumnHeaders && treatmentConfigColumnHeaders.quantity) || "DRUG_DETAILS_QUANTITY_TEXT"
             };
 
             $scope.scheduledDate = DateUtil.getDateWithoutTime(DateUtil.now());

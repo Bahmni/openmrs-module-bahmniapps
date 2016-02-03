@@ -300,5 +300,30 @@ describe('DrugOrdersSection DisplayControl', function () {
 
     });
 
+    describe("Column header Internationalization", function () {
+        it("should pick the column name header key from treatmentConfig", function () {
+            scope.params = {
+                columnHeaders: {
+                    drugName: "drugg"
+                }
+            };
+            element = $compile(simpleHtml)(scope);
+            scope.$digest();
+            mockBackend.flush();
 
+            var compiledElementScope = element.isolateScope();
+            scope.$digest();
+            expect(compiledElementScope.columnHeaders.drugName).toBe("drugg");
+        });
+
+        it("should pick the default column name header key if not present in treatmentConfig", function () {
+            element = $compile(simpleHtml)(scope);
+            scope.$digest();
+            mockBackend.flush();
+
+            var compiledElementScope = element.isolateScope();
+            scope.$digest();
+            expect(compiledElementScope.columnHeaders.drugName).toBe("DRUG_DETAILS_DRUG_NAME");
+        });
+    })
 });
