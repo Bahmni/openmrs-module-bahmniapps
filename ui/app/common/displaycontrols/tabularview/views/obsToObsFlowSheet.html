@@ -57,7 +57,7 @@
                         {{getAbbreviation(header)}}
                         <hint concept-details="header"/>
                     </td>
-                    <td ng-repeat="row in obsTable.rows" ng-class="{'is-abnormal': row.columns[header.name][0].abnormal}">
+                    <td ng-repeat="row in obsTable.rows" ng-class="{'is-abnormal-bold': row.columns[header.name][0].abnormal}">
                         {{commafy(row.columns[header.name])}}
                         <span class="fr" ng-if="header.name === config.groupByConcept && isEditable" >
                                 <span class="has-link fl"

@@ -52,6 +52,10 @@ input[file-upload] {
 .is-abnormal {
   color: red!important;
 }
+.is-abnormal-bold{
+  font-family:$OpenSansBoldFont !important;
+  color: red!important;
+}
 
 .visible-print {
   display: none;
