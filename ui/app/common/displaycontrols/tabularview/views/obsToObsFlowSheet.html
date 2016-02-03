@@ -23,7 +23,7 @@
                 <tr>
                     <th ng-if="isMonthAvailable()"> Month</th>
                     <th ng-repeat="header in obsTable.headers" ng-if="header.name != 'Month'">
-                        {{getAbbreviation(header)}}
+                        {{getHeaderName(header)}}
                         <hint concept-details="header"/>
                     </th>
                 </tr>
@@ -54,7 +54,7 @@
                 </tr>
                 <tr ng-repeat="header in obsTable.headers" ng-if="header.name != 'Month'">
                     <td>
-                        {{getAbbreviation(header)}}
+                        {{getHeaderName(header)}}
                         <hint concept-details="header"/>
                     </td>
                     <td ng-repeat="row in obsTable.rows" ng-class="{'is-abnormal-bold': row.columns[header.name][0].abnormal}">

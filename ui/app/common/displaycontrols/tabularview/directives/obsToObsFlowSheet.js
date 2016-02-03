@@ -1,8 +1,8 @@
 'use strict';
 
-angular.module('bahmni.common.displaycontrol.obsVsObsFlowSheet').directive('obsToObsFlowSheet', ['$translate','spinner','observationsService','conceptSetService', '$q','conceptSetUiConfigService',
-        function ($translate, spinner, observationsService, conceptSetService, $q, conceptSetUiConfigService) {
-            var link = function ($scope, element, attrs) {
+angular.module('bahmni.common.displaycontrol.obsVsObsFlowSheet').directive('obsToObsFlowSheet', ['$translate', 'spinner', 'observationsService', 'conceptSetService', '$q', 'conceptSetUiConfigService',
+    function ($translate, spinner, observationsService, conceptSetService, $q, conceptSetUiConfigService) {
+        var link = function ($scope, element, attrs) {
             $scope.config = $scope.isOnDashboard ? $scope.section.dashboardParams : $scope.section.allDetailsParams;
             $scope.isEditable = $scope.config.isEditable;
             var patient = $scope.patient;
@@ -27,14 +27,14 @@ angular.module('bahmni.common.displaycontrol.obsVsObsFlowSheet').directive('obsT
             var getObsInFlowSheet = function () {
                 return observationsService.getObsInFlowSheet(patient.uuid, $scope.config.templateName,
                     $scope.config.groupByConcept, $scope.config.conceptNames, $scope.config.numberOfVisits, $scope.config.initialCount, $scope.config.latestCount, $scope.config.name, $scope.section.startDate, $scope.section.endDate).success(function (data) {
-                                var obsInFlowSheet = data;
-                                var groupByElement = _.find(obsInFlowSheet.headers, function (header) {
-                            return header.name === $scope.config.groupByConcept;
-                        });
-                        obsInFlowSheet.headers = _.without(obsInFlowSheet.headers, groupByElement);
-                        obsInFlowSheet.headers.unshift(groupByElement);
-                        $scope.obsTable = obsInFlowSheet;
-                    })
+                    var obsInFlowSheet = data;
+                    var groupByElement = _.find(obsInFlowSheet.headers, function (header) {
+                        return header.name === $scope.config.groupByConcept;
+                    });
+                    obsInFlowSheet.headers = _.without(obsInFlowSheet.headers, groupByElement);
+                    obsInFlowSheet.headers.unshift(groupByElement);
+                    $scope.obsTable = obsInFlowSheet;
+                })
             }
 
             var init = function () {
@@ -59,34 +59,41 @@ angular.module('bahmni.common.displaycontrol.obsVsObsFlowSheet').directive('obsT
                 }
             };
 
-            $scope.getPivotOn = function(){
+            $scope.getPivotOn = function () {
                 return $scope.config.pivotOn;
             };
 
-            $scope.getAbbreviation = function(concept){
+            $scope.getHeaderName = function (header) {
+                var headerName = getSourceCode(header, $scope.section.headingConceptSource);
+                return headerName || header.shortName || header.name;
+            };
+
+            var getSourceCode = function (concept, conceptSource) {
                 var result;
-                if(concept && concept.mappings && concept.mappings.length > 0 && $scope.section.headingConceptSource){
-                    result = _.result(_.find(concept.mappings, {"source": $scope.section.headingConceptSource}),"code");
+                if (concept && concept.mappings && concept.mappings.length > 0) {
+                    result = _.result(_.find(concept.mappings, {"source": conceptSource}), "code");
                     result = $translate.instant(result);
                 }
 
-                return result || concept.shortName || concept.name;
+                return result;
             };
 
-            var getName = function(obs){
-                return (obs && obs.value && obs.value.shortName) || (obs && obs.value && obs.value.name) || obs.value;
+            var getName = function (obs) {
+                return getSourceCode(obs.value, $scope.section.dataConceptSource) || (obs && obs.value && obs.value.shortName) || (obs && obs.value && obs.value.name) || obs.value;
             };
 
-            $scope.commafy = function (observations){
+            $scope.commafy = function (observations) {
                 var list = [];
-                var unBoolean = function(boolValue) {
+                var unBoolean = function (boolValue) {
                     return boolValue ? "Yes" : "No";
                 };
 
                 for (var index in observations) {
-                    var name =  getName(observations[index]);
+                    var name = getName(observations[index]);
 
-                    if (observations[index].concept.dataType === "Boolean") name = unBoolean(name);
+                    if (observations[index].concept.dataType === "Boolean") {
+                        name = unBoolean(name);
+                    }
 
                     if (observations[index].concept.dataType === "Date") {
                         var conceptName = observations[index].concept.name;
@@ -105,7 +112,7 @@ angular.module('bahmni.common.displaycontrol.obsVsObsFlowSheet').directive('obsT
                 return list.join(', ');
             };
 
-            $scope.isMonthAvailable = function(){
+            $scope.isMonthAvailable = function () {
                 return $scope.obsTable.rows[0].columns['Month'] != null
             };
 
