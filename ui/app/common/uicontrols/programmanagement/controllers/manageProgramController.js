@@ -205,14 +205,17 @@ angular.module('bahmni.common.uicontrols.programmanagment')
                     }));
             };
 
-            $scope.toggleDetail = function (program) {
+            $scope.toggleDetail = function (program , $event) {
+                if($event){
+                    $event.preventDefault();
+                }
                 program.ending = false;
                 program.showDetail = !program.showDetail;
             };
 
             $scope.toggleEdit = function (program) {
-                program.isOpen = true;
                 program.editing = true;
+                program.isOpen = true;
             };
 
             $scope.toggleEnd = function (program) {
@@ -291,6 +294,18 @@ angular.module('bahmni.common.uicontrols.programmanagment')
                 program.isOpen = !program.isOpen;
                 program.showDetail = false;
                 program.editing = false;
+            };
+
+            $scope.getMaxAllowedDate = function (states) {
+                var minStartDate = new Date();
+                if (states && Array.isArray(states)) {
+                    for (var stateIndex = 0; stateIndex < states.length; stateIndex++) {
+                        if (new Date(states[stateIndex].startDate) < minStartDate) {
+                            minStartDate = new Date(states[stateIndex].startDate);
+                        }
+                    }
+                }
+                return DateUtil.getDateWithoutTime(minStartDate);
             };
 
             init();

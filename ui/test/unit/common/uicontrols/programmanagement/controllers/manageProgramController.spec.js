@@ -103,6 +103,20 @@ describe("ManageProgramController", function () {
         expect(scope.hasPatientAnyPastPrograms()).toBeTruthy();
     });
 
+    describe('get maximum allowed program enrollment date for edit flow',function(){
+        it("Should return minimum start date of states",function(){
+            scope.$apply(setUp);
+            var maxDate =  scope.getMaxAllowedDate(listOfPrograms.activePrograms[0].states);
+            expect(maxDate).toEqual('2015-07-01')
+        });
+
+        it("Should return current date when there are no states",function(){
+            scope.$apply(setUp);
+            var maxDate =  scope.getMaxAllowedDate([]);
+            expect(maxDate).toEqual(Bahmni.Common.Util.DateUtil.getDateWithoutTime(new Date()));
+        });
+    });
+
     describe("Remove program states", function () {
 
         it("should remove latest program state", function () {
@@ -283,7 +297,7 @@ describe("ManageProgramController", function () {
             scope.$apply(setUp);
 
             expect(scope.activePrograms[0].program.allWorkflows.length).toBe(1);
-        })
+        });
     });
 
     var allPrograms = [

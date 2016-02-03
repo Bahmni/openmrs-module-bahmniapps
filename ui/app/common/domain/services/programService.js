@@ -124,7 +124,7 @@ angular.module('bahmni.common.domain')
 
         var updatePatientProgram = function (patientProgram, programAttributeTypes){
             var attributeFormatter = new Bahmni.Common.Domain.AttributeFormatter();
-            var content = { attributes: attributeFormatter.getMrsAttributesForUpdate(patientProgram.patientProgramAttributes, programAttributeTypes, patientProgram.attributes)};
+            var content = { dateEnrolled:patientProgram.dateEnrolled , attributes: attributeFormatter.getMrsAttributesForUpdate(patientProgram.patientProgramAttributes, programAttributeTypes, patientProgram.attributes)};
             return savePatientProgram(patientProgram.uuid,content);
         };
 

@@ -1,4 +1,5 @@
 <div class="program-row">
+    <form class="clearfix" ng-submit="updatePatientProgram(patientProgram)" >
     <div class="program-details">
         <div>
             <table class="programTable">
@@ -9,9 +10,12 @@
                         {{patientProgram.display}}
                     </td>
                     <td class="programState"><strong ng-show="getCurrentStateDisplayName(patientProgram)">{{'PROGRAM_MANAGEMENT_LABEL_PROGRAM_STATE' | translate}} : </strong>{{getCurrentStateDisplayName(patientProgram)}}</td>
-                    <td class="programDate"><strong>{{'PROGRAM_MANAGEMENT_START_DATE_KEY' | translate}} : </strong>{{patientProgram.dateEnrolled | bahmniDate}}
-                        <i class="fa fa-pencil-square-o fr" ng-click="toggleEdit(patientProgram)"></i>
+                    <td class="programDate" ng-if="!patientProgram.editing"><strong>{{'PROGRAM_MANAGEMENT_START_DATE_KEY' | translate}} : </strong>{{patientProgram.dateEnrolled | bahmniDate}}</td>
+                    <td class="programDate" ng-if="patientProgram.editing"><strong>{{'PROGRAM_MANAGEMENT_START_DATE_KEY' | translate}} : </strong>
+                        <span class="asterick">*</span>
+                        <input type="date" max="{{getMaxAllowedDate(patientProgram.states)}}" ng-model="patientProgram.dateEnrolled" ng-required="true">
                     </td>
+                    <td><i class="fa fa-pencil-square-o fr" ng-click="toggleEdit(patientProgram)"></i></td>
                 </tr>
             </table>
         </div>
@@ -31,23 +35,22 @@
                         <span class="patient-id">{{patient.identifier}}</span>
                     </span>
                 </a>
-                <form class="clearfix" ng-submit="updatePatientProgram(patientProgram)" >
-                <program-attributes program="patientProgram" program-attribute-types = "programAttributeTypes"></program-attributes>
-                </form>
+                    <program-attributes program="patientProgram" program-attribute-types = "programAttributeTypes"></program-attributes>
+
             </section>
             <div class="program-timeline-container">
                 <h2 class="programAttribute-title">{{'PROGRAM_MANAGEMENT_PROGRAM_STATES_KEY' | translate}}</h2>
                 <div class="program-timeline">
                     <timeline program="patientProgram"></timeline>
                 </div>
-                <button ng-click="toggleDetail(patientProgram)" ng-class="{'tab-selected': patientProgram.showDetail, 'btn-noTimeline':patientProgram.states.length==0}" class="fr detail-btn">
+                <button ng-click="toggleDetail(patientProgram,$event)" ng-class="{'tab-selected': patientProgram.showDetail, 'btn-noTimeline':patientProgram.states.length==0}" class="fr detail-btn">
                     <span>{{'PROGRAM_MANAGEMENT_DETAILS_KEY' | translate}}</span>
                     <i class="fa fa-expand"></i>
                 </button>
             </div>
         </div>
     </div>
-
+    </form>
     <div class="program-state-list"  ng-if="patientProgram.showDetail && patientProgram.isOpen">
         <div class="down-arrow-container">
         </div>
