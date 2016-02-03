@@ -648,17 +648,22 @@ a.visit:before {
   }
 }
 
-.visit-dashboard{
-  ul li{
-    background: #fff;
+.ng-dialog-all-details-page {
+  .visit-dashboard {
+    i {
+      width: 1.7em;
+    }
     ul li {
-      span {
-        padding: 3px 10px !important;
-        &.formDataTime{
-          width:15%;
-          text-align: right;
-          .formDataEdit{
-            padding:0 !important;
+      background: #fff;
+      ul li {
+        span {
+          padding: 3px 10px !important;
+          &.formDataTime {
+            width: 18%;
+            text-align: right;
+            .formDataEdit {
+              padding: 0 !important;
+            }
           }
         }
       }
