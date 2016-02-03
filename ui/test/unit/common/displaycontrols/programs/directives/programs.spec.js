@@ -82,5 +82,59 @@ describe("Program display control", function () {
         expect(elementIsolatedScope.activePrograms.length).toBe(1);
         expect(elementIsolatedScope.activePrograms[0].display).toBe("End Fever Program");
 
+        expect(elementIsolatedScope.getAttributeValue(
+            {
+                "uuid": "12cac096-ac84-419f-88c3-f140a3c13d99",
+                "name": "Sample concept attribute",
+                "value": {
+                    "uuid": "c2107f30-3f10-11e4-adec-0800271c1b75",
+                    "display": "UneducatedFull",
+                    "name": {
+                        "conceptNameType": "FULLY_SPECIFIED",
+                        "display": "UneducatedFull"
+                    },
+                    "names": [
+                        {
+                            "display": "UneducatedFull"
+                        },
+                        {
+                            "display": "UneducatedShort"
+                        }
+                    ]
+                },
+                "attributeType" : {
+                    "uuid" : "uuid3",
+                    "description" : "Sample concept attribute",
+                    "name" : "Sample concept attribute",
+                    "format" : "org.bahmni.module.bahmnicore.customdatatype.datatype.CodedConceptDatatype"
+                }
+            }
+        )).toBe("UneducatedShort");
+
+        expect(elementIsolatedScope.getAttributeValue(
+            {
+                "uuid": "12cac096-ac84-419f-88c3-f140a3c13d99",
+                "name": "Sample date attribute",
+                "value": "2016-01-13T00:00:00.000+0000",
+                "attributeType" : {
+                    "uuid" : "uuid1",
+                    "name" : "Sample date attribute",
+                    "description" : "Date Attribute",
+                    "format" : "org.openmrs.customdatatype.datatype.DateDatatype"
+                }
+            }) === Bahmni.Common.Util.DateUtil.formatDateWithoutTime("2016-01-13T00:00:00.000+0000")).toBeTruthy();
+
+        expect(elementIsolatedScope.getAttributeValue({
+                "uuid": "12cac096-ac84-419f-88c3-f140a3c13d99",
+                "name": "Sample regex attribute",
+                "value": "123",
+                "attributeType" : {
+                    "uuid" : "uuid2",
+                    "description" : "Sample regex attribute",
+                    "name" : "Sample regex attribute",
+                    "format" : "org.openmrs.customdatatype.datatype.RegexValidationDatatype"
+                }
+            }) === "123").toBeTruthy();
+
     });
 });

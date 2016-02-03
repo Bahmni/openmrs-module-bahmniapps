@@ -28,7 +28,7 @@ angular.module('bahmni.common.displaycontrol.programs')
                     }
                     else if(isCodedConceptFormat(attribute.attributeType.format)) {
                         var mrsAnswer = attribute.value;
-                        var displayName = attribute.display;
+                        var displayName = mrsAnswer.display;
                         if (mrsAnswer.names && mrsAnswer.names.length == 2) {
                             if (mrsAnswer.name.conceptNameType == 'FULLY_SPECIFIED') {
                                 if (mrsAnswer.names[0].display == displayName)
