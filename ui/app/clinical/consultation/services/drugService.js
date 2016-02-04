@@ -3,7 +3,7 @@ angular.module('bahmni.clinical')
     .factory('DrugService', ['$http', function ($http) {
 
         var search = function (drugName) {
-            return $http.get("/openmrs/ws/rest/v1/drug",
+            return $http.get(Bahmni.Common.Constants.drugUrl,
                 {
                     method: "GET",
                     params: {
@@ -19,7 +19,7 @@ angular.module('bahmni.clinical')
         };
 
         var getSetMembersOfConcept = function (conceptSetFullySpecifiedName,searchTerm) {
-            return $http.get("/openmrs/ws/rest/v1/drug",
+            return $http.get(Bahmni.Common.Constants.drugUrl,
                 {
                     method: "GET",
                     params: {

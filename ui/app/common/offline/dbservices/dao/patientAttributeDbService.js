@@ -3,7 +3,7 @@
 angular.module('bahmni.common.offline')
     .service('patientAttributeDbService', ['$http', function ($http) {
         var insertAttributeTypes = function (db) {
-            return $http.get(window.location.origin + "/openmrs/ws/rest/v1/personattributetype?v=custom:(name,uuid,format)").then(function (attributesResponse) {
+                return $http.get(window.location.origin + Bahmni.Common.Constants.RESTWS_V1 + "/personattributetype?v=custom:(name,uuid,format)").then(function (attributesResponse) {
                 var personAttributeTypeList = attributesResponse.data.results;
                 var table, queries = [];
                 table = db.getSchema().table('patient_attribute_type');

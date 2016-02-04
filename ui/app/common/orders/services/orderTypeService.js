@@ -6,7 +6,7 @@ angular.module('bahmni.common.orders')
     var self = this;
     self.orderTypes = [];
     self.loadAll = function () {
-        return $http.get("/openmrs/ws/rest/v1/ordertype").then(function(response) {
+        return $http.get(Bahmni.Common.Constants.orderTypeUrl).then(function(response) {
             self.orderTypes = response.data.results;
         });
     };

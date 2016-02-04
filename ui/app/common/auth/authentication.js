@@ -27,7 +27,7 @@ angular.module('authentication')
             });
         });
     }]).service('sessionService', ['$rootScope', '$http', '$q', '$bahmniCookieStore', 'userService', 'offlineService', function ($rootScope, $http, $q, $bahmniCookieStore, userService, offlineService) {
-        var sessionResourcePath = '/openmrs/ws/rest/v1/session?v=custom:(uuid)', offlineApp = offlineService.isOfflineApp(), authenticationResponse = 'authenticationResponse', previousUser = 'previousUser', previousUserInfo = 'previousUserInfo';
+        var sessionResourcePath = Bahmni.Common.Constants.RESTWS_V1 + '/session?v=custom:(uuid)', offlineApp = offlineService.isOfflineApp(), authenticationResponse = 'authenticationResponse', previousUser = 'previousUser', previousUserInfo = 'previousUserInfo';
 
         var getAuthFromServer = function(username, password) {
             return $http.get(sessionResourcePath, {
@@ -160,7 +160,7 @@ angular.module('authentication')
         };
 
         this.loadProviders = function(userInfo) {
-            return $http.get("/openmrs/ws/rest/v1/provider", {
+            return $http.get(Bahmni.Common.Constants.providerUrl, {
                  method: "GET",
                  params: {
                      user: userInfo.uuid
@@ -201,7 +201,7 @@ angular.module('authentication')
                     scope.$apply(function() {
                         sessionService.destroy().then(
                             function () {
-                                $window.location = "../home/#/login";
+                                $window.location = "../home/index.html#/login";
                             }
                         );
                     });

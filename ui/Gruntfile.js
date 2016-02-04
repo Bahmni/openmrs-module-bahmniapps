@@ -369,7 +369,6 @@ module.exports = function (grunt) {
         'copy:dist',
         'filerev',
         'usemin',
-        'uglify',
         'rename:minified'
     ]);
 
@@ -407,7 +406,7 @@ module.exports = function (grunt) {
             if (fs.statSync(name).isDirectory()){
                 getFiles(name, files_);
             } else {
-                name = "'"+name.split("./app").join("/bahmni")+"'";
+                name = "'"+name.split("./app").join("https://192.168.33.10/bahmni")+"'";
                 if(files_.indexOf(name) === -1) {
                     files_.push(name);
                 }

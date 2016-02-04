@@ -2,9 +2,10 @@
 
 angular.module('bahmni.home', ['ui.router', 'httpErrorInterceptor', 'bahmni.common.domain', 'bahmni.common.i18n', 'bahmni.common.uiHelper', 'bahmni.common.util',
     'bahmni.common.appFramework', 'bahmni.common.logging', 'bahmni.common.routeErrorHandler', 'pascalprecht.translate', 'ngCookies', 'bahmni.common.offline'])
-    .config(['$urlRouterProvider', '$stateProvider','$httpProvider', '$bahmniTranslateProvider', function ($urlRouterProvider, $stateProvider, $httpProvider, $bahmniTranslateProvider) {
-    $urlRouterProvider.otherwise('/dashboard');
-    $stateProvider
+    .config(['$urlRouterProvider', '$stateProvider','$httpProvider', '$bahmniTranslateProvider', '$compileProvider', function ($urlRouterProvider, $stateProvider, $httpProvider, $bahmniTranslateProvider, $compileProvider) {
+        $urlRouterProvider.otherwise('/dashboard');
+        $compileProvider.aHrefSanitizationWhitelist(/^\s*(https?|ftp|mailto|chrome-extension):/);
+        $stateProvider
     .state('dashboard',
     {   url: '/dashboard',
         templateUrl: 'views/dashboard.html',
