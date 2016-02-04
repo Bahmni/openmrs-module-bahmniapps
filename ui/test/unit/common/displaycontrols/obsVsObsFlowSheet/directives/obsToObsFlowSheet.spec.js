@@ -223,8 +223,8 @@ describe('obsToObsFlowSheet DisplayControl', function () {
         });
     });
 
-    describe('getHeaderName ', function () {
-        it('should return the concept name when there is no abbreviation and there is no short name', function () {
+    describe('commafy ', function () {
+        it('should return the values in comma seperated if there are multiple values', function () {
             var scope = rootScope.$new();
 
             scope.isOnDashboard = true;
@@ -254,15 +254,24 @@ describe('obsToObsFlowSheet DisplayControl', function () {
             var compiledElementScope = element.isolateScope();
             scope.$digest();
 
-            var conceptWithoutMappingAndShortName = {
-                "uuid": "uuid",
-                "name": "name"
-            };
+            var observations = [
+                {
+                    concept: {
+                        dataType: 'Numeric'
+                    },
+                    value: 7.2
+                }, {
+                    concept: {
+                        dataType: 'Numeric'
+                    },
+                    value: 9.3
+                }
+            ];
 
-            expect(compiledElementScope.getHeaderName(conceptWithoutMappingAndShortName)).toEqual("name");
+            expect(compiledElementScope.commafy(observations)).toEqual("7.2, 9.3");
         });
 
-        it('should return the concept short name when there is no abbreviation and there is short name available', function () {
+        it('should return just the value if there is only one value', function () {
             var scope = rootScope.$new();
 
             scope.isOnDashboard = true;
@@ -291,16 +300,19 @@ describe('obsToObsFlowSheet DisplayControl', function () {
             var compiledElementScope = element.isolateScope();
             scope.$digest();
 
-            var conceptWithAbbreviation = {
-                "uuid": "uuid",
-                "shortName": "shortName",
-                "name": "name"
-            };
+            var observations = [
+                {
+                    concept: {
+                        dataType: 'Numeric'
+                    },
+                    value: 7.2
+                }
+            ];
 
-            expect(compiledElementScope.getHeaderName(conceptWithAbbreviation)).toEqual("shortName");
+            expect(compiledElementScope.commafy(observations)).toEqual("7.2");
         });
 
-        it('should return abbreviation if the concept have it and if it is configured', function () {
+        it('should return yes/no if the concept is boolean', function () {
             var scope = rootScope.$new();
 
             scope.isOnDashboard = true;
@@ -329,23 +341,19 @@ describe('obsToObsFlowSheet DisplayControl', function () {
             var compiledElementScope = element.isolateScope();
             scope.$digest();
 
-            var conceptWithAbbreviation = {
-                "uuid": "uuid",
-                "shortName": "shortName",
-                "mappings": [
-                    {
-                        "source": "CustomAbbreviationSource",
-                        "name": "abbreviation",
-                        "code": "SCD"
-                    }
-                ]
-            };
+            var observations = [
+                {
+                    concept: {
+                        dataType: 'Boolean'
+                    },
+                    value: true
+                }
+            ];
 
-            expect(compiledElementScope.getHeaderName(conceptWithAbbreviation)).toEqual("SCD");
-
+            expect(compiledElementScope.commafy(observations)).toEqual("Yes");
         });
 
-        it('should return the short name when headingConceptSource is not configured', function () {
+        it('should return date if the concept datatype is date and not configured to show month and year', function () {
             var scope = rootScope.$new();
 
             scope.isOnDashboard = true;
@@ -373,25 +381,218 @@ describe('obsToObsFlowSheet DisplayControl', function () {
             var compiledElementScope = element.isolateScope();
             scope.$digest();
 
-            var conceptWithAbbreviation = {
-                "uuid": "uuid",
-                "shortName": "shortName",
-                "mappings": [
-                    {
-                        "source": "org.openmrs.module.bacteriology",
-                        "name": "SPECIMEN COLLECTION DATE",
-                        "code": "SPECIMEN_COLLECTION_DATE"
+            var observations = [
+                {
+                    concept: {
+                        dataType: 'Date'
                     },
-                    {
-                        "source": "Abbrevation",
-                        "name": "abbreviation",
-                        "code": "SCD"
+                    value: '10/10/2015'
+                }
+            ];
+
+            expect(compiledElementScope.commafy(observations)).toEqual("10 Oct 15");
+        });
+
+        it('should return just month and year if the concept datatype is date and configured to show month and year', function () {
+            conceptSetUiConfigService.getConfig.and.callFake(function () {
+                return {
+                    ConceptName: {
+                        displayMonthAndYear: true
                     }
-                ]
+                }
+            });
+
+            var scope = rootScope.$new();
+
+            scope.isOnDashboard = true;
+            scope.section = {
+                "dashboardParams": {
+                    "conceptNames": [
+                        "Bacteriology, Rifampicin result",
+                        "Bacteriology, Ethambutol result"
+                    ]
+                }
             };
 
-            expect(compiledElementScope.getHeaderName(conceptWithAbbreviation)).toEqual("shortName");
+            scope.patient = {
+                "uuid": "patientUuid"
+            };
 
+            mockBackend.expectGET('/openmrs/ws/rest/v1/bahmnicore/observations/flowSheet?conceptNames=Bacteriology,+Rifampicin+result&conceptNames=Bacteriology,+Ethambutol+result&patientUuid=patientUuid').respond({});
+            mockBackend.expectGET('/openmrs/ws/rest/v1/concept?s=byFullySpecifiedName&v=custom:(uuid,names,displayString)').respond("<div>dummy</div>");
+
+            var element = compile(simpleHtml)(scope);
+
+            scope.$digest();
+            mockBackend.flush();
+
+            var compiledElementScope = element.isolateScope();
+            scope.$digest();
+
+            var observations = [
+                {
+                    concept: {
+                        name: "ConceptName",
+                        dataType: 'Date'
+                    },
+                    value: '10/10/2015'
+                }
+            ];
+
+            expect(compiledElementScope.commafy(observations)).toEqual("Oct 15");
+        });
+
+        it('should return abbreviation of the coded answer if the concept is coded and configured to show abbreviation', function () {
+            var scope = rootScope.$new();
+
+            scope.isOnDashboard = true;
+            scope.section = {
+                "dataConceptSource": "Abbreviation",
+                "dashboardParams": {
+                    "conceptNames": [
+                        "Bacteriology, Rifampicin result",
+                        "Bacteriology, Ethambutol result"
+                    ]
+                }
+            };
+
+            scope.patient = {
+                "uuid": "patientUuid"
+            };
+
+            mockBackend.expectGET('/openmrs/ws/rest/v1/bahmnicore/observations/flowSheet?conceptNames=Bacteriology,+Rifampicin+result&conceptNames=Bacteriology,+Ethambutol+result&patientUuid=patientUuid').respond({});
+            mockBackend.expectGET('/openmrs/ws/rest/v1/concept?s=byFullySpecifiedName&v=custom:(uuid,names,displayString)').respond("<div>dummy</div>");
+
+            var element = compile(simpleHtml)(scope);
+
+            scope.$digest();
+            mockBackend.flush();
+
+            var compiledElementScope = element.isolateScope();
+            scope.$digest();
+
+            var observations = [
+                {
+                    concept: {
+                        name: "ConceptName",
+                        dataType: 'Coded'
+                    },
+                    value: {
+                        "name": "Answer1",
+                        "shortName": "Ans1",
+                        "mappings": [
+                            {
+                                "source": "Abbreviation",
+                                "name": "abbreviation",
+                                "code": "A1"
+                            }
+                        ]
+                    }
+                }
+            ];
+
+            expect(compiledElementScope.commafy(observations)).toEqual("A1");
+        });
+
+        it('should return shortName of the coded answer if the concept is coded and not configured to show abbreviation', function () {
+            var scope = rootScope.$new();
+
+            scope.isOnDashboard = true;
+            scope.section = {
+                "dashboardParams": {
+                    "conceptNames": [
+                        "Bacteriology, Rifampicin result",
+                        "Bacteriology, Ethambutol result"
+                    ]
+                }
+            };
+
+            scope.patient = {
+                "uuid": "patientUuid"
+            };
+
+            mockBackend.expectGET('/openmrs/ws/rest/v1/bahmnicore/observations/flowSheet?conceptNames=Bacteriology,+Rifampicin+result&conceptNames=Bacteriology,+Ethambutol+result&patientUuid=patientUuid').respond({});
+            mockBackend.expectGET('/openmrs/ws/rest/v1/concept?s=byFullySpecifiedName&v=custom:(uuid,names,displayString)').respond("<div>dummy</div>");
+
+            var element = compile(simpleHtml)(scope);
+
+            scope.$digest();
+            mockBackend.flush();
+
+            var compiledElementScope = element.isolateScope();
+            scope.$digest();
+
+            var observations = [
+                {
+                    concept: {
+                        name: "ConceptName",
+                        dataType: 'Coded'
+                    },
+                    value: {
+                        "name": "Answer1",
+                        "shortName": "Ans1",
+                        "mappings": [
+                            {
+                                "source": "Abbreviation",
+                                "name": "abbreviation",
+                                "code": "A1"
+                            }
+                        ]
+                    }
+                }
+            ];
+
+            expect(compiledElementScope.commafy(observations)).toEqual("Ans1");
+        });
+
+        it('should return name of the coded answer if the concept is coded and not configured to show abbreviation and no shortname for the concept', function () {
+            var scope = rootScope.$new();
+
+            scope.isOnDashboard = true;
+            scope.section = {
+                "dashboardParams": {
+                    "conceptNames": [
+                        "Bacteriology, Rifampicin result",
+                        "Bacteriology, Ethambutol result"
+                    ]
+                }
+            };
+
+            scope.patient = {
+                "uuid": "patientUuid"
+            };
+
+            mockBackend.expectGET('/openmrs/ws/rest/v1/bahmnicore/observations/flowSheet?conceptNames=Bacteriology,+Rifampicin+result&conceptNames=Bacteriology,+Ethambutol+result&patientUuid=patientUuid').respond({});
+            mockBackend.expectGET('/openmrs/ws/rest/v1/concept?s=byFullySpecifiedName&v=custom:(uuid,names,displayString)').respond("<div>dummy</div>");
+
+            var element = compile(simpleHtml)(scope);
+
+            scope.$digest();
+            mockBackend.flush();
+
+            var compiledElementScope = element.isolateScope();
+            scope.$digest();
+
+            var observations = [
+                {
+                    concept: {
+                        name: "ConceptName",
+                        dataType: 'Coded'
+                    },
+                    value: {
+                        "name": "Answer1",
+                        "mappings": [
+                            {
+                                "source": "Abbreviation",
+                                "name": "abbreviation",
+                                "code": "A1"
+                            }
+                        ]
+                    }
+                }
+            ];
+
+            expect(compiledElementScope.commafy(observations)).toEqual("Answer1");
         });
     });
 });
