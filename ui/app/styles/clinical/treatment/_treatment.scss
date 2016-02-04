@@ -1,5 +1,11 @@
 .treatment-page-container{
     font-size: 12px;
+    .dashboard-section-wrapper{
+        position: static;
+    }
+    .dashboard-section{
+        position: static !important;
+    }
     .drug-details {
         line-height: 1.5em;
         padding-left: 10px;
@@ -53,9 +59,9 @@
         }
         .refill-btn, .stop-drug-btn {
             padding: 6px!important;
-            @media screen and (max-width: 1024px){
-                padding:9px 6px !important
-            }
+            //@media screen and (max-width: 1024px){
+            //    padding:9px 6px !important
+            //}
         }
         button.dispense-btn{
             font-family: OpenSansBold;
