@@ -1,57 +1,60 @@
 .messages {
-	.error-message, .info-message {
-		width: 35%;
-		margin: 5px auto;
-		color: #333;
+  .message-container{
+	width: 35%;
+	margin: 5px auto;
+	padding: 5px 10px;
+	border-radius: 2px;
+	font-size: 14px;
+	color: #FFF;
+	font-family: OpenSansSemiBold;
+	text-align: center;
+	position: fixed;
+	top: 50px;
+	left: 32%;
+	z-index: 1;
+	display: table;
+	@include clearfix;
+	.message-icon{
+	  display: table-cell;
+	  font-size: 30px;
+	  text-align: left;
+	  width: 12%;
+	}
+	.message-text{
+	  display: table-cell;
+	  text-align: left;
+	  vertical-align: middle;
+	}
+  }
+  .error-message-container{
+	background: rgb(216, 119, 119);
+	background: -moz-linear-gradient(top, rgba(216, 119, 119, 1) 1%, rgba(217, 87, 87, 1) 100%);
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(1%, rgba(216, 119, 119, 1)), color-stop(100%, rgba(217, 87, 87, 1)));
+	background: -webkit-linear-gradient(top, rgba(216, 119, 119, 1) 1%, rgba(217, 87, 87, 1) 100%);
+	background: -o-linear-gradient(top, rgba(216, 119, 119, 1) 1%, rgba(217, 87, 87, 1) 100%);
+	background: -ms-linear-gradient(top, rgba(216, 119, 119, 1) 1%, rgba(217, 87, 87, 1) 100%);
+	filter: progid:DXImageTransform.Microsoft.gradient(startColorstr = '#d87777', endColorstr = '#d95757', GradientType = 0);
+	background: linear-gradient(top, rgba(216, 119, 119, 1) 1%, rgba(217, 87, 87, 1) 100%);
+	border: 1px solid #b72224;
+	.types-for-errors{
+	  padding-top: 6px;
+	}
+	.button-wrappper{
+	  .copy-btn, .show-btn {
 		padding: 5px;
-		border-radius: 2px;
-		box-shadow: 0px 0px 8px -1px $lightGray;
-		font-size: 14px;
-		font-family: $OpenSansBoldFont;
-		text-align: center;
-		position: fixed;
-		top: 50px;
-		left: 32%;
-		z-index: 1;
+		margin-left: 5px;
+	  }
 	}
-	.error-message {
-	    background: $clinicalFormInvalid;
-	    border: 1px solid darken($clinicalFormInvalid, 30%);
-	    color: #333;
-	  	z-index: 99999;
-		.copy-btn, .show-btn {
-			padding: 5px;
-			margin-left: 5px;
-		}
-
-		.msg {
-			clear: both;
-			padding: 10px;
-			box-sizing: border-box;
-		    word-break:break-all;
-		    &.primary {
-			   color: darken($clinicalFormInvalid, 30%);
-			}
-		}
-	}
-	.info-message {
-		background: $clinicalSuccessMessageBg;
-		border: 1px solid darken($clinicalSuccessMessageBg, 30%);
-		color: green;
-		p:before {
-			content: "\f00c";
-			font-family: FontAwesome;
-			margin-right: 5px;
-			font-size: 18px;
-		}
-	}
-    .null-data-message {
-        padding: 30px 10px;
-        color: $mediumGray;
-        border: 1px solid $lightGray;
-        background: $lightestGray;
-        margin-top: 10px;
-        text-align: center;
-        border-radius: 3px;
-    }
+  }
+  .success-message-container{
+	background: rgb(138, 211, 130);
+	background: -moz-linear-gradient(top, rgba(138, 211, 130, 1) 0%, rgba(106, 177, 101, 1) 100%);
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, rgba(138, 211, 130, 1)), color-stop(100%, rgba(106, 177, 101, 1)));
+	background: -webkit-linear-gradient(top, rgba(138, 211, 130, 1) 0%, rgba(106, 177, 101, 1) 100%);
+	background: -o-linear-gradient(top, rgba(138, 211, 130, 1) 0%, rgba(106, 177, 101, 1) 100%);
+	background: -ms-linear-gradient(top, rgba(138, 211, 130, 1) 0%, rgba(106, 177, 101, 1) 100%);
+	filter: progid:DXImageTransform.Microsoft.gradient(startColorstr = '#8ad382', endColorstr = '#6ab165', GradientType = 0);
+	background: linear-gradient(top, rgba(138, 211, 130, 1) 0%, rgba(106, 177, 101, 1) 100%);
+	border: 1px solid #4b8048;
+  }
 }
