@@ -6,7 +6,6 @@ build.xml
 *.iml
 .project
 .settings
-.idea/*
 test/output
 target
 output
@@ -21,8 +20,8 @@ ui/app/styles/*.css
 **/.DS_Store
 test_out
 omod/src/main/webapp/*
-ui/.idea/
 coverage
 ui/style-guide
 node_modules
 *.tern-port
+**/.idea/*
