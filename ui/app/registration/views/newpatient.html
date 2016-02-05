@@ -22,28 +22,28 @@
                         </div>
                         <div ng-show="::hasIdentifierSources()" class="field-value" id="patientID">
                             <select id="identifierPrefix" ng-model="patient.identifierPrefix"
-                                    ng-options="::identifierSource.prefix for identifierSource in identifierSources" ng-change="patient.generateIdentifier()"
+                                    ng-options="::identifierSource.prefix for identifierSource in ::identifierSources" ng-change="patient.generateIdentifier()"
                                     required>
                             </select>
                         </div>
                         <div class="field-value showOn-desktop">
                             <input type="text" id="registrationNumber" ng-model="patient.registrationNumber"
-                                   placeholder="{{ ::'REGISTRATION_LABEL_NUMBER' | translate}}" non-blank="hasOldIdentifier || !hasIdentifierSources()" pattern-validate
-                                   ng-change="patient.generateIdentifier()" ng-show="hasOldIdentifier || !hasIdentifierSources()" focus-on="hasOldIdentifier">
+                                   placeholder="{{ ::'REGISTRATION_LABEL_NUMBER' | translate}}" non-blank="patient.hasOldIdentifier || !hasIdentifierSources()" pattern-validate
+                                   ng-change="patient.generateIdentifier()" ng-show="patient.hasOldIdentifier || !hasIdentifierSources()" focus-on="hasOldIdentifier">
                         </div>
                         <div ng-show="::hasIdentifierSources()">
                             <div class="field-attribute hasOldIdentifier-field-attribute">
                                 <label for="hasOldIdentifier" class="control-label">{{::'REGISTRATION_LABEL_ENTER_ID' | translate}}</label>
                             </div>
                             <div class="field-value">
-                                <input class="input-label-inline" ng-show="::showEnterID" type="checkbox" id="::hasOldIdentifier" ng-model="$parent.hasOldIdentifier"
+                                <input class="input-label-inline" ng-show="::showEnterID" type="checkbox" id="hasOldIdentifier" ng-model="patient.hasOldIdentifier"
                                        ng-change="patient.clearRegistrationNumber()">
                             </div>
                         </div>
                         <div class="field-value showOn-small-screen">
                             <input ng-class="::{'registrationNumber-Mobile': hasIdentifierSources()}" type="text" id="registrationNumber" ng-model="patient.registrationNumber"
-                                   placeholder="Registration Number" non-blank="hasOldIdentifier" pattern-validate
-                                   ng-change="patient.generateIdentifier()" ng-show="hasOldIdentifier || !hasIdentifierSources()" focus-on="hasOldIdentifier">
+                                   placeholder="Registration Number" non-blank="patient.hasOldIdentifier" pattern-validate
+                                   ng-change="patient.generateIdentifier()" ng-show="patient.hasOldIdentifier || !hasIdentifierSources()" focus-on="hasOldIdentifier">
                         </div>
                     </article>
                 </section>

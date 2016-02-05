@@ -78,7 +78,7 @@ angular.module('bahmni.registration')
                     prefix: preferences.identifierPrefix
                 });
                 $scope.patient.identifierPrefix = identifierPrefix || $scope.identifierSources[0];
-                $scope.hasOldIdentifier = preferences.hasOldIdentifier;
+                $scope.patient.hasOldIdentifier = preferences.hasOldIdentifier;
                 prepopulateDefaultsInFields();
                 buildSectionVisibilityMap();
 
@@ -206,7 +206,7 @@ angular.module('bahmni.registration')
 
                 if (!$scope.hasIdentifierSources()) {
                     createPatientWithOutIdentifierSource().finally(resolved);
-                } else if (!$scope.hasOldIdentifier) {
+                } else if (!$scope.patient.hasOldIdentifier) {
                     createPatientWithGeneratedIdentifier().finally(resolved);
                 } else {
                     createPatientWithGivenIdentifier().finally(resolved);

@@ -294,7 +294,7 @@ describe('CreatePatientController', function() {
     it("should create a patient with custom id and go to edit page", function() {
         scopeMock.patient.identifierPrefix.prefix = "GAN";
 
-        scopeMock.hasOldIdentifier = true;
+        scopeMock.patient.hasOldIdentifier = true;
         patientServiceMock.getLatestIdentifier.and.stub();
         patientServiceMock.getLatestIdentifier.and.returnValue(specUtil.createFakePromise("100000"));
         patientServiceMock.create.and.returnValue(specUtil.createFakePromise({
@@ -320,7 +320,7 @@ describe('CreatePatientController', function() {
         scopeMock.patient.identifierPrefix.prefix = "GAN";
         scopeMock.patient.registrationNumber = "1050";
 
-        scopeMock.hasOldIdentifier = true;
+        scopeMock.patient.hasOldIdentifier = true;
 
         patientServiceMock.getLatestIdentifier.and.returnValue(specUtil.createFakePromise("1000"));
         patientServiceMock.create.and.returnValue(specUtil.createFakePromise({
@@ -351,7 +351,7 @@ describe('CreatePatientController', function() {
         scopeMock.patient.identifierPrefix.prefix = "GAN";
         scopeMock.patient.registrationNumber = "1050";
 
-        scopeMock.hasOldIdentifier = true;
+        scopeMock.patient.hasOldIdentifier = true;
 
         patientServiceMock.getLatestIdentifier.and.returnValue(specUtil.createFakePromise("1055"));
         patientServiceMock.create.and.returnValue(specUtil.createFakePromise({
@@ -378,7 +378,7 @@ describe('CreatePatientController', function() {
         scopeMock.patient.identifierPrefix.prefix = "GAN";
         scopeMock.patient.registrationNumber = "1050";
 
-        scopeMock.hasOldIdentifier = true;
+        scopeMock.patient.hasOldIdentifier = true;
 
         patientServiceMock.getLatestIdentifier.and.returnValue(specUtil.respondWithPromise(q, {
             data: "1050"
@@ -415,7 +415,7 @@ describe('CreatePatientController', function() {
         scopeMock.patient.identifierPrefix.prefix = "GAN";
         scopeMock.patient.registrationNumber = "1050";
 
-        scopeMock.hasOldIdentifier = true;
+        scopeMock.patient.hasOldIdentifier = true;
 
         patientServiceMock.getLatestIdentifier.and.returnValue(specUtil.createFakePromise("1050"));
         patientServiceMock.setLatestIdentifier.and.throwError(serverError);
@@ -431,7 +431,7 @@ describe('CreatePatientController', function() {
         scopeMock.patient.identifierPrefix.prefix = "GAN";
         scopeMock.patient.registrationNumber = "1050";
 
-        scopeMock.hasOldIdentifier = true;
+        scopeMock.patient.hasOldIdentifier = true;
 
         patientServiceMock.getLatestIdentifier.and.returnValue(specUtil.respondWithPromise(q, {
             data: "1000"
@@ -474,7 +474,7 @@ describe('CreatePatientController', function() {
         scopeMock.patient.identifierPrefix.prefix = "GAN";
         scopeMock.patient.registrationNumber = "1050";
 
-        scopeMock.hasOldIdentifier = true;
+        scopeMock.patient.hasOldIdentifier = true;
 
         patientServiceMock.getLatestIdentifier.and.returnValue(specUtil.createFakePromise("1000"));
         patientServiceMock.setLatestIdentifier.and.returnValue(specUtil.createFakePromise("1051"));
