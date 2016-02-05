@@ -80,12 +80,12 @@ angular.module('bahmni.common.uiHelper')
             responseMap: '&',
             onSelect: '&',
             onEdit: '&?',
-            minLength: '=',
-            blurOnSelect: '=',
-            strictSelect: '=',
+            minLength: '=?',
+            blurOnSelect: '=?',
+            strictSelect: '=?',
             validationMessage: '@',
-            isInvalid: "=",
-            initialValue: "="
+            isInvalid: "=?",
+            initialValue: "=?"
         }
     };
 });

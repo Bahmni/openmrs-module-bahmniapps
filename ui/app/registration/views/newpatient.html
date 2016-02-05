@@ -41,7 +41,7 @@
                             </div>
                         </div>
                         <div class="field-value showOn-small-screen">
-                            <input ng-class="hasIdentifierSources()? 'registrationNumber-Mobile' : ''" type="text" id="registrationNumber" ng-model="patient.registrationNumber"
+                            <input ng-class="::{'registrationNumber-Mobile': hasIdentifierSources()}" type="text" id="registrationNumber" ng-model="patient.registrationNumber"
                                    placeholder="Registration Number" non-blank="hasOldIdentifier" pattern-validate
                                    ng-change="patient.generateIdentifier()" ng-show="hasOldIdentifier || !hasIdentifierSources()" focus-on="hasOldIdentifier">
                         </div>
