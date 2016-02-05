@@ -9,10 +9,6 @@ angular.module('bahmni.common.offline')
             }
 
             var sync = function () {
-                if (offlineService.offline()) {
-                    scheduleSync();
-                    return;
-                }
                 offlineDbService.getMarker().then(function (marker) {
                     if (marker == undefined) {
                         //todo: Hemanth|Santhosh get catchment number from login location

@@ -1,7 +1,7 @@
 'use strict';
 
 describe('offlineSearchDbService', function () {
-    var offlineSearchDbService, patientDbService, age, patientAddressDbService, patientAttributeDbService, $q = Q;
+    var offlineSearchDbService, patientDbService, age, patientAddressDbService, patientAttributeDbService, $q=Q;
 
     var mockHttp = jasmine.createSpyObj('$http', ['get']);
 

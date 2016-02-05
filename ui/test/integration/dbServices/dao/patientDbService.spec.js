@@ -1,6 +1,6 @@
 'use strict';
 
-describe('patientDbService', function () {
+describe('patientDbService tests', function () {
     var patientDbService;
 
     var mockHttp = jasmine.createSpyObj('$http', ['get']);
