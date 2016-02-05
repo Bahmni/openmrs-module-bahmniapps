@@ -4,26 +4,6 @@ angular.module('bahmni.clinical').factory('treatmentConfig',
     ['TreatmentService', 'spinner', 'configurationService', 'appService', 'DrugService', '$q', '$translate',
         function (treatmentService, spinner, configurationService, appService, drugService, $q, $translate) {
 
-            var findIndexOfFrequency = function (frequencies, value) {
-                var index;
-                for (index = 0; index < frequencies.length; index++) {
-                    if (frequencies[index].name == value)
-                        break;
-                }
-                return index;
-            };
-
-            var bubbleValueToTop = function (frequencies, value) {
-                var index = findIndexOfFrequency(frequencies, value);
-                if (index == frequencies.length)
-                    return;
-                var frequencyToBeBubbled = frequencies[index];
-                for (; index; index--) {
-                    frequencies[index] = frequencies[index - 1];
-                }
-                frequencies[index] = frequencyToBeBubbled;
-            };
-
             var getConfigFromServer = function (baseTreatmentConfig) {
                 return treatmentService.getConfig().then(function (result) {
                     var config = angular.extend(baseTreatmentConfig, result.data);
@@ -32,9 +12,11 @@ angular.module('bahmni.clinical').factory('treatmentConfig',
                         {name: "Week(s)", factor: 7},
                         {name: "Month(s)", factor: 30}
                     ];
-                    var frequencies = config.frequencies;
-                    bubbleValueToTop(frequencies, "Immediately");
-                    bubbleValueToTop(frequencies, "SOS");
+                    config.frequencies = _(config.frequencies)
+                        .sortBy({'name':'Immediately'})
+                        .sortBy({'name':'SOS'})
+                        .reverse()
+                        .value();
                     return config;
                 });
             };
