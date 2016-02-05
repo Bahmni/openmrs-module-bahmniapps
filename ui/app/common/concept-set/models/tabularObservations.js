@@ -12,6 +12,15 @@ Bahmni.ConceptSet.TabularObservations = function(obsGroups, parentObs, conceptUI
         return group.concept;
     });
 
+    this.cloneNew = function() {
+        var old = this;
+        var clone = new Bahmni.ConceptSet.TabularObservations(angular.copy(obsGroups), parentObs, conceptUIConfig);
+        clone.rows = _.map(old.rows, function(row){
+            return row.cloneNew();
+        });
+        return clone;
+    };
+
     this.addNew = function(row) {
         var newRow = row.cloneNew();
         this.rows.push(newRow);
