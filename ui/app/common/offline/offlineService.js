@@ -58,7 +58,7 @@ angular.module('bahmni.common.offline').service('offlineService', ['$rootScope',
 
     Offline.options = {
         game: false,
-        checkOnLoad: true,
+        checkOnLoad: false,
         checks: {xhr: {url: '/bahmni/favicon.ico'}}
     };
 
