@@ -12,7 +12,7 @@
             <div>
                 <ul>
                     <li ng-repeat="data in formData">
-                        <span>{{data.concept.displayString}}</span>
+                        <span>{{getDisplayName(data)}}</span>
                         <span class="fr formDataTime">{{data.obsDatetime | bahmniDateTime}}
                             <span class="has-link fl formDataEdit"
                                   ng-dialog="../common/displaycontrols/forms/views/showObservationFormData.html"

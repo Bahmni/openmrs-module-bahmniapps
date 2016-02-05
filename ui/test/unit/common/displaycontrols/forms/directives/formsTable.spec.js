@@ -37,7 +37,7 @@ describe("Forms Table display control", function () {
         $compile = _$compile_;
         q = $q;
         scope.patient = {uuid: '123'};
-        scope.section = {dashboardParams: {maximumNoOfVisits: 10}};
+        scope.section = {dashboardParams: {maximumNoOfVisits: 10} };
         mockBackend = $httpBackend;
         mockBackend.expectGET('../common/displaycontrols/forms/views/formsTable.html').respond("<div>dummy</div>");
     }));

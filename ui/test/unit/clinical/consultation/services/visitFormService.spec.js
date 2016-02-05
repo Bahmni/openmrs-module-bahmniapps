@@ -24,6 +24,21 @@ describe('visitFormService', function () {
                 s: "byPatientUuid",
                 patient: "patientUuid",
                 numberOfVisits: 5,
+                v: "visitFormDetails",
+                conceptNames:null
+            }
+        });
+    });
+
+    it('should call http service to return the form data with concept names', function () {
+        var httpPromise = this.visitFormService.formData("patientUuid", 5,["Vitals", "HIV"]);
+        expect(httpPromise.uuid).toEqual("12345");
+        expect(http.get).toHaveBeenCalledWith("/openmrs/ws/rest/v1/obs", {
+            params: {
+                s: "byPatientUuid",
+                patient: "patientUuid",
+                numberOfVisits: 5,
+                conceptNames:["Vitals", "HIV"],
                 v: "visitFormDetails"
             }
         });

@@ -13,7 +13,7 @@ angular.module('bahmni.common.displaycontrol.forms')
                 };
 
                 var obsFormData = function () {
-                    return visitFormService.formData($scope.patient.uuid, $scope.section.dashboardParams.maximumNoOfVisits);
+                    return visitFormService.formData($scope.patient.uuid, $scope.section.dashboardParams.maximumNoOfVisits,$scope.section.formGroup);
                 };
 
                 var filterFormData = function (formData) {
