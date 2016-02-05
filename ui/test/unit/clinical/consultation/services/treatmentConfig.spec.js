@@ -2,7 +2,7 @@
 
 describe('treatmentConfig', function() {
 
-    var treatmentConfig,medicationConfig, masterConfig, translate;
+    var treatmentConfig,medicationConfig, masterConfig, translate, configurationService;
     beforeEach(function(){
         medicationConfig = {
             "commonConfig": {},
@@ -61,9 +61,16 @@ describe('treatmentConfig', function() {
             var drugService = jasmine.createSpyObj('drugService', ['getSetMembersOfConcept']);
             drugService.getSetMembersOfConcept.and.returnValue(specUtil.respondWith([{name: "K"}, {name: "T"}]));
 
+            configurationService = jasmine.createSpyObj('configurationService',['getConfigurations']);
+            configurationService.getConfigurations.and.returnValue(specUtil.respondWith({
+                stoppedOrderReasonConfig:{
+                    results:[{answers:[]}]
+                }
+            }));
             translate = jasmine.createSpyObj('$translate', ['instant']);
 
             $provide.value('TreatmentService', treatmentService);
+            $provide.value('configurationService', configurationService);
             $provide.value('appService', appService);
             $provide.value('spinner', spinner);
             $provide.value('DrugService', drugService);

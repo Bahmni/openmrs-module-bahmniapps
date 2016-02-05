@@ -11,8 +11,6 @@ angular.module('bahmni.clinical')
             var DrugOrderViewModel = Bahmni.Clinical.DrugOrderViewModel;
 
             $scope.treatmentActionLinks = clinicalAppConfigService.getTreatmentActionLink();
-            $scope.allowOnlyCodedDrugs = appService.getAppDescriptor().getConfig("allowOnlyCodedDrugs") &&
-                appService.getAppDescriptor().getConfig("allowOnlyCodedDrugs").value;
 
             var preFetchDrugsForGivenConceptSet = function () {
                 drugService.getSetMembersOfConcept(treatmentConfig.getDrugConceptSet()).then(function (result) {

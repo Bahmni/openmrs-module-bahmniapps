@@ -26,5 +26,6 @@ Bahmni.Clinical.DrugOrderOptions = (function() {
         this.drugConceptSet = inputConfig.drugConceptSet;
         this.labels = inputConfig.labels || {};
         this.doseFractions = itemsForInputConfig(masterConfig.doseFractions, inputConfig.doseFractions, 'label');
+        this.allowNonCodedDrugs = !inputConfig.allowOnlyCodedDrugs;
     };
 })();
