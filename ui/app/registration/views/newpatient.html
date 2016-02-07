@@ -22,7 +22,7 @@
                         </div>
                         <div ng-show="::hasIdentifierSources()" class="field-value" id="patientID">
                             <select id="identifierPrefix" ng-model="patient.identifierPrefix"
-                                    ng-options="::identifierSource.prefix for identifierSource in ::identifierSources" ng-change="patient.generateIdentifier()"
+                                    ng-options="identifierSource.prefix for identifierSource in ::identifierSources" ng-change="patient.generateIdentifier()"
                                     required>
                             </select>
                         </div>

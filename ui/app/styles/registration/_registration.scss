@@ -90,6 +90,17 @@ body{
   }
 }
 
+.expand{
+  .fa-caret-right{
+    display: none;
+  }
+}
+.collapse{
+  .fa-caret-down{
+    display: none;
+  }
+}
+
 
 
 

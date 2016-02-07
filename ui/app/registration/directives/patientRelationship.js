@@ -38,6 +38,14 @@ angular.module('bahmni.registration')
                 return $scope.getRelationshipType(relationship.relationshipType.uuid);
             };
 
+            $scope.getChosenRelationshipType= function(relation){
+                if($scope.isPatientRelationship(relation)){
+                    return "patient"
+                }else if($scope.isProviderRelationship(relation)){
+                    return "provider"
+                }
+            };
+
             $scope.isProviderRelationship = function (relationship) {
                 var relationshipType = getRelationshipType(relationship);
                 return relationshipType && relationshipType.searchType == "provider";
