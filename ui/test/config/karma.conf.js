@@ -70,6 +70,7 @@ module.exports = function (config) {
             'app/orders/**/*.js': ['coverage'],
             'app/registration/**/*.js': ['coverage'],
             'app/common/displaycontrols/**/views/*.html':['ng-html2js'],
+            'app/common/concept-set/views/*.html':['ng-html2js'],
             'app/clinical/**/**/*.html':['ng-html2js']
         },
         coverageReporter: {

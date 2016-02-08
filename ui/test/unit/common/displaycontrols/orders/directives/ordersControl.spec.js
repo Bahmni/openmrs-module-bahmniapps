@@ -27,7 +27,7 @@ describe("OrdersDisplayControl", function () {
 
     });
 
-    var     generateElement = function () {
+    var generateElement = function () {
         var unCompiledHtml =
             '<orders-control ' +
             'patient="patient" ' +

@@ -11,6 +11,7 @@ angular.module('bahmni.common.conceptSet')
                 var newObs = observation.cloneNew();
                 var index = parentObservation.groupMembers.indexOf(observation);
                 parentObservation.groupMembers.splice(index + 1, 0, newObs);
+                scope.$root.$broadcast("event:addMore", newObs);
                 jQuery.scrollTo(element, 300)
             };
 
@@ -72,7 +73,7 @@ angular.module('bahmni.common.conceptSet')
             });
 
             scope.handleUpdate = function () {
-                scope.$root.$broadcast("event:observationUpdated-" + scope.conceptSetName, scope.observation.concept.name);
+                scope.$root.$broadcast("event:observationUpdated-" + scope.conceptSetName, scope.observation.concept.name, scope.rootObservation);
             }
 
             scope.constructSearchResult = function(concept, searchString) {
