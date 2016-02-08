@@ -59,9 +59,9 @@
         }
         .refill-btn, .stop-drug-btn {
             padding: 6px!important;
-            //@media screen and (max-width: 1024px){
-            //    padding:9px 6px !important
-            //}
+            @media screen and (max-width: 1024px){
+                padding:4px 6px !important
+            }
         }
         button.dispense-btn{
             font-family: OpenSansBold;
@@ -191,16 +191,22 @@
     .revise-refill-modal-wrapper {
         outline: 0;
     }
-    .orders-section-left{
-        width: 31% !important;
-        margin: 0 !important;
+    .treatment-section-left{
+        width: 31%;
         background: #fff;
         border-radius:3px;
         box-sizing: border-box;
+        float: left;
         @include box-shadow-for-section();
+        @media screen and (max-width: 1024px) {
+            width:24%;
+        }
         .order-section-container{
             padding: 10px;
             box-sizing: border-box;
+            @media screen and (max-width: 1024px) {
+                padding: 10px 5px;
+            }
             .Order-section-orderDrug{
                 margin: 0 0 30px;
                 .unit-wrap{
@@ -210,6 +216,9 @@
                         padding: 3px 2px;
                         line-height: initial;
                         margin-top:5px;
+                        @media (max-width: 1024px) {
+                            padding: 7px 6px;
+                        }
                     }
                 }
                 .variable-frequency{
@@ -223,12 +232,27 @@
                 form .form-field{
                     input[type="text"], input[type="number"]{
                         padding: 4px 10px 3px;
+                        @media (max-width: 1024px) {
+                            padding: 7px 10px 7px;
+                        }
                     }
                     .field-attribute label{
                         width: 6.6em;
+                        &.unit-text{
+                            display: inline-block;
+                            padding-left:5px;
+                            width:2em ;
+                            @media (max-width: 1024px) {
+                                width: 6.6em;
+                                padding-left: 0;
+                            }
+                        }
                     }
                     .drug-name{
                         width:185px;
+                        @media (max-width: 1024px) {
+                            width:120px;
+                        }
                     }
                 }
 
@@ -237,19 +261,38 @@
                     margin-top: 4px;
                     padding: 8px 10px 7px;
                     width: 77px;
+                    @media screen and (max-width: 1024px) {
+                        clear: both;
+                        padding: 8px 10px 8px;
+                        float: right;
+
+                    }
                 }
                 input[type="number"]{
                     width:100px;
                     box-sizing: border-box;
                     padding: 0.3em 0.7em;
+                    @media screen and (max-width: 1024px) {
+                        width:142px;
+                    }
                 }
                 input[type="date"]{
                     width:10em;
+                    padding: 2px 10px 3px!important;
+                    @media screen and (max-width: 1024px) {
+                        padding: 6px 10px !important;
+                    }
                 }
                 .dose{
                     width:50px !important;
+                    @media screen and (max-width: 1024px) {
+                        width:142px!important;
+                    }
                     &.noFractionOptions{
                         width: 100px !important;
+                        @media screen and (max-width: 1024px) {
+                            width:142px!important;
+                        }
                     }
                 }
                 select{
@@ -257,21 +300,27 @@
                     width:142px;
                 }
                 .freq-dose-units{
-                    width:75px;
-                    min-width: 75px;
+                    width:79px;
+                    min-width: 79px;
+                    @media screen and (max-width: 1024px) {
+                        width:142px;
+                        min-width: 142px;
+                    }
                 }
                 .freq-choose-units{
-                    width:90px;
-                    min-width: 90px;
+                    width:85px;
+                    min-width: 85px;
                     &.noFractionOptions{
                         width: 150px;
                         min-width: 150px;
+                        @media screen and (max-width: 1024px) {
+                            width:142px;
+                            min-width: 142px;
+                        }
                     }
-                }
-                .unit-text{
-                    display: inline-block;
-                    padding: 8px 5px 0;
-                    float: left;
+                    @media screen and (max-width: 1024px) {
+                        width:142px!important;
+                    }
                 }
 
                 .frequencyFields{
@@ -279,6 +328,9 @@
                 }
                 textarea{
                     width:275px;
+                    @media (max-width: 1024px) {
+                        width:142px;
+                    }
                 }
                 .operations{
                     margin-top: 10px;
@@ -288,8 +340,13 @@
                     input[type="number"] {
                         min-width: 55px;
                         width: 55px;
-                        padding: 4px 0px 4px 8px !important;
+                        padding: 4px 0px 3px 8px !important;
                         text-align: center;
+                        @media (max-width: 1024px) {
+                            min-width: 45px;
+                            width: 45px;
+                            padding: 7px 0px 7px 8px !important;
+                        }
                     }
                 }
             }
@@ -313,13 +370,17 @@
         }
     }
 
-    .orders-section-right{
-        width: 68% !important;
-        margin-top: 0 !important;
+    .treatment-section-right{
+        width: 68%;
+        float: right;
         .dashboard-section{
             margin-top:0;
             border-radius: 3px 3px 0 0;
         }
+        @media screen and (max-width: 1024px) {
+            width:75% !important;
+        }
+
     }
     .frequencyField{
         clear:both;

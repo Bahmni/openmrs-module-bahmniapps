@@ -1,6 +1,6 @@
 <div class="treatment-page treatment-page-container order-list">
     <div class="dashboard-section-wrapper">
-        <section class="orders-section-left">
+        <section class="treatment-section-left">
             <h2 class="section-title">
                 <i class="fa fa-caret-down"></i>
                 <span class="section-label">{{ ::'MEDICATION_ADD_DRUG_FORM_TITLE' | translate}}</span>
@@ -11,7 +11,7 @@
                 </div>
             </div>
         </section>
-        <section class="orders-section-right">
+        <section class="treatment-section-right">
             <new-drug-orders treatments="treatments"
                              treatment-config="treatmentConfig"></new-drug-orders>
             <div ng-if="drugOrderHistoryView === 'default'" ui-view="defaultHistoryView"></div>
