@@ -3,10 +3,12 @@
     <i class="fa fa-caret-down ng-hide" ng-show="toggle"></i>
     <span class="section-label">{{ config | titleTranslate }}</span>
 </h2>
-<p class="placeholder-text" ng-if="drugOrders && drugOrders.length == 0">{{'NO_DRUG_DETAILS_MESSAGE' | translate}} </p>
-<div class="drugOrderTable">
-    <div class="drugOrderTableScroll">
-        <table ng-if="drugOrders && drugOrders.length > 0" class="drug-order-table treatments-details-table" ng-show="toggle">
+<p class="placeholder-text" ng-if="drugOrders && drugOrders.length == 0" ng-show="toggle">
+    {{'NO_DRUG_DETAILS_MESSAGE' | translate}}
+</p>
+<div class="drugOrderTable" ng-if="toggle && drugOrders && drugOrders.length > 0">
+    <div class="drugOrderTableScroll" >
+        <table class="drug-order-table treatments-details-table" >
             <tr>
                 <th ng-repeat="columnName in columns" ng-class="columnName">{{columnHeaders[columnName] | translate}}</th>
                 <th class="empty-header custom-empty-header">Actions</th>
