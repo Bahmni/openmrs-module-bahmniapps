@@ -35,7 +35,7 @@ angular.module('bahmni.common.uiHelper')
                             '</li>' +
                             '<ul class="hidden-options">' +
                             '<li bm-pop-over-target ng-repeat="option in ::secondaryOptions" class="secondaryOption">' +
-                                '<button ng-class="buttonClass" ng-click="optionClick()(option)" accesskey="{{::option.shortcutKey}}" ng-disabled="optionDisabled" ng-bind-html="::optionText()(option) | translate"></button>' +
+                                '<button class="buttonClass" ng-click="optionClick()(option)" accesskey="{{::option.shortcutKey}}" ng-disabled="optionDisabled" ng-bind-html="::optionText()(option) | translate"></button>' +
                             '</li>' +
                             '</ul>'+
                         '</ul>' +

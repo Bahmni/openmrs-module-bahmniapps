@@ -1,10 +1,11 @@
 <section class="reg-search-wrapper">
     <section class="reg-search">
         <article class="search-seperator-l">
-            <form name="searchByIdForm" ng-submit="searchById()" class="simple-form-ui clearfix" >
+            <form name="searchByIdForm" ng-submit="searchById()" class="simple-form-ui clearfix">
                     <label for="registrationNumber"><strong>{{ ::'REGISTRATION_LABEL_PATIENT_ID' | translate}}</strong></label>
                     <div class="search-patient-id fl">
-                        <select tabindex="1" ng-if="::hasIdentifierSources()" class="fl" id="identifierPrefix" ng-model="searchParameters.identifierPrefix" ng-options="identifierSource.prefix for identifierSource in identifierSources"> </select>
+                        <select tabindex="1" ng-if="::hasIdentifierSources()" class="fl" id="identifierPrefix" ng-model="searchParameters.identifierPrefix"
+                                ng-options="identifierSource.prefix for identifierSource in ::identifierSources"> </select>
                         <input tabindex="2" class="fl" type="text" id="registrationNumber"
                         ng-model="searchParameters.registrationNumber" focus-me="true"
                                placeholder="{{ ::'REGISTRATION_LABEL_ENTER_ID' | translate}}">
@@ -48,8 +49,8 @@
         </div>
     </div>
     
-    <div infinite-scroll="nextPage()" infinite-scroll-immediate-check="false" infinite-scroll-disabled="noMoreResultsPresent" class="registraition-search-results-container">
-        <table ng-show="resultsPresent()" class="table">
+    <div ng-if="resultsPresent()" infinite-scroll="nextPage()" infinite-scroll-immediate-check="false" infinite-scroll-disabled="noMoreResultsPresent" class="registraition-search-results-container">
+        <table class="table">
             <thead>
             <tr>
                 <th><strong>{{ ::'REGISTRATION_LABEL_ID' | translate}}</strong></th>
@@ -64,12 +65,12 @@
             <tbody>
             <tr ng-repeat="result in results">
                 <td>
-                    <a href="javascript:void(0)" tabindex="{{ 7 + $index + 1 }}" ng-if="::(searchActions.length > 0)" ng-click="forPatient(result).doExtensionAction(searchActions[0])">
+                    <a href="javascript:void(0)" tabindex="{{ :: 7 + $index + 1 }}" ng-if="::(searchActions.length > 0)" ng-click="forPatient(result).doExtensionAction(searchActions[0])">
                         {{::result.identifier || 'Not Assigned'}}
                     </a>
                 </td>
                 <td>{{::result.givenName}} {{::result.middleName}} {{::result.familyName}}</td>
-                <td ng-repeat = "field in ::customAttributesSearchConfig.fields">{{::result.customAttribute[field]}}</td>
+                <td ng-repeat = "field in ::customAttributesSearchConfig.fields">{{::result.customAttribute[field] || ""}}</td>
                 <td>{{::result.gender}}</td>
                 <td>{{::result.age}}</td>
                 <td>{{::result.addressFieldValue}}</td>
