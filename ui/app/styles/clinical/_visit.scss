@@ -82,11 +82,14 @@
       }
     }
     .formDataTime{
-      width:27%;
+      width:31%;
       text-align: right;
       .formDataEdit{
         padding:0 !important;
       }
+    }
+    .formDataDate{
+      width:21%;
     }
   }
   table tr th {
@@ -659,11 +662,14 @@ a.visit:before {
         span {
           padding: 3px 10px !important;
           &.formDataTime {
-            width: 18%;
+            width: 19%;
             text-align: right;
             .formDataEdit {
               padding: 0 !important;
             }
+          }
+          &.formDataDate{
+            width:14%;
           }
         }
       }

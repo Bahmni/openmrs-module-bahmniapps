@@ -13,7 +13,7 @@
                 <ul>
                     <li ng-repeat="data in formData">
                         <span>{{getDisplayName(data)}}</span>
-                       <span class="fr formDataTime">
+                       <span class="fr formDataTime" ng-class="{'formDataDate': showFormsDate }">
                             <span ng-hide="::showFormsDate">{{data.obsDatetime | bahmniDateTime}}</span>
                             <span ng-show="::showFormsDate">{{data.obsDatetime | bahmniDate}}</span>
                             <span class="has-link fl formDataEdit"
