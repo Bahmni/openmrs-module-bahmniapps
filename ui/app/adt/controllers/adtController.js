@@ -43,6 +43,14 @@ angular.module('bahmni.adt')
                 return mappingCode;
             };
 
+            var getAdtActionForEncounterType = function (encounterTypeUuid) {
+                var adtActionsForType = $scope.dispositionActions.filter(function (dispositionAction) {
+                    var actionConfig = actionConfigs[getActionCode(dispositionAction)];
+                    return actionConfig ? actionConfig.encounterTypeUuid === encounterTypeUuid : false;
+                });
+                return adtActionsForType.length > 0 ? adtActionsForType[0] : null;
+            };
+            
             var initializeActionConfig = function () {
                 var admitActions = appService.getAppDescriptor().getExtensions("org.bahmni.adt.admit.action", "config");
                 var transferActions = appService.getAppDescriptor().getExtensions("org.bahmni.adt.transfer.action", "config");
