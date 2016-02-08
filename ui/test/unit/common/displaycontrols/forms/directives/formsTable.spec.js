@@ -2,6 +2,13 @@
 
 describe("Forms Table display control", function () {
     var element, scope, $compile, mockBackend, conceptSetService, visitFormService, q, spinner;
+    var appService = jasmine.createSpyObj('appService', ['getAppDescriptor']);
+
+    appService.getAppDescriptor.and.returnValue({
+        getConfigValue: function () {
+            return true;
+        }
+    });
 
     beforeEach(module('ngHtml2JsPreprocessor'));
     beforeEach(module('bahmni.common.patient'));
@@ -30,6 +37,7 @@ describe("Forms Table display control", function () {
                 return "en"
             }
         });
+        $provide.value('appService', appService);
     }));
 
     beforeEach(inject(function (_$compile_, $rootScope, $httpBackend, $q) {
@@ -223,7 +231,7 @@ describe("Forms Table display control", function () {
             expected.push(formDataObj.data.results[0]);
             expect(compiledElementScope.formData).toEqual(expected);
         });
-        it("should set shouldPromptBrowserReload", function () {
+        it("should set shouldPromptBrowserReload and set showFormDate", function () {
             var allObsTemplateData = {"data": {"results": [{"display":"Followup Template"}]}};
             var formDataObj = {"data": {results: [
                 {
@@ -248,6 +256,7 @@ describe("Forms Table display control", function () {
 
             expect(compiledElementScope.shouldPromptBrowserReload).toBeTruthy();
             expect(compiledElementScope.shouldPromptBeforeClose).toBeTruthy();
+            expect(compiledElementScope.showFormsDate).toBeTruthy();
         });
     });
 

@@ -1,10 +1,11 @@
 'use strict';
 
 angular.module('bahmni.common.displaycontrol.forms')
-    .directive('formsTable', ['conceptSetService', 'spinner', '$q', 'visitFormService',
-        function (conceptSetService, spinner, $q, visitFormService) {
+    .directive('formsTable', ['conceptSetService', 'spinner', '$q', 'visitFormService','appService',
+        function (conceptSetService, spinner, $q, visitFormService, appService) {
             var controller = function ($scope) {
                 $scope.shouldPromptBrowserReload = true;
+                $scope.showFormsDate = appService.getAppDescriptor().getConfigValue("showFormsDate");
                 var getAllObservationTemplates = function () {
                     return conceptSetService.getConcept({
                         name: "All Observation Templates",

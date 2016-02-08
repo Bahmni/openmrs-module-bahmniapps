@@ -13,7 +13,9 @@
                 <ul>
                     <li ng-repeat="data in formData">
                         <span>{{getDisplayName(data)}}</span>
-                        <span class="fr formDataTime">{{data.obsDatetime | bahmniDateTime}}
+                       <span class="fr formDataTime">
+                            <span ng-hide="::showFormsDate">{{data.obsDatetime | bahmniDateTime}}</span>
+                            <span ng-show="::showFormsDate">{{data.obsDatetime | bahmniDate}}</span>
                             <span class="has-link fl formDataEdit"
                                   ng-dialog="../common/displaycontrols/forms/views/showObservationFormData.html"
                                   ng-dialog-class="ngdialog-theme-default ng-dialog-all-details-page"
