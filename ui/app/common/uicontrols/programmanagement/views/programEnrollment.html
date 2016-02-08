@@ -21,6 +21,14 @@
                     </select>
                 </label>
                 <label class="start-date-label"><strong>{{'PROGRAM_MANAGEMENT_START_DATE_KEY' | translate}}</strong> <span class="asterick">*</span> <input type="date" max="{{today}}" ng-model="programEnrollmentDate" ng-required="true"></label>
+                <a class="back-btn dashboard-link fr newProgramEnrollmentDashboard" id="dashboard-link"
+                   ui-sref="patient.dashboard.show({patientUuid: patient.uuid,conceptSetGroupName: 'observations'})">
+                    <img ng-src="{{patient.image}}" onerror="this.onerror=null;this.src='../images/blank-user.gif';">
+                    <span class="patient-info">
+                     <span class="patient-name">{{patient.name}}</span>
+                     <span class="patient-id">{{patient.identifier}}</span>
+                    </span>
+                </a>
                 <section ng-hide="programSelected == null" class="programAttributeFields clearfix">
                     <h2 class="programAttribute-title" ng-if="programAttributeTypes.length>0">{{'PROGRAM_MANAGEMENT_PROGRAM_ATTRIBUTES_KEY' | translate}}</h2>
 

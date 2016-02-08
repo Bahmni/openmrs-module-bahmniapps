@@ -1,6 +1,7 @@
 .program-enrollment-container{
   .select-program-option {
-    padding: 10px 15px;
+    margin: 10px 15px;
+    position: relative;
   }
   h2.program-title{
     cursor: pointer;
@@ -49,6 +50,7 @@
   input[type="submit"]{
     width:149px !important;
     float: right;
+    margin-top: 20px;
   }
   a {
     &.back-btn{
@@ -81,7 +83,7 @@
       width:auto !important;
     }
     .fieldNonFormValue{
-      padding-top: 10px;
+      padding-top: 9px;
     }
   }
   .program-row{
@@ -99,14 +101,23 @@
         cursor: pointer;
       }
       &.programState{
-        width: 60%;
+        width: 45%;
       }
       &.programDate{
-        width: 14%;
+        width: 35%;
+        text-align: right;
         span{
           padding-left:10px;
         }
-        .fa{
+        input[type="date"]{
+          float: right;
+          margin: -5px 0 0 10px;
+        }
+      }
+      &.programEdit{
+        padding: 5px 10px 0 0;
+        width: 17px;
+        .fa-edit-program{
           padding:0;
           font-size:1.2em;
           cursor: pointer;
@@ -117,10 +128,10 @@
         }
       }
       &.pastProgramOutcome{
-        width:48%;
+        width:44%;
       }
       &.programStartDate ,&.programStopDate{
-        width: 16%;
+        width: 18%;
         span{
           padding-left: 10px;
         }
