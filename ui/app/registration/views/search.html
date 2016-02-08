@@ -26,10 +26,16 @@
                     <label for="name"><strong>{{::customAttributesSearchConfig.label}}</strong></label>
                     <input tabindex="5" type="text" id="customAttribute" ng-model="searchParameters.customAttribute" placeholder="{{::customAttributesSearchConfig.placeholder}}">
                 </article>
-                <article class="fl">
+                <article class="fl" ng-if="::addressSearchConfig.show">
                     <label for="name"><strong>{{::addressSearchConfig.label}}</strong></label>
-                    <input tabindex="6" type="text" id="addressFieldValue" ng-model="searchParameters.addressFieldValue" placeholder="{{::addressSearchConfig.placeholder}}">
+                    <input tabindex="4" type="text" id="addressFieldValue" ng-model="searchParameters.addressFieldValue" placeholder="{{::addressSearchConfig.placeholder}}">
                 </article>
+
+                <article class="fl" ng-show="::programAttributesSearchConfig.show">
+                    <label for="name"><strong>{{ ::'REGISTRATION_LABEL_PROGRAM_ATTRIBUTE' | translate}}</strong></label>
+                    <input tabindex="4" type="text" id="programAttribute" ng-model="searchParameters.programAttributeFieldValue" placeholder="{{ ::programAttributesSearchConfig.placeholder}}">
+                </article>
+
                 <article class="fl">
                     <div class="reg-srch-btn">
                         <button tabindex="7" type="submit" ng-disabled="disableSearchButton()">{{ ::'REGISTRATION_LABEL_SEARCH' | translate}}</button>
@@ -57,8 +63,9 @@
                 <th ng-repeat = "field in ::customAttributesSearchConfig.fields"><strong>{{::convertToTableHeader(field)}}</strong></th>
                 <th><strong>{{ ::'REGISTRATION_LABEL_GENDER' | translate}}</strong></th>
                 <th><strong>{{ ::'REGISTRATION_LABEL_AGE' | translate}}</strong></th>
-                <th><strong>{{::addressSearchConfig.label}}</strong></th>
+                <th><strong>{{ ::getAddressFieldLabel() }}</strong></th>
                 <th><strong>{{ ::'REGISTRATION_LABEL_REGISTRATION_DATE' | translate}}</strong></th>
+                <th><strong>{{::convertToTableHeader(programAttributesSearchConfig.label)}}</strong></th>
             </tr>
             </thead>
             <tbody>
@@ -74,6 +81,7 @@
                 <td>{{::result.age}}</td>
                 <td>{{::result.addressFieldValue}}</td>
                 <td>{{::result.dateCreated | bahmniDate}}</td>
+                <td>{{::result.patientProgramAttributeValue["National TB Number"]}}</td>
             </tr>
             </tbody>
         </table>

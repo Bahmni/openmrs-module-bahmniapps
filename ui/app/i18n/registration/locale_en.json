@@ -22,6 +22,7 @@
   "REGISTRATION_LABEL_GENDER" : "Gender",
   "REGISTRATION_LABEL_SELECT_GENDER" : "Select Gender",
   "REGISTRATION_LABEL_AGE" : "Age",
+  "REGISTRATION_LABEL_CITY": "Village",
   "REGISTRATION_LABEL_YEARS" : "Years",
   "REGISTRATION_LABEL_NUMERIC_YEARS":"Enter a numeric value for Years.",
   "REGISTRATION_LABEL_MONTHS":"Months",
@@ -77,5 +78,6 @@
   "REGISTRATON_LATEST_KEY" : "Latest",
   "DISPLAY_CONTROL_ERROR_MESSAGE_KEY": "No {{ displayControl }} for this patient",
   "REGISTRATION_LABEL_NUMBER": "Registration Number",
-  "REGISTRATION_START_VISIT": "Start {{ visitType }} visit"
+  "REGISTRATION_START_VISIT": "Start {{ visitType }} visit",
+  "REGISTRATION_LABEL_PROGRAM_ATTRIBUTE": "Program Attribute"
 }

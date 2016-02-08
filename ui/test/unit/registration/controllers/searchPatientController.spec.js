@@ -192,12 +192,34 @@ describe('SearchPatientController', function () {
         });
     });
 
+    describe("searchByProgramAttribute", function () {
+        it("should go to search page with programAttribute if programAttributesSearchConfig has been set", function () {
+            scope.searchParameters.programAttribute = {field: "programAttributeFieldName"};
+            scope.searchParameters.programAttributeFieldValue = "programAttributeFieldValue";
+            scope.programAttributesSearchConfig.show = true;
+            spyOn(location, 'search');
+
+            scope.searchPatients();
+
+            expect(location.search).toHaveBeenCalledWith({'programAttributeFieldName': "programAttributeFieldName", programAttributeFieldValue: "programAttributeFieldValue"});
+        });
+
+        it("should not go to search page with programAttribute if programAttributesSearchConfig has not been set", function () {
+            scope.searchParameters.programAttribute = "programAttributeId";
+            spyOn(location, 'search');
+
+            scope.searchPatients();
+
+            expect(location.search).not.toHaveBeenCalledWith({'programAttribute': "programAttributeId"});
+        });
+    });
+
     describe("searchById", function () {
         it('should search by patient identifier when registrationNumber is present', function () {
             scope.searchParameters.identifierPrefix = {};
             scope.searchParameters.identifierPrefix.prefix = "GAN";
             scope.searchParameters.registrationNumber = "20001";
-            var defaultSearchAddressField = "city_village";
+            var defaultSearchAddressField = undefined;
             scope.searchById();
 
             expect(patientResource.search).toHaveBeenCalledWith(undefined, "20001", "GAN", defaultSearchAddressField);
