@@ -232,6 +232,7 @@ Bahmni.ConceptSet.Observation.prototype = {
     },
 
     isValidDate: function () {
+        if (this.isComputed()) return true;
         if (!this.hasValue()) return true;
         var date = Bahmni.Common.Util.DateUtil.parse(this.value);
         if (!this.conceptUIConfig.allowFutureDates) {
@@ -242,6 +243,7 @@ Bahmni.ConceptSet.Observation.prototype = {
     },
 
     hasInvalidDateTime: function () {
+        if (this.isComputed()) return false;
         var date = Bahmni.Common.Util.DateUtil.parse(this.value);
         if (!this.conceptUIConfig.allowFutureDates) {
             if (moment() < date) return true;

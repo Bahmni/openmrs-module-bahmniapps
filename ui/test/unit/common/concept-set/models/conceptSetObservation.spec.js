@@ -66,4 +66,36 @@ describe("ConceptSetObservation", function() {
             lowAbsolute: 90, value:101}}, null, {"someConcept":{"disableAddNotes" : true}})
         expect(requiredObservation.canHaveComment()).toBeFalsy();
     });
+
+    it("should allow future date the value is computed", function() {
+        var obs = new Bahmni.ConceptSet.Observation({
+            concept: {name: "someConcept", dataType: "Date", conceptClass: 'Computed'}
+        }, {value: "2116-11-16"}, {});
+        expect(obs.isValidDate()).toBeTruthy();
+    });
+
+    it("should not allow future date if allowFutureDates is set to false and the value is not computed", function() {
+        var obs = new Bahmni.ConceptSet.Observation({
+            concept: {name: "someConcept",dataType: "Date"}
+        }, {value:"2116-11-16"}, {
+            allowFutureDates: false
+        });
+        expect(obs.isValidDate()).toBeFalsy();
+    });
+
+    it("should allow future date time if the value is computed", function() {
+        var obs = new Bahmni.ConceptSet.Observation({
+            concept: {name: "someConcept", dataType: "Datetime", conceptClass: 'Computed'}
+        }, {value: "2116-02-09 01:00:00"}, {});
+        expect(obs.hasInvalidDateTime()).toBeFalsy();
+    });
+
+    it("should not allow future date time if allowFutureDates is set to false and the value is not computed", function() {
+        var obs = new Bahmni.ConceptSet.Observation({
+            concept: {name: "someConcept",dataType: "Datetime"}
+        }, {value:"2116-02-09 01:00:00"}, {
+            allowFutureDates: false
+        });
+        expect(obs.hasInvalidDateTime()).toBeTruthy();
+    })
 });
