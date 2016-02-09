@@ -172,8 +172,7 @@ describe('offlineSearchDbService', function () {
 
     it('Should search for patient by Education(custom attribute)', function (done) {
 
-        var searchString = '6th';
-        var identifier = 'GAN200076';
+        var searchString = '6th to 9th';
         var params = {
             q: '',
             s: "byIdOrNameOrVillage",
@@ -184,7 +183,8 @@ describe('offlineSearchDbService', function () {
         };
 
         createAndSearch(params, done).then(function (result) {
-            expect(result.pageOfResults[0].identifier).toBe(identifier);
+            var customAttributes = JSON.parse(result.pageOfResults[0].customAttribute);
+            expect(customAttributes.education).toBe(searchString);
             done();
         });
 
@@ -192,8 +192,7 @@ describe('offlineSearchDbService', function () {
 
     it('Should search for patient by landHolding(custom attribute)', function (done) {
 
-        var searchString = '23';
-        var identifier = 'GAN200076';
+        var searchString = 23;
         var params = {
             q: '',
             s: "byIdOrNameOrVillage",
@@ -204,7 +203,8 @@ describe('offlineSearchDbService', function () {
         };
 
         createAndSearch(params, done).then(function (result) {
-            expect(result.pageOfResults[0].identifier).toBe(identifier);
+            var customAttributes = JSON.parse(result.pageOfResults[0].customAttribute);
+            expect(customAttributes.landHolding).toBe(searchString);
             done();
         });
 
