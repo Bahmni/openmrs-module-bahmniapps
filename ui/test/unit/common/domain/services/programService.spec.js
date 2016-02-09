@@ -291,7 +291,7 @@ describe('programService', function () {
 
 
         mockBackend.whenGET('/openmrs/ws/rest/v1/programattributetype?v=custom:(uuid,name,description,datatypeClassname,datatypeConfig,concept)').respond(attributeType.data);
-        mockBackend.whenGET('/openmrs/ws/rest/v1/programenrollment?patient=somePatientUuid&v=full').respond(data.data);
+        mockBackend.whenGET(Bahmni.Common.Constants.programEnrollPatientUrl + '?patient=somePatientUuid&v=full').respond(data.data);
 
         programService.getProgramAttributeTypes().then(function (response) {
             expect(response.length).toBe(4);
@@ -323,7 +323,7 @@ describe('programService', function () {
             required: false
         }];
 
-        mockBackend.whenPOST('/openmrs/ws/rest/v1/programenrollment').respond(function (method, url, data, headers) {
+        mockBackend.whenPOST(Bahmni.Common.Constants.programEnrollPatientUrl).respond(function (method, url, data, headers) {
             expect(method).toEqual('POST');
             data = JSON.parse(data);
             expect(url).toEqual(Bahmni.Common.Constants.programEnrollPatientUrl);
@@ -353,7 +353,7 @@ describe('programService', function () {
         var outcome = "someOutcomeUuid";
         var dateCompleted = "Fri Dec 11 2015 12:04:23 GMT+0530 (IST)";
 
-        mockBackend.whenPOST('/openmrs/ws/rest/v1/programenrollment/somePatientProgramUuid').respond(function (method, url, data, headers) {
+        mockBackend.whenPOST(Bahmni.Common.Constants.programEnrollPatientUrl + '/somePatientProgramUuid').respond(function (method, url, data, headers) {
             data = JSON.parse(data);
             expect(url).toEqual(Bahmni.Common.Constants.programEnrollPatientUrl + "/" + patientProgramUuid);
             expect(moment(data.dateCompleted).isSame(moment("2015-12-11T12:04:23+0530"))).toBe(true);
@@ -373,7 +373,7 @@ describe('programService', function () {
         programService.deletePatientState(patientProgramUuid, patientStateUuid).success(function (response) {
             expect(response.reason).toEqual("User deleted the state.");
         });
-        mockBackend.when('DELETE', '/openmrs/ws/rest/v1/programenrollment/somePatientProgramUuid/state/someStateUuid').respond(function (method, url) {
+        mockBackend.when('DELETE', Bahmni.Common.Constants.programEnrollPatientUrl + '/somePatientProgramUuid/state/someStateUuid').respond(function (method, url) {
             expect(url).toEqual(Bahmni.Common.Constants.programEnrollPatientUrl + "/" + patientProgramUuid + "/state/" + patientStateUuid);
             return [200, {"reason": "User deleted the state."}, {}];
 
@@ -392,7 +392,7 @@ describe('programService', function () {
         var constructedState = [{state: {uuid: uuid}, uuid: programStateUuid, startDate: onDate}];
 
 
-        mockBackend.whenPOST('/openmrs/ws/rest/v1/programenrollment/somePatientProgramUuid').respond(function (method, url, data, headers) {
+        mockBackend.whenPOST(Bahmni.Common.Constants.programEnrollPatientUrl + '/somePatientProgramUuid').respond(function (method, url, data, headers) {
             data = JSON.parse(data);
             expect(url).toEqual(Bahmni.Common.Constants.programEnrollPatientUrl + "/" + patientProgramUuid);
             expect(data.states).toEqual(constructedState);
@@ -516,7 +516,7 @@ describe('programService', function () {
         });
 
         it("should have attribute representation", function () {
-            mockBackend.whenGET('/openmrs/ws/rest/v1/programenrollment?patient=somePatientUuid&v=full').respond(data.data);
+            mockBackend.whenGET(Bahmni.Common.Constants.programEnrollPatientUrl + '?patient=somePatientUuid&v=full').respond(data.data);
             mockBackend.whenGET('/openmrs/ws/rest/v1/programattributetype?v=custom:(uuid,name,description,datatypeClassname,datatypeConfig,concept)').respond(
                 {
                     "results":[
@@ -557,7 +557,7 @@ describe('programService', function () {
                 "voided": false
             }];
 
-            mockBackend.whenGET('/openmrs/ws/rest/v1/programenrollment?patient=somePatientUuid&v=full').respond(data.data);
+            mockBackend.whenGET(Bahmni.Common.Constants.programEnrollPatientUrl + '?patient=somePatientUuid&v=full').respond(data.data);
             mockBackend.whenGET('/openmrs/ws/rest/v1/programattributetype?v=custom:(uuid,name,description,datatypeClassname,datatypeConfig,concept)').respond({
                 "results":[
                     {
@@ -585,7 +585,7 @@ describe('programService', function () {
         var patientProgramUuid = "somePatientProgramUuid";
         var content = "SampleContent";
 
-        mockBackend.whenPOST('/openmrs/ws/rest/v1/programenrollment/somePatientProgramUuid').respond(function (method, url, data, headers) {
+        mockBackend.whenPOST(Bahmni.Common.Constants.programEnrollPatientUrl + '/somePatientProgramUuid').respond(function (method, url, data, headers) {
             expect(url).toEqual(Bahmni.Common.Constants.programEnrollPatientUrl + "/" + patientProgramUuid);
             expect(data).toEqual(content);
             return [200, {}, {}];
@@ -638,7 +638,7 @@ describe('programService', function () {
             "attributes": attributes
         };
 
-        mockBackend.whenPOST('/openmrs/ws/rest/v1/programenrollment/Some UUID').respond(function (method, url, data, headers) {
+        mockBackend.whenPOST(Bahmni.Common.Constants.programEnrollPatientUrl + '/Some UUID').respond(function (method, url, data, headers) {
             data = JSON.parse(data);
             expect(url).toEqual(Bahmni.Common.Constants.programEnrollPatientUrl + "/" + patientProgram.uuid);
             expect(data).toEqual(content);

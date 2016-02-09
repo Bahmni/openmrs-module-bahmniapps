@@ -70,7 +70,7 @@ Bahmni.Common = Bahmni.Common || {};
         adminImportStatusUrl: BAHMNI_CORE + "/admin/upload/status",
         dhisAllTasksUrl: RESTWS_V1 + "/dhis/tasks",
         programUrl: RESTWS_V1 + "/program",
-        programEnrollPatientUrl: RESTWS_V1 + "/programenrollment",
+        programEnrollPatientUrl: RESTWS_V1 + "/bahmniprogramenrollment",
         programEnrollmentDefaultInformation: "default",
         programEnrollmentFullInformation: "full",
         programAttributeTypes: RESTWS_V1 + "/programattributetype",
