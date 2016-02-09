@@ -279,7 +279,7 @@ angular.module('bahmni.clinical').controller('ConsultationController',
                 var visitTypeForRetrospectiveEntries = clinicalAppConfigService.getVisitTypeForRetrospectiveEntries();
                 var defaultVisitType = clinicalAppConfigService.getDefaultVisitType();
                 var encounterData = new Bahmni.Clinical.EncounterTransactionMapper().map(tempConsultation, $scope.patient, sessionService.getLoginLocationUuid(), retrospectiveEntryService.getRetrospectiveEntry(),
-                    visitTypeForRetrospectiveEntries, defaultVisitType, $scope.isInEditEncounterMode());
+                    visitTypeForRetrospectiveEntries, defaultVisitType, $scope.isInEditEncounterMode(), $state.params.enrollment );
                 deferred.resolve(encounterData);
                 return deferred.promise;
             };

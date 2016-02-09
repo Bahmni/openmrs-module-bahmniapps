@@ -105,7 +105,8 @@ angular.module('consultation')
                         return retrospectiveEntryService.initializeRetrospectiveEntry();
                     },
                     consultationContext: function (consultationInitialization, initialization, $stateParams) {
-                        return consultationInitialization($stateParams.patientUuid, $stateParams.encounterUuid, $stateParams.programUuid);
+                        return consultationInitialization(
+                            $stateParams.patientUuid, $stateParams.encounterUuid, $stateParams.programUuid, $stateParams.enrollment);
                     },
                     dashboardInitialization: function ($rootScope, initialization, patientContext, clinicalDashboardConfig, userService) {
                         return clinicalDashboardConfig.load().then(function (data) {
