@@ -98,7 +98,8 @@ describe("patient dashboard controller", function () {
             spinner: spinner,
             appService: _appService,
             $stateParams: _stateParams,
-            diseaseTemplateService: _diseaseTemplateService
+            diseaseTemplateService: _diseaseTemplateService,
+            patientContext: {patient: {}}
 
         });
     });
@@ -135,7 +136,8 @@ describe("patient dashboard controller", function () {
             spinner: spinner,
             appService: _appService,
             $stateParams: _stateParams,
-            diseaseTemplateService: _diseaseTemplateService
+            diseaseTemplateService: _diseaseTemplateService,
+            patientContext: {patient: {}}
 
         });
     });
