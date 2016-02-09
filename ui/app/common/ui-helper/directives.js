@@ -120,9 +120,7 @@ angular.module('bahmni.common.uiHelper')
                 }
             };
 
-            $scope.$watch(attrs.patternValidate, function () {
-                addPatternToElement();
-            });
+            addPatternToElement();
         }
     })
     .directive('validateOn', function(){
