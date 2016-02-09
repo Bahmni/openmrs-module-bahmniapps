@@ -687,6 +687,12 @@ table.pivot-table {
     font-family: OpenSansSemiBold;
     color: #333;
   }
+  .tabular-obs table tr td.obsTableEdit{
+      width:130px;
+      span.obsTableData{
+        width:105px;
+      }
+  }
 }
 
 .dashboard-chronic-treatment-section {
