@@ -11,7 +11,7 @@ angular.module('bahmni.common.conceptSet')
         },
         template: '<div class="stepper clearfix">' +
                         '<button ng-click="decrement()" class="stepper__btn stepper__minus" ng-disabled="obs.disabled">-</button>'+
-                        '<input id="{{::obs.uniqueId}}" obs-constraints ng-model="ngModel" obs="::obs" ng-class="ngClass" focus-me="focusMe" integer="true" type="text" class="stepper__field" ng-disabled="obs.disabled" />'+
+                        '<input id="{{::obs.uniqueId}}" obs-constraints ng-model="ngModel" obs="::obs" ng-class="ngClass" focus-me="focusMe" type="text" class="stepper__field" ng-disabled="obs.disabled" />'+
                         '<button ng-click="increment()" class="stepper__btn stepper__plus"  ng-disabled="obs.disabled">+</button>' +
                   '</div> ',
 

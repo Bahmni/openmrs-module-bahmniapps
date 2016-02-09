@@ -149,7 +149,6 @@
             '/bahmni/common/concept-set/directives/stepper.js',
             '/bahmni/common/concept-set/directives/obsConstraints.js',
             '/bahmni/common/concept-set/directives/duration.js',
-            '/bahmni/common/concept-set/directives/integer.js',
             '/bahmni/common/concept-set/directives/latestObs.js',
             '/bahmni/common/concept-set/models/conceptSetGroupValidationHandler.js',
             '/bahmni/common/concept-set/models/conceptSetObservation.js',

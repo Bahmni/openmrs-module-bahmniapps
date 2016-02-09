@@ -45,7 +45,7 @@
                         <label class="dose-label">{{ ::treatmentConfig.translate('dose', 'MEDICATION_LABEL_DOSE') }} </label>
                     </div>
                     <div class="field-value">
-                        <input id="uniform-dose" class="dose fl" integer="true" ng-focus="treatment.setFrequencyType('uniform')"
+                        <input id="uniform-dose" class="dose fl"  ng-focus="treatment.setFrequencyType('uniform')"
                                type="number" min="0" step="any" placeholder="{{ treatmentConfig.getDosePlaceHolder() | translate}}"
                                ng-model="treatment.uniformDosingType.dose"
                                ng-required="treatment.isUniformFrequency && !treatment.uniformDosingType.doseFraction"
@@ -114,13 +114,13 @@
                     </div>
                     <div class="field-value">
                         <input id="morning-dose" type="number" min="0" step="any" ng-model="treatment.variableDosingType.morningDose"
-                               integer="true" ng-focus="treatment.setFrequencyType('variable')"
+                               ng-focus="treatment.setFrequencyType('variable')"
                                ng-required="!treatment.validate()" focus-on="editDrugEntryVariableFrequency" placeholder="&mdash;"/>
                         <input id="afternoon-dose" type="number" min="0" step="any"
-                               ng-model="treatment.variableDosingType.afternoonDose" integer="true"
+                               ng-model="treatment.variableDosingType.afternoonDose"
                                ng-required="!treatment.validate()" placeholder="&mdash;"/>
                         <input id="evening-dose" type="number" min="0" step="any"
-                               ng-model="treatment.variableDosingType.eveningDose" integer="true"
+                               ng-model="treatment.variableDosingType.eveningDose"
                                ng-required="!treatment.validate()" placeholder="&mdash;"/>
                     </div>
                 </div>
