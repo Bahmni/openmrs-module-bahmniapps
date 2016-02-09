@@ -8,7 +8,7 @@ describe("TreamentService", function () {
     beforeEach(module('bahmni.clinical'));
     
     beforeEach(module(function () {
-        _$http = jasmine.createSpyObj('$http', ['get']);
+        _$http = jasmine.createSpyObj('$http', ['get', 'delete']);
 
     }));
 
@@ -85,8 +85,26 @@ describe("TreamentService", function () {
                 done();
             })
 
-        })
+        });
 
+        it('should void drug order', function (done) {
+            var sampleDrugOrder = drugOrders[0];
+
+            _$http.delete.and.callFake(function () {
+                return {
+                    success: function(fn) {
+                        return fn("Ok");
+                    }
+                };
+            });
+
+            var drugOrder = Bahmni.Clinical.DrugOrderViewModel.createFromContract(sampleDrugOrder);
+
+            this.treatmentService.voidDrugOrder(drugOrder).then(function () {
+                expect(_$http.delete).toHaveBeenCalledWith([Bahmni.Common.Constants.ordersUrl, '/', sampleDrugOrder.uuid].join(''));
+                done();
+            });
+        });
     });
 
     var drugOrders = [

@@ -2,7 +2,7 @@
 
 angular.module('bahmni.common.displaycontrol.drugOrdersSection')
     .directive('drugOrdersSection', ['Treatment' +
-    'Service', 'spinner', '$rootScope',  function (treatmentService, spinner, $rootScope) {
+    'Service', 'spinner', '$rootScope','$http',  function (treatmentService, spinner, $rootScope, $http) {
         var controller = function ($scope) {
             var DateUtil = Bahmni.Common.Util.DateUtil;
 
@@ -75,6 +75,20 @@ angular.module('bahmni.common.displaycontrol.drugOrdersSection')
             $scope.refill = function (drugOrder) {
                 $rootScope.$broadcast("event:refillDrugOrder", drugOrder);
             };
+
+            $scope.remove = function (drugOrder) {
+                var promise = treatmentService.voidDrugOrder(drugOrder);
+
+                spinner.forPromise(promise);
+
+                promise.then(function() {
+                    $rootScope.$broadcast("event:sectionUpdated");
+                });
+            };
+
+            $scope.$on("event:sectionUpdated", function (event) {
+                init();
+            });
 
             $scope.revise = function (drugOrder, drugOrders) {
                 if (drugOrder.isEditAllowed) {

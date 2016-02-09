@@ -121,12 +121,24 @@ angular.module('bahmni.clinical')
             });
             return deferred.promise;
         };
+
+        var voidDrugOrder = function (drugOrder) {
+            var deferred = $q.defer();
+
+            $http.delete([Bahmni.Common.Constants.ordersUrl, '/', drugOrder.uuid].join('')).success(function (response) {
+                deferred.resolve(response);
+            });
+
+            return deferred.promise;
+        };
+
         return {
             getActiveDrugOrders: getActiveDrugOrders,
             getConfig: getConfig,
             getPrescribedDrugOrders: getPrescribedDrugOrders,
             getPrescribedAndActiveDrugOrders: getPrescribedAndActiveDrugOrders,
             getNonCodedDrugConcept: getNonCodedDrugConcept,
-            getAllDrugOrdersFor: getAllDrugOrdersFor
+            getAllDrugOrdersFor: getAllDrugOrdersFor,
+            voidDrugOrder: voidDrugOrder
         };
     }]);

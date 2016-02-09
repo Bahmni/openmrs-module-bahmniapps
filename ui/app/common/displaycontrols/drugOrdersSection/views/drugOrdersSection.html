@@ -38,6 +38,8 @@
                 <td class="buttonColumn"  ng-class="{'noActionColumn' :!config.actions ,'noActionColumnAddNote' : !config.actions && drugOrder.showAdditionalInstructions , 'buttonColumnStopForm' : drugOrder.isMarkedForDiscontinue , 'buttonColumnAddNote': drugOrder.showAdditionalInstructions ,'buttonColumnStopFormAddNote' : drugOrder.isMarkedForDiscontinue && drugOrder.showAdditionalInstructions }">
                     <div class="button-group-wrapper">
                         <div class="button-group" ng-if="config.actions"  ng-repeat="actionName in config.actions">
+                            <button ng-if="actionName=='void'" ng-confirm-click="remove(drugOrder)"
+                                    confirm-message="{{ 'REMOVE_DRUG_ORDER_KEY' | translate: {drugName :drugOrder.drugNameDisplay} }}" ><i class="fa fa-remove"></i></button>
                             <button ng-if="actionName=='revise'" ng-disabled="!drugOrder.isActive() || !drugOrder.isEditAllowed" ng-click="revise(drugOrder, drugOrders)">
                                 <i class="fa fa-edit"></i>
                             </button>

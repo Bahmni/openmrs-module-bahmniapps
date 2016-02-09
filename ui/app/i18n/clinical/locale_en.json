@@ -133,6 +133,7 @@
     "MEDICATION_CHANGE_DURATION_BUTTON" :"Change Duration",
 
     "REMOVE_CONFIRMATION_KEY": "Are you sure you want to remove?",
+    "REMOVE_DRUG_ORDER_KEY": "Are you sure you want to remove drug : {{ drugName }} ?",
 
     "DRUG_DETAILS_DRUG_NAME": "Drug",
     "DRUG_DETAILS_DOSE_INFO": "Dose",

@@ -105,7 +105,7 @@ describe('DrugOrdersSection DisplayControl', function () {
     beforeEach(module('bahmni.common.displaycontrol.drugOrdersSection'));
 
     beforeEach(module(function ($provide) {
-        treatmentService = jasmine.createSpyObj('treatmentService', ['getAllDrugOrdersFor']);
+        treatmentService = jasmine.createSpyObj('treatmentService', ['getAllDrugOrdersFor', 'voidDrugOrder']);
         $provide.value('TreatmentService', treatmentService);
 
     }));
@@ -335,4 +335,23 @@ describe('DrugOrdersSection DisplayControl', function () {
             expect(compiledElementScope.columnHeaders.drugName).toBe("DRUG_DETAILS_DRUG_NAME");
         });
     })
+
+    describe("voidDrugOrder", function () {
+        it('should broadcast sectionUpdated event on void', function () {
+            element = $compile(simpleHtml)(scope);
+            scope.$digest();
+            mockBackend.flush();
+
+            treatmentService.voidDrugOrder.and.callFake(function() {
+                return q.defer().promise;
+            });
+
+            var compiledElementScope = element.isolateScope();
+
+            var drugOrder = Bahmni.Clinical.DrugOrderViewModel.createFromContract(activeDrugOrder);
+            compiledElementScope.remove(drugOrder);
+
+            expect(treatmentService.voidDrugOrder).toHaveBeenCalledWith(drugOrder);
+        });
+    });
 });
