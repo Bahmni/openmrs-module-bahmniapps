@@ -52,8 +52,6 @@ describe('offlineService', function () {
 
             expect(offlineServiceInjected.isOfflineApp()).toBeFalsy();
             expect(bahmniCookieStore.get).toHaveBeenCalledWith(Bahmni.Common.Constants.platform);
-            expect(bahmniCookieStore.get.calls.count()).toBe(2);
-
         });
 
         it('should return true if platformType is not chrome browser', function () {
@@ -67,7 +65,6 @@ describe('offlineService', function () {
 
             expect(offlineServiceInjected.isOfflineApp()).toBeTruthy();
             expect(bahmniCookieStore.get).toHaveBeenCalledWith(Bahmni.Common.Constants.platform);
-            expect(bahmniCookieStore.get.calls.count()).toBe(1);
         });
 
     });
@@ -79,7 +76,6 @@ describe('offlineService', function () {
 
             expect(offlineServiceInjected.isAndroidApp()).toBeTruthy();
             expect(bahmniCookieStore.get).toHaveBeenCalledWith(Bahmni.Common.Constants.platform);
-            expect(bahmniCookieStore.get.calls.count()).toBe(1);
 
         });
         it('should return false if platformType is not android', function () {
@@ -89,7 +85,6 @@ describe('offlineService', function () {
 
             expect(offlineServiceInjected.isAndroidApp()).toBeFalsy();
             expect(bahmniCookieStore.get).toHaveBeenCalledWith(Bahmni.Common.Constants.platform);
-            expect(bahmniCookieStore.get.calls.count()).toBe(1);
 
         });
     });
@@ -102,7 +97,6 @@ describe('offlineService', function () {
 
             expect(offlineServiceInjected.isChromeApp()).toBeTruthy();
             expect(bahmniCookieStore.get).toHaveBeenCalledWith(Bahmni.Common.Constants.platform);
-            expect(bahmniCookieStore.get.calls.count()).toBe(1);
 
         });
         it('should return false if platformType is not chromeApp', function () {
@@ -112,8 +106,6 @@ describe('offlineService', function () {
 
             expect(offlineServiceInjected.isChromeApp()).toBeFalsy();
             expect(bahmniCookieStore.get).toHaveBeenCalledWith(Bahmni.Common.Constants.platform);
-            expect(bahmniCookieStore.get.calls.count()).toBe(1);
-
         });
     });
 
@@ -125,8 +117,6 @@ describe('offlineService', function () {
 
             expect(offlineServiceInjected.isChromeBrowser()).toBeTruthy();
             expect(bahmniCookieStore.get).toHaveBeenCalledWith(Bahmni.Common.Constants.platform);
-            expect(bahmniCookieStore.get.calls.count()).toBe(1);
-
         });
         it('should return false if platformType is not chrome', function () {
             bahmniCookieStore.get.and.callFake(function () {
@@ -135,8 +125,6 @@ describe('offlineService', function () {
 
             expect(offlineServiceInjected.isChromeBrowser()).toBeFalsy();
             expect(bahmniCookieStore.get).toHaveBeenCalledWith(Bahmni.Common.Constants.platform);
-            expect(bahmniCookieStore.get.calls.count()).toBe(1);
-
         });
     });
 
@@ -148,8 +136,6 @@ describe('offlineService', function () {
 
             expect(offlineServiceInjected.isChromeBrowser()).toBeTruthy();
             expect(bahmniCookieStore.get).toHaveBeenCalledWith(Bahmni.Common.Constants.platform);
-            expect(bahmniCookieStore.get.calls.count()).toBe(1);
-
         });
         it('should return false if platformType is not chrome', function () {
             bahmniCookieStore.get.and.callFake(function () {
@@ -158,8 +144,6 @@ describe('offlineService', function () {
 
             expect(offlineServiceInjected.isChromeBrowser()).toBeFalsy();
             expect(bahmniCookieStore.get).toHaveBeenCalledWith(Bahmni.Common.Constants.platform);
-            expect(bahmniCookieStore.get.calls.count()).toBe(1);
-
         });
     });
 
@@ -171,8 +155,6 @@ describe('offlineService', function () {
 
             expect(offlineServiceInjected.isChromeBrowser()).toBeTruthy();
             expect(bahmniCookieStore.get).toHaveBeenCalledWith(Bahmni.Common.Constants.platform);
-            expect(bahmniCookieStore.get.calls.count()).toBe(1);
-
         });
         it('should return false if platformType is not chrome', function () {
             bahmniCookieStore.get.and.callFake(function () {
@@ -181,8 +163,6 @@ describe('offlineService', function () {
 
             expect(offlineServiceInjected.isChromeBrowser()).toBeFalsy();
             expect(bahmniCookieStore.get).toHaveBeenCalledWith(Bahmni.Common.Constants.platform);
-            expect(bahmniCookieStore.get.calls.count()).toBe(1);
-
         });
     });
 
