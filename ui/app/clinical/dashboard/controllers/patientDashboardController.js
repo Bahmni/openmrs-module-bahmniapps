@@ -35,7 +35,7 @@ angular.module('bahmni.clinical')
                     dashboard.endDate = $stateParams.dateCompleted;
                 }
                 clinicalDashboardConfig.switchTab(dashboard);
-                $scope.dashboard = Bahmni.Common.DisplayControl.Dashboard.create(dashboard || {});
+                $scope.dashboard = Bahmni.Common.DisplayControl.Dashboard.create(dashboard);
                 spinner.forPromise(diseaseTemplateService.getLatestDiseaseTemplates(
                     $stateParams.patientUuid, clinicalDashboardConfig.getDiseaseTemplateSections(), dashboard.startDate, dashboard.endDate).then(function (diseaseTemplate) {
                         $scope.diseaseTemplates = diseaseTemplate;
