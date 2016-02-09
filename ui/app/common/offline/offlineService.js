@@ -13,7 +13,7 @@ angular.module('bahmni.common.offline').service('offlineService', ['$rootScope',
     };
 
     this.isOfflineApp = function () {
-        return !this.isChromeBrowser();
+        return this.isAndroidApp() || this.isChromeApp();
     };
 
     this.offline = function () {
@@ -58,8 +58,8 @@ angular.module('bahmni.common.offline').service('offlineService', ['$rootScope',
 
     Offline.options = {
         game: false,
-        checkOnLoad: false,
-        checks: {xhr: {url: '/bahmni/favicon.ico'}}
+        checkOnLoad: true,
+        checks: {xhr: {url: Bahmni.Common.Constants.faviconUrl}}
     };
 
     Offline.on('up', function () {
