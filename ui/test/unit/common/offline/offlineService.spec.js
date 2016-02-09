@@ -52,7 +52,7 @@ describe('offlineService', function () {
 
             expect(offlineServiceInjected.isOfflineApp()).toBeFalsy();
             expect(bahmniCookieStore.get).toHaveBeenCalledWith(Bahmni.Common.Constants.platform);
-            expect(bahmniCookieStore.get.calls.count()).toBe(1);
+            expect(bahmniCookieStore.get.calls.count()).toBe(2);
 
         });
 
