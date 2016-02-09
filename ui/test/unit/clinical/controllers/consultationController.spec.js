@@ -57,7 +57,8 @@ describe("ConsultationController", function () {
                 params: {
                     encounterUuid: "someEncounterUuid",
                     programUuid: "someProgramUuid",
-                    patientUuid: "somePatientUuid"
+                    patientUuid: "somePatientUuid",
+                    enrollment: "somePatientProgramUuid"
                 },
                 go: function () {
                 }
@@ -129,20 +130,20 @@ describe("ConsultationController", function () {
     it("should return proper URL when showing a different board", function () {
         scope.lastConsultationTabUrl = {url: undefined};
         var newUrl = scope.showBoard(1);
-        expect(newUrl).toEqual("/default/patient/somePatientUuid/dashboard/treatment?encounterUuid=someEncounterUuid&programUuid=someProgramUuid&tabConfigName=tbTabConfig");
+        expect(newUrl).toEqual("/default/patient/somePatientUuid/dashboard/treatment?encounterUuid=someEncounterUuid&programUuid=someProgramUuid&enrollment=somePatientProgramUuid&tabConfigName=tbTabConfig");
     });
 
     it("should return proper URL with extension params as parameters with url", function () {
         scope.lastConsultationTabUrl = {url: undefined};
         var newUrl = scope.showBoard(1);
-        expect(newUrl).toEqual("/default/patient/somePatientUuid/dashboard/treatment?encounterUuid=someEncounterUuid&programUuid=someProgramUuid&tabConfigName=tbTabConfig");
+        expect(newUrl).toEqual("/default/patient/somePatientUuid/dashboard/treatment?encounterUuid=someEncounterUuid&programUuid=someProgramUuid&enrollment=somePatientProgramUuid&tabConfigName=tbTabConfig");
     });
 
     it("should not append encounterUuid in query params if not available", function () {
         scope.lastConsultationTabUrl = {url: undefined};
         state.params.encounterUuid = null;
         var newUrl = scope.showBoard(1);
-        expect(newUrl).toEqual("/default/patient/somePatientUuid/dashboard/treatment?programUuid=someProgramUuid&tabConfigName=tbTabConfig");
+        expect(newUrl).toEqual("/default/patient/somePatientUuid/dashboard/treatment?programUuid=someProgramUuid&enrollment=somePatientProgramUuid&tabConfigName=tbTabConfig");
     });
 
     it("should check whether app is in editEncounterMode", function () {

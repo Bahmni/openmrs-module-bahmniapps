@@ -27,6 +27,7 @@
                    ui-sref="patient.dashboard.show({
                            patientUuid: patient.uuid,
                            programUuid: patientProgram.program.uuid,
+                           enrollment: patientProgram.uuid,
                            conceptSetGroupName: 'observations',
                            dateEnrolled: patientProgram.fromDate,
                            dateCompleted: patientProgram.toDate})">

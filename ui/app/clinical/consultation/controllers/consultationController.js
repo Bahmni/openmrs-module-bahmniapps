@@ -200,6 +200,10 @@ angular.module('bahmni.clinical').controller('ConsultationController',
                     queryParams.push("programUuid="+$state.params.programUuid);
                 }
 
+                if($state.params.enrollment) {
+                    queryParams.push("enrollment="+$state.params.enrollment);
+                }
+
                 if($state.params.dateEnrolled) {
                     queryParams.push("dateEnrolled="+$state.params.dateEnrolled);
                 }
@@ -207,6 +211,7 @@ angular.module('bahmni.clinical').controller('ConsultationController',
                 if($state.params.dateCompleted) {
                     queryParams.push("dateCompleted="+$state.params.dateCompleted);
                 }
+
 
                 var extensionParams = board.extensionParams;
                 angular.forEach(extensionParams, function(extensionParamValue, extensionParamKey){

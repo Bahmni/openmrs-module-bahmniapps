@@ -33,7 +33,7 @@ angular.module('bahmni.common.uicontrols.programmanagment')
                     endedProgram.fromDate = Bahmni.Common.Util.DateUtil.parseLongDateToServerFormat(endedProgram.dateEnrolled);
                     endedProgram.toDate = Bahmni.Common.Util.DateUtil.parseLongDateToServerFormat(endedProgram.dateCompleted);
                 })
-            }
+            };
 
             var getCurrentDate = function () {
                 var retrospectiveDate = retrospectiveEntryService.getRetrospectiveDate();

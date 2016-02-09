@@ -119,7 +119,7 @@ angular.module('consultation')
                 }
             })
             .state('patient.dashboard.show', {
-                url: '/dashboard?programUuid,dateEnrolled,dateCompleted',
+                url: '/dashboard?programUuid,dateEnrolled,dateCompleted,enrollment',
                 params: {
                     dashboardCachebuster: null
                 },
