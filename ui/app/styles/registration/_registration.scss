@@ -90,17 +90,20 @@ body{
   }
 }
 
-.expand{
-  .fa-caret-right{
-    display: none;
+.additional-attribute{
+  &.active{
+    .fa-caret-right{
+      display: none;
+    }
+    .fa-caret-down{
+      display: inline;
+    }
   }
-}
-.collapse{
   .fa-caret-down{
     display: none;
   }
-}
 
+}
 
 
 

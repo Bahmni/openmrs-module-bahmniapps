@@ -165,18 +165,17 @@
     <div ng-repeat="(key, section) in ::patientConfiguration.getPatientAttributesSections()"
          class="additional-info-wrapper">
         <div class="box-container form" ng-if="::(section.attributes.length > 0 && section.title)">
-            <legend class="additional-attribute" toggle="sectionVisibilityMap[key]"
-                    ng-class="{'expand': sectionVisibilityMap[key], 'collapse': !sectionVisibilityMap[key]}">
-          <span>
-              <i class="fa fa-caret-right"></i>
-              <i class="fa fa-caret-down"></i>
-              <strong>
-                  <a ng-if="::section.translationKey" href accesskey="{{::section.shortcutKey | translate}}"
-                     ng-bind-html="::section.translationKey | translate">
-                  </a>
-                  <a ng-if="::(section.title && !section.translationKey)" href>{{::section.title}}</a>
-              </strong>
-          </span>
+            <legend class="additional-attribute" toggle="sectionVisibilityMap[key]">
+              <span>
+                  <i class="fa fa-caret-right"></i>
+                  <i class="fa fa-caret-down"></i>
+                  <strong>
+                      <a ng-if="::section.translationKey" href accesskey="{{::section.shortcutKey | translate}}"
+                         ng-bind-html="::section.translationKey | translate">
+                      </a>
+                      <a ng-if="::(section.title && !section.translationKey)" href>{{::section.title}}</a>
+                  </strong>
+              </span>
             </legend>
             <section class="form-field-inline clearfix" ng-show="sectionVisibilityMap[key]">
                 <article class="form-field" ng-repeat="attribute in ::section.attributes"
@@ -189,9 +188,7 @@
         </div>
     </div>
     <div class="box-container" ng-if="::(relationshipTypes.length > 0)">
-        <legend class="additional-attribute" ng-show="::relationshipTypes"
-                ng-class="{'expand': displayRelationshipInformation, 'collapse': !displayRelationshipInformation}"
-                toggle="displayRelationshipInformation">
+        <legend class="additional-attribute" ng-show="::relationshipTypes" toggle="displayRelationshipInformation">
           <span>
               <i class="fa fa-caret-right"></i>
               <i class="fa fa-caret-down"></i>
@@ -203,8 +200,7 @@
              ng-if="::relationshipTypes"></div>
     </div>
     <div class="box-container">
-        <legend class="additional-attribute" toggle="displayDeathInformation"
-                ng-class="{'expand': displayDeathInformation, 'collapse': !displayDeathInformation}">
+        <legend class="additional-attribute" toggle="displayDeathInformation">
           <span>
               <i class="fa fa-caret-right"></i>
               <i class="fa fa-caret-down"></i>
