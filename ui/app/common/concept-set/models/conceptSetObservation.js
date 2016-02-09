@@ -165,7 +165,7 @@ Bahmni.ConceptSet.Observation.prototype = {
 
     isStepperControl: function() {
         if(this.isNumeric()){
-            return this.conceptUIConfig.stepper;
+            return this.conceptUIConfig.stepper == true;
         }
     },
 
@@ -281,7 +281,7 @@ Bahmni.ConceptSet.Observation.prototype = {
     },
 
     isRequired: function () {
-        return this.conceptUIConfig.required;
+        return this.conceptUIConfig.required == true  ;
     },
 
     isFormElement: function() {

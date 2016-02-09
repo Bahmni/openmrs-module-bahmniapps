@@ -286,7 +286,7 @@ angular.module('bahmni.common.conceptSet')
                 validationHandler: "&",
                 patient: "=",
                 conceptSetFocused: "=",
-                collapseInnerSections: "="
+                collapseInnerSections: "=?"
             },
             templateUrl: '../common/concept-set/views/conceptSet.html',
             controller: controller

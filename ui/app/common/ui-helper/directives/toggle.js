@@ -1,9 +1,11 @@
 angular.module('bahmni.common.uiHelper')
-.directive('toggle', function() {
-	var link = function($scope, element, attrs) {
-		$scope.$watch("toggle", function(value) {
-			$(element).toggleClass('active', value)
-		});
+    .directive('toggle', function () {
+        var link = function ($scope, element, attrs) {
+            $scope.$watch("toggle", function (value) {
+                if(value!= undefined) {
+                    $(element).toggleClass('active', value)
+                }
+            });
             $(element).click(function () {
                 $scope.$apply(function () {
                     $scope.toggle = !$scope.toggle
@@ -11,10 +13,10 @@ angular.module('bahmni.common.uiHelper')
             });
         };
 
-	return {
-		scope: {
-		  toggle: "="
-		},
-		link: link
-	}
-});
+        return {
+            scope: {
+                toggle: "="
+            },
+            link: link
+        }
+    });
