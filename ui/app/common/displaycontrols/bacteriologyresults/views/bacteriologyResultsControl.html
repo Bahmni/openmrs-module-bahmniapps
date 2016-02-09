@@ -6,13 +6,14 @@
         <ul class="form-field">
             <li ng-repeat="specimen in specimens" >
                 <span class="tree-list-item">
-                    <i class="fa fa-caret-right" ng-hide="specimen.isOpen"></i>
-                    <i class="fa fa-caret-down" ng-show="specimen.isOpen"></i>
                     <span class="specimen-info">
-                        <span class="specimenSource" toggle="specimen.isOpen">
+                        <span class="specimenSource"   toggle="specimen.isOpen">
+                            <i class="fa fa-caret-right" ng-hide="specimen.isOpen"></i>
+                            <i class="fa fa-caret-down" ng-show="specimen.isOpen"></i>
                             {{getDisplayName(specimen)}} :
                             <span class="specimenId">{{specimen.specimenId}}</span>
                         </span>
+
                         <span class="specimenCollectionDate fr">
                             <i class="fa fa-pencil fl" ng-click="editBacteriologySample(specimen)"></i>
                             {{specimen.specimenCollectionDate | bahmniDate}}
