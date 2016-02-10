@@ -40,7 +40,7 @@
     <div class="apps">
         <ul>
             <li ng-repeat="extn in appExtensions">
-                <a ng-href="{{extn.url}}" class="button app big" target="{{extn.target?extn.target:'_self'}}"><i class="fa {{extn.icon}}"></i>{{extn | titleTranslate}}</a>
+                <a ng-href="{{extn.url}}" class="button app big" target="{{extn.target?extn.target:'_self'}}"><i class="{{extn.icon}}"></i>{{extn | titleTranslate}}</a>
             </li>
         </ul>
     </div>
