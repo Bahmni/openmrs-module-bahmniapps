@@ -203,7 +203,7 @@
   }
 }
 
-.patient-dashboard.visit {padding: 0;}
+.patient-dashboard.visit {padding: 0; margin-top: 65px}
 .dashboard-visit-summary {padding: 10px;}
 .dashboard-header {
   width: 100%;
@@ -756,4 +756,58 @@ table.treatments-details-table{
 }
 .patient-dashboard small.hint{
   padding-left: 3px;
+}
+
+
+
+.patient-info-fixed-postion-container{
+  position: fixed;
+  top: 52px;
+  z-index: 9999;
+  background: #fff;
+  width: 100%;
+  left: 0;
+  div.patient-info-fixed{
+    @include clearfix;
+    background: #ddd;
+    max-width: 1300px;
+    margin: 10px auto 10px;
+    clear: both;
+    width: 100%;
+    border: 1px solid #669999;
+    border-radius: 5px;
+    padding: 5px 0px;
+    box-sizing: border-box;
+    font-family: openSansSemiBold;
+    ul{
+      li{
+        display: block;
+        float: left;
+        color: $black;
+        border-left: 2px #828181 solid;
+        margin: 10px 0px;
+        padding-left: 15px;
+        padding-right: 15px;
+        &.patient-name-image-container{
+          margin: 0;
+          margin: 0;
+          border-left: none;
+          display: table;
+          .patient-image{
+            display: table-cell;
+            height: 35px;
+            width: auto;
+            border: 1px solid #ccc;
+            border-radius: 100%;
+          }
+          .patient-name{
+            display: table-cell;
+            vertical-align: middle;
+            padding-left: 10px;
+          }
+        }
+      }
+    }
+  }
+
 }
