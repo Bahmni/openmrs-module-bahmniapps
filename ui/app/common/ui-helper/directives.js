@@ -112,7 +112,7 @@ angular.module('bahmni.common.uiHelper')
             }
         };
     })
-    .directive('patternValidate', function () {
+    .directive('patternValidate', function ($timeout) {
         return function ($scope, element, attrs) {
             var addPatternToElement = function () {
                 if($scope.fieldValidation && $scope.fieldValidation[attrs.id]){
@@ -120,7 +120,7 @@ angular.module('bahmni.common.uiHelper')
                 }
             };
 
-            addPatternToElement();
+            $timeout(addPatternToElement);
         }
     })
     .directive('validateOn', function(){
