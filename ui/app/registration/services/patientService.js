@@ -4,7 +4,7 @@ angular.module('bahmni.registration')
     .factory('patientService', ['$http', '$rootScope','$bahmniCookieStore','$q','offlinePatientService', 'offlineService', function ($http, $rootScope, $bahmniCookieStore, $q, offlinePatientService, offlineService) {
         var openmrsUrl = Bahmni.Registration.Constants.openmrsUrl;
         var baseOpenMRSRESTURL = Bahmni.Registration.Constants.baseOpenMRSRESTURL;
-        var search = function (query, identifier, identifierPrefix, addressFieldName, addressFieldValue, customAttributeValue, offset, customAttributeFields) {
+        var search = function (query, identifier, identifierPrefix, addressFieldName, addressFieldValue, customAttributeValue, offset, customAttributeFields, programAttributeFieldName, programAttributeFieldValue) {
 
             var config = {
                 params: {
@@ -16,7 +16,9 @@ angular.module('bahmni.registration')
                     address_field_value: addressFieldValue,
                     custom_attribute: customAttributeValue,
                     startIndex: offset || 0,
-                    patientAttributes: customAttributeFields
+                    patientAttributes: customAttributeFields,
+                    programAttributeFieldName: programAttributeFieldName,
+                    programAttributeFieldValue: programAttributeFieldValue
                 },
                 withCredentials: true
             };

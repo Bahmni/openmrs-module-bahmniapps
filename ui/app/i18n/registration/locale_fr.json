@@ -25,6 +25,7 @@
   "REGISTRATION_LABEL_GENDER" : "Sexe",
   "REGISTRATION_LABEL_SELECT_GENDER" : "Sélectionnez le sexe",
   "REGISTRATION_LABEL_AGE" : "Age",
+  "REGISTRATION_LABEL_CITY": "Village",
   "REGISTRATION_LABEL_YEARS" : "Années",
   "REGISTRATION_LABEL_NUMERIC_YEARS":"Entrez une valeur numérique pour les années .",
   "REGISTRATION_LABEL_MONTHS":"mois",
