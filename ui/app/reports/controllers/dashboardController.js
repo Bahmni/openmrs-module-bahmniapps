@@ -16,6 +16,7 @@ angular.module('bahmni.reports')
             $scope.reportsRequiringDateRange = _.values(response).filter(function (report) {
                 return !(report.config && report.config.dateRangeRequired === false);
             });
+            debugger;
             $scope.reportsNotRequiringDateRange = _.values(response).filter(function (report) {
                 return (report.config && report.config.dateRangeRequired === false);
             });
