@@ -1,17 +1,24 @@
 'use strict';
 
 angular.module('bahmni.registration')
-    .factory('addressHierarchyService', ['$http', 'offlineService', '$q', function ($http, offlineService, $q) {
+    .factory('addressHierarchyService', ['$http', 'offlineService', 'offlineDbService', 'androidDbService',
+        function ($http, offlineService, offlineDbService, androidDbService) {
         var search = function(fieldName, query, parentUuid){
 
+            var params =  {searchString: query, addressField: fieldName ,parentUuid: parentUuid, limit: defaults.maxAutocompleteResults};
             if(offlineService.isOfflineApp()){
-                return $q.when({data : []});
+                if(offlineService.isAndroidApp()){
+                    return androidDbService.searchAddress(params);
+                }else{
+                    return offlineDbService.searchAddress(params);
+                }
+
             }
             var url = Bahmni.Registration.Constants.openmrsUrl + "/module/addresshierarchy/ajax/getPossibleAddressHierarchyEntriesWithParents.form";
 
             return $http.get(url, {
                 method: "GET",
-                params: {searchString: query, addressField: fieldName ,parentUuid: parentUuid, limit: defaults.maxAutocompleteResults},
+                params: params,
                 withCredentials: true
             });
         };

@@ -49,6 +49,13 @@ angular.module('bahmni.common.offline')
                 return $q.when(value);
             };
 
+            var searchAddress = function(requestParams){
+                var addressParams = JSON.stringify(requestParams);
+                var value = AndroidOfflineService.searchAddress(addressParams);
+                value = value != undefined ? JSON.parse(value) : value;
+                return $q.when({data:value});
+            };
+
             return {
                 init: init,
                 populateData: populateData,
@@ -57,7 +64,8 @@ angular.module('bahmni.common.offline')
                 deletePatientData: deletePatientData,
                 getMarker: getMarker,
                 insertMarker: insertMarker,
-                insertAddressHierarchy: insertAddressHierarchy
+                insertAddressHierarchy: insertAddressHierarchy,
+                searchAddress: searchAddress
             }
         }
     ]);

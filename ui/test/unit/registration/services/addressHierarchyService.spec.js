@@ -46,15 +46,23 @@ describe('addressHierarchyService', function () {
         get:jasmine.createSpy('Http get').and.returnValue(resultList)
     };
 
-    var mockofflineService = jasmine.createSpyObj('offlineService', ['isOfflineApp']);
+    var mockofflineService = jasmine.createSpyObj('offlineService', ['isOfflineApp', 'isAndroidApp']);
     mockofflineService.isOfflineApp.and.returnValue(false);
+    mockofflineService.isAndroidApp.and.returnValue(false);
+
+    var mockofflineDbService= jasmine.createSpyObj('offlineDbService', ['searchAddress']);
+    mockofflineDbService.searchAddress.and.returnValue(resultList);
+
+    var mockandroidDbService= jasmine.createSpyObj('androidDbService', ['searchAddress']);
+    mockandroidDbService.searchAddress.and.returnValue(resultList);
 
 
     beforeEach(module('bahmni.registration'));
     beforeEach(module(function ($provide) {
         $provide.value('$http', mockHttp);
         $provide.value('offlineService', mockofflineService);
-        $provide.value('$q', {});
+        $provide.value('androidDbService', mockandroidDbService);
+        $provide.value('offlineDbService', mockofflineDbService);
     }));
 
     describe("search", function () {

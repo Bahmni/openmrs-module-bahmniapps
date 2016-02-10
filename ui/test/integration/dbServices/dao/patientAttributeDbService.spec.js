@@ -27,7 +27,7 @@ describe('patientAttributeDbService tests', function () {
         var patientJson = JSON.parse(readFixtures('patient.json'));
         var personAttributeTypeJSON = JSON.parse(readFixtures('patientAttributeType.json'));
         mockHttp.get.and.returnValue(specUtil.respondWithPromise($q, personAttributeTypeJSON));
-        return schemaBuilder.connect().then(function (db) {
+        schemaBuilder.connect().then(function (db) {
             return patientAttributeDbService.insertAttributeTypes(db).then(function () {
                 var attributeTypeTable = db.getSchema().table('patient_attribute_type');
                 return db.select(attributeTypeTable.attributeTypeId,

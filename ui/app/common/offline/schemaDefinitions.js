@@ -34,6 +34,9 @@ Bahmni.Common.Offline.SchemaDefinitions = {
         tableName: 'address_hierarchy_entry',
         columns: [
             {
+                name: 'id',
+                type: 'INTEGER'
+            },{
                 name: 'name',
                 type: 'STRING'
             }, {

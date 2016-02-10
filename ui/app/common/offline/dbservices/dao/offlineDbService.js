@@ -98,6 +98,10 @@ angular.module('bahmni.common.offline')
             return offlineAddressHierarchyDbService.insertAddressHierarchy(data)
         };
 
+        var searchAddress = function(params){
+            return offlineAddressHierarchyDbService.search(params);
+        };
+
         return {
             init: init,
             populateData: populateData,
@@ -106,6 +110,7 @@ angular.module('bahmni.common.offline')
             deletePatientData: deletePatientData,
             getMarker: getMarker,
             insertMarker: insertMarker,
-            insertAddressHierarchy: insertAddressHierarchy
+            insertAddressHierarchy: insertAddressHierarchy,
+            searchAddress: searchAddress
         }
     }]);
