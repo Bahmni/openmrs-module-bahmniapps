@@ -11,7 +11,7 @@
 	position: fixed;
 	top: 50px;
 	left: 32%;
-	z-index: 1;
+	z-index: 10000;
 	display: table;
 	@include clearfix;
 	.message-icon{
