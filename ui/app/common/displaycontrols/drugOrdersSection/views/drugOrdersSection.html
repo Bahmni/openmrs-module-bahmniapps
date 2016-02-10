@@ -16,7 +16,7 @@
             <tbody ng-repeat="drugOrder in drugOrders">
             <tr ng-class="{'highlight' : drugOrder.isBeingEdited, 'edited' : drugOrder.isMarkedForDiscontinue}">
                 <td ng-repeat="columnName in columns" class="{{columnName}}" ng-class="{'drugNameStopForm' : drugOrder.isMarkedForDiscontinue && columnName === 'drugName' ,'drugNameAddNote': drugOrder.showAdditionalInstructions  && columnName === 'drugName' ,'drugNameStopFormAddNote':  drugOrder.isMarkedForDiscontinue && drugOrder.showAdditionalInstructions  && columnName === 'drugName'}">
-                    <span ng-if="columnName === 'drugName'">{{::drugOrder.getDrugOrderName(false)}}</span>
+                    <span ng-if="columnName === 'drugName'" title="{{::drugOrder.getDrugOrderName(false)}}">{{::drugOrder.getDrugOrderName(false)}}</span>
                     <span ng-if="columnName === 'dosage'">{{::drugOrder.dosage}}</span>
                     <span ng-if="columnName === 'route'">{{::drugOrder.route}}</span>
                     <span ng-if="columnName === 'duration'">{{::drugOrder.getDurationAndDurationUnits()}}</span>

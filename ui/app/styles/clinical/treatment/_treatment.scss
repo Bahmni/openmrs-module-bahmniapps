@@ -58,10 +58,7 @@
             }
         }
         .refill-btn, .stop-drug-btn {
-            padding: 6px!important;
-            @media screen and (max-width: 1024px){
-                padding:4px 6px !important
-            }
+            padding:4px 6px!important;
         }
         button.dispense-btn{
             font-family: OpenSansBold;

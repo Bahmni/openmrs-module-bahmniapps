@@ -95,6 +95,12 @@
           width: 170px;
         }
       }
+      &.stopDate{
+        width:60px;
+      }
+      &.stopReason{
+        width:160px;
+      }
       &.empty-header{
         width: 165px;
         position: absolute;
@@ -118,6 +124,9 @@
         box-sizing: border-box;
         background: #EFEFF2;
         border-bottom: 1px solid #ddd;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
         @media (max-width : 1024px){
            width: 170px;
         }
