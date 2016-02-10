@@ -55,6 +55,7 @@ angular.module('bahmni.registration')
                         $scope.searchParameters.programAttributeFieldValue
                     ).then(function(response) {
                          mapCustomAttributesSearchResults(response);
+                         mapProgramAttributesSearchResults(response);
                          return response;
                     });
                     searchPromise['finally'](function () {
@@ -70,6 +71,15 @@ angular.module('bahmni.registration')
                 }).trim();
             };
 
+            $scope.getProgramAttributeValues = function(result){
+                var attributeValues = result && result.patientProgramAttributeValue && result.patientProgramAttributeValue[$scope.programAttributesSearchConfig.field];
+                var commaSeparatedAttributeValues = "";
+                _.each(attributeValues, function (attr) {
+                    commaSeparatedAttributeValues = commaSeparatedAttributeValues + attr + ", ";
+                });
+                return commaSeparatedAttributeValues.substring(0, commaSeparatedAttributeValues.length-2);
+            };
+
             $scope.getAddressFieldLabel = function(){
               if($scope.addressSearchConfig.label){
                   return $scope.addressSearchConfig.label;
@@ -81,10 +91,31 @@ angular.module('bahmni.registration')
                 if(( $scope.programAttributesSearchConfig.field || $scope.customAttributesSearchConfig.fields) && data != "Searching"){
                     _.map(data.pageOfResults, function(result){
                         result.customAttribute = result.customAttribute && JSON.parse(result.customAttribute);
-                        result.patientProgramAttributeValue = result.patientProgramAttributeValue && JSON.parse(result.patientProgramAttributeValue);
                     });
                 }
             };
+
+            var mapProgramAttributesSearchResults = function (data) {
+                if(( $scope.programAttributesSearchConfig.field || $scope.customAttributesSearchConfig.fields) && data != "Searching") {
+                    _.map(data.pageOfResults, function (result) {
+                        var programAttributesObj ={};
+                        var arrayOfStringOfKeysValue = result.patientProgramAttributeValue && result.patientProgramAttributeValue.substring(2, result.patientProgramAttributeValue.length-2).split('","');
+                        _.each(arrayOfStringOfKeysValue, function(keyValueString){
+                            var keyValueArray = keyValueString.split('":"');
+                            var key = keyValueArray[0];
+                            var value = keyValueArray[1]
+                            if(! _.contains(_.keys(programAttributesObj), key)) {
+                                programAttributesObj[key] = [];
+                                programAttributesObj[key].push(value);
+                            }
+                            else {
+                                programAttributesObj[key].push(value)
+                            }
+                        });
+                        result.patientProgramAttributeValue = programAttributesObj;
+                    });
+                }
+            }
 
             var showSearchResults = function (searchPromise) {
                 $scope.noMoreResultsPresent = false;
@@ -94,6 +125,11 @@ angular.module('bahmni.registration')
                         $scope.noResultsMessage = $scope.results.length === 0 ? 'REGISTRATION_NO_RESULTS_FOUND' : null;
                     });
                 }
+            };
+
+            var setPatientIdentifierSearchConfig = function(){
+                $scope.patientIdentifierSearchConfig = {};
+                $scope.patientIdentifierSearchConfig.show = allSearchConfigs.searchByPatientIdentifier === undefined ? true: allSearchConfigs.searchByPatientIdentifier ;
             };
 
             var setAddressSearchConfig = function(){
@@ -117,6 +153,7 @@ angular.module('bahmni.registration')
             var initialize = function () {
                 $scope.searchParameters = {};
                 $scope.searchActions = appService.getAppDescriptor().getExtensions("org.bahmni.registration.patient.search.result.action");
+                setPatientIdentifierSearchConfig();
                 setAddressSearchConfig();
                 setCustomAttributesSearchConfig();
                 setProgramAttributesSearchConfig();
@@ -154,9 +191,17 @@ angular.module('bahmni.registration')
 
                 var patientIdentifier = $scope.searchParameters.registrationNumber;
                 preferences.identifierPrefix = $scope.searchParameters.identifierPrefix ? $scope.searchParameters.identifierPrefix.prefix : "";
-                $location.search({identifierPrefix: preferences.identifierPrefix, registrationNumber: $scope.searchParameters.registrationNumber});
-                var searchPromise = patientService.search(undefined, patientIdentifier, preferences.identifierPrefix, $scope.addressSearchConfig.field).then(function (data) {
+
+                $location.search({
+                    identifierPrefix: preferences.identifierPrefix,
+                    registrationNumber: $scope.searchParameters.registrationNumber,
+                    programAttributeFieldName: $scope.programAttributesSearchConfig.field,
+                    programAttributeFieldValue: $scope.searchParameters.programAttributeFieldValue
+                });
+
+                var searchPromise = patientService.search(undefined, patientIdentifier, preferences.identifierPrefix, $scope.addressSearchConfig.field, undefined, undefined, undefined, undefined, $scope.programAttributesSearchConfig.field, $scope.searchParameters.programAttributeFieldValue).then(function (data) {
                     mapCustomAttributesSearchResults(data);
+                    mapProgramAttributesSearchResults(data)
                     if (data.pageOfResults.length === 1) {
                         var patient = data.pageOfResults[0];
                         var forwardUrl = appService.getAppDescriptor().getConfigValue("searchByIdForwardUrl") || "/patient/{{patientUuid}}";
