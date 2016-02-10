@@ -348,7 +348,7 @@ angular.module('consultation')
                 abstract: true,
                 views: {
                     'content': {
-                        template: '<div ui-view="patientProgram-header"></div> <div ui-view="patientProgram-content"></div>'
+                        template: '<div ui-view="patientProgram-header"></div> <div ui-view="patientProgram-content" class="patientProgram-content-container"></div>'
                     }
                 },
                 resolve:{
