@@ -47,6 +47,7 @@ angular.module('bahmni.common.conceptSet')
             $scope.conceptSetRequired = false;
             $scope.showTitleValue = $scope.showTitle();
             $scope.numberOfVisits = conceptSetUIConfig[conceptSetName] && conceptSetUIConfig[conceptSetName].numberOfVisits ? conceptSetUIConfig[conceptSetName].numberOfVisits : null;
+            $scope.hideAbnormalButton = conceptSetUIConfig[conceptSetName] && conceptSetUIConfig[conceptSetName].hideAbnormalButton;
 
             var updateObservationsOnRootScope = function () {
                 if ($scope.rootObservation) {

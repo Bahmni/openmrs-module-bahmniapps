@@ -73,7 +73,7 @@
 
                 <div ng-include src="'../common/concept-set/views/observationDataTypes/addMore.html'"></div>
 
-                <div ng-if="::observation.abnormalObs && !observation.isComputed()" class="fl accept-btn-wrapper">
+                <div ng-if="::observation.abnormalObs && !observation.isComputed() && !hideAbnormalButton" class="fl accept-btn-wrapper">
                     <button type="button" ng-model="observation.abnormalObs.value"
                             class="small-btn accept-btn grid-row-element"
                             ng-disabled="!observation.primaryObs.hasValue() || observation.disabled"
@@ -282,7 +282,7 @@
                             <concept collapse-inner-sections="collapseInnerSections" observation="obs"
                                      root-observation="row" at-least-one-value-is-set="atLeastOneValueIsSet"
                                      patient="patient" show-title="false"
-                                     concept-set-required="conceptSetRequired" concept-set-name="conceptSetName"></concept>
+                                     concept-set-required="conceptSetRequired" concept-set-name="::conceptSetName" hide-abnormal-button="hideAbnormalButton"></concept>
                         </td>
                         <td ng-if="observation.canAddMore()">
                             <button type="button" class="add-more-btn btn-small" ng-click="observation.addNew(row)">
@@ -329,7 +329,7 @@
                         <concept collapse-inner-sections="collapseInnerSections" observation="member"
                                  root-observation="observation" at-least-one-value-is-set="atLeastOneValueIsSet"
                                  patient="patient" show-title="true"
-                                 concept-set-required="conceptSetRequired" concept-set-name="::conceptSetName"></concept>
+                                 concept-set-required="conceptSetRequired" concept-set-name="::conceptSetName" hide-abnormal-button="hideAbnormalButton"></concept>
                     </div>
                 </div>
             </div>

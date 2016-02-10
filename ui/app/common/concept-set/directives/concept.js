@@ -3,9 +3,11 @@ angular.module('bahmni.common.conceptSet')
         function (RecursionHelper, spinner, conceptSetService, $filter) {
         var link = function (scope, element, attributes) {
             var conceptMapper = new Bahmni.Common.Domain.ConceptMapper();
+            var hideAbnormalbuttonConfig = scope.observation && scope.observation.conceptUIConfig &&  scope.observation.conceptUIConfig['hideAbnormalButton'];
 
             scope.now = moment().format("YYYY-MM-DD hh:mm:ss");
             scope.showTitle = scope.showTitle === undefined ? true : scope.showTitle;
+            scope.hideAbnormalButton = hideAbnormalbuttonConfig == undefined ? scope.hideAbnormalButton : hideAbnormalbuttonConfig;
 
             scope.cloneNew = function (observation, parentObservation) {
                 var newObs = observation.cloneNew();
@@ -109,7 +111,8 @@ angular.module('bahmni.common.conceptSet')
                 rootObservation: "=",
                 patient: "=",
                 collapseInnerSections: "=",
-                rootConcept: "&"
+                rootConcept: "&",
+                hideAbnormalButton:"="
             },
             templateUrl: '../common/concept-set/views/observation.html'
         }

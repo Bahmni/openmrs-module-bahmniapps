@@ -1,17 +1,12 @@
 'use strict';
 
-xdescribe("conceptSet", function () {
+describe("conceptSet", function () {
     var appService, spinner, conceptSetUiConfigService, contextChangeHandler, observationsService,
-        messagingService, compile, scope, recursionHelper, conceptSetService;
+        messagingService, compile, scope, conceptSetService, httpBackend;
 
     beforeEach(function () {
-        module('ui.select2');
-        module('bahmni.common.uiHelper');
         module('bahmni.common.conceptSet');
-        module('ngHtml2JsPreprocessor');
-        module('bahmni.common.i18n');
         module(function ($provide) {
-            recursionHelper = jasmine.createSpyObj('RecursionHelper', ['compile']);
             conceptSetService = jasmine.createSpyObj('conceptSetService', ['getConcept']);
             appService = jasmine.createSpyObj('appService', ['getAppDescriptor']);
             contextChangeHandler = jasmine.createSpyObj('contextChangeHandler', ['add']);
@@ -19,7 +14,6 @@ xdescribe("conceptSet", function () {
             messagingService = jasmine.createSpyObj('messagingService', ['showMessage']);
             conceptSetUiConfigService = jasmine.createSpyObj('conceptSetUiConfigService', ['getConfig']);
             spinner = jasmine.createSpyObj('spinner', ['forPromise']);
-            $provide.value('RecursionHelper', recursionHelper);
             $provide.value('appService', appService);
             $provide.value('conceptSetService', conceptSetService);
             $provide.value('contextChangeHandler', contextChangeHandler);
@@ -29,9 +23,10 @@ xdescribe("conceptSet", function () {
             $provide.value('conceptSetUiConfigService', conceptSetUiConfigService);
             $provide.value('spinner', spinner);
         });
-        inject(function ($compile, $rootScope) {
+        inject(function ($compile, $rootScope, $httpBackend) {
             compile = $compile;
             scope = $rootScope.$new();
+            httpBackend = $httpBackend;
         });
     });
     beforeEach(function () {
@@ -52,7 +47,8 @@ xdescribe("conceptSet", function () {
         });
 
         conceptSetUiConfigService.getConfig.and.returnValue({
-            additionalAttributesConceptName: {}
+            additionalAttributesConceptName: {},
+            "conceptSetName" :{"hideAbnormalButton" :true}
         });
 
         conceptSetService.getConcept.and.returnValue({
@@ -64,25 +60,18 @@ xdescribe("conceptSet", function () {
         });
     });
 
-    var generateElement = function () {
-        var unCompiledHtml =
-            '<concept-set ' +
-            'show-title="false" ' +
-            'patient="patient" ' +
-            'concept-set-name="additionalAttributesConceptName" ' +
-            'observations="observations">' +
-            '</concept-set>';
-        var element = compile(angular.element(unCompiledHtml))(scope);
-        scope.$digest();
-        return element;
-    };
 
     it("should apply form conditions for observation on AddMore", function () {
         scope.selectOptions = function(){
             return {}
         };
 
-        var element = generateElement();
+        httpBackend.expectGET("../common/concept-set/views/conceptSet.html").respond('<div>dummy</div>');
+
+        var html = '<concept-set concept-set-name = "conceptSetName"  observations = "observations" required="true" show-title="" validation-handler="something" patient = "patient" concept-set-focused="no" collapse-inner-sections="no"></concept-set>';
+        var element = compile(html)(scope);
+        scope.$digest();
+        httpBackend.flush();
 
         var compiledElementScope = element.isolateScope();
         scope.$digest();
@@ -93,4 +82,19 @@ xdescribe("conceptSet", function () {
         //scope.$broadcast('event:addMore', scope.observations[0]);
         //expect(scope.$root.$on).toHaveBeenCalled();
     });
+
+    it("should set hideAbnormalButton value from config", function(){
+
+        httpBackend.expectGET("../common/concept-set/views/conceptSet.html").respond('<div>dummy</div>');
+        scope.conceptSetName = "conceptSetName";
+        var html = '<concept-set concept-set-name = "conceptSetName"  observations = "observations" required="true" show-title="" validation-handler="something" patient = "patient" concept-set-focused="no" collapse-inner-sections="no"></concept-set>';
+        var element = compile(html)(scope);
+        scope.$digest();
+        httpBackend.flush();
+
+        var compiledElementScope = element.isolateScope();
+        scope.$digest();
+        expect(compiledElementScope.hideAbnormalButton).toBeTruthy();
+
+    })
 });
