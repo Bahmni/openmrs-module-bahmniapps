@@ -528,19 +528,18 @@ table.pivot-table {
     vertical-align: middle;
     font-weight: bold;
     font-family: $OpenSansBoldFont;
+    &:first-letter{
+      text-transform: capitalize;
+    }
   }
   thead th {
     font-family: OpenSans, Arial, sans-serif;
     font-weight: normal;
     border-right: 0;
-    &.row-header-group {
-      //text-align: right;
-    }
   }
   tr {
     td, th {
       line-height: 1.2em;
-      text-transform: capitalize;
       height: 36px;
       max-height: 36px;
       vertical-align: middle;
