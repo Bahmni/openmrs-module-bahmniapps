@@ -2,7 +2,7 @@
   .message-container{
 	width: 35%;
 	margin: 5px auto;
-	padding: 5px 10px;
+	padding: 0px 10px;
 	border-radius: 2px;
 	font-size: 14px;
 	color: #FFF;
@@ -37,9 +37,13 @@
 	background: linear-gradient(top, rgba(216, 119, 119, 1) 1%, rgba(217, 87, 87, 1) 100%);
 	border: 1px solid #b72224;
 	.types-for-errors{
-	  padding-top: 6px;
+	  width: 330px;
+	  display: table-cell;
+	  vertical-align: middle;
 	}
 	.button-wrappper{
+	  display: table-cell;
+	  vertical-align: middle;
 	  .copy-btn, .show-btn {
 		padding: 5px;
 		margin-left: 5px;
@@ -56,5 +60,10 @@
 	filter: progid:DXImageTransform.Microsoft.gradient(startColorstr = '#8ad382', endColorstr = '#6ab165', GradientType = 0);
 	background: linear-gradient(top, rgba(138, 211, 130, 1) 0%, rgba(106, 177, 101, 1) 100%);
 	border: 1px solid #4b8048;
+	.fa{
+	  padding: 0 !important;
+	  padding-bottom: 3px !important;
+	}
   }
+
 }

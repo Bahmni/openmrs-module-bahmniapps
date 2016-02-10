@@ -5,7 +5,7 @@
         <li>
             <div class="message-container success-message-container" ng-if="isInfoMessagePresent()">
                 <div class="message-icon">
-                    <i class="fa fa-check"></i>
+                    <i class="fa fa-check-circle"></i>
                 </div>
                 <div class="message-text">
                     <div ng-repeat="info in messages.info">
@@ -23,7 +23,7 @@
                     <i class="fa fa-exclamation-triangle"></i>
                 </div>
                 <div class="message-text">
-                    <div class="fl types-for-errors error-message">
+                    <div class="types-for-errors error-message">
                         <div ng-if="!showError">Error Occurred!!!</div>
 
                         <div ng-if="showError" ng-repeat="error in messages.error track by $index">
@@ -31,7 +31,7 @@
                             <div class="msg primary" ng-if="error.isServerError">{{error.value}}</div>
                         </div>
                     </div>
-                    <div class="fr button-wrappper">
+                    <div class="button-wrappper">
                         <button type="button" clip-copy="getErrorMessageText()" class="copy-btn">Copy</button>
                         <button type="button" ng-click="toggleShowError()" class="show-btn">
                             <span ng-show="!showError">Show</span>
