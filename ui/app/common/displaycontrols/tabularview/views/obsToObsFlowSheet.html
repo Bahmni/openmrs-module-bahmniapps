@@ -31,15 +31,17 @@
                     <td ng-if="isMonthAvailable()">{{row.columns['Month'][0].valueAsString}}</td>
                     <td ng-repeat="header in obsTable.headers" ng-if="header.name != 'Month'"
                         ng-class="{'is-abnormal': row.columns[header.name][0].abnormal , 'obsTableEdit' : header.name === config.groupByConcept && isEditable }">
-                        <span class="fl" ng-class="{ 'obsTableData' : header.name === config.groupByConcept && isEditable }">{{commafy(row.columns[header.name])}}</span>
-                        <span class="fl" ng-if="header.name === config.groupByConcept && isEditable" >
-                            <span class="has-link fl"
-                                  ng-dialog="dashboard/views/dashboardSections/editObservationForm.html"
-                                  ng-dialog-class="ngdialog-theme-default ng-dialog-all-details-page"
-                                  ng-dialog-data="{{::getEditObsData(row.columns[header.name][0])}}">
-                                 <i class="fl fa fa-pencil"></i>
+                       <div ng-class="{'obsTableEditContainer' : header.name === config.groupByConcept && isEditable }">
+                           <span class="fl" ng-class="{ 'obsTableData' : header.name === config.groupByConcept && isEditable }">{{commafy(row.columns[header.name])}}</span>
+                            <span class="fl" ng-if="header.name === config.groupByConcept && isEditable" >
+                                <span class="has-link fl"
+                                      ng-dialog="dashboard/views/dashboardSections/editObservationForm.html"
+                                      ng-dialog-class="ngdialog-theme-default ng-dialog-all-details-page"
+                                      ng-dialog-data="{{::getEditObsData(row.columns[header.name][0])}}">
+                                     <i class="fl fa fa-pencil"></i>
+                                </span>
                             </span>
-                        </span>
+                       </div>
                     </td>
                 </tr>
 
