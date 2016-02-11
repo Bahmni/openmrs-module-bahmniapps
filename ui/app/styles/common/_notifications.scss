@@ -13,6 +13,10 @@
 	left: 32%;
 	z-index: 10000;
 	display: table;
+	@media (max-width : 1024px){
+	  width: 50%;
+	  left: 25%;
+	}
 	@include clearfix;
 	.message-icon{
 	  display: table-cell;
