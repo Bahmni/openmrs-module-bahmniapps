@@ -40,7 +40,7 @@ angular.module('bahmni.common.displaycontrol.dashboard')
                 visitHistory: "=",
                 activeVisitUuid: "=",
                 visitSummary: "=",
-                programUuid: "="
+                enrollment: "="
             }
         }
     }]);

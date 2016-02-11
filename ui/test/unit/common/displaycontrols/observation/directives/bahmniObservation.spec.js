@@ -2,7 +2,7 @@
 
 describe("BahmniObservation", function () {
     var appService, scope, $compile, mockBackend, observationsService, visitFormService, q, spinner;
-    var simpleHtml = '<bahmni-observation section="section" patient="patient" is-on-dashboard="true" config="config" program-uuid="programUuid"></bahmni-observation>';
+    var simpleHtml = '<bahmni-observation section="section" patient="patient" is-on-dashboard="true" config="config" enrollment="enrollment"></bahmni-observation>';
 
     beforeEach(module('ngHtml2JsPreprocessor'));
     beforeEach(module('bahmni.common.patient'));
@@ -72,7 +72,7 @@ describe("BahmniObservation", function () {
             scope.patient = {uuid: '123'};
             scope.config = {showGroupDateTime: false, conceptNames: ["Concept Name"], scope: "latest", numberOfVisits: 1};
             scope.section = {startDate: "enrollment date" , endDate: "completed date"};
-            scope.programUuid = "uuid";
+            scope.enrollment = "uuid";
             observationsService.fetch.and.returnValue({});
 
             mockBackend.expectGET('../common/displaycontrols/observation/views/observationDisplayControl.html').respond("<div>dummy</div>");
@@ -94,7 +94,7 @@ describe("BahmniObservation", function () {
             scope.patient = {uuid: '123'};
             scope.config = {showGroupDateTime: false, conceptNames: ["Concept Name"], scope: "latest", numberOfVisits: 1};
             scope.section = {startDate: "enrollment date", endDate: "completed date"};
-            scope.programUuid = "uuid";
+            scope.enrollment = "uuid";
             observationsService.fetch.and.returnValue({});
             appService.getAppDescriptor.and.returnValue({
                 getConfigValue: function () {

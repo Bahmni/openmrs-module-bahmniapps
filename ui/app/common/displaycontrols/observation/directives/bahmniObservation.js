@@ -44,7 +44,7 @@ angular.module('bahmni.common.displaycontrol.observation')
                             spinner.forPromise(observationsService.fetch($scope.patient.uuid, $scope.config.conceptNames,
                                 $scope.config.scope, $scope.config.numberOfVisits, $scope.visitUuid,
                                 $scope.config.obsIgnoreList, null, $scope.section.startDate, $scope.section.endDate,
-                                $scope.programUuid)).then(function (response) {
+                                $scope.enrollment)).then(function (response) {
                                 mapObservation(response.data, $scope.config);
                             });
                         }
@@ -82,7 +82,7 @@ angular.module('bahmni.common.displaycontrol.observation')
                     isOnDashboard: "=",
                     observations: "=",
                     message: "=",
-                    programUuid: "="
+                    enrollment: "="
                 }
             }
         }]);

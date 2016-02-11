@@ -12,7 +12,7 @@ angular.module('bahmni.clinical')
             $scope.obsIgnoreList = clinicalAppConfigService.getObsIgnoreList();
             $scope.clinicalDashboardConfig = clinicalDashboardConfig;
             $scope.visitSummary = visitSummary;
-            $scope.programUuid = $stateParams.programUuid;
+            $scope.enrollment = $stateParams.enrollment;
             var programConfig = appService.getAppDescriptor().getConfigValue("program") || {};
 
             $scope.stateChange = function () {
