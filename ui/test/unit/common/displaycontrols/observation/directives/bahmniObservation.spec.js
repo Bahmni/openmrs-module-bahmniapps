@@ -71,7 +71,7 @@ describe("BahmniObservation", function () {
         it("should fetch observations for patient if the encounterUuid is not provided", function () {
             scope.patient = {uuid: '123'};
             scope.config = {showGroupDateTime: false, conceptNames: ["Concept Name"], scope: "latest", numberOfVisits: 1};
-            scope.section = {startDate: "enrollment date" , endDate: "completed date"};
+            scope.section = {};
             scope.enrollment = "uuid";
             observationsService.fetch.and.returnValue({});
 
@@ -85,7 +85,7 @@ describe("BahmniObservation", function () {
             expect(compiledElementScope).not.toBeUndefined();
             expect(compiledElementScope.config).not.toBeUndefined();
             expect(observationsService.fetch).toHaveBeenCalledWith(scope.patient.uuid, scope.config.conceptNames, scope.config.scope,
-                scope.config.numberOfVisits, undefined, undefined, null, "enrollment date", "completed date", "uuid");
+                scope.config.numberOfVisits, undefined, undefined, null, "uuid");
             expect(observationsService.fetch.calls.count()).toEqual(1);
             expect(observationsService.fetchForEncounter.calls.count()).toEqual(0);
         });
@@ -93,7 +93,7 @@ describe("BahmniObservation", function () {
         it("should fetch observations within daterange if you want to fetch program specific data.", function () {
             scope.patient = {uuid: '123'};
             scope.config = {showGroupDateTime: false, conceptNames: ["Concept Name"], scope: "latest", numberOfVisits: 1};
-            scope.section = {startDate: "enrollment date", endDate: "completed date"};
+            scope.section = {};
             scope.enrollment = "uuid";
             observationsService.fetch.and.returnValue({});
             appService.getAppDescriptor.and.returnValue({
@@ -122,7 +122,7 @@ describe("BahmniObservation", function () {
             expect(compiledElementScope.config).not.toBeUndefined();
             expect(observationsService.fetch).toHaveBeenCalledWith(scope.patient.uuid, scope.config.conceptNames,
                 scope.config.scope, scope.config.numberOfVisits, undefined, undefined,
-                null, "enrollment date", "completed date", "uuid");
+                null, "uuid");
             expect(observationsService.fetch.calls.count()).toEqual(1);
             expect(observationsService.fetchForEncounter.calls.count()).toEqual(0);
         })

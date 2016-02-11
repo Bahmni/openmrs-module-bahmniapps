@@ -43,7 +43,7 @@ angular.module('bahmni.common.displaycontrol.observation')
                         } else {
                             spinner.forPromise(observationsService.fetch($scope.patient.uuid, $scope.config.conceptNames,
                                 $scope.config.scope, $scope.config.numberOfVisits, $scope.visitUuid,
-                                $scope.config.obsIgnoreList, null, $scope.section.startDate, $scope.section.endDate,
+                                $scope.config.obsIgnoreList, null,
                                 $scope.enrollment)).then(function (response) {
                                 mapObservation(response.data, $scope.config);
                             });
