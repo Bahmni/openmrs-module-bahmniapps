@@ -2,7 +2,7 @@
 
 describe("BahmniObservation", function () {
     var appService, scope, $compile, mockBackend, observationsService, visitFormService, q, spinner;
-    var simpleHtml = '<bahmni-observation section="section" patient="patient" is-on-dashboard="true" config="config"></bahmni-observation>';
+    var simpleHtml = '<bahmni-observation section="section" patient="patient" is-on-dashboard="true" config="config" program-uuid="programUuid"></bahmni-observation>';
 
     beforeEach(module('ngHtml2JsPreprocessor'));
     beforeEach(module('bahmni.common.patient'));
@@ -35,7 +35,6 @@ describe("BahmniObservation", function () {
             }
         });
 
-        $provide.value('$stateParams', {dateEnrolled: "enrollment date", dateCompleted: "completed date"});
         $provide.value('observationsService', observationsService);
         $provide.value('appService', appService);
         $provide.value('spinner', spinner);
@@ -72,7 +71,8 @@ describe("BahmniObservation", function () {
         it("should fetch observations for patient if the encounterUuid is not provided", function () {
             scope.patient = {uuid: '123'};
             scope.config = {showGroupDateTime: false, conceptNames: ["Concept Name"], scope: "latest", numberOfVisits: 1};
-            scope.section = {};
+            scope.section = {startDate: "enrollment date" , endDate: "completed date"};
+            scope.programUuid = "uuid";
             observationsService.fetch.and.returnValue({});
 
             mockBackend.expectGET('../common/displaycontrols/observation/views/observationDisplayControl.html').respond("<div>dummy</div>");
@@ -84,7 +84,8 @@ describe("BahmniObservation", function () {
 
             expect(compiledElementScope).not.toBeUndefined();
             expect(compiledElementScope.config).not.toBeUndefined();
-            expect(observationsService.fetch).toHaveBeenCalledWith(scope.patient.uuid, scope.config.conceptNames, scope.config.scope, scope.config.numberOfVisits, undefined, undefined, null, null, null);
+            expect(observationsService.fetch).toHaveBeenCalledWith(scope.patient.uuid, scope.config.conceptNames, scope.config.scope,
+                scope.config.numberOfVisits, undefined, undefined, null, "enrollment date", "completed date", "uuid");
             expect(observationsService.fetch.calls.count()).toEqual(1);
             expect(observationsService.fetchForEncounter.calls.count()).toEqual(0);
         });
@@ -92,7 +93,8 @@ describe("BahmniObservation", function () {
         it("should fetch observations within daterange if you want to fetch program specific data.", function () {
             scope.patient = {uuid: '123'};
             scope.config = {showGroupDateTime: false, conceptNames: ["Concept Name"], scope: "latest", numberOfVisits: 1};
-            scope.section = {};
+            scope.section = {startDate: "enrollment date", endDate: "completed date"};
+            scope.programUuid = "uuid";
             observationsService.fetch.and.returnValue({});
             appService.getAppDescriptor.and.returnValue({
                 getConfigValue: function () {
@@ -118,7 +120,9 @@ describe("BahmniObservation", function () {
 
             expect(compiledElementScope).not.toBeUndefined();
             expect(compiledElementScope.config).not.toBeUndefined();
-            expect(observationsService.fetch).toHaveBeenCalledWith(scope.patient.uuid, scope.config.conceptNames, scope.config.scope, scope.config.numberOfVisits, undefined, undefined, null, "enrollment date", "completed date");
+            expect(observationsService.fetch).toHaveBeenCalledWith(scope.patient.uuid, scope.config.conceptNames,
+                scope.config.scope, scope.config.numberOfVisits, undefined, undefined,
+                null, "enrollment date", "completed date", "uuid");
             expect(observationsService.fetch.calls.count()).toEqual(1);
             expect(observationsService.fetchForEncounter.calls.count()).toEqual(0);
         })

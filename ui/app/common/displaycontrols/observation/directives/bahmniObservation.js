@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('bahmni.common.displaycontrol.observation')
-    .directive('bahmniObservation', ['observationsService', 'appService', '$q', 'spinner', '$stateParams',
-        function (observationsService, appService, $q, spinner, $stateParams) {
+    .directive('bahmniObservation', ['observationsService', 'appService', '$q', 'spinner',
+        function (observationsService, appService, $q, spinner) {
 
             var controller = function ($scope) {
                 $scope.showGroupDateTime = $scope.config.showGroupDateTime === false ? false : true;
@@ -36,18 +36,15 @@ angular.module('bahmni.common.displaycontrol.observation')
                         $scope.isFulfilmentDisplayControl = true;
                     }
                     else {
-                        var startDate = null, endDate = null;
-                        if (programConfig.showDetailsWithinDateRange) {
-                            startDate = $stateParams.dateEnrolled;
-                            endDate = $stateParams.dateCompleted;
-                        }
                         if ($scope.config.encounterUuid) {
                             spinner.forPromise(observationsService.fetchForEncounter($scope.config.encounterUuid, $scope.config.conceptNames)).then(function (response) {
                                 mapObservation(response.data, $scope.config)
                             });
                         } else {
                             spinner.forPromise(observationsService.fetch($scope.patient.uuid, $scope.config.conceptNames,
-                                $scope.config.scope, $scope.config.numberOfVisits, $scope.visitUuid, $scope.config.obsIgnoreList, null, startDate, endDate)).then(function (response) {
+                                $scope.config.scope, $scope.config.numberOfVisits, $scope.visitUuid,
+                                $scope.config.obsIgnoreList, null, $scope.section.startDate, $scope.section.endDate,
+                                $scope.programUuid)).then(function (response) {
                                 mapObservation(response.data, $scope.config);
                             });
                         }
@@ -84,7 +81,8 @@ angular.module('bahmni.common.displaycontrol.observation')
                     title: "=sectionTitle",
                     isOnDashboard: "=",
                     observations: "=",
-                    message: "="
+                    message: "=",
+                    programUuid: "="
                 }
             }
         }]);

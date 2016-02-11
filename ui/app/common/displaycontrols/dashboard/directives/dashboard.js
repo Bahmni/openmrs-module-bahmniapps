@@ -39,7 +39,8 @@ angular.module('bahmni.common.displaycontrol.dashboard')
                 sectionGroups: "=",
                 visitHistory: "=",
                 activeVisitUuid: "=",
-                visitSummary: "="
+                visitSummary: "=",
+                programUuid: "="
             }
         }
     }]);
