@@ -37,7 +37,7 @@ angular.module('bahmni.common.uicontrols.programmanagment')
 
             var getCurrentDate = function () {
                 var retrospectiveDate = retrospectiveEntryService.getRetrospectiveDate();
-                return DateUtil.parseLongDateToServerFormat(retrospectiveDate) || DateUtil.parse(DateUtil.now()) ;
+                return DateUtil.parseLongDateToServerFormat(retrospectiveDate);
             };
 
             var init = function () {
@@ -194,7 +194,7 @@ angular.module('bahmni.common.uicontrols.programmanagment')
             };
 
             $scope.endPatientProgram = function (patientProgram) {
-                var dateCompleted = getCurrentDate();
+                var dateCompleted = DateUtil.getDateWithoutTime(getCurrentDate());
                 var currentState = getCurrentState(patientProgram.states);
                 var currentStateDate = currentState ? DateUtil.parse(currentState.startDate) : null;
 

@@ -91,7 +91,7 @@ angular.module('bahmni.common.domain')
 
         var endPatientProgram = function (patientProgramUuid, asOfDate, outcomeUuid){
             var content = {
-                dateCompleted: moment(asOfDate).format(Bahmni.Common.Constants.ServerDateTimeFormat),
+                dateCompleted: asOfDate ? moment(asOfDate).format(Bahmni.Common.Constants.ServerDateTimeFormat) : null,
                 outcome: outcomeUuid
             };
             return savePatientProgram(patientProgramUuid, content);
