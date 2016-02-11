@@ -676,6 +676,11 @@ table.pivot-table {
   }
 }
 .dashboard-tabular-obs-section{
+  &.dst-results{
+    .tabular-obs table{
+      table-layout: fixed;
+    }
+  }
   .tabular-obs table tr td:first-child {
     background: #eee;
     background-image: none;
