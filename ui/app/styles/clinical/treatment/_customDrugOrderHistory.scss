@@ -1,5 +1,4 @@
 .drugOrderHistorySectionContainer{
-  //margin-top: 15px;
   .drugOrderTable{
     width:100%;
     position: relative !important;
@@ -8,7 +7,7 @@
     width: auto;
     overflow-x: auto;
     overflow-y: visible;
-    margin-left:200px;
+    margin-left:240px;
     margin-right: 165px;
     @media (max-width : 1024px){
       margin-left: 170px;
@@ -78,13 +77,13 @@
       background: #eee;
       background-image: none;
       color: #333;
-      width: 108px;
+      width:121px;
       @media (max-width : 1024px){
-        width: 83px;
+        width: 78px;
       }
       font-family: openSansSemiBold;
       &.drugName{
-        width: 200px;
+        width: 240px;
         text-align: left;
         position: absolute;
         top:auto;
@@ -94,9 +93,6 @@
         @media (max-width : 1024px){
           width: 170px;
         }
-      }
-      &.stopDate{
-        width:60px;
       }
       &.stopReason{
         width:160px;
@@ -116,7 +112,7 @@
       &.drugName{
         text-align: left;
         padding-left: 10px;
-        width: 200px;
+        width: 240px;
         text-align: left;
         position: absolute;
         top:auto;
@@ -160,7 +156,6 @@
         padding: 2px 5px 82px;
       }
       &.noActionColumn{
-        //padding: 9px 5px 9px 10px;
         padding: 3px 5px;
       }
       &.noActionColumnAddNote{
@@ -175,9 +170,6 @@
         button{
           i{
             font-size: 1.8em;
-            //@media (max-width : 1024px){
-            //  font-size: 2.1em;
-            //}
           }
         }
         .button-group{

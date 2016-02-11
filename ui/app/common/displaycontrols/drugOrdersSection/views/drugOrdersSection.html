@@ -8,7 +8,7 @@
 </p>
 <div class="drugOrderTable" ng-if="toggle && drugOrders && drugOrders.length > 0">
     <div class="drugOrderTableScroll" >
-        <table class="drug-order-table treatments-details-table" >
+        <table class="drug-order-table treatments-details-table"  ng-class="{'drug-order-table-discontinue' : drugOrder.isMarkedForDiscontinue }">
             <tr>
                 <th ng-repeat="columnName in columns" ng-class="columnName">{{columnHeaders[columnName] | translate}}</th>
                 <th class="empty-header custom-empty-header">Actions</th>
