@@ -1,9 +1,9 @@
 'use strict';
 
-describe('treatmentConfig', function() {
+describe('treatmentConfig', function () {
 
-    var treatmentConfig,medicationConfig, masterConfig, translate, configurationService;
-    beforeEach(function(){
+    var treatmentConfig, medicationConfig, masterConfig, translate, configurationService;
+    beforeEach(function () {
         medicationConfig = {
             "commonConfig": {},
             "tabConfig": {
@@ -36,8 +36,12 @@ describe('treatmentConfig', function() {
             "dosingInstructions": [{"name": "Before meals"}, {"name": "As directed"}],
             "dispensingUnits": [{"name": "Tablet(s)"}, {"name": "Unit(s)"}],
             "frequencies": [
-                { "uuid": "ca407cb0-3a91-11e5-b380-0050568236ae", "frequencyPerDay": 1, "name": "Seven days a week"},
-                { "uuid": "18a35ec5-3a92-11e5-b380-0050568236ae", "frequencyPerDay": 0.857142857, "name": "Six days a week"}
+                {"uuid": "ca407cb0-3a91-11e5-b380-0050568236ae", "frequencyPerDay": 1, "name": "Seven days a week"},
+                {
+                    "uuid": "18a35ec5-3a92-11e5-b380-0050568236ae",
+                    "frequencyPerDay": 0.857142857,
+                    "name": "Six days a week"
+                }
             ]
         };
 
@@ -61,10 +65,10 @@ describe('treatmentConfig', function() {
             var drugService = jasmine.createSpyObj('drugService', ['getSetMembersOfConcept']);
             drugService.getSetMembersOfConcept.and.returnValue(specUtil.respondWith([{name: "K"}, {name: "T"}]));
 
-            configurationService = jasmine.createSpyObj('configurationService',['getConfigurations']);
+            configurationService = jasmine.createSpyObj('configurationService', ['getConfigurations']);
             configurationService.getConfigurations.and.returnValue(specUtil.respondWith({
-                stoppedOrderReasonConfig:{
-                    results:[{answers:[]}]
+                stoppedOrderReasonConfig: {
+                    results: [{answers: []}]
                 }
             }));
             translate = jasmine.createSpyObj('$translate', ['instant']);
@@ -86,51 +90,45 @@ describe('treatmentConfig', function() {
 
     it("should initialize treatment config based on tab name configured", function (done) {
         injectTreatmentConfig("tbTab");
-        treatmentConfig.then(function(config){
+        treatmentConfig.then(function (config) {
             expect(config.inputOptionsConfig.drugConceptSet).toBe("All TB Drugs");
-            done();
-        });
+        }).catch(notifyError).finally(done);
     });
 
-    it("should initialise drugOrderHistoryConfig if it is not available", function(){
+    it("should initialise drugOrderHistoryConfig if it is not available", function (done) {
         injectTreatmentConfig("tbTab");
-        treatmentConfig.then(function(config){
+        treatmentConfig.then(function (config) {
             expect(config.drugOrderHistoryConfig).toEqual({});
-            done();
-        });
+        }).catch(notifyError).finally(done);
     });
 
-    it('should initialize duration units', function(done) {
+    it('should initialize duration units', function (done) {
         injectTreatmentConfig("tbTab");
-        treatmentConfig.then(function(data){
+        treatmentConfig.then(function (data) {
             expect(data.durationUnits).toEqual([
                 {name: "Day(s)", factor: 1},
                 {name: "Week(s)", factor: 7},
                 {name: "Month(s)", factor: 30}
             ]);
-            done();
-        });
+        }).catch(notifyError).finally(done);
     });
 
-    it('should initialize dosage units', function(done) {
+    it('should initialize dosage units', function (done) {
         injectTreatmentConfig("tbTab");
-        treatmentConfig.then(function(config){
+        treatmentConfig.then(function (config) {
             var doseUnits = config.getDoseUnits();
             expect(doseUnits.length).toEqual(1);
             expect(doseUnits).toContain({"name": "mg"});
-            done();
-        });
+        }).catch(notifyError).finally(done);
     });
 
-    it('should retrieve all dose Units configured for the tab', function(done) {
+    it('should retrieve all dose Units configured for the tab', function (done) {
         injectTreatmentConfig("tbTab");
-        treatmentConfig.then(function(config){
+        treatmentConfig.then(function (config) {
             var doseUnits = config.getDoseUnits();
             expect(doseUnits.length).toEqual(1);
             expect(doseUnits).toContain({"name": "mg"});
-
-            done();
-        });
+        }).catch(notifyError).finally(done);
     });
 
     it("should disable elements on UI mentioned in inputConfig", function (done) {
@@ -138,105 +136,95 @@ describe('treatmentConfig', function() {
         treatmentConfig.then(function (config) {
             expect(config.isHiddenField('additionalInstructions')).toBe(true);
             expect(config.isHiddenField('frequencies')).toBe(false);
-            done();
-        });
+        }).catch(notifyError).finally(done);
     });
 
-    it("drug name field should be dropdown if configured as dropdown",function(done){
+    it("drug name field should be dropdown if configured as dropdown", function (done) {
         var configName = "tbTab";
-        medicationConfig['tabConfig'][configName].inputOptionsConfig.isDropDown=true;
-        medicationConfig['tabConfig'][configName].inputOptionsConfig.drugConceptSet="Some Drug set";
+        medicationConfig['tabConfig'][configName].inputOptionsConfig.isDropDown = true;
+        medicationConfig['tabConfig'][configName].inputOptionsConfig.drugConceptSet = "Some Drug set";
         injectTreatmentConfig(configName);
-        treatmentConfig.then(function(config){
+        treatmentConfig.then(function (config) {
             expect(config.isDropDown()).toBeTruthy();
-            done();
-        });
+        }).catch(notifyError).finally(done);
     });
 
-    it("drug name field should be autocomplete if dropdown is not configured",function(done){
+    it("drug name field should be autocomplete if dropdown is not configured", function (done) {
         var configName = "tbTab";
-        medicationConfig['tabConfig'][configName].inputOptionsConfig.isDropDown=false;
+        medicationConfig['tabConfig'][configName].inputOptionsConfig.isDropDown = false;
         injectTreatmentConfig(configName);
-        treatmentConfig.then(function(config){
+        treatmentConfig.then(function (config) {
             expect(config.isAutoComplete()).toBeTruthy();
-            done();
-        });
+        }).catch(notifyError).finally(done);
     });
 
-    it("drugConceptSet should be part of inputOptionsConfig",function (done) {
+    it("drugConceptSet should be part of inputOptionsConfig", function (done) {
         var allTBDrugs = 'All TB Drugs';
         var configName = "tbTab";
-        medicationConfig['tabConfig'][configName].inputOptionsConfig.drugConceptSet=allTBDrugs;
+        medicationConfig['tabConfig'][configName].inputOptionsConfig.drugConceptSet = allTBDrugs;
         injectTreatmentConfig(configName);
-        treatmentConfig.then(function(config){
+        treatmentConfig.then(function (config) {
             expect(config.getDrugConceptSet()).toBe(allTBDrugs);
-            done();
-        });
+        }).catch(notifyError).finally(done);
     });
 
-    it("show additional information only if sos or dosing instructions or additional instructions are configured to be shown", function(done){
+    it("show additional information only if sos or dosing instructions or additional instructions are configured to be shown", function (done) {
         var configName = "tbTab";
         medicationConfig['tabConfig'][configName].inputOptionsConfig.hiddenFields = ["additionalInstructions", "sos"];
         injectTreatmentConfig(configName);
-        treatmentConfig.then(function(config){
+        treatmentConfig.then(function (config) {
             expect(config.showAdditionalInformation()).toBeTruthy();
-            done();
-        })
+        }).catch(notifyError).finally(done);
     });
 
-    it("hide additional information only if sos, dosing instructions, additional instructions are hidden", function(done){
+    it("hide additional information only if sos, dosing instructions, additional instructions are hidden", function (done) {
         var configName = "tbTab";
         medicationConfig['tabConfig'][configName].inputOptionsConfig.hiddenFields = ["additionalInstructions", "sos", "dosingInstructions"];
         injectTreatmentConfig(configName);
-        treatmentConfig.then(function(config){
+        treatmentConfig.then(function (config) {
             expect(config.showAdditionalInformation()).toBeFalsy();
-            done();
-        })
+        }).catch(notifyError).finally(done);
     });
 
-    it("should return default config for medication if not configured", function(done){
+    it("should return default config for medication if not configured", function (done) {
         medicationConfig = null;
         injectTreatmentConfig();
-        treatmentConfig.then(function(config){
+        treatmentConfig.then(function (config) {
             expect(config).toBeTruthy();
             expect(config.getDoseUnits()).toEqual(masterConfig.doseUnits);
-            done();
-        })
+        }).catch(notifyError).finally(done);
     });
 
-    it("showBulkChangeDuration should return true if it is not hidden via config", function(done){
+    it("showBulkChangeDuration should return true if it is not hidden via config", function (done) {
         var configName = "tbTab";
         medicationConfig.tabConfig[configName].hideBulkChangeDurationButton = false;
 
         injectTreatmentConfig(configName);
 
-        treatmentConfig.then(function(config){
+        treatmentConfig.then(function (config) {
             expect(config.showBulkChangeDuration()).toBeTruthy();
-            done()
-        })
+        }).catch(notifyError).finally(done);
     });
 
-    it("showBulkChangeDuration should return true if it is not configured", function(done){
+    it("showBulkChangeDuration should return true if it is not configured", function (done) {
         var configName = "tbTab";
         medicationConfig.tabConfig[configName].hideBulkChangeDurationButton = null;
 
         injectTreatmentConfig(configName);
 
-        treatmentConfig.then(function(config){
+        treatmentConfig.then(function (config) {
             expect(config.showBulkChangeDuration()).toBeTruthy();
-            done()
-        })
+        }).catch(notifyError).finally(done);
     });
 
-    it("showBulkChangeDuration should return false if it is hidden via config", function(done){
+    it("showBulkChangeDuration should return false if it is hidden via config", function (done) {
         var configName = "tbTab";
         medicationConfig.tabConfig[configName].hideBulkChangeDurationButton = true;
 
         injectTreatmentConfig(configName);
 
-        treatmentConfig.then(function(config){
+        treatmentConfig.then(function (config) {
             expect(config.showBulkChangeDuration()).toBeFalsy();
-            done()
-        })
+        }).catch(notifyError).finally(done);
     })
 });
