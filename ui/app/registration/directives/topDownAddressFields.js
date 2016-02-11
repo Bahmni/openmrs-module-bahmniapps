@@ -36,7 +36,14 @@ angular.module('bahmni.registration')
                 });
             }
         };
-        populateSelectedAddressUuids(0);
+
+        //wait for address to be resolved in edit patient scenario
+        var deregisterAddressWatch = $scope.$watch('address', function(newValue, oldValue){
+            if(newValue != undefined) {
+                populateSelectedAddressUuids(0);
+                deregisterAddressWatch();
+            }
+        });
 
 
         $scope.addressFieldSelected = function (fieldName) {
