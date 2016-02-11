@@ -2,8 +2,6 @@
 
 angular.module('bahmni.common.offline').service('offlineService', ['$rootScope', '$bahmniCookieStore', function ($rootScope, $bahmniCookieStore) {
 
-    var offline = false;
-
     this.getAppPlatform = function () {
         return $bahmniCookieStore.get(Bahmni.Common.Constants.platform);
     };
@@ -14,10 +12,6 @@ angular.module('bahmni.common.offline').service('offlineService', ['$rootScope',
 
     this.isOfflineApp = function () {
         return this.isAndroidApp() || this.isChromeApp();
-    };
-
-    this.offline = function () {
-        return offline;
     };
 
     this.isAndroidApp = function () {
@@ -55,32 +49,5 @@ angular.module('bahmni.common.offline').service('offlineService', ['$rootScope',
         return (this.getItem(Bahmni.Common.Constants.LoginInformation)['username'] === loginInfo.username &&
         JSON.stringify(this.getItem(Bahmni.Common.Constants.LoginInformation)['password']) === JSON.stringify(CryptoJS.SHA3(loginInfo.password)));
     };
-
-    Offline.options = {
-        game: false,
-        checkOnLoad: true,
-        checks: {xhr: {url: Bahmni.Common.Constants.faviconUrl}}
-    };
-
-    Offline.on('up', function () {
-        offline = false;
-        $rootScope.$broadcast('offline', offline);
-    });
-
-    Offline.on('down', function () {
-        offline = true;
-        $rootScope.$broadcast('offline', offline);
-    });
-    var checkOfflineStatus = function () {
-        if (Offline.state === 'up') {
-            Offline.check();
-        }
-    };
-
-    var init = function () {
-        setInterval(checkOfflineStatus, 5000);
-    };
-    init();
-    checkOfflineStatus();
 
 }]);

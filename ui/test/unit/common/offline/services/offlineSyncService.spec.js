@@ -62,9 +62,6 @@ describe('OfflineSyncService', function () {
                 $provide.value('offlineService', {
                     isAndroidApp: function () {
                         return false;
-                    },
-                    offline: function () {
-                        return false;
                     }
                 });
             });
@@ -185,9 +182,6 @@ describe('OfflineSyncService', function () {
                 });
                 $provide.value('offlineService', {
                     isAndroidApp: function () {
-                        return false;
-                    },
-                    offline: function () {
                         return false;
                     }
                 });

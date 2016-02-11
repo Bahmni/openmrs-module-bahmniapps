@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('bahmni.registration')
-    .controller('NavigationController', ['$scope', '$rootScope', '$location', 'sessionService', '$window', 'appService', '$sce', 'offlineService',
-        function ($scope, $rootScope, $location, sessionService, $window, appService, $sce, offlineService) {
+    .controller('NavigationController', ['$scope', '$rootScope', '$location', 'sessionService', '$window', 'appService', '$sce',
+        function ($scope, $rootScope, $location, sessionService, $window, appService, $sce) {
 
             $scope.extensions = appService.getAppDescriptor().getExtensions("org.bahmni.registration.navigation", "link");
 
@@ -21,13 +21,5 @@ angular.module('bahmni.registration')
                         $window.location = "../home/";
                     }
                 );
-            };
-
-            $rootScope.$on('offline', function () {
-                $scope.$apply();
-            });
-
-            $scope.isOffline = function () {
-                return offlineService.offline();
             };
         }]);
