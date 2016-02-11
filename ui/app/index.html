@@ -45,17 +45,11 @@
     </div>
 </div>
 
-    <script src="components/offline/offline.min.js"></script>
     <script src="initWorker.js"></script>
     <script>
         var redirect = function(){
             window.location.href = "/bahmni/home/" + window.location.hash;
         };
-
-        //when offline need not wait for sync
-        if(Offline.state == "down") {
-            redirect();
-        }
 
         setTimeout(function(){ redirect(); }, 5000);
     </script>
