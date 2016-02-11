@@ -35,7 +35,7 @@ angular.module('bahmni.reports')
 
 
         var isDateRangeRequiredFor = function (report) {
-            return _.findWhere($scope.reportsRequiringDateRange, {name: report.name});
+            return _.find($scope.reportsRequiringDateRange, {name: report.name});
 
         };
 

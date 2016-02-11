@@ -56,12 +56,12 @@ angular.module('bahmni.common.patientSearch')
         };
 
         $scope.isHeadingOfIdentifier = function(heading){
-            return _.contains(Bahmni.Common.PatientSearch.Constants.identifierHeading,heading);
+            return _.includes(Bahmni.Common.PatientSearch.Constants.identifierHeading,heading);
 
         };
 
         $scope.isHeadingOfName = function(heading){
-            return _.contains(Bahmni.Common.PatientSearch.Constants.nameHeading,heading);
+            return _.includes(Bahmni.Common.PatientSearch.Constants.nameHeading,heading);
 
         };
 

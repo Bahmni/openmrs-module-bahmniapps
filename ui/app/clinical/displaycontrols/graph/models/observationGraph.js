@@ -41,7 +41,7 @@
             return obs.concept.name === config.xAxisConcept;
         });
 
-        var lines = _(yAxisObservations).uniq(function (item) {
+        var lines = _(yAxisObservations).uniqBy(function (item) {
             return item.concept.name + item.concept.units;
         }).map(function (item) {
             return new Bahmni.Clinical.ObservationGraphLine({
@@ -75,7 +75,7 @@
 
         if (referenceLines != undefined) {
             lines = lines.concat(referenceLines);
-            var referenceLinesYAxisConcepts = _.pluck(referenceLines,'name');
+            var referenceLinesYAxisConcepts = _.map(referenceLines,'name');
             config.yAxisConcepts = config.yAxisConcepts.concat(referenceLinesYAxisConcepts);
         }
 

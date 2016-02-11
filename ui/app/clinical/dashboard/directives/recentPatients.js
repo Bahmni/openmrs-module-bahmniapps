@@ -4,18 +4,18 @@ angular.module('bahmni.clinical')
     .directive('recentPatients', function () {
 
         var controller = function ($rootScope, $scope, $state, clinicalDashboardConfig, $stateParams) {
-            $scope.recentlyViewedPatients = _.first($rootScope.currentUser.recentlyViewedPatients, clinicalDashboardConfig.getMaxRecentlyViewedPatients());
+            $scope.recentlyViewedPatients = _.take($rootScope.currentUser.recentlyViewedPatients, clinicalDashboardConfig.getMaxRecentlyViewedPatients());
             var patientIndex = _.findIndex($scope.recentlyViewedPatients, function(patientHistoryEntry) {
                 return patientHistoryEntry.uuid === $scope.patient.uuid;
             });
 
             $scope.configName = $stateParams.configName;
             $scope.hasNext = function () {
-                return patientIndex != 0;
+                return patientIndex !== 0;
             };
 
             $scope.hasPrevious = function () {
-                return patientIndex >= 0 && $scope.recentlyViewedPatients.length-1 != patientIndex;
+                return patientIndex >= 0 && $scope.recentlyViewedPatients.length-1 !== patientIndex;
             };
 
             $scope.next = function () {

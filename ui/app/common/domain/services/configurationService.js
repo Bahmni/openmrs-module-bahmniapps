@@ -69,7 +69,7 @@ angular.module('bahmni.common.domain')
                 withCredentials: true
             });
             return radiologyObservationConfig;
-        }
+        };
 
         configurationFunctions.labOrderNotesConfig = function () {
             var labOrderNotesConfig = $http.get(Bahmni.Common.Constants.conceptSearchByFullNameUrl, {

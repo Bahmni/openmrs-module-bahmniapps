@@ -3,7 +3,7 @@
 Bahmni.Common.Util.ValidationUtil = (function () {
 
     var isAcceptableType = function (propertyToCheck) {
-        return _.contains(["string", "boolean", "number", "object"], typeof propertyToCheck);
+        return _.includes(["string", "boolean", "number", "object"], typeof propertyToCheck);
     };
 
     var flattenObject = function (ob) {

@@ -36,7 +36,7 @@ angular.module('bahmni.clinical')
 
                     var obsArrayFiltered = [];
                     for (var ob in observation) {
-                        if (_.contains(observationTemplateArray, observation[ob].concept.display)) {
+                        if (_.includes(observationTemplateArray, observation[ob].concept.display)) {
                             obsArrayFiltered.push(observation[ob])
                         }
                     }

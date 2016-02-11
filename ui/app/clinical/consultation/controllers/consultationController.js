@@ -101,9 +101,9 @@ angular.module('bahmni.clinical').controller('ConsultationController',
                 var currentPath = $location.url();
                 var board = _.find($scope.availableBoards,function (board) {
                     if(board.url === "treatment") {
-                        return _.contains(currentPath, board.extensionParams ? board.extensionParams.tabConfigName: board.url)
+                        return _.includes(currentPath, board.extensionParams ? board.extensionParams.tabConfigName: board.url)
                     }
-                    return _.contains(currentPath, board.url);
+                    return _.includes(currentPath, board.url);
                 });
                 if(board) {
                     $scope.currentBoard = board;

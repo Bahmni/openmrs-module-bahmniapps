@@ -101,7 +101,7 @@ angular.module('bahmni.common.uicontrols.programmanagment')
             };
 
             var isThePatientAlreadyEnrolled = function () {
-                return _.pluck($scope.activePrograms, function (program) {
+                return _.map($scope.activePrograms, function (program) {
                         return program.program.uuid
                     }).indexOf($scope.programSelected.uuid) > -1;
             };
@@ -189,7 +189,7 @@ angular.module('bahmni.common.uicontrols.programmanagment')
             };
 
             $scope.getOutcomes = function (program) {
-                var currentProgram = _.findWhere($scope.allPrograms, {uuid: program.uuid});
+                var currentProgram = _.find($scope.allPrograms, {uuid: program.uuid});
                 return currentProgram.outcomesConcept ? currentProgram.outcomesConcept.setMembers : [];
             };
 

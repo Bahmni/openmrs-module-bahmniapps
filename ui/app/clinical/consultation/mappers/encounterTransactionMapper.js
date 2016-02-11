@@ -49,17 +49,16 @@ Bahmni.Clinical.EncounterTransactionMapper = function () {
                     diagnosisStatusConcept: diagnosis.diagnosisStatusConcept,
                     voided: diagnosis.voided,
                     comments: diagnosis.comments
-                }
+                };
             });
         } else {
             encounterData.bahmniDiagnoses = [];
         }
         addEditedDiagnoses(consultation, encounterData.bahmniDiagnoses);
         encounterData.orders = [];
-        
         var addOrdersToEncounter = function () {
             var modifiedOrders = _.filter(consultation.orders, function(order){
-                return order.hasBeenModified || order.isDiscontinued || !order.uuid
+                return order.hasBeenModified || order.isDiscontinued || !order.uuid;
             });
             var tempOrders = modifiedOrders.map(function (order) {
                 if(order.hasBeenModified && !order.isDiscontinued){
@@ -101,7 +100,7 @@ Bahmni.Clinical.EncounterTransactionMapper = function () {
                 var orderAttributes = _.values(consultation.drugOrdersWithUpdatedOrderAttributes).map(function(drugOrder){
                     return drugOrder.getOrderAttributesAsObs();
                 });
-                encounterData.observations = encounterData.observations.concat(_.flatten(orderAttributes,true));
+                encounterData.observations = encounterData.observations.concat(_.flatten(orderAttributes));
             }
         };
 

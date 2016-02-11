@@ -95,11 +95,11 @@ angular.module('bahmni.common.conceptSet')
                 if (defaultAnswer instanceof Array) {
                     defaultCodedAnswer = [];
                     _.each(defaultAnswer, function (answer) {
-                        defaultCodedAnswer.push(_.findWhere(possibleAnswers, {displayString: answer}));
+                        defaultCodedAnswer.push(_.find(possibleAnswers, {displayString: answer}));
                     });
                 }
                 else {
-                    defaultCodedAnswer = _.findWhere(possibleAnswers, {displayString: defaultAnswer});
+                    defaultCodedAnswer = _.find(possibleAnswers, {displayString: defaultAnswer});
                 }
                 return defaultCodedAnswer;
             };
@@ -108,7 +108,7 @@ angular.module('bahmni.common.conceptSet')
                 if (defaults) {
                     _.each(groupMembers, function (groupMember) {
                         var conceptFullName = groupMember.concept.name;
-                        var present = _.contains(_.keys(defaults), conceptFullName);
+                        var present = _.includes(_.keys(defaults), conceptFullName);
                         if (present && groupMember.value == undefined) {
                             if (groupMember.concept.dataType == "Coded") {
                                 setDefaultsForCodedObservations(groupMember, defaults);

@@ -52,7 +52,7 @@ angular.module('bahmni.registration')
             };
 
             $scope.getRelationshipType = function (uuid) {
-                return _.findWhere($scope.relationshipTypes, {uuid: uuid});
+                return _.find($scope.relationshipTypes, {uuid: uuid});
             };
 
             $scope.getRelationshipTypeForDisplay = function(relationship){

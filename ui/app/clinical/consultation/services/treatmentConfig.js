@@ -69,7 +69,7 @@ angular.module('bahmni.clinical').factory('treatmentConfig',
                         return drugOrderOptions.doseFractions;
                     },
                     isHiddenField: function (fieldName) {
-                        return _.contains(drugOrderOptions.hiddenFields, fieldName)
+                        return _.includes(drugOrderOptions.hiddenFields, fieldName)
                     },
                     isDropDown: function () {
                         return drugOrderOptions.isDropDown && drugOrderOptions.drugConceptSet;

@@ -16,6 +16,17 @@ Bahmni.Graph.c3Chart = function () {
         return classes;
     };
 
+    var formatValueForDisplay= function(value, config){
+        if(config.displayForAge()){
+            return Bahmni.Common.Util.AgeUtil.monthsToAgeString(value);
+        } else if(config.displayForObservationDateTime()) {
+            return dateUtil.formatDateWithoutTime(value);
+        } else {
+            return d3.round(value, 2);
+        }
+    };
+
+
     var createXAxisConfig = function (config) {
         return {
             label: {
@@ -32,17 +43,7 @@ Bahmni.Graph.c3Chart = function () {
                     return formatValueForDisplay(xAxisValue, config);
                 }
             }
-        }
-    };
-
-    var formatValueForDisplay= function(value, config){
-        if(config.displayForAge()){
-            return Bahmni.Common.Util.AgeUtil.monthsToAgeString(value);
-        } else if(config.displayForObservationDateTime()) {
-            return dateUtil.formatDateWithoutTime(value);
-        } else {
-            return d3.round(value, 2);
-        }
+        };
     };
 
     var createYAxisConfig = function (unit) {
@@ -60,7 +61,7 @@ Bahmni.Graph.c3Chart = function () {
                 }
             },
             show: true
-        }
+        };
     };
 
     var createAxisConfig = function(config, units) {
@@ -68,11 +69,11 @@ Bahmni.Graph.c3Chart = function () {
             x: createXAxisConfig(config),
             y: createYAxisConfig(units[0])
         };
-        if(units[1] != undefined) {
+        if(units[1] !== undefined) {
             axis['y2'] = createYAxisConfig(units[1]);
         }
         return axis;
-    }
+    };
 
     var createGridConfig = function(config) {
         var grid = {
@@ -80,11 +81,11 @@ Bahmni.Graph.c3Chart = function () {
                 lines: []
             }
         };
-        if (config.yAxisConcepts.length == 1) {
-            if (config.lowNormal != undefined) {
+        if (config.yAxisConcepts.length === 1) {
+            if (config.lowNormal !== undefined) {
                 grid.y.lines.push({value: config.lowNormal, text: "low", class: "lowNormal"});
             }
-            if (config.hiNormal != undefined) {
+            if (config.hiNormal !== undefined) {
                 grid.y.lines.push({value: config.hiNormal, text: "high", class: "hiNormal"});
             }
         }
@@ -99,6 +100,15 @@ Bahmni.Graph.c3Chart = function () {
         return xs;
     };
 
+
+    var createAxisAndPopulateAxes = function (axes, data, axisY, unit) {
+        if (!unit) {return;}
+        _.each(data, function (item) {
+            if (item.units === unit) {
+                axes[item.name] = axisY;
+            }
+        });
+    };
     var createConfigForAxes = function (data, units) {
         var axes = {};
         createAxisAndPopulateAxes(axes, data, 'y', units[0]);
@@ -106,17 +116,8 @@ Bahmni.Graph.c3Chart = function () {
         return axes;
     };
 
-    var createAxisAndPopulateAxes = function (axes, data, axisY, unit) {
-        if (!unit) return;
-        _.each(data, function (item) {
-            if (item.units === unit) {
-                axes[item.name] = axisY;
-            }
-        });
-    };
-
     this.render = function (bindTo, graphWidth, config, data) {
-        var distinctUnits = _.uniq(_.pluck(data, 'units'));
+        var distinctUnits = _.uniq(_.map(data, 'units'));
         if (distinctUnits.length > 2) {
             throw new Error("Cannot display line graphs with concepts that have more than 2 units");
         }

@@ -7,7 +7,7 @@ Bahmni.Clinical.DrugOrderOptions = (function() {
         if (!filterStrings) return listOfObjects;
 
         return _.filter(listOfObjects, function(object) {
-            return _.contains(filterStrings, object[filterKey]);
+            return _.includes(filterStrings, object[filterKey]);
         });
     };
 

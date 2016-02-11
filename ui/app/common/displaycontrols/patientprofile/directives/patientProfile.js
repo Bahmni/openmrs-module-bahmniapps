@@ -42,7 +42,7 @@ angular.module('bahmni.common.displaycontrol.patientprofile')
                         }
                     });
                 }
-                else if (!_.contains($scope.config, "cityVillage")) {
+                else if (!_.includes($scope.config, "cityVillage")) {
                     address.push(patient.address["cityVillage"]);
                 }
                 return address.join(", ");

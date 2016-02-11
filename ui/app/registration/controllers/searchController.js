@@ -104,7 +104,7 @@ angular.module('bahmni.registration')
                             var keyValueArray = keyValueString.split('":"');
                             var key = keyValueArray[0];
                             var value = keyValueArray[1]
-                            if(! _.contains(_.keys(programAttributesObj), key)) {
+                            if(! _.includes(_.keys(programAttributesObj), key)) {
                                 programAttributesObj[key] = [];
                                 programAttributesObj[key].push(value);
                             }
@@ -222,7 +222,7 @@ angular.module('bahmni.registration')
                     return privilege.name;
                 });
                 var result = _.some(userPrivs, function(privName){
-                    return _.contains(applicablePrivs, privName);
+                    return _.includes(applicablePrivs, privName);
                 });
                 return result;
             };

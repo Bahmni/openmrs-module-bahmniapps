@@ -37,22 +37,22 @@ describe('patientAttributeDbService tests', function () {
                         return patientAttributeDbService.insertAttributes(db, uuid, person.attributes, attributeTypeMap).then(function () {
                                 var uuid = 'e34992ca-894f-4344-b4b3-54a4aa1e5558';
                                 patientDbService.getPatientByUuid(db, uuid).then(function(result){
-                                    expect(_.any(result.patient.person.attributes, function(attribute){
+                                    expect(_.some(result.patient.person.attributes, function(attribute){
                                        return attribute.attributeType.display === 'caste' && attribute.value === 'hindu';
                                     })).toBeTruthy();
-                                    expect(_.any(result.patient.person.attributes, function(attribute){
+                                    expect(_.some(result.patient.person.attributes, function(attribute){
                                        return attribute.attributeType.display === 'class' && attribute.value.display === 'General';
                                     })).toBeTruthy();
-                                    expect(_.any(result.patient.person.attributes, function(attribute){
+                                    expect(_.some(result.patient.person.attributes, function(attribute){
                                        return attribute.attributeType.display === 'education' && attribute.value.display === '6th to 9th';
                                     })).toBeTruthy();
-                                    expect(_.any(result.patient.person.attributes, function(attribute){
+                                    expect(_.some(result.patient.person.attributes, function(attribute){
                                        return attribute.attributeType.display === 'landHolding' && attribute.value === 23;
                                     })).toBeTruthy();
-                                    expect(_.any(result.patient.person.attributes, function(attribute){
+                                    expect(_.some(result.patient.person.attributes, function(attribute){
                                        return attribute.attributeType.display === 'debt' && attribute.value === "21";
                                     })).toBeTruthy();
-                                    expect(_.any(result.patient.person.attributes, function(attribute){
+                                    expect(_.some(result.patient.person.attributes, function(attribute){
                                        return attribute.attributeType.display === 'isUrban' && attribute.value === true;
                                     })).toBeTruthy();
                                     done();

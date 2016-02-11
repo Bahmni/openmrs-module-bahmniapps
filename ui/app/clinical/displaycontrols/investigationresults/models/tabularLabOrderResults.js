@@ -6,9 +6,9 @@ Bahmni.Clinical.TabularLabOrderResults = (function () {
         this.tabularResult = tabularResult;
 
         var filterData = function(list, filteredOn) {
-            var indices = _.uniq(_.pluck(self.tabularResult.values, filteredOn));
+            var indices = _.uniq(_.map(self.tabularResult.values, filteredOn));
             return _.filter(list, function (element) {
-                return _.contains(indices, element.index)
+                return _.includes(indices, element.index)
             });
         };
 

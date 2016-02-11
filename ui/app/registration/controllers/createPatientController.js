@@ -10,6 +10,10 @@ angular.module('bahmni.registration')
             $scope.showEnterID = configValueForEnterId === null ? true : configValueForEnterId;
             $scope.today = dateUtil.getDateWithoutTime(dateUtil.now());
 
+            var getPersonAttributeTypes = function() {
+                return $rootScope.patientConfiguration.attributeTypes;
+            };
+
             var prepopulateDefaultsInFields = function() {
 
                 var personAttributeTypes = getPersonAttributeTypes();
@@ -21,11 +25,11 @@ angular.module('bahmni.registration')
                 var defaultVariableNames = _.keys(defaults);
 
                 var hasDefaultAnswer = function(personAttributeType) {
-                    return _.contains(defaultVariableNames, personAttributeType.name);
+                    return _.includes(defaultVariableNames, personAttributeType.name);
                 };
 
                 var isConcept = function(personAttributeType) {
-                    return personAttributeType.format == "org.openmrs.Concept";
+                    return personAttributeType.format === "org.openmrs.Concept";
                 };
 
                 var setDefaultAnswer = function(personAttributeType) {
@@ -40,17 +44,14 @@ angular.module('bahmni.registration')
 
                     _.chain(personAttributeType.answers).filter(isDefaultAnswer).each(function(answer) {
                         $scope.patient[personAttributeType.name] = answer.conceptId;
-                    });
+                    }).value();
                 };
 
                 _.chain(personAttributeTypes)
-                    .select(hasDefaultAnswer)
-                    .each(setDefaultAnswer).filter(isConcept).each(setDefaultConcept);
+                    .filter(hasDefaultAnswer)
+                    .each(setDefaultAnswer).filter(isConcept).each(setDefaultConcept).value();
             };
 
-            var getPersonAttributeTypes = function() {
-                return $rootScope.patientConfiguration.attributeTypes;
-            };
             var getPatientAttributeSections = function(){
                 return $rootScope.patientConfiguration && $rootScope.patientConfiguration.getPatientAttributesSections();
             };
@@ -68,13 +69,13 @@ angular.module('bahmni.registration')
                     .filter(shouldShowSection)
                     .each(function(key) {
                         $scope.sectionVisibilityMap[key] = true;
-                    });
+                    }).value();
             };
 
             var init = function() {
                 $scope.patient = patientModel.create();
                 $scope.identifierSources = $rootScope.patientConfiguration.identifierSources;
-                var identifierPrefix = _.findWhere($scope.identifierSources, {
+                var identifierPrefix = _.find($scope.identifierSources, {
                     prefix: preferences.identifierPrefix
                 });
                 $scope.patient.identifierPrefix = identifierPrefix || $scope.identifierSources[0];

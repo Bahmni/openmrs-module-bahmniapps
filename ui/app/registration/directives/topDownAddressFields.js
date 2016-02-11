@@ -113,6 +113,6 @@ angular.module('bahmni.registration')
         };
 
         $scope.isFreeTextAddressField = function (field) {
-            return $scope.freeTextAddressFields && _.contains($scope.freeTextAddressFields, field);
+            return $scope.freeTextAddressFields && _.includes($scope.freeTextAddressFields, field);
         };
     });

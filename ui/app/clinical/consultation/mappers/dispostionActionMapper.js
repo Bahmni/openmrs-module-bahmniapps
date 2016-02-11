@@ -1,3 +1,4 @@
+'use strict';
 Bahmni.Clinical.DispostionActionMapper = function() {
     var getMappingCode = function(concept){
         var mappingCode="";
@@ -17,5 +18,5 @@ Bahmni.Clinical.DispostionActionMapper = function() {
 		return dispositionActions.map(function(dispositionAction){
 			return {name: dispositionAction.name.name, code: getMappingCode(dispositionAction) };
 		});
-	}
-}
+	};
+};

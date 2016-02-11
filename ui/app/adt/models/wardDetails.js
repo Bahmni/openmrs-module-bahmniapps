@@ -18,9 +18,9 @@ Bahmni.ADT.WardDetails.create = function(details, diagnosisStatus) {
 
     var removeDuplicateRuledOutDiagnosis = function(rows) {
         rows.forEach(function(row){
-            var ruledOutDiagnoses = _.pluck(_.filter(row.Diagnosis, {'ruledOut': true}), 'Diagnosis');
+            var ruledOutDiagnoses = _.map(_.filter(row.Diagnosis, {'ruledOut': true}), 'Diagnosis');
             _.remove(row.Diagnosis, function(diagnosisObj) {
-                return _.contains(ruledOutDiagnoses, diagnosisObj.Diagnosis) && !diagnosisObj.ruledOut
+                return _.includes(ruledOutDiagnoses, diagnosisObj.Diagnosis) && !diagnosisObj.ruledOut
             });
         });
         return rows;

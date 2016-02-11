@@ -44,7 +44,7 @@ angular.module('bahmni.common.conceptSet')
                 }).join(", ");
             };
             scope.selectOptions = function (codedConcept) {
-                var answers = _.uniq(codedConcept.answers, _.property('uuid')).map(conceptMapper.map);
+                var answers = _.uniqBy(codedConcept.answers, 'uuid').map(conceptMapper.map);
                 return {
                     data: answers,
                     query: function (options) {
