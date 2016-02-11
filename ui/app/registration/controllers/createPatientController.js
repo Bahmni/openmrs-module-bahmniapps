@@ -158,17 +158,17 @@ angular.module('bahmni.registration')
                 var errMsg = Bahmni.Common.Util.ValidationUtil.validate($scope.patient, $scope.patientConfiguration.attributeTypes);
                 if (errMsg) {
                     messagingService.showMessage('formError', errMsg);
-                    return deferred.resolve();
-                }
-
-                if(!$scope.hasIdentifierSources()){
-                    createPatientWithOutIdentifierSource().finally(resolved);
-                }
-                else if (!$scope.hasOldIdentifier) {
-                    createPatientWithGeneratedIdentifier().finally(resolved)
-                }
-                else {
-                    createPatientWithGivenIdentifier().finally(resolved);
+                    deferred.reject();
+                } else {
+                    if (!$scope.hasIdentifierSources()) {
+                        createPatientWithOutIdentifierSource().finally(resolved);
+                    }
+                    else if (!$scope.hasOldIdentifier) {
+                        createPatientWithGeneratedIdentifier().finally(resolved)
+                    }
+                    else {
+                        createPatientWithGivenIdentifier().finally(resolved);
+                    }
                 }
                 return deferred.promise;
             };
