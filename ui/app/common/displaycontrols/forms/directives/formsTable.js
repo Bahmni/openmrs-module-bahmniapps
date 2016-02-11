@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('bahmni.common.displaycontrol.forms')
-    .directive('formsTable', ['conceptSetService', 'spinner', '$q', 'visitFormService','appService',
-        function (conceptSetService, spinner, $q, visitFormService, appService) {
+    .directive('formsTable', ['conceptSetService', 'spinner', '$q', 'visitFormService', 'appService', '$state',
+        function (conceptSetService, spinner, $q, visitFormService, appService, $state) {
             var controller = function ($scope) {
                 $scope.shouldPromptBrowserReload = true;
                 $scope.showFormsDate = appService.getAppDescriptor().getConfigValue("showFormsDate");
@@ -14,7 +14,7 @@ angular.module('bahmni.common.displaycontrol.forms')
                 };
 
                 var obsFormData = function () {
-                    return visitFormService.formData($scope.patient.uuid, $scope.section.dashboardParams.maximumNoOfVisits,$scope.section.formGroup);
+                    return visitFormService.formData($scope.patient.uuid, $scope.section.dashboardParams.maximumNoOfVisits, $scope.section.formGroup, $state.params.enrollment);
                 };
 
                 var filterFormData = function (formData) {

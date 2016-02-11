@@ -38,6 +38,7 @@ describe("Forms Table display control", function () {
             }
         });
         $provide.value('appService', appService);
+        $provide.value('$state', {params: {enrollment: "patientProgramUuid"}})
     }));
 
     beforeEach(inject(function (_$compile_, $rootScope, $httpBackend, $q) {
@@ -45,7 +46,7 @@ describe("Forms Table display control", function () {
         $compile = _$compile_;
         q = $q;
         scope.patient = {uuid: '123'};
-        scope.section = {dashboardParams: {maximumNoOfVisits: 10} };
+        scope.section = {dashboardParams: {maximumNoOfVisits: 10}};
         mockBackend = $httpBackend;
         mockBackend.expectGET('../common/displaycontrols/forms/views/formsTable.html').respond("<div>dummy</div>");
     }));
@@ -232,18 +233,22 @@ describe("Forms Table display control", function () {
             expect(compiledElementScope.formData).toEqual(expected);
         });
         it("should set shouldPromptBrowserReload and set showFormDate", function () {
-            var allObsTemplateData = {"data": {"results": [{"display":"Followup Template"}]}};
-            var formDataObj = {"data": {results: [
-                {
-                    "uuid": "ace25383-0baf-4c52-96bd-224d8caca00e",
-                    "concept": {
-                        "uuid": "bb80d45d-e4c5-4ce0-bb7c-0a34d2635ea5",
-                        "displayString": "Outcome End of Treatment Template"
-                    },
-                    "display": "Outcome End of Treatment Template: 2015-11-17",
-                    "obsDatetime": "2015-11-18T16:26:30.000+0000"
+            var allObsTemplateData = {"data": {"results": [{"display": "Followup Template"}]}};
+            var formDataObj = {
+                "data": {
+                    results: [
+                        {
+                            "uuid": "ace25383-0baf-4c52-96bd-224d8caca00e",
+                            "concept": {
+                                "uuid": "bb80d45d-e4c5-4ce0-bb7c-0a34d2635ea5",
+                                "displayString": "Outcome End of Treatment Template"
+                            },
+                            "display": "Outcome End of Treatment Template: 2015-11-17",
+                            "obsDatetime": "2015-11-18T16:26:30.000+0000"
+                        }
+                    ]
                 }
-            ]}};
+            };
             var simpleHtml = '<forms-table section="section" patient="patient" is-on-dashboard="false"></forms-table>';
 
             mockConceptSetService(allObsTemplateData);
