@@ -1,6 +1,6 @@
 'use strict';
 
-describe('consultationContextController', function () {
+describe('visitHeaderController', function () {
     var scope, controller, rootScope,visitTabConfig;
     var mockClinicalAppConfigService= jasmine.createSpyObj('clinicalAppConfigService', ['getConsultationBoardLink']);
     var mockLocation= jasmine.createSpyObj('$location', ['path']);
