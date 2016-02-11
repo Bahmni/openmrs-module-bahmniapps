@@ -8,7 +8,21 @@
     overflow-x: auto;
     overflow-y: visible;
     margin-left:240px;
-    margin-right: 165px;
+    &.noOfActions-4-width{
+      margin-right: 200px;
+    }
+    &.noOfActions-3-width{
+      margin-right: 160px;
+    }
+    &.noOfActions-2-width{
+      margin-right: 130px;
+    }
+    &.noOfActions-1-width{
+      margin-right: 90px;
+    }
+    &.noOfActions-0-width{
+      margin-right: 75px;
+    }
     @media (max-width : 1024px){
       margin-left: 170px;
     }
@@ -77,7 +91,7 @@
       background: #eee;
       background-image: none;
       color: #333;
-      width:121px;
+      width:112px;
       @media (max-width : 1024px){
         width: 78px;
       }
@@ -98,11 +112,25 @@
         width:160px;
       }
       &.empty-header{
-        width: 165px;
         position: absolute;
         right: 0;
         top: auto;
         box-sizing: border-box;
+        &.noOfActions-4-width{
+          width: 200px;
+        }
+        &.noOfActions-3-width{
+          width: 160px;
+        }
+        &.noOfActions-2-width{
+          width: 130px;
+        }
+        &.noOfActions-1-width{
+          width: 90px;
+        }
+        &.noOfActions-0-width{
+          width: 75px;
+        }
       }
     }
     td{
@@ -137,7 +165,6 @@
         padding: 6px 5px 85px;
       }
       &.buttonColumn{
-        width: 165px;
         position: absolute;
         right:0;
         top:auto;
@@ -157,6 +184,21 @@
       }
       &.noActionColumn{
         padding: 3px 5px;
+      }
+      &.noOfActions-4-width{
+          width: 200px;
+      }
+      &.noOfActions-3-width{
+          width: 160px;
+      }
+      &.noOfActions-2-width{
+          width: 130px;
+      }
+      &.noOfActions-1-width{
+          width: 90px;
+      }
+      &.noOfActions-0-width{
+          width: 75px;
       }
       &.noActionColumnAddNote{
         padding: 3px 5px 27px;
