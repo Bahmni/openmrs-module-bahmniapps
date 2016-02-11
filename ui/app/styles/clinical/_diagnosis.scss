@@ -129,6 +129,10 @@
   .status button {
     border-radius: 3px;
   }
+  button:focus {
+    outline: 0;
+    border: 2px solid #007fff;
+  }
   button.active {
     color: $bahmniTertiaryColor;
     padding-top: 7px;
