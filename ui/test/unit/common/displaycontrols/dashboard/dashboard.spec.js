@@ -73,7 +73,7 @@ describe("Dashboard", function () {
 
             var groupedSections = dashboard.groupSectionsByType(sections);
             expect(groupedSections).toEqual([sections]);
-        })
+        });
 
         it("should group the mixed sections", function () {
             var groupedSections = dashboard.groupSectionsByType(sections);

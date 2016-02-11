@@ -22,5 +22,22 @@ describe("observationsService", function () {
 
             mockBackend.flush();
         })
-    })
+    });
+
+    describe("getObsInFlowSheet", function () {
+        it("should send parameters specified in call to the server", function () {
+            mockBackend.expectGET('/openmrs/ws/rest/v1/bahmnicore/observations/flowSheet?' +
+            'conceptNames=conceptNames&conceptSet=conceptSet&enrollment=patientProgramUuid' +
+            '&groupByConcept=groupByConcept&initialCount=initialCount&latestCount=latestCount' +
+            '&name=groovyExtension&numberOfVisits=numberOfVisits&patientUuid=patientUuid')
+                .respond({results: ["Some data"]});
+
+            observationsService.getObsInFlowSheet("patientUuid", "conceptSet", "groupByConcept", "conceptNames",
+                "numberOfVisits", "initialCount", "latestCount", "groovyExtension",
+                null, null, "patientProgramUuid");
+
+            mockBackend.flush();
+        });
+    });
+
 });

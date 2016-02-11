@@ -51,6 +51,43 @@ describe('obsToObsFlowSheet DisplayControl', function () {
         q = $q;
     }));
 
+    describe('initialization', function() {
+        it("should make the right http call as specified by its input", function() {
+            var scope = rootScope.$new();
+
+            scope.section = {
+                "name": "obsToObsFlowSheet",
+                "headingConceptSource": "Abbreviation",
+                "dashboardParams": {
+                    "conceptNames": [
+                        "Bacteriology, Rifampicin result",
+                        "Bacteriology, Ethambutol result"
+                    ]
+                }
+            };
+
+            scope.patient = {
+                "uuid": "patientUuid"
+            };
+
+            scope.enrollment = "enrollmentUuid";
+
+            mockBackend.expectGET('/openmrs/ws/rest/v1/bahmnicore/observations/flowSheet?conceptNames=Bacteriology,+Rifampicin+result&conceptNames=Bacteriology,+Ethambutol+result&enrollment=enrollmentUuid&patientUuid=patientUuid').respond({});
+            mockBackend.expectGET('/openmrs/ws/rest/v1/concept?s=byFullySpecifiedName&v=custom:(uuid,names,displayString)').respond("<div>dummy</div>");
+
+            var html = '<obs-to-obs-flow-sheet patient="patient" section="section" is-on-dashboard="true" enrollment="enrollment"></obs-to-obs-flow-sheet>';
+
+            var element = compile(html)(scope);
+
+            scope.$digest();
+            mockBackend.flush();
+
+            element.isolateScope();
+            scope.$digest();
+        });
+
+    });
+
     describe('getHeaderName ', function () {
         it('should return the concept name when there is no abbreviation and there is no short name', function () {
             var scope = rootScope.$new();

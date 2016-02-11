@@ -26,7 +26,9 @@ angular.module('bahmni.common.displaycontrol.obsVsObsFlowSheet').directive('obsT
 
             var getObsInFlowSheet = function () {
                 return observationsService.getObsInFlowSheet(patient.uuid, $scope.config.templateName,
-                    $scope.config.groupByConcept, $scope.config.conceptNames, $scope.config.numberOfVisits, $scope.config.initialCount, $scope.config.latestCount, $scope.config.name, $scope.section.startDate, $scope.section.endDate).success(function (data) {
+                    $scope.config.groupByConcept, $scope.config.conceptNames, $scope.config.numberOfVisits,
+                    $scope.config.initialCount, $scope.config.latestCount, $scope.config.name, $scope.section.startDate,
+                    $scope.section.endDate, $scope.enrollment).success(function (data) {
                     var obsInFlowSheet = data;
                     var groupByElement = _.find(obsInFlowSheet.headers, function (header) {
                         return header.name === $scope.config.groupByConcept;
@@ -126,6 +128,7 @@ angular.module('bahmni.common.displaycontrol.obsVsObsFlowSheet').directive('obsT
                 section: "=",
                 visitSummary: "=",
                 isOnDashboard: "=",
+                enrollment: "=",
                 startDate: "=",
                 endDate: "="
             },
