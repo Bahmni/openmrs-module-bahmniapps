@@ -30,8 +30,7 @@ describe('patientAttributeDbService tests', function () {
         schemaBuilder.connect().then(function (db) {
             return patientAttributeDbService.insertAttributeTypes(db).then(function () {
                 var attributeTypeTable = db.getSchema().table('patient_attribute_type');
-                return db.select(attributeTypeTable.attributeTypeId,
-                    attributeTypeTable.uuid, attributeTypeTable.attributeName, attributeTypeTable.format).from(attributeTypeTable).exec().then(function (attributeTypeMap) {
+                return patientAttributeDbService.getAttributeTypes(db).then(function (attributeTypeMap) {
                     return patientDbService.insertPatientData(db, patientJson).then(function (uuid) {
                         var patient = patientJson.patient;
                         var person = patient.person;

@@ -46,8 +46,7 @@ angular.module('bahmni.common.offline')
             var person = patient.person;
             var attributeTypeTable = db.getSchema().table('patient_attribute_type');
 
-            return db.select(attributeTypeTable.attributeTypeId, attributeTypeTable.uuid, attributeTypeTable.attributeName, attributeTypeTable.format).from(attributeTypeTable).exec()
-                .then(function (attributeTypeMap) {
+            return patientAttributeDbService.getAttributeTypes(db).then(function (attributeTypeMap) {
                     if ("POST" === requestType) {
                         parseAttributeValues(person.attributes, attributeTypeMap);
                     }

@@ -53,10 +53,22 @@ angular.module('bahmni.common.offline')
             }
         };
 
+        var getAttributeTypes = function (db) {
+            var attributeTypeTable = db.getSchema().table('patient_attribute_type');
+
+            return db.select(attributeTypeTable.attributeTypeId, attributeTypeTable.uuid, attributeTypeTable.attributeName, attributeTypeTable.format).from(attributeTypeTable).exec()
+                .then(function (attributeTypeMap) {
+                     return attributeTypeMap;
+                });
+
+        };
+
+
 
         return {
             insertAttributeTypes: insertAttributeTypes,
-            insertAttributes: insertAttributes
+            insertAttributes: insertAttributes,
+            getAttributeTypes: getAttributeTypes
         }
 
     }]);

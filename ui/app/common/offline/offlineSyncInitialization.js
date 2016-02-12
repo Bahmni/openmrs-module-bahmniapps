@@ -11,7 +11,7 @@ angular.module('bahmni.common.offline')
                     offlineDbService.init(offlineDb);
                     offlineMarkerDbService.init(offlineDb);
                     offlineAddressHierarchyDbService.init(offlineDb);
-                    offlineDbService.populateData(window.location.origin);
+                    offlineDbService.populateData(Bahmni.Common.Constants.hostURL);
                     offlineSyncService.sync();
                 }
             };
