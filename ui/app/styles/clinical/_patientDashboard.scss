@@ -6,38 +6,57 @@
   min-height: 860px;
   right: 0;
   padding-bottom: 10px;
-  @media screen and (min-width: 860px) {
-    .patient-dashboard.visit & {
-      //margin: 0 -10px;
-    }
-  }
 }
 .dashboard-date-picker {
   float: left;
   margin-left: 10px;
 }
-.dashboard-section-wrapper {
+.dashboard-sections-wrapper {
   @include clearfix();
   .dashboard-sections {
-    width: 50%;
     margin: 0;
     box-sizing: border-box;
     float: left;
-    @media screen and (max-width: 859px) {
-      width: 100%;
-      margin: 0 auto;
-      padding: 0;
-      float: none;
+    width: 100%;
+    padding: 0;
+    @include clearfix;
+    &.halfpage-container{
+      width: 50%;
+      @media screen and (max-width: 859px) {
+        width: 100%;
+        margin: 0 auto;
+        padding: 0;
+        float: none;
+      }
+      .LAYOUT_25_75{
+        width: 49.7%;
+      }
+    }
+    &.dashboard-sections-right{
+      padding: 0px 0px 0px 5px;
     }
     &.dashboard-sections-left{
       padding: 0px 5px 0px 0px;
     }
-    &.dashboard-section-fullpage{
-      width: 100%;
-      padding: 0;
-    }
-    &.dashboard-sections-right{
-      padding: 0px 0px 0px 5px;
+    &.three-fourth-page-container{
+      div.three-fourth-page{
+        box-sizing: border-box;
+          &.section-0{
+            padding-right: 5px;
+          }
+          &.section-1{
+            padding-left: 5px;
+          }
+      }
+      .LAYOUT_25_75{
+        width: 24.5%;
+        float: left;
+      }
+
+      .LAYOUT_75_25{
+        width: 75.5%;
+        float: left;
+      }
     }
     .disease-date{
       font-family: OpenSansSemiBold;
@@ -762,9 +781,6 @@ table.treatments-details-table{
 .patient-dashboard small.hint{
   padding-left: 3px;
 }
-
-
-
 .patient-info-fixed-postion-container{
   position: fixed;
   top: 52px;
@@ -816,3 +832,4 @@ table.treatments-details-table{
   }
 
 }
+

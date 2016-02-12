@@ -105,7 +105,9 @@
     }
   }
 }
-.visit .diagnosis .history-diagnosis {margin:0; table-layout:fixed;
+.visit .diagnosis .history-diagnosis {
+  margin:0; table-layout:fixed;
+  border-right: 0;
   .view{
     font-size: 11px;
   }
