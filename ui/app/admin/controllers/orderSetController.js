@@ -93,7 +93,7 @@ angular.module('bahmni.common.domain')
                 }
             };
 
-            var primaryAttributeCount = function () {
+/*            var primaryAttributeCount = function () {
                 var count = 0;
                 _.each($scope.orderSet.orderSetMembers, function (orderSetMember) {
                     _.each(orderSetMember.orderSetMemberAttributes, function (orderSetMemberAttribute) {
@@ -103,7 +103,7 @@ angular.module('bahmni.common.domain')
                     });
                 });
                 return count;
-            };
+            };*/
 
             $scope.save = function () {
                 if (validationSuccess()) {
@@ -112,7 +112,7 @@ angular.module('bahmni.common.domain')
                             orderSetMember.orderTemplate = JSON.stringify(orderSetMember.orderTemplate);
                         }
                     });
-                    spinner.forPromise(orderSetService.saveOrderSet(filterOrderSetAttributes($scope.orderSet)).then(function (response) {
+                    spinner.forPromise(orderSetService.saveOrderSet().then(function (response) {
                         $state.params.orderSetUuid = response.data.uuid;
                         return $state.transitionTo($state.current, $state.params, {
                             reload: true,
@@ -125,7 +125,7 @@ angular.module('bahmni.common.domain')
                 }
             };
 
-            var filterOrderSetAttributes = function (orderSet) {
+/*            var filterOrderSetAttributes = function (orderSet) {
                 orderSet.orderSetMembers.forEach(function (orderSetMember) {
                     if (!_.isNull(orderSetMember.orderSetMemberAttributes)) {
                         orderSetMember.orderSetMemberAttributes = _.filter(orderSetMember.orderSetMemberAttributes, function (orderSetMemberAttribute) {
@@ -136,7 +136,7 @@ angular.module('bahmni.common.domain')
                     }
                 });
                 return orderSet;
-            };
+            };*/
 
             var validationSuccess = function () {
                 if (!$scope.orderSet.orderSetMembers || countActiveOrderSetMembers($scope.orderSet.orderSetMembers) < 2) {
@@ -144,12 +144,12 @@ angular.module('bahmni.common.domain')
                     return false;
                 }
 
-                var primaryAttrCount = primaryAttributeCount();
+/*                var primaryAttrCount = primaryAttributeCount();
                 if (primaryAttrCount === 0) {
                     messagingService.showMessage('error', 'Please select at least one member as Primary.');
                     return false;
 
-                }
+                }*/
                 return true;
             };
 
@@ -175,12 +175,14 @@ angular.module('bahmni.common.domain')
 
             var buildOrderSetMember = function () {
                 return {
-                    orderType: {uuid: $scope.orderTypes[0].uuid},
+                    orderType: {uuid: $scope.orderTypes[0].uuid}
+/*
                     orderSetMemberAttributes: [getOrderSetMemberAttr_primary()]
+*/
                 };
             };
 
-            var getOrderSetMemberAttr_primary = function(){
+/*            var getOrderSetMemberAttr_primary = function(){
                 var attr_primary = {
                     orderSetMemberAttributeType: {
                         orderSetMemberAttributeTypeId: $scope.primaryAttributeType.orderSetMemberAttributeTypeId
@@ -188,25 +190,29 @@ angular.module('bahmni.common.domain')
                     value: ""
                 };
                 return attr_primary;
-            };
+            };*/
 
             var init = function () {
                 var init = $q.all([
                     orderTypeService.loadAll(),
+/*
                     orderSetService.getOrderSetMemberAttributeType(Bahmni.Common.Constants.primaryOrderSetMemberAttributeTypeName),
+*/
                     orderSetService.getDrugConfig()
                 ]).then(function (results) {
                     $scope.orderTypes = results[0];
+/*
                     $scope.primaryAttributeType = results[1].data.results[0];
-                    $scope.treatmentConfig = results[2];
+*/
+                    $scope.treatmentConfig = results[1];
                     if ($state.params.orderSetUuid !== "new") {
                         spinner.forPromise(orderSetService.getOrderSet($state.params.orderSetUuid).then(function (response) {
                             $scope.orderSet = filterOutVoidedOrderSetMembers(Bahmni.Common.OrderSet.create(response.data));
                             _.each($scope.orderSet.orderSetMembers, function (orderSetMember) {
                                 orderSetMember.orderTemplate = JSON.parse(orderSetMember.orderTemplate || null);
-                                if(_.isEmpty(orderSetMember.orderSetMemberAttributes)){
+/*                                if(_.isEmpty(orderSetMember.orderSetMemberAttributes)){
                                     orderSetMember.orderSetMemberAttributes.push(getOrderSetMemberAttr_primary());
-                                }
+                                }*/
                             });
                         }));
                     }
