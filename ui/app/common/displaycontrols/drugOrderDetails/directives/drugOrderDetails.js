@@ -5,7 +5,7 @@ angular.module('bahmni.common.displaycontrol.drugOrderDetails')
         var controller = function ($scope) {
 
             var init = function () {
-                return $q.all([treatmentService.getAllDrugOrdersFor($scope.patient.uuid, $scope.section.dashboardParams.drugConceptSet),
+                return $q.all([treatmentService.getAllDrugOrdersFor($scope.patient.uuid, $scope.section.dashboardParams.drugConceptSet, undefined, undefined, $scope.enrollment),
                     treatmentConfig()])
                     .then(function (results) {
                         var createDrugOrder = function (drugOrder) {
@@ -53,7 +53,8 @@ angular.module('bahmni.common.displaycontrol.drugOrderDetails')
             controller: controller,
             scope: {
                 section: "=",
-                patient: "="
+                patient: "=",
+                enrollment: "="
             },
             templateUrl: "../common/displaycontrols/drugOrderDetails/views/drugOrderDetails.html"
         };

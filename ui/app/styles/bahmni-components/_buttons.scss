@@ -506,3 +506,18 @@ input[type="submit"].secondary-button:hover  {
     margin-left: -3px;
   }
 }
+
+
+button.toggle{
+  .fa-angle-up{
+    display: none;
+  }
+  &.active{
+    .fa-angle-up{
+      display: block;
+    }
+    .fa-angle-down{
+      display: none;
+    }
+  }
+}

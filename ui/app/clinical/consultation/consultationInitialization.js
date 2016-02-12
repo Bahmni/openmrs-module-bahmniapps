@@ -3,14 +3,14 @@
 angular.module('bahmni.clinical').factory('consultationInitialization',
     ['$q', 'diagnosisService', '$rootScope', 'encounterService', 'sessionService', 'configurations', '$bahmniCookieStore', 'retrospectiveEntryService',
         function ($q, diagnosisService, $rootScope, encounterService, sessionService, configurations, $bahmniCookieStore, retrospectiveEntryService) {
-            return function (patientUuid, encounterUuid) {
+            return function (patientUuid, encounterUuid, programUuid) {
 
                 if(encounterUuid == 'active') {
                     encounterUuid = undefined;
                 }
 
-                var getDefaultEncounterTypeForLocation = function() {
-                    return encounterService.getEncounterType(null, sessionService.getLoginLocationUuid());
+                var getEncounterType = function() {
+                    return encounterService.getEncounterType(programUuid, sessionService.getLoginLocationUuid());
                 };
 
                 var consultationMapper = new Bahmni.ConsultationMapper(configurations.dosageFrequencyConfig(), configurations.dosageInstructionConfig(),
@@ -36,7 +36,7 @@ angular.module('bahmni.clinical').factory('consultationInitialization',
                 };
 
                 var findEncounter= function(providerData, currentProviderUuid, encounterDate) {
-                    return getDefaultEncounterTypeForLocation().then(function (encounterType) {
+                    return getEncounterType().then(function (encounterType) {
                         return encounterService.find({
                             patientUuid: patientUuid,
                             providerUuids: !_.isEmpty(providerData) ? [providerData.uuid] : [currentProviderUuid],
