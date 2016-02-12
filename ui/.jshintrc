@@ -12,6 +12,20 @@
   "unused": true,
   "strict": true,
   "maxdepth": 3,
-  "predef": [ "Bahmni", "angular", "describe", "it", "moment", "$" ],
-  "asi": true
+  "predef": [ "Bahmni", "angular", "describe", "it", "moment", "$", "_", "d3", "c3" ],
+  "asi": true,
+  "globals":{
+    "Bahmni": false,
+    "describe": false,
+    "it": false,
+    "moment": false,
+    "$": false,
+    "angular": false,
+    "_": false,
+    "d3": false,
+    "c3": false,
+    "expect": false,
+    "describe": false,
+    "window": false
+  }
 }

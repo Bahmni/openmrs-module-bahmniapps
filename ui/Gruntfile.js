@@ -43,6 +43,23 @@ module.exports = function (grunt) {
                 '<%= yeoman.app %>/styles/*.css'
             ]
         },
+        jshint: {
+            options:{
+                force: true,
+                jshintrc: '.jshintrc',
+                verbose: true,
+                reporter: require('jshint-stylish')
+
+            },
+            all: [
+                'Gruntfile.js',
+                '<%= yeoman.app %>/**/*.js',
+                '!<%= yeoman.app %>/**/*.min.js',
+                '!<%= yeoman.app %>/components/**/*.js',
+                '!<%= yeoman.app %>/lib/**/*.js',
+                '!app/lib/**/*.js'
+            ]
+        },
         karma: {
             unit: {
                 configFile: 'test/config/karma.conf.js'
@@ -375,26 +392,27 @@ module.exports = function (grunt) {
 
     grunt.registerTask('build', [
         'bower-install',
+        'jshint',
         'test',
         'dist'
     ]);
 
 
-    grunt.registerTask('default', ['build']);
+    var updatePrefetchList = function(preFetchList){
+        var replace = require("replace");
 
-    grunt.registerTask('pre-fetch', 'Generate files to pre-fetch for service worker', function() {
-            var preFetchList = [];
-            var preFetchDirs = ['./app/lib', './app/images', './app/home', './app/registration', './app/i18n/home', './app/i18n/registration'];
-            for (var i in preFetchDirs) {
-                preFetchList = preFetchList.concat(getFiles(preFetchDirs[i], preFetchList))
-            }
-            updatePrefetchList(unique(preFetchList));
-        }
-    );
+        replace({
+            regex: "{pre-fetch-list}",
+            replacement: preFetchList,
+            paths: ['./app/worker.js'],
+            recursive: false,
+            silent: true
+        });
+    };
 
     var unique = function(array) {
         return array.filter(function(item, pos) {
-            return array.indexOf(item) == pos;
+            return array.indexOf(item) === pos;
         });
     };
 
@@ -416,22 +434,22 @@ module.exports = function (grunt) {
         return files_;
     };
 
-    var updatePrefetchList = function(preFetchList){
-        var replace = require("replace");
+    grunt.registerTask('default', ['build']);
 
-        replace({
-            regex: "{pre-fetch-list}",
-            replacement: preFetchList,
-            paths: ['./app/worker.js'],
-            recursive: false,
-            silent: true,
-        });
-    };
+    grunt.registerTask('pre-fetch', 'Generate files to pre-fetch for service worker', function() {
+            var preFetchList = [];
+            var preFetchDirs = ['./app/lib', './app/images', './app/home', './app/registration', './app/i18n/home', './app/i18n/registration'];
+            for (var i in preFetchDirs) {
+                preFetchList = preFetchList.concat(getFiles(preFetchDirs[i], preFetchList));
+            }
+            updatePrefetchList(unique(preFetchList));
+        }
+    );
 
     grunt.registerTask('bower-install', 'install dependencies using bower', function () {
         var exec = require('child_process').exec;
         var cb = this.async();
-        exec('bower install', function (err, stdout, stderr) {
+        exec('bower install', function (err, stdout) {
             console.log(stdout);
             cb();
         });
