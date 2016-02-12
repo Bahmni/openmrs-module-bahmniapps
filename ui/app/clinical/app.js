@@ -387,5 +387,12 @@ angular.module('consultation')
         $rootScope.$on('$stateChangeSuccess', function () {
             window.scrollTo(0, 0);
         });
+        $rootScope.$on('ngDialog.opened', function (e, $dialog) {
+           $('html').addClass('ngdialog-open')
+        });
+        $rootScope.$on('ngDialog.closing', function (e, $dialog) {
+            $('html').removeClass('ngdialog-open')
+        });
     }]);
+
 

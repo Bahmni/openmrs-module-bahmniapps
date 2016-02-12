@@ -2,6 +2,12 @@ html,body{
   height:100%;
 }
 
+html{
+  &.ngdialog-open{
+    overflow: hidden !important;
+  }
+}
+
 body {
   font-family: $OpenSansFont, Arial, sans-serif;
   -webkit-font-smoothing: subpixel-antialiased;
