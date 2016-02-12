@@ -103,7 +103,7 @@ Bahmni.Clinical.DrugOrderViewModel = function (config, proto, encounterDate) {
     this.isBeingEdited = this.isBeingEdited || false;
     this.orderAttributes = [];
     this.isNonCodedDrug = this.isNonCodedDrug || false;
-    this.isDurationRequired = (inputOptionsConfig.duration && inputOptionsConfig.duration.required) || false;
+    this.isDurationRequired = inputOptionsConfig.duration && inputOptionsConfig.duration.required == false? false : true;
 
     if(inputOptionsConfig.defaultStartDate === false && !this.effectiveStartDate)
         this.effectiveStartDate = null;
