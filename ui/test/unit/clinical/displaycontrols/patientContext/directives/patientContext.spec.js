@@ -242,5 +242,37 @@ describe('patient context', function () {
             expect(Object.keys(compiledElementScope.patientContext.personAttributes).length).toEqual(1);
             expect(Object.keys(compiledElementScope.patientContext.programAttributes).length).toEqual(0);
         });
+
+        it("should convert boolean values to 'yes' or 'no'", function() {
+            var patientContext = {
+                personAttributes: {'isUrban': {description: 'Urban', value: 'true'}, 'cool': {description: 'Cool', value: 'false'}},
+                programAttributes: {}
+            };
+            var patientContextConfig = {
+                personAttributes: ['isUrban', 'cool']
+            };
+            mockAppDescriptor.getConfigValue.and.returnValue(patientContextConfig);
+            mockAppService.getAppDescriptor.and.returnValue(mockAppDescriptor);
+
+            spinner.forPromise.and.callFake(function (param) {
+                return {
+                    then: function (callback) {
+                        return callback({data: patientContext});
+                    }
+                }
+            });
+
+            var simpleHtml = '<patient-context patient="patient"></patient-context>';
+            var element = $compile(simpleHtml)(scope);
+            scope.$digest();
+            mockBackend.flush();
+            var compiledElementScope = element.isolateScope();
+            scope.$digest();
+
+            expect(compiledElementScope).not.toBeUndefined();
+            expect(Object.keys(compiledElementScope.patientContext.personAttributes).length).toEqual(2);
+            expect(compiledElementScope.patientContext.personAttributes.isUrban.value).toEqual("Yes");
+            expect(compiledElementScope.patientContext.personAttributes.cool.value).toEqual("No");
+        });
     })
 });
