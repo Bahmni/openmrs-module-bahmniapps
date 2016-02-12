@@ -7,12 +7,6 @@ angular.module('bahmni.registration')
             $scope.printOptions = appService.getAppDescriptor().getConfigValue("printOptions");
             $scope.defaultPrint = $scope.printOptions && $scope.printOptions[0];
 
-            _.forEach($scope.printOptions, function(printOption) {
-                if(printOption.templateUrl) {
-                    printOption.templateUrl = 'https://192.168.33.10'+ printOption.templateUrl;
-                }
-            });
-
             var mapRegistrationObservations = function () {
                 var obs = {};
                 $scope.observations = $scope.observations || [];

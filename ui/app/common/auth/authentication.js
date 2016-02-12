@@ -23,7 +23,7 @@ angular.module('authentication')
     }).run(['$rootScope', '$window', '$timeout', function ($rootScope, $window, $timeout) {
         $rootScope.$on('event:auth-loginRequired', function () {
             $timeout(function(){
-                $window.location = "../home/#/login?showLoginMessage=true";
+                $window.location = "../home/index.html#/login";
             });
         });
     }]).service('sessionService', ['$rootScope', '$http', '$q', '$bahmniCookieStore', 'userService', 'offlineService', function ($rootScope, $http, $q, $bahmniCookieStore, userService, offlineService) {

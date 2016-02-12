@@ -2,7 +2,7 @@ var Bahmni = Bahmni || {};
 Bahmni.Common = Bahmni.Common || {};
 
 (function(){
-    var hostUrl = "";
+    var hostUrl = localStorage.getItem('host') ? ("https://" + localStorage.getItem('host'))  : "";
     var RESTWS = hostUrl + "/openmrs/ws/rest";
     var RESTWS_V1 = hostUrl + "/openmrs/ws/rest/v1";
     var BAHMNI_CORE = RESTWS_V1 + "/bahmnicore";
@@ -173,6 +173,7 @@ Bahmni.Common = Bahmni.Common || {};
         baseUrl :  BASE_URL,
         customUrl : CUSTOM_URL,
         customLocaleUrl : CUSTOM_LOCALE_URL,
+        eventLogServiceUrl : hostUrl + "/event-log-service/rest/eventlog/getevents",
         faviconUrl : hostUrl + "/bahmni/favicon.ico",
         platformType: {
             chrome: 'chrome',

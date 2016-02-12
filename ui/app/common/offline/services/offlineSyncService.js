@@ -41,7 +41,7 @@ angular.module('bahmni.common.offline')
                     return;
 
                 var event = events[index];
-                return eventLogService.getDataForUrl(event.object).then(function (response) {
+                return eventLogService.getDataForUrl(Bahmni.Common.Constants.hostURL + event.object).then(function(response) {
                     return saveData(event, response).then(updateMarker(event).then(function () {
                         return readEvent(events, ++index);
                     }));

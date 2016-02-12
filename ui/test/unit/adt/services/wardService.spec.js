@@ -35,6 +35,6 @@ describe('Ward Service', function () {
             done();
         });
         expect(mockHttp.get).toHaveBeenCalled();
-        expect(mockHttp.get.calls.mostRecent().args[0]).toBe("/openmrs/ws/rest/v1/admissionLocation");
+        expect(mockHttp.get.calls.mostRecent().args[0]).toBe("/openmrs/ws/rest/v1/admissionLocation/");
     });
 });
