@@ -6,24 +6,21 @@
     margin: 10px 15px;
     position: relative;
   }
-  h2.program-title{
-    cursor: pointer;
-  }
-  .programAttributeFields {
-    clear: both;
-    position: relative;
-    h2.programAttribute-title {
-      color: #000;
-      font-size: 13px;
-      clear: both;
-      border-bottom: 1px solid #ccc;
-      padding: 5px 0;
-      font-family: openSansBold;;
-    }
-    .pastProgramNoState{
-      margin-bottom: 10px;
-    }
-  }
+  //.programAttributeFields {
+  //  clear: both;
+  //  position: relative;
+  //  h2.programAttribute-title {
+  //    color: #000;
+  //    font-size: 13px;
+  //    clear: both;
+  //    border-bottom: 1px solid #ccc;
+  //    padding: 5px 0;
+  //    font-family: openSansBold;
+  //  }
+  //  .pastProgramNoState{
+  //    margin-bottom: 10px;
+  //  }
+  //}
   label{
     float: left;
     padding: 10px 10px 0 0;
@@ -40,34 +37,117 @@
       }
     }
   }
-  input{
+
+  // New css start
+  .program-title{
+    font-family: openSansBold;
+    color: #000;
+    font-size: 14px;
+    padding-bottom: 10px;
+  }
+  .active-program-tiles{
     float: left;
-    max-width: 197px;
+    margin-bottom: 10px;
+    margin-right: 0.5%;
+    width: 33%;
+    border: 1px solid #699;
+    border-radius: 5px;
+    padding: 10px;
+    background: #fff;
+    line-height: 1.35;
+    font-size: 13px;
     box-sizing: border-box;
-    width: 197px !important;
+    &:nth-child(3n){
+      margin-right: 0;
+    }
   }
-  .button-group-wrapper{
-    clear:both;
-    width: auto;
+  .button-group{
+    .programSave ,.programEdit{
+      margin-left:10px;
+      cursor: pointer;
+      font-family: openSansSemiBold;
+      &:hover , &:active , &:focus{
+        color: #5B8989;
+        text-shadow: 1px 1px 1px #ccc;
+      }
+    }
   }
-  input[type="submit"]{
-    width:149px !important;
-    float: right;
-    margin-top: 20px;
+  .programNameOutComeWrap{
+    margin: 10px 0 0;
   }
+  .programName , .programAttributes ,.programState{
+    width: 68%;
+    .programAttributeRow{
+      margin-bottom: 5px;
+    }
+  }
+  .programName {
+    font-size: 14px;
+    .program-action-container {
+      display: block;
+      padding: 5px 0 0;
+    }
+  }
+
+  .ProgramEnrollInfo{
+    margin:15px 0;
+  }
+  .programEnrollDate{
+     width:114px;
+    text-align: right;
+    span.programStartDate{
+      display: block;
+    }
+  }
+  button.selectOutcome{
+    padding: 6px 5px 7px;
+    box-shadow: 2px 1px 2px 0px #ccc;
+    width:117px;
+  }
+  .programStateWrap{
+    margin:0 0 15px;
+  }
+  .programEditing{
+    .form-field .field-attribute label{
+      margin: 0;
+      padding: 0;
+    }
+  }
+
+  // New css end
+
+
+  //input{
+  //  float: left;
+  //  max-width: 197px;
+  //  box-sizing: border-box;
+  //  width: 197px !important;
+  //}
+  //.button-group-wrapper{
+  //  clear:both;
+  //  width: auto;
+  //}
+  //input[type="submit"]{
+  //  width:149px !important;
+  //  float: right;
+  //  margin-top: 20px;
+  //}
   a {
     &.back-btn{
-      float: right;
       margin: 0;
-    }
-    &.newProgramEnrollmentDashboard{
-      position: absolute;
-      right:0;
+      width: 96%;
+      float: none;
+      .patient-info {
+        width:60%;
+        .patient-name{
+          width:100%;
+        }
+      }
     }
   }
-  .programDescription{
-    margin: 0 10px 0 15px;
-  }
+  //.programDescription{
+  //  margin: 0 10px 0 15px;
+  //}
   .dashboard-section section .form-field{
     width: 43%;
     border-bottom: none !important;
@@ -150,82 +230,82 @@
 
   //Program State
 
-  .program-state-list {
-    width: auto;
-    background-color: #fff;
-    box-shadow: 3px 3px 10px #E4E0E0;
-    border: 1px #d0d0d0 solid;
-    border-radius: 0 0 3px 3px;
-    margin: 0 10px 15px 15px;
-    position: relative;
-    div.down-arrow-container{
-      width: 88px;
-      height: 1px;
-      background-color: #000;
-      position: absolute;
-      right: -1px;
-      top: -1px;
-      float: right;
-      background-color: #fff;
-      box-shadow: 0;
-      border: 1px #d0d0d0 solid;
-      border-radius: 0;
-      border-bottom-color: #fff;
-      border-top: 0;
-      border-bottom: 0;
-    }
-    .program-actions{
-      padding: 0px 20px 20px;
-      width: 75%;
-      margin: 0 auto;
-      button{
-        padding: 6px 15px !important;
-        margin-top: 4px;
-      }
-    }
-    .state-list{
-      padding: 25px 20px;
-      &.state-list-cutomPadding{
-        padding: 0;
-        padding-top: 20px;
-      }
-      table{
-        box-shadow: 1px 1px 5px rgba(0,0,0,.3);
-        tbody{
-          tr{
-            border: none;
-            &:nth-child(odd){
-              background: #F9F4E7
-            }
-            &:nth-child(even){
-              background: #FFF;
-            }
-            td{
-              border: none;
-            }
-          }
-        }
-      }
-    }
-  }
-  .remove-state-container{
-    overflow: hidden;
-    border-bottom: 1px #ccc solid;
-    padding-bottom: 10px;
-    margin-bottom: 10px;
-    .current-state-name{
-      max-width: 135px;
-      overflow: hidden;
-      padding-right: 0 !important;
-      span{
-        font-family: openSansSemiBold;
-        font-size: 12px;
-      }
-    }
-    .row-remover{
-      padding: 2px 4px !important;
-    }
-  }
+  //.program-state-list {
+  //  width: auto;
+  //  background-color: #fff;
+  //  box-shadow: 3px 3px 10px #E4E0E0;
+  //  border: 1px #d0d0d0 solid;
+  //  border-radius: 0 0 3px 3px;
+  //  margin: 0 10px 15px 15px;
+  //  position: relative;
+  //  div.down-arrow-container{
+  //    width: 88px;
+  //    height: 1px;
+  //    background-color: #000;
+  //    position: absolute;
+  //    right: -1px;
+  //    top: -1px;
+  //    float: right;
+  //    background-color: #fff;
+  //    box-shadow: 0;
+  //    border: 1px #d0d0d0 solid;
+  //    border-radius: 0;
+  //    border-bottom-color: #fff;
+  //    border-top: 0;
+  //    border-bottom: 0;
+  //  }
+  //  .program-actions{
+  //    padding: 0px 20px 20px;
+  //    width: 75%;
+  //    margin: 0 auto;
+  //    button{
+  //      padding: 6px 15px !important;
+  //      margin-top: 4px;
+  //    }
+  //  }
+  //  .state-list{
+  //    padding: 25px 20px;
+  //    &.state-list-cutomPadding{
+  //      padding: 0;
+  //      padding-top: 20px;
+  //    }
+  //    table{
+  //      box-shadow: 1px 1px 5px rgba(0,0,0,.3);
+  //      tbody{
+  //        tr{
+  //          border: none;
+  //          &:nth-child(odd){
+  //            background: #F9F4E7
+  //          }
+  //          &:nth-child(even){
+  //            background: #FFF;
+  //          }
+  //          td{
+  //            border: none;
+  //          }
+  //        }
+  //      }
+  //    }
+  //  }
+  //}
+  //.remove-state-container{
+  //  overflow: hidden;
+  //  border-bottom: 1px #ccc solid;
+  //  padding-bottom: 10px;
+  //  margin-bottom: 10px;
+  //  .current-state-name{
+  //    max-width: 135px;
+  //    overflow: hidden;
+  //    padding-right: 0 !important;
+  //    span{
+  //      font-family: openSansSemiBold;
+  //      font-size: 12px;
+  //    }
+  //  }
+  //  .row-remover{
+  //    padding: 2px 4px !important;
+  //  }
+  //}
 
   .program-timeline-container{
     width: 100%;
@@ -279,28 +359,28 @@
       }
     }
   }
-  .program-action-container{
-    margin-top: 4px;
-    width: 45%;
-    padding: 10px 15px;
-    display: inline-block;
-    background-color: #F3F2F2;
-    margin-right: 10px;
-    select{
-      float: left;
-      max-width: 197px;
-    }
-    label{
-      float: left;
-      padding-right: 9px;
-      margin-top: 10px;
-    }
-    .btn-grp{
-      button{
-        padding: 6px 15px;
-      }
-    }
-  }
+  //.program-action-container{
+  //  margin-top: 4px;
+  //  width: 45%;
+  //  padding: 10px 15px;
+  //  display: inline-block;
+  //  background-color: #F3F2F2;
+  //  margin-right: 10px;
+  //  select{
+  //    float: left;
+  //    max-width: 197px;
+  //  }
+  //  label{
+  //    float: left;
+  //    padding-right: 9px;
+  //    margin-top: 10px;
+  //  }
+  //  .btn-grp{
+  //    button{
+  //      padding: 6px 15px;
+  //    }
+  //  }
+  //}
 }
 
 @import "programDisplayControl";
