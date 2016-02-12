@@ -25,7 +25,7 @@ angular.module('bahmni.common.offline')
                         scheduleSync();
                         return;
                     }
-                    readEvent(response.data, 0).then(sync);
+                    readEvent(response.data, 0);
                 });
             };
 
@@ -37,9 +37,13 @@ angular.module('bahmni.common.offline')
             };
 
             var readEvent = function (events, index) {
-                if (events.length == index)
+                if (events.length == index && events.length > 0){
+                    sync();
                     return;
-
+                }
+                if (events.length == index){
+                    return;
+                }
                 var event = events[index];
                 return eventLogService.getDataForUrl(Bahmni.Common.Constants.hostURL + event.object).then(function(response) {
                     return saveData(event, response).then(updateMarker(event).then(function () {

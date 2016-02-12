@@ -32,7 +32,7 @@ describe('OfflineSyncService', function () {
                     insertMarker: function () {
                         return {
                             then: function (callback) {
-                                return callback(undefined);
+                                return;
                             }
                         };
                     }
@@ -153,7 +153,7 @@ describe('OfflineSyncService', function () {
                     insertMarker: function () {
                         return {
                             then: function (callback) {
-                                return callback(undefined);
+                                return ;
                             }
                         };
                     }
