@@ -686,6 +686,13 @@ h3 {
     color: #000 !important;
 }
 
+
+.patient-info-fixed-postion-container{
+    .patient-info-fixed{
+        font-family: Arial, sans-serif !important;
+    }
+}
+
 .print-patient-summary{
     &.print-wrapper{
       max-width: 100%;
