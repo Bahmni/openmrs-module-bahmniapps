@@ -8,7 +8,7 @@ describe('Chronic Treatment Chart DisplayControl', function () {
         deferred,
         drugService,
         translate,
-        simpleHtml = '<chronic-treatment-chart patient="patient" section="section" is-on-dashboard="true"></chronic-treatment-chart>';
+        simpleHtml = '<chronic-treatment-chart patient="patient" section="section" is-on-dashboard="true" enrollment="enrollment"></chronic-treatment-chart>';
 
     beforeEach(module('ui.router.router', function(){}));
     beforeEach(module('pascalprecht.translate', function(){}));
@@ -175,8 +175,10 @@ describe('Chronic Treatment Chart DisplayControl', function () {
             "uuid":"patientUuid"
         };
 
+        scope.enrollment = "patientProgramUuid";
+
         mockBackend.expectGET('../common/displaycontrols/chronicTreatmentChart/views/chronicTreatmentChart.html').respond("<div>dummy</div>");
-        mockBackend.expectGET('/openmrs/ws/rest/v1/bahmnicore/drugOGram/regimen?drugs=RIFAMPICIN&drugs=PYRAZINAMIDE&patientUuid=patientUuid').respond({});
+        mockBackend.expectGET('/openmrs/ws/rest/v1/bahmnicore/drugOGram/regimen?drugs=RIFAMPICIN&drugs=PYRAZINAMIDE&patientProgramUuid=patientProgramUuid&patientUuid=patientUuid').respond({});
 
         var element = compile(simpleHtml)(scope);
 
@@ -253,6 +255,69 @@ describe('Chronic Treatment Chart DisplayControl', function () {
         };
 
         expect(compiledElementScope.getAbbreviation(conceptWithAbbreviation)).toEqual("shortName");
+
+    });
+
+    it('should expected to call with the only patientUuid', function () {
+        var scope = rootScope.$new();
+
+        scope.isOnDashboard = true;
+        scope.section = {
+            "dashboardParams": {
+                "drugs": [
+                    "RIFAMPICIN",
+                    "PYRAZINAMIDE"
+                ]
+            }
+        };
+
+        scope.patient = {
+            "uuid":"patientUuid"
+        };
+
+
+        mockBackend.expectGET('../common/displaycontrols/chronicTreatmentChart/views/chronicTreatmentChart.html').respond("<div>dummy</div>");
+        mockBackend.expectGET('/openmrs/ws/rest/v1/bahmnicore/drugOGram/regimen?drugs=RIFAMPICIN&drugs=PYRAZINAMIDE&patientUuid=patientUuid').respond({});
+
+        var element = compile(simpleHtml)(scope);
+
+        scope.$digest();
+        mockBackend.flush();
+
+        var compiledElementScope = element.isolateScope();
+        scope.$digest();
+
+    });
+
+    it('should expected to call with the both patientProgramUuid and patientUuid', function () {
+        var scope = rootScope.$new();
+
+        scope.isOnDashboard = true;
+        scope.section = {
+            "dashboardParams": {
+                "drugs": [
+                    "RIFAMPICIN",
+                    "PYRAZINAMIDE"
+                ]
+            }
+        };
+
+        scope.patient = {
+            "uuid":"patientUuid"
+        };
+
+        scope.enrollment = "patientProgramUuid";
+
+        mockBackend.expectGET('../common/displaycontrols/chronicTreatmentChart/views/chronicTreatmentChart.html').respond("<div>dummy</div>");
+        mockBackend.expectGET('/openmrs/ws/rest/v1/bahmnicore/drugOGram/regimen?drugs=RIFAMPICIN&drugs=PYRAZINAMIDE&patientProgramUuid=patientProgramUuid&patientUuid=patientUuid').respond({});
+
+        var element = compile(simpleHtml)(scope);
+
+        scope.$digest();
+        mockBackend.flush();
+
+        var compiledElementScope = element.isolateScope();
+        scope.$digest();
 
     });
 });

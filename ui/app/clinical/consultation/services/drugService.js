@@ -35,12 +35,11 @@ angular.module('bahmni.clinical')
                 });
         };
 
-        var getRegimen = function (patientUuid, drugs, startDate, endDate) {
+        var getRegimen = function (patientUuid, patientProgramUuid, drugs) {
             var params = {
                 patientUuid: patientUuid,
-                drugs: drugs,
-                startDate: Bahmni.Common.Util.DateUtil.parseLongDateToServerFormat(startDate),
-                endDate: Bahmni.Common.Util.DateUtil.parseLongDateToServerFormat(endDate)
+                patientProgramUuid: patientProgramUuid,
+                drugs: drugs
             };
 
             return $http.get(Bahmni.Common.Constants.bahmniRESTBaseURL + "/drugOGram/regimen", {
