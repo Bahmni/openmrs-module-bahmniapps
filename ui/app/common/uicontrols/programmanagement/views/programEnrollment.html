@@ -1,38 +1,58 @@
 <div class="program-enrollment-container">
     <div class="select-program-container form">
-        <section class="block dashboard-section">
-            <h2 class="section-title program-title" toggle="allPrograms.showProgramSection">
-                <i class="fa fa-caret-right" ng-show="!allPrograms.showProgramSection"></i>
-                <i class="fa fa-caret-down" ng-show="allPrograms.showProgramSection"></i>
-                {{'PROGRAM_MANAGEMENT_SELECT_PROGRAM_KEY' | translate}}
-            </h2>
+        <a href="javascript:void(0)" class="section-title" toggle="allPrograms.showProgramSection">
+            <i class="fa fa-minus-square" ng-show="!allPrograms.showProgramSection"></i>
+            <i class="fa fa-plus-square" ng-show="allPrograms.showProgramSection"></i>
+            {{'PROGRAM_MANAGEMENT_SELECT_PROGRAM_KEY' | translate}}
+        </a>
 
-            <form class="select-program-option  clearfix" ng-submit="enrollPatient()" ng-show="allPrograms.showProgramSection">
-                <label class="start-date-label">
-                   <span> {{'PROGRAM_MANAGEMENT_LABEL_PROGRAM' | translate}} </span>
-                    <select ng-model="programSelected" ng-options="program.name for program in allPrograms" data-ng-change="setWorkflowStates(programSelected)">
+        <form class="select-program-option form-field clearfix" ng-submit="enrollPatient()"
+              ng-show="!allPrograms.showProgramSection">
+
+            <article class="fl">
+                <div class="field-attribute">
+                    <label >{{'PROGRAM_MANAGEMENT_LABEL_PROGRAM' | translate}} : </label>
+                </div>
+                <div class="field-value">
+                    <select ng-model="programSelected" ng-options="program.name for program in allPrograms"
+                            data-ng-change="setWorkflowStates(programSelected)">
                         <option value="">{{'PROGRAM_MANAGEMENT_CHOOSE_PROGRAM_KEY' | translate}}</option>
                     </select>
-                </label>
-                <label class="start-date-label" ng-if="hasStates(programSelected)">
-                    <span> {{'PROGRAM_MANAGEMENT_LABEL_PROGRAM_STATE' | translate }} </span>
-                    <select ng-model="$parent.workflowStateSelected" ng-options="state.concept.display for state in programWorkflowStates">
-                        <option value="">{{'PROGRAM_MANAGEMENT_CHOOSE_STATE_KEY' | translate}}</option>
-                    </select>
-                </label>
-                <label class="start-date-label"><strong>{{'PROGRAM_MANAGEMENT_START_DATE_KEY' | translate}}</strong> <span class="asterick">*</span> <input type="date" max="{{today}}" ng-model="programEnrollmentDate" ng-required="true"></label>
-                <section ng-hide="programSelected == null" class="programAttributeFields clearfix">
-                    <h2 class="programAttribute-title" ng-if="programAttributeTypes.length>0">{{'PROGRAM_MANAGEMENT_PROGRAM_ATTRIBUTES_KEY' | translate}}</h2>
+                </div>
+            </article>
 
-                    <attribute-types target-model="patientProgramAttributes" attribute="attribute"
-                                     ng-repeat="attribute in programAttributeTypes"
-                                     class="form-field clearfix"></attribute-types>
-                    <div class="button-group-wrapper clearfix">
-                        <input type="submit" value="{{'PROGRAM_MANAGEMENT_ENROLL_KEY' | translate}}"/>
+            <article class="fl">
+                <div ng-if="hasStates(programSelected)">
+                    <div class="field-attribute">
+                        <label> {{'PROGRAM_MANAGEMENT_LABEL_PROGRAM_STATE' | translate }} : </label>
                     </div>
-                </section>
-            </form>
-        </section>
+                    <div class="field-value">
+                        <select ng-model="$parent.workflowStateSelected"
+                                ng-options="state.concept.display for state in programWorkflowStates">
+                            <option value="">{{'PROGRAM_MANAGEMENT_CHOOSE_STATE_KEY' | translate}}</option>
+                        </select>
+                    </div>
+                </div>
+            </article>
+
+            <article class="fl">
+                <div class="field-attribute">
+                    <label>
+                        {{'PROGRAM_MANAGEMENT_START_DATE_KEY' | translate}} :
+                        <span class="asterick">*</span>
+                    </label>
+                </div>
+                <div class="field-value">
+                    <input type="date" max="{{today}}" ng-model="programEnrollmentDate" ng-required="true">
+                </div>
+            </article>
+
+            <article class="fl" ng-repeat="attribute in programAttributeTypes">
+                <attribute-types target-model="patientProgramAttributes" attribute="attribute"></attribute-types>
+            </article>
+
+            <input class="fr" type="submit" value="{{'PROGRAM_MANAGEMENT_ENROLL_KEY' | translate}}"/>
+        </form>
     </div>
 
     <div class="active-program-container clearfix" id="activePrograms" ng-show="hasPatientEnrolledToSomePrograms()">

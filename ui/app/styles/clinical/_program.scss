@@ -2,11 +2,6 @@
   margin-top: 70px;
 }
 .program-enrollment-container{
-  .select-program-option {
-    margin: 10px 15px;
-    position: relative;
-  }
-
   form .form-field{
     .field-attribute label{
       width: auto;
@@ -96,6 +91,34 @@
     }
     .row-remover{
       padding: 2px 4px !important;
+    }
+  }
+}
+
+.select-program-container{
+  @include clearfix;
+  background: #fff;
+  margin: 30px auto 10px;
+  border: 1px solid #669999;
+  border-radius: 5px;
+  padding: 10px 15px;
+  box-sizing: border-box;
+  a{
+    color: $black;
+    font-size: 16px;
+    display: block;
+    font-family: openSansSemiBold;
+  }
+  .select-program-option {
+    padding: 10px 0px;
+    &.form-field{
+      .field-attribute label{
+        width: auto;
+      }
+      article{
+        padding-right: 15px;
+        padding-bottom: 5px;
+      }
     }
   }
 }
