@@ -1,9 +1,11 @@
 <div class="form-field" ng-repeat="attributeType in programAttributeTypes" ng-show="!patientProgram.editing">
     <div class="field-attribute">
-        <label>{{attributeType.description}} <span class="asterick" ng-show="attributeType.required">*</span> : </label>
+        <label>{{attributeType.description}} : </label>
     </div>
-    <div class="field-value fieldNonFormValue">
-        {{getValueForAttributeType(attributeType)}}
+    <div class="field-value">
+        <span>
+            {{getValueForAttributeType(attributeType)}}
+        </span>
     </div>
 </div>
 <div  ng-show="patientProgram.editing" class="programEditing">

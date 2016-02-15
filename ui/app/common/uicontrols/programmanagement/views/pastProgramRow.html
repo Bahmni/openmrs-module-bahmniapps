@@ -1,22 +1,27 @@
-<div class="program-row"  ng-class='{"no-past-program":program.states.length==0}'>
+<div class="program-row" ng-class='{"no-past-program":program.states.length==0}'>
     <div class="program-details">
         <div>
-            <table class=" programTable">
+            <table class="programTable">
                 <tr>
-                    <td  class="programName"  toggle="program.isOpen">
+                    <td class="programName" toggle="program.isOpen">
                         <i class="fa fa-caret-right" ng-hide="program.isOpen"></i>
                         <i class="fa fa-caret-down" ng-show="program.isOpen"></i>
-                        {{program.display}}
+                        {{::program.display}}
                     </td>
-                    <td class="pastProgramOutcome"><strong>{{'PROGRAM_MANAGEMENT_LABEL_PROGRAM_OUTCOME' | translate}} : </strong>{{program.outcome.display}}</td>
-                    <td class="programStartDate"><strong>{{'PROGRAM_MANAGEMENT_START_DATE_KEY' | translate}} :</strong><span> {{program.dateEnrolled | bahmniDate}} </span></td>
-                    <td class="programStopDate"><strong>{{'PROGRAM_MANAGEMENT_STOP_DATE_KEY' | translate}} :</strong><span> {{program.dateCompleted | bahmniDate}} </span></td>
+                    <td class="pastProgramOutcome">
+                        <strong>{{::'PROGRAM_MANAGEMENT_LABEL_PROGRAM_OUTCOME' | translate}}: </strong>{{::program.outcome.display}}
+                    </td>
+                    <td class="programStartDate">
+                        <strong>{{::'PROGRAM_MANAGEMENT_START_DATE_KEY' | translate}}: </strong><span> {{::program.dateEnrolled | bahmniDate}} </span>
+                    </td>
+                    <td class="programStopDate"><strong>{{::'PROGRAM_MANAGEMENT_STOP_DATE_KEY' | translate}}
+                        :</strong><span> {{::program.dateCompleted | bahmniDate}} </span></td>
                 </tr>
             </table>
         </div>
         <div ng-if="program.isOpen" class="programDescription">
             <section class="programAttributeFields activeProgramAttributeFields">
-                <h2 class="programAttribute-title">{{'PROGRAM_MANAGEMENT_PROGRAM_ATTRIBUTES_KEY' | translate}}</h2>
+                <h2 class="programAttribute-title">{{::'PROGRAM_MANAGEMENT_PROGRAM_ATTRIBUTES_KEY' | translate}}</h2>
                 <a class="back-btn dashboard-link fr  newProgramEnrollmentDashboard" id="dashboard-link"
                    ui-sref="patient.dashboard.show({
                patientUuid: patient.uuid,
@@ -25,38 +30,44 @@
                dateEnrolled: program.fromDate,
                dateCompleted: program.toDate,
                enrollment : program.uuid})">
-                    <img ng-src="{{patient.image}}" onerror="this.onerror=null;this.src='../images/blank-user.gif';">
+                    <img ng-src="{{::patient.image}}" onerror="this.onerror=null;this.src='../images/blank-user.gif';">
                 <span class="patient-info">
-                    <span class="patient-name" >{{program.display}}</span>
-                    <span class="patient-id">{{patient.identifier}}</span>
+                    <span class="patient-name">{{::program.display}}</span>
+                    <span class="patient-id">{{::patient.identifier}}</span>
                 </span>
                 </a>
+
                 <div class="form clearfix" ng-class="{'pastProgramNoState' : program.states.length==0 }">
-                    <program-attributes patient-program="program" program-attribute-types = "programAttributeTypes"></program-attributes>
+                    <program-attributes patient-program="program"
+                                        program-attribute-types="programAttributeTypes"></program-attributes>
                 </div>
             </section>
             <div class="program-timeline-container" ng-if="program.states.length!=0 && program.isOpen">
-                <h2 class="programAttribute-title">{{'PROGRAM_MANAGEMENT_PROGRAM_STATES_KEY' | translate}}</h2>
+                <h2 class="programAttribute-title">{{::'PROGRAM_MANAGEMENT_PROGRAM_STATES_KEY' | translate}}</h2>
+
                 <div class="program-timeline">
                     <timeline program="program"></timeline>
                 </div>
-                <button ng-click="toggleDetail(program)" ng-class="{'tab-selected': program.showDetail}" class="fr detail-btn" >
-                    <span>{{'PROGRAM_MANAGEMENT_DETAILS_KEY' | translate}}</span>
-                    <i class="fa fa-expand"></i>
-                </button>
             </div>
         </div>
     </div>
-    <div class="program-state-list" ng-if="program.showDetail">
+    <div class="program-state-list" ng-show="program.isOpen && hasProgramWorkflowStates(program)">
         <div class="down-arrow-container"></div>
         <div class="state-list">
             <table>
                 <tbody>
-                <tr ng-repeat="state in program.states| orderBy:'auditInfo.dateCreated':true" ng-if="state.voided != true">
+                <tr ng-repeat="state in program.states| orderBy:'auditInfo.dateCreated':true"
+                    ng-if="state.voided != true">
                     <td>{{state.state.concept.display}}</td>
-                    <td ng-if="state.endDate">{{state.startDate | bahmniDate}} {{'PROGRAM_MANAGEMENT_TO_KEY' | translate}} {{state.endDate | bahmniDate}}</td>
-                    <td ng-if="!state.endDate">{{'PROGRAM_MANAGEMENT_STARTED_ON_KEY' | translate}} {{state.startDate | bahmniDate}}</td>
-                    <td>{{'PROGRAM_MANAGEMENT_BY_KEY' | translate}} {{state.auditInfo.creator.display}} {{'PROGRAM_MANAGEMENT_ON_KEY' | translate}} {{state.auditInfo.dateCreated | bahmniDate}}</td>
+                    <td ng-if="state.endDate">{{::state.startDate | bahmniDate}} {{::'PROGRAM_MANAGEMENT_TO_KEY' |
+                        translate}} {{::state.endDate | bahmniDate}}
+                    </td>
+                    <td ng-if="!state.endDate">{{::'PROGRAM_MANAGEMENT_STARTED_ON_KEY' | translate}} {{::state.startDate
+                        | bahmniDate}}
+                    </td>
+                    <td>{{::'PROGRAM_MANAGEMENT_BY_KEY' | translate}} {{state.auditInfo.creator.display}}
+                        {{::'PROGRAM_MANAGEMENT_ON_KEY' | translate}} {{::state.auditInfo.dateCreated | bahmniDate}}
+                    </td>
                 </tr>
                 </tbody>
             </table>

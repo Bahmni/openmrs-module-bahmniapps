@@ -21,14 +21,6 @@
                     </select>
                 </label>
                 <label class="start-date-label"><strong>{{'PROGRAM_MANAGEMENT_START_DATE_KEY' | translate}}</strong> <span class="asterick">*</span> <input type="date" max="{{today}}" ng-model="programEnrollmentDate" ng-required="true"></label>
-                <!--<a class="back-btn dashboard-link fr newProgramEnrollmentDashboard" id="dashboard-link"
-                   ui-sref="patient.dashboard.show({patientUuid: patient.uuid,conceptSetGroupName: 'observations'})">
-                    <img ng-src="{{patient.image}}" onerror="this.onerror=null;this.src='../images/blank-user.gif';">
-                    <span class="patient-info">
-                     <span class="patient-name">{{patient.name}}</span>
-                     <span class="patient-id">{{patient.identifier}}</span>
-                    </span>
-                </a>-->
                 <section ng-hide="programSelected == null" class="programAttributeFields clearfix">
                     <h2 class="programAttribute-title" ng-if="programAttributeTypes.length>0">{{'PROGRAM_MANAGEMENT_PROGRAM_ATTRIBUTES_KEY' | translate}}</h2>
 
@@ -43,19 +35,17 @@
         </section>
     </div>
 
-    <div class="active-program-container" id="activePrograms" ng-show="hasPatientEnrolledToSomePrograms()">
-        <section class="block dashboard-section programAttributeFields" >
-            <h2 class="section-title program-title" toggle="activePrograms.showProgramSection">
-                <i class="fa fa-caret-right" ng-show="!activePrograms.showProgramSection"></i>
-                <i class="fa fa-caret-down" ng-show="activePrograms.showProgramSection"></i>
-                {{'PROGRAM_MANAGEMENT_ACTIVE_PROGRAM_KEY' | translate}}
-            </h2>
-            <div ng-if="hasPatientEnrolledToSomePrograms()">
-                <div ng-repeat="patientProgram in activePrograms" class="program-stuff" ng-show="activePrograms.showProgramSection">
-                    <ng-include src="'../common/uicontrols/programmanagement/views/programRow.html'" ng-init="active=true"></ng-include>
-                </div>
-            </div>
-        </section>
+    <div class="active-program-container clearfix" id="activePrograms" ng-show="hasPatientEnrolledToSomePrograms()">
+        <h2 class="program-title">
+            {{'PROGRAM_MANAGEMENT_ACTIVE_PROGRAM_KEY' | translate}}
+        </h2>
+        <div ng-if="hasPatientEnrolledToSomePrograms()">
+            <section class="active-program-tiles program-tiles"
+                     ng-repeat="patientProgram in activePrograms"
+                     ng-show="activePrograms.showProgramSection">
+                <ng-include src="'../common/uicontrols/programmanagement/views/programRow.html'" ng-init="active=true"></ng-include>
+            </section>
+        </div>
     </div>
 
     <div class="inactive-program-container" ng-show="hasPatientAnyPastPrograms()">
