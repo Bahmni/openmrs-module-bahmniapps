@@ -11,8 +11,4 @@ Bahmni.Clinical.Notifier = function () {
             callback();
         });
     };
-
-    this.reset = function () {
-        callBacks = [];
-    }
 };

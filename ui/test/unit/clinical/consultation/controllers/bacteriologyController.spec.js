@@ -20,18 +20,12 @@ describe("Bacteriology Controller", function () {
             postSaveHandler: new Bahmni.Clinical.Notifier()
         };
         rootScope = $rootScope;
-        contextChangeHandler = {
-            execute: function () {
-                return {allow: true}
-            }, reset: function () {
-            }
-        };
 
         var spinner = jasmine.createSpyObj('spinner', ['forPromise']);
         conceptSetService = jasmine.createSpyObj('conceptSetService', ['getConcept']);
         contextChangeHandler = jasmine.createSpyObj('contextChangeHandler', ['add']);
 
-        spinner.forPromise.and.callFake(function (param) {
+        spinner.forPromise.and.callFake(function () {
             return {
                 then: function () {
                     return {};
