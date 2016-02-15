@@ -12,18 +12,7 @@ angular.module('bahmni.reports')
             fileItem.report.reportTemplateLocation = response;
         };
 
-        appService.loadConfig('reports.json').then(function (response) {
-            $scope.reportsRequiringDateRange = _.values(response).filter(function (report) {
-                return !(report.config && report.config.dateRangeRequired === false);
-            });
-            $scope.reportsNotRequiringDateRange = _.values(response).filter(function (report) {
-                return (report.config && report.config.dateRangeRequired === false);
-            });
-            $scope.reportsDefined = _.values(response).length > 0;
-        });
-
         $scope.default = {reportsRequiringDateRange: {}, reportsNotRequiringDateRange: {}};
-
         $scope.reportsDefined = true;
 
         $scope.setDefault = function (item, header) {
@@ -40,6 +29,10 @@ angular.module('bahmni.reports')
         };
 
         $scope.runReport = function (report) {
+            if(!report.responseType){
+                messagingService.showMessage("formError", "Select format for the report: " + report.name);
+                return;
+            }
             if (report.responseType == 'application/vnd.ms-excel-custom' && !report.reportTemplateLocation) {
                 messagingService.showMessage("formError", "Workbook template should be selected for generating report: " + report.name);
                 return;
@@ -55,8 +48,38 @@ angular.module('bahmni.reports')
                 reportService.generateReport(report);
                 if (report.responseType == 'application/vnd.ms-excel-custom') {
                     report.reportTemplateLocation = undefined;
-                    report.responseType = 'text/html'
+                    report.responseType = _.values($scope.formats)[0];
                 }
             }
         };
+
+        var initializeFormats = function(){
+            var availableFormats = {
+                "CSV": "text/csv",
+                "HTML": "text/html",
+                "EXCEL": "application/vnd.ms-excel",
+                "PDF": "application/pdf",
+                "CUSTOM EXCEL": "application/vnd.ms-excel-custom"
+            };
+            var supportedFormats = appService.getAppDescriptor().getConfigValue("supportedFormats") || _.keys(availableFormats);
+            supportedFormats = _.map(supportedFormats, function(format){
+                return format.toUpperCase();
+            });
+            $scope.formats = _.pick(availableFormats, supportedFormats);
+        };
+
+        var initialization = function () {
+            var reportList = appService.getAppDescriptor().getConfigForPage("reports");
+            $scope.reportsRequiringDateRange = _.values(reportList).filter(function (report) {
+                return !(report.config && report.config.dateRangeRequired === false);
+            });
+            $scope.reportsNotRequiringDateRange = _.values(reportList).filter(function (report) {
+                return (report.config && report.config.dateRangeRequired === false);
+            });
+            $scope.reportsDefined = _.values(reportList).length > 0;
+
+            initializeFormats();
+        };
+
+        initialization();
     }]);
