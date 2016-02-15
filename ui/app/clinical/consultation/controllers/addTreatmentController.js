@@ -414,7 +414,7 @@ angular.module('bahmni.clinical')
                         delete  $scope.treatment.drugNonCoded;
                         $scope.treatment.changeDrug({
                             name: selectedItem.drug.name,
-                            form: selectedItem.drug.dosageForm.display,
+                            form: selectedItem.drug.dosageForm && selectedItem.drug.dosageForm.display,
                             uuid: selectedItem.drug.uuid
                         });
                         selectedItem = null;
