@@ -166,7 +166,7 @@ Bahmni.Clinical.DrugOrderViewModel = function (config, proto, encounterDate) {
     };
 
     var asNeeded = function (asNeeded) {
-        return asNeeded ? "SOS" : '';
+        return asNeeded ? config.translate(null, 'MEDICATION_AS_NEEDED') : '';
     };
 
     var blankIfFalsy = function (value) {
