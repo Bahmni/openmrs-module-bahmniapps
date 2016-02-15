@@ -88,10 +88,8 @@
                                conceptSetGroupName: 'observations',
                                dateEnrolled: patientProgram.fromDate,
                                dateCompleted: patientProgram.toDate})">
-        <img ng-src="{{::patient.image}}" onerror="this.onerror=null;this.src='../images/blank-user.gif';">
-        <span class="patient-info">
-            <span class="patient-name" >{{::patientProgram.display}}</span>
-            <span class="patient-id">{{::patient.identifier}}</span>
+        <span class="proggram-dashboard-text">
+            <span class="patient-name" >{{::patientProgram.display}} Dashboard</span>
         </span>
     </a>
 

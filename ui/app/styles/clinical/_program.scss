@@ -41,11 +41,10 @@
       margin: 15px 0 0;
       width: 96%;
       float: none;
-      .patient-info {
-        width:60%;
-        .patient-name{
-          width:100%;
-        }
+      .proggram-dashboard-text{
+        text-align: center;
+        display: inline-block;
+        width: 100%
       }
     }
   }
@@ -152,6 +151,12 @@
   }
   &.inactive-program-tiles{
     background: #ddd;
+    .form .form-field .field-attribute label{
+      width: auto;
+    }
+    .program-timeline .timeline-view svg .states .date-bg{
+      fill: #ddd;
+    }
   }
 }
 

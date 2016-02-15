@@ -69,18 +69,14 @@
     </div>
 
     <div class="inactive-program-container" ng-show="hasPatientAnyPastPrograms()">
-        <section class="block dashboard-section programAttributeFields">
-            <h2 class="section-title program-title" toggle="endedPrograms.showProgramSection">
-                <i class="fa fa-caret-right" ng-show="!endedPrograms.showProgramSection"></i>
-                <i class="fa fa-caret-down" ng-show="endedPrograms.showProgramSection"></i>
-                {{'PROGRAM_MANAGEMENT_PAST_PROGRAM_KEY' | translate}}
-            </h2>
+        <h2 class="program-title">
+            {{'PROGRAM_MANAGEMENT_PAST_PROGRAM_KEY' | translate}}
+        </h2>
 
-            <div ng-if="hasPatientAnyPastPrograms()">
-                <div ng-repeat="program in endedPrograms" class="program-stuff" ng-show="endedPrograms.showProgramSection">
-                    <ng-include src="'../common/uicontrols/programmanagement/views/pastProgramRow.html'" ng-init="active=false"></ng-include>
-                </div>
-            </div>
-        </section>
+        <div ng-if="hasPatientAnyPastPrograms()">
+            <section ng-repeat="program in endedPrograms" class="inactive-program-tiles program-tiles" ng-show="endedPrograms.showProgramSection">
+                <ng-include src="'../common/uicontrols/programmanagement/views/pastProgramRow.html'" ng-init="active=false"></ng-include>
+            </section>
+        </div>
     </div>
 </div>
