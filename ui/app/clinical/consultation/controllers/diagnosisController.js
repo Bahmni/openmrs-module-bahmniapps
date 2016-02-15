@@ -162,15 +162,19 @@ angular.module('bahmni.clinical')
                     .then(function() {});
             };
 
-            var removeBlankDiagnosis = function() {
-                $scope.consultation.newlyAddedDiagnoses = $scope.consultation.newlyAddedDiagnoses.filter(function(diagnosis) {
-                    return !diagnosis.isEmpty();
-                });
+            var initial = true;
+            var removeBlankDiagnosis = function () {
+                if (initial) {
+                    $scope.consultation.newlyAddedDiagnoses = $scope.consultation.newlyAddedDiagnoses
+                        .filter(function (diagnosis) {
+                            return !diagnosis.isEmpty();
+                        });
+                    initial = false;
+                }
             };
 
             $scope.consultation.preSaveHandler.register("diagnosisSaveHandlerKey", removeBlankDiagnosis);
-            // following line removed upon angular upgrade to 1.4.9 
-            //            $scope.$on('$destroy', removeBlankDiagnosis);
+            $scope.$on('$destroy', removeBlankDiagnosis);
 
             $scope.processDiagnoses = function(data) {
                 data.map(

@@ -10,11 +10,7 @@ describe("Diagnosis Controller", function () {
         q = $q;
         deferred = $q.defer();
         $scope.consultation = {
-            "newlyAddedDiagnoses": [], preSaveHandler: {
-                register: function () {
-
-                }
-            }
+            "newlyAddedDiagnoses": [], preSaveHandler: new Bahmni.Clinical.Notifier()
         };
         rootScope.currentUser = {privileges: [{name: "app:clinical:deleteDiagnosis"}, {name: "app:clinical"}]};
 
@@ -78,6 +74,35 @@ describe("Diagnosis Controller", function () {
         it("should make a call to diagnosis service getAllFor", function () {
             $scope.getDiagnosis({term:"primary"});
             expect(mockDiagnosisService.getAllFor).toHaveBeenCalledWith("primary");
+        });
+    });
+
+    describe("removing blank diagnosis", function() {
+        it("happens when the presave handler is fired", function() {
+            expect($scope.consultation.newlyAddedDiagnoses.length).toBe(1);
+
+            $scope.consultation.preSaveHandler.fire();
+            expect($scope.consultation.newlyAddedDiagnoses.length).toBe(0);
+        });
+
+        it("happens when the scope is destroyed", function() {
+            expect($scope.consultation.newlyAddedDiagnoses.length).toBe(1);
+
+            $scope.$destroy();
+            expect($scope.consultation.newlyAddedDiagnoses.length).toBe(0);
+        });
+
+        it("should happen only once during the lifecycle of the controller", function() {
+            expect($scope.consultation.newlyAddedDiagnoses.length).toBe(1);
+
+            $scope.consultation.preSaveHandler.fire();
+            expect($scope.consultation.newlyAddedDiagnoses.length).toBe(0);
+
+            $scope.consultation.newlyAddedDiagnoses.push(new Bahmni.Common.Domain.Diagnosis(''));
+            expect($scope.consultation.newlyAddedDiagnoses.length).toBe(1);
+            $scope.consultation.preSaveHandler.fire();
+
+            expect($scope.consultation.newlyAddedDiagnoses.length).toBe(1);
         });
     });
 
