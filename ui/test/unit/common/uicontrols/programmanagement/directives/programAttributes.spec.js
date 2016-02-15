@@ -8,7 +8,7 @@ describe("ensure that the directive program-attributes works properly", function
 
     beforeEach(inject(function ($controller, $rootScope,$filter) {
         scope = $rootScope.$new();
-        scope.program = program;
+        scope.patientProgram = patientProgram;
         scope.programAttributeTypes = attributeTypes;
         filter = $filter;
         $controller('ProgramAttributesController', {
@@ -20,7 +20,7 @@ describe("ensure that the directive program-attributes works properly", function
 
     it("Get program attributes map from program", function () {
         var dateUtil = Bahmni.Common.Util.DateUtil;
-        var programAtrributeMap = scope.program.patientProgramAttributes;
+        var programAtrributeMap = scope.patientProgram.patientProgramAttributes;
         expect(programAtrributeMap["Sample regex attribute"]).toBe("123");
         expect(dateUtil.isSameDateTime(programAtrributeMap["Sample date attribute"], dateUtil.parseServerDateToDate("2016-01-13T00:00:00.000+0000"))).toBeTruthy();
         expect(programAtrributeMap["Sample concept attribute"]).toBe("c2107f30-3f10-11e4-adec-0800271c1b75");
@@ -65,7 +65,7 @@ describe("ensure that the directive program-attributes works properly", function
         expect(scope.getValueForAttributeType(attributeType)).toBe("UneducatedShort");
     });
 
-    var program = {
+    var patientProgram = {
         "uuid": "01f3f8c7-28cc-4771-b466-ec77f39601ae",
         "patient": {
             "uuid": "ad95e200-6196-4438-a078-16ad0506a473",

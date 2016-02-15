@@ -1,6 +1,7 @@
 'use strict';
 angular.module('bahmni.common.domain')
-    .factory('programService', ['$http', 'programHelper', 'appService', function ($http, programHelper, appService) {
+    .factory('programService', ['$http','programHelper', 'appService',function ($http, programHelper, appService) {
+        var PatientProgramMapper = new Bahmni.Common.Domain.PatientProgramMapper();
 
         var getAllPrograms = function () {
             return $http.get(Bahmni.Common.Constants.programUrl, {params: {v: 'default'}}).then(function (response) {
@@ -56,21 +57,6 @@ angular.module('bahmni.common.domain')
             });
         };
 
-        var constructStatesPayload = function (stateUuid, onDate, currProgramStateUuid) {
-            var states = [];
-            if (stateUuid) {
-                states.push({
-                        state: {
-                            uuid: stateUuid
-                        },
-                        uuid: currProgramStateUuid,
-                        startDate: onDate
-                    }
-                );
-            }
-            return states;
-        };
-
         var savePatientProgram = function (patientProgramUuid, content) {
             var req = {
                 url: Bahmni.Common.Constants.programEnrollPatientUrl + "/" + patientProgramUuid,
@@ -80,22 +66,7 @@ angular.module('bahmni.common.domain')
             return $http.post(req.url, req.content, req.headers);
         };
 
-        var savePatientProgramStates = function (patientProgramUuid, stateUuid, onDate, currProgramStateUuid) {
-            var content = {
-                states: constructStatesPayload(stateUuid, onDate, currProgramStateUuid)
-            };
-            return savePatientProgram(patientProgramUuid, content);
-        };
-
-        var endPatientProgram = function (patientProgramUuid, asOfDate, outcomeUuid) {
-            var content = {
-                dateCompleted: asOfDate ? moment(asOfDate).format(Bahmni.Common.Constants.ServerDateTimeFormat) : null,
-                outcome: outcomeUuid
-            };
-            return savePatientProgram(patientProgramUuid, content);
-        };
-
-        var deletePatientState = function (patientProgramUuid, patientStateUuid) {
+        var deletePatientState = function(patientProgramUuid, patientStateUuid) {
             var req = {
                 url: Bahmni.Common.Constants.programEnrollPatientUrl + "/" + patientProgramUuid + "/state/" + patientStateUuid,
                 content: {
@@ -113,20 +84,16 @@ angular.module('bahmni.common.domain')
 
                 var mandatoryProgramAttributes = [];
                 for (var attributeName in programAttributesConfig) {
-                    if (programAttributesConfig[attributeName].required)
+                    if (programAttributesConfig[attributeName].required) {
                         mandatoryProgramAttributes.push(attributeName);
+                    }
                 }
                 return new Bahmni.Common.Domain.AttributeTypeMapper().mapFromOpenmrsAttributeTypes(response.data.results, mandatoryProgramAttributes).attributeTypes;
             });
         };
 
-        var updatePatientProgram = function (patientProgram, programAttributeTypes) {
-            var attributeFormatter = new Bahmni.Common.Domain.AttributeFormatter();
-            var content = {
-                dateEnrolled: patientProgram.dateEnrolled,
-                attributes: attributeFormatter.getMrsAttributesForUpdate(patientProgram.patientProgramAttributes, programAttributeTypes, patientProgram.attributes)
-            };
-            return savePatientProgram(patientProgram.uuid, content);
+        var updatePatientProgram = function (patientProgram, programAttributeTypes, dateCompleted) {
+            return savePatientProgram(patientProgram.uuid, PatientProgramMapper.map(patientProgram,programAttributeTypes, dateCompleted));
         };
 
         var getProgramStateConfig = function () {
@@ -138,10 +105,8 @@ angular.module('bahmni.common.domain')
             getAllPrograms: getAllPrograms,
             enrollPatientToAProgram: enrollPatientToAProgram,
             getPatientPrograms: getPatientPrograms,
-            endPatientProgram: endPatientProgram,
             savePatientProgram: savePatientProgram,
             updatePatientProgram: updatePatientProgram,
-            savePatientProgramStates: savePatientProgramStates,
             deletePatientState: deletePatientState,
             getProgramAttributeTypes: getProgramAttributeTypes,
             getProgramStateConfig: getProgramStateConfig

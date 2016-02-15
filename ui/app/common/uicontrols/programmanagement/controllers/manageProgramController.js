@@ -57,7 +57,7 @@ angular.module('bahmni.common.uicontrols.programmanagment')
                 updateActiveProgramsList();
             };
 
-            var successCallback = function (data) {
+            var successCallback = function () {
                 messagingService.showMessage("info", "Saved");
                 $scope.programEdited.selectedState = null;
                 $scope.programSelected = null;
@@ -65,10 +65,6 @@ angular.module('bahmni.common.uicontrols.programmanagment')
                 $scope.patientProgramAttributes = {};
                 $scope.programEnrollmentDate = null;
                 updateActiveProgramsList();
-            };
-
-            var successCallBackForEditProgram = function(){
-                messagingService.showMessage("info", "Saved");
             };
 
             var failureCallback = function (error) {
@@ -142,14 +138,14 @@ angular.module('bahmni.common.uicontrols.programmanagment')
                 return !_.isEmpty(objectDeepFind(patientProgram, 'outcomeData.uuid'));
             };
 
-            var getCurrentState = function(states){
+            var getActiveState = function(states){
                 return _.find(states, function(state){
                     return state.endDate == null && !state.voided;
                 });
             };
 
             $scope.getWorkflowStatesWithoutCurrent = function (patientProgram) {
-                var currentState = getCurrentState(patientProgram.states);
+                var currentState = getActiveState(patientProgram.states);
                 var states = getStates(patientProgram.program);
                 if (currentState) {
                     states = _.reject(states, function (state) {
@@ -159,81 +155,44 @@ angular.module('bahmni.common.uicontrols.programmanagment')
                 return states;
             };
 
-            $scope.savePatientProgramStates = function (patientProgram) {
-                var startDate = getCurrentDate();
-                var currentState = getCurrentState(patientProgram.states);
-                var currentStateDate = currentState ? DateUtil.parse(currentState.startDate) : null;
-
-                if (DateUtil.isBeforeDate(startDate, currentStateDate)) {
-                    var formattedCurrentStateDate = DateUtil.formatDateWithoutTime(currentStateDate);
-                    messagingService.showMessage("formError", "State cannot be started earlier than current state (" + formattedCurrentStateDate + ")");
-                    return;
-                }
-
-                if (!isProgramStateSelected()) {
-                    messagingService.showMessage("formError", "Please select a state to change.");
-                    return;
-                }
-                spinner.forPromise(
-                    programService.savePatientProgramStates(patientProgram.uuid, $scope.programEdited.selectedState.uuid, startDate)
-                        .then(successCallback, failureCallback)
-                );
-            };
-
             $scope.updatePatientProgram = function (patientProgram){
+                var activeState = getActiveState(patientProgram.states);
+                var activeStateDate = activeState ? DateUtil.parse(activeState.startDate) : null;
+                var dateCompleted = null;
+
+                if(isProgramStateSelected()){
+                    var startDate = getCurrentDate();
+                    if (activeState && DateUtil.isBeforeDate(startDate, activeStateDate)) {
+                        messagingService.showMessage("formError", "State cannot be started earlier than current state (" + DateUtil.formatDateWithoutTime(activeStateDate) + ")");
+                        return;
+                    }
+                    if($scope.programEdited.selectedState.uuid){
+                        patientProgram.states.push({
+                                state: {
+                                    uuid: $scope.programEdited.selectedState.uuid
+                                },
+                                startDate: startDate
+                            }
+                        );
+                    }
+                }
+                if(isOutcomeSelected(patientProgram)){
+                    dateCompleted = DateUtil.getDateWithoutTime(getCurrentDate());
+                    if (activeState && DateUtil.isBeforeDate(dateCompleted, activeStateDate)) {
+                        messagingService.showMessage("formError", "Program cannot be ended earlier than current state (" + DateUtil.formatDateWithoutTime(activeStateDate) + ")");
+                        return;
+                    }
+
+                }
                 spinner.forPromise(
-                    programService.updatePatientProgram(patientProgram, $scope.programAttributeTypes)
-                        .then(successCallBackForEditProgram, failureCallback)
+                    programService.updatePatientProgram(patientProgram, $scope.programAttributeTypes, dateCompleted)
+                        .then(successCallback, failureCallback)
                 );
                 patientProgram.editing = false;
             };
 
-            $scope.getOutcomes = function (program) {
-                var currentProgram = _.find($scope.allPrograms, {uuid: program.uuid});
-                return currentProgram.outcomesConcept ? currentProgram.outcomesConcept.setMembers : [];
-            };
-
-            $scope.endPatientProgram = function (patientProgram) {
-                var dateCompleted = DateUtil.getDateWithoutTime(getCurrentDate());
-                var currentState = getCurrentState(patientProgram.states);
-                var currentStateDate = currentState ? DateUtil.parse(currentState.startDate) : null;
-
-
-                if (currentState && DateUtil.isBeforeDate(dateCompleted, currentStateDate)) {
-                    var formattedCurrentStateDate = DateUtil.formatDateWithoutTime(currentStateDate);
-                    messagingService.showMessage("formError", "Program cannot be ended earlier than current state (" + formattedCurrentStateDate + ")");
-                    return;
-                }
-
-                if (!isOutcomeSelected(patientProgram)) {
-                    messagingService.showMessage("formError", "Please select an outcome.");
-                    return;
-                }
-
-                var outcomeConceptUuid = patientProgram.outcomeData ? patientProgram.outcomeData.uuid : null;
-                spinner.forPromise(programService.endPatientProgram(patientProgram.uuid, dateCompleted, outcomeConceptUuid)
-                    .then(function () {
-                        messagingService.showMessage("info", "Program ended successfully");
-                        updateActiveProgramsList();
-                    }));
-            };
-
-            $scope.toggleDetail = function (program , $event) {
-                if($event){
-                    $event.preventDefault();
-                }
-                program.ending = false;
-                program.showDetail = !program.showDetail;
-            };
-
             $scope.toggleEdit = function (program) {
-                program.editing = true;
-                program.isOpen = true;
-            };
-
-            $scope.toggleEnd = function (program) {
-                program.showDetail = false;
-                program.ending = !program.ending;
+                program.editing = !program.editing;
             };
 
             $scope.setWorkflowStates = function (program) {
@@ -264,19 +223,6 @@ angular.module('bahmni.common.uicontrols.programmanagment')
                 );
             };
 
-            $scope.getWorkflowStates = function(program){
-                $scope.programWorkflowStates = [];
-                if(program && program.allWorkflows.length ) {
-                    program.allWorkflows.forEach(function(workflow){
-                        if(!workflow.retired && workflow.states.length)
-                            workflow.states.forEach(function(state){
-                                if(!state.retired)
-                                    $scope.programWorkflowStates.push(state);
-                            });
-                    });
-                }
-                return states;
-            };
             $scope.hasStates = function (program) {
                 return program && !_.isEmpty(program.allWorkflows) && !_.isEmpty($scope.programWorkflowStates)
             };
@@ -290,23 +236,8 @@ angular.module('bahmni.common.uicontrols.programmanagment')
             };
 
             $scope.getCurrentStateDisplayName = function(program){
-                var currentState = getCurrentState(program.states);
+                var currentState = getActiveState(program.states);
                 return currentState && currentState.state.concept.display;
-            };
-
-            $scope.getProgramAttributeMap = function(programAttributes){
-                var programAttributeMap={};
-                _.forEach(programAttributes, function (programAttribute) {
-                    programAttributeMap[programAttribute.name]=programAttribute.value;
-                });
-                return programAttributeMap;
-
-            };
-
-            $scope.showProgramAttributes = function(program){
-                program.isOpen = !program.isOpen;
-                program.showDetail = false;
-                program.editing = false;
             };
 
             $scope.getMaxAllowedDate = function (states) {

@@ -348,24 +348,6 @@ describe('programService', function () {
 
     });
 
-    it('should end patient program', function () {
-        var patientProgramUuid = "somePatientProgramUuid";
-        var outcome = "someOutcomeUuid";
-        var dateCompleted = "Fri Dec 11 2015 12:04:23 GMT+0530 (IST)";
-
-        mockBackend.whenPOST(Bahmni.Common.Constants.programEnrollPatientUrl + '/somePatientProgramUuid').respond(function (method, url, data, headers) {
-            data = JSON.parse(data);
-            expect(url).toEqual(Bahmni.Common.Constants.programEnrollPatientUrl + "/" + patientProgramUuid);
-            expect(moment(data.dateCompleted).isSame(moment("2015-12-11T12:04:23+0530"))).toBe(true);
-            expect(data.outcome).toEqual(outcome);
-            return [200, {}, {}];
-        });
-
-        programService.endPatientProgram(patientProgramUuid, dateCompleted, outcome);
-
-        mockBackend.flush();
-
-    });
 
     it('should delete patient state', function () {
         var patientProgramUuid = "somePatientProgramUuid";
@@ -383,27 +365,6 @@ describe('programService', function () {
 
     });
 
-    it('should save patient program with states', function () {
-        var patientProgramUuid = "somePatientProgramUuid";
-        var uuid = "someStateUuid";
-        var onDate = "someOnDateOfTheState";
-        var programStateUuid = "someProgramStateUuid";
-
-        var constructedState = [{state: {uuid: uuid}, uuid: programStateUuid, startDate: onDate}];
-
-
-        mockBackend.whenPOST(Bahmni.Common.Constants.programEnrollPatientUrl + '/somePatientProgramUuid').respond(function (method, url, data, headers) {
-            data = JSON.parse(data);
-            expect(url).toEqual(Bahmni.Common.Constants.programEnrollPatientUrl + "/" + patientProgramUuid);
-            expect(data.states).toEqual(constructedState);
-            return [200, {}, {}];
-        });
-
-        programService.savePatientProgramStates(patientProgramUuid, uuid, onDate, programStateUuid);
-
-        mockBackend.flush();
-
-    });
 
     it('should retrieve list of program attribute types', function () {
         var programAttributeTypesJson = {
@@ -631,11 +592,20 @@ describe('programService', function () {
         var patientProgram = {
             "uuid": "Some UUID",
             "patientProgramAttributes": programAttributes,
-            "attributes": attributes
+            "attributes": attributes,
+            "dateEnrolled": "2016-01-01",
+            "states": []
         };
 
+        var dateCompleted = "2016-01-12T00:00:00.000+0000";
         var content = {
-            "attributes": attributes
+            "attributes": attributes,
+            "states": [],
+            "outcome": null,
+            "dateCompleted": "2016-01-12T05:30:00+0530",
+            "dateEnrolled": "2016-01-01",
+            "uuid": "Some UUID"
+
         };
 
         mockBackend.whenPOST(Bahmni.Common.Constants.programEnrollPatientUrl + '/Some UUID').respond(function (method, url, data, headers) {
@@ -645,7 +615,7 @@ describe('programService', function () {
             return [200, {}, {}];
         });
 
-        programService.updatePatientProgram(patientProgram, programAttributeTypes);
+        programService.updatePatientProgram(patientProgram, programAttributeTypes, dateCompleted);
 
         mockBackend.flush();
     });

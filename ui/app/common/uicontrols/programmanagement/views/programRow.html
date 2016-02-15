@@ -1,28 +1,25 @@
 <div class="program-row">
-    <form class="clearfix" ng-submit="updatePatientProgram(patientProgram)" >
+    <form class="clearfix">
     <div class="program-details">
         <div>
             <table class="programTable">
                 <tr>
-                    <td class="programName" toggle="patientProgram.isOpen">
-                        <i class="fa fa-caret-right" ng-hide="patientProgram.isOpen"></i>
-                        <i class="fa fa-caret-down" ng-show="patientProgram.isOpen"></i>
-                        {{patientProgram.display}}
+                    <td class="programName">
+                        {{::patientProgram.display}}
                     </td>
-                    <td class="programState"><strong ng-show="getCurrentStateDisplayName(patientProgram)">{{'PROGRAM_MANAGEMENT_LABEL_PROGRAM_STATE' | translate}} : </strong>{{getCurrentStateDisplayName(patientProgram)}}</td>
                     <td class="programDate" ng-if="!patientProgram.editing"><strong>{{'PROGRAM_MANAGEMENT_START_DATE_KEY' | translate}} : </strong>{{patientProgram.dateEnrolled | bahmniDate}}</td>
                     <td class="programDate" ng-if="patientProgram.editing">
-                        <strong>{{'PROGRAM_MANAGEMENT_START_DATE_KEY' | translate}} : </strong>
-                        <span class="asterick" class="fr">*</span>
+                        <strong>{{::'PROGRAM_MANAGEMENT_START_DATE_KEY' | translate}} : </strong>
+                        <span class ="asterick" class="fr">*</span>
                         <input type="date" max="{{getMaxAllowedDate(patientProgram.states)}}" ng-model="patientProgram.dateEnrolled" ng-required="true" class="fr">
                     </td>
-                    <td class="programEdit"><i class="fa fa-pencil-square-o fr fa-edit-program" ng-click="toggleEdit(patientProgram)"></i></td>
+                    <td class="programEdit"><a href="javascript:void(0)" ng-click="toggleEdit(patientProgram)">Edit</a></td>
+                    <td class="programEdit" ng-show="patientProgram.editing"><a href="javascript:void(0)" ng-click="updatePatientProgram(patientProgram)" >Save</a></td>
                 </tr>
             </table>
         </div>
-        <div ng-if="patientProgram.isOpen" class="programDescription">
+        <div class="programDescription">
             <section class="programAttributeFields activeProgramAttributeFields">
-                <h2 class="programAttribute-title">{{'PROGRAM_MANAGEMENT_PROGRAM_ATTRIBUTES_KEY' | translate}}</h2>
                 <a class="back-btn dashboard-link fr  newProgramEnrollmentDashboard" id="dashboard-link"
                    ui-sref="patient.dashboard.show({
                            patientUuid: patient.uuid,
@@ -31,59 +28,58 @@
                            conceptSetGroupName: 'observations',
                            dateEnrolled: patientProgram.fromDate,
                            dateCompleted: patientProgram.toDate})">
-                    <img ng-src="{{patient.image}}" onerror="this.onerror=null;this.src='../images/blank-user.gif';">
+                    <img ng-src="{{::patient.image}}" onerror="this.onerror=null;this.src='../images/blank-user.gif';">
                     <span class="patient-info">
-                        <span class="patient-name" >{{patientProgram.display}}</span>
-                        <span class="patient-id">{{patient.identifier}}</span>
+                        <span class="patient-name" >{{::patientProgram.display}}</span>
+                        <span class="patient-id">{{::patient.identifier}}</span>
                     </span>
                 </a>
-                    <program-attributes program="patientProgram" program-attribute-types = "programAttributeTypes"></program-attributes>
+                <program-attributes patient-program="patientProgram" program-attribute-types = "programAttributeTypes"></program-attributes>
 
             </section>
+            <div class="program-actions">
+                <div class="program-action-container form" ng-if="::hasProgramWorkflowStates(patientProgram)" ng-init="workflowStatesWithoutCurrentState = getWorkflowStatesWithoutCurrent(patientProgram)">
+                    <div class="programState">
+                        <strong>{{::'PROGRAM_MANAGEMENT_LABEL_PROGRAM_STATE' | translate}} : </strong>
+                        <span ng-show="!patientProgram.editing">{{getCurrentStateDisplayName(patientProgram)}}</span>
+                        <select ng-show="patientProgram.editing" ng-model="programEdited.selectedState"
+                                ng-options="state.concept.display for state in workflowStatesWithoutCurrentState track by state.uuid">
+                            <option value="">{{::'PROGRAM_MANAGEMENT_CHOOSE_STATE_KEY' | translate}}</option>
+                        </select>
+
+                    </div>
+                </div>
+                <div class="program-action-container form" ng-show="patientProgram.editing">
+                    <strong>{{::'PROGRAM_MANAGEMENT_LABEL_PROGRAM_OUTCOME' | translate}} : </strong>
+                    <select ng-model="patientProgram.outcomeData"
+                            ng-options="outcomeSelected.display for outcomeSelected in ::patientProgram.program.outcomesConcept.setMembers">
+                        <option value="">{{::'PROGRAM_MANAGEMENT_LABEL_CHOOSE_OUTCOME' | translate}}</option>
+                    </select>
+                </div>
+            </div>
+
             <div class="program-timeline-container">
-                <h2 class="programAttribute-title">{{'PROGRAM_MANAGEMENT_PROGRAM_STATES_KEY' | translate}}</h2>
                 <div class="program-timeline">
                     <timeline program="patientProgram"></timeline>
                 </div>
-                <button ng-click="toggleDetail(patientProgram,$event)" ng-class="{'tab-selected': patientProgram.showDetail, 'btn-noTimeline':patientProgram.states.length==0}" class="fr detail-btn">
-                    <span>{{'PROGRAM_MANAGEMENT_DETAILS_KEY' | translate}}</span>
-                    <i class="fa fa-expand"></i>
-                </button>
             </div>
         </div>
     </div>
     </form>
-    <div class="program-state-list"  ng-if="patientProgram.showDetail && patientProgram.isOpen">
-        <div class="down-arrow-container">
-        </div>
+    <div class="program-state-list">
         <div class="state-list" ng-class="{'state-list-cutomPadding':patientProgram.states.length == 0}">
             <table>
                 <tbody>
-                    <tr ng-repeat="state in patientProgram.states| orderBy:'auditInfo.dateCreated':true" ng-if="state.voided != true">
-                        <td>{{state.state.concept.display}}</td>
-                        <td ng-if="state.endDate">{{state.startDate | bahmniDate}} {{'PROGRAM_MANAGEMENT_TO_KEY' | translate}} {{state.endDate | bahmniDate}}</td>
-                        <td ng-if="!state.endDate">{{'PROGRAM_MANAGEMENT_STARTED_ON_KEY' | translate}} {{state.startDate | bahmniDate}}</td>
-                        <td>{{'PROGRAM_MANAGEMENT_BY_KEY' | translate}} {{state.auditInfo.creator.display}} {{'PROGRAM_MANAGEMENT_ON_KEY' | translate}} {{state.auditInfo.dateCreated | bahmniDate}}</td>
-                        <td><i ng-class="{'fa fa-remove': !state.endDate}" ng-confirm-click="removePatientState(patientProgram)" confirm-message="{{'PROGRAM_MANAGEMENT_DO_YOU_WANT_TO_REMOVE_KEY' | translate}}'{{state.state.concept.display}}'" ng-if="canRemovePatientState(state)" class="fa fa-remove"></i></td>
-                    </tr>
+                <tr ng-repeat="state in patientProgram.states| orderBy:'auditInfo.dateCreated':true" ng-if="state.voided != true">
+                    <td>{{state.state.concept.display}}</td>
+                    <td ng-if="state.endDate">{{state.startDate | bahmniDate}} {{::'PROGRAM_MANAGEMENT_TO_KEY' | translate}} {{state.endDate | bahmniDate}}</td>
+                    <td ng-if="!state.endDate">{{::'PROGRAM_MANAGEMENT_STARTED_ON_KEY' | translate}} {{::state.startDate | bahmniDate}}</td>
+                    <td>{{::'PROGRAM_MANAGEMENT_BY_KEY' | translate}} {{::state.auditInfo.creator.display}} {{::'PROGRAM_MANAGEMENT_ON_KEY' | translate}} {{state.auditInfo.dateCreated | bahmniDate}}</td>
+                    <td><i ng-class="{'fa fa-remove': !state.endDate}" ng-confirm-click="removePatientState(patientProgram)" confirm-message="{{'PROGRAM_MANAGEMENT_DO_YOU_WANT_TO_REMOVE_KEY' | translate}}'{{state.state.concept.display}}'" ng-if="canRemovePatientState(state)" class="fa fa-remove"></i></td>
+                </tr>
                 </tbody>
             </table>
         </div>
-        <div class="program-actions">
-            <div class="program-action-container form" ng-if="hasProgramWorkflowStates(patientProgram)" ng-init="workflowStatesWithoutCurrentState = getWorkflowStatesWithoutCurrent(patientProgram)">
-                <select ng-model="programEdited.selectedState"
-                        ng-options="state.concept.display for state in workflowStatesWithoutCurrentState track by state.uuid">
-                    <option value="">{{'PROGRAM_MANAGEMENT_CHOOSE_STATE_KEY' | translate}}</option>
-                </select>
-                <button class="fr ok_btn" ng-click="savePatientProgramStates(patientProgram)">{{'PROGRAM_MANAGEMENT_CHANGE_STATE_KEY' | translate}}</button>
-            </div>
-            <div class="program-action-container form" ng-init="outComesForProgram = getOutcomes(patientProgram.program)">
-                <select ng-model="patientProgram.outcomeData"
-                        ng-options="outcomeSelected.display for outcomeSelected in outComesForProgram">
-                    <option value="">{{'PROGRAM_MANAGEMENT_LABEL_CHOOSE_OUTCOME' | translate}}</option>
-                </select>
-                <button class="fr ok_btn" ng-click="endPatientProgram(patientProgram)">{{'PROGRAM_MANAGEMENT_End_PROGRAM_KEY' | translate}}</button>
-            </div>
-        </div>
+
     </div>
 </div>

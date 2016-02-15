@@ -4,7 +4,7 @@ angular.module('bahmni.common.uicontrols.programmanagment')
     .controller('ProgramAttributesController', ['$scope', function ($scope) {
         $scope.getProgramAttributesMap = function () {
             var programAttributesMap = {};
-            var programAttributes = $scope.program.attributes;
+            var programAttributes = $scope.patientProgram.attributes;
             _.forEach($scope.programAttributeTypes, function (programAttributeType) {
                 var programAttribute = getProgramAttributeByType(programAttributes, programAttributeType);
 
@@ -22,7 +22,7 @@ angular.module('bahmni.common.uicontrols.programmanagment')
         };
 
         $scope.getValueForAttributeType = function(attributeType){
-            var programAttributesMap = $scope.program.patientProgramAttributes;
+            var programAttributesMap = $scope.patientProgram.patientProgramAttributes;
 
             if(isDateFormat(attributeType.format)){
                 return programAttributesMap[attributeType.name] ? Bahmni.Common.Util.DateUtil.formatDateWithoutTime(programAttributesMap[attributeType.name]) : "";
@@ -52,14 +52,14 @@ angular.module('bahmni.common.uicontrols.programmanagment')
             return format == "org.bahmni.module.bahmnicore.customdatatype.datatype.CodedConceptDatatype";
         };
 
-        $scope.program.patientProgramAttributes = $scope.getProgramAttributesMap();
+        $scope.patientProgram.patientProgramAttributes = $scope.getProgramAttributesMap();
     }])
     .directive('programAttributes', function(){
         return {
             controller: 'ProgramAttributesController',
             templateUrl: "../common/uicontrols/programmanagement/views/programAttributes.html",
             scope:{
-                program: "=",
+                patientProgram: "=",
                 programAttributeTypes: "="
             }
         }

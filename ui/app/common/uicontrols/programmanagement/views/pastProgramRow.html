@@ -32,7 +32,7 @@
                 </span>
                 </a>
                 <div class="form clearfix" ng-class="{'pastProgramNoState' : program.states.length==0 }">
-                    <program-attributes program="program" program-attribute-types = "programAttributeTypes"></program-attributes>
+                    <program-attributes patient-program="program" program-attribute-types = "programAttributeTypes"></program-attributes>
                 </div>
             </section>
             <div class="program-timeline-container" ng-if="program.states.length!=0 && program.isOpen">

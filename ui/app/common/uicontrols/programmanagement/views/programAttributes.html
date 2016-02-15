@@ -1,4 +1,4 @@
-<div class="form-field" ng-repeat="attributeType in programAttributeTypes" ng-show="!program.editing">
+<div class="form-field" ng-repeat="attributeType in programAttributeTypes" ng-show="!patientProgram.editing">
     <div class="field-attribute">
         <label>{{attributeType.description}} <span class="asterick" ng-show="attributeType.required">*</span> : </label>
     </div>
@@ -6,11 +6,8 @@
         {{getValueForAttributeType(attributeType)}}
     </div>
 </div>
-<div  ng-show="program.editing" class="programEditing">
+<div  ng-show="patientProgram.editing" class="programEditing">
     <article class="form-field" ng-repeat="attributeType in programAttributeTypes">
-        <attribute-types target-model="program.patientProgramAttributes" attribute="attributeType"></attribute-types>
+        <attribute-types target-model="patientProgram.patientProgramAttributes" attribute="attributeType"></attribute-types>
     </article>
-    <div class="button-group-wrapper clearfix">
-        <input type="submit" value="Save"/>
-    </div>
 </div>
