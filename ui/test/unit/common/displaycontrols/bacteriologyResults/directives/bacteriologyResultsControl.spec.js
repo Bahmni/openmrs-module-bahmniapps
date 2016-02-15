@@ -4,8 +4,8 @@ describe('Bacteriology Results Control', function () {
     var $compile,
         mockBackend, q,
         scope,deferred,
-        params,element,_bacteriologyResultsService, appService, _spinner,mockedBacteriologyTabInitialization,patient={uuid:"patientUuid"},
-        simpleHtml = '<bacteriology-results-control id="dashboard-drug-order-details" patient="patient" section="params"></bacteriology-results-control>',
+        section,element,_bacteriologyResultsService, appService, _spinner,mockedBacteriologyTabInitialization,patient={uuid:"patientUuid"},
+        simpleHtml = '<bacteriology-results-control id="dashboard-drug-order-details" patient="patient" section="section"></bacteriology-results-control>',
         mockDialog,mockConsultationInitialization;
 
     beforeEach(module('bahmni.common.bacteriologyresults'));
@@ -43,22 +43,31 @@ describe('Bacteriology Results Control', function () {
         $provide.value('messagingService', {});
         $provide.value('$translate', {});
     }));
-    beforeEach(inject(function (_$compile_, $rootScope, $httpBackend, $q) {
-        scope = $rootScope;
-        $compile = _$compile_;
-        q = $q;
-        scope.patient= {uuid:'123'};
-        mockBackend = $httpBackend;
-        mockBackend.expectGET('../common/displaycontrols/bacteriologyresults/views/bacteriologyResultsControl.html').respond("<div>dummy</div>");
-        element = $compile(simpleHtml)(scope);
+
+    var compileScope = function () {
+        section = section || {};
+        inject(function (_$compile_, $rootScope, $httpBackend, $q) {
+            scope = $rootScope;
+            $compile = _$compile_;
+            q = $q;
+            scope.patient= {uuid:'123'};
+            scope.section = section;
+            mockBackend = $httpBackend;
+            mockBackend.expectGET('../common/displaycontrols/bacteriologyresults/views/bacteriologyResultsControl.html').respond("<div>dummy</div>");
+            element = $compile(simpleHtml)(scope);
+            scope.$digest();
+            mockBackend.flush();
+        });
+
+        var compiledElementScope = element.isolateScope();
         scope.$digest();
-        mockBackend.flush();
-    }));
+        return compiledElementScope;
+    };
 
     describe('Initialization', function () {
         it("should set title to bacteriology results", function () {
-            var compiledElementScope = element.isolateScope();
-            scope.$digest();
+            section = {};
+            var compiledElementScope = compileScope();
             expect(compiledElementScope.title).toBe("bacteriology results");
         });
     });

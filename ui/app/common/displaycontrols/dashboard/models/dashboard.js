@@ -9,6 +9,14 @@ Bahmni.Common.DisplayControl.Dashboard = function (config) {
         });
     }
 
+    var addPatientProgramUuid = function (section) {
+        section.patientProgramUuid = config.patientProgramUuid;
+    };
+
+    if (config.patientProgramUuid) {
+        _.each(config.sections, addPatientProgramUuid);
+    }
+
     this._sections = _.sortBy(_.map(config.sections, Bahmni.Common.DisplayControl.Dashboard.Section.create), function (section) {
         return section.displayOrder;
     });
