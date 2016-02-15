@@ -12,7 +12,7 @@
       margin-right: 200px;
     }
     &.noOfActions-3-width{
-      margin-right: 160px;
+      margin-right: 165px;
     }
     &.noOfActions-2-width{
       margin-right: 130px;
@@ -107,9 +107,17 @@
         @media (max-width : 1024px){
           width: 170px;
         }
+        span{
+          z-index: 999;
+          position: static;
+          width: 100%;
+        }
       }
       &.stopReason{
         width:160px;
+      }
+      &.instructions{
+        width:168px;
       }
       &.empty-header{
         position: absolute;
@@ -120,7 +128,7 @@
           width: 200px;
         }
         &.noOfActions-3-width{
-          width: 160px;
+          width: 165px;
         }
         &.noOfActions-2-width{
           width: 130px;
@@ -153,6 +161,11 @@
         text-overflow: ellipsis;
         @media (max-width : 1024px){
            width: 170px;
+        }
+        span{
+          z-index: 999;
+          position: static;
+          width: 100%;
         }
       }
       &.drugNameStopForm{
@@ -189,7 +202,7 @@
           width: 200px;
       }
       &.noOfActions-3-width{
-          width: 160px;
+          width: 165px;
       }
       &.noOfActions-2-width{
           width: 130px;
@@ -209,6 +222,7 @@
       .button-group-wrapper{
         width: auto;
         padding:0 !important;
+        position: static;
         button{
           i{
             font-size: 1.8em;
