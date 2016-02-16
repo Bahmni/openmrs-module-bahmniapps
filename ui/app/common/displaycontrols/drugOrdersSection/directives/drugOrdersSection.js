@@ -43,7 +43,7 @@ angular.module('bahmni.common.displaycontrol.drugOrdersSection')
                 if (_.isEmpty($scope.config.title) && _.isEmpty($scope.config.translationKey)){
                     $scope.config.title = "Drug Orders";
                 }
-                return treatmentService.getAllDrugOrdersFor($scope.patientUuid, $scope.config.includeConceptSet, $scope.config.excludeConceptSet, $scope.config.active).then(function (drugOrderResponse) {
+                return treatmentService.getAllDrugOrdersFor($scope.patientUuid, $scope.config.includeConceptSet, $scope.config.excludeConceptSet, $scope.config.active, $scope.enrollment).then(function (drugOrderResponse) {
                     var createDrugOrder = function (drugOrder) {
                         return Bahmni.Clinical.DrugOrderViewModel.createFromContract(drugOrder, $scope.treatmentConfig);
                     };
@@ -147,7 +147,8 @@ angular.module('bahmni.common.displaycontrol.drugOrdersSection')
             scope: {
                 config: "=",
                 patientUuid: "=",
-                treatmentConfig: "="
+                treatmentConfig: "=",
+                enrollment: "="
             },
             templateUrl: "../common/displaycontrols/drugOrdersSection/views/drugOrdersSection.html"
         };

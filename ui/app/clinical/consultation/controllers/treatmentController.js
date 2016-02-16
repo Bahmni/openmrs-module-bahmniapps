@@ -14,6 +14,7 @@ angular.module('bahmni.clinical')
 
             $scope.$watch('consultation.newlyAddedTabTreatments', initializeTreatments);
 
+            $scope.enrollment = $stateParams.enrollment;
             $scope.treatmentConfig = treatmentConfig;
         };
         init();
