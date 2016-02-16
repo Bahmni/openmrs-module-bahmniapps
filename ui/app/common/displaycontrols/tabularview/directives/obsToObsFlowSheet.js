@@ -66,11 +66,12 @@ angular.module('bahmni.common.displaycontrol.obsVsObsFlowSheet').directive('obsT
             };
 
             $scope.getHeaderName = function (header) {
-                var headerName = getSourceCode(header, $scope.section.headingConceptSource);
-                if (header.units && headerName) {
-                    headerName = headerName + " (" + header.units + ")";
+                var abbreviation = getSourceCode(header, $scope.section.headingConceptSource);
+                var headerName = abbreviation || header.shortName || header.name;
+                if (header.units) {
+                    headerName = headerName +  " (" + header.units + ")";
                 }
-                return headerName || header.shortName || header.name;
+                return headerName;
             };
 
             var getSourceCode = function (concept, conceptSource) {

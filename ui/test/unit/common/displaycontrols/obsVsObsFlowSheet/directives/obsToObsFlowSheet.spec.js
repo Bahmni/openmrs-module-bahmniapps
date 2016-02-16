@@ -89,7 +89,7 @@ describe('obsToObsFlowSheet DisplayControl', function () {
     });
 
     describe('getHeaderName ', function () {
-        it('should return the concept name when there is no abbreviation and there is no short name', function () {
+        it('should return the concept name when there is no abbreviation and there is no short name and units not specified', function () {
             var scope = rootScope.$new();
 
             scope.isOnDashboard = true;
@@ -165,7 +165,7 @@ describe('obsToObsFlowSheet DisplayControl', function () {
             expect(compiledElementScope.getHeaderName(conceptWithAbbreviation)).toEqual("shortName");
         });
 
-        it('should return abbreviation if the concept have it and if it is configured', function () {
+        it('should return abbreviation if the concept have it and if it is configured and units not specified', function () {
             var scope = rootScope.$new();
 
             scope.isOnDashboard = true;
@@ -208,6 +208,51 @@ describe('obsToObsFlowSheet DisplayControl', function () {
 
             expect(compiledElementScope.getHeaderName(conceptWithAbbreviation)).toEqual("SCD");
 
+        });
+
+        it('should return the abbreviation name with units if units are specified', function () {
+            var scope = rootScope.$new();
+
+            scope.isOnDashboard = true;
+            scope.section = {
+                "headingConceptSource": "CustomAbbreviationSource",
+                "dashboardParams": {
+                    "conceptNames": [
+                        "Bacteriology, Rifampicin result",
+                        "Bacteriology, Ethambutol result"
+                    ]
+                }
+            };
+
+            scope.patient = {
+                "uuid": "patientUuid"
+            };
+
+            mockBackend.expectGET('/openmrs/ws/rest/v1/bahmnicore/observations/flowSheet?conceptNames=Bacteriology,+Rifampicin+result&conceptNames=Bacteriology,+Ethambutol+result&patientUuid=patientUuid').respond({});
+            mockBackend.expectGET('/openmrs/ws/rest/v1/concept?s=byFullySpecifiedName&v=custom:(uuid,names,displayString)').respond("<div>dummy</div>");
+
+            var element = compile(simpleHtml)(scope);
+
+            scope.$digest();
+            mockBackend.flush();
+
+            var compiledElementScope = element.isolateScope();
+            scope.$digest();
+
+            var conceptWithAbbreviation = {
+                "uuid": "uuid",
+                "shortName": "shortName",
+                "units": "mg",
+                "mappings": [
+                    {
+                        "source": "CustomAbbreviationSource",
+                        "name": "abbreviation",
+                        "code": "SCD"
+                    }
+                ]
+            };
+
+            expect(compiledElementScope.getHeaderName(conceptWithAbbreviation)).toEqual("SCD (mg)");
         });
 
         it('should return the short name when headingConceptSource is not configured', function () {
@@ -258,6 +303,82 @@ describe('obsToObsFlowSheet DisplayControl', function () {
             expect(compiledElementScope.getHeaderName(conceptWithAbbreviation)).toEqual("shortName");
 
         });
+        it('should return the shortname with units if abbreviation is not specifed and units are specified ', function () {
+            var scope = rootScope.$new();
+
+            scope.isOnDashboard = true;
+            scope.section = {
+                "dashboardParams": {
+                    "conceptNames": [
+                        "Bacteriology, Rifampicin result",
+                        "Bacteriology, Ethambutol result"
+                    ]
+                }
+            };
+
+            scope.patient = {
+                "uuid": "patientUuid"
+            };
+
+            mockBackend.expectGET('/openmrs/ws/rest/v1/bahmnicore/observations/flowSheet?conceptNames=Bacteriology,+Rifampicin+result&conceptNames=Bacteriology,+Ethambutol+result&patientUuid=patientUuid').respond({});
+            mockBackend.expectGET('/openmrs/ws/rest/v1/concept?s=byFullySpecifiedName&v=custom:(uuid,names,displayString)').respond("<div>dummy</div>");
+
+            var element = compile(simpleHtml)(scope);
+
+            scope.$digest();
+            mockBackend.flush();
+
+            var compiledElementScope = element.isolateScope();
+            scope.$digest();
+
+            var conceptWithAbbreviation = {
+                "uuid": "uuid",
+                "shortName": "shortName",
+                "units": "mg"
+            };
+
+            expect(compiledElementScope.getHeaderName(conceptWithAbbreviation)).toEqual("shortName (mg)");
+        });
+
+        it('should return the full specified Name with units if abbreviation and shortName are not specifed and units are specified ', function () {
+            var scope = rootScope.$new();
+
+            scope.isOnDashboard = true;
+            scope.section = {
+                "dashboardParams": {
+                    "conceptNames": [
+                        "Bacteriology, Rifampicin result",
+                        "Bacteriology, Ethambutol result"
+                    ]
+                }
+            };
+
+            scope.patient = {
+                "uuid": "patientUuid"
+            };
+
+            mockBackend.expectGET('/openmrs/ws/rest/v1/bahmnicore/observations/flowSheet?conceptNames=Bacteriology,+Rifampicin+result&conceptNames=Bacteriology,+Ethambutol+result&patientUuid=patientUuid').respond({});
+            mockBackend.expectGET('/openmrs/ws/rest/v1/concept?s=byFullySpecifiedName&v=custom:(uuid,names,displayString)').respond("<div>dummy</div>");
+
+            var element = compile(simpleHtml)(scope);
+
+            scope.$digest();
+            mockBackend.flush();
+
+            var compiledElementScope = element.isolateScope();
+            scope.$digest();
+
+            var conceptWithAbbreviation = {
+                "uuid": "uuid",
+                "name": "fullName",
+                "units": "mg"
+            };
+
+            expect(compiledElementScope.getHeaderName(conceptWithAbbreviation)).toEqual("fullName (mg)");
+        });
+
+
+
     });
 
     describe('commafy ', function () {
