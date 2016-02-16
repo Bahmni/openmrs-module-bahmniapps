@@ -23,6 +23,9 @@
     &.noOfActions-0-width{
       margin-right: 75px;
     }
+    &.noOfActions--width{
+      margin-right: 65px;
+    }
     @media (max-width : 1024px){
       margin-left: 170px;
     }
@@ -31,6 +34,17 @@
     u{
       border: none !important;
       font-family: openSans !important;
+    }
+    thead tr {
+      border: none !important;
+    }
+    thead tr th {
+      text-align: center;
+    }
+
+    tbody tr td {
+      border: none !important;
+      border-top: 1px #ccc solid !important;
     }
     table-layout: fixed;
     tr{
@@ -91,11 +105,11 @@
       background: #eee;
       background-image: none;
       color: #333;
-      width:112px;
-      @media (max-width : 1024px){
-        width: 78px;
-      }
+      width:113px;
       font-family: openSansSemiBold;
+      &.active-drugs{
+        width:25%;
+      }
       &.drugName{
         width: 240px;
         text-align: left;
@@ -104,6 +118,7 @@
         left:0;
         box-sizing: border-box;
         border-right: none;
+        height:100%;
         @media (max-width : 1024px){
           width: 170px;
         }
@@ -124,6 +139,7 @@
         right: 0;
         top: auto;
         box-sizing: border-box;
+        height:100%;
         &.noOfActions-4-width{
           width: 200px;
         }
@@ -138,6 +154,9 @@
         }
         &.noOfActions-0-width{
           width: 75px;
+        }
+        &.noOfActions--width{
+          width: 65px;
         }
       }
     }
@@ -212,6 +231,9 @@
       }
       &.noOfActions-0-width{
           width: 75px;
+      }
+      &.noOfActions--width{
+        width: 65px;
       }
       &.noActionColumnAddNote{
         padding: 3px 5px 27px;

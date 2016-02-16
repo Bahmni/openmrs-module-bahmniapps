@@ -9,10 +9,13 @@
 <div class="drugOrderTable" ng-if="toggle && drugOrders && drugOrders.length > 0">
     <div class="drugOrderTableScroll noOfActions-{{::config.actions.length}}-width">
         <table class="drug-order-table treatments-details-table"  ng-class="{'drug-order-table-discontinue' : drugOrder.isMarkedForDiscontinue }">
-            <tr>
-                <th ng-repeat="columnName in columns" ng-class="columnName"><span>{{columnHeaders[columnName] | translate}}</span></th>
-                <th class="empty-header noOfActions-{{::config.actions.length}}-width">Actions</th>
-            </tr>
+            <thead>
+                <tr>
+                    <th ng-repeat="columnName in columns" ng-class="{ 'active-drugs' : columns.length ===5 ,
+                    '{{::columnName}}':true }"><span>{{columnHeaders[columnName] | translate}}</span></th>
+                    <th class="empty-header noOfActions-{{::config.actions.length}}-width">Actions</th>
+                </tr>
+            </thead>
             <tbody ng-repeat="drugOrder in drugOrders">
             <tr ng-class="{'highlight' : drugOrder.isBeingEdited, 'edited' : drugOrder.isMarkedForDiscontinue}">
                 <td ng-repeat="columnName in columns" class="{{columnName}}" ng-class="{'drugNameStopForm' : drugOrder.isMarkedForDiscontinue && columnName === 'drugName' ,'drugNameAddNote': drugOrder.showAdditionalInstructions  && columnName === 'drugName' ,'drugNameStopFormAddNote':  drugOrder.isMarkedForDiscontinue && drugOrder.showAdditionalInstructions  && columnName === 'drugName'}">
