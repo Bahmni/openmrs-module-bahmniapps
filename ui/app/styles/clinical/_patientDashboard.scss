@@ -231,7 +231,7 @@
 .dashboard-visit-summary {padding: 10px;}
 .dashboard-header {
   width: 100%;
-  height: 52px;
+  height: 45px;
   background: $bahmniSecondaryColor;
   h5 {
     margin: 15px 0;
@@ -793,19 +793,18 @@ table.treatments-details-table{
   position: fixed;
   top: 52px;
   z-index: 9999;
-  background: #fff;
+  background: #ddd;
   width: 100%;
   left: 0;
+  box-shadow: 0px 1px 8px #686666;
+  border-bottom: 1px #699 solid;
   div.patient-info-fixed{
     @include clearfix;
-    background: #ddd;
     max-width: 1300px;
-    margin: 10px auto 10px;
+    margin: 2px auto 2px;
     clear: both;
     width: 100%;
-    border: 1px solid #669999;
-    border-radius: 5px;
-    padding: 5px 0px;
+    padding: 0px 0px;
     box-sizing: border-box;
     font-family: openSansSemiBold;
     ul{
