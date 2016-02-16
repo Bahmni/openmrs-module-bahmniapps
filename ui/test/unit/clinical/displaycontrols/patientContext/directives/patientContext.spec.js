@@ -246,7 +246,7 @@ describe('patient context', function () {
         it("should convert boolean values to 'yes' or 'no'", function() {
             var patientContext = {
                 personAttributes: {'isUrban': {description: 'Urban', value: 'true'}, 'cool': {description: 'Cool', value: 'false'}},
-                programAttributes: {}
+                programAttributes: {'isUrban': {description: 'Urban', value: 'true'}, 'cool': {description: 'Cool', value: 'false'}}
             };
             var patientContextConfig = {
                 personAttributes: ['isUrban', 'cool']
@@ -273,6 +273,8 @@ describe('patient context', function () {
             expect(Object.keys(compiledElementScope.patientContext.personAttributes).length).toEqual(2);
             expect(compiledElementScope.patientContext.personAttributes.isUrban.value).toEqual("Yes");
             expect(compiledElementScope.patientContext.personAttributes.cool.value).toEqual("No");
+            expect(compiledElementScope.patientContext.programAttributes.isUrban.value).toEqual("Yes");
+            expect(compiledElementScope.patientContext.programAttributes.cool.value).toEqual("No");
         });
     })
 });
