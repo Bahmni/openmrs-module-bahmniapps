@@ -6,6 +6,7 @@ angular.module('bahmni.clinical')
             var patientContextConfig = appService.getAppDescriptor().getConfigValue('patientContext') || {};
             spinner.forPromise(patientService.getPatientContext($scope.patient.uuid, $state.params.enrollment, patientContextConfig.personAttributes, patientContextConfig.programAttributes)).then(function (response) {
                 $scope.patientContext = response.data;
+                console.log($scope.patientContext = response.data)
                 var programAttributes = $scope.patientContext.programAttributes;
                 var personAttributes = $scope.patientContext.personAttributes;
 
