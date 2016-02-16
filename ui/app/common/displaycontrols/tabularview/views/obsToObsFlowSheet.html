@@ -21,8 +21,8 @@
 
             <table ng-if="obsTable.rows.length > 0 && getPivotOn() != 'column'">
                 <tr>
-                    <th ng-if="isMonthAvailable()"> Month</th>
-                    <th ng-repeat="header in obsTable.headers" ng-if="header.name != 'Month'">
+                    <th ng-if="isMonthAvailable()"  ng-class="{'obsTableEdit' : header.name === config.groupByConcept && isEditable }"> Month</th>
+                    <th ng-repeat="header in obsTable.headers" ng-if="header.name != 'Month'"  ng-class="{'obsTableEdit' : header.name === config.groupByConcept && isEditable }">
                         {{getHeaderName(header)}}
                         <hint concept-details="header"/>
                     </th>

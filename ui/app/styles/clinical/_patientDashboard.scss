@@ -699,9 +699,9 @@ table.pivot-table {
     }
   }
 }
-.dashboard-tabular-obs-section{
-  &.dst-results{
-    .tabular-obs table{
+.dashboard-tabular-obs-section {
+  &.dst-results {
+    .tabular-obs table {
       table-layout: fixed;
     }
   }
@@ -714,6 +714,9 @@ table.pivot-table {
     background: #eee !important;
     font-family: OpenSansSemiBold;
     color: #333;
+  }
+  .tabular-obs table tr th.obsTableEdit{
+    width:130px;
   }
   .tabular-obs table tr td.obsTableEdit{
       width:130px;
