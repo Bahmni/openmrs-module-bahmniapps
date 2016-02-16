@@ -3,7 +3,7 @@ angular.module('bahmni.clinical')
     .factory('DrugService', ['$http', function ($http) {
 
         var search = function (drugName) {
-            return $http.get("/openmrs/ws/rest/v1/drug",
+            return $http.get(Bahmni.Common.Constants.drugUrl,
                 {
                     method: "GET",
                     params: {
@@ -18,14 +18,15 @@ angular.module('bahmni.clinical')
                 });
         };
 
-        var getSetMembersOfConcept = function (conceptSetFullySpecifiedName) {
-            return $http.get("/openmrs/ws/rest/v1/drug",
+        var getSetMembersOfConcept = function (conceptSetFullySpecifiedName,searchTerm) {
+            return $http.get(Bahmni.Common.Constants.drugUrl,
                 {
                     method: "GET",
                     params: {
                         v: 'custom:(uuid,name,doseStrength,units,dosageForm,concept:(uuid,name,names:(name)))',
                         q: conceptSetFullySpecifiedName,
-                        s: "byConceptSet"
+                        s: "byConceptSet",
+                        searchTerm: searchTerm
                     },
                     withCredentials: true
                 }
@@ -34,12 +35,11 @@ angular.module('bahmni.clinical')
                 });
         };
 
-        var getRegimen = function (patientUuid, drugs, startDate, endDate) {
+        var getRegimen = function (patientUuid, patientProgramUuid, drugs) {
             var params = {
                 patientUuid: patientUuid,
-                drugs: drugs,
-                startDate: Bahmni.Common.Util.DateUtil.parseLongDateToServerFormat(startDate),
-                endDate: Bahmni.Common.Util.DateUtil.parseLongDateToServerFormat(endDate)
+                patientProgramUuid: patientProgramUuid,
+                drugs: drugs
             };
 
             return $http.get(Bahmni.Common.Constants.bahmniRESTBaseURL + "/drugOGram/regimen", {

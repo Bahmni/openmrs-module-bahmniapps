@@ -23,9 +23,9 @@ angular.module('bahmni.adt').factory('initialization', ['$rootScope', '$q', 'app
                         return section.displayOrder;
                     }
                 )
-                data.baseConfigs.isBedManagementEnabled = {name: 'isBedManagementEnabled', value: _.contains(config[0].value, 'bed')};
+                data.baseConfigs.isBedManagementEnabled = {name: 'isBedManagementEnabled', value: _.includes(config[0].value, 'bed')};
                 if(config[1]){
-                    data.customConfigs.isBedManagementEnabled={name: 'isBedManagementEnabled', value: _.contains(config[1].value, 'bed')};
+                    data.customConfigs.isBedManagementEnabled={name: 'isBedManagementEnabled', value: _.includes(config[1].value, 'bed')};
                 }
             });
         };

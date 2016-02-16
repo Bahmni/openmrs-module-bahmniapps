@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('bahmni.registration').factory('initialization',
-    ['$rootScope', '$q', 'configurations', 'authenticator', 'appService', 'spinner', 'Preferences',
-    function ($rootScope, $q, configurations, authenticator, appService, spinner, preferences) {
+    ['$rootScope', '$q', 'configurations', 'authenticator', 'appService', 'spinner', 'Preferences', 'locationService',
+    function ($rootScope, $q, configurations, authenticator, appService, spinner, preferences, locationService) {
         var getConfigs = function() {
             var configNames = ['encounterConfig', 'patientAttributesConfig', 'identifierSourceConfig', 'addressLevels', 'genderMap', 'relationshipTypeConfig','relationshipTypeMap', 'loginLocationToVisitTypeMapping'];
             return configurations.load(configNames).then(function () {
@@ -48,9 +48,19 @@ angular.module('bahmni.registration').factory('initialization',
                 relationshipType.searchType = (relationshipTypeMap.provider.indexOf(relationshipType.aIsToB) > -1) ? "provider":"patient";
             });
         };
+
+        var loggedInLocation = function() {
+            return locationService.getLoggedInLocation().then(function(location) {
+                $rootScope.loggedInLocation = location;
+            });
+        };
         
-        return spinner.forPromise(authenticator.authenticateUser().then(initApp).then(getConfigs).then(initAppConfigs)
+        return spinner.forPromise(authenticator.authenticateUser()
+            .then(initApp)
+            .then(getConfigs)
+            .then(initAppConfigs)
             .then(mapRelationsTypeWithSearch)
+            .then(loggedInLocation)
             .then(loadValidators(appService.configBaseUrl(), "registration")));
     }]
 );

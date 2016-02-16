@@ -1,0 +1,37 @@
+{
+  "parent" : {
+    "addressHierarchyEntryId": 1,
+    "name": "Barisal",
+    "levelId": 1,
+    "addressHierarchyLevel": {
+      "levelId": 1,
+      "name": "Division",
+      "parentLevelId": null,
+      "addressField": "STATE_PROVINCE",
+      "required": true,
+      "uuid": "c25a0952-7d55-11e5-acdf-90fba67c4298",
+      "id": 1
+    },
+    "parentId": null,
+    "userGeneratedId": "10",
+    "uuid": "b3f2af24-ae8f-4699-83d9-78e0d97ba976"
+  },
+
+  "child" : {
+    "addressHierarchyEntryId": 2,
+    "name": "Barguna",
+    "levelId": 2,
+    "addressHierarchyLevel": {
+      "levelId": 2,
+      "name": "Zilla",
+      "parentLevelId": 1,
+      "addressField": "COUNTY_DISTRICT",
+      "required": true,
+      "uuid": "c25a3285-7d55-11e5-acdf-90fba67c4298",
+      "id": 2
+    },
+    "parentId": 1,
+    "userGeneratedId": "1004",
+    "uuid": "559ba00d-d2d6-443e-be7b-f4e9fb7265fb"
+  }
+}

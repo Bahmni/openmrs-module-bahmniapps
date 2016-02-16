@@ -109,7 +109,7 @@ describe('patientMapper', function () {
         expect(patient.address.cityVillage).toBe(openmrsPatient.patient.person.preferredAddress.cityVillage);
         expect(patient.address.countyDistrict).toBe(openmrsPatient.patient.person.preferredAddress.countyDistrict);
         expect(patient.address.stateProvince).toBe(openmrsPatient.patient.person.preferredAddress.stateProvince);
-        expect(patient.date.toString()).toBe(moment("1999-01-01").toDate().toString());
+        expect(moment(patient.date).zone(0).isSame(moment("1998-12-31T18:30:00.000+0000"))).toBe(true);
         var urlParts = patient.image.split('?');
         expect(urlParts.length).toBe(2);
         expect(urlParts[0]).toBe("/patient_images/" + openmrsPatient.patient.uuid + ".jpeg");
@@ -124,7 +124,7 @@ describe('patientMapper', function () {
         var date1 = new Date();
         openmrsPatient.patient.person.birthdate = moment(date1).format();
         var patient = mapper.map(openmrsPatient);
-        expect(dateUtil.getDateWithoutTime(patient.birthdate)).toEqual(dateUtil.getDateWithoutTime(date1));
+        expect(dateUtil.getDateWithoutTime(patient.birthdate)).toEqual(dateUtil.getDateWithoutTime(dateUtil.parseServerDateToDate(moment(date1).format())));
     });
 
     it("should not fail when birthdate is null", function () {
@@ -137,7 +137,7 @@ describe('patientMapper', function () {
         var date1 = new Date();
         openmrsPatient.patient.person.personDateCreated = moment(date1).format();
         var patient = mapper.map(openmrsPatient);
-        expect(dateUtil.getDateWithoutTime(patient.registrationDate)).toEqual(dateUtil.getDateWithoutTime(date1));
+        expect(dateUtil.getDateWithoutTime(patient.registrationDate)).toEqual(dateUtil.getDateWithoutTime(dateUtil.parseServerDateToDate(moment(date1).format())));
     });
 
     it("should populate birthdate and age if birthdate is not estimated", function () {
@@ -152,7 +152,7 @@ describe('patientMapper', function () {
 
         var patient = mapper.map(openmrsPatient);
 
-        expect(dateUtil.getDateWithoutTime(patient.birthdate)).toEqual(dateUtil.getDateWithoutTime(dob));
+        expect(dateUtil.getDateWithoutTime(patient.birthdate)).toEqual(dateUtil.getDateWithoutTime(dateUtil.parseServerDateToDate(moment(dob).format())));
         expect(patient.age).toBe(age);
     });
 

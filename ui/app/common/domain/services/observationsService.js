@@ -3,7 +3,7 @@
 angular.module('bahmni.common.domain')
     .service('observationsService', ['$http', function ($http) {
 
-        this.fetch = function (patientUuid, conceptNames, scope, numberOfVisits, visitUuid, obsIgnoreList, filterObsWithOrders, startDate, endDate) {
+        this.fetch = function (patientUuid, conceptNames, scope, numberOfVisits, visitUuid, obsIgnoreList, filterObsWithOrders, patientProgramUuid) {
             var params = {concept: conceptNames};
             if (obsIgnoreList) {
                 params.obsIgnoreList = obsIgnoreList
@@ -15,16 +15,21 @@ angular.module('bahmni.common.domain')
             if (visitUuid) {
                 params.visitUuid = visitUuid;
                 params.scope = scope;
-            }
-            else {
+            } else {
                 params.patientUuid = patientUuid;
                 params.numberOfVisits = numberOfVisits;
                 params.scope = scope;
-                params.startDate = Bahmni.Common.Util.DateUtil.parseLongDateToServerFormat(startDate);
-                params.endDate = Bahmni.Common.Util.DateUtil.parseLongDateToServerFormat(endDate);
+                params.patientProgramUuid = patientProgramUuid;
             }
             return $http.get(Bahmni.Common.Constants.observationsUrl, {
                 params: params,
+                withCredentials: true
+            });
+        };
+
+        this.fetchForEncounter = function (encounterUuid, conceptNames) {
+            return $http.get(Bahmni.Common.Constants.observationsUrl, {
+                params: {encounterUuid: encounterUuid, concept: conceptNames},
                 withCredentials: true
             });
         };
@@ -38,7 +43,9 @@ angular.module('bahmni.common.domain')
             });
         };
 
-        this.getObsInFlowSheet = function (patientUuid, conceptSet, groupByConcept, conceptNames, numberOfVisits, initialCount, latestCount, groovyExtension, startDate, endDate) {
+        this.getObsInFlowSheet = function (patientUuid, conceptSet, groupByConcept, conceptNames,
+                                           numberOfVisits, initialCount, latestCount, groovyExtension,
+                                           startDate, endDate, patientProgramUuid) {
             var params = {
                 patientUuid: patientUuid,
                 conceptSet: conceptSet,
@@ -49,7 +56,8 @@ angular.module('bahmni.common.domain')
                 latestCount: latestCount,
                 name: groovyExtension,
                 startDate: Bahmni.Common.Util.DateUtil.parseLongDateToServerFormat(startDate),
-                endDate: Bahmni.Common.Util.DateUtil.parseLongDateToServerFormat(endDate)
+                endDate: Bahmni.Common.Util.DateUtil.parseLongDateToServerFormat(endDate),
+                enrollment: patientProgramUuid
             };
             return $http.get(Bahmni.Common.Constants.observationsUrl + "/flowSheet", {
                 params: params,

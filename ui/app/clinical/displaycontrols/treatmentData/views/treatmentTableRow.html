@@ -1,7 +1,7 @@
 <tr ng-class="{active: drugOrder.isActive(), 'test-notes-parent': drugOrder.additionalInstructions, 'notes-open': showDetails}" >
     <td class="drug" ng-class="{'strike-text':drugOrder.isDiscontinuedOrStopped(), 'active-drug': drugOrder.isActive(), 'scheduled-drug': drugOrder.isScheduled()}">
         <span >{{drugOrder.getDrugOrderName(params.showDrugForm)}}</span>
-        <span ng-repeat="orderAttribute in drugOrder.orderAttributes" ng-show="orderAttribute.value == 'true'" ng-class="'drug-attr-highlight'">
+        <span ng-repeat="orderAttribute in drugOrder.orderAttributes" ng-if="orderAttribute.value == 'true'" ng-class="'drug-attr-highlight'">
             {{orderAttribute.name.substring(0,1)}}
         </span>
     </td>
@@ -27,7 +27,7 @@
         <i class="fa fa-comments left"></i>
         <pre class="left">{{drugOrder.additionalInstructions}}</pre>
         <div class="footer-note right">
-            <span class="provider">
+            <span class="provider" ng-if="params.showProvider">
                 <provider-directive creator-name="{{drugOrder.creatorName}}" provider-name="{{drugOrder.provider.name}}" provider-date="drugOrder.effectiveStartDate"></provider-directive>
             </span>
         </div>
@@ -36,7 +36,7 @@
 <tr bm-show="showDetails" ng-if="!drugOrder.additionalInstructions">
     <td colspan="4" class="notes inline-notes">
         <div class="footer-note right">
-            <span class="provider">
+            <span class="provider" ng-if="params.showProvider">
                 <provider-directive creator-name="{{drugOrder.creatorName}}" provider-name="{{drugOrder.provider.name}}" provider-date="drugOrder.effectiveStartDate"></provider-directive>
             </span>
         </div>

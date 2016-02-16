@@ -1,4 +1,4 @@
-<div class="reg-body-wrapper">
+<div class="reg-body-wrapper visit-patient-page">
     <div class="non-printable" xmlns="http://www.w3.org/1999/html">
         <div>
             <form name="myForm" ng-init="disableFormSubmitOnEnter()" class="visit-patient" ng-submit="submit()">
@@ -13,7 +13,7 @@
                                 <label for="patientId">{{ ::'REGISTRATION_LABEL_PATIENT_IDENTIFIER' | translate}} : </label>
                             </div>
                             <div class="field-value">
-                                <label class="control-label"><strong>{{patient.identifier}}</strong></label>
+                                <label class="control-label"><strong>{{::patient.identifier}}</strong></label>
                             </div>
                         </div>
                         <div class="form-field photocontainer-spacing clearfix">
@@ -21,7 +21,7 @@
                                 <label class="control-label" for="patientName">{{ ::'REGISTRATION_LABEL_PATIENT_NAME' | translate}} : </label>
                             </div>
                             <div class="field-value">
-                                <label class="control-label"><strong>{{patient.name}}</strong></label>
+                                <label class="control-label"><strong>{{::patient.name}}</strong></label>
                             </div>
                         </div>
                     </section>
@@ -34,20 +34,22 @@
                             </div>
                             <div ng-if="::conceptSet.options.showLatest" class="clearfix">
                                 <article class="fl">
-                                    <concept-set concept-set-name="::conceptSet.options.conceptName" required="::conceptSet.options.required" patient="patient" observations="observations" obs-scope="::conceptSet.options.scope" show-title="false" concept-set-focused="$index === 0"></concept-set>
+                                    <concept-set concept-set-name="::conceptSet.options.conceptName" required="::conceptSet.options.required" patient="patient" observations="observations"
+                                                 obs-scope="::conceptSet.options.scope" show-title="false" concept-set-focused="::$index === 0"></concept-set>
                                 </article>
                                 <article class="obs-section fr">
                                     <bahmni-observation patient="patient" config="{conceptNames: conceptSet.options.conceptNames, scope: 'latest'}" section-title="'REGISTRATON_LATEST_KEY'"></bahmni-observation>
                                 </article>
                             </div>
                             <article class="fl" ng-if="::!conceptSet.options.showLatest">
-                                <concept-set concept-set-name="::conceptSet.options.conceptName" required="::conceptSet.options.required" patient="patient" observations="observations" obs-scope="::conceptSet.options.scope" show-title="false" concept-set-focused="$index === 0"></concept-set>
+                                <concept-set concept-set-name="::conceptSet.options.conceptName" required="::conceptSet.options.required" patient="patient" observations="observations"
+                                             obs-scope="::conceptSet.options.scope" show-title="false" concept-set-focused="::$index === 0"></concept-set>
                             </article>
                         </div>
                     </section>
                 </div>
                 <div class="submit-btn-container">
-                    <button type="button" class="cancel" tabindex="-1" ng-show="canCloseVisit" ng-click="closeVisitIfDischarged()">{{ ::'REGISTRATION_LABEL_CLOSE_VISIT' | translate}}</button>
+                    <button type="button" class="cancel" tabindex="-1" ng-show="::canCloseVisit" ng-click="closeVisitIfDischarged()">{{ ::'REGISTRATION_LABEL_CLOSE_VISIT' | translate}}</button>
                     <div class="right">
                         <button type="button" ng-click="back()" accesskey="{{ ::'REGISTRATION_BACK_ACCESS_KEY' | translate}}" ng-bind-html="::'REGISTRATION_LABEL_BACK' | translate"></button>
                         <button type="submit" class="confirm" accesskey="{{ ::'REGISTRATION_SAVE_ACCESS_KEY' | translate}}" ng-bind-html="::'REGISTRATION_LABEL_SAVE' | translate"></button>

@@ -1,25 +1,18 @@
 'use strict';
 
 Bahmni.Clinical.DrugOrderOptions = (function() {
-    var _proto;
 
-    var itemsForInputConfig = function(listOfObjects, filterStrings) {
+    var itemsForInputConfig = function(listOfObjects, filterStrings, filterKey) {
+        filterKey = filterKey || 'name';
         if (!filterStrings) return listOfObjects;
 
         return _.filter(listOfObjects, function(object) {
-            return _.contains(filterStrings, object.name);
+            return _.includes(filterStrings, object[filterKey]);
         });
     };
 
-
-    var DrugOrderOptions = function (inputConfig, listOfDrugs, masterConfig) {
-        var listOfDrugs = _.map(listOfDrugs, function(drug) {
-            return drug.name;
-        });
-        this._drugMatches = function(drug) {
-            return drug && _.contains(listOfDrugs, drug.name);
-        };
-        inputConfig = inputConfig || {};
+    return function (_inputConfig, masterConfig) {
+        var inputConfig = _inputConfig || {};
 
         this.doseUnits = itemsForInputConfig(masterConfig.doseUnits, inputConfig.doseUnits);
         this.routes =  itemsForInputConfig(masterConfig.routes, inputConfig.routes);
@@ -28,39 +21,11 @@ Bahmni.Clinical.DrugOrderOptions = (function() {
         this.dosingInstructions = itemsForInputConfig(masterConfig.dosingInstructions, inputConfig.dosingInstructions);
         this.dispensingUnits = itemsForInputConfig(masterConfig.dispensingUnits, inputConfig.dispensingUnits);
         this.dosePlaceHolder = inputConfig.dosePlaceHolder;
-        this.disableFields = inputConfig.disableFields || [];
-
+        this.hiddenFields = inputConfig.hiddenFields || [];
+        this.isDropDown = inputConfig.isDropDown;
+        this.drugConceptSet = inputConfig.drugConceptSet;
+        this.labels = inputConfig.labels || {};
+        this.doseFractions = itemsForInputConfig(masterConfig.doseFractions, inputConfig.doseFractions, 'label');
+        this.allowNonCodedDrugs = !inputConfig.allowOnlyCodedDrugs;
     };
-    _proto = DrugOrderOptions.prototype;
-
-    _proto.getDoseUnits = function(drug) {
-        return this._drugMatches(drug)? this.doseUnits: null;
-    };
-
-    _proto.getRoutes = function (drug){
-        return this._drugMatches(drug)? this.routes: null;
-    };
-
-    _proto.getFrequencies = function (drug){
-        return this._drugMatches(drug)? this.frequencies: null;
-    };
-    _proto.getDurationUnits = function (drug){
-        return this._drugMatches(drug)? this.durationUnits: null;
-    };
-    _proto.getDosingInstructions = function (drug){
-        return this._drugMatches(drug)? this.dosingInstructions: null;
-    };
-    _proto.getDispensingUnits = function (drug){
-        return this._drugMatches(drug)? this.dispensingUnits: null;
-    };
-    _proto.isDefaultDrugOrderOption = function() {
-        return this.listOfDrugs.length == 0;
-    };
-    _proto.disableField = function(drug, fieldName) {
-        return this._drugMatches(drug)? _.contains(this.disableFields, fieldName): null;
-    };
-    _proto.getDosePlaceHolder = function(drug) {
-        return this._drugMatches(drug) ? this.dosePlaceHolder : null;
-    };
-    return DrugOrderOptions;
 })();

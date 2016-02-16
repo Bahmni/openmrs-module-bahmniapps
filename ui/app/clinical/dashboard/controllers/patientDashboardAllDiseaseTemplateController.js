@@ -12,7 +12,7 @@ angular.module('bahmni.clinical')
 
             var programConfig = appService.getAppDescriptor().getConfigValue('program');
             var startDate = null,endDate = null;
-            if(programConfig&&programConfig.showDashBoardWithinDateRange){
+            if(programConfig&&programConfig.showDetailsWithinDateRange){
                 startDate = $stateParams.dateEnrolled;
                 endDate = $stateParams.dateCompleted;
             }

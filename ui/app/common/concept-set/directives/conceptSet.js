@@ -1,8 +1,9 @@
 'use strict';
 
 angular.module('bahmni.common.conceptSet')
-    .directive('conceptSet', ['contextChangeHandler', 'appService', 'observationsService', '$timeout', 'messagingService', function (contextChangeHandler, appService, observationsService, $timeout, messagingService) {
-        var controller = function ($scope, conceptSetService, conceptSetUiConfigService, spinner) {
+    .directive('conceptSet', ['contextChangeHandler', 'appService', 'observationsService', 'messagingService', 'conceptSetService', 'conceptSetUiConfigService', 'spinner',
+        function (contextChangeHandler, appService, observationsService, messagingService,  conceptSetService, conceptSetUiConfigService, spinner) {
+        var controller = function ($scope) {
             var conceptSetName = $scope.conceptSetName;
             var ObservationUtil = Bahmni.Common.Obs.ObservationUtil;
             var conceptSetUIConfig = conceptSetUiConfigService.getConfig();
@@ -32,7 +33,8 @@ angular.module('bahmni.common.conceptSet')
                         var groupMembers = getObservationsOfCurrentTemplate()[0].groupMembers;
                         var defaults = getDefaults();
                         setDefaultsForGroupMembers(groupMembers, defaults);
-                        updateFormConditions();
+                        var observationsOfCurrentTemplate = getObservationsOfCurrentTemplate();
+                        updateFormConditions(observationsOfCurrentTemplate, $scope.rootObservation);
 
                     } else {
                         $scope.showEmptyConceptSetMessage = true;
@@ -45,6 +47,7 @@ angular.module('bahmni.common.conceptSet')
             $scope.conceptSetRequired = false;
             $scope.showTitleValue = $scope.showTitle();
             $scope.numberOfVisits = conceptSetUIConfig[conceptSetName] && conceptSetUIConfig[conceptSetName].numberOfVisits ? conceptSetUIConfig[conceptSetName].numberOfVisits : null;
+            $scope.hideAbnormalButton = conceptSetUIConfig[conceptSetName] && conceptSetUIConfig[conceptSetName].hideAbnormalButton;
 
             var updateObservationsOnRootScope = function () {
                 if ($scope.rootObservation) {
@@ -64,14 +67,13 @@ angular.module('bahmni.common.conceptSet')
                 });
             };
 
-            var updateFormConditions = function () {
-                var observationsOfCurrentTemplate = getObservationsOfCurrentTemplate();
+            var updateFormConditions = function (observationsOfCurrentTemplate, observation) {
                 var flattenedObs = ObservationUtil.flattenObsToArray(observationsOfCurrentTemplate);
                 var conceptSetObsValues = getFlattenedObsValues(flattenedObs);
                 if (Bahmni.ConceptSet.FormConditions.rules) {
                     _.each(Bahmni.ConceptSet.FormConditions.rules, function (conditionFn, conceptName) {
                         if (_.has(conceptSetObsValues, conceptName)) {
-                            var conditions = conditionFn($scope.rootObservation.concept.name, conceptSetObsValues);
+                            var conditions = conditionFn(observation.concept.name, conceptSetObsValues);
                             processConditions(flattenedObs, conditions.disable, true);
                         }
                     })
@@ -93,11 +95,11 @@ angular.module('bahmni.common.conceptSet')
                 if (defaultAnswer instanceof Array) {
                     defaultCodedAnswer = [];
                     _.each(defaultAnswer, function (answer) {
-                        defaultCodedAnswer.push(_.findWhere(possibleAnswers, {displayString: answer}));
+                        defaultCodedAnswer.push(_.find(possibleAnswers, {displayString: answer}));
                     });
                 }
                 else {
-                    defaultCodedAnswer = _.findWhere(possibleAnswers, {displayString: defaultAnswer});
+                    defaultCodedAnswer = _.find(possibleAnswers, {displayString: defaultAnswer});
                 }
                 return defaultCodedAnswer;
             };
@@ -106,7 +108,7 @@ angular.module('bahmni.common.conceptSet')
                 if (defaults) {
                     _.each(groupMembers, function (groupMember) {
                         var conceptFullName = groupMember.concept.name;
-                        var present = _.contains(_.keys(defaults), conceptFullName);
+                        var present = _.includes(_.keys(defaults), conceptFullName);
                         if (present && groupMember.value == undefined) {
                             if (groupMember.concept.dataType == "Coded") {
                                 setDefaultsForCodedObservations(groupMember, defaults);
@@ -215,12 +217,16 @@ angular.module('bahmni.common.conceptSet')
                 });
             });
 
-            $scope.$root.$on("event:observationUpdated-" + conceptSetName, function (event, conceptName) {
-                var formName = $scope.rootObservation.concept.name;
-                var allObsValues = Bahmni.Common.Obs.ObservationUtil.flatten($scope.rootObservation);
+            $scope.$root.$on("event:addMore", function(event, observation) {
+                updateFormConditions([observation], observation)
+            });
+
+            $scope.$root.$on("event:observationUpdated-" + conceptSetName, function (event, conceptName, rootObservation) {
+                var formName = rootObservation.concept.name;
+                var allObsValues = Bahmni.Common.Obs.ObservationUtil.flatten(rootObservation);
                 var formCondition = Bahmni.ConceptSet.FormConditions.rules && Bahmni.ConceptSet.FormConditions.rules[conceptName];
                 if (formCondition) {
-                    var flattenedObs = ObservationUtil.flattenObsToArray([$scope.rootObservation]);
+                    var flattenedObs = ObservationUtil.flattenObsToArray([rootObservation]);
                     var conditions = formCondition(formName, allObsValues);
                     if (conditions.error && !_.isEmpty(conditions.error)) {
                         messagingService.showMessage('formError', conditions.error);
@@ -281,7 +287,7 @@ angular.module('bahmni.common.conceptSet')
                 validationHandler: "&",
                 patient: "=",
                 conceptSetFocused: "=",
-                collapseInnerSections: "="
+                collapseInnerSections: "=?"
             },
             templateUrl: '../common/concept-set/views/conceptSet.html',
             controller: controller

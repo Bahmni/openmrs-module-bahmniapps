@@ -7,9 +7,9 @@
                 ng-bind-html="::'REGISTRATION_LABEL_ENTER_VISIT' | translate">
             </button>
         </span>
-        <span data-ng-switch-when="startVisit">
-            <div split-button options="visitControl.visitTypes"
-                 primary-option="visitControl.defaultVisitType"
+        <span ng-if="::showStartVisitButton()" data-ng-switch-when="startVisit">
+            <div split-button options="::visitControl.visitTypes"
+                 primary-option="::visitControl.defaultVisitType"
                  option-text="visitControl.startButtonText"
                  option-click="visitControl.startVisit"
                  option-disabled="saveInProgress"
@@ -23,5 +23,6 @@
             </button>
         </span>
     </span>
-    <button type="submit" ng-disabled="saveInProgress" class="right submit-btn" ng-click="setSubmitSource('save')" accesskey="{{ ::'REGISTRATION_SAVE_ACCESS_KEY' | translate}}" ng-bind-html="::'REGISTRATION_LABEL_SAVE' | translate"></button>
+    <button type="submit" ng-disabled="saveInProgress" class="right submit-btn" ng-click="setSubmitSource('save')"
+            accesskey="{{ ::'REGISTRATION_SAVE_ACCESS_KEY' | translate}}" ng-bind-html="::'REGISTRATION_LABEL_SAVE' | translate"></button>
 </div>

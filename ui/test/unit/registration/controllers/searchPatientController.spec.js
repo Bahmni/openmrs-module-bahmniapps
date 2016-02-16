@@ -192,15 +192,37 @@ describe('SearchPatientController', function () {
         });
     });
 
+    describe("searchByProgramAttribute", function () {
+        it("should go to search page with programAttribute if programAttributesSearchConfig has been set", function () {
+            scope.programAttributesSearchConfig.field = "programAttributeFieldName";
+            scope.searchParameters.programAttributeFieldValue = "programAttributeFieldValue";
+            scope.programAttributesSearchConfig.show = true;
+            spyOn(location, 'search');
+
+            scope.searchPatients();
+
+            expect(location.search).toHaveBeenCalledWith({'programAttributeFieldName': "programAttributeFieldName", programAttributeFieldValue: "programAttributeFieldValue"});
+        });
+
+        it("should not go to search page with programAttribute if programAttributesSearchConfig has not been set", function () {
+            scope.searchParameters.programAttribute = "programAttributeId";
+            spyOn(location, 'search');
+
+            scope.searchPatients();
+
+            expect(location.search).not.toHaveBeenCalledWith({'programAttribute': "programAttributeId"});
+        });
+    });
+
     describe("searchById", function () {
         it('should search by patient identifier when registrationNumber is present', function () {
             scope.searchParameters.identifierPrefix = {};
             scope.searchParameters.identifierPrefix.prefix = "GAN";
             scope.searchParameters.registrationNumber = "20001";
-            var defaultSearchAddressField = "city_village";
+            var defaultSearchAddressField = undefined;
             scope.searchById();
 
-            expect(patientResource.search).toHaveBeenCalledWith(undefined, "20001", "GAN", defaultSearchAddressField);
+            expect(patientResource.search).toHaveBeenCalledWith(undefined, "20001", "GAN", defaultSearchAddressField, undefined, undefined, undefined, undefined, undefined, undefined);
         });
 
         it('should show the spinner while searching', function () {
@@ -221,7 +243,19 @@ describe('SearchPatientController', function () {
 
             scope.searchById();
 
-            expect(location.search).toHaveBeenCalledWith({identifierPrefix: "GAN", registrationNumber: "20001"});
+            expect(location.search).toHaveBeenCalledWith({identifierPrefix: "GAN", registrationNumber: "20001", programAttributeFieldName: undefined, programAttributeFieldValue: undefined});
+        });
+
+        it('should change the search parameter to patient identifier with programAttributesSearchConfig', function () {
+            spyOn(location, 'search');
+            scope.searchParameters.identifierPrefix = {};
+            scope.searchParameters.identifierPrefix.prefix = "GAN";
+            scope.searchParameters.registrationNumber = "20001";
+            scope.programAttributesSearchConfig.field = "Facility";
+
+            scope.searchById();
+
+            expect(location.search).toHaveBeenCalledWith({identifierPrefix: "GAN", registrationNumber: "20001", programAttributeFieldName: "Facility", programAttributeFieldValue: undefined});
         });
 
         it('should not search if registrationNumber is not present', function () {
@@ -261,6 +295,38 @@ describe('SearchPatientController', function () {
 
                 expect(scope.noResultsMessage).toMatch("REGISTRATION_LABEL_COULD_NOT_FIND_PATIENT");
             });
+        });
+    });
+
+    describe("getProgramAttributeValues", function () {
+        it("should return undefined on empty result object passed", function () {
+            var result = {};
+            var programAttributeValue = scope.getProgramAttributeValues(result);
+
+            expect(programAttributeValue).toBe('');
+        });
+
+        it("should return programAttribute on result object passed and programAttributesSearchConfig is not configured", function () {
+            var result = {patientProgramAttributeValue: {Facility: ["Facility1"]}};
+            var programAttributeValue = scope.getProgramAttributeValues(result);
+
+            expect(programAttributeValue).toBe('');
+        });
+
+        it("should return programAttribute on result object passed and programAttributesSearchConfig is configured", function () {
+            var result = {patientProgramAttributeValue: {Facility: ["Facility1"]}};
+            scope.programAttributesSearchConfig.field = "Facility";
+            var programAttributeValue = scope.getProgramAttributeValues(result);
+
+            expect(programAttributeValue).toBe("Facility1");
+        });
+
+        it("should return comma separated program attribute values when programAttributesSearchConfig is configured", function () {
+            var result = {patientProgramAttributeValue: {Facility: ["Facility1", "Facility2", "Facility3"]}};
+            scope.programAttributesSearchConfig.field = "Facility";
+            var programAttributeValue = scope.getProgramAttributeValues(result);
+
+            expect(programAttributeValue).toBe("Facility1, Facility2, Facility3");
         });
     });
 });

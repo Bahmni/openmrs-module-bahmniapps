@@ -16,7 +16,10 @@ Bahmni.Clinical.Specimen = function (specimen, allSamples) {
     }
 
     self.isDirty = function () {
-        return (self.dateCollected && !self.type) || (!self.dateCollected && self.type) || (!self.dateCollected && !self.type && self.identifier) || isDirtyRuleForFreeText() ? true : false
+        return (self.dateCollected && !self.type)
+        || (!self.dateCollected && !self.type && self.isAdditionalAttriburtesFilled())
+        || (!self.dateCollected && self.type)
+        || (!self.dateCollected && !self.type && self.identifier) || isDirtyRuleForFreeText() ? true : false
     };
 
     self.isEmpty = function () {
@@ -42,5 +45,14 @@ Bahmni.Clinical.Specimen = function (specimen, allSamples) {
 
     self.isTypeFreeTextDirty = function(){
         return !self.typeFreeText && self.hasIllegalTypeFreeText;
+    }
+
+    self.isAdditionalAttriburtesFilled = function () {
+        var additionalAttributes = self.sample && self.sample.additionalAttributes[0] && self.sample.additionalAttributes[0].groupMembers;
+        for (var i in additionalAttributes) {
+            if (additionalAttributes[i].value)
+                return true;
+        }
+        return false;
     }
 };

@@ -1,5 +1,10 @@
 .bacteriology-container{
   font-size: 14px;
+  .illegalValue{
+    border: 2px solid darken($clinicalFormInvalid, 30%) !important;
+    background: $clinicalFormInvalid !important;
+    outline: 0 !important;
+  }
   .sample-container{
     margin-bottom: 20px;
   }
@@ -26,6 +31,9 @@
       .vitals.form-horizontal{
         padding: 0;
         .leaf-observation-node{
+          .multi-select-button-group{
+            margin-top: 5px;
+          }
           .control-label{
             font-size: 14px;
           }
@@ -63,15 +71,15 @@
         font-family: OpenSansSemiBold;
       }
       &.specimenCollectionDate{
-        width: 17%;
+        width: 120px;
         text-align: right;
         padding-right: 10px;
       }
     }
   }
-  .hierarchy ul li ul li .tree-list-item{
+  /*.hierarchy ul li ul li .tree-list-item{
     padding-left: 40px;
-  }
+  }*/
 }
 .dashboard-tabular-obs-section{
   .tabular-obs{
@@ -94,6 +102,7 @@
     table{
       tr{
         th{
+          width:155px;
           border: 1px solid #DDD;
         }
         td{

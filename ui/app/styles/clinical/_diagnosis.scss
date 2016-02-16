@@ -131,6 +131,7 @@
   }
   button:focus {
     outline: 0;
+    border: 2px solid #007fff;
   }
   button.active {
     color: $bahmniTertiaryColor;
@@ -244,4 +245,5 @@
 }
 textarea.comment-section {
     margin: 0 10px 10px 10px;
+    min-width: 80%;
 }

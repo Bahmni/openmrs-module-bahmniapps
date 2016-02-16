@@ -82,11 +82,14 @@
       }
     }
     .formDataTime{
-      width:27%;
+      width:200px;
       text-align: right;
       .formDataEdit{
         padding:0 !important;
       }
+    }
+    .formDataDate{
+      width:150px;
     }
   }
   table tr th {
@@ -102,7 +105,9 @@
     }
   }
 }
-.visit .diagnosis .history-diagnosis {margin:0; table-layout:fixed;
+.visit .diagnosis .history-diagnosis {
+  margin:0; table-layout:fixed;
+  border-right: 0;
   .view{
     font-size: 11px;
   }
@@ -648,17 +653,25 @@ a.visit:before {
   }
 }
 
-.visit-dashboard{
-  ul li{
-    background: #fff;
+.ng-dialog-all-details-page {
+  .visit-dashboard {
+    i {
+      width: 1.7em;
+    }
     ul li {
-      span {
-        padding: 3px 10px !important;
-        &.formDataTime{
-          width:15%;
-          text-align: right;
-          .formDataEdit{
-            padding:0 !important;
+      background: #fff;
+      ul li {
+        span {
+          padding: 3px 10px !important;
+          &.formDataTime {
+            width: 220px;
+            text-align: right;
+            .formDataEdit {
+              padding: 0 !important;
+            }
+          }
+          &.formDataDate{
+            width:160px;
           }
         }
       }

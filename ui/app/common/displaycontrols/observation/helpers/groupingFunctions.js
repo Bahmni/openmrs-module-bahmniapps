@@ -1,3 +1,5 @@
+'use strict';
+
 Bahmni.Common.DisplayControl.Observation.GroupingFunctions = function(){
 
     var self = this;
@@ -37,7 +39,7 @@ Bahmni.Common.DisplayControl.Observation.GroupingFunctions = function(){
 
             obsArray.push(anObs);
         }
-        return _.sortBy(obsArray, ['date']).reverse();
+        return _.sortBy(obsArray, 'date').reverse();
     };
 
     return self;

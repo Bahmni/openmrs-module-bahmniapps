@@ -19,12 +19,25 @@ angular.module('bahmni.common.uicontrols.programmanagment')
 
                     $scope.endedPrograms = programs.endedPrograms;
                     $scope.endedPrograms.showProgramSection = true;
+                }).then(function() {
+                    formatProgramDates();
                 }));
+            };
+
+            var formatProgramDates = function() {
+                _.each($scope.activePrograms, function(activeProgram) {
+                    activeProgram.fromDate = Bahmni.Common.Util.DateUtil.parseLongDateToServerFormat(activeProgram.dateEnrolled);
+                    activeProgram.toDate = Bahmni.Common.Util.DateUtil.parseLongDateToServerFormat(activeProgram.dateCompleted);
+                });
+                _.each($scope.endedPrograms, function(endedProgram) {
+                    endedProgram.fromDate = Bahmni.Common.Util.DateUtil.parseLongDateToServerFormat(endedProgram.dateEnrolled);
+                    endedProgram.toDate = Bahmni.Common.Util.DateUtil.parseLongDateToServerFormat(endedProgram.dateCompleted);
+                })
             };
 
             var getCurrentDate = function () {
                 var retrospectiveDate = retrospectiveEntryService.getRetrospectiveDate();
-                return DateUtil.parseLongDateToServerFormat(retrospectiveDate) || DateUtil.parse(DateUtil.now()) ;
+                return DateUtil.parseLongDateToServerFormat(retrospectiveDate);
             };
 
             var init = function () {
@@ -44,7 +57,7 @@ angular.module('bahmni.common.uicontrols.programmanagment')
                 updateActiveProgramsList();
             };
 
-            var successCallback = function (data) {
+            var successCallback = function () {
                 messagingService.showMessage("info", "Saved");
                 $scope.programEdited.selectedState = null;
                 $scope.programSelected = null;
@@ -84,7 +97,7 @@ angular.module('bahmni.common.uicontrols.programmanagment')
             };
 
             var isThePatientAlreadyEnrolled = function () {
-                return _.pluck($scope.activePrograms, function (program) {
+                return _.map($scope.activePrograms, function (program) {
                         return program.program.uuid
                     }).indexOf($scope.programSelected.uuid) > -1;
             };
@@ -125,14 +138,14 @@ angular.module('bahmni.common.uicontrols.programmanagment')
                 return !_.isEmpty(objectDeepFind(patientProgram, 'outcomeData.uuid'));
             };
 
-            var getCurrentState = function(states){
+            var getActiveState = function(states){
                 return _.find(states, function(state){
                     return state.endDate == null && !state.voided;
                 });
             };
 
             $scope.getWorkflowStatesWithoutCurrent = function (patientProgram) {
-                var currentState = getCurrentState(patientProgram.states);
+                var currentState = getActiveState(patientProgram.states);
                 var states = getStates(patientProgram.program);
                 if (currentState) {
                     states = _.reject(states, function (state) {
@@ -142,65 +155,44 @@ angular.module('bahmni.common.uicontrols.programmanagment')
                 return states;
             };
 
-            $scope.savePatientProgram = function (patientProgram) {
-                var startDate = getCurrentDate();
-                var currentState = getCurrentState(patientProgram.states);
-                var currentStateDate = currentState ? DateUtil.parse(currentState.startDate) : null;
+            $scope.updatePatientProgram = function (patientProgram){
+                var activeState = getActiveState(patientProgram.states);
+                var activeStateDate = activeState ? DateUtil.parse(activeState.startDate) : null;
+                var dateCompleted = null;
 
-                if (DateUtil.isBeforeDate(startDate, currentStateDate)) {
-                    var formattedCurrentStateDate = DateUtil.formatDateWithoutTime(currentStateDate);
-                    messagingService.showMessage("formError", "State cannot be started earlier than current state (" + formattedCurrentStateDate + ")");
-                    return;
+                if(isProgramStateSelected()){
+                    var startDate = getCurrentDate();
+                    if (activeState && DateUtil.isBeforeDate(startDate, activeStateDate)) {
+                        messagingService.showMessage("formError", "State cannot be started earlier than current state (" + DateUtil.formatDateWithoutTime(activeStateDate) + ")");
+                        return;
+                    }
+                    if($scope.programEdited.selectedState.uuid){
+                        patientProgram.states.push({
+                                state: {
+                                    uuid: $scope.programEdited.selectedState.uuid
+                                },
+                                startDate: startDate
+                            }
+                        );
+                    }
                 }
+                if(isOutcomeSelected(patientProgram)){
+                    dateCompleted = DateUtil.getDateWithoutTime(getCurrentDate());
+                    if (activeState && DateUtil.isBeforeDate(dateCompleted, activeStateDate)) {
+                        messagingService.showMessage("formError", "Program cannot be ended earlier than current state (" + DateUtil.formatDateWithoutTime(activeStateDate) + ")");
+                        return;
+                    }
 
-                if (!isProgramStateSelected()) {
-                    messagingService.showMessage("formError", "Please select a state to change.");
-                    return;
                 }
                 spinner.forPromise(
-                    programService.savePatientProgram(patientProgram.uuid, $scope.programEdited.selectedState.uuid, startDate)
+                    programService.updatePatientProgram(patientProgram, $scope.programAttributeTypes, dateCompleted)
                         .then(successCallback, failureCallback)
                 );
-            };
-
-            $scope.getOutcomes = function (program) {
-                var currentProgram = _.findWhere($scope.allPrograms, {uuid: program.uuid});
-                return currentProgram.outcomesConcept ? currentProgram.outcomesConcept.setMembers : [];
-            };
-
-            $scope.endPatientProgram = function (patientProgram) {
-                var dateCompleted = getCurrentDate();
-                var currentState = getCurrentState(patientProgram.states);
-                var currentStateDate = currentState ? DateUtil.parse(currentState.startDate) : null;
-
-
-                if (currentState && DateUtil.isBeforeDate(dateCompleted, currentStateDate)) {
-                    var formattedCurrentStateDate = DateUtil.formatDateWithoutTime(currentStateDate);
-                    messagingService.showMessage("formError", "Program cannot be ended earlier than current state (" + formattedCurrentStateDate + ")");
-                    return;
-                }
-
-                if (!isOutcomeSelected(patientProgram)) {
-                    messagingService.showMessage("formError", "Please select an outcome.");
-                    return;
-                }
-
-                var outcomeConceptUuid = patientProgram.outcomeData ? patientProgram.outcomeData.uuid : null;
-                spinner.forPromise(programService.endPatientProgram(patientProgram.uuid, dateCompleted, outcomeConceptUuid)
-                    .then(function () {
-                        messagingService.showMessage("info", "Program ended successfully");
-                        updateActiveProgramsList();
-                    }));
+                patientProgram.editing = false;
             };
 
             $scope.toggleEdit = function (program) {
-                program.ending = false;
                 program.editing = !program.editing;
-            };
-
-            $scope.toggleEnd = function (program) {
-                program.editing = false;
-                program.ending = !program.ending;
             };
 
             $scope.setWorkflowStates = function (program) {
@@ -231,19 +223,6 @@ angular.module('bahmni.common.uicontrols.programmanagment')
                 );
             };
 
-            $scope.getWorkflowStates = function(program){
-                $scope.programWorkflowStates = [];
-                if(program && program.allWorkflows.length ) {
-                    program.allWorkflows.forEach(function(workflow){
-                        if(!workflow.retired && workflow.states.length)
-                            workflow.states.forEach(function(state){
-                                if(!state.retired)
-                                    $scope.programWorkflowStates.push(state);
-                            });
-                    });
-                }
-                return states;
-            };
             $scope.hasStates = function (program) {
                 return program && !_.isEmpty(program.allWorkflows) && !_.isEmpty($scope.programWorkflowStates)
             };
@@ -257,12 +236,20 @@ angular.module('bahmni.common.uicontrols.programmanagment')
             };
 
             $scope.getCurrentStateDisplayName = function(program){
-                var currentState = getCurrentState(program.states);
+                var currentState = getActiveState(program.states);
                 return currentState && currentState.state.concept.display;
             };
 
-            $scope.showProgramAttributes = function(program){
-                program.isOpen = !program.isOpen;
+            $scope.getMaxAllowedDate = function (states) {
+                var minStartDate = new Date();
+                if (states && Array.isArray(states)) {
+                    for (var stateIndex = 0; stateIndex < states.length; stateIndex++) {
+                        if (new Date(states[stateIndex].startDate) < minStartDate) {
+                            minStartDate = new Date(states[stateIndex].startDate);
+                        }
+                    }
+                }
+                return DateUtil.getDateWithoutTime(minStartDate);
             };
 
             init();

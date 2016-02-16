@@ -5,7 +5,7 @@ describe("DrugSchedule", function () {
     var DateUtil = Bahmni.Common.Util.DateUtil;
 
     var createDrugOrder = function (name, startDate, endDate) {
-        return DrugOrder.create({drug: {name: name}, effectiveStartDate: startDate, effectiveStopDate: endDate});
+        return DrugOrder.create({drug: {name: name, uuid: "foo"}, effectiveStartDate: startDate, effectiveStopDate: endDate});
     };
 
     var createStoppedDrugOrder = function (name, startDate, endDate) {
@@ -114,7 +114,6 @@ describe("DrugSchedule", function () {
             var amoxyOrder = createDrugOrder('Amoxy', '2014-04-13T15:52:59.000+0530', '2014-04-15T15:52:59.000+0530');
             var calpolInitialOrder = createDrugOrder('Calpol', '2014-04-10T15:52:59.000+0530', '2014-04-12T15:52:59.000+0530');
             var drugSchedule = new DrugSchedule(fromDate, toDate, [calpolRepeatOrder, amoxyOrder, calpolInitialOrder]);
-
             var drugs = drugSchedule.getDrugs();
 
             expect(drugs.length).toBe(2);

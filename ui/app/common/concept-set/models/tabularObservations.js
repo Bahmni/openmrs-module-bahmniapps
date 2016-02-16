@@ -2,7 +2,7 @@ Bahmni.ConceptSet.TabularObservations = function(obsGroups, parentObs, conceptUI
     this.parentObs = parentObs;
     this.concept = obsGroups[0] && obsGroups[0].concept;
     this.label = obsGroups[0] && obsGroups[0].label;
-    this.conceptUIConfig = conceptUIConfig || {};
+    this.conceptUIConfig = conceptUIConfig[this.concept.name] || {};
 
     this.rows = _.map(obsGroups, function(group) {
         return new Bahmni.ConceptSet.ObservationRow(group, conceptUIConfig);
@@ -11,6 +11,15 @@ Bahmni.ConceptSet.TabularObservations = function(obsGroups, parentObs, conceptUI
     this.columns = _.map(obsGroups[0].groupMembers, function(group) {
         return group.concept;
     });
+
+    this.cloneNew = function() {
+        var old = this;
+        var clone = new Bahmni.ConceptSet.TabularObservations(angular.copy(obsGroups), parentObs, conceptUIConfig);
+        clone.rows = _.map(old.rows, function(row){
+            return row.cloneNew();
+        });
+        return clone;
+    };
 
     this.addNew = function(row) {
         var newRow = row.cloneNew();
@@ -39,7 +48,7 @@ Bahmni.ConceptSet.TabularObservations = function(obsGroups, parentObs, conceptUI
     };
 
     this.getConceptUIConfig = function() {
-        return this.conceptUIConfig[this.concept.name] || {};
+        return this.conceptUIConfig || {};
     };
 
     this.canAddMore = function() {

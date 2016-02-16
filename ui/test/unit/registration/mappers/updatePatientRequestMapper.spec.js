@@ -94,7 +94,7 @@ describe('patient mapper', function () {
 
         var mappedPatientData = updatePatientRequestMapper.mapFromPatient(patientAttributeTypes, openMrsPatient, patient);
 
-        var castePatientAttribute = _.findWhere(mappedPatientData.patient.person.attributes,{uuid : "caste-attribute-uuid"})
+        var castePatientAttribute = _.find(mappedPatientData.patient.person.attributes,{uuid : "caste-attribute-uuid"})
         expect(castePatientAttribute.voided).toBeTruthy();
     });
 
@@ -106,7 +106,7 @@ describe('patient mapper', function () {
 
         var mappedPatientData = updatePatientRequestMapper.mapFromPatient(patientAttributeTypes, openMrsPatient,patient);
 
-        var castePatientAttribute = _.findWhere(mappedPatientData.patient.person.attributes ,{uuid : "caste-attribute-uuid"});
+        var castePatientAttribute = _.find(mappedPatientData.patient.person.attributes ,{uuid : "caste-attribute-uuid"});
         expect(castePatientAttribute.hydratedObject).toBe("General");
     });
 

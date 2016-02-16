@@ -1,4 +1,3 @@
-
 <div class="observations-tab">
     <div class="vitals form-horizontal" ng-if="!observation.voided || (observation.getControlType() == 'image' && observation.value)">
         <fieldset class="leaf-observation-node" ng-if="::observation.isObservationNode">
@@ -10,7 +9,7 @@
                 </div>
 
 
-                <label class="control-label" ng-if="showTitle" for="{{::observation.uniqueId}}">
+                <label class="control-label" ng-if="::showTitle" for="{{::observation.uniqueId}}">
                     <span ng-bind="::observation.label"></span>
                     <span ng-show="::observation.primaryObs.units"
                           ng-bind-html="::'(' + observation.primaryObs.units + ')'"></span>
@@ -70,11 +69,11 @@
                     <p ng-switch-default class="field-value info fa fa-info-sign"> The concept data type
                         '::{{observation.dataTypeName}}' is not supported yet.</p>
                 </div>
-                <hint concept-details="observation. primaryObs.concept"/>
+                <hint concept-details="::observation.primaryObs.concept"/>
 
                 <div ng-include src="'../common/concept-set/views/observationDataTypes/addMore.html'"></div>
 
-                <div ng-if="::observation.abnormalObs && !observation.isComputed()" class="fl accept-btn-wrapper">
+                <div ng-if="::observation.abnormalObs && !observation.isComputed() && !hideAbnormalButton" class="fl accept-btn-wrapper">
                     <button type="button" ng-model="observation.abnormalObs.value"
                             class="small-btn accept-btn grid-row-element"
                             ng-disabled="!observation.primaryObs.hasValue() || observation.disabled"
@@ -100,7 +99,7 @@
                 <div ng-include src="'../common/concept-set/views/observationDataTypes/showComment.html'"></div>
                 <div class="fl" ng-include src="'../common/concept-set/views/observationDataTypes/removeClone.html'"></div>
 
-                <div class="offset-label" ng-show="observation.showComment">
+                <div class="offset-label" ng-if="observation.showComment">
                     <label class="control-label"></label>
                     <div class="field-value">
                         <textarea class="obs-comment-section" maxlength="255" ng-model="observation.comment"
@@ -120,7 +119,7 @@
                     <span class="details" ng-bind-html="::observation.concept.description"></span>
                 </div>
 
-                <label class="control-label" ng-if="showTitle" for="{{::observation.uniqueId}}">
+                <label class="control-label" ng-if="::showTitle" for="{{::observation.uniqueId}}">
                     <span ng-bind="::observation.label"></span>
                     <span ng-show="::observation.units" ng-bind-html="::'(' + observation.units + ')'"></span>
                     <span ng-if="::observation.isRequired()" class="asterick">*</span>
@@ -191,15 +190,15 @@
                             <button type="button" toggle="observation.showComment" ng-show="observation.value"
                                     class="comment-toggle fr" tabindex="-1"
                                     ng-class="{'has-notes': observation.comment}">
-                                <i class="fa fa-file-o" ng-hide="observation.comment">
-                                    <i class="fa fa-plus-circle" ng-hide="observation.showComment"></i>
-                                    <i class="fa fa-minus-circle" ng-show="observation.showComment"></i>
+                                <i class="fa fa-file-o">
+                                    <i class="fa fa-plus-circle"></i>
+                                    <i class="fa fa-minus-circle"></i>
                                 </i>
-                                <i class="fa fa-file-text-o" ng-show="observation.comment"></i>
+                                <i class="fa fa-file-text-o"></i>
                             </button>
                         </div>
 
-                        <textarea class="consultation-img-comments" ng-show="observation.showComment" maxlength="255"
+                        <textarea class="consultation-img-comments" ng-if="observation.showComment" maxlength="255"
                                   ng-model="observation.comment" msd-elastic>
                         </textarea>
                     </div>
@@ -221,9 +220,9 @@
                     </div>
 
                     <p ng-switch-default class="field-value info fa fa-info-sign"> The concept data type
-                        '{{observation.dataTypeName}}' is not supported yet.</p>
+                        '{{::observation.dataTypeName}}' is not supported yet.</p>
                 </div>
-                <hint concept-details="observation.concept"/>
+                <hint concept-details="::observation.concept"/>
 
                 <div ng-include src="'../common/concept-set/views/observationDataTypes/addMore.html'"></div>
 
@@ -233,16 +232,16 @@
                 <button ng-if="::observation.canHaveComment()" type="button" toggle="observation.showComment"
                         ng-blur="handleUpdate()" ng-disabled="observation.disabled"
                         class="comment-toggle fr" tabindex="-1" ng-class="{'has-notes': observation.comment}">
-                    <i class="fa fa-file-o" ng-hide="observation.comment">
-                        <i class="fa fa-plus-circle" ng-hide="observation.showComment"></i>
-                        <i class="fa fa-minus-circle" ng-show="observation.showComment"></i>
+                    <i class="fa fa-file-o">
+                        <i class="fa fa-plus-circle"></i>
+                        <i class="fa fa-minus-circle"></i>
                     </i>
-                    <i class="fa fa-file-text-o" ng-show="observation.comment"></i>
+                    <i class="fa fa-file-text-o"></i>
                 </button>
 
-                <div ng-if="::observation.canHaveComment()" class="offset-label" ng-show="observation.showComment">
+                <div ng-if="::observation.canHaveComment()" class="offset-label" >
                     <label class="control-label"></label>
-                    <div class="field-value">
+                    <div class="field-value" ng-if="observation.showComment">
                         <textarea class="obs-comment-section" maxlength="255" ng-model="observation.comment"
                                   placeholder="Notes" msd-elastic>
                         </textarea>
@@ -283,7 +282,7 @@
                             <concept collapse-inner-sections="collapseInnerSections" observation="obs"
                                      root-observation="row" at-least-one-value-is-set="atLeastOneValueIsSet"
                                      patient="patient" show-title="false"
-                                     concept-set-required="conceptSetRequired" concept-set-name="conceptSetName"></concept>
+                                     concept-set-required="conceptSetRequired" concept-set-name="::conceptSetName" hide-abnormal-button="hideAbnormalButton"></concept>
                         </td>
                         <td ng-if="observation.canAddMore()">
                             <button type="button" class="add-more-btn btn-small" ng-click="observation.addNew(row)">
@@ -330,7 +329,7 @@
                         <concept collapse-inner-sections="collapseInnerSections" observation="member"
                                  root-observation="observation" at-least-one-value-is-set="atLeastOneValueIsSet"
                                  patient="patient" show-title="true"
-                                 concept-set-required="conceptSetRequired" concept-set-name="conceptSetName"></concept>
+                                 concept-set-required="conceptSetRequired" concept-set-name="::conceptSetName" hide-abnormal-button="hideAbnormalButton"></concept>
                     </div>
                 </div>
             </div>

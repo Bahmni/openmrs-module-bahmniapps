@@ -21,7 +21,6 @@ body{
     .observation-section{
       width: 100%;
       article{
-        @include column(5);
         width: 42%;
         margin-left: 0;
         @media (max-width : 768px){
@@ -69,6 +68,14 @@ body{
         }
       }
     }
+    &.visit-patient-page{
+      .observation-section{
+        article{
+          min-width: 42%;
+          width: auto;
+        }
+      }
+    }
   }
   .obs-section section{
     .form-field{
@@ -90,6 +97,20 @@ body{
   }
 }
 
+.additional-attribute{
+  &.active{
+    .fa-caret-right{
+      display: none;
+    }
+    .fa-caret-down{
+      display: inline;
+    }
+  }
+  .fa-caret-down{
+    display: none;
+  }
+
+}
 
 
 

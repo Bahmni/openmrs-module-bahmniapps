@@ -41,7 +41,7 @@ angular.module('bahmni.common.displaycontrol.pivottable').directive('pivotTable'
                 var programConfig = appService.getAppDescriptor().getConfigValue("program") || {};
 
                 var startDate = null, endDate = null, getOtherActive;
-                if (programConfig.showDashBoardWithinDateRange) {
+                if (programConfig.showDetailsWithinDateRange) {
                     startDate = $stateParams.dateEnrolled;
                     endDate = $stateParams.dateCompleted;
                 }

@@ -1,15 +1,15 @@
 'use strict';
 
 angular.module('bahmni.common.displaycontrol.bacteriologyresults')
-    .directive('bacteriologyResultsControl', ['bacteriologyResultsService', 'appService', '$q', 'spinner', '$filter',  'ngDialog', 'bacteriologyTabInitialization', '$controller','consultationInitialization', '$state','messagingService',
-        function (bacteriologyResultsService, appService, $q, spinner, $filter,ngDialog, bacteriologyTabInitialization, $controller, consultationInitialization, $state, messagingService) {
+    .directive('bacteriologyResultsControl', ['bacteriologyResultsService', 'appService', '$q', 'spinner', '$filter',  'ngDialog', 'bacteriologyTabInitialization', '$controller','consultationInitialization', '$state','messagingService','$rootScope','$translate',
+        function (bacteriologyResultsService, appService, $q, spinner, $filter,ngDialog, bacteriologyTabInitialization, $controller, consultationInitialization, $state, messagingService,$rootScope, $translate) {
             var controller = function ($scope) {
+                var shouldPromptBeforeClose = true;
                 var init = function () {
                     $scope.title = "bacteriology results";
                     var params = {
                         patientUuid: $scope.patient.uuid,
-                        scope: $scope.scope,
-                        conceptNames: "BACTERIOLOGY CONCEPT SET"
+                        patientProgramUuid: $scope.section.patientProgramUuid
                     };
                     return bacteriologyTabInitialization().then(function (data) {
                         $scope.bacteriologyTabData  = data;
@@ -38,6 +38,7 @@ angular.module('bahmni.common.displaycontrol.bacteriologyresults')
                 };
 
                 $scope.editBacteriologySample = function(specimen){
+                    var configForPrompt = appService.getAppDescriptor().getConfigValue('showSaveConfirmDialog');
                     var promise = consultationInitialization($scope.patient.uuid, null, null).then(function(consultationContext) {
                         $scope.consultation = consultationContext;
                         $scope.consultation.newlyAddedSpecimens = [];
@@ -51,7 +52,19 @@ angular.module('bahmni.common.displaycontrol.bacteriologyresults')
                             controller: $controller('BacteriologyController', {
                                 $scope: $scope,
                                 bacteriologyConceptSet: $scope.bacteriologyTabData
-                            })
+                            }),
+                            preCloseCallback: function() {
+                                if(configForPrompt && shouldPromptBeforeClose) {
+                                    if(confirm($translate.instant("POP_UP_CLOSE_DIALOG_MESSAGE_KEY"))) {
+                                        if(!$rootScope.hasVisitedConsultation) {
+                                            window.onbeforeunload = null;
+                                        }
+                                        spinner.forPromise(init());
+                                        return true;
+                                    }
+                                    return false;
+                                }
+                            }
                         })
                     });
                     spinner.forPromise(promise);
@@ -62,10 +75,14 @@ angular.module('bahmni.common.displaycontrol.bacteriologyresults')
                     if (specimen.isDirty()){
                         messagingService.showMessage('formError', "{{'CLINICAL_FORM_ERRORS_MESSAGE_KEY' | translate }}");
                     }else{
+                        shouldPromptBeforeClose = false;
                         var specimenMapper = new Bahmni.Clinical.SpecimenMapper();
                         var createPromise = bacteriologyResultsService.saveBacteriologyResults(specimenMapper.mapSpecimenToObservation(specimen));
 
                         spinner.forPromise(createPromise).then(function() {
+                            if(!$rootScope.hasVisitedConsultation) {
+                                window.onbeforeunload = null;
+                            }
                             $state.go($state.current, {}, {reload: true});
                             ngDialog.close();
                             messagingService.showMessage('info', "{{'CLINICAL_SAVE_SUCCESS_MESSAGE_KEY' | translate}}");

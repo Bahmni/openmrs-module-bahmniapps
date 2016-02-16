@@ -9,7 +9,8 @@ angular.module('bahmni.common.displaycontrol.custom')
                 patient: "=",
                 visitUuid: "=",
                 section: "=",
-                config: "="
+                config: "=",
+                enrollment:"="
             }
         }
     }]);

@@ -57,6 +57,7 @@ describe('EncounterService', function () {
         $provide.value('$bahmniCookieStore', $bahmniCookieStore);
         $provide.value('$rootScope', rootScope);
         $provide.value('configurations', configurations);
+        $provide.value('offlineService', {});
     }));
 
     beforeEach(inject(['encounterService', function (encounterServiceInjected) {

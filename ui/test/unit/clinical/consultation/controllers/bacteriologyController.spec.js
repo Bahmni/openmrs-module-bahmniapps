@@ -1,5 +1,14 @@
 describe("Bacteriology Controller", function () {
-    var $scope, rootScope, contextChangeHandler, spinner, conceptSetService;
+    var $scope, rootScope, contextChangeHandler, spinner, conceptSetService, appService, appDescriptor, controller;
+    var existingSpecimen = new Bahmni.Clinical.Specimen({
+        existingObs: "Existing Obs Uuid",
+        dateCollected: "2015-10-01T18:30:00.000Z",
+        type: "Blood",
+        identifier: "1234",
+        sample: {
+            additionalAttributes: {}
+        }
+    });
 
     beforeEach(module('bahmni.clinical'));
 
@@ -11,18 +20,12 @@ describe("Bacteriology Controller", function () {
             postSaveHandler: new Bahmni.Clinical.Notifier()
         };
         rootScope = $rootScope;
-        contextChangeHandler = {
-            execute: function () {
-                return {allow: true}
-            }, reset: function () {
-            }
-        };
 
         var spinner = jasmine.createSpyObj('spinner', ['forPromise']);
         conceptSetService = jasmine.createSpyObj('conceptSetService', ['getConcept']);
         contextChangeHandler = jasmine.createSpyObj('contextChangeHandler', ['add']);
 
-        spinner.forPromise.and.callFake(function (param) {
+        spinner.forPromise.and.callFake(function () {
             return {
                 then: function () {
                     return {};
@@ -33,27 +36,28 @@ describe("Bacteriology Controller", function () {
 
         conceptSetService.getConcept.and.returnValue({});
 
+        appService = jasmine.createSpyObj('appService', ['getAppDescriptor']);
+        appDescriptor = jasmine.createSpyObj('appDescriptor', ['getConfigValue']);
+        appService.getAppDescriptor.and.returnValue(appDescriptor);
+        appDescriptor.getConfigValue.and.returnValue(true);
+
+        spyOn($scope, '$broadcast');
+        controller = $controller;
+
         $controller('BacteriologyController', {
             $scope: $scope,
             $rootScope: rootScope,
             contextChangeHandler: contextChangeHandler,
             spinner: spinner,
             conceptSetService: conceptSetService,
-            bacteriologyConceptSet: {}
+            bacteriologyConceptSet: {},
+            appService:appService
         });
     }));
 
     describe("Edit Specimen", function () {
         it("should add specimen to new specimens list", function () {
-            var existingSpecimen = new Bahmni.Clinical.Specimen({
-                existingObs: "Existing Obs Uuid",
-                dateCollected: "2015-10-01T18:30:00.000Z",
-                type: "Blood",
-                identifier: "1234",
-                sample: {
-                    additionalAttributes: {}
-                }
-            });
+
             $scope.newSpecimens = [];
 
             $scope.editSpecimen(existingSpecimen);
@@ -64,15 +68,7 @@ describe("Bacteriology Controller", function () {
 
     describe("Delete Specimen", function () {
         it("should delete specimen from the existing specimen list", function () {
-            var existingSpecimen = new Bahmni.Clinical.Specimen({
-                existingObs: "Existing Obs Uuid",
-                dateCollected: "2015-10-01T18:30:00.000Z",
-                type: "Blood",
-                identifier: "1234",
-                sample: {
-                    additionalAttributes: {}
-                }
-            });
+
             $scope.savedSpecimens = [existingSpecimen];
 
             $scope.deleteSpecimen(existingSpecimen);
@@ -131,7 +127,7 @@ describe("Bacteriology Controller", function () {
     });
 
     describe("Specimen type Others", function(){
-        var existingSpecimen = function () {
+        var existingSpecimenOther = function () {
             return new Bahmni.Clinical.Specimen({
                 existingObs: "Existing Obs Uuid",
                 dateCollected: "2015-10-01T18:30:00.000Z",
@@ -145,7 +141,7 @@ describe("Bacteriology Controller", function () {
 
         it("should set showNonCodedSampleText to be true on call of editSpecimen", function () {
             $scope.newSpecimens = [];
-            $scope.editSpecimen(existingSpecimen());
+            $scope.editSpecimen(existingSpecimenOther());
             expect($scope.newSpecimens[0].showTypeFreeText).toBe(true);
 
         });
@@ -153,12 +149,29 @@ describe("Bacteriology Controller", function () {
         it("should set showNonCodedSampleText to be true on call of handleUpdate", function () {
 
             $scope.newSpecimens = [];
-            $scope.newSpecimens.push(existingSpecimen());
+            $scope.newSpecimens.push(existingSpecimenOther());
             $scope.handleUpdate();
 
             expect($scope.newSpecimens[0].showTypeFreeText).toBe(true);
 
         });
 
+        it("should set typeFreeText to null if specimen is not of type Other  ", function () {
+            $scope.newSpecimens = [];
+            $scope.newSpecimens.push(existingSpecimen);
+            $scope.handleUpdate();
+
+            expect($scope.newSpecimens[0].typeFreeText).toBe(null);
+
+        });
+
+    });
+
+
+
+    describe("initialization", function () {
+        it("should broadcast event:pageUnload if configured to show popUp", function () {
+            expect($scope.$broadcast).toHaveBeenCalledWith('event:pageUnload');
+        });
     });
 });

@@ -1,0 +1,237 @@
+.drugOrderHistorySectionContainer{
+  .drugOrderTable{
+    width:100%;
+    position: relative !important;
+  }
+  .drugOrderTableScroll{
+    width: auto;
+    overflow-x: auto;
+    overflow-y: visible;
+    margin-left:240px;
+    &.noOfActions-4-width{
+      margin-right: 200px;
+    }
+    &.noOfActions-3-width{
+      margin-right: 165px;
+    }
+    &.noOfActions-2-width{
+      margin-right: 130px;
+    }
+    &.noOfActions-1-width{
+      margin-right: 90px;
+    }
+    &.noOfActions-0-width{
+      margin-right: 75px;
+    }
+    @media (max-width : 1024px){
+      margin-left: 170px;
+    }
+  }
+  table.treatments-details-table{
+    u{
+      border: none !important;
+      font-family: openSans !important;
+    }
+    table-layout: fixed;
+    tr{
+      &.edited{
+        border-bottom: none;
+      }
+      &.medicationDrugNotes{
+        border-top: 2px solid #EFF8FF;
+        background: #EFF8FF;
+        td{
+          text-align: left;
+          padding-left:10px;
+          .additionalInstructions{
+            padding-right:10px;
+          }
+        }
+      }
+      &.formStopReason{
+        td{
+          padding: 4px 5px 7px;
+          font-size: 12px;
+        }
+        .form-field .field-attribute label{
+          margin-top: 3px !important;
+          @media (max-width: 1024px) {
+            margin-top: 7px !important;
+          }
+        }
+        .form-field .field-value {
+          input[type="date"], select, textarea{
+            margin-top: 0 !important;
+          }
+          input[type="date"]{
+            width: 120px;
+            padding: 2px 10px !important;
+          }
+          select{
+            width: 140px;
+            min-width: 140px;
+          }
+          textarea{
+            width: 131px !important;
+          }
+          @media (max-width: 1024px) {
+            textarea{
+              width: 400px !important;
+              height: 32px !important;
+            }
+            select{
+              width: 197px !important;
+            }
+          }
+        }
+      }
+
+    }
+    th{
+      background: #eee;
+      background-image: none;
+      color: #333;
+      width:112px;
+      @media (max-width : 1024px){
+        width: 78px;
+      }
+      font-family: openSansSemiBold;
+      &.drugName{
+        width: 240px;
+        text-align: left;
+        position: absolute;
+        top:auto;
+        left:0;
+        box-sizing: border-box;
+        border-right: none;
+        @media (max-width : 1024px){
+          width: 170px;
+        }
+        span{
+          z-index: 999;
+          position: static;
+          width: 100%;
+        }
+      }
+      &.stopReason{
+        width:160px;
+      }
+      &.instructions{
+        width:168px;
+      }
+      &.empty-header{
+        position: absolute;
+        right: 0;
+        top: auto;
+        box-sizing: border-box;
+        &.noOfActions-4-width{
+          width: 200px;
+        }
+        &.noOfActions-3-width{
+          width: 165px;
+        }
+        &.noOfActions-2-width{
+          width: 130px;
+        }
+        &.noOfActions-1-width{
+          width: 90px;
+        }
+        &.noOfActions-0-width{
+          width: 75px;
+        }
+      }
+    }
+    td{
+      text-align: center;
+      padding: 6px 5px 7px;
+      vertical-align: middle;
+      &.drugName{
+        text-align: left;
+        padding-left: 10px;
+        width: 240px;
+        text-align: left;
+        position: absolute;
+        top:auto;
+        left:0;
+        box-sizing: border-box;
+        background: #EFEFF2;
+        border-bottom: 1px solid #ddd;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        @media (max-width : 1024px){
+           width: 170px;
+        }
+        span{
+          z-index: 999;
+          position: static;
+          width: 100%;
+        }
+      }
+      &.drugNameStopForm{
+         padding: 6px 5px 43px;
+      }
+      &.drugNameAddNote{
+        padding: 6px 5px 31px;
+      }
+      &.drugNameStopFormAddNote{
+        padding: 6px 5px 85px;
+      }
+      &.buttonColumn{
+        position: absolute;
+        right:0;
+        top:auto;
+        padding: 2px 5px;
+        border-bottom: 1px solid #ddd;
+        background: #EFEFF2;
+        box-sizing: border-box;
+      }
+      &.buttonColumnStopForm{
+        padding: 2px 5px 38px;
+      }
+      &.buttonColumnAddNote{
+        padding: 2px 5px 26px;
+      }
+      &.buttonColumnStopFormAddNote{
+        padding: 2px 5px 82px;
+      }
+      &.noActionColumn{
+        padding: 3px 5px;
+      }
+      &.noOfActions-4-width{
+          width: 200px;
+      }
+      &.noOfActions-3-width{
+          width: 165px;
+      }
+      &.noOfActions-2-width{
+          width: 130px;
+      }
+      &.noOfActions-1-width{
+          width: 90px;
+      }
+      &.noOfActions-0-width{
+          width: 75px;
+      }
+      &.noActionColumnAddNote{
+        padding: 3px 5px 27px;
+      }
+      &.drug-stop-container{
+        padding: 0;
+      }
+      .button-group-wrapper{
+        width: auto;
+        padding:0 !important;
+        position: static;
+        button{
+          i{
+            font-size: 1.8em;
+          }
+        }
+        .button-group{
+          float: left;
+        }
+      }
+    }
+  }
+}

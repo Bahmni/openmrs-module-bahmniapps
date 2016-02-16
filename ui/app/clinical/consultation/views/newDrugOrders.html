@@ -1,0 +1,58 @@
+<section class="section-grid new-drug-order" ng-show="treatments.length > 0">
+    <div class="section-title-wrapper clearfix">
+        <h2 class="section-title fl">New Prescription</h2>
+        <button class="secondary-button fr bulk-toggle-btn" ng-show="!showBulkChangeToggle && showBulkChangeDuration"
+                ng-click="bulkChangeDuration()">{{ ::'MEDICATION_CHANGE_DURATION_BUTTON' | translate}}
+        </button>
+    </div>
+    <div ng-if="showBulkChangeToggle" class="bulk-edit-options-container clearfix">
+        <form name="updateBulkDuration" ng-submit="bulkDurationChangeDone()">
+            <input type="checkbox" class="select-all-chkBox" ng-model="bulkSelectCheckbox"
+                   ng-change="selectAllCheckbox()"/>
+            <div class="fr bulk-btn-container">
+                <button type="button" ng-click="updateDuration(-1)" class="stepper__btn stepper__minus">-</button>
+                <input class="form-field duration bulkDuration" type="number" min=0 placeholder="Duration"
+                       ng-model="bulkDurationData.bulkDuration" required ng-pattern="/^[0-9]+$/"/>
+                <button type="button" ng-click="updateDuration(+1)" class="stepper__btn stepper__plus">+</button>
+                <select class="form-field bulk-duration-unit" ng-model="bulkDurationData.bulkDurationUnit"
+                        ng-options="item.name as item.name for item in treatmentConfig.durationUnits" required>
+                </select>
+                <button type="submit" class="bulk-update-btn secondary-button">Update</button>
+                <button type="button" ng-click="bulkChangeDuration()" class="bulk-cancel-btn">Cancel</button>
+            </div>
+        </form>
+    </div>
+    <ul class="table-mimic">
+        <li id="new-drug-orders" ng-repeat="newTreatment in treatments"
+            ng-class="{highlight : newTreatment.isBeingEdited, invalid: !newTreatment.validate()}">
+            <div class="drug-details">
+                <div class="form">
+                    <input type="checkbox" ng-show="showBulkChangeToggle" ng-model="newTreatment.durationUpdateFlag"
+                           class="treatmentChkBox"/>
+                    <strong class="drug-name">{{newTreatment.getDisplayName()}}</strong>&nbsp;{{newTreatment.getDescriptionWithQuantity()}}
+                </div>
+            </div>
+            <div class="button-group-wrapper">
+                <div class="button-group">
+                    <button ng-click="edit($index)" ng-disabled="showBulkChangeToggle"><i class="fa fa-edit"></i>
+                    </button>
+                    <button ng-confirm-click="remove($index)"
+                            confirm-message="{{ 'REMOVE_CONFIRMATION_KEY' | translate }}"
+                            ng-disabled="showBulkChangeToggle"><i class="fa fa-remove"></i></button>
+                    <button class="toggle" ng-class="{'has-notes': newTreatment.additionalInstructions}"
+                            toggle="newTreatment.showAdditionalInstructions"
+                             ng-disabled="showBulkChangeToggle">
+                        <i class="fa fa-minus-circle" ng-show="newTreatment.showAdditionalInstructions"></i>
+                        <i class="fa fa-plus-circle" ng-hide="newTreatment.showAdditionalInstructions"></i>
+                    </button>
+                </div>
+            </div>
+            <div class="start-date fr">
+                <span>from {{newTreatment.effectiveStartDate | bahmniDate}}</span>
+            </div>
+            <div ng-show="newTreatment.showAdditionalInstructions" class="notes inline-notes">
+                {{newTreatment.additionalInstructions}}
+            </div>
+        </li>
+    </ul>
+</section>

@@ -17,7 +17,7 @@ Bahmni.Clinical.OrdersMapper.prototype.group = function(orders, groupingParamete
         }
         return function (order) {
             return order[groupingParameter];
-        }
+        };
     };
 
     groupingParameter = groupingParameter || 'date';
@@ -57,13 +57,13 @@ Bahmni.Clinical.OrdersMapper.prototype.map = function (encounterTransactions, or
         });
     };
     encounterTransactions.forEach(setOrderProvider);
-    var flattenedOrders = _.flatten(encounterTransactions, ordersName);
-
+    var flattenedOrders = _(encounterTransactions).map(ordersName).flatten().value();
     var ordersWithoutVoidedOrders = flattenedOrders.filter(function(order){
         return !order.voided;
     });
 
-    var allObservations = _.flatten(encounterTransactions, 'observations');
+    var allObservations = _(encounterTransactions).map('observations').flatten().value();
+
     orderObservationsMapper.map(allObservations, ordersWithoutVoidedOrders);
     var sortedOrders = allTestsPanelsConcept.sort(ordersWithoutVoidedOrders, this.nameToSort);
     sortedOrders.forEach(function(order) {

@@ -11,7 +11,7 @@ describe("User", function () {
             user.toggleFavoriteObsTemplate("Diabetes");
             user.toggleFavoriteObsTemplate("Tuberculosis");
             user.addToRecentlyViewed({uuid: 'abc', name: 'patient'}, 5);
-            
+
             var contract = user.toContract();
             expect(contract.userProperties.favouriteObsTemplates).toBe("Gynaecology###Diabetes###Tuberculosis");
             expect(contract.userProperties.recentlyViewedPatients).toBe('[{"uuid":"abc","name":"patient"}]');

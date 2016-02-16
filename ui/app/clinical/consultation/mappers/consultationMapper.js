@@ -45,6 +45,7 @@ Bahmni.ConsultationMapper = function (dosageFrequencies, dosageInstructions, con
                 return new Bahmni.Clinical.Specimen(specimen);
             });
 
+
         return {
             visitUuid: encounterTransaction.visitUuid,
             visitTypeUuid: encounterTransaction.visitTypeUuid,

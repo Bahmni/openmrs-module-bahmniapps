@@ -5,6 +5,12 @@ Bahmni.Clinical.TabConfig = function (tabs) {
     this.tabs = tabs;
     this.identifierKey = null;
 
+    var initDisplayByDefaultTabs = function(){
+        self.visibleTabs = _.filter(self.tabs, function (tab) {
+            return tab.displayByDefault;
+        });
+    };
+
     var init = function(){
         initDisplayByDefaultTabs();
         self.currentTab = self.getFirstTab();
@@ -13,22 +19,17 @@ Bahmni.Clinical.TabConfig = function (tabs) {
         }
     };
 
-    var initDisplayByDefaultTabs = function(){
-        self.visibleTabs = _.filter(self.tabs, function (tab) {
-            return tab.displayByDefault;
-        });
-    };
 
     var isTabClosed = function (tab) {
-        return !_.findWhere(self.visibleTabs, function(visibleTab) {
-            return visibleTab[self.identifierKey] == tab[self.identifierKey];
+        return !_.find(self.visibleTabs, function(visibleTab) {
+            return visibleTab[self.identifierKey] === tab[self.identifierKey];
         });
     };
 
     this.getTab = function (id) {
         return _.find(self.tabs, function (tab) {
             return tab[self.identifierKey] === id;
-        })
+        });
     };
 
     this.getFirstTab = function() {
@@ -51,7 +52,7 @@ Bahmni.Clinical.TabConfig = function (tabs) {
     this.closeTab = function (tab) {
         if (tab.displayByDefault) return;
         _.remove(self.visibleTabs, function(visibleTab) {
-            return tab[self.identifierKey] == visibleTab[self.identifierKey];
+            return tab[self.identifierKey] === visibleTab[self.identifierKey];
         });
         this.switchTab(this.getFirstTab());
     };

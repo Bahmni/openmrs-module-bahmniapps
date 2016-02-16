@@ -1,36 +1,34 @@
 'use strict';
 
 describe('AddressFieldsDirectiveController', function () {
-    var patientAttributeService;
+    var addressHierarchyService;
     var success;
     var controller;
     var scope;
 
     beforeEach(angular.mock.module('bahmni.registration'));
-    beforeEach(angular.mock.inject(function ($injector) {
+    beforeEach(angular.mock.inject(function () {
         success = jasmine.createSpy('Successful');
-        patientAttributeService = jasmine.createSpyObj('patientAttributeService', ['search']);
-        patientAttributeService.search.and.returnValue({success:success});
+        addressHierarchyService = jasmine.createSpyObj('addressHierarchyService', ['search', 'getNextAvailableParentName','getAddressDataResults']);
     }));
 
     var setupController = function () {
         inject(function ($controller, $rootScope) {
             scope = $rootScope.$new();
             scope.address = {};
-            var autocompletedFields = ["cityVillage", "address3", "countyDistrict", "stateProvince"];
             scope.addressLevels = [
               {"name": "State", "addressField": "stateProvince", "required": false },
               {"name": "District", "addressField": "countyDistrict", "required": false },
               {"name": "Tehsil", "addressField": "address3", "required": false },
               {"name": "Village", "addressField": "cityVillage", "required": true },
               {"name": "House No., Street", "addressField": "address1", "required": false },
-            ]
+            ];
             controller = $controller('AddressFieldsDirectiveController', {
                 $scope: scope,
-                patientAttributeService: patientAttributeService
+                addressHierarchyService: addressHierarchyService
             });
         });
-    }
+    };
 
     describe("village selection", function(){
         beforeEach(setupController);
@@ -48,7 +46,7 @@ describe('AddressFieldsDirectiveController', function () {
         it("should not update tehsil, district and state when selected village does not have parents", function () {
             var village = Bahmni.Tests.villageMother.build();
             village.parent = null;
-            scope.address = {address3: "", countyDistrict: "", stateProvince: ""}
+            scope.address = {address3: "", countyDistrict: "", stateProvince: ""};
 
             scope.addressFieldSelected('cityVillage')({addressField : village });
 
@@ -58,41 +56,6 @@ describe('AddressFieldsDirectiveController', function () {
         });
     });
 
-    describe("getAddressDataResults", function(){
-       it("should map address field to value and label for fields with parent", function(){
-           var addresses ={data: [{ name : "someVillage" , parent : { name : "someTehsil"}}]};
-
-           var addressDataResults = scope.getAddressDataResults(addresses);
-
-           expect(addressDataResults.length).toBe(1);
-           expect(addressDataResults[0].value).toBe("someVillage");
-           expect(addressDataResults[0].label).toBe("someVillage, someTehsil");
-           expect(addressDataResults[0].addressField).toBe(addresses.data[0]);
-       });
-
-       it("should map address field to value and label for fields without parent", function(){
-           var addresses = {data:[{ name : "someVillage"}]};
-
-           var addressDataResults = scope.getAddressDataResults(addresses);
-
-           expect(addressDataResults.length).toBe(1);
-           expect(addressDataResults[0].value).toBe("someVillage");
-           expect(addressDataResults[0].label).toBe("someVillage");
-           expect(addressDataResults[0].addressField).toBe(addresses.data[0]);
-       });
-
-       it("should map address field to value and label for fields with blank parent and grand parent", function(){
-           var blankTehsil = {name: "", parent: {name: "someDistrict"}}
-           var addresses = {data:[{ name : "someVillage", parent: blankTehsil}]};
-
-           var addressDataResults = scope.getAddressDataResults(addresses);
-
-           expect(addressDataResults.length).toBe(1);
-           expect(addressDataResults[0].value).toBe("someVillage");
-           expect(addressDataResults[0].label).toBe("someVillage, someDistrict");
-           expect(addressDataResults[0].addressField).toBe(addresses.data[0]);
-       });
-    });
 
     describe("Editing any auto complete field", function(){
         it("should clear all other auto completed fields", function(){

@@ -61,7 +61,7 @@ angular.module('consultation')
                 }
             })
             .state('patient', {
-                url: '/:configName/patient/:patientUuid?encounterUuid',
+                url: '/:configName/patient/:patientUuid?encounterUuid,programUuid',
                 abstract: true,
                 data: {
                     backLinks: [patientSearchBackLink]
@@ -106,7 +106,8 @@ angular.module('consultation')
                         return retrospectiveEntryService.initializeRetrospectiveEntry();
                     },
                     consultationContext: function (consultationInitialization, initialization, $stateParams) {
-                        return consultationInitialization($stateParams.patientUuid, $stateParams.encounterUuid, $stateParams.programUuid);
+                        return consultationInitialization(
+                            $stateParams.patientUuid, $stateParams.encounterUuid, $stateParams.programUuid, $stateParams.enrollment);
                     },
                     dashboardInitialization: function ($rootScope, initialization, patientContext, clinicalDashboardConfig, userService) {
                         return clinicalDashboardConfig.load().then(function (data) {
@@ -120,7 +121,7 @@ angular.module('consultation')
                 }
             })
             .state('patient.dashboard.show', {
-                url: '/dashboard?programUuid,dateEnrolled,dateCompleted',
+                url: '/dashboard?dateEnrolled,dateCompleted,enrollment',
                 params: {
                     dashboardCachebuster: null
                 },
@@ -161,6 +162,14 @@ angular.module('consultation')
             })
             .state('patient.dashboard.show.treatment', {
                 abstract: true,
+                params: {
+                    tabConfigName: null
+                },
+                resolve: {
+                    treatmentConfig: function(initialization, treatmentConfig, $stateParams) {
+                        return treatmentConfig($stateParams.tabConfigName);
+                    }
+                },
                 views: {
                     'consultation-content': {
                         controller: 'TreatmentController',
@@ -169,16 +178,13 @@ angular.module('consultation')
                 }
             })
             .state('patient.dashboard.show.treatment.page', {
-                url: '/treatment',
+                url: "/treatment?tabConfigName",
                 params: {
                   cachebuster: null
                 },
                 resolve: {
-                    activeDrugOrders: function (TreatmentService, $stateParams) {
-                        return TreatmentService.getActiveDrugOrders($stateParams.patientUuid);
-                    },
-                    treatmentConfig: function(initialization, treatmentConfig) {
-                        return treatmentConfig;
+                    activeDrugOrders: function (TreatmentService, $stateParams, initialization) {
+                        return TreatmentService.getActiveDrugOrders($stateParams.patientUuid, $stateParams.dateEnrolled, $stateParams.dateCompleted);
                     }
                 },
                 views: {
@@ -351,7 +357,7 @@ angular.module('consultation')
                 abstract: true,
                 views: {
                     'content': {
-                        template: '<div ui-view="patientProgram-header"></div> <div ui-view="patientProgram-content"></div>'
+                        template: '<div ui-view="patientProgram-header"></div> <div ui-view="patientProgram-content" class="patientProgram-content-container"></div>'
                     }
                 },
                 resolve:{
@@ -390,5 +396,12 @@ angular.module('consultation')
         $rootScope.$on('$stateChangeSuccess', function () {
             window.scrollTo(0, 0);
         });
+        $rootScope.$on('ngDialog.opened', function (e, $dialog) {
+           $('html').addClass('ngdialog-open')
+        });
+        $rootScope.$on('ngDialog.closing', function (e, $dialog) {
+            $('html').removeClass('ngdialog-open')
+        });
     }]);
+
 

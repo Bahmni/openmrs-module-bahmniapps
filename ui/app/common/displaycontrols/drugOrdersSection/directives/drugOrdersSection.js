@@ -1,29 +1,28 @@
 'use strict';
 
 angular.module('bahmni.common.displaycontrol.drugOrdersSection')
-    .directive('drugOrdersSection', ['TreatmentService', 'spinner', '$rootScope', 'treatmentConfig', '$q','clinicalAppConfigService',  function (treatmentService, spinner, $rootScope, treatmentConfig, $q, clinicalAppConfigService) {
+    .directive('drugOrdersSection', ['Treatment' +
+    'Service', 'spinner', '$rootScope','$http',  function (treatmentService, spinner, $rootScope, $http) {
         var controller = function ($scope) {
             var DateUtil = Bahmni.Common.Util.DateUtil;
-            var drugOrderAppConfig = clinicalAppConfigService.getDrugOrderConfig();
 
             $scope.toggle = true;
             $scope.toggleDisplay = function () {
                 $scope.toggle = ! $scope.toggle
             };
 
+            var treatmentConfigColumnHeaders = $scope.config.columnHeaders;
             $scope.columnHeaders = {
-                "drugName": "DRUG_DETAILS_DRUG_NAME",
-                "dosage": "DRUG_DETAILS_DOSE_INFO",
-                "route": "DRUG_DETAILS_ROUTE",
-                "duration": "DRUG_DETAILS_DURATION",
-                "frequency": "DRUG_DETAILS_FREQUENCY",
-                "startDate": "DRUG_DETAILS_START_DATE",
-                "stopDate": "DRUG_DETAILS_STOP_DATE",
-                "stopReason": "DRUG_DETAILS_ORDER_REASON_CODED",
-                "stopReasonNotes": "DRUG_DETAILS_ORDER_REASON_TEXT",
-                "instructions": "DRUG_DETAILS_INSTRUCTIONS_TEXT",
-                "quantity": "DRUG_DETAILS_QUANTITY_TEXT",
-                "additionalInstructions": "DRUG_DETAILS_ADDITIONAL_INSTRUCTIONS_TEXT"
+                "drugName": (treatmentConfigColumnHeaders && treatmentConfigColumnHeaders.drugName) || "DRUG_DETAILS_DRUG_NAME",
+                "dosage": (treatmentConfigColumnHeaders && treatmentConfigColumnHeaders.dosage) || "DRUG_DETAILS_DOSE_INFO",
+                "route": (treatmentConfigColumnHeaders && treatmentConfigColumnHeaders.route) || "DRUG_DETAILS_ROUTE",
+                "duration": (treatmentConfigColumnHeaders && treatmentConfigColumnHeaders.duration) || "DRUG_DETAILS_DURATION",
+                "frequency": (treatmentConfigColumnHeaders && treatmentConfigColumnHeaders.frequency) || "DRUG_DETAILS_FREQUENCY",
+                "startDate": (treatmentConfigColumnHeaders && treatmentConfigColumnHeaders.startDate) || "DRUG_DETAILS_START_DATE",
+                "stopDate": (treatmentConfigColumnHeaders && treatmentConfigColumnHeaders.stopDate) || "DRUG_DETAILS_STOP_DATE",
+                "stopReason": (treatmentConfigColumnHeaders && treatmentConfigColumnHeaders.stopReason) || "DRUG_DETAILS_ORDER_REASON_CODED",
+                "instructions": (treatmentConfigColumnHeaders && treatmentConfigColumnHeaders.instructions) || "DRUG_DETAILS_INSTRUCTIONS_TEXT",
+                "quantity": (treatmentConfigColumnHeaders && treatmentConfigColumnHeaders.quantity) || "DRUG_DETAILS_QUANTITY_TEXT"
             };
 
             $scope.scheduledDate = DateUtil.getDateWithoutTime(DateUtil.now());
@@ -44,22 +43,20 @@ angular.module('bahmni.common.displaycontrol.drugOrdersSection')
                 if (_.isEmpty($scope.config.title) && _.isEmpty($scope.config.translationKey)){
                     $scope.config.title = "Drug Orders";
                 }
-                var getDrugOrders = treatmentService.getAllDrugOrdersFor($scope.patientUuid, $scope.config.includeConceptSet, $scope.config.excludeConceptSet, $scope.config.active);
-
-                return $q.all([getDrugOrders, treatmentConfig]).then(function (results) {
+                return treatmentService.getAllDrugOrdersFor($scope.patientUuid, $scope.config.includeConceptSet, $scope.config.excludeConceptSet, $scope.config.active).then(function (drugOrderResponse) {
                     var createDrugOrder = function (drugOrder) {
-                        return Bahmni.Clinical.DrugOrderViewModel.createFromContract(drugOrder, drugOrderAppConfig, results[1]);
+                        return Bahmni.Clinical.DrugOrderViewModel.createFromContract(drugOrder, $scope.treatmentConfig);
                     };
-                    $scope.drugOrders = sortOrders(results[0].map(createDrugOrder));
-                    $scope.stoppedOrderReasons = results[1].stoppedOrderReasonConcepts;
+                    $scope.drugOrders = sortOrders(drugOrderResponse.map(createDrugOrder));
+                    $scope.stoppedOrderReasons = $scope.treatmentConfig.stoppedOrderReasonConcepts;
                 });
             };
 
             var sortOrders = function(drugOrders){
                 var drugOrderUtil = Bahmni.Clinical.DrugOrder.Util;
                 var sortedDrugOrders = [];
-                sortedDrugOrders.push(drugOrderUtil.sortDrugOrders(drugOrders));
-                return _.flatten(sortedDrugOrders).reverse();
+                sortedDrugOrders.push(drugOrderUtil.sortDrugOrdersInChronologicalOrder(drugOrders));
+                return _.flatten(sortedDrugOrders)
             };
 
             var clearOtherDrugOrderActions = function(revisedDrugOrder) {
@@ -79,10 +76,28 @@ angular.module('bahmni.common.displaycontrol.drugOrdersSection')
                 $rootScope.$broadcast("event:refillDrugOrder", drugOrder);
             };
 
+            $scope.remove = function (drugOrder) {
+                var promise = treatmentService.voidDrugOrder(drugOrder);
+
+                spinner.forPromise(promise);
+
+                promise.then(function() {
+                    $rootScope.$broadcast("event:sectionUpdated");
+                });
+            };
+
+            $scope.$on("event:sectionUpdated", function (event) {
+                init();
+            });
+
             $scope.revise = function (drugOrder, drugOrders) {
                 if (drugOrder.isEditAllowed) {
                     $rootScope.$broadcast("event:reviseDrugOrder", drugOrder, drugOrders);
                 }
+            };
+
+            $scope.toggleShowAdditionalInstructions = function (line) {
+                line.showAdditionalInstructions = !line.showAdditionalInstructions;
             };
 
             $scope.discontinue = function (drugOrder) {
@@ -131,7 +146,8 @@ angular.module('bahmni.common.displaycontrol.drugOrdersSection')
             controller: controller,
             scope: {
                 config: "=",
-                patientUuid: "="
+                patientUuid: "=",
+                treatmentConfig: "="
             },
             templateUrl: "../common/displaycontrols/drugOrdersSection/views/drugOrdersSection.html"
         };

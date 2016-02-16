@@ -1,246 +1,56 @@
-.program-enrollment-container {
-  .placholder-text {
-    padding: 10px;
-  }
-  .program-title {
-    text-decoration: none;
-    font-size: 16px;
-    color: #2b95ff;
-  }
-  .program-action-container{
-    margin-top: 4px;
-    width: 45%;
-    padding: 10px 15px;
-    display: inline-block;
-    background-color: #F3F2F2;
-    margin-right: 10px;
-    select{
-      //height: 33px;
-      float: left;
-      max-width: 197px;
-    }
-    label{
-      float: left;
-      padding-right: 9px;
-      margin-top: 10px;
-    }
-    .btn-grp{
-      button{
-        padding: 6px 15px;
-      }
+.patientProgram-content-container{
+  margin-top: 70px;
+}
+.program-enrollment-container{
+  form .form-field{
+    .field-attribute label{
+      width: auto;
     }
   }
 
-  .select-program-container {
-    .dashboard-section{
-      overflow: hidden;
-      padding-bottom: 10px;
-    }
-    input, select {
-      min-width: 0;
-      width: 197px;
-      display: inline-block;
-      margin-right: 10px;
-      box-sizing: border-box;
-      float: none;
-    }
-    label.start-date-label {
-      display: inline-block;
-      margin-top: 0;
-    }
-    .select-program-option {
-      padding: 10px 15px;
-    }
-    .back-btn {
-      margin: 0;
-    }
-    input[type="submit"]{
+  .program-title{
+    font-family: openSansSemiBold;
+    color: #000;
+    font-size: 20px;
+    margin-top: 40px;
+  }
+  .button-group{
+    @include clearfix;
+    text-align: right;
+    a{
       float: right;
-    }
-  }
-  .program-details table.programTable{
-    tr{
-      border-bottom: none;
-    }
-    td{
-      border: none;
-      &.programName{
-        width: 20%;
-      }
-      &.programState{
-        width: 60%;
-      }
-      &.programDate{
-        width: 17%;
-        span{
-          padding-left:10px;
-        }
-        .fa{
-          padding: 1px 0 0;
-        }
-      }
-      &.pastProgramState{
-        width: 42%;
-      }
-      &.programStartDate ,&.programStopDate{
-        width: 19%;
-        span{
-          padding-left: 10px;
-        }
-      }
-    }
-  }
-  .programDescription{
-    padding: 10px 11px 0 26px;
-  }
-
-}
-
-.program-row {
-  padding: 5px 15px 5px 0;
-  border-bottom: 1px solid #669999;
-}
-.remove-state-container{
-  overflow: hidden;
-  border-bottom: 1px #ccc solid;
-  padding-bottom: 10px;
-  margin-bottom: 10px;
-  .current-state-name{
-    max-width: 135px;
-    overflow: hidden;
-    padding-right: 0 !important;
-    span{
+      margin-left:10px;
+      cursor: pointer;
+      color: #363463;
       font-family: openSansSemiBold;
-      font-size: 12px;
-    }
-  }
-  .row-remover{
-    padding: 2px 4px !important;
-  }
-}
-
-.program-timeline-container{
-  width: 100%;
-  overflow: hidden;
-  .program-timeline {
-    width: 91%;
-    float: left;
-    padding: 0px 0px 5px;
-  }
-  button.detail-btn{
-    margin-top: 20px;
-    margin-bottom: 0px;
-    i{
-      display: none;
-    }
-    &.btn-noTimeline{
-      margin-top: 10px;
-      margin-bottom: 10px;
-    }
-  }
-  .tab-selected{
-    border-radius: 3px 3px 0 0;
-    background: #fff;
-    border-bottom: 0;
-    font-family: openSansBOld;
-    padding: 8px 18px;
-    border-color: #D0D0D0;
-    position: relative;
-    z-index: 999;
-    margin-top: 20px !important;
-    margin-bottom: 0px !important;
-    span{
-      display: none;
-    }
-    i{
-      display: block !important;
-      font-size: 30px;
-      padding: 15px 13px;
-    }
-    &:hover{
-      border-bottom: 1px #F3F2F2 solid;
-    }
-    &:focus{
-      outline: none;
-      border-color: #d0d0d0;
-      border-bottom:none;
-    }
-  }
-}
-
-
-
-.program-enrollment-container {
-  display: inline-block;
-  vertical-align: top;
-  width: 100%;
-  a {
-    line-height: 25px;
-    float: none;
-    font-size: 14px;
-    &.back-btn{
-      float: right;
-      margin-right: 0;
-    }
-    &.big-anchor{
-      font-size: 20px;
-      font-family: openSans;
-      display: inline-block;
-    }
-  }
-  span{
-    display: inline-block;
-    &.enrolled-info {
-      display: inline-block;
-      font-size: 12px;
-      color: #666666;
-      padding: 5px 25px 5px 5px;
-      &.enrolled-info-dash-board{
-        padding: 0;
+      &:hover , &:active , &:focus{
+        color: #5B8989;
+        text-decoration: underline;
       }
     }
   }
-}
 
-.program-state-list {
-  width: auto;
-  background-color: #fff;
-  box-shadow: 3px 3px 10px #E4E0E0;
-  border: 1px #d0d0d0 solid;
-  border-radius: 0 0 3px 3px;
-  margin-bottom: 15px;
-  position: relative;
-  div.down-arrow-container{
-    width: 88px;
-    height: 1px;
-    background-color: #000;
-    position: absolute;
-    right: -1px;
-    top: -1px;
-    float: right;
-    background-color: #fff;
-    box-shadow: 0;
-    border: 1px #d0d0d0 solid;
-    border-radius: 0;
-    border-bottom-color: #fff;
-    border-top: 0;
-    border-bottom: 0;
+  .programName {
+    font-size: 16px;
+    font-family: openSansSemiBold;
+    margin-bottom: 5px;
   }
-  .program-actions{
-    padding: 0px 20px 20px;
-    width: 75%;
-    margin: 0 auto;
-    button{
-      padding: 6px 15px !important;
-      margin-top: 4px;
+
+  a {
+    &.back-btn{
+      margin: 15px 0 0;
+      width: 96%;
+      float: none;
+      .proggram-dashboard-text{
+        text-align: center;
+        display: inline-block;
+        width: 100%
+      }
     }
   }
+
   .state-list{
-    padding: 25px 20px;
-    &.state-list-cutomPadding{
-      padding: 0;
-      padding-top: 20px;
-    }
+    margin-top: 10px;
     table{
       box-shadow: 1px 1px 5px rgba(0,0,0,.3);
       tbody{
@@ -259,35 +69,98 @@
       }
     }
   }
+  //Program State
 
-}
+  .program-state-list {
 
-
-.program-dashboard{
-  .program-timeline, .program-details {
-    width: 100%;
   }
-}
-
-.inactive-program-container{
-  label{
-    padding: 2px 5px 2px 0;
-    //font-family: openSansSemiBold;
-    display: inline-block;
-    float: left;
-  }
-  .program-row{
-    &.no-past-program{
+  .remove-state-container{
+    overflow: hidden;
+    border-bottom: 1px #ccc solid;
+    padding-bottom: 10px;
+    margin-bottom: 10px;
+    .current-state-name{
+      max-width: 135px;
       overflow: hidden;
-      a.back-btn{
-        margin-bottom:10px ;
+      padding-right: 0 !important;
+      span{
+        font-family: openSansSemiBold;
+        font-size: 12px;
       }
-   }
+    }
+    .row-remover{
+      padding: 2px 4px !important;
+    }
   }
 }
-.program-stuff {
-  overflow: hidden;
+
+.select-program-container{
+  @include clearfix;
+  background: #fff;
+  margin: 30px auto 10px;
+  border: 1px solid #669999;
+  border-radius: 5px;
+  padding: 10px 15px;
+  box-sizing: border-box;
+  a{
+    color: $black;
+    font-size: 16px;
+    display: block;
+    font-family: openSansSemiBold;
+  }
+  .select-program-option {
+    padding: 10px 0px;
+    &.form-field{
+      .field-attribute label{
+        width: auto;
+      }
+      article{
+        padding-right: 15px;
+        padding-bottom: 5px;
+      }
+    }
+  }
 }
+
+.program-tiles{
+  float: left;
+  margin-bottom: 10px;
+  margin-right: 0.5%;
+  width: 33%;
+  border: 1px solid #699;
+  border-radius: 5px;
+  padding: 15px 10px;
+  line-height: 1.35;
+  font-size: 13px;
+  box-sizing: border-box;
+  &:nth-child(3n){
+    margin-right: 0;
+  }
+  .program-tile{
+    @include clearfix;
+    .form-field{
+      .field-value span{
+        margin: 0.7em 0.8em 0em 0em;
+        display: inline-block;
+      }
+    }
+
+  }
+  &.active-program-tiles{
+    background: #fff;
+  }
+  &.inactive-program-tiles{
+    background: #ddd;
+    .form .form-field .field-attribute label{
+      width: auto;
+    }
+    .program-timeline .timeline-view svg .states .date-bg{
+      fill: #ddd;
+    }
+  }
+}
+
+@import "programDisplayControl";
 
 .program-timeline {
   .tool-tip {
@@ -349,115 +222,3 @@
   }
 }
 
-
-.dashboard-program-section {
-  .program-title {
-    background: #E4E4E4;
-    margin: 0;
-    padding: 7px;
-    font-family: "OpenSansBold";
-    color: #4B4B4B;
-    font-size: 14px;
-  }
-  .programs-table {
-    strong {
-      font-family: "OpenSans";
-      font-weight: 400;
-    }
-  }
-}
-
-.ngdialog.ngdialog-theme-default {
-  &.end-program-dialog {
-    .ngdialog-content {
-      padding: 30px 20px;
-    }
-    .end-program-wrapper {
-      overflow: hidden;
-      input {
-        min-width: 0;
-        padding: 5px 10px;
-        width: 200px;
-      }
-      select {
-        height: 31px;
-        min-width: 0;
-        width: 200px;
-      }
-      .end-program-container {
-        overflow: hidden;
-        margin-bottom: 5px;
-        padding: 0 6%;
-        label.middle-align {
-          padding-top: 10px;
-        }
-        .left-container {
-          float: left;
-          width: 43%;
-          label {
-            margin-top: 0;
-          }
-        }
-        .right-container {
-          float: right;
-          width: 56%;
-          label {
-            margin-top: 0;
-          }
-        }
-      }
-      .btn-grp {
-        margin-top: 10px;
-        margin-right: 29px;
-      }
-    }
-  }
-}
-
-
-//Style for New Program Enrollment
-
-.program-enrollment-container {
-  .programAttributeFields{
-      clear: both;
-      margin: 15px 0;
-      h2.programAttribute-title{
-        color: #000;
-        font-size: 13px;
-        clear: both;
-        border-bottom: 1px solid #ccc;
-        padding: 5px 0;
-        font-family: openSansSemiBold;;
-      }
-      .form-field{
-        width: 43%;
-        display: inline-block;
-        border-bottom: none;
-        padding: 0;
-        padding-left: 0;
-      }
-      section .form-field{
-        padding: 0;
-        padding-left: 0;
-        .field-attribute{
-          float: left;
-          text-align: right;
-          label{
-            width: 15em;
-            margin: 0 0.8em 0em 0em;
-          }
-        }
-        .field-value{
-          float: left;
-        }
-      }
-  }
-  .activeProgramAttributeFields {
-    .form-field{
-      line-height: 1.5em;
-      label{
-        width:13em;
-      }
-    }
-  }
-}

@@ -1,15 +1,16 @@
 'use strict';
 
-describe('Drug Order Details DisplayControl', function () {
+describe('DrugOrdersSection DisplayControl', function () {
     var drugOrders,
         $compile,
         mockBackend,
         scope,
-        params,element,
-        simpleHtml = '<drug-orders-section patient-uuid="patientUuid" config="params"></drug-order-details>';
+        params, element, q,
+        treatmentService,
+        simpleHtml = '<drug-orders-section patient-uuid="patientUuid" config="params" treatment-config="treatmentConfig"></drug-orders-section>';
     var DateUtil = Bahmni.Common.Util.DateUtil;
 
-    var  activeDrugOrder = {
+    var activeDrugOrder = {
         "uuid": "activeOrderUuid",
         "action": "NEW",
         "careSetting": "Outpatient",
@@ -97,34 +98,33 @@ describe('Drug Order Details DisplayControl', function () {
         "provider": {name: "superman"}
     };
 
-    drugOrders =[ activeDrugOrder, scheduledOrder
+    drugOrders = [activeDrugOrder, scheduledOrder
     ];
 
     beforeEach(module('bahmni.clinical'));
     beforeEach(module('bahmni.common.displaycontrol.drugOrdersSection'));
-    beforeEach(module( function ($provide) {
-        var treatmentConfig = jasmine.createSpy('treatmentConfig');
-        var clinicalAppConfigService = jasmine.createSpyObj('clinicalAppConfigService', ['getDrugOrderConfig']);
-        $provide.value('treatmentConfig', treatmentConfig);
-        $provide.value('clinicalAppConfigService', clinicalAppConfigService);
+
+    beforeEach(module(function ($provide) {
+        treatmentService = jasmine.createSpyObj('treatmentService', ['getAllDrugOrdersFor', 'voidDrugOrder']);
+        $provide.value('TreatmentService', treatmentService);
 
     }));
 
+    beforeEach(inject(function (_$compile_, $rootScope, $httpBackend, $q) {
+        scope = $rootScope;
+        q = $q;
+        $compile = _$compile_;
+        scope.patientUuid = "abcd-1234";
+        scope.params = {
+            title: "Active TB Drugs",
+            columns: ["drugName", "dosage", "route"]
+        };
+        scope.treatmentConfig = {};
+        treatmentService.getAllDrugOrdersFor.and.returnValue(specUtil.respondWithPromise(q, drugOrders));
 
-        beforeEach(inject(function (_$compile_, $rootScope, $httpBackend) {
-            scope = $rootScope;
-
-            $compile = _$compile_;
-            scope.patientUuid = "abcd-1234"
-            scope.params = {
-                title: "Active TB Drugs",
-                columns: ["drugName", "dosage", "route"]
-            };
-            mockBackend = $httpBackend;
-            mockBackend.expectGET('../common/displaycontrols/drugOrdersSection/views/drugOrdersSection.html').respond("<div>dummy</div>");
-            mockBackend.expectGET(Bahmni.Common.Constants.bahmniDrugOrderUrl + "/drugOrderDetails" + "?patientUuid=abcd-1234").respond(drugOrders);
-        }));
-
+        mockBackend = $httpBackend;
+        mockBackend.expectGET('../common/displaycontrols/drugOrdersSection/views/drugOrdersSection.html').respond("<div>dummy</div>");
+    }));
 
     it("should return all configured drug orders taken by the patient", function () {
         element = $compile(simpleHtml)(scope);
@@ -136,7 +136,7 @@ describe('Drug Order Details DisplayControl', function () {
         expect(compiledElementScope.drugOrders.length).toBe(drugOrders.length);
     });
 
-    it("should initialise columns if not specified in config", function(){
+    it("should initialise columns if not specified in config", function () {
         scope.params = {
             title: "Active TB Drugs"
         };
@@ -146,12 +146,12 @@ describe('Drug Order Details DisplayControl', function () {
 
         var compiledElementScope = element.isolateScope();
         scope.$digest();
-        var expectedColumns = ["drugName", "dosage", "startDate","frequency", "route"]
+        var expectedColumns = ["drugName", "dosage", "startDate", "frequency", "route"]
         expect(compiledElementScope.columns.length).toBe(5);
         expect(compiledElementScope.columns).toEqual(expectedColumns)
     });
 
-    it("should assign Drug Orders as default title if title is not specified in config", function(){
+    it("should assign Drug Orders as default title if title is not specified in config", function () {
         scope.params = {};
         element = $compile(simpleHtml)(scope);
         scope.$digest();
@@ -162,7 +162,7 @@ describe('Drug Order Details DisplayControl', function () {
         expect(compiledElementScope.config.title).toBe("Drug Orders");
     });
 
-    it('should broadcast refillDrugOrder event on refill', function(){
+    it('should broadcast refillDrugOrder event on refill', function () {
         element = $compile(simpleHtml)(scope);
         scope.$digest();
         mockBackend.flush();
@@ -176,8 +176,8 @@ describe('Drug Order Details DisplayControl', function () {
         expect(scope.$broadcast).toHaveBeenCalledWith('event:refillDrugOrder', drugOrder);
     });
 
-    describe("reviseDrugOrder", function(){
-        it('should broadcast reviseDrugOrder event on revise', function(){
+    describe("reviseDrugOrder", function () {
+        it('should broadcast reviseDrugOrder event on revise', function () {
             element = $compile(simpleHtml)(scope);
             scope.$digest();
             mockBackend.flush();
@@ -191,7 +191,7 @@ describe('Drug Order Details DisplayControl', function () {
             expect(scope.$broadcast).toHaveBeenCalledWith('event:reviseDrugOrder', drugOrder, drugOrders);
         });
 
-        it("should clear drug action flags for drug orders on listening to reviseDrugOrder event", function(){
+        it("should clear drug action flags for drug orders on listening to reviseDrugOrder event", function () {
             element = $compile(simpleHtml)(scope);
             scope.$digest();
             mockBackend.flush();
@@ -216,7 +216,7 @@ describe('Drug Order Details DisplayControl', function () {
         })
     });
 
-    it('should broadcast discontinueDrugOrder event on discontinue and update form conditions', function(){
+    it('should broadcast discontinueDrugOrder event on discontinue and update form conditions', function () {
         element = $compile(simpleHtml)(scope);
         scope.$digest();
         mockBackend.flush();
@@ -244,8 +244,8 @@ describe('Drug Order Details DisplayControl', function () {
             scope.$digest();
 
             var drugOrder = Bahmni.Clinical.DrugOrderViewModel.createFromContract(drugOrders[0]);
-            Bahmni.ConceptSet.FormConditions.rules ={};
-            drugOrder.orderReasonConcept = {name:{name:"Other"}};
+            Bahmni.ConceptSet.FormConditions.rules = {};
+            drugOrder.orderReasonConcept = {name: {name: "Other"}};
             compiledElementScope.discontinue(drugOrder);
 
             expect(drugOrder.orderReasonNotesEnabled).toBe(true);
@@ -261,16 +261,17 @@ describe('Drug Order Details DisplayControl', function () {
             scope.$digest();
 
             var drugOrder = Bahmni.Clinical.DrugOrderViewModel.createFromContract(drugOrders[0]);
-            Bahmni.ConceptSet.FormConditions.rules ={ "Medication Stop Reason":function (drugOrder, conceptName) {
-                if (conceptName == "Adverse event") {
-                    drugOrder.orderReasonNotesEnabled = true;
-                    return true;
+            Bahmni.ConceptSet.FormConditions.rules = {
+                "Medication Stop Reason": function (drugOrder, conceptName) {
+                    if (conceptName == "Adverse event") {
+                        drugOrder.orderReasonNotesEnabled = true;
+                        return true;
+                    }
+                    else
+                        return false;
                 }
-                else
-                    return false;
-            }
             };
-            drugOrder.orderReasonConcept = {name:{name:"Adverse event"}};
+            drugOrder.orderReasonConcept = {name: {name: "Adverse event"}};
             compiledElementScope.discontinue(drugOrder);
 
             expect(drugOrder.orderReasonNotesEnabled).toBe(true);
@@ -286,20 +287,21 @@ describe('Drug Order Details DisplayControl', function () {
             scope.$digest();
 
             var drugOrder = Bahmni.Clinical.DrugOrderViewModel.createFromContract(drugOrders[0]);
-            Bahmni.ConceptSet.FormConditions.rules ={ "Medication Stop Reason":function (drugOrder, conceptName) {
-                if (conceptName == "Adverse event") {
-                    drugOrder.orderReasonNotesEnabled = true;
-                    return true;
+            Bahmni.ConceptSet.FormConditions.rules = {
+                "Medication Stop Reason": function (drugOrder, conceptName) {
+                    if (conceptName == "Adverse event") {
+                        drugOrder.orderReasonNotesEnabled = true;
+                        return true;
+                    }
+                    else
+                        return false;
                 }
-                else
-                    return false;
-            }
             };
-            drugOrder.orderReasonConcept = {name:{name:"Adverse event"}};
+            drugOrder.orderReasonConcept = {name: {name: "Adverse event"}};
             compiledElementScope.updateFormConditions(drugOrder);
             expect(drugOrder.orderReasonNotesEnabled).toBe(true);
 
-            drugOrder.orderReasonConcept = {name:{name:"other event"}};
+            drugOrder.orderReasonConcept = {name: {name: "other event"}};
             compiledElementScope.updateFormConditions(drugOrder);
             expect(drugOrder.orderReasonNotesEnabled).toBe(false);
 
@@ -307,5 +309,49 @@ describe('Drug Order Details DisplayControl', function () {
 
     });
 
+    describe("Column header Internationalization", function () {
+        it("should pick the column name header key from treatmentConfig", function () {
+            scope.params = {
+                columnHeaders: {
+                    drugName: "drugg"
+                }
+            };
+            element = $compile(simpleHtml)(scope);
+            scope.$digest();
+            mockBackend.flush();
 
+            var compiledElementScope = element.isolateScope();
+            scope.$digest();
+            expect(compiledElementScope.columnHeaders.drugName).toBe("drugg");
+        });
+
+        it("should pick the default column name header key if not present in treatmentConfig", function () {
+            element = $compile(simpleHtml)(scope);
+            scope.$digest();
+            mockBackend.flush();
+
+            var compiledElementScope = element.isolateScope();
+            scope.$digest();
+            expect(compiledElementScope.columnHeaders.drugName).toBe("DRUG_DETAILS_DRUG_NAME");
+        });
+    })
+
+    describe("voidDrugOrder", function () {
+        it('should broadcast sectionUpdated event on void', function () {
+            element = $compile(simpleHtml)(scope);
+            scope.$digest();
+            mockBackend.flush();
+
+            treatmentService.voidDrugOrder.and.callFake(function() {
+                return q.defer().promise;
+            });
+
+            var compiledElementScope = element.isolateScope();
+
+            var drugOrder = Bahmni.Clinical.DrugOrderViewModel.createFromContract(activeDrugOrder);
+            compiledElementScope.remove(drugOrder);
+
+            expect(treatmentService.voidDrugOrder).toHaveBeenCalledWith(drugOrder);
+        });
+    });
 });

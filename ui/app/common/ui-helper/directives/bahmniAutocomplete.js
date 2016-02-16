@@ -19,7 +19,6 @@ angular.module('bahmni.common.uiHelper')
         scope.$watch('initialValue', function() {
             if(scope.initialValue) {
                 scope.selectedValue = scope.initialValue;
-                scope.$apply();
             }
         });
 
@@ -80,12 +79,12 @@ angular.module('bahmni.common.uiHelper')
             responseMap: '&?',
             onSelect: '&',
             onEdit: '&?',
-            minLength: '=',
-            blurOnSelect: '=',
-            strictSelect: '=',
+            minLength: '=?',
+            blurOnSelect: '=?',
+            strictSelect: '=?',
             validationMessage: '@',
-            isInvalid: "=",
-            initialValue: "="
+            isInvalid: "=?",
+            initialValue: "=?"
         }
     };
 });

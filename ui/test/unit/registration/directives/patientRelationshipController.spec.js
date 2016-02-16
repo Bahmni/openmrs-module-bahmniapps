@@ -128,6 +128,33 @@ describe('PatientRelationshipController', function () {
         });
     });
 
+    describe('getChosenRelationshipType',function(){
+       it('should return provider when provider relationship is chosen', function(){
+           var relationship = {
+               patientIdentifier: "Doctor",
+               relationshipType: {"uuid": "8d919b58-c2cc-11de-8d13-0010c6dffd0f"},
+               personB: {"uuid": "uuid"}
+           };
+           expect(scope.getChosenRelationshipType(relationship)).toBe("provider");
+       })
+       it('should return patient when patient relationship is chosen', function(){
+           var relationship = {
+               patientIdentifier: "Patient",
+               relationshipType: {"uuid": "8d91a01c-c2cc-11de-8d13-0010c6dffd0f"},
+               personB: {"uuid": "uuid"}
+           };
+           expect(scope.getChosenRelationshipType(relationship)).toBe("patient");
+       })
+       it('should return undefined when no relationship is chosen', function(){
+           var relationship = {
+               patientIdentifier: "Doctor",
+               relationshipType: {"uuid": undefined},
+               personB: null
+           };
+
+           expect(scope.getChosenRelationshipType(relationship)).toBeUndefined();
+       })
+    });
     describe("clearRelationshipRow", function(){
         it("should clear the relationship data", function () {
             var patientRelationship = {

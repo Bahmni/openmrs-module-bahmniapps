@@ -23,20 +23,20 @@ Bahmni.Auth.User = function (user) {
     };
 
     this.addToRecentlyViewed = function (patient, maxPatients) {
-        if (!_.any(this.recentlyViewedPatients, {'uuid': patient.uuid})) {
+        if (!_.some(this.recentlyViewedPatients, {'uuid': patient.uuid})) {
             this.recentlyViewedPatients.unshift({
                 uuid: patient.uuid,
                 name: patient.name,
                 identifier: patient.identifier
             });
             if (_.size(this.recentlyViewedPatients) >= maxPatients) {
-                this.recentlyViewedPatients = _.first(this.recentlyViewedPatients, maxPatients);
+                this.recentlyViewedPatients = _.take(this.recentlyViewedPatients, maxPatients);
             }
         }
     };
 
     this.isFavouriteObsTemplate = function (conceptName) {
-        return _.contains(this.favouriteObsTemplates, conceptName);
+        return _.includes(this.favouriteObsTemplates, conceptName);
     };
 
     this.toggleFavoriteObsTemplate = function (conceptName) {
@@ -48,7 +48,7 @@ Bahmni.Auth.User = function (user) {
     };
 
     this.isFavouriteWard = function (wardName) {
-        return _.contains(this.favouriteWards, wardName);
+        return _.includes(this.favouriteWards, wardName);
     };
 
     this.toggleFavoriteWard = function (wardName) {

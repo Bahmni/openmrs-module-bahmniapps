@@ -59,6 +59,7 @@
 
 .template-container {
     padding: 65px 20px;
+    position: relative;
     section {
         margin-bottom: 15px;
         section, table {
@@ -203,16 +204,16 @@ body.abc.ngdialog-open{
             margin-top: -52px;
             margin-bottom: 20px;
             padding: 0;
+            overflow: hidden;
             @media (max-width :1024px) {
                 margin-left:auto;
                 margin-right:auto;
                 max-width: 1000px;
                 height: 610px;
                 min-height: 610px;
-                overflow: scroll;
+                overflow: auto;
                 box-sizing: border-box;
                 padding: 0 0px 10px;
-                color: #fff;
             }
             .template-container {
                 padding:10px 20px;
@@ -220,6 +221,11 @@ body.abc.ngdialog-open{
                 width: 100%;
                 margin-bottom: 20px;
                 margin-top: 20px;
+                overflow: hidden;
+                .concept-set-container{
+                    height: 610px;
+                    overflow-y: auto;
+                }
                 @media (max-width :1024px) {
                     position: static;
                 }

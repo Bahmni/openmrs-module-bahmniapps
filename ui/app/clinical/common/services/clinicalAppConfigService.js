@@ -7,14 +7,6 @@ angular.module('bahmni.clinical')
             return appService.getAppDescriptor().getExtensions("org.bahmni.clinical.treatment.links", "link") || [];
         };
 
-        this.getDrugOrderConfig = function () {
-            var appDescriptor = appService.getAppDescriptor();
-            var medicationConfig = appDescriptor.getConfigForPage("medication") || {};
-            var drugOrderConfig = appDescriptor.getConfigValue("drugOrder") || {};
-
-            return _.merge(drugOrderConfig, medicationConfig);
-        };
-
         this.getAllConceptsConfig = function () {
             return appService.getAppDescriptor().getConfigValue("conceptSetUI") || {};
         };
@@ -62,7 +54,13 @@ angular.module('bahmni.clinical')
         this.getConsultationBoardLink = function () {
             var allBoards = this.getAllConsultationBoards();
             var defaultBoard = _.find(allBoards, 'default');
-            if (defaultBoard) {
+            if(stateParams.programUuid) {
+                var programParams = "?programUuid=" + stateParams.programUuid
+                    + "&dateEnrolled=" + stateParams.dateEnrolled
+                    + "&dateCompleted" + stateParams.dateCompleted;
+                return "/" + stateParams.configName + urlHelper.getPatientUrl() + "/" + defaultBoard.url + programParams;
+            }
+            else if (defaultBoard) {
                 return "/" + stateParams.configName + urlHelper.getPatientUrl() + "/" + defaultBoard.url + "?encounterUuid=active";
             }
             return urlHelper.getConsultationUrl();

@@ -13,7 +13,7 @@ angular.module('bahmni.registration')
             }
         };
     })
-    .controller('AddressFieldsDirectiveController', function ($scope, addressAttributeService) {
+    .controller('AddressFieldsDirectiveController', function ($scope, addressHierarchyService) {
         var addressLevelsCloneInDescendingOrder = $scope.addressLevels.slice(0).reverse();
         $scope.addressLevelsChunks = Bahmni.Common.Util.ArrayUtil.chunk(addressLevelsCloneInDescendingOrder, 2);
         var addressLevelsNamesInDescendingOrder = addressLevelsCloneInDescendingOrder.map(function (addressLevel) {
@@ -32,35 +32,19 @@ angular.module('bahmni.registration')
                 autocompletedFields = [];
                 autocompletedFields.push(fieldName);
                 autocompletedFields = autocompletedFields.concat(parentFields);
-            }
+            };
         };
 
         $scope.getAddressEntryList = function (field) {
             return function (searchAttrs) {
-                return addressAttributeService.search(field, searchAttrs.term);
+                return addressHierarchyService.search(field, searchAttrs.term);
             };
         };
 
-        var getNextAvailableParentName = function (addressField) {
-            var parent = addressField.parent;
-            while (parent) {
-                if (parent.name) return parent.name;
-                else parent = parent.parent;
-            }
-        };
+        $scope.getAddressDataResults = addressHierarchyService.getAddressDataResults;
 
-        $scope.getAddressDataResults = function (data) {
-            return data.data.map(function (addressField) {
-                var parentName = getNextAvailableParentName(addressField);
-                return {
-                    'value': addressField.name,
-                    'label': addressField.name + ( parentName ? ", " + parentName : "" ),
-                    addressField: addressField
-                }
-            });
-        };
         $scope.clearFields = function (fieldName) {
-            if(_.contains(autocompletedFields, fieldName)) {
+            if(_.includes(autocompletedFields, fieldName)) {
                 var childFields = autocompletedFields.slice(0, autocompletedFields.indexOf(fieldName));
                 childFields.forEach(function (childField) {
                     $scope.address[childField] = "";

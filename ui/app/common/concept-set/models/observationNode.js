@@ -119,7 +119,7 @@ Bahmni.ConceptSet.ObservationNode.prototype = {
 
     _getGroupMembersWithoutClass: function(classNames) {
          var groupMembers = this.groupMembers.filter(function (member) {
-            return !(_.include(classNames, member.concept.conceptClass.name) || _.include(classNames, member.concept.conceptClass));
+            return !(_.includes(classNames, member.concept.conceptClass.name) || _.includes(classNames, member.concept.conceptClass));
         });
 
         return groupMembers;
@@ -371,6 +371,7 @@ Bahmni.ConceptSet.ObservationNode.prototype = {
     },
 
     hasInvalidDateTime: function () {
+        if (this.isComputed()) return false;
         var date = Bahmni.Common.Util.DateUtil.parse(this.value);
         if (!this.conceptUIConfig.allowFutureDates) {
             if (moment() < date) return true;

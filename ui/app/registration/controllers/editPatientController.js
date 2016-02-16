@@ -7,17 +7,16 @@ angular.module('bahmni.registration')
             var uuid = $stateParams.patientUuid;
             $scope.patient = {};
             $scope.actions = {};
-            $scope.readOnlyFields = {};
             $scope.addressHierarchyConfigs = appService.getAppDescriptor().getConfigValue("addressHierarchy");
 
             $scope.today = dateUtil.getDateWithoutTime(dateUtil.now());
 
             var setReadOnlyFields = function () {
+                $scope.readOnlyFields = {};
                 var readOnlyFields = appService.getAppDescriptor().getConfigValue("readOnlyFields");
                 angular.forEach(readOnlyFields, function (readOnlyField) {
                     if ($scope.patient[readOnlyField]) {
                         $scope.readOnlyFields[readOnlyField] = true;
-
                     }
                 });
             };
@@ -43,8 +42,8 @@ angular.module('bahmni.registration')
                 var getPatientPromise = patientService.get(uuid).then(successCallBack);
 
                 var isDigitized = encounterService.getDigitized(uuid);
-                isDigitized.success(function (data) {
-                    var encountersWithObservations = data.results.filter(function (encounter) {
+                isDigitized.then(function (data) {
+                    var encountersWithObservations = data.data.results.filter(function (encounter) {
                         return encounter.obs.length > 0
                     });
                     $scope.isDigitized = encountersWithObservations.length > 0;
@@ -82,7 +81,7 @@ angular.module('bahmni.registration')
             };
 
             $scope.isReadOnly = function (field) {
-                return $scope.readOnlyFields[field];
+                return $scope.readOnlyFields? ($scope.readOnlyFields[field]? true: false): undefined;
             };
 
             $scope.afterSave = function () {

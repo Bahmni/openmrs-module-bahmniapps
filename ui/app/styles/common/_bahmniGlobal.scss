@@ -52,6 +52,10 @@ input[file-upload] {
 .is-abnormal {
   color: red!important;
 }
+.is-abnormal-bold{
+  font-family:$OpenSansBoldFont !important;
+  color: red!important;
+}
 
 .visible-print {
   display: none;
@@ -266,10 +270,13 @@ u, .add-drug-btninput[value]:first-letter {
   }
 }
 
-.fa-pencil{
+.fa-pencil, .fa-eye{
   cursor: pointer;
 }
 
+.cursor-pointer{
+  cursor: pointer;
+}
 
 .clear-both{
   clear: both;
@@ -330,5 +337,14 @@ u, .add-drug-btninput[value]:first-letter {
       width: 100%;
     }
   }
+  &.removeLegend{
+    &:before{
+      display: none;
+    }
+    span.mylegend{
+      display: none;
+    }
+  }
+
 }
 

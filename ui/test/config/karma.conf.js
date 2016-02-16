@@ -2,7 +2,8 @@ module.exports = function (config) {
     config.set({
         basePath: '../..',
         frameworks: ['jasmine'],
-        browsers: ['PhantomJS'],
+        browsers: ['Firefox'],
+        browserNoActivityTimeout: 100000,
         autoWatch: false,
         singleRun: true,
         files: [
@@ -21,6 +22,7 @@ module.exports = function (config) {
             'app/components/offline/offline.min.js',
             'app/components/angular-ui-router/release/angular-ui-router.js',
             'app/components/lodash/dist/lodash.min.js',
+            'app/components/lovefield/dist/lovefield.min.js',
             'app/components/angular-ui-select2/src/select2.js',
             'app/components/angular-bindonce/bindonce.js',
             'app/components/stacktrace-js/stacktrace.js',
@@ -50,9 +52,11 @@ module.exports = function (config) {
             'app/orders/**/*.js',
             'app/reports/**/*.js',
             'app/registration/**/*.js',
-            'app/offline/**/*.js',
             'test/support/**/*.js',
-            'test/unit/**/*.js'
+            'test/unit/**/*.js',
+            'test/integration/**/*.js',
+            'test/integration/utils/*.js',
+            {pattern: 'test/data/*.json', watched: true, served: true, included: false}
         ],
         reporters: ['junit', 'progress', 'coverage'],
         preprocessors: {
@@ -63,10 +67,11 @@ module.exports = function (config) {
             'app/dhis/**/*.js': ['coverage'],
             'app/document-upload/**/*.js': ['coverage'],
             'app/home/**/*.js': ['coverage'],
-            'app/offline/**/*.js': ['coverage'],
             'app/orders/**/*.js': ['coverage'],
             'app/registration/**/*.js': ['coverage'],
-            'app/common/displaycontrols/**/views/*.html':['ng-html2js']
+            'app/common/displaycontrols/**/views/*.html':['ng-html2js'],
+            'app/common/concept-set/views/*.html':['ng-html2js'],
+            'app/clinical/**/**/*.html':['ng-html2js']
         },
         coverageReporter: {
             reporters: [

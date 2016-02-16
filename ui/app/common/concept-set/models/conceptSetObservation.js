@@ -165,7 +165,7 @@ Bahmni.ConceptSet.Observation.prototype = {
 
     isStepperControl: function() {
         if(this.isNumeric()){
-            return this.conceptUIConfig.stepper;
+            return this.conceptUIConfig.stepper == true;
         }
     },
 
@@ -232,6 +232,7 @@ Bahmni.ConceptSet.Observation.prototype = {
     },
 
     isValidDate: function () {
+        if (this.isComputed()) return true;
         if (!this.hasValue()) return true;
         var date = Bahmni.Common.Util.DateUtil.parse(this.value);
         if (!this.conceptUIConfig.allowFutureDates) {
@@ -242,6 +243,7 @@ Bahmni.ConceptSet.Observation.prototype = {
     },
 
     hasInvalidDateTime: function () {
+        if (this.isComputed()) return false;
         var date = Bahmni.Common.Util.DateUtil.parse(this.value);
         if (!this.conceptUIConfig.allowFutureDates) {
             if (moment() < date) return true;
@@ -279,7 +281,7 @@ Bahmni.ConceptSet.Observation.prototype = {
     },
 
     isRequired: function () {
-        return this.conceptUIConfig.required;
+        return this.conceptUIConfig.required == true  ;
     },
 
     isFormElement: function() {

@@ -5,9 +5,14 @@ describe("DrugOrderHistoryController", function () {
     beforeEach(module('bahmni.clinical'));
 
     var scope, prescribedDrugOrders, activeDrugOrder, _treatmentService,
-        clinicalAppConfigService, retrospectiveEntryService, translate, appService, rootScope;
+       retrospectiveEntryService, translate, appService, rootScope;
     var fetchActiveTreatmentsDeferred;
     var DateUtil = Bahmni.Common.Util.DateUtil;
+    var treatmentConfig =  {
+        drugOrderHistoryConfig: {
+            numberOfVisits: 4
+        }
+    }
 
     beforeEach(module(function ($provide) {
         translate = jasmine.createSpyObj('$translate',['instant']);
@@ -25,6 +30,7 @@ describe("DrugOrderHistoryController", function () {
     }));
 
     beforeEach(inject(function ($controller, $rootScope) {
+
         rootScope = $rootScope;
         spyOn($rootScope, '$broadcast');
         $rootScope.visit = {startDate: 1410322624000};
@@ -32,8 +38,6 @@ describe("DrugOrderHistoryController", function () {
         scope.consultation = {preSaveHandler: new Bahmni.Clinical.Notifier(), discontinuedDrugs: [],
             activeAndScheduledDrugOrders: [Bahmni.Clinical.DrugOrderViewModel.createFromContract(scheduledOrder), Bahmni.Clinical.DrugOrderViewModel.createFromContract(activeDrugOrder)] };
         scope.currentBoard = {extensionParams: {}};
-        clinicalAppConfigService = jasmine.createSpyObj('clinicalAppConfigService', ['getDrugOrderConfig']);
-        clinicalAppConfigService.getDrugOrderConfig.and.returnValue([]);
 
         var retrospectiveEntry = Bahmni.Common.Domain.RetrospectiveEntry.createFrom(Date.now());
         retrospectiveEntryService = jasmine.createSpyObj('retrospectiveEntryService', ['getRetrospectiveEntry']);
@@ -45,12 +49,13 @@ describe("DrugOrderHistoryController", function () {
             $scope: scope,
             activeDrugOrders : [activeDrugOrder, scheduledOrder],
             TreatmentService: _treatmentService,
-            clinicalAppConfigService: clinicalAppConfigService,
             retrospectiveEntryService: retrospectiveEntryService,
             $stateParams: {patientUuid: "patientUuid"},
             visitContext: {},
             spinner : spinner,
-            visitHistory: []
+            visitHistory: [],
+            treatmentConfig: treatmentConfig
+
         });
 
     }));
@@ -77,7 +82,11 @@ describe("DrugOrderHistoryController", function () {
 
                 done();
             });
+
         });
+        it("should get prescribed and active Drugorders with correct no of visits ", function () {
+                expect( _treatmentService.getPrescribedDrugOrders).toHaveBeenCalledWith("patientUuid", true, 4, undefined,undefined);
+            });
     });
 
     describe("when conditionally enable or disable order reason text for drug stoppage", function () {
@@ -157,7 +166,7 @@ describe("DrugOrderHistoryController", function () {
         it("should be same as start date of drug order if past drug", function() {
             var pastDrugOrder = Bahmni.Clinical.DrugOrderViewModel.createFromContract(activeDrugOrder);
             var minDate = scope.getMinDateForDiscontinue(pastDrugOrder);
-            expect(minDate).toEqual("2014-09-10");
+            expect(minDate).toEqual(moment(pastDrugOrder.effectiveStartDate).format("YYYY-MM-DD"));
         });
 
         it("should be same as current date if scheduled drug", function() {

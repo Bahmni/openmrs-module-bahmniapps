@@ -2,11 +2,15 @@ var Bahmni = Bahmni || {};
 Bahmni.Common = Bahmni.Common || {};
 
 (function(){
-    var RESTWS = "/openmrs/ws/rest";
-    var RESTWS_V1 = "/openmrs/ws/rest/v1";
+    var hostUrl = localStorage.getItem('host') ? ("https://" + localStorage.getItem('host'))  : "";
+    var RESTWS = hostUrl + "/openmrs/ws/rest";
+    var RESTWS_V1 = hostUrl + "/openmrs/ws/rest/v1";
     var BAHMNI_CORE = RESTWS_V1 + "/bahmnicore";
     var EMRAPI = RESTWS + "/emrapi";
     var BACTERIOLOGY = RESTWS_V1;
+    var BASE_URL = hostUrl + "/bahmni_config/openmrs/apps/";
+    var CUSTOM_URL = hostUrl + "/implementation_config/openmrs/apps/";
+    var CUSTOM_LOCALE_URL = hostUrl + "/bahmni_config/openmrs/i18n/";
 
     var serverErrorMessages = [
         {
@@ -21,6 +25,7 @@ Bahmni.Common = Bahmni.Common || {};
         "setMembers:(uuid,name,names,conceptClass))))";
 
     Bahmni.Common.Constants = {
+        hostURL: hostUrl,
         dateFormat: "dd/mm/yyyy",
         dateDisplayFormat: "DD-MMM-YYYY",
         timeDisplayFormat: "hh:mm",
@@ -52,7 +57,7 @@ Bahmni.Common = Bahmni.Common || {};
         labResultUploadedFileNameUrl: "/uploaded_results/",
         visitSummaryUrl: BAHMNI_CORE + "/visit/summary",
         encounterModifierUrl: BAHMNI_CORE + "/bahmniencountermodifier",
-        openmrsUrl: "/openmrs",
+        openmrsUrl: hostUrl + "/openmrs",
         idgenConfigurationURL: RESTWS_V1 + "/idgen/identifiersources",
         bahmniRESTBaseURL: BAHMNI_CORE + "",
         observationsUrl: BAHMNI_CORE + "/observations",
@@ -70,7 +75,7 @@ Bahmni.Common = Bahmni.Common || {};
         adminImportStatusUrl: BAHMNI_CORE + "/admin/upload/status",
         dhisAllTasksUrl: RESTWS_V1 + "/dhis/tasks",
         programUrl: RESTWS_V1 + "/program",
-        programEnrollPatientUrl: RESTWS_V1 + "/programenrollment",
+        programEnrollPatientUrl: RESTWS_V1 + "/bahmniprogramenrollment",
         programEnrollmentDefaultInformation: "default",
         programEnrollmentFullInformation: "full",
         programAttributeTypes: RESTWS_V1 + "/programattributetype",
@@ -159,9 +164,21 @@ Bahmni.Common = Bahmni.Common || {};
         drugUrl : RESTWS_V1 + "/drug?s=ordered",
         bahmniBacteriologyResultsUrl: BACTERIOLOGY + "/specimen",
         bedFromVisit: RESTWS_V1+ "/beds",
+        ordersUrl: RESTWS_V1+ "/order",
         formDataUrl: RESTWS_V1 + "/obs",
+        providerUrl: RESTWS_V1 + "/provider",
+        drugUrl : RESTWS_V1 + "/drug",
+        orderTypeUrl : RESTWS_V1 +  "/ordertype",
+        userUrl : RESTWS_V1 + "/user",
+        sqlUrl : BAHMNI_CORE + "/sql",
         patientAttributeDateFieldFormat: "org.openmrs.util.AttributableDate",
         platform:"user.platform",
+        RESTWS_V1 : RESTWS_V1,
+        baseUrl :  BASE_URL,
+        customUrl : CUSTOM_URL,
+        customLocaleUrl : CUSTOM_LOCALE_URL,
+        eventLogServiceUrl : hostUrl + "/event-log-service/rest/eventlog/getevents",
+        faviconUrl : hostUrl + "/bahmni/favicon.ico",
         platformType: {
             chrome: 'chrome',
             android: 'android',

@@ -171,11 +171,12 @@ describe('OrdersMapper', function () {
             {providers: [sampleProvider()], orders: [firstTestOrder, secondTestOrder, thirdTestOrder], observations: []}
         ];
 
+
         var sortedOrders = new Bahmni.Clinical.OrdersMapper().map(encounterTransactions, 'orders', allTestsAndPanelsConcept);
 
         expect(sortedOrders[0].concept.name).toBe("Test3");
         expect(sortedOrders[1].concept.name).toBe("Test1");
-    })
+    });
 
     it("should sort tests under panel", function () {
         var panelOrder = createOrder("Panel1", "2014-03-25T14:38:13.000+0530");

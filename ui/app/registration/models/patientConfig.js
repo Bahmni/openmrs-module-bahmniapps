@@ -43,7 +43,7 @@ Bahmni.Registration.PatientConfig = (function () {
                             translationKey: section.translationKey,
                             shortcutKey: section.shortcutKey,
                             order: section.order
-                        }
+                        };
                     }
                     sectionObject.attributes.push(item);
                     patientAttributesSections[key] = sectionObject;
@@ -62,7 +62,7 @@ Bahmni.Registration.PatientConfig = (function () {
     PatientConfig.prototype = {
         get: function (attributeUuid) {
             return this.attributeTypes.filter(function (item) {
-                return item.uuid === attributeUuid
+                return item.uuid === attributeUuid;
             })[0];
         },
 

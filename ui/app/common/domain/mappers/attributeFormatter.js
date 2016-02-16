@@ -17,13 +17,27 @@ Bahmni.Common.Domain.AttributeFormatter = (function () {
         })
     };
 
-    AttributeFormatter.prototype.removeUnfilledAttributes = function(formattedAttributes) {
-        return _.filter(formattedAttributes, function(elem){
-            return elem.value !== undefined;
+    AttributeFormatter.prototype.getMrsAttributesForUpdate = function (model, attributeTypes, attributes) {
+        return _.filter(AttributeFormatter.prototype.getMrsAttributes(model, attributeTypes), function (mrsAttribute) {
+            var attribute = _.find(attributes,function(attribute){
+              return mrsAttribute.attributeType.uuid === attribute.attributeType.uuid;
+            });
+            if(attribute && !attribute.voided) {
+                mrsAttribute.uuid = attribute.uuid;
+            }
+            return isAttributeChanged(mrsAttribute);
         });
     };
-    
-    function setAttributeValue(attributeType, attr, value) {
+
+    AttributeFormatter.prototype.removeUnfilledAttributes = function(formattedAttributes) {
+        return _.filter(formattedAttributes, isAttributeChanged);
+    };
+
+    var isAttributeChanged = function(attribute) {
+        return attribute.value || attribute.uuid;
+    };
+
+    var setAttributeValue = function setAttributeValue(attributeType, attr, value) {
         if (value === "" || value === null || value === undefined) {
             attr.voided = true;
         }
@@ -41,7 +55,7 @@ Bahmni.Common.Domain.AttributeFormatter = (function () {
         else {
             attr.value = value.toString();
         }
-    }
+    };
 
     return AttributeFormatter;
 })();

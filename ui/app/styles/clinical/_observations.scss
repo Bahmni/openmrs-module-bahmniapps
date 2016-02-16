@@ -14,11 +14,6 @@
     }
   }
   fieldset {
-    .form-group {
-      label span {
-        text-transform: capitalize;
-      }
-    }
     legend + .form-group {
       padding: 10px;
       border: 1px solid $lightGray;
@@ -50,6 +45,9 @@
         padding-left: 10px;
         margin-left: 10px;
         border-left: 1px solid #ccc;
+        @media screen and (max-width: 1024px) {
+          margin-top:0 !important;
+        }
       }
       .add-more-btn {
         font-size: 10px;
@@ -423,6 +421,7 @@ concept-set {
 
 .accept-btn-wrapper {
   margin-top: 5px;
+  margin-left:2px;
 }
 
 .stepper {

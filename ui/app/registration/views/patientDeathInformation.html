@@ -11,11 +11,11 @@
         <div class="col col2" ng-init="getDeathConcepts()">
             <div class="field-attribute">
                 <label class="till-text">{{ ::'REGISTRATION_LABEL_REASON_FOR_DEATH' | translate}}</label>
-                <span class="asterick" ng-if="patient.dead">*</span>
+                <span class="asterick" ng-show="patient.dead">*</span>
             </div>
             <div class="field-value">
                 <select ng-model="patient.causeOfDeath"
-                        ng-options="concept.display for concept in deathConcepts track by concept.uuid"
+                        ng-options="concept.display for concept in ::deathConcepts track by concept.uuid"
                         ng-change="selectIsDead()" ng-required="patient.dead">
                     <option value="">{{ ::'REGISTRATION_LABEL_CHOOSE_VALUE' | translate}}</option>
                 </select>

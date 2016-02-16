@@ -26,7 +26,7 @@ angular.module('bahmni.common.domain')
 
         this.getAssignedBedForPatient = function(patientUuid) {
             var deffered = $q.defer();
-            $http.get("/openmrs/ws/rest/v1/beds", {
+            $http.get(Bahmni.Common.Constants.bedFromVisit, {
                 method: "GET",
                 params: {patientUuid: patientUuid, v: "full"},
                 withCredentials: true
@@ -37,7 +37,7 @@ angular.module('bahmni.common.domain')
         };
 
         this.freeBed = function (bedId, patientUuid) {
-            return $http.delete("/openmrs/ws/rest/v1/beds/" + bedId, {params:{patientUuid: patientUuid}}, {
+            return $http.delete(Bahmni.Common.Constants.bedFromVisit + "/" + bedId, {params:{patientUuid: patientUuid}}, {
                 withCredentials: true,
                 headers: {"Accept": "application/json", "Content-Type": "application/json"}
             });
@@ -45,14 +45,14 @@ angular.module('bahmni.common.domain')
 
         this.assignBed = function (bedId, patientUuid, encounterUuid) {
             var patientJson = {"patientUuid": patientUuid, "encounterUuid" : encounterUuid};
-            return $http.post("/openmrs/ws/rest/v1/beds/" + bedId, patientJson, {
+            return $http.post(Bahmni.Common.Constants.bedFromVisit + "/" + bedId, patientJson, {
                 withCredentials: true,
                 headers: {"Accept": "application/json", "Content-Type": "application/json"}
             });
         };
 
         this.getBedInfo = function (bedId) {
-            return $http.get("/openmrs/ws/rest/v1/beds/" + bedId + "?v=custom:(bedId,bedNumber,patients:(uuid,person:(age,personName:(givenName,familyName),gender),identifiers:(uuid,identifier),),physicalLocation:(name))", {
+            return $http.get(Bahmni.Common.Constants.bedFromVisit + "/" + bedId + "?v=custom:(bedId,bedNumber,patients:(uuid,person:(age,personName:(givenName,familyName),gender),identifiers:(uuid,identifier),),physicalLocation:(name))", {
                 withCredentials: true
             });
         };

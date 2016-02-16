@@ -92,15 +92,17 @@
   }
   .history-relationship {
     overflow: hidden;
-    margin-bottom: 15px;
-    border-bottom: 1px #ccc solid;
-    padding-bottom: 15px;
     .row{
       &:nth-child(odd) {
         background-color: #EFEFEF;
       }
       &:nth-child(even) {
         background-color: #fff;
+      }
+      &:last-child{
+        margin-bottom: 15px;
+        border-bottom: 1px #ccc solid;
+        padding-bottom: 15px;
       }
       padding: 3px 3px 3px 8px;
       line-height: 30px;

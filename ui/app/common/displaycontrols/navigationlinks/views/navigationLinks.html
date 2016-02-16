@@ -1,11 +1,13 @@
-<section>
-    <h2 class="section-title">{{params | titleTranslate}}</h2>
-    <ul class="navigation-link-container">
-    	<li ng-repeat="link in params.links">
-    		<a ng-click="getUrl(link)" target="_blank" ng-if="showUrl(link)" class="title-link">{{link | titleTranslate}}</a>
-    	</li>
+<section class="navigation-links-wrapper">
+    <!--<h2 class="section-title">{{params | titleTranslate}}</h2>-->
+    <div class="placeholder-text" ng-show="noNavigationLinksMessage">
+        <p>{{noNavigationLinksMessage}}</p>
+    </div>
+    <ul class="navigation-link-container clearfix" ng-show="!noNavigationLinksMessage">
+        <li ng-repeat="link in getLinks()">
+            <a ng-click="getUrl(link)" target="_blank" ng-if="showUrl(link)" class="title-link">
+                {{link | titleTranslate}}
+            </a>
+        </li>
     </ul>
-</section>
-<section ng-show="noNavigationLinksMessage">
-    <div class="placeholder-text">{{noNavigationLinksMessage}}</div>
 </section>

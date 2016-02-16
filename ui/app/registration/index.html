@@ -101,13 +101,21 @@
         <script src="../common/offline/init.js"></script>
         <script src="../common/offline/offlineService.js"></script>
         <script src="../common/offline/initializeOfflineSchema.js"></script>
-        <script src="../common/offline/dbservices/dao/offlineSearchDao.js"></script>
-        <script src="../common/offline/dbservices/dao/offlineDao.js"></script>
-        <script src="../common/offline/dbservices/dao/patientAddressDao.js"></script>
-        <script src="../common/offline/dbservices/dao/patientAttributeDao.js"></script>
-        <script src="../common/offline/dbservices/dao/patientDao.js"></script>
-        <script src="../common/offline/dbservices/dao/offlineMarkerDao.js"></script>
-        <script src="../common/offline/dbservices/offlineAddressHierarchyDao.js"></script>
+        <script src="../common/offline/offlineDbInitialization.js"></script>
+        <script src="../common/offline/offlineSyncInitialization.js"></script>
+        <script src="../common/offline/services/eventLogService.js"></script>
+        <script src="../common/offline/services/offlineSyncService.js"></script>
+        <script src="../common/offline/services/androidDbService.js"></script>
+        <script src="../common/offline/dbservices/dao/offlineSearchDbService.js"></script>
+        <script src="../common/offline/dbservices/dao/offlineDbService.js"></script>
+        <script src="../common/offline/dbservices/dao/patientAddressDbService.js"></script>
+        <script src="../common/offline/dbservices/dao/patientAttributeDbService.js"></script>
+        <script src="../common/offline/dbservices/dao/patientDbService.js"></script>
+        <script src="../common/offline/dbservices/dao/offlineMarkerDbService.js"></script>
+        <script src="../common/offline/dbservices/dao/offlineAddressHierarchyDbService.js"></script>
+        <script src="../common/offline/schemaDefinitions.js"></script>
+        <script src="../common/offline/models/UUID.js"></script>
+        <script src="../common/offline/models/AddressFields.js"></script>
 
         <script src="../common/auth/init.js"></script>
         <script src="../common/auth/user.js"></script>
@@ -130,7 +138,6 @@
         <script src="../common/concept-set/directives/stepper.js"></script>
         <script src="../common/concept-set/directives/obsConstraints.js"></script>
         <script src="../common/concept-set/directives/duration.js"></script>
-        <script src="../common/concept-set/directives/integer.js"></script>
         <script src="../common/concept-set/directives/latestObs.js"></script>
         <script src="../common/concept-set/models/conceptSetGroupValidationHandler.js"></script>
         <script src="../common/concept-set/models/conceptSetObservation.js"></script>
@@ -178,8 +185,10 @@
         <script src="initialization.js"></script>
         <script src="defaults.js"></script>
         <script src="constants.js"></script>
-        
-        
+        <!--script to get number of watchers on page-->
+        <!--<script src="watchers.js"></script>-->
+
+        <script src="directives/patientImage.js"></script>
         <script src="directives/addressFields.js"></script>
         <script src="directives/topDownAddressFields.js"></script>
         <script src="directives/printOptions.js"></script>
@@ -195,7 +204,7 @@
         <script src="services/offlinePatientService.js"></script>
         <!--<script src="services/visitService.js"></script>-->
         <script src="services/patientAttributeService.js"></script>
-        <script src="services/addressAttributeService.js"></script>
+        <script src="services/addressHierarchyService.js"></script>
         <script src="services/registrationCardPrinter.js"></script>
         <script src="../common/domain/mappers/attributeTypeMapper.js"></script>
         <script src="../common/domain/mappers/attributeFormatter.js"></script>

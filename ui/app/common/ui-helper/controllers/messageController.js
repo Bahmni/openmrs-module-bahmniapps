@@ -22,5 +22,13 @@ angular.module('bahmni.common.uiHelper')
 
             $scope.isErrorMessagePresent = function(){
                 return $scope.messages.error.length > 0 ? true : false;
+            };
+
+            $scope.isFormErrorMessagePresent = function(){
+                return $scope.messages.formError.length > 0 ? true : false;
+            };
+
+            $scope.isInfoMessagePresent = function(){
+                return $scope.messages.info.length > 0 ? true : false;
             }
         }]);

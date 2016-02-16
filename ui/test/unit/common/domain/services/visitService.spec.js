@@ -21,7 +21,7 @@ describe('Registration Visit Service', function () {
             }})
     };
 
-    var offlineService = {offline: function(){}};
+    var offlineService = {isOfflineApp: function(){}};
 
     beforeEach(function () {
         module('bahmni.common.domain');

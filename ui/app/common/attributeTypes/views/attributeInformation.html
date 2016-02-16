@@ -6,10 +6,10 @@
     <div data-ng-switch-when="java.lang.String">
         <span data-ng-switch="::isAutoComplete(attribute.name)">
             <input data-ng-switch-when="true"
-                   type="text" id="{{::$parent.attribute.name}}"
-                   ng-model="$parent.patient[$parent.attribute.name]" data-item-type="personAttribute"
+                   type="text" id="{{::attribute.name}}"
+                   ng-model="targetModel[attribute.name]" data-item-type="personAttribute"
                    my-autocomplete source="getAutoCompleteList" response-map="getDataResults"
-                   ng-disabled="::isReadOnly($parent.attribute.name)" ng-required="{{::attribute.required}}">
+                   ng-disabled="::isReadOnly(attribute.name)" ng-required="{{::attribute.required}}">
 
             <input data-ng-switch-default
                    type="text" pattern-validate id="{{::attribute.name}}"
@@ -19,7 +19,14 @@
     </div>
     <div class="left" data-ng-switch-when="org.openmrs.Concept">
         <select id="{{::attribute.name}}" ng-model="targetModel[attribute.name]"
-                ng-options="a.conceptId as a.description for a in attribute.answers"
+                ng-options="a.conceptId as a.description for a in ::attribute.answers"
+                ng-disabled="::isReadOnly(attribute.name)" ng-required="{{::attribute.required}}">
+            <option value=""></option>
+        </select>
+    </div>
+    <div class="left" data-ng-switch-when="org.bahmni.module.bahmnicore.customdatatype.datatype.CodedConceptDatatype">
+        <select id="{{::attribute.name}}" ng-model="targetModel[attribute.name]"
+                ng-options="a.conceptId as a.description for a in ::attribute.answers"
                 ng-disabled="::isReadOnly(attribute.name)" ng-required="{{::attribute.required}}">
             <option value=""></option>
         </select>
@@ -27,8 +34,8 @@
     <div class="left" data-ng-switch-when="org.openmrs.customdatatype.datatype.FreeTextDatatype">
         <input
                 type="text" pattern-validate id="{{::attribute.name}}"
-                ng-model="targetModel[attribute.name]" data-item-type="personAttribute"
-                ng-disabled="::isReadOnly(attribute.name)" ng-required="{{::attribute.required}}">
+                ng-model="targetModel[attribute.name]" data-item-type="personAttribute"  pattern="^\S.*$"
+                ng-disabled="::isReadOnly(attribute.name)" ng-required="{{::attribute.required}}"/>
     </div>
     <div class="left" data-ng-switch-when="java.lang.Integer">
         <input id="{{::attribute.name}}" type="number" pattern-validate
@@ -57,6 +64,10 @@
     </div>
     <div class="left" data-ng-switch-when="org.openmrs.util.AttributableDate">
         <input id="{{::attribute.name}}" type="date" ng-model="targetModel[attribute.name]"
+               ng-disabled="::isReadOnly(attribute.name)" ng-required="{{::attribute.required}}"/>
+    </div>
+    <div class="left" data-ng-switch-when="org.openmrs.customdatatype.datatype.RegexValidatedTextDatatype">
+        <input id="{{::attribute.name}}" type="text" pattern="{{::attribute.pattern}}" ng-model="targetModel[attribute.name]"
                ng-disabled="::isReadOnly(attribute.name)" ng-required="{{::attribute.required}}"/>
     </div>
 </div>

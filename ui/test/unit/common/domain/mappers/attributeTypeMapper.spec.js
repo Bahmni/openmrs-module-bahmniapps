@@ -179,4 +179,33 @@ describe('AttributeTypeMapper', function () {
             required: true
         }));
     });
+
+    it('should map name, datatypeClassname if description, format not there for attributeTypes', function(){
+        var mrsAttributeTypes= [
+            {
+                "uuid" : "uuid2",
+                "name" : "Sample regex attribute",
+                "datatypeClassname" : "org.openmrs.customdatatype.datatype.RegexValidatedTextDatatype",
+                "datatypeConfig" : "[0-9]*"
+            }
+        ];
+        var mappedAttributeTypes = new Bahmni.Common.Domain.AttributeTypeMapper().mapFromOpenmrsAttributeTypes(mrsAttributeTypes, {});
+        expect(mappedAttributeTypes.attributeTypes[0].pattern).toBe("[0-9]*");
+        expect(mappedAttributeTypes.attributeTypes[0].format).toBe("org.openmrs.customdatatype.datatype.RegexValidatedTextDatatype");
+        expect(mappedAttributeTypes.attributeTypes[0].description).toBe("Sample regex attribute");
+    });
+
+    it('should map dataType Config to pattern for RegexValidatedTextDatatype attributeTypes', function(){
+        var mrsAttributeTypes= [
+           {
+               "uuid" : "uuid2",
+               "description" : "Sample regex attribute",
+               "name" : "Sample regex attribute",
+               "format" : "org.openmrs.customdatatype.datatype.RegexValidatedTextDatatype",
+               "datatypeConfig" : "[0-9]*"
+           }
+        ];
+        var mappedAttributeTypes = new Bahmni.Common.Domain.AttributeTypeMapper().mapFromOpenmrsAttributeTypes(mrsAttributeTypes, {});
+        expect(mappedAttributeTypes.attributeTypes[0].pattern).toBe("[0-9]*");
+    });
 });

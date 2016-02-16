@@ -61,6 +61,13 @@ describe("Tabular Observations", function() {
         expect(tabularObservations.atLeastOneValueSet()).toBeTruthy();
     });
 
+    it("should clone itself", function(){
+        var tabularObservations = new Bahmni.ConceptSet.TabularObservations(obsGroups, parentObs, {});
+        var newObj =  tabularObservations.cloneNew();
+        expect(tabularObservations.label).toEqual(newObj.label);
+        expect(tabularObservations.rows.length).toEqual(newObj.rows.length);
+    });
+
     var obsGroups = [{
         concept: {name:"DST Result", shortName: "DST"},
         label: "DST Result",

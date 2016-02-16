@@ -353,6 +353,25 @@ button.back-btn {
         text-overflow: ellipsis;
         text-align: left;
         height: 32px !important;
+      &.grid-row-element{
+        font-size: 12px;
+        padding-left: 15px;
+        padding-right: 15px;
+        .fa-ok{
+          display: none;
+          padding-top: 0;
+          padding-bottom: 0;
+          font-size: 14px;
+          line-height: inherit;
+        }
+        &.active{
+          color: #457FAC;
+          padding-left: 3px;
+          .fa-ok {
+            display: inline-block;
+          }
+        }
+      }
     }
     button:focus, a:focus, .btn:focus {
       border: 2px solid $clinicalFormFocus;
@@ -376,32 +395,56 @@ input[type="submit"].secondary-button:hover  {
 
 /* icon button */
 .comment-toggle {
-    padding: 5px;
-    @media (max-width:1024px){
-      margin: 7px 10px 0 10px;
-      //float: left;
+  padding: 5px;
+  @media (max-width: 1024px) {
+    margin: 7px 10px 0 10px;
+    //float: left;
+  }
+  .fa-file-text-o {
+    display: none;
+  }
+  &.has-notes {
+    .fa-file-text-o {
+      display: block;
     }
     .fa-file-o {
-        position: relative;
-        font-size: 16px;
-        color: $mediumGray;
-        .fa-plus-circle, .fa-ok-sign, .fa-plus, .fa-minus-circle {
-            position: absolute;
-            right: 2px;
-            bottom: 2px;
-            font-size: 10px;
-
-            color: green;
-            background: $white;
-            border-radius: 8px;
-            padding: 0;
-        }
-
-    }        
-    .fa-file-alt {
-        font-size: 21px;
-        color: orange;
+      display: none;
     }
+  }
+  &.active {
+    .fa-file-o {
+      .fa-plus-circle {
+        display: none;
+      }
+      .fa-minus-circle {
+        display: block;
+      }
+    }
+  }
+  .fa-file-o {
+    position: relative;
+    font-size: 16px;
+    color: $mediumGray;
+    .fa-minus-circle {
+      display: none;
+    }
+    .fa-plus-circle, .fa-ok-sign, .fa-plus, .fa-minus-circle {
+      position: absolute;
+      right: 2px;
+      bottom: 2px;
+      font-size: 10px;
+
+      color: green;
+      background: $white;
+      border-radius: 8px;
+      padding: 0;
+    }
+
+  }
+  .fa-file-alt {
+    font-size: 21px;
+    color: orange;
+  }
 }
 
 /* Add Favourite button */
@@ -461,5 +504,20 @@ input[type="submit"].secondary-button:hover  {
   }
   .btn--right {
     margin-left: -3px;
+  }
+}
+
+
+button.toggle{
+  .fa-angle-up{
+    display: none;
+  }
+  &.active{
+    .fa-angle-up{
+      display: block;
+    }
+    .fa-angle-down{
+      display: none;
+    }
   }
 }

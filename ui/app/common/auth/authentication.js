@@ -23,11 +23,11 @@ angular.module('authentication')
     }).run(['$rootScope', '$window', '$timeout', function ($rootScope, $window, $timeout) {
         $rootScope.$on('event:auth-loginRequired', function () {
             $timeout(function(){
-                $window.location = "../home/#/login?showLoginMessage=true";
+                $window.location = "../home/index.html#/login";
             });
         });
     }]).service('sessionService', ['$rootScope', '$http', '$q', '$bahmniCookieStore', 'userService', 'offlineService', function ($rootScope, $http, $q, $bahmniCookieStore, userService, offlineService) {
-        var sessionResourcePath = '/openmrs/ws/rest/v1/session?v=custom:(uuid)', offlineApp = offlineService.isOfflineApp(), authenticationResponse = 'authenticationResponse', previousUser = 'previousUser', previousUserInfo = 'previousUserInfo';
+        var sessionResourcePath = Bahmni.Common.Constants.RESTWS_V1 + '/session?v=custom:(uuid)', offlineApp = offlineService.isOfflineApp(), authenticationResponse = 'authenticationResponse', previousUser = 'previousUser', previousUserInfo = 'previousUserInfo';
 
         var getAuthFromServer = function(username, password) {
             return $http.get(sessionResourcePath, {
@@ -72,7 +72,7 @@ angular.module('authentication')
             delete $.cookie(Bahmni.Common.Constants.currentUser, null, {path: "/"});
             delete $.cookie(Bahmni.Common.Constants.retrospectiveEntryEncounterDateCookieName, null, {path: "/"});
             delete $.cookie(Bahmni.Common.Constants.grantProviderAccessDataCookieName, null, {path: "/"});
-            $rootScope.currentUser = null;
+            $rootScope.currentUser = undefined;
         };
 
         this.destroy = function(){
@@ -160,7 +160,7 @@ angular.module('authentication')
         };
 
         this.loadProviders = function(userInfo) {
-            return $http.get("/openmrs/ws/rest/v1/provider", {
+            return $http.get(Bahmni.Common.Constants.providerUrl, {
                  method: "GET",
                  params: {
                      user: userInfo.uuid
@@ -201,7 +201,7 @@ angular.module('authentication')
                     scope.$apply(function() {
                         sessionService.destroy().then(
                             function () {
-                                $window.location = "../home/#/login";
+                                $window.location = "../home/index.html#/login";
                             }
                         );
                     });

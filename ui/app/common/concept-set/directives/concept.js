@@ -3,14 +3,17 @@ angular.module('bahmni.common.conceptSet')
         function (RecursionHelper, spinner, conceptSetService, $filter) {
         var link = function (scope, element, attributes) {
             var conceptMapper = new Bahmni.Common.Domain.ConceptMapper();
+            var hideAbnormalbuttonConfig = scope.observation && scope.observation.conceptUIConfig &&  scope.observation.conceptUIConfig['hideAbnormalButton'];
 
             scope.now = moment().format("YYYY-MM-DD hh:mm:ss");
             scope.showTitle = scope.showTitle === undefined ? true : scope.showTitle;
+            scope.hideAbnormalButton = hideAbnormalbuttonConfig == undefined ? scope.hideAbnormalButton : hideAbnormalbuttonConfig;
 
             scope.cloneNew = function (observation, parentObservation) {
                 var newObs = observation.cloneNew();
                 var index = parentObservation.groupMembers.indexOf(observation);
                 parentObservation.groupMembers.splice(index + 1, 0, newObs);
+                scope.$root.$broadcast("event:addMore", newObs);
                 jQuery.scrollTo(element, 300)
             };
 
@@ -41,7 +44,7 @@ angular.module('bahmni.common.conceptSet')
                 }).join(", ");
             };
             scope.selectOptions = function (codedConcept) {
-                var answers = _.uniq(codedConcept.answers, _.property('uuid')).map(conceptMapper.map);
+                var answers = _.uniqBy(codedConcept.answers, 'uuid').map(conceptMapper.map);
                 return {
                     data: answers,
                     query: function (options) {
@@ -72,12 +75,12 @@ angular.module('bahmni.common.conceptSet')
             });
 
             scope.handleUpdate = function () {
-                scope.$root.$broadcast("event:observationUpdated-" + scope.conceptSetName, scope.observation.concept.name);
+                scope.$root.$broadcast("event:observationUpdated-" + scope.conceptSetName, scope.observation.concept.name, scope.rootObservation);
             }
 
             scope.constructSearchResult = function(concept, searchString) {
                 var matchingName = null;
-                if (concept.name.name.toLowerCase().indexOf(searchString) != 0) {
+                if (concept.name.name.toLowerCase().indexOf(searchString.toLowerCase()) != 0) {
                     matchingName = _.find(_.map(concept.names, 'name'), function (name) {
                         return (name != concept.name.name) && name.search(new RegExp(searchString, "i")) !== -1
                     });
@@ -108,7 +111,8 @@ angular.module('bahmni.common.conceptSet')
                 rootObservation: "=",
                 patient: "=",
                 collapseInnerSections: "=",
-                rootConcept: "&"
+                rootConcept: "&",
+                hideAbnormalButton:"="
             },
             templateUrl: '../common/concept-set/views/observation.html'
         }

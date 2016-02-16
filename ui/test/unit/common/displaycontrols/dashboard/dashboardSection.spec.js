@@ -40,4 +40,16 @@ describe("Dashboard Section", function () {
 
     })
 
+    it("should get the view template for custom control section", function () {
+        var section = {
+            "title": "Custom Display Control",
+            "name": "custom",
+            "config":{
+
+            }
+        };
+        dashboardSection = new Bahmni.Common.DisplayControl.Dashboard.Section(section);
+        expect(dashboardSection.viewName).toBe("../common/displaycontrols/dashboard/views/sections/custom.html");
+    })
+
 });

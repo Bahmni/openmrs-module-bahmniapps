@@ -1,11 +1,15 @@
 'use strict';
 
 angular.module('bahmni.common.offline')
-    .service('offlineSyncService', ['eventLogService', 'offlineDao', '$interval', '$q', 'offlineMarkerDao', 'offlineAddressHierarchyDao',
-        function (eventLogService, offlineDao, $interval, $q, offlineMarkerDao, offlineAddressHierarchyDao) {
+    .service('offlineSyncService', ['eventLogService', 'offlineDbService', '$interval', '$q', 'offlineService', 'androidDbService',
+        function (eventLogService, offlineDbService, $interval, $q, offlineService, androidDbService) {
             var scheduler;
+            if (offlineService.isAndroidApp()) {
+                offlineDbService = androidDbService;
+            }
+
             var sync = function () {
-                offlineMarkerDao.getMarker().then(function (marker) {
+                offlineDbService.getMarker().then(function (marker) {
                     if (marker == undefined) {
                         //todo: Hemanth|Santhosh get catchment number from login location
                         marker = {catchmentNumber: 202020}
@@ -16,12 +20,12 @@ angular.module('bahmni.common.offline')
             };
 
             var syncForMarker = function (marker) {
-                eventLogService.getEventsFor(marker.catchmentNumber, marker.lastReadUuid).then(function (response) {
+                eventLogService.getEventsFor(marker.catchmentNumber, marker.lastReadEventUuid).then(function (response) {
                     if (response.data == undefined || response.data.length == 0) {
                         scheduleSync();
                         return;
                     }
-                    readEvent(response.data, 0).then(sync);
+                    readEvent(response.data, 0);
                 });
             };
 
@@ -33,11 +37,15 @@ angular.module('bahmni.common.offline')
             };
 
             var readEvent = function (events, index) {
-                if (events.length == index)
+                if (events.length == index && events.length > 0){
+                    sync();
                     return;
-
+                }
+                if (events.length == index){
+                    return;
+                }
                 var event = events[index];
-                return eventLogService.getDataForUrl(event.object).then(function (response) {
+                return eventLogService.getDataForUrl(Bahmni.Common.Constants.hostURL + event.object).then(function(response) {
                     return saveData(event, response).then(updateMarker(event).then(function () {
                         return readEvent(events, ++index);
                     }));
@@ -48,7 +56,7 @@ angular.module('bahmni.common.offline')
                 var deferrable = $q.defer();
                 switch (event.category) {
                     case 'patient':
-                        offlineDao.createPatient({patient: response.data}).then(function () {
+                        offlineDbService.createPatient({patient: response.data}, "GET").then(function () {
                             deferrable.resolve();
                         });
                         break;
@@ -56,7 +64,7 @@ angular.module('bahmni.common.offline')
                         deferrable.resolve();
                         break;
                     case 'addressHierarchy':
-                        offlineAddressHierarchyDao.insertAddressHierarchy(response.data).then(function () {
+                        offlineDbService.insertAddressHierarchy(response.data).then(function () {
                             deferrable.resolve();
                         });
                         break;
@@ -68,7 +76,7 @@ angular.module('bahmni.common.offline')
             };
 
             var updateMarker = function (event) {
-                return offlineMarkerDao.insertMarker(event.uuid, 202020);
+                return offlineDbService.insertMarker(event.uuid, 202020);
             };
 
             return {

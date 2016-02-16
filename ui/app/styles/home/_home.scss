@@ -481,6 +481,7 @@ body{
         a {
           width: 130px;
           @include box-shadow-for-section();
+          padding: 10px 10px 20px;
           i {
             margin-bottom: 5px;
           }
@@ -498,11 +499,22 @@ body{
 
   @media screen and (min-width: 960px) {
     .apps {
-      width: 520px;
+      width: 560px;
       margin: 80px auto;
       padding-bottom: 100px;
       ul {
         max-width: 600px;
+        li {
+          a {
+            width: 140px;
+            &.button{
+              min-height: 115px !important;
+            }
+            i {
+              margin-bottom: 5px;
+            }
+          }
+        }
       }
     }
   }

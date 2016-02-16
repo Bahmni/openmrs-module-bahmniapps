@@ -17,7 +17,7 @@ Bahmni.Clinical.EncounterTransactionMapper = function () {
         });
     };
 
-    this.map = function (consultation, patient, locationUuid, retrospectiveEntry, defaultRetrospectiveVisitType, defaultVisitType, isInEditEncounterMode) {
+    this.map = function (consultation, patient, locationUuid, retrospectiveEntry, defaultRetrospectiveVisitType, defaultVisitType, isInEditEncounterMode, patientProgramUuid) {
         var encounterData = {};
         encounterData.locationUuid = isInEditEncounterMode? consultation.locationUuid : locationUuid;
         encounterData.patientUuid = patient.uuid;
@@ -26,6 +26,7 @@ Bahmni.Clinical.EncounterTransactionMapper = function () {
         encounterData.providers = consultation.providers;
         encounterData.encounterDateTime = consultation.encounterDateTime;
         encounterData.extensions = {mdrtbSpecimen: consultation.newlyAddedSpecimens};
+        encounterData.patientProgramUuid = patientProgramUuid;
 
         if (!_.isEmpty(retrospectiveEntry)) {
             encounterData.visitType = defaultRetrospectiveVisitType || "OPD";
@@ -48,17 +49,16 @@ Bahmni.Clinical.EncounterTransactionMapper = function () {
                     diagnosisStatusConcept: diagnosis.diagnosisStatusConcept,
                     voided: diagnosis.voided,
                     comments: diagnosis.comments
-                }
+                };
             });
         } else {
             encounterData.bahmniDiagnoses = [];
         }
         addEditedDiagnoses(consultation, encounterData.bahmniDiagnoses);
         encounterData.orders = [];
-        
         var addOrdersToEncounter = function () {
             var modifiedOrders = _.filter(consultation.orders, function(order){
-                return order.hasBeenModified || order.isDiscontinued || !order.uuid
+                return order.hasBeenModified || order.isDiscontinued || !order.uuid;
             });
             var tempOrders = modifiedOrders.map(function (order) {
                 if(order.hasBeenModified && !order.isDiscontinued){
@@ -118,7 +118,7 @@ Bahmni.Clinical.EncounterTransactionMapper = function () {
                 var orderAttributes = _.values(consultation.drugOrdersWithUpdatedOrderAttributes).map(function(drugOrder){
                     return drugOrder.getOrderAttributesAsObs();
                 });
-                encounterData.observations = encounterData.observations.concat(_.flatten(orderAttributes,true));
+                encounterData.observations = encounterData.observations.concat(_.flatten(orderAttributes));
             }
         };
 

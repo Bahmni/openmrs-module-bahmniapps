@@ -4,9 +4,21 @@ angular.module('bahmni.common.attributeTypes', []).directive('attributeTypes', [
     return {
         scope : {
             targetModel : '=',
-            attribute : '='
+            attribute : '=',
+            fieldValidation : '=',
+            isAutoComplete: '&',
+            getAutoCompleteList: '&',
+            getDataResults: '&',
+            isReadOnly: '&'
         },
         templateUrl : '../common/attributeTypes/views/attributeInformation.html',
-        restrict : 'E'
+        restrict : 'E',
+        controller: function($scope){
+            $scope.getAutoCompleteList = $scope.getAutoCompleteList();
+            $scope.getDataResults = $scope.getDataResults();
+            //to avoid watchers in one way binding
+            $scope.isAutoComplete = $scope.isAutoComplete() || function(){return false};
+            $scope.isReadOnly = $scope.isReadOnly() || function(){return false};
+        }
     }
 }]);

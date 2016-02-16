@@ -77,7 +77,7 @@ describe("Specimen", function () {
         });
 
         it("Should return true if result has value", function () {
-            var specimenData = { report :{results:[{value:"data"}]}}
+            var specimenData = {report: {results: [{value: "data"}]}}
             var specimen = new Bahmni.Clinical.Specimen(specimenData);
 
             expect(specimen.atLeastOneResult()).toBe(true);
@@ -136,4 +136,34 @@ describe("Specimen", function () {
             expect(specimen.isDirty()).toBe(false);
         });
     });
+
+    describe("Dirty Rules for Additional Attributes", function () {
+        var specimen, sampleMock;
+        beforeEach(function () {
+            specimen = new Bahmni.Clinical.Specimen();
+            sampleMock = {
+                "additionalAttributes": [
+                    {
+                        "groupMembers": [
+                            {
+                                "value": "a"
+                            },
+                            {}
+                        ]
+                    }
+                ]
+            }
+            specimen.sample = sampleMock
+        });
+
+        it("Should return true when additional attributes are filled", function () {
+            expect(specimen.isAdditionalAttriburtesFilled()).toBe(true);
+        });
+
+        it("Should return true if date collected is not set, type is not set and additional attribute is set", function () {
+            expect(specimen.isDirty()).toBe(true);
+        });
+    });
+
+
 });

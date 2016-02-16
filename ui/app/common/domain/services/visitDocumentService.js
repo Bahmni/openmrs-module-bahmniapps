@@ -3,13 +3,13 @@
 angular.module('bahmni.common.domain')
   .service('visitDocumentService', ['$http', function ($http) {
     this.save = function (visitDocument) {
-        var url = "/openmrs/ws/rest/v1/bahmnicore/visitDocument";
+        var url =  Bahmni.Common.Constants.RESTWS_V1 + "/bahmnicore/visitDocument";
           return $http.post(url, visitDocument);
     };
     this.saveFile = function (file, patientUuid, encounterTypeName) {
         var searchStr = ";base64";
         var format = file.split(searchStr)[0].split("/")[1];
-        var url = "/openmrs/ws/rest/v1/bahmnicore/visitDocument/uploadImage";
+        var url = Bahmni.Common.Constants.RESTWS_V1 + "/bahmnicore/visitDocument/uploadImage";
         return $http.post(url, {
             image: file.substring(file.indexOf(searchStr) + searchStr.length, file.length),
             format: format,

@@ -56,3 +56,9 @@ specUtil.createFakePromise = function (data) {
     };
     return new FakePromise(data);
 };
+
+// catch the error thrown by a promise in async specs
+var notifyError = function (error) {
+    expect(error).toBeTruthy();
+    expect("Error : " + error.message + " not to be thrown").toBeNull(); // It is a hack. But, instead of wasting time on making it perfect it's better to go with it
+};

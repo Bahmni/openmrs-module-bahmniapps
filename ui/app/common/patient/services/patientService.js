@@ -2,7 +2,7 @@
 
 angular.module('bahmni.common.patient')
     .service('patientService', ['$http', function ($http) {
-        
+
         this.getPatient = function (uuid) {
             var patient = $http.get(Bahmni.Common.Constants.openmrsUrl + "/ws/rest/v1/patient/" + uuid, {
                 method: "GET",
@@ -12,7 +12,7 @@ angular.module('bahmni.common.patient')
             return patient;
         };
 
-        this.getRelationships = function(patientUuid){
+        this.getRelationships = function (patientUuid) {
             return $http.get(Bahmni.Common.Constants.openmrsUrl + "/ws/rest/v1/relationship", {
                 method: "GET",
                 params: {person: patientUuid, v: "full"},
@@ -21,7 +21,7 @@ angular.module('bahmni.common.patient')
         };
 
         this.findPatients = function (params) {
-            return $http.get("/openmrs/ws/rest/v1/bahmnicore/sql" , {
+            return $http.get( Bahmni.Common.Constants.sqlUrl  , {
                 method: "GET",
                 params: params,
                 withCredentials: true
@@ -37,4 +37,15 @@ angular.module('bahmni.common.patient')
             });
         };
 
-}]);
+        this.getPatientContext = function (patientUuid, programUuid, personAttributes, programAttributes) {
+            return $http.get('/openmrs/ws/rest/v1/bahmnicore/patientcontext', {
+                params: {
+                    patientUuid: patientUuid,
+                    programUuid: programUuid,
+                    personAttributes: personAttributes,
+                    programAttributes: programAttributes
+                },
+                withCredentials: true
+            });
+        }
+    }]);

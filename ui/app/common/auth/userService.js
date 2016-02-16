@@ -3,7 +3,7 @@ angular.module('authentication')
         var offlineApp = offlineService.isOfflineApp();
 
         var getUserFromServer = function(userName) {
-            return $http.get("/openmrs/ws/rest/v1/user", {
+            return $http.get(Bahmni.Common.Constants.userUrl, {
                 method: "GET",
                 params: {
                     username: userName,
@@ -36,7 +36,7 @@ angular.module('authentication')
                 return deferrable.promise;
             }
             var user = $rootScope.currentUser.toContract();
-            var response = $http.post("/openmrs/ws/rest/v1/user/" + user.uuid, {"uuid": user.uuid, "userProperties": user.userProperties}, {
+            var response = $http.post(Bahmni.Common.Constants.userUrl + "/" + user.uuid, {"uuid": user.uuid, "userProperties": user.userProperties}, {
                 withCredentials: true
             }).then(function (response) {
                 offlineService.setItem('userProperties', response.data.userProperties);
@@ -47,7 +47,7 @@ angular.module('authentication')
         };
 
         var getProviderFromServer = function(uuid) {
-            return $http.get("/openmrs/ws/rest/v1/provider", {
+            return $http.get(Bahmni.Common.Constants.providerUrl, {
                 method: "GET",
                 params: {
                     user: uuid

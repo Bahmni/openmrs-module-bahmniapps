@@ -72,7 +72,7 @@ angular.module('bahmni.registration')
                     return privilege.name;
                 });
                 var result = _.some(userPrivs, function(privName){
-                    return _.contains(applicablePrivs, privName);
+                    return _.includes(applicablePrivs, privName);
                 });
                 return result;
             };

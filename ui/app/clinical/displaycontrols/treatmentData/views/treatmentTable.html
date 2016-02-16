@@ -1,15 +1,17 @@
-<section class="block treatment-section">
-    <h2 class="has-toggle section-title" ng-if="params | titleTranslate">
-        {{ params | titleTranslate}}
-    </h2>
-    <p class="placeholder-text" ng-if="drugOrderSections && drugOrderSections.length == 0">{{'NO_TREATMENTS_MESSAGE' | translate}} </p>
-    <table ng-repeat="drugOrderSection in drugOrderSections | orderBy: drugOrderSection.visitDate" class="repeated-table drug-order-table">
-        <thead>
-            <th colspan="4" ng-if="!isOtherActiveSection(drugOrderSection.visitDate)">{{'VISIT_ON_TRANSLATION_KEY'|translate}} {{drugOrderSection.visitDate | bahmniDate}}</th>
-            <th colspan="4" ng-if="isOtherActiveSection(drugOrderSection.visitDate)">{{drugOrderSection.visitDate}}</th>
-        </thead>
-        <tbody treatment-table-row drug-order="drugOrder" params="params" ng-repeat="drugOrder in drugOrderSection.drugOrders | orderBy: 'effectiveStartDate'"
-               ng-class="{'drug-discontinued': drugOrder.isDiscontinuedOrStopped()}" ng-if="drugOrderSection.drugOrders.length > 0">
-        </tbody>
-    </table>
-</section>
+<div class="concept-set-conatiner">
+    <section class="block treatment-section">
+        <h2 class="has-toggle section-title" ng-if="params | titleTranslate">
+            {{ params | titleTranslate}}
+        </h2>
+        <p class="placeholder-text" ng-if="drugOrderSections && drugOrderSections.length == 0">{{'NO_TREATMENTS_MESSAGE' | translate}} </p>
+        <table ng-repeat="drugOrderSection in drugOrderSections | orderBy: drugOrderSection.visitDate" class="repeated-table drug-order-table">
+            <thead>
+                <th colspan="4" ng-if="!isOtherActiveSection(drugOrderSection.visitDate)">{{'VISIT_ON_TRANSLATION_KEY'|translate}} {{drugOrderSection.visitDate | bahmniDate}}</th>
+                <th colspan="4" ng-if="isOtherActiveSection(drugOrderSection.visitDate)">{{drugOrderSection.visitDate}}</th>
+            </thead>
+            <tbody treatment-table-row drug-order="drugOrder" params="params" ng-repeat="drugOrder in drugOrderSection.drugOrders | orderBy: 'effectiveStartDate'"
+                   ng-class="{'drug-discontinued': drugOrder.isDiscontinuedOrStopped()}" ng-if="drugOrderSection.drugOrders.length > 0">
+            </tbody>
+        </table>
+    </section>
+</div>

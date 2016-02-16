@@ -54,8 +54,8 @@ angular.module('bahmni.common.uiHelper')
                 autofocus: true,
                 minLength: 2,
                 source: function (request, response) {
-                    source(attrs.id, request.term, attrs.itemType).success(function (data) {
-                        var results = responseMap ? responseMap(data) : data;
+                    source(attrs.id, request.term, attrs.itemType).then(function (data) {
+                        var results = responseMap ? responseMap(data.data) : data.data;
                         response(results);
                     });
                 },
@@ -112,7 +112,7 @@ angular.module('bahmni.common.uiHelper')
             }
         };
     })
-    .directive('patternValidate', function () {
+    .directive('patternValidate', function ($timeout) {
         return function ($scope, element, attrs) {
             var addPatternToElement = function () {
                 if($scope.fieldValidation && $scope.fieldValidation[attrs.id]){
@@ -120,9 +120,7 @@ angular.module('bahmni.common.uiHelper')
                 }
             };
 
-            $scope.$watch(attrs.patternValidate, function () {
-                addPatternToElement();
-            });
+            $timeout(addPatternToElement);
         }
     })
     .directive('validateOn', function(){

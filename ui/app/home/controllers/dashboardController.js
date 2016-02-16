@@ -38,9 +38,5 @@ angular.module('bahmni.home')
                 $window.location.reload();
             };
 
-            $rootScope.$on('offline', function () {
-                $scope.$apply();
-            });
-
             return spinner.forPromise(init());
         }]);

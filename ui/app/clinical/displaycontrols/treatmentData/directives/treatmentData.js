@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('bahmni.clinical')
-    .directive('treatmentData', ['TreatmentService', 'appService', 'spinner', '$stateParams', 'clinicalAppConfigService', function (treatmentService, appService, spinner, $stateParams, clinicalAppConfigService) {
+    .directive('treatmentData', ['TreatmentService', 'appService', 'spinner', '$stateParams','$q','treatmentConfig', function (treatmentService, appService, spinner, $stateParams,$q, treatmentConfig) {
         var controller = function ($scope) {
             var Constants = Bahmni.Clinical.Constants;
             var defaultParams = {
@@ -20,7 +20,7 @@ angular.module('bahmni.clinical')
                 var programConfig = appService.getAppDescriptor().getConfigValue("program") || {};
 
                 var startDate = null, endDate = null, getOtherActive, getEffectiveOrdersOnly = false;
-                if (programConfig.showDashBoardWithinDateRange) {
+                if (programConfig.showDetailsWithinDateRange) {
                     startDate = $stateParams.dateEnrolled;
                     endDate = $stateParams.dateCompleted;
                     if(startDate || endDate){
@@ -29,11 +29,19 @@ angular.module('bahmni.clinical')
                     getEffectiveOrdersOnly = true;
                 }
 
-                var drugOrderAppConfig = clinicalAppConfigService.getDrugOrderConfig();
-                return treatmentService.getPrescribedAndActiveDrugOrders($scope.params.patientUuid, $scope.params.numberOfVisits,
-                    $scope.params.showOtherActive, $scope.params.visitUuids || [], startDate, endDate, getEffectiveOrdersOnly, drugOrderAppConfig)
-                    .then(function (response) {
-                        var groupedByVisit = _.groupBy(response.data.visitDrugOrders, function (drugOrder) {
+                return $q.all([treatmentConfig(), treatmentService.getPrescribedAndActiveDrugOrders($scope.params.patientUuid, $scope.params.numberOfVisits,
+                    $scope.params.showOtherActive, $scope.params.visitUuids || [], startDate, endDate, getEffectiveOrdersOnly)])
+                    .then(function (results) {
+                        var config = results[0];
+                        var drugOrderResponse = results[1].data;
+                        var createDrugOrderViewModel = function (drugOrder) {
+                            return Bahmni.Clinical.DrugOrderViewModel.createFromContract(drugOrder, config);
+                        };
+                        for (var key in drugOrderResponse) {
+                            drugOrderResponse[key] = drugOrderResponse[key].map(createDrugOrderViewModel);
+                        }
+
+                        var groupedByVisit = _.groupBy(drugOrderResponse.visitDrugOrders, function (drugOrder) {
                             return drugOrder.visit.startDateTime;
                         });
                         var treatmentSections = [];
@@ -42,8 +50,8 @@ angular.module('bahmni.clinical')
                             var values = Bahmni.Clinical.DrugOrder.Util.mergeContinuousTreatments(groupedByVisit[key]);
                             treatmentSections.push({visitDate: key, drugOrders: values});
                         }
-                        if (!_.isEmpty(response.data[Constants.otherActiveDrugOrders])) {
-                            var mergedOtherActiveDrugOrders = Bahmni.Clinical.DrugOrder.Util.mergeContinuousTreatments(response.data[Constants.otherActiveDrugOrders]);
+                        if (!_.isEmpty(drugOrderResponse[Constants.otherActiveDrugOrders])) {
+                            var mergedOtherActiveDrugOrders = Bahmni.Clinical.DrugOrder.Util.mergeContinuousTreatments(drugOrderResponse[Constants.otherActiveDrugOrders]);
                             treatmentSections.push({
                                 visitDate: Constants.otherActiveDrugOrders,
                                 drugOrders: mergedOtherActiveDrugOrders
@@ -51,7 +59,7 @@ angular.module('bahmni.clinical')
                         }
                         $scope.treatmentSections = treatmentSections;
                         if ($scope.visitSummary) {
-                            $scope.ipdDrugOrders = Bahmni.Clinical.VisitDrugOrder.createFromDrugOrders(response.data.visitDrugOrders, $scope.visitSummary.startDateTime, getToDate());
+                            $scope.ipdDrugOrders = Bahmni.Clinical.VisitDrugOrder.createFromDrugOrders(drugOrderResponse.visitDrugOrders, $scope.visitSummary.startDateTime, getToDate());
                         }
                     });
             };

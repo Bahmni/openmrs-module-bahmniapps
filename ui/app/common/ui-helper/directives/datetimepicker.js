@@ -53,9 +53,11 @@ angular.module('bahmni.common.uiHelper')
                 allowFutureDates: '='
             },
             template:
-                "<span>" +
-                    "<input type='date' ng-change='updateModel()' ng-class=\"{'illegalValue': illegalValue}\" ng-attr-max='{{maxDate || undefined}}' ng-model='selectedDate' ng-required='!isValid() || illegalValue' ng-disabled='observation.disabled' />" +
-                    "<input type='time' ng-change='updateModel()' ng-class= \"{'illegalValue': !isValid()}\" ng-model='selectedTime'  ng-required='!isValid() || illegalValue' ng-disabled='observation.disabled' />" +
-                "</span>"
+                "<div>" +
+                    "<input type='date' ng-change='updateModel()' ng-class=\"{'illegalValue': illegalValue}\" ng-attr-max='{{maxDate || undefined}}' ng-model='selectedDate' ng-disabled='observation.disabled' />" +
+                "</div>" +
+                "<div>" +
+                    "<input type='time' ng-change='updateModel()' ng-class= \"{'illegalValue': !isValid()}\" ng-model='selectedTime' ng-disabled='observation.disabled' />" +
+                "</div>"
         }
     });

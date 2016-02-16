@@ -43,7 +43,7 @@
     .search-seperator-r{
       width: 67%;
       margin: 0;
-      float: right;
+      float: left;
       @media (max-width: 767px) {
         @include column(12);
         display: block;

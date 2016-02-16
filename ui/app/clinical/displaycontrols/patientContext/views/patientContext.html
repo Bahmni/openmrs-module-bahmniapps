@@ -1,0 +1,21 @@
+<div class="patient-info-fixed-postion-container">
+    <div class="patient-info-fixed">
+        <ul>
+            <li class="patient-name-image-container">
+                <img class="patient-image" ng-src="{{patientContext.image}}"
+                     onerror="this.onerror=null;this.src='../images/blank-user.gif';" src="../images/blank-user.gif">
+              <span class="patient-name">
+                  {{patientContext.givenName}} {{patientContext.familyName}} ({{patientContext.identifier}})
+              </span>
+            </li>
+            <li>{{patientContext.gender}}</li>
+            <li>{{patientContext.birthdate | birthDateToAgeText}}</li>
+            <li ng-repeat="(key, value) in patientContext.personAttributes">
+                {{value.description}}: {{value.value}}
+            </li>
+            <li ng-repeat="(key, value) in patientContext.programAttributes">
+                {{value.description}}: {{value.value}}
+            </li>
+        </ul>
+    </div>
+</div>

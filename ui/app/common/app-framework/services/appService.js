@@ -3,8 +3,8 @@
 angular.module('bahmni.common.appFramework')
     .service('appService', ['$http', '$q', 'sessionService', '$rootScope', 'mergeService', function ($http, $q, sessionService, $rootScope, mergeService) {
         var currentUser = null;
-        var baseUrl = "/bahmni_config/openmrs/apps/";
-        var customUrl = "/implementation_config/openmrs/apps/";
+        var baseUrl = Bahmni.Common.Constants.baseUrl;
+        var customUrl = Bahmni.Common.Constants.customUrl;
         var appDescriptor = null;
         var self = this;
 

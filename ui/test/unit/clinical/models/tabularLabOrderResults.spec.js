@@ -36,8 +36,8 @@ describe("TabularLabOrderResults", function() {
 			var tabularLabOrderResults = new Bahmni.Clinical.TabularLabOrderResults(labOrderResults, accessionConfig);
 			var dateLabels = tabularLabOrderResults.getDateLabels();
             expect(dateLabels.length).toBe(2);
-			expect(dateLabels[0]).toEqual({"index":0,"date":moment("30-May-2014").toDate()});
-			expect(dateLabels[1]).toEqual({"index":2,"date":moment("02-Jun-2014").toDate()});
+			expect(dateLabels[0]).toEqual({"index":0,"date":moment("30-May-2014", "DD-MMM-YYYY").toDate()});
+			expect(dateLabels[1]).toEqual({"index":2,"date":moment("02-Jun-2014", "DD-MMM-YYYY").toDate()});
 		});
 
 		it("should return all accessions if the initial and latest count is greater than or equal to number of accessions", function() {
@@ -56,8 +56,8 @@ describe("TabularLabOrderResults", function() {
 			var tabularLabOrderResults = new Bahmni.Clinical.TabularLabOrderResults(labOrderResults, accessionConfig);
 			var dateLabels = tabularLabOrderResults.getDateLabels();
             expect(dateLabels.length).toBe(2);
-			expect(dateLabels[0]).toEqual({"index":0,"date":moment("30-May-2014").toDate()});
-			expect(dateLabels[1]).toEqual({"index":2,"date":moment("01-Jun-2014").toDate()});
+			expect(dateLabels[0]).toEqual({"index":0,"date":moment("30-May-2014", "DD-MMM-YYYY").toDate()});
+			expect(dateLabels[1]).toEqual({"index":2,"date":moment("01-Jun-2014", "DD-MMM-YYYY").toDate()});
 		});
 
 		it("should return all accessions if the initial and latest count is undefined", function() {
@@ -76,8 +76,9 @@ describe("TabularLabOrderResults", function() {
 			var tabularLabOrderResults = new Bahmni.Clinical.TabularLabOrderResults(labOrderResults, accessionConfig);
 			var dateLabels = tabularLabOrderResults.getDateLabels();
             expect(dateLabels.length).toBe(2);
-			expect(dateLabels[0]).toEqual({"index":0,"date":moment("30-May-2014").toDate()});
-			expect(dateLabels[1]).toEqual({"index":2,"date":moment("01-Jun-2014").toDate()});
+
+			expect(dateLabels[0]).toEqual({"index":0,"date":moment("30-May-2014", "DD-MMM-YYYY").toDate()});
+			expect(dateLabels[1]).toEqual({"index":2,"date":moment("01-Jun-2014", "DD-MMM-YYYY").toDate()});
 		})
 	})
 });

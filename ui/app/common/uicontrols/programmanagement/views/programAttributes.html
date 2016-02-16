@@ -1,19 +1,15 @@
-<!--<section class="form-field-inline clearfix" >-->
-    <!--<article class="form-field" ng-repeat="attribute in attributes">-->
-        <!--<attribute-types target-model="patientProgramAttributes" attribute="attribute"></attribute-types>-->
-    <!--</article>-->
-<!--</section>-->
-<!--<div ng-repeat="attribute in attributes">-->
-    <!--<span class="asterick" ng-show="attribute.required">*</span>-->
-    <!--<span>{{attribute.name}} : </span>-->
-    <!--<span>{{attribute.value}}</span>-->
-<!--</div>-->
-
-<div class="form-field" ng-repeat="attribute in attributes">
+<div class="form-field" ng-repeat="attributeType in programAttributeTypes" ng-show="!patientProgram.editing">
     <div class="field-attribute">
-        <label>{{attribute.name}} : <span class="asterick" ng-show="attribute.required">*</span></label>
+        <label>{{attributeType.description}} : </label>
     </div>
     <div class="field-value">
-        {{attribute.value}}
+        <span>
+            {{getValueForAttributeType(attributeType)}}
+        </span>
     </div>
+</div>
+<div  ng-show="patientProgram.editing" class="programEditing">
+    <article class="form-field" ng-repeat="attributeType in programAttributeTypes">
+        <attribute-types target-model="patientProgram.patientProgramAttributes" attribute="attributeType"></attribute-types>
+    </article>
 </div>

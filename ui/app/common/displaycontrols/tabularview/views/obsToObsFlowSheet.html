@@ -1,4 +1,4 @@
-<section class="dashboard-tabular-obs-section dashboard-section" id="tabular-obs"
+<section class="dashboard-tabular-obs-section dashboard-section dst-results" id="tabular-obs"
          ng-class="{'noTable' :(obsTable.rows.length == 0),'hasTable' :(obsTable.rows.length > 0 && section.rotateInPrint)}">
     <div ng-class="{'rotate':section.rotateInPrint}">
         <h2 ng-if="!isClickable()" class="section-title">{{section | titleTranslate}}</h2>
@@ -23,24 +23,25 @@
                 <tr>
                     <th ng-if="isMonthAvailable()"> Month</th>
                     <th ng-repeat="header in obsTable.headers" ng-if="header.name != 'Month'">
-                        {{getAbbreviation(header)}}
+                        {{getHeaderName(header)}}
                         <hint concept-details="header"/>
                     </th>
                 </tr>
                 <tr ng-repeat="row in obsTable.rows">
                     <td ng-if="isMonthAvailable()">{{row.columns['Month'][0].valueAsString}}</td>
                     <td ng-repeat="header in obsTable.headers" ng-if="header.name != 'Month'"
-                        ng-class="{'is-abnormal': row.columns[header.name].abnormal}">
-                        {{commafy(row.columns[header.name])}}
-                        <span class="fr" ng-if="header.name === config.groupByConcept && isEditable" >
-
+                        ng-class="{'is-abnormal-bold': row.columns[header.name][0].abnormal , 'obsTableEdit' : header.name === config.groupByConcept && isEditable }">
+                       <div ng-class="{'obsTableEditContainer' : header.name === config.groupByConcept && isEditable }">
+                           <span class="fl" ng-class="{ 'obsTableData' : header.name === config.groupByConcept && isEditable }">{{commafy(row.columns[header.name])}}</span>
+                            <span class="fl" ng-if="header.name === config.groupByConcept && isEditable" >
                                 <span class="has-link fl"
                                       ng-dialog="dashboard/views/dashboardSections/editObservationForm.html"
                                       ng-dialog-class="ngdialog-theme-default ng-dialog-all-details-page"
                                       ng-dialog-data="{{::getEditObsData(row.columns[header.name][0])}}">
-                                     <i class="fr fa fa-pencil"></i>
+                                     <i class="fl fa fa-pencil"></i>
                                 </span>
-                        </span>
+                            </span>
+                       </div>
                     </td>
                 </tr>
 
@@ -54,17 +55,17 @@
                 </tr>
                 <tr ng-repeat="header in obsTable.headers" ng-if="header.name != 'Month'">
                     <td>
-                        {{getAbbreviation(header)}}
+                        {{getHeaderName(header)}}
                         <hint concept-details="header"/>
                     </td>
-                    <td ng-repeat="row in obsTable.rows" ng-class="{'is-abnormal': row.columns[header.name].abnormal}">
-                        {{commafy(row.columns[header.name])}}
-                        <span class="fr" ng-if="header.name === config.groupByConcept && isEditable" >
+                    <td ng-repeat="row in obsTable.rows" ng-class="{'is-abnormal-bold': row.columns[header.name][0].abnormal , 'obsTableEdit' : header.name === config.groupByConcept && isEditable }">
+                        <span class="fl" ng-class="{ 'obsTableData' : header.name === config.groupByConcept && isEditable }">{{commafy(row.columns[header.name])}}</span>
+                        <span class="fl" ng-if="header.name === config.groupByConcept && isEditable" >
                                 <span class="has-link fl"
                                       ng-dialog="dashboard/views/dashboardSections/editObservationForm.html"
                                       ng-dialog-class="ngdialog-theme-default ng-dialog-all-details-page"
                                       ng-dialog-data="{{::getEditObsData(row.columns[header.name][0])}}">
-                                     <i class="fr fa fa-pencil"></i>
+                                     <i class="fl fa fa-pencil"></i>
                                 </span>
                         </span>
                     </td>
