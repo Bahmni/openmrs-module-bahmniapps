@@ -26,7 +26,7 @@
                     <span ng-if="columnName === 'frequency'">
                         {{::drugOrder.getFrequency()}}
                         <span ng-if="drugOrder.asNeeded">
-                            , <span  ng-bind-html="'MEDICATION_SOS_BUTTON_TEXT' | translate"></span>
+                            , {{::'MEDICATION_AS_NEEDED' | translate}}
                         </span>
                     </span>
                     <span ng-if="columnName === 'startDate'">{{::drugOrder.effectiveStartDate | bahmniDate}}</span>
