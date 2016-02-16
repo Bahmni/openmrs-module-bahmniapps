@@ -21,7 +21,6 @@ body{
     .observation-section{
       width: 100%;
       article{
-        @include column(5);
         width: 42%;
         margin-left: 0;
         @media (max-width : 768px){
@@ -66,6 +65,14 @@ body{
               padding-left:0;
             }
           }
+        }
+      }
+    }
+    &.visit-patient-page{
+      .observation-section{
+        article{
+          min-width: 42%;
+          width: auto;
         }
       }
     }
