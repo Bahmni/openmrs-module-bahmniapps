@@ -22,14 +22,19 @@
     @include clearfix;
     &.halfpage-container{
       width: 50%;
+      .LAYOUT_25_75{
+        width: 49.7%;
+      }
+      &.dashboard-sections-left{
+        .LAYOUT_25_75{
+          width:48.3%;
+        }
+      }
       @media screen and (max-width: 859px) {
         width: 100%;
         margin: 0 auto;
         padding: 0;
         float: none;
-      }
-      .LAYOUT_25_75{
-        width: 49.7%;
       }
     }
     &.dashboard-sections-right{
