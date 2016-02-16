@@ -219,7 +219,8 @@
                     ng-class="{active: treatment.asNeeded}" ng-click="toggleAsNeeded(treatment)"
                     accesskey="{{ ::treatmentConfig.translate('asNeededButtonAccessKey', 'MEDICATION_AS_NEEDED_ACCESS_KEY') }} ">
                 <i class="fa fa-ok"></i>
-                <span ng-bind-html="::treatmentConfig.translate('asNeededButton', 'MEDICATION_AS_NEEDED')"></span>
+                <span ng-bind-html="::treatmentConfig.translate('asNeededButton', 'MEDICATION_AS_NEEDED_BUTTON_PLACEHOLDER')">
+                </span>
             </button>
         </div>
     </article>
