@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('bahmni.common.offline')
-    .service('androidDbService', ['$q',
-        function ($q) {
+    .service('androidDbService', ['$q', '$http',
+        function ($q, $http) {
             var getMarker = function () {
                 var value = AndroidOfflineService.getMarker();
                 value = value != undefined ? JSON.parse(value) : value;
@@ -34,7 +34,11 @@ angular.module('bahmni.common.offline')
 
             var populateData = function (host) {
                 //TODO: Hemanth/Abishek/Ranganathan - we don't need to pass host for this method once we build event log for patient attributes.
-                AndroidOfflineService.populateData(host);
+                 $http.get(Bahmni.Common.Constants.RESTWS_V1 +
+                     "/personattributetype?v=custom:(name,uuid,format)").then(function (attributeTypeResponse) {
+                        var personAttributeTypeList = attributeTypeResponse.data.results;
+                        AndroidOfflineService.populateData(JSON.stringify(personAttributeTypeList));
+                });
             };
 
             var deletePatientData = function (identifier) {
