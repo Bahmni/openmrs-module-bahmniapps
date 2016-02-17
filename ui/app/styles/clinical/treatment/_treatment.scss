@@ -191,15 +191,19 @@
     }
     .treatment-section-left{
         width: 24%;
-        background: #fff;
-        border-radius:3px;
-        box-sizing: border-box;
-        float: left;
-        position: relative;
-        z-index: 999;
-        @include box-shadow-for-section();
         @media screen and (max-width: 1024px) {
             width:26%;
+        }
+        .treatment-data-container, .order-set-container{
+            background: #fff;
+            border-radius:3px;
+            box-sizing: border-box;
+            z-index: 999;
+            @include box-shadow-for-section();
+            width: 100%;
+        }
+        .order-set-container{
+            margin-top: 20px;
         }
         .order-section-container{
             padding: 10px;

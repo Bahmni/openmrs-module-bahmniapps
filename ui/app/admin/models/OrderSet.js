@@ -19,7 +19,6 @@ Bahmni.Common.OrderSet = (function () {
                 uuid: member.orderType.uuid
             },
             orderTemplate: member.orderTemplate,
-            orderSetMemberAttributes: member.orderSetMemberAttributes,
             concept: {
                 name: member.concept.name.display,
                 uuid: member.concept.uuid

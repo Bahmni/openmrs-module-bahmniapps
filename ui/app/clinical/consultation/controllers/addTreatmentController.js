@@ -231,10 +231,6 @@ angular.module('bahmni.clinical')
                         }).concat(unsavedNotBeingEditedOrders)
                     : $scope.consultation.activeAndScheduledDrugOrders.concat(unsavedNotBeingEditedOrders);
 
-                if ($scope.treatment.isBeingEdited) {
-                    $scope.treatments.splice($scope.treatment.currentIndex, 1);
-                }
-
                 var potentiallyOverlappingOrders = existingDrugOrders.filter(function (drugOrder) {
                     return (drugOrder.getDrugName() == newDrugOrder.getDrugName() && drugOrder.overlappingScheduledWith(newDrugOrder));
                 });
@@ -259,12 +255,11 @@ angular.module('bahmni.clinical')
                 }
 
                 if ($scope.treatment.isBeingEdited) {
-                    $scope.treatments.splice($scope.treatment.currentIndex, 0, $scope.treatment);
+                    $scope.treatments.splice($scope.treatment.currentIndex, 1, $scope.treatment);
                     $scope.treatment.isBeingEdited = false;
                 } else {
                     $scope.treatments.push($scope.treatment);
                 }
-
                 $scope.clearForm();
 
             };
@@ -328,9 +323,14 @@ angular.module('bahmni.clinical')
             };
 
 
-            var edit = function (index) {
+            var edit = function (index, isOrderSetDrug) {
                 clearHighlights();
-                var treatment = $scope.treatments[index];
+                var treatment;
+                if(isOrderSetDrug) {
+                    treatment = $scope.orderSet.drugs[index];
+                } else {
+                    treatment = $scope.treatments[index];
+                }
                 markEitherVariableDrugOrUniformDrug(treatment);
                 treatment.isBeingEdited = true;
                 $scope.treatment = treatment.cloneForEdit(index, treatmentConfig);
@@ -341,8 +341,8 @@ angular.module('bahmni.clinical')
                 selectDrugFromDropdown(treatment.drug);
             };
 
-            $scope.$on("event:editDrugOrder", function (event, index) {
-                edit(index);
+            $scope.$on("event:editDrugOrder", function (event, index, isOrderSetDrug) {
+                edit(index, isOrderSetDrug);
             });
 
             var remove = function (index) {
@@ -497,6 +497,8 @@ angular.module('bahmni.clinical')
                     }
                 });
             };
+
+
 
             $scope.consultation.preSaveHandler.register("drugOrderSaveHandlerKey", saveTreatment);
 

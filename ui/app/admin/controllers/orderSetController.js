@@ -43,9 +43,9 @@ angular.module('bahmni.common.domain')
                     var orderType = $scope.orderTypes.filter(function (orderObj) {
                         return orderObj.uuid === selectedOrderType.uuid;
                     })[0];
-                    var orderTypeNames = _.pluck(orderType.conceptClasses, 'name');
+                    var orderTypeNames = _.map(orderType.conceptClasses, 'name');
                     return results.filter(function (concept) {
-                        return _.contains(orderTypeNames, concept.conceptClass.name);
+                        return _.includes(orderTypeNames, concept.conceptClass.name);
                     }).map(function (concept) {
                         return {'concept': {uuid: concept.uuid, name: concept.name.name}, 'value': concept.name.name}
                     });
@@ -93,18 +93,6 @@ angular.module('bahmni.common.domain')
                 }
             };
 
-/*            var primaryAttributeCount = function () {
-                var count = 0;
-                _.each($scope.orderSet.orderSetMembers, function (orderSetMember) {
-                    _.each(orderSetMember.orderSetMemberAttributes, function (orderSetMemberAttribute) {
-                        if (orderSetMemberAttribute.value == "true") {
-                            count++;
-                        }
-                    });
-                });
-                return count;
-            };*/
-
             $scope.save = function () {
                 if (validationSuccess()) {
                     _.each($scope.orderSet.orderSetMembers, function (orderSetMember) {
@@ -112,7 +100,7 @@ angular.module('bahmni.common.domain')
                             orderSetMember.orderTemplate = JSON.stringify(orderSetMember.orderTemplate);
                         }
                     });
-                    spinner.forPromise(orderSetService.saveOrderSet().then(function (response) {
+                    spinner.forPromise(orderSetService.saveOrderSet($scope.orderSet).then(function (response) {
                         $state.params.orderSetUuid = response.data.uuid;
                         return $state.transitionTo($state.current, $state.params, {
                             reload: true,
@@ -125,31 +113,12 @@ angular.module('bahmni.common.domain')
                 }
             };
 
-/*            var filterOrderSetAttributes = function (orderSet) {
-                orderSet.orderSetMembers.forEach(function (orderSetMember) {
-                    if (!_.isNull(orderSetMember.orderSetMemberAttributes)) {
-                        orderSetMember.orderSetMemberAttributes = _.filter(orderSetMember.orderSetMemberAttributes, function (orderSetMemberAttribute) {
-                            if (orderSetMemberAttribute.value) {
-                                return true;
-                            }
-                        });
-                    }
-                });
-                return orderSet;
-            };*/
-
             var validationSuccess = function () {
                 if (!$scope.orderSet.orderSetMembers || countActiveOrderSetMembers($scope.orderSet.orderSetMembers) < 2) {
                     messagingService.showMessage('error', 'Please enter a minimum of 2 order set to proceed with save.');
                     return false;
                 }
 
-/*                var primaryAttrCount = primaryAttributeCount();
-                if (primaryAttrCount === 0) {
-                    messagingService.showMessage('error', 'Please select at least one member as Primary.');
-                    return false;
-
-                }*/
                 return true;
             };
 
@@ -163,9 +132,6 @@ angular.module('bahmni.common.domain')
                 return countActive;
             };
 
-            //TODO:
-            //    move this logic to service side
-
             var filterOutVoidedOrderSetMembers = function (orderSetResult) {
                 orderSetResult.orderSetMembers = _.filter(orderSetResult.orderSetMembers, function (orderSetMemberObj) {
                     return !orderSetMemberObj.voided;
@@ -176,43 +142,21 @@ angular.module('bahmni.common.domain')
             var buildOrderSetMember = function () {
                 return {
                     orderType: {uuid: $scope.orderTypes[0].uuid}
-/*
-                    orderSetMemberAttributes: [getOrderSetMemberAttr_primary()]
-*/
                 };
             };
-
-/*            var getOrderSetMemberAttr_primary = function(){
-                var attr_primary = {
-                    orderSetMemberAttributeType: {
-                        orderSetMemberAttributeTypeId: $scope.primaryAttributeType.orderSetMemberAttributeTypeId
-                    },
-                    value: ""
-                };
-                return attr_primary;
-            };*/
 
             var init = function () {
                 var init = $q.all([
                     orderTypeService.loadAll(),
-/*
-                    orderSetService.getOrderSetMemberAttributeType(Bahmni.Common.Constants.primaryOrderSetMemberAttributeTypeName),
-*/
                     orderSetService.getDrugConfig()
                 ]).then(function (results) {
                     $scope.orderTypes = results[0];
-/*
-                    $scope.primaryAttributeType = results[1].data.results[0];
-*/
                     $scope.treatmentConfig = results[1];
                     if ($state.params.orderSetUuid !== "new") {
                         spinner.forPromise(orderSetService.getOrderSet($state.params.orderSetUuid).then(function (response) {
                             $scope.orderSet = filterOutVoidedOrderSetMembers(Bahmni.Common.OrderSet.create(response.data));
                             _.each($scope.orderSet.orderSetMembers, function (orderSetMember) {
                                 orderSetMember.orderTemplate = JSON.parse(orderSetMember.orderTemplate || null);
-/*                                if(_.isEmpty(orderSetMember.orderSetMemberAttributes)){
-                                    orderSetMember.orderSetMemberAttributes.push(getOrderSetMemberAttr_primary());
-                                }*/
                             });
                         }));
                     }

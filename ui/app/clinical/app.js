@@ -200,6 +200,10 @@ angular.module('consultation')
                             }
                         }
                     },
+                    "addOrderSet": {
+                        controller: 'AddOrderSetController',
+                        templateUrl: 'consultation/views/treatmentSections/addOrderSet.html'
+                    },
                     "defaultHistoryView": {
                         controller: 'DrugOrderHistoryController',
                         templateUrl: 'consultation/views/treatmentSections/drugOrderHistory.html'
