@@ -43,7 +43,7 @@ aside{
     bottom: 0;
     top: 50px;
     box-shadow: -3px 5px 10px $mediumGray;
-    z-index: 5;
+    z-index: 9999;
     h2 {
       color: $mediumGray;
       font-size: 14px;

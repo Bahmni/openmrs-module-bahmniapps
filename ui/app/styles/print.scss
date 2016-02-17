@@ -868,56 +868,21 @@ h3 {
                     }
                 }
             }
-            //&.h-scroll{
-            //    border: none !important;
-            //    .time{
-            //        font-family: Arial, sans-serif !important;
-            //    }
-            //    //tr{
-            //    //    th{
-            //    //        border: none !important;
-            //    //        border-bottom: 1px #ccc solid !important;
-            //    //        font-weight: bold    !important;
-            //    //        min-height: auto !important;
-            //    //        height: auto !important;
-            //    //        &:last-child{
-            //    //            border-bottom: none !important;
-            //    //        }
-            //    //        &:first-child{
-            //    //            text-align: left;
-            //    //        }
-            //    //        &.row-header-group{
-            //    //            min-height: 36px !important;
-            //    //            height: 36px !important;
-            //    //        }
-            //    //    }
-            //    //    td{
-            //    //        border-bottom: none !important;
-            //    //        border-left: none !important;
-            //    //        min-height: auto !important;
-            //    //        height: auto !important;
-            //    //        &:last-child{
-            //    //            border-right: none !important;
-            //    //        }
-            //    //    }
-            //    //}
-            //    //tbody{
-            //    //    tr{
-            //    //        border-left: none !important;
-            //    //        th{
-            //    //            border-bottom: none !important;
-            //    //        }
-            //    //        /*td{
-            //    //            &:first-child{
-            //    //                border-left: none !important;
-            //    //            }
-            //    //        }*/
-            //    //    }
-            //    //}
-            //}
         }
 
     }
-
+    .dashboard-sections-wrapper .dashboard-sections.three-fourth-page-container .LAYOUT_25_75{
+        width:auto;
+        float: none;
+    }
+    .dashboard-sections-wrapper .dashboard-sections.three-fourth-page-container .LAYOUT_75_25{
+        width:auto;
+        float: none;
+    }
+    .patient-info-fixed-postion-container{
+        box-shadow: none;
+        border-bottom: none;
+        top: 65px;
+    }
 
 }
