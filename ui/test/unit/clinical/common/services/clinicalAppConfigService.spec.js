@@ -170,6 +170,7 @@ describe("clinicalAppConfigService", function () {
             return  specUtil.respondWith({});
         });
         var urlHelper = {getPatientUrl: function() {return "/patient/somePatientUuid"}};
+        var offlineService = {isAndroidApp: function() {return false}};
 
 
 
@@ -178,6 +179,7 @@ describe("clinicalAppConfigService", function () {
         $provide.value('$q', Q);
         $provide.value('$stateParams', $stateParams);
         $provide.value('urlHelper', urlHelper);
+        $provide.value('offlineService', offlineService);
     }));
 
 

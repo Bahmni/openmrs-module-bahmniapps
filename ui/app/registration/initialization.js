@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('bahmni.registration').factory('initialization',
-    ['$rootScope', '$q', 'configurations', 'authenticator', 'appService', 'spinner', 'Preferences', 'locationService',
-    function ($rootScope, $q, configurations, authenticator, appService, spinner, preferences, locationService) {
+    ['$rootScope', '$q', 'configurations', 'authenticator', 'appService', 'spinner', 'Preferences', 'locationService','offlineService',
+    function ($rootScope, $q, configurations, authenticator, appService, spinner, preferences, locationService, offlineService) {
         var getConfigs = function() {
             var configNames = ['encounterConfig', 'patientAttributesConfig', 'identifierSourceConfig', 'addressLevels', 'genderMap', 'relationshipTypeConfig','relationshipTypeMap', 'loginLocationToVisitTypeMapping'];
             return configurations.load(configNames).then(function () {
@@ -22,7 +22,16 @@ angular.module('bahmni.registration').factory('initialization',
         };
 
         var loadValidators = function (baseUrl,contextPath) {
-                Bahmni.Common.Util.DynamicResourceLoader.includeJs(baseUrl + contextPath + '/fieldValidation.js');
+            var script;
+            var isOfflineApp = offlineService.isOfflineApp();
+            if(isOfflineApp){
+                var config = JSON.parse(AndroidConfigDbService.getConfig("registration"));
+                script = config['fieldValidation.js']
+            }
+            else{
+                script = baseUrl + contextPath + '/fieldValidation.js';
+            }
+            Bahmni.Common.Util.DynamicResourceLoader.includeJs(script, isOfflineApp);
         };
 
         var initApp = function() {
