@@ -116,12 +116,13 @@ div.duration.checkbox-inline {
     float: left;
   }
   input.duration-value {
-    width: 30px;
+    width: 52px;
     margin: 0 10px;
     padding: 5px;
+    box-sizing: border-box;
   }
   select.duration-unit {
-    margin-left: 25px;
+    margin-left: 10px;
     min-width: 180px;
   }
 }
@@ -420,8 +421,7 @@ concept-set {
 
 
 .accept-btn-wrapper {
-  margin-top: 5px;
-  margin-left:2px;
+  margin: 7px 5px 0 20px;
 }
 
 .stepper {
@@ -462,8 +462,9 @@ concept-set {
   border-radius: 3px;
   background: #ddd;
   border: 1px solid #ddd;
-  width: 10px;
+  width: 16px;
   cursor: pointer;
+  box-sizing: border-box;
 }
 .vitals table{
   caption{

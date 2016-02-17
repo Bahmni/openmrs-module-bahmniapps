@@ -14,7 +14,6 @@ angular.module('bahmni.common.conceptSet')
                 var index = parentObservation.groupMembers.indexOf(observation);
                 parentObservation.groupMembers.splice(index + 1, 0, newObs);
                 scope.$root.$broadcast("event:addMore", newObs);
-                jQuery.scrollTo(element, 300)
             };
 
             scope.removeClonedObs = function (observation, parentObservation) {
