@@ -282,6 +282,30 @@ describe("drugOrderViewModel", function () {
         expect(sampleTreatment.variableDosingType).toEqual({});
     });
 
+    it("should copy dose units to uniformDosingType when changing frequency type to uniform", function () {
+        var sampleTreatment = new Bahmni.Clinical.DrugOrderViewModel({});
+        sampleTreatment.variableDosingType = {
+            morningDose: 1,
+            afternoonDose: 1,
+            eveningDose: 1,
+            doseUnits : "Tablets"
+        };
+        sampleTreatment.setFrequencyType(Bahmni.Clinical.Constants.dosingTypes.uniform);
+        expect(sampleTreatment.uniformDosingType).not.toBe({});
+        expect(sampleTreatment.uniformDosingType.doseUnits).toEqual("Tablets");
+    });
+
+    it("should copy dose units to variableDosingType when changing frequency type to variable", function () {
+        var sampleTreatment = new Bahmni.Clinical.DrugOrderViewModel({});
+        sampleTreatment.uniformDosingType = {
+            doseUnits : "Tablets"
+        };
+        sampleTreatment.setFrequencyType(Bahmni.Clinical.Constants.dosingTypes.variable);
+        expect(sampleTreatment.variableDosingType).not.toBe({});
+        expect(sampleTreatment.variableDosingType.doseUnits).toEqual("Tablets");
+    });
+
+
     it("should change duration unit based on frequency factor for uniform frequency type", function () {
        treatmentConfig.inputOptionsConfig.frequencyDefaultDurationUnitsMap = [
             {"minFrequency":5, "maxFrequency": null, "defaultDurationUnit": "Hour(s)"},

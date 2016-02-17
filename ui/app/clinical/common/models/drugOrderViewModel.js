@@ -324,8 +324,14 @@ Bahmni.Clinical.DrugOrderViewModel = function (config, proto, encounterDate) {
     this.setFrequencyType = function (type) {
         self.frequencyType = type;
         if (self.frequencyType === Bahmni.Clinical.Constants.dosingTypes.variable) {
+            if (self.uniformDosingType.doseUnits) {
+                self.variableDosingType.doseUnits = self.uniformDosingType.doseUnits;
+            }
             self.uniformDosingType = {};
         } else {
+            if (self.variableDosingType.doseUnits) {
+                self.uniformDosingType.doseUnits = self.variableDosingType.doseUnits;
+            }
             self.variableDosingType = {};
         }
     };
