@@ -13,17 +13,17 @@ angular.module('bahmni.home', ['ui.router', 'httpErrorInterceptor', 'bahmni.comm
                     controller: 'DashboardController',
                     data: {extensionPointId: 'org.bahmni.home.dashboard'},
                     resolve: {
-                        offlineConfigInitialization: function(offlineConfigInitialization){
-                            return offlineConfigInitialization("home")
+                        offlineDb: function (offlineDbInitialization) {
+                            return offlineDbInitialization();
                         },
                         initialize: function (initialization, offlineConfigInitialization) {
                             return initialization(offlineConfigInitialization);
                         },
-                        offlineDb: function (offlineDbInitialization) {
-                            return offlineDbInitialization();
-                        },
                         offlineSyncInitialization: function (offlineSyncInitialization, offlineDb) {
                             return offlineSyncInitialization(offlineDb);
+                        },
+                        offlineConfigInitialization: function(offlineConfigInitialization, offlineSyncInitialization){
+                            return offlineConfigInitialization("home")
                         }
                     }
                 }).state('login',

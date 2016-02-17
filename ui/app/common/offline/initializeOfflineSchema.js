@@ -24,6 +24,7 @@ angular.module('bahmni.common.offline').service('initializeOfflineSchema', ['$q'
         createTable(schemaBuilder, Bahmni.Common.Offline.SchemaDefinitions.AddressHierarchyEntry);
         createTable(schemaBuilder, Bahmni.Common.Offline.SchemaDefinitions.AddressHierarchyLevel);
         createTable(schemaBuilder, Bahmni.Common.Offline.SchemaDefinitions.PatientAddress);
+        createTable(schemaBuilder, Bahmni.Common.Offline.SchemaDefinitions.Configs);
 
         return schemaBuilder.connect().then(function (database) {
             return database;

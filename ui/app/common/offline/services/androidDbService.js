@@ -60,6 +60,14 @@ angular.module('bahmni.common.offline')
                 return $q.when({data:value});
             };
 
+            var getConfig = function(module){
+                return $q.when(JSON.parse(AndroidConfigDbService.getConfig(module)));
+            };
+
+            var insertConfig = function(module, data, eTag){
+                return $q.when(JSON.parse(AndroidConfigDbService.insertConfig(module, JSON.stringify(data), eTag)));
+            };
+
             return {
                 init: init,
                 populateData: populateData,
@@ -69,7 +77,9 @@ angular.module('bahmni.common.offline')
                 getMarker: getMarker,
                 insertMarker: insertMarker,
                 insertAddressHierarchy: insertAddressHierarchy,
-                searchAddress: searchAddress
+                searchAddress: searchAddress,
+                getConfig: getConfig,
+                insertConfig : insertConfig
             }
         }
     ]);

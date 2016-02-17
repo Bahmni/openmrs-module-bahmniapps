@@ -1,7 +1,8 @@
 'use strict';
 
 angular.module('bahmni.common.offline')
-    .service('offlineDbService', ['$http', '$q', 'patientDbService', 'patientAddressDbService', 'patientAttributeDbService', 'offlineMarkerDbService', 'offlineAddressHierarchyDbService', function ($http, $q, patientDbService, patientAddressDbService, patientAttributeDbService, offlineMarkerDbService, offlineAddressHierarchyDbService) {
+    .service('offlineDbService', ['$http', '$q', 'patientDbService', 'patientAddressDbService', 'patientAttributeDbService', 'offlineMarkerDbService', 'offlineAddressHierarchyDbService', 'offlineConfigDbService',
+        function ($http, $q, patientDbService, patientAddressDbService, patientAttributeDbService, offlineMarkerDbService, offlineAddressHierarchyDbService, offlineConfigDbService) {
         var db;
 
         var populateData = function () {
@@ -101,6 +102,17 @@ angular.module('bahmni.common.offline')
             return offlineAddressHierarchyDbService.search(params);
         };
 
+        var getConfig = function(module){
+            return offlineConfigDbService.getConfig(module).then(function(config){
+                return config;
+            });
+        };
+
+        var insertConfig = function(module, data, eTag){
+            return offlineConfigDbService.insertConfig(module, data, eTag).then(function(config){
+                return config;
+            });
+        };
         return {
             init: init,
             populateData: populateData,
@@ -110,6 +122,8 @@ angular.module('bahmni.common.offline')
             getMarker: getMarker,
             insertMarker: insertMarker,
             insertAddressHierarchy: insertAddressHierarchy,
-            searchAddress: searchAddress
+            searchAddress: searchAddress,
+            getConfig : getConfig,
+            insertConfig : insertConfig
         }
     }]);
