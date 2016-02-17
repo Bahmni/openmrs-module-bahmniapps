@@ -12,7 +12,7 @@ Bahmni.ConceptSet.Observation = function (observation, savedObs, conceptUIConfig
         this.observationDateTime = savedObs.observationDateTime;
         this.provider = savedObs.provider;
     } else {
-        this.value = this.conceptUIConfig.defaultValue;         
+        this.value = this.conceptUIConfig.defaultValue;
     }
 
     if(this.conceptUIConfig.autocomplete && this.conceptUIConfig.answersConceptName) {
@@ -114,7 +114,7 @@ Bahmni.ConceptSet.Observation.prototype = {
     getDataTypeName: function () {
         return this.concept.dataType;
     },
-    
+
     isDateDataType: function () {
         return 'Date'.indexOf(this.getDataTypeName()) != -1;
     },
@@ -281,7 +281,7 @@ Bahmni.ConceptSet.Observation.prototype = {
     },
 
     isRequired: function () {
-        return this.conceptUIConfig.required == true  ;
+        return this.conceptUIConfig.required === true && this.disabled === false;
     },
 
     isFormElement: function() {
