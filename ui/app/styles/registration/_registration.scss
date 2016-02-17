@@ -112,6 +112,41 @@ body{
 
 }
 
+.showOn-desktop-registration{
+  display: block !important;
+  @media (max-width : 990px){
+    display: none !important;
+  }
+}
+
+.showOn-small-screen-registration{
+  display: none !important;
+  @media (max-width : 990px){
+    display: block !important;
+    float: none !important;
+    clear: both;
+  }
+}
+
+.patientExistingIdentifier{
+  @media (max-width : 990px){
+    width: auto;
+    float: left;
+  }
+}
+.otherInfoContainer{
+  input[type="number"]{
+    width: 12.5em!important;
+    @media (max-width : 800px){
+      width: 11.5em !important;
+    }
+    @media (max-width : 768px){
+      width: 12.5em !important;
+    }
+  }
+}
+
+
 
 
 

@@ -26,6 +26,9 @@
       @media (max-width : 1024px){
         width: 36%;
       }
+      @media (max-width : 990px){
+        width: 31%;
+      }
       @media (max-width : 768px){
         width: 100%;
       }
@@ -37,6 +40,9 @@
       @media (max-width : 1024px){
         width: 28%;
       }
+      @media (max-width : 990px){
+        width: 36%;
+      }
       @media (max-width : 768px){
         width: 100%;
       }
@@ -45,6 +51,9 @@
         float: left;
         padding-right: 20px;
         padding-top: 12px;
+        @media (max-width : 990px){
+          padding-right: 10px;
+        }
         @media (max-width : 768px){
           display: none;
         }
@@ -56,6 +65,10 @@
       margin-left: 2%;
       button{
         padding: 2px 4px !important;
+      }
+      @media (max-width : 990px){
+        margin-left:0;
+        width: 3%;
       }
     }
   }
@@ -70,6 +83,7 @@
   .row{
     .col4{
        button{
+         margin-top: 4px;
          @media (max-width : 768px) {
            position: absolute;
            top: 0;

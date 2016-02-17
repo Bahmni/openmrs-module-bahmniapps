@@ -13,6 +13,13 @@
 }
 
 form .form-field{
+  .field-value input[type="text"]{
+    &#familyNameLocal ,&#familyName{
+      @media (max-width : 990px) {
+        clear: both;
+      }
+    }
+  }
   @media (max-width : 768px) {
     .field-value {
       @media (max-width : 580px) {
@@ -22,7 +29,6 @@ form .form-field{
         float: none !important;
         display: block;
       }
-
     }
     .field-attribute {
       @media (max-width : 580px) {
@@ -41,6 +47,14 @@ form .form-field{
   input[type="checkbox"]{
     margin-top: 9px;
     margin-left: 0;
+  }
+  label[for = "smokingHistory"]{
+    @media (max-width : 990px) {
+      width: auto !important;
+    }
+    @media (max-width : 768px){
+      width:17em !important;
+    }
   }
   &.form-field-gender{
     //margin-top: 5px;
@@ -63,6 +77,9 @@ section.form-field-inline{
       .field-attribute{
         label{
           width: 17em;
+          @media (max-width : 990px) {
+            text-align: left;
+          }
           @media (max-width : 580px) {
             text-align: left;
           }
@@ -154,11 +171,19 @@ section.form-field-inline{
     }
     .estimated-label{
       label{
-        @media (min-width : 768px) {
+        @media (min-width : 990px) {
           width: auto !important;
           margin-top: 1em;
         }
       }
+    }
+    .birth-time-label{
+       label{
+         @media (max-width : 990px) {
+           width: auto;
+           margin: 1em 0.8em 0em 0em
+         }
+       }
     }
     .showOn-small-screen{
       @media (max-width : 768px){
@@ -223,6 +248,9 @@ section.form-field-inline{
           &.hasOldIdentifier-field-attribute{
             label{
               width: auto;
+              @media (max-width: 990px) {
+                width: 15em;
+              }
             }
           }
         }
@@ -243,8 +271,24 @@ section.form-field-inline{
     &.registrationNumber-Mobile{
       width: 11em;
       margin-right: 0;
+      @media (max-width : 990px) {
+        min-width: initial;
+      }
     }
   }
+}
+
+
+.addressContainer ,.otherInfoContainer ,.additional-info-wrapper{
+  .form-field .field-attribute label{
+    @media (max-width : 990px) {
+      text-align: left;
+    }
+  }
+}
+
+.oldId-wrapper{
+  float: left;
 }
 
 
