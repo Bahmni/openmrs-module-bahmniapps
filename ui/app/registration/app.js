@@ -21,7 +21,12 @@ angular
                     'content@search': {templateUrl: 'views/search.html'}
                 },
                 resolve: {
-                    initialization: 'initialization',
+                    offlineConfigInitialization: function(offlineConfigInitialization){
+                        return offlineConfigInitialization("registration")
+                    },
+                    initialize: function (initialization, offlineConfigInitialization) {
+                        return initialization();
+                    },
                     offlineDb: function (offlineDbInitialization) {
                         return offlineDbInitialization();
 
@@ -41,7 +46,12 @@ angular
                     'content@newpatient': {templateUrl: 'views/newpatient.html'}
                 },
                 resolve: {
-                    initialization: 'initialization',
+                    offlineConfigInitialization: function(offlineConfigInitialization){
+                        return offlineConfigInitialization("registration")
+                    },
+                    initialize: function (initialization, offlineConfigInitialization) {
+                        return initialization();
+                    },
                     offlineDb: function (offlineDbInitialization) {
                         return offlineDbInitialization();
 
@@ -61,7 +71,12 @@ angular
                     'layout': {template: '<div ui-view="layout"></div>'}
                 },
                 resolve: {
-                    initialization: 'initialization',
+                    offlineConfigInitialization: function(offlineConfigInitialization){
+                        return offlineConfigInitialization("registration")
+                    },
+                    initialize: function (initialization, offlineConfigInitialization) {
+                        return initialization();
+                    },
                     offlineDb: function (offlineDbInitialization) {
                         return offlineDbInitialization();
 

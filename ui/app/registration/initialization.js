@@ -54,13 +54,15 @@ angular.module('bahmni.registration').factory('initialization',
                 $rootScope.loggedInLocation = location;
             });
         };
-        
-        return spinner.forPromise(authenticator.authenticateUser()
-            .then(initApp)
-            .then(getConfigs)
-            .then(initAppConfigs)
-            .then(mapRelationsTypeWithSearch)
-            .then(loggedInLocation)
-            .then(loadValidators(appService.configBaseUrl(), "registration")));
+
+        return function(){
+            return spinner.forPromise(authenticator.authenticateUser()
+                .then(initApp)
+                .then(getConfigs)
+                .then(initAppConfigs)
+                .then(mapRelationsTypeWithSearch)
+                .then(loggedInLocation)
+                .then(loadValidators(appService.configBaseUrl(), "registration")));
+        }
     }]
 );
