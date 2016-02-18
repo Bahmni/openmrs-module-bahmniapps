@@ -2,9 +2,12 @@
   margin-top: 45px;
 }
 .program-enrollment-container{
-  form .form-field{
+  form.form-field{
     .field-attribute label{
       width: auto;
+    }
+    input[type="checkbox"]{
+      margin-top:8px;
     }
   }
 
