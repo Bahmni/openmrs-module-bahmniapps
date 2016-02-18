@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('bahmni.adt')
-    .directive('wardList',['QueryService','spinner','$q','$window','$stateParams','appService', function (queryService, spinner, $q, $window, $stateParams, appService) {
+    .directive('wardList',[function () {
         return {
             restrict: 'E',
             controller: 'WardListController',

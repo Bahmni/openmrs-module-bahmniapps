@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('bahmni.adt')
-    .service('BedManagementService', ['WardService', function (wardService) {
+    .service('BedManagementService', [function () {
         var bedLayouts = [];
         var maxX = 1;
         var maxY = 1;

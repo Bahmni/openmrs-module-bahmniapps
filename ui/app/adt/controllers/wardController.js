@@ -16,8 +16,9 @@ angular.module('bahmni.adt')
 
             $scope.toggleExpandState = function () {
                 $scope.expanded = !$scope.expanded;
-                if(!$scope.expanded)
-                $scope.showWardList();
+                if(!$scope.expanded) {
+                    $scope.showWardList();
+                }
                 if($scope.readOnly) {
                     $rootScope.currentUser.toggleFavoriteWard($scope.ward.ward.name);
                     userService.savePreferences();
@@ -25,7 +26,12 @@ angular.module('bahmni.adt')
             };
 
             $scope.toggleWardView = function(){
-                ($scope.currentView == 'wardLayout') ? $scope.showWardList() : $scope.showWardLayout();
+                if ($scope.currentView == 'wardLayout') {
+                    $scope.showWardList()
+                }
+                else {
+                    $scope.showWardLayout();
+                }
                 expandView();
             };
 
