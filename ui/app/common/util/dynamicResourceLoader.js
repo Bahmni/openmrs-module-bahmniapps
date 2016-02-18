@@ -3,9 +3,12 @@
 Bahmni.Common.Util.DynamicResourceLoader = (function () {
 
     return {
-        includeJs: function (url) {
+        includeJs: function (script, isOfflineApp) {
             var element = document.createElement('script');
-            element.setAttribute('src', url);
+            if(isOfflineApp)
+                element.appendChild(document.createTextNode(script));
+            else
+                element.setAttribute('src', script);
             document.body.appendChild(element);
         },
         includeCss: function (url) {

@@ -11,11 +11,6 @@ angular.module('bahmni.common.offline').service('initializeOfflineSchema', ['$q'
     };
 
     this.initSchema = function () {
-
-        if (!offlineService.isChromeApp()) {
-            return $q.when({});
-        }
-
         var schemaBuilder = lf.schema.create('Bahmni', 2);
         createTable(schemaBuilder, Bahmni.Common.Offline.SchemaDefinitions.Patient);
         createTable(schemaBuilder, Bahmni.Common.Offline.SchemaDefinitions.PatientAttribute);
@@ -24,6 +19,7 @@ angular.module('bahmni.common.offline').service('initializeOfflineSchema', ['$q'
         createTable(schemaBuilder, Bahmni.Common.Offline.SchemaDefinitions.AddressHierarchyEntry);
         createTable(schemaBuilder, Bahmni.Common.Offline.SchemaDefinitions.AddressHierarchyLevel);
         createTable(schemaBuilder, Bahmni.Common.Offline.SchemaDefinitions.PatientAddress);
+        createTable(schemaBuilder, Bahmni.Common.Offline.SchemaDefinitions.Configs);
 
         return schemaBuilder.connect().then(function (database) {
             return database;
