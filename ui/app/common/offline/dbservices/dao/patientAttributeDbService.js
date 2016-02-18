@@ -32,8 +32,9 @@ angular.module('bahmni.common.offline')
                         var attributeValue = personAttribute.value;
                         if (typeof(attributeValue) == "object") {
                             value = attributeValue.display;
-                        } else
+                        } else {
                             value = attributeValue;
+                        }
                         var foundAttribute = _.find(attributeTypeMap, function (attributeType) {
                             return attributeType.uuid === personAttribute.attributeType.uuid
                         });

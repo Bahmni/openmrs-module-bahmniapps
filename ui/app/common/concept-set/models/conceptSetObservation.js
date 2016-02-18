@@ -84,8 +84,9 @@ Bahmni.ConceptSet.Observation.prototype = {
     },
 
     isGroup: function () {
-        if (this.groupMembers)
+        if (this.groupMembers) {
             return this.groupMembers.length > 0;
+        }
         return false;
     },
 

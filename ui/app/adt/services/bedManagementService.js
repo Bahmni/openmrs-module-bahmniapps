@@ -2,7 +2,6 @@
 
 angular.module('bahmni.adt')
     .service('BedManagementService', [function () {
-        var bedLayouts = [];
         var maxX = 1;
         var maxY = 1;
         var minX = 1;

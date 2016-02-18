@@ -36,7 +36,9 @@ Bahmni.ConceptSet.ObservationMapper = function () {
                         var observation = newObservation(savedObs.concept, savedObs, []);
                         obsToDisplay = createObservationForDisplay(observation, observation.concept);
                     }
-                    if (obsToDisplay) observationsForDisplay.push(obsToDisplay);
+                    if (obsToDisplay) {
+                        observationsForDisplay.push(obsToDisplay);
+                    }
                 }
             }
         });

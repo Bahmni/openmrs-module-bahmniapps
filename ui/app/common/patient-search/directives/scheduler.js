@@ -3,7 +3,7 @@
 angular.module('bahmni.common.patientSearch')
     .directive('scheduler', function ($interval) {
 
-        var link = function($scope,element,attrs){
+        var link = function($scope){
 
             var promise;
 

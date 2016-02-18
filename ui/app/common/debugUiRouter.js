@@ -1,6 +1,7 @@
 'use strict';
 
 // Tip from http://stackoverflow.com/a/20786262/69362
+/* exported debugUiRouter */
 var debugUiRouter = function($rootScope) {
 //	var $rootScope = angular.element(document.getElementById("debug")).injector().get('$rootScope');
 

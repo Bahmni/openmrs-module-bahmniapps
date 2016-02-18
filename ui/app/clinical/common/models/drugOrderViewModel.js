@@ -140,8 +140,9 @@ Bahmni.Clinical.DrugOrderViewModel = function (config, proto, encounterDate) {
         var mantissa = parseFloat((number - Math.floor(number)).toFixed(2)),
             abscissa = Math.ceil(number - mantissa);
 
-        if (!config.getDoseFractions || _.isEmpty(config.getDoseFractions()) || mantissa === 0)
+        if (!config.getDoseFractions || _.isEmpty(config.getDoseFractions()) || mantissa === 0) {
             return number;
+        }
 
         var result = _.result(_.find(config.getDoseFractions(), function(item) {
             return item.value === mantissa;
@@ -555,7 +556,7 @@ Bahmni.Clinical.DrugOrderViewModel = function (config, proto, encounterDate) {
             self.quantityUnit == undefined);
     };
 
-    this.validate = function(arg){
+    this.validate = function(){
         if(self.isUniformDosingType()){
             return validateUniformDosingType();
         }else if(self.isVariableDosingType()){

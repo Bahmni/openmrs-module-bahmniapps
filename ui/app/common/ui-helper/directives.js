@@ -96,7 +96,9 @@ angular.module('bahmni.common.uiHelper')
                     var formScope = scope.$parent;
                     var formName = attrs.name;
                     e.preventDefault();
-                    if(scope.autofillable) $(elem).find('input').trigger('change');
+                    if(scope.autofillable) {
+                        $(elem).find('input').trigger('change');
+                    }
                     if(formScope[formName].$valid) {
                         formScope.$apply(attrs.ngSubmit);
                         $(elem).removeClass('submitted-with-error');

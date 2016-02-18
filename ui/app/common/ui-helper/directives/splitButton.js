@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('bahmni.common.uiHelper')
-    .directive('splitButton',['$timeout', '$parse', function ($timeout, $parse) {
+    .directive('splitButton',['$timeout', '$parse', function ($timeout) {
         var controller = function($scope) {
             $scope.primaryOption = $scope.primaryOption || $scope.options[0];
             $scope.secondaryOptions = _.without($scope.options, $scope.primaryOption);
@@ -11,7 +11,7 @@ angular.module('bahmni.common.uiHelper')
 
         };
 
-        var link = function(scope,element,attrs){
+        var link = function(scope,element){
             var shouldScroll = function(elementPosition, elementHeight){
                 var windowHeight = window.innerHeight + $(window).scrollTop();
                 return windowHeight < (elementHeight+elementPosition);

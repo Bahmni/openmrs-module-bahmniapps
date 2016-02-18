@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('bahmni.common.offline').service('initializeOfflineSchema', ['$q', 'offlineService', function ($q, offlineService) {
+angular.module('bahmni.common.offline').service('initializeOfflineSchema', [function () {
 
     var dataTypes = {
         "INTEGER": lf.Type.INTEGER,
