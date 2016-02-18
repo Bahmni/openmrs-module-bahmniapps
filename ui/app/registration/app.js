@@ -39,7 +39,7 @@ angular
                     offlineSyncInitialization: function (offlineSyncInitialization, offlineDb) {
                         return offlineSyncInitialization(offlineDb);
                     },
-                    offlineConfigInitialization: function(offlineConfigInitialization, offlineSyncInitialization){
+                    offlineConfigInitialization: function(offlineConfigInitialization){
                         return offlineConfigInitialization("registration")
                     },
                     offlineRegistrationInitialization: function (offlineRegistrationInitialization, offlineDb) {
@@ -63,7 +63,7 @@ angular
                     offlineSyncInitialization: function (offlineSyncInitialization, offlineDb) {
                         return offlineSyncInitialization(offlineDb);
                     },
-                    offlineConfigInitialization: function(offlineConfigInitialization, offlineSyncInitialization){
+                    offlineConfigInitialization: function(offlineConfigInitialization){
                         return offlineConfigInitialization("registration")
                     },
                     offlineRegistrationInitialization: function (offlineRegistrationInitialization, offlineDb) {
@@ -87,7 +87,7 @@ angular
                     offlineSyncInitialization: function (offlineSyncInitialization, offlineDb) {
                         return offlineSyncInitialization(offlineDb);
                     },
-                    offlineConfigInitialization: function(offlineConfigInitialization, offlineSyncInitialization){
+                    offlineConfigInitialization: function(offlineConfigInitialization){
                         return offlineConfigInitialization("registration")
                     },
                     offlineRegistrationInitialization: function (offlineRegistrationInitialization, offlineDb) {

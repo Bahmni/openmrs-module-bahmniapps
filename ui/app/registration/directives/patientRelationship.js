@@ -58,7 +58,9 @@ angular.module('bahmni.registration')
             $scope.getRelationshipTypeForDisplay = function(relationship){
                 var personUuid = $scope.patient.uuid;
                 var relationshipType = $scope.getRelationshipType(relationship.relationshipType.uuid);
-                if(!relationship.personA) return "";
+                if(!relationship.personA) {
+                    return "";
+                }
                 if(relationship.personA.uuid == personUuid){
                     return relationshipType.aIsToB;
                 }else{

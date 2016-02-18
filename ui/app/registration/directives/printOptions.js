@@ -26,8 +26,9 @@ angular.module('bahmni.registration')
             $scope.buttonText = function(option,type) {
                 var printHtml = "";
                 var optionValue = option && $filter('titleTranslate')(option);
-                if(type)
+                if(type) {
                     printHtml = '<i class="fa fa-print"></i>';
+                }
                 return '<span>'+ optionValue +'</span>' + printHtml;
             }
         };

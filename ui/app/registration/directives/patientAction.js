@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('bahmni.registration')
-    .directive('patientAction', ['$window', '$location', '$state', 'spinner', '$rootScope', '$stateParams', '$bahmniCookieStore', 'appService', 'visitService', 'sessionService', 'encounterService', 'messagingService', '$translate','offlineService',
-        function ($window, $location, $state, spinner, $rootScope, $stateParams, $bahmniCookieStore, appService, visitService, sessionService, encounterService, messagingService, $translate, offlineService) {
+    .directive('patientAction', ['$window', '$location', '$state', 'spinner', '$rootScope', '$stateParams', '$bahmniCookieStore', 'appService', 'visitService', 'sessionService', 'encounterService', 'messagingService', '$translate',
+        function ($window, $location, $state, spinner, $rootScope, $stateParams, $bahmniCookieStore, appService, visitService, sessionService, encounterService, messagingService, $translate) {
             var controller = function ($scope) {
                 var self = this;
                 var uuid = $stateParams.patientUuid;

@@ -25,7 +25,9 @@ angular.module('bahmni.registration')
                 var parentFields = addressLevelsNamesInDescendingOrder.slice(addressLevelsNamesInDescendingOrder.indexOf(fieldName) + 1);
                 var parent = addressFieldItem.addressField.parent;
                 parentFields.forEach(function (parentField) {
-                    if (!parent) return;
+                    if (!parent) {
+                        return;
+                    }
                     $scope.address[parentField] = parent.name;
                     parent = parent.parent;
                 });

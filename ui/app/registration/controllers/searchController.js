@@ -2,8 +2,8 @@
 
 angular.module('bahmni.registration')
     .controller('SearchPatientController', ['$rootScope', '$scope', '$location', '$window', 'spinner', 'patientService', 'appService', 'Preferences',
-                'messagingService', '$translate','$filter','$bahmniCookieStore',
-        function ($rootScope, $scope, $location, $window, spinner, patientService, appService, preferences, messagingService, $translate,$filter, $bahmniCookieStore) {
+                'messagingService', '$translate','$filter',
+        function ($rootScope, $scope, $location, $window, spinner, patientService, appService, preferences, messagingService, $translate,$filter) {
 
             $scope.identifierSources = $rootScope.patientConfiguration.identifierSources;
             $scope.results = [];
@@ -12,10 +12,10 @@ angular.module('bahmni.registration')
             var allSearchConfigs = appService.getAppDescriptor().getConfigValue("patientSearch") || {};
 
             var hasSearchParameters = function () {
-                return $scope.searchParameters.name.trim().length > 0
-                    || $scope.searchParameters.addressFieldValue.trim().length > 0
-                    || $scope.searchParameters.customAttribute.trim().length > 0
-                    || $scope.searchParameters.programAttributeFieldValue.trim().length > 0;
+                return $scope.searchParameters.name.trim().length > 0 ||
+                    $scope.searchParameters.addressFieldValue.trim().length > 0 ||
+                    $scope.searchParameters.customAttribute.trim().length > 0 ||
+                    $scope.searchParameters.programAttributeFieldValue.trim().length > 0;
             };
 
             var searchBasedOnQueryParameters = function (offset) {
@@ -66,7 +66,7 @@ angular.module('bahmni.registration')
 
             };
             $scope.convertToTableHeader = function(camelCasedText){
-                return camelCasedText.replace(/[A-Z]|^[a-z]/g,function (str, group1, group2) {
+                return camelCasedText.replace(/[A-Z]|^[a-z]/g,function (str) {
                     return " " + str.toUpperCase() + "";
                 }).trim();
             };
@@ -135,8 +135,12 @@ angular.module('bahmni.registration')
             var setAddressSearchConfig = function(){
                 $scope.addressSearchConfig = allSearchConfigs.address || {};
                 $scope.addressSearchConfig.show = !_.isEmpty($scope.addressSearchConfig) && !_.isEmpty($scope.addressSearchConfig.field);
-                if($scope.addressSearchConfig.label && !$scope.addressSearchConfig.label) throw "Search Config label is not present!";
-                if($scope.addressSearchConfig.field && !$scope.addressSearchConfig.field) throw "Search Config field is not present!";
+                if($scope.addressSearchConfig.label && !$scope.addressSearchConfig.label) {
+                    throw "Search Config label is not present!";
+                }
+                if($scope.addressSearchConfig.field && !$scope.addressSearchConfig.field) {
+                    throw "Search Config field is not present!";
+                }
             };
 
             var setCustomAttributesSearchConfig = function () {
@@ -186,7 +190,9 @@ angular.module('bahmni.registration')
                     showInsufficientPrivMessage();
                     return;
                 }
-                if (!$scope.searchParameters.registrationNumber) return;
+                if (!$scope.searchParameters.registrationNumber) {
+                    return;
+                }
                 $scope.results = [];
 
                 var patientIdentifier = $scope.searchParameters.registrationNumber;

@@ -17,9 +17,9 @@ Bahmni.Registration.PatientConfig = (function () {
             delete patientInformation["hidden"];
 
             var otherInformationAttributes = this.attributeTypes.filter(function (item) {
-                return !isHiddenPatientAttribute(hiddenAttributes, item)
-                    && !isItemAMandatoryField(item)
-                    && !isAttributeInOtherSection(patientInformation, patientAttributesSections, item);
+                return !isHiddenPatientAttribute(hiddenAttributes, item) &&
+                    !isItemAMandatoryField(item) &&
+                    !isAttributeInOtherSection(patientInformation, patientAttributesSections, item);
             });
 
             this.attributeRows = this.splitAsRows(otherInformationAttributes);

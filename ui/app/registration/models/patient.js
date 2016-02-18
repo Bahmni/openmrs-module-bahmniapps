@@ -40,19 +40,19 @@ angular.module('bahmni.registration')
             };
 
             return {
-                address: {}
-                ,age: age.create()
-                ,birthdate: null
-                ,calculateAge: calculateAge
-                ,identifierPrefix: {}
-                ,generateIdentifier: generateIdentifier
-                ,clearRegistrationNumber: clearRegistrationNumber
-                ,image: '../images/blank-user.gif'
-                ,fullNameLocal: fullNameLocal
-                ,getImageData: getImageData
-                ,relationships: []
-                ,newlyAddedRelationships: [{}]
-                ,calculateBirthDate: calculateBirthDate
+                address: {},
+                age: age.create(),
+                birthdate: null,
+                calculateAge: calculateAge,
+                identifierPrefix: {},
+                generateIdentifier: generateIdentifier,
+                clearRegistrationNumber: clearRegistrationNumber,
+                image: '../images/blank-user.gif',
+                fullNameLocal: fullNameLocal,
+                getImageData: getImageData,
+                relationships: [],
+                newlyAddedRelationships: [{}],
+                calculateBirthDate: calculateBirthDate
             };
         };
 
