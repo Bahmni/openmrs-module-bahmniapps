@@ -11,11 +11,6 @@ angular.module('bahmni.common.offline').service('initializeOfflineSchema', ['$q'
     };
 
     this.initSchema = function () {
-
-        if (!offlineService.isChromeApp()) {
-            return $q.when({});
-        }
-
         var schemaBuilder = lf.schema.create('Bahmni', 2);
         createTable(schemaBuilder, Bahmni.Common.Offline.SchemaDefinitions.Patient);
         createTable(schemaBuilder, Bahmni.Common.Offline.SchemaDefinitions.PatientAttribute);

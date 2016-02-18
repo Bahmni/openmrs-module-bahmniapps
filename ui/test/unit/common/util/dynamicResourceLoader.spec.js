@@ -7,6 +7,11 @@ describe('DynamicResourceLoader', function () {
         var x  = document.body.getElementsByTagName("script");
         expect(x[x.length-1].getAttribute("src")).toBe("https://www.example.com/scripts/a.js");
     });
+    it("include js for offline app", function () {
+        var msg = dynamicResourceLoader.includeJs("var id = 'Bahmni'", true);
+        var x  = document.body.getElementsByTagName("script");
+        expect(x[x.length-1].textContent).toBe("var id = 'Bahmni'");
+    });
     it("include css", function () {
         var msg = dynamicResourceLoader.includeCss("https://www.example.com/scripts/a.css");
         var x  = document.head.getElementsByTagName("link");

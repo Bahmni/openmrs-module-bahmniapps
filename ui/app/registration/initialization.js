@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('bahmni.registration').factory('initialization',
-    ['$rootScope', '$q', 'configurations', 'authenticator', 'appService', 'spinner', 'Preferences', 'locationService','offlineService',
-    function ($rootScope, $q, configurations, authenticator, appService, spinner, preferences, locationService, offlineService) {
+    ['$rootScope', '$q', 'configurations', 'authenticator', 'appService', 'spinner', 'Preferences', 'locationService','offlineService','offlineDbService','androidDbService',
+    function ($rootScope, $q, configurations, authenticator, appService, spinner, preferences, locationService, offlineService, offlineDbService, androidDbService) {
         var getConfigs = function() {
             var configNames = ['encounterConfig', 'patientAttributesConfig', 'identifierSourceConfig', 'addressLevels', 'genderMap', 'relationshipTypeConfig','relationshipTypeMap', 'loginLocationToVisitTypeMapping'];
             return configurations.load(configNames).then(function () {
@@ -25,13 +25,18 @@ angular.module('bahmni.registration').factory('initialization',
             var script;
             var isOfflineApp = offlineService.isOfflineApp();
             if(isOfflineApp){
-                var config = JSON.parse(AndroidConfigDbService.getConfig("registration"));
-                script = config['fieldValidation.js']
+                if (offlineService.isAndroidApp()) {
+                    offlineDbService = androidDbService;
+                }
+                offlineDbService.getConfig("registration").then(function(config){
+                    script = config.value['fieldValidation.js'];
+                    Bahmni.Common.Util.DynamicResourceLoader.includeJs(script, isOfflineApp);
+                });
             }
             else{
                 script = baseUrl + contextPath + '/fieldValidation.js';
+                Bahmni.Common.Util.DynamicResourceLoader.includeJs(script, isOfflineApp);
             }
-            Bahmni.Common.Util.DynamicResourceLoader.includeJs(script, isOfflineApp);
         };
 
         var initApp = function() {

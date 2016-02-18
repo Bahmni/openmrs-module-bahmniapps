@@ -21,18 +21,17 @@ angular
                     'content@search': {templateUrl: 'views/search.html'}
                 },
                 resolve: {
-                    offlineConfigInitialization: function(offlineConfigInitialization){
-                        return offlineConfigInitialization("registration")
-                    },
-                    initialize: function (initialization, offlineConfigInitialization) {
-                        return initialization();
-                    },
                     offlineDb: function (offlineDbInitialization) {
                         return offlineDbInitialization();
-
+                    },
+                    initialize: function (initialization, offlineConfigInitialization) {
+                        return initialization(offlineConfigInitialization);
                     },
                     offlineSyncInitialization: function (offlineSyncInitialization, offlineDb) {
                         return offlineSyncInitialization(offlineDb);
+                    },
+                    offlineConfigInitialization: function(offlineConfigInitialization, offlineSyncInitialization){
+                        return offlineConfigInitialization("registration")
                     },
                     offlineRegistrationInitialization: function (offlineRegistrationInitialization, offlineDb) {
                         return offlineRegistrationInitialization(offlineDb);
@@ -46,18 +45,17 @@ angular
                     'content@newpatient': {templateUrl: 'views/newpatient.html'}
                 },
                 resolve: {
-                    offlineConfigInitialization: function(offlineConfigInitialization){
-                        return offlineConfigInitialization("registration")
-                    },
-                    initialize: function (initialization, offlineConfigInitialization) {
-                        return initialization();
-                    },
                     offlineDb: function (offlineDbInitialization) {
                         return offlineDbInitialization();
-
+                    },
+                    initialize: function (initialization, offlineConfigInitialization) {
+                        return initialization(offlineConfigInitialization);
                     },
                     offlineSyncInitialization: function (offlineSyncInitialization, offlineDb) {
                         return offlineSyncInitialization(offlineDb);
+                    },
+                    offlineConfigInitialization: function(offlineConfigInitialization, offlineSyncInitialization){
+                        return offlineConfigInitialization("registration")
                     },
                     offlineRegistrationInitialization: function (offlineRegistrationInitialization, offlineDb) {
                         return offlineRegistrationInitialization(offlineDb);
@@ -71,18 +69,17 @@ angular
                     'layout': {template: '<div ui-view="layout"></div>'}
                 },
                 resolve: {
-                    offlineConfigInitialization: function(offlineConfigInitialization){
-                        return offlineConfigInitialization("registration")
-                    },
-                    initialize: function (initialization, offlineConfigInitialization) {
-                        return initialization();
-                    },
                     offlineDb: function (offlineDbInitialization) {
                         return offlineDbInitialization();
-
+                    },
+                    initialize: function (initialization, offlineConfigInitialization) {
+                        return initialization(offlineConfigInitialization);
                     },
                     offlineSyncInitialization: function (offlineSyncInitialization, offlineDb) {
                         return offlineSyncInitialization(offlineDb);
+                    },
+                    offlineConfigInitialization: function(offlineConfigInitialization, offlineSyncInitialization){
+                        return offlineConfigInitialization("registration")
                     },
                     offlineRegistrationInitialization: function (offlineRegistrationInitialization, offlineDb) {
                         return offlineRegistrationInitialization(offlineDb);

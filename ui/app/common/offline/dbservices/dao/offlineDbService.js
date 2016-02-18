@@ -1,11 +1,11 @@
 'use strict';
 
 angular.module('bahmni.common.offline')
-    .service('offlineDbService', ['$http', '$q', 'patientDbService', 'patientAddressDbService', 'patientAttributeDbService', 'offlineMarkerDbService', 'offlineAddressHierarchyDbService', 'offlineConfigDbService',
-        function ($http, $q, patientDbService, patientAddressDbService, patientAttributeDbService, offlineMarkerDbService, offlineAddressHierarchyDbService, offlineConfigDbService) {
+    .service('offlineDbService', ['$http', '$q', 'patientDbService', 'patientAddressDbService', 'patientAttributeDbService', 'offlineMarkerDbService', 'offlineAddressHierarchyDbService', 'offlineConfigDbService','initializeOfflineSchema',
+        function ($http, $q, patientDbService, patientAddressDbService, patientAttributeDbService, offlineMarkerDbService, offlineAddressHierarchyDbService, offlineConfigDbService, initializeOfflineSchema) {
         var db;
 
-        var populateData = function () {
+        var populateAttributeTypes = function () {
             patientAttributeDbService.insertAttributeTypes(db);
         };
 
@@ -45,7 +45,6 @@ angular.module('bahmni.common.offline')
         var insertPatientData = function (patientData, requestType) {
             var patient = patientData.patient;
             var person = patient.person;
-            var attributeTypeTable = db.getSchema().table('patient_attribute_type');
 
             return patientAttributeDbService.getAttributeTypes(db).then(function (attributeTypeMap) {
                     if ("POST" === requestType) {
@@ -86,6 +85,10 @@ angular.module('bahmni.common.offline')
             db = _db;
         };
 
+        var initSchema = function () {
+            return initializeOfflineSchema.initSchema();
+        };
+
         var getMarker = function () {
             return offlineMarkerDbService.getMarker();
         };
@@ -115,7 +118,8 @@ angular.module('bahmni.common.offline')
         };
         return {
             init: init,
-            populateData: populateData,
+            initSchema: initSchema,
+            populateAttributeTypes: populateAttributeTypes,
             getPatientByUuid: getPatientByUuid,
             createPatient: createPatient,
             deletePatientData: deletePatientData,
