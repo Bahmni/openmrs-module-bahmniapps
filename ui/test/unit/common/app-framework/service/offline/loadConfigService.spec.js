@@ -57,7 +57,6 @@ describe("loading config functionality", function () {
         mockHttp.get.and.returnValue(specUtil.respondWithPromise($q, config.value["app.json"]));
 
         loadConfigService.loadConfig("something/app.json", "test").then(function(result){
-            console.log("abc");
             expect(result.id).toBe("bahmni.test");
             done();
         });
