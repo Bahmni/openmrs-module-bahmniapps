@@ -367,6 +367,17 @@ module.exports = function (grunt) {
                 src: ['**/*.min.*.js'],
                 dest: '<%= yeoman.dist %>'
             }
+        },
+        preprocess : {
+            options: {
+                context : {
+                    DEBUG: 'production'
+                }
+            },
+            js : {
+                src : '<%= yeoman.dist %>/registration.min.js',
+                dest : '<%= yeoman.dist %>/registration.min.js'
+            }
         }
     });
 
@@ -380,6 +391,7 @@ module.exports = function (grunt) {
         'useminPrepare',
         'ngAnnotate',
         'concat',
+        'preprocess',
         'imagemin',
         'htmlmin',
         'cssmin',

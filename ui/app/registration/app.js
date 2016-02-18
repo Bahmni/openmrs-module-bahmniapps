@@ -12,6 +12,15 @@ angular
         $urlRouterProvider.otherwise('/search');
         $compileProvider.aHrefSanitizationWhitelist(/^\s*(https?|ftp|mailto|chrome-extension|file):/);
         $compileProvider.imgSrcSanitizationWhitelist(/^\s*(https?|local|data|blob|chrome-extension):/);
+
+        // @if DEBUG='production'
+                $compileProvider.debugInfoEnabled(false);
+        // @endif
+
+        // @if DEBUG='development'
+                $compileProvider.debugInfoEnabled(true);
+        // @endif
+
         $stateProvider
             .state('search', {
                 url: '/search',
