@@ -1,6 +1,6 @@
 <div class="relationships-container form">
         <div class="history-relationship">
-            <div class="row" ng-repeat="relationship in patient.relationships" ng-hide="relationship.voided">
+            <div class="row" ng-repeat="relationship in patient.relationships track by relationship.uuid" ng-hide="relationship.voided">
                 <div class="col col1">
                     <span>{{::getRelationshipTypeForDisplay(relationship)}}</span>
                 </div>
