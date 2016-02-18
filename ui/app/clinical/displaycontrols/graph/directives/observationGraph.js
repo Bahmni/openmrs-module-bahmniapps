@@ -13,7 +13,9 @@ angular.module('bahmni.clinical').directive('observationGraph', ['appService', '
         var link = function ($scope, element) {
             $scope.graphId = 'graph' + $scope.$id;
 
-            if (!$scope.params) return;
+            if (!$scope.params) {
+                return;
+            }
 
             var config = new Bahmni.Clinical.ObservationGraphConfig($scope.params.config);
 
@@ -65,7 +67,9 @@ angular.module('bahmni.clinical').directive('observationGraph', ['appService', '
                     observationGraphReferenceModel.validate();
                     referenceLines = observationGraphReferenceModel.createObservationGraphReferenceLines();
                 }
-                if (observations.length == 0) return;
+                if (observations.length == 0) {
+                    return;
+                }
 
                 if (yAxisConceptDetails != undefined) {
                     config.lowNormal = yAxisConceptDetails.lowNormal;

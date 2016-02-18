@@ -23,7 +23,7 @@ angular.module('bahmni.clinical')
                 $scope.init(dashboard);
             });
 
-            $scope.$on("event:printDashboard", function (event) {
+            $scope.$on("event:printDashboard", function () {
                 printer.printFromScope("dashboard/views/dashboardPrint.html", $scope);
             });
 

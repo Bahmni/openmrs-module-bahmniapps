@@ -46,7 +46,9 @@ angular.module('bahmni.clinical')
 
         var getSelectedDisposition = function(){
             if($scope.dispositionCode){
-                if(!$scope.dispositionNote.value){ $scope.dispositionNote.voided = true};
+                if(!$scope.dispositionNote.value){
+                    $scope.dispositionNote.voided = true
+                }
                 return {
                     dispositionDateTime : null,
                     additionalObs :[$scope.dispositionNote],

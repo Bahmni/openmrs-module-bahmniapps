@@ -1,3 +1,5 @@
+'use strict';
+
 Bahmni.LabResultsMapper = function () {
     this.map = function (encounterTransaction) {
         return getLabResults(getLabResultObs(encounterTransaction));
@@ -35,7 +37,6 @@ Bahmni.LabResultsMapper = function () {
             if (observation.concept.name == Bahmni.Clinical.Constants.labConceptSetName) {
                 labResultObs = observation.groupMembers;
             }
-            ;
         });
         return labResultObs || [];
     };

@@ -1,4 +1,4 @@
-'use.strict';
+'use strict';
 
 angular.module('bahmni.clinical').factory('ordersTabInitialization',
     ['conceptSetService', 'spinner', function(conceptSetService, spinner){

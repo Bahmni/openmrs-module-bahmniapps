@@ -270,8 +270,8 @@ angular.module('bahmni.clinical')
             };
 
             var isEffectiveStartDateSameAsToday = function (newDrugOrder) {
-                return DateUtil.isSameDate(newDrugOrder.effectiveStartDate, DateUtil.parse(newDrugOrder.encounterDate))
-                    && DateUtil.isSameDate(newDrugOrder.effectiveStartDate, DateUtil.now());
+                return DateUtil.isSameDate(newDrugOrder.effectiveStartDate, DateUtil.parse(newDrugOrder.encounterDate)) &&
+                    DateUtil.isSameDate(newDrugOrder.effectiveStartDate, DateUtil.now());
 
             };
 
@@ -478,24 +478,26 @@ angular.module('bahmni.clinical')
                     return $scope.consultation.newlyAddedTabTreatments[tabName];
                 });
                 $scope.consultation.newlyAddedTreatments = _.flatten(allTreatmentsAcrossTabs);
-                $scope.consultation.discontinuedDrugs && $scope.consultation.discontinuedDrugs.forEach(function (discontinuedDrug) {
-                    var removableOrder = _.find(activeDrugOrders, {uuid: discontinuedDrug.uuid});
-                    if (discontinuedDrug != null) {
-                        removableOrder.orderReasonText = discontinuedDrug.orderReasonText;
-                        removableOrder.dateActivated = discontinuedDrug.dateStopped;
-                        removableOrder.scheduledDate = discontinuedDrug.dateStopped;
+                if ($scope.consultation.discontinuedDrugs) {
+                    $scope.consultation.discontinuedDrugs.forEach(function (discontinuedDrug) {
+                        var removableOrder = _.find(activeDrugOrders, {uuid: discontinuedDrug.uuid});
+                        if (discontinuedDrug != null) {
+                            removableOrder.orderReasonText = discontinuedDrug.orderReasonText;
+                            removableOrder.dateActivated = discontinuedDrug.dateStopped;
+                            removableOrder.scheduledDate = discontinuedDrug.dateStopped;
 
-                        if (discontinuedDrug.orderReasonConcept != null && discontinuedDrug.orderReasonConcept.name) {
-                            removableOrder.orderReasonConcept = {
-                                name: discontinuedDrug.orderReasonConcept.name.name,
-                                uuid: discontinuedDrug.orderReasonConcept.uuid
-                            };
+                            if (discontinuedDrug.orderReasonConcept != null && discontinuedDrug.orderReasonConcept.name) {
+                                removableOrder.orderReasonConcept = {
+                                    name: discontinuedDrug.orderReasonConcept.name.name,
+                                    uuid: discontinuedDrug.orderReasonConcept.uuid
+                                };
+                            }
                         }
-                    }
-                    if (removableOrder) {
-                        removeOrder(removableOrder);
-                    }
-                });
+                        if (removableOrder) {
+                            removeOrder(removableOrder);
+                        }
+                    })
+                }
             };
 
             $scope.consultation.preSaveHandler.register("drugOrderSaveHandlerKey", saveTreatment);

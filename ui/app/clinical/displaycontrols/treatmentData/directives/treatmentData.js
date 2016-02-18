@@ -19,7 +19,7 @@ angular.module('bahmni.clinical')
 
                 var programConfig = appService.getAppDescriptor().getConfigValue("program") || {};
 
-                var startDate = null, endDate = null, getOtherActive, getEffectiveOrdersOnly = false;
+                var startDate = null, endDate = null, getEffectiveOrdersOnly = false;
                 if (programConfig.showDetailsWithinDateRange) {
                     startDate = $stateParams.dateEnrolled;
                     endDate = $stateParams.dateCompleted;

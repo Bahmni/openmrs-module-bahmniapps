@@ -1,3 +1,5 @@
+'use strict';
+
 Bahmni.Clinical.PatientFileObservationsMapper = function () {
     var DateUtil = Bahmni.Common.Util.DateUtil;
 

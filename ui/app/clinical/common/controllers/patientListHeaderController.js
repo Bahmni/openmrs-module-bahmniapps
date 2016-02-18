@@ -54,7 +54,7 @@ angular.module('bahmni.clinical')
             };
 
 
-            $scope.$on('ngDialog.closed', function (e, $dialog) {
+            $scope.$on('ngDialog.closed', function () {
                 $('body').removeClass('show-controller-back');
             });
 
@@ -64,9 +64,15 @@ angular.module('bahmni.clinical')
 
             $scope.getTitle = function(){
                 var title = [];
-                if(getCurrentCookieLocation()) title.push(getCurrentCookieLocation().name);
-                if(getCurrentProvider() && getCurrentProvider().value) title.push(getCurrentProvider().value);
-                if(retrospectiveEntryService.getRetrospectiveDate()) title.push(DateUtil.formatDateWithoutTime(retrospectiveEntryService.getRetrospectiveDate()));
+                if(getCurrentCookieLocation()) {
+                    title.push(getCurrentCookieLocation().name);
+                }
+                if(getCurrentProvider() && getCurrentProvider().value) {
+                    title.push(getCurrentProvider().value);
+                }
+                if(retrospectiveEntryService.getRetrospectiveDate()) {
+                    title.push(DateUtil.formatDateWithoutTime(retrospectiveEntryService.getRetrospectiveDate()));
+                }
                 return title.join(',');
             };
 

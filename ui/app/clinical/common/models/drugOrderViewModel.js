@@ -1,3 +1,5 @@
+'use strict';
+
 Bahmni.Clinical.DrugOrderViewModel = function (config, proto, encounterDate) {
     angular.copy(proto, this);
 
@@ -90,8 +92,9 @@ Bahmni.Clinical.DrugOrderViewModel = function (config, proto, encounterDate) {
         var destructredNumber = destructureReal(this.uniformDosingType.dose);
         this.uniformDosingType.dose = destructredNumber.dose === 0 ? "" : destructredNumber.dose;
 
-        if (destructredNumber.fraction)
+        if (destructredNumber.fraction) {
             this.uniformDosingType.doseFraction = destructredNumber.fraction;
+        }
     }
     this.variableDosingType = this.variableDosingType || {};
     this.durationInDays = this.durationInDays || 0;
@@ -105,8 +108,9 @@ Bahmni.Clinical.DrugOrderViewModel = function (config, proto, encounterDate) {
     this.isNonCodedDrug = this.isNonCodedDrug || false;
     this.isDurationRequired = inputOptionsConfig.duration && inputOptionsConfig.duration.required == false? false : true;
 
-    if(inputOptionsConfig.defaultStartDate === false && !this.effectiveStartDate)
+    if(inputOptionsConfig.defaultStartDate === false && !this.effectiveStartDate) {
         this.effectiveStartDate = null;
+    }
     else{
         this.effectiveStartDate = this.effectiveStartDate || this.encounterDate;
     }
@@ -143,8 +147,9 @@ Bahmni.Clinical.DrugOrderViewModel = function (config, proto, encounterDate) {
             return item.value === mantissa;
         }), 'label');
 
-        if (!result)
+        if (!result) {
             return number;
+        }
 
         return abscissa ? "" + abscissa + result : "" + result;
     };
@@ -198,8 +203,9 @@ Bahmni.Clinical.DrugOrderViewModel = function (config, proto, encounterDate) {
             otherDescription = addDelimiter(blankIfFalsy(otherDescription), " - ");
         }
         if(withDuration){
-            if(self.duration && self.duration != 0)
+            if(self.duration && self.duration != 0) {
                 otherDescription = otherDescription + addDelimiter(blankIfFalsy(self.duration), " ") + addDelimiter(blankIfFalsy(self.durationUnit), ", ")
+            }
         }
         otherDescription = otherDescription.substring(0, otherDescription.length - 2);
         return otherDescription;
@@ -298,7 +304,9 @@ Bahmni.Clinical.DrugOrderViewModel = function (config, proto, encounterDate) {
 
     this.changeDrug = function(drug) {
         this.drug = drug;
-        if(!drug) return;
+        if(!drug) {
+            return;
+        }
         var defaults = drugFormDefaults[this.drug.form];
         if(defaults) {
             this.doseUnits = getDoseUnits(defaults.doseUnits);
@@ -458,9 +466,10 @@ Bahmni.Clinical.DrugOrderViewModel = function (config, proto, encounterDate) {
 
     this.getSpanDetails = function () {
         var valueString = '- ';
-        _.forEach(this.span, function (value, key, obj) {
-            if(value)
-                valueString +=  value + " " + key + " + ";
+        _.forEach(this.span, function (value, key) {
+            if(value) {
+                valueString += value + " " + key + " + ";
+            }
         });
         return valueString.substring(0, valueString.length - 3);
     };
@@ -680,7 +689,11 @@ Bahmni.Clinical.DrugOrderViewModel.createFromContract = function (drugOrderRespo
     viewModel.drugNonCoded = drugOrderResponse.drugNonCoded;
     viewModel.isNonCodedDrug = drugOrderResponse.drugNonCoded ? true : false;
     viewModel.drugNameDisplay = drugOrderResponse.drugNonCoded ? drugOrderResponse.drugNonCoded: drugOrderResponse.drug.name + " (" + drugOrderResponse.drug.form + ")";
-    config ? viewModel.loadOrderAttributes(drugOrderResponse) : viewModel.orderAttributes = drugOrderResponse.orderAttributes;
+    if (config) {
+        viewModel.loadOrderAttributes(drugOrderResponse);
+    } else {
+        viewModel.orderAttributes = drugOrderResponse.orderAttributes;
+    }
     viewModel.visit = drugOrderResponse.visit;
     viewModel.voided = drugOrderResponse.voided;
     viewModel.dosage = viewModel.getDoseAndUnits();

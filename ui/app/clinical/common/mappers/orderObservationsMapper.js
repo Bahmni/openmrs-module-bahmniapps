@@ -1,3 +1,5 @@
+'use strict';
+
 Bahmni.Clinical.OrderObservationsMapper = function () {
 };
 

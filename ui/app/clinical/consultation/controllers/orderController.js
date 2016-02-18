@@ -10,14 +10,17 @@ angular.module('bahmni.clinical')
             var testConceptToParentsMapping = {}; //A child concept could be part of multiple parent panels
 
             var collapseExistingActiveSection = function(section){
-                section && (section.klass="");
+                if (section) {
+                    section.klass = "";
+                }
             };
 
             var showFirstLeftCategoryByDefault = function(){
                 if(!$scope.activeTab.leftCategory) {
                     var allLeftCategories = $scope.getOrderTemplate($scope.activeTab.name).setMembers;
-                    if (allLeftCategories.length > 0)
+                    if (allLeftCategories.length > 0) {
                         $scope.showLeftCategoryTests(allLeftCategories[0]);
+                    }
                 }
             };
 

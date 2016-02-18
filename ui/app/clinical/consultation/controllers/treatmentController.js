@@ -1,3 +1,5 @@
+'use strict';
+
 angular.module('bahmni.clinical')
     .controller('TreatmentController', ['$scope', 'clinicalAppConfigService', 'treatmentConfig', '$stateParams',
         function ($scope, clinicalAppConfigService, treatmentConfig, $stateParams) {

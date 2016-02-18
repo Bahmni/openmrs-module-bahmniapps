@@ -1,6 +1,7 @@
+'use strict';
+
 Bahmni.Clinical.VisitHistoryEntry = (function(){
-	var DateUtil = Bahmni.Common.Util.DateUtil;
-	
+
 	var VisitHistoryEntry = function(visitData) {
 	    angular.extend(this, visitData);
 	};
@@ -11,7 +12,9 @@ Bahmni.Clinical.VisitHistoryEntry = (function(){
 	    },
 
 	    isOneDayVisit: function() {
-	    	if(this.isActive()) return true;
+	    	if(this.isActive()) {
+				return true;
+            }
 	    	var startDateString = moment(this.startDatetime).format("YYYYMMDD");
 	    	var stopDateString = moment(this.stopDatetime).format("YYYYMMDD");
 	        return startDateString === stopDateString;

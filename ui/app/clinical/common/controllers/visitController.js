@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('bahmni.clinical')
-    .controller('VisitController', ['$scope', '$state', 'encounterService', 'clinicalAppConfigService', 'configurations', 'visitSummary','$timeout', 'printer','visitConfig', 'visitHistory', '$stateParams', '$location',
-        function ($scope, $state, encounterService, clinicalAppConfigService, configurations, visitSummary, $timeout, printer, visitConfig, visitHistory, $stateParams, $location) {
+    .controller('VisitController', ['$scope', '$state', 'encounterService', 'clinicalAppConfigService', 'configurations', 'visitSummary','$timeout', 'printer','visitConfig', 'visitHistory', '$stateParams',
+        function ($scope, $state, encounterService, clinicalAppConfigService, configurations, visitSummary, $timeout, printer, visitConfig, visitHistory, $stateParams) {
             var encounterTypeUuid = configurations.encounterConfig().getPatientDocumentEncounterTypeUuid();
             $scope.documentsPromise = encounterService.getEncountersForEncounterType($scope.patient.uuid, encounterTypeUuid).then(function (response) {
                 return new Bahmni.Clinical.PatientFileObservationsMapper().map(response.data.results);
@@ -49,11 +49,11 @@ angular.module('bahmni.clinical')
                 return moment(date).format("DD-MMM-YY");
             };
 
-            $scope.$on("event:printVisitTab", function (event) {
+            $scope.$on("event:printVisitTab", function () {
                 printer.printFromScope("common/views/visitTabPrint.html",$scope);
             });
 
-            $scope.$on("event:clearVisitBoard", function (event, tab) {
+            $scope.$on("event:clearVisitBoard", function () {
                 $scope.clearBoard = true;
                 $timeout(function(){
                     $scope.clearBoard = false;

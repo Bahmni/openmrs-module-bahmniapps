@@ -70,8 +70,9 @@ Bahmni.Clinical.DrugOrder = (function () {
         },
 
         getStatusOnDate: function (date) {
-            if(DateUtil.isSameDate(this.dateStopped, date))
+            if(DateUtil.isSameDate(this.dateStopped, date)) {
                 return 'stopped';
+            }
             return this.isActiveOnDate(date) ? 'active' : 'inactive';
         },
 

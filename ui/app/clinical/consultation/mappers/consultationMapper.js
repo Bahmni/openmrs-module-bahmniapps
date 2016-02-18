@@ -1,4 +1,6 @@
-Bahmni.ConsultationMapper = function (dosageFrequencies, dosageInstructions, consultationNoteConcept, labOrderNoteConcept, stoppedOrderReasonConfig) {
+'use strict';
+
+Bahmni.ConsultationMapper = function (dosageFrequencies, dosageInstructions, consultationNoteConcept, labOrderNoteConcept) {
 
     var filterPreviousOrderOfRevisedOrders = function (orders) {
         return _.filter(orders, function (drugOrder) {

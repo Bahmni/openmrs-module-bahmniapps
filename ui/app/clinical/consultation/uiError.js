@@ -1,6 +1,6 @@
 'use strict';
 
-Bahmni.Clinical.Error = function () {
+Bahmni.Clinical.Error = (function () {
 
     var messages = Bahmni.Common.Constants.serverErrorMessages;
 
@@ -21,4 +21,4 @@ Bahmni.Clinical.Error = function () {
     return {
         translate: translate
     }
-}();
+})();
