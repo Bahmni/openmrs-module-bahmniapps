@@ -3,7 +3,7 @@ Bahmni.Common.Domain.PatientProgramMapper = function(){
 
         var attributeFormatter = new Bahmni.Common.Domain.AttributeFormatter();
         return {
-            dateEnrolled: patientProgram.dateEnrolled,
+            dateEnrolled: moment(patientProgram.dateEnrolled).format(Bahmni.Common.Constants.ServerDateTimeFormat),
             states: patientProgram.states,
             uuid: patientProgram.uuid,
             dateCompleted: dateCompleted ? moment(dateCompleted).format(Bahmni.Common.Constants.ServerDateTimeFormat) : null,
