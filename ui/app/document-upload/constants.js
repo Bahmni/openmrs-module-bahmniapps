@@ -1,3 +1,5 @@
+'use strict';
+
 var Bahmni = Bahmni || {};
 Bahmni.DocumentUpload = Bahmni.DocumentUpload || {};
 
