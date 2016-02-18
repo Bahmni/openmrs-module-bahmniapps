@@ -1,6 +1,7 @@
+'use strict';
+
 Bahmni.Common.Obs.ObservationMapper = function () {
     var conceptMapper = new Bahmni.Common.Domain.ConceptMapper();
-    var self = this;
 
     this.map = function (bahmniObservations, allConceptsConfig) {
         var mappedObservations = mapObservations(bahmniObservations, allConceptsConfig);
@@ -53,7 +54,9 @@ Bahmni.Common.Obs.ObservationMapper = function () {
         if (observation.isBoolean || observation.type === "Boolean") {
             return observation.value === true ? "Yes" : "No";
         }
-        if (!observation.value) return "";
+        if (!observation.value) {
+            return "";
+        }
         if (typeof observation.value.name === 'object') {
             var valueConcept = conceptMapper.map(observation.value);
             return valueConcept.shortName || valueConcept.name;

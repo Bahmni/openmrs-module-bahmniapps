@@ -1,3 +1,5 @@
+'use strict';
+
 Bahmni.ConceptSet.SpecimenTypeObservation = function(observation,allSamples) {
     angular.extend(this, observation);
     this.allSamples = allSamples;

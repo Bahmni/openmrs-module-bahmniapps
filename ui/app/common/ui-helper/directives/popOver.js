@@ -1,3 +1,5 @@
+'use strict';
+
 angular.module('bahmni.common.uiHelper')
     .directive('bmPopOver', function(){
         var controller = function($scope) {
@@ -15,7 +17,9 @@ angular.module('bahmni.common.uiHelper')
                 $scope.triggerElement = triggerElement;
 
                 var docClickHandler = function() {
-                    if (!$scope.autoclose) return;
+                    if (!$scope.autoclose) {
+                        return;
+                    }
 
                     hideTargetElements();
                     $scope.isTargetOpen = false;

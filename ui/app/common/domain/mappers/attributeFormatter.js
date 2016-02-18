@@ -43,8 +43,9 @@ Bahmni.Common.Domain.AttributeFormatter = (function () {
         }
         else if (attributeType.format === "org.openmrs.Concept") {
             attr.value = _.find(attributeType.answers, function(answer){
-                if(answer.conceptId === value)
+                if(answer.conceptId === value) {
                     return true;
+                }
             }).description;
             attr.hydratedObject = value;
         }

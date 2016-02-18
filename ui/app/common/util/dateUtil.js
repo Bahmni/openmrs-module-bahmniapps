@@ -69,25 +69,33 @@ Bahmni.Common.Util.DateUtil = {
     getDateInMonthsAndYears : function (date, format){
         var format = format || "MMM YY";
         var dateRepresentation = isNaN(Number(date)) ? date : Number(date);
-        if(!moment(dateRepresentation).isValid()) return date;
+        if(!moment(dateRepresentation).isValid()) {
+            return date;
+        }
         return dateRepresentation ? moment(dateRepresentation).format(format) : null;
     },
 
     formatDateWithTime: function (datetime) {
         var dateRepresentation = isNaN(Number(datetime)) ? datetime : Number(datetime);
-        if(!moment(dateRepresentation).isValid()) return datetime;
+        if(!moment(dateRepresentation).isValid()) {
+            return datetime;
+        }
         return dateRepresentation ? moment(dateRepresentation).format("DD MMM YY h:mm a") : null;
     },
 
     formatDateWithoutTime: function(date) {
         var dateRepresentation = isNaN(Number(date)) ? date : Number(date);
-        if(!moment(dateRepresentation).isValid()) return date;
+        if(!moment(dateRepresentation).isValid()) {
+            return date;
+        }
         return dateRepresentation ? moment(dateRepresentation).format("DD MMM YY") : null;
     },
 
     formatTime: function(date) {
         var dateRepresentation = isNaN(Number(date)) ? date : Number(date);
-        if(!moment(dateRepresentation).isValid()) return date;
+        if(!moment(dateRepresentation).isValid()) {
+            return date;
+        }
         return dateRepresentation ? moment(dateRepresentation).format("h:mm a") : null;
     },
 
@@ -140,14 +148,14 @@ Bahmni.Common.Util.DateUtil = {
         }
         var dateOne = this.parse(date1);
         var dateTwo = this.parse(date2);
-        return dateOne.getFullYear() === dateTwo.getFullYear()
-            && dateOne.getMonth() === dateTwo.getMonth()
-            && dateOne.getDate() === dateTwo.getDate();
+        return dateOne.getFullYear() === dateTwo.getFullYear() &&
+            dateOne.getMonth() === dateTwo.getMonth() &&
+            dateOne.getDate() === dateTwo.getDate();
     },
 
     diffInYearsMonthsDays: function (dateFrom, dateTo) {
-        dateFrom = this.parse(dateFrom)
-        dateTo = this.parse(dateTo)
+        dateFrom = this.parse(dateFrom);
+        dateTo = this.parse(dateTo);
 
         var from = {
             d: dateFrom.getDate(),
@@ -165,7 +173,7 @@ Bahmni.Common.Util.DateUtil = {
             d: 0,
             m: 0,
             y: 0
-        }
+        };
 
         var daysFebruary = to.y % 4 != 0 || (to.y % 100 == 0 && to.y % 400 != 0)? 28 : 29;
         var daysInMonths = [31, daysFebruary, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];

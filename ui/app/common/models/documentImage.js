@@ -1,3 +1,5 @@
+'use strict';
+
 Bahmni.Common.DocumentImage = function(data){
     angular.extend(this, data);
     this.title = this.getTitle();

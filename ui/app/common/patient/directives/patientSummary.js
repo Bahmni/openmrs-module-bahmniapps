@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('bahmni.common.patient').directive('patientSummary', function() {
-    var link = function($scope, elem, attrs) {
+    var link = function($scope) {
         $scope.showPatientDetails = false;
         $scope.togglePatientDetails = function() {
             $scope.showPatientDetails = !$scope.showPatientDetails;

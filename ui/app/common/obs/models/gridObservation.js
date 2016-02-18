@@ -1,3 +1,5 @@
+'use strict';
+
 Bahmni.Common.Obs.GridObservation = (function () {
 
     var conceptMapper = new Bahmni.Common.Domain.ConceptMapper();
@@ -12,7 +14,9 @@ Bahmni.Common.Obs.GridObservation = (function () {
         if (observation.isBoolean || observation.type === "Boolean") {
             return observation.value === true ? "Yes" : "No";
         }
-        if(!observation.value) return "";
+        if(!observation.value) {
+            return "";
+        }
         if(typeof observation.value.name === 'object') {
             var valueConcept = conceptMapper.map(observation.value);
             return valueConcept.shortName || valueConcept.name;

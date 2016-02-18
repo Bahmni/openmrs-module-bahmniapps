@@ -1,3 +1,5 @@
+'use strict';
+
 angular.module('bahmni.common.patient')
 .filter('dateToAge', function($filter) {
 	return function(birthDate, referenceDate) {

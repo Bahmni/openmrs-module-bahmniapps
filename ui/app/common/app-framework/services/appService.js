@@ -10,9 +10,8 @@ angular.module('bahmni.common.appFramework')
         var baseUrl = Bahmni.Common.Constants.baseUrl;
         var customUrl = Bahmni.Common.Constants.customUrl;
         var appDescriptor = null;
-        var self = this;
 
-        var loadConfig = function (url) {
+            var loadConfig = function (url) {
             if(offlineService.isOfflineApp()) {
                 var configFile = url.substring(url.lastIndexOf("/") + 1);
                 if(offlineService.isAndroidApp()) {

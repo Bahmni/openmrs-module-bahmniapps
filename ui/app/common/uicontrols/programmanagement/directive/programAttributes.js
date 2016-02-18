@@ -33,8 +33,9 @@ angular.module('bahmni.common.uicontrols.programmanagment')
                 });
                 return mrsAnswer ? mrsAnswer.description : "";
             }
-            else
-              return programAttributesMap[attributeType.name];
+            else {
+                return programAttributesMap[attributeType.name];
+            }
 
         };
 

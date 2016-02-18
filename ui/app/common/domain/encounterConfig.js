@@ -1,3 +1,5 @@
+'use strict';
+
 var EncounterConfig = (function () {
     function EncounterConfig(encounterTypes) {
         this.encounterTypes = encounterTypes;

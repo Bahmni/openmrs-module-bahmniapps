@@ -11,7 +11,9 @@ angular.module('bahmni.common.uiHelper')
                 element.removeAttr('required');
             };
 
-            if (!attrs.nonBlank) return addNonBlankAttrs(element);
+            if (!attrs.nonBlank) {
+                return addNonBlankAttrs(element);
+            }
 
             $scope.$watch(attrs.nonBlank, function (value) {
                 return value ? addNonBlankAttrs() : removeNonBlankAttrs();
@@ -103,7 +105,7 @@ angular.module('bahmni.common.uiHelper')
                     }
                 });
             }, 0);
-        }
+        };
         return {
             link: link,
             require: 'form',

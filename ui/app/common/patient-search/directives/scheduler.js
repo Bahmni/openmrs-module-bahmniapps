@@ -22,7 +22,11 @@ angular.module('bahmni.common.patientSearch')
 
             $scope.$watch(function(){return $scope.watchOn}, function(value) {
                 if($scope.refreshTime > 0){
-                    value ? cancelSchedule() : startSchedule();
+                    if (value) {
+                        cancelSchedule();
+                    } else {
+                        startSchedule();
+                    }
                 }
             });
 

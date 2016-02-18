@@ -2,7 +2,7 @@
 
 angular.module('bahmni.common.displaycontrol.drugOrdersSection')
     .directive('drugOrdersSection', ['Treatment' +
-    'Service', 'spinner', '$rootScope','$http',  function (treatmentService, spinner, $rootScope, $http) {
+    'Service', 'spinner', '$rootScope',  function (treatmentService, spinner, $rootScope) {
         var controller = function ($scope) {
             var DateUtil = Bahmni.Common.Util.DateUtil;
 
@@ -86,7 +86,7 @@ angular.module('bahmni.common.displaycontrol.drugOrdersSection')
                 });
             };
 
-            $scope.$on("event:sectionUpdated", function (event) {
+            $scope.$on("event:sectionUpdated", function () {
                 init();
             });
 
@@ -123,11 +123,13 @@ angular.module('bahmni.common.displaycontrol.drugOrdersSection')
                 var formCondition = Bahmni.ConceptSet.FormConditions.rules ? Bahmni.ConceptSet.FormConditions.rules["Medication Stop Reason"] : undefined ;
                 if(formCondition){
                     if(drugOrder.orderReasonConcept) {
-                        if (!formCondition(drugOrder, drugOrder.orderReasonConcept.name.name))
+                        if (!formCondition(drugOrder, drugOrder.orderReasonConcept.name.name)) {
                             disableAndClearReasonText(drugOrder);
+                        }
                     }
-                    else
+                    else {
                         disableAndClearReasonText(drugOrder);
+                    }
                 }else{
                     drugOrder.orderReasonNotesEnabled = true;
                 }

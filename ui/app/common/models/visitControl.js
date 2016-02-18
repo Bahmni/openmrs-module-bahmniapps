@@ -11,7 +11,9 @@ Bahmni.Common.VisitControl = function(visitTypes, defaultVisitTypeName, encounte
     };
 
     self.startVisit = function(visitType) {
-        if(self.onStartVisit) self.onStartVisit(visitType);
+        if(self.onStartVisit) {
+            self.onStartVisit(visitType);
+        }
         self.selectedVisitType = visitType;
     };
 

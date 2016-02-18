@@ -9,7 +9,6 @@ angular.module('bahmni.common.uicontrols.programmanagment')
                 var svg = d3.select($element[0]).select('.timeline-view').append("svg");
                 var elementDimension = $element[0].getBoundingClientRect();
                 var sortedDates = _.map(data.states, 'date');
-                var uniqueStates = _.uniq(_.map(data.states, 'state'));
                 var xMin = 0;
                 var xMax = elementDimension.width - 15;
                 var endDate = $scope.program.dateCompleted ? dateUtil.parse($scope.program.dateCompleted) : new Date();

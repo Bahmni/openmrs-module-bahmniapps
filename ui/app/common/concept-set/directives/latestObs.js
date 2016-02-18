@@ -1,3 +1,5 @@
+'use strict';
+
 angular.module('bahmni.common.conceptSet')
     .directive('latestObs', function () {
         var controller = function ($scope, observationsService, $q, spinner) {

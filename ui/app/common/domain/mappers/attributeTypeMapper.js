@@ -33,10 +33,12 @@ Bahmni.Common.Domain.AttributeTypeMapper = (function () {
                     var displayName = mrsAnswer.display;
                     if (mrsAnswer.names && mrsAnswer.names.length == 2) {
                         if (mrsAnswer.name.conceptNameType == 'FULLY_SPECIFIED') {
-                            if (mrsAnswer.names[0].display == displayName)
+                            if (mrsAnswer.names[0].display == displayName) {
                                 displayName = mrsAnswer.names[1].display;
-                            else
+                            }
+                            else {
                                 displayName = mrsAnswer.names[0].display;
+                            }
                         }
                     }
                     attributeType.answers.push({

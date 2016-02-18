@@ -3,7 +3,7 @@
 angular.module('bahmni.common.conceptSet')
     .directive('obsConstraints', function () {
         var attributesMap = {'Numeric': 'number', 'Date': 'date', 'Datetime': 'datetime'};
-        var link = function ($scope, element, attrs, ctrl) {
+        var link = function ($scope, element) {
             var attributes = {}, primaryObs;
             var obsConcept = $scope.obs.concept;
             if (obsConcept.conceptClass == Bahmni.Common.Constants.conceptDetailsClassName) {

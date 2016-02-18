@@ -20,11 +20,11 @@ angular.module('bahmni.common.i18n')
                                 return mergeService.merge(baseResponse.data, customResponse.data);
                             }
                             return [baseResponse.data, customResponse.data];
-                        }, function (error) {
+                        }, function () {
                             return baseResponse.data;
                         });
                     },
-                    function (error) {
+                    function () {
                         return loadFile(customLocaleUrl + fileURL).then(function (customResponse) {
                             return customResponse.data;
                         });

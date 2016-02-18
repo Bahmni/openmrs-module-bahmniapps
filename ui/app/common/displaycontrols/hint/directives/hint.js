@@ -2,7 +2,7 @@
 
 angular.module('bahmni.common.displaycontrol.hint')
     .directive('hint', ['conceptSetService','spinner',
-        function (conceptSetService,spinner) {
+        function () {
             var link = function($scope){
                 $scope.hintForNumericConcept = Bahmni.Common.Domain.Helper.getHintForNumericConcept($scope.conceptDetails);
             };

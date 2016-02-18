@@ -1,3 +1,5 @@
+'use strict';
+
 angular.module('bahmni.common.uiHelper')
 .directive('focusOn', function ($timeout) {
     return function (scope, elem, attrs) {

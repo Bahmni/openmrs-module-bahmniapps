@@ -1,3 +1,5 @@
+'use strict';
+
 angular.module('authentication')
     .service('userService', ['$rootScope', '$http', '$q', 'offlineService', function ($rootScope, $http, $q, offlineService) {
         var offlineApp = offlineService.isOfflineApp();
@@ -36,7 +38,7 @@ angular.module('authentication')
                 return deferrable.promise;
             }
             var user = $rootScope.currentUser.toContract();
-            var response = $http.post(Bahmni.Common.Constants.userUrl + "/" + user.uuid, {"uuid": user.uuid, "userProperties": user.userProperties}, {
+            $http.post(Bahmni.Common.Constants.userUrl + "/" + user.uuid, {"uuid": user.uuid, "userProperties": user.userProperties}, {
                 withCredentials: true
             }).then(function (response) {
                 offlineService.setItem('userProperties', response.data.userProperties);

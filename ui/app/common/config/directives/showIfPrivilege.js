@@ -6,7 +6,7 @@ angular.module('bahmni.common.config')
             scope : {
                 showIfPrivilege :"@"
             },
-            link : function(scope,element,attr){
+            link : function(scope,element){
                 var requiredPrivilege = false;
                 if($rootScope.currentUser) {
                     requiredPrivilege = _.find($rootScope.currentUser.privileges, function (privilege) {

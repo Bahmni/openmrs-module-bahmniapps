@@ -1,7 +1,7 @@
 "use strict";
 
 angular.module('bahmni.common.displaycontrol.admissiondetails')
-    .directive('admissionDetails', ['bedService', 'visitService',function (bedService, visitService) {
+    .directive('admissionDetails', ['bedService', 'visitService',function (bedService) {
 
         var controller = function($scope){
             if($scope.patientUuid) {

@@ -1,3 +1,5 @@
+'use strict';
+
 Bahmni.ConceptSet.TabularObservations = function(obsGroups, parentObs, conceptUIConfig) {
     this.parentObs = parentObs;
     this.concept = obsGroups[0] && obsGroups[0].concept;

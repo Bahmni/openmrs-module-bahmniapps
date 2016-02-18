@@ -1,3 +1,5 @@
+'use strict';
+
 Bahmni.Common.AppFramework.AppDescriptor = function (context, inheritContext, retrieveUserCallback, mergeService) {
     this.id = null;
     this.instanceOf = null;
@@ -114,9 +116,9 @@ Bahmni.Common.AppFramework.AppDescriptor = function (context, inheritContext, re
                 return priv.retired ? "" : priv.name;
             });
             var appsExtns = currentExtensions.filter(function (extn) {
-                return ((extnType==='all') || (extn.type===extnType))
-                    && (extn.extensionPointId === extPointId) && (!extn.requiredPrivilege
-                    || (userPrivileges.indexOf(extn.requiredPrivilege) >= 0));
+                return ((extnType==='all') || (extn.type===extnType)) &&
+                    (extn.extensionPointId === extPointId) && (!extn.requiredPrivilege ||
+                    (userPrivileges.indexOf(extn.requiredPrivilege) >= 0));
             });
             appsExtns.sort(function(extn1, extn2) {
                 return extn1.order - extn2.order;

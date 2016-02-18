@@ -1,3 +1,5 @@
+'use strict';
+
 Bahmni.Auth.User = function (user) {
 
     angular.extend(this, user);

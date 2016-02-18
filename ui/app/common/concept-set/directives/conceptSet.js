@@ -15,7 +15,9 @@ angular.module('bahmni.common.conceptSet')
                     var firstObs = _.find($scope.rootObservation.groupMembers, function (obs) {
                         return obs.isFormElement && obs.isFormElement();
                     });
-                    firstObs && (firstObs.isFocused = true);
+                    if (firstObs) {
+                        firstObs.isFocused = true;
+                    }
                 }
             };
 
@@ -167,8 +169,9 @@ angular.module('bahmni.common.conceptSet')
                 $scope.conceptSetRequired = $scope.required ? $scope.required : true;
                 var errorMessage = null;
                 var invalidNodes = $scope.rootObservation && $scope.rootObservation.groupMembers.filter(function (childNode) {
-                        if (childNode.voided)
+                        if (childNode.voided) {
                             return false;
+                        }
                         //Other than Bahmni.ConceptSet.Observation  and Bahmni.ConceptSet.ObservationNode, other concepts does not have isValueInAbsoluteRange fn
                         if (typeof childNode.isValueInAbsoluteRange == 'function' && !childNode.isValueInAbsoluteRange()) {
                             errorMessage = "The value you entered (red field) is outside the range of allowable values for that record. Please check the value.";
@@ -180,7 +183,9 @@ angular.module('bahmni.common.conceptSet')
             };
             contextChangeHandler.add(contextChange);
             var validateObservationTree = function () {
-                if (!$scope.rootObservation) return true;
+                if (!$scope.rootObservation) {
+                    return true;
+                }
                 $scope.atLeastOneValueIsSet = $scope.rootObservation.atLeastOneValueSet();
                 var invalidNodes = $scope.rootObservation.groupMembers.filter(function (childNode) {
                     return childNode.isObservationNode && !childNode.isValid($scope.atLeastOneValueIsSet);
@@ -191,7 +196,7 @@ angular.module('bahmni.common.conceptSet')
             validationHandler.add(validateObservationTree);
 
 
-            $scope.$on('event:showPrevious' + conceptSetName, function (event) {
+            $scope.$on('event:showPrevious' + conceptSetName, function () {
 
                 return spinner.forPromise(observationsService.fetch($scope.patient.uuid, $scope.conceptSetName, null, $scope.numberOfVisits, null, true)).then(function (response) {
                     var recentObservations = ObservationUtil.flattenObsToArray(response.data);

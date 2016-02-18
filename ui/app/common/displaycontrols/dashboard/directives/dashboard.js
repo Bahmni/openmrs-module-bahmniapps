@@ -23,18 +23,19 @@ angular.module('bahmni.common.displaycontrol.dashboard')
             $scope.checkDisplayType = function(sections, typeToCheck , index)
             {
                 return sections[index] && sections[index]['displayType'] && sections[index]['displayType'] === typeToCheck;
-            }
+            };
             $scope.containsThreeFourthPageSection = function (sections) {
                 var hasThreeFourthSection = this.hasThreeFourthPageSection(sections, 0) || this.hasThreeFourthPageSection(sections, 1);
-                if(sections.length==1)
-                return (this.hasThreeFourthPageSection(sections, 0));
+                if(sections.length==1) {
+                    return this.hasThreeFourthPageSection(sections, 0);
+                }
 
                 return hasThreeFourthSection;
             };
             $scope.isDisplayTypeWrong = function(sections) {
                 var allDisplayTypes = ['Full-Page','LAYOUT_75_25','LAYOUT_25_75','Half-Page'];
                 return (allDisplayTypes.indexOf(sections[0]['displayType']) <= -1);
-            }
+            };
 
             $scope.filterOdd = function(index) {
                 return function() {

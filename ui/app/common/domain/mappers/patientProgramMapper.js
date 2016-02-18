@@ -1,3 +1,5 @@
+'use strict';
+
 Bahmni.Common.Domain.PatientProgramMapper = function(){
     this.map = function(patientProgram, programAttributeTypes, dateCompleted) {
 
@@ -12,4 +14,4 @@ Bahmni.Common.Domain.PatientProgramMapper = function(){
         }
     }
 
-}
+};

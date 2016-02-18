@@ -1,3 +1,5 @@
+'use strict';
+
 angular.module('bahmni.common.uiHelper')
     .directive('splitButton',['$timeout', '$parse', function ($timeout, $parse) {
         var controller = function($scope) {
@@ -7,7 +9,7 @@ angular.module('bahmni.common.uiHelper')
                 return $scope.secondaryOptions.length > 0;
             }
 
-        }
+        };
 
         var link = function(scope,element,attrs){
             var shouldScroll = function(elementPosition, elementHeight){
@@ -50,4 +52,4 @@ angular.module('bahmni.common.uiHelper')
                 optionDisabled: '='
             }
         };
-    }])
+    }]);

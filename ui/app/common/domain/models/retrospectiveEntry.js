@@ -1,7 +1,6 @@
 'use strict';
 
 Bahmni.Common.Domain.RetrospectiveEntry = function() {
-    var _encounterDate;
     var self = this;
 
     Object.defineProperty(this, 'encounterDate', {

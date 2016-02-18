@@ -1,3 +1,5 @@
+'use strict';
+
 angular.module('bahmni.common.obs')
     .directive('editObservation', ['$q', 'spinner', '$state','$rootScope', 'ngDialog', 'messagingService', 'encounterService', 'configurations', function ($q, spinner, $state, $rootScope, ngDialog, messagingService, encounterService,configurations) {
         var controller = function ($scope) {

@@ -1,3 +1,5 @@
+'use strict';
+
 angular.module('bahmni.common.conceptSet')
     .directive('imageUpload', ['$rootScope', 'visitDocumentService', 'spinner', function ($rootScope, visitDocumentService, spinner) {
 

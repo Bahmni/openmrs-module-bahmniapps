@@ -1,3 +1,5 @@
+'use strict';
+
 Bahmni.ConceptSet.ConceptSetSection = function (extensions, user, config, observations, conceptSet) {
     
     var self = this;
@@ -59,7 +61,7 @@ Bahmni.ConceptSet.ConceptSetSection = function (extensions, user, config, observ
     };
 
     self.showComputeButton = function (){
-        return config.computeDrugs === true ? true : false;
+        return config.computeDrugs === true;
     };
 
     self.toggle = function () {

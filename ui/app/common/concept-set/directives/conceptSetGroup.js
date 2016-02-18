@@ -1,3 +1,5 @@
+'use strict';
+
 angular.module('bahmni.common.conceptSet')
     .controller('ConceptSetGroupController', ['$scope', 'appService', 'contextChangeHandler', 'spinner',
         'conceptSetService', '$rootScope', 'sessionService', 'encounterService', 'treatmentConfig', 'messagingService',

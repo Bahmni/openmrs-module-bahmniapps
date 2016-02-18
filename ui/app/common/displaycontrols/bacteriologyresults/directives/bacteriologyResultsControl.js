@@ -71,7 +71,6 @@ angular.module('bahmni.common.displaycontrol.bacteriologyresults')
                 };
 
                 $scope.saveBacteriologySample = function(specimen){
-                    var observationFilter = new Bahmni.Common.Domain.ObservationFilter();
                     if (specimen.isDirty()){
                         messagingService.showMessage('formError', "{{'CLINICAL_FORM_ERRORS_MESSAGE_KEY' | translate }}");
                     }else{

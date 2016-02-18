@@ -1,3 +1,5 @@
+'use strict';
+
 Bahmni.ConceptSet.CustomRepresentationBuilder = {
 	build: function(fields, childPropertyName, numberOfLevels) {
 		var childPropertyRep = childPropertyName + ':{{entity_fileds}}';

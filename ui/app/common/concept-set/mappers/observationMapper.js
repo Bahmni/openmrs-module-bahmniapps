@@ -1,3 +1,5 @@
+'use strict';
+
 Bahmni.ConceptSet.ObservationMapper = function () {
     var conceptMapper = new Bahmni.Common.Domain.ConceptMapper();
     var self = this;
@@ -12,7 +14,9 @@ Bahmni.ConceptSet.ObservationMapper = function () {
             if (savedObs.concept.conceptClass && (savedObs.concept.conceptClass === Bahmni.Common.Constants.conceptDetailsClassName || savedObs.concept.conceptClass.name === Bahmni.Common.Constants.conceptDetailsClassName)) {
                 var observationNode = new Bahmni.ConceptSet.ObservationNode(savedObs, savedObs, []);
                 var obsToDisplay = createObservationForDisplay(observationNode, observationNode.primaryObs.concept);
-                if (obsToDisplay) observationsForDisplay.push(obsToDisplay);
+                if (obsToDisplay) {
+                    observationsForDisplay.push(obsToDisplay);
+                }
             } else {
                 if (savedObs.concept.set) {
                     if (conceptSetConfig[savedObs.concept.name] && conceptSetConfig[savedObs.concept.name].grid) {
@@ -53,8 +57,9 @@ Bahmni.ConceptSet.ObservationMapper = function () {
 
     var mapObservation = function (concept, savedObs, conceptSetConfig) {
         var obs = null;
-        if (savedObs && (savedObs.isObservation || savedObs.isObservationNode))
+        if (savedObs && (savedObs.isObservation || savedObs.isObservationNode)) {
             return savedObs;
+        }
         var mappedGroupMembers = concept.set ? mapObservationGroupMembers(savedObs ? savedObs.groupMembers : [], concept, conceptSetConfig) : [];
 
         if (concept.conceptClass.name === Bahmni.Common.Constants.conceptDetailsClassName) {
@@ -150,7 +155,9 @@ Bahmni.ConceptSet.ObservationMapper = function () {
     }
 
     var createObservationForDisplay = function (observation, concept) {
-        if (observation.value == null) return;
+        if (observation.value == null) {
+            return;
+        }
         var observationValue = getObservationDisplayValue(observation);
         observationValue = observation.durationObs ? observationValue + " " + getDurationDisplayValue(observation.durationObs) : observationValue;
         return {
@@ -165,7 +172,9 @@ Bahmni.ConceptSet.ObservationMapper = function () {
         if (observation.isBoolean || observation.type === "Boolean") {
             return observation.value === true ? "Yes" : "No";
         }
-        if (!observation.value) return "";
+        if (!observation.value) {
+            return "";
+        }
         if (typeof observation.value.name === 'object') {
             var valueConcept = conceptMapper.map(observation.value);
             return valueConcept.shortName || valueConcept.name;

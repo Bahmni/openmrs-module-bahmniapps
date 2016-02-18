@@ -5,7 +5,7 @@ angular.module('bahmni.common.orders')
 
         var save = function(orders, patient, locationUuid) {
             var observationFilter = new Bahmni.Common.Domain.ObservationFilter();
-            var observations = []
+            var observations = [];
 
             orders.forEach(function(order){
                 if(order.bahmniObservations) {

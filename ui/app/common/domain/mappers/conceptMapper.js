@@ -1,7 +1,13 @@
+'use strict';
+
 Bahmni.Common.Domain.ConceptMapper = function () {
     this.map = function (openMrsConcept) {
-        if(!openMrsConcept) return null;
-        if(alreadyMappedConcept(openMrsConcept)) return openMrsConcept; // TODO: Clean up: God knows why people are passing already mapped concept. Keeping this non sense check in this one line alone to avoid confusion
+        if(!openMrsConcept) {
+            return null;
+        }
+        if(alreadyMappedConcept(openMrsConcept)) {
+            return openMrsConcept;
+        } // TODO: Clean up: God knows why people are passing already mapped concept. Keeping this non sense check in this one line alone to avoid confusion
         var openMrsDescription = openMrsConcept.descriptions ? openMrsConcept.descriptions[0] : null;
         var shortConceptName = _.find(openMrsConcept.names, {conceptNameType: "SHORT"});
         return {

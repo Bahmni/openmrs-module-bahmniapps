@@ -1,3 +1,5 @@
+'use strict';
+
 Bahmni.Common.PatientSearch.Search = function(searchTypes) {
 	var self = this;
     self.searchTypes = searchTypes || [];
