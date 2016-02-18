@@ -39,9 +39,15 @@
     }
     &.dashboard-sections-right{
       padding: 0px 0px 0px 5px;
+      @media screen and (max-width: 859px) {
+        padding: 0;
+      }
     }
     &.dashboard-sections-left{
       padding: 0px 5px 0px 0px;
+      @media screen and (max-width: 859px) {
+        padding: 0;
+      }
     }
     &.three-fourth-page-container{
       div.three-fourth-page{
