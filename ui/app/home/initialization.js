@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('bahmni.home')
-    .factory('initialization', ['$rootScope', 'appService', 'spinner', 'offlineService', '$bahmniCookieStore',
-        function ($rootScope, appService, spinner, offlineService, $bahmniCookieStore) {
+    .factory('initialization', ['$rootScope', 'appService', 'spinner',
+        function ($rootScope, appService, spinner) {
             var initApp = function () {
                 return appService.initApp('home');
             };
