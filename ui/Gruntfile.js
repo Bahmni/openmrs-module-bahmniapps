@@ -1,4 +1,3 @@
-
 'use strict';
 
 module.exports = function (grunt) {
@@ -397,20 +396,24 @@ module.exports = function (grunt) {
         'cssmin',
         'copy:dist',
         'filerev',
-        'usemin',
-        'uglify',
-        'rename:minified'
+        'usemin'
     ]);
 
     grunt.registerTask('build', [
+        'npm-install',
         'bower-install',
         'jshint',
         'test',
         'dist'
     ]);
 
+    grunt.registerTask('uglify-and-rename', [
+        'uglify',
+        'rename:minified'
+    ]);
 
-    var updatePrefetchList = function(preFetchList){
+
+    var updatePrefetchList = function (preFetchList) {
         var replace = require("replace");
 
         replace({
@@ -446,7 +449,8 @@ module.exports = function (grunt) {
         return files_;
     };
 
-    grunt.registerTask('default', ['build']);
+    grunt.registerTask('default', ['build', 'uglify-and-rename']);
+    grunt.registerTask('dev', ['build']);
 
     grunt.registerTask('pre-fetch', 'Generate files to pre-fetch for service worker', function() {
             var preFetchList = [];
@@ -462,6 +466,15 @@ module.exports = function (grunt) {
         var exec = require('child_process').exec;
         var cb = this.async();
         exec('bower install', function (err, stdout) {
+            console.log(stdout);
+            cb();
+        });
+    });
+
+    grunt.registerTask('npm-install', 'install dependencies using npm', function () {
+        var exec = require('child_process').exec;
+        var cb = this.async();
+        exec('npm install', function (err, stdout) {
             console.log(stdout);
             cb();
         });
