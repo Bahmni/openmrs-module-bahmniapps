@@ -32,12 +32,15 @@ angular.module('bahmni.common.offline')
                 // Hemanth: This method is not required for android app.
             };
 
-            var populateData = function (host) {
-                //TODO: Hemanth/Abishek/Ranganathan - we don't need to pass host for this method once we build event log for patient attributes.
+            var initSchema = function () {
+                return $q.when(AndroidOfflineService.initSchema());
+            };
+
+            var populateAttributeTypes = function () {
                  $http.get(Bahmni.Common.Constants.RESTWS_V1 +
                      "/personattributetype?v=custom:(name,uuid,format)").then(function (attributeTypeResponse) {
                         var personAttributeTypeList = attributeTypeResponse.data.results;
-                        AndroidOfflineService.populateData(JSON.stringify(personAttributeTypeList));
+                        AndroidOfflineService.populateAttributeTypes(JSON.stringify(personAttributeTypeList));
                 });
             };
 
@@ -60,16 +63,29 @@ angular.module('bahmni.common.offline')
                 return $q.when({data:value});
             };
 
+            var getConfig = function(module){
+                var value = AndroidConfigDbService.getConfig(module);
+                value = value != undefined ? JSON.parse(value) : value;
+                return $q.when(value);
+            };
+
+            var insertConfig = function(module, data, eTag){
+                return $q.when(JSON.parse(AndroidConfigDbService.insertConfig(module, JSON.stringify(data), eTag)));
+            };
+
             return {
                 init: init,
-                populateData: populateData,
+                initSchema: initSchema,
+                populateAttributeTypes: populateAttributeTypes,
                 getPatientByUuid: getPatientByUuid,
                 createPatient: createPatient,
                 deletePatientData: deletePatientData,
                 getMarker: getMarker,
                 insertMarker: insertMarker,
                 insertAddressHierarchy: insertAddressHierarchy,
-                searchAddress: searchAddress
+                searchAddress: searchAddress,
+                getConfig: getConfig,
+                insertConfig : insertConfig
             }
         }
     ]);

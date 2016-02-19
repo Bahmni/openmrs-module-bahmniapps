@@ -204,7 +204,7 @@ angular.module('bahmni.common.domain')
 
     this.getDigitized = function(patientUuid) {
         if(offlineService.isOfflineApp()){
-            return $q.when({"data" : {"data" : {"results" : {}}}})
+            return $q.when({"data" : {"results" : []}});
         }
     var patientDocumentEncounterTypeUuid = configurations.encounterConfig().getPatientDocumentEncounterTypeUuid();
         return $http.get(Bahmni.Common.Constants.encounterUrl, {
