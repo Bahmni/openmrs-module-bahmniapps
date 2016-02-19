@@ -1,8 +1,8 @@
 <div class="program-tile">
-    <form class="form-field clearfix">
+    <form class="form-field clearfix" ng-submit="updatePatientProgram(patientProgram)">
         <div class="button-group">
-            <a href="javascript:void(0)" ng-click="toggleEdit(patientProgram)">Edit</a>
-            <a href="javascript:void(0)" ng-show="patientProgram.editing" ng-click="updatePatientProgram(patientProgram)" >Save</a>
+            <input type="button" ng-click="toggleEdit(patientProgram)" value="Edit"  class="button" />
+            <input type="submit" ng-show="patientProgram.editing" value="Save" class="button" />
         </div>
 
         <div class="programName">

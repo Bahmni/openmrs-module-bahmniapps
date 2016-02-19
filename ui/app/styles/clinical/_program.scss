@@ -20,15 +20,21 @@
   .button-group{
     @include clearfix;
     text-align: right;
-    a{
+    .button{
       float: right;
       margin-left:10px;
       cursor: pointer;
       color: #363463;
+      box-shadow: none;
+      background: none;
+      border: none;
+      box-shadow: none;
+      padding: 0;
       font-family: openSansSemiBold;
       &:hover , &:active , &:focus{
         color: #5B8989;
         text-decoration: underline;
+        outline:none;
       }
     }
   }
