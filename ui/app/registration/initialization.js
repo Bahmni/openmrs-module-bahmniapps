@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('bahmni.registration').factory('initialization',
-    ['$rootScope', '$q', 'configurations', 'authenticator', 'appService', 'spinner', 'Preferences', 'locationService','offlineService','offlineDbService','androidDbService',
-    function ($rootScope, $q, configurations, authenticator, appService, spinner, preferences, locationService, offlineService, offlineDbService, androidDbService) {
+    ['$rootScope', '$q', 'configurations', 'authenticator', 'appService', 'spinner', 'Preferences', 'locationService',
+    function ($rootScope, $q, configurations, authenticator, appService, spinner, preferences, locationService) {
         var getConfigs = function() {
             var configNames = ['encounterConfig', 'patientAttributesConfig', 'identifierSourceConfig', 'addressLevels', 'genderMap', 'relationshipTypeConfig','relationshipTypeMap', 'loginLocationToVisitTypeMapping'];
             return configurations.load(configNames).then(function () {
@@ -22,21 +22,7 @@ angular.module('bahmni.registration').factory('initialization',
         };
 
         var loadValidators = function (baseUrl,contextPath) {
-            var script;
-            var isOfflineApp = offlineService.isOfflineApp();
-            if(isOfflineApp){
-                if (offlineService.isAndroidApp()) {
-                    offlineDbService = androidDbService;
-                }
-                offlineDbService.getConfig("registration").then(function(config){
-                    script = config.value['fieldValidation.js'];
-                    Bahmni.Common.Util.DynamicResourceLoader.includeJs(script, isOfflineApp);
-                });
-            }
-            else{
-                script = baseUrl + contextPath + '/fieldValidation.js';
-                Bahmni.Common.Util.DynamicResourceLoader.includeJs(script, isOfflineApp);
-            }
+                Bahmni.Common.Util.DynamicResourceLoader.includeJs(baseUrl + contextPath + '/fieldValidation.js');
         };
 
         var initApp = function() {
@@ -68,15 +54,13 @@ angular.module('bahmni.registration').factory('initialization',
                 $rootScope.loggedInLocation = location;
             });
         };
-
-        return function(){
-            return spinner.forPromise(authenticator.authenticateUser()
-                .then(initApp)
-                .then(getConfigs)
-                .then(initAppConfigs)
-                .then(mapRelationsTypeWithSearch)
-                .then(loggedInLocation)
-                .then(loadValidators(appService.configBaseUrl(), "registration")));
-        }
+        
+        return spinner.forPromise(authenticator.authenticateUser()
+            .then(initApp)
+            .then(getConfigs)
+            .then(initAppConfigs)
+            .then(mapRelationsTypeWithSearch)
+            .then(loggedInLocation)
+            .then(loadValidators(appService.configBaseUrl(), "registration")));
     }]
 );
