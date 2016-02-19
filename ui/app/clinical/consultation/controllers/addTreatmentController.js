@@ -3,9 +3,9 @@
 angular.module('bahmni.clinical')
 
     .controller('AddTreatmentController', ['$scope', '$rootScope', 'contextChangeHandler', 'treatmentConfig', 'DrugService', '$timeout',
-        'clinicalAppConfigService', 'ngDialog', '$window', 'messagingService', 'appService', 'activeDrugOrders',
+        'clinicalAppConfigService', 'ngDialog', '$window', 'messagingService', 'appService', 'activeDrugOrders', 'orderSets',
         function ($scope, $rootScope, contextChangeHandler, treatmentConfig, drugService, $timeout,
-                  clinicalAppConfigService, ngDialog, $window, messagingService, appService, activeDrugOrders) {
+                  clinicalAppConfigService, ngDialog, $window, messagingService, appService, activeDrugOrders, orderSets) {
 
             var DateUtil = Bahmni.Common.Util.DateUtil;
             var DrugOrderViewModel = Bahmni.Clinical.DrugOrderViewModel;
@@ -323,14 +323,9 @@ angular.module('bahmni.clinical')
             };
 
 
-            var edit = function (index, isOrderSetDrug) {
+            var edit = function (index) {
                 clearHighlights();
-                var treatment;
-                if(isOrderSetDrug) {
-                    treatment = $scope.orderSet.drugs[index];
-                } else {
-                    treatment = $scope.treatments[index];
-                }
+                var treatment = $scope.treatments[index];
                 markEitherVariableDrugOrUniformDrug(treatment);
                 treatment.isBeingEdited = true;
                 $scope.treatment = treatment.cloneForEdit(index, treatmentConfig);
@@ -341,16 +336,13 @@ angular.module('bahmni.clinical')
                 selectDrugFromDropdown(treatment.drug);
             };
 
-            $scope.$on("event:editDrugOrder", function (event, index, isOrderSetDrug) {
-                edit(index, isOrderSetDrug);
+            $scope.$on("event:editDrugOrder", function (event, index) {
+                edit(index);
             });
 
-            var remove = function (index) {
-                $scope.treatments.splice(index, 1);
-            };
 
             $scope.$on("event:removeDrugOrder", function (event, index) {
-                remove(index);
+                $scope.treatments.splice(index, 1);
             });
 
             $scope.incompleteDrugOrders = function(){
@@ -477,7 +469,10 @@ angular.module('bahmni.clinical')
                 var allTreatmentsAcrossTabs = _.map(tabNames,function(tabName){
                     return $scope.consultation.newlyAddedTabTreatments[tabName];
                 });
-                $scope.consultation.newlyAddedTreatments = _.flatten(allTreatmentsAcrossTabs);
+                var filteredTreatments = _.flatten(allTreatmentsAcrossTabs);
+                $scope.consultation.newlyAddedTreatments = _.filter(filteredTreatments, function (treatment) {
+                    return treatment.orderSetUuid ? treatment.include : true;
+                });
                 $scope.consultation.discontinuedDrugs && $scope.consultation.discontinuedDrugs.forEach(function (discontinuedDrug) {
                     var removableOrder = _.find(activeDrugOrders, {uuid: discontinuedDrug.uuid});
                     if (discontinuedDrug != null) {
@@ -498,7 +493,18 @@ angular.module('bahmni.clinical')
                 });
             };
 
-
+            $scope.addOrderSet = function (orderSet) {
+                $scope.drugOrderSet.name = orderSet.name;
+                _.each(orderSet.orderSetMembers, function (orderSetMember) {
+                    var drugOrderResponse = JSON.parse(orderSetMember.orderTemplate);
+                    drugOrderResponse.effectiveStartDate = $scope.drugOrderSet.date;
+                    drugOrderResponse.orderSetUuid = orderSet.uuid;
+                    var drugOrderViewModel = Bahmni.Clinical.DrugOrderViewModel.createFromContract(Bahmni.Clinical.DrugOrder.create(drugOrderResponse), treatmentConfig);
+                    drugOrderViewModel.include = true;
+                    drugOrderViewModel.calculateQuantityAndUnit();
+                    $scope.treatments.push(drugOrderViewModel);
+                });
+            };
 
             $scope.consultation.preSaveHandler.register("drugOrderSaveHandlerKey", saveTreatment);
 
@@ -508,6 +514,7 @@ angular.module('bahmni.clinical')
                 $scope.consultation.drugOrdersWithUpdatedOrderAttributes = $scope.consultation.drugOrdersWithUpdatedOrderAttributes || {};
                 $scope.consultation.activeAndScheduledDrugOrders = getActiveDrugOrders(activeDrugOrders);
                 $scope.treatmentConfig = treatmentConfig;// $scope.treatmentConfig used only in UI
+                $scope.orderSets = orderSets;
             };
             init();
         }]);

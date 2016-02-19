@@ -18,7 +18,7 @@ Bahmni.Common.OrderSet = (function () {
             orderType: {
                 uuid: member.orderType.uuid
             },
-            orderTemplate: member.orderTemplate,
+            orderTemplate: new OrderTemplate(member),
             concept: {
                 name: member.concept.name.display,
                 uuid: member.concept.uuid
@@ -28,11 +28,20 @@ Bahmni.Common.OrderSet = (function () {
         });
     };
 
+    var OrderTemplate = function(member){
+        var orderTemplate = JSON.parse(member.orderTemplate);
+        angular.extend(this, {
+            drug: member.drug,
+            dosingInstructions: member.dosingInstructions
+        }, orderTemplate)
+    }
     var createOrderSetMember = function (orderSetMember) {
         var member = orderSetMember || {};
         member.orderType = member.orderType || {};
         member.concept = member.concept || {};
         member.concept.name = member.concept.name || {};
+        member.drug = member.drug || {};
+        member.dosingInstructions = member.dosingInstructions || {};
         return new OrderSetMember(member);
     };
 

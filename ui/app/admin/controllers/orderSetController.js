@@ -95,11 +95,6 @@ angular.module('bahmni.common.domain')
 
             $scope.save = function () {
                 if (validationSuccess()) {
-                    _.each($scope.orderSet.orderSetMembers, function (orderSetMember) {
-                        if (orderSetMember.orderTemplate) {
-                            orderSetMember.orderTemplate = JSON.stringify(orderSetMember.orderTemplate);
-                        }
-                    });
                     spinner.forPromise(orderSetService.saveOrderSet($scope.orderSet).then(function (response) {
                         $state.params.orderSetUuid = response.data.uuid;
                         return $state.transitionTo($state.current, $state.params, {
@@ -155,9 +150,9 @@ angular.module('bahmni.common.domain')
                     if ($state.params.orderSetUuid !== "new") {
                         spinner.forPromise(orderSetService.getOrderSet($state.params.orderSetUuid).then(function (response) {
                             $scope.orderSet = filterOutVoidedOrderSetMembers(Bahmni.Common.OrderSet.create(response.data));
-                            _.each($scope.orderSet.orderSetMembers, function (orderSetMember) {
-                                orderSetMember.orderTemplate = JSON.parse(orderSetMember.orderTemplate || null);
-                            });
+                            //_.each($scope.orderSet.orderSetMembers, function (orderSetMember) {
+                            //    orderSetMember.orderTemplate = JSON.parse(orderSetMember.orderTemplate || null);
+                            //});
                         }));
                     }
                     else {

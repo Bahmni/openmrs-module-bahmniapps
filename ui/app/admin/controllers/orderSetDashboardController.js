@@ -18,7 +18,7 @@ angular.module('bahmni.common.domain')
             spinner.forPromise(orderSetService.saveOrderSet(orderSetObj)).then(function(response){
                 init();
             })
-        }
+        };
 
         var init = function() {
             spinner.forPromise(orderSetService.getAllOrderSets()).then(function(response) {

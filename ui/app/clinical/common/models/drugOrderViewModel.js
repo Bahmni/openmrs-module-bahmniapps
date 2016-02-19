@@ -104,9 +104,6 @@ Bahmni.Clinical.DrugOrderViewModel = function (config, proto, encounterDate) {
     this.orderAttributes = [];
     this.isNonCodedDrug = this.isNonCodedDrug || false;
     this.isDurationRequired = inputOptionsConfig.duration && inputOptionsConfig.duration.required == false? false : true;
-    this.orderSetUuid = '';
-    this.orderGroupUuid = '';
-    this.sortWeight = '';
 
     if(inputOptionsConfig.defaultStartDate === false && !this.effectiveStartDate)
         this.effectiveStartDate = null;
@@ -625,9 +622,10 @@ Bahmni.Clinical.DrugOrderViewModel = function (config, proto, encounterDate) {
 
 Bahmni.Clinical.DrugOrderViewModel.createFromContract = function (drugOrderResponse, config) {
     var DateUtil = Bahmni.Common.Util.DateUtil;
-    var administrationInstructions = JSON.parse(drugOrderResponse.dosingInstructions.administrationInstructions) || {};
+    drugOrderResponse.dosingInstructions = drugOrderResponse.dosingInstructions || {};
+    var administrationInstructions = JSON.parse(drugOrderResponse.dosingInstructions.administrationInstructions || "{}");
     var viewModel = new Bahmni.Clinical.DrugOrderViewModel(config);
-    viewModel.asNeeded = drugOrderResponse.dosingInstructions.asNeeded;
+    viewModel.asNeeded = drugOrderResponse.dosingInstructions.asNeeded == undefined ? false : drugOrderResponse.dosingInstructions.asNeeded ;
     viewModel.route = drugOrderResponse.dosingInstructions.route;
 
     if (drugOrderResponse.effectiveStartDate) {

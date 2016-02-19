@@ -12,7 +12,7 @@ angular.module('bahmni.clinical')
                 $scope.consultation.newlyAddedTabTreatments = $scope.consultation.newlyAddedTabTreatments || {};
                 $scope.consultation.newlyAddedTabTreatments[$scope.tabConfigName] = $scope.consultation.newlyAddedTabTreatments[$scope.tabConfigName] || [];
                 $scope.treatments = $scope.consultation.newlyAddedTabTreatments[$scope.tabConfigName];
-                $scope.orderSet = {name:'', drugs:[]};
+                $scope.drugOrderSet = $scope.drugOrderSet || {name: ''};
             };
 
             $scope.$watch('consultation.newlyAddedTabTreatments', initializeTreatments);

@@ -23,7 +23,7 @@
         </form>
     </div>
     <ul class="table-mimic">
-        <li id="new-drug-orders" ng-repeat="newTreatment in treatments"
+        <li id="new-drug-orders" ng-repeat="newTreatment in treatments" ng-if="!newTreatment.orderSetUuid"
             ng-class="{highlight : newTreatment.isBeingEdited, invalid: !newTreatment.validate()}">
             <div class="drug-details">
                 <div class="form">

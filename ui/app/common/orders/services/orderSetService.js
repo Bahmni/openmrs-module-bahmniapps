@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('bahmni.common.domain')
+angular.module('bahmni.common.orders')
     .service('orderSetService', ['$http', '$q', function ($http, $q) {
         this.getAllOrderSets = function () {
             return $http.get(Bahmni.Common.Constants.orderSetUrl, {
@@ -22,6 +22,11 @@ angular.module('bahmni.common.domain')
 
 
         this.saveOrderSet = function (orderSet) {
+            _.each(orderSet.orderSetMembers, function (orderSetMember) {
+                if (orderSetMember.orderTemplate) {
+                    orderSetMember.orderTemplate = JSON.stringify(orderSetMember.orderTemplate);
+                }
+            });
             var url = Bahmni.Common.Constants.orderSetUrl;
             return $http.post(url, orderSet, {
                 withCredentials: true,

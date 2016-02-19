@@ -75,27 +75,11 @@ Bahmni.Clinical.EncounterTransactionMapper = function () {
         addOrdersToEncounter();
 
         consultation.drugOrders = [];
-        var orderGroupMap = {};
 
         var newlyAddedTreatments = consultation.newlyAddedTreatments;
         newlyAddedTreatments && newlyAddedTreatments.forEach(function (treatment) {
-            if(treatment.orderSetUuid) {
-                if(orderGroupMap[treatment.orderSetUuid]) {
-                    orderGroupMap[treatment.orderSetUuid].push(Bahmni.Clinical.DrugOrder.createFromUIObject(treatment));
-                } else {
-                    orderGroupMap[treatment.orderSetUuid] = [Bahmni.Clinical.DrugOrder.createFromUIObject(treatment)];
-                }
-            } else {
                 consultation.drugOrders.push(Bahmni.Clinical.DrugOrder.createFromUIObject(treatment));
-            }
         });
-
-        var orderGroups = [];
-        _.each(orderGroupMap, function(value, key) {
-            orderGroups.push({drugOrders : value, uuid: value[0].orderGroupUuid, orderSet : {orderSetUuid : key}});
-        });
-
-        encounterData.orderGroups = orderGroups;
 
         if(consultation.removableDrugs) {
             consultation.drugOrders = consultation.drugOrders.concat(consultation.removableDrugs);
