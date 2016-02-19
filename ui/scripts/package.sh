@@ -21,5 +21,5 @@ else
     echo "Xvfb running"
 fi
 
-grunt build
+grunt
 cd $ROOT_DIR/dist && zip -r ../target/$ZIP_FILE_NAME *
