@@ -39,8 +39,8 @@ angular
                     offlineSyncInitialization: function (offlineSyncInitialization, offlineDb) {
                         return offlineSyncInitialization(offlineDb);
                     },
-                    offlineConfigInitialization: function(offlineConfigInitialization){
-                        return offlineConfigInitialization("registration")
+                    offlineConfigInitialization: function(offlineConfigInitialization, offlineSyncInitialization){
+                        return offlineConfigInitialization("registration", offlineSyncInitialization)
                     },
                     offlineRegistrationInitialization: function (offlineRegistrationInitialization, offlineDb) {
                         return offlineRegistrationInitialization(offlineDb);
@@ -63,8 +63,8 @@ angular
                     offlineSyncInitialization: function (offlineSyncInitialization, offlineDb) {
                         return offlineSyncInitialization(offlineDb);
                     },
-                    offlineConfigInitialization: function(offlineConfigInitialization){
-                        return offlineConfigInitialization("registration")
+                    offlineConfigInitialization: function(offlineConfigInitialization, offlineSyncInitialization){
+                        return offlineConfigInitialization("registration", offlineSyncInitialization)
                     },
                     offlineRegistrationInitialization: function (offlineRegistrationInitialization, offlineDb) {
                         return offlineRegistrationInitialization(offlineDb);
@@ -87,8 +87,8 @@ angular
                     offlineSyncInitialization: function (offlineSyncInitialization, offlineDb) {
                         return offlineSyncInitialization(offlineDb);
                     },
-                    offlineConfigInitialization: function(offlineConfigInitialization){
-                        return offlineConfigInitialization("registration")
+                    offlineConfigInitialization: function(offlineConfigInitialization, offlineSyncInitialization){
+                        return offlineConfigInitialization("registration", offlineSyncInitialization)
                     },
                     offlineRegistrationInitialization: function (offlineRegistrationInitialization, offlineDb) {
                         return offlineRegistrationInitialization(offlineDb);

@@ -5,7 +5,7 @@ angular.module('bahmni.common.offline')
 
         var getPatientByUuid = function (db, uuid) {
             var p = db.getSchema().table('patient');
-            return db.select(p.patientJson.as('patient'), p.relationships.as('relationships'))
+            return db.select(p.patientJson.as('patient'))
                 .from(p)
                 .where(p.uuid.eq(uuid)).exec()
                 .then(function (result) {
@@ -20,15 +20,6 @@ angular.module('bahmni.common.offline')
             person = patient.person;
             var personName = person.names[0];
 
-            var relationships = patientData.relationships;
-            if (!_.isEmpty(relationships)) {
-                _.each(relationships, function (relationship) {
-                    relationship.personA = {
-                        display: personName.givenName + " " + personName.familyName,
-                        uuid: patient.uuid
-                    };
-                })
-            }
             patientIdentifier = patient.identifiers[0].identifier;
             var row = patientTable.createRow({
                 'identifier': patientIdentifier,
@@ -39,8 +30,7 @@ angular.module('bahmni.common.offline')
                 'gender': person.gender,
                 'birthdate': new Date(person.birthdate),
                 'dateCreated': new Date(patient.person.auditInfo.dateCreated),
-                'patientJson': patient,
-                'relationships': relationships
+                'patientJson': patient
             });
             return db.insertOrReplace().into(patientTable).values([row]).exec().then(function () {
                 return patient.uuid;

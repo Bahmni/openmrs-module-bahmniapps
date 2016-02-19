@@ -22,8 +22,8 @@ angular.module('bahmni.home', ['ui.router', 'httpErrorInterceptor', 'bahmni.comm
                         offlineSyncInitialization: function (offlineSyncInitialization, offlineDb) {
                             return offlineSyncInitialization(offlineDb);
                         },
-                        offlineConfigInitialization: function(offlineConfigInitialization){
-                            return offlineConfigInitialization("home")
+                        offlineConfigInitialization: function(offlineConfigInitialization, offlineSyncInitialization){
+                            return offlineConfigInitialization("home", offlineSyncInitialization)
                         }
                     }
                 }).state('login',

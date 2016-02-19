@@ -31,7 +31,7 @@ angular.module('bahmni.registration').factory('openmrsPatientMapper', ['patient'
                 return preferredAddress || {};
             },
             mapRelationships = function(patient, relationships){
-                patient.relationships = relationships;
+                patient.relationships = relationships || [];
                 patient.newlyAddedRelationships = [{}];
             },
             map = function (openmrsPatient) {

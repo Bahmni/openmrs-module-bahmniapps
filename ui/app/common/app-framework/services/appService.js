@@ -4,24 +4,15 @@ angular.module('bahmni.common.appFramework')
     .config(['$compileProvider', function ($compileProvider) {
         $compileProvider.aHrefSanitizationWhitelist(/^\s*(https?|ftp|mailto|chrome-extension|file):/);
     }])
-    .service('appService', ['$http', '$q', 'sessionService', '$rootScope', 'mergeService','offlineService', 'androidDbService', 'offlineDbService',
-        function ($http, $q, sessionService, $rootScope, mergeService, offlineService, androidDbService, offlineDbService) {
+    .service('appService', ['$http', '$q', 'sessionService', '$rootScope', 'mergeService','loadConfigService',
+        function ($http, $q, sessionService, $rootScope, mergeService, loadConfigService) {
         var currentUser = null;
         var baseUrl = Bahmni.Common.Constants.baseUrl;
         var customUrl = Bahmni.Common.Constants.customUrl;
         var appDescriptor = null;
 
             var loadConfig = function (url) {
-            if(offlineService.isOfflineApp()) {
-                var configFile = url.substring(url.lastIndexOf("/") + 1);
-                if(offlineService.isAndroidApp()) {
-                    offlineDbService = androidDbService;
-                }
-                return offlineDbService.getConfig(appDescriptor.contextPath).then(function(config){
-                    return $q.when({"data": config.value[configFile]});
-                });
-            }
-            return $http.get(url, {withCredentials: true});
+                return loadConfigService.loadConfig(url, appDescriptor.contextPath)
         };
 
         var loadTemplate = function (appDescriptor) {

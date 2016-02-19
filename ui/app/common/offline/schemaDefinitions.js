@@ -145,9 +145,6 @@ Bahmni.Common.Offline.SchemaDefinitions = {
                 name: 'patientJson',
                 type: 'OBJECT'
             }, {
-                name: 'relationships',
-                type: 'ARRAY_BUFFER'
-            }, {
                 name: 'uuid',
                 type: 'STRING'
             }

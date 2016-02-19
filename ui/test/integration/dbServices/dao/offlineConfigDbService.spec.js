@@ -3,8 +3,6 @@
 describe('offlineConfigDbService tests', function () {
     var offlineConfigDbService;
 
-    var mockHttp = jasmine.createSpyObj('$http', ['get']);
-
     beforeEach(function () {
         module('bahmni.common.offline');
     });
