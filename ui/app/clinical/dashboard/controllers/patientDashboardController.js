@@ -28,7 +28,6 @@ angular.module('bahmni.clinical')
             });
 
             $scope.init = function (dashboard) {
-                dashboard.patientProgramUuid = $stateParams.enrollment;
                 dashboard.startDate = null;
                 dashboard.endDate = null;
                 if (programConfig.showDetailsWithinDateRange) {

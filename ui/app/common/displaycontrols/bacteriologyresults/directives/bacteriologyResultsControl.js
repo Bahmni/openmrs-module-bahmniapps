@@ -9,7 +9,7 @@ angular.module('bahmni.common.displaycontrol.bacteriologyresults')
                     $scope.title = "bacteriology results";
                     var params = {
                         patientUuid: $scope.patient.uuid,
-                        patientProgramUuid: $scope.section.patientProgramUuid
+                        patientProgramUuid: $scope.enrollment
                     };
                     return bacteriologyTabInitialization().then(function (data) {
                         $scope.bacteriologyTabData  = data;
@@ -113,7 +113,8 @@ angular.module('bahmni.common.displaycontrol.bacteriologyresults')
                     section: "=",
                     observationUuid: "=",
                     config: "=",
-                    visitUuid: "="
+                    visitUuid: "=",
+                    enrollment: "@"
                 }
             }
         }]);
