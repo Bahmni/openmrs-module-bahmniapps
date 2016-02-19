@@ -30,17 +30,7 @@ angular
                     'content@search': {templateUrl: 'views/search.html'}
                 },
                 resolve: {
-                    initialization: 'initialization',
-                    offlineDb: function (offlineDbInitialization) {
-                        return offlineDbInitialization();
-
-                    },
-                    offlineSyncInitialization: function (offlineSyncInitialization, offlineDb) {
-                        return offlineSyncInitialization(offlineDb);
-                    },
-                    offlineRegistrationInitialization: function (offlineRegistrationInitialization, offlineDb) {
-                        return offlineRegistrationInitialization(offlineDb);
-                    }
+                    initialization: 'initialization'
                 }
             })
             .state('newpatient', {
@@ -50,17 +40,7 @@ angular
                     'content@newpatient': {templateUrl: 'views/newpatient.html'}
                 },
                 resolve: {
-                    initialization: 'initialization',
-                    offlineDb: function (offlineDbInitialization) {
-                        return offlineDbInitialization();
-
-                    },
-                    offlineSyncInitialization: function (offlineSyncInitialization, offlineDb) {
-                        return offlineSyncInitialization(offlineDb);
-                    },
-                    offlineRegistrationInitialization: function (offlineRegistrationInitialization, offlineDb) {
-                        return offlineRegistrationInitialization(offlineDb);
-                    }
+                    initialization: 'initialization'
                 }
             })
             .state('patient', {
@@ -70,17 +50,7 @@ angular
                     'layout': {template: '<div ui-view="layout"></div>'}
                 },
                 resolve: {
-                    initialization: 'initialization',
-                    offlineDb: function (offlineDbInitialization) {
-                        return offlineDbInitialization();
-
-                    },
-                    offlineSyncInitialization: function (offlineSyncInitialization, offlineDb) {
-                        return offlineSyncInitialization(offlineDb);
-                    },
-                    offlineRegistrationInitialization: function (offlineRegistrationInitialization, offlineDb) {
-                        return offlineRegistrationInitialization(offlineDb);
-                    }
+                    initialization: 'initialization'
                 }
             })
             .state('patient.edit', {
