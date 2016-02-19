@@ -344,6 +344,7 @@ Bahmni.ConceptSet.Observation.prototype = {
     },
 
     isRequired: function () {
+        this.disabled = this.disabled ? this.disabled : false;
         return this.conceptUIConfig.required === true && this.disabled === false;
     },
 
