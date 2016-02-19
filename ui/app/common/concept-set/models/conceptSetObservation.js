@@ -1,5 +1,3 @@
-'use strict';
-
 Bahmni.ConceptSet.Observation = function (observation, savedObs, conceptUIConfig) {
     var self = this;
     angular.extend(this, observation);
