@@ -38,7 +38,7 @@ Bahmni.Common.Obs.ObservationUtil = (function () {
             obsValue = observation.value;
         }
 
-        return obsValue === undefined ? obsValue : (obsValue.displayString || obsValue);
+        return (obsValue === undefined || obsValue === null) ? obsValue : (obsValue.displayString || obsValue);
     };
 
     var collect = function (flattenedObservations, key, value) {
