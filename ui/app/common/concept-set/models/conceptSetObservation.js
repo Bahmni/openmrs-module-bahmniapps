@@ -15,17 +15,15 @@ Bahmni.ConceptSet.Observation = function (observation, savedObs, conceptUIConfig
         this.value = this.conceptUIConfig.defaultValue;         
     }
 
-    if(this.conceptUIConfig.autocomplete && this.conceptUIConfig.answersConceptName) {
-        Object.defineProperty(this, 'autocompleteValue', {
-            enumerable: true,
-            get: function () {
-                return (this.value != null && (typeof this.value === "object")) ? this.value.name: this.value;
-            },
-            set: function (newValue) {
-                this.value = newValue;
-            }
-        });
-    }
+    Object.defineProperty(this, 'autocompleteValue', {
+        enumerable: true,
+        get: function () {
+            return (this.value != null && (typeof this.value === "object")) ? this.value.name: this.value;
+        },
+        set: function (newValue) {
+            this.value = newValue;
+        }
+    });
 
 
     Object.defineProperty(this, 'value', {
