@@ -1,3 +1,5 @@
+'use strict';
+
 Bahmni.ConceptSet.Observation = function (observation, savedObs, conceptUIConfig) {
     var self = this;
     angular.extend(this, observation);
@@ -35,7 +37,7 @@ Bahmni.ConceptSet.Observation = function (observation, savedObs, conceptUIConfig
                         return self._value;
                     }
                     if (savedObs) {
-                        if (savedObs.value) {
+                        if (typeof(savedObs.value) == "object" && savedObs.value) {
                             savedObs.value['displayString'] = (savedObs.value.shortName ? savedObs.value.shortName : savedObs.value.name)
                         }
                     }
