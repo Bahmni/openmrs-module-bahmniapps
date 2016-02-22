@@ -12,7 +12,7 @@
         <div class="ProgramEnrollInfo clearfix">
             <div class="form-field">
                 <div class="field-attribute">
-                    <label>{{::'PROGRAM_MANAGEMENT_START_DATE_KEY' | translate}} :</label>
+                    <label>{{::'PROGRAM_MANAGEMENT_START_DATE_KEY' | translate}} : <span class="asterick" ng-show="patientProgram.editing">*</span></label>
                 </div>
                 <div class="field-value" ng-show="!patientProgram.editing">
                     <span>
