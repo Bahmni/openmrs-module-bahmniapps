@@ -142,8 +142,21 @@
   line-height: 1.35;
   font-size: 13px;
   box-sizing: border-box;
+  @media (max-width : 1024px){
+    width:49.5%;
+    margin-right: 1%;
+    font-size: 14px;
+  }
   &:nth-child(3n){
     margin-right: 0;
+    @media (max-width : 1024px){
+      margin-right: 1%;
+    }
+  }
+  &:nth-child(even){
+    @media (max-width : 1024px) {
+      margin-right: 0;
+    }
   }
   .program-tile{
     @include clearfix;
