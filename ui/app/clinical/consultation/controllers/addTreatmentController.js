@@ -75,6 +75,7 @@ angular.module('bahmni.clinical')
 
                 clearHighlights = function(){
                     $scope.treatments.forEach(setIsNotBeingEdited);
+                    $scope.orderSetTreatments.forEach(setIsNotBeingEdited);
                     if(drugOrderBeingEdited){
                         drugOrderBeingEdited.isBeingEdited = false;
                         drugOrderBeingEdited.isDiscontinuedAllowed = true;
@@ -203,6 +204,10 @@ angular.module('bahmni.clinical')
             }, true);
 
             $scope.add = function () {
+                var treatments = $scope.treatments;
+                if($scope.treatment.orderSetUuid){
+                    treatments = $scope.orderSetTreatments;
+                }
                 $scope.treatment.dosingInstructionType = Bahmni.Clinical.Constants.flexibleDosingInstructionsClass;
                 if($scope.treatment.isNonCodedDrug) {
                     $scope.treatment.drugNonCoded = $scope.treatment.drugNameDisplay;
@@ -221,47 +226,54 @@ angular.module('bahmni.clinical')
                         DateUtil.parse(newDrugOrder.effectiveStartDate), newDrugOrder.durationInDays);
                 }
 
-                var unsavedNotBeingEditedOrders = $scope.treatments
-                    .filter(function(drugOrder) { return drugOrder.isBeingEdited == false});
+                if(isConflictingDrug(newDrugOrder)){
+                    return;
+                }
+                if (!$scope.treatment.quantity) {
+                    $scope.treatment.quantity = 0;
+                }
+
+                if ($scope.treatment.isBeingEdited) {
+                    treatments.splice($scope.treatment.currentIndex, 1, $scope.treatment);
+                    $scope.treatment.isBeingEdited = false;
+                } else {
+                    treatments.push($scope.treatment);
+                }
+                $scope.clearForm();
+
+            };
+
+            var isConflictingDrug = function(newDrugOrder){
+                var allDrugOrders = $scope.treatments.concat($scope.orderSetTreatments);
+                var unsavedNotBeingEditedOrders = allDrugOrders
+                    .filter(function(drugOrder) { return drugOrder.isBeingEdited === false});
 
                 var existingDrugOrders = newDrugOrder.isBeingEdited ?
                     $scope.consultation.activeAndScheduledDrugOrders
                         .filter(function (drugOrder) {
-                            return drugOrder.uuid != newDrugOrder.previousOrderUuid
+                            return drugOrder.uuid !== newDrugOrder.previousOrderUuid
                         }).concat(unsavedNotBeingEditedOrders)
                     : $scope.consultation.activeAndScheduledDrugOrders.concat(unsavedNotBeingEditedOrders);
 
                 var potentiallyOverlappingOrders = existingDrugOrders.filter(function (drugOrder) {
-                    return (drugOrder.getDrugName() == newDrugOrder.getDrugName() && drugOrder.overlappingScheduledWith(newDrugOrder));
+                    return (drugOrder.getDrugName() === newDrugOrder.getDrugName() && drugOrder.overlappingScheduledWith(newDrugOrder));
                 });
 
                 setEffectiveDates(newDrugOrder, potentiallyOverlappingOrders);
 
 
                 var alreadyActiveSimilarOrders = existingDrugOrders.filter(function (drugOrder) {
-                    return (drugOrder.getDrugName() == newDrugOrder.getDrugName() && drugOrder.overlappingScheduledWith(newDrugOrder));
+                    return (drugOrder.getDrugName() === newDrugOrder.getDrugName() && drugOrder.overlappingScheduledWith(newDrugOrder));
                 });
 
                 if (alreadyActiveSimilarOrders.length > 0) {
                     $scope.alreadyActiveSimilarOrder = _.sortBy(potentiallyOverlappingOrders, 'effectiveStartDate').reverse()[0];
-                    $scope.conflictingIndex = _.findIndex($scope.treatments, $scope.alreadyActiveSimilarOrder);
+                    $scope.conflictingIndex = _.findIndex(allDrugOrders, $scope.alreadyActiveSimilarOrder);
                     ngDialog.open({ template: 'consultation/views/treatmentSections/conflictingDrugOrderModal.html', scope: $scope});
                     $scope.popupActive = true;
-                    return;
+                    return true;
                 }
-
-                if (!$scope.treatment.quantity) {
-                    $scope.treatment.quantity = 0;
-                }
-
-                if ($scope.treatment.isBeingEdited) {
-                    $scope.treatments.splice($scope.treatment.currentIndex, 1, $scope.treatment);
-                    $scope.treatment.isBeingEdited = false;
-                } else {
-                    $scope.treatments.push($scope.treatment);
-                }
-                $scope.clearForm();
-
+                return false;
             };
 
             var isEffectiveStartDateSameAsToday = function (newDrugOrder) {
@@ -323,9 +335,9 @@ angular.module('bahmni.clinical')
             };
 
 
-            var edit = function (index) {
+            var edit = function (index, isOrderSet) {
                 clearHighlights();
-                var treatment = $scope.treatments[index];
+                var treatment = isOrderSet? $scope.orderSetTreatments[index] : $scope.treatments[index];
                 markEitherVariableDrugOrUniformDrug(treatment);
                 treatment.isBeingEdited = true;
                 $scope.treatment = treatment.cloneForEdit(index, treatmentConfig);
@@ -336,8 +348,8 @@ angular.module('bahmni.clinical')
                 selectDrugFromDropdown(treatment.drug);
             };
 
-            $scope.$on("event:editDrugOrder", function (event, index) {
-                edit(index);
+            $scope.$on("event:editDrugOrder", function (event, index, isOrderSet) {
+                edit(index, isOrderSet);
             });
 
 
@@ -466,13 +478,16 @@ angular.module('bahmni.clinical')
 
             var saveTreatment = function () {
                 var tabNames = Object.keys($scope.consultation.newlyAddedTabTreatments || {});
-                var allTreatmentsAcrossTabs = _.map(tabNames,function(tabName){
-                    return $scope.consultation.newlyAddedTabTreatments[tabName];
-                });
-                var filteredTreatments = _.flatten(allTreatmentsAcrossTabs);
-                $scope.consultation.newlyAddedTreatments = _.filter(filteredTreatments, function (treatment) {
+                var allTreatmentsAcrossTabs = _.flatten(_.map(tabNames,function(tabName){
+                    return $scope.consultation.newlyAddedTabTreatments[tabName].treatments;
+                }));
+                var orderSetTreatmentsAcrossTabs = _.flatten(_.map(tabNames,function(tabName){
+                    return $scope.consultation.newlyAddedTabTreatments[tabName].orderSetTreatments;
+                }));
+                var includedOrderSetTreatments = _.filter(orderSetTreatmentsAcrossTabs, function (treatment) {
                     return treatment.orderSetUuid ? treatment.include : true;
                 });
+                $scope.consultation.newlyAddedTreatments = allTreatmentsAcrossTabs.concat(includedOrderSetTreatments);
                 $scope.consultation.discontinuedDrugs && $scope.consultation.discontinuedDrugs.forEach(function (discontinuedDrug) {
                     var removableOrder = _.find(activeDrugOrders, {uuid: discontinuedDrug.uuid});
                     if (discontinuedDrug != null) {
@@ -494,15 +509,15 @@ angular.module('bahmni.clinical')
             };
 
             $scope.addOrderSet = function (orderSet) {
-                $scope.drugOrderSet.name = orderSet.name;
+                $scope.newOrderSet.name = orderSet.name;
                 _.each(orderSet.orderSetMembers, function (orderSetMember) {
                     var drugOrderResponse = JSON.parse(orderSetMember.orderTemplate);
-                    drugOrderResponse.effectiveStartDate = $scope.drugOrderSet.date;
+                    drugOrderResponse.effectiveStartDate = $scope.newOrderSet.date;
                     drugOrderResponse.orderSetUuid = orderSet.uuid;
                     var drugOrderViewModel = Bahmni.Clinical.DrugOrderViewModel.createFromContract(Bahmni.Clinical.DrugOrder.create(drugOrderResponse), treatmentConfig);
                     drugOrderViewModel.include = true;
                     drugOrderViewModel.calculateQuantityAndUnit();
-                    $scope.treatments.push(drugOrderViewModel);
+                    $scope.orderSetTreatments.push(drugOrderViewModel);
                 });
             };
 

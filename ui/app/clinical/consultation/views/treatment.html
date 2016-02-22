@@ -6,7 +6,7 @@
         <section class="treatment-section-right clearfix">
             <new-drug-orders treatments="treatments"
                              treatment-config="treatmentConfig"></new-drug-orders>
-            <new-order-group treatments="treatments" order-set-name="drugOrderSet.name"></new-order-group>
+            <new-order-group treatments="orderSetTreatments" order-set-name="newOrderSet.name"></new-order-group>
             <div ng-if="drugOrderHistoryView === 'default'" ui-view="defaultHistoryView"></div>
             <div ng-if="drugOrderHistoryView === 'custom'" ui-view="customHistoryView"></div>
         </section>

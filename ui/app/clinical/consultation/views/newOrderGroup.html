@@ -1,9 +1,9 @@
-<section class="order-section-container">
+<section class="order-section-container" ng-if="treatments.length > 0">
     <div class="order-grid">
         <h2 class="order-title" toggle="showOrderSet">
             <i class="fa fa-caret-right"></i>
             <i class="fa fa-caret-down"></i>
-            {{orderSetName}}
+            {{::orderSetName}}
         </h2>
     </div>
     <div class="dashboard-section" ng-show="showOrderSet">
@@ -21,7 +21,7 @@
             </tr>
             </thead>
             <tbody>
-            <tr ng-repeat="drugOrder in treatments" ng-if="drugOrder.orderSetUuid">
+            <tr ng-repeat="drugOrder in treatments">
                 <td><input type="checkbox" ng-model="drugOrder.include"/></td>
                 <td>{{::drugOrder.drugNameDisplay}}</td>
                 <td>{{::drugOrder.getDoseAndUnits()}}</td>
