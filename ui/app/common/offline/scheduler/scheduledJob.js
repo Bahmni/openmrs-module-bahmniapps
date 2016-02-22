@@ -16,5 +16,10 @@ angular.module("bahmni.common.offline")
                     $interval.cancel(jobPromise);
                 }
             };
+
+            this.pause = function() {
+                worker.pause();
+                this.stop();
+            };
         }
     }]);

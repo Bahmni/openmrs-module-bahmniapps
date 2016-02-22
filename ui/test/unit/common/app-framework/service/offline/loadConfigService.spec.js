@@ -62,6 +62,4 @@ describe("loading config functionality", function () {
         });
 
     });
-
-
 });

@@ -37,4 +37,19 @@ describe('scheduledJob', function () {
 
         done();
     });
+
+    it("should pause a scheduled job", function(done) {
+        var workerObj = jasmine.createSpyObj('worker', ['execute', 'pause']);
+        var job = scheduledJobService.create({interval: 1, worker: workerObj});
+        job.start();
+        interval.flush(10);
+        expect(workerObj.execute.calls.count()).toBe(10);
+
+        job.pause();
+        interval.flush(10);
+        expect(workerObj.execute.calls.count()).toBe(10);
+        expect(workerObj.pause.calls.count()).toBe(1);
+
+        done();
+    })
 });
