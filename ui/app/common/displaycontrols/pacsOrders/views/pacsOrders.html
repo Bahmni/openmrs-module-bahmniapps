@@ -7,9 +7,10 @@
                     <a ng-click="openImage(bahmniOrder)" target="_blank">
                         {{bahmniOrder.concept.name}}
                     </a>
-                    <span class="order-sub-heading-container">
-                        <span class="fr order-sub-heading">
-                            {{bahmniOrder.provider}} {{ bahmniOrder.orderDate | bahmniDateTime }}
+                    <span class="fr order-sub-heading-container">
+                        <span class="order-sub-heading">
+                            <span class="provider-name">{{bahmniOrder.provider}} </span>
+                            <span class="provider-date">{{ bahmniOrder.orderDate | bahmniDateTime }}</span>
                         </span>
                     </span>
                 </span>
