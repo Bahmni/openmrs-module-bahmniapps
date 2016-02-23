@@ -66,6 +66,12 @@ angular.module('bahmni.common.conceptSet')
                 }));
             };
 
+            $scope.clone = function(index) {
+                var clonedObj = $scope.allTemplates[index].clone();
+                $scope.allTemplates.splice(index + 1, 0, clonedObj);
+                $scope.$root.$broadcast("event:addConceptSection", clonedObj);
+            };
+
             var copyValues = function (existingObservations, modifiedObservations) {
                 existingObservations.forEach(function (observation, index) {
                     if (observation.groupMembers && observation.groupMembers.length > 0) {

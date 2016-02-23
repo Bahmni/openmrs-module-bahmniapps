@@ -21,6 +21,7 @@
                 </button>
             </h2>
         </div>
+        <input class="favourite-concept-set" type="button" ng-click="clone($index)" value="Add More" ng-if="conceptSet.canAddMore()">
         <span class="favourite-concept-set">
             <label class="add-fav">
               <input type="checkbox" id="hasOldIdentifier" ng-model="conceptSet.alwaysShow" ng-change="togglePref(conceptSet, conceptSet.conceptName)" />
@@ -31,6 +32,6 @@
 
     <concept-set ng-if="conceptSet.isLoaded" patient="patient" ng-show="conceptSet.isOpen" collapse-inner-sections="conceptSet.collapseInnerSections"
                  concept-set-name="conceptSet.conceptName" required="conceptSet.options.required"
-                 observations="observations" show-title="false" validation-handler="validationHandler">
+                 observations="conceptSet.observations" show-title="false" validation-handler="validationHandler">
     </concept-set>
 </div>

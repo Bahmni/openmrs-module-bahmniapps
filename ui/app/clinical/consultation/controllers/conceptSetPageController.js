@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('bahmni.clinical')
-    .controller('ConceptSetPageController', ['$scope', '$rootScope', '$stateParams', 'conceptSetService', 'clinicalAppConfigService', 'messagingService', 'configurations','$state',
+    .controller('ConceptSetPageController', ['$scope', '$rootScope', '$stateParams', 'conceptSetService', 'clinicalAppConfigService', 'messagingService', 'configurations', '$state',
         function ($scope, $rootScope, $stateParams, conceptSetService, clinicalAppConfigService, messagingService, configurations, $state) {
             $scope.consultation.selectedObsTemplate = $scope.consultation.selectedObsTemplate || [];
             $scope.scrollingEnabled = false;
@@ -12,31 +12,39 @@ angular.module('bahmni.clinical')
             var numberOfLevels = 2;
             var fields = ['uuid', 'name:(name,display)', 'names:(uuid,conceptNameType,name)'];
             var customRepresentation = Bahmni.ConceptSet.CustomRepresentationBuilder.build(fields, 'setMembers', numberOfLevels);
+            var allConceptSections = [];
 
             conceptSetService.getConcept({
                 name: "All Observation Templates",
                 v: "custom:" + customRepresentation
             }).success(function (response) {
                 var allTemplates = response.results[0].setMembers;
-                var allConceptSections = allTemplates.map(function (template) {
+                _.map(allTemplates, function (template) {
                     var conceptSetExtension = _.find(extensions, function (extension) {
                             return extension.extensionParams.conceptName === template.name.name;
                         }) || {};
                     var conceptSetConfig = configs[template.name.name] || {};
-                    return new Bahmni.ConceptSet.ConceptSetSection(conceptSetExtension, $rootScope.currentUser, conceptSetConfig, $scope.consultation.observations, template);
+                    var observationsForTemplate = getObservationsForTemplate(template);
+                    if (observationsForTemplate && observationsForTemplate.length > 0) {
+                        _.each(observationsForTemplate, function (observation) {
+                            allConceptSections.push(new Bahmni.ConceptSet.ConceptSetSection(conceptSetExtension, $rootScope.currentUser, conceptSetConfig, [observation], template));
+                        });
+                    }else{
+                        allConceptSections.push(new Bahmni.ConceptSet.ConceptSetSection(conceptSetExtension, $rootScope.currentUser, conceptSetConfig, [], template))
+                    }
                 });
                 $scope.consultation.selectedObsTemplate = getSelectedObsTemplate(allConceptSections);
                 if (!!$state.params.programUuid) {
                     conceptSetService.getObsTemplatesForProgram($state.params.programUuid).success(function (data) {
-                        if(data.results.length>0 && data.results[0].mappings.length>0) {
-                            _.map(allConceptSections, function(conceptSection) {
+                        if (data.results.length > 0 && data.results[0].mappings.length > 0) {
+                            _.map(allConceptSections, function (conceptSection) {
                                 conceptSection.isAdded = false;
                                 conceptSection.alwaysShow = false;
                             });
 
                             _.map(data.results[0].mappings, function (template) {
                                 var matchedTemplate = _.find(allConceptSections, {uuid: template.uuid});
-                                if(matchedTemplate) {
+                                if (matchedTemplate) {
                                     matchedTemplate.alwaysShow = true;
                                 }
 
@@ -46,7 +54,26 @@ angular.module('bahmni.clinical')
                 }
             });
 
-            var getSelectedObsTemplate = function(allConceptSections){
+            var collectObservationsFromConceptSets = function () {
+                $scope.consultation.observations = [];
+                _.each(allConceptSections, function (conceptSetSection) {
+                    $scope.consultation.observations.push(conceptSetSection.observations[0]);
+                });
+            };
+
+            $scope.$root.$on("event:addConceptSection", function (event, conceptSetSection) {
+                allConceptSections.push(conceptSetSection);
+            });
+
+            $scope.consultation.preSaveHandler.register("collectObservationsFromConceptSets", collectObservationsFromConceptSets);
+
+            var getObservationsForTemplate = function (template) {
+                return _.filter($scope.consultation.observations, function (observation) {
+                    return observation.concept.uuid === template.uuid;
+                })
+            };
+
+            var getSelectedObsTemplate = function (allConceptSections) {
                 return allConceptSections.filter(function (conceptSet) {
                     if (conceptSet.isAvailable($scope.context)) {
                         return true;
