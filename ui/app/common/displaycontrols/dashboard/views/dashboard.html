@@ -5,6 +5,7 @@
                 <div ng-if="isFullPageSection(sections)" ng-repeat="section in sections" class="dashboard-sections fullpage-container">
                     <section id="{{section.title.toValidId()}}"
                              class="dashboard-section"
+                             ng-class="{'visible-print': section.showOnlyInPrint}"
                              ng-include="section.viewName">
                     </section>
                 </div>
@@ -12,23 +13,25 @@
                 <div ng-if="isHalfPageSection(sections)||(isOneFourthPageSection(sections) && (!hasThreeFourthPageSection(sections,1))&&!hasThreeFourthPageSection(sections,0))">
                     <div class="dashboard-sections halfpage-container dashboard-sections-left">
                         <div ng-repeat="section in sections | filter:filterOdd(0)">
-                            <section id="{{section.title.toValidId()}}" class="dashboard-section"
-                                     ng-include="section.viewName" ng-class="section.displayType">
+                            <section id="{{section.title.toValidId()}}" class="dashboard-section {{section.displayType}}"
+                                     ng-include="section.viewName" ng-class="{'visible-print': section.showOnlyInPrint}">
                             </section>
                         </div>
                     </div>
 
                     <div class="dashboard-sections halfpage-container dashboard-sections-right">
                         <div ng-repeat="section in sections | filter:filterEven(0)">
-                            <section id="{{section.title.toValidId()}}" class="dashboard-section" ng-class="section.displayType">
+                            <section id="{{section.title.toValidId()}}" class="dashboard-section {{section.displayType}}"
+                                     ng-class="{'visible-print': section.showOnlyInPrint}">
                                 <ng-include src="section.viewName"></ng-include>
                             </section>
                         </div>
                     </div>
                 </div>
                 <div ng-if="containsThreeFourthPageSection(sections)" class="dashboard-sections three-fourth-page-container">
-                    <div ng-repeat="section in sections" ng-class="section.displayType" class="three-fourth-page section-{{::$index}}">
-                        <section ng-include="section.viewName" class="dashboard-section"></section>
+                    <div ng-repeat="section in sections"class="three-fourth-page section-{{::$index}} ">
+                        <section ng-include="section.viewName" class="dashboard-section {{section.displayType}}"
+                                 ng-class="{'visible-print': section.showOnlyInPrint}"></section>
                     </div>
                 </div>
             </div>
