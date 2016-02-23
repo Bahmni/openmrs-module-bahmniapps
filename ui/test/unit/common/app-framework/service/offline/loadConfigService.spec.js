@@ -2,7 +2,7 @@ describe("loading config functionality", function () {
 
     var offlineService, offlineDbService, loadConfigService, $q= Q, mockHttp;
 
-    beforeEach(module('bahmni.common.appFramework'));
+    beforeEach(module('bahmni.common.appFramework.offline'));
     beforeEach(module('bahmni.common.offline'));
     beforeEach(module(function($provide) {
         offlineService = jasmine.createSpyObj('offlineService',['isOfflineApp', 'isAndroidApp']);

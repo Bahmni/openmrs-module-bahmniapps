@@ -24,9 +24,7 @@ angular.module('bahmni.common.offline')
                 etag: eTag
             });
 
-            return db.insertOrReplace().into(config).values([row]).exec().then(function () {
-                return getConfig(module);
-            });
+            return db.insertOrReplace().into(config).values([row]).exec();
         };
 
         var init = function (_db) {

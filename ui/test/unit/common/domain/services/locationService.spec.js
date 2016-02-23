@@ -6,7 +6,7 @@ describe('LocationService', function () {
     var $http, mockBahmniCookieStore,
         mockHttp = {defaults: {headers: {common: {'X-Requested-With': 'present'}} },
             get: jasmine.createSpy('Http get').and.returnValue(locationUuids)};
-    beforeEach(module('bahmni.registration'));
+    beforeEach(module('bahmni.common.domain'));
     beforeEach(module(function ($provide) {
         $provide.value('$http', mockHttp);
         $provide.value('$bahmniCookieStore', mockBahmniCookieStore);

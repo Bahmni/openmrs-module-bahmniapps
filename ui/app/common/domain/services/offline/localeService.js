@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('bahmni.common.domain')
+angular.module('bahmni.common.domain.offline')
     .service('localeService', ['$http','offlineService', 'offlineDbService', 'androidDbService',
         function ($http, offlineService, offlineDbService, androidDbService) {
 

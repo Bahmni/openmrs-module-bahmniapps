@@ -26,9 +26,8 @@ describe('patientAttributeDbService tests', function () {
         jasmine.getFixtures().fixturesPath = 'base/test/data';
         var patientJson = JSON.parse(readFixtures('patient.json'));
         var personAttributeTypeJSON = JSON.parse(readFixtures('patientAttributeType.json'));
-        mockHttp.get.and.returnValue(specUtil.respondWithPromise($q, personAttributeTypeJSON));
         schemaBuilder.connect().then(function (db) {
-            return patientAttributeDbService.insertAttributeTypes(db).then(function () {
+            return patientAttributeDbService.insertAttributeTypes(db, personAttributeTypeJSON.data.results).then(function () {
                 var attributeTypeTable = db.getSchema().table('patient_attribute_type');
                 return patientAttributeDbService.getAttributeTypes(db).then(function (attributeTypeMap) {
                     return patientDbService.insertPatientData(db, patientJson).then(function (uuid) {

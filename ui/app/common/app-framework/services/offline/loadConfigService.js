@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('bahmni.common.appFramework')
+angular.module('bahmni.common.appFramework.offline')
     .service('loadConfigService', ['$http', '$q', 'offlineService', 'androidDbService', 'offlineDbService',
         function ($http, $q, offlineService, androidDbService, offlineDbService) {
         this.loadConfig = function (url, contextPath) {

@@ -29,18 +29,15 @@ angular.module('bahmni.common.offline')
             return db.insertOrReplace().into(referenceData).values([row]).exec().then(function () {
                 switch (referenceDataKey) {
                     case 'PersonAttributeType':
-                        promise = patientAttributeDbService.insertAttributeTypes(db, data.results);
+                        return patientAttributeDbService.insertAttributeTypes(db, data.results);
                         break;
                     case 'LoginLocations':
-                        promise = locationDbService.insertLocations(db, data.results);
+                        return locationDbService.insertLocations(db, data.results);
                         break;
                     default :
-                        return getReferenceData(referenceDataKey);
+                        return;
                         break;
                 }
-                return promise.then(function(){
-                    return  getReferenceData(referenceDataKey);
-                })
             });
         };
 

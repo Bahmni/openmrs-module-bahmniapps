@@ -3,8 +3,6 @@
 angular.module('bahmni.common.offline')
     .service('locationDbService', [ function () {
 
-        var db;
-
         var insertLocations = function (db, locations) {
                 var table, queries = [];
                 table = db.getSchema().table('login_locations');

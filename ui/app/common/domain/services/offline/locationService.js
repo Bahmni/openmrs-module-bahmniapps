@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('bahmni.common.domain')
+angular.module('bahmni.common.domain.offline')
     .factory('locationService', ['$http', '$bahmniCookieStore','offlineService', 'offlineDbService', 'androidDbService',
         function ($http, $bahmniCookieStore, offlineService, offlineDbService, androidDbService ) {
         var getAllByTag = function (tags) {

@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('bahmni.common.domain')
+angular.module('bahmni.common.domain.offline')
     .factory('configurationService', ['$http', '$q',  'offlineService', 'offlineDbService', 'androidDbService',
         function ($http, $q, offlineService, offlineDbService, androidDbService) {
 

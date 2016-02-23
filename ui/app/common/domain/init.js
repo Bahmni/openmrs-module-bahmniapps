@@ -5,3 +5,4 @@ Bahmni.Common.Domain = Bahmni.Common.Domain || {};
 Bahmni.Common.Domain.Helper = Bahmni.Common.Domain.Helper || {};
 
 angular.module('bahmni.common.domain', []);
+angular.module('bahmni.common.domain.offline', []);
