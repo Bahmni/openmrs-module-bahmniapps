@@ -26,6 +26,22 @@ Bahmni.Common = Bahmni.Common || {};
         "setMembers:(uuid,name,names,conceptClass," +
         "setMembers:(uuid,name,names,conceptClass))))";
 
+    var unAuthenticatedReferenceDataMap = {
+        "/openmrs/ws/rest/v1/location?q=Login+Location&s=byTags&v=default": "LoginLocations",
+        "/openmrs/ws/rest/v1/idgen/identifiersources": "IdentifierSources",
+        "/openmrs/module/addresshierarchy/ajax/getOrderedAddressHierarchyLevels.form": "AddressHierarchyLevels",
+        "/openmrs/ws/rest/v1/bahmnicore/sql/globalproperty?property=locale.allowed.list": "LocaleList",
+        "/openmrs/ws/rest/v1/bahmnicore/sql/globalproperty?property=mrs.genders": "Genders",
+        "/openmrs/ws/rest/v1/bahmnicore/sql/globalproperty?property=bahmni.relationshipTypeMap": "RelationshipTypeMap"
+    };
+
+    var authenticatedReferenceDataMap = {
+        "/openmrs/ws/rest/v1/bahmnicore/config/bahmniencounter?callerContext=REGISTRATION_CONCEPTS": "RegistrationConcepts",
+        "/openmrs/ws/rest/v1/relationshiptype?v=custom:(aIsToB,bIsToA,uuid)": "RelationshipType",
+        "/openmrs/ws/rest/v1/personattributetype?v=custom:(uuid,name,sortWeight,description,format,concept)" : "PersonAttributeType",
+        "/openmrs/ws/rest/v1/entitymapping?mappingType=loginlocation_visittype&s=byEntityAndMappingType": "LoginLocationToVisitTypeMapping"
+    };
+
     Bahmni.Common.Constants = {
         hostURL: hostUrl,
         dateFormat: "dd/mm/yyyy",
@@ -189,6 +205,8 @@ Bahmni.Common = Bahmni.Common || {};
             SHA3: 'SHA3'
         },
         LoginInformation: 'LoginInformation',
-        ServerDateTimeFormat: 'YYYY-MM-DDTHH:mm:ssZZ'
+        ServerDateTimeFormat: 'YYYY-MM-DDTHH:mm:ssZZ',
+        unAuthenticatedReferenceDataMap: unAuthenticatedReferenceDataMap,
+        authenticatedReferenceDataMap: authenticatedReferenceDataMap
     };
 })();

@@ -1,10 +1,8 @@
 'use strict';
 
 angular.module('bahmni.common.offline')
-    .service('patientAttributeDbService', ['$http', function ($http) {
-        var insertAttributeTypes = function (db) {
-                return $http.get(Bahmni.Common.Constants.RESTWS_V1 + "/personattributetype?v=custom:(name,uuid,format)").then(function (attributesResponse) {
-                var personAttributeTypeList = attributesResponse.data.results;
+    .service('patientAttributeDbService', [ function () {
+        var insertAttributeTypes = function (db, personAttributeTypeList) {
                 var table, queries = [];
                 table = db.getSchema().table('patient_attribute_type');
                 for (var i = 0; i < personAttributeTypeList.length; i++) {
@@ -18,7 +16,6 @@ angular.module('bahmni.common.offline')
                 }
                 var tx = db.createTransaction();
                 return tx.exec(queries);
-            });
         };
 
         var insertAttributes = function (db, patientUuid, attributes, attributeTypeMap) {

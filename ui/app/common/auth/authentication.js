@@ -44,7 +44,7 @@ angular.module('authentication')
             } else {
                 getAuthFromServer(username, password).success(function(data) {
                     if(offlineApp) {
-                        if(authenticationResponse.authenticated == true) {
+                        if(data.authenticated == true) {
                             offlineService.setItem(authenticationResponse, data);
                         }
                     }
@@ -109,6 +109,9 @@ angular.module('authentication')
         };
 
         this.get = function () {
+            if(offlineApp) {
+                return $q.when({data:offlineService.getItem('authenticationResponse')});
+            }
             return $http.get(sessionResourcePath, { cache: false });
         };
 
@@ -161,6 +164,12 @@ angular.module('authentication')
         };
 
         this.loadProviders = function(userInfo) {
+            if (offlineApp) {
+                var data  = offlineService.getItem('providerData');
+                var providerUuid = (data.results.length > 0) ? data.results[0].uuid : undefined;
+                $rootScope.currentProvider = { uuid: providerUuid };
+                return $q.when(data);
+            }
             return $http.get(Bahmni.Common.Constants.providerUrl, {
                  method: "GET",
                  params: {
@@ -176,20 +185,16 @@ angular.module('authentication')
         var authenticateUser = function () {
             var defer = $q.defer();
             var sessionDetails = sessionService.get();
-            sessionDetails.success(function (data) {
-                if (data.authenticated) {
+            sessionDetails.then(function (response) {
+                if (response.data.authenticated) {
                     defer.resolve();
                 } else {
                     defer.reject('User not authenticated');
                     $rootScope.$broadcast('event:auth-loginRequired');
                 }
             });
-            sessionDetails.error(function(){
-                defer.reject('User not authenticated');
-                $rootScope.$broadcast('event:auth-loginRequired');
-            });
             return defer.promise;
-        }
+        };
 
         return {
             authenticateUser: authenticateUser

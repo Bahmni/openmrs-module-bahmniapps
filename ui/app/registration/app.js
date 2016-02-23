@@ -33,14 +33,11 @@ angular
                     offlineDb: function (offlineDbInitialization) {
                         return offlineDbInitialization();
                     },
-                    initialize: function (initialization, offlineConfigInitialization) {
-                        return initialization(offlineConfigInitialization);
+                    initialize: function (initialization, offlineSyncInitialization) {
+                        return initialization(offlineSyncInitialization);
                     },
                     offlineSyncInitialization: function (offlineSyncInitialization, offlineDb) {
                         return offlineSyncInitialization(offlineDb);
-                    },
-                    offlineConfigInitialization: function(offlineConfigInitialization, offlineSyncInitialization){
-                        return offlineConfigInitialization("registration", offlineSyncInitialization)
                     },
                     offlineRegistrationInitialization: function (offlineRegistrationInitialization, offlineDb) {
                         return offlineRegistrationInitialization(offlineDb);
@@ -57,14 +54,11 @@ angular
                     offlineDb: function (offlineDbInitialization) {
                         return offlineDbInitialization();
                     },
-                    initialize: function (initialization, offlineConfigInitialization) {
-                        return initialization(offlineConfigInitialization);
+                    initialize: function (initialization, offlineSyncInitialization) {
+                        return initialization(offlineSyncInitialization);
                     },
                     offlineSyncInitialization: function (offlineSyncInitialization, offlineDb) {
                         return offlineSyncInitialization(offlineDb);
-                    },
-                    offlineConfigInitialization: function(offlineConfigInitialization, offlineSyncInitialization){
-                        return offlineConfigInitialization("registration", offlineSyncInitialization)
                     },
                     offlineRegistrationInitialization: function (offlineRegistrationInitialization, offlineDb) {
                         return offlineRegistrationInitialization(offlineDb);
@@ -81,14 +75,11 @@ angular
                     offlineDb: function (offlineDbInitialization) {
                         return offlineDbInitialization();
                     },
-                    initialize: function (initialization, offlineConfigInitialization) {
-                        return initialization(offlineConfigInitialization);
+                    initialize: function (initialization, offlineSyncInitialization) {
+                        return initialization(offlineSyncInitialization);
                     },
                     offlineSyncInitialization: function (offlineSyncInitialization, offlineDb) {
                         return offlineSyncInitialization(offlineDb);
-                    },
-                    offlineConfigInitialization: function(offlineConfigInitialization, offlineSyncInitialization){
-                        return offlineConfigInitialization("registration", offlineSyncInitialization)
                     },
                     offlineRegistrationInitialization: function (offlineRegistrationInitialization, offlineDb) {
                         return offlineRegistrationInitialization(offlineDb);

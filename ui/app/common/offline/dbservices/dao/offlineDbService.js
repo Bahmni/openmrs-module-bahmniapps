@@ -1,13 +1,10 @@
 'use strict';
 
 angular.module('bahmni.common.offline')
-    .service('offlineDbService', ['$http', '$q', 'patientDbService', 'patientAddressDbService', 'patientAttributeDbService', 'offlineMarkerDbService', 'offlineAddressHierarchyDbService', 'offlineConfigDbService','initializeOfflineSchema',
-        function ($http, $q, patientDbService, patientAddressDbService, patientAttributeDbService, offlineMarkerDbService, offlineAddressHierarchyDbService, offlineConfigDbService, initializeOfflineSchema) {
+    .service('offlineDbService', ['$http', '$q', 'patientDbService', 'patientAddressDbService', 'patientAttributeDbService', 'offlineMarkerDbService', 'offlineAddressHierarchyDbService', 'offlineConfigDbService','initializeOfflineSchema', 'referenceDataDbService', 'locationDbService',
+        function ($http, $q, patientDbService, patientAddressDbService, patientAttributeDbService, offlineMarkerDbService, offlineAddressHierarchyDbService, offlineConfigDbService, initializeOfflineSchema, referenceDataDbService, locationDbService) {
         var db;
 
-        var populateAttributeTypes = function () {
-            patientAttributeDbService.insertAttributeTypes(db);
-        };
 
         var createPatient = function (postRequest, requestType) {
             var uuid = postRequest.patient.uuid;
@@ -106,20 +103,31 @@ angular.module('bahmni.common.offline')
         };
 
         var getConfig = function(module){
-            return offlineConfigDbService.getConfig(module).then(function(config){
-                return config;
-            });
+            return offlineConfigDbService.getConfig(module);
         };
 
         var insertConfig = function(module, data, eTag){
-            return offlineConfigDbService.insertConfig(module, data, eTag).then(function(config){
-                return config;
-            });
+            return offlineConfigDbService.insertConfig(module, data, eTag);
         };
+
+        var getReferenceData = function(referenceDataKey){
+            return referenceDataDbService.getReferenceData(referenceDataKey);
+
+        };
+
+        var insertReferenceData = function(key, data, eTag){
+            return referenceDataDbService.insertReferenceData(key, data, eTag);
+        };
+
+        var getLocationByUuid = function(uuid){
+            return locationDbService.getLocationByUuid(db, uuid);
+        };
+
+
+
         return {
             init: init,
             initSchema: initSchema,
-            populateAttributeTypes: populateAttributeTypes,
             getPatientByUuid: getPatientByUuid,
             createPatient: createPatient,
             deletePatientData: deletePatientData,
@@ -128,6 +136,9 @@ angular.module('bahmni.common.offline')
             insertAddressHierarchy: insertAddressHierarchy,
             searchAddress: searchAddress,
             getConfig : getConfig,
-            insertConfig : insertConfig
+            insertConfig : insertConfig,
+            getReferenceData: getReferenceData,
+            insertReferenceData: insertReferenceData,
+            getLocationByUuid: getLocationByUuid
         }
     }]);

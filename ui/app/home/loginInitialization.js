@@ -18,6 +18,8 @@ angular.module('bahmni.home')
                 return deferrable.promise;
             };
 
-            return spinner.forPromise(init());
+            return function () {
+                return spinner.forPromise(init());
+            }
         }
     ]);

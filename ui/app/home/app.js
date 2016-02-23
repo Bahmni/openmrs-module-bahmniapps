@@ -23,7 +23,10 @@ angular.module('bahmni.home', ['ui.router', 'httpErrorInterceptor', 'bahmni.comm
                             return offlineSyncInitialization(offlineDb);
                         },
                         offlineConfigInitialization: function(offlineConfigInitialization, offlineSyncInitialization){
-                            return offlineConfigInitialization("home", offlineSyncInitialization)
+                            return offlineConfigInitialization(offlineSyncInitialization)
+                        },
+                        offlineReferenceDataInitialization: function(offlineReferenceDataInitialization, offlineDb){
+                            return offlineReferenceDataInitialization(offlineDb, true);
                         }
                     }
                 }).state('login',
@@ -32,7 +35,15 @@ angular.module('bahmni.home', ['ui.router', 'httpErrorInterceptor', 'bahmni.comm
                 templateUrl: 'views/login.html',
                 controller: 'LoginController',
                 resolve: {
-                    initialData: 'loginInitialization'
+                    initialData: function(loginInitialization, offlineReferenceDataInitialization){
+                        return loginInitialization(offlineReferenceDataInitialization)
+                    },
+                    offlineDb: function (offlineDbInitialization) {
+                        return offlineDbInitialization();
+                    },
+                    offlineReferenceDataInitialization: function(offlineReferenceDataInitialization, offlineDb){
+                        return offlineReferenceDataInitialization(offlineDb, false);
+                    }
                 }
             }).state('offline',
             {

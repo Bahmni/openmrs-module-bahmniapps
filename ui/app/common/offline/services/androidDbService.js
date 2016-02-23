@@ -36,14 +36,6 @@ angular.module('bahmni.common.offline')
                 return $q.when(AndroidOfflineService.initSchema());
             };
 
-            var populateAttributeTypes = function () {
-                 $http.get(Bahmni.Common.Constants.RESTWS_V1 +
-                     "/personattributetype?v=custom:(name,uuid,format)").then(function (attributeTypeResponse) {
-                        var personAttributeTypeList = attributeTypeResponse.data.results;
-                        AndroidOfflineService.populateAttributeTypes(JSON.stringify(personAttributeTypeList));
-                });
-            };
-
             var deletePatientData = function (identifier) {
                 AndroidOfflineService.deletePatientData(identifier);
                 return $q.when({});
@@ -76,7 +68,6 @@ angular.module('bahmni.common.offline')
             return {
                 init: init,
                 initSchema: initSchema,
-                populateAttributeTypes: populateAttributeTypes,
                 getPatientByUuid: getPatientByUuid,
                 createPatient: createPatient,
                 deletePatientData: deletePatientData,
