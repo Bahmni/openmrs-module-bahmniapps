@@ -258,6 +258,10 @@ Bahmni.ConceptSet.Observation.prototype = {
         if (this._isDateDataType()) return this.isValidDate();
         if (this._isDateTimeDataType()) {   return !this.hasInvalidDateTime();}
         if (this.erroneousValue) return false;
+
+        if (this.getControlType() === 'autocomplete') {
+            return _.isEmpty(this.value) || _.isObject(this.value);
+        }
         return true;
     },
 

@@ -132,7 +132,7 @@ Bahmni.ConceptSet.ObservationNode.prototype = {
     },
 
     _getGroupMembersWithoutClass: function(classNames) {
-         var groupMembers = this.groupMembers.filter(function (member) {
+         var groupMembers = _.filter(this.groupMembers,function (member) {
             return !(_.include(classNames, member.concept.conceptClass.name) || _.include(classNames, member.concept.conceptClass));
         });
 
@@ -305,6 +305,9 @@ Bahmni.ConceptSet.ObservationNode.prototype = {
         if (this.getPrimaryObs().hasValue() && this.hasDuration()) return false;
         if (this.abnormalObs && this.abnormalObs.erroneousValue) return false;
         if (this.getPrimaryObs().hasValue() && this.getPrimaryObs()._isDateTimeDataType()) return !this.hasInvalidDateTime();
+        if (this.getControlType() === 'autocomplete') {
+            return _.isEmpty(this.primaryObs.value) || _.isObject(this.primaryObs.value);
+        }
         return true;
     },
 
