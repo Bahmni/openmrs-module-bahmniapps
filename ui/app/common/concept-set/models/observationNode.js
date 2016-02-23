@@ -12,50 +12,64 @@ Bahmni.ConceptSet.ObservationNode = function (observation, savedObs, conceptUICo
         return clone;
     };
 
+
+    var observationNodeValueGetter = function () {
+        if (this.primaryObs) {
+            return typeof this.getPrimaryObs().value === "object" && this.getPrimaryObs().value !== null ?
+                this.getPrimaryObs().value.name : this.getPrimaryObs().value;
+        }
+        return undefined;
+    };
+    var observationNodeValueSetter = function (newValue) {
+        if (typeof newValue === "object") {
+            this.getCodedObs().value = newValue;
+            this.getCodedObs().voided = false;
+
+            if (this.getFreeTextObs()) {
+                if (this.getFreeTextObs().uuid) {
+                    this.getFreeTextObs().voided = true;
+                } else {
+                    this.getFreeTextObs().value = undefined;
+                }
+            }
+        }
+        else {
+            var freeTextObs = this.getFreeTextObs();
+            if (freeTextObs) {
+                freeTextObs.value = newValue;
+                freeTextObs.voided = false;
+            }
+            if (this.getCodedObs()) {
+                if (this.getCodedObs().uuid) {
+                    this.getCodedObs().voided = true;
+                } else {
+                    this.getCodedObs().value = undefined;
+                }
+            }
+        }
+        this.onValueChanged(newValue);
+    };
     Object.defineProperty(this, 'value', {
         enumerable: true,
-        get: function () {
-            if (this.primaryObs) {
-                return typeof this.getPrimaryObs().value==="object"  && this.getPrimaryObs().value!==null?
-                    this.getPrimaryObs().value.name:this.getPrimaryObs().value;
-            }
-            return undefined;
-        },
-        set: function (newValue) {
-            if(typeof newValue === "object"){
-                this.getCodedObs().value = newValue;
-                this.getCodedObs().voided = false;
-
-                if(this.getFreeTextObs()){
-                    if(this.getFreeTextObs().uuid){
-                        this.getFreeTextObs().voided = true;
-                    }else{
-                        this.getFreeTextObs().value = undefined;
-                    }
-                }
-            }
-            else {
-                var freeTextObs = this.getFreeTextObs();
-                if(freeTextObs){
-                    freeTextObs.value = newValue;
-                    freeTextObs.voided = false;
-                }
-                if(this.getCodedObs()){
-                    if(this.getCodedObs().uuid){
-                        this.getCodedObs().voided = true;
-                    }else{
-                        this.getCodedObs().value = undefined;
-                    }
-                }
-            }
-            this.onValueChanged(newValue);
-        }
+        get: observationNodeValueGetter,
+        set: observationNodeValueSetter
     });
 
     Object.defineProperty(this, 'primaryObs', {
         enumerable: true,
         get: function () {
             return this.getPrimaryObs();
+        }
+    });
+
+    Object.defineProperty(this, 'primaryObsAutocompleteValue', {
+        enumerable: true,
+        get: function(){
+            var primaryObsValue = this.primaryObs.value || {};
+            return primaryObsValue.name || this.primaryObs.value;
+        },
+        set: function(newValue){
+            this.primaryObs.value = newValue;
         }
     });
 
@@ -150,7 +164,7 @@ Bahmni.ConceptSet.ObservationNode.prototype = {
         }
         if(primaryObs.uuid && !primaryObs.voided) return primaryObs;
 
-        return observations[1] && (observations[1].value || observations[1].value === "") && !observations[1].voided? observations[1]:observations[0];
+        return observations[1] && (observations[1].value || observations[1].value === "") && !observations[1].voided ? observations[1] : observations[0];
     },
 
     onValueChanged: function () {

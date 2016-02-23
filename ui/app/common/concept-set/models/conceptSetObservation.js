@@ -18,31 +18,30 @@ Bahmni.ConceptSet.Observation = function (observation, savedObs, conceptUIConfig
     Object.defineProperty(this, 'autocompleteValue', {
         enumerable: true,
         get: function () {
-            return (this.value != null && (typeof this.value === "object")) ? this.value.name: this.value;
+            return (this.value != null && (typeof this.value === "object")) ? this.value.name : this.value;
         },
         set: function (newValue) {
             this.value = newValue;
         }
     });
 
-
     Object.defineProperty(this, 'value', {
-                enumerable: true,
-                get: function () {
-                    if(self._value!=null){
-                        return self._value;
-                    }
-                    savedObs && savedObs.value ? savedObs.value['displayString'] = (savedObs.value.shortName ? savedObs.value.shortName : savedObs.value.name) : '';
-                    return savedObs ? savedObs.value : undefined;
-                },
-                set: function (newValue) {
-                    self._value = newValue;
-                    if (!newValue) {
-                        savedObs = null;
-                    }
-                    self.onValueChanged();
-                }
-            });
+        enumerable: true,
+        get: function () {
+            if (self._value != null) {
+                return self._value;
+            }
+            savedObs && savedObs.value ? savedObs.value['displayString'] = (savedObs.value.shortName ? savedObs.value.shortName : savedObs.value.name) : '';
+            return savedObs ? savedObs.value : undefined;
+        },
+        set: function (newValue) {
+            self._value = newValue;
+            if (!newValue) {
+                savedObs = null;
+            }
+            self.onValueChanged();
+        }
+    });
 
     this.cloneNew = function() {
         var oldObs = angular.copy(observation);

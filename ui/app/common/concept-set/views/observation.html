@@ -55,16 +55,12 @@
                     <div ng-switch-when="autocomplete"
                          ng-class="{'illegalValue': !observation.isValid(atLeastOneValueIsSet), 'computed-field': observation.isComputedAndEditable()}"
                          class="autocomplete">
-                        <input ng-if="!observation.conceptUIConfig.answersConceptName" type="hidden"
-                               ui-select2="selectOptions(observation.primaryObs.concept)"
-                               ng-blur="handleUpdate()"
+                        <input ng-change="handleUpdate()"
                                ng-disabled="observation.disabled"
-                               ng-model="observation.primaryObs.value" style="width: 90%;"/>
-                        <input ng-if="observation.conceptUIConfig.answersConceptName" concept-autocomplete
-                               coded-concept-name="observation.conceptUIConfig.answersConceptName"
-                               ng-blur="handleUpdate()"
-                               ng-disabled="observation.disabled"
-                               ng-model="observation.value"/>
+                               ng-model="observation.primaryObsAutocompleteValue"
+                               concept-autocomplete
+                               coded-concept-name="observation.conceptUIConfig.answersConceptName || observation.primaryObs.concept.name"
+                               response-map="constructSearchResult"/>
                     </div>
 
                     <p ng-switch-default class="field-value info fa fa-info-sign"> The concept data type
