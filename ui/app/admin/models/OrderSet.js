@@ -29,12 +29,12 @@ Bahmni.Common.OrderSet = (function () {
     };
 
     var OrderTemplate = function(member){
-        var orderTemplate = JSON.parse(member.orderTemplate);
-        angular.extend(this, {
+        var orderTemplate = member.orderTemplate ? JSON.parse(member.orderTemplate) : {
             drug: member.drug,
             dosingInstructions: member.dosingInstructions
-        }, orderTemplate)
-    }
+        };
+        angular.extend(this, orderTemplate);
+    };
     var createOrderSetMember = function (orderSetMember) {
         var member = orderSetMember || {};
         member.orderType = member.orderType || {};

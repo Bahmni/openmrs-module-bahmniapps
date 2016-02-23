@@ -25,7 +25,8 @@ angular.module('bahmni.common.domain')
                     params: {
                         v: 'custom:(uuid,name,doseStrength,units,dosageForm,concept:(uuid,name,names:(name)))',
                         conceptUuid: concept.uuid,
-                        q: request.term
+                        q: request.term,
+                        s: 'ordered'
                     },
                     withCredentials: true
                 }).then(function (response) {

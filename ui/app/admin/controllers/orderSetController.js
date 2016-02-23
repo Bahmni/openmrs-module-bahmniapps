@@ -150,9 +150,6 @@ angular.module('bahmni.common.domain')
                     if ($state.params.orderSetUuid !== "new") {
                         spinner.forPromise(orderSetService.getOrderSet($state.params.orderSetUuid).then(function (response) {
                             $scope.orderSet = filterOutVoidedOrderSetMembers(Bahmni.Common.OrderSet.create(response.data));
-                            //_.each($scope.orderSet.orderSetMembers, function (orderSetMember) {
-                            //    orderSetMember.orderTemplate = JSON.parse(orderSetMember.orderTemplate || null);
-                            //});
                         }));
                     }
                     else {

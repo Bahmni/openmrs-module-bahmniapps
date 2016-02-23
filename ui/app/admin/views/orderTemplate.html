@@ -13,13 +13,13 @@
                 <div class="form-field">
                     <div class="field-value">
                         <input id="uniform-dose" class="form-field dose" integer="true" type="number" min="0" step="any" placeholder="Dose"
-                               ng-model="orderSetMember.orderTemplate.dosingInstructions.dose" />
+                               ng-model="orderSetMember.orderTemplate.dosingInstructions.dose" required/>
                     </div>
                 </div>
                 <div class="form-field">
                     <div class="field-value">
                         <select id="uniform-dose-unit" class="form-field freq-dose-units" ng-model="orderSetMember.orderTemplate.dosingInstructions.doseUnits"
-                                ng-options="item.name as item.name for item in treatmentConfig.doseUnits">
+                                ng-options="item.name as item.name for item in treatmentConfig.doseUnits" required>
                             <option value="">Choose Unit</option>
                         </select>
                     </div>
@@ -27,7 +27,7 @@
                 <div class="form-field">
                     <div class="field-value">
                         <select id="frequency" class="form-field frequency" ng-model="orderSetMember.orderTemplate.dosingInstructions.frequency"
-                                ng-options="item.name as item.name for item in treatmentConfig.frequencies">
+                                ng-options="item.name as item.name for item in treatmentConfig.frequencies" required placeholder="Please select a frequency">
                             <option value="">Choose frequency</option>
                         </select>
                     </div>
@@ -52,13 +52,14 @@
                     <div class="field-value">
                         <select ng-model="orderSetMember.orderTemplate.durationUnits"
                                 ng-options="item.name as item.name for item in treatmentConfig.durationUnits" required>
+                            <option value="">Choose Unit</option>
                         </select>
                     </div>
                 </div>
                 <div class="form-field">
                     <div class="field-value">
                         <select ng-model="orderSetMember.orderTemplate.dosingInstructions.route"
-                                ng-options="item.name as item.name for item in treatmentConfig.routes">
+                                ng-options="item.name as item.name for item in treatmentConfig.routes" required>
                             <option value="">Choose Route</option>
                         </select>
                     </div>

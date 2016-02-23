@@ -477,6 +477,7 @@ Bahmni.Clinical.DrugOrderViewModel = function (config, proto, encounterDate) {
         defaultQuantityUnit(newDrugOrder);
         newDrugOrder.orderReasonText = null;
         newDrugOrder.orderReasonConcept = null;
+        newDrugOrder.isNewOrderSet = false;
         return newDrugOrder;
     };
 
@@ -497,6 +498,7 @@ Bahmni.Clinical.DrugOrderViewModel = function (config, proto, encounterDate) {
 
         newDrugOrder.orderSetUuid = self.orderSetUuid;
         newDrugOrder.orderGroupUuid = self.orderGroupUuid;
+        newDrugOrder.isNewOrderSet = false;
 
         if (newDrugOrder.effectiveStartDate <= today()) {
             newDrugOrder.effectiveStartDate = today();
@@ -529,7 +531,7 @@ Bahmni.Clinical.DrugOrderViewModel = function (config, proto, encounterDate) {
 
             if (dose !== void 0 && self.uniformDosingType.doseUnits && self.quantityUnit) {
                 return true;
-            } else if (self.uniformDosingType.dose == undefined && !self.uniformDosingType.doseUnits && !self.quantityUnit) {
+            } else if (self.uniformDosingType.dose === undefined && !self.uniformDosingType.doseUnits && !self.quantityUnit) {
                 return true;
             }
             return false
@@ -545,7 +547,7 @@ Bahmni.Clinical.DrugOrderViewModel = function (config, proto, encounterDate) {
             self.quantityUnit == undefined);
     };
 
-    this.validate = function(arg){
+    this.validate = function(){
         if(self.isUniformDosingType()){
             return validateUniformDosingType();
         }else if(self.isVariableDosingType()){
@@ -596,27 +598,35 @@ Bahmni.Clinical.DrugOrderViewModel = function (config, proto, encounterDate) {
 
     this.loadOrderAttributes({});
 
-    this.getDose = function() {
+    var calculateUniformDose = function(){
         var mantissa = self.uniformDosingType.doseFraction ? self.uniformDosingType.doseFraction.value : 0;
         var dose = self.uniformDosingType.dose ? self.uniformDosingType.dose : 0;
         self.uniformDosingType.doseFraction = void 0;
-
         return dose + mantissa;
     };
 
-    this.setDose = function(dose) {
-        self.uniformDosingType.dose = dose;
+    this.setUniformDoseFraction = function() {
+        self.uniformDosingType.dose = calculateUniformDose();
     };
 
     this.getDoseAndUnits = function(){
         var variableDosingType = self.variableDosingType;
         var variableDosingString = addDelimiter(morphToMixedFraction(variableDosingType.morningDose || 0) + "-" + morphToMixedFraction(variableDosingType.afternoonDose || 0) + "-" + morphToMixedFraction(variableDosingType.eveningDose || 0), " ");
 
-        return self.frequencyType === Bahmni.Clinical.Constants.dosingTypes.uniform ? blankIfFalsy(morphToMixedFraction(this.getDose(true))) + " " + blankIfFalsy(self.doseUnits) : (variableDosingString + blankIfFalsy(self.doseUnits)).trim();
+        return self.frequencyType === Bahmni.Clinical.Constants.dosingTypes.uniform ? blankIfFalsy(morphToMixedFraction(calculateUniformDose())) + " " + blankIfFalsy(self.doseUnits)
+            : (variableDosingString + blankIfFalsy(self.doseUnits)).trim();
     };
 
     this.getFrequency = function(){
         return self.frequencyType === Bahmni.Clinical.Constants.dosingTypes.uniform ? blankIfFalsy(self.uniformDosingType.frequency) : "";
+    };
+
+    this.calculateEffectiveStopDate = function(){
+        if(this.durationInDays) {
+            this.effectiveStopDate = DateUtil
+                .addDays(
+                DateUtil.parse(this.effectiveStartDate), this.durationInDays);
+        }
     }
 };
 

@@ -21,8 +21,9 @@
             </tr>
             </thead>
             <tbody>
-            <tr ng-repeat="drugOrder in treatments">
-                <td><input type="checkbox" ng-model="drugOrder.include"/></td>
+            <tr ng-repeat="drugOrder in treatments"
+                ng-class="{highlight : drugOrder.isBeingEdited, invalid: !drugOrder.validate()}">
+                <td><input type="checkbox" ng-model="drugOrder.include" ng-click="checkConflictingDrug(drugOrder)"/></td>
                 <td>{{::drugOrder.drugNameDisplay}}</td>
                 <td>{{::drugOrder.getDoseAndUnits()}}</td>
                 <td>{{::drugOrder.getFrequency()}}</td>
@@ -30,7 +31,7 @@
                 <td>{{::drugOrder.getDurationAndDurationUnits()}}</td>
                 <td>{{::drugOrder.effectiveStartDate | bahmniDate}}</td>
                 <td class="buttonColumn">
-                    <button ng-click="edit($index)">
+                    <button ng-click="edit(drugOrder, $index)">
                         <i class="fa fa-edit"></i>
                     </button>
                 </td>

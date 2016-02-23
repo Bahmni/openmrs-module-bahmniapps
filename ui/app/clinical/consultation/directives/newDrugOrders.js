@@ -3,8 +3,8 @@
 angular.module('bahmni.clinical')
     .directive('newDrugOrders', ['messagingService', function (messagingService) {
         var controller = function ($scope, $rootScope) {
-            $scope.edit = function (index) {
-                $rootScope.$broadcast("event:editDrugOrder", index);
+            $scope.edit = function (drugOrder, index) {
+                $rootScope.$broadcast("event:editDrugOrder", drugOrder, index);
             };
 
             $scope.remove = function(index) {

@@ -34,7 +34,7 @@
             </div>
             <div class="button-group-wrapper">
                 <div class="button-group">
-                    <button ng-click="edit($index)" ng-disabled="showBulkChangeToggle"><i class="fa fa-edit"></i>
+                    <button ng-click="edit(newTreatment, $index)" ng-disabled="showBulkChangeToggle"><i class="fa fa-edit"></i>
                     </button>
                     <button ng-confirm-click="remove($index)"
                             confirm-message="{{ 'REMOVE_CONFIRMATION_KEY' | translate }}"
