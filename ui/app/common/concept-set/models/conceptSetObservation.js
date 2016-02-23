@@ -17,40 +17,37 @@ Bahmni.ConceptSet.Observation = function (observation, savedObs, conceptUIConfig
         this.value = this.conceptUIConfig.defaultValue;
     }
 
-    if(this.conceptUIConfig.autocomplete && this.conceptUIConfig.answersConceptName) {
-        Object.defineProperty(this, 'autocompleteValue', {
-            enumerable: true,
-            get: function () {
-                return (this.value != null && (typeof this.value === "object")) ? this.value.name: this.value;
-            },
-            set: function (newValue) {
-                this.value = newValue;
-            }
-        });
-    }
-
+    Object.defineProperty(this, 'autocompleteValue', {
+        enumerable: true,
+        get: function () {
+            return (this.value != null && (typeof this.value === "object")) ? this.value.name : this.value;
+        },
+        set: function (newValue) {
+            this.value = newValue;
+        }
+    });
 
     Object.defineProperty(this, 'value', {
-                enumerable: true,
-                get: function () {
-                    if(self._value!=null){
-                        return self._value;
-                    }
-                    if (savedObs) {
-                        if (typeof(savedObs.value) == "object" && savedObs.value) {
-                            savedObs.value['displayString'] = (savedObs.value.shortName ? savedObs.value.shortName : savedObs.value.name)
-                        }
-                    }
-                    return savedObs ? savedObs.value : undefined;
-                },
-                set: function (newValue) {
-                    self._value = newValue;
-                    if (!newValue) {
-                        savedObs = null;
-                    }
-                    self.onValueChanged();
+        enumerable: true,
+        get: function () {
+            if (self._value != null) {
+                return self._value;
+            }
+            if (savedObs) {
+                if (typeof(savedObs.value) === "object" && savedObs.value) {
+                    savedObs.value['displayString'] = (savedObs.value.shortName ? savedObs.value.shortName : savedObs.value.name)
                 }
-            });
+            }
+            return savedObs ? savedObs.value : undefined;
+        },
+        set: function (newValue) {
+            self._value = newValue;
+            if (!newValue) {
+                savedObs = null;
+            }
+            self.onValueChanged();
+        }
+    });
 
     this.cloneNew = function() {
         var oldObs = angular.copy(observation);
@@ -297,7 +294,6 @@ Bahmni.ConceptSet.Observation.prototype = {
     },
 
     isValid: function (checkRequiredFields, conceptSetRequired) {
-
         if (this.error) {
             return false;
         }
@@ -321,6 +317,9 @@ Bahmni.ConceptSet.Observation.prototype = {
         if (this._isDateTimeDataType()) {   return !this.hasInvalidDateTime();}
         if (this.erroneousValue) {
             return false;
+        }
+        if (this.getControlType() === 'autocomplete') {
+            return _.isEmpty(this.value) || _.isObject(this.value);
         }
         return true;
     },

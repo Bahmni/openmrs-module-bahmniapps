@@ -51,19 +51,17 @@
                         <div ng-include src="'../common/concept-set/views/observationDataTypes/buttonSelectType.html'"></div>
                     </div>
 
-                    <div ng-switch-when="autocomplete"
-                         ng-class="{'illegalValue': !observation.isValid(atLeastOneValueIsSet), 'computed-field': observation.isComputedAndEditable()}"
-                         class="autocomplete">
-                        <input ng-if="!observation.conceptUIConfig.answersConceptName" type="hidden"
-                               ui-select2="selectOptions(observation.primaryObs.concept)"
-                               ng-blur="handleUpdate()"
+                    <div ng-switch-when="autocomplete" class="autocomplete">
+                        <input ng-change="handleUpdate()"
                                ng-disabled="observation.disabled"
-                               ng-model="observation.primaryObs.value" style="width: 90%;"/>
-                        <input ng-if="observation.conceptUIConfig.answersConceptName" concept-autocomplete
-                               coded-concept-name="observation.conceptUIConfig.answersConceptName"
-                               ng-blur="handleUpdate()"
-                               ng-disabled="observation.disabled"
-                               ng-model="observation.value"/>
+                               ng-model="observation.primaryObsAutocompleteValue"
+                               concept-autocomplete
+                               coded-concept-name="observation.conceptUIConfig.answersConceptName || observation.primaryObs.concept.name"
+                               response-map="constructSearchResult"
+                               ng-class="{
+                                    'illegalValue': !observation.isValid(atLeastOneValueIsSet, conceptSetRequired),
+                                    'computed-field': observation.isComputedAndEditable()
+                               }"/>
                     </div>
 
                     <p ng-switch-default class="field-value info fa fa-info-sign"> The concept data type
@@ -204,19 +202,17 @@
                     </div>
 
 
-                    <div ng-switch-when="autocomplete"
-                         ng-class="{'illegalValue': !observation.isValid(atLeastOneValueIsSet, conceptSetRequired), 'computed-field': observation.isComputedAndEditable()}"
-                         class="autocomplete">
-                        <input ng-if="::!observation.conceptUIConfig.answersConceptName" type="hidden"
-                               ng-change="handleUpdate()"
+                    <div ng-switch-when="autocomplete">
+                        <input ng-change="handleUpdate()"
                                ng-disabled="observation.disabled"
-                               ui-select2="selectOptions(observation.concept)" ng-model="observation.value"
-                               style="width: 90%;"/>
-                        <input ng-if="::observation.conceptUIConfig.answersConceptName" concept-autocomplete
-                               ng-change="handleUpdate()"
-                               ng-disabled="observation.disabled"
-                               coded-concept-name="observation.conceptUIConfig.answersConceptName"
-                               ng-model="observation.autocompleteValue" autofocus/>
+                               ng-model="observation.autocompleteValue"
+                               concept-autocomplete
+                               coded-concept-name="observation.conceptUIConfig.answersConceptName || observation.concept.name"
+                               response-map="constructSearchResult"
+                               ng-class="{
+                                    'illegalValue': !observation.isValid(atLeastOneValueIsSet, conceptSetRequired),
+                                    'computed-field': observation.isComputedAndEditable()
+                               }"/>
                     </div>
 
                     <p ng-switch-default class="field-value info fa fa-info-sign"> The concept data type
