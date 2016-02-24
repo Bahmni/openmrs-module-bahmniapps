@@ -694,8 +694,9 @@ Bahmni.Clinical.DrugOrderViewModel.createFromContract = function (drugOrderRespo
     viewModel.visit = drugOrderResponse.visit;
     viewModel.voided = drugOrderResponse.voided;
     viewModel.dosage = viewModel.getDoseAndUnits();
-    viewModel.orderSetUuid = drugOrderResponse.orderSetUuid;
-    viewModel.orderGroupUuid = drugOrderResponse.orderGroupUuid;
-    viewModel.sortWeight = drugOrderResponse.sortWeight;
+    if(drugOrderResponse.orderGroup){
+        viewModel.orderGroupUuid = drugOrderResponse.orderGroup.uuid;
+        viewModel.orderSetUuid = drugOrderResponse.orderGroup.orderSet.uuid;
+    }
     return viewModel;
 };
