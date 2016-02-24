@@ -110,7 +110,9 @@ angular.module('bahmni.common.domain')
             };
 
     this.search = function (visitUuid,encounterDate) {
-        if (!encounterDate) return searchWithoutEncounterDate(visitUuid);
+        if (!encounterDate) {
+            return searchWithoutEncounterDate(visitUuid);
+        }
 
         return $http.get(Bahmni.Common.Constants.emrEncounterUrl, {
         	params:{
@@ -171,7 +173,7 @@ angular.module('bahmni.common.domain')
             }
             searchable.resolve(selectedEnc);
         },
-        function(responseError) {
+        function() {
             searchable.reject("Couldn't identify prerequisite encounter for this operation.");
         });
         return searchable.promise;
@@ -202,7 +204,7 @@ angular.module('bahmni.common.domain')
 
     this.getDigitized = function(patientUuid) {
         if(offlineService.isOfflineApp()){
-            return $q.when({"data" : {"data" : {"results" : {}}}})
+            return $q.when({"data" : {"results" : []}});
         }
     var patientDocumentEncounterTypeUuid = configurations.encounterConfig().getPatientDocumentEncounterTypeUuid();
         return $http.get(Bahmni.Common.Constants.encounterUrl, {

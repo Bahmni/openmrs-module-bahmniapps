@@ -8,10 +8,21 @@
     width: 100%;
     .col {
       width: 33%;
+      @media (max-width : 990px){
+        width:40%;
+      }
       @media (max-width : 768px){
         @include column(12)
       }
       float: left;
+    }
+    .col3{
+      @media (max-width : 990px){
+        width:15%;
+      }
+      @media (max-width : 768px){
+        @include column(12)
+      }
     }
   }
   .till-text{

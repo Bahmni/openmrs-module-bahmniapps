@@ -17,9 +17,15 @@ Bahmni.Common.Util.AgeUtil = (function() {
     var monthsToAgeString = function(months) {
         var age = monthsToAge(months);
         var ageString='';
-        if(age.years) ageString+= age.years +'y ';
-        if(age.months) ageString+= age.months +'m ';
-        if(age.days) ageString+= age.days +'d';
+        if(age.years) {
+            ageString += age.years + 'y ';
+        }
+        if(age.months) {
+            ageString += age.months + 'm ';
+        }
+        if(age.days) {
+            ageString += age.days + 'd';
+        }
         return ageString;
     };
 

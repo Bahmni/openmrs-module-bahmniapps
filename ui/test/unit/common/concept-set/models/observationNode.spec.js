@@ -73,6 +73,28 @@ describe("ObservationNode", function () {
         });
     });
 
+    describe("autocomplete isValid",function(){
+
+        it("should be a valid observation if the value is selected from autocomplete", function () {
+            var observation = mapper.map(savedObs, rootConcept, {"Chief Complaint": {autocomplete: true}});
+
+            expect(observation.isValid()).toBeTruthy();
+            observation.primaryObs.value = {
+                name: "some concept"
+            };
+
+            expect(observation.isValid()).toBeTruthy();
+        });
+
+        it("should be a invalid observation if the value is not selected from autocomplete", function () {
+            var observation = mapper.map(savedObs, rootConcept, {"Chief Complaint": {autocomplete: true}});
+
+            observation.primaryObs.value = "someValue";
+            expect(observation.isValid()).toBeFalsy()
+        });
+
+    });
+
     function buildConcept(name, setMembers, answers, classname, datatype) {
         return {
             "name": {name: name},

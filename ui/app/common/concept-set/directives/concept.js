@@ -1,7 +1,9 @@
+'use strict';
+
 angular.module('bahmni.common.conceptSet')
     .directive('concept', ['RecursionHelper', 'spinner', 'conceptSetService', '$filter',
         function (RecursionHelper, spinner, conceptSetService, $filter) {
-        var link = function (scope, element, attributes) {
+        var link = function (scope) {
             var conceptMapper = new Bahmni.Common.Domain.ConceptMapper();
             var hideAbnormalbuttonConfig = scope.observation && scope.observation.conceptUIConfig &&  scope.observation.conceptUIConfig['hideAbnormalButton'];
 
@@ -14,7 +16,6 @@ angular.module('bahmni.common.conceptSet')
                 var index = parentObservation.groupMembers.indexOf(observation);
                 parentObservation.groupMembers.splice(index + 1, 0, newObs);
                 scope.$root.$broadcast("event:addMore", newObs);
-                jQuery.scrollTo(element, 300)
             };
 
             scope.removeClonedObs = function (observation, parentObservation) {

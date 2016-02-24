@@ -1,3 +1,5 @@
+'use strict';
+
 (function(){
 	Bahmni.Common.Domain.ObservationFilter = function () {
 		var self = this;
@@ -7,12 +9,13 @@
 				voidExistingObservationWithOutValue(observation.groupMembers);
 				observation.voided = observation.voided || observation.canBeVoided();
 
-                if (observation.voided)
-                    voidAllChildren(observation);
+                if (observation.voided) {
+					voidAllChildren(observation);
+                }
 			});
 		};
 
-        var voidAllChildren = function(voidedObservation) {
+		var voidAllChildren = function(voidedObservation) {
             voidedObservation.groupMembers.forEach(function(childWithVoidedParent) {
                 childWithVoidedParent.voided = true;
 

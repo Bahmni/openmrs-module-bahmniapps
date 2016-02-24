@@ -6,7 +6,7 @@
         <input id="birthdate" type="date" ng-model="patient.birthdate"  max="{{::today}}"
                ng-change="patient.calculateAge()" ng-required="::dobMandatory">
     </div>
-    <div class="showOn-desktop">
+    <div class="showOn-desktop-registration">
         <div class="field-value">
             <input type="checkbox" ng-model="patient.birthdateEstimated" class="estimate-check">
         </div>
@@ -14,7 +14,7 @@
             <label for="birthdate">{{ ::'REGISTRATION_LABEL_ESTIMATE' | translate}}</label>
         </div>
     </div>
-    <div class="showOn-small-screen clearfix">
+    <div class="showOn-small-screen-registration clearfix">
         <div class="field-attribute estimated-label">
             <label for="birthdate">{{ ::'REGISTRATION_LABEL_ESTIMATE' | translate}}</label>
         </div>

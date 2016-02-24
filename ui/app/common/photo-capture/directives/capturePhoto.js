@@ -8,7 +8,6 @@ angular.module('bahmni.common.photoCapture')
                 video = dialogElement.find("video")[0],
                 canvas = dialogElement.find("canvas")[0],
                 confirmImageButton = dialogElement.find(".confirmImage"),
-                streaming = false,
                 dialogOpen = false;
              var context = canvas.getContext("2d");
              var pixelRatio = window.devicePixelRatio;
@@ -55,7 +54,7 @@ angular.module('bahmni.common.photoCapture')
                     var onConfirmationPromise = scope[iAttrs.capturePhoto](image);
                     onConfirmationPromise.then(function(){
                         onConfirmationSuccess(image);
-                    }, function(response){
+                    }, function(){
                         alert("Failed to save image. Please try again later");
                     });
                 } else {
@@ -93,8 +92,9 @@ angular.module('bahmni.common.photoCapture')
                     dialogOpen = false;
                     if (activeStream) {
                         var activeStreamTrack = activeStream.getTracks();
-                        if(activeStreamTrack)
+                        if(activeStreamTrack) {
                             activeStreamTrack[0].stop();
+                        }
                     }
                 }
             });

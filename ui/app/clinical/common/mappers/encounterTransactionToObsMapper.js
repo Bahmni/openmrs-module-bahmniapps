@@ -5,8 +5,12 @@ Bahmni.Clinical.EncounterTransactionToObsMapper = function () {
     this.map = function (encounterTransactions, invalidEncounterTypes,conceptSetUIConfig) {
         var allObs,
             validObservation = function (observation) {
-                if (observation.voided) return false;
-                if (!isObservationAgroup(observation)) return true;
+                if (observation.voided) {
+                    return false;
+                }
+                if (!isObservationAgroup(observation)) {
+                    return true;
+                }
                 return isObservationAgroup(observation) && observation.groupMembers.some(validObservation);
             },
             setProvider = function (provider) {
@@ -42,8 +46,9 @@ Bahmni.Clinical.EncounterTransactionToObsMapper = function () {
             },
             removeInvalidGroupMembers = function (observation) {
                 angular.forEach(observation.groupMembers, removeInvalidGroupMembers);
-                if (observation.groupMembers)
+                if (observation.groupMembers) {
                     observation.groupMembers = observation.groupMembers.filter(validObservation);
+                }
             },
             removeInvalidEncounterTypes = function (encounterTransaction) {
                 return invalidEncounterTypes.indexOf(encounterTransaction.encounterTypeUuid) === -1;

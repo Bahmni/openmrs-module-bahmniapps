@@ -3,15 +3,15 @@
 angular.module('bahmni.common.domain')
     .factory('dispositionService', ['$http', function ($http) {
         var getDispositionActions = function () {
-            return $http.get(Bahmni.Common.Constants.conceptSearchByFullNameUrl
-                +"&name="+Bahmni.Common.Constants.dispositionConcept
-                +"&v=custom:(uuid,name,answers:(uuid,name,mappings))", {cache: true});
+            return $http.get(Bahmni.Common.Constants.conceptSearchByFullNameUrl +
+                "&name="+Bahmni.Common.Constants.dispositionConcept +
+                "&v=custom:(uuid,name,answers:(uuid,name,mappings))", {cache: true});
         };
 
         var getDispositionNoteConcept = function(){
-            return $http.get(Bahmni.Common.Constants.conceptSearchByFullNameUrl
-                +"&name="+Bahmni.Common.Constants.dispositionNoteConcept
-                +"&v=custom:(uuid,name:(name))", {cache: true});
+            return $http.get(Bahmni.Common.Constants.conceptSearchByFullNameUrl +
+                "&name="+Bahmni.Common.Constants.dispositionNoteConcept +
+                "&v=custom:(uuid,name:(name))", {cache: true});
         };
 
         var getDispositionByVisit = function(visitUuid){

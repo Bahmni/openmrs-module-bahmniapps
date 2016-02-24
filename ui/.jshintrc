@@ -11,21 +11,32 @@
   "node": true,      // Node.js
   "unused": true,
   "strict": true,
+  "worker": true,
   "maxdepth": 3,
-  "predef": [ "Bahmni", "angular", "describe", "it", "moment", "$", "_", "d3", "c3" ],
   "asi": true,
+  "browser": true,
+  "devel": true,
+  "jquery" : true,
   "globals":{
-    "Bahmni": false,
+    "Bahmni": true,
+    "EncounterConfig" : true,
+    "defaults" : true,
     "describe": false,
     "it": false,
     "moment": false,
-    "$": false,
     "angular": false,
     "_": false,
     "d3": false,
     "c3": false,
     "expect": false,
-    "describe": false,
-    "window": false
+    "window": false,
+    "purl" : false,
+    "Modernizr": false,
+    "AndroidOfflineService" : false,
+    "AndroidConfigDbService" : false,
+    "lf" : false,
+    "CryptoJS" : false,
+    "keyboardJS" : false,
+    "FastClick" : false
   }
 }

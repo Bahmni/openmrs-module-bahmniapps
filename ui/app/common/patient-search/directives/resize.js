@@ -31,7 +31,7 @@ angular.module('bahmni.common.patientSearch')
         $scope.$watch('tilesToFit', updateVisibleResults);
     }
 
-    var link = function ($scope, element) {
+    var link = function ($scope) {
         $scope.storeWindowDimensions();
         angular.element($window).bind('resize', function () {
             $scope.$apply(function () {

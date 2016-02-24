@@ -17,7 +17,6 @@ angular.module('bahmni.clinical')
                         labOrderResult.tests.forEach(function (test) {
                             if (test.abnormal) {
                                 hasAbnormal = true;
-                                return;
                             }
                         });
                         return hasAbnormal;
@@ -58,8 +57,9 @@ angular.module('bahmni.clinical')
             };
 
             $scope.$watch('accessions', function(){
-                if($scope.accessions && $scope.accessions[0])
+                if($scope.accessions && $scope.accessions[0]) {
                     $scope.accessions[0].isOpen = true
+                }
             });
         };
         return {

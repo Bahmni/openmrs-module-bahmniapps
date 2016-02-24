@@ -1,5 +1,4 @@
 'use strict';
-'use strict';
 
 angular.module('consultation', ['ui.router', 'bahmni.clinical', 'bahmni.common.config', 'bahmni.common.patient', 'bahmni.common.uiHelper', 'bahmni.common.patientSearch', 'bahmni.common.obs', 'bahmni.common.i18n',
     'bahmni.common.domain', 'bahmni.common.conceptSet', 'authentication', 'bahmni.common.appFramework', 'bahmni.common.displaycontrol.documents', 'bahmni.common.displaycontrol.observation',
@@ -110,7 +109,7 @@ angular.module('consultation')
                             $stateParams.patientUuid, $stateParams.encounterUuid, $stateParams.programUuid, $stateParams.enrollment);
                     },
                     dashboardInitialization: function ($rootScope, initialization, patientContext, clinicalDashboardConfig, userService) {
-                        return clinicalDashboardConfig.load().then(function (data) {
+                        return clinicalDashboardConfig.load().then(function () {
                             $rootScope.currentUser.addToRecentlyViewed(patientContext.patient, clinicalDashboardConfig.getMaxRecentlyViewedPatients());
                             return userService.savePreferences();
                         });
@@ -183,7 +182,7 @@ angular.module('consultation')
                   cachebuster: null
                 },
                 resolve: {
-                    activeDrugOrders: function (TreatmentService, $stateParams, initialization) {
+                    activeDrugOrders: function (TreatmentService, $stateParams) {
                         return TreatmentService.getActiveDrugOrders($stateParams.patientUuid, $stateParams.dateEnrolled, $stateParams.dateCompleted);
                     }
                 },
@@ -396,10 +395,10 @@ angular.module('consultation')
         $rootScope.$on('$stateChangeSuccess', function () {
             window.scrollTo(0, 0);
         });
-        $rootScope.$on('ngDialog.opened', function (e, $dialog) {
+        $rootScope.$on('ngDialog.opened', function () {
            $('html').addClass('ngdialog-open')
         });
-        $rootScope.$on('ngDialog.closing', function (e, $dialog) {
+        $rootScope.$on('ngDialog.closing', function () {
             $('html').removeClass('ngdialog-open')
         });
     }]);

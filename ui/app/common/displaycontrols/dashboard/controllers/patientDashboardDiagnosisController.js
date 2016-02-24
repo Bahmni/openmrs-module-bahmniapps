@@ -12,7 +12,7 @@ angular.module('bahmni.common.displaycontrol.dashboard')
                     scope: $scope
                 });
             };
-            $scope.$on('ngDialog.closing', function (e, $dialog) {
+            $scope.$on('ngDialog.closing', function () {
                 $("body").removeClass('ngdialog-open');
             });
 

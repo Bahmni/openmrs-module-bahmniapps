@@ -1,3 +1,5 @@
+'use strict';
+
 Bahmni.Clinical.AccessionNotesMapper = function(encounterConfig) {
 
     var isValidationEncounter = function (encounterTransaction) {

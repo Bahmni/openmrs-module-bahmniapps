@@ -14,7 +14,7 @@ angular.module('bahmni.common.domain')
                    'bedId' : bed.bedId
                 };
             }
-        }
+        };
 
         this.setBedDetailsForPatientOnRootScope = function (uuid) {
             var promise = this.getAssignedBedForPatient(uuid);

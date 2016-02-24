@@ -1,3 +1,5 @@
+'use strict';
+
 Bahmni.Common.Domain.ObservationMapper = function () {
     this.map = function (openMrsObs) {
         var conceptMapper = new Bahmni.Common.Domain.ConceptMapper();

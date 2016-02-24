@@ -8,4 +8,9 @@
       margin-left: 0;
     }
   }
+  label[for="isUrban"]{
+    @media (max-width : 990px) {
+      width: auto !important;
+    }
+  }
 }

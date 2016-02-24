@@ -1,3 +1,5 @@
+'use strict';
+
 angular.module('bahmni.common.uiHelper')
     .directive('bmGallery', ['$location', '$rootScope', '$compile', function ($location, $rootScope, $compile) {
 
@@ -46,7 +48,9 @@ angular.module('bahmni.common.uiHelper')
                 var matchedAlbum = getMatchingAlbum(tag);
 
                 if(matchedAlbum)  {
-                    matchedAlbum.images && matchedAlbum.images.splice(index, 1);
+                    if (matchedAlbum.images) {
+                        matchedAlbum.images.splice(index, 1);
+                    }
                 }
             };
 

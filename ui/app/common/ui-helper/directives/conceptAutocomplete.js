@@ -1,3 +1,5 @@
+'use strict';
+
 angular.module('bahmni.common.uiHelper')
 .directive('conceptAutocomplete', function ($parse, $http) {
     var link = function (scope, element, attrs, ngModelCtrl) {
@@ -27,7 +29,9 @@ angular.module('bahmni.common.uiHelper')
                 scope.$apply(function (scope) {
                     ngModelCtrl.$setViewValue(ui.item);
                     scope.$eval(attrs.ngChange);
-                    if(scope.blurOnSelect) element.blur();
+                    if(scope.blurOnSelect) {
+                        element.blur();
+                    }
                 });
                 return true;
             },

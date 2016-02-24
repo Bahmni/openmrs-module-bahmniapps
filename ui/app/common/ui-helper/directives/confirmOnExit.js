@@ -1,3 +1,5 @@
+'use strict';
+
 angular.module('bahmni.common.uiHelper')
     .directive('confirmOnExit',['$translate', function($translate){
     return {

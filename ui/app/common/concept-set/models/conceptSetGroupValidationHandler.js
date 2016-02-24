@@ -1,3 +1,5 @@
+'use strict';
+
 Bahmni.ConceptSet.ConceptSetGroupValidationHandler = function(conceptSetSections){
     var validations = [];
 
@@ -7,7 +9,7 @@ Bahmni.ConceptSet.ConceptSetGroupValidationHandler = function(conceptSetSections
 
     this.validate = function() {
         var allconceptSetSectionsValid = true;
-        validations.forEach(function(validation, index){
+        validations.forEach(function(validation){
             var isValid = validation();
             allconceptSetSectionsValid = allconceptSetSectionsValid && isValid;
         });

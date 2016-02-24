@@ -50,7 +50,9 @@ Bahmni.Clinical.TabConfig = function (tabs) {
     };
 
     this.closeTab = function (tab) {
-        if (tab.displayByDefault) return;
+        if (tab.displayByDefault) {
+            return;
+        }
         _.remove(self.visibleTabs, function(visibleTab) {
             return tab[self.identifierKey] === visibleTab[self.identifierKey];
         });

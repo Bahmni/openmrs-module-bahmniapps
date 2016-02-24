@@ -1,3 +1,5 @@
+'use strict';
+
 angular.module('bahmni.common.obs')
     .directive('showObservation', function () {
         var controller = function ($scope, $rootScope, $filter) {

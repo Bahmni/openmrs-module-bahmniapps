@@ -1,3 +1,5 @@
+'use strict';
+
 angular.module('bahmni.common.conceptSet')
     .controller('ConceptSetGroupController', ['$scope', 'appService', 'contextChangeHandler', 'spinner',
         'conceptSetService', '$rootScope', 'sessionService', 'encounterService', 'treatmentConfig', 'messagingService',
@@ -62,6 +64,12 @@ angular.module('bahmni.common.conceptSet')
                         $scope.consultation.newlyAddedTreatments.push(Bahmni.Clinical.DrugOrderViewModel.createFromContract(drugOrder, $scope.treatmentConfiguration));
                     });
                 }));
+            };
+
+            $scope.clone = function(index) {
+                var clonedObj = $scope.allTemplates[index].clone();
+                $scope.allTemplates.splice(index + 1, 0, clonedObj);
+                $scope.$root.$broadcast("event:addConceptSection", clonedObj);
             };
 
             var copyValues = function (existingObservations, modifiedObservations) {

@@ -40,10 +40,10 @@ angular.module('bahmni.clinical')
         };
 
         $scope.isConsultationTabEmpty = function(){
-            if (_.isEmpty($scope.consultation.newlyAddedDiagnoses) && _.isEmpty($scope.groupedObservations)
-                && _.isEmpty($scope.consultation.investigations) && _.isEmpty($scope.consultation.disposition)
-                && _.isEmpty($scope.consultation.treatmentDrugs) && _.isEmpty($scope.consultation.newlyAddedTreatments)
-                && _.isEmpty($scope.consultation.discontinuedDrugs) && _.isEmpty($scope.consultation.savedDiagnosesFromCurrentEncounter)){
+            if (_.isEmpty($scope.consultation.newlyAddedDiagnoses) && _.isEmpty($scope.groupedObservations) &&
+                _.isEmpty($scope.consultation.investigations) && _.isEmpty($scope.consultation.disposition) &&
+                _.isEmpty($scope.consultation.treatmentDrugs) && _.isEmpty($scope.consultation.newlyAddedTreatments) &&
+                _.isEmpty($scope.consultation.discontinuedDrugs) && _.isEmpty($scope.consultation.savedDiagnosesFromCurrentEncounter)){
                 return true;
             }
             return false;

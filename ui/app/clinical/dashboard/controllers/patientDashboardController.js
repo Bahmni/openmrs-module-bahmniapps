@@ -23,12 +23,11 @@ angular.module('bahmni.clinical')
                 $scope.init(dashboard);
             });
 
-            $scope.$on("event:printDashboard", function (event) {
+            $scope.$on("event:printDashboard", function () {
                 printer.printFromScope("dashboard/views/dashboardPrint.html", $scope);
             });
 
             $scope.init = function (dashboard) {
-                dashboard.patientProgramUuid = $stateParams.enrollment;
                 dashboard.startDate = null;
                 dashboard.endDate = null;
                 if (programConfig.showDetailsWithinDateRange) {

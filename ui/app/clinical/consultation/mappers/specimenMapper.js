@@ -1,3 +1,5 @@
+'use strict';
+
 Bahmni.Clinical.SpecimenMapper = function() {
 
     this.mapObservationToSpecimen = function(observation, allSamples, conceptsConfig) {

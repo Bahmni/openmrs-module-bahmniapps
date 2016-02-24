@@ -1,3 +1,5 @@
+'use strict';
+
 function getWatchers (element) {
     var elementToWatch = element? angular.element(element) : angular.element(document.getElementsByTagName('body'));
 

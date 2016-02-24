@@ -1,3 +1,5 @@
+'use strict';
+
 Bahmni.Clinical.LabResult = function(name, value, alert, lowNormal, highNormal, unit, notes, members) {
     this.name = name;
     this.value = value;
@@ -7,7 +9,7 @@ Bahmni.Clinical.LabResult = function(name, value, alert, lowNormal, highNormal, 
     this.lowNormal = lowNormal;
     this.notes = notes || [];
     this.members = members;
-}
+};
 
 Bahmni.Clinical.LabResult.prototype = {
     isPanel: function() {
@@ -25,4 +27,4 @@ Bahmni.Clinical.LabResult.prototype = {
     range: function() {
         return (this.lowNormal && this.highNormal) ? "" + this.lowNormal + " - " + this.highNormal : null
     }
-}
+};

@@ -1,3 +1,5 @@
+'use strict';
+
 Bahmni.DiagnosisMapper = function (diagnosisStatus) {
 
     var self = this;

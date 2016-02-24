@@ -1,3 +1,5 @@
+'use strict';
+
 Bahmni.ConceptSet.Observation = function (observation, savedObs, conceptUIConfig) {
     var self = this;
     angular.extend(this, observation);
@@ -12,39 +14,40 @@ Bahmni.ConceptSet.Observation = function (observation, savedObs, conceptUIConfig
         this.observationDateTime = savedObs.observationDateTime;
         this.provider = savedObs.provider;
     } else {
-        this.value = this.conceptUIConfig.defaultValue;         
+        this.value = this.conceptUIConfig.defaultValue;
     }
 
-    if(this.conceptUIConfig.autocomplete && this.conceptUIConfig.answersConceptName) {
-        Object.defineProperty(this, 'autocompleteValue', {
-            enumerable: true,
-            get: function () {
-                return (this.value != null && (typeof this.value === "object")) ? this.value.name: this.value;
-            },
-            set: function (newValue) {
-                this.value = newValue;
-            }
-        });
-    }
-
+    Object.defineProperty(this, 'autocompleteValue', {
+        enumerable: true,
+        get: function () {
+            return (this.value != null && (typeof this.value === "object")) ? this.value.name : this.value;
+        },
+        set: function (newValue) {
+            this.value = newValue;
+        }
+    });
 
     Object.defineProperty(this, 'value', {
-                enumerable: true,
-                get: function () {
-                    if(self._value!=null){
-                        return self._value;
-                    }
-                    savedObs && savedObs.value ? savedObs.value['displayString'] = (savedObs.value.shortName ? savedObs.value.shortName : savedObs.value.name) : '';
-                    return savedObs ? savedObs.value : undefined;
-                },
-                set: function (newValue) {
-                    self._value = newValue;
-                    if (!newValue) {
-                        savedObs = null;
-                    }
-                    self.onValueChanged();
+        enumerable: true,
+        get: function () {
+            if (self._value != null) {
+                return self._value;
+            }
+            if (savedObs) {
+                if (typeof(savedObs.value) === "object" && savedObs.value) {
+                    savedObs.value['displayString'] = (savedObs.value.shortName ? savedObs.value.shortName : savedObs.value.name)
                 }
-            });
+            }
+            return savedObs ? savedObs.value : undefined;
+        },
+        set: function (newValue) {
+            self._value = newValue;
+            if (!newValue) {
+                savedObs = null;
+            }
+            self.onValueChanged();
+        }
+    });
 
     this.cloneNew = function() {
         var oldObs = angular.copy(observation);
@@ -78,8 +81,9 @@ Bahmni.ConceptSet.Observation.prototype = {
     },
 
     isGroup: function () {
-        if (this.groupMembers)
+        if (this.groupMembers) {
             return this.groupMembers.length > 0;
+        }
         return false;
     },
 
@@ -114,7 +118,7 @@ Bahmni.ConceptSet.Observation.prototype = {
     getDataTypeName: function () {
         return this.concept.dataType;
     },
-    
+
     isDateDataType: function () {
         return 'Date'.indexOf(this.getDataTypeName()) != -1;
     },
@@ -144,14 +148,30 @@ Bahmni.ConceptSet.Observation.prototype = {
     },
 
     getControlType: function () {
-        if (this.hidden) return "hidden";
-        if (this.conceptUIConfig.freeTextAutocomplete) return "freeTextAutocomplete";
-        if (this.isHtml5InputDataType()) return "html5InputDataType";
-        if (this.isImage()) return "image";
-        if (this.isText()) return "text";
-        if (this.isCoded()) return this._getCodedControlType();
-        if (this.isGrid()) return "grid";
-        if (this.isDatetime()) return "datetime";
+        if (this.hidden) {
+            return "hidden";
+        }
+        if (this.conceptUIConfig.freeTextAutocomplete) {
+            return "freeTextAutocomplete";
+        }
+        if (this.isHtml5InputDataType()) {
+            return "html5InputDataType";
+        }
+        if (this.isImage()) {
+            return "image";
+        }
+        if (this.isText()) {
+            return "text";
+        }
+        if (this.isCoded()) {
+            return this._getCodedControlType();
+        }
+        if (this.isGrid()) {
+            return "grid";
+        }
+        if (this.isDatetime()) {
+            return "datetime";
+        }
         return "unknown";
     },
 
@@ -175,7 +195,9 @@ Bahmni.ConceptSet.Observation.prototype = {
 
     _getCodedControlType: function () {
         var conceptUIConfig = this.conceptUIConfig;
-        if (conceptUIConfig.autocomplete) return "autocomplete";
+        if (conceptUIConfig.autocomplete) {
+            return "autocomplete";
+        }
         return "buttonselect";
 
     },
@@ -211,15 +233,25 @@ Bahmni.ConceptSet.Observation.prototype = {
 
     hasValue: function () {
         var value = this.value;
-        if (value === false) return true;
-        if (value === 0) return true; //!value ignores 0
-        if (value === '' || !value) return false;
-        if (value instanceof Array) return value.length > 0;
+        if (value === false) {
+            return true;
+        }
+        if (value === 0) {
+            return true;
+        } //!value ignores 0
+        if (value === '' || !value) {
+            return false;
+        }
+        if (value instanceof Array) {
+            return value.length > 0;
+        }
         return true;
     },
 
     hasValueOf: function(value) {
-        if(!this.value || !value) return false;
+        if(!this.value || !value) {
+            return false;
+        }
         return this.value == value || this.value.uuid == value.uuid;
     },
 
@@ -232,43 +264,73 @@ Bahmni.ConceptSet.Observation.prototype = {
     },
 
     isValidDate: function () {
-        if (this.isComputed()) return true;
-        if (!this.hasValue()) return true;
+        if (this.isComputed()) {
+            return true;
+        }
+        if (!this.hasValue()) {
+            return true;
+        }
         var date = Bahmni.Common.Util.DateUtil.parse(this.value);
         if (!this.conceptUIConfig.allowFutureDates) {
             var today = Bahmni.Common.Util.DateUtil.parse(moment().format("YYYY-MM-DD"));
-            if (today < date) return false;
+            if (today < date) {
+                return false;
+            }
         }
         return date.getUTCFullYear() && date.getUTCFullYear().toString().length <= 4;
     },
 
     hasInvalidDateTime: function () {
-        if (this.isComputed()) return false;
+        if (this.isComputed()) {
+            return false;
+        }
         var date = Bahmni.Common.Util.DateUtil.parse(this.value);
         if (!this.conceptUIConfig.allowFutureDates) {
-            if (moment() < date) return true;
+            if (moment() < date) {
+                return true;
+            }
         }
         return this.value === "Invalid Datetime";
     },
 
     isValid: function (checkRequiredFields, conceptSetRequired) {
-
-        if (this.error) return false;
-        if (this.hidden) return true;
-        if (checkRequiredFields) {
-            if (this.isGroup()) return this._hasValidChildren(checkRequiredFields, conceptSetRequired);
-            if (conceptSetRequired && this.isRequired() && !this.hasValue()) return false;
-            if (this.isRequired() && !this.hasValue()) return false;
+        if (this.error) {
+            return false;
         }
-        if (this._isDateDataType()) return this.isValidDate();
+        if (this.hidden) {
+            return true;
+        }
+        if (checkRequiredFields) {
+            if (this.isGroup()) {
+                return this._hasValidChildren(checkRequiredFields, conceptSetRequired);
+            }
+            if (conceptSetRequired && this.isRequired() && !this.hasValue()) {
+                return false;
+            }
+            if (this.isRequired() && !this.hasValue()) {
+                return false;
+            }
+        }
+        if (this._isDateDataType()) {
+            return this.isValidDate();
+        }
         if (this._isDateTimeDataType()) {   return !this.hasInvalidDateTime();}
-        if (this.erroneousValue) return false;
+        if (this.erroneousValue) {
+            return false;
+        }
+        if (this.getControlType() === 'autocomplete') {
+            return _.isEmpty(this.value) || _.isObject(this.value);
+        }
         return true;
     },
 
     isValueInAbsoluteRange: function () {
-        if (this.erroneousValue) return false;
-        if (this.isGroup()) return this._areChildNodesInAbsoluteRange();
+        if (this.erroneousValue) {
+            return false;
+        }
+        if (this.isGroup()) {
+            return this._areChildNodesInAbsoluteRange();
+        }
         return true;
     },
 
@@ -281,7 +343,8 @@ Bahmni.ConceptSet.Observation.prototype = {
     },
 
     isRequired: function () {
-        return this.conceptUIConfig.required == true  ;
+        this.disabled = this.disabled ? this.disabled : false;
+        return this.conceptUIConfig.required === true && this.disabled === false;
     },
 
     isFormElement: function() {

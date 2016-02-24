@@ -1,3 +1,5 @@
+'use strict';
+
 Bahmni.ConceptSet.MultiSelectObservations = function(conceptSetConfig) {
     var self = this;
     this.multiSelectObservationsMap = {};
@@ -49,7 +51,9 @@ Bahmni.ConceptSet.MultiSelectObservation = function (concept, memberOfCollection
 
     this.possibleAnswers = self.concept.answers.map(function(answer) {
         var cloned = _.cloneDeep(answer);
-        if(answer.name.name) cloned.name = answer.name.name;
+        if(answer.name.name) {
+            cloned.name = answer.name.name;
+        }
         return cloned;
     });
 
@@ -85,7 +89,11 @@ Bahmni.ConceptSet.MultiSelectObservation = function (concept, memberOfCollection
     };
 
     this.toggleSelection = function(answer) {
-        self.hasValueOf(answer) ? unselectAnswer(answer): self.selectAnswer(answer);
+        if (self.hasValueOf(answer)) {
+            unselectAnswer(answer);
+        } else {
+            self.selectAnswer(answer);
+        }
     };
 
     this.isFormElement = function(){
@@ -111,17 +119,25 @@ Bahmni.ConceptSet.MultiSelectObservation = function (concept, memberOfCollection
         var hasNonVoidedValue = false;
         if(this.hasValue()) {
             angular.forEach(this.selectedObs, function (obs) {
-                if(!obs.voided) hasNonVoidedValue = true;
+                if(!obs.voided) {
+                    hasNonVoidedValue = true;
+                }
             });
         }
         return hasNonVoidedValue;
     }
 
     this.isValid = function (checkRequiredFields, conceptSetRequired) {
-        if(this.error) return false;
+        if(this.error) {
+            return false;
+        }
         if(checkRequiredFields) {
-            if (conceptSetRequired && this.isRequired() && !this.hasNonVoidedValue()) return false;
-            if (this.isRequired() && !this.hasNonVoidedValue()) return false;
+            if (conceptSetRequired && this.isRequired() && !this.hasNonVoidedValue()) {
+                return false;
+            }
+            if (this.isRequired() && !this.hasNonVoidedValue()) {
+                return false;
+            }
         }
         return true;
     };

@@ -6,32 +6,34 @@ angular.module('bahmni.clinical')
 
     $scope.tabs = [
         {name: 'Laboratory', testsProvider: labTestsProvider, filterColumn: "sample", filterHeader: "Sample",categoryColumn: "department"},
-        {name: 'Other', testsProvider: otherTestsProvider, filterColumn: "type", filterHeader: "Investigation",categoryColumn: "category"},
+        {name: 'Other', testsProvider: otherTestsProvider, filterColumn: "type", filterHeader: "Investigation",categoryColumn: "category"}
     ];
 
     $scope.activateTab = function(tab){
-        $scope.activeTab && ($scope.activeTab.klass="");
+        if ($scope.activeTab) {
+            ($scope.activeTab.klass = "");
+        }
         $scope.activeTab = tab;
         $scope.activeTab.klass="active";
-    }
+    };
 
     var findVoidedInvestigations = function() {
         var filteredInvestigation = $scope.consultation.investigations.filter(function(investigation) {
             if(investigation.voided === true){
                 return true;
             }
-        })
-        if(filteredInvestigation.length === $scope.consultation.investigations.length) return true;
-        return false;
-    }
+        });
+        return filteredInvestigation.length === $scope.consultation.investigations.length;
+    };
     $scope.isValidInvestigation = function() {
         if (!$scope.consultation.investigations.length > 0 || findVoidedInvestigations()) {
             $scope.noteState = false;
             if($scope.consultation.labOrderNote.uuid){
                 $scope.consultation.labOrderNote.voided = true;
             }else {
-                if ($scope.consultation.labOrderNote.value)
+                if ($scope.consultation.labOrderNote.value) {
                     $scope.consultation.labOrderNote.value = null;
+                }
             }
             return false;
         } else {

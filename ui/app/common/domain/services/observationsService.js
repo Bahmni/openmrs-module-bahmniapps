@@ -27,6 +27,13 @@ angular.module('bahmni.common.domain')
             });
         };
 
+        this.getByUuid = function(observationUuid){
+            return $http.get(Bahmni.Common.Constants.observationsUrl, {
+                params: {observationUuid: observationUuid},
+                withCredentials: true
+            });
+        };
+
         this.fetchForEncounter = function (encounterUuid, conceptNames) {
             return $http.get(Bahmni.Common.Constants.observationsUrl, {
                 params: {encounterUuid: encounterUuid, concept: conceptNames},

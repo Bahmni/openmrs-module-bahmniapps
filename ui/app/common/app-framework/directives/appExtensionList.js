@@ -5,11 +5,11 @@ angular.module('bahmni.common.appFramework')
         var appDescriptor = appService.getAppDescriptor(); 
         return {
             restrict:'EA',
-            template: '<ul><li ng-repeat="appExtn in appExtensions">'
-                + '<a href="{{formatUrl(appExtn.url, extnParams)}}" class="{{appExtn.icon}}" '
-                + ' onclick="return false;" title="{{appExtn.label}}" ng-click="extnLinkClick(appExtn, extnParams)">'
-                + ' <span ng-show="showLabel">{{appExtn.label}}</span>'
-                +'</a></li></ul>',
+            template: '<ul><li ng-repeat="appExtn in appExtensions">' +
+            '<a href="{{formatUrl(appExtn.url, extnParams)}}" class="{{appExtn.icon}}" ' +
+            ' onclick="return false;" title="{{appExtn.label}}" ng-click="extnLinkClick(appExtn, extnParams)">' +
+            ' <span ng-show="showLabel">{{appExtn.label}}</span>' +
+            '</a></li></ul>',
             scope: {
                 extnPointId : '@',
                 showLabel:'@',
@@ -18,7 +18,7 @@ angular.module('bahmni.common.appFramework')
             },
             compile: function(cElement, cAttrs) {
                 var extnList = appDescriptor.getExtensions(cAttrs.extnPointId);
-                return function(scope, lElement, attrs) {
+                return function(scope) {
                     scope.appExtensions = extnList;
                     var model = scope.contextModel();
                     scope.extnParams = model || {};

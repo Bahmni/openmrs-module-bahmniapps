@@ -1,3 +1,5 @@
+'use strict';
+
 angular.module('bahmni.common.patient')
 .filter('gender', function($rootScope) {
 	return function(genderChar) {

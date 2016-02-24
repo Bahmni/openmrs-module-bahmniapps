@@ -39,9 +39,15 @@
     }
     &.dashboard-sections-right{
       padding: 0px 0px 0px 5px;
+      @media screen and (max-width: 859px) {
+        padding: 0;
+      }
     }
     &.dashboard-sections-left{
       padding: 0px 5px 0px 0px;
+      @media screen and (max-width: 859px) {
+        padding: 0;
+      }
     }
     &.three-fourth-page-container{
       div.three-fourth-page{
@@ -227,7 +233,7 @@
   }
 }
 
-.patient-dashboard.visit {padding: 0; margin-top: 65px}
+.patient-dashboard.visit {padding: 0; margin-top: 45px}
 .dashboard-visit-summary {padding: 10px;}
 .dashboard-header {
   width: 100%;
@@ -699,9 +705,9 @@ table.pivot-table {
     }
   }
 }
-.dashboard-tabular-obs-section{
-  &.dst-results{
-    .tabular-obs table{
+.dashboard-tabular-obs-section {
+  &.dst-results {
+    .tabular-obs table {
       table-layout: fixed;
     }
   }
@@ -714,6 +720,9 @@ table.pivot-table {
     background: #eee !important;
     font-family: OpenSansSemiBold;
     color: #333;
+  }
+  .tabular-obs table tr th.obsTableEdit{
+    width:130px;
   }
   .tabular-obs table tr td.obsTableEdit{
       width:130px;
@@ -790,21 +799,22 @@ table.treatments-details-table{
   position: fixed;
   top: 52px;
   z-index: 9999;
-  background: #fff;
+  background: #ddd;
   width: 100%;
   left: 0;
+  box-shadow: 0px 1px 8px #686666;
+  border-bottom: 1px #699 solid;
   div.patient-info-fixed{
     @include clearfix;
-    background: #ddd;
     max-width: 1300px;
-    margin: 10px auto 10px;
+    margin: 2px auto 2px;
     clear: both;
     width: 100%;
-    border: 1px solid #669999;
-    border-radius: 5px;
-    padding: 5px 0px;
+    padding: 0px 0px;
     box-sizing: border-box;
     font-family: openSansSemiBold;
+    height: 37px;
+    overflow: hidden;
     ul{
       li{
         display: block;

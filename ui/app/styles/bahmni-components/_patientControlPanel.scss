@@ -37,13 +37,14 @@ aside{
     color: $white;
   }
   &.visit-history{
-    position:absolute;
+    position:fixed;
     width:300px;
     background: $darkGray;
     bottom: 0;
     top: 50px;
     box-shadow: -3px 5px 10px $mediumGray;
-    z-index: 5;
+    z-index: 9999;
+    height:auto;
     h2 {
       color: $mediumGray;
       font-size: 14px;

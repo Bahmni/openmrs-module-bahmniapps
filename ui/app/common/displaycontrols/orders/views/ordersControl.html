@@ -21,7 +21,8 @@
                     <span class="obs-date">{{bahmniOrder.concept.name}}</span>
                     <span class="fr order-sub-heading-container">
                         <span class="order-sub-heading">
-                              {{bahmniOrder.provider}} {{ bahmniOrder.orderDate | bahmniDateTime }}
+                            <span class="provider-name">{{bahmniOrder.provider}} </span>
+                            <span class="provider-date">{{ bahmniOrder.orderDate | bahmniDateTime }}</span>
                           </span>
                         <i ng-class="{'visible-true':bahmniOrder.hasObservations}" class="fa fa-tasks"></i>
                     </span>

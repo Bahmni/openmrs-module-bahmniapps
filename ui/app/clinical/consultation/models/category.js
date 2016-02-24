@@ -1,3 +1,5 @@
+'use strict';
+
 Bahmni.Clinical.Category = function(name, tests) {
     this.name = name;
     this.tests = tests;

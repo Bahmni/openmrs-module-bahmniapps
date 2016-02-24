@@ -37,6 +37,6 @@ function $bahmniTranslateProvider($translateProvider){
     this.$get = [function () {
         return $translateProvider;
     }];
-};
+}
 
 $bahmniTranslateProvider.$inject = ['$translateProvider'];

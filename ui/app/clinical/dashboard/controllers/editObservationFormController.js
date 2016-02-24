@@ -12,7 +12,7 @@ angular.module('bahmni.clinical')
                         return true;
                     }
                     return false;
-                };
+                }
             };
             window.onbeforeunload = function () {
                 if(configForPrompting && $scope.shouldPromptBrowserReload) {

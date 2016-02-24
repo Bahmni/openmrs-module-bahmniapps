@@ -31,16 +31,19 @@ angular.module('bahmni.common.displaycontrol.programs')
                         var displayName = mrsAnswer.display;
                         if (mrsAnswer.names && mrsAnswer.names.length == 2) {
                             if (mrsAnswer.name.conceptNameType == 'FULLY_SPECIFIED') {
-                                if (mrsAnswer.names[0].display == displayName)
+                                if (mrsAnswer.names[0].display == displayName) {
                                     displayName = mrsAnswer.names[1].display;
-                                else
+                                }
+                                else {
                                     displayName = mrsAnswer.names[0].display;
+                                }
                             }
                         }
                         return displayName;
                     }
-                    else
+                    else {
                         return attribute.value;
+                    }
                 };
                 var isDateFormat = function (format) {
                     return format == "org.openmrs.customdatatype.datatype.DateDatatype";

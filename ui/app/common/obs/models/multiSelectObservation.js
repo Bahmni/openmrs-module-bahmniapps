@@ -1,3 +1,5 @@
+'use strict';
+
 Bahmni.Common.Obs.MultiSelectObservation = (function () {
 
     var MultiSelectObservation = function (groupMembers, conceptConfig) {

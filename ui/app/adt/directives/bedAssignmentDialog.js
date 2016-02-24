@@ -4,7 +4,7 @@ angular.module('bahmni.adt')
     .directive('bedAssignmentDialog', function () {
         return {
             restrict: 'A',
-            link: function (scope, elem, attr) {
+            link: function (scope, elem) {
                 elem.bind('click', function (e) {
                     scope.setBedDetails(scope.cell);
                     var leftPos = $(elem).offset().left - 132;

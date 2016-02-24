@@ -1,3 +1,5 @@
+'use strict';
+
 angular.module('bahmni.common.uiHelper')
     .directive('datetimepicker', function () {
         var link = function ($scope) {

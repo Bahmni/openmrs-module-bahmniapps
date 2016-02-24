@@ -33,6 +33,12 @@ form, .form {
             input[type="text"], input[type="password"],input[type="date"] {
                 float: left;
                 width: 12.5em;
+                @media (max-width : 800px) {
+                  width: 11.5em;
+                }
+                @media (max-width : 768px) {
+                  width: 12.5em;
+                }
             }
 
             input[type="number"] { width: 8em; }
@@ -172,12 +178,16 @@ form, .form {
     width: 197px;
     height: 25px;
     @media (max-width : 1024px){
-      height: 32px;
+      height: 31px;
       width: auto;
+    }
+    @media (max-width : 800px){
+      min-width: 183px;
     }
     @media (max-width : 768px){
       width: 210px;
       height: 36px;
+      min-width: 210px;
     }
     float: left;
   }

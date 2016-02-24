@@ -1,10 +1,13 @@
 .patientProgram-content-container{
-  margin-top: 70px;
+  margin-top: 45px;
 }
 .program-enrollment-container{
-  form .form-field{
+  form.form-field{
     .field-attribute label{
       width: auto;
+    }
+    input[type="checkbox"]{
+      margin-top:8px;
     }
   }
 
@@ -17,15 +20,21 @@
   .button-group{
     @include clearfix;
     text-align: right;
-    a{
+    .button{
       float: right;
       margin-left:10px;
       cursor: pointer;
       color: #363463;
+      box-shadow: none;
+      background: none;
+      border: none;
+      box-shadow: none;
+      padding: 0;
       font-family: openSansSemiBold;
       &:hover , &:active , &:focus{
         color: #5B8989;
         text-decoration: underline;
+        outline:none;
       }
     }
   }
@@ -133,8 +142,21 @@
   line-height: 1.35;
   font-size: 13px;
   box-sizing: border-box;
+  @media (max-width : 1024px){
+    width:49.5%;
+    margin-right: 1%;
+    font-size: 14px;
+  }
   &:nth-child(3n){
     margin-right: 0;
+    @media (max-width : 1024px){
+      margin-right: 1%;
+    }
+  }
+  &:nth-child(even){
+    @media (max-width : 1024px) {
+      margin-right: 0;
+    }
   }
   .program-tile{
     @include clearfix;

@@ -4,7 +4,7 @@
             <i class="fa fa-info-circle"></i>
             <span> You can not change <strong>Orders</strong> in retrospective mode</span>
         </div>
-        <div ng-repeat="tab in tabs" class="{{tab.klass}}">
+        <div ng-repeat="tab in tabs" class="{{tab.klass}} clearfix">
             <div class="order-grid"  ng-click="activateTab(tab)">
                 <h2 class="order-title">
                     <i class="fa fa-caret-right" ng-show="activeTab != tab"></i>
@@ -13,9 +13,7 @@
                 </h2>
             </div>
             <div ng-if="activeTab == tab" class="dashboard-section">
-                <!--ng-show="activeTab == tab"-->
-
-                <div class="dashboard-section-wrapper">
+                <div class="dashboard-section-wrapper clearfix">
                     <div ng-include="'consultation/views/orderTemplateViews/ordersTemplate.html'"></div>
                 </div>
             </div>

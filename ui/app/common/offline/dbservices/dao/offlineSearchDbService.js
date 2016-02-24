@@ -14,7 +14,6 @@ angular.module('bahmni.common.offline')
                 return $q.when(response);
             }
             $rootScope.searching = true;
-            var deferred = $q.defer();
             var nameParts = null;
             if (params.q) {
                 nameParts = params.q.split(" ");
@@ -82,8 +81,9 @@ angular.module('bahmni.common.offline')
 
                     var whereCondition = lf.op.and.apply(null, predicates);
 
-                    if (!_.isEmpty(predicates))
+                    if (!_.isEmpty(predicates)) {
                         query = query.where(whereCondition);
+                    }
 
 
                     return query.limit(50).skip(params.startIndex).orderBy(p.dateCreated, lf.Order.DESC).groupBy(p.uuid).exec()

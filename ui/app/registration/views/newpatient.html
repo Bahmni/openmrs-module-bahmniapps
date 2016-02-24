@@ -26,24 +26,33 @@
                                     required>
                             </select>
                         </div>
-                        <div class="field-value showOn-desktop">
+                        <div class="field-value showOn-desktop-registration">
                             <input type="text" id="registrationNumber" ng-model="patient.registrationNumber"
                                    placeholder="{{ ::'REGISTRATION_LABEL_NUMBER' | translate}}" non-blank="patient.hasOldIdentifier || !hasIdentifierSources()" pattern-validate
                                    ng-change="patient.generateIdentifier()" ng-show="patient.hasOldIdentifier || !hasIdentifierSources()" focus-on="hasOldIdentifier">
-                        </div>
-                        <div ng-show="::hasIdentifierSources()">
-                            <div class="field-attribute hasOldIdentifier-field-attribute">
-                                <label for="hasOldIdentifier" class="control-label">{{::'REGISTRATION_LABEL_ENTER_ID' | translate}}</label>
+                            <div ng-show="::hasIdentifierSources()">
+                                <div class="field-attribute hasOldIdentifier-field-attribute">
+                                    <label for="hasOldIdentifier" class="control-label">{{::'REGISTRATION_LABEL_ENTER_ID' | translate}}</label>
+                                </div>
+                                <div class="field-value">
+                                    <input class="input-label-inline" ng-show="::showEnterID" type="checkbox" id="hasOldIdentifier" ng-model="patient.hasOldIdentifier"
+                                           ng-change="patient.clearRegistrationNumber()">
+                                </div>
                             </div>
-                            <div class="field-value">
-                                <input class="input-label-inline" ng-show="::showEnterID" type="checkbox" id="hasOldIdentifier" ng-model="patient.hasOldIdentifier"
-                                       ng-change="patient.clearRegistrationNumber()">
-                            </div>
                         </div>
-                        <div class="field-value showOn-small-screen">
-                            <input ng-class="::{'registrationNumber-Mobile': hasIdentifierSources()}" type="text" id="registrationNumber" ng-model="patient.registrationNumber"
-                                   placeholder="Registration Number" non-blank="patient.hasOldIdentifier" pattern-validate
-                                   ng-change="patient.generateIdentifier()" ng-show="patient.hasOldIdentifier || !hasIdentifierSources()" focus-on="hasOldIdentifier">
+                        <div class="field-value showOn-small-screen-registration">
+                            <div ng-show="::hasIdentifierSources()" class="patientExistingIdentifier">
+                                <div class="field-attribute hasOldIdentifier-field-attribute">
+                                    <label for="hasOldIdentifier" class="control-label">{{::'REGISTRATION_LABEL_ENTER_ID' | translate}}</label>
+                                </div>
+                                <div class="field-value">
+                                    <input class="input-label-inline" ng-show="::showEnterID" type="checkbox" id="::hasOldIdentifier" ng-model="$parent.hasOldIdentifier"
+                                           ng-change="patient.clearRegistrationNumber()">
+                                </div>
+                            </div>
+                            <input ng-class="hasIdentifierSources()? 'registrationNumber-Mobile' : ''" type="text" id="registrationNumber" ng-model="patient.registrationNumber"
+                                   placeholder="Registration Number" non-blank="hasOldIdentifier" pattern-validate
+                                   ng-change="patient.generateIdentifier()" ng-show="hasOldIdentifier || !hasIdentifierSources()" focus-on="hasOldIdentifier">
                         </div>
                     </article>
                 </section>

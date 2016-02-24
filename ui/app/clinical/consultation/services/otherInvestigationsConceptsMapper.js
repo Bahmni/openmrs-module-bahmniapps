@@ -1,3 +1,5 @@
+'use strict';
+
 Bahmni.OtherInvestigationsConceptsMapper = (function(){
 	var OtherInvestigationsConceptsMapper = function(orderTypesMap) {
 		this.orderTypesMap = orderTypesMap;
@@ -14,7 +16,7 @@ Bahmni.OtherInvestigationsConceptsMapper = (function(){
 		    	}
 			});
 		});
-	}
+	};
 
 	var createTest = function(concept, investigationType, orderTypesMap) {
 		var orderTypeName = orderTypesMap[investigationType.name] || investigationType.name;
@@ -29,11 +31,13 @@ Bahmni.OtherInvestigationsConceptsMapper = (function(){
 	OtherInvestigationsConceptsMapper.prototype = {
 		map: function(otherInvestigationsConcept, categoryConceptSet) {
 			var self = this;
-	        if(!otherInvestigationsConcept) return [];
+	        if(!otherInvestigationsConcept) {
+				return [];
+            }
 	        var tests = [];
 	        var testTypeSets = otherInvestigationsConcept.setMembers.filter(function(concept) { return concept.set; });
 	        angular.forEach(testTypeSets, function(concept) {
-	            var type = {uuid : concept.uuid, name : concept.name.name }
+	            var type = {uuid : concept.uuid, name : concept.name.name };
 	            var testConcepts = concept.setMembers.filter(function(concept) { return concept.conceptClass.name === Bahmni.Clinical.Constants.testConceptName});
 	            angular.forEach(testConcepts, function(testConcept){
 	                tests.push(createTest(testConcept, type, self.orderTypesMap));
@@ -42,7 +46,7 @@ Bahmni.OtherInvestigationsConceptsMapper = (function(){
 	        assignCategoriesToTests(tests, categoryConceptSet);
 			return tests;
 		}
-	}
+	};
 
 	return OtherInvestigationsConceptsMapper;
 })();

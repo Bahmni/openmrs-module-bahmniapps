@@ -36,11 +36,11 @@ describe("ConceptSetObservation", function() {
     });
 
     it("should not be valid if observation value goes beyond absolute range", function() {
-             var obs = new Bahmni.ConceptSet.Observation({
-                        concept: {name: "someConcept",dataType: "Numeric",hiAbsolute: 100, lowAbsolute: 90, value:101}
-                    }, null, {});
-                    obs.value = 102;
-                    expect(obs.isValid(false,false)).toBeFalsy();
+        var obs = new Bahmni.ConceptSet.Observation({
+            concept: {name: "someConcept", dataType: "Numeric", hiAbsolute: 100, lowAbsolute: 90, value: 101}
+        }, null, {});
+        obs.value = 102;
+        expect(obs.isValid(false, false)).toBeFalsy();
      });
 
     it("should not be valid if observations child node value goes beyond absolute range", function() {
@@ -97,5 +97,36 @@ describe("ConceptSetObservation", function() {
             allowFutureDates: false
         });
         expect(obs.hasInvalidDateTime()).toBeTruthy();
-    })
+    });
+
+    describe("autocomplete",function(){
+        var conceptUIConfig = {
+            "some autocomplete": {
+                autocomplete: true
+            }
+        };
+        var baseObservation = {
+            concept: {
+                name: "some autocomplete",
+                dataType: "Coded"
+            }
+        };
+        it("should be a valid observation if the value is selected from autocomplete", function () {
+            var observation = new Bahmni.ConceptSet.Observation(baseObservation, null, conceptUIConfig);
+
+            expect(observation.isValid()).toBeTruthy();
+            observation.value = {
+                name: "some selected value"
+            };
+            expect(observation.isValid()).toBeTruthy();
+        });
+
+        it("should be a invalid observation if the value is not selected from autocomplete", function () {
+            var observation = new Bahmni.ConceptSet.Observation(baseObservation, null, conceptUIConfig);
+
+            observation.value = "someValue";
+            expect(observation.isValid()).toBeFalsy()
+        });
+
+    });
 });

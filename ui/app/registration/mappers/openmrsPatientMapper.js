@@ -24,9 +24,6 @@ angular.module('bahmni.registration').factory('openmrsPatientMapper', ['patient'
 
                 });
             },
-            pad = function (number) {
-                return number > 9 ? number.toString() : "0" + number.toString();
-            },
             parseDate = function (dateStr) {
                 return Bahmni.Common.Util.DateUtil.parseServerDateToDate(dateStr);
             },
@@ -34,7 +31,7 @@ angular.module('bahmni.registration').factory('openmrsPatientMapper', ['patient'
                 return preferredAddress || {};
             },
             mapRelationships = function(patient, relationships){
-                patient.relationships = relationships;
+                patient.relationships = relationships || [];
                 patient.newlyAddedRelationships = [{}];
             },
             map = function (openmrsPatient) {

@@ -1,3 +1,5 @@
+'use strict';
+
 angular.module('bahmni.clinical')
     .directive('diagnosisAutoComplete', function ($parse) {
         var link = function (scope, element, attrs) {

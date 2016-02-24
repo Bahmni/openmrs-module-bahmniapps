@@ -14,8 +14,9 @@ angular.module('bahmni.clinical')
                         showTime = true;
                     }
                 } else {
-                    if ($scope.showTimeForProgress)
+                    if ($scope.showTimeForProgress) {
                         showTime = true;
+                    }
                 }
                 return {
                     showDate: showDate,
@@ -25,9 +26,9 @@ angular.module('bahmni.clinical')
 
             $scope.isIntakeTemplate = function (obsTemplate) {
                 return obsTemplate.conceptClass === Bahmni.Clinical.Constants.caseIntakeConceptClass;
-            }
+            };
 
-            $scope.showGroupDateTime = $scope.config.showGroupDateTime === false ? false : true;
+            $scope.showGroupDateTime = $scope.config.showGroupDateTime !== false;
         };
 
         return {

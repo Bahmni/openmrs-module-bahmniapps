@@ -40,12 +40,15 @@ angular.module('bahmni.clinical')
                         getPreviousVisitDrugOrders(), showOnlyActive)
                 };
                 $scope.consultation.drugOrderGroups.unshift(refillableGroup);
-                if(treatmentConfig.drugOrderHistoryConfig.numberOfVisits != undefined && treatmentConfig.drugOrderHistoryConfig.numberOfVisits == 0)
+                if(treatmentConfig.drugOrderHistoryConfig.numberOfVisits != undefined && treatmentConfig.drugOrderHistoryConfig.numberOfVisits == 0) {
                     $scope.consultation.drugOrderGroups = [$scope.consultation.drugOrderGroups[0]];
+                }
             };
 
             var createPrescribedDrugOrderGroups = function () {
-                if (prescribedDrugOrders.length == 0) return [];
+                if (prescribedDrugOrders.length == 0) {
+                    return [];
+                }
                 var sortedDrugOrders = _.sortBy(prescribedDrugOrders, 'orderNumber');
                 var drugOrderGroupedByDate = _.groupBy(sortedDrugOrders, function (drugOrder) {
                     return DateUtil.parse(drugOrder.visit.startDateTime);
@@ -79,8 +82,9 @@ angular.module('bahmni.clinical')
                     }));
             };
             $scope.getOrderReasonConcept = function(drugOrder){
-               if(drugOrder.orderReasonConcept)
-                return drugOrder.orderReasonConcept.display||drugOrder.orderReasonConcept.name  ;
+               if(drugOrder.orderReasonConcept) {
+                   return drugOrder.orderReasonConcept.display || drugOrder.orderReasonConcept.name;
+               }
             };
 
 
@@ -118,11 +122,13 @@ angular.module('bahmni.clinical')
                 var formCondition = Bahmni.ConceptSet.FormConditions.rules ? Bahmni.ConceptSet.FormConditions.rules["Medication Stop Reason"] : undefined ;
                 if(formCondition){
                     if(drugOrder.orderReasonConcept) {
-                        if (!formCondition(drugOrder, drugOrder.orderReasonConcept.name.name))
+                        if (!formCondition(drugOrder, drugOrder.orderReasonConcept.name.name)) {
                             disableAndClearReasonText(drugOrder);
+                        }
                     }
-                    else
+                    else {
                         disableAndClearReasonText(drugOrder);
+                    }
                 }else{
                     drugOrder.orderReasonNotesEnabled = true;
                 }
@@ -149,7 +155,7 @@ angular.module('bahmni.clinical')
 
             $scope.shouldBeDisabled = function (drugOrder, orderAttribute) {
                 var hasEncounterExpired = function () {
-                    return !($scope.consultation.encounterUuid === orderAttribute.encounterUuid);
+                    return $scope.consultation.encounterUuid !== orderAttribute.encounterUuid;
                 };
                 var isAlreadySaved = function () {
                     return orderAttribute.obsUuid
@@ -186,8 +192,9 @@ angular.module('bahmni.clinical')
                 var allAttributesSelected = true;
                 drugOrderGroup.drugOrders.forEach(function (drugOrder) {
                     var orderAttributeOfName = getAttribute(drugOrder, orderAttributeName);
-                    if (!$scope.shouldBeDisabled(drugOrder, orderAttributeOfName) && !orderAttributeOfName.value)
+                    if (!$scope.shouldBeDisabled(drugOrder, orderAttributeOfName) && !orderAttributeOfName.value) {
                         allAttributesSelected = false;
+                    }
                 });
                 drugOrderGroup[orderAttributeName] = drugOrderGroup[orderAttributeName] || {};
                 drugOrderGroup[orderAttributeName].selected = allAttributesSelected;
@@ -197,7 +204,9 @@ angular.module('bahmni.clinical')
                 var canBeUpdated = false;
                 drugOrderGroup.drugOrders.forEach(function (drugOrder) {
                     var orderAttributeOfName = getAttribute(drugOrder, orderAttributeName);
-                    if (!$scope.shouldBeDisabled(drugOrder, orderAttributeOfName)) canBeUpdated = true;
+                    if (!$scope.shouldBeDisabled(drugOrder, orderAttributeOfName)) {
+                        canBeUpdated = true;
+                    }
                 });
                 return canBeUpdated;
             };
@@ -208,7 +217,7 @@ angular.module('bahmni.clinical')
                     minDate = drugOrder.effectiveStartDate;
                 }
                 return DateUtil.getDateWithoutTime(minDate);
-            }
+            };
 
             var getAttribute = function (drugOrder, attributeName) {
                 return _.find(drugOrder.orderAttributes, {name: attributeName});

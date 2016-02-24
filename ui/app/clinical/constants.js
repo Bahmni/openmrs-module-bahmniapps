@@ -1,3 +1,4 @@
+'use strict';
 
 Bahmni.Clinical.Constants = (function () {
     var orderTypes = {

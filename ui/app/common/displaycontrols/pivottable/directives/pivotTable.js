@@ -13,7 +13,9 @@ angular.module('bahmni.common.displaycontrol.pivottable').directive('pivotTable'
             },
             link: function (scope) {
 
-                if(!scope.config) return;
+                if(!scope.config) {
+                    return;
+                }
 
                 scope.groupBy = scope.config.groupBy || "visits";
                 scope.groupByEncounters = scope.groupBy === "encounters";
@@ -40,7 +42,7 @@ angular.module('bahmni.common.displaycontrol.pivottable').directive('pivotTable'
 
                 var programConfig = appService.getAppDescriptor().getConfigValue("program") || {};
 
-                var startDate = null, endDate = null, getOtherActive;
+                var startDate = null, endDate = null;
                 if (programConfig.showDetailsWithinDateRange) {
                     startDate = $stateParams.dateEnrolled;
                     endDate = $stateParams.dateCompleted;

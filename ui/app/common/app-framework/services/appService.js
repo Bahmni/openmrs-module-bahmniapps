@@ -1,15 +1,18 @@
 'use strict';
 
 angular.module('bahmni.common.appFramework')
-    .service('appService', ['$http', '$q', 'sessionService', '$rootScope', 'mergeService', function ($http, $q, sessionService, $rootScope, mergeService) {
+    .config(['$compileProvider', function ($compileProvider) {
+        $compileProvider.aHrefSanitizationWhitelist(/^\s*(https?|ftp|mailto|chrome-extension|file):/);
+    }])
+    .service('appService', ['$http', '$q', 'sessionService', '$rootScope', 'mergeService','loadConfigService',
+        function ($http, $q, sessionService, $rootScope, mergeService, loadConfigService) {
         var currentUser = null;
         var baseUrl = Bahmni.Common.Constants.baseUrl;
         var customUrl = Bahmni.Common.Constants.customUrl;
         var appDescriptor = null;
-        var self = this;
 
-        var loadConfig = function (url) {
-            return $http.get(url, {withCredentials: true});
+            var loadConfig = function (url) {
+                return loadConfigService.loadConfig(url, appDescriptor.contextPath)
         };
 
         var loadTemplate = function (appDescriptor) {

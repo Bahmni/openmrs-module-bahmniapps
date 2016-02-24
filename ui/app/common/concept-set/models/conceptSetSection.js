@@ -1,6 +1,13 @@
+'use strict';
+
+
 Bahmni.ConceptSet.ConceptSetSection = function (extensions, user, config, observations, conceptSet) {
     
     var self = this;
+
+    self.clone = function () {
+        return new Bahmni.ConceptSet.ConceptSetSection(extensions, user, config, [], conceptSet);
+    };
 
     var init = function () {
         self.observations = observations;
@@ -13,6 +20,7 @@ Bahmni.ConceptSet.ConceptSetSection = function (extensions, user, config, observ
         self.collapseInnerSections = false;
         self.uuid = conceptSet.uuid;
         self.alwaysShow = user.isFavouriteObsTemplate(self.conceptName);
+        self.allowAddMore = config.allowAddMore;
     };
 
     var getShowIfFunction = function () {
@@ -59,7 +67,7 @@ Bahmni.ConceptSet.ConceptSetSection = function (extensions, user, config, observ
     };
 
     self.showComputeButton = function (){
-        return config.computeDrugs === true ? true : false;
+        return config.computeDrugs === true;
     };
 
     self.toggle = function () {
@@ -83,6 +91,10 @@ Bahmni.ConceptSet.ConceptSetSection = function (extensions, user, config, observ
 
     self.canToggle = function () {
         return !self.hasSomeValue();
+    };
+
+    self.canAddMore = function(){
+        return self.allowAddMore;
     };
 
     Object.defineProperty(self, "isOpen", {

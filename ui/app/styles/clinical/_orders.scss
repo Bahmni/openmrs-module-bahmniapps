@@ -204,7 +204,7 @@
                 text-align: center;
                 overflow: hidden;
                 text-overflow: ellipsis;
-                width: 237px;
+                width: 260px;
                 white-space: nowrap;
                 height:14px;
                 @media (max-width: 1024px) {
@@ -297,9 +297,25 @@
     }
 }
 .order-sub-heading-container{
+    width:50%;
+    text-align: right;
     .order-sub-heading{
         font-size: 12px;
         color: #666;
+        .provider-name{
+            white-space: nowrap;
+            text-overflow: ellipsis;
+            overflow: hidden;
+            width:50%;
+            display: inline-block;
+            text-align: right;
+            line-height: 1;
+        }
+        .provider-date{
+            width:39%;
+            display: inline-block;
+            text-align:left;
+        }
         //padding-right: 27px;
     }
     .fa-tasks{
@@ -338,6 +354,11 @@
         }
     }
 
+}
+#Pacs{
+    .order-sub-heading-container{
+        padding-top: 7px;
+    }
 }
 
 // .sample-type {

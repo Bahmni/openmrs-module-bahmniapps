@@ -119,12 +119,14 @@ angular.module('bahmni.clinical').controller('ConsultationController',
                 setCurrentBoardBasedOnPath();
             };
 
-            $scope.shouldDisplaySaveConfirmDialogForStateChange = function(toState, toParams, fromState, fromParams) {
-                if((toState.name === fromState.name) && (fromState.name === "patient.dashboard.show"))
+            $scope.shouldDisplaySaveConfirmDialogForStateChange = function(toState, toParams, fromState) {
+                if((toState.name === fromState.name) && (fromState.name === "patient.dashboard.show")) {
                     return true;
+                }
 
-                if (toState.name.match(/patient.dashboard.show.*/))
+                if (toState.name.match(/patient.dashboard.show.*/)) {
                     return false;
+                }
                 return true;
             };
 
@@ -159,11 +161,13 @@ angular.module('bahmni.clinical').controller('ConsultationController',
                 $scope.stateChangeTriggedByDialog = false;
                 if (toState.name.match(/patient.dashboard.show.+/)) {
                     $rootScope.hasVisitedConsultation = true;
-                    if($scope.showSaveConfirmDialogConfig)
+                    if($scope.showSaveConfirmDialogConfig) {
                         $rootScope.$broadcast("event:pageUnload");
+                    }
                 }
-                if ((toState.name === fromState.name) && (fromState.name === "patient.dashboard.show"))
+                if ((toState.name === fromState.name) && (fromState.name === "patient.dashboard.show")) {
                     $rootScope.hasVisitedConsultation = false;
+                }
             });
 
             $scope.cancelTransition = function() {
@@ -250,7 +254,9 @@ angular.module('bahmni.clinical').controller('ConsultationController',
             };
 
             var buttonClickAction = function (board) {
-                if ($scope.currentBoard === board) return;
+                if ($scope.currentBoard === board) {
+                    return;
+                }
                 if(!isFormValid()) {
                     $scope.$parent.$parent.$broadcast("event:errorsOnForm");
                     return;

@@ -38,7 +38,7 @@ angular.module('bahmni.registration')
         };
 
         //wait for address to be resolved in edit patient scenario
-        var deregisterAddressWatch = $scope.$watch('address', function(newValue, oldValue){
+        var deregisterAddressWatch = $scope.$watch('address', function(newValue){
             if(newValue != undefined) {
                 populateSelectedAddressUuids(0);
                 deregisterAddressWatch();
@@ -52,7 +52,9 @@ angular.module('bahmni.registration')
                 var parentFields = addressLevelsNamesInDescendingOrder.slice(addressLevelsNamesInDescendingOrder.indexOf(fieldName) + 1);
                 var parent = addressFieldItem.addressField.parent;
                 parentFields.forEach(function (parentField) {
-                    if (!parent) return;
+                    if (!parent) {
+                        return;
+                    }
                     $scope.address[parentField] = parent.name;
                     parent = parent.parent;
                 });
@@ -72,8 +74,9 @@ angular.module('bahmni.registration')
         };
 
         $scope.isReadOnly = function (fieldName) {
-            if(!$scope.address)
-              return false;
+            if(!$scope.address) {
+                return false;
+            }
             var parentFieldName = $scope.findParentField(fieldName);
             var parentValue = $scope.address[parentFieldName];
             var parentValueInvalid = isParentValueInvalid(parentFieldName);

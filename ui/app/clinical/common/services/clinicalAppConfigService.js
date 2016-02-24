@@ -55,9 +55,9 @@ angular.module('bahmni.clinical')
             var allBoards = this.getAllConsultationBoards();
             var defaultBoard = _.find(allBoards, 'default');
             if(stateParams.programUuid) {
-                var programParams = "?programUuid=" + stateParams.programUuid
-                    + "&dateEnrolled=" + stateParams.dateEnrolled
-                    + "&dateCompleted" + stateParams.dateCompleted;
+                var programParams = "?programUuid=" + stateParams.programUuid +
+                    "&dateEnrolled=" + stateParams.dateEnrolled +
+                    "&dateCompleted" + stateParams.dateCompleted;
                 return "/" + stateParams.configName + urlHelper.getPatientUrl() + "/" + defaultBoard.url + programParams;
             }
             else if (defaultBoard) {

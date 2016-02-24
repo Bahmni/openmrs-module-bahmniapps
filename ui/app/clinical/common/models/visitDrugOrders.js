@@ -23,7 +23,7 @@ Bahmni.Clinical.VisitDrugOrder = (function () {
 
     VisitDrugOrder.create = function (encounterTransactions, admissionDate, dischargeDate) {
         var nameToSort = function (drugOrder) {
-            return order.drugNonCoded ? order.drugNonCoded : drugOrder.drug.name;
+            return drugOrder.drugNonCoded ? drugOrder.drugNonCoded : drugOrder.drug.name;
         };
 
         var drugOrders = new Bahmni.Clinical.OrdersMapper(nameToSort).map(encounterTransactions, 'drugOrders');

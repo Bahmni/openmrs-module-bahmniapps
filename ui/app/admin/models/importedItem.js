@@ -4,7 +4,7 @@ Bahmni.Admin.ImportedItem = function(data) {
 	angular.extend(this, data);
 	//TODO: Make this configurable
 	this.baseUrl = '/uploaded-files/mrs';
-}
+};
 
 Bahmni.Admin.ImportedItem.prototype = {
 	hasError: function() {
@@ -14,4 +14,4 @@ Bahmni.Admin.ImportedItem.prototype = {
 	errorFileUrl: function() {
 		return this.baseUrl + '/' + this.errorFileName;
 	}
-}
+};

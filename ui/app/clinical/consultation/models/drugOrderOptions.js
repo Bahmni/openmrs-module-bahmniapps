@@ -4,7 +4,9 @@ Bahmni.Clinical.DrugOrderOptions = (function() {
 
     var itemsForInputConfig = function(listOfObjects, filterStrings, filterKey) {
         filterKey = filterKey || 'name';
-        if (!filterStrings) return listOfObjects;
+        if (!filterStrings) {
+            return listOfObjects;
+        }
 
         return _.filter(listOfObjects, function(object) {
             return _.includes(filterStrings, object[filterKey]);

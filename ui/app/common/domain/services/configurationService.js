@@ -98,7 +98,7 @@ angular.module('bahmni.common.domain')
                 withCredentials: true
             });
             return radiologyImpressionConfig;
-        }
+        };
 
 
         configurationFunctions.addressLevels = function () {

@@ -31,6 +31,7 @@
     "fastclick": "1.0.2",
     "lodash": "4.3.0",
     "lovefield": "~2.1.4",
+    "offline": "0.7.14",
     "ngDialog": "0.3.12",
     "angular-file-upload": "*",
     "stacktrace-js": "*",
@@ -43,6 +44,7 @@
     "angular-translate-handler-log": "*",
     "angular-cookies": "1.4.9",
     "angular-elastic": "~2.5.0",
+    "hustle": "https://github.com/DWB-eHealth/hustle.git#v0.2.0.cleanup_abandoned_items_patch",
     "crypto-js": "3.1.5"
   },
   "devDependencies": {

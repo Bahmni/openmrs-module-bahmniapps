@@ -66,7 +66,7 @@ angular.module('bahmni.adt')
                 return $rootScope.bedDetails;
             };
 
-            $scope.fetchBedInfo = function (cell, rowIndex, columnIndex) {
+            $scope.fetchBedInfo = function (cell) {
                 if (!cell.available && !cell.empty && !cell.patientInfo) {
                     spinner.forPromise(bedService.getBedInfo(cell.bed.bedId).success(function (data) {
                         cell.patientInfo = [];

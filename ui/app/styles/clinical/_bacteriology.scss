@@ -116,3 +116,17 @@
 .edit-bacteriology-sample{
   margin-top: 10px;
 }
+
+.bacteriology-results-wrapper{
+  .hierarchy ul li ul li, .hierarchy ul li ul li.has-child, .hierarchy ul li ul li.has-child ul li {
+    font-family: openSansBold;
+  }
+  .hierarchy ul li ul li ul li .tree-list-item {
+    background: #DDDDDD;
+    font-family: openSansSemiBold !important;
+  }
+  .hierarchy ul li ul li ul li ul li .tree-list-item {
+    background: #fff;
+    font-family: openSans !important;
+  }
+}

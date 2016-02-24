@@ -26,8 +26,12 @@ angular.module('bahmni.registration')
         var getNextAvailableParentName = function (addressField) {
             var parent = addressField.parent;
             while (parent) {
-                if (parent.name) return parent.name;
-                else parent = parent.parent;
+                if (parent.name) {
+                    return parent.name;
+                }
+                else {
+                    parent = parent.parent;
+                }
             }
             return "";
         };

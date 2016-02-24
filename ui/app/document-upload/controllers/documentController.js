@@ -54,7 +54,9 @@ angular.module('opd.documentupload')
             };
 
             var compareVisitStartWithExistingStop = function (newVisitStart, existingVisit) {
-                if(newVisitStart >= existingVisit.startDatetime && DateUtil.isInvalid(existingVisit.stopDatetime)) return true;
+                if(newVisitStart >= existingVisit.startDatetime && DateUtil.isInvalid(existingVisit.stopDatetime)) {
+                    return true;
+                }
                 return (newVisitStart <= existingVisit.stopDatetime || DateUtil.isSameDate(newVisitStart, existingVisit.stopDatetime));
             };
 
@@ -79,7 +81,7 @@ angular.module('opd.documentupload')
                 var filterExistingVisitsInSameDateRange = function (existingVisit) {
                     return isVisitInSameRange(newVisitWithoutTime, existingVisit);
                 };
-                var newVisitWithoutTime = Object();
+                var newVisitWithoutTime = {};
                 newVisitWithoutTime.startDatetime = DateUtil.getDate($scope.newVisit.startDatetime);
                 newVisitWithoutTime.stopDatetime = $scope.newVisit.stopDatetime ? DateUtil.getDate($scope.newVisit.stopDatetime) : newVisitWithoutTime.startDatetime;
                 var visitStartStopDateTime = $scope.visits.map(getVisitStartStopDateTime);

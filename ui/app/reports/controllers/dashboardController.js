@@ -8,7 +8,7 @@ angular.module('bahmni.reports')
             autoUpload: true
         });
 
-        $scope.uploader.onSuccessItem = function (fileItem, response, status, headers) {
+        $scope.uploader.onSuccessItem = function (fileItem, response) {
             fileItem.report.reportTemplateLocation = response;
         };
 
@@ -41,8 +41,12 @@ angular.module('bahmni.reports')
             report.stopDate = Bahmni.Common.Util.DateUtil.getDateWithoutTime(report.stopDate);
             if (isDateRangeRequiredFor(report) && (!report.startDate || !report.stopDate)) {
                 var msg = [];
-                if (!report.startDate) msg.push("start date");
-                if (!report.stopDate) msg.push("end date");
+                if (!report.startDate) {
+                    msg.push("start date");
+                }
+                if (!report.stopDate) {
+                    msg.push("end date");
+                }
                 messagingService.showMessage("formError", "Please select the " + msg.join(" and "))
             } else {
                 reportService.generateReport(report);

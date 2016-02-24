@@ -1,3 +1,5 @@
+'use strict';
+
 angular.module('bahmni.common.uicontrols.programmanagment')
     .controller('ManageProgramController', ['$scope', 'retrospectiveEntryService', '$window', 'programService', 'spinner', 'messagingService', '$stateParams',
         function ($scope, retrospectiveEntryService, $window, programService, spinner, messagingService, $stateParams) {
@@ -83,9 +85,7 @@ angular.module('bahmni.common.uicontrols.programmanagment')
                 if(_.isUndefined(obj)){
                     return undefined;
                 }
-                var paths = path.split('.')
-                    , current = obj
-                    , i;
+                var paths = path.split('.'), current = obj, i;
                 for (i = 0; i < paths.length; ++i) {
                     if (current[paths[i]] == undefined) {
                         return undefined;

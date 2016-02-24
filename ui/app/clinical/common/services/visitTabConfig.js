@@ -16,13 +16,14 @@ angular.module('bahmni.clinical')
             return $q.all([mandatoryConfigPromise(), configPromise()]).then(function(results) {
                 results[0].data.sections = _.sortBy(results[0].data.sections, function (section) {
                     return section.displayOrder;
-                })
+                });
                 for (var tab in results[1]) {
                     var sortedSections = _.sortBy(results[1][tab].sections, function (section) {
                         return section.displayOrder;
-                    })
-                    if (sortedSections.length > 0)
+                    });
+                    if (sortedSections.length > 0) {
                         results[1][tab].sections = sortedSections;
+                    }
                 }
                 var mandatoryConfig = results[0].data;
                 var tabs = _.values(results[1]);

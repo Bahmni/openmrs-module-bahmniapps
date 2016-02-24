@@ -145,9 +145,6 @@ Bahmni.Common.Offline.SchemaDefinitions = {
                 name: 'patientJson',
                 type: 'OBJECT'
             }, {
-                name: 'relationships',
-                type: 'ARRAY_BUFFER'
-            }, {
                 name: 'uuid',
                 type: 'STRING'
             }
@@ -213,5 +210,22 @@ Bahmni.Common.Offline.SchemaDefinitions = {
         ],
         nullableColumns: ['address1', 'address2', 'cityVillage', 'stateProvince', 'postalCode', 'country', 'countyDistrict', 'address3', 'address4', 'address5', 'address6'],
         primaryKeyColumns: ['patientUuid']
+    },
+    Configs: {
+        tableName: 'configs',
+        columns: [
+            {
+                name: 'key',
+                type: 'STRING'
+            }, {
+                name: 'value',
+                type: 'STRING'
+            }, {
+                name: 'etag',
+                type: 'STRING'
+            }
+        ],
+        nullableColumns: ['etag'],
+        primaryKeyColumns: ['key']
     }
 };

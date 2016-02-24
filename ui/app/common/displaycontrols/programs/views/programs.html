@@ -31,7 +31,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr ng-repeat="state in program.states">
+                        <tr ng-repeat="state in program.states| orderBy:'auditInfo.dateCreated'">
                             <td>{{state.state.concept.display}}</td>
                             <td>{{state.startDate | bahmniDate}}</td>
                             <td>{{state.endDate | bahmniDate}}</td>
@@ -87,7 +87,7 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr ng-repeat="state in program.states">
+                            <tr ng-repeat="state in program.states| orderBy:'auditInfo.dateCreated'">
                                 <td>{{state.state.concept.display}}</td>
                                 <td>{{state.startDate | bahmniDate}}</td>
                                 <td>{{state.endDate | bahmniDate}}</td>

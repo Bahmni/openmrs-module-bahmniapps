@@ -64,7 +64,7 @@ angular.module('bahmni.common.displaycontrol.forms')
 
                 $scope.getEditObsData = function (observation) {
                     return {
-                        observation: {encounterUuid: observation.encounterUuid},
+                        observation: observation,
                         conceptSetName: observation.concept.displayString,
                         conceptDisplayName: $scope.getDisplayName(observation)
                     }
@@ -77,7 +77,8 @@ angular.module('bahmni.common.displaycontrol.forms')
                         config: {
                             conceptNames: [data.concept.displayString],
                             showGroupDateTime: false,
-                            encounterUuid: data.encounterUuid
+                            encounterUuid: data.encounterUuid,
+                            observationUuid: data.uuid
                         },
                         section: {
                             title: data.concept.displayString

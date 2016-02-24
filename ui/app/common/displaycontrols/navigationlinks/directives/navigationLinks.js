@@ -3,9 +3,9 @@
 angular.module('bahmni.common.displaycontrol.navigationlinks')
     .directive('navigationLinks', ['$state', 'appService', function ($state, appService) {
         var controller = function ($scope) {
-            if ((!$scope.params.showLinks && !$scope.params.customLinks)
-                || ($scope.params.showLinks && $scope.params.customLinks
-                && $scope.params.showLinks.length == 0 && $scope.params.customLinks.length == 0)) {
+            if ((!$scope.params.showLinks && !$scope.params.customLinks) ||
+                ($scope.params.showLinks && $scope.params.customLinks &&
+                $scope.params.showLinks.length == 0 && $scope.params.customLinks.length == 0)) {
                 $scope.noNavigationLinksMessage = Bahmni.Common.Constants.noNavigationLinksMessage;
             }
 

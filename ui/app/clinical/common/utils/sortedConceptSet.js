@@ -5,7 +5,9 @@ Bahmni.Clinical.ConceptWeightBasedSorter = function(allTestAndPanelsConcept) {
     var sortedNames = sortedConcepts.map(function(concept) {return concept.name.name;});
 
 	  this.sort = function(conceptHolders, nameToSort) {
-        if(!conceptHolders) return [];
+        if(!conceptHolders) {
+            return [];
+        }
         conceptHolders.forEach(function(conceptHolder){
             var index = sortedNames.indexOf(nameToSort ? nameToSort(conceptHolder) : conceptHolder.concept.name);
             conceptHolder.sortWeight = index === -1 ? 999 : index;
@@ -14,7 +16,9 @@ Bahmni.Clinical.ConceptWeightBasedSorter = function(allTestAndPanelsConcept) {
 	};
 
     this.sortTestResults = function(labOrderResults) {
-        if(!labOrderResults) return [];
+        if(!labOrderResults) {
+            return [];
+        }
         labOrderResults.forEach(function(labOrderResult){
             var index = sortedNames.indexOf(labOrderResult.orderName || labOrderResult.testName);
             labOrderResult.sortWeight = index === -1 ? 999 : index;

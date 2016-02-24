@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('bahmni.clinical')
-    .directive('patientContext', ['$state', '$translate', '$sce', 'patientService', 'spinner', 'appService', 'configurationService', function ($state, $translate, $sce, patientService, spinner, appService, configurationService) {
+    .directive('patientContext', ['$state', '$translate', '$sce', 'patientService', 'spinner', 'appService',  function ($state, $translate, $sce, patientService, spinner, appService) {
         var controller = function ($scope, $rootScope) {
             var patientContextConfig = appService.getAppDescriptor().getConfigValue('patientContext') || {};
             spinner.forPromise(patientService.getPatientContext($scope.patient.uuid, $state.params.enrollment, patientContextConfig.personAttributes, patientContextConfig.programAttributes)).then(function (response) {

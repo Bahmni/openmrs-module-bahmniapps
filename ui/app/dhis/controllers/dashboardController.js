@@ -2,12 +2,12 @@
 
 angular.module('bahmni.dhis')
     .controller('DhisDashboardController', ['$scope', '$state', 'TaskService', 'messagingService',
-        function ($scope, $state, taskService, messagingService) {
+        function ($scope, $state, taskService) {
             $scope.report = new Bahmni.Dhis.ReportParams.default();
 
             $scope.refresh = function() {
                 $state.reload();
-            }
+            };
 
             taskService.getAllTasks().then(function (results) {
                 $scope.tasks = results ? results.data.map(Bahmni.Dhis.Task.create) : [];
@@ -17,7 +17,7 @@ angular.module('bahmni.dhis')
             });
 
             $scope.fireQueries = function () {
-                taskService.fireQueries($scope.report).then(function (response) {
+                taskService.fireQueries($scope.report).then(function () {
                     $state.reload();
                 });
             };

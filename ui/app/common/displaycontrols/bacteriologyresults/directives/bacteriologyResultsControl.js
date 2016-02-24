@@ -9,7 +9,7 @@ angular.module('bahmni.common.displaycontrol.bacteriologyresults')
                     $scope.title = "bacteriology results";
                     var params = {
                         patientUuid: $scope.patient.uuid,
-                        patientProgramUuid: $scope.section.patientProgramUuid
+                        patientProgramUuid: $scope.enrollment
                     };
                     return bacteriologyTabInitialization().then(function (data) {
                         $scope.bacteriologyTabData  = data;
@@ -71,7 +71,6 @@ angular.module('bahmni.common.displaycontrol.bacteriologyresults')
                 };
 
                 $scope.saveBacteriologySample = function(specimen){
-                    var observationFilter = new Bahmni.Common.Domain.ObservationFilter();
                     if (specimen.isDirty()){
                         messagingService.showMessage('formError', "{{'CLINICAL_FORM_ERRORS_MESSAGE_KEY' | translate }}");
                     }else{
@@ -114,7 +113,8 @@ angular.module('bahmni.common.displaycontrol.bacteriologyresults')
                     section: "=",
                     observationUuid: "=",
                     config: "=",
-                    visitUuid: "="
+                    visitUuid: "=",
+                    enrollment: "@"
                 }
             }
         }]);

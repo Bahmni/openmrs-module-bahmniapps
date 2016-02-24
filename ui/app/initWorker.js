@@ -1,3 +1,5 @@
+'use strict';
+
 if ('serviceWorker' in navigator) {
     navigator.serviceWorker.addEventListener('message', function(event) {
         console.log(event.data);

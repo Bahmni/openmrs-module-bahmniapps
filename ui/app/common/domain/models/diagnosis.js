@@ -43,9 +43,9 @@ Bahmni.Common.Domain.Diagnosis = function (codedAnswer, order, certainty, existi
     };
 
     self.isValidAnswer = function () {
-        return (self.codedAnswer.name && self.codedAnswer.uuid)
-            || (self.codedAnswer.name && !self.codedAnswer.uuid && self.isNonCodedAnswer)
-            || self.answerNotFilled();
+        return (self.codedAnswer.name && self.codedAnswer.uuid) ||
+            (self.codedAnswer.name && !self.codedAnswer.uuid && self.isNonCodedAnswer) ||
+            self.answerNotFilled();
     };
     self.isValidOrder = function () {
         return self.answerNotFilled() || self.order !== undefined;

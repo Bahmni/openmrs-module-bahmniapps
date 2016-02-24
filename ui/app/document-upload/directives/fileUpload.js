@@ -1,3 +1,5 @@
+'use strict';
+
 angular.module('opd.documentupload')
     .directive('fileUpload', [function () {
 

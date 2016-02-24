@@ -1,0 +1,235 @@
+{
+  "appTemplate.json": {
+    "contextModel": [
+      "patientUuid",
+      "activeVisitUuid"
+    ],
+    "id": "bahmni.template.registration",
+    "configOptions": {
+      "autoCompleteFields": {
+        "defaultValue": [
+          "givenName",
+          "familyName",
+          "caste",
+          "primaryContact",
+          "secondaryContact",
+          "primaryRelative",
+          "secondaryIdentifier"
+        ],
+        "name": "autoCompleteFields",
+        "description": "auto complete fields in patient create page. eg. givenName, familyName, caste, primaryContact, secondaryContact, primaryRelative, secondaryIdentifier"
+      },
+      "searchByIdForwardUrl": {
+        "defaultValue": "/patient/{{patientUuid}}",
+        "name": "searchByIdForwardUrl",
+        "description": "Url to forward when searched by id"
+      },
+      "defaultIdentifierPrefix": {
+        "defaultValue": null,
+        "name": "defaultIdentifierPrefix",
+        "description": "Default identifier prefix used in search, create patient. eg. GAN"
+      }
+    }
+  },
+  "fieldValidation.js": "Bahmni.Registration.customValidator = {    \"age.days\": {        method: function (name, value) {            return value >= 0;        },        errorMessage: \"REGISTRATION_AGE_ERROR_KEY\"    },    \"Telephone Number\": {        method: function (name, value, personAttributeDetails) {            return value && value.length> 6;        },        errorMessage: \"REGISTRATION_TELEPHONE_NUMBER_ERROR_KEY\"    },    \"caste\": {        method: function (name, value, personAttributeDetails) {            return value.match(/^\\w+$/);        },        errorMessage: \"REGISTRATION_CASTE_TEXT_ERROR_KEY\"    }};",
+  "extension.json": {
+    "nutritionalValues": {
+      "extensionPointId": "org.bahmni.registration.conceptSetGroup.observations",
+      "extensionParams": {
+        "translationKey": "NUTRITIONAL_VALUES_LOCALE_KEY",
+        "conceptNames": [
+          "Height",
+          "Weight",
+          "BMI",
+          "BMI STATUS"
+        ],
+        "required": true,
+        "showLatest": true,
+        "conceptName": "Nutritional Values"
+      },
+      "order": 1,
+      "requiredPrivilege": "Edit Visits",
+      "type": "config",
+      "id": "bahmni.registration.conceptSetGroup.nutritionalLevels"
+    },
+    "search": {
+      "extensionPointId": "org.bahmni.registration.navigation",
+      "url": "/search",
+      "order": 1,
+      "translationKey": "REGISTRATION_SEARCH_CONFIG_KEY",
+      "requiredPrivilege": "View Patients",
+      "shortcutKey": "REGISTRATION_SEARCH_CONFIG_ACCESS_KEY",
+      "type": "link",
+      "id": "bahmni.registration.navigation.patient.search",
+      "icon": "fa-search"
+    },
+    "view": {
+      "extensionPointId": "org.bahmni.registration.patient.search.result.action",
+      "url": "/patient/{{patientUuid}}",
+      "order": 1,
+      "translationKey": "REGISTRATION_VIEW_CONFIG_KEY",
+      "requiredPrivilege": "View Patients",
+      "type": "link",
+      "id": "bahmni.patient.search.result.action.edit",
+      "icon": "fa-patient-edit"
+    },
+    "feeInformation": {
+      "extensionPointId": "org.bahmni.registration.conceptSetGroup.observations",
+      "extensionParams": {
+        "translationKey": "FEE_INFORMATION_LOCALE_KEY",
+        "required": true,
+        "conceptName": "Fee Information"
+      },
+      "order": 2,
+      "requiredPrivilege": "Edit Visits",
+      "type": "config",
+      "id": "bahmni.registration.conceptSetGroup.feeInformation"
+    },
+    "createNew": {
+      "extensionPointId": "org.bahmni.registration.navigation",
+      "url": "/patient/new",
+      "order": 2,
+      "translationKey": "REGISTRATION_CREATE_NEW_CONFIG_KEY",
+      "requiredPrivilege": "Add Patients",
+      "shortcutKey": "REGISTRATION_CREATE_NEW_CONFIG_ACCESS_KEY",
+      "type": "link",
+      "id": "bahmni.registration.navigation.patient.create",
+      "icon": "fa-plus"
+    }
+  },
+  "app.json": {
+    "instanceOf": "bahmni.template.registration",
+    "extensionPoints": [
+      {
+        "id": "org.bahmni.registration.patient.search.result.action",
+        "description": "Bahmni Patient Search Result Action"
+      },
+      {
+        "id": "org.bahmni.registration.patient.next",
+        "description": "After Bahmni Patient Registration, forward url configuration"
+      }
+    ],
+    "contextModel": [
+      "patientUuid",
+      "activeVisitUuid"
+    ],
+    "config": {
+      "showCasteSameAsLastNameCheckbox": false,
+      "addressHierarchy": {
+        "freeTextAddressFields": [
+          "address2",
+          "address1"
+        ],
+        "showAddressFieldsTopDown": false
+      },
+      "searchByIdForwardUrl": "/patient/{{patientUuid}}",
+      "defaultVisitType": "OPD",
+      "conceptSetUI": {
+        "REGISTRATION FEES": {
+          "required": true,
+          "label": "Fee"
+        },
+        "defaults": {
+          "FHS": "Present"
+        },
+        "FHS": {
+          "buttonSelect": true
+        }
+      },
+      "defaultIdentifierPrefix": "GAN",
+      "fieldValidation": {
+        "landHolding": {
+          "pattern": "[0-9]{0,3}",
+          "errorMessage": "Should be between 1 to 999 acres"
+        },
+        "middleName": {
+          "pattern": "[a-zA-Z]{0,}",
+          "errorMessage": "Should contain characters"
+        },
+        "address1": {
+          "pattern": "[a-zA-Z0-9]{3}",
+          "errorMessage": "Should contain 3 characters"
+        },
+        "familyName": {
+          "pattern": "[a-zA-Z]{0,}",
+          "errorMessage": "Should contain characters"
+        },
+        "primaryContact": {
+          "pattern": "[0-9]{8,10}",
+          "errorMessage": "Should be 12 characters starting with 91 (country code)"
+        },
+        "givenName": {
+          "pattern": "[a-zA-Z]{0,}",
+          "errorMessage": "Should contain characters"
+        }
+      },
+      "relationshipTypeMap": {
+        "Parent": "patient",
+        "Doctor": "provider"
+      },
+      "printOptions": [
+        {
+          "translationKey": "REGISTRATION_PRINT_REG_CARD_LOCAL_KEY",
+          "shortcutKey": "l",
+          "templateUrl": "/bahmni_config/openmrs/apps/registration/registrationCardLayout/print_local.html"
+        },
+        {
+          "translationKey": "REGISTRATION_PRINT_REG_CARD_KEY",
+          "shortcutKey": "p",
+          "templateUrl": "/bahmni_config/openmrs/apps/registration/registrationCardLayout/print.html"
+        },
+        {
+          "translationKey": "REGISTRATION_PRINT_SUPPLEMENTAL_PAPER",
+          "shortcutKey": "r",
+          "templateUrl": "/bahmni_config/openmrs/apps/registration/supplementalPaperLayout/print.html"
+        }
+      ],
+      "patientInformation": {
+        "hidden": {
+          "attributes": [
+            "primaryContact"
+          ]
+        },
+        "additionalPatientInformation": {
+          "attributes": [
+            "distanceFromCenter",
+            "isUrban",
+            "cluster",
+            "RationCard",
+            "familyIncome",
+            "debt",
+            "cluster"
+          ],
+          "title": "Additional Patient Information"
+        },
+        "defaults": {
+          "landHolding": 2,
+          "class": "General"
+        }
+      },
+      "autoCompleteFields": [
+        "familyName",
+        "caste"
+      ],
+      "patientSearch": {
+        "customAttributes": {
+          "fields": [
+            "givenNameLocal",
+            "middleNameLocal",
+            "familyNameLocal"
+          ],
+          "placeholder": "रुग्णाचे नाव",
+          "label": "रुग्णाचे नाव"
+        },
+        "address": {
+          "field": "address2",
+          "placeholder": "Enter ward",
+          "label": "Rural Ward"
+        }
+      },
+      "showMiddleName": true
+    },
+    "id": "bahmni.registration",
+    "description": "Bahmni Patient Registration App"
+  }
+}

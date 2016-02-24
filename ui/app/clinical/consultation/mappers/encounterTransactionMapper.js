@@ -3,18 +3,22 @@
 Bahmni.Clinical.EncounterTransactionMapper = function () {
 
     var addEditedDiagnoses = function (consultation, diagnosisList) {
-        consultation.pastDiagnoses && consultation.pastDiagnoses.forEach(function (diagnosis) {
-            if (diagnosis.isDirty) {
-                diagnosis.diagnosisDateTime = null;
-                diagnosisList.push(diagnosis);
-            }
-        });
-        consultation.savedDiagnosesFromCurrentEncounter && consultation.savedDiagnosesFromCurrentEncounter.forEach(function (diagnosis) {
-            if (diagnosis.isDirty) {
-                diagnosis.diagnosisDateTime = null;
-                diagnosisList.push(diagnosis);
-            }
-        });
+        if (consultation.pastDiagnoses) {
+            consultation.pastDiagnoses.forEach(function (diagnosis) {
+                if (diagnosis.isDirty) {
+                    diagnosis.diagnosisDateTime = null;
+                    diagnosisList.push(diagnosis);
+                }
+            });
+        }
+        if (consultation.savedDiagnosesFromCurrentEncounter) {
+            consultation.savedDiagnosesFromCurrentEncounter.forEach(function (diagnosis) {
+                if (diagnosis.isDirty) {
+                    diagnosis.diagnosisDateTime = null;
+                    diagnosisList.push(diagnosis);
+                }
+            });
+        }
     };
 
     this.map = function (consultation, patient, locationUuid, retrospectiveEntry, defaultRetrospectiveVisitType, defaultVisitType, isInEditEncounterMode, patientProgramUuid) {
@@ -77,10 +81,11 @@ Bahmni.Clinical.EncounterTransactionMapper = function () {
         consultation.drugOrders = [];
 
         var newlyAddedTreatments = consultation.newlyAddedTreatments;
-        newlyAddedTreatments && newlyAddedTreatments.forEach(function (treatment) {
+        if (newlyAddedTreatments) {
+            newlyAddedTreatments.forEach(function (treatment) {
                 consultation.drugOrders.push(Bahmni.Clinical.DrugOrder.createFromUIObject(treatment));
-        });
-
+            });
+        }
         if(consultation.removableDrugs) {
             consultation.drugOrders = consultation.drugOrders.concat(consultation.removableDrugs);
         }

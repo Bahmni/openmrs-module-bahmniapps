@@ -1,3 +1,5 @@
+'use strict';
+
 (function () {
     Bahmni = Bahmni || {};
     Bahmni.Clinical = Bahmni.Clinical || {};

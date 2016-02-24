@@ -9,14 +9,6 @@ Bahmni.Common.DisplayControl.Dashboard = function (config) {
         });
     }
 
-    var addPatientProgramUuid = function (section) {
-        section.patientProgramUuid = config.patientProgramUuid;
-    };
-
-    if (config.patientProgramUuid) {
-        _.each(config.sections, addPatientProgramUuid);
-    }
-
     this._sections = _.sortBy(_.map(config.sections, Bahmni.Common.DisplayControl.Dashboard.Section.create), function (section) {
         return section.displayOrder;
     });
@@ -88,8 +80,9 @@ Bahmni.Common.DisplayControl.Dashboard = function (config) {
         {
             sectionGroups = this.groupOneFourthPageSection(lastSection, lastElement, lastSectionIndex, section, sectionGroups, nextSection);
         }
-        else
+        else {
             sectionGroups = this.groupHalfPageSection(lastSection, lastElement, lastSectionIndex, section, sectionGroups);
+        }
         return sectionGroups;
     };
 
@@ -98,10 +91,12 @@ Bahmni.Common.DisplayControl.Dashboard = function (config) {
         var lastSectionLength = lastSection.length;
         var isLastSectionOneFourth = lastSectionLength==1 && this.isOneFourthPageSection(lastSection[lastSectionIndex]);
 
-        if(_.isEmpty(lastSection) || isLastSectionOneFourth)
+        if(_.isEmpty(lastSection) || isLastSectionOneFourth) {
             sectionGroups[lastElement].push(section);
-        else
+        }
+        else {
             sectionGroups.push([section]);
+        }
         return sectionGroups;
     };
 
@@ -110,8 +105,9 @@ Bahmni.Common.DisplayControl.Dashboard = function (config) {
         if (this.addOneFourthElementToLastSection(lastSection, lastElement, lastSectionIndex, nextSection)) {
             sectionGroups[lastElement].push(section);
         }
-        else
+        else {
             sectionGroups.push([section]);
+        }
         return sectionGroups;
     };
 
@@ -127,10 +123,12 @@ Bahmni.Common.DisplayControl.Dashboard = function (config) {
 
         var lastSectionLength = lastSection.length;
         var isLastSectionNotThreeFourth = !this.isThreeFourthPageSection(lastSection[lastSectionIndex]) && !this.isThreeFourthPageSection(lastSection[0]);
-        if(_.isEmpty(lastSection) || lastSectionLength > 2 || isLastSectionNotThreeFourth)
+        if(_.isEmpty(lastSection) || lastSectionLength > 2 || isLastSectionNotThreeFourth) {
             sectionGroups[lastElement].push(section);
-        else
+        }
+        else {
             sectionGroups.push([section]);
+        }
         return sectionGroups;
     }
 };

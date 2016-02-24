@@ -1,4 +1,6 @@
-Bahmni.Common.Obs.Observation = function () {
+'use strict';
+
+Bahmni.Common.Obs.Observation = (function () {
 
     var Observation = function (obs, conceptConfig) {
         angular.extend(this, obs);
@@ -32,7 +34,9 @@ Bahmni.Common.Obs.Observation = function () {
             }
             if (this.conceptConfig && this.conceptConfig.displayMonthAndYear) {
                 value = Bahmni.Common.Util.DateUtil.getDateInMonthsAndYears(this.value);
-                if (value != null) return value;
+                if (value != null) {
+                    return value;
+                }
             }
             if (this.type === "Date") {
                 return this.value ? Bahmni.Common.Util.DateUtil.formatDateWithoutTime(this.value) : "";
@@ -54,5 +58,5 @@ Bahmni.Common.Obs.Observation = function () {
 
     return Observation;
 
-}();
+})();
 

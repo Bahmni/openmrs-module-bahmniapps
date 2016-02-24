@@ -9,4 +9,4 @@ angular.module('bahmni.common.displaycontrol.chronicTreatmentChart')
             }
             return value;
         }
-    })
+    });

@@ -5,7 +5,7 @@ angular.module('bahmni.common.uiHelper')
     	var showSpinner = function(event, toState) { toState.spinnerToken = spinner.show() };
     	var hideSpinner = function(event, toState) { spinner.hide(toState.spinnerToken) };
 
-        this.activate = function(level, message) {
+        this.activate = function() {
             $rootScope.$on('$stateChangeStart', showSpinner);
             $rootScope.$on('$stateChangeSuccess', hideSpinner);
             $rootScope.$on('$stateChangeError', hideSpinner);

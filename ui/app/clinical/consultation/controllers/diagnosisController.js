@@ -153,7 +153,7 @@ angular.module('bahmni.clinical')
                 var obsUUid = diagnosis.existingObs != null ? diagnosis.existingObs : diagnosis.previousObs;
 
                 spinner.forPromise(
-                        diagnosisService.deleteDiagnosis(obsUUid).then(function(result) {
+                        diagnosisService.deleteDiagnosis(obsUUid).then(function() {
                             messagingService.showMessage('info', 'Deleted');
                             var currentUuid = $scope.consultation.savedDiagnosesFromCurrentEncounter.length > 0 ?
                                 $scope.consultation.savedDiagnosesFromCurrentEncounter[0].encounterUuid : "";
