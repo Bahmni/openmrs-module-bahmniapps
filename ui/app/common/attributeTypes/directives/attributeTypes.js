@@ -9,7 +9,8 @@ angular.module('bahmni.common.attributeTypes', []).directive('attributeTypes', [
             isAutoComplete: '&',
             getAutoCompleteList: '&',
             getDataResults: '&',
-            isReadOnly: '&'
+            isReadOnly: '&',
+            isForm : '=?'
         },
         templateUrl : '../common/attributeTypes/views/attributeInformation.html',
         restrict : 'E',
