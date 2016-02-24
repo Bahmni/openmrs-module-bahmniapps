@@ -34,7 +34,11 @@ angular.module('bahmni.common.displaycontrol.observation')
                         $scope.isFulfilmentDisplayControl = true;
                     }
                     else {
-                        if ($scope.config.encounterUuid) {
+                        if ($scope.config.observationUuid){
+                            spinner.forPromise(observationsService.getByUuid($scope.config.observationUuid)).then(function(response){
+                                mapObservation([response.data], $scope.config)
+                            })
+                        } else if ($scope.config.encounterUuid) {
                             spinner.forPromise(observationsService.fetchForEncounter($scope.config.encounterUuid, $scope.config.conceptNames)).then(function (response) {
                                 mapObservation(response.data, $scope.config)
                             });
