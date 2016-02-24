@@ -295,7 +295,7 @@
             <div ng-repeat="orderSet in ::orderSets">
                 <h2 class="section-title order-set-orderAnOrderSet">
                     {{::orderSet.name}}
-                    <button class="add-drug-btn secondary-button fr" ng-disabled="!newOrderSet.uuid" ng-show="newOrderSet.uuid !== orderSet.uuid" ng-click="addOrderSet(orderSet)">Add</button>
+                    <button class="add-drug-btn secondary-button fr" ng-disabled="newOrderSet.uuid" ng-show="newOrderSet.uuid !== orderSet.uuid" ng-click="addOrderSet(orderSet)">Add</button>
                     <button class="add-drug-btn secondary-button fr" ng-show="newOrderSet.uuid === orderSet.uuid" ng-click="removeOrderSet()">Remove</button>
                 </h2>
                 <div class="dashboard-section dashboard-orderSet">
