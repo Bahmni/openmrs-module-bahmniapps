@@ -10,7 +10,7 @@ describe('DynamicResourceLoader', function () {
     it("include js for offline app", function () {
         var msg = dynamicResourceLoader.includeJs("var id = 'Bahmni'", true);
         var x  = document.body.getElementsByTagName("script");
-        expect(x[x.length-1].textContent).toBe("var id = 'Bahmni'");
+        expect(x[x.length-1].getAttribute("src")).toContain("blob");
     });
     it("include css", function () {
         var msg = dynamicResourceLoader.includeCss("https://www.example.com/scripts/a.css");

@@ -13,9 +13,12 @@ angular.module('bahmni.common.offline')
                     referenceDataMap = isAuthenticated ?
                                                 Bahmni.Common.Constants.authenticatedReferenceDataMap :
                                                 Bahmni.Common.Constants.unAuthenticatedReferenceDataMap;
+                    var length = Object.keys(referenceDataMap).length;
+                    var x = 0;
+                    var deferred = $q.defer();
                     angular.forEach(referenceDataMap, function(referenceData, url){
 
-                       offlineDbService.getReferenceData(referenceData).then(function(result){
+                        offlineDbService.getReferenceData(referenceData).then(function(result){
                             var requestUrl = Bahmni.Common.Constants.hostURL + url;
                             var req = {
                                 method: 'GET',
@@ -27,18 +30,22 @@ angular.module('bahmni.common.offline')
                             if(referenceData == 'LocaleList') {
                                 req.headers.Accept = 'text/plain';
                             }
-                            return $http(req).then(function (response) {
+                             $http(req).then(function (response) {
                                 if(response.status == 200) {
                                     var eTag = response.headers().etag;
-                                    return offlineDbService.insertReferenceData(referenceData, response.data, eTag);
+                                    return offlineDbService.insertReferenceData(referenceData, response.data, eTag).then(function(){
+                                        x++;
+                                        x ==length && deferred.resolve({});
+                                    });
                                 }
                             }).catch(function(result){
-                                if(result.status == 304) {
-                                    return $q.when({});
-                                }
+                                x++;
+                                if(x ==length)
+                                    deferred.resolve({});
                             });
                         });
-                    })
+                    });
+                    return deferred.promise;
                 }
             };
         }

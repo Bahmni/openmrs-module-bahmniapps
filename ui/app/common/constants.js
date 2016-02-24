@@ -5,6 +5,7 @@ Bahmni.Common = Bahmni.Common || {};
 
 (function(){
     var hostUrl = localStorage.getItem('host') ? ("https://" + localStorage.getItem('host'))  : "";
+    var offlineRootDir = localStorage.getItem('offlineRootDir') || "";
     var RESTWS = hostUrl + "/openmrs/ws/rest";
     var RESTWS_V1 = hostUrl + "/openmrs/ws/rest/v1";
     var BAHMNI_CORE = RESTWS_V1 + "/bahmnicore";
@@ -207,6 +208,7 @@ Bahmni.Common = Bahmni.Common || {};
         LoginInformation: 'LoginInformation',
         ServerDateTimeFormat: 'YYYY-MM-DDTHH:mm:ssZZ',
         unAuthenticatedReferenceDataMap: unAuthenticatedReferenceDataMap,
-        authenticatedReferenceDataMap: authenticatedReferenceDataMap
+        authenticatedReferenceDataMap: authenticatedReferenceDataMap,
+        offlineRootDir: offlineRootDir
     };
 })();
