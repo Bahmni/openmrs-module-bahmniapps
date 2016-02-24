@@ -622,7 +622,9 @@ Bahmni.Clinical.DrugOrderViewModel = function (config, proto, encounterDate) {
     };
 
     this.setUniformDoseFraction = function() {
-        self.uniformDosingType.dose = calculateUniformDose();
+        if(self.frequencyType === "uniform") {
+            self.uniformDosingType.dose = calculateUniformDose();
+        }
     };
 
     this.getDoseAndUnits = function(){

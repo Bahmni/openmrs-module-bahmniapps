@@ -243,9 +243,7 @@ angular.module('bahmni.clinical')
                     $scope.treatment.drugNonCoded = $scope.treatment.drugNameDisplay;
                 }
 
-                if ($scope.treatment.frequencyType === "uniform") {
-                    $scope.treatment.setUniformDoseFraction();
-                }
+                $scope.treatment.setUniformDoseFraction();
 
                 var newDrugOrder = $scope.treatment;
                 setNonCodedDrugConcept($scope.treatment);
@@ -368,11 +366,11 @@ angular.module('bahmni.clinical')
 
             var edit = function (drugOrder, index) {
                 clearHighlights();
-                var treatment = drugOrder.isNewOrderSet? $scope.orderSetTreatments[index] : $scope.treatments[index];
+                var treatment = drugOrder;
                 markEitherVariableDrugOrUniformDrug(treatment);
                 treatment.isBeingEdited = true;
                 $scope.treatment = treatment.cloneForEdit(index, treatmentConfig);
-                if($scope.treatment.quantity == 0){
+                if($scope.treatment.quantity === 0){
                     $scope.treatment.quantity = null;
                     $scope.treatment.quantityEnteredManually = false;
                 }
@@ -551,17 +549,14 @@ angular.module('bahmni.clinical')
                     var drugOrderViewModel = Bahmni.Clinical.DrugOrderViewModel.createFromContract(Bahmni.Clinical.DrugOrder.create(drugOrderResponse), treatmentConfig);
                     drugOrderViewModel.orderSetUuid = orderSet.uuid;
                     drugOrderViewModel.isNewOrderSet = true;
-                    $scope.treatment.dosingInstructionType = Bahmni.Clinical.Constants.flexibleDosingInstructionsClass;
+                    drugOrderViewModel.dosingInstructionType = Bahmni.Clinical.Constants.flexibleDosingInstructionsClass;
                     if(!drugOrderViewModel.quantity){
                         drugOrderViewModel.quantity =0;
                     }
-                    drugOrderViewModel.calculateQuantityAndUnit();
                     drugOrderViewModel.calculateDurationUnit();
-                    drugOrderViewModel.calculateDurationInDays();
+                    drugOrderViewModel.calculateQuantityAndUnit();
                     drugOrderViewModel.calculateEffectiveStopDate();
-                    if (drugOrderViewModel.frequencyType === "uniform") {
-                        drugOrderViewModel.setUniformDoseFraction();
-                    }
+                    drugOrderViewModel.setUniformDoseFraction();
                     var conflictingDrugOrder = getConflictingDrugOrder(drugOrderViewModel);
                     if(!conflictingDrugOrder) {
                         drugOrderViewModel.include = true;
@@ -584,7 +579,7 @@ angular.module('bahmni.clinical')
 
             };
 
-            $scope.$on("event:checkConflictingDrugOrder", function (event, drugOrder) {
+            $scope.$on("event:includeOrderSetDrugOrder", function (event, drugOrder) {
                 var conflictingDrugOrders = [];
                 var conflictingDrugOrder = getConflictingDrugOrder(drugOrder);
                 if(conflictingDrugOrder) {

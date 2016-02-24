@@ -9,7 +9,7 @@ angular.module('bahmni.clinical')
             };
 
             $scope.checkConflictingDrug = function(drugOrder) {
-                $rootScope.$broadcast("event:checkConflictingDrugOrder", drugOrder);
+                $rootScope.$broadcast("event:includeOrderSetDrugOrder", drugOrder);
             }
 
         };
