@@ -58,8 +58,8 @@
                                concept-autocomplete
                                coded-concept-name="observation.conceptUIConfig.answersConceptName || observation.primaryObs.concept.name"
                                response-map="constructSearchResult"
+                               strict-select="true"
                                ng-class="{
-                                    'illegalValue': !observation.isValid(atLeastOneValueIsSet, conceptSetRequired),
                                     'computed-field': observation.isComputedAndEditable()
                                }"/>
                     </div>
@@ -209,8 +209,8 @@
                                concept-autocomplete
                                coded-concept-name="observation.conceptUIConfig.answersConceptName || observation.concept.name"
                                response-map="constructSearchResult"
+                               strict-select="true"
                                ng-class="{
-                                    'illegalValue': !observation.isValid(atLeastOneValueIsSet, conceptSetRequired),
                                     'computed-field': observation.isComputedAndEditable()
                                }"/>
                     </div>
