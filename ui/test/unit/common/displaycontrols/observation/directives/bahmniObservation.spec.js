@@ -9,7 +9,7 @@ describe("BahmniObservation", function () {
     beforeEach(module('bahmni.common.uiHelper'));
     beforeEach(module('bahmni.common.i18n'));
     beforeEach(module('bahmni.common.displaycontrol.observation', function ($provide) {
-        observationsService = jasmine.createSpyObj('observationsService', ['fetch', 'fetchForEncounter']);
+        observationsService = jasmine.createSpyObj('observationsService', ['fetch', 'fetchForEncounter', 'getByUuid']);
         appService = jasmine.createSpyObj('appService', ['getAppDescriptor']);
         appService.getAppDescriptor.and.returnValue({
             getConfigValue: function () {
@@ -126,5 +126,25 @@ describe("BahmniObservation", function () {
             expect(observationsService.fetch.calls.count()).toEqual(1);
             expect(observationsService.fetchForEncounter.calls.count()).toEqual(0);
         })
+
+        it("should fetch the only the specific observation if observation uuid is specified in config", function () {
+            scope.patient = {uuid: '123'};
+            scope.config = {observationUuid : "observationUuid"};
+            scope.section = {};
+            scope.enrollment = "uuid";
+            observationsService.getByUuid.and.returnValue({});
+
+            mockBackend.expectGET('../common/displaycontrols/observation/views/observationDisplayControl.html').respond("<div>dummy</div>");
+
+            var element = $compile(simpleHtml)(scope);
+            scope.$digest();
+            var compiledElementScope = element.isolateScope();
+            scope.$digest();
+
+            expect(compiledElementScope).not.toBeUndefined();
+            expect(compiledElementScope.config).not.toBeUndefined();
+            expect(observationsService.getByUuid).toHaveBeenCalledWith("observationUuid");
+            expect(observationsService.getByUuid.calls.count()).toEqual(1);
+        });
     });
 });

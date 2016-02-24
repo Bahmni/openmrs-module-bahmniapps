@@ -175,7 +175,7 @@ describe("Forms Table display control", function () {
             expected.push(formDataObj.data.results[1]);
             expected.push(formDataObj.data.results[2]);
             expect(compiledElementScope.formData).toEqual(expected);
-            expect(compiledElementScope.getEditObsData(observation).observation.encounterUuid).toEqual("encounterUuid");
+            expect(compiledElementScope.getEditObsData(observation).observation).toEqual(observation);
             expect(compiledElementScope.getEditObsData(observation).conceptSetName).toEqual("Medication log Template");
         });
 
@@ -292,7 +292,7 @@ describe("Forms Table display control", function () {
             scope.$digest();
 
             expect(compiledElementScope).not.toBeUndefined();
-            expect(compiledElementScope.getEditObsData(observation).observation.encounterUuid).toEqual(observation.encounterUuid);
+            expect(compiledElementScope.getEditObsData(observation).observation).toEqual(observation);
             expect(compiledElementScope.getEditObsData(observation).conceptSetName).toEqual(observation.concept.displayString);
             expect(compiledElementScope.getEditObsData(observation).conceptDisplayName).toEqual(observation.concept.displayString);
         })
@@ -329,6 +329,7 @@ describe("Forms Table display control", function () {
             expect(compiledElementScope.getConfigToFetchDataAndShow(observation).config.conceptNames).toEqual([observation.concept.displayString]);
             expect(compiledElementScope.getConfigToFetchDataAndShow(observation).config.encounterUuid).toEqual(observation.encounterUuid);
             expect(compiledElementScope.getConfigToFetchDataAndShow(observation).config.showGroupDateTime).toEqual(false);
+            expect(compiledElementScope.getConfigToFetchDataAndShow(observation).config.observationUuid).toEqual(observation.uuid);
         })
     });
 

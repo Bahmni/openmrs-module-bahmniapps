@@ -40,4 +40,16 @@ describe("observationsService", function () {
         });
     });
 
+    describe("fetch By Observation Uuid", function() {
+       it ("should fetch bahmni observation by uuid", function() {
+           mockBackend.expectGET('/openmrs/ws/rest/v1/bahmnicore/observations?observationUuid=observationUuid').respond({results: {uuid : "observationUuid"}});
+
+           observationsService.getByUuid("observationUuid").then(function (response) {
+               expect(response.data.results.uuid).toEqual("observationUuid");
+           });
+
+           mockBackend.flush();
+       });
+    });
+
 });
