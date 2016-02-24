@@ -167,9 +167,12 @@ describe("AddTreatmentController", function () {
                 clinicalAppConfigService: clinicalAppConfigService,
                 ngDialog: ngDialog,
                 appService: appService,
+                orderSets: [],
                 DrugService: drugService,
                 treatmentConfig: treatmentConfig
             });
+            scope.orderSetTreatments = [];
+
         })
     };
     beforeEach(initController);
@@ -1437,7 +1440,7 @@ describe("AddTreatmentController", function () {
 
         it("should reset the treatment being edited", function () {
             scope.treatments = [editTreatment, newTreatment, newTreatment];
-            rootScope.$broadcast("event:editDrugOrder", 0);
+            rootScope.$broadcast("event:editDrugOrder", editTreatment, 0);
             scope.clearForm();
             expect(isSameAs(scope.treatment, newTreatment)).toBeTruthy();
             expect(scope.treatment.isEditAllowed).toBeFalsy();
@@ -1458,7 +1461,7 @@ describe("AddTreatmentController", function () {
             var drugOrder = Bahmni.Tests.drugOrderViewModelMother.build({}, []);
             drugOrder.frequencyType = Bahmni.Clinical.Constants.dosingTypes.uniform;
             scope.treatments = [drugOrder];
-            rootScope.$broadcast("event:editDrugOrder", 0);
+            rootScope.$broadcast("event:editDrugOrder", drugOrder, 0);
             expect(scope.editDrugEntryUniformFrequency).toBeTruthy();
         });
 
@@ -1466,7 +1469,7 @@ describe("AddTreatmentController", function () {
             var drugOrder = Bahmni.Tests.drugOrderViewModelMother.build({}, []);
             drugOrder.frequencyType = Bahmni.Clinical.Constants.dosingTypes.variable;
             scope.treatments = [drugOrder];
-            rootScope.$broadcast("event:editDrugOrder", 0);
+            rootScope.$broadcast("event:editDrugOrder", drugOrder, 0);
             expect(scope.editDrugEntryVariableFrequency).toBeTruthy();
         });
     });
