@@ -255,11 +255,20 @@ concept-set {
         padding: 4px 10px;
         margin: -4px 5px 0 0;
       }
+      &.section-title-add-more{
+        padding: 10px 150px 10px 10px;
+      }
     }
     .favourite-concept-set {
       position: absolute;
       right: 4px;
       top: 4px;
+    }
+    .add-more-concept-set{
+      position: absolute;
+      top: 5px;
+      right: 37px;
+      padding: 3px 5px;
     }
   }
 }
