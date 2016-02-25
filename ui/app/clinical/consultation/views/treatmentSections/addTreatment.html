@@ -1,9 +1,10 @@
 <div class="treatment-data-container clearfix">
-    <h2 class="section-title">
-        <i class="fa fa-caret-down"></i>
+    <h2 class="section-title has-toggle" toggle="addTreatment">
+        <i class="fa fa-caret-right" ng-hide="addTreatment"></i>
+        <i class="fa fa-caret-down" ng-show="addTreatment"></i>
         <span class="section-label">{{ ::'MEDICATION_ADD_DRUG_FORM_TITLE' | translate}}</span>
     </h2>
-    <div class="order-section-container">
+    <div class="order-section-container" ng-show="addTreatment">
         <div class="Order-section-orderDrug clearfix">
             <form name="addForm" ng-class="{ 'show-invalid': formInvalid}"  ng-submit="add()" bm-form class="edit-drug-order-container">
                 <article class="form-field">
@@ -276,30 +277,38 @@
 
 
 <div class="order-set-container clearfix">
-    <h2 class="section-title">
-        <i class="fa fa-caret-down"></i>
+    <h2 class="section-title has-toggle"   toggle="addOrderSet">
+        <i class="fa fa-caret-right" ng-hide="addOrderSet"></i>
+        <i class="fa fa-caret-down" ng-show="addOrderSet"></i>
         <span class="section-label">{{ ::'MEDICATION_ADD_ORDERSET_FORM_TITLE' | translate}}</span>
     </h2>
-    <div class="order-section-container">
-        <div class="Order-section-orderDrug clearfix">
-            <section class="form-field-inline clearfix">
-                <article class="form-field">
-                    <div class="field-attribute">
-                        <label>Start Date</label>
+    <div class="order-section-container" ng-show="addOrderSet">
+        <div class="Order-section-orderDrug form clearfix">
+            <article class="form-field clearfix">
+                <div class="field-attribute">
+                    <label>Start Date</label>
+                </div>
+                <div class="field-value">
+                    <input type="date"  ng-model="newOrderSet.date"/>
+                </div>
+            </article>
+            <div class="orderSet-order-container clearfix">
+                <div ng-repeat="orderSet in ::orderSets" class="orderSet-orders clearfix">
+                    <h2 class="section-title order-set-orderAnOrderSet">
+                        {{::orderSet.name}}
+                        <div class="button-group fr">
+                            <button class="add-orderSet-btn secondary-button fl" ng-disabled="newOrderSet.uuid" ng-show="newOrderSet.uuid !== orderSet.uuid" ng-click="addOrderSet(orderSet)">Add</button>
+                            <button class="add-orderSet-btn secondary-button fl" ng-show="newOrderSet.uuid === orderSet.uuid" ng-click="removeOrderSet()">Remove</button>
+                            <div toggle="showOrderSetDetails" class="fr showOrderSet">
+                                <i class="fa fa-plus-square" ng-show="showOrderSetDetails"></i>
+                                <i class="fa fa-minus-square" ng-hide="showOrderSetDetails"></i>
+                            </div>
+
+                        </div>
+                    </h2>
+                    <div class="dashboard-section dashboard-orderSet" ng-class="{'showOrder' : !showOrderSetDetails}">
+                        <p>{{::orderSet.description}}</p>
                     </div>
-                    <div class="field-value">
-                        <input type="date"  ng-model="newOrderSet.date"/>
-                    </div>
-                </article>
-            </section>
-            <div ng-repeat="orderSet in ::orderSets">
-                <h2 class="section-title order-set-orderAnOrderSet">
-                    {{::orderSet.name}}
-                    <button class="add-drug-btn secondary-button fr" ng-disabled="newOrderSet.uuid" ng-show="newOrderSet.uuid !== orderSet.uuid" ng-click="addOrderSet(orderSet)">Add</button>
-                    <button class="add-drug-btn secondary-button fr" ng-show="newOrderSet.uuid === orderSet.uuid" ng-click="removeOrderSet()">Remove</button>
-                </h2>
-                <div class="dashboard-section dashboard-orderSet">
-                    {{::orderSet.description}}
                 </div>
             </div>
         </div>

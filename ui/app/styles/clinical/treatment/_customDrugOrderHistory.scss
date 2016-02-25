@@ -37,14 +37,14 @@
     }
     thead tr {
       border: none !important;
+      th{
+        text-align: center;
+      }
     }
-    thead tr th {
-      text-align: center;
-    }
-
     tbody tr td {
       border: none !important;
       border-top: 1px #ccc solid !important;
+      text-align: center;
     }
     table-layout: fixed;
     tr{

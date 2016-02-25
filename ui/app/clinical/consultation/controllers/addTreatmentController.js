@@ -10,6 +10,10 @@ angular.module('bahmni.clinical')
             var DateUtil = Bahmni.Common.Util.DateUtil;
             var DrugOrderViewModel = Bahmni.Clinical.DrugOrderViewModel;
 
+            $scope.showOrderSetDetails = true;
+            $scope.addTreatment = true;
+            $scope.addOrderSet =true;
+
             $scope.treatmentActionLinks = clinicalAppConfigService.getTreatmentActionLink();
 
             var preFetchDrugsForGivenConceptSet = function () {
