@@ -29,8 +29,8 @@
                     </div>
                 </div>
                 <div ng-if="containsThreeFourthPageSection(sections)" class="dashboard-sections three-fourth-page-container">
-                    <div ng-repeat="section in sections"class="three-fourth-page section-{{::$index}} ">
-                        <section ng-include="section.viewName" class="dashboard-section {{section.displayType}}"
+                    <div ng-repeat="section in sections"class="three-fourth-page section-{{::$index}} {{section.displayType}}">
+                        <section ng-include="section.viewName" class="dashboard-section"
                                  ng-class="{'visible-print': section.showOnlyInPrint}"></section>
                     </div>
                 </div>
