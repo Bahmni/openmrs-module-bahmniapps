@@ -1,8 +1,7 @@
 angular.module('bahmni.common.conceptSet')
     .directive('concept', ['RecursionHelper', 'spinner', 'conceptSetService', '$filter',
         function (RecursionHelper, spinner, conceptSetService, $filter) {
-        var link = function (scope, element, attributes) {
-            var conceptMapper = new Bahmni.Common.Domain.ConceptMapper();
+        var link = function (scope, element) {
 
             scope.now = moment().format("YYYY-MM-DD hh:mm:ss");
             scope.showTitle = scope.showTitle === undefined ? true : scope.showTitle;
@@ -40,20 +39,6 @@ angular.module('bahmni.common.conceptSet')
                     return observation.value + ' (' + $filter('bahmniDate')(observation.date) + ")";
                 }).join(", ");
             };
-            scope.selectOptions = function (codedConcept) {
-                var answers = _.uniq(codedConcept.answers, _.property('uuid')).map(conceptMapper.map);
-                return {
-                    data: answers,
-                    query: function (options) {
-                        return options.callback({results: $filter('filter')(answers, {name: options.term})});
-                    },
-                    allowClear: true,
-                    placeholder: 'Select',
-                    formatResult: _.property('displayString'),
-                    formatSelection: _.property('displayString'),
-                    id: _.property('uuid')
-                };
-            };
 
             scope.toggleSection = function () {
                 scope.collapse = !scope.collapse;
@@ -75,21 +60,6 @@ angular.module('bahmni.common.conceptSet')
                 scope.$root.$broadcast("event:observationUpdated-" + scope.conceptSetName, scope.observation.concept.name);
             }
 
-            scope.constructSearchResult = function(concept, searchString) {
-                var matchingName = null;
-                if (concept.name.name.toLowerCase().indexOf(searchString.toLowerCase()) != 0) {
-                    matchingName = _.find(_.map(concept.names, 'name'), function (name) {
-                        return (name != concept.name.name) && name.search(new RegExp(searchString, "i")) !== -1
-                    });
-                }
-                return {
-                    label: matchingName ? matchingName + " => " + concept.name.name : concept.name.name,
-                    value: concept.name.name,
-                    concept: concept,
-                    uuid: concept.uuid,
-                    name: concept.name.name
-                }
-            }
         };
 
         var compile = function (element) {
