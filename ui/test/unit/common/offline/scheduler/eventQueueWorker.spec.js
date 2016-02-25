@@ -19,7 +19,7 @@ describe('eventQueueWorker', function () {
         _eventQueue = eventQueue;
     }));
 
-    it("should start syncing events", function(done) {
+    xit("should start syncing events", function(done) {
         var datasetup = function() {
             return Q.all([
                 _eventQueue.addToEventQueue({uuid: 1}),
