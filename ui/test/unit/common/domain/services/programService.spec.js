@@ -355,8 +355,8 @@ describe('programService', function () {
         programService.deletePatientState(patientProgramUuid, patientStateUuid).success(function (response) {
             expect(response.reason).toEqual("User deleted the state.");
         });
-        mockBackend.when('DELETE', Bahmni.Common.Constants.programEnrollPatientUrl + '/somePatientProgramUuid/state/someStateUuid').respond(function (method, url) {
-            expect(url).toEqual(Bahmni.Common.Constants.programEnrollPatientUrl + "/" + patientProgramUuid + "/state/" + patientStateUuid);
+        mockBackend.when('DELETE', Bahmni.Common.Constants.programStateDeletionUrl + '/somePatientProgramUuid/state/someStateUuid').respond(function (method, url) {
+            expect(url).toEqual(Bahmni.Common.Constants.programStateDeletionUrl + "/" + patientProgramUuid + "/state/" + patientStateUuid);
             return [200, {"reason": "User deleted the state."}, {}];
 
         });

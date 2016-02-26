@@ -78,6 +78,7 @@ Bahmni.Common = Bahmni.Common || {};
         dhisAllTasksUrl: RESTWS_V1 + "/dhis/tasks",
         programUrl: RESTWS_V1 + "/program",
         programEnrollPatientUrl: RESTWS_V1 + "/bahmniprogramenrollment",
+        programStateDeletionUrl: RESTWS_V1 + "/programenrollment",
         programEnrollmentDefaultInformation: "default",
         programEnrollmentFullInformation: "full",
         programAttributeTypes: RESTWS_V1 + "/programattributetype",
