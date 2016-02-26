@@ -78,7 +78,7 @@ describe("EncounterTransactionMapper", function () {
 
             var encounterData = mapper.map(consulation, patient, "logged-in-location-uuid", {encounterDate : "2015-04-01"}, defaultRetrospectiveVisitType, null, false, patientProgramUuid);
 
-            expect(encounterData.patientProgramUuid).toBe(patientProgramUuid);
+            expect(encounterData.context.patientProgramUuid).toBe(patientProgramUuid);
 
         });
     });

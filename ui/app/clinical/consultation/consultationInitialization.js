@@ -3,7 +3,7 @@
 angular.module('bahmni.clinical').factory('consultationInitialization',
     ['$q', 'diagnosisService', '$rootScope', 'encounterService', 'sessionService', 'configurations', '$bahmniCookieStore', 'retrospectiveEntryService',
         function ($q, diagnosisService, $rootScope, encounterService, sessionService, configurations, $bahmniCookieStore, retrospectiveEntryService) {
-            return function (patientUuid, encounterUuid, programUuid) {
+            return function (patientUuid, encounterUuid, programUuid, enrollment) {
 
                 if(encounterUuid == 'active') {
                     encounterUuid = undefined;
@@ -43,7 +43,8 @@ angular.module('bahmni.clinical').factory('consultationInitialization',
                             includeAll: Bahmni.Common.Constants.includeAllObservations,
                             encounterDateTimeFrom: encounterDate,
                             encounterDateTimeTo: encounterDate,
-                            encounterTypeUuids: [encounterType.uuid]
+                            encounterTypeUuids: [encounterType.uuid],
+                            patientProgramUuid: enrollment
                         }).then(function (encounterTransactionResponse) {
                             return consultationMapper.map(encounterTransactionResponse.data);
                         });

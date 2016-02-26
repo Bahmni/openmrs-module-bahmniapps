@@ -59,7 +59,7 @@ angular.module('consultation')
                 }
             })
             .state('patient', {
-                url: '/:configName/patient/:patientUuid?encounterUuid,programUuid',
+                url: '/:configName/patient/:patientUuid?encounterUuid,programUuid,enrollment',
                 abstract: true,
                 data: {
                     backLinks: [patientSearchBackLink]
@@ -119,7 +119,7 @@ angular.module('consultation')
                 }
             })
             .state('patient.dashboard.show', {
-                url: '/dashboard?dateEnrolled,dateCompleted,enrollment',
+                url: '/dashboard?dateEnrolled,dateCompleted',
                 params: {
                     dashboardCachebuster: null
                 },
@@ -354,9 +354,6 @@ angular.module('consultation')
                     retrospectiveIntialization: function(retrospectiveEntryService){
                         return retrospectiveEntryService.initializeRetrospectiveEntry();
                     }
-                    //consultationContext: function (consultationInitialization, initialization, $stateParams) {
-                    //    return consultationInitialization($stateParams.patientUuid, $stateParams.encounterUuid, $stateParams.programUuid);
-                    //}
                 }
             })
             .state('patient.patientProgram.show', {
