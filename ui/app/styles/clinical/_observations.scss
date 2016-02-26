@@ -146,6 +146,10 @@ form .vitals .form-field .field-value {
     }
     .accept-btn {
       margin-top: 6px;
+      &:focus{
+        border:2px solid #007fff;
+        outline:none;
+      }
     }
   }
   .select2-drop-active, .select2-container-active .select2-choice, .select2-container-active .select2-choices, .select2-drop.select2-drop-above.select2-drop-active {
