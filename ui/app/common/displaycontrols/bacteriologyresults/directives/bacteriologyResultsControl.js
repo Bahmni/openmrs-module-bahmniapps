@@ -38,6 +38,7 @@ angular.module('bahmni.common.displaycontrol.bacteriologyresults')
                 };
 
                 $scope.editBacteriologySample = function(specimen){
+
                     var configForPrompt = appService.getAppDescriptor().getConfigValue('showSaveConfirmDialog');
                     var promise = consultationInitialization($scope.patient.uuid, null, null).then(function(consultationContext) {
                         $scope.consultation = consultationContext;
@@ -71,6 +72,10 @@ angular.module('bahmni.common.displaycontrol.bacteriologyresults')
                 };
 
                 $scope.saveBacteriologySample = function(specimen){
+                    specimen.hasIllegalDateCollected = !specimen.dateCollected;
+                    specimen.hasIllegalType = !specimen.type;
+                    specimen.hasIllegalTypeFreeText = !specimen.typeFreeText;
+                    var observationFilter = new Bahmni.Common.Domain.ObservationFilter();
                     if (specimen.isDirty()){
                         messagingService.showMessage('formError', "{{'CLINICAL_FORM_ERRORS_MESSAGE_KEY' | translate }}");
                     }else{

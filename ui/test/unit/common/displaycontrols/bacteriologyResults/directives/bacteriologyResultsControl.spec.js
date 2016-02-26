@@ -2,17 +2,18 @@
 
 describe('Bacteriology Results Control', function () {
     var $compile,
-        mockBackend, q,
+        mockBackend, q,messagingService,
         scope,deferred,
         section,element,_bacteriologyResultsService, appService, _spinner,mockedBacteriologyTabInitialization,patient={uuid:"patientUuid"},
         simpleHtml = '<bacteriology-results-control id="dashboard-drug-order-details" patient="patient" section="section"></bacteriology-results-control>',
         mockDialog,mockConsultationInitialization;
 
+    var messageServiceMock = jasmine.createSpyObj('messagingService', ['showMessage']);
     beforeEach(module('bahmni.common.bacteriologyresults'));
     beforeEach(module('bahmni.common.appFramework'));
     beforeEach(module('bahmni.common.displaycontrol.bacteriologyresults'));
     beforeEach(module(function ($provide) {
-        _bacteriologyResultsService = jasmine.createSpyObj('bacteriologyResultsService', ['getBacteriologyResults']);
+        _bacteriologyResultsService = jasmine.createSpyObj('bacteriologyResultsService', ['getBacteriologyResults', 'saveBacteriologyResults']);
         appService = jasmine.createSpyObj('appService', ['getAppDescriptor']);
         var mockAppDescriptor = jasmine.createSpyObj('appDescriptor', ['getConfigValue']);
         appService.getAppDescriptor.and.returnValue(mockAppDescriptor);
@@ -40,7 +41,7 @@ describe('Bacteriology Results Control', function () {
         $provide.value('spinner', _spinner);
         $provide.value('ngDialog', mockDialog);
         $provide.value('consultationInitialization', mockConsultationInitialization);
-        $provide.value('messagingService', {});
+        $provide.value('messagingService', messageServiceMock);
         $provide.value('$translate', {});
     }));
 
@@ -70,5 +71,32 @@ describe('Bacteriology Results Control', function () {
             var compiledElementScope = compileScope();
             expect(compiledElementScope.title).toBe("bacteriology results");
         });
+    });
+    describe('save specimens', function() {
+       it("should validate form before saving", function() {
+           var specimen = {
+               dateCollected: "2016-02-25",
+               existingObs: "9a0827e3-de02-4b68-bfc8-3150842d8f7f",
+               identifier: null,
+               report: {},
+               sample: {},
+               sampleResult: [],
+               showTypeFreeText: false,
+               specimenCollectionDate: "2016-02-25",
+               specimenId: null,
+               specimenSource: "Lymph node",
+               type: null,
+               typeFreeText: null,
+               typeObservation: Bahmni.ConceptSet.SpecimenTypeObservation
+
+           };
+           var savableSpecimen = new Bahmni.Clinical.Specimen(specimen);
+           var compiledElementScope = compileScope();
+
+           compiledElementScope.saveBacteriologySample(savableSpecimen);
+           expect(savableSpecimen.hasIllegalType).toBeTruthy();
+           expect(savableSpecimen.hasIllegalDateCollected).toBeFalsy();
+           expect(messageServiceMock.showMessage).toHaveBeenCalled();
+       })
     });
 });

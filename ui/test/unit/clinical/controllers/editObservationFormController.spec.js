@@ -10,6 +10,7 @@ describe("EditObservationFormController", function () {
         scope = $rootScope.$new();
         rootScope = $rootScope;
         scope.shouldPromptBrowserReload = true;
+        scope.resetContextChangeHandler = function()  {};
         controller = $controller;
         appDescriptor = jasmine.createSpyObj('appDescriptor', ['getConfigValue']);
         appService = jasmine.createSpyObj('appService', ['getAppDescriptor']);

@@ -2,7 +2,7 @@
 
 describe("ensure that the directive edit-observation works properly", function () {
 
-    var scope, rootScope, filter, httpBackend, compile, q, encounterService, spinner, state, ngDialog;
+    var scope, rootScope, filter, httpBackend, compile, q, encounterService, spinner, state, ngDialog, contextChangeHandler;
     var html = '<edit-observation  concept-set-name="History and Examinations" observation="observation" ></edit-observation>';
 
     var obsDate = new Date();
@@ -46,6 +46,7 @@ describe("ensure that the directive edit-observation works properly", function (
         $provide.value('spinner', _spinner);
 
         var encounterServiceMock = jasmine.createSpyObj('encounterService', ['findByEncounterUuid', 'create']);
+      contextChangeHandler = jasmine.createSpyObj('contextChangeHandler', ['execute']);
         var encounterPromise = specUtil.createServicePromise('findByEncounterUuid');
         encounterPromise.then = function (successFn) {
             successFn({data:{
@@ -83,9 +84,11 @@ describe("ensure that the directive edit-observation works properly", function (
             return encounterPromise;
 
         };
+        contextChangeHandler.execute.and.returnValue({allow: true} );
         encounterServiceMock.findByEncounterUuid.and.returnValue(encounterPromise);
 
         $provide.value('$state', state);
+        $provide.value('contextChangeHandler', contextChangeHandler);
         $provide.value('ngDialog', ngDialog);
         $provide.value('messagingService', messageServiceMock);
         $provide.value('encounterService', encounterServiceMock);
@@ -159,6 +162,30 @@ describe("ensure that the directive edit-observation works properly", function (
 
         expect(compiledScope.encounter.observations[0].groupMembers[0].groupMembers.length).toBe(0);
         expect(compiledScope.encounter.observations[0].groupMembers[1].groupMembers.length).toBe(1);
+    });
+
+    it("should validate form on save ", function() {
+
+        contextChangeHandler.execute.and.returnValue({allow:false, errorMessage: "Enter mandatory fields"} );
+        scope = rootScope.$new();
+        scope.observation = _.extend(observation, {uuid: 'child2-obs-uuid'});
+
+        httpBackend.expectGET("../common/obs/views/editObservation.html").respond("<div>dummy</div>");
+
+        var compiledEle = compile(html)(scope);
+
+        scope.$digest();
+        httpBackend.flush();
+
+        var compiledScope = compiledEle.isolateScope();
+        scope.$digest();
+
+        spyOn(rootScope, '$broadcast');
+        compiledScope.save();
+
+        expect(rootScope.$broadcast).toHaveBeenCalledWith('event:errorsOnForm');
+        expect(messageServiceMock.showMessage).toHaveBeenCalledWith("formError", "Enter mandatory fields");
+
     })
 
 });
