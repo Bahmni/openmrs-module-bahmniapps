@@ -9,10 +9,10 @@
     var constructSearchResult = function (concept, searchString) {
         var matchingName = null;
         var conceptName = concept.name.name || concept.name;
-        if (conceptName.toLowerCase().indexOf(searchString.toLowerCase()) != 0) {
+        if (_.lowerCase(conceptName).indexOf(_.lowerCase(searchString)) != 0) {
             var synonyms = _.map(concept.names, 'name');
             matchingName = _.find(synonyms, function (name) {
-                return (name != conceptName) && name.search(new RegExp(searchString, "i")) !== -1
+                return (name !== conceptName) && name.search(new RegExp(searchString, "i")) !== -1
             });
         }
         return {
@@ -26,10 +26,10 @@
 
     var searchWithDefaultConcept = function (request, response, scope) {
         var answers = getAnswers(scope.defaultConcept);
-        var searchTerm =  request.term.trim().toLowerCase();
+        var searchTerm = _.lowerCase(request.term.trim());
         var search = function (answer) {
-            var answerName = answer.name && answer.name.toLowerCase();
-            var defaultConceptName = scope.defaultConcept.name && scope.defaultConcept.name.toLowerCase();
+            var answerName = _.lowerCase(answer.name);
+            var defaultConceptName = _.lowerCase(scope.defaultConcept.name);
             return _.includes(answerName, searchTerm) && (answerName !== defaultConceptName);
         };
         var responseMap = function (matchingAnswer) {
@@ -76,13 +76,13 @@
         var link = function (scope, element, attrs, ngModelCtrl) {
             scope.source = source;
             var minLength = scope.minLength || 2;
-            var previousValue;
+            var previousValue = scope.previousValue;
 
             var validator = function (searchTerm) {
                 if (!scope.strictSelect) {
                     return;
                 }
-                if (_.isEmpty(searchTerm) || searchTerm === previousValue || _.isUndefined(previousValue)) {
+                if (_.isEmpty(searchTerm) || searchTerm === previousValue) {
                     element.removeClass('illegalValue');
                     return;
                 }
@@ -135,7 +135,8 @@
                 codedConceptName: '=',
                 minLength: '=',
                 blurOnSelect: '=',
-                strictSelect: '=?'
+                strictSelect: '=?',
+                previousValue: '='
             }
         }
     };
