@@ -75,11 +75,29 @@ describe('Patient resource', function () {
     it('Should call url for search', function () {
         var query = 'john';
         mockOfflineService();
-        var results = patientService.search(query);
+        var identifier = '20000',
+            identifierPrefix = 'GAN';
+        var addressFieldName = 'address2';
+        var addressFieldValue = 'kaliganj';
+        var customAttributeValue = 'Student';
+        var customAttributeFields = ['occupation','education'];
+        var programAttributeFieldName = 'REGISTRATION NO';
+        var programAttributeFieldValue = '1234';
+        var results = patientService.search(query, identifier, identifierPrefix, addressFieldName, addressFieldValue, customAttributeValue, 0,
+            customAttributeFields, programAttributeFieldName, programAttributeFieldValue);
 
         expect(mockHttp.get).toHaveBeenCalled();
         expect(mockHttp.get.calls.mostRecent().args[0]).toBe(Bahmni.Common.Constants.bahmniSearchUrl + "/patient");
         expect(mockHttp.get.calls.mostRecent().args[1].params.q).toBe(query);
+        expect(mockHttp.get.calls.mostRecent().args[1].params.identifier).toBe(identifier);
+        expect(mockHttp.get.calls.mostRecent().args[1].params.identifierPrefix).toBe(identifierPrefix);
+        expect(mockHttp.get.calls.mostRecent().args[1].params.addressFieldName).toBe(addressFieldName);
+        expect(mockHttp.get.calls.mostRecent().args[1].params.addressFieldValue).toBe(addressFieldValue);
+        expect(mockHttp.get.calls.mostRecent().args[1].params.customAttribute).toBe(customAttributeValue);
+        expect(mockHttp.get.calls.mostRecent().args[1].params.startIndex).toBe(0);
+        expect(mockHttp.get.calls.mostRecent().args[1].params.patientAttributes).toBe(customAttributeFields);
+        expect(mockHttp.get.calls.mostRecent().args[1].params.programAttributeFieldName).toBe(programAttributeFieldName);
+        expect(mockHttp.get.calls.mostRecent().args[1].params.programAttributeFieldValue).toBe(programAttributeFieldValue);
         expect(results.$$state.value.name).toBe('john');
 
     });
