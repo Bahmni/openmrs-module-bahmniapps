@@ -1,24 +1,82 @@
-'use strict';
+(function () {
+    'use strict';
 
-angular.module('bahmni.common.uiHelper')
-    .directive('conceptAutocomplete', function ($parse, $http) {
-        var link = function (scope, element, attrs, ngModelCtrl) {
-            var responseMap = scope.responseMap();
-            var source = function (request) {
-                var params = {
-                    q: request.term,
-                    memberOf: scope.conceptSetUuid,
-                    answerTo: scope.codedConceptName,
-                    v: "custom:(uuid,name,names:(name))"
-                };
-                if (params.answerTo) {
-                    params.question = params.answerTo;
-                    params.s = "byQuestion";
-                }
-                return $http.get(Bahmni.Common.Constants.conceptUrl, {params: params});
+    var getAnswers = function (codedConcept) {
+        var conceptMapper = new Bahmni.Common.Domain.ConceptMapper();
+        return _.uniqBy(codedConcept.answers, _.property('uuid')).map(conceptMapper.map);
+    };
+
+    var constructSearchResult = function (concept, searchString) {
+        var matchingName = null;
+        var conceptName = concept.name.name || concept.name;
+        if (_.lowerCase(conceptName).indexOf(_.lowerCase(searchString)) != 0) {
+            var synonyms = _.map(concept.names, 'name');
+            matchingName = _.find(synonyms, function (name) {
+                return (name !== conceptName) && name.search(new RegExp(searchString, "i")) !== -1
+            });
+        }
+        return {
+            label: matchingName ? matchingName + " => " + conceptName : conceptName,
+            value: conceptName,
+            concept: concept,
+            uuid: concept.uuid,
+            name: conceptName
+        }
+    };
+
+    var searchWithDefaultConcept = function (request, response, scope) {
+        var answers = getAnswers(scope.defaultConcept);
+        var searchTerm = _.lowerCase(request.term.trim());
+        var search = function (answer) {
+            var answerName = _.lowerCase(answer.name);
+            var defaultConceptName = _.lowerCase(scope.defaultConcept.name);
+            return _.includes(answerName, searchTerm) && (answerName !== defaultConceptName);
+        };
+        var responseMap = function (matchingAnswer) {
+            return constructSearchResult(matchingAnswer, searchTerm);
+        };
+        var results = _(answers)
+            .filter(search)
+            .map(responseMap)
+            .value();
+
+        response(results);
+    };
+
+    var searchWithGivenConcept = function (request, response, scope, attrs) {
+        scope.source({
+            elementId: attrs.id,
+            term: request.term,
+            elementType: attrs.type,
+            conceptSetUuid: scope.conceptSetUuid,
+            codedConceptName: scope.codedConceptName
+        }).then(function (resp) {
+            return resp.data.results.map(function (concept) {
+                return constructSearchResult(concept, request.term.trim());
+            });
+        }).then(response);
+    };
+
+    var conceptAutocomplete = function ($parse, $http) {
+
+        var source = function (request) {
+            var params = {
+                q: request.term,
+                memberOf: request.conceptSetUuid,
+                answerTo: request.codedConceptName,
+                v: "custom:(uuid,name,names:(name))"
             };
+            if (params.answerTo) {
+                params.question = params.answerTo;
+                params.s = "byQuestion";
+            }
+            return $http.get(Bahmni.Common.Constants.conceptUrl, {params: params});
+        };
+
+        var link = function (scope, element, attrs, ngModelCtrl) {
+            scope.source = source;
             var minLength = scope.minLength || 2;
-            var previousValue;
+            var previousValue = scope.previousValue;
 
             var validator = function (searchTerm) {
                 if (!scope.strictSelect) {
@@ -35,12 +93,11 @@ angular.module('bahmni.common.uiHelper')
                 autofocus: true,
                 minLength: minLength,
                 source: function (request, response) {
-                    source({elementId: attrs.id, term: request.term, elementType: attrs.type}).then(function (resp) {
-                        var results = resp.data.results.map(function (concept) {
-                            return responseMap ? responseMap(concept, request.term.trim()) : concept;
-                        });
-                        response(results);
-                    });
+                    if (scope.codedConceptName || !scope.defaultConcept) {
+                        searchWithGivenConcept(request, response, scope, attrs);
+                    } else {
+                        searchWithDefaultConcept(request, response, scope);
+                    }
                 },
                 select: function (event, ui) {
                     scope.$apply(function (scope) {
@@ -73,12 +130,16 @@ angular.module('bahmni.common.uiHelper')
             link: link,
             require: 'ngModel',
             scope: {
+                defaultConcept: '=',
                 conceptSetUuid: '=',
                 codedConceptName: '=',
                 minLength: '=',
                 blurOnSelect: '=',
-                responseMap: '&',
-                strictSelect: '=?'
+                strictSelect: '=?',
+                previousValue: '='
             }
         }
-    });
+    };
+
+    angular.module('bahmni.common.uiHelper').directive('conceptAutocomplete', conceptAutocomplete);
+})();

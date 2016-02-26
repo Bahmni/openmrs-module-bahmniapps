@@ -56,8 +56,9 @@
                                ng-disabled="observation.disabled"
                                ng-model="observation.primaryObsAutocompleteValue"
                                concept-autocomplete
-                               coded-concept-name="observation.conceptUIConfig.answersConceptName || observation.primaryObs.concept.name"
-                               response-map="constructSearchResult"
+                               previous-value="observation.primaryObsAutocompleteValue"
+                               coded-concept-name="observation.conceptUIConfig.answersConceptName"
+                               default-concept="observation.primaryObs.concept"
                                strict-select="true"
                                ng-class="{
                                     'computed-field': observation.isComputedAndEditable()
@@ -201,13 +202,14 @@
                         </textarea>
                     </div>
 
-
                     <div ng-switch-when="autocomplete">
                         <input ng-change="handleUpdate()"
                                ng-disabled="observation.disabled"
                                ng-model="observation.autocompleteValue"
                                concept-autocomplete
-                               coded-concept-name="observation.conceptUIConfig.answersConceptName || observation.concept.name"
+                               previous-value="observation.autocompleteValue"
+                               coded-concept-name="observation.conceptUIConfig.answersConceptName"
+                               default-concept="observation.concept"
                                response-map="constructSearchResult"
                                strict-select="true"
                                ng-class="{
