@@ -37,11 +37,14 @@ angular
                     initialize: function (initialization, offlineSyncInitialization) {
                         return initialization(offlineSyncInitialization);
                     },
-                    offlineSyncInitialization: function (offlineSyncInitialization, offlineDb) {
-                        return offlineSyncInitialization(offlineDb);
+                    offlineSyncInitialization: function (offlineSyncInitialization, offlineDb, offlineReferenceDataInitialization) {
+                        return offlineSyncInitialization(offlineDb, offlineReferenceDataInitialization);
                     },
                     offlineRegistrationInitialization: function (offlineRegistrationInitialization, offlineDb) {
                         return offlineRegistrationInitialization(offlineDb);
+                    },
+                    offlineReferenceDataInitialization: function(offlineReferenceDataInitialization, offlineDb){
+                        return offlineReferenceDataInitialization(offlineDb, false);
                     }
                 }
             })
@@ -58,11 +61,14 @@ angular
                     initialize: function (initialization, offlineSyncInitialization) {
                         return initialization(offlineSyncInitialization);
                     },
-                    offlineSyncInitialization: function (offlineSyncInitialization, offlineDb) {
-                        return offlineSyncInitialization(offlineDb);
+                    offlineSyncInitialization: function (offlineSyncInitialization, offlineDb, offlineReferenceDataInitialization) {
+                        return offlineSyncInitialization(offlineDb, offlineReferenceDataInitialization);
                     },
                     offlineRegistrationInitialization: function (offlineRegistrationInitialization, offlineDb) {
                         return offlineRegistrationInitialization(offlineDb);
+                    },
+                    offlineReferenceDataInitialization: function(offlineReferenceDataInitialization, offlineDb){
+                        return offlineReferenceDataInitialization(offlineDb, false);
                     }
                 }
             })
@@ -79,11 +85,14 @@ angular
                     initialize: function (initialization, offlineSyncInitialization) {
                         return initialization(offlineSyncInitialization);
                     },
-                    offlineSyncInitialization: function (offlineSyncInitialization, offlineDb) {
-                        return offlineSyncInitialization(offlineDb);
+                    offlineSyncInitialization: function (offlineSyncInitialization, offlineDb, offlineReferenceDataInitialization) {
+                        return offlineSyncInitialization(offlineDb, offlineReferenceDataInitialization);
                     },
                     offlineRegistrationInitialization: function (offlineRegistrationInitialization, offlineDb) {
                         return offlineRegistrationInitialization(offlineDb);
+                    },
+                    offlineReferenceDataInitialization: function(offlineReferenceDataInitialization, offlineDb){
+                        return offlineReferenceDataInitialization(offlineDb, false);
                     }
                 }
             })

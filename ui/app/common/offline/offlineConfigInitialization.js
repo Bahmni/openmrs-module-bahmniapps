@@ -35,11 +35,10 @@ angular.module('bahmni.common.offline')
                                 x++;
                                 if(x ==length)
                                     deferred.resolve({});
-                                return $q.when({});
                             });
-
                         });
-                    })
+                    });
+                    return deferred.promise;
                 }
             };
         }

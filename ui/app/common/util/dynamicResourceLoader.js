@@ -6,7 +6,7 @@ Bahmni.Common.Util.DynamicResourceLoader = (function () {
         includeJs: function (script, isOfflineApp) {
             var element = document.createElement('script');
             if(isOfflineApp) {
-                var file = new Blob([script], {type: 'js'});
+                var file = new Blob([script], {type: 'text/javascript'});
                 var url = URL.createObjectURL(file);
                 element.setAttribute('src', url);
             }

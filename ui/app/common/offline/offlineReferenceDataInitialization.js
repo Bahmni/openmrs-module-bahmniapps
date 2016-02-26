@@ -11,7 +11,8 @@ angular.module('bahmni.common.offline')
                     }
                     var referenceDataMap;
                     referenceDataMap = isAuthenticated ?
-                                                Bahmni.Common.Constants.authenticatedReferenceDataMap :
+                                                angular.extend(Bahmni.Common.Constants.authenticatedReferenceDataMap,
+                                                    Bahmni.Common.Constants.unAuthenticatedReferenceDataMap) :
                                                 Bahmni.Common.Constants.unAuthenticatedReferenceDataMap;
                     var length = Object.keys(referenceDataMap).length;
                     var x = 0;
@@ -31,16 +32,17 @@ angular.module('bahmni.common.offline')
                                 req.headers.Accept = 'text/plain';
                             }
                              $http(req).then(function (response) {
+                                x++;
                                 if(response.status == 200) {
                                     var eTag = response.headers().etag;
                                     return offlineDbService.insertReferenceData(referenceData, response.data, eTag).then(function(){
-                                        x++;
-                                        x ==length && deferred.resolve({});
+                                        if(x == length)
+                                            deferred.resolve({});
                                     });
                                 }
-                            }).catch(function(result){
+                            }).catch(function(){
                                 x++;
-                                if(x ==length)
+                                if(x == length)
                                     deferred.resolve({});
                             });
                         });

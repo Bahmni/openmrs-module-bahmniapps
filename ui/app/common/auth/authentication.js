@@ -39,10 +39,7 @@ angular.module('authentication')
         var createSession = function(username, password){
             var deferrable = $q.defer();
 
-            if(offlineApp && offlineService.getItem(authenticationResponse)){
-                deferrable.resolve(offlineService.getItem(authenticationResponse));
-            } else {
-                getAuthFromServer(username, password).success(function(data) {
+            getAuthFromServer(username, password).success(function(data) {
                     if(offlineApp) {
                         if(data.authenticated == true) {
                             offlineService.setItem(authenticationResponse, data);
@@ -50,9 +47,12 @@ angular.module('authentication')
                     }
                     deferrable.resolve(data);
                 }).error(function(){
-                    deferrable.reject('LOGIN_LABEL_LOGIN_ERROR_MESSAGE_KEY');
+                    if(offlineApp && offlineService.getItem(authenticationResponse)){
+                        deferrable.resolve(offlineService.getItem(authenticationResponse));
+                    }else {
+                        deferrable.reject('LOGIN_LABEL_LOGIN_ERROR_MESSAGE_KEY');
+                    }
                 });
-            }
             return deferrable.promise;
         };
 
