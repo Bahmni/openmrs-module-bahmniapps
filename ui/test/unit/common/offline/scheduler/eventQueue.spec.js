@@ -1,6 +1,6 @@
 'use strict';
 
-xdescribe('eventQueue', function () {
+describe('eventQueue', function () {
     var eventQueueService;
 
     beforeEach(module('bahmni.common.offline'));
