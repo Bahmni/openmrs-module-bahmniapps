@@ -30,7 +30,7 @@
                             <input type="text" id="registrationNumber" ng-model="patient.registrationNumber"
                                    placeholder="{{ ::'REGISTRATION_LABEL_NUMBER' | translate}}" non-blank="patient.hasOldIdentifier || !hasIdentifierSources()" pattern-validate
                                    ng-change="patient.generateIdentifier()" ng-show="patient.hasOldIdentifier || !hasIdentifierSources()" focus-on="hasOldIdentifier">
-                            <div ng-show="::hasIdentifierSources()">
+                            <div ng-show="::hasIdentifierSources()" class="fl">
                                 <div class="field-attribute hasOldIdentifier-field-attribute">
                                     <label for="hasOldIdentifier" class="control-label">{{::'REGISTRATION_LABEL_ENTER_ID' | translate}}</label>
                                 </div>
