@@ -161,6 +161,7 @@
             '/bahmni/common/concept-set/models/conceptSetSection.js',
             '/bahmni/common/concept-set/mappers/observationMapper.js',
             '/bahmni/common/concept-set/services/conceptSetServices.js',
+            '/bahmni/common/concept-set/services/conceptService.js',
             '/bahmni/common/concept-set/services/conceptSetUiConfigService.js',
             '/bahmni/common/ui-helper/filters/thumbnail.js',
             '/bahmni/common/ui-helper/filters/dateFilters.js',
