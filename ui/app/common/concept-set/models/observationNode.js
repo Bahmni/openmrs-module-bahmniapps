@@ -236,7 +236,8 @@ Bahmni.ConceptSet.ObservationNode.prototype = {
         if (conceptUIConfig.multiselect) return "multiselect";
         if (conceptUIConfig.buttonSelect) return "buttonselect";
         if (conceptUIConfig.autocomplete) return "autocomplete";
-        return "dropdown";
+        if (conceptUIConfig.dropdown) return "dropdown";
+        return "buttonselect";
     },
 
     isHtml5InputDataType: function () {
