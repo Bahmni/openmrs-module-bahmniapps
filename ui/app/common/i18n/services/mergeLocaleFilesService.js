@@ -14,11 +14,19 @@ angular.module('bahmni.common.i18n')
                 var fileURL = options.app + "/locale_" + options.key + ".json";
 
 
-                var loadBahmniTranslations = function(){
-                    return loadFile(baseLocaleUrl + fileURL);
+                var loadBahmniTranslations = function () {
+                    return loadFile(baseLocaleUrl + fileURL).then(function (result) {
+                        return result;
+                    }, function () {
+                        return;
+                    });
                 };
-                var loadCustomTranslations= function(){
-                    return loadFile(customLocaleUrl + fileURL);
+                var loadCustomTranslations = function () {
+                    return loadFile(customLocaleUrl + fileURL).then(function (result) {
+                        return result;
+                    }, function () {
+                        return;
+                    });
                 };
 
                 var mergeTranslations = function(result){

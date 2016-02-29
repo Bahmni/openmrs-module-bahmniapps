@@ -34,7 +34,7 @@ describe('mergeLocaleFilesService', function () {
         var promise = mergeLocaleFilesService({app: 'clinical', shouldMerge: true, key: 'en'});
 
         promise.then(function(response) {
-            expect(response).toEqual(customFile);
+            expect(response.data).toEqual(customFile);
             done();
         });
     });
@@ -50,7 +50,7 @@ describe('mergeLocaleFilesService', function () {
         var promise = mergeLocaleFilesService({app: 'clinical', shouldMerge: false, key: 'en'});
 
         promise.then(function(response) {
-            expect(response).toEqual([ baseFile, customFile ]);
+            expect([response[0].data, response[1].data]).toEqual([ baseFile, customFile ]);
             done();
         });
     });
