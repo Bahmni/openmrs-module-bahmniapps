@@ -27,13 +27,6 @@
         });
     };
 
-    var template = '<select \
-                        ng-options="answer as answer.name for answer in answers"\
-                        ng-change="onChange()"\
-                        ng-model="model">\
-                        <option value="">Choose Answer</option>\
-                    </select>';
-
     var conceptDropdown = function ($http) {
         var source = function (request) {
             var params = {
@@ -80,7 +73,7 @@
                 defaultConcept: '=',
                 onChange: '&'
             },
-            template: template
+            templateUrl: '../common/uicontrols/concept-dropdown/views/conceptDropdown.html'
         }
     };
 
