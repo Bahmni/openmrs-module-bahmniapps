@@ -1,6 +1,6 @@
 angular.module('bahmni.common.conceptSet')
-    .directive('concept', ['RecursionHelper', 'spinner', 'conceptSetService', '$filter',
-        function (RecursionHelper, spinner, conceptSetService, $filter) {
+    .directive('concept', ['RecursionHelper', 'spinner', '$filter',
+        function (RecursionHelper, spinner, $filter) {
         var link = function (scope, element) {
 
             scope.now = moment().format("YYYY-MM-DD hh:mm:ss");

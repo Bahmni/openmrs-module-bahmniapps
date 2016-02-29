@@ -35,16 +35,17 @@ module.exports = function (config) {
             'app/components/angular-translate-loader-static-files/angular-translate-loader-static-files.js',
             'app/lib/modernizr.custom.80690.js',
             'app/common/constants.js',
+            'app/common/domain/init.js',
+            'app/common/domain/**/*.js',
             'app/**/init.js',
             'app/**/constants.js',
             'app/common/uicontrols/**/*.js',
             'app/common/uicontrols/**/**/*.js',
             'app/common/**/*.js',
+            'app/common/**/*.html',
             'app/admin/**/*.js',
             'app/adt/**/*.js',
             'app/clinical/**/*.js',
-            'app/common/**/*.html',
-            'app/common/**/*.js',
             'app/dhis/**/*.js',
             'app/document-upload/**/*.js',
             'app/home/**/*.js',
@@ -65,13 +66,13 @@ module.exports = function (config) {
             'app/home/**/*.js': ['coverage'],
             'app/orders/**/*.js': ['coverage'],
             'app/registration/**/*.js': ['coverage'],
-            'app/common/displaycontrols/**/views/*.html':['ng-html2js'],
-            'app/clinical/**/**/*.html':['ng-html2js']
+            'app/common/displaycontrols/**/views/*.html': ['ng-html2js'],
+            'app/clinical/**/**/*.html': ['ng-html2js']
         },
         coverageReporter: {
             reporters: [
-                {type: 'json', dir: 'coverage/' },
-                {type: 'html', dir: 'coverage/' },
+                {type: 'json', dir: 'coverage/'},
+                {type: 'html', dir: 'coverage/'},
                 {type: 'text-summary'}
             ]
         },
