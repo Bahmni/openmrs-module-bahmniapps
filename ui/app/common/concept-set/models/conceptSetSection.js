@@ -6,7 +6,9 @@ Bahmni.ConceptSet.ConceptSetSection = function (extensions, user, config, observ
     var self = this;
 
     self.clone = function () {
-        return new Bahmni.ConceptSet.ConceptSetSection(extensions, user, config, [], conceptSet);
+        var clonedConceptSetSection = new Bahmni.ConceptSet.ConceptSetSection(extensions, user, config, [], conceptSet);
+        clonedConceptSetSection.isAdded = true;
+        return clonedConceptSetSection;
     };
 
     var init = function () {
@@ -127,4 +129,3 @@ Bahmni.ConceptSet.ConceptSetSection = function (extensions, user, config, observ
 
     init();
 };
-
