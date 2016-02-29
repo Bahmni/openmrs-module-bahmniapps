@@ -223,8 +223,12 @@ body.abc.ngdialog-open{
                 margin-top: 20px;
                 overflow: hidden;
                 .concept-set-container{
-                    max-height: 570px;
+                    max-height: 530px;
                     overflow-y: auto;
+                   &:-webkit-scrollbar-track{
+                       width:10px;
+                   }
+
                 }
                 @media (max-width :1024px) {
                     position: static;
