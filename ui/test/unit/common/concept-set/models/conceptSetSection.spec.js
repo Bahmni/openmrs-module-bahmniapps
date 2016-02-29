@@ -194,4 +194,15 @@ describe("ConceptSetSection", function () {
         });
 
     });
+
+    describe("clone", function () {
+        it("should clone the concept set section and set isAdded to true", function () {
+            var extensions = {extensionParams: {conceptName: "vitals"}};
+            var conceptSetSection = new ConceptSetSection(extensions, new Bahmni.Auth.User({}), {}, [], conceptSet);
+            var clonedConceptSetSection = conceptSetSection.clone();
+
+            expect(clonedConceptSetSection).toBeTruthy();
+            expect(clonedConceptSetSection.isAdded).toBeTruthy();
+        });
+    });
 });
