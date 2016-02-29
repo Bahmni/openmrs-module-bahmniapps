@@ -68,7 +68,7 @@ angular.module('bahmni.common.domain')
 
         var deletePatientState = function(patientProgramUuid, patientStateUuid) {
             var req = {
-                url: Bahmni.Common.Constants.programStateDeletionUrl + "/" + patientProgramUuid + "/state/" + patientStateUuid,
+                url: Bahmni.Common.Constants.programEnrollPatientUrl + "/" + patientProgramUuid + "/state/" + patientStateUuid,
                 content: {
                     "!purge": "",
                     "reason": "User deleted the state."
