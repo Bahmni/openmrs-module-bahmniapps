@@ -67,6 +67,7 @@ angular.module('bahmni.clinical')
                 $scope.consultation.observations = [];
                 _.each(allConceptSections, function (conceptSetSection) {
                     $scope.consultation.observations.push(conceptSetSection.observations[0]);
+                    conceptSetSection.observations = [];
                 });
             };
 
