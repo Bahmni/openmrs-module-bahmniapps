@@ -48,7 +48,9 @@
                                 ng-disabled="observation.disabled"
                                 model="observation.primaryObs.value"
                                 coded-concept-name="observation.conceptUIConfig.answersConceptName"
-                                default-concept="observation.primaryObs.concept">
+                                default-concept="observation.primaryObs.concept"
+                                on-invalid-class="'illegalValue'"
+                                is-valid="observation.isValid(atLeastOneValueIsSet,conceptSetRequired)">
                         </concept-dropdown>
                     </div>
 
@@ -216,7 +218,9 @@
                                 ng-disabled="observation.disabled"
                                 model="observation.value"
                                 coded-concept-name="observation.conceptUIConfig.answersConceptName"
-                                default-concept="observation.concept">
+                                default-concept="observation.concept"
+                                on-invalid-class="'illegalValue'"
+                                is-valid="observation.isValid(atLeastOneValueIsSet,conceptSetRequired)">
                         </concept-dropdown>
                     </div>
 

@@ -48,7 +48,9 @@
                 model: '=',
                 codedConceptName: '=?',
                 defaultConcept: '=',
-                onChange: '&'
+                onChange: '&',
+                onInvalidClass:'@',
+                isValid:'='
             },
             templateUrl: '../common/uicontrols/concept-dropdown/views/conceptDropdown.html'
         }
