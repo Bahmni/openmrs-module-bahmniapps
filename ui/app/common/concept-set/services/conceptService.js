@@ -20,7 +20,7 @@ angular.module('bahmni.common.conceptSet')
         var getAnswers = function (defaultConcept) {
             var deferred = $q.defer();
             var response = _(defaultConcept.answers)
-                .uniq(_.property('uuid'))
+                .uniqBy('uuid')
                 .map(conceptMapper.map)
                 .value();
             deferred.resolve(response);
