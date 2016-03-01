@@ -41,7 +41,17 @@
                         <div ng-include src="'../common/concept-set/views/observationDataTypes/conciseTextType.html'"></div>
                     </div>
 
-                    <span ng-switch-when="dropdown" class="field-value info fa fa-info-sign"> Dropdowns are not supported. Change it to autocomplete</span>
+                    <div ng-switch-when="dropdown" class="field-value info fa fa-info-sign">
+                        <concept-dropdown
+                                on-change="handleUpdate"
+                                ng-disabled="observation.disabled"
+                                model="observation.primaryObs.value"
+                                coded-concept-name="observation.conceptUIConfig.answersConceptName"
+                                default-concept="observation.primaryObs.concept"
+                                on-invalid-class="'illegalValue'"
+                                is-valid="observation.isValid(atLeastOneValueIsSet,conceptSetRequired)">
+                        </concept-dropdown>
+                    </div>
 
                     <div ng-switch-when="freeTextAutocomplete">
                         <div ng-include src="'../common/concept-set/views/observationDataTypes/autocompleteFreeTextType.html'"></div>
@@ -202,6 +212,18 @@
                         </textarea>
                     </div>
 
+                    <div ng-switch-when="dropdown" class="field-value info fa fa-info-sign">
+                        <concept-dropdown
+                                on-change="handleUpdate"
+                                ng-disabled="observation.disabled"
+                                model="observation.value"
+                                coded-concept-name="observation.conceptUIConfig.answersConceptName"
+                                default-concept="observation.concept"
+                                on-invalid-class="'illegalValue'"
+                                is-valid="observation.isValid(atLeastOneValueIsSet,conceptSetRequired)">
+                        </concept-dropdown>
+                    </div>
+
                     <div ng-switch-when="autocomplete">
                         <input ng-change="handleUpdate()"
                                ng-disabled="observation.disabled"
@@ -210,7 +232,6 @@
                                previous-value="observation.autocompleteValue"
                                coded-concept-name="observation.conceptUIConfig.answersConceptName"
                                default-concept="observation.concept"
-                               response-map="constructSearchResult"
                                strict-select="true"
                                ng-class="{
                                     'computed-field': observation.isComputedAndEditable()

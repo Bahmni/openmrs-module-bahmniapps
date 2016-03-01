@@ -198,6 +198,9 @@ Bahmni.ConceptSet.Observation.prototype = {
         if (conceptUIConfig.autocomplete) {
             return "autocomplete";
         }
+        if (conceptUIConfig.dropdown) {
+            return "dropdown";
+        }
         return "buttonselect";
 
     },
