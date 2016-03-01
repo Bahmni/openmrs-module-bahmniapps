@@ -20,21 +20,23 @@ Bahmni.Common.Offline.MultiStageWorker = function($q) {
     }
 
     this.addStage = function(worker) {
-        this.stages.push(worker);
+        self.stages.push(worker);
     };
 
     this.execute = function() {
-        this.paused = false;
+        self.paused = false;
         return getStagesToBeExecuted().reduce(function(promise, worker) {
             return promise.then(checkForPause).then(function() {
                 self.currentlyExecutingStage = worker;
                 return worker.execute();
             });
-        }, checkForPause());
+        }, checkForPause()).then(function() {
+            self.currentlyExecutingStage = null;
+        });
     };
 
     this.pause = function() {
-        this.paused = true;
+        self.paused = true;
         if(this.currentlyExecutingStage != null) {
             this.currentlyExecutingStage.pause();
         }
