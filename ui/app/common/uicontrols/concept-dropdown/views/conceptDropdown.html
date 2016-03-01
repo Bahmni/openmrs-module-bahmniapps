@@ -1,0 +1,8 @@
+<select ng-options="answer as answer.name for answer in answers"
+        ng-change="onChange()"
+        ng-class="{{
+        '{' + onInvalidClass + ' : ' + '!isValid' + '}'
+        }}"
+        ng-model="selectedAnswer">
+    <option value="">Choose Answer</option>
+</select>
