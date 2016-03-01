@@ -25,7 +25,7 @@
 
             var response = function (answers) {
                 $scope.answers = answers;
-                $scope.model = find(answers, $scope.model);
+                $scope.selectedAnswer = find(answers, $scope.selectedAnswer);
             };
             if (!$scope.codedConceptName && $scope.defaultConcept) {
                 conceptService.getAnswers($scope.defaultConcept).then(function (results) {
@@ -45,17 +45,17 @@
             controller: controller,
             restrict: 'E',
             scope: {
-                model: '=',
+                selectedAnswer: '=model',
                 codedConceptName: '=?',
                 defaultConcept: '=',
                 onChange: '&',
-                onInvalidClass:'@',
-                isValid:'='
+                onInvalidClass: '@',
+                isValid: '='
             },
             templateUrl: '../common/uicontrols/concept-dropdown/views/conceptDropdown.html'
         }
     };
 
     conceptDropdown.$inject = toBeInjected;
-    angular.module('bahmni.common.conceptSet').directive('conceptDropdown', conceptDropdown);
+    angular.module('bahmni.common.uicontrols').directive('conceptDropdown', conceptDropdown);
 })();

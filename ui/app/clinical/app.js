@@ -1,17 +1,23 @@
 'use strict';
-'use strict';
 
-angular.module('consultation', ['ui.router', 'bahmni.clinical', 'bahmni.common.config', 'bahmni.common.patient', 'bahmni.common.uiHelper', 'bahmni.common.patientSearch', 'bahmni.common.obs', 'bahmni.common.i18n',
-    'bahmni.common.domain', 'bahmni.common.conceptSet', 'authentication', 'bahmni.common.appFramework', 'bahmni.common.displaycontrol.documents', 'bahmni.common.displaycontrol.observation',
-    'bahmni.common.displaycontrol.pivottable', 'bahmni.common.displaycontrol.dashboard', 'bahmni.common.gallery',
-    'bahmni.common.displaycontrol.disposition', 'bahmni.common.displaycontrol.custom', 'bahmni.common.displaycontrol.admissiondetails', 'bahmni.common.routeErrorHandler', 'bahmni.common.displaycontrol.disposition',
-    'httpErrorInterceptor', 'pasvaz.bindonce', 'infinite-scroll', 'bahmni.common.util', 'ngAnimate', 'ngDialog',
-    'bahmni.common.displaycontrol.patientprofile', 'bahmni.common.displaycontrol.diagnosis', 'RecursionHelper', 'ngSanitize',
-    'bahmni.common.orders', 'bahmni.common.displaycontrol.orders', 'bahmni.common.displaycontrol.prescription', 'bahmni.common.displaycontrol.navigationlinks', 'bahmni.common.displaycontrol.programs',
-    'bahmni.common.displaycontrol.pacsOrders', 'bahmni.common.uicontrols.programmanagment', 'pascalprecht.translate', 'ngCookies','monospaced.elastic','bahmni.common.bacteriologyresults','bahmni.common.displaycontrol.bacteriologyresults', 'bahmni.common.displaycontrol.obsVsObsFlowSheet',
-    'bahmni.common.displaycontrol.chronicTreatmentChart', 'bahmni.common.displaycontrol.forms', 'bahmni.common.displaycontrol.drugOrderDetails', 'bahmni.common.offline', 'bahmni.common.displaycontrol.hint', 'bahmni.common.displaycontrol.drugOrdersSection', 'bahmni.common.attributeTypes']);
+angular.module('consultation', ['ui.router', 'bahmni.clinical', 'bahmni.common.config', 'bahmni.common.patient',
+    'bahmni.common.uiHelper', 'bahmni.common.patientSearch', 'bahmni.common.obs', 'bahmni.common.i18n',
+    'bahmni.common.domain', 'bahmni.common.conceptSet', 'authentication', 'bahmni.common.appFramework',
+    'bahmni.common.displaycontrol.documents', 'bahmni.common.displaycontrol.observation', 'bahmni.common.displaycontrol.pivottable',
+    'bahmni.common.displaycontrol.dashboard', 'bahmni.common.gallery', 'bahmni.common.displaycontrol.disposition',
+    'bahmni.common.displaycontrol.custom', 'bahmni.common.displaycontrol.admissiondetails', 'bahmni.common.routeErrorHandler',
+    'bahmni.common.displaycontrol.disposition', 'httpErrorInterceptor', 'pasvaz.bindonce', 'infinite-scroll', 'bahmni.common.util',
+    'ngAnimate', 'ngDialog', 'bahmni.common.displaycontrol.patientprofile', 'bahmni.common.displaycontrol.diagnosis',
+    'RecursionHelper', 'ngSanitize', 'bahmni.common.orders', 'bahmni.common.displaycontrol.orders',
+    'bahmni.common.displaycontrol.prescription', 'bahmni.common.displaycontrol.navigationlinks',
+    'bahmni.common.displaycontrol.programs', 'bahmni.common.displaycontrol.pacsOrders','bahmni.common.uicontrols',
+    'bahmni.common.uicontrols.programmanagment','pascalprecht.translate', 'ngCookies', 'monospaced.elastic', 'bahmni.common.bacteriologyresults',
+    'bahmni.common.displaycontrol.bacteriologyresults', 'bahmni.common.displaycontrol.obsVsObsFlowSheet',
+    'bahmni.common.displaycontrol.chronicTreatmentChart', 'bahmni.common.displaycontrol.forms',
+    'bahmni.common.displaycontrol.drugOrderDetails', 'bahmni.common.offline', 'bahmni.common.displaycontrol.hint',
+    'bahmni.common.displaycontrol.drugOrdersSection', 'bahmni.common.attributeTypes']);
 angular.module('consultation')
-    .config(['$stateProvider', '$httpProvider', '$urlRouterProvider','$bahmniTranslateProvider', function ($stateProvider, $httpProvider, $urlRouterProvider,$bahmniTranslateProvider) {
+    .config(['$stateProvider', '$httpProvider', '$urlRouterProvider', '$bahmniTranslateProvider', function ($stateProvider, $httpProvider, $urlRouterProvider, $bahmniTranslateProvider) {
         $urlRouterProvider.otherwise('/' + Bahmni.Clinical.Constants.defaultExtensionName + '/patient/search');
         var patientSearchBackLink = {
             label: "",
@@ -34,7 +40,7 @@ angular.module('consultation')
                     backLinks: [homeBackLink]
                 },
                 resolve: {
-                    retrospectiveIntialization: function(retrospectiveEntryService){
+                    retrospectiveIntialization: function (retrospectiveEntryService) {
                         return retrospectiveEntryService.initializeRetrospectiveEntry();
                     }
                 }
@@ -51,7 +57,7 @@ angular.module('consultation')
                         controller: 'PatientsListController'
                     }
                 },
-                resolve:{
+                resolve: {
                     initializeConfigs: function (initialization, $stateParams) {
                         $stateParams.configName = $stateParams.configName || Bahmni.Clinical.Constants.defaultExtensionName;
                         patientSearchBackLink.state = 'search.patientsearch({configName: \"' + $stateParams.configName + '\"})';
@@ -85,15 +91,15 @@ angular.module('consultation')
                 }
             })
             .state('patient.dashboard', {
-                abstract : true,
+                abstract: true,
                 views: {
                     'content': {
                         template: '<div ui-view="dashboard-header"></div> <div ui-view="dashboard-content"></div>' +
-                                    '<patient-control-panel patient="patient" visit-history="visitHistory" visit="visit" show="showControlPanel" consultation="consultation"/>',
-                        controller: function($scope, visitHistory, consultationContext){
+                        '<patient-control-panel patient="patient" visit-history="visitHistory" visit="visit" show="showControlPanel" consultation="consultation"/>',
+                        controller: function ($scope, visitHistory, consultationContext) {
                             $scope.visitHistory = visitHistory;
                             $scope.consultation = consultationContext;
-                            $scope.lastConsultationTabUrl = {url : undefined};
+                            $scope.lastConsultationTabUrl = {url: undefined};
                         }
                     }
                 },
@@ -101,7 +107,7 @@ angular.module('consultation')
                     visitHistory: function (visitHistoryInitialization, $stateParams) {
                         return visitHistoryInitialization($stateParams.patientUuid);
                     },
-                    retrospectiveIntialization: function(retrospectiveEntryService){
+                    retrospectiveIntialization: function (retrospectiveEntryService) {
                         return retrospectiveEntryService.initializeRetrospectiveEntry();
                     },
                     consultationContext: function (consultationInitialization, initialization, $stateParams) {
@@ -164,7 +170,7 @@ angular.module('consultation')
                     tabConfigName: null
                 },
                 resolve: {
-                    treatmentConfig: function(initialization, treatmentConfig, $stateParams) {
+                    treatmentConfig: function (initialization, treatmentConfig, $stateParams) {
                         return treatmentConfig($stateParams.tabConfigName);
                     }
                 },
@@ -178,7 +184,7 @@ angular.module('consultation')
             .state('patient.dashboard.show.treatment.page', {
                 url: "/treatment?tabConfigName",
                 params: {
-                  cachebuster: null
+                    cachebuster: null
                 },
                 resolve: {
                     activeDrugOrders: function (TreatmentService, $stateParams) {
@@ -350,8 +356,8 @@ angular.module('consultation')
                         template: '<div ui-view="patientProgram-header"></div> <div ui-view="patientProgram-content"></div>'
                     }
                 },
-                resolve:{
-                    retrospectiveIntialization: function(retrospectiveEntryService){
+                resolve: {
+                    retrospectiveIntialization: function (retrospectiveEntryService) {
                         return retrospectiveEntryService.initializeRetrospectiveEntry();
                     }
                     //consultationContext: function (consultationInitialization, initialization, $stateParams) {
