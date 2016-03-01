@@ -27,8 +27,14 @@
     padding: 20px 20px;
     .program-attribute{
       padding-bottom: 5px;
+      clear: both;
       .program-attribute-tilte{
           text-align: right;
+      }
+      .program-attribute-title{
+        width:13em;
+        text-align: right;
+        display: inline-block;
       }
       .program-attribute-value{
           text-align: left;

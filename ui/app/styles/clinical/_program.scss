@@ -165,6 +165,9 @@
         margin: 0.7em 0.8em 0em 0em;
         display: inline-block;
       }
+      .field-attribute label{
+        width:11em;
+      }
     }
 
   }
@@ -174,7 +177,7 @@
   &.inactive-program-tiles{
     background: #ddd;
     .form .form-field .field-attribute label{
-      width: auto;
+      width: 11em;
     }
     .program-timeline .timeline-view svg .states .date-bg{
       fill: #ddd;
