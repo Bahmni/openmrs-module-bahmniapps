@@ -1,4 +1,4 @@
-<div ng-repeat="conceptSet in allTemplates track by $index"
+<div ng-repeat="conceptSet in allTemplates track by $index" id="concept-set-{{$index}}"
      ng-if="conceptSet.isAvailable(context) && (conceptSet.isAdded || conceptSet.alwaysShow)"
      class="concept-set-group section-grid"
      auto-scroll="{{getNormalized(conceptSet.conceptName)}}" auto-scroll-enabled="autoScrollEnabled">
