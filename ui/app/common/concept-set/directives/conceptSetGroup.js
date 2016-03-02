@@ -70,7 +70,7 @@ angular.module('bahmni.common.conceptSet')
                 var clonedObj = $scope.allTemplates[index].clone();
                 $scope.allTemplates.splice(index + 1, 0, clonedObj);
                 $scope.$root.$broadcast("event:addConceptSection", clonedObj);
-                jQuery.scrollTo($element, 300);
+                $.scrollTo('#concept-set-' + (index + 1), 200, {offset: {top: -400}});
             };
 
             var copyValues = function (existingObservations, modifiedObservations) {
