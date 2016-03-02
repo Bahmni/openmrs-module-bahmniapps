@@ -34,7 +34,7 @@
             <div class="footer-note fr">
                 <span class="provider">
                     <provider-directive creator-name="{{::observation.creatorName}}" provider-name="{{::observation.providers[0].name}}"></provider-directive>
-                    <span ng-if="observation.isFormElement()">{{dateString(observation)}} </span>
+                    <span ng-if="observation.isFormElement()">{{::dateString(observation)}} </span>
                 </span>
             </div>
         </div>
@@ -43,20 +43,20 @@
         <div class="footer-note fr">
             <span class="provider">
                 <provider-directive creator-name="{{::observation.creatorName}}" provider-name="{{::observation.providers[0].name}}"></provider-directive>
-                <span ng-if="observation.isFormElement()">{{dateString(observation)}}</span>
+                <span ng-if="observation.isFormElement()">{{::dateString(observation)}}</span>
             </span>
 
         </div>
     </div>
-    <ul ng-if="!observation.isFormElement()" class="hidden-print">
-        <show-observation  show-details-button="showDetailsButton" ng-if="!observation.isFormElement()" ng-repeat="member in observation.groupMembers" patient="patient"
-                          observation="member" patient="patient" show-date="showDate" show-time="showTime"></show-observation>
+    <ul ng-if="!observation.isFormElement() && !print" class="hidden-print">
+        <show-observation  show-details-button="showDetailsButton" ng-if="!observation.isFormElement()" ng-repeat="member in ::observation.groupMembers"
+                          observation="::member" patient="::patient" show-date="showDate" show-time="showTime"></show-observation>
     </ul>
-    <ul ng-if="!observation.isFormElement()" class="visible-print">
-        <li ng-repeat="member in observation.groupMembers">
+    <ul ng-if="!observation.isFormElement() && print" class="visible-print">
+        <li ng-repeat="member in ::observation.groupMembers">
             <ul>
-                <show-observation  show-details-button="showDetailsButton" ng-if="!observation.isFormElement()" patient="patient"
-                                   observation="member" patient="patient" show-date="showDate" show-time="showTime"></show-observation>
+                <show-observation  show-details-button="showDetailsButton" ng-if="!observation.isFormElement()"
+                                   observation="::member" patient="::patient" show-date="showDate" show-time="showTime"></show-observation>
             </ul>
         </li>
     </ul>

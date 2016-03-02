@@ -1,10 +1,12 @@
 'use strict';
 
 angular.module('bahmni.common.displaycontrol.observation')
-    .directive('bahmniObservation', ['observationsService', 'appService', '$q', 'spinner',
-        function (observationsService, appService, $q, spinner) {
+    .directive('bahmniObservation', ['observationsService', 'appService', '$q', 'spinner', '$rootScope',
+        function (observationsService, appService, $q, spinner, $rootScope) {
 
             var controller = function ($scope) {
+                $scope.print = $rootScope.isBeingPrinted || false;
+
                 $scope.showGroupDateTime = $scope.config.showGroupDateTime !== false;
 
                 var mapObservation = function (observations) {
