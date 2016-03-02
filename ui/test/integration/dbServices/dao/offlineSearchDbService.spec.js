@@ -66,7 +66,7 @@ describe('offlineSearchDbService', function () {
             q: searchString,
             s: "byIdOrNameOrVillage",
             startIndex: 0,
-            address_field_name: 'address2'
+            addressFieldName: 'address2'
         };
 
         createAndSearch(params).then(function (result) {
@@ -84,7 +84,7 @@ describe('offlineSearchDbService', function () {
             q: searchString,
             s: "byIdOrNameOrVillage",
             startIndex: 0,
-            address_field_name: 'address2'
+            addressFieldName: 'address2'
         };
 
         createAndSearch(params).then(function (result) {
@@ -101,8 +101,8 @@ describe('offlineSearchDbService', function () {
             q: '',
             s: "byIdOrNameOrVillage",
             startIndex: 0,
-            address_field_name: 'stateProvince',
-            address_field_value: searchString
+            addressFieldName: 'stateProvince',
+            addressFieldValue: searchString
         };
 
         createAndSearch(params).then(function (result) {
@@ -119,7 +119,7 @@ describe('offlineSearchDbService', function () {
             q: searchString,
             s: "byIdOrNameOrVillage",
             startIndex: 0,
-            address_field_name: 'address2'
+            addressFieldName: 'address2'
         };
 
         createAndSearch(params).then(function (result) {
@@ -135,8 +135,8 @@ describe('offlineSearchDbService', function () {
         var params = {
             q: '',
             s: "byIdOrNameOrVillage",
-            address_field_name: 'address2',
-            custom_attribute: searchString,
+            addressFieldName: 'address2',
+            customAttribute: searchString,
             startIndex: 0,
             patientAttributes: ["caste"]
         };
@@ -155,8 +155,8 @@ describe('offlineSearchDbService', function () {
         var params = {
             q: '',
             s: "byIdOrNameOrVillage",
-            address_field_name: 'address2',
-            custom_attribute: searchString,
+            addressFieldName: 'address2',
+            customAttribute: searchString,
             startIndex: 0,
             patientAttributes: ["caste", "isUrban"]
         };
@@ -175,8 +175,8 @@ describe('offlineSearchDbService', function () {
         var params = {
             q: '',
             s: "byIdOrNameOrVillage",
-            address_field_name: 'address2',
-            custom_attribute: searchString,
+            addressFieldName: 'address2',
+            customAttribute: searchString,
             startIndex: 0,
             patientAttributes: ["education"]
         };
@@ -195,8 +195,8 @@ describe('offlineSearchDbService', function () {
         var params = {
             q: '',
             s: "byIdOrNameOrVillage",
-            address_field_name: 'address2',
-            custom_attribute: searchString,
+            addressFieldName: 'address2',
+            customAttribute: searchString,
             startIndex: 0,
             patientAttributes: ["landHolding"]
         };

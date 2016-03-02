@@ -1,11 +1,12 @@
 'use strict';
 
-var $scope, offlineDbService, eventLogService, offlineSyncService, offlineService;
+var $scope, offlineDbService, eventLogService, offlineSyncService, offlineService, configurationService;
 
 describe('OfflineSyncService', function () {
     describe('initial sync ', function () {
         beforeEach(function () {
             module('bahmni.common.offline');
+            module('bahmni.common.domain.offline');
             module(function ($provide) {
                 $provide.value('offlineDbService', {
                     insertAddressHierarchy: function () {
@@ -62,15 +63,20 @@ describe('OfflineSyncService', function () {
                 $provide.value('offlineService', {
                     isAndroidApp: function () {
                         return false;
+                    },
+                    getItem: function() {
+                        return 202020;
                     }
                 });
             });
         });
 
-        beforeEach(inject(['offlineSyncService', 'eventLogService', 'offlineDbService', function (offlineSyncServiceInjected, eventLogServiceInjected, offlineDbServiceInjected) {
+        beforeEach(inject(['offlineSyncService', 'eventLogService', 'offlineDbService', 'configurationService',
+            function (offlineSyncServiceInjected, eventLogServiceInjected, offlineDbServiceInjected, configurationServiceInjected) {
             offlineSyncService = offlineSyncServiceInjected;
             eventLogService = eventLogServiceInjected;
             offlineDbService = offlineDbServiceInjected;
+            configurationService = configurationServiceInjected;
         }]));
 
 
@@ -81,7 +87,7 @@ describe('OfflineSyncService', function () {
             spyOn(offlineDbService, 'createPatient').and.callThrough();
             spyOn(offlineDbService, 'insertMarker').and.callThrough();
 
-            offlineSyncService.sync();
+            offlineSyncService.init();
 
             expect(offlineDbService.getMarker).toHaveBeenCalled();
             expect(offlineDbService.getMarker.calls.count()).toBe(1);
@@ -116,7 +122,7 @@ describe('OfflineSyncService', function () {
             spyOn(offlineDbService, 'insertMarker').and.callThrough();
             spyOn(offlineDbService, 'insertAddressHierarchy').and.callThrough();
 
-            offlineSyncService.sync();
+            offlineSyncService.init();
 
             expect(offlineDbService.getMarker).toHaveBeenCalled();
             expect(offlineDbService.getMarker.calls.count()).toBe(1);
@@ -134,6 +140,7 @@ describe('OfflineSyncService', function () {
     describe('subsequent sync ', function () {
         beforeEach(function () {
             module('bahmni.common.offline');
+            module('bahmni.common.domain.offline');
             module(function ($provide) {
                 $provide.value('offlineDbService', {
                     createPatient: function () {
@@ -183,15 +190,20 @@ describe('OfflineSyncService', function () {
                 $provide.value('offlineService', {
                     isAndroidApp: function () {
                         return false;
+                    },
+                    getItem: function() {
+                        return 202020;
                     }
                 });
             });
         });
 
-        beforeEach(inject(['offlineSyncService', 'eventLogService', 'offlineDbService', function (offlineSyncServiceInjected, eventLogServiceInjected, offlineDbServiceInjected) {
+        beforeEach(inject(['offlineSyncService', 'eventLogService', 'offlineDbService', 'configurationService',
+            function (offlineSyncServiceInjected, eventLogServiceInjected, offlineDbServiceInjected, configurationServiceInjected) {
             offlineSyncService = offlineSyncServiceInjected;
             eventLogService = eventLogServiceInjected;
             offlineDbService = offlineDbServiceInjected;
+            configurationService = configurationServiceInjected;
         }]));
 
 
@@ -202,7 +214,7 @@ describe('OfflineSyncService', function () {
             spyOn(offlineDbService, 'createPatient').and.callThrough();
             spyOn(offlineDbService, 'insertMarker').and.callThrough();
 
-            offlineSyncService.sync();
+            offlineSyncService.init();
 
             expect(offlineDbService.getMarker).toHaveBeenCalled();
             expect(offlineDbService.getMarker.calls.count()).toBe(1);

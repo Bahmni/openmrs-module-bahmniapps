@@ -10,7 +10,7 @@ describe('LocationService', function () {
         module('bahmni.common.domain.offline');
         module('bahmni.common.offline');
         module(function ($provide) {
-            offlineService = jasmine.createSpyObj('offlineService', ['isOfflineApp', 'isAndroidApp']);
+            offlineService = jasmine.createSpyObj('offlineService', ['isOfflineApp', 'isAndroidApp', 'getItem']);
             offlineDbService = jasmine.createSpyObj('offlineDbService', ['getReferenceData']);
             $provide.value('$http', mockHttp);
             $provide.value('$bahmniCookieStore', mockBahmniCookieStore);
@@ -46,11 +46,33 @@ describe('LocationService', function () {
 
         offlineService.isAndroidApp.and.returnValue(false);
         offlineService.isOfflineApp.and.returnValue(true);
+        offlineService.getItem.and.returnValue(null);
         offlineDbService.getReferenceData.and.returnValue(specUtil.respondWithPromise($q, locationUuids));
 
         locationService.getAllByTag().then(function (response) {
             expect(response.data.results.length).toEqual(2);
             expect(response.data).toEqual(locationUuids.value);
+            done();
+        });
+    });
+
+    it('should get selected location for subsequent logins for the offline app', function(done){
+
+        var loginInformation = {
+            "currentLocation" : {
+                "value": {
+                    "results": ["location2"]
+                }
+            }
+        };
+
+        offlineService.isAndroidApp.and.returnValue(false);
+        offlineService.isOfflineApp.and.returnValue(true);
+        offlineService.getItem.and.returnValue(loginInformation);
+
+        locationService.getAllByTag().then(function (response) {
+            expect(response.data.results.length).toEqual(1);
+            expect(response.data.results[0]).toEqual(loginInformation.currentLocation);
             done();
         });
     });

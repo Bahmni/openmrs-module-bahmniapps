@@ -15,7 +15,8 @@ angular.module('bahmni.common.offline')
                     offlineAddressHierarchyDbService.init(offlineDb);
                     offlineConfigDbService.init(offlineDb);
                     referenceDataDbService.init(offlineDb);
-                    offlineSyncService.sync();
+                    offlineSyncService.init();
+
                 }
             };
         }

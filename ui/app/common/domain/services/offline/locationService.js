@@ -1,12 +1,16 @@
 'use strict';
 
 angular.module('bahmni.common.domain.offline')
-    .factory('locationService', ['$http', '$bahmniCookieStore','offlineService', 'offlineDbService', 'androidDbService',
-        function ($http, $bahmniCookieStore, offlineService, offlineDbService, androidDbService ) {
+    .factory('locationService', ['$http', '$bahmniCookieStore','offlineService', 'offlineDbService', 'androidDbService', '$q',
+        function ($http, $bahmniCookieStore, offlineService, offlineDbService, androidDbService, $q) {
         var getAllByTag = function (tags) {
             if(offlineService.isOfflineApp()) {
                 if(offlineService.isAndroidApp()) {
                     offlineDbService = androidDbService;
+                }
+                if(offlineService.getItem('LoginInformation') != null){
+                    var obj = {"data" : { "results" : [ offlineService.getItem('LoginInformation').currentLocation ]}};
+                    return $q.when(obj);
                 }
                 return offlineDbService.getReferenceData('LoginLocations').then(function(loginLocations){
                     return {"data": loginLocations.value};

@@ -1,21 +1,87 @@
 'use strict';
 
 angular.module('bahmni.common.offline')
-    .service('offlineSyncService', ['eventLogService', 'offlineDbService', '$interval', '$q', 'offlineService', 'androidDbService',
-        function (eventLogService, offlineDbService, $interval, $q, offlineService, androidDbService) {
-            var scheduler;
+    .service('offlineSyncService', ['eventLogService', 'offlineDbService', '$interval', '$q', 'offlineService', 'androidDbService', 'configurationService',
+        function (eventLogService, offlineDbService, $interval, $q, offlineService, androidDbService, configurationService) {
+            var scheduler, addressLevels;
             if (offlineService.isAndroidApp()) {
                 offlineDbService = androidDbService;
             }
 
+            var init = function () {
+                if (offlineService.getItem('catchmentNumber')) {
+                    sync();
+                } else {
+                    var loginLocation = offlineService.getItem('LoginInformation').currentLocation;
+                    configurationService.getConfigurations(['addressLevels']).then(function (addressHierarchyLevel) {
+                        addressLevels = _.reverse(addressHierarchyLevel.addressLevels);
+                        var addressField = getLoginLocationAddress(loginLocation);
+                        _.reverse(addressLevels);
+                        var params = { searchString: loginLocation[addressField], addressField: addressField};
+                        eventLogService.getAddressForLoginLocation(params).then(function (results) {
+                                var data = results.data;
+                                for(var addressResults=0; addressResults < data.length ; addressResults++){
+                                    var loginAddress = data[addressResults];
+                                    if(checkParents(loginAddress, getParentAddressLevel(addressField), loginLocation)){
+                                        offlineService.setItem('catchmentNumber', data[addressResults].userGeneratedId);
+                                        getParentAddressLineItems(data[addressResults]);
+                                        sync();
+                                        break;
+                                    }
+                                }
+                        });
+                    });
+                }
+            };
+
+            var checkParents = function(result, addressLevel, loginLocation){
+                if(!result.parent)
+                    return true;
+                if(result.parent.name != loginLocation[addressLevel.addressField])
+                    return false;
+                if(result.parent.name == loginLocation[addressLevel.addressField])
+                    return checkParents(result.parent, getParentAddressLevel(addressLevel.addressField), loginLocation)
+            };
+
+            var getParentAddressLevel = function (addressField){
+                var parent = null;
+                for(var addrLevel=0; addrLevel < addressLevels.length; addrLevel++){
+                    if(addressLevels[addrLevel].addressField == addressField)
+                        return parent;
+                    parent = addressLevels[addrLevel];
+                }
+            };
+
+            var getParentAddressLineItems = function (parentAddresses){
+                var uuids = [];
+                while(parentAddresses){
+                    uuids.push(parentAddresses.uuid);
+                    parentAddresses = parentAddresses.parent;
+                }
+                eventLogService.getParentAddressHierarchyEntriesForLoginLocation(uuids).then(function(response){
+                    var addressList = response.data;
+                    angular.forEach(addressList, function(address){
+                        offlineDbService.insertAddressHierarchy(address);
+                    })
+                });
+            };
+
+            var getLoginLocationAddress = function(loginLocation){
+                for(var addressLevel=0; addressLevel < addressLevels.length; addressLevel++){
+                    if (loginLocation[addressLevels[addressLevel].addressField] != null) {
+                         return addressLevels[addressLevel].addressField;
+                    }
+                }
+            };
+
             var sync = function () {
                 offlineDbService.getMarker().then(function (marker) {
                     if (marker == undefined) {
-                        //todo: Hemanth|Santhosh get catchment number from login location
-                        marker = {catchmentNumber: 202020}
+                        marker = {
+                            catchmentNumber: offlineService.getItem('catchmentNumber')
+                        }
                     }
                     syncForMarker(marker);
-
                 });
             };
 
@@ -76,11 +142,11 @@ angular.module('bahmni.common.offline')
             };
 
             var updateMarker = function (event) {
-                return offlineDbService.insertMarker(event.uuid, 202020);
+                return offlineDbService.insertMarker(event.uuid, offlineService.getItem('catchmentNumber'));
             };
 
             return {
-                sync: sync
+                init: init
             }
         }
     ]);

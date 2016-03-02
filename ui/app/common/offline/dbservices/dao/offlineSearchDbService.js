@@ -27,8 +27,8 @@ angular.module('bahmni.common.offline')
             }
 
             var addressFieldName = null;
-            if (params.address_field_name) {
-                addressFieldName = params.address_field_name.replace("_", "");
+            if (params.addressFieldName) {
+                addressFieldName = params.addressFieldName.replace("_", "");
             }
 
             var p = db.getSchema().table('patient');
@@ -49,9 +49,9 @@ angular.module('bahmni.common.offline')
                         .leftOuterJoin(pat, pa.attributeTypeId.eq(pat.attributeTypeId));
                     var predicates = [];
 
-                    if (!_.isEmpty(params.address_field_value)) {
-                        params.address_field_value = params.address_field_value.replace('%','.');
-                        predicates.push(padd[addressFieldName].match(new RegExp(params.address_field_value, 'i')));
+                    if (!_.isEmpty(params.addressFieldValue)) {
+                        params.addressFieldValue = params.addressFieldValue.replace('%','.');
+                        predicates.push(padd[addressFieldName].match(new RegExp(params.addressFieldValue, 'i')));
                     }
 
                     if (!_.isEmpty(params.identifier)) {
@@ -70,13 +70,13 @@ angular.module('bahmni.common.offline')
                         }
                     }
 
-                    if (!_.isEmpty(params.custom_attribute)) {
-                        params.custom_attribute = params.custom_attribute.replace('%','.');
+                    if (!_.isEmpty(params.customAttribute)) {
+                        params.customAttribute = params.customAttribute.replace('%','.');
                         predicates.push(pa.attributeTypeId.in(_.map(attributeTypeIds, function (attributeTypeId) {
                             return attributeTypeId.attributeTypeId;
                         })));
 
-                        predicates.push(pa.attributeValue.match(new RegExp(params.custom_attribute, 'i')));
+                        predicates.push(pa.attributeValue.match(new RegExp(params.customAttribute, 'i')));
                     }
 
                     var whereCondition = lf.op.and.apply(null, predicates);
