@@ -24,7 +24,7 @@ angular.module('bahmni.common.domain')
                     patient: patientUuid,
                     program: programUuid,
                     dateEnrolled: moment(dateEnrolled).format(Bahmni.Common.Constants.ServerDateTimeFormat),
-                    attributes: attributeFormatter.removeUnfilledAttributes(attributeFormatter.getMrsAttributes(patientProgramAttributes, programAttributeTypes))
+                    attributes: attributeFormatter.removeUnfilledAttributes(attributeFormatter.getMrsAttributes(patientProgramAttributes, (programAttributeTypes || [])))
                 },
                 headers: {"Content-Type": "application/json"}
             };
