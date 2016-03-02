@@ -1,11 +1,6 @@
 (function () {
     'use strict';
 
-    var getAnswers = function (codedConcept) {
-        var conceptMapper = new Bahmni.Common.Domain.ConceptMapper();
-        return _.uniqBy(codedConcept.answers, _.property('uuid')).map(conceptMapper.map);
-    };
-
     var constructSearchResult = function (concept, searchString) {
         var matchingName = null;
         var conceptName = concept.name.name || concept.name;
@@ -24,57 +19,34 @@
         }
     };
 
-    var searchWithDefaultConcept = function (request, response, scope) {
-        var answers = getAnswers(scope.defaultConcept);
+    var searchWithDefaultConcept = function (searchMethod, request, response) {
         var searchTerm = _.lowerCase(request.term.trim());
-        var search = function (answer) {
+        var isMatching = function (answer) {
             var answerName = _.lowerCase(answer.name);
-            var defaultConceptName = _.lowerCase(scope.defaultConcept.name);
+            var defaultConceptName = _.lowerCase(request.defaultConcept.name);
             return _.includes(answerName, searchTerm) && (answerName !== defaultConceptName);
         };
         var responseMap = function (matchingAnswer) {
             return constructSearchResult(matchingAnswer, searchTerm);
         };
-        var results = _(answers)
-            .filter(search)
-            .map(responseMap)
-            .value();
 
-        response(results);
+        searchMethod()
+            .then(_.partialRight(_.filter, isMatching))// == .then(function(value){return _.filter(value,isMatching);})
+            .then(_.partialRight(_.map, responseMap))
+            .then(response);
     };
 
-    var searchWithGivenConcept = function (request, response, scope, attrs) {
-        scope.source({
-            elementId: attrs.id,
-            term: request.term,
-            elementType: attrs.type,
-            conceptSetUuid: scope.conceptSetUuid,
-            codedConceptName: scope.codedConceptName
-        }).then(function (resp) {
-            return resp.data.results.map(function (concept) {
-                return constructSearchResult(concept, request.term.trim());
-            });
-        }).then(response);
+    var searchWithGivenConcept = function (searchMethod, request, response) {
+        var searchTerm = request.term.trim();
+        var responseMap = _.partialRight(constructSearchResult, searchTerm);
+        searchMethod()
+            .then(_.partialRight(_.map, responseMap))
+            .then(response);
     };
 
-    var conceptAutocomplete = function ($parse, $http) {
-
-        var source = function (request) {
-            var params = {
-                q: request.term,
-                memberOf: request.conceptSetUuid,
-                answerTo: request.codedConceptName,
-                v: "custom:(uuid,name,names:(name))"
-            };
-            if (params.answerTo) {
-                params.question = params.answerTo;
-                params.s = "byQuestion";
-            }
-            return $http.get(Bahmni.Common.Constants.conceptUrl, {params: params});
-        };
-
+    var toBeInjected = ['$parse', '$http', 'conceptService'];
+    var conceptAutocomplete = function ($parse, $http, conceptService) {
         var link = function (scope, element, attrs, ngModelCtrl) {
-            scope.source = source;
             var minLength = scope.minLength || 2;
             var previousValue = scope.previousValue;
 
@@ -93,10 +65,17 @@
                 autofocus: true,
                 minLength: minLength,
                 source: function (request, response) {
-                    if (scope.codedConceptName || !scope.defaultConcept) {
-                        searchWithGivenConcept(request, response, scope, attrs);
+                    var searchMethod;
+                    if (!scope.codedConceptName && scope.defaultConcept) {
+                        searchMethod = _.partial(conceptService.getAnswers,scope.defaultConcept);
+                        request.defaultConcept = scope.defaultConcept;
+                        searchWithDefaultConcept(searchMethod, request, response);
                     } else {
-                        searchWithDefaultConcept(request, response, scope);
+                        searchMethod = _.partial(conceptService.getConceptByQuestion,{
+                            term: request.term,
+                            codedConceptName: scope.codedConceptName
+                        });
+                        searchWithGivenConcept(searchMethod, request, response);
                     }
                 },
                 select: function (event, ui) {
@@ -131,7 +110,6 @@
             require: 'ngModel',
             scope: {
                 defaultConcept: '=',
-                conceptSetUuid: '=',
                 codedConceptName: '=',
                 minLength: '=',
                 blurOnSelect: '=',
@@ -141,5 +119,6 @@
         }
     };
 
+    conceptAutocomplete.$inject = toBeInjected;
     angular.module('bahmni.common.uiHelper').directive('conceptAutocomplete', conceptAutocomplete);
 })();
