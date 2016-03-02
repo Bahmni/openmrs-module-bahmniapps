@@ -12,9 +12,7 @@ angular.module('bahmni.common.conceptSet')
                 s: "byQuestion"
             };
             return $http.get(Bahmni.Common.Constants.conceptUrl, {params: params})
-                .then(function (response) {
-                    return response.data.results;
-                });
+                .then(_.partial(_.get, _, 'data.results'));
         };
 
         var getAnswers = function (defaultConcept) {

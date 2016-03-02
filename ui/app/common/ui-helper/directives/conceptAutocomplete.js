@@ -26,21 +26,19 @@
             var defaultConceptName = _.lowerCase(request.defaultConcept.name);
             return _.includes(answerName, searchTerm) && (answerName !== defaultConceptName);
         };
-        var responseMap = function (matchingAnswer) {
-            return constructSearchResult(matchingAnswer, searchTerm);
-        };
+        var responseMap = _.partial(constructSearchResult, _, searchTerm);
 
         searchMethod()
-            .then(_.partialRight(_.filter, isMatching))// == .then(function(value){return _.filter(value,isMatching);})
-            .then(_.partialRight(_.map, responseMap))
+            .then(_.partial(_.filter, _, isMatching))// == .then(function(value){return _.filter(value,isMatching);})
+            .then(_.partial(_.map, _, responseMap))
             .then(response);
     };
 
     var searchWithGivenConcept = function (searchMethod, request, response) {
         var searchTerm = request.term.trim();
-        var responseMap = _.partialRight(constructSearchResult, searchTerm);
+        var responseMap = _.partial(constructSearchResult, _, searchTerm);
         searchMethod()
-            .then(_.partialRight(_.map, responseMap))
+            .then(_.partial(_.map, _, responseMap))
             .then(response);
     };
 
@@ -67,11 +65,11 @@
                 source: function (request, response) {
                     var searchMethod;
                     if (!scope.codedConceptName && scope.defaultConcept) {
-                        searchMethod = _.partial(conceptService.getAnswers,scope.defaultConcept);
+                        searchMethod = _.partial(conceptService.getAnswers, scope.defaultConcept);
                         request.defaultConcept = scope.defaultConcept;
                         searchWithDefaultConcept(searchMethod, request, response);
                     } else {
-                        searchMethod = _.partial(conceptService.getConceptByQuestion,{
+                        searchMethod = _.partial(conceptService.getConceptByQuestion, {
                             term: request.term,
                             codedConceptName: scope.codedConceptName
                         });
