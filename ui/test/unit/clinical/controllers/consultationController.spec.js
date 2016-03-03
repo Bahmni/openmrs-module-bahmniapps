@@ -167,8 +167,10 @@ describe("ConsultationController", function () {
         scope.toParams = {config: 'default'};
         expect(state.name).toEqual("patient.dashboard.show");
         scope.save = jasmine.createSpy('save');
+        var toStateConfig = {toState : "", toParams: ""};
+        scope.toStateConfig = toStateConfig;
         scope.saveAndContinue();
-        expect(scope.save).toHaveBeenCalledWith(true);
+        expect(scope.save).toHaveBeenCalledWith(toStateConfig);
         expect(ngDialog.close).toHaveBeenCalled();
     });
 
@@ -177,10 +179,11 @@ describe("ConsultationController", function () {
         scope.toParams = {config: 'default'};
         expect(state.name).toEqual("patient.dashboard.show");
         state.go = jasmine.createSpy('go');
+        var toStateConfig = {toState : "patient.search", toParams: "default"};
+        scope.toStateConfig = toStateConfig;
         scope.continueWithoutSaving();
-        expect(state.go).toHaveBeenCalledWith(scope.toState, scope.toParams);
+        expect(state.go).toHaveBeenCalledWith(toStateConfig.toState, toStateConfig.toParams);
         expect(ngDialog.close).toHaveBeenCalled();
-
     });
 
     it("should allow all transitions where the target state falls within consultation", function () {
