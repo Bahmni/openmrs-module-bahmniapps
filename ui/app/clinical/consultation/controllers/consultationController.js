@@ -146,6 +146,9 @@ angular.module('bahmni.clinical').controller('ConsultationController',
                 setCurrentBoardBasedOnPath();
             });
 
+            $scope.$on("event:errorsOnForm", function() {
+                $scope.stateChangeTriggedByDialog = false;
+            });
 
             $scope.displayConfirmationDialog = function (event) {
                 if ($rootScope.hasVisitedConsultation && $scope.showSaveConfirmDialogConfig) {
