@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('bahmni.clinical')
-    .controller('ConceptSetPageController', ['$scope', '$rootScope', '$stateParams', 'conceptSetService', 'clinicalAppConfigService', 'messagingService', 'configurations', '$state', 'spinner',
-        function ($scope, $rootScope, $stateParams, conceptSetService, clinicalAppConfigService, messagingService, configurations, $state, spinner) {
+    .controller('ConceptSetPageController', ['$scope', '$rootScope', '$stateParams', 'conceptSetService', 'clinicalAppConfigService', 'messagingService', 'configurations', '$state', 'spinner', 'contextChangeHandler', '$q',
+        function ($scope, $rootScope, $stateParams, conceptSetService, clinicalAppConfigService, messagingService, configurations, $state, spinner, contextChangeHandler, $q) {
             $scope.consultation.selectedObsTemplate = $scope.consultation.selectedObsTemplate || [];
             $scope.scrollingEnabled = false;
             var extensions = clinicalAppConfigService.getAllConceptSetExtensions($stateParams.conceptSetGroupName);
@@ -15,17 +15,22 @@ angular.module('bahmni.clinical')
             var allConceptSections = [];
 
             var init = function () {
-                spinner.forPromise(conceptSetService.getConcept({
-                    name: "All Observation Templates",
-                    v: "custom:" + customRepresentation
-                }).success(function (response) {
-                    var allTemplates = response.results[0].setMembers;
-                    createConceptSections(allTemplates);
-                    $scope.consultation.selectedObsTemplate = getSelectedObsTemplate(allConceptSections);
-                    if (!!$state.params.programUuid) {
-                        showOnlyTemplatesFilledInProgram();
-                    }
-                }));
+                if ($scope.consultation.selectedObsTemplate != undefined && $scope.consultation.selectedObsTemplate.length > 0) {
+                    allConceptSections = $scope.consultation.selectedObsTemplate;
+                    return $q.when({data: {}});
+                } else {
+                    spinner.forPromise(conceptSetService.getConcept({
+                        name: "All Observation Templates",
+                        v: "custom:" + customRepresentation
+                    }).success(function (response) {
+                        var allTemplates = response.results[0].setMembers;
+                        createConceptSections(allTemplates);
+                        $scope.consultation.selectedObsTemplate = getSelectedObsTemplate(allConceptSections);
+                        if (!!$state.params.programUuid) {
+                            showOnlyTemplatesFilledInProgram();
+                        }
+                    }));
+                }
             };
 
             var showOnlyTemplatesFilledInProgram = function () {
