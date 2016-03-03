@@ -7,6 +7,8 @@ module.exports = function (config) {
         autoWatch: false,
         singleRun: true,
         files: [
+            {pattern: 'test/data/*.json', watched: true, served: true, included: false},
+            {pattern: 'app/registration/offline/**/*.js', watched: false, served: false, included: false},
             'app/components/q/q.js',
             'app/components/angular/angular.js',
             'app/components/angular-route/angular-route.js',
@@ -57,8 +59,7 @@ module.exports = function (config) {
             'test/support/**/*.js',
             'test/unit/**/*.js',
             'test/integration/**/*.js',
-            'test/integration/utils/*.js',
-            {pattern: 'test/data/*.json', watched: true, served: true, included: false}
+            'test/integration/utils/*.js'
         ],
         reporters: ['junit', 'progress', 'coverage'],
         preprocessors: {

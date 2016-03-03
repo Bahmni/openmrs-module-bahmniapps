@@ -1,9 +1,8 @@
 'use strict';
 
 describe('Patient resource', function () {
-    var patientService, offlineService;
+    var patientService;
     var patient;
-    var _offlineService = jasmine.createSpyObj('offlineService', ['isOfflineApp', 'isAndroidApp']);
 
     var openmrsUrl = "http://blah";
     var patientConfiguration;
@@ -42,7 +41,6 @@ describe('Patient resource', function () {
         module(function ($provide) {
             Bahmni.Registration.Constants.openmrsUrl = openmrsUrl;
             $provide.value('$http', mockHttp);
-            $provide.value('offlineService', _offlineService);
         });
 
 
@@ -62,19 +60,9 @@ describe('Patient resource', function () {
 
     });
 
-    var mockOfflineService = function () {
-        _offlineService.isOfflineApp.and.callFake(function () {
-            return false;
-        });
-        _offlineService.isAndroidApp.and.callFake(function () {
-            return false;
-        });
-    };
-
 
     it('Should call url for search', function () {
         var query = 'john';
-        mockOfflineService();
         var identifier = '20000',
             identifierPrefix = 'GAN';
         var addressFieldName = 'address2';
@@ -103,7 +91,6 @@ describe('Patient resource', function () {
     });
 
     it('Should create a patient', function () {
-        mockOfflineService();
         angular.extend(patient, {
             "gender": "M",
             "givenName": "someGivenName",
@@ -130,4 +117,19 @@ describe('Patient resource', function () {
         expect(mockHttp.post.calls.mostRecent().args[2].headers['Content-Type']).toBe('application/json');
         expect(mockHttp.post.calls.mostRecent().args[2].headers['Accept']).toBe('application/json');
     });
+
+    it("should get patients by uuid", function() {
+        patientService.get("someUuid");
+
+        expect(mockHttp.get).toHaveBeenCalled();
+        expect(mockHttp.get.calls.mostRecent().args[0]).toBe("http://blah/ws/rest/v1/patientprofile/someUuid");
+    })
+
+    it("should generate identifier", function() {
+        patientService.generateIdentifier({identifierPrefix: {prefix: "GAN"}});
+
+        expect(mockHttp.post).toHaveBeenCalled();
+        expect(mockHttp.post.calls.mostRecent().args[0]).toBe("http://blah/ws/rest/v1/idgen");
+        expect(mockHttp.post.calls.mostRecent().args[1].identifierSourceName).toBe("GAN");
+    })
 });
