@@ -87,6 +87,7 @@ angular.module('bahmni.common.displaycontrol.bacteriologyresults')
                             if(!$rootScope.hasVisitedConsultation) {
                                 window.onbeforeunload = null;
                             }
+                            $rootScope.hasVisitedConsultation = false;
                             $state.go($state.current, {}, {reload: true});
                             ngDialog.close();
                             messagingService.showMessage('info', "{{'CLINICAL_SAVE_SUCCESS_MESSAGE_KEY' | translate}}");
