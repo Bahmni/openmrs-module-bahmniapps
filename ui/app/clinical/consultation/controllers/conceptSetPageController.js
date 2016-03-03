@@ -71,7 +71,6 @@ angular.module('bahmni.clinical')
             var collectObservationsFromConceptSets = function () {
                 $scope.consultation.observations = [];
                 _.each($scope.consultation.selectedObsTemplate, function (conceptSetSection) {
-                    console.log(conceptSetSection.observations);
                     $scope.consultation.observations.push(conceptSetSection.observations[0]);
                 });
             };
