@@ -159,7 +159,10 @@ Bahmni.Clinical.DrugOrderViewModel = function (config, proto, encounterDate) {
         var uniformDosingType = self.uniformDosingType;
         var mantissa = self.uniformDosingType.doseFraction ? self.uniformDosingType.doseFraction.value : 0;
         var dose = uniformDosingType.dose ? uniformDosingType.dose : 0;
-        var doseAndUnits = blankIfFalsy(morphToMixedFraction(parseFloat(dose) + mantissa)) + " " + blankIfFalsy(self.doseUnits);
+        var doseAndUnits;
+        if(uniformDosingType.dose || mantissa){
+             doseAndUnits = blankIfFalsy(morphToMixedFraction(parseFloat(dose) + mantissa)) + " " + blankIfFalsy(self.doseUnits);
+        }
 
         return addDelimiter(blankIfFalsy(doseAndUnits), ", ") +
             addDelimiter(blankIfFalsy(uniformDosingType.frequency), ", ");
@@ -167,9 +170,18 @@ Bahmni.Clinical.DrugOrderViewModel = function (config, proto, encounterDate) {
 
     var numberBasedDoseAndFrequency = function () {
         var variableDosingType = self.variableDosingType;
-        var variableDosingString = addDelimiter(morphToMixedFraction(variableDosingType.morningDose || 0) + "-" + morphToMixedFraction(variableDosingType.afternoonDose || 0) + "-" + morphToMixedFraction(variableDosingType.eveningDose || 0), " ");
-        return addDelimiter((variableDosingString + blankIfFalsy(self.doseUnits)).trim(), ", ")
+        var variableDosingString = addDelimiter(morphToMixedFraction(variableDosingType.morningDose || 0) + "-"
+            + morphToMixedFraction(variableDosingType.afternoonDose || 0)
+            + "-" + morphToMixedFraction(variableDosingType.eveningDose || 0), " ");
+        
+        if (!isDoseEmpty(variableDosingType)) {
+            return addDelimiter((variableDosingString + blankIfFalsy(self.doseUnits)).trim(), ", ")
+        }
     };
+
+    var isDoseEmpty = function (variableDosingType) {
+        return !variableDosingType.morningDose && !variableDosingType.afternoonDose && !variableDosingType.eveningDose;
+    }
 
     var asNeeded = function (asNeeded) {
         return asNeeded ? config.translate(null, 'MEDICATION_AS_NEEDED') : '';
@@ -536,24 +548,37 @@ Bahmni.Clinical.DrugOrderViewModel = function (config, proto, encounterDate) {
 
     var validateUniformDosingType = function () {
         if (self.uniformDosingType.frequency) {
-            var dose = self.uniformDosingType.doseFraction && !self.uniformDosingType.dose ? 0 : self.uniformDosingType.dose;
+            if (self.shouldDoseBeNonMandatory())
+                return self.quantityUnit;
 
-            if (dose !== void 0 && self.uniformDosingType.doseUnits && self.quantityUnit) {
-                return true;
-            } else if (self.uniformDosingType.dose == undefined && !self.uniformDosingType.doseUnits && !self.quantityUnit) {
-                return true;
-            }
-            return false
+            return validateMandatoryDosingType();
         }
         return false;
     };
 
+    var validateMandatoryDosingType = function () {
+        var dose = self.uniformDosingType.doseFraction && !self.uniformDosingType.dose ? 0 : self.uniformDosingType.dose;
+        var isDoseAndUnitEmpty = dose !== void 0 && self.uniformDosingType.doseUnits && self.quantityUnit;
+        var isDoseAndUnitNotEmpty =  self.uniformDosingType.dose == undefined && !self.uniformDosingType.doseUnits && !self.quantityUnit;
+
+        if (isDoseAndUnitEmpty || isDoseAndUnitNotEmpty)
+            return true;
+        return false;
+    }
+
     var validateVariableDosingType = function(){
+        if (self.shouldDoseBeNonMandatory()) {
+            return self.quantityUnit;
+        }
         return !(self.variableDosingType.morningDose == undefined ||
             self.variableDosingType.afternoonDose == undefined ||
             self.variableDosingType.eveningDose == undefined ||
             self.variableDosingType.doseUnits == undefined ||
             self.quantityUnit == undefined);
+    };
+
+    this.shouldDoseBeNonMandatory = function() {
+        return inputOptionsConfig.routesToMakeDoseSectionNonMandatory && inputOptionsConfig.routesToMakeDoseSectionNonMandatory.indexOf(this.route) > -1;
     };
 
     this.validate = function(){
