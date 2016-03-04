@@ -1,13 +1,7 @@
 'use strict';
 
 describe("AdtController", function () {
-    var bedService = jasmine.createSpyObj('bedService', ['assignBed', 'setBedDetailsForPatientOnRootScope']);
-    var appService = jasmine.createSpyObj('appService', ['getAppDescriptor']);
-    var sessionService = jasmine.createSpyObj('sessionService', ['getLoginLocationUuid']);
-    var dispositionService = jasmine.createSpyObj('dispositionService', ['getDispositionActions']);
-    var visitService = jasmine.createSpyObj('visitService', ['getVisitSummary','endVisit']);
-    var encounterService = jasmine.createSpyObj('encounterService', ['create']);
-    var scope, rootScope, controller;
+    var scope, rootScope, controller, bedService, appService, sessionService, dispositionService, visitService, encounterService, ngDialog, window, appDescriptor;
 
     beforeEach(function () {
         module('bahmni.adt');
@@ -17,6 +11,16 @@ describe("AdtController", function () {
             rootScope = $rootScope;
             scope = $rootScope.$new();
         });
+
+        bedService = jasmine.createSpyObj('bedService', ['assignBed', 'setBedDetailsForPatientOnRootScope']);
+        appService = jasmine.createSpyObj('appService', ['getAppDescriptor']);
+        sessionService = jasmine.createSpyObj('sessionService', ['getLoginLocationUuid']);
+        dispositionService = jasmine.createSpyObj('dispositionService', ['getDispositionActions']);
+        visitService = jasmine.createSpyObj('visitService', ['getVisitSummary','endVisit']);
+        encounterService = jasmine.createSpyObj('encounterService', ['create']);
+        ngDialog = jasmine.createSpyObj('ngDialog', ['openConfirm', 'close']);
+        window = {};
+
         appService.getAppDescriptor.and.returnValue({
             getConfigValue: function () {
                 return "IPD";
@@ -26,27 +30,28 @@ describe("AdtController", function () {
                 }
             },
             getConfig: function(){
-
             }
         });
 
-        rootScope.encounterConfig = {getVisitTypes:function(){
-            return [];
-        },getAdmissionEncounterTypeUuid : function(){
+        rootScope.encounterConfig = {
+            getVisitTypes: function () {
+                return [{name : "Current Visit", uuid : "visitUuid"}, {}];
+            }, getAdmissionEncounterTypeUuid: function () {
 
-        },getDischargeEncounterTypeUuid: function(){
+            }, getDischargeEncounterTypeUuid: function () {
 
-        },getTransferEncounterTypeUuid: function(){
+            }, getTransferEncounterTypeUuid: function () {
 
-        }
+            }
         };
 
         var visitServicePromise = specUtil.createServicePromise('getVisitSummary');
         visitService.getVisitSummary.and.returnValue(visitServicePromise);
         dispositionService.getDispositionActions.and.returnValue({});
         sessionService.getLoginLocationUuid.and.returnValue("someLocationUuid");
+    });
 
-
+    var createController = function() {
         controller('AdtController', {
             $scope: scope,
             $rootScope: rootScope,
@@ -56,43 +61,43 @@ describe("AdtController", function () {
             encounterService: encounterService,
             bedService: bedService,
             appService: appService,
-            visitService: visitService
+            visitService: visitService,
+            ngDialog: ngDialog,
+            $window: window
         });
-    });
+    };
 
-    it("Should show the confirm dialog if visit type is not IPD", function () {
+    it("Should show confirmation dialog if patient's visit type is not defaultVisitType", function () {
         scope.visitSummary = {"visitType": "OPD"};
-        spyOn(window, 'confirm');
+        createController();
 
-        scope.admit(null);
-        expect(window.confirm).toHaveBeenCalledWith('Patient Visit Type is OPD, Do you want to close the Visit and start new IPD Visit?');
+        scope.admit();
+        expect(ngDialog.openConfirm).toHaveBeenCalled();
+        expect(ngDialog.openConfirm).toHaveBeenCalledWith({template: 'views/visitChangeConfirmation.html', scope: scope, closeByEscape: true});
     });
 
-    //it("should close the visit if dialog is confirmed and the visit type is not IPD",function(){
-    //    scope.visitSummary = {"visitType": "OPD","uuid":"visitUuid"};
-    //    scope.patient = {uuid:""}; //set because local method in the controller is using it
-    //    scope.adtObservations = [];
-    //    spyOn(window, 'confirm');
-    //
-    //    window.confirm.and.returnValue(true);
-    //    var stubOnePromise = function (data) {
-    //        return {
-    //            success: function (successFn) {
-    //                successFn({results: data});
-    //            }
-    //        };
-    //    };
-    //    encounterService.create.and.callFake(stubOnePromise);
-    //
-    //    scope.admit(null);
-    //    expect(visitService.endVisit).toHaveBeenCalledWith("visitUuid");
-    //
-    //});
+    it("Should not show confirmation dialog if patient's visit type is defaultVisitType", function () {
 
-    it("should not close the visit if visit type is IPD", function(){
-        scope.visitSummary = {"visitType": "IPD","uuid":"visitUuid"};
-        scope.patient = {uuid:""}; //set because local method in the controller is using it
+        scope.visitSummary = {"visitType": "IPD"};
+        scope.patient = {uuid : '123'};
+        encounterService.create.and.callFake(function () {
+            return {
+                success: function (callback) {
+                    return callback({});
+                }
+            }
+        });
+        createController();
+
+        scope.admit();
+
+        expect(ngDialog.openConfirm).not.toHaveBeenCalled();
+    });
+    it("should close the visit and create a new encounter if dialog is confirmed", function () {
+        scope.visitSummary = {"visitType": "Current Visit", "uuid": "visitUuid"};
+        scope.patient = {uuid: "123"};
         scope.adtObservations = [];
+
         var stubOnePromise = function (data) {
             return {
                 success: function (successFn) {
@@ -100,8 +105,80 @@ describe("AdtController", function () {
                 }
             };
         };
+        var stubTwoPromise = function(data) {
+            return {
+                then: function (successFn) {
+                    successFn({results: data});
+                }
+            };
+        };
+        visitService.endVisit.and.callFake(stubTwoPromise);
         encounterService.create.and.callFake(stubOnePromise);
+        createController();
 
-        scope.admit(null);
-    })
+        scope.closeCurrentVisitAndStartNewVisit();
+
+        expect(visitService.endVisit).toHaveBeenCalledWith("visitUuid");
+        expect(encounterService.create).toHaveBeenCalledWith({
+            patientUuid: '123',
+            encounterTypeUuid: undefined,
+            visitTypeUuid: null,
+            observations: [],
+            locationUuid: 'someLocationUuid'
+        });
+        expect(ngDialog.close).toHaveBeenCalled();
+    });
+
+    it("Should close the confirmation dialog if cancelled", function () {
+        scope.visitSummary = {"visitType": "IPD"};
+        scope.patient = {uuid : '123'};
+        encounterService.create.and.callFake(function () {
+            return {
+                success: function (callback) {
+                    return callback({});
+                }
+            }
+        });
+        createController();
+
+        scope.cancelConfirmationDialog();
+
+        expect(ngDialog.close).toHaveBeenCalled();
+    });
+
+    it("Should create an encounter with in the current visit if continued", function () {
+        scope.visitSummary = {"visitType": "Current Visit", "uuid": "visitUuid"};
+        scope.patient = {uuid: "123"};
+        scope.adtObservations = [];
+
+        var stubOnePromise = function (data) {
+            return {
+                success: function (successFn) {
+                    successFn({results: data});
+                }
+            };
+        };
+        var stubTwoPromise = function(data) {
+            return {
+                then: function (successFn) {
+                    successFn({results: data});
+                }
+            };
+        };
+        visitService.endVisit.and.callFake(stubTwoPromise);
+        encounterService.create.and.callFake(stubOnePromise);
+        createController();
+
+        scope.continueWithCurrentVisit();
+
+        expect(encounterService.create).toHaveBeenCalledWith({
+            patientUuid: '123',
+            encounterTypeUuid: undefined,
+            visitTypeUuid: "visitUuid",
+            observations: [],
+            locationUuid: 'someLocationUuid'
+        });
+        expect(ngDialog.close).toHaveBeenCalled();
+    });
+
 });

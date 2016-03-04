@@ -3,33 +3,37 @@
 angular.module('bahmni.adt')
     .controller('AdtController', ['$scope', '$q', '$rootScope', 'spinner', 'dispositionService',
         'encounterService', 'bedService', 'appService', 'visitService', '$location', '$window', 'sessionService',
-        'messagingService', '$anchorScroll', '$stateParams',
+        'messagingService', '$anchorScroll', '$stateParams', 'ngDialog',
         function ($scope, $q, $rootScope, spinner, dispositionService, encounterService, bedService,
                   appService, visitService, $location, $window, sessionService, messagingService, $anchorScroll,
-                  $stateParams) {
+                  $stateParams, ngDialog) {
             var actionConfigs = {};
             var encounterConfig = $rootScope.encounterConfig;
             var locationUuid = sessionService.getLoginLocationUuid();
-            $scope.adtObservations = [];
+            var visitTypes = encounterConfig.getVisitTypes();
 
+            $scope.defaultVisitTypeName = appService.getAppDescriptor().getConfigValue('defaultVisitType');
+            $scope.adtObservations = [];
             $scope.dashboardConfig = appService.getAppDescriptor().getConfigValue('dashboard');
             $scope.getAdtConceptConfig = $scope.dashboardConfig.conceptName;
             var defaultAdmitVisitType;
 
-            var getDefaultVisitTypeUuid = function () {
-                if ($scope.visitSummary && $scope.visitSummary.stopDatetime == null) {
-                    return $scope.visitSummary.visitType;
-                }
-                var defaultVisitTypeName = appService.getAppDescriptor().getConfigValue('defaultVisitType');
-                var visitTypes = encounterConfig.getVisitTypes();
-                var defaultVisitType = _.find(visitTypes, {name: defaultVisitTypeName});
-                return defaultVisitType && defaultVisitType.uuid || null;
+            var getVisitTypeUuid = function (visitTypeName) {
+                var visitType = _.find(visitTypes, {name: visitTypeName});
+                return visitType && visitType.uuid || null;
             };
 
-            var defaultVisitTypeUuid = getDefaultVisitTypeUuid();
+            var defaultVisitTypeUuid = getVisitTypeUuid($scope.defaultVisitTypeName);
             if (defaultVisitTypeUuid == null) {
                 messagingService.showMessage("error", "Please configure a default VisitType.");
             }
+
+            var getCurrentVisitTypeUuid = function() {
+                if ($scope.visitSummary && $scope.visitSummary.dateCompleted == null) {
+                    return getVisitTypeUuid($scope.visitSummary.visitType);
+                }
+                return defaultVisitTypeUuid;
+            };
 
             var getActionCode = function (concept) {
                 var mappingCode = "";
@@ -89,7 +93,7 @@ angular.module('bahmni.adt')
 
             var getVisit = function () {
                 var visitUuid = $stateParams.visitUuid;
-                if (visitUuid != 'null') {
+                if (visitUuid !== 'null' && visitUuid !== '') {
                     return visitService.getVisitSummary(visitUuid).then(function (response) {
                         $scope.visitSummary = new Bahmni.Common.VisitSummary(response.data);
                     });
@@ -192,33 +196,45 @@ angular.module('bahmni.adt')
                 }
             };
 
-
-            $scope.admit = function () {
-                if ($scope.visitSummary && $scope.visitSummary.visitType != defaultAdmitVisitType) {
-                    var confirmed = $window.confirm("Patient Visit Type is "+$scope.visitSummary.visitType+", Do you want to close the Visit and start new "+defaultAdmitVisitType+" Visit?");
-                    if (confirmed) {
-                        visitService.endVisit($scope.visitSummary.uuid).then(function(){
-                            createEncounter();
+            var createEncounterAndContinue = function () {
+                var encounterData = getEncounterData($scope.encounterConfig.getAdmissionEncounterTypeUuid(), getCurrentVisitTypeUuid());
+                encounterService.create(encounterData).success(function (response) {
+                    if ($scope.visitSummary === null) {
+                        visitService.getVisitSummary(response.visitUuid).then(function (response) {
+                            $scope.visitSummary = new Bahmni.Common.VisitSummary(response.data);
                         });
                     }
-                    else {
-                        return;
-                    }
-                }
-                else{
-                    createEncounter();
-                }
-            };
-
-            var createEncounter = function(){
-                var encounterData = getEncounterData($scope.encounterConfig.getAdmissionEncounterTypeUuid(), defaultVisitTypeUuid);
-                encounterService.create(encounterData).success(function (response) {
                     forwardUrl(response, "onAdmissionForwardTo");
                 });
             };
 
+            $scope.admit = function () {
+                if ($scope.visitSummary && $scope.visitSummary.visitType !== 'IPD') {
+                    ngDialog.openConfirm({template: 'views/visitChangeConfirmation.html', scope: $scope, closeByEscape: true});
+                } else {
+                    createEncounterAndContinue();
+                }
+            };
+
+            $scope.cancelConfirmationDialog = function() {
+                ngDialog.close();
+            };
+
+            $scope.closeCurrentVisitAndStartNewVisit = function() {
+                visitService.endVisit($scope.visitSummary.uuid).then(function() {
+                    $scope.visitSummary = null;
+                    createEncounterAndContinue();
+                });
+                ngDialog.close();
+            };
+
+            $scope.continueWithCurrentVisit = function() {
+                createEncounterAndContinue();
+                ngDialog.close();
+            };
+
             $scope.transfer = function () {
-                var encounterData = getEncounterData($scope.encounterConfig.getTransferEncounterTypeUuid(), defaultVisitTypeUuid);
+                var encounterData = getEncounterData($scope.encounterConfig.getTransferEncounterTypeUuid(), getCurrentVisitTypeUuid());
                 encounterService.create(encounterData).then(function (response) {
                     forwardUrl(response.data, "onTransferForwardTo");
                 });
@@ -250,6 +266,5 @@ angular.module('bahmni.adt')
 
             spinner.forPromise(init());
             $anchorScroll();
-
         }
     ]);
