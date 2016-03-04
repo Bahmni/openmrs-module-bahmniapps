@@ -14,6 +14,7 @@ angular.module('bahmni.adt')
 
             $scope.dashboardConfig = appService.getAppDescriptor().getConfigValue('dashboard');
             $scope.getAdtConceptConfig = $scope.dashboardConfig.conceptName;
+            var defaultAdmitVisitType;
 
             var getDefaultVisitTypeUuid = function () {
                 if ($scope.visitSummary && $scope.visitSummary.stopDatetime == null) {
@@ -102,6 +103,7 @@ angular.module('bahmni.adt')
                 initializeActionConfig();
                 var defaultVisitType = appService.getAppDescriptor().getConfigValue('defaultVisitType');
                 var visitTypes = encounterConfig.getVisitTypes();
+                defaultAdmitVisitType = defaultVisitType ? defaultVisitType : "IPD";
                 $scope.visitControl = new Bahmni.Common.VisitControl(visitTypes, defaultVisitType, visitService);
                 $scope.dashboard = Bahmni.Common.DisplayControl.Dashboard.create($scope.dashboardConfig || {});
                 $scope.sectionGroups =  $scope.dashboard.getSections($scope.diseaseTemplates);
@@ -192,14 +194,22 @@ angular.module('bahmni.adt')
 
 
             $scope.admit = function () {
-                if ($scope.visitSummary && $scope.visitSummary.visitType != 'IPD') {
-                    var confirmed = $window.confirm("Patient Visit Type is "+$scope.visitSummary.visitType+", Do you want to close the Visit and start new IPD Visit?");
+                if ($scope.visitSummary && $scope.visitSummary.visitType != defaultAdmitVisitType) {
+                    var confirmed = $window.confirm("Patient Visit Type is "+$scope.visitSummary.visitType+", Do you want to close the Visit and start new "+defaultAdmitVisitType+" Visit?");
                     if (confirmed) {
-                        visitService.endVisit($scope.visitSummary.uuid);
+                        visitService.endVisit($scope.visitSummary.uuid).then(function(){
+                            createEncounter();
+                        });
                     }
                     else
                      return;
                 }
+                else{
+                    createEncounter();
+                }
+            };
+
+            var createEncounter = function(){
                 var encounterData = getEncounterData($scope.encounterConfig.getAdmissionEncounterTypeUuid(), defaultVisitTypeUuid);
                 encounterService.create(encounterData).success(function (response) {
                     forwardUrl(response, "onAdmissionForwardTo");
