@@ -174,13 +174,13 @@ Bahmni.Clinical.DrugOrderViewModel = function (config, proto, encounterDate) {
             + morphToMixedFraction(variableDosingType.afternoonDose || 0)
             + "-" + morphToMixedFraction(variableDosingType.eveningDose || 0), " ");
         
-        if (!isDoseEmpty(variableDosingType)) {
+        if (!isVariableDoseEmpty(variableDosingType)) {
             return addDelimiter((variableDosingString + blankIfFalsy(self.doseUnits)).trim(), ", ")
         }
     };
 
-    var isDoseEmpty = function (variableDosingType) {
-        return !variableDosingType.morningDose && !variableDosingType.afternoonDose && !variableDosingType.eveningDose;
+    var isVariableDoseEmpty = function (variableDosingType) {
+        return (!variableDosingType.morningDose && !variableDosingType.afternoonDose && !variableDosingType.eveningDose);
     }
 
     var asNeeded = function (asNeeded) {
@@ -548,9 +548,8 @@ Bahmni.Clinical.DrugOrderViewModel = function (config, proto, encounterDate) {
 
     var validateUniformDosingType = function () {
         if (self.uniformDosingType.frequency) {
-            if (self.shouldDoseBeNonMandatory())
-                return self.quantityUnit;
-
+            if(self.isDoseAndUnitNonMandatory())
+              return self.quantityUnit;
             return validateMandatoryDosingType();
         }
         return false;
@@ -558,18 +557,18 @@ Bahmni.Clinical.DrugOrderViewModel = function (config, proto, encounterDate) {
 
     var validateMandatoryDosingType = function () {
         var dose = self.uniformDosingType.doseFraction && !self.uniformDosingType.dose ? 0 : self.uniformDosingType.dose;
-        var isDoseAndUnitEmpty = dose !== void 0 && self.uniformDosingType.doseUnits && self.quantityUnit;
-        var isDoseAndUnitNotEmpty =  self.uniformDosingType.dose == undefined && !self.uniformDosingType.doseUnits && !self.quantityUnit;
+        var isDoseAndUnitNotEmpty = dose !== void 0 && self.uniformDosingType.doseUnits && self.quantityUnit;
+        var isDoseAndUnitEmpty =  self.uniformDosingType.dose == undefined && !self.uniformDosingType.doseUnits && !self.quantityUnit;
 
         if (isDoseAndUnitEmpty || isDoseAndUnitNotEmpty)
             return true;
         return false;
     }
 
-    var validateVariableDosingType = function(){
-        if (self.shouldDoseBeNonMandatory()) {
+    var validateVariableDosingType = function () {
+        if(self.isDoseAndUnitNonMandatory())
             return self.quantityUnit;
-        }
+
         return !(self.variableDosingType.morningDose == undefined ||
             self.variableDosingType.afternoonDose == undefined ||
             self.variableDosingType.eveningDose == undefined ||
@@ -577,8 +576,9 @@ Bahmni.Clinical.DrugOrderViewModel = function (config, proto, encounterDate) {
             self.quantityUnit == undefined);
     };
 
-    this.shouldDoseBeNonMandatory = function() {
-        return inputOptionsConfig.routesToMakeDoseSectionNonMandatory && inputOptionsConfig.routesToMakeDoseSectionNonMandatory.indexOf(this.route) > -1;
+    this.isDoseAndUnitNonMandatory = function() {
+        return (inputOptionsConfig.routesToMakeDoseSectionNonMandatory
+            && inputOptionsConfig.routesToMakeDoseSectionNonMandatory.indexOf(this.route) > -1);
     };
 
     this.validate = function(){
@@ -589,6 +589,19 @@ Bahmni.Clinical.DrugOrderViewModel = function (config, proto, encounterDate) {
         }
         return false;
     };
+
+    this.isMantissaRequired = function () {
+        return (!this.isDoseAndUnitNonMandatory() && this.isUniformFrequency && !this.uniformDosingType.dose);
+    };
+
+    this.isUniformDoseUnitRequired = function () {
+        return (!(this.uniformDosingType.dose == undefined) || !(this.uniformDosingType.doseFraction == undefined)
+            || (this.isUniformFrequency  && !this.isDoseAndUnitNonMandatory()));
+    }
+
+    this.isVariableDoseRequired = function () {
+        return (!this.isUniformFrequency && !this.isDoseAndUnitNonMandatory());
+    }
 
     this.loadOrderAttributes = function(drugOrderResponse){
         if(config && config.orderAttributes){

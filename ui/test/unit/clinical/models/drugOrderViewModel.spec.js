@@ -1136,7 +1136,7 @@ describe("drugOrderViewModel", function () {
             });
 
             it("should pass validation if dose and and dose units are not given for the routes given in config", function () {
-                treatmentConfig.inputOptionsConfig.routesToMakeDoseSectionNonMandatory = ["Topical","Inhalation"];
+                treatmentConfig.inputOptionsConfig.routesToMakeDoseSectionNonMandatory = ["Topical", "Inhalation"];
                 var treatment = sampleTreatment(treatmentConfig, null, Bahmni.Common.Util.DateUtil.now());
                 treatment.uniformDosingType = {
                     frequency: "Once a day",
@@ -1146,17 +1146,8 @@ describe("drugOrderViewModel", function () {
                 expect(treatment.validate()).toBeTruthy();
             });
 
-            it("should pass validation if dose and and dose units are not given for the routes given in config", function () {
-                treatmentConfig.inputOptionsConfig.routesToMakeDoseSectionNonMandatory = ["Topical","Inhalation"];
-                var treatment = sampleTreatment(treatmentConfig, null, Bahmni.Common.Util.DateUtil.now());
-                treatment.route = 'Topical';
-                treatment.frequencyType = Bahmni.Clinical.Constants.dosingTypes.variable;
-                treatment.quantityUnit = "Some";
-                expect(treatment.validate()).toBeTruthy();
-            });
-
             it("should fail validation if quantity unit is not given for the routes given in config", function () {
-                treatmentConfig.inputOptionsConfig.routesToMakeDoseSectionNonMandatory = ["Topical","Inhalation"];
+                treatmentConfig.inputOptionsConfig.routesToMakeDoseSectionNonMandatory = ["Topical", "Inhalation"];
                 var treatment = sampleTreatment(treatmentConfig, null, Bahmni.Common.Util.DateUtil.now());
                 treatment.uniformDosingType = {
                     frequency: "Once a day",
@@ -1165,6 +1156,37 @@ describe("drugOrderViewModel", function () {
                 treatment.quantityUnit = null;
                 expect(treatment.validate()).toBeFalsy();
             });
+
+            it("should make dose and unit required for the routes given in config", function () {
+                treatmentConfig.inputOptionsConfig.routesToMakeDoseSectionNonMandatory = ["Topical", "Inhalation"];
+                var treatment = sampleTreatment(treatmentConfig, null, Bahmni.Common.Util.DateUtil.now());
+                treatment.uniformDosingType = {
+                    frequency: "Once a day",
+                };
+                treatment.route = 'Topical';
+                expect(treatment.isDoseAndUnitNonMandatory()).toBeTruthy();
+            });
+        });
+
+        describe("for variable dosing type", function () {
+
+            it("should pass validation if dose and and dose units are not given for the routes given in config", function () {
+                    treatmentConfig.inputOptionsConfig.routesToMakeDoseSectionNonMandatory = ["Topical", "Inhalation"];
+                    var treatment = sampleTreatment(treatmentConfig, null, Bahmni.Common.Util.DateUtil.now());
+                    treatment.route = 'Topical';
+                    treatment.frequencyType = Bahmni.Clinical.Constants.dosingTypes.variable;
+                    treatment.quantityUnit = "Some";
+                    expect(treatment.validate()).toBeTruthy();
+                });
+
+            it("should make variable dose required for the routes given in config", function () {
+                var treatment = sampleTreatment(treatmentConfig, null, Bahmni.Common.Util.DateUtil.now());
+                treatment.uniformDosingType = {
+                    frequency: "Once a day",
+                };
+                treatment.isUniformFrequency = false;
+                expect(treatment.isVariableDoseRequired()).toBeTruthy();
+                });
         });
 
         describe("for variable dosing type", function () {
