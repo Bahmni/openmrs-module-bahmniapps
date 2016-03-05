@@ -174,12 +174,12 @@ Bahmni.Clinical.DrugOrderViewModel = function (config, proto, encounterDate) {
             + morphToMixedFraction(variableDosingType.afternoonDose || 0)
             + "-" + morphToMixedFraction(variableDosingType.eveningDose || 0), " ");
         
-        if (!isVariableDoseEmpty(variableDosingType)) {
+        if (!self.isVariableDoseEmpty(variableDosingType)) {
             return addDelimiter((variableDosingString + blankIfFalsy(self.doseUnits)).trim(), ", ")
         }
     };
 
-    var isVariableDoseEmpty = function (variableDosingType) {
+    this.isVariableDoseEmpty = function (variableDosingType) {
         return (!variableDosingType.morningDose && !variableDosingType.afternoonDose && !variableDosingType.eveningDose);
     }
 
@@ -548,7 +548,7 @@ Bahmni.Clinical.DrugOrderViewModel = function (config, proto, encounterDate) {
 
     var validateUniformDosingType = function () {
         if (self.uniformDosingType.frequency) {
-            if(self.isDoseAndUnitNonMandatory())
+            if (self.isDoseAndUnitNonMandatory())
               return self.quantityUnit;
             return validateMandatoryDosingType();
         }

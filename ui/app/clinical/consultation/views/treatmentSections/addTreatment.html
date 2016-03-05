@@ -130,9 +130,9 @@
                     <label class=" unit-text">{{ ::treatmentConfig.translate('units', 'MEDICATION_LABEL_UNITS') }} </label>
                 </div>
                 <div class="field-value">
-                    <select id="variable-dose-unit" class=" freq-dose-units" ng-model="treatment.variableDosingType.doseUnits" name="variable unit"
+                    <select id="variable-dose-unit" class=" freq-dose-units" ng-model="treatment.variableDosingType.doseUnits"
                             ng-options="item.name as item.name for item in treatmentConfig.getDoseUnits()"
-                            ng-required="(!treatment.isVariableDoseEmpty()) || treatment.isVariableDoseRequired()">
+                            ng-required="!treatment.isVariableDoseEmpty(treatment.variableDosingType) || treatment.isVariableDoseRequired()">
                         <option value="">{{ ::treatmentConfig.translate('doseUnitsPlaceHolder', 'MEDICATION_DOSE_UNIT_PLACEHOLDER') }} </option>
                     </select>
                 </div>
