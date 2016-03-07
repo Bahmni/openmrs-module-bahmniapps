@@ -1,6 +1,6 @@
 <li ng-class="{'is-text': observation.type == 'Text', 'has-child' : observation.groupMembers.length > 0}">
     <div ng-class="{'is-abnormal': observation.abnormal}" class="tree-list-item" bm-gallery patient="patient">
-        <span ng-if="!observation.isImageConcept() || (observation.isImageConcept() && !print)" class="testUnderPanel">
+        <span ng-if="!observation.isImageConcept() || (observation.isImageConcept() && !print)" class="testUnderPanel left">
             <label>{{::observation.concept.shortName || observation.concept.name}}</label>
             <hint concept-details="{
             lowNormal:observation.lowNormal||observation.concept.lowNormal,
@@ -12,7 +12,7 @@
                        'value-text-only': !(observation.concept.dataType ==='Text' && print)
                        }"
              ng-if="observation.isFormElement() && !observation.isImageConcept()">
-            {{::observation.getDisplayValue()}}
+            <pre class="left">{{::observation.getDisplayValue()}}</pre>
             <span class="label-add-on">{{::observation.concept.units}}</span>
         </span>
         <a  ng-if="observation.isImageConcept() && !observation.hasPDFAsValue() && !print" class="img-concept">
