@@ -91,6 +91,11 @@
     .formDataDate{
       width:150px;
     }
+    .formDataTime , .formDataDate{
+      .fa-pencil ,.fa-eye{
+        font-size: 16px;
+      }
+    }
   }
   table tr th {
     background: $lightestGray;
@@ -672,6 +677,9 @@ a.visit:before {
           }
           &.formDataDate{
             width:160px;
+          }
+          .fa-pencil ,.fa-eye{
+            font-size: 16px;
           }
         }
       }
