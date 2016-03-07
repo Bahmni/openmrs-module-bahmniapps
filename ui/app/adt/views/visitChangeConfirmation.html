@@ -6,7 +6,8 @@
             z-index: 10000 !important;
         }
     </style>
-    <button id="modal-close-button" class="secondary-button" ng-click="cancelConfirmationDialog()">{{'VISIT_CHANGE_CONFIRMATION_OPTION_CANCEL_KEY' | translate}}</button>
+    <div class="ngdialog-close clearfix"></div>
+    <!--<button id="modal-close-button" class="secondary-button" ng-click="cancelConfirmationDialog()">{{'VISIT_CHANGE_CONFIRMATION_OPTION_CANCEL_KEY' | translate}}</button>-->
     <div class="drug-details">
         <p translate="VISIT_CHANGE_CONFIRMATION_DIALOG_MESSAGE_KEY" translate-values="{visitType : '{{visitSummary.visitType}}', defaultVisitType : '{{ defaultVisitTypeName }}'}"></p>
     </div>
