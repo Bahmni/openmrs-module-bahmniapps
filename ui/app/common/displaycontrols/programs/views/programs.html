@@ -65,9 +65,12 @@
 
 
                 <div class="program-attributes">
-                    <div class="program-attribute" ng-repeat="attribute in program.attributes">
-                        <span>
-                            <strong>{{attribute.attributeType.description || attribute.attributeType.display}}</strong> : {{getAttributeValue(attribute)}}
+                    <div class="program-attribute clearfix" ng-repeat="attribute in program.attributes">
+                       <span class="program-attribute-title fl">
+                            <strong>{{attribute.attributeType.description || attribute.attributeType.display}}</strong> :
+                       </span>
+                        <span class="program-attribute-value fl">
+                            {{getAttributeValue(attribute)}}
                         </span>
                     </div>
                     <div class="program-attribute" ng-if="program.location">
