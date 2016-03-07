@@ -13,15 +13,8 @@ angular.module('bahmni.common.uiHelper')
                 return string;
             };
 
-            $scope.showError = false;
-
-            $scope.toggleShowError = function (){
-                $scope.showError = !$scope.showError;
-                if ($scope.showError === true) {
-                    messagingService.cancelTimeout();
-                } else {
-                    messagingService.createTimeout("error", 0);
-                }
+            $scope.hideError = function() {
+                messagingService.hideMessages("error");
             };
 
             $scope.isErrorMessagePresent = function(){
