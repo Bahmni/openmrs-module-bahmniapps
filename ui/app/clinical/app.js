@@ -17,7 +17,8 @@ angular.module('consultation', ['ui.router', 'bahmni.clinical', 'bahmni.common.c
     'bahmni.common.displaycontrol.drugOrderDetails', 'bahmni.common.offline', 'bahmni.common.displaycontrol.hint',
     'bahmni.common.displaycontrol.drugOrdersSection', 'bahmni.common.attributeTypes']);
 angular.module('consultation')
-    .config(['$stateProvider', '$httpProvider', '$urlRouterProvider', '$bahmniTranslateProvider', function ($stateProvider, $httpProvider, $urlRouterProvider, $bahmniTranslateProvider) {
+    .config(['$stateProvider', '$httpProvider', '$urlRouterProvider', '$bahmniTranslateProvider', '$compileProvider',
+        function ($stateProvider, $httpProvider, $urlRouterProvider, $bahmniTranslateProvider, $compileProvider) {
         $urlRouterProvider.otherwise('/' + Bahmni.Clinical.Constants.defaultExtensionName + '/patient/search');
         var patientSearchBackLink = {
             label: "",
@@ -27,6 +28,14 @@ angular.module('consultation')
             icon: "fa-users"
         };
         var homeBackLink = {label: "", url: "../home/", accessKey: "h", icon: "fa-home"};
+
+        // @if DEBUG='production'
+        $compileProvider.debugInfoEnabled(false);
+        // @endif
+
+        // @if DEBUG='development'
+        $compileProvider.debugInfoEnabled(true);
+        // @endif
 
         $stateProvider
             .state('search', {
