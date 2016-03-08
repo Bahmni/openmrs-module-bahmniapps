@@ -85,7 +85,7 @@ angular.module('bahmni.common.orders')
         };
 
         var hasSpecialDoseUnit = function (doseUnits) {
-            return _.contains(Bahmni.Common.Constants.orderSetSpecialUnits, doseUnits);
+            return _.includes(Bahmni.Common.Constants.orderSetSpecialUnits, doseUnits);
         };
 
         var getRuleForUnits = function (doseUnits) {
