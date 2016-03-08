@@ -109,7 +109,7 @@ angular.module('bahmni.clinical')
                     $scope.newSpecimens.push(new Bahmni.Clinical.Specimen(specimen,$scope.allSamples));
                     $scope.clearEmptySpecimens();
                 } else {
-                    messagingService.showMessage("formError", "{{ 'BACTERIOLOGY_SAMPLE_BEING_EDITED_KEY' | translate}}" + specimen.type.name + " #" + specimen.identifier);
+                    messagingService.showMessage("error", "{{ 'BACTERIOLOGY_SAMPLE_BEING_EDITED_KEY' | translate}}" + specimen.type.name + " #" + specimen.identifier);
                 }
                 handleSampleTypeOther();
             };
@@ -125,7 +125,7 @@ angular.module('bahmni.clinical')
                     $scope.savedSpecimens = _.without($scope.savedSpecimens, specimen);
                     $scope.clearEmptySpecimens();
                 } else {
-                    messagingService.showMessage("formError", "{{ 'BACTERIOLOGY_SAMPLE_BEING_EDITED_KEY' | translate}}" + specimen.type.name + " #" + specimen.identifier);
+                    messagingService.showMessage("error", "{{ 'BACTERIOLOGY_SAMPLE_BEING_EDITED_KEY' | translate}}" + specimen.type.name + " #" + specimen.identifier);
                 }
             };
 
@@ -137,7 +137,7 @@ angular.module('bahmni.clinical')
                 }
                 return displayName;
             };
-            
+
             $scope.consultation.preSaveHandler.register("bacteriologySaveHandlerKey", saveSpecimens);
 
             var handleSampleTypeOther = function(){

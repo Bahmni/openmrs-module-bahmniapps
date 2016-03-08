@@ -295,7 +295,7 @@ angular.module('bahmni.clinical').controller('ConsultationController',
                 var shouldAllow = contxChange["allow"];
                 if (!shouldAllow) {
                     var errorMessage = contxChange["errorMessage"] ? contxChange["errorMessage"] : "{{'CLINICAL_FORM_ERRORS_MESSAGE_KEY' | translate }}";
-                    messagingService.showMessage('formError', errorMessage);
+                    messagingService.showMessage('error', errorMessage);
                 }
                 return shouldAllow;
             };
@@ -334,7 +334,7 @@ angular.module('bahmni.clinical').controller('ConsultationController',
                                 }));
                         }).catch(function (error) {
                             var message = Bahmni.Clinical.Error.translate(error) || "{{'CLINICAL_SAVE_FAILURE_MESSAGE_KEY' | translate}}";
-                            messagingService.showMessage('formError', message);
+                            messagingService.showMessage('error', message);
                         })
                 }));
             };

@@ -92,7 +92,7 @@ angular.module('bahmni.registration')
                 visitService.getVisitSummary(self.visitUuid).then(function (response) {
                     var visitSummary = response.data;
                     if (visitSummary.admissionDetails != null && visitSummary.dischargeDetails === null) {
-                        messagingService.showMessage("formError", 'REGISTRATION_VISIT_CANNOT_BE_CLOSED');
+                        messagingService.showMessage("error", 'REGISTRATION_VISIT_CANNOT_BE_CLOSED');
                     } else {
                         closeVisit();
                     }
@@ -118,12 +118,12 @@ angular.module('bahmni.registration')
                 var allowContextChange = contxChange["allow"];
                 if (!allowContextChange) {
                     var errorMessage = contxChange["errorMessage"] ? contxChange["errorMessage"] : 'REGISTRATION_LABEL_CORRECT_ERRORS';
-                    messagingService.showMessage('formError', errorMessage);
+                    messagingService.showMessage('error', errorMessage);
                     deferred.reject("Some fields are not valid");
                     return deferred.promise;
                 }else if(!mandatoryValidate()){ // This ELSE IF condition is to be deleted later.
                     var errorMessage =  "REGISTRATION_LABEL_ENTER_MANDATORY_FIELDS";
-                    messagingService.showMessage('formError', errorMessage);
+                    messagingService.showMessage('error', errorMessage);
                     deferred.reject("Some fields are not valid");
                     return deferred.promise;
                 } else {

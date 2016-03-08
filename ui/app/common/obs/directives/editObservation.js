@@ -37,7 +37,7 @@ angular.module('bahmni.common.obs')
                 var shouldAllow = contxChange["allow"];
                 if (!shouldAllow) {
                     var errorMessage = contxChange["errorMessage"] ? contxChange["errorMessage"] : "{{'CLINICAL_FORM_ERRORS_MESSAGE_KEY' | translate }}";
-                    messagingService.showMessage('formError', errorMessage);
+                    messagingService.showMessage('error', errorMessage);
                 }
                 return shouldAllow;
             };

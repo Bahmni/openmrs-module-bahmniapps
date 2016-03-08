@@ -352,7 +352,7 @@ describe("ManageProgramController", function () {
 
             scope.updatePatientProgram(programToBeUpdated);
 
-            expect(messageService.showMessage).toHaveBeenCalledWith("formError", "State cannot be started earlier than current state (15 Jul 15)");
+            expect(messageService.showMessage).toHaveBeenCalledWith("error", "State cannot be started earlier than current state (15 Jul 15)");
         });
 
         it("should transit from one state to another successfully", function(){
@@ -411,7 +411,7 @@ describe("ManageProgramController", function () {
 
             scope.updatePatientProgram(programToBeUpdated);
 
-            expect(messageService.showMessage).toHaveBeenCalledWith("formError", "Program cannot be ended earlier than current state (15 Jul 15)");
+            expect(messageService.showMessage).toHaveBeenCalledWith("error", "Program cannot be ended earlier than current state (15 Jul 15)");
         });
 
         it('should end a program successfully', function(){

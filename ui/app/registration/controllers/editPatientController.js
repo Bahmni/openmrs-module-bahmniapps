@@ -57,7 +57,7 @@ angular.module('bahmni.registration')
                 addNewRelationships();
                 var errMsg = Bahmni.Common.Util.ValidationUtil.validate($scope.patient, $scope.patientConfiguration.attributeTypes);
                 if (errMsg) {
-                    messagingService.showMessage('formError', errMsg);
+                    messagingService.showMessage('error', errMsg);
                     return;
                 }
 

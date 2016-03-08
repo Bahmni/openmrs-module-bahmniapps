@@ -233,7 +233,7 @@ angular.module('bahmni.common.conceptSet')
                         var flattenedObs = ObservationUtil.flattenObsToArray([rootObservation]);
                         var conditions = formCondition(formName, allObsValues);
                         if (conditions.error && !_.isEmpty(conditions.error)) {
-                            messagingService.showMessage('formError', conditions.error);
+                            messagingService.showMessage('error', conditions.error);
                             processConditions(flattenedObs, [conceptName], false, true);
                             return
                         } else {

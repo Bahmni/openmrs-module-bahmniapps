@@ -31,8 +31,7 @@ describe('MessagingService', function () {
         expect(messagingService.messages['error']).toBeTruthy();
         expect(messagingService.messages).toEqual({
             error: [{value: 'message', isServerError: false}],
-            info: [],
-            formError: []
+            info: []
         });
     });
 
@@ -43,8 +42,7 @@ describe('MessagingService', function () {
         expect(messagingService.messages['error']).toBeTruthy();
         expect(messagingService.messages).toEqual({
             error: [{value: 'message', isServerError: true}],
-            info: [],
-            formError: []
+            info: []
         });
     });
 
@@ -68,11 +66,41 @@ describe('MessagingService', function () {
         expect(args[2]).toBeTruthy();
         expect(messagingService.messages).toEqual({
             error: [],
-            info: [{value: 'message', isServerError: false}],
-            formError: []
+            info: [{value: 'message', isServerError: false}]
         });
         args[0]();
         expect(messagingService.messages['info']).toEqual([]);
     });
 
+    it('should not have multiple messages of same content', function () {
+        messagingService.showMessage('error', 'message');
+        messagingService.showMessage('error', 'message');
+
+        expect(messagingService.messages).toBeTruthy();
+        expect(messagingService.messages['error']).toBeTruthy();
+        expect(args[1]).toEqual(4000);
+        expect(args[2]).toBeTruthy();
+        expect(messagingService.messages).toEqual({
+            info: [],
+            error: [{value: 'message', isServerError: false}]
+        });
+        args[0]();
+        expect(messagingService.messages['error'].length).toEqual(1);
+    });
+
+    it('should not have multiple messages of different content', function () {
+        messagingService.showMessage('error', 'message');
+        messagingService.showMessage('error', 'le message');
+
+        expect(messagingService.messages).toBeTruthy();
+        expect(messagingService.messages['error']).toBeTruthy();
+        expect(args[1]).toEqual(4000);
+        expect(args[2]).toBeTruthy();
+        expect(messagingService.messages).toEqual({
+            info: [],
+            error: [{value: 'message', isServerError: false}, {value: 'le message', isServerError: false}]
+        });
+        args[0]();
+        expect(messagingService.messages['error'].length).toEqual(2);
+    });
 });

@@ -139,7 +139,7 @@ describe("DashboardController", function () {
 
         scope.runReport(report);
 
-        expect(messagingServiceMock.showMessage).toHaveBeenCalledWith("formError", "Please select the start date and end date");
+        expect(messagingServiceMock.showMessage).toHaveBeenCalledWith("error", "Please select the start date and end date");
         expect(reportServiceMock.generateReport).not.toHaveBeenCalled();
     });
 
@@ -155,7 +155,7 @@ describe("DashboardController", function () {
 
         scope.runReport(report);
 
-        expect(messagingServiceMock.showMessage).toHaveBeenCalledWith("formError", "Please select the start date");
+        expect(messagingServiceMock.showMessage).toHaveBeenCalledWith("error", "Please select the start date");
         expect(reportServiceMock.generateReport).not.toHaveBeenCalled();
     });
 
@@ -171,7 +171,7 @@ describe("DashboardController", function () {
 
         scope.runReport(report);
 
-        expect(messagingServiceMock.showMessage).toHaveBeenCalledWith("formError", "Please select the end date");
+        expect(messagingServiceMock.showMessage).toHaveBeenCalledWith("error", "Please select the end date");
         expect(reportServiceMock.generateReport).not.toHaveBeenCalled();
     });
 
@@ -180,13 +180,13 @@ describe("DashboardController", function () {
             config: {},
             name: "Vitals",
             startDate: '2015-02-01',
-            stopDate: null,
+            stopDate: null
         };
         scope.reportsRequiringDateRange.push(report);
 
         scope.runReport(report);
 
-        expect(messagingServiceMock.showMessage).toHaveBeenCalledWith("formError", "Select format for the report: Vitals");
+        expect(messagingServiceMock.showMessage).toHaveBeenCalledWith("error", "Select format for the report: Vitals");
         expect(reportServiceMock.generateReport).not.toHaveBeenCalled();
     });
 
@@ -203,7 +203,7 @@ describe("DashboardController", function () {
 
         scope.runReport(report);
 
-        expect(messagingServiceMock.showMessage).toHaveBeenCalledWith("formError", "Workbook template should be selected for generating report: Vitals");
+        expect(messagingServiceMock.showMessage).toHaveBeenCalledWith("error", "Workbook template should be selected for generating report: Vitals");
         expect(reportServiceMock.generateReport).not.toHaveBeenCalled();
     });
 

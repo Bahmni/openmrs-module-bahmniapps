@@ -86,7 +86,7 @@ app.controller('OrderFulfillmentController', ['$scope', '$rootScope', '$statePar
                     message = "Visit already closed, create new visit to fulfill the order";
                 }
             } catch(e) { /* ignore the error */}
-            messagingService.showMessage('formError', message);
+            messagingService.showMessage('error', message);
         }));
     });
 

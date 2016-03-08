@@ -184,7 +184,7 @@ describe("ensure that the directive edit-observation works properly", function (
         compiledScope.save();
 
         expect(rootScope.$broadcast).toHaveBeenCalledWith('event:errorsOnForm');
-        expect(messageServiceMock.showMessage).toHaveBeenCalledWith("formError", "Enter mandatory fields");
+        expect(messageServiceMock.showMessage).toHaveBeenCalledWith("error", "Enter mandatory fields");
 
     })
 
