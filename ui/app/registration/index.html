@@ -238,16 +238,33 @@
 
         <script src="initialization.js"></script>
         <script src="offlineRegistrationInitialization.js"></script>
-
-        <!--<script src="offline/offlinePatientServiceStrategy.js"></script>-->
-        <script src="services/defaultPatientServiceStrategy.js"></script>
-        <!--<script src="offline/chrome/chromePatientServiceStrategy.js"></script>-->
-        <!--<script src="offline/android/androidPatientServiceStrategy.js"></script>-->
-
         <!-- endbuild -->
+
+
+        <!-- @ifdef ONLINE -->
+            <!-- build:js registration.min.web.js -->
+            <script src="services/defaultPatientServiceStrategy.js"></script>
+            <!-- endbuild -->
+        <!-- @endif -->
+
+        <!-- @ifdef CHROME -->
+            <!-- build:js registration.min.chrome.js -->
+            <!--<script src="../components/hustle/hustle.js"></script>-->
+            <!--<script src="offline/offlinePatientServiceStrategy.js"></script>-->
+            <!--<script src="offline/chrome/chromePatientServiceStrategy.js"></script>-->
+            <!-- endbuild -->
+        <!-- @endif -->
+
+
+        <!-- @ifdef ANDROID -->
+            <!-- build:js registration.min.android.js -->
+            <!--<script src="../components/hustle/hustle.js"></script>-->
+            <!--<script src="offline/offlinePatientServiceStrategy.js"></script>-->
+            <!--<script src="offline/android/androidPatientServiceStrategy.js"></script>-->
+            <!-- endbuild -->
+        <!-- @endif -->
+
+
         <script src="/bahmni_config/openmrs/apps/customDisplayControl/js/customControl.js"></script>
-
-
-
     </body>
 </html>

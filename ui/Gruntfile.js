@@ -376,6 +376,33 @@ module.exports = function (grunt) {
             js : {
                 src : '<%= yeoman.dist %>/registration.min.js',
                 dest : '<%= yeoman.dist %>/registration.min.js'
+            },
+            web: {
+                src: ['<%= yeoman.dist %>/**/index.html'],
+                options: {
+                    inline: true,
+                    context: {
+                        ONLINE: true
+                    }
+                }
+            },
+            chrome: {
+                src: ['<%= yeoman.dist %>/**/index.html'],
+                options: {
+                    inline: true,
+                    context: {
+                        CHROME: true
+                    }
+                }
+            },
+            android: {
+                src: '<%= yeoman.dist %>/**/index.html',
+                options: {
+                    inline: true,
+                    context: {
+                        ANDROID: true
+                    }
+                }
             }
         }
     });
@@ -411,7 +438,6 @@ module.exports = function (grunt) {
         'uglify',
         'rename:minified'
     ]);
-
 
     var updatePrefetchList = function (preFetchList) {
         var replace = require("replace");
@@ -449,8 +475,10 @@ module.exports = function (grunt) {
         return files_;
     };
 
-    grunt.registerTask('default', ['build', 'uglify-and-rename']);
-    grunt.registerTask('dev', ['build']);
+    grunt.registerTask('default', ['build', 'uglify-and-rename', 'preprocess:web']);
+    grunt.registerTask('dev', ['build', 'rename', 'preprocess:web']);
+    grunt.registerTask('chrome', ['build', 'uglify-and-rename', 'preprocess:chrome']);
+    grunt.registerTask('android', ['build', 'uglify-and-rename', 'preprocess:android']);
 
     grunt.registerTask('pre-fetch', 'Generate files to pre-fetch for service worker', function() {
             var preFetchList = [];
