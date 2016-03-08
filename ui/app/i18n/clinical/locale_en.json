@@ -162,5 +162,7 @@
     "SAVE_CONFIRMATION_OPTION_SAVE_KEY" : "Save",
     "SAVE_CONFIRMATION_OPTION_CANCEL_KEY" : "Cancel",
     "BROWSER_CLOSE_DIALOG_MESSAGE_KEY":"You might lose unsaved data",
-    "POP_UP_CLOSE_DIALOG_MESSAGE_KEY":"You might lose unsaved data. Are you sure you want to leave this page?"
+    "POP_UP_CLOSE_DIALOG_MESSAGE_KEY":"You might lose unsaved data. Are you sure you want to leave this page?",
+    "MESSAGE_DIALOG_OPTION_COPY" : "Copy",
+    "MESSAGE_DIALOG_OPTION_OKAY" : "Okay"
 }

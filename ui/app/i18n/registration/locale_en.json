@@ -42,7 +42,6 @@
   "REGISTRATION_LABEL_TILL":"Till",
   "REGISTRATION_LABEL_SELECT_RELATIONSHIP_TYPE":"Select Relationship Type",
   "REGISTRATION_LABEL_ENTER_NAME_ID":"Enter Name or ID",
-  "REGISTRATION_LABEL_ENTER_ID":"Enter ID",
   "REGISTRATION_LABEL_VALID_PATIENT_IDENTIFIER":"Please enter a valid patient identifier",
   "REGISTRATION_LABEL_PROVIDER_AUTOCOMPLETE_LIST":"Please select a provider from the autocomplete list",
   "REGISTRATION_LABEL_ENTER_NAME":"Enter Name",
@@ -78,5 +77,7 @@
   "REGISTRATON_LATEST_KEY" : "Latest",
   "DISPLAY_CONTROL_ERROR_MESSAGE_KEY": "No {{ displayControl }} for this patient",
   "REGISTRATION_LABEL_NUMBER": "Registration Number",
-  "REGISTRATION_START_VISIT": "Start {{ visitType }} visit"
+  "REGISTRATION_START_VISIT": "Start {{ visitType }} visit",
+  "MESSAGE_DIALOG_OPTION_COPY" : "Copy",
+  "MESSAGE_DIALOG_OPTION_OKAY" : "Okay"
 }

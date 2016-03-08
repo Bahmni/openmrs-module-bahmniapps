@@ -30,8 +30,8 @@
                         </div>
                     </div>
                     <div class="button-wrappper">
-                        <button type="button" clip-copy="getErrorMessageText()" class="copy-btn">Copy</button>
-                        <button type="button" ng-click="hideError()" class="show-btn">Hide</button>
+                        <button type="button" clip-copy="getMessageText('error')" class="copy-btn">{{ 'MESSAGE_DIALOG_OPTION_COPY' | translate }}</button>
+                        <button type="button" ng-click="hideMessage('error')" class="show-btn">{{ 'MESSAGE_DIALOG_OPTION_OKAY' | translate }}</button>
                     </div>
                 </div>
             </div>
@@ -47,6 +47,10 @@
                 <div class="message-text">
                     <div ng-repeat="error in messages.formError track by $index">
                         {{error.value | translate}}
+                    </div>
+                    <div class="button-wrappper">
+                        <button type="button" clip-copy="getMessageText('formError')" class="copy-btn">{{ 'MESSAGE_DIALOG_OPTION_COPY' | translate }}</button>
+                        <button type="button" ng-click="hideMessage('formError')" class="show-btn">{{ 'MESSAGE_DIALOG_OPTION_OKAY' | translate }}</button>
                     </div>
                 </div>
             </div>

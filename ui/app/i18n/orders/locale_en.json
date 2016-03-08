@@ -4,5 +4,7 @@
     "location": "Location",
     "login": "Login1",
     "selectLocation": "Select Location",
-    "clinical_key": "Clinical"
+    "clinical_key": "Clinical",
+    "MESSAGE_DIALOG_OPTION_COPY" : "Copy",
+    "MESSAGE_DIALOG_OPTION_OKAY" : "Okay"
 }

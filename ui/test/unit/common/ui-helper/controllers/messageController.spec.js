@@ -28,19 +28,19 @@ describe("MessageController", function () {
         });
     });
 
-    describe("method getErrorMessageText", function () {
-        it("should return concatenated error message", function () {
+    describe("method getMessageText", function () {
+        it("should return concatenated message for the specified level", function () {
             createController();
             scope.messages = {error:[{'value':'this'},{'value':"is"} ,{'value':"server"} ,{'value':"error"}]};
-            expect(scope.getErrorMessageText()).toBe("thisisservererror");
+            expect(scope.getMessageText('error')).toBe("thisisservererror");
         });
     });
 
-    describe("method hideError", function() {
+    describe("method hideMessage", function() {
         it ("should call messagingservice hideMessages", function(){
             createController();
-            scope.hideError();
-            expect(messagingService.hideMessages).toHaveBeenCalledWith("error");
+            scope.hideMessage('level');
+            expect(messagingService.hideMessages).toHaveBeenCalledWith("level");
         });
     });
 });

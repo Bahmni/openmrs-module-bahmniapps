@@ -5,16 +5,16 @@ angular.module('bahmni.common.uiHelper')
         function ($scope, messagingService) {
             $scope.messages = messagingService.messages;
 
-            $scope.getErrorMessageText = function(){
+            $scope.getMessageText = function (level) {
                 var string = "";
-                $scope.messages.error.forEach(function(errorMessage){
-                    string = string.concat(errorMessage.value);
+                $scope.messages[level].forEach(function (message) {
+                    string = string.concat(message.value);
                 });
                 return string;
             };
 
-            $scope.hideError = function() {
-                messagingService.hideMessages("error");
+            $scope.hideMessage = function(level) {
+                messagingService.hideMessages(level);
             };
 
             $scope.isErrorMessagePresent = function(){
