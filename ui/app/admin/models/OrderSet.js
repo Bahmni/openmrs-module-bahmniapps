@@ -23,7 +23,6 @@ Bahmni.Common.OrderSet = (function () {
                 name: member.concept.name.display,
                 uuid: member.concept.uuid
             },
-            sortWeight: member.sortWeight,
             voided: member.voided
         });
     };

@@ -154,18 +154,4 @@ describe("OrderSetController", function () {
         expect(scope.orderSet.orderSetMembers.length).toBe(5);
     });
 
-    //it("should rearrange orderSetMembers when their sortWeight is Changed", function () {
-    //    scope.$apply(setUp);
-    //    scope.orderSet = orderSetData.data;
-    //
-    //    expect(scope.orderSet.orderSetMembers[0].sortWeight).toBe(1);
-    //    expect(scope.orderSet.orderSetMembers[2].sortWeight).toBe(2);
-    //
-    //    scope.orderSet.orderSetMembers[2].sortWeight = 4;
-    //    scope.rearrangeSequence(scope.orderSet, scope.orderSet.orderSetMembers[1])
-    //
-    //    expect(scope.orderSet.orderSetMembers[0].sortWeight).toBe(1);
-    //    expect(scope.orderSet.orderSetMembers[2].sortWeight).toBe(2);
-    //});
-
 });

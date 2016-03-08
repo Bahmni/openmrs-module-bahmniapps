@@ -277,12 +277,12 @@
 
 
 <div class="order-set-container clearfix">
-    <h2 class="section-title has-toggle"   toggle="addOrderSet">
-        <i class="fa fa-caret-right" ng-hide="addOrderSet"></i>
-        <i class="fa fa-caret-down" ng-show="addOrderSet"></i>
+    <h2 class="section-title has-toggle"   toggle="canOrderSetBeAdded">
+        <i class="fa fa-caret-right" ng-hide="canOrderSetBeAdded"></i>
+        <i class="fa fa-caret-down" ng-show="canOrderSetBeAdded"></i>
         <span class="section-label">{{ ::'MEDICATION_ADD_ORDERSET_FORM_TITLE' | translate}}</span>
     </h2>
-    <div class="order-section-container" ng-show="addOrderSet">
+    <div class="order-section-container" ng-show="canOrderSetBeAdded">
         <div class="Order-section-orderDrug form clearfix">
             <article class="form-field clearfix">
                 <div class="field-attribute">

@@ -76,19 +76,6 @@
                                         <label class="primaryDrug-text">{{primaryAttributeType.description}}</label>
                                     </div>
                                 </div>
-                                <div class="col col4 form-field">
-                                    <div class="field-attribute">
-                                        <label>Sequence<span class="asterick">*</span></label>
-                                    </div>
-                                    <div class="field-value">
-                                        <select ng-init="orderSetMember.sortWeight = orderSetMember.sortWeight || $index+1"
-                                                ng-model="orderSetMember.sortWeight"
-                                                ng-options="i for i in getNumber(orderSet.orderSetMembers.length)"
-                                                ng-change="rearrangeSequence(orderSet, orderSetMember, {{orderSetMember.sortWeight}}, orderSetMember.sortWeight, $index)" required></select>
-                                    </div>
-                                    <input class="fl remove-orderSet" type="button" ng-click="removeOrderSetMember($index)"
-                                           value="X">
-                                </div>
                             </div>
 
                             <div ng-if="orderSetMember.concept.uuid" class="treatment-page">

@@ -12,7 +12,7 @@ angular.module('bahmni.clinical')
 
             $scope.showOrderSetDetails = true;
             $scope.addTreatment = true;
-            $scope.addOrderSet =true;
+            $scope.canOrderSetBeAdded =true;
 
             $scope.treatmentActionLinks = clinicalAppConfigService.getTreatmentActionLink();
 

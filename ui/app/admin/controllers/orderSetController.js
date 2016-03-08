@@ -67,32 +67,6 @@ angular.module('bahmni.common.domain')
                 orderSetMember.concept = {};
             };
 
-            $scope.rearrangeSequence = function (orderSet, orderSetMember, oldValue, newValue, startIndex) {
-                var numberOfOrderSetMembers = orderSet.orderSetMembers.length;
-                var startIndex;
-                for (var i = 0; i < numberOfOrderSetMembers; i++) {
-                    if (orderSet.orderSetMembers[i] == orderSetMember) {
-                        startIndex = i + 1;
-                    }
-                }
-                var endIndex = orderSetMember.sortWeight;
-                if (startIndex > endIndex) {
-                    orderSet.orderSetMembers.splice(endIndex - 1, 0, orderSetMember);
-                    for (var i = endIndex; i < startIndex; i++) {
-                        orderSet.orderSetMembers[i].sortWeight += 1;
-                    }
-                    orderSet.orderSetMembers.splice(startIndex, 1);
-                }
-                else {
-
-                    orderSet.orderSetMembers.splice(endIndex, 0, orderSetMember);
-                    for (var i = startIndex; i < endIndex; i++) {
-                        orderSet.orderSetMembers[i].sortWeight -= 1;
-                    }
-                    orderSet.orderSetMembers.splice(startIndex - 1, 1)
-                }
-            };
-
             $scope.save = function () {
                 if (validationSuccess()) {
                     spinner.forPromise(orderSetService.saveOrderSet($scope.orderSet).then(function (response) {
