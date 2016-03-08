@@ -209,7 +209,7 @@ angular.module('bahmni.adt')
             };
 
             $scope.admit = function () {
-                if ($scope.visitSummary && $scope.visitSummary.visitType !== 'IPD') {
+                if ($scope.visitSummary && $scope.visitSummary.visitType !== defaultAdmitVisitType) {
                     ngDialog.openConfirm({template: 'views/visitChangeConfirmation.html', scope: $scope, closeByEscape: true});
                 } else {
                     createEncounterAndContinue();
