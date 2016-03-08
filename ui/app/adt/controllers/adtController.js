@@ -77,10 +77,12 @@ angular.module('bahmni.adt')
             };
 
             var getDispositionActions = function (actions) {
-
-                if ($scope.visitSummary && $scope.visitSummary.isDischarged()) {
+                var visitSummary = $scope.visitSummary;
+                var stopDate = visitSummary.stopDateTime;
+                var isVisitOpen = (stopDate == null);
+                if (visitSummary && visitSummary.isDischarged() && isVisitOpen) {
                     return filterAction(actions, ["Undo Discharge"]);
-                } else if ($scope.visitSummary && $scope.visitSummary.isAdmitted()) {
+                } else if (visitSummary && visitSummary.isAdmitted() && isVisitOpen) {
                     return filterAction(actions, ["Transfer Patient", "Discharge Patient"]);
                 } else {
                     return filterAction(actions, ["Admit Patient"]);
