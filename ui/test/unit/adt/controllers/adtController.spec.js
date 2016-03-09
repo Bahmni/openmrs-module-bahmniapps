@@ -181,4 +181,37 @@ describe("AdtController", function () {
         expect(ngDialog.close).toHaveBeenCalled();
     });
 
+    it("Should not create encounter with in the current visit if closed", function () {
+        scope.visitSummary = {"visitType": "Current Visit", "uuid": "visitUuid"};
+        scope.patient = {uuid: "123"};
+        scope.adtObservations = [];
+
+        var stubOnePromise = function (data) {
+            return {
+                success: function (successFn) {
+                    successFn({results: data});
+                }
+            };
+        };
+        var stubTwoPromise = function(data) {
+            return {
+                then: function (successFn) {
+                    successFn({results: data});
+                }
+            };
+        };
+        visitService.endVisit.and.callFake(stubTwoPromise);
+        encounterService.create.and.callFake(stubOnePromise);
+        createController();
+
+        expect(encounterService.create).not.toHaveBeenCalledWith({
+            patientUuid: '123',
+            encounterTypeUuid: undefined,
+            visitTypeUuid: "visitUuid",
+            observations: [],
+            locationUuid: 'someLocationUuid'
+        });
+        expect(ngDialog.close).not.toHaveBeenCalled();
+    });
+
 });
