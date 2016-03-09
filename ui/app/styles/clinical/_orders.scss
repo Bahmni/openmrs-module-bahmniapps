@@ -297,7 +297,7 @@
     }
 }
 .order-sub-heading-container{
-    width:50%;
+    width:280px;
     text-align: right;
     .order-sub-heading{
         font-size: 12px;
@@ -306,17 +306,15 @@
             white-space: nowrap;
             text-overflow: ellipsis;
             overflow: hidden;
-            width:50%;
+            width:150px;
             display: inline-block;
             text-align: right;
-            line-height: 1;
         }
         .provider-date{
-            width:39%;
+            width:120px;
             display: inline-block;
             text-align:left;
         }
-        //padding-right: 27px;
     }
     .fa-tasks{
         color: #E8A000;
