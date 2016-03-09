@@ -103,5 +103,5 @@ describe("AdtController", function () {
         encounterService.create.and.callFake(stubOnePromise);
 
         scope.admit(null);
-    })
+    });
 });
