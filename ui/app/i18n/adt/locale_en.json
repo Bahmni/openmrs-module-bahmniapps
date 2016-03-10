@@ -17,5 +17,7 @@
     "VISIT_CHANGE_CONFIRMATION_OPTION_CANCEL_KEY": "Cancel",
     "VISIT_CHANGE_CONFIRMATION_OPTION_CONTINUE_KEY": "Continue with current Visit",
     "MESSAGE_DIALOG_OPTION_COPY" : "Copy",
-    "MESSAGE_DIALOG_OPTION_OKAY": "Ok"
+    "MESSAGE_DIALOG_OPTION_OKAY": "Ok",
+    "MESSAGE_DEFAULT_VISIT_TYPE_INVALID_KEY" : "Please configure a valid default visit type",
+    "MESSAGE_DEFAULT_VISIT_TYPE_NOT_FOUND_KEY" : "Please configure a default visit type"
 }

@@ -206,9 +206,9 @@ angular.module('bahmni.adt')
                         forwardUrl(response, "onAdmissionForwardTo");
                     });
                 } else if ($scope.defaultVisitTypeName === null) {
-                    messagingService.showMessage("error", "Please configure a default visit type");
+                    messagingService.showMessage("error", "MESSAGE_DEFAULT_VISIT_TYPE_NOT_FOUND_KEY");
                 } else {
-                    messagingService.showMessage("error", "Please configure a valid default visit type")
+                    messagingService.showMessage("error", "MESSAGE_DEFAULT_VISIT_TYPE_INVALID_KEY")
                 }
             };
 
@@ -231,9 +231,9 @@ angular.module('bahmni.adt')
                         createEncounterAndContinue();
                     });
                 } else if ($scope.defaultVisitTypeName === null) {
-                    messagingService.showMessage("error", "Please configure a default visit type");
+                    messagingService.showMessage("error", "MESSAGE_DEFAULT_VISIT_TYPE_NOT_FOUND_KEY");
                 } else {
-                    messagingService.showMessage("error", "Please configure a valid default visit type")
+                    messagingService.showMessage("error", "MESSAGE_DEFAULT_VISIT_TYPE_INVALID_KEY")
                 }
                 ngDialog.close();
             };
