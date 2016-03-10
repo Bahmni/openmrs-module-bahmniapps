@@ -269,7 +269,7 @@
             </div>
         </fieldset>
 
-        <fieldset class="leaf-observation-node" ng-if="observation.getControlType() == 'tabular'" >
+        <fieldset class="leaf-observation-node" ng-if="observation.getControlType() == 'tabular'">
             <div>
                 <table>
                     <caption ng-bind="::observation.label"></caption>
@@ -277,7 +277,7 @@
                     <tr>
                         <th ng-repeat="column in observation.columns">
                             <div class="form-group" bm-pop-over>
-                                <div class=" concept-tooltip-description" bm-pop-over-target ng-if="::column.description">
+                                <div class=" concept-tooltip-description" bm-pop-over-target ng-if="::column.description"  ng-class="{'concept-tooltip-tabular-observation' : observation.getControlType() == 'tabular'}" >
                                     <i class="fa fa-caret-down"></i>
                                     <span class="details" ng-bind-html="::column.description"></span>
                                 </div>
