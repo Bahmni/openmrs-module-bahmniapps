@@ -78,7 +78,7 @@ angular.module('bahmni.adt')
 
             var getDispositionActions = function (actions) {
                 var visitSummary = $scope.visitSummary;
-                var stopDate = visitSummary.stopDateTime;
+                var stopDate = visitSummary && visitSummary.stopDateTime;
                 var isVisitOpen = (stopDate == null);
                 if (visitSummary && visitSummary.isDischarged() && isVisitOpen) {
                     return filterAction(actions, ["Undo Discharge"]);
