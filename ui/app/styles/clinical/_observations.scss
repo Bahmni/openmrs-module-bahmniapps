@@ -490,9 +490,13 @@ concept-set {
   th{
     font-size: 11px;
   }
+
 }
 .vitals {
   .mylegend #removeClonedObs.fa-remove {
     margin-top: 0;
   }
+}
+.concept-tooltip-tabular-observation{
+  margin-left:70px;
 }
