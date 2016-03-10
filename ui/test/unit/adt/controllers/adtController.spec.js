@@ -7,6 +7,7 @@ describe("AdtController", function () {
     var dispositionService = jasmine.createSpyObj('dispositionService', ['getDispositionActions']);
     var visitService = jasmine.createSpyObj('visitService', ['getVisitSummary','endVisit']);
     var encounterService = jasmine.createSpyObj('encounterService', ['create']);
+    var spinnerService = jasmine.createSpyObj('spinner', ['forPromise']);
     var scope, rootScope, controller;
 
     beforeEach(function () {
@@ -45,7 +46,16 @@ describe("AdtController", function () {
         visitService.getVisitSummary.and.returnValue(visitServicePromise);
         dispositionService.getDispositionActions.and.returnValue({});
         sessionService.getLoginLocationUuid.and.returnValue("someLocationUuid");
+    });
 
+    var createController = function () {
+        spinnerService.forPromise.and.callFake(function () {
+            return {
+                then: function () {
+                    return {};
+                }
+            }
+        });
 
         controller('AdtController', {
             $scope: scope,
@@ -58,12 +68,12 @@ describe("AdtController", function () {
             appService: appService,
             visitService: visitService
         });
-    });
+    }
 
     it("Should show the confirm dialog if visit type is not IPD", function () {
         scope.visitSummary = {"visitType": "OPD"};
         spyOn(window, 'confirm');
-
+        createController();
         scope.admit(null);
         expect(window.confirm).toHaveBeenCalledWith('Patient Visit Type is OPD, Do you want to close the Visit and start new IPD Visit?');
     });
@@ -102,6 +112,126 @@ describe("AdtController", function () {
         };
         encounterService.create.and.callFake(stubOnePromise);
 
+        createController();
         scope.admit(null);
     });
+
+    it("Should have Admit Patient action if the patient is discharged the visit has closed", function () {
+        var visitSummary = {"visitType": "Current Visit", "uuid": "visitUuid", "stopDateTime":"1452764060000",
+            "dischargeDetails": {uuid: "someDischargeUuid"},"admissionDetails":{"uuid":"someadmissionDetails"}};
+        visitService.getVisitSummary.and.returnValue(specUtil.createFakePromise(visitSummary));
+
+        scope.patient = {uuid: "123"};
+        scope.adtObservations = [];
+        var response = {"results":[{"answers":[{"name":{"name": "Undo Discharge", "uuid":"c2bc09b3"}},
+            {"name":{"name": "Admit Patient", "uuid":"avb231rt"}},
+            {"name":{"name": "Discharge Patient","uuid":"81cecc80"}},
+            {"name":{"name": "Transfer Patient","uuid":"81d1cf4e"}}]}]};
+        dispositionService.getDispositionActions.and.returnValue(response);
+        var stubOnePromise = function (data) {
+            return {
+                success: function (successFn) {
+                    successFn({results: data});
+                }
+            };
+        };
+        var stubTwoPromise = function(data) {
+            return {
+                then: function (successFn) {
+                    successFn({results: data});
+                }
+            };
+        };
+        visitService.endVisit.and.callFake(stubTwoPromise);
+        encounterService.create.and.callFake(stubOnePromise);
+
+        createController();
+        expect(scope.dispositionActions).toEqual([{"name":{"name": "Admit Patient","uuid": "avb231rt"}}]);
+    });
+
+    it("Should have Undo Discharge action if the patient is discharged and visit is open", function () {
+        var visitSummary = {"visitType": "Current Visit", "uuid": "visitUuid", "stopDateTime":null,
+            "dischargeDetails": {uuid: "someDischargeUuid"},"admissionDetails":{"uuid":"someadmissionDetails"}};
+        visitService.getVisitSummary.and.returnValue(specUtil.createFakePromise(visitSummary));
+
+        scope.patient = {uuid: "123"};
+        scope.adtObservations = [];
+        var response = {"results":[{"answers":[{"name":{"name": "Undo Discharge", "uuid":"c2bc09b3"}},
+            {"name":{"name": "Admit Patient", "uuid":"avb231rt"}},
+            {"name":{"name": "Discharge Patient","uuid":"81cecc80"}},
+            {"name":{"name": "Transfer Patient","uuid":"81d1cf4e"}}]}]};
+        dispositionService.getDispositionActions.and.returnValue(response);
+        var stubOnePromise = function (data) {
+            return {
+                success: function (successFn) {
+                    successFn({results: data});
+                }
+            };
+        };
+
+        encounterService.create.and.callFake(stubOnePromise);
+
+        createController();
+        expect(scope.dispositionActions).toEqual([{"name":{"name": "Undo Discharge", "uuid":"c2bc09b3"}}]);
+    });
+
+    it("Should have Discharge Patient and Transfer Patient action if the patient is admitted", function () {
+        var visitSummary = {"visitType": "Current Visit", "uuid": "visitUuid", "stopDateTime":null,
+            "admissionDetails":{"uuid":"someadmissionDetails"}};
+        visitService.getVisitSummary.and.returnValue(specUtil.createFakePromise(visitSummary));
+
+        scope.patient = {uuid: "123"};
+        scope.adtObservations = [];
+        var response = {"results":[{"answers":[{"name":{"name": "Undo Discharge", "uuid":"c2bc09b3"}},
+            {"name":{"name": "Admit Patient", "uuid":"avb231rt"}},
+            {"name":{"name": "Discharge Patient","uuid":"81cecc80"}},
+            {"name":{"name": "Transfer Patient","uuid":"81d1cf4e"}}]}]};
+        dispositionService.getDispositionActions.and.returnValue(response);
+        var stubOnePromise = function (data) {
+            return {
+                success: function (successFn) {
+                    successFn({results: data});
+                }
+            };
+        };
+
+        encounterService.create.and.callFake(stubOnePromise);
+
+        createController();
+        expect(scope.dispositionActions).toEqual([{"name": {"name": "Discharge Patient", "uuid": "81cecc80"}},
+            {"name": {"name": "Transfer Patient", "uuid": "81d1cf4e"}}]);
+    });
+
+    it("Should have Admit Patient action if the patient is not admitted in given visit", function () {
+        var visitSummary = {"visitType": "Current Visit", "uuid": "visitUuid", "stopDateTime":null};
+        visitService.getVisitSummary.and.returnValue(specUtil.createFakePromise(visitSummary));
+
+        scope.patient = {uuid: "123"};
+        scope.adtObservations = [];
+        var response = {"results":[{"answers":[{"name":{"name": "Undo Discharge", "uuid":"c2bc09b3"}},
+            {"name":{"name": "Admit Patient", "uuid":"avb231rt"}},
+            {"name":{"name": "Discharge Patient","uuid":"81cecc80"}},
+            {"name":{"name": "Transfer Patient","uuid":"81d1cf4e"}}]}]};
+        dispositionService.getDispositionActions.and.returnValue(response);
+        var stubOnePromise = function (data) {
+            return {
+                success: function (successFn) {
+                    successFn({results: data});
+                }
+            };
+        };
+        var stubTwoPromise = function(data) {
+            return {
+                then: function (successFn) {
+                    successFn({results: data});
+                }
+            };
+        };
+        visitService.endVisit.and.callFake(stubTwoPromise);
+        encounterService.create.and.callFake(stubOnePromise);
+
+        createController();
+        expect(scope.dispositionActions).toEqual([{"name":{"name": "Admit Patient","uuid": "avb231rt"}}]);
+    });
+
 });
