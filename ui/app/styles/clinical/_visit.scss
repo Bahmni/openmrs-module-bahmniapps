@@ -44,21 +44,20 @@
   }
   table 
 	.info-message{
-			padding:10px;
-			color:red;
-			border:1px solid $lightGray;
+        padding:10px;
+        color:red;
+        border:1px solid $lightGray;
 	}
 	.block-day{
 		border:3px solid #67ad95;
 		padding:10px;
-			background: $white;
-			h1{
-				color:#274b59;
-				float:left;
-				padding:0px 10px;
-				font-family: $OpenSansBoldFont;
-			}
-		
+        background: $white;
+        h1{
+            color:#274b59;
+            float:left;
+            padding:0px 10px;
+            font-family: $OpenSansBoldFont;
+        }
 	}
 }
 .visit {
@@ -87,13 +86,14 @@
       .formDataEdit{
         padding:0 !important;
       }
+      @media screen and (max-width: 1024px) {
+        width:214px;
+      }
     }
     .formDataDate{
-      width:150px;
-    }
-    .formDataTime , .formDataDate{
-      .fa-pencil ,.fa-eye{
-        font-size: 16px;
+      width:140px;
+      @media screen and (max-width: 1024px) {
+        width:154px;
       }
     }
   }
@@ -669,17 +669,14 @@ a.visit:before {
         span {
           padding: 3px 10px !important;
           &.formDataTime {
-            width: 220px;
+            width: 234px;
             text-align: right;
             .formDataEdit {
               padding: 0 !important;
             }
           }
           &.formDataDate{
-            width:160px;
-          }
-          .fa-pencil ,.fa-eye{
-            font-size: 16px;
+            width:174px;
           }
         }
       }

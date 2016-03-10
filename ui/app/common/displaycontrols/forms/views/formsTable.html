@@ -11,7 +11,7 @@
         <li>
             <div>
                 <ul>
-                    <li ng-repeat="data in formData">
+                    <li ng-repeat="data in formData" class="clearfix">
                         <span>{{getDisplayName(data)}}</span>
                        <span class="fr formDataTime" ng-class="{'formDataDate': showFormsDate }">
                             <span ng-hide="::showFormsDate">{{data.obsDatetime | bahmniDateTime}}</span>

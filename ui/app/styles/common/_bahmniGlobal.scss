@@ -272,6 +272,12 @@ u, .add-drug-btninput[value]:first-letter {
 
 .fa-pencil, .fa-eye{
   cursor: pointer;
+  &:hover{
+    color: #5C8A93;
+  }
+  @media screen and (max-width: 1024px) {
+    font-size: 20px;
+  }
 }
 
 .cursor-pointer{
