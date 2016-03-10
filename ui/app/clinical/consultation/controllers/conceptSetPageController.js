@@ -15,10 +15,7 @@ angular.module('bahmni.clinical')
             var allConceptSections = [];
 
             var init = function () {
-                if ($scope.consultation.selectedObsTemplate != undefined && $scope.consultation.selectedObsTemplate.length > 0) {
-                    allConceptSections = $scope.consultation.selectedObsTemplate;
-                    return $q.when({data: {}});
-                } else {
+                if (!($scope.consultation.selectedObsTemplate != undefined && $scope.consultation.selectedObsTemplate.length > 0)) {
                     spinner.forPromise(conceptSetService.getConcept({
                         name: "All Observation Templates",
                         v: "custom:" + customRepresentation
@@ -107,10 +104,6 @@ angular.module('bahmni.clinical')
             $scope.getNormalized = function (conceptName) {
                 return conceptName.replace(/['\.\s\(\)\/,\\]+/g, "_");
             };
-
-            $scope.$root.$on("event:addConceptSection", function (event, conceptSetSection) {
-                allConceptSections.push(conceptSetSection);
-            });
 
             $scope.consultation.preSaveHandler.register("collectObservationsFromConceptSets", collectObservationsFromConceptSets);
 
