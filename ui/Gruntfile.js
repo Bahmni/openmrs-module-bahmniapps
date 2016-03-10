@@ -373,9 +373,17 @@ module.exports = function (grunt) {
                     DEBUG: 'production'
                 }
             },
-            js : {
-                src : '<%= yeoman.dist %>/registration.min.js',
-                dest : '<%= yeoman.dist %>/registration.min.js'
+            multifile : {
+                files : {
+                    '<%= yeoman.dist %>/registration.min.js' : '<%= yeoman.dist %>/registration.min.js',
+                    '<%= yeoman.dist %>/admin.min.js' : '<%= yeoman.dist %>/admin.min.js',
+                    '<%= yeoman.dist %>/adt.min.js' : '<%= yeoman.dist %>/adt.min.js',
+                    '<%= yeoman.dist %>/document-upload.min.js' : '<%= yeoman.dist %>/document-upload.min.js',
+                    '<%= yeoman.dist %>/home.min.js' : '<%= yeoman.dist %>/home.min.js',
+                    '<%= yeoman.dist %>/orders.min.js' : '<%= yeoman.dist %>/orders.min.js',
+                    '<%= yeoman.dist %>/reports.min.js' : '<%= yeoman.dist %>/reports.min.js',
+                    '<%= yeoman.dist %>/clinical.min.js' : '<%= yeoman.dist %>/clinical.min.js'
+                }
             },
             web: {
                 src: ['<%= yeoman.dist %>/**/index.html'],
