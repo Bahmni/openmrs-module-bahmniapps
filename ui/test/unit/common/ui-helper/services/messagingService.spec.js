@@ -47,7 +47,7 @@ describe('MessagingService', function () {
     });
 
 
-    it('should clear all messages', function () {
+    it('should clear all messages for a given level', function () {
         messagingService.messages = {error: ['a', 'b']};
 
         messagingService.hideMessages('error');
@@ -78,13 +78,10 @@ describe('MessagingService', function () {
 
         expect(messagingService.messages).toBeTruthy();
         expect(messagingService.messages['error']).toBeTruthy();
-        expect(args[1]).toEqual(4000);
-        expect(args[2]).toBeTruthy();
         expect(messagingService.messages).toEqual({
             info: [],
             error: [{value: 'message', isServerError: false}]
         });
-        args[0]();
         expect(messagingService.messages['error'].length).toEqual(1);
     });
 
@@ -94,13 +91,10 @@ describe('MessagingService', function () {
 
         expect(messagingService.messages).toBeTruthy();
         expect(messagingService.messages['error']).toBeTruthy();
-        expect(args[1]).toEqual(4000);
-        expect(args[2]).toBeTruthy();
         expect(messagingService.messages).toEqual({
             info: [],
             error: [{value: 'message', isServerError: false}, {value: 'le message', isServerError: false}]
         });
-        args[0]();
         expect(messagingService.messages['error'].length).toEqual(2);
     });
 });

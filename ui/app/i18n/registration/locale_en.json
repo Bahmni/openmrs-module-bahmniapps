@@ -79,5 +79,5 @@
   "REGISTRATION_LABEL_NUMBER": "Registration Number",
   "REGISTRATION_START_VISIT": "Start {{ visitType }} visit",
   "MESSAGE_DIALOG_OPTION_COPY" : "Copy",
-  "MESSAGE_DIALOG_OPTION_OKAY" : "Okay"
+  "MESSAGE_DIALOG_OPTION_OKAY": "Ok"
 }
