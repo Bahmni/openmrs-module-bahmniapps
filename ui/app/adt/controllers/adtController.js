@@ -16,7 +16,6 @@ angular.module('bahmni.adt')
             $scope.adtObservations = [];
             $scope.dashboardConfig = appService.getAppDescriptor().getConfigValue('dashboard');
             $scope.getAdtConceptConfig = $scope.dashboardConfig.conceptName;
-            var defaultAdmitVisitType;
 
             var getVisitTypeUuid = function (visitTypeName) {
                 var visitType = _.find(visitTypes, {name: visitTypeName});
@@ -24,9 +23,6 @@ angular.module('bahmni.adt')
             };
 
             var defaultVisitTypeUuid = getVisitTypeUuid($scope.defaultVisitTypeName);
-            if (defaultVisitTypeUuid == null) {
-                messagingService.showMessage("error", "Please configure a default VisitType.");
-            }
 
             var getCurrentVisitTypeUuid = function() {
                 if ($scope.visitSummary && $scope.visitSummary.dateCompleted == null) {
@@ -109,7 +105,6 @@ angular.module('bahmni.adt')
                 initializeActionConfig();
                 var defaultVisitType = appService.getAppDescriptor().getConfigValue('defaultVisitType');
                 var visitTypes = encounterConfig.getVisitTypes();
-                defaultAdmitVisitType = defaultVisitType ? defaultVisitType : "IPD";
                 $scope.visitControl = new Bahmni.Common.VisitControl(visitTypes, defaultVisitType, visitService);
                 $scope.dashboard = Bahmni.Common.DisplayControl.Dashboard.create($scope.dashboardConfig || {});
                 $scope.sectionGroups =  $scope.dashboard.getSections($scope.diseaseTemplates);
@@ -199,19 +194,26 @@ angular.module('bahmni.adt')
             };
 
             var createEncounterAndContinue = function () {
-                var encounterData = getEncounterData($scope.encounterConfig.getAdmissionEncounterTypeUuid(), getCurrentVisitTypeUuid());
-                encounterService.create(encounterData).success(function (response) {
-                    if ($scope.visitSummary === null) {
-                        visitService.getVisitSummary(response.visitUuid).then(function (response) {
-                            $scope.visitSummary = new Bahmni.Common.VisitSummary(response.data);
-                        });
-                    }
-                    forwardUrl(response, "onAdmissionForwardTo");
-                });
+                var currentVisitTypeUuid = getCurrentVisitTypeUuid();
+                if (currentVisitTypeUuid !== null) {
+                    var encounterData = getEncounterData($scope.encounterConfig.getAdmissionEncounterTypeUuid(), currentVisitTypeUuid);
+                    encounterService.create(encounterData).success(function (response) {
+                        if ($scope.visitSummary === null) {
+                            visitService.getVisitSummary(response.visitUuid).then(function (response) {
+                                $scope.visitSummary = new Bahmni.Common.VisitSummary(response.data);
+                            });
+                        }
+                        forwardUrl(response, "onAdmissionForwardTo");
+                    });
+                } else if ($scope.defaultVisitTypeName === null) {
+                    messagingService.showMessage("error", "Please configure a default visit type");
+                } else {
+                    messagingService.showMessage("error", "Please configure a valid default visit type")
+                }
             };
 
             $scope.admit = function () {
-                if ($scope.visitSummary && $scope.visitSummary.visitType !== defaultAdmitVisitType) {
+                if ($scope.visitSummary && $scope.visitSummary.visitType !== $scope.defaultVisitTypeName) {
                     ngDialog.openConfirm({template: 'views/visitChangeConfirmation.html', scope: $scope, closeByEscape: true});
                 } else {
                     createEncounterAndContinue();
@@ -223,10 +225,16 @@ angular.module('bahmni.adt')
             };
 
             $scope.closeCurrentVisitAndStartNewVisit = function() {
-                visitService.endVisit($scope.visitSummary.uuid).then(function() {
-                    $scope.visitSummary = null;
-                    createEncounterAndContinue();
-                });
+                if (defaultVisitTypeUuid !== null) {
+                    visitService.endVisit($scope.visitSummary.uuid).then(function () {
+                        $scope.visitSummary = null;
+                        createEncounterAndContinue();
+                    });
+                } else if ($scope.defaultVisitTypeName === null) {
+                    messagingService.showMessage("error", "Please configure a default visit type");
+                } else {
+                    messagingService.showMessage("error", "Please configure a valid default visit type")
+                }
                 ngDialog.close();
             };
 

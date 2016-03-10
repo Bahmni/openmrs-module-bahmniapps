@@ -1,7 +1,7 @@
 'use strict';
 
 describe("AdtController", function () {
-    var scope, rootScope, controller, bedService, appService, sessionService, dispositionService, visitService, encounterService, ngDialog, window, appDescriptor;
+    var scope, rootScope, controller, bedService, appService, sessionService, dispositionService, visitService, encounterService, ngDialog, window, messagingService;
 
     beforeEach(function () {
         module('bahmni.adt');
@@ -19,6 +19,7 @@ describe("AdtController", function () {
         visitService = jasmine.createSpyObj('visitService', ['getVisitSummary','endVisit']);
         encounterService = jasmine.createSpyObj('encounterService', ['create']);
         ngDialog = jasmine.createSpyObj('ngDialog', ['openConfirm', 'close']);
+        messagingService = jasmine.createSpyObj('messagingService', ['showMessage']);
         window = {};
 
         appService.getAppDescriptor.and.returnValue({
@@ -35,7 +36,7 @@ describe("AdtController", function () {
 
         rootScope.encounterConfig = {
             getVisitTypes: function () {
-                return [{name : "Current Visit", uuid : "visitUuid"}, {}];
+                return [{name : "Current Visit", uuid : "visitUuid"}, {name : "IPD", uuid : "visitUuid"}];
             }, getAdmissionEncounterTypeUuid: function () {
 
             }, getDischargeEncounterTypeUuid: function () {
@@ -63,7 +64,8 @@ describe("AdtController", function () {
             appService: appService,
             visitService: visitService,
             ngDialog: ngDialog,
-            $window: window
+            $window: window,
+            messagingService : messagingService
         });
     };
 
@@ -122,7 +124,7 @@ describe("AdtController", function () {
         expect(encounterService.create).toHaveBeenCalledWith({
             patientUuid: '123',
             encounterTypeUuid: undefined,
-            visitTypeUuid: null,
+            visitTypeUuid: 'visitUuid',
             observations: [],
             locationUuid: 'someLocationUuid'
         });
@@ -214,4 +216,54 @@ describe("AdtController", function () {
         expect(ngDialog.close).not.toHaveBeenCalled();
     });
 
+    it("should show an error message and not close the current visit when defaultVisitType is not configured and yet the user decides to close the current visit and create a new visit of type defaultVisitType", function () {
+        scope.visitSummary = {"visitType": "Current Visit", "uuid": "visitUuid"};
+        scope.patient = {uuid: "123"};
+        scope.adtObservations = [];
+
+        appService.getAppDescriptor.and.returnValue({
+            getConfigValue: function () {
+                return {dashboard : ''};
+            }, getExtensions: function () {
+                return {
+                    maxPatientsPerBed: 2
+                }
+            },
+            getConfig: function(){
+            }
+        });
+
+        createController();
+
+        scope.closeCurrentVisitAndStartNewVisit();
+
+        expect(messagingService.showMessage).toHaveBeenCalled();
+        expect(visitService.endVisit).not.toHaveBeenCalled();
+        expect(ngDialog.close).toHaveBeenCalled();
+    });
+
+    it("should show an error message when defaultVisitType is not configured and patient doesn't have any visit open while admitting", function () {
+        scope.visitSummary = null;
+        scope.patient = {uuid: "123"};
+        scope.adtObservations = [];
+
+        appService.getAppDescriptor.and.returnValue({
+            getConfigValue: function () {
+                return {dashboard : ''};
+            }, getExtensions: function () {
+                return {
+                    maxPatientsPerBed: 2
+                }
+            },
+            getConfig: function(){
+            }
+        });
+
+        createController();
+
+        scope.admit();
+
+        expect(messagingService.showMessage).toHaveBeenCalled();
+        expect(encounterService.create).not.toHaveBeenCalled();
+    });
 });
