@@ -209,6 +209,7 @@ Bahmni.Common = Bahmni.Common || {};
         ServerDateTimeFormat: 'YYYY-MM-DDTHH:mm:ssZZ',
         unAuthenticatedReferenceDataMap: unAuthenticatedReferenceDataMap,
         authenticatedReferenceDataMap: authenticatedReferenceDataMap,
-        offlineRootDir: offlineRootDir
+        offlineRootDir: offlineRootDir,
+        dischargeUrl: BAHMNI_CORE + "/discharge"
     };
 })();
