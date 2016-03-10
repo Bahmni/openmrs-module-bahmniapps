@@ -80,7 +80,6 @@
                 </div>
                 <hint concept-details="::observation.primaryObs.concept"/>
 
-                <div ng-include src="'../common/concept-set/views/observationDataTypes/addMore.html'"></div>
 
                 <div ng-if="::observation.abnormalObs && !observation.isComputed() && !hideAbnormalButton" class="fl accept-btn-wrapper">
                     <button type="button" ng-model="observation.abnormalObs.value"
@@ -105,6 +104,8 @@
                     <duration ng-model="observation.durationObs.value" disabled="!observation.primaryObs.hasValue()"
                               illegal-value="observation.isDurationRequired() && !observation.hasDuration()"></duration>
                 </div>
+                <div ng-include src="'../common/concept-set/views/observationDataTypes/addMore.html'"></div>
+
                 <div ng-include src="'../common/concept-set/views/observationDataTypes/showComment.html'"></div>
                 <div class="fl" ng-include src="'../common/concept-set/views/observationDataTypes/removeClone.html'"></div>
 
