@@ -97,36 +97,13 @@ describe("AddTreatmentController", function () {
 
     var scope, stateParams, rootScope, contextChangeHandler, newTreatment,
         editTreatment, clinicalAppConfigService, ngDialog, drugService, drugs,
-        encounterDateTime, appService, appConfig, defaultDrugsPromise;
+        encounterDateTime, appService, appConfig, defaultDrugsPromise, orderSetService;
 
     stateParams = {
         tabConfigName: null
     };
 
-    var orderSets = [{
-        "orderSetId": 3,
-        "uuid": "497b959b-101b-41a8-8154-3f252b2771d7",
-        "name": "test",
-        "description": "test",
-        "operator": "ALL",
-        "orderSetMembers": [
-            {
-                "orderSetMemberId": 6,
-                "uuid": "7b375220-50c9-4193-a238-33a588caa0f3",
-                "orderTemplate": "{\"drug\":{\"name\":\"Paracetamol 500mg\",\"uuid\":\"d9c230a5-89d8-4e4d-b08b-2af3b1234c80\",\"form\":\"Tablet\"},\"dosingInstructions\":{\"dose\":2,\"frequency\":\"Twice a day\",\"doseUnits\":\"Capsule(s)\",\"route\":\"Intramuscular\"},\"duration\":2,\"durationUnits\":\"Day(s)\",\"administrationInstructions\":\"Before meals\"}",
-                "sortWeight": 1,
-                "retired": false
-            },
-            {
-                "orderSetMemberId": 5,
-                "uuid": "6a204704-e18b-457a-9ed3-da2ef57524dd",
-                "orderTemplate": "{\"drug\":{\"name\":\"Aspirin 75mg\",\"uuid\":\"49f0c5c2-4738-4382-9928-69fd330d4624\",\"form\":\"Tablet\"},\"dosingInstructions\":{\"dose\":1,\"doseUnits\":\"Tablet(s)\",\"frequency\":\"Twice a day\",\"route\":\"Nasal\"},\"duration\":1,\"durationUnits\":\"Day(s)\",\"administrationInstructions\":\"Before meals\"}",
-                "sortWeight": 2,
-                "retired": false
-            }
-        ],
-        "retired": false
-    }];
+    var orderSets;
 
     var treatmentConfig = {
         getDrugConceptSet: function () {
@@ -170,6 +147,11 @@ describe("AddTreatmentController", function () {
             clinicalAppConfigService.getTreatmentActionLink.and.returnValue([]);
             appService = jasmine.createSpyObj('appService', ['getAppDescriptor']);
             appConfig = jasmine.createSpyObj('appConfig', ['getConfig']);
+            orderSetService = jasmine.createSpyObj('orderSetService', ['getCalculatedDose']);
+            scope.patient = {uuid: "patient.uuid"};
+            orderSetService.getCalculatedDose.and.returnValue(specUtil.respondWith({
+                dose: 20, doseUnit: 'mg'
+            }));
 
             drugService = jasmine.createSpyObj('drugService', ['getSetMembersOfConcept']);
             drugs = [
@@ -181,7 +163,30 @@ describe("AddTreatmentController", function () {
             drugService.getSetMembersOfConcept.and.returnValue(defaultDrugsPromise);
 
             appService.getAppDescriptor.and.returnValue(appConfig);
-
+            orderSets = [{
+                "orderSetId": 3,
+                "uuid": "497b959b-101b-41a8-8154-3f252b2771d7",
+                "name": "test",
+                "description": "test",
+                "operator": "ALL",
+                "orderSetMembers": [
+                    {
+                        "orderSetMemberId": 6,
+                        "uuid": "7b375220-50c9-4193-a238-33a588caa0f3",
+                        "orderTemplate": "{\"drug\":{\"name\":\"Paracetamol 500mg\",\"uuid\":\"d9c230a5-89d8-4e4d-b08b-2af3b1234c80\",\"form\":\"Tablet\"},\"dosingInstructions\":{\"dose\":2,\"frequency\":\"Twice a day\",\"doseUnits\":\"Capsule(s)\",\"route\":\"Intramuscular\"},\"duration\":2,\"durationUnits\":\"Day(s)\",\"administrationInstructions\":\"Before meals\"}",
+                        "sortWeight": 1,
+                        "retired": false
+                    },
+                    {
+                        "orderSetMemberId": 5,
+                        "uuid": "6a204704-e18b-457a-9ed3-da2ef57524dd",
+                        "orderTemplate": "{\"drug\":{\"name\":\"Aspirin 75mg\",\"uuid\":\"49f0c5c2-4738-4382-9928-69fd330d4624\",\"form\":\"Tablet\"},\"dosingInstructions\":{\"dose\":1,\"doseUnits\":\"Tablet(s)\",\"frequency\":\"Twice a day\",\"route\":\"Nasal\"},\"duration\":1,\"durationUnits\":\"Day(s)\",\"administrationInstructions\":\"Before meals\"}",
+                        "sortWeight": 2,
+                        "retired": false
+                    }
+                ],
+                "retired": false
+            }];
             $controller('AddTreatmentController', {
                 $scope: scope,
                 $stateParams: stateParams,
@@ -194,12 +199,12 @@ describe("AddTreatmentController", function () {
                 appService: appService,
                 orderSets: orderSets,
                 DrugService: drugService,
-                treatmentConfig: treatmentConfig
+                treatmentConfig: treatmentConfig,
+                orderSetService: orderSetService
             });
             scope.treatments = [];
             scope.orderSetTreatments = [];
             scope.newOrderSet = {};
-
         })
     };
     beforeEach(initController);
@@ -1573,12 +1578,12 @@ describe("AddTreatmentController", function () {
             scope.consultation.preSaveHandler.fire();
         });
 
-        it('should save multiple tab drug orders for both order-set and new prescription sections', function(){
+        it('should save multiple tab drug orders for both order-set and new prescription sections', function () {
             var drugOrder1 = Bahmni.Clinical.DrugOrderViewModel.createFromContract(activeDrugOrder);
             var drugOrder2 = Bahmni.Tests.drugOrderViewModelMother.build({}, []);
 
-            var drugOrder1FromOrderSet = Bahmni.Clinical.DrugOrderViewModel.createFromContract(JSON.parse(orderSets[0].orderSetMembers[0].orderTemplate));
-            var drugOrder2FromOrderSet = Bahmni.Clinical.DrugOrderViewModel.createFromContract(JSON.parse(orderSets[0].orderSetMembers[1].orderTemplate));
+            var drugOrder1FromOrderSet = Bahmni.Clinical.DrugOrderViewModel.createFromContract(orderSets[0].orderSetMembers[0].orderTemplate);
+            var drugOrder2FromOrderSet = Bahmni.Clinical.DrugOrderViewModel.createFromContract(orderSets[0].orderSetMembers[1].orderTemplate);
 
             scope.consultation.newlyAddedTabTreatments = {
                 "tabOne": {
@@ -1680,6 +1685,7 @@ describe("AddTreatmentController", function () {
 
     describe("add orderset", function () {
         it("should add order set drugs to orderSetTreatments list in scope", function () {
+
             var orderSetDate = moment("2015-03-02").toDate();
             var stopDate = moment("2015-03-04").toDate();
             scope.newOrderSet.date = orderSetDate;
@@ -1699,7 +1705,7 @@ describe("AddTreatmentController", function () {
 
         });
 
-        it('should set include flag only if it is not conflicting with active or scheduled drug',function(){
+        it('should set include flag only if it is not conflicting with active or scheduled drug', function () {
             scope.newOrderSet.date = moment("2015-03-02").toDate();
             scope.consultation.activeAndScheduledDrugOrders = [Bahmni.Tests.drugOrderViewModelMother.buildWith({}, {
                 drug: {name: "Paracetamol 500mg"},
@@ -1718,8 +1724,8 @@ describe("AddTreatmentController", function () {
         })
     });
 
-    describe("remove orderset", function(){
-        it('should empty orderSetTreatments when orderset is removed', function(){
+    describe("remove orderset", function () {
+        it('should empty orderSetTreatments when orderset is removed', function () {
             scope.addOrderSet(orderSets[0]);
             expect(scope.orderSetTreatments.length).toBe(2);
             expect(scope.newOrderSet.uuid).toBe(orderSets[0].uuid);
@@ -1731,8 +1737,8 @@ describe("AddTreatmentController", function () {
         })
     });
 
-    describe('include orderSetMember checkbox', function(){
-        it("should include orderSetMember to save list only if it is not conflicting with active/scheduled drugs", function(){
+    describe('include orderSetMember checkbox', function () {
+        it("should include orderSetMember to save list only if it is not conflicting with active/scheduled drugs", function () {
             scope.consultation.activeAndScheduledDrugOrders = [Bahmni.Tests.drugOrderViewModelMother.buildWith({}, {
                 drug: {name: "Paracetamol 500mg"},
                 effectiveStartDate: "2015-03-01",
@@ -1741,12 +1747,12 @@ describe("AddTreatmentController", function () {
                 uuid: "abcdef"
             })];
 
-            var drugOrderResponse = JSON.parse(orderSets[0].orderSetMembers[0].orderTemplate);
+            var drugOrderResponse = orderSets[0].orderSetMembers[0].orderTemplate;
             var orderSetDrugOrder = Bahmni.Clinical.DrugOrderViewModel.createFromContract(drugOrderResponse);
             orderSetDrugOrder.effectiveStartDate = moment("2015-03-01");
             orderSetDrugOrder.include = true;
 
-            rootScope.$broadcast("event:includeOrderSetDrugOrder",orderSetDrugOrder);
+            rootScope.$broadcast("event:includeOrderSetDrugOrder", orderSetDrugOrder);
 
             expect(orderSetDrugOrder.include).toBeFalsy();
             expect(ngDialog.open).toHaveBeenCalled();

@@ -6,7 +6,7 @@ angular.module('bahmni.clinical')
         'orderSets', 'orderSetService', '$q',
         function ($scope, $rootScope, contextChangeHandler, treatmentConfig, drugService, $timeout,
                   clinicalAppConfigService, ngDialog, $window, messagingService, appService, activeDrugOrders, orderSets,
-                  orderSetService,$q) {
+                  orderSetService, $q) {
 
             var DateUtil = Bahmni.Common.Util.DateUtil;
             var DrugOrderViewModel = Bahmni.Clinical.DrugOrderViewModel;
@@ -516,18 +516,6 @@ angular.module('bahmni.clinical')
                 $scope.consultation.removableDrugs.push(removableOrder);
             };
 
-            var putCalculatedDose = function (orderTemplate) {
-                return orderSetService.getCalculatedDose(
-                    $scope.patient.uuid,
-                    orderTemplate.dosingInstructions.dose,
-                    orderTemplate.dosingInstructions.doseUnits
-                ).then(function (calculatedDosage) {
-                        orderTemplate.dosingInstructions.dose = calculatedDosage.dose;
-                        orderTemplate.dosingInstructions.doseUnits = calculatedDosage.doseUnit;
-                        return orderTemplate;
-                    });
-            };
-
             var saveTreatment = function () {
                 var tabNames = Object.keys($scope.consultation.newlyAddedTabTreatments || {});
                 var allTreatmentsAcrossTabs = _.flatten(_.map(tabNames, function (tabName) {
@@ -562,44 +550,60 @@ angular.module('bahmni.clinical')
                 }
             };
 
+            var putCalculatedDose = function (orderTemplate) {
+                return orderSetService.getCalculatedDose(
+                    $scope.patient.uuid,
+                    orderTemplate.dosingInstructions.dose,
+                    orderTemplate.dosingInstructions.doseUnits
+                ).then(function (calculatedDosage) {
+                        orderTemplate.dosingInstructions.dose = calculatedDosage.dose;
+                        orderTemplate.dosingInstructions.doseUnits = calculatedDosage.doseUnit;
+                        return orderTemplate;
+                    });
+            };
+
+            var setUpOrderSetTransactionalData = function (orderSetMember) {
+                orderSetMember.orderTemplateMetaData = orderSetMember.orderTemplate;
+                orderSetMember.orderTemplate = JSON.parse(orderSetMember.orderTemplate);
+                putCalculatedDose(orderSetMember.orderTemplate).then(function (orderTemplate) {
+                    orderSetMember.orderTemplate = orderTemplate;
+                });
+            };
+
             $scope.addOrderSet = function (orderSet) {
                 $scope.newOrderSet.name = orderSet.name;
                 $scope.newOrderSet.uuid = orderSet.uuid;
                 var conflictingDrugOrders = [];
-                var drugOrderResponses = _.map(orderSet.orderSetMembers, function (orderSetMember) {
-                    var drugOrderResponse = JSON.parse(orderSetMember.orderTemplate);
-                    drugOrderResponse.effectiveStartDate = $scope.newOrderSet.date;
-                    return drugOrderResponse;
-                });
-                $q.all(_.map(drugOrderResponses, putCalculatedDose)).then(function (drugOrderResponses) {
-                    _.each(drugOrderResponses, function (drugOrderResponse) {
-                        var drugOrderViewModel = Bahmni.Clinical.DrugOrderViewModel.createFromContract(Bahmni.Clinical.DrugOrder.create(drugOrderResponse), treatmentConfig);
-                        drugOrderViewModel.orderSetUuid = orderSet.uuid;
-                        drugOrderViewModel.isNewOrderSet = true;
-                        drugOrderViewModel.dosingInstructionType = Bahmni.Clinical.Constants.flexibleDosingInstructionsClass;
-                        if (!drugOrderViewModel.quantity) {
-                            drugOrderViewModel.quantity = 0;
-                        }
-                        drugOrderViewModel.calculateDurationUnit();
-                        drugOrderViewModel.calculateQuantityAndUnit();
-                        drugOrderViewModel.calculateEffectiveStopDate();
-                        drugOrderViewModel.setUniformDoseFraction();
-                        var conflictingDrugOrder = getConflictingDrugOrder(drugOrderViewModel);
-                        if (!conflictingDrugOrder) {
-                            drugOrderViewModel.include = true;
-                        } else {
-                            conflictingDrugOrders.push(conflictingDrugOrder);
-                        }
-                        $scope.orderSetTreatments.push(drugOrderViewModel);
-                    });
-                    if (conflictingDrugOrders.length > 0) {
-                        ngDialog.open({
-                            template: 'consultation/views/treatmentSections/conflictingOrderSet.html',
-                            data: {'conflictingDrugOrders': conflictingDrugOrders}
-                        });
-                        $scope.popupActive = true;
+                _.each(orderSet.orderSetMembers, function (orderSetMember) {
+                    orderSetMember.orderTemplate.effectiveStartDate = $scope.newOrderSet.date;
+                    var drugOrderViewModel = Bahmni.Clinical.DrugOrderViewModel.createFromContract(Bahmni.Clinical.DrugOrder.create(orderSetMember.orderTemplate), treatmentConfig);
+                    drugOrderViewModel.orderSetUuid = orderSet.uuid;
+                    drugOrderViewModel.isNewOrderSet = true;
+                    drugOrderViewModel.dosingInstructionType = Bahmni.Clinical.Constants.flexibleDosingInstructionsClass;
+                    if (!drugOrderViewModel.quantity) {
+                        drugOrderViewModel.quantity = 0;
                     }
+                    drugOrderViewModel.calculateDurationUnit();
+                    drugOrderViewModel.calculateQuantityAndUnit();
+                    drugOrderViewModel.calculateEffectiveStopDate();
+                    drugOrderViewModel.setUniformDoseFraction();
+                    var conflictingDrugOrder = getConflictingDrugOrder(drugOrderViewModel);
+                    if (!conflictingDrugOrder) {
+                        drugOrderViewModel.include = true;
+                    } else {
+                        conflictingDrugOrders.push(conflictingDrugOrder);
+                    }
+
+                    $scope.orderSetTreatments.push(drugOrderViewModel);
                 });
+                if (conflictingDrugOrders.length > 0) {
+                    ngDialog.open({
+                        template: 'consultation/views/treatmentSections/conflictingOrderSet.html',
+                        data: {'conflictingDrugOrders': conflictingDrugOrders}
+                    });
+                    $scope.popupActive = true;
+                }
+
             };
 
             $scope.removeOrderSet = function () {
@@ -631,6 +635,10 @@ angular.module('bahmni.clinical')
                 $scope.consultation.activeAndScheduledDrugOrders = getActiveDrugOrders(activeDrugOrders);
                 $scope.treatmentConfig = treatmentConfig;// $scope.treatmentConfig used only in UI
                 $scope.orderSets = orderSets;
+
+                _.each($scope.orderSets, function (orderSet) {
+                    _.each(orderSet.orderSetMembers, setUpOrderSetTransactionalData);
+                });
             };
             init();
         }]);
