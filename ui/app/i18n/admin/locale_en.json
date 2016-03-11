@@ -5,6 +5,6 @@
     "login": "Login",
     "selectLocation": "Select Location",
     "clinical_key": "Clinical",
-    "MESSAGE_DIALOG_OPTION_COPY" : "Copy",
-    "MESSAGE_DIALOG_OPTION_OKAY": "Ok"
+    "MESSAGE_DIALOG_OPTION_COPY" : "Copy Error",
+    "MESSAGE_DIALOG_OPTION_OKAY": "OK"
 }

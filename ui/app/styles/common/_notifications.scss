@@ -2,8 +2,8 @@
   .message-container{
 	width: 35%;
 	margin: 5px auto;
-	padding: 0px 10px;
-	border-radius: 2px;
+	padding: 7px 10px;
+	border-radius: 3px;
 	font-size: 14px;
 	color: #FFF;
 	font-family: OpenSansSemiBold;
@@ -19,15 +19,10 @@
 	}
 	@include clearfix;
 	.message-icon{
-	  display: table-cell;
+	  display: block;
 	  font-size: 30px;
 	  text-align: left;
 	  width: 12%;
-	}
-	.message-text{
-	  display: table-cell;
-	  text-align: left;
-	  vertical-align: middle;
 	}
   }
   .error-message-container{
@@ -41,16 +36,16 @@
 	background: linear-gradient(top, rgba(216, 119, 119, 1) 1%, rgba(217, 87, 87, 1) 100%);
 	border: 1px solid #b72224;
 	.types-for-errors{
-	  width: 330px;
-	  display: table-cell;
-	  vertical-align: middle;
+		display: block;
+		text-align: center;
+		padding: 0 0 7px;
 	}
 	.button-wrappper{
-	  display: table-cell;
-	  vertical-align: middle;
 	  .copy-btn, .show-btn {
 		padding: 5px;
-		margin-left: 5px;
+		font-family: OpenSansSemiBold;
+		font-size: 12px;
+		width: 74px;
 	  }
 	}
   }
