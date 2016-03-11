@@ -6,12 +6,13 @@ angular.module('bahmni.common.offline')
         var db;
 
         var search = function (params) {
+            var defer = $q.defer();
             var response = {
                 pageOfResults: []
             };
             if ($rootScope.searching) {
                 response.pageOfResults.push({});
-                return $q.when(response);
+                return defer.resolve(response);
             }
             $rootScope.searching = true;
             var nameParts = null;
@@ -36,7 +37,7 @@ angular.module('bahmni.common.offline')
             var pat = db.getSchema().table('patient_attribute_type');
             var padd = db.getSchema().table('patient_address');
 
-            return db.select(pat.attributeTypeId)
+             db.select(pat.attributeTypeId)
                 .from(pat)
                 .where(pat.attributeName.in(params.patientAttributes)).exec()
                 .then(function (attributeTypeIds) {
@@ -86,7 +87,7 @@ angular.module('bahmni.common.offline')
                     }
 
 
-                    return query.limit(50).skip(params.startIndex).orderBy(p.dateCreated, lf.Order.DESC).groupBy(p.uuid).exec()
+                     query.limit(50).skip(params.startIndex).orderBy(p.dateCreated, lf.Order.DESC).groupBy(p.uuid).exec()
                         .then(function (tempResults) {
                             return db.select(p.identifier.as('identifier'), p.givenName.as('givenName'), p.middleName.as('middleName'), p.familyName.as('familyName'),
                                 p.dateCreated.as('dateCreated'), p.birthdate.as('birthdate'), p.gender.as('gender'), p.uuid.as('uuid'), padd[addressFieldName].as('addressFieldValue'),
@@ -121,7 +122,7 @@ angular.module('bahmni.common.offline')
                                     });
                                     $rootScope.searching = false;
 
-                                    return response;
+                                    defer.resolve(response);
 
                                 });
 
@@ -129,6 +130,7 @@ angular.module('bahmni.common.offline')
                             console.log(e);
                         });
                 });
+            return defer.promise;
         };
 
         var init = function(_db){

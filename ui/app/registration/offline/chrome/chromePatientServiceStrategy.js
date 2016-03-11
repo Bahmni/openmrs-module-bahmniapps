@@ -5,11 +5,7 @@ angular.module('bahmni.registration')
 
         var search = function (config) {
             console.log("chrome")
-            var defer = $q.defer();
-            offlineSearchDbService.search(config.params).then(function(result){
-                    defer.resolve(result);
-                });
-                return defer.promise;
+            return offlineSearchDbService.search(config.params)
         };
 
         var getByUuid = function(uuid) {
