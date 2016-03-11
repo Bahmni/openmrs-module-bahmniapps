@@ -341,9 +341,10 @@ button.back-btn {
 }
 /* multi select */
 .multi-select-button-group {
-    max-width: 600px;
-    overflow: auto;
-    box-sizing: border-box;
+    //max-width: 1200px;
+    //overflow: auto;
+    //box-sizing: border-box;
+    //min-width: 700px;
     button {
         /* width: 200px; temp changes - removed equal spacing */
         float: left;

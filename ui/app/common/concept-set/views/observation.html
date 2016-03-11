@@ -25,7 +25,7 @@
                     </div>
                 </div>
 
-                <div class="field-value" ng-if="!observation.isComputed()" ng-switch="::observation.getControlType()">
+                <div class="field-value" ng-if="!observation.isComputed()" ng-switch="::observation.getControlType()"  ng-class="{'field-value-buttonSelectType' :observation.getControlType()== 'buttonselect'}">
                     <div class="concept-description" ng-if="observation.previous">
                         <span class="details" ng-bind-html="observation.previous.value"></span>
                     </div>
@@ -138,7 +138,7 @@
                     </i>
                 </label>
 
-                <div class="field-value" ng-switch="::observation.getControlType()">
+                <div class="field-value" ng-switch="::observation.getControlType()"  ng-class="{'field-value-buttonSelectType' :observation.getControlType()== 'buttonselect'}">
                     <div class="concept-description" ng-if="observation.previous">
                         <span class="details" ng-bind-html="getStringValue(observation.previous)"></span>
                     </div>

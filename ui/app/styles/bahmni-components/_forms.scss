@@ -63,7 +63,7 @@ form, .form {
         }
         textarea {
            height: 35px;
-            width: 600px;;
+            width: 807px;;
             transition: height 0.1s ease;
             box-sizing: border-box;
             margin-top: 5px;
@@ -72,6 +72,13 @@ form, .form {
             }
             &.consultation-img-comments {
                 width: 100%;
+            }
+            @media screen and (max-width: 1024px) {
+              width:600px;
+            }
+            @media screen and (max-width: 768px){
+              width:350px;
+
             }
         }
     }

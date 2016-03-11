@@ -305,12 +305,18 @@ concept-set {
     padding: 5px;
   }
   .consultation-image {
-    width: 600px;
+    width: 807px;
     background: $lightestGray;
     padding: 5px;
     overflow: auto;
     clear: both;
     box-sizing: border-box;
+    @media screen and (max-width: 1024px) {
+      width:600px;
+    }
+    @media screen and (max-width: 768px){
+      width:350px;
+    }
     .file{
       .comment-toggle {
         margin-right: 10px;
@@ -499,4 +505,14 @@ concept-set {
 }
 .concept-tooltip-tabular-observation{
   margin-left:70px;
+}
+
+.field-value-buttonSelectType{
+  width:66%;
+  .multi-select-button-group button{
+    width:200px;
+    text-align: center;
+    padding-left: 10px;
+    padding-right: 10px;
+  }
 }
