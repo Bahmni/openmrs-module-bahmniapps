@@ -5,7 +5,9 @@ angular.module('bahmni.registration')
         function ($http, $q, offlinePatientServiceStrategy) {
 
             var search = function (config) {
-                return offlinePatientServiceStrategy.search(config);
+                return offlinePatientServiceStrategy.search(config).then(function(results) {
+                    return results.data;
+                });
             };
 
             var get = function (uuid) {

@@ -22,10 +22,17 @@ angular.module('bahmni.common.domain.offline')
         };
 
         configurationFunctions.patientConfig = function () {
-            var patientConfig = $http.get(Bahmni.Common.Constants.patientConfigurationUrl, {
+            if(offlineService.isOfflineApp()) {
+                if(offlineService.isAndroidApp()) {
+                    offlineDbService = androidDbService;
+                }
+                return offlineDbService.getReferenceData('PatientConfig').then(function(patientConfig){
+                    return {"data": patientConfig.value};
+                });
+            }
+            return $http.get(Bahmni.Common.Constants.patientConfigurationUrl, {
                 withCredentials: true
             });
-            return patientConfig;
         };
 
         configurationFunctions.patientAttributesConfig = function () {
@@ -44,33 +51,62 @@ angular.module('bahmni.common.domain.offline')
         };
 
         configurationFunctions.dosageFrequencyConfig = function () {
-            var dosageFrequencyConfig = $http.get(Bahmni.Common.Constants.conceptSearchByFullNameUrl, {
+            if(offlineService.isOfflineApp()) {
+                if(offlineService.isAndroidApp()) {
+                    offlineDbService = androidDbService;
+                }
+                return offlineDbService.getReferenceData('DosageFrequencyConfig').then(function(dosageFrequencyConfig){
+                    return {"data": dosageFrequencyConfig.value};
+                });
+            }
+           return $http.get(Bahmni.Common.Constants.conceptSearchByFullNameUrl, {
                 method: "GET",
                 params: {v: 'custom:(uuid,name,answers)', name: Bahmni.Common.Constants.dosageFrequencyConceptName},
                 withCredentials: true
             });
-            return dosageFrequencyConfig;
         };
 
         configurationFunctions.dosageInstructionConfig = function () {
-            var dosageInstructionConfig = $http.get(Bahmni.Common.Constants.conceptSearchByFullNameUrl, {
+            if(offlineService.isOfflineApp()) {
+                if(offlineService.isAndroidApp()) {
+                    offlineDbService = androidDbService;
+                }
+                return offlineDbService.getReferenceData('DosageInstructionConfig').then(function(dosageInstructionConfig){
+                    return {"data": dosageInstructionConfig.value};
+                });
+            }
+            return $http.get(Bahmni.Common.Constants.conceptSearchByFullNameUrl, {
                 method: "GET",
                 params: {v: 'custom:(uuid,name,answers)', name: Bahmni.Common.Constants.dosageInstructionConceptName},
                 withCredentials: true
             });
-            return dosageInstructionConfig;
         };
 
         configurationFunctions.stoppedOrderReasonConfig = function () {
-            var stoppedOrderReasonConfig = $http.get(Bahmni.Common.Constants.conceptSearchByFullNameUrl, {
+            if(offlineService.isOfflineApp()) {
+                if(offlineService.isAndroidApp()) {
+                    offlineDbService = androidDbService;
+                }
+                return offlineDbService.getReferenceData('StoppedOrderReasonConfig').then(function(stoppedOrderReasonConfig){
+                    return {"data": stoppedOrderReasonConfig.value};
+                });
+            }
+            return $http.get(Bahmni.Common.Constants.conceptSearchByFullNameUrl, {
                 method: "GET",
                 params: {v: 'custom:(uuid,name,answers)', name: Bahmni.Common.Constants.stoppedOrderReasonConceptName},
                 withCredentials: true
             });
-            return stoppedOrderReasonConfig;
         };
 
         configurationFunctions.consultationNoteConfig = function () {
+            if(offlineService.isOfflineApp()) {
+                if(offlineService.isAndroidApp()) {
+                    offlineDbService = androidDbService;
+                }
+                return offlineDbService.getReferenceData('ConsultationNote').then(function(consultationNote){
+                    return {"data": consultationNote.value};
+                });
+            }
             var consultationNoteConfig = $http.get(Bahmni.Common.Constants.conceptSearchByFullNameUrl, {
                 method: "GET",
                 params: {v: 'custom:(uuid,name,answers)', name: Bahmni.Common.Constants.consultationNoteConceptName},
@@ -89,15 +125,31 @@ angular.module('bahmni.common.domain.offline')
         };
 
         configurationFunctions.labOrderNotesConfig = function () {
-            var labOrderNotesConfig = $http.get(Bahmni.Common.Constants.conceptSearchByFullNameUrl, {
+            if(offlineService.isOfflineApp()) {
+                if(offlineService.isAndroidApp()) {
+                    offlineDbService = androidDbService;
+                }
+                return offlineDbService.getReferenceData('LabOrderNotes').then(function(labOrderNotes){
+                    return {"data": labOrderNotes.value};
+                });
+            }
+           return $http.get(Bahmni.Common.Constants.conceptSearchByFullNameUrl, {
                 method: "GET",
                 params: {v: 'custom:(uuid,name)', name: Bahmni.Common.Constants.labOrderNotesConcept},
                 withCredentials: true
             });
-            return labOrderNotesConfig;
+
         };
 
         configurationFunctions.defaultEncounterType = function () {
+            if(offlineService.isOfflineApp()) {
+                if(offlineService.isAndroidApp()) {
+                    offlineDbService = androidDbService;
+                }
+                return offlineDbService.getReferenceData('DefaultEncounterType').then(function(defaultEncounterType){
+                    return {"data": defaultEncounterType.value};
+                });
+            }
             return $http.get(Bahmni.Common.Constants.globalPropertyUrl, {
                 params: {
                     property: 'bahmni.encounterType.default'
@@ -109,12 +161,19 @@ angular.module('bahmni.common.domain.offline')
         };
 
         configurationFunctions.radiologyImpressionConfig = function () {
-            var radiologyImpressionConfig = $http.get(Bahmni.Common.Constants.conceptSearchByFullNameUrl, {
+            if(offlineService.isOfflineApp()) {
+                if(offlineService.isAndroidApp()) {
+                    offlineDbService = androidDbService;
+                }
+                return offlineDbService.getReferenceData('RadiologyImpressionConfig').then(function(radiologyImpressionConfig){
+                    return {"data": radiologyImpressionConfig.value};
+                });
+            }
+            return $http.get(Bahmni.Common.Constants.conceptSearchByFullNameUrl, {
                 method: "GET",
                 params: {v: 'custom:(uuid,name)', name: Bahmni.Common.Constants.impressionConcept},
                 withCredentials: true
             });
-            return radiologyImpressionConfig;
         };
 
 
@@ -134,7 +193,15 @@ angular.module('bahmni.common.domain.offline')
         };
 
         configurationFunctions.allTestsAndPanelsConcept = function () {
-            var allTestsAndPanelsConcept = $http.get(Bahmni.Common.Constants.conceptSearchByFullNameUrl, {
+            if(offlineService.isOfflineApp()) {
+                if(offlineService.isAndroidApp()) {
+                    offlineDbService = androidDbService;
+                }
+                return offlineDbService.getReferenceData('AllTestsAndPanelsConcept').then(function(allTestsAndPanelsConcept){
+                    return {"data": allTestsAndPanelsConcept.value};
+                });
+            }
+            return $http.get(Bahmni.Common.Constants.conceptSearchByFullNameUrl, {
                 method: "GET",
                 params: {
                     v: 'custom:(uuid,name:(uuid,name),setMembers:(uuid,name:(uuid,name)))',
@@ -142,7 +209,6 @@ angular.module('bahmni.common.domain.offline')
                 },
                 withCredentials: true
             });
-            return allTestsAndPanelsConcept;
         };
 
         configurationFunctions.identifierSourceConfig = function () {
@@ -177,6 +243,7 @@ angular.module('bahmni.common.domain.offline')
                 withCredentials: true
             });
         };
+
 
         configurationFunctions.relationshipTypeMap = function() {
             if(offlineService.isOfflineApp()) {

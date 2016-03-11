@@ -28,7 +28,7 @@ angular.module('bahmni.common.offline')
                                     'If-None-Match': result ? result.etag : undefined
                                 }
                             };
-                            if(referenceData == 'LocaleList') {
+                            if(referenceData == 'LocaleList' || referenceData == 'DefaultEncounterType') {
                                 req.headers.Accept = 'text/plain';
                             }
                              $http(req).then(function (response) {

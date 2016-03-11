@@ -74,9 +74,44 @@
         <script src="../common/util/iosLabelFix.js"></script>
         <script src="../common/util/stringFormat.js"></script>
         <script src="../common/util/dynamicResourceLoader.js"></script>
+        <script src="../components/lovefield/dist/lovefield.min.js"></script>
+
 
         <script src="../common/offline/init.js"></script>
         <script src="../common/offline/offlineService.js"></script>
+        <script src="../common/offline/initializeOfflineSchema.js"></script>
+        <script src="../common/offline/offlineDbInitialization.js"></script>
+        <script src="../common/offline/offlineConfigInitialization.js"></script>
+        <script src="../common/offline/offlineReferenceDataInitialization.js"></script>
+        <script src="../common/offline/offlineSyncInitialization.js"></script>
+        <script src="../common/offline/services/eventLogService.js"></script>
+        <script src="../common/offline/services/offlineSyncService.js"></script>
+        <script src="../common/offline/services/androidDbService.js"></script>
+        <script src="../common/offline/dbservices/dao/offlineSearchDbService.js"></script>
+        <script src="../common/offline/dbservices/dao/offlineDbService.js"></script>
+        <script src="../common/offline/dbservices/dao/patientAddressDbService.js"></script>
+        <script src="../common/offline/dbservices/dao/patientAttributeDbService.js"></script>
+        <script src="../common/offline/dbservices/dao/patientDbService.js"></script>
+        <script src="../common/offline/dbservices/dao/offlineMarkerDbService.js"></script>
+        <script src="../common/offline/dbservices/dao/offlineAddressHierarchyDbService.js"></script>
+        <script src="../common/offline/dbservices/dao/offlineConfigDbService.js"></script>
+        <script src="../common/offline/schemaDefinitions.js"></script>
+        <script src="../common/offline/models/UUID.js"></script>
+        <script src="../common/offline/models/AddressFields.js"></script>
+        <script src="../common/offline/dbservices/dao/referenceDataDbService.js"></script>
+        <script src="../common/offline/dbservices/dao/locationDbService.js"></script>
+        <script src="../common/offline/offlineDbInitialization.js"></script>
+
+
+        <script src="../common/offline/scheduler/scheduledJob.js"></script>
+        <script src="../common/offline/scheduler/MultiStageWorker.js"></script>
+        <script src="../common/offline/scheduler/eventQueue.js"></script>
+        <script src="../common/offline/scheduledSync.js"></script>
+
+        <script src="../common/models/init.js"></script>
+        <script src="../common/models/age.js"></script>
+
+
 
         <script src="../common/auth/init.js"></script>
         <script src="../common/auth/user.js"></script>
@@ -88,7 +123,7 @@
         <script src="../common/app-framework/services/mergeService.js"></script>
         <script src="../common/app-framework/directives/appExtensionList.js"></script>
         <script src="../common/app-framework/models/appDescriptor.js"></script>
-        <script src="../common/app-framework/services/loadConfigService.js"></script>
+        <script src="../common/app-framework/services/offline/loadConfigService.js"></script>
 
         <script src="../common/config/init.js"></script>
         <script src="../common/config/services/configurations.js"></script>
@@ -119,7 +154,7 @@
         <script src="../common/domain/services/observationsService.js"></script>
         <script src="../common/domain/services/dispositionService.js"></script>
         <script src="../common/domain/services/visitService.js"></script>
-        <script src="../common/domain/services/configurationService.js"></script>
+        <script src="../common/domain/services/offline/configurationService.js"></script>
         <script src="../common/domain/services/visitDocumentService.js"></script>
         <script src="../common/domain/services/bedService.js"></script>
         <script src="../common/domain/services/diagnosisService.js"></script>
@@ -442,7 +477,7 @@
 
         <script src="../common/orders/init.js"></script>
         <script src="../common/orders/services/orderService.js"></script>
-        <script src="../common/orders/services/orderTypeService.js"></script>
+        <script src="../common/orders/services/offline/orderTypeService.js"></script>
         <script src="../common/bacteriologyresults/init.js"></script>
         <script src="../common/bacteriologyresults/services/bacteriologyResultsService.js"></script>
 

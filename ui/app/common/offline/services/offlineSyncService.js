@@ -18,18 +18,21 @@ angular.module('bahmni.common.offline')
                         var addressField = getLoginLocationAddress(loginLocation);
                         _.reverse(addressLevels);
                         var params = { searchString: loginLocation[addressField], addressField: addressField};
-                        eventLogService.getAddressForLoginLocation(params).then(function (results) {
+                        if(params.searchString != undefined && params.addressField != undefined) {
+                            eventLogService.getAddressForLoginLocation(params).then(function (results) {
                                 var data = results.data;
-                                for(var addressResults=0; addressResults < data.length ; addressResults++){
+                                for (var addressResults = 0; addressResults < data.length; addressResults++) {
                                     var loginAddress = data[addressResults];
-                                    if(checkParents(loginAddress, getParentAddressLevel(addressField), loginLocation)){
+                                    if (checkParents(loginAddress, getParentAddressLevel(addressField), loginLocation)) {
                                         offlineService.setItem('catchmentNumber', data[addressResults].userGeneratedId);
                                         getParentAddressLineItems(data[addressResults]);
                                         sync();
                                         break;
                                     }
                                 }
-                        });
+                            });
+
+                        }
                     });
                 }
             };

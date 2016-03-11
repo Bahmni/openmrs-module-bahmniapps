@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('bahmni.clinical').factory('initialization',
-    ['$rootScope','authenticator', 'appService', 'spinner', 'configurations', 'orderTypeService',
-        function ($rootScope, authenticator, appService, spinner, configurations, orderTypeService) {
+    ['$rootScope','authenticator', 'appService', 'spinner', 'configurations', 'orderTypeService', 'offlineService', 'offlineDbService', 'androidDbService',
+        function ($rootScope, authenticator, appService, spinner, configurations, orderTypeService, offlineService, offlineDbService, androidDbService) {
             return function (config) {
 
             var loadConfigPromise = function () {
@@ -34,8 +34,21 @@ angular.module('bahmni.clinical').factory('initialization',
                 };
 
                 var loadFormConditions = function () {
-                    var baseUrl = appService.configBaseUrl();
-                    Bahmni.Common.Util.DynamicResourceLoader.includeJs(baseUrl + 'clinical/formConditions.js');
+                    var script;
+                    var isOfflineApp = offlineService.isOfflineApp();
+                    if(isOfflineApp){
+                        if (offlineService.isAndroidApp()) {
+                            offlineDbService = androidDbService;
+                        }
+                        offlineDbService.getConfig("clinical").then(function(config){
+                            script = config.value['formConditions.js'];
+                            Bahmni.Common.Util.DynamicResourceLoader.includeJs(script, isOfflineApp);
+                        });
+                    }
+                    else{
+                        var baseUrl = appService.configBaseUrl();
+                        Bahmni.Common.Util.DynamicResourceLoader.includeJs(baseUrl + 'clinical/formConditions.js');
+                    }
                 };
 
                 return spinner.forPromise(authenticator.authenticateUser()
