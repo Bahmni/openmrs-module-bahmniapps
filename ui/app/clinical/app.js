@@ -15,7 +15,7 @@ angular.module('consultation', ['ui.router', 'bahmni.clinical', 'bahmni.common.c
     'bahmni.common.displaycontrol.bacteriologyresults', 'bahmni.common.displaycontrol.obsVsObsFlowSheet',
     'bahmni.common.displaycontrol.chronicTreatmentChart', 'bahmni.common.displaycontrol.forms',
     'bahmni.common.displaycontrol.drugOrderDetails', 'bahmni.common.offline', 'bahmni.common.displaycontrol.hint',
-    'bahmni.common.displaycontrol.drugOrdersSection', 'bahmni.common.attributeTypes', 'bahmni.common.appFramework.offline', 'bahmni.common.domain.offline','bahmni.common.models']);
+    'bahmni.common.displaycontrol.drugOrdersSection', 'bahmni.common.attributeTypes', 'bahmni.common.models']);
 angular.module('consultation')
     .config(['$stateProvider', '$httpProvider', '$urlRouterProvider', '$bahmniTranslateProvider', '$compileProvider',
         function ($stateProvider, $httpProvider, $urlRouterProvider, $bahmniTranslateProvider, $compileProvider) {

@@ -61,7 +61,6 @@
         <script src="../common/config/services/configurations.js"></script>
 
         <script src="../common/domain/init.js"></script>
-        <script src="../common/domain/services/offline/configurationService.js"></script>
         <script src="../common/domain/observationFilter.js"></script>
         <script src="../common/domain/helpers/domainHelpers.js"></script>
         <script src="../common/domain/mappers/conceptMapper.js"></script>
@@ -69,7 +68,6 @@
         <script src="../common/domain/services/encounterService.js"></script>
         <script src="../common/domain/services/observationsService.js"></script>
         <script src="../common/domain/services/providerService.js"></script>
-        <script src="../common/domain/services/offline/locationService.js"></script>
         <script src="../common/domain/encounterConfig.js"></script>
         <script src="../common/domain/mappers/observationValueMapper.js"></script>
 
@@ -138,7 +136,6 @@
         <script src="../common/app-framework/models/appDescriptor.js"></script>
         <script src="../common/app-framework/services/appService.js"></script>
         <script src="../common/app-framework/services/mergeService.js"></script>
-        <script src="../common/app-framework/services/offline/loadConfigService.js"></script>
 
         <script src="../common/patient/init.js"></script>
         <script src="../common/patient/filters/age.js"></script>
@@ -247,8 +244,13 @@
 
         <!-- @ifdef ONLINE -->
             <!-- build:js registration.min.web.js -->
-            <script src="services/defaultPatientServiceStrategy.js"></script>
-            <!-- endbuild -->
+        <script src="../common/domain/services/locationService.js"></script>
+        <script src="services/defaultPatientServiceStrategy.js"></script>
+        <script src="../common/domain/services/configurationService.js"></script>
+        <script src="../common/app-framework/services/loadConfigService.js"></script>
+
+
+        <!-- endbuild -->
         <!-- @endif -->
 
         <!-- @ifdef CHROME -->
@@ -256,6 +258,9 @@
             <!--<script src="../components/hustle/hustle.js"></script>-->
             <!--<script src="offline/offlinePatientServiceStrategy.js"></script>-->
             <!--<script src="offline/chrome/chromePatientServiceStrategy.js"></script>-->
+            <!--<script src="../common/domain/offline/chrome/chromeLocationService.js"></script>-->
+            <!--<script src="../common/domain/offline/chrome/chromeConfigurationService.js"></script>-->
+            <!--<script src="../common/app-framework/offline/chrome/chromeLoadConfigService.js"></script>-->
             <!-- endbuild -->
         <!-- @endif -->
 
@@ -265,6 +270,9 @@
             <!--<script src="../components/hustle/hustle.js"></script>-->
             <!--<script src="offline/offlinePatientServiceStrategy.js"></script>-->
             <!--<script src="offline/android/androidPatientServiceStrategy.js"></script>-->
+            <!--<script src="../common/domain/offline/android/androidLocationService.js"></script>-->
+            <!--<script src="../common/domain/offline/android/androidConfigurationService.js"></script>-->
+            <!--<script src="../common/app-framework/offline/android/androidLoadConfigService.js"></script>-->
             <!-- endbuild -->
         <!-- @endif -->
 

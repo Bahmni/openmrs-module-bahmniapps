@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('bahmni.common.patient')
-    .service('patientService', ['$http', function ($http) {
+    .service('patientService', ['$http', 'offlineService', 'offlineSearchDbService', function ($http, offlineService, offlineSearchDbService) {
 
         this.getPatient = function (uuid) {
             var patient = $http.get(Bahmni.Common.Constants.openmrsUrl + "/ws/rest/v1/patient/" + uuid, {
@@ -30,12 +30,13 @@ angular.module('bahmni.common.patient')
         };
 
         this.search = function (query, offset, identifier) {
-            offset = offset || 0;
-            return $http.get(Bahmni.Common.Constants.bahmniSearchUrl + "/patient", {
-                method: "GET",
-                params: {q: query, startIndex: offset, identifier: identifier},
-                withCredentials: true
-            });
+            var params ={
+                q: query,
+                identifier:identifier,
+                startIndex: offset || 0,
+                addressFieldName: Bahmni.Common.Offline.AddressFields.CITY_VILLAGE
+            };
+            return offlineSearchDbService.search(params);
         };
 
         this.getPatientContext = function (patientUuid, programUuid, personAttributes, programAttributes) {

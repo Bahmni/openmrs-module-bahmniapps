@@ -113,6 +113,7 @@ angular.module('bahmni.common.offline')
                                         patient = groupedResult[0];
                                         //ToDo:: Dependency of age factory in Admin page
                                         patient.age = age.fromBirthDate(patient.birthdate).years;
+                                        patient.image = "../images/blank-user.png";
 
                                         angular.forEach(groupedResult, function (result) {
                                             if (result.attributeName) {
