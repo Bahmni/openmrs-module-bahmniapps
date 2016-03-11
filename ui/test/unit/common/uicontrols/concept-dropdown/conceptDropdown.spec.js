@@ -40,7 +40,7 @@ describe('conceptDropdown', function () {
         };
 
         var data = [
-            {uuid: "uuid1", name: 'name1'},
+            {uuid: "uuid1", name: 'name1' , shortName: 'shortname'},
             {uuid: "uuid2", name: 'name2'}
         ];
         var response = specUtil.respondWithPromise($q, data);
@@ -58,6 +58,10 @@ describe('conceptDropdown', function () {
         expect(compiledElementScope).toBeTruthy();
         expect(compiledElementScope.answers[0].uuid).toEqual("uuid1");
         expect(compiledElementScope.answers[1].uuid).toEqual("uuid2");
+        expect(compiledElementScope.answers[0].name).toEqual("shortname");
+        expect(compiledElementScope.answers[1].name).toEqual("name2");
+
+
     });
 
     it("should load answers from given concept", function () {

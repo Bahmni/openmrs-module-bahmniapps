@@ -2,7 +2,7 @@
     'use strict';
 
     var constructSearchResult = function (concept) {
-        var conceptName = concept.name.name || concept.name;
+        var conceptName = concept.shortName || concept.name.name || concept.name;
         return {
             label: conceptName,
             value: conceptName,
