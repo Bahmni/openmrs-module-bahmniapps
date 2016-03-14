@@ -228,15 +228,8 @@ angular.module('bahmni.adt')
 
             $scope.discharge = function () {
                 var encounterData = getEncounterData($scope.encounterConfig.getDischargeEncounterTypeUuid());
-                spinner.forPromise(encounterService.create(encounterData).then(function (response) {
-                    return bedService.getAssignedBedForPatient($scope.patient.uuid).then(function (bedDetails) {
-                        if (bedDetails) {
-                            return bedService.freeBed(bedDetails.bedId, $scope.patient.uuid).success(function () {
-                                forwardUrl(response.data, "onDischargeForwardTo");
-                            })
-                        }
-                        forwardUrl(response.data, "onDischargeForwardTo");
-                    })
+                spinner.forPromise(encounterService.discharge(encounterData).then(function (response) {
+                    forwardUrl(response.data, "onDischargeForwardTo");
                 }));
             };
 
