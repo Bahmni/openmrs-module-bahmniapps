@@ -36,6 +36,13 @@ angular.module('bahmni.common.domain')
             return deffered.promise;
         };
 
+        this.freeBed = function (bedId, patientUuid) {
+            return $http.delete(Bahmni.Common.Constants.bedFromVisit + "/" + bedId, {params:{patientUuid: patientUuid}}, {
+                withCredentials: true,
+                headers: {"Accept": "application/json", "Content-Type": "application/json"}
+            });
+        };
+
         this.assignBed = function (bedId, patientUuid, encounterUuid) {
             var patientJson = {"patientUuid": patientUuid, "encounterUuid" : encounterUuid};
             return $http.post(Bahmni.Common.Constants.bedFromVisit + "/" + bedId, patientJson, {
