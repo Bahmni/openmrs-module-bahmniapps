@@ -1,7 +1,7 @@
 'use strict';
 
 describe("AdtController", function () {
-    var scope, rootScope, controller, bedService, appService, sessionService, dispositionService, visitService, encounterService, ngDialog, window, messagingService;
+    var scope, rootScope, controller, bedService, appService, sessionService, dispositionService, visitService, encounterService, ngDialog, window, messagingService, spinnerService;
 
     beforeEach(function () {
         module('bahmni.adt');
@@ -17,9 +17,10 @@ describe("AdtController", function () {
         sessionService = jasmine.createSpyObj('sessionService', ['getLoginLocationUuid']);
         dispositionService = jasmine.createSpyObj('dispositionService', ['getDispositionActions']);
         visitService = jasmine.createSpyObj('visitService', ['getVisitSummary','endVisit']);
-        encounterService = jasmine.createSpyObj('encounterService', ['create']);
+        encounterService = jasmine.createSpyObj('encounterService', ['create', 'discharge']);
         ngDialog = jasmine.createSpyObj('ngDialog', ['openConfirm', 'close']);
         messagingService = jasmine.createSpyObj('messagingService', ['showMessage']);
+        spinnerService = jasmine.createSpyObj('spinnerService', ['forPromise']);
         window = {};
 
         appService.getAppDescriptor.and.returnValue({
@@ -53,6 +54,13 @@ describe("AdtController", function () {
     });
 
     var createController = function () {
+        spinnerService.forPromise.and.callFake(function () {
+            return {
+                then: function () {
+                    return {};
+                }
+            }
+        });
 
         controller('AdtController', {
             $scope: scope,
@@ -66,7 +74,8 @@ describe("AdtController", function () {
             visitService: visitService,
             ngDialog: ngDialog,
             $window: window,
-            messagingService : messagingService
+            messagingService : messagingService,
+            spinner: spinnerService
         });
     };
 
@@ -407,5 +416,21 @@ describe("AdtController", function () {
 
         createController();
         expect(scope.dispositionActions).toEqual([{"name": {"name": "Admit Patient", "uuid": "avb231rt"}}]);
+    });
+
+    describe('Discharge', function () {
+        it('should discharge patient', function () {
+            scope.patient = {uuid: "patient Uuid"};
+            encounterService.discharge.and.callFake(function () {
+                return {
+                    then: function (callback) {
+                        return callback({data: {}})
+                    }
+                }
+            });
+            createController();
+
+            scope.discharge();
+        })
     });
 });
