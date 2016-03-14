@@ -38,6 +38,7 @@ describe("ConsultationController", function () {
     ];
 
     beforeEach(module('bahmni.clinical'));
+    beforeEach(module('bahmni.common.offline'));
 
     var injectConsultationController = function () {
         inject(function ($controller, $rootScope, _$window_) {

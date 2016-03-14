@@ -6,6 +6,7 @@ var $aController, q, scopeMock, rootScopeMock, stateMock, patientServiceMock, pr
 describe('CreatePatientController', function() {
 
     beforeEach(module('bahmni.registration'));
+    beforeEach(module('bahmni.common.models'));
 
     beforeEach(
         inject(function($controller, $rootScope, $q) {

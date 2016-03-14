@@ -1,32 +1,18 @@
 'use strict';
 
 angular.module('bahmni.common.patient')
-    .service('patientService', ['$http', 'offlineService', 'offlineSearchDbService', function ($http, offlineService, offlineSearchDbService) {
+    .service('patientService', ['offlineSearchDbService', function ( offlineSearchDbService) {
 
         this.getPatient = function (uuid) {
-            var patient = $http.get(Bahmni.Common.Constants.openmrsUrl + "/ws/rest/v1/patient/" + uuid, {
-                method: "GET",
-                params: {v: "full"},
-                withCredentials: true
-            });
-            return patient;
+            return $q.when({});
         };
 
         this.getRelationships = function (patientUuid) {
-            return $http.get(Bahmni.Common.Constants.openmrsUrl + "/ws/rest/v1/relationship", {
-                method: "GET",
-                params: {person: patientUuid, v: "full"},
-                withCredentials: true
-            });
+            return $q.when({});
         };
 
         this.findPatients = function (params) {
-
-            return $http.get( Bahmni.Common.Constants.sqlUrl  , {
-                method: "GET",
-                params: params,
-                withCredentials: true
-            });
+            return $q.when({});
         };
 
         this.search = function (query, offset, identifier) {
@@ -40,14 +26,6 @@ angular.module('bahmni.common.patient')
         };
 
         this.getPatientContext = function (patientUuid, programUuid, personAttributes, programAttributes) {
-            return $http.get('/openmrs/ws/rest/v1/bahmnicore/patientcontext', {
-                params: {
-                    patientUuid: patientUuid,
-                    programUuid: programUuid,
-                    personAttributes: personAttributes,
-                    programAttributes: programAttributes
-                },
-                withCredentials: true
-            });
+            return $q.when({});
         }
     }]);

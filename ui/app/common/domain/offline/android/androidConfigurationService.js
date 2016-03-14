@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('bahmni.common.domain')
-    .factory('configurationService', ['$http', '$q', 'androidDbService',
-        function ($http, $q, androidDbService) {
+    .factory('configurationService', ['$q', 'androidDbService',
+        function ($q, androidDbService) {
 
             var configurationFunctions = {};
 
@@ -52,12 +52,7 @@ angular.module('bahmni.common.domain')
             };
 
             configurationFunctions.radiologyObservationConfig = function () {
-                var radiologyObervationConfig = $http.get(Bahmni.Common.Constants.conceptSearchByFullNameUrl, {
-                    method: "GET",
-                    params: {v: 'custom:(uuid,name)', name: Bahmni.Common.Constants.radiologyResultConceptName},
-                    withCredentials: true
-                });
-                return radiologyObservationConfig;
+                return $q.when({});
             };
 
             configurationFunctions.labOrderNotesConfig = function () {

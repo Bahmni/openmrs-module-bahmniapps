@@ -35,8 +35,9 @@ describe('Patient resource', function () {
         gender: "M"};
 
     beforeEach(function () {
-        module('bahmni.registration');
+        module('bahmni.common.models');
         module('bahmni.common.offline');
+        module('bahmni.registration');
 
         module(function ($provide) {
             Bahmni.Registration.Constants.openmrsUrl = openmrsUrl;

@@ -7,7 +7,6 @@ module.exports = function (config) {
         autoWatch: false,
         singleRun: true,
         files: [
-            {pattern: 'test/data/*.json', watched: true, served: true, included: false},
             'app/components/q/q.js',
             'app/components/angular/angular.js',
             'app/components/angular-route/angular-route.js',
@@ -58,18 +57,21 @@ module.exports = function (config) {
             'test/support/**/*.js',
             'test/unit/**/*.js',
             'test/integration/**/*.js',
-            'test/integration/utils/*.js'
+            'test/integration/utils/*.js',
+            {pattern: 'test/data/*.json', watched: true, served: true, included: false}
         ],
         exclude:[
-            'app/registration/offline/**/*.js',
-            'app/common/app-framework/offline/**/*.js',
-            'app/common/domain/offline/**/*.js',
-            'app/common/orders/offline/**/*.js',
-            'app/common/patient/offline/**/*.js',
-            'test/unit/orders/offline/**/*.js',
-            'test/unit/common/patient/offline/**/*.js',
-            'test/unit/common/app-framework/offline/**/*.js',
-            'test/unit/common/domain/offline/**/*.js'
+            'app/registration/offline/*.js',
+            'app/common/app-framework/offline/chrome/*.js',
+            'app/common/orders/offline/chrome/*.js',
+            'app/common/patient/offline/chrome/*.js',
+            'app/common/domain/offline/chrome/*.js',
+            'app/common/app-framework/services/LoadConfigService.js',
+            'app/common/orders/services/orderTypeService.js',
+            'app/common/patient/services/patientService.js',
+            'app/common/domain/service/configurationService.js',
+            'app/common/domain/service/locationService.js',
+            'app/common/domain/service/localeService.js'
         ],
         reporters: ['junit', 'progress', 'coverage'],
         preprocessors: {
