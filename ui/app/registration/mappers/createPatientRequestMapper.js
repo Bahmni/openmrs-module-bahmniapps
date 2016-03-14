@@ -31,7 +31,8 @@ Bahmni.Registration.CreatePatientRequestMapper = (function () {
                 },
                 identifiers: [
                     {
-                        identifier: patient.identifier,
+                        identifierPrefix: patient.identifierPrefix.prefix,
+                        registrationNumber: parseInt(patient.registrationNumber),
                         "identifierType": {
                             "name": constants.patientIdentifierTypeName
                         },
