@@ -189,6 +189,7 @@ Bahmni.Common = Bahmni.Common || {};
             SHA3: 'SHA3'
         },
         LoginInformation: 'LoginInformation',
-        ServerDateTimeFormat: 'YYYY-MM-DDTHH:mm:ssZZ'
+        ServerDateTimeFormat: 'YYYY-MM-DDTHH:mm:ssZZ',
+        dischargeUrl: BAHMNI_CORE + "/discharge"
     };
 })();

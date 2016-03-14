@@ -6,7 +6,7 @@ describe("AdtController", function () {
     var sessionService = jasmine.createSpyObj('sessionService', ['getLoginLocationUuid']);
     var dispositionService = jasmine.createSpyObj('dispositionService', ['getDispositionActions']);
     var visitService = jasmine.createSpyObj('visitService', ['getVisitSummary','endVisit']);
-    var encounterService = jasmine.createSpyObj('encounterService', ['create']);
+    var encounterService = jasmine.createSpyObj('encounterService', ['create', 'discharge']);
     var spinnerService = jasmine.createSpyObj('spinner', ['forPromise']);
     var scope, rootScope, controller;
 
@@ -66,9 +66,10 @@ describe("AdtController", function () {
             encounterService: encounterService,
             bedService: bedService,
             appService: appService,
-            visitService: visitService
+            visitService: visitService,
+            spinner: spinnerService
         });
-    }
+    };
 
     it("Should show the confirm dialog if visit type is not IPD", function () {
         scope.visitSummary = {"visitType": "OPD"};
@@ -234,4 +235,19 @@ describe("AdtController", function () {
         expect(scope.dispositionActions).toEqual([{"name":{"name": "Admit Patient","uuid": "avb231rt"}}]);
     });
 
+    describe('Discharge', function () {
+        it('should discharge patient', function () {
+            scope.patient = {uuid: "patient Uuid"};
+            encounterService.discharge.and.callFake(function () {
+                return {
+                    then: function (callback) {
+                        return callback({data: {}})
+                    }
+                }
+            });
+            createController();
+
+            scope.discharge();
+        })
+    });
 });

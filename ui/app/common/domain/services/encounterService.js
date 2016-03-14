@@ -160,6 +160,13 @@ angular.module('bahmni.common.domain')
             },
             withCredentials : true
         });
-    }
-}]);
+    };
+
+            this.discharge = function (encounterData) {
+                var encounter = this.buildEncounter(encounterData);
+                return $http.post(Bahmni.Common.Constants.dischargeUrl, encounter, {
+                    withCredentials: true
+                });
+            };
+        }]);
 
