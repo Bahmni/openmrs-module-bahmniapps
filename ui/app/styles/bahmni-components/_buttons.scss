@@ -522,3 +522,21 @@ button.toggle{
     }
   }
 }
+
+.toggle-btn{
+  button.toggle{
+    .fa-angle-up{
+      display: none;
+    }
+  }
+  &.active{
+    button.toggle{
+      .fa-angle-up{
+        display: block;
+      }
+      .fa-angle-down{
+        display: none;
+      }
+    }
+  }
+}
