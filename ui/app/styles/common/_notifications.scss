@@ -3,7 +3,7 @@
 	width: 35%;
 	margin: 5px auto;
 	padding: 7px 10px;
-	border-radius: 3px;
+	border-radius: 2px;
 	font-size: 14px;
 	color: #FFF;
 	font-family: OpenSansSemiBold;
@@ -59,10 +59,21 @@
 	filter: progid:DXImageTransform.Microsoft.gradient(startColorstr = '#8ad382', endColorstr = '#6ab165', GradientType = 0);
 	background: linear-gradient(top, rgba(138, 211, 130, 1) 0%, rgba(106, 177, 101, 1) 100%);
 	border: 1px solid #4b8048;
+	padding: 0px 10px;
 	.fa{
 	  padding: 0 !important;
 	  padding-bottom: 3px !important;
 	}
   }
 
+}
+.success-message-container {
+	.message-icon {
+		display: table-cell !important;
+	}
+	.message-text {
+		display: table-cell;
+		text-align: left;
+		vertical-align: middle;
+	}
 }
