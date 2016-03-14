@@ -1,4 +1,4 @@
-<tr ng-class="{active: drugOrder.isActive(), 'test-notes-parent': drugOrder.additionalInstructions, 'notes-open': showDetails}" >
+<tr ng-class="{active: drugOrder.isActive(), 'test-notes-parent': drugOrder.additionalInstructions, 'notes-open': drugOrder.showDetails}" >
     <td class="drug" ng-class="{'strike-text':drugOrder.isDiscontinuedOrStopped(), 'active-drug': drugOrder.isActive(), 'scheduled-drug': drugOrder.isScheduled()}">
         <span >{{drugOrder.getDrugOrderName(params.showDrugForm)}}</span>
         <span ng-repeat="orderAttribute in drugOrder.orderAttributes" ng-if="orderAttribute.value == 'true'" ng-class="'drug-attr-highlight'">
@@ -15,10 +15,10 @@
         <span class="fr">{{drugOrder.effectiveStartDate | bahmniDate}}</span>
     </td>
 
-    <td class="toggle-btn" ng-click="toggle()" ng-if="params.showDetailsButton && !drugOrder.additionalInstructions">
+    <td class="toggle-btn" toggle="drugOrder.showDetails" ng-if="params.showDetailsButton && !drugOrder.additionalInstructions">
         <button class="toggle fr">
-            <i class="fa fa-angle-down" ng-hide="showDetails"></i>
-            <i class="fa fa-angle-up" ng-show="showDetails"></i>
+            <i class="fa fa-angle-down"></i>
+            <i class="fa fa-angle-up"></i>
         </button>
     </td>
 </tr>
@@ -33,7 +33,7 @@
         </div>
     </td>
 </tr>
-<tr bm-show="showDetails" ng-if="!drugOrder.additionalInstructions">
+<tr bm-show="drugOrder.showDetails" ng-if="!drugOrder.additionalInstructions">
     <td colspan="4" class="notes inline-notes">
         <div class="footer-note right">
             <span class="provider" ng-if="params.showProvider">
