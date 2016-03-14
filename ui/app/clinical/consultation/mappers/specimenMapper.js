@@ -2,7 +2,7 @@
 
 Bahmni.Clinical.SpecimenMapper = function() {
 
-    this.mapObservationToSpecimen = function(observation, allSamples, conceptsConfig) {
+    this.mapObservationToSpecimen = function(observation, allSamples, conceptsConfig, dontSortByObsDateTime) {
         var specimen = new Bahmni.Clinical.Specimen(observation, allSamples);
         specimen.specimenId = specimen.identifier;
         specimen.specimenSource = specimen.type.shortName? specimen.type.shortName: specimen.type.name;
@@ -11,7 +11,7 @@ Bahmni.Clinical.SpecimenMapper = function() {
         if (specimen.report && specimen.report.results) {
             specimen.report.results = (specimen.report.results) instanceof Array ? specimen.report.results : [specimen.report.results];
 
-            var obs = new Bahmni.Common.Obs.ObservationMapper().map(specimen.report.results, conceptsConfig);
+            var obs = new Bahmni.Common.Obs.ObservationMapper().map(specimen.report.results, conceptsConfig, dontSortByObsDateTime);
             specimen.sampleResult = obs && obs.length > 0 ? obs[0] : obs;
         }
         if (specimen.sample && specimen.sample.additionalAttributes) {

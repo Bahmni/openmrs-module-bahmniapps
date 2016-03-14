@@ -31,8 +31,9 @@ angular.module('bahmni.common.displaycontrol.bacteriologyresults')
                         });
                         var specimenMapper = new Bahmni.Clinical.SpecimenMapper();
                         var conceptsConfig = appService.getAppDescriptor().getConfigValue("conceptSetUI") || {};
+                        var dontSortByObsDateTime = true;
                         _.forEach($scope.observations, function (observation) {
-                            $scope.specimens.push(specimenMapper.mapObservationToSpecimen(observation, $scope.allSamples, conceptsConfig));
+                            $scope.specimens.push(specimenMapper.mapObservationToSpecimen(observation, $scope.allSamples, conceptsConfig, dontSortByObsDateTime));
                         });
                     }
                 };
