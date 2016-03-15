@@ -53,7 +53,7 @@ angular.module('bahmni.common.domain')
     };
 
     var  getDefaultEncounterTypeIfMappingNotFound = function(entityMappings){
-        var encounterType = entityMappings.data.results[0].mappings[0];
+        var encounterType = entityMappings.data.results[0] && entityMappings.data.results[0].mappings[0];
         if (!encounterType) {
             encounterType = getDefaultEncounterType();
         }
