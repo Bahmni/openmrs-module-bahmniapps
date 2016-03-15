@@ -38,9 +38,33 @@ angular.module('bahmni.registration')
             return patientServiceStrategy.get(uuid);
         };
 
-        var create = function (patient, jumpAccepted) {
+        var generateIdentifier = function (patient) {
+            return patientServiceStrategy.generateIdentifier(patient);
+        };
+
+        var getLatestIdentifier = function (sourceName) {
+            var url = openmrsUrl + "/ws/rest/v1/idgen/latestidentifier";
+            var config = {
+                method: "GET",
+                withCredentials: true,
+                params: {"sourceName": sourceName},
+                headers: {"Accept": "text/plain", "Content-Type": "application/json"}
+            };
+            return $http.get(url, config);
+        };
+
+        var setLatestIdentifier = function (sourceName, identifier) {
+            var url = openmrsUrl + "/ws/rest/v1/idgen/latestidentifier";
+            var data = {
+                sourceName: sourceName,
+                identifier: identifier
+            };
+            return $http.post(url, data);
+        };
+
+        var create = function (patient) {
             var data = new Bahmni.Registration.CreatePatientRequestMapper(moment()).mapFromPatient($rootScope.patientConfiguration.attributeTypes, patient);
-            return patientServiceStrategy.create(data, jumpAccepted);
+            return patientServiceStrategy.create(data);
         };
 
         var update = function (patient, openMRSPatient) {
@@ -64,6 +88,9 @@ angular.module('bahmni.registration')
             search: search,
             searchByIdentifier: searchByIdentifier,
             create: create,
+            generateIdentifier: generateIdentifier,
+            getLatestIdentifier: getLatestIdentifier,
+            setLatestIdentifier: setLatestIdentifier,
             update: update,
             get: get,
             updateImage: updateImage

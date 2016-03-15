@@ -29,18 +29,18 @@ angular.module('bahmni.registration')
             return defer.promise;
         };
 
-        var create = function(data, jumpAccepted) {
-            var url = baseOpenMRSRESTURL + "/bahmnicore/patientprofile";
+        var create = function(data) {
+            var url = baseOpenMRSRESTURL + "/patientprofile";
             return $http.post(url, data, {
                 withCredentials: true,
-                headers: {"Accept": "application/json", "Content-Type": "application/json", "Jump-Accepted": jumpAccepted}
+                headers: {"Accept": "application/json", "Content-Type": "application/json"}
             });
         };
 
         var update = function(patient, openMRSPatient, attributeTypes) {
             var deferred = $q.defer();
             var data = new Bahmni.Registration.UpdatePatientRequestMapper(moment()).mapFromPatient(attributeTypes, openMRSPatient, patient);
-            var url = baseOpenMRSRESTURL + "/bahmnicore/patientprofile/" + openMRSPatient.uuid;
+            var url = baseOpenMRSRESTURL + "/patientprofile/" + openMRSPatient.uuid;
             var config = {
                 withCredentials: true,
                 headers: {"Accept": "application/json", "Content-Type": "application/json"}

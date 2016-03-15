@@ -47,8 +47,7 @@ describe('patient mapper', function () {
                 "days": 17
             },
             "gender": "M",
-            "identifierPrefix": {"prefix" : "GAN"},
-            "registrationNumber": "200011",
+            "identifier": "GAN200011",
             "registrationDate": moment(date).format(),
             "caste": "10",
             "education": "16",
@@ -100,8 +99,7 @@ describe('patient mapper', function () {
 
         expect(openmrsPatient.patient.identifiers).toEqual([
             {
-                "identifierPrefix": "GAN",
-                "registrationNumber": 200011,
+                "identifier": "GAN200011",
                 "identifierType": {
                     "name": "Bahmni Id"
                 },
