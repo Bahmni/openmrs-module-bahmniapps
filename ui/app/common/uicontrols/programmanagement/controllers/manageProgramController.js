@@ -117,14 +117,14 @@ angular.module('bahmni.common.uicontrols.programmanagment')
             $scope.enrollPatient = function () {
                 if (!isProgramSelected()) {
                     messagingService.showMessage("error", "Please select a Program to Enroll the patient");
-                    return;
+                    return $q.when({});
                 }
                 if (isThePatientAlreadyEnrolled()) {
                     messagingService.showMessage("error", "Patient already enrolled to the Program");
-                    return;
+                    return $q.when({});
                 }
                 var stateUuid = $scope.workflowStateSelected && $scope.workflowStateSelected.uuid ? $scope.workflowStateSelected.uuid : null;
-                spinner.forPromise(
+                return spinner.forPromise(
                     programService.enrollPatientToAProgram($scope.patient.uuid, $scope.programSelected.uuid, $scope.programEnrollmentDate, stateUuid, $scope.patientProgramAttributes, $scope.programAttributeTypes)
                         .then(successCallback, failureCallback)
                 );

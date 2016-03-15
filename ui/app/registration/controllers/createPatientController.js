@@ -221,10 +221,7 @@ angular.module('bahmni.registration')
             };
 
             $scope.create = function() {
-                $scope.saveInProgress = true;
-                spinner.forPromise(createPromise()).finally(function() {
-                    $scope.saveInProgress = false;
-                });
+                return spinner.forPromise(createPromise());
             };
 
             $scope.afterSave = function() {

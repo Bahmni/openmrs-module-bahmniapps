@@ -154,10 +154,9 @@ angular.module('bahmni.adt')
 
             $scope.call = function (functionName) {
                 if (functionName) {
-                    $scope.submitButtonDisabled = false;
                     return $scope[functionName]();
                 } else {
-                    return true;
+                    return $q.when({});
                 }
             };
 
@@ -197,7 +196,7 @@ angular.module('bahmni.adt')
                 var currentVisitTypeUuid = getCurrentVisitTypeUuid();
                 if (currentVisitTypeUuid !== null) {
                     var encounterData = getEncounterData($scope.encounterConfig.getAdmissionEncounterTypeUuid(), currentVisitTypeUuid);
-                    encounterService.create(encounterData).success(function (response) {
+                    return encounterService.create(encounterData).success(function (response) {
                         if ($scope.visitSummary === null) {
                             visitService.getVisitSummary(response.visitUuid).then(function (response) {
                                 $scope.visitSummary = new Bahmni.Common.VisitSummary(response.data);
@@ -210,14 +209,16 @@ angular.module('bahmni.adt')
                 } else {
                     messagingService.showMessage("error", "MESSAGE_DEFAULT_VISIT_TYPE_INVALID_KEY")
                 }
+                return $q.when({});
             };
 
             $scope.admit = function () {
                 if ($scope.visitSummary && $scope.visitSummary.visitType !== $scope.defaultVisitTypeName) {
                     ngDialog.openConfirm({template: 'views/visitChangeConfirmation.html', scope: $scope, closeByEscape: true});
                 } else {
-                    createEncounterAndContinue();
+                    return createEncounterAndContinue();
                 }
+                return $q.when({});
             };
 
             $scope.cancelConfirmationDialog = function() {
@@ -245,20 +246,20 @@ angular.module('bahmni.adt')
 
             $scope.transfer = function () {
                 var encounterData = getEncounterData($scope.encounterConfig.getTransferEncounterTypeUuid(), getCurrentVisitTypeUuid());
-                encounterService.create(encounterData).then(function (response) {
+                return encounterService.create(encounterData).then(function (response) {
                     forwardUrl(response.data, "onTransferForwardTo");
                 });
             };
 
             $scope.discharge = function () {
                 var encounterData = getEncounterData($scope.encounterConfig.getDischargeEncounterTypeUuid());
-                spinner.forPromise(encounterService.discharge(encounterData).then(function (response) {
+                return spinner.forPromise(encounterService.discharge(encounterData).then(function (response) {
                     forwardUrl(response.data, "onDischargeForwardTo");
                 }));
             };
 
             $scope.undoDischarge = function () {
-                spinner.forPromise(encounterService.delete($scope.visitSummary.getDischargeEncounterUuid(), "Undo Discharge")).success(function () {
+                return spinner.forPromise(encounterService.delete($scope.visitSummary.getDischargeEncounterUuid(), "Undo Discharge")).success(function () {
                     var params = {
                         'encounterUuid': $scope.visitSummary.getAdmissionEncounterUuid(),
                         'visitUuid': $scope.visitSummary.uuid

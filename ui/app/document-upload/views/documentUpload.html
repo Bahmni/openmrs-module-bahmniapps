@@ -13,7 +13,7 @@
             </h5>
 
             <div ng-show="isCurrentVisit(newVisit)" class="visit-content">
-                <form name="newVisitForm" ng-submit="save(newVisit)">
+                <form name="newVisitForm" single-submit="save(newVisit)">
                     <p class="caution" ng-show="newVisitForm.startDate.$error.overlap">
                         <i class="fa fa-exclamation-sign small"></i>
                         <span>There is already a visit that exists within the entered dates. Please upload documents against appropriate visit.</span>
@@ -118,7 +118,7 @@
                         class="fa fa-star"></i></span>
             </h5>
             <div class="visit-content" ng-show="isCurrentVisit(visit)">
-                <form name="{{'visit' + $index}}" ng-submit="save(visit)" ng-disabled="!visit.changed">
+                <form name="{{'visit' + $index}}" single-submit="save(visit)" ng-disabled="!visit.changed">
                     <ul>
                         <li>
                             <ul class="files">

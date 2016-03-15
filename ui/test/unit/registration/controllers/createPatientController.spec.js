@@ -283,7 +283,6 @@ describe('CreatePatientController', function() {
 
         scopeMock.create();
         scopeMock.$apply();
-        expect(scopeMock.saveInProgress).toBeFalsy();
 
         expect(scopeMock.patient.identifier).toBe("uuid");
         expect(stateMock.go).toHaveBeenCalledWith("patient.edit", {
@@ -310,7 +309,6 @@ describe('CreatePatientController', function() {
         }));
 
         scopeMock.create();
-        expect(scopeMock.saveInProgress).toBeFalsy();
 
         expect(stateMock.go).toHaveBeenCalledWith("patient.edit", {
             patientUuid: 'patientUuid'
@@ -336,7 +334,6 @@ describe('CreatePatientController', function() {
         }));
 
         scopeMock.create();
-        expect(scopeMock.saveInProgress).toBeFalsy();
 
         expect(patientServiceMock.getLatestIdentifier).toHaveBeenCalledWith("GAN");
         expect(ngDialogMock.open).toHaveBeenCalledWith({
@@ -367,7 +364,6 @@ describe('CreatePatientController', function() {
         }));
 
         scopeMock.create();
-        expect(scopeMock.saveInProgress).toBeFalsy();
 
         expect(patientServiceMock.getLatestIdentifier).toHaveBeenCalledWith("GAN");
         expect(ngDialogMock.open).not.toHaveBeenCalled();
@@ -402,7 +398,6 @@ describe('CreatePatientController', function() {
 
         scopeMock.create();
         scopeMock.$apply();
-        expect(scopeMock.saveInProgress).toBeFalsy();
 
         expect(patientServiceMock.getLatestIdentifier).toHaveBeenCalledWith("GAN");
         expect(ngDialogMock.open).not.toHaveBeenCalled();

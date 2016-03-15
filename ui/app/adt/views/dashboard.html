@@ -22,8 +22,8 @@
                              primary-option="visitControl.defaultVisitType" option-text="visitControl.startButtonText"
                              option-click="startNewVisit" class="right">
                         </div>
-                        <button ng-switch-default="" type="submit" class="right admit_btn" ng-disabled="submitButtonDisabled"
-                                ng-click="call(extn.extensionParams.action)">
+                        <button ng-switch-default="" type="submit" class="right admit_btn"
+                                single-click="call(extn.extensionParams.action)">
                             {{getDisplay(extn.extensionParams.displayFunction, extn.extensionParams.display)}}
                         </button>
                     </span>
