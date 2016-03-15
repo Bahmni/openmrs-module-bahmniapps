@@ -62,26 +62,25 @@ module.exports = function (config) {
         ],
         exclude:[
             'app/registration/offline/*.js',
-            'app/common/app-framework/offline/android/*.js',
-            'app/common/orders/offline/android/*.js',
-            'app/common/patient/offline/android/*.js',
-            'app/common/domain/offline/android/*.js',
+            'app/common/**/offline/android/*.js',
+
             'app/common/app-framework/services/loadConfigService.js',
             'app/common/orders/services/orderTypeService.js',
             'app/common/patient/services/patientService.js',
             'app/common/domain/services/configurationService.js',
             'app/common/domain/services/locationService.js',
             'app/common/domain/services/localeService.js',
+
             'test/unit/orders/services/orderTypeService.spec.js',
             'test/unit/common/patient/services/patientService.spec.js',
             'test/unit/common/app-framework/service/loadConfigService.spec.js',
             'test/unit/document-upload/controllers/*.js',
             'test/unit/common/displaycontrols/patientProfile/directives/*.js',
-            'test/unit/common/app-framework/offline/android/*.js',
-            'test/unit/common/domain/offline/android/*.js',
             'test/unit/common/domain/services/locationService.spec.js',
             'test/unit/common/domain/services/configurationService.spec.js',
-            'test/unit/common/domain/services/localeService.spec.js'
+            'test/unit/common/domain/services/localeService.spec.js',
+
+            'test/unit/**/offline/android/*.js'
         ],
         reporters: ['junit', 'progress', 'coverage'],
         preprocessors: {

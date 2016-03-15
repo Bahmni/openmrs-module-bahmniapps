@@ -1,4 +1,4 @@
-ddescribe("loading config functionality", function () {
+describe("loading config functionality", function () {
 
     var androidDbService, loadConfigService, $q= Q;
 

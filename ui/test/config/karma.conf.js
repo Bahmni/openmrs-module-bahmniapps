@@ -62,14 +62,10 @@ module.exports = function (config) {
         ],
         exclude:[
             'app/registration/offline/**/*.js',
-            'app/common/app-framework/offline/**/*.js',
-            'app/common/domain/offline/**/*.js',
-            'app/common/orders/offline/**/*.js',
-            'app/common/patient/offline/**/*.js',
-            'test/unit/orders/offline/**/*.js',
-            'test/unit/common/patient/offline/**/*.js',
-            'test/unit/common/app-framework/offline/**/*.js',
-            'test/unit/common/domain/offline/**/*.js'
+            'app/common/**/offline/chrome/*.js',
+            'app/common/**/offline/android/*.js',
+            'test/unit/**/offline/android/*.js',
+            'test/unit/**/offline/chrome/*.js'
         ],
         reporters: ['junit', 'progress', 'coverage'],
         preprocessors: {

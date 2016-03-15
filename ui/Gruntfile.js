@@ -64,10 +64,10 @@ module.exports = function (grunt) {
                 configFile: 'test/config/karma.conf.js'
             },
             chrome: {
-                configFile: 'test/config/karma.conf.chrome.js'
+                configFile: 'test/config/karma.chrome.conf.js'
             },
             android: {
-                configFile: 'test/config/karma.conf.android.js'
+                configFile: 'test/config/karma.android.conf.js'
             },
             auto: {
                 configFile: 'test/config/karma.conf.js',
@@ -81,7 +81,7 @@ module.exports = function (grunt) {
                     'statements': 63.6,
                     'branches': 53.1,
                     'functions': 55.1,
-                    'lines': 63.2
+                    'lines': 63.6
                 },
                 dir: 'coverage',
                 root: '.'
@@ -452,11 +452,7 @@ module.exports = function (grunt) {
     ]);
 
     grunt.registerTask('tests', function(app){
-        if(app != null){
-            grunt.task.run(app + 'test');
-        }else {
-            grunt.task.run('test');
-        }
+        grunt.task.run((app || '') + 'test');
     });
 
     grunt.registerTask('uglify-and-rename', [

@@ -8,6 +8,7 @@ angular.module('bahmni.common.orders')
             self.orderTypes = [];
             self.loadAll = function () {
                 return androidDbService.getReferenceData('OrderType').then(function (orderType) {
+                    self.orderTypes = orderType.value;
                     return {"data": orderType.value};
                 });
             };
