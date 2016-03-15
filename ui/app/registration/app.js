@@ -7,7 +7,7 @@ angular
         'bahmni.common.routeErrorHandler', 'bahmni.common.displaycontrol.pivottable', 'RecursionHelper', 'ngSanitize',
         'bahmni.common.uiHelper', 'bahmni.common.domain', 'ngDialog', 'pascalprecht.translate', 'ngCookies',
         'monospaced.elastic', 'bahmni.common.offline', 'bahmni.common.displaycontrol.hint', 'bahmni.common.attributeTypes',
-        'bahmni.common.domain.offline', 'bahmni.common.appFramework.offline'])
+          'bahmni.common.models'])
     .config(['$urlRouterProvider', '$stateProvider', '$httpProvider', '$bahmniTranslateProvider','$compileProvider', function ($urlRouterProvider, $stateProvider, $httpProvider, $bahmniTranslateProvider, $compileProvider) {
         $httpProvider.defaults.headers.common['Disable-WWW-Authenticate'] = true;
         $urlRouterProvider.otherwise('/search');
@@ -44,7 +44,7 @@ angular
                         return offlineRegistrationInitialization(offlineDb);
                     },
                     offlineReferenceDataInitialization: function(offlineReferenceDataInitialization, offlineDb){
-                        return offlineReferenceDataInitialization(offlineDb, false);
+                        return offlineReferenceDataInitialization(offlineDb, true);
                     }
                 }
             })
@@ -68,7 +68,7 @@ angular
                         return offlineRegistrationInitialization(offlineDb);
                     },
                     offlineReferenceDataInitialization: function(offlineReferenceDataInitialization, offlineDb){
-                        return offlineReferenceDataInitialization(offlineDb, false);
+                        return offlineReferenceDataInitialization(offlineDb, true);
                     }
                 }
             })

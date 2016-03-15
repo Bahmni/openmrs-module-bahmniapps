@@ -6,7 +6,7 @@ describe('OfflineSyncService', function () {
     describe('initial sync ', function () {
         beforeEach(function () {
             module('bahmni.common.offline');
-            module('bahmni.common.domain.offline');
+            module('bahmni.common.domain');
             module(function ($provide) {
                 $provide.value('offlineDbService', {
                     insertAddressHierarchy: function () {
@@ -140,7 +140,7 @@ describe('OfflineSyncService', function () {
     describe('subsequent sync ', function () {
         beforeEach(function () {
             module('bahmni.common.offline');
-            module('bahmni.common.domain.offline');
+            module('bahmni.common.domain');
             module(function ($provide) {
                 $provide.value('offlineDbService', {
                     createPatient: function () {

@@ -21,6 +21,7 @@ angular.module('bahmni.common.patient')
         };
 
         this.findPatients = function (params) {
+
             return $http.get( Bahmni.Common.Constants.sqlUrl  , {
                 method: "GET",
                 params: params,

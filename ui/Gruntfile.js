@@ -63,6 +63,12 @@ module.exports = function (grunt) {
             unit: {
                 configFile: 'test/config/karma.conf.js'
             },
+            chrome: {
+                configFile: 'test/config/karma.chrome.conf.js'
+            },
+            android: {
+                configFile: 'test/config/karma.android.conf.js'
+            },
             auto: {
                 configFile: 'test/config/karma.conf.js',
                 singleRun: false,
@@ -72,10 +78,10 @@ module.exports = function (grunt) {
         coverage: {
             options: {
                 thresholds: {
-                    'statements': 63.7,
+                    'statements': 63.6,
                     'branches': 53.1,
-                    'functions': 55.3,
-                    'lines': 63.7
+                    'functions': 55.1,
+                    'lines': 63.6
                 },
                 dir: 'coverage',
                 root: '.'
@@ -419,6 +425,10 @@ module.exports = function (grunt) {
 
     grunt.registerTask('test', ['karma:unit', 'coverage']);
 
+    grunt.registerTask('chrometest', ['karma:chrome']);
+
+    grunt.registerTask('androidtest', ['karma:android']);
+
     grunt.registerTask('dist', [
         'clean:dist',
         'compass:dist',
@@ -438,9 +448,12 @@ module.exports = function (grunt) {
         'npm-install',
         'bower-install',
         'jshint',
-        'test',
         'dist'
     ]);
+
+    grunt.registerTask('tests', function(app){
+        grunt.task.run((app || '') + 'test');
+    });
 
     grunt.registerTask('uglify-and-rename', [
         'uglify',
@@ -483,10 +496,10 @@ module.exports = function (grunt) {
         return files_;
     };
 
-    grunt.registerTask('default', ['build', 'uglify-and-rename', 'preprocess:web']);
-    grunt.registerTask('dev', ['build', 'rename', 'preprocess:web']);
-    grunt.registerTask('chrome', ['build', 'uglify-and-rename', 'preprocess:chrome']);
-    grunt.registerTask('android', ['build', 'uglify-and-rename', 'preprocess:android']);
+    grunt.registerTask('default', ['build', 'tests', 'uglify-and-rename', 'preprocess:web']);
+    grunt.registerTask('dev', ['build', 'tests', 'rename', 'preprocess:web']);
+    grunt.registerTask('chrome', ['build', 'tests:chrome', 'uglify-and-rename', 'preprocess:chrome']);
+    grunt.registerTask('android', ['build', 'tests:android', 'uglify-and-rename', 'preprocess:android']);
 
     grunt.registerTask('pre-fetch', 'Generate files to pre-fetch for service worker', function() {
             var preFetchList = [];

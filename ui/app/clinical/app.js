@@ -15,11 +15,13 @@ angular.module('consultation', ['ui.router', 'bahmni.clinical', 'bahmni.common.c
     'bahmni.common.displaycontrol.bacteriologyresults', 'bahmni.common.displaycontrol.obsVsObsFlowSheet',
     'bahmni.common.displaycontrol.chronicTreatmentChart', 'bahmni.common.displaycontrol.forms',
     'bahmni.common.displaycontrol.drugOrderDetails', 'bahmni.common.offline', 'bahmni.common.displaycontrol.hint',
-    'bahmni.common.displaycontrol.drugOrdersSection', 'bahmni.common.attributeTypes']);
+    'bahmni.common.displaycontrol.drugOrdersSection', 'bahmni.common.attributeTypes', 'bahmni.common.models']);
 angular.module('consultation')
     .config(['$stateProvider', '$httpProvider', '$urlRouterProvider', '$bahmniTranslateProvider', '$compileProvider',
         function ($stateProvider, $httpProvider, $urlRouterProvider, $bahmniTranslateProvider, $compileProvider) {
         $urlRouterProvider.otherwise('/' + Bahmni.Clinical.Constants.defaultExtensionName + '/patient/search');
+        $compileProvider.aHrefSanitizationWhitelist(/^\s*(https?|ftp|mailto|chrome-extension|file):/);
+        $compileProvider.imgSrcSanitizationWhitelist(/^\s*(https?|local|data|blob|chrome-extension):/);
         var patientSearchBackLink = {
             label: "",
             state: "search.patientsearch",
@@ -27,7 +29,7 @@ angular.module('consultation')
             id: "patients-link",
             icon: "fa-users"
         };
-        var homeBackLink = {label: "", url: "../home/", accessKey: "h", icon: "fa-home"};
+        var homeBackLink = {label: "", url: "../home/index.html", accessKey: "h", icon: "fa-home"};
 
         // @if DEBUG='production'
         $compileProvider.debugInfoEnabled(false);
@@ -67,10 +69,19 @@ angular.module('consultation')
                     }
                 },
                 resolve: {
-                    initializeConfigs: function (initialization, $stateParams) {
+                    offlineDb: function (offlineDbInitialization) {
+                        return offlineDbInitialization();
+                    },
+                    offlineSyncInitialization: function (offlineSyncInitialization, offlineDb, offlineReferenceDataInitialization) {
+                        return offlineSyncInitialization(offlineDb, offlineReferenceDataInitialization);
+                    },
+                    offlineReferenceDataInitialization: function(offlineReferenceDataInitialization, offlineDb){
+                        return offlineReferenceDataInitialization(offlineDb, true);
+                    },
+                    initializeConfigs: function (initialization, $stateParams, offlineSyncInitialization) {
                         $stateParams.configName = $stateParams.configName || Bahmni.Clinical.Constants.defaultExtensionName;
                         patientSearchBackLink.state = 'search.patientsearch({configName: \"' + $stateParams.configName + '\"})';
-                        return initialization($stateParams.configName);
+                        return initialization($stateParams.configName, offlineSyncInitialization);
                     }
                 }
             })

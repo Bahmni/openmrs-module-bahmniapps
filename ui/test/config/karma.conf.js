@@ -8,7 +8,6 @@ module.exports = function (config) {
         singleRun: true,
         files: [
             {pattern: 'test/data/*.json', watched: true, served: true, included: false},
-            {pattern: 'app/registration/offline/**/*.js', watched: false, served: false, included: false},
             'app/components/q/q.js',
             'app/components/angular/angular.js',
             'app/components/angular-route/angular-route.js',
@@ -60,6 +59,13 @@ module.exports = function (config) {
             'test/unit/**/*.js',
             'test/integration/**/*.js',
             'test/integration/utils/*.js'
+        ],
+        exclude:[
+            'app/registration/offline/**/*.js',
+            'app/common/**/offline/chrome/*.js',
+            'app/common/**/offline/android/*.js',
+            'test/unit/**/offline/android/*.js',
+            'test/unit/**/offline/chrome/*.js'
         ],
         reporters: ['junit', 'progress', 'coverage'],
         preprocessors: {

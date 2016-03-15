@@ -2,9 +2,9 @@
 
 angular.module('bahmni.common.offline')
         .factory('offlineSyncInitialization', ['offlineDbService', 'offlineSyncService', 'offlineService',
-        'offlineMarkerDbService', 'offlineAddressHierarchyDbService', 'androidDbService', 'offlineConfigDbService', 'referenceDataDbService',
+        'offlineMarkerDbService', 'offlineAddressHierarchyDbService', 'androidDbService', 'offlineConfigDbService', 'referenceDataDbService','offlineSearchDbService',
         function (offlineDbService, offlineSyncService, offlineService, offlineMarkerDbService,
-                  offlineAddressHierarchyDbService, androidDbService, offlineConfigDbService, referenceDataDbService) {
+                  offlineAddressHierarchyDbService, androidDbService, offlineConfigDbService, referenceDataDbService, offlineSearchDbService) {
             return function (offlineDb) {
                 if (offlineService.isOfflineApp()) {
                     if (offlineService.isAndroidApp()){
@@ -15,6 +15,7 @@ angular.module('bahmni.common.offline')
                     offlineAddressHierarchyDbService.init(offlineDb);
                     offlineConfigDbService.init(offlineDb);
                     referenceDataDbService.init(offlineDb);
+                    offlineSearchDbService.init(offlineDb);
                     offlineSyncService.init();
 
                 }

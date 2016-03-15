@@ -8,10 +8,12 @@ angular.module('bahmni.common.offline')
         var search = function (params) {
             var defer = $q.defer();
             var response = {
-                pageOfResults: []
+                "data" : {
+                    pageOfResults: []
+                }
             };
             if ($rootScope.searching) {
-                response.pageOfResults.push({});
+                response.data.pageOfResults.push({});
                 return defer.resolve(response);
             }
             $rootScope.searching = true;
@@ -111,6 +113,7 @@ angular.module('bahmni.common.offline')
                                         patient = groupedResult[0];
                                         //ToDo:: Dependency of age factory in Admin page
                                         patient.age = age.fromBirthDate(patient.birthdate).years;
+                                        patient.image = "../images/blank-user.png";
 
                                         angular.forEach(groupedResult, function (result) {
                                             if (result.attributeName) {
@@ -118,7 +121,7 @@ angular.module('bahmni.common.offline')
                                             }
                                         });
                                         patient.customAttribute = JSON.stringify(customAttributes);
-                                        response.pageOfResults.push(patient);
+                                        response.data.pageOfResults.push(patient);
                                     });
                                     $rootScope.searching = false;
 

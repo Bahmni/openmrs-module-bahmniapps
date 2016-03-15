@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('bahmni.registration')
+angular.module('bahmni.common.models')
     .factory('age', [function () {
         var dateUtil = Bahmni.Common.Util.DateUtil;
 

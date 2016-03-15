@@ -7,7 +7,7 @@ describe('offlineSearchDbService', function () {
 
     beforeEach(function () {
         module('bahmni.common.offline');
-        module('bahmni.registration');
+        module('bahmni.common.models');
         module(function ($provide) {
             $provide.value('$http', mockHttp);
             $provide.value('$q', $q);
@@ -70,7 +70,7 @@ describe('offlineSearchDbService', function () {
         };
 
         createAndSearch(params).then(function (result) {
-            expect(result.pageOfResults[0].givenName).toBe(searchString);
+            expect(result.data.pageOfResults[0].givenName).toBe(searchString);
             done();
         });
 
@@ -88,7 +88,7 @@ describe('offlineSearchDbService', function () {
         };
 
         createAndSearch(params).then(function (result) {
-            expect(result.pageOfResults[0].familyName).toBe(searchString);
+            expect(result.data.pageOfResults[0].familyName).toBe(searchString);
             done();
         });
 
@@ -106,7 +106,7 @@ describe('offlineSearchDbService', function () {
         };
 
         createAndSearch(params).then(function (result) {
-            expect(result.pageOfResults[0].addressFieldValue).toBe(searchString);
+            expect(result.data.pageOfResults[0].addressFieldValue).toBe(searchString);
             done();
         });
 
@@ -123,7 +123,7 @@ describe('offlineSearchDbService', function () {
         };
 
         createAndSearch(params).then(function (result) {
-            expect(result.pageOfResults[0].identifier).toBe(searchString);
+            expect(result.data.pageOfResults[0].identifier).toBe(searchString);
             done();
         });
 
@@ -142,7 +142,7 @@ describe('offlineSearchDbService', function () {
         };
 
         createAndSearch(params, done).then(function (result) {
-            var customAttributes = JSON.parse(result.pageOfResults[0].customAttribute);
+            var customAttributes = JSON.parse(result.data.pageOfResults[0].customAttribute);
             expect(customAttributes.caste).toBe(searchString);
             done();
         });
@@ -162,7 +162,7 @@ describe('offlineSearchDbService', function () {
         };
 
         createAndSearch(params, done).then(function (result) {
-            var customAttributes = JSON.parse(result.pageOfResults[0].customAttribute);
+            var customAttributes = JSON.parse(result.data.pageOfResults[0].customAttribute);
             expect(customAttributes.isUrban).toBe(searchString);
             done();
         });
@@ -182,7 +182,7 @@ describe('offlineSearchDbService', function () {
         };
 
         createAndSearch(params, done).then(function (result) {
-            var customAttributes = JSON.parse(result.pageOfResults[0].customAttribute);
+            var customAttributes = JSON.parse(result.data.pageOfResults[0].customAttribute);
             expect(customAttributes.education).toBe(searchString);
             done();
         });
@@ -202,7 +202,7 @@ describe('offlineSearchDbService', function () {
         };
 
         createAndSearch(params, done).then(function (result) {
-            var customAttributes = JSON.parse(result.pageOfResults[0].customAttribute);
+            var customAttributes = JSON.parse(result.data.  pageOfResults[0].customAttribute);
             expect(customAttributes.landHolding).toBe(searchString);
             done();
         });

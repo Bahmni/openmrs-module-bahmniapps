@@ -3,7 +3,7 @@
 describe("Age", function(){
     var ageFactory, scope, age;
     var dateUtil = Bahmni.Common.Util.DateUtil;
-    beforeEach(module('bahmni.registration'));
+    beforeEach(module('bahmni.common.models'));
     beforeEach(inject(['$rootScope', 'age', function($rootScope, ageFactoryInjected){
         ageFactory = ageFactoryInjected;
         scope = $rootScope.$new();

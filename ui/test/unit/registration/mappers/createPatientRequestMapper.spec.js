@@ -8,6 +8,7 @@ describe('patient mapper', function () {
 
     beforeEach(function () {
         module('bahmni.registration');
+        module('bahmni.common.models');
         inject(['patient', function (patientFactory) {
             patient = patientFactory.create();
         }]);

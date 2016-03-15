@@ -1,8 +1,8 @@
 'use strict';
 describe("clinicalAppConfigService", function () {
-    var _$http;
     var _sessionService;
     var $stateParams;
+    var loadConfigService;
 
     beforeEach(module('bahmni.clinical'));
     beforeEach(module('bahmni.common.appFramework'));
@@ -143,8 +143,8 @@ describe("clinicalAppConfigService", function () {
     }
     };
     beforeEach(module(function ($provide) {
-        _$http = jasmine.createSpyObj('$http', ['get']);
-        _$http.get.and.callFake(function (url) {
+        loadConfigService = jasmine.createSpyObj('loadConfigService', ['loadConfig']);
+        loadConfigService.loadConfig.and.callFake(function (url) {
             if (url.indexOf("app.json") > -1) {
                 return specUtil.respondWith(appJson)
             } else if (url.indexOf("extension.json") > -1) {
@@ -170,18 +170,14 @@ describe("clinicalAppConfigService", function () {
             return  specUtil.respondWith({});
         });
         var urlHelper = {getPatientUrl: function() {return "/patient/somePatientUuid"}};
-        var offlineService = {isOfflineApp: function() {return false}};
 
 
 
-        $provide.value('$http', _$http);
         $provide.value('sessionService', _sessionService);
         $provide.value('$q', Q);
         $provide.value('$stateParams', $stateParams);
         $provide.value('urlHelper', urlHelper);
-        $provide.value('offlineService', offlineService);
-        $provide.value('androidDbService', {});
-        $provide.value('offlineDbService', {});
+        $provide.value('loadConfigService', loadConfigService);
     }));
 
 

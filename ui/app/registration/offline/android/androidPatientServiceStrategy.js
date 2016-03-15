@@ -16,7 +16,7 @@ angular.module('bahmni.registration')
         };
 
         var deletePatientData = function(patientUuid) {
-            return offlineDbService.deletePatientData(patientUuid);
+            return androidDbService.deletePatientData(patientUuid);
         };
 
         return {
