@@ -13,38 +13,40 @@
             <i class="fa fa-external-link"></i>
         </h2>
     </div>
-    <section class="block hierarchy">
-        <ul class="form-field" ng-if="bahmniObservations.length > 0">
-            <li ng-repeat="obsGroup in ::bahmniObservations">
-                <span ng-if="showGroupDateTime" class="tree-list-item row-click" ng-click="toggle(obsGroup)">
-                    <i class="fa fa-caret-right" ng-hide="obsGroup.isOpen"></i>
-                    <i class="fa fa-caret-down" ng-show="obsGroup.isOpen"></i>
-                    <span class="obs-date">
-                        {{::obsGroup.date | bahmniDateTime}}
+    <div class="concept-set-container-view">
+        <section class="block hierarchy">
+            <ul class="form-field" ng-if="bahmniObservations.length > 0">
+                <li ng-repeat="obsGroup in ::bahmniObservations">
+                    <span ng-if="showGroupDateTime" class="tree-list-item row-click" ng-click="toggle(obsGroup)">
+                        <i class="fa fa-caret-right" ng-hide="obsGroup.isOpen"></i>
+                        <i class="fa fa-caret-down" ng-show="obsGroup.isOpen"></i>
+                        <span class="obs-date">
+                            {{::obsGroup.date | bahmniDateTime}}
+                        </span>
                     </span>
-                </span>
 
-                <ul bm-show="obsGroup.isOpen" ng-if="print" class="print-observations visible-print">
-                    <li ng-repeat="observation in obsGroup.value">
-                        <ul>
-                            <show-observation show-details-button="config.showDetailsButton" patient="entient"
-                                              observation="observation"
-                                              level="2"></show-observation>
-                        </ul>
-                    </li>
-                </ul>
-                <ul bm-show="obsGroup.isOpen" ng-if="!print" class="print-observations hidden-print">
-                    <show-observation show-details-button="config.showDetailsButton" patient="entient"
-                                      observation="::observation" ng-repeat="observation in ::obsGroup.value"
-                                      level="2"></show-observation>
-                </ul>
-            </li>
-        </ul>
-        <div ng-if="noObsMessage">
-            <div class="placeholder-text" ng-if="!message"><p translate="DISPLAY_CONTROL_ERROR_MESSAGE_KEY"
-                                                              translate-values="{displayControl : '{{title | translate}}'}"></p>
+                    <ul bm-show="obsGroup.isOpen" ng-if="print" class="print-observations visible-print">
+                        <li ng-repeat="observation in obsGroup.value">
+                            <ul>
+                                <show-observation show-details-button="config.showDetailsButton" patient="entient"
+                                                  observation="observation"
+                                                  level="2"></show-observation>
+                            </ul>
+                        </li>
+                    </ul>
+                    <ul bm-show="obsGroup.isOpen" ng-if="!print" class="print-observations hidden-print">
+                        <show-observation show-details-button="config.showDetailsButton" patient="entient"
+                                          observation="::observation" ng-repeat="observation in ::obsGroup.value"
+                                          level="2"></show-observation>
+                    </ul>
+                </li>
+            </ul>
+            <div ng-if="noObsMessage">
+                <div class="placeholder-text" ng-if="!message"><p translate="DISPLAY_CONTROL_ERROR_MESSAGE_KEY"
+                                                                  translate-values="{displayControl : '{{title | translate}}'}"></p>
+                </div>
+                <div class="placeholder-text" ng-if="message">{{message}}</div>
             </div>
-            <div class="placeholder-text" ng-if="message">{{message}}</div>
-        </div>
-    </section>
+        </section>
+    </div>
 </div>

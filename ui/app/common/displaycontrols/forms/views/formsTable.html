@@ -18,13 +18,13 @@
                             <span ng-show="::showFormsDate">{{data.obsDatetime | bahmniDate}}</span>
                             <span class="has-link fl formDataEdit"
                                   ng-dialog="../common/displaycontrols/forms/views/showObservationFormData.html"
-                                  ng-dialog-class="ngdialog-theme-default ng-dialog-all-details-page"
+                                  ng-dialog-class="ngdialog-theme-default ng-dialog-all-details-page ng-dialog-view"
                                   ng-dialog-data="{{getConfigToFetchDataAndShow(data)}}">
                                 <i class="fa fa-eye"></i>
                             </span>
                             <span class="has-link fl formDataEdit"
                                   ng-dialog="dashboard/views/dashboardSections/editObservationForm.html"
-                                  ng-dialog-class="ngdialog-theme-default ng-dialog-all-details-page"
+                                  ng-dialog-class="ngdialog-theme-default ng-dialog-all-details-page ng-dialog-edit"
                                   ng-dialog-data="{{getEditObsData(data)}}"
                                   ng-dialog-scope="this"
                                   ng-dialog-controller="EditObservationFormController"

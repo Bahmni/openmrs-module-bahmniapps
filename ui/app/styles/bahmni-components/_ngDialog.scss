@@ -243,3 +243,10 @@ body.abc.ngdialog-open{
         }
     }
 }
+.ng-dialog-view .ngdialog-content .concept-set-container-view{
+    max-height: 605px;
+    overflow-y: auto;
+    &:-webkit-scrollbar-track{
+        width:10px;
+    }
+}
