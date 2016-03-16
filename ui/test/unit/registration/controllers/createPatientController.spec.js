@@ -1,7 +1,7 @@
 'use strict';
 
 var $aController, q, scopeMock, rootScopeMock, stateMock, patientServiceMock, preferencesMock, patientModelMock, spinnerMock, locationServiceMock,
-    appServiceMock, ngDialogMock, ngDialogLocalScopeMock;
+    appServiceMock, ngDialogMock, ngDialogLocalScopeMock, httpBackend, http;
 
 describe('CreatePatientController', function() {
 
@@ -9,17 +9,19 @@ describe('CreatePatientController', function() {
     beforeEach(module('bahmni.common.models'));
 
     beforeEach(
-        inject(function($controller, $rootScope, $q) {
+        inject(function($controller, $rootScope, $q, $httpBackend, $http) {
             $aController = $controller;
             rootScopeMock = $rootScope;
             q = $q;
             scopeMock = rootScopeMock.$new();
+            httpBackend = $httpBackend;
+            http = $http;
         })
     );
 
     beforeEach(function() {
         stateMock = jasmine.createSpyObj('stateMock', ['go']);
-        patientServiceMock = jasmine.createSpyObj('patientServiceMock', ['generateIdentifier', 'getLatestIdentifier', 'setLatestIdentifier', 'create']);
+        patientServiceMock = jasmine.createSpyObj('patientServiceMock', ['create']);
         preferencesMock = jasmine.createSpyObj('preferencesMock', ['']);
         patientModelMock = jasmine.createSpyObj('patientModelMock', ['']);
         spinnerMock = jasmine.createSpyObj('spinnerMock', ['forPromise']);
@@ -265,9 +267,6 @@ describe('CreatePatientController', function() {
     it("should create a patient and go to edit page", function() {
         scopeMock.patient.identifierPrefix.prefix = "GAN";
 
-        patientServiceMock.generateIdentifier.and.returnValue(specUtil.respondWithPromise(q, {
-            data: "uuid"
-        }));
         patientServiceMock.create.and.returnValue(specUtil.respondWithPromise(q, {
             data: {
                 patient: {
@@ -283,8 +282,8 @@ describe('CreatePatientController', function() {
 
         scopeMock.create();
         scopeMock.$apply();
+        expect(scopeMock.saveInProgress).toBeFalsy();
 
-        expect(scopeMock.patient.identifier).toBe("uuid");
         expect(stateMock.go).toHaveBeenCalledWith("patient.edit", {
             patientUuid: 'patientUuid'
         });
@@ -295,8 +294,6 @@ describe('CreatePatientController', function() {
         scopeMock.patient.identifierPrefix.prefix = "GAN";
 
         scopeMock.patient.hasOldIdentifier = true;
-        patientServiceMock.getLatestIdentifier.and.stub();
-        patientServiceMock.getLatestIdentifier.and.returnValue(specUtil.createFakePromise("100000"));
         patientServiceMock.create.and.returnValue(specUtil.createFakePromise({
             patient: {
                 uuid: "patientUuid",
@@ -309,6 +306,7 @@ describe('CreatePatientController', function() {
         }));
 
         scopeMock.create();
+        expect(scopeMock.saveInProgress).toBeFalsy();
 
         expect(stateMock.go).toHaveBeenCalledWith("patient.edit", {
             patientUuid: 'patientUuid'
@@ -318,24 +316,18 @@ describe('CreatePatientController', function() {
     it("should open the pop up when the custom identifier is greater then the next identifier in the sequence", function() {
         scopeMock.patient.identifierPrefix.prefix = "GAN";
         scopeMock.patient.registrationNumber = "1050";
-
         scopeMock.patient.hasOldIdentifier = true;
 
-        patientServiceMock.getLatestIdentifier.and.returnValue(specUtil.createFakePromise("1000"));
-        patientServiceMock.create.and.returnValue(specUtil.createFakePromise({
-            patient: {
-                uuid: "patientUuid",
-                person: {
-                    names: [{
-                        display: "somename"
-                    }]
-                }
-            }
-        }));
+        httpBackend.expectPOST("/openmrs/ws/rest/v1/bahmnicore/patientprofile").respond(412,"{\"sizeOfJump\":50}");
+        patientServiceMock.create.and.callFake(function() {
+            return http.post("/openmrs/ws/rest/v1/bahmnicore/patientprofile");
+        });
 
         scopeMock.create();
+        httpBackend.flush();
 
-        expect(patientServiceMock.getLatestIdentifier).toHaveBeenCalledWith("GAN");
+        expect(scopeMock.saveInProgress).toBeFalsy();
+
         expect(ngDialogMock.open).toHaveBeenCalledWith({
             template: 'views/customIdentifierConfirmation.html',
             data: {
@@ -351,7 +343,6 @@ describe('CreatePatientController', function() {
 
         scopeMock.patient.hasOldIdentifier = true;
 
-        patientServiceMock.getLatestIdentifier.and.returnValue(specUtil.createFakePromise("1055"));
         patientServiceMock.create.and.returnValue(specUtil.createFakePromise({
             patient: {
                 uuid: "patientUuid",
@@ -364,64 +355,13 @@ describe('CreatePatientController', function() {
         }));
 
         scopeMock.create();
+        expect(scopeMock.saveInProgress).toBeFalsy();
 
-        expect(patientServiceMock.getLatestIdentifier).toHaveBeenCalledWith("GAN");
         expect(ngDialogMock.open).not.toHaveBeenCalled();
-        expect(patientServiceMock.create).toHaveBeenCalledWith(scopeMock.patient);
+        expect(patientServiceMock.create).toHaveBeenCalledWith(scopeMock.patient, undefined);
         expect(scopeMock.patient.uuid).toBe("patientUuid");
     });
 
-    it("should not open the pop up when the custom identifier is equal to the next identifier in the sequence", function() {
-        scopeMock.patient.identifierPrefix.prefix = "GAN";
-        scopeMock.patient.registrationNumber = "1050";
-
-        scopeMock.patient.hasOldIdentifier = true;
-
-        patientServiceMock.getLatestIdentifier.and.returnValue(specUtil.respondWithPromise(q, {
-            data: "1050"
-        }));
-        patientServiceMock.setLatestIdentifier.and.returnValue(specUtil.respondWithPromise(q, {
-            data: "1051"
-        }));
-        patientServiceMock.create.and.returnValue(specUtil.respondWithPromise(q, {
-            data: {
-                patient: {
-                    uuid: "patientUuid",
-                    person: {
-                        names: [{
-                            display: "somename"
-                        }]
-                    }
-                }
-            }
-        }));
-
-        scopeMock.create();
-        scopeMock.$apply();
-
-        expect(patientServiceMock.getLatestIdentifier).toHaveBeenCalledWith("GAN");
-        expect(ngDialogMock.open).not.toHaveBeenCalled();
-        expect(patientServiceMock.create).toHaveBeenCalledWith(scopeMock.patient);
-        expect(patientServiceMock.setLatestIdentifier).toHaveBeenCalledWith("GAN", 1051);
-        expect(scopeMock.patient.uuid).toBe("patientUuid");
-    });
-
-    it("should not create patient when the set Identifier throws error", function() {
-        var serverError = new Error("Server Error : User is logged in but doesn't have the relevant privilege");
-        scopeMock.patient.identifierPrefix.prefix = "GAN";
-        scopeMock.patient.registrationNumber = "1050";
-
-        scopeMock.patient.hasOldIdentifier = true;
-
-        patientServiceMock.getLatestIdentifier.and.returnValue(specUtil.createFakePromise("1050"));
-        patientServiceMock.setLatestIdentifier.and.throwError(serverError);
-
-        expect(scopeMock.create).toThrow(serverError);
-
-        expect(patientServiceMock.getLatestIdentifier).toHaveBeenCalledWith("GAN");
-        expect(patientServiceMock.setLatestIdentifier).toHaveBeenCalledWith("GAN", 1051);
-        expect(patientServiceMock.create).not.toHaveBeenCalled();
-    });
 
     it("should create patient when the user says yes to the pop up", function() {
         scopeMock.patient.identifierPrefix.prefix = "GAN";
@@ -429,29 +369,15 @@ describe('CreatePatientController', function() {
 
         scopeMock.patient.hasOldIdentifier = true;
 
-        patientServiceMock.getLatestIdentifier.and.returnValue(specUtil.respondWithPromise(q, {
-            data: "1000"
-        }));
-        patientServiceMock.setLatestIdentifier.and.returnValue(specUtil.respondWithPromise(q, {
-            data: "1051"
-        }));
-        patientServiceMock.create.and.returnValue(specUtil.respondWithPromise(q, {
-            data: {
-                patient: {
-                    uuid: "patientUuid",
-                    person: {
-                        names: [{
-                            display: "somename"
-                        }]
-                    }
-                }
-            }
-        }));
+        httpBackend.expectPOST("/openmrs/ws/rest/v1/bahmnicore/patientprofile").respond(412,"{\"sizeOfJump\":50}");
+        patientServiceMock.create.and.callFake(function() {
+            return http.post("/openmrs/ws/rest/v1/bahmnicore/patientprofile");
+        });
 
         scopeMock.create();
         scopeMock.$apply();
+        httpBackend.flush();
 
-        expect(patientServiceMock.getLatestIdentifier).toHaveBeenCalledWith("GAN");
         expect(ngDialogMock.open).toHaveBeenCalledWith({
             template: 'views/customIdentifierConfirmation.html',
             data: {
@@ -460,10 +386,21 @@ describe('CreatePatientController', function() {
             scope: ngDialogLocalScopeMock
         });
 
+        patientServiceMock.create.and.returnValue(specUtil.createFakePromise({
+            patient: {
+                uuid: "patientUuid",
+                person: {
+                    names: [{
+                        display: "somename"
+                    }]
+                }
+            }
+        }));
+
         ngDialogLocalScopeMock.yes();
         scopeMock.$apply();
-        expect(patientServiceMock.setLatestIdentifier).toHaveBeenCalledWith("GAN", 1051);
-        expect(patientServiceMock.create).toHaveBeenCalledWith(scopeMock.patient);
+
+        expect(patientServiceMock.create).toHaveBeenCalledWith(scopeMock.patient, true);
     });
 
     it("should not create patient when the user says no to the pop up", function() {
@@ -472,22 +409,15 @@ describe('CreatePatientController', function() {
 
         scopeMock.patient.hasOldIdentifier = true;
 
-        patientServiceMock.getLatestIdentifier.and.returnValue(specUtil.createFakePromise("1000"));
-        patientServiceMock.setLatestIdentifier.and.returnValue(specUtil.createFakePromise("1051"));
-        patientServiceMock.create.and.returnValue(specUtil.createFakePromise({
-            patient: {
-                uuid: "patientUuid",
-                person: {
-                    names: [{
-                        display: "somename"
-                    }]
-                }
-            }
-        }));
+        httpBackend.expectPOST("/openmrs/ws/rest/v1/bahmnicore/patientprofile").respond(412,"{\"sizeOfJump\":50}");
+        patientServiceMock.create.and.callFake(function() {
+            return http.post("/openmrs/ws/rest/v1/bahmnicore/patientprofile");
+        });
 
         scopeMock.create();
+        scopeMock.$apply();
+        httpBackend.flush();
 
-        expect(patientServiceMock.getLatestIdentifier).toHaveBeenCalledWith("GAN");
         expect(ngDialogMock.open).toHaveBeenCalledWith({
             template: 'views/customIdentifierConfirmation.html',
             data: {
@@ -495,35 +425,10 @@ describe('CreatePatientController', function() {
             },
             scope: ngDialogLocalScopeMock
         });
+
         ngDialogLocalScopeMock.no();
-        expect(patientServiceMock.setLatestIdentifier).not.toHaveBeenCalled();
-        expect(patientServiceMock.create).not.toHaveBeenCalled();
-    });
 
-    it("should create patient when the registration number is given without prefix", function() {
-        scopeMock.patient.registrationNumber = "1050";
-
-        scopeMock.identifierSources = [];
-
-        patientServiceMock.create.and.returnValue(specUtil.createFakePromise({
-            patient: {
-                uuid: "patientUuid",
-                person: {
-                    names: [{
-                        display: "somename"
-                    }]
-                }
-            }
-        }));
-
-        scopeMock.create();
-
-
-        expect(patientServiceMock.generateIdentifier).not.toHaveBeenCalled();
-        expect(patientServiceMock.getLatestIdentifier).not.toHaveBeenCalled();
-        expect(patientServiceMock.setLatestIdentifier).not.toHaveBeenCalled();
-
-        expect(patientServiceMock.create).toHaveBeenCalledWith(scopeMock.patient);
+        expect(patientServiceMock.create.calls.count()).toEqual(1);
     });
 
     it("hasIdentifierSources, should return false if identifier sources are not present", function() {

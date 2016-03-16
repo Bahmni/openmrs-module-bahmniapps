@@ -110,7 +110,7 @@ describe('Patient resource', function () {
         });
 
         expect(mockHttp.post).toHaveBeenCalled();
-        expect(mockHttp.post.calls.mostRecent().args[0]).toBe('/openmrs/ws/rest/v1/patientprofile');
+        expect(mockHttp.post.calls.mostRecent().args[0]).toBe('/openmrs/ws/rest/v1/bahmnicore/patientprofile');
         expect(mockHttp.post.calls.mostRecent().args[1].patient.person.gender).toEqual("M");
         expect(mockHttp.post.calls.mostRecent().args[1].patient.person.names[0].givenName).toEqual("someGivenName");
         expect(mockHttp.post.calls.mostRecent().args[1].patient.person.names[0].familyName).toEqual("someFamilyName");
@@ -124,13 +124,5 @@ describe('Patient resource', function () {
 
         expect(mockHttp.get).toHaveBeenCalled();
         expect(mockHttp.get.calls.mostRecent().args[0]).toBe("http://blah/ws/rest/v1/patientprofile/someUuid");
-    })
-
-    it("should generate identifier", function() {
-        patientService.generateIdentifier({identifierPrefix: {prefix: "GAN"}});
-
-        expect(mockHttp.post).toHaveBeenCalled();
-        expect(mockHttp.post.calls.mostRecent().args[0]).toBe("http://blah/ws/rest/v1/idgen");
-        expect(mockHttp.post.calls.mostRecent().args[1].identifierSourceName).toBe("GAN");
     })
 });
