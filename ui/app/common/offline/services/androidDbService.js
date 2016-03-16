@@ -83,7 +83,7 @@ angular.module('bahmni.common.offline')
 
             var getLocationByUuid = function(uuid){
                 var value = AndroidLocationDbService.getLocationByUuid(uuid);
-                value = value != undefined ? JSON.parse(value) : value;
+                value = value != undefined ? JSON.parse(value).value : value;
                 return $q.when(value);
             };
 
