@@ -34,7 +34,7 @@
                             illegalValue: treatment.drugNameDisplay && !treatment.isNonCodedDrug,
                             active: treatment.isNonCodedDrug
                         }"
-                            ng-disabled="treatment.drug.uuid || (treatment.isBeingEdited && treatment.isNonCodedDrug)">
+                            ng-disabled="treatment.drug.uuid || treatment.concept.uuid || (treatment.isBeingEdited && treatment.isNonCodedDrug)">
                         <span>Accept</span>
                     </button>
                 </span>
@@ -254,7 +254,7 @@
                 </article>
                 <div class="operations fr clearfix">
                     <button class="add-drug-btn secondary-button fl" type="submit" accesskey="a"
-                            ng-disabled="!treatment.drug.uuid && treatment.drugNameDisplay && !treatment.isNonCodedDrug">
+                            ng-disabled="!treatment.drug.uuid && !treatment.concept.uuid && treatment.drugNameDisplay && !treatment.isNonCodedDrug">
                         <u>A</u>dd
                     </button>
                     <button type="button" class="icon-button showInfo-btn fr reset-drug-form" tabindex="-1" ng-click="clearForm()" title="Clear">

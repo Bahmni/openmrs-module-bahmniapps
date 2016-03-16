@@ -88,10 +88,6 @@ angular.module('bahmni.common.orders')
             return _.includes(Bahmni.Common.Constants.orderSetSpecialUnits, doseUnits);
         };
 
-        var getRuleForUnits = function (doseUnits) {
-            return (_.find(Bahmni.Common.Constants.orderSetSpecialUnits, {name: doseUnits})).rule;
-        };
-
         this.getCalculatedDose = function (patientUuid, baseDose, doseUnit) {
             if (hasSpecialDoseUnit(doseUnit)) {
                 return $http.get(Bahmni.Common.Constants.calculateDose, {
@@ -103,7 +99,6 @@ angular.module('bahmni.common.orders')
                     withCredentials: true,
                     headers: {"Accept": "application/json", "Content-Type": "application/json"}
                 }).then(function (response) {
-                    var dosage = {dose: response.data};
                     return {
                         dose: response.data.value,
                         doseUnit: response.data.doseUnit

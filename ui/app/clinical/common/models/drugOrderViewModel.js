@@ -1,5 +1,11 @@
 'use strict';
 
+var constructDrugNameDisplay = function (drug) {
+    if (!_.isEmpty(drug)) {
+        return drug.name + " (" + drug.form + ")";
+    }
+};
+
 Bahmni.Clinical.DrugOrderViewModel = function (config, proto, encounterDate) {
     angular.copy(proto, this);
 
@@ -37,7 +43,8 @@ Bahmni.Clinical.DrugOrderViewModel = function (config, proto, encounterDate) {
         get: function() {
             if(this.isUniformDosingType()) {
                 return this.uniformDosingType.doseUnits;
-            } else if(this.isVariableDosingType()) {
+            }
+            if(this.isVariableDosingType()) {
                 return this.variableDosingType.doseUnits;
             }
             return null;
@@ -212,24 +219,12 @@ Bahmni.Clinical.DrugOrderViewModel = function (config, proto, encounterDate) {
         return otherDescription;
     };
 
-    var constructDrugNameDisplay = function (drug, drugForm) {
-        return {
-            label: drug.name + " (" + drugForm + ")",
-            value: drug.name + " (" + drugForm + ")",
-            drug: drug
-        };
-    };
-
     this.getDoseInformation = function(){
         return getDoseAndFrequency();
     };
 
     this.getDisplayName = function(){
-        return this.drugNameDisplay ? this.drugNameDisplay : constructDrugNameDisplay(this.drug, this.drug.form).label;
-    };
-
-    this.getDrugName = function(){
-        return self.drugNameDisplay ? self.drugNameDisplay : constructDrugNameDisplay(self.drug, self.drug.form).value
+        return this.drugNameDisplay ? this.drugNameDisplay : constructDrugNameDisplay(this.drug);
     };
 
     this.getDrugOrderName = function(showDrugForm){
@@ -506,9 +501,10 @@ Bahmni.Clinical.DrugOrderViewModel = function (config, proto, encounterDate) {
         newDrugOrder.action = Bahmni.Clinical.Constants.orderActions.revise;
         newDrugOrder.uuid = undefined;
         newDrugOrder.dateActivated = undefined;
-        newDrugOrder.drugNameDisplay = self.drug ? constructDrugNameDisplay(self.drug, self.drug.form).value : self.drugNonCoded;
+        newDrugOrder.drugNameDisplay = constructDrugNameDisplay(self.drug) || self.drugNonCoded || self.concept.name;
+
         //this field is just a flag that you turn on when revising the first time. It is turned off at the first
-        //call of calculateQuantityAndUnit(). Bad code. Needs change.
+        //call of calculateQuantityAndUnit(). Bad code. Needs change. // I agree.
         newDrugOrder.quantityEnteredViaEdit = true;
         newDrugOrder.isBeingEdited = true;
 
@@ -707,7 +703,8 @@ Bahmni.Clinical.DrugOrderViewModel.createFromContract = function (drugOrderRespo
     viewModel.orderNumber = drugOrderResponse.orderNumber && parseInt(drugOrderResponse.orderNumber.replace("ORD-", ""));
     viewModel.drugNonCoded = drugOrderResponse.drugNonCoded;
     viewModel.isNonCodedDrug = drugOrderResponse.drugNonCoded ? true : false;
-    viewModel.drugNameDisplay = drugOrderResponse.drugNonCoded ? drugOrderResponse.drugNonCoded: drugOrderResponse.drug.name + " (" + drugOrderResponse.drug.form + ")";
+    viewModel.drugNameDisplay = viewModel.drugNonCoded || constructDrugNameDisplay(viewModel.drug)
+        || _.get(viewModel,'concept.name');
     if (config) {
         viewModel.loadOrderAttributes(drugOrderResponse);
     } else {

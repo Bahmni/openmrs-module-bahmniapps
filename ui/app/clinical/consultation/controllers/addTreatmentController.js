@@ -117,7 +117,7 @@ angular.module('bahmni.clinical')
                 var existingTreatment = false;
                 angular.forEach($scope.consultation.discontinuedDrugs, function (drugOrder) {
                     existingTreatment = _.some($scope.treatments, function (treatment) {
-                            return treatment.getDrugName() === drugOrder.getDrugName();
+                            return treatment.getDisplayName() === drugOrder.getDisplayName();
                         }) && drugOrder.isMarkedForDiscontinue;
                 });
                 return existingTreatment;
@@ -298,14 +298,14 @@ angular.module('bahmni.clinical')
                     : $scope.consultation.activeAndScheduledDrugOrders.concat(unsavedNotBeingEditedOrders);
 
                 var potentiallyOverlappingOrders = existingDrugOrders.filter(function (drugOrder) {
-                    return (drugOrder.getDrugName() === newDrugOrder.getDrugName() && drugOrder.overlappingScheduledWith(newDrugOrder));
+                    return (drugOrder.getDisplayName() === newDrugOrder.getDisplayName() && drugOrder.overlappingScheduledWith(newDrugOrder));
                 });
 
                 setEffectiveDates(newDrugOrder, potentiallyOverlappingOrders);
 
 
                 var alreadyActiveSimilarOrders = existingDrugOrders.filter(function (drugOrder) {
-                    return (drugOrder.getDrugName() === newDrugOrder.getDrugName() && drugOrder.overlappingScheduledWith(newDrugOrder));
+                    return (drugOrder.getDisplayName() === newDrugOrder.getDisplayName() && drugOrder.overlappingScheduledWith(newDrugOrder));
                 });
 
                 if (alreadyActiveSimilarOrders.length > 0) {
@@ -551,15 +551,22 @@ angular.module('bahmni.clinical')
             };
 
             var putCalculatedDose = function (orderTemplate) {
-                return orderSetService.getCalculatedDose(
+                var calculatedDose = orderSetService.getCalculatedDose(
                     $scope.patient.uuid,
                     orderTemplate.dosingInstructions.dose,
                     orderTemplate.dosingInstructions.doseUnits
-                ).then(function (calculatedDosage) {
+                );
+                return calculatedDose.then(function (calculatedDosage) {
                         orderTemplate.dosingInstructions.dose = calculatedDosage.dose;
                         orderTemplate.dosingInstructions.doseUnits = calculatedDosage.doseUnit;
                         return orderTemplate;
                     });
+            };
+
+            var deleteDrugIfEmpty = function (template) {
+                if (_.isEmpty(template.drug)) {
+                    delete template.drug; //_.isEmpty({}) is true.
+                }
             };
 
             var setUpOrderSetTransactionalData = function (orderSetMember) {
@@ -567,6 +574,12 @@ angular.module('bahmni.clinical')
                 orderSetMember.orderTemplate = JSON.parse(orderSetMember.orderTemplate);
                 putCalculatedDose(orderSetMember.orderTemplate).then(function (orderTemplate) {
                     orderSetMember.orderTemplate = orderTemplate;
+                    orderTemplate.concept = {
+                        name: orderSetMember.concept.name.name,
+                        uuid: orderSetMember.concept.uuid
+                    };
+                    deleteDrugIfEmpty(orderTemplate);
+                    return orderTemplate;
                 });
             };
 
