@@ -16,7 +16,9 @@ angular.module('bahmni.registration')
 
             var create = function (data) {
                 data.patient.person.auditInfo = {dateCreated: new Date()};
-                data.patient.person.uuid = Bahmni.Common.Offline.UUID.generateUuid();
+                if (!data.patient.uuid) {
+                    data.patient.uuid = Bahmni.Common.Offline.UUID.generateUuid();
+                }
                 data.patient.person.preferredName = data.patient.person.names[0];
                 data.patient.person.preferredAddress = data.patient.person.addresses[0];
                 return offlinePatientServiceStrategy.create(data);
