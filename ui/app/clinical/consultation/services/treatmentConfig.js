@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('bahmni.clinical').factory('treatmentConfig',
-    ['TreatmentService', 'spinner', 'configurationService', 'appService', 'DrugService', '$q', '$translate',
-        function (treatmentService, spinner, configurationService, appService, drugService, $q, $translate) {
+    ['TreatmentService', 'spinner', 'configurationService', 'appService', '$q', '$translate',
+        function (treatmentService, spinner, configurationService, appService, $q, $translate) {
 
             var getConfigFromServer = function (baseTreatmentConfig) {
                 return treatmentService.getConfig().then(function (result) {

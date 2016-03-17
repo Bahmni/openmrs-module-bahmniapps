@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('bahmni.common.displaycontrol.chronicTreatmentChart').directive('chronicTreatmentChart', ['$translate','spinner','DrugService',
+angular.module('bahmni.common.displaycontrol.chronicTreatmentChart').directive('chronicTreatmentChart', ['$translate','spinner','drugService',
     function ($translate, spinner, DrugService) {
         var link = function ($scope) {
             $scope.config = $scope.isOnDashboard ? $scope.section.dashboardConfig : $scope.section.expandedViewConfig;

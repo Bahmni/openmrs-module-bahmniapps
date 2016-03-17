@@ -62,8 +62,6 @@ describe('treatmentConfig', function () {
             appDescriptor.getConfigForPage.and.returnValue(medicationConfig);
             appService.getAppDescriptor.and.returnValue(appDescriptor);
             spinner.forPromise.and.returnValue("drug-oncept-uuid");
-            var drugService = jasmine.createSpyObj('drugService', ['getSetMembersOfConcept']);
-            drugService.getSetMembersOfConcept.and.returnValue(specUtil.respondWith([{name: "K"}, {name: "T"}]));
 
             configurationService = jasmine.createSpyObj('configurationService', ['getConfigurations']);
             configurationService.getConfigurations.and.returnValue(specUtil.respondWith({
@@ -77,7 +75,6 @@ describe('treatmentConfig', function () {
             $provide.value('configurationService', configurationService);
             $provide.value('appService', appService);
             $provide.value('spinner', spinner);
-            $provide.value('DrugService', drugService);
             $provide.value('$q', Q);
             $provide.value('$translate', translate);
         });

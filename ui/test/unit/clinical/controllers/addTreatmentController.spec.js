@@ -3,6 +3,7 @@
 describe("AddTreatmentController", function () {
 
     beforeEach(module('bahmni.common.uiHelper'));
+    beforeEach(module('bahmni.common.services'));
     beforeEach(module('bahmni.clinical'));
     var DateUtil = Bahmni.Common.Util.DateUtil;
 

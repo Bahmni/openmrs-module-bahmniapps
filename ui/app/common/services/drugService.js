@@ -1,6 +1,6 @@
 'use strict';
-angular.module('bahmni.clinical')
-    .factory('DrugService', ['$http', function ($http) {
+angular.module('bahmni.common.services')
+    .factory('drugService', ['$http', function ($http) {
 
         var search = function (drugName) {
             return $http.get(Bahmni.Common.Constants.drugUrl,

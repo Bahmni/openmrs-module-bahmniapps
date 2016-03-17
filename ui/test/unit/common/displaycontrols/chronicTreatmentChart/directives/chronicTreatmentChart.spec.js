@@ -10,10 +10,13 @@ describe('Chronic Treatment Chart DisplayControl', function () {
         translate,
         simpleHtml = '<chronic-treatment-chart patient="patient" section="section" is-on-dashboard="true" enrollment="enrollment"></chronic-treatment-chart>';
 
-    beforeEach(module('ui.router.router', function(){}));
-    beforeEach(module('pascalprecht.translate', function(){}));
-    beforeEach(module('bahmni.common.uiHelper'), function(){});
-    beforeEach(module('bahmni.clinical'), function(){});
+    beforeEach(function(){
+        module('ui.router.router');
+        module('pascalprecht.translate');
+        module('bahmni.common.uiHelper');
+        module('bahmni.common.services');
+        module('bahmni.clinical');
+    });
 
     beforeEach(module('bahmni.common.displaycontrol.chronicTreatmentChart'), function($provide){
         var _spinner = jasmine.createSpyObj('spinner',['forPromise','then']);
@@ -25,12 +28,12 @@ describe('Chronic Treatment Chart DisplayControl', function () {
 
         _spinner.then.and.callThrough({data: dispositions});
 
-        drugService = jasmine.createSpyObj('DrugService',['getRegimen']);
+        drugService = jasmine.createSpyObj('drugService',['getRegimen']);
 
         translate = jasmine.createSpyObj('$translate',['instant']);
 
         $provide.value('spinner', _spinner);
-        $provide.value('DrugService',drugService);
+        $provide.value('drugService',drugService);
         $provide.value('$translate',translate);
     });
 
