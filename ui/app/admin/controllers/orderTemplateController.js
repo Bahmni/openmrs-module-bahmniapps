@@ -1,44 +1,35 @@
-'use strict'
+'use strict';
 
-angular.module('bahmni.common.domain')
-    .controller('OrderTemplateController', ['$scope', '$state', '$http', 'orderSetService', 'spinner', function ($scope, $state, $http, orderSetService, spinner) {
+(function () {
+    var mapDrug = function (drug) {
+        return {
+            'drug': {
+                'name': drug.name,
+                'uuid': drug.uuid,
+                'form': drug.dosageForm.display
+            },
+            'value': drug.name
+        }
+    };
 
+    var $inject = ['$scope', 'drugService'];
+    var OrderTemplateController = function ($scope, drugService) {
+        var search = function (request, drugConceptUuid) {
+            return drugService.search(request.term, drugConceptUuid);
+        };
         $scope.getDrugResults = function () {
-            return function (results) {
-                return results.map(function (drug) {
-                    return {
-                        'template': {
-                            'name': drug.name,
-                            'uuid': drug.uuid,
-                            'form': drug.dosageForm.display
-                        },
-                        'value':  drug.name
-                    }
-                });
-            }
+            return _.partial(_.map, _, mapDrug);
         };
-
         $scope.getDrugsOfAConcept = function (concept) {
-            return function (request) {
-                return $http.get(Bahmni.Common.Constants.drugUrl, {
-                    method: "GET",
-                    params: {
-                        v: 'custom:(uuid,name,doseStrength,units,dosageForm,concept:(uuid,name,names:(name)))',
-                        conceptUuid: concept.uuid,
-                        q: request.term,
-                        s: 'ordered'
-                    },
-                    withCredentials: true
-                }).then(function (response) {
-                    return response.data.results;
-                });
-            }
+            return _.partial(search, _, concept.uuid);
         };
-
         $scope.onSelectOfDrug = function (index) {
             return function (selectedDrug) {
-                $scope.orderSet.orderSetMembers[index].orderTemplate.drug = selectedDrug.template
+                $scope.orderSet.orderSetMembers[index].orderTemplate.drug = selectedDrug.drug;
             };
         };
-    }]
-)
+    };
+
+    OrderTemplateController.$inject = $inject;
+    angular.module('bahmni.common.domain').controller('OrderTemplateController', OrderTemplateController);
+})();

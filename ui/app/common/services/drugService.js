@@ -1,38 +1,36 @@
 'use strict';
 angular.module('bahmni.common.services')
     .factory('drugService', ['$http', function ($http) {
-
-        var search = function (drugName) {
-            return $http.get(Bahmni.Common.Constants.drugUrl,
-                {
-                    method: "GET",
-                    params: {
-                        v: 'custom:(uuid,name,doseStrength,units,dosageForm,concept:(uuid,name,names:(name)))',
-                        q: drugName,
-                        s: "ordered"
-                    },
-                    withCredentials: true
-                }
-            ).then(function (response) {
-                    return response.data.results;
-                });
+        var v = 'custom:(uuid,name,doseStrength,units,dosageForm,concept:(uuid,name,names:(name)))';
+        var search = function (drugName, conceptUuid) {
+            var params = {
+                v: v,
+                q: drugName,
+                conceptUuid: conceptUuid,
+                s: "ordered"
+            };
+            return $http.get(Bahmni.Common.Constants.drugUrl, {
+                method: "GET",
+                params: params,
+                withCredentials: true
+            }).then(function (response) {
+                return response.data.results;
+            });
         };
 
-        var getSetMembersOfConcept = function (conceptSetFullySpecifiedName,searchTerm) {
-            return $http.get(Bahmni.Common.Constants.drugUrl,
-                {
-                    method: "GET",
-                    params: {
-                        v: 'custom:(uuid,name,doseStrength,units,dosageForm,concept:(uuid,name,names:(name)))',
-                        q: conceptSetFullySpecifiedName,
-                        s: "byConceptSet",
-                        searchTerm: searchTerm
-                    },
-                    withCredentials: true
-                }
-            ).then(function (response) {
-                    return response.data.results;
-                });
+        var getSetMembersOfConcept = function (conceptSetFullySpecifiedName, searchTerm) {
+            return $http.get(Bahmni.Common.Constants.drugUrl, {
+                method: "GET",
+                params: {
+                    v: v,
+                    q: conceptSetFullySpecifiedName,
+                    s: "byConceptSet",
+                    searchTerm: searchTerm
+                },
+                withCredentials: true
+            }).then(function (response) {
+                return response.data.results;
+            });
         };
 
         var getRegimen = function (patientUuid, patientProgramUuid, drugs) {
