@@ -9,7 +9,7 @@ describe("PatientDashboardTreatmentController", function () {
 
     var treatmentConfigParams = {
         title: "Treatments",
-        name: "treatment",
+        type: "treatment",
         dashboardParams: {
             title: null,
             showChart: false,

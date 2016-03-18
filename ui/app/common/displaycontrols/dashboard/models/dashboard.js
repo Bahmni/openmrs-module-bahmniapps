@@ -13,16 +13,16 @@ Bahmni.Common.DisplayControl.Dashboard = function (config) {
         return section.displayOrder;
     });
 
-    this.getSectionByName = function (name) {
+    this.getSectionByType = function (name) {
         return _.find(this._sections, function (section) {
-                return section.name === name;
+                return section.type === name;
             }) || {};
     };
 
     this.getSections = function (diseaseTemplates) {
         var sections = _.filter(this._sections, function (section) {
-            return section.name !== "diseaseTemplate" || _.find(diseaseTemplates, function (diseaseTemplate) {
-                    return diseaseTemplate.name === section.templateName && diseaseTemplate.obsTemplates.length > 0;
+            return section.type !== "diseaseTemplate" || _.find(diseaseTemplates, function (diseaseTemplate) {
+                    return diseaseTemplate.type === section.templateName && diseaseTemplate.obsTemplates.length > 0;
                 });
         });
         return this.groupSectionsByType(sections);

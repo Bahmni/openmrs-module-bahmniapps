@@ -9,7 +9,7 @@ describe("PatientDashboardLabOrdersController", function () {
     var spinner = jasmine.createSpyObj('spinner', ['forPromise']);
     var labResultSection = {
         "title": "Lab Results",
-        "name": "labOrders",
+        "type": "labOrders",
         "dashboardParams": {
             "title": null,
             "showChart": false,

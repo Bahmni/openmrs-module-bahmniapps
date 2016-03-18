@@ -23,11 +23,11 @@ Bahmni.Common.DisplayControl.Dashboard.Section = function (section) {
     if (this.isObservation === true) {
         this.viewName = "../common/displaycontrols/dashboard/views/sections/observationSection.html";
     } else if (commonDisplayControlNames.some(function (name) {
-            return name == section.name
+            return name == section.type
         })) {
-        this.viewName = "../common/displaycontrols/dashboard/views/sections/" + this.name + ".html";
+        this.viewName = "../common/displaycontrols/dashboard/views/sections/" + this.type + ".html";
     } else {
-        this.viewName = "../clinical/dashboard/views/dashboardSections/" + this.name + ".html";
+        this.viewName = "../clinical/dashboard/views/dashboardSections/" + this.type + ".html";
     }
 };
 

@@ -6,22 +6,22 @@ describe("Dashboard", function () {
         "sections": [
             {
                 "title": "Nutritional Values",
-                "name": "vitals",
+                "type": "vitals",
                 "conceptNames": ["Height", "Weight", "BMI", "BMI STATUS"]
             },
             {
                 "title": "Diagnosis",
-                "name": "diagnosis"
+                "type": "diagnosis"
             },
             {
                 "title": "Diabetes",
                 "templateName": "Diabetes Template",
-                "name": "diseaseTemplate"
+                "type": "diseaseTemplate"
             },
             {
                 "title": "tuberculosis",
                 "templateName": "TB Template",
-                "name": "diseaseTemplate"
+                "type": "diseaseTemplate"
             }
         ]
     };
@@ -33,13 +33,13 @@ describe("Dashboard", function () {
     });
 
     it("should get section by name", function () {
-        expect(dashboard.getSectionByName("vitals").title).toBe("Nutritional Values");
+        expect(dashboard.getSectionByType("vitals").title).toBe("Nutritional Values");
     });
 
     it("should only get disease template section with data", function () {
         var diseaseTemplates = [
             {
-                name: "Diabetes Template",
+                type: "Diabetes Template",
                 obsTemplates: [
                     {value: "1"},
                     {value: "2"}
