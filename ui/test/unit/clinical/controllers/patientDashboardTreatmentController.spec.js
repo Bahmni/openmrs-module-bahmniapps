@@ -10,7 +10,7 @@ describe("PatientDashboardTreatmentController", function () {
     var treatmentConfigParams = {
         title: "Treatments",
         type: "treatment",
-        dashboardParams: {
+        dashboardConfig: {
             title: null,
             showChart: false,
             showTable: true,
@@ -18,7 +18,7 @@ describe("PatientDashboardTreatmentController", function () {
             showOtherActive: true,
             showCommentsExpanded: false
         },
-        allTreatmentDetails: {
+        expandedViewConfig: {
             title: null,
             showChart: false,
             showTable: true,
@@ -60,14 +60,14 @@ describe("PatientDashboardTreatmentController", function () {
     describe("Should fetch configuration", function () {
         it("should fetch dashboard params", function () {
             var expected = {};
-            _.extend(expected, treatmentConfigParams.dashboardParams || {}, {patientUuid: "patient uuid"});
-            expect(expected).toEqual(scope.dashboardParams);
+            _.extend(expected, treatmentConfigParams.dashboardConfig || {}, {patientUuid: "patient uuid"});
+            expect(expected).toEqual(scope.dashboardConfig);
         });
 
         it("should fetch summary page params", function () {
             var expected = {};
-            _.extend(expected, treatmentConfigParams.allTreatmentDetails || {}, {patientUuid: "patient uuid"});
-            expect(expected).toEqual(scope.allTreatmentDetails);
+            _.extend(expected, treatmentConfigParams.expandedViewConfig || {}, {patientUuid: "patient uuid"});
+            expect(expected).toEqual(scope.expandedViewConfig);
         });
     });
 })
