@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <title>Bahmni Home</title>
+        
+        <meta charset="utf-8">
+        <meta name="HandheldFriendly" content="true">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=2.0, user-scalable=yes, minimal-ui" />
+        <meta name="apple-mobile-web-app-capable" content="yes" />
+        <link rel="shortcut icon" type="image/x-icon" href="favicon.ico">
+        <link rel="stylesheet" href="lib/jquery/jquery-ui-1.10.4.custom.min.css">
+
+        <!-- build:css home.min.css -->
+        <link rel="stylesheet" href="styles/home.css"/>
+        <!-- endbuild -->
+    </head>
+    <body>
+        <div class="reg-wrapper">
+            <div ng-app="bahmni.yay">
+                <div ui-view id="view-content"></div>
+            </div>
+        </div>
+        <script src="../components/crypto-js/crypto-js.js"></script>
+        <script src="../components/lodash/dist/lodash.min.js"></script>
+        <script src="../components/jquery/jquery.min.js"></script>
+        <script src="../lib/jquery/jquery-ui-1.10.4.custom.min.js"></script>
+        <script src="../components/jquery.cookie/jquery.cookie.js"></script>
+        <script src="../components/angular/angular.min.js"></script>
+        <script src="../components/angular-ui-router/release/angular-ui-router.min.js"></script>
+        <script src="../components/ng-clip/dest/ng-clip.min.js"></script>
+        <script src="../components/zeroclipboard/dist/ZeroClipboard.min.js"></script>
+        <script src="../components/lovefield/dist/lovefield.min.js"></script>
+
+
+        <!-- build:js home.min.js -->
+        <script src="../common/constants.js"></script>
+
+
+        <script src="../common/util/init.js"></script>
+        <script src="../common/util/arrayUtil.js"></script>
+
+
+        <script src="../common/ui-helper/init.js"></script>
+        <script src="../common/ui-helper/spinner.js"></script>
+        <script src="../common/ui-helper/controllers/messageController.js"></script>
+        <script src="../common/ui-helper/services/messagingService.js"></script>
+
+
+        <script src="../common/offline/init.js"></script>
+        <script src="../common/offline/schemaDefinitions.js"></script>
+        <script src="../common/offline/offlineService.js"></script>
+        <script src="../common/offline/initializeOfflineSchema.js"></script>
+        <script src="../common/offline/offlineDbInitialization.js"></script>
+        <script src="../common/offline/offlineSyncInitialization.js"></script>
+        <script src="../common/offline/offlineConfigInitialization.js"></script>
+        <script src="../common/offline/offlineReferenceDataInitialization.js"></script>
+        <script src="../common/offline/services/offlineSyncService.js"></script>
+        <script src="../common/offline/services/eventLogService.js"></script>
+        <script src="../common/offline/services/androidDbService.js"></script>
+        <script src="../common/offline/dbservices/dao/offlineSearchDbService.js"></script>
+        <script src="../common/offline/dbservices/dao/offlineDbService.js"></script>
+        <script src="../common/offline/dbservices/dao/patientAddressDbService.js"></script>
+        <script src="../common/offline/dbservices/dao/patientAttributeDbService.js"></script>
+        <script src="../common/offline/dbservices/dao/patientDbService.js"></script>
+        <script src="../common/offline/dbservices/dao/offlineMarkerDbService.js"></script>
+        <script src="../common/offline/dbservices/dao/offlineAddressHierarchyDbService.js"></script>
+        <script src="../common/offline/dbservices/dao/offlineConfigDbService.js"></script>
+        <script src="../common/offline/dbservices/dao/referenceDataDbService.js"></script>
+        <script src="../common/offline/dbservices/dao/locationDbService.js"></script>
+        <script src="../common/offline/models/UUID.js"></script>
+
+        <script src="../common/offline/scheduler/scheduledJob.js"></script>
+        <script src="../common/offline/scheduler/MultiStageWorker.js"></script>
+        <script src="../common/offline/scheduler/eventQueue.js"></script>
+        <script src="../common/offline/scheduledSync.js"></script>
+
+        <script src="app.js"></script>
+        <div class="mask">
+            <div class="overlay">
+                <p class="message">Offline content is being synced. If you are here for a long time and not redirected automatically,<a href="javascript:void(0)" onclick="redirect()">click here</a>.</p>
+                <img src="/bahmni/images/spinner.gif" style="margin-top: 20px;"/>
+            </div>
+        </div>
+    </body>
+</html>
+
