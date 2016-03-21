@@ -83,13 +83,13 @@ angular.module('bahmni.common.displaycontrol.observation')
                 scope: {
                     patient: "=",
                     visitUuid: "@",
-                    section: "=",
+                    section: "=?",
                     config: "=",
                     title: "=sectionTitle",
-                    isOnDashboard: "=",
-                    observations: "=",
-                    message: "=",
-                    enrollment: "="
+                    isOnDashboard: "=?",
+                    observations: "=?",
+                    message: "=?",
+                    enrollment: "=?"
                 }
             }
         }]);

@@ -26,11 +26,11 @@ angular.module('bahmni.common.obs')
         return {
             restrict: 'E',
             scope: {
-                observation: "=",
+                observation: "=?",
                 patient: "=",
-                showDate: "=",
-                showTime: "=",
-                showDetailsButton: "="
+                showDate: "=?",
+                showTime: "=?",
+                showDetailsButton: "=?"
             },
             controller: controller,
             template: '<ng-include src="\'../common/obs/views/showObservation.html\'" />'

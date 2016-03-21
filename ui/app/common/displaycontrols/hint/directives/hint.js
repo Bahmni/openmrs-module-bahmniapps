@@ -10,7 +10,7 @@ angular.module('bahmni.common.displaycontrol.hint')
             return {
                 restrict: 'E',
                 link:link,
-                template: '<small class="hint" ng-if="hintForNumericConcept">{{::hintForNumericConcept}}</small>',
+                template: '<small class="hint" ng-if="::hintForNumericConcept">{{::hintForNumericConcept}}</small>',
                 scope: {
                     conceptDetails: "="
                 }

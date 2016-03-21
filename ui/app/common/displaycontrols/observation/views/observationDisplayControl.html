@@ -1,15 +1,15 @@
-<div class="block " ng-class="{'hidden-print': noObsMessage}">
-    <h2 ng-if="!isClickable() && title"
-        ng-class="{'section-title': !isFulfilmentDisplayControl, 'form-field': isFulfilmentDisplayControl}">{{title |
+<div class="block " ng-class="::{'hidden-print': noObsMessage}">
+    <h2 ng-if="::(!isClickable() && title)"
+        ng-class="::{'section-title': !isFulfilmentDisplayControl, 'form-field': isFulfilmentDisplayControl}">{{::title |
         translate}}</h2>
 
-    <div ng-if="isClickable()" class="dashboard-observations-section">
+    <div ng-if="::isClickable()" class="dashboard-observations-section">
         <h2 ng-dialog="../common/displaycontrols/observation/views/allObservationDetails.html"
             ng-dialog-controller="AllObservationDetailsController"
             ng-dialog-data="{{dialogData}}"
             ng-dialog-class="ngdialog-theme-default ng-dialog-all-details-page"
             class="section-title has-link">
-            <span class="title-link"> {{section | titleTranslate}} </span>
+            <span class="title-link"> {{::section | titleTranslate}} </span>
             <i class="fa fa-external-link"></i>
         </h2>
     </div>
@@ -17,35 +17,35 @@
         <section class="block hierarchy">
             <ul class="form-field" ng-if="bahmniObservations.length > 0">
                 <li ng-repeat="obsGroup in ::bahmniObservations">
-                    <span ng-if="showGroupDateTime" class="tree-list-item row-click" ng-click="toggle(obsGroup)">
-                        <i class="fa fa-caret-right" ng-hide="obsGroup.isOpen"></i>
-                        <i class="fa fa-caret-down" ng-show="obsGroup.isOpen"></i>
+                    <span ng-if="::showGroupDateTime" class="tree-list-item row-click toggle-container" toggle="obsGroup.isOpen">
+                        <i class="fa fa-caret-right"></i>
+                        <i class="fa fa-caret-down"></i>
                         <span class="obs-date">
                             {{::obsGroup.date | bahmniDateTime}}
                         </span>
                     </span>
 
-                    <ul bm-show="obsGroup.isOpen" ng-if="print" class="print-observations visible-print">
-                        <li ng-repeat="observation in obsGroup.value">
+                    <ul bm-show="obsGroup.isOpen" ng-if="::print" class="print-observations visible-print">
+                        <li ng-repeat="observation in ::obsGroup.value">
                             <ul>
-                                <show-observation show-details-button="config.showDetailsButton" patient="entient"
-                                                  observation="observation"
+                                <show-observation show-details-button="::config.showDetailsButton" patient="patient"
+                                                  observation="::observation"
                                                   level="2"></show-observation>
                             </ul>
                         </li>
                     </ul>
-                    <ul bm-show="obsGroup.isOpen" ng-if="!print" class="print-observations hidden-print">
-                        <show-observation show-details-button="config.showDetailsButton" patient="entient"
+                    <ul bm-show="obsGroup.isOpen" ng-if="::!print" class="print-observations hidden-print">
+                        <show-observation show-details-button="::config.showDetailsButton" patient="patient"
                                           observation="::observation" ng-repeat="observation in ::obsGroup.value"
                                           level="2"></show-observation>
                     </ul>
                 </li>
             </ul>
-            <div ng-if="noObsMessage">
-                <div class="placeholder-text" ng-if="!message"><p translate="DISPLAY_CONTROL_ERROR_MESSAGE_KEY"
-                                                                  translate-values="{displayControl : '{{title | translate}}'}"></p>
+            <div ng-if="::noObsMessage">
+                <div class="placeholder-text" ng-if="::!message"><p translate="DISPLAY_CONTROL_ERROR_MESSAGE_KEY"
+                                                                  translate-values="::{displayControl : '{{title | translate}}'}"></p>
                 </div>
-                <div class="placeholder-text" ng-if="message">{{message}}</div>
+                <div class="placeholder-text" ng-if="::message">{{::message}}</div>
             </div>
         </section>
     </div>

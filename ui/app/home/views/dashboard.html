@@ -1,6 +1,7 @@
 <div class="dashboard">
+<div class="dashboard">
     <header class="reg-header">
-        <form class="change-location">
+        <form class="change-location" ng-class="{'change-location-offline': isOfflineApp}">
             <select  ng-model="selectedLocationUuid" ng-change="onLocationChange()">
                 <option ng-repeat="location in locations" ng-selected="isCurrentLocation(location)" value="{{location.uuid}}">
                     {{location.display}}
@@ -10,6 +11,13 @@
         <!-- Mujir/Vikash - to be introduced when we do retrospective entry for registration and other modules -->
         <!--<input class="retro-date-widget fr" type="date"/>-->
 
+        <button class="btn offline-sync" ng-click="sync()" ng-show="isOfflineApp && !isSyncing ">
+            {{::'HEADER_LABEL_SYNC_KEY' | translate}}
+        </button>
+        <button class="btn offline-sync offline-sync-image" ng-show="isOfflineApp && isSyncing" disabled>
+            <!-- <i class="fa fa-refresh"></i> -->
+            <img src="../images/sync.gif" />
+        </button>
         <button class="btn-user-info">
             <i class="fa fa-user-md fa-white small"></i>
             <i class="fa fa-caret-down fa-white mini"></i>
