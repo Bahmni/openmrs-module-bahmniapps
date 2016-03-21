@@ -46,14 +46,11 @@ angular.module('bahmni.home', ['ui.router', 'httpErrorInterceptor', 'bahmni.comm
                 templateUrl: 'views/login.html',
                 controller: 'LoginController',
                 resolve: {
-                    initialData: function(loginInitialization, offlineReferenceDataInitialization){
-                        return loginInitialization(offlineReferenceDataInitialization)
+                    initialData: function(loginInitialization){
+                        return loginInitialization()
                     },
                     offlineDb: function (offlineDbInitialization) {
                         return offlineDbInitialization();
-                    },
-                    offlineReferenceDataInitialization: function(offlineReferenceDataInitialization, offlineDb){
-                        return offlineReferenceDataInitialization(offlineDb, false);
                     }
                 }
             }).state('offline',
