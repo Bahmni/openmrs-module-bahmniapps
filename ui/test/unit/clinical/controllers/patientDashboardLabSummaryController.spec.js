@@ -10,7 +10,7 @@ describe("PatientDashboardLabSummaryController", function () {
     beforeEach(inject(function ($controller, $rootScope) {
         scope = $rootScope.$new();
         scope.ngDialogData = {
-            allLabDetails: {a: 1, b: 2},
+            expandedViewConfig: {a: 1, b: 2},
             patient: {uuid: "some uuid"}
         }
         stateParams = {
@@ -23,7 +23,7 @@ describe("PatientDashboardLabSummaryController", function () {
     }));
 
     it("should initialize", function () {
-        expect(scope.allLabDetails).toEqual({a: 1, b: 2, patientUuid: "some uuid"});
+        expect(scope.expandedViewConfig).toEqual({a: 1, b: 2, patientUuid: "some uuid"});
         expect(scope.patient).toEqual({uuid: "some uuid"});
     });
 });

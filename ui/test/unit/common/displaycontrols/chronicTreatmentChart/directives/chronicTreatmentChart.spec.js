@@ -47,7 +47,7 @@ describe('Chronic Treatment Chart DisplayControl', function () {
         scope.isOnDashboard = true;
         scope.section = {
             "headingConceptSource":"Abbreviation",
-            "dashboardParams": {
+            "dashboardConfig": {
                 "drugs": [
                     "RIFAMPICIN",
                     "PYRAZINAMIDE"
@@ -99,7 +99,7 @@ describe('Chronic Treatment Chart DisplayControl', function () {
         scope.isOnDashboard = true;
         scope.section = {
             "headingConceptSource":"Abbreviation",
-            "dashboardParams": {
+            "dashboardConfig": {
                 "drugs": [
                     "RIFAMPICIN",
                     "PYRAZINAMIDE"
@@ -163,7 +163,7 @@ describe('Chronic Treatment Chart DisplayControl', function () {
         scope.isOnDashboard = true;
         scope.section = {
             "headingConceptSource":"CustomAbbreviationSource",
-            "dashboardParams": {
+            "dashboardConfig": {
                 "drugs": [
                     "RIFAMPICIN",
                     "PYRAZINAMIDE"
@@ -214,7 +214,7 @@ describe('Chronic Treatment Chart DisplayControl', function () {
 
         scope.isOnDashboard = true;
         scope.section = {
-            "dashboardParams": {
+            "dashboardConfig": {
                 "drugs": [
                     "RIFAMPICIN",
                     "PYRAZINAMIDE"
@@ -263,7 +263,7 @@ describe('Chronic Treatment Chart DisplayControl', function () {
 
         scope.isOnDashboard = true;
         scope.section = {
-            "dashboardParams": {
+            "dashboardConfig": {
                 "drugs": [
                     "RIFAMPICIN",
                     "PYRAZINAMIDE"
@@ -294,7 +294,7 @@ describe('Chronic Treatment Chart DisplayControl', function () {
 
         scope.isOnDashboard = true;
         scope.section = {
-            "dashboardParams": {
+            "dashboardConfig": {
                 "drugs": [
                     "RIFAMPICIN",
                     "PYRAZINAMIDE"

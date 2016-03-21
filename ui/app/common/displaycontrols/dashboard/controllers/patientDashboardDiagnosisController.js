@@ -3,7 +3,7 @@
 angular.module('bahmni.common.displaycontrol.dashboard')
     .controller('PatientDashboardDiagnosisController', ['$scope', 'ngDialog',
         function ($scope, ngDialog) {
-            $scope.section =  $scope.dashboard.getSectionByName("diagnosis") || {};
+            $scope.section =  $scope.dashboard.getSectionByType("diagnosis") || {};
 
             $scope.openSummaryDialog = function () {
                 ngDialog.open({

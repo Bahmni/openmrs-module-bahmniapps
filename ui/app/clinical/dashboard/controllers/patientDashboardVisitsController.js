@@ -7,10 +7,10 @@ angular.module('bahmni.clinical')
             $scope.dialogData = {
                 "noOfVisits": $scope.noOfVisits,
                 "patient": $scope.patient,
-                "sectionConfig": $scope.dashboard.getSectionByName("visits")
+                "sectionConfig": $scope.dashboard.getSectionByType("visits")
             };
 
-            $scope.dashboardParams = $scope.dashboard.getSectionByName("visits").dashboardParams || {};
+            $scope.dashboardConfig = $scope.dashboard.getSectionByType("visits").dashboardConfig || {};
             $scope.patientUuid = $stateParams.patientUuid;
 
         }]);
