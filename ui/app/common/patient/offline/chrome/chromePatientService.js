@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('bahmni.common.patient')
-    .service('patientService', ['offlineSearchDbService', function ( offlineSearchDbService) {
+    .service('patientService', ['offlineSearchDbService', '$q', function (offlineSearchDbService, $q) {
 
         this.getPatient = function (uuid) {
             return $q.when({});

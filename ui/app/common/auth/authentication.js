@@ -39,7 +39,8 @@ angular.module('authentication')
         var createSession = function(username, password){
             var deferrable = $q.defer();
 
-            getAuthFromServer(username, password).success(function(data) {
+            destroySessionFromServer().success(function(){
+                getAuthFromServer(username, password).success(function(data) {
                     if(offlineApp) {
                         if(data.authenticated == true) {
                             offlineService.setItem(authenticationResponse, data);
@@ -53,6 +54,15 @@ angular.module('authentication')
                         deferrable.reject('LOGIN_LABEL_LOGIN_ERROR_MESSAGE_KEY');
                     }
                 });
+            }).error(function(){
+                if(offlineApp && offlineService.getItem(authenticationResponse) &&
+                    offlineService.getItem(Bahmni.Common.Constants.LoginInformation) &&
+                    offlineService.validateLoginInfo({username: username, password: password})){
+                    deferrable.resolve(offlineService.getItem(authenticationResponse));
+                }else {
+                    deferrable.reject('LOGIN_LABEL_LOGIN_ERROR_MESSAGE_KEY');
+                }
+            });
             return deferrable.promise;
         };
 
