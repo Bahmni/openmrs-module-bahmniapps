@@ -460,30 +460,6 @@ module.exports = function (grunt) {
         'rename:minified'
     ]);
 
-    var unique = function(array) {
-        return array.filter(function(item, pos) {
-            return array.indexOf(item) === pos;
-        });
-    };
-
-    var getFiles = function (dir, files_) {
-        var fs = require('fs');
-        files_ = files_ || [];
-        var files = fs.readdirSync(dir);
-        for (var i in files){
-            var name = dir + '/' + files[i];
-            if (fs.statSync(name).isDirectory()){
-                getFiles(name, files_);
-            } else {
-                name = "'"+name.split("./app").join("/bahmni")+"'";
-                if(files_.indexOf(name) === -1) {
-                    files_.push(name);
-                }
-            }
-        }
-        return files_;
-    };
-
     grunt.registerTask('default', ['build', 'tests', 'uglify-and-rename', 'preprocess:web']);
     grunt.registerTask('dev', ['build', 'tests', 'rename', 'preprocess:web']);
     grunt.registerTask('chrome', ['build', 'tests:chrome', 'uglify-and-rename', 'preprocess:chrome']);
