@@ -3,7 +3,7 @@
 angular.module('bahmni.common.displaycontrol.chronicTreatmentChart').directive('chronicTreatmentChart', ['$translate','spinner','DrugService',
     function ($translate, spinner, DrugService) {
         var link = function ($scope) {
-            $scope.config = $scope.isOnDashboard ? $scope.section.dashboardParams : $scope.section.allDetailsParams;
+            $scope.config = $scope.isOnDashboard ? $scope.section.dashboardConfig : $scope.section.expandedViewConfig;
             var patient = $scope.patient;
 
             var init = function () {
@@ -46,7 +46,7 @@ angular.module('bahmni.common.displaycontrol.chronicTreatmentChart').directive('
             };
 
             $scope.isClickable = function () {
-                return $scope.isOnDashboard && $scope.section.allDetailsParams;
+                return $scope.isOnDashboard && $scope.section.expandedViewConfig;
             };
 
             $scope.dialogData = {

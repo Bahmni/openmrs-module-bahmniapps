@@ -61,7 +61,7 @@ describe('Drug Order Details DisplayControl', function () {
         scope = $rootScope;
         $compile = _$compile_;
         scope.patient= {uuid:'123'};
-        scope.params = {dashboardParams:{}};
+        scope.params = {dashboardConfig:{}};
         mockBackend = $httpBackend;
         mockBackend.expectGET('../common/displaycontrols/drugOrderDetails/views/drugOrderDetails.html').respond("<div>dummy</div>");
         treatmentService.getAllDrugOrdersFor.and.returnValue(specUtil.respondWithPromise(q, drugOrderSections));
@@ -87,7 +87,7 @@ describe('Drug Order Details DisplayControl', function () {
     });
 
     it("should filter inactive drug orders when configured to not show them", function(){
-        scope.params = {dashboardParams:{showOnlyActive:true}};
+        scope.params = {dashboardConfig:{showOnlyActive:true}};
         element = $compile(simpleHtml)(scope);
         scope.$digest();
         var compiledElementScope = element.isolateScope();

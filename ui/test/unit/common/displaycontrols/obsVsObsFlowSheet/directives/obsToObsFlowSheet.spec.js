@@ -58,7 +58,7 @@ describe('obsToObsFlowSheet DisplayControl', function () {
             scope.section = {
                 "name": "obsToObsFlowSheet",
                 "headingConceptSource": "Abbreviation",
-                "dashboardParams": {
+                "dashboardConfig": {
                     "conceptNames": [
                         "Bacteriology, Rifampicin result",
                         "Bacteriology, Ethambutol result"
@@ -96,7 +96,7 @@ describe('obsToObsFlowSheet DisplayControl', function () {
             scope.section = {
                 "name": "obsToObsFlowSheet",
                 "headingConceptSource": "Abbreviation",
-                "dashboardParams": {
+                "dashboardConfig": {
                     "conceptNames": [
                         "Bacteriology, Rifampicin result",
                         "Bacteriology, Ethambutol result"
@@ -133,7 +133,7 @@ describe('obsToObsFlowSheet DisplayControl', function () {
             scope.isOnDashboard = true;
             scope.section = {
                 "headingConceptSource": "Abbreviation",
-                "dashboardParams": {
+                "dashboardConfig": {
                     "conceptNames": [
                         "Bacteriology, Rifampicin result",
                         "Bacteriology, Ethambutol result"
@@ -171,7 +171,7 @@ describe('obsToObsFlowSheet DisplayControl', function () {
             scope.isOnDashboard = true;
             scope.section = {
                 "headingConceptSource": "CustomAbbreviationSource",
-                "dashboardParams": {
+                "dashboardConfig": {
                     "conceptNames": [
                         "Bacteriology, Rifampicin result",
                         "Bacteriology, Ethambutol result"
@@ -216,7 +216,7 @@ describe('obsToObsFlowSheet DisplayControl', function () {
             scope.isOnDashboard = true;
             scope.section = {
                 "headingConceptSource": "CustomAbbreviationSource",
-                "dashboardParams": {
+                "dashboardConfig": {
                     "conceptNames": [
                         "Bacteriology, Rifampicin result",
                         "Bacteriology, Ethambutol result"
@@ -260,7 +260,7 @@ describe('obsToObsFlowSheet DisplayControl', function () {
 
             scope.isOnDashboard = true;
             scope.section = {
-                "dashboardParams": {
+                "dashboardConfig": {
                     "conceptNames": [
                         "Bacteriology, Rifampicin result",
                         "Bacteriology, Ethambutol result"
@@ -308,7 +308,7 @@ describe('obsToObsFlowSheet DisplayControl', function () {
 
             scope.isOnDashboard = true;
             scope.section = {
-                "dashboardParams": {
+                "dashboardConfig": {
                     "conceptNames": [
                         "Bacteriology, Rifampicin result",
                         "Bacteriology, Ethambutol result"
@@ -345,7 +345,7 @@ describe('obsToObsFlowSheet DisplayControl', function () {
 
             scope.isOnDashboard = true;
             scope.section = {
-                "dashboardParams": {
+                "dashboardConfig": {
                     "conceptNames": [
                         "Bacteriology, Rifampicin result",
                         "Bacteriology, Ethambutol result"
@@ -389,7 +389,7 @@ describe('obsToObsFlowSheet DisplayControl', function () {
             scope.section = {
                 "name": "obsToObsFlowSheet",
                 "headingConceptSource": "Abbreviation",
-                "dashboardParams": {
+                "dashboardConfig": {
                     "conceptNames": [
                         "Bacteriology, Rifampicin result",
                         "Bacteriology, Ethambutol result"
@@ -435,7 +435,7 @@ describe('obsToObsFlowSheet DisplayControl', function () {
             scope.isOnDashboard = true;
             scope.section = {
                 "headingConceptSource": "Abbreviation",
-                "dashboardParams": {
+                "dashboardConfig": {
                     "conceptNames": [
                         "Bacteriology, Rifampicin result",
                         "Bacteriology, Ethambutol result"
@@ -476,7 +476,7 @@ describe('obsToObsFlowSheet DisplayControl', function () {
             scope.isOnDashboard = true;
             scope.section = {
                 "headingConceptSource": "CustomAbbreviationSource",
-                "dashboardParams": {
+                "dashboardConfig": {
                     "conceptNames": [
                         "Bacteriology, Rifampicin result",
                         "Bacteriology, Ethambutol result"
@@ -516,7 +516,7 @@ describe('obsToObsFlowSheet DisplayControl', function () {
 
             scope.isOnDashboard = true;
             scope.section = {
-                "dashboardParams": {
+                "dashboardConfig": {
                     "conceptNames": [
                         "Bacteriology, Rifampicin result",
                         "Bacteriology, Ethambutol result"
@@ -564,7 +564,7 @@ describe('obsToObsFlowSheet DisplayControl', function () {
 
             scope.isOnDashboard = true;
             scope.section = {
-                "dashboardParams": {
+                "dashboardConfig": {
                     "conceptNames": [
                         "Bacteriology, Rifampicin result",
                         "Bacteriology, Ethambutol result"
@@ -606,7 +606,7 @@ describe('obsToObsFlowSheet DisplayControl', function () {
             scope.isOnDashboard = true;
             scope.section = {
                 "dataConceptSource": "Abbreviation",
-                "dashboardParams": {
+                "dashboardConfig": {
                     "conceptNames": [
                         "Bacteriology, Rifampicin result",
                         "Bacteriology, Ethambutol result"
@@ -657,7 +657,7 @@ describe('obsToObsFlowSheet DisplayControl', function () {
 
             scope.isOnDashboard = true;
             scope.section = {
-                "dashboardParams": {
+                "dashboardConfig": {
                     "conceptNames": [
                         "Bacteriology, Rifampicin result",
                         "Bacteriology, Ethambutol result"
@@ -708,7 +708,7 @@ describe('obsToObsFlowSheet DisplayControl', function () {
 
             scope.isOnDashboard = true;
             scope.section = {
-                "dashboardParams": {
+                "dashboardConfig": {
                     "conceptNames": [
                         "Bacteriology, Rifampicin result",
                         "Bacteriology, Ethambutol result"

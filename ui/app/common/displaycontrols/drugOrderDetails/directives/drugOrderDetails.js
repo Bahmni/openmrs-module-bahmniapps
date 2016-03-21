@@ -5,7 +5,7 @@ angular.module('bahmni.common.displaycontrol.drugOrderDetails')
         var controller = function ($scope) {
 
             var init = function () {
-                return $q.all([treatmentService.getAllDrugOrdersFor($scope.patient.uuid, $scope.section.dashboardParams.drugConceptSet, undefined, undefined, $scope.enrollment),
+                return $q.all([treatmentService.getAllDrugOrdersFor($scope.patient.uuid, $scope.section.dashboardConfig.drugConceptSet, undefined, undefined, $scope.enrollment),
                     treatmentConfig()])
                     .then(function (results) {
                         var createDrugOrder = function (drugOrder) {
@@ -35,7 +35,7 @@ angular.module('bahmni.common.displaycontrol.drugOrderDetails')
             var sortOrders = function(response){
                 var drugOrderUtil = Bahmni.Clinical.DrugOrder.Util;
                 var sortedDrugOrders = [];
-                if($scope.section.dashboardParams.showOnlyActive) {
+                if($scope.section.dashboardConfig.showOnlyActive) {
                     var activeAndScheduled = _.filter(response, function (order) {
                         return order.isActive() || order.isScheduled();
                     });

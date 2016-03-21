@@ -3,7 +3,7 @@
 angular.module('bahmni.common.displaycontrol.obsVsObsFlowSheet').directive('obsToObsFlowSheet', ['$translate', 'spinner', 'observationsService', 'conceptSetService', '$q', 'conceptSetUiConfigService',
     function ($translate, spinner, observationsService, conceptSetService, $q, conceptSetUiConfigService) {
         var link = function ($scope) {
-            $scope.config = $scope.isOnDashboard ? $scope.section.dashboardParams : $scope.section.allDetailsParams;
+            $scope.config = $scope.isOnDashboard ? $scope.section.dashboardConfig : $scope.section.expandedViewConfig;
             $scope.isEditable = $scope.config.isEditable;
             var patient = $scope.patient;
 
@@ -45,7 +45,7 @@ angular.module('bahmni.common.displaycontrol.obsVsObsFlowSheet').directive('obsT
             };
 
             $scope.isClickable = function () {
-                return $scope.isOnDashboard && $scope.section.allDetailsParams;
+                return $scope.isOnDashboard && $scope.section.expandedViewConfig;
             };
 
             $scope.dialogData = {

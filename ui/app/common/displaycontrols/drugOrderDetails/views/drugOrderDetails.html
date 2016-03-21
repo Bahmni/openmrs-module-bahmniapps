@@ -6,7 +6,7 @@
     <table class="drug-order-table treatments-details-table">
         <tr>
             <th ng-if="drugOrders.length > 0" ng-repeat="columnName in ::columnHeaders">{{::columnName | translate}}</th>
-            <th ng-if="::section.dashboardParams.showDetailsButton">&nbsp;</th>
+            <th ng-if="::section.dashboardConfig.showDetailsButton">&nbsp;</th>
         </tr>
         <tbody ng-if="drugOrders.length > 0" ng-repeat="drugOrder in ::drugOrders">
             <tr ng-class="{active: drugOrder.isActive(), 'test-notes-parent': drugOrder.additionalInstructions, 'notes-open': drugOrder.showDetails}">
@@ -31,7 +31,7 @@
                 </td>
 
                 <td class="toggle-btn"
-                    ng-if="::section.dashboardParams.showDetailsButton">
+                    ng-if="::section.dashboardConfig.showDetailsButton">
                     <button class="toggle fr" toggle="drugOrder.showDetails">
                         <i class="fa fa-angle-down"></i>
                         <i class="fa fa-angle-up"></i>

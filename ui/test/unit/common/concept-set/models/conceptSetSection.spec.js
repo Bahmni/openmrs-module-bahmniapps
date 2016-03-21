@@ -79,11 +79,11 @@ describe("ConceptSetSection", function () {
                 "title": "Vitals",
                 "name": "vitals",
                 "isObservation": true,
-                "dashboardParams": {
+                "dashboardConfig": {
                     "conceptNames": ["Vitals", "Second Vitals"],
                     "numberOfVisits": 2
                 },
-                "allObservationDetails": {
+                "expandedViewConfig": {
                     "conceptNames": ["Height", "Weight", "BMI", "BMI STATUS"],
                     "numberOfVisits": 2,
                     "pivotTable": {

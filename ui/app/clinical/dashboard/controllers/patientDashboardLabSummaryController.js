@@ -4,8 +4,8 @@ angular.module('bahmni.clinical')
     .controller('PatientDashboardLabSummaryController', ['$scope', '$stateParams',
         function ($scope, $stateParams) {
 
-            $scope.allLabDetails = $scope.ngDialogData.allLabDetails;
-            $scope.allLabDetails.patientUuid = $stateParams.patientUuid;
+            $scope.expandedViewConfig = $scope.ngDialogData.expandedViewConfig;
+            $scope.expandedViewConfig.patientUuid = $stateParams.patientUuid;
 
             $scope.patient = $scope.ngDialogData.patient;
 

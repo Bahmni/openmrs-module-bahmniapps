@@ -63,8 +63,8 @@ angular.module('bahmni.common.displaycontrol.observation')
                 };
 
                 $scope.isClickable = function () {
-                    return $scope.isOnDashboard && $scope.section.allObservationDetails &&
-                        ($scope.section.allObservationDetails.pivotTable || $scope.section.allObservationDetails.observationGraph);
+                    return $scope.isOnDashboard && $scope.section.expandedViewConfig &&
+                        ($scope.section.expandedViewConfig.pivotTable || $scope.section.expandedViewConfig.observationGraph);
                 };
 
                 fetchObservations();
