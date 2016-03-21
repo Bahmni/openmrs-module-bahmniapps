@@ -460,18 +460,6 @@ module.exports = function (grunt) {
         'rename:minified'
     ]);
 
-    var updatePrefetchList = function (preFetchList) {
-        var replace = require("replace");
-
-        replace({
-            regex: "{pre-fetch-list}",
-            replacement: preFetchList,
-            paths: ['./app/worker.js'],
-            recursive: false,
-            silent: true
-        });
-    };
-
     var unique = function(array) {
         return array.filter(function(item, pos) {
             return array.indexOf(item) === pos;
@@ -500,16 +488,6 @@ module.exports = function (grunt) {
     grunt.registerTask('dev', ['build', 'tests', 'rename', 'preprocess:web']);
     grunt.registerTask('chrome', ['build', 'tests:chrome', 'uglify-and-rename', 'preprocess:chrome']);
     grunt.registerTask('android', ['build', 'tests:android', 'uglify-and-rename', 'preprocess:android']);
-
-    grunt.registerTask('pre-fetch', 'Generate files to pre-fetch for service worker', function() {
-            var preFetchList = [];
-            var preFetchDirs = ['./app/lib', './app/images', './app/home', './app/registration', './app/i18n/home', './app/i18n/registration'];
-            for (var i in preFetchDirs) {
-                preFetchList = preFetchList.concat(getFiles(preFetchDirs[i], preFetchList));
-            }
-            updatePrefetchList(unique(preFetchList));
-        }
-    );
 
     grunt.registerTask('bower-install', 'install dependencies using bower', function () {
         var exec = require('child_process').exec;
