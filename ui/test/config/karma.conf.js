@@ -65,7 +65,8 @@ module.exports = function (config) {
             'app/common/**/offline/chrome/*.js',
             'app/common/**/offline/android/*.js',
             'test/unit/**/offline/android/*.js',
-            'test/unit/**/offline/chrome/*.js'
+            'test/unit/**/offline/chrome/*.js',
+            'app/common/offline/dbservices/dao/offlineDbService.js'
         ],
         reporters: ['junit', 'progress', 'coverage'],
         preprocessors: {

@@ -7,13 +7,15 @@ angular.module('bahmni.common.offline')
 
 
         var createPatient = function (postRequest, requestType) {
+            var deferred = $q.defer();
             var uuid = postRequest.patient.uuid;
-            return insertPatientData(postRequest, requestType)
+            insertPatientData(postRequest, requestType)
                 .then(function () {
-                    return getPatientByUuid(uuid).then(function (result) {
-                        return {data: result};
+                    getPatientByUuid(uuid).then(function (result) {
+                        deferred.resolve({data: result});
                     })
                 });
+            return deferred.promise;
         };
 
         var getPatientByUuid = function (uuid) {
