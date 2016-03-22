@@ -576,15 +576,12 @@ angular.module('bahmni.clinical')
             var setUpOrderSetTransactionalData = function (orderSetMember) {
                 orderSetMember.orderTemplateMetaData = orderSetMember.orderTemplate;
                 orderSetMember.orderTemplate = JSON.parse(orderSetMember.orderTemplate);
-                putCalculatedDose(orderSetMember.orderTemplate).then(function (orderTemplate) {
-                    orderSetMember.orderTemplate = orderTemplate;
-                    orderTemplate.concept = {
-                        name: orderSetMember.concept.display,
-                        uuid: orderSetMember.concept.uuid
-                    };
-                    deleteDrugIfEmpty(orderTemplate);
-                    return orderTemplate;
-                });
+                orderSetMember.orderTemplate.concept = {
+                    name: orderSetMember.concept.display,
+                    uuid: orderSetMember.concept.uuid
+                };
+                deleteDrugIfEmpty(orderSetMember.orderTemplate);
+                putCalculatedDose(orderSetMember.orderTemplate);
             };
 
             $scope.addOrderSet = function (orderSet) {

@@ -1,7 +1,7 @@
 'use strict';
 
 (function () {
-    var mapDrug = function (drug) {
+    var mapResult = function (drug) {
         return {
             'drug': {
                 'name': drug.name,
@@ -11,6 +11,15 @@
             'value': drug.name
         }
     };
+    var selectDrug = function (orderSetMembers, index, selectedTemplate) {
+        orderSetMembers[index].orderTemplate.drug = selectedTemplate.drug;
+    };
+    var deleteDrugIfDrugNameIsEmpty = function (orderSetMembers, index) {
+        var orderTemplate = orderSetMembers[index].orderTemplate;
+        if (!orderTemplate.drug.name) {
+            orderTemplate.drug = {};
+        }
+    };
 
     var $inject = ['$scope', 'drugService'];
     var OrderTemplateController = function ($scope, drugService) {
@@ -18,16 +27,15 @@
             return drugService.search(request.term, drugConceptUuid);
         };
         $scope.getDrugResults = function () {
-            return _.partial(_.map, _, mapDrug);
+            return _.partial(_.map, _, mapResult);
         };
         $scope.getDrugsOfAConcept = function (concept) {
             return _.partial(search, _, concept.uuid);
         };
         $scope.onSelectOfDrug = function (index) {
-            return function (selectedDrug) {
-                $scope.orderSet.orderSetMembers[index].orderTemplate.drug = selectedDrug.drug;
-            };
+            return _.partial(selectDrug, $scope.orderSet.orderSetMembers, index, _);
         };
+        $scope.onChange = _.partial(deleteDrugIfDrugNameIsEmpty, $scope.orderSet.orderSetMembers, _);
     };
 
     OrderTemplateController.$inject = $inject;

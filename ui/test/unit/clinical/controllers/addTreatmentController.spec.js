@@ -179,14 +179,20 @@ describe("AddTreatmentController", function () {
                         "uuid": "7b375220-50c9-4193-a238-33a588caa0f3",
                         "orderTemplate": "{\"drug\":{\"name\":\"Paracetamol 500mg\",\"uuid\":\"d9c230a5-89d8-4e4d-b08b-2af3b1234c80\",\"form\":\"Tablet\"},\"dosingInstructions\":{\"dose\":2,\"frequency\":\"Twice a day\",\"doseUnits\":\"Capsule(s)\",\"route\":\"Intramuscular\"},\"duration\":2,\"durationUnits\":\"Day(s)\",\"administrationInstructions\":\"Before meals\"}",
                         "sortWeight": 1,
-                        "retired": false
+                        "retired": false,
+                        "concept": {
+                            "name": "Paracetamol"
+                        }
                     },
                     {
                         "orderSetMemberId": 5,
                         "uuid": "6a204704-e18b-457a-9ed3-da2ef57524dd",
                         "orderTemplate": "{\"drug\":{\"name\":\"Aspirin 75mg\",\"uuid\":\"49f0c5c2-4738-4382-9928-69fd330d4624\",\"form\":\"Tablet\"},\"dosingInstructions\":{\"dose\":1,\"doseUnits\":\"Tablet(s)\",\"frequency\":\"Twice a day\",\"route\":\"Nasal\"},\"duration\":1,\"durationUnits\":\"Day(s)\",\"administrationInstructions\":\"Before meals\"}",
                         "sortWeight": 2,
-                        "retired": false
+                        "retired": false,
+                        "concept": {
+                            "name": "Rifampacin"
+                        }
                     }
                 ],
                 "retired": false
