@@ -20,6 +20,7 @@ Bahmni.Common.Domain.AttributeTypeMapper = (function () {
                 uuid: mrsAttributeType.uuid,
                 sortWeight: mrsAttributeType.sortWeight,
                 name: mrsAttributeType.name,
+                fullySpecifiedName: mrsAttributeType.name,
                 description: mrsAttributeType.description || mrsAttributeType.name,
                 format: mrsAttributeType.format || mrsAttributeType.datatypeClassname,
                 answers: [],
@@ -31,17 +32,21 @@ Bahmni.Common.Domain.AttributeTypeMapper = (function () {
             if (mrsAttributeType.concept && mrsAttributeType.concept.answers) {
                 angular.forEach(mrsAttributeType.concept.answers, function(mrsAnswer) {
                     var displayName = mrsAnswer.display;
+                    var fullySpecifiedName = mrsAnswer.display;
                     if (mrsAnswer.names && mrsAnswer.names.length == 2) {
                         if (mrsAnswer.name.conceptNameType == 'FULLY_SPECIFIED') {
                             if (mrsAnswer.names[0].display == displayName) {
                                 displayName = mrsAnswer.names[1].display;
+                                fullySpecifiedName = mrsAnswer.names[0].display;
                             }
                             else {
                                 displayName = mrsAnswer.names[0].display;
+                                fullySpecifiedName = mrsAnswer.names[1].display;
                             }
                         }
                     }
                     attributeType.answers.push({
+                        fullySpecifiedName: fullySpecifiedName,
                         description: displayName,
                         conceptId: mrsAnswer.uuid
                     });

@@ -74,6 +74,10 @@ Bahmni.Registration.PatientConfig = (function () {
             return this.patientAttributesSections;
         },
 
+        getOrderedPatientAttributesSections: function(){
+            return _.sortBy(this.patientAttributesSections,'order');
+        },
+
         splitAsRows: function (attributes) {
             var attributeRows = [];
             var row = [];

@@ -91,7 +91,7 @@ angular.module('bahmni.common.conceptSet')
 
                 var getCodedAnswerWithDefaultAnswerString = function (defaults, groupMember) {
                     var possibleAnswers = groupMember.possibleAnswers;
-                    var defaultAnswer = defaults[groupMember.label];
+                    var defaultAnswer = defaults[groupMember.concept.name];
                     var defaultCodedAnswer;
                     if (defaultAnswer instanceof Array) {
                         defaultCodedAnswer = [];

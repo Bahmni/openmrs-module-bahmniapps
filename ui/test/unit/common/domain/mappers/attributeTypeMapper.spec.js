@@ -168,10 +168,12 @@ describe('AttributeTypeMapper', function () {
             format: "org.openmrs.Concept",
             answers: [
                 {
+                    fullySpecifiedName: "OBC",
                     description: "OBC",
                     conceptId: "0a83bc2c-1481-11e3-937b-0800271c1b75"
                 },
                 {
+                    fullySpecifiedName: "General",
                     description: "General",
                     conceptId: "0a843350-1481-11e3-937b-0800271c1b75"
                 }

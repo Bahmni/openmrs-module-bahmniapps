@@ -39,7 +39,7 @@ angular.module('bahmni.registration')
                 var setDefaultConcept = function(personAttributeType) {
                     var defaultAnswer = defaults[personAttributeType.name];
                     var isDefaultAnswer = function(answer) {
-                        return answer.description === defaultAnswer;
+                        return answer.fullySpecifiedName === defaultAnswer;
                     };
 
                     _.chain(personAttributeType.answers).filter(isDefaultAnswer).each(function(answer) {

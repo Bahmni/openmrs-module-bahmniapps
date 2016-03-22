@@ -73,7 +73,7 @@ describe('CreatePatientController', function() {
             format: "org.openmrs.Concept",
             answers: [{
                 conceptId: "c2107f30-3f10-11e4-adec-0800271c1b75",
-                description: "Uneducated"
+                fullySpecifiedName: "Uneducated"
             }, {
                 conceptId: "c211442b-3f10-11e4-adec-0800271c1b75",
                 description: "5th Pass and Below"
