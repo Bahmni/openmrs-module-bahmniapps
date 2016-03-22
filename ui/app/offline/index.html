@@ -7,16 +7,14 @@
         <meta name="HandheldFriendly" content="true">
         <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=2.0, user-scalable=yes, minimal-ui" />
         <meta name="apple-mobile-web-app-capable" content="yes" />
-        <link rel="shortcut icon" type="image/x-icon" href="favicon.ico">
-        <link rel="stylesheet" href="lib/jquery/jquery-ui-1.10.4.custom.min.css">
 
-        <!-- build:css home.min.css -->
-        <link rel="stylesheet" href="styles/home.css"/>
+        <!-- build:css offline.min.css -->
+        <link rel="stylesheet" href="../styles/offline.css"/>
         <!-- endbuild -->
     </head>
     <body>
         <div class="reg-wrapper">
-            <div ng-app="bahmni.yay">
+            <div ng-app="bahmni.offline">
                 <div ui-view id="view-content"></div>
             </div>
         </div>
@@ -32,7 +30,7 @@
         <script src="../components/lovefield/dist/lovefield.min.js"></script>
 
 
-        <!-- build:js home.min.js -->
+        <!-- build:js offline.min.js -->
         <script src="../common/constants.js"></script>
 
 
@@ -75,10 +73,12 @@
         <script src="../common/offline/scheduledSync.js"></script>
 
         <script src="app.js"></script>
+        <!-- endbuild -->
+
         <div class="mask">
             <div class="overlay">
-                <p class="message">Offline content is being synced. If you are here for a long time and not redirected automatically,<a href="javascript:void(0)" onclick="redirect()">click here</a>.</p>
-                <img src="/bahmni/images/spinner.gif" style="margin-top: 20px;"/>
+                <p class="message">Offline content is being synced</p>
+                <img src="../images/spinner.gif" style="margin-top: 20px;"/>
             </div>
         </div>
     </body>

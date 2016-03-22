@@ -9,6 +9,9 @@ angular.module('bahmni.common.domain')
                     return $q.when(obj);
                 }
                 return offlineDbService.getReferenceData('LoginLocations').then(function (loginLocations) {
+                    if(!loginLocations){
+                        return $q.reject("Offline data not set up");
+                    }
                     return {"data": loginLocations.value};
                 });
             };

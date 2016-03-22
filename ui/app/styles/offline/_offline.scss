@@ -1,0 +1,30 @@
+
+$column-width: 100;
+$gutter-width: 0;
+$columns: 12;
+$total-width: 100%;
+
+
+@import "compass";
+
+.mask {
+  position: fixed;
+  left: 0px;
+  top: 0px;
+  bottom: 0px;
+  right: 0px;
+  background: rgba(0, 0, 0, 0.8);
+}
+.overlay {
+  position: absolute;
+  left: 0px;
+  top: 0px;
+  bottom: 0px;
+  right: 0px;
+  margin: auto;
+  color: white;
+  text-align: center;
+}
+.message {
+  margin-top: 20px;
+}

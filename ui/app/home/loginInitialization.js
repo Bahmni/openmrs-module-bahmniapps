@@ -10,9 +10,11 @@ angular.module('bahmni.home')
                     function (response) {
                         deferrable.resolve({locations: response.data.results})
                     },
-                    function () {
+                    function (response) {
                         deferrable.reject();
-                        messagingService.showMessage('error', 'Unable to fetch locations. Please reload the page.');
+                        if(response.status)
+                            response = 'Unable to fetch locations. Please reload the page.';
+                        messagingService.showMessage('error', response);
                     }
                 );
                 return deferrable.promise;

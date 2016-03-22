@@ -46,26 +46,13 @@ angular.module('bahmni.home', ['ui.router', 'httpErrorInterceptor', 'bahmni.comm
                 templateUrl: 'views/login.html',
                 controller: 'LoginController',
                 resolve: {
-                    initialData: function(loginInitialization){
-                        return loginInitialization()
-                    },
                     offlineDb: function (offlineDbInitialization) {
                         return offlineDbInitialization();
+                    },
+                    initialData: function(loginInitialization,referenceDataDbService, offlineDb){
+                        referenceDataDbService.init(offlineDb);
+                        return loginInitialization()
                     }
-                }
-            }).state('offline',
-            {
-                url: '/',
-                templateUrl: '../index.html'
-            }).state('device',
-            {
-                url: "/device/:deviceType",
-                controller: function ($stateParams, $rootScope, $state, offlineService) {
-                    if ($stateParams.deviceType === 'chrome-app' || $stateParams.deviceType === 'android') {
-                        offlineService.setAppPlatform($stateParams.deviceType);
-                    }
-                    $rootScope.loginDevice = $stateParams.deviceType;
-                    $state.go('login');
                 }
             });
         $httpProvider.defaults.headers.common['Disable-WWW-Authenticate'] = true;
