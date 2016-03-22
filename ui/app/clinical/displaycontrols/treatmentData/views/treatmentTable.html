@@ -10,7 +10,7 @@
                 <th colspan="4" ng-if="::isOtherActiveSection(drugOrderSection.visitDate)">{{::drugOrderSection.visitDate}}</th>
             </thead>
             <tbody treatment-table-row drug-order="::drugOrder" params="::params" ng-repeat="drugOrder in ::drugOrderSection.drugOrders | orderBy: '::effectiveStartDate'"
-                   ng-class="::{'drug-discontinued': drugOrder.isDiscontinuedOrStopped()}" ng-if="drugOrderSection.drugOrders.length > 0">
+                   ng-class="::{'drug-discontinued': drugOrder.isDiscontinuedOrStopped()}" ng-if="::drugOrderSection.drugOrders.length > 0">
             </tbody>
         </table>
     </section>

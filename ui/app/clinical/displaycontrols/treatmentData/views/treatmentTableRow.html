@@ -1,13 +1,13 @@
-<tr ng-class="::{active: drugOrder.isActive(), 'test-notes-parent': drugOrder.additionalInstructions, 'notes-open': drugOrder.showDetails}" >
+<tr ng-class="::{active: drugOrder.isActive(), 'test-notes-parent': (drugOrder.additionalInstructions || ''), 'notes-open': (drugOrder.showDetails == true)}" >
     <td class="drug" ng-class="::{'strike-text':drugOrder.isDiscontinuedOrStopped(), 'active-drug': drugOrder.isActive(), 'scheduled-drug': drugOrder.isScheduled()}">
-        <span >{{::drugOrder.getDrugOrderName(params.showDrugForm)}}</span>
+        <span >{{::drugOrder.getDrugOrderName((params.showDrugForm == true))}}</span>
         <span ng-repeat="orderAttribute in drugOrder.orderAttributes" ng-if="::orderAttribute.value == 'true'" ng-class="'drug-attr-highlight'">
             {{::orderAttribute.name.substring(0,1)}}
         </span>
     </td>
     <td class="dosage" >
-        <span ng-if="::params.showRoute" ng-class="::{'strike-text':drugOrder.isDiscontinuedOrStopped()}">{{::drugOrder.getDescriptionWithoutDuration()}}</span>
-        <span ng-if="::!params.showRoute" ng-class="::{'strike-text':drugOrder.isDiscontinuedOrStopped()}">{{::drugOrder.getDescriptionWithoutRouteAndDuration()}}</span>
+        <span ng-if="::(params.showRoute == true)" ng-class="::{'strike-text':drugOrder.isDiscontinuedOrStopped()}">{{::drugOrder.getDescriptionWithoutDuration()}}</span>
+        <span ng-if="::!(params.showRoute == true)" ng-class="::{'strike-text':drugOrder.isDiscontinuedOrStopped()}">{{::drugOrder.getDescriptionWithoutRouteAndDuration()}}</span>
         <span>{{::drugOrder.getSpanDetails()}}</span>
         <span ng-if="::drugOrder.isDiscontinuedOrStopped()" ng-class="::{'discontinued-text':drugOrder.isDiscontinuedOrStopped()}">Stopped on {{::drugOrder.effectiveStopDate | bahmniDate}}</span>
     </td>
@@ -15,7 +15,7 @@
         <span class="fr">{{::drugOrder.effectiveStartDate | bahmniDate}}</span>
     </td>
 
-    <td class="toggle-btn" toggle="drugOrder.showDetails" ng-if="::(params.showDetailsButton && !drugOrder.additionalInstructions)">
+    <td class="toggle-btn" toggle="drugOrder.showDetails" ng-if="::((params.showDetailsButton == true) && !drugOrder.additionalInstructions)">
         <button class="toggle fr">
             <i class="fa fa-angle-down"></i>
             <i class="fa fa-angle-up"></i>

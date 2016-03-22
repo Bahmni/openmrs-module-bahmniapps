@@ -354,3 +354,19 @@ u, .add-drug-btninput[value]:first-letter {
 
 }
 
+
+.toggle-container{
+  &.active{
+    .fa-caret-right{
+      display: none;
+    }
+    .fa-caret-down{
+      display: inline;
+    }
+  }
+  .fa-caret-down{
+    display: none;
+  }
+
+}
+
