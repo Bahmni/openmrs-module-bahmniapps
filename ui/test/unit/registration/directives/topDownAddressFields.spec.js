@@ -16,6 +16,7 @@ describe('TopDownAddressFieldsDirectiveController', function () {
         inject(function ($controller, $rootScope) {
             scope = $rootScope.$new();
             scope.address = {};
+            scope.$parent.patient = {};
             scope.addressLevels = [
                 {"name": "State", "addressField": "stateProvince", "required": false},
                 {"name": "District", "addressField": "countyDistrict", "required": false},
@@ -162,4 +163,58 @@ describe('TopDownAddressFieldsDirectiveController', function () {
         });
 
     });
+
+    describe("It should set location id", function(){
+        beforeEach(setupController);
+
+        it("when any of the address fields are selected", function(){
+
+            scope.addressFieldSelected("countyDistrict")({
+                addressField: {
+                    "name": "Bagerhat",
+                    "uuid": "e12e5566-73b7-476e-8bc1-d6bce6df7fb5",
+                    "userGeneratedId" : "1234"
+                }
+            });
+
+            expect(scope.$parent.patient.addressCode).toBe("1234");
+        });
+
+        it("to parent location id when child location is cleared", function(){
+
+            expect(scope.$parent.patient.addressCode).toBe(undefined);
+
+            scope.addressFieldSelected("stateProvince")({
+                addressField: {
+                    "name": "Barisal",
+                    "uuid": "17d5d37b-7b74-4053-82ba-d041691f0585",
+                    "userGeneratedId": "10"
+                }
+            });
+
+            expect(scope.$parent.patient.addressCode).toBe("10");
+
+            scope.addressFieldSelected("countyDistrict")({
+                addressField: {
+                    "name": "Barguna",
+                    "uuid": "035880e8-8a3a-4efa-93a6-bcd9684935ac",
+                    "userGeneratedId": "1004"
+                }
+            });
+
+            expect(scope.$parent.patient.addressCode).toBe("1004");
+
+            scope.addressFieldSelected("address3")({
+                addressField: {
+                    "name": "Patharghata",
+                    "uuid": "035880e8-8a3a-4efa-93a6-bcd9684935ac",
+                    "userGeneratedId": "100485"
+                }
+            });
+
+            scope.clearFields("countyDistrict");
+
+            expect(scope.$parent.patient.addressCode).toBe("10");
+        })
+    })
 });
