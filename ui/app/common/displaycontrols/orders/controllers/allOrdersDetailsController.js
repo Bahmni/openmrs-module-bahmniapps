@@ -4,6 +4,6 @@ angular.module('bahmni.common.displaycontrol.orders')
         function ($scope) {
             $scope.patient = $scope.ngDialogData.patient;
             $scope.section = $scope.ngDialogData.section;
-            $scope.title = $scope.section.title || $scope.section.translationKey;
+            $scope.title = $scope.section.title;
             $scope.config = $scope.ngDialogData.section ? $scope.ngDialogData.section.expandedViewConfig : {};
         }]);
