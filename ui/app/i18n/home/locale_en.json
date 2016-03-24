@@ -13,5 +13,5 @@
     "HEADER_LABEL_SYNC_KEY": "Sync",
     "MESSAGE_DIALOG_OPTION_COPY" : "Copy Error",
     "MESSAGE_DIALOG_OPTION_OKAY": "OK",
-    "MESSAGE_START_OPENMRS": "Please start OpenMRS or Wait until its startup is complete, then refresh the page"
+    "MESSAGE_START_OPENMRS": "The OpenMRS service is currently unavailable. Please check if the service is started and refresh the page once it is up."
 }
