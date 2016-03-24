@@ -13,7 +13,7 @@ angular.module('bahmni.home')
                     function (response) {
                         deferrable.reject();
                         if(response.status)
-                            response = 'Unable to fetch locations. Please reload the page.';
+                            response = 'MESSAGE_START_OPENMRS';
                         messagingService.showMessage('error', response);
                     }
                 );
