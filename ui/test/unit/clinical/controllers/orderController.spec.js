@@ -300,6 +300,14 @@ describe("OrderController", function () {
         })
     });
 
+    describe("search tests and panels", function () {
+        it("reset search string", function () {
+            scope.search.string = "random";
+            scope.resetSearchString();
+            expect(scope.search.string).toBe('');
+        });
+    });
+
 
     var allOrderables = {
             "\'Lab Samples\'": {

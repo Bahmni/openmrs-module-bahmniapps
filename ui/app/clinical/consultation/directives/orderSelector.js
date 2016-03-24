@@ -10,7 +10,15 @@ angular.module('bahmni.clinical')
             };
 
             $scope.filterByConceptClass = function (test) {
-                return test.conceptClass.name == $scope.group.name;
+                return test.conceptClass.name === $scope.group.name;
+            };
+
+            var filterBySearchString = function (testName) {
+                return _.includes(_.lowerCase(testName.name), _.lowerCase($scope.search.string));
+            };
+
+            $scope.filterBySearchString = function (test) {
+                return _.some(test.names, filterBySearchString);
             };
         };
 

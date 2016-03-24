@@ -114,12 +114,29 @@
         background: #669999;
         position: relative;
     }
+    .search-container{
+        @include clearfix();
+        margin : 1%;
+        position:relative;
+        &.form .form-field .field-value input[type="text"]{
+            padding-right: 22px;
+        }
+        label.cross-button{
+            color: #9D0101;
+            position: absolute;
+            right: 1px;
+            top: -3px;
+            background: none;
+            border: none;
+            font-size: 18px;
+        }
+    }
     .dashboard-section-wrapper {
         margin: 0;
         .orders-section-left {
             width: 25%;
             float: left;
-            margin: 3% 0 2% 10px;
+            margin: 0% 0 2% 10px;
             .multi-select-lab-tests {
                 width: 96%;
                 ul {
@@ -144,7 +161,7 @@
         .orders-section-right {
             width: 74%;
             float: right;
-            margin-top: 2%;
+            margin-top: 0%;
             @media (max-width: 1200px) {
                 width: 72%;
             }
