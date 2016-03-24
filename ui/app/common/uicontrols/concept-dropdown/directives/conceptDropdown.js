@@ -50,7 +50,8 @@
                 defaultConcept: '=',
                 onChange: '&',
                 onInvalidClass: '@',
-                isValid: '='
+                isValid: '=',
+                ngDisabled:'='
             },
             templateUrl: '../common/uicontrols/concept-dropdown/views/conceptDropdown.html'
         }

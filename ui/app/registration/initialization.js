@@ -69,6 +69,24 @@ angular.module('bahmni.registration').factory('initialization',
             });
         };
 
+        var loadFormConditions = function () {
+            var script;
+            var isOfflineApp = offlineService.isOfflineApp();
+            if(isOfflineApp){
+                if (offlineService.isAndroidApp()) {
+                    offlineDbService = androidDbService;
+                }
+                offlineDbService.getConfig("clinical").then(function(config){
+                    script = config.value['formConditions.js'];
+                    Bahmni.Common.Util.DynamicResourceLoader.includeJs(script, isOfflineApp);
+                });
+            }
+            else{
+                var baseUrl = appService.configBaseUrl();
+                Bahmni.Common.Util.DynamicResourceLoader.includeJs(baseUrl + 'clinical/formConditions.js');
+            }
+        };
+
         return function(){
             return spinner.forPromise(authenticator.authenticateUser()
                 .then(initApp)
@@ -76,7 +94,9 @@ angular.module('bahmni.registration').factory('initialization',
                 .then(initAppConfigs)
                 .then(mapRelationsTypeWithSearch)
                 .then(loggedInLocation)
-                .then(loadValidators(appService.configBaseUrl(), "registration")));
+                .then(loadValidators(appService.configBaseUrl(), "registration"))
+                .then(loadFormConditions)
+            );
         }
     }]
 );
