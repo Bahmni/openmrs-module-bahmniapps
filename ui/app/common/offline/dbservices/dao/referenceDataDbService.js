@@ -18,7 +18,6 @@ angular.module('bahmni.common.offline')
 
         var insertReferenceData = function(referenceDataKey, data, eTag){
             var referenceData = db.getSchema().table('reference_data');
-            var promise;
 
             var row = referenceData.createRow({
                 key: referenceDataKey,
@@ -30,13 +29,10 @@ angular.module('bahmni.common.offline')
                 switch (referenceDataKey) {
                     case 'PersonAttributeType':
                         return patientAttributeDbService.insertAttributeTypes(db, data.results);
-                        break;
                     case 'LoginLocations':
                         return locationDbService.insertLocations(db, data.results);
-                        break;
                     default :
                         return;
-                        break;
                 }
             });
         };

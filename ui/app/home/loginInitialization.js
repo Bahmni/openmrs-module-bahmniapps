@@ -12,8 +12,9 @@ angular.module('bahmni.home')
                     },
                     function (response) {
                         deferrable.reject();
-                        if(response.status)
+                        if(response.status) {
                             response = 'MESSAGE_START_OPENMRS';
+                        }
                         messagingService.showMessage('error', response);
                     }
                 );

@@ -36,14 +36,16 @@ angular.module('bahmni.common.offline')
                                 if(response.status == 200) {
                                     var eTag = response.headers().etag;
                                     return offlineDbService.insertReferenceData(referenceData, response.data, eTag).then(function(){
-                                        if(x == length)
+                                        if(x == length) {
                                             deferred.resolve({});
+                                        }
                                     });
                                 }
                             }).catch(function(){
                                 x++;
-                                if(x == length)
+                                if(x == length) {
                                     deferred.resolve({});
+                                }
                             });
                         });
                     });

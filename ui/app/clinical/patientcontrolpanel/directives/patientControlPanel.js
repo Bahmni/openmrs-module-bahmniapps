@@ -60,12 +60,6 @@ angular.module('bahmni.common.patient')
             }
         };
 
-        var getStartDateTime = function () {
-            return $scope.visitHistory.visits.filter(function (visit) {
-                return visit.uuid === $scope.visit.uuid;
-            })[0].startDatetime;
-        };
-
         $scope.links = getLinks();
         $rootScope.$on('$stateChangeSuccess', function() {
             $scope.links = getLinks($state.current.name);

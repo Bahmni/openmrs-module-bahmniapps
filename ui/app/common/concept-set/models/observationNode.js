@@ -388,9 +388,9 @@ Bahmni.ConceptSet.ObservationNode.prototype = {
     getFreeTextObs: function () {
         if (!this.freeTextPrimaryObs) {
             this.freeTextPrimaryObs = this.groupMembers.filter(function (member) {
-                return (((member.concept.conceptClass.name === Bahmni.Common.Constants.miscConceptClassName)
-                || (member.concept.conceptClass === Bahmni.Common.Constants.miscConceptClassName))
-                && (member.concept.dataType !== "Coded"));
+                return (((member.concept.conceptClass.name === Bahmni.Common.Constants.miscConceptClassName) ||
+                (member.concept.conceptClass === Bahmni.Common.Constants.miscConceptClassName)) &&
+                (member.concept.dataType !== "Coded"));
             })[0];
         }
         return this.freeTextPrimaryObs;
@@ -399,9 +399,9 @@ Bahmni.ConceptSet.ObservationNode.prototype = {
     getCodedObs: function () {
         if (!this.codedPrimaryObs) {
             this.codedPrimaryObs = this.groupMembers.filter(function (member) {
-                return (((member.concept.conceptClass.name === Bahmni.Common.Constants.miscConceptClassName)
-                || (member.concept.conceptClass === Bahmni.Common.Constants.miscConceptClassName))
-                && (member.concept.dataType === "Coded"));
+                return (((member.concept.conceptClass.name === Bahmni.Common.Constants.miscConceptClassName) ||
+                (member.concept.conceptClass === Bahmni.Common.Constants.miscConceptClassName)) &&
+                (member.concept.dataType === "Coded"));
             })[0];
         }
         return this.codedPrimaryObs;

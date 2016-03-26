@@ -1,3 +1,5 @@
+'use strict';
+
 angular.module("bahmni.common.offline")
     .service("eventQueue", ['$q', function($q) {
         var hustle;

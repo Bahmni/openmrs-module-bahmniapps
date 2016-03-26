@@ -10,10 +10,12 @@ Bahmni.Common.Obs.ObservationMapper = function () {
 
     var mapObservations = function (bahmniObservations, allConceptsConfig, dontSortByObsDateTime) {
         var mappedObservations = [];
-        if(dontSortByObsDateTime)
+        if(dontSortByObsDateTime) {
             bahmniObservations = _.flatten(bahmniObservations);
-        else
-            bahmniObservations =  Bahmni.Common.Obs.ObservationUtil.sortSameConceptsWithObsDateTime(bahmniObservations);
+        }
+        else {
+            bahmniObservations = Bahmni.Common.Obs.ObservationUtil.sortSameConceptsWithObsDateTime(bahmniObservations);
+        }
         $.each(bahmniObservations, function (i, bahmniObservation) {
             var conceptConfig = allConceptsConfig[bahmniObservation.concept.name] || [];
             var observation = new Bahmni.Common.Obs.Observation(bahmniObservation, conceptConfig);

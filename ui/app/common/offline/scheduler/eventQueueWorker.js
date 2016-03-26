@@ -1,18 +1,20 @@
+'use strict';
+
 angular.module("bahmni.common.offline")
     .service("eventQueueWorker", ['$q', 'eventQueue', 'syncService', function($q, eventQueue, syncService) {
         var self = this;
 
         var sync = function(event) {
             return syncService.sync(event)
-        }
+        };
 
         var removeFromQueue = function(event) {
             return eventQueue.removeFromQueue(event);
-        }
+        };
 
         var handleErrorInSync = function(event) {
             return eventQueue.addToErrorQueue(event);
-        }
+        };
 
         var pushEvents = function() {
             return eventQueue.getCount().then(function(count) {
@@ -23,7 +25,7 @@ angular.module("bahmni.common.offline")
                     .then(pushEvents);
                 }
             });
-        }
+        };
 
         this.execute = function() {
             this.paused = false;

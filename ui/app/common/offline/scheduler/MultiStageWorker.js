@@ -17,7 +17,7 @@ Bahmni.Common.Offline.MultiStageWorker = function($q) {
         var index = self.stages.indexOf(self.currentlyExecutingStage);
         index = index < 0 ? 0 : index;
         return self.stages.slice(index);
-    }
+    };
 
     this.addStage = function(worker) {
         self.stages.push(worker);

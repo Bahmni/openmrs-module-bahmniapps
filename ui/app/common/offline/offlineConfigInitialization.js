@@ -27,14 +27,16 @@ angular.module('bahmni.common.offline')
                                 if (result.status == 200) {
                                     var eTag = result.headers().etag;
                                     return offlineDbService.insertConfig(appName, result.data, eTag).then(function(){
-                                        if(x ==length)
+                                        if(x ==length) {
                                             deferred.resolve({});
+                                        }
                                     });
                                 }
                             }).catch(function (result) {
                                 x++;
-                                if(x ==length)
+                                if(x ==length) {
                                     deferred.resolve({});
+                                }
                             });
                         });
                     });

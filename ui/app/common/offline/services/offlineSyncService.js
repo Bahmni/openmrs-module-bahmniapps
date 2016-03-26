@@ -38,19 +38,23 @@ angular.module('bahmni.common.offline')
             };
 
             var checkParents = function(result, addressLevel, loginLocation){
-                if(!result.parent)
+                if(!result.parent) {
                     return true;
-                if(result.parent.name != loginLocation[addressLevel.addressField])
+                }
+                if(result.parent.name != loginLocation[addressLevel.addressField]) {
                     return false;
-                if(result.parent.name == loginLocation[addressLevel.addressField])
+                }
+                if(result.parent.name == loginLocation[addressLevel.addressField]) {
                     return checkParents(result.parent, getParentAddressLevel(addressLevel.addressField), loginLocation)
+                }
             };
 
             var getParentAddressLevel = function (addressField){
                 var parent = null;
                 for(var addrLevel=0; addrLevel < addressLevels.length; addrLevel++){
-                    if(addressLevels[addrLevel].addressField == addressField)
+                    if(addressLevels[addrLevel].addressField == addressField) {
                         return parent;
+                    }
                     parent = addressLevels[addrLevel];
                 }
             };

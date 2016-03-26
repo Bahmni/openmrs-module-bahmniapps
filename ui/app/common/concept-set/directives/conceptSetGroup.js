@@ -3,11 +3,10 @@
 angular.module('bahmni.common.conceptSet')
     .controller('ConceptSetGroupController', ['$scope', 'appService', 'contextChangeHandler', 'spinner',
         'conceptSetService', '$rootScope', 'sessionService', 'encounterService', 'treatmentConfig', 'messagingService',
-        'retrospectiveEntryService', 'userService', 'conceptSetUiConfigService', '$timeout', 'clinicalAppConfigService', '$stateParams', '$element',
+        'retrospectiveEntryService', 'userService', 'conceptSetUiConfigService', '$timeout', 'clinicalAppConfigService', '$stateParams',
         function ($scope, appService, contextChangeHandler, spinner, conceptSetService, $rootScope, sessionService,
                   encounterService, treatmentConfig, messagingService, retrospectiveEntryService, userService,
-                  conceptSetUiConfigService, $timeout, clinicalAppConfigService, $stateParams, $element) {
-
+                  conceptSetUiConfigService, $timeout, clinicalAppConfigService, $stateParams) {
             var conceptSetUIConfig = conceptSetUiConfigService.getConfig();
             $scope.togglePref = function (conceptSet, conceptName) {
                 $rootScope.currentUser.toggleFavoriteObsTemplate(conceptName);

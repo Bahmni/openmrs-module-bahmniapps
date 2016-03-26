@@ -76,7 +76,7 @@ angular.module('bahmni.common.displaycontrol.bacteriologyresults')
                     specimen.hasIllegalDateCollected = !specimen.dateCollected;
                     specimen.hasIllegalType = !specimen.type;
                     specimen.hasIllegalTypeFreeText = !specimen.typeFreeText;
-                    var observationFilter = new Bahmni.Common.Domain.ObservationFilter();
+
                     if (specimen.isDirty()){
                         messagingService.showMessage('error', "{{'CLINICAL_FORM_ERRORS_MESSAGE_KEY' | translate }}");
                     }else{

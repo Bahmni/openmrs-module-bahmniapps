@@ -73,10 +73,12 @@ angular.module('bahmni.common.offline')
 
             var insertReferenceData = function(key, data, eTag){
                 var referenceData;
-                if(key == "LocaleList" || (key == "RelationshipTypeMap" && data==""))
+                if(key == "LocaleList" || (key == "RelationshipTypeMap" && data=="")) {
                     referenceData = data;
-                else
+                }
+                else {
                     referenceData = JSON.stringify(data);
+                }
                 AndroidReferenceDataDbService.insertReferenceData(key, referenceData, eTag);
                 return $q.when({})
             };

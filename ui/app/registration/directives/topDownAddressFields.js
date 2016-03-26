@@ -119,8 +119,9 @@ angular.module('bahmni.registration')
                     selectedUserGeneratedIds[childField] = null;
                 }
             });
-            if(!_.isEmpty($scope.address[fieldName]))
+            if(!_.isEmpty($scope.address[fieldName])) {
                 $scope.$parent.patient.addressCode  = selectedUserGeneratedIds[fieldName];
+            }
             else {
                 selectedUserGeneratedIds[fieldName] = null;
                 $scope.$parent.patient.addressCode = selectedUserGeneratedIds[$scope.findParentField(fieldName)];

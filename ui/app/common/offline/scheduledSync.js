@@ -1,3 +1,5 @@
+'use strict';
+
 angular.module("bahmni.common.offline")
     .service("scheduledSync", ['$q', 'scheduledJob', function($q, scheduledJob) {
             var jobInit = function() {
@@ -23,7 +25,7 @@ angular.module("bahmni.common.offline")
 
                 var job = scheduledJob.create({interval: 2000, worker: worker});
                 job.start();
-            }
+            };
 
             jobInit();
         }

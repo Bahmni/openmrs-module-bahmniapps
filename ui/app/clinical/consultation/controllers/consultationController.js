@@ -56,25 +56,6 @@ angular.module('bahmni.clinical').controller('ConsultationController',
                 return buttonClickAction($scope.availableBoards[boardIndex]);
             };
 
-            var findBoard = function(boardDetail){
-                var board = findBoardByTranslationKey(boardDetail);
-                if(!board){
-                    board = findBoardByTitle(boardDetail);
-                }
-                return board;
-            };
-
-            var findBoardByTranslationKey = function(boardDetail){
-                if(boardDetail.translationKey){
-                    return _.find($scope.availableBoards,{translationKey: boardDetail.translationKey});
-                }
-                return null;
-            };
-
-            var findBoardByTitle = function(boardDetail){
-                return _.find($scope.availableBoards,{label: boardDetail.label});
-            };
-
             $scope.gotoPatientDashboard = function () {
                 if (contextChangeHandler.execute()["allow"]) {
                     var params = {configName: $scope.configName, patientUuid: patientContext.patient.uuid, encounterUuid: undefined};
