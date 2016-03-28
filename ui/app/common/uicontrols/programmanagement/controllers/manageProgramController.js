@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('bahmni.common.uicontrols.programmanagment')
-    .controller('ManageProgramController', ['$scope', 'retrospectiveEntryService', '$window', 'programService', 'spinner', 'messagingService', '$stateParams',
-        function ($scope, retrospectiveEntryService, $window, programService, spinner, messagingService, $stateParams) {
+    .controller('ManageProgramController', ['$scope', 'retrospectiveEntryService', '$window', 'programService', 'spinner', 'messagingService', '$stateParams', '$q',
+        function ($scope, retrospectiveEntryService, $window, programService, spinner, messagingService, $stateParams, $q) {
             var DateUtil = Bahmni.Common.Util.DateUtil;
             $scope.programSelected = {};
             $scope.workflowStateSelected = {};
