@@ -100,7 +100,12 @@ Bahmni.ConceptSet.Observation.prototype = {
     },
 
     isAllowDecimal : function (){
-        return this.getAllowDecimal() === true;
+        if(this.getAllowDecimal() === false){
+            if(this.value && this.value.toString().indexOf('.') > 0){
+                return false;
+            }
+        }
+        return true;
     },
 
     isText: function () {
@@ -305,6 +310,9 @@ Bahmni.ConceptSet.Observation.prototype = {
     },
 
     isValid: function (checkRequiredFields, conceptSetRequired) {
+        if (this.isNumeric() && this.getAllowDecimal() === false){
+            return this.isAllowDecimal();
+        }
         if (this.error) {
             return false;
         }
