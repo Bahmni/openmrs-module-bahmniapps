@@ -21,6 +21,7 @@ Bahmni.Common.Domain.ConceptMapper = function () {
             lowAbsolute: openMrsConcept.lowAbsolute,
             hiNormal: openMrsConcept.hiNormal,
             handler: openMrsConcept.handler,
+            allowDecimal : openMrsConcept.allowDecimal,
             lowNormal: openMrsConcept.lowNormal,
             conceptClass: openMrsConcept.conceptClass ? openMrsConcept.conceptClass.name : null,
             answers: openMrsConcept.answers,

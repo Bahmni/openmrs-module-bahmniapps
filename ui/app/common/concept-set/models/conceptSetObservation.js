@@ -99,6 +99,10 @@ Bahmni.ConceptSet.Observation.prototype = {
         return this.getDataTypeName() === "Numeric";
     },
 
+    isAllowDecimal : function (){
+        return this.getAllowDecimal() === true;
+    },
+
     isText: function () {
         return this.getDataTypeName() === "Text";
     },
@@ -117,6 +121,10 @@ Bahmni.ConceptSet.Observation.prototype = {
 
     getDataTypeName: function () {
         return this.concept.dataType;
+    },
+
+    getAllowDecimal: function () {
+        return this.concept.allowDecimal;
     },
 
     isDateDataType: function () {
