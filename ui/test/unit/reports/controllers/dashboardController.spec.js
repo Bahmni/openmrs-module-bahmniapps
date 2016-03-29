@@ -222,5 +222,26 @@ describe("DashboardController", function () {
 
         expect(reportServiceMock.generateReport).toHaveBeenCalled();
         expect(report.reportTemplateLocation).toBeUndefined();
+    });
+
+    it("should send macroTemplate File path if macroTemplate is configured", function(){
+        var report = {
+            config: {
+                macroTemplatePath : "/xxx",
+            },
+            name: "Vitals",
+            startDate: '2015-02-01',
+            stopDate: '2015-03-01',
+            responseType: 'application/vnd.ms-excel-custom',
+        };
+        scope.reportsRequiringDateRange.push(report);
+        reportServiceMock.generateReport.and.callFake(function(reportSent) {
+            expect(reportSent.reportTemplateLocation).toBe(report.config.macroTemplatePath);
+        });
+
+        scope.runReport(report);
+
+        expect(reportServiceMock.generateReport).toHaveBeenCalled();
+        expect(report.reportTemplateLocation).toBeUndefined();
     })
 });

@@ -34,8 +34,11 @@ angular.module('bahmni.reports')
                 return;
             }
             if (report.responseType == 'application/vnd.ms-excel-custom' && !report.reportTemplateLocation) {
-                messagingService.showMessage("error", "Workbook template should be selected for generating report: " + report.name);
-                return;
+                if (!report.config.macroTemplatePath) {
+                    messagingService.showMessage("error", "Workbook template should be selected for generating report: " + report.name);
+                    return;
+                }
+                report.reportTemplateLocation = report.config.macroTemplatePath;
             }
             report.startDate = Bahmni.Common.Util.DateUtil.getDateWithoutTime(report.startDate);
             report.stopDate = Bahmni.Common.Util.DateUtil.getDateWithoutTime(report.stopDate);
