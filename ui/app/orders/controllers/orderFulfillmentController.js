@@ -38,7 +38,8 @@ app.controller('OrderFulfillmentController', ['$scope', '$rootScope', '$statePar
             numberOfVisits:$scope.config.numberOfVisits,
             obsIgnoreList:$scope.config.obsIgnoreList,
             visitUuid:$scope.visitUuid,
-            orderUuid:$scope.orderUuid
+            orderUuid:$scope.orderUuid,
+            locationUuids: $rootScope.facilityLocationUuids
         };
         return orderService.getOrders(params).then(function (response) {
             var data = response.data;
