@@ -245,7 +245,7 @@
             return this.primaryObs.hasValue();
         },
 
-        hasDuration: function () {
+        doesNotHaveDuration: function () {
             if (!this.durationObs || !this.conceptUIConfig.durationRequired) {
                 return false;
             }
@@ -280,7 +280,7 @@
             if ("Date" === this.primaryObs.getDataTypeName()) {
                 return this.primaryObs.isValidDate();
             }
-            if (this.primaryObs.hasValue() && this.hasDuration()) {
+            if (this.primaryObs.hasValue() && this.doesNotHaveDuration()) {
                 return false;
             }
             if (this.abnormalObs && this.abnormalObs.erroneousValue) {
@@ -304,11 +304,11 @@
         },
 
         isRequired: function () {
-            return this.conceptUIConfig.required || false;
+            return !!this.conceptUIConfig.required;
         },
 
         isDurationRequired: function () {
-            return this.conceptUIConfig.durationRequired || false;
+            return !!this.conceptUIConfig.durationRequired && !!this.primaryObs.value;
         },
 
         isNumeric: function () {

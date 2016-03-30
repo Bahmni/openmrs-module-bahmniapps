@@ -102,7 +102,7 @@
                      ng-class="{'duration': observation.durationObs, 'computed-field': observation.isComputedAndEditable()}">
                     <span class="for-separator fl">for</span>
                     <duration ng-model="observation.durationObs.value" disabled="!observation.primaryObs.hasValue()"
-                              illegal-value="observation.isDurationRequired() && !observation.hasDuration()"></duration>
+                              illegal-value="observation.isDurationRequired() && observation.doesNotHaveDuration()"></duration>
                 </div>
                 <div class="fl" ng-include src="'../common/concept-set/views/observationDataTypes/removeClone.html'"></div>
                 <div  ng-include src="'../common/concept-set/views/observationDataTypes/addMore.html'"></div>
