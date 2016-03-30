@@ -321,6 +321,9 @@ Bahmni.ConceptSet.ObservationNode.prototype = {
     },
 
     isValid: function (checkRequiredFields, conceptSetRequired) {
+        if (this.isNumeric() && this.getAllowDecimal() === false){
+            return this.isAllowDecimal();
+        }
         if (this.isGroup()) {
             return this._hasValidChildren(checkRequiredFields, conceptSetRequired);
         }
@@ -377,6 +380,19 @@ Bahmni.ConceptSet.ObservationNode.prototype = {
 
     isNumeric: function () {
         return this.primaryObs.getDataTypeName() === "Numeric";
+    },
+
+    getAllowDecimal: function () {
+        return this.concept.allowDecimal;
+    },
+
+    isAllowDecimal : function (){
+        if(this.getAllowDecimal() === false){
+            if(this.value && this.value.toString().indexOf('.') > 0){
+                return false;
+            }
+        }
+        return true;
     },
 
     _hasValidChildren: function (checkRequiredFields, conceptSetRequired) {
