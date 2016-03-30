@@ -3,10 +3,10 @@
 
     var constructSearchResult = function (concept, searchString) {
         var matchingName = null;
-        var conceptName = concept.name.name || concept.name;
-        if (_.lowerCase(conceptName).indexOf(_.lowerCase(searchString)) != 0) {
-            var conceptNames = _.map(concept.names, 'name');
-            matchingName = _.find(conceptNames, function (name) {
+        var conceptName = concept.displayString || concept.name.name || concept.name;
+        if (!_.includes(_.toLower(conceptName),_.toLower(searchString))) {
+            var synonyms = _.map(concept.names, 'name');
+            matchingName = _.find(synonyms, function (name) {
                 return (name !== conceptName) && name.search(new RegExp(searchString, "i")) !== -1
             });
         }

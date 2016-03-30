@@ -9,7 +9,7 @@
                 'computed-field': observation.isComputedAndEditable()
            }"
            coded-concept-name="observation.conceptUIConfig.answersConceptName"
-           default-concept="observation.codedPrimaryObs.concept"
+           default-concept="observation.getCodedConcept()"
            blur-on-select="false" focus-me="::observation.isFocused" />
 
     <div ng-if="observation.primaryObs">

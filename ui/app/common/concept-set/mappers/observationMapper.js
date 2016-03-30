@@ -141,7 +141,7 @@ Bahmni.ConceptSet.ObservationMapper = function () {
     // TODO : remove conceptUIConfig
     var newObservationNode = function (concept, savedObsNode, conceptSetConfig, mappedGroupMembers) {
         var observation = buildObservation(concept, savedObsNode, mappedGroupMembers);
-        return new Bahmni.ConceptSet.ObservationNode(observation, savedObsNode, conceptSetConfig);
+        return new Bahmni.ConceptSet.ObservationNode(observation, savedObsNode, conceptSetConfig, concept);
     };
 
 

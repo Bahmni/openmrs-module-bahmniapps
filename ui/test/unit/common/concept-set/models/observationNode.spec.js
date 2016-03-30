@@ -48,27 +48,28 @@ describe("ObservationNode", function () {
 
     describe("getControlType", function () {
         it("should return freeTextAutocomplete if configured", function () {
-            var obsNode = mapper.map(savedObs, rootConcept, {"Chief Complaint": {freeTextAutocomplete: true}});
+            var obsNode = mapper.map(savedObs, rootConcept, {"Chief Complaint Data": {autocomplete: true, nonCodedConceptName:"Non Coded Chief Complaint"}});
             expect(obsNode.getControlType()).toBe("freeTextAutocomplete");
+            expect(obsNode.primaryObs.concept.name).toEqual(chiefComplaint.name.name);
         });
 
         it("should return autocomplete if configured", function () {
-            var obsNode = mapper.map(savedObs, rootConcept, {"Chief Complaint": {autocomplete: true}});
+            var obsNode = mapper.map(savedObs, rootConcept, {"Chief Complaint Data": {autocomplete: true}});
             expect(obsNode.getControlType()).toBe("autocomplete");
         });
     });
 
     describe("PrimaryObs", function () {
         it("should return obs which is not Abnormal Obs or Duration", function () {
-            var obsNode = mapper.map(savedObs, rootConcept, {"Chief Complaint": {freeTextAutocomplete: true}});
-            expect(obsNode.getPrimaryObs().concept.uuid).toEqual(chiefComplaint.uuid);
-            expect(obsNode.getAbnormalObs().concept.uuid).toEqual(abnormal.uuid);
-            expect(obsNode.getDurationObs().concept.uuid).toEqual(duration.uuid);
-            expect(obsNode.getUnknownObs().concept.uuid).toEqual(unknown.uuid);
+            var obsNode = mapper.map(savedObs, rootConcept, {"Chief Complaint Data": {freeTextAutocomplete: true}});
+            expect(obsNode.primaryObs.concept.uuid).toEqual(chiefComplaint.uuid);
+            expect(obsNode.abnormalObs.concept.uuid).toEqual(abnormal.uuid);
+            expect(obsNode.durationObs.concept.uuid).toEqual(duration.uuid);
+            expect(obsNode.unknownObs.concept.uuid).toEqual(unknown.uuid);
         });
 
         it("isComputed to be true if primaryObs is computed", function () {
-            var obsNode = mapper.map(savedObs, rootConcept, {"Chief Complaint": {freeTextAutocomplete: true}});
+            var obsNode = mapper.map(savedObs, rootConcept, {"Chief Complaint Data": {freeTextAutocomplete: true}});
             expect(obsNode.isComputed()).toBeTruthy();
         });
     });
@@ -76,7 +77,7 @@ describe("ObservationNode", function () {
     describe("autocomplete isValid",function(){
 
         it("should be a valid observation if the value is selected from autocomplete", function () {
-            var observation = mapper.map(savedObs, rootConcept, {"Chief Complaint": {autocomplete: true}});
+            var observation = mapper.map(savedObs, rootConcept, {"Chief Complaint Data": {autocomplete: true}});
 
             expect(observation.isValid()).toBeTruthy();
             observation.primaryObs.value = {
@@ -87,7 +88,7 @@ describe("ObservationNode", function () {
         });
 
         it("should be a invalid observation if the value is not selected from autocomplete", function () {
-            var observation = mapper.map(savedObs, rootConcept, {"Chief Complaint": {autocomplete: true}});
+            var observation = mapper.map(savedObs, rootConcept, {"Chief Complaint Data": {autocomplete: true}});
 
             observation.primaryObs.value = "someValue";
             expect(observation.isValid()).toBeFalsy()
