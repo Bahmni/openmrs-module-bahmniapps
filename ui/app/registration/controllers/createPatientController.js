@@ -139,6 +139,7 @@ angular.module('bahmni.registration')
                 $scope.patient.uuid = patientProfileData.patient.uuid;
                 $scope.patient.name = patientProfileData.patient.person.names[0].display;
                 $scope.patient.isNew = true;
+                $scope.patient.identifierPrefix = patientProfileData.patient.identifiers[0].identifierPrefix;
                 $scope.patient.registrationDate = dateUtil.now();
                 $scope.patient.newlyAddedRelationships = [{}];
                 $scope.actions.followUpAction(patientProfileData);

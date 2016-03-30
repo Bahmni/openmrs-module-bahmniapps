@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('bahmni.common.offline')
-    .service('androidDbService', ['$q', '$http',
-        function ($q, $http) {
+    .service('androidDbService', ['$q',
+        function ($q) {
             var getMarker = function () {
                 var value = AndroidOfflineService.getMarker();
                 value = value != undefined ? JSON.parse(value) : value;
@@ -14,9 +14,9 @@ angular.module('bahmni.common.offline')
 
             };
 
-            var createPatient = function (patient, requestType) {
+            var createPatient = function (patient) {
                 var patientString = JSON.stringify(patient);
-                var value = AndroidOfflineService.createPatient(patientString, requestType);
+                var value = AndroidOfflineService.createPatient(patientString);
                 value = value != undefined ? JSON.parse(value) : value;
                 return $q.when(value);
             };
@@ -89,6 +89,12 @@ angular.module('bahmni.common.offline')
                 return $q.when(value);
             };
 
+            var getAttributeTypes = function(){
+                var value = AndroidOfflineService.getAttributeTypes();
+                value = value != undefined ? JSON.parse(value): value;
+                return $q.when(value);
+            };
+
             return {
                 init: init,
                 initSchema: initSchema,
@@ -103,8 +109,8 @@ angular.module('bahmni.common.offline')
                 insertConfig : insertConfig,
                 getReferenceData: getReferenceData,
                 insertReferenceData: insertReferenceData,
-                getLocationByUuid: getLocationByUuid
-
+                getLocationByUuid: getLocationByUuid,
+                getAttributeTypes: getAttributeTypes
             }
         }
     ]);

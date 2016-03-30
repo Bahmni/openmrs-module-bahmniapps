@@ -5,7 +5,7 @@ angular.module("bahmni.common.offline")
         var hustle;
         var init = function() {
             hustle = new Hustle({
-                "db_name": "bahmni",
+                "db_name": "bahmni_hustle",
                 "db_version": 1,
                 "tubes": ["event_queue", "error_queue"]
             });

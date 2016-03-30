@@ -27,7 +27,8 @@ Bahmni.Registration.CreatePatientRequestMapper = (function () {
                     attributes: new Bahmni.Common.Domain.AttributeFormatter().getMrsAttributes(patient, patientAttributeTypes),
                     dead:patient.dead,
                     deathDate: Bahmni.Common.Util.DateUtil.getDateWithoutTime(patient.deathDate),
-                    causeOfDeath: patient.causeOfDeath != null ? patient.causeOfDeath.uuid : ''
+                    causeOfDeath: patient.causeOfDeath != null ? patient.causeOfDeath.uuid : '',
+                    uuid: patient.uuid
                 },
                 identifiers: [
                     {
@@ -40,7 +41,7 @@ Bahmni.Registration.CreatePatientRequestMapper = (function () {
                         "voided": false
                     }
                 ],
-                uuid: patient.uuid,
+                uuid: patient.uuid
             }
         };
 

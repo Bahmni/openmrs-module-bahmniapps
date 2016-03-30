@@ -12,17 +12,22 @@ angular.module('bahmni.registration')
         };
 
         var create = function(data) {
-            return androidDbService.createPatient(data, "POST");
+            return androidDbService.createPatient(data);
         };
 
         var deletePatientData = function(patientUuid) {
             return androidDbService.deletePatientData(patientUuid);
         };
 
+        var getAttributeTypes = function() {
+            return androidDbService.getAttributeTypes();
+        };
+
         return {
             search: search,
             get: getByUuid,
             create: create,
-            deletePatientData: deletePatientData
+            deletePatientData: deletePatientData,
+            getAttributeTypes: getAttributeTypes
         }
     }]);

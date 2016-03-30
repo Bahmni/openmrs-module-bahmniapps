@@ -6,10 +6,10 @@ angular.module('bahmni.common.offline')
         var db;
 
 
-        var createPatient = function (postRequest, requestType) {
+        var createPatient = function (postRequest) {
             var deferred = $q.defer();
             var uuid = postRequest.patient.uuid;
-            insertPatientData(postRequest, requestType)
+            insertPatientData(postRequest)
                 .then(function () {
                     getPatientByUuid(uuid).then(function (result) {
                         deferred.resolve({data: result});
@@ -41,44 +41,17 @@ angular.module('bahmni.common.offline')
             return deferred.promise;
         };
 
-        var insertPatientData = function (patientData, requestType) {
+        var insertPatientData = function (patientData) {
             var patient = patientData.patient;
             var person = patient.person;
 
-            return patientAttributeDbService.getAttributeTypes(db).then(function (attributeTypeMap) {
-                    if ("POST" === requestType) {
-                        parseAttributeValues(person.attributes, attributeTypeMap);
-                    }
-                    return patientDbService.insertPatientData(db, patientData).then(function (patientUuid) {
-                        patientAttributeDbService.insertAttributes(db, patientUuid, person.attributes, attributeTypeMap);
-                        patientAddressDbService.insertAddress(db, patientUuid, person.addresses[0]);
-                        return patientData;
-                    });
-                });
-
-        };
-
-        var parseAttributeValues = function (attributes, attributeTypeMap) {
-            angular.forEach(attributes, function (attribute) {
-                if (!attribute.voided) {
-                    var foundAttribute = _.find(attributeTypeMap, function (attributeType) {
-                        return attributeType.uuid === attribute.attributeType.uuid
-                    });
-                    if (foundAttribute != undefined && foundAttribute.format != undefined) {
-                        if ("java.lang.Integer" === foundAttribute.format || "java.lang.Float" === foundAttribute.format) {
-                            attribute.value = parseFloat(attribute.value);
-                        } else if ("java.lang.Boolean" === foundAttribute.format) {
-                            attribute.value = (attribute.value === 'true');
-                        } else if ("org.openmrs.Concept" === foundAttribute.format) {
-                            var value = attribute.value;
-                            attribute.value = {display: value, uuid: attribute.hydratedObject};
-
-                        }
-                    }
-                }
+            return patientDbService.insertPatientData(db, patientData).then(function (patientUuid) {
+                patientAttributeDbService.insertAttributes(db, patientUuid, person.attributes);
+                patientAddressDbService.insertAddress(db, patientUuid, person.addresses[0]);
+                return patientData;
             });
-        };
 
+        };
 
         var init = function (_db) {
             db = _db;
@@ -125,6 +98,10 @@ angular.module('bahmni.common.offline')
             return locationDbService.getLocationByUuid(db, uuid);
         };
 
+        var getAttributeTypes = function(){
+            return patientAttributeDbService.getAttributeTypes(db);
+        };
+
 
 
         return {
@@ -141,6 +118,7 @@ angular.module('bahmni.common.offline')
             insertConfig : insertConfig,
             getReferenceData: getReferenceData,
             insertReferenceData: insertReferenceData,
-            getLocationByUuid: getLocationByUuid
+            getLocationByUuid: getLocationByUuid,
+            getAttributeTypes : getAttributeTypes
         }
     }]);

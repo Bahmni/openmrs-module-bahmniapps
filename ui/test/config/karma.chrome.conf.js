@@ -58,12 +58,12 @@ module.exports = function (config) {
             'test/unit/**/*.js',
             'test/integration/**/*.js',
             'test/integration/utils/*.js',
+            'app/registration/offline/*.js',
             {pattern: 'test/data/*.json', watched: true, served: true, included: false}
         ],
         exclude:[
-            'app/registration/offline/*.js',
             'app/common/**/offline/android/*.js',
-
+            'app/registration/services/defaultPatientServiceStrategy.js',
             'app/common/app-framework/services/loadConfigService.js',
             'app/common/orders/services/orderTypeService.js',
             'app/common/patient/services/patientService.js',
