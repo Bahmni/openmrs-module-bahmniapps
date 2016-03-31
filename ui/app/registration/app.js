@@ -72,9 +72,6 @@ angular
                     },
                     offlineReferenceDataInitialization: function(offlineReferenceDataInitialization, offlineDb){
                         return offlineReferenceDataInitialization(offlineDb, true);
-                    },
-                    offlinePush: function(offlinePush, offlineDb, offlineSyncInitialization){
-                        return offlinePush(offlineDb);
                     }
                 }
             })
@@ -99,9 +96,6 @@ angular
                     },
                     offlineReferenceDataInitialization: function(offlineReferenceDataInitialization, offlineDb){
                         return offlineReferenceDataInitialization(offlineDb, false);
-                    },
-                    offlinePush: function(offlinePush, offlineDb, offlineSyncInitialization){
-                        return offlinePush(offlineDb);
                     }
                 }
             })

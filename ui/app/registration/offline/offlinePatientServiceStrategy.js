@@ -45,10 +45,10 @@ angular.module('bahmni.registration')
                 data.patient.person.names[0].uuid = openMRSPatient.person.names[0].uuid;
                 data.patient.person.personDateCreated = undefined;
                 return offlinePatientServiceStrategy.deletePatientData(data.patient.uuid).then(function () {
-                    return create(data).then(function (result) {
+                        return create(data).then(function (result) {
                         result.data.patient.person.preferredName = data.patient.person.names[0];
                         result.data.patient.person.preferredAddress = data.patient.person.addresses[0];
-                        parseAttributeValues(data.patient.person.attributes, attributeTypes);
+                        parseAttributeValues(result.data.patient.person.attributes, attributeTypes);
                         return $q.when(result.data);
                     });
                 });

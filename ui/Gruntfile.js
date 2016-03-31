@@ -78,10 +78,10 @@ module.exports = function (grunt) {
         coverage: {
             options: {
                 thresholds: {
-                    'statements': 64.1,
-                    'branches': 53.36,
-                    'functions': 55.7,
-                    'lines': 64.1
+                    'statements': 64.07,
+                    'branches': 53.3,
+                    'functions': 55.6,
+                    'lines': 64
                 },
                 dir: 'coverage',
                 root: '.'
@@ -465,6 +465,7 @@ module.exports = function (grunt) {
     });
 
     grunt.registerTask('uglify-and-rename', [
+        'uglify',
         'rename:minified'
     ]);
 

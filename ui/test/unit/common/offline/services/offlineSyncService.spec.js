@@ -95,7 +95,7 @@ describe('OfflineSyncService', function () {
             expect(eventLogService.getEventsFor.calls.count()).toBe(1);
             expect(eventLogService.getDataForUrl).toHaveBeenCalledWith('url to get patient object');
             expect(eventLogService.getDataForUrl.calls.count()).toBe(1);
-            expect(offlineDbService.createPatient).toHaveBeenCalledWith({patient: {uuid: 'dataUuid'}},  'GET');
+            expect(offlineDbService.createPatient).toHaveBeenCalledWith({patient: {uuid: 'dataUuid'}});
             expect(offlineDbService.createPatient.calls.count()).toBe(1);
             expect(offlineDbService.insertMarker).toHaveBeenCalledWith('eventuuid', 202020);
             expect(offlineDbService.insertMarker.calls.count()).toBe(1);
@@ -222,7 +222,7 @@ describe('OfflineSyncService', function () {
             expect(eventLogService.getEventsFor.calls.count()).toBe(1);
             expect(eventLogService.getDataForUrl).toHaveBeenCalledWith('url to get patient object');
             expect(eventLogService.getDataForUrl.calls.count()).toBe(1);
-            expect(offlineDbService.createPatient).toHaveBeenCalledWith({patient: {uuid: 'patientUuid'}}, 'GET');
+            expect(offlineDbService.createPatient).toHaveBeenCalledWith({patient: {uuid: 'patientUuid'}});
             expect(offlineDbService.createPatient.calls.count()).toBe(1);
             expect(offlineDbService.insertMarker).toHaveBeenCalledWith('eventuuid', 202020);
             expect(offlineDbService.insertMarker.calls.count()).toBe(1);

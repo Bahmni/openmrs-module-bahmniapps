@@ -275,7 +275,10 @@ describe('CreatePatientController', function() {
                         names: [{
                             display: "somename"
                         }]
-                    }
+                    },
+                    identifiers: [{
+                        identifierPrefix: "GAN"
+                    }]
                 }
             }
         }));
@@ -301,7 +304,10 @@ describe('CreatePatientController', function() {
                     names: [{
                         display: "somename"
                     }]
-                }
+                },
+                identifiers: [{
+                    identifierPrefix: "GAN"
+                }]
             }
         }));
 
@@ -350,7 +356,10 @@ describe('CreatePatientController', function() {
                     names: [{
                         display: "somename"
                     }]
-                }
+                },
+                identifiers: [{
+                    identifierPrefix: "GAN"
+                }]
             }
         }));
 
@@ -393,7 +402,10 @@ describe('CreatePatientController', function() {
                     names: [{
                         display: "somename"
                     }]
-                }
+                },
+                identifiers: [{
+                    identifierPrefix: "GAN"
+                }]
             }
         }));
 

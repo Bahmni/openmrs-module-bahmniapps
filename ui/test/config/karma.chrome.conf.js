@@ -73,6 +73,7 @@ module.exports = function (config) {
 
             'test/unit/orders/services/orderTypeService.spec.js',
             'test/unit/common/patient/services/patientService.spec.js',
+            'test/unit/registration/services/patientService.spec.js',
             'test/unit/common/app-framework/service/loadConfigService.spec.js',
             'test/unit/document-upload/controllers/*.js',
             'test/unit/common/displaycontrols/patientProfile/directives/*.js',

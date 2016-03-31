@@ -2,11 +2,10 @@
 
 describe('PatientServiceStrategy test', function () {
     var patientServiceStrategy, patientJson, patientAttributeTypes;
-    var offlinePatientServiceStrategyMock, $q = Q, eventQueueMock, offlineDbServiceMock;
+    var offlinePatientServiceStrategyMock, $q = Q, eventQueueMock;
 
     eventQueueMock = jasmine.createSpyObj('eventQueue', ['addToEventQueue']);
-    offlinePatientServiceStrategyMock = jasmine.createSpyObj(' offlinePatientServiceStrategy', ['search', 'get', 'create', 'deletePatientData']);
-    offlineDbServiceMock = jasmine.createSpyObj('offlineDbService', ['getAttributeTypes']);
+    offlinePatientServiceStrategyMock = jasmine.createSpyObj(' offlinePatientServiceStrategy', ['search', 'get', 'create', 'deletePatientData','getAttributeTypes']);
 
     beforeEach(function () {
         module('bahmni.common.offline');
@@ -15,12 +14,11 @@ describe('PatientServiceStrategy test', function () {
             $provide.value('$q', $q);
             $provide.value('eventQueue', eventQueueMock);
             $provide.value('offlinePatientServiceStrategy', offlinePatientServiceStrategyMock);
-            $provide.value('offlineDbService', offlineDbServiceMock);
         });
         jasmine.getFixtures().fixturesPath = 'base/test/data';
         patientJson = JSON.parse(readFixtures('patient.json'));
         patientAttributeTypes = JSON.parse(readFixtures('patientAttributeType.json'));
-        offlineDbServiceMock.getAttributeTypes.and.returnValue(specUtil.respondWith(patientAttributeTypes.data.results));
+        offlinePatientServiceStrategyMock.getAttributeTypes.and.returnValue(specUtil.respondWith(patientAttributeTypes.data.results));
         offlinePatientServiceStrategyMock.get.and.returnValue(specUtil.respondWith(patientJson));
         offlinePatientServiceStrategyMock.create.and.returnValue(specUtil.respondWith(patientJson));
         offlinePatientServiceStrategyMock.deletePatientData.and.returnValue(specUtil.respondWith({}));
@@ -54,7 +52,7 @@ describe('PatientServiceStrategy test', function () {
         });
     });
 
-    it("should update the patient ", function (done) {
+    it("should update the patient", function (done) {
         var patient = {
             "uuid": "e34992ca-894f-4344-b4b3-54a4aa1e5558",
             "identifierPrefix": {

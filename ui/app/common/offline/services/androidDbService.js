@@ -45,6 +45,13 @@ angular.module('bahmni.common.offline')
             var getPatientByUuid = function (uuid) {
                 var value = AndroidOfflineService.getPatientByUuid(uuid);
                 value = value != undefined ? JSON.parse(value) : value;
+                angular.forEach(value.patient.person.attributes, function(attribute){
+                    if(attribute.hydratedObject){
+                        var temp = attribute.hydratedObject;
+                        delete attribute.hydratedObject;
+                        attribute.hydratedObject = temp;
+                    }
+                }); 
                 return $q.when(value);
             };
 
