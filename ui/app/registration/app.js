@@ -46,7 +46,7 @@ angular
                     offlineReferenceDataInitialization: function(offlineReferenceDataInitialization, offlineDb){
                         return offlineReferenceDataInitialization(offlineDb, true);
                     },
-                    offlinePush: function(offlinePush, offlineDb){
+                    offlinePush: function(offlinePush, offlineDb, offlineSyncInitialization){
                         return offlinePush(offlineDb);
                     }
                 }
