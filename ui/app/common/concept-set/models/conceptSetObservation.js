@@ -20,7 +20,7 @@ Bahmni.ConceptSet.Observation = function (observation, savedObs, conceptUIConfig
     Object.defineProperty(this, 'autocompleteValue', {
         enumerable: true,
         get: function () {
-            return (this.value != null && (typeof this.value === "object")) ? this.value.displayString : this.value;
+            return (this.value != null && (typeof this.value === "object")) ? this.value.name : this.value;
         },
         set: function (newValue) {
             this.value = newValue;

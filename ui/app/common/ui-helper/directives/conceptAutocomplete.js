@@ -3,10 +3,10 @@
 
     var constructSearchResult = function (concept, searchString) {
         var matchingName = null;
-        var conceptName = concept.displayString || concept.name;
+        var conceptName = concept.name.name || concept.name;
         if (_.lowerCase(conceptName).indexOf(_.lowerCase(searchString)) != 0) {
-            var synonyms = _.map(concept.names, 'name');
-            matchingName = _.find(synonyms, function (name) {
+            var conceptNames = _.map(concept.names, 'name');
+            matchingName = _.find(conceptNames, function (name) {
                 return (name !== conceptName) && name.search(new RegExp(searchString, "i")) !== -1
             });
         }
@@ -22,9 +22,9 @@
     var searchWithDefaultConcept = function (searchMethod, request, response) {
         var searchTerm = _.lowerCase(request.term.trim());
         var isMatching = function (answer) {
-            var answerName = _.lowerCase(answer.displayString);
-            var defaultConceptName = _.lowerCase(request.defaultConcept.name);
-            return _.includes(answerName, searchTerm) && (answerName !== defaultConceptName);
+            return _.find(answer.names, function (name) {
+                return _.includes(_.lowerCase(name.name), searchTerm)
+            });
         };
         var responseMap = _.partial(constructSearchResult, _, searchTerm);
 
@@ -66,7 +66,6 @@
                     var searchMethod;
                     if (!scope.codedConceptName && scope.defaultConcept) {
                         searchMethod = _.partial(conceptService.getAnswers, scope.defaultConcept);
-                        request.defaultConcept = scope.defaultConcept;
                         searchWithDefaultConcept(searchMethod, request, response);
                     } else {
                         searchMethod = _.partial(conceptService.getConceptByQuestion, {
