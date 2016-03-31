@@ -25,7 +25,8 @@ Bahmni.Common.Domain.ConceptMapper = function () {
             conceptClass: openMrsConcept.conceptClass ? openMrsConcept.conceptClass.name : null,
             answers: openMrsConcept.answers,
             units: openMrsConcept.units,
-            displayString:  shortConceptName ? shortConceptName.name : openMrsConcept.name.name
+            displayString:  shortConceptName ? shortConceptName.name : openMrsConcept.name.name,
+            names: openMrsConcept.names
         }
     };
 
