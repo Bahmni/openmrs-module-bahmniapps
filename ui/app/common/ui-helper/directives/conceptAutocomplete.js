@@ -3,7 +3,7 @@
 
     var constructSearchResult = function (concept, searchString) {
         var matchingName = null;
-        var conceptName = concept.name.name || concept.name;
+        var conceptName = concept.name;
         if (!_.includes(_.toLower(conceptName),_.toLower(searchString))) {
             var synonyms = _.map(concept.names, 'name');
             matchingName = _.find(synonyms, function (name) {
@@ -20,12 +20,12 @@
     };
 
     var searchWithDefaultConcept = function (searchMethod, request, response) {
-        var searchTerm = _.lowerCase(request.term.trim());
+        var searchTerm = _.toLower(request.term.trim());
         var isMatching = function (answer) {
             var conceptNameFound = _.find(answer.names, function (name) {
-                return _.includes(_.lowerCase(name.name), searchTerm)
+                return _.includes(_.toLower(name.name), searchTerm);
             });
-            var conceptDrugNameFound = _.includes(_.lowerCase(answer.name), searchTerm);
+            var conceptDrugNameFound = _.includes(_.toLower(answer.name), searchTerm);
             return conceptNameFound || conceptDrugNameFound;
         };
         var responseMap = _.partial(constructSearchResult, _, searchTerm);
@@ -70,7 +70,7 @@
                         searchMethod = _.partial(conceptService.getAnswers, scope.defaultConcept);
                         searchWithDefaultConcept(searchMethod, request, response);
                     } else {
-                        searchMethod = _.partial(conceptService.getConceptByQuestion, {
+                        searchMethod = _.partial(conceptService.getAnswersForConceptName, {
                             term: request.term,
                             answersConceptName: scope.answersConceptName
                         });

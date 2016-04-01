@@ -84,6 +84,9 @@
             if (isAlreadySavedObservation(nonCodedConceptObservation)) {
                 return nonCodedConceptObservation;
             }
+            if(!codedConceptObservation){
+                throw new Error("Configuration Error: Concept '"+this.conceptUIConfig.codedConceptName+"' is not a set member of '"+concept.name.name+"'.");
+            }
             return codedConceptObservation;
         };
         var getFirstObservation = function(){

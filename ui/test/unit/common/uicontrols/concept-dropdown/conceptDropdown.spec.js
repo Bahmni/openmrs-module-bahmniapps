@@ -6,7 +6,7 @@ describe('conceptDropdown', function () {
         module("bahmni.common.uicontrols");
         module('ngHtml2JsPreprocessor');
         module(function ($provide) {
-            conceptService = jasmine.createSpyObj('conceptService', ['getConceptByQuestion', 'getAnswers']);
+            conceptService = jasmine.createSpyObj('conceptService', ['getAnswersForConceptName', 'getAnswers']);
             $provide.value('conceptService', conceptService);
         });
 
@@ -44,11 +44,11 @@ describe('conceptDropdown', function () {
             {uuid: "uuid2", name: 'name2'}
         ];
         var response = specUtil.respondWithPromise($q, data);
-        conceptService.getConceptByQuestion.and.returnValue(response);
+        conceptService.getAnswersForConceptName.and.returnValue(response);
 
         var element = generateElement();
 
-        expect(conceptService.getConceptByQuestion).toHaveBeenCalledWith({
+        expect(conceptService.getAnswersForConceptName).toHaveBeenCalledWith({
             answersConceptName: 'answersConceptFromConfig'
         });
 
@@ -133,7 +133,7 @@ describe('conceptDropdown', function () {
             {uuid: "uuid2", name: 'name2'}
         ];
         var response = specUtil.respondWithPromise($q, data);
-        conceptService.getConceptByQuestion.and.returnValue(response);
+        conceptService.getAnswersForConceptName.and.returnValue(response);
 
         var element = generateElement();
         var compiledElementScope = element.isolateScope();

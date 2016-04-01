@@ -34,7 +34,7 @@
                 return;
             }
 
-            conceptService.getConceptByQuestion({
+            conceptService.getAnswersForConceptName({
                 answersConceptName: $scope.answersConceptName
             }).then(function (results) {
                 return _.map(results, constructSearchResult);

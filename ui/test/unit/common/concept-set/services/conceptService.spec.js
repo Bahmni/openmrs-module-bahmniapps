@@ -94,16 +94,16 @@ describe("conceptService", function () {
             };
             http.get.and.returnValue(specUtil.respondWith({data:data}));
             var conceptService = injectConceptService();
-            conceptService.getConceptByQuestion(request).then(function (answers) {
+            conceptService.getAnswersForConceptName(request).then(function (answers) {
                 var actualRequestArgs = http.get.calls.mostRecent().args;
-                expect(actualRequestArgs[0]).toEqual(Bahmni.Common.Constants.conceptUrl);
+                expect(actualRequestArgs[0]).toEqual(Bahmni.Common.Constants.bahmniConceptAnswerUrl);
                 var actualRequestParams = actualRequestArgs[1].params;
                 expect(actualRequestParams.q).toEqual(request.term);
                 expect(actualRequestParams.question).toEqual(request.answersConceptName);
-                expect(actualRequestParams.v).toEqual("custom:(uuid,name,names:(name))");
+                expect(actualRequestParams.v).toEqual("custom:(concept:(uuid,name:(display,uuid,name,conceptNameType),names:(display,uuid,name,conceptNameType)),drug:(uuid,name,display))");
                 expect(actualRequestParams.s).toEqual("byQuestion");
 
-                expect(answers).toBe(data.results);
+                expect(answers).toEqual(data.results);
             }).catch(notifyError).finally(done);
         });
     });

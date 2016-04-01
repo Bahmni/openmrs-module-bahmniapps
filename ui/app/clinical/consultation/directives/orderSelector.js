@@ -14,7 +14,7 @@ angular.module('bahmni.clinical')
             };
 
             var filterBySearchString = function (testName) {
-                return _.includes(_.lowerCase(testName.name), _.lowerCase($scope.search.string));
+                return _.includes(_.toLower(testName.name), _.toLower($scope.search.string));
             };
 
             $scope.filterBySearchString = function (test) {

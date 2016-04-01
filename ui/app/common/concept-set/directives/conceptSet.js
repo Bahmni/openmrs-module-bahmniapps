@@ -40,6 +40,8 @@ angular.module('bahmni.common.conceptSet')
                         } else {
                             $scope.showEmptyConceptSetMessage = true;
                         }
+                    }).catch(function (error){
+                        messagingService.showMessage('error',error.message);
                     });
                 };
                 spinner.forPromise(init());
