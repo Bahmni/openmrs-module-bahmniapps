@@ -20,9 +20,7 @@ angular.module('bahmni.common.offline')
                                     "Content-Type": "application/json"
                                 }
                             }).success(function (response) {
-                                if (response.status == 200) {
-                                    eventQueue.removeFromQueue(event);
-                                }
+                                eventQueue.removeFromQueue(event);
                                 consume();
                             }).catch(function (response) {
                                 if(response.status == -1){
