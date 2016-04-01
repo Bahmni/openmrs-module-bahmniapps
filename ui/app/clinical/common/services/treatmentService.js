@@ -43,7 +43,7 @@ angular.module('bahmni.clinical')
         };
 
         var getProgramConfig = function () {
-            var programConfig = appService.getAppDescriptor() ? appService.getAppDescriptor().getConfigValue("program") || {} : {};
+            var programConfig = appService.getAppDescriptor() ? appService.getAppDescriptor().getConfigValue("program") : {};
             return programConfig;
         }
 
