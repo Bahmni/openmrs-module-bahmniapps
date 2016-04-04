@@ -7,7 +7,7 @@ angular
         'bahmni.common.routeErrorHandler', 'bahmni.common.displaycontrol.pivottable', 'RecursionHelper', 'ngSanitize',
         'bahmni.common.uiHelper', 'bahmni.common.domain', 'ngDialog', 'pascalprecht.translate', 'ngCookies',
         'monospaced.elastic', 'bahmni.common.offline', 'bahmni.common.displaycontrol.hint', 'bahmni.common.attributeTypes',
-          'bahmni.common.models'])
+        'bahmni.common.models', 'FredrikSandell.worker-pool'])
     .config(['$urlRouterProvider', '$stateProvider', '$httpProvider', '$bahmniTranslateProvider','$compileProvider', function ($urlRouterProvider, $stateProvider, $httpProvider, $bahmniTranslateProvider, $compileProvider) {
         $httpProvider.defaults.headers.common['Disable-WWW-Authenticate'] = true;
         $urlRouterProvider.otherwise('/search');
@@ -45,9 +45,6 @@ angular
                     },
                     offlineReferenceDataInitialization: function(offlineReferenceDataInitialization, offlineDb){
                         return offlineReferenceDataInitialization(offlineDb, true);
-                    },
-                    offlinePush: function(offlinePush, offlineDb, offlineSyncInitialization){
-                        return offlinePush(offlineDb);
                     }
                 }
             })
@@ -123,10 +120,13 @@ angular
                 }
             });
         $bahmniTranslateProvider.init({app: 'registration', shouldMerge: true});
-    }]).run(function ($rootScope, $templateCache) {
-    //Disable caching view template partials
-    $rootScope.$on('$viewContentLoaded', function () {
+    }]).run(function ($rootScope, $templateCache, WorkerService) {
+        //Disable caching view template partials
+        $rootScope.$on('$viewContentLoaded', function () {
             $templateCache.removeAll();
+        });
+
+        if(Bahmni.Common.Offline && Bahmni.Common.Offline.BackgroundWorker) {
+            new Bahmni.Common.Offline.BackgroundWorker(WorkerService);
         }
-    )
 });

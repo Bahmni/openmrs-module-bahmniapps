@@ -39,6 +39,36 @@
         <script src="../components/angular-translate-storage-local/angular-translate-storage-local.min.js"></script>
         <script src="../components/angular-translate-handler-log/angular-translate-handler-log.min.js"></script>
         <script src="../components/lovefield/dist/lovefield.min.js"></script>
+        <script src="../lib/angular-workers/dist/angular-workers.js"></script>
+
+        <!-- build:js ../common.offline.min.js -->
+        <script src="../common/util/init.js"></script>
+        <script src="../common/offline/init.js"></script>
+        <script src="../common/offline/offlineService.js"></script>
+        <script src="../common/offline/offlineService.js"></script>
+        <script src="../common/offline/initializeOfflineSchema.js"></script>
+        <script src="../common/offline/offlineDbInitialization.js"></script>
+        <script src="../common/offline/offlineConfigInitialization.js"></script>
+        <script src="../common/offline/offlineReferenceDataInitialization.js"></script>
+        <script src="../common/offline/offlineSyncInitialization.js"></script>
+        <script src="../common/offline/services/eventLogService.js"></script>
+        <script src="../common/offline/services/offlineSyncService.js"></script>
+        <script src="../common/offline/services/androidDbService.js"></script>
+        <script src="../common/offline/dbservices/dao/offlineSearchDbService.js"></script>
+        <script src="../common/offline/dbservices/dao/offlineDbService.js"></script>
+        <script src="../common/offline/dbservices/dao/patientAddressDbService.js"></script>
+        <script src="../common/offline/dbservices/dao/patientAttributeDbService.js"></script>
+        <script src="../common/offline/dbservices/dao/patientDbService.js"></script>
+        <script src="../common/offline/dbservices/dao/offlineMarkerDbService.js"></script>
+        <script src="../common/offline/dbservices/dao/offlineAddressHierarchyDbService.js"></script>
+        <script src="../common/offline/dbservices/dao/offlineConfigDbService.js"></script>
+        <script src="../common/offline/schemaDefinitions.js"></script>
+        <script src="../common/offline/models/UUID.js"></script>
+        <script src="../common/offline/models/AddressFields.js"></script>
+        <script src="../common/offline/dbservices/dao/referenceDataDbService.js"></script>
+        <script src="../common/offline/dbservices/dao/locationDbService.js"></script>
+        <script src="../common/offline/offlineDbInitialization.js"></script>
+        <!-- endbuild -->
 
 
         <!-- build:js home.min.js -->
@@ -84,34 +114,6 @@
         <script src="../common/i18n/bahmni-translate.js"></script>
         <script src="../common/i18n/services/mergeLocaleFilesService.js"></script>
 
-        <script src="../common/offline/init.js"></script>
-        <script src="../common/offline/schemaDefinitions.js"></script>
-        <script src="../common/offline/offlineService.js"></script>
-        <script src="../common/offline/initializeOfflineSchema.js"></script>
-        <script src="../common/offline/offlineDbInitialization.js"></script>
-        <script src="../common/offline/offlineSyncInitialization.js"></script>
-        <script src="../common/offline/offlineConfigInitialization.js"></script>
-        <script src="../common/offline/offlineReferenceDataInitialization.js"></script>
-        <script src="../common/offline/services/offlineSyncService.js"></script>
-        <script src="../common/offline/services/eventLogService.js"></script>
-        <script src="../common/offline/services/androidDbService.js"></script>
-        <script src="../common/offline/dbservices/dao/offlineSearchDbService.js"></script>
-        <script src="../common/offline/dbservices/dao/offlineDbService.js"></script>
-        <script src="../common/offline/dbservices/dao/patientAddressDbService.js"></script>
-        <script src="../common/offline/dbservices/dao/patientAttributeDbService.js"></script>
-        <script src="../common/offline/dbservices/dao/patientDbService.js"></script>
-        <script src="../common/offline/dbservices/dao/offlineMarkerDbService.js"></script>
-        <script src="../common/offline/dbservices/dao/offlineAddressHierarchyDbService.js"></script>
-        <script src="../common/offline/dbservices/dao/offlineConfigDbService.js"></script>
-        <script src="../common/offline/dbservices/dao/referenceDataDbService.js"></script>
-        <script src="../common/offline/dbservices/dao/locationDbService.js"></script>
-        <script src="../common/offline/models/UUID.js"></script>
-        <script src="../common/offline/offlinePush.js"></script>
-
-        <script src="../common/offline/scheduler/scheduledJob.js"></script>
-        <script src="../common/offline/scheduler/MultiStageWorker.js"></script>
-        <script src="../common/offline/scheduler/eventQueue.js"></script>
-        <script src="../common/offline/scheduledSync.js"></script>
 
         <script src="app.js"></script>
         <script src="initialization.js"></script>
@@ -127,26 +129,37 @@
         <script src="../common/domain/services/localeService.js"></script>
         <script src="../common/domain/services/configurationService.js"></script>
         <script src="../common/app-framework/services/loadConfigService.js"></script>
-
-
         <!-- endbuild -->
         <!-- @endif -->
 
+
+        <!-- @ifdef OFFLINE -->
+        <!-- build:js ../common.background.min.js -->
+        <!--<script src="../components/hustle/hustle.js"></script>-->
+        <!--<script src="../components/lovefield/dist/lovefield.min.js"></script>-->
+        <!--<script src="../common/offline/scheduler/scheduledJob.js"></script>-->
+        <!--<script src="../common/offline/scheduler/MultiStageWorker.js"></script>-->
+        <!--<script src="../common/offline/scheduler/eventQueue.js"></script>-->
+        <!--<script src="../common/offline/scheduledSync.js"></script>-->
+
+        <!--<script src="../common/offline/offlinePush.js"></script>-->
+        <!--<script src="../common/offline/scheduler/backgroundWorker.js"></script>-->
+        <!-- endbuild -->
+        <!-- @endif -->
+
+
         <!-- @ifdef CHROME -->
         <!-- build:js home.min.chrome.js -->
-        <!--<script src="../components/hustle/hustle.js"></script>-->
         <!--<script src="../common/domain/offline/chrome/chromeLocaleService.js"></script>-->
         <!--<script src="../common/domain/offline/chrome/chromeLocationService.js"></script>-->
         <!--<script src="../common/domain/offline/chrome/chromeConfigurationService.js"></script>-->
         <!--<script src="../common/app-framework/offline/chrome/chromeLoadConfigService.js"></script>-->
-
         <!-- endbuild -->
         <!-- @endif -->
 
 
         <!-- @ifdef ANDROID -->
         <!-- build:js home.min.android.js -->
-        <!--<script src="../components/hustle/hustle.js"></script>-->
         <!--<script src="../common/domain/offline/android/androidLocaleService.js"></script>-->
         <!--<script src="../common/domain/offline/android/androidLocationService.js"></script>-->
         <!--<script src="../common/domain/offline/android/androidConfigurationService.js"></script>-->
