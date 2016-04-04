@@ -6,17 +6,28 @@ angular.module('bahmni.common.domain')
         function ($scope, $state, spinner, $http, $q, orderSetService, messagingService, orderTypeService) {
             $scope.operators = ['ALL', 'ANY', 'ONE'];
             $scope.conceptNameInvalid = false;
-            $scope.addOrderSetMembers = function (event) {
-                event.preventDefault();
+
+            $scope.addOrderSetMembers = function () {
                 $scope.orderSet.orderSetMembers.push(buildOrderSetMember());
             };
 
             $scope.removeOrderSetMember = function (index) {
-                if ($scope.orderSet.orderSetMembers[index].orderSetMemberId) {
-                    $scope.orderSet.orderSetMembers[index].voided = true;
+                if ($scope.orderSet.orderSetMembers[index].retired == false) {
+                    $scope.orderSet.orderSetMembers[index].retired = true;
+                    $scope.save();
                 } else {
                     $scope.orderSet.orderSetMembers.splice(index, 1);
                 }
+            };
+
+            $scope.moveOrderSetMemberUp = function (index) {
+                var element = $scope.orderSet.orderSetMembers.splice(index, 1);
+                $scope.orderSet.orderSetMembers.splice(index-1, 0, element[0]);
+            };
+
+            $scope.moveOrderSetMemberDown = function (index) {
+                var element = $scope.orderSet.orderSetMembers.splice(index, 1);
+                $scope.orderSet.orderSetMembers.splice(index+1, 0, element[0]);
             };
 
             $scope.getConcepts = function (request) {
@@ -54,13 +65,9 @@ angular.module('bahmni.common.domain')
 
             $scope.onSelect = function (orderSetMember) {
                 return function (selectedConcept) {
-                    orderSetMember.concept.name = selectedConcept.concept.name;
+                    orderSetMember.concept.display = selectedConcept.concept.display;
                     orderSetMember.concept.uuid = selectedConcept.concept.uuid;
                 };
-            };
-
-            $scope.toggleVoidOrderSetMember = function (orderSetMember) {
-                orderSetMember.voided = !orderSetMember.voided;
             };
 
             $scope.clearConceptName = function (orderSetMember, orderSet) {
@@ -69,7 +76,7 @@ angular.module('bahmni.common.domain')
 
             $scope.save = function () {
                 if (validationSuccess()) {
-                    spinner.forPromise(orderSetService.saveOrderSet($scope.orderSet).then(function (response) {
+                    spinner.forPromise(orderSetService.createOrUpdateOrderSet($scope.orderSet).then(function (response) {
                         $state.params.orderSetUuid = response.data.uuid;
                         return $state.transitionTo($state.current, $state.params, {
                             reload: true,
@@ -101,9 +108,9 @@ angular.module('bahmni.common.domain')
                 return countActive;
             };
 
-            var filterOutVoidedOrderSetMembers = function (orderSetResult) {
+            var filterOutRetiredOrderSetMembers = function (orderSetResult) {
                 orderSetResult.orderSetMembers = _.filter(orderSetResult.orderSetMembers, function (orderSetMemberObj) {
-                    return !orderSetMemberObj.voided;
+                    return !orderSetMemberObj.retired;
                 });
                 return orderSetResult;
             };
@@ -123,7 +130,7 @@ angular.module('bahmni.common.domain')
                     $scope.treatmentConfig = results[1];
                     if ($state.params.orderSetUuid !== "new") {
                         spinner.forPromise(orderSetService.getOrderSet($state.params.orderSetUuid).then(function (response) {
-                            $scope.orderSet = filterOutVoidedOrderSetMembers(Bahmni.Common.OrderSet.create(response.data));
+                            $scope.orderSet = filterOutRetiredOrderSetMembers(Bahmni.Common.OrderSet.create(response.data));
                         }));
                     }
                     else {

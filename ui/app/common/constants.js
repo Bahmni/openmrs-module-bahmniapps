@@ -161,7 +161,7 @@ Bahmni.Common = Bahmni.Common || {};
         encounterTypeUrl: RESTWS_V1+"/encountertype",
         defaultExtensionName: "default",
         orderSetMemberAttributeTypeUrl: RESTWS_V1 + "/ordersetmemberattributetype",
-        orderSetUrl: RESTWS_V1 + "/orderset",
+        orderSetUrl: RESTWS_V1 + "/bahmniorderset",
         primaryOrderSetMemberAttributeTypeName: "Primary",
         drugUrl : RESTWS_V1 + "/drug?s=ordered",
         bahmniBacteriologyResultsUrl: BACTERIOLOGY + "/specimen",

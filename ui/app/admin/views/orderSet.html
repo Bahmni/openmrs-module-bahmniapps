@@ -36,7 +36,7 @@
             </section>
             <div class="orderSetMember-wrapper">
 
-                <input type="button" ng-click="addOrderSetMembers($event)" value="Add New Members"
+                <input type="button" ng-click="addOrderSetMembers()" value="Add New Members"
                        class="button add-more-btn btn-small fr">
 
                 <fieldset>
@@ -63,7 +63,7 @@
                                     </div>
                                     <div class="field-value">
                                         <input class="enter-concept" type="text" name="conceptSet"
-                                               ng-model="orderSetMember.concept.name"
+                                               ng-model="orderSetMember.concept.display"
                                                bahmni-autocomplete strict-select="true" on-select="onSelect(orderSetMember)"
                                                is-invalid="conceptNameInvalid"
                                                source="getConcepts"
@@ -76,9 +76,16 @@
                                         <label class="primaryDrug-text">{{primaryAttributeType.description}}</label>
                                     </div>
                                     <div class="col col4 form-field">
-                                        <input class="fl remove-orderSet" type="button" ng-click="removeOrderSetMember($index)"
-                                               value="X">
+                                        <input class="fl remove-orderSet" type="button" ng-click="removeOrderSetMember($index)" value="X" tabindex="-1">
                                     </div>
+                                </div>
+                                <div class="action-container fr">
+                                    <span class="button" ng-class="{'disabled':$first}" ng-click="moveOrderSetMemberUp($index)">
+                                        <i class="fa fa-arrow-circle-up"></i>
+                                    </span>
+                                    <span class="button"  ng-class="{'disabled':$last}" ng-click="moveOrderSetMemberDown($index)">
+                                        <i class="fa fa-arrow-circle-down"></i>
+                                    </span>
                                 </div>
                             </div>
 

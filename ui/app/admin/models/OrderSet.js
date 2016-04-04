@@ -3,7 +3,6 @@
 Bahmni.Common.OrderSet = (function () {
     var OrderSet = function (set) {
         angular.extend(this, {
-            orderSetId: set.orderSetId,
             uuid: set.uuid,
             name: set.name,
             description: set.description,
@@ -13,17 +12,16 @@ Bahmni.Common.OrderSet = (function () {
     };
     var OrderSetMember = function (member) {
         angular.extend(this, {
-            orderSetMemberId: member.orderSetMemberId,
             uuid: member.uuid,
             orderType: {
                 uuid: member.orderType.uuid
             },
             orderTemplate: new OrderTemplate(member),
             concept: {
-                name: member.concept.name.display,
+                display: member.concept.display,
                 uuid: member.concept.uuid
             },
-            voided: member.voided
+            retired: member.retired
         });
     };
 
@@ -38,7 +36,6 @@ Bahmni.Common.OrderSet = (function () {
         var member = orderSetMember || {};
         member.orderType = member.orderType || {};
         member.concept = member.concept || {};
-        member.concept.name = member.concept.name || {};
         member.drug = member.drug || {};
         member.dosingInstructions = member.dosingInstructions || {};
         return new OrderSetMember(member);

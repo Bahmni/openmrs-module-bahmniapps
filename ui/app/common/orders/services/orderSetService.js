@@ -20,14 +20,18 @@ angular.module('bahmni.common.orders')
             });
         };
 
-
-        this.saveOrderSet = function (orderSet) {
+        this.createOrUpdateOrderSet = function (orderSet) {
+            var url;
             _.each(orderSet.orderSetMembers, function (orderSetMember) {
                 if (orderSetMember.orderTemplate) {
                     orderSetMember.orderTemplate = JSON.stringify(orderSetMember.orderTemplate);
                 }
             });
-            var url = Bahmni.Common.Constants.orderSetUrl;
+            if(orderSet.uuid) {
+                url = Bahmni.Common.Constants.orderSetUrl + "/" + orderSet.uuid;
+            } else {
+                url = Bahmni.Common.Constants.orderSetUrl;
+            }
             return $http.post(url, orderSet, {
                 withCredentials: true,
                 headers: {"Accept": "application/json", "Content-Type": "application/json"}
