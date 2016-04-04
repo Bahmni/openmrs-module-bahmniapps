@@ -144,6 +144,13 @@ Bahmni.ConceptSet.ObservationMapper = function () {
         return new Bahmni.ConceptSet.ObservationNode(observation, savedObsNode, conceptSetConfig);
     };
 
+
+    var showAddMoreButton = function (rootObservation) {
+        var observation = this;
+        var lastObservationByLabel = _.findLast(rootObservation.groupMembers,{label: observation.label});
+        return lastObservationByLabel.uuid === observation.uuid;
+    };
+
     function buildObservation(concept, savedObs, mappedGroupMembers) {
         var comment = savedObs ? savedObs.comment : null;
         return {
@@ -153,7 +160,7 @@ Bahmni.ConceptSet.ObservationMapper = function () {
             possibleAnswers: concept.answers,
             groupMembers: mappedGroupMembers,
             comment: comment,
-            showAddMoreButton: true
+            showAddMoreButton : showAddMoreButton
         };
     }
 

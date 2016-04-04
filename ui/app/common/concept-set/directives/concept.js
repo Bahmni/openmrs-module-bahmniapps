@@ -11,7 +11,7 @@ angular.module('bahmni.common.conceptSet')
             scope.hideAbnormalButton = hideAbnormalbuttonConfig == undefined ? scope.hideAbnormalButton : hideAbnormalbuttonConfig;
 
             scope.cloneNew = function (observation, parentObservation) {
-                observation.showAddMoreButton = false;
+                observation.showAddMoreButton = function(){return false;};
                 var newObs = observation.cloneNew();
                 var index = parentObservation.groupMembers.indexOf(observation);
                 parentObservation.groupMembers.splice(index + 1, 0, newObs);
@@ -19,9 +19,12 @@ angular.module('bahmni.common.conceptSet')
             };
 
             scope.removeClonedObs = function (observation, parentObservation) {
-                var index = parentObservation.groupMembers.indexOf(observation);
-                parentObservation.groupMembers[index].voided = true;
-                parentObservation.groupMembers[index-1].showAddMoreButton = true;
+                observation.voided = true;
+                var lastObservationByLabel = _.findLast(parentObservation.groupMembers,function(groupMember){
+                    return groupMember.label === observation.label && !groupMember.voided;
+                });
+
+                lastObservationByLabel.showAddMoreButton = function(){return true}
                 observation.hidden = true;
             };
 
@@ -65,6 +68,7 @@ angular.module('bahmni.common.conceptSet')
             scope.handleUpdate = function () {
                 scope.$root.$broadcast("event:observationUpdated-" + scope.conceptSetName, scope.observation.concept.name, scope.rootObservation);
             }
+
 
         };
 

@@ -1,4 +1,4 @@
-<span ng-if="observation.canAddMore && observation.canAddMore() && observation.showAddMoreButton" class="add-more">
+<span ng-if="observation.canAddMore && observation.canAddMore() && observation.showAddMoreButton(rootObservation)" class="add-more">
     <button id="{{::observation.assignAddMoreButtonID()}}" type="button"
             class="add-more-btn btn-small" ng-disabled="observation.disabled"
             ng-click="cloneNew(observation, rootObservation)">
