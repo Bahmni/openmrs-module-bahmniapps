@@ -273,6 +273,10 @@ concept-set {
       top: 5px;
       right: 37px;
       padding: 3px 5px;
+      color: #000;
+      i {
+        color: green;
+      }
     }
   }
 }
@@ -499,6 +503,11 @@ concept-set {
 
 }
 .vitals {
+  .mylegend{
+    .add-more{
+      margin-top: 0;
+    }
+  }
   .mylegend #removeClonedObs.fa-remove {
     margin-top: 0;
   }
@@ -518,4 +527,7 @@ concept-set {
   @media screen and (max-width: 850px){
     width:56%;
   }
+}
+.add-more-wrapper{
+  display: inline-block;
 }
