@@ -48,13 +48,29 @@ describe("ObservationNode", function () {
 
     describe("getControlType", function () {
         it("should return freeTextAutocomplete if configured", function () {
-            var obsNode = mapper.map(savedObs, rootConcept, {"Chief Complaint Data": {autocomplete: true, nonCodedConceptName:"Non Coded Chief Complaint"}});
+            var obsNode = mapper.map(savedObs, rootConcept, {"Chief Complaint Data": {
+                autocomplete: true,
+                nonCodedConceptName:"Non Coded Chief Complaint",
+                codedConceptName:"Chief Complaint"
+            }});
             expect(obsNode.getControlType()).toBe("freeTextAutocomplete");
             expect(obsNode.primaryObs.concept.name).toEqual(chiefComplaint.name.name);
         });
 
         it("should return autocomplete if configured", function () {
-            var obsNode = mapper.map(savedObs, rootConcept, {"Chief Complaint Data": {autocomplete: true}});
+            var obsNode = mapper.map(savedObs, rootConcept, {"Chief Complaint Data": {
+                autocomplete: true
+            }});
+            expect(obsNode.getControlType()).toBe("autocomplete");
+            obsNode = mapper.map(savedObs, rootConcept, {"Chief Complaint Data": {
+                autocomplete: true,
+                nonCodedConceptName:"Non Coded Chief Complaint"
+            }});
+            expect(obsNode.getControlType()).toBe("autocomplete");
+            obsNode = mapper.map(savedObs, rootConcept, {"Chief Complaint Data": {
+                autocomplete: true,
+                codedConceptName:"Chief Complaint"
+            }});
             expect(obsNode.getControlType()).toBe("autocomplete");
         });
     });

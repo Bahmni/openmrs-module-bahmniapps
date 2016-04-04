@@ -26,6 +26,11 @@
         }
     };
 
+    var isFreeTextAutocompleteType = function (conceptUIConfig) {
+        return conceptUIConfig.autocomplete && conceptUIConfig.nonCodedConceptName && conceptUIConfig.codedConceptName;
+    };
+
+
     Bahmni.ConceptSet.ObservationNode = function (observation, savedObs, conceptUIConfig, concept) {
         angular.extend(this, observation);
 
@@ -42,15 +47,16 @@
             return clone;
         };
 
-        var observationNodeValueGetter = function () {
+        var getPrimaryObservationValue = function () {
             return this.primaryObs && _.get(this, 'primaryObs.value.name') || _.get(this, 'primaryObs.value');
         };
-        var freeTextAutocompleteValueSetter = function (newValue) {
+        var setFreeTextPrimaryObservationValue = function (newValue) {
             var codedObservation = findObservationByConceptName(this.groupMembers, this.conceptUIConfig.codedConceptName);
             var nonCodedObservation = findObservationByConceptName(this.groupMembers, this.conceptUIConfig.nonCodedConceptName);
             if (typeof newValue === "object") {
                 setNewObservation(codedObservation, newValue);
                 voidObservation(nonCodedObservation);
+                this.markedAsNonCoded = false;
             }
             else {
                 setNewObservation(nonCodedObservation, newValue);
@@ -58,13 +64,17 @@
             }
             this.onValueChanged(newValue);
         };
-
-        var primaryObservationValueSetter = function (newValue) {
-            setNewObservation(this.primaryObs, newValue);
+        var setFirstObservationValue = function (newValue) {
+            setNewObservation(this.groupMembers[0], newValue);
             this.onValueChanged(newValue);
         };
+        Object.defineProperty(this, 'value', {
+            enumerable: true,
+            get: getPrimaryObservationValue,
+            set: isFreeTextAutocompleteType(this.conceptUIConfig) ? setFreeTextPrimaryObservationValue : setFirstObservationValue
+        });
 
-        var freeTextAutocompletePrimaryObsGetter = function () {
+        var getFreeTextPrimaryObservation = function () {
             var isAlreadySavedObservation = function (observation) {
                 return _.isString(_.get(observation, 'value')) && !_.get(observation, 'voided');
             };
@@ -74,49 +84,14 @@
             if (isAlreadySavedObservation(nonCodedConceptObservation)) {
                 return nonCodedConceptObservation;
             }
-            if (codedConceptObservation) {
-                return codedConceptObservation;
-            }
+            return codedConceptObservation;
+        };
+        var getFirstObservation = function(){
             return this.groupMembers[0];
         };
-
-        var observationNodePrimaryObsGetter = function () {
-            return this.groupMembers[0];
-        };
-
-        Object.defineProperty(this, 'value', {
-            enumerable: true,
-            get: observationNodeValueGetter,
-            set: this.conceptUIConfig.nonCodedConceptName ? freeTextAutocompleteValueSetter : primaryObservationValueSetter
-        });
-
         Object.defineProperty(this, 'primaryObs', {
             enumerable: true,
-            get: this.conceptUIConfig.nonCodedConceptName ? freeTextAutocompletePrimaryObsGetter : observationNodePrimaryObsGetter
-        });
-
-        Object.defineProperty(this, 'primaryObsAutocompleteValue', {
-            enumerable: true,
-            get: function () {
-                var primaryObsValue = this.primaryObs.value || {};
-                return primaryObsValue.name || this.primaryObs.value;
-            },
-            set: function (newValue) {
-                this.primaryObs.value = newValue;
-            }
-        });
-
-        Object.defineProperty(this, 'markedAsNonCoded', {
-            enumerable: true,
-            get: function () {
-                if (this.primaryObs.nonCodedAnswer === undefined) {
-                    this.primaryObs.nonCodedAnswer = Boolean(this.primaryObs.concept.dataType !== "Coded" && this.primaryObs.uuid);
-                }
-                return this.primaryObs.nonCodedAnswer;
-            },
-            set: function (isNonCoded) {
-                this.primaryObs.nonCodedAnswer = isNonCoded;
-            }
+            get: isFreeTextAutocompleteType(this.conceptUIConfig) ? getFreeTextPrimaryObservation: getFirstObservation
         });
 
         this.isObservationNode = true;
@@ -124,6 +99,7 @@
         this.durationObs = findObservationByClassName(this.groupMembers, Bahmni.Common.Constants.durationConceptClassName);
         this.abnormalObs = findObservationByClassName(this.groupMembers, Bahmni.Common.Constants.abnormalConceptClassName);
         this.unknownObs = findObservationByClassName(this.groupMembers, Bahmni.Common.Constants.unknownConceptClassName);
+        this.markedAsNonCoded = this.primaryObs.concept.dataType !== "Coded" && this.primaryObs.uuid;
 
         if (savedObs) {
             this.uuid = savedObs.uuid;
@@ -207,7 +183,7 @@
         },
 
         getControlType: function () {
-            if (this.conceptUIConfig.autocomplete && this.conceptUIConfig.nonCodedConceptName) {
+            if (isFreeTextAutocompleteType(this.conceptUIConfig)) {
                 return "freeTextAutocomplete";
             }
             if (this.conceptUIConfig.autocomplete) {

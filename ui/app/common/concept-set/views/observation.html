@@ -46,7 +46,7 @@
                                 on-change="handleUpdate"
                                 ng-disabled="observation.disabled"
                                 model="observation.primaryObs.value"
-                                coded-concept-name="observation.conceptUIConfig.answersConceptName"
+                                answers-concept-name="observation.conceptUIConfig.answersConceptName"
                                 default-concept="observation.primaryObs.concept"
                                 on-invalid-class="'illegalValue'"
                                 is-valid="observation.isValid(atLeastOneValueIsSet,conceptSetRequired)">
@@ -64,10 +64,10 @@
                     <div ng-switch-when="autocomplete" class="autocomplete">
                         <input ng-change="handleUpdate()"
                                ng-disabled="observation.disabled"
-                               ng-model="observation.primaryObsAutocompleteValue"
+                               ng-model="observation.value"
                                concept-autocomplete
-                               previous-value="observation.primaryObsAutocompleteValue"
-                               coded-concept-name="observation.conceptUIConfig.answersConceptName"
+                               previous-value="observation.value"
+                               answers-concept-name="observation.conceptUIConfig.answersConceptName"
                                default-concept="observation.primaryObs.concept"
                                strict-select="true"
                                ng-class="{
@@ -218,7 +218,7 @@
                                 on-change="handleUpdate"
                                 ng-disabled="observation.disabled"
                                 model="observation.value"
-                                coded-concept-name="observation.conceptUIConfig.answersConceptName"
+                                answers-concept-name="observation.conceptUIConfig.answersConceptName"
                                 default-concept="observation.concept"
                                 on-invalid-class="'illegalValue'"
                                 is-valid="observation.isValid(atLeastOneValueIsSet,conceptSetRequired)">
@@ -231,7 +231,7 @@
                                ng-model="observation.autocompleteValue"
                                concept-autocomplete
                                previous-value="observation.autocompleteValue"
-                               coded-concept-name="observation.conceptUIConfig.answersConceptName"
+                               answers-concept-name="observation.conceptUIConfig.answersConceptName"
                                default-concept="observation.concept"
                                strict-select="true"
                                ng-class="{

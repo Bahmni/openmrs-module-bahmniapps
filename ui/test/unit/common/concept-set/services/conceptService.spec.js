@@ -87,7 +87,7 @@ describe("conceptService", function () {
         it("should get answers from openmrs concept api", function (done) {
             var request = {
                 term:"requestTerm",
-                codedConceptName:"requestCodedConceptName"
+                answersConceptName:"requestCodedConceptName"
             };
             var data = {
                 results:[]
@@ -99,7 +99,7 @@ describe("conceptService", function () {
                 expect(actualRequestArgs[0]).toEqual(Bahmni.Common.Constants.conceptUrl);
                 var actualRequestParams = actualRequestArgs[1].params;
                 expect(actualRequestParams.q).toEqual(request.term);
-                expect(actualRequestParams.question).toEqual(request.codedConceptName);
+                expect(actualRequestParams.question).toEqual(request.answersConceptName);
                 expect(actualRequestParams.v).toEqual("custom:(uuid,name,names:(name))");
                 expect(actualRequestParams.s).toEqual("byQuestion");
 

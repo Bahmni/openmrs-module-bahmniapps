@@ -3,7 +3,7 @@
 
     var constructSearchResult = function (concept, searchString) {
         var matchingName = null;
-        var conceptName = concept.displayString || concept.name.name || concept.name;
+        var conceptName = concept.name.name || concept.name;
         if (!_.includes(_.toLower(conceptName),_.toLower(searchString))) {
             var synonyms = _.map(concept.names, 'name');
             matchingName = _.find(synonyms, function (name) {
@@ -66,13 +66,13 @@
                 minLength: minLength,
                 source: function (request, response) {
                     var searchMethod;
-                    if (!scope.codedConceptName && scope.defaultConcept) {
+                    if (!scope.answersConceptName && scope.defaultConcept) {
                         searchMethod = _.partial(conceptService.getAnswers, scope.defaultConcept);
                         searchWithDefaultConcept(searchMethod, request, response);
                     } else {
                         searchMethod = _.partial(conceptService.getConceptByQuestion, {
                             term: request.term,
-                            codedConceptName: scope.codedConceptName
+                            answersConceptName: scope.answersConceptName
                         });
                         searchWithGivenConcept(searchMethod, request, response);
                     }
@@ -109,7 +109,7 @@
             require: 'ngModel',
             scope: {
                 defaultConcept: '=',
-                codedConceptName: '=',
+                answersConceptName: '=',
                 minLength: '=',
                 blurOnSelect: '=',
                 strictSelect: '=?',

@@ -7,7 +7,7 @@ angular.module('bahmni.common.conceptSet')
         var getConceptByQuestion = function (request) {
             var params = {
                 q: request.term,
-                question: request.codedConceptName,
+                question: request.answersConceptName,
                 v: "custom:(uuid,name,names:(name))",
                 s: "byQuestion"
             };

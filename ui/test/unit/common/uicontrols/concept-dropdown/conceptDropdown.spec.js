@@ -22,7 +22,7 @@ describe('conceptDropdown', function () {
             '<concept-dropdown ' +
             'on-change="handleUpdate" ' +
             'model="observation.value" ' +
-            'coded-concept-name="observation.conceptUIConfig.answersConceptName" ' +
+            'answers-concept-name="observation.conceptUIConfig.answersConceptName" ' +
             'default-concept="observation.concept" ' +
             'on-invalid-class="\'illegalValue\'" ' +
             'is-valid="observation.isValid(atLeastOneValueIsSet,conceptSetRequired)"' +
@@ -35,7 +35,7 @@ describe('conceptDropdown', function () {
     it("should load answers with given conceptName", function () {
         scope.observation = {
             conceptUIConfig: {
-                answersConceptName: 'answersConcept'
+                answersConceptName: 'answersConceptFromConfig'
             }
         };
 
@@ -49,7 +49,7 @@ describe('conceptDropdown', function () {
         var element = generateElement();
 
         expect(conceptService.getConceptByQuestion).toHaveBeenCalledWith({
-            codedConceptName: 'answersConcept'
+            answersConceptName: 'answersConceptFromConfig'
         });
 
         var compiledElementScope = element.isolateScope();
