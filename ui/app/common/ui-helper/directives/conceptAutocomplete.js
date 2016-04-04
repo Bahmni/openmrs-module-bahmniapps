@@ -22,9 +22,11 @@
     var searchWithDefaultConcept = function (searchMethod, request, response) {
         var searchTerm = _.lowerCase(request.term.trim());
         var isMatching = function (answer) {
-            return _.find(answer.names, function (name) {
+            var conceptNameFound = _.find(answer.names, function (name) {
                 return _.includes(_.lowerCase(name.name), searchTerm)
             });
+            var conceptDrugNameFound = _.includes(_.lowerCase(answer.name), searchTerm);
+            return conceptNameFound || conceptDrugNameFound;
         };
         var responseMap = _.partial(constructSearchResult, _, searchTerm);
 
