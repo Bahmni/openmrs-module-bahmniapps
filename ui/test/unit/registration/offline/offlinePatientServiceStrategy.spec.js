@@ -20,7 +20,7 @@ describe('PatientServiceStrategy test', function () {
         patientAttributeTypes = JSON.parse(readFixtures('patientAttributeType.json'));
         offlinePatientServiceStrategyMock.getAttributeTypes.and.returnValue(specUtil.respondWith(patientAttributeTypes.data.results));
         offlinePatientServiceStrategyMock.get.and.returnValue(specUtil.respondWith(patientJson));
-        offlinePatientServiceStrategyMock.create.and.returnValue(specUtil.respondWith(patientJson));
+        offlinePatientServiceStrategyMock.create.and.returnValue(specUtil.respondWith({"data": patientJson}));
         offlinePatientServiceStrategyMock.deletePatientData.and.returnValue(specUtil.respondWith({}));
     });
 
