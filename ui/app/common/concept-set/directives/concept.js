@@ -21,6 +21,7 @@ angular.module('bahmni.common.conceptSet')
             scope.removeClonedObs = function (observation, parentObservation) {
                 var index = parentObservation.groupMembers.indexOf(observation);
                 parentObservation.groupMembers[index].voided = true;
+                parentObservation.groupMembers[index-1].showAddMoreButton = true;
                 observation.hidden = true;
             };
 
