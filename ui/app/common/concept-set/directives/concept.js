@@ -11,6 +11,7 @@ angular.module('bahmni.common.conceptSet')
             scope.hideAbnormalButton = hideAbnormalbuttonConfig == undefined ? scope.hideAbnormalButton : hideAbnormalbuttonConfig;
 
             scope.cloneNew = function (observation, parentObservation) {
+                observation.showAddMoreButton = false;
                 var newObs = observation.cloneNew();
                 var index = parentObservation.groupMembers.indexOf(observation);
                 parentObservation.groupMembers.splice(index + 1, 0, newObs);

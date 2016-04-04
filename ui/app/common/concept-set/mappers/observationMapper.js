@@ -152,7 +152,8 @@ Bahmni.ConceptSet.ObservationMapper = function () {
             label: getLabel(concept),
             possibleAnswers: concept.answers,
             groupMembers: mappedGroupMembers,
-            comment: comment
+            comment: comment,
+            showAddMoreButton: true
         };
     }
 
