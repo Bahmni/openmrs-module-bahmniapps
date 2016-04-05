@@ -61,8 +61,9 @@ module.exports = function (config) {
             {pattern: 'test/data/*.json', watched: true, served: true, included: false}
         ],
         exclude:[
-            'app/registration/offline/*.js',
+            'test/unit/registration/offline/*.js',
             'app/common/**/offline/chrome/*.js',
+            'app/registration/services/defaultPatientServiceStrategy.js',
 
             'app/common/app-framework/services/loadConfigService.js',
             'app/common/orders/services/orderTypeService.js',
@@ -77,6 +78,7 @@ module.exports = function (config) {
             'test/unit/document-upload/controllers/*.js',
             'test/unit/common/displaycontrols/patientProfile/directives/*.js',
             'test/unit/common/domain/services/locationService.spec.js',
+            'test/unit/registration/services/patientService.spec.js',
             'test/unit/common/domain/services/configurationService.spec.js',
             'test/unit/common/domain/services/localeService.spec.js',
 
