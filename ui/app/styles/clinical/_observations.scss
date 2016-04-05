@@ -276,6 +276,7 @@ concept-set {
       color: #000;
       i {
         color: green;
+        padding: 0.2em 0.1em;
       }
     }
   }
@@ -477,7 +478,7 @@ concept-set {
 }
 
 #removeClonedObs.fa-remove {
-  margin-top: 10px;
+  margin-top: 9px;
   margin-bottom: 3px;
   margin-left: 9px;
   margin-right: 4px;
@@ -485,9 +486,12 @@ concept-set {
   border-radius: 3px;
   background: #ddd;
   border: 1px solid #ddd;
-  width: 16px;
+  width: 18px;
   cursor: pointer;
   box-sizing: border-box;
+  font-size: 14px;
+  text-align: center;
+
 }
 .vitals table{
   caption{
@@ -511,6 +515,7 @@ concept-set {
   }
   .mylegend #removeClonedObs.fa-remove {
     margin-top: 0;
+    font-size: 12px;
   }
 }
 .concept-tooltip-tabular-observation{

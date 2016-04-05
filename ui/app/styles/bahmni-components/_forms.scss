@@ -57,18 +57,18 @@ form, .form {
         .add-more {
             display: inline-block;
             margin-left: 5px;
-            margin-top:7px;
+            margin-top:9px;
             float:left;
             button {
-              padding: 2px 1px 1px 0px;
+              padding: 2px 0px;
               color: #000;
               i {
-                font-size: 1.4em;
                 color: green;
+                padding: 0.2em 0.1em;
               }
             }
             @media screen and (max-width: 1024px) {
-              margin-top:7px;
+              margin-top:9px;
             }
         }
         textarea {
