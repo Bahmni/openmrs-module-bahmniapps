@@ -12,7 +12,18 @@
                     {{tab.name}}
                 </h2>
             </div>
-            <div ng-if="activeTab == tab" class="dashboard-section">
+            <div ng-if="activeTab === tab" class="dashboard-section">
+                <div class="form search-container">
+                    <section class="form-field fr">
+                        <div class="field-attribute">
+                            <label>Search:</label>
+                        </div>
+                        <div class="field-value">
+                            <input type="text" ng-model="search.string" autofocus>
+                            <label class="fa fa-remove fl cross-button" ng-click="resetSearchString()"></label>
+                        </div>
+                    </section>
+                </div>
                 <div class="dashboard-section-wrapper clearfix">
                     <div ng-include="'consultation/views/orderTemplateViews/ordersTemplate.html'"></div>
                 </div>

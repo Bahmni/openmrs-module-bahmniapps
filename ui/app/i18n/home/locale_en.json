@@ -10,5 +10,8 @@
     "LOGIN_LABEL_SELECT_LOCATION_KEY": "Select Location",
     "LOGIN_LABEL_SELECT_LOCALE_KEY": "Select Locale",
     "HEADER_LABEL_LOGOUT_KEY": "Logout",
-    "HEADER_LABEL_SYNC_KEY": "Sync"
+    "HEADER_LABEL_SYNC_KEY": "Sync",
+    "MESSAGE_DIALOG_OPTION_COPY" : "Copy Error",
+    "MESSAGE_DIALOG_OPTION_OKAY": "OK",
+    "MESSAGE_START_OPENMRS": "The OpenMRS service is currently unavailable. Please check if the service is started and refresh the page once it is up."
 }

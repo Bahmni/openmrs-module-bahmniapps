@@ -169,10 +169,6 @@ Bahmni.Common.AppFramework.AppDescriptor = function (context, inheritContext, re
     this.getConfigValue = function(configName, shouldMerge) {
         var config = this.getConfig(configName, shouldMerge);
 
-        if(config != null && configName === "patientInformation"){
-            config.value = _.sortBy(config.value,'order');
-        }
-
         if(shouldMerge || shouldMerge === undefined) {
             return config ? config.value : null;
         }

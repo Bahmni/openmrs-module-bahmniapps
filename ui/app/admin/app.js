@@ -2,8 +2,17 @@
 
 angular.module('admin', ['httpErrorInterceptor', 'bahmni.admin', 'bahmni.common.routeErrorHandler', 'ngSanitize', 'bahmni.common.uiHelper',
     'bahmni.common.config', 'bahmni.common.orders', 'bahmni.common.i18n', 'pascalprecht.translate', 'ngCookies', 'angularFileUpload', 'bahmni.common.offline'])
-    .config(['$stateProvider', '$httpProvider', '$urlRouterProvider', '$bahmniTranslateProvider', function ($stateProvider, $httpProvider, $urlRouterProvider, $bahmniTranslateProvider) {
+    .config(['$stateProvider', '$httpProvider', '$urlRouterProvider',  '$compileProvider',
+        function ($stateProvider, $httpProvider, $urlRouterProvider, $compileProvider) {
         $urlRouterProvider.otherwise('/dashboard');
+
+        // @if DEBUG='production'
+        $compileProvider.debugInfoEnabled(false);
+        // @endif
+
+        // @if DEBUG='development'
+        $compileProvider.debugInfoEnabled(true);
+        // @endif
     $stateProvider.state('admin', {
         abstract: true,
         template: '<ui-view/>',

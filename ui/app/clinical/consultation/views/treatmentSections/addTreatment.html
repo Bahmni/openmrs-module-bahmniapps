@@ -4,8 +4,8 @@
         <i class="fa fa-caret-down" ng-show="addTreatment"></i>
         <span class="section-label">{{ ::'MEDICATION_ADD_DRUG_FORM_TITLE' | translate}}</span>
     </h2>
-    <div class="order-section-container" ng-show="addTreatment">
-        <div class="Order-section-orderDrug clearfix">
+    <div class="order-section-container">
+        <div class="Order-section-orderDrug clearfix" ng-show="addTreatment">
             <form name="addForm" ng-class="{ 'show-invalid': formInvalid}"  ng-submit="add()" bm-form class="edit-drug-order-container">
                 <article class="form-field">
                     <div class="field-attribute">
@@ -56,7 +56,7 @@
                                     <input id="uniform-dose"  ng-focus="treatment.setFrequencyType('uniform')"
                                            type="number" min="0" step="any" placeholder="{{ treatmentConfig.getDosePlaceHolder() | translate}}"
                                            ng-model="treatment.uniformDosingType.dose"
-                                           ng-required="treatment.isUniformFrequency && !treatment.uniformDosingType.doseFraction"
+                                           ng-required="!treatment.isDoseAndUnitNonMandatory() && treatment.isUniformFrequency && !treatment.uniformDosingType.doseFraction"
                                            focus-on="editDrugEntryUniformFrequency" />
                                 </div>
                             </article>
@@ -69,7 +69,7 @@
                                         <select id="uniform-dose-mantissa" class="form-field"
                                                 ng-model="treatment.uniformDosingType.doseFraction"
                                                 ng-options="item.label for item in doseFractions track by item.value"
-                                                ng-required="treatment.isUniformFrequency && !treatment.uniformDosingType.dose">
+                                                ng-required="treatment.isMantissaRequired() && isDoseFractionsAvailable() && showDoseFractions">
                                             <option value="">e.g. 1/2</option>
                                         </select>
                                     </div>
@@ -81,7 +81,7 @@
                                 </div>
                                 <div class="field-value">
                                     <select id="uniform-dose-unit" class="form-field freq-choose-units" ng-model="treatment.uniformDosingType.doseUnits"
-                                            ng-options="item.name as item.name for item in treatmentConfig.getDoseUnits()" ng-required="!treatment.validate()"
+                                            ng-options="item.name as item.name for item in treatmentConfig.getDoseUnits()" ng-required="treatment.isUniformDoseUnitRequired()"
                                             ng-class="{'noFractionOptions' : !isDoseFractionsAvailable()}">
                                         <option value="">{{ ::treatmentConfig.translate('doseUnitsPlaceHolder', 'MEDICATION_DOSE_UNIT_PLACEHOLDER') }} </option>
                                     </select>
@@ -96,7 +96,7 @@
                                 <select id="frequency" class=" frequency" ng-model="treatment.uniformDosingType.frequency"
                                         ng-change="treatment.calculateDurationUnit(treatmentConfig.durationUnits)"
                                         ng-options="item.name as item.name for item in treatmentConfig.getFrequencies()"
-                                        ng-disabled="!treatment.isUniformDosingType()" ng-required="!treatment.validate()">
+                                        ng-disabled="!treatment.isUniformDosingType()" ng-required="!treatment.validate() && treatment.isUniformFrequency">
                                     <option value="">{{ ::treatmentConfig.translate('frequencyUnitsPlaceHolder', 'MEDICATION_FREQUENCY_UNIT_PLACEHOLDER') }} </option>
                                 </select>
                             </div>
@@ -122,13 +122,13 @@
                                 <div class="field-value">
                                     <input id="morning-dose" type="number" min="0" step="any" ng-model="treatment.variableDosingType.morningDose"
                                            ng-focus="treatment.setFrequencyType('variable')"
-                                           ng-required="!treatment.validate()" focus-on="editDrugEntryVariableFrequency" placeholder="&mdash;"/>
+                                           ng-required="!treatment.isVariableDoseRequired()" focus-on="editDrugEntryVariableFrequency" placeholder="&mdash;"/>
                                     <input id="afternoon-dose" type="number" min="0" step="any"
                                            ng-model="treatment.variableDosingType.afternoonDose"
-                                           ng-required="!treatment.validate()" placeholder="&mdash;"/>
+                                           ng-required="!treatment.isVariableDoseRequired()" placeholder="&mdash;"/>
                                     <input id="evening-dose" type="number" min="0" step="any"
                                            ng-model="treatment.variableDosingType.eveningDose"
-                                           ng-required="!treatment.validate()" placeholder="&mdash;"/>
+                                           ng-required="!treatment.isVariableDoseRequired()" placeholder="&mdash;"/>
                                 </div>
                             </div>
                         </article>
@@ -139,7 +139,7 @@
                             <div class="field-value">
                                 <select id="variable-dose-unit" class=" freq-dose-units" ng-model="treatment.variableDosingType.doseUnits"
                                         ng-options="item.name as item.name for item in treatmentConfig.getDoseUnits()"
-                                        ng-required="!treatment.validate()">
+                                        ng-required="!treatment.isVariableDoseEmpty(treatment.variableDosingType) || treatment.isVariableDoseRequired()">
                                     <option value="">{{ ::treatmentConfig.translate('doseUnitsPlaceHolder', 'MEDICATION_DOSE_UNIT_PLACEHOLDER') }} </option>
                                 </select>
                             </div>
@@ -166,6 +166,7 @@
                                ng-model="treatment.effectiveStartDate" required>
                     </div>
                 </article>
+
                 <div  ng-if="!treatmentConfig.isHiddenField('duration')">
                     <article class="form-field ">
                         <div class="field-attribute">
@@ -190,6 +191,7 @@
                         </div>
                     </article>
                 </div>
+
                 <div ng-if="!treatmentConfig.isHiddenField('quantity')">
                     <div ng-show="!treatment.simpleDrugForm" class="quantity-widget ">
                         <article class="form-field ">
@@ -217,18 +219,19 @@
                         </article>
                     </div>
                 </div>
+
                 <h3 class="orderSet-additional-info" ng-show="treatmentConfig.showAdditionalInformation()">{{ ::treatmentConfig.translate('additionalInformation', 'MEDICATION_ADDITIONAL_INFORMATION_LABEL') }} </h3>
                 <article class="form-field" ng-if="!treatmentConfig.isHiddenField('sos')">
                     <div class="field-attribute">
                         <label  class="start-date-label fl">{{ ::treatmentConfig.translate('asNeeded', 'MEDICATION_LABEL_AS_NEEDED') }} </label>
                     </div>
                     <div class="field-value">
-                        <button id="SOS" tabindex="-1" type="button" class="grid-row-element fl"
+                        <button id="SOS" type="button" class="grid-row-element fl"
                                 ng-class="{active: treatment.asNeeded}" ng-click="toggleAsNeeded(treatment)"
                                 accesskey="{{ ::treatmentConfig.translate('asNeededButtonAccessKey', 'MEDICATION_AS_NEEDED_ACCESS_KEY') }} ">
                             <i class="fa fa-ok"></i>
-                <span ng-bind-html="::treatmentConfig.translate('asNeededButton', 'MEDICATION_AS_NEEDED_BUTTON_PLACEHOLDER')">
-                </span>
+                        <span ng-bind-html="::treatmentConfig.translate('asNeededButton', 'MEDICATION_AS_NEEDED_BUTTON_PLACEHOLDER')">
+                        </span>
                         </button>
                     </div>
                 </article>
@@ -243,15 +246,17 @@
                         </select>
                     </div>
                 </article>
+
                 <article class="form-field" ng-if="!treatmentConfig.isHiddenField('additionalInstructions')">
                     <div class="field-attribute">
                         <label  class="start-date-label fl">{{::treatmentConfig.translate('additionalInstructions', 'MEDICATION_LABEL_ADDITIONAL_INSTRUCTIONS')}}</label>
                     </div>
                     <div class="field-value">
-            <textarea id="additional-instructions" rows="1" msd-elastic class="drug-order-notes"
-                      ng-model="treatment.additionalInstructions"/>
+                        <textarea id="additional-instructions" rows="1" msd-elastic class="drug-order-notes"
+                                  ng-model="treatment.additionalInstructions"/>
                     </div>
                 </article>
+
                 <div class="operations fr clearfix">
                     <button class="add-drug-btn secondary-button fl" type="submit" accesskey="a"
                             ng-disabled="!treatment.drug.uuid && !treatment.concept.uuid && treatment.drugNameDisplay && !treatment.isNonCodedDrug">
@@ -272,10 +277,7 @@
             </form>
         </div>
     </div>
-
 </div>
-
-
 <div class="order-set-container clearfix">
     <h2 class="section-title has-toggle"   toggle="canOrderSetBeAdded">
         <i class="fa fa-caret-right" ng-hide="canOrderSetBeAdded"></i>
@@ -314,4 +316,3 @@
         </div>
     </div>
 </div>
-

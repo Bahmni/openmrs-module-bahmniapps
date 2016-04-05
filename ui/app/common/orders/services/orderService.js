@@ -23,6 +23,10 @@ angular.module('bahmni.common.orders')
             if(data.visitUuid){
                 params.visitUuid = data.visitUuid;
             }
+            if(data.locationUuids && data.locationUuids.length > 0){
+                params.numberOfVisits = 0;
+                params.locationUuids = data.locationUuids;
+            }
             return $http.get(Bahmni.Common.Constants.bahmniOrderUrl, {
                 params: params,
                 withCredentials: true

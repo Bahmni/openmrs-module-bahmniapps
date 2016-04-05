@@ -227,5 +227,36 @@ Bahmni.Common.Offline.SchemaDefinitions = {
         ],
         nullableColumns: ['etag'],
         primaryKeyColumns: ['key']
+    },
+    ReferenceData: {
+        tableName: 'reference_data',
+        columns: [
+            {
+                name: 'key',
+                type: 'STRING'
+            }, {
+                name: 'value',
+                type: 'STRING'
+            },{
+                name: 'etag',
+                type: 'STRING'
+            }
+        ],
+        nullableColumns: ['etag'],
+        primaryKeyColumns: ['key']
+    },
+    LoginLocations: {
+        tableName: 'login_locations',
+        columns: [
+            {
+                name: 'uuid',
+                type: 'STRING'
+            }, {
+                name: 'value',
+                type: 'STRING'
+            }
+        ],
+        nullableColumns: [],
+        primaryKeyColumns: ['uuid']
     }
 };

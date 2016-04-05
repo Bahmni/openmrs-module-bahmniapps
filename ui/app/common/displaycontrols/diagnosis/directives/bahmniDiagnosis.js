@@ -43,9 +43,9 @@ angular.module('bahmni.common.displaycontrol.diagnosis')
                 scope: {
                     patientUuid: "=",
                     config: "=",
-                    visitUuid: "=",
-                    showRuledOutDiagnoses: "=",
-                    hideTitle: "=",
+                    visitUuid: "=?",
+                    showRuledOutDiagnoses: "=?",
+                    hideTitle: "=?",
                     showLatestDiagnosis: "@showLatestDiagnosis"
                 }
             }

@@ -1,8 +1,10 @@
+'use strict';
+
 angular.module("bahmni.common.offline")
     .service("scheduledJob", ['$q', '$interval', function($q, $interval) {
         this.create = function(config) {
             return new Job(config.interval, config.worker);
-        }
+        };
 
         var Job = function(interval, worker) {
             var jobPromise = null;

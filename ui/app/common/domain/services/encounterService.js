@@ -53,7 +53,7 @@ angular.module('bahmni.common.domain')
     };
 
     var  getDefaultEncounterTypeIfMappingNotFound = function(entityMappings){
-        var encounterType = entityMappings.data.results[0].mappings[0];
+        var encounterType = entityMappings.data.results[0] && entityMappings.data.results[0].mappings[0];
         if (!encounterType) {
             encounterType = getDefaultEncounterType();
         }
@@ -100,14 +100,14 @@ angular.module('bahmni.common.domain')
         });
     };
 
-            var searchWithoutEncounterDate = function (visitUuid) {
-                return $http.post(Bahmni.Common.Constants.bahmniEncounterUrl + '/find', {
-                    visitUuids: [visitUuid],
-                    includeAll: Bahmni.Common.Constants.includeAllObservations
-                }, {
-                    withCredentials: true
-                });
-            };
+    var searchWithoutEncounterDate = function (visitUuid) {
+        return $http.post(Bahmni.Common.Constants.bahmniEncounterUrl + '/find', {
+            visitUuids: [visitUuid],
+            includeAll: Bahmni.Common.Constants.includeAllObservations
+        }, {
+            withCredentials: true
+        });
+    };
 
     this.search = function (visitUuid,encounterDate) {
         if (!encounterDate) {
@@ -122,61 +122,6 @@ angular.module('bahmni.common.domain')
         	},
           withCredentials : true
         });
-    };
-
-    var getEncountersOfCurrentVisit = function(patientUuid) {
-        var deferredEncounters = $q.defer();
-        var options = {
-            method:"GET",
-            params:{
-                patient : patientUuid,
-                includeInactive : false,
-                v : "custom:(uuid,encounters:(uuid,encounterDatetime,encounterType:(uuid,name,retired)))"
-            },
-            withCredentials : true
-        };
-
-        $http.get(Bahmni.Common.Constants.visitUrl, options).success(function(data) {
-            var encounters = [];
-            if (data.results.length > 0) {
-                encounters = data.results[0].encounters;
-                encounters.forEach(function(enc) {
-                    if (typeof enc.encounterDatetime == 'string') {
-                        enc.encounterDatetime = Bahmni.Common.Util.DateUtil.parse(enc.encounterDatetime);
-                    }
-                    enc.encounterTypeUuid = enc.encounterType.uuid;
-                });
-            }
-            deferredEncounters.resolve(encounters);
-        }).error(function(e) {
-            deferredEncounters.reject(e);
-        });
-        return deferredEncounters.promise;
-    };
-
-    this.identifyEncounterForType = function(patientUuid, encounterTypeUuid) {
-        var searchable = $q.defer();
-        getEncountersOfCurrentVisit(patientUuid).then(function(encounters) {
-            if (encounters.length == 0) {
-                searchable.resolve(null);
-                return;
-            }
-            var selectedEnc = null;
-            encounters.sort(function(e1, e2) {
-                return e2.encounterDatetime - e1.encounterDatetime;
-            });
-            for (var i = 0, count =  encounters.length; i < count; i++) {
-                if (encounters[i].encounterTypeUuid == encounterTypeUuid) {
-                    selectedEnc = encounters[i];
-                    break;
-                }
-            }
-            searchable.resolve(selectedEnc);
-        },
-        function() {
-            searchable.reject("Couldn't identify prerequisite encounter for this operation.");
-        });
-        return searchable.promise;
     };
 
     this.find = function (params) {
@@ -215,6 +160,13 @@ angular.module('bahmni.common.domain')
             },
             withCredentials : true
         });
-    }
-}]);
+    };
+
+            this.discharge = function (encounterData) {
+                var encounter = this.buildEncounter(encounterData);
+                return $http.post(Bahmni.Common.Constants.dischargeUrl, encounter, {
+                    withCredentials: true
+                });
+            };
+        }]);
 

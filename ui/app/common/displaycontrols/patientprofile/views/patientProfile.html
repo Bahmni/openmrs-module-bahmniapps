@@ -5,53 +5,53 @@
             <tr class="patient-info">
                 <td colspan="2">
                     <span class="patient-img">
-                        <img ng-src="{{patient.image}}" onerror="this.onerror=null;this.src='../images/blank-user.gif';">
+                        <img ng-src="{{::patient.image}}" onerror="this.onerror=null;this.src='../images/blank-user.gif';">
                     </span>
                     <div class="patient-value">
                          <span class="patient-name">
-                            {{patient.name | titleCase}} ({{patient.identifier}})</span> -
-                         <span class="patient-gender-age" ng-bind-html="getPatientAttributeTypes()"></span>
-                         <span class="patient-estimated-text" ng-if="patient.birthdateEstimated"> (est.)</span>
-                         <span class="patient-birth-time" ng-show="patient.birthtime">
+                            {{::patient.name | titleCase}} ({{::patient.identifier}})</span> -
+                         <span class="patient-gender-age" ng-bind-html="::getPatientAttributeTypes()"></span>
+                         <span class="patient-estimated-text" ng-if="::patient.birthdateEstimated"> (est.)</span>
+                         <span class="patient-birth-time" ng-show="::patient.birthtime">
                              <span>Time of Birth</span>
-                             <span ng-bind-html="patient.birthtime | date:'hh:mm a'"></span>
+                             <span ng-bind-html="::patient.birthtime | date:'hh:mm a'"></span>
                          </span>
                          <span class="patient-address">
-                             {{getAddress()}}
+                             {{::getAddress()}}
                          </span>
-                         <i class="ipd-indication fa fa-bed" ng-if="visitSummary.hasBeenAdmitted()"></i>
+                         <i class="ipd-indication fa fa-bed" ng-if="::visitSummary.hasBeenAdmitted()"></i>
                      </div>
                  </td>
             </tr>
             <tr ng-if="showBirthDate" >
                 <td class="name">Date of Birth</td>
-                <td class="value">{{patient.birthdate | bahmniDate}}
+                <td class="value">{{::patient.birthdate | bahmniDate}}
                     <span ng-if="patient.birthdateEstimated" class="patient-estimated-text"> (est.)</span>
                 </td>
             </tr>
-            <tr ng-repeat="attribute in config.patientAttributes" ng-if="patient[attribute]"
-                ng-show="config.patientAttributes.length" ng-class="attribute">
-                <td class="name">{{patient[attribute].label}}</td>
-                <td class="value" ng-if="!patient[attribute].isDateField">{{(patient[attribute].value.display || patient[attribute].value) | booleanFilter}}</td>
-                <td class="value" ng-if="patient[attribute].isDateField">{{patient[attribute].value | bahmniDate}}</td>
+            <tr ng-repeat="attribute in config.patientAttributes" ng-if="::patient[attribute]"
+                ng-show="::config.patientAttributes.length" ng-class="attribute">
+                <td class="name">{{::patient[attribute].label}}</td>
+                <td class="value" ng-if="::!patient[attribute].isDateField">{{(patient[attribute].value.display || patient[attribute].value) | booleanFilter}}</td>
+                <td class="value" ng-if="::patient[attribute].isDateField">{{patient[attribute].value | bahmniDate}}</td>
             </tr>
-            <tr ng-if="patient.relationships && patient.relationships.length > 0">
+            <tr ng-if="::patient.relationships && patient.relationships.length > 0">
                 <td>Relationships</td>
             </tr>
-            <tr ng-repeat="relationship in patient.relationships">
-                <td class="name relationshipType" ng-if="relationship.personA.uuid === patient.uuid">{{relationship.relationshipType.aIsToB}}</td>
-                <td class="value" ng-if="relationship.personA.uuid === patient.uuid">
-                    <a ng-click="openPatientDashboard(relationship.personB.uuid)"
-                       title="Go to Clinical Dashboard" ng-if="!isProviderRelationship(relationship)">
-                        {{relationship.personB.display}}
+            <tr ng-repeat="relationship in patient.relationships track by relationship.uuid">
+                <td class="name relationshipType" ng-if="::relationship.personA.uuid === patient.uuid">{{::relationship.relationshipType.aIsToB}}</td>
+                <td class="value" ng-if="::relationship.personA.uuid === patient.uuid">
+                    <a ng-click="::openPatientDashboard(relationship.personB.uuid)"
+                       title="Go to Clinical Dashboard" ng-if="::!isProviderRelationship(relationship)">
+                        {{::relationship.personB.display}}
                     </a>
-                    <span ng-if="isProviderRelationship(relationship)">{{relationship.personB.display}}</span>
+                    <span ng-if="::isProviderRelationship(relationship)">{{::relationship.personB.display}}</span>
                 </td>
-                <td class="name" ng-if="relationship.personB.uuid === patient.uuid">{{relationship.relationshipType.bIsToA}}</td>
-                <td ng-if="relationship.personB.uuid === patient.uuid" class="value">
-                    <a ng-click="openPatientDashboard(relationship.personA.uuid)"
+                <td class="name" ng-if="::relationship.personB.uuid === patient.uuid">{{::relationship.relationshipType.bIsToA}}</td>
+                <td ng-if="::relationship.personB.uuid === patient.uuid" class="value">
+                    <a ng-click="::openPatientDashboard(relationship.personA.uuid)"
                        title="Go to Clinical Dashboard">
-                        {{relationship.personA.display}}
+                        {{::relationship.personA.display}}
                     </a>
                 </td>
             </tr>

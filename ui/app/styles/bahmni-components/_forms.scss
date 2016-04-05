@@ -55,15 +55,25 @@ form, .form {
             padding-left: 240px;
         }
         .add-more {
-            float: right;
+            display: inline-block;
             margin-left: 5px;
+            margin-top:9px;
+            float:left;
+            button {
+              padding: 2px 0px;
+              color: #000;
+              i {
+                color: green;
+                padding: 0.2em 0.1em;
+              }
+            }
             @media screen and (max-width: 1024px) {
-              margin-top:7px;
+              margin-top:9px;
             }
         }
         textarea {
            height: 35px;
-            width: 600px;;
+            width: 807px;;
             transition: height 0.1s ease;
             box-sizing: border-box;
             margin-top: 5px;
@@ -72,6 +82,13 @@ form, .form {
             }
             &.consultation-img-comments {
                 width: 100%;
+            }
+            @media screen and (max-width: 1024px) {
+              width:600px;
+            }
+            @media screen and (max-width: 768px){
+              width:350px;
+
             }
         }
     }
@@ -353,7 +370,12 @@ form p strong, .form p strong { display: inline; }
 }
 
 .compute-btn, .btn-small {color: darken($bahmniPrimaryBtnColor, 15%);}
-
+.btn-small{
+  color: #000;
+  i{
+    color: green;
+  }
+}
 
 
 /* form invalid error */

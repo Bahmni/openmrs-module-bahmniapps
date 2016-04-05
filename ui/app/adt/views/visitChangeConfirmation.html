@@ -1,0 +1,23 @@
+<div class="revise-refill-modal-wrapper" aria-labelledby="dialog-label">
+    <!--Added to override the z-index property of the top navigation bar. It is done to prevent any user action
+    when the popup is shown-->
+    <style type="text/css">
+        .opd-header-wrapper {
+            z-index: 10000 !important;
+        }
+    </style>
+    <div class="ngdialog-close clearfix"></div>
+    <!--<button id="modal-close-button" class="secondary-button" ng-click="cancelConfirmationDialog()">{{'VISIT_CHANGE_CONFIRMATION_OPTION_CANCEL_KEY' | translate}}</button>-->
+    <div class="drug-details">
+        <p translate="VISIT_CHANGE_CONFIRMATION_DIALOG_MESSAGE_KEY" translate-values="{visitType : '{{visitSummary.visitType}}', defaultVisitType : '{{ defaultVisitTypeName }}'}"></p>
+    </div>
+
+    <div class="dialog-button-group">
+        <button id="modal-revise-button1" class="secondary-button" ng-click="closeCurrentVisitAndStartNewVisit()">{{'VISIT_CHANGE_CONFIRMATION_OPTION_YES_KEY' | translate}}</button>
+        <button id="modal-revise-button3" class="secondary-button" ng-click="continueWithCurrentVisit()">{{'VISIT_CHANGE_CONFIRMATION_OPTION_CONTINUE_KEY' | translate}}</button>
+    </div>
+
+    <span class="ngdialog-end"></span>
+</div>
+
+

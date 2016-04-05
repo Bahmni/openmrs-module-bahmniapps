@@ -1,6 +1,7 @@
 <div class="field-attribute">
-    <label for="{{::attribute.name}}">{{::attribute.description}} :<span class="asterick"
-                                                                       ng-show="{{::attribute.required}}">*</span></label>
+    <label for="{{::attribute.name}}">{{::attribute.description}} <span ng-show="isForm">:</span>
+
+        <span class="asterick" ng-show="{{::attribute.required}}">*</span></label>
 </div>
 <div class="field-value" data-ng-switch on="::attribute.format">
     <div data-ng-switch-when="java.lang.String">

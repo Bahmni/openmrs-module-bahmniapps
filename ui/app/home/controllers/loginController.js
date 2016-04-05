@@ -64,12 +64,6 @@ angular.module('bahmni.home')
                 $scope.errorMessageTranslateKey = null;
                 var deferrable = $q.defer();
 
-                if(isOfflineApp && offlineService.getItem(Bahmni.Common.Constants.LoginInformation) &&
-                    !offlineService.validateLoginInfo($scope.loginInfo)) {
-                    $scope.errorMessageTranslateKey = "LOGIN_LABEL_LOGIN_ERROR_MESSAGE_KEY";
-                    return;
-                }
-
                 sessionService.loginUser($scope.loginInfo.username, $scope.loginInfo.password, $scope.loginInfo.currentLocation).then(
                     function () {
                         sessionService.loadCredentials().then(

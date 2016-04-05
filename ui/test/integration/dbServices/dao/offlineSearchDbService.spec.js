@@ -7,7 +7,7 @@ describe('offlineSearchDbService', function () {
 
     beforeEach(function () {
         module('bahmni.common.offline');
-        module('bahmni.registration');
+        module('bahmni.common.models');
         module(function ($provide) {
             $provide.value('$http', mockHttp);
             $provide.value('$q', $q);
@@ -33,10 +33,9 @@ describe('offlineSearchDbService', function () {
         jasmine.getFixtures().fixturesPath = 'base/test/data';
         var patientJson = JSON.parse(readFixtures('patient.json'));
         var personAttributeTypeJSON = JSON.parse(readFixtures('patientAttributeType.json'));
-        mockHttp.get.and.returnValue(specUtil.respondWithPromise($q, personAttributeTypeJSON));
         return schemaBuilder.connect().then(function (db) {
             offlineSearchDbService.init(db);
-            return patientAttributeDbService.insertAttributeTypes(db).then(function () {
+            return patientAttributeDbService.insertAttributeTypes(db, personAttributeTypeJSON.data.results).then(function () {
                 var attributeTypeTable = db.getSchema().table('patient_attribute_type');
                 return db.select(attributeTypeTable.attributeTypeId,
                     attributeTypeTable.uuid, attributeTypeTable.attributeName, attributeTypeTable.format).from(attributeTypeTable).exec().then(function (attributeTypeMap) {
@@ -67,11 +66,11 @@ describe('offlineSearchDbService', function () {
             q: searchString,
             s: "byIdOrNameOrVillage",
             startIndex: 0,
-            address_field_name: 'address2'
+            addressFieldName: 'address2'
         };
 
         createAndSearch(params).then(function (result) {
-            expect(result.pageOfResults[0].givenName).toBe(searchString);
+            expect(result.data.pageOfResults[0].givenName).toBe(searchString);
             done();
         });
 
@@ -85,11 +84,11 @@ describe('offlineSearchDbService', function () {
             q: searchString,
             s: "byIdOrNameOrVillage",
             startIndex: 0,
-            address_field_name: 'address2'
+            addressFieldName: 'address2'
         };
 
         createAndSearch(params).then(function (result) {
-            expect(result.pageOfResults[0].familyName).toBe(searchString);
+            expect(result.data.pageOfResults[0].familyName).toBe(searchString);
             done();
         });
 
@@ -102,12 +101,12 @@ describe('offlineSearchDbService', function () {
             q: '',
             s: "byIdOrNameOrVillage",
             startIndex: 0,
-            address_field_name: 'stateProvince',
-            address_field_value: searchString
+            addressFieldName: 'stateProvince',
+            addressFieldValue: searchString
         };
 
         createAndSearch(params).then(function (result) {
-            expect(result.pageOfResults[0].addressFieldValue).toBe(searchString);
+            expect(result.data.pageOfResults[0].addressFieldValue).toBe(searchString);
             done();
         });
 
@@ -120,11 +119,11 @@ describe('offlineSearchDbService', function () {
             q: searchString,
             s: "byIdOrNameOrVillage",
             startIndex: 0,
-            address_field_name: 'address2'
+            addressFieldName: 'address2'
         };
 
         createAndSearch(params).then(function (result) {
-            expect(result.pageOfResults[0].identifier).toBe(searchString);
+            expect(result.data.pageOfResults[0].identifier).toBe(searchString);
             done();
         });
 
@@ -136,14 +135,14 @@ describe('offlineSearchDbService', function () {
         var params = {
             q: '',
             s: "byIdOrNameOrVillage",
-            address_field_name: 'address2',
-            custom_attribute: searchString,
+            addressFieldName: 'address2',
+            customAttribute: searchString,
             startIndex: 0,
             patientAttributes: ["caste"]
         };
 
         createAndSearch(params, done).then(function (result) {
-            var customAttributes = JSON.parse(result.pageOfResults[0].customAttribute);
+            var customAttributes = JSON.parse(result.data.pageOfResults[0].customAttribute);
             expect(customAttributes.caste).toBe(searchString);
             done();
         });
@@ -156,14 +155,14 @@ describe('offlineSearchDbService', function () {
         var params = {
             q: '',
             s: "byIdOrNameOrVillage",
-            address_field_name: 'address2',
-            custom_attribute: searchString,
+            addressFieldName: 'address2',
+            customAttribute: searchString,
             startIndex: 0,
             patientAttributes: ["caste", "isUrban"]
         };
 
         createAndSearch(params, done).then(function (result) {
-            var customAttributes = JSON.parse(result.pageOfResults[0].customAttribute);
+            var customAttributes = JSON.parse(result.data.pageOfResults[0].customAttribute);
             expect(customAttributes.isUrban).toBe(searchString);
             done();
         });
@@ -176,14 +175,14 @@ describe('offlineSearchDbService', function () {
         var params = {
             q: '',
             s: "byIdOrNameOrVillage",
-            address_field_name: 'address2',
-            custom_attribute: searchString,
+            addressFieldName: 'address2',
+            customAttribute: searchString,
             startIndex: 0,
             patientAttributes: ["education"]
         };
 
         createAndSearch(params, done).then(function (result) {
-            var customAttributes = JSON.parse(result.pageOfResults[0].customAttribute);
+            var customAttributes = JSON.parse(result.data.pageOfResults[0].customAttribute);
             expect(customAttributes.education).toBe(searchString);
             done();
         });
@@ -196,14 +195,14 @@ describe('offlineSearchDbService', function () {
         var params = {
             q: '',
             s: "byIdOrNameOrVillage",
-            address_field_name: 'address2',
-            custom_attribute: searchString,
+            addressFieldName: 'address2',
+            customAttribute: searchString,
             startIndex: 0,
             patientAttributes: ["landHolding"]
         };
 
         createAndSearch(params, done).then(function (result) {
-            var customAttributes = JSON.parse(result.pageOfResults[0].customAttribute);
+            var customAttributes = JSON.parse(result.data.  pageOfResults[0].customAttribute);
             expect(customAttributes.landHolding).toBe(searchString);
             done();
         });

@@ -5,7 +5,7 @@ describe("Dashboard Section", function () {
     it("should get the view template for observation section", function () {
         var section = {
             "title": "Nutritional Values",
-            "name": "vitals",
+            "type": "vitals",
             "conceptNames": ["Height", "Weight", "BMI", "BMI STATUS"],
             "isObservation": true
         };
@@ -17,7 +17,7 @@ describe("Dashboard Section", function () {
     it("should get the view template for disposition section", function () {
         var section = {
             "title": "Nutritional Values",
-            "name": "disposition",
+            "type": "disposition",
             "conceptNames": ["Height", "Weight", "BMI", "BMI STATUS"],
             "disposition": true
         };
@@ -27,10 +27,10 @@ describe("Dashboard Section", function () {
 
     });
 
-    it("should get the view template for disposition section", function () {
+    it("should get the view template for labOrder section", function () {
         var section = {
             "title": "Nutritional Values",
-            "name": "labOrders",
+            "type": "labOrders",
             "conceptNames": ["Height", "Weight", "BMI", "BMI STATUS"],
             "disposition": true
         };
@@ -43,7 +43,7 @@ describe("Dashboard Section", function () {
     it("should get the view template for custom control section", function () {
         var section = {
             "title": "Custom Display Control",
-            "name": "custom",
+            "type": "custom",
             "config":{
 
             }

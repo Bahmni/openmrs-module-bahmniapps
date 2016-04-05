@@ -8,7 +8,8 @@ module.exports = function (grunt) {
     var yeomanConfig = {
         app: 'app',
         dist: 'dist',
-        test: 'test'
+        test: 'test',
+        root: '.'
     };
 
     try {
@@ -62,6 +63,12 @@ module.exports = function (grunt) {
         karma: {
             unit: {
                 configFile: 'test/config/karma.conf.js'
+            },
+            chrome: {
+                configFile: 'test/config/karma.chrome.conf.js'
+            },
+            android: {
+                configFile: 'test/config/karma.android.conf.js'
             },
             auto: {
                 configFile: 'test/config/karma.conf.js',
@@ -150,6 +157,7 @@ module.exports = function (grunt) {
                 '<%= yeoman.dist %>/home/**/*.html',
                 '<%= yeoman.dist %>/admin/**/*.html',
                 '<%= yeoman.dist %>/dhis/**/*.html',
+                '<%= yeoman.dist %>/offline/**/*.html',
                 '<%= yeoman.dist %>/reports/**/*.html',
                 '<%= yeoman.dist %>/registration/**/*.html',
                 '<%= yeoman.dist %>/document-upload/**/*.html'
@@ -199,6 +207,7 @@ module.exports = function (grunt) {
                             'common/**/*.html',
                             'orders/**/*.html',
                             'home/**/*.html',
+                            'offline/**/*.html',
                             'admin/**/*.html',
                             'dhis/**/*.html',
                             'reports/**/*.html',
@@ -237,46 +246,42 @@ module.exports = function (grunt) {
                     {
                         expand: true,
                         cwd: '<%= yeoman.dist %>',
-                        src: ['patients.min.*.js'],
-                        dest: '<%= yeoman.dist %>/patients/'
-                    },
-                    {
-                        expand: true,
-                        cwd: '<%= yeoman.dist %>',
-                        src: ['clinical.min.*.js'],
+                        src: ['clinical.*.js'],
                         dest: '<%= yeoman.dist %>/clinical/'
                     },
-                    {expand: true, cwd: '<%= yeoman.dist %>', src: ['adt.min.*.js'], dest: '<%= yeoman.dist %>/adt/'},
+                    {expand: true, cwd: '<%= yeoman.dist %>', src: ['adt.*.js'], dest: '<%= yeoman.dist %>/adt/'},
                     {
                         expand: true,
                         cwd: '<%= yeoman.dist %>',
-                        src: ['orders.min.*.js'],
+                        src: ['orders.*.js'],
                         dest: '<%= yeoman.dist %>/orders/'
                     },
-                    {expand: true, cwd: '<%= yeoman.dist %>', src: ['home.min.*.js'], dest: '<%= yeoman.dist %>/home/'},
+                    {expand: true, cwd: '<%= yeoman.dist %>', src: ['home.*.js'], dest: '<%= yeoman.dist %>/home/'},
                     {
                         expand: true,
                         cwd: '<%= yeoman.dist %>',
-                        src: ['admin.min.*.js'],
+                        src: ['admin.*.js'],
                         dest: '<%= yeoman.dist %>/admin/'
                     },
-                    {expand: true, cwd: '<%= yeoman.dist %>', src: ['dhis.min.*.js'], dest: '<%= yeoman.dist %>/dhis/'},
+                    {expand: true, cwd: '<%= yeoman.dist %>', src: ['dhis.*.js'], dest: '<%= yeoman.dist %>/dhis/'},
+                    {expand: true, cwd: '<%= yeoman.dist %>', src: ['offline.*.js'], dest: '<%= yeoman.dist %>/offline/'},
+                    {expand: true, cwd: '<%= yeoman.root %>', src: ['common.*.js'], dest: '<%= yeoman.dist %>/'},
                     {
                         expand: true,
                         cwd: '<%= yeoman.dist %>',
-                        src: ['reports.min.*.js'],
+                        src: ['reports.*.js'],
                         dest: '<%= yeoman.dist %>/reports/'
                     },
                     {
                         expand: true,
                         cwd: '<%= yeoman.dist %>',
-                        src: ['registration.min.*.js'],
+                        src: ['registration.*.js'],
                         dest: '<%= yeoman.dist %>/registration/'
                     },
                     {
                         expand: true,
                         cwd: '<%= yeoman.dist %>',
-                        src: ['document-upload.min.*.js'],
+                        src: ['document-upload.*.js'],
                         dest: '<%= yeoman.dist %>/document-upload/'
                     },
                     {
@@ -288,50 +293,56 @@ module.exports = function (grunt) {
                     {
                         expand: true,
                         cwd: '<%= yeoman.dist %>',
-                        src: ['clinical.min.*.css'],
+                        src: ['clinical.*.css'],
                         dest: '<%= yeoman.dist %>/clinical/'
                     },
-                    {expand: true, cwd: '<%= yeoman.dist %>', src: ['adt.min.*.css'], dest: '<%= yeoman.dist %>/adt/'},
+                    {expand: true, cwd: '<%= yeoman.dist %>', src: ['adt.*.css'], dest: '<%= yeoman.dist %>/adt/'},
                     {
                         expand: true,
                         cwd: '<%= yeoman.dist %>',
-                        src: ['orders.min.*.css'],
+                        src: ['orders.*.css'],
                         dest: '<%= yeoman.dist %>/orders/'
                     },
                     {
                         expand: true,
                         cwd: '<%= yeoman.dist %>',
-                        src: ['home.min.*.css'],
+                        src: ['home.*.css'],
                         dest: '<%= yeoman.dist %>/home/'
                     },
                     {
                         expand: true,
                         cwd: '<%= yeoman.dist %>',
-                        src: ['admin.min.*.css'],
+                        src: ['admin.*.css'],
                         dest: '<%= yeoman.dist %>/admin/'
                     },
                     {
                         expand: true,
                         cwd: '<%= yeoman.dist %>',
-                        src: ['dhis.min.*.css'],
+                        src: ['dhis.*.css'],
                         dest: '<%= yeoman.dist %>/dhis/'
                     },
                     {
                         expand: true,
                         cwd: '<%= yeoman.dist %>',
-                        src: ['reports.min.*.css'],
+                        src: ['offline.*.css'],
+                        dest: '<%= yeoman.dist %>/offline/'
+                    },
+                    {
+                        expand: true,
+                        cwd: '<%= yeoman.dist %>',
+                        src: ['reports.*.css'],
                         dest: '<%= yeoman.dist %>/reports/'
                     },
                     {
                         expand: true,
                         cwd: '<%= yeoman.dist %>',
-                        src: ['registration.min.*.css'],
+                        src: ['registration.*.css'],
                         dest: '<%= yeoman.dist %>/registration/'
                     },
                     {
                         expand: true,
                         cwd: '<%= yeoman.dist %>',
-                        src: ['document-upload.min.*.css'],
+                        src: ['document-upload.*.css'],
                         dest: '<%= yeoman.dist %>/document-upload/'
                     }
                 ]
@@ -373,9 +384,46 @@ module.exports = function (grunt) {
                     DEBUG: 'production'
                 }
             },
-            js : {
-                src : '<%= yeoman.dist %>/registration.min.js',
-                dest : '<%= yeoman.dist %>/registration.min.js'
+            multifile : {
+                files : {
+                    '<%= yeoman.dist %>/registration.min.js' : '<%= yeoman.dist %>/registration.min.js',
+                    '<%= yeoman.dist %>/admin.min.js' : '<%= yeoman.dist %>/admin.min.js',
+                    '<%= yeoman.dist %>/adt.min.js' : '<%= yeoman.dist %>/adt.min.js',
+                    '<%= yeoman.dist %>/document-upload.min.js' : '<%= yeoman.dist %>/document-upload.min.js',
+                    '<%= yeoman.dist %>/home.min.js' : '<%= yeoman.dist %>/home.min.js',
+                    '<%= yeoman.dist %>/orders.min.js' : '<%= yeoman.dist %>/orders.min.js',
+                    '<%= yeoman.dist %>/reports.min.js' : '<%= yeoman.dist %>/reports.min.js',
+                    '<%= yeoman.dist %>/clinical.min.js' : '<%= yeoman.dist %>/clinical.min.js'
+                }
+            },
+            web: {
+                src: ['<%= yeoman.dist %>/**/index.html'],
+                options: {
+                    inline: true,
+                    context: {
+                        ONLINE: true
+                    }
+                }
+            },
+            chrome: {
+                src: ['<%= yeoman.dist %>/**/index.html'],
+                options: {
+                    inline: true,
+                    context: {
+                        CHROME: true,
+                        OFFLINE: true
+                    }
+                }
+            },
+            android: {
+                src: '<%= yeoman.dist %>/**/index.html',
+                options: {
+                    inline: true,
+                    context: {
+                        ANDROID: true,
+                        OFFLINE: true
+                    }
+                }
             }
         }
     });
@@ -383,6 +431,10 @@ module.exports = function (grunt) {
     grunt.renameTask('regarde', 'watch');
 
     grunt.registerTask('test', ['karma:unit', 'coverage']);
+
+    grunt.registerTask('chrometest', ['karma:chrome']);
+
+    grunt.registerTask('androidtest', ['karma:android']);
 
     grunt.registerTask('dist', [
         'clean:dist',
@@ -399,68 +451,43 @@ module.exports = function (grunt) {
         'usemin'
     ]);
 
+    grunt.registerTask('bundle', [
+        'npm-install',
+        'bower-install',
+        'jshint',
+        'clean:dist',
+        'compass:dist',
+        'useminPrepare',
+        'ngAnnotate',
+        'concat',
+        'preprocess',
+        'imagemin',
+        'htmlmin',
+        'cssmin',
+        'copy:dist',
+        'usemin'
+    ]);
+
     grunt.registerTask('build', [
         'npm-install',
         'bower-install',
         'jshint',
-        'test',
         'dist'
     ]);
+
+    grunt.registerTask('tests', function(app){
+        grunt.task.run((app || '') + 'test');
+    });
 
     grunt.registerTask('uglify-and-rename', [
         'uglify',
         'rename:minified'
     ]);
 
-
-    var updatePrefetchList = function (preFetchList) {
-        var replace = require("replace");
-
-        replace({
-            regex: "{pre-fetch-list}",
-            replacement: preFetchList,
-            paths: ['./app/worker.js'],
-            recursive: false,
-            silent: true
-        });
-    };
-
-    var unique = function(array) {
-        return array.filter(function(item, pos) {
-            return array.indexOf(item) === pos;
-        });
-    };
-
-    var getFiles = function (dir, files_) {
-        var fs = require('fs');
-        files_ = files_ || [];
-        var files = fs.readdirSync(dir);
-        for (var i in files){
-            var name = dir + '/' + files[i];
-            if (fs.statSync(name).isDirectory()){
-                getFiles(name, files_);
-            } else {
-                name = "'"+name.split("./app").join("/bahmni")+"'";
-                if(files_.indexOf(name) === -1) {
-                    files_.push(name);
-                }
-            }
-        }
-        return files_;
-    };
-
-    grunt.registerTask('default', ['build', 'uglify-and-rename']);
-    grunt.registerTask('dev', ['build']);
-
-    grunt.registerTask('pre-fetch', 'Generate files to pre-fetch for service worker', function() {
-            var preFetchList = [];
-            var preFetchDirs = ['./app/lib', './app/images', './app/home', './app/registration', './app/i18n/home', './app/i18n/registration'];
-            for (var i in preFetchDirs) {
-                preFetchList = preFetchList.concat(getFiles(preFetchDirs[i], preFetchList));
-            }
-            updatePrefetchList(unique(preFetchList));
-        }
-    );
+    grunt.registerTask('default', ['build', 'tests', 'uglify-and-rename', 'preprocess:web']);
+    grunt.registerTask('dev', ['build', 'tests', 'rename', 'preprocess:web']);
+    grunt.registerTask('chrome', ['bundle', 'tests:chrome', 'uglify-and-rename', 'preprocess:chrome']);
+    grunt.registerTask('android', ['bundle', 'tests:android', 'uglify-and-rename', 'preprocess:android']);
 
     grunt.registerTask('bower-install', 'install dependencies using bower', function () {
         var exec = require('child_process').exec;

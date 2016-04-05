@@ -37,14 +37,14 @@
     }
     thead tr {
       border: none !important;
-      th{
-        text-align: center;
-      }
     }
+    thead tr th {
+      text-align: center;
+    }
+
     tbody tr td {
       border: none !important;
       border-top: 1px #ccc solid !important;
-      text-align: center;
     }
     table-layout: fixed;
     tr{
@@ -179,7 +179,7 @@
         overflow: hidden;
         text-overflow: ellipsis;
         @media (max-width : 1024px){
-           width: 170px;
+          width: 170px;
         }
         span{
           z-index: 999;
@@ -188,7 +188,7 @@
         }
       }
       &.drugNameStopForm{
-         padding: 6px 5px 43px;
+        padding: 6px 5px 43px;
       }
       &.drugNameAddNote{
         padding: 6px 5px 31px;
@@ -218,19 +218,19 @@
         padding: 3px 5px;
       }
       &.noOfActions-4-width{
-          width: 200px;
+        width: 200px;
       }
       &.noOfActions-3-width{
-          width: 165px;
+        width: 165px;
       }
       &.noOfActions-2-width{
-          width: 130px;
+        width: 130px;
       }
       &.noOfActions-1-width{
-          width: 90px;
+        width: 90px;
       }
       &.noOfActions-0-width{
-          width: 75px;
+        width: 75px;
       }
       &.noOfActions--width{
         width: 65px;

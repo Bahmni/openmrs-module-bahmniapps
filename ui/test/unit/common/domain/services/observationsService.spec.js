@@ -24,6 +24,19 @@ describe("observationsService", function () {
         })
     });
 
+    describe("fetchForPatientProgram", function () {
+        it("should fetch observations for patient program", function () {
+            mockBackend.expectGET('/openmrs/ws/rest/v1/bahmnicore/observations?concept=conceptName1&concept=conceptName2&patientProgramUuid=patientProgramUuid&scope=latest').respond({results: ["latest Observation"]});
+
+            observationsService.fetchForPatientProgram("patientProgramUuid", ["conceptName1", "conceptName2"],"latest").then(function (response) {
+                expect(response.data.results.length).toBe(1);
+                expect(response.data.results[0]).toBe("latest Observation");
+            });
+
+            mockBackend.flush();
+        })
+    });
+
     describe("getObsInFlowSheet", function () {
         it("should send parameters specified in call to the server", function () {
             mockBackend.expectGET('/openmrs/ws/rest/v1/bahmnicore/observations/flowSheet?' +
@@ -38,6 +51,18 @@ describe("observationsService", function () {
 
             mockBackend.flush();
         });
+    });
+
+    describe("fetch By Observation Uuid", function() {
+       it ("should fetch bahmni observation by uuid", function() {
+           mockBackend.expectGET('/openmrs/ws/rest/v1/bahmnicore/observations?observationUuid=observationUuid').respond({results: {uuid : "observationUuid"}});
+
+           observationsService.getByUuid("observationUuid").then(function (response) {
+               expect(response.data.results.uuid).toEqual("observationUuid");
+           });
+
+           mockBackend.flush();
+       });
     });
 
 });

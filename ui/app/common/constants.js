@@ -5,6 +5,7 @@ Bahmni.Common = Bahmni.Common || {};
 
 (function(){
     var hostUrl = localStorage.getItem('host') ? ("https://" + localStorage.getItem('host'))  : "";
+    var offlineRootDir = localStorage.getItem('offlineRootDir') || "";
     var RESTWS = hostUrl + "/openmrs/ws/rest";
     var RESTWS_V1 = hostUrl + "/openmrs/ws/rest/v1";
     var BAHMNI_CORE = RESTWS_V1 + "/bahmnicore";
@@ -25,6 +26,32 @@ Bahmni.Common = Bahmni.Common || {};
         "setMembers:(uuid,name,names,conceptClass," +
         "setMembers:(uuid,name,names,conceptClass," +
         "setMembers:(uuid,name,names,conceptClass))))";
+
+    var unAuthenticatedReferenceDataMap = {
+        "/openmrs/ws/rest/v1/location?q=Login+Location&s=byTags&v=default": "LoginLocations",
+        "/openmrs/ws/rest/v1/idgen/identifiersources": "IdentifierSources",
+        "/openmrs/module/addresshierarchy/ajax/getOrderedAddressHierarchyLevels.form": "AddressHierarchyLevels",
+        "/openmrs/ws/rest/v1/bahmnicore/sql/globalproperty?property=locale.allowed.list": "LocaleList",
+        "/openmrs/ws/rest/v1/bahmnicore/sql/globalproperty?property=mrs.genders": "Genders",
+        "/openmrs/ws/rest/v1/bahmnicore/sql/globalproperty?property=bahmni.relationshipTypeMap": "RelationshipTypeMap"
+    };
+
+    var authenticatedReferenceDataMap = {
+        "/openmrs/ws/rest/v1/bahmnicore/config/bahmniencounter?callerContext=REGISTRATION_CONCEPTS": "RegistrationConcepts",
+        "/openmrs/ws/rest/v1/relationshiptype?v=custom:(aIsToB,bIsToA,uuid)": "RelationshipType",
+        "/openmrs/ws/rest/v1/personattributetype?v=custom:(uuid,name,sortWeight,description,format,concept)" : "PersonAttributeType",
+        "/openmrs/ws/rest/v1/entitymapping?mappingType=loginlocation_visittype&s=byEntityAndMappingType": "LoginLocationToVisitTypeMapping",
+        "/openmrs/ws/rest/v1/bahmnicore/config/patient": "PatientConfig",
+        "/openmrs/ws/rest/v1/concept?s=byFullySpecifiedName&name=Consultation+Note&v=custom:(uuid,name,answers)": "ConsultationNote",
+        "/openmrs/ws/rest/v1/concept?s=byFullySpecifiedName&name=Lab+Order+Notes&v=custom:(uuid,name)": "LabOrderNotes",
+        "/openmrs/ws/rest/v1/concept?s=byFullySpecifiedName&name=Impression&v=custom:(uuid,name)":"RadiologyImpressionConfig",
+        "/openmrs/ws/rest/v1/concept?s=byFullySpecifiedName&name=All_Tests_and_Panels&v=custom:(uuid,name:(uuid,name),setMembers:(uuid,name:(uuid,name)))":"AllTestsAndPanelsConcept",
+        "/openmrs/ws/rest/v1/concept?s=byFullySpecifiedName&name=Dosage+Frequency&v=custom:(uuid,name,answers)": "DosageFrequencyConfig",
+        "/openmrs/ws/rest/v1/concept?s=byFullySpecifiedName&name=Dosage+Instructions&v=custom:(uuid,name,answers)": "DosageInstructionConfig",
+        "/openmrs/ws/rest/v1/bahmnicore/sql/globalproperty?property=bahmni.encounterType.default":"DefaultEncounterType",
+        "/openmrs/ws/rest/v1/concept?s=byFullySpecifiedName&name=Stopped+Order+Reason&v=custom:(uuid,name,answers)":"StoppedOrderReasonConfig",
+        "/openmrs/ws/rest/v1/ordertype": "OrderType"
+    };
 
     Bahmni.Common.Constants = {
         hostURL: hostUrl,
@@ -51,6 +78,7 @@ Bahmni.Common = Bahmni.Common || {};
         bahmniLabOrderResultsUrl: BAHMNI_CORE + "/labOrderResults",
         bahmniEncounterUrl: BAHMNI_CORE + "/bahmniencounter",
         conceptUrl: RESTWS_V1 + "/concept",
+        bahmniConceptAnswerUrl: RESTWS_V1 + "/bahmniconceptanswer",
         conceptSearchByFullNameUrl: RESTWS_V1 + "/concept?s=byFullySpecifiedName",
         visitUrl: RESTWS_V1 + "/visit",
         endVisitUrl: BAHMNI_CORE + "/visit/endVisit",
@@ -78,6 +106,7 @@ Bahmni.Common = Bahmni.Common || {};
         dhisAllTasksUrl: RESTWS_V1 + "/dhis/tasks",
         programUrl: RESTWS_V1 + "/program",
         programEnrollPatientUrl: RESTWS_V1 + "/bahmniprogramenrollment",
+        programStateDeletionUrl: RESTWS_V1 + "/programenrollment",
         programEnrollmentDefaultInformation: "default",
         programEnrollmentFullInformation: "full",
         programAttributeTypes: RESTWS_V1 + "/programattributetype",
@@ -163,7 +192,6 @@ Bahmni.Common = Bahmni.Common || {};
         orderSetMemberAttributeTypeUrl: RESTWS_V1 + "/ordersetmemberattributetype",
         orderSetUrl: RESTWS_V1 + "/bahmniorderset",
         primaryOrderSetMemberAttributeTypeName: "Primary",
-        drugUrl : RESTWS_V1 + "/drug?s=ordered",
         bahmniBacteriologyResultsUrl: BACTERIOLOGY + "/specimen",
         bedFromVisit: RESTWS_V1+ "/beds",
         ordersUrl: RESTWS_V1+ "/order",
@@ -192,9 +220,12 @@ Bahmni.Common = Bahmni.Common || {};
             SHA3: 'SHA3'
         },
         LoginInformation: 'LoginInformation',
-        ServerDateTimeFormat: 'YYYY-MM-DDTHH:mm:ssZZ'
-        ,orderSetSpecialUnits:["mg/kg","mg/m2"]
-        ,calculateDose: BAHMNI_CORE+ "/calculateDose"
+        orderSetSpecialUnits:["mg/kg","mg/m2"],
+        calculateDose: BAHMNI_CORE+ "/calculateDose",
+        unAuthenticatedReferenceDataMap: unAuthenticatedReferenceDataMap,
+        authenticatedReferenceDataMap: authenticatedReferenceDataMap,
+        offlineRootDir: offlineRootDir,
+        dischargeUrl: BAHMNI_CORE + "/discharge"
     };
 })();
 

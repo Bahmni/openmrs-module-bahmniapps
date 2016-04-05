@@ -147,7 +147,14 @@ angular.module('bahmni.clinical')
                 $scope.toggleOrderSelection(test);
             };
 
+            $scope.search={};
+            $scope.search.string='';
+            $scope.resetSearchString = function(){
+                $scope.search.string='';
+            };
+
             $scope.toggleOrderSelection = function (test) {
+                $scope.resetSearchString();
                 var orderPresent = $scope.isActiveOrderPresent(test);
                 if (!orderPresent) {
                     createOrder(test);
@@ -212,7 +219,7 @@ angular.module('bahmni.clinical')
 
             $scope.getName = function (sample) {
                 var name = _.find(sample.names, {conceptNameType: "SHORT"}) || _.find(sample.names, {conceptNameType: "FULLY_SPECIFIED"});
-                return name ? name.name : undefined;
+                return name && name.name;
             };
 
             init();

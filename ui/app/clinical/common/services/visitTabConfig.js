@@ -2,7 +2,6 @@
 
 angular.module('bahmni.clinical')
     .service('visitTabConfig', ['$q', 'appService', function ($q, appService) {
-        var self = this;
 
         var mandatoryConfigPromise = function() {
             return appService.loadMandatoryConfig(Bahmni.Clinical.Constants.mandatoryVisitConfigUrl);

@@ -1,10 +1,9 @@
 'use strict';
 
 angular.module('bahmni.common.conceptSet')
-    .directive('concept', ['RecursionHelper', 'spinner', 'conceptSetService', '$filter',
-        function (RecursionHelper, spinner, conceptSetService, $filter) {
+    .directive('concept', ['RecursionHelper', 'spinner', '$filter',
+        function (RecursionHelper, spinner, $filter) {
         var link = function (scope) {
-            var conceptMapper = new Bahmni.Common.Domain.ConceptMapper();
             var hideAbnormalbuttonConfig = scope.observation && scope.observation.conceptUIConfig &&  scope.observation.conceptUIConfig['hideAbnormalButton'];
 
             scope.now = moment().format("YYYY-MM-DD hh:mm:ss");
@@ -12,6 +11,7 @@ angular.module('bahmni.common.conceptSet')
             scope.hideAbnormalButton = hideAbnormalbuttonConfig == undefined ? scope.hideAbnormalButton : hideAbnormalbuttonConfig;
 
             scope.cloneNew = function (observation, parentObservation) {
+                observation.showAddMoreButton = function(){return false;};
                 var newObs = observation.cloneNew();
                 var index = parentObservation.groupMembers.indexOf(observation);
                 parentObservation.groupMembers.splice(index + 1, 0, newObs);
@@ -19,8 +19,12 @@ angular.module('bahmni.common.conceptSet')
             };
 
             scope.removeClonedObs = function (observation, parentObservation) {
-                var index = parentObservation.groupMembers.indexOf(observation);
-                parentObservation.groupMembers[index].voided = true;
+                observation.voided = true;
+                var lastObservationByLabel = _.findLast(parentObservation.groupMembers,function(groupMember){
+                    return groupMember.label === observation.label && !groupMember.voided;
+                });
+
+                lastObservationByLabel.showAddMoreButton = function(){return true}
                 observation.hidden = true;
             };
 
@@ -44,20 +48,6 @@ angular.module('bahmni.common.conceptSet')
                     return observation.value + ' (' + $filter('bahmniDate')(observation.date) + ")";
                 }).join(", ");
             };
-            scope.selectOptions = function (codedConcept) {
-                var answers = _.uniqBy(codedConcept.answers, 'uuid').map(conceptMapper.map);
-                return {
-                    data: answers,
-                    query: function (options) {
-                        return options.callback({results: $filter('filter')(answers, {name: options.term})});
-                    },
-                    allowClear: true,
-                    placeholder: 'Select',
-                    formatResult: _.property('displayString'),
-                    formatSelection: _.property('displayString'),
-                    id: _.property('uuid')
-                };
-            };
 
             scope.toggleSection = function () {
                 scope.collapse = !scope.collapse;
@@ -79,21 +69,7 @@ angular.module('bahmni.common.conceptSet')
                 scope.$root.$broadcast("event:observationUpdated-" + scope.conceptSetName, scope.observation.concept.name, scope.rootObservation);
             }
 
-            scope.constructSearchResult = function(concept, searchString) {
-                var matchingName = null;
-                if (concept.name.name.toLowerCase().indexOf(searchString.toLowerCase()) != 0) {
-                    matchingName = _.find(_.map(concept.names, 'name'), function (name) {
-                        return (name != concept.name.name) && name.search(new RegExp(searchString, "i")) !== -1
-                    });
-                }
-                return {
-                    label: matchingName ? matchingName + " => " + concept.name.name : concept.name.name,
-                    value: concept.name.name,
-                    concept: concept,
-                    uuid: concept.uuid,
-                    name: concept.name.name
-                }
-            }
+
         };
 
         var compile = function (element) {

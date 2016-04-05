@@ -99,6 +99,15 @@ Bahmni.ConceptSet.Observation.prototype = {
         return this.getDataTypeName() === "Numeric";
     },
 
+    isAllowDecimal : function (){
+        if(this.getAllowDecimal() === false){
+            if(this.value && this.value.toString().indexOf('.') > 0){
+                return false;
+            }
+        }
+        return true;
+    },
+
     isText: function () {
         return this.getDataTypeName() === "Text";
     },
@@ -117,6 +126,10 @@ Bahmni.ConceptSet.Observation.prototype = {
 
     getDataTypeName: function () {
         return this.concept.dataType;
+    },
+
+    getAllowDecimal: function () {
+        return this.concept.allowDecimal;
     },
 
     isDateDataType: function () {
@@ -197,6 +210,9 @@ Bahmni.ConceptSet.Observation.prototype = {
         var conceptUIConfig = this.conceptUIConfig;
         if (conceptUIConfig.autocomplete) {
             return "autocomplete";
+        }
+        if (conceptUIConfig.dropdown) {
+            return "dropdown";
         }
         return "buttonselect";
 
@@ -294,6 +310,9 @@ Bahmni.ConceptSet.Observation.prototype = {
     },
 
     isValid: function (checkRequiredFields, conceptSetRequired) {
+        if (this.isNumeric() && this.getAllowDecimal() === false){
+            return this.isAllowDecimal();
+        }
         if (this.error) {
             return false;
         }

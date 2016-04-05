@@ -4,20 +4,19 @@ describe("MessageController", function () {
 
     beforeEach(module('bahmni.common.uiHelper'));
 
-    var scope;
-    var controller;
-    var rootScope;
+    var scope, controller, rootScope, messagingService;
 
     beforeEach(inject(function ($controller, $rootScope) {
         controller = $controller;
         rootScope = $rootScope;
         scope = $rootScope.$new();
-
+        messagingService = jasmine.createSpyObj("messagingService", ["hideMessages"]);
     }));
 
     function createController() {
         return controller("MessageController", {
-            $scope: scope
+            $scope: scope,
+            messagingService : messagingService
         });
     }
 
@@ -29,18 +28,19 @@ describe("MessageController", function () {
         });
     });
 
-    describe("method getErrorMessageText", function () {
-        it("should return concatenated error message", function () {
+    describe("method getMessageText", function () {
+        it("should return concatenated message for the specified level", function () {
             createController();
             scope.messages = {error:[{'value':'this'},{'value':"is"} ,{'value':"server"} ,{'value':"error"}]};
-            expect(scope.getErrorMessageText()).toBe("thisisservererror");
+            expect(scope.getMessageText('error')).toBe("thisisservererror");
         });
     });
 
-    it("should toggle show error", function () {
-        createController();
-        expect(scope.showError).toBeFalsy();
-        scope.toggleShowError();
-        expect(scope.showError).toBeTruthy();
+    describe("method hideMessage", function() {
+        it ("should call messagingservice hideMessages", function(){
+            createController();
+            scope.hideMessage('level');
+            expect(messagingService.hideMessages).toHaveBeenCalledWith("level");
+        });
     });
 });

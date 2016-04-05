@@ -6,7 +6,8 @@ angular
         'bahmni.common.displaycontrol.observation', 'bahmni.common.i18n', 'bahmni.common.displaycontrol.custom',
         'bahmni.common.routeErrorHandler', 'bahmni.common.displaycontrol.pivottable', 'RecursionHelper', 'ngSanitize',
         'bahmni.common.uiHelper', 'bahmni.common.domain', 'ngDialog', 'pascalprecht.translate', 'ngCookies',
-        'monospaced.elastic', 'bahmni.common.offline', 'bahmni.common.displaycontrol.hint', 'bahmni.common.attributeTypes'])
+        'monospaced.elastic', 'bahmni.common.offline', 'bahmni.common.displaycontrol.hint', 'bahmni.common.attributeTypes',
+        'bahmni.common.models', 'FredrikSandell.worker-pool'])
     .config(['$urlRouterProvider', '$stateProvider', '$httpProvider', '$bahmniTranslateProvider','$compileProvider', function ($urlRouterProvider, $stateProvider, $httpProvider, $bahmniTranslateProvider, $compileProvider) {
         $httpProvider.defaults.headers.common['Disable-WWW-Authenticate'] = true;
         $urlRouterProvider.otherwise('/search');
@@ -33,17 +34,20 @@ angular
                     offlineDb: function (offlineDbInitialization) {
                         return offlineDbInitialization();
                     },
-                    initialize: function (initialization, offlineConfigInitialization) {
-                        return initialization(offlineConfigInitialization);
+                    initialize: function (initialization, offlineSyncInitialization) {
+                        return initialization(offlineSyncInitialization);
                     },
-                    offlineSyncInitialization: function (offlineSyncInitialization, offlineDb) {
-                        return offlineSyncInitialization(offlineDb);
-                    },
-                    offlineConfigInitialization: function(offlineConfigInitialization, offlineSyncInitialization){
-                        return offlineConfigInitialization("registration", offlineSyncInitialization)
+                    offlineSyncInitialization: function (offlineSyncInitialization, offlineDb, offlineReferenceDataInitialization) {
+                        return offlineSyncInitialization(offlineDb, offlineReferenceDataInitialization);
                     },
                     offlineRegistrationInitialization: function (offlineRegistrationInitialization, offlineDb) {
                         return offlineRegistrationInitialization(offlineDb);
+                    },
+                    offlineReferenceDataInitialization: function(offlineReferenceDataInitialization, offlineDb){
+                        return offlineReferenceDataInitialization(offlineDb, true);
+                    },
+                    offlinePush: function(offlinePush, offlineSyncInitialization){
+                        return offlinePush.consumeEvents(offlineSyncInitialization);
                     }
                 }
             })
@@ -57,17 +61,17 @@ angular
                     offlineDb: function (offlineDbInitialization) {
                         return offlineDbInitialization();
                     },
-                    initialize: function (initialization, offlineConfigInitialization) {
-                        return initialization(offlineConfigInitialization);
+                    initialize: function (initialization, offlineSyncInitialization) {
+                        return initialization(offlineSyncInitialization);
                     },
-                    offlineSyncInitialization: function (offlineSyncInitialization, offlineDb) {
-                        return offlineSyncInitialization(offlineDb);
-                    },
-                    offlineConfigInitialization: function(offlineConfigInitialization, offlineSyncInitialization){
-                        return offlineConfigInitialization("registration", offlineSyncInitialization)
+                    offlineSyncInitialization: function (offlineSyncInitialization, offlineDb, offlineReferenceDataInitialization) {
+                        return offlineSyncInitialization(offlineDb, offlineReferenceDataInitialization);
                     },
                     offlineRegistrationInitialization: function (offlineRegistrationInitialization, offlineDb) {
                         return offlineRegistrationInitialization(offlineDb);
+                    },
+                    offlineReferenceDataInitialization: function(offlineReferenceDataInitialization, offlineDb){
+                        return offlineReferenceDataInitialization(offlineDb, true);
                     }
                 }
             })
@@ -81,17 +85,17 @@ angular
                     offlineDb: function (offlineDbInitialization) {
                         return offlineDbInitialization();
                     },
-                    initialize: function (initialization, offlineConfigInitialization) {
-                        return initialization(offlineConfigInitialization);
+                    initialize: function (initialization, offlineSyncInitialization) {
+                        return initialization(offlineSyncInitialization);
                     },
-                    offlineSyncInitialization: function (offlineSyncInitialization, offlineDb) {
-                        return offlineSyncInitialization(offlineDb);
-                    },
-                    offlineConfigInitialization: function(offlineConfigInitialization, offlineSyncInitialization){
-                        return offlineConfigInitialization("registration", offlineSyncInitialization)
+                    offlineSyncInitialization: function (offlineSyncInitialization, offlineDb, offlineReferenceDataInitialization) {
+                        return offlineSyncInitialization(offlineDb, offlineReferenceDataInitialization);
                     },
                     offlineRegistrationInitialization: function (offlineRegistrationInitialization, offlineDb) {
                         return offlineRegistrationInitialization(offlineDb);
+                    },
+                    offlineReferenceDataInitialization: function(offlineReferenceDataInitialization, offlineDb){
+                        return offlineReferenceDataInitialization(offlineDb, false);
                     }
                 }
             })
@@ -119,10 +123,13 @@ angular
                 }
             });
         $bahmniTranslateProvider.init({app: 'registration', shouldMerge: true});
-    }]).run(function ($rootScope, $templateCache) {
-    //Disable caching view template partials
-    $rootScope.$on('$viewContentLoaded', function () {
+    }]).run(function ($rootScope, $templateCache, WorkerService) {
+        //Disable caching view template partials
+        $rootScope.$on('$viewContentLoaded', function () {
             $templateCache.removeAll();
+        });
+
+        if(Bahmni.Common.Offline && Bahmni.Common.Offline.BackgroundWorker) {
+            new Bahmni.Common.Offline.BackgroundWorker(WorkerService);
         }
-    )
 });

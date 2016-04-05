@@ -4,6 +4,7 @@ angular.module('bahmni.clinical')
         function ($scope, appService, $window, $rootScope, $translate) {
             var configForPrompting = appService.getAppDescriptor().getConfigValue('showSaveConfirmDialog');
             $scope.directivePreCloseCallback = function () {
+                $scope.resetContextChangeHandler();
                 if (configForPrompting && $scope.shouldPromptBeforeClose) {
                     if ($window.confirm($translate.instant("POP_UP_CLOSE_DIALOG_MESSAGE_KEY"))) {
                         if(!$rootScope.hasVisitedConsultation){

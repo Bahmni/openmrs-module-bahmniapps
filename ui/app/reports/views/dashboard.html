@@ -45,7 +45,7 @@
                     <select ng-model="report.responseType" ng-options="type as label for (label , type) in ::formats">
                         <option value="">Choose Format</option>
                     </select>
-                    <input ng-if="report.responseType=='application/vnd.ms-excel-custom'"
+                    <input ng-if="report.responseType=='application/vnd.ms-excel-custom'&&!report.config.macroTemplatePath"
                            class="input-file-upload custom-file"
                            type="file" accept=".xls" nv-file-select uploader="uploader" options="{report: report}"/>
                 </td>

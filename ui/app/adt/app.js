@@ -6,11 +6,20 @@ angular.module('adt', ['bahmni.common.patient', 'bahmni.common.patientSearch', '
     'bahmni.common.displaycontrol.dashboard', 'bahmni.common.displaycontrol.observation', 'bahmni.common.displaycontrol.disposition', 'bahmni.common.displaycontrol.admissiondetails', 'bahmni.common.displaycontrol.custom',
     'bahmni.common.obs', 'bahmni.common.displaycontrol.patientprofile', 'bahmni.common.displaycontrol.diagnosis', 'RecursionHelper', 'ngSanitize', 'bahmni.common.uiHelper', 'bahmni.common.displaycontrol.navigationlinks', 'pascalprecht.translate',
     'bahmni.common.displaycontrol.dashboard', 'ngCookies','ngDialog', 'angularFileUpload', 'bahmni.common.offline']);
-angular.module('adt').config(['$stateProvider', '$httpProvider', '$urlRouterProvider', '$bahmniTranslateProvider', function ($stateProvider, $httpProvider, $urlRouterProvider, $bahmniTranslateProvider) {
+angular.module('adt').config(['$stateProvider', '$httpProvider', '$urlRouterProvider', '$bahmniTranslateProvider', '$compileProvider',
+    function ($stateProvider, $httpProvider, $urlRouterProvider, $bahmniTranslateProvider, $compileProvider) {
 
     $urlRouterProvider.otherwise('/home');
     var homeBackLink = {label: "", url: "../home/", accessKey: "h", icon: "fa-home", id: "homeBackLink"};
     var adtHomeBackLink = {label: "", url: "#/home", accessKey: "p", icon: "fa-users", id: "adtHomeBackLink" };
+
+    // @if DEBUG='production'
+    $compileProvider.debugInfoEnabled(false);
+    // @endif
+
+    // @if DEBUG='development'
+    $compileProvider.debugInfoEnabled(true);
+    // @endif
 
     $stateProvider
         .state('home', {

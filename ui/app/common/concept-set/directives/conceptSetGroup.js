@@ -7,7 +7,6 @@ angular.module('bahmni.common.conceptSet')
         function ($scope, appService, contextChangeHandler, spinner, conceptSetService, $rootScope, sessionService,
                   encounterService, treatmentConfig, messagingService, retrospectiveEntryService, userService,
                   conceptSetUiConfigService, $timeout, clinicalAppConfigService, $stateParams) {
-
             var conceptSetUIConfig = conceptSetUiConfigService.getConfig();
             $scope.togglePref = function (conceptSet, conceptName) {
                 $rootScope.currentUser.toggleFavoriteObsTemplate(conceptName);
@@ -69,7 +68,7 @@ angular.module('bahmni.common.conceptSet')
             $scope.clone = function(index) {
                 var clonedObj = $scope.allTemplates[index].clone();
                 $scope.allTemplates.splice(index + 1, 0, clonedObj);
-                $scope.$root.$broadcast("event:addConceptSection", clonedObj);
+                $.scrollTo('#concept-set-' + (index + 1), 200, {offset: {top: -400}});
             };
 
             var copyValues = function (existingObservations, modifiedObservations) {

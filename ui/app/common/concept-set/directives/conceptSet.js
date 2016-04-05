@@ -40,6 +40,8 @@ angular.module('bahmni.common.conceptSet')
                         } else {
                             $scope.showEmptyConceptSetMessage = true;
                         }
+                    }).catch(function (error){
+                        messagingService.showMessage('error',error.message);
                     });
                 };
                 spinner.forPromise(init());
@@ -91,7 +93,7 @@ angular.module('bahmni.common.conceptSet')
 
                 var getCodedAnswerWithDefaultAnswerString = function (defaults, groupMember) {
                     var possibleAnswers = groupMember.possibleAnswers;
-                    var defaultAnswer = defaults[groupMember.label];
+                    var defaultAnswer = defaults[groupMember.concept.name];
                     var defaultCodedAnswer;
                     if (defaultAnswer instanceof Array) {
                         defaultCodedAnswer = [];
@@ -176,6 +178,13 @@ angular.module('bahmni.common.conceptSet')
                                 errorMessage = "The value you entered (red field) is outside the range of allowable values for that record. Please check the value.";
                                 return true;
                             }
+
+                            if (childNode.isNumeric()){
+                                if(!childNode.isAllowDecimal()){
+                                    errorMessage = "Please enter Integer value, decimal value is not allowed";
+                                    return true;
+                                }
+                            }
                             return !childNode.isValid($scope.atLeastOneValueIsSet, $scope.conceptSetRequired);
                         });
                     return {allow: !invalidNodes || invalidNodes.length === 0, errorMessage: errorMessage};
@@ -233,7 +242,7 @@ angular.module('bahmni.common.conceptSet')
                         var flattenedObs = ObservationUtil.flattenObsToArray([rootObservation]);
                         var conditions = formCondition(formName, allObsValues);
                         if (conditions.error && !_.isEmpty(conditions.error)) {
-                            messagingService.showMessage('formError', conditions.error);
+                            messagingService.showMessage('error', conditions.error);
                             processConditions(flattenedObs, [conceptName], false, true);
                             return
                         } else {

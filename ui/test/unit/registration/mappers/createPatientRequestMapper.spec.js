@@ -8,6 +8,7 @@ describe('patient mapper', function () {
 
     beforeEach(function () {
         module('bahmni.registration');
+        module('bahmni.common.models');
         inject(['patient', function (patientFactory) {
             patient = patientFactory.create();
         }]);
@@ -46,6 +47,7 @@ describe('patient mapper', function () {
                 "days": 17
             },
             "gender": "M",
+            "identifierPrefix": {"prefix" : "GAN"},
             "identifier": "GAN200011",
             "registrationDate": moment(date).format(),
             "caste": "10",
@@ -98,6 +100,7 @@ describe('patient mapper', function () {
 
         expect(openmrsPatient.patient.identifiers).toEqual([
             {
+                "identifierPrefix": "GAN",
                 "identifier": "GAN200011",
                 "identifierType": {
                     "name": "Bahmni Id"

@@ -24,7 +24,7 @@ angular.module('bahmni.common.domain')
                     patient: patientUuid,
                     program: programUuid,
                     dateEnrolled: moment(dateEnrolled).format(Bahmni.Common.Constants.ServerDateTimeFormat),
-                    attributes: attributeFormatter.removeUnfilledAttributes(attributeFormatter.getMrsAttributes(patientProgramAttributes, programAttributeTypes))
+                    attributes: attributeFormatter.removeUnfilledAttributes(attributeFormatter.getMrsAttributes(patientProgramAttributes, (programAttributeTypes || [])))
                 },
                 headers: {"Content-Type": "application/json"}
             };
@@ -68,7 +68,7 @@ angular.module('bahmni.common.domain')
 
         var deletePatientState = function(patientProgramUuid, patientStateUuid) {
             var req = {
-                url: Bahmni.Common.Constants.programEnrollPatientUrl + "/" + patientProgramUuid + "/state/" + patientStateUuid,
+                url: Bahmni.Common.Constants.programStateDeletionUrl + "/" + patientProgramUuid + "/state/" + patientStateUuid,
                 content: {
                     "!purge": "",
                     "reason": "User deleted the state."

@@ -5,31 +5,20 @@ angular.module('bahmni.common.uiHelper')
         function ($scope, messagingService) {
             $scope.messages = messagingService.messages;
 
-            $scope.getErrorMessageText = function(){
+            $scope.getMessageText = function (level) {
                 var string = "";
-                $scope.messages.error.forEach(function(errorMessage){
-                    string = string.concat(errorMessage.value);
+                $scope.messages[level].forEach(function (message) {
+                    string = string.concat(message.value);
                 });
                 return string;
             };
 
-            $scope.showError = false;
-
-            $scope.toggleShowError = function (){
-                $scope.showError = !$scope.showError;
-                if ($scope.showError === true) {
-                    messagingService.cancelTimeout();
-                } else {
-                    messagingService.createTimeout("error", 0);
-                }
+            $scope.hideMessage = function(level) {
+                messagingService.hideMessages(level);
             };
 
             $scope.isErrorMessagePresent = function(){
                 return $scope.messages.error.length > 0;
-            };
-
-            $scope.isFormErrorMessagePresent = function(){
-                return $scope.messages.formError.length > 0;
             };
 
             $scope.isInfoMessagePresent = function(){

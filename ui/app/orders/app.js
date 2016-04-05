@@ -4,11 +4,21 @@ angular
         'httpErrorInterceptor', 'bahmni.common.routeErrorHandler', 'bahmni.common.uiHelper', 'bahmni.common.patientSearch', 'bahmni.common.util', 'bahmni.common.conceptSet', 
         'RecursionHelper', 'infinite-scroll', 'bahmni.common.displaycontrol.patientprofile',  'bahmni.common.obs', 'bahmni.common.displaycontrol.orders', 'bahmni.common.i18n',
         'bahmni.common.displaycontrol.observation', 'bahmni.common.orders', 'pascalprecht.translate', 'ngCookies', 'bahmni.common.offline'])
-    .config(['$urlRouterProvider', '$stateProvider', '$httpProvider', '$bahmniTranslateProvider', function ($urlRouterProvider, $stateProvider, $httpProvider, $bahmniTranslateProvider) {
+    .config(['$urlRouterProvider', '$stateProvider', '$httpProvider', '$bahmniTranslateProvider', '$compileProvider',
+        function ($urlRouterProvider, $stateProvider, $httpProvider, $bahmniTranslateProvider , $compileProvider) {
         $httpProvider.defaults.headers.common['Disable-WWW-Authenticate'] = true;
         $urlRouterProvider.otherwise('/search');
         var homeBacklink = {label: "Home", url: "../home/", accessKey: "h", icon: "fa-home"};
         var searchBacklink = {label: "Search", state: "search", accessKey: "p", icon: "fa-users"};
+
+        // @if DEBUG='production'
+        $compileProvider.debugInfoEnabled(false);
+        // @endif
+
+        // @if DEBUG='development'
+        $compileProvider.debugInfoEnabled(true);
+        // @endif
+
         $stateProvider
             .state('search', {
                 url: '/search',

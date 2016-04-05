@@ -9,8 +9,8 @@ describe("PatientDashboardLabOrdersController", function () {
     var spinner = jasmine.createSpyObj('spinner', ['forPromise']);
     var labResultSection = {
         "title": "Lab Results",
-        "name": "labOrders",
-        "dashboardParams": {
+        "type": "labOrders",
+        "dashboardConfig": {
             "title": null,
             "showChart": false,
             "showTable": true,
@@ -43,9 +43,9 @@ describe("PatientDashboardLabOrdersController", function () {
                 $stateParams: stateParams,
                 spinner: spinner
             });
-            var params = scope.dashboardParams;
+            var params = scope.dashboardConfig;
             expect(params.patientUuid).toBe("some uuid");
-            expect(params.showNormalValues).toBe(labResultSection.dashboardParams.showNormalValues);
+            expect(params.showNormalValues).toBe(labResultSection.dashboardConfig.showNormalValues);
         });
 
         it("passes in just the patient uuid when no parameters specified", function () {
@@ -58,7 +58,7 @@ describe("PatientDashboardLabOrdersController", function () {
                 $stateParams: stateParams
             });
 
-            var params = scope.dashboardParams;
+            var params = scope.dashboardConfig;
             expect(params.patientUuid).toBe("some uuid");
         });
 

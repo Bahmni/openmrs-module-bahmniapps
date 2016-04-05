@@ -25,7 +25,7 @@
                     </div>
                 </div>
 
-                <div class="field-value" ng-if="!observation.isComputed()" ng-switch="::observation.getControlType()">
+                <div class="field-value" ng-if="!observation.isComputed()" ng-switch="::observation.getControlType()"  ng-class="{'field-value-buttonSelectType' :observation.getControlType()== 'buttonselect'}">
                     <div class="concept-description" ng-if="observation.previous">
                         <span class="details" ng-bind-html="observation.previous.value"></span>
                     </div>
@@ -41,7 +41,17 @@
                         <div ng-include src="'../common/concept-set/views/observationDataTypes/conciseTextType.html'"></div>
                     </div>
 
-                    <span ng-switch-when="dropdown" class="field-value info fa fa-info-sign"> Dropdowns are not supported. Change it to autocomplete</span>
+                    <div ng-switch-when="dropdown" class="field-value info fa fa-info-sign">
+                        <concept-dropdown
+                                on-change="handleUpdate"
+                                ng-disabled="observation.disabled"
+                                model="observation.primaryObs.value"
+                                answers-concept-name="observation.conceptUIConfig.answersConceptName"
+                                default-concept="observation.primaryObs.concept"
+                                on-invalid-class="'illegalValue'"
+                                is-valid="observation.isValid(atLeastOneValueIsSet,conceptSetRequired)">
+                        </concept-dropdown>
+                    </div>
 
                     <div ng-switch-when="freeTextAutocomplete">
                         <div ng-include src="'../common/concept-set/views/observationDataTypes/autocompleteFreeTextType.html'"></div>
@@ -54,12 +64,13 @@
                     <div ng-switch-when="autocomplete" class="autocomplete">
                         <input ng-change="handleUpdate()"
                                ng-disabled="observation.disabled"
-                               ng-model="observation.primaryObsAutocompleteValue"
+                               ng-model="observation.value"
                                concept-autocomplete
-                               coded-concept-name="observation.conceptUIConfig.answersConceptName || observation.primaryObs.concept.name"
-                               response-map="constructSearchResult"
+                               previous-value="observation.value"
+                               answers-concept-name="observation.conceptUIConfig.answersConceptName"
+                               default-concept="observation.primaryObs.concept"
+                               strict-select="true"
                                ng-class="{
-                                    'illegalValue': !observation.isValid(atLeastOneValueIsSet, conceptSetRequired),
                                     'computed-field': observation.isComputedAndEditable()
                                }"/>
                     </div>
@@ -69,7 +80,6 @@
                 </div>
                 <hint concept-details="::observation.primaryObs.concept"/>
 
-                <div ng-include src="'../common/concept-set/views/observationDataTypes/addMore.html'"></div>
 
                 <div ng-if="::observation.abnormalObs && !observation.isComputed() && !hideAbnormalButton" class="fl accept-btn-wrapper">
                     <button type="button" ng-model="observation.abnormalObs.value"
@@ -92,10 +102,12 @@
                      ng-class="{'duration': observation.durationObs, 'computed-field': observation.isComputedAndEditable()}">
                     <span class="for-separator fl">for</span>
                     <duration ng-model="observation.durationObs.value" disabled="!observation.primaryObs.hasValue()"
-                              illegal-value="observation.isDurationRequired() && !observation.hasDuration()"></duration>
+                              illegal-value="observation.isDurationRequired() && observation.doesNotHaveDuration()"></duration>
                 </div>
-                <div ng-include src="'../common/concept-set/views/observationDataTypes/showComment.html'"></div>
                 <div class="fl" ng-include src="'../common/concept-set/views/observationDataTypes/removeClone.html'"></div>
+                <div  ng-include src="'../common/concept-set/views/observationDataTypes/addMore.html'"></div>
+
+                <div ng-include src="'../common/concept-set/views/observationDataTypes/showComment.html'"></div>
 
                 <div class="offset-label" ng-if="observation.showComment">
                     <label class="control-label"></label>
@@ -126,7 +138,7 @@
                     </i>
                 </label>
 
-                <div class="field-value" ng-switch="::observation.getControlType()">
+                <div class="field-value" ng-switch="::observation.getControlType()"  ng-class="{'field-value-buttonSelectType' :observation.getControlType()== 'buttonselect'}">
                     <div class="concept-description" ng-if="observation.previous">
                         <span class="details" ng-bind-html="getStringValue(observation.previous)"></span>
                     </div>
@@ -201,16 +213,28 @@
                         </textarea>
                     </div>
 
+                    <div ng-switch-when="dropdown" class="field-value info fa fa-info-sign">
+                        <concept-dropdown
+                                on-change="handleUpdate"
+                                ng-disabled="observation.disabled"
+                                model="observation.value"
+                                answers-concept-name="observation.conceptUIConfig.answersConceptName"
+                                default-concept="observation.concept"
+                                on-invalid-class="'illegalValue'"
+                                is-valid="observation.isValid(atLeastOneValueIsSet,conceptSetRequired)">
+                        </concept-dropdown>
+                    </div>
 
                     <div ng-switch-when="autocomplete">
                         <input ng-change="handleUpdate()"
                                ng-disabled="observation.disabled"
                                ng-model="observation.autocompleteValue"
                                concept-autocomplete
-                               coded-concept-name="observation.conceptUIConfig.answersConceptName || observation.concept.name"
-                               response-map="constructSearchResult"
+                               previous-value="observation.autocompleteValue"
+                               answers-concept-name="observation.conceptUIConfig.answersConceptName"
+                               default-concept="observation.concept"
+                               strict-select="true"
                                ng-class="{
-                                    'illegalValue': !observation.isValid(atLeastOneValueIsSet, conceptSetRequired),
                                     'computed-field': observation.isComputedAndEditable()
                                }"/>
                     </div>
@@ -220,10 +244,9 @@
                 </div>
                 <hint concept-details="::observation.concept"/>
 
-                <div ng-include src="'../common/concept-set/views/observationDataTypes/addMore.html'"></div>
-
-
                 <div class="fl" ng-if="isRemoveValid(observation)" ng-include src="'../common/concept-set/views/observationDataTypes/removeClone.html'"></div>
+
+                <div ng-include src="'../common/concept-set/views/observationDataTypes/addMore.html'"></div>
 
                 <button ng-if="::observation.canHaveComment()" type="button" toggle="observation.showComment"
                         ng-blur="handleUpdate()" ng-disabled="observation.disabled"
@@ -246,7 +269,7 @@
             </div>
         </fieldset>
 
-        <fieldset class="leaf-observation-node" ng-if="observation.getControlType() == 'tabular'" >
+        <fieldset class="leaf-observation-node" ng-if="observation.getControlType() == 'tabular'">
             <div>
                 <table>
                     <caption ng-bind="::observation.label"></caption>
@@ -254,7 +277,7 @@
                     <tr>
                         <th ng-repeat="column in observation.columns">
                             <div class="form-group" bm-pop-over>
-                                <div class=" concept-tooltip-description" bm-pop-over-target ng-if="::column.description">
+                                <div class=" concept-tooltip-description" bm-pop-over-target ng-if="::column.description"  ng-class="{'concept-tooltip-tabular-observation' : observation.getControlType() == 'tabular'}" >
                                     <i class="fa fa-caret-down"></i>
                                     <span class="details" ng-bind-html="::column.description"></span>
                                 </div>
@@ -303,7 +326,7 @@
 
             <span ng-if="observation.canAddMore && observation.canAddMore()" class="add-more">
                 <button id="{{observation.assignAddMoreButtonID()}}" type="button" class="add-more-btn btn-small" ng-click="cloneNew(observation, rootObservation)">
-                    <i class="fa fa-plus-circle"></i> {{'ADD_MORE_KEY' | translate}}
+                    <i class="fa fa-plus"></i> {{'ADD_SECTION_KEY' | translate}}
                 </button>
             </span>
             </legend>

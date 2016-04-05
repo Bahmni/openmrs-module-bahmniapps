@@ -1,22 +1,21 @@
 'use strict';
 
 angular.module('bahmni.common.offline')
-    .service('offlineDbService', ['$http', '$q', 'patientDbService', 'patientAddressDbService', 'patientAttributeDbService', 'offlineMarkerDbService', 'offlineAddressHierarchyDbService', 'offlineConfigDbService','initializeOfflineSchema',
-        function ($http, $q, patientDbService, patientAddressDbService, patientAttributeDbService, offlineMarkerDbService, offlineAddressHierarchyDbService, offlineConfigDbService, initializeOfflineSchema) {
+    .service('offlineDbService', ['$http', '$q', 'patientDbService', 'patientAddressDbService', 'patientAttributeDbService', 'offlineMarkerDbService', 'offlineAddressHierarchyDbService', 'offlineConfigDbService','initializeOfflineSchema', 'referenceDataDbService', 'locationDbService',
+        function ($http, $q, patientDbService, patientAddressDbService, patientAttributeDbService, offlineMarkerDbService, offlineAddressHierarchyDbService, offlineConfigDbService, initializeOfflineSchema, referenceDataDbService, locationDbService) {
         var db;
 
-        var populateAttributeTypes = function () {
-            patientAttributeDbService.insertAttributeTypes(db);
-        };
 
-        var createPatient = function (postRequest, requestType) {
+        var createPatient = function (postRequest) {
+            var deferred = $q.defer();
             var uuid = postRequest.patient.uuid;
-            return insertPatientData(postRequest, requestType)
+            insertPatientData(postRequest)
                 .then(function () {
-                    return getPatientByUuid(uuid).then(function (result) {
-                        return {data: result};
+                    getPatientByUuid(uuid).then(function (result) {
+                        deferred.resolve({data: result});
                     })
                 });
+            return deferred.promise;
         };
 
         var getPatientByUuid = function (uuid) {
@@ -42,44 +41,17 @@ angular.module('bahmni.common.offline')
             return deferred.promise;
         };
 
-        var insertPatientData = function (patientData, requestType) {
+        var insertPatientData = function (patientData) {
             var patient = patientData.patient;
             var person = patient.person;
 
-            return patientAttributeDbService.getAttributeTypes(db).then(function (attributeTypeMap) {
-                    if ("POST" === requestType) {
-                        parseAttributeValues(person.attributes, attributeTypeMap);
-                    }
-                    return patientDbService.insertPatientData(db, patientData).then(function (patientUuid) {
-                        patientAttributeDbService.insertAttributes(db, patientUuid, person.attributes, attributeTypeMap);
-                        patientAddressDbService.insertAddress(db, patientUuid, person.addresses[0]);
-                        return patientData;
-                    });
-                });
-
-        };
-
-        var parseAttributeValues = function (attributes, attributeTypeMap) {
-            angular.forEach(attributes, function (attribute) {
-                if (!attribute.voided) {
-                    var foundAttribute = _.find(attributeTypeMap, function (attributeType) {
-                        return attributeType.uuid === attribute.attributeType.uuid
-                    });
-                    if (foundAttribute != undefined && foundAttribute.format != undefined) {
-                        if ("java.lang.Integer" === foundAttribute.format || "java.lang.Float" === foundAttribute.format) {
-                            attribute.value = parseFloat(attribute.value);
-                        } else if ("java.lang.Boolean" === foundAttribute.format) {
-                            attribute.value = (attribute.value === 'true');
-                        } else if ("org.openmrs.Concept" === foundAttribute.format) {
-                            var value = attribute.value;
-                            attribute.value = {display: value, uuid: attribute.hydratedObject};
-
-                        }
-                    }
-                }
+            return patientDbService.insertPatientData(db, patientData).then(function (patientUuid) {
+                patientAttributeDbService.insertAttributes(db, patientUuid, person.attributes);
+                patientAddressDbService.insertAddress(db, patientUuid, person.addresses[0]);
+                return patientData;
             });
-        };
 
+        };
 
         var init = function (_db) {
             db = _db;
@@ -106,20 +78,35 @@ angular.module('bahmni.common.offline')
         };
 
         var getConfig = function(module){
-            return offlineConfigDbService.getConfig(module).then(function(config){
-                return config;
-            });
+            return offlineConfigDbService.getConfig(module);
         };
 
         var insertConfig = function(module, data, eTag){
-            return offlineConfigDbService.insertConfig(module, data, eTag).then(function(config){
-                return config;
-            });
+            return offlineConfigDbService.insertConfig(module, data, eTag);
         };
+
+        var getReferenceData = function(referenceDataKey){
+            return referenceDataDbService.getReferenceData(referenceDataKey);
+
+        };
+
+        var insertReferenceData = function(key, data, eTag){
+            return referenceDataDbService.insertReferenceData(key, data, eTag);
+        };
+
+        var getLocationByUuid = function(uuid){
+            return locationDbService.getLocationByUuid(db, uuid);
+        };
+
+        var getAttributeTypes = function(){
+            return patientAttributeDbService.getAttributeTypes(db);
+        };
+
+
+
         return {
             init: init,
             initSchema: initSchema,
-            populateAttributeTypes: populateAttributeTypes,
             getPatientByUuid: getPatientByUuid,
             createPatient: createPatient,
             deletePatientData: deletePatientData,
@@ -128,6 +115,10 @@ angular.module('bahmni.common.offline')
             insertAddressHierarchy: insertAddressHierarchy,
             searchAddress: searchAddress,
             getConfig : getConfig,
-            insertConfig : insertConfig
+            insertConfig : insertConfig,
+            getReferenceData: getReferenceData,
+            insertReferenceData: insertReferenceData,
+            getLocationByUuid: getLocationByUuid,
+            getAttributeTypes : getAttributeTypes
         }
     }]);

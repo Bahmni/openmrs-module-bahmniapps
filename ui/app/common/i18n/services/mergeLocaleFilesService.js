@@ -4,35 +4,44 @@ angular.module('bahmni.common.i18n')
     .service('mergeLocaleFilesService', ['$http', '$q', 'mergeService', function ($http, $q, mergeService) {
         return function(options) {
             var baseLocaleUrl = '../i18n/';
-            var customLocaleUrl = Bahmni.Common.Constants.customLocaleUrl;
+            var customLocaleUrl = Bahmni.Common.Constants.offlineRootDir + '/bahmni_config/openmrs/i18n/';
 
             var loadFile = function (url) {
                 return $http.get(url, {withCredentials: true});
             };
 
             var mergeLocaleFile = function (options) {
-                var deferrable = $q.defer();
                 var fileURL = options.app + "/locale_" + options.key + ".json";
-                var mergedLocaleFile = loadFile(baseLocaleUrl + fileURL).then(
-                    function (baseResponse) {
-                        return loadFile(customLocaleUrl + fileURL).then(function (customResponse) {
-                            if (options.shouldMerge || options.shouldMerge === undefined) {
-                                return mergeService.merge(baseResponse.data, customResponse.data);
-                            }
-                            return [baseResponse.data, customResponse.data];
-                        }, function () {
-                            return baseResponse.data;
-                        });
-                    },
-                    function () {
-                        return loadFile(customLocaleUrl + fileURL).then(function (customResponse) {
-                            return customResponse.data;
-                        });
+
+
+                var loadBahmniTranslations = function () {
+                    return loadFile(baseLocaleUrl + fileURL).then(function (result) {
+                        return result;
+                    }, function () {
+                        return;
+                    });
+                };
+                var loadCustomTranslations = function () {
+                    return loadFile(customLocaleUrl + fileURL).then(function (result) {
+                        return result;
+                    }, function () {
+                        return;
+                    });
+                };
+
+                var mergeTranslations = function(result){
+                    var baseFileData = result[0] ? result[0].data : undefined;
+                    var customFileData = result[1] ? result[1].data : undefined;
+                    if (options.shouldMerge || options.shouldMerge === undefined) {
+                        return mergeService.merge(baseFileData, customFileData);
                     }
-                );
-                deferrable.resolve(mergedLocaleFile);
-                return deferrable.promise;
+                    return [baseFileData, customFileData];
+                };
+
+
+                return $q.all([loadBahmniTranslations(),loadCustomTranslations()])
+                    .then(mergeTranslations);
             };
-            return $q.when(mergeLocaleFile(options));
+            return mergeLocaleFile(options);
         }
     }]);

@@ -24,11 +24,12 @@ angular.module('bahmni.registration')
                     showInsufficientPrivMessage();
                     return;
                 }
-                $scope.searchParameters.addressFieldValue = $location.search().addressFieldValue || '';
-                $scope.searchParameters.name = $location.search().name || '';
-                $scope.searchParameters.customAttribute = $location.search().customAttribute || '';
-                $scope.searchParameters.programAttributeFieldValue = $location.search().programAttributeFieldValue || '';
-                var identifierPrefix = $location.search().identifierPrefix;
+                var searchParameters = $location.search();
+                $scope.searchParameters.addressFieldValue = searchParameters.addressFieldValue || '';
+                $scope.searchParameters.name = searchParameters.name || '';
+                $scope.searchParameters.customAttribute = searchParameters.customAttribute || '';
+                $scope.searchParameters.programAttributeFieldValue = searchParameters.programAttributeFieldValue || '';
+                var identifierPrefix = searchParameters.identifierPrefix;
                 if (!identifierPrefix || identifierPrefix.length === 0) {
                     identifierPrefix = preferences.identifierPrefix;
                 }
@@ -39,7 +40,7 @@ angular.module('bahmni.registration')
                 });
                 $scope.searchParameters.identifierPrefix = $scope.searchParameters.identifierPrefix || $scope.identifierSources[0];
 
-                $scope.searchParameters.registrationNumber = $location.search().registrationNumber || "";
+                $scope.searchParameters.registrationNumber = searchParameters.registrationNumber || "";
                 if (hasSearchParameters()) {
                     searching = true;
                     var searchPromise = patientService.search(

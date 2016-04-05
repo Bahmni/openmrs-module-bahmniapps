@@ -72,11 +72,14 @@
     "VISIT_TITLE_PATIENT_FILES_KEY": "Patient Files",
     "VISIT_TITLE_RADIOLOGY_KEY": "Radiology",
     "VISIT_TITLE_OBSERVATIONS_KEY": "Observations",
-    "ADD_MORE_KEY": "ADD MORE",
+    "ADD_MORE_KEY": "Add More",
+    "ADD_SECTION_KEY": "Add Section",
+    "ADD_FORM_KEY": "Add Form",
     "CLINICAL_SAVE_TRANSLATION_KEY":"<u>S</u>ave",
     "CLINICAL_SAVE_SUCCESS_MESSAGE_KEY": "Saved",
     "CLINICAL_SAVE_FAILURE_MESSAGE_KEY": "An error has occurred on the server. Information not saved.",
     "CLINICAL_FORM_ERRORS_MESSAGE_KEY": "Please enter a value in the mandatory fields or correct the value in the highlighted fields to proceed",
+    "CLINICAL_DECIMAL_FAILURE_MESSAGE_KEY" : "Please enter Integer value, decimal value is not allowed",
     "SAVE_ACCESS_KEY": "s",
     "CLINICAL_PRINT_TRANSLATION_KEY": "P<u>r</u>int",
     "CLINICAL_PRINT_ACCESS_KEY": "r",
@@ -94,7 +97,7 @@
     "BACTERIOLOGY_SAMPLE_TYPE_KEY" : "Type of sample",
     "BACTERIOLOGY_SAMPLE_ID_KEY" : "Sample Id",
     "BACTERIOLOGY_TAB_TITLE_KEY" : "Sample Details",
-    "BACTERIOLOGY_BUTTON_ADD_SAMPLE_KEY" : "Add Sample",
+    "BACTERIOLOGY_BUTTON_ADD_SAMPLE_KEY" : "ADD SAMPLE",
     "BACTERIOLOGY_BUTTON_CLEAR_KEY" : "Clear",
     "BACTERIOLOGY_BUTTON_EDIT_KEY" : "Edit",
     "BACTERIOLOGY_SAMPLE_BEING_EDITED_KEY": "The specimen is already being edited: ",
@@ -163,5 +166,7 @@
     "SAVE_CONFIRMATION_OPTION_SAVE_KEY" : "Save",
     "SAVE_CONFIRMATION_OPTION_CANCEL_KEY" : "Cancel",
     "BROWSER_CLOSE_DIALOG_MESSAGE_KEY":"You might lose unsaved data",
-    "POP_UP_CLOSE_DIALOG_MESSAGE_KEY":"You might lose unsaved data. Are you sure you want to leave this page?"
+    "POP_UP_CLOSE_DIALOG_MESSAGE_KEY":"You might lose unsaved data. Are you sure you want to leave this page?",
+    "MESSAGE_DIALOG_OPTION_COPY" : "Copy Error",
+    "MESSAGE_DIALOG_OPTION_OKAY": "OK"
 }

@@ -247,9 +247,7 @@ angular.module('bahmni.clinical')
                 if ($scope.treatment.isNonCodedDrug) {
                     $scope.treatment.drugNonCoded = $scope.treatment.drugNameDisplay;
                 }
-
                 $scope.treatment.setUniformDoseFraction();
-
                 var newDrugOrder = $scope.treatment;
                 setNonCodedDrugConcept($scope.treatment);
 
@@ -575,7 +573,7 @@ angular.module('bahmni.clinical')
                 putCalculatedDose(orderSetMember.orderTemplate).then(function (orderTemplate) {
                     orderSetMember.orderTemplate = orderTemplate;
                     orderTemplate.concept = {
-                        name: orderSetMember.concept.name.name,
+                        name: orderSetMember.concept.display,
                         uuid: orderSetMember.concept.uuid
                     };
                     deleteDrugIfEmpty(orderTemplate);

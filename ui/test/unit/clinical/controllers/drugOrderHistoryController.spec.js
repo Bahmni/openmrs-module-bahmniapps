@@ -150,6 +150,7 @@ describe("DrugOrderHistoryController", function () {
 
     it('should broadcast reviseDrugOrder event on revise', function(){
         var drugOrder = Bahmni.Clinical.DrugOrderViewModel.createFromContract(prescribedDrugOrders[0]);
+        scope.consultation.drugOrdersWithUpdatedOrderAttributes = {}
         scope.revise(drugOrder, prescribedDrugOrders);
         expect(rootScope.$broadcast).toHaveBeenCalledWith('event:reviseDrugOrder', drugOrder, prescribedDrugOrders);
     });

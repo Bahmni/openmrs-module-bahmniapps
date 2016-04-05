@@ -1,49 +1,37 @@
-Bahmni Apps
-============
+# Bahmni Apps
 
-Medical Front-end for Bahmni. 
-
-[![Build Status](https://travis-ci.org/Bhamni/openmrs-module-bahmniapps.svg?branch=master)](https://travis-ci.org/Bhamni/openmrs-module-bahmniapps)
-
-Instructions
-============
-Please see https://bahmni.atlassian.net/wiki/display/BAH/Working+on+Bahmni+OpenMRS+frontend
+This repository acts as the front end for the **Bahmni EMR**. It is compeltely written in **AngularJS**.
 
 
-Project Structure
------------------
+# Build
+
+Please visit https://bahmni.atlassian.net/wiki/display/BAH/Working+on+Bahmni+OpenMRS+frontend for detailed instructions on **building** and **deploying** the front end
+
+# Project structure
+
 <pre>
-|-- api
-|   |-- pom.xml
-|   `-- src
-|       `-- main
-|-- omod
-|   |-- pom.xml
-|   `-- src
-|       `-- main
-|           |-- resources
-|               |-- config.xml
-|               |-- liquibase.xml
-|               |-- package.sh
-|               `-- webModuleApplicationContext.xml
+|-- .tx
+|   
+|-- scripts
+|	
 `-- ui
     |-- Gruntfile.js
     |-- app
+    |	|-- admin
     |   |-- adt
     |   |-- clinical
     |   |-- common
-    |   |-- components
+    |	|-- dhis
     |   |-- document-upload
     |   |-- home
+    |	|-- i18n
     |   |-- images
-    |   |-- lib
+    |   |-- offline
     |   |-- orders
     |   |-- registration
-    |   |-- styles
-    |   `-- trends
+    |   `-- reports
+    |
+    |-- .jshint.rc
     |-- bower.json
-    |-- build.sh
     |-- package.json
-    `-- scripts
-        `-- package.sh
 </pre>

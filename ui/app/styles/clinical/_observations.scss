@@ -146,6 +146,10 @@ form .vitals .form-field .field-value {
     }
     .accept-btn {
       margin-top: 6px;
+      &:focus{
+        border:2px solid #007fff;
+        outline:none;
+      }
     }
   }
   .select2-drop-active, .select2-container-active .select2-choice, .select2-container-active .select2-choices, .select2-drop.select2-drop-above.select2-drop-active {
@@ -269,6 +273,11 @@ concept-set {
       top: 5px;
       right: 37px;
       padding: 3px 5px;
+      color: #000;
+      i {
+        color: green;
+        padding: 0.2em 0.1em;
+      }
     }
   }
 }
@@ -301,12 +310,18 @@ concept-set {
     padding: 5px;
   }
   .consultation-image {
-    width: 600px;
+    width: 807px;
     background: $lightestGray;
     padding: 5px;
     overflow: auto;
     clear: both;
     box-sizing: border-box;
+    @media screen and (max-width: 1024px) {
+      width:600px;
+    }
+    @media screen and (max-width: 768px){
+      width:350px;
+    }
     .file{
       .comment-toggle {
         margin-right: 10px;
@@ -463,7 +478,7 @@ concept-set {
 }
 
 #removeClonedObs.fa-remove {
-  margin-top: 10px;
+  margin-top: 9px;
   margin-bottom: 3px;
   margin-left: 9px;
   margin-right: 4px;
@@ -471,9 +486,12 @@ concept-set {
   border-radius: 3px;
   background: #ddd;
   border: 1px solid #ddd;
-  width: 16px;
+  width: 18px;
   cursor: pointer;
   box-sizing: border-box;
+  font-size: 14px;
+  text-align: center;
+
 }
 .vitals table{
   caption{
@@ -486,9 +504,36 @@ concept-set {
   th{
     font-size: 11px;
   }
+
 }
 .vitals {
+  .mylegend{
+    .add-more{
+      margin-top: 0;
+      float: right;
+    }
+  }
   .mylegend #removeClonedObs.fa-remove {
     margin-top: 0;
+    font-size: 12px;
   }
+}
+.concept-tooltip-tabular-observation{
+  margin-left:70px;
+}
+
+.field-value-buttonSelectType{
+  width:66%;
+  .multi-select-button-group button{
+    width:200px;
+    text-align: center;
+    padding-left: 10px;
+    padding-right: 10px;
+  }
+  @media screen and (max-width: 850px){
+    width:56%;
+  }
+}
+.add-more-wrapper{
+  display: inline-block;
 }

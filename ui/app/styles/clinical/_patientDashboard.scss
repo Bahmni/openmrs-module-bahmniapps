@@ -117,7 +117,7 @@
     padding: 0!important;
     border: 0;
     background: $white;
-    overflow: auto !important;
+    //overflow: auto !important;
   }
   table {
     margin: 0;
@@ -728,6 +728,9 @@ table.pivot-table {
       width:130px;
       span.obsTableData{
         width:105px;
+        @media screen and (max-width: 1024px) {
+          width:97px;
+        }
       }
   }
   .tabular-obs table tr td .obsTableEditContainer{

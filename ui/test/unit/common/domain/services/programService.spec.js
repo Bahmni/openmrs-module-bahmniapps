@@ -355,8 +355,8 @@ describe('programService', function () {
         programService.deletePatientState(patientProgramUuid, patientStateUuid).success(function (response) {
             expect(response.reason).toEqual("User deleted the state.");
         });
-        mockBackend.when('DELETE', Bahmni.Common.Constants.programEnrollPatientUrl + '/somePatientProgramUuid/state/someStateUuid').respond(function (method, url) {
-            expect(url).toEqual(Bahmni.Common.Constants.programEnrollPatientUrl + "/" + patientProgramUuid + "/state/" + patientStateUuid);
+        mockBackend.when('DELETE', Bahmni.Common.Constants.programStateDeletionUrl + '/somePatientProgramUuid/state/someStateUuid').respond(function (method, url) {
+            expect(url).toEqual(Bahmni.Common.Constants.programStateDeletionUrl + "/" + patientProgramUuid + "/state/" + patientStateUuid);
             return [200, {"reason": "User deleted the state."}, {}];
 
         });
@@ -397,6 +397,7 @@ describe('programService', function () {
                 uuid: '82325788-3f10-11e4-adec-0800271c1b75',
                 sortWeight: 3,
                 name: 'locationName',
+                fullySpecifiedName: 'locationName',
                 description: 'Location of the patient program',
                 format: 'java.lang.String',
                 answers: [],
@@ -406,6 +407,7 @@ describe('programService', function () {
                 uuid: '82325788-3f10-11es-adec-0800271c1b75',
                 sortWeight: 3,
                 name: 'mandatory',
+                fullySpecifiedName: 'mandatory',
                 description: 'Is the program mandatory',
                 format: 'java.lang.Boolean',
                 answers: [],

@@ -10,11 +10,11 @@
                 </span>
             </div>
             <div class="program-attributes">
-                <div class="program-attribute" ng-repeat="attribute in program.attributes">
-                    <span class="program-attribute-title">
+                <div class="program-attribute clearfix" ng-repeat="attribute in program.attributes">
+                    <span class="program-attribute-title fl">
                         <strong>{{attribute.attributeType.description || attribute.attributeType.display}}</strong> :
                     </span>
-                    <span class="program-attribute-value">{{getAttributeValue(attribute)}}</span>
+                    <span class="program-attribute-value fl">{{getAttributeValue(attribute)}}</span>
                 </div>
                 <div class="program-attribute" ng-if="program.location">
                     <strong>{{'PROGRAM_DISPLAY_CONTROL_FACILITY_OF_ENROLLMENT_KEY' | translate}}</strong> : {{program.location}}
@@ -65,15 +65,17 @@
 
 
                 <div class="program-attributes">
-                    <div class="program-attribute" ng-repeat="attribute in program.attributes">
-                        <span>
-                            <strong>{{attribute.attributeType.description || attribute.attributeType.display}}</strong> : {{getAttributeValue(attribute)}}
+                    <div class="program-attribute clearfix" ng-repeat="attribute in program.attributes">
+                       <span class="program-attribute-title fl">
+                            <strong>{{attribute.attributeType.description || attribute.attributeType.display}}</strong> :
+                       </span>
+                        <span class="program-attribute-value fl">
+                            {{getAttributeValue(attribute)}}
                         </span>
                     </div>
                     <div class="program-attribute" ng-if="program.location">
                         <strong>{{'PROGRAM_DISPLAY_CONTROL_FACILITY_OF_ENROLLMENT_KEY' | translate}}</strong> : {{program.location}}
                     </div>
-
                 </div>
 
 

@@ -42,11 +42,12 @@ Bahmni.Common.Domain.AttributeFormatter = (function () {
             attr.voided = true;
         }
         else if (attributeType.format === "org.openmrs.Concept") {
-            attr.value = _.find(attributeType.answers, function(answer){
+            var attrDescription = _.find(attributeType.answers, function(answer){
                 if(answer.conceptId === value) {
                     return true;
                 }
-            }).description;
+            });
+            attr.value = attrDescription != undefined ? attrDescription.description : null;
             attr.hydratedObject = value;
         }
         else if (attributeType.format == "org.openmrs.util.AttributableDate" || attributeType.format == "org.openmrs.customdatatype.datatype.DateDatatype") {

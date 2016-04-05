@@ -113,6 +113,11 @@ angular.module('bahmni.clinical')
             };
 
             $scope.revise = function (drugOrder, drugOrders) {
+                if($scope.consultation.drugOrdersWithUpdatedOrderAttributes[drugOrder.uuid]) {
+                    delete $scope.consultation.drugOrdersWithUpdatedOrderAttributes[drugOrder.uuid];
+                    $scope.toggleDrugOrderAttribute(drugOrder.orderAttributes[0]);
+                }
+
                 if (drugOrder.isEditAllowed) {
                     $rootScope.$broadcast("event:reviseDrugOrder", drugOrder, drugOrders);
                 }
@@ -154,13 +159,10 @@ angular.module('bahmni.clinical')
 
 
             $scope.shouldBeDisabled = function (drugOrder, orderAttribute) {
-                var hasEncounterExpired = function () {
-                    return $scope.consultation.encounterUuid !== orderAttribute.encounterUuid;
-                };
-                var isAlreadySaved = function () {
-                    return orderAttribute.obsUuid
-                };
-                return !drugOrder.isActive() || (isAlreadySaved() && hasEncounterExpired());
+                if (drugOrder.isBeingEdited) {
+                    return true;
+                }
+                return !drugOrder.isActive() || orderAttribute.obsUuid;
             };
 
             $scope.updateOrderAttribute = function (drugOrder, orderAttribute, valueToSet) {

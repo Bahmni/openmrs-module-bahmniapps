@@ -1,9 +1,11 @@
+'use strict';
+
 angular.module("bahmni.common.offline")
     .service("eventQueue", ['$q', function($q) {
         var hustle;
         var init = function() {
             hustle = new Hustle({
-                "db_name": "bahmni",
+                "db_name": "bahmni_hustle",
                 "db_version": 1,
                 "tubes": ["event_queue", "error_queue"]
             });
@@ -58,6 +60,12 @@ angular.module("bahmni.common.offline")
         this.removeFromQueue = function(event) {
             return getQueue().then(function() {
                 return $q.when(hustle.Queue.delete(event.id))
+            });
+        };
+
+        this.releaseFromQueue = function(event) {
+            return getQueue().then(function() {
+                return $q.when(hustle.Queue.release(event.id))
             });
         };
     }]);

@@ -31,13 +31,15 @@ angular.module('bahmni.common.displaycontrol.bacteriologyresults')
                         });
                         var specimenMapper = new Bahmni.Clinical.SpecimenMapper();
                         var conceptsConfig = appService.getAppDescriptor().getConfigValue("conceptSetUI") || {};
+                        var dontSortByObsDateTime = true;
                         _.forEach($scope.observations, function (observation) {
-                            $scope.specimens.push(specimenMapper.mapObservationToSpecimen(observation, $scope.allSamples, conceptsConfig));
+                            $scope.specimens.push(specimenMapper.mapObservationToSpecimen(observation, $scope.allSamples, conceptsConfig, dontSortByObsDateTime));
                         });
                     }
                 };
 
                 $scope.editBacteriologySample = function(specimen){
+
                     var configForPrompt = appService.getAppDescriptor().getConfigValue('showSaveConfirmDialog');
                     var promise = consultationInitialization($scope.patient.uuid, null, null).then(function(consultationContext) {
                         $scope.consultation = consultationContext;
@@ -71,8 +73,12 @@ angular.module('bahmni.common.displaycontrol.bacteriologyresults')
                 };
 
                 $scope.saveBacteriologySample = function(specimen){
+                    specimen.hasIllegalDateCollected = !specimen.dateCollected;
+                    specimen.hasIllegalType = !specimen.type;
+                    specimen.hasIllegalTypeFreeText = !specimen.typeFreeText;
+
                     if (specimen.isDirty()){
-                        messagingService.showMessage('formError', "{{'CLINICAL_FORM_ERRORS_MESSAGE_KEY' | translate }}");
+                        messagingService.showMessage('error', "{{'CLINICAL_FORM_ERRORS_MESSAGE_KEY' | translate }}");
                     }else{
                         shouldPromptBeforeClose = false;
                         var specimenMapper = new Bahmni.Clinical.SpecimenMapper();
@@ -82,6 +88,7 @@ angular.module('bahmni.common.displaycontrol.bacteriologyresults')
                             if(!$rootScope.hasVisitedConsultation) {
                                 window.onbeforeunload = null;
                             }
+                            $rootScope.hasVisitedConsultation = false;
                             $state.go($state.current, {}, {reload: true});
                             ngDialog.close();
                             messagingService.showMessage('info', "{{'CLINICAL_SAVE_SUCCESS_MESSAGE_KEY' | translate}}");

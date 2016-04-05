@@ -39,20 +39,30 @@ angular.module('authentication')
         var createSession = function(username, password){
             var deferrable = $q.defer();
 
-            if(offlineApp && offlineService.getItem(authenticationResponse)){
-                deferrable.resolve(offlineService.getItem(authenticationResponse));
-            } else {
+            destroySessionFromServer().success(function(){
                 getAuthFromServer(username, password).success(function(data) {
                     if(offlineApp) {
-                        if(authenticationResponse.authenticated == true) {
+                        if(data.authenticated == true) {
                             offlineService.setItem(authenticationResponse, data);
                         }
                     }
                     deferrable.resolve(data);
                 }).error(function(){
-                    deferrable.reject('LOGIN_LABEL_LOGIN_ERROR_MESSAGE_KEY');
+                    if(offlineApp && offlineService.getItem(authenticationResponse)){
+                        deferrable.resolve(offlineService.getItem(authenticationResponse));
+                    }else {
+                        deferrable.reject('LOGIN_LABEL_LOGIN_ERROR_MESSAGE_KEY');
+                    }
                 });
-            }
+            }).error(function(){
+                if(offlineApp && offlineService.getItem(authenticationResponse) &&
+                    offlineService.getItem(Bahmni.Common.Constants.LoginInformation) &&
+                    offlineService.validateLoginInfo({username: username, password: password})){
+                    deferrable.resolve(offlineService.getItem(authenticationResponse));
+                }else {
+                    deferrable.reject('LOGIN_LABEL_LOGIN_ERROR_MESSAGE_KEY');
+                }
+            });
             return deferrable.promise;
         };
 
@@ -109,6 +119,9 @@ angular.module('authentication')
         };
 
         this.get = function () {
+            if(offlineApp) {
+                return $q.when({data:offlineService.getItem('authenticationResponse')});
+            }
             return $http.get(sessionResourcePath, { cache: false });
         };
 
@@ -161,6 +174,12 @@ angular.module('authentication')
         };
 
         this.loadProviders = function(userInfo) {
+            if (offlineApp) {
+                var data  = offlineService.getItem('providerData');
+                var providerUuid = (data.results.length > 0) ? data.results[0].uuid : undefined;
+                $rootScope.currentProvider = { uuid: providerUuid };
+                return $q.when(data);
+            }
             return $http.get(Bahmni.Common.Constants.providerUrl, {
                  method: "GET",
                  params: {
@@ -176,20 +195,16 @@ angular.module('authentication')
         var authenticateUser = function () {
             var defer = $q.defer();
             var sessionDetails = sessionService.get();
-            sessionDetails.success(function (data) {
-                if (data.authenticated) {
+            sessionDetails.then(function (response) {
+                if (response.data.authenticated) {
                     defer.resolve();
                 } else {
                     defer.reject('User not authenticated');
                     $rootScope.$broadcast('event:auth-loginRequired');
                 }
             });
-            sessionDetails.error(function(){
-                defer.reject('User not authenticated');
-                $rootScope.$broadcast('event:auth-loginRequired');
-            });
             return defer.promise;
-        }
+        };
 
         return {
             authenticateUser: authenticateUser

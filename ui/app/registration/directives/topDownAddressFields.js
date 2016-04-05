@@ -17,6 +17,7 @@ angular.module('bahmni.registration')
     .controller('TopDownAddressFieldsDirectiveController', function ($scope, addressHierarchyService) {
         $scope.addressFieldInvalid = false;
         var selectedAddressUuids = {};
+        var selectedUserGeneratedIds = {};
 
         var addressLevelsCloneInDescendingOrder = $scope.addressLevels.slice(0).reverse();
         var addressLevelUIOrderBasedOnConfig = $scope.addressLevels;
@@ -32,6 +33,8 @@ angular.module('bahmni.registration')
                 addressHierarchyService.search(fieldName, addressValue).then(function(response) {
                     var address = response.data[0];
                     selectedAddressUuids[fieldName] = address.uuid;
+                    selectedUserGeneratedIds[fieldName] = address.userGeneratedId;
+                    $scope.$parent.patient.addressCode =  selectedUserGeneratedIds[fieldName];
                     populateSelectedAddressUuids(levelIndex + 1);
                 });
             }
@@ -49,6 +52,7 @@ angular.module('bahmni.registration')
         $scope.addressFieldSelected = function (fieldName) {
             return function (addressFieldItem) {
                 selectedAddressUuids[fieldName] = addressFieldItem.addressField.uuid;
+                selectedUserGeneratedIds[fieldName] = addressFieldItem.addressField.userGeneratedId;
                 var parentFields = addressLevelsNamesInDescendingOrder.slice(addressLevelsNamesInDescendingOrder.indexOf(fieldName) + 1);
                 var parent = addressFieldItem.addressField.parent;
                 parentFields.forEach(function (parentField) {
@@ -58,6 +62,7 @@ angular.module('bahmni.registration')
                     $scope.address[parentField] = parent.name;
                     parent = parent.parent;
                 });
+                $scope.$parent.patient.addressCode = selectedUserGeneratedIds[fieldName];
             };
         };
 
@@ -111,8 +116,17 @@ angular.module('bahmni.registration')
                 if (!$scope.isFreeTextAddressField(childField)) {
                     $scope.address[childField] = "";
                     selectedAddressUuids[childField] = null;
+                    selectedUserGeneratedIds[childField] = null;
                 }
             });
+            if(!_.isEmpty($scope.address[fieldName])) {
+                $scope.$parent.patient.addressCode  = selectedUserGeneratedIds[fieldName];
+            }
+            else {
+                selectedUserGeneratedIds[fieldName] = null;
+                $scope.$parent.patient.addressCode = selectedUserGeneratedIds[$scope.findParentField(fieldName)];
+            }
+
         };
 
         $scope.isFreeTextAddressField = function (field) {

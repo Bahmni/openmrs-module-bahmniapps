@@ -10,7 +10,7 @@ angular.module('httpErrorInterceptor',[])
                     return listItem.serverMessage === errorMessage;
                 });
                 if(_.isEmpty(result)){
-                    $rootScope.$broadcast('event:serverError', "Server Error : " + errorMessage);
+                    $rootScope.$broadcast('event:serverError', errorMessage);
                 }
             };
 

@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('bahmni.common.uiHelper').directive('autoScroll', function ($location,$anchorScroll, $timeout) {
-    const heightOfNavigationBar = 55;
+    var heightOfNavigationBar = 55;
     return {
         scope:{
             autoScrollEnabled:"="

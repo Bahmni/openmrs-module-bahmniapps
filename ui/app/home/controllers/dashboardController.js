@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('bahmni.home')
-    .controller('DashboardController', ['$rootScope', '$scope', '$state', 'appService', 'locationService', 'spinner', '$bahmniCookieStore', '$window',
-        function ($rootScope, $scope, $state, appService, locationService, spinner, $bahmniCookieStore, $window) {
+    .controller('DashboardController', ['$rootScope', '$scope', '$state', 'appService', 'locationService', 'spinner', '$bahmniCookieStore', '$window', '$q',
+        function ($rootScope, $scope, $state, appService, locationService, spinner, $bahmniCookieStore, $window, $q) {
             $scope.appExtensions = appService.getAppDescriptor().getExtensions($state.current.data.extensionPointId, "link") || [];
             $scope.selectedLocationUuid = {};
 
@@ -38,5 +38,5 @@ angular.module('bahmni.home')
                 $window.location.reload();
             };
 
-            return spinner.forPromise(init());
+            return spinner.forPromise($q.all(init()));
         }]);

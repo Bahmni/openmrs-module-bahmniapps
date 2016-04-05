@@ -271,7 +271,6 @@
                 width: 7.6em;
             }
         }
-
         .edit-drug-order-container .accept-btn{
             margin-left: 5px;
             margin-top: 4px;
@@ -299,19 +298,39 @@
             margin-top: 10px;
         }
         .dose-cell {
-            margin-left: 5px;
-            input[type="number"] {
-                min-width: 59.6px;
-                width: 59.6px;
-                padding: 4px 0px 3px 8px !important;
-                text-align: center;
-                @media (max-width: 1024px) {
-                    min-width: 45px;
-                    width: 45px;
-                    padding: 7px 0px 7px 8px !important;
+                    margin-left: 5px;
+                    input[type="number"] {
+                        min-width: 59.6px;
+                        width: 59.6px;
+                        padding: 4px 0px 3px 8px !important;
+                        text-align: center;
+                        @media (max-width: 1024px) {
+                            min-width: 45px;
+                            width: 45px;
+                            padding: 7px 0px 7px 8px !important;
+                        }
+                    }
+                }
+//            }
+
+        h3.orderSet-additional-info{
+            font-family: OpenSansBold;
+            color: #333;
+            font-size: 13px;
+            border-bottom: 1px solid #ccc;
+            padding: 20px 0 5px;
+            margin: 0 0 10px;
+        }
+        #SOS{
+                margin-right: 5px;
+                line-height: .9em;
+                margin-top: 4px;
+                padding: 6px 20px 6px;
+                @media screen and (max-width: 1024px) {
+                    line-height: 1.3em;
+                    padding: 7px 20px;
                 }
             }
-        }
     }
 
     .treatment-section-right{
@@ -334,4 +353,3 @@
 
 @import "customDrugOrderHistory";
 @import "orderSet";
-

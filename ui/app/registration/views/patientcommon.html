@@ -133,7 +133,7 @@
                 <ng-include src="'views/age.html'"></ng-include>
             </div>
         </section>
-        <legend class="registraion_legend">
+        <legend class="registraion_legend" ng-if="::!addressHierarchyConfigs.showAddressFieldsTopDown">
             <span class="mylegend"> {{ ::'REGISTRATION_LABEL_ADDRESS_INFO' | translate}}</span>
         </legend>
 
@@ -160,7 +160,7 @@
         </section>
     </div>
 
-    <div ng-repeat="(key, section) in ::patientConfiguration.getPatientAttributesSections()"
+    <div ng-repeat="(key, section) in ::patientConfiguration.getOrderedPatientAttributesSections()"
          class="additional-info-wrapper">
         <div class="box-container form" ng-if="::(section.attributes.length > 0 && section.title)">
             <legend class="additional-attribute" toggle="sectionVisibilityMap[key]">
@@ -202,7 +202,7 @@
           <span>
               <i class="fa fa-caret-right"></i>
               <i class="fa fa-caret-down"></i>
-              <strong><a href="javascript:void(0)">{{ ::'REGISTRATION_LABEL_DEATH_INFO' | translate}}</a></strong>
+              <strong><a>{{ ::'REGISTRATION_LABEL_DEATH_INFO' | translate}}</a></strong>
           </span>
         </legend>
         <section class="form-field-inline form-field-inline-one-col clearfix" ng-show="displayDeathInformation">

@@ -9,16 +9,16 @@ describe('mergeLocaleFilesService', function () {
 
     beforeEach(function(){
         module('bahmni.common.i18n');
+        module('bahmni.common.appFramework');
         module(function ($provide){
             _$http = jasmine.createSpyObj('$http', ['get']);
             $provide.value('$http', _$http);
             $provide.value('$q', Q);
-            $provide.value('mergeService', mergeService);
         });
 
-        mergeService = jasmine.createSpyObj('mergeService', ['merge']);
-        inject(function (_mergeLocaleFilesService_) {
+        inject(function (_mergeLocaleFilesService_, _mergeService_) {
             mergeLocaleFilesService = _mergeLocaleFilesService_;
+            mergeService = _mergeService_;
         });
     });
 
@@ -30,14 +30,11 @@ describe('mergeLocaleFilesService', function () {
                 return specUtil.createFakePromise(baseFile);
         });
 
-        mergeService.merge.and.callFake(function() {
-            return customFile;
-        });
 
         var promise = mergeLocaleFilesService({app: 'clinical', shouldMerge: true, key: 'en'});
 
-        promise.then(function valueOf(response) {
-            expect(response.data.data).toEqual(customFile);
+        promise.then(function(response) {
+            expect(response.data).toEqual(customFile);
             done();
         });
     });
@@ -50,14 +47,10 @@ describe('mergeLocaleFilesService', function () {
                 return specUtil.createFakePromise(baseFile);
         });
 
-        mergeService.merge.and.callFake(function() {
-            return customFile;
-        });
-
         var promise = mergeLocaleFilesService({app: 'clinical', shouldMerge: false, key: 'en'});
 
-        promise.then(function valueOf(response) {
-            expect(response.data.data).toEqual([ baseFile, customFile ]);
+        promise.then(function(response) {
+            expect([response[0].data, response[1].data]).toEqual([ baseFile, customFile ]);
             done();
         });
     });

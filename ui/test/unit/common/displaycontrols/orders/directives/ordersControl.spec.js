@@ -206,7 +206,6 @@ describe("OrdersDisplayControl", function () {
 
         //firstOrder isOPen
         expect(firstOrderITags[0]).toHaveClass('fa-caret-right');
-        expect(firstOrderITags[0]).toHaveClass('ng-hide');
         expect(firstOrderITags[1]).toHaveClass('fa-caret-down');
         expect(firstOrderITags[1]).not.toHaveClass('ng-hide');
         expect(firstOrderFulfillments).not.toHaveClass('ng-hide');
@@ -215,7 +214,6 @@ describe("OrdersDisplayControl", function () {
         expect(secondOrderITags[0]).toHaveClass('fa-caret-right');
         expect(secondOrderITags[0]).not.toHaveClass('ng-hide');
         expect(secondOrderITags[1]).toHaveClass('fa-caret-down');
-        expect(secondOrderITags[1]).toHaveClass('ng-hide');
         expect(secondOrderFulfillments).toHaveClass('ng-hide');
     });
 

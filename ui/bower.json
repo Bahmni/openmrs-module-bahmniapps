@@ -11,7 +11,6 @@
     "components"
   ],
   "dependencies": {
-    "sw-toolbox": "3.0.0",
     "angular": "1.4.9",
     "angular-animate": "1.4.9",
     "angular-bindonce": "0.3.3",
@@ -30,8 +29,7 @@
     "angular-ui-router": "0.2.18",
     "fastclick": "1.0.2",
     "lodash": "4.3.0",
-    "lovefield": "~2.1.4",
-    "offline": "0.7.14",
+    "lovefield": "~2.1.7",
     "ngDialog": "0.3.12",
     "angular-file-upload": "*",
     "stacktrace-js": "*",

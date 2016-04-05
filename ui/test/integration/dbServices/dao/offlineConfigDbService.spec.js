@@ -20,11 +20,13 @@ describe('offlineConfigDbService tests', function () {
         var eTag = "etag";
         schemaBuilder.connect().then(function(db){
             offlineConfigDbService.init(db);
-            offlineConfigDbService.insertConfig(module, configJson, eTag).then(function(result){
+            offlineConfigDbService.insertConfig(module, configJson, eTag).then(function(){
+                offlineConfigDbService.getConfig(module).then(function(result){
                     expect(result.etag).toBe(eTag);
                     expect(result.key).toBe(module);
                     expect(result.value).toBe(configJson);
                     done();
+                });
             });
         });
     });

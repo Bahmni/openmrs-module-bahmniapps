@@ -50,6 +50,8 @@ angular.module('bahmni.registration').factory('openmrsPatientMapper', ['patient'
                 patient.address = mapAddress(openmrsPerson.preferredAddress);
                 patient.birthtime = parseDate(openmrsPerson.birthtime);
                 patient.identifier = openmrsPatient.identifiers[0].identifier;
+                patient.registrationNumber = openmrsPatient.identifiers[0].registrationNumber;
+                patient.identifierPrefix.prefix = openmrsPatient.identifiers[0].identifierPrefix;
                 patient.image = Bahmni.Registration.Constants.patientImageURL + openmrsPatient.uuid + ".jpeg?q=" + new Date().toISOString();
                 patient.registrationDate = parseDate(openmrsPerson.auditInfo.dateCreated);
                 patient.dead = openmrsPerson.dead;

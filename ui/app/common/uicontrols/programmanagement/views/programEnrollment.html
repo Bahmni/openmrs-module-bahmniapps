@@ -6,7 +6,7 @@
             {{'PROGRAM_MANAGEMENT_SELECT_PROGRAM_KEY' | translate}}
         </a>
 
-        <form class="select-program-option form-field clearfix" ng-submit="enrollPatient()"
+        <form class="select-program-option form-field clearfix" single-submit="enrollPatient()"
               ng-show="!allPrograms.showProgramSection">
 
             <article class="fl">
@@ -48,7 +48,7 @@
             </article>
 
             <article class="fl" ng-repeat="attribute in programAttributeTypes">
-                <attribute-types target-model="patientProgramAttributes" attribute="attribute"></attribute-types>
+                <attribute-types target-model="patientProgramAttributes" attribute="attribute" is-form="true"></attribute-types>
             </article>
 
             <input class="fr" type="submit" value="{{'PROGRAM_MANAGEMENT_ENROLL_KEY' | translate}}"/>

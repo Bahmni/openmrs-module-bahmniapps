@@ -79,11 +79,11 @@ describe("ConceptSetSection", function () {
                 "title": "Vitals",
                 "name": "vitals",
                 "isObservation": true,
-                "dashboardParams": {
+                "dashboardConfig": {
                     "conceptNames": ["Vitals", "Second Vitals"],
                     "numberOfVisits": 2
                 },
-                "allObservationDetails": {
+                "expandedViewConfig": {
                     "conceptNames": ["Height", "Weight", "BMI", "BMI STATUS"],
                     "numberOfVisits": 2,
                     "pivotTable": {
@@ -193,5 +193,16 @@ describe("ConceptSetSection", function () {
             expect(conceptSetSection.isOpen).toBe(true);
         });
 
+    });
+
+    describe("clone", function () {
+        it("should clone the concept set section and set isAdded to true", function () {
+            var extensions = {extensionParams: {conceptName: "vitals"}};
+            var conceptSetSection = new ConceptSetSection(extensions, new Bahmni.Auth.User({}), {}, [], conceptSet);
+            var clonedConceptSetSection = conceptSetSection.clone();
+
+            expect(clonedConceptSetSection).toBeTruthy();
+            expect(clonedConceptSetSection.isAdded).toBeTruthy();
+        });
     });
 });

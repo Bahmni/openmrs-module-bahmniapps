@@ -1,9 +1,8 @@
 'use strict';
 
 describe('Patient resource', function () {
-    var patientService, offlineService;
+    var patientService;
     var patient;
-    var _offlineService = jasmine.createSpyObj('offlineService', ['isOfflineApp', 'isAndroidApp']);
 
     var openmrsUrl = "http://blah";
     var patientConfiguration;
@@ -36,13 +35,13 @@ describe('Patient resource', function () {
         gender: "M"};
 
     beforeEach(function () {
-        module('bahmni.registration');
+        module('bahmni.common.models');
         module('bahmni.common.offline');
+        module('bahmni.registration');
 
         module(function ($provide) {
             Bahmni.Registration.Constants.openmrsUrl = openmrsUrl;
             $provide.value('$http', mockHttp);
-            $provide.value('offlineService', _offlineService);
         });
 
 
@@ -62,30 +61,37 @@ describe('Patient resource', function () {
 
     });
 
-    var mockOfflineService = function () {
-        _offlineService.isOfflineApp.and.callFake(function () {
-            return false;
-        });
-        _offlineService.isAndroidApp.and.callFake(function () {
-            return false;
-        });
-    };
-
 
     it('Should call url for search', function () {
         var query = 'john';
-        mockOfflineService();
-        var results = patientService.search(query);
+        var identifier = '20000',
+            identifierPrefix = 'GAN';
+        var addressFieldName = 'address2';
+        var addressFieldValue = 'kaliganj';
+        var customAttributeValue = 'Student';
+        var customAttributeFields = ['occupation','education'];
+        var programAttributeFieldName = 'REGISTRATION NO';
+        var programAttributeFieldValue = '1234';
+        var results = patientService.search(query, identifier, identifierPrefix, addressFieldName, addressFieldValue, customAttributeValue, 0,
+            customAttributeFields, programAttributeFieldName, programAttributeFieldValue);
 
         expect(mockHttp.get).toHaveBeenCalled();
         expect(mockHttp.get.calls.mostRecent().args[0]).toBe(Bahmni.Common.Constants.bahmniSearchUrl + "/patient");
         expect(mockHttp.get.calls.mostRecent().args[1].params.q).toBe(query);
+        expect(mockHttp.get.calls.mostRecent().args[1].params.identifier).toBe(identifier);
+        expect(mockHttp.get.calls.mostRecent().args[1].params.identifierPrefix).toBe(identifierPrefix);
+        expect(mockHttp.get.calls.mostRecent().args[1].params.addressFieldName).toBe(addressFieldName);
+        expect(mockHttp.get.calls.mostRecent().args[1].params.addressFieldValue).toBe(addressFieldValue);
+        expect(mockHttp.get.calls.mostRecent().args[1].params.customAttribute).toBe(customAttributeValue);
+        expect(mockHttp.get.calls.mostRecent().args[1].params.startIndex).toBe(0);
+        expect(mockHttp.get.calls.mostRecent().args[1].params.patientAttributes).toBe(customAttributeFields);
+        expect(mockHttp.get.calls.mostRecent().args[1].params.programAttributeFieldName).toBe(programAttributeFieldName);
+        expect(mockHttp.get.calls.mostRecent().args[1].params.programAttributeFieldValue).toBe(programAttributeFieldValue);
         expect(results.$$state.value.name).toBe('john');
 
     });
 
     it('Should create a patient', function () {
-        mockOfflineService();
         angular.extend(patient, {
             "gender": "M",
             "givenName": "someGivenName",
@@ -104,7 +110,7 @@ describe('Patient resource', function () {
         });
 
         expect(mockHttp.post).toHaveBeenCalled();
-        expect(mockHttp.post.calls.mostRecent().args[0]).toBe('/openmrs/ws/rest/v1/patientprofile');
+        expect(mockHttp.post.calls.mostRecent().args[0]).toBe('/openmrs/ws/rest/v1/bahmnicore/patientprofile');
         expect(mockHttp.post.calls.mostRecent().args[1].patient.person.gender).toEqual("M");
         expect(mockHttp.post.calls.mostRecent().args[1].patient.person.names[0].givenName).toEqual("someGivenName");
         expect(mockHttp.post.calls.mostRecent().args[1].patient.person.names[0].familyName).toEqual("someFamilyName");
@@ -112,4 +118,11 @@ describe('Patient resource', function () {
         expect(mockHttp.post.calls.mostRecent().args[2].headers['Content-Type']).toBe('application/json');
         expect(mockHttp.post.calls.mostRecent().args[2].headers['Accept']).toBe('application/json');
     });
+
+    it("should get patients by uuid", function() {
+        patientService.get("someUuid");
+
+        expect(mockHttp.get).toHaveBeenCalled();
+        expect(mockHttp.get.calls.mostRecent().args[0]).toBe("http://blah/ws/rest/v1/patientprofile/someUuid");
+    })
 });

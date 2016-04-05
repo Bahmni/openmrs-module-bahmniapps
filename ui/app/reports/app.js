@@ -2,9 +2,18 @@
 
 angular
     .module('bahmni.reports')
-    .config(['$urlRouterProvider', '$stateProvider', '$httpProvider', '$bahmniTranslateProvider', function ($urlRouterProvider, $stateProvider, $httpProvider, $bahmniTranslateProvider) {
+    .config(['$urlRouterProvider', '$stateProvider', '$httpProvider', '$bahmniTranslateProvider', '$compileProvider',
+        function ($urlRouterProvider, $stateProvider, $httpProvider, $bahmniTranslateProvider , $compileProvider) {
         $httpProvider.defaults.headers.common['Disable-WWW-Authenticate'] = true;
+
         $urlRouterProvider.otherwise('/dashboard');
+        // @if DEBUG='production'
+        $compileProvider.debugInfoEnabled(false);
+        // @endif
+
+        // @if DEBUG='development'
+        $compileProvider.debugInfoEnabled(true);
+        // @endif
         $stateProvider
             .state('dashboard', {
                 url: '/dashboard',

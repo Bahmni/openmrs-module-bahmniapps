@@ -139,7 +139,7 @@ describe("DashboardController", function () {
 
         scope.runReport(report);
 
-        expect(messagingServiceMock.showMessage).toHaveBeenCalledWith("formError", "Please select the start date and end date");
+        expect(messagingServiceMock.showMessage).toHaveBeenCalledWith("error", "Please select the start date and end date");
         expect(reportServiceMock.generateReport).not.toHaveBeenCalled();
     });
 
@@ -155,7 +155,7 @@ describe("DashboardController", function () {
 
         scope.runReport(report);
 
-        expect(messagingServiceMock.showMessage).toHaveBeenCalledWith("formError", "Please select the start date");
+        expect(messagingServiceMock.showMessage).toHaveBeenCalledWith("error", "Please select the start date");
         expect(reportServiceMock.generateReport).not.toHaveBeenCalled();
     });
 
@@ -171,7 +171,7 @@ describe("DashboardController", function () {
 
         scope.runReport(report);
 
-        expect(messagingServiceMock.showMessage).toHaveBeenCalledWith("formError", "Please select the end date");
+        expect(messagingServiceMock.showMessage).toHaveBeenCalledWith("error", "Please select the end date");
         expect(reportServiceMock.generateReport).not.toHaveBeenCalled();
     });
 
@@ -180,13 +180,13 @@ describe("DashboardController", function () {
             config: {},
             name: "Vitals",
             startDate: '2015-02-01',
-            stopDate: null,
+            stopDate: null
         };
         scope.reportsRequiringDateRange.push(report);
 
         scope.runReport(report);
 
-        expect(messagingServiceMock.showMessage).toHaveBeenCalledWith("formError", "Select format for the report: Vitals");
+        expect(messagingServiceMock.showMessage).toHaveBeenCalledWith("error", "Select format for the report: Vitals");
         expect(reportServiceMock.generateReport).not.toHaveBeenCalled();
     });
 
@@ -203,7 +203,7 @@ describe("DashboardController", function () {
 
         scope.runReport(report);
 
-        expect(messagingServiceMock.showMessage).toHaveBeenCalledWith("formError", "Workbook template should be selected for generating report: Vitals");
+        expect(messagingServiceMock.showMessage).toHaveBeenCalledWith("error", "Workbook template should be selected for generating report: Vitals");
         expect(reportServiceMock.generateReport).not.toHaveBeenCalled();
     });
 
@@ -217,6 +217,27 @@ describe("DashboardController", function () {
             reportTemplateLocation: "/tmp/"
         };
         scope.reportsRequiringDateRange.push(report);
+
+        scope.runReport(report);
+
+        expect(reportServiceMock.generateReport).toHaveBeenCalled();
+        expect(report.reportTemplateLocation).toBeUndefined();
+    });
+
+    it("should send macroTemplate File path if macroTemplate is configured", function(){
+        var report = {
+            config: {
+                macroTemplatePath : "/xxx",
+            },
+            name: "Vitals",
+            startDate: '2015-02-01',
+            stopDate: '2015-03-01',
+            responseType: 'application/vnd.ms-excel-custom',
+        };
+        scope.reportsRequiringDateRange.push(report);
+        reportServiceMock.generateReport.and.callFake(function(reportSent) {
+            expect(reportSent.reportTemplateLocation).toBe(report.config.macroTemplatePath);
+        });
 
         scope.runReport(report);
 

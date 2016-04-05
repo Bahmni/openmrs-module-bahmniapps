@@ -19,39 +19,16 @@
     <ul>
         <li>
             <div class="message-container error-message-container" ng-if="isErrorMessagePresent()">
-                <div class="message-icon">
-                    <i class="fa fa-exclamation-triangle"></i>
-                </div>
                 <div class="message-text">
                     <div class="types-for-errors error-message">
-                        <div ng-if="!showError">Error Occurred!!!</div>
-
-                        <div ng-if="showError" ng-repeat="error in messages.error track by $index">
-                            <div class="msg" ng-if="!error.isServerError">{{error.value}}</div>
-                            <div class="msg primary" ng-if="error.isServerError">{{error.value}}</div>
+                        <div ng-repeat="error in messages.error track by $index">
+                            <div class="msg" ng-if="!error.isServerError">{{ error.value | translate}}</div>
+                            <div class="msg primary" ng-if="error.isServerError">{{error.value | translate}}</div>
                         </div>
                     </div>
-                    <div class="button-wrappper">
-                        <button type="button" clip-copy="getErrorMessageText()" class="copy-btn">Copy</button>
-                        <button type="button" ng-click="toggleShowError()" class="show-btn">
-                            <span ng-show="!showError">Show</span>
-                            <span ng-show="showError">Hide</span>
-                        </button>
-                    </div>
-                </div>
-            </div>
-        </li>
-    </ul>
-
-    <ul>
-        <li>
-            <div class="message-container error-message-container" ng-if="isFormErrorMessagePresent()">
-                <div class="message-icon">
-                    <i class="fa fa-exclamation-triangle"></i>
-                </div>
-                <div class="message-text">
-                    <div ng-repeat="error in messages.formError track by $index">
-                        {{error.value | translate}}
+                    <div class="button-wrappper clearfix">
+                        <button type="button" clip-copy="getMessageText('error')" class="copy-btn fl">{{ 'MESSAGE_DIALOG_OPTION_COPY' | translate }}</button>
+                        <button type="button" ng-click="hideMessage('error')" class="show-btn fr">{{ 'MESSAGE_DIALOG_OPTION_OKAY' | translate }}</button>
                     </div>
                 </div>
             </div>

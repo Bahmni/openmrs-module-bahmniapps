@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('bahmni.common.obs')
-    .directive('editObservation', ['$q', 'spinner', '$state','$rootScope', 'ngDialog', 'messagingService', 'encounterService', 'configurations', function ($q, spinner, $state, $rootScope, ngDialog, messagingService, encounterService,configurations) {
+    .directive('editObservation', ['$q', 'spinner', '$state','$rootScope', 'ngDialog', 'messagingService', 'encounterService', 'configurations','contextChangeHandler', function ($q, spinner, $state, $rootScope, ngDialog, messagingService, encounterService,configurations, contextChangeHandler) {
         var controller = function ($scope) {
 
             var ObservationUtil = Bahmni.Common.Obs.ObservationUtil;
@@ -13,6 +13,9 @@ angular.module('bahmni.common.obs')
 
             var shouldEditSpecificObservation = function(){
                 return $scope.observation.uuid ? true : false;
+            };
+            var contextChange = function () {
+                return contextChangeHandler.execute();
             };
 
             var init = function() {
@@ -29,7 +32,27 @@ angular.module('bahmni.common.obs')
 
             spinner.forPromise(init());
 
+            var isFormValid = function(){
+                var contxChange = contextChange();
+                var shouldAllow = contxChange["allow"];
+                if (!shouldAllow) {
+                    var errorMessage = contxChange["errorMessage"] ? contxChange["errorMessage"] : "{{'CLINICAL_FORM_ERRORS_MESSAGE_KEY' | translate }}";
+                    messagingService.showMessage('error', errorMessage);
+                }
+                return shouldAllow;
+            };
+
+            $scope.$parent.resetContextChangeHandler = function () {
+
+                contextChangeHandler.reset();
+            };
+
+
             $scope.save = function(){
+                if (!isFormValid()) {
+                    $scope.$parent.$parent.$broadcast("event:errorsOnForm");
+                    return;
+                }
               $scope.$parent.shouldPromptBeforeClose = false;
                 $scope.$parent.shouldPromptBrowserReload = false;
                 var updateEditedObservation =   function(observations) {

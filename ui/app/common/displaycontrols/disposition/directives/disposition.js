@@ -60,8 +60,8 @@ angular.module('bahmni.common.displaycontrol.disposition')
                 templateUrl:"../common/displaycontrols/disposition/views/disposition.html",
                 scope: {
                     params: "=",
-                    patientUuid: "=",
-                    visitUuid: "="
+                    patientUuid: "=?",
+                    visitUuid: "=?"
                 }
             };
         }]);

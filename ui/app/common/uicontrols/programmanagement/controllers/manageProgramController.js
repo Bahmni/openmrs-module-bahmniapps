@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('bahmni.common.uicontrols.programmanagment')
-    .controller('ManageProgramController', ['$scope', 'retrospectiveEntryService', '$window', 'programService', 'spinner', 'messagingService', '$stateParams',
-        function ($scope, retrospectiveEntryService, $window, programService, spinner, messagingService, $stateParams) {
+    .controller('ManageProgramController', ['$scope', 'retrospectiveEntryService', '$window', 'programService', 'spinner', 'messagingService', '$stateParams', '$q',
+        function ($scope, retrospectiveEntryService, $window, programService, spinner, messagingService, $stateParams, $q) {
             var DateUtil = Bahmni.Common.Util.DateUtil;
             $scope.programSelected = {};
             $scope.workflowStateSelected = {};
@@ -116,15 +116,15 @@ angular.module('bahmni.common.uicontrols.programmanagment')
 
             $scope.enrollPatient = function () {
                 if (!isProgramSelected()) {
-                    messagingService.showMessage("formError", "Please select a Program to Enroll the patient");
-                    return;
+                    messagingService.showMessage("error", "Please select a Program to Enroll the patient");
+                    return $q.when({});
                 }
                 if (isThePatientAlreadyEnrolled()) {
-                    messagingService.showMessage("formError", "Patient already enrolled to the Program");
-                    return;
+                    messagingService.showMessage("error", "Patient already enrolled to the Program");
+                    return $q.when({});
                 }
                 var stateUuid = $scope.workflowStateSelected && $scope.workflowStateSelected.uuid ? $scope.workflowStateSelected.uuid : null;
-                spinner.forPromise(
+                return spinner.forPromise(
                     programService.enrollPatientToAProgram($scope.patient.uuid, $scope.programSelected.uuid, $scope.programEnrollmentDate, stateUuid, $scope.patientProgramAttributes, $scope.programAttributeTypes)
                         .then(successCallback, failureCallback)
                 );
@@ -163,7 +163,7 @@ angular.module('bahmni.common.uicontrols.programmanagment')
                 if(isProgramStateSelected()){
                     var startDate = getCurrentDate();
                     if (activeState && DateUtil.isBeforeDate(startDate, activeStateDate)) {
-                        messagingService.showMessage("formError", "State cannot be started earlier than current state (" + DateUtil.formatDateWithoutTime(activeStateDate) + ")");
+                        messagingService.showMessage("error", "State cannot be started earlier than current state (" + DateUtil.formatDateWithoutTime(activeStateDate) + ")");
                         return;
                     }
                     if($scope.programEdited.selectedState.uuid){
@@ -179,7 +179,7 @@ angular.module('bahmni.common.uicontrols.programmanagment')
                 if(isOutcomeSelected(patientProgram)){
                     dateCompleted = DateUtil.getDateWithoutTime(getCurrentDate());
                     if (activeState && DateUtil.isBeforeDate(dateCompleted, activeStateDate)) {
-                        messagingService.showMessage("formError", "Program cannot be ended earlier than current state (" + DateUtil.formatDateWithoutTime(activeStateDate) + ")");
+                        messagingService.showMessage("error", "Program cannot be ended earlier than current state (" + DateUtil.formatDateWithoutTime(activeStateDate) + ")");
                         return;
                     }
 

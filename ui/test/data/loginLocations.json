@@ -1,0 +1,394 @@
+{
+  "results": [
+    {
+      "uuid": "e905bf88-c461-46e7-a2f1-87db4f611f8b",
+      "display": "IPD",
+      "name": "IPD",
+      "description": "In patient department",
+      "address1": null,
+      "address2": null,
+      "cityVillage": null,
+      "stateProvince": null,
+      "country": null,
+      "postalCode": null,
+      "latitude": null,
+      "longitude": null,
+      "countyDistrict": null,
+      "address3": null,
+      "address4": null,
+      "address5": null,
+      "address6": null,
+      "tags": [
+        {
+          "uuid": "be8e21dd-d0e9-4d8a-9746-da24890c5a47",
+          "display": "Report Location",
+          "links": [
+            {
+              "rel": "self",
+              "uri": "NEED-TO-CONFIGURE/ws/rest/v1/locationtag/be8e21dd-d0e9-4d8a-9746-da24890c5a47"
+            }
+          ]
+        },
+        {
+          "uuid": "b8bbf83e-645f-451f-8efe-a0db56f09676",
+          "display": "Login Location",
+          "links": [
+            {
+              "rel": "self",
+              "uri": "NEED-TO-CONFIGURE/ws/rest/v1/locationtag/b8bbf83e-645f-451f-8efe-a0db56f09676"
+            }
+          ]
+        }
+      ],
+      "parentLocation": {
+        "uuid": "c4284d68-622c-4f20-92bb-6f1d94708e01",
+        "display": "Gazipur District Hospital (10000137)",
+        "links": [
+          {
+            "rel": "self",
+            "uri": "NEED-TO-CONFIGURE/ws/rest/v1/location/c4284d68-622c-4f20-92bb-6f1d94708e01"
+          }
+        ]
+      },
+      "childLocations": [],
+      "retired": false,
+      "attributes": [],
+      "links": [
+        {
+          "rel": "self",
+          "uri": "NEED-TO-CONFIGURE/ws/rest/v1/location/e905bf88-c461-46e7-a2f1-87db4f611f8b"
+        },
+        {
+          "rel": "full",
+          "uri": "NEED-TO-CONFIGURE/ws/rest/v1/location/e905bf88-c461-46e7-a2f1-87db4f611f8b?v=full"
+        }
+      ],
+      "resourceVersion": "1.9"
+    },
+    {
+      "uuid": "55a2e954-fc2d-4f43-9ef1-9400a50a7714",
+      "display": "OPD",
+      "name": "OPD",
+      "description": "Outpatient Department",
+      "address1": null,
+      "address2": null,
+      "cityVillage": null,
+      "stateProvince": null,
+      "country": null,
+      "postalCode": null,
+      "latitude": null,
+      "longitude": null,
+      "countyDistrict": null,
+      "address3": null,
+      "address4": null,
+      "address5": null,
+      "address6": null,
+      "tags": [
+        {
+          "uuid": "be8e21dd-d0e9-4d8a-9746-da24890c5a47",
+          "display": "Report Location",
+          "links": [
+            {
+              "rel": "self",
+              "uri": "NEED-TO-CONFIGURE/ws/rest/v1/locationtag/be8e21dd-d0e9-4d8a-9746-da24890c5a47"
+            }
+          ]
+        },
+        {
+          "uuid": "b8bbf83e-645f-451f-8efe-a0db56f09676",
+          "display": "Login Location",
+          "links": [
+            {
+              "rel": "self",
+              "uri": "NEED-TO-CONFIGURE/ws/rest/v1/locationtag/b8bbf83e-645f-451f-8efe-a0db56f09676"
+            }
+          ]
+        }
+      ],
+      "parentLocation": {
+        "uuid": "c4284d68-622c-4f20-92bb-6f1d94708e01",
+        "display": "Gazipur District Hospital (10000137)",
+        "links": [
+          {
+            "rel": "self",
+            "uri": "NEED-TO-CONFIGURE/ws/rest/v1/location/c4284d68-622c-4f20-92bb-6f1d94708e01"
+          }
+        ]
+      },
+      "childLocations": [],
+      "retired": false,
+      "attributes": [],
+      "links": [
+        {
+          "rel": "self",
+          "uri": "NEED-TO-CONFIGURE/ws/rest/v1/location/55a2e954-fc2d-4f43-9ef1-9400a50a7714"
+        },
+        {
+          "rel": "full",
+          "uri": "NEED-TO-CONFIGURE/ws/rest/v1/location/55a2e954-fc2d-4f43-9ef1-9400a50a7714?v=full"
+        }
+      ],
+      "resourceVersion": "1.9"
+    },
+    {
+      "uuid": "7743f1bf-1927-4787-8981-b29d98de6d93",
+      "display": "Emergency",
+      "name": "Emergency",
+      "description": null,
+      "address1": null,
+      "address2": null,
+      "cityVillage": null,
+      "stateProvince": null,
+      "country": null,
+      "postalCode": null,
+      "latitude": null,
+      "longitude": null,
+      "countyDistrict": null,
+      "address3": null,
+      "address4": null,
+      "address5": null,
+      "address6": null,
+      "tags": [
+        {
+          "uuid": "be8e21dd-d0e9-4d8a-9746-da24890c5a47",
+          "display": "Report Location",
+          "links": [
+            {
+              "rel": "self",
+              "uri": "NEED-TO-CONFIGURE/ws/rest/v1/locationtag/be8e21dd-d0e9-4d8a-9746-da24890c5a47"
+            }
+          ]
+        },
+        {
+          "uuid": "b8bbf83e-645f-451f-8efe-a0db56f09676",
+          "display": "Login Location",
+          "links": [
+            {
+              "rel": "self",
+              "uri": "NEED-TO-CONFIGURE/ws/rest/v1/locationtag/b8bbf83e-645f-451f-8efe-a0db56f09676"
+            }
+          ]
+        }
+      ],
+      "parentLocation": {
+        "uuid": "c4284d68-622c-4f20-92bb-6f1d94708e01",
+        "display": "Gazipur District Hospital (10000137)",
+        "links": [
+          {
+            "rel": "self",
+            "uri": "NEED-TO-CONFIGURE/ws/rest/v1/location/c4284d68-622c-4f20-92bb-6f1d94708e01"
+          }
+        ]
+      },
+      "childLocations": [],
+      "retired": false,
+      "attributes": [],
+      "links": [
+        {
+          "rel": "self",
+          "uri": "NEED-TO-CONFIGURE/ws/rest/v1/location/7743f1bf-1927-4787-8981-b29d98de6d93"
+        },
+        {
+          "rel": "full",
+          "uri": "NEED-TO-CONFIGURE/ws/rest/v1/location/7743f1bf-1927-4787-8981-b29d98de6d93?v=full"
+        }
+      ],
+      "resourceVersion": "1.9"
+    },
+    {
+      "uuid": "c2ba5fab-ed2e-4a17-978e-b9b19340644e",
+      "display": "Vaccination",
+      "name": "Vaccination",
+      "description": null,
+      "address1": null,
+      "address2": null,
+      "cityVillage": null,
+      "stateProvince": null,
+      "country": null,
+      "postalCode": null,
+      "latitude": null,
+      "longitude": null,
+      "countyDistrict": null,
+      "address3": null,
+      "address4": null,
+      "address5": null,
+      "address6": null,
+      "tags": [
+        {
+          "uuid": "be8e21dd-d0e9-4d8a-9746-da24890c5a47",
+          "display": "Report Location",
+          "links": [
+            {
+              "rel": "self",
+              "uri": "NEED-TO-CONFIGURE/ws/rest/v1/locationtag/be8e21dd-d0e9-4d8a-9746-da24890c5a47"
+            }
+          ]
+        },
+        {
+          "uuid": "b8bbf83e-645f-451f-8efe-a0db56f09676",
+          "display": "Login Location",
+          "links": [
+            {
+              "rel": "self",
+              "uri": "NEED-TO-CONFIGURE/ws/rest/v1/locationtag/b8bbf83e-645f-451f-8efe-a0db56f09676"
+            }
+          ]
+        }
+      ],
+      "parentLocation": {
+        "uuid": "c4284d68-622c-4f20-92bb-6f1d94708e01",
+        "display": "Gazipur District Hospital (10000137)",
+        "links": [
+          {
+            "rel": "self",
+            "uri": "NEED-TO-CONFIGURE/ws/rest/v1/location/c4284d68-622c-4f20-92bb-6f1d94708e01"
+          }
+        ]
+      },
+      "childLocations": [],
+      "retired": false,
+      "attributes": [],
+      "links": [
+        {
+          "rel": "self",
+          "uri": "NEED-TO-CONFIGURE/ws/rest/v1/location/c2ba5fab-ed2e-4a17-978e-b9b19340644e"
+        },
+        {
+          "rel": "full",
+          "uri": "NEED-TO-CONFIGURE/ws/rest/v1/location/c2ba5fab-ed2e-4a17-978e-b9b19340644e?v=full"
+        }
+      ],
+      "resourceVersion": "1.9"
+    },
+    {
+      "uuid": "6d9b190b-02f3-4d33-bb35-21cd71cbe62a",
+      "display": "OT",
+      "name": "OT",
+      "description": "Operation Theatre",
+      "address1": null,
+      "address2": null,
+      "cityVillage": null,
+      "stateProvince": null,
+      "country": null,
+      "postalCode": null,
+      "latitude": null,
+      "longitude": null,
+      "countyDistrict": null,
+      "address3": null,
+      "address4": null,
+      "address5": null,
+      "address6": null,
+      "tags": [
+        {
+          "uuid": "be8e21dd-d0e9-4d8a-9746-da24890c5a47",
+          "display": "Report Location",
+          "links": [
+            {
+              "rel": "self",
+              "uri": "NEED-TO-CONFIGURE/ws/rest/v1/locationtag/be8e21dd-d0e9-4d8a-9746-da24890c5a47"
+            }
+          ]
+        },
+        {
+          "uuid": "b8bbf83e-645f-451f-8efe-a0db56f09676",
+          "display": "Login Location",
+          "links": [
+            {
+              "rel": "self",
+              "uri": "NEED-TO-CONFIGURE/ws/rest/v1/locationtag/b8bbf83e-645f-451f-8efe-a0db56f09676"
+            }
+          ]
+        }
+      ],
+      "parentLocation": {
+        "uuid": "c4284d68-622c-4f20-92bb-6f1d94708e01",
+        "display": "Gazipur District Hospital (10000137)",
+        "links": [
+          {
+            "rel": "self",
+            "uri": "NEED-TO-CONFIGURE/ws/rest/v1/location/c4284d68-622c-4f20-92bb-6f1d94708e01"
+          }
+        ]
+      },
+      "childLocations": [],
+      "retired": false,
+      "attributes": [],
+      "links": [
+        {
+          "rel": "self",
+          "uri": "NEED-TO-CONFIGURE/ws/rest/v1/location/6d9b190b-02f3-4d33-bb35-21cd71cbe62a"
+        },
+        {
+          "rel": "full",
+          "uri": "NEED-TO-CONFIGURE/ws/rest/v1/location/6d9b190b-02f3-4d33-bb35-21cd71cbe62a?v=full"
+        }
+      ],
+      "resourceVersion": "1.9"
+    },
+    {
+      "uuid": "74703720-ea14-4caa-be74-0fa0e0f2fbe7",
+      "display": "Registration",
+      "name": "Registration",
+      "description": null,
+      "address1": null,
+      "address2": null,
+      "cityVillage": null,
+      "stateProvince": null,
+      "country": null,
+      "postalCode": null,
+      "latitude": null,
+      "longitude": null,
+      "countyDistrict": null,
+      "address3": null,
+      "address4": null,
+      "address5": null,
+      "address6": null,
+      "tags": [
+        {
+          "uuid": "be8e21dd-d0e9-4d8a-9746-da24890c5a47",
+          "display": "Report Location",
+          "links": [
+            {
+              "rel": "self",
+              "uri": "NEED-TO-CONFIGURE/ws/rest/v1/locationtag/be8e21dd-d0e9-4d8a-9746-da24890c5a47"
+            }
+          ]
+        },
+        {
+          "uuid": "b8bbf83e-645f-451f-8efe-a0db56f09676",
+          "display": "Login Location",
+          "links": [
+            {
+              "rel": "self",
+              "uri": "NEED-TO-CONFIGURE/ws/rest/v1/locationtag/b8bbf83e-645f-451f-8efe-a0db56f09676"
+            }
+          ]
+        }
+      ],
+      "parentLocation": {
+        "uuid": "c4284d68-622c-4f20-92bb-6f1d94708e01",
+        "display": "Gazipur District Hospital (10000137)",
+        "links": [
+          {
+            "rel": "self",
+            "uri": "NEED-TO-CONFIGURE/ws/rest/v1/location/c4284d68-622c-4f20-92bb-6f1d94708e01"
+          }
+        ]
+      },
+      "childLocations": [],
+      "retired": false,
+      "attributes": [],
+      "links": [
+        {
+          "rel": "self",
+          "uri": "NEED-TO-CONFIGURE/ws/rest/v1/location/74703720-ea14-4caa-be74-0fa0e0f2fbe7"
+        },
+        {
+          "rel": "full",
+          "uri": "NEED-TO-CONFIGURE/ws/rest/v1/location/74703720-ea14-4caa-be74-0fa0e0f2fbe7?v=full"
+        }
+      ],
+      "resourceVersion": "1.9"
+    }
+  ]
+}

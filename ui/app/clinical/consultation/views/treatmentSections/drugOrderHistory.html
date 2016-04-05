@@ -26,7 +26,9 @@
                                 </div>
 								<div class="button-group-wrapper">
                                     <div class="button-group">
-                                        <button ng-repeat="orderAttribute in drugOrder.orderAttributes" show-if-privilege="{{dispensePrivilege}}" class="dispense-btn" ng-disabled="shouldBeDisabled(drugOrder,orderAttribute)" ng-click="updateOrderAttribute(drugOrder,orderAttribute)">
+                                        <button ng-repeat="orderAttribute in drugOrder.orderAttributes" show-if-privilege="{{dispensePrivilege}}"
+                                                class="dispense-btn" ng-disabled="shouldBeDisabled(drugOrder,orderAttribute)"
+                                                ng-click="updateOrderAttribute(drugOrder,orderAttribute)">
                                             <i class="fa fa-check" ng-show="orderAttribute.value"></i>
                                             {{orderAttribute.name.substring(0,1)}}
                                         </button>

@@ -30,12 +30,15 @@ angular.module('bahmni.reports')
 
         $scope.runReport = function (report) {
             if(!report.responseType){
-                messagingService.showMessage("formError", "Select format for the report: " + report.name);
+                messagingService.showMessage("error", "Select format for the report: " + report.name);
                 return;
             }
             if (report.responseType == 'application/vnd.ms-excel-custom' && !report.reportTemplateLocation) {
-                messagingService.showMessage("formError", "Workbook template should be selected for generating report: " + report.name);
-                return;
+                if (!report.config.macroTemplatePath) {
+                    messagingService.showMessage("error", "Workbook template should be selected for generating report: " + report.name);
+                    return;
+                }
+                report.reportTemplateLocation = report.config.macroTemplatePath;
             }
             report.startDate = Bahmni.Common.Util.DateUtil.getDateWithoutTime(report.startDate);
             report.stopDate = Bahmni.Common.Util.DateUtil.getDateWithoutTime(report.stopDate);
@@ -47,7 +50,7 @@ angular.module('bahmni.reports')
                 if (!report.stopDate) {
                     msg.push("end date");
                 }
-                messagingService.showMessage("formError", "Please select the " + msg.join(" and "))
+                messagingService.showMessage("error", "Please select the " + msg.join(" and "))
             } else {
                 reportService.generateReport(report);
                 if (report.responseType == 'application/vnd.ms-excel-custom') {

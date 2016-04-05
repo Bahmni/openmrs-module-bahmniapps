@@ -3,6 +3,7 @@
 describe("Patient", function(){
     var patientFactory, ageFactory, patient;
     beforeEach(module('bahmni.registration'));
+    beforeEach(module('bahmni.common.models'));
     beforeEach(inject(['patient', 'age', function(patient, age){
         patientFactory = patient;
         ageFactory = age;

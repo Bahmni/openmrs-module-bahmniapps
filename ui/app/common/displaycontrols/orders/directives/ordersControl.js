@@ -55,7 +55,7 @@ angular.module('bahmni.common.displaycontrol.orders')
                 };
 
                 $scope.isClickable= function(){
-                    return $scope.isOnDashboard && $scope.section.allOrdersDetails;
+                    return $scope.isOnDashboard && $scope.section.expandedViewConfig;
                 };
 
                 $scope.hasTitleToBeShown = function() {

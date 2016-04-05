@@ -3,7 +3,7 @@
         <legend class="order-title mylegend">{{group.description}}</legend>
         <div class="orderBtnContainer">
             <ul>
-                <li ng-repeat="test in (tab.leftCategory.setMembers | filter:filterByConceptClass)">
+                <li ng-repeat="test in (tab.leftCategory.setMembers | filter:filterByConceptClass | filter:filterBySearchString)">
                     <a class="grid-row-element button orderBtn ng-binding ng-scope"
                        ng-click="toggleOrderSelection(test)"
                        ng-class="{active:isActiveOrderPresent(test), noteditable:isTestIndirectlyPresent(test)}"

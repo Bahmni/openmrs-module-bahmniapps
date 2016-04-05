@@ -46,7 +46,8 @@ angular.module('bahmni.common.offline').service('offlineService', ['$rootScope',
     };
 
     this.validateLoginInfo = function (loginInfo) {
-        return (this.getItem(Bahmni.Common.Constants.LoginInformation)['username'] === loginInfo.username &&
+        var username = this.getItem(Bahmni.Common.Constants.LoginInformation)['username'] || '';
+        return ( username.toLowerCase() === loginInfo.username.toLowerCase() &&
         JSON.stringify(this.getItem(Bahmni.Common.Constants.LoginInformation)['password']) === JSON.stringify(CryptoJS.SHA3(loginInfo.password)));
     };
 

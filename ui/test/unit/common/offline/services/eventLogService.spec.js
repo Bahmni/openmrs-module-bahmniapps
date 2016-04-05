@@ -43,5 +43,84 @@ describe('EventLogService', function () {
         });
 
         expect(mockHttp.get).toHaveBeenCalledWith('/openmrs/patient/111234');
-    })
+    });
+
+    it('should make a call to get address for login location', function (done) {
+        var result = [
+            {
+                "name": "Kaliganj Paurasava",
+                "uuid": "7abec0b0-e89e-40cb-8ed1-da47747be9eb",
+                "userGeneratedId": "40443332",
+                "parent": {
+                    "name": "Kaliganj",
+                    "uuid": "5a93f0e8-dc3d-4c9b-88a7-aa7be764f7a6",
+                    "userGeneratedId": "404433"
+                }
+            },
+            {
+                "name": "Kaliganj Paurashava",
+                "uuid": "ea664f90-7483-4bcd-ae7a-9e223cee5e4b",
+                "userGeneratedId": "30333449",
+                "parent": {
+                    "name": "Kaliganj",
+                    "uuid": "89471bee-1bbe-47eb-b1a9-6cf3093b1452",
+                    "userGeneratedId": "303334"
+                }
+            }
+        ];
+        var params =  {searchString: 'location', addressField: "address2"};
+        mockHttp.get.and.callFake(function () {
+            return specUtil.respondWith(result);
+        });
+
+        eventLogService.getAddressForLoginLocation(params).then(function (data) {
+            expect(data.length).toBe(2);
+            expect(data).toBe(result);
+            done();
+        });
+
+        expect(mockHttp.get).toHaveBeenCalledWith('/openmrs/module/addresshierarchy/ajax/getPossibleAddressHierarchyEntriesWithParents.form', {
+            method : 'GET',
+            params: params,
+            withCredentials : true
+        });
+    });
+
+    it('should make a call to get parent address hierarchy entries for login location', function (done) {
+        var result = [
+            {
+                "addressHierarchyEntryId": 16165,
+                "name": "Gazipur",
+                "levelId": 2,
+                "addressHierarchyLevel": {
+                    "levelId": 2,
+                    "name": "Zilla",
+                    "parentLevelId": 1,
+                    "addressField": "COUNTY_DISTRICT",
+                    "required": true,
+                    "uuid": "c25a3285-7d55-11e5-acdf-90fba67c4298",
+                    "id": 2
+                },
+                "parentId": 14332,
+                "userGeneratedId": "3033",
+                "uuid": "f9cbb04a-8656-43e1-893c-e969f9ecf41a"
+            }
+        ];
+        var params =  ['f9cbb04a-8656-43e1-893c-e969f9ecf41a'];
+        mockHttp.get.and.callFake(function () {
+            return specUtil.respondWith(result);
+        });
+
+        eventLogService.getParentAddressHierarchyEntriesForLoginLocation(params).then(function (data) {
+            expect(data.length).toBe(1);
+            expect(data).toBe(result);
+            done();
+        });
+
+        expect(mockHttp.get).toHaveBeenCalledWith('/openmrs/ws/rest/v1/addressHierarchy', {
+            method : 'GET',
+            params: {"uuids" : params},
+            withCredentials : true
+        });
+    });
 });

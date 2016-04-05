@@ -6,12 +6,15 @@ angular.module('bahmni.common.offline')
         var db;
 
         var search = function (params) {
+            var defer = $q.defer();
             var response = {
-                pageOfResults: []
+                "data" : {
+                    pageOfResults: []
+                }
             };
             if ($rootScope.searching) {
-                response.pageOfResults.push({});
-                return $q.when(response);
+                response.data.pageOfResults.push({});
+                return defer.resolve(response);
             }
             $rootScope.searching = true;
             var nameParts = null;
@@ -27,8 +30,8 @@ angular.module('bahmni.common.offline')
             }
 
             var addressFieldName = null;
-            if (params.address_field_name) {
-                addressFieldName = params.address_field_name.replace("_", "");
+            if (params.addressFieldName) {
+                addressFieldName = params.addressFieldName.replace("_", "");
             }
 
             var p = db.getSchema().table('patient');
@@ -36,7 +39,7 @@ angular.module('bahmni.common.offline')
             var pat = db.getSchema().table('patient_attribute_type');
             var padd = db.getSchema().table('patient_address');
 
-            return db.select(pat.attributeTypeId)
+             db.select(pat.attributeTypeId)
                 .from(pat)
                 .where(pat.attributeName.in(params.patientAttributes)).exec()
                 .then(function (attributeTypeIds) {
@@ -49,9 +52,9 @@ angular.module('bahmni.common.offline')
                         .leftOuterJoin(pat, pa.attributeTypeId.eq(pat.attributeTypeId));
                     var predicates = [];
 
-                    if (!_.isEmpty(params.address_field_value)) {
-                        params.address_field_value = params.address_field_value.replace('%','.');
-                        predicates.push(padd[addressFieldName].match(new RegExp(params.address_field_value, 'i')));
+                    if (!_.isEmpty(params.addressFieldValue)) {
+                        params.addressFieldValue = params.addressFieldValue.replace('%','.');
+                        predicates.push(padd[addressFieldName].match(new RegExp(params.addressFieldValue, 'i')));
                     }
 
                     if (!_.isEmpty(params.identifier)) {
@@ -70,13 +73,13 @@ angular.module('bahmni.common.offline')
                         }
                     }
 
-                    if (!_.isEmpty(params.custom_attribute)) {
-                        params.custom_attribute = params.custom_attribute.replace('%','.');
+                    if (!_.isEmpty(params.customAttribute)) {
+                        params.customAttribute = params.customAttribute.replace('%','.');
                         predicates.push(pa.attributeTypeId.in(_.map(attributeTypeIds, function (attributeTypeId) {
                             return attributeTypeId.attributeTypeId;
                         })));
 
-                        predicates.push(pa.attributeValue.match(new RegExp(params.custom_attribute, 'i')));
+                        predicates.push(pa.attributeValue.match(new RegExp(params.customAttribute, 'i')));
                     }
 
                     var whereCondition = lf.op.and.apply(null, predicates);
@@ -86,7 +89,7 @@ angular.module('bahmni.common.offline')
                     }
 
 
-                    return query.limit(50).skip(params.startIndex).orderBy(p.dateCreated, lf.Order.DESC).groupBy(p.uuid).exec()
+                     query.limit(50).skip(params.startIndex).orderBy(p.dateCreated, lf.Order.DESC).groupBy(p.uuid).exec()
                         .then(function (tempResults) {
                             return db.select(p.identifier.as('identifier'), p.givenName.as('givenName'), p.middleName.as('middleName'), p.familyName.as('familyName'),
                                 p.dateCreated.as('dateCreated'), p.birthdate.as('birthdate'), p.gender.as('gender'), p.uuid.as('uuid'), padd[addressFieldName].as('addressFieldValue'),
@@ -110,6 +113,7 @@ angular.module('bahmni.common.offline')
                                         patient = groupedResult[0];
                                         //ToDo:: Dependency of age factory in Admin page
                                         patient.age = age.fromBirthDate(patient.birthdate).years;
+                                        patient.image = "../images/blank-user.png";
 
                                         angular.forEach(groupedResult, function (result) {
                                             if (result.attributeName) {
@@ -117,11 +121,11 @@ angular.module('bahmni.common.offline')
                                             }
                                         });
                                         patient.customAttribute = JSON.stringify(customAttributes);
-                                        response.pageOfResults.push(patient);
+                                        response.data.pageOfResults.push(patient);
                                     });
                                     $rootScope.searching = false;
 
-                                    return response;
+                                    defer.resolve(response);
 
                                 });
 
@@ -129,6 +133,7 @@ angular.module('bahmni.common.offline')
                             console.log(e);
                         });
                 });
+            return defer.promise;
         };
 
         var init = function(_db){

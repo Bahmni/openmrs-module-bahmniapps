@@ -51,13 +51,7 @@ describe("conceptSet", function () {
             "conceptSetName" :{"hideAbnormalButton" :true}
         });
 
-        conceptSetService.getConcept.and.returnValue({
-            then: function () {
-                return function () {
-                    return {}
-                }
-            }
-        });
+        conceptSetService.getConcept.and.returnValue(specUtil.respondWith({}));
     });
 
 

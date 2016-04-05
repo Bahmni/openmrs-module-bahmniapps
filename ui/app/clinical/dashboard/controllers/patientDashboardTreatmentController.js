@@ -4,19 +4,19 @@ angular.module('bahmni.clinical')
     .controller('PatientDashboardTreatmentController', ['$scope', 'ngDialog',
         function ($scope, ngDialog) {
 
-            var treatmentConfigParams = $scope.dashboard.getSectionByName("treatment") || {};
+            var treatmentConfigParams = $scope.dashboard.getSectionByType("treatment") || {};
             var patientUuidparams = {"patientUuid": $scope.patient.uuid};
 
-            $scope.dashboardParams = {};
-            $scope.allTreatmentDetails = {};
+            $scope.dashboardConfig = {};
+            $scope.expandedViewConfig = {};
 
-            _.extend($scope.dashboardParams, treatmentConfigParams.dashboardParams || {}, patientUuidparams);
-            _.extend($scope.allTreatmentDetails, treatmentConfigParams.allTreatmentDetails || {}, patientUuidparams);
+            _.extend($scope.dashboardConfig, treatmentConfigParams.dashboardConfig || {}, patientUuidparams);
+            _.extend($scope.expandedViewConfig, treatmentConfigParams.expandedViewConfig || {}, patientUuidparams);
 
             $scope.openSummaryDialog = function () {
                 ngDialog.open({
                     template: 'dashboard/views/dashboardSections/treatmentSummary.html',
-                    params: $scope.allTreatmentDetails,
+                    params: $scope.expandedViewConfig,
                     className: "ngdialog-theme-default ng-dialog-all-details-page",
                     scope: $scope
                 });

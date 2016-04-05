@@ -7,7 +7,8 @@ describe('patientMapper', function () {
 
     beforeEach(function () {
         module('bahmni.registration');
-        
+        module('bahmni.common.models');
+
         patientConfiguration = new Bahmni.Registration.PatientConfig([
             {"uuid": "d3d93ab0-e796-11e2-852f-0800271c1b75", "sortWeight": 2.0, "name": "caste", "description": "Caste", "format": "java.lang.String", "answers": []},
             {"uuid": "d3d93ab0-e796-11e2-852f-0800271c1999", "sortWeight": 2.0, "name": "date", "description": "Test Date", "format": "org.openmrs.util.AttributableDate"},

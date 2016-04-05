@@ -1,10 +1,8 @@
 'use strict';
 
 angular.module('bahmni.common.offline')
-    .service('patientAttributeDbService', ['$http', function ($http) {
-        var insertAttributeTypes = function (db) {
-                return $http.get(Bahmni.Common.Constants.RESTWS_V1 + "/personattributetype?v=custom:(name,uuid,format)").then(function (attributesResponse) {
-                var personAttributeTypeList = attributesResponse.data.results;
+    .service('patientAttributeDbService', [ function () {
+        var insertAttributeTypes = function (db, personAttributeTypeList) {
                 var table, queries = [];
                 table = db.getSchema().table('patient_attribute_type');
                 for (var i = 0; i < personAttributeTypeList.length; i++) {
@@ -18,40 +16,41 @@ angular.module('bahmni.common.offline')
                 }
                 var tx = db.createTransaction();
                 return tx.exec(queries);
-            });
         };
 
-        var insertAttributes = function (db, patientUuid, attributes, attributeTypeMap) {
+        var insertAttributes = function (db, patientUuid, attributes) {
             var attributeTable, value;
             attributeTable = db.getSchema().table('patient_attribute');
             var queries = [];
-            if (attributes != null && attributes.length > 0) {
-                for (var j = 0; j < attributes.length; j++) {
-                    if (!attributes[j].voided) {
-                        var personAttribute = attributes[j];
-                        var attributeValue = personAttribute.value;
-                        if (typeof(attributeValue) == "object") {
-                            value = attributeValue.display;
-                        } else {
-                            value = attributeValue;
-                        }
-                        var foundAttribute = _.find(attributeTypeMap, function (attributeType) {
-                            return attributeType.uuid === personAttribute.attributeType.uuid
-                        });
-                        if (foundAttribute != undefined) {
-                            var row = attributeTable.createRow({
-                                'attributeTypeId': foundAttribute.attributeTypeId,
-                                'attributeValue': value,
-                                'patientUuid': patientUuid,
-                                'uuid': personAttribute.uuid ? personAttribute.uuid : Bahmni.Common.Offline.UUID.generateUuid()
+            return getAttributeTypes(db).then(function (attributeTypes) {
+                if (attributes != null && attributes.length > 0) {
+                    for (var j = 0; j < attributes.length; j++) {
+                        if (!attributes[j].voided) {
+                            var personAttribute = attributes[j];
+                            var attributeValue = personAttribute.value;
+                            if (typeof(attributeValue) == "object") {
+                                value = attributeValue.display;
+                            } else {
+                                value = attributeValue;
+                            }
+                            var foundAttribute = _.find(attributeTypes, function (attributeType) {
+                                return attributeType.uuid === personAttribute.attributeType.uuid
                             });
-                            queries.push(db.insertOrReplace().into(attributeTable).values([row]));
+                            if (foundAttribute != undefined) {
+                                var row = attributeTable.createRow({
+                                    'attributeTypeId': foundAttribute.attributeTypeId,
+                                    'attributeValue': value,
+                                    'patientUuid': patientUuid,
+                                    'uuid': personAttribute.uuid ? personAttribute.uuid : Bahmni.Common.Offline.UUID.generateUuid()
+                                });
+                                queries.push(db.insertOrReplace().into(attributeTable).values([row]));
+                            }
                         }
                     }
+                    var tx = db.createTransaction();
+                    return tx.exec(queries);
                 }
-                var tx = db.createTransaction();
-                return tx.exec(queries);
-            }
+            });
         };
 
         var getAttributeTypes = function (db) {
@@ -59,11 +58,10 @@ angular.module('bahmni.common.offline')
 
             return db.select(attributeTypeTable.attributeTypeId, attributeTypeTable.uuid, attributeTypeTable.attributeName, attributeTypeTable.format).from(attributeTypeTable).exec()
                 .then(function (attributeTypeMap) {
-                     return attributeTypeMap;
+                    return attributeTypeMap;
                 });
 
         };
-
 
 
         return {
