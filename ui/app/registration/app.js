@@ -45,6 +45,9 @@ angular
                     },
                     offlineReferenceDataInitialization: function(offlineReferenceDataInitialization, offlineDb){
                         return offlineReferenceDataInitialization(offlineDb, true);
+                    },
+                    offlinePush: function(offlinePush, offlineSyncInitialization){
+                        return offlinePush.consumeEvents(offlineSyncInitialization);
                     }
                 }
             })

@@ -61,7 +61,6 @@ module.exports = function (config) {
             {pattern: 'test/data/*.json', watched: true, served: true, included: false}
         ],
         exclude:[
-            'test/unit/registration/offline/*.js',
             'app/common/**/offline/chrome/*.js',
             'app/registration/services/defaultPatientServiceStrategy.js',
 

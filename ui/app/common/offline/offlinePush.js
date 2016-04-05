@@ -3,40 +3,81 @@
 angular.module('bahmni.common.offline')
     .factory('offlinePush', ['offlineService','eventQueue','$http','offlineDbService','androidDbService',
         function (offlineService, eventQueue, $http, offlineDbService, androidDbService) {
-            return function () {
-                function consume() {
-                    if(offlineService.isAndroidApp()) {
-                        offlineDbService = androidDbService;
-                    }
-                    eventQueue.consumeFromEventQueue().then(function (event) {
-                        if (!event)
-                            return null;
-                        offlineDbService.getPatientByUuid(event.data.patientUuid).then(function(response){
-                            response.relationships = [];
-                            $http.post(event.data.url, response, {
-                                withCredentials: true,
-                                headers: {
-                                    "Accept": "application/json",
-                                    "Content-Type": "application/json"
-                                }
-                            }).success(function (response) {
-                                eventQueue.removeFromQueue(event);
-                                consume();
-                            }).catch(function (response) {
-                                if(response.status == -1){
-                                    eventQueue.releaseFromQueue(event);
-                                }
-                                else{
-                                    console.log("Push error. Status Code:" + response.status);
-                                }
-                            })
-                        });
-                    });
+            var reservedEvents = [];
+            var consumeEvents = function () {
+                if (!offlineService.isOfflineApp()) {
+                    return;
                 }
+                if (offlineService.isAndroidApp()) {
+                    offlineDbService = androidDbService;
+                }
+                return consumeFromErrorQueue().then(function () {
+                    releaseReservedEvents(reservedEvents);
+                    consumeFromEventQueue();
+                });
+            };
 
-                if(offlineService.isOfflineApp()) {
-                        consume();
-                    }
-                }
+            var releaseReservedEvents = function (reservedEvents) {
+                angular.forEach(reservedEvents, function (reservedEvent) {
+                    eventQueue.releaseFromQueue(reservedEvent);
+                });
+            };
+
+            var consumeFromEventQueue = function () {
+                return eventQueue.consumeFromEventQueue().then(function (event) {
+                    if (!event)
+                        return;
+                    return processEvent(event)
+                })
+            };
+
+            var consumeFromErrorQueue = function () {
+                return eventQueue.consumeFromErrorQueue().then(function (event) {
+                    if (!event)
+                        return;
+                    return processEvent(event)
+                })
+            };
+
+            var processEvent = function (event) {
+                return offlineDbService.getPatientByUuid(event.data.patientUuid).then(function (response) {
+                    response.relationships = [];
+                    return $http.post(event.data.url, response, {
+                        withCredentials: true,
+                        headers: {
+                            "Accept": "application/json",
+                            "Content-Type": "application/json"
+                        }
+                    }).success(function () {
+                        eventQueue.removeFromQueue(event);
+                        if (event.tube === "event_queue") {
+                             consumeFromEventQueue();
+                        } else {
+                             consumeFromErrorQueue();
+                        }
+                    }).catch(function (response) {
+                        if (parseInt(response.status / 100) == 5) {
+                            if (event.tube === "event_queue") {
+                                eventQueue.removeFromQueue(event);
+                                eventQueue.addToErrorQueue(event.data);
+                                consumeFromEventQueue();
+                            }
+                            else {
+                                reservedEvents.push(event);
+                                 consumeFromErrorQueue();
+                            }
+                        }
+                        else {
+                            eventQueue.releaseFromQueue(event);
+                        }
+                    })
+                });
+            };
+
+
+            return {
+                consumeEvents: consumeEvents,
+                processEvent: processEvent
+            }
         }
     ]);
