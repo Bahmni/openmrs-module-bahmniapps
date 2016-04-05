@@ -48,8 +48,7 @@ describe('PatientServiceStrategy test', function () {
             expect(_.some(data.patient.person.attributes, function (attribute) {
                 return attribute.attributeType.uuid === '9234695b-0f68-4970-aeb7-3b32d4a2b346';
             })).toBeTruthy();
-            done();
-        });
+        }).catch(notifyError).finally(done);
     });
 
     it("should update the patient", function (done) {
@@ -68,8 +67,7 @@ describe('PatientServiceStrategy test', function () {
             event.url = Bahmni.Registration.Constants.baseOpenMRSRESTURL + "/bahmnicore/patientprofile/e34992ca-894f-4344-b4b3-54a4aa1e5558";
             event.patientUuid = "e34992ca-894f-4344-b4b3-54a4aa1e5558";
             expect(eventQueueMock.addToEventQueue).toHaveBeenCalledWith(event);
-            done();
-        });
+        }).catch(notifyError).finally(done);
     });
 
     it("should create new patient ", function (done) {
@@ -77,8 +75,7 @@ describe('PatientServiceStrategy test', function () {
         patientServiceStrategy.create(patientJson).then(function(data) {
             var url = Bahmni.Registration.Constants.baseOpenMRSRESTURL + "/bahmnicore/patientprofile/";
             expect(eventQueueMock.addToEventQueue).toHaveBeenCalledWith(jasmine.objectContaining({"url": url}));
-            done();
-        });
+        }).catch(notifyError).finally(done);
 
     });
 });
