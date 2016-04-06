@@ -34,20 +34,8 @@ angular
                     offlineDb: function (offlineDbInitialization) {
                         return offlineDbInitialization();
                     },
-                    initialize: function (initialization, offlineSyncInitialization) {
-                        return initialization(offlineSyncInitialization);
-                    },
-                    offlineSyncInitialization: function (offlineSyncInitialization, offlineDb, offlineReferenceDataInitialization) {
-                        return offlineSyncInitialization(offlineDb, offlineReferenceDataInitialization);
-                    },
-                    offlineRegistrationInitialization: function (offlineRegistrationInitialization, offlineDb) {
-                        return offlineRegistrationInitialization(offlineDb);
-                    },
-                    offlineReferenceDataInitialization: function(offlineReferenceDataInitialization, offlineDb){
-                        return offlineReferenceDataInitialization(offlineDb, true);
-                    },
-                    offlinePush: function(offlinePush, offlineSyncInitialization){
-                        return offlinePush(offlineSyncInitialization);
+                    initialize: function (initialization, offlineDb) {
+                        return initialization(offlineDb);
                     }
                 }
             })
@@ -61,17 +49,8 @@ angular
                     offlineDb: function (offlineDbInitialization) {
                         return offlineDbInitialization();
                     },
-                    initialize: function (initialization, offlineSyncInitialization) {
-                        return initialization(offlineSyncInitialization);
-                    },
-                    offlineSyncInitialization: function (offlineSyncInitialization, offlineDb, offlineReferenceDataInitialization) {
-                        return offlineSyncInitialization(offlineDb, offlineReferenceDataInitialization);
-                    },
-                    offlineRegistrationInitialization: function (offlineRegistrationInitialization, offlineDb) {
-                        return offlineRegistrationInitialization(offlineDb);
-                    },
-                    offlineReferenceDataInitialization: function(offlineReferenceDataInitialization, offlineDb){
-                        return offlineReferenceDataInitialization(offlineDb, true);
+                    initialize: function (initialization, offlineDb) {
+                        return initialization(offlineDb);
                     }
                 }
             })
@@ -85,17 +64,8 @@ angular
                     offlineDb: function (offlineDbInitialization) {
                         return offlineDbInitialization();
                     },
-                    initialize: function (initialization, offlineSyncInitialization) {
-                        return initialization(offlineSyncInitialization);
-                    },
-                    offlineSyncInitialization: function (offlineSyncInitialization, offlineDb, offlineReferenceDataInitialization) {
-                        return offlineSyncInitialization(offlineDb, offlineReferenceDataInitialization);
-                    },
-                    offlineRegistrationInitialization: function (offlineRegistrationInitialization, offlineDb) {
-                        return offlineRegistrationInitialization(offlineDb);
-                    },
-                    offlineReferenceDataInitialization: function(offlineReferenceDataInitialization, offlineDb){
-                        return offlineReferenceDataInitialization(offlineDb, false);
+                    initialize: function (initialization, offlineDb) {
+                        return initialization(offlineDb);
                     }
                 }
             })
@@ -123,13 +93,17 @@ angular
                 }
             });
         $bahmniTranslateProvider.init({app: 'registration', shouldMerge: true});
-    }]).run(function ($rootScope, $templateCache, WorkerService, offlineService) {
+    }]).run(function ($rootScope, $templateCache, WorkerService, offlineService, scheduledSync) {
         //Disable caching view template partials
         $rootScope.$on('$viewContentLoaded', function () {
             $templateCache.removeAll();
         });
 
-        if(Bahmni.Common.Offline && Bahmni.Common.Offline.BackgroundWorker) {
-            new Bahmni.Common.Offline.BackgroundWorker(WorkerService, offlineService);
+        if(offlineService.isChromeApp()) {
+            if (Bahmni.Common.Offline && Bahmni.Common.Offline.BackgroundWorker) {
+                new Bahmni.Common.Offline.BackgroundWorker(WorkerService, offlineService);
+            }
+        }else if(offlineService.isAndroidApp()){
+                scheduledSync();
         }
 });

@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('bahmni.offline', ['ui.router',  'bahmni.common.uiHelper', 'bahmni.common.util', 'bahmni.common.offline'])
+angular.module('bahmni.offline', ['ui.router',  'bahmni.common.uiHelper', 'bahmni.common.util', 'bahmni.common.offline', 'bahmni.common.models'])
     .config(['$urlRouterProvider', '$stateProvider',
         function ($urlRouterProvider, $stateProvider) {
         $urlRouterProvider.otherwise('/initScheduler');
@@ -13,23 +13,51 @@ angular.module('bahmni.offline', ['ui.router',  'bahmni.common.uiHelper', 'bahmn
                         offlineDb: function (offlineDbInitialization) {
                             return offlineDbInitialization();
                         },
-                        offlineReferenceDataInitialization: function(offlineReferenceDataInitialization, offlineDb, offlineDbService, referenceDataDbService, offlineService, androidDbService, $state){
+                        offlineReferenceDataInitialization: function(offlineReferenceDataInitialization, offlineDb, offlineDbService, offlineService, androidDbService, $state){
                             if (offlineService.isAndroidApp()){
                                 offlineDbService = androidDbService;
                             }
-                            offlineDbService.init(offlineDb);
-                            referenceDataDbService.init(offlineDb);
                             return offlineDbService.getReferenceData("LoginLocations").then(function(result){
                                 if(result){
                                     $state.go('login');
                                 }
-                                return offlineReferenceDataInitialization(offlineDb, false).then(function(){
+                                return offlineReferenceDataInitialization(false).then(function(){
                                     $state.go('login');
                                 });
                             });
                         }
                     }
-                }).state('device',
+                }).state('scheduler',
+                {
+                    url: '/scheduler',
+                    resolve: {
+                        offlineDb: function (offlineDbInitialization) {
+                            return offlineDbInitialization();
+                        },
+                        test : function(offlineDb, offlineService, offlineDbService, androidDbService, $state){
+                           if(offlineService.isAndroidApp()){
+                               offlineDbService = androidDbService;
+                           }
+                           return offlineDbService.getConfig("home").then(function(result){
+                               if(result && offlineService.getItem('catchmentNumber')){
+                                   $state.go('dashboard');
+                               }
+                            });
+                        },
+                        offlineReferenceDataInitialization: function(offlineReferenceDataInitialization, offlineDb, test){
+                            return offlineReferenceDataInitialization(true, offlineDb, test);
+                        },
+                        offlineLocationInitialization: function(offlineLocationInitialization, offlineReferenceDataInitialization){
+                            return offlineLocationInitialization(offlineReferenceDataInitialization);
+                        },
+                        offlineConfigInitialization: function(offlineConfigInitialization, offlineLocationInitialization){
+                            return offlineConfigInitialization(offlineLocationInitialization);
+                        },
+                        state: function($state, offlineConfigInitialization){
+                            $state.go('dashboard');
+                        }
+                }
+            }).state('device',
             {
                 url: "/device/:deviceType",
                 controller: function ($stateParams, $rootScope, $state, offlineService) {
@@ -42,6 +70,11 @@ angular.module('bahmni.offline', ['ui.router',  'bahmni.common.uiHelper', 'bahmn
             {
                 controller: function () {
                     window.location.href = "../home/index.html#/login";
+                }
+            }).state('dashboard',
+            {
+                controller: function () {
+                    window.location.href = "../home/index.html#/dashboard";
                 }
             });
 

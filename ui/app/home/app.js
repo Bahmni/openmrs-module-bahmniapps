@@ -27,22 +27,9 @@ angular.module('bahmni.home', ['ui.router', 'httpErrorInterceptor', 'bahmni.comm
                         offlineDb: function (offlineDbInitialization) {
                             return offlineDbInitialization();
                         },
-                        initialize: function (initialization, offlineConfigInitialization) {
-                            return initialization(offlineConfigInitialization);
-                        },
-                        offlineSyncInitialization: function (offlineSyncInitialization, offlineDb, offlineReferenceDataInitialization) {
-                            return offlineSyncInitialization(offlineDb, offlineReferenceDataInitialization);
-                        },
-                        offlineConfigInitialization: function(offlineConfigInitialization, offlineSyncInitialization){
-                            return offlineConfigInitialization(offlineSyncInitialization)
-                        },
-                        offlineReferenceDataInitialization: function(offlineReferenceDataInitialization, offlineDb){
-                            return offlineReferenceDataInitialization(offlineDb, true);
-                        },
-                        offlinePush: function(offlinePush, offlineSyncInitialization){
-                            return offlinePush(offlineSyncInitialization);
+                        initialize: function (initialization, offlineDb) {
+                            return initialization(offlineDb);
                         }
-
                     }
                 }).state('login',
             {
@@ -53,8 +40,7 @@ angular.module('bahmni.home', ['ui.router', 'httpErrorInterceptor', 'bahmni.comm
                     offlineDb: function (offlineDbInitialization) {
                         return offlineDbInitialization();
                     },
-                    initialData: function(loginInitialization,referenceDataDbService, offlineDb){
-                        referenceDataDbService.init(offlineDb);
+                    initialData: function(loginInitialization, offlineDb){
                         return loginInitialization()
                     }
                 }
@@ -62,13 +48,17 @@ angular.module('bahmni.home', ['ui.router', 'httpErrorInterceptor', 'bahmni.comm
         $httpProvider.defaults.headers.common['Disable-WWW-Authenticate'] = true;
         $bahmniTranslateProvider.init({app: 'home', shouldMerge: true});
 
-    }]).run(function ($rootScope, $templateCache, WorkerService) {
+    }]).run(function ($rootScope, $templateCache, WorkerService, offlineService, scheduledSync) {
         //Disable caching view template partials
         $rootScope.$on('$viewContentLoaded', function () {
             $templateCache.removeAll();
         });
 
-        //if(Bahmni.Common.Offline && Bahmni.Common.Offline.BackgroundWorker) {
-        //    new Bahmni.Common.Offline.BackgroundWorker(WorkerService);
-        //}
+        if(offlineService.isChromeApp()) {
+            if (Bahmni.Common.Offline && Bahmni.Common.Offline.BackgroundWorker) {
+                new Bahmni.Common.Offline.BackgroundWorker(WorkerService, offlineService);
+            }
+        }else if(offlineService.isAndroidApp()){
+                scheduledSync();
+        }
 });

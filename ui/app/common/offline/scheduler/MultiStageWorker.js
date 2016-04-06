@@ -41,4 +41,4 @@ Bahmni.Common.Offline.MultiStageWorker = function($q) {
             this.currentlyExecutingStage.pause();
         }
     }
-}
+};
