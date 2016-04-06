@@ -145,13 +145,14 @@
             return this.primaryObs.concept.answers;
         },
 
-        getCodedConcept: function () {
+            getCodedConcept: function () {
             return findObservationByConceptName(this.groupMembers, this.conceptUIConfig.codedConceptName).concept;
         },
 
         onValueChanged: function () {
             if (!this.primaryObs.hasValue() && this.abnormalObs) {
                 this.abnormalObs.value = undefined;
+                this.abnormalObs.erroneousValue = undefined;
             }
             if (this.primaryObs.isNumeric() && this.primaryObs.hasValue() && this.abnormalObs) {
                 this.setAbnormal();
