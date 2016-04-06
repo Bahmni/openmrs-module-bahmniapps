@@ -1,6 +1,6 @@
 'use strict';
 
-ddescribe('offlinePush', function () {
+describe('Offline Push Tests', function () {
     var offlinePush, offlineServiceMock, eventQueueMock, httpBackend, offlineDbServiceMock, androidDbService, $q=Q, eventQueue, errorQueue, event, eventQueueMock;
 
 
