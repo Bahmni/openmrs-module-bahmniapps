@@ -65,7 +65,7 @@
             this.onValueChanged(newValue);
         };
         var setFirstObservationValue = function (newValue) {
-            setNewObservation(this.groupMembers[0], newValue);
+            setNewObservation(this.primaryObs, newValue);
             this.onValueChanged(newValue);
         };
         Object.defineProperty(this, 'value', {
