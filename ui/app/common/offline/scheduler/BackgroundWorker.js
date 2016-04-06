@@ -1,22 +1,48 @@
-Bahmni.Common.Offline.BackgroundWorker = function(WorkerService) {
+Bahmni.Common.Offline.BackgroundWorker = function(WorkerService, offlineService) {
+
+    var app;
+    if(offlineService.isChromeApp()){
+        app = 'chrome-app';
+    }else if(offlineService.isAndroidApp()){
+        app = 'android-app';
+    }
     var getUrl = function(path) {
         return chrome.runtime.getURL("app/" + path);
     };
 
-    WorkerService.setAngularUrl(getUrl("components/angular/angular.js"))
+    WorkerService.addToLocalStorage("host", localStorage.getItem('host'));
+    WorkerService.setAngularUrl(getUrl("components/angular/angular.js"));
     WorkerService.includeScripts(getUrl('common.offline.min.js'));
     WorkerService.addDependency('scheduledJob', 'bahmni.common.offline', getUrl('common.background.min.js'));
     WorkerService.addDependency('offlinePush', 'bahmni.common.offline', getUrl('common.background.min.js'));
 
-    var workerPromise = WorkerService.createAngularWorker(['input', 'output', '$http', 'scheduledJob', 'offlinePush', function (input, output, $http, scheduledJob, offlinePush) {
-        var multiStageWorker = new Bahmni.Common.Offline.MultiStageWorker($q);
-        multiStageWorker.addStage({execute: function() { output.notify("In stage 1") }});
-        multiStageWorker.addStage({execute: function() { output.notify("In stage 2") }});
-        scheduledJob.create({worker: multiStageWorker, interval: 1000}).start();
+    var workerPromise = WorkerService.createAngularWorker(['input', 'output', '$http', 'scheduledJob', 'offlinePush',
+        'offlineDbService', 'offlineService', 'offlineConfigInitialization', 'androidDbService', 'offlineReferenceDataInitialization',
+        function (input, output, $http, scheduledJob, offlinePush, offlineDbService, offlineService, offlineConfigInitialization,
+                  androidDbService, offlineReferenceDataInitialization) {
+        app = input.app;
+        offlineService.isAndroidApp = function(){
+            return app === 'android-app';
+        };
+        offlineService.isChromeApp = function(){
+            return app === 'chrome-app';
+        };
+        if(offlineService.isAndroidApp()){
+            offlineDbService = androidDbService;
+        }
+        offlineDbService.initSchema().then(function(db) {
+            offlineDbService.init(db);
+            var multiStageWorker = new Bahmni.Common.Offline.MultiStageWorker($q);
+            multiStageWorker.addStage({execute: function() { output.notify("In stage 1");return offlineConfigInitialization();}});
+            multiStageWorker.addStage({execute: function() { output.notify("In stage 2");return offlineReferenceDataInitialization(db, true);}});
+            multiStageWorker.addStage({execute: function() { output.notify("In stage 3");return offlinePush(); }});
+            multiStageWorker.addStage({execute: function() { output.notify("In stage 4") }});
+            scheduledJob.create({worker: multiStageWorker, interval: 30000}).start();
+        });
     }]);
 
     workerPromise.then(function success(angularWorker) {
-            return angularWorker.run({});
+            return angularWorker.run({'app': app});
         }, function error(reason) {
             console.log('callback error');
             console.log(reason);

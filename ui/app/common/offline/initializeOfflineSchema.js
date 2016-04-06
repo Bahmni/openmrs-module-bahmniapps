@@ -10,22 +10,26 @@ angular.module('bahmni.common.offline').service('initializeOfflineSchema', [func
         "ARRAY_BUFFER": lf.Type.ARRAY_BUFFER
     };
 
-    this.initSchema = function () {
-        var schemaBuilder = lf.schema.create('Bahmni', 2);
-        createTable(schemaBuilder, Bahmni.Common.Offline.SchemaDefinitions.Patient);
-        createTable(schemaBuilder, Bahmni.Common.Offline.SchemaDefinitions.PatientAttribute);
-        createTable(schemaBuilder, Bahmni.Common.Offline.SchemaDefinitions.PatientAttributeType);
-        createTable(schemaBuilder, Bahmni.Common.Offline.SchemaDefinitions.EventLogMarker);
-        createTable(schemaBuilder, Bahmni.Common.Offline.SchemaDefinitions.AddressHierarchyEntry);
-        createTable(schemaBuilder, Bahmni.Common.Offline.SchemaDefinitions.AddressHierarchyLevel);
-        createTable(schemaBuilder, Bahmni.Common.Offline.SchemaDefinitions.PatientAddress);
-        createTable(schemaBuilder, Bahmni.Common.Offline.SchemaDefinitions.Configs);
-        createTable(schemaBuilder, Bahmni.Common.Offline.SchemaDefinitions.ReferenceData);
-        createTable(schemaBuilder, Bahmni.Common.Offline.SchemaDefinitions.LoginLocations);
+    this.databasePromise = null;
 
-        return schemaBuilder.connect().then(function (database) {
-            return database;
-        });
+    this.initSchema = function () {
+        if(this.databasePromise == null ) {
+            var schemaBuilder = lf.schema.create('Bahmni', 2);
+            createTable(schemaBuilder, Bahmni.Common.Offline.SchemaDefinitions.Patient);
+            createTable(schemaBuilder, Bahmni.Common.Offline.SchemaDefinitions.PatientAttribute);
+            createTable(schemaBuilder, Bahmni.Common.Offline.SchemaDefinitions.PatientAttributeType);
+            createTable(schemaBuilder, Bahmni.Common.Offline.SchemaDefinitions.EventLogMarker);
+            createTable(schemaBuilder, Bahmni.Common.Offline.SchemaDefinitions.AddressHierarchyEntry);
+            createTable(schemaBuilder, Bahmni.Common.Offline.SchemaDefinitions.AddressHierarchyLevel);
+            createTable(schemaBuilder, Bahmni.Common.Offline.SchemaDefinitions.PatientAddress);
+            createTable(schemaBuilder, Bahmni.Common.Offline.SchemaDefinitions.Configs);
+            createTable(schemaBuilder, Bahmni.Common.Offline.SchemaDefinitions.ReferenceData);
+            createTable(schemaBuilder, Bahmni.Common.Offline.SchemaDefinitions.LoginLocations);
+
+            this.databasePromise = schemaBuilder.connect();
+        }
+
+        return this.databasePromise;
     };
 
 

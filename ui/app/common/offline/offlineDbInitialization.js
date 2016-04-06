@@ -9,6 +9,7 @@ angular.module('bahmni.common.offline')
                         offlineDbService = androidDbService;
                     }
                     return offlineDbService.initSchema().then(function (db) {
+                        offlineDbService.init(db);
                         return db;
                     });
                 }

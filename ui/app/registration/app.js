@@ -123,13 +123,13 @@ angular
                 }
             });
         $bahmniTranslateProvider.init({app: 'registration', shouldMerge: true});
-    }]).run(function ($rootScope, $templateCache, WorkerService) {
+    }]).run(function ($rootScope, $templateCache, WorkerService, offlineService) {
         //Disable caching view template partials
         $rootScope.$on('$viewContentLoaded', function () {
             $templateCache.removeAll();
         });
 
         if(Bahmni.Common.Offline && Bahmni.Common.Offline.BackgroundWorker) {
-            new Bahmni.Common.Offline.BackgroundWorker(WorkerService);
+            new Bahmni.Common.Offline.BackgroundWorker(WorkerService, offlineService);
         }
 });

@@ -10,14 +10,7 @@ angular.module('bahmni.common.offline')
                     if (offlineService.isAndroidApp()){
                         offlineDbService = androidDbService;
                     }
-                    offlineDbService.init(offlineDb);
-                    offlineMarkerDbService.init(offlineDb);
-                    offlineAddressHierarchyDbService.init(offlineDb);
-                    offlineConfigDbService.init(offlineDb);
-                    referenceDataDbService.init(offlineDb);
-                    offlineSearchDbService.init(offlineDb);
                     offlineSyncService.init();
-
                 }
             };
         }
