@@ -145,7 +145,7 @@
             return this.primaryObs.concept.answers;
         },
 
-            getCodedConcept: function () {
+        getCodedConcept: function () {
             return findObservationByConceptName(this.groupMembers, this.conceptUIConfig.codedConceptName).concept;
         },
 

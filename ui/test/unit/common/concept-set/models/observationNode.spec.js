@@ -112,6 +112,49 @@ describe("ObservationNode", function () {
 
     });
 
+    describe("onValueChanged", function(){
+        it("should set abnormalObs value and erroneousValue to undefined if primaryObs value is not present and abnormalObs is set", function(){
+            var obsNode = mapper.map([{}], rootConcept, {"Chief Complaint Data": {freeTextAutocomplete: true}});
+            expect(obsNode.abnormalObs.value).toBeUndefined();
+            expect(obsNode.abnormalObs.erroneousValue).toBeUndefined()
+        });
+
+        it("should call setAbnormal when primaryObs is numeric and has value and it is abnormal", function() {
+            var pulse = buildConcept("Pulse", [], [], "Misc", "Numeric");
+            var abnormal = buildConcept("Pulse Abnormal", [], [], "Abnormal", "Boolean");
+            var unknown = buildConcept("Pulse Unknown", [], [], "Unknown", "Boolean");
+
+            var pulseData = buildConcept("Pulse Data", [pulse, abnormal, unknown], [], "Concept Details");
+
+            var observations = [{
+                concept: pulseData,
+                label: "Pulse",
+                groupMembers: [
+                    {
+                        "concept": pulse,
+                        "label": "Pulse",
+                        "groupMembers": [],
+                        "value": 72,
+                        "voided": false
+                    },
+                    {
+                        "concept": abnormal,
+                        "label": "Abnormal",
+                        "groupMembers": [],
+                        "value": true,
+                        "voided": false
+                    }
+                ],
+                "voided": false
+            }];
+            var obsNode = mapper.map(observations, pulseData, {});
+
+            expect(obsNode.abnormalObs.value).toBeTruthy();
+            expect(obsNode.abnormalObs.erroneousValue).toBeFalsy();
+            expect(obsNode.unknownObs.value).toBeUndefined()
+            });
+    });
+
     function buildConcept(name, setMembers, answers, classname, datatype) {
         return {
             "name": {name: name},
