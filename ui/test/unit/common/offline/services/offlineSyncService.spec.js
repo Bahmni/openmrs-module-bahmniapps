@@ -3,11 +3,40 @@
 var $scope, offlineDbService, eventLogService, offlineSyncService, offlineService, configurationService;
 
 describe('OfflineSyncService', function () {
+    var patient, mappedPatient;
     describe('initial sync ', function () {
         beforeEach(function () {
             module('bahmni.common.offline');
             module('bahmni.common.domain');
             module(function ($provide) {
+                mappedPatient = {
+                    patient: {
+                        uuid: 'dataUuid',
+                        person: {
+                            attributes: [{
+                                attributeType: {uuid: 'attributeUuid'},
+                                voided: false,
+                                value: 'attributeName',
+                                hydratedObject: 'attributeValueUuid'
+                            }]
+                        }
+                    }
+                };
+                patient = {
+                    uuid: 'dataUuid',
+                    person: {
+                        attributes:[{
+                            attributeType: {
+                                uuid: "attributeUuid"
+                            },
+                            voided: false,
+                            value: {
+                                display: "attributeName",
+                                uuid: "attributeValueUuid"
+                            }
+                        }]
+                    }
+                };
                 $provide.value('offlineDbService', {
                     insertAddressHierarchy: function () {
                         return {
@@ -36,6 +65,17 @@ describe('OfflineSyncService', function () {
                                 return;
                             }
                         };
+                    },
+                    getAttributeTypes: function(){
+                        return {
+                            then: function (callback) {
+                                var attributeTypes = {
+                                    uuid: 'attributeUuid',
+                                    format: 'org.openmrs.Concept'
+                                };
+                                return callback({data: attributeTypes});
+                            }
+                        };
                     }
                 });
                 $provide.value('eventLogService', {
@@ -55,11 +95,13 @@ describe('OfflineSyncService', function () {
                     getDataForUrl: function () {
                         return {
                             then: function (callback) {
-                                return callback({data: {uuid: 'dataUuid'}});
+
+                                return callback({data: patient});
                             }
                         };
                     }
                 });
+
                 $provide.value('offlineService', {
                     isAndroidApp: function () {
                         return false;
@@ -86,6 +128,7 @@ describe('OfflineSyncService', function () {
             spyOn(eventLogService, 'getDataForUrl').and.callThrough();
             spyOn(offlineDbService, 'createPatient').and.callThrough();
             spyOn(offlineDbService, 'insertMarker').and.callThrough();
+            spyOn(offlineDbService, 'getAttributeTypes').and.callThrough();
 
             offlineSyncService.init();
 
@@ -95,7 +138,10 @@ describe('OfflineSyncService', function () {
             expect(eventLogService.getEventsFor.calls.count()).toBe(1);
             expect(eventLogService.getDataForUrl).toHaveBeenCalledWith('url to get patient object');
             expect(eventLogService.getDataForUrl.calls.count()).toBe(1);
-            expect(offlineDbService.createPatient).toHaveBeenCalledWith({patient: {uuid: 'dataUuid'}});
+
+
+
+            expect(offlineDbService.createPatient).toHaveBeenCalledWith(mappedPatient);
             expect(offlineDbService.createPatient.calls.count()).toBe(1);
             expect(offlineDbService.insertMarker).toHaveBeenCalledWith('eventuuid', 202020);
             expect(offlineDbService.insertMarker.calls.count()).toBe(1);
@@ -130,7 +176,7 @@ describe('OfflineSyncService', function () {
             expect(eventLogService.getEventsFor.calls.count()).toBe(1);
             expect(eventLogService.getDataForUrl).toHaveBeenCalledWith('url to get addressHierarchy object');
             expect(eventLogService.getDataForUrl.calls.count()).toBe(1);
-            expect(offlineDbService.insertAddressHierarchy).toHaveBeenCalledWith({uuid: 'dataUuid'});
+            expect(offlineDbService.insertAddressHierarchy).toHaveBeenCalledWith(patient);
             expect(offlineDbService.createPatient.calls.count()).toBe(0);
             expect(offlineDbService.insertMarker).toHaveBeenCalledWith('eventuuid', 202020);
             expect(offlineDbService.insertMarker.calls.count()).toBe(1);
@@ -163,6 +209,17 @@ describe('OfflineSyncService', function () {
                                 return ;
                             }
                         };
+                    },
+                    getAttributeTypes: function(){
+                        return {
+                            then: function (callback) {
+                                var attributeTypes = {
+                                    uuid: 'attributeUuid',
+                                    format: 'org.openmrs.Concept'
+                                };
+                                return callback({data: attributeTypes});
+                            }
+                        };
                     }
                 });
                 $provide.value('eventLogService', {
@@ -182,7 +239,8 @@ describe('OfflineSyncService', function () {
                     getDataForUrl: function () {
                         return {
                             then: function (callback) {
-                                return callback({data: {uuid: 'patientUuid'}});
+
+                                return callback({data: patient});
                             }
                         };
                     }
@@ -222,7 +280,7 @@ describe('OfflineSyncService', function () {
             expect(eventLogService.getEventsFor.calls.count()).toBe(1);
             expect(eventLogService.getDataForUrl).toHaveBeenCalledWith('url to get patient object');
             expect(eventLogService.getDataForUrl.calls.count()).toBe(1);
-            expect(offlineDbService.createPatient).toHaveBeenCalledWith({patient: {uuid: 'patientUuid'}});
+            expect(offlineDbService.createPatient).toHaveBeenCalledWith(mappedPatient);
             expect(offlineDbService.createPatient.calls.count()).toBe(1);
             expect(offlineDbService.insertMarker).toHaveBeenCalledWith('eventuuid', 202020);
             expect(offlineDbService.insertMarker.calls.count()).toBe(1);

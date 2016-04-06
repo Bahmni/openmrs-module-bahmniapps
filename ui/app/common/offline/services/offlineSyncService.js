@@ -129,8 +129,11 @@ angular.module('bahmni.common.offline')
                 var deferrable = $q.defer();
                 switch (event.category) {
                     case 'patient':
-                        offlineDbService.createPatient({patient: response.data}).then(function () {
-                            deferrable.resolve();
+                        offlineDbService.getAttributeTypes().then(function(attributeTypes) {
+                            mapAttributesToPostFormat(response.data.person.attributes, attributeTypes);
+                            offlineDbService.createPatient({patient: response.data}).then(function () {
+                                deferrable.resolve();
+                            });
                         });
                         break;
                     case 'Encounter':
@@ -146,6 +149,22 @@ angular.module('bahmni.common.offline')
                         break;
                 }
                 return deferrable.promise;
+            };
+
+            var mapAttributesToPostFormat = function(attributes, attributeTypes){
+                    angular.forEach(attributes, function (attribute) {
+                        if (!attribute.voided) {
+                            var foundAttribute = _.find(attributeTypes, function (attributeType) {
+                                return attributeType.uuid === attribute.attributeType.uuid
+                            });
+                            if ("org.openmrs.Concept" === foundAttribute.format) {
+                                var value = attribute.value;
+                                attribute.value = value.display;
+                                attribute.hydratedObject = value.uuid;
+                            }
+                        }
+                    return;
+                });
             };
 
             var updateMarker = function (event) {
