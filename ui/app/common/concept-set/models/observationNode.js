@@ -89,8 +89,25 @@
             }
             return codedConceptObservation;
         };
-        var getFirstObservation = function(){
-            return this.groupMembers[0];
+        var getGroupMembersWithoutClass = function(groupMembers,classNames){
+            return _.filter(groupMembers,function (member) {
+                return !(_.includes(classNames, member.concept.conceptClass.name) || _.includes(classNames, member.concept.conceptClass));
+            });
+        };
+        var getFirstObservation = function () {
+            var observations = getGroupMembersWithoutClass(this.groupMembers,[Bahmni.Common.Constants.abnormalConceptClassName,
+                Bahmni.Common.Constants.unknownConceptClassName,
+                Bahmni.Common.Constants.durationConceptClassName]);
+            //todo : add migration to set correct sort orders for the concepts
+            //this is needed when you have freetext autocomplete
+            var primaryObs = observations[1] && observations[1].uuid && !observations[1].voided ? observations[1] : observations[0];
+            if (observations[0].isMultiSelect) {
+                return observations[0];
+            }
+            if(primaryObs.uuid && !primaryObs.voided) {
+                return primaryObs;
+            }
+            return observations[1] && (observations[1].value || observations[1].value === "") && !observations[1].voided ? observations[1] : observations[0];
         };
         Object.defineProperty(this, 'primaryObs', {
             enumerable: true,
