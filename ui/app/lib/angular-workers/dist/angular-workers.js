@@ -5,6 +5,7 @@ angular.module('FredrikSandell.worker-pool', []).service('WorkerService', [
         //this should be configured from the app in the future
         var urlToAngular = 'http://localhost:9876/base/bower_components/angular/angular.js';
         var serviceToUrlMap = {};
+        var storage = {};
         var scriptsToLoad = [];
         that.setAngularUrl = function (urlToAngularJs) {
             urlToAngular = urlToAngularJs;
@@ -18,6 +19,8 @@ angular.module('FredrikSandell.worker-pool', []).service('WorkerService', [
                 'var window = self;',
                 'self.history = {};',
                 'var Node = function() {};',
+                'var app',
+                'var localStorage = {storage: <STORAGE>, getItem: function(key) {return this.storage[key]}, setItem: function(key, value) {this.storage[key]=value}}',
                 'var document = {',
                 '      readyState: \'complete\',',
                 '      cookie: \'\',',
@@ -65,6 +68,9 @@ angular.module('FredrikSandell.worker-pool', []).service('WorkerService', [
         that.includeScripts = function(url) {
             scriptsToLoad.push(url);
         };
+        that.addToLocalStorage = function(key, value) {
+            storage[key] = value;
+        };
         function createIncludeStatements(listOfServiceNames) {
             var includeString = '';
             angular.forEach(scriptsToLoad, function(script) {
@@ -104,7 +110,14 @@ angular.module('FredrikSandell.worker-pool', []).service('WorkerService', [
             return depMetaData;
         }
         function populateWorkerTemplate(workerFunc, dependencyMetaData) {
-            return workerTemplate.replace('<URL_TO_ANGULAR>', urlToAngular).replace('<CUSTOM_DEP_INCLUDES>', dependencyMetaData.servicesIncludeStatements).replace('<DEP_MODULES>', dependencyMetaData.moduleList).replace('<STRING_DEP_NAMES>', dependencyMetaData.angularDepsAsStrings).replace('<DEP_NAMES>', dependencyMetaData.angularDepsAsParamList).replace('<WORKER_FUNCTION>', workerFunc.toString());
+            return workerTemplate
+                .replace('<URL_TO_ANGULAR>', urlToAngular)
+                .replace('<CUSTOM_DEP_INCLUDES>', dependencyMetaData.servicesIncludeStatements)
+                .replace('<DEP_MODULES>', dependencyMetaData.moduleList)
+                .replace('<STRING_DEP_NAMES>', dependencyMetaData.angularDepsAsStrings)
+                .replace('<DEP_NAMES>', dependencyMetaData.angularDepsAsParamList)
+                .replace('<STORAGE>', JSON.stringify(storage))
+                .replace('<WORKER_FUNCTION>', workerFunc.toString());
         }
         var buildAngularWorker = function (initializedWorker) {
             var that = {};

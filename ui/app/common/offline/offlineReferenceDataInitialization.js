@@ -1,10 +1,9 @@
 'use strict';
 
 angular.module('bahmni.common.offline')
-    .factory('offlineReferenceDataInitialization', ['offlineService','$http', 'offlineDbService', 'androidDbService', '$q', 'referenceDataDbService',
-        function (offlineService, $http, offlineDbService, androidDbService, $q, referenceDataDbService) {
-            return function (offlineDb, isAuthenticated) {
-                referenceDataDbService.init(offlineDb);
+    .factory('offlineReferenceDataInitialization', ['offlineService','$http', 'offlineDbService', 'androidDbService', '$q',
+        function (offlineService, $http, offlineDbService, androidDbService, $q) {
+            return function (isAuthenticated) {
                 if(offlineService.isOfflineApp()) {
                     if (offlineService.isAndroidApp()) {
                         offlineDbService = androidDbService;

@@ -68,7 +68,7 @@ module.exports = function (config) {
             'test/unit/**/offline/android/*.js',
             'test/unit/**/offline/chrome/*.js',
             'app/common/offline/dbservices/dao/offlineDbService.js',
-            'app/common/offline/scheduler/backgroundWorkder.js'
+            'app/common/offline/scheduler/BackgroundWorker.js'
         ],
         reporters: ['junit', 'progress', 'coverage'],
         preprocessors: {

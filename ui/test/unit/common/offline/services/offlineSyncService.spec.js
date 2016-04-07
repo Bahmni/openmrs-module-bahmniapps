@@ -130,7 +130,7 @@ describe('OfflineSyncService', function () {
             spyOn(offlineDbService, 'insertMarker').and.callThrough();
             spyOn(offlineDbService, 'getAttributeTypes').and.callThrough();
 
-            offlineSyncService.init();
+            offlineSyncService();
 
             expect(offlineDbService.getMarker).toHaveBeenCalled();
             expect(offlineDbService.getMarker.calls.count()).toBe(1);
@@ -168,7 +168,7 @@ describe('OfflineSyncService', function () {
             spyOn(offlineDbService, 'insertMarker').and.callThrough();
             spyOn(offlineDbService, 'insertAddressHierarchy').and.callThrough();
 
-            offlineSyncService.init();
+            offlineSyncService();
 
             expect(offlineDbService.getMarker).toHaveBeenCalled();
             expect(offlineDbService.getMarker.calls.count()).toBe(1);
@@ -272,7 +272,7 @@ describe('OfflineSyncService', function () {
             spyOn(offlineDbService, 'createPatient').and.callThrough();
             spyOn(offlineDbService, 'insertMarker').and.callThrough();
 
-            offlineSyncService.init();
+            offlineSyncService();
 
             expect(offlineDbService.getMarker).toHaveBeenCalled();
             expect(offlineDbService.getMarker.calls.count()).toBe(1);

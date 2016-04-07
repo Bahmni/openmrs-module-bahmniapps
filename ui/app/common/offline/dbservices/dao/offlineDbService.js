@@ -1,8 +1,10 @@
 'use strict';
 
 angular.module('bahmni.common.offline')
-    .service('offlineDbService', ['$http', '$q', 'patientDbService', 'patientAddressDbService', 'patientAttributeDbService', 'offlineMarkerDbService', 'offlineAddressHierarchyDbService', 'offlineConfigDbService','initializeOfflineSchema', 'referenceDataDbService', 'locationDbService',
-        function ($http, $q, patientDbService, patientAddressDbService, patientAttributeDbService, offlineMarkerDbService, offlineAddressHierarchyDbService, offlineConfigDbService, initializeOfflineSchema, referenceDataDbService, locationDbService) {
+    .service('offlineDbService', ['$http', '$q', 'patientDbService', 'patientAddressDbService', 'patientAttributeDbService', 'offlineMarkerDbService', 'offlineAddressHierarchyDbService',
+        'offlineConfigDbService','initializeOfflineSchema', 'referenceDataDbService', 'locationDbService', 'offlineSearchDbService',
+        function ($http, $q, patientDbService, patientAddressDbService, patientAttributeDbService, offlineMarkerDbService, offlineAddressHierarchyDbService,
+                  offlineConfigDbService, initializeOfflineSchema, referenceDataDbService, locationDbService, offlineSearchDbService) {
         var db;
 
 
@@ -53,8 +55,13 @@ angular.module('bahmni.common.offline')
 
         };
 
-        var init = function (_db) {
-            db = _db;
+        var init = function (offlineDb) {
+            db = offlineDb;
+            offlineMarkerDbService.init(offlineDb);
+            offlineAddressHierarchyDbService.init(offlineDb);
+            offlineConfigDbService.init(offlineDb);
+            referenceDataDbService.init(offlineDb);
+            offlineSearchDbService.init(offlineDb);
         };
 
         var initSchema = function () {

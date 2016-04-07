@@ -91,6 +91,7 @@ angular.module('bahmni.home')
                         if (redirectUrl) {
                             $window.location = redirectUrl;
                         } else {
+                            landingPagePath = offlineService.isOfflineApp() ? $window.location = '../offline/index.html#/scheduler' : landingPagePath;
                             $location.path(landingPagePath);
                         }
                     }
