@@ -99,25 +99,12 @@ describe("OrderSetController", function () {
     var orderSetData = {
         data:{
             orderSetMembers:[
-                {orderType:{uuid: "some_uuid1"}, concept:{name: "concept_name1"}, sortWeight: 1},
-                {orderType:{uuid: "some_uuid2"}, concept:{name: "concept_name2"}, voided: true},
-                {orderType:{uuid: "some_uuid3"}, concept:{name: "concept_name3"}, sortWeight: 2},
-                {orderType:{uuid: "some_uuid4"}, concept:{name: "concept_name4"}, sortWeight: 3},
-                {orderType:{uuid: "some_uuid5"}, concept:{name: "concept_name5"}, sortWeight: 4},
-                {orderType:{uuid: "some_uuid6"}, concept:{name: "concept_name6"}, sortWeight: 5}
-            ]
-        }
-    };
-
-    var orderSetMemberAttributeTypeData = {
-        data:{
-            results: [
-               {
-                orderSetMemberAttributeTypeId: 1,
-                name: "primary",
-                "description": "primary drug",
-                "uuid": "123df-fd56-967fg"
-                }
+                {orderType:{uuid: "some_uuid1"}, concept:{name: "concept_name1"}, retired: false},
+                {orderType:{uuid: "some_uuid2"}, concept:{name: "concept_name2"}, retired: true},
+                {orderType:{uuid: "some_uuid3"}, concept:{name: "concept_name3"}},
+                {orderType:{uuid: "some_uuid4"}, concept:{name: "concept_name4"}},
+                {orderType:{uuid: "some_uuid5"}, concept:{name: "concept_name5"}},
+                {orderType:{uuid: "some_uuid6"}, concept:{name: "concept_name6"}}
             ]
         }
     };
@@ -133,10 +120,10 @@ describe("OrderSetController", function () {
 
     it("should void already saved orderSetMember", function () {
         scope.$apply(setUp);
-        scope.orderSet.orderSetMembers= [{orderSetMemberId:1}];
+        scope.orderSet.orderSetMembers= [orderSetData.data.orderSetMembers[0]];
         scope.removeOrderSetMember(0);
 
-        expect(scope.orderSet.orderSetMembers[0].voided).toBeTruthy();
+        expect(scope.orderSet.orderSetMembers[0].retired).toBeTruthy();
     });
 
     it("should remove newly added orderSetMember", function () {
@@ -147,11 +134,4 @@ describe("OrderSetController", function () {
 
         expect(scope.orderSet.orderSetMembers.length).toBe(0);
     });
-
-    it("should filter all voided orderSetMember", function () {
-        _provider.value('$state', {params:{orderSetUuid: "default"}});
-        scope.$apply(setUp);
-        expect(scope.orderSet.orderSetMembers.length).toBe(5);
-    });
-
 });
