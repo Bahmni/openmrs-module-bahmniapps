@@ -11,7 +11,7 @@
                         <i class="fa fa-plus"></i>
                         {{'BACTERIOLOGY_BUTTON_ADD_SAMPLE_KEY' | translate}}
                     </button>
-                    <button class="confirm fr" ng-click="saveBacteriologySample(newSpecimen)" accesskey="s" ng-hide="!isOnDashboard">
+                    <button class="confirm fr" ng-click="saveBacteriologySample(newSpecimen)" accesskey="s" ng-if="isOnDashboard">
                         <span class="text ng-binding" ng-bind-html="'CLINICAL_SAVE_TRANSLATION_KEY'| translate"></span>
                     </button>
                 </div>
