@@ -1,0 +1,15 @@
+<section class="medications-orderset-list" ng-if="orderSetMembers.length > 0">
+    <div class="subheading-wrapper medications">
+        <!--<h2 class="section-title fl">The selected drug {{treatment.drugNameDisplay}} is a part of {{orderSets.length}} order set(s)</h2>-->
+    </div>
+    <ul class="table-mimic">
+        <li id="new-drug-orders" ng-repeat="orderSetMember in orderSetMembers">
+            <div class="drug-details">
+                <div class="form">
+                    <strong class="drug-name">{{orderSetMember.concept.display}}</strong>
+                    <input type="button" value="Use" ng-click="addOrderSetDrugs()"/>
+                </div>
+            </div>
+        </li>
+    </ul>
+</section>

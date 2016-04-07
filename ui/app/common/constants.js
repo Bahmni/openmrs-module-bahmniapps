@@ -189,6 +189,9 @@ Bahmni.Common = Bahmni.Common || {};
         entityMappingUrl: RESTWS_V1 + "/entitymapping",
         encounterTypeUrl: RESTWS_V1+"/encountertype",
         defaultExtensionName: "default",
+        orderSetMemberAttributeTypeUrl: RESTWS_V1 + "/ordersetmemberattributetype",
+        orderSetUrl: RESTWS_V1 + "/bahmniorderset",
+        primaryOrderSetMemberAttributeTypeName: "Primary",
         bahmniBacteriologyResultsUrl: BACTERIOLOGY + "/specimen",
         bedFromVisit: RESTWS_V1+ "/beds",
         ordersUrl: RESTWS_V1+ "/order",
@@ -217,10 +220,13 @@ Bahmni.Common = Bahmni.Common || {};
             SHA3: 'SHA3'
         },
         LoginInformation: 'LoginInformation',
+        orderSetSpecialUnits:["mg/kg","mg/m2"],
         ServerDateTimeFormat: 'YYYY-MM-DDTHH:mm:ssZZ',
+        calculateDose: BAHMNI_CORE+ "/calculateDose",
         unAuthenticatedReferenceDataMap: unAuthenticatedReferenceDataMap,
         authenticatedReferenceDataMap: authenticatedReferenceDataMap,
         offlineRootDir: offlineRootDir,
         dischargeUrl: BAHMNI_CORE + "/discharge"
     };
 })();
+

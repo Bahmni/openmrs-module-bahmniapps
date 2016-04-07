@@ -11,7 +11,7 @@
 	</div>
 
 	<div class="dialog-button-group" ng-if="alreadyActiveSimilarOrder.effectiveStopDate">
-		<button id="modal-refill-button" class="secondary-button" type="button" ng-click="refill(treatment, alreadyActiveSimilarOrder)" focus-on="popupActive" ng-focus="toggleTabIndexWithinModal($event)">Refill</button>
+		<button id="modal-refill-button" class="secondary-button" type="button" ng-click="refillConflictingDrug(treatment, alreadyActiveSimilarOrder)" focus-on="popupActive" ng-focus="toggleTabIndexWithinModal($event)">Refill</button>
 		<button id="modal-revise-button" class="secondary-button" ng-click="revise(alreadyActiveSimilarOrder, conflictingIndex)" ng-focus="toggleTabIndexWithinModal($event)">Revise</button>
 	</div>
 	<div class="dialog-button-group" ng-if="!alreadyActiveSimilarOrder.effectiveStopDate">

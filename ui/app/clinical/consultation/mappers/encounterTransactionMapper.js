@@ -79,6 +79,7 @@ Bahmni.Clinical.EncounterTransactionMapper = function () {
         addOrdersToEncounter();
 
         consultation.drugOrders = [];
+
         var newlyAddedTreatments = consultation.newlyAddedTreatments;
         if (newlyAddedTreatments) {
             newlyAddedTreatments.forEach(function (treatment) {

@@ -97,12 +97,14 @@ describe("AddTreatmentController", function () {
 
     var scope, stateParams, rootScope, contextChangeHandler, newTreatment,
         editTreatment, clinicalAppConfigService, ngDialog, drugService, drugs,
-        encounterDateTime, appService, appConfig, defaultDrugsPromise, locationService;
+        encounterDateTime, appService, appConfig, defaultDrugsPromise, orderSetService, locationService;
+
 
     stateParams = {
         tabConfigName: null
     };
 
+    var orderSets;
 
     var treatmentConfig = {
         getDrugConceptSet: function () {
@@ -118,8 +120,9 @@ describe("AddTreatmentController", function () {
             return true;
         },
         getDoseFractions: function () {
-            return [{"value": 0.50, "label": "½" }];
+            return [{"value": 0.50, "label": "½"}];
         },
+        frequencies: [{name: 'Twice a day', frequencyPerDay: 2}],
         durationUnits: [
             {name: "Day(s)", factor: 1},
             {name: "Week(s)", factor: 7},
@@ -128,7 +131,7 @@ describe("AddTreatmentController", function () {
         inputOptionsConfig: {}
     };
 
-    var initController = function(){
+    var initController = function () {
         inject(function ($controller, $rootScope) {
             scope = $rootScope.$new();
             rootScope = $rootScope;
@@ -145,6 +148,11 @@ describe("AddTreatmentController", function () {
             clinicalAppConfigService.getTreatmentActionLink.and.returnValue([]);
             appService = jasmine.createSpyObj('appService', ['getAppDescriptor']);
             appConfig = jasmine.createSpyObj('appConfig', ['getConfig']);
+            orderSetService = jasmine.createSpyObj('orderSetService', ['getCalculatedDose']);
+            scope.patient = {uuid: "patient.uuid"};
+            orderSetService.getCalculatedDose.and.returnValue(specUtil.respondWith({
+                dose: 20, doseUnit: 'mg'
+            }));
 
             locationService = jasmine.createSpyObj('locationService', ['getLoggedInLocation'])
 
@@ -158,10 +166,33 @@ describe("AddTreatmentController", function () {
             drugService.getSetMembersOfConcept.and.returnValue(defaultDrugsPromise);
 
             appService.getAppDescriptor.and.returnValue(appConfig);
-
+            orderSets = [{
+                "orderSetId": 3,
+                "uuid": "497b959b-101b-41a8-8154-3f252b2771d7",
+                "name": "test",
+                "description": "test",
+                "operator": "ALL",
+                "orderSetMembers": [
+                    {
+                        "orderSetMemberId": 6,
+                        "uuid": "7b375220-50c9-4193-a238-33a588caa0f3",
+                        "orderTemplate": "{\"drug\":{\"name\":\"Paracetamol 500mg\",\"uuid\":\"d9c230a5-89d8-4e4d-b08b-2af3b1234c80\",\"form\":\"Tablet\"},\"dosingInstructions\":{\"dose\":2,\"frequency\":\"Twice a day\",\"doseUnits\":\"Capsule(s)\",\"route\":\"Intramuscular\"},\"duration\":2,\"durationUnits\":\"Day(s)\",\"administrationInstructions\":\"Before meals\"}",
+                        "sortWeight": 1,
+                        "retired": false
+                    },
+                    {
+                        "orderSetMemberId": 5,
+                        "uuid": "6a204704-e18b-457a-9ed3-da2ef57524dd",
+                        "orderTemplate": "{\"drug\":{\"name\":\"Aspirin 75mg\",\"uuid\":\"49f0c5c2-4738-4382-9928-69fd330d4624\",\"form\":\"Tablet\"},\"dosingInstructions\":{\"dose\":1,\"doseUnits\":\"Tablet(s)\",\"frequency\":\"Twice a day\",\"route\":\"Nasal\"},\"duration\":1,\"durationUnits\":\"Day(s)\",\"administrationInstructions\":\"Before meals\"}",
+                        "sortWeight": 2,
+                        "retired": false
+                    }
+                ],
+                "retired": false
+            }];
             $controller('AddTreatmentController', {
                 $scope: scope,
-                $stateParams : stateParams,
+                $stateParams: stateParams,
                 $rootScope: rootScope,
                 treatmentService: null,
                 activeDrugOrders: [activeDrugOrder, scheduledOrder],
@@ -170,78 +201,17 @@ describe("AddTreatmentController", function () {
                 ngDialog: ngDialog,
                 appService: appService,
                 locationService :locationService,
+                orderSets: orderSets,
                 DrugService: drugService,
-                treatmentConfig: treatmentConfig
+                treatmentConfig: treatmentConfig,
+                orderSetService: orderSetService
             });
+            scope.treatments = [];
+            scope.orderSetTreatments = [];
+            scope.newOrderSet = {};
         })
     };
     beforeEach(initController);
-
-    describe("add treatment()", function () {
-        it("should save as a free text drug order on click of accept button", function () {
-            var treatment = {drugNameDisplay: "Some New Drug", drug: {name: "CodedDrug"}};
-            scope.treatment = treatment;
-            scope.onAccept();
-            expect(scope.treatment.selectedItem).toBeFalsy();
-            expect(scope.treatment.drug).toBeUndefined();
-            expect(scope.treatment.isNonCodedDrug).toBe(true);
-            expect(scope.treatment.drugNonCoded).toBe(treatment.drugNameDisplay);
-        });
-
-        it("should save as a coded-drug after the entered free text drug is edited to coded", function () {
-            var treatment = {drugNameDisplay: "Some New Drug", drug: {name: "CodedDrug"}};
-            scope.treatment = treatment;
-            treatment.changeDrug = jasmine.createSpy(treatment, 'changeDrug');
-
-            scope.onSelect({
-                drug: {
-                    name: "CodedDrug",
-                    uuid: "CodedDrugUuid",
-                    dosageForm: {
-                        display: "Once"
-                    }
-                }
-            });
-
-            scope.onChange();
-            expect(treatment.changeDrug).toHaveBeenCalledWith({
-                name: "CodedDrug",
-                form: "Once",
-                uuid: "CodedDrugUuid"
-            });
-
-            expect(scope.treatment.selectedItem).toBeUndefined();
-            expect(scope.treatment.isNonCodedDrug).toBeFalsy();
-        });
-
-        it("should remove the added coded-drug on changing the drug name", function () {
-            scope.treatment = {drugNameDisplay: "Some New Drug", drug: {name: "CodedDrug"}};
-
-            scope.onChange();
-
-            expect(scope.treatment).toEqual({
-                drugNameDisplay: "Some New Drug"
-            });
-        });
-
-        it("should enable accept button on editing an accepted drug", function () {
-            var treatment = {drugNameDisplay: "Some Coded Drug", drug: {name: "CodedDrug"}};
-            scope.treatment = treatment;
-            treatment.changeDrug = jasmine.createSpy(treatment, 'changeDrug');
-
-            scope.treatment.drugNameDisplay = "Some NonCoded Drug";
-            scope.onChange();
-
-            scope.onAccept();
-            expect(scope.treatment.isNonCodedDrug).toBeTruthy();
-
-            scope.treatment.drugNameDisplay = "Some another NonCoded Drug";
-            scope.onChange();
-
-            scope.onAccept();
-            expect(scope.treatment.isNonCodedDrug).toBeFalsy();
-        });
-    });
 
     describe("DosingUnitsFractions()", function () {
         it("should return true if mantissa available", function () {
@@ -261,19 +231,31 @@ describe("AddTreatmentController", function () {
     });
 
     describe("add()", function () {
-        beforeEach(function(){
+        beforeEach(function () {
             scope.treatments = [];
         })
 
-        it("adds treatment object to list of treatments", function () {
+        it("adds treatment object to list of treatments if newOrderSet flag is false", function () {
             var treatment = Bahmni.Tests.drugOrderViewModelMother.buildWith({}, {drug: {name: true}});
+            treatment.isNewOrderSet = false;
             scope.treatment = treatment;
             scope.add();
+            expect(scope.orderSetTreatments.length).toBe(0);
             expect(scope.treatments.length).toBe(1);
             expect(scope.treatments[0]).toBe(treatment);
         });
 
-        it("should not set effective stop date when duration is not specified",function(){
+        it("adds treatment object to list of treatments if newOrderSet flag is true", function () {
+            var treatment = Bahmni.Tests.drugOrderViewModelMother.buildWith({}, {drug: {name: true}});
+            treatment.isNewOrderSet = true;
+            scope.treatment = treatment;
+            scope.add();
+            expect(scope.treatments.length).toBe(0);
+            expect(scope.orderSetTreatments.length).toBe(1);
+            expect(scope.orderSetTreatments[0]).toBe(treatment);
+        });
+
+        it("should not set effective stop date when duration is not specified", function () {
             var treatment = Bahmni.Tests.drugOrderViewModelMother.buildWith({}, {drug: {name: true}});
             treatment.effectiveStopDate = null;
             treatment.durationInDays = null;
@@ -283,8 +265,8 @@ describe("AddTreatmentController", function () {
             expect(scope.treatments[0].effectiveStopDate).toBe(null);
         });
 
-        it("should set effective stop date when duration is specified",function(){
-            var treatment = Bahmni.Tests.drugOrderViewModelMother.buildWith({},  {drug: {name: true}});
+        it("should set effective stop date when duration is specified", function () {
+            var treatment = Bahmni.Tests.drugOrderViewModelMother.buildWith({}, {drug: {name: true}});
             treatment.effectiveStopDate = null;
             treatment.durationInDays = 2;
             treatment.effectiveStartDate = '2015-01-15';
@@ -331,6 +313,7 @@ describe("AddTreatmentController", function () {
             expect(scope.treatments.length).toEqual(0);
             expect(ngDialog.open).toHaveBeenCalled();
         });
+
         it("should allow to add new drug order if new order is scheduled to start on same day as stop date of already existing order", function () {
             scope.consultation.activeAndScheduledDrugOrders = [Bahmni.Tests.drugOrderViewModelMother.buildWith({}, {
                 drug: {
@@ -378,6 +361,7 @@ describe("AddTreatmentController", function () {
             expect(scope.treatments.length).toEqual(1);
             expect(scope.treatments[0].effectiveStopDate.getTime() == DateUtil.subtractSeconds("2014-12-02", 1).getTime()).toBeTruthy();
         });
+
         it("should allow to add new drug order if new order is scheduled to end on same day as start date of unsaved order", function () {
             scope.treatments = [Bahmni.Tests.drugOrderViewModelMother.buildWith({}, {
                 drug: {
@@ -388,7 +372,7 @@ describe("AddTreatmentController", function () {
                 effectiveStopDate: DateUtil.parse("2014-12-04"),
                 durationInDays: 2
             })];
-            scope.treatment = Bahmni.Tests.drugOrderViewModelMother.buildWith({},  {
+            scope.treatment = Bahmni.Tests.drugOrderViewModelMother.buildWith({}, {
                 drug: {name: "abc", uuid: "123"},
                 effectiveStartDate: DateUtil.parse("2014-11-30"),
                 effectiveStopDate: DateUtil.parse("2014-12-02"),
@@ -437,6 +421,73 @@ describe("AddTreatmentController", function () {
             expect(scope.treatments[1].drug.name).toEqual("def");
             expect(scope.treatments[2].drug.name).toEqual("ghi");
         });
+
+        describe("add free text drug order()", function () {
+            it("should save as a free text drug order on click of accept button", function () {
+                var treatment = {drugNameDisplay: "Some New Drug", drug: {name: "CodedDrug"}};
+                scope.treatment = treatment;
+                scope.onAccept();
+                expect(scope.treatment.selectedItem).toBeFalsy();
+                expect(scope.treatment.drug).toBeUndefined();
+                expect(scope.treatment.isNonCodedDrug).toBe(true);
+                expect(scope.treatment.drugNonCoded).toBe(treatment.drugNameDisplay);
+            });
+
+            it("should save as a coded-drug after the entered free text drug is edited to coded", function () {
+                var treatment = {drugNameDisplay: "Some New Drug", drug: {name: "CodedDrug"}};
+                scope.treatment = treatment;
+                treatment.changeDrug = jasmine.createSpy(treatment, 'changeDrug');
+
+                scope.onSelect({
+                    drug: {
+                        name: "CodedDrug",
+                        uuid: "CodedDrugUuid",
+                        dosageForm: {
+                            display: "Once"
+                        }
+                    }
+                });
+
+                scope.onChange();
+                expect(treatment.changeDrug).toHaveBeenCalledWith({
+                    name: "CodedDrug",
+                    form: "Once",
+                    uuid: "CodedDrugUuid"
+                });
+
+                expect(scope.treatment.selectedItem).toBeUndefined();
+                expect(scope.treatment.isNonCodedDrug).toBeFalsy();
+            });
+
+            it("should remove the added coded-drug on changing the drug name", function () {
+                scope.treatment = {drugNameDisplay: "Some New Drug", drug: {name: "CodedDrug"}};
+
+                scope.onChange();
+
+                expect(scope.treatment).toEqual({
+                    drugNameDisplay: "Some New Drug"
+                });
+            });
+
+            it("should enable accept button on editing an accepted drug", function () {
+                var treatment = {drugNameDisplay: "Some Coded Drug", drug: {name: "CodedDrug"}};
+                scope.treatment = treatment;
+                treatment.changeDrug = jasmine.createSpy(treatment, 'changeDrug');
+
+                scope.treatment.drugNameDisplay = "Some NonCoded Drug";
+                scope.onChange();
+
+                scope.onAccept();
+                expect(scope.treatment.isNonCodedDrug).toBeTruthy();
+
+                scope.treatment.drugNameDisplay = "Some another NonCoded Drug";
+                scope.onChange();
+
+                scope.onAccept();
+                expect(scope.treatment.isNonCodedDrug).toBeFalsy();
+            });
+        });
+
         describe("isEffectiveStartDateSameAsToday", function () {
             var originalDateUtilNow = DateUtil.now;
             var today = new Date("December 17, 2007 03:24:00");
@@ -506,7 +557,7 @@ describe("AddTreatmentController", function () {
 
             var encounterDate = DateUtil.parse("2014-12-02");
 
-            beforeEach(function(){
+            beforeEach(function () {
                 scope.treatments = [];
             })
 
@@ -717,12 +768,12 @@ describe("AddTreatmentController", function () {
         describe("should allow potentially overlapping order whose dates can be set and be resolved", function () {
             var encounterDate = DateUtil.parse("2014-12-02");
 
-            beforeEach(function(){
+            beforeEach(function () {
                 scope.treatments = [];
             })
 
             it("existing drug orders for dates 2-3 and 3-4 and revised drug order for 2-3", function () {
-                var dec2_dec3order = Bahmni.Tests.drugOrderViewModelMother.buildWith({},  {
+                var dec2_dec3order = Bahmni.Tests.drugOrderViewModelMother.buildWith({}, {
                     drug: {
                         name: "abc",
                         uuid: "123"
@@ -792,7 +843,7 @@ describe("AddTreatmentController", function () {
         describe("should not allow overlapping order", function () {
             var encounterDate = DateUtil.parse("2014-12-02");
 
-            beforeEach(function(){
+            beforeEach(function () {
                 scope.treatments = []
             })
 
@@ -824,13 +875,16 @@ describe("AddTreatmentController", function () {
                 scope.add();
 
                 expect(scope.treatments.length).toEqual(1);
-                expect(ngDialog.open).toHaveBeenCalledWith({ template: 'consultation/views/treatmentSections/conflictingDrugOrderModal.html', scope: scope});
+                expect(ngDialog.open).toHaveBeenCalledWith({
+                    template: 'consultation/views/treatmentSections/conflictingDrugOrderModal.html',
+                    scope: scope
+                });
             });
 
             it("new orders for dates 2-4 and 5-6 and 4-6", function () {
                 var encounterDate = DateUtil.parse("2014-12-02");
 
-                var dec2_dec4order = Bahmni.Tests.drugOrderViewModelMother.buildWith({},  {
+                var dec2_dec4order = Bahmni.Tests.drugOrderViewModelMother.buildWith({}, {
                     drug: {
                         name: "abc",
                         uuid: "123"
@@ -844,7 +898,7 @@ describe("AddTreatmentController", function () {
                 scope.add();
                 expect(scope.treatments.length).toEqual(1);
 
-                var dec5_dec6order = Bahmni.Tests.drugOrderViewModelMother.buildWith({},  {
+                var dec5_dec6order = Bahmni.Tests.drugOrderViewModelMother.buildWith({}, {
                     drug: {
                         name: "abc",
                         uuid: "123"
@@ -890,7 +944,7 @@ describe("AddTreatmentController", function () {
                 scope.add();
                 expect(scope.treatments.length).toEqual(1);
 
-                var dec5_dec6order = Bahmni.Tests.drugOrderViewModelMother.buildWith({},  {
+                var dec5_dec6order = Bahmni.Tests.drugOrderViewModelMother.buildWith({}, {
                     drug: {
                         name: "abc",
                         uuid: "123"
@@ -904,7 +958,7 @@ describe("AddTreatmentController", function () {
                 scope.add();
                 expect(scope.treatments.length).toEqual(2);
 
-                var overlappingOrder = Bahmni.Tests.drugOrderViewModelMother.buildWith({},  {
+                var overlappingOrder = Bahmni.Tests.drugOrderViewModelMother.buildWith({}, {
                     drug: {
                         name: "abc",
                         uuid: "123"
@@ -922,7 +976,7 @@ describe("AddTreatmentController", function () {
             it("new orders for dates 2-4 and 5-6 and 5-6", function () {
                 var encounterDate = DateUtil.parse("2014-12-02");
 
-                var dec2_dec4order = Bahmni.Tests.drugOrderViewModelMother.buildWith({},  {
+                var dec2_dec4order = Bahmni.Tests.drugOrderViewModelMother.buildWith({}, {
                     drug: {
                         name: "abc",
                         uuid: "123"
@@ -936,7 +990,7 @@ describe("AddTreatmentController", function () {
                 scope.add();
                 expect(scope.treatments.length).toEqual(1);
 
-                var dec5_dec6order = Bahmni.Tests.drugOrderViewModelMother.buildWith({},  {
+                var dec5_dec6order = Bahmni.Tests.drugOrderViewModelMother.buildWith({}, {
                     drug: {
                         name: "abc",
                         uuid: "123"
@@ -951,7 +1005,7 @@ describe("AddTreatmentController", function () {
                 expect(scope.treatments.length).toEqual(2);
 
 
-                var overlappingOrder = Bahmni.Tests.drugOrderViewModelMother.buildWith({},  {
+                var overlappingOrder = Bahmni.Tests.drugOrderViewModelMother.buildWith({}, {
                     drug: {
                         name: "abc",
                         uuid: "123"
@@ -969,7 +1023,7 @@ describe("AddTreatmentController", function () {
             it("new orders for dates 2-4 and 5-6 and 2-4", function () {
                 var encounterDate = DateUtil.parse("2014-12-02");
 
-                var dec2_dec4order = Bahmni.Tests.drugOrderViewModelMother.buildWith({},  {
+                var dec2_dec4order = Bahmni.Tests.drugOrderViewModelMother.buildWith({}, {
                     drug: {
                         name: "abc",
                         uuid: "123"
@@ -983,7 +1037,7 @@ describe("AddTreatmentController", function () {
                 scope.add();
                 expect(scope.treatments.length).toEqual(1);
 
-                var dec5_dec6order = Bahmni.Tests.drugOrderViewModelMother.buildWith({},  {
+                var dec5_dec6order = Bahmni.Tests.drugOrderViewModelMother.buildWith({}, {
                     drug: {
                         name: "abc",
                         uuid: "123"
@@ -1030,7 +1084,7 @@ describe("AddTreatmentController", function () {
                     effectiveStopDate: DateUtil.parse("2014-12-04"),
                     durationInDays: 2
                 }, encounterDate);
-                var dec5_dec6order = Bahmni.Tests.drugOrderViewModelMother.buildWith({},  {
+                var dec5_dec6order = Bahmni.Tests.drugOrderViewModelMother.buildWith({}, {
                     drug: {
                         name: "abc",
                         uuid: "123"
@@ -1066,7 +1120,7 @@ describe("AddTreatmentController", function () {
             });
 
             it("existing drug orders for dates 2-4 and 5-6 and new drug order for 6-7", function () {
-                var dec2_dec4order = Bahmni.Tests.drugOrderViewModelMother.buildWith({},  {
+                var dec2_dec4order = Bahmni.Tests.drugOrderViewModelMother.buildWith({}, {
                     drug: {
                         name: "abc",
                         uuid: "123"
@@ -1075,7 +1129,7 @@ describe("AddTreatmentController", function () {
                     effectiveStopDate: DateUtil.parse("2014-12-04"),
                     durationInDays: 2
                 }, encounterDate);
-                var dec5_dec6order = Bahmni.Tests.drugOrderViewModelMother.buildWith({},  {
+                var dec5_dec6order = Bahmni.Tests.drugOrderViewModelMother.buildWith({}, {
                     drug: {
                         name: "abc",
                         uuid: "123"
@@ -1086,7 +1140,7 @@ describe("AddTreatmentController", function () {
                 }, encounterDate);
                 scope.treatments = [dec2_dec4order, dec5_dec6order];
 
-                var nonOverlappingOrder = Bahmni.Tests.drugOrderViewModelMother.buildWith({},  {
+                var nonOverlappingOrder = Bahmni.Tests.drugOrderViewModelMother.buildWith({}, {
                     drug: {
                         name: "abc",
                         uuid: "123"
@@ -1127,7 +1181,7 @@ describe("AddTreatmentController", function () {
                 }, encounterDate);
                 scope.treatments = [dec2_dec4order];
 
-                var overlappingOrder = Bahmni.Tests.drugOrderViewModelMother.buildWith({},  {
+                var overlappingOrder = Bahmni.Tests.drugOrderViewModelMother.buildWith({}, {
                     drug: {
                         name: "abc",
                         uuid: "123"
@@ -1147,7 +1201,7 @@ describe("AddTreatmentController", function () {
             it("should not allow conflicting orders for dates 2-4 and 5-6 and new drug order for 4-6", function () {
                 var encounterDate = DateUtil.parse("2014-12-02");
 
-                var dec2_dec4order = Bahmni.Tests.drugOrderViewModelMother.buildWith({},  {
+                var dec2_dec4order = Bahmni.Tests.drugOrderViewModelMother.buildWith({}, {
                     drug: {
                         name: "abc",
                         uuid: "123"
@@ -1156,7 +1210,7 @@ describe("AddTreatmentController", function () {
                     effectiveStopDate: DateUtil.parse("2014-12-04"),
                     durationInDays: 2
                 }, encounterDate);
-                var dec5_dec6order = Bahmni.Tests.drugOrderViewModelMother.buildWith({},  {
+                var dec5_dec6order = Bahmni.Tests.drugOrderViewModelMother.buildWith({}, {
                     drug: {
                         name: "abc",
                         uuid: "123"
@@ -1167,7 +1221,7 @@ describe("AddTreatmentController", function () {
                 }, encounterDate);
                 scope.treatments = [dec2_dec4order, dec5_dec6order];
 
-                var overlappingOrder = Bahmni.Tests.drugOrderViewModelMother.buildWith({},  {
+                var overlappingOrder = Bahmni.Tests.drugOrderViewModelMother.buildWith({}, {
                     drug: {
                         name: "abc",
                         uuid: "123"
@@ -1185,7 +1239,7 @@ describe("AddTreatmentController", function () {
 
             it("should not allow conflicting orders for dates 2-4 and 5-6 and new drug order for 3-4", function () {
                 var encounterDate = DateUtil.parse("2014-12-02");
-                var dec2_dec4order = Bahmni.Tests.drugOrderViewModelMother.buildWith({},  {
+                var dec2_dec4order = Bahmni.Tests.drugOrderViewModelMother.buildWith({}, {
                     drug: {
                         name: "abc",
                         uuid: "123"
@@ -1194,7 +1248,7 @@ describe("AddTreatmentController", function () {
                     effectiveStopDate: DateUtil.parse("2014-12-04"),
                     durationInDays: 2
                 }, encounterDate);
-                var dec5_dec6order = Bahmni.Tests.drugOrderViewModelMother.buildWith({},  {
+                var dec5_dec6order = Bahmni.Tests.drugOrderViewModelMother.buildWith({}, {
                     drug: {
                         name: "abc",
                         uuid: "123"
@@ -1205,7 +1259,7 @@ describe("AddTreatmentController", function () {
                 }, encounterDate);
                 scope.treatments = [dec2_dec4order, dec5_dec6order];
 
-                var overlappingOrder = Bahmni.Tests.drugOrderViewModelMother.buildWith({},  {
+                var overlappingOrder = Bahmni.Tests.drugOrderViewModelMother.buildWith({}, {
                     drug: {
                         name: "abc",
                         uuid: "123"
@@ -1224,7 +1278,7 @@ describe("AddTreatmentController", function () {
             it("should not allow conflicting orders for dates 2-4 and 5-6 and new drug order for 5-6", function () {
                 var encounterDate = DateUtil.parse("2014-12-02");
 
-                var dec2_dec4order = Bahmni.Tests.drugOrderViewModelMother.buildWith({},  {
+                var dec2_dec4order = Bahmni.Tests.drugOrderViewModelMother.buildWith({}, {
                     drug: {
                         name: "abc",
                         uuid: "123"
@@ -1233,7 +1287,7 @@ describe("AddTreatmentController", function () {
                     effectiveStopDate: DateUtil.parse("2014-12-04"),
                     durationInDays: 2
                 }, encounterDate);
-                var dec5_dec6order = Bahmni.Tests.drugOrderViewModelMother.buildWith({},  {
+                var dec5_dec6order = Bahmni.Tests.drugOrderViewModelMother.buildWith({}, {
                     drug: {
                         name: "abc",
                         uuid: "123"
@@ -1244,7 +1298,7 @@ describe("AddTreatmentController", function () {
                 }, encounterDate);
                 scope.treatments = [dec2_dec4order, dec5_dec6order];
 
-                var overlappingOrder = Bahmni.Tests.drugOrderViewModelMother.buildWith({},  {
+                var overlappingOrder = Bahmni.Tests.drugOrderViewModelMother.buildWith({}, {
                     drug: {
                         name: "abc",
                         uuid: "123"
@@ -1263,7 +1317,7 @@ describe("AddTreatmentController", function () {
             it("should not allow conflicting orders for dates 2-4 and 5-6 and new drug order for 2-4", function () {
                 var encounterDate = DateUtil.parse("2014-12-02");
 
-                var dec2_dec4order = Bahmni.Tests.drugOrderViewModelMother.buildWith({},  {
+                var dec2_dec4order = Bahmni.Tests.drugOrderViewModelMother.buildWith({}, {
                     drug: {
                         name: "abc",
                         uuid: "123"
@@ -1272,7 +1326,7 @@ describe("AddTreatmentController", function () {
                     effectiveStopDate: DateUtil.parse("2014-12-04"),
                     durationInDays: 2
                 }, encounterDate);
-                var dec5_dec6order = Bahmni.Tests.drugOrderViewModelMother.buildWith({},  {
+                var dec5_dec6order = Bahmni.Tests.drugOrderViewModelMother.buildWith({}, {
                     drug: {
                         name: "abc",
                         uuid: "123"
@@ -1309,7 +1363,7 @@ describe("AddTreatmentController", function () {
         it("should edit the drug order if conflicting order is unsaved when revise is selected", function () {
             var encounterDate = DateUtil.parse("2014-12-02");
 
-            var dec2_dec4order = Bahmni.Tests.drugOrderViewModelMother.buildWith({},  {
+            var dec2_dec4order = Bahmni.Tests.drugOrderViewModelMother.buildWith({}, {
                 drug: {
                     name: "abc",
                     uuid: "123"
@@ -1322,7 +1376,7 @@ describe("AddTreatmentController", function () {
             scope.add();
             expect(scope.treatments.length).toEqual(1);
 
-            var new_dec2_dec4order = Bahmni.Tests.drugOrderViewModelMother.buildWith({},  {
+            var new_dec2_dec4order = Bahmni.Tests.drugOrderViewModelMother.buildWith({}, {
                 drug: {
                     name: "abc",
                     uuid: "123"
@@ -1346,7 +1400,7 @@ describe("AddTreatmentController", function () {
         it("should edit the drug order if conflicting order is a saved order when revise is selected", function () {
             var encounterDate = DateUtil.parse("2014-12-02");
 
-            var dec2_dec4order = Bahmni.Tests.drugOrderViewModelMother.buildWith({},  {
+            var dec2_dec4order = Bahmni.Tests.drugOrderViewModelMother.buildWith({}, {
                 drug: {
                     name: "abc",
                     uuid: "123"
@@ -1360,7 +1414,7 @@ describe("AddTreatmentController", function () {
             expect(scope.treatments.length).toEqual(0);
 
 
-            var new_dec2_dec4order = Bahmni.Tests.drugOrderViewModelMother.buildWith({},  {
+            var new_dec2_dec4order = Bahmni.Tests.drugOrderViewModelMother.buildWith({}, {
                 drug: {
                     name: "abc",
                     uuid: "123"
@@ -1419,7 +1473,7 @@ describe("AddTreatmentController", function () {
             return true;
         };
 
-        beforeEach(function(){
+        beforeEach(function () {
             scope.treatments = []
         });
 
@@ -1440,7 +1494,7 @@ describe("AddTreatmentController", function () {
 
         it("should reset the treatment being edited", function () {
             scope.treatments = [editTreatment, newTreatment, newTreatment];
-            rootScope.$broadcast("event:editDrugOrder", 0);
+            rootScope.$broadcast("event:editDrugOrder", editTreatment, 0);
             scope.clearForm();
             expect(isSameAs(scope.treatment, newTreatment)).toBeTruthy();
             expect(scope.treatment.isEditAllowed).toBeFalsy();
@@ -1455,13 +1509,12 @@ describe("AddTreatmentController", function () {
 
     });
 
-
     describe("Edit DrugOrder()", function () {
         it("should set editDrugEntryUniformFrequency to true on edit of uniform dosing type drug", function () {
             var drugOrder = Bahmni.Tests.drugOrderViewModelMother.build({}, []);
             drugOrder.frequencyType = Bahmni.Clinical.Constants.dosingTypes.uniform;
             scope.treatments = [drugOrder];
-            rootScope.$broadcast("event:editDrugOrder", 0);
+            rootScope.$broadcast("event:editDrugOrder", drugOrder, 0);
             expect(scope.editDrugEntryUniformFrequency).toBeTruthy();
         });
 
@@ -1469,7 +1522,7 @@ describe("AddTreatmentController", function () {
             var drugOrder = Bahmni.Tests.drugOrderViewModelMother.build({}, []);
             drugOrder.frequencyType = Bahmni.Clinical.Constants.dosingTypes.variable;
             scope.treatments = [drugOrder];
-            rootScope.$broadcast("event:editDrugOrder", 0);
+            rootScope.$broadcast("event:editDrugOrder", drugOrder, 0);
             expect(scope.editDrugEntryVariableFrequency).toBeTruthy();
         });
     });
@@ -1527,6 +1580,32 @@ describe("AddTreatmentController", function () {
         it("should not fail for empty treatments", function () {
             scope.consultation.newlyAddedTreatments = undefined;
             scope.consultation.preSaveHandler.fire();
+        });
+
+        it('should save multiple tab drug orders for both order-set and new prescription sections', function () {
+            var drugOrder1 = Bahmni.Clinical.DrugOrderViewModel.createFromContract(activeDrugOrder);
+            var drugOrder2 = Bahmni.Tests.drugOrderViewModelMother.build({}, []);
+
+            var drugOrder1FromOrderSet = Bahmni.Clinical.DrugOrderViewModel.createFromContract(orderSets[0].orderSetMembers[0].orderTemplate);
+            var drugOrder2FromOrderSet = Bahmni.Clinical.DrugOrderViewModel.createFromContract(orderSets[0].orderSetMembers[1].orderTemplate);
+
+            scope.consultation.newlyAddedTabTreatments = {
+                "tabOne": {
+                    treatments: [drugOrder1],
+                    orderSetTreatments: [drugOrder1FromOrderSet]
+                },
+                "tabTwo": {
+                    treatments: [drugOrder2],
+                    orderSetTreatments: [drugOrder2FromOrderSet]
+
+                }
+            };
+
+            scope.consultation.newlyAddedTreatments = [];
+
+            scope.consultation.preSaveHandler.fire();
+
+            expect(scope.consultation.newlyAddedTreatments.length).toBe(4);
         });
     });
 
@@ -1608,4 +1687,79 @@ describe("AddTreatmentController", function () {
         })
     });
 
+    describe("add orderset", function () {
+        it("should add order set drugs to orderSetTreatments list in scope", function () {
+
+            var orderSetDate = moment("2015-03-02").toDate();
+            var stopDate = moment("2015-03-04").toDate();
+            scope.newOrderSet.date = orderSetDate;
+            scope.addOrderSet(orderSets[0]);
+            expect(scope.orderSetTreatments.length).toBe(2);
+            var firstOrderSetTreatment = scope.orderSetTreatments[0];
+            expect(firstOrderSetTreatment.isNewOrderSet).toBeTruthy();
+            expect(firstOrderSetTreatment.orderSetUuid).toBe(orderSets[0].uuid);
+            expect(firstOrderSetTreatment.effectiveStartDate).toEqual(orderSetDate);
+            expect(firstOrderSetTreatment.effectiveStopDate).toEqual(stopDate);
+            expect(firstOrderSetTreatment.dosingInstructionType).toEqual(Bahmni.Clinical.Constants.flexibleDosingInstructionsClass);
+            expect(firstOrderSetTreatment.frequencyType).toEqual("uniform");
+            expect(firstOrderSetTreatment.uniformDosingType.dose).toEqual(2);
+            expect(firstOrderSetTreatment.durationUnit).toEqual("Day(s)");
+            expect(firstOrderSetTreatment.quantity).toEqual(8);
+            expect(ngDialog.open).not.toHaveBeenCalled();
+
+        });
+
+        it('should set include flag only if it is not conflicting with active or scheduled drug', function () {
+            scope.newOrderSet.date = moment("2015-03-02").toDate();
+            scope.consultation.activeAndScheduledDrugOrders = [Bahmni.Tests.drugOrderViewModelMother.buildWith({}, {
+                drug: {name: "Paracetamol 500mg"},
+                effectiveStartDate: "2015-03-01",
+                durationInDays: 2,
+                effectiveStopDate: "2015-03-05",
+                uuid: "abcdef"
+            })];
+
+            scope.addOrderSet(orderSets[0]);
+
+            expect(scope.orderSetTreatments[0].include).toBeFalsy();
+            expect(scope.orderSetTreatments[1].include).toBeTruthy();
+            expect(ngDialog.open).toHaveBeenCalled();
+
+        })
+    });
+
+    describe("remove orderset", function () {
+        it('should empty orderSetTreatments when orderset is removed', function () {
+            scope.addOrderSet(orderSets[0]);
+            expect(scope.orderSetTreatments.length).toBe(2);
+            expect(scope.newOrderSet.uuid).toBe(orderSets[0].uuid);
+
+            scope.removeOrderSet();
+
+            expect(scope.orderSetTreatments.length).toBe(0);
+            expect(scope.newOrderSet).toEqual({});
+        })
+    });
+
+    describe('include orderSetMember checkbox', function () {
+        it("should include orderSetMember to save list only if it is not conflicting with active/scheduled drugs", function () {
+            scope.consultation.activeAndScheduledDrugOrders = [Bahmni.Tests.drugOrderViewModelMother.buildWith({}, {
+                drug: {name: "Paracetamol 500mg"},
+                effectiveStartDate: "2015-03-01",
+                durationInDays: 2,
+                effectiveStopDate: "2015-03-05",
+                uuid: "abcdef"
+            })];
+
+            var drugOrderResponse = orderSets[0].orderSetMembers[0].orderTemplate;
+            var orderSetDrugOrder = Bahmni.Clinical.DrugOrderViewModel.createFromContract(drugOrderResponse);
+            orderSetDrugOrder.effectiveStartDate = moment("2015-03-01");
+            orderSetDrugOrder.include = true;
+
+            rootScope.$broadcast("event:includeOrderSetDrugOrder", orderSetDrugOrder);
+
+            expect(orderSetDrugOrder.include).toBeFalsy();
+            expect(ngDialog.open).toHaveBeenCalled();
+        })
+    })
 });

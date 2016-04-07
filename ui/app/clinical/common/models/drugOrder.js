@@ -55,7 +55,13 @@ Bahmni.Clinical.DrugOrder = (function () {
                 orderReasonConcept: drugOrderData.orderReasonConcept,
                 orderReasonText: drugOrderData.orderReasonText,
                 dateStopped: dateUtil.parse(drugOrderData.dateStopped),
-                concept: drugOrderData.concept
+                concept: drugOrderData.concept,
+                orderGroup: {
+                    uuid: drugOrderData.orderGroupUuid,
+                    orderSet: {
+                        uuid: drugOrderData.orderSetUuid
+                    }
+                }
             }
         );
         if (!drugOrder.dosingInstructions.quantityUnits) {

@@ -1,0 +1,58 @@
+.orderSet-order-container{
+  margin:20px 0;
+ .orderSet-orders{
+   button.add-orderSet-btn{
+    margin-top:-5px !important;
+   }
+   .showOrderSet{
+     cursor: pointer;
+   }
+  .dashboard-orderSet{
+    padding: 5px;
+    p{
+      height:38px;
+      overflow:hidden;
+      font-size: 12px;
+      line-height: 1.5;
+    }
+    &.showOrder{
+      p{
+        height:auto;
+      }
+    }
+  }
+
+  .button-group{
+    .fa{
+      font-size: 20px;
+      margin-top:-6px;
+    }
+  }
+ }
+}
+
+table.orderSet-table{
+  th{
+    background: #eee;
+    color: #333;
+    font-family: openSansSemiBold;
+    text-align: center;
+  }
+   th.drugName ,td.drugName{
+      width: 300px;
+     text-align: left;
+     span{
+       display: block;
+       width:240px;
+     }
+     input[type="checkbox"]{
+        width:20px;
+     }
+   }
+  td{
+    padding: 4px 7px !important;
+    .button-group-wrapper{
+      width:auto;
+    }
+  }
+}

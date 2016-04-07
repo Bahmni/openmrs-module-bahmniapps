@@ -1,6 +1,7 @@
 'use strict';
 
-angular.module('admin', ['httpErrorInterceptor', 'bahmni.admin', 'bahmni.common.routeErrorHandler', 'ngSanitize', 'bahmni.common.uiHelper', 'bahmni.common.config',  'bahmni.common.i18n', 'pascalprecht.translate', 'ngCookies', 'angularFileUpload', 'bahmni.common.offline'])
+angular.module('admin', ['httpErrorInterceptor', 'bahmni.admin', 'bahmni.common.routeErrorHandler', 'ngSanitize', 'bahmni.common.uiHelper',
+    'bahmni.common.config', 'bahmni.common.orders', 'bahmni.common.i18n', 'pascalprecht.translate', 'ngCookies', 'angularFileUpload', 'bahmni.common.offline'])
     .config(['$stateProvider', '$httpProvider', '$urlRouterProvider',  '$compileProvider',
         function ($stateProvider, $httpProvider, $urlRouterProvider, $compileProvider) {
         $urlRouterProvider.otherwise('/dashboard');
@@ -33,8 +34,8 @@ angular.module('admin', ['httpErrorInterceptor', 'bahmni.admin', 'bahmni.common.
             controller: 'CSVUploadController'
 
         })
-        .state('admin.csvExport',
-        {   url: '/csvExport',
+        .state('admin.csvExport', {   
+            url: '/csvExport',
             templateUrl: 'views/csvexport.html',
             controller: 'CSVExportController'
 
@@ -48,10 +49,24 @@ angular.module('admin', ['httpErrorInterceptor', 'bahmni.admin', 'bahmni.common.
         {   url: '/formIndex',
             templateUrl: 'views/formIndex.html',
             controller: ''
-        });
-    $httpProvider.defaults.headers.common['Disable-WWW-Authenticate'] = true;
-    // $bahmniTranslateProvider.init({app: 'admin', shouldMerge: true});
-}]).
+        })
+            .state('admin.orderSetDashboard', {
+                url: '/ordersetdashboard',
+                templateUrl: 'views/orderSetDashboard.html',
+                controller: 'OrderSetDashboardController',
+                data: {
+                    backLinks: [{label: "Home", state: "admin.dashboard", icon: "fa-home"}],
+                }
+            })
+            .state('admin.orderSet', {
+                url: '/orderset/:orderSetUuid',
+                templateUrl: 'views/orderSet.html',
+                data: {
+                    backLinks: [{label: "Home", state: "admin.orderSetDashboard", icon: "fa-users"}],
+                }
+            });
+        $httpProvider.defaults.headers.common['Disable-WWW-Authenticate'] = true;
+    }]).
     run(function ($rootScope, $templateCache) {
         //Disable caching view template partials
         $rootScope.$on('$viewContentLoaded', function () {
