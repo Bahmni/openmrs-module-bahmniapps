@@ -80,6 +80,9 @@ section.form-field-inline{
           @media (max-width : 990px) {
             text-align: left;
           }
+          @media (max-width : 768px) {
+            text-align: right;
+          }
           @media (max-width : 580px) {
             text-align: left;
           }
@@ -283,6 +286,9 @@ section.form-field-inline{
   .form-field .field-attribute label{
     @media (max-width : 990px) {
       text-align: left;
+    }
+    @media (max-width : 768px) {
+      text-align: right;
     }
   }
 }
