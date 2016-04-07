@@ -40,7 +40,7 @@ angular.module('bahmni.home', ['ui.router', 'httpErrorInterceptor', 'bahmni.comm
                             return offlineReferenceDataInitialization(offlineDb, true);
                         },
                         offlinePush: function(offlinePush, offlineSyncInitialization){
-                            return offlinePush.consumeEvents(offlineSyncInitialization);
+                            return offlinePush(offlineSyncInitialization);
                         }
 
                     }

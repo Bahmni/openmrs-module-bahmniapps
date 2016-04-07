@@ -15,7 +15,7 @@ angular.module('bahmni.registration')
                     data.patient.person.preferredName = data.patient.person.names[0];
                     data.patient.person.preferredAddress = data.patient.person.addresses[0];
                     return offlinePatientServiceStrategy.getAttributeTypes().then(function (attributeTypes) {
-                        parseAttributeValues(data.patient.person.attributes,attributeTypes);
+                        mapAttributesToGetFormat(data.patient.person.attributes,attributeTypes);
                         return data;
                     });
                 });
@@ -48,13 +48,13 @@ angular.module('bahmni.registration')
                         return create(data).then(function (result) {
                         result.data.patient.person.preferredName = data.patient.person.names[0];
                         result.data.patient.person.preferredAddress = data.patient.person.addresses[0];
-                        parseAttributeValues(result.data.patient.person.attributes, attributeTypes);
+                        mapAttributesToGetFormat(result.data.patient.person.attributes, attributeTypes);
                         return $q.when(result.data);
                     });
                 });
             };
 
-            var parseAttributeValues = function (attributes, attributeTypes) {
+            var mapAttributesToGetFormat = function (attributes, attributeTypes) {
                 angular.forEach(attributes, function (attribute){
                     if (!attribute.voided) {
                         var foundAttribute = _.find(attributeTypes, function (attributeType) {

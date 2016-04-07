@@ -65,7 +65,7 @@
             this.onValueChanged(newValue);
         };
         var setFirstObservationValue = function (newValue) {
-            setNewObservation(this.groupMembers[0], newValue);
+            setNewObservation(this.primaryObs, newValue);
             this.onValueChanged(newValue);
         };
         Object.defineProperty(this, 'value', {
@@ -152,6 +152,7 @@
         onValueChanged: function () {
             if (!this.primaryObs.hasValue() && this.abnormalObs) {
                 this.abnormalObs.value = undefined;
+                this.abnormalObs.erroneousValue = undefined;
             }
             if (this.primaryObs.isNumeric() && this.primaryObs.hasValue() && this.abnormalObs) {
                 this.setAbnormal();
