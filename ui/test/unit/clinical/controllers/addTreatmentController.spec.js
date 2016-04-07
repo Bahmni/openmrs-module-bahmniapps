@@ -97,7 +97,7 @@ describe("AddTreatmentController", function () {
 
     var scope, stateParams, rootScope, contextChangeHandler, newTreatment,
         editTreatment, clinicalAppConfigService, ngDialog, drugService, drugs,
-        encounterDateTime, appService, appConfig, defaultDrugsPromise;
+        encounterDateTime, appService, appConfig, defaultDrugsPromise, locationService;
 
     stateParams = {
         tabConfigName: null
@@ -146,6 +146,8 @@ describe("AddTreatmentController", function () {
             appService = jasmine.createSpyObj('appService', ['getAppDescriptor']);
             appConfig = jasmine.createSpyObj('appConfig', ['getConfig']);
 
+            locationService = jasmine.createSpyObj('locationService', ['getLoggedInLocation'])
+
             drugService = jasmine.createSpyObj('drugService', ['getSetMembersOfConcept']);
             drugs = [
                 {name: "T", dosageForm: {display: "something"}, uuid: "123-12321"},
@@ -167,6 +169,7 @@ describe("AddTreatmentController", function () {
                 clinicalAppConfigService: clinicalAppConfigService,
                 ngDialog: ngDialog,
                 appService: appService,
+                locationService :locationService,
                 DrugService: drugService,
                 treatmentConfig: treatmentConfig
             });

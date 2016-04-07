@@ -3,9 +3,9 @@
 angular.module('bahmni.clinical')
 
     .controller('AddTreatmentController', ['$scope', '$rootScope', 'contextChangeHandler', 'treatmentConfig', 'DrugService', '$timeout',
-        'clinicalAppConfigService', 'ngDialog', '$window', 'messagingService', 'appService', 'activeDrugOrders',
+        'clinicalAppConfigService', 'ngDialog', '$window', 'messagingService', 'appService', 'activeDrugOrders','locationService',
         function ($scope, $rootScope, contextChangeHandler, treatmentConfig, drugService, $timeout,
-                  clinicalAppConfigService, ngDialog, $window, messagingService, appService, activeDrugOrders) {
+                  clinicalAppConfigService, ngDialog, $window, messagingService, appService, activeDrugOrders, locationService) {
 
             var DateUtil = Bahmni.Common.Util.DateUtil;
             var DrugOrderViewModel = Bahmni.Clinical.DrugOrderViewModel;
@@ -439,8 +439,14 @@ angular.module('bahmni.clinical')
             };
 
             $scope.openActionLink = function (extension) {
-                var url = extension.url.replace("{{patient_ref}}", $scope.patient.identifier);
-                $window.open(url, "_blank");
+                var url, location;
+                locationService.getLoggedInLocation().then(function(response){
+                    location = response.name;
+                    url = extension.url
+                        .replace("{{patient_ref}}", $scope.patient.identifier)
+                        .replace("{{location_ref}}", location);
+                    $window.open(url, "_blank");
+                });
             };
 
             $scope.toggleTabIndexWithinModal = function(event){
