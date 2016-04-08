@@ -25,13 +25,12 @@ angular.module('bahmni.common.offline')
                                 url: requestUrl,
                                 headers: {
                                     'If-None-Match': result ? result.etag : undefined
-                                },
-                                withCredentials: true
+                                }
                             };
                             if(referenceData == 'LocaleList' || referenceData == 'DefaultEncounterType') {
                                 req.headers.Accept = 'text/plain';
                             }
-                             $http.get(req).then(function (response) {
+                             $http(req).then(function (response) {
                                 x++;
                                 if(response.status == 200) {
                                     var eTag = response.headers().etag;
