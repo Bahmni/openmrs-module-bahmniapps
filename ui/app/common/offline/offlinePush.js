@@ -60,6 +60,7 @@ angular.module('bahmni.common.offline')
                             else {
                                 eventQueue.releaseFromQueue(event);
                                 deferred.resolve();
+                                return "4xx error";
                             }
                         })
                     });
@@ -73,8 +74,11 @@ angular.module('bahmni.common.offline')
                 if (offlineService.isAndroidApp()) {
                     offlineDbService = androidDbService;
                 }
-                consumeFromErrorQueue().then(function () {
+                consumeFromErrorQueue().then(function (response) {
                     releaseReservedEvents(reservedEvents);
+                    if(response == "4xx error") {
+                        return;
+                    }
                     return consumeFromEventQueue();
                 });
                 return deferred.promise;
