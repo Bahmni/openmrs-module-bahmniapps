@@ -24,6 +24,11 @@ angular.module('bahmni.registration')
             var create = function (data) {
                 data.patient.person.auditInfo = {dateCreated: moment(data.patient.person.personDateCreated).format() || moment().format()};
                 var event = {};
+                if(!data.patient.person.addresses[0].uuid){
+                    _.each(data.patient.person.addresses, function(address) {
+                        address.uuid = Bahmni.Common.Offline.UUID.generateUuid();
+                    });
+                }
                 if (!data.patient.uuid){
                     data.patient.person.uuid = Bahmni.Common.Offline.UUID.generateUuid();
                     _.each(data.patient.person.names, function(name) {
