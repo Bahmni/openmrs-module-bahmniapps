@@ -13,6 +13,10 @@ angular.module('bahmni.common.domain')
 
             $scope.removeOrderSetMember = function (index) {
                 if ($scope.orderSet.orderSetMembers[index].retired == false) {
+                    if($scope.orderSet.orderSetMembers.length == 2) {
+                        messagingService.showMessage('error', 'An orderSet should have a minimum of two orderSetMembers');
+                        return;
+                    }
                     $scope.orderSet.orderSetMembers[index].retired = true;
                     $scope.save();
                 } else {
@@ -39,14 +43,6 @@ angular.module('bahmni.common.domain')
                 }).then(function (result) {
                     return result.data.results;
                 });
-            };
-
-            $scope.getNumber = function (num) {
-                var sequence = [];
-                for (var i = 1; i <= num; i++) {
-                    sequence.push(i);
-                }
-                return sequence;
             };
 
             $scope.getDataResults = function (selectedOrderType) {
@@ -90,29 +86,12 @@ angular.module('bahmni.common.domain')
             };
 
             var validationSuccess = function () {
-                if (!$scope.orderSet.orderSetMembers || countActiveOrderSetMembers($scope.orderSet.orderSetMembers) < 2) {
-                    messagingService.showMessage('error', 'Please enter a minimum of 2 order set to proceed with save.');
+                if (!$scope.orderSet.orderSetMembers || $scope.orderSet.orderSetMembers.length < 2) {
+                    messagingService.showMessage('error', 'An orderSet should have a minimum of two orderSetMembers');
                     return false;
                 }
 
                 return true;
-            };
-
-            var countActiveOrderSetMembers = function (orderSetMembers) {
-                var countActive = 0;
-                orderSetMembers.forEach(function (orderSetMember) {
-                    if (!orderSetMember.voided) {
-                        countActive++;
-                    }
-                });
-                return countActive;
-            };
-
-            var filterOutRetiredOrderSetMembers = function (orderSetResult) {
-                orderSetResult.orderSetMembers = _.filter(orderSetResult.orderSetMembers, function (orderSetMemberObj) {
-                    return !orderSetMemberObj.retired;
-                });
-                return orderSetResult;
             };
 
             var buildOrderSetMember = function () {
@@ -130,7 +109,7 @@ angular.module('bahmni.common.domain')
                     $scope.treatmentConfig = results[1];
                     if ($state.params.orderSetUuid !== "new") {
                         spinner.forPromise(orderSetService.getOrderSet($state.params.orderSetUuid).then(function (response) {
-                            $scope.orderSet = filterOutRetiredOrderSetMembers(Bahmni.Common.OrderSet.create(response.data));
+                            $scope.orderSet = Bahmni.Common.OrderSet.create(response.data);
                         }));
                     }
                     else {
