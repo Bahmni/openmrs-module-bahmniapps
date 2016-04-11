@@ -31,6 +31,10 @@ angular.module('bahmni.common.offline')
 
                 var processEvent = function (event) {
                     return offlineDbService.getPatientByUuid(event.data.patientUuid).then(function (response) {
+                        if(response == undefined){
+                            eventQueue.releaseFromQueue(event);
+                            return consumeFromEventQueue();
+                        }
                         response.relationships = [];
                         return $http.post(event.data.url, response, {
                             withCredentials: true,
