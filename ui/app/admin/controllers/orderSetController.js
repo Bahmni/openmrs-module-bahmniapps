@@ -25,11 +25,17 @@ angular.module('bahmni.common.domain')
             };
 
             $scope.moveOrderSetMemberUp = function (index) {
+                if(index == 0) {
+                    return;
+                }
                 var element = $scope.orderSet.orderSetMembers.splice(index, 1);
                 $scope.orderSet.orderSetMembers.splice(index-1, 0, element[0]);
             };
 
             $scope.moveOrderSetMemberDown = function (index) {
+                if(index == ($scope.orderSet.orderSetMembers.length-1)){
+                    return;
+                }
                 var element = $scope.orderSet.orderSetMembers.splice(index, 1);
                 $scope.orderSet.orderSetMembers.splice(index+1, 0, element[0]);
             };
