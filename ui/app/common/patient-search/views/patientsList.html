@@ -57,7 +57,7 @@
                             <a ng-if="isHeadingOfIdentifier(heading)"
                                ng-click="forwardPatient(row)">{{row[heading]}}</a>
                             <span ng-if="isHeadingOfName(heading)" ng-click="forwardPatient(row)">{{row[heading]}}
-                                <i class="ipd-indication fa fa-bed" ng-if="row['hasBeenAdmitted'] == 'true'"></i>
+                                <i class="ipd-indication fa fa-bed" ng-if="row.hasBeenAdmitted===true||row.hasBeenAdmitted==='true'"></i>
                             </span>
                             <span ng-if="!isHeadingOfIdentifier(heading) && !isHeadingOfName(heading)">
                             {{row[heading]}}
@@ -77,7 +77,7 @@
 
                 <div class="patient-name">{{patient.name}}</div>
                 <div class="patient-id">{{patient.identifier}}</div>
-                <i class="ipd-indication fa fa-bed" ng-if="patient.hasBeenAdmitted == 'true'"></i>
+                <i class="ipd-indication fa fa-bed" ng-if="patient.hasBeenAdmitted===true||patient.hasBeenAdmitted==='true'"></i>
             </li>
             </ul>
         </resize>
