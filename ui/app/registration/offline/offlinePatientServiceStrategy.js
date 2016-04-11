@@ -22,6 +22,7 @@ angular.module('bahmni.registration')
             };
 
             var create = function (data) {
+                data.patient.person.birthtime = moment(data.patient.person.birthtime).format("YYYY-MM-DDTHH:mm:ss.SSSZZ");
                 data.patient.person.auditInfo = {dateCreated: moment(data.patient.person.personDateCreated).format() || moment().format()};
                 var event = {};
                 if(!data.patient.person.addresses[0].uuid){
