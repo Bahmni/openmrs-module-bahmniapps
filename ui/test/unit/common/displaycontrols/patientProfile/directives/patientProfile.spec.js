@@ -1,43 +1,75 @@
 'use strict';
 
 describe("Patient Profile display control", function () {
-    var element, scope, $compile, mockBackend, $window;
+    var element, scope, $compile, mockBackend, $window, $q, openMRSPatientMockData, visitService;
 
     beforeEach(module('ngHtml2JsPreprocessor'));
     beforeEach(module('bahmni.common.patient'));
     beforeEach(module('bahmni.common.uiHelper'));
-    beforeEach(module(function($provide){
+    beforeEach(module('bahmni.common.displaycontrol.patientprofile'));
+    beforeEach(module(function ($provide) {
         $provide.value('$stateParams', {configName: "programs"});
+
         $window = jasmine.createSpyObj('$window', ['open']);
         $window.open.and.callFake(function (param) {
             return true;
         });
         $provide.value('$window', $window);
-    }));
 
-    beforeEach(module('bahmni.common.displaycontrol.patientprofile'), function ($provide) {
-        var patientService = jasmine.createSpyObj('patientService', ['getRelationships']);
+        var $translate = jasmine.createSpyObj('$translate', ['']);
+        $provide.value('$translate', $translate);
+
+        var configurations = jasmine.createSpyObj('configurations', ['patientConfig']);
+        var patientConfigMockData = {};
+        configurations.patientConfig.and.returnValue(patientConfigMockData);
+        $provide.value('configurations', configurations);
+
+        visitService = jasmine.createSpyObj('visitService', ['getVisit']);
+        $provide.value('visitService', visitService);
+
+        var patientService = jasmine.createSpyObj('patientService', ['getRelationships', 'getPatient']);
         patientService.getRelationships.and.callFake(function (param) {
-            return specUtil.respondWith({
-                results: []
-            });
+            return specUtil.respondWithPromise($q, {data: {results: []}});
         });
+        openMRSPatientMockData = {};
+        patientService.getPatient.and.callFake(function () {
+            return specUtil.respondWithPromise($q, {data: openMRSPatientMockData});
+        });
+        $provide.value('patientService', patientService);
 
         var spinner = jasmine.createSpyObj('spinner', ['forPromise']);
         spinner.forPromise.and.callFake(function (param) {
-            var deferred = q.defer();
-            deferred.resolve({data: {}});
-            return deferred.promise;
+            return specUtil.respondWithPromise($q, {data: {}});
         });
-        spinner.then.and.callThrough({data: {}});
         $provide.value('spinner', spinner);
-        $provide.value('patientService', patientService);
-    });
 
-    beforeEach(inject(function (_$compile_, $rootScope, $httpBackend) {
+    }));
+
+    beforeEach(inject(function (_$compile_, $rootScope, _$q_, $httpBackend) {
         scope = $rootScope;
         $compile = _$compile_;
-        scope.patient = {
+        mockBackend = $httpBackend;
+        $q = _$q_;
+        mockBackend.expectGET('/openmrs/ws/rest/v1/relationship?v=full').respond([]);
+    }));
+
+    /*Mock of constructor Bahmni.PatientMapper*/
+    var originalPatientMapper, spyPatientMapperInstance;
+    beforeEach(function () {
+        spyPatientMapperInstance = jasmine.createSpyObj('PatientMapperInstance', ['map']);
+        originalPatientMapper = Bahmni.PatientMapper;
+        Bahmni.PatientMapper = function () {
+            return spyPatientMapperInstance;
+        };
+    });
+    afterEach(function () {
+        Bahmni.PatientMapper = originalPatientMapper;
+    });
+    /*********/
+
+    var patientMockData;
+    beforeEach(function () {
+        patientMockData = {
             "name": "Patient name",
             "genderText": "Female",
             "identifier": "Some identifier",
@@ -50,24 +82,22 @@ describe("Patient Profile display control", function () {
                 zip: ''
             }
         };
-        mockBackend = $httpBackend;
-        mockBackend.expectGET('/openmrs/ws/rest/v1/relationship?v=full').respond([]);
-    }));
-
+        spyPatientMapperInstance.map.and.returnValue(patientMockData);
+    });
 
     it("should get patient address with cityVillage when addressField is not specified in config", function () {
-         var config = {
+        var config = {
             "title": "Patient Information",
             "name": "patientInformation",
             "patientAttributes": ["caste", "class", "education", "occupation"]
         };
-        var isoScope = createIsoScope(config);
-        expect(isoScope.getAddress()).toBe("Some village");
+        var isolatedScope = createIsoScope(config);
+        expect(isolatedScope.addressLine).toBe("Some village");
     });
 
     it("should get patient name, age, gender, identifier and address even though config is empty", function () {
         var isoScope = createIsoScope({});
-        var patientAttributeTypes = isoScope.getPatientAttributeTypes();
+        var patientAttributeTypes = isoScope.patientAttributeTypes;
         expect(patientAttributeTypes.$$unwrapTrustedValue()).toBe("Female, 21 years");
     });
 
@@ -78,22 +108,9 @@ describe("Patient Profile display control", function () {
     });
 
     it("should also get patient blood group attribute if it is directly specified", function () {
-        scope.patient = {
-            "name": "Patient name",
-            "genderText": "Female",
-            "identifier": "Some identifier",
-            "ageText": "21 years",
-            "bloodGroupText": "AB+",
-            "address": {
-                address1: 'Address',
-                address2: null,
-                cityVillage: 'Some village',
-                state: "State",
-                zip: ''
-            }
-        };
+        patientMockData.bloodGroupText = "AB+";
         var isoScope = createIsoScope({});
-        var patientAttributeTypes = isoScope.getPatientAttributeTypes();
+        var patientAttributeTypes = isoScope.patientAttributeTypes;
         expect(patientAttributeTypes.$$unwrapTrustedValue()).toBe("Female, 21 years, AB+");
     });
 
@@ -104,32 +121,32 @@ describe("Patient Profile display control", function () {
             "addressFields": ["address1", "cityVillage", "state", "zip"]
         };
         var isoScope = createIsoScope(config);
-        expect(isoScope.getAddress()).toBe("Address, Some village, State");
+        expect(isoScope.addressLine).toBe("Address, Some village, State");
     });
 
     it("should return false if the relationshipTypeMap.provider object is empty", function () {
         scope.relationshipTypeMap = {};
         var isoScope = createIsoScope({});
-        expect(isoScope.isProviderRelationship({relationshipType : {aIsToB : "Parent"}})).toBeFalsy();
+        expect(isoScope.isProviderRelationship({relationshipType: {aIsToB: "Parent"}})).toBeFalsy();
     });
 
     it("should return true if the relationship is provider", function () {
-        scope.relationshipTypeMap = { "provider" : ["Doctor"]};
+        scope.relationshipTypeMap = {"provider": ["Doctor"]};
         var isoScope = createIsoScope({});
-        expect(isoScope.isProviderRelationship({relationshipType : {aIsToB : "Doctor"}})).toBeTruthy();
+        expect(isoScope.isProviderRelationship({relationshipType: {aIsToB: "Doctor"}})).toBeTruthy();
     });
 
     it("should return false if the relationship is patient", function () {
-        scope.relationshipTypeMap = { "provider" : ["Doctor"]};
+        scope.relationshipTypeMap = {"provider": ["Doctor"]};
         var isoScope = createIsoScope({});
-        expect(isoScope.isProviderRelationship({relationshipType : {aIsToB : "Patient"}})).toBeFalsy();
+        expect(isoScope.isProviderRelationship({relationshipType: {aIsToB: "Patient"}})).toBeFalsy();
     });
 
     it("should return false if showDOB configured false", function () {
         var config = {
             "title": "Patient Information",
             "name": "patientInformation",
-            "showDOB":false
+            "showDOB": false
         };
         var isoScope = createIsoScope(config);
         expect(isoScope.showBirthDate).toBeFalsy();
@@ -140,14 +157,33 @@ describe("Patient Profile display control", function () {
             "title": "Patient Information",
             "name": "patientInformation"
         };
-        scope.patient.birthdate = "20 Jun 15";
+        patientMockData.birthdate = "20 Jun 15";
         var isoScope = createIsoScope(config);
         expect(isoScope.showBirthDate).toBeTruthy();
     });
 
-    var createIsoScope = function(config)  {
+    it("should get admission status when visit uuid is given", function () {
+        var isoScope = createIsoScope({});
+        expect(isoScope.hasBeenAdmitted).toBe(undefined);
+
+        isoScope.visitUuid = "visit-uuid-00001";
+        var ADMISSION_STATUS_ATTRIBUTE = "Admission Status";
+        var attributes = [
+            {value:"Admitted",attributeType:{name:ADMISSION_STATUS_ATTRIBUTE}},
+            {attributeType:{name:"IPD"}},
+            {attributeType:{name:"OPD"}}
+        ];
+        visitService.getVisit.and.returnValue(specUtil.respondWithPromise($q, {data: {attributes: attributes}}));
+        isoScope.$apply();
+
+        var REP = "custom:(attributes:(value,attributeType:(display,name)))";
+        expect(visitService.getVisit).toHaveBeenCalledWith("visit-uuid-00001", REP);
+        expect(isoScope.hasBeenAdmitted).toBe(true);
+    });
+
+    var createIsoScope = function (config) {
         scope.config = config;
-        element = angular.element('<patient-profile patient="patient" config="config"></patient-profile>');
+        element = angular.element('<patient-profile patient-uuid="{{::patient.uuid}}" config="config"></patient-profile>');
         $compile(element)(scope);
         scope.$digest();
         return element.isolateScope();

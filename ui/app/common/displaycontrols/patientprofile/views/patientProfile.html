@@ -1,4 +1,4 @@
-<div class="dashboard-patientInformation-section" id="patient_information">
+<div class="dashboard-patientInformation-section" id="patient_information" ng-if="::isDirectiveReady">
     <section bindonce="patient" class="block patientInformation dashboard-section" ng-class="{'more': patientSummary.show}">
         <table class="patient dashboard-table">
             <tbody>
@@ -10,16 +10,16 @@
                     <div class="patient-value">
                          <span class="patient-name">
                             {{::patient.name | titleCase}} ({{::patient.identifier}})</span> -
-                         <span class="patient-gender-age" ng-bind-html="::getPatientAttributeTypes()"></span>
+                         <span class="patient-gender-age" ng-bind-html="::patientAttributeTypes"></span>
                          <span class="patient-estimated-text" ng-if="::patient.birthdateEstimated"> (est.)</span>
                          <span class="patient-birth-time" ng-show="::patient.birthtime">
                              <span>Time of Birth</span>
                              <span ng-bind-html="::patient.birthtime | date:'hh:mm a'"></span>
                          </span>
                          <span class="patient-address">
-                             {{::getAddress()}}
+                             {{::addressLine}}
                          </span>
-                         <i class="ipd-indication fa fa-bed" ng-if="::visitSummary.hasBeenAdmitted()"></i>
+                         <i class="ipd-indication fa fa-bed" ng-if="::hasBeenAdmitted"></i>
                      </div>
                  </td>
             </tr>
@@ -35,10 +35,10 @@
                 <td class="value" ng-if="::!patient[attribute].isDateField">{{(patient[attribute].value.display || patient[attribute].value) | booleanFilter}}</td>
                 <td class="value" ng-if="::patient[attribute].isDateField">{{patient[attribute].value | bahmniDate}}</td>
             </tr>
-            <tr ng-if="::patient.relationships && patient.relationships.length > 0">
+            <tr ng-if="::relationships && relationships.length > 0">
                 <td>Relationships</td>
             </tr>
-            <tr ng-repeat="relationship in patient.relationships track by relationship.uuid">
+            <tr ng-repeat="relationship in relationships track by relationship.uuid">
                 <td class="name relationshipType" ng-if="::relationship.personA.uuid === patient.uuid">{{::relationship.relationshipType.aIsToB}}</td>
                 <td class="value" ng-if="::relationship.personA.uuid === patient.uuid">
                     <a ng-click="::openPatientDashboard(relationship.personB.uuid)"

@@ -1,5 +1,8 @@
 <patient-context patient="patient"></patient-context>
-<patient-profile patient="patient" config="patientInfoSection.patientInformation" visit-summary="visitSummary"></patient-profile>
+<patient-profile patient-uuid="{{::patient.uuid}}"
+                 visit-uuid="{{::visitSummary.uuid}}"
+                 config="patientInfoSection.patientInformation"
+></patient-profile>
 
 <manage-programs patient="patient"></manage-programs>
 
