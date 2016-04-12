@@ -406,6 +406,11 @@ angular.module('consultation')
                         templateUrl: 'common/views/consultationContext.html',
                         controller: 'consultationContextController'
                     }
+                },
+                resolve: {
+                    visitHistory: function (visitHistoryInitialization, $stateParams) {
+                        return visitHistoryInitialization($stateParams.patientUuid);
+                    }
                 }
             });
 

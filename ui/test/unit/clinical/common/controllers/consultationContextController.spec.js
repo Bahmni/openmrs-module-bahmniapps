@@ -1,10 +1,9 @@
 'use strict';
 
 describe('consultationContextController', function () {
-    var scope,mockAppService, controller, programConfig, mockAppDescriptor;
+    var scope,mockAppService, controller, programConfig, mockAppDescriptor, visitHistory;
     mockAppDescriptor = jasmine.createSpyObj('appDescriptor', ['getConfigValue']);
     mockAppService= jasmine.createSpyObj('appService', ['getAppDescriptor']);
-
 
     beforeEach(function () {
         module('bahmni.clinical');
@@ -13,13 +12,16 @@ describe('consultationContextController', function () {
             controller = $controller;
             scope = $rootScope.$new();
         });
+
+        visitHistory = {activeVisit:{uuid:'activeVisitUuid-00001'}};
     });
 
     function createController() {
         return controller('consultationContextController', {
             $scope: scope,
             $stateParams: {patientUuid: "patientUuid", visitUuid: "visitUuid"},
-            appService: mockAppService
+            appService: mockAppService,
+            visitHistory: visitHistory
         });
     }
 
@@ -43,6 +45,20 @@ describe('consultationContextController', function () {
             createController();
             expect(scope.patientInfoSection).not.toBeUndefined();
             expect(scope.patientInfoSection.patientInformation.ageLimit).toBe("21");
+        });
+
+        it("should set visitUuid from visitHistory",function () {
+            createController();
+            expect(scope.visitUuid).toBe('activeVisitUuid-00001');
+            visitHistory = {activeVisit:{uuid:'activeVisitUuid-00022'}};
+            createController();
+            expect(scope.visitUuid).toBe('activeVisitUuid-00022');
+            visitHistory = null;
+            createController();
+            expect(scope.visitUuid).toBeFalsy();
+            visitHistory = {};
+            createController();
+            expect(scope.visitUuid).toBeFalsy();
         });
     });
 
