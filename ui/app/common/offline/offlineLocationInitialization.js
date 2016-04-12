@@ -30,6 +30,9 @@ angular.module('bahmni.common.offline')
                         });
 
                     }
+                    else{
+                        deferred.resolve();
+                    }
                 });
 
                 var getLoginLocationAddress = function(){
