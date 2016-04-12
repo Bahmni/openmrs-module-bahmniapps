@@ -100,7 +100,8 @@ angular.module('bahmni.common.offline')
                                 .leftOuterJoin(pat, pa.attributeTypeId.eq(pat.attributeTypeId))
                                 .where(p.uuid.in(_.map(tempResults, function (tempResult) {
                                     return tempResult.uuid;
-                                }))).exec()
+                                }))).
+                                orderBy(p.dateCreated, lf.Order.DESC).exec()
                                 .then(function (results) {
 
                                     var groupedResults = _.groupBy(results, function (res) {
