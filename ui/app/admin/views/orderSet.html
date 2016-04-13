@@ -72,18 +72,15 @@
                                     </div>
                                 </div>
                                 <div class="col col3 form-field">
-                                    <div class="field-attribute">
-                                        <label class="primaryDrug-text">{{primaryAttributeType.description}}</label>
-                                    </div>
                                     <div class="col col4 form-field">
                                         <input class="fl remove-orderSet" type="button" ng-click="removeOrderSetMember($index)" value="X" tabindex="-1">
                                     </div>
                                 </div>
                                 <div class="action-container fr">
-                                    <span class="button" ng-class="{'disabled':$first}" ng-click="moveOrderSetMemberUp($index)">
+                                    <span class="button" ng-click="moveOrderSetMemberUp($index)">
                                         <i class="fa fa-arrow-circle-up"></i>
                                     </span>
-                                    <span class="button"  ng-class="{'disabled':$last}" ng-click="moveOrderSetMemberDown($index)">
+                                    <span class="button" ng-click="moveOrderSetMemberDown($index)">
                                         <i class="fa fa-arrow-circle-down"></i>
                                     </span>
                                 </div>

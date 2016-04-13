@@ -31,13 +31,23 @@ angular.module('bahmni.clinical')
                 return [];
             };
 
+            var sortOrderSetDrugsFollowedByDrugOrders = function (drugOrders,showOnlyActive) {
+                var orderSetOrdersAndDrugOrders = _.groupBy(drugOrders, function(drugOrder){
+                    if(drugOrder.orderGroupUuid){
+                        return 'orderSetOrders';
+                    }
+                    return 'drugOrders';
+                });
+                var refillableDrugOrders = drugOrderHistoryHelper.getRefillableDrugOrders(orderSetOrdersAndDrugOrders.drugOrders, getPreviousVisitDrugOrders(), showOnlyActive);
+                return _.concat(orderSetOrdersAndDrugOrders.orderSetOrders, refillableDrugOrders);
+            };
+
             var createRecentDrugOrderGroup = function (activeAndScheduledDrugOrders) {
                 var showOnlyActive = treatmentConfig.drugOrderHistoryConfig.showOnlyActive;
                 var refillableGroup = {
                     label: $translate.instant("MEDICATION_RECENT_TAB"),
                     selected: true,
-                    drugOrders: drugOrderHistoryHelper.getRefillableDrugOrders(activeAndScheduledDrugOrders,
-                        getPreviousVisitDrugOrders(), showOnlyActive)
+                    drugOrders: sortOrderSetDrugsFollowedByDrugOrders(activeAndScheduledDrugOrders,showOnlyActive)
                 };
                 $scope.consultation.drugOrderGroups.unshift(refillableGroup);
                 if(treatmentConfig.drugOrderHistoryConfig.numberOfVisits != undefined && treatmentConfig.drugOrderHistoryConfig.numberOfVisits == 0) {
@@ -49,8 +59,7 @@ angular.module('bahmni.clinical')
                 if (prescribedDrugOrders.length == 0) {
                     return [];
                 }
-                var sortedDrugOrders = _.sortBy(prescribedDrugOrders, 'orderNumber');
-                var drugOrderGroupedByDate = _.groupBy(sortedDrugOrders, function (drugOrder) {
+                var drugOrderGroupedByDate = _.groupBy(prescribedDrugOrders, function (drugOrder) {
                     return DateUtil.parse(drugOrder.visit.startDateTime);
                 });
 
@@ -73,7 +82,6 @@ angular.module('bahmni.clinical')
             $scope.stoppedOrderReasons = treatmentConfig.stoppedOrderReasonConcepts;
 
             var init = function () {
-                activeDrugOrdersList = activeDrugOrders || [];
                 var numberOfVisits = treatmentConfig.drugOrderHistoryConfig.numberOfVisits ? treatmentConfig.drugOrderHistoryConfig.numberOfVisits : 3;
                 spinner.forPromise(treatmentService.getPrescribedDrugOrders(
                     $stateParams.patientUuid, true, numberOfVisits, $stateParams.dateEnrolled, $stateParams.dateCompleted).then(function (data) {

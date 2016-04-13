@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('bahmni.common.displaycontrol.drugOrdersSection')
-    .directive('drugOrdersSection', ['Treatment' +
-    'Service', 'spinner', '$rootScope',  function (treatmentService, spinner, $rootScope) {
+    .directive('drugOrdersSection', ['TreatmentService', 'spinner', '$rootScope',
+        function (treatmentService, spinner, $rootScope) {
         var controller = function ($scope) {
             var DateUtil = Bahmni.Common.Util.DateUtil;
 

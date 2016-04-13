@@ -20,8 +20,10 @@
             <tbody>
             <tr ng-repeat="drugOrder in treatments"
                 ng-class="{highlight : drugOrder.isBeingEdited, invalid: !drugOrder.validate()}">
-                <td class="drugName"><input type="checkbox" ng-model="drugOrder.include" ng-click="checkConflictingDrug(drugOrder)" class="fl"/>
-                    <span class="fr">{{::drugOrder.drugNameDisplay}}</span></td>
+                <td class="drugName">
+                    <input type="checkbox" ng-model="drugOrder.include" ng-click="checkConflictingDrug(drugOrder)" class="fl"/>
+                    <span class="fr">{{::drugOrder.drugNameDisplay}}</span>
+                </td>
                 <td>{{::drugOrder.getDoseAndUnits()}}</td>
                 <td>{{::drugOrder.getFrequency()}}</td>
                 <td>{{::drugOrder.route}}</td>
@@ -30,7 +32,7 @@
                 <td class="buttonColumn">
                     <div class="button-group-wrapper">
                         <div class="button-group">
-                            <button ng-click="edit(drugOrder, $index)">
+                            <button ng-if="drugOrder.include" ng-click="edit(drugOrder, $index)">
                                 <i class="fa fa-edit"></i>
                             </button>
                         </div>

@@ -30,7 +30,7 @@ angular.module('bahmni.clinical')
             });
             var sortedDrugOrders = [];
 
-            sortedDrugOrders.push(drugOrderUtil.sortDrugOrders(partitionedDrugOrders.scheduled));
+                sortedDrugOrders.push(drugOrderUtil.sortDrugOrders(partitionedDrugOrders.scheduled));
             sortedDrugOrders.push(drugOrderUtil.sortDrugOrders(partitionedDrugOrders.active));
             if(!showOnlyActive){
                 sortedDrugOrders.push(drugOrderUtil.sortDrugOrders(this.getInactiveDrugsFromPastVisit(activeAndScheduledDrugOrders, previousVisitDrugOrders)));
