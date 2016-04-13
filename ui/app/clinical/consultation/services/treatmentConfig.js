@@ -13,6 +13,7 @@ angular.module('bahmni.clinical').factory('treatmentConfig',
                         {name: "Month(s)", factor: 30}
                     ];
                     config.frequencies = _(config.frequencies)
+                        .reverse()
                         .sortBy({'name':'Immediately'})
                         .sortBy({'name':'SOS'})
                         .reverse()
