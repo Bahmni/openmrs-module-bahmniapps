@@ -1716,7 +1716,7 @@ describe("AddTreatmentController", function () {
 
         });
 
-        it('should set include flag only if it is not conflicting with active or scheduled drug', function () {
+        it('should reset include flag for all orderSetTreatments if any of them is conflicting with active or scheduled drug', function () {
             scope.newOrderSet.date = moment("2015-03-02").toDate();
             scope.consultation.activeAndScheduledDrugOrders = [Bahmni.Tests.drugOrderViewModelMother.buildWith({}, {
                 drug: {name: "Paracetamol 500mg"},
@@ -1729,7 +1729,7 @@ describe("AddTreatmentController", function () {
             scope.addOrderSet(orderSets[0]);
 
             expect(scope.orderSetTreatments[0].include).toBeFalsy();
-            expect(scope.orderSetTreatments[1].include).toBeTruthy();
+            expect(scope.orderSetTreatments[1].include).toBeFalsy();
             expect(ngDialog.open).toHaveBeenCalled();
 
         })

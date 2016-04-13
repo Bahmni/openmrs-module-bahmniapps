@@ -608,6 +608,9 @@ angular.module('bahmni.clinical')
                     $scope.orderSetTreatments.push(drugOrderViewModel);
                 });
                 if (conflictingDrugOrders.length > 0) {
+                    _.each($scope.orderSetTreatments,function(orderSetDrugOrder){
+                        orderSetDrugOrder.include = false;
+                    });
                     ngDialog.open({
                         template: 'consultation/views/treatmentSections/conflictingOrderSet.html',
                         data: {'conflictingDrugOrders': conflictingDrugOrders}
