@@ -10,12 +10,9 @@ angular.module('bahmni.common.displaycontrol.observation')
                 $scope.showGroupDateTime = $scope.config.showGroupDateTime !== false;
 
                 var mapObservation = function (observations) {
+
                     var conceptsConfig = appService.getAppDescriptor().getConfigValue("conceptSetUI") || {};
                     observations = new Bahmni.Common.Obs.ObservationMapper().map(observations, conceptsConfig);
-
-                    observations = _.filter(observations, function(obs) {
-                        return ($scope.config.conceptNames.includes(obs.concept.name));
-                    });
 
                     $scope.bahmniObservations = new Bahmni.Common.DisplayControl.Observation.GroupingFunctions().groupByEncounterDate(observations);
                     if (_.isEmpty($scope.bahmniObservations)) {
@@ -51,7 +48,7 @@ angular.module('bahmni.common.displaycontrol.observation')
                             spinner.forPromise(observationsService.fetchForPatientProgram($scope.enrollment, $scope.config.conceptNames, $scope.config.scope)).then(function (response) {
                                 mapObservation(response.data, $scope.config)
                             });
-                        } else {
+                        }else {
                             spinner.forPromise(observationsService.fetch($scope.patient.uuid, $scope.config.conceptNames,
                                 $scope.config.scope, $scope.config.numberOfVisits, $scope.visitUuid,
                                 $scope.config.obsIgnoreList, null)).then(function (response) {
