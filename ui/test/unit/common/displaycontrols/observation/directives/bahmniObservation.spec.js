@@ -2,7 +2,7 @@
 
 describe("BahmniObservation", function () {
     var appService, scope, $compile, mockBackend, observationsService, visitFormService, q, spinner;
-    var simpleHtml = '<bahmni-observation section="section" patient="patient" is-on-dashboard="true" config="config" enrollment="enrollment"></bahmni-observation>';
+    var simpleHtml = '<bahmni-observation section="section" patient="patient" is-on-dashboard="true" config="config" enrollment="enrollment" observations="observations"></bahmni-observation>';
 
     beforeEach(module('ngHtml2JsPreprocessor'));
     beforeEach(module('bahmni.common.patient'));
@@ -167,5 +167,40 @@ describe("BahmniObservation", function () {
             expect(observationsService.fetchForEncounter.calls.count()).toEqual(0);
         });
 
+        it("should only fetch observations from config which are fully specified", function () {
+            scope.patient = {uuid: '123'};
+            scope.config = {
+                conceptNames: [
+                    "Vitals",
+                    "History and Examination"
+                ],
+                scope: "latest"
+            };
+            scope.section = {};
+            scope.observations = [
+                {
+                    concept: {
+                        name: "Vitals",
+                        shortName: "Vitals"
+                    }
+                },
+                {
+                    concept: {
+                        name: "History and Examination Template",
+                        shortName: "History and Examination"
+                    }
+                }
+            ];
+
+            mockBackend.expectGET('../common/displaycontrols/observation/views/observationDisplayControl.html').respond("<div>dummy</div>");
+
+            var element = $compile(simpleHtml)(scope);
+            scope.$digest();
+            var compiledElementScope = element.isolateScope();
+            scope.$digest();
+
+            expect(compiledElementScope.bahmniObservations[0].value.length).toEqual(1);
+            expect(compiledElementScope.bahmniObservations[0].value[0].concept.name).toEqual("Vitals");
+        });
     });
 });
