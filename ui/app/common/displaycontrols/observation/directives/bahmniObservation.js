@@ -15,7 +15,7 @@ angular.module('bahmni.common.displaycontrol.observation')
                     observations = new Bahmni.Common.Obs.ObservationMapper().map(observations, conceptsConfig);
 
                     observations = _.filter(observations, function(obs) {
-                        return ($scope.config.conceptNames.includes(obs.concept.name));
+                        return ($scope.config.conceptNames.indexOf(obs.concept.name) !== -1);
                     });
 
                     $scope.bahmniObservations = new Bahmni.Common.DisplayControl.Observation.GroupingFunctions().groupByEncounterDate(observations);
