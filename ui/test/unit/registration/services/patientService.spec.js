@@ -114,7 +114,7 @@ describe('Patient resource', function () {
         expect(mockHttp.post.calls.mostRecent().args[1].patient.person.gender).toEqual("M");
         expect(mockHttp.post.calls.mostRecent().args[1].patient.person.names[0].givenName).toEqual("someGivenName");
         expect(mockHttp.post.calls.mostRecent().args[1].patient.person.names[0].familyName).toEqual("someFamilyName");
-        expect(mockHttp.post.calls.mostRecent().args[1].patient.person.birthdate).toEqual(moment().subtract('days', 23).subtract('months', 2).subtract('years', 1).format('YYYY-MM-DD'));
+        expect(moment(mockHttp.post.calls.mostRecent().args[1].patient.person.birthdate).format('YYYY-MM-DD')).toEqual(moment().subtract('days', 23).subtract('months', 2).subtract('years', 1).format('YYYY-MM-DD'));
         expect(mockHttp.post.calls.mostRecent().args[2].headers['Content-Type']).toBe('application/json');
         expect(mockHttp.post.calls.mostRecent().args[2].headers['Accept']).toBe('application/json');
     });
