@@ -14,7 +14,7 @@ angular.module('bahmni.common.displaycontrol.observation')
                     var conceptsConfig = appService.getAppDescriptor().getConfigValue("conceptSetUI") || {};
                     observations = new Bahmni.Common.Obs.ObservationMapper().map(observations, conceptsConfig);
 
-                    observations = _.filter(observations, function(obs) {
+                    observations = $scope.config.conceptNames && observations && _.filter(observations, function(obs) {
                         for (var i = 0; i < $scope.config.conceptNames.length; i++) {
                             if (obs.concept.name.toLowerCase() === $scope.config.conceptNames[i].toLowerCase())
                                 return true;
