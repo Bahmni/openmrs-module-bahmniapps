@@ -10,11 +10,27 @@ angular.module('bahmni.common.offline').service('initializeOfflineSchema', [func
         "ARRAY_BUFFER": lf.Type.ARRAY_BUFFER
     };
 
+    var onUpgrade = function (rawDb) {
+        switch (rawDb.getVersion()) {
+            case 2:
+                console.log("Upgrade logic from 2 goes here.");
+                break;
+            default:
+                console.log('Existing DB version', rawDb.getVersion());
+        }
+        return rawDb.dump();
+    };
+
+    var LOVEFIELD_DB_CONFIG = {
+        storeType : lf.schema.DataStoreType.INDEXED_DB,
+        onUpgrade: onUpgrade
+    }, DB_NAME = 'Bahmni';
+
     this.databasePromise = null;
 
     this.initSchema = function () {
-        if(this.databasePromise == null ) {
-            var schemaBuilder = lf.schema.create('Bahmni', 2);
+        if(this.databasePromise === null ) {
+            var schemaBuilder = lf.schema.create(DB_NAME, 2);
             createTable(schemaBuilder, Bahmni.Common.Offline.SchemaDefinitions.Patient);
             createTable(schemaBuilder, Bahmni.Common.Offline.SchemaDefinitions.PatientAttribute);
             createTable(schemaBuilder, Bahmni.Common.Offline.SchemaDefinitions.PatientAttributeType);
@@ -26,7 +42,11 @@ angular.module('bahmni.common.offline').service('initializeOfflineSchema', [func
             createTable(schemaBuilder, Bahmni.Common.Offline.SchemaDefinitions.ReferenceData);
             createTable(schemaBuilder, Bahmni.Common.Offline.SchemaDefinitions.LoginLocations);
 
-            this.databasePromise = schemaBuilder.connect();
+            // Add migrations like this
+            // schemaBuilder = lf.schema.create(DB_NAME, 3);
+            // createTable(schemaBuilder, Bahmni.Common.Offline.SchemaDefinitions.Dummy);
+
+            this.databasePromise = schemaBuilder.connect(LOVEFIELD_DB_CONFIG);
         }
 
         return this.databasePromise;
