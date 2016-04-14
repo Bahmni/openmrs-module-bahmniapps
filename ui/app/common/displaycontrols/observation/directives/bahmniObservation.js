@@ -15,7 +15,11 @@ angular.module('bahmni.common.displaycontrol.observation')
                     observations = new Bahmni.Common.Obs.ObservationMapper().map(observations, conceptsConfig);
 
                     observations = _.filter(observations, function(obs) {
-                        return ($scope.config.conceptNames.indexOf(obs.concept.name) !== -1);
+                        for (var i = 0; i < $scope.config.conceptNames.length; i++) {
+                            if (obs.concept.name.toLowerCase() === $scope.config.conceptNames[i].toLowerCase())
+                                return true;
+                        }
+                        return false;
                     });
 
                     $scope.bahmniObservations = new Bahmni.Common.DisplayControl.Observation.GroupingFunctions().groupByEncounterDate(observations);
