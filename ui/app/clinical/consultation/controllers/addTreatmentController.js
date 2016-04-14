@@ -621,9 +621,9 @@ angular.module('bahmni.clinical')
             };
 
             $scope.removeOrderSet = function () {
-                $scope.newOrderSet = {};
+                delete $scope.newOrderSet.name;
+                delete $scope.newOrderSet.uuid;
                 $scope.orderSetTreatments.splice(0, $scope.orderSetTreatments.length);
-
             };
 
             $scope.$on("event:includeOrderSetDrugOrder", function (event, drugOrder) {
