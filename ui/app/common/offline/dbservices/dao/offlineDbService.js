@@ -68,6 +68,10 @@ angular.module('bahmni.common.offline')
             return initializeOfflineSchema.initSchema();
         };
 
+        var reinitSchema = function () {
+            return initializeOfflineSchema.reinitSchema();
+        };
+
         var getMarker = function () {
             return offlineMarkerDbService.getMarker();
         };
@@ -114,6 +118,7 @@ angular.module('bahmni.common.offline')
         return {
             init: init,
             initSchema: initSchema,
+            reinitSchema: reinitSchema,
             getPatientByUuid: getPatientByUuid,
             createPatient: createPatient,
             deletePatientData: deletePatientData,

@@ -52,6 +52,10 @@ angular.module('bahmni.common.offline').service('initializeOfflineSchema', [func
         return this.databasePromise;
     };
 
+    this.reinitSchema = function() {
+        this.databasePromise = null;
+        return this.initSchema();
+    };
 
     var createTable = function (schemaBuilder, tableDefinition) {
         var table = schemaBuilder.createTable(tableDefinition.tableName);

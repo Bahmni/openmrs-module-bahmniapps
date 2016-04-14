@@ -40,10 +40,14 @@ angular.module('bahmni.common.offline')
                                         }
                                     });
                                 }
-                            }).catch(function(){
-                                x++;
-                                if(x == length) {
+                            }).catch(function(response){
+                                if(parseInt(response.status / 100) == 4){
                                     deferred.resolve({});
+                                }else {
+                                    x++;
+                                    if (x == length) {
+                                        deferred.resolve({});
+                                    }
                                 }
                             });
                         });

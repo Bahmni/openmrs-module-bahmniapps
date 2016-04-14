@@ -26,13 +26,18 @@ angular.module('bahmni.common.offline')
                                 x++;
                                 if (result.status == 200) {
                                     var eTag = result.headers().etag;
-                                    return offlineDbService.insertConfig(appName, result.data, eTag).then(function(){
+                                    return offlineDbService.insertConfig(appName, result.data, eTag).then(function(response){
+                                        if(response.key == 'home' || response.module == 'home'){
+                                            var offlineConfig = response.value['offline-config.json'];
+                                            var schedulerInterval = offlineConfig ? offlineConfig.schedulerInterval : 60000;
+                                            localStorage.setItem('schedulerInterval', schedulerInterval);
+                                        }
                                         if(x ==length) {
                                             deferred.resolve({});
                                         }
                                     });
                                 }
-                            }).catch(function (result) {
+                            }).catch(function () {
                                 x++;
                                 if(x ==length) {
                                     deferred.resolve({});
