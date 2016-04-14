@@ -14,11 +14,13 @@ angular.module('bahmni.common.displaycontrol.observation')
                     var conceptsConfig = appService.getAppDescriptor().getConfigValue("conceptSetUI") || {};
                     observations = new Bahmni.Common.Obs.ObservationMapper().map(observations, conceptsConfig);
 
-                    observations = _.filter(observations, function(observation) {
-                        return _.some($scope.config.conceptNames, function(conceptName){
-                            return _.toLower(conceptName) === _.toLower(_.get(observation, 'concept.name'));
-                        })
-                    });
+                    if ($scope.config.conceptNames){
+                        observations = _.filter(observations, function(observation) {
+                            return _.some($scope.config.conceptNames, function(conceptName){
+                                return _.toLower(conceptName) === _.toLower(_.get(observation, 'concept.name'));
+                            })
+                        });
+                    }
 
                     $scope.bahmniObservations = new Bahmni.Common.DisplayControl.Observation.GroupingFunctions().groupByEncounterDate(observations);
                     if (_.isEmpty($scope.bahmniObservations)) {
