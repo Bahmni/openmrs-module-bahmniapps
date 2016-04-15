@@ -6,5 +6,7 @@
     "selectLocation": "Select Location",
     "clinical_key": "Clinical",
     "MESSAGE_DIALOG_OPTION_COPY" : "Copy Error",
-    "MESSAGE_DIALOG_OPTION_OKAY": "OK"
+    "MESSAGE_DIALOG_OPTION_OKAY": "OK",
+    "ORDERS_FORM_ERRORS_MESSAGE_KEY": "Please enter a value in the mandatory fields or correct the value in the highlighted fields to proceed"
+
 }
