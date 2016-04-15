@@ -2,9 +2,9 @@
 
 var app = angular.module('bahmni.orders');
 app.controller('OrderFulfillmentController', ['$scope', '$rootScope', '$stateParams', '$state', '$q', 'patientContext', 'orderService', 'orderObservationService',
-    'orderTypeService', 'sessionService', 'encounterService', 'spinner', 'messagingService', 'appService', '$anchorScroll', 'orderFulfillmentConfig',
+    'orderTypeService', 'sessionService', 'encounterService', 'spinner', 'messagingService', 'appService', '$anchorScroll', 'orderFulfillmentConfig','contextChangeHandler',
     function ($scope, $rootScope, $stateParams, $state, $q, patientContext, orderService, orderObservationService,
-              orderTypeService, sessionService, encounterService, spinner, messagingService, appService, $anchorScroll, orderFulfillmentConfig) {
+              orderTypeService, sessionService, encounterService, spinner, messagingService, appService, $anchorScroll, orderFulfillmentConfig, contextChangeHandler) {
 
 
     $scope.patient = patientContext.patient;
@@ -66,8 +66,21 @@ app.controller('OrderFulfillmentController', ['$scope', '$rootScope', '$statePar
     $scope.config = $scope.fulfillmentConfig || {};
     $anchorScroll();
 
+    $scope.isFormValid = function(){
+        var contxChange = contextChangeHandler.execute();
+        var shouldAllow = contxChange["allow"];
+        if (!shouldAllow) {
+            var errorMessage = contxChange["errorMessage"] ? contxChange["errorMessage"] : "{{'ORDERS_FORM_ERRORS_MESSAGE_KEY' | translate }}";
+            messagingService.showMessage('error', errorMessage);
+        }
+        return shouldAllow;
+    };
 
     $scope.$on("event:saveOrderObservations", function() {
+        if (!$scope.isFormValid()) {
+            $scope.$parent.$broadcast("event:errorsOnForm");
+            return $q.when({});
+        }
         var savePromise = orderObservationService.save($scope.orders, $scope.patient, sessionService.getLoginLocationUuid());
         spinner.forPromise(savePromise.then(function () {
             $state.transitionTo($state.current, $state.params, {

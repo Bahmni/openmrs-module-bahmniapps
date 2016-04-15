@@ -19,8 +19,9 @@
                 ng-disabled="observation.disabled"
                 ng-click="observation.markAsNonCoded()"
                 ng-class="{'illegalValue': observation.primaryObs.value.length > 0 && !observation.markedAsNonCoded, active: observation.markedAsNonCoded}"
-                ng-disabled="observation.primaryObs.isCoded() && observation.primaryObs.value"><i
-                class="fa fa-ok"></i>Accept
+                ng-disabled="observation.primaryObs.isCoded() && observation.primaryObs.value">
+            <span></span>
+            Accept
         </button>
     </div>
 </div>

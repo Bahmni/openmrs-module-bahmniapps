@@ -2,11 +2,12 @@
 
 describe("OrderFulfillmentController", function () {
 
-    var scope, rootScope, deferred, deferred1, q, $bahmniCookieStore;
+    var scope, rootScope, deferred, deferred1, q, $bahmniCookieStore, contextChangeHandler;
     var mockEncounterService = jasmine.createSpyObj('encounterService', ['find']);
     var mockOrderObservationService = jasmine.createSpyObj('orderObservationService', ['save']);
     var mockOrderTypeService = jasmine.createSpyObj('orderTypeService', ['getOrderTypeUuid']);
     var mockOrderService = jasmine.createSpyObj('orderService', ['getOrders', 'then']);
+    var contextChangeHandlerService = jasmine.createSpyObj('contextChangeHandler',['execute']);
 
     mockEncounterService.find.and.callFake(function(param) {
         deferred1 = q.defer();
@@ -63,7 +64,8 @@ describe("OrderFulfillmentController", function () {
             $stateParams: mockStateParams,
             orderService: mockOrderService,
             $q :q,
-            orderFulfillmentConfig: { conceptNames: ["Blood Pressure"]}
+            orderFulfillmentConfig: { conceptNames: ["Blood Pressure"]},
+            contextChangeHandler: contextChangeHandlerService
         });
     }));
 
@@ -114,5 +116,34 @@ describe("OrderFulfillmentController", function () {
         scope.$digest();
         expect(scope.orders[0].showForm).toBeTruthy();
         expect(scope.orders[1].showForm).toBeFalsy();
+    });
+
+    it('should return true if form is valid ', function () {
+        spyOn(scope,'isFormValid').and.callThrough();
+        contextChangeHandlerService.execute.and.callFake(function() {
+            return {allow: true};
+        });
+        scope.$digest();
+        expect(scope.isFormValid()).toBe(true);
+    });
+
+    it('should return true if form is valid ', function () {
+        spyOn(scope,'isFormValid').and.callThrough();
+        contextChangeHandlerService.execute.and.callFake(function() {
+            return {allow: false};
+        });
+        scope.$digest();
+        expect(scope.isFormValid()).toBe(false);
+    });
+
+
+    it('should show error message if form is not valid ', function () {
+        scope.isFormValid = function() {return false};
+        spyOn(scope.$parent, '$broadcast').and.callThrough();
+
+        scope.$broadcast("event:saveOrderObservations");
+        scope.$digest();
+
+        expect(scope.$parent.$broadcast).toHaveBeenCalledWith("event:errorsOnForm");
     });
 });
