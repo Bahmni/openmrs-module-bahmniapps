@@ -10,6 +10,7 @@ angular.module('bahmni.clinical')
 
             var DateUtil = Bahmni.Common.Util.DateUtil;
             var DrugOrderViewModel = Bahmni.Clinical.DrugOrderViewModel;
+            var scrollTop = _.partial($window.scrollTo,0,0);
 
             $scope.showOrderSetDetails = true;
             $scope.addTreatment = true;
@@ -582,12 +583,14 @@ angular.module('bahmni.clinical')
             };
 
             $scope.addOrderSet = function (orderSet) {
+                scrollTop();
                 $scope.newOrderSet.name = orderSet.name;
                 $scope.newOrderSet.uuid = orderSet.uuid;
                 var conflictingDrugOrders = [];
                 _.each(orderSet.orderSetMembers, function (orderSetMember) {
                     orderSetMember.orderTemplate.effectiveStartDate = $scope.newOrderSet.date;
                     var drugOrderViewModel = Bahmni.Clinical.DrugOrderViewModel.createFromContract(Bahmni.Clinical.DrugOrder.create(orderSetMember.orderTemplate), treatmentConfig);
+                    drugOrderViewModel.instructions = orderSetMember.orderTemplate.administrationInstructions;
                     drugOrderViewModel.orderSetUuid = orderSet.uuid;
                     drugOrderViewModel.isNewOrderSet = true;
                     drugOrderViewModel.dosingInstructionType = Bahmni.Clinical.Constants.flexibleDosingInstructionsClass;
@@ -621,9 +624,9 @@ angular.module('bahmni.clinical')
             };
 
             $scope.removeOrderSet = function () {
-                $scope.newOrderSet = {};
+                delete $scope.newOrderSet.name;
+                delete $scope.newOrderSet.uuid;
                 $scope.orderSetTreatments.splice(0, $scope.orderSetTreatments.length);
-
             };
 
             $scope.$on("event:includeOrderSetDrugOrder", function (event, drugOrder) {

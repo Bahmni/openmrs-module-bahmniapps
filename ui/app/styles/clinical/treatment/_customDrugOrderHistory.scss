@@ -186,12 +186,16 @@
           position: static;
           width: 100%;
         }
+        .orderSetStagingAreaCheckbox{
+          margin: 1px 7px 0 0;
+          transform:scale(1.2);
+        }
       }
       &.drugNameStopForm{
         padding: 6px 5px 43px;
       }
       &.drugNameAddNote{
-        padding: 6px 5px 31px;
+        padding: 6px 10px 31px;
       }
       &.drugNameStopFormAddNote{
         padding: 6px 5px 85px;

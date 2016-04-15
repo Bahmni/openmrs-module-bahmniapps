@@ -1,46 +1,10 @@
-<section class="dashboard-section" ng-if="treatments.length > 0">
-    <h2 class="order-title section-title has-toggle" toggle="showOrderSet">
-        <i class="fa fa-caret-right" ng-hide="showOrderSet"></i>
-        <i class="fa fa-caret-down" ng-show="showOrderSet"></i>
-        {{::orderSetName}}
-    </h2>
-    <div class="drugOrderTable" ng-show="showOrderSet">
-        <table class="orderSet-table treatments-details-table">
-            <thead>
-            <tr>
-                <th class="drugName">Drug Name</th>
-                <th>Dose (mg)</th>
-                <th>Frequency</th>
-                <th>Route</th>
-                <th>Duration</th>
-                <th>State Date</th>
-                <th class="empty-header">Actions</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr ng-repeat="drugOrder in treatments"
-                ng-class="{highlight : drugOrder.isBeingEdited, invalid: !drugOrder.validate()}">
-                <td class="drugName">
-                    <input type="checkbox" ng-model="drugOrder.include" ng-click="checkConflictingDrug(drugOrder)" class="fl"/>
-                    <span class="fr">{{::drugOrder.drugNameDisplay}}</span>
-                </td>
-                <td>{{::drugOrder.getDoseAndUnits()}}</td>
-                <td>{{::drugOrder.getFrequency()}}</td>
-                <td>{{::drugOrder.route}}</td>
-                <td>{{::drugOrder.getDurationAndDurationUnits()}}</td>
-                <td>{{::drugOrder.effectiveStartDate | bahmniDate}}</td>
-                <td class="buttonColumn">
-                    <div class="button-group-wrapper">
-                        <div class="button-group">
-                            <button ng-if="drugOrder.include" ng-click="edit(drugOrder, $index)">
-                                <i class="fa fa-edit"></i>
-                            </button>
-                        </div>
-                    </div>
-                </td>
-
-            </tr>
-            </tbody>
-        </table>
-    </div>
-</section>
+<div class="drugOrderHistorySectionContainer clearfix" ng-if="treatments.length > 0">
+    <section class="dashboard-section">
+        <drug-orders-section config="config"
+                             patient-uuid="null"
+                             treatment-config="null"
+                             enrollment="null"
+                             drug-orders="treatments">
+        </drug-orders-section>
+    </section>
+</div>

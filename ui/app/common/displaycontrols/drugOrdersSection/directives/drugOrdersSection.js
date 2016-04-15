@@ -34,7 +34,7 @@ angular.module('bahmni.common.displaycontrol.drugOrdersSection')
                 if (_.isEmpty($scope.config.columns)) {
                     $scope.columns = _.union(mandatoryColumns, defaultColumns);
                 } else {
-                    $scope.columns = _.union(mandatoryColumns, $scope.config.columns);
+                    $scope.columns = _.union($scope.config.columns, mandatoryColumns);
                 }
             };
 
@@ -42,6 +42,10 @@ angular.module('bahmni.common.displaycontrol.drugOrdersSection')
                 initialiseColumns();
                 if (_.isEmpty($scope.config.title) && _.isEmpty($scope.config.translationKey)){
                     $scope.config.title = "Drug Orders";
+                }
+                if (_.isArray($scope.drugOrders)) {
+                    $scope.isDrugOrderSet = true;
+                    return ;
                 }
                 return treatmentService.getAllDrugOrdersFor($scope.patientUuid, $scope.config.includeConceptSet, $scope.config.excludeConceptSet, $scope.config.active, $scope.enrollment).then(function (drugOrderResponse) {
                     var createDrugOrder = function (drugOrder) {
@@ -95,6 +99,13 @@ angular.module('bahmni.common.displaycontrol.drugOrdersSection')
                     $rootScope.$broadcast("event:reviseDrugOrder", drugOrder, drugOrders);
                 }
             };
+            $scope.checkConflictingDrug = function(drugOrder) {
+                $rootScope.$broadcast("event:includeOrderSetDrugOrder", drugOrder);
+            };
+            $scope.edit = function (drugOrder) {
+                var index = _.indexOf($scope.drugOrders,drugOrder);
+                $rootScope.$broadcast("event:editDrugOrder", drugOrder, index);
+            };
 
             $scope.toggleShowAdditionalInstructions = function (line) {
                 line.showAdditionalInstructions = !line.showAdditionalInstructions;
@@ -141,7 +152,10 @@ angular.module('bahmni.common.displaycontrol.drugOrdersSection')
             };
 
 
-            spinner.forPromise(init());
+            var promise = init();
+            if(promise){
+                spinner.forPromise(promise);
+            }
         };
         return {
             restrict: 'E',
@@ -150,7 +164,8 @@ angular.module('bahmni.common.displaycontrol.drugOrdersSection')
                 config: "=",
                 patientUuid: "=",
                 treatmentConfig: "=",
-                enrollment: "="
+                enrollment: "=",
+                drugOrders:"=?"
             },
             templateUrl: "../common/displaycontrols/drugOrdersSection/views/drugOrdersSection.html"
         };
