@@ -2,16 +2,21 @@
 
 angular.module('bahmni.clinical')
     .directive('newOrderGroup', [function () {
-        var controller = function ($scope, $rootScope) {
-            $scope.showOrderSet = true;
-            $scope.edit = function (drugOrder, index) {
-                $rootScope.$broadcast("event:editDrugOrder", drugOrder, index);
+        var controller = function ($scope) {
+            $scope.config = {
+                columns: ['drugName', 'dosage', 'frequency', 'route', 'duration', 'startDate', 'instructions'],
+                actions: ['edit'],
+                columnHeaders: {
+                    frequency: 'MEDICATION_LABEL_FREQUENCY',
+                    drugName: 'MEDICATION_DRUG_NAME_TITLE'
+                }
             };
-
-            $scope.checkConflictingDrug = function(drugOrder) {
-                $rootScope.$broadcast("event:includeOrderSetDrugOrder", drugOrder);
-            }
-
+            var setOrderSetName = function(orderSetNewName) {
+                if(!_.isUndefined(orderSetNewName)){
+                    $scope.config.title = orderSetNewName;
+                }
+            };
+            $scope.$watch('orderSetName', setOrderSetName);
         };
         return {
             templateUrl: 'consultation/views/newOrderGroup.html',

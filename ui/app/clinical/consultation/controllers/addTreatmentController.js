@@ -588,6 +588,7 @@ angular.module('bahmni.clinical')
                 _.each(orderSet.orderSetMembers, function (orderSetMember) {
                     orderSetMember.orderTemplate.effectiveStartDate = $scope.newOrderSet.date;
                     var drugOrderViewModel = Bahmni.Clinical.DrugOrderViewModel.createFromContract(Bahmni.Clinical.DrugOrder.create(orderSetMember.orderTemplate), treatmentConfig);
+                    drugOrderViewModel.instructions = orderSetMember.orderTemplate.administrationInstructions;
                     drugOrderViewModel.orderSetUuid = orderSet.uuid;
                     drugOrderViewModel.isNewOrderSet = true;
                     drugOrderViewModel.dosingInstructionType = Bahmni.Clinical.Constants.flexibleDosingInstructionsClass;

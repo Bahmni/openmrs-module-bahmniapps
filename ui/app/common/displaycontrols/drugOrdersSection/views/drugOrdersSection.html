@@ -19,8 +19,17 @@
             <tbody ng-repeat="drugOrder in drugOrders">
             <tr ng-class="{'highlight' : drugOrder.isBeingEdited, 'edited' : drugOrder.isMarkedForDiscontinue}">
                 <td ng-repeat="columnName in columns" class="{{columnName}}" ng-class="{'drugNameStopForm' : drugOrder.isMarkedForDiscontinue && columnName === 'drugName' ,'drugNameAddNote': drugOrder.showAdditionalInstructions  && columnName === 'drugName' ,'drugNameStopFormAddNote':  drugOrder.isMarkedForDiscontinue && drugOrder.showAdditionalInstructions  && columnName === 'drugName'}">
-                    <span ng-if="columnName === 'drugName'" title="{{::drugOrder.getDrugOrderName(false)}}">{{::drugOrder.getDrugOrderName(false)}}</span>
-                    <span ng-if="columnName === 'dosage'">{{::drugOrder.dosage}}</span>
+                    <span ng-if="columnName === 'dosage'">{{::drugOrder.getDoseAndUnits()}}</span>
+                    <span ng-if="columnName === 'drugName' && !isDrugOrderSet" title="{{::drugOrder.getDrugOrderName(false)}}">
+                        {{::drugOrder.getDrugOrderName(false)}}
+                    </span>
+                    <span ng-if="columnName === 'drugName' && isDrugOrderSet" title="{{::drugOrder.drugNameDisplay}}">
+                        <input type="checkbox" ng-model="drugOrder.include" ng-click="checkConflictingDrug(drugOrder)" class="fl clearfix"/>
+                        <!--IMPORTANT-->
+                        <!--need to get rid of this inline css-->
+                        <!--IMPORTANT-->
+                        <span style="padding-left: 4px;">{{::drugOrder.drugNameDisplay}}</span>
+                    </span>
                     <span ng-if="columnName === 'route'">{{::drugOrder.route}}</span>
                     <span ng-if="columnName === 'duration'">{{::drugOrder.getDurationAndDurationUnits()}}</span>
                     <span ng-if="columnName === 'frequency'">
@@ -49,6 +58,9 @@
                             <button ng-if="actionName=='void'" ng-confirm-click="remove(drugOrder)"
                                     confirm-message="{{ 'REMOVE_DRUG_ORDER_KEY' | translate: {drugName :drugOrder.drugNameDisplay} }}" ><i class="fa fa-remove"></i></button>
                             <button ng-if="actionName=='revise'" ng-disabled="!drugOrder.isActive() || !drugOrder.isEditAllowed" ng-click="revise(drugOrder, drugOrders)">
+                                <i class="fa fa-edit"></i>
+                            </button>
+                            <button ng-if="actionName=='edit'" ng-disabled="!drugOrder.include || !drugOrder.isActive() || !drugOrder.isEditAllowed" ng-click="edit(drugOrder)">
                                 <i class="fa fa-edit"></i>
                             </button>
                             <button class="undo-btn" ng-if=" actionName=='stop' && drugOrder.isMarkedForDiscontinue" ng-disabled="!drugOrder.isActive() || !drugOrder.isDiscontinuedAllowed" ng-click="undoDiscontinue(drugOrder)">
