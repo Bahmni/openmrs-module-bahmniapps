@@ -10,6 +10,7 @@ angular.module('bahmni.clinical')
 
             var DateUtil = Bahmni.Common.Util.DateUtil;
             var DrugOrderViewModel = Bahmni.Clinical.DrugOrderViewModel;
+            var scrollTop = _.partial($window.scrollTo,0,0);
 
             $scope.showOrderSetDetails = true;
             $scope.addTreatment = true;
@@ -582,6 +583,7 @@ angular.module('bahmni.clinical')
             };
 
             $scope.addOrderSet = function (orderSet) {
+                scrollTop();
                 $scope.newOrderSet.name = orderSet.name;
                 $scope.newOrderSet.uuid = orderSet.uuid;
                 var conflictingDrugOrders = [];
