@@ -87,7 +87,7 @@
             <div data-ng-switch-when="custom">
                 <div ng-if="section.config">
                     <custom-display-control patient="patient" visit-uuid="visitUuid"
-                            config="section.config"></custom-display-control>
+                            config="section.config" visit-summary="visitSummary"></custom-display-control>
                 </div>
             </div>
             <div data-ng-switch-when="pacsOrders">

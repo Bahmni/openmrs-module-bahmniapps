@@ -10,7 +10,9 @@ angular.module('bahmni.common.displaycontrol.custom')
                 visitUuid: "=",
                 section: "=",
                 config: "=",
-                enrollment:"="
+                enrollment: "=",
+                params: "=",
+                visitSummary: '='
             }
         }
     }]);
