@@ -198,8 +198,26 @@
     border-radius: 3px!important;
   }
   .diagnosis {
+    .col1{
+      width:37%;
+    }
+    .col2{
+      width:18%;
+    }
+    .col3{
+      width:18%;
+    }
+    .col4{
+      width:16%;
+    }
+    .col5{
+      width:9%;
+    }
     button {
-      width: 100px;
+      width: 78px;
+    }
+    .comment-toggle ,.toggle , .remove-diagnosis{
+      width:auto;
     }
     button:first-child {
       margin-left: 10px;

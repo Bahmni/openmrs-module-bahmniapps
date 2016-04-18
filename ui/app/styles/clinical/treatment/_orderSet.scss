@@ -3,6 +3,10 @@
  .orderSet-orders{
    button.add-orderSet-btn{
     margin-top:-5px !important;
+     @media screen and (max-width: 768px) {
+       font-size: 12px;
+       padding: 6px 5px 7px;
+     }
    }
    .showOrderSet{
      cursor: pointer;

@@ -59,6 +59,7 @@ form, .form {
             margin-left: 5px;
             margin-top:9px;
             float:left;
+            font-size: 13px;
             button {
               padding: 2px 0px;
               color: #000;
@@ -67,12 +68,12 @@ form, .form {
                 padding: 0.2em 0.1em;
               }
             }
-            @media screen and (max-width: 1024px) {
-              margin-top:9px;
+            @media screen and (max-width: 850px) and (min-width: 596px) {
+              margin-top:13px;
             }
         }
         textarea {
-           height: 35px;
+            height: 35px;
             width: 807px;;
             transition: height 0.1s ease;
             box-sizing: border-box;
@@ -83,11 +84,11 @@ form, .form {
             &.consultation-img-comments {
                 width: 100%;
             }
-            @media screen and (max-width: 1024px) {
+            @media screen and (max-width: 1130px) {
               width:600px;
             }
             @media screen and (max-width: 768px){
-              width:350px;
+              width:275px;
 
             }
         }
@@ -407,4 +408,12 @@ buttons-radio.illegalValue { border: 0 !important; background: none !important;}
 input[type="time"]{
   padding: 1px 10px;
   margin-left: 2px;
+}
+
+@media screen and (-webkit-min-device-pixel-ratio:0) {
+  form .form-field .add-more, .form .form-field .add-more{
+    @media screen and (max-width: 850px) and (min-width: 596px) {
+      margin-top:24px;
+    }
+  }
 }

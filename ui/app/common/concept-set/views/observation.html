@@ -1,7 +1,7 @@
 <div class="observations-tab">
     <div class="vitals form-horizontal" ng-if="!observation.voided || (observation.getControlType() == 'image' && observation.value)">
         <fieldset class="leaf-observation-node" ng-if="::observation.isObservationNode">
-            <div class="form-group" bm-pop-over>
+            <div class="form-group" bm-pop-over ng-class="{'add-more-image' :observation.getControlType()== 'image'}">
                 <div class=" concept-tooltip-description" bm-pop-over-target
                      ng-if="::observation.primaryObs.concept.description">
                     <i class="fa fa-caret-down"></i>
@@ -80,23 +80,24 @@
                 </div>
                 <hint concept-details="::observation.primaryObs.concept"/>
 
+                <div ng-class="{'accept-btn-wrap-smallScreen' : observation.unknownObs &&  observation.abnormalObs && !observation.isComputed() && !hideAbnormalButton}">
+                    <div ng-if="::observation.abnormalObs && !observation.isComputed() && !hideAbnormalButton" class="fl accept-btn-wrapper">
+                        <button type="button" ng-model="observation.abnormalObs.value"
+                                class="small-btn accept-btn grid-row-element"
+                                ng-disabled="!observation.primaryObs.hasValue() || observation.disabled"
+                                ng-class="{'active': observation.abnormalObs.value}"
+                                ng-click="observation.toggleAbnormal()"><i class="fa fa-ok"></i>{{'OBS_ABNORMAL_TRANSLATE_KEY' | translate}}
+                        </button>
+                    </div>
 
-                <div ng-if="::observation.abnormalObs && !observation.isComputed() && !hideAbnormalButton" class="fl accept-btn-wrapper">
-                    <button type="button" ng-model="observation.abnormalObs.value"
-                            class="small-btn accept-btn grid-row-element"
-                            ng-disabled="!observation.primaryObs.hasValue() || observation.disabled"
-                            ng-class="{'active': observation.abnormalObs.value}"
-                            ng-click="observation.toggleAbnormal()"><i class="fa fa-ok"></i>{{'OBS_ABNORMAL_TRANSLATE_KEY' | translate}}
-                    </button>
-                </div>
-
-                <div ng-if="::observation.unknownObs" class="fl accept-btn-wrapper">
-                    <button type="button" ng-model="observation.unknownObs.value"
-                            class="small-btn accept-btn grid-row-element"
-                            ng-disabled="observation.primaryObs.hasValue() && observation.primaryObs.atLeastOneValueSet() || observation.disabled"
-                            ng-class="{'active': observation.unknownObs.value}"
-                            ng-click="observation.toggleUnknown()"><i class="fa fa-ok"></i>{{'OBS_UNKNOWN_TRANSLATE_KEY' | translate}}
-                    </button>
+                    <div ng-if="::observation.unknownObs" class="fl accept-btn-wrapper">
+                        <button type="button" ng-model="observation.unknownObs.value"
+                                class="small-btn accept-btn grid-row-element"
+                                ng-disabled="observation.primaryObs.hasValue() && observation.primaryObs.atLeastOneValueSet() || observation.disabled"
+                                ng-class="{'active': observation.unknownObs.value}"
+                                ng-click="observation.toggleUnknown()"><i class="fa fa-ok"></i>{{'OBS_UNKNOWN_TRANSLATE_KEY' | translate}}
+                        </button>
+                    </div>
                 </div>
                 <div class="checkbox-inline" ng-if="::observation.durationObs"
                      ng-class="{'duration': observation.durationObs, 'computed-field': observation.isComputedAndEditable()}">
@@ -122,7 +123,7 @@
         </fieldset>
 
         <fieldset class="leaf-observation-node" ng-if="observation.isFormElement()">
-            <div class="form-group" bm-pop-over>
+            <div class="form-group" bm-pop-over ng-class="{'add-more-image' :observation.getControlType()== 'image'}">
 
                 <div class=" concept-tooltip-description" bm-pop-over-target ng-if="::observation.concept.description">
                     <i class="fa fa-caret-down"></i>

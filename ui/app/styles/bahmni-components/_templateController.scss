@@ -74,6 +74,9 @@
             margin: 0 auto;
             vertical-align: middle;
           }
+           @media screen and (max-width: 768px) {
+             min-height: 57px;
+           }
         }
       }
     }

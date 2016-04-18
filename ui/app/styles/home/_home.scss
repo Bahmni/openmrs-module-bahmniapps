@@ -485,6 +485,9 @@ body{
           i {
             margin-bottom: 5px;
           }
+          &.button{
+            min-height: 115px !important;
+          }
         }
       }
     }
@@ -497,7 +500,7 @@ body{
     }
   }
 
-  @media screen and (min-width: 960px) {
+  @media screen and (min-width: 900px) {
     .apps {
       width: 560px;
       margin: 80px auto;

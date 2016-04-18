@@ -108,7 +108,7 @@ div.duration.checkbox-inline {
   margin-top: -10px;
   @media screen and (max-width: 850px) and (min-width: 596px) {
     margin-top: 0;
-    margin-left: 166px;
+    margin-left: 150px;
   }
   @media screen and (max-width: 595px) {
     margin-left: 10px;
@@ -203,6 +203,9 @@ form .observations-tab .vitals .form-field .field-value {
     &.for-separator {
       font-size: 12px;
       padding-top: 10px;
+      @media screen and (max-width: 1024px) {
+        padding-top: 16px;
+      }
     }
   }
 }
@@ -316,11 +319,11 @@ concept-set {
     overflow: auto;
     clear: both;
     box-sizing: border-box;
-    @media screen and (max-width: 1024px) {
+    @media screen and (max-width: 1130px) {
       width:600px;
     }
     @media screen and (max-width: 768px){
-      width:350px;
+      width:275px;
     }
     .file{
       .comment-toggle {
@@ -446,8 +449,23 @@ concept-set {
 
 .accept-btn-wrapper {
   margin: 7px 5px 0 20px;
+  @media screen and (max-width: 1024px){
+    margin: 7px 5px 0 0;
+  }
+  button{
+    @media screen and (max-width: 768px){
+      padding-left: 6px;
+      padding-right: 6px;
+    }
+  }
 }
 
+.accept-btn-wrap-smallScreen{
+  @media screen  and (max-width: 800px) and (min-width: 596px){
+    margin-left:176px;
+    clear:both;
+  }
+}
 .stepper {
   &.illegalValue{
     border: none !important;
@@ -491,7 +509,9 @@ concept-set {
   box-sizing: border-box;
   font-size: 14px;
   text-align: center;
-
+  @media screen and (max-width: 850px) and (min-width: 596px) {
+    margin-top:13px;
+  }
 }
 .vitals table{
   caption{
@@ -529,11 +549,29 @@ concept-set {
     text-align: center;
     padding-left: 10px;
     padding-right: 10px;
+    @media screen and (max-width: 1024px){
+      width:185px;
+    }
   }
   @media screen and (max-width: 850px){
-    width:56%;
+    width:52%;
   }
 }
 .add-more-wrapper{
   display: inline-block;
+}
+
+@media screen and (-webkit-min-device-pixel-ratio:0) {
+  #removeClonedObs.fa-remove {
+    @media screen and (max-width: 850px) and (min-width: 596px) {
+      margin-top:24px;
+    }
+  }
+  .add-more-image{
+    .add-more , #removeClonedObs.fa-remove {
+      @media screen and (max-width: 850px) and (min-width: 596px) {
+        margin-top:10px !important;
+      }
+    }
+  }
 }
