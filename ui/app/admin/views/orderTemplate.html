@@ -10,11 +10,10 @@
                                ng-model="orderSetMember.orderTemplate.drug.name"
                                bahmni-autocomplete
                                strict-select="true"
-                               on-select="onSelectOfDrug($index)"
-                               ng-change="onChange($index)"
+                               on-select="onSelectOfDrug(orderSetMember)"
+                               ng-change="onChange(orderSetMember)"
                                is-invalid="conceptNameInvalid"
-                               source="getDrugsOfAConcept(orderSetMember.concept)"
-                               response-map=getDrugResults()
+                               source="getDrugsOf(orderSetMember)"
                                placeholder="Enter a drug name"/>
                     </div>
                 </div>

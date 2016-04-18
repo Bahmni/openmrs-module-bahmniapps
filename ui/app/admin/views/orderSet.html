@@ -52,7 +52,7 @@
                                     </div>
                                     <div class="field-value">
                                         <select ng-model="orderSetMember.orderType.uuid"
-                                                ng-change="clearConceptName(orderSetMember, orderSet)"
+                                                ng-change="clearTemplateAndConcept(orderSetMember)"
                                                 ng-options="orderType.uuid as orderType.display for orderType in orderTypes"
                                                 required></select>
                                     </div>
@@ -62,25 +62,31 @@
                                         <label>Concept Name<span class="asterick">*</span></label>
                                     </div>
                                     <div class="field-value">
-                                        <input class="enter-concept" type="text" name="conceptSet"
+                                        <input class="enter-concept"
+                                               type="text"
+                                               name="conceptSet"
                                                ng-model="orderSetMember.concept.display"
-                                               bahmni-autocomplete strict-select="true" on-select="onSelect(orderSetMember)"
+                                               bahmni-autocomplete
+                                               strict-select="true"
                                                is-invalid="conceptNameInvalid"
-                                               source="getConcepts"
-                                               response-map=getDataResults(orderSetMember.orderType) required
+                                               source="getConcepts(orderSetMember)"
+                                               on-select="onSelect"
+                                               ng-change="onChange(orderSetMember)"
+                                               ng-trim="false"
+                                               required
                                                placeholder="Enter a concept name"/>
                                     </div>
                                 </div>
                                 <div class="col col3 form-field">
                                     <div class="col col4 form-field">
-                                        <input class="fl remove-orderSet" type="button" ng-click="removeOrderSetMember($index)" value="X" tabindex="-1">
+                                        <input class="fl remove-orderSet" type="button" ng-click="remove(orderSetMember)" value="X" tabindex="-1">
                                     </div>
                                 </div>
                                 <div class="action-container fr">
-                                    <span class="button" ng-click="moveOrderSetMemberUp($index)">
+                                    <span class="button" ng-click="moveUp(orderSetMember)">
                                         <i class="fa fa-arrow-circle-up"></i>
                                     </span>
-                                    <span class="button" ng-click="moveOrderSetMemberDown($index)">
+                                    <span class="button" ng-click="moveDown(orderSetMember)">
                                         <i class="fa fa-arrow-circle-down"></i>
                                     </span>
                                 </div>

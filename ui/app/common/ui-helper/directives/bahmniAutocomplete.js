@@ -4,8 +4,9 @@ angular.module('bahmni.common.uiHelper')
 .directive('bahmniAutocomplete', function () {
     var link = function (scope, element, attrs, ngModelCtrl) {
         var source = scope.source();
-        var responseMap = scope.responseMap();
+        var responseMap = scope.responseMap && scope.responseMap();
         var onSelect = scope.onSelect();
+        var onEdit = scope.onEdit && scope.onEdit();
         var minLength = scope.minLength || 2;
         var formElement = element[0];
         var validationMessage = scope.validationMessage || 'Please select a value from auto complete';
@@ -51,8 +52,8 @@ angular.module('bahmni.common.uiHelper')
                 return true;
             },
             search: function (event, ui) {
-                if(scope.onEdit != null){
-                    scope.onEdit(ui.item);
+                if(onEdit != null){
+                    onEdit(ui.item);
                 }
                 var searchTerm = $.trim(element.val());
                 validateIfNeeded(searchTerm);

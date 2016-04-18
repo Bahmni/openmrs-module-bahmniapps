@@ -11,31 +11,28 @@
             'value': drug.name
         }
     };
-    var selectDrug = function (orderSetMembers, index, selectedTemplate) {
-        orderSetMembers[index].orderTemplate.drug = selectedTemplate.drug;
+    var selectDrug = function (selectedTemplate, orderSetMember) {
+        orderSetMember.orderTemplate.drug = selectedTemplate.drug;
     };
-    var deleteDrugIfDrugNameIsEmpty = function (orderSetMembers, index) {
-        var orderTemplate = orderSetMembers[index].orderTemplate;
-        if (!orderTemplate.drug.name) {
-            orderTemplate.drug = {};
+    var deleteDrugIfDrugNameIsEmpty = function (orderSetMember) {
+        if (!orderSetMember.orderTemplate.drug.name) {
+            orderSetMember.orderTemplate.drug = {};
         }
     };
 
     var $inject = ['$scope', 'drugService'];
     var OrderTemplateController = function ($scope, drugService) {
-        var search = function (request, drugConceptUuid) {
-            return drugService.search(request.term, drugConceptUuid);
+        var search = function (request, orderSetMember) {
+            return drugService.search(request.term, orderSetMember.concept.uuid)
+                .then(_.partial(_.map,_,mapResult));
         };
-        $scope.getDrugResults = function () {
-            return _.partial(_.map, _, mapResult);
+        $scope.getDrugsOf = function (orderSetMember) {
+            return _.partial(search, _, orderSetMember);
         };
-        $scope.getDrugsOfAConcept = function (concept) {
-            return _.partial(search, _, concept.uuid);
+        $scope.onSelectOfDrug = function (orderSetMember) {
+            return _.partial(selectDrug, _, orderSetMember);
         };
-        $scope.onSelectOfDrug = function (index) {
-            return _.partial(selectDrug, $scope.orderSet.orderSetMembers, index, _);
-        };
-        $scope.onChange = _.partial(deleteDrugIfDrugNameIsEmpty, $scope.orderSet.orderSetMembers, _);
+        $scope.onChange = deleteDrugIfDrugNameIsEmpty;
     };
 
     OrderTemplateController.$inject = $inject;
