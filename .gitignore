@@ -25,3 +25,5 @@ ui/style-guide
 node_modules
 *.tern-port
 **/.idea/*
+ui/common.background.min.js
+ui/common.offline.min.js
