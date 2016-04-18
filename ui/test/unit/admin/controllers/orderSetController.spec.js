@@ -121,7 +121,7 @@ describe("OrderSetController", function () {
     it("should void already saved orderSetMember", function () {
         scope.$apply(setUp);
         scope.orderSet.orderSetMembers= [orderSetData.data.orderSetMembers[0]];
-        scope.removeOrderSetMember(0);
+        scope.remove(scope.orderSet.orderSetMembers[0]);
 
         expect(scope.orderSet.orderSetMembers[0].retired).toBeTruthy();
     });
@@ -130,7 +130,7 @@ describe("OrderSetController", function () {
         scope.$apply(setUp);
 
         scope.orderSet.orderSetMembers= [{}];
-        scope.removeOrderSetMember(0);
+        scope.remove(scope.orderSet.orderSetMembers[0]);
 
         expect(scope.orderSet.orderSetMembers.length).toBe(0);
     });

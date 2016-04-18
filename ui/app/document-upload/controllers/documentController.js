@@ -215,8 +215,10 @@ angular.module('opd.documentupload')
             };
 
             $scope.onEditConcept = function(file){
-                file.concept.name = undefined;
-                file.concept.uuid = undefined;
+                return function(){
+                    file.concept.name = undefined;
+                    file.concept.uuid = undefined;
+                }
             };
 
             $scope.onConceptSelected = function(file){
