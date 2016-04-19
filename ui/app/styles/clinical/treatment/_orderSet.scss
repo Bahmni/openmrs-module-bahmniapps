@@ -2,7 +2,14 @@
   margin:20px 0;
  .orderSet-orders{
    button.add-orderSet-btn{
-    margin-top:-5px !important;
+    margin-top:-2px !important;
+     font-size: 12px;
+     @media screen and (max-width: 1024px) {
+       margin-top:-6px !important;
+     }
+   }
+   button.remove-orderSet-btn{
+     padding: 6px 10px 7px;
    }
    .showOrderSet{
      cursor: pointer;
