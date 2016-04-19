@@ -96,7 +96,7 @@ describe("AddTreatmentController", function () {
     };
 
 
-    var scope, stateParams, rootScope, contextChangeHandler, newTreatment,
+    var $q, scope, stateParams, rootScope, contextChangeHandler, newTreatment,
         editTreatment, clinicalAppConfigService, ngDialog, drugService, drugs,
         encounterDateTime, appService, appConfig, defaultDrugsPromise, orderSetService, locationService;
 
@@ -133,7 +133,8 @@ describe("AddTreatmentController", function () {
     };
 
     var initController = function () {
-        inject(function ($controller, $rootScope) {
+        inject(function ($controller, $rootScope, _$q_) {
+            $q = _$q_;
             scope = $rootScope.$new();
             rootScope = $rootScope;
             encounterDateTime = moment("2014-03-02").toDate();
@@ -151,7 +152,7 @@ describe("AddTreatmentController", function () {
             appConfig = jasmine.createSpyObj('appConfig', ['getConfig']);
             orderSetService = jasmine.createSpyObj('orderSetService', ['getCalculatedDose']);
             scope.patient = {uuid: "patient.uuid"};
-            orderSetService.getCalculatedDose.and.returnValue(specUtil.respondWith({
+            orderSetService.getCalculatedDose.and.returnValue(specUtil.respondWithPromise($q, {
                 dose: 20, doseUnit: 'mg'
             }));
 
@@ -1694,13 +1695,15 @@ describe("AddTreatmentController", function () {
         })
     });
 
-    xdescribe("add orderset", function () {
+    describe("add orderset", function () {
         it("should add order set drugs to orderSetTreatments list in scope", function () {
 
             var orderSetDate = moment("2015-03-02").toDate();
             var stopDate = moment("2015-03-04").toDate();
             scope.newOrderSet.date = orderSetDate;
             scope.addOrderSet(orderSets[0]);
+
+            scope.$apply();
             expect(scope.orderSetTreatments.length).toBe(2);
             var firstOrderSetTreatment = scope.orderSetTreatments[0];
             expect(firstOrderSetTreatment.isNewOrderSet).toBeTruthy();
@@ -1709,9 +1712,9 @@ describe("AddTreatmentController", function () {
             expect(firstOrderSetTreatment.effectiveStopDate).toEqual(stopDate);
             expect(firstOrderSetTreatment.dosingInstructionType).toEqual(Bahmni.Clinical.Constants.flexibleDosingInstructionsClass);
             expect(firstOrderSetTreatment.frequencyType).toEqual("uniform");
-            expect(firstOrderSetTreatment.uniformDosingType.dose).toEqual(2);
+            expect(firstOrderSetTreatment.uniformDosingType.dose).toEqual(20);
             expect(firstOrderSetTreatment.durationUnit).toEqual("Day(s)");
-            expect(firstOrderSetTreatment.quantity).toEqual(8);
+            expect(firstOrderSetTreatment.quantity).toEqual(80);
             expect(ngDialog.open).not.toHaveBeenCalled();
 
         });
@@ -1728,6 +1731,7 @@ describe("AddTreatmentController", function () {
 
             scope.addOrderSet(orderSets[0]);
 
+            scope.$apply();
             expect(scope.orderSetTreatments[0].include).toBeFalsy();
             expect(scope.orderSetTreatments[1].include).toBeFalsy();
             expect(ngDialog.open).toHaveBeenCalled();
@@ -1735,9 +1739,11 @@ describe("AddTreatmentController", function () {
         })
     });
 
-    xdescribe("remove orderset", function () {
+    describe("remove orderset", function () {
         it('should empty orderSetTreatments when orderset is removed', function () {
             scope.addOrderSet(orderSets[0]);
+
+            scope.$apply();
             expect(scope.orderSetTreatments.length).toBe(2);
             expect(scope.newOrderSet.uuid).toBe(orderSets[0].uuid);
 

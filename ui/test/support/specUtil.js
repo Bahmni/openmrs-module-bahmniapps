@@ -60,5 +60,16 @@ specUtil.createFakePromise = function (data) {
 // catch the error thrown by a promise in async specs
 var notifyError = function (error) {
     expect(error).toBeTruthy();
-    expect("Error : " + error.message + " not to be thrown").toBeNull(); // It is a hack. But, instead of wasting time on making it perfect it's better to go with it
+    expect("Error : '" + error.message + "' not to be thrown").toBeNull(); // It is a hack. But, instead of wasting time on making it perfect it's better to go with it
+};
+// log a message to see whether a then callback is called or not.
+// ex:  101 - promise.then(...)
+//      102 -       .then(...)
+//      103 -       .then(specUtil.debug(103))
+//      104 -       .then(...);
+specUtil.debug = function (lineNumber) {
+    return function(data){
+        console.log(lineNumber+" : here");
+        return data;
+    };
 };
