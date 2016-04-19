@@ -135,10 +135,10 @@ describe('patientMapper', function () {
     });
 
     it('should map registration date', function () {
-        var date1 = new Date();
-        openmrsPatient.patient.person.personDateCreated = moment(date1).format();
+        var date1 = new Date("1947-04-15T05:30:10.748+0530");
+        openmrsPatient.patient.person.auditInfo.dateCreated = moment(date1).format();
         var patient = mapper.map(openmrsPatient);
-        expect(dateUtil.getDateWithoutTime(patient.registrationDate)).toEqual(dateUtil.getDateWithoutTime(dateUtil.parseServerDateToDate(moment(date1).format())));
+        expect(patient.registrationDate.toString()).toEqual(date1.toString());
     });
 
     it("should populate birthdate and age if birthdate is not estimated", function () {
