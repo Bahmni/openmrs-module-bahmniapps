@@ -66,7 +66,7 @@ angular.module('bahmni.common.conceptSet')
 
                 var getObservationsOfCurrentTemplate = function () {
                     return _.filter($scope.observations, function (observation) {
-                        return observation.conceptSetName === $scope.rootObservation.concept.name;
+                        return observation.conceptSetName.toLowerCase() === $scope.rootObservation.concept.name.toLowerCase();
                     });
                 };
 
