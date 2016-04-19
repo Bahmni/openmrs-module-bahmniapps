@@ -299,8 +299,8 @@
                     <h2 class="section-title order-set-orderAnOrderSet">
                         {{::orderSet.name}}
                         <div class="button-group fr">
-                            <button class="add-orderSet-btn secondary-button fl" ng-disabled="newOrderSet.uuid" ng-show="newOrderSet.uuid !== orderSet.uuid" ng-click="addOrderSet(orderSet)">Add</button>
-                            <button class="add-orderSet-btn secondary-button fl" ng-show="newOrderSet.uuid === orderSet.uuid" ng-click="removeOrderSet()">Remove</button>
+                            <button class="add-orderSet-btn secondary-button fl" ng-disabled="newOrderSet.uuid" ng-show="newOrderSet.uuid !== orderSet.uuid" ng-click="addOrderSet(orderSet)"><u>A</u>dd</button>
+                            <button class="add-orderSet-btn secondary-button remove-orderSet-btn fl" ng-show="newOrderSet.uuid === orderSet.uuid" ng-click="removeOrderSet()"><u>R</u>emove</button>
                             <div toggle="showOrderSetDetails" class="fr showOrderSet">
                                 <i class="fa fa-plus-square" ng-show="showOrderSetDetails"></i>
                                 <i class="fa fa-minus-square" ng-hide="showOrderSetDetails"></i>

@@ -237,6 +237,9 @@
                 }
                 h2.section-title{
                     margin: 0 0 10px;
+                    @media screen and (max-width: 1024px) {
+                        font-size: 14px;
+                    }
                     @media screen and (max-width: 768px) {
                         font-size: 13px;
                     }
