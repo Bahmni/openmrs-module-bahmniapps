@@ -5,88 +5,87 @@ describe("DrugOrderHistoryController", function () {
     beforeEach(module('bahmni.clinical'));
 
     var scope, prescribedDrugOrders, activeDrugOrder, _treatmentService,
-       retrospectiveEntryService, translate, appService, rootScope;
-    var fetchActiveTreatmentsDeferred;
+        retrospectiveEntryService, appService, rootScope, visitHistory;
     var DateUtil = Bahmni.Common.Util.DateUtil;
-    var treatmentConfig =  {
+    var treatmentConfig = {
         drugOrderHistoryConfig: {
             numberOfVisits: 4
         }
     }
 
+    var translate;
     beforeEach(module(function ($provide) {
-        translate = jasmine.createSpyObj('$translate',['instant']);
-
-        $provide.value('$q', Q);
-        $provide.value('$translate',translate);
-        $provide.value('appService',appService);
-        fetchActiveTreatmentsDeferred = Q.defer();
-
-        _treatmentService = jasmine.createSpyObj('TreatmentService', ['getPrescribedDrugOrders']);
-        _treatmentService.getPrescribedDrugOrders.and.callFake(function () {
-            fetchActiveTreatmentsDeferred.resolve();
-            return specUtil.respondWith(prescribedDrugOrders);
-        });
+        translate = jasmine.createSpyObj('$translate', ['instant']);
+        $provide.value('$translate', translate);
+        $provide.value('appService', appService);
     }));
 
-    beforeEach(inject(function ($controller, $rootScope) {
+    var $q, $controller, spinner;
+    beforeEach(inject(function (_$controller_, $rootScope, _$q_) {
+        $q = _$q_;
+        $controller = _$controller_;
+        _treatmentService = jasmine.createSpyObj('TreatmentService', ['getPrescribedDrugOrders']);
+        _treatmentService.getPrescribedDrugOrders.and.callFake(function () {
+            return specUtil.respondWithPromise($q, prescribedDrugOrders);
+        });
 
         rootScope = $rootScope;
         spyOn($rootScope, '$broadcast');
         $rootScope.visit = {startDate: 1410322624000};
         scope = $rootScope.$new();
-        scope.consultation = {preSaveHandler: new Bahmni.Clinical.Notifier(), discontinuedDrugs: [],
-            activeAndScheduledDrugOrders: [Bahmni.Clinical.DrugOrderViewModel.createFromContract(scheduledOrder), Bahmni.Clinical.DrugOrderViewModel.createFromContract(activeDrugOrder)] };
+        scope.consultation = {
+            preSaveHandler: new Bahmni.Clinical.Notifier(), discontinuedDrugs: [],
+            activeAndScheduledDrugOrders: [Bahmni.Clinical.DrugOrderViewModel.createFromContract(scheduledOrder), Bahmni.Clinical.DrugOrderViewModel.createFromContract(activeDrugOrder)]
+        };
         scope.currentBoard = {extensionParams: {}};
 
         var retrospectiveEntry = Bahmni.Common.Domain.RetrospectiveEntry.createFrom(Date.now());
         retrospectiveEntryService = jasmine.createSpyObj('retrospectiveEntryService', ['getRetrospectiveEntry']);
         retrospectiveEntryService.getRetrospectiveEntry.and.returnValue(retrospectiveEntry);
-         var spinner = jasmine.createSpyObj('spinner', ['forPromise']);
+        spinner = jasmine.createSpyObj('spinner', ['forPromise']);
+        visitHistory = {};
+    }));
 
-
+    var initController = function () {
         $controller('DrugOrderHistoryController', {
             $scope: scope,
-            activeDrugOrders : [activeDrugOrder, scheduledOrder],
+            $translate: translate,
+            activeDrugOrders: [activeDrugOrder, scheduledOrder],
             TreatmentService: _treatmentService,
             retrospectiveEntryService: retrospectiveEntryService,
             $stateParams: {patientUuid: "patientUuid"},
             visitContext: {},
-            spinner : spinner,
-            visitHistory: [],
+            spinner: spinner,
+            visitHistory: visitHistory,
             treatmentConfig: treatmentConfig
-
         });
+        rootScope.$apply();
+    };
 
-    }));
+    beforeEach(initController);
 
     describe("when initialized", function () {
-        it("should setup scope variables", function (done) {
-            translate.instant.and.callFake(function(){
-                return "Recent";
-            });
-            fetchActiveTreatmentsDeferred.promise.then().then(function(){
-                expect(scope.consultation.drugOrderGroups.length).toBe(3);
-                expect(scope.consultation.drugOrderGroups[0].label).toEqual("Recent");
-                expect(scope.consultation.drugOrderGroups[0].drugOrders.length).toBe(3);
-                expect(scope.consultation.drugOrderGroups[0].drugOrders[0].uuid).toBe(scheduledOrder.uuid);
-                expect(scope.consultation.drugOrderGroups[0].drugOrders[1].uuid).toBe(activeDrugOrder.uuid);
-                expect(scope.consultation.drugOrderGroups[0].drugOrders[2].uuid).toBe('drugOrder2Uuid');
-                expect(scope.consultation.drugOrderGroups[0].selected).toBeTruthy();
-                expect(scope.consultation.drugOrderGroups[1].visitStartDate.getTime()).toEqual(1410349317000);
-                expect(scope.consultation.drugOrderGroups[1].drugOrders.length).toBe(1);
-                expect(scope.consultation.drugOrderGroups[2].visitStartDate.getTime()).toEqual(1397028261000);
+        it("should setup scope variables", function () {
+            translate.instant.and.returnValue("Recent");
 
-                var secondDrugOrder = scope.consultation.drugOrderGroups[2].drugOrders[0];
-                expect(secondDrugOrder.drug.name).toBe(prescribedDrugOrders[0].drug.name);
+            initController();
+            expect(scope.consultation.drugOrderGroups.length).toBe(3);
+            expect(scope.consultation.drugOrderGroups[0].label).toEqual("Recent");
+            expect(scope.consultation.drugOrderGroups[0].drugOrders.length).toBe(3);
+            expect(scope.consultation.drugOrderGroups[0].drugOrders[0].uuid).toBe(scheduledOrder.uuid);
+            expect(scope.consultation.drugOrderGroups[0].drugOrders[1].uuid).toBe(activeDrugOrder.uuid);
+            expect(scope.consultation.drugOrderGroups[0].drugOrders[2].uuid).toBe('drugOrder2Uuid');
+            expect(scope.consultation.drugOrderGroups[0].selected).toBeTruthy();
+            expect(scope.consultation.drugOrderGroups[1].visitStartDate.getTime()).toEqual(1410349317000);
+            expect(scope.consultation.drugOrderGroups[1].drugOrders.length).toBe(1);
+            expect(scope.consultation.drugOrderGroups[2].visitStartDate.getTime()).toEqual(1397028261000);
 
-                done();
-            });
-
+            var secondDrugOrder = scope.consultation.drugOrderGroups[2].drugOrders[0];
+            expect(secondDrugOrder.drug.name).toBe(prescribedDrugOrders[0].drug.name);
         });
         it("should get prescribed and active Drugorders with correct no of visits ", function () {
-                expect( _treatmentService.getPrescribedDrugOrders).toHaveBeenCalledWith("patientUuid", true, 4, undefined,undefined);
-            });
+            expect(_treatmentService.getPrescribedDrugOrders).toHaveBeenCalledWith("patientUuid", true, 4, undefined, undefined);
+        });
     });
 
     describe("when conditionally enable or disable order reason text for drug stoppage", function () {
@@ -94,7 +93,7 @@ describe("DrugOrderHistoryController", function () {
         it("should enable reason text for all concepts when nothing is configured", function () {
             var drugOrder = Bahmni.Clinical.DrugOrderViewModel.createFromContract(prescribedDrugOrders[0]);
 
-            drugOrder.orderReasonConcept = {name:{name:"Other"}};
+            drugOrder.orderReasonConcept = {name: {name: "Other"}};
             scope.discontinue(drugOrder);
 
             expect(drugOrder.orderReasonNotesEnabled).toBe(true);
@@ -103,38 +102,39 @@ describe("DrugOrderHistoryController", function () {
 
         it("should enable reason text only for configured reason concepts", function () {
             var drugOrder = Bahmni.Clinical.DrugOrderViewModel.createFromContract(prescribedDrugOrders[0]);
-            Bahmni.ConceptSet.FormConditions.rules ={ "Medication Stop Reason":function (drugOrder, conceptName) {
-                if (conceptName == "Adverse event") {
-                    drugOrder.orderReasonNotesEnabled = true;
-                    return true;
+            Bahmni.ConceptSet.FormConditions.rules = {
+                "Medication Stop Reason": function (drugOrder, conceptName) {
+                    if (conceptName == "Adverse event") {
+                        drugOrder.orderReasonNotesEnabled = true;
+                        return true;
+                    }
+                    else
+                        return false;
                 }
-                else
-                    return false;
-            }
-           };
-            drugOrder.orderReasonConcept = {name:{name:"Adverse event"}};
+            };
+            drugOrder.orderReasonConcept = {name: {name: "Adverse event"}};
             scope.discontinue(drugOrder);
 
             expect(drugOrder.orderReasonNotesEnabled).toBe(true);
-
         });
 
         it("should disable reason text only for unconfigured reason concepts", function () {
             var drugOrder = Bahmni.Clinical.DrugOrderViewModel.createFromContract(prescribedDrugOrders[0]);
-            Bahmni.ConceptSet.FormConditions.rules ={ "Medication Stop Reason":function (drugOrder, conceptName) {
-                if (conceptName == "Adverse event") {
-                    drugOrder.orderReasonNotesEnabled = true;
-                    return true;
+            Bahmni.ConceptSet.FormConditions.rules = {
+                "Medication Stop Reason": function (drugOrder, conceptName) {
+                    if (conceptName == "Adverse event") {
+                        drugOrder.orderReasonNotesEnabled = true;
+                        return true;
+                    }
+                    else
+                        return false;
                 }
-                else
-                    return false;
-            }
             };
-            drugOrder.orderReasonConcept = {name:{name:"Adverse event"}};
+            drugOrder.orderReasonConcept = {name: {name: "Adverse event"}};
             scope.updateFormConditions(drugOrder);
             expect(drugOrder.orderReasonNotesEnabled).toBe(true);
 
-            drugOrder.orderReasonConcept = {name:{name:"other event"}};
+            drugOrder.orderReasonConcept = {name: {name: "other event"}};
             scope.updateFormConditions(drugOrder);
             expect(drugOrder.orderReasonNotesEnabled).toBe(false);
 
@@ -142,20 +142,20 @@ describe("DrugOrderHistoryController", function () {
 
     });
 
-    it('should broadcast refillDrugOrder event on refill', function(){
+    it('should broadcast refillDrugOrder event on refill', function () {
         var drugOrder = Bahmni.Clinical.DrugOrderViewModel.createFromContract(prescribedDrugOrders[0]);
         scope.refill(drugOrder);
         expect(rootScope.$broadcast).toHaveBeenCalledWith('event:refillDrugOrder', drugOrder);
     });
 
-    it('should broadcast reviseDrugOrder event on revise', function(){
+    it('should broadcast reviseDrugOrder event on revise', function () {
         var drugOrder = Bahmni.Clinical.DrugOrderViewModel.createFromContract(prescribedDrugOrders[0]);
         scope.consultation.drugOrdersWithUpdatedOrderAttributes = {}
         scope.revise(drugOrder, prescribedDrugOrders);
         expect(rootScope.$broadcast).toHaveBeenCalledWith('event:reviseDrugOrder', drugOrder, prescribedDrugOrders);
     });
 
-    it('should broadcast discontinueDrugOrder event on discontinue and update form conditions', function(){
+    it('should broadcast discontinueDrugOrder event on discontinue and update form conditions', function () {
         var drugOrder = Bahmni.Clinical.DrugOrderViewModel.createFromContract(prescribedDrugOrders[0]);
         spyOn(scope, 'updateFormConditions');
         scope.discontinue(drugOrder);
@@ -163,18 +163,54 @@ describe("DrugOrderHistoryController", function () {
         expect(scope.updateFormConditions).toHaveBeenCalled();
     });
 
-    describe("Min stop date", function() {
-        it("should be same as start date of drug order if past drug", function() {
+    describe("Min stop date", function () {
+        it("should be same as start date of drug order if past drug", function () {
             var pastDrugOrder = Bahmni.Clinical.DrugOrderViewModel.createFromContract(activeDrugOrder);
             var minDate = scope.getMinDateForDiscontinue(pastDrugOrder);
             expect(minDate).toEqual(moment(pastDrugOrder.effectiveStartDate).format("YYYY-MM-DD"));
         });
 
-        it("should be same as current date if scheduled drug", function() {
+        it("should be same as current date if scheduled drug", function () {
             var pastDrugOrder = Bahmni.Clinical.DrugOrderViewModel.createFromContract(scheduledOrder);
             var minDate = scope.getMinDateForDiscontinue(pastDrugOrder);
             expect(minDate).toEqual(moment().format("YYYY-MM-DD"));
         });
+    });
+
+    describe("sortOrderSetDrugsFollowedByDrugOrders", function () {
+        it("should not return duplicate orderSet orders if orders are from previous visit", function () {
+            var orderSetOrderFromPreviousVisit = {
+                orderGroup: {
+                    uuid: "orderGroupUuid",
+                    orderSet: {}
+                },
+                "visit": {
+                    "startDateTime": new Date("Wed Apr 09 2014 12:00:00 GMT+0530 (IST)"),
+                    "uuid": "002efa33-4c4f-469f-968a-faedfe3a5e90"
+                },
+                "drug": {
+                    "form": "Injection",
+                    "uuid": "8d7e3dc0-f4ad-400c-9468-5a9e2b1f4230",
+                    "strength": null,
+                    "name": "Methylprednisolone 2ml"
+                }
+            };
+
+            scope.consultation.activeAndScheduledDrugOrders = [
+                Bahmni.Clinical.DrugOrderViewModel.createFromContract(orderSetOrderFromPreviousVisit)
+            ];
+
+            _treatmentService.getPrescribedDrugOrders.and.returnValue(
+                specUtil.respondWithPromise($q, [orderSetOrderFromPreviousVisit])
+            );
+
+            visitHistory.activeVisit = {
+                "startDateTime": new Date("Wed Apr 09 2014 12:54:21 GMT+0530 (IST)")
+            };
+
+            initController();
+            expect(scope.consultation.drugOrderGroups[0].drugOrders.length).toBe(1);
+        })
     });
 
     activeDrugOrder = {
