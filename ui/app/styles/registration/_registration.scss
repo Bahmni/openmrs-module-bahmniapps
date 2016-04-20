@@ -24,14 +24,14 @@ body{
         width: 42%;
         margin-left: 0;
         @media (max-width : 768px){
-          width: 100%;
+          width: 100% !important;
         }
         &.obs-section{
-          width: 40%;
+          width: 40% !important;
           margin-left: 8.375%;
           float: right;
           @media (max-width : 768px){
-            width: 100%;
+            width: 100% !important;
             margin:15px auto;
           }
         }
@@ -72,7 +72,19 @@ body{
       .observation-section{
         article{
           min-width: 42%;
-          width: auto;
+          width: 47%;
+        }
+        .field-value-buttonSelectType{
+          width:40%;
+          .multi-select-button-group button{
+            width:200px;
+            text-align: center;
+            padding-left: 10px;
+            padding-right: 10px;
+            @media screen and (max-width: 1024px){
+              width:185px;
+            }
+          }
         }
       }
     }
