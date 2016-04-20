@@ -39,7 +39,10 @@ angular.module('bahmni.clinical')
                     return 'drugOrders';
                 });
                 var refillableDrugOrders = drugOrderHistoryHelper.getRefillableDrugOrders(orderSetOrdersAndDrugOrders.drugOrders, getPreviousVisitDrugOrders(), showOnlyActive);
-                return _.concat(orderSetOrdersAndDrugOrders.orderSetOrders, refillableDrugOrders);
+                return _(orderSetOrdersAndDrugOrders.orderSetOrders)
+                    .concat(refillableDrugOrders)
+                    .uniqBy('uuid')
+                    .value();
             };
 
             var createRecentDrugOrderGroup = function (activeAndScheduledDrugOrders) {
