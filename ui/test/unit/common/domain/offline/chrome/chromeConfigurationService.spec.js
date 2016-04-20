@@ -331,4 +331,32 @@ describe('configurationService', function () {
             done();
         });
     });
+
+
+
+    it('should fetch loginLocationToEncounterTypeMapping from offline db', function (done) {
+        var loginLocationToEncounterTypeMapping = {
+            "value": {
+                "results": [
+                    {
+                        "entity": {
+                            "uuid": "6f8dca71-1f5a-4cb4-8bb2-f52b317af202",
+                            "display": "login location",
+                            "name": "login location"
+                        }
+                    },
+                    {
+                        "mappings": []
+                    }
+                ]
+            }
+        };
+
+        offlineDbService.getReferenceData.and.returnValue(specUtil.respondWithPromise($q, loginLocationToEncounterTypeMapping));
+        configurationservice.getConfigurations(['loginLocationToEncounterTypeMapping']).then(function (result) {
+            expect(result.loginLocationToEncounterTypeMapping.value.results.length).toBe(2);
+            expect(result.loginLocationToEncounterTypeMapping.value.results[0].entity.name).toBe("login location");
+            done();
+        });
+    });
 });

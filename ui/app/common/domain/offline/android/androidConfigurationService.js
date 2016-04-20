@@ -117,6 +117,12 @@ angular.module('bahmni.common.domain')
                 });
             };
 
+            configurationFunctions.loginLocationToEncounterTypeMapping =  function () {
+                return androidDbService.getReferenceData('LoginLocationToEncounterTypeMapping').then(function (result){
+                    return {"data" : result};
+                });
+            };
+
             var existingPromises = {};
             var configurations = {};
 

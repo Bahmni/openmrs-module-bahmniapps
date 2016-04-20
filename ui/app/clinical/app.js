@@ -73,16 +73,10 @@ angular.module('consultation')
                     offlineDb: function (offlineDbInitialization) {
                         return offlineDbInitialization();
                     },
-                    offlineSyncInitialization: function (offlineSyncInitialization, offlineDb, offlineReferenceDataInitialization) {
-                        return offlineSyncInitialization(offlineDb, offlineReferenceDataInitialization);
-                    },
-                    offlineReferenceDataInitialization: function(offlineReferenceDataInitialization, offlineDb){
-                        return offlineReferenceDataInitialization(offlineDb, true);
-                    },
-                    initializeConfigs: function (initialization, $stateParams, offlineSyncInitialization) {
+                    initializeConfigs: function (initialization, $stateParams, offlineDb) {
                         $stateParams.configName = $stateParams.configName || Bahmni.Clinical.Constants.defaultExtensionName;
                         patientSearchBackLink.state = 'search.patientsearch({configName: \"' + $stateParams.configName + '\"})';
-                        return initialization($stateParams.configName, offlineSyncInitialization);
+                        return initialization($stateParams.configName, offlineDb);
                     }
                 }
             })
@@ -101,10 +95,13 @@ angular.module('consultation')
                     }
                 },
                 resolve: {
-                    initialization: function (initialization, $stateParams) {
+                    offlineDb: function (offlineDbInitialization) {
+                        return offlineDbInitialization();
+                    },
+                    initialization: function (initialization, $stateParams, offlineDb) {
                         $stateParams.configName = $stateParams.configName || Bahmni.Clinical.Constants.defaultExtensionName;
                         patientSearchBackLink.state = 'search.patientsearch({configName: \"' + $stateParams.configName + '\"})';
-                        return initialization($stateParams.configName);
+                        return initialization($stateParams.configName, offlineDb);
                     },
                     patientContext: function (initialization, patientInitialization, $stateParams) {
                         return patientInitialization($stateParams.patientUuid);

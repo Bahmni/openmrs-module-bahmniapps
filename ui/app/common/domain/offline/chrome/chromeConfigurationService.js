@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('bahmni.common.domain')
-    .factory('configurationService', ['$q', 'offlineDbService',
+        .factory('configurationService', ['$q', 'offlineDbService',
         function ($q, offlineDbService) {
 
             var configurationFunctions = {};
@@ -116,6 +116,13 @@ angular.module('bahmni.common.domain')
                     return {"data": mapping.value};
                 });
             };
+
+            configurationFunctions.loginLocationToEncounterTypeMapping =  function () {
+                    return offlineDbService.getReferenceData('LoginLocationToEncounterTypeMapping').then(function (result){
+                        return {"data" : result};
+                    });
+            };
+
 
             var existingPromises = {};
             var configurations = {};

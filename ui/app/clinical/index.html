@@ -130,6 +130,7 @@
 
         <script src="../common/patient/init.js"></script>
         <script src="../common/patient/mappers/patientMapper.js"></script>
+        <script src="../common/patient/mappers/patientContextMapper.js"></script>
         <script src="../common/patient/filters/gender.js"></script>
         <script src="../common/patient/filters/age.js"></script>
         <script src="../common/patient/filters/dateToAge.js"></script>
@@ -148,7 +149,7 @@
         <script src="../common/domain/models/diagnosis.js"></script>
 
         <script src="../common/domain/services/retrospectiveEntryService.js"></script>
-        <script src="../common/domain/services/encounterService.js"></script>
+
         <script src="../common/domain/services/observationsService.js"></script>
         <script src="../common/domain/services/dispositionService.js"></script>
         <script src="../common/domain/services/visitService.js"></script>
@@ -509,12 +510,14 @@
         <script src="../common/domain/services/locationService.js"></script>
         <script src="../common/domain/services/configurationService.js"></script>
         <script src="../common/app-framework/services/loadConfigService.js"></script>
+        <script src="../common/domain/services/encounterService.js"></script>
         <!-- endbuild -->
         <!-- @endif -->
 
         <!-- @ifdef CHROME -->
         <!-- build:js clinical.min.chrome.js -->
         <!--<script src="../components/hustle/hustle.js"></script>-->
+        <!--<script src="../common/domain/offline/chrome/chromeEncounterService.js"></script>-->
         <!--<script src="../common/patient/offline/chrome/chromePatientService.js"></script>-->
         <!--<script src="../common/orders/offline/chrome/chromeOrderTypeService.js"></script>-->
         <!--<script src="../common/domain/offline/chrome/chromeLocationService.js"></script>-->
@@ -527,6 +530,7 @@
         <!-- @ifdef ANDROID -->
         <!-- build:js clinical.min.android.js -->
         <!--<script src="../components/hustle/hustle.js"></script>-->
+        <!--<script src="../common/domain/offline/android/androidEncounterService.js"></script>-->
         <!--<script src="../common/patient/offline/android/androidPatientService.js"></script>-->
         <!--<script src="../common/orders/offline/android/androidOrderTypeService.js"></script>-->
         <!--<script src="../common/domain/offline/android/androidLocationService.js"></script>-->

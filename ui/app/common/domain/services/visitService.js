@@ -31,6 +31,9 @@ angular.module('bahmni.common.domain')
         };
 
         this.getVisitSummary = function (visitUuid) {
+            if(offlineService.isOfflineApp()) {
+                return $q.when({data : {results: {}}});
+            }
             return $http.get(Bahmni.Common.Constants.visitSummaryUrl,
                 {
                     params: {
@@ -43,7 +46,7 @@ angular.module('bahmni.common.domain')
 
         this.search = function (parameters) {
             if(offlineService.isOfflineApp()){
-                return $q.when({data : {}});
+                return $q.when({data : {results: {}}});
             }
             return $http.get(Bahmni.Common.Constants.visitUrl, {
                 params: parameters,

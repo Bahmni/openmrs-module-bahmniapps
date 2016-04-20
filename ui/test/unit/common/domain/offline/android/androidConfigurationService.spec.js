@@ -2,13 +2,13 @@
 
 describe('configurationService', function () {
     var androidDbService;
-    var $q= Q;
+    var $q = Q;
 
     beforeEach(module('bahmni.common.domain'));
     beforeEach(module('bahmni.common.offline'));
 
     beforeEach(module(function ($provide) {
-        androidDbService = jasmine.createSpyObj('androidDbService',['getReferenceData']);
+        androidDbService = jasmine.createSpyObj('androidDbService', ['getReferenceData']);
         $provide.value('$q', $q);
         $provide.value('androidDbService', androidDbService);
     }));
@@ -31,7 +31,7 @@ describe('configurationService', function () {
             }
         };
         androidDbService.getReferenceData.and.returnValue(specUtil.respondWithPromise($q, encounterConfig));
-        configurationservice.getConfigurations(['encounterConfig']).then(function(result){
+        configurationservice.getConfigurations(['encounterConfig']).then(function (result) {
             expect(result.encounterConfig.visitTypes).toBe(encounterConfig.value.visitTypes);
             done();
         });
@@ -54,10 +54,11 @@ describe('configurationService', function () {
                         "format": "java.lang.String"
                     }
                 ]
-            }};
+            }
+        };
 
         androidDbService.getReferenceData.and.returnValue(specUtil.respondWithPromise($q, patientAttributesConfig));
-        configurationservice.getConfigurations(['patientAttributesConfig']).then(function(result){
+        configurationservice.getConfigurations(['patientAttributesConfig']).then(function (result) {
             expect(result.patientAttributesConfig.results.length).toBe(2);
             expect(result.patientAttributesConfig.results[0].name).toBe("fatherName");
             done();
@@ -73,16 +74,17 @@ describe('configurationService', function () {
                         personAttributeTypes: [{
                             name: "personName",
                             description: "Name in local language"
-                        },{
+                        }, {
                             name: "patientName",
                             description: "Name in local language"
                         }]
                     }
                 ]
-            }};
+            }
+        };
 
         androidDbService.getReferenceData.and.returnValue(specUtil.respondWithPromise($q, patientConfig));
-        configurationservice.getConfigurations(['patientConfig']).then(function(result){
+        configurationservice.getConfigurations(['patientConfig']).then(function (result) {
 
             expect(result.patientConfig.results.length).toBe(1);
             expect(result.patientConfig.results[0].personAttributeTypes[0].name).toBe("personName");
@@ -101,10 +103,11 @@ describe('configurationService', function () {
                         name: "TID"
                     }
                 ]
-            }};
+            }
+        };
 
         androidDbService.getReferenceData.and.returnValue(specUtil.respondWithPromise($q, dosageFrequencyConfig));
-        configurationservice.getConfigurations(['dosageFrequencyConfig']).then(function(result){
+        configurationservice.getConfigurations(['dosageFrequencyConfig']).then(function (result) {
             expect(result.dosageFrequencyConfig.results.length).toBe(1);
             expect(result.dosageFrequencyConfig.results[0].name).toBe("TID");
             done();
@@ -116,7 +119,8 @@ describe('configurationService', function () {
             "value": {
                 "results": [
                     {
-                        name: { display: "AC",
+                        name: {
+                            display: "AC",
                             uuid: "81b90886-3f10-11e4-adec-0800271c1b75",
                             name: "AC",
                             locale: "en"
@@ -139,7 +143,8 @@ describe('configurationService', function () {
             "value": {
                 "results": [
                     {
-                        name: { display: "Stopped Order Reason",
+                        name: {
+                            display: "Stopped Order Reason",
                             uuid: "81b90886-3f10-11e4-adec-0800271c1b75",
                             name: "Stopped Order Reason",
                             locale: "en"
@@ -162,13 +167,15 @@ describe('configurationService', function () {
             "value": {
                 "results": [
                     {
-                        name: { display: "Consultation Note Config",
+                        name: {
+                            display: "Consultation Note Config",
                             uuid: "81b90886-3f10-11e4-adec-0800271c1b75",
                             name: "Consultation Note Config",
                             locale: "en"
                         },
                         answers: []
-                    }]}
+                    }]
+            }
         };
 
         androidDbService.getReferenceData.and.returnValue(specUtil.respondWithPromise($q, consultationNoteConfig));
@@ -184,13 +191,15 @@ describe('configurationService', function () {
             "value": {
                 "results": [
                     {
-                        name: { display: "labOrder Note Config",
+                        name: {
+                            display: "labOrder Note Config",
                             uuid: "81b90886-3f10-11e4-adec-0800271c1b75",
                             name: "labOrder Note Config",
                             locale: "en"
                         },
                         answers: []
-                    }]}
+                    }]
+            }
         };
 
         androidDbService.getReferenceData.and.returnValue(specUtil.respondWithPromise($q, labOrderNotesConfig));
@@ -206,13 +215,15 @@ describe('configurationService', function () {
             "value": {
                 "results": [
                     {
-                        name: { display: "Radiology Impression Config",
+                        name: {
+                            display: "Radiology Impression Config",
                             uuid: "81b90886-3f10-11e4-adec-0800271c1b75",
                             name: "Radiology Impression Config",
                             locale: "en"
                         },
                         answers: []
-                    }]}
+                    }]
+            }
         };
 
         androidDbService.getReferenceData.and.returnValue(specUtil.respondWithPromise($q, radiologyImpressionConfig));
@@ -231,7 +242,8 @@ describe('configurationService', function () {
                         name: "State",
                         addressField: "stateProvince",
                         required: false
-                    }]}
+                    }]
+            }
         };
 
         androidDbService.getReferenceData.and.returnValue(specUtil.respondWithPromise($q, addressLevels));
@@ -249,7 +261,8 @@ describe('configurationService', function () {
                     {
                         uuid: "41e09efb-eca2-48b1-9aff-0b34864e0aad",
                         name: "All_Tests_and_Panels"
-                    }]}
+                    }]
+            }
         };
 
         androidDbService.getReferenceData.and.returnValue(specUtil.respondWithPromise($q, allTestsAndPanelsConcept));
@@ -267,7 +280,8 @@ describe('configurationService', function () {
                     {
                         uuid: "41e09efb-eca2-48b1-9aff-0b34864e0aad",
                         name: "Identifier Source Config"
-                    }]}
+                    }]
+            }
         };
 
         androidDbService.getReferenceData.and.returnValue(specUtil.respondWithPromise($q, identifierSourceConfig));
@@ -285,7 +299,8 @@ describe('configurationService', function () {
                     {
                         uuid: "41e09efb-eca2-48b1-9aff-0b348e0aad",
                         name: "LoginLocation_Visit_type_Mapping"
-                    }]}
+                    }]
+            }
         };
 
         androidDbService.getReferenceData.and.returnValue(specUtil.respondWithPromise($q, relationshipTypeConfig));
@@ -321,13 +336,40 @@ describe('configurationService', function () {
                     {
                         uuid: "41e09efb-eca2-48b1-9aff-0b34864e0aad",
                         name: "loginLocation To VisitType Map"
-                    }]}
+                    }]
+            }
         };
 
         androidDbService.getReferenceData.and.returnValue(specUtil.respondWithPromise($q, loginLocationToVisitTypeMapping));
         configurationservice.getConfigurations(['loginLocationToVisitTypeMapping']).then(function (result) {
             expect(result.loginLocationToVisitTypeMapping.results.length).toBe(1);
             expect(result.loginLocationToVisitTypeMapping.results[0].name).toBe("loginLocation To VisitType Map");
+            done();
+        });
+    });
+
+    it('should fetch loginLocationToEncounterTypeMapping from offline db', function (done) {
+        var loginLocationToEncounterTypeMapping = {
+            "value": {
+                "results": [
+                    {
+                        "entity": {
+                            "uuid": "6f8dca71-1f5a-4cb4-8bb2-f52b317af202",
+                            "display": "login location",
+                            "name": "login location"
+                        }
+                    },
+                    {
+                        "mappings": []
+                    }
+                ]
+            }
+        };
+
+        androidDbService.getReferenceData.and.returnValue(specUtil.respondWithPromise($q, loginLocationToEncounterTypeMapping));
+        configurationservice.getConfigurations(['loginLocationToEncounterTypeMapping']).then(function (result) {
+            expect(result.loginLocationToEncounterTypeMapping.value.results.length).toBe(2);
+            expect(result.loginLocationToEncounterTypeMapping.value.results[0].entity.name).toBe("login location");
             done();
         });
     });

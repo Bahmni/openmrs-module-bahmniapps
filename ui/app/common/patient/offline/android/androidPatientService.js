@@ -1,18 +1,22 @@
 'use strict';
 
 angular.module('bahmni.common.patient')
-    .service('patientService', ['$http','$q', function ($http, $q) {
+    .service('patientService', ['$q','androidDbService', function ($q, androidDbService) {
 
         this.getPatient = function (uuid) {
-            return $q.when({});
+            return androidDbService.getPatientByUuid(uuid).then(function(response){
+                response.patient.person.preferredName = response.patient.person.names[0];
+                response.patient.person.preferredAddress = response.patient.person.addresses[0];
+                return {"data" : response.patient};
+            });
         };
 
         this.getRelationships = function (patientUuid) {
-            return $q.when({});
+            return $q.when({data : {}});
         };
 
         this.findPatients = function (params) {
-            return $q.when({});
+            return $q.when({data: {}});
         };
 
         this.search = function (query, offset, identifier) {
@@ -25,7 +29,13 @@ angular.module('bahmni.common.patient')
             return $q.when(JSON.parse(AndroidOfflineService.search(JSON.stringify(params))));
         };
 
-        this.getPatientContext = function (patientUuid, programUuid, personAttributes, programAttributes) {
-            return $q.when({});
-        };
+        this.getPatientContext = function (uuid) {
+            var deferrable = $q.defer();
+            var patientContextMapper = new Bahmni.PatientContextMapper();
+            androidDbService.getPatientByUuid(uuid).then(function(response){
+                var patientContext = patientContextMapper.map(response.patient);
+                deferrable.resolve({"data" : patientContext});
+            });
+            return deferrable.promise;
+        }
     }]);

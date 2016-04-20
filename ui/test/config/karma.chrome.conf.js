@@ -70,11 +70,13 @@ module.exports = function (config) {
             'app/common/domain/services/configurationService.js',
             'app/common/domain/services/locationService.js',
             'app/common/domain/services/localeService.js',
+            'app/common/domain/services/encounterService.js',
 
             'test/unit/orders/services/orderTypeService.spec.js',
             'test/unit/common/patient/services/patientService.spec.js',
             'test/unit/registration/services/patientService.spec.js',
             'test/unit/common/app-framework/service/loadConfigService.spec.js',
+            'test/unit/registration/services/encounterService.spec.js',
             'test/unit/document-upload/controllers/*.js',
             'test/unit/common/displaycontrols/patientProfile/directives/*.js',
             'test/unit/common/domain/services/locationService.spec.js',
