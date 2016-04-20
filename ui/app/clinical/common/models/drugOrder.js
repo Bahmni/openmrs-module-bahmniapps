@@ -56,6 +56,7 @@ Bahmni.Clinical.DrugOrder = (function () {
                 orderReasonText: drugOrderData.orderReasonText,
                 dateStopped: dateUtil.parse(drugOrderData.dateStopped),
                 concept: drugOrderData.concept,
+                sortWeight: drugOrderData.sortWeight,
                 orderGroup: {
                     uuid: drugOrderData.orderGroupUuid,
                     orderSet: {

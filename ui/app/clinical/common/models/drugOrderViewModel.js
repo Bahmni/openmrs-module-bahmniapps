@@ -495,6 +495,8 @@ Bahmni.Clinical.DrugOrderViewModel = function (config, proto, encounterDate) {
         defaultQuantityUnit(newDrugOrder);
         newDrugOrder.orderReasonText = null;
         newDrugOrder.orderReasonConcept = null;
+        newDrugOrder.orderSetUuid = self.orderSetUuid;
+        newDrugOrder.orderGroupUuid = undefined;
         newDrugOrder.isNewOrderSet = false;
         return newDrugOrder;
     };
@@ -752,6 +754,7 @@ Bahmni.Clinical.DrugOrderViewModel.createFromContract = function (drugOrderRespo
     if(drugOrderResponse.orderGroup){
         viewModel.orderGroupUuid = drugOrderResponse.orderGroup.uuid;
         viewModel.orderSetUuid = drugOrderResponse.orderGroup.orderSet.uuid;
+        viewModel.sortWeight = drugOrderResponse.sortWeight;
     }
     return viewModel;
 };

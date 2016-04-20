@@ -153,6 +153,7 @@ angular.module('bahmni.clinical')
                 var drugOrdersOfOrderSet = _.filter($scope.consultation.activeAndScheduledDrugOrders, function (treatment) {
                     return treatment.orderGroupUuid === drugOrder.orderGroupUuid;
                 });
+                setSortWeightForOrderSetDrugs(drugOrdersOfOrderSet);
                 refillDrugOrders(drugOrdersOfOrderSet);
                 ngDialog.close();
             };
@@ -600,6 +601,17 @@ angular.module('bahmni.clinical')
                 drugOrderViewModel.setUniformDoseFraction();
                 return drugOrderViewModel;
             };
+
+            var setSortWeightForOrderSetDrugs = function (orderSetDrugs) {
+                _.each(orderSetDrugs, function (drugOrder, index) {
+                    if(drugOrder.sortWeight !== undefined){
+                        drugOrder.sortWeight = drugOrder.sortWeight + orderSetDrugs.length;
+                    }
+                    else
+                        drugOrder.sortWeight = index + 1;
+                });
+            };
+
             var createDrugOrdersAndGetConflicts = function (orderSet) {
                 var conflictingDrugOrders = [];
                 var orderSetMemberTemplates = _.map(orderSet.orderSetMembers, 'orderTemplate');
@@ -614,6 +626,7 @@ angular.module('bahmni.clinical')
                     }
                     $scope.orderSetTreatments.push(drugOrderViewModel);
                 });
+                setSortWeightForOrderSetDrugs($scope.orderSetTreatments);
                 return conflictingDrugOrders;
             };
             var showConflictMessageIfAny = function (conflictingDrugOrders) {
