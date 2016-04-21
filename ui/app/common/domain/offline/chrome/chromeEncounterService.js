@@ -7,7 +7,7 @@ angular.module('bahmni.common.domain')
             this.buildEncounter = function (encounter) {
                 encounter.observations = encounter.observations || [];
                 encounter.observations.forEach(function (obs) {
-                    stripExtraConceptInfo(obs);
+                    stripExtraInfo(obs);
                 });
 
                 encounter.providers = encounter.providers || [];
@@ -70,19 +70,25 @@ angular.module('bahmni.common.domain')
             };
 
 
-            this.create = function (encounter) {
-                return $q.when({"data": {"results": []}})
+            this.create = function (encounterData) {
+                this.buildEncounter(encounterData);
+                encounterData.encounterUuid = encounterData.encounterUuid || Bahmni.Common.Offline.UUID.generateUuid();
+                encounterData.visitUuid = encounterData.visitUuid || Bahmni.Common.Offline.UUID.generateUuid();
+                encounterData.encounterDateTime = Bahmni.Common.Util.DateUtil.now();
+                return $q.when({data: encounterData});
             };
 
             this.delete = function (encounterUuid, reason) {
                 return $q.when({"data": {"results": []}})
             };
 
-            var stripExtraConceptInfo = function (obs) {
+            var stripExtraInfo = function (obs) {
+                delete obs.isObservation;
+                delete obs.isObservationNode;
                 obs.concept = {uuid: obs.concept.uuid, name: obs.concept.name, dataType: obs.concept.dataType};
                 obs.groupMembers = obs.groupMembers || [];
                 obs.groupMembers.forEach(function (groupMember) {
-                    stripExtraConceptInfo(groupMember);
+                    stripExtraInfo(groupMember);
                 });
             };
 
