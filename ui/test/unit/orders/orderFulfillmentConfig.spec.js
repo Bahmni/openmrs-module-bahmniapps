@@ -69,7 +69,6 @@ describe('OrderFulfillmentConfig Factory', function () {
             expect(config).not.toBeFalsy();
 
             expect(config.isObservation).toBeTruthy();
-            expect(config.numberOfVisits).toBe(2);
             expect(config.showDetailsButton).toBeTruthy();
             expect(config.hideIfEmpty).toBeFalsy();
             expect(config.showHeader).toBeFalsy();

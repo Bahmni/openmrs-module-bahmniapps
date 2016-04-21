@@ -2,9 +2,9 @@
 
 angular.module('bahmni.common.domain')
     .factory('locationService', ['$http', '$bahmniCookieStore', function ($http, $bahmniCookieStore) {
-        var getAllByTag = function (tags) {
+        var getAllByTag = function (tags,operator) {
             return $http.get(Bahmni.Common.Constants.locationUrl, {
-                params: {s: "byTags", q: tags || "", v:"default"},
+                params: {s: "byTags", tags: tags || "", v:"default", operator:operator||"ALL"},
                 cache: true
             });
         };
