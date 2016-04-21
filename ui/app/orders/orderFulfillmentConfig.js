@@ -14,7 +14,6 @@ angular.module('bahmni.orders')
                         return concept.name.name;
                     });
                     config.isObservation = true;
-                    config.numberOfVisits = 2;
                     config.showDetailsButton = true;
                     config.hideIfEmpty = false;
                     config.showHeader = false;

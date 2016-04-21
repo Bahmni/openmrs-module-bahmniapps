@@ -9,8 +9,10 @@ angular.module('bahmni.orders')
             var configNames = ['encounterConfig', 'patientConfig', 'genderMap', 'relationshipTypeMap'];
             configurations.load(configNames).then(function () {
                 var conceptConfig = appService.getAppDescriptor().getConfigValue("conceptSetUI");
-                if(conceptConfig && conceptConfig.facilityLocationTags){
-                   getLocationUuidsFromLocationTags(conceptConfig.facilityLocationTags);
+                var customLocationTags = _.get(conceptConfig,'facilityLocationTags');
+                var hasCustomLocationTags = !_.isEmpty(customLocationTags);
+                if(hasCustomLocationTags){
+                   getLocationUuidsFromLocationTags(customLocationTags);
                 }
                 $rootScope.encounterConfig = angular.extend(new EncounterConfig(), configurations.encounterConfig());
                 $rootScope.patientConfig = configurations.patientConfig();
@@ -23,7 +25,7 @@ angular.module('bahmni.orders')
 
         var getLocationUuidsFromLocationTags = function (tags) {
             $rootScope.facilityLocationUuids = [];
-            return locationService.getAllByTag(tags).then(function (response) {
+            return locationService.getAllByTag(tags,"ANY").then(function (response) {
                 $rootScope.facilityLocationUuids = _.map(response.data.results, function (location) {
                     return location.uuid;
                 });

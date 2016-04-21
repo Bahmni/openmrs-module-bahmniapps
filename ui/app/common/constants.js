@@ -28,7 +28,7 @@ Bahmni.Common = Bahmni.Common || {};
         "setMembers:(uuid,name,names,conceptClass))))";
 
     var unAuthenticatedReferenceDataMap = {
-        "/openmrs/ws/rest/v1/location?q=Login+Location&s=byTags&v=default": "LoginLocations",
+        "/openmrs/ws/rest/v1/location?tags=Login+Location&s=byTags&v=default": "LoginLocations",
         "/openmrs/ws/rest/v1/bahmnicore/sql/globalproperty?property=locale.allowed.list": "LocaleList"
     };
 
