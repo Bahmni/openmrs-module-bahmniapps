@@ -3,10 +3,10 @@
 angular.module('bahmni.clinical')
     .controller('AddTreatmentController', ['$scope', '$rootScope', 'contextChangeHandler', 'treatmentConfig', 'drugService',
         '$timeout', 'clinicalAppConfigService', 'ngDialog', '$window', 'messagingService', 'appService', 'activeDrugOrders',
-        'orderSets', 'orderSetService', '$q', 'locationService',
+        'orderSets', 'orderSetService', '$q', 'locationService','spinner',
         function ($scope, $rootScope, contextChangeHandler, treatmentConfig, drugService, $timeout,
                   clinicalAppConfigService, ngDialog, $window, messagingService, appService, activeDrugOrders, orderSets,
-                  orderSetService, $q, locationService) {
+                  orderSetService, $q, locationService, spinner) {
 
             var DateUtil = Bahmni.Common.Util.DateUtil;
             var DrugOrderViewModel = Bahmni.Clinical.DrugOrderViewModel;
@@ -150,12 +150,56 @@ angular.module('bahmni.clinical')
 
 
             $scope.refillOrderSet = function (drugOrder) {
-                var drugOrdersOfOrderSet = _.filter($scope.consultation.activeAndScheduledDrugOrders, function (treatment) {
+                ngDialog.close();
+                var drugOrdersOfOrderGroup = _.filter($scope.consultation.activeAndScheduledDrugOrders, function (treatment) {
                     return treatment.orderGroupUuid === drugOrder.orderGroupUuid;
                 });
-                setSortWeightForOrderSetDrugs(drugOrdersOfOrderSet);
-                refillDrugOrders(drugOrdersOfOrderSet);
-                ngDialog.close();
+
+                var refilledOrderGroupOrders = [];
+                drugOrdersOfOrderGroup.forEach(function (drugOrder) {
+                    setNonCodedDrugConcept(drugOrder);
+                    if (drugOrder.effectiveStopDate) {
+                        refilledOrderGroupOrders.push(drugOrder.refill());
+                    }
+                });
+
+                setSortWeightForOrderSetDrugs(refilledOrderGroupOrders);
+
+                //Fetch the orderSet for the drugOrder
+                var matchedOrderSet = _.find(orderSets, {uuid : drugOrder.orderSetUuid});
+
+                //Find the drugs in ordered DrugOrderSet which matches with the matchedOrderSet SetMembers
+                var orderSetMembersOfMatchedOrderSet = matchedOrderSet.orderSetMembers;
+                var matchedMembers = [];
+
+                _.each(refilledOrderGroupOrders, function(drugOrder) {
+                    _.each(orderSetMembersOfMatchedOrderSet, function(orderSetMember) {
+                        if(orderSetMember.orderTemplate.drug) {
+                            if(orderSetMember.orderTemplate.drug.uuid === drugOrder.drug.uuid)
+                                matchedMembers.push(orderSetMember)
+                        }
+                        else {
+                            if(orderSetMember.concept.uuid === drugOrder.concept.uuid)
+                                matchedMembers.push(orderSetMember)
+                        }
+                    })
+                });
+
+                var listOfPromises = _.map(matchedMembers, function(eachMember, index){
+                    if(eachMember.orderTemplate){
+                        var doseUnits = eachMember.orderTemplate.dosingInstructions.doseUnits;
+                        var baseDose = eachMember.orderTemplate.dosingInstructions.dose;
+                        return orderSetService.getCalculatedDose($scope.patient.uuid, baseDose, doseUnits).then(function(calculatedDosage){
+                            refilledOrderGroupOrders[index].uniformDosingType.dose = calculatedDosage.dose;
+                            refilledOrderGroupOrders[index].uniformDosingType.doseUnits = calculatedDosage.doseUnit;
+                            refilledOrderGroupOrders[index].calculateQuantityAndUnit();
+                        });
+                    }
+                });
+
+                spinner.forPromise($q.all(listOfPromises).then(function(){
+                    Array.prototype.push.apply($scope.treatments, refilledOrderGroupOrders);
+                }));
             };
 
             $scope.$on("event:refillDrugOrder", function (event, drugOrder, alreadyActiveSimilarOrder) {
