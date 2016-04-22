@@ -175,7 +175,7 @@ angular.module('bahmni.clinical')
                 _.each(refilledOrderGroupOrders, function(drugOrder) {
                     _.each(orderSetMembersOfMatchedOrderSet, function(orderSetMember) {
                         if(orderSetMember.orderTemplate.drug) {
-                            if(orderSetMember.orderTemplate.drug.uuid === drugOrder.drug.uuid)
+                            if(orderSetMember.orderTemplate.drug.uuid === _.get(drugOrder,'drug.uuid'))
                                 matchedMembers.push(orderSetMember)
                         }
                         else {
