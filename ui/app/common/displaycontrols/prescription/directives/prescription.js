@@ -14,7 +14,17 @@ angular.module('bahmni.common.displaycontrol.prescription')
                         drugOrderResponse[key] = drugOrderResponse[key].map(createDrugOrderViewModel);
                     }
                     var drugUtil = Bahmni.Clinical.DrugOrder.Util;
-                    $scope.drugOrders = drugUtil.sortDrugOrders(drugOrderResponse.visitDrugOrders);
+                    var orderGroupOrders = _.groupBy(drugOrderResponse.visitDrugOrders, function(drugOrder){
+                        if(drugOrder.orderGroupUuid){
+                            return 'orderGroupOrders';
+                        }
+                        return 'drugOrders';
+                    });
+                    var drugOrdersSorted = drugUtil.sortDrugOrders(orderGroupOrders.drugOrders);
+                    $scope.drugOrders =  _(orderGroupOrders.orderGroupOrders)
+                        .concat(drugOrdersSorted)
+                        .uniqBy('uuid')
+                        .value();
                 });
 
             };
