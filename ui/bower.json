@@ -32,7 +32,7 @@
     "lovefield": "~2.1.7",
     "ngDialog": "0.3.12",
     "angular-file-upload": "*",
-    "stacktrace-js": "*",
+    "stacktrace-js": "0.6.4",
     "ng-clip": "0.2.5",
     "angular-recursion": "~1.0.5",
     "jquery.scrollTo": "*",
