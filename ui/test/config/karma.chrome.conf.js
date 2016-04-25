@@ -22,7 +22,7 @@ module.exports = function (config) {
             'app/components/offline/offline.min.js',
             'app/components/angular-ui-router/release/angular-ui-router.js',
             'app/components/lodash/dist/lodash.min.js',
-            'app/components/lovefield/dist/lovefield.min.js',
+            'app/components/lovefield/dist/lovefield.js',
             'app/components/angular-ui-select2/src/select2.js',
             'app/components/angular-bindonce/bindonce.js',
             'app/components/stacktrace-js/stacktrace.js',

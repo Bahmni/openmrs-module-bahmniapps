@@ -262,5 +262,23 @@ Bahmni.Common.Offline.SchemaDefinitions = {
         ],
         nullableColumns: [],
         primaryKeyColumns: ['uuid']
+    },
+    Encounter: {
+        tableName: 'encounter',
+        columns: [
+            {
+                name: 'uuid',
+                type: 'STRING'
+            },
+            {
+                name: 'patientUuid',
+                type: 'STRING'
+            }, {
+                name: 'encounterJson',
+                type: 'OBJECT'
+            }
+        ],
+        nullableColumns: [],
+        primaryKeyColumns: ['uuid']
     }
 };

@@ -2,9 +2,9 @@
 
 angular.module('bahmni.common.offline')
     .service('offlineDbService', ['$http', '$q', 'patientDbService', 'patientAddressDbService', 'patientAttributeDbService', 'offlineMarkerDbService', 'offlineAddressHierarchyDbService',
-        'offlineConfigDbService','initializeOfflineSchema', 'referenceDataDbService', 'locationDbService', 'offlineSearchDbService',
+        'offlineConfigDbService','initializeOfflineSchema', 'referenceDataDbService', 'locationDbService', 'offlineSearchDbService', 'encounterDbService',
         function ($http, $q, patientDbService, patientAddressDbService, patientAttributeDbService, offlineMarkerDbService, offlineAddressHierarchyDbService,
-                  offlineConfigDbService, initializeOfflineSchema, referenceDataDbService, locationDbService, offlineSearchDbService) {
+                  offlineConfigDbService, initializeOfflineSchema, referenceDataDbService, locationDbService, offlineSearchDbService, encounterDbService) {
         var db;
 
 
@@ -54,6 +54,31 @@ angular.module('bahmni.common.offline')
             });
 
         };
+
+
+            var createEncounter = function (postRequest) {
+                var deferred = $q.defer();
+                var uuid = postRequest.patientUuid;
+                insertEncounterData(postRequest)
+                    .then(function () {
+                        getEncountersByPatientUuid(uuid).then(function (results) {
+                            deferred.resolve({data: results});
+                        })
+                    });
+                return deferred.promise;
+            };
+
+            var insertEncounterData = function (encounterData) {
+                return encounterDbService.insertEncounterData(db, encounterData).then(function (patientUuid) {
+                    return encounterData;
+                });
+            };
+
+            var getEncountersByPatientUuid = function (patientUuid) {
+                return encounterDbService.getEncountersByPatientUuid(db, patientUuid)
+            };
+
+
 
         var init = function (offlineDb) {
             db = offlineDb;
@@ -131,6 +156,9 @@ angular.module('bahmni.common.offline')
             getReferenceData: getReferenceData,
             insertReferenceData: insertReferenceData,
             getLocationByUuid: getLocationByUuid,
-            getAttributeTypes : getAttributeTypes
+            getAttributeTypes : getAttributeTypes,
+            insertEncounterData: insertEncounterData,
+            getEncountersByPatientUuid: getEncountersByPatientUuid,
+            createEncounter: createEncounter
         }
     }]);
