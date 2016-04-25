@@ -34,7 +34,7 @@ angular.module('bahmni.common.displaycontrol.drugOrdersSection')
                 if (_.isEmpty($scope.config.columns)) {
                     $scope.columns = _.union(mandatoryColumns, defaultColumns);
                 } else {
-                    $scope.columns = _.union($scope.config.columns, mandatoryColumns);
+                    $scope.columns = _.union($scope.config.columns, defaultColumns, mandatoryColumns);
                 }
             };
 
