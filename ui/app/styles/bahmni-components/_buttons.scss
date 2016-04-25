@@ -213,7 +213,7 @@ a.back-btn, button.back-btn {
     text-decoration: none;
     z-index: 1;
     margin: 6px 6px 0 0px;
-    color: $white;  
+    color: $white;
     border-left: 0;
     float: left;
     font-size: 16px;
@@ -255,7 +255,7 @@ a.back-btn, button.back-btn {
       }
 }
 
-ul li a.back-btn, ul li a.back-btn:hover, button.back-btn, a.back-btn { 
+ul li a.back-btn, ul li a.back-btn:hover, button.back-btn, a.back-btn {
     padding: 4px 10px 5px 10px;
     border: 1px solid darken($bahmniSecondaryColor, 15%);
     background: linear-gradient(to bottom, $bahmniSecondaryColor, darken($bahmniSecondaryColor, 10%));
@@ -315,7 +315,7 @@ button.back-btn {
         border-radius: 100%;
         float: left;
         margin-right: 5px;
-        
+
     }
      .patient-info {
           float: left;
@@ -381,9 +381,9 @@ button.back-btn {
 }
 .illegalValue .multi-select-button-group { width: auto; }
 
-.secondary-button, 
-.secondary-button:hover, 
-input[type="submit"].secondary-button, 
+.secondary-button,
+.secondary-button:hover,
+input[type="submit"].secondary-button,
 input[type="submit"].secondary-button:hover  {
     background: linear-gradient(to bottom, $bahmniSecondaryColor, darken($bahmniSecondaryColor, 10%));
     color: $white;
@@ -460,7 +460,7 @@ input[type="submit"].secondary-button:hover  {
   transition: all .5s ease;
   border-radius: 4px;
   box-shadow: inset 0 -1px 1px #eee;
-  
+
   &:hover {
     background: linear-gradient(to bottom, #fff, $lightGray) #ddd;
   }
@@ -473,7 +473,7 @@ input[type="submit"].secondary-button:hover  {
     padding: 0;
   }
 
-  input[type="checkbox"] { 
+  input[type="checkbox"] {
     position: absolute;
     opacity: 0;
     & + .fa-thumb-tack {
@@ -531,6 +531,7 @@ button.toggle{
   }
   &.active{
     button.toggle{
+      background: none !important;
       .fa-angle-up{
         display: block;
       }
