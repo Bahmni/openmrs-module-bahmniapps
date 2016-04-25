@@ -22,9 +22,9 @@
             <i class="fa fa-file-pdf-o"></i>
         </a>
         <button class="toggle fr" ng-if="observation.isFormElement() && showDetailsButton && !observation.comment" ng-class="{'has-notes': observation.comment}"
-                ng-click="toggle(observation)">
-            <i class="fa fa-angle-down" ng-hide="observation.showDetails"></i>
-            <i class="fa fa-angle-up" ng-show="observation.showDetails"></i>
+                toggle="observation.showDetails">
+            <i class="fa fa-angle-down"></i>
+            <i class="fa fa-angle-up"></i>
         </button>
 
         <div ng-if="::observation.comment" class="notes inline-comments" ng-class="::{'print-notes': observation.comment}">
