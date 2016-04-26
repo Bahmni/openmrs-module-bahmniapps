@@ -158,6 +158,7 @@
     "HOME_DASHBOARD_KEY":"Home",
     "PATIENT_VISIT_PAGE_KEY":"Visit",
     "PATIENT_ADT_PAGE_KEY":"Inpatient",
+    "HEADER_LABEL_SYNC_KEY": "Sync",
     "PROGRAM_MANAGEMENT_PAGE_KEY" : "Enrollment",
     "PATIENT_VISIT_ATTRIBUTES_PAGE_KEY":"Visit Attributes",
     "PATIENT_REGISTRATION_PAGE_KEY" : "Registration",

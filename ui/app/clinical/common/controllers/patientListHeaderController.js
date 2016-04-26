@@ -1,13 +1,14 @@
 'use strict';
 
 angular.module('bahmni.clinical')
-    .controller('PatientListHeaderController', ['$scope', '$rootScope', '$bahmniCookieStore', 'providerService', 'spinner', 'locationService', '$window', 'ngDialog','retrospectiveEntryService',
-        function ($scope, $rootScope, $bahmniCookieStore, providerService, spinner, locationService, $window, ngDialog, retrospectiveEntryService) {
+    .controller('PatientListHeaderController', ['$scope', '$rootScope', '$bahmniCookieStore', 'providerService', 'spinner', 'locationService', '$window', 'ngDialog','retrospectiveEntryService','offlineService','WorkerService',
+        function ($scope, $rootScope, $bahmniCookieStore, providerService, spinner, locationService, $window, ngDialog, retrospectiveEntryService, offlineService, WorkerService) {
             var DateUtil = Bahmni.Common.Util.DateUtil;
             $scope.maxStartDate = DateUtil.getDateWithoutTime(DateUtil.today());
             var selectedProvider = {};
             $scope.retrospectivePrivilege = Bahmni.Common.Constants.retrospectivePrivilege;
             $scope.selectedLocationUuid = {};
+            $scope.isOfflineApp = offlineService.isOfflineApp();
 
 
             $scope.getProviderList = function() {
@@ -75,6 +76,17 @@ angular.module('bahmni.clinical')
                 }
                 return title.join(',');
             };
+
+            $scope.sync = function() {
+                if (Bahmni.Common.Offline && Bahmni.Common.Offline.BackgroundWorker) {
+                    new Bahmni.Common.Offline.BackgroundWorker(WorkerService, offlineService, {delay: 1000, repeat: 1});
+                }
+            };
+
+            $scope.$on("schedulerStage", function(event,stage){
+                $scope.isSyncing = (stage !== null);
+            });
+
 
             var getCurrentCookieLocation = function () {
                 return $bahmniCookieStore.get(Bahmni.Common.Constants.locationCookieName) ? $bahmniCookieStore.get(Bahmni.Common.Constants.locationCookieName) : null;

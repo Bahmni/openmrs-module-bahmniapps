@@ -6,6 +6,13 @@
             <div class="retro-date-widget-wrapper" ng-if="getTitle()">
                 <div class="retro-date-widget-header">
                     <button ng-click="popUpHandler()">{{ getTitle() }}</button>
+                     <button class="btn offline-sync" ng-click="sync()" ng-show="isOfflineApp && !isSyncing ">
+                       {{::'HEADER_LABEL_SYNC_KEY' | translate}}
+                     </button>
+                     <button class="btn offline-sync offline-sync-image" ng-show="isOfflineApp && isSyncing" disabled>
+                        <!-- <i class="fa fa-refresh"></i> -->
+                        <img src="../images/sync.gif" />
+                     </button>
                 </div>
             </div>
 

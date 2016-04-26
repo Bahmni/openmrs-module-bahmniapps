@@ -92,6 +92,14 @@ $retroModeColor:  #0E74AF;
           text-decoration: none;
         }
       }
+      .offline-sync {
+        position: relative;
+        right: 344px;
+        &.offline-sync-image {
+          padding: 6px 27px;
+          top: 7px;
+        }
+      }
     }
 
 
