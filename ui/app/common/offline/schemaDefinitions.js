@@ -61,6 +61,10 @@ Bahmni.Common.Offline.SchemaDefinitions = {
         tableName: 'event_log_marker',
         columns: [
             {
+                name: 'markerName',
+                type: 'STRING'
+            },
+            {
                 name: 'lastReadEventUuid',
                 type: 'STRING'
             }, {
@@ -71,8 +75,8 @@ Bahmni.Common.Offline.SchemaDefinitions = {
                 type: 'DATE_TIME'
             }
         ],
-        nullableColumns: [],
-        primaryKeyColumns: ['catchmentNumber']
+        nullableColumns: ['catchmentNumber'],
+        primaryKeyColumns: ['markerName']
     },
 
     PatientAttributeType: {

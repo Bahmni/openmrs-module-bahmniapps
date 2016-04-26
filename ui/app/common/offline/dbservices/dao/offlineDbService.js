@@ -72,12 +72,12 @@ angular.module('bahmni.common.offline')
             return initializeOfflineSchema.reinitSchema();
         };
 
-        var getMarker = function () {
-            return offlineMarkerDbService.getMarker();
+        var getMarker = function (markerName) {
+            return offlineMarkerDbService.getMarker(markerName);
         };
 
-        var insertMarker = function (eventUuid, catchmentNumber) {
-            return offlineMarkerDbService.insertMarker(eventUuid, catchmentNumber);
+        var insertMarker = function (markerName, eventUuid, catchmentNumber) {
+            return offlineMarkerDbService.insertMarker(markerName, eventUuid, catchmentNumber);
         };
 
         var insertAddressHierarchy = function (data) {

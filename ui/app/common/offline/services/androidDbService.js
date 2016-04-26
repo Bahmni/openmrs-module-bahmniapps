@@ -3,14 +3,14 @@
 angular.module('bahmni.common.offline')
     .service('androidDbService', ['$q',
         function ($q) {
-            var getMarker = function () {
-                var value = AndroidOfflineService.getMarker();
+            var getMarker = function (markerName) {
+                var value = AndroidOfflineService.getMarker(markerName);
                 value = value != undefined ? JSON.parse(value) : value;
                 return $q.when(value);
             };
 
-            var insertMarker = function (uuid, catchmentNumber) {
-                return $q.when(AndroidOfflineService.insertMarker(uuid, catchmentNumber));
+            var insertMarker = function (markerName, uuid, catchmentNumber) {
+                return $q.when(AndroidOfflineService.insertMarker(markerName, uuid, catchmentNumber));
 
             };
 

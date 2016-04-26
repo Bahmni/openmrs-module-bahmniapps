@@ -12,8 +12,9 @@ Bahmni.Common.Offline.BackgroundWorker = function(WorkerService, offlineService,
 
     WorkerService.addToLocalStorage("host", localStorage.getItem('host'));
     WorkerService.addToLocalStorage("catchmentNumber", localStorage.getItem('catchmentNumber'));
+    WorkerService.addToLocalStorage("addressCatchmentNumber", localStorage.getItem('addressCatchmentNumber'));
     WorkerService.addToLocalStorage("LoginInformation", localStorage.getItem('LoginInformation'));
-    WorkerService.addToLocalStorage("schedulerInterval", localStorage.getItem('schedulerInterval'));
+    WorkerService.addToLocalStorage("schedulerInterval", parseInt(localStorage.getItem('schedulerInterval')));
     WorkerService.setAngularUrl(getUrl("components/angular/angular.js"));
     WorkerService.includeScripts(getUrl('common.offline.min.js'));
     WorkerService.addDependency('scheduledSync', 'bahmni.common.offline', getUrl('common.background.min.js'));

@@ -8,6 +8,12 @@ angular.module('bahmni.common.offline')
             })
         };
 
+        var getAddressEventsFor = function (catchmentNumber, lastReadUuid) {
+            return $http.get(Bahmni.Common.Constants.addressEventLogServiceUrl, {
+                params: {filterBy: catchmentNumber, uuid: lastReadUuid}
+            })
+        };
+
         var getDataForUrl = function (url) {
             return $http.get(url);
         };
@@ -18,16 +24,11 @@ angular.module('bahmni.common.offline')
             return $http.get(url, { method: "GET", params: params, withCredentials: true});
         };
 
-        var getParentAddressHierarchyEntriesForLoginLocation = function(uuids){
-            var params = {"uuids" :uuids};
-            var url =  Bahmni.Common.Constants.hostURL + "/openmrs/ws/rest/v1/addressHierarchy";
-            return $http.get(url, { method: "GET", params: params, withCredentials: true});
-        };
 
         return {
             getEventsFor: getEventsFor,
             getDataForUrl: getDataForUrl,
             getAddressForLoginLocation: getAddressForLoginLocation,
-            getParentAddressHierarchyEntriesForLoginLocation: getParentAddressHierarchyEntriesForLoginLocation
+            getAddressEventsFor: getAddressEventsFor
         };
     }]);

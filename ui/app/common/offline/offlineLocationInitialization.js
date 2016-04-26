@@ -23,7 +23,8 @@ angular.module('bahmni.common.offline')
                                 var loginAddress = data[addressResults];
                                 if (checkParents(loginAddress, getParentAddressLevel(addressField))) {
                                     offlineService.setItem('catchmentNumber', data[addressResults].userGeneratedId);
-                                    getParentAddressLineItems(data[addressResults]);
+                                    getCatchmentNumberForAddressHierarchy(data[addressResults]);
+                                    deferred.resolve();
                                     break;
                                 }
                             }
@@ -65,19 +66,15 @@ angular.module('bahmni.common.offline')
                     }
                 };
 
-                var getParentAddressLineItems = function (parentAddresses){
-                    var uuids = [];
-                    while(parentAddresses){
-                        uuids.push(parentAddresses.uuid);
-                        parentAddresses = parentAddresses.parent;
+                var getCatchmentNumberForAddressHierarchy = function (addressData){
+                    while(addressData.parent) {
+                        if(addressData.userGeneratedId.length == 6){
+                            offlineService.setItem('addressCatchmentNumber', addressData.userGeneratedId);
+                            deferred.resolve();
+                            break;
+                        }
+                        addressData = addressData.parent;
                     }
-                    eventLogService.getParentAddressHierarchyEntriesForLoginLocation(uuids).then(function(response){
-                        var addressList = response.data;
-                        angular.forEach(addressList, function(address){
-                            offlineDbService.insertAddressHierarchy(address);
-                        });
-                        deferred.resolve({});
-                    });
                 };
 
               return deferred.promise;
