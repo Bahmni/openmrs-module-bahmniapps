@@ -177,7 +177,12 @@ angular.module('bahmni.common.appFramework')
             return $http.get(path);
         };
 
+        this.getAppName  = function() {
+          return this.appName;
+        };
+
         this.initApp = function (appName, options, extensionFileSuffix, configPages) {
+            this.appName = appName;
             var appLoader = $q.defer();
             var extensionFileName = (extensionFileSuffix && extensionFileSuffix.toLowerCase() !== 'default') ? "/extension-" + extensionFileSuffix + ".json" : "/extension.json";
             var promises = [];
