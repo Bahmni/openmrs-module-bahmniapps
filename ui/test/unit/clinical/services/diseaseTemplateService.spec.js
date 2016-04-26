@@ -4,7 +4,6 @@ describe("DiseaseTemplateService", function () {
     var _clinicalAppConfigService, _$http;
     var diseaseTemplateService;
 
-    var offlineService = {isOfflineApp: function(){}};
     var mockHttp = function(method,data){
         _$http[method].and.returnValue(specUtil.createFakePromise(data));
     };
@@ -23,7 +22,6 @@ describe("DiseaseTemplateService", function () {
         $provide.value('clinicalAppConfigService', _clinicalAppConfigService);
         $provide.value('$http', _$http);
         $provide.value('$q', Q);
-        $provide.value('offlineService', offlineService);
     }));
 
     beforeEach(inject(['diseaseTemplateService', function (diseaseTemplateService) {

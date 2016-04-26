@@ -71,6 +71,9 @@ module.exports = function (config) {
             'app/common/domain/services/locationService.js',
             'app/common/domain/services/localeService.js',
             'app/common/domain/services/encounterService.js',
+            'app/common/domain/services/diagnosisService.js',
+            'app/common/domain/services/visitService.js',
+            'app/clinical/dashboard/services/diseaseTemplateService.js',
 
             'test/unit/orders/services/orderTypeService.spec.js',
             'test/unit/common/patient/services/patientService.spec.js',
@@ -82,6 +85,9 @@ module.exports = function (config) {
             'test/unit/registration/services/encounterService.spec.js',
             'test/unit/common/domain/services/configurationService.spec.js',
             'test/unit/common/domain/services/localeService.spec.js',
+            'test/unit/common/domain/services/visitService.spec.js',
+            'test/unit/clinical/services/diseaseTemplateService.spec.js',
+
 
             'test/unit/**/offline/chrome/*.js'
         ],

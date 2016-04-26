@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('bahmni.common.domain')
-    .service('diagnosisService', ['$http','$rootScope','offlineService','$q', function ($http, $rootScope,offlineService,$q) {
+    .service('diagnosisService', ['$http','$rootScope', function ($http, $rootScope) {
         var self = this;
         this.getAllFor = function (searchTerm) {
             var url = Bahmni.Common.Constants.emrapiConceptUrl;
@@ -11,9 +11,6 @@ angular.module('bahmni.common.domain')
         };
 
         this.getDiagnoses = function (patientUuid, visitUuid) {
-            if(offlineService.isOfflineApp()) {
-                return $q.when({"data": {}});
-            }
             var url = Bahmni.Common.Constants.bahmniDiagnosisUrl;
             return $http.get(url, {
                 params: { patientUuid: patientUuid , visitUuid: visitUuid}

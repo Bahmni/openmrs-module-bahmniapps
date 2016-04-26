@@ -64,6 +64,7 @@ module.exports = function (config) {
             'app/registration/offline/**/*.js',
             'app/common/**/offline/chrome/*.js',
             'app/common/**/offline/android/*.js',
+            'app/clinical/dashboard/services/offline/**/*.js',
             'test/unit/registration/offline/**/*.js',
             'test/unit/**/offline/android/*.js',
             'test/unit/**/offline/chrome/*.js',

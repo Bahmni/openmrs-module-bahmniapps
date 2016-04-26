@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('bahmni.clinical')
-    .service('diseaseTemplateService', ['$http', '$q', 'clinicalAppConfigService','offlineService', function ($http, $q, clinicalAppConfigService,offlineService) {
+    .service('diseaseTemplateService', ['$http', '$q', 'clinicalAppConfigService', function ($http, $q, clinicalAppConfigService) {
 
         this.getLatestDiseaseTemplates = function (patientUuid, diseaseTemplates, startDate, endDate) {
             var url = Bahmni.Common.Constants.diseaseTemplateUrl;
@@ -9,9 +9,6 @@ angular.module('bahmni.clinical')
             params.startDate = startDate && moment(startDate).format(Bahmni.Common.Constants.ServerDateTimeFormat);
             params.endDate = endDate && moment(endDate).format(Bahmni.Common.Constants.ServerDateTimeFormat);
             var deferred = $q.defer();
-            if(offlineService.isOfflineApp()) {
-                return $q.when({"data": {}});
-            }
             $http.post(url, params,  {
                 withCredentials: true,
                 headers: {"Accept": "application/json", "Content-Type": "application/json"}
