@@ -4,6 +4,7 @@ angular.module('bahmni.common.offline')
     .service('encounterDbService', function () {
 
         var insertEncounterData = function(db, encounterData) {
+            encounterData = JSON.parse(JSON.stringify(encounterData));
             var patientUuid = encounterData.patientUuid;
             var uuid = encounterData.encounterUuid;
             var encounterTable = db.getSchema().table('encounter');

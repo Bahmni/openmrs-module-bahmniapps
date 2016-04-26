@@ -75,6 +75,7 @@ angular.module('bahmni.common.domain')
                 encounterData.encounterUuid = encounterData.encounterUuid || Bahmni.Common.Offline.UUID.generateUuid();
                 encounterData.visitUuid = encounterData.visitUuid || Bahmni.Common.Offline.UUID.generateUuid();
                 encounterData.encounterDateTime = Bahmni.Common.Util.DateUtil.now();
+                encounterData.encounterType = 'field';
                 return offlineDbService.createEncounter(encounterData);
             };
 

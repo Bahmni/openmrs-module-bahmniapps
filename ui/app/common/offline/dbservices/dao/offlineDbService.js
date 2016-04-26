@@ -61,9 +61,7 @@ angular.module('bahmni.common.offline')
                 var uuid = postRequest.patientUuid;
                 insertEncounterData(postRequest)
                     .then(function () {
-                        getEncountersByPatientUuid(uuid).then(function (results) {
-                            deferred.resolve({data: results});
-                        })
+                        deferred.resolve({data: postRequest});
                     });
                 return deferred.promise;
             };
