@@ -1,4 +1,3 @@
-
 $column-width: 100;
 $gutter-width: 0;
 $columns: 12;
@@ -137,6 +136,15 @@ body{
 }
 .reg-header{
 	height:52px;
+    .offline-sync{
+      position: absolute;
+      right: 75px;
+      top: 8px;
+      &.offline-sync-image{
+        padding: 6px 27px;
+        top:7px;
+      }
+    }
 }
 .remove-margin{
   margin:0px !important;
@@ -527,6 +535,9 @@ body{
     float: right;
     padding: 7px;
     margin-right: 70px;
+    &.change-location-offline{
+     margin-right:150px;
+    }
     select, select:focus {
         background: lighten($bahmniPrimaryColor, 10%);
         color: $white;

@@ -1,11 +1,10 @@
 'use strict';
 
 angular.module('bahmni.registration')
-    .controller('NavigationController', ['$scope', '$rootScope', '$location', 'sessionService', '$window', 'appService', '$sce',
-        function ($scope, $rootScope, $location, sessionService, $window, appService, $sce) {
-
+    .controller('NavigationController', ['$scope', '$rootScope', '$location', 'sessionService', '$window', 'appService', '$sce','offlineService', 'WorkerService',
+        function ($scope, $rootScope, $location, sessionService, $window, appService, $sce, offlineService, WorkerService) {
             $scope.extensions = appService.getAppDescriptor().getExtensions("org.bahmni.registration.navigation", "link");
-
+            $scope.isOfflineApp = offlineService.isOfflineApp();
             $scope.goTo = function (url) {
                 $location.url(url);
             };
@@ -22,4 +21,15 @@ angular.module('bahmni.registration')
                     }
                 );
             };
+
+            $scope.sync = function() {
+                if (Bahmni.Common.Offline && Bahmni.Common.Offline.BackgroundWorker) {
+                    new Bahmni.Common.Offline.BackgroundWorker(WorkerService, offlineService, {delay: 1000, repeat: 1});
+                }
+            };
+
+            $scope.$on("schedulerStage", function(event,stage){
+                $scope.isSyncing = (stage !== null);
+            });
+
         }]);

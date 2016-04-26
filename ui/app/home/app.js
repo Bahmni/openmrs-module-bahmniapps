@@ -30,13 +30,13 @@ angular.module('bahmni.home', ['ui.router', 'httpErrorInterceptor', 'bahmni.comm
                         initialize: function (initialization, offlineDb) {
                             return initialization(offlineDb);
                         },
-                        webWorker: function(offlineService, scheduledSync, WorkerService){
-                            if(offlineService.isChromeApp()) {
+                        webWorker: function(offlineService, scheduledSync, WorkerService) {
+                            if (offlineService.isChromeApp()) {
                                 if (Bahmni.Common.Offline && Bahmni.Common.Offline.BackgroundWorker) {
                                     new Bahmni.Common.Offline.BackgroundWorker(WorkerService, offlineService);
                                 }
-                            }else if(offlineService.isAndroidApp()){
-                                    scheduledSync();
+                            } else if (offlineService.isAndroidApp()) {
+                                scheduledSync();
                             }
                         }
                     }

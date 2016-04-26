@@ -8,7 +8,15 @@
         </ul>
         <div ui-view="headerExtension" class="print-action-items"></div>
 
-        <button class="btn-user-info">
+    <button class="btn offline-sync" ng-click="sync()" ng-show="isOfflineApp && !isSyncing ">
+        {{::'REGISTRATION_LABEL_SYNC' | translate}}
+    </button>
+    <button class="btn offline-sync offline-sync-image" ng-show="isOfflineApp && isSyncing" disabled>
+        <!-- <i class="fa fa-refresh"></i> -->
+        <img src="../images/sync.gif" />
+    </button>
+
+    <button class="btn-user-info">
             <i class="fa fa-user-md fa-white small"></i>
             <i class="fa fa-caret-down fa-white mini"></i>
         </button>
@@ -18,11 +26,6 @@
             </li>
             <li>
                 <i class="fa fa-map-marker fa-white small"></i><span>{{:: currentUser.currentLocation}}</span>
-            </li>
-            <li ng-if="isOfflineApp()">
-                <a href="/offline">
-                    <i class="fa fa-refresh small"></i><span class="nav-link">{{::'REGISTRATION_LABEL_SYNC' | translate}}</span>
-                </a>
             </li>
             <li>
                 <a log-out><i class="fa fa-power-off fa-white small"></i><span class="nav-link">{{::'REGISTRATION_LABEL_LOGOUT' | translate}}</span></a>

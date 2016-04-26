@@ -1,10 +1,11 @@
 'use strict';
 
 angular.module('bahmni.home')
-    .controller('DashboardController', ['$rootScope', '$scope', '$state', 'appService', 'locationService', 'spinner', '$bahmniCookieStore', '$window', '$q',
-        function ($rootScope, $scope, $state, appService, locationService, spinner, $bahmniCookieStore, $window, $q) {
+    .controller('DashboardController', ['$scope', '$state', 'appService', 'locationService', 'spinner', '$bahmniCookieStore', '$window', '$q', 'offlineService', 'WorkerService',
+        function ($scope, $state, appService, locationService, spinner, $bahmniCookieStore, $window, $q, offlineService, WorkerService) {
             $scope.appExtensions = appService.getAppDescriptor().getExtensions($state.current.data.extensionPointId, "link") || [];
             $scope.selectedLocationUuid = {};
+            $scope.isOfflineApp = offlineService.isOfflineApp();
 
             var getCurrentLocation = function () {
                 return $bahmniCookieStore.get(Bahmni.Common.Constants.locationCookieName) ? $bahmniCookieStore.get(Bahmni.Common.Constants.locationCookieName) : null;
@@ -37,6 +38,16 @@ angular.module('bahmni.home')
                 }, {path: '/', expires: 7});
                 $window.location.reload();
             };
+
+            $scope.sync = function() {
+                if (Bahmni.Common.Offline && Bahmni.Common.Offline.BackgroundWorker) {
+                    new Bahmni.Common.Offline.BackgroundWorker(WorkerService, offlineService, {delay: 1000, repeat: 1});
+                }
+            };
+
+            $scope.$on("schedulerStage", function(event,stage){
+                $scope.isSyncing = (stage !== null);
+            });
 
             return spinner.forPromise($q.all(init()));
         }]);

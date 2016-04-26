@@ -1,6 +1,15 @@
 .reg-header-wrapper{
   .reg-header{
     position: relative;
+    .offline-sync{
+      position: absolute;
+      right: 75px;
+      top: 8px;
+      &.offline-sync-image{
+        padding: 6px 27px;
+        top:7px;
+      }
+    }
     ul.top-nav{
       float: left;
       li{
