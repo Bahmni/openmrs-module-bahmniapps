@@ -1,10 +1,10 @@
 <div class="back-btn-link">
     <a ng-href="../clinical/#/default/patient/{{patient.uuid}}/dashboard" title="Back to {{patient.name}}'s Clinical Dashboard">
-    <img ng-src="{{patient.image}}" onerror="this.onerror=null;this.src='../images/blank-user.gif';">
-      <span class="patient-info">
-        <span class="patient-name" >{{patient.name}} </span>
-        <span class="patient-id">{{patient.identifier}}</span>
-    </span>
+        <patient-image patient="patient"></patient-image>
+        <span class="patient-info">
+            <span class="patient-name" >{{patient.name}} </span>
+            <span class="patient-id">{{patient.identifier}}</span>
+        </span>
     </a>
 </div>
 

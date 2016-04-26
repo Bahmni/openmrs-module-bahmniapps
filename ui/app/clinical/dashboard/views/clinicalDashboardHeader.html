@@ -9,7 +9,7 @@
                 <i class="fa fa-bed fa-white"></i>
             </a>
             <a class="back-btn-link" id="dashboard-link" accesskey="d" ng-click="gotoPatientDashboard()" title="Back to {{patient.name}} Dashboard">
-                <img ng-src="{{patient.image}}" onerror="this.onerror=null;this.src='../images/blank-user.gif';">
+                <patient-image patient="patient"></patient-image>
               <span class="patient-info">
                 <span class="patient-name" >{{patient.name}} </span>
                 <span class="patient-id">{{patient.identifier}}</span>

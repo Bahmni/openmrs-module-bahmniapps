@@ -2,11 +2,10 @@
     <div class="patient-info-fixed">
         <ul>
             <li class="patient-name-image-container">
-                <img class="patient-image" ng-src="{{patientContext.image}}"
-                     onerror="this.onerror=null;this.src='../images/blank-user.gif';" src="../images/blank-user.gif">
-              <span class="patient-name">
+                <patient-image class="patient-image" patient="patientContext"></patient-image>
+                <span class="patient-name">
                   {{patientContext.givenName}} {{patientContext.familyName}} ({{patientContext.identifier}})
-              </span>
+                </span>
             </li>
             <li>{{patientContext.gender}}</li>
             <li>{{patientContext.birthdate | birthDateToAgeText}}</li>

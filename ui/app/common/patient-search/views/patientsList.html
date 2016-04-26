@@ -72,8 +72,7 @@
                 visible-results="search.visiblePatients" class="active-visits">
             <ul>
                 <li ng-repeat="patient in search.visiblePatients" class="active-patient" ng-click="forwardPatient(patient)">
-                <img class="smallImages" ng-src="{{patient.image}}"
-                     onerror="this.onerror=null;this.src='../images/blank-user.png';">
+                <patient-image patient="patient" class="smallImages" alt="../images/blank-user.png"></patient-image>
 
                 <div class="patient-name">{{patient.name}}</div>
                 <div class="patient-id">{{patient.identifier}}</div>
