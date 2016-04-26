@@ -13,13 +13,13 @@
 }
 
 form .form-field{
-  .field-value input[type="text"]{
-    &#familyNameLocal ,&#familyName{
-      @media (max-width : 990px) {
-        clear: both;
-      }
-    }
-  }
+  //.field-value input[type="text"]{
+  //  &#familyNameLocal ,&#familyName{
+  //    @media (max-width : 990px) {
+  //      clear: both;
+  //    }
+  //  }
+  //}
   @media (max-width : 768px) {
     .field-value {
       @media (max-width : 580px) {
@@ -140,6 +140,14 @@ section.form-field-inline{
     }
     label#casteSameAsLastNameCheckLabel{
       width: auto;
+    }
+    .patient-name span{
+      @include clearfix();
+      float:left;
+      @media (max-width : 768px) {
+        display:block;
+        float:none;
+      }
     }
   }
 }

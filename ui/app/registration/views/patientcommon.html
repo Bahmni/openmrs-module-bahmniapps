@@ -21,7 +21,7 @@
                     <label for="patientName">{{ ::'REGISTRATION_LABEL_PATIENT_NAME' | translate}}<span class="asterick">*</span></label>
                 </div>
 
-                <div class="field-value" id="patientName">
+                <div class="field-value patient-name" id="patientName">
 
               <span data-ng-switch="::isAutoComplete('givenName')"
                     ng-if="::patientConfiguration.local()['showNameField']">
