@@ -509,6 +509,7 @@ button.toggle{
     display: none;
   }
   &.active{
+    background: none !important;
     .fa-angle-up{
       display: block;
     }

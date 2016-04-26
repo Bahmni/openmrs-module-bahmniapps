@@ -16,11 +16,11 @@
                 <td class="value" ng-if="visitSummary.admissionDetails">
                     {{visitSummary.admissionDetails.date | bahmniDate}}
                 </td>
-                <td class="toggle-btn" ng-if="showDetailsButton(visitSummary.admissionDetails)">
+                <td  ng-if="showDetailsButton(visitSummary.admissionDetails)">
                     <button class="toggle fr"
-                            ng-click="toggle(visitSummary.admissionDetails)" >
-                        <i class="fa fa-angle-down" ng-hide="visitSummary.admissionDetails.show"></i>
-                        <i class="fa fa-angle-up" ng-show="visitSummary.admissionDetails.show"></i>
+                           toggle="visitSummary.admissionDetails.show">
+                        <i class="fa fa-angle-down"></i>
+                        <i class="fa fa-angle-up"></i>
                     </button>
                 </td>
             </tr>
