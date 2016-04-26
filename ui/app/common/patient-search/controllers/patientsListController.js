@@ -9,6 +9,9 @@ angular.module('bahmni.common.patientSearch')
             $scope.search = new Bahmni.Common.PatientSearch.Search(searchTypes);
             $scope.search.markPatientEntry();
             $scope.$watch('search.searchType', fetchPatients);
+            if($rootScope.currentSearchType != null ) {
+                $scope.search.switchSearchType($rootScope.currentSearchType);
+            }
         };
 
         $scope.searchPatients = function () {
@@ -81,6 +84,7 @@ angular.module('bahmni.common.patientSearch')
         };
 
         var fetchPatients = function () {
+            $rootScope.currentSearchType = $scope.search.searchType;
             if($scope.search.isCurrentSearchLookUp()) {
                 var params = { q: $scope.search.searchType.handler, v: "full",
                                location_uuid: $bahmniCookieStore.get(Bahmni.Common.Constants.locationCookieName).uuid,

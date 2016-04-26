@@ -8,15 +8,17 @@ Bahmni.Common.PatientSearch.Search = function(searchTypes) {
     self.noResultsMessage = null;
     self.searchResults = [];
     self.activePatients = [];
+    self.navigated=false;
     angular.forEach(searchTypes, function(searchType){
         searchType.patientCount = "..."
     });
 
     self.switchSearchType = function (searchType) {
         self.noResultsMessage = null;
-        if (self.searchType != searchType)
+        if (!self.isSelectedSearch(searchType))
         {
             self.searchParameter = '';
+            self.navigated=true;
             self.searchType = searchType;
             self.activePatients = [];
             self.searchResults = [];
@@ -58,7 +60,7 @@ Bahmni.Common.PatientSearch.Search = function(searchTypes) {
     };
 
 	self.isSelectedSearch = function(searchType) {
-        return self.searchType == searchType;
+        return self.searchType && self.searchType.id == searchType.id;
     };
 
     self.isCurrentSearchLookUp = function() {

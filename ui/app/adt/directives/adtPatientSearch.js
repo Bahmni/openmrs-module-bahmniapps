@@ -7,7 +7,7 @@ angular.module('bahmni.adt')
             $timeout(function() {
                 element.find('.tabs ul').prepend($('.ward-list-tab'));
                 element.find('.tab-content').prepend($('#ward-list'));
-                if($scope.isBedManagementEnabled) {
+                if($scope.isBedManagementEnabled && !$scope.search.navigated) {
                     $scope.search.searchType = undefined;
                 }
             });
