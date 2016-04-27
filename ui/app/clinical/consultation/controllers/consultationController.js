@@ -114,10 +114,10 @@ angular.module('bahmni.clinical').controller('ConsultationController',
             $scope.$on('$stateChangeStart', function (event, toState, toParams, fromState, fromParams ) {
                 if ($scope.showSaveConfirmDialogConfig) {
                     if ($rootScope.hasVisitedConsultation && $scope.shouldDisplaySaveConfirmDialogForStateChange(toState, toParams, fromState, fromParams)) {
-                        if (!$scope.stateChangeTriggedByDialog) {
-                            $scope.stateChangeTriggedByDialog = true;
+                        if ($scope.showConfirmationPopUp) {
                             event.preventDefault();
                             spinner.hide(toState.spinnerToken);
+                            ngDialog.close();
                             $scope.toStateConfig = {toState: toState, toParams: toParams};
                             $scope.displayConfirmationDialog();
                         }
@@ -127,7 +127,7 @@ angular.module('bahmni.clinical').controller('ConsultationController',
             });
 
             $scope.$on("event:errorsOnForm", function() {
-                $scope.stateChangeTriggedByDialog = false;
+                $scope.showConfirmationPopUp = true;
             });
 
             $scope.displayConfirmationDialog = function (event) {
@@ -141,9 +141,9 @@ angular.module('bahmni.clinical').controller('ConsultationController',
             };
 
             $scope.$on('$stateChangeSuccess', function (event, toState, toParams, fromState) {
-                $scope.stateChangeTriggedByDialog = false;
                 if (toState.name.match(/patient.dashboard.show.+/)) {
                     $rootScope.hasVisitedConsultation = true;
+                    $scope.showConfirmationPopUp = true;
                     if($scope.showSaveConfirmDialogConfig) {
                         $rootScope.$broadcast("event:pageUnload");
                     }
@@ -154,24 +154,26 @@ angular.module('bahmni.clinical').controller('ConsultationController',
             });
 
             $scope.cancelTransition = function() {
-                $scope.stateChangeTriggedByDialog = false;
+                $scope.showConfirmationPopUp = true;
                 ngDialog.close();
                 delete $scope.targetUrl;
             };
 
             $scope.saveAndContinue = function() {
-                ngDialog.close();
+                $scope.showConfirmationPopUp = false;
                 $scope.save($scope.toStateConfig);
                 $window.onbeforeunload = null;
+                ngDialog.close();
             };
 
             $scope.continueWithoutSaving = function() {
-                ngDialog.close();
+                $scope.showConfirmationPopUp = false;
                 if ($scope.targetUrl) {
                     $window.open($scope.targetUrl, "_self");
                 }
                 $window.onbeforeunload = null;
                 $state.go($scope.toStateConfig.toState, $scope.toStateConfig.toParams);
+                ngDialog.close();
             };
 
             var getUrl = function (board) {
