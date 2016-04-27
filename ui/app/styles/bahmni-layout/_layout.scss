@@ -37,6 +37,25 @@
             max-width: $max-page-width;
             margin: 0px auto;
 
+            .offline-sync {
+              position: fixed;
+              right: 322px;
+              top : 5px;
+              button{
+                cursor: pointer;
+                width: auto;
+                max-width: 100%;
+                padding: 10px 12px 10px;
+                color: $white;
+                border: 1px solid darken($bahmniSecondaryColor, 15%);
+                background: linear-gradient(to bottom, $bahmniSecondaryColor, darken($bahmniSecondaryColor, 10%));
+                font-size: 16px;
+              }
+              &.offline-sync-image {
+                padding: 6px 27px;
+                top: 7px;
+              }
+            }
             .header-logo{
               display: block;
               width: 35px;
