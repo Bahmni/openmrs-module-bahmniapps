@@ -50,14 +50,7 @@ angular.module('bahmni.common.offline')
                     } else {
                         parents = response[0].parents;
                     }
-                    if (parent) {
-                        if (_.isArray(parent)) {
-                            parents.parentUuids = _.union(parents.parentUuids, parent);
-                        }
-                        else {
-                            parents.parentUuids = _.union(parents.parentUuids, [parent]);
-                        }
-                    }
+                    parents.parentUuids = _.union(parents.parentUuids, parent);
 
                     var row = concept.createRow({
                         data: data,
@@ -85,7 +78,7 @@ angular.module('bahmni.common.offline')
                     deferred.resolve();
                 var count = 0;
                 _.each(concept.setMembers, function (child) {
-                    insertConceptAndUpdateHierarchy({"results": [child]}, concept.uuid).then(function () {
+                    insertConceptAndUpdateHierarchy({"results": [child]}, [concept.uuid]).then(function () {
                         count++;
                         if (count == length) {
                             deferred.resolve();
