@@ -38,6 +38,7 @@ angular.module('bahmni.common.offline').service('initializeOfflineSchema', [func
         createTable(schemaBuilder, Bahmni.Common.Offline.SchemaDefinitions.PatientAddress);
         createTable(schemaBuilder, Bahmni.Common.Offline.SchemaDefinitions.Configs);
         createTable(schemaBuilder, Bahmni.Common.Offline.SchemaDefinitions.ReferenceData);
+        createTable(schemaBuilder, Bahmni.Common.Offline.SchemaDefinitions.Concept);
         createTable(schemaBuilder, Bahmni.Common.Offline.SchemaDefinitions.LoginLocations);
         createTable(schemaBuilder, Bahmni.Common.Offline.SchemaDefinitions.Encounter);
         createTable(schemaBuilder, Bahmni.Common.Offline.SchemaDefinitions.Visit);

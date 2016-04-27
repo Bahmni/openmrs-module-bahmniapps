@@ -64,9 +64,9 @@
         <script src="../lib/angular-workers/dist/angular-workers.js"></script>
 
 
-        <!-- build:js clinical.min.js -->
+        <!-- build:js ../common.offline.min.js -->
         <script src="../common/constants.js"></script>
-        <script src="../common/route-errorhandler/init.js"></script>
+        <script src="../components/lodash/dist/lodash.min.js"></script>
         <script src="../common/util/init.js"></script>
         <script src="../common/util/dateUtil.js"></script>
         <script src="../common/util/ageUtil.js"></script>
@@ -79,12 +79,16 @@
         <script src="../components/lovefield/dist/lovefield.js"></script>
 
 
+        <script src="../common/models/init.js"></script>
+        <script src="../common/models/age.js"></script>
         <script src="../common/offline/init.js"></script>
+        <script src="../common/offline/offlineService.js"></script>
         <script src="../common/offline/offlineService.js"></script>
         <script src="../common/offline/initializeOfflineSchema.js"></script>
         <script src="../common/offline/offlineDbInitialization.js"></script>
         <script src="../common/offline/offlineConfigInitialization.js"></script>
         <script src="../common/offline/offlineReferenceDataInitialization.js"></script>
+        <script src="../common/offline/offlineLocationInitialization.js"></script>
         <script src="../common/offline/offlineSyncInitialization.js"></script>
         <script src="../common/offline/services/eventLogService.js"></script>
         <script src="../common/offline/services/offlineSyncService.js"></script>
@@ -106,16 +110,38 @@
         <script src="../common/offline/dbservices/dao/encounterDbService.js"></script>
         <script src="../common/offline/dbservices/dao/visitDbService.js"></script>
         <script src="../common/offline/dbservices/dao/observationDbService.js"></script>
+        <script src="../common/offline/dbservices/dao/conceptDbService.js"></script>
         <script src="../common/offline/offlineDbInitialization.js"></script>
         <script src="../common/offline/offlinePush.js"></script>
         <script src="../common/offline/offlinePull.js"></script>
         <script src="../common/offline/services/offlinePatientSyncService.js"></script>
 
 
-        <script src="../common/offline/scheduler/scheduledJob.js"></script>
-        <script src="../common/offline/scheduler/MultiStageWorker.js"></script>
-        <script src="../common/offline/scheduler/eventQueue.js"></script>
         <script src="../common/offline/scheduler/scheduledSync.js"></script>
+        <script src="../common/offline/scheduler/scheduledJob.js"></script>
+        <script src="../common/offline/offlinePush.js"></script>
+        <script src="../common/offline/offlinePull.js"></script>
+        <script src="../common/offline/scheduler/MultiStageWorker.js"></script>
+        <script src="../components/hustle/hustle.js"></script>
+        <script src="../common/offline/scheduler/eventQueue.js"></script>
+        <!-- endbuild -->
+
+
+        <!-- build:js clinical.min.js -->
+        <script src="../common/constants.js"></script>
+        <script src="../common/route-errorhandler/init.js"></script>
+        <script src="../common/util/init.js"></script>
+        <script src="../common/util/dateUtil.js"></script>
+        <script src="../common/util/ageUtil.js"></script>
+        <script src="../common/util/arrayUtil.js"></script>
+        <script src="../common/util/httpErrorInterceptor.js"></script>
+        <script src="../common/util/modernizr.tests.js"></script>
+        <script src="../common/util/iosLabelFix.js"></script>
+        <script src="../common/util/stringFormat.js"></script>
+        <script src="../common/util/dynamicResourceLoader.js"></script>
+        <script src="../components/lovefield/dist/lovefield.min.js"></script>
+
+
 
         <script src="../common/models/init.js"></script>
         <script src="../common/models/age.js"></script>
@@ -524,6 +550,19 @@
         <script src="../common/app-framework/services/loadConfigService.js"></script>
         <script src="../common/domain/services/encounterService.js"></script>
         <script src="dashboard/services/diseaseTemplateService.js"></script>
+
+
+
+        <!-- endbuild -->
+        <!-- @endif -->
+
+        <!-- @ifdef OFFLINE -->
+        <!-- build:js ../common.background.min.js -->
+        <!--<script src="../components/hustle/hustle.js"></script>-->
+        <!--<script src="../components/lovefield/dist/lovefield.min.js"></script>-->
+        <!--<script src="../common/offline/scheduler/eventQueue.js"></script>-->
+        <!--<script src="../common/offline/scheduler/scheduledSync.js"></script>-->
+        <!--<script src="../common/offline/scheduler/backgroundWorker.js"></script>-->
         <!-- endbuild -->
         <!-- @endif -->
 
@@ -532,6 +571,7 @@
         <!--<script src="../common/domain/offline/chrome/chromeVisitService.js"></script>-->
         <!--<script src="../components/hustle/hustle.js"></script>-->
         <!--<script src="../common/domain/offline/chrome/chromeEncounterService.js"></script>-->
+        <!--<script src="../common/concept-set/offline/chrome/chromeConceptSetService.js"></script>-->
         <!--<script src="../common/patient/offline/chrome/chromePatientService.js"></script>-->
         <!--<script src="../common/orders/offline/chrome/chromeOrderTypeService.js"></script>-->
         <!--<script src="../common/domain/offline/chrome/chromeLocationService.js"></script>-->
