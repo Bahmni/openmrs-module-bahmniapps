@@ -273,7 +273,12 @@ Bahmni.Common.Offline.SchemaDefinitions = {
             {
                 name: 'patientUuid',
                 type: 'STRING'
-            }, {
+            },
+            {
+                name: 'encounterDateTime',
+                type: 'DATE_TIME'
+            },
+            {
                 name: 'encounterJson',
                 type: 'OBJECT'
             }
