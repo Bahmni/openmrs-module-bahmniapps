@@ -17,7 +17,7 @@ angular.module('bahmni.common.patient')
         };
 
         this.findPatients = function (params) {
-            return $q.when({data: {}});
+            return $q.when({data: []});
         };
 
         this.search = function (query, offset, identifier) {
