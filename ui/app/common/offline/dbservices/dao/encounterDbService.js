@@ -7,11 +7,13 @@ angular.module('bahmni.common.offline')
             encounterData = JSON.parse(JSON.stringify(encounterData));
             var patientUuid = encounterData.patientUuid;
             var uuid = encounterData.encounterUuid;
+            var encounterDateTime = encounterData.encounterDateTime;
             var encounterTable = db.getSchema().table('encounter');
 
             var row = encounterTable.createRow({
                 uuid: uuid,
                 patientUuid: patientUuid,
+                encounterDateTime: new Date(encounterDateTime),
                 encounterJson: encounterData
             });
             return db.insertOrReplace().into(encounterTable).values([row]).exec().then(function () {
