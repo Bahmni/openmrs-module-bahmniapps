@@ -1,10 +1,10 @@
 'use strict';
 
 angular.module('bahmni.common.patient')
-    .directive('eventStopPropagation', function () {
+    .directive('stopEventPropagation', function () {
         return {
             link: function(scope, elem, attrs) {
-                elem.on(attrs.eventStopPropagation, function(e){
+                elem.on(attrs.stopEventPropagation, function(e){
                     e.stopPropagation();
                 });
             }

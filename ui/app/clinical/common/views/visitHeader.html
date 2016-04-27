@@ -3,7 +3,7 @@
         <bm-back-links></bm-back-links>
 
         <a class="back-btn dashboard-link" id="dashboard-link" ng-click="gotoPatientDashboard()" title="Back to patient dashboard">
-            <patient-image patient="patient"></patient-image>
+            <img ng-src="{{::patient.image}}" fallback-src='../images/blank-user.gif'>
             <span class="patient-info">
                 <span class="patient-name" >{{patient.name}} </span>
                 <span class="patient-id">{{patient.identifier}}</span>

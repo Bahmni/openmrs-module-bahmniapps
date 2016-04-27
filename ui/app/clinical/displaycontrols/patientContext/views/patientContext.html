@@ -2,7 +2,7 @@
     <div class="patient-info-fixed">
         <ul>
             <li class="patient-name-image-container">
-                <patient-image class="patient-image" patient="patientContext"></patient-image>
+                <img class="patient-image" ng-src="{{::patientContext.image}}" fallback-src='../images/blank-user.gif'>
                 <span class="patient-name">
                   {{patientContext.givenName}} {{patientContext.familyName}} ({{patientContext.identifier}})
                 </span>

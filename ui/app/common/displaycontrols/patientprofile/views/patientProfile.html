@@ -5,7 +5,7 @@
             <tr class="patient-info">
                 <td colspan="2">
                     <span class="patient-img">
-                        <patient-image patient="patient"></patient-image>
+                        <img ng-src="{{::patient.image}}" fallback-src='../images/blank-user.gif'>
                     </span>
                     <div class="patient-value">
                          <span class="patient-name">
