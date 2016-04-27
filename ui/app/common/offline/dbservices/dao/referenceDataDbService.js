@@ -21,7 +21,7 @@ angular.module('bahmni.common.offline')
 
             var row = referenceData.createRow({
                 key: referenceDataKey,
-                value: data,
+                data: data,
                 etag: eTag
             });
 

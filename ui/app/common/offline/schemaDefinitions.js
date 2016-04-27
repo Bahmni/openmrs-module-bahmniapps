@@ -56,6 +56,26 @@ Bahmni.Common.Offline.SchemaDefinitions = {
         nullableColumns: ['name', 'parentId', 'userGeneratedId'],
         primaryKeyColumns: ['uuid']
     },
+    Concept: {
+        tableName: 'concept',
+        columns: [
+            {
+                name: 'data',
+                type: 'STRING'
+            }, {
+                name: 'uuid',
+                type: 'STRING'
+            }, {
+                name: 'name',
+                type: 'STRING'
+            }, {
+                name: 'parents',
+                type: 'OBJECT'
+            }
+        ],
+        nullableColumns: [],
+        primaryKeyColumns: ['uuid']
+    },
 
     EventLogMarker: {
         tableName: 'event_log_marker',
@@ -239,7 +259,7 @@ Bahmni.Common.Offline.SchemaDefinitions = {
                 name: 'key',
                 type: 'STRING'
             }, {
-                name: 'value',
+                name: 'data',
                 type: 'STRING'
             },{
                 name: 'etag',

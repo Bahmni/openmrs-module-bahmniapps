@@ -8,8 +8,8 @@ angular.module('bahmni.common.orders')
             self.orderTypes = [];
             self.loadAll = function () {
                 return offlineDbService.getReferenceData('OrderType').then(function (orderType) {
-                    self.orderTypes = orderType.value;
-                    return {"data": orderType.value};
+                    self.orderTypes = orderType.data;
+                    return orderType;
                 });
             };
 
