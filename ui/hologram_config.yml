@@ -23,6 +23,7 @@ dependencies:
 # List all css to include for the styleguide render examples (path from styleguide directory)
 css_include:
   - '/bahmni/styles/clinical.css'
+  - '/bahmni/styles/registration.css'
 
 # Mark which category should be the index page
 # Alternatively, you may have an index.md in the documentation assets

@@ -2,17 +2,136 @@
 ---
 title: Buttons
 name: button
-category: Bahmni styleGuide
+category: Layout - Button
 ---
 
 Button styles can be applied to any element. Typically you'll want to
 use either a `<button>` or an `<a>` element:
 
 ```html_example
-<button class="back-btn">Back Button</button>
+<button>Button</button>
+<button class="confirm">Confirm</button>
+<button class="cancel">Cancel</button>
+<button class="back-btn">Back</button>
+<button  disabled="disabled">Disabled</button>
+<button class="arrow-button">Accept</button>
 ```
 
 */
+
+
+
+/*doc
+---
+title: Buttons With Icon
+name: button_icon
+category: Layout - Button
+---
+
+
+```html_example
+ <button  type="button" class="icon-button exchange-btn">
+     <i class="fa fa-exchange"></i>
+ </button>
+
+ <button type="button" class="small-btn row-remover">
+     <span class="fa fa-remove"></span>
+ </button>
+
+ <span class="favourite-concept-set">
+     <label class="add-fav">
+       <input type="checkbox">
+       <i class="fa fa-thumb-tack"></i></label>
+ </span>
+
+<button class="add-more-concept-set add-more-btn btn-small">
+    <i class="fa fa-plus"></i>
+    ADD MORE
+</button>
+
+ <button type="button" class="comment-toggle">
+     <i class="fa fa-file-o">
+       <i class="fa fa-plus-circle"></i>
+       <i class="fa fa-minus-circle"></i>
+    </i>
+</button>
+
+<button>
+     <i class="fa fa-edit"></i>
+ </button>
+```
+
+*/
+
+
+
+/*doc
+---
+title: Button Groups
+name: button_groups
+category: Layout - Button
+---
+
+
+```html_example
+<div class="multi-select-button-group">
+  <button type="button" class="grid-row-element">
+  <i class="fa fa-ok"></i>
+      Multi
+  </button>
+  <button type="button" class="grid-row-element active">
+      <i class="fa fa-ok"></i>
+      Select
+  </button>
+  <button type="button" class="grid-row-element">
+    <i class="fa fa-ok"></i>
+     Button
+  </button>
+  <button type="button" class="grid-row-element">
+    <i class="fa fa-ok"></i>
+     Group
+  </button>
+</div>
+```
+
+*/
+
+
+
+/*doc
+---
+title: Button Groups with same width
+name: button_group_same_width
+category: Layout - Button
+---
+
+
+```html_example
+<div class="field-value-buttonSelectType">
+  <div class="multi-select-button-group">
+    <button type="button" class="grid-row-element">
+    <i class="fa fa-ok"></i>
+        Multi
+    </button>
+    <button type="button" class="grid-row-element active">
+        <i class="fa fa-ok"></i>
+        Select
+    </button>
+    <button type="button" class="grid-row-element">
+      <i class="fa fa-ok"></i>
+       Button
+    </button>
+    <button type="button" class="grid-row-element">
+      <i class="fa fa-ok"></i>
+       Group
+    </button>
+  </div>
+</div>
+```
+
+
+*/
+
 
 
 
@@ -68,9 +187,9 @@ use either a `<button>` or an `<a>` element:
   }
 
   &.disabled, &:disabled {
-    background: #EEE;
-    border: #CCC 1px solid;
-    color: #333;
+    background: $lightestGray;
+    border: $lightGray 1px solid;
+    color: $darkGray;
     cursor: default;
   }
 
@@ -99,7 +218,7 @@ use either a `<button>` or an `<a>` element:
     margin-left: -10px;
     background: darken($success, 10%);
     color: white;
-    border-color: #BBB;
+    border-color: $primarySectionGridBorder;
     height: 68px;
 
     span {
@@ -130,22 +249,22 @@ use either a `<button>` or an `<a>` element:
       right: -18px;
       border-bottom: 34px solid transparent;
       border-top: 33px solid transparent;
-      border-left: 18px solid #BBB;
+      border-left: 18px solid $primarySectionGridBorder;
       position: absolute;
     }
 
     &.disabled {
-      background: #EEE;
-      border: #CCC 1px solid;
-      color: #CCC;
+      background: $lightestGray;
+      border: $lightGray 1px solid;
+      color: $lightGray;
       cursor: default;
 
       .arrow-button {
-        border-left: 18px solid #eee;
+        border-left: 18px solid $lightestGray;
       }
 
       .arrow-border-button {
-        border-left: 18px solid #ccc;
+        border-left: 18px solid $lightGray;
       }
     }
   }
@@ -179,13 +298,6 @@ use either a `<button>` or an `<a>` element:
   }
 
   &.cancel {
-    @include button($error, darken($error, 8%), white);
-    max-width: 250px;
-    min-width: 0;
-    margin-right: 10px;
-  }
-
-  &.proceed {
     @include button($error, darken($error, 8%), white);
     max-width: 250px;
     min-width: 0;
@@ -361,7 +473,7 @@ button.back-btn {
           line-height: inherit;
         }
         &.active{
-          color: #457FAC;
+          color: $bahmniTertiaryColor;
           padding-left: 3px;
           .fa-ok {
             display: inline-block;
@@ -449,15 +561,15 @@ input[type="submit"].secondary-button:hover  {
   display: inline-block;
   padding: 4px;
   cursor: pointer;
-  border: 1px solid #ccc;
-  background: linear-gradient(to bottom, #fff, #ddd) #ddd;
+  border: 1px solid $lightGray;
+  background: linear-gradient(to bottom, #fff, $lighterGray) $lighterGray;
   position: relative;
   transition: all .5s ease;
   border-radius: 4px;
-  box-shadow: inset 0 -1px 1px #eee;
+  box-shadow: inset 0 -1px 1px $lightestGray;
 
   &:hover {
-    background: linear-gradient(to bottom, #fff, $lightGray) #ddd;
+    background: linear-gradient(to bottom, #fff, $lightGray) $lighterGray;
   }
 
   .fa-star-empty {
@@ -485,7 +597,7 @@ input[type="submit"].secondary-button:hover  {
 /* split button - seperate scss file */
 
 
-.refill-btn, .stop-drug-btn { padding: 10px!important; font-family: $primaryBoldFont; color: #666; }
+.refill-btn, .stop-drug-btn { padding: 10px!important; font-family: $primaryBoldFont; color: $mediumGray; }
 .refill-btn .fa-play { font-size: 1em!important; }
 
 .btn-small {

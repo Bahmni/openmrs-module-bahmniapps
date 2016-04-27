@@ -131,7 +131,7 @@
   }
   button:focus {
     outline: 0;
-    border: 2px solid #007fff;
+    border: 2px solid $clinicalFormFocus;
   }
   button.active {
     color: $bahmniTertiaryColor;

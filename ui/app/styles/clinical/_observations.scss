@@ -44,7 +44,7 @@
       .add-more {
         padding-left: 10px;
         margin-left: 10px;
-        border-left: 1px solid #ccc;
+        border-left: 1px solid $lightGray;
         @media screen and (max-width: 1024px) {
           margin-top:0 !important;
         }
@@ -66,7 +66,7 @@
     &.collapsible-set{
       &.collapsed legend + .form-group {
         border: none;
-        border-top: 1px solid #ccc;
+        border-top: 1px solid $lightGray;
         border-radius:0 ;
         background: none !important;
       }
@@ -147,7 +147,7 @@ form .vitals .form-field .field-value {
     .accept-btn {
       margin-top: 6px;
       &:focus{
-        border:2px solid #007fff;
+        border:2px solid $clinicalFormFocus;
         outline:none;
       }
     }
@@ -276,7 +276,7 @@ concept-set {
       top: 5px;
       right: 37px;
       padding: 3px 5px;
-      color: #000;
+      color: $black;
       i {
         color: green;
         padding: 0.2em 0.1em;
@@ -415,7 +415,7 @@ concept-set {
   font-size: 20px;
   color: $bahmniSecondaryColor;
   box-shadow: 1px 1px 1px $lightGray;
-  background: #fff;
+  background: $white;
   padding: 0;
   margin-left: 5px;
 }
@@ -429,15 +429,15 @@ concept-set {
     font-size: 12px;
     padding: 5px;
     border-radius: 5px;
-    background: #000;
-    color: #fff;
+    background:$black;
+    color: $white;
   }
   i {
     position: absolute;
     bottom: -16px;
     left: 1%;
     font-size: 20px;
-    color: #000;
+    color: $black;
   }
   p {
     margin-bottom: 5px;
@@ -502,8 +502,8 @@ concept-set {
   margin-right: 4px;
   color: #9D0101;
   border-radius: 3px;
-  background: #ddd;
-  border: 1px solid #ddd;
+  background: $lighterGray;
+  border: 1px solid $lighterGray;
   width: 18px;
   cursor: pointer;
   box-sizing: border-box;
@@ -519,7 +519,7 @@ concept-set {
     font-family: $primaryBoldFont;
     font-size: 12px;
     padding: 0 0 5px;
-    color:#666 ;
+    color:$mediumGray ;
   }
   th{
     font-size: 11px;

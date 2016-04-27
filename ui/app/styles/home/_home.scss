@@ -1,3 +1,23 @@
+/*doc
+---
+title: Overlay Window
+name: overlay_window
+category: Layout - overlay
+---
+
+Overlay window is visible when page is loading.
+
+```html_example
+<div id="overlay">
+  <div></div>
+</div>
+```
+
+
+*/
+
+
+
 $column-width: 100;
 $gutter-width: 0;
 $columns: 12;
@@ -301,7 +321,7 @@ body{
   font-size:0.865em;
   max-width: 500px;
   form {
-    border-radius: 0 0 10px 10px;    
+    border-radius: 0 0 10px 10px;
     box-shadow: 0 10px 10px -10px $mediumGray;
   }
   header {
@@ -319,7 +339,7 @@ body{
       }
       select{
         background-color: #FFF;
-        border: 1px solid #DDD;
+        border: 1px solid $lighterGray;
         color: #363463;
         height: 25px;
         padding: 5px 10px;

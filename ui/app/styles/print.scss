@@ -11,14 +11,14 @@
 body{
     font-family: Arial, sans-serif !important;
     font-size: 9pt;
-    color: #000;
+    color: $black;
     background: #fff;
     -webkit-print-color-adjust: exact;
 }
 body pre {
     font-family: Arial, sans-serif !important;
     font-size: 9pt;
-    color: #000;
+    color: $black;
     white-space: pre-wrap;
 }
 
@@ -156,7 +156,7 @@ h3 {
         }
     }
     a {
-        color: #333;
+        color: $darkGray;
     }
     strong {
         font-family: Arial, sans-serif;
@@ -175,7 +175,7 @@ h3 {
     }
     .print-header {
         text-align: center;
-        color: #000;
+        color: $black;
         margin-bottom: 10px;
         .logo {
             width: 35px;
@@ -186,14 +186,14 @@ h3 {
         h1 {
             font-size: 14pt;
             margin-bottom: 0;
-            color: #000;
+            color: $black;
             font-family: Arial, sans-serif;
         }
         h2 {
             font-size: 10pt;
             margin-top: 5px;
             margin-bottom: 7px;
-            color: #000;
+            color: $black;
             text-transform: capitalize;
             padding: 0;
             font-family: Arial, sans-serif;
@@ -248,7 +248,7 @@ h3 {
     }
     h2.section-title {
         text-align: left;
-        color: #000;
+        color: $black;
         font-size: 9.5pt;
         font-family: Arial, sans-serif;
         font-weight: bold;
@@ -287,7 +287,7 @@ h3 {
         border: 0;
         h2.section-title {
             text-align: left;
-            color: #000;
+            color: $black;
             font-size: 9.5pt;
             font-family: Arial, sans-serif;
             font-weight: bold;
@@ -390,7 +390,7 @@ h3 {
                         font-size: 9pt;
                         font-weight: bold;
                         padding: 1px 5px;
-                        color: #000;
+                        color: $black;
                         background: none;
                         font-family: Arial, sans-serif;
                     }
@@ -419,7 +419,7 @@ h3 {
                     }
                     .value .is-abnormal {
                         font-weight: bold;
-                        color: #333 !important;
+                        color: $darkGray !important;
                     }
                     .toggle-btn {
                         display: none;
@@ -476,12 +476,12 @@ h3 {
         }
         table.ipd-investigation-print {
             border-collapse: collapse;
-            border-bottom: 1px solid #ddd;
+            border-bottom: 1px solid $lighterGray;
             table-layout: fixed;
             font-size: 8pt;
             tbody tr, thead tr {
                 th, td {
-                    border: 1px solid #ddd;
+                    border: 1px solid $lighterGray;
                     border-width: 1px 1px 0 0;
                     display: table-cell;
                     font-weight: normal;
@@ -494,7 +494,7 @@ h3 {
             }
             tbody tr th,
             thead tr th:first-child {
-                border-left: 1px solid #ddd;
+                border-left: 1px solid $lighterGray;
                 width: 38%;
             }
             span {
@@ -508,7 +508,7 @@ h3 {
                     white-space: normal;
                     text-overflow: initial;
                     padding: 0px 5px;
-                    border-right-color: #ddd;
+                    border-right-color: $lighterGray;
                     display: inline-block;
                     float: left;
                 }
@@ -608,7 +608,7 @@ h3 {
         padding: 0 5px;
     }
     .is-abnormal {
-        color: #000 !important;
+        color: $black !important;
     }
     button.toggle {
         display: none;
@@ -683,7 +683,7 @@ h3 {
 }
 
 #diagnosisComments{
-    color: #000 !important;
+    color: $black !important;
 }
 
 
@@ -846,18 +846,18 @@ h3 {
             }
         }
         table{
-            border: 1px #ccc solid !important;
+            border: 1px $lightGray solid !important;
             border-collapse: collapse !important;
             tr{
-                border: 1px #ccc solid !important;
+                border: 1px $lightGray solid !important;
                 th{
                     background: #EAEAEA !important;
-                    border: 1px #ccc solid !important;
+                    border: 1px $lightGray solid !important;
                     vertical-align: middle;
                 }
                 td{
                     background: #fff !important;
-                    border: 1px #ccc solid !important;
+                    border: 1px $lightGray solid !important;
                 }
 
             }

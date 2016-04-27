@@ -158,6 +158,78 @@ body{
   }
 }
 
+.row {
+  float: left;
+  width: 100%;
+  @media (max-width: 768px) {
+    margin-bottom: 10px;
+  }
+  .col1 {
+    margin-top: 0;
+    label.add-new {
+      margin-top: 10px;
+      font-size: 12px;
+    }
+    width: 30%;
+    float: left;
+    @media (max-width: 768px) {
+      width: 100%;
+    }
+  }
+  .col2 {
+    width: 38%;
+    float: left;
+    text-align: left;
+    @media (max-width: 1024px) {
+      width: 36%;
+    }
+    @media (max-width: 990px) {
+      width: 31%;
+    }
+    @media (max-width: 768px) {
+      width: 100%;
+    }
+  }
+  .col3 {
+    width: 25%;
+    float: left;
+    text-align: right;
+    @media (max-width: 1024px) {
+      width: 28%;
+    }
+    @media (max-width: 990px) {
+      width: 36%;
+    }
+    @media (max-width: 768px) {
+      width: 100%;
+    }
+    .till-text {
+      display: inline-block;
+      float: left;
+      padding-right: 20px;
+      padding-top: 12px;
+      @media (max-width: 990px) {
+        padding-right: 10px;
+      }
+      @media (max-width: 768px) {
+        display: none;
+      }
+    }
+  }
+  .col4 {
+    width: 4%;
+    float: left;
+    margin-left: 2%;
+    button {
+      padding: 2px 4px !important;
+    }
+    @media (max-width: 990px) {
+      margin-left: 0;
+      width: 3%;
+    }
+  }
+}
+
 
 
 

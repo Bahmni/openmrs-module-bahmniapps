@@ -49,11 +49,11 @@
                     background: none;
                     color: #fff;
                     &:hover {
-                        background: #A1D030;
+                        background: $bahmniPrimaryBtnColor;
                     }
                 }                    
                 &:hover {
-                    background: #A1D030;
+                    background: $bahmniPrimaryBtnColor;
                 }
             }
             button{

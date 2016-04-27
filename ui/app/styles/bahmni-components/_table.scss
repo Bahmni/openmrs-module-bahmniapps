@@ -1,3 +1,114 @@
+/*doc
+---
+title: Basic Tables
+name: basic_Table
+category: Layout - Table
+---
+
+Tables in the application are automatically styled. Make sure you use <thead> and <tbody> sections around your rows.
+If each of a table rows have multiple possible actions associated with them, use an "Actions" column with icons.For your reference you can check medication tab in clinical dashboard.
+
+```html_example
+<table>
+    <thead>
+    <tr>
+        <th>Table Header</th>
+        <th>Table Header</th>
+        <th>Table Header</th>
+        <th>Actions</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+        <td>Table Data</td>
+        <td>Table Data</td>
+        <td>Table Data</td>
+        <td>
+           <button>
+                Stop
+            </button>
+            <button>
+                <i class="fa fa-plus-circle"></i>
+            </button>
+        </td>
+    </tr>
+    <tr>
+        <td>Table Data</td>
+        <td>Table Data</td>
+        <td>Table Data</td>
+        <td>
+            <button>
+                Stop
+            </button>
+            <button>
+                <i class="fa fa-plus-circle"></i>
+            </button>
+        </td>
+    </tr>
+    <tr>
+        <td>Table Data</td>
+        <td>Table Data</td>
+        <td>Table Data</td>
+        <td>
+           <button>
+                Stop
+            </button>
+            <button>
+                <i class="fa fa-plus-circle"></i>
+            </button>
+        </td>
+    </tr>
+    </tbody>
+</table>
+```
+
+
+*/
+
+
+
+/*doc
+---
+title: Pivot Tables
+name: pivot_table
+category: Layout - Table
+---
+
+
+```html_example
+<article class="visit">
+  <section class="dashboard-tabular-obs-section">
+    <section class="tabular-obs">
+      <table class="tableAsColumn">
+          <tbody>
+            <tr>
+                <th>Table Header</th>
+                <th>Table Header</th>
+                <th>Table Header</th>
+            </tr>
+            <tr>
+                <td>Table Data</td>
+                <td>Table Data</td>
+                <td>Table Data</td>
+            </tr>
+            <tr>
+                <td>Table Data</td>
+                <td>Table Data</td>
+                <td>Table Data</td>
+            </tr>
+          </tbody>
+      </table>
+    </section>
+  </section>
+</article>
+```
+
+
+*/
+
+
+
+
 /*old styles - visit - diagnosis, diagnosis tab*/
 .table{
   border: 0;

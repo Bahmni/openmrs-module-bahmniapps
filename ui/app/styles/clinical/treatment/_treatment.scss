@@ -66,7 +66,7 @@
         }
         button.dispense-btn{
             font-family: OpenSansBold;
-            color: #457fac;
+            color: $bahmniTertiaryColor;
             padding: 0 7px;
             width: auto;
             height: 24px;
@@ -74,7 +74,7 @@
                 padding: 0 7px;
             }
             i{
-                color: #457fac;
+                color: $bahmniTertiaryColor;
                 font-size: 1.2em;
                 padding: 0;
             }
@@ -143,10 +143,10 @@
 
     .bulk-edit-options-container{
         padding: 10px 10px 10px 10px;
-        background-color: #EEEEEE;
-        border-bottom: 1px #bbb solid;
+        background-color: $lightestGray;
+        border-bottom: 1px $primarySectionGridBorder solid;
         margin-bottom: 4px;
-        box-shadow: 1px 2px 7px #ccc;
+        box-shadow: 1px 2px 7px $lightGray;
         .bulk-btn-container{
             .stepper__btn{
                 height: 26px;
@@ -248,9 +248,9 @@
 
             h3.orderSet-additional-info{
                 font-family: OpenSansBold;
-                color: #333;
+                color: $darkGray;
                 font-size: 13px;
-                border-bottom: 1px solid #ccc;
+                border-bottom: 1px solid $lightGray;
                 padding: 20px 0 5px;
                 margin: 0 0 10px;
             }
@@ -340,9 +340,9 @@
 
         h3.orderSet-additional-info{
             font-family: OpenSansBold;
-            color: #333;
+            color: $darkGray;
             font-size: 13px;
-            border-bottom: 1px solid #ccc;
+            border-bottom: 1px solid $lightGray;
             padding: 20px 0 5px;
             margin: 0 0 10px;
         }

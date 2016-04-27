@@ -326,7 +326,7 @@ u, .add-drug-btninput[value]:first-letter {
   }
   &:before{
     content: "";
-    border-top:1px #ccc solid;
+    border-top:1px $lightGray solid;
     position: absolute;
     top: 14px;
     width: 96%;
@@ -372,4 +372,5 @@ u, .add-drug-btninput[value]:first-letter {
   }
 
 }
+
 

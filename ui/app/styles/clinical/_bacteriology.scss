@@ -103,10 +103,10 @@
       tr{
         th{
           width:155px;
-          border: 1px solid #DDD;
+          border: 1px solid $lighterGray;
         }
         td{
-          border: 1px solid #DDD;
+          border: 1px solid $lighterGray;
         }
       }
     }
@@ -122,7 +122,7 @@
     font-family: openSansBold;
   }
   .hierarchy ul li ul li ul li .tree-list-item {
-    background: #DDDDDD;
+    background: $lighterGray;
     font-family: openSansSemiBold !important;
   }
   .hierarchy ul li ul li ul li ul li .tree-list-item {

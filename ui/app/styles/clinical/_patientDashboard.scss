@@ -1,3 +1,154 @@
+/*doc
+---
+title: Half page Layout
+name: half_page_layout
+category: Layout - sections
+---
+
+Clinical Display control in different structure:
+
+```html_example
+<div class="dashboard-sections-wrapper">
+   <div class="dashboard-sections halfpage-container dashboard-sections-left">
+      <section class="dashboard-section">
+          <div>
+            <h2 class="section-title has-link">
+                <span class="title-link">Section Title</span>
+                <i class="fa fa-external-link"></i>
+            </h2>
+        </div>
+        <section class="block hierarchy">
+          <ul class="form-field">
+            <li>
+              <span class="tree-list-item row-click toggle-container">
+                    <i class="fa fa-caret-right"></i>
+                    <i class="fa fa-caret-down"></i>
+                    <span class="obs-date ng-binding">Observation</span>
+                      <span class="fr order-sub-heading-container">
+                          <span class="order-sub-heading">
+                            <span class="provider-name fl">Username</span>
+                            <span class="provider-date fr">27 Jan 16 6:36 pm</span>
+                          </span>
+                      </span>
+                  </span>
+              </span>
+            </li>
+          </ul>
+        </section>
+      </section>
+    </div>
+  <div class="dashboard-sections halfpage-container dashboard-sections-right">
+    <section class="dashboard-section">
+        <div>
+          <h2 class="section-title has-link">
+              <span class="title-link">Section Title</span>
+              <i class="fa fa-external-link"></i>
+          </h2>
+          <section class="block">
+            <table class="dashboard-table">
+              <tbody>
+                <tr>
+                    <td>Sample Data1</td>
+                    <td>Sample Data2</td>
+                </tr>
+              </tbody>
+            </table>
+          </section>
+      </div>
+    </section>
+  </div>
+</div>
+```
+
+
+*/
+
+
+
+/*doc
+---
+title: Three Fourth Layout
+name: three_fourth_layout
+category:  Layout - sections
+---
+
+
+```html_example
+<div class="dashboard-sections-wrapper">
+   <div class="dashboard-sections three-fourth-page-container">
+     <div class="three-fourth-page LAYOUT_75_25">
+        <section class="dashboard-section">
+            <div>
+              <h2 class="section-title has-link">
+                  <span class="title-link">Section Title</span>
+                  <i class="fa fa-external-link"></i>
+              </h2>
+          </div>
+          <section class="block hierarchy">
+            <ul class="form-field">
+              <li>
+                <span class="tree-list-item row-click toggle-container" toggle="obsGroup.isOpen">
+                      <i class="fa fa-caret-right"></i>
+                      <i class="fa fa-caret-down"></i>
+                      <span class="obs-date">Observation</span>
+                        <span class="fr order-sub-heading-container">
+                            <span class="order-sub-heading">
+                              <span class="provider-name fl">Username</span>
+                              <span class="provider-date fr">27 Jan 16 6:36 pm</span>
+                            </span>
+                        </span>
+                    </span>
+                </span>
+              </li>
+            </ul>
+          </section>
+        </section>
+      </div>
+    </div>
+</div>
+```
+
+
+*/
+
+
+
+/*doc
+---
+title: One Fourth Layout
+name: one_fourth_layout
+category:  Layout - sections
+---
+
+
+```html_example
+<div class="dashboard-sections-wrapper">
+  <div class="dashboard-sections halfpage-container dashboard-sections-left">
+    <section class="dashboard-section LAYOUT_25_75">
+        <div>
+          <h2 class="section-title has-link">
+              <span class="title-link">Section Title</span>
+              <i class="fa fa-external-link"></i>
+          </h2>
+          <section class="block">
+            <table class="dashboard-table">
+              <tbody>
+                <tr>
+                    <td>Sample Data1</td>
+                    <td>Sample Data2</td>
+                </tr>
+              </tbody>
+            </table>
+          </section>
+      </div>
+    </section>
+  </div>
+</div>
+```
+
+
+*/
+
 .pgContainer {
   position: relative;
   overflow-y: auto;
@@ -145,7 +296,7 @@
       padding: 0;
       li{
         display: block;
-        border-bottom: 1px #ccc solid;
+        border-bottom: 1px $lightGray solid;
         a{
           display: inline-block;
           padding: 8px 10px 7px;
@@ -165,7 +316,7 @@
         li{
           float: left;
           border-bottom: none;
-          border-right: 1px #ccc solid;
+          border-right: 1px $lightGray solid;
           padding: 0 6px;
           margin: 5px 0;
           &:last-child{
@@ -306,7 +457,7 @@ table.drug-order-table td.drug {
     border-left: 3px solid green !important;
   }
   span.drug-attr-highlight{
-    background: #457FAC;
+    background: $bahmniTertiaryColor;
     color: #fff;
     border-radius: 4px;
     width: 16px;
@@ -474,18 +625,18 @@ table.drug-order-table td.drug {
       vertical-align: top;
       margin: 0;
       padding: 0;
-      border: 1px solid #ddd;
+      border: 1px solid $lighterGray;
       width: 40px;
-      box-shadow: 0px 0px 3px #ccc;
+      box-shadow: 0px 0px 3px $lightGray;
       height: auto;
       transition: all .2s ease-in-out;
     }
     &:hover {
       border: 1px solid rgba($bahmniLinkColor, 1);
-      box-shadow: inset 0px 0px 3px #ccc;
+      box-shadow: inset 0px 0px 3px $lightGray;
       img {
         box-shadow: none;
-        border-color: #ccc;
+        border-color: $lightGray;
       }
     }
   }
@@ -660,7 +811,7 @@ table.pivot-table {
     left: 0px;
     top: 47px;
     background: $white;
-    border: 1px solid #ccc;
+    border: 1px solid $lightGray;
     width: 330px;
     max-height: 250px;
     overflow-y: auto;
@@ -682,7 +833,7 @@ table.pivot-table {
     a{
       color: $black;
       font-size: 14px;
-      border-bottom: 1px solid #ccc;
+      border-bottom: 1px solid $lightGray;
       padding: 13px 5px 12px 10px;
       display: block;
       &:hover{
@@ -700,7 +851,7 @@ table.pivot-table {
     }
     .currentPatient{
       a{
-        background: #ddd;
+        background: $lighterGray;
       }
     }
   }
@@ -712,14 +863,14 @@ table.pivot-table {
     }
   }
   .tabular-obs table tr td:first-child {
-    background: #eee;
+    background: $lightestGray;
     background-image: none;
-    color: #333;
+    color: $darkGray;
   }
   .tabular-obs table.tableAsColumn tr:first-child td {
-    background: #eee !important;
+    background: $lightestGray !important;
     font-family: OpenSansSemiBold;
-    color: #333;
+    color: $darkGray;
   }
   .tabular-obs table tr th.obsTableEdit{
     width:130px;
@@ -756,10 +907,10 @@ table.pivot-table {
     table {
       tr {
         th {
-          border: 1px solid #DDD;
+          border: 1px solid $lighterGray;
         }
         td {
-          border: 1px solid #DDD;
+          border: 1px solid $lighterGray;
         }
       }
     }
@@ -782,16 +933,16 @@ table.treatments-details-table{
   }
   tr{
     &.test-notes-parent {
-      border-bottom: 1px solid #ddd;
+      border-bottom: 1px solid $lighterGray;
     }
     &.notes-open{
       border-bottom: none !important;
       td {
-        background: #eff8ff;
+        background: $clinicalNotesColor;
       }
     }
     &.notes{
-      border-bottom: 1px solid #ddd;
+      border-bottom: 1px solid $lighterGray;
     }
   }
 }
@@ -802,7 +953,7 @@ table.treatments-details-table{
   position: fixed;
   top: 52px;
   z-index: 9999;
-  background: #ddd;
+  background: $lighterGray;
   width: 100%;
   left: 0;
   box-shadow: 0px 1px 8px #686666;
@@ -836,7 +987,7 @@ table.treatments-details-table{
             display: table-cell;
             height: 35px;
             width: auto;
-            border: 1px solid #ccc;
+            border: 1px solid $lightGray;
             border-radius: 100%;
           }
           .patient-name{

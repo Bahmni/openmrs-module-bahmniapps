@@ -41,9 +41,9 @@
                 box-sizing: border-box;
                 cursor: default;
                 &.active {
-                    background: linear-gradient(to bottom, #FFF, #DDD);
-                    background-color: #DDD;
-                    border: #DDD 1px solid;
+                    background: linear-gradient(to bottom, #FFF, $lighterGray);
+                    background-color: $lighterGray;
+                    border: $lighterGray 1px solid;
                     &:hover {
                         background: #e2e2e2;
                         border-color: #d0d0d0;
@@ -92,7 +92,7 @@
 .order-list {
     margin-top: 10px;
     .order-grid {
-        border: 1px solid #669999;
+        border: 1px solid $bahmniSecondaryColor;
         border-radius: 5px 5px 0 0;
         background: #FFFFFF;
         margin-bottom: 10px;
@@ -111,7 +111,7 @@
         font-size: 16px;
         clear: both;
         overflow: auto;
-        background: #669999;
+        background: $bahmniSecondaryColor;
         position: relative;
     }
     .search-container{
@@ -143,7 +143,7 @@
                     li {
                         a {
                             color: $white;
-                            background: #669999;
+                            background: $bahmniSecondaryColor;
                             display: block;
                             padding: 8px 12px;
                             border-bottom: 1px $white solid;
@@ -181,7 +181,7 @@
                     padding: 5px 10px;
                     font-family: "OpenSansBold";
                     font-size: 12px;
-                    color: #666;
+                    color: $mediumGray;
                     border: 1px solid #999999;
                     border-radius: 20px;
                     text-transform: uppercase;
@@ -243,7 +243,7 @@
             }
         }
         .block.consultation-notes {
-            border: 1px solid #669999;
+            border: 1px solid $bahmniSecondaryColor;
             width: 95%;
             margin-top: 20px;
             border-radius: 5px 5px 0 0;
@@ -257,13 +257,13 @@
     .disableOrdersInRetroMode {
         .dashboard-section-wrapper .order-section-container .orderBtn{
             pointer-events: none;
-            background: #EEE;
-            border: #CCC 1px solid;
+            background: $lightestGray;
+            border: $lightGray 1px solid;
             color: #999;
         }
         .fa-remove{
             pointer-events: none;
-            background: #EEE;
+            background: $lightestGray;
         }
     }
 
@@ -301,7 +301,7 @@
         }
     }
     .hierarchy ul li ul li span {
-        background: #ddd;
+        background: $lighterGray;
     }
     .hierarchy ul li ul li ul li{
         font-size: 14px;
@@ -318,7 +318,7 @@
     text-align: right;
     .order-sub-heading{
         font-size: 12px;
-        color: #666;
+        color: $mediumGray;
         .provider-name{
             white-space: nowrap;
             text-overflow: ellipsis;
@@ -334,7 +334,7 @@
         }
     }
     .fa-tasks{
-        color: #E8A000;
+        color: $clinicalCurrentVist;
         visibility: hidden;
         &.visible-true{
             visibility: visible;
