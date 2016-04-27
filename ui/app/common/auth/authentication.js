@@ -90,12 +90,13 @@ angular.module('authentication')
             var deferrable = $q.defer();
             if(offlineApp) {
                 sessionCleanup();
+                deferrable.resolve();
             } else {
                 destroySessionFromServer().then(function(){
                     sessionCleanup();
+                    deferrable.resolve();
                 });
             }
-            deferrable.resolve();
             return deferrable.promise;
         };
 
