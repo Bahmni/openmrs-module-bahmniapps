@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('bahmni.clinical')
-    .controller('PatientListHeaderController', ['$scope', '$rootScope', '$bahmniCookieStore', 'providerService', 'spinner', 'locationService', '$window', 'ngDialog','retrospectiveEntryService','offlineService','WorkerService',
-        function ($scope, $rootScope, $bahmniCookieStore, providerService, spinner, locationService, $window, ngDialog, retrospectiveEntryService, offlineService, WorkerService) {
+    .controller('PatientListHeaderController', ['$scope', '$rootScope', '$bahmniCookieStore', 'providerService', 'spinner', 'locationService', '$window', 'ngDialog','retrospectiveEntryService','offlineService','WorkerService','scheduledSync',
+        function ($scope, $rootScope, $bahmniCookieStore, providerService, spinner, locationService, $window, ngDialog, retrospectiveEntryService, offlineService, WorkerService, scheduledSync) {
             var DateUtil = Bahmni.Common.Util.DateUtil;
             $scope.maxStartDate = DateUtil.getDateWithoutTime(DateUtil.today());
             var selectedProvider = {};
@@ -78,8 +78,13 @@ angular.module('bahmni.clinical')
             };
 
             $scope.sync = function() {
-                if (Bahmni.Common.Offline && Bahmni.Common.Offline.BackgroundWorker) {
-                    new Bahmni.Common.Offline.BackgroundWorker(WorkerService, offlineService, {delay: 1000, repeat: 1});
+                if(offlineService.isChromeApp()){
+                    if (Bahmni.Common.Offline && Bahmni.Common.Offline.BackgroundWorker) {
+                        new Bahmni.Common.Offline.BackgroundWorker(WorkerService, offlineService, {delay: 1000, repeat: 1});
+                    }
+                }
+                else{
+                    scheduledSync(undefined, {delay: 1000, repeat: 1});
                 }
             };
 
