@@ -28,10 +28,10 @@
             <a class="uploaded-file" href="{{test.labReportUrl}}" target="_blank"><i class="fa fa-paper-clip"></i></a>
         </span>
     </td>
-    <td class="toggle-btn" ng-click="toggle()" ng-if="test.showDetailsButton && !test.notes">
+    <td class="toggle-btn" toggle="test.showDetails" ng-if="test.showDetailsButton && !test.notes">
         <button class="toggle fr">
-            <i class="fa fa-angle-down" ng-hide="test.showDetails"></i>
-            <i class="fa fa-angle-up" ng-show="test.showDetails"></i>
+            <i class="fa fa-angle-down"></i>
+            <i class="fa fa-angle-up"></i>
         </button>
     </td>
 </tr>
