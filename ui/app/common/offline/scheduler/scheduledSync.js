@@ -24,7 +24,7 @@ angular.module("bahmni.common.offline")
                     {
                         execute: function() {
                             try{
-                                output.notify(STAGES.STAGE1);
+                                //output.notify(STAGES.STAGE1);
                                 console.log(STAGES.STAGE1);
                                 if(db){
                                     return db.close();
@@ -38,7 +38,7 @@ angular.module("bahmni.common.offline")
                     {
                         execute: function () {
                             try{
-                                output.notify(STAGES.STAGE2);
+                                //output.notify(STAGES.STAGE2);
                                 console.log(STAGES.STAGE2);
                                 if(offlineService.isChromeApp()) {
                                     return offlineDbService.reinitSchema().then(function (_db) {
@@ -56,7 +56,7 @@ angular.module("bahmni.common.offline")
                     {
                         execute: function() {
                             try{
-                                output.notify(STAGES.STAGE3);
+                                //output.notify(STAGES.STAGE3);
                                 console.log(STAGES.STAGE3);
                                 return offlinePush();
                             } catch (e) {
@@ -68,7 +68,7 @@ angular.module("bahmni.common.offline")
                     {
                         execute: function() {
                             try{
-                                output.notify(STAGES.STAGE4);
+                                //output.notify(STAGES.STAGE4);
                                 console.log(STAGES.STAGE4);
                                 return offlinePull();
                             } catch (e) {
@@ -80,7 +80,7 @@ angular.module("bahmni.common.offline")
                     {
                         execute: function() {
                             try{
-                                output.notify(null);
+                                //output.notify(null);
                                 console.log("All stages done");
                             } catch (e) {
                                 console.log('Error at '+STAGES.STAGE_FINAL, e);

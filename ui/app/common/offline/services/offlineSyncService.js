@@ -69,6 +69,7 @@ angular.module('bahmni.common.offline')
                 var syncNextEvents = function(category){
                     switch (category) {
                         case 'patient':
+                        case 'Encounter':
                                 syncTransactionalData();
                                 break;
                         case 'addressHierarchy':
@@ -113,7 +114,17 @@ angular.module('bahmni.common.offline')
                             });
                             break;
                         case 'Encounter':
-                            deferrable.resolve();
+                            offlineDbService.insertEncounterData(response.data).then(function() {
+                                if(response.data.visitUuid){
+                                    eventLogService.getDataForUrl(Bahmni.Common.Constants.visitUrl + "/" + response.data.visitUuid).then(function(response) {
+                                        offlineDbService.insertVisitData(response.data).then(function(){
+                                            deferrable.resolve();
+                                        })
+                                    })
+                                }else {
+                                    deferrable.resolve();
+                                }
+                            });
                             break;
                         case 'addressHierarchy':
                         case 'parentAddressHierarchy':

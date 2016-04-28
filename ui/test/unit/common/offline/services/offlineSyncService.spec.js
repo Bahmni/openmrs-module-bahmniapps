@@ -3,7 +3,7 @@
 var $scope, offlineDbService, eventLogService, offlineSyncService, offlineService, configurationService;
 
 describe('OfflineSyncService', function () {
-    var patient, mappedPatient;
+    var patient, mappedPatient, encounter;
     describe('initial sync ', function () {
         beforeEach(function () {
             module('bahmni.common.offline');
@@ -37,8 +37,28 @@ describe('OfflineSyncService', function () {
                         }]
                     }
                 };
+                encounter = {
+                    uuid: 'encounterUuid',
+                    observations: [],
+                    patientUuid: "patientUuid",
+                    visitUuid: "visitUuid"
+                };
                 $provide.value('offlineDbService', {
                     insertAddressHierarchy: function () {
+                        return {
+                            then: function (callback) {
+                                return callback({});
+                            }
+                        };
+                    },
+                    insertEncounterData: function () {
+                        return {
+                            then: function (callback) {
+                                return callback({visitUuid: "someUuid"});
+                            }
+                        };
+                    },
+                    insertVisitData: function () {
                         return {
                             then: function (callback) {
                                 return callback({});
@@ -206,6 +226,54 @@ describe('OfflineSyncService', function () {
 
             expect(offlineDbService.createPatient).toHaveBeenCalledWith(mappedPatient);
             expect(offlineDbService.createPatient.calls.count()).toBe(1);
+            expect(offlineDbService.insertMarker).toHaveBeenCalledWith('TransactionalData', 'eventuuid', 202020);
+            expect(offlineDbService.insertMarker.calls.count()).toBe(1);
+        });
+
+        it('should read encounter events from the beginning for the catchment', function () {
+            spyOn(offlineDbService, 'getMarker').and.callThrough();
+            spyOn(eventLogService, 'getEventsFor').and.callFake(function () {
+                return {
+                    then: function (callback) {
+                        return callback({
+                            data: [{
+                                object: 'url to get encounter object',
+                                category: 'Encounter',
+                                uuid: 'eventuuid'
+                            }]
+                        });
+                    }
+                };
+            });
+            spyOn(eventLogService, 'getDataForUrl').and.callFake(function(){
+                return {
+                    then: function (callback) {
+
+                        return callback({data: encounter});
+                    }
+                };
+            });
+            spyOn(offlineDbService, 'insertEncounterData').and.callThrough();
+            spyOn(offlineDbService, 'insertVisitData').and.callThrough();
+            spyOn(offlineDbService, 'insertMarker').and.callThrough();
+            spyOn(offlineDbService, 'getAttributeTypes').and.callThrough();
+
+            offlineSyncService.syncTransactionalData();
+
+            expect(offlineDbService.getMarker).toHaveBeenCalled();
+            expect(offlineDbService.getMarker.calls.count()).toBe(1);
+            expect(eventLogService.getEventsFor).toHaveBeenCalledWith(202020, undefined);
+            expect(eventLogService.getEventsFor.calls.count()).toBe(1);
+            expect(eventLogService.getDataForUrl).toHaveBeenCalledWith('url to get encounter object');
+
+            expect(offlineDbService.insertEncounterData).toHaveBeenCalledWith(encounter);
+            expect(offlineDbService.insertEncounterData.calls.count()).toBe(1);
+
+            expect(offlineDbService.insertVisitData).toHaveBeenCalledWith(encounter);
+            expect(offlineDbService.insertVisitData.calls.count()).toBe(1);
+
+            expect(eventLogService.getDataForUrl.calls.count()).toBe(2);
+
             expect(offlineDbService.insertMarker).toHaveBeenCalledWith('TransactionalData', 'eventuuid', 202020);
             expect(offlineDbService.insertMarker.calls.count()).toBe(1);
         });

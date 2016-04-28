@@ -102,6 +102,41 @@ angular.module('bahmni.common.offline')
                 return $q.when(value);
             };
 
+            var createEncounter = function (postRequest) {
+                var deferred = $q.defer();
+                var uuid = postRequest.patientUuid;
+                insertEncounterData(postRequest)
+                    .then(function () {
+                        deferred.resolve({data: postRequest});
+                    });
+                return deferred.promise;
+            };
+
+
+            var insertEncounterData = function (encounterData) {
+                var response = AndroidOfflineService.insertEncounterData(JSON.stringify(encounterData));
+                response = response != undefined ? JSON.parse(response) : response;
+                return $q.when(response);
+            };
+
+            var getEncountersByPatientUuid = function (patientUuid) {
+                var response = AndroidOfflineService.getEncountersByPatientUuid(patientUuid);
+                response = response != undefined ? JSON.parse(response) : response;
+                return $q.when(response);
+            };
+
+            var insertVisitData = function (visitData) {
+                var response = AndroidOfflineService.insertVisitData(JSON.stringify(visitData));
+                response = response != undefined ? JSON.parse(response) : response;
+                return $q.when(response);
+            };
+
+            var getVisitByUuid = function (visitUuid) {
+                var response = visitDbService.getVisitByUuid(visitUuid);
+                response = response != undefined ? JSON.parse(response) : response;
+                return $q.when(response);
+            };
+
             return {
                 init: init,
                 initSchema: initSchema,
@@ -117,7 +152,12 @@ angular.module('bahmni.common.offline')
                 getReferenceData: getReferenceData,
                 insertReferenceData: insertReferenceData,
                 getLocationByUuid: getLocationByUuid,
-                getAttributeTypes: getAttributeTypes
+                getAttributeTypes: getAttributeTypes,
+                insertEncounterData: insertEncounterData,
+                getEncountersByPatientUuid: getEncountersByPatientUuid,
+                createEncounter: createEncounter,
+                insertVisitData: insertVisitData,
+                getVisitByUuid: getVisitByUuid
             }
         }
     ]);

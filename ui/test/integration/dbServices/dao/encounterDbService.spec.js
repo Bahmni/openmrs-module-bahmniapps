@@ -26,6 +26,7 @@ describe('encounterDbService tests', function () {
                 var uuid = 'fc6ede09-f16f-4877-d2f5-ed8b2182ec11';
                 encounterDbService.getEncountersByPatientUuid(db, uuid).then(function(results){
                     expect(results[0].encounter.patientUuid).toBe(uuid);
+                    expect(results[0].encounter.encounterDateTime).toBe("2016-04-22T11:06:20.000+0530");
                     done();
                 });
             });
