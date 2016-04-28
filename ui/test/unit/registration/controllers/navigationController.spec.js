@@ -1,9 +1,9 @@
 'use strict';
 
-xdescribe('navigationController', function () {
+describe('navigationController', function () {
 
     var $aController, window, sce;
-    var scopeMock,rootScopeMock,locationMock,offlineService,sessionServiceMock,appServiceMock,scheduledSyncMock;
+    var scopeMock,rootScopeMock,locationMock,offlineService,sessionServiceMock,appServiceMock,scheduledSyncMock, WorkerService;
 
     beforeEach(module('bahmni.registration'));
 
@@ -20,8 +20,6 @@ xdescribe('navigationController', function () {
         });
         offlineService = jasmine.createSpyObj('offlineService', ['isOfflineApp']);
         offlineService.isOfflineApp.and.returnValue(true);
-        scheduledSyncMock = jasmine.createSpyObj('scheduledSync', ['jobInit','isJobRunning']);
-        scheduledSyncMock.isJobRunning.and.returnValue(specUtil.createFakePromise());
     }));
 
     beforeEach(
@@ -44,19 +42,30 @@ xdescribe('navigationController', function () {
             sessionService: sessionServiceMock,
             appService: appServiceMock,
             offlineService: offlineService,
-            scheduledSync:scheduledSyncMock
+            scheduledSync:scheduledSyncMock,
+            WorkerService : WorkerService
         });
     });
 
-    it("should sync data when app is offline", function () {
+    it("should set isOfflineApp  to true if it is chrome or android app", function () {
         scopeMock.$digest();
         expect(offlineService.isOfflineApp).toHaveBeenCalled();
-        expect(scopeMock.isSyncing).toBe(true);
+        expect(scopeMock.isOfflineApp).toBeTruthy();
     });
 
-    it("should intialize sync process in offline", function () {
-        scheduledSyncMock.isJobRunning.and.returnValue(null);
+    it("should set isSyncing to true  when user clicks on sync button", function () {
         scopeMock.$digest();
-        expect(scopeMock.isSyncing).toBeUndefined();
+        expect(offlineService.isOfflineApp).toHaveBeenCalled();
+
+        rootScopeMock.$broadcast("schedulerStage","stage1");
+        expect(scopeMock.isSyncing).toBeTruthy();
+    });
+
+    it("should set isSyncing to false when syncing is not happening", function () {
+
+        scopeMock.$digest();
+        rootScopeMock.$broadcast("schedulerStage",null);
+
+        expect(scopeMock.isSyncing).toBeFalsy();
     });
 });

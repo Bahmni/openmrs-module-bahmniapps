@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module("bahmni.common.offline")
-    .service("scheduledSync", ['$q', 'scheduledJob', 'offlineService', 'offlineDbService', 'androidDbService', 'offlinePush', 'offlinePull',
-        function($q, scheduledJob, offlineService, offlineDbService, androidDbService, offlinePush, offlinePull) {
+    .service("scheduledSync", ['$q', '$rootScope','scheduledJob', 'offlineService', 'offlineDbService', 'androidDbService', 'offlinePush', 'offlinePull',
+        function($q, $rootScope, scheduledJob, offlineService, offlineDbService, androidDbService, offlinePush, offlinePull) {
             return function(output, syncButtonConfig){
 
                 if(offlineService.isAndroidApp()){
@@ -24,7 +24,11 @@ angular.module("bahmni.common.offline")
                     {
                         execute: function() {
                             try{
-                                //output.notify(STAGES.STAGE1);
+                                if(output){
+                                  output.notify(STAGES.STAGE1);
+                                }else{
+                                    $rootScope.$broadcast("schedulerStage",STAGES.STAGE1);
+                                }
                                 console.log(STAGES.STAGE1);
                                 if(db){
                                     return db.close();
@@ -38,13 +42,19 @@ angular.module("bahmni.common.offline")
                     {
                         execute: function () {
                             try{
-                                //output.notify(STAGES.STAGE2);
+                                if(output){
+                                    output.notify(STAGES.STAGE2);
+                                }else{
+                                    $rootScope.$broadcast("schedulerStage",STAGES.STAGE2);
+                                }
                                 console.log(STAGES.STAGE2);
                                 if(offlineService.isChromeApp()) {
                                     return offlineDbService.reinitSchema().then(function (_db) {
                                         db = _db;
                                         return offlineDbService.init(_db);
 
+                                    }, function(error){
+                                        console.log("Error at "+STAGES.STAGE2+" Unable get Db Connection")
                                     });
                                 }
                             } catch (e) {
@@ -56,11 +66,19 @@ angular.module("bahmni.common.offline")
                     {
                         execute: function() {
                             try{
-                                //output.notify(STAGES.STAGE3);
+                                if(output){
+                                    output.notify("schedulerStage",STAGES.STAGE3);
+                                }else{
+                                    $rootScope.$broadcast(STAGES.STAGE3);
+                                }
                                 console.log(STAGES.STAGE3);
-                                return offlinePush();
-                            } catch (e) {
-                                console.log('Error at '+STAGES.STAGE3, e);
+                                return offlinePush().then(function(){
+                                },function(error){
+                                    console.log("Error " + STAGES.STAGE3 +"\n"+ error.config.url + " "+error.statusText);
+                                });
+                            }
+                            catch(e){
+
                             }
                         }
                     });
@@ -68,9 +86,16 @@ angular.module("bahmni.common.offline")
                     {
                         execute: function() {
                             try{
-                                //output.notify(STAGES.STAGE4);
+                                if(output){
+                                    output.notify(STAGES.STAGE4);
+                                }else{
+                                    $rootScope.$broadcast("schedulerStage",STAGES.STAGE4);
+                                }
                                 console.log(STAGES.STAGE4);
-                                return offlinePull();
+                                return offlinePull().then(function(){
+                                }, function(error){
+                                    console.log("Error " + STAGES.STAGE4 +"\n"+ error.config.url + " "+error.statusText);
+                                });
                             } catch (e) {
                                 console.log('Error at '+STAGES.STAGE4, e);
                             }
@@ -80,7 +105,11 @@ angular.module("bahmni.common.offline")
                     {
                         execute: function() {
                             try{
-                                //output.notify(null);
+                                if(output){
+                                    output.notify(null);
+                                }else{
+                                    $rootScope.$broadcast("schedulerStage", null);
+                                }
                                 console.log("All stages done");
                             } catch (e) {
                                 console.log('Error at '+STAGES.STAGE_FINAL, e);
