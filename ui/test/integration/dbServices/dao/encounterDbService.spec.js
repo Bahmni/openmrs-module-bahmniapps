@@ -43,7 +43,7 @@ describe('encounterDbService tests', function () {
         schemaBuilder.connect().then(function(db){
             encounterDbService.insertEncounterData(db, encounterJson).then(function(result){
                 var uuid = 'fc6ede09-f16f-4877-d2f5-ed8b2182ec11';
-                encounterDbService.findActiveEncounter(db, {patientUuid: uuid}).then(function(results){
+                encounterDbService.findActiveEncounter(db, {patientUuid: uuid}, 60).then(function(results){
                     expect(results[0].encounter).not.toBeUndefined();
                     expect(results[0].encounter.patientUuid).toBe(uuid);
                     done();

@@ -79,8 +79,12 @@ angular.module('bahmni.common.offline')
 
         var getActiveEncounter = function(patientUuid){
             var deferred = $q.defer();
-            encounterDbService.findActiveEncounter(db, {patientUuid: patientUuid}).then(function (encounter){
-                deferred.resolve(encounter);
+            getReferenceData("encounterSessionDuration").then(function(encounterSessionDurationData){
+                var encounterSessionDuration = encounterSessionDurationData.value;
+                encounterDbService.findActiveEncounter(db, {patientUuid: patientUuid}, encounterSessionDuration).then(function (encounter) {
+                    deferred.resolve(encounter);
+                });
+
             });
             return deferred.promise;
         }
