@@ -240,10 +240,11 @@ describe('SearchPatientController', function () {
             scope.searchParameters.identifierPrefix = {};
             scope.searchParameters.identifierPrefix.prefix = "GAN";
             scope.searchParameters.registrationNumber = "20001";
+            scope.customAttributesSearchConfig.fields = ["education", "firstNameLocal"]
 
             scope.searchById();
 
-            expect(location.search).toHaveBeenCalledWith({identifierPrefix: "GAN", registrationNumber: "20001", programAttributeFieldName: undefined, programAttributeFieldValue: undefined});
+            expect(location.search).toHaveBeenCalledWith({identifierPrefix: "GAN", registrationNumber: "20001",  programAttributeFieldName: undefined, patientAttributes : ["education", "firstNameLocal"], programAttributeFieldValue: undefined});
         });
 
         it('should change the search parameter to patient identifier with programAttributesSearchConfig', function () {
@@ -252,10 +253,11 @@ describe('SearchPatientController', function () {
             scope.searchParameters.identifierPrefix.prefix = "GAN";
             scope.searchParameters.registrationNumber = "20001";
             scope.programAttributesSearchConfig.field = "Facility";
+            scope.customAttributesSearchConfig.fields = ["education", "firstNameLocal"]
 
             scope.searchById();
 
-            expect(location.search).toHaveBeenCalledWith({identifierPrefix: "GAN", registrationNumber: "20001", programAttributeFieldName: "Facility", programAttributeFieldValue: undefined});
+            expect(location.search).toHaveBeenCalledWith({identifierPrefix: "GAN", registrationNumber: "20001", programAttributeFieldName: "Facility", patientAttributes : ["education", "firstNameLocal"], programAttributeFieldValue: undefined});
         });
 
         it('should not search if registrationNumber is not present', function () {
