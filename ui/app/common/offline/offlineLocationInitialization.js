@@ -15,7 +15,7 @@ angular.module('bahmni.common.offline')
                     addressLevels = _.reverse(addressHierarchyLevel.value);
                     var addressField = getLoginLocationAddress();
                     _.reverse(addressLevels);
-                    var params = { searchString: loginLocation[addressField], addressField: addressField};
+                    var params = { searchString: loginLocation[addressField], addressField: addressField, limit: 5000};
                     if(params.searchString != undefined && params.addressField != undefined) {
                         eventLogService.getAddressForLoginLocation(params).then(function (results) {
                             var data = results.data;

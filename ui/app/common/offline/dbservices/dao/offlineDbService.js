@@ -2,9 +2,9 @@
 
 angular.module('bahmni.common.offline')
     .service('offlineDbService', ['$http', '$q', 'patientDbService', 'patientAddressDbService', 'patientAttributeDbService', 'offlineMarkerDbService', 'offlineAddressHierarchyDbService',
-        'offlineConfigDbService','initializeOfflineSchema', 'referenceDataDbService', 'locationDbService', 'offlineSearchDbService', 'encounterDbService',
+        'offlineConfigDbService', 'initializeOfflineSchema', 'referenceDataDbService', 'locationDbService', 'offlineSearchDbService', 'encounterDbService', 'visitDbService',
         function ($http, $q, patientDbService, patientAddressDbService, patientAttributeDbService, offlineMarkerDbService, offlineAddressHierarchyDbService,
-                  offlineConfigDbService, initializeOfflineSchema, referenceDataDbService, locationDbService, offlineSearchDbService, encounterDbService) {
+                  offlineConfigDbService, initializeOfflineSchema, referenceDataDbService, locationDbService, offlineSearchDbService, encounterDbService, visitDbService) {
         var db;
 
 
@@ -136,8 +136,13 @@ angular.module('bahmni.common.offline')
             return patientAttributeDbService.getAttributeTypes(db);
         };
 
+        var insertVisitData = function (visitData) {
+            return visitDbService.insertVisitData(db, visitData);
+        };
 
-
+        var getVisitByUuid = function (visitUuid) {
+            return visitDbService.getVisitByUuid(db, visitUuid);
+        };
         return {
             init: init,
             initSchema: initSchema,
@@ -157,6 +162,8 @@ angular.module('bahmni.common.offline')
             getAttributeTypes : getAttributeTypes,
             insertEncounterData: insertEncounterData,
             getEncountersByPatientUuid: getEncountersByPatientUuid,
-            createEncounter: createEncounter
+            createEncounter: createEncounter,
+            insertVisitData: insertVisitData,
+            getVisitByUuid: getVisitByUuid
         }
     }]);
