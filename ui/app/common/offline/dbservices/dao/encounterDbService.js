@@ -31,8 +31,22 @@ angular.module('bahmni.common.offline')
                 });
         };
 
+        var findActiveEncounter = function(db, params) {
+            var DateUtil = Bahmni.Common.Util.DateUtil;
+            var p = db.getSchema().table('encounter');
+            return db.select(p.encounterJson.as('encounter'))
+                .from(p)
+                .where(lf.op.and(
+                    p.patientUuid.eq(params.patientUuid), p.encounterDateTime.gte(DateUtil.addSeconds(new Date(), -3600)) ))
+                .exec()
+                .then(function (result) {
+                    return result;
+                });
+        };
+
         return {
             insertEncounterData: insertEncounterData,
-            getEncountersByPatientUuid: getEncountersByPatientUuid
+            getEncountersByPatientUuid: getEncountersByPatientUuid,
+            findActiveEncounter: findActiveEncounter
         }
     });

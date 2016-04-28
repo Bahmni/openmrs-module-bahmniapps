@@ -5,6 +5,10 @@ Bahmni.Common.Util.DateUtil = {
         return Math.floor((this.parse(dateTo) - this.parse(dateFrom)) / (60 * 1000 * 60 * 24));
     },
 
+    diffInMinutes: function (dateFrom, dateTo) {
+        return moment(dateTo).diff(moment(dateFrom), 'minutes');
+    },
+
     diffInSeconds: function (dateFrom, dateTo) {
         return moment(dateFrom).diff(moment(dateTo), 'seconds');
     },
