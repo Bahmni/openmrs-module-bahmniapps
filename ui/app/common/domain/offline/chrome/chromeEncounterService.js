@@ -73,10 +73,13 @@ angular.module('bahmni.common.domain')
             this.create = function (encounterData) {
                 this.buildEncounter(encounterData);
                 encounterData.encounterUuid = encounterData.encounterUuid || Bahmni.Common.Offline.UUID.generateUuid();
-                encounterData.visitUuid = encounterData.visitUuid || Bahmni.Common.Offline.UUID.generateUuid();
+                encounterData.visitUuid = encounterData.visitUuid || Bahmni.Common.Constants.newOfflineVisitUuid;
                 encounterData.encounterDateTime = encounterData.encounterDateTime || Bahmni.Common.Util.DateUtil.now();
-                encounterData.encounterType = 'field';
-                return offlineDbService.createEncounter(encounterData);
+                encounterData.visitType = encounterData.visitType || 'Field';
+                return getDefaultEncounterType().then(function (encounterType) {
+                    encounterData.encounterType = encounterData.encounterType || encounterType.value;
+                    return offlineDbService.createEncounter(encounterData);
+                })
             };
 
             this.delete = function (encounterUuid, reason) {

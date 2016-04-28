@@ -230,7 +230,8 @@ Bahmni.Common = Bahmni.Common || {};
         unAuthenticatedReferenceDataMap: unAuthenticatedReferenceDataMap,
         authenticatedReferenceDataMap: authenticatedReferenceDataMap,
         offlineRootDir: offlineRootDir,
-        dischargeUrl: BAHMNI_CORE + "/discharge"
+        dischargeUrl: BAHMNI_CORE + "/discharge",
+        newOfflineVisitUuid: "newOfflineVisitUuid"
     };
 })();
 
