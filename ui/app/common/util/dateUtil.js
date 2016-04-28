@@ -28,6 +28,11 @@ Bahmni.Common.Util.DateUtil = {
     addSeconds: function (date, seconds) {
         return moment(date).add(seconds, 'seconds').toDate();
     },
+
+    addMinutes: function (date, minutes) {
+        return this.addSeconds(date, minutes * 60);
+    },
+
     addDays: function (date, days) {
         return moment(date).add(days, 'day').toDate();
     },
