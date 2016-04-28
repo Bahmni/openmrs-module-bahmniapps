@@ -56,7 +56,7 @@ angular.module('bahmni.common.offline')
         };
 
 
-            var createEncounter = function (postRequest) {
+         var createEncounter = function (postRequest) {
                 var deferred = $q.defer();
                 var uuid = postRequest.patientUuid;
                 insertEncounterData(postRequest)
@@ -77,6 +77,13 @@ angular.module('bahmni.common.offline')
             };
 
 
+        var getActiveEncounter = function(patientUuid){
+            var deferred = $q.defer();
+            encounterDbService.findActiveEncounter(db, {patientUuid: patientUuid}).then(function (encounter){
+                deferred.resolve(encounter);
+            });
+            return deferred.promise;
+        }
 
         var init = function (offlineDb) {
             db = offlineDb;
@@ -164,6 +171,7 @@ angular.module('bahmni.common.offline')
             getEncountersByPatientUuid: getEncountersByPatientUuid,
             createEncounter: createEncounter,
             insertVisitData: insertVisitData,
-            getVisitByUuid: getVisitByUuid
+            getVisitByUuid: getVisitByUuid,
+            getActiveEncounter: getActiveEncounter
         }
     }]);

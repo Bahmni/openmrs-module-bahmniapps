@@ -74,7 +74,7 @@ angular.module('bahmni.common.domain')
                 this.buildEncounter(encounterData);
                 encounterData.encounterUuid = encounterData.encounterUuid || Bahmni.Common.Offline.UUID.generateUuid();
                 encounterData.visitUuid = encounterData.visitUuid || Bahmni.Common.Offline.UUID.generateUuid();
-                encounterData.encounterDateTime = Bahmni.Common.Util.DateUtil.now();
+                encounterData.encounterDateTime = encounterData.encounterDateTime || Bahmni.Common.Util.DateUtil.now();
                 encounterData.encounterType = 'field';
                 return offlineDbService.createEncounter(encounterData);
             };
@@ -102,31 +102,38 @@ angular.module('bahmni.common.domain')
             };
 
             this.find = function (params) {
-                return $q.when({"data":{
-                    "bahmniDiagnoses": [],
-                    "observations": [],
-                    "accessionNotes": [],
-                    "encounterType": null,
-                    "visitType": null,
-                    "patientId": null,
-                    "reason": null,
-                    "orders": [],
-                    "providers": [],
-                    "drugOrders": [],
-                    "patientProgramUuid": null,
-                    "visitUuid": null,
-                    "patientUuid": null,
-                    "encounterDateTime": null,
-                    "associatedToPatientProgram": false,
-                    "encounterUuid": null,
-                    "visitTypeUuid": null,
-                    "encounterTypeUuid": null,
-                    "locationUuid": null,
-                    "disposition": null,
-                    "locationName": null,
-                    "context": {},
-                    "extensions": {}
-                }});
+                var deferrable = $q.defer();
+                offlineDbService.getActiveEncounter(params.patientUuid).then(function(results) {
+                    if(results && results[0] && results[0].encounter)
+                        deferrable.resolve({data: results[0].encounter});
+                    else
+                        deferrable.resolve({"data":{
+                            "bahmniDiagnoses": [],
+                            "observations": [],
+                            "accessionNotes": [],
+                            "encounterType": null,
+                            "visitType": null,
+                            "patientId": null,
+                            "reason": null,
+                            "orders": [],
+                            "providers": [],
+                            "drugOrders": [],
+                            "patientProgramUuid": null,
+                            "visitUuid": null,
+                            "patientUuid": null,
+                            "encounterDateTime": null,
+                            "associatedToPatientProgram": false,
+                            "encounterUuid": null,
+                            "visitTypeUuid": null,
+                            "encounterTypeUuid": null,
+                            "locationUuid": null,
+                            "disposition": null,
+                            "locationName": null,
+                            "context": {},
+                            "extensions": {}
+                        }});
+                });
+                return deferrable.promise;
             };
             this.findByEncounterUuid = function (encounterUuid) {
                return $q.when({"data": {"results": []}})

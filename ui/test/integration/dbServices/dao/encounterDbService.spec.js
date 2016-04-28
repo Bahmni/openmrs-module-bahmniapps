@@ -32,4 +32,23 @@ describe('encounterDbService tests', function () {
             });
         });
     });
-})
+
+    it("insert encounter and getActiveEncounter from lovefield database", function(done){
+        var schemaBuilder = lf.schema.create('BahmniEncounter', 2);
+        Bahmni.Tests.OfflineDbUtils.createTable(schemaBuilder, Bahmni.Common.Offline.SchemaDefinitions.Encounter);
+        jasmine.getFixtures().fixturesPath = 'base/test/data';
+        var encounterJson = JSON.parse(readFixtures('encounter.json'));
+        var DateUtil = Bahmni.Common.Util.DateUtil;
+        encounterJson.encounterDateTime = DateUtil.addSeconds(DateUtil.now(), -1600);
+        schemaBuilder.connect().then(function(db){
+            encounterDbService.insertEncounterData(db, encounterJson).then(function(result){
+                var uuid = 'fc6ede09-f16f-4877-d2f5-ed8b2182ec11';
+                encounterDbService.findActiveEncounter(db, {patientUuid: uuid}).then(function(results){
+                    expect(results[0].encounter).not.toBeUndefined();
+                    expect(results[0].encounter.patientUuid).toBe(uuid);
+                    done();
+                });
+            });
+        });
+    });
+});
