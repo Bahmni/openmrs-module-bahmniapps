@@ -203,10 +203,11 @@ angular.module('bahmni.registration')
                     identifierPrefix: preferences.identifierPrefix,
                     registrationNumber: $scope.searchParameters.registrationNumber,
                     programAttributeFieldName: $scope.programAttributesSearchConfig.field,
+                    patientAttributes : $scope.customAttributesSearchConfig.fields,
                     programAttributeFieldValue: $scope.searchParameters.programAttributeFieldValue
                 });
 
-                var searchPromise = patientService.search(undefined, patientIdentifier, preferences.identifierPrefix, $scope.addressSearchConfig.field, undefined, undefined, undefined, undefined, $scope.programAttributesSearchConfig.field, $scope.searchParameters.programAttributeFieldValue).then(function (data) {
+                var searchPromise = patientService.search(undefined, patientIdentifier, preferences.identifierPrefix, $scope.addressSearchConfig.field, undefined, undefined, undefined, $scope.customAttributesSearchConfig.fields, $scope.programAttributesSearchConfig.field, $scope.searchParameters.programAttributeFieldValue).then(function (data) {
                     mapCustomAttributesSearchResults(data);
                     mapProgramAttributesSearchResults(data)
                     if (data.pageOfResults.length === 1) {
