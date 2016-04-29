@@ -3,8 +3,8 @@
 describe("PatientListHeaderController", function () {
 
     var scope, ngDialog,
-        $bahmniCookieStore, locationService, $window, retrospectiveEntryService, scheduledSync,
-        providerService, rootScope, thisController, locationsPromise, offlineService, workerService;
+        $bahmniCookieStore, locationService, $window, retrospectiveEntryService,
+        providerService, rootScope, thisController, locationsPromise, offlineService,offlinePatientSync;
     var date = "2015-01-11";
     var encounterProvider = {value: "Test", uuid: "Test_UUID"};
 
@@ -42,6 +42,7 @@ describe("PatientListHeaderController", function () {
         });
         providerService = jasmine.createSpyObj('providerService', ['search']);
         offlineService = jasmine.createSpyObj('offlineService', ['isOfflineApp']);
+        offlinePatientSync = jasmine.createSpyObj('offlinePatientSync', ['sync']);
         $window = {location: { reload: jasmine.createSpy()} };
 
         offlineService.isOfflineApp.and.returnValue(true);
@@ -55,8 +56,7 @@ describe("PatientListHeaderController", function () {
             $window: $window,
             ngDialog: ngDialog,
             offlineService: offlineService,
-            WorkerService: workerService,
-            scheduledSync : scheduledSync
+            offlinePatientSyncService: offlinePatientSync
         });
         thisController.windowReload = function () {
         };

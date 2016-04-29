@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('bahmni.home')
-    .controller('DashboardController', ['$scope', '$state', 'appService', 'locationService', 'spinner', '$bahmniCookieStore', '$window', '$q', 'offlineService', 'WorkerService','scheduledSync',
-        function ($scope, $state, appService, locationService, spinner, $bahmniCookieStore, $window, $q, offlineService, WorkerService, scheduledSync) {
+    .controller('DashboardController', ['$scope', '$state', 'appService', 'locationService', 'spinner', '$bahmniCookieStore', '$window', '$q', 'offlineService', 'offlinePatientSyncService',
+        function ($scope, $state, appService, locationService, spinner, $bahmniCookieStore, $window, $q, offlineService, offlinePatientSyncService) {
             $scope.appExtensions = appService.getAppDescriptor().getExtensions($state.current.data.extensionPointId, "link") || [];
             $scope.selectedLocationUuid = {};
             $scope.isOfflineApp = offlineService.isOfflineApp();
@@ -40,15 +40,7 @@ angular.module('bahmni.home')
             };
 
             $scope.sync = function() {
-                if(offlineService.isChromeApp()){
-                    if (Bahmni.Common.Offline && Bahmni.Common.Offline.BackgroundWorker) {
-                        new Bahmni.Common.Offline.BackgroundWorker(WorkerService, offlineService, {delay: 1000, repeat: 1});
-                    }
-                }
-                else{
-                    scheduledSync(undefined, {delay: 1000, repeat: 1});
-                }
-
+                offlinePatientSyncService.sync(Bahmni.Common.Constants.syncButtonConfiguration);
             };
 
             $scope.$on("schedulerStage", function(event,stage){
