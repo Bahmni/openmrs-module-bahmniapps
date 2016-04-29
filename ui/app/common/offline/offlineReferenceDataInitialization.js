@@ -43,7 +43,13 @@ angular.module('bahmni.common.offline')
                             }).catch(function(response){
                                 if(parseInt(response.status / 100) == 4){
                                     deferred.resolve({});
-                                }else {
+                                }else if(parseInt(response.status / 100) == 5) {
+                                    deferred.resolve({"data": Bahmni.Common.Constants.offlineErrorMessages.openmrsServerError});
+                                }
+                                else if(response.status == -1) {
+                                    deferred.resolve({"data": Bahmni.Common.Constants.offlineErrorMessages.networkError});
+                                }
+                                else {
                                     x++;
                                     if (x == length) {
                                         deferred.resolve({});
