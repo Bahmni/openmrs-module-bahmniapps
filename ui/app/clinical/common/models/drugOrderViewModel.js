@@ -652,7 +652,7 @@ Bahmni.Clinical.DrugOrderViewModel = function (config, proto, encounterDate) {
         var mantissa = self.uniformDosingType.doseFraction ? self.uniformDosingType.doseFraction.value : 0;
         var dose = self.uniformDosingType.dose ? self.uniformDosingType.dose : 0;
         self.uniformDosingType.doseFraction = void 0;
-        return dose + mantissa;
+        return  !dose && !mantissa ? null : dose + mantissa;
     };
 
     this.setUniformDoseFraction = function() {
