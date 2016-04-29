@@ -4,20 +4,20 @@
             <li class="tab-item" ng-repeat="searchType in search.searchTypes"
                 ng-class="{'tab-selected': search.isSelectedSearch(searchType)}">
                 <a href="" ng-click="search.switchSearchType(searchType)">
-                    <span>{{searchType | titleTranslate}} </span>
-                    <span ng-if="search.showPatientCountOnSearchParameter(searchType)">({{search.searchResults.length}})</span>
-                    <span ng-if="searchType.handler && !search.showPatientCountOnSearchParameter(searchType)" scheduler
+                    <span>{{::searchType | titleTranslate}} </span>
+                    <span ng-if="::search.showPatientCountOnSearchParameter(searchType)">({{::search.searchResults.length}})</span>
+                    <span ng-if="::(searchType.handler && !search.showPatientCountOnSearchParameter(searchType))" scheduler
                           watch-on="search.searchParameter" refresh-time="searchType.refreshTime"
-                          trigger-function="getPatientCount(searchType)">({{searchType.patientCount}})</span>
+                          trigger-function="getPatientCount(searchType)">({{::searchType.patientCount}})</span>
                 </a>
             </li>
         </ul>
     </div>
-    <div class="tab-content" ng-if="search.searchTypes.length">
+    <div class="tab-content" ng-if="::search.searchTypes.length">
         <span ng-if="search.isCurrentSearchLookUp()">
             <form name="filterPatients" ng-submit="filterPatientsAndSubmit()">
                 <div class="search-wrapper">
-                    <input type="text" id="patientIdentifier" ng-model="search.searchParameter"
+                    <input type="text" id="patientIdentifier" ng-model="::search.searchParameter"
                            focus-on="search.startPatientSearch"
                            ng-change="search.filterPatients()"/>
                 </div>
@@ -26,7 +26,7 @@
         <span ng-if="search.searchType && !search.isCurrentSearchLookUp()">
             <form name="searchPatientForm" ng-submit="searchPatients()" class="overflow-hidden">
                 <div class="search-patient-id left">
-                    <input type="text" id="patientIdentifier" ng-model="search.searchParameter"
+                    <input type="text" id="patientIdentifier" ng-model="::search.searchParameter"
                            focus-on="search.startPatientSearch" placeholder="{{'SEARCH_NAME_PLACEHOLDER_KEY' | translate }}"/>
                 </div>
 
@@ -45,22 +45,22 @@
                     <thead>
                     <tr>
                         <!-- <th><strong>Sl.No</strong></th> -->
-                        <th ng-repeat="heading in getHeadings(search.visiblePatients)"><strong>{{heading}}</strong></th>
+                        <th ng-repeat="heading in getHeadings(search.visiblePatients)"><strong>{{::heading}}</strong></th>
                     </tr>
                     </thead>
                     <tbody>
-                    <tr ng-repeat="row in search.visiblePatients">
+                    <tr ng-repeat="row in search.visiblePatients track by row.uuid">
                         <!-- <td>
                             {{$index + 1}}
                         </td> -->
                         <td ng-repeat="heading in getHeadings(search.visiblePatients)">
-                            <a ng-if="isHeadingOfIdentifier(heading)"
-                               ng-click="forwardPatient(row)">{{row[heading]}}</a>
-                            <span ng-if="isHeadingOfName(heading)" ng-click="forwardPatient(row)">{{row[heading]}}
-                                <i class="ipd-indication fa fa-bed" ng-if="row.hasBeenAdmitted===true||row.hasBeenAdmitted==='true'"></i>
+                            <a ng-if="::isHeadingOfIdentifier(heading)"
+                               ng-click="forwardPatient(row)">{{::row[heading]}}</a>
+                            <span ng-if="::isHeadingOfName(heading)" ng-click="forwardPatient(row)">{{::row[heading]}}
+                                <i class="ipd-indication fa fa-bed" ng-if="::(row.hasBeenAdmitted===true||row.hasBeenAdmitted==='true')"></i>
                             </span>
-                            <span ng-if="!isHeadingOfIdentifier(heading) && !isHeadingOfName(heading)">
-                            {{row[heading]}}
+                            <span ng-if="::(!isHeadingOfIdentifier(heading) && !isHeadingOfName(heading))">
+                            {{::row[heading]}}
                             </span>
                         </td>
                     </tr>
@@ -71,19 +71,19 @@
         <resize ng-if="search.isTileView()" search-results="search.searchResults"
                 visible-results="search.visiblePatients" class="active-visits">
             <ul>
-                <li ng-repeat="patient in search.visiblePatients" class="active-patient" ng-click="forwardPatient(patient)">
+                <li ng-repeat="patient in search.visiblePatients track by patient.uuid" class="active-patient" ng-click="forwardPatient(patient)">
                     <img class="smallImages" ng-src="{{::patient.image}}" fallback-src='../images/blank-user.png'>
 
-                <div class="patient-name">{{patient.name}}</div>
-                <div class="patient-id">{{patient.identifier}}</div>
-                <i class="ipd-indication fa fa-bed" ng-if="patient.hasBeenAdmitted===true||patient.hasBeenAdmitted==='true'"></i>
+                <div class="patient-name">{{::patient.name}}</div>
+                <div class="patient-id">{{::patient.identifier}}</div>
+                <i class="ipd-indication fa fa-bed" ng-if="::(patient.hasBeenAdmitted===true||patient.hasBeenAdmitted==='true')"></i>
             </li>
             </ul>
         </resize>
         <div class="note-container" ng-if="search.noResultsMessage">
             <div class="note warning">
                 <div class="text">
-                    <p class="ng-binding">{{search.noResultsMessage}}</p>
+                    <p class="ng-binding">{{::search.noResultsMessage}}</p>
                 </div>
             </div>
         </div>
