@@ -21,7 +21,10 @@ angular.module('bahmni.offline', ['ui.router',  'bahmni.common.uiHelper', 'bahmn
                                 if(result){
                                     $state.go('login');
                                 }
-                                return offlineReferenceDataInitialization(false).then(function(){
+                                return offlineReferenceDataInitialization(false).then(function(response){
+                                    if(response.data) {
+                                        offlineService.setItem("networkError", response.data);
+                                    }
                                     $state.go('login');
                                 });
                             });
