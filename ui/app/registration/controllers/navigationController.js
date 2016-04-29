@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('bahmni.registration')
-    .controller('NavigationController', ['$scope', '$rootScope', '$location', 'sessionService', '$window', 'appService', '$sce','offlineService', 'WorkerService','scheduledSync',
-        function ($scope, $rootScope, $location, sessionService, $window, appService, $sce, offlineService, WorkerService, scheduledSync) {
+    .controller('NavigationController', ['$scope', '$rootScope', '$location', 'sessionService', '$window', 'appService', '$sce','offlineService', 'offlinePatientSyncService',
+        function ($scope, $rootScope, $location, sessionService, $window, appService, $sce, offlineService, offlinePatientSyncService) {
             $scope.extensions = appService.getAppDescriptor().getExtensions("org.bahmni.registration.navigation", "link");
             $scope.isOfflineApp = offlineService.isOfflineApp();
             $scope.goTo = function (url) {
@@ -23,14 +23,7 @@ angular.module('bahmni.registration')
             };
 
             $scope.sync = function() {
-                if(offlineService.isChromeApp()){
-                    if (Bahmni.Common.Offline && Bahmni.Common.Offline.BackgroundWorker) {
-                        new Bahmni.Common.Offline.BackgroundWorker(WorkerService, offlineService, {delay: 1000, repeat: 1});
-                    }
-                }
-                else{
-                    scheduledSync(undefined, {delay: 1000, repeat: 1});
-                }
+                offlinePatientSyncService.sync(Bahmni.Common.Constants.syncButtonConfiguration);
 
             };
 

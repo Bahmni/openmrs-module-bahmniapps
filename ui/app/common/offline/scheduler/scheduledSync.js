@@ -67,9 +67,9 @@ angular.module("bahmni.common.offline")
                         execute: function() {
                             try{
                                 if(output){
-                                    output.notify("schedulerStage",STAGES.STAGE3);
+                                    output.notify(STAGES.STAGE3);
                                 }else{
-                                    $rootScope.$broadcast(STAGES.STAGE3);
+                                    $rootScope.$broadcast("schedulerStage", STAGES.STAGE3);
                                 }
                                 console.log(STAGES.STAGE3);
                                 return offlinePush().then(function(){
@@ -78,7 +78,7 @@ angular.module("bahmni.common.offline")
                                 });
                             }
                             catch(e){
-
+                                console.log('Error at '+STAGES.STAGE3, e);
                             }
                         }
                     });

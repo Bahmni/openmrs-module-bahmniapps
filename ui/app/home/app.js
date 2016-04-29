@@ -2,7 +2,7 @@
 
 angular.module('bahmni.home', ['ui.router', 'httpErrorInterceptor', 'bahmni.common.domain', 'bahmni.common.i18n', 'bahmni.common.uiHelper', 'bahmni.common.util',
         'bahmni.common.appFramework', 'bahmni.common.logging', 'bahmni.common.routeErrorHandler', 'pascalprecht.translate', 'ngCookies', 'bahmni.common.offline',
-          'bahmni.common.models', 'FredrikSandell.worker-pool'])
+          'bahmni.common.models'])
     .config(['$urlRouterProvider', '$stateProvider', '$httpProvider', '$bahmniTranslateProvider', '$compileProvider',
         function ($urlRouterProvider, $stateProvider, $httpProvider, $bahmniTranslateProvider, $compileProvider) {
         $urlRouterProvider.otherwise('/dashboard');
@@ -30,14 +30,8 @@ angular.module('bahmni.home', ['ui.router', 'httpErrorInterceptor', 'bahmni.comm
                         initialize: function (initialization, offlineDb) {
                             return initialization(offlineDb);
                         },
-                        webWorker: function(offlineService, scheduledSync, WorkerService) {
-                            if (offlineService.isChromeApp()) {
-                                if (Bahmni.Common.Offline && Bahmni.Common.Offline.BackgroundWorker) {
-                                    new Bahmni.Common.Offline.BackgroundWorker(WorkerService, offlineService);
-                                }
-                            } else if (offlineService.isAndroidApp()) {
-                                scheduledSync();
-                            }
+                        webWorker: function(offlinePatientSyncService, initialize) {
+                            return offlinePatientSyncService.sync();
                         }
                     }
                 }).state('login',

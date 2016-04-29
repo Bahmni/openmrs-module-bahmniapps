@@ -14,6 +14,10 @@ Bahmni.Common = Bahmni.Common || {};
     var BASE_URL = hostUrl + "/bahmni_config/openmrs/apps/";
     var CUSTOM_URL = hostUrl + "/implementation_config/openmrs/apps/";
     var CUSTOM_LOCALE_URL = hostUrl + "/bahmni_config/openmrs/i18n/";
+    var syncButtonConfiguration =  {
+        delay: 1000,
+        repeat: 1
+    };
 
     var serverErrorMessages = [
         {
@@ -238,7 +242,8 @@ Bahmni.Common = Bahmni.Common || {};
         offlineRootDir: offlineRootDir,
         dischargeUrl: BAHMNI_CORE + "/discharge",
         newOfflineVisitUuid: "newOfflineVisitUuid",
-        offlineErrorMessages: offlineErrorMessages
+        offlineErrorMessages: offlineErrorMessages,
+        syncButtonConfiguration:syncButtonConfiguration
     };
 })();
 
