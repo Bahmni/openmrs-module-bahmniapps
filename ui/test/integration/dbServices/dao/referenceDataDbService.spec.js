@@ -25,7 +25,7 @@ describe('referenceDataDbService tests', function () {
                     referenceDataDbService.getReferenceData(referenceDataKey).then(function(result) {
                         expect(result.etag).toBe(eTag);
                         expect(result.key).toBe(referenceDataKey);
-                        expect(result.value).toBe(locationsJson);
+                        expect(result.data).toBe(locationsJson);
                         done();
                     });
             });

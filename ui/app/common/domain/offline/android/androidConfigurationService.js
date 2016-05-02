@@ -7,48 +7,33 @@ angular.module('bahmni.common.domain')
             var configurationFunctions = {};
 
             configurationFunctions.encounterConfig = function () {
-                return androidDbService.getReferenceData('RegistrationConcepts').then(function (registrationConcepts) {
-                    return {"data": registrationConcepts.value};
-                });
+                return androidDbService.getReferenceData('RegistrationConcepts');
             };
 
             configurationFunctions.patientConfig = function () {
-                return androidDbService.getReferenceData('PatientConfig').then(function (patientConfig) {
-                    return {"data": patientConfig.value};
-                });
+                return androidDbService.getReferenceData('PatientConfig');
             };
 
             configurationFunctions.patientAttributesConfig = function () {
-                return androidDbService.getReferenceData('PersonAttributeType').then(function (relationshipTypes) {
-                    return {"data": relationshipTypes.value};
-                });
+                return androidDbService.getReferenceData('PersonAttributeType');
             };
 
             configurationFunctions.dosageFrequencyConfig = function () {
 
-                return androidDbService.getReferenceData('DosageFrequencyConfig').then(function (dosageFrequencyConfig) {
-                    return {"data": dosageFrequencyConfig.value};
-
-                });
+                return androidDbService.getReferenceData('DosageFrequencyConfig');
             };
 
             configurationFunctions.dosageInstructionConfig = function () {
 
-                return androidDbService.getReferenceData('DosageInstructionConfig').then(function (dosageInstructionConfig) {
-                    return {"data": dosageInstructionConfig.value};
-                });
+                return androidDbService.getReferenceData('DosageInstructionConfig');
             };
 
             configurationFunctions.stoppedOrderReasonConfig = function () {
-                return androidDbService.getReferenceData('StoppedOrderReasonConfig').then(function (stoppedOrderReasonConfig) {
-                    return {"data": stoppedOrderReasonConfig.value};
-                });
+                return androidDbService.getReferenceData('StoppedOrderReasonConfig');
             };
 
             configurationFunctions.consultationNoteConfig = function () {
-                return androidDbService.getReferenceData('ConsultationNote').then(function (consultationNote) {
-                    return {"data": consultationNote.value};
-                });
+                return androidDbService.getReferenceData('ConsultationNote');
             };
 
             configurationFunctions.radiologyObservationConfig = function () {
@@ -56,71 +41,49 @@ angular.module('bahmni.common.domain')
             };
 
             configurationFunctions.labOrderNotesConfig = function () {
-                return androidDbService.getReferenceData('LabOrderNotes').then(function (labOrderNotes) {
-                    return {"data": labOrderNotes.value};
-                });
+                return androidDbService.getReferenceData('LabOrderNotes');
             };
 
             configurationFunctions.defaultEncounterType = function () {
-                return androidDbService.getReferenceData('DefaultEncounterType').then(function (defaultEncounterType) {
-                    return {"data": defaultEncounterType.value};
-                });
+                return androidDbService.getReferenceData('DefaultEncounterType');
             };
 
             configurationFunctions.radiologyImpressionConfig = function () {
-                return androidDbService.getReferenceData('RadiologyImpressionConfig').then(function (radiologyImpressionConfig) {
-                    return {"data": radiologyImpressionConfig.value};
-                });
+                return androidDbService.getReferenceData('RadiologyImpressionConfig');
             };
 
 
             configurationFunctions.addressLevels = function () {
-                return androidDbService.getReferenceData('AddressHierarchyLevels').then(function (addressHierarchyLevels) {
-                    return {"data": addressHierarchyLevels.value};
-                });
+                return androidDbService.getReferenceData('AddressHierarchyLevels');
             };
 
             configurationFunctions.allTestsAndPanelsConcept = function () {
-                return androidDbService.getReferenceData('AllTestsAndPanelsConcept').then(function (allTestsAndPanelsConcept) {
-                    return {"data": allTestsAndPanelsConcept.value};
-                });
+                return androidDbService.getReferenceData('AllTestsAndPanelsConcept');
             };
 
             configurationFunctions.identifierSourceConfig = function () {
-                return androidDbService.getReferenceData('IdentifierSources').then(function (identifierSources) {
-                    return {"data": identifierSources.value};
-                });
+                return androidDbService.getReferenceData('IdentifierSources');
             };
 
             configurationFunctions.genderMap = function () {
-                return androidDbService.getReferenceData('Genders').then(function (genders) {
-                    return {"data": genders.value};
-                });
+                return androidDbService.getReferenceData('Genders');
             };
 
 
             configurationFunctions.relationshipTypeMap = function () {
-                return androidDbService.getReferenceData('RelationshipTypeMap').then(function (relationshipTypeMap) {
-                    return {"data": relationshipTypeMap.value};
-                });
+                return androidDbService.getReferenceData('RelationshipTypeMap');
             };
 
             configurationFunctions.relationshipTypeConfig = function () {
-                return androidDbService.getReferenceData('RelationshipType').then(function (relationshipTypes) {
-                    return {"data": relationshipTypes.value};
-                });
+                return androidDbService.getReferenceData('RelationshipType');
             };
 
             configurationFunctions.loginLocationToVisitTypeMapping = function () {
-                return androidDbService.getReferenceData('LoginLocationToVisitTypeMapping').then(function (mapping) {
-                    return {"data": mapping.value};
-                });
+                return androidDbService.getReferenceData('LoginLocationToVisitTypeMapping');
             };
 
             configurationFunctions.loginLocationToEncounterTypeMapping =  function () {
-                return androidDbService.getReferenceData('LoginLocationToEncounterTypeMapping').then(function (result){
-                    return {"data" : result};
-                });
+                return androidDbService.getReferenceData('LoginLocationToEncounterTypeMapping');
             };
 
             var existingPromises = {};

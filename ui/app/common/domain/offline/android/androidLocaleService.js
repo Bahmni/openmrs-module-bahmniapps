@@ -5,9 +5,7 @@ angular.module('bahmni.common.domain')
         function (androidDbService) {
 
         this.allowedLocalesList = function () {
-                return androidDbService.getReferenceData('LocaleList').then(function(localeList){
-                    return {"data": localeList.value};
-                });
+                return androidDbService.getReferenceData('LocaleList');
         };
 
     }]);
