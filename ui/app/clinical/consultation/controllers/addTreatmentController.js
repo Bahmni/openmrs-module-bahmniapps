@@ -203,7 +203,10 @@ angular.module('bahmni.clinical')
             };
 
             $scope.$on("event:refillDrugOrder", function (event, drugOrder, alreadyActiveSimilarOrder) {
-                if (drugOrder.orderGroupUuid) {
+
+                // Todo -- Removed orderset refill logic , since its needs more analysis
+
+                /* if (drugOrder.orderGroupUuid) {
                     ngDialog.open({
                         template: 'consultation/views/treatmentSections/refillDrugOrderSetModal.html',
                         scope: $scope,
@@ -214,7 +217,8 @@ angular.module('bahmni.clinical')
                     });
                     $scope.popupActive = true;
                     return;
-                }
+                }*/
+                
                 $scope.refillDrug(drugOrder, alreadyActiveSimilarOrder);
             });
 
