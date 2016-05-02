@@ -26,11 +26,11 @@
                 var drugAlreadyOrdered = _.find(allOrderedDrugs, order.drugNonCoded ? {
                     name: order.drugNonCoded
                 } : {
-                    name: order.drug.name
+                    name: order.drug && order.drug.name || order.concept.name
                 });
 
                 if (!drugAlreadyOrdered) {
-                    drugAlreadyOrdered = new Drug(order.drugNonCoded ? order.drugNonCoded : order.drug.name);
+                    drugAlreadyOrdered = new Drug(order.drugNonCoded ? order.drugNonCoded : order.drug && order.drug.name || order.concept.name);
                     allOrderedDrugs.push(drugAlreadyOrdered);
                 }
                 drugAlreadyOrdered.orders.push(order);
