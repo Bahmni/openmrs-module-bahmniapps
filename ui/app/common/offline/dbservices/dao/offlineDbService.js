@@ -154,6 +154,11 @@ angular.module('bahmni.common.offline')
         var getVisitByUuid = function (visitUuid) {
             return visitDbService.getVisitByUuid(db, visitUuid);
         };
+
+        var getEncounterByEncounterUuid = function(encounterUuid){
+            return encounterDbService.getEncounterByEncounterUuid(db,encounterUuid);
+        };
+
         return {
             init: init,
             initSchema: initSchema,
@@ -176,6 +181,7 @@ angular.module('bahmni.common.offline')
             createEncounter: createEncounter,
             insertVisitData: insertVisitData,
             getVisitByUuid: getVisitByUuid,
-            getActiveEncounter: getActiveEncounter
+            getActiveEncounter: getActiveEncounter,
+            getEncounterByEncounterUuid: getEncounterByEncounterUuid
         }
     }]);

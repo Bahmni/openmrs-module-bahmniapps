@@ -29,9 +29,26 @@ angular.module('bahmni.common.offline')
                     })
                 };
 
-                var processEvent = function (event) {
+                var pushEncounterData = function(event) {
+                    return offlineDbService.getEncounterByEncounterUuid(event.data.encounterUuid).then(function (response) {
+                        if (response == undefined) {
+                            eventQueue.releaseFromQueue(event);
+                            return consumeFromEventQueue();
+                        }
+                        return $http.post(Bahmni.Common.Constants.bahmniEncounterUrl, response.encounter, {
+                            withCredentials: true,
+                            headers: {
+                                "Accept": "application/json",
+                                "Content-Type": "application/json"
+                            }
+
+                        });
+                    });
+                };
+
+                var pushPatientProfileData = function(event) {
                     return offlineDbService.getPatientByUuid(event.data.patientUuid).then(function (response) {
-                        if(response == undefined){
+                        if (response == undefined) {
                             eventQueue.releaseFromQueue(event);
                             return consumeFromEventQueue();
                         }
@@ -42,7 +59,22 @@ angular.module('bahmni.common.offline')
                                 "Accept": "application/json",
                                 "Content-Type": "application/json"
                             }
-                        }).success(function () {
+
+                        });
+                    });
+                };
+
+                var pushEventData = function (event) {
+                    if (event.data.type && event.data.type == "encounter") {
+                        return pushEncounterData(event);
+                    } else {
+                        return pushPatientProfileData(event);
+                    }
+                };
+
+                var processEvent = function (event) {
+                    return pushEventData(event)
+                        .success(function () {
                             eventQueue.removeFromQueue(event);
                             if (event.tube === "event_queue") {
                                 return consumeFromEventQueue();
@@ -66,8 +98,7 @@ angular.module('bahmni.common.offline')
                                 deferred.resolve();
                                 return "4xx error";
                             }
-                        })
-                    });
+                        });
                 };
 
                 var reservedEvents = [];
@@ -80,7 +111,7 @@ angular.module('bahmni.common.offline')
                 }
                 consumeFromErrorQueue().then(function (response) {
                     releaseReservedEvents(reservedEvents);
-                    if(response == "4xx error") {
+                    if (response == "4xx error") {
                         return;
                     }
                     return consumeFromEventQueue();
