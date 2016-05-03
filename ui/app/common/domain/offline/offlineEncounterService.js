@@ -37,7 +37,7 @@ angular.module('bahmni.common.domain')
 
             var getDefaultEncounterTypeIfMappingNotFound = function (mapping) {
                 var encounterType = mapping;
-                if (!encounterType) {
+                if (_.isEmpty(encounterType)) {
                     encounterType = getDefaultEncounterType();
                 }
                 return encounterType;
@@ -103,8 +103,8 @@ angular.module('bahmni.common.domain')
 
             this.find = function (params) {
                 return offlineEncounterService.find(params).then(function(results) {
-                    if(results && results[0] && results[0].encounter)
-                        return {data: results[0].encounter};
+                    if(results  && results.encounter)
+                        return {data: results.encounter};
                     else
                         return {"data":{
                             "bahmniDiagnoses": [],

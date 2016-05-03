@@ -32,6 +32,6 @@ angular.module('bahmni.common.domain')
             };
 
             this.find = function (params) {
-                return offlineDbService.getActiveEncounter(params.patientUuid);
+                return offlineDbService.getActiveEncounter(params);
             };
         }]);

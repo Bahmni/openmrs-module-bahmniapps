@@ -19,8 +19,7 @@ angular.module('bahmni.common.domain')
             };
 
             this.create = function (encounterData) {
-                return $q.when({data: encounterData});
-                //return androidDbService.createEncounter(encounterData);
+                return androidDbService.createEncounter(encounterData);
             };
 
             this.delete = function (encounterUuid, reason) {
@@ -33,6 +32,6 @@ angular.module('bahmni.common.domain')
             };
 
             this.find = function (params) {
-                return androidDbService.getActiveEncounter(params.patientUuid);
+                return androidDbService.getActiveEncounter(params);
             };
         }]);

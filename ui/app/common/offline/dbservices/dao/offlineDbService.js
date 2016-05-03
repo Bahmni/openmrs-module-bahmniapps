@@ -77,17 +77,20 @@ angular.module('bahmni.common.offline')
             };
 
 
-        var getActiveEncounter = function(patientUuid){
+        var getActiveEncounter = function(params){
             var deferred = $q.defer();
             getReferenceData("encounterSessionDuration").then(function(encounterSessionDurationData){
                 var encounterSessionDuration = encounterSessionDurationData.value;
-                encounterDbService.findActiveEncounter(db, {patientUuid: patientUuid}, encounterSessionDuration).then(function (encounter) {
-                    deferred.resolve(encounter);
+                getReferenceData("DefaultEncounterType").then(function(defaultEncounterType) {
+                    var encounterType = defaultEncounterType ? defaultEncounterType.value : null;
+                    encounterDbService.findActiveEncounter(db, {patientUuid: params.patientUuid, providerUuid: params.providerUuids[0], encounterType: encounterType}, encounterSessionDuration).then(function (encounter) {
+                        deferred.resolve(encounter);
+                    });
                 });
 
             });
             return deferred.promise;
-        }
+        };
 
         var init = function (offlineDb) {
             db = offlineDb;

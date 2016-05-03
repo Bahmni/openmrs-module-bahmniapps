@@ -24,7 +24,9 @@ angular.module('bahmni.common.domain')
         };
 
         this.populateDiagnosisInformation = function(patientUuid, consultation) {
-            return $q.when({"data": {}});
+            consultation.savedDiagnosesFromCurrentEncounter = [];
+            consultation.pastDiagnoses = [];
+            return $q.when(consultation);
         }
 
     }]);

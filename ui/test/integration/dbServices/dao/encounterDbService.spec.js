@@ -42,10 +42,13 @@ describe('encounterDbService tests', function () {
         encounterJson.encounterDateTime = DateUtil.addSeconds(DateUtil.now(), -1600);
         schemaBuilder.connect().then(function(db){
             encounterDbService.insertEncounterData(db, encounterJson).then(function(result){
-                var uuid = 'fc6ede09-f16f-4877-d2f5-ed8b2182ec11';
-                encounterDbService.findActiveEncounter(db, {patientUuid: uuid}, 60).then(function(results){
-                    expect(results[0].encounter).not.toBeUndefined();
-                    expect(results[0].encounter.patientUuid).toBe(uuid);
+                var patientUuid = 'fc6ede09-f16f-4877-d2f5-ed8b2182ec11';
+                var providerUuid = "6a5d9c71-bb71-47ad-abed-bda86637f1b7";
+                var encounterType = "FIELD";
+                encounterDbService.findActiveEncounter(db, {patientUuid: patientUuid, providerUuid: providerUuid, encounterType: encounterType}, 60).then(function(results){
+                    expect(results.encounter).not.toBeUndefined();
+                    expect(results.encounter.patientUuid).toBe(patientUuid);
+                    expect(results.encounter.encounterType).toBe(encounterType);
                     done();
                 });
             });
@@ -59,9 +62,11 @@ describe('encounterDbService tests', function () {
         schemaBuilder.connect().then(function(db){
             encounterDbService.insertEncounterData(db, encounterJson).then(function(result){
                 var uuid = 'fc6ede09-f16f-4877-d2f5-ed8b2182ec11';
-                encounterDbService.findActiveEncounter(db, {patientUuid: uuid}, 60).then(function(results){
-                    expect(results[0].encounter).not.toBeUndefined();
-                    expect(results[0].encounter.patientUuid).toBe(uuid);
+                var providerUuid = "6a5d9c71-bb71-47ad-abed-bda86637f1b7";
+                var encounterType = "FIELD";
+                encounterDbService.findActiveEncounter(db, {patientUuid: uuid, providerUuid: providerUuid, encounterType: encounterType}, 60).then(function(results){
+                    expect(results.encounter).not.toBeUndefined();
+                    expect(results.encounter.patientUuid).toBe(uuid);
                     done();
                 });
                 encounterDbService.getEncounterByEncounterUuid(db, encounterJson.encounterUuid).then(function(results){
