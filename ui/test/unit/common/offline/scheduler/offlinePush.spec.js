@@ -9,7 +9,7 @@ describe('Offline Push Tests', function () {
         module(function ($provide) {
             var offlineServiceMock = jasmine.createSpyObj('offlineService', ['isOfflineApp','isAndroidApp']);
             eventQueueMock = jasmine.createSpyObj('eventQueue', ['consumeFromErrorQueue','consumeFromEventQueue','removeFromQueue','addToErrorQueue','releaseFromQueue']);
-            var offlineDbServiceMock = jasmine.createSpyObj('offlineDbService', ['getPatientByUuid']);
+            var offlineDbServiceMock = jasmine.createSpyObj('offlineDbService', ['getPatientByUuid','getEncounterByEncounterUuid']);
 
             offlineServiceMock.isOfflineApp.and.returnValue(true);
             offlineServiceMock.isAndroidApp.and.returnValue(false);
@@ -35,6 +35,7 @@ describe('Offline Push Tests', function () {
             eventQueueMock.removeFromQueue = jasmine.createSpy('removeFromQueue').and.returnValue($q.when({}));
             var patient = {};
             offlineDbServiceMock.getPatientByUuid.and.returnValue($q.when(patient));
+            offlineDbServiceMock.getEncounterByEncounterUuid.and.returnValue($q.when({}));
             $provide.value('offlineService', offlineServiceMock);
             $provide.value('eventQueue', eventQueueMock);
             $provide.value('offlineDbService', offlineDbServiceMock);
@@ -53,10 +54,10 @@ describe('Offline Push Tests', function () {
         offlinePush().then(function(){
             expect(eventQueueMock.removeFromQueue).toHaveBeenCalled();
             expect(eventQueueMock.consumeFromEventQueue).toHaveBeenCalled();
-            done();
         });
         setTimeout(function(){
             httpBackend.flush();
+            done();
         }, 1000);
     });
 
@@ -67,10 +68,10 @@ describe('Offline Push Tests', function () {
         offlinePush().then(function(){
             expect(eventQueueMock.removeFromQueue).toHaveBeenCalled();
             expect(eventQueueMock.consumeFromErrorQueue).toHaveBeenCalled();
-            done();
         });
         setTimeout(function(){
             httpBackend.flush();
+            done();
         }, 1000);
     });
 
@@ -81,10 +82,10 @@ describe('Offline Push Tests', function () {
             expect(eventQueueMock.removeFromQueue).toHaveBeenCalled();
             expect(eventQueueMock.addToErrorQueue).toHaveBeenCalled();
             expect(eventQueueMock.consumeFromEventQueue).toHaveBeenCalled();
-            done();
         });
         setTimeout(function(){
             httpBackend.flush();
+            done();
         }, 1000);
     });
 
@@ -95,11 +96,23 @@ describe('Offline Push Tests', function () {
             expect(eventQueueMock.addToErrorQueue).not.toHaveBeenCalled();
             expect(eventQueueMock.consumeFromEventQueue).not.toHaveBeenCalled();
             expect(eventQueueMock.releaseFromQueue).toHaveBeenCalled();
-            done();
         });
         setTimeout(function(){
             httpBackend.flush();
+            done();
         }, 1000);
     });
 
+    it("should push encounter data from event queue", function(done) {
+        event.type = "encounter";
+        httpBackend.expectPOST("someUrl").respond(200, {});
+        offlinePush().then(function(){
+            expect(eventQueueMock.removeFromQueue).toHaveBeenCalled();
+            expect(eventQueueMock.consumeFromEventQueue).toHaveBeenCalled();
+        });
+        setTimeout(function(){
+            httpBackend.flush();
+            done();
+        }, 1000);
+    });
 });

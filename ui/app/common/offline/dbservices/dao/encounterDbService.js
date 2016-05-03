@@ -44,9 +44,20 @@ angular.module('bahmni.common.offline')
                 });
         };
 
+        var getEncounterByEncounterUuid = function(db, encounterUuid){
+            var en = db.getSchema().table('encounter');
+            return db.select(en.encounterJson.as('encounter'))
+                .from(en)
+                .where(en.uuid.eq(encounterUuid)).exec()
+                .then(function (result) {
+                    return result[0];
+                });
+        };
+
         return {
             insertEncounterData: insertEncounterData,
             getEncountersByPatientUuid: getEncountersByPatientUuid,
-            findActiveEncounter: findActiveEncounter
+            findActiveEncounter: findActiveEncounter,
+            getEncounterByEncounterUuid : getEncounterByEncounterUuid
         }
     });

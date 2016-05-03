@@ -1,7 +1,7 @@
 'use strict';
 
 describe('encounterDbService tests', function () {
-    var encounterDbService;
+    var encounterDbService, schemaBuilder, encounterJson;
 
     var mockHttp = jasmine.createSpyObj('$http', ['get']);
 
@@ -10,6 +10,12 @@ describe('encounterDbService tests', function () {
         module(function ($provide) {
             $provide.value('$http', mockHttp);
         });
+
+        schemaBuilder = lf.schema.create('BahmniEncounter', 2);
+        Bahmni.Tests.OfflineDbUtils.createTable(schemaBuilder, Bahmni.Common.Offline.SchemaDefinitions.Encounter);
+        jasmine.getFixtures().fixturesPath = 'base/test/data';
+        encounterJson = JSON.parse(readFixtures('encounter.json'));
+
     });
 
     beforeEach(inject(['encounterDbService', function (encounterDbServiceInjected) {
@@ -17,10 +23,7 @@ describe('encounterDbService tests', function () {
     }]));
 
     it("insert encounter and get from lovefield database", function(done){
-        var schemaBuilder = lf.schema.create('BahmniEncounter', 2);
-        Bahmni.Tests.OfflineDbUtils.createTable(schemaBuilder, Bahmni.Common.Offline.SchemaDefinitions.Encounter);
-        jasmine.getFixtures().fixturesPath = 'base/test/data';
-        var encounterJson = JSON.parse(readFixtures('encounter.json'));
+
         schemaBuilder.connect().then(function(db){
             encounterDbService.insertEncounterData(db, encounterJson).then(function(){
                 var uuid = 'fc6ede09-f16f-4877-d2f5-ed8b2182ec11';
@@ -34,10 +37,7 @@ describe('encounterDbService tests', function () {
     });
 
     it("insert encounter and getActiveEncounter from lovefield database", function(done){
-        var schemaBuilder = lf.schema.create('BahmniEncounter', 2);
-        Bahmni.Tests.OfflineDbUtils.createTable(schemaBuilder, Bahmni.Common.Offline.SchemaDefinitions.Encounter);
-        jasmine.getFixtures().fixturesPath = 'base/test/data';
-        var encounterJson = JSON.parse(readFixtures('encounter.json'));
+
         var DateUtil = Bahmni.Common.Util.DateUtil;
         encounterJson.encounterDateTime = DateUtil.addSeconds(DateUtil.now(), -1600);
         schemaBuilder.connect().then(function(db){
@@ -50,5 +50,25 @@ describe('encounterDbService tests', function () {
                 });
             });
         });
+    });
+
+    it("get encounter by encounterUuid from lovefield database", function(done){
+
+        var DateUtil = Bahmni.Common.Util.DateUtil;
+        encounterJson.encounterDateTime = DateUtil.addSeconds(DateUtil.now(), -1600);
+        schemaBuilder.connect().then(function(db){
+            encounterDbService.insertEncounterData(db, encounterJson).then(function(result){
+                var uuid = 'fc6ede09-f16f-4877-d2f5-ed8b2182ec11';
+                encounterDbService.findActiveEncounter(db, {patientUuid: uuid}, 60).then(function(results){
+                    expect(results[0].encounter).not.toBeUndefined();
+                    expect(results[0].encounter.patientUuid).toBe(uuid);
+                    done();
+                });
+                encounterDbService.getEncounterByEncounterUuid(db, encounterJson.encounterUuid).then(function(results){
+                    expect(results).not.toBeUndefined();
+                })
+            });
+        });
+
     });
 });

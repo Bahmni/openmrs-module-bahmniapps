@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('bahmni.common.domain')
-    .service('encounterService', ['$q', '$rootScope', '$bahmniCookieStore', 'offlineEncounterServiceStrategy',
-        function ($q, $rootScope,  $bahmniCookieStore, offlineEncounterService) {
+    .service('encounterService', ['$q', '$rootScope', '$bahmniCookieStore', 'offlineEncounterServiceStrategy','eventQueue',
+        function ($q, $rootScope,  $bahmniCookieStore, offlineEncounterService, eventQueue) {
 
             this.buildEncounter = function (encounter) {
                 encounter.observations = encounter.observations || [];
@@ -64,7 +64,7 @@ angular.module('bahmni.common.domain')
             this.create = function (encounterData) {
                 this.buildEncounter(encounterData);
                 encounterData.encounterUuid = encounterData.encounterUuid || Bahmni.Common.Offline.UUID.generateUuid();
-                encounterData.visitUuid = encounterData.visitUuid || Bahmni.Common.Constants.newOfflineVisitUuid;
+                encounterData.visitUuid = encounterData.visitUuid || null;
                 encounterData.encounterDateTime = encounterData.encounterDateTime || Bahmni.Common.Util.DateUtil.now();
                 encounterData.visitType = encounterData.visitType || 'Field';
                 return getDefaultEncounterType().then(function (encounterType) {
@@ -72,7 +72,11 @@ angular.module('bahmni.common.domain')
                     return encounterData;
                 }).then(function(encounterData) {
                     return offlineEncounterService.create(encounterData);
-                })
+                }).then(function(result) {
+                    var event = {type: "encounter", encounterUuid: result.data.encounterUuid };
+                    eventQueue.addToEventQueue(event);
+                    return $q.when({data: encounterData});
+                });
             };
 
             this.delete = function (encounterUuid, reason) {
