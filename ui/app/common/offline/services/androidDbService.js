@@ -80,7 +80,7 @@ angular.module('bahmni.common.offline')
 
             var insertReferenceData = function(key, data, eTag){
                 var referenceData;
-                if(key == "LocaleList" || (key == "RelationshipTypeMap" && data=="")) {
+                if(key == "LocaleList" || key == "DefaultEncounterType" || (key == "RelationshipTypeMap" && data=="")) {
                     referenceData = data;
                 }
                 else {
@@ -136,6 +136,21 @@ angular.module('bahmni.common.offline')
                 response = response != undefined ? JSON.parse(response) : response;
                 return $q.when(response);
             };
+            
+            var getActiveEncounter = function(params){
+                var deferred = $q.defer();
+                getReferenceData("encounterSessionDuration").then(function(encounterSessionDurationData){
+                    var encounterSessionDuration = encounterSessionDurationData.value;
+                    getReferenceData("DefaultEncounterType").then(function(defaultEncounterType) {
+                        var encounterType = defaultEncounterType ? defaultEncounterType.value : null;
+                        var response = AndroidOfflineService.findActiveEncounter(JSON.stringify({patientUuid: params.patientUuid, providerUuid: params.providerUuids[0], encounterType: encounterType}), encounterSessionDuration);
+                        response = response != undefined ? JSON.parse(response) : response;
+                        deferred.resolve(response);
+                    });
+                });
+                return deferred.promise;
+            };
+
 
             return {
                 init: init,
@@ -157,7 +172,8 @@ angular.module('bahmni.common.offline')
                 getEncountersByPatientUuid: getEncountersByPatientUuid,
                 createEncounter: createEncounter,
                 insertVisitData: insertVisitData,
-                getVisitByUuid: getVisitByUuid
+                getVisitByUuid: getVisitByUuid,
+                getActiveEncounter: getActiveEncounter
             }
         }
     ]);

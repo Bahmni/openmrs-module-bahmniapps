@@ -297,6 +297,14 @@ Bahmni.Common.Offline.SchemaDefinitions = {
                 type: 'DATE_TIME'
             },
             {
+                name: 'encounterType',
+                type: 'STRING'
+            },
+            {
+                name: 'providerUuid',
+                type: 'STRING'
+            },
+            {
                 name: 'encounterJson',
                 type: 'OBJECT'
             }

@@ -24,23 +24,25 @@ describe('Diagnosis DisplayControl', function () {
 
         _diagnosisService = jasmine.createSpyObj('diagnosisService', ['getDiagnoses']);
         var getDiagnosesPromise = specUtil.createServicePromise('getDiagnoses');
-        getDiagnosesPromise.success = function (successFn) {
-            successFn([{
-                    "order": "SECONDARY",
-                    "certainty": "PRESUMED",
-                    "diagnosisDateTime": "2015-10-08T11:33:24.000+0530",
-                    "diagnosisStatusConcept": {
-                        "uuid": "823051c4-3f10-11e4-adec-0800271c1b75",
-                        "name": "Ruled Out Diagnosis",
-                        "dataType": null,
-                        "shortName": null,
-                        "conceptClass": null,
-                        "set": false,
-                        "mappings": []
-                    },
-                    "latestDiagnosis": null,
-                    "encounterUuid": "b6818776-f3d1-4a01-8f26-87ab9b3b211f"
-                }]);
+        getDiagnosesPromise.then = function (successFn) {
+            var diagnosis = [{
+                "order": "SECONDARY",
+                "certainty": "PRESUMED",
+                "diagnosisDateTime": "2015-10-08T11:33:24.000+0530",
+                "diagnosisStatusConcept": {
+                    "uuid": "823051c4-3f10-11e4-adec-0800271c1b75",
+                    "name": "Ruled Out Diagnosis",
+                    "dataType": null,
+                    "shortName": null,
+                    "conceptClass": null,
+                    "set": false,
+                    "mappings": []
+                },
+                "latestDiagnosis": null,
+                "encounterUuid": "b6818776-f3d1-4a01-8f26-87ab9b3b211f"
+            }];
+            var data = {"data": diagnosis};
+            successFn(data);
             return getDiagnosesPromise;
 
         };

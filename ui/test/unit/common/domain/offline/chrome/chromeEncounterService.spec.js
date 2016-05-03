@@ -54,10 +54,14 @@ describe('EncounterService', function () {
             }
         };
         spyOn(offlineDbService, "getReferenceData").and.callFake(function(referenceData) {
-            if (referenceData = "DefaultEncounterType") return specUtil.respondWithPromise($q,defaultEncounterType);
-            if (referenceData = "LoginLocationToEncounterTypeMapping") return specUtil.respondWithPromise($q,loginLocationToEncounterTypeMapping);
+            if (referenceData == "LoginLocationToEncounterTypeMapping") {
+                return specUtil.respondWithPromise($q, loginLocationToEncounterTypeMapping);
+            }
+            if (referenceData == "DefaultEncounterType") {
+                return specUtil.respondWithPromise($q, defaultEncounterType);
+            }
             return null;
-        })
+        });
         encounterService.getEncounterType(programUuid, locationUuid).then(function (response) {
             expect(response.value.results[0].uuid).toBe("defaultEncounterUuid");
             done();
