@@ -2,9 +2,9 @@
 
 angular.module('bahmni.common.offline')
     .service('offlineDbService', ['$http', '$q', 'patientDbService', 'patientAddressDbService', 'patientAttributeDbService', 'offlineMarkerDbService', 'offlineAddressHierarchyDbService',
-        'offlineConfigDbService', 'initializeOfflineSchema', 'referenceDataDbService', 'locationDbService', 'offlineSearchDbService', 'encounterDbService', 'visitDbService',
+        'offlineConfigDbService', 'initializeOfflineSchema', 'referenceDataDbService', 'locationDbService', 'offlineSearchDbService', 'encounterDbService', 'visitDbService', 'observationDbService',
         function ($http, $q, patientDbService, patientAddressDbService, patientAttributeDbService, offlineMarkerDbService, offlineAddressHierarchyDbService,
-                  offlineConfigDbService, initializeOfflineSchema, referenceDataDbService, locationDbService, offlineSearchDbService, encounterDbService, visitDbService) {
+                  offlineConfigDbService, initializeOfflineSchema, referenceDataDbService, locationDbService, offlineSearchDbService, encounterDbService, visitDbService, observationDbService) {
         var db;
 
 
@@ -68,7 +68,13 @@ angular.module('bahmni.common.offline')
 
             var insertEncounterData = function (encounterData) {
                 return encounterDbService.insertEncounterData(db, encounterData).then(function (patientUuid) {
-                    return encounterData;
+                    var callback = function () {
+                        return encounterData;
+                    }
+                    var asynCallsDone = _.after(encounterData.observations.length, callback);
+                     _.each(encounterData.observations, function (observationData) {
+                         observationDbService.insertObservationData(db, encounterData.patientUuid, encounterData.visitUuid, observationData).then(asynCallsDone)
+                    });
                 });
             };
 

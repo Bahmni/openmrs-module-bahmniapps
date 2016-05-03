@@ -311,5 +311,36 @@ Bahmni.Common.Offline.SchemaDefinitions = {
         ],
         nullableColumns: [],
         primaryKeyColumns: ['uuid']
+    },
+    Observation: {
+        tableName: 'observation',
+        columns: [
+            {
+                name: 'uuid',
+                type: 'STRING'
+            },
+            {
+                name: 'encounterUuid',
+                type: 'STRING'
+            },
+            {
+                name: 'visitUuid',
+                type: 'STRING'
+            },
+            {
+                name: 'patientUuid',
+                type: 'STRING'
+            },
+            {
+                name: 'conceptName',
+                type: 'STRING'
+            },
+            {
+                name: 'observationJson',
+                type: 'OBJECT'
+            }
+        ],
+        nullableColumns: [],
+        primaryKeyColumns: ['uuid']
     }
 };
