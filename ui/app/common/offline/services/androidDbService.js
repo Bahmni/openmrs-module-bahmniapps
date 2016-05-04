@@ -152,6 +152,14 @@ angular.module('bahmni.common.offline')
             };
 
 
+            var getVisitUuidsByPatientUuid = function (patientUuid, numberOfVisits) {
+                return $q.when({"data": []});
+            };
+
+            var getObservationsFor = function(params) {
+                return $q.when({"data": []});
+            };
+
             return {
                 init: init,
                 initSchema: initSchema,
@@ -173,7 +181,9 @@ angular.module('bahmni.common.offline')
                 createEncounter: createEncounter,
                 insertVisitData: insertVisitData,
                 getVisitByUuid: getVisitByUuid,
-                getActiveEncounter: getActiveEncounter
+                getActiveEncounter: getActiveEncounter,
+                getVisitUuidsByPatientUuid: getVisitUuidsByPatientUuid,
+                getObservationsFor: getObservationsFor
             }
         }
     ]);
