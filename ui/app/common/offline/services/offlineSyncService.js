@@ -190,7 +190,8 @@ angular.module('bahmni.common.offline')
                 sync: sync,
                 syncTransactionalData: syncTransactionalData,
                 syncAddressHierarchyEntries: syncAddressHierarchyEntries,
-                syncParentAddressEntries: syncParentAddressEntries
+                syncParentAddressEntries: syncParentAddressEntries,
+                syncConcepts: syncConcepts
             };
         }
     ]);

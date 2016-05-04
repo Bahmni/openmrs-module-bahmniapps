@@ -3,7 +3,7 @@
 var $scope, offlineDbService, eventLogService, offlineSyncService, offlineService, configurationService;
 
 describe('OfflineSyncService', function () {
-    var patient, mappedPatient, encounter;
+    var patient, mappedPatient, encounter, concept;
     describe('initial sync ', function () {
         beforeEach(function () {
             module('bahmni.common.offline');
@@ -37,6 +37,12 @@ describe('OfflineSyncService', function () {
                         }]
                     }
                 };
+                concept = {
+                    uuid: 'dataUuid',
+                    data: {},
+                    parents: {"parentUuids" : []},
+                    name: 'concept'
+                };
                 encounter = {
                     uuid: 'encounterUuid',
                     observations: [],
@@ -66,6 +72,13 @@ describe('OfflineSyncService', function () {
                         };
                     },
                     createPatient: function () {
+                        return {
+                            then: function (callback) {
+                                return callback({});
+                            }
+                        };
+                    },
+                    insertConceptAndUpdateHierarchy: function () {
                         return {
                             then: function (callback) {
                                 return callback({});
@@ -125,10 +138,25 @@ describe('OfflineSyncService', function () {
                             }
                         };
                     },
-                    getDataForUrl: function () {
+                    getConceptEventsFor: function () {
                         return {
                             then: function (callback) {
-
+                                return callback({
+                                    data: [{
+                                        object: 'url to get concept object',
+                                        category: 'offline-concepts',
+                                        uuid: 'eventuuid'
+                                    }]
+                                });
+                            }
+                        };
+                    },
+                    getDataForUrl: function (url) {
+                        return {
+                            then: function (callback) {
+                                if (url.contains("concept")) {
+                                    return callback({data: concept});
+                                }
                                 return callback({data: patient});
                             }
                         };
@@ -230,6 +258,30 @@ describe('OfflineSyncService', function () {
             expect(offlineDbService.insertMarker.calls.count()).toBe(1);
         });
 
+        it('should read concept events from the beginning', function () {
+            spyOn(offlineDbService, 'getMarker').and.callThrough();
+            spyOn(eventLogService, 'getConceptEventsFor').and.callThrough();
+            spyOn(eventLogService, 'getDataForUrl').and.callThrough();
+            spyOn(offlineDbService, 'insertConceptAndUpdateHierarchy').and.callThrough();
+            spyOn(offlineDbService, 'insertMarker').and.callThrough();
+
+            offlineSyncService.syncConcepts();
+
+            expect(offlineDbService.getMarker).toHaveBeenCalled();
+            expect(offlineDbService.getMarker.calls.count()).toBe(1);
+            expect(eventLogService.getConceptEventsFor).toHaveBeenCalledWith(undefined);
+            expect(eventLogService.getConceptEventsFor.calls.count()).toBe(1);
+            expect(eventLogService.getDataForUrl).toHaveBeenCalledWith('url to get concept object');
+            expect(eventLogService.getDataForUrl.calls.count()).toBe(1);
+
+
+
+            expect(offlineDbService.insertConceptAndUpdateHierarchy).toHaveBeenCalledWith({"results" : [concept]});
+            expect(offlineDbService.insertConceptAndUpdateHierarchy.calls.count()).toBe(1);
+            expect(offlineDbService.insertMarker).toHaveBeenCalledWith('ConceptData', 'eventuuid', null);
+            expect(offlineDbService.insertMarker.calls.count()).toBe(1);
+        });
+
         it('should read encounter events from the beginning for the catchment', function () {
             spyOn(offlineDbService, 'getMarker').and.callThrough();
             spyOn(eventLogService, 'getEventsFor').and.callFake(function () {
@@ -284,6 +336,27 @@ describe('OfflineSyncService', function () {
             module('bahmni.common.offline');
             module('bahmni.common.domain');
             module(function ($provide) {
+                patient = {
+                    uuid: 'dataUuid',
+                    person: {
+                        attributes:[{
+                            attributeType: {
+                                uuid: "attributeUuid"
+                            },
+                            voided: false,
+                            value: {
+                                display: "attributeName",
+                                uuid: "attributeValueUuid"
+                            }
+                        }]
+                    }
+                };
+                concept = {
+                    uuid: 'dataUuid',
+                    data: {},
+                    parents: {"parentUuids" : []},
+                    name: 'concept'
+                };
                 $provide.value('offlineDbService', {
                     createPatient: function () {
                         return {
@@ -323,6 +396,13 @@ describe('OfflineSyncService', function () {
                                 return callback({});
                             }
                         };
+                    },
+                    insertConceptAndUpdateHierarchy: function () {
+                        return {
+                            then: function (callback) {
+                                return callback({});
+                            }
+                        };
                     }
                 });
                 $provide.value('eventLogService', {
@@ -351,10 +431,25 @@ describe('OfflineSyncService', function () {
                             }
                         };
                     },
-                    getDataForUrl: function () {
+                    getConceptEventsFor: function () {
                         return {
                             then: function (callback) {
-
+                                return callback({
+                                    data: [{
+                                        object: 'url to get concept object',
+                                        category: 'offline-concepts',
+                                        uuid: 'eventuuid'
+                                    }]
+                                });
+                            }
+                        };
+                    },
+                    getDataForUrl: function (url) {
+                        return {
+                            then: function (callback) {
+                                if (url.contains("concept")) {
+                                    return callback({data: concept});
+                                }
                                 return callback({data: patient});
                             }
                         };
@@ -450,6 +545,30 @@ describe('OfflineSyncService', function () {
             expect(offlineDbService.createPatient).toHaveBeenCalledWith({patient:patient});
             expect(offlineDbService.createPatient.calls.count()).toBe(1);
             expect(offlineDbService.insertMarker).toHaveBeenCalledWith('TransactionalData', 'eventuuid', 202020);
+            expect(offlineDbService.insertMarker.calls.count()).toBe(1);
+        });
+
+        it('should read concept events from the last read uuid', function () {
+            spyOn(offlineDbService, 'getMarker').and.callThrough();
+            spyOn(eventLogService, 'getConceptEventsFor').and.callThrough();
+            spyOn(eventLogService, 'getDataForUrl').and.callThrough();
+            spyOn(offlineDbService, 'insertConceptAndUpdateHierarchy').and.callThrough();
+            spyOn(offlineDbService, 'insertMarker').and.callThrough();
+
+            offlineSyncService.syncConcepts();
+
+            expect(offlineDbService.getMarker).toHaveBeenCalled();
+            expect(offlineDbService.getMarker.calls.count()).toBe(1);
+            expect(eventLogService.getConceptEventsFor).toHaveBeenCalledWith('lastReadUuid');
+            expect(eventLogService.getConceptEventsFor.calls.count()).toBe(1);
+            expect(eventLogService.getDataForUrl).toHaveBeenCalledWith('url to get concept object');
+            expect(eventLogService.getDataForUrl.calls.count()).toBe(1);
+
+
+
+            expect(offlineDbService.insertConceptAndUpdateHierarchy).toHaveBeenCalledWith({"results" : [concept]});
+            expect(offlineDbService.insertConceptAndUpdateHierarchy.calls.count()).toBe(1);
+            expect(offlineDbService.insertMarker).toHaveBeenCalledWith('ConceptData', 'eventuuid', null);
             expect(offlineDbService.insertMarker.calls.count()).toBe(1);
         });
     })
