@@ -1,7 +1,6 @@
 'use strict';
-
 angular.module('bahmni.common.conceptSet')
-    .directive('duration', function () {
+    .directive('duration',['contextChangeHandler', function (contextChangeHandler) {
 
         var link = function ($scope, element, attrs, ngModelController) {
             var setValue = function () {
@@ -23,6 +22,19 @@ angular.module('bahmni.common.conceptSet')
                     $scope.measureValue = undefined;
                     $scope.hours = undefined;
                 }
+            });
+
+            var illegalValueChecker = $scope.$watch('illegalValue', function (value) {
+                $scope.illegalDurationValue = value;
+                var contextChange = function () {
+                        return {allow: !$scope.illegalDurationValue};
+                };
+                contextChangeHandler.add(contextChange);
+            });
+
+            $scope.$on('$destroy', function() {
+                $scope.illegalDurationValue = false;
+                illegalValueChecker();
             });
         };
 
@@ -52,4 +64,4 @@ angular.module('bahmni.common.conceptSet')
                 '<span><select ng-model=\'unitValue\' class="duration-unit" ng-class="{\'illegalValue\': illegalValue}" ng-options="displayUnit.value as displayUnit.name for displayUnit in displayUnits" ng-disabled="disabled"><option value=""></option>>' +
                 '</select></span>'
         }
-    });
+    }]);
