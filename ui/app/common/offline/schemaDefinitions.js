@@ -269,9 +269,14 @@ Bahmni.Common.Offline.SchemaDefinitions = {
             {
                 name: 'uuid',
                 type: 'STRING'
-            }, {
+            },
+            {
                 name: 'patientUuid',
                 type: 'STRING'
+            },
+            {
+                name: 'startDatetime',
+                type: 'DATE_TIME'
             },
             {
                 name: 'visitJson',
@@ -340,7 +345,7 @@ Bahmni.Common.Offline.SchemaDefinitions = {
                 type: 'OBJECT'
             }
         ],
-        nullableColumns: [],
+        nullableColumns: ['visitUuid'],
         primaryKeyColumns: ['uuid']
     }
 };
