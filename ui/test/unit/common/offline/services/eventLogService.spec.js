@@ -1,6 +1,6 @@
 'use strict';
 
-ddescribe('EventLogService', function () {
+describe('EventLogService', function () {
     var eventLogService;
 
     var mockHttp = jasmine.createSpyObj('$http', ['get']);
