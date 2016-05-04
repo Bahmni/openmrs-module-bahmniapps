@@ -29,75 +29,65 @@ angular.module('bahmni.common.offline')
                     })
                 };
 
-                var pushEncounterData = function(event) {
-                    return offlineDbService.getEncounterByEncounterUuid(event.data.encounterUuid).then(function (response) {
-                        if (response == undefined) {
-                            eventQueue.releaseFromQueue(event);
-                            return consumeFromEventQueue();
-                        }
-                        return $http.post(Bahmni.Common.Constants.bahmniEncounterUrl, response.encounter, {
-                            withCredentials: true,
-                            headers: {
-                                "Accept": "application/json",
-                                "Content-Type": "application/json"
-                            }
+                var postData = function(event, response){
+                    if (response == undefined) {
+                        eventQueue.releaseFromQueue(event);
+                        return consumeFromEventQueue();
+                    }
+                    var config ={
+                        withCredentials: true,
+                        headers: {
+                            "Accept": "application/json",
+                            "Content-Type": "application/json"
+                        } };
 
-                        });
-                    });
-                };
-
-                var pushPatientProfileData = function(event) {
-                    return offlineDbService.getPatientByUuid(event.data.patientUuid).then(function (response) {
-                        if (response == undefined) {
-                            eventQueue.releaseFromQueue(event);
-                            return consumeFromEventQueue();
-                        }
+                    if(event.type && event.type == "encounter"){
+                        return $http.post(Bahmni.Common.Constants.bahmniEncounterUrl, response.encounter,config);
+                    }
+                    else{
                         response.relationships = [];
-                        return $http.post(event.data.url, response, {
-                            withCredentials: true,
-                            headers: {
-                                "Accept": "application/json",
-                                "Content-Type": "application/json"
-                            }
+                        return $http.post(event.data.url, response, config);
+                    }
 
-                        });
-                    });
                 };
 
-                var pushEventData = function (event) {
+                var getEventData = function (event) {
                     if (event.data.type && event.data.type == "encounter") {
-                        return pushEncounterData(event);
+                        return offlineDbService.getEncounterByEncounterUuid(event.data.encounterUuid);
                     } else {
-                        return pushPatientProfileData(event);
+                        return offlineDbService.getPatientByUuid(event.data.patientUuid);
                     }
                 };
 
                 var processEvent = function (event) {
-                    return pushEventData(event)
-                        .success(function () {
-                            eventQueue.removeFromQueue(event);
-                            if (event.tube === "event_queue") {
-                                return consumeFromEventQueue();
-                            } else {
-                                return consumeFromErrorQueue();
-                            }
-                        }).catch(function (response) {
-                            if (parseInt(response.status / 100) == 5) {
-                                if (event.tube === "event_queue") {
+                    return getEventData(event)
+                        .then(function(response){
+                            return postData(event,response)
+                                .success(function () {
                                     eventQueue.removeFromQueue(event);
-                                    eventQueue.addToErrorQueue(event.data);
-                                    return consumeFromEventQueue();
-                                }
-                                else {
-                                    reservedEvents.push(event);
-                                    return consumeFromErrorQueue();
-                                }
-                            }
-                            else {
-                                eventQueue.releaseFromQueue(event);
-                                deferred.resolve();
-                                return "4xx error";
-                            }
+                                    if (event.tube === "event_queue") {
+                                        return consumeFromEventQueue();
+                                    } else {
+                                        return consumeFromErrorQueue();
+                                    }
+                                }).catch(function (response) {
+                                    if (parseInt(response.status / 100) == 5) {
+                                        if (event.tube === "event_queue") {
+                                            eventQueue.removeFromQueue(event);
+                                            eventQueue.addToErrorQueue(event.data);
+                                            return consumeFromEventQueue();
+                                        }
+                                        else {
+                                            reservedEvents.push(event);
+                                            return consumeFromErrorQueue();
+                                        }
+                                    }
+                                    else {
+                                        eventQueue.releaseFromQueue(event);
+                                        deferred.resolve();
+                                        return "4xx error";
+                                    }
+                                })
                         });
                 };
 
