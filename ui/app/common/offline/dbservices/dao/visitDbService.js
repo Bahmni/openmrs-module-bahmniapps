@@ -8,6 +8,7 @@ angular.module('bahmni.common.offline')
             var row = visitTable.createRow({
                 'uuid': visit.uuid,
                 'patientUuid': visit.patient.uuid,
+                'startDatetime': new Date(visit.startDatetime),
                 'visitJson': visit
             });
             return db.insertOrReplace().into(visitTable).values([row]).exec().then(function () {
@@ -28,9 +29,24 @@ angular.module('bahmni.common.offline')
 
         };
 
+        var getVisitUuidsByPatientUuid = function (db, patientUuid, numberOfVisits) {
+            var visitTable = db.getSchema().table('visit');
+
+            return db.select(visitTable.uuid)
+                .from(visitTable)
+                .where(visitTable.patientUuid.eq(patientUuid))
+                .orderBy(visitTable.startDatetime, lf.Order.DESC)
+                .limit(numberOfVisits)
+                .exec()
+                .then(function (visitUuids) {
+                    return visitUuids;
+                });
+        };
+
         return {
             insertVisitData: insertVisitData,
-            getVisitByUuid: getVisitByUuid
+            getVisitByUuid: getVisitByUuid,
+            getVisitUuidsByPatientUuid: getVisitUuidsByPatientUuid
         }
 
     }]);

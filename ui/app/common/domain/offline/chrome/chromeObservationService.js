@@ -21,13 +21,15 @@ angular.module('bahmni.common.domain')
                 params.scope = scope;
                 params.patientProgramUuid = patientProgramUuid;
             }
-            params.visitUuids = ["newOfflineVisitUuid"];
             var deffered = $q.defer();
-            offlineDbService.getObservationsFor(params).then(function (obs) {
-                var mappedObs = _.map(obs, function (ob) {
-                   return ob.observation;
+            offlineDbService.getVisitUuidsByPatientUuid(patientUuid, numberOfVisits).then(function (visitUuids) {
+                params.visitUuids = visitUuids;
+                offlineDbService.getObservationsFor(params).then(function (obs) {
+                    var mappedObs = _.map(obs, function (ob) {
+                        return ob.observation;
+                    });
+                    deffered.resolve({data: mappedObs});
                 });
-                deffered.resolve({data: mappedObs});
             });
             return deffered.promise;
         };

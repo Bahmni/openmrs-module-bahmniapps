@@ -30,7 +30,7 @@ angular.module('bahmni.common.offline')
             return db.select(obs.observationJson.as('observation'))
                 .from(obs)
                 .where(
-                    lf.op.and(obs.patientUuid.eq(params.patientUuid), obs.conceptName.in(params.conceptNames), obs.visitUuid.in(params.visitUuids))
+                    lf.op.and(obs.patientUuid.eq(params.patientUuid), obs.conceptName.in(params.conceptNames), lf.op.or(obs.visitUuid.in(params.visitUuids), obs.visitUuid.eq(null)))
                 )
                 .exec()
                 .then(function (results) {
