@@ -1,13 +1,13 @@
 'use strict';
 
 angular.module('bahmni.common.domain')
-    .service('observationsServiceStrategy', ['$q', 'offlineDbService', function ($q, offlineDbService) {
+    .service('observationsServiceStrategy', ['$q', 'androidDbService', function ($q, androidDbService) {
 
         this.fetch = function (patientUuid, numberOfVisits, params) {
             var deffered = $q.defer();
-            offlineDbService.getVisitUuidsByPatientUuid(patientUuid, numberOfVisits).then(function (visitUuids) {
+            androidDbService.getVisitUuidsByPatientUuid(patientUuid, numberOfVisits).then(function (visitUuids) {
                 params.visitUuids = visitUuids;
-                offlineDbService.getObservationsFor(params).then(function (obs) {
+                androidDbService.getObservationsFor(params).then(function (obs) {
                     var mappedObs = _.map(obs, function (ob) {
                         return ob.observation;
                     });
