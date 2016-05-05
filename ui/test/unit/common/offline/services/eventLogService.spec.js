@@ -27,7 +27,7 @@ describe('EventLogService', function () {
             expect(data[0]).toBe(newVar);
         });
 
-        expect(mockHttp.get).toHaveBeenCalledWith('/event-log-service/rest/eventlog/getevents', {
+        expect(mockHttp.get).toHaveBeenCalledWith('/event-log-service/rest/eventlog/events', {
             params: {filterBy: 111, uuid: undefined}
         });
     });

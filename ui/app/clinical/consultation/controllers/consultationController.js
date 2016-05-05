@@ -3,10 +3,10 @@
 angular.module('bahmni.clinical').controller('ConsultationController',
     ['$scope', '$rootScope', '$state','$location', 'clinicalAppConfigService', 'diagnosisService', 'urlHelper', 'contextChangeHandler',
         'spinner', 'encounterService', 'messagingService', 'sessionService', 'retrospectiveEntryService', 'patientContext', 'consultationContext', '$q',
-        'patientVisitHistoryService', '$stateParams', '$window', 'visitHistory', 'clinicalDashboardConfig','appService','ngDialog','$filter', 'configurations',
+        'patientVisitHistoryService', '$stateParams', '$window', 'visitHistory', 'clinicalDashboardConfig','appService','ngDialog','$filter', 'configurations','offlineService',
         function ($scope, $rootScope, $state, $location, clinicalAppConfigService, diagnosisService, urlHelper, contextChangeHandler,
                   spinner, encounterService, messagingService, sessionService, retrospectiveEntryService, patientContext, consultationContext, $q,
-                  patientVisitHistoryService, $stateParams, $window, visitHistory, clinicalDashboardConfig, appService, ngDialog, $filter, configurations) {
+                  patientVisitHistoryService, $stateParams, $window, visitHistory, clinicalDashboardConfig, appService, ngDialog, $filter, configurations, offlineService) {
             $scope.patient = patientContext.patient;
             $scope.stateChange = function(){
                 return $state.current.name === 'patient.dashboard.show'
@@ -32,6 +32,9 @@ angular.module('bahmni.clinical').controller('ConsultationController',
             };
 
             $scope.allowConsultation = function(){
+                if(offlineService.isOfflineApp()){
+                    return true;
+                }
                 return appService.getAppDescriptor().getConfigValue('allowConsultationWhenNoOpenVisit');
             };
 

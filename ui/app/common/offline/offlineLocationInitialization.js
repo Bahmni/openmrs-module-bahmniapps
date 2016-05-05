@@ -12,7 +12,11 @@ angular.module('bahmni.common.offline')
                 var deferred = $q.defer();
 
                 offlineDbService.getReferenceData('AddressHierarchyLevels').then(function (addressHierarchyLevel) {
-                    addressLevels = _.reverse(addressHierarchyLevel.value);
+                    if(addressHierarchyLevel && addressHierarchyLevel.data ? false : true){
+                        deferred.resolve();
+                        return;
+                    }
+                    addressLevels = _.reverse(addressHierarchyLevel.data);
                     var addressField = getLoginLocationAddress();
                     _.reverse(addressLevels);
                     var params = { searchString: loginLocation[addressField], addressField: addressField, limit: 5000};

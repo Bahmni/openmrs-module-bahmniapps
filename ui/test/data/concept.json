@@ -1,0 +1,2535 @@
+{
+  "results": [
+    {
+      "uuid": "c36a7537-3f10-11e4-adec-0800271c1b75",
+      "name": {
+        "display": "Vitals",
+        "uuid": "c36a7e42-3f10-11e4-adec-0800271c1b75",
+        "name": "Vitals",
+        "locale": "en",
+        "localePreferred": true,
+        "conceptNameType": "FULLY_SPECIFIED",
+        "links": [
+          {
+            "rel": "self",
+            "uri": "NEED-TO-CONFIGURE/ws/rest/v1/concept/c36a7537-3f10-11e4-adec-0800271c1b75/name/c36a7e42-3f10-11e4-adec-0800271c1b75"
+          },
+          {
+            "rel": "full",
+            "uri": "NEED-TO-CONFIGURE/ws/rest/v1/concept/c36a7537-3f10-11e4-adec-0800271c1b75/name/c36a7e42-3f10-11e4-adec-0800271c1b75?v=full"
+          }
+        ],
+        "resourceVersion": "1.9"
+      },
+      "names": [
+        {
+          "display": "Vitals",
+          "uuid": "c36a7a7b-3f10-11e4-adec-0800271c1b75",
+          "name": "Vitals",
+          "locale": "en",
+          "localePreferred": false,
+          "conceptNameType": "SHORT",
+          "links": [
+            {
+              "rel": "self",
+              "uri": "NEED-TO-CONFIGURE/ws/rest/v1/concept/c36a7537-3f10-11e4-adec-0800271c1b75/name/c36a7a7b-3f10-11e4-adec-0800271c1b75"
+            },
+            {
+              "rel": "full",
+              "uri": "NEED-TO-CONFIGURE/ws/rest/v1/concept/c36a7537-3f10-11e4-adec-0800271c1b75/name/c36a7a7b-3f10-11e4-adec-0800271c1b75?v=full"
+            }
+          ],
+          "resourceVersion": "1.9"
+        },
+        {
+          "display": "Vitals",
+          "uuid": "c36a7e42-3f10-11e4-adec-0800271c1b75",
+          "name": "Vitals",
+          "locale": "en",
+          "localePreferred": true,
+          "conceptNameType": "FULLY_SPECIFIED",
+          "links": [
+            {
+              "rel": "self",
+              "uri": "NEED-TO-CONFIGURE/ws/rest/v1/concept/c36a7537-3f10-11e4-adec-0800271c1b75/name/c36a7e42-3f10-11e4-adec-0800271c1b75"
+            },
+            {
+              "rel": "full",
+              "uri": "NEED-TO-CONFIGURE/ws/rest/v1/concept/c36a7537-3f10-11e4-adec-0800271c1b75/name/c36a7e42-3f10-11e4-adec-0800271c1b75?v=full"
+            }
+          ],
+          "resourceVersion": "1.9"
+        }
+      ],
+      "set": true,
+      "datatype": {
+        "uuid": "8d4a4c94-c2cc-11de-8d13-0010c6dffd0f",
+        "display": "N/A",
+        "name": "N/A",
+        "description": "Not associated with a datatype (e.g., term answers, sets)",
+        "hl7Abbreviation": "ZZ",
+        "retired": false,
+        "links": [
+          {
+            "rel": "self",
+            "uri": "NEED-TO-CONFIGURE/ws/rest/v1/conceptdatatype/8d4a4c94-c2cc-11de-8d13-0010c6dffd0f"
+          },
+          {
+            "rel": "full",
+            "uri": "NEED-TO-CONFIGURE/ws/rest/v1/conceptdatatype/8d4a4c94-c2cc-11de-8d13-0010c6dffd0f?v=full"
+          }
+        ],
+        "resourceVersion": "1.8"
+      },
+      "conceptClass": {
+        "uuid": "8d492774-c2cc-11de-8d13-0010c6dffd0f",
+        "display": "Misc",
+        "name": "Misc",
+        "description": "Terms which don't fit other categories",
+        "retired": false,
+        "links": [
+          {
+            "rel": "self",
+            "uri": "NEED-TO-CONFIGURE/ws/rest/v1/conceptclass/8d492774-c2cc-11de-8d13-0010c6dffd0f"
+          },
+          {
+            "rel": "full",
+            "uri": "NEED-TO-CONFIGURE/ws/rest/v1/conceptclass/8d492774-c2cc-11de-8d13-0010c6dffd0f?v=full"
+          }
+        ],
+        "resourceVersion": "1.8"
+      },
+      "hiNormal": null,
+      "hiAbsolute": null,
+      "hiCritical": null,
+      "lowNormal": null,
+      "lowAbsolute": null,
+      "lowCritical": null,
+      "units": null,
+      "precise": null,
+      "allowDecimal": null,
+      "handler": null,
+      "descriptions": [],
+      "answers": [],
+      "setMembers": [
+        {
+          "uuid": "c36af094-3f10-11e4-adec-0800271c1b75",
+          "name": {
+            "display": "Pulse Data",
+            "uuid": "c36af707-3f10-11e4-adec-0800271c1b75",
+            "name": "Pulse Data",
+            "locale": "en",
+            "localePreferred": true,
+            "conceptNameType": "FULLY_SPECIFIED",
+            "links": [
+              {
+                "rel": "self",
+                "uri": "NEED-TO-CONFIGURE/ws/rest/v1/concept/c36af094-3f10-11e4-adec-0800271c1b75/name/c36af707-3f10-11e4-adec-0800271c1b75"
+              },
+              {
+                "rel": "full",
+                "uri": "NEED-TO-CONFIGURE/ws/rest/v1/concept/c36af094-3f10-11e4-adec-0800271c1b75/name/c36af707-3f10-11e4-adec-0800271c1b75?v=full"
+              }
+            ],
+            "resourceVersion": "1.9"
+          },
+          "names": [
+            {
+              "display": "Pulse",
+              "uuid": "c36af420-3f10-11e4-adec-0800271c1b75",
+              "name": "Pulse",
+              "locale": "en",
+              "localePreferred": false,
+              "conceptNameType": "SHORT",
+              "links": [
+                {
+                  "rel": "self",
+                  "uri": "NEED-TO-CONFIGURE/ws/rest/v1/concept/c36af094-3f10-11e4-adec-0800271c1b75/name/c36af420-3f10-11e4-adec-0800271c1b75"
+                },
+                {
+                  "rel": "full",
+                  "uri": "NEED-TO-CONFIGURE/ws/rest/v1/concept/c36af094-3f10-11e4-adec-0800271c1b75/name/c36af420-3f10-11e4-adec-0800271c1b75?v=full"
+                }
+              ],
+              "resourceVersion": "1.9"
+            },
+            {
+              "display": "Pulse Data",
+              "uuid": "c36af707-3f10-11e4-adec-0800271c1b75",
+              "name": "Pulse Data",
+              "locale": "en",
+              "localePreferred": true,
+              "conceptNameType": "FULLY_SPECIFIED",
+              "links": [
+                {
+                  "rel": "self",
+                  "uri": "NEED-TO-CONFIGURE/ws/rest/v1/concept/c36af094-3f10-11e4-adec-0800271c1b75/name/c36af707-3f10-11e4-adec-0800271c1b75"
+                },
+                {
+                  "rel": "full",
+                  "uri": "NEED-TO-CONFIGURE/ws/rest/v1/concept/c36af094-3f10-11e4-adec-0800271c1b75/name/c36af707-3f10-11e4-adec-0800271c1b75?v=full"
+                }
+              ],
+              "resourceVersion": "1.9"
+            }
+          ],
+          "set": true,
+          "datatype": {
+            "uuid": "8d4a4c94-c2cc-11de-8d13-0010c6dffd0f",
+            "display": "N/A",
+            "name": "N/A",
+            "description": "Not associated with a datatype (e.g., term answers, sets)",
+            "hl7Abbreviation": "ZZ",
+            "retired": false,
+            "links": [
+              {
+                "rel": "self",
+                "uri": "NEED-TO-CONFIGURE/ws/rest/v1/conceptdatatype/8d4a4c94-c2cc-11de-8d13-0010c6dffd0f"
+              },
+              {
+                "rel": "full",
+                "uri": "NEED-TO-CONFIGURE/ws/rest/v1/conceptdatatype/8d4a4c94-c2cc-11de-8d13-0010c6dffd0f?v=full"
+              }
+            ],
+            "resourceVersion": "1.8"
+          },
+          "conceptClass": {
+            "uuid": "82516ba3-3f10-11e4-adec-0800271c1b75",
+            "display": "Concept Details",
+            "name": "Concept Details",
+            "description": "Concept Details class",
+            "retired": false,
+            "links": [
+              {
+                "rel": "self",
+                "uri": "NEED-TO-CONFIGURE/ws/rest/v1/conceptclass/82516ba3-3f10-11e4-adec-0800271c1b75"
+              },
+              {
+                "rel": "full",
+                "uri": "NEED-TO-CONFIGURE/ws/rest/v1/conceptclass/82516ba3-3f10-11e4-adec-0800271c1b75?v=full"
+              }
+            ],
+            "resourceVersion": "1.8"
+          },
+          "hiNormal": null,
+          "hiAbsolute": null,
+          "hiCritical": null,
+          "lowNormal": null,
+          "lowAbsolute": null,
+          "lowCritical": null,
+          "units": null,
+          "precise": null,
+          "allowDecimal": null,
+          "handler": null,
+          "descriptions": [],
+          "answers": [],
+          "setMembers": [
+            {
+              "uuid": "c36bc411-3f10-11e4-adec-0800271c1b75",
+              "name": {
+                "display": "Pulse",
+                "uuid": "c36bcba8-3f10-11e4-adec-0800271c1b75",
+                "name": "Pulse",
+                "locale": "en",
+                "localePreferred": true,
+                "conceptNameType": "FULLY_SPECIFIED",
+                "links": [
+                  {
+                    "rel": "self",
+                    "uri": "NEED-TO-CONFIGURE/ws/rest/v1/concept/c36bc411-3f10-11e4-adec-0800271c1b75/name/c36bcba8-3f10-11e4-adec-0800271c1b75"
+                  },
+                  {
+                    "rel": "full",
+                    "uri": "NEED-TO-CONFIGURE/ws/rest/v1/concept/c36bc411-3f10-11e4-adec-0800271c1b75/name/c36bcba8-3f10-11e4-adec-0800271c1b75?v=full"
+                  }
+                ],
+                "resourceVersion": "1.9"
+              },
+              "names": [
+                {
+                  "display": "Pulse",
+                  "uuid": "c36bc8ad-3f10-11e4-adec-0800271c1b75",
+                  "name": "Pulse",
+                  "locale": "en",
+                  "localePreferred": false,
+                  "conceptNameType": "SHORT",
+                  "links": [
+                    {
+                      "rel": "self",
+                      "uri": "NEED-TO-CONFIGURE/ws/rest/v1/concept/c36bc411-3f10-11e4-adec-0800271c1b75/name/c36bc8ad-3f10-11e4-adec-0800271c1b75"
+                    },
+                    {
+                      "rel": "full",
+                      "uri": "NEED-TO-CONFIGURE/ws/rest/v1/concept/c36bc411-3f10-11e4-adec-0800271c1b75/name/c36bc8ad-3f10-11e4-adec-0800271c1b75?v=full"
+                    }
+                  ],
+                  "resourceVersion": "1.9"
+                },
+                {
+                  "display": "Pulse",
+                  "uuid": "c36bcba8-3f10-11e4-adec-0800271c1b75",
+                  "name": "Pulse",
+                  "locale": "en",
+                  "localePreferred": true,
+                  "conceptNameType": "FULLY_SPECIFIED",
+                  "links": [
+                    {
+                      "rel": "self",
+                      "uri": "NEED-TO-CONFIGURE/ws/rest/v1/concept/c36bc411-3f10-11e4-adec-0800271c1b75/name/c36bcba8-3f10-11e4-adec-0800271c1b75"
+                    },
+                    {
+                      "rel": "full",
+                      "uri": "NEED-TO-CONFIGURE/ws/rest/v1/concept/c36bc411-3f10-11e4-adec-0800271c1b75/name/c36bcba8-3f10-11e4-adec-0800271c1b75?v=full"
+                    }
+                  ],
+                  "resourceVersion": "1.9"
+                }
+              ],
+              "set": false,
+              "datatype": {
+                "uuid": "8d4a4488-c2cc-11de-8d13-0010c6dffd0f",
+                "display": "Numeric",
+                "name": "Numeric",
+                "description": "Numeric value, including integer or float (e.g., creatinine, weight)",
+                "hl7Abbreviation": "NM",
+                "retired": false,
+                "links": [
+                  {
+                    "rel": "self",
+                    "uri": "NEED-TO-CONFIGURE/ws/rest/v1/conceptdatatype/8d4a4488-c2cc-11de-8d13-0010c6dffd0f"
+                  },
+                  {
+                    "rel": "full",
+                    "uri": "NEED-TO-CONFIGURE/ws/rest/v1/conceptdatatype/8d4a4488-c2cc-11de-8d13-0010c6dffd0f?v=full"
+                  }
+                ],
+                "resourceVersion": "1.8"
+              },
+              "conceptClass": {
+                "uuid": "8d492774-c2cc-11de-8d13-0010c6dffd0f",
+                "display": "Misc",
+                "name": "Misc",
+                "description": "Terms which don't fit other categories",
+                "retired": false,
+                "links": [
+                  {
+                    "rel": "self",
+                    "uri": "NEED-TO-CONFIGURE/ws/rest/v1/conceptclass/8d492774-c2cc-11de-8d13-0010c6dffd0f"
+                  },
+                  {
+                    "rel": "full",
+                    "uri": "NEED-TO-CONFIGURE/ws/rest/v1/conceptclass/8d492774-c2cc-11de-8d13-0010c6dffd0f?v=full"
+                  }
+                ],
+                "resourceVersion": "1.8"
+              },
+              "hiNormal": 72,
+              "hiAbsolute": null,
+              "hiCritical": null,
+              "lowNormal": 72,
+              "lowAbsolute": null,
+              "lowCritical": null,
+              "units": "/min",
+              "precise": true,
+              "allowDecimal": true,
+              "handler": null,
+              "descriptions": [],
+              "answers": [],
+              "setMembers": [],
+              "resourceVersion": "1.9"
+            },
+            {
+              "uuid": "c36c7c98-3f10-11e4-adec-0800271c1b75",
+              "name": {
+                "display": "Pulse Abnormal",
+                "uuid": "c36c82d6-3f10-11e4-adec-0800271c1b75",
+                "name": "Pulse Abnormal",
+                "locale": "en",
+                "localePreferred": true,
+                "conceptNameType": "FULLY_SPECIFIED",
+                "links": [
+                  {
+                    "rel": "self",
+                    "uri": "NEED-TO-CONFIGURE/ws/rest/v1/concept/c36c7c98-3f10-11e4-adec-0800271c1b75/name/c36c82d6-3f10-11e4-adec-0800271c1b75"
+                  },
+                  {
+                    "rel": "full",
+                    "uri": "NEED-TO-CONFIGURE/ws/rest/v1/concept/c36c7c98-3f10-11e4-adec-0800271c1b75/name/c36c82d6-3f10-11e4-adec-0800271c1b75?v=full"
+                  }
+                ],
+                "resourceVersion": "1.9"
+              },
+              "names": [
+                {
+                  "display": "Pulse Abnormal",
+                  "uuid": "c36c8007-3f10-11e4-adec-0800271c1b75",
+                  "name": "Pulse Abnormal",
+                  "locale": "en",
+                  "localePreferred": false,
+                  "conceptNameType": "SHORT",
+                  "links": [
+                    {
+                      "rel": "self",
+                      "uri": "NEED-TO-CONFIGURE/ws/rest/v1/concept/c36c7c98-3f10-11e4-adec-0800271c1b75/name/c36c8007-3f10-11e4-adec-0800271c1b75"
+                    },
+                    {
+                      "rel": "full",
+                      "uri": "NEED-TO-CONFIGURE/ws/rest/v1/concept/c36c7c98-3f10-11e4-adec-0800271c1b75/name/c36c8007-3f10-11e4-adec-0800271c1b75?v=full"
+                    }
+                  ],
+                  "resourceVersion": "1.9"
+                },
+                {
+                  "display": "Pulse Abnormal",
+                  "uuid": "c36c82d6-3f10-11e4-adec-0800271c1b75",
+                  "name": "Pulse Abnormal",
+                  "locale": "en",
+                  "localePreferred": true,
+                  "conceptNameType": "FULLY_SPECIFIED",
+                  "links": [
+                    {
+                      "rel": "self",
+                      "uri": "NEED-TO-CONFIGURE/ws/rest/v1/concept/c36c7c98-3f10-11e4-adec-0800271c1b75/name/c36c82d6-3f10-11e4-adec-0800271c1b75"
+                    },
+                    {
+                      "rel": "full",
+                      "uri": "NEED-TO-CONFIGURE/ws/rest/v1/concept/c36c7c98-3f10-11e4-adec-0800271c1b75/name/c36c82d6-3f10-11e4-adec-0800271c1b75?v=full"
+                    }
+                  ],
+                  "resourceVersion": "1.9"
+                }
+              ],
+              "set": false,
+              "datatype": {
+                "uuid": "8d4a5cca-c2cc-11de-8d13-0010c6dffd0f",
+                "display": "Boolean",
+                "name": "Boolean",
+                "description": "Boolean value (yes/no, true/false)",
+                "hl7Abbreviation": "BIT",
+                "retired": false,
+                "links": [
+                  {
+                    "rel": "self",
+                    "uri": "NEED-TO-CONFIGURE/ws/rest/v1/conceptdatatype/8d4a5cca-c2cc-11de-8d13-0010c6dffd0f"
+                  },
+                  {
+                    "rel": "full",
+                    "uri": "NEED-TO-CONFIGURE/ws/rest/v1/conceptdatatype/8d4a5cca-c2cc-11de-8d13-0010c6dffd0f?v=full"
+                  }
+                ],
+                "resourceVersion": "1.8"
+              },
+              "conceptClass": {
+                "uuid": "824a6818-3f10-11e4-adec-0800271c1b75",
+                "display": "Abnormal",
+                "name": "Abnormal",
+                "description": "Abnormal class",
+                "retired": false,
+                "links": [
+                  {
+                    "rel": "self",
+                    "uri": "NEED-TO-CONFIGURE/ws/rest/v1/conceptclass/824a6818-3f10-11e4-adec-0800271c1b75"
+                  },
+                  {
+                    "rel": "full",
+                    "uri": "NEED-TO-CONFIGURE/ws/rest/v1/conceptclass/824a6818-3f10-11e4-adec-0800271c1b75?v=full"
+                  }
+                ],
+                "resourceVersion": "1.8"
+              },
+              "hiNormal": null,
+              "hiAbsolute": null,
+              "hiCritical": null,
+              "lowNormal": null,
+              "lowAbsolute": null,
+              "lowCritical": null,
+              "units": null,
+              "precise": null,
+              "allowDecimal": null,
+              "handler": null,
+              "descriptions": [],
+              "answers": [],
+              "setMembers": [],
+              "resourceVersion": "1.9"
+            }
+          ],
+          "resourceVersion": "1.9"
+        },
+        {
+          "uuid": "c36d22e6-3f10-11e4-adec-0800271c1b75",
+          "name": {
+            "display": "Blood Pressure",
+            "uuid": "c36d2953-3f10-11e4-adec-0800271c1b75",
+            "name": "Blood Pressure",
+            "locale": "en",
+            "localePreferred": true,
+            "conceptNameType": "FULLY_SPECIFIED",
+            "links": [
+              {
+                "rel": "self",
+                "uri": "NEED-TO-CONFIGURE/ws/rest/v1/concept/c36d22e6-3f10-11e4-adec-0800271c1b75/name/c36d2953-3f10-11e4-adec-0800271c1b75"
+              },
+              {
+                "rel": "full",
+                "uri": "NEED-TO-CONFIGURE/ws/rest/v1/concept/c36d22e6-3f10-11e4-adec-0800271c1b75/name/c36d2953-3f10-11e4-adec-0800271c1b75?v=full"
+              }
+            ],
+            "resourceVersion": "1.9"
+          },
+          "names": [
+            {
+              "display": "Blood Pressure",
+              "uuid": "c36d2953-3f10-11e4-adec-0800271c1b75",
+              "name": "Blood Pressure",
+              "locale": "en",
+              "localePreferred": true,
+              "conceptNameType": "FULLY_SPECIFIED",
+              "links": [
+                {
+                  "rel": "self",
+                  "uri": "NEED-TO-CONFIGURE/ws/rest/v1/concept/c36d22e6-3f10-11e4-adec-0800271c1b75/name/c36d2953-3f10-11e4-adec-0800271c1b75"
+                },
+                {
+                  "rel": "full",
+                  "uri": "NEED-TO-CONFIGURE/ws/rest/v1/concept/c36d22e6-3f10-11e4-adec-0800271c1b75/name/c36d2953-3f10-11e4-adec-0800271c1b75?v=full"
+                }
+              ],
+              "resourceVersion": "1.9"
+            },
+            {
+              "display": "Blood Pressure",
+              "uuid": "c36d266a-3f10-11e4-adec-0800271c1b75",
+              "name": "Blood Pressure",
+              "locale": "en",
+              "localePreferred": false,
+              "conceptNameType": "SHORT",
+              "links": [
+                {
+                  "rel": "self",
+                  "uri": "NEED-TO-CONFIGURE/ws/rest/v1/concept/c36d22e6-3f10-11e4-adec-0800271c1b75/name/c36d266a-3f10-11e4-adec-0800271c1b75"
+                },
+                {
+                  "rel": "full",
+                  "uri": "NEED-TO-CONFIGURE/ws/rest/v1/concept/c36d22e6-3f10-11e4-adec-0800271c1b75/name/c36d266a-3f10-11e4-adec-0800271c1b75?v=full"
+                }
+              ],
+              "resourceVersion": "1.9"
+            }
+          ],
+          "set": true,
+          "datatype": {
+            "uuid": "8d4a4c94-c2cc-11de-8d13-0010c6dffd0f",
+            "display": "N/A",
+            "name": "N/A",
+            "description": "Not associated with a datatype (e.g., term answers, sets)",
+            "hl7Abbreviation": "ZZ",
+            "retired": false,
+            "links": [
+              {
+                "rel": "self",
+                "uri": "NEED-TO-CONFIGURE/ws/rest/v1/conceptdatatype/8d4a4c94-c2cc-11de-8d13-0010c6dffd0f"
+              },
+              {
+                "rel": "full",
+                "uri": "NEED-TO-CONFIGURE/ws/rest/v1/conceptdatatype/8d4a4c94-c2cc-11de-8d13-0010c6dffd0f?v=full"
+              }
+            ],
+            "resourceVersion": "1.8"
+          },
+          "conceptClass": {
+            "uuid": "8d492594-c2cc-11de-8d13-0010c6dffd0f",
+            "display": "ConvSet",
+            "name": "ConvSet",
+            "description": "Term to describe convenience sets",
+            "retired": false,
+            "links": [
+              {
+                "rel": "self",
+                "uri": "NEED-TO-CONFIGURE/ws/rest/v1/conceptclass/8d492594-c2cc-11de-8d13-0010c6dffd0f"
+              },
+              {
+                "rel": "full",
+                "uri": "NEED-TO-CONFIGURE/ws/rest/v1/conceptclass/8d492594-c2cc-11de-8d13-0010c6dffd0f?v=full"
+              }
+            ],
+            "resourceVersion": "1.8"
+          },
+          "hiNormal": null,
+          "hiAbsolute": null,
+          "hiCritical": null,
+          "lowNormal": null,
+          "lowAbsolute": null,
+          "lowCritical": null,
+          "units": null,
+          "precise": null,
+          "allowDecimal": null,
+          "handler": null,
+          "descriptions": [],
+          "answers": [],
+          "setMembers": [
+            {
+              "uuid": "c36ddb6d-3f10-11e4-adec-0800271c1b75",
+              "name": {
+                "display": "Systolic Data",
+                "uuid": "c36de1d2-3f10-11e4-adec-0800271c1b75",
+                "name": "Systolic Data",
+                "locale": "en",
+                "localePreferred": true,
+                "conceptNameType": "FULLY_SPECIFIED",
+                "links": [
+                  {
+                    "rel": "self",
+                    "uri": "NEED-TO-CONFIGURE/ws/rest/v1/concept/c36ddb6d-3f10-11e4-adec-0800271c1b75/name/c36de1d2-3f10-11e4-adec-0800271c1b75"
+                  },
+                  {
+                    "rel": "full",
+                    "uri": "NEED-TO-CONFIGURE/ws/rest/v1/concept/c36ddb6d-3f10-11e4-adec-0800271c1b75/name/c36de1d2-3f10-11e4-adec-0800271c1b75?v=full"
+                  }
+                ],
+                "resourceVersion": "1.9"
+              },
+              "names": [
+                {
+                  "display": "Systolic Data",
+                  "uuid": "c36de1d2-3f10-11e4-adec-0800271c1b75",
+                  "name": "Systolic Data",
+                  "locale": "en",
+                  "localePreferred": true,
+                  "conceptNameType": "FULLY_SPECIFIED",
+                  "links": [
+                    {
+                      "rel": "self",
+                      "uri": "NEED-TO-CONFIGURE/ws/rest/v1/concept/c36ddb6d-3f10-11e4-adec-0800271c1b75/name/c36de1d2-3f10-11e4-adec-0800271c1b75"
+                    },
+                    {
+                      "rel": "full",
+                      "uri": "NEED-TO-CONFIGURE/ws/rest/v1/concept/c36ddb6d-3f10-11e4-adec-0800271c1b75/name/c36de1d2-3f10-11e4-adec-0800271c1b75?v=full"
+                    }
+                  ],
+                  "resourceVersion": "1.9"
+                },
+                {
+                  "display": "Systolic",
+                  "uuid": "c36ddef1-3f10-11e4-adec-0800271c1b75",
+                  "name": "Systolic",
+                  "locale": "en",
+                  "localePreferred": false,
+                  "conceptNameType": "SHORT",
+                  "links": [
+                    {
+                      "rel": "self",
+                      "uri": "NEED-TO-CONFIGURE/ws/rest/v1/concept/c36ddb6d-3f10-11e4-adec-0800271c1b75/name/c36ddef1-3f10-11e4-adec-0800271c1b75"
+                    },
+                    {
+                      "rel": "full",
+                      "uri": "NEED-TO-CONFIGURE/ws/rest/v1/concept/c36ddb6d-3f10-11e4-adec-0800271c1b75/name/c36ddef1-3f10-11e4-adec-0800271c1b75?v=full"
+                    }
+                  ],
+                  "resourceVersion": "1.9"
+                }
+              ],
+              "set": true,
+              "datatype": {
+                "uuid": "8d4a4c94-c2cc-11de-8d13-0010c6dffd0f",
+                "display": "N/A",
+                "name": "N/A",
+                "description": "Not associated with a datatype (e.g., term answers, sets)",
+                "hl7Abbreviation": "ZZ",
+                "retired": false,
+                "links": [
+                  {
+                    "rel": "self",
+                    "uri": "NEED-TO-CONFIGURE/ws/rest/v1/conceptdatatype/8d4a4c94-c2cc-11de-8d13-0010c6dffd0f"
+                  },
+                  {
+                    "rel": "full",
+                    "uri": "NEED-TO-CONFIGURE/ws/rest/v1/conceptdatatype/8d4a4c94-c2cc-11de-8d13-0010c6dffd0f?v=full"
+                  }
+                ],
+                "resourceVersion": "1.8"
+              },
+              "conceptClass": {
+                "uuid": "82516ba3-3f10-11e4-adec-0800271c1b75",
+                "display": "Concept Details",
+                "name": "Concept Details",
+                "description": "Concept Details class",
+                "retired": false,
+                "links": [
+                  {
+                    "rel": "self",
+                    "uri": "NEED-TO-CONFIGURE/ws/rest/v1/conceptclass/82516ba3-3f10-11e4-adec-0800271c1b75"
+                  },
+                  {
+                    "rel": "full",
+                    "uri": "NEED-TO-CONFIGURE/ws/rest/v1/conceptclass/82516ba3-3f10-11e4-adec-0800271c1b75?v=full"
+                  }
+                ],
+                "resourceVersion": "1.8"
+              },
+              "hiNormal": null,
+              "hiAbsolute": null,
+              "hiCritical": null,
+              "lowNormal": null,
+              "lowAbsolute": null,
+              "lowCritical": null,
+              "units": null,
+              "precise": null,
+              "allowDecimal": null,
+              "handler": null,
+              "descriptions": [],
+              "answers": [],
+              "setMembers": [
+                {
+                  "uuid": "c36e9c8b-3f10-11e4-adec-0800271c1b75",
+                  "name": {
+                    "display": "Systolic",
+                    "uuid": "c36ea343-3f10-11e4-adec-0800271c1b75",
+                    "name": "Systolic",
+                    "locale": "en",
+                    "localePreferred": true,
+                    "conceptNameType": "FULLY_SPECIFIED",
+                    "links": [
+                      {
+                        "rel": "self",
+                        "uri": "NEED-TO-CONFIGURE/ws/rest/v1/concept/c36e9c8b-3f10-11e4-adec-0800271c1b75/name/c36ea343-3f10-11e4-adec-0800271c1b75"
+                      },
+                      {
+                        "rel": "full",
+                        "uri": "NEED-TO-CONFIGURE/ws/rest/v1/concept/c36e9c8b-3f10-11e4-adec-0800271c1b75/name/c36ea343-3f10-11e4-adec-0800271c1b75?v=full"
+                      }
+                    ],
+                    "resourceVersion": "1.9"
+                  },
+                  "names": [
+                    {
+                      "display": "Systolic",
+                      "uuid": "c36ea343-3f10-11e4-adec-0800271c1b75",
+                      "name": "Systolic",
+                      "locale": "en",
+                      "localePreferred": true,
+                      "conceptNameType": "FULLY_SPECIFIED",
+                      "links": [
+                        {
+                          "rel": "self",
+                          "uri": "NEED-TO-CONFIGURE/ws/rest/v1/concept/c36e9c8b-3f10-11e4-adec-0800271c1b75/name/c36ea343-3f10-11e4-adec-0800271c1b75"
+                        },
+                        {
+                          "rel": "full",
+                          "uri": "NEED-TO-CONFIGURE/ws/rest/v1/concept/c36e9c8b-3f10-11e4-adec-0800271c1b75/name/c36ea343-3f10-11e4-adec-0800271c1b75?v=full"
+                        }
+                      ],
+                      "resourceVersion": "1.9"
+                    },
+                    {
+                      "display": "Systolic",
+                      "uuid": "c36ea04b-3f10-11e4-adec-0800271c1b75",
+                      "name": "Systolic",
+                      "locale": "en",
+                      "localePreferred": false,
+                      "conceptNameType": "SHORT",
+                      "links": [
+                        {
+                          "rel": "self",
+                          "uri": "NEED-TO-CONFIGURE/ws/rest/v1/concept/c36e9c8b-3f10-11e4-adec-0800271c1b75/name/c36ea04b-3f10-11e4-adec-0800271c1b75"
+                        },
+                        {
+                          "rel": "full",
+                          "uri": "NEED-TO-CONFIGURE/ws/rest/v1/concept/c36e9c8b-3f10-11e4-adec-0800271c1b75/name/c36ea04b-3f10-11e4-adec-0800271c1b75?v=full"
+                        }
+                      ],
+                      "resourceVersion": "1.9"
+                    }
+                  ],
+                  "set": false,
+                  "datatype": {
+                    "uuid": "8d4a4488-c2cc-11de-8d13-0010c6dffd0f",
+                    "display": "Numeric",
+                    "name": "Numeric",
+                    "description": "Numeric value, including integer or float (e.g., creatinine, weight)",
+                    "hl7Abbreviation": "NM",
+                    "retired": false,
+                    "links": [
+                      {
+                        "rel": "self",
+                        "uri": "NEED-TO-CONFIGURE/ws/rest/v1/conceptdatatype/8d4a4488-c2cc-11de-8d13-0010c6dffd0f"
+                      },
+                      {
+                        "rel": "full",
+                        "uri": "NEED-TO-CONFIGURE/ws/rest/v1/conceptdatatype/8d4a4488-c2cc-11de-8d13-0010c6dffd0f?v=full"
+                      }
+                    ],
+                    "resourceVersion": "1.8"
+                  },
+                  "conceptClass": {
+                    "uuid": "8d492774-c2cc-11de-8d13-0010c6dffd0f",
+                    "display": "Misc",
+                    "name": "Misc",
+                    "description": "Terms which don't fit other categories",
+                    "retired": false,
+                    "links": [
+                      {
+                        "rel": "self",
+                        "uri": "NEED-TO-CONFIGURE/ws/rest/v1/conceptclass/8d492774-c2cc-11de-8d13-0010c6dffd0f"
+                      },
+                      {
+                        "rel": "full",
+                        "uri": "NEED-TO-CONFIGURE/ws/rest/v1/conceptclass/8d492774-c2cc-11de-8d13-0010c6dffd0f?v=full"
+                      }
+                    ],
+                    "resourceVersion": "1.8"
+                  },
+                  "hiNormal": 140,
+                  "hiAbsolute": null,
+                  "hiCritical": null,
+                  "lowNormal": 110,
+                  "lowAbsolute": null,
+                  "lowCritical": null,
+                  "units": "mm Hg",
+                  "precise": true,
+                  "allowDecimal": true,
+                  "handler": null,
+                  "descriptions": [],
+                  "answers": [],
+                  "setMembers": [],
+                  "resourceVersion": "1.9"
+                },
+                {
+                  "uuid": "c36f5a8b-3f10-11e4-adec-0800271c1b75",
+                  "name": {
+                    "display": "Systolic Abnormal",
+                    "uuid": "c374f4ee-3f10-11e4-adec-0800271c1b75",
+                    "name": "Systolic Abnormal",
+                    "locale": "en",
+                    "localePreferred": true,
+                    "conceptNameType": "FULLY_SPECIFIED",
+                    "links": [
+                      {
+                        "rel": "self",
+                        "uri": "NEED-TO-CONFIGURE/ws/rest/v1/concept/c36f5a8b-3f10-11e4-adec-0800271c1b75/name/c374f4ee-3f10-11e4-adec-0800271c1b75"
+                      },
+                      {
+                        "rel": "full",
+                        "uri": "NEED-TO-CONFIGURE/ws/rest/v1/concept/c36f5a8b-3f10-11e4-adec-0800271c1b75/name/c374f4ee-3f10-11e4-adec-0800271c1b75?v=full"
+                      }
+                    ],
+                    "resourceVersion": "1.9"
+                  },
+                  "names": [
+                    {
+                      "display": "Systolic Abnormal",
+                      "uuid": "c374f4ee-3f10-11e4-adec-0800271c1b75",
+                      "name": "Systolic Abnormal",
+                      "locale": "en",
+                      "localePreferred": true,
+                      "conceptNameType": "FULLY_SPECIFIED",
+                      "links": [
+                        {
+                          "rel": "self",
+                          "uri": "NEED-TO-CONFIGURE/ws/rest/v1/concept/c36f5a8b-3f10-11e4-adec-0800271c1b75/name/c374f4ee-3f10-11e4-adec-0800271c1b75"
+                        },
+                        {
+                          "rel": "full",
+                          "uri": "NEED-TO-CONFIGURE/ws/rest/v1/concept/c36f5a8b-3f10-11e4-adec-0800271c1b75/name/c374f4ee-3f10-11e4-adec-0800271c1b75?v=full"
+                        }
+                      ],
+                      "resourceVersion": "1.9"
+                    },
+                    {
+                      "display": "Systolic Abnormal",
+                      "uuid": "c374ed29-3f10-11e4-adec-0800271c1b75",
+                      "name": "Systolic Abnormal",
+                      "locale": "en",
+                      "localePreferred": false,
+                      "conceptNameType": "SHORT",
+                      "links": [
+                        {
+                          "rel": "self",
+                          "uri": "NEED-TO-CONFIGURE/ws/rest/v1/concept/c36f5a8b-3f10-11e4-adec-0800271c1b75/name/c374ed29-3f10-11e4-adec-0800271c1b75"
+                        },
+                        {
+                          "rel": "full",
+                          "uri": "NEED-TO-CONFIGURE/ws/rest/v1/concept/c36f5a8b-3f10-11e4-adec-0800271c1b75/name/c374ed29-3f10-11e4-adec-0800271c1b75?v=full"
+                        }
+                      ],
+                      "resourceVersion": "1.9"
+                    }
+                  ],
+                  "set": false,
+                  "datatype": {
+                    "uuid": "8d4a5cca-c2cc-11de-8d13-0010c6dffd0f",
+                    "display": "Boolean",
+                    "name": "Boolean",
+                    "description": "Boolean value (yes/no, true/false)",
+                    "hl7Abbreviation": "BIT",
+                    "retired": false,
+                    "links": [
+                      {
+                        "rel": "self",
+                        "uri": "NEED-TO-CONFIGURE/ws/rest/v1/conceptdatatype/8d4a5cca-c2cc-11de-8d13-0010c6dffd0f"
+                      },
+                      {
+                        "rel": "full",
+                        "uri": "NEED-TO-CONFIGURE/ws/rest/v1/conceptdatatype/8d4a5cca-c2cc-11de-8d13-0010c6dffd0f?v=full"
+                      }
+                    ],
+                    "resourceVersion": "1.8"
+                  },
+                  "conceptClass": {
+                    "uuid": "824a6818-3f10-11e4-adec-0800271c1b75",
+                    "display": "Abnormal",
+                    "name": "Abnormal",
+                    "description": "Abnormal class",
+                    "retired": false,
+                    "links": [
+                      {
+                        "rel": "self",
+                        "uri": "NEED-TO-CONFIGURE/ws/rest/v1/conceptclass/824a6818-3f10-11e4-adec-0800271c1b75"
+                      },
+                      {
+                        "rel": "full",
+                        "uri": "NEED-TO-CONFIGURE/ws/rest/v1/conceptclass/824a6818-3f10-11e4-adec-0800271c1b75?v=full"
+                      }
+                    ],
+                    "resourceVersion": "1.8"
+                  },
+                  "hiNormal": null,
+                  "hiAbsolute": null,
+                  "hiCritical": null,
+                  "lowNormal": null,
+                  "lowAbsolute": null,
+                  "lowCritical": null,
+                  "units": null,
+                  "precise": null,
+                  "allowDecimal": null,
+                  "handler": null,
+                  "descriptions": [],
+                  "answers": [],
+                  "setMembers": [],
+                  "resourceVersion": "1.9"
+                }
+              ],
+              "resourceVersion": "1.9"
+            },
+            {
+              "uuid": "c378f635-3f10-11e4-adec-0800271c1b75",
+              "name": {
+                "display": "Diastolic Data",
+                "uuid": "c378fd58-3f10-11e4-adec-0800271c1b75",
+                "name": "Diastolic Data",
+                "locale": "en",
+                "localePreferred": true,
+                "conceptNameType": "FULLY_SPECIFIED",
+                "links": [
+                  {
+                    "rel": "self",
+                    "uri": "NEED-TO-CONFIGURE/ws/rest/v1/concept/c378f635-3f10-11e4-adec-0800271c1b75/name/c378fd58-3f10-11e4-adec-0800271c1b75"
+                  },
+                  {
+                    "rel": "full",
+                    "uri": "NEED-TO-CONFIGURE/ws/rest/v1/concept/c378f635-3f10-11e4-adec-0800271c1b75/name/c378fd58-3f10-11e4-adec-0800271c1b75?v=full"
+                  }
+                ],
+                "resourceVersion": "1.9"
+              },
+              "names": [
+                {
+                  "display": "Diastolic",
+                  "uuid": "c378fa31-3f10-11e4-adec-0800271c1b75",
+                  "name": "Diastolic",
+                  "locale": "en",
+                  "localePreferred": false,
+                  "conceptNameType": "SHORT",
+                  "links": [
+                    {
+                      "rel": "self",
+                      "uri": "NEED-TO-CONFIGURE/ws/rest/v1/concept/c378f635-3f10-11e4-adec-0800271c1b75/name/c378fa31-3f10-11e4-adec-0800271c1b75"
+                    },
+                    {
+                      "rel": "full",
+                      "uri": "NEED-TO-CONFIGURE/ws/rest/v1/concept/c378f635-3f10-11e4-adec-0800271c1b75/name/c378fa31-3f10-11e4-adec-0800271c1b75?v=full"
+                    }
+                  ],
+                  "resourceVersion": "1.9"
+                },
+                {
+                  "display": "Diastolic Data",
+                  "uuid": "c378fd58-3f10-11e4-adec-0800271c1b75",
+                  "name": "Diastolic Data",
+                  "locale": "en",
+                  "localePreferred": true,
+                  "conceptNameType": "FULLY_SPECIFIED",
+                  "links": [
+                    {
+                      "rel": "self",
+                      "uri": "NEED-TO-CONFIGURE/ws/rest/v1/concept/c378f635-3f10-11e4-adec-0800271c1b75/name/c378fd58-3f10-11e4-adec-0800271c1b75"
+                    },
+                    {
+                      "rel": "full",
+                      "uri": "NEED-TO-CONFIGURE/ws/rest/v1/concept/c378f635-3f10-11e4-adec-0800271c1b75/name/c378fd58-3f10-11e4-adec-0800271c1b75?v=full"
+                    }
+                  ],
+                  "resourceVersion": "1.9"
+                }
+              ],
+              "set": true,
+              "datatype": {
+                "uuid": "8d4a4c94-c2cc-11de-8d13-0010c6dffd0f",
+                "display": "N/A",
+                "name": "N/A",
+                "description": "Not associated with a datatype (e.g., term answers, sets)",
+                "hl7Abbreviation": "ZZ",
+                "retired": false,
+                "links": [
+                  {
+                    "rel": "self",
+                    "uri": "NEED-TO-CONFIGURE/ws/rest/v1/conceptdatatype/8d4a4c94-c2cc-11de-8d13-0010c6dffd0f"
+                  },
+                  {
+                    "rel": "full",
+                    "uri": "NEED-TO-CONFIGURE/ws/rest/v1/conceptdatatype/8d4a4c94-c2cc-11de-8d13-0010c6dffd0f?v=full"
+                  }
+                ],
+                "resourceVersion": "1.8"
+              },
+              "conceptClass": {
+                "uuid": "82516ba3-3f10-11e4-adec-0800271c1b75",
+                "display": "Concept Details",
+                "name": "Concept Details",
+                "description": "Concept Details class",
+                "retired": false,
+                "links": [
+                  {
+                    "rel": "self",
+                    "uri": "NEED-TO-CONFIGURE/ws/rest/v1/conceptclass/82516ba3-3f10-11e4-adec-0800271c1b75"
+                  },
+                  {
+                    "rel": "full",
+                    "uri": "NEED-TO-CONFIGURE/ws/rest/v1/conceptclass/82516ba3-3f10-11e4-adec-0800271c1b75?v=full"
+                  }
+                ],
+                "resourceVersion": "1.8"
+              },
+              "hiNormal": null,
+              "hiAbsolute": null,
+              "hiCritical": null,
+              "lowNormal": null,
+              "lowAbsolute": null,
+              "lowCritical": null,
+              "units": null,
+              "precise": null,
+              "allowDecimal": null,
+              "handler": null,
+              "descriptions": [],
+              "answers": [],
+              "setMembers": [
+                {
+                  "uuid": "c379aa1d-3f10-11e4-adec-0800271c1b75",
+                  "name": {
+                    "display": "Diastolic",
+                    "uuid": "c379b311-3f10-11e4-adec-0800271c1b75",
+                    "name": "Diastolic",
+                    "locale": "en",
+                    "localePreferred": true,
+                    "conceptNameType": "FULLY_SPECIFIED",
+                    "links": [
+                      {
+                        "rel": "self",
+                        "uri": "NEED-TO-CONFIGURE/ws/rest/v1/concept/c379aa1d-3f10-11e4-adec-0800271c1b75/name/c379b311-3f10-11e4-adec-0800271c1b75"
+                      },
+                      {
+                        "rel": "full",
+                        "uri": "NEED-TO-CONFIGURE/ws/rest/v1/concept/c379aa1d-3f10-11e4-adec-0800271c1b75/name/c379b311-3f10-11e4-adec-0800271c1b75?v=full"
+                      }
+                    ],
+                    "resourceVersion": "1.9"
+                  },
+                  "names": [
+                    {
+                      "display": "Diastolic",
+                      "uuid": "c379b311-3f10-11e4-adec-0800271c1b75",
+                      "name": "Diastolic",
+                      "locale": "en",
+                      "localePreferred": true,
+                      "conceptNameType": "FULLY_SPECIFIED",
+                      "links": [
+                        {
+                          "rel": "self",
+                          "uri": "NEED-TO-CONFIGURE/ws/rest/v1/concept/c379aa1d-3f10-11e4-adec-0800271c1b75/name/c379b311-3f10-11e4-adec-0800271c1b75"
+                        },
+                        {
+                          "rel": "full",
+                          "uri": "NEED-TO-CONFIGURE/ws/rest/v1/concept/c379aa1d-3f10-11e4-adec-0800271c1b75/name/c379b311-3f10-11e4-adec-0800271c1b75?v=full"
+                        }
+                      ],
+                      "resourceVersion": "1.9"
+                    },
+                    {
+                      "display": "Diastolic",
+                      "uuid": "c379adf9-3f10-11e4-adec-0800271c1b75",
+                      "name": "Diastolic",
+                      "locale": "en",
+                      "localePreferred": false,
+                      "conceptNameType": "SHORT",
+                      "links": [
+                        {
+                          "rel": "self",
+                          "uri": "NEED-TO-CONFIGURE/ws/rest/v1/concept/c379aa1d-3f10-11e4-adec-0800271c1b75/name/c379adf9-3f10-11e4-adec-0800271c1b75"
+                        },
+                        {
+                          "rel": "full",
+                          "uri": "NEED-TO-CONFIGURE/ws/rest/v1/concept/c379aa1d-3f10-11e4-adec-0800271c1b75/name/c379adf9-3f10-11e4-adec-0800271c1b75?v=full"
+                        }
+                      ],
+                      "resourceVersion": "1.9"
+                    }
+                  ],
+                  "set": false,
+                  "datatype": {
+                    "uuid": "8d4a4488-c2cc-11de-8d13-0010c6dffd0f",
+                    "display": "Numeric",
+                    "name": "Numeric",
+                    "description": "Numeric value, including integer or float (e.g., creatinine, weight)",
+                    "hl7Abbreviation": "NM",
+                    "retired": false,
+                    "links": [
+                      {
+                        "rel": "self",
+                        "uri": "NEED-TO-CONFIGURE/ws/rest/v1/conceptdatatype/8d4a4488-c2cc-11de-8d13-0010c6dffd0f"
+                      },
+                      {
+                        "rel": "full",
+                        "uri": "NEED-TO-CONFIGURE/ws/rest/v1/conceptdatatype/8d4a4488-c2cc-11de-8d13-0010c6dffd0f?v=full"
+                      }
+                    ],
+                    "resourceVersion": "1.8"
+                  },
+                  "conceptClass": {
+                    "uuid": "8d492774-c2cc-11de-8d13-0010c6dffd0f",
+                    "display": "Misc",
+                    "name": "Misc",
+                    "description": "Terms which don't fit other categories",
+                    "retired": false,
+                    "links": [
+                      {
+                        "rel": "self",
+                        "uri": "NEED-TO-CONFIGURE/ws/rest/v1/conceptclass/8d492774-c2cc-11de-8d13-0010c6dffd0f"
+                      },
+                      {
+                        "rel": "full",
+                        "uri": "NEED-TO-CONFIGURE/ws/rest/v1/conceptclass/8d492774-c2cc-11de-8d13-0010c6dffd0f?v=full"
+                      }
+                    ],
+                    "resourceVersion": "1.8"
+                  },
+                  "hiNormal": 85,
+                  "hiAbsolute": null,
+                  "hiCritical": null,
+                  "lowNormal": 70,
+                  "lowAbsolute": null,
+                  "lowCritical": null,
+                  "units": "mm Hg",
+                  "precise": true,
+                  "allowDecimal": true,
+                  "handler": null,
+                  "descriptions": [],
+                  "answers": [],
+                  "setMembers": [],
+                  "resourceVersion": "1.9"
+                },
+                {
+                  "uuid": "c37a5735-3f10-11e4-adec-0800271c1b75",
+                  "name": {
+                    "display": "Diastolic Abnormal",
+                    "uuid": "c37a5dfd-3f10-11e4-adec-0800271c1b75",
+                    "name": "Diastolic Abnormal",
+                    "locale": "en",
+                    "localePreferred": true,
+                    "conceptNameType": "FULLY_SPECIFIED",
+                    "links": [
+                      {
+                        "rel": "self",
+                        "uri": "NEED-TO-CONFIGURE/ws/rest/v1/concept/c37a5735-3f10-11e4-adec-0800271c1b75/name/c37a5dfd-3f10-11e4-adec-0800271c1b75"
+                      },
+                      {
+                        "rel": "full",
+                        "uri": "NEED-TO-CONFIGURE/ws/rest/v1/concept/c37a5735-3f10-11e4-adec-0800271c1b75/name/c37a5dfd-3f10-11e4-adec-0800271c1b75?v=full"
+                      }
+                    ],
+                    "resourceVersion": "1.9"
+                  },
+                  "names": [
+                    {
+                      "display": "Diastolic Abnormal",
+                      "uuid": "c37a5dfd-3f10-11e4-adec-0800271c1b75",
+                      "name": "Diastolic Abnormal",
+                      "locale": "en",
+                      "localePreferred": true,
+                      "conceptNameType": "FULLY_SPECIFIED",
+                      "links": [
+                        {
+                          "rel": "self",
+                          "uri": "NEED-TO-CONFIGURE/ws/rest/v1/concept/c37a5735-3f10-11e4-adec-0800271c1b75/name/c37a5dfd-3f10-11e4-adec-0800271c1b75"
+                        },
+                        {
+                          "rel": "full",
+                          "uri": "NEED-TO-CONFIGURE/ws/rest/v1/concept/c37a5735-3f10-11e4-adec-0800271c1b75/name/c37a5dfd-3f10-11e4-adec-0800271c1b75?v=full"
+                        }
+                      ],
+                      "resourceVersion": "1.9"
+                    },
+                    {
+                      "display": "Diastolic Abnormal",
+                      "uuid": "c37a5af3-3f10-11e4-adec-0800271c1b75",
+                      "name": "Diastolic Abnormal",
+                      "locale": "en",
+                      "localePreferred": false,
+                      "conceptNameType": "SHORT",
+                      "links": [
+                        {
+                          "rel": "self",
+                          "uri": "NEED-TO-CONFIGURE/ws/rest/v1/concept/c37a5735-3f10-11e4-adec-0800271c1b75/name/c37a5af3-3f10-11e4-adec-0800271c1b75"
+                        },
+                        {
+                          "rel": "full",
+                          "uri": "NEED-TO-CONFIGURE/ws/rest/v1/concept/c37a5735-3f10-11e4-adec-0800271c1b75/name/c37a5af3-3f10-11e4-adec-0800271c1b75?v=full"
+                        }
+                      ],
+                      "resourceVersion": "1.9"
+                    }
+                  ],
+                  "set": false,
+                  "datatype": {
+                    "uuid": "8d4a5cca-c2cc-11de-8d13-0010c6dffd0f",
+                    "display": "Boolean",
+                    "name": "Boolean",
+                    "description": "Boolean value (yes/no, true/false)",
+                    "hl7Abbreviation": "BIT",
+                    "retired": false,
+                    "links": [
+                      {
+                        "rel": "self",
+                        "uri": "NEED-TO-CONFIGURE/ws/rest/v1/conceptdatatype/8d4a5cca-c2cc-11de-8d13-0010c6dffd0f"
+                      },
+                      {
+                        "rel": "full",
+                        "uri": "NEED-TO-CONFIGURE/ws/rest/v1/conceptdatatype/8d4a5cca-c2cc-11de-8d13-0010c6dffd0f?v=full"
+                      }
+                    ],
+                    "resourceVersion": "1.8"
+                  },
+                  "conceptClass": {
+                    "uuid": "824a6818-3f10-11e4-adec-0800271c1b75",
+                    "display": "Abnormal",
+                    "name": "Abnormal",
+                    "description": "Abnormal class",
+                    "retired": false,
+                    "links": [
+                      {
+                        "rel": "self",
+                        "uri": "NEED-TO-CONFIGURE/ws/rest/v1/conceptclass/824a6818-3f10-11e4-adec-0800271c1b75"
+                      },
+                      {
+                        "rel": "full",
+                        "uri": "NEED-TO-CONFIGURE/ws/rest/v1/conceptclass/824a6818-3f10-11e4-adec-0800271c1b75?v=full"
+                      }
+                    ],
+                    "resourceVersion": "1.8"
+                  },
+                  "hiNormal": null,
+                  "hiAbsolute": null,
+                  "hiCritical": null,
+                  "lowNormal": null,
+                  "lowAbsolute": null,
+                  "lowCritical": null,
+                  "units": null,
+                  "precise": null,
+                  "allowDecimal": null,
+                  "handler": null,
+                  "descriptions": [],
+                  "answers": [],
+                  "setMembers": [],
+                  "resourceVersion": "1.9"
+                }
+              ],
+              "resourceVersion": "1.9"
+            },
+            {
+              "uuid": "c44c3c37-3f10-11e4-adec-0800271c1b75",
+              "name": {
+                "display": "Posture",
+                "uuid": "c44c4494-3f10-11e4-adec-0800271c1b75",
+                "name": "Posture",
+                "locale": "en",
+                "localePreferred": true,
+                "conceptNameType": "FULLY_SPECIFIED",
+                "links": [
+                  {
+                    "rel": "self",
+                    "uri": "NEED-TO-CONFIGURE/ws/rest/v1/concept/c44c3c37-3f10-11e4-adec-0800271c1b75/name/c44c4494-3f10-11e4-adec-0800271c1b75"
+                  },
+                  {
+                    "rel": "full",
+                    "uri": "NEED-TO-CONFIGURE/ws/rest/v1/concept/c44c3c37-3f10-11e4-adec-0800271c1b75/name/c44c4494-3f10-11e4-adec-0800271c1b75?v=full"
+                  }
+                ],
+                "resourceVersion": "1.9"
+              },
+              "names": [
+                {
+                  "display": "Posture",
+                  "uuid": "c44c4494-3f10-11e4-adec-0800271c1b75",
+                  "name": "Posture",
+                  "locale": "en",
+                  "localePreferred": true,
+                  "conceptNameType": "FULLY_SPECIFIED",
+                  "links": [
+                    {
+                      "rel": "self",
+                      "uri": "NEED-TO-CONFIGURE/ws/rest/v1/concept/c44c3c37-3f10-11e4-adec-0800271c1b75/name/c44c4494-3f10-11e4-adec-0800271c1b75"
+                    },
+                    {
+                      "rel": "full",
+                      "uri": "NEED-TO-CONFIGURE/ws/rest/v1/concept/c44c3c37-3f10-11e4-adec-0800271c1b75/name/c44c4494-3f10-11e4-adec-0800271c1b75?v=full"
+                    }
+                  ],
+                  "resourceVersion": "1.9"
+                },
+                {
+                  "display": "Posture",
+                  "uuid": "c44c4122-3f10-11e4-adec-0800271c1b75",
+                  "name": "Posture",
+                  "locale": "en",
+                  "localePreferred": false,
+                  "conceptNameType": "SHORT",
+                  "links": [
+                    {
+                      "rel": "self",
+                      "uri": "NEED-TO-CONFIGURE/ws/rest/v1/concept/c44c3c37-3f10-11e4-adec-0800271c1b75/name/c44c4122-3f10-11e4-adec-0800271c1b75"
+                    },
+                    {
+                      "rel": "full",
+                      "uri": "NEED-TO-CONFIGURE/ws/rest/v1/concept/c44c3c37-3f10-11e4-adec-0800271c1b75/name/c44c4122-3f10-11e4-adec-0800271c1b75?v=full"
+                    }
+                  ],
+                  "resourceVersion": "1.9"
+                }
+              ],
+              "set": false,
+              "datatype": {
+                "uuid": "8d4a48b6-c2cc-11de-8d13-0010c6dffd0f",
+                "display": "Coded",
+                "name": "Coded",
+                "description": "Value determined by term dictionary lookup (i.e., term identifier)",
+                "hl7Abbreviation": "CWE",
+                "retired": false,
+                "links": [
+                  {
+                    "rel": "self",
+                    "uri": "NEED-TO-CONFIGURE/ws/rest/v1/conceptdatatype/8d4a48b6-c2cc-11de-8d13-0010c6dffd0f"
+                  },
+                  {
+                    "rel": "full",
+                    "uri": "NEED-TO-CONFIGURE/ws/rest/v1/conceptdatatype/8d4a48b6-c2cc-11de-8d13-0010c6dffd0f?v=full"
+                  }
+                ],
+                "resourceVersion": "1.8"
+              },
+              "conceptClass": {
+                "uuid": "8d492774-c2cc-11de-8d13-0010c6dffd0f",
+                "display": "Misc",
+                "name": "Misc",
+                "description": "Terms which don't fit other categories",
+                "retired": false,
+                "links": [
+                  {
+                    "rel": "self",
+                    "uri": "NEED-TO-CONFIGURE/ws/rest/v1/conceptclass/8d492774-c2cc-11de-8d13-0010c6dffd0f"
+                  },
+                  {
+                    "rel": "full",
+                    "uri": "NEED-TO-CONFIGURE/ws/rest/v1/conceptclass/8d492774-c2cc-11de-8d13-0010c6dffd0f?v=full"
+                  }
+                ],
+                "resourceVersion": "1.8"
+              },
+              "hiNormal": null,
+              "hiAbsolute": null,
+              "hiCritical": null,
+              "lowNormal": null,
+              "lowAbsolute": null,
+              "lowCritical": null,
+              "units": null,
+              "precise": null,
+              "allowDecimal": null,
+              "handler": null,
+              "descriptions": [],
+              "answers": [
+                {
+                  "uuid": "c44cfed2-3f10-11e4-adec-0800271c1b75",
+                  "name": {
+                    "display": "Sitting",
+                    "uuid": "c44d0752-3f10-11e4-adec-0800271c1b75",
+                    "name": "Sitting",
+                    "locale": "en",
+                    "localePreferred": true,
+                    "conceptNameType": "FULLY_SPECIFIED",
+                    "links": [
+                      {
+                        "rel": "self",
+                        "uri": "NEED-TO-CONFIGURE/ws/rest/v1/concept/c44cfed2-3f10-11e4-adec-0800271c1b75/name/c44d0752-3f10-11e4-adec-0800271c1b75"
+                      },
+                      {
+                        "rel": "full",
+                        "uri": "NEED-TO-CONFIGURE/ws/rest/v1/concept/c44cfed2-3f10-11e4-adec-0800271c1b75/name/c44d0752-3f10-11e4-adec-0800271c1b75?v=full"
+                      }
+                    ],
+                    "resourceVersion": "1.9"
+                  },
+                  "names": [
+                    {
+                      "display": "Sitting",
+                      "uuid": "c44d02f5-3f10-11e4-adec-0800271c1b75",
+                      "name": "Sitting",
+                      "locale": "en",
+                      "localePreferred": false,
+                      "conceptNameType": "SHORT",
+                      "links": [
+                        {
+                          "rel": "self",
+                          "uri": "NEED-TO-CONFIGURE/ws/rest/v1/concept/c44cfed2-3f10-11e4-adec-0800271c1b75/name/c44d02f5-3f10-11e4-adec-0800271c1b75"
+                        },
+                        {
+                          "rel": "full",
+                          "uri": "NEED-TO-CONFIGURE/ws/rest/v1/concept/c44cfed2-3f10-11e4-adec-0800271c1b75/name/c44d02f5-3f10-11e4-adec-0800271c1b75?v=full"
+                        }
+                      ],
+                      "resourceVersion": "1.9"
+                    },
+                    {
+                      "display": "Sitting",
+                      "uuid": "c44d0752-3f10-11e4-adec-0800271c1b75",
+                      "name": "Sitting",
+                      "locale": "en",
+                      "localePreferred": true,
+                      "conceptNameType": "FULLY_SPECIFIED",
+                      "links": [
+                        {
+                          "rel": "self",
+                          "uri": "NEED-TO-CONFIGURE/ws/rest/v1/concept/c44cfed2-3f10-11e4-adec-0800271c1b75/name/c44d0752-3f10-11e4-adec-0800271c1b75"
+                        },
+                        {
+                          "rel": "full",
+                          "uri": "NEED-TO-CONFIGURE/ws/rest/v1/concept/c44cfed2-3f10-11e4-adec-0800271c1b75/name/c44d0752-3f10-11e4-adec-0800271c1b75?v=full"
+                        }
+                      ],
+                      "resourceVersion": "1.9"
+                    }
+                  ],
+                  "displayString": "Sitting",
+                  "resourceVersion": "1.9"
+                },
+                {
+                  "uuid": "c44d6b8e-3f10-11e4-adec-0800271c1b75",
+                  "name": {
+                    "display": "Supine",
+                    "uuid": "c44d728a-3f10-11e4-adec-0800271c1b75",
+                    "name": "Supine",
+                    "locale": "en",
+                    "localePreferred": true,
+                    "conceptNameType": "FULLY_SPECIFIED",
+                    "links": [
+                      {
+                        "rel": "self",
+                        "uri": "NEED-TO-CONFIGURE/ws/rest/v1/concept/c44d6b8e-3f10-11e4-adec-0800271c1b75/name/c44d728a-3f10-11e4-adec-0800271c1b75"
+                      },
+                      {
+                        "rel": "full",
+                        "uri": "NEED-TO-CONFIGURE/ws/rest/v1/concept/c44d6b8e-3f10-11e4-adec-0800271c1b75/name/c44d728a-3f10-11e4-adec-0800271c1b75?v=full"
+                      }
+                    ],
+                    "resourceVersion": "1.9"
+                  },
+                  "names": [
+                    {
+                      "display": "Supine",
+                      "uuid": "c44d6f5f-3f10-11e4-adec-0800271c1b75",
+                      "name": "Supine",
+                      "locale": "en",
+                      "localePreferred": false,
+                      "conceptNameType": "SHORT",
+                      "links": [
+                        {
+                          "rel": "self",
+                          "uri": "NEED-TO-CONFIGURE/ws/rest/v1/concept/c44d6b8e-3f10-11e4-adec-0800271c1b75/name/c44d6f5f-3f10-11e4-adec-0800271c1b75"
+                        },
+                        {
+                          "rel": "full",
+                          "uri": "NEED-TO-CONFIGURE/ws/rest/v1/concept/c44d6b8e-3f10-11e4-adec-0800271c1b75/name/c44d6f5f-3f10-11e4-adec-0800271c1b75?v=full"
+                        }
+                      ],
+                      "resourceVersion": "1.9"
+                    },
+                    {
+                      "display": "Supine",
+                      "uuid": "c44d728a-3f10-11e4-adec-0800271c1b75",
+                      "name": "Supine",
+                      "locale": "en",
+                      "localePreferred": true,
+                      "conceptNameType": "FULLY_SPECIFIED",
+                      "links": [
+                        {
+                          "rel": "self",
+                          "uri": "NEED-TO-CONFIGURE/ws/rest/v1/concept/c44d6b8e-3f10-11e4-adec-0800271c1b75/name/c44d728a-3f10-11e4-adec-0800271c1b75"
+                        },
+                        {
+                          "rel": "full",
+                          "uri": "NEED-TO-CONFIGURE/ws/rest/v1/concept/c44d6b8e-3f10-11e4-adec-0800271c1b75/name/c44d728a-3f10-11e4-adec-0800271c1b75?v=full"
+                        }
+                      ],
+                      "resourceVersion": "1.9"
+                    }
+                  ],
+                  "displayString": "Supine",
+                  "resourceVersion": "1.9"
+                }
+              ],
+              "setMembers": [],
+              "resourceVersion": "1.9"
+            }
+          ],
+          "resourceVersion": "1.9"
+        },
+        {
+          "uuid": "c37afa71-3f10-11e4-adec-0800271c1b75",
+          "name": {
+            "display": "Temperature Data",
+            "uuid": "c37b032c-3f10-11e4-adec-0800271c1b75",
+            "name": "Temperature Data",
+            "locale": "en",
+            "localePreferred": true,
+            "conceptNameType": "FULLY_SPECIFIED",
+            "links": [
+              {
+                "rel": "self",
+                "uri": "NEED-TO-CONFIGURE/ws/rest/v1/concept/c37afa71-3f10-11e4-adec-0800271c1b75/name/c37b032c-3f10-11e4-adec-0800271c1b75"
+              },
+              {
+                "rel": "full",
+                "uri": "NEED-TO-CONFIGURE/ws/rest/v1/concept/c37afa71-3f10-11e4-adec-0800271c1b75/name/c37b032c-3f10-11e4-adec-0800271c1b75?v=full"
+              }
+            ],
+            "resourceVersion": "1.9"
+          },
+          "names": [
+            {
+              "display": "Temperature",
+              "uuid": "c37affab-3f10-11e4-adec-0800271c1b75",
+              "name": "Temperature",
+              "locale": "en",
+              "localePreferred": false,
+              "conceptNameType": "SHORT",
+              "links": [
+                {
+                  "rel": "self",
+                  "uri": "NEED-TO-CONFIGURE/ws/rest/v1/concept/c37afa71-3f10-11e4-adec-0800271c1b75/name/c37affab-3f10-11e4-adec-0800271c1b75"
+                },
+                {
+                  "rel": "full",
+                  "uri": "NEED-TO-CONFIGURE/ws/rest/v1/concept/c37afa71-3f10-11e4-adec-0800271c1b75/name/c37affab-3f10-11e4-adec-0800271c1b75?v=full"
+                }
+              ],
+              "resourceVersion": "1.9"
+            },
+            {
+              "display": "Temperature Data",
+              "uuid": "c37b032c-3f10-11e4-adec-0800271c1b75",
+              "name": "Temperature Data",
+              "locale": "en",
+              "localePreferred": true,
+              "conceptNameType": "FULLY_SPECIFIED",
+              "links": [
+                {
+                  "rel": "self",
+                  "uri": "NEED-TO-CONFIGURE/ws/rest/v1/concept/c37afa71-3f10-11e4-adec-0800271c1b75/name/c37b032c-3f10-11e4-adec-0800271c1b75"
+                },
+                {
+                  "rel": "full",
+                  "uri": "NEED-TO-CONFIGURE/ws/rest/v1/concept/c37afa71-3f10-11e4-adec-0800271c1b75/name/c37b032c-3f10-11e4-adec-0800271c1b75?v=full"
+                }
+              ],
+              "resourceVersion": "1.9"
+            }
+          ],
+          "set": true,
+          "datatype": {
+            "uuid": "8d4a4c94-c2cc-11de-8d13-0010c6dffd0f",
+            "display": "N/A",
+            "name": "N/A",
+            "description": "Not associated with a datatype (e.g., term answers, sets)",
+            "hl7Abbreviation": "ZZ",
+            "retired": false,
+            "links": [
+              {
+                "rel": "self",
+                "uri": "NEED-TO-CONFIGURE/ws/rest/v1/conceptdatatype/8d4a4c94-c2cc-11de-8d13-0010c6dffd0f"
+              },
+              {
+                "rel": "full",
+                "uri": "NEED-TO-CONFIGURE/ws/rest/v1/conceptdatatype/8d4a4c94-c2cc-11de-8d13-0010c6dffd0f?v=full"
+              }
+            ],
+            "resourceVersion": "1.8"
+          },
+          "conceptClass": {
+            "uuid": "82516ba3-3f10-11e4-adec-0800271c1b75",
+            "display": "Concept Details",
+            "name": "Concept Details",
+            "description": "Concept Details class",
+            "retired": false,
+            "links": [
+              {
+                "rel": "self",
+                "uri": "NEED-TO-CONFIGURE/ws/rest/v1/conceptclass/82516ba3-3f10-11e4-adec-0800271c1b75"
+              },
+              {
+                "rel": "full",
+                "uri": "NEED-TO-CONFIGURE/ws/rest/v1/conceptclass/82516ba3-3f10-11e4-adec-0800271c1b75?v=full"
+              }
+            ],
+            "resourceVersion": "1.8"
+          },
+          "hiNormal": null,
+          "hiAbsolute": null,
+          "hiCritical": null,
+          "lowNormal": null,
+          "lowAbsolute": null,
+          "lowCritical": null,
+          "units": null,
+          "precise": null,
+          "allowDecimal": null,
+          "handler": null,
+          "descriptions": [],
+          "answers": [],
+          "setMembers": [
+            {
+              "uuid": "c37bd733-3f10-11e4-adec-0800271c1b75",
+              "name": {
+                "display": "Temperature",
+                "uuid": "c37bdec5-3f10-11e4-adec-0800271c1b75",
+                "name": "Temperature",
+                "locale": "en",
+                "localePreferred": true,
+                "conceptNameType": "FULLY_SPECIFIED",
+                "links": [
+                  {
+                    "rel": "self",
+                    "uri": "NEED-TO-CONFIGURE/ws/rest/v1/concept/c37bd733-3f10-11e4-adec-0800271c1b75/name/c37bdec5-3f10-11e4-adec-0800271c1b75"
+                  },
+                  {
+                    "rel": "full",
+                    "uri": "NEED-TO-CONFIGURE/ws/rest/v1/concept/c37bd733-3f10-11e4-adec-0800271c1b75/name/c37bdec5-3f10-11e4-adec-0800271c1b75?v=full"
+                  }
+                ],
+                "resourceVersion": "1.9"
+              },
+              "names": [
+                {
+                  "display": "Temperature",
+                  "uuid": "c37bdb8e-3f10-11e4-adec-0800271c1b75",
+                  "name": "Temperature",
+                  "locale": "en",
+                  "localePreferred": false,
+                  "conceptNameType": "SHORT",
+                  "links": [
+                    {
+                      "rel": "self",
+                      "uri": "NEED-TO-CONFIGURE/ws/rest/v1/concept/c37bd733-3f10-11e4-adec-0800271c1b75/name/c37bdb8e-3f10-11e4-adec-0800271c1b75"
+                    },
+                    {
+                      "rel": "full",
+                      "uri": "NEED-TO-CONFIGURE/ws/rest/v1/concept/c37bd733-3f10-11e4-adec-0800271c1b75/name/c37bdb8e-3f10-11e4-adec-0800271c1b75?v=full"
+                    }
+                  ],
+                  "resourceVersion": "1.9"
+                },
+                {
+                  "display": "Temperature",
+                  "uuid": "c37bdec5-3f10-11e4-adec-0800271c1b75",
+                  "name": "Temperature",
+                  "locale": "en",
+                  "localePreferred": true,
+                  "conceptNameType": "FULLY_SPECIFIED",
+                  "links": [
+                    {
+                      "rel": "self",
+                      "uri": "NEED-TO-CONFIGURE/ws/rest/v1/concept/c37bd733-3f10-11e4-adec-0800271c1b75/name/c37bdec5-3f10-11e4-adec-0800271c1b75"
+                    },
+                    {
+                      "rel": "full",
+                      "uri": "NEED-TO-CONFIGURE/ws/rest/v1/concept/c37bd733-3f10-11e4-adec-0800271c1b75/name/c37bdec5-3f10-11e4-adec-0800271c1b75?v=full"
+                    }
+                  ],
+                  "resourceVersion": "1.9"
+                }
+              ],
+              "set": false,
+              "datatype": {
+                "uuid": "8d4a4488-c2cc-11de-8d13-0010c6dffd0f",
+                "display": "Numeric",
+                "name": "Numeric",
+                "description": "Numeric value, including integer or float (e.g., creatinine, weight)",
+                "hl7Abbreviation": "NM",
+                "retired": false,
+                "links": [
+                  {
+                    "rel": "self",
+                    "uri": "NEED-TO-CONFIGURE/ws/rest/v1/conceptdatatype/8d4a4488-c2cc-11de-8d13-0010c6dffd0f"
+                  },
+                  {
+                    "rel": "full",
+                    "uri": "NEED-TO-CONFIGURE/ws/rest/v1/conceptdatatype/8d4a4488-c2cc-11de-8d13-0010c6dffd0f?v=full"
+                  }
+                ],
+                "resourceVersion": "1.8"
+              },
+              "conceptClass": {
+                "uuid": "8d492774-c2cc-11de-8d13-0010c6dffd0f",
+                "display": "Misc",
+                "name": "Misc",
+                "description": "Terms which don't fit other categories",
+                "retired": false,
+                "links": [
+                  {
+                    "rel": "self",
+                    "uri": "NEED-TO-CONFIGURE/ws/rest/v1/conceptclass/8d492774-c2cc-11de-8d13-0010c6dffd0f"
+                  },
+                  {
+                    "rel": "full",
+                    "uri": "NEED-TO-CONFIGURE/ws/rest/v1/conceptclass/8d492774-c2cc-11de-8d13-0010c6dffd0f?v=full"
+                  }
+                ],
+                "resourceVersion": "1.8"
+              },
+              "hiNormal": 98.6,
+              "hiAbsolute": null,
+              "hiCritical": null,
+              "lowNormal": 98.6,
+              "lowAbsolute": null,
+              "lowCritical": null,
+              "units": "F",
+              "precise": true,
+              "allowDecimal": true,
+              "handler": null,
+              "descriptions": [],
+              "answers": [],
+              "setMembers": [],
+              "resourceVersion": "1.9"
+            },
+            {
+              "uuid": "c37c942d-3f10-11e4-adec-0800271c1b75",
+              "name": {
+                "display": "Temperature Abnormal",
+                "uuid": "c37c9ce5-3f10-11e4-adec-0800271c1b75",
+                "name": "Temperature Abnormal",
+                "locale": "en",
+                "localePreferred": true,
+                "conceptNameType": "FULLY_SPECIFIED",
+                "links": [
+                  {
+                    "rel": "self",
+                    "uri": "NEED-TO-CONFIGURE/ws/rest/v1/concept/c37c942d-3f10-11e4-adec-0800271c1b75/name/c37c9ce5-3f10-11e4-adec-0800271c1b75"
+                  },
+                  {
+                    "rel": "full",
+                    "uri": "NEED-TO-CONFIGURE/ws/rest/v1/concept/c37c942d-3f10-11e4-adec-0800271c1b75/name/c37c9ce5-3f10-11e4-adec-0800271c1b75?v=full"
+                  }
+                ],
+                "resourceVersion": "1.9"
+              },
+              "names": [
+                {
+                  "display": "Temperature Abnormal",
+                  "uuid": "c37c9ce5-3f10-11e4-adec-0800271c1b75",
+                  "name": "Temperature Abnormal",
+                  "locale": "en",
+                  "localePreferred": true,
+                  "conceptNameType": "FULLY_SPECIFIED",
+                  "links": [
+                    {
+                      "rel": "self",
+                      "uri": "NEED-TO-CONFIGURE/ws/rest/v1/concept/c37c942d-3f10-11e4-adec-0800271c1b75/name/c37c9ce5-3f10-11e4-adec-0800271c1b75"
+                    },
+                    {
+                      "rel": "full",
+                      "uri": "NEED-TO-CONFIGURE/ws/rest/v1/concept/c37c942d-3f10-11e4-adec-0800271c1b75/name/c37c9ce5-3f10-11e4-adec-0800271c1b75?v=full"
+                    }
+                  ],
+                  "resourceVersion": "1.9"
+                },
+                {
+                  "display": "Temperature Abnormal",
+                  "uuid": "c37c99b4-3f10-11e4-adec-0800271c1b75",
+                  "name": "Temperature Abnormal",
+                  "locale": "en",
+                  "localePreferred": false,
+                  "conceptNameType": "SHORT",
+                  "links": [
+                    {
+                      "rel": "self",
+                      "uri": "NEED-TO-CONFIGURE/ws/rest/v1/concept/c37c942d-3f10-11e4-adec-0800271c1b75/name/c37c99b4-3f10-11e4-adec-0800271c1b75"
+                    },
+                    {
+                      "rel": "full",
+                      "uri": "NEED-TO-CONFIGURE/ws/rest/v1/concept/c37c942d-3f10-11e4-adec-0800271c1b75/name/c37c99b4-3f10-11e4-adec-0800271c1b75?v=full"
+                    }
+                  ],
+                  "resourceVersion": "1.9"
+                }
+              ],
+              "set": false,
+              "datatype": {
+                "uuid": "8d4a5cca-c2cc-11de-8d13-0010c6dffd0f",
+                "display": "Boolean",
+                "name": "Boolean",
+                "description": "Boolean value (yes/no, true/false)",
+                "hl7Abbreviation": "BIT",
+                "retired": false,
+                "links": [
+                  {
+                    "rel": "self",
+                    "uri": "NEED-TO-CONFIGURE/ws/rest/v1/conceptdatatype/8d4a5cca-c2cc-11de-8d13-0010c6dffd0f"
+                  },
+                  {
+                    "rel": "full",
+                    "uri": "NEED-TO-CONFIGURE/ws/rest/v1/conceptdatatype/8d4a5cca-c2cc-11de-8d13-0010c6dffd0f?v=full"
+                  }
+                ],
+                "resourceVersion": "1.8"
+              },
+              "conceptClass": {
+                "uuid": "824a6818-3f10-11e4-adec-0800271c1b75",
+                "display": "Abnormal",
+                "name": "Abnormal",
+                "description": "Abnormal class",
+                "retired": false,
+                "links": [
+                  {
+                    "rel": "self",
+                    "uri": "NEED-TO-CONFIGURE/ws/rest/v1/conceptclass/824a6818-3f10-11e4-adec-0800271c1b75"
+                  },
+                  {
+                    "rel": "full",
+                    "uri": "NEED-TO-CONFIGURE/ws/rest/v1/conceptclass/824a6818-3f10-11e4-adec-0800271c1b75?v=full"
+                  }
+                ],
+                "resourceVersion": "1.8"
+              },
+              "hiNormal": null,
+              "hiAbsolute": null,
+              "hiCritical": null,
+              "lowNormal": null,
+              "lowAbsolute": null,
+              "lowCritical": null,
+              "units": null,
+              "precise": null,
+              "allowDecimal": null,
+              "handler": null,
+              "descriptions": [],
+              "answers": [],
+              "setMembers": [],
+              "resourceVersion": "1.9"
+            }
+          ],
+          "resourceVersion": "1.9"
+        },
+        {
+          "uuid": "c37d3f27-3f10-11e4-adec-0800271c1b75",
+          "name": {
+            "display": "RR Data",
+            "uuid": "c37d4567-3f10-11e4-adec-0800271c1b75",
+            "name": "RR Data",
+            "locale": "en",
+            "localePreferred": true,
+            "conceptNameType": "FULLY_SPECIFIED",
+            "links": [
+              {
+                "rel": "self",
+                "uri": "NEED-TO-CONFIGURE/ws/rest/v1/concept/c37d3f27-3f10-11e4-adec-0800271c1b75/name/c37d4567-3f10-11e4-adec-0800271c1b75"
+              },
+              {
+                "rel": "full",
+                "uri": "NEED-TO-CONFIGURE/ws/rest/v1/concept/c37d3f27-3f10-11e4-adec-0800271c1b75/name/c37d4567-3f10-11e4-adec-0800271c1b75?v=full"
+              }
+            ],
+            "resourceVersion": "1.9"
+          },
+          "names": [
+            {
+              "display": "RR",
+              "uuid": "c37d4292-3f10-11e4-adec-0800271c1b75",
+              "name": "RR",
+              "locale": "en",
+              "localePreferred": false,
+              "conceptNameType": "SHORT",
+              "links": [
+                {
+                  "rel": "self",
+                  "uri": "NEED-TO-CONFIGURE/ws/rest/v1/concept/c37d3f27-3f10-11e4-adec-0800271c1b75/name/c37d4292-3f10-11e4-adec-0800271c1b75"
+                },
+                {
+                  "rel": "full",
+                  "uri": "NEED-TO-CONFIGURE/ws/rest/v1/concept/c37d3f27-3f10-11e4-adec-0800271c1b75/name/c37d4292-3f10-11e4-adec-0800271c1b75?v=full"
+                }
+              ],
+              "resourceVersion": "1.9"
+            },
+            {
+              "display": "RR Data",
+              "uuid": "c37d4567-3f10-11e4-adec-0800271c1b75",
+              "name": "RR Data",
+              "locale": "en",
+              "localePreferred": true,
+              "conceptNameType": "FULLY_SPECIFIED",
+              "links": [
+                {
+                  "rel": "self",
+                  "uri": "NEED-TO-CONFIGURE/ws/rest/v1/concept/c37d3f27-3f10-11e4-adec-0800271c1b75/name/c37d4567-3f10-11e4-adec-0800271c1b75"
+                },
+                {
+                  "rel": "full",
+                  "uri": "NEED-TO-CONFIGURE/ws/rest/v1/concept/c37d3f27-3f10-11e4-adec-0800271c1b75/name/c37d4567-3f10-11e4-adec-0800271c1b75?v=full"
+                }
+              ],
+              "resourceVersion": "1.9"
+            }
+          ],
+          "set": true,
+          "datatype": {
+            "uuid": "8d4a4c94-c2cc-11de-8d13-0010c6dffd0f",
+            "display": "N/A",
+            "name": "N/A",
+            "description": "Not associated with a datatype (e.g., term answers, sets)",
+            "hl7Abbreviation": "ZZ",
+            "retired": false,
+            "links": [
+              {
+                "rel": "self",
+                "uri": "NEED-TO-CONFIGURE/ws/rest/v1/conceptdatatype/8d4a4c94-c2cc-11de-8d13-0010c6dffd0f"
+              },
+              {
+                "rel": "full",
+                "uri": "NEED-TO-CONFIGURE/ws/rest/v1/conceptdatatype/8d4a4c94-c2cc-11de-8d13-0010c6dffd0f?v=full"
+              }
+            ],
+            "resourceVersion": "1.8"
+          },
+          "conceptClass": {
+            "uuid": "82516ba3-3f10-11e4-adec-0800271c1b75",
+            "display": "Concept Details",
+            "name": "Concept Details",
+            "description": "Concept Details class",
+            "retired": false,
+            "links": [
+              {
+                "rel": "self",
+                "uri": "NEED-TO-CONFIGURE/ws/rest/v1/conceptclass/82516ba3-3f10-11e4-adec-0800271c1b75"
+              },
+              {
+                "rel": "full",
+                "uri": "NEED-TO-CONFIGURE/ws/rest/v1/conceptclass/82516ba3-3f10-11e4-adec-0800271c1b75?v=full"
+              }
+            ],
+            "resourceVersion": "1.8"
+          },
+          "hiNormal": null,
+          "hiAbsolute": null,
+          "hiCritical": null,
+          "lowNormal": null,
+          "lowAbsolute": null,
+          "lowCritical": null,
+          "units": null,
+          "precise": null,
+          "allowDecimal": null,
+          "handler": null,
+          "descriptions": [],
+          "answers": [],
+          "setMembers": [
+            {
+              "uuid": "c37e0f37-3f10-11e4-adec-0800271c1b75",
+              "name": {
+                "display": "RR",
+                "uuid": "c37e176b-3f10-11e4-adec-0800271c1b75",
+                "name": "RR",
+                "locale": "en",
+                "localePreferred": true,
+                "conceptNameType": "FULLY_SPECIFIED",
+                "links": [
+                  {
+                    "rel": "self",
+                    "uri": "NEED-TO-CONFIGURE/ws/rest/v1/concept/c37e0f37-3f10-11e4-adec-0800271c1b75/name/c37e176b-3f10-11e4-adec-0800271c1b75"
+                  },
+                  {
+                    "rel": "full",
+                    "uri": "NEED-TO-CONFIGURE/ws/rest/v1/concept/c37e0f37-3f10-11e4-adec-0800271c1b75/name/c37e176b-3f10-11e4-adec-0800271c1b75?v=full"
+                  }
+                ],
+                "resourceVersion": "1.9"
+              },
+              "names": [
+                {
+                  "display": "RR",
+                  "uuid": "c37e134e-3f10-11e4-adec-0800271c1b75",
+                  "name": "RR",
+                  "locale": "en",
+                  "localePreferred": false,
+                  "conceptNameType": "SHORT",
+                  "links": [
+                    {
+                      "rel": "self",
+                      "uri": "NEED-TO-CONFIGURE/ws/rest/v1/concept/c37e0f37-3f10-11e4-adec-0800271c1b75/name/c37e134e-3f10-11e4-adec-0800271c1b75"
+                    },
+                    {
+                      "rel": "full",
+                      "uri": "NEED-TO-CONFIGURE/ws/rest/v1/concept/c37e0f37-3f10-11e4-adec-0800271c1b75/name/c37e134e-3f10-11e4-adec-0800271c1b75?v=full"
+                    }
+                  ],
+                  "resourceVersion": "1.9"
+                },
+                {
+                  "display": "RR",
+                  "uuid": "c37e176b-3f10-11e4-adec-0800271c1b75",
+                  "name": "RR",
+                  "locale": "en",
+                  "localePreferred": true,
+                  "conceptNameType": "FULLY_SPECIFIED",
+                  "links": [
+                    {
+                      "rel": "self",
+                      "uri": "NEED-TO-CONFIGURE/ws/rest/v1/concept/c37e0f37-3f10-11e4-adec-0800271c1b75/name/c37e176b-3f10-11e4-adec-0800271c1b75"
+                    },
+                    {
+                      "rel": "full",
+                      "uri": "NEED-TO-CONFIGURE/ws/rest/v1/concept/c37e0f37-3f10-11e4-adec-0800271c1b75/name/c37e176b-3f10-11e4-adec-0800271c1b75?v=full"
+                    }
+                  ],
+                  "resourceVersion": "1.9"
+                }
+              ],
+              "set": false,
+              "datatype": {
+                "uuid": "8d4a4488-c2cc-11de-8d13-0010c6dffd0f",
+                "display": "Numeric",
+                "name": "Numeric",
+                "description": "Numeric value, including integer or float (e.g., creatinine, weight)",
+                "hl7Abbreviation": "NM",
+                "retired": false,
+                "links": [
+                  {
+                    "rel": "self",
+                    "uri": "NEED-TO-CONFIGURE/ws/rest/v1/conceptdatatype/8d4a4488-c2cc-11de-8d13-0010c6dffd0f"
+                  },
+                  {
+                    "rel": "full",
+                    "uri": "NEED-TO-CONFIGURE/ws/rest/v1/conceptdatatype/8d4a4488-c2cc-11de-8d13-0010c6dffd0f?v=full"
+                  }
+                ],
+                "resourceVersion": "1.8"
+              },
+              "conceptClass": {
+                "uuid": "8d492774-c2cc-11de-8d13-0010c6dffd0f",
+                "display": "Misc",
+                "name": "Misc",
+                "description": "Terms which don't fit other categories",
+                "retired": false,
+                "links": [
+                  {
+                    "rel": "self",
+                    "uri": "NEED-TO-CONFIGURE/ws/rest/v1/conceptclass/8d492774-c2cc-11de-8d13-0010c6dffd0f"
+                  },
+                  {
+                    "rel": "full",
+                    "uri": "NEED-TO-CONFIGURE/ws/rest/v1/conceptclass/8d492774-c2cc-11de-8d13-0010c6dffd0f?v=full"
+                  }
+                ],
+                "resourceVersion": "1.8"
+              },
+              "hiNormal": 20,
+              "hiAbsolute": null,
+              "hiCritical": null,
+              "lowNormal": 16,
+              "lowAbsolute": null,
+              "lowCritical": null,
+              "units": "/min",
+              "precise": true,
+              "allowDecimal": true,
+              "handler": null,
+              "descriptions": [],
+              "answers": [],
+              "setMembers": [],
+              "resourceVersion": "1.9"
+            },
+            {
+              "uuid": "c37f16d3-3f10-11e4-adec-0800271c1b75",
+              "name": {
+                "display": "RR Abnormal",
+                "uuid": "c37f1ef0-3f10-11e4-adec-0800271c1b75",
+                "name": "RR Abnormal",
+                "locale": "en",
+                "localePreferred": true,
+                "conceptNameType": "FULLY_SPECIFIED",
+                "links": [
+                  {
+                    "rel": "self",
+                    "uri": "NEED-TO-CONFIGURE/ws/rest/v1/concept/c37f16d3-3f10-11e4-adec-0800271c1b75/name/c37f1ef0-3f10-11e4-adec-0800271c1b75"
+                  },
+                  {
+                    "rel": "full",
+                    "uri": "NEED-TO-CONFIGURE/ws/rest/v1/concept/c37f16d3-3f10-11e4-adec-0800271c1b75/name/c37f1ef0-3f10-11e4-adec-0800271c1b75?v=full"
+                  }
+                ],
+                "resourceVersion": "1.9"
+              },
+              "names": [
+                {
+                  "display": "Temperature Abnormal",
+                  "uuid": "c37f1bb8-3f10-11e4-adec-0800271c1b75",
+                  "name": "Temperature Abnormal",
+                  "locale": "en",
+                  "localePreferred": false,
+                  "conceptNameType": "SHORT",
+                  "links": [
+                    {
+                      "rel": "self",
+                      "uri": "NEED-TO-CONFIGURE/ws/rest/v1/concept/c37f16d3-3f10-11e4-adec-0800271c1b75/name/c37f1bb8-3f10-11e4-adec-0800271c1b75"
+                    },
+                    {
+                      "rel": "full",
+                      "uri": "NEED-TO-CONFIGURE/ws/rest/v1/concept/c37f16d3-3f10-11e4-adec-0800271c1b75/name/c37f1bb8-3f10-11e4-adec-0800271c1b75?v=full"
+                    }
+                  ],
+                  "resourceVersion": "1.9"
+                },
+                {
+                  "display": "RR Abnormal",
+                  "uuid": "c37f1ef0-3f10-11e4-adec-0800271c1b75",
+                  "name": "RR Abnormal",
+                  "locale": "en",
+                  "localePreferred": true,
+                  "conceptNameType": "FULLY_SPECIFIED",
+                  "links": [
+                    {
+                      "rel": "self",
+                      "uri": "NEED-TO-CONFIGURE/ws/rest/v1/concept/c37f16d3-3f10-11e4-adec-0800271c1b75/name/c37f1ef0-3f10-11e4-adec-0800271c1b75"
+                    },
+                    {
+                      "rel": "full",
+                      "uri": "NEED-TO-CONFIGURE/ws/rest/v1/concept/c37f16d3-3f10-11e4-adec-0800271c1b75/name/c37f1ef0-3f10-11e4-adec-0800271c1b75?v=full"
+                    }
+                  ],
+                  "resourceVersion": "1.9"
+                }
+              ],
+              "set": false,
+              "datatype": {
+                "uuid": "8d4a5cca-c2cc-11de-8d13-0010c6dffd0f",
+                "display": "Boolean",
+                "name": "Boolean",
+                "description": "Boolean value (yes/no, true/false)",
+                "hl7Abbreviation": "BIT",
+                "retired": false,
+                "links": [
+                  {
+                    "rel": "self",
+                    "uri": "NEED-TO-CONFIGURE/ws/rest/v1/conceptdatatype/8d4a5cca-c2cc-11de-8d13-0010c6dffd0f"
+                  },
+                  {
+                    "rel": "full",
+                    "uri": "NEED-TO-CONFIGURE/ws/rest/v1/conceptdatatype/8d4a5cca-c2cc-11de-8d13-0010c6dffd0f?v=full"
+                  }
+                ],
+                "resourceVersion": "1.8"
+              },
+              "conceptClass": {
+                "uuid": "824a6818-3f10-11e4-adec-0800271c1b75",
+                "display": "Abnormal",
+                "name": "Abnormal",
+                "description": "Abnormal class",
+                "retired": false,
+                "links": [
+                  {
+                    "rel": "self",
+                    "uri": "NEED-TO-CONFIGURE/ws/rest/v1/conceptclass/824a6818-3f10-11e4-adec-0800271c1b75"
+                  },
+                  {
+                    "rel": "full",
+                    "uri": "NEED-TO-CONFIGURE/ws/rest/v1/conceptclass/824a6818-3f10-11e4-adec-0800271c1b75?v=full"
+                  }
+                ],
+                "resourceVersion": "1.8"
+              },
+              "hiNormal": null,
+              "hiAbsolute": null,
+              "hiCritical": null,
+              "lowNormal": null,
+              "lowAbsolute": null,
+              "lowCritical": null,
+              "units": null,
+              "precise": null,
+              "allowDecimal": null,
+              "handler": null,
+              "descriptions": [],
+              "answers": [],
+              "setMembers": [],
+              "resourceVersion": "1.9"
+            }
+          ],
+          "resourceVersion": "1.9"
+        },
+        {
+          "uuid": "c37fc55f-3f10-11e4-adec-0800271c1b75",
+          "name": {
+            "display": "SPO2 Data",
+            "uuid": "c37fcc1e-3f10-11e4-adec-0800271c1b75",
+            "name": "SPO2 Data",
+            "locale": "en",
+            "localePreferred": true,
+            "conceptNameType": "FULLY_SPECIFIED",
+            "links": [
+              {
+                "rel": "self",
+                "uri": "NEED-TO-CONFIGURE/ws/rest/v1/concept/c37fc55f-3f10-11e4-adec-0800271c1b75/name/c37fcc1e-3f10-11e4-adec-0800271c1b75"
+              },
+              {
+                "rel": "full",
+                "uri": "NEED-TO-CONFIGURE/ws/rest/v1/concept/c37fc55f-3f10-11e4-adec-0800271c1b75/name/c37fcc1e-3f10-11e4-adec-0800271c1b75?v=full"
+              }
+            ],
+            "resourceVersion": "1.9"
+          },
+          "names": [
+            {
+              "display": "SPO2 Data",
+              "uuid": "c37fcc1e-3f10-11e4-adec-0800271c1b75",
+              "name": "SPO2 Data",
+              "locale": "en",
+              "localePreferred": true,
+              "conceptNameType": "FULLY_SPECIFIED",
+              "links": [
+                {
+                  "rel": "self",
+                  "uri": "NEED-TO-CONFIGURE/ws/rest/v1/concept/c37fc55f-3f10-11e4-adec-0800271c1b75/name/c37fcc1e-3f10-11e4-adec-0800271c1b75"
+                },
+                {
+                  "rel": "full",
+                  "uri": "NEED-TO-CONFIGURE/ws/rest/v1/concept/c37fc55f-3f10-11e4-adec-0800271c1b75/name/c37fcc1e-3f10-11e4-adec-0800271c1b75?v=full"
+                }
+              ],
+              "resourceVersion": "1.9"
+            },
+            {
+              "display": "SPO2",
+              "uuid": "c37fc91d-3f10-11e4-adec-0800271c1b75",
+              "name": "SPO2",
+              "locale": "en",
+              "localePreferred": false,
+              "conceptNameType": "SHORT",
+              "links": [
+                {
+                  "rel": "self",
+                  "uri": "NEED-TO-CONFIGURE/ws/rest/v1/concept/c37fc55f-3f10-11e4-adec-0800271c1b75/name/c37fc91d-3f10-11e4-adec-0800271c1b75"
+                },
+                {
+                  "rel": "full",
+                  "uri": "NEED-TO-CONFIGURE/ws/rest/v1/concept/c37fc55f-3f10-11e4-adec-0800271c1b75/name/c37fc91d-3f10-11e4-adec-0800271c1b75?v=full"
+                }
+              ],
+              "resourceVersion": "1.9"
+            }
+          ],
+          "set": true,
+          "datatype": {
+            "uuid": "8d4a4c94-c2cc-11de-8d13-0010c6dffd0f",
+            "display": "N/A",
+            "name": "N/A",
+            "description": "Not associated with a datatype (e.g., term answers, sets)",
+            "hl7Abbreviation": "ZZ",
+            "retired": false,
+            "links": [
+              {
+                "rel": "self",
+                "uri": "NEED-TO-CONFIGURE/ws/rest/v1/conceptdatatype/8d4a4c94-c2cc-11de-8d13-0010c6dffd0f"
+              },
+              {
+                "rel": "full",
+                "uri": "NEED-TO-CONFIGURE/ws/rest/v1/conceptdatatype/8d4a4c94-c2cc-11de-8d13-0010c6dffd0f?v=full"
+              }
+            ],
+            "resourceVersion": "1.8"
+          },
+          "conceptClass": {
+            "uuid": "82516ba3-3f10-11e4-adec-0800271c1b75",
+            "display": "Concept Details",
+            "name": "Concept Details",
+            "description": "Concept Details class",
+            "retired": false,
+            "links": [
+              {
+                "rel": "self",
+                "uri": "NEED-TO-CONFIGURE/ws/rest/v1/conceptclass/82516ba3-3f10-11e4-adec-0800271c1b75"
+              },
+              {
+                "rel": "full",
+                "uri": "NEED-TO-CONFIGURE/ws/rest/v1/conceptclass/82516ba3-3f10-11e4-adec-0800271c1b75?v=full"
+              }
+            ],
+            "resourceVersion": "1.8"
+          },
+          "hiNormal": null,
+          "hiAbsolute": null,
+          "hiCritical": null,
+          "lowNormal": null,
+          "lowAbsolute": null,
+          "lowCritical": null,
+          "units": null,
+          "precise": null,
+          "allowDecimal": null,
+          "handler": null,
+          "descriptions": [],
+          "answers": [],
+          "setMembers": [
+            {
+              "uuid": "c3838414-3f10-11e4-adec-0800271c1b75",
+              "name": {
+                "display": "SPO2",
+                "uuid": "c3838b02-3f10-11e4-adec-0800271c1b75",
+                "name": "SPO2",
+                "locale": "en",
+                "localePreferred": true,
+                "conceptNameType": "FULLY_SPECIFIED",
+                "links": [
+                  {
+                    "rel": "self",
+                    "uri": "NEED-TO-CONFIGURE/ws/rest/v1/concept/c3838414-3f10-11e4-adec-0800271c1b75/name/c3838b02-3f10-11e4-adec-0800271c1b75"
+                  },
+                  {
+                    "rel": "full",
+                    "uri": "NEED-TO-CONFIGURE/ws/rest/v1/concept/c3838414-3f10-11e4-adec-0800271c1b75/name/c3838b02-3f10-11e4-adec-0800271c1b75?v=full"
+                  }
+                ],
+                "resourceVersion": "1.9"
+              },
+              "names": [
+                {
+                  "display": "SPO2",
+                  "uuid": "c38387e7-3f10-11e4-adec-0800271c1b75",
+                  "name": "SPO2",
+                  "locale": "en",
+                  "localePreferred": false,
+                  "conceptNameType": "SHORT",
+                  "links": [
+                    {
+                      "rel": "self",
+                      "uri": "NEED-TO-CONFIGURE/ws/rest/v1/concept/c3838414-3f10-11e4-adec-0800271c1b75/name/c38387e7-3f10-11e4-adec-0800271c1b75"
+                    },
+                    {
+                      "rel": "full",
+                      "uri": "NEED-TO-CONFIGURE/ws/rest/v1/concept/c3838414-3f10-11e4-adec-0800271c1b75/name/c38387e7-3f10-11e4-adec-0800271c1b75?v=full"
+                    }
+                  ],
+                  "resourceVersion": "1.9"
+                },
+                {
+                  "display": "SPO2",
+                  "uuid": "c3838b02-3f10-11e4-adec-0800271c1b75",
+                  "name": "SPO2",
+                  "locale": "en",
+                  "localePreferred": true,
+                  "conceptNameType": "FULLY_SPECIFIED",
+                  "links": [
+                    {
+                      "rel": "self",
+                      "uri": "NEED-TO-CONFIGURE/ws/rest/v1/concept/c3838414-3f10-11e4-adec-0800271c1b75/name/c3838b02-3f10-11e4-adec-0800271c1b75"
+                    },
+                    {
+                      "rel": "full",
+                      "uri": "NEED-TO-CONFIGURE/ws/rest/v1/concept/c3838414-3f10-11e4-adec-0800271c1b75/name/c3838b02-3f10-11e4-adec-0800271c1b75?v=full"
+                    }
+                  ],
+                  "resourceVersion": "1.9"
+                }
+              ],
+              "set": false,
+              "datatype": {
+                "uuid": "8d4a4488-c2cc-11de-8d13-0010c6dffd0f",
+                "display": "Numeric",
+                "name": "Numeric",
+                "description": "Numeric value, including integer or float (e.g., creatinine, weight)",
+                "hl7Abbreviation": "NM",
+                "retired": false,
+                "links": [
+                  {
+                    "rel": "self",
+                    "uri": "NEED-TO-CONFIGURE/ws/rest/v1/conceptdatatype/8d4a4488-c2cc-11de-8d13-0010c6dffd0f"
+                  },
+                  {
+                    "rel": "full",
+                    "uri": "NEED-TO-CONFIGURE/ws/rest/v1/conceptdatatype/8d4a4488-c2cc-11de-8d13-0010c6dffd0f?v=full"
+                  }
+                ],
+                "resourceVersion": "1.8"
+              },
+              "conceptClass": {
+                "uuid": "8d492774-c2cc-11de-8d13-0010c6dffd0f",
+                "display": "Misc",
+                "name": "Misc",
+                "description": "Terms which don't fit other categories",
+                "retired": false,
+                "links": [
+                  {
+                    "rel": "self",
+                    "uri": "NEED-TO-CONFIGURE/ws/rest/v1/conceptclass/8d492774-c2cc-11de-8d13-0010c6dffd0f"
+                  },
+                  {
+                    "rel": "full",
+                    "uri": "NEED-TO-CONFIGURE/ws/rest/v1/conceptclass/8d492774-c2cc-11de-8d13-0010c6dffd0f?v=full"
+                  }
+                ],
+                "resourceVersion": "1.8"
+              },
+              "hiNormal": null,
+              "hiAbsolute": null,
+              "hiCritical": null,
+              "lowNormal": 97,
+              "lowAbsolute": null,
+              "lowCritical": null,
+              "units": "%",
+              "precise": true,
+              "allowDecimal": true,
+              "handler": null,
+              "descriptions": [],
+              "answers": [],
+              "setMembers": [],
+              "resourceVersion": "1.9"
+            },
+            {
+              "uuid": "c384402b-3f10-11e4-adec-0800271c1b75",
+              "name": {
+                "display": "SPO2 Abnormal",
+                "uuid": "c384471a-3f10-11e4-adec-0800271c1b75",
+                "name": "SPO2 Abnormal",
+                "locale": "en",
+                "localePreferred": true,
+                "conceptNameType": "FULLY_SPECIFIED",
+                "links": [
+                  {
+                    "rel": "self",
+                    "uri": "NEED-TO-CONFIGURE/ws/rest/v1/concept/c384402b-3f10-11e4-adec-0800271c1b75/name/c384471a-3f10-11e4-adec-0800271c1b75"
+                  },
+                  {
+                    "rel": "full",
+                    "uri": "NEED-TO-CONFIGURE/ws/rest/v1/concept/c384402b-3f10-11e4-adec-0800271c1b75/name/c384471a-3f10-11e4-adec-0800271c1b75?v=full"
+                  }
+                ],
+                "resourceVersion": "1.9"
+              },
+              "names": [
+                {
+                  "display": "Temperature Abnormal",
+                  "uuid": "c38443f7-3f10-11e4-adec-0800271c1b75",
+                  "name": "Temperature Abnormal",
+                  "locale": "en",
+                  "localePreferred": false,
+                  "conceptNameType": "SHORT",
+                  "links": [
+                    {
+                      "rel": "self",
+                      "uri": "NEED-TO-CONFIGURE/ws/rest/v1/concept/c384402b-3f10-11e4-adec-0800271c1b75/name/c38443f7-3f10-11e4-adec-0800271c1b75"
+                    },
+                    {
+                      "rel": "full",
+                      "uri": "NEED-TO-CONFIGURE/ws/rest/v1/concept/c384402b-3f10-11e4-adec-0800271c1b75/name/c38443f7-3f10-11e4-adec-0800271c1b75?v=full"
+                    }
+                  ],
+                  "resourceVersion": "1.9"
+                },
+                {
+                  "display": "SPO2 Abnormal",
+                  "uuid": "c384471a-3f10-11e4-adec-0800271c1b75",
+                  "name": "SPO2 Abnormal",
+                  "locale": "en",
+                  "localePreferred": true,
+                  "conceptNameType": "FULLY_SPECIFIED",
+                  "links": [
+                    {
+                      "rel": "self",
+                      "uri": "NEED-TO-CONFIGURE/ws/rest/v1/concept/c384402b-3f10-11e4-adec-0800271c1b75/name/c384471a-3f10-11e4-adec-0800271c1b75"
+                    },
+                    {
+                      "rel": "full",
+                      "uri": "NEED-TO-CONFIGURE/ws/rest/v1/concept/c384402b-3f10-11e4-adec-0800271c1b75/name/c384471a-3f10-11e4-adec-0800271c1b75?v=full"
+                    }
+                  ],
+                  "resourceVersion": "1.9"
+                }
+              ],
+              "set": false,
+              "datatype": {
+                "uuid": "8d4a5cca-c2cc-11de-8d13-0010c6dffd0f",
+                "display": "Boolean",
+                "name": "Boolean",
+                "description": "Boolean value (yes/no, true/false)",
+                "hl7Abbreviation": "BIT",
+                "retired": false,
+                "links": [
+                  {
+                    "rel": "self",
+                    "uri": "NEED-TO-CONFIGURE/ws/rest/v1/conceptdatatype/8d4a5cca-c2cc-11de-8d13-0010c6dffd0f"
+                  },
+                  {
+                    "rel": "full",
+                    "uri": "NEED-TO-CONFIGURE/ws/rest/v1/conceptdatatype/8d4a5cca-c2cc-11de-8d13-0010c6dffd0f?v=full"
+                  }
+                ],
+                "resourceVersion": "1.8"
+              },
+              "conceptClass": {
+                "uuid": "824a6818-3f10-11e4-adec-0800271c1b75",
+                "display": "Abnormal",
+                "name": "Abnormal",
+                "description": "Abnormal class",
+                "retired": false,
+                "links": [
+                  {
+                    "rel": "self",
+                    "uri": "NEED-TO-CONFIGURE/ws/rest/v1/conceptclass/824a6818-3f10-11e4-adec-0800271c1b75"
+                  },
+                  {
+                    "rel": "full",
+                    "uri": "NEED-TO-CONFIGURE/ws/rest/v1/conceptclass/824a6818-3f10-11e4-adec-0800271c1b75?v=full"
+                  }
+                ],
+                "resourceVersion": "1.8"
+              },
+              "hiNormal": null,
+              "hiAbsolute": null,
+              "hiCritical": null,
+              "lowNormal": null,
+              "lowAbsolute": null,
+              "lowCritical": null,
+              "units": null,
+              "precise": null,
+              "allowDecimal": null,
+              "handler": null,
+              "descriptions": [],
+              "answers": [],
+              "setMembers": [],
+              "resourceVersion": "1.9"
+            }
+          ],
+          "resourceVersion": "1.9"
+        }
+      ],
+      "resourceVersion": "1.9"
+    }
+  ]
+}

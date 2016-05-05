@@ -13,7 +13,7 @@ angular.module('bahmni.common.domain')
                         var msg = offlineService.getItem("networkError") || "Offline data not set up";
                         return $q.reject(msg);
                     }
-                    return {"data": loginLocations.value};
+                    return loginLocations;
                 });
             };
 

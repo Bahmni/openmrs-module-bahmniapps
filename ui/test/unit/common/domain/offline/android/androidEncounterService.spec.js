@@ -33,7 +33,7 @@ describe('EncounterService', function () {
         var programUuid = undefined;
         var locationUuid = "locationUuid";
         var loginLocationToEncounterTypeMapping = {
-            "value" :{
+            "data" :{
                 "results": [
                     {   "entity": {"uuid": "locationUuid", "name": "login location"},
                         "mappings": [{"uuid": "encounterUuid"}]}
@@ -49,14 +49,14 @@ describe('EncounterService', function () {
         var programUuid = undefined;
         var locationUuid = "locationUuid";
         var loginLocationToEncounterTypeMapping = {
-            "value" :{
+            "data" :{
                 "results": [
                     {   "entity": {"uuid": "locationUuid", "name": "login location"},
                         "mappings": []}
                 ]}};
 
         var defaultEncounterType= {
-            "value" : {
+            "data" : {
                 "results": [{"uuid": "defaultEncounterUuid"}]
             }
         };
@@ -66,7 +66,7 @@ describe('EncounterService', function () {
             return null;
         });
         encounterService.getEncounterType(programUuid, locationUuid).then(function (response) {
-            expect(response.value.results[0].uuid).toBe("defaultEncounterUuid");
+            expect(response.data.results[0].uuid).toBe("defaultEncounterUuid");
             done();
         });
     });

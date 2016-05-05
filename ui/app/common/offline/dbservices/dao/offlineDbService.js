@@ -2,9 +2,9 @@
 
 angular.module('bahmni.common.offline')
     .service('offlineDbService', ['$http', '$q', 'patientDbService', 'patientAddressDbService', 'patientAttributeDbService', 'offlineMarkerDbService', 'offlineAddressHierarchyDbService',
-        'offlineConfigDbService', 'initializeOfflineSchema', 'referenceDataDbService', 'locationDbService', 'offlineSearchDbService', 'encounterDbService', 'visitDbService', 'observationDbService',
+        'offlineConfigDbService', 'initializeOfflineSchema', 'referenceDataDbService', 'locationDbService', 'offlineSearchDbService', 'encounterDbService', 'visitDbService', 'observationDbService', 'conceptDbService',
         function ($http, $q, patientDbService, patientAddressDbService, patientAttributeDbService, offlineMarkerDbService, offlineAddressHierarchyDbService,
-                  offlineConfigDbService, initializeOfflineSchema, referenceDataDbService, locationDbService, offlineSearchDbService, encounterDbService, visitDbService, observationDbService) {
+                  offlineConfigDbService, initializeOfflineSchema, referenceDataDbService, locationDbService, offlineSearchDbService, encounterDbService, visitDbService, observationDbService, conceptDbService) {
         var db;
 
 
@@ -82,9 +82,9 @@ angular.module('bahmni.common.offline')
         var getActiveEncounter = function(params){
             var deferred = $q.defer();
             getReferenceData("encounterSessionDuration").then(function(encounterSessionDurationData){
-                var encounterSessionDuration = encounterSessionDurationData.value;
+                var encounterSessionDuration = encounterSessionDurationData.data;
                 getReferenceData("DefaultEncounterType").then(function(defaultEncounterType) {
-                    var encounterType = defaultEncounterType ? defaultEncounterType.value : null;
+                    var encounterType = defaultEncounterType ? defaultEncounterType.data : null;
                     encounterDbService.findActiveEncounter(db, {patientUuid: params.patientUuid, providerUuid: params.providerUuids[0], encounterType: encounterType}, encounterSessionDuration).then(function (encounter) {
                         deferred.resolve(encounter);
                     });
@@ -93,7 +93,7 @@ angular.module('bahmni.common.offline')
             });
             return deferred.promise;
         };
-
+            
         var init = function (offlineDb) {
             db = offlineDb;
             offlineMarkerDbService.init(offlineDb);
@@ -101,6 +101,7 @@ angular.module('bahmni.common.offline')
             offlineConfigDbService.init(offlineDb);
             referenceDataDbService.init(offlineDb);
             offlineSearchDbService.init(offlineDb);
+            conceptDbService.init(offlineDb);
         };
 
         var initSchema = function () {
@@ -152,6 +153,26 @@ angular.module('bahmni.common.offline')
             return patientAttributeDbService.getAttributeTypes(db);
         };
 
+        var getConcept = function (conceptUuid) {
+            return conceptDbService.getReferenceData(conceptUuid);
+        };
+
+        var getConceptByName = function (conceptUuid) {
+            return conceptDbService.getConceptByName(conceptUuid);
+        };
+
+        var insertConceptAndUpdateHierarchy = function (data, parent) {
+            return conceptDbService.insertConceptAndUpdateHierarchy(data, parent);
+        };
+
+        var updateChildren = function (concept) {
+            return conceptDbService.updateChildren(concept);
+        };
+
+        var updateParentJson = function (child) {
+            return conceptDbService.updateParentJson(child);
+        };
+        
         var insertVisitData = function (visitData) {
             return visitDbService.insertVisitData(db, visitData);
         };
@@ -197,6 +218,11 @@ angular.module('bahmni.common.offline')
             getActiveEncounter: getActiveEncounter,
             getEncounterByEncounterUuid: getEncounterByEncounterUuid,
             getObservationsFor: getObservationsFor,
-            getVisitUuidsByPatientUuid: getVisitUuidsByPatientUuid
+            getVisitUuidsByPatientUuid: getVisitUuidsByPatientUuid,
+            insertConceptAndUpdateHierarchy: insertConceptAndUpdateHierarchy,
+            getConcept: getConcept,
+            getConceptByName: getConceptByName,
+            updateChildren: updateChildren,
+            updateParentJson: updateParentJson
         }
     }]);

@@ -8,10 +8,21 @@ angular.module('bahmni.common.offline')
                     if (offlineService.isAndroidApp()) {
                         offlineDbService = androidDbService;
                     }
-                    return syncParentAddressEntries().then(function(){
-                        return syncAddressHierarchyEntries().then(function(){
-                            return  syncTransactionalData();
-                        });
+                    return syncConcepts().then(function () {
+                        return syncParentAddressEntries().then(function () {
+                            return syncAddressHierarchyEntries().then(function () {
+                                return syncTransactionalData();
+                            });
+                        })
+                    });
+                };
+
+                var syncConcepts = function() {
+                    return offlineDbService.getMarker("ConceptData").then(function (marker) {
+                        if (marker == undefined) {
+                            marker = {}
+                        }
+                        return syncConceptsForMarker(marker)
                     });
                 };
 
@@ -52,6 +63,16 @@ angular.module('bahmni.common.offline')
                             return;
                         }
                         return readEvent(response.data, 0, levels);
+                    });
+                };
+
+
+                var syncConceptsForMarker = function (marker) {
+                    eventLogService.getConceptEventsFor(marker.lastReadEventUuid).then(function (response) {
+                        if (response.data == undefined || response.data.length == 0) {
+                            return;
+                        }
+                        readEvent(response.data, 0);
                     });
                 };
 
@@ -106,7 +127,7 @@ angular.module('bahmni.common.offline')
                     var deferrable = $q.defer();
                     switch (event.category) {
                         case 'patient':
-                            offlineDbService.getAttributeTypes().then(function(attributeTypes) {
+                            offlineDbService.getAttributeTypes().then(function (attributeTypes) {
                                 mapAttributesToPostFormat(response.data.person.attributes, attributeTypes);
                                 offlineDbService.createPatient({patient: response.data}).then(function () {
                                     deferrable.resolve();
@@ -126,6 +147,9 @@ angular.module('bahmni.common.offline')
                                 }
                             });
                             break;
+                        case 'offline-concepts':
+                            offlineDbService.insertConceptAndUpdateHierarchy({"results": [response.data]});
+                            break;
                         case 'addressHierarchy':
                         case 'parentAddressHierarchy':
                             offlineDbService.insertAddressHierarchy(response.data).then(function () {
@@ -139,7 +163,7 @@ angular.module('bahmni.common.offline')
                     return deferrable.promise;
                 };
 
-                var mapAttributesToPostFormat = function(attributes, attributeTypes){
+                var mapAttributesToPostFormat = function (attributes, attributeTypes) {
                     angular.forEach(attributes, function (attribute) {
                         if (!attribute.voided) {
                             var foundAttribute = _.find(attributeTypes, function (attributeType) {
@@ -163,6 +187,9 @@ angular.module('bahmni.common.offline')
                     }else if (event.category == "addressHierarchy") {
                         markerName = "AddressHierarchyData";
                         catchmentNumber = offlineService.getItem("addressCatchmentNumber");
+                    }else if (event.category == "offline-concepts") {
+                        markerName = "ConceptData";
+                        catchmentNumber = null;
                     }else{
                         markerName = "TransactionalData";
                         catchmentNumber = offlineService.getItem('catchmentNumber');
@@ -174,7 +201,8 @@ angular.module('bahmni.common.offline')
                 sync: sync,
                 syncTransactionalData: syncTransactionalData,
                 syncAddressHierarchyEntries: syncAddressHierarchyEntries,
-                syncParentAddressEntries: syncParentAddressEntries
+                syncParentAddressEntries: syncParentAddressEntries,
+                syncConcepts: syncConcepts
             };
         }
     ]);

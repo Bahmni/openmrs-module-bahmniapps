@@ -24,7 +24,7 @@ describe('localeService', function () {
     it('should fetch allowed list of locales for the offline app', function(done){
 
         var localesList = {
-            "value" : "en, es, fr"
+            "data" : "en, es, fr"
         };
 
         offlineDbService.getReferenceData.and.returnValue(specUtil.respondWithPromise($q, localesList));
