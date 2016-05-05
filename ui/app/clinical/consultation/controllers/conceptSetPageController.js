@@ -19,8 +19,8 @@ angular.module('bahmni.clinical')
                     spinner.forPromise(conceptSetService.getConcept({
                         name: "All Observation Templates",
                         v: "custom:" + customRepresentation
-                    }).success(function (response) {
-                        var allTemplates = response.results[0].setMembers;
+                    }).then(function (response) {
+                        var allTemplates = response.data.results[0].setMembers;
                         createConceptSections(allTemplates);
                         $scope.consultation.selectedObsTemplate = getSelectedObsTemplate(allConceptSections);
                         if (!!$state.params.programUuid) {

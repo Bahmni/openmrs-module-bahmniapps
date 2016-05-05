@@ -71,7 +71,7 @@ angular.module('bahmni.common.domain')
                 encounterData.visitType = encounterData.visitType || 'Field';
                 this.buildEncounter(encounterData);
                 return getDefaultEncounterType().then(function (encounterType) {
-                    encounterData.encounterType = encounterData.encounterType || encounterType.value;
+                    encounterData.encounterType = encounterData.encounterType || encounterType.data;
                     return encounterData;
                 }).then(function(encounterData) {
                     return offlineEncounterService.create(encounterData);

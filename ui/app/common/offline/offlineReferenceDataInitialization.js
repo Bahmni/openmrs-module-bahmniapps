@@ -14,7 +14,7 @@ angular.module('bahmni.common.offline')
                                                     Bahmni.Common.Constants.unAuthenticatedReferenceDataMap) :
                                                 Bahmni.Common.Constants.unAuthenticatedReferenceDataMap;
                     var length = Object.keys(referenceDataMap).length;
-                    var x = 0;
+                    var count = 0;
                     var deferred = $q.defer();
                     angular.forEach(referenceDataMap, function(referenceData, url){
 
@@ -25,17 +25,18 @@ angular.module('bahmni.common.offline')
                                 url: requestUrl,
                                 headers: {
                                     'If-None-Match': result ? result.etag : undefined
-                                }
+                                },
+                                withCredentials: true
                             };
                             if(referenceData == 'LocaleList' || referenceData == 'DefaultEncounterType') {
                                 req.headers.Accept = 'text/plain';
                             }
                              $http(req).then(function (response) {
-                                x++;
+                                count++;
                                 if(response.status == 200) {
                                     var eTag = response.headers().etag;
                                     return offlineDbService.insertReferenceData(referenceData, response.data, eTag).then(function(){
-                                        if(x == length) {
+                                        if(count == length) {
                                             deferred.resolve({});
                                         }
                                     });
@@ -50,8 +51,8 @@ angular.module('bahmni.common.offline')
                                     deferred.resolve({"data": Bahmni.Common.Constants.offlineErrorMessages.networkError});
                                 }
                                 else {
-                                    x++;
-                                    if (x == length) {
+                                    count++;
+                                    if(count == length) {
                                         deferred.resolve({});
                                     }
                                 }

@@ -140,9 +140,9 @@ angular.module('bahmni.common.offline')
             var getActiveEncounter = function(params){
                 var deferred = $q.defer();
                 getReferenceData("encounterSessionDuration").then(function(encounterSessionDurationData){
-                    var encounterSessionDuration = encounterSessionDurationData.value;
+                    var encounterSessionDuration = encounterSessionDurationData.data;
                     getReferenceData("DefaultEncounterType").then(function(defaultEncounterType) {
-                        var encounterType = defaultEncounterType ? defaultEncounterType.value : null;
+                        var encounterType = defaultEncounterType ? defaultEncounterType.data : null;
                         var response = AndroidOfflineService.findActiveEncounter(JSON.stringify({patientUuid: params.patientUuid, providerUuid: params.providerUuids[0], encounterType: encounterType}), encounterSessionDuration);
                         response = response != undefined ? JSON.parse(response) : response;
                         deferred.resolve(response);
@@ -158,6 +158,29 @@ angular.module('bahmni.common.offline')
 
             var getObservationsFor = function(params) {
                 return $q.when({"data": []});
+            };
+
+            var insertConceptAndUpdateHierarchy = function(data, parent) {
+                if(!parent) {
+                    parent = null;
+                }
+                else{
+                    parent = JSON.stringify(parent);
+                }
+                AndroidConceptDbService.insertConceptAndUpdateHierarchy(JSON.stringify(data), parent);
+                return $q.when({})
+            };
+
+            var getConcept = function(conceptUuid){
+                var value = AndroidConceptDbService.getConcept(conceptUuid);
+                value = value != undefined ? JSON.parse(value) : value;
+                return $q.when(value);
+            };
+
+            var getConceptByName = function(conceptName){
+                var value = AndroidConceptDbService.getConceptByName(conceptName);
+                value = value != undefined ? JSON.parse(value) : value;
+                return $q.when(value);
             };
 
             return {
@@ -183,7 +206,10 @@ angular.module('bahmni.common.offline')
                 getVisitByUuid: getVisitByUuid,
                 getActiveEncounter: getActiveEncounter,
                 getVisitUuidsByPatientUuid: getVisitUuidsByPatientUuid,
-                getObservationsFor: getObservationsFor
+                getObservationsFor: getObservationsFor,
+                insertConceptAndUpdateHierarchy: insertConceptAndUpdateHierarchy,
+                getConcept: getConcept,
+                getConceptByName: getConceptByName
             }
         }
     ]);

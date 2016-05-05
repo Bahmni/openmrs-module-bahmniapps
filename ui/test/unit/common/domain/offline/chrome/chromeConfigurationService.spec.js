@@ -22,7 +22,7 @@ describe('configurationService', function () {
 
     it('should fetch encounterConfig from love field database', function (done) {
         var encounterConfig = {
-            "value": {
+            "data": {
                 "visitTypes": {
                     "emergency": "d77c4b69-7d55-11e5-acdf-90fba67c4298",
                     "inpatient": "d5d88349-7d55-11e5-acdf-90fba67c4298",
@@ -32,7 +32,7 @@ describe('configurationService', function () {
         };
         offlineDbService.getReferenceData.and.returnValue(specUtil.respondWithPromise($q, encounterConfig));
         configurationservice.getConfigurations(['encounterConfig']).then(function(result){
-            expect(result.encounterConfig.visitTypes).toBe(encounterConfig.value.visitTypes);
+            expect(result.encounterConfig.visitTypes).toBe(encounterConfig.data.visitTypes);
             done();
         });
     });
@@ -41,7 +41,7 @@ describe('configurationService', function () {
     it('should fetch patientAttributesConfig from offline db', function (done) {
 
         var patientAttributesConfig = {
-            "value": {
+            "data": {
                 "results": [
                     {
                         "name": "fatherName",
@@ -67,7 +67,7 @@ describe('configurationService', function () {
 
     it('should fetch patientConfig from offline db', function (done) {
         var patientConfig = {
-            "value": {
+            "data": {
                 "results": [
                     {
                         personAttributeTypes: [{
@@ -94,7 +94,7 @@ describe('configurationService', function () {
 
     it('should fetch dosageFrequencyConfig from offline db', function (done) {
         var dosageFrequencyConfig = {
-            "value": {
+            "data": {
                 "results": [
                     {
                         uuid: "818f75fe-3f10-11e4-adec-0800271c1b75",
@@ -113,7 +113,7 @@ describe('configurationService', function () {
 
     it('should fetch dosageInstructionConfig from  offline db', function (done) {
         var dosageInstructionConfig = {
-            "value": {
+            "data": {
                 "results": [
                     {
                         name: { display: "AC",
@@ -136,7 +136,7 @@ describe('configurationService', function () {
 
     it('should fetch stoppedOrderReasonConfig from  offline db', function (done) {
         var stoppedOrderReasonConfig = {
-            "value": {
+            "data": {
                 "results": [
                     {
                         name: { display: "Stopped Order Reason",
@@ -159,7 +159,7 @@ describe('configurationService', function () {
 
     it('should fetch consultationNoteConfig from  offline db', function (done) {
         var consultationNoteConfig = {
-            "value": {
+            "data": {
                 "results": [
                     {
                         name: { display: "Consultation Note Config",
@@ -181,7 +181,7 @@ describe('configurationService', function () {
 
     it('should fetch labOrderNotesConfig from  offline db', function (done) {
         var labOrderNotesConfig = {
-            "value": {
+            "data": {
                 "results": [
                     {
                         name: { display: "labOrder Note Config",
@@ -203,7 +203,7 @@ describe('configurationService', function () {
 
     it('should fetch radiologyImpressionConfig from  offline db', function (done) {
         var radiologyImpressionConfig = {
-            "value": {
+            "data": {
                 "results": [
                     {
                         name: { display: "Radiology Impression Config",
@@ -225,7 +225,7 @@ describe('configurationService', function () {
 
     it('should fetch addressLevels from  offline db', function (done) {
         var addressLevels = {
-            "value": {
+            "data": {
                 "results": [
                     {
                         name: "State",
@@ -244,7 +244,7 @@ describe('configurationService', function () {
 
     it('should fetch allTestsAndPanelsConcept from offline db', function (done) {
         var allTestsAndPanelsConcept = {
-            "value": {
+            "data": {
                 "results": [
                     {
                         uuid: "41e09efb-eca2-48b1-9aff-0b34864e0aad",
@@ -262,7 +262,7 @@ describe('configurationService', function () {
 
     it('should fetch identifierSourceConfig from offline db', function (done) {
         var identifierSourceConfig = {
-            "value": {
+            "data": {
                 "results": [
                     {
                         uuid: "41e09efb-eca2-48b1-9aff-0b34864e0aad",
@@ -280,7 +280,7 @@ describe('configurationService', function () {
 
     it('should fetch relationshipTypes from offline db', function (done) {
         var relationshipTypeConfig = {
-            "value": {
+            "data": {
                 "results": [
                     {
                         uuid: "41e09efb-eca2-48b1-9aff-0b348e0aad",
@@ -298,7 +298,7 @@ describe('configurationService', function () {
 
     it('should fetch genderMap from offline db', function (done) {
         var genderMap = {
-            "value": {
+            "data": {
                 "results": {
                     M: "Male",
                     F: "Female",
@@ -316,7 +316,7 @@ describe('configurationService', function () {
 
     it('should fetch loginLocationToVisitTypeMapping from offline db', function (done) {
         var loginLocationToVisitTypeMapping = {
-            "value": {
+            "data": {
                 "results": [
                     {
                         uuid: "41e09efb-eca2-48b1-9aff-0b34864e0aad",
@@ -336,7 +336,7 @@ describe('configurationService', function () {
 
     it('should fetch loginLocationToEncounterTypeMapping from offline db', function (done) {
         var loginLocationToEncounterTypeMapping = {
-            "value": {
+            "data": {
                 "results": [
                     {
                         "entity": {
@@ -354,8 +354,8 @@ describe('configurationService', function () {
 
         offlineDbService.getReferenceData.and.returnValue(specUtil.respondWithPromise($q, loginLocationToEncounterTypeMapping));
         configurationservice.getConfigurations(['loginLocationToEncounterTypeMapping']).then(function (result) {
-            expect(result.loginLocationToEncounterTypeMapping.value.results.length).toBe(2);
-            expect(result.loginLocationToEncounterTypeMapping.value.results[0].entity.name).toBe("login location");
+            expect(result.loginLocationToEncounterTypeMapping.results.length).toBe(2);
+            expect(result.loginLocationToEncounterTypeMapping.results[0].entity.name).toBe("login location");
             done();
         });
     });

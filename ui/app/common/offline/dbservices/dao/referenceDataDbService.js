@@ -21,7 +21,7 @@ angular.module('bahmni.common.offline')
 
             var row = referenceData.createRow({
                 key: referenceDataKey,
-                value: data,
+                data: data,
                 etag: eTag
             });
 
@@ -30,7 +30,7 @@ angular.module('bahmni.common.offline')
                     case 'PersonAttributeType':
                         return patientAttributeDbService.insertAttributeTypes(db, data.results);
                     case 'LoginLocations':
-                        return locationDbService.insertLocations(db, data.results);
+                            return locationDbService.insertLocations(db, data.results);
                     default :
                         return;
                 }
