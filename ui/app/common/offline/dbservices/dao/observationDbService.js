@@ -3,26 +3,27 @@
 angular.module('bahmni.common.offline')
     .service('observationDbService', function () {
 
-        var insertObservationData = function (db, patientUuid, visitUuid, observationData) {
-            observationData = JSON.parse(JSON.stringify(observationData));
-            var uuid = observationData.uuid;
-            var patientUuid = patientUuid;
-            var encounterUuid = observationData.encounterUuid;
-            var visitUuid = visitUuid;
-            var conceptName = observationData.concept.name;
+        var insertObservationsData = function (db, patientUuid, visitUuid, observationsDataList) {
+            observationsDataList = JSON.parse(JSON.stringify(observationsDataList));
             var observationTable = db.getSchema().table('observation');
-
-            var row = observationTable.createRow({
-                uuid: uuid,
-                patientUuid: patientUuid,
-                encounterUuid: encounterUuid,
-                visitUuid: visitUuid,
-                conceptName: conceptName,
-                observationJson: observationData
+            var queries = [];
+            _.each(observationsDataList, function (observationData) {
+                if (observationData.groupMembers.length) {
+                    var row = observationTable.createRow({
+                        uuid: observationData.uuid,
+                        patientUuid: patientUuid,
+                        encounterUuid: observationData.encounterUuid,
+                        visitUuid: visitUuid,
+                        conceptName: observationData.concept.name,
+                        observationJson: observationData
+                    });
+                    queries.push(db.insertOrReplace().into(observationTable).values([row]));
+                }
+                else
+                    removeObservationByObservationUuid(db, observationData.uuid);
             });
-            return db.insertOrReplace().into(observationTable).values([row]).exec().then(function () {
-                return observationData;
-            });
+            var tx = db.createTransaction();
+            return tx.exec(queries);
         };
 
         var getObservationsFor = function (db, params) {
@@ -38,8 +39,20 @@ angular.module('bahmni.common.offline')
                 });
         };
 
+        var removeObservationByObservationUuid = function(db, observationUuid){
+            var obs = db.getSchema().table('observation');
+            return db.delete()
+                .from(obs)
+                .where(obs.uuid.eq(observationUuid))
+                .exec()
+                .then(function () {
+                    return observationUuid;
+                });
+        }
+
         return {
-            insertObservationData: insertObservationData,
-            getObservationsFor: getObservationsFor
+            getObservationsFor: getObservationsFor,
+            removeObservationByObservationUuid: removeObservationByObservationUuid,
+            insertObservationsData: insertObservationsData
         }
     });
