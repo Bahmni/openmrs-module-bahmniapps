@@ -183,6 +183,12 @@ angular.module('bahmni.common.offline')
                 return $q.when(value);
             };
 
+            var getEncounterByEncounterUuid = function(encounterUuid){
+                var response = AndroidOfflineService.findEncounterByEncounterUuid(encounterUuid);
+                response = response != undefined ? JSON.parse(response) : response;
+                return $q.when(response);
+            };
+
             return {
                 init: init,
                 initSchema: initSchema,
@@ -209,7 +215,8 @@ angular.module('bahmni.common.offline')
                 getObservationsFor: getObservationsFor,
                 insertConceptAndUpdateHierarchy: insertConceptAndUpdateHierarchy,
                 getConcept: getConcept,
-                getConceptByName: getConceptByName
+                getConceptByName: getConceptByName,
+                getEncounterByEncounterUuid: getEncounterByEncounterUuid
             }
         }
     ]);

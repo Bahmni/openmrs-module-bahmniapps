@@ -41,7 +41,7 @@ angular.module('bahmni.common.offline')
                             "Content-Type": "application/json"
                         } };
 
-                    if(event.type && event.type == "encounter"){
+                    if(event.data.type && event.data.type == "encounter"){
                         return $http.post(Bahmni.Common.Constants.bahmniEncounterUrl, response.encounter,config);
                     }
                     else{

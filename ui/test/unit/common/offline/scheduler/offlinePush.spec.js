@@ -105,7 +105,7 @@ describe('Offline Push Tests', function () {
     });
 
     it("should push encounter data from event queue", function(done) {
-        event.type = "encounter";
+        event.data = {type : "encounter"};
         httpBackend.expectPOST(Bahmni.Common.Constants.bahmniEncounterUrl).respond(200, {});
         offlinePush().then(function(){
             expect(eventQueueMock.removeFromQueue).toHaveBeenCalled();
