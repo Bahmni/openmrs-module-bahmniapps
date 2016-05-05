@@ -230,11 +230,11 @@ angular.module('bahmni.common.conceptSet')
                     });
                 });
 
-                $scope.$root.$on("event:addMore", function (event, observation) {
+                var deregisterAddMove = $scope.$root.$on("event:addMore", function (event, observation) {
                     updateFormConditions([observation], observation)
                 });
 
-                $scope.$root.$on("event:observationUpdated-" + conceptSetName, function (event, conceptName, rootObservation) {
+                var deregisterObservationUpdated = $scope.$root.$on("event:observationUpdated-" + conceptSetName, function (event, conceptName, rootObservation) {
                     var formName = rootObservation.concept.name;
                     var allObsValues = Bahmni.Common.Obs.ObservationUtil.flatten(rootObservation);
                     var formCondition = Bahmni.ConceptSet.FormConditions.rules && Bahmni.ConceptSet.FormConditions.rules[conceptName];
@@ -251,6 +251,11 @@ angular.module('bahmni.common.conceptSet')
                         processConditions(flattenedObs, conditions.enable, false);
                         processConditions(flattenedObs, conditions.disable, true);
                     }
+                });
+
+                $scope.$on('$destroy', function() {
+                    deregisterObservationUpdated();
+                    deregisterAddMove();
                 });
 
                 var processConditions = function (flattenedObs, fields, disable, error) {

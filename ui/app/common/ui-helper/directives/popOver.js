@@ -38,17 +38,27 @@ angular.module('bahmni.common.uiHelper')
                         event.stopImmediatePropagation();
                     }
                 });
+
+                $scope.$on('$destroy', function() {
+                    $(document).off('click', docClickHandler);
+                });
             };
 
             this.registerTargetElement = function(targetElement) {
                 targetElement.hide();
                 $scope.targetElements.push(targetElement);
             };
-            $(document).on('click','.reg-wrapper', function () {
+            var hideOrShowTargetElements = function () {
                 if ($scope.isTargetOpen) {
                     $scope.isTargetOpen = false;
                     hideTargetElements(0);
                 }
+            };
+
+            $(document).on('click','.reg-wrapper', hideOrShowTargetElements);
+
+            $scope.$on('$destroy', function() {
+                $(document).off('click', '.reg-wrapper', hideOrShowTargetElements);
             });
         };
 

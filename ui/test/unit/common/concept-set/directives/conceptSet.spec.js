@@ -90,5 +90,5 @@ describe("conceptSet", function () {
         scope.$digest();
         expect(compiledElementScope.hideAbnormalButton).toBeTruthy();
 
-    })
+    });
 });
