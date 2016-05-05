@@ -177,6 +177,8 @@ Bahmni.Common = Bahmni.Common || {};
         serverErrorMessages: serverErrorMessages,
         currentUser:'bahmni.user',
         retrospectivePrivilege:'app:clinical:retrospective',
+        locationPickerPrivilege:'app:clinical:locationpicker',
+        onBehalfOfPrivilege:'app:clinical:onbehalf',
         nutritionalConceptName:'Nutritional Values',
         messageForNoObservation: "No observations captured for this visit.",
         messageForNoDisposition: "NO_DISPOSTIONS_AVAILABLE_MESSAGE_KEY",

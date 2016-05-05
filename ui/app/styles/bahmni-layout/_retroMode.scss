@@ -144,11 +144,10 @@ $retroModeColor:  #0E74AF;
   float: left;
   margin: 6px 0;
   div.input-container{
-    float: left;
     width: 210px;
     padding-left: 10px;
+    margin-bottom: 10px;
     &.date-widget-container{
-      padding-top: 8px;
     }
     select{
       width: 100%;
@@ -184,4 +183,10 @@ $retroModeColor:  #0E74AF;
 }
 .ui-autocomplete{
   z-index: 10001;
+}
+
+.test.ngdialog.ngdialog-theme-default {
+  .ngdialog-content{
+    width: 245px;
+  }
 }

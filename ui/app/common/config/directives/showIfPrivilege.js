@@ -6,15 +6,16 @@ angular.module('bahmni.common.config')
             scope : {
                 showIfPrivilege :"@"
             },
-            link : function(scope,element){
+            link : function(scope, element){
+                var privileges = scope.showIfPrivilege.split(',');
                 var requiredPrivilege = false;
                 if($rootScope.currentUser) {
-                    requiredPrivilege = _.find($rootScope.currentUser.privileges, function (privilege) {
-                        return scope.showIfPrivilege === privilege.name;
-                    });
+                    var allTypesPrivileges = _.map($rootScope.currentUser.privileges, _.property('name'));
+                    var intersect = _.intersectionWith(allTypesPrivileges, privileges, _.isEqual);
+                    intersect.length > 0 ? requiredPrivilege = true : requiredPrivilege = false;
                 }
                 if (!requiredPrivilege) {
-                    element.hide()
+                    element.hide();
                 }
             }
         }

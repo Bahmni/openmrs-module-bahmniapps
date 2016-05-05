@@ -7,6 +7,8 @@ angular.module('bahmni.clinical')
             $scope.maxStartDate = DateUtil.getDateWithoutTime(DateUtil.today());
             var selectedProvider = {};
             $scope.retrospectivePrivilege = Bahmni.Common.Constants.retrospectivePrivilege;
+            $scope.locationPickerPrivilege = Bahmni.Common.Constants.locationPickerPrivilege;
+            $scope.onBehalfOfPrivilege = Bahmni.Common.Constants.onBehalfOfPrivilege;
             $scope.selectedLocationUuid = {};
             $scope.isOfflineApp = offlineService.isOfflineApp();
 
