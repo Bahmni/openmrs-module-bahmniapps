@@ -83,9 +83,7 @@ angular.module('bahmni.common.domain')
             };
 
             configurationFunctions.loginLocationToEncounterTypeMapping =  function () {
-                    return offlineDbService.getReferenceData('LoginLocationToEncounterTypeMapping').then(function (result){
-                        return {"data" : result};
-                    });
+                return offlineDbService.getReferenceData('LoginLocationToEncounterTypeMapping')
             };
 
 

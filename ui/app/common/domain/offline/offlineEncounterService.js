@@ -70,7 +70,7 @@ angular.module('bahmni.common.domain')
                 encounterData.encounterDateTime = encounterData.encounterDateTime || Bahmni.Common.Util.DateUtil.now();
                 encounterData.visitType = encounterData.visitType || 'Field';
                 return getDefaultEncounterType().then(function (encounterType) {
-                    encounterData.encounterType = encounterData.encounterType || encounterType.value;
+                    encounterData.encounterType = encounterData.encounterType || encounterType.data;
                     return encounterData;
                 }).then(function(encounterData) {
                     return offlineEncounterService.create(encounterData);
