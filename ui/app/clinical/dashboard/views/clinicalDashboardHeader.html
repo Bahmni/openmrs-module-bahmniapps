@@ -78,7 +78,7 @@
                 <div class="dashboard-date-picker" ng-controller="PatientListHeaderController">
                     <div class="retro-date-widget-wrapper">
                         <div class="retro-date-widget-header">
-                            <button ng-click="popUpHandler()">{{ getTitle() }}</button>
+                            <button ng-click="popUpHandler()" show-if-privilege="{{retrospectivePrivilege}},{{onBehalfOfPrivilege}},{{locationPickerPrivilege}}" ng-if="getTitle()">{{ getTitle() }}</button>
 
                         </div>
                         <div class="offline-sync">
