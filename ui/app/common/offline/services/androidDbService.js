@@ -140,9 +140,9 @@ angular.module('bahmni.common.offline')
             var getActiveEncounter = function(params){
                 var deferred = $q.defer();
                 getReferenceData("encounterSessionDuration").then(function(encounterSessionDurationData){
-                    var encounterSessionDuration = encounterSessionDurationData.value;
+                    var encounterSessionDuration = encounterSessionDurationData.data;
                     getReferenceData("DefaultEncounterType").then(function(defaultEncounterType) {
-                        var encounterType = defaultEncounterType ? defaultEncounterType.value : null;
+                        var encounterType = defaultEncounterType ? defaultEncounterType.data : null;
                         var response = AndroidOfflineService.findActiveEncounter(JSON.stringify({patientUuid: params.patientUuid, providerUuid: params.providerUuids[0], encounterType: encounterType}), encounterSessionDuration);
                         response = response != undefined ? JSON.parse(response) : response;
                         deferred.resolve(response);

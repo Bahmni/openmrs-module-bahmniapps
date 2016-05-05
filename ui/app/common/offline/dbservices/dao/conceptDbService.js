@@ -78,7 +78,7 @@ angular.module('bahmni.common.offline')
                     deferred.resolve();
                 var count = 0;
                 _.each(concept.setMembers, function (child) {
-                    insertConceptAndUpdateHierarchy({"results": [child]}, [concept.uuid]).then(function () {
+                    insertConcept({"results": [child]}, [concept.uuid]).then(function () {
                         count++;
                         if (count == length) {
                             deferred.resolve();

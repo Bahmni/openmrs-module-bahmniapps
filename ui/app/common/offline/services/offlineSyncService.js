@@ -3,15 +3,26 @@
 angular.module('bahmni.common.offline')
     .service('offlineSyncService', ['eventLogService', 'offlineDbService', '$q', 'offlineService', 'androidDbService',
         function (eventLogService, offlineDbService, $q, offlineService, androidDbService) {
-            
+
                 var sync = function () {
                     if (offlineService.isAndroidApp()) {
                         offlineDbService = androidDbService;
                     }
-                    return syncParentAddressEntries().then(function(){
-                        return syncAddressHierarchyEntries().then(function(){
-                            return  syncTransactionalData();
-                        });
+                    return syncConcepts().then(function () {
+                        return syncParentAddressEntries().then(function () {
+                            return syncAddressHierarchyEntries().then(function () {
+                                return syncTransactionalData();
+                            });
+                        })
+                    });
+                };
+
+                var syncConcepts = function() {
+                    return offlineDbService.getMarker("ConceptData").then(function (marker) {
+                        if (marker == undefined) {
+                            marker = {}
+                        }
+                        return syncConceptsForMarker(marker)
                     });
                 };
 
