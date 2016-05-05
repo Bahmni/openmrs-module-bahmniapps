@@ -42,7 +42,7 @@ Bahmni.Common.Obs.Observation = (function () {
                 return this.value ? Bahmni.Common.Util.DateUtil.formatDateWithoutTime(this.value) : "";
             }
             value = this.value;
-            var displayValue = value && (value.shortName || value.displayString || value.name || value);
+            var displayValue = value && (value.shortName || (value.name && (value.name.name || value.name)) || value);
             if (this.duration) {
                 displayValue = displayValue + " " + this.getDurationDisplayValue();
             }

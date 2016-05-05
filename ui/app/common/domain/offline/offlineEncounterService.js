@@ -9,6 +9,7 @@ angular.module('bahmni.common.domain')
                 encounter.observations.forEach(function (obs) {
                     obs.uuid = obs.uuid || Bahmni.Common.Offline.UUID.generateUuid();
                     obs.encounterUuid = encounter.encounterUuid;
+                    obs.encounterDateTime = encounter.encounterDateTime;
                     stripExtraInfo(obs);
                 });
 
@@ -66,9 +67,9 @@ angular.module('bahmni.common.domain')
             this.create = function (encounterData) {
                 encounterData.encounterUuid = encounterData.encounterUuid || Bahmni.Common.Offline.UUID.generateUuid();
                 encounterData.visitUuid = encounterData.visitUuid || null;
-                this.buildEncounter(encounterData);
                 encounterData.encounterDateTime = encounterData.encounterDateTime || Bahmni.Common.Util.DateUtil.now();
                 encounterData.visitType = encounterData.visitType || 'Field';
+                this.buildEncounter(encounterData);
                 return getDefaultEncounterType().then(function (encounterType) {
                     encounterData.encounterType = encounterData.encounterType || encounterType.value;
                     return encounterData;

@@ -67,13 +67,9 @@ angular.module('bahmni.common.offline')
             };
 
             var insertEncounterData = function (encounterData) {
-                return encounterDbService.insertEncounterData(db, encounterData).then(function (patientUuid) {
-                    var callback = function () {
+                return encounterDbService.insertEncounterData(db, encounterData).then(function () {
+                    observationDbService.insertObservationsData(db, encounterData.patientUuid, encounterData.visitUuid, encounterData.observations).then(function () {
                         return encounterData;
-                    }
-                    var asynCallsDone = _.after(encounterData.observations.length, callback);
-                     _.each(encounterData.observations, function (observationData) {
-                         observationDbService.insertObservationData(db, encounterData.patientUuid, encounterData.visitUuid, observationData).then(asynCallsDone)
                     });
                 });
             };
