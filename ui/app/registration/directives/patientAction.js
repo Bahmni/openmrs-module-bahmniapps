@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('bahmni.registration')
-    .directive('patientAction', ['$window', '$location', '$state', 'spinner', '$rootScope', '$stateParams', '$bahmniCookieStore', 'appService', 'visitService', 'sessionService', 'encounterService', 'messagingService', '$translate',
-        function ($window, $location, $state, spinner, $rootScope, $stateParams, $bahmniCookieStore, appService, visitService, sessionService, encounterService, messagingService, $translate) {
+    .directive('patientAction', ['$window', '$location', '$state', 'spinner', '$rootScope', '$stateParams', '$bahmniCookieStore', 'appService', 'visitService', 'sessionService', 'encounterService', 'messagingService', '$translate', 'offlineService',
+        function ($window, $location, $state, spinner, $rootScope, $stateParams, $bahmniCookieStore, appService, visitService, sessionService, encounterService, messagingService, $translate, offlineService) {
             var controller = function ($scope) {
                 var self = this;
                 var uuid = $stateParams.patientUuid;
@@ -12,10 +12,13 @@ angular.module('bahmni.registration')
                 defaultVisitType = defaultVisitType != null ? defaultVisitType : appService.getAppDescriptor().getConfigValue('defaultVisitType');
                 var showStartVisitButton = appService.getAppDescriptor().getConfigValue("showStartVisitButton");
                 showStartVisitButton = showStartVisitButton != null ? showStartVisitButton : true;
+                var isOfflineApp = offlineService.isOfflineApp();
 
 
                 function setForwardActionKey() {
-                    if (editActionsConfig.length == 0) {
+                    if (editActionsConfig.length == 0 && isOfflineApp) {
+                        $scope.forwardActionKey = undefined;
+                    } else if (editActionsConfig.length == 0) {
                         $scope.forwardActionKey = self.hasActiveVisit ? 'enterVisitDetails' : 'startVisit';
                     } else {
                         $scope.actionConfig = editActionsConfig[0];
@@ -36,6 +39,7 @@ angular.module('bahmni.registration')
                     };
                     spinner.forPromise(visitService.search(searchParams).then(function (data) {
                         self.hasActiveVisit = data.data.results && (data.data.results.length > 0);
+                        self.hasActiveVisit = self.hasActiveVisit ? self.hasActiveVisit : (isOfflineApp ? true: false);
                         setForwardActionKey();
                     }));
                 };
