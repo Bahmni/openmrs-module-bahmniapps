@@ -66,8 +66,8 @@ angular.module('bahmni.offline', ['ui.router',  'bahmni.common.uiHelper', 'bahmn
                 controller: function ($stateParams, $rootScope, $state, offlineService) {
                     if ($stateParams.deviceType === 'chrome-app' || $stateParams.deviceType === 'android') {
                         offlineService.setAppPlatform($stateParams.deviceType);
+                        $state.go('initScheduler');
                     }
-                    $state.go('initScheduler');
                 }
             }).state('login',
             {
