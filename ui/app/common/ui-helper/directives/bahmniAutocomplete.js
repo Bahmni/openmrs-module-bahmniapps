@@ -63,12 +63,12 @@ angular.module('bahmni.common.uiHelper')
             }
         });
 
-        $(element).on('change', function() {
-            validateIfNeeded($(element).val()); }
-        );
+        element.on('change', function(e) {
+            validateIfNeeded(element.val()); 
+        });
 
-        $(element).keyup(function() {
-            validateIfNeeded($(element).val());
+        element.on('keyup', function(e) {
+            validateIfNeeded(element.val());
             scope.$apply();
         });
 
@@ -76,6 +76,7 @@ angular.module('bahmni.common.uiHelper')
             ngModelCtrl.$setValidity('selection', !scope.isInvalid);
             formElement.setCustomValidity(scope.isInvalid ? validationMessage : '');
         });
+
     };
 
     return {
