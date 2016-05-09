@@ -208,6 +208,7 @@ If each of a table rows have multiple possible actions associated with them, use
         box-sizing: border-box;
         border-right: none;
         height:100%;
+        padding-left: 10px;
         @media (max-width : 1024px){
           width: 170px;
         }
@@ -281,13 +282,13 @@ If each of a table rows have multiple possible actions associated with them, use
         }
       }
       &.drugNameStopForm{
-        padding: 6px 5px 43px;
+        padding: 6px 10px 43px;
       }
       &.drugNameAddNote{
         padding: 6px 10px 31px;
       }
       &.drugNameStopFormAddNote{
-        padding: 6px 5px 85px;
+        padding: 6px 10px 85px;
       }
       &.buttonColumn{
         position: absolute;
