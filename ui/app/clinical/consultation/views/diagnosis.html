@@ -15,7 +15,7 @@
                             <div class="col col1">
                                 <input ng-model="diagnosis.codedAnswer.name" type="text" name="name" id="name-{{$index}}"
                                        bahmni-autocomplete source="getDiagnosis"
-                                       response-map="cleanOutDiagnosisList" on-select="getAddNewDiagnosisMethod($index)"
+                                       response-map="cleanOutDiagnosisList" on-select="getAddNewDiagnosisMethod(diagnosis)"
                                        ng-class="{
                                             illegalValue: diagnosis.codedAnswer.name && !diagnosis.codedAnswer.uuid &&
                                                 !diagnosis.isNonCodedAnswer && allowOnlyCodedDiagnosis,
