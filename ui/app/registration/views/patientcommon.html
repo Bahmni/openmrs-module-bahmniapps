@@ -197,7 +197,7 @@
         <div patient-relationship patient="patient" ng-show="displayRelationshipInformation"
              ng-if="::relationshipTypes"></div>
     </div>
-    <div class="box-container">
+    <div class="box-container" ng-if="deathConceptExists">
         <legend class="additional-attribute" toggle="displayDeathInformation">
           <span>
               <i class="fa fa-caret-right"></i>
