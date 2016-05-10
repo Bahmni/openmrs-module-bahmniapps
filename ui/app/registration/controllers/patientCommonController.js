@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('bahmni.registration')
-    .controller('PatientCommonController', ['$scope', '$rootScope', '$http', 'patientAttributeService', 'appService',
-        function ($scope, $rootScope, $http, patientAttributeService, appService) {
+    .controller('PatientCommonController', ['$scope', '$rootScope', '$http', 'patientAttributeService', 'appService','spinner',
+        function ($scope, $rootScope, $http, patientAttributeService, appService, spinner) {
 
             var autoCompleteFields = appService.getAppDescriptor().getConfigValue("autoCompleteFields", []);
             var showCasteSameAsLastNameCheckbox = appService.getAppDescriptor().getConfigValue("showCasteSameAsLastNameCheckbox");
@@ -10,32 +10,37 @@ angular.module('bahmni.registration')
             $scope.genderCodes = Object.keys($rootScope.genderMap);
             $scope.dobMandatory = appService.getAppDescriptor().getConfigValue("dobMandatory") || false;
 
+
+
             $scope.getDeathConcepts = function () {
-                var deathConcept;
-                $http({
+                return $http({
                     url: Bahmni.Common.Constants.globalPropertyUrl,
                     method: 'GET',
                     params: {
                         property: 'concept.reasonForDeath'
                     },
                     withCredentials: true,
-                    transformResponse: [function(data){
-                        deathConcept = data;
-                        $http.get(Bahmni.Common.Constants.conceptSearchByFullNameUrl, {
-                            params: {
-                                name: deathConcept,
-                                v: "custom:(uuid,name,set,setMembers:(uuid,display,name:(uuid,name),retired))"
-                            },
-                            withCredentials: true
-                        }).then(function (results) {
-                            $scope.deathConcepts = results.data.results[0]!=null ? results.data.results[0].setMembers:[];
-                            $scope.deathConcepts = filterRetireDeathConcepts($scope.deathConcepts);
-                        })
+                    transformResponse: [function(deathConcept){
+                        if(_.isEmpty(deathConcept)) {
+                            $scope.deathConceptExists = false;
+                        }
+                        else{
+                            $http.get(Bahmni.Common.Constants.conceptSearchByFullNameUrl, {
+                                params: {
+                                    name: deathConcept,
+                                    v: "custom:(uuid,name,set,setMembers:(uuid,display,name:(uuid,name),retired))"
+                                },
+                                withCredentials: true
+                            }).then(function (results) {
+                                $scope.deathConceptExists = !!results.data.results.length;
+                                $scope.deathConcepts = results.data.results[0] != null ? results.data.results[0].setMembers : [];
+                                $scope.deathConcepts = filterRetireDeathConcepts($scope.deathConcepts);
+                            })
+                        }
                     }]
                 });
-
             };
-
+            spinner.forPromise($scope.getDeathConcepts());
             var filterRetireDeathConcepts = function(deathConcepts){
                 return _.filter(deathConcepts,function(concept){
                     return !concept.retired;
