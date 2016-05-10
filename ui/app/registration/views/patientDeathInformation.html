@@ -8,7 +8,7 @@
                 <input type="date" ng-model="patient.deathDate" ng-change="selectIsDead()" max="{{::today}}"/>
             </div>
         </div>
-        <div class="col col2" ng-init="getDeathConcepts()">
+        <div class="col col2">
             <div class="field-attribute">
                 <label class="till-text">{{ ::'REGISTRATION_LABEL_REASON_FOR_DEATH' | translate}}</label>
                 <span class="asterick" ng-show="patient.dead">*</span>
