@@ -114,9 +114,11 @@ angular.module('bahmni.common.offline')
 
 
             var insertEncounterData = function (encounterData) {
-                var response = AndroidOfflineService.insertEncounterData(JSON.stringify(encounterData));
-                response = response != undefined ? JSON.parse(response) : response;
-                return $q.when(response);
+                var encounter = AndroidOfflineService.insertEncounterData(JSON.stringify(encounterData));
+                return insertObservationData(encounterData.patientUuid, encounterData.visitUuid, encounterData.observations).then(function () {
+                    encounter = encounter != undefined ? JSON.parse(encounter) : encounter;
+                    return encounter;
+                });
             };
 
             var getEncountersByPatientUuid = function (patientUuid) {
@@ -132,7 +134,7 @@ angular.module('bahmni.common.offline')
             };
 
             var getVisitByUuid = function (visitUuid) {
-                var response = visitDbService.getVisitByUuid(visitUuid);
+                var response = AndroidOfflineService.getVisitByUuid(visitUuid);
                 response = response != undefined ? JSON.parse(response) : response;
                 return $q.when(response);
             };
@@ -151,13 +153,22 @@ angular.module('bahmni.common.offline')
                 return deferred.promise;
             };
 
+            var insertObservationData = function (patientUuid, visitUuid, observationData) {
+                var response = AndroidOfflineService.insertObservationData(patientUuid, visitUuid, JSON.stringify(observationData));
+                response = response != undefined ? JSON.parse(response) : response;
+                return $q.when(response);
+            };
 
             var getVisitUuidsByPatientUuid = function (patientUuid, numberOfVisits) {
-                return $q.when({"data": []});
+                var response = AndroidOfflineService.getVisitUuidsByPatientUuid(patientUuid, numberOfVisits);
+                response = response != undefined ? JSON.parse(response) : response;
+                return $q.when(response);
             };
 
             var getObservationsFor = function(params) {
-                return $q.when({"data": []});
+                var response =  AndroidOfflineService.getObservationsFor(JSON.stringify(params));
+                response = response != undefined ? JSON.parse(response) : response;
+                return $q.when(response);
             };
 
             var insertConceptAndUpdateHierarchy = function(data, parent) {

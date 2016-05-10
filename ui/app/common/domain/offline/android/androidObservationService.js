@@ -6,7 +6,7 @@ angular.module('bahmni.common.domain')
         this.fetch = function (patientUuid, numberOfVisits, params) {
             var deffered = $q.defer();
             androidDbService.getVisitUuidsByPatientUuid(patientUuid, numberOfVisits).then(function (visitUuids) {
-                params.visitUuids = visitUuids;
+                params.visitUuids = visitUuids || [];
                 androidDbService.getObservationsFor(params).then(function (obs) {
                     var mappedObs = _.map(obs, function (ob) {
                         return ob.observation;
