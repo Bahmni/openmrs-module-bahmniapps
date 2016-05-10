@@ -32,7 +32,7 @@ describe('conceptDbService tests', function () {
                 }).then(function() {
                     conceptDbService.getConcept(child1Uuid).then(function(result) {
                         expect(result.name).toBe(child1Name);
-                        expect(result.parents.parentUuids.indexOf(uuid)).toBeGreaterThan(-1);
+                        expect(result.parents.parentConcepts.length).toBe(1);
                         done();
                     })
                 });

@@ -46,11 +46,18 @@ angular.module('bahmni.common.offline')
                 return getParents(uuid).then(function (response) {
                     var parents = {};
                     if (response.length == 0 || response[0].parents == undefined) {
-                        parents.parentUuids = [];
+                        parents.parentConcepts = [];
                     } else {
                         parents = response[0].parents;
                     }
-                    parents.parentUuids = _.union(parents.parentUuids, parent);
+
+                     if(parent && parent.length > 0 ){
+                         _.each(parent, function(member){
+                             if(!_.find(parents.parentConcepts, member)){
+                                 parents.parentConcepts.push(member);
+                             }
+                         })
+                     }
 
                     var row = concept.createRow({
                         data: data,
@@ -78,7 +85,7 @@ angular.module('bahmni.common.offline')
                     deferred.resolve();
                 var count = 0;
                 _.each(concept.setMembers, function (child) {
-                    insertConcept({"results": [child]}, [concept.uuid]).then(function () {
+                    insertConcept({"results": [child]}, [{conceptName : concept.name.name, uuid: concept.uuid}]).then(function () {
                         count++;
                         if (count == length) {
                             deferred.resolve();
@@ -92,14 +99,14 @@ angular.module('bahmni.common.offline')
                 return getParents(child.uuid).then(function (response) {
                     if (response[0].parents == undefined)
                         return;
-                    _.each(response[0].parents.parentUuids, function (parentUuid) {
-                        return getConcept(parentUuid).then(function (parent) {
+                    _.each(response[0].parents.parentConcepts, function (eachParent) {
+                        return getConcept(eachParent.uuid).then(function (parent) {
                             for (var i = 0; i < parent.data.results[0].setMembers.length; i++) {
                                 if (parent.data.results[0].setMembers[i].uuid == child.uuid) {
                                     parent.data.results[0].setMembers[i] = child;
                                 }
                             }
-                            insertConcept(parent.data, parent.parents.parentUuids);
+                            insertConcept(parent.data, parent.parents.parentConcepts);
                             updateParentJson(parent.data.results[0]);
                         });
                     });
