@@ -313,7 +313,7 @@
         },
 
         getAllowDecimal: function () {
-            return this.concept.allowDecimal;
+            return this.primaryObs.concept.allowDecimal;
         },
 
         isAllowDecimal: function () {
