@@ -1,10 +1,12 @@
 'use strict';
 
 angular.module('bahmni.common.offline')
-    .service('offlineSyncService', ['eventLogService', 'offlineDbService', '$q', 'offlineService', 'androidDbService',
-        function (eventLogService, offlineDbService, $q, offlineService, androidDbService) {
+    .service('offlineSyncService', ['eventLogService', 'offlineDbService', '$q', 'offlineService', 'androidDbService', '$rootScope',
+        function (eventLogService, offlineDbService, $q, offlineService, androidDbService, $rootScope) {
 
+                var stages;
                 var sync = function () {
+                    stages = 0;
                     if (offlineService.isAndroidApp()) {
                         offlineDbService = androidDbService;
                     }
@@ -60,19 +62,25 @@ angular.module('bahmni.common.offline')
                 var syncAddressHierarchyForMarker = function (marker, levels) {
                     return eventLogService.getAddressEventsFor(marker.catchmentNumber, marker.lastReadEventUuid).then(function (response) {
                         if (response.data == undefined || response.data.length == 0) {
+                            endSync(stages++);
                             return;
                         }
                         return readEvent(response.data, 0, levels);
+                    }, function () {
+                        endSync(-1);
                     });
                 };
 
 
                 var syncConceptsForMarker = function (marker) {
-                    eventLogService.getConceptEventsFor(marker.lastReadEventUuid).then(function (response) {
+                    return eventLogService.getConceptEventsFor(marker.lastReadEventUuid).then(function (response) {
                         if (response.data == undefined || response.data.length == 0) {
+                            endSync(stages++);
                             return;
                         }
                         readEvent(response.data, 0);
+                    }, function () {
+                        endSync(-1);
                     });
                 };
 
@@ -80,9 +88,12 @@ angular.module('bahmni.common.offline')
                 var syncForMarker = function (marker) {
                     return eventLogService.getEventsFor(marker.catchmentNumber, marker.lastReadEventUuid).then(function (response) {
                         if (response.data == undefined || response.data.length == 0) {
+                            endSync(stages++);
                             return;
                         }
                         return readEvent(response.data, 0);
+                    }, function () {
+                        endSync(-1);
                     });
                 };
 
@@ -98,6 +109,9 @@ angular.module('bahmni.common.offline')
                                 break;
                         case 'parentAddressHierarchy':
                                 syncParentAddressEntries();
+                                break;
+                        case 'offline-concepts':
+                                syncConcepts();
                                 break;
                         default:
                             break;
@@ -195,6 +209,12 @@ angular.module('bahmni.common.offline')
                         catchmentNumber = offlineService.getItem('catchmentNumber');
                     }
                     return offlineDbService.insertMarker(markerName, event.uuid, catchmentNumber);
+                };
+
+                var endSync = function (status) {
+                      if (stages == 4 || status == -1){
+                          $rootScope.$broadcast("schedulerStage", null);
+                      }
                 };
 
             return {

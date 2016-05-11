@@ -45,6 +45,9 @@ angular.module('bahmni.home', ['ui.router', 'httpErrorInterceptor', 'bahmni.comm
                     },
                     initialData: function(loginInitialization, offlineDb){
                         return loginInitialization()
+                    },
+                    webWorker: function(offlinePatientSyncService, initialData) {
+                        return offlinePatientSyncService.stopSync();
                     }
                 }
             });
