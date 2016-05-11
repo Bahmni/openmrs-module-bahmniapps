@@ -43,12 +43,12 @@ Bahmni.Common.Domain.AttributeFormatter = (function () {
         }
         else if (attributeType.format === "org.openmrs.Concept") {
             var attrDescription = _.find(attributeType.answers, function(answer){
-                if(answer.conceptId === value) {
+                if(answer.conceptId === value.conceptUuid) {
                     return true;
                 }
             });
             attr.value = attrDescription != undefined ? attrDescription.description : null;
-            attr.hydratedObject = value;
+            attr.hydratedObject = value.conceptUuid;
         }
         else if (attributeType.format == "org.openmrs.util.AttributableDate" || attributeType.format == "org.openmrs.customdatatype.datatype.DateDatatype") {
             var mnt = moment(value);
