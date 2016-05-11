@@ -3,8 +3,8 @@
 angular.module("bahmni.common.offline")
     .service("scheduledSync", ['$q', '$rootScope','scheduledJob', 'offlineService', 'offlineDbService', 'androidDbService', 'offlinePush', 'offlinePull',
         function($q, $rootScope, scheduledJob, offlineService, offlineDbService, androidDbService, offlinePush, offlinePull) {
-            return function(output, syncButtonConfig){
-
+            return function(syncButtonConfig){
+                var job;
                 if(offlineService.isAndroidApp()){
                     offlineDbService = androidDbService;
                 }
@@ -15,108 +15,48 @@ angular.module("bahmni.common.offline")
                 var multiStageWorker = new Bahmni.Common.Offline.MultiStageWorker($q);
                 var db, STAGES = {
                     STAGE1 : "STAGE 1",
-                    STAGE2 : "STAGE 2",
-                    STAGE3 : "STAGE 3",
-                    STAGE4 : "STAGE 4",
-                    STAGE_FINAL : "STAGE FINAL"
+                    STAGE2 : "STAGE 2"
                 };
                 multiStageWorker.addStage(
                     {
                         execute: function() {
                             try{
-                                if(output){
-                                  output.notify(STAGES.STAGE1);
-                                }else{
-                                    $rootScope.$broadcast("schedulerStage",STAGES.STAGE1);
-                                }
+                                $rootScope.$broadcast("schedulerStage", STAGES.STAGE1);
                                 console.log(STAGES.STAGE1);
-                                if(db){
-                                    return db.close();
-                                }
-                            } catch (e) {
+                                return offlinePush().then(function(){
+                                },function(error){
+                                    console.log("Error " + STAGES.STAGE1 +"\n"+ error.config.url + " "+error.statusText);
+                                });
+                            }
+                            catch(e){
                                 console.log('Error at '+STAGES.STAGE1, e);
                             }
                         }
                     });
                 multiStageWorker.addStage(
                     {
-                        execute: function () {
+                        execute: function() {
                             try{
-                                if(output){
-                                    output.notify(STAGES.STAGE2);
-                                }else{
-                                    $rootScope.$broadcast("schedulerStage",STAGES.STAGE2);
-                                }
+                                $rootScope.$broadcast("schedulerStage",STAGES.STAGE2);
                                 console.log(STAGES.STAGE2);
-                                if(offlineService.isChromeApp()) {
-                                    return offlineDbService.reinitSchema().then(function (_db) {
-                                        db = _db;
-                                        return offlineDbService.init(_db);
-
-                                    }, function(error){
-                                        console.log("Error at "+STAGES.STAGE2+" Unable get Db Connection")
-                                    });
-                                }
+                                return offlinePull().then(function(){
+                                }, function(error){
+                                    console.log("Error " + STAGES.STAGE2 +"\n"+ error.config.url + " "+error.statusText);
+                                });
                             } catch (e) {
                                 console.log('Error at '+STAGES.STAGE2, e);
                             }
                         }
                     });
-                multiStageWorker.addStage(
-                    {
-                        execute: function() {
-                            try{
-                                if(output){
-                                    output.notify(STAGES.STAGE3);
-                                }else{
-                                    $rootScope.$broadcast("schedulerStage", STAGES.STAGE3);
-                                }
-                                console.log(STAGES.STAGE3);
-                                return offlinePush().then(function(){
-                                },function(error){
-                                    console.log("Error " + STAGES.STAGE3 +"\n"+ error.config.url + " "+error.statusText);
-                                });
-                            }
-                            catch(e){
-                                console.log('Error at '+STAGES.STAGE3, e);
-                            }
-                        }
-                    });
-                multiStageWorker.addStage(
-                    {
-                        execute: function() {
-                            try{
-                                if(output){
-                                    output.notify(STAGES.STAGE4);
-                                }else{
-                                    $rootScope.$broadcast("schedulerStage",STAGES.STAGE4);
-                                }
-                                console.log(STAGES.STAGE4);
-                                return offlinePull().then(function(){
-                                }, function(error){
-                                    console.log("Error " + STAGES.STAGE4 +"\n"+ error.config.url + " "+error.statusText);
-                                });
-                            } catch (e) {
-                                console.log('Error at '+STAGES.STAGE4, e);
-                            }
-                        }
-                    });
-                multiStageWorker.addStage(
-                    {
-                        execute: function() {
-                            try{
-                                if(output){
-                                    output.notify(null);
-                                }else{
-                                    $rootScope.$broadcast("schedulerStage", null);
-                                }
-                                console.log("All stages done");
-                            } catch (e) {
-                                console.log('Error at '+STAGES.STAGE_FINAL, e);
-                            }
-                        }
-                    });
-                return scheduledJob.create({worker: multiStageWorker, interval: syncButtonConfig.delay, count : syncButtonConfig.repeat}).start();
+                 if(!job) {
+                     job = scheduledJob.create({
+                         worker: multiStageWorker,
+                         interval: syncButtonConfig.delay,
+                         count: syncButtonConfig.repeat
+                     });
+                     job.start();
+                 }
+                 return job;
             };
 
         }

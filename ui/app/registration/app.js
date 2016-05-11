@@ -93,17 +93,13 @@ angular
                 }
             });
         $bahmniTranslateProvider.init({app: 'registration', shouldMerge: true});
-    }]).run(function ($rootScope, $templateCache, WorkerService, offlineService, scheduledSync) {
+    }]).run(function ($rootScope, $templateCache, offlineService, offlinePatientSyncService) {
         //Disable caching view template partials
         $rootScope.$on('$viewContentLoaded', function () {
             $templateCache.removeAll();
         });
 
-        if(offlineService.isChromeApp()) {
-            if (Bahmni.Common.Offline && Bahmni.Common.Offline.BackgroundWorker) {
-                new Bahmni.Common.Offline.BackgroundWorker(WorkerService, offlineService);
-            }
-        }else if(offlineService.isAndroidApp()){
-                scheduledSync();
+        if (offlineService.isChromeApp() || offlineService.isAndroidApp()) {
+            offlinePatientSyncService.sync();
         }
 });

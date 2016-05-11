@@ -28,7 +28,7 @@ Bahmni.Common.Offline.BackgroundWorker = function(WorkerService, offlineService,
             offlineService.isChromeApp = function(){
                 return app === 'chrome-app';
             };
-            scheduledSync(output, input.syncButtonConfig);
+            scheduledSync(input.syncButtonConfig, output);
         }]);
 
     workerPromise.then(

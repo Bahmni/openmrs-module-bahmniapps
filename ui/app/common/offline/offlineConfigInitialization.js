@@ -29,7 +29,7 @@ angular.module('bahmni.common.offline')
                                     return offlineDbService.insertConfig(appName, result.data, eTag).then(function(response){
                                         if(response.key == 'home' || response.module == 'home'){
                                             var offlineConfig = response.value['offline-config.json'];
-                                            var schedulerInterval = offlineConfig ? offlineConfig.schedulerInterval : 60000;
+                                            var schedulerInterval = offlineConfig ? offlineConfig.schedulerInterval : 900000;
                                             localStorage.setItem('schedulerInterval', schedulerInterval);
                                         }
                                         if(x ==length) {
