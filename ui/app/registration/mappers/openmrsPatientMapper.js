@@ -9,7 +9,7 @@ angular.module('bahmni.registration').factory('openmrsPatientMapper', ['patient'
                 var attributeType = $rootScope.patientConfiguration.get(attribute.attributeType.uuid);
                 if (attributeType) {
                     if (attributeType.format === "org.openmrs.Concept" && attribute.value) {
-                        patient[attributeType.name] = attribute.value.uuid;
+                        patient[attributeType.name] = {conceptUuid : attribute.value.uuid, value :attribute.value.display};
                     }
                     else if (attributeType.format === "org.openmrs.util.AttributableDate") {
                         patient[attributeType.name] = parseDate(attribute.value);
