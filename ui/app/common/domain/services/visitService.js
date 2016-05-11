@@ -30,6 +30,12 @@ angular.module('bahmni.common.domain')
             });
         };
 
+        this.createVisit = function(visitDetails){
+            return $http.post(Bahmni.Common.Constants.visitUrl, visitDetails, {
+                withCredentials: true
+            });
+        };
+
         this.getVisitSummary = function (visitUuid) {
 
             return $http.get(Bahmni.Common.Constants.visitSummaryUrl,

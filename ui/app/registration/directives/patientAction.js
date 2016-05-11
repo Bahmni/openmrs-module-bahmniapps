@@ -48,7 +48,7 @@ angular.module('bahmni.registration')
                 $scope.visitControl = new Bahmni.Common.VisitControl(
                     $rootScope.regEncounterConfiguration.getVisitTypesAsArray(),
                     defaultVisitType,
-                    encounterService, $translate
+                    encounterService, $translate, visitService
                 );
 
                 $scope.visitControl.onStartVisit = function () {
@@ -93,7 +93,7 @@ angular.module('bahmni.registration')
 
 
                 var createVisit = function (patientProfileData, forwardUrl) {
-                    spinner.forPromise($scope.visitControl.createVisit(patientProfileData.patient.uuid, createEncounterObject()).success(function () {
+                    spinner.forPromise($scope.visitControl.createOnlyVisit(patientProfileData.patient.uuid, loginLocationUuid).success(function () {
                         if (forwardUrl) {
                             $window.location.href = forwardUrl;
                         } else {
