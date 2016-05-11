@@ -77,7 +77,8 @@ describe('patientMapper', function () {
                     {
                         "uuid": "3da8141e-65d6-452e-9cfe-ce813bd11d52",
                         "value":  {
-                            uuid : "4da8141e-65d6-452e-9cfe-ce813bd11d52"
+                            uuid : "4da8141e-65d6-452e-9cfe-ce813bd11d52",
+                            display: "some-value"
                         },
                         "attributeType": {
                             "uuid": "d3e6dc74-e796-11e2-852f-0800271c1b75"
@@ -118,7 +119,8 @@ describe('patientMapper', function () {
 
     it('should map attributes from openmrsPatient to our patient object', function () {
         var patient = mapper.map(openmrsPatient);
-        expect(patient.class).toBe("4da8141e-65d6-452e-9cfe-ce813bd11d52");
+        expect(patient.class.conceptUuid).toBe("4da8141e-65d6-452e-9cfe-ce813bd11d52");
+        expect(patient.class.value).toBe("some-value");
     });
 
     it('should map birth date in dd-mm-yyyy format', function () {

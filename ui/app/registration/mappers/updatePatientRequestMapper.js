@@ -78,7 +78,7 @@ Bahmni.Registration.UpdatePatientRequestMapper = (function () {
             attr.voided = true;
         }
         else if (attributeType.format === "org.openmrs.Concept") {
-            attr.hydratedObject = value;
+            attr.hydratedObject = value.conceptUuid;
         }
         else if(attributeType.format == "org.openmrs.util.AttributableDate"){
             var mnt = moment(value);
