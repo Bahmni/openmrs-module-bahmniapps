@@ -48,7 +48,7 @@ describe('AttributeFormatter', function () {
 
 
     var model = {
-        "caste": "10",
+        "caste": {"conceptUuid":"10","value":"ten"},
         "class": "10",
         "testDate": "Fri Jan 01 1999 00:00:00",
         "isUrban": false
@@ -56,7 +56,6 @@ describe('AttributeFormatter', function () {
 
     it('should map values from the openmrs patientAttributeTypes to our patientConfig', function () {
         var attributes = new Bahmni.Common.Domain.AttributeFormatter().getMrsAttributes(model, patientAttributeTypes);
-
 
         expect(attributes).toContain({
             attributeType: {uuid: 'caste-uuid'},

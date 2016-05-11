@@ -43,7 +43,7 @@ angular.module('bahmni.registration')
                     };
 
                     _.chain(personAttributeType.answers).filter(isDefaultAnswer).each(function(answer) {
-                        $scope.patient[personAttributeType.name] = answer.conceptId;
+                        $scope.patient[personAttributeType.name] = {conceptUuid: answer.conceptId, value:answer.fullySpecifiedName};
                     }).value();
                 };
 

@@ -136,7 +136,8 @@ describe('CreatePatientController', function() {
             offlineService: {}
         });
 
-        expect(scopeMock.patient["education"]).toBe("c2107f30-3f10-11e4-adec-0800271c1b75");
+        expect(scopeMock.patient["education"].conceptUuid).toBe("c2107f30-3f10-11e4-adec-0800271c1b75");
+        expect(scopeMock.patient["education"].value).toBe("Uneducated");
 
     });
 
