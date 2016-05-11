@@ -114,7 +114,7 @@ angular.module('bahmni.clinical')
 
             $scope.getDisplayName = function (specimen){
                 var type = specimen.type;
-                var displayName = type.shortName ? type.shortName : type.name;
+                var displayName = type && (type.shortName ? type.shortName : type.name);
                 if(displayName ===  Bahmni.Clinical.Constants.bacteriologyConstants.otherSampleType){
                     displayName = specimen.typeFreeText;
                 }
