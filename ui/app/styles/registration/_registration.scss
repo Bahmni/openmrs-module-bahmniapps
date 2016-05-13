@@ -27,8 +27,8 @@ body{
           width: 100% !important;
         }
         &.obs-section{
-          width: 40% !important;
-          margin-left: 8.375%;
+          width: 30% !important;
+          margin-left: 5%;
           float: right;
           @media (max-width : 768px){
             width: 100% !important;
@@ -71,19 +71,21 @@ body{
     &.visit-patient-page{
       .observation-section{
         article{
-          min-width: 42%;
-          width: 47%;
+          width: 60%;
         }
         .field-value-buttonSelectType{
-          width:40%;
+          width:63%;
           .multi-select-button-group button{
             width:200px;
             text-align: center;
             padding-left: 10px;
             padding-right: 10px;
             @media screen and (max-width: 1024px){
-              width:185px;
+              width:175px;
             }
+          }
+          @media screen and (max-width: 1060px){
+            width:56%;
           }
         }
       }
@@ -154,7 +156,7 @@ body{
 }
 .reg-body-wrapper{
   .form-field .field-value .autocomplete {
-    width: 272px;
+    width: 296px;
     input.concept-name.ui-autocomplete-input{
       float: left;
       min-width: 197px;
