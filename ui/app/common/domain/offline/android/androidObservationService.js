@@ -37,6 +37,14 @@ angular.module('bahmni.common.domain')
                                            numberOfVisits, initialCount, latestCount, groovyExtension,
                                            startDate, endDate, patientProgramUuid) {
             return $q.when({"data": {"results": []}});
-        }
+        };
+
+        this.getAllParentsInHierarchy = function(conceptName){
+            var deferred = $q.defer();
+            androidDbService.getAllParentsInHierarchy(conceptName).then(function(results){
+                deferred.resolve({data: results});
+            });
+            return deferred.promise;
+        };
 
     }]);
