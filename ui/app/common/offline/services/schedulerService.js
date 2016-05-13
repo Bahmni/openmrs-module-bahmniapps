@@ -1,5 +1,5 @@
 angular.module('bahmni.common.offline')
-    .service('offlinePatientSyncService', ['offlineService','WorkerService','scheduledSync',
+    .service('schedulerService', ['offlineService','WorkerService','scheduledSync',
         function (offlineService, WorkerService, scheduledSync) {
             this.jobs = [];
             this.sync = function (config) {

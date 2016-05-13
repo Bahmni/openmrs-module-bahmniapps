@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('bahmni.registration')
-    .controller('NavigationController', ['$scope', '$rootScope', '$location', 'sessionService', '$window', 'appService', '$sce','offlineService', 'offlinePatientSyncService',
-        function ($scope, $rootScope, $location, sessionService, $window, appService, $sce, offlineService, offlinePatientSyncService) {
+    .controller('NavigationController', ['$scope', '$rootScope', '$location', 'sessionService', '$window', 'appService', '$sce','offlineService', 'schedulerService',
+        function ($scope, $rootScope, $location, sessionService, $window, appService, $sce, offlineService, schedulerService) {
             $scope.extensions = appService.getAppDescriptor().getExtensions("org.bahmni.registration.navigation", "link");
             $scope.isOfflineApp = offlineService.isOfflineApp();
             $scope.goTo = function (url) {
@@ -23,7 +23,7 @@ angular.module('bahmni.registration')
             };
 
             $scope.sync = function() {
-                offlinePatientSyncService.sync(Bahmni.Common.Constants.syncButtonConfiguration);
+                schedulerService.sync(Bahmni.Common.Constants.syncButtonConfiguration);
 
             };
 

@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('bahmni.home')
-    .controller('DashboardController', ['$scope', '$state', 'appService', 'locationService', 'spinner', '$bahmniCookieStore', '$window', '$q', 'offlineService', 'offlinePatientSyncService',
-        function ($scope, $state, appService, locationService, spinner, $bahmniCookieStore, $window, $q, offlineService, offlinePatientSyncService) {
+    .controller('DashboardController', ['$scope', '$state', 'appService', 'locationService', 'spinner', '$bahmniCookieStore', '$window', '$q', 'offlineService', 'schedulerService',
+        function ($scope, $state, appService, locationService, spinner, $bahmniCookieStore, $window, $q, offlineService, schedulerService) {
             $scope.appExtensions = appService.getAppDescriptor().getExtensions($state.current.data.extensionPointId, "link") || [];
             $scope.selectedLocationUuid = {};
             $scope.isOfflineApp = offlineService.isOfflineApp();
@@ -40,7 +40,7 @@ angular.module('bahmni.home')
             };
 
             $scope.sync = function() {
-                offlinePatientSyncService.sync(Bahmni.Common.Constants.syncButtonConfiguration);
+                schedulerService.sync(Bahmni.Common.Constants.syncButtonConfiguration);
             };
 
             $scope.$on("schedulerStage", function(event,stage){

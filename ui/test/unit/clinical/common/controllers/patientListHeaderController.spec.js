@@ -56,7 +56,7 @@ describe("PatientListHeaderController", function () {
             $window: $window,
             ngDialog: ngDialog,
             offlineService: offlineService,
-            offlinePatientSyncService: offlinePatientSync
+            schedulerService: offlinePatientSync
         });
         thisController.windowReload = function () {
         };
