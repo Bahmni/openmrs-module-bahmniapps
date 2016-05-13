@@ -55,7 +55,15 @@ angular.module('bahmni.common.offline')
                     if (event.data.type && event.data.type == "encounter") {
                         return offlineDbService.getEncounterByEncounterUuid(event.data.encounterUuid);
                     } else {
-                        return offlineDbService.getPatientByUuid(event.data.patientUuid);
+                        return offlineDbService.getPatientByUuid(event.data.patientUuid).then(function (response) {
+                            if(event.data.url.indexOf(event.data.patientUuid) == -1){
+                                if(response && response.patient && response.patient.person){
+                                    delete response.patient.person.preferredName;
+                                    delete response.patient.person.preferredAddress;
+                                }
+                            }
+                            return response;
+                        });
                     }
                 };
 
