@@ -200,6 +200,13 @@ angular.module('bahmni.common.offline')
                 return $q.when(response);
             };
 
+            var getAllParentsInHierarchy = function(conceptName){
+                var conceptNamesInHierarchy = [];
+                var response = AndroidConceptDbService.getAllParentsInHierarchy(conceptName);
+                response = response != undefined ? JSON.parse(response) : response;
+                return $q.when(response);
+            };
+
             return {
                 init: init,
                 initSchema: initSchema,
@@ -227,7 +234,8 @@ angular.module('bahmni.common.offline')
                 insertConceptAndUpdateHierarchy: insertConceptAndUpdateHierarchy,
                 getConcept: getConcept,
                 getConceptByName: getConceptByName,
-                getEncounterByEncounterUuid: getEncounterByEncounterUuid
+                getEncounterByEncounterUuid: getEncounterByEncounterUuid,
+                getAllParentsInHierarchy: getAllParentsInHierarchy
             }
         }
     ]);
