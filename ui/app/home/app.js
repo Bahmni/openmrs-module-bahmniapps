@@ -30,8 +30,8 @@ angular.module('bahmni.home', ['ui.router', 'httpErrorInterceptor', 'bahmni.comm
                         initialize: function (initialization, offlineDb) {
                             return initialization(offlineDb);
                         },
-                        webWorker: function(offlinePatientSyncService, initialize) {
-                            return offlinePatientSyncService.sync();
+                        webWorker: function(schedulerService, initialize) {
+                            return schedulerService.sync();
                         }
                     }
                 }).state('login',
@@ -46,8 +46,8 @@ angular.module('bahmni.home', ['ui.router', 'httpErrorInterceptor', 'bahmni.comm
                     initialData: function(loginInitialization, offlineDb){
                         return loginInitialization()
                     },
-                    webWorker: function(offlinePatientSyncService, initialData) {
-                        return offlinePatientSyncService.stopSync();
+                    webWorker: function(schedulerService, initialData) {
+                        return schedulerService.stopSync();
                     }
                 }
             });

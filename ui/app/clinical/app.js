@@ -414,8 +414,8 @@ angular.module('consultation')
         $httpProvider.defaults.headers.common['Disable-WWW-Authenticate'] = true;
 
         $bahmniTranslateProvider.init({app: 'clinical', shouldMerge: true});
-    }]).run(['stateChangeSpinner', '$rootScope', 'offlineService', 'offlinePatientSyncService',
-        function (stateChangeSpinner, $rootScope, offlineService, offlinePatientSyncService) {
+    }]).run(['stateChangeSpinner', '$rootScope', 'offlineService', 'schedulerService',
+        function (stateChangeSpinner, $rootScope, offlineService, schedulerService) {
         FastClick.attach(document.body);
         stateChangeSpinner.activate();
 
@@ -430,7 +430,7 @@ angular.module('consultation')
         });
 
         if (offlineService.isChromeApp() || offlineService.isAndroidApp()) {
-            offlinePatientSyncService.sync();
+            schedulerService.sync();
         }
     }]);
 

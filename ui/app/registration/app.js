@@ -93,13 +93,13 @@ angular
                 }
             });
         $bahmniTranslateProvider.init({app: 'registration', shouldMerge: true});
-    }]).run(function ($rootScope, $templateCache, offlineService, offlinePatientSyncService) {
+    }]).run(function ($rootScope, $templateCache, offlineService, schedulerService) {
         //Disable caching view template partials
         $rootScope.$on('$viewContentLoaded', function () {
             $templateCache.removeAll();
         });
 
         if (offlineService.isChromeApp() || offlineService.isAndroidApp()) {
-            offlinePatientSyncService.sync();
+            schedulerService.sync();
         }
 });

@@ -3,7 +3,7 @@
 describe('navigationController', function () {
 
     var $aController, window, sce;
-    var scopeMock,rootScopeMock,locationMock,offlineService,sessionServiceMock,appServiceMock,offlinePatientSyncService,scheduledSyncMock;
+    var scopeMock,rootScopeMock,locationMock,offlineService,sessionServiceMock,appServiceMock,schedulerService,scheduledSyncMock;
 
     beforeEach(module('bahmni.registration'));
 
@@ -19,7 +19,7 @@ describe('navigationController', function () {
             getExtensions: function () { return {} }
         });
         offlineService = jasmine.createSpyObj('offlineService', ['isOfflineApp']);
-        offlinePatientSyncService = jasmine.createSpyObj('offlinePatientSync', ['sync']);
+        schedulerService = jasmine.createSpyObj('offlinePatientSync', ['sync']);
 
         offlineService.isOfflineApp.and.returnValue(true);
     }));
@@ -45,7 +45,7 @@ describe('navigationController', function () {
             appService: appServiceMock,
             offlineService: offlineService,
             scheduledSync:scheduledSyncMock,
-            offlinePatientSyncService: offlinePatientSyncService
+            schedulerService: schedulerService
         });
     });
 
