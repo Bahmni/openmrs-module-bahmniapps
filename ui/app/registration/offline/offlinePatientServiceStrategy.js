@@ -12,11 +12,12 @@ angular.module('bahmni.registration')
 
             var get = function (uuid) {
                 return offlinePatientServiceStrategy.get(uuid).then(function(data) {
-                    data.patient.person.preferredName = data.patient.person.names[0];
-                    data.patient.person.preferredAddress = data.patient.person.addresses[0];
+                    var patientData = JSON.parse(JSON.stringify(data));
+                    patientData.patient.person.preferredName = patientData.patient.person.names[0];
+                    patientData.patient.person.preferredAddress = patientData.patient.person.addresses[0];
                     return offlinePatientServiceStrategy.getAttributeTypes().then(function (attributeTypes) {
-                        mapAttributesToGetFormat(data.patient.person.attributes,attributeTypes);
-                        return data;
+                        mapAttributesToGetFormat(patientData.patient.person.attributes,attributeTypes);
+                        return patientData;
                     });
                 });
             };
@@ -52,10 +53,11 @@ angular.module('bahmni.registration')
                 data.patient.person.names[0].uuid = openMRSPatient.person.names[0].uuid;
                 return offlinePatientServiceStrategy.deletePatientData(data.patient.uuid).then(function () {
                         return create(data).then(function (result) {
-                        result.data.patient.person.preferredName = data.patient.person.names[0];
-                        result.data.patient.person.preferredAddress = data.patient.person.addresses[0];
-                        mapAttributesToGetFormat(result.data.patient.person.attributes, attributeTypes);
-                        return $q.when(result.data);
+                            var patientData = JSON.parse(JSON.stringify(result.data));
+                            patientData.patient.person.preferredName = data.patient.person.names[0];
+                            patientData.patient.person.preferredAddress = data.patient.person.addresses[0];
+                            mapAttributesToGetFormat(patientData.patient.person.attributes, attributeTypes);
+                            return $q.when(patientData);
                     });
                 });
             };
