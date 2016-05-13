@@ -53,13 +53,13 @@ angular.module('bahmni.clinical')
                     drugOrders: sortOrderSetDrugsFollowedByDrugOrders(activeAndScheduledDrugOrders,showOnlyActive)
                 };
                 $scope.consultation.drugOrderGroups.unshift(refillableGroup);
-                if(treatmentConfig.drugOrderHistoryConfig.numberOfVisits != undefined && treatmentConfig.drugOrderHistoryConfig.numberOfVisits == 0) {
+                if(treatmentConfig.drugOrderHistoryConfig.numberOfVisits != undefined && treatmentConfig.drugOrderHistoryConfig.numberOfVisits === 0) {
                     $scope.consultation.drugOrderGroups = [$scope.consultation.drugOrderGroups[0]];
                 }
             };
 
             var createPrescribedDrugOrderGroups = function () {
-                if (prescribedDrugOrders.length == 0) {
+                if (prescribedDrugOrders.length === 0) {
                     return [];
                 }
                 var drugOrderGroupedByDate = _.groupBy(prescribedDrugOrders, function (drugOrder) {

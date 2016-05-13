@@ -43,7 +43,7 @@ angular.module('bahmni.clinical')
             angular.forEach(test.panels, function(testPanel){
                 var selectablePanel = selectablePanels.filter(function(panel){ return panel.name === testPanel.name })[0];
                 if(selectablePanel) {
-                    selectablePanel.addChild(selectableTest)
+                    selectablePanel.addChild(selectableTest);
                 } else {
                     selectablePanel = new Selectable(testPanel, [selectableTest], onSelectionChange);
                     selectablePanels.push(selectablePanel)                    
@@ -59,7 +59,7 @@ angular.module('bahmni.clinical')
 
     var selectSelectablesBasedOnInvestigations = function() {
         var selectables = $scope.allSelectables();
-        var currentInvestigations = $scope.investigations.filter(function(investigation){ return !investigation.voided; })
+        var currentInvestigations = $scope.investigations.filter(function(investigation){ return !investigation.voided; });
         angular.forEach(currentInvestigations, function(investigation){
             var selectable = findSelectableForInvestigation(selectables, investigation);
             if(selectable) {
@@ -110,7 +110,7 @@ angular.module('bahmni.clinical')
     }
     
     $scope.showAll = function() {
-        $scope.filterBy(null)
+        $scope.filterBy(null);
     }
 
     var applyCurrentFilterByFilterCoulmn = function(selectable) {

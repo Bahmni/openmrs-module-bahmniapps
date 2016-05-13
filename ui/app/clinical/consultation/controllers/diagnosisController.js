@@ -125,7 +125,7 @@ angular.module('bahmni.clinical')
             var alreadyAddedToDiagnosis = function(diagnosis) {
                 var isPresent = false;
                 $scope.consultation.newlyAddedDiagnoses.forEach(function(d) {
-                    if (d.codedAnswer.uuid == diagnosis.concept.uuid) {
+                    if (d.codedAnswer.uuid === diagnosis.concept.uuid) {
                         isPresent = true;
                     }
                 });
@@ -197,13 +197,13 @@ angular.module('bahmni.clinical')
                 var iter;
                 for (iter = 0; iter < $scope.consultation.newlyAddedDiagnoses.length; iter++) {
                     if ($scope.consultation.newlyAddedDiagnoses[iter].isEmpty() && iter !== index) {
-                        $scope.consultation.newlyAddedDiagnoses.splice(iter, 1)
+                        $scope.consultation.newlyAddedDiagnoses.splice(iter, 1);
                     }
                 }
                 var emptyRows = $scope.consultation.newlyAddedDiagnoses.filter(function(diagnosis) {
                     return diagnosis.isEmpty();
                 });
-                if (emptyRows.length == 0) {
+                if (emptyRows.length === 0) {
                     addPlaceHolderDiagnosis();
                 }
             };
