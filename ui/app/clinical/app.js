@@ -423,10 +423,10 @@ angular.module('consultation')
             window.scrollTo(0, 0);
         });
         $rootScope.$on('ngDialog.opened', function () {
-           $('html').addClass('ngdialog-open')
+           $('html').addClass('ngdialog-open');
         });
         $rootScope.$on('ngDialog.closing', function () {
-            $('html').removeClass('ngdialog-open')
+            $('html').removeClass('ngdialog-open');
         });
 
         if (offlineService.isChromeApp() || offlineService.isAndroidApp()) {

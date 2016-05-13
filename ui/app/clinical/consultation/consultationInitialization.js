@@ -5,7 +5,7 @@ angular.module('bahmni.clinical').factory('consultationInitialization',
         function ($q, diagnosisService, $rootScope, encounterService, sessionService, configurations, $bahmniCookieStore, retrospectiveEntryService) {
             return function (patientUuid, encounterUuid, programUuid, enrollment) {
 
-                if(encounterUuid == 'active') {
+                if(encounterUuid === 'active') {
                     encounterUuid = undefined;
                 }
 

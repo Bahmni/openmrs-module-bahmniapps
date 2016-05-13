@@ -8,7 +8,7 @@ angular.module('bahmni.clinical')
             _.each(previousVisitDrugs, function (previousVisitDrug) {
                 var presentInActiveAndScheduledDrugs = _.find(activeAndScheduledDrugs, function (activeAndScheduledDrug) {
                     if(activeAndScheduledDrug.drug && previousVisitDrug.drug) {
-                        return activeAndScheduledDrug.drug.uuid == previousVisitDrug.drug.uuid;
+                        return activeAndScheduledDrug.drug.uuid === previousVisitDrug.drug.uuid;
                     }
                     else if(activeAndScheduledDrug.drugNonCoded && previousVisitDrug.drugNonCoded){
                         return activeAndScheduledDrug.drugNonCoded === previousVisitDrug.drugNonCoded;

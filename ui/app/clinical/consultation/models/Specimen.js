@@ -12,7 +12,7 @@ Bahmni.Clinical.Specimen = function (specimen, allSamples) {
     self.typeObservation =  new Bahmni.ConceptSet.SpecimenTypeObservation(self, allSamples);
 
     var isDirtyRuleForFreeText= function(){
-        return (self.type && self.type.name=="Other" && !self.typeFreeText);
+        return (self.type && self.type.name==="Other" && !self.typeFreeText);
     };
 
     self.isDirty = function () {

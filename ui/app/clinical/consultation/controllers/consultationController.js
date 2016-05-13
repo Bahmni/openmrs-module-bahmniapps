@@ -85,7 +85,7 @@ angular.module('bahmni.clinical').controller('ConsultationController',
                 var currentPath = $location.url();
                 var board = _.find($scope.availableBoards,function (board) {
                     if(board.url === "treatment") {
-                        return _.includes(currentPath, board.extensionParams ? board.extensionParams.tabConfigName: board.url)
+                        return _.includes(currentPath, board.extensionParams ? board.extensionParams.tabConfigName: board.url);
                     }
                     return _.includes(currentPath, board.url);
                 });
@@ -205,7 +205,7 @@ angular.module('bahmni.clinical').controller('ConsultationController',
 
                 var extensionParams = board.extensionParams;
                 angular.forEach(extensionParams, function(extensionParamValue, extensionParamKey){
-                    queryParams.push(extensionParamKey + "=" + extensionParamValue)
+                    queryParams.push(extensionParamKey + "=" + extensionParamValue);
                 });
 
                 if(!_.isEmpty(queryParams)) {
