@@ -92,6 +92,7 @@ angular.module('bahmni.common.domain')
                 obs.concept = {uuid: obs.concept.uuid, name: obs.concept.name, dataType: obs.concept.dataType};
                 obs.groupMembers = obs.groupMembers || [];
                 obs.groupMembers.forEach(function (groupMember) {
+                    groupMember.encounterDateTime = obs.encounterDateTime;
                     stripExtraInfo(groupMember);
                 });
             };

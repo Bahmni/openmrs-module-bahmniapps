@@ -60,6 +60,8 @@ module.exports = function (config) {
             'test/integration/**/*.js',
             'test/integration/utils/*.js',
             'app/registration/offline/*.js',
+            'app/common/domain/offline/offlineObservationService.js',
+            'test/unit/common/domain/offline/offlineObservationService.spec.js',
             {pattern: 'test/data/*.json', watched: true, served: true, included: false}
         ],
         exclude:[
@@ -74,6 +76,8 @@ module.exports = function (config) {
             'app/common/domain/services/encounterService.js',
             'app/common/domain/services/diagnosisService.js',
             'app/common/domain/services/visitService.js',
+            'app/common/domain/services/observationsService.js',
+            'test/unit/common/displaycontrols/obsVsObsFlowSheet/directives/obsToObsFlowSheet.spec.js',
             'app/clinical/dashboard/services/diseaseTemplateService.js',
 
             'test/unit/orders/services/orderTypeService.spec.js',
@@ -87,6 +91,7 @@ module.exports = function (config) {
             'test/unit/common/domain/services/configurationService.spec.js',
             'test/unit/common/domain/services/localeService.spec.js',
             'test/unit/common/domain/services/visitService.spec.js',
+            'test/unit/common/domain/services/observationsService.spec.js',
             'test/unit/clinical/services/diseaseTemplateService.spec.js',
 
 

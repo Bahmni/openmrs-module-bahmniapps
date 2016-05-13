@@ -119,12 +119,27 @@ angular.module('bahmni.common.offline')
             };
 
 
+            var getAllParentsInHierarchy = function (conceptName, conceptNamesInHierarchy) {
+                return getConceptByName(conceptName).then(function (result) {
+                    if(!result)
+                        return;
+                    conceptNamesInHierarchy.push(conceptName);
+                    var parentConcepts = result.parents.parentConcepts;
+                    // TODO not considering all the parents
+                    if (parentConcepts && parentConcepts.length > 0) {
+                        return getAllParentsInHierarchy(parentConcepts[0].conceptName, conceptNamesInHierarchy);
+                    }
+                    return conceptNamesInHierarchy;
+                });
+            };
+
             return {
                 init: init,
                 getConcept: getConcept,
                 getConceptByName: getConceptByName,
                 insertConceptAndUpdateHierarchy: insertConceptAndUpdateHierarchy,
                 updateChildren: updateChildren,
-                updateParentJson: updateParentJson
+                updateParentJson: updateParentJson,
+                getAllParentsInHierarchy: getAllParentsInHierarchy
             }
         }]);

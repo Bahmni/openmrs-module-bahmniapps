@@ -40,4 +40,25 @@ describe('conceptDbService tests', function () {
         });
     });
 
+    it("should return the root concept for any given child concept", function(done){
+        var schemaBuilder = lf.schema.create('BahmniConcept', 1);
+        Bahmni.Tests.OfflineDbUtils.createTable(schemaBuilder, Bahmni.Common.Offline.SchemaDefinitions.Concept);
+        jasmine.getFixtures().fixturesPath = 'base/test/data';
+        var conceptJson = JSON.parse(readFixtures('concept.json'));
+        var childConceptName = "RR Data";
+        schemaBuilder.connect().then(function(db){
+            conceptDbService.init(db);
+            conceptDbService.insertConceptAndUpdateHierarchy(conceptJson).then(function(){
+                conceptDbService.getAllParentsInHierarchy(childConceptName, []).then(function (result) {
+                    expect(result).toEqual(['RR Data', 'Vitals']);
+                });
+
+                conceptDbService.getAllParentsInHierarchy(childConceptName, []).then(function (result) {
+                    expect(result).toEqual(['RR Data', 'Vitals']);
+                    done();
+                });
+            });
+        });
+    });
+
 });

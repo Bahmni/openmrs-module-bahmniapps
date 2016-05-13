@@ -193,6 +193,11 @@ angular.module('bahmni.common.offline')
             return visitDbService.getVisitUuidsByPatientUuid(db, patientUuid, numberOfVisits);
         };
 
+        var getAllParentsInHierarchy = function(conceptName){
+            var conceptNamesInHierarchy = [];
+            return conceptDbService.getAllParentsInHierarchy(conceptName, conceptNamesInHierarchy)
+        };
+
         return {
             init: init,
             initSchema: initSchema,
@@ -223,6 +228,7 @@ angular.module('bahmni.common.offline')
             getConcept: getConcept,
             getConceptByName: getConceptByName,
             updateChildren: updateChildren,
-            updateParentJson: updateParentJson
+            updateParentJson: updateParentJson,
+            getAllParentsInHierarchy: getAllParentsInHierarchy
         }
     }]);
