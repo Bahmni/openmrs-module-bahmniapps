@@ -33,7 +33,7 @@
                                 <span class="mylegend" ng-if="::!conceptSet.options.translationKey">{{::conceptSet.label}}</span>
                             </div>
                             <div ng-if="::conceptSet.options.showLatest" class="clearfix">
-                                <article class="fl">
+                                <article class="fl obs-section-form">
                                     <concept-set concept-set-name="::conceptSet.options.conceptName" required="::conceptSet.options.required" patient="patient" observations="observations"
                                                  obs-scope="::conceptSet.options.scope" show-title="false" concept-set-focused="::$index === 0"></concept-set>
                                 </article>
