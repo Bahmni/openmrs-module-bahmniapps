@@ -11,7 +11,8 @@ angular.module('bahmni.registration')
                 var obs = {};
                 $scope.observations = $scope.observations || [];
                 var getValue = function(observation) {
-                    obs[observation.concept.name] = observation.value;
+                    obs[observation.concept.name] = obs[observation.concept.name] || [];
+                    observation.value && obs[observation.concept.name].push(observation.value);
                     observation.groupMembers.forEach(getValue);
                 };
 
