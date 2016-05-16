@@ -166,21 +166,11 @@ angular.module('bahmni.registration')
                 })
             };
 
-            var createPromise = function() {
+            var createPromise = function () {
                 var deferred = $q.defer();
-                var resolved = function () {
+                createPatient().finally(function () {
                     return deferred.resolve({});
-                };
-
-                setPreferences();
-                addNewRelationships();
-                var errMsg = Bahmni.Common.Util.ValidationUtil.validate($scope.patient, $scope.patientConfiguration.attributeTypes);
-                if (errMsg) {
-                    messagingService.showMessage('error', errMsg);
-                    deferred.reject();
-                } else {
-                    createPatient().finally(resolved);
-                }
+                });
                 return deferred.promise;
             };
 
@@ -189,7 +179,14 @@ angular.module('bahmni.registration')
                 return offlineService.isOfflineApp();
             };
 
-            $scope.create = function() {
+            $scope.create = function () {
+                setPreferences();
+                addNewRelationships();
+                var errMsg = Bahmni.Common.Util.ValidationUtil.validate($scope.patient, $scope.patientConfiguration.attributeTypes);
+                if (errMsg) {
+                    messagingService.showMessage('error', errMsg);
+                    return $q.when({});
+                }
                 return spinner.forPromise(createPromise());
             };
 
