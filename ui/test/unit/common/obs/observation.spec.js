@@ -6,9 +6,9 @@ describe("Observation", function () {
     describe("display Value", function () {
         it("should return yes and no for Boolean observation", function () {
             var yesObservation = new Observation({"type": "Boolean", "value": true});
-            expect(yesObservation.getDisplayValue()).toBe("Yes");
+            expect(yesObservation.getDisplayValue()).toBe("OBS_BOOLEAN_YES_KEY");
             var noObservation = new Observation({"type": "Boolean", "value": false});
-            expect(noObservation.getDisplayValue()).toBe("No");
+            expect(noObservation.getDisplayValue()).toBe("OBS_BOOLEAN_NO_KEY");
         });
 
         it("should return shortName if exists for coded observation", function () {
