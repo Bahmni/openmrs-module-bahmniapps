@@ -66,7 +66,6 @@ angular.module('bahmni.common.uiHelper')
         element.on('change', function(e) {
             validateIfNeeded(element.val()); 
         });
-
         element.on('keyup', function(e) {
             validateIfNeeded(element.val());
             scope.$apply();

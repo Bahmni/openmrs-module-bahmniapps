@@ -229,8 +229,7 @@ angular.module('bahmni.common.conceptSet')
                         });
                     });
                 });
-
-                var deregisterAddMove = $scope.$root.$on("event:addMore", function (event, observation) {
+                var deregisterAddMore = $scope.$root.$on("event:addMore", function (event, observation) {
                     updateFormConditions([observation], observation)
                 });
 
@@ -255,7 +254,7 @@ angular.module('bahmni.common.conceptSet')
 
                 $scope.$on('$destroy', function() {
                     deregisterObservationUpdated();
-                    deregisterAddMove();
+                    deregisterAddMore();
                 });
 
                 var processConditions = function (flattenedObs, fields, disable, error) {
