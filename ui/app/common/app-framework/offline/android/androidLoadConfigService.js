@@ -9,6 +9,7 @@ angular.module('bahmni.common.appFramework')
                     if(config) {
                         return {"data": config.value[configFile]};
                     }
+                    return {"data": {}}
                 });
         };
 
