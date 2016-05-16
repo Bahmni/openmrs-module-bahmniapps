@@ -44,32 +44,36 @@ describe('offlineObservationService', function () {
 
     it('should not get observations if the given conceptName is not present in the db',function (done) {
         var childConceptNameNotInDb = 'Dummy Concept';
+        var params = { patientUuid : 'fc6ede09-f16f-4877-d2f5-ed8b2182ec11', numberOfVisits : 0, scope : undefined, patientProgramUuid : undefined };
+        params.conceptNames = [];
 
         spyOn(observationsServiceStrategy, 'getAllParentsInHierarchy').and.callFake(function () {
                 return {
                     then: function (callback) {
-                        return callback([]);
+                        return callback({"data":[]});
                     }
                 };
             });
         spyOn(observationsServiceStrategy, 'fetch').and.callFake(function () {
             return {
                 then: function (callback) {
-                    return callback([]);
+                    return callback({"data":[]});
                 }
             };
         });
-        var patientUuid = "fc6ede09-f16f-4877-d2f5-ed8b2182ec11";
-        var result = observationsService.fetch(patientUuid, [childConceptNameNotInDb], undefined, 0, undefined, undefined, undefined,undefined).then(function(results){
+        var result = observationsService.fetch(params.patientUuid, [childConceptNameNotInDb], undefined, 0, undefined, undefined, undefined,undefined).then(function(results){
             expect(results.data.length).toBe(0);
             expect(observationsServiceStrategy.getAllParentsInHierarchy.calls.count()).toBe(1);
             expect(observationsServiceStrategy.fetch.calls.count()).toBe(1);
+            expect(observationsServiceStrategy.fetch).toHaveBeenCalledWith(params.patientUuid, params.numberOfVisits, params);
             done();
         });
     });
 
     it('should not get observations if the given conceptName is present in the db and no obs filled against it',function (done) {
-        var childConceptName = "Vitals";
+        var templateConceptName = "Vitals";
+        var params = { patientUuid : 'fc6ede09-f16f-4877-d2f5-ed8b2182ec11', numberOfVisits : 0, scope : undefined, patientProgramUuid : undefined };
+        params.conceptNames = [templateConceptName];
 
         spyOn(observationsServiceStrategy, 'getAllParentsInHierarchy').and.callFake(function () {
             return {
@@ -86,10 +90,11 @@ describe('offlineObservationService', function () {
             };
         });
         var patientUuid = "fc6ede09-f16f-4877-d2f5-ed8b2182ec11";
-        var result = observationsService.fetch(patientUuid, [childConceptName], undefined, 0, undefined, undefined, undefined,undefined).then(function(results){
+        var result = observationsService.fetch(patientUuid, [templateConceptName], undefined, 0, undefined, undefined, undefined,undefined).then(function(results){
             expect(results.data.length).toBe(0);
             expect(observationsServiceStrategy.getAllParentsInHierarchy.calls.count()).toBe(1);
             expect(observationsServiceStrategy.fetch.calls.count()).toBe(1);
+            expect(observationsServiceStrategy.fetch).toHaveBeenCalledWith(params.patientUuid, params.numberOfVisits, params);
             done();
         });
     });

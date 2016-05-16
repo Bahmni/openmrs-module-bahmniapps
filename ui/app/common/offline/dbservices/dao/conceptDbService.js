@@ -122,7 +122,7 @@ angular.module('bahmni.common.offline')
             var getAllParentsInHierarchy = function (conceptName, conceptNamesInHierarchy) {
                 return getConceptByName(conceptName).then(function (result) {
                     if(!result)
-                        return;
+                        return [];
                     conceptNamesInHierarchy.push(conceptName);
                     var parentConcepts = result.parents.parentConcepts;
                     // TODO not considering all the parents
