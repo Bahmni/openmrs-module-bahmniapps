@@ -61,7 +61,7 @@ describe('conceptDbService tests', function () {
         });
     });
 
-    iit("should return the empty array if the given concept is not in db", function(done){
+    it("should return the empty array if the given concept is not in db", function(done){
         var schemaBuilder = lf.schema.create('BahmniConcept', 1);
         Bahmni.Tests.OfflineDbUtils.createTable(schemaBuilder, Bahmni.Common.Offline.SchemaDefinitions.Concept);
         jasmine.getFixtures().fixturesPath = 'base/test/data';
