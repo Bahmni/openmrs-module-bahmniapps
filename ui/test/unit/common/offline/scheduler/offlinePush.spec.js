@@ -1,7 +1,7 @@
 'use strict';
 
 describe('Offline Push Tests', function () {
-    var offlinePush, eventQueueMock, httpBackend, androidDbService, $q=Q, eventQueue, errorQueue, event;
+    var offlinePush, eventQueueMock, httpBackend, androidDbService, $q=Q, eventQueue, errorQueue, event, offlineDbServiceMock;
 
 
     beforeEach(function () {
@@ -9,7 +9,7 @@ describe('Offline Push Tests', function () {
         module(function ($provide) {
             var offlineServiceMock = jasmine.createSpyObj('offlineService', ['isOfflineApp','isAndroidApp']);
             eventQueueMock = jasmine.createSpyObj('eventQueue', ['consumeFromErrorQueue','consumeFromEventQueue','removeFromQueue','addToErrorQueue','releaseFromQueue']);
-            var offlineDbServiceMock = jasmine.createSpyObj('offlineDbService', ['getPatientByUuid','getEncounterByEncounterUuid']);
+            offlineDbServiceMock = jasmine.createSpyObj('offlineDbService', ['getPatientByUuid','getEncounterByEncounterUuid', 'createEncounter']);
 
             offlineServiceMock.isOfflineApp.and.returnValue(true);
             offlineServiceMock.isAndroidApp.and.returnValue(false);
@@ -36,6 +36,7 @@ describe('Offline Push Tests', function () {
             var patient = {};
             offlineDbServiceMock.getPatientByUuid.and.returnValue($q.when(patient));
             offlineDbServiceMock.getEncounterByEncounterUuid.and.returnValue($q.when({}));
+            offlineDbServiceMock.createEncounter.and.returnValue($q.when({}));
             $provide.value('offlineService', offlineServiceMock);
             $provide.value('eventQueue', eventQueueMock);
             $provide.value('offlineDbService', offlineDbServiceMock);
@@ -108,6 +109,7 @@ describe('Offline Push Tests', function () {
         event.data = {type : "encounter"};
         httpBackend.expectPOST(Bahmni.Common.Constants.bahmniEncounterUrl).respond(200, {});
         offlinePush().then(function(){
+            expect(offlineDbServiceMock.createEncounter).toHaveBeenCalled();
             expect(eventQueueMock.removeFromQueue).toHaveBeenCalled();
             expect(eventQueueMock.consumeFromEventQueue).toHaveBeenCalled();
             done();

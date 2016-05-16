@@ -71,13 +71,13 @@ angular.module('bahmni.common.offline')
                     return getEventData(event)
                         .then(function(response){
                             return postData(event,response)
-                                .success(function () {
-                                    eventQueue.removeFromQueue(event);
-                                    if (event.tube === "event_queue") {
-                                        return consumeFromEventQueue();
-                                    } else {
-                                        return consumeFromErrorQueue();
+                                .success(function (data) {
+                                    if(event.data.type && event.data.type == "encounter") {
+                                        return offlineDbService.createEncounter(data).then(function () {
+                                            return successCallBack(event);
+                                        });
                                     }
+                                    return successCallBack(event);
                                 }).catch(function (response) {
                                     if (parseInt(response.status / 100) == 5) {
                                         if (event.tube === "event_queue") {
@@ -97,6 +97,15 @@ angular.module('bahmni.common.offline')
                                     }
                                 })
                         });
+                };
+
+                var successCallBack = function (event) {
+                    eventQueue.removeFromQueue(event);
+                    if (event.tube === "event_queue") {
+                        return consumeFromEventQueue();
+                    } else {
+                        return consumeFromErrorQueue();
+                    }
                 };
 
                 var reservedEvents = [];
