@@ -60,6 +60,7 @@ angular.module('bahmni.common.uiHelper')
             $scope.$on('$destroy', function() {
                 $(document).off('click', '.reg-wrapper', hideOrShowTargetElements);
             });
+
         };
 
         return {
