@@ -98,7 +98,7 @@
                 }
             });
 
-            $(element).on('blur', function () {
+            element.on('blur', function () {
                 var searchTerm = $.trim(element.val());
                 validator(searchTerm);
             });
