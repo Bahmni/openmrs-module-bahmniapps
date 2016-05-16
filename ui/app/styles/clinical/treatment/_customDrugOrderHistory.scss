@@ -91,11 +91,13 @@ If each of a table rows have multiple possible actions associated with them, use
   .drugOrderTable{
     width:100%;
     position: relative !important;
+    clear:both;
+    overflow: hidden;
   }
   .drugOrderTableScroll{
     width: auto;
     overflow-x: auto;
-    overflow-y: visible;
+    overflow-y: hidden;
     margin-left:240px;
     &.noOfActions-4-width{
       margin-right: 200px;
@@ -129,13 +131,15 @@ If each of a table rows have multiple possible actions associated with them, use
     }
     thead tr th {
       text-align: center;
+      white-space: nowrap;
     }
 
     tbody tr td {
       border: none !important;
       border-top: 1px $lightGray solid !important;
+      white-space: nowrap;
     }
-    table-layout: fixed;
+    //table-layout: fixed;
     tr{
       &.edited{
         border-bottom: none;
