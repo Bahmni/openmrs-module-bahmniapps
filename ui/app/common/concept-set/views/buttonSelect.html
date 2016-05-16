@@ -6,6 +6,6 @@
             ng-class="{'active': isSet(answer), 'is-abnormal': abnormalObs.value && isSet(answer)}"
             ng-click="select(answer)"
             ng-repeat="answer in ::observation.getPossibleAnswers()">
-        <i class="fa fa-ok"></i>{{::getAnswerDisplayName(answer)}}
+        <i class="fa fa-ok"></i>{{::getAnswerDisplayName(answer) | translate}}
     </button>
 </div>
