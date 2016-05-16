@@ -61,4 +61,21 @@ describe('conceptDbService tests', function () {
         });
     });
 
+    iit("should return the empty array if the given concept is not in db", function(done){
+        var schemaBuilder = lf.schema.create('BahmniConcept', 1);
+        Bahmni.Tests.OfflineDbUtils.createTable(schemaBuilder, Bahmni.Common.Offline.SchemaDefinitions.Concept);
+        jasmine.getFixtures().fixturesPath = 'base/test/data';
+        var conceptJson = JSON.parse(readFixtures('concept.json'));
+        var conceptName = "dummyConcept";
+        schemaBuilder.connect().then(function(db){
+            conceptDbService.init(db);
+            conceptDbService.insertConceptAndUpdateHierarchy(conceptJson).then(function(){
+                conceptDbService.getAllParentsInHierarchy(conceptName, []).then(function (result) {
+                    expect(result).toEqual([]);
+                    done();
+                });
+            });
+        });
+    });
+
 });
