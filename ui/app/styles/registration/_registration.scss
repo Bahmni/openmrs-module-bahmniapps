@@ -23,14 +23,14 @@ body{
       article{
         width: 42%;
         margin-left: 0;
-        @media (max-width : 768px){
+        @media (max-width : 950px){
           width: 100% !important;
         }
         &.obs-section{
           width: 30% !important;
           margin-left: 5%;
           float: right;
-          @media (max-width : 768px){
+          @media (max-width : 950px){
             width: 100% !important;
             margin:15px auto;
           }
@@ -74,7 +74,7 @@ body{
           width: 60%;
         }
         .field-value-buttonSelectType{
-          width:63%;
+          width:61%;
           .multi-select-button-group button{
             width:200px;
             text-align: center;
@@ -85,7 +85,10 @@ body{
             }
           }
           @media screen and (max-width: 1060px){
-            width:56%;
+            width:54%;
+          }
+          @media (max-width : 650px){
+            width:40%;
           }
         }
       }
@@ -162,6 +165,15 @@ body{
       min-width: 197px;
       margin-right: 15px;
       box-sizing: border-box;
+      @media (max-width : 768px){
+        float: left !important;
+      }
+      @media (max-width : 650px){
+        float:none !important;
+      }
+    }
+    @media (max-width : 650px){
+      width:218px;
     }
     .accept-btn {
       margin-top: 4px;
