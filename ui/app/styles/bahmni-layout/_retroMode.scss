@@ -95,22 +95,11 @@ $retroModeColor:  #0E74AF;
     }
     .offline-sync {
       position: relative;
-      right:73px;
-      top: -42px;
-      button{
-        cursor: pointer;
-        width: auto;
-        max-width: 100%;
-        padding: 10px 12px 10px;
-        float: left;
-        color: $white;
-        border: 1px solid darken($bahmniSecondaryColor, 15%);
-        background: linear-gradient(to bottom, $bahmniSecondaryColor, darken($bahmniSecondaryColor, 10%));
-        font-size: 16px;
-      }
+      right:79px;
+      top: -35px;
       &.offline-sync-image {
         padding: 6px 27px;
-        top: 7px;
+        top: -35px;
       }
     }
 

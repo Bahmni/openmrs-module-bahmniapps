@@ -8,13 +8,13 @@
         </ul>
         <div ui-view="headerExtension" class="print-action-items"></div>
 
-    <button class="btn offline-sync" ng-click="sync()" ng-show="isOfflineApp && !isSyncing ">
-        {{::'REGISTRATION_LABEL_SYNC' | translate}}
-    </button>
-    <button class="btn offline-sync offline-sync-image" ng-show="isOfflineApp && isSyncing" disabled>
-        <!-- <i class="fa fa-refresh"></i> -->
-        <img src="../images/sync.gif" />
-    </button>
+        <button class="btn offline-sync" ng-click="sync()" ng-show="isOfflineApp && !isSyncing ">
+            {{::'REGISTRATION_LABEL_SYNC' | translate}}
+        </button>
+        <button class="btn offline-sync offline-sync-image" ng-show="isOfflineApp && isSyncing" disabled>
+            <!-- <i class="fa fa-refresh"></i> -->
+            <img src="../images/sync.gif" />
+        </button>
 
     <button class="btn-user-info">
             <i class="fa fa-user-md fa-white small"></i>
