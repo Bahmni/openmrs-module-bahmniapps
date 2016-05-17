@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('bahmni.common.offline')
-    .factory('offlineReferenceDataInitialization', ['offlineService','$http', 'offlineDbService', 'androidDbService', '$q',
-        function (offlineService, $http, offlineDbService, androidDbService, $q) {
+    .factory('offlineReferenceDataInitialization', ['offlineService','$http', 'offlineDbService', 'androidDbService', '$q','$rootScope',
+                function (offlineService, $http, offlineDbService, androidDbService, $q, $rootScope) {
             return function (isAuthenticated) {
                 if(offlineService.isOfflineApp()) {
                     if (offlineService.isAndroidApp()) {
@@ -43,9 +43,13 @@ angular.module('bahmni.common.offline')
                                 }
                             }).catch(function(response){
                                 if(parseInt(response.status / 100) == 4){
+                                    offlineDbService.insertLog(response.config.url, response.status, response.data);
+                                    $rootScope.$broadcast("event:restartSync");
                                     deferred.resolve({});
                                 }else if(parseInt(response.status / 100) == 5) {
+                                    offlineDbService.insertLog(response.config.url, response.status, response.data);
                                     deferred.resolve({"data": Bahmni.Common.Constants.offlineErrorMessages.openmrsServerError});
+                                    $rootScope.$broadcast("event:restartSync");
                                 }
                                 else if(response.status == -1) {
                                     deferred.resolve({"data": Bahmni.Common.Constants.offlineErrorMessages.networkError});

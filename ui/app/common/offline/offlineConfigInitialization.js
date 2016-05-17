@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('bahmni.common.offline')
-    .factory('offlineConfigInitialization', ['offlineService','$http', 'offlineDbService', 'androidDbService', '$q',
-        function (offlineService, $http, offlineDbService, androidDbService, $q) {
+    .factory('offlineConfigInitialization', ['offlineService','$http', 'offlineDbService', 'androidDbService', '$q','$rootScope',
+        function (offlineService, $http, offlineDbService, androidDbService, $q, $rootScope) {
             return function () {
                 if(offlineService.isOfflineApp()) {
                     if (offlineService.isAndroidApp()) {
@@ -37,7 +37,11 @@ angular.module('bahmni.common.offline')
                                         }
                                     });
                                 }
-                            }).catch(function () {
+                            }).catch(function (response) {
+                                if(parseInt(response.status / 100) == 4 || parseInt(response.status / 100) == 5) {
+                                    offlineDbService.insertLog(response.config.url, response.status, response.data);
+                                    $rootScope.$broadcast("event:restartSync");
+                                }
                                 x++;
                                 if(x ==length) {
                                     deferred.resolve({});

@@ -3,8 +3,9 @@
 var $scope, offlineDbService, eventLogService, offlineSyncService, offlineService, configurationService;
 
 describe('OfflineSyncService', function () {
-    var patient, mappedPatient, encounter, concept;
+    var patient, mappedPatient, encounter, concept, error_log;
     describe('initial sync ', function () {
+        var httpBackend, $http, $rootScope;
         beforeEach(function () {
             module('bahmni.common.offline');
             module('bahmni.common.domain');
@@ -42,6 +43,10 @@ describe('OfflineSyncService', function () {
                     data: {},
                     parents: {"parentUuids" : []},
                     name: 'concept'
+                };
+                error_log = {
+                    config: {"url": "this is the url"},
+                    data: {}
                 };
                 encounter = {
                     uuid: 'encounterUuid',
@@ -93,6 +98,13 @@ describe('OfflineSyncService', function () {
                         };
                     },
                     insertMarker: function () {
+                        return {
+                            then: function (callback) {
+                                return callback;
+                            }
+                        };
+                    },
+                    insertLog: function () {
                         return {
                             then: function (callback) {
                                 return callback;
@@ -174,12 +186,15 @@ describe('OfflineSyncService', function () {
             });
         });
 
-        beforeEach(inject(['offlineSyncService', 'eventLogService', 'offlineDbService', 'configurationService',
-            function (offlineSyncServiceInjected, eventLogServiceInjected, offlineDbServiceInjected, configurationServiceInjected) {
+        beforeEach(inject(['offlineSyncService', 'eventLogService', 'offlineDbService', 'configurationService', '$httpBackend', '$http', '$rootScope',
+            function (offlineSyncServiceInjected, eventLogServiceInjected, offlineDbServiceInjected, configurationServiceInjected, _$httpBackend_, http, rootScope) {
             offlineSyncService = offlineSyncServiceInjected;
             eventLogService = eventLogServiceInjected;
             offlineDbService = offlineDbServiceInjected;
             configurationService = configurationServiceInjected;
+            httpBackend = _$httpBackend_;
+            $http = http;
+            $rootScope = rootScope;
         }]));
 
 
@@ -328,6 +343,28 @@ describe('OfflineSyncService', function () {
 
             expect(offlineDbService.insertMarker).toHaveBeenCalledWith('TransactionalData', 'eventuuid', 202020);
             expect(offlineDbService.insertMarker.calls.count()).toBe(1);
+        });
+
+        it('should insert log in case of error in response and should stop syncing further', function () {
+            spyOn(offlineDbService, 'getMarker').and.callThrough();
+            spyOn(eventLogService, 'getConceptEventsFor').and.callThrough();
+            spyOn($rootScope, '$broadcast');
+            spyOn(eventLogService, 'getDataForUrl').and.callFake(function(){
+                return $http.get("some url");
+            });
+            spyOn(offlineDbService, 'insertLog').and.callThrough();
+            httpBackend.expectGET("some url").respond(500, error_log.data);
+            offlineSyncService.syncConcepts();
+            httpBackend.flush();
+
+
+            expect(offlineDbService.getMarker).toHaveBeenCalled();
+            expect(offlineDbService.getMarker.calls.count()).toBe(1);
+            expect(eventLogService.getConceptEventsFor).toHaveBeenCalledWith(undefined);
+            expect(eventLogService.getConceptEventsFor.calls.count()).toBe(1);
+            
+            expect(offlineDbService.insertLog).toHaveBeenCalled();
+            expect($rootScope.$broadcast).toHaveBeenCalledWith("schedulerStage", null, true);
         });
     });
 

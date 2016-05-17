@@ -43,6 +43,7 @@ angular.module('bahmni.common.offline').service('initializeOfflineSchema', [func
         createTable(schemaBuilder, Bahmni.Common.Offline.SchemaDefinitions.Encounter);
         createTable(schemaBuilder, Bahmni.Common.Offline.SchemaDefinitions.Visit);
         createTable(schemaBuilder, Bahmni.Common.Offline.SchemaDefinitions.Observation);
+        createTable(schemaBuilder, Bahmni.Common.Offline.SchemaDefinitions.ErrorLog, true);
     };
 
     this.initSchema = function () {
@@ -64,7 +65,7 @@ angular.module('bahmni.common.offline').service('initializeOfflineSchema', [func
         return this.initSchema();
     };
 
-    var createTable = function (schemaBuilder, tableDefinition) {
+    var createTable = function (schemaBuilder, tableDefinition, autoIncrement) {
         var table = schemaBuilder.createTable(tableDefinition.tableName);
 
         _.map(tableDefinition.columns, function (column) {
@@ -72,7 +73,12 @@ angular.module('bahmni.common.offline').service('initializeOfflineSchema', [func
         });
 
         table.addNullable(tableDefinition.nullableColumns);
-        table.addPrimaryKey(tableDefinition.primaryKeyColumns);
+        if(autoIncrement) {
+            table.addPrimaryKey(tableDefinition.primaryKeyColumns, true);
+        }
+        else {
+            table.addPrimaryKey(tableDefinition.primaryKeyColumns);
+        }
         _.each(tableDefinition.indexes, function (index) {
             table.addIndex(index.indexName, index.columnNames);
         })

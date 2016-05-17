@@ -89,8 +89,12 @@ angular.module('bahmni.common.offline')
                                             reservedEvents.push(event);
                                             return consumeFromErrorQueue();
                                         }
+                                        offlineDbService.insertLog(response.config.url, response.status, response.data);
                                     }
                                     else {
+                                        if(parseInt(response.status / 100) == 4) {
+                                            offlineDbService.insertLog(response.config.url, response.status, response.data);
+                                        }
                                         eventQueue.releaseFromQueue(event);
                                         deferred.resolve();
                                         return "4xx error";

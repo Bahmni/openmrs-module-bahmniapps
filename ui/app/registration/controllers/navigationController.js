@@ -27,8 +27,12 @@ angular.module('bahmni.registration')
 
             };
 
-            $scope.$on("schedulerStage", function(event,stage){
+            $scope.$on("schedulerStage", function (event, stage, restartSync) {
                 $scope.isSyncing = (stage !== null);
+                if (restartSync) {
+                    schedulerService.stopSync();
+                    schedulerService.sync();
+                }
             });
 
         }]);
