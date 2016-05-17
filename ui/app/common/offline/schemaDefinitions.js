@@ -367,5 +367,28 @@ Bahmni.Common.Offline.SchemaDefinitions = {
         ],
         nullableColumns: ['visitUuid'],
         primaryKeyColumns: ['uuid']
+    },
+    ErrorLog: {
+        tableName: 'error_log',
+        columns: [
+            {
+                name: 'id',
+                type: 'INTEGER'
+            }, {
+                name: 'failedRequestUrl',
+                type: 'STRING'
+            }, {
+                name: 'logDateTime',
+                type: 'DATE_TIME'
+            }, {
+                name: 'responseStatus',
+                type: 'INTEGER'
+            }, {
+                name: 'stackTrace',
+                type: 'STRING'
+            }
+        ],
+        nullableColumns: [],
+        primaryKeyColumns: ['id']
     }
 };

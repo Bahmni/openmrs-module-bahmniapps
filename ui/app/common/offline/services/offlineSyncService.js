@@ -134,6 +134,12 @@ angular.module('bahmni.common.offline')
                         return saveData(event, response).then(updateMarker(event).then(function () {
                             return readEvent(events, ++index, category);
                         }));
+                    }).catch(function(response) {
+                        if(parseInt(response.status / 100) == 4 || parseInt(response.status / 100) == 5) {
+                            offlineDbService.insertLog(response.config.url, response.status, response.data);
+                        }
+                        $rootScope.$broadcast("schedulerStage", null, true);
+                        endSync(-1);
                     });
                 };
 

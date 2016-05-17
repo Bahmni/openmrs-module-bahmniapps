@@ -1,17 +1,20 @@
 'use strict';
 
-xdescribe('dashboardController', function () {
+describe('dashboardController', function () {
 
 
     var $aController, window;
-    var scopeMock,rootScopeMock,_spinner,httpBackend, $q,state, $bahmniCookieStore, locationService,offlineService,appServiceMock,scheduledSyncMock;
+    var scopeMock,rootScopeMock,_spinner,httpBackend, $q,state, $bahmniCookieStore, locationService,offlineService,appServiceMock, schedulerService;
 
     beforeEach(module('bahmni.home'));
 
 
     beforeEach(module(function() {
-        _spinner = jasmine.createSpyObj('spinner', ['forPromise']);
+
+        scopeMock = jasmine.createSpyObj('scopeMock', ['actions']);
+        rootScopeMock = jasmine.createSpyObj('rootScopeMock', ['patientConfiguration']);
         appServiceMock = jasmine.createSpyObj('appServiceMock', ['getAppDescriptor']);
+        _spinner = jasmine.createSpyObj('spinner', ['forPromise']);
         locationService = jasmine.createSpyObj('locationService', ['getAllByTag']);
         $bahmniCookieStore = jasmine.createSpyObj('$bahmniCookieStore', ['get','remove','put']);
         $bahmniCookieStore.get.and.callFake(function(cookieName) {
@@ -23,10 +26,14 @@ xdescribe('dashboardController', function () {
             getExtensions: function () { return {} }
         });
         offlineService = jasmine.createSpyObj('offlineService', ['isOfflineApp']);
+        schedulerService = jasmine.createSpyObj('schedulerService', ['sync', 'stopSync']);
+
+        schedulerService.sync.and.returnValue({});
+        schedulerService.stopSync.and.returnValue({});
+
         offlineService.isOfflineApp.and.returnValue(true);
-        scheduledSyncMock = jasmine.createSpyObj('scheduledSync', ['jobInit','isJobRunning']);
-        scheduledSyncMock.isJobRunning.and.returnValue(specUtil.createFakePromise());
-        locationService.getAllByTag.and.returnValue(specUtil.createFakePromise({"data":{"results":{}}}));
+        locationService.getAllByTag.and.returnValue(specUtil.createFakePromise({"data":{"results":{}}}))
+
     }));
 
     beforeEach(
@@ -57,20 +64,51 @@ xdescribe('dashboardController', function () {
             spinner: _spinner,
             appService: appServiceMock,
             offlineService: offlineService,
-            scheduledSync:scheduledSyncMock,
             $bahmniCookieStore: $bahmniCookieStore,
+            schedulerService: schedulerService
         });
     });
 
-    it("should sync data when app is offline", function () {
+    it("should set isOfflineApp  to true if it is chrome or android app", function () {
         scopeMock.$digest();
         expect(offlineService.isOfflineApp).toHaveBeenCalled();
-        expect(scopeMock.isSyncing).toBe(true);
+        expect(scopeMock.isOfflineApp).toBeTruthy();
     });
 
-    it("should intialize sync process in offline", function () {
-        scheduledSyncMock.isJobRunning.and.returnValue(null);
+    it("should set isSyncing to true  when user clicks on sync button", function () {
         scopeMock.$digest();
-        expect(scopeMock.isSyncing).toBeUndefined();
+        expect(offlineService.isOfflineApp).toHaveBeenCalled();
+
+        rootScopeMock.$broadcast("schedulerStage","stage1");
+        expect(scopeMock.isSyncing).toBeTruthy();
     });
+
+    it("should set isSyncing to false when syncing is not happening and should not restart Sync in offline App", function () {
+
+        scopeMock.$digest();
+        rootScopeMock.$broadcast("schedulerStage",null);
+
+        expect(scopeMock.isSyncing).toBeFalsy();
+        expect(schedulerService.sync).not.toHaveBeenCalled();
+        expect(schedulerService.stopSync).not.toHaveBeenCalled();
+    });
+
+    it("should restart scheduler when there is an error in offline app", function () {
+
+        scopeMock.$digest();
+        rootScopeMock.$broadcast("schedulerStage",null, true);
+
+        expect(schedulerService.sync).toHaveBeenCalled();
+        expect(schedulerService.stopSync).toHaveBeenCalled();
+
+    });
+
+    it("should not restart scheduler when there are no errors in offline app", function () {
+        scopeMock.$digest();
+        rootScopeMock.$broadcast("schedulerStage",null, false);
+
+        expect(schedulerService.sync).not.toHaveBeenCalled();
+        expect(schedulerService.stopSync).not.toHaveBeenCalled();
+    });
+
 });

@@ -207,6 +207,10 @@ angular.module('bahmni.common.offline')
                 return $q.when(response);
             };
 
+            var insertLog = function (failedRequest, responseStatus, stacktrace) {
+                 AndroidOfflineService.insertLog(failedRequest, responseStatus, stacktrace);
+            };
+            
             return {
                 init: init,
                 initSchema: initSchema,
@@ -235,6 +239,7 @@ angular.module('bahmni.common.offline')
                 getConcept: getConcept,
                 getConceptByName: getConceptByName,
                 getEncounterByEncounterUuid: getEncounterByEncounterUuid,
+                insertLog: insertLog,
                 getAllParentsInHierarchy: getAllParentsInHierarchy
             }
         }

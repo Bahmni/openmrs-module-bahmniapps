@@ -83,10 +83,13 @@ angular.module('bahmni.clinical')
                 schedulerService.sync(Bahmni.Common.Constants.syncButtonConfiguration);
             };
 
-            $scope.$on("schedulerStage", function(event,stage){
+            $scope.$on("schedulerStage", function (event, stage, restartSync) {
                 $scope.isSyncing = (stage !== null);
+                if (restartSync) {
+                    schedulerService.stopSync();
+                    schedulerService.sync();
+                }
             });
-
 
             var getCurrentCookieLocation = function () {
                 return $bahmniCookieStore.get(Bahmni.Common.Constants.locationCookieName) ? $bahmniCookieStore.get(Bahmni.Common.Constants.locationCookieName) : null;

@@ -19,7 +19,9 @@ describe('navigationController', function () {
             getExtensions: function () { return {} }
         });
         offlineService = jasmine.createSpyObj('offlineService', ['isOfflineApp']);
-        schedulerService = jasmine.createSpyObj('offlinePatientSync', ['sync']);
+        schedulerService = jasmine.createSpyObj('schedulerService', ['sync','stopSync']);
+        schedulerService.sync.and.returnValue({});
+        schedulerService.stopSync.and.returnValue({});
 
         offlineService.isOfflineApp.and.returnValue(true);
     }));
@@ -63,11 +65,31 @@ describe('navigationController', function () {
         expect(scopeMock.isSyncing).toBeTruthy();
     });
 
-    it("should set isSyncing to false when syncing is not happening", function () {
+    it("should set isSyncing to false when syncing is not happening  and should not restart Sync in offlineApp", function () {
 
         scopeMock.$digest();
         rootScopeMock.$broadcast("schedulerStage",null);
 
+        expect(schedulerService.sync).not.toHaveBeenCalled();
+        expect(schedulerService.stopSync).not.toHaveBeenCalled();
         expect(scopeMock.isSyncing).toBeFalsy();
+    });
+
+    it("should restart scheduler when there is an error in offlineApp", function () {
+
+        scopeMock.$digest();
+        rootScopeMock.$broadcast("schedulerStage",null, true);
+
+        expect(schedulerService.sync).toHaveBeenCalled();
+        expect(schedulerService.stopSync).toHaveBeenCalled();
+
+    });
+
+    it("should not restart scheduler when there are no errors  in offlineApp", function () {
+        scopeMock.$digest();
+        rootScopeMock.$broadcast("schedulerStage",null, false);
+
+        expect(schedulerService.sync).not.toHaveBeenCalled();
+        expect(schedulerService.stopSync).not.toHaveBeenCalled();
     });
 });

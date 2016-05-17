@@ -2,9 +2,9 @@
 
 angular.module('bahmni.common.offline')
     .service('offlineDbService', ['$http', '$q', 'patientDbService', 'patientAddressDbService', 'patientAttributeDbService', 'offlineMarkerDbService', 'offlineAddressHierarchyDbService',
-        'offlineConfigDbService', 'initializeOfflineSchema', 'referenceDataDbService', 'locationDbService', 'offlineSearchDbService', 'encounterDbService', 'visitDbService', 'observationDbService', 'conceptDbService',
+        'offlineConfigDbService', 'initializeOfflineSchema', 'referenceDataDbService', 'locationDbService', 'offlineSearchDbService', 'encounterDbService', 'visitDbService', 'observationDbService', 'conceptDbService','errorLogDbService',
         function ($http, $q, patientDbService, patientAddressDbService, patientAttributeDbService, offlineMarkerDbService, offlineAddressHierarchyDbService,
-                  offlineConfigDbService, initializeOfflineSchema, referenceDataDbService, locationDbService, offlineSearchDbService, encounterDbService, visitDbService, observationDbService, conceptDbService) {
+                  offlineConfigDbService, initializeOfflineSchema, referenceDataDbService, locationDbService, offlineSearchDbService, encounterDbService, visitDbService, observationDbService, conceptDbService, errorLogDbService) {
         var db;
 
 
@@ -193,6 +193,11 @@ angular.module('bahmni.common.offline')
             return visitDbService.getVisitUuidsByPatientUuid(db, patientUuid, numberOfVisits);
         };
 
+        var insertLog = function (failedRequest, responseStatus, stackTrace) {
+            return errorLogDbService.insertLog(db, failedRequest, responseStatus, stackTrace);
+        };
+
+
         var getAllParentsInHierarchy = function(conceptName){
             var conceptNamesInHierarchy = [];
             return conceptDbService.getAllParentsInHierarchy(conceptName, conceptNamesInHierarchy)
@@ -229,6 +234,7 @@ angular.module('bahmni.common.offline')
             getConceptByName: getConceptByName,
             updateChildren: updateChildren,
             updateParentJson: updateParentJson,
-            getAllParentsInHierarchy: getAllParentsInHierarchy
+            getAllParentsInHierarchy: getAllParentsInHierarchy,
+            insertLog: insertLog
         }
     }]);
