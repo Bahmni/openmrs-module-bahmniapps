@@ -4,13 +4,7 @@ angular.module('bahmni.registration')
     .service('offlinePatientServiceStrategy', ['$http', '$q', 'offlineSearchDbService', 'offlineDbService', function ($http, $q, offlineSearchDbService, offlineDbService) {
 
         var search = function (config) {
-             var defer = $q.defer();
-           offlineDbService.reinitSchema().then(function (_db) {
-               offlineDbService.init(_db);
-           }).then(function() {
-               return defer.resolve(offlineSearchDbService.search(config.params));
-           });
-            return defer.promise;
+            return offlineSearchDbService.search(config.params);
         };
 
         var getByUuid = function(uuid) {
