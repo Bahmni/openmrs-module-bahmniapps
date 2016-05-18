@@ -24,7 +24,7 @@ Bahmni.Common.Obs.Observation = (function () {
 
         getDisplayValue: function () {
             var value;
-            if (this.type === "Boolean") {
+            if (this.type === "Boolean" || this.concept && this.concept.dataType === "Boolean") {
                 return this.value === true ? "OBS_BOOLEAN_YES_KEY" : "OBS_BOOLEAN_NO_KEY";
             }
             if (this.type === "Datetime") {

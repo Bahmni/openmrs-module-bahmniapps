@@ -12,7 +12,7 @@ Bahmni.Common.Obs.GridObservation = (function () {
 
     var getObservationDisplayValue = function (observation) {
         if (observation.isBoolean || observation.type === "Boolean") {
-            return observation.value === true ? "Yes" : "No";
+            return observation.value === true ? "OBS_BOOLEAN_YES_KEY" : "OBS_BOOLEAN_NO_KEY";
         }
         if(!observation.value) {
             return "";
