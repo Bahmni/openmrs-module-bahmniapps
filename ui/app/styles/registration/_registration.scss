@@ -82,7 +82,7 @@ body{
             }
           }
           @media screen and (max-width: 1060px){
-            width:54%;
+            width:48%;
           }
           @media (max-width : 650px){
             width:40%;
@@ -90,6 +90,9 @@ body{
         }
         article{
           width: 60%;
+          @media (max-width : 1024px){
+            width:63%;
+          }
           &.noShowLatest{
             width:100%;
             .field-value-buttonSelectType {
