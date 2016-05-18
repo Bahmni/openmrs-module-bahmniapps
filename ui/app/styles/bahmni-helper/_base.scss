@@ -92,12 +92,6 @@ a {
   border-radius: 5px;
 }
 
-/*pre {
-  font-size: 16px;
-  padding: 10px;
-  background: rgb(253, 252, 223);
-}*/
-
 table {
   margin: 0 auto;
 }
@@ -106,11 +100,11 @@ i {
   &.link {
     font-size: 0.7em;
   }
-  
+
   &.small {
     font-size: 1.2em;
   }
-  
+
   &.medium {
     font-size: 2em;
   }
@@ -187,25 +181,25 @@ table {
     padding: 5px 10px;
     border: 1px solid $lighterGray;
   }
-  
+
   tr {
     border: 1px solid $bodyBackground;
   }
-  
+
   tr:nth-child(even) {
     background: $focus;
   }
-  
+
   tr:nth-child(odd) {
     background: white;
   }
-  
+
   tr.hover{
     background: lighten(desaturate($link, 20%), 20%);
     color: white;
     cursor: pointer;
   }
-  
+
   tr.selected{
     background: $link;
     color: white;
@@ -214,7 +208,7 @@ table {
       color: white
     }
   }
-  
+
   thead th {
     border-bottom: 1px solid $lighterGray;
     background: $lighterGrey;
@@ -268,7 +262,7 @@ table {
 
 .highlighted {
   background-color: $highlight;
-  color: $white; 
+  color: $white;
   padding: 5px;
   margin: 5px
  }

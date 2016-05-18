@@ -404,7 +404,6 @@ ul li a.back-btn, ul li a.back-btn:hover, button.back-btn, a.back-btn {
 button.back-btn {
     box-shadow: none;
     line-height: 1.1em;
-    //float: none;
 }
 .back-btn-link {
     @include clearfix();
@@ -506,7 +505,6 @@ input[type="submit"].secondary-button:hover  {
   padding: 5px;
   @media (max-width: 1024px) {
     margin: 5px 0 0 10px;
-    //float: left;
   }
   .fa-file-text-o {
     display: none;
