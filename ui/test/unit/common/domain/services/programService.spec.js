@@ -604,8 +604,8 @@ describe('programService', function () {
             "attributes": attributes,
             "states": [],
             "outcome": null,
-            "dateCompleted": "2016-01-12T05:30:00+0530",
-            "dateEnrolled": "2016-01-01T00:00:00+0530",
+            "dateCompleted": moment("2016-01-12T05:30:00+0530").format('YYYY-MM-DDTHH:mm:ssZZ'),
+            "dateEnrolled": moment("2016-01-01T00:00:00").format('YYYY-MM-DDTHH:mm:ssZZ'),
             "uuid": "Some UUID"
 
         };
