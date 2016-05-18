@@ -2,14 +2,29 @@
 
 angular.module('bahmni.registration')
     .controller('SearchPatientController', ['$rootScope', '$scope', '$location', '$window', 'spinner', 'patientService', 'appService', 'Preferences',
-                'messagingService', '$translate','$filter',
-        function ($rootScope, $scope, $location, $window, spinner, patientService, appService, preferences, messagingService, $translate,$filter) {
+        'messagingService', '$translate', '$filter', 'configurations',
+        function ($rootScope, $scope, $location, $window, spinner, patientService, appService, preferences, messagingService, $translate,$filter,configurations) {
 
             $scope.identifierSources = $rootScope.patientConfiguration.identifierSources;
             $scope.results = [];
+            configurations.load(['addressLevels']);
             var searching = false;
-
+            var maxAttributesFromConfig = 5;
             var allSearchConfigs = appService.getAppDescriptor().getConfigValue("patientSearch") || {};
+            var patientSearchResultConfigs = appService.getAppDescriptor().getConfigValue("patientSearchResults") || {};
+            maxAttributesFromConfig = !_.isEmpty(allSearchConfigs.programAttributes) ? maxAttributesFromConfig - 1 : maxAttributesFromConfig;
+
+            $scope.getAddressColumnName = function (column) {
+                var columnName = "";
+                var columnCamelCase = column.replace(/([-_][a-z])/g, function ($1) {
+                    return $1.toUpperCase().replace(/[-_]/, '');
+                });
+                _.each(configurations.configs.addressLevels, function (addressLevel) {
+                    if (addressLevel.addressField === columnCamelCase)
+                        columnName = addressLevel.name;
+                });
+                return columnName;
+            };
 
             var hasSearchParameters = function () {
                 return $scope.searchParameters.name.trim().length > 0 ||
@@ -29,6 +44,8 @@ angular.module('bahmni.registration')
                 $scope.searchParameters.name = searchParameters.name || '';
                 $scope.searchParameters.customAttribute = searchParameters.customAttribute || '';
                 $scope.searchParameters.programAttributeFieldValue = searchParameters.programAttributeFieldValue || '';
+                $scope.searchParameters.addressSearchResultsConfig = searchParameters.addressSearchResultsConfig || '';
+                $scope.searchParameters.personSearchResultsConfig = searchParameters.personSearchResultsConfig || '';
                 var identifierPrefix = searchParameters.identifierPrefix;
                 if (!identifierPrefix || identifierPrefix.length === 0) {
                     identifierPrefix = preferences.identifierPrefix;
@@ -53,11 +70,14 @@ angular.module('bahmni.registration')
                         offset,
                         $scope.customAttributesSearchConfig.fields,
                         $scope.programAttributesSearchConfig.field,
-                        $scope.searchParameters.programAttributeFieldValue
+                        $scope.searchParameters.programAttributeFieldValue,
+                        $scope.addressSearchResultsConfig.fields,
+                        $scope.personSearchResultsConfig.fields
                     ).then(function(response) {
-                         mapCustomAttributesSearchResults(response);
-                         mapProgramAttributesSearchResults(response);
-                         return response;
+                        mapCustomAttributesSearchResults(response);
+                        mapAddressAttributesSearchResults(response);
+                        mapProgramAttributesSearchResults(response);
+                        return response;
                     });
                     searchPromise['finally'](function () {
                         searching = false;
@@ -81,23 +101,24 @@ angular.module('bahmni.registration')
                 return commaSeparatedAttributeValues.substring(0, commaSeparatedAttributeValues.length-2);
             };
 
-            $scope.getAddressFieldLabel = function(){
-              if($scope.addressSearchConfig.label){
-                  return $scope.addressSearchConfig.label;
-              }
-              return $translate.instant('REGISTRATION_LABEL_CITY');
-            };
-
             var mapCustomAttributesSearchResults = function(data){
-                if(( $scope.programAttributesSearchConfig.field || $scope.customAttributesSearchConfig.fields) && data != "Searching"){
+                if(( $scope.personSearchResultsConfig.fields) && data != "Searching"){
                     _.map(data.pageOfResults, function(result){
                         result.customAttribute = result.customAttribute && JSON.parse(result.customAttribute);
                     });
                 }
             };
 
+            var mapAddressAttributesSearchResults = function(data){
+                if(($scope.addressSearchResultsConfig.fields) && data != "Searching"){
+                    _.map(data.pageOfResults, function(result){
+                        result.addressFieldValue = result.addressFieldValue && JSON.parse(result.addressFieldValue);
+                    });
+                }
+            };
+
             var mapProgramAttributesSearchResults = function (data) {
-                if(( $scope.programAttributesSearchConfig.field || $scope.customAttributesSearchConfig.fields) && data != "Searching") {
+                if(( $scope.programAttributesSearchConfig.field ) && data != "Searching") {
                     _.map(data.pageOfResults, function (result) {
                         var programAttributesObj ={};
                         var arrayOfStringOfKeysValue = result.patientProgramAttributeValue && result.patientProgramAttributeValue.substring(2, result.patientProgramAttributeValue.length-2).split('","');
@@ -155,6 +176,42 @@ angular.module('bahmni.registration')
                 $scope.programAttributesSearchConfig.show = !_.isEmpty($scope.programAttributesSearchConfig.field);
             };
 
+            var sliceExtraColumns = function () {
+                var orderedColumns = Object.keys(patientSearchResultConfigs);
+                _.each(orderedColumns, function (column) {
+                    if (patientSearchResultConfigs[column].fields && !_.isEmpty(patientSearchResultConfigs[column].fields)){
+                        patientSearchResultConfigs[column].fields = patientSearchResultConfigs[column].fields.slice(patientSearchResultConfigs[column].fields, maxAttributesFromConfig);
+                        maxAttributesFromConfig -= patientSearchResultConfigs[column].fields.length;
+                    }
+                });
+            };
+
+            var setSearchResultsConfig = function () {
+                var resultsConfigNotFound = false;
+                if (_.isEmpty(patientSearchResultConfigs)) {
+                    resultsConfigNotFound = true;
+                    patientSearchResultConfigs.address = {"fields": allSearchConfigs.address ? [allSearchConfigs.address.field] : {}};
+                    patientSearchResultConfigs.personAttributes
+                        = {fields: allSearchConfigs.customAttributes ? allSearchConfigs.customAttributes.fields : {}};
+                }
+                else {
+                    if (!patientSearchResultConfigs.address) patientSearchResultConfigs.address = {};
+                    if (!patientSearchResultConfigs.personAttributes)  patientSearchResultConfigs.personAttributes = {};
+                }
+
+                if (patientSearchResultConfigs.address.fields && !_.isEmpty(patientSearchResultConfigs.address.fields)) {
+                    patientSearchResultConfigs.address.fields =
+                        patientSearchResultConfigs.address.fields.filter(function (item) {
+                            return !_.isEmpty($scope.getAddressColumnName(item));
+                        });
+                }
+                if(!resultsConfigNotFound) sliceExtraColumns();
+                $scope.personSearchResultsConfig = patientSearchResultConfigs.personAttributes;
+                $scope.addressSearchResultsConfig = patientSearchResultConfigs.address;
+            };
+
+
+
             var initialize = function () {
                 $scope.searchParameters = {};
                 $scope.searchActions = appService.getAppDescriptor().getExtensions("org.bahmni.registration.patient.search.result.action");
@@ -162,6 +219,7 @@ angular.module('bahmni.registration')
                 setAddressSearchConfig();
                 setCustomAttributesSearchConfig();
                 setProgramAttributesSearchConfig();
+                setSearchResultsConfig();
             };
 
             var identifyParams = function (querystring) {
@@ -204,11 +262,14 @@ angular.module('bahmni.registration')
                     registrationNumber: $scope.searchParameters.registrationNumber,
                     programAttributeFieldName: $scope.programAttributesSearchConfig.field,
                     patientAttributes : $scope.customAttributesSearchConfig.fields,
-                    programAttributeFieldValue: $scope.searchParameters.programAttributeFieldValue
+                    programAttributeFieldValue: $scope.searchParameters.programAttributeFieldValue,
+                    addressSearchResultsConfig : $scope.addressSearchResultsConfig.fields,
+                    personSearchResultsConfig : $scope.personSearchResultsConfig.fields
                 });
 
-                var searchPromise = patientService.search(undefined, patientIdentifier, preferences.identifierPrefix, $scope.addressSearchConfig.field, undefined, undefined, undefined, $scope.customAttributesSearchConfig.fields, $scope.programAttributesSearchConfig.field, $scope.searchParameters.programAttributeFieldValue).then(function (data) {
+                var searchPromise = patientService.search(undefined, patientIdentifier, preferences.identifierPrefix, $scope.addressSearchConfig.field, undefined, undefined, undefined, $scope.customAttributesSearchConfig.fields, $scope.programAttributesSearchConfig.field, $scope.searchParameters.programAttributeFieldValue, $scope.addressSearchResultsConfig.fields, $scope.personSearchResultsConfig.fields).then(function (data) {
                     mapCustomAttributesSearchResults(data);
+                    mapAddressAttributesSearchResults(data);
                     mapProgramAttributesSearchResults(data)
                     if (data.pageOfResults.length === 1) {
                         var patient = data.pageOfResults[0];

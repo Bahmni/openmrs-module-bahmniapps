@@ -54,17 +54,17 @@
             </div>
         </div>
     </div>
-    
+
     <div ng-if="resultsPresent()" infinite-scroll="nextPage()" infinite-scroll-immediate-check="false" infinite-scroll-disabled="noMoreResultsPresent" class="registraition-search-results-container">
         <table class="table">
             <thead>
             <tr>
                 <th><strong>{{ ::'REGISTRATION_LABEL_ID' | translate}}</strong></th>
                 <th><strong>{{ ::'REGISTRATION_LABEL_NAME' | translate}}</strong></th>
-                <th ng-repeat = "field in ::customAttributesSearchConfig.fields"><strong>{{::convertToTableHeader(field)}}</strong></th>
+                <th ng-repeat = "field in ::personSearchResultsConfig.fields track by $index"><strong>{{::convertToTableHeader(field)}}</strong></th>
                 <th><strong>{{ ::'REGISTRATION_LABEL_GENDER' | translate}}</strong></th>
                 <th><strong>{{ ::'REGISTRATION_LABEL_AGE' | translate}}</strong></th>
-                <th><strong>{{ ::getAddressFieldLabel() }}</strong></th>
+                <th ng-repeat = "field in ::addressSearchResultsConfig.fields"><strong>{{::convertToTableHeader(getAddressColumnName(field))}}</strong></th>
                 <th><strong>{{ ::'REGISTRATION_LABEL_REGISTRATION_DATE' | translate}}</strong></th>
                 <th ng-if="::programAttributesSearchConfig.show"><strong>{{::convertToTableHeader(programAttributesSearchConfig.label)}}</strong></th>
             </tr>
@@ -77,10 +77,10 @@
                     </a>
                 </td>
                 <td>{{::result.givenName}} {{::result.middleName}} {{::result.familyName}}</td>
-                <td ng-repeat = "field in ::customAttributesSearchConfig.fields">{{::result.customAttribute[field] || ""}}</td>
+                <td ng-repeat = "field in ::personSearchResultsConfig.fields track by $index">{{::result.customAttribute[field] || ""}}</td>
                 <td>{{::result.gender}}</td>
                 <td>{{::result.age}}</td>
-                <td>{{::result.addressFieldValue}}</td>
+                <td ng-repeat = "field in ::addressSearchResultsConfig.fields">{{::result.addressFieldValue[field] || ""}}</td>
                 <td>{{::result.dateCreated | bahmniDate}}</td>
                 <td ng-if="::programAttributesSearchConfig.show">{{getProgramAttributeValues(result)}}</td>
             </tr>

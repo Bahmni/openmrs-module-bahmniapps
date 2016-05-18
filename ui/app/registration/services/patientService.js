@@ -6,7 +6,8 @@ angular.module('bahmni.registration')
         var baseOpenMRSRESTURL = Bahmni.Registration.Constants.baseOpenMRSRESTURL;
 
         var search = function (query, identifier, identifierPrefix, addressFieldName, addressFieldValue, customAttributeValue,
-                               offset, customAttributeFields, programAttributeFieldName, programAttributeFieldValue) {
+                               offset, customAttributeFields, programAttributeFieldName, programAttributeFieldValue , addressSearchResultsConfig,
+                               patientSearchResultsConfig) {
             var config = {
                 params: {
                     q: query,
@@ -19,7 +20,9 @@ angular.module('bahmni.registration')
                     startIndex: offset || 0,
                     patientAttributes: customAttributeFields,
                     programAttributeFieldName: programAttributeFieldName,
-                    programAttributeFieldValue: programAttributeFieldValue
+                    programAttributeFieldValue: programAttributeFieldValue,
+                    addressSearchResultsConfig : addressSearchResultsConfig,
+                    patientSearchResultsConfig : patientSearchResultsConfig
                 },
                 withCredentials: true
             };
