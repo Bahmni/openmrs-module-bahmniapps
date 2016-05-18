@@ -28,7 +28,7 @@ body{
         }
         &.obs-section{
           width: 30% !important;
-          margin-left: 5%;
+          margin-left: 3%;
           float: right;
           @media (max-width : 950px){
             width: 100% !important;
@@ -70,13 +70,10 @@ body{
     }
     &.visit-patient-page{
       .observation-section{
-        article{
-          width: 60%;
-        }
         .field-value-buttonSelectType{
-          width:61%;
+          width:55%;
           .multi-select-button-group button{
-            width:200px;
+            width:185px;
             text-align: center;
             padding-left: 10px;
             padding-right: 10px;
@@ -89,6 +86,15 @@ body{
           }
           @media (max-width : 650px){
             width:40%;
+          }
+        }
+        article{
+          width: 60%;
+          &.noShowLatest{
+            width:100%;
+            .field-value-buttonSelectType {
+              width: 66%;
+            }
           }
         }
       }
@@ -180,10 +186,9 @@ body{
     @media (max-width : 650px){
       width:218px;
     }
-    .accept-btn {
-      margin-top: 4px;
-      padding: 4px 8px 6px;
-      font-size: 12px;
-    }
+  }
+  .form-field .field-value .autocomplete .accept-btn{
+    margin-top: 6px;
   }
 }
+

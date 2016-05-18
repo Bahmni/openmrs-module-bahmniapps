@@ -104,29 +104,6 @@
 
 }
 
-div.duration.checkbox-inline {
-  margin-top: -10px;
-  @media screen and (max-width: 850px) and (min-width: 596px) {
-    margin-top: 0;
-    margin-left: 166px;
-  }
-  @media screen and (max-width: 595px) {
-    margin-left: 10px;
-    margin-top: 0;
-    float: left;
-  }
-  input.duration-value {
-    width: 52px;
-    margin: 0 10px;
-    padding: 5px;
-    box-sizing: border-box;
-  }
-  select.duration-unit {
-    margin-left: 10px;
-    min-width: 180px;
-  }
-}
-
 form .vitals .form-field .field-value {
   @media screen and (max-width: 595px) {
     margin-left: 10px;
@@ -165,7 +142,6 @@ form .observations-tab .vitals .form-field .field-value {
   fieldset {
     label {
       float: left;
-      // width: 135px;
       margin-left: 20px;
       margin-right: 20px;
       text-align: right;
@@ -174,35 +150,6 @@ form .observations-tab .vitals .form-field .field-value {
         width: 96%;
         text-align: left;
       }
-    }
-    // &.hasLegend {
-    //   label {
-    //     margin-left: 10px;
-    //   }
-    // }
-  }
-}
-.checkbox-inline {
-  padding: 10px 0 0 0;
-  float: left;
-  @media screen and (max-width: 685px) and (min-width: 600px) {
-    padding: 0;
-    margin-left: 221px;
-  }
-  @media screen and (max-width: 595px) {
-    float: right;
-    margin-right: 16%;
-    padding: 0;
-  }
-  input[type="checkbox"] {
-    margin-left: 10px!important;
-  }
-  span {
-    display: inline-block;
-    margin-top: 2px;
-    &.for-separator {
-      font-size: 12px;
-      padding-top: 10px;
     }
   }
 }
@@ -279,29 +226,6 @@ concept-set {
         padding: 0.2em 0.1em;
       }
     }
-  }
-}
-
-.grid-row {
-  padding: 2px;
-}
-.grid-row-element {
-  font-size: 12px;
-  padding-left: 15px;
-  padding-right: 15px;
-  .fa-ok {
-    display: none;
-    padding-top: 0;
-    padding-bottom: 0;
-    font-size: 14px;
-    line-height: inherit;
-  }
-}
-.grid-row-element.active {
-  color: $bahmniTertiaryColor;
-  padding-left: 3px;
-  .fa-ok {
-    display: inline-block;
   }
 }
 
@@ -442,12 +366,6 @@ concept-set {
   }
 }
 
-
-
-.accept-btn-wrapper {
-  margin: 7px 5px 0 20px;
-}
-
 .stepper {
   &.illegalValue{
     border: none !important;
@@ -477,22 +395,6 @@ concept-set {
 
 }
 
-#removeClonedObs.fa-remove {
-  margin-top: 9px;
-  margin-bottom: 3px;
-  margin-left: 9px;
-  margin-right: 4px;
-  color: #9D0101;
-  border-radius: 3px;
-  background: #ddd;
-  border: 1px solid #ddd;
-  width: 18px;
-  cursor: pointer;
-  box-sizing: border-box;
-  font-size: 14px;
-  text-align: center;
-
-}
 .vitals table{
   caption{
     text-align: left;
