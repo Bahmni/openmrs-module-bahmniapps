@@ -34,4 +34,8 @@ angular.module('bahmni.common.domain')
             this.find = function (params) {
                 return androidDbService.getActiveEncounter(params);
             };
+
+            this.getEncountersByPatientUuid = function(patientUuid){
+                return androidDbService.getEncountersByPatientUuid(patientUuid);
+            }
         }]);
