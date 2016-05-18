@@ -41,7 +41,7 @@
                                     <bahmni-observation patient="patient" config="{conceptNames: conceptSet.options.conceptNames, scope: 'latest'}" section-title="'REGISTRATON_LATEST_KEY'"></bahmni-observation>
                                 </article>
                             </div>
-                            <article ng-if="::!conceptSet.options.showLatest">
+                            <article ng-if="::!conceptSet.options.showLatest"  class="clearfix" ng-class="{'noShowLatest' : !conceptSet.options.showLatest}">
                                 <concept-set concept-set-name="::conceptSet.options.conceptName" required="::conceptSet.options.required" patient="patient" observations="observations"
                                              obs-scope="::conceptSet.options.scope" show-title="false" concept-set-focused="::$index === 0"></concept-set>
                             </article>
