@@ -22,7 +22,7 @@ angular.module('bahmni.common.i18n',['pascalprecht.translate'])
             if (input.display) {
                 return input.display;
             }
-            return null;
+            return $translate.instant(input);
         }
     }]);
 
