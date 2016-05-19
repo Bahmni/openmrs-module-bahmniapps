@@ -9,7 +9,7 @@ describe('Offline Push Tests', function () {
         module(function ($provide) {
             var offlineServiceMock = jasmine.createSpyObj('offlineService', ['isOfflineApp','isAndroidApp']);
             eventQueueMock = jasmine.createSpyObj('eventQueue', ['consumeFromErrorQueue','consumeFromEventQueue','removeFromQueue','addToErrorQueue','releaseFromQueue']);
-            var offlineDbServiceMock = jasmine.createSpyObj('offlineDbService', ['getPatientByUuid','getEncounterByEncounterUuid','insertLog', 'createEncounter']);
+            offlineDbServiceMock = jasmine.createSpyObj('offlineDbService', ['getPatientByUuid','getEncounterByEncounterUuid','insertLog', 'createEncounter']);
 
             offlineServiceMock.isOfflineApp.and.returnValue(true);
             offlineServiceMock.isAndroidApp.and.returnValue(false);
@@ -84,6 +84,7 @@ describe('Offline Push Tests', function () {
             expect(eventQueueMock.removeFromQueue).toHaveBeenCalled();
             expect(eventQueueMock.addToErrorQueue).toHaveBeenCalled();
             expect(eventQueueMock.consumeFromEventQueue).toHaveBeenCalled();
+            expect(offlineDbServiceMock.insertLog).toHaveBeenCalled();
             done();
         });
         setTimeout(function(){
@@ -98,6 +99,7 @@ describe('Offline Push Tests', function () {
             expect(eventQueueMock.addToErrorQueue).not.toHaveBeenCalled();
             expect(eventQueueMock.consumeFromEventQueue).not.toHaveBeenCalled();
             expect(eventQueueMock.releaseFromQueue).toHaveBeenCalled();
+            expect(offlineDbServiceMock.insertLog).toHaveBeenCalled();
             done();
         });
         setTimeout(function(){
