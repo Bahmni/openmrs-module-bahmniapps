@@ -27,6 +27,7 @@ describe('SearchPatientController', function () {
         preferences = $injector.get('Preferences');
         rootScope.patientConfiguration = {};
         rootScope.currentUser = { privileges: [{name: 'View Patients'}] };
+        rootScope.addressLevels = [{ "addressField" : "stateProvince" ,name: "State"}];
         rootScope.patientConfiguration.identifierSources = [
             {name: 'GAN', prefix: 'GAN'},
             {name: 'SEM', prefix: 'SEM'},
@@ -331,6 +332,10 @@ describe('SearchPatientController', function () {
             var programAttributeValue = scope.getProgramAttributeValues(result);
 
             expect(programAttributeValue).toBe("Facility1, Facility2, Facility3");
+        });
+
+        it("should check if the address fields are valid", function () {
+            expect(scope.getAddressColumnName("stateProvince")).toBe("State");
         });
     });
 });
