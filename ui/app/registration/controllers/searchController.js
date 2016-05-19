@@ -2,12 +2,11 @@
 
 angular.module('bahmni.registration')
     .controller('SearchPatientController', ['$rootScope', '$scope', '$location', '$window', 'spinner', 'patientService', 'appService', 'Preferences',
-        'messagingService', '$translate', '$filter', 'configurations',
-        function ($rootScope, $scope, $location, $window, spinner, patientService, appService, preferences, messagingService, $translate,$filter,configurations) {
+        'messagingService', '$translate', '$filter',
+        function ($rootScope, $scope, $location, $window, spinner, patientService, appService, preferences, messagingService, $translate,$filter) {
 
             $scope.identifierSources = $rootScope.patientConfiguration.identifierSources;
             $scope.results = [];
-            configurations.load(['addressLevels']);
             var searching = false;
             var maxAttributesFromConfig = 5;
             var allSearchConfigs = appService.getAppDescriptor().getConfigValue("patientSearch") || {};
@@ -19,7 +18,7 @@ angular.module('bahmni.registration')
                 var columnCamelCase = column.replace(/([-_][a-z])/g, function ($1) {
                     return $1.toUpperCase().replace(/[-_]/, '');
                 });
-                _.each(configurations.configs.addressLevels, function (addressLevel) {
+                _.each($scope.addressLevels, function (addressLevel) {
                     if (addressLevel.addressField === columnCamelCase)
                         columnName = addressLevel.name;
                 });
