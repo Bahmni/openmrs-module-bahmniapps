@@ -10,15 +10,31 @@ angular.module('bahmni.common.offline')
                     }
                     var referenceDataMap;
                     referenceDataMap = isAuthenticated ?
-                                                angular.extend(Bahmni.Common.Constants.authenticatedReferenceDataMap,
-                                                    Bahmni.Common.Constants.unAuthenticatedReferenceDataMap) :
-                                                Bahmni.Common.Constants.unAuthenticatedReferenceDataMap;
-                    var length = Object.keys(referenceDataMap).length;
-                    var count = 0;
-                    var deferred = $q.defer();
-                    angular.forEach(referenceDataMap, function(referenceData, url){
+                        angular.extend(Bahmni.Common.Constants.authenticatedReferenceDataMap,
+                            Bahmni.Common.Constants.unAuthenticatedReferenceDataMap) :
+                        Bahmni.Common.Constants.unAuthenticatedReferenceDataMap;
 
-                        offlineDbService.getReferenceData(referenceData).then(function(result){
+                    var requests = [];
+
+                    for (var key in referenceDataMap) {
+                        var request = [];
+                        if (referenceDataMap.hasOwnProperty(key)) {
+                            request.push(key);
+                            request.push(referenceDataMap[key]);
+                            requests.push(request);
+                        }
+                    }
+
+                    var deferred = $q.defer();
+
+                    var readReferenceData = function (requests, index) {
+                        if(requests.length == index) {
+                            deferred.resolve(1);
+                            return deferred.promise;
+                        }
+                        var url = requests[index][0];
+                        var referenceData = requests[index][1];
+                        return offlineDbService.getReferenceData(referenceData).then(function (result) {
                             var requestUrl = Bahmni.Common.Constants.hostURL + url;
                             var req = {
                                 method: 'GET',
@@ -28,42 +44,41 @@ angular.module('bahmni.common.offline')
                                 },
                                 withCredentials: true
                             };
-                            if(referenceData == 'LocaleList' || referenceData == 'DefaultEncounterType') {
+                            if (referenceData == 'LocaleList' || referenceData == 'DefaultEncounterType') {
                                 req.headers.Accept = 'text/plain';
                             }
-                             $http(req).then(function (response) {
-                                count++;
-                                if(response.status == 200) {
+                            return req;
+                        }).then(function (req) {
+                            return $http(req).then(function (response) {
+                                if (response.status == 200) {
                                     var eTag = response.headers().etag;
-                                    return offlineDbService.insertReferenceData(referenceData, response.data, eTag).then(function(){
-                                        if(count == length) {
-                                            deferred.resolve({});
-                                        }
+                                    return offlineDbService.insertReferenceData(referenceData, response.data, eTag).then(function () {
+                                        return readReferenceData(requests, ++index);
                                     });
                                 }
-                            }).catch(function(response){
-                                if(parseInt(response.status / 100) == 4){
+                            }).catch(function (response) {
+                                if (parseInt(response.status / 100) == 4) {
                                     offlineDbService.insertLog(response.config.url, response.status, response.data);
-                                    $rootScope.$broadcast("event:restartSync");
+                                    $rootScope.$broadcast("schedulerStage", null, true);
                                     deferred.resolve({});
-                                }else if(parseInt(response.status / 100) == 5) {
+                                } else if (parseInt(response.status / 100) == 5) {
                                     offlineDbService.insertLog(response.config.url, response.status, response.data);
                                     deferred.resolve({"data": Bahmni.Common.Constants.offlineErrorMessages.openmrsServerError});
-                                    $rootScope.$broadcast("event:restartSync");
+                                    $rootScope.$broadcast("schedulerStage", null, true);
                                 }
-                                else if(response.status == -1) {
+                                else if (response.status == -1) {
                                     deferred.resolve({"data": Bahmni.Common.Constants.offlineErrorMessages.networkError});
+                                    $rootScope.$broadcast("schedulerStage", null, true);
                                 }
                                 else {
-                                    count++;
-                                    if(count == length) {
-                                        deferred.resolve({});
-                                    }
+                                    return readReferenceData(requests, ++index);
                                 }
+                                return deferred.promise;
                             });
-                        });
-                    });
-                    return deferred.promise;
+                        })
+                    };
+
+                    return readReferenceData(requests, 0);
                 }
             };
         }

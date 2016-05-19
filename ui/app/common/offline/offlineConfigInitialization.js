@@ -10,9 +10,14 @@ angular.module('bahmni.common.offline')
                     }
                     var modules = ['home', 'registration', 'clinical'];
                     var length = modules.length;
-                    var x = 0;
                     var deferred = $q.defer();
-                    angular.forEach(modules, function (appName) {
+
+                    var readConfigData = function(modules, index) {
+                        if(length == index) {
+                            deferred.resolve(1);
+                            return deferred.promise;
+                        }
+                        var appName = modules[index];
                         return offlineDbService.getConfig(appName).then(function (result) {
                             var requestUrl = Bahmni.Common.Constants.baseUrl + appName + "/" + appName + ".json";
                             var req = {
@@ -22,34 +27,35 @@ angular.module('bahmni.common.offline')
                                     'If-None-Match': result ? result.etag : undefined
                                 }
                             };
+                            return req;
+                        }).then(function (req) {
                             return $http(req).then(function (result) {
-                                x++;
                                 if (result.status == 200) {
                                     var eTag = result.headers().etag;
-                                    return offlineDbService.insertConfig(appName, result.data, eTag).then(function(response){
-                                        if(response.key == 'home' || response.module == 'home'){
+                                    return offlineDbService.insertConfig(appName, result.data, eTag).then(function (response) {
+                                        if (response.key == 'home' || response.module == 'home') {
                                             var offlineConfig = response.value['offline-config.json'];
                                             var schedulerInterval = offlineConfig ? offlineConfig.schedulerInterval : 900000;
                                             localStorage.setItem('schedulerInterval', schedulerInterval);
                                         }
-                                        if(x ==length) {
-                                            deferred.resolve({});
-                                        }
+                                        return readConfigData(modules, ++index);
                                     });
                                 }
                             }).catch(function (response) {
-                                if(parseInt(response.status / 100) == 4 || parseInt(response.status / 100) == 5) {
+                                if (parseInt(response.status / 100) == 4 || parseInt(response.status / 100) == 5) {
                                     offlineDbService.insertLog(response.config.url, response.status, response.data);
-                                    $rootScope.$broadcast("event:restartSync");
-                                }
-                                x++;
-                                if(x ==length) {
+                                    return readConfigData(modules, ++index);
+                                } else if(response.status == -1) {
+                                    $rootScope.$broadcast("schedulerStage", null, true);
                                     deferred.resolve({});
+                                } else {
+                                    return readConfigData(modules, ++index);
                                 }
+                                return deferred.promise;
                             });
                         });
-                    });
-                    return deferred.promise;
+                    }
+                    return readConfigData(modules, 0);
                 }
             };
         }
