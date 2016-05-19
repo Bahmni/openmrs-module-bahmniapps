@@ -74,7 +74,7 @@ Bahmni.Registration.UpdatePatientRequestMapper = (function () {
 
     var setAttributeValue = function (attributeType, attr, value) {
 
-        if(value === "" || value === null || value === undefined) {
+        if(value === "" || value === null || value === undefined || value.conceptUuid === null) {
             attr.voided = true;
         }
         else if (attributeType.format === "org.openmrs.Concept") {
