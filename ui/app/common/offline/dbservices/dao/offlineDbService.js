@@ -2,9 +2,9 @@
 
 angular.module('bahmni.common.offline')
     .service('offlineDbService', ['$http', '$q', 'patientDbService', 'patientAddressDbService', 'patientAttributeDbService', 'offlineMarkerDbService', 'offlineAddressHierarchyDbService',
-        'offlineConfigDbService', 'initializeOfflineSchema', 'referenceDataDbService', 'locationDbService', 'offlineSearchDbService', 'encounterDbService', 'visitDbService', 'observationDbService', 'conceptDbService','errorLogDbService',
+        'offlineConfigDbService', 'initializeOfflineSchema', 'referenceDataDbService', 'locationDbService', 'offlineSearchDbService', 'encounterDbService', 'visitDbService', 'observationDbService', 'conceptDbService','errorLogDbService', 'eventLogService',
         function ($http, $q, patientDbService, patientAddressDbService, patientAttributeDbService, offlineMarkerDbService, offlineAddressHierarchyDbService,
-                  offlineConfigDbService, initializeOfflineSchema, referenceDataDbService, locationDbService, offlineSearchDbService, encounterDbService, visitDbService, observationDbService, conceptDbService, errorLogDbService) {
+                  offlineConfigDbService, initializeOfflineSchema, referenceDataDbService, locationDbService, offlineSearchDbService, encounterDbService, visitDbService, observationDbService, conceptDbService, errorLogDbService, eventLogService) {
         var db;
 
 
@@ -56,13 +56,17 @@ angular.module('bahmni.common.offline')
         };
 
 
-         var createEncounter = function (postRequest) {
+         var createEncounter = function (encounterData) {
                 var deferred = $q.defer();
-                var uuid = postRequest.patientUuid;
-                insertEncounterData(postRequest)
-                    .then(function () {
-                        deferred.resolve({data: postRequest});
-                    });
+                insertEncounterData(encounterData).then(function () {
+                    if(encounterData.visitUuid){
+                        eventLogService.getDataForUrl(Bahmni.Common.Constants.visitUrl + "/" + encounterData.visitUuid).then(function(response) {
+                            insertVisitData(response.data);
+                        })
+
+                    }
+                    deferred.resolve({data: encounterData});
+                });
                 return deferred.promise;
             };
 

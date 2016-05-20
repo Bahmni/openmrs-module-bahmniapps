@@ -155,16 +155,8 @@ angular.module('bahmni.common.offline')
                             });
                             break;
                         case 'Encounter':
-                            offlineDbService.insertEncounterData(response.data).then(function() {
-                                if(response.data.visitUuid){
-                                    eventLogService.getDataForUrl(Bahmni.Common.Constants.visitUrl + "/" + response.data.visitUuid).then(function(response) {
-                                        offlineDbService.insertVisitData(response.data).then(function(){
-                                            deferrable.resolve();
-                                        })
-                                    })
-                                }else {
-                                    deferrable.resolve();
-                                }
+                            offlineDbService.createEncounter(response.data).then(function () {
+                                deferrable.resolve();
                             });
                             break;
                         case 'offline-concepts':

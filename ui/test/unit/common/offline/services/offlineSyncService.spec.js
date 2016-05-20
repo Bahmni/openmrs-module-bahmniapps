@@ -69,6 +69,13 @@ describe('OfflineSyncService', function () {
                             }
                         };
                     },
+                    createEncounter: function () {
+                        return {
+                            then: function (callback) {
+                                return callback({});
+                            }
+                        };
+                    },
                     insertVisitData: function () {
                         return {
                             then: function (callback) {
@@ -320,8 +327,7 @@ describe('OfflineSyncService', function () {
                     }
                 };
             });
-            spyOn(offlineDbService, 'insertEncounterData').and.callThrough();
-            spyOn(offlineDbService, 'insertVisitData').and.callThrough();
+            spyOn(offlineDbService, 'createEncounter').and.callThrough();
             spyOn(offlineDbService, 'insertMarker').and.callThrough();
             spyOn(offlineDbService, 'getAttributeTypes').and.callThrough();
 
@@ -333,13 +339,7 @@ describe('OfflineSyncService', function () {
             expect(eventLogService.getEventsFor.calls.count()).toBe(1);
             expect(eventLogService.getDataForUrl).toHaveBeenCalledWith('url to get encounter object');
 
-            expect(offlineDbService.insertEncounterData).toHaveBeenCalledWith(encounter);
-            expect(offlineDbService.insertEncounterData.calls.count()).toBe(1);
-
-            expect(offlineDbService.insertVisitData).toHaveBeenCalledWith(encounter);
-            expect(offlineDbService.insertVisitData.calls.count()).toBe(1);
-
-            expect(eventLogService.getDataForUrl.calls.count()).toBe(2);
+            expect(offlineDbService.createEncounter).toHaveBeenCalledWith(encounter);
 
             expect(offlineDbService.insertMarker).toHaveBeenCalledWith('TransactionalData', 'eventuuid', 202020);
             expect(offlineDbService.insertMarker.calls.count()).toBe(1);
