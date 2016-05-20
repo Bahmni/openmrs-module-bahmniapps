@@ -38,10 +38,6 @@
                     border-radius: 0 0 3px 3px;
                 }
                 button {
-                    //background: $white;
-                    //color: $black;
-                    //position:relative;
-                    //z-index:99;
                     border-radius: 0;
                     text-align: left;
                     border: 0;
@@ -65,13 +61,6 @@
                     outline: 2px solid $clinicalFormFocus;
                 }
             }
-           /* button {
-
-                margin: 0px;
-                font-size: 14px;
-                border-radius: 3px 0 0 3px;
-
-            }*/
         }
     }
     .toggle-button {
@@ -89,56 +78,8 @@
     }
 }
 
-
-/*.reg-search-wrapper .split-button li{
-    width:auto;
-}
-.reg-body-wrapper .split-button{
-    ul{
-        li{
-            &.primaryOption{
-                width: 300px;
-                .buttonClass{
-                    text-align: left;
-                }
-            }
-        }
-        
-    }
-    .toggle-button {
-        margin-right: 0 !important;
-    }
-}*/
-
-/*.edit-col {
-    .split-button {
-        position: relative;
-        ul {
-            width: 100px;
-            float:none;
-            margin: 0 auto;
-            li.secondaryOption button {
-                border: 0;
-                border-radius: 0;
-            }
-            li button {
-                text-align: center;
-            }
-        }
-        .toggle-button {
-            position: absolute;
-            z-index: 1;
-            right: 3px;
-        }
-    }
-}*/
-
 .print-action-items {
     position: absolute;
     top: 8px;
     right: 80px;
-    /*.secondaryOption {
-        position: relative;
-        z-index: 99;
-    }*/
 }

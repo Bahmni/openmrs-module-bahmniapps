@@ -1,5 +1,4 @@
 .selected-orders {
-    // padding: 10px;
     margin: 5px 0;
     width: 99.5%;
     @media (max-width: 768px) {
@@ -86,8 +85,6 @@
     }
 
 }
-
-
 
 .order-list {
     margin-top: 10px;
@@ -278,10 +275,6 @@
     font-size: 13px;
 }
 
-.order-created-date{
-    //margin-right: 35px;
-    //margin-top: 4px;
-}
 .order-provider-nane{
   margin-right: 10px;
 }
@@ -289,9 +282,6 @@
     .dashboard-section {
         border-right: 0;
         border-radius: 0;
-        .hierarchy ul li {
-            //border-top: 0;
-        }
     }
     .concept-set-title {
         .has-notes {
@@ -368,61 +358,10 @@
             }
         }
     }
-
 }
+
 #Pacs{
     .order-sub-heading-container{
         padding-top: 7px;
     }
 }
-
-// .sample-type {
-//     margin-left: 10px;
-//     button {
-//         font-size: 1em;
-//     }
-//     fieldset {
-//         position: relative;
-//         width: 99%;
-//         .form-group {
-//             label span {
-//                 text-transform: capitalize;
-//             }
-//         }
-//         legend + .form-group {
-//             padding: 10px;
-//             border: 1px solid $lightGray;
-//             margin-top: 20px;
-//             border-radius: 5px;
-//             legend {
-//                 color: lighten($mediumGray, 30%);
-//                 top: 8px;
-//                 left: 30px;
-//             }
-//             legend + .form-group {
-//                 padding: 10px 0;
-//                 background: $lightestGray;
-//             }
-//         }
-//         legend {
-//             position: absolute;
-//             top: 5px;
-//             left: 20px;
-//             padding: 5px 10px;
-//             font-family: $OpenSansBoldFont;
-//             font-size: 14px;
-//             color: $mediumGray;
-//             border: 1px solid lighten($mediumGray, 20%);
-//             border-radius: 20px;
-//             .add-more {
-//                 padding-left: 10px;
-//                 margin-left: 10px;
-//                 border-left: 1px solid #ccc;
-//             }
-//             .add-more-btn {
-//                 font-size: 10px;
-//                 padding: 3px;
-//             }
-//         }
-//     }
-// }

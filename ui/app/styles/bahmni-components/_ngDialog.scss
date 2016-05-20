@@ -9,7 +9,6 @@
             height: 100%;
         }
         &.show-controller-back{
-            //overflow: hidden !important;
             #ClinicalController {
                 display: block !important;
 
@@ -142,16 +141,6 @@ div.ngdialog-close {
     margin-top: 10px; clear: both;
     button:focus {outline: 2px solid $clinicalFormFocus;}
 }
-
-
-/*body{
-    padding-right: 0 !important;
-}
-
-body.abc.ngdialog-open{
-    overflow: auto !important;
-    overflow-x: hidden !important;
-}*/
 
 .ngdialog-theme-default{
     &.ng-dialog-all-details-page{

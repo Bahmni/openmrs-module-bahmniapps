@@ -48,8 +48,7 @@ h2.section-title {
 	margin-bottom: 0;
 	color: $white;
 	font-size: 16px;
-	clear: both; 
-	// overflow: auto;
+	clear: both;
 	background: $bahmniSecondaryColor;
 	position: relative;
 	border-radius: 2px 2px 0 0;
@@ -132,7 +131,7 @@ table {
 		background: #fff;
 		color: $darkGray;
 		margin: 0;
-		
+
 		i[class^=fa-] {
 			font-size: 14px;
 			margin-right: 5px;
@@ -156,7 +155,6 @@ table {
 		display: inline-block;
 		width: 100%;
 		height: 100%;
-		// width: 15px;
 		&:focus{
 			border: none;
 			outline: none;
@@ -218,9 +216,6 @@ table {
     &.box-container-default{
       margin-bottom: 0;
 	  padding: 0 15px;
-	  /*@media (max-width: 768px) {
-		padding: 15px 10px 15px 5px;
-	  }*/
     }
     section.section-padding{
       padding-top: 14px;

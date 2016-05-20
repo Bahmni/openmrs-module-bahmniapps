@@ -2,7 +2,7 @@
     background: $bahmniSecondaryColor;
     header{
         height:52px;
-        max-width: 1200px;
+        max-width:$max-page-width;
         margin: 0 auto;
     }
 }

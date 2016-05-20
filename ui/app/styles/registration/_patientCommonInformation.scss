@@ -13,13 +13,6 @@
 }
 
 form .form-field{
-  //.field-value input[type="text"]{
-  //  &#familyNameLocal ,&#familyName{
-  //    @media (max-width : 990px) {
-  //      clear: both;
-  //    }
-  //  }
-  //}
   @media (max-width : 768px) {
     .field-value {
       @media (max-width : 580px) {
@@ -56,14 +49,10 @@ form .form-field{
       width:17em !important;
     }
   }
-  &.form-field-gender{
-    //margin-top: 5px;
-  }
 }
 
 section.form-field-inline{
   @include clearfix();
-  //margin-bottom: 2px;
   @media (max-width : 768px){
     margin-bottom: 0;
   }
@@ -134,7 +123,6 @@ section.form-field-inline{
   }
   .patient-name-wrapper{
     @include clearfix();
-    //margin-bottom: 2px;
     input[type="text"]{
       margin-right: 5px;
     }
