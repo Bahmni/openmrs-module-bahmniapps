@@ -188,7 +188,7 @@ body{
 /*** login specific css end ***/
 /*** search page css start ****/
 body{
-  max-width:1200px;
+  max-width:$max-page-width;
   margin: 0 auto;
 }
 .reg-wrapper{

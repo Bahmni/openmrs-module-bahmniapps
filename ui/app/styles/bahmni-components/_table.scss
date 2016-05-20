@@ -188,13 +188,10 @@ table.horizontal-only {
 ul.table-mimic {
 	li {
 		width: 100%;
-		//padding: 5px 10px;
 		border-bottom: 1px solid darken($lightestGray, 5%);
-		//border-bottom: 0;
 		box-sizing: border-box;
 		@include clearfix();
 		&:last-child {
-			//border-bottom: 1px solid darken($lightestGray, 5%);
           border-bottom: none;
 		}
 	}
@@ -204,8 +201,6 @@ ul.table-mimic {
 table.h-scroll {
     width: 100%; border-collapse: collapse; border-spacing: 0;
     display: block; position: relative;
-    // border-left: 1px solid $lightestGray;
-    // border-right: 1px solid $lightestGray;
     font-size: 14px;
     margin-top: 0;
     overflow: auto;

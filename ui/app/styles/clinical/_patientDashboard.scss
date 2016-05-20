@@ -327,18 +327,6 @@ category:  Layout - sections
             display: block;
             border-radius: 4px;
             text-transform: capitalize;
-            /*.icon-text {
-              margin-right: 5px;
-              background: #898585;
-              border-radius: 5px;
-              text-align: center;
-              color: #fff;
-              display: inline-block;
-              width: 22px;
-              height: 18px;
-              padding-top: 4px;
-
-            }*/
             &:hover{
               text-decoration: none;
               background: #97C32D;
@@ -467,14 +455,12 @@ table.drug-order-table td.drug {
     padding-top: 2px;
     margin-left: 0px;
     font-size: 13px;
-    //margin-right: 5px;
   }
 }
 
 .placeholder-text {
   font-size: 14px;
   padding: 10px;
-  // border-bottom: 1px solid $lightGray;
 }
 .white-popup {
   position: relative;
@@ -551,7 +537,6 @@ table.drug-order-table td.drug {
       padding: 5px;
       font-size: 12px;
       color: $darkGray;
-      // border-left: 1px solid $lightGray;
       .line-value {
         width: 50%;
         float: left;
@@ -762,9 +747,7 @@ table.pivot-table {
 }
 
 .recent-patients {
-  //  width: 15%;
   display: inline-block;
-  //padding-top: 7px;
   position: relative;
   float: left;
   img{
