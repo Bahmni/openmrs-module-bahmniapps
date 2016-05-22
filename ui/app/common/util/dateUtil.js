@@ -100,6 +100,17 @@ Bahmni.Common.Util.DateUtil = {
         return dateRepresentation ? moment(dateRepresentation).format("DD MMM YY") : null;
     },
 
+    formatDateInStrictMode: function(date) {
+        var dateRepresentation = isNaN(Number(date)) ? date : Number(date);
+        if(moment(dateRepresentation, 'YYYY-MM-DD', true).isValid()) {
+            return moment(dateRepresentation).format("DD MMM YY");
+        }
+        if(moment(dateRepresentation, 'YYYY-MM-DDTHH:mm:ss.SSSZZ', true).isValid()) {
+            return moment(dateRepresentation).format("DD MMM YY");
+        }
+        return date;
+    },
+
     formatTime: function(date) {
         var dateRepresentation = isNaN(Number(date)) ? date : Number(date);
         if(!moment(dateRepresentation).isValid()) {

@@ -27,7 +27,7 @@ Bahmni.Common.Obs.Observation = (function () {
             if (this.type === "Boolean" || this.concept && this.concept.dataType === "Boolean") {
                 return this.value === true ? "OBS_BOOLEAN_YES_KEY" : "OBS_BOOLEAN_NO_KEY";
             }
-            if (this.type === "Datetime") {
+            if (this.type === "Datetime" || this.concept && this.concept.dataType === "Datetime") {
 
                 var date = Bahmni.Common.Util.DateUtil.parseDatetime(this.value);
                 return date != null ? Bahmni.Common.Util.DateUtil.formatDateWithTime(date) : "";
@@ -38,7 +38,7 @@ Bahmni.Common.Obs.Observation = (function () {
                     return value;
                 }
             }
-            if (this.type === "Date") {
+            if (this.type === "Date" || this.concept && this.concept.dataType === "Date") {
                 return this.value ? Bahmni.Common.Util.DateUtil.formatDateWithoutTime(this.value) : "";
             }
             value = this.value;
