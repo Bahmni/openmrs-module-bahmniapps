@@ -8,7 +8,7 @@ angular.module('bahmni.registration')
             var configValueForEnterId = appService.getAppDescriptor().getConfigValue('showEnterID');
             $scope.addressHierarchyConfigs = appService.getAppDescriptor().getConfigValue("addressHierarchy");
             $scope.showEnterID = configValueForEnterId === null ? true : configValueForEnterId;
-            $scope.today = dateUtil.getDateWithoutTime(dateUtil.now());
+            $scope.today = Bahmni.Common.Util.DateTimeFormatter.getDateWithoutTime(dateUtil.now());
 
             var getPersonAttributeTypes = function() {
                 return $rootScope.patientConfiguration.attributeTypes;
