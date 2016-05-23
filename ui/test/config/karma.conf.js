@@ -59,7 +59,8 @@ module.exports = function (config) {
             'test/support/**/*.js',
             'test/unit/**/*.js',
             'test/integration/**/*.js',
-            'test/integration/utils/*.js'
+            'test/integration/utils/*.js',
+            "test/unit/common/util/dateTimeFormatter.spec.js"
         ],
         exclude:[
             'app/registration/offline/**/*.js',
@@ -73,7 +74,9 @@ module.exports = function (config) {
             'test/unit/**/offline/android/*.js',
             'test/unit/**/offline/chrome/*.js',
             'app/common/offline/dbservices/dao/offlineDbService.js',
-            'app/common/offline/scheduler/backgroundWorker.js'
+            'app/common/offline/scheduler/backgroundWorker.js',
+            'app/common/util/androidDateTimeFormatter.js',
+            "test/unit/common/util/androidDateTimeFormatter.spec.js"
         ],
         reporters: ['junit', 'progress', 'coverage'],
         preprocessors: {

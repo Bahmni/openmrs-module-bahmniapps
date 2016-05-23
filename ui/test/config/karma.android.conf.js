@@ -61,6 +61,8 @@ module.exports = function (config) {
             'test/integration/utils/*.js',
             'app/common/domain/offline/offlineObservationService.js',
             'test/unit/common/domain/offline/offlineObservationService.spec.js',
+            'app/common/util/androidDateTimeFormatter.js',
+            "test/unit/common/util/androidDateTimeFormatter.spec.js",
             {pattern: 'test/data/*.json', watched: true, served: true, included: false}
         ],
         exclude:[
@@ -94,7 +96,8 @@ module.exports = function (config) {
             'test/unit/common/domain/services/observationsService.spec.js',
             'test/unit/clinical/services/diseaseTemplateService.spec.js',
 
-
+            "app/common/util/dateTimeFormatter.js",
+            "test/unit/common/util/dateTimeFormatter.spec.js",
             'test/unit/**/offline/chrome/*.js'
         ],
         reporters: ['junit', 'progress', 'coverage'],
