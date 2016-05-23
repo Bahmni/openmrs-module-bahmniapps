@@ -64,7 +64,7 @@ module.exports = function (config) {
         ],
         exclude:[
             'app/registration/offline/**/*.js',
-            'app/common/**/offline/offlineObservationService.js',
+            'app/common/domain/offline/*.js',
             'app/common/**/offline/chrome/*.js',
             'app/common/**/offline/android/*.js',
             'app/common/domain/offline/*.js',
