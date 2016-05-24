@@ -155,16 +155,8 @@ body{
   font-family: "OpenSans",Arial,sans-serif;
 }
 .reg-header{
+    @include clearfix;
 	height:52px;
-    .offline-sync{
-      position: absolute;
-      right: 75px;
-      top: 8px;
-      &.offline-sync-image{
-        padding: 6px 27px;
-        top:7px;
-      }
-    }
 }
 .remove-margin{
   margin:0px !important;
@@ -188,21 +180,17 @@ body{
 /*** login specific css end ***/
 /*** search page css start ****/
 body{
-  max-width:$max-page-width;
-  margin: 0 auto;
+  @include clearfix;
 }
 .reg-wrapper{
   margin:0px auto;
-  @include clearfix();
   .inline-element,select,input,button{
       display:inline-block;
-      margin:2px;
   }
   select{
         height:35px;
   }
   header {
-    position: relative;
     color: $lightGray;
     height: 52px;
     border-radius: 0;
@@ -457,19 +445,13 @@ body{
 /******************************************************************************/
 
 .dashboard {
-  position: absolute;
-  top: 0; bottom: 0;
-  left: 0; right: 0;
+  position: relative;
   header {
     .btn-user-info {
       background: lighten($bahmniPrimaryColor, 10%);
       padding: 17px 16px;
       border: none;
       border-radius: 0;
-      margin: 0;
-      position: absolute;
-      top: 0;
-      right: 0;
       &:focus {outline:0;}
       i.mini {
         font-size: .9em;
@@ -552,12 +534,7 @@ body{
 }
 
 .change-location {
-    float: right;
     padding: 7px;
-    margin-right: 70px;
-    &.change-location-offline{
-     margin-right:150px;
-    }
     select, select:focus {
         background: lighten($bahmniPrimaryColor, 10%);
         color: $white;
