@@ -2,12 +2,10 @@
     overflow:hidden;
     margin: 2px;
     border-radius: 3px;
-    position: relative;
     ul {
         border-radius: 3px 0 0 3px;
         border-right:none;
         float:left;
-        position: relative;
         margin-bottom: 5px;
         &.hidden-options{
             width: 250px;
@@ -20,6 +18,7 @@
             color: #fff;
             clear: both;
             border-right: 0;
+            position: absolute;
         }
         li {
             font-size:.9em;
@@ -47,7 +46,7 @@
                     &:hover {
                         background: $bahmniPrimaryBtnColor;
                     }
-                }                    
+                }
                 &:hover {
                     background: $bahmniPrimaryBtnColor;
                 }
@@ -79,7 +78,5 @@
 }
 
 .print-action-items {
-    position: absolute;
-    top: 8px;
-    right: 80px;
+    margin: 8px 10px 0 0;
 }

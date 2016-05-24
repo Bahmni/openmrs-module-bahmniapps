@@ -1,15 +1,5 @@
 .reg-header-wrapper{
   .reg-header{
-    position: relative;
-    .offline-sync{
-      position: absolute;
-      right: 75px;
-      top: 8px;
-      &.offline-sync-image{
-        padding: 6px 27px;
-        top:7px;
-      }
-    }
     ul.top-nav{
       float: left;
       li{
@@ -31,7 +21,6 @@
       border-radius: 0;
       margin: 0;
       color: $white;
-      float: right;
       &:focus {outline:0;}
       i.mini {
         font-size: .9em;
@@ -45,6 +34,9 @@
           right: 0;
           top: 50px;
           z-index: 1000;
+          @media screen and (max-width: $max-page-width) {
+            right:10px;
+          }
         }
         li {
           float: left;

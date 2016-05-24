@@ -1,14 +1,11 @@
 @charset "UTF-8";
 
 .container{
-  max-width: 100%;
-  width: $max-page-width;
+  @include clearfix;
+  max-width: $max-page-width;
   margin: 0 auto;
-  @media (max-width : 1024px){
-    width: 1024px;
-  }
-  @media (max-width : 768px){
-    width: 100%
+  @media screen and (max-width: $max-page-width) {
+    padding: 0 10px;
   }
 }
 
@@ -19,12 +16,11 @@
     left: 0;
     right: 0;
     z-index: 100001;
-    padding: 0 15px;
+    padding: 0 10px;
     box-sizing: border-box;
     background: $bahmniSecondaryColor;
     height: 52px;
     width: 100%;
-
     header {
         position: relative;
         color: $lightGray;
@@ -32,19 +28,8 @@
         border-radius: 0;
         background: $bahmniSecondaryColor;
         line-height: 1em;
-
         max-width: $max-page-width;
         margin: 0px auto;
-
-        .offline-sync {
-          float: right;
-          margin-top: 12px;
-          margin-right: 12px;
-          position: static;
-          &.offline-sync-image {
-            padding: 6px 27px;
-          }
-        }
         .header-logo{
           display: block;
           width: 35px;
@@ -165,9 +150,6 @@
           list-style: none;
         }
         .grouped-buttons {
-          // position: absolute;
-          // top: 5px;
-          // right: 65px;
           float: left;
           padding-top: 6px;
           margin: 0 10px;
@@ -198,7 +180,7 @@
         max-width: $max-page-width;
         margin: 0 auto;
         box-sizing: border-box;
-        @media screen and (max-width: 1200px) {
+        @media screen and (max-width: $max-page-width) {
           padding: 0 10px;
         }
         nav.navbar {
@@ -213,4 +195,5 @@
         }
     }
 }
+
 
