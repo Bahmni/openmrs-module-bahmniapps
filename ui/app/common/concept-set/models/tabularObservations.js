@@ -45,8 +45,12 @@ Bahmni.ConceptSet.TabularObservations = function(obsGroups, parentObs, conceptUI
         return "tabular";
     };
 
-    this.isValid = function() {
-        return true;
+    this.isValid = function (checkRequiredFields, conceptSetRequired) {
+        return _.every(this.rows, function (observationRow) {
+            return _.every(observationRow.cells, function (conceptSetObservation) {
+                return conceptSetObservation.isValid(checkRequiredFields, conceptSetRequired);
+            });
+        });
     };
 
     this.getConceptUIConfig = function() {
@@ -61,6 +65,10 @@ Bahmni.ConceptSet.TabularObservations = function(obsGroups, parentObs, conceptUI
         return this.rows.some(function (childNode) {
             return childNode.obsGroup.value;
         })
+    };
+
+    this.isNumeric = function() {
+        return this.concept.dataType === "Numeric";
     };
 };
 
