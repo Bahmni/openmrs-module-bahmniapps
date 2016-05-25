@@ -102,13 +102,18 @@ angular.module('bahmni.common.offline')
                 return $q.when(value);
             };
 
-            var createEncounter = function (postRequest) {
+            var createEncounter = function (encounterData) {
                 var deferred = $q.defer();
-                var uuid = postRequest.patientUuid;
-                insertEncounterData(postRequest)
-                    .then(function () {
-                        deferred.resolve({data: postRequest});
-                    });
+                insertEncounterData(encounterData).then(function () {
+                    if(encounterData.visitUuid){
+                        eventLogService.getDataForUrl(Bahmni.Common.Constants.visitUrl + "/" + encounterData.visitUuid).then(function(response) {
+                            insertVisitData(response.data).then(function() {
+                                deferred.resolve();
+                            });
+                        })
+                    }
+                    deferred.resolve({data: encounterData});
+                });
                 return deferred.promise;
             };
 

@@ -61,9 +61,10 @@ angular.module('bahmni.common.offline')
                 insertEncounterData(encounterData).then(function () {
                     if(encounterData.visitUuid){
                         eventLogService.getDataForUrl(Bahmni.Common.Constants.visitUrl + "/" + encounterData.visitUuid).then(function(response) {
-                            insertVisitData(response.data);
+                            insertVisitData(response.data).then(function() {
+                                deferred.resolve();
+                            });
                         })
-
                     }
                     deferred.resolve({data: encounterData});
                 });
