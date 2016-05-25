@@ -64,6 +64,8 @@ angular.module('authentication')
                 deferrable.resolve(cachedProviderData);
             } else{
                 getProviderFromServer(uuid).success(function(data){
+                    data.results[0].name = data.results[0].display.split("-")[1];
+                    data.results[0].name = data.results[0].name.trim();
                     offlineService.setItem('providerData', data);
                     deferrable.resolve(data);
                 }).error(function(){

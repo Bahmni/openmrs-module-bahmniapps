@@ -177,8 +177,8 @@ angular.module('authentication')
         this.loadProviders = function(userInfo) {
             if (offlineApp) {
                 var data  = offlineService.getItem('providerData');
-                var providerUuid = (data.results.length > 0) ? data.results[0].uuid : undefined;
-                $rootScope.currentProvider = { uuid: providerUuid };
+                var provider = (data.results.length > 0) ? data.results[0] : undefined;
+                $rootScope.currentProvider = provider;
                 return $q.when(data);
             }
             return $http.get(Bahmni.Common.Constants.providerUrl, {

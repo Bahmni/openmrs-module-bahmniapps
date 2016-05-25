@@ -128,6 +128,7 @@ describe('offlineEncounterService', function () {
             expect(results.data.observations[0].groupMembers).not.toBeUndefined();
             expect(results.data.observations[0].groupMembers[0].uuid).not.toBeUndefined();
             expect(results.data.observations[0].groupMembers[0].encounterUuid).not.toBeUndefined();
+            expect(results.data.observations[0].groupMembers[0].providers).not.toBeUndefined();
             expect(results.data.encounterType).toBe("FieldEncounter");
             expect(results.data).toBe(encounterData);
             done();
@@ -136,7 +137,7 @@ describe('offlineEncounterService', function () {
 
 
     it('should create an encounter with given encounterData, if currentProvider is then it adds currentProvider to providers list',function (done) {
-        rootScope.currentProvider = {uuid: "currentProviderUuid"};
+        rootScope.currentProvider = {uuid: "currentProviderUuid", name: "Arman Vuiyan"};
         jasmine.getFixtures().fixturesPath = 'base/test/data';
         var encounterData = JSON.parse(readFixtures('encounter.json'));
 
@@ -160,7 +161,10 @@ describe('offlineEncounterService', function () {
             expect(eventQueue.addToEventQueue).toHaveBeenCalledWith({type: "encounter", encounterUuid: results.data.encounterUuid});
 
             expect(results.data).not.toBeUndefined();
-            expect(results.data.providers).toEqual([{uuid:'currentProviderUuid'}]);
+            expect(results.data.providers).toEqual([{uuid:'currentProviderUuid', name: 'Arman Vuiyan'}]);
+            expect(results.data.observations[0].groupMembers[0].providers).not.toBeUndefined();
+            expect(results.data.observations[0].groupMembers[0].providers).toEqual([{uuid:'currentProviderUuid', name : 'Arman Vuiyan'}]);
+
             expect(results.data).toBe(encounterData);
             done();
         });
@@ -173,6 +177,7 @@ describe('offlineEncounterService', function () {
         encounterData.observations[0].uuid = undefined;
         encounterData.observations[0].encounterUuid = undefined;
         encounterData.observations[0].encounterDateTime = undefined;
+        encounterData.observations[0].observationDateTime = undefined;
 
         spyOn(offlineEncounterServiceStrategy, 'getDefaultEncounterType').and.returnValue(specUtil.respondWithPromise($q, {data: "FieldEncounter"}));
         spyOn(offlineEncounterServiceStrategy, 'create').and.returnValue(specUtil.respondWithPromise($q, {data: encounterData}));
@@ -191,6 +196,7 @@ describe('offlineEncounterService', function () {
             expect(results.data.observations[0].encounterUuid).toBe(encounterData.encounterUuid);
             expect(results.data.observations[0].encounterDateTime).not.toBeUndefined();
             expect(results.data.observations[0].encounterDateTime).toBe(encounterData.encounterDateTime);
+            expect(results.data.observations[0].observationDateTime).not.toBeUndefined();
             expect(results.data).toBe(encounterData);
             done();
         });
