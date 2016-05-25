@@ -54,7 +54,7 @@ describe('observationDbService tests', function () {
         });
     });
 
-    it("delete observations by observationUuid from lovefield database", function(done){
+    it("delete observations(i.e. uncheck all selected options) by observationUuid from lovefield database", function(done){
         var schemaBuilder = lf.schema.create('Obs', 1);
         Bahmni.Tests.OfflineDbUtils.createTable(schemaBuilder, Bahmni.Common.Offline.SchemaDefinitions.Observation);
         jasmine.getFixtures().fixturesPath = 'base/test/data';
@@ -65,9 +65,9 @@ describe('observationDbService tests', function () {
 
         schemaBuilder.connect().then(function(db){
             observationDbService.insertObservationsData(db, patientUuid, null, observationJson).then(function(){
-                observationDbService.removeObservationByObservationUuid(db, observationUuid).then(function(results){
+                observationDbService.insertObservationsData(db, patientUuid, null, [{groupMembers: [], uuid: observationUuid}]).then(function(results){
                     expect(results).not.toBeUndefined();
-                    expect(results).toBe(observationUuid);
+                    expect(results).toEqual([[]]);
                     done();
                 });
             });

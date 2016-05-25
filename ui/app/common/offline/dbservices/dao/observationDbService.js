@@ -19,8 +19,10 @@ angular.module('bahmni.common.offline')
                     });
                     queries.push(db.insertOrReplace().into(observationTable).values([row]));
                 }
-                else
-                    removeObservationByObservationUuid(db, observationData.uuid);
+                else {
+                    var obsToBeRemoved = removeObservationByObservationUuid(db, observationData.uuid);
+                    queries.push(obsToBeRemoved);
+                }
             });
             var tx = db.createTransaction();
             return tx.exec(queries);
@@ -43,16 +45,11 @@ angular.module('bahmni.common.offline')
             var obs = db.getSchema().table('observation');
             return db.delete()
                 .from(obs)
-                .where(obs.uuid.eq(observationUuid))
-                .exec()
-                .then(function () {
-                    return observationUuid;
-                });
-        }
+                .where(obs.uuid.eq(observationUuid));
+        };
 
         return {
             getObservationsFor: getObservationsFor,
-            removeObservationByObservationUuid: removeObservationByObservationUuid,
             insertObservationsData: insertObservationsData
         }
     });
