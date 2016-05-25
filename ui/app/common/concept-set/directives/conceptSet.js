@@ -180,7 +180,7 @@ angular.module('bahmni.common.conceptSet')
                             }
 
                             if (childNode.isNumeric()){
-                                if(!childNode.isAllowDecimal()){
+                                if(!childNode.isValidNumeric()){
                                     errorMessage = "Please enter Integer value, decimal value is not allowed";
                                     return true;
                                 }

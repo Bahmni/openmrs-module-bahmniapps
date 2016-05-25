@@ -129,4 +129,62 @@ describe("ConceptSetObservation", function() {
         });
 
     });
+
+    describe("Numeric allowDecimal", function () {
+        var numericObservation = {
+            concept: {
+                name: "Systolic",
+                dataType: "Numeric",
+                hiAbsolute: 100,
+                lowAbsolute: 30
+            }
+        };
+
+
+        it ("should be a valid observation if value is integer and allow decimal is false and value is within absolute range", function () {
+            numericObservation.concept.allowDecimal = false;
+            var observation = new Bahmni.ConceptSet.Observation(numericObservation, null, {});
+            observation.value = 70;
+            expect(observation.isValid()).toBeTruthy();
+        });
+
+        it ("should be a valid observation if value is integer and allow decimal is true and value is within absolute range", function () {
+            numericObservation.concept.allowDecimal = true;
+            var observation = new Bahmni.ConceptSet.Observation(numericObservation, null, {});
+            observation.value = 70;
+            expect(observation.isValid()).toBeTruthy();
+        });
+
+        it ("should be a valid observation if value is decimal and allow decimal is true and value is within absolute range", function () {
+            numericObservation.concept.allowDecimal = true;
+            var observation = new Bahmni.ConceptSet.Observation(numericObservation, null, {});
+            observation.value = 70.5;
+            expect(observation.isValid()).toBeTruthy();
+        });
+
+        it ("should be an invalid observation if value is decimal and allow decimal is false", function () {
+            numericObservation.concept.allowDecimal = false;
+            var observation = new Bahmni.ConceptSet.Observation(numericObservation, null, {});
+            observation.value = 70.5;
+            expect(observation.isValid()).toBeFalsy();
+        });
+
+        it ("should be an invalid observation if value is integer and allow decimal is false but beyond absolute range", function () {
+            numericObservation.concept.allowDecimal = false;
+            var observation = new Bahmni.ConceptSet.Observation(numericObservation, null, {});
+            observation.value = 170;
+            expect(observation.isValid()).toBeFalsy();
+            observation.value = 24;
+            expect(observation.isValid()).toBeFalsy();
+        });
+
+        it ("should be an invalid observation if value is decimal and allow decimal is true but beyond absolute range", function () {
+            numericObservation.concept.allowDecimal = true;
+            var observation = new Bahmni.ConceptSet.Observation(numericObservation, null, {});
+            observation.value = 170.6;
+            expect(observation.isValid()).toBeFalsy();
+            observation.value = 24.3;
+            expect(observation.isValid()).toBeFalsy();
+        });
+    })
 });
