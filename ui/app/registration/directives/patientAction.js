@@ -93,13 +93,13 @@ angular.module('bahmni.registration')
 
 
                 var createVisit = function (patientProfileData, forwardUrl) {
-                    spinner.forPromise($scope.visitControl.createOnlyVisit(patientProfileData.patient.uuid, loginLocationUuid).success(function () {
+                    spinner.forPromise($scope.visitControl.createOnlyVisit(patientProfileData.patient.uuid, loginLocationUuid).then(function () {
                         if (forwardUrl) {
                             $window.location.href = forwardUrl;
                         } else {
                             goToVisitPage(patientProfileData);
                         }
-                    }).error(function () {
+                    }, function() {
                         $state.go('patient.edit', {patientUuid: $scope.patient.uuid});
                     }));
                 };
