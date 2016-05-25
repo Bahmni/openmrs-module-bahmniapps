@@ -73,9 +73,12 @@ angular.module('bahmni.common.offline')
 
             var insertEncounterData = function (encounterData) {
                 return encounterDbService.insertEncounterData(db, encounterData).then(function () {
-                    return observationDbService.insertObservationsData(db, encounterData.patientUuid, encounterData.visitUuid, encounterData.observations).then(function () {
-                        return encounterData;
-                    });
+                    if(encounterData && encounterData.observations && encounterData.observations.length > 0){
+                        return observationDbService.insertObservationsData(db, encounterData.patientUuid, encounterData.visitUuid, encounterData.observations).then(function () {
+                            return encounterData;
+                        });
+                    }
+                    return encounterData;
                 });
             };
 
