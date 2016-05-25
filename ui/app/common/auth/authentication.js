@@ -211,13 +211,16 @@ angular.module('authentication')
             authenticateUser: authenticateUser
         }
 
-    }]).directive('logOut',['sessionService', '$window', function(sessionService, $window) {
+    }]).directive('logOut',['sessionService', 'offlineService', '$window', function(sessionService, offlineService, $window) {
         return {
             link: function(scope, element) {
                 element.bind('click', function() {
                     scope.$apply(function() {
                         sessionService.destroy().then(
                             function () {
+                                if (offlineService.isOfflineApp()) {
+                                    $window.location.reload();
+                                }
                                 $window.location = "../home/index.html#/login";
                             }
                         );
