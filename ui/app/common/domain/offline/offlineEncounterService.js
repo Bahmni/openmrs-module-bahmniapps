@@ -6,13 +6,6 @@ angular.module('bahmni.common.domain')
 
             this.buildEncounter = function (encounter) {
                 encounter.observations = encounter.observations || [];
-                encounter.observations.forEach(function (obs) {
-                    obs.uuid = obs.uuid || Bahmni.Common.Offline.UUID.generateUuid();
-                    obs.encounterUuid = encounter.encounterUuid;
-                    obs.encounterDateTime = encounter.encounterDateTime;
-                    stripExtraInfo(obs);
-                });
-
                 encounter.providers = encounter.providers || [];
 
                 var providerData = $bahmniCookieStore.get(Bahmni.Common.Constants.grantProviderAccessDataCookieName);
@@ -20,9 +13,18 @@ angular.module('bahmni.common.domain')
                     if (providerData && providerData.uuid) {
                         encounter.providers.push({"uuid": providerData.uuid});
                     } else if ($rootScope.currentProvider && $rootScope.currentProvider.uuid) {
-                        encounter.providers.push({"uuid": $rootScope.currentProvider.uuid});
+                        encounter.providers.push($rootScope.currentProvider);
                     }
                 }
+                encounter.observations.forEach(function (obs) {
+                    obs.uuid = obs.uuid || Bahmni.Common.Offline.UUID.generateUuid();
+                    obs.encounterUuid = encounter.encounterUuid;
+                    obs.encounterDateTime = encounter.encounterDateTime;
+                    obs.observationDateTime = encounter.observationDateTime || new Date();
+                    obs.providers = encounter.providers;
+                    obs.creatorName = encounter.creatorName;
+                    stripExtraInfo(obs);
+                });
                 return encounter;
             };
 
@@ -93,6 +95,9 @@ angular.module('bahmni.common.domain')
                 obs.groupMembers = obs.groupMembers || [];
                 obs.groupMembers.forEach(function (groupMember) {
                     groupMember.encounterDateTime = obs.encounterDateTime;
+                    groupMember.observationDateTime = obs.observationDateTime;
+                    groupMember.providers = obs.providers;
+                    groupMember.creatorName = obs.creatorName;
                     stripExtraInfo(groupMember);
                 });
             };

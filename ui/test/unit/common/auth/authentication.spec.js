@@ -57,4 +57,27 @@ describe("Authentication", function () {
 
     });
 
+    describe("Should loadProviders ", function () {
+            var mockOfflineService;
+
+            beforeEach(module(function ($provide) {
+                $q = jasmine.createSpyObj('$q', ['defer', 'when']);
+                mockOfflineService = jasmine.createSpyObj('offlineService',['setPlatformCookie', 'getAppPlatform','isOfflineApp', 'getItem']);
+                mockOfflineService.getAppPlatform.and.returnValue('chrome');
+                mockOfflineService.isOfflineApp.and.returnValue(true);
+
+                $provide.value('$q', $q);
+                $provide.value('offlineService', mockOfflineService);
+            }));
+        it("and set the providers to currentProvider in rootScope", inject(['sessionService', '$rootScope', function (sessionService, $rootScope) {
+            var provider = {results: [{uuid: "6a5d9c71-bb71-47ad-abed-bda86637f1b7", name: "93779 - Arman Vuiyan", links: []}]};
+
+            mockOfflineService.isOfflineApp.and.returnValue(true);
+            mockOfflineService.getItem.and.returnValue(provider);
+
+            sessionService.loadProviders({uuid: "userInfoUuid"});
+            expect($rootScope.currentProvider).toEqual({uuid: "6a5d9c71-bb71-47ad-abed-bda86637f1b7", name: "93779 - Arman Vuiyan", links: []});
+        }]));
+    });
+
 });
