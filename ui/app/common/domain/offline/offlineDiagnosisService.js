@@ -4,6 +4,14 @@ angular.module('bahmni.common.domain')
     .service('diagnosisService', ['$q', 'offlineEncounterServiceStrategy',
         function ($q, offlineEncounterService) {
 
+            var filterAndSortDiagnosis = function(diagnoses){
+                diagnoses = _.filter(diagnoses, function(singleDiagnosis){
+                    return singleDiagnosis.revised == false;
+                });
+                diagnoses = _.sortBy(diagnoses, 'diagnosisDateTime').reverse();
+                return diagnoses;
+            };
+
             this.getDiagnoses = function(patientUuid, visitUuid){
                 var deferred = $q.defer();
                 var diagnoses =[];
@@ -11,6 +19,7 @@ angular.module('bahmni.common.domain')
                     _.each(results, function(result){
                         diagnoses = diagnoses.concat(result.encounter.bahmniDiagnoses)
                     });
+                    diagnoses = filterAndSortDiagnosis(diagnoses);
                     deferred.resolve({"data":diagnoses});
                 });
                 return deferred.promise;
