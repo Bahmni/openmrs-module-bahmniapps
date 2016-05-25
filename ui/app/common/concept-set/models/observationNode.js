@@ -257,8 +257,8 @@
         },
 
         isValid: function (checkRequiredFields, conceptSetRequired) {
-            if (this.isNumeric() && this.getAllowDecimal() === false) {
-                return this.isAllowDecimal();
+            if (this.isNumeric() && !this.isValidNumeric()) {
+                return false;
             }
             if (this.isGroup()) {
                 return this._hasValidChildren(checkRequiredFields, conceptSetRequired);
@@ -293,6 +293,7 @@
         },
 
         isValueInAbsoluteRange: function () {
+            console.log('absolute')
             return !(this.abnormalObs && this.abnormalObs.erroneousValue);
         },
 
@@ -312,12 +313,12 @@
             return this.primaryObs.getDataTypeName() === "Numeric";
         },
 
-        getAllowDecimal: function () {
+        isDecimalAllowed: function () {
             return this.primaryObs.concept.allowDecimal;
         },
 
-        isAllowDecimal: function () {
-            if (this.getAllowDecimal() === false) {
+        isValidNumeric: function () {
+            if (!this.isDecimalAllowed()) {
                 if (this.value && this.value.toString().indexOf('.') > 0) {
                     return false;
                 }
