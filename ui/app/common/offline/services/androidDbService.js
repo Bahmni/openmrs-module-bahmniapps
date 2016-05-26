@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('bahmni.common.offline')
-    .service('androidDbService', ['$q',
-        function ($q) {
+    .service('androidDbService', ['$q', 'eventLogService',
+        function ($q, eventLogService) {
             var getMarker = function (markerName) {
                 var value = AndroidOfflineService.getMarker(markerName);
                 value = value != undefined ? JSON.parse(value) : value;
