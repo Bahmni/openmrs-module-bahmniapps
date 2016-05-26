@@ -80,7 +80,7 @@ angular.module('bahmni.common.offline')
 
             var insertReferenceData = function(key, data, eTag){
                 var referenceData;
-                if(key == "LocaleList" || key == "DefaultEncounterType" || (key == "RelationshipTypeMap" && data=="")) {
+                if(key == "LocaleList" || key == "DefaultEncounterType" || key == "NonCodedDrugConcept" || (key == "RelationshipTypeMap" && data=="")) {
                     referenceData = data;
                 }
                 else {
@@ -108,11 +108,14 @@ angular.module('bahmni.common.offline')
                     if(encounterData.visitUuid){
                         eventLogService.getDataForUrl(Bahmni.Common.Constants.visitUrl + "/" + encounterData.visitUuid).then(function(response) {
                             insertVisitData(response.data).then(function() {
-                                deferred.resolve();
+                                deferred.resolve({data: encounterData});
                             });
-                        })
+                        },function (error) {
+                            deferred.resolve({data: encounterData});
+                        });
+                    }else{
+                        deferred.resolve({data: encounterData});
                     }
-                    deferred.resolve({data: encounterData});
                 });
                 return deferred.promise;
             };
@@ -164,8 +167,8 @@ angular.module('bahmni.common.offline')
                 return $q.when(response);
             };
 
-            var getVisitUuidsByPatientUuid = function (patientUuid, numberOfVisits) {
-                var response = AndroidOfflineService.getVisitUuidsByPatientUuid(patientUuid, numberOfVisits);
+            var getVisitsByPatientUuid = function (patientUuid, numberOfVisits) {
+                var response = AndroidOfflineService.getVisitsByPatientUuid(patientUuid, numberOfVisits);
                 response = response != undefined ? JSON.parse(response) : response;
                 return $q.when(response);
             };
@@ -215,6 +218,12 @@ angular.module('bahmni.common.offline')
             var insertLog = function (failedRequest, responseStatus, stacktrace) {
                  AndroidOfflineService.insertLog(failedRequest, responseStatus, stacktrace);
             };
+
+            var getPrescribedAndActiveDrugOrders = function (params) {
+                var response = AndroidOfflineService.getEncountersByVisits(JSON.stringify(params));
+                response = response != undefined ? JSON.parse(response) : response;
+                return $q.when(response);
+            };
             
             return {
                 init: init,
@@ -238,14 +247,15 @@ angular.module('bahmni.common.offline')
                 insertVisitData: insertVisitData,
                 getVisitByUuid: getVisitByUuid,
                 getActiveEncounter: getActiveEncounter,
-                getVisitUuidsByPatientUuid: getVisitUuidsByPatientUuid,
+                getVisitsByPatientUuid: getVisitsByPatientUuid,
                 getObservationsFor: getObservationsFor,
                 insertConceptAndUpdateHierarchy: insertConceptAndUpdateHierarchy,
                 getConcept: getConcept,
                 getConceptByName: getConceptByName,
                 getEncounterByEncounterUuid: getEncounterByEncounterUuid,
                 insertLog: insertLog,
-                getAllParentsInHierarchy: getAllParentsInHierarchy
+                getAllParentsInHierarchy: getAllParentsInHierarchy,
+                getPrescribedAndActiveDrugOrders: getPrescribedAndActiveDrugOrders
             }
         }
     ]);

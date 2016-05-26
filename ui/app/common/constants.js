@@ -61,7 +61,9 @@ Bahmni.Common = Bahmni.Common || {};
         "/openmrs/ws/rest/v1/concept?s=byFullySpecifiedName&name=Dosage+Instructions&v=custom:(uuid,name,answers)": "DosageInstructionConfig",
         "/openmrs/ws/rest/v1/bahmnicore/sql/globalproperty?property=bahmni.encounterType.default":"DefaultEncounterType",
         "/openmrs/ws/rest/v1/concept?s=byFullySpecifiedName&name=Stopped+Order+Reason&v=custom:(uuid,name,answers)":"StoppedOrderReasonConfig",
-        "/openmrs/ws/rest/v1/ordertype": "OrderType"
+        "/openmrs/ws/rest/v1/ordertype": "OrderType",
+        "/openmrs/ws/rest/v1/bahmnicore/config/drugOrders": "DrugOrderConfig",
+        "/openmrs/ws/rest/v1/bahmnicore/sql/globalproperty?property=drugOrder.drugOther": "NonCodedDrugConcept"
     };
 
     authenticatedReferenceDataMap["/openmrs/ws/rest/v1/entitymapping?mappingType=location_encountertype&s=byEntityAndMappingType&entityUuid=" +(localStorage.getItem("LoginInformation") ? JSON.parse(localStorage.getItem("LoginInformation")).currentLocation.uuid : "") ] = "LoginLocationToEncounterTypeMapping";

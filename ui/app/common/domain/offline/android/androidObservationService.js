@@ -5,8 +5,11 @@ angular.module('bahmni.common.domain')
 
         this.fetch = function (patientUuid, numberOfVisits, params) {
             var deffered = $q.defer();
-            androidDbService.getVisitUuidsByPatientUuid(patientUuid, numberOfVisits).then(function (visitUuids) {
-                params.visitUuids = visitUuids || [];
+            androidDbService.getVisitsByPatientUuid(patientUuid, numberOfVisits).then(function (visitUuids) {
+                var mappedVisitUuids = _.map(visitUuids, function (visitUuid) {
+                    return visitUuid.uuid;
+                });
+                params.visitUuids = mappedVisitUuids || [];
                 androidDbService.getObservationsFor(params).then(function (obs) {
                     var mappedObs = _.map(obs, function (ob) {
                         return ob.observation;

@@ -42,21 +42,22 @@ describe('visitDbService tests', function () {
                 visitJson.startDatetime = "2016-04-30T17:36:18.000+0530";
                 visitDbService.insertVisitData(db, visitJson).then(function () {
                     var patientUuid = "d07ddb7e-fd8d-4e06-bc44-3bb17507d955";
-                    visitDbService.getVisitUuidsByPatientUuid(db, patientUuid, 2).then(function (visitUuids) {
+                    visitDbService.getVisitsByPatientUuid(db, patientUuid, 2).then(function (visitUuids) {
                         expect(visitUuids).not.toBeUndefined();
                         expect(visitUuids.length).toBe(2);
                         expect(visitUuids[0].uuid).toBe(newVisitUuid);
                         expect(visitUuids[1].uuid).toBe(visitUuid);
+                        expect((visitUuids[0].startDatetime.toString())).toBe(new Date("2016-04-30T17:36:18.000+0530").toString());
                     });
 
-                    visitDbService.getVisitUuidsByPatientUuid(db, patientUuid, 1).then(function (visitUuids) {
+                    visitDbService.getVisitsByPatientUuid(db, patientUuid, 1).then(function (visitUuids) {
                         expect(visitUuids).not.toBeUndefined();
                         expect(visitUuids.length).toBe(1);
                         expect(visitUuids[0].uuid).toBe(newVisitUuid);
                         expect(visitUuids[1]).toBeUndefined();
                     });
 
-                    visitDbService.getVisitUuidsByPatientUuid(db, patientUuid, 4).then(function (visitUuids) {
+                    visitDbService.getVisitsByPatientUuid(db, patientUuid, 4).then(function (visitUuids) {
                         expect(visitUuids).not.toBeUndefined();
                         expect(visitUuids.length).toBe(2);
                         expect(visitUuids[0].uuid).toBe(newVisitUuid);

@@ -44,7 +44,7 @@ angular.module('bahmni.common.offline')
                                 },
                                 withCredentials: true
                             };
-                            if (referenceData == 'LocaleList' || referenceData == 'DefaultEncounterType') {
+                            if (referenceData == 'LocaleList' || referenceData == 'DefaultEncounterType' || referenceData == "NonCodedDrugConcept") {
                                 req.headers.Accept = 'text/plain';
                             }
                             return req;

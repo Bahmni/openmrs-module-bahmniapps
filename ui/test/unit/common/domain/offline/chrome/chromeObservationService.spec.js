@@ -27,10 +27,10 @@ describe('chromeObservationService', function () {
 
         var obsData = [];
 
-        spyOn(offlineDbService, 'getVisitUuidsByPatientUuid').and.returnValue(specUtil.respondWithPromise($q, visitUuids));
+        spyOn(offlineDbService, 'getVisitsByPatientUuid').and.returnValue(specUtil.respondWithPromise($q, visitUuids));
         spyOn(offlineDbService, 'getObservationsFor').and.returnValue(specUtil.respondWithPromise($q, obsData));
         observationsServiceStrategy.fetch(params.patientUuid, params.numberOfVisits, params).then(function (response) {
-            expect(offlineDbService.getVisitUuidsByPatientUuid).toHaveBeenCalledWith(params.patientUuid, params.numberOfVisits);
+            expect(offlineDbService.getVisitsByPatientUuid).toHaveBeenCalledWith(params.patientUuid, params.numberOfVisits);
             expect(offlineDbService.getObservationsFor).toHaveBeenCalledWith(paramsWithVisitUuids);
             expect(response.data.length).toBe(0);
             expect(response).toEqual({"data": []});
@@ -49,10 +49,10 @@ describe('chromeObservationService', function () {
             {"observation": {name: "child health", type: "Field"}},
         ];
 
-        spyOn(offlineDbService, 'getVisitUuidsByPatientUuid').and.returnValue(specUtil.respondWithPromise($q, visitUuids));
+        spyOn(offlineDbService, 'getVisitsByPatientUuid').and.returnValue(specUtil.respondWithPromise($q, visitUuids));
         spyOn(offlineDbService, 'getObservationsFor').and.returnValue(specUtil.respondWithPromise($q, obsData));
         observationsServiceStrategy.fetch(params.patientUuid, params.numberOfVisits, params).then(function (response) {
-            expect(offlineDbService.getVisitUuidsByPatientUuid).toHaveBeenCalledWith(params.patientUuid, params.numberOfVisits);
+            expect(offlineDbService.getVisitsByPatientUuid).toHaveBeenCalledWith(params.patientUuid, params.numberOfVisits);
             expect(offlineDbService.getObservationsFor).toHaveBeenCalledWith(paramsWithVisitUuids);
             expect(response.data.length).toBe(1);
             expect(response).toEqual({"data": [{"name": "child health", type: "Field"}]});
@@ -74,10 +74,10 @@ describe('chromeObservationService', function () {
 
         var obsData = [];
 
-        spyOn(offlineDbService, 'getVisitUuidsByPatientUuid').and.returnValue(specUtil.respondWithPromise($q, visitUuids));
+        spyOn(offlineDbService, 'getVisitsByPatientUuid').and.returnValue(specUtil.respondWithPromise($q, visitUuids));
         spyOn(offlineDbService, 'getObservationsFor').and.returnValue(specUtil.respondWithPromise($q, obsData));
         observationsServiceStrategy.fetch(params.patientUuid, params.numberOfVisits, params).then(function (response) {
-            expect(offlineDbService.getVisitUuidsByPatientUuid).toHaveBeenCalledWith(params.patientUuid, params.numberOfVisits);
+            expect(offlineDbService.getVisitsByPatientUuid).toHaveBeenCalledWith(params.patientUuid, params.numberOfVisits);
             expect(offlineDbService.getObservationsFor).toHaveBeenCalledWith(paramsWithVisitUuids);
             expect(response.data.length).toBe(0);
             expect(response).toEqual({"data": []});
@@ -101,10 +101,10 @@ describe('chromeObservationService', function () {
             {observation: {"name": "Immunization"}}
         ];
 
-        spyOn(offlineDbService, 'getVisitUuidsByPatientUuid').and.returnValue(specUtil.respondWithPromise($q, visitUuids));
+        spyOn(offlineDbService, 'getVisitsByPatientUuid').and.returnValue(specUtil.respondWithPromise($q, visitUuids));
         spyOn(offlineDbService, 'getObservationsFor').and.returnValue(specUtil.respondWithPromise($q, obsData));
         observationsServiceStrategy.fetch(params.patientUuid, params.numberOfVisits, params).then(function (response) {
-            expect(offlineDbService.getVisitUuidsByPatientUuid).toHaveBeenCalledWith(params.patientUuid, params.numberOfVisits);
+            expect(offlineDbService.getVisitsByPatientUuid).toHaveBeenCalledWith(params.patientUuid, params.numberOfVisits);
             expect(offlineDbService.getObservationsFor).toHaveBeenCalledWith(paramsWithVisitUuids);
             expect(response.data.length).toBe(2);
             expect(response).toEqual({data: [{name: "child health", type: "Field"}, {"name": "Immunization"}]});

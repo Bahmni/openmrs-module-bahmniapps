@@ -29,10 +29,10 @@ angular.module('bahmni.common.offline')
 
         };
 
-        var getVisitUuidsByPatientUuid = function (db, patientUuid, numberOfVisits) {
+        var getVisitsByPatientUuid = function (db, patientUuid, numberOfVisits) {
             var visitTable = db.getSchema().table('visit');
 
-            return db.select(visitTable.uuid)
+            return db.select(visitTable.uuid, visitTable.startDatetime)
                 .from(visitTable)
                 .where(visitTable.patientUuid.eq(patientUuid))
                 .orderBy(visitTable.startDatetime, lf.Order.DESC)
@@ -46,7 +46,7 @@ angular.module('bahmni.common.offline')
         return {
             insertVisitData: insertVisitData,
             getVisitByUuid: getVisitByUuid,
-            getVisitUuidsByPatientUuid: getVisitUuidsByPatientUuid
+            getVisitsByPatientUuid: getVisitsByPatientUuid
         }
 
     }]);

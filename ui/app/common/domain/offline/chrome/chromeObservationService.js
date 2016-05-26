@@ -5,7 +5,7 @@ angular.module('bahmni.common.domain')
 
         this.fetch = function (patientUuid, numberOfVisits, params) {
             var deffered = $q.defer();
-            offlineDbService.getVisitUuidsByPatientUuid(patientUuid, numberOfVisits).then(function (visitUuids) {
+            offlineDbService.getVisitsByPatientUuid(patientUuid, numberOfVisits).then(function (visitUuids) {
                 var mappedVisitUuids = _.map(visitUuids, function (visitUuid) {
                     return visitUuid.uuid;
                 });

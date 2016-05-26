@@ -27,10 +27,10 @@ describe('androidObservationService', function () {
 
         var obsData = [];
 
-        spyOn(androidDbService, 'getVisitUuidsByPatientUuid').and.returnValue(specUtil.respondWithPromise($q, visitUuids));
+        spyOn(androidDbService, 'getVisitsByPatientUuid').and.returnValue(specUtil.respondWithPromise($q, visitUuids));
         spyOn(androidDbService, 'getObservationsFor').and.returnValue(specUtil.respondWithPromise($q, obsData));
         observationsServiceStrategy.fetch(params.patientUuid, params.numberOfVisits, params).then(function (response) {
-            expect(androidDbService.getVisitUuidsByPatientUuid).toHaveBeenCalledWith(params.patientUuid, params.numberOfVisits);
+            expect(androidDbService.getVisitsByPatientUuid).toHaveBeenCalledWith(params.patientUuid, params.numberOfVisits);
             expect(androidDbService.getObservationsFor).toHaveBeenCalledWith(paramsWithVisitUuids);
             expect(response.data.length).toBe(0);
             expect(response).toEqual({"data": []});
@@ -49,10 +49,10 @@ describe('androidObservationService', function () {
             {"observation": {name: "child health", type: "Field"}},
         ];
 
-        spyOn(androidDbService, 'getVisitUuidsByPatientUuid').and.returnValue(specUtil.respondWithPromise($q, visitUuids));
+        spyOn(androidDbService, 'getVisitsByPatientUuid').and.returnValue(specUtil.respondWithPromise($q, visitUuids));
         spyOn(androidDbService, 'getObservationsFor').and.returnValue(specUtil.respondWithPromise($q, obsData));
         observationsServiceStrategy.fetch(params.patientUuid, params.numberOfVisits, params).then(function (response) {
-            expect(androidDbService.getVisitUuidsByPatientUuid).toHaveBeenCalledWith(params.patientUuid, params.numberOfVisits);
+            expect(androidDbService.getVisitsByPatientUuid).toHaveBeenCalledWith(params.patientUuid, params.numberOfVisits);
             expect(androidDbService.getObservationsFor).toHaveBeenCalledWith(paramsWithVisitUuids);
             expect(response.data.length).toBe(1);
             expect(response).toEqual({"data": [{"name": "child health", type: "Field"}]});
@@ -70,14 +70,16 @@ describe('androidObservationService', function () {
             {uuid: "fc6ede09-f16f-4877-d2f5-ed8b21833333"}
         ];
 
-        paramsWithVisitUuids.visitUuids = visitUuids;
+        paramsWithVisitUuids.visitUuids = _.map(visitUuids, function (visitUuid) {
+            return visitUuid.uuid;
+        });
 
         var obsData = [];
 
-        spyOn(androidDbService, 'getVisitUuidsByPatientUuid').and.returnValue(specUtil.respondWithPromise($q, visitUuids));
+        spyOn(androidDbService, 'getVisitsByPatientUuid').and.returnValue(specUtil.respondWithPromise($q, visitUuids));
         spyOn(androidDbService, 'getObservationsFor').and.returnValue(specUtil.respondWithPromise($q, obsData));
         observationsServiceStrategy.fetch(params.patientUuid, params.numberOfVisits, params).then(function (response) {
-            expect(androidDbService.getVisitUuidsByPatientUuid).toHaveBeenCalledWith(params.patientUuid, params.numberOfVisits);
+            expect(androidDbService.getVisitsByPatientUuid).toHaveBeenCalledWith(params.patientUuid, params.numberOfVisits);
             expect(androidDbService.getObservationsFor).toHaveBeenCalledWith(paramsWithVisitUuids);
             expect(response.data.length).toBe(0);
             expect(response).toEqual({"data": []});
@@ -94,17 +96,19 @@ describe('androidObservationService', function () {
             {uuid: "fc6ede09-f16f-4877-d2f5-ed8b21833333"}
         ];
 
-        paramsWithVisitUuids.visitUuids = visitUuids;
-
+        paramsWithVisitUuids.visitUuids = _.map(visitUuids, function (visitUuid) {
+            return visitUuid.uuid;
+        });
+        
         var obsData = [
             {observation: {"name": "child health", type: "Field"}},
             {observation: {"name": "Immunization"}}
         ];
 
-        spyOn(androidDbService, 'getVisitUuidsByPatientUuid').and.returnValue(specUtil.respondWithPromise($q, visitUuids));
+        spyOn(androidDbService, 'getVisitsByPatientUuid').and.returnValue(specUtil.respondWithPromise($q, visitUuids));
         spyOn(androidDbService, 'getObservationsFor').and.returnValue(specUtil.respondWithPromise($q, obsData));
         observationsServiceStrategy.fetch(params.patientUuid, params.numberOfVisits, params).then(function (response) {
-            expect(androidDbService.getVisitUuidsByPatientUuid).toHaveBeenCalledWith(params.patientUuid, params.numberOfVisits);
+            expect(androidDbService.getVisitsByPatientUuid).toHaveBeenCalledWith(params.patientUuid, params.numberOfVisits);
             expect(androidDbService.getObservationsFor).toHaveBeenCalledWith(paramsWithVisitUuids);
             expect(response.data.length).toBe(2);
             expect(response).toEqual({data: [{name: "child health", type: "Field"}, {"name": "Immunization"}]});

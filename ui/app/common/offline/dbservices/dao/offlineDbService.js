@@ -62,11 +62,14 @@ angular.module('bahmni.common.offline')
                     if(encounterData.visitUuid){
                         eventLogService.getDataForUrl(Bahmni.Common.Constants.visitUrl + "/" + encounterData.visitUuid).then(function(response) {
                             insertVisitData(response.data).then(function() {
-                                deferred.resolve();
+                                deferred.resolve({data: encounterData});
                             });
-                        })
+                        },function (error) {
+                            deferred.resolve({data: encounterData});
+                        });
+                    }else{
+                        deferred.resolve({data: encounterData});
                     }
-                    deferred.resolve({data: encounterData});
                 });
                 return deferred.promise;
             };
@@ -197,8 +200,8 @@ angular.module('bahmni.common.offline')
             return observationDbService.getObservationsFor(db, params);
         };
 
-        var getVisitUuidsByPatientUuid = function (patientUuid, numberOfVisits) {
-            return visitDbService.getVisitUuidsByPatientUuid(db, patientUuid, numberOfVisits);
+        var getVisitsByPatientUuid = function (patientUuid, numberOfVisits) {
+            return visitDbService.getVisitsByPatientUuid(db, patientUuid, numberOfVisits);
         };
 
         var insertLog = function (failedRequest, responseStatus, stackTrace) {
@@ -209,6 +212,10 @@ angular.module('bahmni.common.offline')
         var getAllParentsInHierarchy = function(conceptName){
             var conceptNamesInHierarchy = [];
             return conceptDbService.getAllParentsInHierarchy(conceptName, conceptNamesInHierarchy)
+        };
+
+        var getPrescribedAndActiveDrugOrders = function (params) {
+            return encounterDbService.getEncountersByVisits(db, params);
         };
 
         return {
@@ -236,13 +243,14 @@ angular.module('bahmni.common.offline')
             getActiveEncounter: getActiveEncounter,
             getEncounterByEncounterUuid: getEncounterByEncounterUuid,
             getObservationsFor: getObservationsFor,
-            getVisitUuidsByPatientUuid: getVisitUuidsByPatientUuid,
+            getVisitsByPatientUuid: getVisitsByPatientUuid,
             insertConceptAndUpdateHierarchy: insertConceptAndUpdateHierarchy,
             getConcept: getConcept,
             getConceptByName: getConceptByName,
             updateChildren: updateChildren,
             updateParentJson: updateParentJson,
             getAllParentsInHierarchy: getAllParentsInHierarchy,
-            insertLog: insertLog
+            insertLog: insertLog,
+            getPrescribedAndActiveDrugOrders: getPrescribedAndActiveDrugOrders
         }
     }]);
