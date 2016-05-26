@@ -130,6 +130,10 @@ angular.module('bahmni.common.offline')
                     }
                     var event = events[index];
                     event.category = category ? category : event.category;
+                    if(event.category == "SHREncounter") {
+                        var uuid = event.object.match(Bahmni.Common.Constants.uuidRegex)[0];
+                        event.object = Bahmni.Common.Constants.offlineBahmniEncounterUrl + uuid + "?includeAll=true";
+                    }
                     return eventLogService.getDataForUrl(Bahmni.Common.Constants.hostURL + event.object).then(function (response) {
                         return saveData(event, response).then(updateMarker(event).then(function () {
                             return readEvent(events, ++index, category);
