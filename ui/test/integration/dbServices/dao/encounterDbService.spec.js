@@ -29,6 +29,7 @@ describe('encounterDbService tests', function () {
                 var uuid = 'fc6ede09-f16f-4877-d2f5-ed8b2182ec11';
                 encounterDbService.getEncountersByPatientUuid(db, uuid).then(function(results){
                     expect(results[0].encounter.patientUuid).toBe(uuid);
+                    expect(results[0].encounter.visitUuid).toBe("47a706a2-c0e6-4e40-ae31-4a3535be2ace");
                     expect(results[0].encounter.encounterDateTime).toBe("2016-04-22T11:06:20.000+0530");
                     done();
                 });
@@ -71,6 +72,25 @@ describe('encounterDbService tests', function () {
                 });
                 encounterDbService.getEncounterByEncounterUuid(db, encounterJson.encounterUuid).then(function(results){
                     expect(results).not.toBeUndefined();
+                })
+            });
+        });
+
+    });
+
+
+    it("get encounter by visits from lovefield database", function(done){
+
+        var DateUtil = Bahmni.Common.Util.DateUtil;
+        encounterJson.encounterDateTime = DateUtil.addSeconds(DateUtil.now(), -1600);
+        schemaBuilder.connect().then(function(db){
+            encounterDbService.insertEncounterData(db, encounterJson).then(function(result){
+                var patientUuid = 'fc6ede09-f16f-4877-d2f5-ed8b2182ec11';
+                var visitUuids = ["47a706a2-c0e6-4e40-ae31-4a3535be2ace"];
+                encounterDbService.getEncountersByVisits(db, {patientUuid: patientUuid, visitUuids: visitUuids}).then(function (results) {
+                    expect(results[0].encounter.patientUuid).toBe(patientUuid);
+                    expect(results[0].encounter.visitUuid).toBe(visitUuids[0]);
+                    done();
                 })
             });
         });

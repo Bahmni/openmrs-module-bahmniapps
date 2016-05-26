@@ -330,11 +330,15 @@ Bahmni.Common.Offline.SchemaDefinitions = {
                 type: 'STRING'
             },
             {
+                name: 'visitUuid',
+                type: 'STRING'
+            },
+            {
                 name: 'encounterJson',
                 type: 'OBJECT'
             }
         ],
-        nullableColumns: [],
+        nullableColumns: ['visitUuid'],
         primaryKeyColumns: ['uuid']
     },
     Observation: {

@@ -10,6 +10,7 @@ angular.module('bahmni.common.offline')
             var encounterDateTime = encounterData.encounterDateTime;
             var encounterType = encounterData.encounterType ? encounterData.encounterType.toUpperCase() : null;
             var providerUuid = encounterData.providers[0].uuid;
+            var visitUuid = encounterData.visitUuid;
             var encounterTable = db.getSchema().table('encounter');
 
 
@@ -19,6 +20,7 @@ angular.module('bahmni.common.offline')
                 encounterDateTime: new Date(encounterDateTime),
                 encounterType: encounterType,
                 providerUuid: providerUuid,
+                visitUuid: visitUuid,
                 encounterJson: encounterData
             });
             return db.insertOrReplace().into(encounterTable).values([row]).exec().then(function () {
@@ -60,10 +62,24 @@ angular.module('bahmni.common.offline')
                 });
         };
 
+        var getEncountersByVisits = function (db, params) {
+            var encounter = db.getSchema().table('encounter');
+            return db.select(encounter.encounterJson.as('encounter'))
+                .from(encounter)
+                .where(
+                    lf.op.and(encounter.patientUuid.eq(params.patientUuid), encounter.visitUuid.in(params.visitUuids)))
+                .orderBy(encounter.encounterDateTime, lf.Order.DESC)
+                .exec()
+                .then(function (results) {
+                    return results;
+                });
+        };
+
         return {
             insertEncounterData: insertEncounterData,
             getEncountersByPatientUuid: getEncountersByPatientUuid,
             findActiveEncounter: findActiveEncounter,
-            getEncounterByEncounterUuid : getEncounterByEncounterUuid
+            getEncounterByEncounterUuid : getEncounterByEncounterUuid,
+            getEncountersByVisits: getEncountersByVisits
         }
     });
