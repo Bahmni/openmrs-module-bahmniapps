@@ -111,7 +111,10 @@ angular.module('bahmni.registration')
             var mapAddressAttributesSearchResults = function(data){
                 if(($scope.addressSearchResultsConfig.fields) && data != "Searching"){
                     _.map(data.pageOfResults, function(result){
-                        result.addressFieldValue = result.addressFieldValue && JSON.parse(result.addressFieldValue);
+                        try{
+                            result.addressFieldValue = JSON.parse(result.addressFieldValue);
+                        }catch(e){
+                        }
                     });
                 }
             };
