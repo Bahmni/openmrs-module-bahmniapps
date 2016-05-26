@@ -293,7 +293,6 @@
         },
 
         isValueInAbsoluteRange: function () {
-            console.log('absolute')
             return !(this.abnormalObs && this.abnormalObs.erroneousValue);
         },
 
