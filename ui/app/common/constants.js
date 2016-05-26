@@ -246,7 +246,9 @@ Bahmni.Common = Bahmni.Common || {};
         dischargeUrl: BAHMNI_CORE + "/discharge",
         newOfflineVisitUuid: "newOfflineVisitUuid",
         offlineErrorMessages: offlineErrorMessages,
-        syncButtonConfiguration:syncButtonConfiguration
+        syncButtonConfiguration:syncButtonConfiguration,
+        uuidRegex: "[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}",
+        offlineBahmniEncounterUrl: "/openmrs/ws/rest/v1/bahmnicore/bahmniencounter/"
     };
 })();
 
