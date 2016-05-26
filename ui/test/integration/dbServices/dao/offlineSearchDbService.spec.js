@@ -106,7 +106,7 @@ describe('offlineSearchDbService', function () {
         };
 
         createAndSearch(params).then(function (result) {
-            expect(result.data.pageOfResults[0].addressFieldValue).toBe(searchString);
+            expect(result.data.pageOfResults[0].addressFieldValue).toEqual({ 'stateProvince' : 'Chattisgarh' });
             done();
         });
 
