@@ -1,9 +1,12 @@
 'use strict';
 
 describe('offlineSearchDbService', function () {
-    var offlineSearchDbService, patientDbService, age, patientAddressDbService, patientAttributeDbService, $q=Q;
+    var offlineSearchDbService, patientDbService, age, patientAddressDbService, patientAttributeDbService, encounterDbService, $q = Q;
 
     var mockHttp = jasmine.createSpyObj('$http', ['get']);
+    jasmine.getFixtures().fixturesPath = 'base/test/data';
+    var encounterJson = JSON.parse(readFixtures('encounter.json'));
+    var patientJson = JSON.parse(readFixtures('patient.json'));
 
     beforeEach(function () {
         module('bahmni.common.offline');
@@ -14,24 +17,24 @@ describe('offlineSearchDbService', function () {
         });
     });
 
-    beforeEach(inject(['offlineSearchDbService', 'patientDbService', 'age', 'patientAddressDbService', 'patientAttributeDbService',
-        function (offlineSearchDbServiceInjected, patientDbServiceInjected, ageInjected, patientAddressDbServiceInjected, patientAttributeDbServiceInjected) {
+    beforeEach(inject(['offlineSearchDbService', 'patientDbService', 'age', 'patientAddressDbService', 'patientAttributeDbService', 'encounterDbService',
+        function (offlineSearchDbServiceInjected, patientDbServiceInjected, ageInjected, patientAddressDbServiceInjected, patientAttributeDbServiceInjected, encounterDbServiceInjected) {
             offlineSearchDbService = offlineSearchDbServiceInjected;
             patientDbService = patientDbServiceInjected;
             age = ageInjected;
             patientAddressDbService = patientAddressDbServiceInjected;
             patientAttributeDbService = patientAttributeDbServiceInjected;
+            encounterDbService = encounterDbServiceInjected;
         }]));
 
 
     var createAndSearch = function (params, done) {
-        var schemaBuilder = lf.schema.create('BahmniTest', 1);
+        var schemaBuilder = lf.schema.create('BahmniTest', 2);
         Bahmni.Tests.OfflineDbUtils.createTable(schemaBuilder, Bahmni.Common.Offline.SchemaDefinitions.Patient);
+        Bahmni.Tests.OfflineDbUtils.createTable(schemaBuilder, Bahmni.Common.Offline.SchemaDefinitions.Encounter);
         Bahmni.Tests.OfflineDbUtils.createTable(schemaBuilder, Bahmni.Common.Offline.SchemaDefinitions.PatientAttribute);
         Bahmni.Tests.OfflineDbUtils.createTable(schemaBuilder, Bahmni.Common.Offline.SchemaDefinitions.PatientAttributeType);
         Bahmni.Tests.OfflineDbUtils.createTable(schemaBuilder, Bahmni.Common.Offline.SchemaDefinitions.PatientAddress);
-        jasmine.getFixtures().fixturesPath = 'base/test/data';
-        var patientJson = JSON.parse(readFixtures('patient.json'));
         var personAttributeTypeJSON = JSON.parse(readFixtures('patientAttributeType.json'));
         return schemaBuilder.connect().then(function (db) {
             offlineSearchDbService.init(db);
@@ -39,11 +42,12 @@ describe('offlineSearchDbService', function () {
                 var attributeTypeTable = db.getSchema().table('patient_attribute_type');
                 return db.select(attributeTypeTable.attributeTypeId,
                     attributeTypeTable.uuid, attributeTypeTable.attributeName, attributeTypeTable.format).from(attributeTypeTable).exec().then(function (attributeTypeMap) {
-                        return patientDbService.insertPatientData(db, patientJson).then(function (uuid) {
-                            var patient = patientJson.patient;
-                            var person = patient.person;
-                            return patientAddressDbService.insertAddress(db, uuid, person.addresses[0]).then(function () {
-                                return patientAttributeDbService.insertAttributes(db, uuid, person.attributes, attributeTypeMap).then(function () {
+                    return patientDbService.insertPatientData(db, patientJson).then(function (uuid) {
+                        var patient = patientJson.patient;
+                        var person = patient.person;
+                        return patientAddressDbService.insertAddress(db, uuid, person.addresses[0]).then(function () {
+                            return patientAttributeDbService.insertAttributes(db, uuid, person.attributes, attributeTypeMap).then(function () {
+                                return encounterDbService.insertEncounterData(db, encounterJson).then(function () {
                                     return offlineSearchDbService.search(params).then(function (result) {
                                         return result;
                                         done();
@@ -52,10 +56,10 @@ describe('offlineSearchDbService', function () {
                             });
                         });
                     });
+                });
             });
 
         });
-
     };
 
 
@@ -202,12 +206,105 @@ describe('offlineSearchDbService', function () {
         };
 
         createAndSearch(params, done).then(function (result) {
-            var customAttributes = JSON.parse(result.data.  pageOfResults[0].customAttribute);
+            var customAttributes = JSON.parse(result.data.pageOfResults[0].customAttribute);
             expect(customAttributes.landHolding).toBe(searchString);
             done();
         });
 
     });
 
+     it('Should not display if patient datecreated and encounter date is not within duration', function (done) {
+        var params = {
+            q: '',
+            s: "byDate",
+            startIndex: 0,
+            addressFieldName: 'address2',
+            duration: 14
+        };
+
+         var DateUtil = Bahmni.Common.Util.DateUtil;
+         encounterJson.encounterDateTime = DateUtil.subtractDays(DateUtil.now(), 20);
+         patientJson.patient.person.auditInfo.dateCreated = DateUtil.subtractDays(DateUtil.now(), 20);
+
+         createAndSearch(params, done).then(function (result) {
+            expect(result.data.pageOfResults).toEqual([]);
+            done(encounterJson.encounterDateTime);
+        });
+
+    });
+
+    it('Should display if patient date created in not within duration and encounter date is within duration', function (done) {
+        var params = {
+            q: '',
+            s: "byDate",
+            startIndex: 0,
+            addressFieldName: 'address2',
+            duration: 14
+        };
+
+        var DateUtil = Bahmni.Common.Util.DateUtil;
+        encounterJson.encounterDateTime = DateUtil.subtractDays(DateUtil.now(), 2);
+        patientJson.patient.person.auditInfo.dateCreated = DateUtil.subtractDays(DateUtil.now(), 20);
+        createAndSearch(params, done).then(function (result) {
+            expect(result.data.pageOfResults[0].givenName).toEqual("test");
+            done();
+        });
+    });
+
+    it('Should display as recent patient if dateCreated is within date range and there is no encounter for patient', function (done) {
+        var params = {
+            q: '',
+            s: "byDate",
+            startIndex: 0,
+            addressFieldName: 'address2',
+            duration: 14
+        };
+
+        var DateUtil = Bahmni.Common.Util.DateUtil;
+        encounterJson.patientUuid = "patientUuid";
+        patientJson.patient.person.auditInfo.dateCreated = DateUtil.subtractDays(DateUtil.now(), 2);
+        createAndSearch(params, done).then(function (result) {
+            expect(result.data.pageOfResults[0].givenName).toEqual("test");
+            done();
+        });
+    });
+
+
+    it('Should display as recent patient if dateCreated is within date range and encounter date is not in date range for patient', function (done) {
+        var params = {
+            q: '',
+            s: "byDate",
+            startIndex: 0,
+            addressFieldName: 'address2',
+            duration: 14
+        };
+
+        var DateUtil = Bahmni.Common.Util.DateUtil;
+        encounterJson.encounterDateTime = DateUtil.subtractDays(DateUtil.now(), 20);
+        patientJson.patient.person.auditInfo.dateCreated = DateUtil.subtractDays(DateUtil.now(), 2);
+        createAndSearch(params, done).then(function (result) {
+            expect(result.data.pageOfResults[0].givenName).toEqual("test");
+            done();
+        });
+    });
+
+
+    it('Should display as recent patient if dateCreated and encounter date is within date range', function (done) {
+        var params = {
+            q: '',
+            s: "byDate",
+            startIndex: 0,
+            addressFieldName: 'address2',
+            duration: 14
+        };
+
+        var DateUtil = Bahmni.Common.Util.DateUtil;
+        encounterJson.encounterDateTime = DateUtil.subtractDays(DateUtil.now(), 2);
+        patientJson.patient.person.auditInfo.dateCreated = DateUtil.subtractDays(DateUtil.now(), 2);
+        createAndSearch(params, done).then(function (result) {
+            expect(result.data.pageOfResults[0].givenName).toEqual("test");
+            done();
+        });
+    });
 
 });
