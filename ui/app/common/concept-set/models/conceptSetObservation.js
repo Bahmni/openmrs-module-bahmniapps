@@ -101,7 +101,7 @@ Bahmni.ConceptSet.Observation.prototype = {
 
     isValidNumeric : function (){
         if(!this.isDecimalAllowed()){
-            if(this.value && this.value.toString().indexOf('.') > 0){
+            if(this.value && this.value.toString().indexOf('.') >= 0){
                 return false;
             }
         }
