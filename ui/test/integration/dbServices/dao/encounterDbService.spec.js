@@ -85,7 +85,7 @@ describe('encounterDbService tests', function () {
         encounterJson.encounterDateTime = DateUtil.addSeconds(DateUtil.now(), -1600);
         schemaBuilder.connect().then(function(db){
             encounterDbService.insertEncounterData(db, encounterJson).then(function(result){
-                var patientUuid = 'fc6ede09-f16f-4877-d2f5-ed8b2182ec11';
+                var patientUuid = 'e34992ca-894f-4344-b4b3-54a4aa1e5558';
                 var visitUuids = ["47a706a2-c0e6-4e40-ae31-4a3535be2ace"];
                 encounterDbService.getEncountersByVisits(db, {patientUuid: patientUuid, visitUuids: visitUuids}).then(function (results) {
                     expect(results[0].encounter.patientUuid).toBe(patientUuid);
