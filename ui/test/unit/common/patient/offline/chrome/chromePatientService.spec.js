@@ -54,4 +54,11 @@ describe('patientService', function () {
         })
     });
 
+    it('should display recent patient in all tab for offline app',  function (done) {
+        patientService.getRecentPatients().then(function () {
+              expect(offlineSearchDbServiceMock.search).toHaveBeenCalled();
+            done();
+        })
+    })
+
 });

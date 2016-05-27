@@ -37,5 +37,15 @@ angular.module('bahmni.common.patient')
                 deferrable.resolve({"data" : patientContext});
             });
             return deferrable.promise;
+        };
+
+        this.getRecentPatients = function (duration) {
+            var params = {
+                q: '',
+                startIndex: 0,
+                addressFieldName: Bahmni.Common.Offline.AddressFields.CITY_VILLAGE,
+                duration: duration || 14
+            };
+            return $q.when(JSON.parse(AndroidOfflineService.search(JSON.stringify(params))));
         }
     }]);

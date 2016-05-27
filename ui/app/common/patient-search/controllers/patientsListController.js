@@ -2,11 +2,11 @@
 
 angular.module('bahmni.common.patientSearch')
 .controller('PatientsListController', ['$scope', '$window', 'patientService', '$rootScope', 'appService', 'spinner',
-        '$stateParams', '$bahmniCookieStore',
-    function ($scope, $window, patientService, $rootScope, appService, spinner, $stateParams, $bahmniCookieStore) {
+        '$stateParams', '$bahmniCookieStore','offlineService',
+    function ($scope, $window, patientService, $rootScope, appService, spinner, $stateParams, $bahmniCookieStore, offlineService) {
         var initialize = function () {
             var searchTypes = appService.getAppDescriptor().getExtensions("org.bahmni.patient.search", "config").map(mapExtensionToSearchType);
-            $scope.search = new Bahmni.Common.PatientSearch.Search(searchTypes);
+            $scope.search = new Bahmni.Common.PatientSearch.Search(_.without(searchTypes, undefined));
             $scope.search.markPatientEntry();
             $scope.$watch('search.searchType', fetchPatients);
             if($rootScope.currentSearchType != null ) {
@@ -69,6 +69,9 @@ angular.module('bahmni.common.patientSearch')
         };
 
         var mapExtensionToSearchType = function(appExtn) {
+            if(offlineService.isOfflineApp() && appExtn.offline == false){
+                return;
+            }
             return {
                     name: appExtn.label,
                     display: appExtn.extensionParams.display,
@@ -95,6 +98,14 @@ angular.module('bahmni.common.patientSearch')
                 return spinner.forPromise(patientService.findPatients(params)).then(function (response) {
                     $scope.search.updatePatientList(response.data);
                 })
+            }
+            else {
+                if(offlineService.isOfflineApp()) {
+                    var duration = appService.getAppDescriptor().getConfigValue('recentPatientsDuration');
+                    patientService.getRecentPatients(duration).then(function(response){
+                        $scope.search.updatePatientList(response.data.pageOfResults);
+                    });
+                }
             }
         };
 
