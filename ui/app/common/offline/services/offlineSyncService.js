@@ -102,6 +102,7 @@ angular.module('bahmni.common.offline')
                     switch (category) {
                         case 'patient':
                         case 'Encounter':
+                        case 'SHREncounter':
                                 syncTransactionalData();
                                 break;
                         case 'addressHierarchy':
@@ -159,6 +160,7 @@ angular.module('bahmni.common.offline')
                             });
                             break;
                         case 'Encounter':
+                        case 'SHREncounter':
                             offlineDbService.createEncounter(response.data).then(function () {
                                 deferrable.resolve();
                             });
