@@ -14,6 +14,10 @@ angular.module('bahmni.common.domain')
             return $q.when({data : {results: {}}});
         };
 
+        this.createVisit = function (visitDetails) {
+            return $q.when({data : {results: {}}});
+        };
+
         this.updateVisit = function (visitUuid, attributes) {
             return $q.when({data : {results: {}}});
         };
