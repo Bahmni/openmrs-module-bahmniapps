@@ -722,11 +722,21 @@ angular.module('bahmni.clinical')
 
             $scope.consultation.preSaveHandler.register("drugOrderSaveHandlerKey", saveTreatment);
 
+            var mergeActiveAndScheduledWithDiscontinuedOrders = function() {
+                _.each($scope.consultation.discontinuedDrugs, function (discontinuedDrug) {
+                    _.remove($scope.consultation.activeAndScheduledDrugOrders, {'uuid': discontinuedDrug.uuid});
+                    $scope.consultation.activeAndScheduledDrugOrders.push(discontinuedDrug);
+                });
+            };
+
             var init = function () {
                 $scope.consultation.removableDrugs = $scope.consultation.removableDrugs || [];
                 $scope.consultation.discontinuedDrugs = $scope.consultation.discontinuedDrugs || [];
                 $scope.consultation.drugOrdersWithUpdatedOrderAttributes = $scope.consultation.drugOrdersWithUpdatedOrderAttributes || {};
                 $scope.consultation.activeAndScheduledDrugOrders = getActiveDrugOrders(activeDrugOrders);
+
+                mergeActiveAndScheduledWithDiscontinuedOrders();
+
                 $scope.treatmentConfig = treatmentConfig;// $scope.treatmentConfig used only in UI
                 $scope.orderSets = orderSets;
 
