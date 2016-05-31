@@ -70,6 +70,12 @@ Bahmni.ConceptSet.TabularObservations = function(obsGroups, parentObs, conceptUI
     this.isNumeric = function() {
         return this.concept.dataType === "Numeric";
     };
+    this.isValidNumericValue = function () {
+        if (this.value === "" && this.__prevValue && this.__prevValue.length == 1) {
+            return true;
+        }
+        return this.value !== "";
+    }
 };
 
 
