@@ -259,7 +259,9 @@
         },
 
         isValid: function (checkRequiredFields, conceptSetRequired) {
-            if (this.isNumeric() && !this.isValidNumeric()) {
+            var element = document.getElementById(this.uniqueId);
+            if (this.isNumeric() && (!this.isValidNumeric()) ||
+                (element && !element.value && !element.checkValidity())) {
                 return false;
             }
             if (this.isGroup()) {
@@ -320,11 +322,17 @@
 
         isValidNumeric: function () {
             if (!this.isDecimalAllowed()) {
-                if (this.value && this.value.toString().indexOf('.') > 0) {
+                if (this.value && this.value.toString().indexOf('.') >= 0) {
                     return false;
                 }
             }
             return true;
+        },
+        isValidNumericValue: function () {
+            if (this.value === "" && this.__prevValue && this.__prevValue.length == 1) {
+                return true;
+            }
+            return this.value !== "";
         },
 
         _hasValidChildren: function (checkRequiredFields, conceptSetRequired) {

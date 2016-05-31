@@ -179,10 +179,7 @@ angular.module('bahmni.common.conceptSet')
                         }
                         var groupMembers = childNode.groupMembers || [];
                         for (var index in groupMembers) {
-                            var information;
-                                if(groupMembers[index].groupMembers && groupMembers[index].groupMembers.length)
-                                    information = findInvalidNodes(groupMembers[index].groupMembers) ;
-                            else information = validateChildNode(groupMembers[index]);
+                            var information = groupMembers[index].groupMembers && groupMembers[index].groupMembers.length ? findInvalidNodes(groupMembers[index].groupMembers) : validateChildNode(groupMembers[index]);
                             if (information.status) {
                                 errorMessage = information.message;
                                 return true;
@@ -205,9 +202,15 @@ angular.module('bahmni.common.conceptSet')
                             return {message: errorMessage, status: true};
                         }
 
-                        if (childNode.isNumeric() && !childNode.isValidNumeric()) {
-                            errorMessage = "Please enter Integer value, decimal value is not allowed";
-                            return {message: errorMessage, status: true};
+                        if (childNode.isNumeric()) {
+                            if(!childNode.isValidNumeric()){
+                                errorMessage = "Please enter Integer value, decimal value is not allowed";
+                                return {message: errorMessage, status: true};
+                            }
+                            if(!childNode.isValidNumericValue()){
+                                errorMessage = "Please enter Numeric values";
+                                return {message: errorMessage, status: true};
+                            }
                         }
                     }
                     return {status: false};
