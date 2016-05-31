@@ -204,7 +204,7 @@ angular.module('bahmni.common.conceptSet')
                 validationHandler.add(validateObservationTree);
 
 
-                $scope.$on('event:showPrevious' + conceptSetName, function () {
+                var cleanUpListenerShowPrevious = $scope.$on('event:showPrevious' + conceptSetName, function () {
 
                     return spinner.forPromise(observationsService.fetch($scope.patient.uuid, $scope.conceptSetName, null, $scope.numberOfVisits, null, true)).then(function (response) {
                         var recentObservations = ObservationUtil.flattenObsToArray(response.data);
@@ -229,6 +229,7 @@ angular.module('bahmni.common.conceptSet')
                         });
                     });
                 });
+
                 var deregisterAddMore = $scope.$root.$on("event:addMore", function (event, observation) {
                     updateFormConditions([observation], observation)
                 });
@@ -255,6 +256,7 @@ angular.module('bahmni.common.conceptSet')
                 $scope.$on('$destroy', function() {
                     deregisterObservationUpdated();
                     deregisterAddMore();
+                    cleanUpListenerShowPrevious();
                 });
 
                 var processConditions = function (flattenedObs, fields, disable, error) {

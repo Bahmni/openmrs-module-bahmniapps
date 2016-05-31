@@ -9,18 +9,18 @@ Bahmni.Common.DisplayControl.Dashboard = function (config) {
         });
     }
 
-    this._sections = _.sortBy(_.map(config.sections, Bahmni.Common.DisplayControl.Dashboard.Section.create), function (section) {
+    var _sections = _.sortBy(_.map(config.sections, Bahmni.Common.DisplayControl.Dashboard.Section.create), function (section) {
         return section.displayOrder;
     });
 
     this.getSectionByType = function (name) {
-        return _.find(this._sections, function (section) {
+        return _.find(_sections, function (section) {
                 return section.type === name;
             }) || {};
     };
 
     this.getSections = function (diseaseTemplates) {
-        var sections = _.filter(this._sections, function (section) {
+        var sections = _.filter(_sections, function (section) {
             return section.type !== "diseaseTemplate" || _.find(diseaseTemplates, function (diseaseTemplate) {
                     return diseaseTemplate.type === section.templateName && diseaseTemplate.obsTemplates.length > 0;
                 });
