@@ -3,7 +3,7 @@
 angular.module('bahmni.common.uiHelper')
     .directive('focusOnInputErrors', function ($timeout) {
         return function (scope, elem) {
-            scope.$on("event:errorsOnForm", function () {
+            var cleanUpListenerErrorsOnForm = scope.$on("event:errorsOnForm", function () {
                 var isTopElement = true;
                 $timeout(function() {
                     $("*", elem).each(function(){
@@ -16,5 +16,7 @@ angular.module('bahmni.common.uiHelper')
                     });
                 }, 1, false);
             });
+
+            scope.$on("$destroy", cleanUpListenerErrorsOnForm);
         };
     });

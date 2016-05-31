@@ -27,7 +27,7 @@ angular.module('bahmni.registration')
 
             };
 
-            $scope.$on("schedulerStage", function (event, stage, restartSync) {
+            var cleanUpListenerSchedulerStage = $scope.$on("schedulerStage", function (event, stage, restartSync) {
                 $scope.isSyncing = (stage !== null);
                 if (restartSync) {
                     schedulerService.stopSync();
@@ -35,4 +35,5 @@ angular.module('bahmni.registration')
                 }
             });
 
+            $scope.$on("$destroy", cleanUpListenerSchedulerStage);
         }]);

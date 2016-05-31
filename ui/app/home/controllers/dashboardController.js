@@ -43,13 +43,15 @@ angular.module('bahmni.home')
                 schedulerService.sync(Bahmni.Common.Constants.syncButtonConfiguration);
             };
 
-            $scope.$on("schedulerStage", function (event, stage, restartSync) {
+            var cleanUpListenerSchedulerStage = $scope.$on("schedulerStage", function (event, stage, restartSync) {
                 $scope.isSyncing = (stage !== null);
                 if (restartSync) {
                     schedulerService.stopSync();
                     schedulerService.sync();
                 }
             });
+
+            $scope.$on("$destroy", cleanUpListenerSchedulerStage);
             
             return spinner.forPromise($q.all(init()));
         }]);

@@ -62,20 +62,27 @@ angular.module('bahmni.common.uiHelper')
                 }
             }
         });
+        var changeHanlder = function(e) {
+            validateIfNeeded(element.val());
+        };
 
-        element.on('change', function(e) {
-            validateIfNeeded(element.val()); 
-        });
-        element.on('keyup', function(e) {
+        var keyUpHandler = function(e) {
             validateIfNeeded(element.val());
             scope.$apply();
-        });
+        };
+
+        element.on('change', changeHanlder);
+        element.on('keyup', keyUpHandler);
 
         scope.$watch('isInvalid', function(){
             ngModelCtrl.$setValidity('selection', !scope.isInvalid);
             formElement.setCustomValidity(scope.isInvalid ? validationMessage : '');
         });
 
+        scope.$on("$destroy", function () {
+            element.off('change', changeHanlder);
+            element.off('keyup', keyUpHandler);
+        })
     };
 
     return {

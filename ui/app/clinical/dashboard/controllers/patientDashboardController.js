@@ -1,9 +1,9 @@
 'use strict';
 
 angular.module('bahmni.clinical')
-    .controller('PatientDashboardController', ['$rootScope', '$scope', 'clinicalAppConfigService', 'clinicalDashboardConfig', 'printer',
+    .controller('PatientDashboardController', ['$scope', 'clinicalAppConfigService', 'clinicalDashboardConfig', 'printer',
         '$state', 'spinner', 'visitSummary', 'appService', '$stateParams', 'diseaseTemplateService', 'patientContext',
-        function ($rootScope, $scope, clinicalAppConfigService, clinicalDashboardConfig, printer,
+        function ($scope, clinicalAppConfigService, clinicalDashboardConfig, printer,
                   $state, spinner, visitSummary, appService, $stateParams, diseaseTemplateService, patientContext) {
 
             $scope.patient = patientContext.patient;
@@ -19,12 +19,17 @@ angular.module('bahmni.clinical')
                 return $state.current.name === 'patient.dashboard.show'
             };
 
-            $scope.$on("event:switchDashboard", function (event, dashboard) {
+            var cleanUpListenerSwitchDashboard = $scope.$on("event:switchDashboard", function (event, dashboard) {
                 $scope.init(dashboard);
             });
 
-            $scope.$on("event:printDashboard", function () {
+            var cleanUpListenerPrintDashboard = $scope.$on("event:printDashboard", function () {
                 printer.printFromScope("dashboard/views/dashboardPrint.html", $scope);
+            });
+
+            $scope.$on("$destroy", function () {
+                cleanUpListenerSwitchDashboard();
+                cleanUpListenerPrintDashboard();
             });
 
             $scope.init = function (dashboard) {
@@ -35,11 +40,11 @@ angular.module('bahmni.clinical')
                     dashboard.endDate = $stateParams.dateCompleted;
                 }
                 clinicalDashboardConfig.switchTab(dashboard);
-                $scope.dashboard = Bahmni.Common.DisplayControl.Dashboard.create(dashboard);
+                var dashboardModel = Bahmni.Common.DisplayControl.Dashboard.create(dashboard);
                 spinner.forPromise(diseaseTemplateService.getLatestDiseaseTemplates(
                     $stateParams.patientUuid, clinicalDashboardConfig.getDiseaseTemplateSections(), dashboard.startDate, dashboard.endDate).then(function (diseaseTemplate) {
                         $scope.diseaseTemplates = diseaseTemplate;
-                        $scope.sectionGroups = $scope.dashboard.getSections($scope.diseaseTemplates);
+                        $scope.sectionGroups = dashboardModel.getSections($scope.diseaseTemplates);
                     }));
                 $scope.currentDashboardTemplateUrl = $state.current.views['dashboard-content'] ?
                     $state.current.views['dashboard-content'].templateUrl : $state.current.views['dashboard-content'];

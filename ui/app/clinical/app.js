@@ -418,15 +418,20 @@ angular.module('consultation')
         function (stateChangeSpinner, $rootScope, offlineService, schedulerService) {
         FastClick.attach(document.body);
         stateChangeSpinner.activate();
-
-        $rootScope.$on('$stateChangeSuccess', function () {
+        var cleanUpStateChangeSuccess = $rootScope.$on('$stateChangeSuccess', function () {
             window.scrollTo(0, 0);
         });
-        $rootScope.$on('ngDialog.opened', function () {
+        var cleanUpNgDialogOpened = $rootScope.$on('ngDialog.opened', function () {
            $('html').addClass('ngdialog-open');
         });
-        $rootScope.$on('ngDialog.closing', function () {
+        var cleanUpNgDialogClosing = $rootScope.$on('ngDialog.closing', function () {
             $('html').removeClass('ngdialog-open');
+        });
+
+        $rootScope.$on("$destroy", function() {
+            cleanUpStateChangeSuccess();
+            cleanUpNgDialogOpened();
+            cleanUpNgDialogClosing();
         });
 
         if (offlineService.isChromeApp() || offlineService.isAndroidApp()) {
