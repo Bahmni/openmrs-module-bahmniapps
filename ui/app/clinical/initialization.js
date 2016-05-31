@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('bahmni.clinical').factory('initialization',
-    ['$rootScope','authenticator', 'appService', 'spinner', 'configurations', 'orderTypeService', 'offlineService', 'offlineDbService', 'androidDbService',
-        function ($rootScope, authenticator, appService, spinner, configurations, orderTypeService, offlineService, offlineDbService, androidDbService) {
+    ['$rootScope','authenticator', 'appService', 'spinner', 'configurations', 'orderTypeService', 'offlineService', 'offlineDbService', 'androidDbService','mergeService',
+        function ($rootScope, authenticator, appService, spinner, configurations, orderTypeService, offlineService, offlineDbService, androidDbService, mergeService) {
             return function (config) {
 
             var loadConfigPromise = function () {
@@ -33,28 +33,17 @@ angular.module('bahmni.clinical').factory('initialization',
                     }, config, ["dashboard", "visit", "medication"]);
                 };
 
-                var loadFormConditions = function () {
-                    var script;
-                    var isOfflineApp = offlineService.isOfflineApp();
-                    if(isOfflineApp){
-                        if (offlineService.isAndroidApp()) {
-                            offlineDbService = androidDbService;
-                        }
-                        offlineDbService.getConfig("clinical").then(function(config){
-                            script = config.value['formConditions.js'];
-                            Bahmni.Common.Util.DynamicResourceLoader.includeJs(script, isOfflineApp);
-                        });
-                    }
-                    else{
-                        var baseUrl = appService.configBaseUrl();
-                        Bahmni.Common.Util.DynamicResourceLoader.includeJs(baseUrl + 'clinical/formConditions.js');
+                var mergeFormConditions = function () {
+                    var formConditions = Bahmni.ConceptSet.FormConditions;
+                    if(formConditions){
+                            formConditions.rules = mergeService.merge(formConditions.rules, formConditions.rulesOverride);
                     }
                 };
 
                 return spinner.forPromise(authenticator.authenticateUser()
                     .then(initApp)
                     .then(loadConfigPromise)
-                    .then(loadFormConditions)
+                    .then(mergeFormConditions)
                     .then(orderTypeService.loadAll));
             };
         }

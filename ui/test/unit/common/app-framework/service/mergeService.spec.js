@@ -76,4 +76,19 @@ describe("merge functionality", function (mergeService) {
         expect(result.a.d.e).toBe(master.a.d.e);
         expect(result.a.d.f).toBe(master.a.d.f)
     }]));
+
+    it("should not throw an error for undefined base and custom parameters", inject(['mergeService', function (mergeService){
+        var result = mergeService.merge(undefined, undefined);
+        expect(result).toBeEmpty();
+    }]));
+
+    it("should not throw an error for undefined base parameter", inject(['mergeService', function(mergeService){
+        var result = mergeService.merge(undefined, master);
+        expect(result.a.b).toBe(master.a.b);
+        expect(result.a.c).toBe(master.a.c);
+        expect(result.b).toBe(master.b);
+        expect(result.a.d.e).toBe(master.a.d.e);
+        expect(result.a.d.f).toBe(master.a.d.f)
+    }]));
+
 });

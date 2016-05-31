@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('bahmni.registration').factory('initialization',
-    ['$rootScope', '$q', 'configurations', 'authenticator', 'appService', 'spinner', 'Preferences', 'locationService','offlineService','offlineDbService','androidDbService',
-    function ($rootScope, $q, configurations, authenticator, appService, spinner, preferences, locationService, offlineService, offlineDbService, androidDbService) {
+    ['$rootScope', '$q', 'configurations', 'authenticator', 'appService', 'spinner', 'Preferences', 'locationService','offlineService','offlineDbService','androidDbService','mergeService',
+    function ($rootScope, $q, configurations, authenticator, appService, spinner, preferences, locationService, offlineService, offlineDbService, androidDbService, mergeService) {
         var getConfigs = function() {
             var configNames = ['encounterConfig', 'patientAttributesConfig', 'identifierSourceConfig', 'addressLevels', 'genderMap', 'relationshipTypeConfig','relationshipTypeMap', 'loginLocationToVisitTypeMapping'];
             return configurations.load(configNames).then(function () {
@@ -69,21 +69,10 @@ angular.module('bahmni.registration').factory('initialization',
             });
         };
 
-        var loadFormConditions = function () {
-            var script;
-            var isOfflineApp = offlineService.isOfflineApp();
-            if(isOfflineApp){
-                if (offlineService.isAndroidApp()) {
-                    offlineDbService = androidDbService;
-                }
-                offlineDbService.getConfig("clinical").then(function(config){
-                    script = config.value['formConditions.js'];
-                    Bahmni.Common.Util.DynamicResourceLoader.includeJs(script, isOfflineApp);
-                });
-            }
-            else{
-                var baseUrl = appService.configBaseUrl();
-                Bahmni.Common.Util.DynamicResourceLoader.includeJs(baseUrl + 'clinical/formConditions.js');
+        var mergeFormConditions = function () {
+            var formConditions = Bahmni.ConceptSet.FormConditions;
+            if(formConditions){
+                formConditions.rules = mergeService.merge(formConditions.rules, formConditions.rulesOverride);
             }
         };
 
@@ -95,7 +84,7 @@ angular.module('bahmni.registration').factory('initialization',
                 .then(mapRelationsTypeWithSearch)
                 .then(loggedInLocation)
                 .then(loadValidators(appService.configBaseUrl(), "registration"))
-                .then(loadFormConditions)
+                .then(mergeFormConditions)
             );
         }
     }]
