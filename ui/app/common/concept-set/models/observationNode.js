@@ -98,8 +98,10 @@
             var observations = getGroupMembersWithoutClass(this.groupMembers,[Bahmni.Common.Constants.abnormalConceptClassName,
                 Bahmni.Common.Constants.unknownConceptClassName,
                 Bahmni.Common.Constants.durationConceptClassName]);
-            //todo : add migration to set correct sort orders for the concepts
-            //this is needed when you have freetext autocomplete
+
+            if (_.isEmpty(observations)) {
+                return this.groupMembers[0];
+            }
             var primaryObs = observations[1] && observations[1].uuid && !observations[1].voided ? observations[1] : observations[0];
             if (observations[0].isMultiSelect) {
                 return observations[0];
