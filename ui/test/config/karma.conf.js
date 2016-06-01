@@ -111,6 +111,9 @@ module.exports = function (config) {
             stripPrefix: 'app',
             prependPrefix: '..',
             moduleName: 'ngHtml2JsPreprocessor'
+        },
+        proxies:{
+            '/images/blank-user.gif' :'app/images/blank-user.gif'
         }
     });
 };
