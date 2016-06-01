@@ -1,8 +1,8 @@
 <article class="patient-dashboard visit">
     <div class="pgContainer">
         <article>
-            <div ng-repeat="sections in ::sectionGroups track by $index" class="dashboard-sections-wrapper">
-                <div ng-if="::isFullPageSection(sections)" ng-repeat="section in ::sections track by $index" class="dashboard-sections fullpage-container">
+            <div ng-repeat="sections in sectionGroups" class="dashboard-sections-wrapper">
+                <div ng-if="::isFullPageSection(sections)" ng-repeat="section in sections" class="dashboard-sections fullpage-container">
                     <section id="{{(section | titleTranslate).toValidId()}}"
                              class="dashboard-section"
                              ng-class="{'visible-print': section.showOnlyInPrint}"
@@ -12,7 +12,7 @@
 
                 <div ng-if="::(isHalfPageSection(sections) || (isOneFourthPageSection(sections) && (!hasThreeFourthPageSection(sections,1))&&!hasThreeFourthPageSection(sections,0)))">
                     <div class="dashboard-sections halfpage-container dashboard-sections-left">
-                        <div ng-repeat="section in ::sections | filter:filterOdd(0) track by $index">
+                        <div ng-repeat="section in sections | filter:filterOdd(0)">
                             <section id="{{(section | titleTranslate).toValidId()}}" class="dashboard-section {{section.displayType}}"
                                      ng-include="::section.viewName" ng-class="{'visible-print': section.showOnlyInPrint}">
                             </section>
@@ -20,7 +20,7 @@
                     </div>
 
                     <div class="dashboard-sections halfpage-container dashboard-sections-right">
-                        <div ng-repeat="section in ::sections | filter:filterEven(0) track by $index">
+                        <div ng-repeat="section in sections | filter:filterEven(0)">
                             <section id="{{(section | titleTranslate).toValidId()}}" class="dashboard-section {{section.displayType}}"
                                      ng-class="{'visible-print': section.showOnlyInPrint}">
                                 <ng-include src="::section.viewName"></ng-include>
@@ -29,7 +29,7 @@
                     </div>
                 </div>
                 <div ng-if="::containsThreeFourthPageSection(sections)" class="dashboard-sections three-fourth-page-container">
-                    <div ng-repeat="section in ::sections track by $index" class="three-fourth-page section-{{::$index}} {{section.displayType}}">
+                    <div ng-repeat="section in sections" class="three-fourth-page section-{{::$index}} {{section.displayType}}">
                         <section ng-include="::section.viewName" class="dashboard-section"
                                  ng-class="{'visible-print': section.showOnlyInPrint}"></section>
                     </div>

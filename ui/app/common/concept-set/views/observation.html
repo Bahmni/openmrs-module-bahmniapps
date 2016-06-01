@@ -344,7 +344,7 @@
                     <div class="concept-set-description" ng-if="::observation.concept.description">
                         <span class="description" ng-bind-html="observation.concept.description"></span>
                     </div>
-                    <div class="form-field form-field-group" ng-repeat="member in observation.groupMembers track by $index"
+                    <div class="form-field form-field-group" ng-repeat="member in observation.groupMembers"
                          ng-if="!member.hidden">
                         <concept collapse-inner-sections="collapseInnerSections" observation="member"
                                  root-observation="observation" at-least-one-value-is-set="atLeastOneValueIsSet"
