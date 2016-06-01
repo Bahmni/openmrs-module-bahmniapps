@@ -78,10 +78,6 @@ angular.module('bahmni.clinical')
                 }
             };
 
-            $scope.clearSpecimen = function (index) {
-                $scope.newSpecimens[index] = new Bahmni.Clinical.Specimen(null, $scope.allSamples);
-            };
-
             var isAlreadyBeingEdited = function (specimen) {
                 var specimenBeingEdited = _.find($scope.newSpecimens, function (newSpecimen) {
                     return newSpecimen.existingObs === specimen.existingObs;

@@ -165,5 +165,42 @@ describe("Specimen", function () {
         });
     });
 
+    describe("clear specimen", function () {
+        var specimen = new Bahmni.Clinical.Specimen();
+        specimen.type = "Some Type";
+        specimen.dateCollected = "Some Date";
+        specimen.identifier = "Some Identifier";
+        specimen.sample = {
+            "additionalAttributes": [
+                {
+                    "groupMembers": [
+                        {
+                            "value": "a"
+                        }
+                    ]
+                }
+            ]
+        };
+        specimen.report = {
+            "results": [
+                {
+                    "groupMembers": [
+                        {
+                            "value": "a"
+                        }
+                    ]
+                }
+            ]
 
+        };
+        specimen.clear();
+        it("Specimen should be cleared", function () {
+            expect(specimen.dateCollected).toBeUndefined();
+            expect(specimen.type).toBeUndefined();
+            expect(specimen.typeFreeText).toBeUndefined();
+            expect(specimen.identifier).toBeUndefined();
+            expect(specimen.sample.additionalAttributes[0].groupMembers[0].value).toBeUndefined();
+            expect(specimen.report.results[0].groupMembers[0].value).toBeUndefined();
+        });
+    });
 });
