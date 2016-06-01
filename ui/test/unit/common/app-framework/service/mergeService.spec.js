@@ -78,12 +78,15 @@ describe("merge functionality", function (mergeService) {
     }]));
 
     it("should not throw an error for undefined base and custom parameters", inject(['mergeService', function (mergeService){
-        var result = mergeService.merge(undefined, undefined);
+        var base = undefined;
+        var custom = undefined;
+        var result = mergeService.merge(base, custom);
         expect(result).toBeEmpty();
     }]));
 
     it("should not throw an error for undefined base parameter", inject(['mergeService', function(mergeService){
-        var result = mergeService.merge(undefined, master);
+        var base = undefined;
+        var result = mergeService.merge(base, master);
         expect(result.a.b).toBe(master.a.b);
         expect(result.a.c).toBe(master.a.c);
         expect(result.b).toBe(master.b);
