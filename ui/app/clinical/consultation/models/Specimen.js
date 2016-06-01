@@ -11,9 +11,16 @@ Bahmni.Clinical.Specimen = function (specimen, allSamples) {
     self.existingObs = specimen && specimen.existingObs;
     self.typeObservation =  new Bahmni.ConceptSet.SpecimenTypeObservation(self, allSamples);
 
-    var isDirtyRuleForFreeText= function(){
+    var isDirtyRuleForFreeText = function(){
         return (self.type && self.type.name==="Other" && !self.typeFreeText);
     };
+
+    var clearObservations = function (obs) {
+        angular.forEach(obs, function(ob) {
+            ob.value = undefined;
+            clearObservations(ob.groupMembers);
+        });
+    }
 
     self.isDirty = function () {
         return (self.dateCollected && !self.type) ||
@@ -55,5 +62,14 @@ Bahmni.Clinical.Specimen = function (specimen, allSamples) {
             }
         }
         return false;
+    };
+
+    self.clear = function (){
+        self.dateCollected = undefined;
+        self.type = undefined;
+        self.typeFreeText = undefined;
+        self.identifier = undefined;
+        clearObservations(self.sample.additionalAttributes)
+        clearObservations(self.report.results);
     }
 };

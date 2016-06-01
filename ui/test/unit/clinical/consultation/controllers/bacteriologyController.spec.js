@@ -83,30 +83,6 @@ describe("Bacteriology Controller", function () {
         });
     });
 
-    describe("Clear Specimen", function () {
-        it("should clear all data in the specimen", function () {
-            createController();
-            $scope.newSpecimens = [];
-            $scope.createNewSpecimen();
-            var specimen = new Bahmni.Clinical.Specimen({
-                existingObs: "Existing Obs Uuid",
-                dateCollected: "2015-10-01T18:30:00.000Z",
-                type: "Blood",
-                identifier: "1234",
-                sample: {
-                    additionalAttributes: {}
-                }
-            });
-            $scope.newSpecimens.push(specimen);
-
-            var emptySpecimen = new Bahmni.Clinical.Specimen(null, $scope.allSamples);
-            $scope.clearSpecimen(1);
-
-            expect($scope.newSpecimens.length).toEqual(2);
-            expect(angular.equals($scope.newSpecimens[1], emptySpecimen)).toBeTruthy();
-        });
-    });
-
     describe("Delete Specimen", function () {
         it("should delete specimen from the existing specimen list", function () {
             createController();
