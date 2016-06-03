@@ -22,6 +22,7 @@ describe('PatientServiceStrategy test', function () {
         offlinePatientServiceStrategyMock.get.and.returnValue(specUtil.respondWith(patientJson));
         offlinePatientServiceStrategyMock.create.and.returnValue(specUtil.respondWith({"data": patientJson}));
         offlinePatientServiceStrategyMock.deletePatientData.and.returnValue(specUtil.respondWith({}));
+        eventQueueMock.addToEventQueue.and.returnValue(specUtil.respondWith({}));
     });
 
     beforeEach(inject(['patientServiceStrategy', function (patientServiceStrategyInjected) {
