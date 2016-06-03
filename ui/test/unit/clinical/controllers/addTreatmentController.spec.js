@@ -1553,6 +1553,16 @@ describe("AddTreatmentController", function () {
         });
     });
 
+    describe("Void DrugOrder", function () {
+        it("should remove the drugOrder from activeAndScheduledDrugOrders", function () {
+            var length = scope.consultation.activeAndScheduledDrugOrders.length;
+            var drugOrder = Bahmni.Tests.drugOrderViewModelMother.build({}, []);
+            scope.consultation.activeAndScheduledDrugOrders.push(drugOrder);
+            rootScope.$broadcast("event:sectionUpdated", drugOrder);
+            expect(scope.consultation.activeAndScheduledDrugOrders.length).toBe(length);
+        });
+    });
+
     describe("saveTreatment()", function () {
 
         it("should not save the treatment if a discontinued drug order is added at the same time", function () {

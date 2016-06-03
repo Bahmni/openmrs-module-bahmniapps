@@ -232,6 +232,12 @@ angular.module('bahmni.clinical')
                 });
             };
 
+            $scope.$on("event:sectionUpdated", function (event, drugOrder) {
+                _.remove($scope.consultation.activeAndScheduledDrugOrders, function(activeOrder){
+                    return activeOrder.uuid === drugOrder.uuid;
+                });
+            });
+
             $scope.$on("event:refillDrugOrders", function (event, drugOrders) {
                 $scope.bulkSelectCheckbox = false;
                 refillDrugOrders(drugOrders);
