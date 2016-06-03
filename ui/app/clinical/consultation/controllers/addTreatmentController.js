@@ -646,6 +646,7 @@ angular.module('bahmni.clinical')
                 var drugOrder = Bahmni.Clinical.DrugOrder.create(orderTemplate);
                 var drugOrderViewModel = Bahmni.Clinical.DrugOrderViewModel.createFromContract(drugOrder, treatmentConfig);
                 drugOrderViewModel.instructions = orderTemplate.administrationInstructions;
+                drugOrderViewModel.additionalInstructions = orderTemplate.additionalInstructions;
                 drugOrderViewModel.isNewOrderSet = true;
                 drugOrderViewModel.dosingInstructionType = Bahmni.Clinical.Constants.flexibleDosingInstructionsClass;
                 drugOrderViewModel.quantity = drugOrderViewModel.quantity || 0;
