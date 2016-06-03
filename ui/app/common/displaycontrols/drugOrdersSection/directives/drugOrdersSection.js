@@ -86,7 +86,7 @@ angular.module('bahmni.common.displaycontrol.drugOrdersSection')
                 spinner.forPromise(promise);
 
                 promise.then(function() {
-                    $rootScope.$broadcast("event:sectionUpdated");
+                    $rootScope.$broadcast("event:sectionUpdated", drugOrder);
                 });
             };
 
