@@ -17,16 +17,16 @@
          ng-if="::(observation.isNumeric() && observation.isStepperControl())"></stepper>
 
 <datetimepicker model="observation.value"
-                observation="observation"
+                observation="::observation"
                 ng-blur="handleUpdate()"
                 allow-future-dates="(observation.conceptUIConfig && observation.conceptUIConfig.allowFutureDates)"
-                show-time="true" illegal-value="!observation.isValid(atLeastOneValueIsSet, conceptSetRequired)"
+                show-time="::true" illegal-value="!observation.isValid(atLeastOneValueIsSet, conceptSetRequired)"
                 ng-if="::(observation._isDateTimeDataType())"></datetimepicker>
 
-<monthyearpicker min-year="observation.conceptUIConfig.minYear"
-                 max-year="observation.conceptUIConfig.maxYear"
+<monthyearpicker min-year="::observation.conceptUIConfig.minYear"
+                 max-year="::observation.conceptUIConfig.maxYear"
                  ng-if="!observation.isNumeric() && !observation._isDateTimeDataType() && observation.conceptUIConfig.displayMonthAndYear"
-                 observation="observation"
+                 observation="::observation"
                  ng-blur="handleUpdate()"
                  illegal-value="!observation.isValid(atLeastOneValueIsSet, conceptSetRequired)"
                  model="observation.value">

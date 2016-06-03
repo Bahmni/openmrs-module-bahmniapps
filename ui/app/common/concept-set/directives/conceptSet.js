@@ -300,12 +300,12 @@ angular.module('bahmni.common.conceptSet')
                 restrict: 'E',
                 scope: {
                     conceptSetName: "=",
-                    observations: "=",
-                    required: "=",
+                    observations: "=?",
+                    required: "=?",
                     showTitle: "&",
                     validationHandler: "&",
                     patient: "=",
-                    conceptSetFocused: "=",
+                    conceptSetFocused: "=?",
                     collapseInnerSections: "=?"
                 },
                 templateUrl: '../common/concept-set/views/conceptSet.html',

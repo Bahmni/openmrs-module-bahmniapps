@@ -5,7 +5,7 @@
             ng-disabled="observation.disabled"
             ng-class="{'active': isSet(answer), 'is-abnormal': abnormalObs.value && isSet(answer)}"
             ng-click="select(answer)"
-            ng-repeat="answer in ::observation.getPossibleAnswers()">
+            ng-repeat="answer in ::observation.getPossibleAnswers() track by $index">
         <i class="fa fa-ok"></i>{{::getAnswerDisplayName(answer) | titleTranslate}}
     </button>
 </div>
