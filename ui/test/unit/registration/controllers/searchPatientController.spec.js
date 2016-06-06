@@ -273,6 +273,37 @@ describe('SearchPatientController', function () {
             expect(patientResource.search).not.toHaveBeenCalled();
         });
 
+        it('should strip prefix from registrationNumber if present', function () {
+            scope.searchParameters.identifierPrefix = {};
+            scope.searchParameters.identifierPrefix.prefix = "GAN";
+            scope.searchParameters.registrationNumber = "gan20001";  // match should case-insensitive
+            var defaultSearchAddressField = undefined;
+            scope.searchById();
+
+            expect(patientResource.search).toHaveBeenCalledWith(undefined, "20001", "GAN", defaultSearchAddressField, undefined, undefined, undefined, undefined, undefined, undefined);
+        });
+
+        it('should strip prefix from registrationNumber even if not selected prefix', function () {
+            scope.searchParameters.identifierPrefix = {};
+            scope.searchParameters.identifierPrefix.prefix = "GAN";
+            scope.searchParameters.registrationNumber = "sem20001";  // match should case-insensitive
+            var defaultSearchAddressField = undefined;
+            scope.searchById();
+
+            expect(patientResource.search).toHaveBeenCalledWith(undefined, "20001", "SEM", defaultSearchAddressField, undefined, undefined, undefined, undefined, undefined, undefined);
+        });
+
+        it('should not strip prefix from registrationNumber if found elsewhere than as a prefix', function () {
+            scope.searchParameters.identifierPrefix = {};
+            scope.searchParameters.identifierPrefix.prefix = "GAN";
+            scope.searchParameters.registrationNumber = "20001gan";
+            var defaultSearchAddressField = undefined;
+            scope.searchById();
+
+            expect(patientResource.search).toHaveBeenCalledWith(undefined, "20001gan", "GAN", defaultSearchAddressField, undefined, undefined, undefined, undefined, undefined, undefined);
+        });
+
+
         describe("on success", function () {
             beforeEach(function () {
                 scope.searchParameters.identifierPrefix = {};
