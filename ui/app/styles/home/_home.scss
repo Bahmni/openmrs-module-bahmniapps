@@ -531,7 +531,7 @@ body{
 }
 
 .change-location {
-    padding: 7px;
+    padding: 7px 10px;
     select, select:focus {
         background: lighten($bahmniPrimaryColor, 10%);
         color: $white;
