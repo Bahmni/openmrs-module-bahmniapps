@@ -1,65 +1,65 @@
 <section class="program-dashboard">
     <div ng-if="hasPatientAnyActivePrograms()">
-        <div class="typeOfPrograms">{{'PROGRAM_MANAGEMENT_ACTIVE_TREATMENT_KEY' | translate}}</div>
+        <div class="typeOfPrograms">{{::'PROGRAM_MANAGEMENT_ACTIVE_TREATMENT_KEY' | translate}}</div>
 
-        <div ng-repeat="program in activePrograms" ng-if="hasPatientAnyActivePrograms()">
+        <div ng-repeat="program in activePrograms" ng-if="::hasPatientAnyActivePrograms()">
             <div class="program-basic-details">
-                <span class="program-name fl">{{program.display}}</span>
+                <span class="program-name fl">{{::program.display}}</span>
                 <span class="program-dates fr">
-                    <strong>{{'PROGRAM_MANAGEMENT_START_DATE_KEY'| translate }}</strong> : {{program.dateEnrolled | bahmniDate}}
+                    <strong>{{::'PROGRAM_MANAGEMENT_START_DATE_KEY'| translate }}</strong> : {{::program.dateEnrolled | bahmniDate}}
                 </span>
             </div>
             <div class="program-attributes">
                 <div class="program-attribute clearfix" ng-repeat="attribute in program.attributes">
                     <span class="program-attribute-title fl">
-                        <strong>{{attribute.attributeType.description || attribute.attributeType.display}}</strong> :
+                        <strong>{{::attribute.attributeType.description || attribute.attributeType.display}}</strong> :
                     </span>
-                    <span class="program-attribute-value fl">{{getAttributeValue(attribute)}}</span>
+                    <span class="program-attribute-value fl">{{::getAttributeValue(attribute)}}</span>
                 </div>
-                <div class="program-attribute" ng-if="program.location">
-                    <strong>{{'PROGRAM_DISPLAY_CONTROL_FACILITY_OF_ENROLLMENT_KEY' | translate}}</strong> : {{program.location}}
+                <div class="program-attribute" ng-if="::program.location">
+                    <strong>{{::'PROGRAM_DISPLAY_CONTROL_FACILITY_OF_ENROLLMENT_KEY' | translate}}</strong> : {{::program.location}}
                 </div>
             </div>
 
-            <div class="program-table" ng-if="!showProgramStateInTimeline() && hasStates(program)" >
+            <div class="program-table" ng-if="::!showProgramStateInTimeline() && hasStates(program)" >
                 <table>
                     <thead>
                         <tr>
-                            <th> {{'PROGRAM_DISPLAY_CONTROL_TREATMENT_STATES_KEY' | translate}}</th>
-                            <th> {{'PROGRAM_DISPLAY_CONTROL_TREATMENT_START_DATE_KEY' | translate}}</th>
-                            <th> {{'PROGRAM_DISPLAY_CONTROL_TREATMENT_STOP_DATE_KEY' | translate}}</th>
+                            <th> {{::'PROGRAM_DISPLAY_CONTROL_TREATMENT_STATES_KEY' | translate}}</th>
+                            <th> {{::'PROGRAM_DISPLAY_CONTROL_TREATMENT_START_DATE_KEY' | translate}}</th>
+                            <th> {{::'PROGRAM_DISPLAY_CONTROL_TREATMENT_STOP_DATE_KEY' | translate}}</th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr ng-repeat="state in program.states| orderBy:'auditInfo.dateCreated'">
-                            <td>{{state.state.concept.display}}</td>
-                            <td>{{state.startDate | bahmniDate}}</td>
-                            <td>{{state.endDate | bahmniDate}}</td>
+                            <td>{{::state.state.concept.display}}</td>
+                            <td>{{::state.startDate | bahmniDate}}</td>
+                            <td>{{::state.endDate | bahmniDate}}</td>
                         </tr>
                     </tbody>
                 </table>
             </div>
-            <div class="program-timeline" ng-if="showProgramStateInTimeline() && hasStates(program)">
+            <div class="program-timeline" ng-if="::showProgramStateInTimeline() && hasStates(program)">
                 <timeline program="program"></timeline>
             </div>
         </div>
     </div>
     <div ng-if="hasPatientAnyPastPrograms()">
-            <div class="typeOfPrograms">{{'PROGRAM_MANAGEMENT_INACTIVE_TREATMENT_KEY' | translate}}</div>
+            <div class="typeOfPrograms">{{::'PROGRAM_MANAGEMENT_INACTIVE_TREATMENT_KEY' | translate}}</div>
 
-            <div ng-repeat="program in pastPrograms" ng-if="hasPatientAnyPastPrograms()">
+            <div ng-repeat="program in pastPrograms" ng-if="::hasPatientAnyPastPrograms()">
                 <div class="program-basic-details">
                     <div class="clearfix">
-                        <span class="program-name fl">{{program.display}} Treatment</span>
+                        <span class="program-name fl">{{::program.display}} Treatment</span>
                         <span class="program-dates fr">
                             <span class="program-start-date">
-                                <strong>{{'PROGRAM_MANAGEMENT_START_DATE_KEY'| translate }}</strong> : {{program.dateEnrolled | bahmniDate}}
+                                <strong>{{::'PROGRAM_MANAGEMENT_START_DATE_KEY'| translate }}</strong> : {{::program.dateEnrolled | bahmniDate}}
                             </span>
-                            <strong>{{'PROGRAM_MANAGEMENT_STOP_DATE_KEY' | translate }}</strong> : {{program.dateCompleted | bahmniDate}}
+                            <strong>{{::'PROGRAM_MANAGEMENT_STOP_DATE_KEY' | translate }}</strong> : {{::program.dateCompleted | bahmniDate}}
                         </span>
                     </div>
                     <div class="outcome-container">
-                        <strong>{{'PROGRAM_MANAGEMENT_LABEL_PROGRAM_OUTCOME' | translate }}</strong> : {{program.outcome.display}}
+                        <strong>{{::'PROGRAM_MANAGEMENT_LABEL_PROGRAM_OUTCOME' | translate }}</strong> : {{::program.outcome.display}}
                     </div>
                 </div>
 
@@ -67,37 +67,37 @@
                 <div class="program-attributes">
                     <div class="program-attribute clearfix" ng-repeat="attribute in program.attributes">
                        <span class="program-attribute-title fl">
-                            <strong>{{attribute.attributeType.description || attribute.attributeType.display}}</strong> :
+                            <strong>{{::attribute.attributeType.description|| attribute.attributeType.display}}</strong> :
                        </span>
                         <span class="program-attribute-value fl">
-                            {{getAttributeValue(attribute)}}
+                            {{::getAttributeValue(attribute)}}
                         </span>
                     </div>
-                    <div class="program-attribute" ng-if="program.location">
-                        <strong>{{'PROGRAM_DISPLAY_CONTROL_FACILITY_OF_ENROLLMENT_KEY' | translate}}</strong> : {{program.location}}
+                    <div class="program-attribute" ng-if="::program.location">
+                        <strong>{{::'PROGRAM_DISPLAY_CONTROL_FACILITY_OF_ENROLLMENT_KEY' | translate}}</strong> : {{::program.location}}
                     </div>
                 </div>
 
 
-                <div class="program-table" ng-if="!showProgramStateInTimeline() && hasStates(program)">
+                <div class="program-table" ng-if="::!showProgramStateInTimeline() && hasStates(program)">
                     <table>
                         <thead>
                             <tr>
-                                <th>{{'PROGRAM_DISPLAY_CONTROL_TREATMENT_STATES_KEY' | translate}}</th>
-                                <th>{{'PROGRAM_DISPLAY_CONTROL_TREATMENT_START_DATE_KEY' | translate}}</th>
-                                <th>{{'PROGRAM_DISPLAY_CONTROL_TREATMENT_STOP_DATE_KEY' | translate}}</th>
+                                <th>{{::'PROGRAM_DISPLAY_CONTROL_TREATMENT_STATES_KEY' | translate}}</th>
+                                <th>{{::'PROGRAM_DISPLAY_CONTROL_TREATMENT_START_DATE_KEY' | translate}}</th>
+                                <th>{{::'PROGRAM_DISPLAY_CONTROL_TREATMENT_STOP_DATE_KEY' | translate}}</th>
                             </tr>
                         </thead>
                         <tbody>
                             <tr ng-repeat="state in program.states| orderBy:'auditInfo.dateCreated'">
-                                <td>{{state.state.concept.display}}</td>
-                                <td>{{state.startDate | bahmniDate}}</td>
-                                <td>{{state.endDate | bahmniDate}}</td>
+                                <td>{{::state.state.concept.display}}</td>
+                                <td>{{::state.startDate | bahmniDate}}</td>
+                                <td>{{::state.endDate | bahmniDate}}</td>
                             </tr>
                         </tbody>
                     </table>
                 </div>
-                <div class="program-timeline" ng-if="showProgramStateInTimeline() && hasStates(program)">
+                <div class="program-timeline" ng-if="::showProgramStateInTimeline() && hasStates(program)">
                     <timeline program="program"></timeline>
                 </div>
             </div>
@@ -105,7 +105,7 @@
     <div class="note-container" ng-show="!hasPatientAnyPrograms()">
         <div class="note warning">
             <div class="text placeholder-text">
-                <p>{{'NO_ACTIVE_PASSIVE_PROGRAMS_MESSAGE' | translate}}</p>
+                <p>{{::'NO_ACTIVE_PASSIVE_PROGRAMS_MESSAGE' | translate}}</p>
             </div>
         </div>
     </div>
