@@ -102,9 +102,6 @@ describe('patient mapper', function () {
             {
                 "identifierPrefix": "GAN",
                 "identifier": "GAN200011",
-                "identifierType": {
-                    "name": "Bahmni Id"
-                },
                 "preferred": true,
                 "voided": false
             }

@@ -20,7 +20,7 @@
                                 <span ng-show="::!hasIdentifierSources()" class="asterick">*</span>
                             </label>
                         </div>
-                        <div ng-show="::hasIdentifierSources()" class="field-value" id="patientID">
+                        <div ng-show="::(hasIdentifierSources() && !hasIdentifierSourceWithEmptyPrefix())" class="field-value" id="patientID">
                             <select id="identifierPrefix" ng-model="patient.identifierPrefix"
                                     ng-options="identifierSource.prefix for identifierSource in ::identifierSources" ng-change="patient.generateIdentifier()"
                                     required>

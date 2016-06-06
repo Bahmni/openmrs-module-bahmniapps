@@ -2,7 +2,6 @@ var Bahmni = Bahmni || {};
 Bahmni.Registration = Bahmni.Registration || {};
 var hostUrl = Bahmni.Common.Constants.hostURL;
 Bahmni.Registration.Constants = {
-    patientIdentifierTypeName: "Bahmni Id",
     openmrsUrl: hostUrl + "/openmrs",
     registrationEncounterType: "REG",
     baseOpenMRSRESTURL: hostUrl + "/openmrs/ws/rest/v1",
