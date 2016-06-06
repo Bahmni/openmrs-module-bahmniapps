@@ -179,9 +179,6 @@ body{
 
 /*** login specific css end ***/
 /*** search page css start ****/
-body{
-  @include clearfix;
-}
 .reg-wrapper{
   margin:0px auto;
   .inline-element,select,input,button{
@@ -514,7 +511,7 @@ body{
     .apps {
       width: 560px;
       margin: 80px auto;
-      padding-bottom: 100px;
+      //padding-bottom: 100px;
       ul {
         max-width: 600px;
         li {
@@ -540,6 +537,10 @@ body{
         color: $white;
         border: 1px solid lighten($bahmniPrimaryColor, 5%)
     }
+}
+
+.orderSet-Create{
+  margin-top: 0 !important;
 }
 
 
