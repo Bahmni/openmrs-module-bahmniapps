@@ -179,8 +179,27 @@ describe('VisitController', function () {
             scope.patient = {uuid: "21308498-2502-4495-b604-7b704a55522d"};
         });
 
-        it("should validate save and reload current page", function (done) {
+        it("should validate save and reload current page if afterVisitSaveTransitionToState not specified", function (done) {
             state.expectTransitionTo(state.current);
+            var submit = scope.submit();
+            submit.then(function (response) {
+                expect(encounterService.create).toHaveBeenCalled();
+                expect(messagingService.showMessage).toHaveBeenCalledWith('info', 'REGISTRATION_LABEL_SAVED');
+                state.ensureAllTransitionsHappened();
+                done();
+            });
+        });
+
+        it("should validate save and redirect to state specify by afterVisitSaveTransitionToState", function (done) {
+            appDescriptor.getConfigValue.and.callFake(function(value) {
+                if (value == 'afterVisitSaveTransitionToState') {
+                    return "search";
+                }
+                else {
+                    return "";
+                }
+            });
+            state.expectTransitionTo("search");
             var submit = scope.submit();
             submit.then(function (response) {
                 expect(encounterService.create).toHaveBeenCalled();
