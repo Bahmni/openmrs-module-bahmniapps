@@ -45,8 +45,10 @@ angular.module('bahmni.registration')
                 withCredentials: true,
                 headers: {"Accept": "application/json", "Content-Type": "application/json"}
             };
-            $http.post(url, data, config).success(function(result){
+            $http.post(url, data, config).then(function(result){
                 deferred.resolve(result);
+            }, function (reason) {
+                deferred.resolve(reason);
             });
             return deferred.promise;
         };
