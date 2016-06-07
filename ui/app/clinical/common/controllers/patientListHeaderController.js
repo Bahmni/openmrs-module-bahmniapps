@@ -10,7 +10,7 @@ angular.module('bahmni.clinical')
             $scope.locationPickerPrivilege = Bahmni.Common.Constants.locationPickerPrivilege;
             $scope.onBehalfOfPrivilege = Bahmni.Common.Constants.onBehalfOfPrivilege;
             $scope.selectedLocationUuid = {};
-            $scope.isOfflineApp = offlineService.isOfflineApp();
+            $rootScope.isOfflineApp = offlineService.isOfflineApp();
 
 
             $scope.getProviderList = function() {
@@ -84,7 +84,7 @@ angular.module('bahmni.clinical')
             };
 
             $scope.$on("schedulerStage", function (event, stage, restartSync) {
-                $scope.isSyncing = (stage !== null);
+                $rootScope.isSyncing = (stage !== null);
                 if (restartSync) {
                     schedulerService.stopSync();
                     schedulerService.sync();
