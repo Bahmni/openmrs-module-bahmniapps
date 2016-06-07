@@ -558,14 +558,14 @@ Bahmni.Clinical.DrugOrderViewModel = function (config, proto, encounterDate) {
 
     this.isUniformDoseUnitRequired = function () {
         return (this.uniformDosingType.dose) ||
-            (this.uniformDosingType.doseFraction) ||
-            (this.isUniformFrequency  && this.isDoseMandatory());
+               (this.uniformDosingType.doseFraction) ||
+               (this.isUniformFrequency  && this.isDoseMandatory());
     };
 
     this.isUniformDoseRequired = function(){
         return this.isUniformFrequency &&
-            this.isDoseMandatory() &&
-            !this.uniformDosingType.doseFraction
+               this.isDoseMandatory() &&
+               !this.uniformDosingType.doseFraction
     };
 
     this.isVariableDoseRequired = function () {
@@ -581,7 +581,6 @@ Bahmni.Clinical.DrugOrderViewModel = function (config, proto, encounterDate) {
             }
         }
     };
-
     this.loadOrderAttributes = function(drugOrderResponse){
         if(config && config.orderAttributes){
             var findOrderAttribute= function(drugOrder,orderAttribute) {

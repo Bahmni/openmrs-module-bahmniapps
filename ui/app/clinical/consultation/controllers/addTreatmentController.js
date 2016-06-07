@@ -471,12 +471,6 @@ angular.module('bahmni.clinical')
                 if ($scope.unaddedDrugOrders()) {
                     return {allow: false, errorMessage: errorMessages.incompleteForm};
                 }
-                var valid = _.every($scope.treatments, function (drugOrder) {
-                    return drugOrder.validate();
-                });
-                if (!valid) {
-                    return {allow: false, errorMessage: errorMessages.invalidItems};
-                }
                 return {allow: true};
             };
 
