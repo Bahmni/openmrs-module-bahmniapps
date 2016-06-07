@@ -8,6 +8,8 @@ module.exports = function (grunt) {
     var yeomanConfig = {
         app: 'app',
         dist: 'dist',
+        chromeApp: '../../bahmni-offline/chrome/app/',
+        androidApp: '../../bahmni-offline/android/www/app/',
         test: 'test',
         root: '.'
     };
@@ -39,9 +41,41 @@ module.exports = function (grunt) {
                     }
                 ]
             },
+            chromeApp: {
+                files: [
+                    {
+                        dot: true,
+                        src: [
+                            '<%= yeoman.chromeApp %>/*'
+                        ]
+                    }
+                ]
+            },
+            androidApp: {
+                files: [
+                    {
+                        dot: true,
+                        src: [
+                            '<%= yeoman.androidApp %>/*'
+                        ]
+                    }
+                ]
+            },
             debug: [
                 '<%= yeoman.app %>/styles/*.css'
             ]
+        },
+        toggleComments: {
+            customOptions: {
+                options: {
+                    padding: 4,
+                    removeCommands: true
+                },
+                files: {"dist/offline/index.html" : "dist/offline/index.html",
+                    "dist/registration/index.html" : "dist/registration/index.html",
+                    "dist/clinical/index.html" : "dist/clinical/index.html",
+                    "dist/home/index.html" : "dist/home/index.html"}
+            }
         },
         jshint: {
             options:{
@@ -235,6 +269,48 @@ module.exports = function (grunt) {
                             'styles/**/*',
                             '**/*/*.json',
                             'lib/**/*'
+                        ]
+                    }
+                ]
+            },
+            chromeDist: {
+                files: [
+                    {
+                        expand: true,
+                        dot: true,
+                        cwd: '<%= yeoman.app %>',
+                        dest: '<%= yeoman.dist %>',
+                        src: [
+                            '*.{ico,txt,html,js}',
+                            '*/**/*'
+                        ]
+                    }
+                ]
+            },
+            chromeApp: {
+                files: [
+                    {
+                        expand: true,
+                        dot: true,
+                        cwd: '<%= yeoman.dist %>',
+                        dest: '<%= yeoman.chromeApp %>',
+                        src: [
+                            '*.{ico,txt,html,js}',
+                            '*/**/*'
+                        ]
+                    }
+                ]
+            },
+            androidApp: {
+                files: [
+                    {
+                        expand: true,
+                        dot: true,
+                        cwd: '<%= yeoman.dist %>',
+                        dest: '<%= yeoman.androidApp %>',
+                        src: [
+                            '*.{ico,txt,html,js}',
+                            '*/**/*'
                         ]
                     }
                 ]
@@ -468,6 +544,12 @@ module.exports = function (grunt) {
         'usemin'
     ]);
 
+    grunt.registerTask('devbundle', [
+        'clean:dist',
+        'compass:dist',
+        'copy:chromeDist'
+    ]);
+
     grunt.registerTask('build', [
         'npm-install',
         'bower-install',
@@ -487,7 +569,9 @@ module.exports = function (grunt) {
     grunt.registerTask('default', ['build', 'tests', 'uglify-and-rename', 'preprocess:web']);
     grunt.registerTask('dev', ['build', 'tests', 'rename', 'preprocess:web']);
     grunt.registerTask('chrome', ['bundle', 'tests:chrome', 'uglify-and-rename', 'preprocess:chrome']);
+    grunt.registerTask('devchrome', ['devbundle', 'preprocess:chrome', 'toggleComments', 'clean:chromeApp', 'copy:chromeApp']);
     grunt.registerTask('android', ['bundle', 'tests:android', 'uglify-and-rename', 'preprocess:android']);
+    grunt.registerTask('devandroid', ['devbundle', 'preprocess:android', 'toggleComments', 'clean:androidApp', 'copy:androidApp']);
 
     grunt.registerTask('bower-install', 'install dependencies using bower', function () {
         var exec = require('child_process').exec;
