@@ -2,17 +2,19 @@
     <div class="opd-header-top">
         <header>
             <bm-back-links></bm-back-links>
-
-            <div class="retro-date-widget-wrapper fr">
-                <div class="retro-date-widget-header fr" show-if-privilege="{{retrospectivePrivilege}},{{onBehalfOfPrivilege}},{{locationPickerPrivilege}}"
+            <div class="fr">
+                <div class="retro-date-widget-wrapper"
+                     show-if-privilege="{{retrospectivePrivilege}},{{onBehalfOfPrivilege}},{{locationPickerPrivilege}}"
                      ng-if="getTitle()">
-                    <button ng-click="popUpHandler()">{{ getTitle() }}</button>
+                    <div class="retro-date-widget-header fr">
+                        <button ng-click="popUpHandler()">{{ getTitle() }}</button>
+                    </div>
                 </div>
-                 <button class="btn offline-sync fl" ng-click="sync()"  ng-show="isOfflineApp && !isSyncing ">
-                                       {{::'HEADER_LABEL_SYNC_KEY' | translate}}
-                 </button>
+                <button class="btn offline-sync fl" ng-click="sync()"  ng-show="isOfflineApp && !isSyncing ">
+                    {{::'HEADER_LABEL_SYNC_KEY' | translate}}
+                </button>
                 <button class="btn offline-sync fl offline-sync-image" ng-show="isOfflineApp && isSyncing" disabled>
-                                    <!-- <i class="fa fa-refresh"></i> -->
+                    <!-- <i class="fa fa-refresh"></i> -->
                     <img src="../images/sync.gif" />
                 </button>
             </div>
