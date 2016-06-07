@@ -241,15 +241,15 @@ angular.module('bahmni.common.uicontrols.programmanagment')
             };
 
             $scope.getMaxAllowedDate = function (states) {
-                var minStartDate = new Date();
+                var minStartDate = DateUtil.getDateWithoutTime(new Date());
                 if (states && Array.isArray(states)) {
                     for (var stateIndex = 0; stateIndex < states.length; stateIndex++) {
-                        if (new Date(states[stateIndex].startDate) < minStartDate) {
-                            minStartDate = new Date(states[stateIndex].startDate);
+                        if (states[stateIndex].startDate < minStartDate) {
+                            minStartDate = states[stateIndex].startDate;
                         }
                     }
                 }
-                return DateUtil.getDateWithoutTime(minStartDate);
+                return minStartDate;
             };
 
             init();
