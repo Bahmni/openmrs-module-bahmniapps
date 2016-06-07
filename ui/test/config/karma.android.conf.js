@@ -88,6 +88,7 @@ module.exports = function (config) {
             'test/unit/common/domain/services/locationService.spec.js',
             'test/unit/registration/services/patientService.spec.js',
             'test/unit/registration/services/encounterService.spec.js',
+            'test/unit/registration/services/defaultPatientServiceStrategy.spec.js',
             'test/unit/common/domain/services/configurationService.spec.js',
             'test/unit/common/domain/services/localeService.spec.js',
             'test/unit/common/domain/services/visitService.spec.js',
