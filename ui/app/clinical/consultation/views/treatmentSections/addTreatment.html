@@ -115,7 +115,7 @@
                             </div>
                         </article>
                     </div>
-                    <div class="frequency-widget variable-frequency " ng-show="!treatment.isUniformFrequency">
+                    <div class="frequency-widget variable-frequency " ng-if="!treatment.isUniformFrequency">
                         <article class="form-field ">
                             <div class=" dose-cell clearfix">
                                 <div class="field-attribute">
@@ -124,13 +124,13 @@
                                 <div class="field-value">
                                     <input id="morning-dose" type="number" min="0" step="any" ng-model="treatment.variableDosingType.morningDose"
                                            ng-focus="treatment.setFrequencyType('variable')"
-                                           ng-required="treatment.isVariableDoseRequired()" focus-on="editDrugEntryVariableFrequency" placeholder="&mdash;"/>
+                                           required="required" focus-on="editDrugEntryVariableFrequency" placeholder="&mdash;"/>
                                     <input id="afternoon-dose" type="number" min="0" step="any"
                                            ng-model="treatment.variableDosingType.afternoonDose"
-                                           ng-required="treatment.isVariableDoseRequired()" placeholder="&mdash;"/>
+                                           required="required" placeholder="&mdash;"/>
                                     <input id="evening-dose" type="number" min="0" step="any"
                                            ng-model="treatment.variableDosingType.eveningDose"
-                                           ng-required="treatment.isVariableDoseRequired()" placeholder="&mdash;"/>
+                                           required="required" placeholder="&mdash;"/>
                                 </div>
                             </div>
                         </article>
@@ -141,7 +141,7 @@
                             <div class="field-value">
                                 <select id="variable-dose-unit" class=" freq-dose-units" ng-model="treatment.variableDosingType.doseUnits"
                                         ng-options="item.name as item.name for item in treatmentConfig.getDoseUnits()"
-                                        ng-required="!treatment.isVariableDoseEmpty(treatment.variableDosingType) || treatment.isVariableDoseRequired()">
+                                        required="required">
                                     <option value="">{{ ::treatmentConfig.translate('doseUnitsPlaceHolder', 'MEDICATION_DOSE_UNIT_PLACEHOLDER') }} </option>
                                 </select>
                             </div>
@@ -214,7 +214,7 @@
                                 <select ng-if="!treatmentConfig.isHiddenField('quantityUnits')" id="total-quantity-unit"
                                         class="fl" ng-model="treatment.quantityUnit" ng-change="treatment.setQuantityUnitEnteredManually()"
                                         ng-options="item.name as item.name for item in treatmentConfig.getDoseUnits()"
-                                        ng-required="true">
+                                        ng-required="treatment.isDurationRequired">
                                     <option value="">{{ ::treatmentConfig.translate('quantityUnitsPlaceHolder', 'MEDICATION_CHOOSE_QUANTITY_UNIT_PLACEHOLDER') }} </option>
                                 </select>
                             </div>

@@ -640,8 +640,12 @@ Bahmni.Clinical.DrugOrderViewModel = function (config, proto, encounterDate) {
         var variableDosingType = self.variableDosingType;
         var variableDosingString = addDelimiter(morphToMixedFraction(variableDosingType.morningDose || 0) + "-" + morphToMixedFraction(variableDosingType.afternoonDose || 0) + "-" + morphToMixedFraction(variableDosingType.eveningDose || 0), " ");
 
-        return self.frequencyType === Bahmni.Clinical.Constants.dosingTypes.uniform ? blankIfFalsy(morphToMixedFraction(calculateUniformDose())) + " " + blankIfFalsy(self.doseUnits)
-            : (variableDosingString + blankIfFalsy(self.doseUnits)).trim();
+        if (self.frequencyType === Bahmni.Clinical.Constants.dosingTypes.uniform) {
+            var value = morphToMixedFraction(calculateUniformDose());
+            return value? value + " "+ blankIfFalsy(self.doseUnits): "";
+        } else {
+            return (variableDosingString + blankIfFalsy(self.doseUnits)).trim();
+        }
     };
 
     this.getFrequency = function(){
