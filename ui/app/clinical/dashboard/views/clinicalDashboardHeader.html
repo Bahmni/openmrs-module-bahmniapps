@@ -27,6 +27,16 @@
                 <i class="fa fa-bars fa-white fa-large"></i>
             </button>
 
+            <div class="fr offlin-sync-wrapper" ng-controller="PatientListHeaderController">
+                <button class="btn fl  offline-sync" ng-click="sync()" ng-show="isOfflineApp && !isSyncing">
+                    {{::'HEADER_LABEL_SYNC_KEY' | translate}}
+                </button>
+                <button class="btn fl offline-sync offline-sync-image" ng-show="isOfflineApp && isSyncing" disabled>
+                    <!-- <i class="fa fa-refresh"></i> -->
+                    <img src="../images/sync.gif" />
+                </button>
+            </div>
+
             <button class="confirm save-consultation" ng-show="availableBoards" single-click="save()" accesskey="{{'SAVE_ACCESS_KEY' | translate}}" ng-class="{'hideSaveText':availableBoards.length > 6}">
                 <i class="fa fa-save"></i>
                 <span class="text" ng-bind-html="'CLINICAL_SAVE_TRANSLATION_KEY'| translate"></span>
