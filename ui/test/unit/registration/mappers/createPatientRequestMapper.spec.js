@@ -47,7 +47,7 @@ describe('patient mapper', function () {
                 "days": 17
             },
             "gender": "M",
-            "identifierPrefix": {"prefix" : "GAN"},
+            "identifierPrefix": {"prefix" : "GAN", "uuid" : "dead-cafe"},
             "identifier": "GAN200011",
             "registrationDate": moment(date).format(),
             "caste": "10",
@@ -102,6 +102,7 @@ describe('patient mapper', function () {
             {
                 "identifierPrefix": "GAN",
                 "identifier": "GAN200011",
+                "identifierSourceUuid" : "dead-cafe",
                 "preferred": true,
                 "voided": false
             }
