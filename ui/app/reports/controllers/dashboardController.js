@@ -66,7 +66,8 @@ angular.module('bahmni.reports')
                 "HTML": "text/html",
                 "EXCEL": "application/vnd.ms-excel",
                 "PDF": "application/pdf",
-                "CUSTOM EXCEL": "application/vnd.ms-excel-custom"
+                "CUSTOM EXCEL": "application/vnd.ms-excel-custom",
+                "ODS": "application/vnd.oasis.opendocument.spreadsheet"
             };
             var supportedFormats = appService.getAppDescriptor().getConfigValue("supportedFormats") || _.keys(availableFormats);
             supportedFormats = _.map(supportedFormats, function(format){
