@@ -41,6 +41,18 @@ module.exports = function (grunt) {
                     }
                 ]
             },
+            offlineDist: {
+                files: [
+                    {
+                        dot: true,
+                        src: [
+                            '.tmp',
+                            '<%= yeoman.dist %>/*',
+                            '!<%= yeoman.dist %>/.git*'
+                        ]
+                    }
+                ]
+            },
             chromeApp: {
                 files: [
                     {
@@ -273,7 +285,7 @@ module.exports = function (grunt) {
                     }
                 ]
             },
-            chromeDist: {
+            offlineDist: {
                 files: [
                     {
                         expand: true,
@@ -545,9 +557,8 @@ module.exports = function (grunt) {
     ]);
 
     grunt.registerTask('devbundle', [
-        'clean:dist',
-        'compass:dist',
-        'copy:chromeDist'
+        'clean:offlineDist',
+        'copy:offlineDist'
     ]);
 
     grunt.registerTask('build', [
