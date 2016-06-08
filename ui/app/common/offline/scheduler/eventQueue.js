@@ -35,13 +35,13 @@ angular.module("bahmni.common.offline")
 
         this.addToEventQueue = function(eventContent) {
             return getQueue().then(function() {
-                return hustle.Queue.put(eventContent, {tube: "event_queue"});
+                return hustle.Queue.put(eventContent, {tube: "event_queue", ttr: 10});
             });
         };
 
         this.addToErrorQueue = function(eventContent) {
             return getQueue().then(function() {
-                return hustle.Queue.put(eventContent, {tube: "error_queue"});
+                return hustle.Queue.put(eventContent, {tube: "error_queue", ttr: 10});
             });
         };
 
