@@ -112,8 +112,8 @@ angular.module('bahmni.common.domain')
 
             this.find = function (params) {
                 return offlineEncounterService.find(params).then(function(results) {
-                    if(results  && results.encounter)
-                        return {data: results.encounter};
+                    if(!_.isEmpty(results))
+                        return {data: results};
                     else
                         return {"data":{
                             "bahmniDiagnoses": [],

@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('bahmni.common.offline')
-    .service('visitDbService', [function () {
+    .service('visitDbService', ['chromeEncryptionService', function (chromeEncryptionService) {
 
         var insertVisitData = function (db, visit) {
             var visitTable = db.getSchema().table('visit');
@@ -9,7 +9,7 @@ angular.module('bahmni.common.offline')
                 'uuid': visit.uuid,
                 'patientUuid': visit.patient.uuid,
                 'startDatetime': new Date(visit.startDatetime),
-                'visitJson': visit
+                'visitJson': chromeEncryptionService.encrypt(JSON.stringify(visit))
             });
             return db.insertOrReplace().into(visitTable).values([row]).exec().then(function () {
                 return visit;
@@ -19,12 +19,12 @@ angular.module('bahmni.common.offline')
         var getVisitByUuid = function (db, uuid) {
             var visitTable = db.getSchema().table('visit');
 
-            return db.select(visitTable.value)
+            return db.select(visitTable.visitJson.as('visit'))
                 .from(visitTable)
                 .where(visitTable.uuid.eq(uuid))
                 .exec()
-                .then(function (visit) {
-                    return visit[0];
+                .then(function (results) {
+                    return results.length ? chromeEncryptionService.decrypt(results[0].visit) : undefined;
                 });
 
         };

@@ -26,7 +26,7 @@ describe('observationDbService tests', function () {
                 var params = {patientUuid: "fc6ede09-f16f-4877-d2f5-ed8b2182ec11", conceptNames: ["Child Health"], visitUuids: [visitUuid]}
                 observationDbService.getObservationsFor(db, params).then(function(results){
                     expect(results).not.toBeUndefined();
-                    expect(results[0].observation.uuid).toBe(observationUuid);
+                    expect(results[0].uuid).toBe(observationUuid);
                     done();
                 });
             });
@@ -47,7 +47,7 @@ describe('observationDbService tests', function () {
                 var params = {patientUuid: "fc6ede09-f16f-4877-d2f5-ed8b2182ec11", conceptNames: ["Child Health"], visitUuids: [null]}
                 observationDbService.getObservationsFor(db, params).then(function(results){
                     expect(results).not.toBeUndefined();
-                    expect(results[0].observation.uuid).toBe(observationUuid);
+                    expect(results[0].uuid).toBe(observationUuid);
                     done();
                 });
             });

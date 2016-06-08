@@ -41,7 +41,7 @@ describe('offlineEncounterService', function () {
         };
 
         spyOn(offlineEncounterServiceStrategy, 'find').and.returnValue(specUtil.respondWithPromise($q, []));
-        var result = encounterService.find(params).then(function(results){
+        encounterService.find(params).then(function(results){
             expect(offlineEncounterServiceStrategy.find.calls.count()).toBe(1);
             expect(offlineEncounterServiceStrategy.find).toHaveBeenCalledWith(params);
             expect(results.data.patientUuid).toBe(null);
@@ -60,7 +60,7 @@ describe('offlineEncounterService', function () {
             encounterType: undefined
         };
 
-        spyOn(offlineEncounterServiceStrategy, 'find').and.returnValue(specUtil.respondWithPromise($q, {encounter: encounterJson}));
+        spyOn(offlineEncounterServiceStrategy, 'find').and.returnValue(specUtil.respondWithPromise($q, encounterJson));
         var result = encounterService.find(params).then(function(results){
             expect(offlineEncounterServiceStrategy.find.calls.count()).toBe(1);
             expect(offlineEncounterServiceStrategy.find).toHaveBeenCalledWith(params);
