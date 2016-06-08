@@ -540,12 +540,14 @@
         <script src="../common/util/dateTimeFormatter.js"></script>
         <script src="common/services/treatmentService.js"></script>
 
-        <script src="/bahmni_config/openmrs/apps/customDisplayControl/js/customControl.js"></script>
-        <script src="/bahmni_config/openmrs/apps/clinical/formConditions.js"></script>
-        <script src="/implementation_config/openmrs/apps/clinical/formConditions.js"></script>
         <!-- endbuild -->
         <!-- @endif -->
 
+        <!-- @ifdef ONLINE -->
+        <script src="/bahmni_config/openmrs/apps/customDisplayControl/js/customControl.js"></script>
+        <script src="/bahmni_config/openmrs/apps/clinical/formConditions.js"></script>
+        <script src="/implementation_config/openmrs/apps/clinical/formConditions.js"></script>
+        <!-- @endif -->
 
         <!-- @ifdef OFFLINE -->
         <!-- build:js ../common.background.min.js -->
