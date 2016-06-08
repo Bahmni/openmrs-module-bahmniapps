@@ -182,9 +182,11 @@ angular.module('bahmni.registration')
             $scope.create = function () {
                 setPreferences();
                 addNewRelationships();
-                var errMsg = Bahmni.Common.Util.ValidationUtil.validate($scope.patient, $scope.patientConfiguration.attributeTypes);
-                if (errMsg) {
-                    messagingService.showMessage('error', errMsg);
+                var errorMessages = Bahmni.Common.Util.ValidationUtil.validate($scope.patient, $scope.patientConfiguration.attributeTypes);
+                if (errorMessages.length > 0) {
+                    errorMessages.forEach(function(errorMessage) {
+                        messagingService.showMessage('error', errorMessage);
+                    });
                     return $q.when({});
                 }
                 return spinner.forPromise(createPromise());

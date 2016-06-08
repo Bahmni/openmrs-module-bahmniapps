@@ -53,7 +53,7 @@ Bahmni.Common.Util.ValidationUtil = (function () {
             }
             return isValid;
         });
-        return errorMessages.join(', ');
+        return errorMessages;
     };
     return {
         validate: validate
