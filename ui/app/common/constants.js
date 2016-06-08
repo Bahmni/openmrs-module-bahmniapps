@@ -29,7 +29,7 @@ Bahmni.Common = Bahmni.Common || {};
     var offlineErrorMessages = {
         networkError:"The network connectivity is bad and not able to connect to the server. Please ensure minimum network condition to sync the device",
         openmrsServerError:"OpenMRS is down and the device not able to communicate to the server. Please make sure the server is up before Syncing the device"
-    }
+    };
 
 
     var representation = "custom:(uuid,name,names,conceptClass," +
@@ -250,7 +250,8 @@ Bahmni.Common = Bahmni.Common || {};
         offlineErrorMessages: offlineErrorMessages,
         syncButtonConfiguration:syncButtonConfiguration,
         uuidRegex: "[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}",
-        offlineBahmniEncounterUrl: "/openmrs/ws/rest/v1/bahmnicore/bahmniencounter/"
+        offlineBahmniEncounterUrl: "/openmrs/ws/rest/v1/bahmnicore/bahmniencounter/",
+        key: 'key'
     };
 })();
 

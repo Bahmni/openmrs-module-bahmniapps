@@ -35,16 +35,16 @@ angular.module('bahmni.clinical')
                 params.visitUuids = mappedVisitUuids || [];
                 offlineDbService.getPrescribedAndActiveDrugOrders(params).then(function (results) {
                     _.each(results, function(result){
-                        var drugOrders = result.encounter.drugOrders ? result.encounter.drugOrders : [];
+                        var drugOrders = result.drugOrders ? result.drugOrders : [];
                         _.each(visits, function (visit) {
-                            if(result.encounter.visitUuid == visit.uuid){
-                                result.encounter.visit = {startDateTime: visit.startDatetime}
+                            if(result.visitUuid == visit.uuid){
+                                result.visit = {startDateTime: visit.startDatetime}
                             }
                         });
                         _.each(drugOrders, function (drugOrder) {
-                           drugOrder.provider = result.encounter.providers[0];
-                           drugOrder.creatorName = result.encounter.providers[0].name;
-                           drugOrder.visit = result.encounter.visit;
+                           drugOrder.provider = result.providers[0];
+                           drugOrder.creatorName = result.providers[0].name;
+                           drugOrder.visit = result.visit;
                         });
                         visitDrugOrders = visitDrugOrders.concat(drugOrders);
                     });

@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('bahmni.common.offline')
-    .service('observationDbService', function () {
+    .service('observationDbService', ['chromeEncryptionService', function (chromeEncryptionService) {
 
         var insertObservationsData = function (db, patientUuid, visitUuid, observationsDataList) {
             observationsDataList = JSON.parse(JSON.stringify(observationsDataList));
@@ -15,7 +15,7 @@ angular.module('bahmni.common.offline')
                         encounterUuid: observationData.encounterUuid,
                         visitUuid: visitUuid,
                         conceptName: observationData.concept.name,
-                        observationJson: observationData
+                        observationJson: chromeEncryptionService.encrypt(JSON.stringify(observationData)).toString()
                     });
                     queries.push(db.insertOrReplace().into(observationTable).values([row]));
                 }
@@ -37,7 +37,11 @@ angular.module('bahmni.common.offline')
                 )
                 .exec()
                 .then(function (results) {
-                    return results;
+                    var decryptedResults = [];
+                    angular.forEach(results, function(result){
+                        decryptedResults.push(chromeEncryptionService.decrypt(result.observation))
+                    });
+                    return decryptedResults;
                 });
         };
 
@@ -52,4 +56,4 @@ angular.module('bahmni.common.offline')
             getObservationsFor: getObservationsFor,
             insertObservationsData: insertObservationsData
         }
-    });
+    }]);
