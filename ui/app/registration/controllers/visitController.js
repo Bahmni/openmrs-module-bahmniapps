@@ -163,17 +163,21 @@ angular.module('bahmni.registration')
             };
             //End :: Registration Page validation
 
-            var reload = function () {
-                $state.transitionTo($state.current, $state.params, {
+            var afterSave = function () {
+
+                var nextState = appService.getAppDescriptor().getConfigValue('afterVisitSaveTransitionToState');
+
+                $state.transitionTo(nextState ? nextState : $state.current, $state.params, {
                     reload: true,
                     inherit: false,
                     notify: true
                 });
+
                 messagingService.showMessage('info', 'REGISTRATION_LABEL_SAVED');
             };
 
             $scope.submit = function () {
-                return validate().then(save).then(reload);
+                return validate().then(save).then(afterSave);
             };
 
             $scope.today = function () {
