@@ -42,13 +42,13 @@ describe('ValidationUtil', function () {
         customValidator["Telephone Number"].errorMessage = "Invalid Telephone Number";
         complexObject["Telephone Number"] = 983;
         var msg = ValidationUtil.validate(complexObject, objectConfiguration);
-        expect(msg).toEqual("Invalid Telephone Number");
+        expect(msg).toEqual(["Invalid Telephone Number"]);
     });
 
     it("should return nothing when the custom validator is not present", function () {
         customValidator = undefined;
         var msg = ValidationUtil.validate(complexObject, objectConfiguration);
-        expect(msg).toEqual('');
+        expect(msg).toEqual([]);
     });
 
 });
