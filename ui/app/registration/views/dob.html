@@ -22,10 +22,10 @@
             <input type="checkbox" ng-model="patient.birthdateEstimated" class="estimate-check">
         </div>
     </div>
-    <div class="field-attribute">
+    <div ng-show="::showBirthTime" class="field-attribute">
         <label for="birthtime">{{ ::'REGISTRATION_LABEL_BIRTH_TIME' | translate}}</label>
     </div>
-    <div class="field-value">
+    <div ng-show="::showBirthTime" class="field-value">
         <input id="birthtime" type="time" ng-model="patient.birthtime">
     </div>
 </article>
