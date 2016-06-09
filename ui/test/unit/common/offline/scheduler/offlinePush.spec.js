@@ -74,7 +74,7 @@ describe('Offline Push Tests', function () {
         });
         setTimeout(function(){
             httpBackend.flush();
-        },1000);
+        },100);
     });
 
     it("should add to error queue if push response is 500", function(done) {
@@ -89,7 +89,7 @@ describe('Offline Push Tests', function () {
         });
         setTimeout(function(){
             httpBackend.flush();
-        }, 1000);
+        }, 100);
     });
 
     it("should halt queue processing if push response is 400", function(done) {
@@ -104,7 +104,7 @@ describe('Offline Push Tests', function () {
         });
         setTimeout(function(){
             httpBackend.flush();
-        }, 1000);
+        }, 100);
     });
 
     it("should push encounter data from event queue", function(done) {
