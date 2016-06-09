@@ -94,6 +94,7 @@ angular.module('bahmni.common.domain')
                 obs.concept = {uuid: obs.concept.uuid, name: obs.concept.name, dataType: obs.concept.dataType};
                 obs.groupMembers = obs.groupMembers || [];
                 obs.groupMembers.forEach(function (groupMember) {
+                    groupMember.uuid = groupMember.uuid || Bahmni.Common.Offline.UUID.generateUuid();
                     groupMember.encounterDateTime = obs.encounterDateTime;
                     groupMember.observationDateTime = obs.observationDateTime;
                     groupMember.providers = obs.providers;

@@ -5,6 +5,7 @@ describe('offlineObservationService', function () {
     var observationsService, observationsServiceStrategy;
     var $q= Q;
     var rootScope;
+    var observationJson;
 
     beforeEach(module('bahmni.common.offline'));
     beforeEach(module('bahmni.common.domain'));
@@ -12,7 +13,7 @@ describe('offlineObservationService', function () {
     beforeEach(module(function ($provide) {
         jasmine.getFixtures().fixturesPath = 'base/test/data';
         var encounterJson = JSON.parse(readFixtures('encounter.json'));
-        var observationJson = encounterJson.observations;
+        observationJson = encounterJson.observations;
         var observationsWithConceptNamesInHierarchy = {"data": observationJson};
         var conceptNamesInHierarchy = {"data": ['Child Health', 'Treatment Given']};
 
@@ -188,4 +189,61 @@ describe('offlineObservationService', function () {
             done();
         });
     });
+
+    it('should not get the observations if the configure observation is voided',function (done) {
+        observationJson[0].groupMembers[5].groupMembers[0].voided = true;
+
+        spyOn(observationsServiceStrategy, 'getAllParentsInHierarchy').and.callFake(function () {
+            return {
+                then: function (callback) {
+                    return callback({"data": ['Child Health', 'Oral antibiotics given']});
+                }
+            };
+        });
+        spyOn(observationsServiceStrategy, 'fetch').and.callFake(function () {
+            return {
+                then: function (callback) {
+                    return callback({"data": observationJson});
+                }
+            };
+        });
+
+        var childConcept = "Oral antibiotics given";
+        var patientUuid = "fc6ede09-f16f-4877-d2f5-ed8b2182ec11";
+        var result = observationsService.fetch(patientUuid, [childConcept], undefined, 0, undefined, undefined, undefined,undefined).then(function(results){
+            expect(results.data.length).toBe(0);
+            expect(observationsServiceStrategy.getAllParentsInHierarchy.calls.count()).toBe(1);
+            expect(observationsServiceStrategy.fetch.calls.count()).toBe(1);
+            done();
+        });
+    });
+
+    it('should not get the observations if the whole template(rootConcept) is voided',function (done) {
+        observationJson[0].voided = true;
+
+        spyOn(observationsServiceStrategy, 'getAllParentsInHierarchy').and.callFake(function () {
+            return {
+                then: function (callback) {
+                    return callback({"data": ['Child Health', 'Oral antibiotics given']});
+                }
+            };
+        });
+        spyOn(observationsServiceStrategy, 'fetch').and.callFake(function () {
+            return {
+                then: function (callback) {
+                    return callback({"data": observationJson});
+                }
+            };
+        });
+
+        var childConcept = "Child Health";
+        var patientUuid = "fc6ede09-f16f-4877-d2f5-ed8b2182ec11";
+        var result = observationsService.fetch(patientUuid, [childConcept], undefined, 0, undefined, undefined, undefined,undefined).then(function(results){
+            expect(results.data.length).toBe(0);
+            expect(observationsServiceStrategy.getAllParentsInHierarchy.calls.count()).toBe(1);
+            expect(observationsServiceStrategy.fetch.calls.count()).toBe(1);
+            done();
+        });
+    });
+
 });
