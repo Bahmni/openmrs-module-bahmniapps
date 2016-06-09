@@ -6,6 +6,8 @@ angular.module('bahmni.registration')
 
             var autoCompleteFields = appService.getAppDescriptor().getConfigValue("autoCompleteFields", []);
             var showCasteSameAsLastNameCheckbox = appService.getAppDescriptor().getConfigValue("showCasteSameAsLastNameCheckbox");
+            var personAttributes = [];
+            var caste;
             $scope.showMiddleName = appService.getAppDescriptor().getConfigValue("showMiddleName");
             $scope.genderCodes = Object.keys($rootScope.genderMap);
             $scope.dobMandatory = appService.getAppDescriptor().getConfigValue("dobMandatory") || false;
@@ -52,13 +54,17 @@ angular.module('bahmni.registration')
             };
 
             $scope.showCasteSameAsLastName = function() {
-                var personAttributeHasCaste = (_.find($rootScope.patientConfiguration.attributeTypes, {name: 'caste'}) != null);
+                personAttributes = _.map($rootScope.patientConfiguration.attributeTypes, function(attribute){
+                    return attribute.name.toLowerCase();
+                });
+                var personAttributeHasCaste = personAttributes.indexOf("caste") != -1;
+                caste = personAttributeHasCaste ? $rootScope.patientConfiguration.attributeTypes[personAttributes.indexOf("caste")].name : undefined;
                 return showCasteSameAsLastNameCheckbox && personAttributeHasCaste;
             };
 
             $scope.setCasteAsLastName = function () {
                 if ($scope.patient.sameAsLastName) {
-                    $scope.patient.caste = $scope.patient.familyName;
+                    $scope.patient[caste] = $scope.patient.familyName;
                 }
             };
 
@@ -75,12 +81,12 @@ angular.module('bahmni.registration')
 
             $scope.$watch('patient.familyName', function () {
                 if ($scope.patient.sameAsLastName) {
-                    $scope.patient.caste = $scope.patient.familyName;
+                    $scope.patient[caste] = $scope.patient.familyName;
                 }
             });
 
             $scope.$watch('patient.caste', function () {
-                if ($scope.patient.sameAsLastName && ($scope.patient.familyName !== $scope.patient.caste)) {
+                if ($scope.patient.sameAsLastName && ($scope.patient.familyName !== $scope.patient[caste])) {
                     $scope.patient.sameAsLastName = false;
                 }
             });
