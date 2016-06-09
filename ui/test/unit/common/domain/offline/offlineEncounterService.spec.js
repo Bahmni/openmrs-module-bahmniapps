@@ -233,4 +233,31 @@ describe('offlineEncounterService', function () {
     });
 
 
+    it('should create an encounter with given observations and create observation uuid, if it is not present, for its all groupMembers',function (done) {
+        jasmine.getFixtures().fixturesPath = 'base/test/data';
+        var encounterData = JSON.parse(readFixtures('encounter.json'));
+
+        encounterData.observations[0].uuid = undefined;
+        encounterData.observations[0].groupMembers[5].uuid = undefined;
+        encounterData.observations[0].groupMembers[5].groupMembers[0].uuid = undefined;
+
+        spyOn(offlineEncounterServiceStrategy, 'getDefaultEncounterType').and.returnValue(specUtil.respondWithPromise($q, {data: "FieldEncounter"}));
+        spyOn(offlineEncounterServiceStrategy, 'create').and.returnValue(specUtil.respondWithPromise($q, {data: encounterData}));
+        spyOn(eventQueue, 'addToEventQueue').and.returnValue(specUtil.respondWithPromise($q, {}));
+
+        var result = encounterService.create(encounterData).then(function(results){
+            expect(offlineEncounterServiceStrategy.getDefaultEncounterType.calls.count()).toBe(1);
+            expect(offlineEncounterServiceStrategy.getDefaultEncounterType).toHaveBeenCalledWith();
+            expect(offlineEncounterServiceStrategy.create.calls.count()).toBe(1);
+            expect(offlineEncounterServiceStrategy.create).toHaveBeenCalledWith(encounterData);
+            expect(eventQueue.addToEventQueue.calls.count()).toBe(1);
+            expect(eventQueue.addToEventQueue).toHaveBeenCalledWith({type: "encounter", encounterUuid: results.data.encounterUuid});
+
+            expect(results.data.observations[0].uuid).not.toBeUndefined();
+            expect(results.data.observations[0].groupMembers[5].uuid).not.toBeUndefined();
+            expect(results.data.observations[0].groupMembers[5].groupMembers[0].uuid).not.toBeUndefined();
+            expect(results.data).toBe(encounterData);
+            done();
+        });
+    });
 });

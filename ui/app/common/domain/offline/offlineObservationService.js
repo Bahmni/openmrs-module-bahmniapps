@@ -20,15 +20,20 @@ angular.module('bahmni.common.domain')
         };
 
         var getObservationByIterateOverGroupMembers = function(obs, conceptName, results) {
-            if(obs.concept.name === conceptName)
+            if(obs.concept.name === conceptName && !obs.voided)
                 results.push(obs);
-            _.each(obs.groupMembers, function (groupMember) {
-                if (groupMember.concept.name === conceptName){
+            _.each(obs.groupMembers, function (groupMember,index) {
+                if(groupMember.voided)
+                    delete obs.groupMembers[index];
+                else if (groupMember.concept.name === conceptName){
                     results.push(groupMember);
                 }
                 else{
-                    getObservationByIterateOverGroupMembers(groupMember, conceptName, results)
+                    getObservationByIterateOverGroupMembers(groupMember, conceptName, results);
                 }
+            });
+            _.remove(obs.groupMembers, function (member) {
+                return member == undefined;
             });
         };
 
