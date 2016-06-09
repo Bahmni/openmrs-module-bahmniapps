@@ -178,11 +178,14 @@ angular.module('bahmni.common.conceptSet')
                                 errorMessage = "The value you entered (red field) is outside the range of allowable values for that record. Please check the value.";
                                 return true;
                             }
-
-                            if (childNode.isNumeric()){
-                                if(!childNode.isValidNumeric()){
+                            if (childNode.isNumeric()) {
+                                if (!childNode.isValidNumeric()) {
                                     errorMessage = "Please enter Integer value, decimal value is not allowed";
-                                    return true;
+                                    return {message: errorMessage, status: true};
+                                }
+                                if (childNode.isValidNumericValue() === false) {
+                                    errorMessage = "Please enter Numeric values";
+                                    return {message: errorMessage, status: true};
                                 }
                             }
                             return !childNode.isValid($scope.atLeastOneValueIsSet, $scope.conceptSetRequired);
