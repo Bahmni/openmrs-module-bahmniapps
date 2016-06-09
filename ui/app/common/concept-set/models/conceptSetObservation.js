@@ -107,6 +107,22 @@ Bahmni.ConceptSet.Observation.prototype = {
         }
         return true;
     },
+    isValidNumericValue: function () {
+        //TODO : Suman: Hacky fix to check invalid number
+        var element = document.getElementById(this.uniqueId);
+        if (this.value === "") {
+            if (element) {
+                return element.checkValidity();
+            } else {
+                if ((this.value === "" && this.__prevValue && (this.__prevValue.toString().length == 1 || this.__prevValue.toString().indexOf(".") != -1)) || this.__prevValue === undefined) {
+                    return true;
+                }
+                return this.value !== "";
+            }
+
+        }
+        return true;
+    },
 
     isText: function () {
         return this.getDataTypeName() === "Text";
