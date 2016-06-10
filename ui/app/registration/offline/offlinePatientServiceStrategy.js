@@ -58,7 +58,7 @@ angular.module('bahmni.registration')
                             patientData.patient.person.preferredName = data.patient.person.names[0];
                             patientData.patient.person.preferredAddress = data.patient.person.addresses[0];
                             mapAttributesToGetFormat(patientData.patient.person.attributes, attributeTypes);
-                            return $q.when(patientData);
+                            return $q.when({"data": patientData});
                     });
                 });
             };
