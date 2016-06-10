@@ -46,7 +46,7 @@ describe('chromeObservationService', function () {
         var visitUuids = [];
 
         var obsData = [
-            {name: "child health", type: "Field"},
+            {"observation": {name: "child health", type: "Field"}},
         ];
 
         spyOn(offlineDbService, 'getVisitsByPatientUuid').and.returnValue(specUtil.respondWithPromise($q, visitUuids));
@@ -97,8 +97,8 @@ describe('chromeObservationService', function () {
         ];
 
         var obsData = [
-            {"name": "child health", type: "Field"},
-            {"name": "Immunization"}
+            {observation: {"name": "child health", type: "Field"}},
+            {observation: {"name": "Immunization"}}
         ];
 
         spyOn(offlineDbService, 'getVisitsByPatientUuid').and.returnValue(specUtil.respondWithPromise($q, visitUuids));

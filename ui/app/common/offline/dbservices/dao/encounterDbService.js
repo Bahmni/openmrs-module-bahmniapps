@@ -1,11 +1,10 @@
 'use strict';
 
 angular.module('bahmni.common.offline')
-    .service('encounterDbService', ['chromeEncryptionService', function (chromeEncryptionService) {
+    .service('encounterDbService', function () {
 
         var insertEncounterData = function(db, encounterData) {
-            var encounterDataString = JSON.stringify(encounterData);
-            encounterData = JSON.parse(encounterDataString);
+            encounterData = JSON.parse(JSON.stringify(encounterData));
             var patientUuid = encounterData.patientUuid;
             var uuid = encounterData.encounterUuid;
             var encounterDateTime = encounterData.encounterDateTime;
@@ -22,7 +21,7 @@ angular.module('bahmni.common.offline')
                 encounterType: encounterType,
                 providerUuid: providerUuid,
                 visitUuid: visitUuid,
-                encounterJson: chromeEncryptionService.encrypt(encounterDataString)
+                encounterJson: encounterData
             });
             return db.insertOrReplace().into(encounterTable).values([row]).exec().then(function () {
                 return patientUuid;
@@ -35,11 +34,7 @@ angular.module('bahmni.common.offline')
                 .from(p)
                 .where(p.patientUuid.eq(patientUuid)).exec()
                 .then(function (results) {
-                    var decryptedResults = [];
-                    angular.forEach(results, function(result){
-                        decryptedResults.push(chromeEncryptionService.decrypt(result.encounter))
-                    });
-                    return decryptedResults;
+                    return results;
                 });
         };
 
@@ -52,8 +47,8 @@ angular.module('bahmni.common.offline')
                 .where(lf.op.and(
                     p.patientUuid.eq(params.patientUuid), p.providerUuid.eq(params.providerUuid), p.encounterType.match(encounterType), p.encounterDateTime.gte(DateUtil.addMinutes(new Date(), -1 * encounterSessionDurationInMinutes)) ))
                 .exec()
-                .then(function (results) {
-                    return results.length ? chromeEncryptionService.decrypt(results[0].encounter) : undefined;
+                .then(function (result) {
+                    return result[0];
                 });
         };
 
@@ -62,8 +57,8 @@ angular.module('bahmni.common.offline')
             return db.select(en.encounterJson.as('encounter'))
                 .from(en)
                 .where(en.uuid.eq(encounterUuid)).exec()
-                .then(function (results) {
-                    return results.length ? chromeEncryptionService.decrypt(results[0].encounter) : undefined;
+                .then(function (result) {
+                    return result[0];
                 });
         };
 
@@ -76,11 +71,7 @@ angular.module('bahmni.common.offline')
                 .orderBy(encounter.encounterDateTime, lf.Order.DESC)
                 .exec()
                 .then(function (results) {
-                    var decryptedResults = [];
-                    angular.forEach(results, function(result){
-                        decryptedResults.push(chromeEncryptionService.decrypt(result.encounter))
-                    });
-                    return decryptedResults;
+                    return results;
                 });
         };
 
@@ -91,4 +82,4 @@ angular.module('bahmni.common.offline')
             getEncounterByEncounterUuid : getEncounterByEncounterUuid,
             getEncountersByVisits: getEncountersByVisits
         }
-    }]);
+    });

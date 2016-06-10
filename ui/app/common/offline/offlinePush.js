@@ -42,7 +42,7 @@ angular.module('bahmni.common.offline')
                         } };
 
                     if(event.data.type && event.data.type == "encounter"){
-                        return $http.post(Bahmni.Common.Constants.bahmniEncounterUrl, response,config);
+                        return $http.post(Bahmni.Common.Constants.bahmniEncounterUrl, response.encounter,config);
                     }
                     else{
                         response.relationships = [];

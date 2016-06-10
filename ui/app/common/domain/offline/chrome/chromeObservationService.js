@@ -11,7 +11,10 @@ angular.module('bahmni.common.domain')
                 });
                 params.visitUuids = mappedVisitUuids || [];
                 offlineDbService.getObservationsFor(params).then(function (obs) {
-                    deffered.resolve({data: obs});
+                    var mappedObs = _.map(obs, function (ob) {
+                        return ob.observation;
+                    });
+                    deffered.resolve({data: mappedObs});
                 });
             });
             return deffered.promise;
