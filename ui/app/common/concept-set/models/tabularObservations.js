@@ -78,7 +78,7 @@ Bahmni.ConceptSet.TabularObservations = function(obsGroups, parentObs, conceptUI
             if (element) {
                 return element.checkValidity();
             } else {
-                if ((this.value === "" && this.__prevValue && (this.__prevValue.toString().length == 1 || this.__prevValue.toString().indexOf(".") != -1)) || this.__prevValue === undefined) {
+                if ((this.value === "" && this.__prevValue && (this.__prevValue.toString().length == 1 || (this.__prevValue.toString().indexOf(".") ===0 && this.__prevValue.toString().length==2)))) {
                     return true;
                 }
                 return this.value !== "";
