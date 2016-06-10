@@ -38,6 +38,13 @@ angular.module('bahmni.common.displaycontrol.drugOrdersSection')
                 }
             };
 
+            var mergeActiveAndScheduledWithDiscontinuedOrders = function() {
+                _.each($scope.discontinuedDrugs, function (discontinuedDrug) {
+                    _.remove($scope.drugOrders, {'uuid': discontinuedDrug.uuid});
+                    $scope.drugOrders.push(discontinuedDrug);
+                });
+            };
+
             var init = function () {
                 initialiseColumns();
                 if (_.isEmpty($scope.config.title) && _.isEmpty($scope.config.translationKey)){
@@ -52,6 +59,9 @@ angular.module('bahmni.common.displaycontrol.drugOrdersSection')
                         return Bahmni.Clinical.DrugOrderViewModel.createFromContract(drugOrder, $scope.treatmentConfig);
                     };
                     $scope.drugOrders = sortOrders(drugOrderResponse.map(createDrugOrder));
+                    if ($scope.config.active) {
+                        mergeActiveAndScheduledWithDiscontinuedOrders();
+                    }
                     $scope.stoppedOrderReasons = $scope.treatmentConfig.stoppedOrderReasonConcepts;
                 });
             };
@@ -164,6 +174,7 @@ angular.module('bahmni.common.displaycontrol.drugOrdersSection')
                 config: "=",
                 patientUuid: "=",
                 treatmentConfig: "=",
+                discontinuedDrugs: "=",
                 enrollment: "=",
                 drugOrders:"=?",
                 isOrderSet:"=?"
