@@ -304,6 +304,8 @@ form, .form {
     min-width: 197px;
     width: 197px;
     height: 25px;
+    font-family: $primaryFont;
+    font-size: 12px;
     @media (max-width : 1024px){
       height: 31px;
       width: auto;
