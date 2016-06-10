@@ -60,7 +60,7 @@ describe('Offline Push Tests', function () {
         });
         setTimeout(function(){
             httpBackend.flush();
-        }, 1000);
+        }, 100);
     });
 
 
