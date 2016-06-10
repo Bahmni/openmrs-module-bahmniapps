@@ -1,7 +1,7 @@
 <div class="drugOrderHistorySectionContainer clearfix">
     <div ng-repeat="section in drugOrderHistorySections">
         <section class="dashboard-section">
-            <drug-orders-section config="section" patient-uuid="patient.uuid" treatment-config="treatmentConfig" enrollment="enrollment"></drug-orders-section>
+            <drug-orders-section config="section" patient-uuid="patient.uuid" treatment-config="treatmentConfig" enrollment="enrollment" discontinued-drugs="consultation.discontinuedDrugs"></drug-orders-section>
         </section>
     </div>
 </div>
