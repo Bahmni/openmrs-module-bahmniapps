@@ -28,9 +28,9 @@ describe('encounterDbService tests', function () {
             encounterDbService.insertEncounterData(db, encounterJson).then(function(){
                 var uuid = 'e34992ca-894f-4344-b4b3-54a4aa1e5558';
                 encounterDbService.getEncountersByPatientUuid(db, uuid).then(function(results){
-                    expect(results[0].patientUuid).toBe(uuid);
-                    expect(results[0].visitUuid).toBe("47a706a2-c0e6-4e40-ae31-4a3535be2ace");
-                    expect(results[0].encounterDateTime).toBe("2016-04-22T11:06:20.000+0530");
+                    expect(results[0].encounter.patientUuid).toBe(uuid);
+                    expect(results[0].encounter.visitUuid).toBe("47a706a2-c0e6-4e40-ae31-4a3535be2ace");
+                    expect(results[0].encounter.encounterDateTime).toBe("2016-04-22T11:06:20.000+0530");
                     done();
                 });
             });
@@ -47,9 +47,9 @@ describe('encounterDbService tests', function () {
                 var providerUuid = "6a5d9c71-bb71-47ad-abed-bda86637f1b7";
                 var encounterType = "FIELD";
                 encounterDbService.findActiveEncounter(db, {patientUuid: patientUuid, providerUuid: providerUuid, encounterType: encounterType}, 60).then(function(results){
-                    expect(results).not.toBeUndefined();
-                    expect(results.patientUuid).toBe(patientUuid);
-                    expect(results.encounterType).toBe(encounterType);
+                    expect(results.encounter).not.toBeUndefined();
+                    expect(results.encounter.patientUuid).toBe(patientUuid);
+                    expect(results.encounter.encounterType).toBe(encounterType);
                     done();
                 });
             });
@@ -66,8 +66,8 @@ describe('encounterDbService tests', function () {
                 var providerUuid = "6a5d9c71-bb71-47ad-abed-bda86637f1b7";
                 var encounterType = "FIELD";
                 encounterDbService.findActiveEncounter(db, {patientUuid: uuid, providerUuid: providerUuid, encounterType: encounterType}, 60).then(function(results){
-                    expect(results).not.toBeUndefined();
-                    expect(results.patientUuid).toBe(uuid);
+                    expect(results.encounter).not.toBeUndefined();
+                    expect(results.encounter.patientUuid).toBe(uuid);
                     done();
                 });
                 encounterDbService.getEncounterByEncounterUuid(db, encounterJson.encounterUuid).then(function(results){
@@ -88,8 +88,8 @@ describe('encounterDbService tests', function () {
                 var patientUuid = 'e34992ca-894f-4344-b4b3-54a4aa1e5558';
                 var visitUuids = ["47a706a2-c0e6-4e40-ae31-4a3535be2ace"];
                 encounterDbService.getEncountersByVisits(db, {patientUuid: patientUuid, visitUuids: visitUuids}).then(function (results) {
-                    expect(results[0].patientUuid).toBe(patientUuid);
-                    expect(results[0].visitUuid).toBe(visitUuids[0]);
+                    expect(results[0].encounter.patientUuid).toBe(patientUuid);
+                    expect(results[0].encounter.visitUuid).toBe(visitUuids[0]);
                     done();
                 })
             });

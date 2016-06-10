@@ -21,7 +21,7 @@ describe('visitDbService tests', function () {
             visitDbService.insertVisitData(db, visitJson).then(function(){
                 visitDbService.getVisitByUuid(db, uuid).then(function(visit){
                     expect(visit.uuid).toBe(uuid);
-                    expect(visit.patient.uuid).toBe("d07ddb7e-fd8d-4e06-bc44-3bb17507d955");
+                    expect(visit.patientUuid).toBe("d07ddb7e-fd8d-4e06-bc44-3bb17507d955");
                     done();
                 });
             });
