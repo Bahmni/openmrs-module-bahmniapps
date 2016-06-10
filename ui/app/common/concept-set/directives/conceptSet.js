@@ -164,33 +164,56 @@ angular.module('bahmni.common.conceptSet')
                     }, {});
                 };
 
-
                 var contextChange = function () {
                     $scope.atLeastOneValueIsSet = $scope.rootObservation && $scope.rootObservation.atLeastOneValueSet();
                     $scope.conceptSetRequired = $scope.required ? $scope.required : true;
+                    var nodes = findInvalidNodes($scope.rootObservation.groupMembers);
+                    return {allow: !nodes.status, errorMessage: nodes.message};
+                }; //TODO: Write unit test for this function
+
+                var findInvalidNodes = function (members) {
                     var errorMessage = null;
-                    var invalidNodes = $scope.rootObservation && $scope.rootObservation.groupMembers.filter(function (childNode) {
-                            if (childNode.voided) {
-                                return false;
-                            }
-                            //Other than Bahmni.ConceptSet.Observation  and Bahmni.ConceptSet.ObservationNode, other concepts does not have isValueInAbsoluteRange fn
-                            if (typeof childNode.isValueInAbsoluteRange == 'function' && !childNode.isValueInAbsoluteRange()) {
-                                errorMessage = "The value you entered (red field) is outside the range of allowable values for that record. Please check the value.";
+                    var status = members.some(function (childNode) {
+                        if (childNode.voided) {
+                            return false;
+                        }
+                        var groupMembers = childNode.groupMembers || [];
+                        for (var index in groupMembers) {
+                            var information = groupMembers[index].groupMembers && groupMembers[index].groupMembers.length ? findInvalidNodes(groupMembers[index].groupMembers) : validateChildNode(groupMembers[index]);
+                            if (information.status) {
+                                errorMessage = information.message;
                                 return true;
                             }
-                            if (childNode.isNumeric()) {
-                                if (!childNode.isValidNumeric()) {
-                                    errorMessage = "Please enter Integer value, decimal value is not allowed";
-                                    return {message: errorMessage, status: true};
-                                }
-                                if (childNode.isValidNumericValue() === false) {
-                                    errorMessage = "Please enter Numeric values";
-                                    return {message: errorMessage, status: true};
-                                }
+                        }
+                        information = validateChildNode(childNode);
+                        if (information.status) {
+                            errorMessage = information.message;
+                            return true;
+                        }
+                        return !childNode.isValid($scope.atLeastOneValueIsSet, $scope.conceptSetRequired);
+                    });
+                    return {message: errorMessage, status: status};
+                };
+                var validateChildNode = function (childNode) {
+                    var errorMessage;
+                    if (childNode.possibleAnswers && !childNode.possibleAnswers.length) {
+                        if (typeof childNode.isValueInAbsoluteRange == 'function' && !childNode.isValueInAbsoluteRange()) {
+                            errorMessage = "The value you entered (red field) is outside the range of allowable values for that record. Please check the value.";
+                            return {message: errorMessage, status: true};
+                        }
+
+                        if (childNode.isNumeric()) {
+                            if (!childNode.isValidNumeric()) {
+                                errorMessage = "Please enter Integer value, decimal value is not allowed";
+                                return {message: errorMessage, status: true};
                             }
-                            return !childNode.isValid($scope.atLeastOneValueIsSet, $scope.conceptSetRequired);
-                        });
-                    return {allow: !invalidNodes || invalidNodes.length === 0, errorMessage: errorMessage};
+                            if(!childNode.isValidNumericValue()){
+                                errorMessage = "Please enter Numeric values";
+                                return {message: errorMessage, status: true};
+                            }
+                        }
+                    }
+                    return {status: false};
                 };
                 contextChangeHandler.add(contextChange);
                 var validateObservationTree = function () {
