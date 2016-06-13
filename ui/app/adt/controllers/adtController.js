@@ -150,6 +150,7 @@ angular.module('bahmni.adt')
 
             $scope.cancel = function () {
                 $location.url(Bahmni.ADT.Constants.patientsListUrl);
+                return $q.when({});
             };
 
             $scope.call = function (functionName) {
