@@ -35,7 +35,9 @@ Bahmni.Clinical.TabularLabOrderResults = (function () {
 
         this.getDateLabels = function () {
             return this.tabularResult.dates.map(function(date) {
-                date.date = moment(date.date, "DD-MMM-YYYY").toDate();
+                if(moment(date.date, "DD-MMM-YYYY", true).isValid()) {
+                    date.date = moment(date.date, "DD-MMM-YYYY").toDate();
+                }
                 return date;  
             });
         };
