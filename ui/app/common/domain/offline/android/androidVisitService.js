@@ -6,10 +6,6 @@ angular.module('bahmni.common.domain')
             return $q.when({data : {results: {}}});
         };
 
-        this.getVisitForAdmissionDetails = function (uuid) {
-            return $q.when({data : {results: {}}});
-        };
-
         this.endVisit = function (visitUuid) {
             return $q.when({data : {results: {}}});
         };
@@ -32,6 +28,5 @@ angular.module('bahmni.common.domain')
 
         this.getVisitType = function () {
             return $q.when({data : {results: {}}});
-
         }
     }]);
