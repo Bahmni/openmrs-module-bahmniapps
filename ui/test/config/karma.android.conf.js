@@ -56,9 +56,9 @@ module.exports = function (config) {
             'app/reports/**/*.js',
             'app/registration/**/*.js',
             'test/support/**/*.js',
-            'test/unit/**/*.js',
             'test/integration/**/*.js',
             'test/integration/utils/*.js',
+            'test/unit/**/*.js',
             'app/common/util/androidDateTimeFormatter.js',
             "test/unit/common/util/androidDateTimeFormatter.spec.js",
             {pattern: 'test/data/*.json', watched: true, served: true, included: false}

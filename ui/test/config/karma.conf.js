@@ -57,9 +57,9 @@ module.exports = function (config) {
             'app/reports/**/*.js',
             'app/registration/**/*.js',
             'test/support/**/*.js',
-            'test/unit/**/*.js',
             'test/integration/**/*.js',
             'test/integration/utils/*.js',
+            'test/unit/**/*.js',
             "test/unit/common/util/dateTimeFormatter.spec.js"
         ],
         exclude:[
