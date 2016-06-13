@@ -292,6 +292,9 @@
             if (this.getControlType() === 'autocomplete') {
                 return _.isEmpty(this.primaryObs.value) || _.isObject(this.primaryObs.value);
             }
+            if(this.primaryObs.hasValue() && this.primaryObs.erroneousValue){
+                return false;
+            }
             return true;
         },
 
