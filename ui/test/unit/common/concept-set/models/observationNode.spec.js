@@ -214,6 +214,17 @@ describe("ObservationNode", function () {
             expect(observation.isValid()).toBeFalsy();
         });
 
+
+        it ("should be an invalid observation if value is integer and value is outside the absolute range", function () {
+            pulse.allowDecimal = false;
+            var observation = mapper.map(observations, pulseData, {});
+            observation.primaryObs.value = 700;
+            expect(observation.isValid()).toBeFalsy();
+            expect(observation.primaryObs.erroneousValue).toBeTruthy();
+        });
+
+
+
     });
 
     function buildConcept(name, setMembers, answers, classname, datatype) {
