@@ -14,7 +14,6 @@ angular.module('bahmni.registration')
                 showStartVisitButton = showStartVisitButton != null ? showStartVisitButton : true;
                 var isOfflineApp = offlineService.isOfflineApp();
 
-
                 function setForwardActionKey() {
                     if (editActionsConfig.length == 0 && isOfflineApp) {
                         $scope.forwardActionKey = undefined;
@@ -39,7 +38,7 @@ angular.module('bahmni.registration')
                     };
                     spinner.forPromise(visitService.search(searchParams).then(function (data) {
                         self.hasActiveVisit = data.data.results && (data.data.results.length > 0);
-                        self.hasActiveVisit = self.hasActiveVisit ? self.hasActiveVisit : (isOfflineApp ? true: false);
+                        self.hasActiveVisit = self.hasActiveVisit ? self.hasActiveVisit : (isOfflineApp ? true : false);
                         setForwardActionKey();
                     }));
                 };
@@ -59,7 +58,7 @@ angular.module('bahmni.registration')
                     $scope.actions.submitSource = source;
                 };
 
-                $scope.showStartVisitButton = function(){
+                $scope.showStartVisitButton = function () {
                     return showStartVisitButton;
                 };
 
@@ -93,30 +92,15 @@ angular.module('bahmni.registration')
 
 
                 var createVisit = function (patientProfileData, forwardUrl) {
-                    spinner.forPromise($scope.visitControl.createOnlyVisit(patientProfileData.patient.uuid, loginLocationUuid).then(function () {
+                    spinner.forPromise($scope.visitControl.createVisitOnly(patientProfileData.patient.uuid).then(function () {
                         if (forwardUrl) {
                             $window.location.href = forwardUrl;
                         } else {
                             goToVisitPage(patientProfileData);
                         }
-                    }, function() {
+                    }, function () {
                         $state.go('patient.edit', {patientUuid: $scope.patient.uuid});
                     }));
-                };
-
-                var createEncounterObject = function () {
-                    var regEncounterTypeUuid = $rootScope.regEncounterConfiguration.encounterTypes[Bahmni.Registration.Constants.registrationEncounterType];
-                    var locationUuid = sessionService.getLoginLocationUuid();
-                    var encounter = {
-                        locationUuid: locationUuid,
-                        providers: [],
-                        encounterTypeUuid: regEncounterTypeUuid
-                    };
-                    if ($rootScope.currentProvider && $rootScope.currentProvider.uuid) {
-                        $bahmniCookieStore.put(Bahmni.Common.Constants.grantProviderAccessDataCookieName, $rootScope.currentProvider, {path: '/', expires: 1});
-                        //encounter.providers.push({"uuid": $rootScope.currentProvider.uuid});
-                    }
-                    return encounter;
                 };
 
                 init();

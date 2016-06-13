@@ -5,11 +5,7 @@ angular.module('bahmni.common.domain')
         this.getVisit = function (uuid, params) {
             return $q.when({data : {results: {}}});
         };
-
-        this.getVisitForAdmissionDetails = function (uuid) {
-            return $q.when({data : {results: {}}});
-        };
-
+        
         this.endVisit = function (visitUuid) {
             return $q.when({data : {results: {}}});
         };
