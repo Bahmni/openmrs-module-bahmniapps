@@ -189,8 +189,18 @@ Bahmni.Clinical.DrugOrderViewModel = function (config, proto, encounterDate) {
         return (!variableDosingType.morningDose && !variableDosingType.afternoonDose && !variableDosingType.eveningDose);
     };
 
+
+
     var asNeeded = function (asNeeded) {
-        return asNeeded ? config.translate(null, 'MEDICATION_AS_NEEDED') : '';
+        if(asNeeded && config.translate){
+            return config.translate(null, 'MEDICATION_AS_NEEDED')
+        }
+        else if(asNeeded) {
+            return 'sos'
+        }
+        else{
+            return ''
+        }
     };
 
     var blankIfFalsy = function (value) {
