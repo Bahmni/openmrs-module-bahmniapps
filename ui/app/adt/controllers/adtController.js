@@ -25,7 +25,7 @@ angular.module('bahmni.adt')
             var defaultVisitTypeUuid = getVisitTypeUuid($scope.defaultVisitTypeName);
 
             var getCurrentVisitTypeUuid = function() {
-                if ($scope.visitSummary && $scope.visitSummary.dateCompleted == null) {
+                if ($scope.visitSummary && $scope.visitSummary.dateCompleted === null) {
                     return getVisitTypeUuid($scope.visitSummary.visitType);
                 }
                 return defaultVisitTypeUuid;
@@ -79,7 +79,7 @@ angular.module('bahmni.adt')
             var getDispositionActions = function (actions) {
                 var visitSummary = $scope.visitSummary;
                 var stopDate = visitSummary && visitSummary.stopDateTime;
-                var isVisitOpen = (stopDate == null);
+                var isVisitOpen = (stopDate === null);
                 if (visitSummary && visitSummary.isDischarged() && isVisitOpen) {
                     return filterAction(actions, ["Undo Discharge"]);
                 } else if (visitSummary && visitSummary.isAdmitted() && isVisitOpen) {

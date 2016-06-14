@@ -9,7 +9,7 @@ angular.module('bahmni.adt')
                     $scope.expanded = $rootScope.currentUser.isFavouriteWard($scope.ward.ward.name);
                     $scope.showWardList();
                 } else {
-                    $scope.expanded = ($rootScope.bedDetails && $rootScope.bedDetails.wardUuid == $scope.ward.ward.uuid);
+                    $scope.expanded = ($rootScope.bedDetails && $rootScope.bedDetails.wardUuid === $scope.ward.ward.uuid);
                     $scope.showWardLayout();
                 }
             };
@@ -26,7 +26,7 @@ angular.module('bahmni.adt')
             };
 
             $scope.toggleWardView = function(){
-                if ($scope.currentView == 'wardLayout') {
+                if ($scope.currentView === 'wardLayout') {
                     $scope.showWardList()
                 }
                 else {

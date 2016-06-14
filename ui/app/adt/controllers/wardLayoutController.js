@@ -97,7 +97,7 @@ angular.module('bahmni.adt')
 
             $scope.highlightCurrentPatient = function (cell) {
                 var currentBed = $scope.getCurrentBed();
-                return !$scope.readOnly && (currentBed && currentBed.bedId == cell.bed.bedId);
+                return !$scope.readOnly && (currentBed && currentBed.bedId === cell.bed.bedId);
             };
 
             init();

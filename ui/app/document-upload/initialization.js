@@ -30,9 +30,9 @@ angular.module('opd.documentupload').factory('initialization',
                     deferrable.reject();
                 };
 
-                if($rootScope.appConfig.encounterType == null) {
+                if($rootScope.appConfig.encounterType === null) {
                     throwValidationError("encounterType should be configured in config");
-                } else if($rootScope.encounterConfig.getEncounterTypeUuid($rootScope.appConfig.encounterType) == null) {
+                } else if($rootScope.encounterConfig.getEncounterTypeUuid($rootScope.appConfig.encounterType) === null) {
                     throwValidationError("Configured encounterType does not exist");
                 }
 

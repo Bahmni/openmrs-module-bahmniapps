@@ -29,9 +29,9 @@ Bahmni.ADT.WardDetails.create = function(details, diagnosisStatus) {
     details.forEach(function(detail) {
         detailsMap[detail.Id] = detailsMap[detail.Id] || copyProperties({}, detail, attributesToCopy);
         detailsMap[detail.Id].Diagnosis = detailsMap[detail.Id].Diagnosis || [];
-        if(detail.Diagnosis != null) {
+        if(detail.Diagnosis !== undefined) {
             var diagnosis = copyProperties({}, detail, diagnosisProperties);
-            diagnosis.ruledOut = diagnosis["Diagnosis Status"] == "Ruled Out Diagnosis";
+            diagnosis.ruledOut = diagnosis["Diagnosis Status"] === "Ruled Out Diagnosis";
             if(diagnosis.ruledOut) {
                 diagnosis.diagnosisStatus = diagnosisStatus;
             }

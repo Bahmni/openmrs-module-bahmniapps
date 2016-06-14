@@ -20,9 +20,9 @@ angular.module('bahmni.adt')
                         empty: isEmpty(bedLayout),
                         available: isAvailable(bedLayout),
                         bed: {
-                            bedId: bedLayout != null && bedLayout.bedId,
-                            bedNumber: bedLayout != null && bedLayout.bedNumber,
-                            bedType: bedLayout != null && bedLayout.bedType != null && bedLayout.bedType.displayName
+                            bedId: bedLayout !== null && bedLayout.bedId,
+                            bedNumber: bedLayout !== null && bedLayout.bedNumber,
+                            bedType: bedLayout !== null && bedLayout.bedType !== null && bedLayout.bedType.displayName
                         }
                     })
                 }
@@ -53,11 +53,11 @@ angular.module('bahmni.adt')
         };
 
         var isEmpty = function (bedLayout) {
-            return bedLayout == null || bedLayout.bedId == null;
+            return bedLayout === null || bedLayout.bedId === null;
         };
 
          var isAvailable = function (bedLayout) {
-            if (bedLayout == null) {
+            if (bedLayout === null) {
                 return false;
             }
             return bedLayout.status === "AVAILABLE";

@@ -43,8 +43,8 @@
                 };
 
                 $scope.remove = function (orderSetMember) {
-                    if (orderSetMember.retired == false) {
-                        if ($scope.orderSet.orderSetMembers.length == 2) {
+                    if (orderSetMember.retired === false) {
+                        if ($scope.orderSet.orderSetMembers.length === 2) {
                             messagingService.showMessage('error', 'An orderSet should have a minimum of two orderSetMembers');
                             return;
                         }
