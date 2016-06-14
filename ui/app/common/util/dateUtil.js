@@ -271,5 +271,8 @@ Bahmni.Common.Util.DateUtil = {
 
     parseServerDateToDate: function(longDate){
         return longDate ? moment(longDate,"YYYY-MM-DDTHH:mm:ss.SSSZZ").toDate() : null;
+    },
+    getDateTimeInSpecifiedFormat: function(date, format){
+        return date ? moment(date).format(format) : null;
     }
 };

@@ -10,7 +10,9 @@ angular.module('bahmni.common.offline')
             };
 
             var insertMarker = function (markerName, uuid, catchmentNumber) {
-                return $q.when(AndroidOfflineService.insertMarker(markerName, uuid, catchmentNumber));
+                var value = AndroidOfflineService.insertMarker(markerName, uuid, catchmentNumber);
+                value = value != undefined ? JSON.parse(value) : value;
+                return $q.when(value);
 
             };
 

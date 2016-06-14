@@ -331,4 +331,15 @@ describe('DateUtil', function () {
        })
 
     });
+
+    describe("getDateTimeInSpecifiedFormat", function(){
+        it("should return the date in the specified format, say \"dddd, MMMM Do YYYY, HH:mm:ss\"", function(){
+            expect(dateUtil.getDateTimeInSpecifiedFormat("2016-06-10T10:36:21.310Z", "dddd, MMMM Do YYYY, HH:mm:ss")).toBe("Friday, June 10th 2016, 16:06:21");
+        })
+
+        it("should return null if date is not passed and say format is \"dddd, MMMM Do YYYY, HH:mm:ss\"", function(){
+            expect(dateUtil.getDateTimeInSpecifiedFormat(undefined, "dddd, MMMM Do YYYY, HH:mm:ss")).toBe(null);
+        })
+
+    });
 });

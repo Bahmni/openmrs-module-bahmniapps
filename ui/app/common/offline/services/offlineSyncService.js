@@ -136,7 +136,8 @@ angular.module('bahmni.common.offline')
                         event.object = Bahmni.Common.Constants.offlineBahmniEncounterUrl + uuid + "?includeAll=true";
                     }
                     return eventLogService.getDataForUrl(Bahmni.Common.Constants.hostURL + event.object).then(function (response) {
-                        return saveData(event, response).then(updateMarker(event).then(function () {
+                        return saveData(event, response).then(updateMarker(event).then(function (lastEvent) {
+                            offlineService.setItem("lastSyncTime", lastEvent.lastReadTime);
                             return readEvent(events, ++index, category);
                         }));
                     }).catch(function(response) {

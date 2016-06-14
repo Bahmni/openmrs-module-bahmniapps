@@ -21,15 +21,16 @@ angular.module('bahmni.common.offline')
         var insertMarker = function (markerName, eventUuid, catchmentNumber) {
             var markerTable = db.getSchema().table('event_log_marker');
 
-            var row = markerTable.createRow({
+            var marker = {
                 markerName: markerName,
                 lastReadEventUuid: eventUuid,
                 catchmentNumber: catchmentNumber,
                 lastReadTime: new Date()
-            });
+            };
+            var row = markerTable.createRow(marker);
 
             return insertOrUpdateMarker(markerTable, row).then(function () {
-                return eventUuid;
+                return marker;
             });
         };
 
