@@ -66,7 +66,7 @@ Bahmni.DocumentUpload.Visit = function () {
     };
 
     this.isNew = function () {
-        return this.uuid == null;
+        return this.uuid === null;
     };
 
     this.hasFiles = function () {
@@ -97,7 +97,7 @@ Bahmni.DocumentUpload.Visit = function () {
         var alreadyPresent = this.files.filter(function (img) {
             return img.encodedValue === file;
         });
-        if (alreadyPresent.length == 0) {
+        if (alreadyPresent.length === 0) {
             savedImage = new DocumentImage({"encodedValue": file, "new": true});
             this.files.push(savedImage);
         }

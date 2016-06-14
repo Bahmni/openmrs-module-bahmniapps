@@ -33,7 +33,7 @@ angular.module('bahmni.reports')
                 messagingService.showMessage("error", "Select format for the report: " + report.name);
                 return;
             }
-            if (report.responseType == 'application/vnd.ms-excel-custom' && !report.reportTemplateLocation) {
+            if (report.responseType === 'application/vnd.ms-excel-custom' && !report.reportTemplateLocation) {
                 if (!report.config.macroTemplatePath) {
                     messagingService.showMessage("error", "Workbook template should be selected for generating report: " + report.name);
                     return;
@@ -53,7 +53,7 @@ angular.module('bahmni.reports')
                 messagingService.showMessage("error", "Please select the " + msg.join(" and "))
             } else {
                 reportService.generateReport(report);
-                if (report.responseType == 'application/vnd.ms-excel-custom') {
+                if (report.responseType === 'application/vnd.ms-excel-custom') {
                     report.reportTemplateLocation = undefined;
                     report.responseType = _.values($scope.formats)[0];
                 }

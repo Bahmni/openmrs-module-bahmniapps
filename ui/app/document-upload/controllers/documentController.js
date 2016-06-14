@@ -86,8 +86,8 @@ angular.module('opd.documentupload')
                 newVisitWithoutTime.stopDatetime = $scope.newVisit.stopDatetime ? DateUtil.getDate($scope.newVisit.stopDatetime) : newVisitWithoutTime.startDatetime;
                 var visitStartStopDateTime = $scope.visits.map(getVisitStartStopDateTime);
                 var existingVisitsInSameRange = visitStartStopDateTime.filter(filterExistingVisitsInSameDateRange);
-                $scope.isDateValid = existingVisitsInSameRange.length == 0;
-                return existingVisitsInSameRange.length == 0;
+                $scope.isDateValid = existingVisitsInSameRange.length === 0;
+                return existingVisitsInSameRange.length === 0;
             };
 
             var getVisits = function () {
@@ -116,19 +116,19 @@ angular.module('opd.documentupload')
             };
 
             var setDefaultConcept = function(topLevelConcept) {
-                if (topLevelConcept.setMembers.length == 1) {
+                if (topLevelConcept.setMembers.length === 1) {
                     var concept = topLevelConcept.setMembers[0];
                     $scope.defaultConcept = {'concept':{uuid:concept.uuid, name:concept.name.name, editableName:concept.name.name}, 'value':concept.name.name};
                 }else if($rootScope.appConfig.defaultOption){
                     var concept = topLevelConcept.setMembers.filter(function(member){
-                        return member.name.name == $rootScope.appConfig.defaultOption;
+                        return member.name.name === $rootScope.appConfig.defaultOption;
                     })[0];
                     $scope.defaultConcept = {'concept':{uuid:concept.uuid, name:concept.name.name, editableName:concept.name.name}, 'value':concept.name.name};
                 }
             };
 
             var getTopLevelConcept = function () {
-                if($rootScope.appConfig.topLevelConcept == null ) {
+                if($rootScope.appConfig.topLevelConcept === null ) {
                     topLevelConceptUuid = null;
                     return $q.when({});
                 }
@@ -256,7 +256,7 @@ angular.module('opd.documentupload')
                     var fileUrl = file.encodedValue.replace(Bahmni.Common.Constants.documentsPath + "/", "");
                     if(!visit.isSaved(file)) {
                         visitDocument.documents.push({testUuid: file.concept.uuid, image: fileUrl, obsDateTime: getEncounterStartDateTime(visit)})
-                    } else if (file.changed == true || file.voided == true) {
+                    } else if (file.changed === true || file.voided === true) {
                         visitDocument.documents.push({testUuid: file.concept.uuid, image: fileUrl, voided: file.voided, obsUuid: file.obsUuid});
                     }
                 });
