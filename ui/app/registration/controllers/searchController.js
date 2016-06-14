@@ -101,7 +101,7 @@ angular.module('bahmni.registration')
             };
 
             var mapCustomAttributesSearchResults = function(data){
-                if(( $scope.personSearchResultsConfig.fields) && data != "Searching"){
+                if(( $scope.personSearchResultsConfig.fields) && data !== "Searching"){
                     _.map(data.pageOfResults, function(result){
                         result.customAttribute = result.customAttribute && JSON.parse(result.customAttribute);
                     });
@@ -109,7 +109,7 @@ angular.module('bahmni.registration')
             };
 
             var mapAddressAttributesSearchResults = function(data){
-                if(($scope.addressSearchResultsConfig.fields) && data != "Searching"){
+                if(($scope.addressSearchResultsConfig.fields) && data !== "Searching"){
                     _.map(data.pageOfResults, function(result){
                         try{
                             result.addressFieldValue = JSON.parse(result.addressFieldValue);
@@ -120,7 +120,7 @@ angular.module('bahmni.registration')
             };
 
             var mapProgramAttributesSearchResults = function (data) {
-                if(( $scope.programAttributesSearchConfig.field ) && data != "Searching") {
+                if(( $scope.programAttributesSearchConfig.field ) && data !== "Searching") {
                     _.map(data.pageOfResults, function (result) {
                         var programAttributesObj ={};
                         var arrayOfStringOfKeysValue = result.patientProgramAttributeValue && result.patientProgramAttributeValue.substring(2, result.patientProgramAttributeValue.length-2).split('","');

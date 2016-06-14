@@ -92,7 +92,7 @@ angular.module('bahmni.registration')
                 if (fieldsToPopulate) {
                     _.each(fieldsToPopulate, function(field) {
                         var addressLevel = _.find($scope.addressLevels, function(level) {
-                            return level.name == field;
+                            return level.name === field;
                         });
                         if (addressLevel) {
                             $scope.patient.address[addressLevel.addressField] = $rootScope.loggedInLocation[addressLevel.addressField];
@@ -150,7 +150,7 @@ angular.module('bahmni.registration')
                 return patientService.create($scope.patient, jumpAccepted).then(function(response){
                     copyPatientProfileDataToScope(response);
                 },function(response){
-                    if(response.status == 412) {
+                    if(response.status === 412) {
                         getConfirmationViaNgDialog({
                             template: 'views/customIdentifierConfirmation.html',
                             data: {

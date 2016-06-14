@@ -28,7 +28,7 @@ angular.module('bahmni.registration')
 
             $scope.isPatientRelationship = function (relationship) {
                 var relationshipType = getRelationshipType(relationship);
-                return relationshipType && (_.isUndefined(relationshipType.searchType) || relationshipType.searchType == "patient");
+                return relationshipType && (_.isUndefined(relationshipType.searchType) || relationshipType.searchType === "patient");
             };
 
             var getRelationshipType = function(relationship){
@@ -48,7 +48,7 @@ angular.module('bahmni.registration')
 
             $scope.isProviderRelationship = function (relationship) {
                 var relationshipType = getRelationshipType(relationship);
-                return relationshipType && relationshipType.searchType == "provider";
+                return relationshipType && relationshipType.searchType === "provider";
             };
 
             $scope.getRelationshipType = function (uuid) {
@@ -61,7 +61,7 @@ angular.module('bahmni.registration')
                 if(!relationship.personA) {
                     return "";
                 }
-                if(relationship.personA.uuid == personUuid){
+                if(relationship.personA.uuid === personUuid){
                     return relationshipType.aIsToB;
                 }else{
                     return relationshipType.bIsToA;
@@ -88,7 +88,7 @@ angular.module('bahmni.registration')
                     }
 
                     var patients = response.data.pageOfResults;
-                    if (patients.length == 0) {
+                    if (patients.length === 0) {
                         return;
                     }
                     relationship.content = getPatientGenderAndAge(patients[0]);
@@ -105,7 +105,7 @@ angular.module('bahmni.registration')
             };
 
             var getPersonRelatedTo = function(relationship){
-               return relationship.personA && relationship.personA.uuid == $scope.patient.uuid ? relationship.personB : relationship.personA
+               return relationship.personA && relationship.personA.uuid === $scope.patient.uuid ? relationship.personB : relationship.personA
             };
 
             $scope.openPatientDashboardInNewTab = function (relationship) {
@@ -171,7 +171,7 @@ angular.module('bahmni.registration')
                 }
 
                 var emptyRows = _.filter($scope.patient.newlyAddedRelationships, $scope.isEmpty);
-                if (emptyRows.length == 0) {
+                if (emptyRows.length === 0) {
                     $scope.addPlaceholderRelationship();
                 }
             };

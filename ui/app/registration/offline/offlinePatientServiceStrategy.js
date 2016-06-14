@@ -69,7 +69,7 @@ angular.module('bahmni.registration')
                         var foundAttribute = _.find(attributeTypes, function (attributeType) {
                             return attributeType.uuid === attribute.attributeType.uuid
                         });
-                        if (foundAttribute != undefined && foundAttribute.format != undefined) {
+                        if (foundAttribute && foundAttribute.format) {
                             if ("java.lang.Integer" === foundAttribute.format || "java.lang.Float" === foundAttribute.format) {
                                 attribute.value = parseFloat(attribute.value);
                             } else if ("java.lang.Boolean" === foundAttribute.format) {

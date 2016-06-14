@@ -6,7 +6,7 @@ Bahmni.Clinical.OrdersMapper = function(nameToSort){
 
 Bahmni.Clinical.OrdersMapper.prototype.group = function(orders, groupingParameter) {
     var getGroupingFunction = function (groupingParameter) {
-        if (groupingParameter == 'date') {
+        if (groupingParameter === 'date') {
             return function (order) {
                 if(order.startDate){
                     return Bahmni.Common.Util.DateUtil.getDate(order.startDate);

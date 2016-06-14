@@ -6,7 +6,7 @@ angular.module('bahmni.clinical')
             var visits = _.clone($scope.visits).reverse();
             
             var visitIndex = _.findIndex(visits, function(visitHistoryEntry) {
-                return $scope.currentVisitUuid != null && visitHistoryEntry.uuid === $scope.currentVisitUuid;
+                return $scope.currentVisitUuid !== null && visitHistoryEntry.uuid === $scope.currentVisitUuid;
             });
 
             $scope.visitHistoryEntry = visits[visitIndex];
@@ -16,7 +16,7 @@ angular.module('bahmni.clinical')
             };
 
             $scope.hasNext = function () {
-                return visitIndex != -1 && visitIndex < (visits.length - 1);
+                return visitIndex !== -1 && visitIndex < (visits.length - 1);
             };
 
             $scope.hasPrevious = function () {

@@ -18,7 +18,7 @@ Bahmni.ConsultationMapper = function (dosageFrequencies, dosageInstructions, con
         });
         var labResults = new Bahmni.LabResultsMapper().map(encounterTransaction);
         var nonVoidedDrugOrders = encounterTransaction.drugOrders.filter(function (order) {
-            return !order.voided && order.action != Bahmni.Clinical.Constants.orderActions.discontinue;
+            return !order.voided && order.action !== Bahmni.Clinical.Constants.orderActions.discontinue;
         });
         nonVoidedDrugOrders = filterPreviousOrderOfRevisedOrders(nonVoidedDrugOrders);
         var treatmentDrugs = nonVoidedDrugOrders.map(function (drugOrder) {
@@ -33,7 +33,7 @@ Bahmni.ConsultationMapper = function (dosageFrequencies, dosageInstructions, con
         });
 
         var orders = encounterTransaction.orders.filter(function (order) {
-            return order.action != Bahmni.Clinical.Constants.orderActions.discontinue && !order.dateStopped;
+            return order.action !== Bahmni.Clinical.Constants.orderActions.discontinue && !order.dateStopped;
         });
 
         var mdrtbSpecimen = encounterTransaction.extensions.mdrtbSpecimen && encounterTransaction.extensions.mdrtbSpecimen.map(function (specimen) {

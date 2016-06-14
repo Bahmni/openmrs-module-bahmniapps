@@ -46,7 +46,7 @@
     };
 
     configPrototype.shouldDrawReferenceLines = function(){
-        return this.referenceData != undefined && this.yAxisConcepts && this.yAxisConcepts.length == 1;
+        return this.referenceData !== undefined && this.yAxisConcepts && this.yAxisConcepts.length === 1;
     };
 
     configPrototype.getReferenceDataFileName = function() {

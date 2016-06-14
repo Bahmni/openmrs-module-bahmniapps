@@ -582,12 +582,12 @@ angular.module('bahmni.clinical')
                 if ($scope.consultation.discontinuedDrugs) {
                     $scope.consultation.discontinuedDrugs.forEach(function (discontinuedDrug) {
                         var removableOrder = _.find(activeDrugOrders, {uuid: discontinuedDrug.uuid});
-                        if (discontinuedDrug != null) {
+                        if (discontinuedDrug) {
                             removableOrder.orderReasonText = discontinuedDrug.orderReasonText;
                             removableOrder.dateActivated = discontinuedDrug.dateStopped;
                             removableOrder.scheduledDate = discontinuedDrug.dateStopped;
 
-                            if (discontinuedDrug.orderReasonConcept != null && discontinuedDrug.orderReasonConcept.name) {
+                            if (discontinuedDrug.orderReasonConcept && discontinuedDrug.orderReasonConcept.name) {
                                 removableOrder.orderReasonConcept = {
                                     name: discontinuedDrug.orderReasonConcept.name.name,
                                     uuid: discontinuedDrug.orderReasonConcept.uuid
