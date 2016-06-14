@@ -94,5 +94,9 @@ angular.module('bahmni.home')
                 getSyncStatusInfo();
             });
 
+            $scope.getStatusStyleCode = function () {
+                return $scope.syncStatusMessage && ($scope.syncStatusMessage.match(/.*Success.*/i)? 'success' : $scope.syncStatusMessage.match(/.*Pending.*/i) ? 'pending' : $scope.syncStatusMessage.match(/.*Failed.*/i) ? 'fail' : 'inProgress');
+            };
+
             return spinner.forPromise($q.all(init()));
         }]);
