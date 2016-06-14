@@ -1,6 +1,6 @@
 <div class="concept-set-conatiner">
     <section class="block treatment-section">
-        <h class="has-toggle section-title" ng-if="::params | titleTranslate"/>
+        <h2 ng-if="::params.translationKey" class="section-title">{{::params | titleTranslate}} </h2>
         <p class="placeholder-text" ng-if="::(drugOrderSections && drugOrderSections.length == 0)">{{::'NO_TREATMENTS_MESSAGE' | translate}} </p>
         <table ng-repeat="drugOrderSection in ::drugOrderSections | orderBy: drugOrderSection.visitDate" class="repeated-table drug-order-table">
             <thead>
