@@ -237,7 +237,7 @@ angular.module('bahmni.common.uicontrols.programmanagment')
 
             $scope.getCurrentStateDisplayName = function(program){
                 var currentState = getActiveState(program.states);
-                return currentState && currentState.state.concept.display;
+                return _.get(currentState,'currentState.state.concept.display');
             };
 
             $scope.getMaxAllowedDate = function (states) {
