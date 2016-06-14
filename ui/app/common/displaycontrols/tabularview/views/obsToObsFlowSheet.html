@@ -36,7 +36,7 @@
                             <span class="fl" ng-if="header.name === config.groupByConcept && isEditable" >
                                 <span class="has-link fl"
                                       ng-dialog="dashboard/views/dashboardSections/editObservationForm.html"
-                                      ng-dialog-class="ngdialog-theme-default ng-dialog-all-details-page"
+                                      ng-dialog-class="ngdialog-theme-default ng-dialog-all-details-page ng-dialog-edit"
                                       ng-dialog-data="{{::getEditObsData(row.columns[header.name][0])}}">
                                      <i class="fl fa fa-pencil"></i>
                                 </span>
@@ -63,7 +63,7 @@
                         <span class="fl" ng-if="header.name === config.groupByConcept && isEditable" >
                                 <span class="has-link fl"
                                       ng-dialog="dashboard/views/dashboardSections/editObservationForm.html"
-                                      ng-dialog-class="ngdialog-theme-default ng-dialog-all-details-page"
+                                      ng-dialog-class="ngdialog-theme-default ng-dialog-all-details-page  ng-dialog-edit"
                                       ng-dialog-data="{{::getEditObsData(row.columns[header.name][0])}}">
                                      <i class="fl fa fa-pencil"></i>
                                 </span>
