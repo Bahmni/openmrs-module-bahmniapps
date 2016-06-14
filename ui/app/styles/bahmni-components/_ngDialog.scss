@@ -155,6 +155,7 @@ div.ngdialog-close {
         }
         .ngdialog-overlay{
             top: 52px;
+            height:100%;
             @media (max-width :1024px) {
                 right: 0px;
                 display: none;
@@ -189,7 +190,7 @@ div.ngdialog-close {
             max-width: 1180px;
             width: 100%;
             margin: 0 auto;
-            min-height: 98%;
+            height: 98%;
             margin-top: -52px;
             margin-bottom: 20px;
             padding: 0;
@@ -198,26 +199,52 @@ div.ngdialog-close {
                 margin-left:auto;
                 margin-right:auto;
                 max-width: 1000px;
-                height: 610px;
-                min-height: 610px;
-                overflow: auto;
+                height:95%;
+                //height: 610px;
+                //min-height: 610px;
                 box-sizing: border-box;
                 padding: 0 0px 10px;
             }
             .template-container {
                 padding:10px 20px;
-                position: absolute;
                 width: 100%;
-                margin-bottom: 20px;
-                margin-top: 20px;
-                overflow: hidden;
+                margin-bottom: 25px;
+                margin-top: 25px;
+                height:98%;
                 .concept-set-container{
                     max-height: 605px;
                     overflow-y: auto;
+                    height:84%;
+                    position: absolute;
+                    top:57px;
                    &:-webkit-scrollbar-track{
                        width:10px;
                    }
+                    &.concept-set-container-lab{
+                        height:84%;
+                    }
 
+                }
+                section{
+                    height: 98%;
+                    &.form-field-inline{
+                        height:auto;
+                    }
+                }
+
+                .edit-bacteriology-section ,.bacteriology-container, .bacteriology-container .sample-container ,.bacteriology-container .sample-container ,.bacteriology-container form{
+                    height:100%;
+                    width: 100%;
+                }
+                .edit-bacteriology-section>div{
+                    width:100%;
+                    height:100%;
+                    position: relative;
+                }
+                .section-grid{
+                    position: absolute;
+                    width: 100%;
+                    height: 97%;
                 }
                 @media (max-width :1024px) {
                     position: static;
@@ -232,10 +259,26 @@ div.ngdialog-close {
         }
     }
 }
-.ng-dialog-view .ngdialog-content .concept-set-container-view{
-    max-height: 605px;
+.ng-dialog-all-details-page .ngdialog-content .template-container .concept-set-container {
+    width:97%;
+
+}
+
+.ng-dialog-view .ngdialog-content .template-container {
     overflow-y: auto;
-    &:-webkit-scrollbar-track{
-        width:10px;
+    section{
+        height:auto!important;
     }
+    .concept-set-container {
+        height:84%;
+    }
+}
+.ng-dialog-all-details-page.ng-dialog-edit .ngdialog-content .template-container .concept-set-container {
+    width: 100%;
+    top: 41px;
+    height:84%;
+    section {
+        height: auto;
+    }
+
 }
