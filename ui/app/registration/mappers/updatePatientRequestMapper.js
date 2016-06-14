@@ -28,7 +28,7 @@ Bahmni.Registration.UpdatePatientRequestMapper = (function () {
                     attributes: this.getMrsAttributes(openMRSPatient, patient, patientAttributeTypes),
                     dead:patient.dead,
                     deathDate: Bahmni.Common.Util.DateUtil.getDateWithoutTime(patient.deathDate),
-                    causeOfDeath: patient.causeOfDeath != null ? patient.causeOfDeath.uuid : ''
+                    causeOfDeath: patient.causeOfDeath ? patient.causeOfDeath.uuid : ''
                 }
             }
         };
@@ -80,7 +80,7 @@ Bahmni.Registration.UpdatePatientRequestMapper = (function () {
         else if (attributeType.format === "org.openmrs.Concept") {
             attr.hydratedObject = value.conceptUuid;
         }
-        else if(attributeType.format == "org.openmrs.util.AttributableDate"){
+        else if(attributeType.format === "org.openmrs.util.AttributableDate"){
             var mnt = moment(value);
             attr.value = mnt.format('YYYY-MM-DDTHH:mm:ss.SSSZZ');
         }

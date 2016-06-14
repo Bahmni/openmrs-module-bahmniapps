@@ -57,7 +57,7 @@ angular.module('bahmni.clinical')
                 $scope.getDisplayName = function(data){
                     var concept = data.concept;
                     var displayName = data.concept.displayString;
-                    if(concept.names && concept.names.length === 1 && concept.names[0].name != ""){
+                    if(concept.names && concept.names.length === 1 && concept.names[0].name !== ""){
                         displayName = concept.names[0].name;
                     }
                     else if(concept.names && concept.names.length === 2){

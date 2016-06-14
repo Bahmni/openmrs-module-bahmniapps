@@ -28,7 +28,7 @@ Bahmni.Clinical.OrderObservationsMapper.prototype.map = function (observations, 
                 if (order.uuid === observation.orderUuid) {
                     makeCommentsAsAdditionalObs(observation);
                     obs.push(observation);
-                } else if (observation.orderUuid == null && observation.groupMembers.length > 0) {
+                } else if (observation.orderUuid === null && observation.groupMembers.length > 0) {
                     getObservationForOrderIfExist(observation.groupMembers, order, obs);
                 }
             });

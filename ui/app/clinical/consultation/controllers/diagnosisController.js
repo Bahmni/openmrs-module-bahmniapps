@@ -62,7 +62,7 @@ angular.module('bahmni.clinical')
                         var memberFound = _.find($scope.diagnosisMetaData.setMembers, function(member) {
                             return member.name.name === 'Bahmni Diagnosis Status'
                         });
-                        return memberFound != undefined;
+                        return memberFound !== undefined;
                     };
                 });
             };
@@ -151,7 +151,7 @@ angular.module('bahmni.clinical')
             };
 
             $scope.deleteDiagnosis = function(diagnosis) {
-                var obsUUid = diagnosis.existingObs != null ? diagnosis.existingObs : diagnosis.previousObs;
+                var obsUUid = diagnosis.existingObs !== null ? diagnosis.existingObs : diagnosis.previousObs;
 
                 spinner.forPromise(
                         diagnosisService.deleteDiagnosis(obsUUid).then(function() {

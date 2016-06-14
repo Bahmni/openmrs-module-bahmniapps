@@ -24,9 +24,9 @@ Bahmni.Common.AppFramework.AppDescriptor = function (context, inheritContext, re
         _.values(currentExtensions).forEach(function(extn) {
             if(extn) {
                 var existing = self[currentExtensionPoints].filter(function (ep) {
-                    return ep.id == extn.extensionPointId;
+                    return ep.id === extn.extensionPointId;
                 });
-                if (existing.length == 0) {
+                if (existing.length === 0) {
                     self[currentExtensionPoints].push({
                         id: extn.extensionPointId,
                         description: extn.description
@@ -52,7 +52,7 @@ Bahmni.Common.AppFramework.AppDescriptor = function (context, inheritContext, re
         if (template.configOptions) {
             _.values(template.configOptions).forEach(function(opt) {
                 var existing = self.configs.filter(function(cfg) {
-                    return cfg.name == opt.name;
+                    return cfg.name === opt.name;
                 });
                 if (existing.length > 0) {
                     existing[0].description = opt.description;
@@ -83,7 +83,7 @@ Bahmni.Common.AppFramework.AppDescriptor = function (context, inheritContext, re
             extensionPoints.forEach(function (iep) {
                 if (iep) {
                     var existing = self[currentExtensionPoints].filter(function (ep) {
-                        return ep.id == iep.id;
+                        return ep.id === iep.id;
                     });
                     if (existing.length === 0) {
                         self[currentExtensionPoints].push(iep);
@@ -153,7 +153,7 @@ Bahmni.Common.AppFramework.AppDescriptor = function (context, inheritContext, re
 
     var getConfig = function(config, configName){
         var cfgList = _.values(config).filter(function (cfg) {
-            return cfg.name == configName;
+            return cfg.name === configName;
         });
         return (cfgList.length > 0) ? cfgList[0] : null;
     }

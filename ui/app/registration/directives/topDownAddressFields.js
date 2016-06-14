@@ -47,7 +47,7 @@ angular.module('bahmni.registration')
 
         //wait for address to be resolved in edit patient scenario
         var deregisterAddressWatch = $scope.$watch('address', function(newValue){
-            if(newValue != undefined) {
+            if(newValue !== undefined) {
                 populateSelectedAddressUuids(0);
                 deregisterAddressWatch();
             }
@@ -76,7 +76,7 @@ angular.module('bahmni.registration')
             var index = _.findIndex($scope.addressLevels, found);
             var parentFieldName;
             var topLevel = 0;
-            if (index != topLevel) {
+            if (index !== topLevel) {
                 var parent = $scope.addressLevels[index - 1];
                 parentFieldName = parent.addressField;
             }

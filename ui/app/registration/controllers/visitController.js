@@ -91,7 +91,7 @@ angular.module('bahmni.registration')
             $scope.closeVisitIfDischarged = function () {
                 visitService.getVisitSummary(self.visitUuid).then(function (response) {
                     var visitSummary = response.data;
-                    if (visitSummary.admissionDetails != null && visitSummary.dischargeDetails === null) {
+                    if (visitSummary.admissionDetails && !visitSummary.dischargeDetails) {
                         messagingService.showMessage("error", 'REGISTRATION_VISIT_CANNOT_BE_CLOSED');
                     } else {
                         closeVisit();
@@ -157,7 +157,7 @@ angular.module('bahmni.registration')
             };
             var isValid = function (mandatoryConcepts){
                 var concept = mandatoryConcepts.filter(function(mandatoryConcept){
-                    return mandatoryConcept.value == undefined;
+                    return !mandatoryConcept.value;
                 });
                 return _.isEmpty(concept);
             };

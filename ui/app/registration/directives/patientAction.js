@@ -9,15 +9,15 @@ angular.module('bahmni.registration')
                 var editActionsConfig = appService.getAppDescriptor().getExtensions(Bahmni.Registration.Constants.nextStepConfigId, "config");
                 var loginLocationUuid = $bahmniCookieStore.get(Bahmni.Common.Constants.locationCookieName).uuid;
                 var defaultVisitType = $rootScope.regEncounterConfiguration.getDefaultVisitType(loginLocationUuid);
-                defaultVisitType = defaultVisitType != null ? defaultVisitType : appService.getAppDescriptor().getConfigValue('defaultVisitType');
+                defaultVisitType = defaultVisitType ? defaultVisitType : appService.getAppDescriptor().getConfigValue('defaultVisitType');
                 var showStartVisitButton = appService.getAppDescriptor().getConfigValue("showStartVisitButton");
-                showStartVisitButton = showStartVisitButton != null ? showStartVisitButton : true;
+                showStartVisitButton = showStartVisitButton ? showStartVisitButton : true;
                 var isOfflineApp = offlineService.isOfflineApp();
 
                 function setForwardActionKey() {
-                    if (editActionsConfig.length == 0 && isOfflineApp) {
+                    if (editActionsConfig.length === 0 && isOfflineApp) {
                         $scope.forwardActionKey = undefined;
-                    } else if (editActionsConfig.length == 0) {
+                    } else if (editActionsConfig.length === 0) {
                         $scope.forwardActionKey = self.hasActiveVisit ? 'enterVisitDetails' : 'startVisit';
                     } else {
                         $scope.actionConfig = editActionsConfig[0];

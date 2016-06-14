@@ -29,7 +29,7 @@ angular.module('bahmni.clinical')
                 var mappedVisitUuids = _.map(visits, function (visit) {
                     return visit.uuid;
                 });
-                if(mappedVisitUuids && mappedVisitUuids.length == 0){
+                if(mappedVisitUuids && mappedVisitUuids.length === 0){
                     deferred.resolve({"data": {}});
                 }
                 params.visitUuids = mappedVisitUuids || [];
@@ -37,7 +37,7 @@ angular.module('bahmni.clinical')
                     _.each(results, function(result){
                         var drugOrders = result.encounter.drugOrders ? result.encounter.drugOrders : [];
                         _.each(visits, function (visit) {
-                            if(result.encounter.visitUuid == visit.uuid){
+                            if(result.encounter.visitUuid === visit.uuid){
                                 result.encounter.visit = {startDateTime: visit.startDatetime}
                             }
                         });
@@ -57,7 +57,7 @@ angular.module('bahmni.clinical')
 
                     for(var index=0; index < visitDrugOrders.length; index++){
                         for(var indx=0; indx < uuids.length; indx++){
-                            if(uuids[indx] == visitDrugOrders[index].uuid){
+                            if(uuids[indx] === visitDrugOrders[index].uuid){
                                 visitDrugOrders.splice(index, 1);
                             }
                         }

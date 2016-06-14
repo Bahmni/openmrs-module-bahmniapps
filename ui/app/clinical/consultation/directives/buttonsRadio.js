@@ -26,7 +26,7 @@ angular.module('bahmni.clinical')
                 };
             },
             template:"<button type='button' class='btn' " +
-                "ng-class='{active: option == model}'" +
+                "ng-class='{active: option === model}'" +
                 "ng-repeat='option in options' " +
                 "ng-click='activate(option)'><span></span>{{option}} " +
                 "</button>"

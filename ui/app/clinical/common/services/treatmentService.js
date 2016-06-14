@@ -109,7 +109,7 @@ angular.module('bahmni.clinical')
             if(conceptSetToBeExcluded){
                 params.excludeConceptSet = conceptSetToBeExcluded;
             }
-            if(isActive != undefined){
+            if(isActive !== undefined){
                 params.isActive=isActive;
             }
             if(patientProgramUuid){

@@ -8,10 +8,10 @@ Bahmni.Clinical.DrugOrder.Util = {
             drugOrder.span = {};
 
             var areValuesEqual = function(value1, value2){
-                if(typeof value1 == "boolean" && typeof value2 == "boolean"){
-                    return value1 == value2;
+                if(typeof value1 === "boolean" && typeof value2 === "boolean"){
+                    return value1 === value2;
                 }
-                return value1 == value2 || (_.isEmpty(value1) && _.isEmpty(value2));
+                return value1 === value2 || (_.isEmpty(value1) && _.isEmpty(value2));
             };
 
             var foundDrugOrder = _.find(drugOrders, function (existingOrder) {
@@ -58,7 +58,7 @@ Bahmni.Clinical.DrugOrder.Util = {
         return drugOrders.sort(function (drug1, drug2) {
             var timeDifference = DateUtil.diffInSeconds(drug1.effectiveStartDate, drug2.effectiveStartDate);
             if (DateUtil.isSameDate(drug1.effectiveStartDate, drug2.effectiveStartDate)) {
-                return (timeDifference == 0) ? (drug1.orderNumber - drug2.orderNumber) : timeDifference; //Ascending order
+                return (timeDifference === 0) ? (drug1.orderNumber - drug2.orderNumber) : timeDifference; //Ascending order
             } else {
                 return timeDifference * sortOrderFactor;
             }

@@ -42,7 +42,7 @@ angular.module('bahmni.common.patient')
         };
 
         $scope.isInEditEncounterMode = function(){
-           return $stateParams.encounterUuid != undefined && $stateParams.encounterUuid != 'active';
+           return $stateParams.encounterUuid !== undefined && $stateParams.encounterUuid !== 'active';
         };
 
         var getLinks = function () {

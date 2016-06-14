@@ -18,7 +18,7 @@ Bahmni.Registration.RegistrationEncounterConfig = (function () {
         getDefaultVisitType: function (locationUuid) {
             var visitType = null;
             _.each(this.loginLocationToVisitTypeMap.results, function (result) {
-                if (result.entity.uuid == locationUuid) {
+                if (result.entity.uuid === locationUuid) {
                     visitType = result.mappings[0].name;
                 }
             });

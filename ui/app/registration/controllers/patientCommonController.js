@@ -35,7 +35,7 @@ angular.module('bahmni.registration')
                                 withCredentials: true
                             }).then(function (results) {
                                 $scope.deathConceptExists = !!results.data.results.length;
-                                $scope.deathConcepts = results.data.results[0] != null ? results.data.results[0].setMembers : [];
+                                $scope.deathConcepts = results.data.results[0] ? results.data.results[0].setMembers : [];
                                 $scope.deathConcepts = filterRetireDeathConcepts($scope.deathConcepts);
                             })
                         }
@@ -57,7 +57,7 @@ angular.module('bahmni.registration')
                 personAttributes = _.map($rootScope.patientConfiguration.attributeTypes, function(attribute){
                     return attribute.name.toLowerCase();
                 });
-                var personAttributeHasCaste = personAttributes.indexOf("caste") != -1;
+                var personAttributeHasCaste = personAttributes.indexOf("caste") !== -1;
                 caste = personAttributeHasCaste ? $rootScope.patientConfiguration.attributeTypes[personAttributes.indexOf("caste")].name : undefined;
                 return showCasteSameAsLastNameCheckbox && personAttributeHasCaste;
             };
@@ -92,13 +92,13 @@ angular.module('bahmni.registration')
             });
 
             $scope.selectIsDead = function(){
-                if($scope.patient.causeOfDeath != null ||$scope.patient.deathDate != null){
+                if($scope.patient.causeOfDeath ||$scope.patient.deathDate){
                     $scope.patient.dead = true;
                 }
             };
 
             $scope.disableIsDead = function(){
-                return ($scope.patient.causeOfDeath != null || $scope.patient.deathDate != null) && $scope.patient.dead;
+                return ($scope.patient.causeOfDeath || $scope.patient.deathDate) && $scope.patient.dead;
             }
 
         }]);

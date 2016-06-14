@@ -53,7 +53,7 @@ angular.module('bahmni.clinical')
                     drugOrders: sortOrderSetDrugsFollowedByDrugOrders(activeAndScheduledDrugOrders,showOnlyActive)
                 };
                 $scope.consultation.drugOrderGroups.unshift(refillableGroup);
-                if(treatmentConfig.drugOrderHistoryConfig.numberOfVisits != undefined && treatmentConfig.drugOrderHistoryConfig.numberOfVisits === 0) {
+                if(treatmentConfig.drugOrderHistoryConfig.numberOfVisits !== undefined && treatmentConfig.drugOrderHistoryConfig.numberOfVisits === 0) {
                     $scope.consultation.drugOrderGroups = [$scope.consultation.drugOrderGroups[0]];
                 }
             };
