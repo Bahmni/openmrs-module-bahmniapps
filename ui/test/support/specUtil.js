@@ -35,6 +35,15 @@ var specUtil = {
 
 };
 
+specUtil.simplePromise = function(data) {
+    var SimplePromise = function(data) {
+        this.then = function(callback) {
+            return new SimplePromise(callback(data));
+        }
+    };
+    return new SimplePromise(data);
+}
+
 specUtil.createFakePromise = function (data) {
     var FakePromise = function(data){
         this.data=data;

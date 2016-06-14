@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('bahmni.home')
-    .controller('DashboardController', ['$scope', '$state', 'appService', 'locationService', 'spinner', '$bahmniCookieStore', '$window', '$q', 'offlineService', 'schedulerService',
-        function ($scope, $state, appService, locationService, spinner, $bahmniCookieStore, $window, $q, offlineService, schedulerService) {
+    .controller('DashboardController', ['$scope', '$state', 'appService', 'locationService', 'spinner', '$bahmniCookieStore', '$window', '$q', 'offlineService', 'schedulerService', 'eventQueue',
+        function ($scope, $state, appService, locationService, spinner, $bahmniCookieStore, $window, $q, offlineService, schedulerService, eventQueue) {
             $scope.appExtensions = appService.getAppDescriptor().getExtensions($state.current.data.extensionPointId, "link") || [];
             $scope.selectedLocationUuid = {};
             $scope.isOfflineApp = offlineService.isOfflineApp();
@@ -39,7 +39,7 @@ angular.module('bahmni.home')
                 $window.location.reload();
             };
 
-            $scope.sync = function() {
+            $scope.sync = function () {
                 schedulerService.sync(Bahmni.Common.Constants.syncButtonConfiguration);
             };
 
@@ -52,6 +52,47 @@ angular.module('bahmni.home')
             });
 
             $scope.$on("$destroy", cleanUpListenerSchedulerStage);
-            
+
+            var getLastSyncTime = function () {
+                var date = offlineService.getItem('lastSyncTime');
+                $scope.lastSyncTime = Bahmni.Common.Util.DateUtil.getDateTimeInSpecifiedFormat(date, "dddd, MMMM Do YYYY, HH:mm:ss");
+            };
+
+            var getErrorCount = function () {
+                return eventQueue.getErrorCount().then(function (errorCount) {
+                    return errorCount;
+                });
+            };
+
+            var getEventCount = function () {
+                return eventQueue.getCount().then(function (eventCount) {
+                    return eventCount;
+                });
+            };
+
+            var updateSyncStatusMessageBasedOnQueuesCount = function() {
+                 getErrorCount().then(function (errorCount) {
+                    if (errorCount) {
+                        $scope.syncStatusMessage = "Sync Failed, Press sync button to try again";
+                    }
+                    else {
+                        getEventCount().then(function (eventCount) {
+                            $scope.syncStatusMessage = eventCount ? "Sync Pending, Press Sync button to Sync" : "Data Synced Successfully";
+                        });
+                    }
+                });
+            };
+
+            var getSyncStatusInfo = function () {
+                getLastSyncTime();
+                $scope.isSyncing ? $scope.syncStatusMessage = "Sync in Progress..." : updateSyncStatusMessageBasedOnQueuesCount();
+            };
+
+            getSyncStatusInfo();
+
+            $scope.$watch('isSyncing', function () {
+                getSyncStatusInfo();
+            });
+
             return spinner.forPromise($q.all(init()));
         }]);
