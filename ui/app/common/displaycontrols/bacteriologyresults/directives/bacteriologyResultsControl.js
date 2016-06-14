@@ -50,7 +50,7 @@ angular.module('bahmni.common.displaycontrol.bacteriologyresults')
                         ngDialog.open({
                             template: '../common/displaycontrols/bacteriologyresults/views/editBacteriologySample.html',
                             scope: $scope,
-                            className: "ngdialog-theme-default ng-dialog-all-details-page",
+                            className: "ngdialog-theme-default ng-dialog-all-details-page ng-dialog-edit",
                             controller: $controller('BacteriologyController', {
                                 $scope: $scope,
                                 bacteriologyConceptSet: $scope.bacteriologyTabData
