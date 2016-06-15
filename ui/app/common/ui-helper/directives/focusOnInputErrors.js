@@ -14,7 +14,7 @@ angular.module('bahmni.common.uiHelper')
                             isTopElement = false;
                         }
                     });
-                }, 1, false);
+                }, 10, false);
             });
 
             scope.$on("$destroy", cleanUpListenerErrorsOnForm);
