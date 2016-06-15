@@ -12,7 +12,7 @@ Bahmni.Clinical.ClinicalDashboardConfig = function (config) {
 
     this.getDiseaseTemplateSections = function () {
         return _.filter(_.values(this.currentTab.sections), function (section) {
-            return section.name === "diseaseTemplate";
+            return section.type === "diseaseTemplate";
         });
     };
 
