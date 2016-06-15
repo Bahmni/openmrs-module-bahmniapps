@@ -8,19 +8,19 @@ describe('Treatment Table DisplayControl', function () {
         "displayByDefault": true,
         "sections": [
             {
-                "name": "vitals"
+                "type": "vitals"
             },
             {
                 "title": "Diabetes",
-                "name": "diseaseTemplate"
+                "type": "diseaseTemplate"
             },
             {
                 "title": "Diagnosis",
-                "name": "diagnosis"
+                "type": "diagnosis"
             },
             {
                 "title": "TB",
-                "name": "diseaseTemplate"
+                "type": "diseaseTemplate"
             }
         ]
     };
@@ -30,7 +30,7 @@ describe('Treatment Table DisplayControl', function () {
         "sections": [
             {
                 "title": "Patient Information",
-                "name": "patientInformation"
+                "type": "patientInformation"
             }
         ]
     };

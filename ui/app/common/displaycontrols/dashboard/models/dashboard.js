@@ -22,7 +22,7 @@ Bahmni.Common.DisplayControl.Dashboard = function (config) {
     this.getSections = function (diseaseTemplates) {
         var sections = _.filter(this._sections, function (section) {
             return section.type !== "diseaseTemplate" || _.find(diseaseTemplates, function (diseaseTemplate) {
-                    return diseaseTemplate.type === section.templateName && diseaseTemplate.obsTemplates.length > 0;
+                    return diseaseTemplate.name === section.templateName && diseaseTemplate.obsTemplates.length > 0;
                 });
         });
         return this.groupSectionsByType(sections);
