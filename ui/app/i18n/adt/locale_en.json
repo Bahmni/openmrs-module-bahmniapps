@@ -19,5 +19,7 @@
     "MESSAGE_DIALOG_OPTION_COPY" : "Copy Error",
     "MESSAGE_DIALOG_OPTION_OKAY": "OK",
     "MESSAGE_DEFAULT_VISIT_TYPE_INVALID_KEY" : "Please configure a valid default visit type",
-    "MESSAGE_DEFAULT_VISIT_TYPE_NOT_FOUND_KEY" : "Please configure a default visit type"
+    "MESSAGE_DEFAULT_VISIT_TYPE_NOT_FOUND_KEY" : "Please configure a default visit type",
+    "PATIENT_VISIT_ATTRIBUTES_PAGE_KEY":"Visit Attributes",
+    "PATIENT_REGISTRATION_PAGE_KEY" : "Registration"
 }
