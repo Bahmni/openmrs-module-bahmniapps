@@ -514,7 +514,7 @@ describe("drugOrderViewModel", function () {
 
         it("should be active if the effective stop date is null", function () {
             var treatment = sampleTreatmentWithUniformDosing(3, "Capsule", {name: "Twice a Day", frequencyPerDay: 2}, 5, "Days");
-            treatment.effectiveStopDate = null;
+            treatment.effectiveStopDate = undefined;
             expect(treatment.isActive()).toBe(true);
         });
 
