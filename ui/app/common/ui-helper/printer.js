@@ -36,7 +36,7 @@ angular.module('bahmni.common.uiHelper')
                 var element = $compile($('<div>' + template + '</div>'))(printScope);
                 var waitForRenderAndPrint = function() {
                     if(printScope.$$phase || $http.pendingRequests.length) {
-                        $timeout(waitForRenderAndPrint);
+                        $timeout(waitForRenderAndPrint, 1000);
                     } else {
                         // Replace printHtml with openNewWindow for debugging
                         printHtml(element.html());
