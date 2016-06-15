@@ -442,3 +442,5 @@ concept-set {
 .add-more-wrapper{
   display: inline-block;
 }
+.illegalValue .multi-select-button-group {display: table;  width: auto; }
+.field-value-buttonSelectType .illegalValue{display: table; width:auto;}
