@@ -32,7 +32,7 @@ Bahmni.Common.Util.ValidationUtil = (function () {
     var validate = function (complexObject, objectConfiguration) {
         var allCustomValidators = Bahmni.Registration.customValidator;
         if(!allCustomValidators) {
-            return;
+            return [];
         }
 
         var dataArray = flattenObject(complexObject);
