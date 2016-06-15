@@ -39,7 +39,7 @@ describe("Dashboard", function () {
     it("should only get disease template section with data", function () {
         var diseaseTemplates = [
             {
-                type: "Diabetes Template",
+                name: "Diabetes Template",
                 obsTemplates: [
                     {value: "1"},
                     {value: "2"}
