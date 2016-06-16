@@ -186,22 +186,30 @@ describe("ConsultationController", function () {
         expect(ngDialog.close).toHaveBeenCalled();
     });
 
-    it("should allow all transitions where the target state falls within consultation", function () {
+    it("should not show dialog to confirm save where the target state falls within consultation", function () {
         var toState = {name: "patient.dashboard.show.diagnosis"};
         var fromState = {name: "some.state"};
-        expect(scope.shouldDisplaySaveConfirmDialogForStateChange(toState, null, fromState)).toEqual(false);
+        var params = {patientUUid: 'patientUuid'};
+        expect(scope.shouldDisplaySaveConfirmDialogForStateChange(toState, params, fromState, params)).toEqual(false);
 
         toState = {name: "patient.search"};
-        expect(scope.shouldDisplaySaveConfirmDialogForStateChange(toState, null, fromState)).toEqual(true);
+        expect(scope.shouldDisplaySaveConfirmDialogForStateChange(toState, params, fromState, params)).toEqual(true);
 
         toState = {name: "patient.dashboard.show"};
-        expect(scope.shouldDisplaySaveConfirmDialogForStateChange(toState, null, fromState)).toEqual(false);
+        expect(scope.shouldDisplaySaveConfirmDialogForStateChange(toState, params, fromState, params)).toEqual(false);
     });
 
-    it("should not allow transition between same states", function () {
+    it("should not show dialog to confirm save if from state is equal to to state and the patient uuid is same.", function () {
         var fromState = {name: "patient.dashboard.show"};
         var toState = {name: "patient.dashboard.show"};
-        expect(scope.shouldDisplaySaveConfirmDialogForStateChange(toState, null, fromState)).toEqual(true);
+        var params = {patientUUid: 'patientUuid'};
+        expect(scope.shouldDisplaySaveConfirmDialogForStateChange(toState, params, fromState, params)).toEqual(false);
+    });
+
+    it("should show dialog to confirm save if from state is equal to to state and the patient uuid is different", function () {
+        var fromState = {name: "patient.dashboard.show"};
+        var toState = {name: "patient.dashboard.show"};
+        expect(scope.shouldDisplaySaveConfirmDialogForStateChange(toState, {patientUuid: 'patientUuid1'}, fromState, {patientUuid: 'patientUuid2'})).toEqual(true);
     });
 
     it("should display save confirm dialog if the config is set", function () {
@@ -349,4 +357,66 @@ describe("ConsultationController", function () {
         expectedCurrentBoard.isSelectedTab = true;
         expect(scope.currentBoard).toEqual(expectedCurrentBoard)
     });
+
+    describe("enablePatientSearch", function () {
+        it("should return true if configured", function () {
+            appService.getAppDescriptor.and.returnValue({
+                getConfigValue: function (configName) {
+                    return configName == 'allowPatientSwitchOnConsultation';
+                }
+            });
+
+            expect(scope.enablePatientSearch()).toBe(true);
+        });
+
+        it("should return false if configured", function () {
+            appService.getAppDescriptor.and.returnValue({
+                getConfigValue: function (configName) {
+                    return configName != 'allowPatientSwitchOnConsultation';
+                }
+            });
+
+            expect(scope.enablePatientSearch()).toBe(false);
+        });
+
+        it("should return false if configured value is null", function () {
+            appService.getAppDescriptor.and.returnValue({
+                getConfigValue: function (configName) {
+                    return configName == 'allowPatientSwitchOnConsultation' ? null : true;
+                }
+            });
+
+            expect(scope.enablePatientSearch()).toBe(false);
+        });
+
+        it("should return false if configured value is empty string", function () {
+            appService.getAppDescriptor.and.returnValue({
+                getConfigValue: function (configName) {
+                    return configName == 'allowPatientSwitchOnConsultation' ? "" : true;
+                }
+            });
+
+            expect(scope.enablePatientSearch()).toBe(false);
+        });
+
+        it("should return false if configured value is string", function () {
+            appService.getAppDescriptor.and.returnValue({
+                getConfigValue: function (configName) {
+                    return configName == 'allowPatientSwitchOnConsultation' ? "some value" : true;
+                }
+            });
+
+            expect(scope.enablePatientSearch()).toBe(false);
+        });
+
+        it("should return false if configured value is numeric", function () {
+            appService.getAppDescriptor.and.returnValue({
+                getConfigValue: function (configName) {
+                    return configName == 'allowPatientSwitchOnConsultation' ? 10 : true;
+                }
+            });
+
+            expect(scope.enablePatientSearch()).toBe(false);
+        });
+    })
 });

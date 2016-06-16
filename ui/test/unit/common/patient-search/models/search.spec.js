@@ -14,13 +14,24 @@ describe("Search", function() {
 	});
 
 	describe("filterPatients", function() {
-	    it('should search the activePatients based on the search text (case insensitive)', function () {
+	    it('should search the patients by both identifier and name', function () {
 	    	search.updatePatientList(allActivePatients);
             search.searchParameter = "Gan";
             
             search.filterPatients();
             
             expect(search.searchResults.length).toBe(3);
+	    });
+	});
+
+	describe("filterPatientsByIdentifier", function() {
+	    it('should search the patients by identifier', function () {
+	    	search.updatePatientList(allActivePatients);
+            search.searchParameter = "Gan";
+
+            search.filterPatientsByIdentifier();
+
+            expect(search.searchResults.length).toBe(2);
 	    });
 	});
 

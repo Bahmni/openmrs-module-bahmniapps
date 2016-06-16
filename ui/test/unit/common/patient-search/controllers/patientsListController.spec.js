@@ -1,6 +1,6 @@
 'use strict';
 
-describe("PatientListController", function () {
+describe("PatientsListController", function () {
         var _spinner, _patientService, _appService, $bahmniCookieStore;
         var controller, scope, findPatientsPromise, searchPatientsPromise, retrospectiveEntryService, offlineService, getRecentPatientsPromise;
         var stateParams = { location: "Ganiyari"};
