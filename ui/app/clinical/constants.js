@@ -66,7 +66,8 @@ Bahmni.Clinical.Constants = (function () {
         dispensePrivilege: "bahmni:clinical:dispense",
         mandatoryVisitConfigUrl: "config/visitMandatoryTab.json",
         defaultExtensionName: "default",
-        bacteriologyConstants: bacteriologyConstants
+        bacteriologyConstants: bacteriologyConstants,
+        globalPropertyToFetchActivePatients: 'emrapi.sqlSearch.activePatients'
 
     };
 })();

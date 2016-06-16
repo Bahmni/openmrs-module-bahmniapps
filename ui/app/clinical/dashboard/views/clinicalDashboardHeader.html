@@ -4,6 +4,7 @@
 
         <div class="opd-header-bottom tabs">
             <bm-back-links></bm-back-links>
+            <recent-patients ng-if="enablePatientSearch()"></recent-patients>
             <a show-if-privilege="app:adt" ng-click= "displayConfirmationDialog($event)" class="back-btn"  ng-href="../adt/#/patient/{{patient.uuid}}/visit/{{consultation.visitUuid}}/"
                title="Go to IPD dashboard">
                 <i class="fa fa-bed fa-white"></i>

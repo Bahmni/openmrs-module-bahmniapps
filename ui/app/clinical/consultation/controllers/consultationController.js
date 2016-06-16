@@ -81,6 +81,10 @@ angular.module('bahmni.clinical').controller('ConsultationController',
                 return $stateParams.encounterUuid !== undefined && $stateParams.encounterUuid !== 'active';
             };
 
+            $scope.enablePatientSearch=function () {
+                return appService.getAppDescriptor().getConfigValue('allowPatientSwitchOnConsultation') === true;
+            };
+
             var setCurrentBoardBasedOnPath = function () {
                 var currentPath = $location.url();
                 var board = _.find($scope.availableBoards,function (board) {
@@ -103,13 +107,9 @@ angular.module('bahmni.clinical').controller('ConsultationController',
                 setCurrentBoardBasedOnPath();
             };
 
-            $scope.shouldDisplaySaveConfirmDialogForStateChange = function(toState, toParams, fromState) {
-                if((toState.name === fromState.name) && (fromState.name === "patient.dashboard.show")) {
-                    return true;
-                }
-
+            $scope.shouldDisplaySaveConfirmDialogForStateChange = function(toState, toParams, fromState, fromParams) {
                 if (toState.name.match(/patient.dashboard.show.*/)) {
-                    return false;
+                    return fromParams.patientUuid != toParams.patientUuid;
                 }
                 return true;
             };
