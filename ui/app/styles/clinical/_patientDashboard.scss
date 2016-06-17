@@ -750,12 +750,12 @@ table.pivot-table {
   position: relative;
   float: left;
   img{
-    width: 48px;
+    width: 35px;
     height: 31px;
     float: left;
   }
   .back-btn{
-    padding: 5px 4px 3px !important
+    padding: 5px 10px 3px !important
   }
   .recent-patients-header {
     .prev-patient, .next-patient {
@@ -784,7 +784,6 @@ table.pivot-table {
       border: 1px solid darken($bahmniSecondaryColor, 15%);
       background: linear-gradient(to bottom, $bahmniSecondaryColor, darken($bahmniSecondaryColor, 10%));
     }
-
   }
 
   .recent-patients-panel {
@@ -812,6 +811,21 @@ table.pivot-table {
       background-color: rgba(0,0,0,.5);
       -webkit-box-shadow: 0 0 1px rgba(255,255,255,.5);
     }
+    .recent-patients-search{
+      background: #F1F1F1;
+      padding: 10px;
+      box-sizing: border-box;
+      border-radius: 0 5px 0 0;
+      #patientIdentifier{
+        width: 100%;
+        color: #000;
+        padding: 2px 10px;
+        background-color: #FFF;
+        border: 1px solid #DDD;
+        box-sizing: border-box;
+      }
+    }
+
     a{
       color: $black;
       font-size: 14px;
