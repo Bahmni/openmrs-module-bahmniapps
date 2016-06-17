@@ -6,6 +6,7 @@ angular.module('bahmni.common.logging')
         var logError = function(exception, cause) {
             try {
                 var messagingService = $injector.get('messagingService');
+                var loggingService = $injector.get('loggingService');
                 var errorMessage = exception.toString();
                 var stackTrace = printStackTrace({ e: exception });
                 var errorDetails = {
@@ -16,12 +17,7 @@ angular.module('bahmni.common.logging')
                     stackTrace: stackTrace,
                     cause: ( cause || "" )
                 };
-                $.ajax({
-                    type: "POST",
-                    url: "/log",
-                    contentType: "application/json",
-                    data: angular.toJson(errorDetails)
-                });
+                loggingService.log(errorDetails);
                 messagingService.showMessage('error', errorMessage);
                 exposeException(errorDetails);
             } catch (loggingError) {

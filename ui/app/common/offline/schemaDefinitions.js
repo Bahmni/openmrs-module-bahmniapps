@@ -392,7 +392,7 @@ Bahmni.Common.Offline.SchemaDefinitions = {
                 type: 'STRING'
             }
         ],
-        nullableColumns: [],
+        nullableColumns: ['responseStatus'],
         primaryKeyColumns: ['id']
     }
 };
