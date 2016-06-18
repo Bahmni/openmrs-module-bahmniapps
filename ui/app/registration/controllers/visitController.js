@@ -163,17 +163,23 @@ angular.module('bahmni.registration')
             };
             //End :: Registration Page validation
 
-            var reload = function () {
-                $state.transitionTo($state.current, $state.params, {
-                    reload: true,
-                    inherit: false,
-                    notify: true
-                });
+            var afterSave = function () {
+                var forwardUrl = appService.getAppDescriptor().getConfigValue("afterVisitSaveForwardUrl");
+                if (forwardUrl != null) {
+                    $window.location.href = appService.getAppDescriptor().formatUrl(forwardUrl, {'patientUuid': patientUuid});
+                }
+                else {
+                    $state.transitionTo($state.current, $state.params, {
+                        reload: true,
+                        inherit: false,
+                        notify: true
+                    });
+                }
                 messagingService.showMessage('info', 'REGISTRATION_LABEL_SAVED');
             };
 
             $scope.submit = function () {
-                return validate().then(save).then(reload);
+                return validate().then(save).then(afterSave);
             };
 
             $scope.today = function () {
