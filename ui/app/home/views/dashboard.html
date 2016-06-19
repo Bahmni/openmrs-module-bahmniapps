@@ -1,36 +1,44 @@
 <div class="dashboard">
-<div class="dashboard">
     <header class="reg-header">
-        <form class="change-location">
-            <select  ng-model="selectedLocationUuid" ng-change="onLocationChange()">
-                <option ng-repeat="location in locations" ng-selected="isCurrentLocation(location)" value="{{location.uuid}}">
-                    {{location.display}}
-                </option>
-            </select>
-        </form>
-        <!-- Mujir/Vikash - to be introduced when we do retrospective entry for registration and other modules -->
-        <!--<input class="retro-date-widget fr" type="date"/>-->
-        <button class="btn-user-info">
-            <i class="fa fa-user-md fa-white small"></i>
-            <i class="fa fa-caret-down fa-white mini"></i>
-        </button>
-        <ul>
-            <li ng-show=currentUser.username>
-                <a class="disabled">
-                    <i class="fa fa-user-md fa-white small"></i>
-                    <span ng-bind="currentUser.username"></span>
-                </a>
-            </li>
-            <li ng-show=currentUser.currentLocation>
-                <a class="disabled">
-                    <i class="fa fa-map-marker fa-white small"></i>
-                    <span ng-bind="currentUser.currentLocation"></span>
-                </a>
-            </li>
-            <li>
-                <a log-out><i class="fa fa-power-off fa-white small"></i><span class="nav-link">{{'HEADER_LABEL_LOGOUT_KEY' | translate}}</span></a>
-            </li>
-        </ul>
+        <div class="reg-header-right fr">
+            <form class="change-location fl" ng-class="{'change-location-offline': isOfflineApp}">
+                <select  ng-model="selectedLocationUuid" ng-change="onLocationChange()">
+                    <option ng-repeat="location in locations" ng-selected="isCurrentLocation(location)" value="{{location.uuid}}">
+                        {{location.display}}
+                    </option>
+                </select>
+            </form>
+            <!-- Mujir/Vikash - to be introduced when we do retrospective entry for registration and other modules -->
+            <!--<input class="retro-date-widget fr" type="date"/>-->
+
+            <button class="btn offline-sync fl" ng-click="sync()" ng-show="isOfflineApp && !isSyncing ">
+                {{::'HEADER_LABEL_SYNC_KEY' | translate}}
+            </button>
+            <button class="btn offline-sync fl offline-sync-image" ng-show="isOfflineApp && isSyncing" disabled>
+                <img src="../images/sync.gif" />
+            </button>
+            <button class="btn-user-info fr">
+                <i class="fa fa-user-md fa-white small"></i>
+                <i class="fa fa-caret-down fa-white mini"></i>
+            </button>
+            <ul>
+                <li ng-show=currentUser.username>
+                    <a class="disabled">
+                        <i class="fa fa-user-md fa-white small"></i>
+                        <span ng-bind="currentUser.username"></span>
+                    </a>
+                </li>
+                <li ng-show=currentUser.currentLocation>
+                    <a class="disabled">
+                        <i class="fa fa-map-marker fa-white small"></i>
+                        <span ng-bind="currentUser.currentLocation"></span>
+                    </a>
+                </li>
+                <li>
+                    <a log-out><i class="fa fa-power-off fa-white small"></i><span class="nav-link">{{'HEADER_LABEL_LOGOUT_KEY' | translate}}</span></a>
+                </li>
+            </ul>
+        </div>
     </header>
     <div class="apps">
         <ul>

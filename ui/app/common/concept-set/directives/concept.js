@@ -54,7 +54,7 @@ angular.module('bahmni.common.conceptSet')
             };
 
             scope.isCollapsibleSet = function () {
-                return scope.showTitle;
+                return scope.showTitle == true;
             };
 
             scope.hasPDFAsValue = function () {
@@ -69,6 +69,9 @@ angular.module('bahmni.common.conceptSet')
                 scope.$root.$broadcast("event:observationUpdated-" + scope.conceptSetName, scope.observation.concept.name, scope.rootObservation);
             }
 
+            scope.getBooleanResult = function(value){
+                return !!value;
+            }
 
         };
 

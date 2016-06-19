@@ -78,8 +78,8 @@ angular.module('bahmni.home')
                                 function() {deferrable.resolve()},
                                 function(error) {deferrable.reject(error)}
                             );
-                                deferrable.resolve();
-                        })
+                        },function(error) {deferrable.reject(error)}
+                        );
                     },
                     function (error) {
                         $scope.errorMessageTranslateKey = error;

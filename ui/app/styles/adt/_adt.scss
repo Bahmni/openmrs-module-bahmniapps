@@ -10,7 +10,7 @@
         margin-bottom: 5px;
         margin-top: 5px;
         background-color: #FFF;
-        border: 1px solid #DDD;
+        border: 1px solid $lighterGray;
     }
     .patient-disposition-status {
         color: green;
@@ -82,7 +82,7 @@ div[ng-app="adt"] {
                 }
             }
             tbody tr:nth-child(even) {
-              background: #FFFDF7;
+              background: $clinicalFormFocusBg;
             }
         }
         .no-data-info{

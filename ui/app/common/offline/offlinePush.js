@@ -29,45 +29,87 @@ angular.module('bahmni.common.offline')
                     })
                 };
 
-                var processEvent = function (event) {
-                    return offlineDbService.getPatientByUuid(event.data.patientUuid).then(function (response) {
-                        if(response == undefined){
-                            eventQueue.releaseFromQueue(event);
-                            return consumeFromEventQueue();
-                        }
+                var postData = function(event, response){
+                    if (response == undefined) {
+                        eventQueue.releaseFromQueue(event);
+                        return consumeFromEventQueue();
+                    }
+                    var config ={
+                        withCredentials: true,
+                        headers: {
+                            "Accept": "application/json",
+                            "Content-Type": "application/json"
+                        } };
+
+                    if(event.data.type && event.data.type == "encounter"){
+                        return $http.post(Bahmni.Common.Constants.bahmniEncounterUrl, response,config);
+                    }
+                    else{
                         response.relationships = [];
-                        return $http.post(event.data.url, response, {
-                            withCredentials: true,
-                            headers: {
-                                "Accept": "application/json",
-                                "Content-Type": "application/json"
-                            }
-                        }).success(function () {
-                            eventQueue.removeFromQueue(event);
-                            if (event.tube === "event_queue") {
-                                return consumeFromEventQueue();
-                            } else {
-                                return consumeFromErrorQueue();
-                            }
-                        }).catch(function (response) {
-                            if (parseInt(response.status / 100) == 5) {
-                                if (event.tube === "event_queue") {
-                                    eventQueue.removeFromQueue(event);
-                                    eventQueue.addToErrorQueue(event.data);
-                                    return consumeFromEventQueue();
-                                }
-                                else {
-                                    reservedEvents.push(event);
-                                    return consumeFromErrorQueue();
+                        return $http.post(event.data.url, response, config);
+                    }
+
+                };
+
+                var getEventData = function (event) {
+                    if (event.data.type && event.data.type == "encounter") {
+                        return offlineDbService.getEncounterByEncounterUuid(event.data.encounterUuid);
+                    } else {
+                        return offlineDbService.getPatientByUuid(event.data.patientUuid).then(function (response) {
+                            if(event.data.url.indexOf(event.data.patientUuid) == -1){
+                                if(response && response.patient && response.patient.person){
+                                    delete response.patient.person.preferredName;
+                                    delete response.patient.person.preferredAddress;
                                 }
                             }
-                            else {
-                                eventQueue.releaseFromQueue(event);
-                                deferred.resolve();
-                                return "4xx error";
-                            }
-                        })
-                    });
+                            return response;
+                        });
+                    }
+                };
+
+                var processEvent = function (event) {
+                    return getEventData(event)
+                        .then(function(response){
+                            return postData(event,response)
+                                .success(function (data) {
+                                    if(event.data.type && event.data.type == "encounter") {
+                                        return offlineDbService.createEncounter(data).then(function () {
+                                            return successCallBack(event);
+                                        });
+                                    }
+                                    return successCallBack(event);
+                                }).catch(function (response) {
+                                    if (parseInt(response.status / 100) == 5) {
+                                        offlineDbService.insertLog(response.config.url, response.status, response.data);
+                                        if (event.tube === "event_queue") {
+                                            eventQueue.removeFromQueue(event);
+                                            eventQueue.addToErrorQueue(event.data);
+                                            return consumeFromEventQueue();
+                                        }
+                                        else {
+                                            reservedEvents.push(event);
+                                            return consumeFromErrorQueue();
+                                        }
+                                    }
+                                    else {
+                                        if(parseInt(response.status / 100) == 4) {
+                                            offlineDbService.insertLog(response.config.url, response.status, response.data);
+                                        }
+                                        eventQueue.releaseFromQueue(event);
+                                        deferred.resolve();
+                                        return "4xx error";
+                                    }
+                                })
+                        });
+                };
+
+                var successCallBack = function (event) {
+                    eventQueue.removeFromQueue(event);
+                    if (event.tube === "event_queue") {
+                        return consumeFromEventQueue();
+                    } else {
+                        return consumeFromErrorQueue();
+                    }
                 };
 
                 var reservedEvents = [];
@@ -80,7 +122,7 @@ angular.module('bahmni.common.offline')
                 }
                 consumeFromErrorQueue().then(function (response) {
                     releaseReservedEvents(reservedEvents);
-                    if(response == "4xx error") {
+                    if (response == "4xx error") {
                         return;
                     }
                     return consumeFromEventQueue();

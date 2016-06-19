@@ -55,17 +55,21 @@ angular.module('bahmni.registration')
 
             $scope.update = function () {
                 addNewRelationships();
-                var errMsg = Bahmni.Common.Util.ValidationUtil.validate($scope.patient, $scope.patientConfiguration.attributeTypes);
-                if (errMsg) {
-                    messagingService.showMessage('error', errMsg);
+                var errorMessages = Bahmni.Common.Util.ValidationUtil.validate($scope.patient, $scope.patientConfiguration.attributeTypes);
+                if (errorMessages.length > 0) {
+                    errorMessages.forEach(function(errorMessage) {
+                        messagingService.showMessage('error', errorMessage);
+                    });
                     return $q.when({});
                 }
 
-                var patientUpdatePromise = patientService.update($scope.patient, $scope.openMRSPatient).then(function (patientProfileData) {
-                    successCallBack(patientProfileData);
-                    $scope.actions.followUpAction(patientProfileData);
-                });
-                return spinner.forPromise(patientUpdatePromise);
+                return spinner.forPromise(patientService.update($scope.patient, $scope.openMRSPatient).then(function (result) {
+                    var patientProfileData = result.data;
+                    if (!patientProfileData.error) {
+                        successCallBack(patientProfileData);
+                        $scope.actions.followUpAction(patientProfileData);
+                    }
+                }));
             };
 
             var addNewRelationships = function () {

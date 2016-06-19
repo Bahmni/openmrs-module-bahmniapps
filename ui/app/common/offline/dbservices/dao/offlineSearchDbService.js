@@ -37,24 +37,31 @@ angular.module('bahmni.common.offline')
             var p = db.getSchema().table('patient');
             var pa = db.getSchema().table('patient_attribute');
             var pat = db.getSchema().table('patient_attribute_type');
-            var padd = db.getSchema().table('patient_address');
+            var padd = db.getSchema().table('patient_address').as('addressFieldValue');
+            var encounter = db.getSchema().table('encounter');
 
              db.select(pat.attributeTypeId)
                 .from(pat)
                 .where(pat.attributeName.in(params.patientAttributes)).exec()
                 .then(function (attributeTypeIds) {
-
-
                     var query = db.select(p.uuid.as('uuid'))
                         .from(p)
                         .innerJoin(padd, p.uuid.eq(padd.patientUuid))
                         .leftOuterJoin(pa, p.uuid.eq(pa.patientUuid))
+                        .leftOuterJoin(encounter, p.uuid.eq(encounter.patientUuid))
                         .leftOuterJoin(pat, pa.attributeTypeId.eq(pat.attributeTypeId));
                     var predicates = [];
 
                     if (!_.isEmpty(params.addressFieldValue)) {
                         params.addressFieldValue = params.addressFieldValue.replace('%','.');
                         predicates.push(padd[addressFieldName].match(new RegExp(params.addressFieldValue, 'i')));
+                    }
+
+                    if (params.duration) {
+                        var startDate =  Bahmni.Common.Util.DateUtil.subtractDays(new Date(), params.duration);
+                        var encounterPredicate = encounter.encounterDateTime.gte(startDate);
+                        var dateCreatedPredicate = p.dateCreated.gte(startDate);
+                        predicates.push(lf.op.or(encounterPredicate, dateCreatedPredicate));
                     }
 
                     if (!_.isEmpty(params.identifier)) {
@@ -92,7 +99,7 @@ angular.module('bahmni.common.offline')
                      query.limit(50).skip(params.startIndex).orderBy(p.dateCreated, lf.Order.DESC).groupBy(p.uuid).exec()
                         .then(function (tempResults) {
                             return db.select(p.identifier.as('identifier'), p.givenName.as('givenName'), p.middleName.as('middleName'), p.familyName.as('familyName'),
-                                p.dateCreated.as('dateCreated'), p.birthdate.as('birthdate'), p.gender.as('gender'), p.uuid.as('uuid'), padd[addressFieldName].as('addressFieldValue'),
+                                p.dateCreated.as('dateCreated'), p.birthdate.as('birthdate'), p.gender.as('gender'), p.uuid.as('uuid'), padd[addressFieldName],
                                 pat.attributeName.as('attributeName'), pa.attributeValue.as('attributeValue'), pat.format.as('attributeFormat'))
                                 .from(p)
                                 .innerJoin(padd, p.uuid.eq(padd.patientUuid))

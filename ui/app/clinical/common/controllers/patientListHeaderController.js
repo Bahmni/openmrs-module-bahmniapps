@@ -1,13 +1,16 @@
 'use strict';
 
 angular.module('bahmni.clinical')
-    .controller('PatientListHeaderController', ['$scope', '$rootScope', '$bahmniCookieStore', 'providerService', 'spinner', 'locationService', '$window', 'ngDialog','retrospectiveEntryService',
-        function ($scope, $rootScope, $bahmniCookieStore, providerService, spinner, locationService, $window, ngDialog, retrospectiveEntryService) {
+    .controller('PatientListHeaderController', ['$scope', '$rootScope', '$bahmniCookieStore', 'providerService', 'spinner', 'locationService', '$window', 'ngDialog','retrospectiveEntryService','offlineService','schedulerService',
+        function ($scope, $rootScope, $bahmniCookieStore, providerService, spinner, locationService, $window, ngDialog, retrospectiveEntryService, offlineService, schedulerService) {
             var DateUtil = Bahmni.Common.Util.DateUtil;
             $scope.maxStartDate = DateUtil.getDateWithoutTime(DateUtil.today());
             var selectedProvider = {};
             $scope.retrospectivePrivilege = Bahmni.Common.Constants.retrospectivePrivilege;
+            $scope.locationPickerPrivilege = Bahmni.Common.Constants.locationPickerPrivilege;
+            $scope.onBehalfOfPrivilege = Bahmni.Common.Constants.onBehalfOfPrivilege;
             $scope.selectedLocationUuid = {};
+            $rootScope.isOfflineApp = offlineService.isOfflineApp();
 
 
             $scope.getProviderList = function() {
@@ -75,6 +78,18 @@ angular.module('bahmni.clinical')
                 }
                 return title.join(',');
             };
+
+            $scope.sync = function() {
+                schedulerService.sync(Bahmni.Common.Constants.syncButtonConfiguration);
+            };
+
+            $scope.$on("schedulerStage", function (event, stage, restartSync) {
+                $rootScope.isSyncing = (stage !== null);
+                if (restartSync) {
+                    schedulerService.stopSync();
+                    schedulerService.sync();
+                }
+            });
 
             var getCurrentCookieLocation = function () {
                 return $bahmniCookieStore.get(Bahmni.Common.Constants.locationCookieName) ? $bahmniCookieStore.get(Bahmni.Common.Constants.locationCookieName) : null;

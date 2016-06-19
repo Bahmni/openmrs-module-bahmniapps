@@ -98,8 +98,10 @@
             var observations = getGroupMembersWithoutClass(this.groupMembers,[Bahmni.Common.Constants.abnormalConceptClassName,
                 Bahmni.Common.Constants.unknownConceptClassName,
                 Bahmni.Common.Constants.durationConceptClassName]);
-            //todo : add migration to set correct sort orders for the concepts
-            //this is needed when you have freetext autocomplete
+
+            if (_.isEmpty(observations)) {
+                return this.groupMembers[0];
+            }
             var primaryObs = observations[1] && observations[1].uuid && !observations[1].voided ? observations[1] : observations[0];
             if (observations[0].isMultiSelect) {
                 return observations[0];
@@ -257,8 +259,10 @@
         },
 
         isValid: function (checkRequiredFields, conceptSetRequired) {
-            if (this.isNumeric() && this.getAllowDecimal() === false) {
-                return this.isAllowDecimal();
+            var element = document.getElementById(this.uniqueId);
+            if (this.isNumeric() && (!this.isValidNumeric()) ||
+                (element && !element.value && !element.checkValidity())) {
+                return false;
             }
             if (this.isGroup()) {
                 return this._hasValidChildren(checkRequiredFields, conceptSetRequired);
@@ -312,17 +316,23 @@
             return this.primaryObs.getDataTypeName() === "Numeric";
         },
 
-        getAllowDecimal: function () {
-            return this.concept.allowDecimal;
+        isDecimalAllowed: function () {
+            return this.primaryObs.concept.allowDecimal;
         },
 
-        isAllowDecimal: function () {
-            if (this.getAllowDecimal() === false) {
-                if (this.value && this.value.toString().indexOf('.') > 0) {
+        isValidNumeric: function () {
+            if (!this.isDecimalAllowed()) {
+                if (this.value && this.value.toString().indexOf('.') >= 0) {
                     return false;
                 }
             }
             return true;
+        },
+        isValidNumericValue: function () {
+            if (this.value === "" && this.__prevValue && this.__prevValue.length == 1) {
+                return true;
+            }
+            return this.value !== "";
         },
 
         _hasValidChildren: function (checkRequiredFields, conceptSetRequired) {

@@ -1,3 +1,67 @@
+
+/*doc
+---
+title: Alerts
+name: alerts
+category: Components - Alerts
+---
+
+
+```html_example
+<div class="messages">
+<ul>
+	<li>
+		<div class="message-container success-message-container">
+			<div class="message-icon">
+				<i class="fa fa-check-circle"></i>
+			</div>
+			<div class="message-text">
+				<div>
+				   Save
+				</div>
+			</div>
+		</div>
+	</li>
+</ul>
+</div>
+```
+
+*/
+
+
+
+/*doc
+---
+title: Error Message
+name: error_message
+category: Components - Alerts
+---
+
+
+```html_example
+<div class="messages">
+ 	<ul>
+        <li>
+            <div class="message-container error-message-container">
+                <div class="message-text">
+                    <div class="types-for-errors error-message">
+                        <div>
+                            <div class="msg">Error Message</div>
+                        </div>
+                    </div>
+                    <div class="button-wrappper clearfix">
+                        <button type="button"  class="copy-btn fl">Copy Error</button>
+                        <button type="button"  class="show-btn fr">OK</button>
+                    </div>
+                </div>
+            </div>
+        </li>
+    </ul>
+</div>
+```
+
+*/
+
 .messages {
   .message-container{
 	width: 35%;

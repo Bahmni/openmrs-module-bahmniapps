@@ -1,16 +1,16 @@
 'use strict';
 
 angular.module('bahmni.common.offline')
-    .service('androidDbService', ['$q',
-        function ($q) {
-            var getMarker = function () {
-                var value = AndroidOfflineService.getMarker();
+    .service('androidDbService', ['$q', 'eventLogService',
+        function ($q, eventLogService) {
+            var getMarker = function (markerName) {
+                var value = AndroidOfflineService.getMarker(markerName);
                 value = value != undefined ? JSON.parse(value) : value;
                 return $q.when(value);
             };
 
-            var insertMarker = function (uuid, catchmentNumber) {
-                return $q.when(AndroidOfflineService.insertMarker(uuid, catchmentNumber));
+            var insertMarker = function (markerName, uuid, catchmentNumber) {
+                return $q.when(AndroidOfflineService.insertMarker(markerName, uuid, catchmentNumber));
 
             };
 
@@ -80,7 +80,7 @@ angular.module('bahmni.common.offline')
 
             var insertReferenceData = function(key, data, eTag){
                 var referenceData;
-                if(key == "LocaleList" || (key == "RelationshipTypeMap" && data=="")) {
+                if(key == "LocaleList" || key == "DefaultEncounterType" || key == "NonCodedDrugConcept" || (key == "RelationshipTypeMap" && data=="")) {
                     referenceData = data;
                 }
                 else {
@@ -102,6 +102,129 @@ angular.module('bahmni.common.offline')
                 return $q.when(value);
             };
 
+            var createEncounter = function (encounterData) {
+                var deferred = $q.defer();
+                insertEncounterData(encounterData).then(function () {
+                    if(encounterData.visitUuid){
+                        eventLogService.getDataForUrl(Bahmni.Common.Constants.visitUrl + "/" + encounterData.visitUuid).then(function(response) {
+                            insertVisitData(response.data).then(function() {
+                                deferred.resolve({data: encounterData});
+                            });
+                        },function (error) {
+                            deferred.resolve({data: encounterData});
+                        });
+                    }else{
+                        deferred.resolve({data: encounterData});
+                    }
+                });
+                return deferred.promise;
+            };
+
+
+            var insertEncounterData = function (encounterData) {
+                var encounter = AndroidOfflineService.insertEncounterData(JSON.stringify(encounterData));
+                return insertObservationData(encounterData.patientUuid, encounterData.visitUuid, encounterData.observations).then(function () {
+                    encounter = encounter != undefined ? JSON.parse(encounter) : encounter;
+                    return encounter;
+                });
+            };
+
+            var getEncountersByPatientUuid = function (patientUuid) {
+                var response = AndroidOfflineService.getEncountersByPatientUuid(patientUuid);
+                response = response != undefined ? JSON.parse(response) : response;
+                return $q.when(response);
+            };
+
+            var insertVisitData = function (visitData) {
+                var response = AndroidOfflineService.insertVisitData(JSON.stringify(visitData));
+                response = response != undefined ? JSON.parse(response) : response;
+                return $q.when(response);
+            };
+
+            var getVisitByUuid = function (visitUuid) {
+                var response = AndroidOfflineService.getVisitByUuid(visitUuid);
+                response = response != undefined ? JSON.parse(response) : response;
+                return $q.when(response);
+            };
+            
+            var getActiveEncounter = function(params){
+                var deferred = $q.defer();
+                getReferenceData("encounterSessionDuration").then(function(encounterSessionDurationData){
+                    var encounterSessionDuration = encounterSessionDurationData.data;
+                    getReferenceData("DefaultEncounterType").then(function(defaultEncounterType) {
+                        var encounterType = defaultEncounterType ? defaultEncounterType.data : null;
+                        var response = AndroidOfflineService.findActiveEncounter(JSON.stringify({patientUuid: params.patientUuid, providerUuid: params.providerUuids[0], encounterType: encounterType}), encounterSessionDuration);
+                        response = response != undefined ? JSON.parse(response) : response;
+                        deferred.resolve(response);
+                    });
+                });
+                return deferred.promise;
+            };
+
+            var insertObservationData = function (patientUuid, visitUuid, observationData) {
+                var response = AndroidOfflineService.insertObservationData(patientUuid, visitUuid, JSON.stringify(observationData));
+                response = response != undefined ? JSON.parse(response) : response;
+                return $q.when(response);
+            };
+
+            var getVisitsByPatientUuid = function (patientUuid, numberOfVisits) {
+                var response = AndroidOfflineService.getVisitsByPatientUuid(patientUuid, numberOfVisits);
+                response = response != undefined ? JSON.parse(response) : response;
+                return $q.when(response);
+            };
+
+            var getObservationsFor = function(params) {
+                var response =  AndroidOfflineService.getObservationsFor(JSON.stringify(params));
+                response = response != undefined ? JSON.parse(response) : response;
+                return $q.when(response);
+            };
+
+            var insertConceptAndUpdateHierarchy = function(data, parent) {
+                if(!parent) {
+                    parent = null;
+                }
+                else{
+                    parent = JSON.stringify(parent);
+                }
+                AndroidConceptDbService.insertConceptAndUpdateHierarchy(JSON.stringify(data), parent);
+                return $q.when({})
+            };
+
+            var getConcept = function(conceptUuid){
+                var value = AndroidConceptDbService.getConcept(conceptUuid);
+                value = value != undefined ? JSON.parse(value) : value;
+                return $q.when(value);
+            };
+
+            var getConceptByName = function(conceptName){
+                var value = AndroidConceptDbService.getConceptByName(conceptName);
+                value = value != undefined ? JSON.parse(value) : value;
+                return $q.when(value);
+            };
+
+            var getEncounterByEncounterUuid = function(encounterUuid){
+                var response = AndroidOfflineService.findEncounterByEncounterUuid(encounterUuid);
+                response = response != undefined ? JSON.parse(response) : response;
+                return $q.when(response);
+            };
+
+            var getAllParentsInHierarchy = function(conceptName){
+                var conceptNamesInHierarchy = [];
+                var response = AndroidConceptDbService.getAllParentsInHierarchy(conceptName);
+                response = response != undefined ? JSON.parse(response) : response;
+                return $q.when(response);
+            };
+
+            var insertLog = function (failedRequest, responseStatus, stacktrace) {
+                 AndroidOfflineService.insertLog(failedRequest, responseStatus, stacktrace);
+            };
+
+            var getPrescribedAndActiveDrugOrders = function (params) {
+                var response = AndroidOfflineService.getEncountersByVisits(JSON.stringify(params));
+                response = response != undefined ? JSON.parse(response) : response;
+                return $q.when(response);
+            };
+            
             return {
                 init: init,
                 initSchema: initSchema,
@@ -117,7 +240,22 @@ angular.module('bahmni.common.offline')
                 getReferenceData: getReferenceData,
                 insertReferenceData: insertReferenceData,
                 getLocationByUuid: getLocationByUuid,
-                getAttributeTypes: getAttributeTypes
+                getAttributeTypes: getAttributeTypes,
+                insertEncounterData: insertEncounterData,
+                getEncountersByPatientUuid: getEncountersByPatientUuid,
+                createEncounter: createEncounter,
+                insertVisitData: insertVisitData,
+                getVisitByUuid: getVisitByUuid,
+                getActiveEncounter: getActiveEncounter,
+                getVisitsByPatientUuid: getVisitsByPatientUuid,
+                getObservationsFor: getObservationsFor,
+                insertConceptAndUpdateHierarchy: insertConceptAndUpdateHierarchy,
+                getConcept: getConcept,
+                getConceptByName: getConceptByName,
+                getEncounterByEncounterUuid: getEncounterByEncounterUuid,
+                insertLog: insertLog,
+                getAllParentsInHierarchy: getAllParentsInHierarchy,
+                getPrescribedAndActiveDrugOrders: getPrescribedAndActiveDrugOrders
             }
         }
     ]);

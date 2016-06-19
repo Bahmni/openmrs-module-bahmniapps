@@ -3,7 +3,7 @@ Bahmni.Tests = Bahmni.Tests || {};
 
 Bahmni.Tests.OfflineDbUtils = {
 
-     createTable : function (schemaBuilder, tableDefinition) {
+     createTable : function (schemaBuilder, tableDefinition, autoIncrement) {
 
          var dataTypes = {
              "INTEGER": lf.Type.INTEGER,
@@ -20,7 +20,12 @@ Bahmni.Tests.OfflineDbUtils = {
         });
 
         table.addNullable(tableDefinition.nullableColumns);
-        table.addPrimaryKey(tableDefinition.primaryKeyColumns);
+         if(autoIncrement) {
+             table.addPrimaryKey(tableDefinition.primaryKeyColumns, true);
+         }
+         else {
+             table.addPrimaryKey(tableDefinition.primaryKeyColumns);
+         }
         _.each(tableDefinition.indexes, function (index) {
             table.addIndex(index.indexName, index.columnNames);
         })

@@ -16,7 +16,7 @@ angular
         // @endif
         $stateProvider
             .state('dashboard', {
-                url: '/dashboard',
+                url: '/dashboard?appName',
                 views: {
                     'additional-header': {
                         templateUrl: 'views/dashboardHeader.html'
@@ -32,10 +32,18 @@ angular
                     ]
                 },
                 resolve: {
-                    initialization: 'initialization'
+                    initializeConfig: function(initialization, $stateParams) {
+                        return initialization($stateParams.appName);
+                    }
                 }
             });
-        $bahmniTranslateProvider.init({app: 'reports', shouldMerge: true});
+
+            var getAppName = function(){
+                var val = location.hash.indexOf("appName=");
+                   return location.hash.substr(val).split("&")[0].split("=")[1] || 'reports';
+            };
+
+        $bahmniTranslateProvider.init({app: getAppName(), shouldMerge: true});
     }]).run(function ($rootScope, $templateCache) {
         $rootScope.$on('$viewContentLoaded', function () {
                 $templateCache.removeAll();

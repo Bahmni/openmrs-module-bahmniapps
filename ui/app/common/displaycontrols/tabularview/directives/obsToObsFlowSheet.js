@@ -27,7 +27,7 @@ angular.module('bahmni.common.displaycontrol.obsVsObsFlowSheet').directive('obsT
             var getObsInFlowSheet = function () {
                 return observationsService.getObsInFlowSheet(patient.uuid, $scope.config.templateName,
                     $scope.config.groupByConcept, $scope.config.conceptNames, $scope.config.numberOfVisits,
-                    $scope.config.initialCount, $scope.config.latestCount, $scope.config.name, $scope.section.startDate,
+                    $scope.config.initialCount, $scope.config.latestCount, $scope.config.type, $scope.section.startDate,
                     $scope.section.endDate, $scope.enrollment).success(function (data) {
                     var obsInFlowSheet = data;
                     var groupByElement = _.find(obsInFlowSheet.headers, function (header) {
@@ -91,7 +91,7 @@ angular.module('bahmni.common.displaycontrol.obsVsObsFlowSheet').directive('obsT
             $scope.commafy = function (observations) {
                 var list = [];
                 var unBoolean = function (boolValue) {
-                    return boolValue ? "Yes" : "No";
+                    return boolValue ? $translate.instant("OBS_BOOLEAN_YES_KEY") : $translate.instant("OBS_BOOLEAN_NO_KEY");
                 };
 
                 for (var index in observations) {

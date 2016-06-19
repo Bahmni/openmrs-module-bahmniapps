@@ -2,11 +2,11 @@
 
 angular.module('bahmni.clinical').controller('ConsultationController',
     ['$scope', '$rootScope', '$state','$location', 'clinicalAppConfigService', 'diagnosisService', 'urlHelper', 'contextChangeHandler',
-        'spinner', 'encounterService', 'messagingService', 'sessionService', 'retrospectiveEntryService', 'patientContext', 'consultationContext', '$q',
-        'patientVisitHistoryService', '$stateParams', '$window', 'visitHistory', 'clinicalDashboardConfig','appService','ngDialog','$filter', 'configurations',
+        'spinner', 'encounterService', 'messagingService', 'sessionService', 'retrospectiveEntryService', 'patientContext', '$q',
+        'patientVisitHistoryService', '$stateParams', '$window', 'visitHistory', 'clinicalDashboardConfig','appService','ngDialog','$filter', 'configurations','offlineService',
         function ($scope, $rootScope, $state, $location, clinicalAppConfigService, diagnosisService, urlHelper, contextChangeHandler,
-                  spinner, encounterService, messagingService, sessionService, retrospectiveEntryService, patientContext, consultationContext, $q,
-                  patientVisitHistoryService, $stateParams, $window, visitHistory, clinicalDashboardConfig, appService, ngDialog, $filter, configurations) {
+                  spinner, encounterService, messagingService, sessionService, retrospectiveEntryService, patientContext, $q,
+                  patientVisitHistoryService, $stateParams, $window, visitHistory, clinicalDashboardConfig, appService, ngDialog, $filter, configurations, offlineService) {
             $scope.patient = patientContext.patient;
             $scope.stateChange = function(){
                 return $state.current.name === 'patient.dashboard.show'
@@ -32,6 +32,9 @@ angular.module('bahmni.clinical').controller('ConsultationController',
             };
 
             $scope.allowConsultation = function(){
+                if(offlineService.isOfflineApp()){
+                    return true;
+                }
                 return appService.getAppDescriptor().getConfigValue('allowConsultationWhenNoOpenVisit');
             };
 
@@ -82,7 +85,7 @@ angular.module('bahmni.clinical').controller('ConsultationController',
                 var currentPath = $location.url();
                 var board = _.find($scope.availableBoards,function (board) {
                     if(board.url === "treatment") {
-                        return _.includes(currentPath, board.extensionParams ? board.extensionParams.tabConfigName: board.url)
+                        return _.includes(currentPath, board.extensionParams ? board.extensionParams.tabConfigName: board.url);
                     }
                     return _.includes(currentPath, board.url);
                 });
@@ -111,13 +114,13 @@ angular.module('bahmni.clinical').controller('ConsultationController',
                 return true;
             };
 
-            $scope.$on('$stateChangeStart', function (event, toState, toParams, fromState, fromParams ) {
+            var cleanUpListenerStateChangeStart = $scope.$on('$stateChangeStart', function (event, toState, toParams, fromState, fromParams ) {
                 if ($scope.showSaveConfirmDialogConfig) {
                     if ($rootScope.hasVisitedConsultation && $scope.shouldDisplaySaveConfirmDialogForStateChange(toState, toParams, fromState, fromParams)) {
-                        if (!$scope.stateChangeTriggedByDialog) {
-                            $scope.stateChangeTriggedByDialog = true;
+                        if ($scope.showConfirmationPopUp) {
                             event.preventDefault();
                             spinner.hide(toState.spinnerToken);
+                            ngDialog.close();
                             $scope.toStateConfig = {toState: toState, toParams: toParams};
                             $scope.displayConfirmationDialog();
                         }
@@ -126,8 +129,8 @@ angular.module('bahmni.clinical').controller('ConsultationController',
                 setCurrentBoardBasedOnPath();
             });
 
-            $scope.$on("event:errorsOnForm", function() {
-                $scope.stateChangeTriggedByDialog = false;
+            var cleanUpListenerErrorsOnForm = $scope.$on("event:errorsOnForm", function() {
+                $scope.showConfirmationPopUp = true;
             });
 
             $scope.displayConfirmationDialog = function (event) {
@@ -140,10 +143,10 @@ angular.module('bahmni.clinical').controller('ConsultationController',
                 }
             };
 
-            $scope.$on('$stateChangeSuccess', function (event, toState, toParams, fromState) {
-                $scope.stateChangeTriggedByDialog = false;
+            var cleanUpListenerStateChangeSuccess = $scope.$on('$stateChangeSuccess', function (event, toState, toParams, fromState) {
                 if (toState.name.match(/patient.dashboard.show.+/)) {
                     $rootScope.hasVisitedConsultation = true;
+                    $scope.showConfirmationPopUp = true;
                     if($scope.showSaveConfirmDialogConfig) {
                         $rootScope.$broadcast("event:pageUnload");
                     }
@@ -153,25 +156,33 @@ angular.module('bahmni.clinical').controller('ConsultationController',
                 }
             });
 
+            $scope.$on("$destroy", function() {
+                cleanUpListenerStateChangeSuccess();
+                cleanUpListenerErrorsOnForm();
+                cleanUpListenerStateChangeStart();
+            });
+
             $scope.cancelTransition = function() {
-                $scope.stateChangeTriggedByDialog = false;
+                $scope.showConfirmationPopUp = true;
                 ngDialog.close();
                 delete $scope.targetUrl;
             };
 
             $scope.saveAndContinue = function() {
-                ngDialog.close();
+                $scope.showConfirmationPopUp = false;
                 $scope.save($scope.toStateConfig);
                 $window.onbeforeunload = null;
+                ngDialog.close();
             };
 
             $scope.continueWithoutSaving = function() {
-                ngDialog.close();
+                $scope.showConfirmationPopUp = false;
                 if ($scope.targetUrl) {
                     $window.open($scope.targetUrl, "_self");
                 }
                 $window.onbeforeunload = null;
                 $state.go($scope.toStateConfig.toState, $scope.toStateConfig.toParams);
+                ngDialog.close();
             };
 
             var getUrl = function (board) {
@@ -200,7 +211,7 @@ angular.module('bahmni.clinical').controller('ConsultationController',
 
                 var extensionParams = board.extensionParams;
                 angular.forEach(extensionParams, function(extensionParamValue, extensionParamKey){
-                    queryParams.push(extensionParamKey + "=" + extensionParamValue)
+                    queryParams.push(extensionParamKey + "=" + extensionParamValue);
                 });
 
                 if(!_.isEmpty(queryParams)) {

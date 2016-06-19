@@ -27,15 +27,20 @@ angular.module('bahmni.registration')
         });
 
         var populateSelectedAddressUuids = function(levelIndex) {
+            if ($scope.addressLevels.length === 0)
+                return;
+
             var fieldName = $scope.addressLevels[levelIndex].addressField;
             var addressValue = $scope.address[fieldName];
             if (addressValue) {
                 addressHierarchyService.search(fieldName, addressValue).then(function(response) {
                     var address = response.data[0];
-                    selectedAddressUuids[fieldName] = address.uuid;
-                    selectedUserGeneratedIds[fieldName] = address.userGeneratedId;
-                    $scope.$parent.patient.addressCode =  selectedUserGeneratedIds[fieldName];
-                    populateSelectedAddressUuids(levelIndex + 1);
+                    if (address) {
+                        selectedAddressUuids[fieldName] = address.uuid;
+                        selectedUserGeneratedIds[fieldName] = address.userGeneratedId;
+                        $scope.$parent.patient.addressCode = selectedUserGeneratedIds[fieldName];
+                        populateSelectedAddressUuids(levelIndex + 1);
+                    }
                 });
             }
         };

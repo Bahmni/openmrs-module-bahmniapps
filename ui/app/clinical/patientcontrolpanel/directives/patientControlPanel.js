@@ -61,9 +61,11 @@ angular.module('bahmni.common.patient')
         };
 
         $scope.links = getLinks();
-        $rootScope.$on('$stateChangeSuccess', function() {
+        var cleanUpListenerStateChangeSuccess = $rootScope.$on('$stateChangeSuccess', function() {
             $scope.links = getLinks($state.current.name);
         });
+
+        $scope.$on("$destroy", cleanUpListenerStateChangeSuccess);
 
         var encounterTypeUuid =  configurations.encounterConfig().getPatientDocumentEncounterTypeUuid();
         $scope.documentsPromise = encounterService.getEncountersForEncounterType($scope.patient.uuid, encounterTypeUuid).then(function(response) {

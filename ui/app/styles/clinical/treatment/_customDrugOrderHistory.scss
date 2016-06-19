@@ -1,12 +1,103 @@
+/*doc
+---
+title: Scrollable Table with 2 fixed Columns
+name: scrollable_table
+category: Layout - Table
+---
+
+Tables in the application are automatically styled. Make sure you use <thead> and <tbody> sections around your rows.
+If each of a table rows have multiple possible actions associated with them, use an "Actions" column with icons.For your reference you can check medication tab in clinical dashboard.
+
+```html_example
+<div class="treatment-page-container">
+  <div class="drugOrderHistorySectionContainer clearfix">
+    <div class="drugOrderTable">
+      <div class="drugOrderTableScroll noOfActions-1-width">
+          <table class="drug-order-table treatments-details-table">
+              <thead>
+              <tr>
+                  <th class="drugName">Table Header</th>
+                  <th  class="active-drugs">Table Header</th>
+                  <th class="active-drugs">Table Header</th>
+                  <th class="active-drugs">Table Header</th>
+                  <th class="active-drugs">Table Header</th>
+                  <th class="empty-header noOfActions-1-width">Actions</th>
+              </tr>
+              </thead>
+              <tbody>
+              <tr>
+                  <td class="drugName">Table Data</td>
+                  <td>Table Data</td>
+                  <td>Table Data</td>
+                  <td>Table Data</td>
+                  <td>Table Data</td>
+                  <td class="buttonColumn noOfActions-1-width">
+                      <div class="button-group-wrapper">
+                          <div class="button-group">
+                              <button><i class="fa fa-remove"></i></button>
+                          </div>
+                          <button  class="toggle">
+                              <i class="fa fa-plus-circle"></i>
+                          </button>
+                      </div>
+                  </td>
+              </tr>
+              <tr>
+                  <td class="drugName">Table Data</td>
+                  <td>Table Data</td>
+                  <td>Table Data</td>
+                  <td>Table Data</td>
+                  <td>Table Data</td>
+                  <td class="buttonColumn noOfActions-1-width">
+                      <div class="button-group-wrapper">
+                          <div class="button-group">
+                              <button><i class="fa fa-remove"></i></button>
+                          </div>
+                          <button  class="toggle">
+                              <i class="fa fa-plus-circle"></i>
+                          </button>
+                      </div>
+                  </td>
+              </tr>
+              <tr>
+                  <td class="drugName">Table Data</td>
+                  <td>Table Data</td>
+                  <td>Table Data</td>
+                  <td>Table Data</td>
+                  <td>Table Data</td>
+                  <td class="buttonColumn noOfActions-1-width">
+                      <div class="button-group-wrapper">
+                          <div class="button-group">
+                              <button><i class="fa fa-remove"></i></button>
+                          </div>
+                          <button class="toggle">
+                              <i class="fa fa-plus-circle"></i>
+                          </button>
+                      </div>
+                  </td>
+              </tr>
+              </tbody>
+          </table>
+       </div>
+    </div>
+  </div>
+</div>
+```
+
+
+*/
+
 .drugOrderHistorySectionContainer{
   .drugOrderTable{
     width:100%;
     position: relative !important;
+    clear:both;
+    overflow: hidden;
   }
   .drugOrderTableScroll{
     width: auto;
     overflow-x: auto;
-    overflow-y: visible;
+    overflow-y: hidden;
     margin-left:240px;
     &.noOfActions-4-width{
       margin-right: 200px;
@@ -40,20 +131,22 @@
     }
     thead tr th {
       text-align: center;
+      white-space: nowrap;
     }
 
     tbody tr td {
       border: none !important;
-      border-top: 1px #ccc solid !important;
+      border-top: 1px $lightGray solid !important;
+      white-space: nowrap;
     }
-    table-layout: fixed;
+    //table-layout: fixed;
     tr{
       &.edited{
         border-bottom: none;
       }
       &.medicationDrugNotes{
-        border-top: 2px solid #EFF8FF;
-        background: #EFF8FF;
+        border-top: 2px solid $clinicalNotesColor;
+        background: $clinicalNotesColor;
         td{
           text-align: left;
           padding-left:10px;
@@ -102,9 +195,9 @@
 
     }
     th{
-      background: #eee;
+      background: $lightestGray;
       background-image: none;
-      color: #333;
+      color: $darkGray;
       width:113px;
       font-family: openSansSemiBold;
       &.active-drugs{
@@ -119,6 +212,7 @@
         box-sizing: border-box;
         border-right: none;
         height:100%;
+        padding-left: 10px;
         @media (max-width : 1024px){
           width: 170px;
         }
@@ -174,7 +268,7 @@
         left:0;
         box-sizing: border-box;
         background: #EFEFF2;
-        border-bottom: 1px solid #ddd;
+        border-bottom: 1px solid $lighterGray;
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
@@ -192,20 +286,20 @@
         }
       }
       &.drugNameStopForm{
-        padding: 6px 5px 43px;
+        padding: 6px 10px 43px;
       }
       &.drugNameAddNote{
         padding: 6px 10px 31px;
       }
       &.drugNameStopFormAddNote{
-        padding: 6px 5px 85px;
+        padding: 6px 10px 85px;
       }
       &.buttonColumn{
         position: absolute;
         right:0;
         top:auto;
         padding: 2px 5px;
-        border-bottom: 1px solid #ddd;
+        border-bottom: 1px solid $lighterGray;
         background: #EFEFF2;
         box-sizing: border-box;
       }

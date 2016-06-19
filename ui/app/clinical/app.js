@@ -73,16 +73,10 @@ angular.module('consultation')
                     offlineDb: function (offlineDbInitialization) {
                         return offlineDbInitialization();
                     },
-                    offlineSyncInitialization: function (offlineSyncInitialization, offlineDb, offlineReferenceDataInitialization) {
-                        return offlineSyncInitialization(offlineDb, offlineReferenceDataInitialization);
-                    },
-                    offlineReferenceDataInitialization: function(offlineReferenceDataInitialization, offlineDb){
-                        return offlineReferenceDataInitialization(offlineDb, true);
-                    },
-                    initializeConfigs: function (initialization, $stateParams, offlineSyncInitialization) {
+                    initializeConfigs: function (initialization, $stateParams, offlineDb) {
                         $stateParams.configName = $stateParams.configName || Bahmni.Clinical.Constants.defaultExtensionName;
                         patientSearchBackLink.state = 'search.patientsearch({configName: \"' + $stateParams.configName + '\"})';
-                        return initialization($stateParams.configName, offlineSyncInitialization);
+                        return initialization($stateParams.configName, offlineDb);
                     }
                 }
             })
@@ -101,10 +95,13 @@ angular.module('consultation')
                     }
                 },
                 resolve: {
-                    initialization: function (initialization, $stateParams) {
+                    offlineDb: function (offlineDbInitialization) {
+                        return offlineDbInitialization();
+                    },
+                    initialization: function (initialization, $stateParams, offlineDb) {
                         $stateParams.configName = $stateParams.configName || Bahmni.Clinical.Constants.defaultExtensionName;
                         patientSearchBackLink.state = 'search.patientsearch({configName: \"' + $stateParams.configName + '\"})';
-                        return initialization($stateParams.configName);
+                        return initialization($stateParams.configName, offlineDb);
                     },
                     patientContext: function (initialization, patientInitialization, $stateParams) {
                         return patientInitialization($stateParams.patientUuid);
@@ -417,19 +414,29 @@ angular.module('consultation')
         $httpProvider.defaults.headers.common['Disable-WWW-Authenticate'] = true;
 
         $bahmniTranslateProvider.init({app: 'clinical', shouldMerge: true});
-    }]).run(['stateChangeSpinner', '$rootScope', function (stateChangeSpinner, $rootScope) {
+    }]).run(['stateChangeSpinner', '$rootScope', 'offlineService', 'schedulerService',
+        function (stateChangeSpinner, $rootScope, offlineService, schedulerService) {
         FastClick.attach(document.body);
         stateChangeSpinner.activate();
-
-        $rootScope.$on('$stateChangeSuccess', function () {
+        var cleanUpStateChangeSuccess = $rootScope.$on('$stateChangeSuccess', function () {
             window.scrollTo(0, 0);
         });
-        $rootScope.$on('ngDialog.opened', function () {
-           $('html').addClass('ngdialog-open')
+        var cleanUpNgDialogOpened = $rootScope.$on('ngDialog.opened', function () {
+           $('html').addClass('ngdialog-open');
         });
-        $rootScope.$on('ngDialog.closing', function () {
-            $('html').removeClass('ngdialog-open')
+        var cleanUpNgDialogClosing = $rootScope.$on('ngDialog.closing', function () {
+            $('html').removeClass('ngdialog-open');
         });
+
+        $rootScope.$on("$destroy", function() {
+            cleanUpStateChangeSuccess();
+            cleanUpNgDialogOpened();
+            cleanUpNgDialogClosing();
+        });
+
+        if (offlineService.isChromeApp() || offlineService.isAndroidApp()) {
+            schedulerService.sync();
+        }
     }]);
 
 

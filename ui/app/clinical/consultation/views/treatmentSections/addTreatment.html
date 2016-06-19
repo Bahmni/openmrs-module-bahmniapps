@@ -56,7 +56,7 @@
                                     <input id="uniform-dose"  ng-focus="treatment.setFrequencyType('uniform')"
                                            type="number" min="0" step="any" placeholder="{{ treatmentConfig.getDosePlaceHolder() | translate}}"
                                            ng-model="treatment.uniformDosingType.dose"
-                                           ng-required="!treatment.isDoseAndUnitNonMandatory() && treatment.isUniformFrequency && !treatment.uniformDosingType.doseFraction"
+                                           ng-required="treatment.isUniformDoseRequired()"
                                            focus-on="editDrugEntryUniformFrequency" />
                                 </div>
                             </article>
@@ -81,7 +81,8 @@
                                 </div>
                                 <div class="field-value">
                                     <select id="uniform-dose-unit" class="form-field freq-choose-units" ng-model="treatment.uniformDosingType.doseUnits"
-                                            ng-options="item.name as item.name for item in treatmentConfig.getDoseUnits()" ng-required="treatment.isUniformDoseUnitRequired()"
+                                            ng-options="item.name as item.name for item in treatmentConfig.getDoseUnits()"
+                                            ng-required="treatment.isUniformDoseUnitRequired()"
                                             ng-class="{'noFractionOptions' : !isDoseFractionsAvailable()}">
                                         <option value="">{{ ::treatmentConfig.translate('doseUnitsPlaceHolder', 'MEDICATION_DOSE_UNIT_PLACEHOLDER') }} </option>
                                     </select>
@@ -96,7 +97,8 @@
                                 <select id="frequency" class=" frequency" ng-model="treatment.uniformDosingType.frequency"
                                         ng-change="treatment.calculateDurationUnit(treatmentConfig.durationUnits)"
                                         ng-options="item.name as item.name for item in treatmentConfig.getFrequencies()"
-                                        ng-disabled="!treatment.isUniformDosingType()" ng-required="!treatment.validate() && treatment.isUniformFrequency">
+                                        ng-disabled="!treatment.isUniformDosingType()"
+                                        ng-required="treatment.isUniformFrequency">
                                     <option value="">{{ ::treatmentConfig.translate('frequencyUnitsPlaceHolder', 'MEDICATION_FREQUENCY_UNIT_PLACEHOLDER') }} </option>
                                 </select>
                             </div>
@@ -113,7 +115,7 @@
                             </div>
                         </article>
                     </div>
-                    <div class="frequency-widget variable-frequency " ng-show="!treatment.isUniformFrequency">
+                    <div class="frequency-widget variable-frequency " ng-if="!treatment.isUniformFrequency">
                         <article class="form-field ">
                             <div class=" dose-cell clearfix">
                                 <div class="field-attribute">
@@ -122,13 +124,13 @@
                                 <div class="field-value">
                                     <input id="morning-dose" type="number" min="0" step="any" ng-model="treatment.variableDosingType.morningDose"
                                            ng-focus="treatment.setFrequencyType('variable')"
-                                           ng-required="treatment.isVariableDoseRequired()" focus-on="editDrugEntryVariableFrequency" placeholder="&mdash;"/>
+                                           required="required" focus-on="editDrugEntryVariableFrequency" placeholder="&mdash;"/>
                                     <input id="afternoon-dose" type="number" min="0" step="any"
                                            ng-model="treatment.variableDosingType.afternoonDose"
-                                           ng-required="treatment.isVariableDoseRequired()" placeholder="&mdash;"/>
+                                           required="required" placeholder="&mdash;"/>
                                     <input id="evening-dose" type="number" min="0" step="any"
                                            ng-model="treatment.variableDosingType.eveningDose"
-                                           ng-required="treatment.isVariableDoseRequired()" placeholder="&mdash;"/>
+                                           required="required" placeholder="&mdash;"/>
                                 </div>
                             </div>
                         </article>
@@ -139,7 +141,7 @@
                             <div class="field-value">
                                 <select id="variable-dose-unit" class=" freq-dose-units" ng-model="treatment.variableDosingType.doseUnits"
                                         ng-options="item.name as item.name for item in treatmentConfig.getDoseUnits()"
-                                        ng-required="!treatment.isVariableDoseEmpty(treatment.variableDosingType) || treatment.isVariableDoseRequired()">
+                                        required="required">
                                     <option value="">{{ ::treatmentConfig.translate('doseUnitsPlaceHolder', 'MEDICATION_DOSE_UNIT_PLACEHOLDER') }} </option>
                                 </select>
                             </div>
@@ -212,7 +214,7 @@
                                 <select ng-if="!treatmentConfig.isHiddenField('quantityUnits')" id="total-quantity-unit"
                                         class="fl" ng-model="treatment.quantityUnit" ng-change="treatment.setQuantityUnitEnteredManually()"
                                         ng-options="item.name as item.name for item in treatmentConfig.getDoseUnits()"
-                                        ng-required="!treatment.validate()">
+                                        ng-required="treatment.isDurationRequired">
                                     <option value="">{{ ::treatmentConfig.translate('quantityUnitsPlaceHolder', 'MEDICATION_CHOOSE_QUANTITY_UNIT_PLACEHOLDER') }} </option>
                                 </select>
                             </div>

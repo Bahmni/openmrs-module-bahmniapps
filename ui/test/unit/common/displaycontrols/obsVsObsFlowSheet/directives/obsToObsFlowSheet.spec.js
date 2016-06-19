@@ -508,7 +508,7 @@ describe('obsToObsFlowSheet DisplayControl', function () {
                 }
             ];
 
-            expect(compiledElementScope.commafy(observations)).toEqual("Yes");
+            expect(compiledElementScope.commafy(observations)).toEqual("OBS_BOOLEAN_YES_KEY");
         });
 
         it('should return date if the concept datatype is date and not configured to show month and year', function () {

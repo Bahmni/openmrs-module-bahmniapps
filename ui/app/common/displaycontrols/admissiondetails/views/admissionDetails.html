@@ -1,9 +1,9 @@
 <section id="admissionDetails" class="block">
-    <h2 class="section-title"> {{params | titleTranslate}}</h2>
-    <div ng-if="!visitSummary.admissionDetails && !visitSummary.dischargeDetails">
-        <div class="placeholder-text">{{'NO_ADMISSION_DETAILS_MESSAGE' | translate}}</div>
+    <h2 class="section-title"> {{::params | titleTranslate}}</h2>
+    <div ng-if="::!visitSummary.admissionDetails && !visitSummary.dischargeDetails">
+        <div class="placeholder-text">{{::'NO_ADMISSION_DETAILS_MESSAGE' | translate}}</div>
     </div>
-    <table class="dashboard-table history-diagnosis" ng-if="visitSummary.admissionDetails || visitSummary.dischargeDetails">
+    <table class="dashboard-table history-diagnosis" ng-if="::visitSummary.admissionDetails || visitSummary.dischargeDetails">
         <tbody class="row">
         <tr ng-if="bedDetails">
             <td class="value">{{::bedDetails.wardName}}</td>
@@ -13,8 +13,8 @@
             <td class="name">
                 <span class="disposition-state">Admission Date</span>
             </td>
-            <td class="value" ng-if="visitSummary.admissionDetails">
-                {{visitSummary.admissionDetails.date | bahmniDate}}
+            <td class="value" ng-if="::visitSummary.admissionDetails">
+                {{::visitSummary.admissionDetails.date | bahmniDate}}
             </td>
             <td ng-if="showDetailsButton(visitSummary.admissionDetails)">
                 <button class="toggle fr"
@@ -26,18 +26,18 @@
         </tr>
         <tr ng-if="visitSummary.admissionDetails.show || visitSummary.admissionDetails.notes">
             <td colspan="3" class="notes inline-notes">
-                <pre class="left ng-binding">{{visitSummary.admissionDetails.notes}}</pre>
+                <pre class="left ng-binding">{{::visitSummary.admissionDetails.notes}}</pre>
                 <div class="footer-note right">
-                    <span class="provider">{{visitSummary.admissionDetails.provider}} {{visitSummary.admissionDetails.date | bahmniTime}}</span>
+                    <span class="provider">{{::visitSummary.admissionDetails.provider}} {{::visitSummary.admissionDetails.date | bahmniTime}}</span>
                 </div>
             </td>
         </tr>
-        <tr class="view-past" ng-if="visitSummary.dischargeDetails" ng-class="{'notes-open': visitSummary.dischargeDetails.show}">
+        <tr class="view-past" ng-if="::visitSummary.dischargeDetails" ng-class="{'notes-open': visitSummary.dischargeDetails.show}">
             <td class="name">
                 <span class="disposition-state">Discharge Date</span>
             </td>
             <td class="value">
-                {{visitSummary.dischargeDetails.date| bahmniDate}}
+                {{::visitSummary.dischargeDetails.date| bahmniDate}}
             </td>
             <td ng-if="showDetailsButton(visitSummary.dischargeDetails)">
                 <button class="toggle fr"
@@ -49,9 +49,9 @@
         </tr>
         <tr ng-show="visitSummary.dischargeDetails.show || visitSummary.dischargeDetails.notes">
             <td colspan="3" class="notes inline-notes">
-                <pre class="left ng-binding">{{visitSummary.dischargeDetails.notes}}</pre>
+                <pre class="left ng-binding">{{::visitSummary.dischargeDetails.notes}}</pre>
                 <div class="footer-note right">
-                    <span class="provider">{{visitSummary.dischargeDetails.provider}} {{visitSummary.dischargeDetails.date  | bahmniTime}}</span>
+                    <span class="provider">{{::visitSummary.dischargeDetails.provider}} {{::visitSummary.dischargeDetails.date  | bahmniTime}}</span>
                 </div>
             </td>
         </tr>

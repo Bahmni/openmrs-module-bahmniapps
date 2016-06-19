@@ -1,10 +1,10 @@
 <section class="block">
-<h2 class="section-title">{{config | titleTranslate}}</h2>
+<h2 class="section-title">{{::config | titleTranslate}}</h2>
     <ul>
         <li ng-repeat="recordGroup in recordGroups" class="radiology-doc-item"
             bm-gallery patient="patient" access-impression="true">
             <a class="document-link" bm-image-observation-gallery-items list=recordGroup.records>
-                {{recordGroup.conceptName}}
+                {{::recordGroup.conceptName}}
             </a>
             <i ng-show="shouldShowActiveVisitStar(recordGroup.records)"
                class="fa fa-star current-visit-icon fr"></i>

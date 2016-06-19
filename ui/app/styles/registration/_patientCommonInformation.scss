@@ -13,13 +13,6 @@
 }
 
 form .form-field{
-  .field-value input[type="text"]{
-    &#familyNameLocal ,&#familyName{
-      @media (max-width : 990px) {
-        clear: both;
-      }
-    }
-  }
   @media (max-width : 768px) {
     .field-value {
       @media (max-width : 580px) {
@@ -56,14 +49,10 @@ form .form-field{
       width:17em !important;
     }
   }
-  &.form-field-gender{
-    //margin-top: 5px;
-  }
 }
 
 section.form-field-inline{
   @include clearfix();
-  //margin-bottom: 2px;
   @media (max-width : 768px){
     margin-bottom: 0;
   }
@@ -134,12 +123,19 @@ section.form-field-inline{
   }
   .patient-name-wrapper{
     @include clearfix();
-    //margin-bottom: 2px;
     input[type="text"]{
       margin-right: 5px;
     }
     label#casteSameAsLastNameCheckLabel{
       width: auto;
+    }
+    .patient-name span{
+      @include clearfix();
+      float:left;
+      @media (max-width : 768px) {
+        display:block;
+        float:none;
+      }
     }
   }
 }
@@ -150,7 +146,7 @@ section.form-field-inline{
       margin: 5px 5px 0px 0px;
       .add-on{
         min-width: 0;
-        background-color: #eee!important;
+        background-color: $lightestGray!important;
         height: 19px;
 
       }
@@ -211,7 +207,7 @@ section.form-field-inline{
 }
 
 .selectGender{
-  border: 1px solid #DDD;
+  border: 1px solid $lighterGray;
   border-radius: 5px;
   ul{
     li{
@@ -219,14 +215,14 @@ section.form-field-inline{
       a{
         padding: 5px 20px;
         display: block;
-        border-right: 1px #ddd solid;
+        border-right: 1px $lighterGray solid;
         color: #363463;
         &:hover ,&:active{
-          background: #EEEEEE;
+          background: $lightestGray;
         }
         &:focus{
-          outline: 2px solid #007FFF;
-          background: #EEEEEE;
+          outline: 2px solid $clinicalFormFocus;
+          background: $lightestGray;
         }
       }
       &:last-child a{

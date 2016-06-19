@@ -24,7 +24,7 @@
     </div>
     <ul class="table-mimic">
         <li id="new-drug-orders" ng-repeat="newTreatment in treatments"
-            ng-class="{highlight : newTreatment.isBeingEdited, invalid: !newTreatment.validate()}">
+            ng-class="{highlight : newTreatment.isBeingEdited}">
             <div class="drug-details">
                 <div class="form">
                     <input type="checkbox" ng-show="showBulkChangeToggle" ng-model="newTreatment.durationUpdateFlag"

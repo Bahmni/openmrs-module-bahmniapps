@@ -19,9 +19,7 @@ angular.module('bahmni.clinical')
 
     var findVoidedInvestigations = function() {
         var filteredInvestigation = $scope.consultation.investigations.filter(function(investigation) {
-            if(investigation.voided === true){
-                return true;
-            }
+            return investigation.voided;
         });
         return filteredInvestigation.length === $scope.consultation.investigations.length;
     };

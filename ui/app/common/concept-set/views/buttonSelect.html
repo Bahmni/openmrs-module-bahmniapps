@@ -1,11 +1,12 @@
 <div ng-class="{'multi-select-widget' : observation.isMultiSelect}"
      class="multi-select-button-group">
-    <button type="button" class="grid-row-element"
-            title="{{::getAnswerDisplayName(answer)}}"
-            ng-disabled="observation.disabled"
-            ng-class="{'active': isSet(answer), 'is-abnormal': abnormalObs.value && isSet(answer)}"
-            ng-click="select(answer)"
-            ng-repeat="answer in ::observation.getPossibleAnswers()">
-        <i class="fa fa-ok"></i>{{::getAnswerDisplayName(answer)}}
-    </button>
+    <div class="btn-tooltip-wrapper fl" ng-repeat="answer in ::observation.getPossibleAnswers() track by $index">
+        <button type="button" class="grid-row-element"
+                ng-disabled="observation.disabled"
+                ng-class="{'active': isSet(answer), 'is-abnormal': abnormalObs.value && isSet(answer)}"
+                ng-click="select(answer)">
+            <i class="fa fa-ok"></i>{{::getAnswerDisplayName(answer) | titleTranslate}}
+        </button>
+        <span>{{::getAnswerDisplayName(answer) | titleTranslate}}</span>
+    </div>
 </div>

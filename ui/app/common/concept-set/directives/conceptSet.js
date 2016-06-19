@@ -164,30 +164,56 @@ angular.module('bahmni.common.conceptSet')
                     }, {});
                 };
 
-
                 var contextChange = function () {
                     $scope.atLeastOneValueIsSet = $scope.rootObservation && $scope.rootObservation.atLeastOneValueSet();
                     $scope.conceptSetRequired = $scope.required ? $scope.required : true;
+                    var nodes = findInvalidNodes($scope.rootObservation.groupMembers);
+                    return {allow: !nodes.status, errorMessage: nodes.message};
+                }; //TODO: Write unit test for this function
+
+                var findInvalidNodes = function (members) {
                     var errorMessage = null;
-                    var invalidNodes = $scope.rootObservation && $scope.rootObservation.groupMembers.filter(function (childNode) {
-                            if (childNode.voided) {
-                                return false;
-                            }
-                            //Other than Bahmni.ConceptSet.Observation  and Bahmni.ConceptSet.ObservationNode, other concepts does not have isValueInAbsoluteRange fn
-                            if (typeof childNode.isValueInAbsoluteRange == 'function' && !childNode.isValueInAbsoluteRange()) {
-                                errorMessage = "The value you entered (red field) is outside the range of allowable values for that record. Please check the value.";
+                    var status = members.some(function (childNode) {
+                        if (childNode.voided) {
+                            return false;
+                        }
+                        var groupMembers = childNode.groupMembers || [];
+                        for (var index in groupMembers) {
+                            var information = groupMembers[index].groupMembers && groupMembers[index].groupMembers.length ? findInvalidNodes(groupMembers[index].groupMembers) : validateChildNode(groupMembers[index]);
+                            if (information.status) {
+                                errorMessage = information.message;
                                 return true;
                             }
+                        }
+                        information = validateChildNode(childNode);
+                        if (information.status) {
+                            errorMessage = information.message;
+                            return true;
+                        }
+                        return !childNode.isValid($scope.atLeastOneValueIsSet, $scope.conceptSetRequired);
+                    });
+                    return {message: errorMessage, status: status};
+                };
+                var validateChildNode = function (childNode) {
+                    var errorMessage;
+                    if (childNode.possibleAnswers && !childNode.possibleAnswers.length) {
+                        if (typeof childNode.isValueInAbsoluteRange == 'function' && !childNode.isValueInAbsoluteRange()) {
+                            errorMessage = "The value you entered (red field) is outside the range of allowable values for that record. Please check the value.";
+                            return {message: errorMessage, status: true};
+                        }
 
-                            if (childNode.isNumeric()){
-                                if(!childNode.isAllowDecimal()){
-                                    errorMessage = "Please enter Integer value, decimal value is not allowed";
-                                    return true;
-                                }
+                        if (childNode.isNumeric()) {
+                            if(!childNode.isValidNumeric()){
+                                errorMessage = "Please enter Integer value, decimal value is not allowed";
+                                return {message: errorMessage, status: true};
                             }
-                            return !childNode.isValid($scope.atLeastOneValueIsSet, $scope.conceptSetRequired);
-                        });
-                    return {allow: !invalidNodes || invalidNodes.length === 0, errorMessage: errorMessage};
+                            if(!childNode.isValidNumericValue()){
+                                errorMessage = "Please enter Numeric values";
+                                return {message: errorMessage, status: true};
+                            }
+                        }
+                    }
+                    return {status: false};
                 };
                 contextChangeHandler.add(contextChange);
                 var validateObservationTree = function () {
@@ -204,7 +230,7 @@ angular.module('bahmni.common.conceptSet')
                 validationHandler.add(validateObservationTree);
 
 
-                $scope.$on('event:showPrevious' + conceptSetName, function () {
+                var cleanUpListenerShowPrevious = $scope.$on('event:showPrevious' + conceptSetName, function () {
 
                     return spinner.forPromise(observationsService.fetch($scope.patient.uuid, $scope.conceptSetName, null, $scope.numberOfVisits, null, true)).then(function (response) {
                         var recentObservations = ObservationUtil.flattenObsToArray(response.data);
@@ -256,6 +282,7 @@ angular.module('bahmni.common.conceptSet')
                 $scope.$on('$destroy', function() {
                     deregisterObservationUpdated();
                     deregisterAddMore();
+                    cleanUpListenerShowPrevious();
                 });
 
                 var processConditions = function (flattenedObs, fields, disable, error) {
@@ -299,12 +326,12 @@ angular.module('bahmni.common.conceptSet')
                 restrict: 'E',
                 scope: {
                     conceptSetName: "=",
-                    observations: "=",
-                    required: "=",
+                    observations: "=?",
+                    required: "=?",
                     showTitle: "&",
                     validationHandler: "&",
                     patient: "=",
-                    conceptSetFocused: "=",
+                    conceptSetFocused: "=?",
                     collapseInnerSections: "=?"
                 },
                 templateUrl: '../common/concept-set/views/conceptSet.html',

@@ -15,6 +15,10 @@ angular.module('bahmni.common.uiHelper')
                     $(element).toggleClass('active', $scope.toggle)
                 });
             });
+
+            $scope.$on("$destroy", function(){
+               element.off('click');
+            });
         };
 
         return {

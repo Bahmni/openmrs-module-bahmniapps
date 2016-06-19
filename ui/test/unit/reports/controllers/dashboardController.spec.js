@@ -76,7 +76,7 @@ describe("DashboardController", function () {
     it('should initialise all available formats when supportedFormats config is not specified', function(){
         mockAppDescriptor.getConfigValue.and.returnValue(undefined);
 
-        expect(_.keys(scope.formats).length).toBe(5);
+        expect(_.keys(scope.formats).length).toBe(6);
     });
 
     it('setDefault sets the right defaults based on section', function () {

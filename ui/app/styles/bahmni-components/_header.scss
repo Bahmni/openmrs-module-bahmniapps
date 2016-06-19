@@ -2,8 +2,12 @@
     background: $bahmniSecondaryColor;
     header{
         height:52px;
-        max-width: 1200px;
+        max-width:$max-page-width;
         margin: 0 auto;
+        position: relative;
+        @media screen and (max-width: $max-page-width) {
+            padding: 0 10px;
+        }
     }
 }
 
@@ -34,4 +38,23 @@
     @media screen and (max-width: 768px) {
         display: none;
     }
+}
+
+.reg-header-right{
+    width:auto;
+}
+
+.offline-sync {
+    margin:12px 10px 0 0;
+    &.offline-sync-image {
+        padding: 6px 27px;
+    }
+}
+
+.offlin-sync-wrap .offline-sync {
+    margin:5px 0 0 0;
+}
+
+.offlin-sync-wrapper .offline-sync {
+    margin:12px 10px 1px 0;
 }

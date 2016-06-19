@@ -7,7 +7,7 @@ Bahmni.Common.Domain.ProviderMapper = function () {
         }
         return {
             uuid: openMrsProvider.uuid,
-            name: openMrsProvider.preferredName.display
+            name: openMrsProvider.preferredName ? openMrsProvider.preferredName.display : openMrsProvider.person.preferredName.display
         }
     };
 };

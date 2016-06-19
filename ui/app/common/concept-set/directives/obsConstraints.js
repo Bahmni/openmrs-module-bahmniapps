@@ -21,7 +21,7 @@ angular.module('bahmni.common.conceptSet')
             }
             if(attributes['type'] == 'date') {
                 if($scope.obs.conceptUIConfig == null || !$scope.obs.conceptUIConfig['allowFutureDates']) {
-                    attributes['max'] = moment().format("YYYY-MM-DD");
+                    attributes['max'] = Bahmni.Common.Util.DateTimeFormatter.getDateWithoutTime();
                 }
             }
             element.attr(attributes);

@@ -70,7 +70,7 @@ angular.module('bahmni.clinical').factory('treatmentConfig',
                         return drugOrderOptions.doseFractions;
                     },
                     isHiddenField: function (fieldName) {
-                        return _.includes(drugOrderOptions.hiddenFields, fieldName)
+                        return _.includes(drugOrderOptions.hiddenFields, fieldName);
                     },
                     isDropDown: function () {
                         return drugOrderOptions.isDropDown && drugOrderOptions.drugConceptSet;
@@ -99,7 +99,7 @@ angular.module('bahmni.clinical').factory('treatmentConfig',
                         var labelKey = drugOrderOptions.labels[field];
                         var labelValue = $translate.instant(labelKey);
                         if (labelValue === labelKey) {
-                            labelValue = $translate.instant(defaultKey)
+                            labelValue = $translate.instant(defaultKey);
                         }
                         return labelValue;
                     },

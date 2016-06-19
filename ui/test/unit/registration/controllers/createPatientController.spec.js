@@ -449,4 +449,14 @@ describe('CreatePatientController', function() {
         expect(scopeMock.hasIdentifierSources()).toBeFalsy();
     });
 
+    it("should return true if there is only one identifier source with blank prefix", function () {
+        scopeMock.identifierSources = [{name : "ABC", prefix: ""}];
+        expect(scopeMock.hasIdentifierSourceWithEmptyPrefix()).toBeTruthy();
+    });
+
+
+    it("should return false if there is only one identifier source without a blank prefix", function () {
+        scopeMock.identifierSources = [{name : "ABC", prefix: "prefix"}];
+        expect(scopeMock.hasIdentifierSourceWithEmptyPrefix()).toBeFalsy();
+    });
 });

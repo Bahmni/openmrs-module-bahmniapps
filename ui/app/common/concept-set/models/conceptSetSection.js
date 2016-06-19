@@ -96,7 +96,7 @@ Bahmni.ConceptSet.ConceptSetSection = function (extensions, user, config, observ
     };
 
     self.canAddMore = function(){
-        return self.allowAddMore;
+        return self.allowAddMore == true;
     };
 
     Object.defineProperty(self, "isOpen", {

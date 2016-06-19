@@ -115,4 +115,19 @@ describe('patient mapper', function () {
     });
 
 
+    it('should set voided flag to true when blank value is selected for an attribute of concept type', function () {
+        angular.extend(patient, {
+            "caste":{
+                conceptUuid: null,
+                value: "General"
+            }
+        });
+
+
+        var mappedPatientData = updatePatientRequestMapper.mapFromPatient(patientAttributeTypes, openMrsPatient,patient);
+
+        var castePatientAttribute = _.find(mappedPatientData.patient.person.attributes ,{uuid : "caste-attribute-uuid"});
+        expect(castePatientAttribute.voided).toBeTruthy();
+    });
+
 });

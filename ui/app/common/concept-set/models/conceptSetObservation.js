@@ -4,7 +4,7 @@ Bahmni.ConceptSet.Observation = function (observation, savedObs, conceptUIConfig
     var self = this;
     angular.extend(this, observation);
     this.isObservation = true;
-    this.conceptUIConfig = conceptUIConfig[this.concept.name] || []
+    this.conceptUIConfig = conceptUIConfig[this.concept.name] || [];
     this.uniqueId = _.uniqueId('observation_');
     this.erroneousValue = null;
 
@@ -23,6 +23,7 @@ Bahmni.ConceptSet.Observation = function (observation, savedObs, conceptUIConfig
             return (this.value != null && (typeof this.value === "object")) ? this.value.name : this.value;
         },
         set: function (newValue) {
+            this.__prevValue = this.value;
             this.value = newValue;
         }
     });
@@ -41,6 +42,7 @@ Bahmni.ConceptSet.Observation = function (observation, savedObs, conceptUIConfig
             return savedObs ? savedObs.value : undefined;
         },
         set: function (newValue) {
+            self.__prevValue = this.value;
             self._value = newValue;
             if (!newValue) {
                 savedObs = null;
@@ -99,13 +101,19 @@ Bahmni.ConceptSet.Observation.prototype = {
         return this.getDataTypeName() === "Numeric";
     },
 
-    isAllowDecimal : function (){
-        if(this.getAllowDecimal() === false){
-            if(this.value && this.value.toString().indexOf('.') > 0){
+    isValidNumeric : function (){
+        if(!this.isDecimalAllowed()){
+            if(this.value && this.value.toString().indexOf('.') >= 0){
                 return false;
             }
         }
         return true;
+    },
+    isValidNumericValue: function () {
+        if (this.value === "" && this.__prevValue && (this.__prevValue.length == 1)) {
+            return true;
+        }
+        return this.value !== "";
     },
 
     isText: function () {
@@ -128,7 +136,7 @@ Bahmni.ConceptSet.Observation.prototype = {
         return this.concept.dataType;
     },
 
-    getAllowDecimal: function () {
+    isDecimalAllowed: function () {
         return this.concept.allowDecimal;
     },
 
@@ -310,8 +318,8 @@ Bahmni.ConceptSet.Observation.prototype = {
     },
 
     isValid: function (checkRequiredFields, conceptSetRequired) {
-        if (this.isNumeric() && this.getAllowDecimal() === false){
-            return this.isAllowDecimal();
+        if (this.isNumeric() && !this.isValidNumeric()) {
+            return false;
         }
         if (this.error) {
             return false;
