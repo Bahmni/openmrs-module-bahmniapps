@@ -36,7 +36,6 @@ angular.module('bahmni.common.offline').service('offlineService', ['$rootScope',
     this.setItem = function (key, value) {
         localStorage.setItem(key, JSON.stringify(value));
     };
-
     this.getItem = function (key) {
         var value = localStorage.getItem(key);
         if (value) {
@@ -49,6 +48,10 @@ angular.module('bahmni.common.offline').service('offlineService', ['$rootScope',
         var username = this.getItem(Bahmni.Common.Constants.LoginInformation)['username'] || '';
         return ( username.toLowerCase() === loginInfo.username.toLowerCase() &&
         JSON.stringify(this.getItem(Bahmni.Common.Constants.LoginInformation)['password']) === JSON.stringify(CryptoJS.SHA3(loginInfo.password)));
+    };
+
+    this.setSchedulerStatus = function (stage){
+        $rootScope.$broadcast("schedulerStage",stage);
     };
 
 }]);

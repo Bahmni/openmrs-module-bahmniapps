@@ -3,15 +3,18 @@
     .dashboard-section-wrapper{
         position: static;
     }
-    .dashboard-section{
-        position: static !important;
-    }
     .drug-details {
         line-height: 1.5em;
         padding-left: 10px;
         margin-top: 5px;
         width: 58%;
         float: left;
+        @media screen and (max-width: 1024px) {
+            width:46%;
+        }
+        @media screen and (max-width: 768px) {
+            width:44%;
+        }
     }
     div.start-date span {
         line-height: 1em;
@@ -50,9 +53,6 @@
                 font-size: 1.3em;
                 color: $mediumGray;
                 padding: 3px 0.2em;
-                @media screen and (max-width: 1024px){
-                    font-size: 1.8em;
-                }
             }
         }
         .refill-btn, .stop-drug-btn {
@@ -63,18 +63,15 @@
         }
         button.dispense-btn{
             font-family: OpenSansBold;
-            color: #457fac;
+            color: $bahmniTertiaryColor;
             padding: 0 7px;
             width: auto;
             height: 24px;
-            @media screen and (max-width: 1024px){
-                height: 27px;
-            }
             &:hover{
                 padding: 0 7px;
             }
             i{
-                color: #457fac;
+                color: $bahmniTertiaryColor;
                 font-size: 1.2em;
                 padding: 0;
             }
@@ -143,10 +140,10 @@
 
     .bulk-edit-options-container{
         padding: 10px 10px 10px 10px;
-        background-color: #EEEEEE;
-        border-bottom: 1px #bbb solid;
+        background-color: $lightestGray;
+        border-bottom: 1px $primarySectionGridBorder solid;
         margin-bottom: 4px;
-        box-shadow: 1px 2px 7px #ccc;
+        box-shadow: 1px 2px 7px $lightGray;
         .bulk-btn-container{
             .stepper__btn{
                 height: 26px;
@@ -223,6 +220,11 @@
                         @media (max-width: 1024px) {
                             padding: 7px 6px 6px;
                         }
+                        @media screen and (max-width: 768px) {
+                           top:-31px;
+                           right:0;
+                            margin-top:0;
+                        }
                     }
                 }
                 .variable-frequency{
@@ -235,14 +237,17 @@
                     @media screen and (max-width: 1024px) {
                         font-size: 14px;
                     }
+                    @media screen and (max-width: 768px) {
+                        font-size: 13px;
+                    }
                 }
             }
 
             h3.orderSet-additional-info{
                 font-family: OpenSansBold;
-                color: #333;
+                color: $darkGray;
                 font-size: 13px;
-                border-bottom: 1px solid #ccc;
+                border-bottom: 1px solid $lightGray;
                 padding: 20px 0 5px;
                 margin: 0 0 10px;
             }
@@ -269,9 +274,16 @@
                     min-width: 142px;
                     height: 31px;
                 }
+
             }
             .field-attribute label{
                 width: 7.6em;
+                @media screen and (max-width: 768px) {
+                    float: none;
+                    width:11em;
+                    clear:both;
+                    text-align: left;
+                }
             }
         }
         .edit-drug-order-container .accept-btn{
@@ -283,6 +295,9 @@
             float: right;
             @media screen and (max-width: 1024px) {
                 padding: 8px 10px 7px;
+            }
+            @media screen and (max-width: 768px) {
+                margin-right: 41px;
             }
         }
         input[type="date"]{
@@ -301,26 +316,30 @@
             margin-top: 10px;
         }
         .dose-cell {
-                    margin-left: 5px;
-                    input[type="number"] {
-                        min-width: 59.6px;
-                        width: 59.6px;
-                        padding: 4px 0px 3px 8px !important;
-                        text-align: center;
-                        @media (max-width: 1024px) {
-                            min-width: 45px;
-                            width: 45px;
-                            padding: 7px 0px 7px 8px !important;
-                        }
-                    }
+            margin-left: 5px;
+            input[type="number"] {
+                min-width: 59.6px;
+                width: 59.6px;
+                padding: 4px 0px 3px 8px !important;
+                text-align: center;
+                @media (max-width: 1024px) {
+                    min-width: 45px;
+                    width: 45px;
+                    padding: 7px 0px 7px 8px !important;
                 }
-//            }
+                @media (max-width: 768px) {
+                   width:44px;
+                    min-width: 44px;
+
+                }
+            }
+        }
 
         h3.orderSet-additional-info{
             font-family: OpenSansBold;
-            color: #333;
+            color: $darkGray;
             font-size: 13px;
-            border-bottom: 1px solid #ccc;
+            border-bottom: 1px solid $lightGray;
             padding: 20px 0 5px;
             margin: 0 0 10px;
         }
@@ -340,6 +359,8 @@
         width: 75%;
         float: right;
         .dashboard-section{
+            position: relative;
+            clear:both;
             margin-top:0;
             border-radius: 3px 3px 0 0;
         }

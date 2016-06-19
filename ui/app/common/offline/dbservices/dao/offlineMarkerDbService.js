@@ -8,18 +8,21 @@ angular.module('bahmni.common.offline')
             db = _db;
         };
 
-        var getMarkers = function (markerTable) {
-            return db.select().from(markerTable).exec();
+        var getMarkers = function (markerTable, markerName) {
+            return db.select()
+                .from(markerTable)
+                .where(markerTable.markerName.eq(markerName)).exec();
         };
 
         var insertOrUpdateMarker = function (markerTable, row) {
             return db.insertOrReplace().into(markerTable).values([row]).exec();
         };
 
-        var insertMarker = function (eventUuid, catchmentNumber) {
+        var insertMarker = function (markerName, eventUuid, catchmentNumber) {
             var markerTable = db.getSchema().table('event_log_marker');
 
             var row = markerTable.createRow({
+                markerName: markerName,
                 lastReadEventUuid: eventUuid,
                 catchmentNumber: catchmentNumber,
                 lastReadTime: new Date()
@@ -30,9 +33,9 @@ angular.module('bahmni.common.offline')
             });
         };
 
-        var getMarker = function () {
+        var getMarker = function (markerName) {
             var markerTable = db.getSchema().table('event_log_marker');
-            return getMarkers(markerTable).then(function (markers) {
+            return getMarkers(markerTable, markerName).then(function (markers) {
                 return markers[0]
             })
         };

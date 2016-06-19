@@ -27,7 +27,7 @@ describe('EventLogService', function () {
             expect(data[0]).toBe(newVar);
         });
 
-        expect(mockHttp.get).toHaveBeenCalledWith('/event-log-service/rest/eventlog/getevents', {
+        expect(mockHttp.get).toHaveBeenCalledWith('/event-log-service/rest/eventlog/events', {
             params: {filterBy: 111, uuid: undefined}
         });
     });
@@ -86,41 +86,5 @@ describe('EventLogService', function () {
         });
     });
 
-    it('should make a call to get parent address hierarchy entries for login location', function (done) {
-        var result = [
-            {
-                "addressHierarchyEntryId": 16165,
-                "name": "Gazipur",
-                "levelId": 2,
-                "addressHierarchyLevel": {
-                    "levelId": 2,
-                    "name": "Zilla",
-                    "parentLevelId": 1,
-                    "addressField": "COUNTY_DISTRICT",
-                    "required": true,
-                    "uuid": "c25a3285-7d55-11e5-acdf-90fba67c4298",
-                    "id": 2
-                },
-                "parentId": 14332,
-                "userGeneratedId": "3033",
-                "uuid": "f9cbb04a-8656-43e1-893c-e969f9ecf41a"
-            }
-        ];
-        var params =  ['f9cbb04a-8656-43e1-893c-e969f9ecf41a'];
-        mockHttp.get.and.callFake(function () {
-            return specUtil.respondWith(result);
-        });
 
-        eventLogService.getParentAddressHierarchyEntriesForLoginLocation(params).then(function (data) {
-            expect(data.length).toBe(1);
-            expect(data).toBe(result);
-            done();
-        });
-
-        expect(mockHttp.get).toHaveBeenCalledWith('/openmrs/ws/rest/v1/addressHierarchy', {
-            method : 'GET',
-            params: {"uuids" : params},
-            withCredentials : true
-        });
-    });
 });

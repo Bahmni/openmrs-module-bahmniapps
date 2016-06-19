@@ -4,7 +4,7 @@ angular.module('bahmni.common.uiHelper')
     .directive('singleClick', function () {
         var ignoreClick = false;
         var link = function (scope, element) {
-            element.on('click', function () {
+            var clickHandler = function () {
                 if (ignoreClick) {
                     return;
                 }
@@ -12,6 +12,12 @@ angular.module('bahmni.common.uiHelper')
                 scope.singleClick().finally(function () {
                     ignoreClick = false;
                 });
+            };
+
+            element.on('click', clickHandler);
+
+            scope.$on("$destroy", function() {
+                element.off('click', clickHandler);
             });
         };
         return {

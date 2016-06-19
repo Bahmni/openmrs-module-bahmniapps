@@ -48,7 +48,6 @@ angular.module('bahmni.common.uiHelper')
                 targetElement.hide();
                 $scope.targetElements.push(targetElement);
             };
-
             var hideOrShowTargetElements = function () {
                 if ($scope.isTargetOpen) {
                     $scope.isTargetOpen = false;

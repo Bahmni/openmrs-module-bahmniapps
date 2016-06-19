@@ -15,13 +15,15 @@ angular.module('bahmni.common.uiHelper')
 					'</ul>',
 		controller: function ($scope, backlinkService) {
 	        $scope.backLinks = backlinkService.getAllUrls();
-	        $scope.$on('$stateChangeSuccess', function (event, state) {
+			var cleanUpListenerStateChangeSuccess = $scope.$on('$stateChangeSuccess', function (event, state) {
 	            if (state.data && state.data.backLinks) {
 	                backlinkService.setUrls(state.data.backLinks);
 	                $scope.backLinks = backlinkService.getAllUrls();
 	            }
 	        });
-	    },
+
+			$scope.$on("$destroy", cleanUpListenerStateChangeSuccess);
+		},
 	    restrict: 'E'
 	}
 });

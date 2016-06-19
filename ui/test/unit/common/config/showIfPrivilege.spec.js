@@ -1,18 +1,20 @@
 'use strict';
 
 describe("show if privilege directive", function () {
-    var element, scope, $compile;
+    var element, scope, rootScope, $compile;
 
     beforeEach(module('bahmni.common.config'));
 
     beforeEach(inject(function (_$compile_, $rootScope) {
-        scope = $rootScope;
+        rootScope = $rootScope;
+        scope = $rootScope.$new();
         $compile = _$compile_;
-        scope.currentUser = {
+        rootScope.currentUser = {
             "username": "superman",
-            "privileges": [{
-                "name": "app:clinical:retrospective"
-            },{"name":"app:billing"}]
+            "privileges": [
+                {"name": "app:clinical:retrospective"},
+                {"name":"app:billing"}
+            ]
         };
     }));
 

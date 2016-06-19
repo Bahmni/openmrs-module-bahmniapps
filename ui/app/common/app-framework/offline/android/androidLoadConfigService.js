@@ -6,7 +6,10 @@ angular.module('bahmni.common.appFramework')
         this.loadConfig = function (url, contextPath) {
             var configFile = url.substring(url.lastIndexOf("/") + 1);
             return androidDbService.getConfig(contextPath).then(function(config){
-                    return {"data": config.value[configFile]};
+                    if(config) {
+                        return {"data": config.value[configFile]};
+                    }
+                    return {"data": {}}
                 });
         };
 

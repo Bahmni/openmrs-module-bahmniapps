@@ -1,13 +1,14 @@
 'use strict';
 
 describe("Tabular Observations", function() {
+    var isValid = jasmine.createSpy();
+
     it("should have rows", function() {
         var tabularObservations = new Bahmni.ConceptSet.TabularObservations(obsGroups, parentObs, {});
         expect(tabularObservations.label).toEqual("DST Result");
         expect(tabularObservations.concept).not.toBeNull();
         expect(tabularObservations.rows.length).toBe(2);
         expect(tabularObservations.isFormElement()).toBeFalsy();
-        expect(tabularObservations.isValid()).toBeTruthy();
         expect(tabularObservations.getControlType()).toBe("tabular");
     });
 
@@ -68,15 +69,24 @@ describe("Tabular Observations", function() {
         expect(tabularObservations.rows.length).toEqual(newObj.rows.length);
     });
 
+    it("should validate all observations", function () {
+        var tabularObservations = new Bahmni.ConceptSet.TabularObservations(obsGroups, parentObs, {});
+        isValid.and.returnValue(true);
+        tabularObservations.isValid(true, true);
+        expect(isValid.calls.count()).toEqual(4);
+    });
+
     var obsGroups = [{
         concept: {name:"DST Result", shortName: "DST"},
         label: "DST Result",
         groupMembers: [{
             concept: {shortName: "Drugs"},
-            value: "Drug1"
+            value: "Drug1",
+            isValid : isValid
         }, {
             concept: {shortName: "Concentration"},
-            value: "500mg"
+            value: "500mg",
+            isValid : isValid
         }],
         cloneNew: function() {
             return {concept: {shortName: "DST"}, label: "DST Result", groupMembers: [{concept: {shortName: "Drugs"}}, {concept: {shortName: "Concentration"}}]}
@@ -86,10 +96,12 @@ describe("Tabular Observations", function() {
         label: "DST Result",
         groupMembers: [{
             concept: {shortName: "Drugs"},
-            value: "Drug2"
+            value: "Drug2",
+            isValid : isValid
         }, {
             concept: {shortName: "Concentration"},
-            value: "100mg"
+            value: "100mg",
+            isValid : isValid
         }],
         cloneNew: function() {
             return {concept: {shortName: "DST"}, label: "DST Result", groupMembers: [{concept: {shortName: "Drugs"}}, {concept: {shortName: "Concentration"}}]}

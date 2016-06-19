@@ -98,9 +98,15 @@
                 }
             });
 
-            element.on('blur', function () {
+            var blurHandler = function () {
                 var searchTerm = $.trim(element.val());
                 validator(searchTerm);
+            };
+
+            element.on('blur', blurHandler);
+
+            scope.$on("$destroy", function() {
+                element.off('blur', blurHandler);
             });
         };
 

@@ -1,3 +1,134 @@
+/*doc
+---
+title: Form
+name: Form
+category: Layout - Form
+---
+
+Form is following the below structure:
+
+```html_example
+<form>
+    <section class="form-field">
+      <article class="form-field">
+          <div class="field-attribute">
+            <label>Postalcode
+            </label>
+          </div>
+          <div class="field-value">
+              <input type="text" id="postalCode">
+          </div>
+      </article>
+      <article class="form-field">
+          <div class="field-attribute">
+            <label>Postalcode
+                <span class="asterick">*</span>
+            </label>
+          </div>
+          <div class="field-value">
+              <input type="text" id="postalCode" value="incorrect value" class="illegalValue">
+          </div>
+      </article>
+    </section>
+</form>
+```
+
+
+*/
+
+
+
+/*doc
+---
+title: Two column Layout Form
+name: two_column_layout_form
+category: Layout - Form
+---
+
+Form is following the below structure:
+
+```html_example
+<form>
+    <section class="form-field-inline">
+      <article class="form-field">
+          <div class="field-attribute">
+            <label>Postalcode
+            </label>
+          </div>
+          <div class="field-value">
+              <input type="text" id="postalCode">
+          </div>
+      </article>
+      <article class="form-field right-form-field">
+          <div class="field-attribute">
+            <label>Postalcode
+                <span class="asterick">*</span>
+            </label>
+          </div>
+          <div class="field-value">
+              <input type="text" id="postalCode" value="incorrect value" class="illegalValue">
+          </div>
+      </article>
+    </section>
+</form>
+```
+
+
+*/
+
+
+
+/*doc
+---
+title: Multi Column Layout
+name: multi_column_layout
+category: Layout - Form
+---
+
+
+```html_example
+    <form>
+      <div class="row">
+          <div class="col col1 form-field">
+              <div class="field-attribute">
+                   <label>Sample</label>
+              </div>
+              <div class="field-value">
+                  <select>
+                    <option value="" selected="selected">Select Relationship Type</option>
+                    <option label="Doctor" value="doctor">Doctor</option>
+                  </select>
+              </div>
+           </div>
+           <div class="col col1 form-field">
+              <div class="field-attribute">
+                   <label>Label</label>
+              </div>
+              <div class="field-value">
+                  <select>
+                    <option value="" selected="selected">Select Relationship Type</option>
+                    <option label="Doctor" value="doctor">Doctor</option>
+                  </select>
+              </div>
+           </div>
+           <div class="col col1 form-field">
+              <div class="field-attribute">
+                   <label>Till</label>
+              </div>
+              <div class="field-value">
+                 <select>
+                    <option value="" selected="selected">Select Relationship Type</option>
+                    <option label="Doctor" value="doctor">Doctor</option>
+                  </select>
+              </div>
+           </div>
+      </div>
+    </form>
+```
+
+
+*/
+
 /******** form element styling start********/
 
 fieldset { margin: 0; padding: 0; border: 0; }
@@ -52,20 +183,21 @@ form, .form {
             margin-left: 5px;
             margin-top:9px;
             float:left;
+            font-size: 13px;
             button {
               padding: 2px 0px;
-              color: #000;
+              color: $black;
               i {
                 color: green;
                 padding: 0.2em 0.1em;
               }
             }
-            @media screen and (max-width: 1024px) {
-              margin-top:9px;
+            @media screen and (max-width: 850px) and (min-width: 596px) {
+              margin-top:13px;
             }
         }
         textarea {
-           height: 35px;
+            height: 35px;
             width: 807px;;
             transition: height 0.1s ease;
             box-sizing: border-box;
@@ -76,11 +208,11 @@ form, .form {
             &.consultation-img-comments {
                 width: 100%;
             }
-            @media screen and (max-width: 1024px) {
+            @media screen and (max-width: 1130px) {
               width:600px;
             }
             @media screen and (max-width: 768px){
-              width:350px;
+              width:275px;
 
             }
         }
@@ -188,9 +320,9 @@ form, .form {
   }
 
   select[disabled] {
-    background: #EEE;
-    border: #CCC 1px solid;
-    color: #CCC;
+    background: $lightestGray;
+    border: $lightGray 1px solid;
+    color: $lightGray;
     font-style: normal;
   }
 
@@ -214,20 +346,20 @@ form, .form {
       margin-top: 5px;
       padding-left: 5px;
       line-height: 2.2em;
-      border-left: 1px solid #ccc;
+      border-left: 1px solid $lightGray;
     }
 
     select {
       -webkit-appearance: none;
       border-radius: 0;
-      background: white;
+      background: $white;
       cursor: pointer;
     }
 
     select[disabled] {
-      background: #EEE;
-      border: #CCC 1px solid;
-      color: #CCC;
+      background: $lightestGray;
+      border: $lightGray 1px solid;
+      color: $lightGray;
       font-style: normal;
       cursor: default;
     }
@@ -316,18 +448,18 @@ ul.select {
     width: 250px;
     padding: 5px;
     color: $link;
-    background-color: #FFF;
+    background-color: $white;
     border-bottom: 1px solid #EFEFEF;
 
     &:hover {
       background-color: $link;
-      color: white;
+      color: $white;
       cursor: pointer;
     }
 
     &.selected {
       background-color: $link;
-      color: white;
+      color: $white;
       border-color: transparent;
     }
   }
@@ -347,7 +479,7 @@ form p strong, .form p strong { display: inline; }
 
 .compute-btn, .btn-small {color: darken($bahmniPrimaryBtnColor, 15%);}
 .btn-small{
-  color: #000;
+  color: $black;
   i{
     color: green;
   }

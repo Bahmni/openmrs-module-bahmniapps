@@ -1,31 +1,36 @@
 <header class="reg-header" ng-controller="NavigationController">
-        <ul class="top-nav">
+        <ul class="top-nav fl">
             <a class="back-btn" accesskey="h" href="../home/index.html"><i class="fa fa-home"></i></a>
             <li ng-repeat="extension in ::extensions">
                 <a ng-click="goTo(extension.url)" accesskey="{{::extension.shortcutKey | translate}}"><i class="{{::extension.icon}} fa fa-white small"></i>
                     <span class="nav-link" ng-bind-html="::extension | titleTranslate"></span></a>
             </li>
         </ul>
-        <div ui-view="headerExtension" class="print-action-items"></div>
+        <div class="reg-header-right fr">
+            <div ui-view="headerExtension" class="print-action-items fl"></div>
 
-        <button class="btn-user-info">
-            <i class="fa fa-user-md fa-white small"></i>
-            <i class="fa fa-caret-down fa-white mini"></i>
-        </button>
-        <ul>
-            <li>
-                <a><i class="fa fa-user fa-white small"></i><span>{{:: currentUser.username}}</span></a>
-            </li>
-            <li>
-                <i class="fa fa-map-marker fa-white small"></i><span>{{:: currentUser.currentLocation}}</span>
-            </li>
-            <li ng-if="isOfflineApp()">
-                <a href="/offline">
-                    <i class="fa fa-refresh small"></i><span class="nav-link">{{::'REGISTRATION_LABEL_SYNC' | translate}}</span>
-                </a>
-            </li>
-            <li>
-                <a log-out><i class="fa fa-power-off fa-white small"></i><span class="nav-link">{{::'REGISTRATION_LABEL_LOGOUT' | translate}}</span></a>
-            </li>
-        </ul>
+            <button class="btn offline-sync fl" ng-click="sync()" ng-show="isOfflineApp && !isSyncing ">
+                {{::'REGISTRATION_LABEL_SYNC' | translate}}
+            </button>
+            <button class="btn offline-sync offline-sync-image fl" ng-show="isOfflineApp && isSyncing" disabled>
+                <!-- <i class="fa fa-refresh"></i> -->
+                <img src="../images/sync.gif" />
+            </button>
+
+            <button class="btn-user-info fr">
+                <i class="fa fa-user-md fa-white small"></i>
+                <i class="fa fa-caret-down fa-white mini"></i>
+            </button>
+            <ul>
+                <li>
+                    <a><i class="fa fa-user fa-white small"></i><span>{{:: currentUser.username}}</span></a>
+                </li>
+                <li>
+                    <i class="fa fa-map-marker fa-white small"></i><span>{{:: currentUser.currentLocation}}</span>
+                </li>
+                <li>
+                    <a log-out><i class="fa fa-power-off fa-white small"></i><span class="nav-link">{{::'REGISTRATION_LABEL_LOGOUT' | translate}}</span></a>
+                </li>
+            </ul>
+        </div>
 </header>

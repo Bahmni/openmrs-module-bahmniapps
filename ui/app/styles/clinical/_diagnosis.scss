@@ -15,8 +15,6 @@
     }
     .new-diagnosis, .current-diagnosis, .history-diagnosis {
         margin-bottom: 25px;
-        //margin-left: 5px;
-        //margin-right: 5px;
         border: 1px solid #b3b3b3;
         border-bottom: none;
     }
@@ -131,7 +129,7 @@
   }
   button:focus {
     outline: 0;
-    border: 2px solid #007fff;
+    border: 2px solid $clinicalFormFocus;
   }
   button.active {
     color: $bahmniTertiaryColor;
@@ -198,8 +196,26 @@
     border-radius: 3px!important;
   }
   .diagnosis {
+    .col1{
+      width:37%;
+    }
+    .col2{
+      width:18%;
+    }
+    .col3{
+      width:18%;
+    }
+    .col4{
+      width:16%;
+    }
+    .col5{
+      width:9%;
+    }
     button {
-      width: 100px;
+      width: 78px;
+    }
+    .comment-toggle ,.toggle , .remove-diagnosis{
+      width:auto;
     }
     button:first-child {
       margin-left: 10px;

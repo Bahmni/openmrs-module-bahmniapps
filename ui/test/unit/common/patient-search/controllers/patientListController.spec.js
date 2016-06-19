@@ -2,7 +2,7 @@
 
 describe("PatientListController", function () {
         var _spinner, _patientService, _appService, $bahmniCookieStore;
-        var controller, scope, findPatientsPromise, searchPatientsPromise, retrospectiveEntryService;
+        var controller, scope, findPatientsPromise, searchPatientsPromise, retrospectiveEntryService, offlineService, getRecentPatientsPromise;
         var stateParams = { location: "Ganiyari"};
 
         beforeEach(module('bahmni.common.patientSearch'));
@@ -23,6 +23,18 @@ describe("PatientListController", function () {
                 "requiredPrivilege": "app:clinical"
             },
             {
+                "id": "bahmni.clinical.patients.all",
+                "extensionPointId": "org.bahmni.patient.search",
+                "type": "config",
+                "extensionParams": {
+                    "display": "All patients",
+                    "refreshTime": "10"
+                },
+                "label": "All patients",
+                "order": 1,
+                "requiredPrivilege": "app:clinical"
+            },
+            {
                 "id": "bahmni.clinical.patients.patientsToAdmit",
                 "extensionPointId": "org.bahmni.patient.search",
                 "type": "config",
@@ -33,6 +45,7 @@ describe("PatientListController", function () {
                 },
                 "label": "Patients to be admitted",
                 "order": 2,
+                "offline": false,
                 "requiredPrivilege": "app:clinical"
             }
         ];
@@ -51,6 +64,7 @@ describe("PatientListController", function () {
                     return {uuid: 1, display: "Location" };
                 }
             });
+            offlineService = jasmine.createSpyObj('offlineService', ['isOfflineApp']);
 
             _spinner = jasmine.createSpyObj('spinner', ['forPromise']);
             _spinner.forPromise.and.callFake(function (promiseParam) {
@@ -58,15 +72,26 @@ describe("PatientListController", function () {
             });
 
             _appService = jasmine.createSpyObj('appService', ['getAppDescriptor']);
-            _appService.getAppDescriptor.and.returnValue({'getExtensions': function () {
-                return appExtensions;
-            } });
+            _appService.getAppDescriptor.and.returnValue(
+                {
+                    'getExtensions': function () {
+                        return appExtensions;
+                    },
+                    'getConfigValue': function () {
+                        return {
+                            "recentPatientsDuration": 14
+                        }
+                    }
+                });
 
-            _patientService = jasmine.createSpyObj('patientService', ['findPatients', 'search']);
+            _patientService = jasmine.createSpyObj('patientService', ['findPatients', 'search','getRecentPatients']);
             findPatientsPromise = specUtil.createServicePromise('findPatients');
             searchPatientsPromise = specUtil.createServicePromise('search');
+            getRecentPatientsPromise = specUtil.createServicePromise('getRecentPatients');
             _patientService.findPatients.and.returnValue(findPatientsPromise);
             _patientService.search.and.returnValue(searchPatientsPromise);
+            _patientService.getRecentPatients.and.returnValue(getRecentPatientsPromise);
+            offlineService.isOfflineApp.and.returnValue(true);
         });
 
         beforeEach(inject(function ($rootScope) {
@@ -88,7 +113,8 @@ describe("PatientListController", function () {
                     spinner: _spinner,
                     $stateParams: stateParams,
                     retrospectiveEntryService: retrospectiveEntryService,
-                    $bahmniCookieStore: $bahmniCookieStore
+                    $bahmniCookieStore: $bahmniCookieStore,
+                    offlineService: offlineService
                 });
             });
         };
@@ -105,6 +131,8 @@ describe("PatientListController", function () {
                 expect(scope.search.activePatients.length).toBe(patients.length);
                 expect(scope.search.searchResults.length).toBe(patients.length);
             });
+
+
         });
 
         describe("searchPatients", function () {
@@ -124,6 +152,8 @@ describe("PatientListController", function () {
                 expect(scope.search.searchResults.length).toBe(patients.length);
             });
 
+
+
             it('should navigate to patient dashboard when the filter yields a single patient', function () {
                 var ramSingh = {identifier: 'GAN1234', name: 'Ram Singh', uuid: 'p-uuid-1', activeVisitUuid: 'v-uuid-1'};
                 scope.search.searchResults = [ ramSingh ];
@@ -134,6 +164,8 @@ describe("PatientListController", function () {
                 scope.filterPatientsAndSubmit();
                 expect(result).toEqual(ramSingh);
             });
+
+
         });
 
         describe("patientCount",function(){
@@ -152,5 +184,40 @@ describe("PatientListController", function () {
             });
 
         });
+
+    describe("Offline",function(){
+        beforeEach(function(){
+            scope.$apply(setUp);
+        });
+
+        it('should show recent patients in all tab for offline app', function () {
+            scope.$apply(setUp);
+            expect(_patientService.findPatients).toHaveBeenCalled();
+
+            scope.search.searchType = {
+                "id": "bahmni.clinical.patients.all",
+                "extensionPointId": "org.bahmni.patient.search",
+                "type": "config",
+                "extensionParams": {
+                    "display": "All patients",
+                    "refreshTime": "10"
+                },
+                "label": "All patients",
+                "order": 1,
+                "requiredPrivilege": "app:clinical"
+            };
+
+
+            scope.$apply();
+
+            expect(offlineService.isOfflineApp).toHaveBeenCalled();
+            expect(_patientService.getRecentPatients).toHaveBeenCalled();
+        });
+
+        it('should not display tab in offline app if offline is set to false in tab config', function(){
+            expect(scope.search.searchTypes.length).toBe(2);
+        });
+
+    });
     }
 ); 

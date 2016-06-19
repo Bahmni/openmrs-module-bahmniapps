@@ -35,7 +35,9 @@ module.exports = function (config) {
             'app/components/angular-translate-storage-cookie/angular-translate-storage-cookie.js',
             'app/components/angular-translate-loader-static-files/angular-translate-loader-static-files.js',
             'app/components/hustle/hustle.js',
+            'app/components/crypto-js/crypto-js.js',
             'app/lib/modernizr.custom.80690.js',
+            'app/lib/angular-workers/dist/angular-workers.js',
             'app/common/constants.js',
             'app/common/domain/init.js',
             'app/common/domain/**/*.js',
@@ -58,6 +60,8 @@ module.exports = function (config) {
             'test/unit/**/*.js',
             'test/integration/**/*.js',
             'test/integration/utils/*.js',
+            'app/common/util/androidDateTimeFormatter.js',
+            "test/unit/common/util/androidDateTimeFormatter.spec.js",
             {pattern: 'test/data/*.json', watched: true, served: true, included: false}
         ],
         exclude:[
@@ -70,6 +74,12 @@ module.exports = function (config) {
             'app/common/domain/services/configurationService.js',
             'app/common/domain/services/locationService.js',
             'app/common/domain/services/localeService.js',
+            'app/common/domain/services/encounterService.js',
+            'app/common/domain/services/diagnosisService.js',
+            'app/common/domain/services/visitService.js',
+            'app/common/domain/services/observationsService.js',
+            'test/unit/common/displaycontrols/obsVsObsFlowSheet/directives/obsToObsFlowSheet.spec.js',
+            'app/clinical/dashboard/services/diseaseTemplateService.js',
 
             'test/unit/orders/services/orderTypeService.spec.js',
             'test/unit/common/patient/services/patientService.spec.js',
@@ -78,9 +88,16 @@ module.exports = function (config) {
             'test/unit/common/displaycontrols/patientProfile/directives/*.js',
             'test/unit/common/domain/services/locationService.spec.js',
             'test/unit/registration/services/patientService.spec.js',
+            'test/unit/registration/services/encounterService.spec.js',
+            'test/unit/registration/services/defaultPatientServiceStrategy.spec.js',
             'test/unit/common/domain/services/configurationService.spec.js',
             'test/unit/common/domain/services/localeService.spec.js',
+            'test/unit/common/domain/services/visitService.spec.js',
+            'test/unit/common/domain/services/observationsService.spec.js',
+            'test/unit/clinical/services/diseaseTemplateService.spec.js',
 
+            "app/common/util/dateTimeFormatter.js",
+            "test/unit/common/util/dateTimeFormatter.spec.js",
             'test/unit/**/offline/chrome/*.js'
         ],
         reporters: ['junit', 'progress', 'coverage'],

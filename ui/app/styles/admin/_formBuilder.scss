@@ -53,11 +53,11 @@
     margin: 0;
     padding: 7px 0;
     font-family: $OpenSansBoldFont;
-    color: #666;
+    color: $mediumGray;
     font-size: 14px;
   }
   .formBuilder-Form-container {
-    background: #ccc;
+    background: $lightGray;
     border-radius: 0px 5px 5px 5px;
     padding: 30px 10px 20px;
     overflow: auto;
@@ -104,7 +104,7 @@
   legend{
     width: 100%;
     &.mylegend{
-      background: #eee !important;
+      background: $lightestGray!important;
       margin: 10px 0;
       padding: 3px 10px;
       box-sizing: border-box;

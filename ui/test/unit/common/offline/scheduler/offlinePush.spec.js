@@ -1,7 +1,7 @@
 'use strict';
 
 describe('Offline Push Tests', function () {
-    var offlinePush, offlineServiceMock, eventQueueMock, httpBackend, offlineDbServiceMock, androidDbService, $q=Q, eventQueue, errorQueue, event, eventQueueMock;
+    var offlinePush, eventQueueMock, httpBackend, androidDbService, $q=Q, eventQueue, errorQueue, event, offlineDbServiceMock;
 
 
     beforeEach(function () {
@@ -9,7 +9,7 @@ describe('Offline Push Tests', function () {
         module(function ($provide) {
             var offlineServiceMock = jasmine.createSpyObj('offlineService', ['isOfflineApp','isAndroidApp']);
             eventQueueMock = jasmine.createSpyObj('eventQueue', ['consumeFromErrorQueue','consumeFromEventQueue','removeFromQueue','addToErrorQueue','releaseFromQueue']);
-            var offlineDbServiceMock = jasmine.createSpyObj('offlineDbService', ['getPatientByUuid']);
+            offlineDbServiceMock = jasmine.createSpyObj('offlineDbService', ['getPatientByUuid','getEncounterByEncounterUuid','insertLog', 'createEncounter']);
 
             offlineServiceMock.isOfflineApp.and.returnValue(true);
             offlineServiceMock.isAndroidApp.and.returnValue(false);
@@ -35,6 +35,8 @@ describe('Offline Push Tests', function () {
             eventQueueMock.removeFromQueue = jasmine.createSpy('removeFromQueue').and.returnValue($q.when({}));
             var patient = {};
             offlineDbServiceMock.getPatientByUuid.and.returnValue($q.when(patient));
+            offlineDbServiceMock.getEncounterByEncounterUuid.and.returnValue($q.when({}));
+            offlineDbServiceMock.createEncounter.and.returnValue($q.when({}));
             $provide.value('offlineService', offlineServiceMock);
             $provide.value('eventQueue', eventQueueMock);
             $provide.value('offlineDbService', offlineDbServiceMock);
@@ -54,6 +56,7 @@ describe('Offline Push Tests', function () {
             expect(eventQueueMock.removeFromQueue).toHaveBeenCalled();
             expect(eventQueueMock.consumeFromEventQueue).toHaveBeenCalled();
             done();
+
         });
         setTimeout(function(){
             httpBackend.flush();
@@ -71,7 +74,7 @@ describe('Offline Push Tests', function () {
         });
         setTimeout(function(){
             httpBackend.flush();
-        }, 1000);
+        },100);
     });
 
     it("should add to error queue if push response is 500", function(done) {
@@ -81,11 +84,12 @@ describe('Offline Push Tests', function () {
             expect(eventQueueMock.removeFromQueue).toHaveBeenCalled();
             expect(eventQueueMock.addToErrorQueue).toHaveBeenCalled();
             expect(eventQueueMock.consumeFromEventQueue).toHaveBeenCalled();
+            expect(offlineDbServiceMock.insertLog).toHaveBeenCalled();
             done();
         });
         setTimeout(function(){
             httpBackend.flush();
-        }, 1000);
+        }, 100);
     });
 
     it("should halt queue processing if push response is 400", function(done) {
@@ -95,11 +99,25 @@ describe('Offline Push Tests', function () {
             expect(eventQueueMock.addToErrorQueue).not.toHaveBeenCalled();
             expect(eventQueueMock.consumeFromEventQueue).not.toHaveBeenCalled();
             expect(eventQueueMock.releaseFromQueue).toHaveBeenCalled();
+            expect(offlineDbServiceMock.insertLog).toHaveBeenCalled();
+            done();
+        });
+        setTimeout(function(){
+            httpBackend.flush();
+        }, 100);
+    });
+
+    it("should push encounter data from event queue", function(done) {
+        event.data = {type : "encounter"};
+        httpBackend.expectPOST(Bahmni.Common.Constants.bahmniEncounterUrl).respond(200, {});
+        offlinePush().then(function(){
+            expect(offlineDbServiceMock.createEncounter).toHaveBeenCalled();
+            expect(eventQueueMock.removeFromQueue).toHaveBeenCalled();
+            expect(eventQueueMock.consumeFromEventQueue).toHaveBeenCalled();
             done();
         });
         setTimeout(function(){
             httpBackend.flush();
         }, 1000);
     });
-
 });

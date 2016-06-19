@@ -27,6 +27,7 @@ describe('AgeUtil', function () {
         });
 
         it("should take the current date if end date is not given", function () {
+            var originalNow = Bahmni.Common.Util.DateUtil.now;
             Bahmni.Common.Util.DateUtil.now = function () {
                 var fromDate = new Date();
                 fromDate.setDate(1);
@@ -39,6 +40,7 @@ describe('AgeUtil', function () {
             fromDate.setMonth(4);
             fromDate.setFullYear(2015);
             expect(ageUtil.differenceInMonths(fromDate)).toEqual(1);
+            Bahmni.Common.Util.DateUtil.now = originalNow;
         });
     });
 

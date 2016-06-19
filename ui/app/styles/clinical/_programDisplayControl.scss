@@ -4,14 +4,14 @@
     font-family: openSansSemiBold;
   }
   .typeOfPrograms {
-    background: #cccccc;
+    background: $lightGray;
     font-family: openSansSemiBold;
     font-size: 15px;
     padding: 10px;
   }
   .program-basic-details{
     @include clearfix();
-    background: #eeeeee;
+    background: $lightestGray;
     padding: 5px 20px;
     .program-name{  }
     .program-start-date{
@@ -53,7 +53,7 @@
           background: #fff !important;
           border: none !important;
           font-family: openSansSemiBold;
-          border-bottom: 2px #ccc solid !important;
+          border-bottom: 2px $lightGray solid !important;
           padding-left: 0;
         }
         td{

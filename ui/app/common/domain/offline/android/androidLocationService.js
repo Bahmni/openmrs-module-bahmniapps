@@ -9,7 +9,11 @@ angular.module('bahmni.common.domain')
                     return $q.when(obj);
                 }
                 return androidDbService.getReferenceData('LoginLocations').then(function (loginLocations) {
-                    return {"data": loginLocations.value};
+                    if(!loginLocations){
+                        var msg = offlineService.getItem("networkError") || "Offline data not set up";
+                        return $q.reject(msg);
+                    }
+                    return loginLocations;
                 });
             };
 

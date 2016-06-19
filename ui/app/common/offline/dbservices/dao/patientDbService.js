@@ -1,15 +1,15 @@
 'use strict';
 
 angular.module('bahmni.common.offline')
-    .service('patientDbService', function () {
+    .service('patientDbService', ['chromeEncryptionService', function (chromeEncryptionService) {
 
         var getPatientByUuid = function (db, uuid) {
             var p = db.getSchema().table('patient');
             return db.select(p.patientJson.as('patient'))
                 .from(p)
                 .where(p.uuid.eq(uuid)).exec()
-                .then(function (result) {
-                    return result[0];
+                .then(function (results) {
+                    return results.length ? {"patient": chromeEncryptionService.decrypt(results[0].patient)} : undefined;
                 });
         };
 
@@ -19,7 +19,6 @@ angular.module('bahmni.common.offline')
             patientTable = db.getSchema().table('patient');
             person = patient.person;
             var personName = person.names[0];
-
             patientIdentifier = patient.identifiers[0].identifier;
             var row = patientTable.createRow({
                 'identifier': patientIdentifier,
@@ -30,7 +29,7 @@ angular.module('bahmni.common.offline')
                 'gender': person.gender,
                 'birthdate': new Date(person.birthdate),
                 'dateCreated': new Date(patient.person.auditInfo.dateCreated),
-                'patientJson': patient
+                'patientJson': chromeEncryptionService.encrypt(JSON.stringify(patient))
             });
             return db.insertOrReplace().into(patientTable).values([row]).exec().then(function () {
                 return patient.uuid;
@@ -41,4 +40,4 @@ angular.module('bahmni.common.offline')
             getPatientByUuid: getPatientByUuid,
             insertPatientData: insertPatientData
         }
-    });
+    }]);

@@ -21,7 +21,6 @@ describe('Registration Visit Service', function () {
             }})
     };
 
-    var offlineService = {isOfflineApp: function(){}};
 
     beforeEach(function () {
         module('bahmni.common.domain');
@@ -29,7 +28,6 @@ describe('Registration Visit Service', function () {
             Bahmni.Common.Constants.endVisitUrl = endVisitUrl;
             Bahmni.Common.Constants.visitUrl = openmrsUrl;
             $provide.value('$http', mockHttp);
-            $provide.value('offlineService', offlineService);
         });
 
         inject(['visitService', function (visitServiceInjectted) {

@@ -14,8 +14,8 @@ Bahmni.ConceptSet.BooleanObservation = function(observation, conceptUIConfig) {
     };
 
     var possibleAnswers = [
-        {displayString: "Yes", value: true},
-        {displayString: "No", value: false}
+        {displayString: "OBS_BOOLEAN_YES_KEY", value: true},
+        {displayString: "OBS_BOOLEAN_NO_KEY", value: false}
     ];
 
     this.getPossibleAnswers = function() {
@@ -43,7 +43,7 @@ Bahmni.ConceptSet.BooleanObservation = function(observation, conceptUIConfig) {
     };
 
     this.isRequired = function () {
-        return this.getConceptUIConfig().required;
+        return this.getConceptUIConfig().required == true;
     };
 
     this.isComputedAndEditable = function() {

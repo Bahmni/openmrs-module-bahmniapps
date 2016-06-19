@@ -5,7 +5,7 @@
                 <div class="section-title-wrapper clearfix">
                     <h2 class="section-title fl">{{'BACTERIOLOGY_TAB_TITLE_KEY' | translate}}</h2>
                     <input type="button" value="{{'BACTERIOLOGY_BUTTON_CLEAR_KEY' | translate}}"
-                           ng-click="clearSpecimen($index)" class="fr add-sample-btn" ng-hide="isOnDashboard">
+                           ng-click="newSpecimen.clear()" class="fr add-sample-btn" ng-hide="isOnDashboard">
 
                     <button ng-click="createNewSpecimen()" class="fr add-more-concept-set add-more-btn btn-small" ng-hide="isOnDashboard">
                         <i class="fa fa-plus"></i>
@@ -85,7 +85,7 @@
         <div class="fl savedSpecimens-text">
             <span>{{getDisplayName(savedSpecimen)}}</span>
             <span>#{{savedSpecimen.identifier}}</span>
-            <span>{{ 'BACTERIOLOGY_ADDED_ON_KEY' | translate }} {{savedSpecimen.dateCollected | date: 'MM/dd/yyyy'}}</span>
+            <span>{{ 'BACTERIOLOGY_ADDED_ON_KEY' | translate }} {{savedSpecimen.dateCollected | date: 'dd MMM yy'}}</span>
         </div>
         <div class="fr savedSpecimens-action">
             <i class="fa fa-pencil" ng-click="editSpecimen(savedSpecimen)"></i>

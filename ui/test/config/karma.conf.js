@@ -23,7 +23,7 @@ module.exports = function (config) {
             'app/components/offline/offline.min.js',
             'app/components/angular-ui-router/release/angular-ui-router.js',
             'app/components/lodash/dist/lodash.min.js',
-            'app/components/lovefield/dist/lovefield.min.js',
+            'app/components/lovefield/dist/lovefield.js',
             'app/components/angular-ui-select2/src/select2.js',
             'app/components/angular-bindonce/bindonce.js',
             'app/components/stacktrace-js/stacktrace.js',
@@ -36,7 +36,9 @@ module.exports = function (config) {
             'app/components/angular-translate-storage-cookie/angular-translate-storage-cookie.js',
             'app/components/angular-translate-loader-static-files/angular-translate-loader-static-files.js',
             'app/components/hustle/hustle.js',
+            'app/components/crypto-js/crypto-js.js',
             'app/lib/modernizr.custom.80690.js',
+            'app/lib/angular-workers/dist/angular-workers.js',
             'app/common/constants.js',
             'app/common/domain/init.js',
             'app/common/domain/**/*.js',
@@ -58,17 +60,25 @@ module.exports = function (config) {
             'test/support/**/*.js',
             'test/unit/**/*.js',
             'test/integration/**/*.js',
-            'test/integration/utils/*.js'
+            'test/integration/utils/*.js',
+            "test/unit/common/util/dateTimeFormatter.spec.js"
         ],
         exclude:[
             'app/registration/offline/**/*.js',
+            'app/clinical/common/offline/**/*.js',
+            'app/common/domain/offline/*.js',
             'app/common/**/offline/chrome/*.js',
             'app/common/**/offline/android/*.js',
+            'app/common/domain/offline/*.js',
+            'app/clinical/dashboard/services/offline/**/*.js',
             'test/unit/registration/offline/**/*.js',
+            'test/unit/**/offline/*.js',
             'test/unit/**/offline/android/*.js',
             'test/unit/**/offline/chrome/*.js',
             'app/common/offline/dbservices/dao/offlineDbService.js',
-            'app/common/offline/scheduler/backgroundWorker.js'
+            'app/common/offline/scheduler/backgroundWorker.js',
+            'app/common/util/androidDateTimeFormatter.js',
+            "test/unit/common/util/androidDateTimeFormatter.spec.js"
         ],
         reporters: ['junit', 'progress', 'coverage'],
         preprocessors: {
@@ -102,6 +112,9 @@ module.exports = function (config) {
             stripPrefix: 'app',
             prependPrefix: '..',
             moduleName: 'ngHtml2JsPreprocessor'
+        },
+        proxies:{
+            '/images/blank-user.gif' :'app/images/blank-user.gif'
         }
     });
 };

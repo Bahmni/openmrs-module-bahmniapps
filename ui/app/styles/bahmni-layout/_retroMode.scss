@@ -68,10 +68,11 @@ $retroModeColor:  #0E74AF;
 }
 .reg-header, .opd-header-wrapper {
 	.retro-date-widget-wrapper{
-    float: right;
-    margin-top: 6px;
-    // position: relative;
+      float: right;
+      width: auto;
     .retro-date-widget-header {
+      margin-top: 6px;
+      margin-left:10px;
       button{
         cursor: pointer;
         width: auto;
@@ -93,8 +94,6 @@ $retroModeColor:  #0E74AF;
         }
       }
     }
-
-
   }
   input.retro-date-widget {
 	&.disabled-date {
@@ -125,11 +124,10 @@ $retroModeColor:  #0E74AF;
   float: left;
   margin: 6px 0;
   div.input-container{
-    float: left;
     width: 210px;
     padding-left: 10px;
+    margin-bottom: 10px;
     &.date-widget-container{
-      padding-top: 8px;
     }
     select{
       width: 100%;
@@ -165,4 +163,10 @@ $retroModeColor:  #0E74AF;
 }
 .ui-autocomplete{
   z-index: 10001;
+}
+
+.test.ngdialog.ngdialog-theme-default {
+  .ngdialog-content{
+    width: 245px;
+  }
 }

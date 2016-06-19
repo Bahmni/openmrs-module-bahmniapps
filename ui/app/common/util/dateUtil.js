@@ -5,6 +5,10 @@ Bahmni.Common.Util.DateUtil = {
         return Math.floor((this.parse(dateTo) - this.parse(dateFrom)) / (60 * 1000 * 60 * 24));
     },
 
+    diffInMinutes: function (dateFrom, dateTo) {
+        return moment(dateTo).diff(moment(dateFrom), 'minutes');
+    },
+
     diffInSeconds: function (dateFrom, dateTo) {
         return moment(dateFrom).diff(moment(dateTo), 'seconds');
     },
@@ -24,6 +28,11 @@ Bahmni.Common.Util.DateUtil = {
     addSeconds: function (date, seconds) {
         return moment(date).add(seconds, 'seconds').toDate();
     },
+
+    addMinutes: function (date, minutes) {
+        return this.addSeconds(date, minutes * 60);
+    },
+
     addDays: function (date, days) {
         return moment(date).add(days, 'day').toDate();
     },
@@ -89,6 +98,17 @@ Bahmni.Common.Util.DateUtil = {
             return date;
         }
         return dateRepresentation ? moment(dateRepresentation).format("DD MMM YY") : null;
+    },
+
+    formatDateInStrictMode: function(date) {
+        var dateRepresentation = isNaN(Number(date)) ? date : Number(date);
+        if(moment(dateRepresentation, 'YYYY-MM-DD', true).isValid()) {
+            return moment(dateRepresentation).format("DD MMM YY");
+        }
+        if(moment(dateRepresentation, 'YYYY-MM-DDTHH:mm:ss.SSSZZ', true).isValid()) {
+            return moment(dateRepresentation).format("DD MMM YY");
+        }
+        return date;
     },
 
     formatTime: function(date) {

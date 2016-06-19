@@ -21,7 +21,7 @@ Bahmni.Clinical.LabResult.prototype = {
     },
 
     isAbnormal: function() {
-        return this.alert == "A" || this.alert == "B";
+        return this.alert === "A" || this.alert === "B";
     },
 
     range: function() {

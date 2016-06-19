@@ -85,7 +85,7 @@
   }
   .remove-state-container{
     overflow: hidden;
-    border-bottom: 1px #ccc solid;
+    border-bottom: 1px $lightGray solid;
     padding-bottom: 10px;
     margin-bottom: 10px;
     .current-state-name{
@@ -107,7 +107,7 @@
   @include clearfix;
   background: #fff;
   margin: 30px auto 10px;
-  border: 1px solid #669999;
+  border: 1px solid $bahmniSecondaryColor;
   border-radius: 5px;
   padding: 10px 15px;
   box-sizing: border-box;
@@ -175,12 +175,12 @@
     background: #fff;
   }
   &.inactive-program-tiles{
-    background: #ddd;
+    background: $lighterGray;
     .form .form-field .field-attribute label{
       width: 11em;
     }
     .program-timeline .timeline-view svg .states .date-bg{
-      fill: #ddd;
+      fill: $lighterGray;
     }
   }
 }

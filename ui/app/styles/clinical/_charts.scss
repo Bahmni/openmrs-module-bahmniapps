@@ -8,7 +8,7 @@ svg {
 
 .c3-ygrid-line{
   text{
-    fill: #333;
+    fill: $darkGray;
   }
   &.lowNormal line {
     stroke: green;

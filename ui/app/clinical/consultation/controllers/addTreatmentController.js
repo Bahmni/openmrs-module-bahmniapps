@@ -232,6 +232,12 @@ angular.module('bahmni.clinical')
                 });
             };
 
+            $scope.$on("event:sectionUpdated", function (event, drugOrder) {
+                _.remove($scope.consultation.activeAndScheduledDrugOrders, function(activeOrder){
+                    return activeOrder.uuid === drugOrder.uuid;
+                });
+            });
+
             $scope.$on("event:refillDrugOrders", function (event, drugOrders) {
                 $scope.bulkSelectCheckbox = false;
                 refillDrugOrders(drugOrders);
@@ -465,12 +471,6 @@ angular.module('bahmni.clinical')
                 if ($scope.unaddedDrugOrders()) {
                     return {allow: false, errorMessage: errorMessages.incompleteForm};
                 }
-                var valid = _.every($scope.treatments, function (drugOrder) {
-                    return drugOrder.validate();
-                });
-                if (!valid) {
-                    return {allow: false, errorMessage: errorMessages.invalidItems};
-                }
                 return {allow: true};
             };
 
@@ -640,6 +640,7 @@ angular.module('bahmni.clinical')
                 var drugOrder = Bahmni.Clinical.DrugOrder.create(orderTemplate);
                 var drugOrderViewModel = Bahmni.Clinical.DrugOrderViewModel.createFromContract(drugOrder, treatmentConfig);
                 drugOrderViewModel.instructions = orderTemplate.administrationInstructions;
+                drugOrderViewModel.additionalInstructions = orderTemplate.additionalInstructions;
                 drugOrderViewModel.isNewOrderSet = true;
                 drugOrderViewModel.dosingInstructionType = Bahmni.Clinical.Constants.flexibleDosingInstructionsClass;
                 drugOrderViewModel.quantity = drugOrderViewModel.quantity || 0;
@@ -722,11 +723,21 @@ angular.module('bahmni.clinical')
 
             $scope.consultation.preSaveHandler.register("drugOrderSaveHandlerKey", saveTreatment);
 
+            var mergeActiveAndScheduledWithDiscontinuedOrders = function() {
+                _.each($scope.consultation.discontinuedDrugs, function (discontinuedDrug) {
+                    _.remove($scope.consultation.activeAndScheduledDrugOrders, {'uuid': discontinuedDrug.uuid});
+                    $scope.consultation.activeAndScheduledDrugOrders.push(discontinuedDrug);
+                });
+            };
+
             var init = function () {
                 $scope.consultation.removableDrugs = $scope.consultation.removableDrugs || [];
                 $scope.consultation.discontinuedDrugs = $scope.consultation.discontinuedDrugs || [];
                 $scope.consultation.drugOrdersWithUpdatedOrderAttributes = $scope.consultation.drugOrdersWithUpdatedOrderAttributes || {};
                 $scope.consultation.activeAndScheduledDrugOrders = getActiveDrugOrders(activeDrugOrders);
+
+                mergeActiveAndScheduledWithDiscontinuedOrders();
+
                 $scope.treatmentConfig = treatmentConfig;// $scope.treatmentConfig used only in UI
                 $scope.orderSets = orderSets;
 

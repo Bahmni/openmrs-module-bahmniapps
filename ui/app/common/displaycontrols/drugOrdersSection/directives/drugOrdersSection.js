@@ -43,7 +43,7 @@ angular.module('bahmni.common.displaycontrol.drugOrdersSection')
                 if (_.isEmpty($scope.config.title) && _.isEmpty($scope.config.translationKey)){
                     $scope.config.title = "Drug Orders";
                 }
-                if (_.isArray($scope.drugOrders)) {
+                if ($scope.isOrderSet) {
                     $scope.isDrugOrderSet = true;
                     return ;
                 }
@@ -86,7 +86,7 @@ angular.module('bahmni.common.displaycontrol.drugOrdersSection')
                 spinner.forPromise(promise);
 
                 promise.then(function() {
-                    $rootScope.$broadcast("event:sectionUpdated");
+                    $rootScope.$broadcast("event:sectionUpdated", drugOrder);
                 });
             };
 
@@ -165,7 +165,8 @@ angular.module('bahmni.common.displaycontrol.drugOrdersSection')
                 patientUuid: "=",
                 treatmentConfig: "=",
                 enrollment: "=",
-                drugOrders:"=?"
+                drugOrders:"=?",
+                isOrderSet:"=?"
             },
             templateUrl: "../common/displaycontrols/drugOrdersSection/views/drugOrdersSection.html"
         };
