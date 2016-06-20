@@ -28,7 +28,9 @@ Bahmni.Common = Bahmni.Common || {};
 
     var offlineErrorMessages = {
         networkError:"The network connectivity is bad and not able to connect to the server. Please ensure minimum network condition to sync the device",
-        openmrsServerError:"OpenMRS is down and the device not able to communicate to the server. Please make sure the server is up before Syncing the device"
+        openmrsServerError:"OpenMRS is down and the device not able to communicate to the server. Please make sure the server is up before Syncing the device",
+        openmrsServerDownError:"OpenMRS is down and the device not able to communicate to the server. Please ensure the server is up for the first time login and setup.",
+        networkErrorForFirstTimeLogin: "The device is not connected to the internet. Please ensure minimal connectivity for the first time login and setup."
     }
 
 

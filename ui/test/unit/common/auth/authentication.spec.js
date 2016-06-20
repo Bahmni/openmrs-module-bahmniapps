@@ -6,8 +6,8 @@ describe("Authentication", function () {
     beforeEach(module('authentication'));
     beforeEach(module(function ($provide) {
         var currentUserCookie = {};
-        $bahmniCookieStore = jasmine.createSpyObj('$bahmniCookieStore', ['get']);
-        $q = jasmine.createSpyObj('$q', ['defer']);
+        $bahmniCookieStore = jasmine.createSpyObj('$bahmniCookieStore', ['get', 'put', 'remove']);
+        $q = jasmine.createSpyObj('$q', ['defer', 'when']);
         $bahmniCookieStore.get.and.callFake(function (cookieName) {
             if (cookieName == Bahmni.Common.Constants.currentUser) {
                 return currentUserCookie;
@@ -54,8 +54,50 @@ describe("Authentication", function () {
 
             expect(deferrable.reject).toHaveBeenCalledWith('You have not been setup as a Provider, please contact administrator.');
         }]));
+    });
+
+
+    describe("loginUser", function () {
+        it("should createSession and authenticate the user then save currentUser and cookie in the $bahmniCookieStore", inject(['sessionService', '$rootScope', '$http', function (sessionService, $rootScope, $http) {
+            var mockOfflineService = jasmine.createSpyObj('offlineService',['setPlatformCookie', 'getAppPlatform','isOfflineApp', 'getItem']);
+            mockOfflineService.isOfflineApp.and.returnValue(true);
+            var userInfoFromLocalStorage = undefined;
+            mockOfflineService.getItem.and.returnValue(userInfoFromLocalStorage);
+
+            var deferrable = jasmine.createSpyObj('deferrable', ['reject', 'resolve']);
+            deferrable.promise = {
+                then: function (callback) {
+                    callback({authenticated: true})
+                }
+            };
+
+            $q.defer.and.returnValue(deferrable);
+
+            var fakeHttpPromise = {
+                error: function(callback) {
+                    callback("Error")
+                },
+                success: function(callback){
+                    return {
+                        error: function(callback) {
+                            callback("Error")
+                        },
+                        success: function(callback){
+                            callback("Sucess")
+                        }
+                    };
+                }
+            };
+            spyOn($http, 'delete').and.returnValue(fakeHttpPromise);
+
+            sessionService.loginUser("userName", "password", "location");
+            expect($bahmniCookieStore.put).toHaveBeenCalled();
+            expect($bahmniCookieStore.put.calls.count()).toBe(2);
+            expect($bahmniCookieStore.remove).toHaveBeenCalledWith(Bahmni.Common.Constants.locationCookieName);
+        }]));
 
     });
+
 
     describe("Should loadProviders ", function () {
             var mockOfflineService;
