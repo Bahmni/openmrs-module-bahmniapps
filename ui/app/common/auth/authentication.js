@@ -27,7 +27,11 @@ angular.module('authentication')
             });
         });
     }]).service('sessionService', ['$rootScope', '$http', '$q', '$bahmniCookieStore', 'userService', 'offlineService', function ($rootScope, $http, $q, $bahmniCookieStore, userService, offlineService) {
-        var sessionResourcePath = Bahmni.Common.Constants.RESTWS_V1 + '/session?v=custom:(uuid)', offlineApp = offlineService.isOfflineApp(), authenticationResponse = 'authenticationResponse', previousUser = 'previousUser', previousUserInfo = 'previousUserInfo';
+        var sessionResourcePath = Bahmni.Common.Constants.RESTWS_V1 + '/session?v=custom:(uuid)';
+        var offlineApp = offlineService.isOfflineApp();
+        var authenticationResponse = 'authenticationResponse';
+        var previousUser = 'previousUser';
+        var previousUserInfo = 'previousUserInfo';
 
         var getAuthFromServer = function(username, password) {
             return $http.get(sessionResourcePath, {
@@ -54,11 +58,15 @@ angular.module('authentication')
                         deferrable.reject('LOGIN_LABEL_LOGIN_ERROR_MESSAGE_KEY');
                     }
                 });
-            }).error(function(){
+            }).error(function(data, status){
                 if(offlineApp && offlineService.getItem(authenticationResponse) &&
                     offlineService.getItem(Bahmni.Common.Constants.LoginInformation) &&
                     offlineService.validateLoginInfo({username: username, password: password})){
                     deferrable.resolve(offlineService.getItem(authenticationResponse));
+                }else if(offlineApp && parseInt(status / 100) == 5){
+                    var errorInfo = {forOffline: true};
+                    errorInfo.openmrsServerDownError = Bahmni.Common.Constants.offlineErrorMessages.openmrsServerDownError;
+                    deferrable.reject(errorInfo);
                 }else {
                     deferrable.reject('LOGIN_LABEL_LOGIN_ERROR_MESSAGE_KEY');
                 }
@@ -113,8 +121,12 @@ angular.module('authentication')
                 } else {
                    deferrable.reject('LOGIN_LABEL_LOGIN_ERROR_MESSAGE_KEY');
                 }
-            }, function(){
-                deferrable.reject('LOGIN_LABEL_LOGIN_ERROR_MESSAGE_KEY');
+            }, function(errorInfo){
+                if(offlineApp && !offlineService.getItem(authenticationResponse)){
+                    errorInfo.forOffline ? deferrable.reject(errorInfo.openmrsServerDownError) : deferrable.reject(Bahmni.Common.Constants.offlineErrorMessages.networkErrorForFirstTimeLogin);
+                }else {
+                    deferrable.reject('LOGIN_LABEL_LOGIN_ERROR_MESSAGE_KEY');
+                }
             });
             return deferrable.promise;
         };
