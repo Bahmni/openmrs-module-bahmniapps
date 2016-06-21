@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('bahmni.offline', ['ui.router',  'bahmni.common.uiHelper', 'bahmni.common.util', 'bahmni.common.offline', 'bahmni.common.models'])
+angular.module('bahmni.offline', ['ui.router',  'bahmni.common.uiHelper', 'bahmni.common.util', 'bahmni.common.offline', 'bahmni.common.models', 'ngDialog'])
     .config(['$urlRouterProvider', '$stateProvider',
         function ($urlRouterProvider, $stateProvider) {
         $urlRouterProvider.otherwise('/initScheduler');
@@ -39,12 +39,12 @@ angular.module('bahmni.offline', ['ui.router',  'bahmni.common.uiHelper', 'bahmn
                         },
                         test : function(offlineDb, offlineService, offlineDbService, androidDbService, $state){
                            if(offlineService.isAndroidApp()){
-                               offlineDbService = androidDbService;
-                           }
-                           return offlineDbService.getConfig("home").then(function(result){
-                               if(result && offlineService.getItem('catchmentNumber')){
-                                   $state.go('dashboard');
-                               }
+                                offlineDbService = androidDbService;
+                            }
+                            return offlineDbService.getConfig("home").then(function (result) {
+                                if (result && offlineService.getItem('catchmentNumber')) {
+                                    $state.go('initSync');
+                                }
                             });
                         },
                         offlineReferenceDataInitialization: function(offlineReferenceDataInitialization, offlineDb, test){
@@ -59,7 +59,20 @@ angular.module('bahmni.offline', ['ui.router',  'bahmni.common.uiHelper', 'bahmn
                         state: function($state, offlineConfigInitialization){
                             $state.go('dashboard');
                         }
-                }
+                    }
+                }).state('initSync', {
+                    controller: 'InitSyncController',
+                    resolve: {
+                        offlinePush: function (offlinePush) {
+                            return offlinePush();
+                        },
+                        offlinePull: function (offlinePull, offlinePush) {
+                            return offlinePull(offlinePush).then(function(){}, function(error){
+                                console.log("Error in offline pull \n"+ error.config.url + " "+error.statusText);
+                            });
+                        }
+                    }
+
             }).state('device',
             {
                 url: "/device/:deviceType",
