@@ -57,7 +57,7 @@ angular.module('bahmni.offline', ['ui.router',  'bahmni.common.uiHelper', 'bahmn
                             return offlineConfigInitialization(offlineLocationInitialization);
                         },
                         state: function($state, offlineConfigInitialization){
-                            $state.go('dashboard');
+                            $state.go('initSync');
                         }
                     }
                 }).state('initSync', {
