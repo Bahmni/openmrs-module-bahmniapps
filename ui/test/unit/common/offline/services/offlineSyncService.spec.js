@@ -217,6 +217,7 @@ describe('OfflineSyncService', function () {
 
 
             offlineSyncService.syncParentAddressEntries();
+            $rootScope.$digest();
 
             expect(offlineDbService.getMarker).toHaveBeenCalled();
             expect(offlineDbService.getMarker.calls.count()).toBe(1);
@@ -242,7 +243,7 @@ describe('OfflineSyncService', function () {
 
 
             offlineSyncService.syncAddressHierarchyEntries();
-
+            $rootScope.$digest();
             expect(offlineDbService.getMarker).toHaveBeenCalled();
             expect(offlineDbService.getMarker.calls.count()).toBe(1);
             expect(eventLogService.getAddressEventsFor).toHaveBeenCalledWith(202020, undefined);
@@ -264,7 +265,7 @@ describe('OfflineSyncService', function () {
             spyOn(offlineDbService, 'getAttributeTypes').and.callThrough();
 
             offlineSyncService.syncTransactionalData();
-
+            $rootScope.$digest();
             expect(offlineDbService.getMarker).toHaveBeenCalled();
             expect(offlineDbService.getMarker.calls.count()).toBe(1);
             expect(eventLogService.getEventsFor).toHaveBeenCalledWith(202020, undefined);
@@ -288,7 +289,7 @@ describe('OfflineSyncService', function () {
             spyOn(offlineDbService, 'insertMarker').and.callThrough();
 
             offlineSyncService.syncConcepts();
-
+            $rootScope.$digest();
             expect(offlineDbService.getMarker).toHaveBeenCalled();
             expect(offlineDbService.getMarker.calls.count()).toBe(1);
             expect(eventLogService.getConceptEventsFor).toHaveBeenCalledWith(undefined);
@@ -332,6 +333,7 @@ describe('OfflineSyncService', function () {
             spyOn(offlineDbService, 'getAttributeTypes').and.callThrough();
 
             offlineSyncService.syncTransactionalData();
+            $rootScope.$digest();
 
             expect(offlineDbService.getMarker).toHaveBeenCalled();
             expect(offlineDbService.getMarker.calls.count()).toBe(1);
@@ -356,6 +358,7 @@ describe('OfflineSyncService', function () {
             httpBackend.expectGET("some url").respond(500, error_log.data);
             offlineSyncService.syncConcepts();
             httpBackend.flush();
+            $rootScope.$digest();
 
 
             expect(offlineDbService.getMarker).toHaveBeenCalled();
@@ -369,6 +372,7 @@ describe('OfflineSyncService', function () {
     });
 
     describe('subsequent sync ', function () {
+        var $rootScope;
         beforeEach(function () {
             module('bahmni.common.offline');
             module('bahmni.common.domain');
@@ -503,12 +507,13 @@ describe('OfflineSyncService', function () {
             });
         });
 
-        beforeEach(inject(['offlineSyncService', 'eventLogService', 'offlineDbService', 'configurationService',
-            function (offlineSyncServiceInjected, eventLogServiceInjected, offlineDbServiceInjected, configurationServiceInjected) {
+        beforeEach(inject(['offlineSyncService', 'eventLogService', 'offlineDbService', 'configurationService', '$rootScope',
+            function (offlineSyncServiceInjected, eventLogServiceInjected, offlineDbServiceInjected, configurationServiceInjected, rootScope) {
             offlineSyncService = offlineSyncServiceInjected;
             eventLogService = eventLogServiceInjected;
             offlineDbService = offlineDbServiceInjected;
             configurationService = configurationServiceInjected;
+            $rootScope = rootScope;
         }]));
 
 
@@ -528,6 +533,7 @@ describe('OfflineSyncService', function () {
             spyOn(offlineDbService, 'insertMarker').and.callThrough();
 
             offlineSyncService.syncParentAddressEntries();
+            $rootScope.$digest();
 
             expect(offlineDbService.getMarker).toHaveBeenCalled();
             expect(offlineDbService.getMarker.calls.count()).toBe(1);
@@ -551,6 +557,7 @@ describe('OfflineSyncService', function () {
             spyOn(offlineDbService, 'insertMarker').and.callThrough();
 
             offlineSyncService.syncAddressHierarchyEntries();
+            $rootScope.$digest();
 
             expect(offlineDbService.getMarker).toHaveBeenCalled();
             expect(offlineDbService.getMarker.calls.count()).toBe(1);
@@ -572,6 +579,7 @@ describe('OfflineSyncService', function () {
             spyOn(offlineDbService, 'insertMarker').and.callThrough();
 
             offlineSyncService.syncTransactionalData();
+            $rootScope.$digest();
 
             expect(offlineDbService.getMarker).toHaveBeenCalled();
             expect(offlineDbService.getMarker.calls.count()).toBe(1);
@@ -593,6 +601,7 @@ describe('OfflineSyncService', function () {
             spyOn(offlineDbService, 'insertMarker').and.callThrough();
 
             offlineSyncService.syncConcepts();
+            $rootScope.$digest();
 
             expect(offlineDbService.getMarker).toHaveBeenCalled();
             expect(offlineDbService.getMarker.calls.count()).toBe(1);
@@ -600,8 +609,6 @@ describe('OfflineSyncService', function () {
             expect(eventLogService.getConceptEventsFor.calls.count()).toBe(1);
             expect(eventLogService.getDataForUrl).toHaveBeenCalledWith('url to get concept object');
             expect(eventLogService.getDataForUrl.calls.count()).toBe(1);
-
-
 
             expect(offlineDbService.insertConceptAndUpdateHierarchy).toHaveBeenCalledWith({"results" : [concept]});
             expect(offlineDbService.insertConceptAndUpdateHierarchy.calls.count()).toBe(1);
