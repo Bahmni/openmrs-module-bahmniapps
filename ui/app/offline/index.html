@@ -10,6 +10,10 @@
 
         <!-- build:css offline.min.css -->
         <link rel="stylesheet" href="../styles/offline.css"/>
+        <link rel="stylesheet" href="../components/ngDialog/css/ngDialog.min.css"/>
+        <link rel="stylesheet" href="../components/ngDialog/css/ngDialog-theme-default.min.css"/>
+        <link rel="stylesheet" href="../components/ngDialog/css/ngDialog-theme-plain.min.css"/>
+
         <!-- endbuild -->
     </head>
     <body>
@@ -28,6 +32,7 @@
         <script src="../components/ng-clip/dest/ng-clip.min.js"></script>
         <script src="../components/zeroclipboard/dist/ZeroClipboard.min.js"></script>
         <script src="../components/lovefield/dist/lovefield.min.js"></script>
+        <script src="../components/hustle/hustle.js"></script>
 
 
         <!-- build:js offline.min.js -->
@@ -56,6 +61,10 @@
         <script src="../common/offline/offlineConfigInitialization.js"></script>
         <script src="../common/offline/offlineReferenceDataInitialization.js"></script>
         <script src="../common/offline/offlineLocationInitialization.js"></script>
+        <script src="../components/ngDialog/js/ngDialog.min.js"></script>
+        <script src="controllers/initSyncController.js"></script>
+        <script src="../common/offline/offlinePush.js"></script>
+        <script src="../common/offline/offlinePull.js"></script>
         <script src="../common/offline/services/offlineSyncService.js"></script>
         <script src="../common/offline/services/eventLogService.js"></script>
         <script src="../common/offline/services/androidDbService.js"></script>

@@ -10,13 +10,7 @@ angular.module('bahmni.common.offline')
                     if (offlineService.isAndroidApp()) {
                         offlineDbService = androidDbService;
                     }
-                    return syncConcepts().then(function () {
-                        return syncParentAddressEntries().then(function () {
-                            return syncAddressHierarchyEntries().then(function () {
-                                return syncTransactionalData();
-                            });
-                        })
-                    });
+                    return $q.all([syncConcepts(),syncParentAddressEntries(),syncAddressHierarchyEntries(),syncTransactionalData()]);
                 };
 
                 var syncConcepts = function() {
@@ -78,7 +72,7 @@ angular.module('bahmni.common.offline')
                             endSync(stages++);
                             return;
                         }
-                        readEvent(response.data, 0);
+                        return readEvent(response.data, 0);
                     }, function () {
                         endSync(-1);
                     });
@@ -103,17 +97,13 @@ angular.module('bahmni.common.offline')
                         case 'patient':
                         case 'Encounter':
                         case 'SHREncounter':
-                                syncTransactionalData();
-                                break;
+                                return syncTransactionalData();
                         case 'addressHierarchy':
-                                syncAddressHierarchyEntries();
-                                break;
+                                return syncAddressHierarchyEntries();
                         case 'parentAddressHierarchy':
-                                syncParentAddressEntries();
-                                break;
+                                return syncParentAddressEntries();
                         case 'offline-concepts':
-                                syncConcepts();
-                                break;
+                                return syncConcepts();
                         default:
                             break;
                     }
@@ -123,8 +113,7 @@ angular.module('bahmni.common.offline')
                 var readEvent = function (events, index, category) {
                     if (events.length == index && events.length > 0) {
                         var group = category ? category : events[0].category;
-                        syncNextEvents(group);
-                        return;
+                        return syncNextEvents(group);
                     }
                     if (events.length == index) {
                         return;
@@ -135,11 +124,16 @@ angular.module('bahmni.common.offline')
                         var uuid = event.object.match(Bahmni.Common.Constants.uuidRegex)[0];
                         event.object = Bahmni.Common.Constants.offlineBahmniEncounterUrl + uuid + "?includeAll=true";
                     }
-                    return eventLogService.getDataForUrl(Bahmni.Common.Constants.hostURL + event.object).then(function (response) {
-                        return saveData(event, response).then(updateMarker(event).then(function (lastEvent) {
-                            offlineService.setItem("lastSyncTime", lastEvent.lastReadTime);
-                            return readEvent(events, ++index, category);
-                        }));
+
+                    return eventLogService.getDataForUrl(Bahmni.Common.Constants.hostURL + event.object)
+                        .then(function (response) {
+                            return saveData(event, response)
+                                .then(function() { return updateMarker(event)})
+                                .then(
+                                    function() {
+                                        offlineService.setItem("lastSyncTime", lastEvent.lastReadTime);
+                                        return readEvent(events, ++index, category)
+                                    });
                     }).catch(function(response) {
                         if(parseInt(response.status / 100) == 4 || parseInt(response.status / 100) == 5) {
                             offlineDbService.insertLog(response.config.url, response.status, response.data);
@@ -155,7 +149,7 @@ angular.module('bahmni.common.offline')
                         case 'patient':
                             offlineDbService.getAttributeTypes().then(function (attributeTypes) {
                                 mapAttributesToPostFormat(response.data.person.attributes, attributeTypes);
-                                offlineDbService.createPatient({patient: response.data}).then(function () {
+                                 offlineDbService.createPatient({patient: response.data}).then(function () {
                                     deferrable.resolve();
                                 });
                             });
@@ -167,7 +161,9 @@ angular.module('bahmni.common.offline')
                             });
                             break;
                         case 'offline-concepts':
-                            offlineDbService.insertConceptAndUpdateHierarchy({"results": [response.data]});
+                            offlineDbService.insertConceptAndUpdateHierarchy({"results": [response.data]}).then(function(){
+                                deferrable.resolve();
+                            });
                             break;
                         case 'addressHierarchy':
                         case 'parentAddressHierarchy':
