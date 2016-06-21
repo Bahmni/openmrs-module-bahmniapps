@@ -130,7 +130,7 @@ angular.module('bahmni.common.offline')
                             return saveData(event, response)
                                 .then(function() { return updateMarker(event)})
                                 .then(
-                                    function() {
+                                    function(lastEvent) {
                                         offlineService.setItem("lastSyncTime", lastEvent.lastReadTime);
                                         return readEvent(events, ++index, category)
                                     });
