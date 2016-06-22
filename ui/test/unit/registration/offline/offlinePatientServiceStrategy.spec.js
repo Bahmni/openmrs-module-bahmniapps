@@ -2,7 +2,7 @@
 
 describe('PatientServiceStrategy test', function () {
     var patientServiceStrategy, patientJson, patientAttributeTypes;
-    var offlinePatientServiceStrategyMock, $q = Q, eventQueueMock;
+    var offlinePatientServiceStrategyMock, $q = Q, eventQueueMock, rootScope;
 
     eventQueueMock = jasmine.createSpyObj('eventQueue', ['addToEventQueue']);
     offlinePatientServiceStrategyMock = jasmine.createSpyObj(' offlinePatientServiceStrategy', ['search', 'get', 'create', 'deletePatientData','getAttributeTypes']);
@@ -25,8 +25,9 @@ describe('PatientServiceStrategy test', function () {
         eventQueueMock.addToEventQueue.and.returnValue(specUtil.respondWith({}));
     });
 
-    beforeEach(inject(['patientServiceStrategy', function (patientServiceStrategyInjected) {
-        patientServiceStrategy = patientServiceStrategyInjected
+    beforeEach(inject(['patientServiceStrategy', "$rootScope", function (patientServiceStrategyInjected, rootScopeInjected) {
+        patientServiceStrategy = patientServiceStrategyInjected;
+        rootScope = rootScopeInjected;
     }]));
 
     it("should get patient data to render registration page", function (done) {
@@ -79,5 +80,19 @@ describe('PatientServiceStrategy test', function () {
             expect(eventQueueMock.addToEventQueue).toHaveBeenCalledWith(jasmine.objectContaining({"url": url}));
         }).catch(notifyError).finally(done);
 
+    });
+
+    it("should create new patient with providerInfo as creator inside auditInfo", function (done) {
+        patientJson.patient.uuid = undefined;
+        var providerInfo = {uuid: 'c1c21e11-3f10-11e4-adec-0800271c1111', display: 'armanvuiyan', links: []};
+        rootScope.currentProvider = providerInfo;
+        patientServiceStrategy.create(patientJson).then(function(data) {
+            var url = Bahmni.Registration.Constants.baseOpenMRSRESTURL + "/bahmnicore/patientprofile/";
+            expect(eventQueueMock.addToEventQueue).toHaveBeenCalledWith(jasmine.objectContaining({"url": url}));
+            expect(offlinePatientServiceStrategyMock.create).toHaveBeenCalledWith(patientJson);
+            expect(data.data).toBe(patientJson);
+            expect(data.data.patient.auditInfo.creator).toBe(providerInfo);
+            expect(data.data.patient.auditInfo.creator).toBe(providerInfo);
+        }).catch(notifyError).finally(done);
     });
 });

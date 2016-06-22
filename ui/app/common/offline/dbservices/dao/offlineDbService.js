@@ -168,8 +168,8 @@ angular.module('bahmni.common.offline')
             return conceptDbService.getReferenceData(conceptUuid);
         };
 
-        var getConceptByName = function (conceptUuid) {
-            return conceptDbService.getConceptByName(conceptUuid);
+        var getConceptByName = function (conceptName) {
+            return conceptDbService.getConceptByName(conceptName);
         };
 
         var insertConceptAndUpdateHierarchy = function (data, parent) {
@@ -204,8 +204,10 @@ angular.module('bahmni.common.offline')
             return visitDbService.getVisitsByPatientUuid(db, patientUuid, numberOfVisits);
         };
 
-        var insertLog = function (failedRequest, responseStatus, stackTrace) {
-            return errorLogDbService.insertLog(db, failedRequest, responseStatus, stackTrace);
+        var insertLog = function (failedRequest, responseStatus, stackTrace, requestPayload) {
+            var provider = _.has(requestPayload, 'providers') ? requestPayload.providers[0] :
+                ( _.has(requestPayload, 'auditInfo.creator') ? requestPayload.auditInfo.creator : null);
+            return errorLogDbService.insertLog(db, failedRequest, responseStatus, stackTrace, requestPayload, provider);
         };
 
         var getAllLogs = function () {

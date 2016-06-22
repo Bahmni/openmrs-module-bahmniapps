@@ -80,7 +80,8 @@ angular.module('bahmni.common.offline')
                                     return successCallBack(event);
                                 }).catch(function (response) {
                                     if (parseInt(response.status / 100) == 5) {
-                                        offlineDbService.insertLog(response.config.url, response.status, response.data);
+                                        var payload = response.config.data;
+                                        offlineDbService.insertLog(response.config.url, response.status, response.data, payload);
                                         if (event.tube === "event_queue") {
                                             eventQueue.removeFromQueue(event);
                                             eventQueue.addToErrorQueue(event.data);
@@ -93,7 +94,8 @@ angular.module('bahmni.common.offline')
                                     }
                                     else {
                                         if(parseInt(response.status / 100) == 4) {
-                                            offlineDbService.insertLog(response.config.url, response.status, response.data);
+                                            var payload = response.config.data;
+                                            offlineDbService.insertLog(response.config.url, response.status, response.data, payload);
                                         }
                                         eventQueue.releaseFromQueue(event);
                                         deferred.resolve();

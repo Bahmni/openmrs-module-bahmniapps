@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('bahmni.registration')
-    .factory('patientServiceStrategy', ['$q', 'offlinePatientServiceStrategy','eventQueue',
-        function ($q, offlinePatientServiceStrategy, eventQueue) {
+    .factory('patientServiceStrategy', ['$q', 'offlinePatientServiceStrategy','eventQueue', '$bahmniCookieStore', '$rootScope',
+        function ($q, offlinePatientServiceStrategy, eventQueue, $bahmniCookieStore, $rootScope) {
 
             var search = function (config) {
                 return offlinePatientServiceStrategy.search(config).then(function(results) {
@@ -25,6 +25,10 @@ angular.module('bahmni.registration')
             var create = function (data) {
                 data.patient.person.birthtime = data.patient.person.birthtime ? moment(data.patient.person.birthtime).format("YYYY-MM-DDTHH:mm:ss.SSSZZ") : null;
                 data.patient.person.auditInfo = {dateCreated: moment(data.patient.person.personDateCreated).format() || moment().format()};
+                if ($rootScope.currentProvider) {
+                    data.patient.person.auditInfo.creator = $rootScope.currentProvider;
+                    data.patient.auditInfo.creator = $rootScope.currentProvider;
+                }
                 data.patient.person.personDateCreated = undefined;
                 var event = {};
                 if(!data.patient.person.addresses[0].uuid){

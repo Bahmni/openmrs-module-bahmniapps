@@ -85,6 +85,7 @@ describe('Offline Push Tests', function () {
             expect(eventQueueMock.addToErrorQueue).toHaveBeenCalled();
             expect(eventQueueMock.consumeFromEventQueue).toHaveBeenCalled();
             expect(offlineDbServiceMock.insertLog).toHaveBeenCalled();
+            expect(offlineDbServiceMock.insertLog).toHaveBeenCalledWith("someUrl", 500, {}, {relationships : []});
             done();
         });
         setTimeout(function(){
@@ -100,6 +101,7 @@ describe('Offline Push Tests', function () {
             expect(eventQueueMock.consumeFromEventQueue).not.toHaveBeenCalled();
             expect(eventQueueMock.releaseFromQueue).toHaveBeenCalled();
             expect(offlineDbServiceMock.insertLog).toHaveBeenCalled();
+            expect(offlineDbServiceMock.insertLog).toHaveBeenCalledWith("someUrl", 400, {}, {relationships : []});
             done();
         });
         setTimeout(function(){
