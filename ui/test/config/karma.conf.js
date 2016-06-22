@@ -74,7 +74,6 @@ module.exports = function (config) {
             'test/unit/**/offline/*.js',
             'test/unit/**/offline/android/*.js',
             'test/unit/**/offline/chrome/*.js',
-            'app/common/offline/dbservices/dao/offlineDbService.js',
             'app/common/offline/scheduler/backgroundWorker.js',
             'app/common/util/androidDateTimeFormatter.js',
             "test/unit/common/util/androidDateTimeFormatter.spec.js"
