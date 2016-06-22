@@ -545,9 +545,16 @@ body{
 }
 
 .syncStatusInfo{
-  font-weight: bold;
-  margin-top: 300px;
   text-align: center;
+  font-size: 14px;
+  width: 100%;
+  position: fixed;
+  bottom: 13px;
+  font-style: italic;
+  color: #666;
+  .message{
+    font-style: normal;
+  }
   .pending {
     color: #FDA319;
   }
@@ -555,12 +562,11 @@ body{
     color: red;
   }
   .success {
-    color: green;
+    color: #53B76D;
   }
   .inProgress {
     color: black;
   }
-  font-size: 14px;
   p {
     padding-bottom: 10px;
     margin: 0;
