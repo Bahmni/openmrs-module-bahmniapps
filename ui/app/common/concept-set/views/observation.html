@@ -231,12 +231,14 @@
                                ng-disabled="observation.disabled"
                                ng-model="observation.autocompleteValue"
                                concept-autocomplete
+                               illegal-value = "!observation.isValid(atLeastOneValueIsSet,conceptSetRequired)"
                                previous-value="observation.autocompleteValue"
                                answers-concept-name="::observation.conceptUIConfig.answersConceptName"
                                default-concept="::observation.concept"
                                strict-select="true"
                                ng-class="{
-                                    'computed-field': observation.isComputedAndEditable()
+                                    'computed-field': observation.isComputedAndEditable(),
+                                    'illegalValue': !observation.isValid(atLeastOneValueIsSet,conceptSetRequired)
                                }"/>
                     </div>
 

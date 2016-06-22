@@ -54,7 +54,7 @@
                 if (!scope.strictSelect) {
                     return;
                 }
-                if (_.isEmpty(searchTerm) || searchTerm === previousValue) {
+                if (!scope.illegalValue && (_.isEmpty(searchTerm) || searchTerm === previousValue)) {
                     element.removeClass('illegalValue');
                     return;
                 }
@@ -114,6 +114,7 @@
             link: link,
             require: 'ngModel',
             scope: {
+                illegalValue: '=',
                 defaultConcept: '=',
                 answersConceptName: '=',
                 minLength: '=',
