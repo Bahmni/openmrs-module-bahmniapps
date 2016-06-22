@@ -636,6 +636,15 @@ h3 {
     .fa {
         display: none !important;
     }
+    .patient-info-fixed-postion-container {
+        position:static;
+        .patient-info-fixed{
+            font-family: Arial, sans-serif !important;
+        }
+    }
+    .patient-dashboard.visit {
+        margin-top:15px;
+    }
 }
 
 .prescription-print {
@@ -687,11 +696,6 @@ h3 {
 }
 
 
-.patient-info-fixed-postion-container{
-    .patient-info-fixed{
-        font-family: Arial, sans-serif !important;
-    }
-}
 
 .print-patient-summary{
     &.print-wrapper{
