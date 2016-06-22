@@ -18,8 +18,10 @@ describe('encounterDbService tests', function () {
         var failedRequest = "https://failedRequestUrl";
         var stackTraceOfError = "error 500";
         var responseStatus = 500;
+        var requestPayload = {data: 'requestPayload'};
+        var provider = {display: "armanvuiyan", uuid: "providerUuid"};
         schemaBuilder.connect().then(function(db){
-           errorLogDbService.insertLog(db, failedRequest, responseStatus,  stackTraceOfError);
+            errorLogDbService.insertLog(db, failedRequest, responseStatus,  stackTraceOfError, requestPayload, provider);
                errorLogDbService.getLog(db).then(function (result) {
                    expect(result[0].stackTrace).toBe(stackTraceOfError);
                    done();

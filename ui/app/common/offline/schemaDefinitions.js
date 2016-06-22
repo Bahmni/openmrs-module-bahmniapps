@@ -390,9 +390,15 @@ Bahmni.Common.Offline.SchemaDefinitions = {
             }, {
                 name: 'stackTrace',
                 type: 'STRING'
+            }, {
+                name: 'requestPayload',
+                type: 'STRING'
+            }, {
+                name: 'provider',
+                type: 'OBJECT'
             }
         ],
         nullableColumns: ['responseStatus'],
-        primaryKeyColumns: ['id']
+        primaryKeyColumns: ['failedRequestUrl', 'requestPayload']
     }
 };
