@@ -221,6 +221,12 @@ angular.module('bahmni.common.offline')
                  AndroidOfflineService.insertLog(failedRequest, responseStatus, stacktrace);
             };
 
+            var getAllLogs = function () {
+                var value =  AndroidOfflineService.getAllLogs();
+                value = value !== undefined ? JSON.parse(value) : value;
+                return $q.when(value);
+            };
+
             var getPrescribedAndActiveDrugOrders = function (params) {
                 var response = AndroidOfflineService.getEncountersByVisits(JSON.stringify(params));
                 response = response != undefined ? JSON.parse(response) : response;
@@ -256,6 +262,7 @@ angular.module('bahmni.common.offline')
                 getConceptByName: getConceptByName,
                 getEncounterByEncounterUuid: getEncounterByEncounterUuid,
                 insertLog: insertLog,
+                getAllLogs: getAllLogs,
                 getAllParentsInHierarchy: getAllParentsInHierarchy,
                 getPrescribedAndActiveDrugOrders: getPrescribedAndActiveDrugOrders
             }

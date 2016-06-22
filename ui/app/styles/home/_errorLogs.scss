@@ -1,0 +1,16 @@
+.error-log-wrapper{
+  table{
+    table-layout: fixed;
+    th{
+      &:nth-child(1){
+        width: 20%;
+      }
+      &:nth-child(2){
+        width: 10%;
+      }
+      &:nth-child(3){
+        width: 10%;
+      }
+    }
+  }
+}

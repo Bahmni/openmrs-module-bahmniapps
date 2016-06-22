@@ -47,8 +47,11 @@
             </li>
         </ul>
     </div>
-    <div ng-show="isOfflineApp" class="syncStatusInfo">
+    <div ng-if="::isOfflineApp" class="syncStatusInfo">
         <p class="{{getStatusStyleCode()}}">{{syncStatusMessage}}</p>
         <p>Last Successful Sync Time : {{lastSyncTime}}</p>
+    </div>
+    <div ng-if="::isOfflineApp">
+        <a ui-sref="errorLog">Error logs</a>
     </div>
 </div>
