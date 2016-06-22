@@ -7,7 +7,8 @@
         </div>
     </div>
     <div class="opd-content-wrapper error-log-wrapper">
-        <table>
+        <div ng-if="::errorLogs.length==0">No errors present</div>
+        <table ng-if="::errorLogs.length>0">
             <thead>
             <tr>
                 <th>Request Url</th>
@@ -20,7 +21,7 @@
             <tr ng-repeat="errorLog in errorLogs track by errorLog.id">
                 <td>{{::errorLog.failedRequestUrl}}</td>
                 <td>{{::errorLog.responseStatus}}</td>
-                <td>{{::errorLog.logDateTime}}</td>
+                <td>{{::errorLog.logDateTime | bahmniDateTime }}</td>
                 <td><pre>{{ ::errorLog.stackTrace | json:4 }}</pre></td>
             </tr>
             </tbody>
