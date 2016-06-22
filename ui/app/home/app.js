@@ -50,6 +50,21 @@ angular.module('bahmni.home', ['ui.router', 'httpErrorInterceptor', 'bahmni.comm
                         return schedulerService.stopSync();
                     }
                 }
+            })
+            .state('errorLog', {
+                url: '/errorLog',
+                controller: 'ErrorLogController',
+                templateUrl: 'views/errorLog.html',
+                data: {
+                    backLinks: [
+                        {label: "Home", state: "dashboard", accessKey: "h", icon: "fa-home"}
+                    ]
+                },
+                resolve: {
+                    offlineDb: function (offlineDbInitialization) {
+                        return offlineDbInitialization();
+                    }
+                }
             });
         $httpProvider.defaults.headers.common['Disable-WWW-Authenticate'] = true;
         $bahmniTranslateProvider.init({app: 'home', shouldMerge: true});
