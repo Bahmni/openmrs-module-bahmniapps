@@ -47,11 +47,11 @@ angular.module('bahmni.common.uiHelper')
             };
 
             $scope.illegalMonth = function() {
-                return ($scope.selectedMonth === undefined || $scope.selectedMonth === null) && $scope.selectedYear !== null;
+                return ($scope.selectedMonth === undefined || $scope.selectedMonth === null) && ($scope.selectedYear !== null && $scope.selectedYear !== undefined);
             };
 
             $scope.illegalYear = function(){
-                return $scope.selectedMonth !== null && ($scope.selectedYear === undefined || $scope.selectedYear === null);
+                return ($scope.selectedMonth !== null && $scope.selectedMonth !== undefined) && ($scope.selectedYear === undefined || $scope.selectedYear === null);
             };
 
 
@@ -74,9 +74,9 @@ angular.module('bahmni.common.uiHelper')
                 illegalValue: '=',
                 model: "="
             },
-            template: '<span><select ng-model=\'selectedMonth\'  ng-class=\"{\'illegalValue\': illegalMonth() && illegalValue}\" ng-change="updateModel()" ng-options="monthNames.indexOf(month) as month for month in monthNames" ><option value="">{{\'CHOOSE_MONTH_KEY\' | translate}}</option>>' +
+            template: '<span><select ng-model=\'selectedMonth\'  ng-class=\"{\'illegalValue\': illegalMonth() || illegalValue}\" ng-change="updateModel()" ng-options="monthNames.indexOf(month) as month for month in monthNames" ><option value="">{{\'CHOOSE_MONTH_KEY\' | translate}}</option>>' +
             '</select></span>' +
-            '<span><select ng-model=\'selectedYear\'   ng-class=\"{\'illegalValue\': illegalYear() && illegalValue}\" ng-change="updateModel()" ng-options="year as year for year in years"><option value="">{{\'CHOOSE_YEAR_KEY\' | translate}}</option>>' +
+            '<span><select ng-model=\'selectedYear\'   ng-class=\"{\'illegalValue\': illegalYear() || illegalValue}\" ng-change="updateModel()" ng-options="year as year for year in years"><option value="">{{\'CHOOSE_YEAR_KEY\' | translate}}</option>>' +
             '</select></span>'
         }
     });

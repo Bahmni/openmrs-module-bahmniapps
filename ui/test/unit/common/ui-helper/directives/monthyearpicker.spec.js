@@ -26,6 +26,7 @@ describe('monthyearpicker', function () {
     function createDirective() {
         var elem, compiledElem;
         scope.modelValue = "2010-09-28";
+
         var simpleHtml = '<monthyearpicker min-year="2000" max-year="2016" illegal-value="false" model="modelValue"></monthyearpicker>';
         elem = angular.element(simpleHtml);
         compiledElem = $compile(elem)(scope);
@@ -64,5 +65,49 @@ describe('monthyearpicker', function () {
 
         isolatedScope.updateModel();
         expect(isolatedScope.model).toEqual("2010-9-01");
+    });
+
+    it('should set illegal month/year false if month and year are undefined', function () {
+        var el = createDirective();
+        var isolatedScope = el.isolateScope();
+
+        isolatedScope.$apply();
+
+        isolatedScope.updateModel();
+        isolatedScope.selectedYear = "undefined";
+        isolatedScope.selectedMonth = "undefined";
+        expect(isolatedScope.illegalMonth()).toBeFalsy();
+        expect(isolatedScope.illegalYear()).toBeFalsy();
+
+    });
+
+    it('should set illegal year true if month is present and year is undefined or null', function () {
+        var el = createDirective();
+        var isolatedScope = el.isolateScope();
+
+        isolatedScope.$apply();
+        isolatedScope.updateModel();
+
+        isolatedScope.selectedYear = undefined;
+        isolatedScope.selectedMonth = "06";
+        expect(isolatedScope.illegalYear()).toBeTruthy();
+        isolatedScope.selectedYear = null;
+        expect(isolatedScope.illegalYear()).toBeTruthy();
+
+    });
+
+    it('should set illegal month true if year is present and month is undefined or null', function () {
+        var el = createDirective();
+        var isolatedScope = el.isolateScope();
+
+        isolatedScope.$apply();
+        isolatedScope.updateModel();
+
+        isolatedScope.selectedYear = "2010";
+        isolatedScope.selectedMonth = undefined;
+        expect(isolatedScope.illegalMonth()).toBeTruthy();
+        isolatedScope.selectedMonth = null;
+        expect(isolatedScope.illegalMonth()).toBeTruthy();
+
     });
 });
