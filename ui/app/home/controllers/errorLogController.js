@@ -9,7 +9,7 @@ angular.module('bahmni.home')
                     offlineDbService = androidDbService;
                 }
 
-                offlineDbService.getAllLogs().then(function (response) {
+                spinner.forPromise(offlineDbService.getAllLogs().then(function (response) {
                     $scope.errorLogs = response;
                     _.each($scope.errorLogs, function(errorLog){
                         try {
@@ -17,7 +17,7 @@ angular.module('bahmni.home')
                             errorLog.stackTrace = value;
                         }catch(ex){}
                     })
-                });
+                }));
 
             }
         }]);
