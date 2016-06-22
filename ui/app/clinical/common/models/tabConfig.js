@@ -2,7 +2,9 @@
 
 Bahmni.Clinical.TabConfig = function (tabs) {
     var self = this;
-    this.tabs = tabs;
+    this.tabs = _.filter(tabs, function (tab) {
+        return angular.isObject(tab);
+    });
     this.identifierKey = null;
 
     var initDisplayByDefaultTabs = function(){
