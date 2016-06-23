@@ -12,7 +12,7 @@ angular.module('bahmni.home')
             };
 
             var init = function () {
-                return locationService.getAllByTag("Login   Location").then(function (response) {
+                return locationService.getAllByTag("Login Location").then(function (response) {
                         $scope.locations = response.data.results;
                         $scope.selectedLocationUuid = getCurrentLocation().uuid;
                     }
