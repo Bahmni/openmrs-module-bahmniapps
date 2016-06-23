@@ -33,25 +33,33 @@ angular.module('authentication')
         var previousUser = 'previousUser';
         var previousUserInfo = 'previousUserInfo';
 
-        var getAuthFromServer = function(username, password) {
+        var getAuthFromServer = function(username, password, otp) {
+            var btoa = otp ? username + ':' + password + ':' + otp : username + ':' + password ;
             return $http.get(sessionResourcePath, {
-                headers: {'Authorization': 'Basic ' + window.btoa(username + ':' + password)},
+                headers: {'Authorization': 'Basic ' + window.btoa(btoa)},
                 cache: false
             });
         };
 
-        var createSession = function(username, password){
+        var createSession = function(username, password, otp){
             var deferrable = $q.defer();
 
             destroySessionFromServer().success(function(){
-                getAuthFromServer(username, password).success(function(data) {
+                getAuthFromServer(username, password, otp).then(function(response) {
+                    if (response.status == 204){
+                        deferrable.resolve({"firstFactAuthorization": true});
+                    }
+                    var data = response.data;
                     if(offlineApp) {
                         if(data.authenticated == true) {
                             offlineService.setItem(authenticationResponse, data);
                         }
                     }
                     deferrable.resolve(data);
-                }).error(function(){
+                }, function(response){
+                    if(response.status == 401){
+                        deferrable.reject('LOGIN_LABEL_INVALID_OTP_MESSAGE_KEY');
+                    }
                     if(offlineApp && offlineService.getItem(authenticationResponse)){
                         deferrable.resolve(offlineService.getItem(authenticationResponse));
                     }else {
@@ -108,16 +116,18 @@ angular.module('authentication')
             return deferrable.promise;
         };
 
-        this.loginUser = function(username, password, location) {
+        this.loginUser = function(username, password, location, otp) {
             var deferrable = $q.defer();
-            createSession(username,password).then(function(data) {
+            createSession(username,password, otp).then(function(data) {
                 if (data.authenticated) {
                     $bahmniCookieStore.put(Bahmni.Common.Constants.currentUser, username, {path: '/', expires: 7});
                     if(location != undefined) {
                         $bahmniCookieStore.remove(Bahmni.Common.Constants.locationCookieName);
                         $bahmniCookieStore.put(Bahmni.Common.Constants.locationCookieName, {name: location.display, uuid: location.uuid}, {path: '/', expires: 7});
                     }
-                    deferrable.resolve();
+                    deferrable.resolve(data);
+                } else if(data.firstFactAuthorization) {
+                    deferrable.resolve(data);
                 } else {
                    deferrable.reject('LOGIN_LABEL_LOGIN_ERROR_MESSAGE_KEY');
                 }
@@ -125,7 +135,7 @@ angular.module('authentication')
                 if(offlineApp && !offlineService.getItem(authenticationResponse)){
                     errorInfo.forOffline ? deferrable.reject(errorInfo.openmrsServerDownError) : deferrable.reject(Bahmni.Common.Constants.offlineErrorMessages.networkErrorForFirstTimeLogin);
                 }else {
-                    deferrable.reject('LOGIN_LABEL_LOGIN_ERROR_MESSAGE_KEY');
+                    deferrable.reject(errorInfo);
                 }
             });
             return deferrable.promise;

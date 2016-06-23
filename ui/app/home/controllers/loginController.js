@@ -64,8 +64,13 @@ angular.module('bahmni.home')
                 $scope.errorMessageTranslateKey = null;
                 var deferrable = $q.defer();
 
-                sessionService.loginUser($scope.loginInfo.username, $scope.loginInfo.password, $scope.loginInfo.currentLocation).then(
-                    function () {
+                sessionService.loginUser($scope.loginInfo.username, $scope.loginInfo.password, $scope.loginInfo.currentLocation, $scope.loginInfo.otp).then(
+                    function (data) {
+                        if (data && data.firstFactAuthorization) {
+                            $scope.showOTP = true;
+                            deferrable.resolve(data);
+                            return; 
+                        }
                         sessionService.loadCredentials().then(
                             onSuccessfulAuthentication,
                             function (error) {
@@ -87,7 +92,8 @@ angular.module('bahmni.home')
                     }
                 );
                 spinner.forPromise(deferrable.promise).then(
-                    function () {
+                    function (data) {
+                        if (data) return;
                         if (redirectUrl) {
                             $window.location = redirectUrl;
                         } else {

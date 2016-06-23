@@ -1,4 +1,4 @@
-<div class="login">
+<div class="login" ng-hide="showOTP">
 
     <header class="reg-header">
         <div class="left">{{'LOGIN_LABEL_LOGIN_KEY' | translate}}</div>
@@ -58,4 +58,37 @@
         </div>
     </form>
 
+</div>
+
+<div class="login" ng-show ="showOTP">
+
+    <header class="reg-header">
+        <div class="left">{{'LOGIN_LABEL_LOGIN_KEY' | translate}}</div>
+    </header>
+
+    <form ng-submit="login()" name="otpForm" bm-form>
+        <div class="login-body">
+            <div class="note-container">
+                <div class="note error" ng-show="errorMessageTranslateKey">
+                    <div class="text">
+                        {{errorMessageTranslateKey | translate}}
+                    </div>
+                </div>
+            </div>
+            <div class="form-field">
+                <div class="field-attribute">
+                    <label for="password">
+                        {{'LOGIN_LABEL_ENTER_OTP_KEY' | translate}} <span class="asterick">*</span>
+                    </label>
+                </div>
+                <div class="field-value">
+                    <input type="password" id="otp" name="password" ng-model="loginInfo.otp"  placeholder="{{'LOGIN_LABEL_ENTER_OTP_KEY' | translate}}" required>
+                </div>
+            </div>
+
+            <div class="form-footer">
+                <button type="submit" class="confirm">{{'LOGIN_LABEL_SUBMIT_KEY' | translate}}</button>
+            </div>
+        </div>
+    </form>
 </div>
