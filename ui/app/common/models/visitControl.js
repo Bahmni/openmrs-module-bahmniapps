@@ -1,6 +1,7 @@
 'use strict';
 
-Bahmni.Common.VisitControl = function (visitTypes, defaultVisitTypeName, encounterService, $translate, visitService) {
+Bahmni.Common.VisitControl = function (visitTypes, defaultVisitTypeName, encounterService,
+                                       $translate, visitService) {
     var self = this;
     self.visitTypes = visitTypes;
     self.defaultVisitTypeName = defaultVisitTypeName;
@@ -17,26 +18,13 @@ Bahmni.Common.VisitControl = function (visitTypes, defaultVisitTypeName, encount
         self.selectedVisitType = visitType;
     };
 
-    self.createVisit = function (patientUuid, encounter) {
-        var visitType = self.selectedVisitType || self.defaultVisitType;
-        var encounterTransaction = {
-            patientUuid: patientUuid,
-            visitTypeUuid: visitType.uuid,
-            locationUuid: encounter.locationUuid
-        };
-        if (encounter && encounter.encounterTypeUuid) {
-            encounterTransaction.encounterTypeUuid = encounter.encounterTypeUuid;
-        }
-        if (encounter && encounter.providers) {
-            encounterTransaction.providers = encounter.providers;
-        }
-        return encounterService.create(encounterTransaction);
-    };
 
-    self.createVisitOnly = function (patientUuid) {
+
+    self.createVisitOnly = function (patientUuid, visitLocationUuid) {
         var visitType = self.selectedVisitType || self.defaultVisitType;
-        var visitDetails = {patient: patientUuid, visitType: visitType.uuid};
+        var visitDetails = {patient: patientUuid, visitType: visitType.uuid, location: visitLocationUuid};
         return visitService.createVisit(visitDetails);
+
     }
 };
 

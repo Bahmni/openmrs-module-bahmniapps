@@ -1,8 +1,12 @@
 'use strict';
 
 angular.module('bahmni.registration')
-    .directive('patientAction', ['$window', '$location', '$state', 'spinner', '$rootScope', '$stateParams', '$bahmniCookieStore', 'appService', 'visitService', 'sessionService', 'encounterService', 'messagingService', '$translate', 'offlineService',
-        function ($window, $location, $state, spinner, $rootScope, $stateParams, $bahmniCookieStore, appService, visitService, sessionService, encounterService, messagingService, $translate, offlineService) {
+    .directive('patientAction', ['$window', '$location', '$state', 'spinner', '$rootScope', '$stateParams',
+        '$bahmniCookieStore', 'appService', 'visitService', 'sessionService', 'encounterService',
+        'messagingService', '$translate', 'offlineService',
+        function ($window, $location, $state, spinner, $rootScope, $stateParams,
+                  $bahmniCookieStore, appService, visitService, sessionService, encounterService,
+                  messagingService, $translate, offlineService) {
             var controller = function ($scope) {
                 var self = this;
                 var uuid = $stateParams.patientUuid;
@@ -46,8 +50,7 @@ angular.module('bahmni.registration')
 
                 $scope.visitControl = new Bahmni.Common.VisitControl(
                     $rootScope.regEncounterConfiguration.getVisitTypesAsArray(),
-                    defaultVisitType,
-                    encounterService, $translate, visitService
+                    defaultVisitType, encounterService, $translate, visitService
                 );
 
                 $scope.visitControl.onStartVisit = function () {
@@ -92,15 +95,15 @@ angular.module('bahmni.registration')
 
 
                 var createVisit = function (patientProfileData, forwardUrl) {
-                    spinner.forPromise($scope.visitControl.createVisitOnly(patientProfileData.patient.uuid).then(function () {
+                    spinner.forPromise($scope.visitControl.createVisitOnly(patientProfileData.patient.uuid, $rootScope.visitLocation).then(function () {
                         if (forwardUrl) {
                             $window.location.href = forwardUrl;
                         } else {
                             goToVisitPage(patientProfileData);
                         }
-                    }, function () {
+                    }), function () {
                         $state.go('patient.edit', {patientUuid: $scope.patient.uuid});
-                    }));
+                    });
                 };
 
                 init();
