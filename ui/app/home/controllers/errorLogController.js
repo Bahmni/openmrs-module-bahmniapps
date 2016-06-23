@@ -1,9 +1,10 @@
 'use strict';
 
 angular.module('bahmni.home')
-    .controller('ErrorLogController', ['$q', 'spinner', 'offlineService', 'offlineDbService', 'androidDbService', '$scope',
-        function ($q, spinner, offlineService, offlineDbService, androidDbService, $scope) {
+    .controller('ErrorLogController', ['$q', 'spinner', 'offlineService', 'offlineDbService', 'androidDbService', '$scope','$rootScope',
+        function ($q, spinner, offlineService, offlineDbService, androidDbService, $scope , $rootScope) {
             $scope.errorLogs = [];
+            $scope.showErrorLog = true;
             if (offlineService.isOfflineApp()) {
                 if (offlineService.isAndroidApp()) {
                     offlineDbService = androidDbService;
