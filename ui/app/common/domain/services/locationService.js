@@ -22,10 +22,17 @@ angular.module('bahmni.common.domain')
             return getByUuid(cookie.uuid);
         };
 
+        var getVisitLocation = function(locationUuid){
+            return $http.get(Bahmni.Common.Constants.bahmniVisitLocationUrl + "/" + locationUuid, {
+                headers: {"Accept": "text/plain"}
+            });
+        };
+
         return {
             getAllByTag: getAllByTag,
             getLoggedInLocation: getLoggedInLocation,
-            getByUuid: getByUuid
+            getByUuid: getByUuid,
+            getVisitLocation : getVisitLocation
         };
 
     }]);

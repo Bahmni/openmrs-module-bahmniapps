@@ -93,8 +93,14 @@ angular
                 }
             });
         $bahmniTranslateProvider.init({app: 'registration', shouldMerge: true});
-    }]).run(function ($rootScope, $templateCache, offlineService, schedulerService) {
+    }]).run(function ($rootScope, $templateCache, offlineService, schedulerService, $bahmniCookieStore, locationService) {
         //Disable caching view template partials
+
+        var loginLocationUuid = $bahmniCookieStore.get(Bahmni.Common.Constants.locationCookieName).uuid;
+        locationService.getVisitLocation(loginLocationUuid).then(function(response){
+            $rootScope.visitLocation = response.data;
+        });
+
         $rootScope.$on('$viewContentLoaded', function () {
             $templateCache.removeAll();
         });
