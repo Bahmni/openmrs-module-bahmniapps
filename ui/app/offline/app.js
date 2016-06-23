@@ -62,16 +62,8 @@ angular.module('bahmni.offline', ['ui.router',  'bahmni.common.uiHelper', 'bahmn
                     }
                 }).state('initSync', {
                     controller: 'InitSyncController',
-                    resolve: {
-                        offlinePush: function (offlinePush) {
-                            return offlinePush();
-                        },
-                        offlinePull: function (offlinePull, offlinePush) {
-                            return offlinePull(offlinePush).then(function(){}, function(error){
-                                console.log("Error in offline pull \n"+ error.config.url + " "+error.statusText);
-                            });
-                        }
-                    }
+                    url: '/initSync'
+
 
             }).state('device',
             {
