@@ -140,6 +140,7 @@ angular.module('bahmni.common.offline')
                         }
                         $rootScope.$broadcast("schedulerStage", null, true);
                         endSync(-1);
+                        return $q.reject("Sync failed");
                     });
                 };
 
