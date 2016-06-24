@@ -1,6 +1,9 @@
 .error-log-wrapper{
   table{
     table-layout: fixed;
+    tr{
+      background: #fff;
+    }
     th{
       &:nth-child(1){
         width: 20%;
@@ -15,18 +18,15 @@
     td{
       word-wrap: break-word;
       .stackTrace{
-        height:30px;
         overflow: hidden;
-        -webkit-transition: all 2s ease;
-        -moz-transition: all 2s ease;
-        transition: all 2s ease;
+        max-height: 30px;
         &.stackTraceMore{
-          height:auto;
           overflow: auto;
           padding-bottom: 15px;
-          -webkit-transition: all 2s ease;
-          -moz-transition: all 2s ease;
-          transition: all 2s ease;
+          max-height: 900px;
+          -webkit-transition: max-height 1.5s ease-in-out;
+          -moz-transition: max-height 1.5s ease-in-out;
+          transition: max-height 1.5s ease-in-out;
         }
       }
       .read-wrap{
