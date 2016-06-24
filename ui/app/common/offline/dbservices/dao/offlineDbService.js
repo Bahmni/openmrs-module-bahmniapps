@@ -208,6 +208,14 @@ angular.module('bahmni.common.offline')
             return errorLogDbService.insertLog(db, failedRequest, responseStatus, stackTrace);
         };
 
+        var getAllLogs = function () {
+            var deferred = $q.defer();
+            errorLogDbService.getLog(db).then(function(response){
+                deferred.resolve(response);
+            });
+            return deferred.promise;
+        };
+
 
         var getAllParentsInHierarchy = function(conceptName){
             var conceptNamesInHierarchy = [];
@@ -251,6 +259,7 @@ angular.module('bahmni.common.offline')
             updateParentJson: updateParentJson,
             getAllParentsInHierarchy: getAllParentsInHierarchy,
             insertLog: insertLog,
+            getAllLogs: getAllLogs,
             getPrescribedAndActiveDrugOrders: getPrescribedAndActiveDrugOrders
         }
     }]);

@@ -205,9 +205,9 @@ body{
       }
     }
     ul{
-      float:right;
+      //float:right;
       li{
-        margin:11px 15px 10px 0px;
+        //margin:11px 15px 10px 0px;
         display:inline-block;
         a{
           color: $white;
@@ -572,5 +572,11 @@ body{
     margin: 0;
   }
 
+}
+button.button-Errorlog{
+  color: $alert;
+  background: $alertBackground;
+  border-color: $alert;
+  margin-bottom: 10px;
 }
 
