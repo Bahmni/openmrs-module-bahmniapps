@@ -120,6 +120,18 @@
         position:relative;
         &.form .form-field .field-value input[type="text"]{
             padding-right: 22px;
+            &.order_search_desktop{
+                @media (max-width: 1024px) {
+                    display:none;
+                }
+            }
+            &.order_search_mobile{
+                display:none;
+                @media (max-width: 1024px) {
+                    display:block;
+                }
+            }
+
         }
         label.cross-button{
             color: #9D0101;
