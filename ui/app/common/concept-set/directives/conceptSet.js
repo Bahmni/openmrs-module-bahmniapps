@@ -167,11 +167,11 @@ angular.module('bahmni.common.conceptSet')
                 var contextChange = function () {
                     $scope.atLeastOneValueIsSet = $scope.rootObservation && $scope.rootObservation.atLeastOneValueSet();
                     $scope.conceptSetRequired = $scope.required ? $scope.required : true;
-                    var nodes = findInvalidNodes($scope.rootObservation.groupMembers);
+                    var nodes = findInvalidNodes($scope.rootObservation.groupMembers, $scope.rootObservation);
                     return {allow: !nodes.status, errorMessage: nodes.message};
                 }; //TODO: Write unit test for this function
 
-                var findInvalidNodes = function (members) {
+                var findInvalidNodes = function (members, parentNode) {
                     var errorMessage = null;
                     var status = members.some(function (childNode) {
                         if (childNode.voided) {
@@ -179,13 +179,13 @@ angular.module('bahmni.common.conceptSet')
                         }
                         var groupMembers = childNode.groupMembers || [];
                         for (var index in groupMembers) {
-                            var information = groupMembers[index].groupMembers && groupMembers[index].groupMembers.length ? findInvalidNodes(groupMembers[index].groupMembers) : validateChildNode(groupMembers[index]);
+                            var information = groupMembers[index].groupMembers && groupMembers[index].groupMembers.length ? findInvalidNodes(groupMembers[index].groupMembers, groupMembers[index]) : validateChildNode(groupMembers[index], childNode);
                             if (information.status) {
                                 errorMessage = information.message;
                                 return true;
                             }
                         }
-                        information = validateChildNode(childNode);
+                        information = validateChildNode(childNode, parentNode);
                         if (information.status) {
                             errorMessage = information.message;
                             return true;
@@ -194,7 +194,7 @@ angular.module('bahmni.common.conceptSet')
                     });
                     return {message: errorMessage, status: status};
                 };
-                var validateChildNode = function (childNode) {
+                var validateChildNode = function (childNode, parentNode) {
                     var errorMessage;
                     if (childNode.possibleAnswers && !childNode.possibleAnswers.length) {
                         if (typeof childNode.isValueInAbsoluteRange == 'function' && !childNode.isValueInAbsoluteRange()) {
@@ -207,9 +207,16 @@ angular.module('bahmni.common.conceptSet')
                                 errorMessage = "Please enter Integer value, decimal value is not allowed";
                                 return {message: errorMessage, status: true};
                             }
-                            if(!childNode.isValidNumericValue()){
-                                errorMessage = "Please enter Numeric values";
-                                return {message: errorMessage, status: true};
+                            if(parentNode){
+                                if(!childNode.isValidNumericValue() || !parentNode.isValidNumericValue()){
+                                    errorMessage = "Please enter Numeric values";
+                                    return {message: errorMessage, status: true};
+                                }
+                            }else {
+                                if(!childNode.isValidNumericValue()){
+                                    errorMessage = "Please enter Numeric values";
+                                    return {message: errorMessage, status: true};
+                                }
                             }
                         }
                     }
