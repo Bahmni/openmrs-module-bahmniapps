@@ -62,6 +62,9 @@ angular.module('bahmni.common.offline')
                         return readEvent(response.data, 0, levels);
                     }, function () {
                         endSync(-1);
+                        var deferrable = $q.defer();
+                        deferrable.reject();
+                        return deferrable.promise;
                     });
                 };
 
@@ -75,6 +78,9 @@ angular.module('bahmni.common.offline')
                         return readEvent(response.data, 0);
                     }, function () {
                         endSync(-1);
+                        var deferrable = $q.defer();
+                        deferrable.reject();
+                        return deferrable.promise;
                     });
                 };
 
@@ -88,6 +94,9 @@ angular.module('bahmni.common.offline')
                         return readEvent(response.data, 0);
                     }, function () {
                         endSync(-1);
+                        var deferrable = $q.defer();
+                        deferrable.reject();
+                        return deferrable.promise;
                     });
                 };
 
@@ -140,7 +149,9 @@ angular.module('bahmni.common.offline')
                         }
                         $rootScope.$broadcast("schedulerStage", null, true);
                         endSync(-1);
-                        return $q.reject("Sync failed");
+                        var deferrable = $q.defer();
+                        deferrable.reject();
+                        return deferrable.promise;
                     });
                 };
 
