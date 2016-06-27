@@ -47,7 +47,7 @@ angular.module('bahmni.common.offline')
                                     return readConfigData(modules, ++index);
                                 } else if(response.status == -1) {
                                     $rootScope.$broadcast("schedulerStage", null, true);
-                                    deferred.resolve({});
+                                    deferred.reject();
                                 } else {
                                     return readConfigData(modules, ++index);
                                 }

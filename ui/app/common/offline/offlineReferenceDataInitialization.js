@@ -60,14 +60,14 @@ angular.module('bahmni.common.offline')
                                 if (parseInt(response.status / 100) == 4) {
                                     offlineDbService.insertLog(response.config.url, response.status, response.data);
                                     $rootScope.$broadcast("schedulerStage", null, true);
-                                    deferred.resolve({});
+                                    deferred.reject({});
                                 } else if (parseInt(response.status / 100) == 5) {
                                     offlineDbService.insertLog(response.config.url, response.status, response.data);
-                                    deferred.resolve({"data": Bahmni.Common.Constants.offlineErrorMessages.openmrsServerError});
+                                    deferred.reject({"data": Bahmni.Common.Constants.offlineErrorMessages.openmrsServerError});
                                     $rootScope.$broadcast("schedulerStage", null, true);
                                 }
                                 else if (response.status == -1) {
-                                    deferred.resolve({"data": Bahmni.Common.Constants.offlineErrorMessages.networkError});
+                                    deferred.reject({"data": Bahmni.Common.Constants.offlineErrorMessages.networkError});
                                     $rootScope.$broadcast("schedulerStage", null, true);
                                 }
                                 else {
