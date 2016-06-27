@@ -71,18 +71,9 @@ Bahmni.ConceptSet.TabularObservations = function(obsGroups, parentObs, conceptUI
         return this.concept.dataType === "Numeric";
     };
     this.isValidNumericValue = function () {
-        //TODO : Suman: Hacky fix to check invalid number
         var element = document.getElementById(this.uniqueId);
-        if (this.value === "") {
-            if (element) {
-                return element.checkValidity();
-            } else {
-                if ((this.value === "" && this.__prevValue && (this.__prevValue.toString().length == 1 || (this.__prevValue.toString().indexOf(".") ===0 && this.__prevValue.toString().length==2)))) {
-                    return true;
-                }
-                return this.value !== "";
-            }
-
+        if (this.value === "" && element) {
+            return element.checkValidity();
         }
         return true;
     }
