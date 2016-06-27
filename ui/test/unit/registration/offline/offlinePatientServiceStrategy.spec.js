@@ -67,6 +67,7 @@ describe('PatientServiceStrategy test', function () {
             var event = {};
             event.url = Bahmni.Registration.Constants.baseOpenMRSRESTURL + "/bahmnicore/patientprofile/e34992ca-894f-4344-b4b3-54a4aa1e5558";
             event.patientUuid = "e34992ca-894f-4344-b4b3-54a4aa1e5558";
+            expect(data.data.patient.identifiers[0].identifierSourceUuid).toBe("81f27b48-8792-11e5-ade6-005056b07f03");
             expect(eventQueueMock.addToEventQueue).toHaveBeenCalledWith(event);
         }).catch(notifyError).finally(done);
     });
