@@ -226,7 +226,7 @@ angular.module('bahmni.common.offline')
 
             var getAllLogs = function () {
                 var value =  AndroidOfflineService.getAllLogs();
-                value = value !== undefined ? JSON.parse(value) : value;
+                value = _.isEmpty(value) ? [] : JSON.parse(value);
                 return $q.when(value);
             };
 
