@@ -887,6 +887,11 @@ h3 {
         box-shadow: none;
         border-bottom: none;
         top: 65px;
+        div.patient-info-fixed ul li.patient-name-image-container .patient-image[src*="blank-user"] {
+            visibility: hidden;
+
+        }
+
     }
     .dashboard-tabular-obs-section .tabular-obs table.tableAsColumn tr:first-child td{
         font-family: Arial, sans-serif !important;
