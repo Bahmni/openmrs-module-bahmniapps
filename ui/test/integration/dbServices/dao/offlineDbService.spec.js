@@ -365,7 +365,7 @@ describe('OfflineDbService ', function () {
             });
         });
 
-        it("should call insertLog with empty string, if either of auditInfo.creator, providers is not available", function (done) {
+        it("should call insertLog with empty string for provider, if either of auditInfo.creator, providers is not available", function (done) {
             var schemaBuilder = lf.schema.create('BahmniOfflineDb', 1);
             schemaBuilder.connect().then(function (db) {
                 offlineDbService.init(db);
@@ -373,7 +373,19 @@ describe('OfflineDbService ', function () {
                 var requestPayload = {patient: "patientPostData"};
                 offlineDbService.insertLog('failedRequestUrl', 500, 'stackTrace', requestPayload);
                 expect(errorLogDbService.insertLog.calls.count()).toBe(1);
-                expect(errorLogDbService.insertLog).toHaveBeenCalledWith(db, 'failedRequestUrl', 500, 'stackTrace', requestPayload, null);
+                expect(errorLogDbService.insertLog).toHaveBeenCalledWith(db, 'failedRequestUrl', 500, 'stackTrace', requestPayload, "");
+                done()
+            });
+        });
+
+        it("should call insertLog with empty string for requestPayload, if requestPayload is not available", function (done) {
+            var schemaBuilder = lf.schema.create('BahmniOfflineDb', 1);
+            schemaBuilder.connect().then(function (db) {
+                offlineDbService.init(db);
+
+                offlineDbService.insertLog('failedRequestUrl', 500, 'stackTrace');
+                expect(errorLogDbService.insertLog.calls.count()).toBe(1);
+                expect(errorLogDbService.insertLog).toHaveBeenCalledWith(db, 'failedRequestUrl', 500, 'stackTrace', "", "");
                 done()
             });
         });

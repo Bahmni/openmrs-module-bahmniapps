@@ -26,7 +26,9 @@ angular.module('bahmni.registration')
                 data.patient.person.birthtime = data.patient.person.birthtime ? moment(data.patient.person.birthtime).format("YYYY-MM-DDTHH:mm:ss.SSSZZ") : null;
                 data.patient.person.auditInfo = {dateCreated: moment(data.patient.person.personDateCreated).format() || moment().format()};
                 if ($rootScope.currentProvider) {
+                    data.patient.person.auditInfo = {};
                     data.patient.person.auditInfo.creator = $rootScope.currentProvider;
+                    data.patient.auditInfo = {};
                     data.patient.auditInfo.creator = $rootScope.currentProvider;
                 }
                 data.patient.person.personDateCreated = undefined;

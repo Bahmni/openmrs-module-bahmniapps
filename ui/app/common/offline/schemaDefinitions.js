@@ -375,10 +375,7 @@ Bahmni.Common.Offline.SchemaDefinitions = {
     ErrorLog: {
         tableName: 'error_log',
         columns: [
-            {
-                name: 'id',
-                type: 'INTEGER'
-            }, {
+             {
                 name: 'failedRequestUrl',
                 type: 'STRING'
             }, {

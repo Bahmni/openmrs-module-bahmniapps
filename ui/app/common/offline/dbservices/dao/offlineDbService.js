@@ -206,7 +206,8 @@ angular.module('bahmni.common.offline')
 
         var insertLog = function (failedRequest, responseStatus, stackTrace, requestPayload) {
             var provider = _.has(requestPayload, 'providers') ? requestPayload.providers[0] :
-                ( _.has(requestPayload, 'auditInfo.creator') ? requestPayload.auditInfo.creator : null);
+                ( _.has(requestPayload, 'auditInfo.creator') ? requestPayload.auditInfo.creator : "");
+            requestPayload = requestPayload ? requestPayload : "";
             return errorLogDbService.insertLog(db, failedRequest, responseStatus, stackTrace, requestPayload, provider);
         };
 
