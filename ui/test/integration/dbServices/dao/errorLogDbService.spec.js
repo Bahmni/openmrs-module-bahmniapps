@@ -6,7 +6,7 @@ describe('encounterDbService tests', function () {
     beforeEach(function () {
         module('bahmni.common.offline');
         schemaBuilder = lf.schema.create('ErrorLog', 2);
-        Bahmni.Tests.OfflineDbUtils.createTable(schemaBuilder, Bahmni.Common.Offline.SchemaDefinitions.ErrorLog, true);
+        Bahmni.Tests.OfflineDbUtils.createTable(schemaBuilder, Bahmni.Common.Offline.SchemaDefinitions.ErrorLog);
     });
 
     beforeEach(inject(['errorLogDbService', function (errorLogDbServiceInjected) {
