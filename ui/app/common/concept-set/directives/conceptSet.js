@@ -313,7 +313,8 @@ angular.module('bahmni.common.conceptSet')
                     }
                     if (obs.groupMembers) {
                         _.each(obs.groupMembers, function (groupMember) {
-                            setObservationState(groupMember, disable, error);
+                            //TODO : Hack to fix issue with formconditions on multiselect - Swathi
+                            groupMember && setObservationState(groupMember, disable, error);
                         });
                     }
                 };
