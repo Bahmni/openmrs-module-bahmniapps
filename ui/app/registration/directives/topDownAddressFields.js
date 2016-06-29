@@ -26,14 +26,14 @@ angular.module('bahmni.registration')
             return addressLevel.addressField;
         });
 
-        var populateSelectedAddressUuids = function(levelIndex) {
+        var populateSelectedAddressUuids = function (levelIndex) {
             if ($scope.addressLevels.length === 0)
                 return;
 
             var fieldName = $scope.addressLevels[levelIndex].addressField;
             var addressValue = $scope.address[fieldName];
             if (addressValue) {
-                addressHierarchyService.search(fieldName, addressValue).then(function(response) {
+                addressHierarchyService.search(fieldName, addressValue).then(function (response) {
                     var address = response.data[0];
                     if (address) {
                         selectedAddressUuids[fieldName] = address.uuid;
@@ -46,8 +46,8 @@ angular.module('bahmni.registration')
         };
 
         //wait for address to be resolved in edit patient scenario
-        var deregisterAddressWatch = $scope.$watch('address', function(newValue){
-            if(newValue !== undefined) {
+        var deregisterAddressWatch = $scope.$watch('address', function (newValue) {
+            if (newValue !== undefined) {
                 populateSelectedAddressUuids(0);
                 deregisterAddressWatch();
             }
@@ -84,7 +84,7 @@ angular.module('bahmni.registration')
         };
 
         $scope.isReadOnly = function (fieldName) {
-            if(!$scope.address) {
+            if (!$scope.address) {
                 return false;
             }
             var parentFieldName = $scope.findParentField(fieldName);
@@ -103,7 +103,7 @@ angular.module('bahmni.registration')
             return angular.element($("#" + parentId)).hasClass('illegalValue');
         };
 
-        var parentUuid = function(field) {
+        var parentUuid = function (field) {
             return selectedAddressUuids[$scope.findParentField(field)];
         };
 
@@ -119,15 +119,15 @@ angular.module('bahmni.registration')
             var childFields = addressLevelsNamesInDescendingOrder.slice(0, addressLevelsNamesInDescendingOrder.indexOf(fieldName));
             childFields.forEach(function (childField) {
                 if (!$scope.isFreeTextAddressField(childField)) {
-                    $scope.address[childField] = "";
+                    $scope.address[childField] = null;
                     selectedAddressUuids[childField] = null;
                     selectedUserGeneratedIds[childField] = null;
                 }
             });
-            if(!_.isEmpty($scope.address[fieldName])) {
-                $scope.$parent.patient.addressCode  = selectedUserGeneratedIds[fieldName];
-            }
-            else {
+            if (!_.isEmpty($scope.address[fieldName])) {
+                $scope.$parent.patient.addressCode = selectedUserGeneratedIds[fieldName];
+            } else {
+                $scope.address[fieldName] = null;
                 selectedUserGeneratedIds[fieldName] = null;
                 $scope.$parent.patient.addressCode = selectedUserGeneratedIds[$scope.findParentField(fieldName)];
             }

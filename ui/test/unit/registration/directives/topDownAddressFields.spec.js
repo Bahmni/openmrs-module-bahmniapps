@@ -58,6 +58,7 @@ describe('TopDownAddressFieldsDirectiveController', function () {
     });
 
     describe("Editing any auto complete field", function () {
+        beforeEach(setupController);
         it("should clear all other auto completed fields", function () {
             scope.address = {
                 address3: "address",
@@ -68,9 +69,22 @@ describe('TopDownAddressFieldsDirectiveController', function () {
 
             scope.clearFields("countyDistrict");
 
-            expect(scope.address.cityVillage).toBe("")
-            expect(scope.address.address3).toBe("")
+            expect(scope.address.cityVillage).toBe(null);
+            expect(scope.address.address3).toBe(null)
+        });
 
+        it("should update value of field on clear", function () {
+            scope.address = {
+                address3: "address",
+                countyDistrict: "district",
+                stateProvince: "state",
+                cityVillage: "village"
+            };
+            scope.address.countyDistrict = "";
+
+            scope.clearFields("countyDistrict");
+
+            expect(scope.address.countyDistrict).toBe(null);
         });
     });
 
