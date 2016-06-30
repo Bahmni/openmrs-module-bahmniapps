@@ -28,10 +28,15 @@ angular.module('bahmni.common.domain')
                 return getByUuid(cookie.uuid);
             };
 
+            var getVisitLocation = function(locationUuid){
+                return $q.when({})
+            };
+
             return {
                 getAllByTag: getAllByTag,
                 getLoggedInLocation: getLoggedInLocation,
-                getByUuid: getByUuid
+                getByUuid: getByUuid,
+                getVisitLocation : getVisitLocation
             };
 
         }]);
