@@ -33,6 +33,14 @@ describe("Search", function() {
 
             expect(search.searchResults.length).toBe(2);
 	    });
+		it('should not fail if user search by any special characters', function () {
+			search.updatePatientList(allActivePatients);
+			search.searchParameter = ")G@a(n$";
+
+			search.filterPatientsByIdentifier();
+
+			expect(search.searchResults.length).toBe(0);
+		})
 	});
 
 	describe("updateSearchResults", function() {

@@ -95,6 +95,9 @@ Bahmni.Common.PatientSearch.Search = function (searchTypes) {
     };
 
     var matchesId = function (patient) {
+        if(/^[a-zA-Z0-9]*$/.test(self.searchParameter) == false) {
+            return false;
+        }
         return patient.identifier.toLowerCase().search(self.searchParameter.toLowerCase()) !== -1;
     };
 
