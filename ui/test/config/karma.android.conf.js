@@ -9,6 +9,7 @@ module.exports = function (config) {
         files: [
             'app/components/q/q.js',
             'app/components/angular/angular.js',
+            'app/components/ngDialog/js/ngDialog.js',
             'app/components/angular-route/angular-route.js',
             'app/components/angular-sanitize/angular-sanitize.js',
             'app/components/jquery/jquery.js',
@@ -97,7 +98,9 @@ module.exports = function (config) {
 
             "app/common/util/dateTimeFormatter.js",
             "test/unit/common/util/dateTimeFormatter.spec.js",
-            'test/unit/**/offline/chrome/*.js'
+            'test/unit/**/offline/chrome/*.js',
+            'app/common/ui-helper/controllers/chromeAppUpdateController.js',
+            "test/unit/common/ui-helper/controllers/chromeAppUpdateController.spec.js"
         ],
         reporters: ['junit', 'progress', 'coverage'],
         preprocessors: {

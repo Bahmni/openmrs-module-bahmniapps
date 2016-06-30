@@ -23,7 +23,7 @@ describe('MultiStageWorker', function () {
 
     it("should be able to pause", function(done) {
         var stage1 = jasmine.createSpyObj("stage1", ["execute", "pause"]);
-        var stage2 = jasmine.createSpyObj("stage2", ["execute", "pause"]);
+        var stage2 = jasmine.createSpyObj("stage2", ["execute"]);
         stage1.execute.and.returnValue(Q.when({}));
         stage2.execute.and.returnValue(Q.when({}));
 

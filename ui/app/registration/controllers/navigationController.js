@@ -24,7 +24,6 @@ angular.module('bahmni.registration')
 
             $scope.sync = function() {
                 schedulerService.sync(Bahmni.Common.Constants.syncButtonConfiguration);
-
             };
 
             var cleanUpListenerSchedulerStage = $scope.$on("schedulerStage", function (event, stage, restartSync) {

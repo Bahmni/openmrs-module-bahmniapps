@@ -25,19 +25,6 @@ describe('ErrorLogController', function () {
 
     );
 
-    var DbServiceMockWithGetAllLogs = function (data) {
-        return {
-            getAllLogs: function () {
-                return {
-                    then: function (callback) {
-                        return callback(data);
-                    }
-                };
-            }
-
-        };
-    };
-
     var errorLogs = [
         {
             failedRequestUrl: '/home/index.html',

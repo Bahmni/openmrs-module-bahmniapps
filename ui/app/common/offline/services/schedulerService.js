@@ -1,3 +1,5 @@
+'use strict';
+
 angular.module('bahmni.common.offline')
     .service('schedulerService', ['offlineService','WorkerService','scheduledSync',
         function (offlineService, WorkerService, scheduledSync) {

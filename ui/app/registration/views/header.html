@@ -9,6 +9,10 @@
         <div class="reg-header-right fr">
             <div ui-view="headerExtension" class="print-action-items fl"></div>
 
+            <div ng-if="isOfflineApp" class="offline-sync fl" ng-controller="AppUpdateController">
+                <button class="btn" ng-if="isUpdateAvailable()" ng-click="update()">Update</button>
+            </div>
+
             <button class="btn offline-sync fl" ng-click="sync()" ng-show="isOfflineApp && !isSyncing ">
                 {{::'REGISTRATION_LABEL_SYNC' | translate}}
             </button>

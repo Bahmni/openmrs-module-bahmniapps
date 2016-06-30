@@ -37,7 +37,7 @@ Bahmni.Common.Offline.MultiStageWorker = function($q) {
 
     this.pause = function() {
         self.paused = true;
-        if(this.currentlyExecutingStage != null) {
+        if(this.currentlyExecutingStage !== null && this.currentlyExecutingStage.pause) {
             this.currentlyExecutingStage.pause();
         }
     }

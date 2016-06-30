@@ -10,6 +10,10 @@
                         <button ng-click="popUpHandler()">{{ getTitle() }}</button>
                     </div>
                 </div>
+                <div ng-if="isOfflineApp" class="offline-sync fl" ng-controller="AppUpdateController">
+                    <button class="btn" ng-if="isUpdateAvailable()" ng-click="update()">Update</button>
+                </div>
+
                 <button class="btn offline-sync fl" ng-click="sync()"  ng-show="isOfflineApp && !isSyncing ">
                     {{::'HEADER_LABEL_SYNC_KEY' | translate}}
                 </button>
