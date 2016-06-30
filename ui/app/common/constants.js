@@ -230,6 +230,7 @@ Bahmni.Common = Bahmni.Common || {};
         addressEventLogServiceUrl : hostUrl + "/event-log-service/rest/eventlog/getAddressHierarchyEvents",
         eventLogServiceUrl : hostUrl + "/event-log-service/rest/eventlog/events",
         eventLogServiceConceptUrl : hostUrl + "/event-log-service/rest/eventlog/concepts",
+        offlineMetadataUrl: hostUrl+"/offlineMetadata.json",
         faviconUrl : hostUrl + "/bahmni/favicon.ico",
         platformType: {
             chrome: 'chrome',

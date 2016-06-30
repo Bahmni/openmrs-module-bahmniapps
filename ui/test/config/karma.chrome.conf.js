@@ -9,6 +9,7 @@ module.exports = function (config) {
         files: [
             'app/components/q/q.js',
             'app/components/angular/angular.js',
+            'app/components/ngDialog/js/ngDialog.js',
             'app/components/angular-route/angular-route.js',
             'app/components/angular-sanitize/angular-sanitize.js',
             'app/components/jquery/jquery.js',
@@ -77,6 +78,8 @@ module.exports = function (config) {
             'app/common/domain/services/diagnosisService.js',
             'app/common/domain/services/visitService.js',
             'app/common/domain/services/observationsService.js',
+            'app/common/ui-helper/controllers/androidAppUpdateController.js',
+            "test/unit/common/ui-helper/controllers/androidAppUpdateController.spec.js",
             'test/unit/common/displaycontrols/obsVsObsFlowSheet/directives/obsToObsFlowSheet.spec.js',
             'app/clinical/dashboard/services/diseaseTemplateService.js',
 

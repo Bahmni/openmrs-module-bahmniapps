@@ -9,6 +9,9 @@
         <meta name="apple-mobile-web-app-capable" content="yes" />
         <link rel="shortcut icon" type="image/x-icon" href="../favicon.ico">
         <link rel="stylesheet" href="../lib/jquery/jquery-ui-1.10.4.custom.min.css">
+        <link rel="stylesheet" href="../components/ngDialog/css/ngDialog.min.css"/>
+        <link rel="stylesheet" href="../components/ngDialog/css/ngDialog-theme-default.min.css"/>
+        <link rel="stylesheet" href="../components/ngDialog/css/ngDialog-theme-plain.min.css"/>
 
         <!-- build:css home.min.css -->
         <link rel="stylesheet" href="../styles/home.css"/>
@@ -40,6 +43,8 @@
         <script src="../components/angular-translate-handler-log/angular-translate-handler-log.min.js"></script>
         <script src="../components/lovefield/dist/lovefield.min.js"></script>
         <script src="../components/moment/min/moment.min.js"></script>
+        <script src="../components/ngDialog/js/ngDialog.min.js"></script>
+
 
         <!-- build:js ../common.offline.min.js -->
         <script src="../lib/angular-workers/dist/angular-workers.js"></script>
@@ -57,6 +62,7 @@
         <script src="../common/offline/services/eventLogService.js"></script>
         <script src="../common/offline/services/offlineSyncService.js"></script>
         <script src="../common/offline/dbservices/dao/androidDbService.js"></script>
+        <script src="../common/offline/services/appUpdateService.js"></script>
         <script src="../common/offline/dbservices/dao/offlineSearchDbService.js"></script>
         <script src="../common/offline/dbservices/dao/offlineDbService.js"></script>
         <script src="../common/offline/dbservices/dao/patientAddressDbService.js"></script>
@@ -83,6 +89,8 @@
         <script src="../common/offline/offlinePull.js"></script>
         <script src="../common/offline/scheduler/MultiStageWorker.js"></script>
         <script src="../common/offline/services/schedulerService.js"></script>
+        <script src="../common/offline/services/chrome/chromeAppInfoStrategy.js"></script>
+
         <!-- endbuild -->
 
 
@@ -124,8 +132,6 @@
         <script src="../common/ui-helper/directives/toggle.js"></script>
 
 
-
-
         <script src="../common/logging/init.js"></script>
         <script src="../common/logging/exceptionHandler.js"></script>
 
@@ -144,6 +150,8 @@
         <script src="../common/offline/scheduler/eventQueue.js"></script>
         <script src="../common/offline/offlinePush.js"></script>
         <script src="../common/offline/services/schedulerService.js"></script>
+        <!--<script src="../common/ui-helper/controllers/chromeAppUpdateController.js"></script>-->
+
         <!-- endbuild -->
 
 
@@ -179,6 +187,8 @@
         <!--<script src="../common/domain/offline/chrome/chromeConfigurationService.js"></script>-->
         <!--<script src="../common/app-framework/offline/chrome/chromeLoadConfigService.js"></script>-->
         <!--<script src="../common/logging/offline/chromeLoggingService.js"></script>-->
+        <!--<script src="../common/offline/services/chrome/chromeAppInfoStrategy.js"></script>-->
+        <!--<script src="../common/ui-helper/controllers/chromeAppUpdateController.js"></script>-->
         <!-- endcomments -->
         <!-- endbuild -->
         <!-- @endif -->
@@ -192,6 +202,8 @@
         <!--<script src="../common/domain/offline/android/androidConfigurationService.js"></script>-->
         <!--<script src="../common/app-framework/offline/android/androidLoadConfigService.js"></script>-->
         <!--<script src="../common/logging/offline/androidLoggingService.js"></script>-->
+        <!--<script src="../common/offline/services/android/androidAppInfoStrategy.js"></script>-->
+        <!--<script src="../common/ui-helper/controllers/androidAppUpdateController.js"></script>-->
         <!-- endcomments -->
         <!-- endbuild -->
         <!-- @endif -->

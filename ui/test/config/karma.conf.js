@@ -10,6 +10,7 @@ module.exports = function (config) {
             {pattern: 'test/data/*.json', watched: true, served: true, included: false},
             'app/components/q/q.js',
             'app/components/angular/angular.js',
+            'app/components/ngDialog/js/ngDialog.js',
             'app/components/angular-route/angular-route.js',
             'app/components/angular-sanitize/angular-sanitize.js',
             'app/components/jquery/jquery.js',
