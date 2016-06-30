@@ -50,6 +50,7 @@ describe('PatientCommonController', function () {
 
     });
 
+
     it("should make calls for reason for death global property and concept sets", function () {
         $httpBackend.expectGET(Bahmni.Common.Constants.globalPropertyUrl);
         $httpBackend.expectGET(Bahmni.Common.Constants.conceptUrl);
@@ -74,5 +75,31 @@ describe('PatientCommonController', function () {
         expect(scope.showCasteSameAsLastName()).toBeFalsy();
     });
 
+    it("showBirthTime should be true by default", function () {
+        expect(scope.showBirthTime).toBe(true);
+    });
+
+    it("showBirthTime should be false if set false", function () {
+
+        appService.getAppDescriptor = function() {
+            return {
+                getConfigValue: function(config) {
+                    if (config == "showBirthTime") {
+                        return false;
+                    }
+                }
+            };
+        };
+
+        $aController('PatientCommonController', {
+            $scope: scope,
+            $rootScope: rootScope,
+            http: $httpBackend,
+            patientAttributeService: patientAttributeService,
+            spinner: spinner,
+            appService: appService
+        });
+        expect(scope.showBirthTime).toBe(false);
+    });
 
 });
