@@ -23,7 +23,7 @@ angular.module('bahmni.common.displaycontrol.navigationlinks')
                 {
                     "name": "inpatient",
                     "translationKey":"PATIENT_ADT_PAGE_KEY",
-                    "url": "../adt/#/patient/{{patientUuid}}/visit/{{visitUuid}}/"
+                    "url": "../adt/#/patient/{{patientUuid}}/visit//"
                 },
                 {
                     "name" :"enrolment",
