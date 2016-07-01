@@ -1,6 +1,6 @@
 'use strict';
 
-ddescribe('AppUpdateService', function () {
+describe('AppUpdateService', function () {
 
     var appUpdateService, httpBackend, mockAppInfoStrategy;
     beforeEach(function () {
