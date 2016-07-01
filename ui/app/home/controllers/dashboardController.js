@@ -73,11 +73,17 @@ angular.module('bahmni.home')
             var updateSyncStatusMessageBasedOnQueuesCount = function() {
                  getErrorCount().then(function (errorCount) {
                     if (errorCount) {
-                        $scope.syncStatusMessage = "Sync Failed, Press sync button to try again";
+                        $scope.syncStatusMessage = Bahmni.Common.Constants.syncStatusMessages.syncFailed;
                     }
                     else {
                         getEventCount().then(function (eventCount) {
-                            $scope.syncStatusMessage = eventCount ? "Sync Pending, Press Sync button to Sync" : "Data Synced Successfully";
+                            function updateLastSyncTimeOnSuccessfullSyncAnReturnSuccessMessage() {
+                                offlineService.setItem('lastSyncTime', new Date());
+                                getLastSyncTime();
+                                return Bahmni.Common.Constants.syncStatusMessages.syncSuccess;
+                            }
+
+                            $scope.syncStatusMessage = eventCount ? Bahmni.Common.Constants.syncStatusMessages.syncPending : updateLastSyncTimeOnSuccessfullSyncAnReturnSuccessMessage();
                         });
                     }
                 });

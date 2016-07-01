@@ -31,7 +31,13 @@ Bahmni.Common = Bahmni.Common || {};
         openmrsServerError:"OpenMRS is down and the device not able to communicate to the server. Please make sure the server is up before Syncing the device",
         openmrsServerDownError:"OpenMRS is down and the device not able to communicate to the server. Please ensure the server is up for the first time login and setup.",
         networkErrorForFirstTimeLogin: "The device is not connected to the internet. Please ensure minimal connectivity for the first time login and setup."
-    }
+    };
+
+    var syncStatusMessages = {
+        syncFailed: "Sync Failed, Press sync button to try again",
+        syncSuccess: "Data Synced Successfully",
+        syncPending: "Sync Pending, Press Sync button to Sync"
+    };
 
 
     var representation = "custom:(uuid,name,names,conceptClass," +
@@ -253,6 +259,7 @@ Bahmni.Common = Bahmni.Common || {};
         newOfflineVisitUuid: "newOfflineVisitUuid",
         offlineErrorMessages: offlineErrorMessages,
         syncButtonConfiguration:syncButtonConfiguration,
+        syncStatusMessages: syncStatusMessages,
         uuidRegex: "[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}",
         offlineBahmniEncounterUrl: "/openmrs/ws/rest/v1/bahmnicore/bahmniencounter/"
     };
