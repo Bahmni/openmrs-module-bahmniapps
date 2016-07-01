@@ -325,9 +325,10 @@
             white-space: nowrap;
             text-overflow: ellipsis;
             overflow: hidden;
-            width:150px;
+            width:130px;
             display: inline-block;
             text-align: right;
+            padding-right: 10px;
         }
         .provider-date{
             width:120px;
@@ -338,6 +339,7 @@
     .fa-tasks{
         color: $clinicalCurrentVist;
         visibility: hidden;
+        margin-top: -0.1em;
         &.visible-true{
             visibility: visible;
         }
