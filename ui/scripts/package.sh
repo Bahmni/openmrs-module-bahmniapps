@@ -13,12 +13,13 @@ rm -rf $ROOT_DIR/target/${ZIP_FILE_NAME}*.zip
 npm install
 bower install
 
-pids=$(pgrep Xvfb)
-if [ -n "$pids" ]; then
+if [ -z $(pgrep Xvfb) ]; then
     export DISPLAY=:99
     Xvfb :99 &
+    XVFB_PID=$!
+    echo "Starting Xvfb process $XVFB_PID"
 else
-    echo "Xvfb running"
+    echo "Xvfb already running"
 fi
 
 grunt
@@ -31,3 +32,9 @@ cd $ROOT_DIR/dist && zip -r ../target/${ZIP_FILE_NAME}_chrome.zip *
 cd ..
 grunt android
 cd $ROOT_DIR/dist && zip -r ../target/${ZIP_FILE_NAME}_android.zip *
+
+if [ -n $XVFB_PID ]; then
+    echo "Killing Xvfb process $XVFB_PID"
+    kill $XVFB_PID
+fi
+
