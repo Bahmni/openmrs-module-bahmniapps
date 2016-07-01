@@ -176,7 +176,49 @@ describe("Authentication", function () {
             expect($bahmniCookieStore.remove).toHaveBeenCalledWith(Bahmni.Common.Constants.locationCookieName);
         }]));
 
+        it("should show login page if the user is locked out after too may invalid OTP attempts", inject(['sessionService', '$rootScope', '$http',function (sessionService, $rootScope, $http) {
+            var mockOfflineService = jasmine.createSpyObj('offlineService',['setPlatformCookie', 'getAppPlatform','isOfflineApp', 'getItem']);
+            mockOfflineService.isOfflineApp.and.returnValue(true);
+            var userInfoFromLocalStorage = undefined;
+            mockOfflineService.getItem.and.returnValue(userInfoFromLocalStorage);
 
+            var deferrable = jasmine.createSpyObj('deferrable', ['reject', 'resolve']);
+            deferrable.promise = {
+                then: function (callback) {
+                    callback({authenticated: true})
+                }
+            };
+
+            $q.defer.and.returnValue(deferrable);
+
+            var fakeHttpPromise = {
+                error: function(callback) {
+                    callback("Error")
+                },
+                success: function(callback){
+                    callback();
+                    return {
+                        error: function(callback) {
+                            callback("Error")
+                        },
+                        success: function(callback){
+                            callback("Sucess")
+                        }
+                    };
+                }
+            };
+
+            var fakeHttpGetPromise = {
+                then: function(success, failure) {
+                    failure({"status" : 429});
+                }
+            };
+            spyOn($http, 'delete').and.returnValue(fakeHttpPromise);
+            spyOn($http, 'get').and.returnValue(fakeHttpGetPromise);
+
+            sessionService.loginUser("userName", "password", "location", "123456");
+            expect(deferrable.reject).toHaveBeenCalledWith("LOGIN_LABEL_USER_LOCKED_OUT");
+        }]));
     });
 
 
