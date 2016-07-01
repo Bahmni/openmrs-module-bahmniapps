@@ -26,7 +26,7 @@ describe('dashboardController', function () {
         appServiceMock.getAppDescriptor.and.returnValue({
             getExtensions: function () { return {} }
         });
-        offlineService = jasmine.createSpyObj('offlineService', ['isOfflineApp', 'getItem']);
+        offlineService = jasmine.createSpyObj('offlineService', ['isOfflineApp', 'getItem', 'setItem']);
         schedulerService = jasmine.createSpyObj('schedulerService', ['sync', 'stopSync']);
         eventQueue = jasmine.createSpyObj('eventQueue', ['getCount', 'getErrorCount']);
 
@@ -172,4 +172,16 @@ describe('dashboardController', function () {
         expect(scopeMock.syncStatusMessage).toBe("Sync in Progress...");
     });
 
+    it("should set the syncStatusMessage to Data Synced Successfully and lastSyncTime to current time. OfflineService getItem called 3 times for pageLoad, onSyncButtonClick, onEachSuccessful sync", function () {
+        eventQueue.getErrorCount.and.returnValue(specUtil.simplePromise(0));
+        eventQueue.getCount.and.returnValue(specUtil.simplePromise(0));
+
+        scopeMock.isSyncing = false;
+        scopeMock.$digest();
+
+        expect(offlineService.getItem).toHaveBeenCalledWith("lastSyncTime");
+        expect(offlineService.getItem.calls.count()).toBe(3);
+        expect(offlineService.setItem).toHaveBeenCalled();
+        expect(scopeMock.syncStatusMessage).toBe("Data Synced Successfully");
+    });
 });
