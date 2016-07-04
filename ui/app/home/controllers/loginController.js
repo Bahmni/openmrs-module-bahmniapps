@@ -93,7 +93,7 @@ angular.module('bahmni.home')
                             delete $scope.loginInfo.otp;
                             delete $scope.loginInfo.username;
                             delete $scope.loginInfo.password;
-                        } else if (error == 'LOGIN_LABEL_WRONG_OTP_MESSAGE_KEY') {
+                        } else if (error == 'LOGIN_LABEL_WRONG_OTP_MESSAGE_KEY' || error == 'LOGIN_LABEL_OTP_EXPIRED') {
                             delete $scope.loginInfo.otp;
                         }
                         deferrable.reject(error);
