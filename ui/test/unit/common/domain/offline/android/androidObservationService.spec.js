@@ -116,14 +116,15 @@ describe('androidObservationService', function () {
         });
     });
 
-    it("should getAllParentsInHierarchy for a given child conceptName", function(){
+    it("should getAllParentsInHierarchy for a given child conceptName", function(done){
         var conceptName = "Oral antibiotics given";
-        var response = {"data": ["Child Health", "Pneumonia Information", "Oral antibiotics given"]};
+        var response = ["Child Health", "Pneumonia Information", "Oral antibiotics given"];
         spyOn(androidDbService, 'getAllParentsInHierarchy').and.returnValue(specUtil.respondWithPromise($q, response));
         observationsServiceStrategy.getAllParentsInHierarchy(conceptName).then(function (response) {
             expect(androidDbService.getAllParentsInHierarchy).toHaveBeenCalledWith(conceptName);
-            expect(response.data.length).toBe(1);
-            expect(response.data).toBe(["Child Health", "Pneumonia Information", "Oral antibiotics given"]);
+            expect(response.data.length).toBe(3);
+            expect(response.data).toEqual(["Child Health", "Pneumonia Information", "Oral antibiotics given"]);
+            done();
         })
     });
 
