@@ -30,6 +30,7 @@ angular.module('bahmni.common.uiHelper')
         };
 
         var print = function (templateUrl, data) {
+            $rootScope.isBeingPrinted = true;
             $http.get(templateUrl).success(function(template){
                 var printScope = $rootScope.$new()
                 angular.extend(printScope, data);
