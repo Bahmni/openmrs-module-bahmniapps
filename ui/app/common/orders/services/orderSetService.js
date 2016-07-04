@@ -77,7 +77,7 @@ angular.module('bahmni.common.orders')
                     headers: {"Accept": "application/json", "Content-Type": "application/json"}
                 }).then(function (response) {
                     return {
-                        dose: response.data.value,
+                        dose: _.round(response.data.value),
                         doseUnit: response.data.doseUnit
                     };
                 });
@@ -88,6 +88,5 @@ angular.module('bahmni.common.orders')
                 doseUnit: doseUnit
             });
             return deferred.promise;
-
         };
     }]);
