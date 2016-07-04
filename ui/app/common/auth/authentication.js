@@ -60,7 +60,7 @@ angular.module('authentication')
                     if(response.status == 401){
                         deferrable.reject('LOGIN_LABEL_INVALID_OTP_MESSAGE_KEY');
                     } else if (response.status == 429) { // Too many requests
-                        deferrable.reject('LOGIN_LABEL_USER_LOCKED_OUT');
+                        deferrable.reject('LOGIN_LABEL_MAX_FAILED_ATTEMPTS');
                     }
                     if(offlineApp && offlineService.getItem(authenticationResponse)){
                         deferrable.resolve(offlineService.getItem(authenticationResponse));
