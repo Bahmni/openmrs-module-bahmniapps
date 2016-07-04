@@ -11,8 +11,9 @@ angular.module('bahmni.clinical').controller('ConsultationController',
             $scope.stateChange = function(){
                 return $state.current.name === 'patient.dashboard.show'
             };
+            $scope.showComment=true;
 
-            $scope.visitHistory = visitHistory;
+                $scope.visitHistory = visitHistory;
             $scope.consultationBoardLink = clinicalAppConfigService.getConsultationBoardLink();
             $scope.showControlPanel = false;
             $scope.clinicalDashboardConfig = clinicalDashboardConfig;
