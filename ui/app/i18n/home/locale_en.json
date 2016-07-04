@@ -7,7 +7,7 @@
     "LOGIN_LABEL_PASSWORD_KEY": "Password",
     "LOGIN_LABEL_LOCATION_KEY": "Location",
     "LOGIN_LABEL_LOGIN_ERROR_MESSAGE_KEY": "You are not authenticated or your session expired. Please login.",
-    "LOGIN_LABEL_INVALID_OTP_MESSAGE_KEY": "Invalid OTP, Please enter a valid OTP.",
+    "LOGIN_LABEL_INVALID_OTP_MESSAGE_KEY": "Wrong OTP entered. Please enter a valid OTP.",
     "LOGIN_MESSAGE_ENTER_USERNAME_KEY": "Enter your username",
     "LOGIN_MESSAGE_ENTER_PASSWORD_KEY": "Enter your password",
     "LOGIN_LABEL_SELECT_LOCATION_KEY": "Select Location",
