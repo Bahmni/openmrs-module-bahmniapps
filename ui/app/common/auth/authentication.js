@@ -59,7 +59,10 @@ angular.module('authentication')
                 }, function(response){
                     if(response.status == 401){
                         deferrable.reject('LOGIN_LABEL_WRONG_OTP_MESSAGE_KEY');
-                    } else if (response.status == 429) { // Too many requests
+                    } else if (response.status == 410) {
+                        deferrable.reject('LOGIN_LABEL_OTP_EXPIRED')
+                    }
+                    else if (response.status == 429) { // Too many requests
                         deferrable.reject('LOGIN_LABEL_MAX_FAILED_ATTEMPTS');
                     }
                     if(offlineApp && offlineService.getItem(authenticationResponse)){
