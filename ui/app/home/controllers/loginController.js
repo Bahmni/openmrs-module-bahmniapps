@@ -91,6 +91,10 @@ angular.module('bahmni.home')
                         if (error === 'LOGIN_LABEL_MAX_FAILED_ATTEMPTS') {
                             $scope.showOTP = false;
                             delete $scope.loginInfo.otp;
+                            delete $scope.loginInfo.username;
+                            delete $scope.loginInfo.password;
+                        } else if (error == 'LOGIN_LABEL_WRONG_OTP_MESSAGE_KEY') {
+                            delete $scope.loginInfo.otp;
                         }
                         deferrable.reject(error);
                     }
