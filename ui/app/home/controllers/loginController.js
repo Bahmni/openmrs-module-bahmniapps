@@ -88,7 +88,7 @@ angular.module('bahmni.home')
                     },
                     function (error) {
                         $scope.errorMessageTranslateKey = error;
-                        if (error === 'LOGIN_LABEL_USER_LOCKED_OUT') {
+                        if (error === 'LOGIN_LABEL_MAX_FAILED_ATTEMPTS') {
                             $scope.showOTP = false;
                             delete $scope.loginInfo.otp;
                         }

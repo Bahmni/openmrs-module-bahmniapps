@@ -217,7 +217,7 @@ describe("Authentication", function () {
             spyOn($http, 'get').and.returnValue(fakeHttpGetPromise);
 
             sessionService.loginUser("userName", "password", "location", "123456");
-            expect(deferrable.reject).toHaveBeenCalledWith("LOGIN_LABEL_USER_LOCKED_OUT");
+            expect(deferrable.reject).toHaveBeenCalledWith("LOGIN_LABEL_MAX_FAILED_ATTEMPTS");
         }]));
     });
 
