@@ -76,7 +76,7 @@
                 <div class="table-body">
                     <div class="row diagnosis-row"
                          ng-repeat="diagnosis in consultation.savedDiagnosesFromCurrentEncounter | primaryDiagnosisFirst">
-                        <div class="view-past row-click" toggle="diagnosis.showComment">
+                        <div class="view-past row-click">
                             <div class="col col1">
                                 <span class="diagnosis-name" ng-class="{'ruled-out': diagnosis.diagnosisStatus}">{{diagnosis.getDisplayName()}}</span>
                             </div>
@@ -103,10 +103,10 @@
                             <div class="col col4">
                                 <i ng-show="diagnosis.revised" class="fa fa-ok fl"></i>
                                 <button class="toggle fr" ng-if="diagnosis.comments"
-                                        ng-click="diagnosis.showComment = !diagnosis.showComment"
+                                        toggle="diagnosis.showComment"
                                         ng-class="{'has-notes': diagnosis.comments}">
-                                    <i class="fa fa-plus-circle" ng-hide="diagnosis.showComment"></i>
-                                    <i class="fa fa-minus-circle" ng-show="diagnosis.showComment"></i>
+                                    <i class="fa fa-plus-circle"></i>
+                                    <i class="fa fa-minus-circle"></i>
                                 </button>
                             </div>
                         </div>

@@ -37,3 +37,19 @@
         }
     }
 }
+
+
+button.toggle{
+    .fa-minus-circle{
+        display: none !important;
+    }
+    &.active{
+        background: none !important;
+        .fa-minus-circle{
+            display: block !important;
+        }
+        .fa-plus-circle{
+            display: none !important;
+        }
+    }
+}
