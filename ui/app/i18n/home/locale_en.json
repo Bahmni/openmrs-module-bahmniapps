@@ -18,5 +18,5 @@
     "MESSAGE_DIALOG_OPTION_OKAY": "OK",
     "MESSAGE_START_OPENMRS": "The OpenMRS service is currently unavailable. Please check if the service is started and refresh the page once it is up.",
     "LOGIN_LABEL_MAX_FAILED_ATTEMPTS" : "Number of wrong OTP attempts exceeded. Please login again.",
-    "LOGIN_LABEL_OTP_EXPIRED" : "Your OTP is expired. Click on Resend to get a new OTP."
+    "LOGIN_LABEL_OTP_EXPIRED" : "Your OTP is expired. Please login again."
 }
