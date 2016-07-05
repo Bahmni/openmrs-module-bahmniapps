@@ -25,8 +25,7 @@
                                 </label>
                             </div>
                             <div class="field-value">
-                                <input ng-class="{'illegalValue': newSpecimen.isDateCollectedDirty()}" id="sample-date"  date-converter type="date" max="{{::today}}" ng-model="newSpecimen.dateCollected"
-                                       required="required">
+                                <input ng-class="{'illegalValue': newSpecimen.isDateCollectedDirty() ,'illegalvalue' : !observation.isValid(atLeastOneValueIsSet, conceptSetRequired) }" id="sample-date"  date-converter type="date" max="{{::today}}" ng-model="newSpecimen.dateCollected">
                             </div>
                         </article>
                     </section>
