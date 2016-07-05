@@ -1,10 +1,11 @@
 describe('Order Set Service', function () {
-  var orderSetService, mockHttp;
+  var orderSetService, mockHttp, $q=Q;
 
   beforeEach(module('bahmni.common.orders'));
   beforeEach(module(function ($provide) {
     mockHttp = jasmine.createSpyObj('$http', ['get']);
     $provide.value('$http', mockHttp);
+    $provide.value('$q', $q);
   }));
 
   beforeEach(inject(['orderSetService',
@@ -22,8 +23,15 @@ describe('Order Set Service', function () {
 
     orderSetService.getCalculatedDose('somePatientUuid', 1, 'mg/m2').then(function (response) {
       expect(response.data).toEqual({ dose: 12, doseUnit: 'mg' });
-      done();
     });
     expect(mockHttp.get).toHaveBeenCalled();
+    done();
+  });
+
+  it('getCalculatedDose should not round off the dose for non special dose unit', function (done) {
+    orderSetService.getCalculatedDose('somePatientUuid', 12.23, 'ml').then(function (response) {
+      expect(response).toEqual({ dose: 12.23, doseUnit: 'ml' });
+      done();
+    });
   });
 });
