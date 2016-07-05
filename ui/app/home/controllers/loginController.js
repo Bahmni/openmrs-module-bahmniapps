@@ -88,12 +88,12 @@ angular.module('bahmni.home')
                     },
                     function (error) {
                         $scope.errorMessageTranslateKey = error;
-                        if (error === 'LOGIN_LABEL_MAX_FAILED_ATTEMPTS') {
+                        if (error === 'LOGIN_LABEL_MAX_FAILED_ATTEMPTS' || error == 'LOGIN_LABEL_OTP_EXPIRED') {
                             $scope.showOTP = false;
                             delete $scope.loginInfo.otp;
                             delete $scope.loginInfo.username;
                             delete $scope.loginInfo.password;
-                        } else if (error == 'LOGIN_LABEL_WRONG_OTP_MESSAGE_KEY' || error == 'LOGIN_LABEL_OTP_EXPIRED') {
+                        } else if (error == 'LOGIN_LABEL_WRONG_OTP_MESSAGE_KEY') {
                             delete $scope.loginInfo.otp;
                         }
                         deferrable.reject(error);
