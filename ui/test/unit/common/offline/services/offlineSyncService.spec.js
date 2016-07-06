@@ -1,6 +1,6 @@
 'use strict';
 
-var $scope, offlineDbService, eventLogService, offlineSyncService, offlineService, configurationService;
+var $scope, offlineDbService, eventLogService, offlineSyncService, offlineService, configurationService,loggingService;
 
 describe('OfflineSyncService', function () {
     var patient, mappedPatient, encounter, concept, error_log;
@@ -190,15 +190,22 @@ describe('OfflineSyncService', function () {
                         return 202020;
                     }
                 });
+
+                $provide.value('loggingService', {
+                    logSyncError: function(errorUrl, status, stackTrace, payload) {
+                        return {};
+                    }
+                });
             });
         });
 
-        beforeEach(inject(['offlineSyncService', 'eventLogService', 'offlineDbService', 'configurationService', '$httpBackend', '$http', '$rootScope',
-            function (offlineSyncServiceInjected, eventLogServiceInjected, offlineDbServiceInjected, configurationServiceInjected, _$httpBackend_, http, rootScope) {
+        beforeEach(inject(['offlineSyncService', 'eventLogService', 'offlineDbService', 'configurationService', '$httpBackend', '$http', '$rootScope','loggingService',
+            function (offlineSyncServiceInjected, eventLogServiceInjected, offlineDbServiceInjected, configurationServiceInjected, _$httpBackend_, http, rootScope, loggingServiceInjected) {
             offlineSyncService = offlineSyncServiceInjected;
             eventLogService = eventLogServiceInjected;
             offlineDbService = offlineDbServiceInjected;
             configurationService = configurationServiceInjected;
+            loggingService = loggingServiceInjected;
             httpBackend = _$httpBackend_;
             $http = http;
             $rootScope = rootScope;
@@ -348,13 +355,14 @@ describe('OfflineSyncService', function () {
         });
 
         it('should insert log in case of error in response and should stop syncing further', function () {
+
             spyOn(offlineDbService, 'getMarker').and.callThrough();
             spyOn(eventLogService, 'getConceptEventsFor').and.callThrough();
             spyOn($rootScope, '$broadcast');
             spyOn(eventLogService, 'getDataForUrl').and.callFake(function(){
                 return $http.get("some url");
             });
-            spyOn(offlineDbService, 'insertLog').and.callThrough();
+            spyOn(loggingService, 'logSyncError').and.callThrough();
             httpBackend.expectGET("some url").respond(500, error_log.data);
             offlineSyncService.syncConcepts();
             httpBackend.flush();
@@ -366,7 +374,7 @@ describe('OfflineSyncService', function () {
             expect(eventLogService.getConceptEventsFor).toHaveBeenCalledWith(undefined);
             expect(eventLogService.getConceptEventsFor.calls.count()).toBe(1);
             
-            expect(offlineDbService.insertLog).toHaveBeenCalled();
+            expect(loggingService.logSyncError).toHaveBeenCalled();
             expect($rootScope.$broadcast).toHaveBeenCalledWith("schedulerStage", null, true);
         });
     });
@@ -504,15 +512,22 @@ describe('OfflineSyncService', function () {
                         return 202020;
                     }
                 });
+
+                $provide.value('loggingService', {
+                    logSyncError: function(errorUrl, status, stackTrace, payload) {
+                        return {};
+                    }
+                });
             });
         });
 
-        beforeEach(inject(['offlineSyncService', 'eventLogService', 'offlineDbService', 'configurationService', '$rootScope',
-            function (offlineSyncServiceInjected, eventLogServiceInjected, offlineDbServiceInjected, configurationServiceInjected, rootScope) {
+        beforeEach(inject(['offlineSyncService', 'eventLogService', 'offlineDbService', 'configurationService', '$rootScope', 'loggingService',
+            function (offlineSyncServiceInjected, eventLogServiceInjected, offlineDbServiceInjected, configurationServiceInjected, rootScope, loggingServiceInjected) {
             offlineSyncService = offlineSyncServiceInjected;
             eventLogService = eventLogServiceInjected;
             offlineDbService = offlineDbServiceInjected;
             configurationService = configurationServiceInjected;
+            loggingService = loggingServiceInjected;
             $rootScope = rootScope;
         }]));
 

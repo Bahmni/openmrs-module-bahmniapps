@@ -1,7 +1,7 @@
 'use strict';
 
 describe('Offline Push Tests', function () {
-    var offlinePush, eventQueueMock, httpBackend, androidDbService, $q=Q, eventQueue, errorQueue, event, offlineDbServiceMock;
+    var offlinePush, eventQueueMock, httpBackend, androidDbService, $q=Q, eventQueue, errorQueue, event, offlineDbServiceMock, loggingServiceMock;
 
 
     beforeEach(function () {
@@ -9,7 +9,8 @@ describe('Offline Push Tests', function () {
         module(function ($provide) {
             var offlineServiceMock = jasmine.createSpyObj('offlineService', ['isOfflineApp','isAndroidApp']);
             eventQueueMock = jasmine.createSpyObj('eventQueue', ['consumeFromErrorQueue','consumeFromEventQueue','removeFromQueue','addToErrorQueue','releaseFromQueue']);
-            offlineDbServiceMock = jasmine.createSpyObj('offlineDbService', ['getPatientByUuid','getEncounterByEncounterUuid','insertLog', 'createEncounter']);
+            offlineDbServiceMock = jasmine.createSpyObj('offlineDbService', ['getPatientByUuid','getEncounterByEncounterUuid','insertLog', 'createEncounter','deleteErrorFromErrorLog','getErrorLogByUuid']);
+            loggingServiceMock = jasmine.createSpyObj('loggingService', ['logSyncError']);
 
             offlineServiceMock.isOfflineApp.and.returnValue(true);
             offlineServiceMock.isAndroidApp.and.returnValue(false);
@@ -37,10 +38,13 @@ describe('Offline Push Tests', function () {
             offlineDbServiceMock.getPatientByUuid.and.returnValue($q.when(patient));
             offlineDbServiceMock.getEncounterByEncounterUuid.and.returnValue($q.when({}));
             offlineDbServiceMock.createEncounter.and.returnValue($q.when({}));
+            offlineDbServiceMock.deleteErrorFromErrorLog.and.returnValue($q.when({}));
+            offlineDbServiceMock.getErrorLogByUuid.and.returnValue($q.when({}));
             $provide.value('offlineService', offlineServiceMock);
             $provide.value('eventQueue', eventQueueMock);
             $provide.value('offlineDbService', offlineDbServiceMock);
             $provide.value('androidDbService', androidDbService);
+            $provide.value('loggingService', loggingServiceMock);
             $provide.value('$q', $q);
         });
     });
@@ -84,8 +88,8 @@ describe('Offline Push Tests', function () {
             expect(eventQueueMock.removeFromQueue).toHaveBeenCalled();
             expect(eventQueueMock.addToErrorQueue).toHaveBeenCalled();
             expect(eventQueueMock.consumeFromEventQueue).toHaveBeenCalled();
-            expect(offlineDbServiceMock.insertLog).toHaveBeenCalled();
-            expect(offlineDbServiceMock.insertLog).toHaveBeenCalledWith("someUrl", 500, {}, {relationships : []});
+            expect(loggingServiceMock.logSyncError).toHaveBeenCalled();
+            expect(loggingServiceMock.logSyncError).toHaveBeenCalledWith("someUrl", 500, {}, {relationships : []});
             done();
         });
         setTimeout(function(){
@@ -100,8 +104,8 @@ describe('Offline Push Tests', function () {
             expect(eventQueueMock.addToErrorQueue).not.toHaveBeenCalled();
             expect(eventQueueMock.consumeFromEventQueue).not.toHaveBeenCalled();
             expect(eventQueueMock.releaseFromQueue).toHaveBeenCalled();
-            expect(offlineDbServiceMock.insertLog).toHaveBeenCalled();
-            expect(offlineDbServiceMock.insertLog).toHaveBeenCalledWith("someUrl", 400, {}, {relationships : []});
+            expect(loggingServiceMock.logSyncError).toHaveBeenCalled();
+            expect(loggingServiceMock.logSyncError).toHaveBeenCalledWith("someUrl", 400, {}, {relationships : []});
             done();
         });
         setTimeout(function(){
@@ -116,6 +120,39 @@ describe('Offline Push Tests', function () {
             expect(offlineDbServiceMock.createEncounter).toHaveBeenCalled();
             expect(eventQueueMock.removeFromQueue).toHaveBeenCalled();
             expect(eventQueueMock.consumeFromEventQueue).toHaveBeenCalled();
+            done();
+        });
+        setTimeout(function(){
+            httpBackend.flush();
+        }, 1000);
+    });
+
+    it("should push error log from event queue", function(done) {
+        event.data = {type : "Error" , uuid:"someUuid"};
+        httpBackend.expectPOST(Bahmni.Common.Constants.loggingUrl).respond(201, {});
+        offlinePush().then(function(){
+            expect(eventQueueMock.removeFromQueue).toHaveBeenCalled();
+            expect(eventQueueMock.consumeFromEventQueue).toHaveBeenCalled();
+            expect(offlineDbServiceMock.getErrorLogByUuid).toHaveBeenCalledWith("someUuid");
+            expect(offlineDbServiceMock.deleteErrorFromErrorLog).toHaveBeenCalledWith("someUuid");
+            done();
+        });
+        setTimeout(function(){
+            httpBackend.flush();
+        }, 1000);
+    });
+
+    it("should not delete error if post fails", function(done) {
+        event.data = {type : "Error" , uuid:"someUuid"};
+        httpBackend.expectPOST(Bahmni.Common.Constants.loggingUrl).respond(404, {});
+        offlinePush().then(function(){
+
+            expect(eventQueueMock.removeFromQueue).not.toHaveBeenCalled();
+            expect(eventQueueMock.addToErrorQueue).not.toHaveBeenCalled();
+            expect(eventQueueMock.consumeFromEventQueue).not.toHaveBeenCalled();
+            expect(eventQueueMock.releaseFromQueue).toHaveBeenCalled();
+            expect(offlineDbServiceMock.getErrorLogByUuid).toHaveBeenCalledWith("someUuid");
+            expect(offlineDbServiceMock.deleteErrorFromErrorLog).not.toHaveBeenCalled();
             done();
         });
         setTimeout(function(){

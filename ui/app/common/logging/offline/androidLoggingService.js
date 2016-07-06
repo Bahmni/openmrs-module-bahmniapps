@@ -1,10 +1,10 @@
 'use strict';
 
 angular.module('bahmni.common.logging')
-    .service('loggingService', ['$http', 'androidDbService', function ($http, androidDbService) {
+    .service('offlineLoggingService', ['$http', 'androidDbService', function ($http, androidDbService) {
 
-        var log = function(errorDetails){
-            return androidDbService.insertLog(errorDetails.errorUrl, null, angular.toJson(errorDetails));
+        var log = function(errorUuid,failedRequest, responseStatus, stackTrace, requestPayload){
+            return androidDbService.insertLog(errorUuid,failedRequest, responseStatus,stackTrace, requestPayload);
         };
 
         return {

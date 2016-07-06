@@ -375,7 +375,10 @@ Bahmni.Common.Offline.SchemaDefinitions = {
     ErrorLog: {
         tableName: 'error_log',
         columns: [
-             {
+            {
+                name: 'uuid',
+                type: 'STRING'
+            }, {
                 name: 'failedRequestUrl',
                 type: 'STRING'
             }, {
@@ -396,6 +399,7 @@ Bahmni.Common.Offline.SchemaDefinitions = {
             }
         ],
         nullableColumns: ['responseStatus'],
-        primaryKeyColumns: ['failedRequestUrl', 'requestPayload']
+        uniqueKeyColumns: ['failedRequestUrl', 'requestPayload'],
+        primaryKeyColumns: ['uuid']
     }
 };

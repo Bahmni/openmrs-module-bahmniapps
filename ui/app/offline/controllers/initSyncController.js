@@ -1,18 +1,20 @@
 "use strict";
 
 angular.module('bahmni.common.offline')
-    .controller('InitSyncController', ['$scope', 'ngDialog', '$state', 'offlineService', 'offlinePush', 'offlinePull','spinner','sessionService',
-        function ($scope, ngDialog, $state, offlineService,  offlinePush, offlinePull, spinner, sessionService) {
+    .controller('InitSyncController', ['$scope', 'ngDialog', '$state', 'offlineService', 'offlinePush', 'offlinePull','spinner','sessionService','$q',
+        function ($scope, ngDialog, $state, offlineService,  offlinePush, offlinePull, spinner, sessionService, $q) {
 
             var init = function () {
-                return offlinePush().then(function () {
-                    return offlinePull().then(function () {
-                            offlineService.setItem("Initial Sync Status", "Complete");
-                        },
-                        function () {
-                            offlineService.setItem("Initial Sync Status", "Not Complete");
-                        })
-                });
+                var deferred = $q.defer();
+                 offlinePull().then(function () {
+                        offlineService.setItem("Initial Sync Status", "Complete");
+                     deferred.resolve();
+                    },
+                    function () {
+                        offlineService.setItem("Initial Sync Status", "Not Complete");
+                        deferred.reject();
+                    });
+                return deferred.promise;
             };
 
             $scope.dashboard = function () {
