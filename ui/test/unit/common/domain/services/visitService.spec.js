@@ -4,6 +4,7 @@ describe('Registration Visit Service', function () {
     var visitService;
     var openmrsVisitUrl = "/openmrs/ws/rest/v1/visit";
     var endVisitUrl = "/openmrs/ws/rest/v1/endVisit";
+    var endVisitAndCreateEncounterUrl = "/openmrs/ws/rest/v1/bahmnicore/visit/endVisitAndCreateEncounter";
     var uuid = "9e23a1bb-0615-4066-97b6-db309c9c6447";
 
     var mockHttp = {
@@ -62,6 +63,17 @@ describe('Registration Visit Service', function () {
         expect(mockHttp.post).toHaveBeenCalled();
         expect(mockHttp.post.calls.mostRecent().args[0]).toBe(openmrsVisitUrl);
         expect(mockHttp.post.calls.mostRecent().args[1]).toBe(visitDetails);
+        expect(mockHttp.post.calls.mostRecent().args[2].withCredentials).toBeTruthy();
+    });
+
+    it("Should post visitUUId and bahmniEncounterTransaction to endVisitAndCreateEncounterUrl", function () {
+        var bahmniEncounterTransaction = {patientUuid: "uuid",visitTypeUuid: "3232"};
+        var visitUuid="1234";
+        visitService.endVisitAndCreateEncounter(visitUuid,bahmniEncounterTransaction);
+
+        expect(mockHttp.post).toHaveBeenCalled();
+        expect(mockHttp.post.calls.mostRecent().args[0]).toBe(endVisitAndCreateEncounterUrl+"?visitUuid="+visitUuid);
+        expect(mockHttp.post.calls.mostRecent().args[1]).toBe(bahmniEncounterTransaction);
         expect(mockHttp.post.calls.mostRecent().args[2].withCredentials).toBeTruthy();
     });
 

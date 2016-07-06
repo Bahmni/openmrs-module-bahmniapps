@@ -16,8 +16,8 @@ describe("AdtController", function () {
         appService = jasmine.createSpyObj('appService', ['getAppDescriptor']);
         sessionService = jasmine.createSpyObj('sessionService', ['getLoginLocationUuid']);
         dispositionService = jasmine.createSpyObj('dispositionService', ['getDispositionActions']);
-        visitService = jasmine.createSpyObj('visitService', ['getVisitSummary','endVisit']);
-        encounterService = jasmine.createSpyObj('encounterService', ['create', 'discharge']);
+        visitService = jasmine.createSpyObj('visitService', ['getVisitSummary','endVisit', 'endVisitAndCreateEncounter']);
+        encounterService = jasmine.createSpyObj('encounterService', ['create', 'discharge', 'buildEncounter']);
         ngDialog = jasmine.createSpyObj('ngDialog', ['openConfirm', 'close']);
         messagingService = jasmine.createSpyObj('messagingService', ['showMessage']);
         spinnerService = jasmine.createSpyObj('spinnerService', ['forPromise']);
@@ -110,34 +110,27 @@ describe("AdtController", function () {
         scope.patient = {uuid: "123"};
         scope.adtObservations = [];
 
-        var stubOnePromise = function (data) {
+        var stubPromise = function (data) {
             return {
                 success: function (successFn) {
                     successFn({results: data});
                 }
             };
         };
-        var stubTwoPromise = function(data) {
-            return {
-                then: function (successFn) {
-                    successFn({results: data});
-                }
-            };
-        };
-        visitService.endVisit.and.callFake(stubTwoPromise);
-        encounterService.create.and.callFake(stubOnePromise);
+        visitService.endVisitAndCreateEncounter.and.callFake(stubPromise);
+        encounterService.buildEncounter.and.returnValue({encounterUuid: 'uuid'});
         createController();
 
         scope.closeCurrentVisitAndStartNewVisit();
 
-        expect(visitService.endVisit).toHaveBeenCalledWith("visitUuid");
-        expect(encounterService.create).toHaveBeenCalledWith({
+        expect(encounterService.buildEncounter).toHaveBeenCalledWith({
             patientUuid: '123',
             encounterTypeUuid: undefined,
             visitTypeUuid: 'visitUuid',
             observations: [],
             locationUuid: 'someLocationUuid'
         });
+        expect(visitService.endVisitAndCreateEncounter).toHaveBeenCalledWith("visitUuid", {encounterUuid: 'uuid'});
         expect(ngDialog.close).toHaveBeenCalled();
     });
 
