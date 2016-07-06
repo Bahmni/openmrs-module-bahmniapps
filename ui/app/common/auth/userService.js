@@ -17,12 +17,13 @@ angular.module('authentication')
 
         this.getUser = function (userName) {
             var deferrable = $q.defer(), cachedUserData = offlineService.getItem('userData');
-            if(offlineApp && cachedUserData){
+            if(offlineApp && _.get(cachedUserData, 'results[0].username') == userName){
                 deferrable.resolve(cachedUserData);
             } else{
                 getUserFromServer(userName).success(function(data){
                     deferrable.resolve(data);
                     offlineService.setItem('userData', data);
+                    offlineService.setItem('providerData', null);
                 }).error(function(){
                     deferrable.reject('Unable to get user data');
                 });
