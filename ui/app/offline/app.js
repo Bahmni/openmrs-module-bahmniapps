@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('bahmni.offline', ['ui.router',  'bahmni.common.uiHelper', 'bahmni.common.util', 'bahmni.common.offline', 'bahmni.common.models', 'ngDialog', 'authentication'])
+angular.module('bahmni.offline', ['ui.router',  'bahmni.common.uiHelper', 'bahmni.common.util', 'bahmni.common.logging' ,'bahmni.common.offline', 'bahmni.common.models', 'ngDialog', 'authentication'])
     .config(['$urlRouterProvider', '$stateProvider',
         function ($urlRouterProvider, $stateProvider) {
         $urlRouterProvider.otherwise('/initScheduler');

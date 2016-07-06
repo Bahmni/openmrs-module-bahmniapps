@@ -79,6 +79,9 @@ angular.module('bahmni.common.offline').service('initializeOfflineSchema', [func
         else {
             table.addPrimaryKey(tableDefinition.primaryKeyColumns);
         }
+        if(tableDefinition.uniqueKeyColumns) {
+            table.addUnique("uKey" + tableDefinition.uniqueKeyColumns.join(""), tableDefinition.uniqueKeyColumns);
+        }
         _.each(tableDefinition.indexes, function (index) {
             table.addIndex(index.indexName, index.columnNames);
         })

@@ -217,17 +217,35 @@ angular.module('bahmni.common.offline')
                 return $q.when(response);
             };
 
-            var insertLog = function (failedRequest, responseStatus, stacktrace, requestPayload) {
+            var insertLog = function (errorLogUuid,failedRequest, responseStatus, stacktrace, requestPayload) {
                 var provider = _.has(requestPayload, 'providers') ? requestPayload.providers[0] :
                     ( _.has(requestPayload, 'auditInfo.creator') ? requestPayload.auditInfo.creator : null);
                 requestPayload = requestPayload ? requestPayload : null;
-                AndroidOfflineService.insertLog(failedRequest, responseStatus, JSON.stringify(stacktrace), JSON.stringify(requestPayload), JSON.stringify(provider));
+                var deferred = $q.defer();
+                try {
+                    var response = AndroidOfflineService.insertLog(errorLogUuid, failedRequest, responseStatus, JSON.stringify(stacktrace), JSON.stringify(requestPayload), JSON.stringify(provider))
+                }catch(error){
+                    deferred.reject();
+                    return deferred.promise;
+                }
+               return $q.when(response)
             };
 
             var getAllLogs = function () {
                 var value =  AndroidOfflineService.getAllLogs();
                 value = _.isEmpty(value) ? [] : JSON.parse(value);
                 return $q.when(value);
+            };
+
+            var getErrorLogByUuid = function (uuid) {
+                var value =  AndroidOfflineService.getErrorLogByUuid(uuid);
+                value = value !== undefined ? JSON.parse(value) : value;
+                return $q.when(value);
+            };
+
+            var deleteErrorFromErrorLog = function(uuid) {
+                AndroidOfflineService.deleteByUuid(uuid);
+                return $q.when({})
             };
 
             var getPrescribedAndActiveDrugOrders = function (params) {
@@ -267,7 +285,9 @@ angular.module('bahmni.common.offline')
                 insertLog: insertLog,
                 getAllLogs: getAllLogs,
                 getAllParentsInHierarchy: getAllParentsInHierarchy,
-                getPrescribedAndActiveDrugOrders: getPrescribedAndActiveDrugOrders
+                getPrescribedAndActiveDrugOrders: getPrescribedAndActiveDrugOrders,
+                getErrorLogByUuid: getErrorLogByUuid,
+                deleteErrorFromErrorLog: deleteErrorFromErrorLog
             }
         }
     ]);

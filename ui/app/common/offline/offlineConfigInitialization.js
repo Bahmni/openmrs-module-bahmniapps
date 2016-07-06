@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('bahmni.common.offline')
-    .factory('offlineConfigInitialization', ['offlineService','$http', 'offlineDbService', 'androidDbService', '$q','$rootScope',
-        function (offlineService, $http, offlineDbService, androidDbService, $q, $rootScope) {
+    .factory('offlineConfigInitialization', ['offlineService','$http', 'offlineDbService', 'androidDbService', '$q','$rootScope','loggingService',
+        function (offlineService, $http, offlineDbService, androidDbService, $q, $rootScope, loggingService) {
             return function () {
                 if(offlineService.isOfflineApp()) {
                     if (offlineService.isAndroidApp()) {
@@ -43,11 +43,11 @@ angular.module('bahmni.common.offline')
                                 }
                             }).catch(function (response) {
                                 if (parseInt(response.status / 100) == 4 || parseInt(response.status / 100) == 5) {
-                                    offlineDbService.insertLog(response.config.url, response.status, response.data);
+                                    loggingService.logSyncError(response.config.url, response.status, response.data);
                                     return readConfigData(modules, ++index);
                                 } else if(response.status == -1) {
                                     $rootScope.$broadcast("schedulerStage", null, true);
-                                    deferred.reject();
+                                    deferred.reject(response);
                                 } else {
                                     return readConfigData(modules, ++index);
                                 }

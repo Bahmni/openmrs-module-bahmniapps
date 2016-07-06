@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('bahmni.common.offline')
-    .factory('offlinePush', ['offlineService', 'eventQueue', '$http', 'offlineDbService', 'androidDbService', '$q',
-        function (offlineService, eventQueue, $http, offlineDbService, androidDbService, $q) {
+    .factory('offlinePush', ['offlineService', 'eventQueue', '$http', 'offlineDbService', 'androidDbService', '$q','loggingService',
+        function (offlineService, eventQueue, $http, offlineDbService, androidDbService, $q, loggingService) {
             return function () {
                 var releaseReservedEvents = function (reservedEvents) {
                     angular.forEach(reservedEvents, function (reservedEvent) {
@@ -41,10 +41,13 @@ angular.module('bahmni.common.offline')
                             "Content-Type": "application/json"
                         } };
 
-                    if(event.data.type && event.data.type == "encounter"){
-                        return $http.post(Bahmni.Common.Constants.bahmniEncounterUrl, response.encounter,config);
+                    if (event.data.type && event.data.type == "encounter") {
+                        return $http.post(Bahmni.Common.Constants.bahmniEncounterUrl, response.encounter, config);
                     }
-                    else{
+                    else if (event.data.type && event.data.type === "Error") {
+                        return $http.post(Bahmni.Common.Constants.loggingUrl, angular.toJson(response));
+                    }
+                    else {
                         response.relationships = [];
                         return $http.post(event.data.url, response, config);
                     }
@@ -54,7 +57,10 @@ angular.module('bahmni.common.offline')
                 var getEventData = function (event) {
                     if (event.data.type && event.data.type == "encounter") {
                         return offlineDbService.getEncounterByEncounterUuid(event.data.encounterUuid);
-                    } else {
+                    }else if(event.data.type && event.data.type === "Error"){
+                        return offlineDbService.getErrorLogByUuid(event.data.uuid);
+                    }
+                    else {
                         return offlineDbService.getPatientByUuid(event.data.patientUuid).then(function (response) {
                             if(event.data.url.indexOf(event.data.patientUuid) == -1){
                                 if(response && response.patient && response.patient.person){
@@ -79,9 +85,10 @@ angular.module('bahmni.common.offline')
                                     }
                                     return successCallBack(event);
                                 }).catch(function (response) {
-                                    if (parseInt(response.status / 100) == 5) {
-                                        var payload = response.config.data;
-                                        offlineDbService.insertLog(response.config.url, response.status, response.data, payload);
+                                    if (event.data.type !== "Error" && (parseInt(response.status / 100) === 5 || parseInt(response.status / 100) === 4))  {
+                                        loggingService.logSyncError(response.config.url, response.status, response.data, response.config.data);
+                                    }
+                                    if (parseInt(response.status / 100) === 5) {
                                         if (event.tube === "event_queue") {
                                             eventQueue.removeFromQueue(event);
                                             eventQueue.addToErrorQueue(event.data);
@@ -93,10 +100,6 @@ angular.module('bahmni.common.offline')
                                         }
                                     }
                                     else {
-                                        if(parseInt(response.status / 100) == 4) {
-                                            var payload = response.config.data;
-                                            offlineDbService.insertLog(response.config.url, response.status, response.data, payload);
-                                        }
                                         eventQueue.releaseFromQueue(event);
                                         deferred.resolve();
                                         return "4xx error";
@@ -106,12 +109,17 @@ angular.module('bahmni.common.offline')
                 };
 
                 var successCallBack = function (event) {
+
+                    if(event.data.type === "Error") {
+                        offlineDbService.deleteErrorFromErrorLog(event.data.uuid);
+                    }
                     eventQueue.removeFromQueue(event);
                     if (event.tube === "event_queue") {
                         return consumeFromEventQueue();
                     } else {
                         return consumeFromErrorQueue();
                     }
+
                 };
 
                 var reservedEvents = [];

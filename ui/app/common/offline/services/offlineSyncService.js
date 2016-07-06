@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('bahmni.common.offline')
-    .service('offlineSyncService', ['eventLogService', 'offlineDbService', '$q', 'offlineService', 'androidDbService', '$rootScope',
-        function (eventLogService, offlineDbService, $q, offlineService, androidDbService, $rootScope) {
+    .service('offlineSyncService', ['eventLogService', 'offlineDbService', '$q', 'offlineService', 'androidDbService', '$rootScope','loggingService',
+        function (eventLogService, offlineDbService, $q, offlineService, androidDbService, $rootScope,loggingService) {
 
                 var stages;
                 var sync = function () {
@@ -145,7 +145,7 @@ angular.module('bahmni.common.offline')
                                     });
                     }).catch(function(response) {
                         if(parseInt(response.status / 100) == 4 || parseInt(response.status / 100) == 5) {
-                            offlineDbService.insertLog(response.config.url, response.status, response.data);
+                            loggingService.logSyncError(response.config.url, response.status, response.data);
                         }
                         $rootScope.$broadcast("schedulerStage", null, true);
                         endSync(-1);

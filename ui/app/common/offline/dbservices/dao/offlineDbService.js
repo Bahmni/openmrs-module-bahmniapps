@@ -2,9 +2,9 @@
 
 angular.module('bahmni.common.offline')
     .service('offlineDbService', ['$http', '$q', 'patientDbService', 'patientAddressDbService', 'patientAttributeDbService', 'offlineMarkerDbService', 'offlineAddressHierarchyDbService',
-        'offlineConfigDbService', 'initializeOfflineSchema', 'referenceDataDbService', 'locationDbService', 'offlineSearchDbService', 'encounterDbService', 'visitDbService', 'observationDbService', 'conceptDbService','errorLogDbService', 'eventLogService',
+        'offlineConfigDbService', 'initializeOfflineSchema', 'referenceDataDbService', 'locationDbService', 'offlineSearchDbService', 'encounterDbService', 'visitDbService', 'observationDbService', 'conceptDbService','errorLogDbService', 'eventLogService','eventQueue',
         function ($http, $q, patientDbService, patientAddressDbService, patientAttributeDbService, offlineMarkerDbService, offlineAddressHierarchyDbService,
-                  offlineConfigDbService, initializeOfflineSchema, referenceDataDbService, locationDbService, offlineSearchDbService, encounterDbService, visitDbService, observationDbService, conceptDbService, errorLogDbService, eventLogService) {
+                  offlineConfigDbService, initializeOfflineSchema, referenceDataDbService, locationDbService, offlineSearchDbService, encounterDbService, visitDbService, observationDbService, conceptDbService, errorLogDbService, eventLogService, eventQueue) {
         var db;
 
 
@@ -204,11 +204,19 @@ angular.module('bahmni.common.offline')
             return visitDbService.getVisitsByPatientUuid(db, patientUuid, numberOfVisits);
         };
 
-        var insertLog = function (failedRequest, responseStatus, stackTrace, requestPayload) {
+        var insertLog = function (errorUuid,failedRequest, responseStatus, stackTrace, requestPayload) {
             var provider = _.has(requestPayload, 'providers') ? requestPayload.providers[0] :
                 ( _.has(requestPayload, 'auditInfo.creator') ? requestPayload.auditInfo.creator : "");
             requestPayload = requestPayload ? requestPayload : "";
-            return errorLogDbService.insertLog(db, failedRequest, responseStatus, stackTrace, requestPayload, provider);
+            return errorLogDbService.insertLog(db, errorUuid, failedRequest, responseStatus, stackTrace, requestPayload, provider);
+        };
+
+        var getErrorLogByUuid = function(uuid){
+            return errorLogDbService.getErrorLogByUuid(db,uuid);
+        };
+
+        var deleteErrorFromErrorLog = function(uuid) {
+            return errorLogDbService.deleteByUuid(db, uuid);
         };
 
         var getAllLogs = function () {
@@ -263,6 +271,8 @@ angular.module('bahmni.common.offline')
             getAllParentsInHierarchy: getAllParentsInHierarchy,
             insertLog: insertLog,
             getAllLogs: getAllLogs,
-            getPrescribedAndActiveDrugOrders: getPrescribedAndActiveDrugOrders
+            getErrorLogByUuid: getErrorLogByUuid,
+            getPrescribedAndActiveDrugOrders: getPrescribedAndActiveDrugOrders,
+            deleteErrorFromErrorLog: deleteErrorFromErrorLog
         }
     }]);

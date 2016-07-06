@@ -22,7 +22,7 @@ describe('OfflineDbService ', function () {
             visitDbService = jasmine.createSpyObj('visitDbService', ['insertVisitData', 'getVisitByUuid', 'getVisitsByPatientUuid']);
             observationDbService = jasmine.createSpyObj('observationDbService', ['insertObservationsData', 'getObservationsFor']);
             conceptDbService = jasmine.createSpyObj('conceptDbService', ['init', 'getReferenceData', 'getConceptByName', 'insertConceptAndUpdateHierarchy', 'updateChildren', 'updateParentJson', 'getAllParentsInHierarchy']);
-            errorLogDbService = jasmine.createSpyObj('errorLogDbService', ['insertLog']);
+            errorLogDbService = jasmine.createSpyObj('errorLogDbService', ['insertLog', 'getErrorLogByUuid', 'deleteByUuid']);
             eventLogService = jasmine.createSpyObj('eventLogService', ['getDataForUrl']);
 
             $provide.value('patientDbService', patientDbService);
@@ -338,15 +338,25 @@ describe('OfflineDbService ', function () {
 
 
     describe("errorLogDbService ", function () {
+
+        beforeEach( function(){
+
+            errorLogDbService.insertLog.and.callFake(function () {
+                var deferred1 = $q.defer();
+                deferred1.resolve("errorUuid");
+                return deferred1.promise;
+            });
+        });
+
         it("should call insertLog with providers, if providers available", function (done) {
             var schemaBuilder = lf.schema.create('BahmniOfflineDb', 1);
             schemaBuilder.connect().then(function (db) {
                 offlineDbService.init(db);
 
                 var requestPayload = {providers: [{display: 'armanvuiyan', uuid: 'providerUuid'}]};
-                offlineDbService.insertLog('failedRequestUrl', 500, 'stackTrace', requestPayload);
+                offlineDbService.insertLog('someUuid','failedRequestUrl', 500, 'stackTrace', requestPayload);
                 expect(errorLogDbService.insertLog.calls.count()).toBe(1);
-                expect(errorLogDbService.insertLog).toHaveBeenCalledWith(db, 'failedRequestUrl', 500, 'stackTrace', requestPayload, requestPayload.providers[0]);
+                expect(errorLogDbService.insertLog).toHaveBeenCalledWith(db,'someUuid', 'failedRequestUrl', 500, 'stackTrace', requestPayload, requestPayload.providers[0]);
                 done();
             });
         });
@@ -358,9 +368,9 @@ describe('OfflineDbService ', function () {
 
                 var auditInfo = {creator: {display: 'armanvuiyan', uuid: 'providerUuid'}};
                 var requestPayload = {patient: "patientPostData", auditInfo: auditInfo};
-                offlineDbService.insertLog('failedRequestUrl', 500, 'stackTrace', requestPayload);
+                offlineDbService.insertLog('someUuid','failedRequestUrl', 500, 'stackTrace', requestPayload);
                 expect(errorLogDbService.insertLog.calls.count()).toBe(1);
-                expect(errorLogDbService.insertLog).toHaveBeenCalledWith(db, 'failedRequestUrl', 500, 'stackTrace', requestPayload, auditInfo.creator);
+                expect(errorLogDbService.insertLog).toHaveBeenCalledWith(db, 'someUuid','failedRequestUrl', 500, 'stackTrace', requestPayload, auditInfo.creator);
                 done()
             });
         });
@@ -371,9 +381,9 @@ describe('OfflineDbService ', function () {
                 offlineDbService.init(db);
 
                 var requestPayload = {patient: "patientPostData"};
-                offlineDbService.insertLog('failedRequestUrl', 500, 'stackTrace', requestPayload);
+                offlineDbService.insertLog('someUuid','failedRequestUrl', 500, 'stackTrace', requestPayload);
                 expect(errorLogDbService.insertLog.calls.count()).toBe(1);
-                expect(errorLogDbService.insertLog).toHaveBeenCalledWith(db, 'failedRequestUrl', 500, 'stackTrace', requestPayload, "");
+                expect(errorLogDbService.insertLog).toHaveBeenCalledWith(db, 'someUuid', 'failedRequestUrl', 500, 'stackTrace', requestPayload, "");
                 done()
             });
         });
@@ -383,12 +393,45 @@ describe('OfflineDbService ', function () {
             schemaBuilder.connect().then(function (db) {
                 offlineDbService.init(db);
 
-                offlineDbService.insertLog('failedRequestUrl', 500, 'stackTrace');
+                offlineDbService.insertLog('someUuid', 'failedRequestUrl', 500, 'stackTrace');
                 expect(errorLogDbService.insertLog.calls.count()).toBe(1);
-                expect(errorLogDbService.insertLog).toHaveBeenCalledWith(db, 'failedRequestUrl', 500, 'stackTrace', "", "");
+                expect(errorLogDbService.insertLog).toHaveBeenCalledWith(db, 'someUuid', 'failedRequestUrl', 500, 'stackTrace', "", "");
                 done()
             });
         });
+
+        it("should call getErrorLogByUuid with given db and uuid and give the log accordingly", function (done) {
+            var schemaBuilder = lf.schema.create('BahmniOfflineDb', 1);
+            schemaBuilder.connect().then(function (db) {
+                offlineDbService.init(db);
+
+                var providers = [{display: 'armanvuiyan', uuid: 'providerUuid'}];
+                var requestPayload = {patient: "patientPostData", providers: providers};
+                offlineDbService.insertLog('someUuid', 'failedRequestUrl', 500, 'stackTrace', requestPayload);
+                expect(errorLogDbService.insertLog).toHaveBeenCalledWith(db, 'someUuid', 'failedRequestUrl', 500, 'stackTrace', requestPayload, providers[0]);
+                offlineDbService.getErrorLogByUuid("someUuid");
+                expect(errorLogDbService.getErrorLogByUuid.calls.count()).toBe(1);
+                expect(errorLogDbService.getErrorLogByUuid).toHaveBeenCalledWith(db,"someUuid");
+                done();
+            });
+        });
+
+        it("should call deleteErrorFromErrorLog with given db and uuid to delete log from errorLog table", function (done) {
+            var schemaBuilder = lf.schema.create('BahmniOfflineDb', 1);
+            schemaBuilder.connect().then(function (db) {
+                offlineDbService.init(db);
+
+                var providers = [{display: 'armanvuiyan', uuid: 'providerUuid'}];
+                var requestPayload = {patient: "patientPostData", providers: providers};
+                offlineDbService.insertLog('someUuid', 'failedRequestUrl', 500, 'stackTrace', requestPayload);
+                expect(errorLogDbService.insertLog).toHaveBeenCalledWith(db, 'someUuid', 'failedRequestUrl', 500, 'stackTrace', requestPayload, providers[0]);
+                offlineDbService.deleteErrorFromErrorLog("someUuid");
+                expect(errorLogDbService.deleteByUuid.calls.count()).toBe(1);
+                expect(errorLogDbService.deleteByUuid).toHaveBeenCalledWith(db, "someUuid");
+                done();
+            });
+        });
+
     });
 
 

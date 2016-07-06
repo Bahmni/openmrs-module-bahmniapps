@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('bahmni.common.offline')
-    .factory('offlineReferenceDataInitialization', ['offlineService','$http', 'offlineDbService', 'androidDbService', '$q','$rootScope',
-                function (offlineService, $http, offlineDbService, androidDbService, $q, $rootScope) {
+    .factory('offlineReferenceDataInitialization', ['offlineService','$http', 'offlineDbService', 'androidDbService', '$q','$rootScope','loggingService',
+                function (offlineService, $http, offlineDbService, androidDbService, $q, $rootScope, loggingService) {
             return function (isAuthenticated) {
                 if(offlineService.isOfflineApp()) {
                     if (offlineService.isAndroidApp()) {
@@ -58,11 +58,11 @@ angular.module('bahmni.common.offline')
                                 }
                             }).catch(function (response) {
                                 if (parseInt(response.status / 100) == 4) {
-                                    offlineDbService.insertLog(response.config.url, response.status, response.data);
+                                    loggingService.logSyncError(response.config.url, response.status, response.data);
                                     $rootScope.$broadcast("schedulerStage", null, true);
                                     deferred.reject({});
                                 } else if (parseInt(response.status / 100) == 5) {
-                                    offlineDbService.insertLog(response.config.url, response.status, response.data);
+                                    loggingService.logSyncError(response.config.url, response.status, response.data);
                                     deferred.reject({"data": Bahmni.Common.Constants.offlineErrorMessages.openmrsServerError});
                                     $rootScope.$broadcast("schedulerStage", null, true);
                                 }
