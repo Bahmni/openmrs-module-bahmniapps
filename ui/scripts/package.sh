@@ -37,4 +37,3 @@ if [ -n $XVFB_PID ]; then
     echo "Killing Xvfb process $XVFB_PID"
     kill $XVFB_PID
 fi
-
