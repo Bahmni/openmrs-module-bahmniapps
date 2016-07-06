@@ -93,6 +93,7 @@ describe('PatientServiceStrategy test', function () {
             expect(data.data).toBe(patientJson);
             expect(data.data.patient.auditInfo.creator).toBe(providerInfo);
             expect(data.data.patient.auditInfo.creator).toBe(providerInfo);
+            expect(data.data.patient.auditInfo.dateCreated).not.toBeUndefined();
         }).catch(notifyError).finally(done);
     });
 });
