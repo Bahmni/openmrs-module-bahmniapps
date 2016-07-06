@@ -888,7 +888,7 @@ h3 {
         border-bottom: none;
         top: 65px;
         div.patient-info-fixed ul li.patient-name-image-container .patient-image[src*="blank-user"] {
-            visibility: hidden;
+            visibility: hidden !important;
 
         }
 
@@ -903,4 +903,5 @@ h3 {
 .is-abnormal-bold{
     font-family: Arial, sans-serif !important;
     font-weight: bold;
+    color: #000 !important;
 }
