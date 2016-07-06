@@ -226,11 +226,14 @@ angular.module('bahmni.adt')
                 ngDialog.close();
             };
 
-            $scope.closeCurrentVisitAndStartNewVisit = function() {
+            $scope.closeCurrentVisitAndStartNewVisit = function () {
                 if (defaultVisitTypeUuid !== null) {
-                    visitService.endVisit($scope.visitSummary.uuid).then(function () {
-                        $scope.visitSummary = null;
-                        createEncounterAndContinue();
+                    var encounter = getEncounterData($scope.encounterConfig.getAdmissionEncounterTypeUuid(), defaultVisitTypeUuid);
+                    visitService.endVisitAndCreateEncounter($scope.visitSummary.uuid, encounterService.buildEncounter(encounter)).success(function (response) {
+                        visitService.getVisitSummary(response.visitUuid).then(function (response) {
+                            $scope.visitSummary = new Bahmni.Common.VisitSummary(response.data);
+                        });
+                        forwardUrl(response, "onAdmissionForwardTo");
                     });
                 } else if ($scope.defaultVisitTypeName === null) {
                     messagingService.showMessage("error", "MESSAGE_DEFAULT_VISIT_TYPE_NOT_FOUND_KEY");
@@ -238,6 +241,7 @@ angular.module('bahmni.adt')
                     messagingService.showMessage("error", "MESSAGE_DEFAULT_VISIT_TYPE_INVALID_KEY")
                 }
                 ngDialog.close();
+                return $q.when({});
             };
 
             $scope.continueWithCurrentVisit = function() {
