@@ -8,6 +8,7 @@ Bahmni.ConceptSet.BooleanObservation = function(observation, conceptUIConfig) {
 
     this.cloneNew = function() {
         var clone = new Bahmni.ConceptSet.BooleanObservation(angular.copy(observation), conceptUIConfig);
+        clone.value = undefined;
         clone.comment = undefined;
         clone.uuid = null;
         return clone;
