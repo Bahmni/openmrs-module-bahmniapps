@@ -36,6 +36,8 @@ angular.module('bahmni.common.offline')
                 ngDialog.open({
                     template: offlineService.getItem("Initial Sync Status") == "Complete" ? 'views/offlineSyncConfirm.html' : 'views/offlineSyncFailure.html',
                     class: 'ngdialog-theme-default',
+                    closeByEscape:false,
+                    showClose:false,
                     scope: $scope
 
                 });
