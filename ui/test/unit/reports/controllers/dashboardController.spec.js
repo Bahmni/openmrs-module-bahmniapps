@@ -243,5 +243,22 @@ describe("DashboardController", function () {
 
         expect(reportServiceMock.generateReport).toHaveBeenCalled();
         expect(report.reportTemplateLocation).toBeUndefined();
-    })
+    });
+
+    it("show an error message when csv format is selected for concatenated reports", function () {
+        var report = {
+            config: {},
+            name: 'Vitals',
+            type: 'concatenated',
+            startDate: '2014-02-01',
+            stopDate: '2015-02-01',
+            responseType: 'text/csv'
+        };
+        scope.reportsRequiringDateRange.push(report);
+
+        scope.runReport(report);
+
+        expect(messagingServiceMock.showMessage).toHaveBeenCalledWith('error', 'CSV format is not supported for concatenated reports');
+        expect(reportServiceMock.generateReport).not.toHaveBeenCalled();
+    });
 });

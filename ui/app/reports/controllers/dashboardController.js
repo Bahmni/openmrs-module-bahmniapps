@@ -2,6 +2,15 @@
 
 angular.module('bahmni.reports')
     .controller('DashboardController', ['$scope', 'appService', 'reportService', 'FileUploader', 'messagingService', function ($scope, appService, reportService, FileUploader, messagingService) {
+        var availableFormats = {
+            "CSV": "text/csv",
+            "HTML": "text/html",
+            "EXCEL": "application/vnd.ms-excel",
+            "PDF": "application/pdf",
+            "CUSTOM EXCEL": "application/vnd.ms-excel-custom",
+            "ODS": "application/vnd.oasis.opendocument.spreadsheet"
+        };
+
         $scope.uploader = new FileUploader({
             url: Bahmni.Common.Constants.uploadReportTemplateUrl,
             removeAfterUpload: true,
@@ -50,8 +59,14 @@ angular.module('bahmni.reports')
                 if (!report.stopDate) {
                     msg.push("end date");
                 }
-                messagingService.showMessage("error", "Please select the " + msg.join(" and "))
-            } else {
+                messagingService.showMessage("error", "Please select the " + msg.join(" and "));
+                return;
+            }
+            if(report.type == 'concatenated' && report.responseType == availableFormats.CSV) {
+                messagingService.showMessage('error', 'CSV format is not supported for concatenated reports');
+                return;
+            }
+            else {
                 reportService.generateReport(report);
                 if (report.responseType === 'application/vnd.ms-excel-custom') {
                     report.reportTemplateLocation = undefined;
@@ -61,14 +76,7 @@ angular.module('bahmni.reports')
         };
 
         var initializeFormats = function(){
-            var availableFormats = {
-                "CSV": "text/csv",
-                "HTML": "text/html",
-                "EXCEL": "application/vnd.ms-excel",
-                "PDF": "application/pdf",
-                "CUSTOM EXCEL": "application/vnd.ms-excel-custom",
-                "ODS": "application/vnd.oasis.opendocument.spreadsheet"
-            };
+
             var supportedFormats = appService.getAppDescriptor().getConfigValue("supportedFormats") || _.keys(availableFormats);
             supportedFormats = _.map(supportedFormats, function(format){
                 return format.toUpperCase();
