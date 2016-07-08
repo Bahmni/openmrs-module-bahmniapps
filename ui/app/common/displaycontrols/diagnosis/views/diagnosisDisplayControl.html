@@ -69,7 +69,7 @@
         </tr>
 
         <tr ng-show="diagnosis.showDetails">
-            <td colspan="2" class="notes inline-notes">
+            <td colspan="{{showLatestDiagnosis ==  'true' ? 3 : 2}}" class="notes inline-notes">
                 <div class="footer-note right">
                         <span class="provider">
                             <provider-directive creator-name="{{::diagnosis.creatorName}}" provider-name="{{::diagnosis.providers[0].name}}" provider-date="::diagnosis.diagnosisDateTime"></provider-directive>
