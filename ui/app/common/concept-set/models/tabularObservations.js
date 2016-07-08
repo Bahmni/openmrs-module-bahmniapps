@@ -63,7 +63,7 @@ Bahmni.ConceptSet.TabularObservations = function(obsGroups, parentObs, conceptUI
 
     this.atLeastOneValueSet = function(){
         return this.rows.some(function (childNode) {
-            return childNode.obsGroup.value;
+            return childNode.obsGroup.atLeastOneValueSet();
         })
     };
 
