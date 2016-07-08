@@ -61,6 +61,10 @@ angular.module('bahmni.clinical').controller('ConsultationController',
             };
 
             $scope.gotoPatientDashboard = function () {
+                if (!isFormValid()) {
+                    $scope.$parent.$parent.$broadcast("event:errorsOnForm");
+                    return $q.when({});
+                }
                 if (contextChangeHandler.execute()["allow"]) {
                     var params = {configName: $scope.configName, patientUuid: patientContext.patient.uuid, encounterUuid: undefined};
                     if($scope.dashboardDirty) {
@@ -99,7 +103,6 @@ angular.module('bahmni.clinical').controller('ConsultationController',
                     $scope.currentBoard.isSelectedTab = true;
                 }
             };
-
 
             var initialize = function () {
                 var appExtensions = clinicalAppConfigService.getAllConsultationBoards();
