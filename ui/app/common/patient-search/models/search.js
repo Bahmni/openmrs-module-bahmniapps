@@ -91,14 +91,11 @@ Bahmni.Common.PatientSearch.Search = function (searchTypes) {
     }
 
     var matchesNameOrId = function (patient) {
-        return patient.display.toLowerCase().search(self.searchParameter.toLowerCase()) !== -1;
+        return patient.display.toLowerCase().indexOf(self.searchParameter.toLowerCase()) !== -1;
     };
 
     var matchesId = function (patient) {
-        if(/^[a-zA-Z0-9]*$/.test(self.searchParameter) == false) {
-            return false;
-        }
-        return patient.identifier.toLowerCase().search(self.searchParameter.toLowerCase()) !== -1;
+        return patient.identifier.toLowerCase().indexOf(self.searchParameter.toLowerCase()) !== -1;
     };
 
     var showPatientCount = function (searchType) {
