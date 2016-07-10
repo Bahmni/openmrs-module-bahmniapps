@@ -6,7 +6,9 @@ describe("Search", function() {
         {identifier: 'GAN1234', name: 'Ram Singh', uuid: 'p-uuid-1', activeVisitUuid: 'v-uuid-1'},
         {identifier: 'BAM1234', name: 'Shyam Singh', uuid: 'p-uuid-2', activeVisitUuid: 'v-uuid-2'},
         {identifier: 'SEM1234', name: 'Ganesh Singh', uuid: 'p-uuid-3', activeVisitUuid: 'v-uuid-3'},
-        {identifier: 'GAN1235', name: 'Gani Singh', uuid: 'p-uuid-4', activeVisitUuid: 'v-uuid-4'}
+        {identifier: 'GAN1235', name: 'Gani Singh', uuid: 'p-uuid-4', activeVisitUuid: 'v-uuid-4'},
+        {identifier: 'SIV-12-35', name: 'Krishna', uuid: 'p99uid-4', activeVisitUuid: 'v-ppuid-4'},
+        {identifier: 'HIC-12\'89*', name: 'Krishna Goud', uuid: 'p99uid-8', activeVisitUuid: 'v-ppuid-7'}
     ];
         
 	beforeEach(function() {
@@ -40,7 +42,23 @@ describe("Search", function() {
 			search.filterPatientsByIdentifier();
 
 			expect(search.searchResults.length).toBe(0);
-		})
+		});
+
+		it('should return the patient, when identifier is having special characters', function(){
+			search.updatePatientList(allActivePatients);
+			search.searchParameter = "SIV-12-";
+
+			search.filterPatientsByIdentifier();
+
+			expect(search.searchResults.length).toBe(1);
+
+			search.searchParameter = "-12\'";
+
+			search.filterPatientsByIdentifier();
+
+			expect(search.searchResults.length).toBe(1);
+		});
+
 	});
 
 	describe("updateSearchResults", function() {
