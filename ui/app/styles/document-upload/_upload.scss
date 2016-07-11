@@ -303,7 +303,7 @@ button.mfp-close:hover {
 
 .document-upload {
   .patient-details {
-    position: relative;
+    position: fixed;
     z-index: 111111;
     top: 17px;
     left: 50%;
@@ -311,6 +311,7 @@ button.mfp-close:hover {
     -webkit-transform: translateX(-50%);
     color: $lightestGray;
     font-size:16px;
+    right:auto;
   }
 }
 
