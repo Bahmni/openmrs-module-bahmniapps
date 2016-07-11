@@ -7,7 +7,7 @@ angular.module('bahmni.common.uiHelper')
             $scope.isUpdateAvailable = function () {
                 var installedVersion = appInfoStrategy.getVersion();
                 var appUpdateInfo = offlineService.getItem("appUpdateInfo");
-                return appUpdateInfo && (installedVersion < appUpdateInfo.latestVersion);
+                return appUpdateInfo && (installedVersion < _.max(appUpdateInfo.compatibleVersions));
             };
             
             $scope.update = function (url) {

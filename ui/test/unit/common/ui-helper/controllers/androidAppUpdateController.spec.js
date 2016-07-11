@@ -24,9 +24,9 @@ describe("AppUpdateController", function () {
 
     it("should check if update available", function () {
         appInfoStrategy.getVersion.and.returnValue(0.82);
-        offlineService.getItem.and.returnValue({latestVersion: 0.83});
+        offlineService.getItem.and.returnValue({compatibleVersions: [0.82, 0.83]});
         expect(scope.isUpdateAvailable()).toBeTruthy();
-        offlineService.getItem.and.returnValue({latestVersion: 0.82});
+        offlineService.getItem.and.returnValue({compatibleVersions: [0.82]});
         expect(scope.isUpdateAvailable()).toBeFalsy();
     });
     
