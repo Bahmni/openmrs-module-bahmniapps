@@ -112,6 +112,10 @@
             color: $darkGray;
             border: 0;
         }
+        td.toggle-btn{
+            padding: 5px;
+            width: 30px;
+        }
         &.h-scroll, &.pivot-table {
             tr td, tr th {
                 border-bottom: 1px solid $lighterGray;
