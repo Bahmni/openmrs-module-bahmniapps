@@ -280,7 +280,7 @@
         </div>
     </div>
 </div>
-<div class="order-set-container clearfix" ng-if="::orderSets.length">
+<div class="order-set-container clearfix">
     <h2 class="section-title has-toggle" toggle="canOrderSetBeAdded">
         <i class="fa fa-caret-right" ng-hide="canOrderSetBeAdded"></i>
         <i class="fa fa-caret-down" ng-show="canOrderSetBeAdded"></i>
@@ -290,14 +290,23 @@
         <div class="Order-section-orderDrug form clearfix">
             <article class="form-field clearfix">
                 <div class="field-attribute">
+                    <label>Search</label>
+                </div>
+                <div class="field-value">
+                    <input class="search-order-set" type="text" ng-model="newOrderSet.searchQuery"
+                           ng-model-options="{debounce:200}"
+                           ng-change="getFilteredOrderSets(newOrderSet.searchQuery)()" ng-disabled="isSearchDisabled"/>
+                </div>
+
+                <div class="field-attribute">
                     <label>Start Date</label>
                 </div>
                 <div class="field-value">
-                    <input type="date"  ng-model="newOrderSet.date"/>
+                    <input type="date" ng-model="newOrderSet.date" ng-disabled="isSearchDisabled"/>
                 </div>
             </article>
             <div class="orderSet-order-container clearfix">
-                <div ng-repeat="orderSet in ::orderSets" class="orderSet-orders clearfix">
+                <div ng-repeat="orderSet in orderSets" class="orderSet-orders clearfix">
                     <h2 class="section-title order-set-orderAnOrderSet">
                         {{::orderSet.name}}
                         <div class="button-group fr">

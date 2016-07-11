@@ -8,6 +8,16 @@ angular.module('bahmni.common.orders')
             });
         };
 
+        this.getOrderSetsByQuery = function (name) {
+            return $http.get(Bahmni.Common.Constants.orderSetUrl, {
+                params: {
+                    v: "full",
+                    s: "byQuery",
+                    q: name
+                }
+            });
+        };
+
         this.getOrderSet = function (uuid) {
             return $http.get(Bahmni.Common.Constants.orderSetUrl + "/" + uuid, {
                 params: {v: "full"}

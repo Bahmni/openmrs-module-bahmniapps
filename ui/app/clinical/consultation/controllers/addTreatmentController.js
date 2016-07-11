@@ -3,9 +3,9 @@
 angular.module('bahmni.clinical')
     .controller('AddTreatmentController', ['$scope', '$rootScope', 'contextChangeHandler', 'treatmentConfig', 'drugService',
         '$timeout', 'clinicalAppConfigService', 'ngDialog', '$window', 'messagingService', 'appService', 'activeDrugOrders',
-        'orderSets', 'orderSetService', '$q', 'locationService','spinner',
+        'orderSetService', '$q', 'locationService','spinner',
         function ($scope, $rootScope, contextChangeHandler, treatmentConfig, drugService, $timeout,
-                  clinicalAppConfigService, ngDialog, $window, messagingService, appService, activeDrugOrders, orderSets,
+                  clinicalAppConfigService, ngDialog, $window, messagingService, appService, activeDrugOrders,
                   orderSetService, $q, locationService, spinner) {
 
             var DateUtil = Bahmni.Common.Util.DateUtil;
@@ -15,6 +15,21 @@ angular.module('bahmni.clinical')
             $scope.showOrderSetDetails = true;
             $scope.addTreatment = true;
             $scope.canOrderSetBeAdded = true;
+            $scope.isSearchDisabled = false;
+
+            $scope.getFilteredOrderSets = function (searchTerm) {
+                if (searchTerm && searchTerm.length >= 3) {
+                    orderSetService.getOrderSetsByQuery(searchTerm).then(function (response) {
+                        $scope.orderSets = response.data.results;
+                        _.each($scope.orderSets, function (orderSet) {
+                            _.each(orderSet.orderSetMembers, setUpOrderSetTransactionalData);
+                        });
+                    });
+                }
+                else{
+                    $scope.orderSets = {};
+                }
+            }
 
             $scope.treatmentActionLinks = clinicalAppConfigService.getTreatmentActionLink();
 
@@ -692,6 +707,7 @@ angular.module('bahmni.clinical')
                 $scope.popupActive = true;
             };
             $scope.addOrderSet = function (orderSet) {
+                $scope.isSearchDisabled = true;
                 scrollTop();
                 var setUpNewOrderSet = function () {
                     $scope.newOrderSet.name = orderSet.name;
@@ -704,6 +720,7 @@ angular.module('bahmni.clinical')
             };
 
             $scope.removeOrderSet = function () {
+                $scope.isSearchDisabled = false
                 delete $scope.newOrderSet.name;
                 delete $scope.newOrderSet.uuid;
                 $scope.orderSetTreatments.splice(0, $scope.orderSetTreatments.length);
@@ -739,11 +756,6 @@ angular.module('bahmni.clinical')
                 mergeActiveAndScheduledWithDiscontinuedOrders();
 
                 $scope.treatmentConfig = treatmentConfig;// $scope.treatmentConfig used only in UI
-                $scope.orderSets = orderSets;
-
-                _.each($scope.orderSets, function (orderSet) {
-                    _.each(orderSet.orderSetMembers, setUpOrderSetTransactionalData);
-                });
             };
             init();
         }]);
