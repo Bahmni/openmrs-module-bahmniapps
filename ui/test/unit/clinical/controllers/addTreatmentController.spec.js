@@ -150,12 +150,11 @@ describe("AddTreatmentController", function () {
             clinicalAppConfigService.getTreatmentActionLink.and.returnValue([]);
             appService = jasmine.createSpyObj('appService', ['getAppDescriptor']);
             appConfig = jasmine.createSpyObj('appConfig', ['getConfig']);
-            orderSetService = jasmine.createSpyObj('orderSetService', ['getCalculatedDose']);
+            orderSetService = jasmine.createSpyObj('orderSetService', ['getCalculatedDose', 'getOrderSetsByQuery']);
             scope.patient = {uuid: "patient.uuid"};
             orderSetService.getCalculatedDose.and.returnValue(specUtil.respondWithPromise($q, {
                 dose: 20, doseUnit: 'mg'
             }));
-
             locationService = jasmine.createSpyObj('locationService', ['getLoggedInLocation'])
 
             drugService = jasmine.createSpyObj('drugService', ['getSetMembersOfConcept']);
@@ -198,6 +197,18 @@ describe("AddTreatmentController", function () {
                 ],
                 "retired": false
             }];
+
+            var fakePromise = {
+                response: {
+                    data: {
+                        results: orderSets
+                    }
+                },
+                then : function(cb) {
+                    cb(this.response);
+                }
+            }
+            orderSetService.getOrderSetsByQuery.and.returnValue(fakePromise);
             $controller('AddTreatmentController', {
                 $scope: scope,
                 $stateParams: stateParams,
@@ -209,7 +220,6 @@ describe("AddTreatmentController", function () {
                 ngDialog: ngDialog,
                 appService: appService,
                 locationService :locationService,
-                orderSets: orderSets,
                 DrugService: drugService,
                 treatmentConfig: treatmentConfig,
                 orderSetService: orderSetService
@@ -217,6 +227,7 @@ describe("AddTreatmentController", function () {
             scope.treatments = [];
             scope.orderSetTreatments = [];
             scope.newOrderSet = {};
+            scope.getFilteredOrderSets('dumm');
         })
     };
     beforeEach(initController);
@@ -1727,6 +1738,8 @@ describe("AddTreatmentController", function () {
             expect(firstOrderSetTreatment.additionalInstructions).toEqual("Additional Instructions");
             expect(firstOrderSetTreatment.quantity).toEqual(80);
             expect(ngDialog.open).not.toHaveBeenCalled();
+            expect(scope.isSearchDisabled).toBeTruthy();
+
 
         });
 
@@ -1762,6 +1775,7 @@ describe("AddTreatmentController", function () {
 
             expect(scope.orderSetTreatments.length).toBe(0);
             expect(scope.newOrderSet).toEqual({});
+            expect(scope.isSearchDisabled).toBeFalsy();
         })
     });
 

@@ -215,12 +215,7 @@ angular.module('consultation')
                         controller: 'AddTreatmentController',
                         templateUrl: 'consultation/views/treatmentSections/addTreatment.html',
                         resolve: {
-                            treatmentConfig: 'treatmentConfig',
-                            orderSets:function(orderSetService){
-                                return orderSetService.getAllOrderSets().then(function(response){
-                                    return response.data.results;
-                                });
-                            }
+                            treatmentConfig: 'treatmentConfig'
                         }
                     },
                     "defaultHistoryView": {
