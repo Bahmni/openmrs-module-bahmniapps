@@ -53,14 +53,14 @@ describe('AppUpdateService', function () {
             .respond(304, {}, {etag: 'some etag'});
 
         mockAppInfoStrategy.getVersion.and.returnValue(0.82);
-        localStorage.setItem("appUpdateInfo", '{"latestAndroidAppUrl":"android url","latestChromeAppUrl":"chrome url","latestVersion":0.82,"etag":"some etag"}');
+        localStorage.setItem("appUpdateInfo", '{"latestAndroidAppUrl":"android url","latestChromeAppUrl":"chrome url","etag":"some etag"}');
 
         appUpdateService.getUpdateInfo().then(function (data) {
             expect(data.forcedUpdateRequired).toBeFalsy();
             expect(data.latestAndroidAppUrl).toBe("android url");
             expect(data.latestChromeAppUrl).toBe("chrome url");
             expect(data.etag).toBe('some etag');
-            expect(localStorage.getItem("appUpdateInfo")).toBe('{"latestAndroidAppUrl":"android url","latestChromeAppUrl":"chrome url","latestVersion":0.82,"etag":"some etag"}')
+            expect(localStorage.getItem("appUpdateInfo")).toBe('{"latestAndroidAppUrl":"android url","latestChromeAppUrl":"chrome url","etag":"some etag"}');
             done();
         });
         setTimeout(function () {
@@ -75,7 +75,7 @@ describe('AppUpdateService', function () {
             .respond(404, {}, {etag: 'some etag'});
 
         mockAppInfoStrategy.getVersion.and.returnValue(0.80);
-        localStorage.setItem("appUpdateInfo", '{"forcedUpdateRequired":true,"latestAndroidAppUrl":"android url","latestChromeAppUrl":"chrome url","latestVersion":0.82,"etag":"some etag"}');
+        localStorage.setItem("appUpdateInfo", '{"forcedUpdateRequired":true,"latestAndroidAppUrl":"android url","latestChromeAppUrl":"chrome url","etag":"some etag"}');
 
         appUpdateService.getUpdateInfo().then(function (data) {
             expect(data).toEqual({});
