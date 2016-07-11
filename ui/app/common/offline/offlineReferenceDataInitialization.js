@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('bahmni.common.offline')
-    .factory('offlineReferenceDataInitialization', ['offlineService','$http', 'offlineDbService', 'androidDbService', '$q','$rootScope','loggingService',
-                function (offlineService, $http, offlineDbService, androidDbService, $q, $rootScope, loggingService) {
+    .factory('offlineReferenceDataInitialization', ['offlineService','$http', 'offlineDbService', 'androidDbService', '$q','$rootScope','loggingService', 'messagingService',
+                function (offlineService, $http, offlineDbService, androidDbService, $q, $rootScope, loggingService, messagingService) {
             return function (isAuthenticated) {
                 if(offlineService.isOfflineApp()) {
                     if (offlineService.isAndroidApp()) {
@@ -60,14 +60,15 @@ angular.module('bahmni.common.offline')
                                 if (parseInt(response.status / 100) == 4) {
                                     loggingService.logSyncError(response.config.url, response.status, response.data);
                                     $rootScope.$broadcast("schedulerStage", null, true);
-                                    deferred.reject({});
+                                    deferred.reject(response);
                                 } else if (parseInt(response.status / 100) == 5) {
                                     loggingService.logSyncError(response.config.url, response.status, response.data);
                                     deferred.reject({"data": Bahmni.Common.Constants.offlineErrorMessages.openmrsServerError});
+                                    messagingService.showMessage("error", Bahmni.Common.Constants.offlineErrorMessages.openmrsServerError);
                                     $rootScope.$broadcast("schedulerStage", null, true);
-                                }
-                                else if (response.status == -1) {
+                                } else if (response.status == -1) {
                                     deferred.reject({"data": Bahmni.Common.Constants.offlineErrorMessages.networkError});
+                                    messagingService.showMessage("error", Bahmni.Common.Constants.offlineErrorMessages.networkError);
                                     $rootScope.$broadcast("schedulerStage", null, true);
                                 }
                                 else {

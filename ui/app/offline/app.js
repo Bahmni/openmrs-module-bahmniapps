@@ -1,8 +1,8 @@
 'use strict';
 
-angular.module('bahmni.offline', ['ui.router',  'bahmni.common.uiHelper', 'bahmni.common.util', 'bahmni.common.logging' ,'bahmni.common.offline', 'bahmni.common.models', 'ngDialog', 'authentication'])
-    .config(['$urlRouterProvider', '$stateProvider',
-        function ($urlRouterProvider, $stateProvider) {
+angular.module('bahmni.offline', ['ui.router', 'httpErrorInterceptor', 'bahmni.common.uiHelper', 'bahmni.common.util', 'bahmni.common.i18n', 'bahmni.common.logging' ,'bahmni.common.offline', 'bahmni.common.models', 'bahmni.common.appFramework', 'ngCookies'])
+    .config(['$urlRouterProvider', '$stateProvider', '$bahmniTranslateProvider',
+        function ($urlRouterProvider, $stateProvider, $bahmniTranslateProvider) {
         $urlRouterProvider.otherwise('/initScheduler');
         // @endif
         $stateProvider
@@ -85,8 +85,8 @@ angular.module('bahmni.offline', ['ui.router',  'bahmni.common.uiHelper', 'bahmn
                     window.location.href = "../home/index.html#/dashboard";
                 }
             });
-
-    }]).run(function ($rootScope, $templateCache) {
+            $bahmniTranslateProvider.init({app: 'offline', shouldMerge: true});
+        }]).run(function ($rootScope, $templateCache) {
     //Disable caching view template partials
     $rootScope.$on('$viewContentLoaded', function () {
         $templateCache.removeAll();
