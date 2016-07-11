@@ -52,12 +52,11 @@ describe("Tabular Observations", function() {
     });
 
     it("atLeastOneValueSet, should return false if obsGroups has value", function() {
-        var tabularObservations = new Bahmni.ConceptSet.TabularObservations(obsGroups, parentObs, {"DST Result":{"allowAddMore": true}});
+        var tabularObservations = new Bahmni.ConceptSet.TabularObservations(obsGroupWithoutValue, parentObs, {"DST Result":{"allowAddMore": true}});
         expect(tabularObservations.atLeastOneValueSet()).toBeFalsy();
     });
 
     it("atLeastOneValueSet, should return true if obsGroups has value", function() {
-        obsGroups[0].value = "something";
         var tabularObservations = new Bahmni.ConceptSet.TabularObservations(obsGroups, parentObs, {"DST Result":{"allowAddMore": true}});
         expect(tabularObservations.atLeastOneValueSet()).toBeTruthy();
     });
@@ -82,12 +81,27 @@ describe("Tabular Observations", function() {
         groupMembers: [{
             concept: {shortName: "Drugs"},
             value: "Drug1",
-            isValid : isValid
+            isValid : isValid,
+            atLeastOneValueSet : function() {
+                return (this.value != undefined);
+            }
         }, {
             concept: {shortName: "Concentration"},
             value: "500mg",
-            isValid : isValid
+            isValid : isValid,
+            atLeastOneValueSet : function() {
+                return (this.value != undefined);
+            }
         }],
+        atLeastOneValueSet : function() {
+            if (this.groupMembers && this.groupMembers.length > 0) {
+                return this.groupMembers.some(function (groupMember) {
+                    return groupMember.atLeastOneValueSet();
+                })
+            } else {
+                return this.value;
+            }
+        },
         cloneNew: function() {
             return {concept: {shortName: "DST"}, label: "DST Result", groupMembers: [{concept: {shortName: "Drugs"}}, {concept: {shortName: "Concentration"}}]}
         }
@@ -97,12 +111,57 @@ describe("Tabular Observations", function() {
         groupMembers: [{
             concept: {shortName: "Drugs"},
             value: "Drug2",
-            isValid : isValid
+            isValid : isValid,
+            atLeastOneValueSet : function() {
+                return (this.value != undefined);
+            }
         }, {
             concept: {shortName: "Concentration"},
             value: "100mg",
-            isValid : isValid
+            isValid : isValid,
+            atLeastOneValueSet : function() {
+                return (this.value != undefined);
+            }
         }],
+        atLeastOneValueSet : function() {
+            if (this.groupMembers && this.groupMembers.length > 0) {
+                return this.groupMembers.some(function (groupMember) {
+                    return groupMember.atLeastOneValueSet();
+                })
+            } else {
+                return this.value;
+            }
+        },
+        cloneNew: function() {
+            return {concept: {shortName: "DST"}, label: "DST Result", groupMembers: [{concept: {shortName: "Drugs"}}, {concept: {shortName: "Concentration"}}]}
+        }
+    }];
+
+    var obsGroupWithoutValue = [{
+        concept: {shortName: "DST"},
+        label: "DST Result",
+        groupMembers: [{
+            concept: {shortName: "Drugs"},
+            isValid : isValid,
+            atLeastOneValueSet : function() {
+                return (this.value != undefined);
+            }
+        }, {
+            concept: {shortName: "Concentration"},
+            isValid : isValid,
+            atLeastOneValueSet : function() {
+                return (this.value != undefined);
+            }
+        }],
+        atLeastOneValueSet : function() {
+            if (this.groupMembers && this.groupMembers.length > 0) {
+                return this.groupMembers.some(function (groupMember) {
+                    return groupMember.atLeastOneValueSet();
+                })
+            } else {
+                return this.value;
+            }
+        },
         cloneNew: function() {
             return {concept: {shortName: "DST"}, label: "DST Result", groupMembers: [{concept: {shortName: "Drugs"}}, {concept: {shortName: "Concentration"}}]}
         }
