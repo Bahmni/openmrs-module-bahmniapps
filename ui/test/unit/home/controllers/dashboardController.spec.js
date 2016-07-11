@@ -184,4 +184,17 @@ describe('dashboardController', function () {
         expect(offlineService.setItem).toHaveBeenCalled();
         expect(scopeMock.syncStatusMessage).toBe("Data Synced Successfully");
     });
+
+    it("should set the syncStatusMessage to Data Synced Successfully and should not update lastSyncTime to current time for page refresh. OfflineService getItem called 2 times for pageLoad, onSyncButtonClick, onEachSuccessful sync", function () {
+        eventQueue.getErrorCount.and.returnValue(specUtil.simplePromise(0));
+        eventQueue.getCount.and.returnValue(specUtil.simplePromise(0));
+
+        scopeMock.isSyncing = undefined;
+        scopeMock.$digest();
+
+        expect(offlineService.getItem).toHaveBeenCalledWith("lastSyncTime");
+        expect(offlineService.getItem.calls.count()).toBe(2);
+        expect(offlineService.setItem).not.toHaveBeenCalled();
+        expect(scopeMock.syncStatusMessage).toBe("Data Synced Successfully");
+    });
 });

@@ -77,12 +77,6 @@ angular.module('bahmni.home')
                     }
                     else {
                         getEventCount().then(function (eventCount) {
-                            function updateLastSyncTimeOnSuccessfullSyncAnReturnSuccessMessage() {
-                                offlineService.setItem('lastSyncTime', new Date());
-                                getLastSyncTime();
-                                return Bahmni.Common.Constants.syncStatusMessages.syncSuccess;
-                            }
-
                             $scope.syncStatusMessage = eventCount ? Bahmni.Common.Constants.syncStatusMessages.syncPending : updateLastSyncTimeOnSuccessfullSyncAnReturnSuccessMessage();
                         });
                     }
@@ -99,6 +93,14 @@ angular.module('bahmni.home')
             $scope.$watch('isSyncing', function () {
                 getSyncStatusInfo();
             });
+
+            var updateLastSyncTimeOnSuccessfullSyncAnReturnSuccessMessage = function () {
+                if ($scope.isSyncing !== undefined) {
+                    offlineService.setItem('lastSyncTime', new Date());
+                    getLastSyncTime();
+                }
+                return Bahmni.Common.Constants.syncStatusMessages.syncSuccess;
+            };
 
             $scope.getStatusStyleCode = function () {
                 return $scope.syncStatusMessage && ($scope.syncStatusMessage.match(/.*Success.*/i)? 'success' : $scope.syncStatusMessage.match(/.*Pending.*/i) ? 'pending' : $scope.syncStatusMessage.match(/.*Failed.*/i) ? 'fail' : 'inProgress');
