@@ -19,6 +19,7 @@ if [ -z $(pgrep Xvfb) ]; then
     XVFB_PID=$!
     echo "Starting Xvfb process $XVFB_PID"
 else
+    XVFB_PID=$(pgrep Xvfb)
     echo "Xvfb already running"
 fi
 
