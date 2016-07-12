@@ -55,7 +55,8 @@ angular.module('bahmni.home')
 
             var getLastSyncTime = function () {
                 var date = offlineService.getItem('lastSyncTime');
-                $scope.lastSyncTime = Bahmni.Common.Util.DateUtil.getDateTimeInSpecifiedFormat(date, "dddd, MMMM Do YYYY, HH:mm:ss");
+                var localeDate = Bahmni.Common.Util.DateUtil.parseServerDateToDate(date);
+                $scope.lastSyncTime = Bahmni.Common.Util.DateUtil.getDateTimeInSpecifiedFormat(localeDate, "dddd, MMMM Do YYYY, HH:mm:ss");
             };
 
             var getErrorCount = function () {
