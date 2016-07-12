@@ -34,4 +34,36 @@ describe('Order Set Service', function () {
       done();
     });
   });
-});
+
+  it('getCalculatedDose should not round off the dose when it is less than 0.49', function(done){
+    var baseDose = 0.48;
+    var doseUnit = 'mg/kg';
+    var mockedReturnData = {
+      value: 0.48,
+      doseUnit: 'mg'
+    };
+    mockHttp.get.and.returnValue(specUtil.createFakePromise(mockedReturnData));
+
+    orderSetService.getCalculatedDose('somePatientUuid',baseDose, doseUnit).then(function(response){
+      expect(response.data).toEqual({ dose: 0.48, doseUnit: 'mg'});
+      done();
+    });
+  });
+
+
+
+  it('getCalculatedDose should round off the dose to 0.1 when it is less than 0.1', function(done){
+    var baseDose = 0.05;
+    var doseUnit = 'mg/kg';
+    var mockedReturnData = {
+      value: 0.05,
+      doseUnit: 'mg'
+    };
+    mockHttp.get.and.returnValue(specUtil.createFakePromise(mockedReturnData));
+
+    orderSetService.getCalculatedDose('somePatientUuid',baseDose, doseUnit).then(function(response){
+      expect(response.data).toEqual({ dose: 0.1, doseUnit: 'mg'});
+      done();
+    });
+  });
+}); 

@@ -87,7 +87,7 @@ angular.module('bahmni.common.orders')
                     headers: {"Accept": "application/json", "Content-Type": "application/json"}
                 }).then(function (response) {
                     return {
-                        dose: _.round(response.data.value),
+                        dose: round(response.data.value),
                         doseUnit: response.data.doseUnit
                     };
                 });
@@ -98,5 +98,11 @@ angular.module('bahmni.common.orders')
                 doseUnit: doseUnit
             });
             return deferred.promise;
+        };
+        var round = function (value) {
+            var leastRoundableDose = 0.49;
+            var leastPrescribableDose = 0.1;
+            value = value <= leastRoundableDose ? value : _.round(value);
+            return (value < leastPrescribableDose) ? leastPrescribableDose : value;
         };
     }]);
