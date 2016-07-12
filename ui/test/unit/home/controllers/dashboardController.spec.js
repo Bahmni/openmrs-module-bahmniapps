@@ -118,19 +118,19 @@ describe('dashboardController', function () {
         expect(schedulerService.stopSync).not.toHaveBeenCalled();
     });
 
-    it("should set lastSyncTime, if it is chrome or android app", function () {
+    it("should get lastSyncTime to have been called, if it is chrome or android app", function () {
         scopeMock.$digest();
 
         expect(offlineService.getItem).toHaveBeenCalledWith("lastSyncTime");
     });
 
     it("should set lastSyncTime, if it is chrome or android app", function () {
-        offlineService.getItem.and.returnValue(new Date("2014-06-13"));
+        offlineService.getItem.and.returnValue('2016-06-13T00:00:00.000Z');
 
         scopeMock.isSyncing = true;
         scopeMock.$digest();
 
-        expect(scopeMock.lastSyncTime).toBe('Friday, June 13th 2014, 05:30:00');
+        expect(scopeMock.lastSyncTime).toBe('Monday, June 13th 2016, 05:30:00');
     });
 
     it("should set the syncStatusMessage to Sync Failed, if there are events in errorQueue and it is chrome or android app", function () {
