@@ -97,7 +97,9 @@ angular.module('bahmni.common.patientSearch')
                 }
                 return spinner.forPromise(patientService.findPatients(params)).then(function (response) {
                     $scope.search.updatePatientList(response.data);
-                })
+                    $scope.getPatientCount($scope.search.searchType);
+                });
+
             }
             else {
                 if(offlineService.isOfflineApp()) {
