@@ -8,7 +8,9 @@ angular.module('bahmni.common.patientSearch')
             var searchTypes = appService.getAppDescriptor().getExtensions("org.bahmni.patient.search", "config").map(mapExtensionToSearchType);
             $scope.search = new Bahmni.Common.PatientSearch.Search(_.without(searchTypes, undefined));
             $scope.search.markPatientEntry();
-            $scope.$watch('search.searchType', fetchPatients);
+            $scope.$watch('search.searchType', function(currentSearchType){
+                _.isEmpty(currentSearchType) || fetchPatients(currentSearchType);
+            });
             if($rootScope.currentSearchType != null ) {
                 $scope.search.switchSearchType($rootScope.currentSearchType);
             }
@@ -86,20 +88,19 @@ angular.module('bahmni.common.patientSearch')
             }
         };
 
-        var fetchPatients = function () {
-            $rootScope.currentSearchType = $scope.search.searchType;
+        var fetchPatients = function (currentSearchType) {
+            $rootScope.currentSearchType = currentSearchType;
             if($scope.search.isCurrentSearchLookUp()) {
-                var params = { q: $scope.search.searchType.handler, v: "full",
+                var params = { q: currentSearchType.handler, v: "full",
                                location_uuid: $bahmniCookieStore.get(Bahmni.Common.Constants.locationCookieName).uuid,
                                provider_uuid: $rootScope.currentProvider.uuid };
-                if($scope.search.searchType.additionalParams){
-                    params["additionalParams"] = $scope.search.searchType.additionalParams
+                if(currentSearchType.additionalParams){
+                    params["additionalParams"] = currentSearchType.additionalParams
                 }
                 return spinner.forPromise(patientService.findPatients(params)).then(function (response) {
                     $scope.search.updatePatientList(response.data);
-                    $scope.getPatientCount($scope.search.searchType);
+                    $scope.getPatientCount(currentSearchType);
                 });
-
             }
             else {
                 if(offlineService.isOfflineApp()) {
