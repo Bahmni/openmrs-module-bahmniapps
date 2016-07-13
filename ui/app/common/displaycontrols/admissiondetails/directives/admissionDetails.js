@@ -5,7 +5,8 @@ angular.module('bahmni.common.displaycontrol.admissiondetails')
 
         var controller = function($scope){
             if($scope.patientUuid) {
-                bedService.getAssignedBedForPatient($scope.patientUuid).then(function(bedDetails){
+                var visitUuid = $scope.visitSummary.uuid;
+                bedService.getAssignedBedForPatientAndVisit($scope.patientUuid,visitUuid).then(function(bedDetails){
                     $scope.bedDetails = bedDetails;
                 })
             }
