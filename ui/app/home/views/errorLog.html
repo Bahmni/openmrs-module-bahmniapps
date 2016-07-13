@@ -20,7 +20,7 @@
             </tr>
             </thead>
             <tbody>
-            <tr ng-repeat="errorLog in errorLogs | orderBy: '-logDateTime' track by errorLog.id ">
+            <tr ng-repeat="errorLog in errorLogs | orderBy: '-logDateTime' track by errorLog.uuid ">
                 <td>{{::errorLog.failedRequestUrl}}</td>
                 <td>{{::errorLog.responseStatus}}</td>
                 <td>{{::errorLog.logDateTime | bahmniDateTime }}</td>
