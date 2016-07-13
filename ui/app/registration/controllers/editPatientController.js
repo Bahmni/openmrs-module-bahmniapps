@@ -81,7 +81,7 @@ angular.module('bahmni.registration')
                     delete relationship.content;
                     delete relationship.providerName;
                 });
-                $scope.patient.relationships = $scope.patient.relationships.concat(newRelationships);
+                $scope.patient.relationships = _.concat(newRelationships, $scope.patient.deletedRelationships);
             };
 
             $scope.isReadOnly = function (field) {

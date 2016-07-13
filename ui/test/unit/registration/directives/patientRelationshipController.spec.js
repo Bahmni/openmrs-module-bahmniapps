@@ -25,7 +25,7 @@ describe('PatientRelationshipController', function () {
     beforeEach(
         inject(function ($controller, $rootScope) {
             scope = $rootScope.$new();
-            scope.patient = {newlyAddedRelationships: [], relationships: []};
+            scope.patient = {newlyAddedRelationships: [], relationships: [], deletedRelationships: []};
             rootScope = $rootScope;
             rootScope.relationshipTypes = [
                 {
@@ -69,7 +69,8 @@ describe('PatientRelationshipController', function () {
             scope.patient.relationships = [relationship];
             scope.removeRelationship(relationship);
             expect(scope.patient.relationships.length).toBe(1);
-            expect(scope.patient.relationships[0].voided).toBeTruthy()
+            expect(scope.patient.relationships[0].voided).toBeTruthy();
+            expect(scope.patient.deletedRelationships.length).toBe(1);
         });
     });
 
