@@ -21,6 +21,7 @@ angular.module('bahmni.registration')
             $scope.removeRelationship = function (relationship, index) {
                 if (relationship.uuid) {
                     relationship.voided = true;
+                    $scope.patient.deletedRelationships.push(relationship);
                 } else {
                     $scope.patient.newlyAddedRelationships.splice(index, 1);
                 }

@@ -111,7 +111,7 @@ angular.module('bahmni.registration')
                     delete relationship.content;
                     delete relationship.providerName;
                 });
-                $scope.patient.relationships = $scope.patient.relationships.concat(newRelationships);
+                $scope.patient.relationships = newRelationships;
             };
 
             var getConfirmationViaNgDialog = function(config) {

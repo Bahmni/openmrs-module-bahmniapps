@@ -52,6 +52,7 @@ angular.module('bahmni.registration')
                 getImageData: getImageData,
                 relationships: [],
                 newlyAddedRelationships: [{}],
+                deletedRelationships : [],
                 calculateBirthDate: calculateBirthDate
             };
         };
