@@ -1,11 +1,12 @@
 'use strict';
 
 angular.module('bahmni.common.domain')
-    .service('bedService', ['$q', '$http', '$rootScope', function ($q, $http, $rootScope) {
-
+    .service('bedService', ['$http', '$rootScope', function ( $http, $rootScope) {
+        
         var mapBedDetails = function(response) {
-            if (response.results.length > 0) {
-                var bed = response.results[0];
+            var results = response.data.results;
+            if (!_.isEmpty(results)) {
+                var bed = _.first(results);
                 return {
                    'wardName': bed.physicalLocation.parentLocation.display,
                    'wardUuid': bed.physicalLocation.parentLocation.uuid,
@@ -25,15 +26,25 @@ angular.module('bahmni.common.domain')
         };
 
         this.getAssignedBedForPatient = function(patientUuid) {
-            var deffered = $q.defer();
-            $http.get(Bahmni.Common.Constants.bedFromVisit, {
+            return $http.get(Bahmni.Common.Constants.bedFromVisit, {
                 method: "GET",
                 params: {patientUuid: patientUuid, v: "full"},
                 withCredentials: true
-            }).success(function (response) {
-                deffered.resolve(mapBedDetails(response));
-            });
-            return deffered.promise;
+            }).then(mapBedDetails);
+        };
+
+        this.getAssignedBedForPatientAndVisit = function (patientUuid, visitUuid) {
+            var params = {
+                patientUuid: patientUuid,
+                v: "full",
+                visitUuid: visitUuid,
+                s:'bedDetailsFromVisit'
+            };
+            return $http.get(Bahmni.Common.Constants.bedFromVisit, {
+                method: "GET",
+                params: params,
+                withCredentials: true
+            }).then(mapBedDetails);
         };
 
         this.assignBed = function (bedId, patientUuid, encounterUuid) {
