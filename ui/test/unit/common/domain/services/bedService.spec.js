@@ -23,7 +23,7 @@ describe("bedService",function () {
         });
     });
 
-    it("getAssignedBedForPatientAndVisit should format the bed details",function (done) {
+    it("getAssignedBedForPatient should hit bedDetailsFromVisit search handler",function (done) {
 
         var data = {
             results:[{
@@ -39,7 +39,7 @@ describe("bedService",function () {
             }]
         };
         _$http.get.and.returnValue(specUtil.respondWithPromise(Q, {data:data}));
-        bedService.getAssignedBedForPatientAndVisit('patientUuid','visitUuid').then(function(bedDetails){
+        bedService.getAssignedBedForPatient('patientUuid','visitUuid').then(function(bedDetails){
             expect(bedDetails).toEqual({
                 wardName:'Labour Ward',
                 bedId:'900',
@@ -57,7 +57,7 @@ describe("bedService",function () {
             }));
         }).catch(notifyError).finally(done);
     });
-    it("getAssignedBedForPatient should format the bed details",function (done) {
+    it("getAssignedBedForPatient should hit regular resource handler",function (done) {
 
         var data = {
             results:[{

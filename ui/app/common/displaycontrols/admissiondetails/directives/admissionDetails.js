@@ -15,8 +15,8 @@ angular.module('bahmni.common.displaycontrol.admissiondetails')
             return !_.isUndefined($scope.patientUuid) && !_.isUndefined($scope.visitSummary);
         };
         var onReady = function($scope){
-            var visitUuid = $scope.visitSummary.uuid;
-            bedService.getAssignedBedForPatientAndVisit($scope.patientUuid,visitUuid).then(function(bedDetails){
+            var visitUuid = _.get($scope.visitSummary,'uuid');
+            bedService.getAssignedBedForPatient($scope.patientUuid,visitUuid).then(function(bedDetails){
                 $scope.bedDetails = bedDetails;
             });
         };
