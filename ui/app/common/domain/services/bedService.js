@@ -25,28 +25,21 @@ angular.module('bahmni.common.domain')
             return promise;
         };
 
-        this.getAssignedBedForPatient = function(patientUuid) {
-            return $http.get(Bahmni.Common.Constants.bedFromVisit, {
-                method: "GET",
-                params: {patientUuid: patientUuid, v: "full"},
-                withCredentials: true
-            }).then(mapBedDetails);
-        };
-
-        this.getAssignedBedForPatientAndVisit = function (patientUuid, visitUuid) {
+        this.getAssignedBedForPatient = function(patientUuid, visitUuid) {
             var params = {
                 patientUuid: patientUuid,
-                v: "full",
-                visitUuid: visitUuid,
-                s:'bedDetailsFromVisit'
+                v: "full"
             };
+            if(visitUuid){
+                params.visitUuid = visitUuid;
+                params.s = 'bedDetailsFromVisit';
+            }
             return $http.get(Bahmni.Common.Constants.bedFromVisit, {
                 method: "GET",
                 params: params,
                 withCredentials: true
             }).then(mapBedDetails);
         };
-
         this.assignBed = function (bedId, patientUuid, encounterUuid) {
             var patientJson = {"patientUuid": patientUuid, "encounterUuid" : encounterUuid};
             return $http.post(Bahmni.Common.Constants.bedFromVisit + "/" + bedId, patientJson, {
