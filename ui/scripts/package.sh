@@ -13,8 +13,8 @@ rm -rf $ROOT_DIR/target/${ZIP_FILE_NAME}*.zip
 npm install
 bower install
 
-XVFB_PID=$(pgrep Xvfb)
-if [ -n $XVFB_PID ]; then
+if [ $(pgrep Xvfb) ]; then
+    XVFB_PID=$(pgrep Xvfb)
     echo "Killing Xvfb process $XVFB_PID"
     kill $XVFB_PID
 fi
@@ -33,4 +33,3 @@ cd $ROOT_DIR/dist && zip -r ../target/${ZIP_FILE_NAME}_chrome.zip *
 cd ..
 grunt android
 cd $ROOT_DIR/dist && zip -r ../target/${ZIP_FILE_NAME}_android.zip *
-
