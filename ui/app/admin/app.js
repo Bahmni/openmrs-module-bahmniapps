@@ -29,14 +29,6 @@ angular.module('admin')
                 url: '/csvExport',
                 templateUrl: 'views/csvexport.html',
                 controller: 'CSVExportController'
-            }).state('admin.formBuilder', {
-                url: '/formBuilder',
-                templateUrl: 'views/formBuilder.html',
-                controller: ''
-            }).state('admin.formIndex', {
-                url: '/formIndex',
-                templateUrl: 'views/formIndex.html',
-                controller: ''
             }).state('admin.orderSetDashboard', {
                 url: '/ordersetdashboard',
                 templateUrl: 'views/orderSetDashboard.html',
