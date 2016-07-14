@@ -13,20 +13,15 @@ rm -rf $ROOT_DIR/target/${ZIP_FILE_NAME}*.zip
 npm install
 bower install
 
-if [ -z $(pgrep Xvfb) ]; then
-    export DISPLAY=:99
-    Xvfb :99 &
-    XVFB_PID=$!
-    echo "Starting Xvfb process $XVFB_PID"
-else
-    XVFB_PID=$(pgrep Xvfb)
-    echo "Xvfb already running"
-fi
-
+XVFB_PID=$(pgrep Xvfb)
 if [ -n $XVFB_PID ]; then
     echo "Killing Xvfb process $XVFB_PID"
     kill $XVFB_PID
 fi
+export DISPLAY=:99
+Xvfb :99 &
+XVFB_PID=$!
+echo "Starting Xvfb process $XVFB_PID"
 
 grunt
 cd $ROOT_DIR/dist && zip -r ../target/${ZIP_FILE_NAME}.zip *
