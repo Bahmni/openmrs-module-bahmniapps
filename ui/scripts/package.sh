@@ -23,6 +23,11 @@ else
     echo "Xvfb already running"
 fi
 
+if [ -n $XVFB_PID ]; then
+    echo "Killing Xvfb process $XVFB_PID"
+    kill $XVFB_PID
+fi
+
 grunt
 cd $ROOT_DIR/dist && zip -r ../target/${ZIP_FILE_NAME}.zip *
 
@@ -34,7 +39,3 @@ cd ..
 grunt android
 cd $ROOT_DIR/dist && zip -r ../target/${ZIP_FILE_NAME}_android.zip *
 
-if [ -n $XVFB_PID ]; then
-    echo "Killing Xvfb process $XVFB_PID"
-    kill $XVFB_PID
-fi
