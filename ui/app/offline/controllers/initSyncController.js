@@ -7,11 +7,11 @@ angular.module('bahmni.common.offline')
             var init = function () {
                 var deferred = $q.defer();
                  offlinePull().then(function () {
-                        offlineService.setItem("Initial Sync Status", "Complete");
+                        offlineService.setItem("initialSyncStatus", "complete");
                      deferred.resolve();
                     },
                     function () {
-                        offlineService.setItem("Initial Sync Status", "Not Complete");
+                        offlineService.setItem("initialSyncStatus", "notComplete");
                         deferred.reject();
                     });
                 return deferred.promise;
@@ -51,7 +51,7 @@ angular.module('bahmni.common.offline')
                 );
             };
 
-            if(offlineService.getItem("Initial Sync Status") == "Complete")
+            if(offlineService.getItem("initialSyncStatus") == "complete")
                 $state.go('dashboard');
             else
                 spinner.forPromise(init()).then(syncSuccessCallBack,syncFailureCallBack);
