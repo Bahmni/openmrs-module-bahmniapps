@@ -17,6 +17,7 @@ angular.module('bahmni.registration')
                 var showStartVisitButton = appService.getAppDescriptor().getConfigValue("showStartVisitButton");
                 showStartVisitButton = showStartVisitButton ? showStartVisitButton : true;
                 var isOfflineApp = offlineService.isOfflineApp();
+                var visitLocationUuid = $rootScope.visitLocation;
 
                 function setForwardActionKey() {
                     if (editActionsConfig.length === 0 && isOfflineApp) {
@@ -38,10 +39,17 @@ angular.module('bahmni.registration')
                     var searchParams = {
                         patient: uuid,
                         includeInactive: false,
-                        v: "custom:(uuid)"
+                        v: "custom:(uuid,location:(uuid))"
                     };
-                    spinner.forPromise(visitService.search(searchParams).then(function (data) {
-                        self.hasActiveVisit = data.data.results && (data.data.results.length > 0);
+                    spinner.forPromise(visitService.search(searchParams).then(function (response) {
+                        var results = response.data.results;
+                        var activeVisitForCurrentLoginLocation;
+                        if(results) {
+                            activeVisitForCurrentLoginLocation = _.filter(results, function(result) {
+                                return result.location.uuid === visitLocationUuid
+                            });
+                        }
+                        self.hasActiveVisit = activeVisitForCurrentLoginLocation && (activeVisitForCurrentLoginLocation.length > 0);
                         self.hasActiveVisit = self.hasActiveVisit ? self.hasActiveVisit : (isOfflineApp ? true : false);
                         setForwardActionKey();
                     }));
