@@ -34,7 +34,7 @@ angular.module('bahmni.registration')
             var addressValue = $scope.address[fieldName];
             if (addressValue) {
                 addressHierarchyService.search(fieldName, addressValue).then(function (response) {
-                    var address = response.data[0];
+                    var address = response && response.data && response.data[0];
                     if (address) {
                         selectedAddressUuids[fieldName] = address.uuid;
                         selectedUserGeneratedIds[fieldName] = address.userGeneratedId;

@@ -230,5 +230,18 @@ describe('TopDownAddressFieldsDirectiveController', function () {
 
             expect(scope.$parent.patient.addressCode).toBe("10");
         })
-    })
+    });
+
+    describe('populateSelectedAddressUuids',function(){
+        it("should not throw an error when response is not present",function(done){
+            setupController();
+
+            scope.address.stateProvince="state";
+            addressHierarchyService.search.and.returnValue(specUtil.createFakePromise(undefined));
+            scope.$digest();
+            expect(addressHierarchyService.search).toHaveBeenCalled();
+            expect(scope.$parent.patient.addressCode).toBe(undefined);
+            done();
+        });
+    });
 });
