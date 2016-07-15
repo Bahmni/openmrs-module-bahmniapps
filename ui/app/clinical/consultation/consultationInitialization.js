@@ -44,7 +44,8 @@ angular.module('bahmni.clinical').factory('consultationInitialization',
                             encounterDateTimeFrom: encounterDate,
                             encounterDateTimeTo: encounterDate,
                             encounterTypeUuids: [encounterType.uuid],
-                            patientProgramUuid: enrollment
+                            patientProgramUuid: enrollment,
+                            locationUuid: $bahmniCookieStore.get(Bahmni.Common.Constants.locationCookieName).uuid
                         }).then(function (encounterTransactionResponse) {
                             return consultationMapper.map(encounterTransactionResponse.data);
                         });
