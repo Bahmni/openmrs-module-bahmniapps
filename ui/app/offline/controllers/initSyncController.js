@@ -17,6 +17,28 @@ angular.module('bahmni.common.offline')
                 return deferred.promise;
             };
 
+            var syncSuccessCallBack = function () {
+                ngDialog.open({
+                    template:'views/offlineSyncConfirm.html' ,
+                    class: 'ngdialog-theme-default',
+                    closeByEscape:false,
+                    showClose:false,
+                    scope: $scope
+
+                });
+            };
+
+            var syncFailureCallBack = function () {
+                ngDialog.open({
+                    template:'views/offlineSyncFailure.html' ,
+                    class: 'ngdialog-theme-default',
+                    closeByEscape:false,
+                    showClose:false,
+                    scope: $scope
+
+                });
+            };
+
             $scope.dashboard = function () {
                 $state.go('dashboard');
             };
@@ -32,16 +54,6 @@ angular.module('bahmni.common.offline')
             if(offlineService.getItem("Initial Sync Status") == "Complete")
                 $state.go('dashboard');
             else
-            spinner.forPromise(init()).then(function () {
-                ngDialog.open({
-                    template: offlineService.getItem("Initial Sync Status") == "Complete" ? 'views/offlineSyncConfirm.html' : 'views/offlineSyncFailure.html',
-                    class: 'ngdialog-theme-default',
-                    closeByEscape:false,
-                    showClose:false,
-                    scope: $scope
-
-                });
-            });
-
+                spinner.forPromise(init()).then(syncSuccessCallBack,syncFailureCallBack);
 
         }]);
