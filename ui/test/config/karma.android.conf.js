@@ -27,6 +27,7 @@ module.exports = function (config) {
             'app/components/angular-ui-select2/src/select2.js',
             'app/components/angular-bindonce/bindonce.js',
             'app/components/stacktrace-js/stacktrace.js',
+            'app/components/ng-tags-input/ng-tags-input.min.js',
             'app/components/ng-clip/src/ngClip.js',
             'app/components/zeroclipboard/dist/ZeroClipboard.js',
             'app/components/angular-translate/angular-translate.js',
