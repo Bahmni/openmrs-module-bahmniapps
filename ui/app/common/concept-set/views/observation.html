@@ -61,6 +61,19 @@
                         <div ng-include src="'../common/concept-set/views/observationDataTypes/buttonSelectType.html'"></div>
                     </div>
 
+                    <div data-ng-controller="multiSelectObservationSearchController" ng-switch-when="autocompleteMultiSelect" class="autocompleteMultiSelect">
+                        <tags-input ng-model="values" display-property="label"
+                                    ng-blur="removeFreeTextItem()"
+                                    key-property = "name"
+                                    on-tag-adding="setLabel($tag)"
+                                    on-tag-added="addItem($tag)"
+                                    on-tag-removed="removeItem($tag)"
+                                    add-from-autocomplete-only="true"
+                                    ng-class="{'illegalValue': !observation.isValid(atLeastOneValueIsSet, conceptSetRequired)}">
+                            <auto-complete source="search($query)" min-length="2"></auto-complete>
+                        </tags-input>
+                    </div>
+
                     <div ng-switch-when="autocomplete" class="autocomplete">
                         <input ng-change="handleUpdate()"
                                ng-disabled="observation.disabled"
@@ -224,6 +237,18 @@
                                 on-invalid-class="'illegalValue'"
                                 is-valid="observation.isValid(atLeastOneValueIsSet,conceptSetRequired)">
                         </concept-dropdown>
+                    </div>
+                    <div data-ng-controller="multiSelectObservationSearchController" ng-switch-when="autocompleteMultiSelect" class="autocompleteMultiSelect">
+                        <tags-input ng-model="values" display-property="label"
+                                    ng-blur="removeFreeTextItem()"
+                                    key-property = "name"
+                                    on-tag-adding="setLabel($tag)"
+                                    on-tag-added="addItem($tag)"
+                                    on-tag-removed="removeItem($tag)"
+                                    add-from-autocomplete-only="true"
+                                    ng-class="{'illegalValue': !observation.isValid(atLeastOneValueIsSet, conceptSetRequired)}">
+                            <auto-complete source="search($query)" min-length="2"></auto-complete>
+                        </tags-input>
                     </div>
 
                     <div ng-switch-when="autocomplete">
