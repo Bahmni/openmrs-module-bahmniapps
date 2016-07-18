@@ -232,12 +232,28 @@ describe('VisitController', function () {
 
         it("should set the visitUuid and canCloseVisit if there is an active visit for the patient", function () {
             var patientUuid = 'uuid';
+            rootScope.visitLocation = 'visitLocation';
             rootScope.currentUser = {privileges: [{name: Bahmni.Common.Constants.closeVisitPrivilege}]};
-            visitService.search.and.returnValue(searchActiveVisits([{uuid: patientUuid}]));
+
+            var mockSearchResults = [{ uuid: patientUuid, location: { uuid: 'visitLocation' } }];
+            visitService.search.and.returnValue(searchActiveVisits(mockSearchResults));
             createController();
 
             expect(visitController.visitUuid).toBe(patientUuid);
             expect(scope.canCloseVisit).toBeTruthy();
+        });
+
+        it("should not set the visitUuid and canCloseVisit if there is no an active visit for the patient in that location", function () {
+            var patientUuid = 'uuid';
+            rootScope.visitLocation = 'visitLocation';
+            rootScope.currentUser = {privileges: [{name: Bahmni.Common.Constants.closeVisitPrivilege}]};
+
+            var mockSearchResults = [{ uuid: patientUuid, location: { uuid: 'someOtherVisitLocation' } }];
+            visitService.search.and.returnValue(searchActiveVisits(mockSearchResults));
+            createController();
+
+            expect(visitController.visitUuid).toEqual("");
+            expect(scope.canCloseVisit).toBeFalsy();
         });
 
         it("should NOT set the visitUuid and canCloseVisit if there is no active visit for the patient", function () {
