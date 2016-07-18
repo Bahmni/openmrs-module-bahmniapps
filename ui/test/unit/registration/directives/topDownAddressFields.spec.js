@@ -23,6 +23,7 @@ describe('TopDownAddressFieldsDirectiveController', function () {
                 {"name": "Tehsil", "addressField": "address3", "required": false},
                 {"name": "Village", "addressField": "cityVillage", "required": true},
                 {"name": "House No., Street", "addressField": "address1", "required": false},
+                {"name": "Address Line", "addressField": "addressLine", "required": true}
             ];
             controller = $controller('TopDownAddressFieldsDirectiveController', {
                 $scope: scope,
@@ -239,8 +240,39 @@ describe('TopDownAddressFieldsDirectiveController', function () {
             scope.address.stateProvince="state";
             addressHierarchyService.search.and.returnValue(specUtil.createFakePromise(undefined));
             scope.$digest();
-            expect(addressHierarchyService.search).toHaveBeenCalled();
+            expect(addressHierarchyService.search).toHaveBeenCalledWith("stateProvince", "state", undefined);
             expect(scope.$parent.patient.addressCode).toBe(undefined);
+            done();
+        });
+
+        it("should recusive call for populateSelectedAddressUuids",function(done){
+            setupController();
+
+            scope.address.stateProvince="Dhaka";
+            scope.address.countyDistrict="Gazipur";
+            scope.address.address3="Gazipur Sadar";
+            scope.address.cityVillage="Baria";
+            scope.address.address1="Ward No-02";
+            addressHierarchyService.search.and.callFake(function (fileName, fieldValue, parentUuid) {
+                if(parentUuid == undefined)
+                    return specUtil.createFakePromise([{uuid: "DhakaUuid"}]);
+                else if(parentUuid == "DhakaUuid")
+                    return specUtil.createFakePromise([{uuid: "GazipurUuid"}]);
+                else if(parentUuid == "GazipurUuid")
+                    return specUtil.createFakePromise([{uuid: "SadarUuid"}]);
+                else if(parentUuid == "SadarUuid")
+                    return specUtil.createFakePromise([{uuid: "BariaUuid"}]);
+                else if(parentUuid == "BariaUuid")
+                    return specUtil.createFakePromise([{uuid: "Ward02Uuid"}]);
+            });
+            scope.$digest();
+
+            expect(addressHierarchyService.search.calls.count()).toBe(5);
+            expect(addressHierarchyService.search).toHaveBeenCalledWith("stateProvince", "Dhaka", undefined);
+            expect(addressHierarchyService.search).toHaveBeenCalledWith('countyDistrict', 'Gazipur', 'DhakaUuid');
+            expect(addressHierarchyService.search).toHaveBeenCalledWith('address3', 'Gazipur Sadar', 'GazipurUuid');
+            expect(addressHierarchyService.search).toHaveBeenCalledWith('cityVillage', 'Baria', 'SadarUuid');
+            expect(addressHierarchyService.search).toHaveBeenCalledWith('address1', 'Ward No-02', 'BariaUuid');
             done();
         });
     });
