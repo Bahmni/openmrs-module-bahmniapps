@@ -237,6 +237,10 @@
             return this.primaryObs.isComputed();
         },
 
+        isConciseText: function(){
+            return this.conceptUIConfig.conciseText === true;
+        },
+
         isComputedAndEditable: function () {
             return this.concept.conceptClass === "Computed/Editable";
         },
