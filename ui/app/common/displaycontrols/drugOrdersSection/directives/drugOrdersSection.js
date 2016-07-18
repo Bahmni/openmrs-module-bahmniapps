@@ -5,7 +5,7 @@ angular.module('bahmni.common.displaycontrol.drugOrdersSection')
         function (treatmentService, spinner, $rootScope) {
         var controller = function ($scope) {
             var DateUtil = Bahmni.Common.Util.DateUtil;
-
+            $scope.showAdditionalInstructions=true;
             $scope.toggle = true;
             $scope.toggleDisplay = function () {
                 $scope.toggle = ! $scope.toggle
