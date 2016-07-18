@@ -15,6 +15,7 @@ angular.module('bahmni.registration')
                 return conceptSet.isAvailable($scope.context);
             });
             var regEncounterTypeUuid = $rootScope.regEncounterConfiguration.encounterTypes[Bahmni.Registration.Constants.registrationEncounterType];
+            var visitLocationUuid = $rootScope.visitLocation;
 
             var getPatient = function () {
                 return patientService.get(patientUuid).then(function (openMRSPatient) {
@@ -79,10 +80,18 @@ angular.module('bahmni.registration')
 
             var searchActiveVisitsPromise = function () {
                 return visitService.search({
-                    patient: patientUuid, includeInactive: false, v: "custom:(uuid)"
-                }).then(function (data) {
-                    var hasActiveVisit = data.data.results.length > 0;
-                    self.visitUuid = hasActiveVisit ? data.data.results[0].uuid : "";
+                    patient: patientUuid, includeInactive: false, v: "custom:(uuid,location:(uuid))"
+                }).then(function (response) {
+                    var results = response.data.results;
+                    var activeVisitForCurrentLoginLocation;
+                    if(results) {
+                        activeVisitForCurrentLoginLocation = _.filter(results, function(result) {
+                            return result.location.uuid === visitLocationUuid
+                        });
+                    }
+
+                    var hasActiveVisit = activeVisitForCurrentLoginLocation.length > 0;
+                    self.visitUuid = hasActiveVisit ? activeVisitForCurrentLoginLocation[0].uuid : "";
                     $scope.canCloseVisit = isUserPrivilegedToCloseVisit() && hasActiveVisit;
                 });
             };
