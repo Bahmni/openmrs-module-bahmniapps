@@ -39,6 +39,9 @@ specUtil.simplePromise = function(data) {
     var SimplePromise = function(data) {
         this.then = function(callback) {
             return new SimplePromise(callback(data));
+        };
+        this.success = function(callback){
+            return new SimplePromise(callback(data));
         }
     };
     return new SimplePromise(data);

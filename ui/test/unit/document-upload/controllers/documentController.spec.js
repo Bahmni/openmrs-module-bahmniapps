@@ -14,6 +14,7 @@ describe("DocumentController", function () {
     var visitDocument;
     var sessionService;
     var visitService;
+    var patientService;
 
     var createVisit = function (startDateTime, stopDateTime, uuid) {
         var visit = new Bahmni.DocumentUpload.Visit();
@@ -121,17 +122,103 @@ describe("DocumentController", function () {
         return visit;
     };
 
+    var date = new Date();
+    var patient = {
+        "uuid": "patient uuid",
+        "auditInfo": {
+            dateCreated: moment(date).format()
+        },
+        "identifiers": [
+            {
+                "identifier": "GAN200003"
+            }
+        ],
+        "person": {
+            "gender": "F",
+            "bloodGroup": "AB+",
+            "age": 0,
+            "birthdate": moment(date).format(),
+            "birthdateEstimated": false,
+            "preferredName": {
+                "uuid": "72573d85-7793-49c1-8c29-7647c0a6a425",
+                "givenName": "first",
+                "middleName": "middle",
+                "familyName": "family"
+            },
+
+            "preferredAddress": {
+                "display": "house1243",
+                "uuid": "7746b284-82d5-4251-a7ec-6685b0ced206",
+                "preferred": true,
+                "address1": "house1243",
+                "address2": null,
+                "cityVillage": "village22",
+                "stateProvince": "state",
+                "countyDistrict": "dist",
+                "address3": "tehsilkk"
+            },
+            "attributes": [
+                {
+                    "uuid": "2a71ee67-3446-4f66-8267-82446bda21a7",
+                    "value": "some-class",
+                    "attributeType": {
+                        "uuid": "d3d93ab0-e796-11e2-852f-0800271c1b75"
+                    }
+                } ,
+                {
+                    "uuid": "2a71ee67-3446-4f66-8267-82446bda2999",
+                    "value": "1998-12-31T18:30:00.000+0000",
+                    "attributeType": {
+                        "uuid": "d3d93ab0-e796-11e2-852f-0800271c1999"
+                    }
+                } ,
+                {
+                    "uuid": "3da8141e-65d6-452e-9cfe-ce813bd11d52",
+                    "value":  {
+                        uuid : "4da8141e-65d6-452e-9cfe-ce813bd11d52",
+                        display: "some-value"
+                    },
+                    "attributeType": {
+                        "uuid": "d3e6dc74-e796-11e2-852f-0800271c1b75"
+                    }
+                }
+            ],
+            "auditInfo": {
+                dateCreated: moment(date).format()
+            }
+        }
+    };
+
     beforeEach(module('opd.documentupload'));
 
-    beforeEach(inject(function ($rootScope) {
+    beforeEach(inject(function () {
         spinner = jasmine.createSpyObj('spinner', ['forPromise']);
         encounterConfig = jasmine.createSpyObj('encounterConfig', ['getEncounterTypeUuid']);
         appConfig = jasmine.createSpyObj('encounterConfig', ['encounterType']);
         visitDocumentService = jasmine.createSpyObj('visitDocumentService', ['save']);
         sessionService = jasmine.createSpyObj('sessionService', ['getLoginLocationUuid']);
-        encounterService = jasmine.createSpyObj('encounterService',['find']);
-        visitService = jasmine.createSpyObj('visitService',['getVisitType']);
+        patientService = jasmine.createSpyObj('patientService', ['getPatient']);
+        encounterService = jasmine.createSpyObj('encounterService',['find', 'getEncountersForEncounterType']);
+        visitService = jasmine.createSpyObj('visitService',['getVisitType','search']);
     }));
+
+    /*Mock of constructor Bahmni.PatientMapper*/
+    var originalPatientMapper, spyPatientMapperInstance;
+    beforeEach(function () {
+        spyPatientMapperInstance = jasmine.createSpyObj('PatientMapperInstance', ['map']);
+        spyPatientMapperInstance.map.and.callFake(function (toBeMapped) {
+            return toBeMapped;
+        });
+
+        originalPatientMapper = Bahmni.PatientMapper;
+        Bahmni.PatientMapper = function () {
+            return spyPatientMapperInstance;
+        };
+    });
+    afterEach(function () {
+        Bahmni.PatientMapper = originalPatientMapper;
+    });
+    /*********/
 
     var mockEncounterService = function (data) {
         encounterService.find.and.callFake(function () {
@@ -141,6 +228,10 @@ describe("DocumentController", function () {
                 }
             }
         });
+    };
+
+    var mockGetEncountersForEncounterType = function (data) {
+        encounterService.getEncountersForEncounterType.and.returnValue(specUtil.simplePromise(data));
     };
 
     var mockVisitService = function(data) {
@@ -153,14 +244,24 @@ describe("DocumentController", function () {
         });
     };
 
+    var mockPatientService = function(data) {
+        patientService.getPatient.and.returnValue(specUtil.simplePromise(data));
+    };
+    var mockVisitServiceSearch = function(data) {
+        visitService.search.and.returnValue(specUtil.simplePromise(data));
+    };
+
     var setUp = function () {
         mockEncounterService([]);
         mockVisitService([]);
+        mockPatientService(patient);
+        visit1 = createVisit(new Date("April 21, 2014"), new Date("April 24, 2014 23:59:59"), "visit uuid");
+        visit2 = createVisit("April 25, 2014", "April 25, 2014 23:59:59");
+
+        mockVisitServiceSearch({data:{results: [visit1, visit2]}});
+        mockGetEncountersForEncounterType({results: []});
         inject(function ($controller, $rootScope) {
             scope = $rootScope.$new();
-
-            visit1 = createVisit(new Date("April 21, 2014"), new Date("April 24, 2014 23:59:59"), "visit uuid");
-            visit2 = createVisit("April 25, 2014", "April 25, 2014 23:59:59");
 
             scope.encounterConfig = encounterConfig;
             scope.appConfig = appConfig;
@@ -184,6 +285,7 @@ describe("DocumentController", function () {
                 visitDocumentService: visitDocumentService,
                 encounterService: encounterService,
                 sessionService: sessionService,
+                patientService: patientService,
                 $translate: translate,
                 visitService: visitService
             });
