@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('bahmni.registration')
-    .factory('patientService', ['$http', '$rootScope','$bahmniCookieStore','$q', 'patientServiceStrategy', function ($http, $rootScope, $bahmniCookieStore, $q, patientServiceStrategy) {
+    .factory('patientService', ['$http', '$rootScope','$bahmniCookieStore','$q', 'patientServiceStrategy','sessionService', function ($http, $rootScope, $bahmniCookieStore, $q, patientServiceStrategy, sessionService) {
         var openmrsUrl = Bahmni.Registration.Constants.openmrsUrl;
         var baseOpenMRSRESTURL = Bahmni.Registration.Constants.baseOpenMRSRESTURL;
 
@@ -22,7 +22,8 @@ angular.module('bahmni.registration')
                     programAttributeFieldName: programAttributeFieldName,
                     programAttributeFieldValue: programAttributeFieldValue,
                     addressSearchResultsConfig : addressSearchResultsConfig,
-                    patientSearchResultsConfig : patientSearchResultsConfig
+                    patientSearchResultsConfig : patientSearchResultsConfig,
+                    loginLocationUuid : sessionService.getLoginLocationUuid()
                 },
                 withCredentials: true
             };
@@ -32,7 +33,10 @@ angular.module('bahmni.registration')
         var searchByIdentifier = function(identifier){
             return $http.get(Bahmni.Common.Constants.bahmniSearchUrl + "/patient", {
                 method: "GET",
-                params: {identifier: identifier},
+                params: {
+                    identifier: identifier,
+                    loginLocationUuid: sessionService.getLoginLocationUuid()
+                },
                 withCredentials: true
             });
         };
