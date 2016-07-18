@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('bahmni.home')
-    .controller('DashboardController', ['$scope', '$state', 'appService', 'locationService', 'spinner', '$bahmniCookieStore', '$window', '$q', 'offlineService', 'schedulerService', 'eventQueue',
-        function ($scope, $state, appService, locationService, spinner, $bahmniCookieStore, $window, $q, offlineService, schedulerService, eventQueue) {
+    .controller('DashboardController', ['$scope', '$state', 'appService', 'locationService', 'spinner', '$bahmniCookieStore', '$window', '$q', 'offlineService', 'schedulerService', 'eventQueue', 'offlineDbService','androidDbService',
+        function ($scope, $state, appService, locationService, spinner, $bahmniCookieStore, $window, $q, offlineService, schedulerService, eventQueue, offlineDbService,androidDbService) {
             $scope.appExtensions = appService.getAppDescriptor().getExtensions($state.current.data.extensionPointId, "link") || [];
             $scope.selectedLocationUuid = {};
             $scope.isOfflineApp = offlineService.isOfflineApp();
@@ -12,6 +12,12 @@ angular.module('bahmni.home')
             };
 
             var init = function () {
+                if($scope.isOfflineApp){
+                    setWatchersForErrorStatus();
+                }
+                if(offlineService.isAndroidApp()){
+                    offlineDbService = androidDbService;
+                }
                 return locationService.getAllByTag("Login Location").then(function (response) {
                         $scope.locations = response.data.results;
                         $scope.selectedLocationUuid = getCurrentLocation().uuid;
@@ -89,11 +95,19 @@ angular.module('bahmni.home')
                 $scope.isSyncing ? $scope.syncStatusMessage = "Sync in Progress..." : updateSyncStatusMessageBasedOnQueuesCount();
             };
 
-            getSyncStatusInfo();
+            var setErrorStatusOnErrorsInSync = function(){
+                 offlineDbService.getAllLogs().then(function(errors){
+                    $scope.errorsInSync = !!errors.length;
+                });
+            };
 
-            $scope.$watch('isSyncing', function () {
-                getSyncStatusInfo();
-            });
+            getSyncStatusInfo();
+            var setWatchersForErrorStatus = function(){
+                $scope.$watch('isSyncing', function () {
+                    getSyncStatusInfo();
+                    setErrorStatusOnErrorsInSync();
+                });
+            };
 
             var updateLastSyncTimeOnSuccessfullSyncAnReturnSuccessMessage = function () {
                 if ($scope.isSyncing !== undefined) {

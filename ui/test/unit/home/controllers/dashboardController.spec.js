@@ -4,7 +4,7 @@ describe('dashboardController', function () {
 
 
     var $aController, window;
-    var scopeMock, rootScopeMock, _spinner, httpBackend, $q, state, $bahmniCookieStore, locationService, offlineService, appServiceMock, schedulerService, eventQueue;
+    var scopeMock, rootScopeMock, _spinner, httpBackend, $q, state, $bahmniCookieStore, locationService, offlineService, appServiceMock, schedulerService, eventQueue, offlineDbService, androidDbService;
 
     beforeEach(module('bahmni.home'));
     beforeEach(module('bahmni.common.offline'));
@@ -26,9 +26,11 @@ describe('dashboardController', function () {
         appServiceMock.getAppDescriptor.and.returnValue({
             getExtensions: function () { return {} }
         });
-        offlineService = jasmine.createSpyObj('offlineService', ['isOfflineApp', 'getItem', 'setItem']);
+        offlineService = jasmine.createSpyObj('offlineService', ['isOfflineApp', 'getItem', 'setItem','isAndroidApp']);
         schedulerService = jasmine.createSpyObj('schedulerService', ['sync', 'stopSync']);
         eventQueue = jasmine.createSpyObj('eventQueue', ['getCount', 'getErrorCount']);
+        offlineDbService = jasmine.createSpyObj('offlineDbService',['getAllLogs']);
+        androidDbService = jasmine.createSpyObj('androidDbService',['getAllLogs']);
 
         eventQueue.getErrorCount.and.returnValue(specUtil.simplePromise(2));
         eventQueue.getCount.and.returnValue(specUtil.simplePromise(1));
@@ -37,7 +39,9 @@ describe('dashboardController', function () {
         schedulerService.stopSync.and.returnValue({});
 
         offlineService.isOfflineApp.and.returnValue(true);
-        locationService.getAllByTag.and.returnValue(specUtil.createFakePromise({"data": {"results": {}}}))
+        offlineService.isAndroidApp.and.returnValue(false);
+        locationService.getAllByTag.and.returnValue(specUtil.createFakePromise({"data": {"results": {}}}));
+        offlineDbService.getAllLogs.and.returnValue(specUtil.simplePromise(["error1"]));
 
     }));
 
@@ -71,7 +75,9 @@ describe('dashboardController', function () {
             offlineService: offlineService,
             $bahmniCookieStore: $bahmniCookieStore,
             schedulerService: schedulerService,
-            eventQueue: eventQueue
+            eventQueue: eventQueue,
+            offlineDbService : offlineDbService,
+            androidDbService : androidDbService
         });
     });
 
@@ -140,6 +146,7 @@ describe('dashboardController', function () {
         scopeMock.isSyncing = false;
         scopeMock.$digest();
         expect(scopeMock.syncStatusMessage).toBe("Sync Failed, Press sync button to try again");
+        expect(scopeMock.errorsInSync).toBeTruthy();
     });
 
     it("should set the syncStatusMessage to Sync Pending, if are events in eventQueue, but no events in errorQueue and it is chrome or android app", function () {
@@ -155,11 +162,14 @@ describe('dashboardController', function () {
     it("should set the syncStatusMessage to Data Synced Successfully, if no events in eventQueue, errorQueue and it is chrome or android app", function () {
         eventQueue.getErrorCount.and.returnValue(specUtil.simplePromise(0));
         eventQueue.getCount.and.returnValue(specUtil.simplePromise(0));
+        offlineDbService.getAllLogs.and.returnValue(specUtil.simplePromise([]));
 
         scopeMock.isSyncing = false;
         scopeMock.$digest();
 
         expect(scopeMock.syncStatusMessage).toBe("Data Synced Successfully");
+        expect(scopeMock.errorsInSync).toBeFalsy();
+
     });
 
     it("should set the syncStatusMessage to Sync in Progress, if no events in eventQueue, errorQueue and it is chrome or android app", function () {
