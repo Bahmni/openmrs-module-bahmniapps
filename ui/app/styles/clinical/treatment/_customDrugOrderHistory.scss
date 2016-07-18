@@ -343,9 +343,10 @@ If each of a table rows have multiple possible actions associated with them, use
         width: auto;
         padding:0 !important;
         position: static;
-        button{
+        button,button:hover{
           i{
             font-size: 1.8em;
+            padding:0 !important;
           }
         }
         .button-group{

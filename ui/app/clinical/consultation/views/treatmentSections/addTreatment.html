@@ -4,8 +4,8 @@
         <i class="fa fa-caret-down" ng-show="addTreatment"></i>
         <span class="section-label">{{ ::'MEDICATION_ADD_DRUG_FORM_TITLE' | translate}}</span>
     </h2>
-    <div class="order-section-container">
-        <div class="Order-section-orderDrug clearfix" ng-show="addTreatment">
+    <div class="order-section-container"  ng-show="addTreatment">
+        <div class="Order-section-orderDrug clearfix">
             <form name="addForm" ng-class="{ 'show-invalid': formInvalid}"  ng-submit="add()" bm-form class="edit-drug-order-container">
                 <article class="form-field">
                     <div class="field-attribute">

@@ -33,6 +33,7 @@ tags-input{
     }
   }
   .tags{
+    border-radius:0px;
     .tag-list{
       display: inline;
     }
@@ -45,22 +46,17 @@ tags-input{
         color:#363463;
       }
     }
+    &.focused{
+      box-shadow:none;
+      outline: 2px solid #007FFF;
+      background: #FFFDF7;
+    }
   }
-}
-tags-input .host{
-  margin-top:0;
-  margin-bottom: 0;
-}
-
-.illegalValue{
-  border-radius: 7px;
-}
-
-tags-input.ng-invalid .tags{
-  box-shadow: none;
-}
-tags-input .tags.focused{
-  box-shadow:none;
-  outline: 2px solid #007FFF;
-  background: #FFFDF7;
+  &.ng-invalid .tags{
+    box-shadow: none;
+  }
+  .host{
+    margin-top:0;
+    margin-bottom: 0;
+  }
 }
