@@ -43,15 +43,15 @@
     "angular-cookies": "1.4.9",
     "angular-elastic": "~2.5.0",
     "hustle": "https://github.com/DWB-eHealth/hustle.git#v0.2.0.cleanup_abandoned_items_patch",
-    "crypto-js": "3.1.5"
+    "crypto-js": "3.1.5",
+    "ng-tags-input": "^3.1.1"
   },
   "devDependencies": {
     "angular-mocks": "1.4.9",
     "angular-scenario": "1.4.9",
     "q": "1.0.1",
     "jasmine-jquery": "~2.1.0",
-    "Cortana": "~1.2.6",
-    "ng-tags-input": "^3.1.1"
+    "Cortana": "~1.2.6"
   },
   "resolutions": {
     "angular": "1.4.9",
