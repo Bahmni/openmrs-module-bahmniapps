@@ -128,7 +128,7 @@ describe("ConceptSetSection", function () {
             var conceptSetSection = new ConceptSetSection(noDefaultConfig, new Bahmni.Auth.User({}), {}, observations, conceptSet);
             expect(conceptSetSection.isAdded).toBe(false);
         });
-    })
+    });
 
 
     describe("isOpen", function () {
@@ -166,7 +166,16 @@ describe("ConceptSetSection", function () {
             ];
             var conceptSetSection = new ConceptSetSection(extensions, new Bahmni.Auth.User({}), {}, observations, conceptSet);
             expect(conceptSetSection.canToggle()).toBe(true);
-        })
+        });
+
+        it("should return true if conceptSet observations has value 0", function () {
+            var observations = [
+                {concept: {name: "vitals"}, value: 0}
+            ];
+            var conceptSetSection = new ConceptSetSection(extensions, new Bahmni.Auth.User({}), {}, observations, conceptSet);
+            expect(conceptSetSection.canToggle()).toBe(false);
+        });
+
     });
 
     describe("toggleDisplay", function () {

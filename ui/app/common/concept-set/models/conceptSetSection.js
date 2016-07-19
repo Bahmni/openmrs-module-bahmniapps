@@ -39,7 +39,7 @@ Bahmni.ConceptSet.ConceptSetSection = function (extensions, user, config, observ
                 return atLeastOneValueSet(groupMember);
             })
         } else {
-            return observation.value;
+            return !(_.isUndefined(observation.value) ||  observation.value === "");
         }
     };
     
