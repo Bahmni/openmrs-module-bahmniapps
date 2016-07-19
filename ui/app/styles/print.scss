@@ -905,3 +905,18 @@ h3 {
     font-weight: bold;
     color: #000 !important;
 }
+
+.registration-print-summary{
+    .hierarchy {
+        ul li{
+            overflow:auto;
+            clear:both;
+        }
+        .value-text-only, .text-only {
+            width: 380px !important;
+            float: right;
+            padding: 2px 0 !important;
+        }
+    }
+}
+
