@@ -101,11 +101,6 @@ angular
         locationService.getVisitLocation(loginLocationUuid).then(function(response){
             $rootScope.visitLocation = response.data;
         });
-
-        $rootScope.$on('$viewContentLoaded', function () {
-            $templateCache.removeAll();
-        });
-
         if (offlineService.isChromeApp() || offlineService.isAndroidApp()) {
             schedulerService.sync();
         }
