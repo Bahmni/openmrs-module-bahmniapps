@@ -98,9 +98,5 @@ angular.module('bahmni.common.conceptSet')
             },
             controller: 'ConceptSetGroupController',
             templateUrl: '../common/concept-set/views/conceptSetGroup.html'
-        }
-        scope.logValue = function(value){
-            console.log(value);
-            return value === true;
-            }
+        };
     });
