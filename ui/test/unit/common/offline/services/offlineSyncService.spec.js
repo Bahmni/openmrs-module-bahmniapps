@@ -608,6 +608,27 @@ describe('OfflineSyncService', function () {
             expect(offlineDbService.insertMarker.calls.count()).toBe(1);
         });
 
+        it('should not create patient record when patient is voided', function () {
+            spyOn(offlineDbService, 'getMarker').and.callThrough();
+            spyOn(eventLogService, 'getEventsFor').and.callThrough();
+            spyOn(eventLogService, 'getDataForUrl').and.callThrough();
+            spyOn(offlineDbService, 'createPatient').and.callThrough();
+            spyOn(offlineDbService, 'insertMarker').and.callThrough();
+            patient.voided = true;
+            offlineSyncService.syncTransactionalData();
+            $rootScope.$digest();
+            expect(offlineDbService.getMarker).toHaveBeenCalled();
+            expect(offlineDbService.getMarker.calls.count()).toBe(1);
+            expect(eventLogService.getEventsFor).toHaveBeenCalledWith(202020, 'lastReadUuid');
+            expect(eventLogService.getEventsFor.calls.count()).toBe(1);
+            expect(eventLogService.getDataForUrl).toHaveBeenCalledWith('url to get patient object');
+            expect(eventLogService.getDataForUrl.calls.count()).toBe(1);
+            expect(offlineDbService.createPatient).not.toHaveBeenCalled();
+            expect(offlineDbService.createPatient.calls.count()).toBe(0);
+            expect(offlineDbService.insertMarker).toHaveBeenCalledWith('TransactionalData', 'eventuuid', 202020);
+            expect(offlineDbService.insertMarker.calls.count()).toBe(1);
+        });
+
         it('should read concept events from the last read uuid', function () {
             spyOn(offlineDbService, 'getMarker').and.callThrough();
             spyOn(eventLogService, 'getConceptEventsFor').and.callThrough();
