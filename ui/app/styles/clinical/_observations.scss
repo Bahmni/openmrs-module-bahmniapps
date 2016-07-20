@@ -425,7 +425,8 @@ concept-set {
 }
 
 .field-value-buttonSelectType{
-  width:66%;
+  max-width:66%;
+  width:auto;
   .multi-select-button-group button{
     width:200px;
     text-align: center;
@@ -436,7 +437,7 @@ concept-set {
     }
   }
   @media screen and (max-width: 850px){
-    width:52%;
+    max-width:52%;
   }
 }
 .add-more-wrapper{
