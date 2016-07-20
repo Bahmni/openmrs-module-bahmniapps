@@ -57,6 +57,14 @@
       margin-right: 10px;
     }
   }
+  .disableBacteriologyInRetroMode{
+    button, input {
+      pointer-events: none;
+      background: $lightestGray;
+      border: $lightGray 1px solid;
+      color: #999;
+    }
+  }
 }
 
 .bacteriology-dashboard{
