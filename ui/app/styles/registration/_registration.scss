@@ -71,7 +71,8 @@ body{
     &.visit-patient-page{
       .observation-section{
         .field-value-buttonSelectType{
-          width:55%;
+          max-width:55%;
+          width:auto;
           .multi-select-button-group button{
             width:185px;
             text-align: center;
@@ -82,10 +83,10 @@ body{
             }
           }
           @media screen and (max-width: 1060px){
-            width:48%;
+            max-width:48%;
           }
           @media (max-width : 650px){
-            width:40%;
+            max-width:40%;
           }
         }
         article{

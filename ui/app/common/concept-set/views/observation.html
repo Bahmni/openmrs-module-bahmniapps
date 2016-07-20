@@ -152,7 +152,7 @@
                     </i>
                 </label>
 
-                <div class="field-value" ng-switch="::observation.getControlType()"  ng-class="{'field-value-buttonSelectType' :observation.getControlType()== 'buttonselect'}">
+                <div class="field-value" ng-switch="::observation.getControlType()"  ng-class="{'field-value-buttonSelectType' :observation.getControlType()== 'buttonselect' || observation.getControlType()== 'grid'}">
                     <div class="concept-description" ng-if="::getBooleanResult(observation.previous)">
                         <span class="details" ng-bind-html="getStringValue(observation.previous)"></span>
                     </div>
