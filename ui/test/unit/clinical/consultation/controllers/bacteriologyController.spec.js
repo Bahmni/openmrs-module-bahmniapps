@@ -1,5 +1,5 @@
 describe("Bacteriology Controller", function () {
-    var $scope, rootScope, contextChangeHandler, spinner, conceptSetService, appService, appDescriptor, controller;
+    var $scope, rootScope, contextChangeHandler, spinner, conceptSetService, appService, appDescriptor, controller, retrospectiveEntryService;
     var existingSpecimen = new Bahmni.Clinical.Specimen({
         existingObs: "Existing Obs Uuid",
         dateCollected: "2015-10-01T18:30:00.000Z",
@@ -55,7 +55,8 @@ describe("Bacteriology Controller", function () {
             spinner: spinner,
             conceptSetService: conceptSetService,
             bacteriologyConceptSet: {},
-            appService:appService
+            appService:appService,
+            retrospectiveEntryService:retrospectiveEntryService
         });
     };
 

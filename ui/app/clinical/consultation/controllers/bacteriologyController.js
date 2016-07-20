@@ -1,14 +1,20 @@
 'use strict';
 
 angular.module('bahmni.clinical')
-    .controller('BacteriologyController', ['$scope', '$rootScope', 'contextChangeHandler', 'spinner', 'conceptSetService', 'messagingService', 'bacteriologyConceptSet','appService',
-        function ($scope, $rootScope, contextChangeHandler, spinner, conceptSetService, messagingService, bacteriologyConceptSet, appService) {
+    .controller('BacteriologyController', ['$scope', '$rootScope', 'contextChangeHandler', 'spinner', 'conceptSetService', 
+        'messagingService', 'bacteriologyConceptSet','appService',  'retrospectiveEntryService',
+        function ($scope, $rootScope, contextChangeHandler, spinner, conceptSetService, messagingService, bacteriologyConceptSet, 
+                  appService,retrospectiveEntryService) {
             $scope.consultation.extensions = $scope.consultation.extensions ? $scope.consultation.extensions : {mdrtbSpecimen: []};
             $scope.savedSpecimens = $scope.consultation.savedSpecimens || $scope.consultation.extensions.mdrtbSpecimen;
             $scope.newSpecimens = $scope.consultation.newlyAddedSpecimens || [];
             $scope.deletedSpecimens = $scope.consultation.deletedSpecimens || [];
 
             $scope.today = Bahmni.Common.Util.DateUtil.getDateWithoutTime(Bahmni.Common.Util.DateUtil.now());
+
+            $scope.isRetrospectiveMode = function(){
+                return !_.isEmpty(retrospectiveEntryService.getRetrospectiveEntry());
+            };
 
             var init = function () {
                 if( appService.getAppDescriptor().getConfigValue("showSaveConfirmDialog")){
