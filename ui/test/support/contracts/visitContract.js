@@ -13,6 +13,9 @@ Bahmni.Tests.OpenMRSVisit = {
                 "retired": false,
                 "resourceVersion": "1.9"
             },
+            "location": {
+                "uuid": "visitLocationUuid"
+            },
             "startDatetime": "2014-12-28T22:41:11.000+0530",
             "stopDatetime": null,
             "encounters": [
@@ -30,6 +33,9 @@ Bahmni.Tests.OpenMRSVisit = {
                 "description": "Visit for patients being admitted",
                 "retired": false,
                 "resourceVersion": "1.9"
+            },
+            "location": {
+                "uuid": "visitLocationUuid"
             },
             "startDatetime": "2014-12-24T10:12:11.000+0530",
             "stopDatetime": "2014-12-24T22:42:11.000+0530",
