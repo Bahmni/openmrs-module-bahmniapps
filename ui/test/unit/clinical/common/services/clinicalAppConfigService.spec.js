@@ -3,6 +3,7 @@ describe("clinicalAppConfigService", function () {
     var _sessionService;
     var $stateParams;
     var loadConfigService;
+    var urlHelper;
 
     beforeEach(module('bahmni.clinical'));
     beforeEach(module('bahmni.common.appFramework'));
@@ -142,7 +143,8 @@ describe("clinicalAppConfigService", function () {
         }
     }
     };
-    beforeEach(module(function ($provide) {
+
+    var createSpyObjects = function() {
         loadConfigService = jasmine.createSpyObj('loadConfigService', ['loadConfig']);
         loadConfigService.loadConfig.and.callFake(function (url) {
             if (url.indexOf("app.json") > -1) {
@@ -165,30 +167,39 @@ describe("clinicalAppConfigService", function () {
                 {"name": "app:billing"},
             ]});
         });
-        $stateParams = {configName: 'default'};
         _sessionService.loadProviders.and.callFake(function () {
             return  specUtil.respondWith({});
         });
-        var urlHelper = {getPatientUrl: function() {return "/patient/somePatientUuid"}};
+        urlHelper = {
+            getPatientUrl: function () {
+                return "/patient/somePatientUuid"
+            }
+        };
+    };
 
 
+    describe("should fetch app config and extension config", function() {
 
-        $provide.value('sessionService', _sessionService);
-        $provide.value('$q', Q);
-        $provide.value('$stateParams', $stateParams);
-        $provide.value('urlHelper', urlHelper);
-        $provide.value('loadConfigService', loadConfigService);
-    }));
+        beforeEach(module(function ($provide) {
+            createSpyObjects();
+
+            $stateParams = {configName: 'default'};
+
+            $provide.value('sessionService', _sessionService);
+            $provide.value('$q', Q);
+            $provide.value('$stateParams', $stateParams);
+            $provide.value('urlHelper', urlHelper);
+            $provide.value('loadConfigService', loadConfigService);
+        }));
 
 
-    var clinicalAppConfigService;
-    var appService;
+        var clinicalAppConfigService;
+        var appService;
 
-    beforeEach(inject(['clinicalAppConfigService', 'appService', function (clinicalAppConfigServiceInjected, appServiceInjected) {
-        clinicalAppConfigService = clinicalAppConfigServiceInjected;
-        appService = appServiceInjected;
-    }]));
-
+        beforeEach(inject(['clinicalAppConfigService', 'appService', function (clinicalAppConfigServiceInjected, appServiceInjected) {
+            clinicalAppConfigService = clinicalAppConfigServiceInjected;
+            appService = appServiceInjected;
+        }]));
 
     describe("should fetch app config", function () {
 
@@ -253,40 +264,72 @@ describe("clinicalAppConfigService", function () {
             });
         })
 
-    });
-
-    describe("should fetch extension config", function () {
-        it('should fetch consultation boards', function (done) {
-            appService.initApp('clinical', {'extension': true}).then(function () {
-                var result = clinicalAppConfigService.getAllConsultationBoards();
-                expect(result.length).toBe(2);
-                done();
-            });
         });
 
-        it('should fetch consultation board link', function (done) {
+        describe("should fetch extension config", function () {
+            it('should fetch consultation boards', function (done) {
+                appService.initApp('clinical', {'extension': true}).then(function () {
+                    var result = clinicalAppConfigService.getAllConsultationBoards();
+                    expect(result.length).toBe(2);
+                    done();
+                });
+            });
+
+            it('should fetch consultation board link', function (done) {
+                appService.initApp('clinical', {'extension': true}).then(function () {
+                    var result = clinicalAppConfigService.getConsultationBoardLink();
+                    expect(result).toBe("/default/patient/somePatientUuid/concept-set-group/observations?encounterUuid=active");
+                    done();
+                });
+            });
+
+            it('should fetch treatment action link', function (done) {
+                appService.initApp('clinical', {'extension': true}).then(function () {
+                    var result = clinicalAppConfigService.getTreatmentActionLink();
+                    expect(result.length).toBe(1);
+                    done();
+                });
+            });
+
+            it('should fetch concept set extensions', function (done) {
+                appService.initApp('clinical', {'extension': true}).then(function () {
+                    var result = clinicalAppConfigService.getAllConceptSetExtensions("observations");
+                    expect(result.length).toBe(2);
+                    done();
+                });
+            })
+        });
+
+    });
+        describe("should send parameters for program uuid and enrollment uuid", function(){
+        beforeEach(module(function ($provide) {
+            createSpyObjects();
+
+            $stateParams = {configName: 'default', programUuid : "programUuid", enrollment : "enrollmentUuid"};
+
+            $provide.value('sessionService', _sessionService);
+            $provide.value('$q', Q);
+            $provide.value('$stateParams', $stateParams);
+            $provide.value('urlHelper', urlHelper);
+            $provide.value('loadConfigService', loadConfigService);
+        }));
+
+
+        var clinicalAppConfigService;
+        var appService;
+
+        beforeEach(inject(['clinicalAppConfigService', 'appService', function (clinicalAppConfigServiceInjected, appServiceInjected) {
+            clinicalAppConfigService = clinicalAppConfigServiceInjected;
+            appService = appServiceInjected;
+        }]));
+
+        it('should fetch consultation board link with parameters', function (done) {
             appService.initApp('clinical', {'extension': true}).then(function () {
                 var result = clinicalAppConfigService.getConsultationBoardLink();
-                expect(result).toBe("/default/patient/somePatientUuid/concept-set-group/observations?encounterUuid=active");
+                expect(result).toBe("/default/patient/somePatientUuid/concept-set-group/observations?programUuid=programUuid&enrollment=enrollmentUuid&dateEnrolled=undefined&dateCompleted=undefined");
                 done();
             });
         });
-
-        it('should fetch treatment action link', function (done) {
-            appService.initApp('clinical', {'extension': true}).then(function () {
-                var result = clinicalAppConfigService.getTreatmentActionLink();
-                expect(result.length).toBe(1);
-                done();
-            });
-        });
-
-        it('should fetch concept set extensions', function (done) {
-            appService.initApp('clinical', {'extension': true}).then(function () {
-                var result = clinicalAppConfigService.getAllConceptSetExtensions("observations");
-                expect(result.length).toBe(2);
-                done();
-            });
-        })
     });
 
 });

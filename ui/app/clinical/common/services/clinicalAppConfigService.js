@@ -2,7 +2,6 @@
 
 angular.module('bahmni.clinical')
     .service('clinicalAppConfigService', ['appService', 'urlHelper', '$stateParams', function (appService, urlHelper, stateParams) {
-
         this.getTreatmentActionLink = function () {
             return appService.getAppDescriptor().getExtensions("org.bahmni.clinical.treatment.links", "link") || [];
         };
@@ -56,8 +55,9 @@ angular.module('bahmni.clinical')
             var defaultBoard = _.find(allBoards, 'default');
             if(stateParams.programUuid) {
                 var programParams = "?programUuid=" + stateParams.programUuid +
+                    "&enrollment=" + stateParams.enrollment +
                     "&dateEnrolled=" + stateParams.dateEnrolled +
-                    "&dateCompleted" + stateParams.dateCompleted;
+                    "&dateCompleted=" + stateParams.dateCompleted;
                 return "/" + stateParams.configName + urlHelper.getPatientUrl() + "/" + defaultBoard.url + programParams;
             }
             else if (defaultBoard) {
