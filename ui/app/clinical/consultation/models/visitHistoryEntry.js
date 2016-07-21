@@ -11,6 +11,11 @@ Bahmni.Clinical.VisitHistoryEntry = (function(){
 	    	return this.stopDatetime === null;
 	    },
 
+		isFromCurrentLocation: function(currentVisitLocation) {
+			var visitLocation = _.get(this.location, 'uuid');
+			return visitLocation === currentVisitLocation
+		},
+
 	    isOneDayVisit: function() {
 	    	if(this.isActive()) {
 				return true;
