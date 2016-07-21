@@ -89,16 +89,33 @@ angular.module('bahmni.home')
                     function (error) {
                         $scope.errorMessageTranslateKey = error;
                         if (error === 'LOGIN_LABEL_MAX_FAILED_ATTEMPTS' || error == 'LOGIN_LABEL_OTP_EXPIRED') {
-                            $scope.showOTP = false;
-                            delete $scope.loginInfo.otp;
-                            delete $scope.loginInfo.username;
-                            delete $scope.loginInfo.password;
+                            deleteUserCredentialsAndShowLoginPage();
                         } else if (error == 'LOGIN_LABEL_WRONG_OTP_MESSAGE_KEY') {
                             delete $scope.loginInfo.otp;
                         }
                         deferrable.reject(error);
                     }
                 );
+
+                var deleteUserCredentialsAndShowLoginPage = function() {
+                    $scope.showOTP = false;
+                    delete $scope.loginInfo.otp;
+                    delete $scope.loginInfo.username;
+                    delete $scope.loginInfo.password;
+                };
+
+                $scope.resendOTP = function () {
+                    var promise = sessionService.resendOTP($scope.loginInfo.username, $scope.loginInfo.password);
+                    promise.then(function () {
+                        $scope.errorMessageTranslateKey = 'LOGIN_LABEL_RESEND_SUCCESS';
+                    }, function (response) {
+                        if (response.status === 429) {
+                            $scope.errorMessageTranslateKey = 'LOGIN_LABEL_MAX_RESEND_ATTEMPTS';
+                            deleteUserCredentialsAndShowLoginPage();
+                        }
+                    });
+                };
+
                 spinner.forPromise(deferrable.promise).then(
                     function (data) {
                         if (data) return;

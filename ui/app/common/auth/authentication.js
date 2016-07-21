@@ -41,6 +41,14 @@ angular.module('authentication')
             });
         };
 
+        this.resendOTP = function (username, password) {
+            var btoa = username + ':' + password;
+            return $http.get(sessionResourcePath + '&resendOTP=true', {
+                headers: {'Authorization': 'Basic ' + window.btoa(btoa)},
+                cache: false
+            });
+        };
+
         var createSession = function(username, password, otp){
             var deferrable = $q.defer();
 

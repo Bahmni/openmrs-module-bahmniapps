@@ -219,6 +219,17 @@ describe("Authentication", function () {
             sessionService.loginUser("userName", "password", "location", "123456");
             expect(deferrable.reject).toHaveBeenCalledWith("LOGIN_LABEL_MAX_FAILED_ATTEMPTS");
         }]));
+
+        it("should send the resend otp request", inject(['$http', 'sessionService', function ($http, sessionService) {
+            spyOn($http, 'get');
+
+            sessionService.resendOTP("userName", "password");
+
+            expect($http.get).toHaveBeenCalledWith('/openmrs/ws/rest/v1/session?v=custom:(uuid)&resendOTP=true', {
+                headers: {Authorization: 'Basic dXNlck5hbWU6cGFzc3dvcmQ='},
+                cache: false
+            })
+        }]));
     });
 
 
