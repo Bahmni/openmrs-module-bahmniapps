@@ -122,8 +122,8 @@ angular.module('consultation')
                     }
                 },
                 resolve: {
-                    visitHistory: function (visitHistoryInitialization, $stateParams) {
-                        return visitHistoryInitialization($stateParams.patientUuid);
+                    visitHistory: function (visitHistoryInitialization, $stateParams, $rootScope) {
+                        return visitHistoryInitialization($stateParams.patientUuid, $rootScope.visitLocation);
                     },
                     retrospectiveIntialization: function (retrospectiveEntryService) {
                         return retrospectiveEntryService.initializeRetrospectiveEntry();
