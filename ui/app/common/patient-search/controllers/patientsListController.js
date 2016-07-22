@@ -2,8 +2,8 @@
 
 angular.module('bahmni.common.patientSearch')
 .controller('PatientsListController', ['$scope', '$window', 'patientService', '$rootScope', 'appService', 'spinner',
-        '$stateParams', '$bahmniCookieStore','offlineService',
-    function ($scope, $window, patientService, $rootScope, appService, spinner, $stateParams, $bahmniCookieStore, offlineService) {
+        '$stateParams', '$bahmniCookieStore','offlineService','printer',
+    function ($scope, $window, patientService, $rootScope, appService, spinner, $stateParams, $bahmniCookieStore, offlineService, printer) {
         var initialize = function () {
             var searchTypes = appService.getAppDescriptor().getExtensions("org.bahmni.patient.search", "config").map(mapExtensionToSearchType);
             $scope.search = new Bahmni.Common.PatientSearch.Search(_.without(searchTypes, undefined));
@@ -67,7 +67,20 @@ angular.module('bahmni.common.patientSearch')
 
         $scope.isHeadingOfName = function(heading){
             return _.includes(Bahmni.Common.PatientSearch.Constants.nameHeading,heading);
+        };
 
+        $scope.getPrintableHeadings = function(patients){
+           var headings = $scope.getHeadings(patients);
+            var printableHeadings = headings.filter(function(heading){
+                return _.indexOf(Bahmni.Common.PatientSearch.Constants.printIgnoreHeadingsList,heading) === -1;
+            });
+            return printableHeadings;
+        };
+
+        $scope.printPage = function() {
+            if($scope.search.searchType.printHtmlLocation != null) {
+                printer.printFromScope($scope.search.searchType.printHtmlLocation, $scope);
+            }
         };
 
         var mapExtensionToSearchType = function(appExtn) {
@@ -83,6 +96,8 @@ angular.module('bahmni.common.patientSearch')
                     params:appExtn.extensionParams.searchParams,
                     refreshTime: appExtn.extensionParams.refreshTime || 0,
                     view: appExtn.extensionParams.view || Bahmni.Common.PatientSearch.Constants.searchExtensionTileViewType,
+                    showPrint: appExtn.extensionParams.showPrint || false,
+                    printHtmlLocation : appExtn.extensionParams.printHtmlLocation || null,
                     additionalParams : appExtn.extensionParams.additionalParams,
                     translationKey : appExtn.extensionParams.translationKey
             }
@@ -116,10 +131,21 @@ angular.module('bahmni.common.patientSearch')
 
         $scope.forwardPatient = function (patient) {
             var options = $.extend({}, $stateParams);
-            $.extend(options, { patientUuid: patient.uuid, visitUuid: patient.activeVisitUuid || null, encounterUuid: $stateParams.encounterUuid || 'active' });
-            $window.location = appService.getAppDescriptor().formatUrl($scope.search.searchType.forwardUrl, options, true);
-        };
+            $.extend(options, {
+                patientUuid: patient.uuid,
+                visitUuid: patient.activeVisitUuid || null,
+                encounterUuid: $stateParams.encounterUuid || 'active',
+                programUuid: patient.programUuid || null,
+                enrollment: patient.enrollment || null,
+                forwardUrl: patient.forwardUrl || null
+            });
 
+            if(options.forwardUrl !== null) {
+                $window.open(appService.getAppDescriptor().formatUrl(options.forwardUrl, options, true), '_blank');
+            } else {
+                $window.location = appService.getAppDescriptor().formatUrl($scope.search.searchType.forwardUrl, options, true);
+            }
+        };
         initialize();
     }
 ]);

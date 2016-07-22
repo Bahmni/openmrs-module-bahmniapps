@@ -1,5 +1,9 @@
 <div class="patient-search-wrapper">
     <div class="tabs">
+        <button ng-if="search.searchType.showPrint" class="dialog-button-group" ng-click="printPage()"
+                accesskey="{{'CLINICAL_PRINT_ACCESS_KEY'| translate}}" ng-bind-html="'CLINICAL_PRINT_TRANSLATION_KEY'|translate">
+            <i class="fa fa-print"></i>
+        </button>
         <ul>
             <li class="tab-item" ng-repeat="searchType in search.searchTypes"
                 ng-class="{'tab-selected': search.isSelectedSearch(searchType)}">
@@ -45,7 +49,7 @@
                     <thead>
                     <tr>
                         <!-- <th><strong>Sl.No</strong></th> -->
-                        <th ng-repeat="heading in getHeadings(search.visiblePatients)"><strong>{{::heading}}</strong></th>
+                        <th ng-repeat="heading in getHeadings(search.visiblePatients)"><strong>{{ ::heading | translate }}</strong></th>
                     </tr>
                     </thead>
                     <tbody>

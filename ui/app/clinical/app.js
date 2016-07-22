@@ -347,6 +347,33 @@ angular.module('consultation')
                     }
                 }
             })
+            .state('patient.dashboard.observation',{
+                url: '/dashboard/observation/:observationUuid',
+                data: {
+                    backLinks: [homeBackLink]
+                },
+                resolve: {
+                    observation: function (observationsService, $stateParams) {
+                        return observationsService.getByUuid($stateParams.observationUuid).then(function(results){
+                            return results.data;
+                        });
+                    }
+                },
+                views: {
+                    'dashboard-header': {
+                        templateUrl: '../common/ui-helper/header.html',
+                        controller: 'PatientListHeaderController'
+                    },
+                    'dashboard-content': {
+                        controller: function ($scope, observation, patientContext) {
+                            $scope.observation = observation;
+                            $scope.patient = patientContext.patient;
+                        },
+                        template: '<patient-context patient="patient"></patient-context>'+
+                        '<edit-observation  observation="observation" concept-set-name="{{observation.concept.name}}" concept-display-name="{{observation.conceptNameToDisplay}}"></edit-observation>'
+                    }
+                }
+            })
             .state('patient.dahsboard.visit.tab', {
                 url: '/:tab',
                 data: {

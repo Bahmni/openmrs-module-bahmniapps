@@ -1,7 +1,7 @@
 'use strict';
 
 describe("PatientsListController", function () {
-        var _spinner, _patientService, _appService, $bahmniCookieStore;
+        var _spinner, _patientService, _appService, $bahmniCookieStore, _window, _printer;
         var controller, scope, findPatientsPromise, searchPatientsPromise, retrospectiveEntryService, offlineService, getRecentPatientsPromise;
         var stateParams = { location: "Ganiyari"};
 
@@ -81,16 +81,22 @@ describe("PatientsListController", function () {
                         return {
                             "recentPatientsDuration": 14
                         }
+                    },
+                    'formatUrl': function () {
+                        return "formattedUrl"
                     }
                 });
 
             _patientService = jasmine.createSpyObj('patientService', ['findPatients', 'search','getRecentPatients']);
+            _printer = jasmine.createSpyObj('printer', ['printFromScope']);
+            _window = jasmine.createSpyObj('$window', ['open', 'location']);
             findPatientsPromise = specUtil.createServicePromise('findPatients');
             searchPatientsPromise = specUtil.createServicePromise('search');
             getRecentPatientsPromise = specUtil.createServicePromise('getRecentPatients');
             _patientService.findPatients.and.returnValue(findPatientsPromise);
             _patientService.search.and.returnValue(searchPatientsPromise);
             _patientService.getRecentPatients.and.returnValue(getRecentPatientsPromise);
+            _printer.printFromScope.and.returnValue(true);
             offlineService.isOfflineApp.and.returnValue(true);
         });
 
@@ -108,13 +114,15 @@ describe("PatientsListController", function () {
             inject(function ($controller, $rootScope) {
                 controller = $controller('PatientsListController', {
                     $scope: scope,
+                    $window: _window,
                     patientService: _patientService,
                     appService: _appService,
                     spinner: _spinner,
                     $stateParams: stateParams,
                     retrospectiveEntryService: retrospectiveEntryService,
                     $bahmniCookieStore: $bahmniCookieStore,
-                    offlineService: offlineService
+                    offlineService: offlineService,
+                    printer: _printer
                 });
             });
         };
@@ -123,7 +131,8 @@ describe("PatientsListController", function () {
             it('should initialize configurations and fetch patients', function () {
                 scope.$apply(setUp);
 
-                expect(scope.search.searchType).toEqual({ name: 'All active patients', display: 'All active patients', handler: 'emrapi.sqlSearch.activePatients', forwardUrl: undefined, id: 'bahmni.clinical.patients.allPatients', params: undefined, refreshTime: '10', view : 'tile', additionalParams : undefined ,translationKey : undefined, patientCount : '...' });
+                expect(scope.search.searchType).toEqual({ name : 'All active patients', display : 'All active patients', handler : 'emrapi.sqlSearch.activePatients', forwardUrl : undefined, id : 'bahmni.clinical.patients.allPatients', params : undefined, refreshTime : '10', view : 'tile',
+                    showPrint : false, printHtmlLocation : null, additionalParams : undefined, translationKey : undefined, patientCount : '...' });
                 expect(_patientService.findPatients).toHaveBeenCalled();
 
                 findPatientsPromise.callThenCallBack({data: patients});
@@ -183,6 +192,45 @@ describe("PatientsListController", function () {
                 expect(searchType.patientCount).toEqual(4);
             });
 
+            it('should call window open when forward url is given', function(){
+                _window.open.and.returnValue(true);
+                var patient = { patientUuid : "patientUuid", forwardUrl : "forwardUrl" };
+                scope.forwardPatient(patient);
+                expect(_window.open).toHaveBeenCalled();
+            });
+
+            it('should call window location when forward url is not given', function(){
+                _window.location.and.returnValue(true);
+                var patient = { patientUuid : "patientUuid"};
+                scope.forwardPatient(patient);
+                expect(_window.location).toEqual("formattedUrl");
+            });
+
+
+        });
+
+        describe("patientListHeadings", function(){
+            beforeEach(function(){
+                scope.$apply(setUp);
+            });
+
+            it('should print headings which are filtered from ignore headings list', function(){
+                var patients = [{emr_id : 'emr_Id123', treatment : 'treatment_id', uuid : '23279927', forwardUrl: 'forwardUrl',programUuid: 'programUuid',enrollment: 'enrollmentUuid', DQ_COLUMN_TITLE_ACTION: 'action url'}];
+                var headings = scope.getHeadings(patients);
+                expect(headings).toEqual(['emr_id', 'treatment', 'DQ_COLUMN_TITLE_ACTION']);
+            });
+
+            it('should print headings which are filtered from ignore headings list and print headings list', function(){
+                var patients = [{emr_id : 'emr_Id123', treatment : 'treatment_id', uuid : '23279927', forwardUrl: 'forwardUrl', DQ_COLUMN_TITLE_ACTION: 'action url'}];
+                var headings = scope.getPrintableHeadings(patients);
+                expect(headings).toEqual(['emr_id', 'treatment']);
+            });
+
+            it('should print page from the config', function(){
+                scope.search.searchType.printHtmlLocation = '/bahmni_config/openmrs/apps/dataintegrity/patientListPrint.html';
+                scope.printPage();
+                expect(_printer.printFromScope).toHaveBeenCalled();
+            });
         });
 
     describe("Offline",function(){
