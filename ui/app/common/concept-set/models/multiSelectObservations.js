@@ -102,8 +102,10 @@ Bahmni.ConceptSet.MultiSelectObservation = function (concept, memberOfCollection
 
     this.getControlType = function(){
         var conceptConfig = this.getConceptUIConfig();
-        if(conceptConfig.autocomplete === true && conceptConfig.multiSelect === true && _.isUndefined(conceptConfig.nonCodedConceptName))
+        if(this.isCoded() && conceptConfig.autocomplete == true && conceptConfig.multiSelect == true)
             return "autocompleteMultiSelect";
+        else if(conceptConfig.autocomplete == true)
+            return "autocomplete";
         return  "buttonselect";
     };
 
