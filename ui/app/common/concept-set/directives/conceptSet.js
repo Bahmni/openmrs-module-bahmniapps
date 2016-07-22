@@ -149,7 +149,8 @@ angular.module('bahmni.common.conceptSet')
                             if (obs.isMultiSelect) {
                                 var selectedObsConceptNames = [];
                                 _.each(obs.selectedObs, function (observation) {
-                                    selectedObsConceptNames.push(observation.value.name);
+                                    if(!observation.voided)
+                                      selectedObsConceptNames.push(observation.value.name);
                                 });
                                 flattenedObsValues[obs.concept.name] = selectedObsConceptNames;
                             }
