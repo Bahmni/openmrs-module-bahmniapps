@@ -70,7 +70,6 @@ Bahmni.ConceptSet.ObservationMapper = function () {
             obs = newObservation(concept, savedObs, conceptSetConfig, mappedGroupMembers);
         }
 
-        if(_.isUndefined(parentConcept) || parentConcept.conceptClass.name === "Concept Details")
           new Bahmni.ConceptSet.MultiSelectObservations(conceptSetConfig).map(mappedGroupMembers);
         mapTabularObs(mappedGroupMembers, concept, obs, conceptSetConfig);
         return obs;
