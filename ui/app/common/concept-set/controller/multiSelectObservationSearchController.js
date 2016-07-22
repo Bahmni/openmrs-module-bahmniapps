@@ -8,6 +8,7 @@ angular.module('bahmni.common.conceptSet').controller('multiSelectObservationSea
 
     var init = function () {
         var selectedValues = _.map(_.values($scope.observation.selectedObs),'value');
+        _.remove(selectedValues,_.isUndefined);
         selectedValues.forEach(function (observation) {
             $scope.values.push({"label": observation.name,"name" : observation.name});
         });
@@ -79,5 +80,8 @@ angular.module('bahmni.common.conceptSet').controller('multiSelectObservationSea
 
     init();
 
-}]);
+}]).config(function(tagsInputConfigProvider) {
+    tagsInputConfigProvider.setDefaults('tagsInput', {
+        placeholder: ''
+    })});
 
