@@ -6,51 +6,11 @@
                 <h2 class="section-title">Select files</h2>
                 <form class="select-file-form">
                     <fieldset class="select-file-type">
-                        <ul>
+                        <ul ng-repeat="(key, urlMap) in urlMaps">
                             <li>
-                                <input type="radio" name="upload-type" ng-model="option" 
-                                id="concept" ng-value="'concept'" > 
-                                <label for="concept">Concept</label>
-                            </li>
-                            <li>
-                                <input type="radio" name="upload-type" ng-model="option" 
-                                id="conceptset" ng-value="'conceptset'" >
-                                <label for="conceptset">Concept Set</label>
-                            </li>
-                            <li>
-                                <input type="radio" name="upload-type" ng-model="option" 
-                                id="program" ng-value="'program'" > 
-                                <label for="program">Program</label>
-                            </li>
-                            <li>
-                                <input type="radio" name="upload-type" ng-model="option" 
-                                id="patient" ng-value="'patient'" > 
-                                <label for="patient">Patient</label>
-                            </li>
-                            <li>
-                                <input type="radio" name="upload-type" ng-model="option" 
-                                id="encounter" ng-value="'encounter'">
-                                <label for="encounter">Encounter</label>
-                            </li>
-                            <li>
-                                <input type="radio" name="upload-type" ng-model="option" 
-                                id="drug" ng-value="'drug'" > 
-                                <label for="drug">Drug</label>
-                            </li>
-                            <li>
-                                <input type="radio" name="upload-type" ng-model="option" 
-                                id="labResults" ng-value="'labResults'" > 
-                                <label for="labResults">Lab Results</label>
-                            </li>
-                            <li>
-                                <input type="radio" name="upload-type" ng-model="option" 
-                                id="referenceterms" ng-value="'referenceterms'" > 
-                                <label for="referenceterms">Reference Terms</label>
-                            </li>
-                            <li>
-                                <input type="radio" name="upload-type" ng-model="option"
-                                       id="relationship" ng-value="'relationship'" >
-                                <label for="relationship">Relationship Information</label>
+                                <input type="radio" name="upload-type" ng-model=option.selected
+                                       id="{{ key }}" ng-value="'{{ key }}'" >
+                                <label for="{{ key }}">{{ urlMap.name }}</label>
                             </li>
                         </ul>
                     </fieldset>
