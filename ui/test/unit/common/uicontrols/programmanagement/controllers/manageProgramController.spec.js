@@ -352,7 +352,7 @@ describe("ManageProgramController", function () {
 
             scope.updatePatientProgram(programToBeUpdated);
 
-            expect(messageService.showMessage).toHaveBeenCalledWith("error", "State cannot be started earlier than current state (15 Jul 15)");
+            expect(messageService.showMessage).toHaveBeenCalledWith("error", "PROGRAM_MANAGEMENT_STATE_CANT_START_BEFORE_KEY (15 Jul 15)");
         });
 
         it("should transit from one state to another successfully", function(){
@@ -372,7 +372,7 @@ describe("ManageProgramController", function () {
             expect(programToBeUpdated.states.length).toBe(3);
             expect(programToBeUpdated.states[2].startDate).toBe(Bahmni.Common.Util.DateUtil.parseLongDateToServerFormat("2015-07-19"));
             expect(programToBeUpdated.states[2].state.uuid).toBe(newStateUuid);
-            expect(messageService.showMessage).toHaveBeenCalledWith("info", "Saved");
+            expect(messageService.showMessage).toHaveBeenCalledWith("info", "CLINICAL_SAVE_SUCCESS_MESSAGE_KEY");
         });
 
         it("should show failure message on any server error with state transition", function(){
@@ -411,7 +411,7 @@ describe("ManageProgramController", function () {
 
             scope.updatePatientProgram(programToBeUpdated);
 
-            expect(messageService.showMessage).toHaveBeenCalledWith("error", "Program cannot be ended earlier than current state (15 Jul 15)");
+            expect(messageService.showMessage).toHaveBeenCalledWith("error", "PROGRAM_MANAGEMENT_PROGRAM_CANT_END_BEFORE_KEY (15 Jul 15)");
         });
 
         it('should end a program successfully', function(){
@@ -425,7 +425,7 @@ describe("ManageProgramController", function () {
             scope.updatePatientProgram(programToBeUpdated);
             scope.$digest();
 
-            expect(messageService.showMessage).toHaveBeenCalledWith("info", "Saved");
+            expect(messageService.showMessage).toHaveBeenCalledWith("info", "CLINICAL_SAVE_SUCCESS_MESSAGE_KEY");
         });
     });
 

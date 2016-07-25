@@ -60,7 +60,7 @@ angular.module('bahmni.common.uicontrols.programmanagment')
             };
 
             var successCallback = function () {
-                messagingService.showMessage("info", "Saved");
+                messagingService.showMessage("info", "CLINICAL_SAVE_SUCCESS_MESSAGE_KEY");
                 $scope.programEdited.selectedState = null;
                 $scope.programSelected = null;
                 $scope.workflowStateSelected = null;
@@ -116,11 +116,11 @@ angular.module('bahmni.common.uicontrols.programmanagment')
 
             $scope.enrollPatient = function () {
                 if (!isProgramSelected()) {
-                    messagingService.showMessage("error", "Please select a Program to Enroll the patient");
+                    messagingService.showMessage("error", "PROGRAM_MANAGEMENT_SELECT_PROGRAM_MESSAGE_KEY");
                     return $q.when({});
                 }
                 if (isThePatientAlreadyEnrolled()) {
-                    messagingService.showMessage("error", "Patient already enrolled to the Program");
+                    messagingService.showMessage("error", "PROGRAM_MANAGEMENT_ALREADY_ENROLLED_PROGRAM_MESSAGE_KEY");
                     return $q.when({});
                 }
                 var stateUuid = $scope.workflowStateSelected && $scope.workflowStateSelected.uuid ? $scope.workflowStateSelected.uuid : null;
@@ -163,7 +163,7 @@ angular.module('bahmni.common.uicontrols.programmanagment')
                 if(isProgramStateSelected()){
                     var startDate = getCurrentDate();
                     if (activeState && DateUtil.isBeforeDate(startDate, activeStateDate)) {
-                        messagingService.showMessage("error", "State cannot be started earlier than current state (" + DateUtil.formatDateWithoutTime(activeStateDate) + ")");
+                        messagingService.showMessage("error", "PROGRAM_MANAGEMENT_STATE_CANT_START_BEFORE_KEY" + " (" + DateUtil.formatDateWithoutTime(activeStateDate) + ")");
                         return;
                     }
                     if($scope.programEdited.selectedState.uuid){
@@ -179,7 +179,7 @@ angular.module('bahmni.common.uicontrols.programmanagment')
                 if(isOutcomeSelected(patientProgram)){
                     dateCompleted = DateUtil.getDateWithoutTime(getCurrentDate());
                     if (activeState && DateUtil.isBeforeDate(dateCompleted, activeStateDate)) {
-                        messagingService.showMessage("error", "Program cannot be ended earlier than current state (" + DateUtil.formatDateWithoutTime(activeStateDate) + ")");
+                        messagingService.showMessage("error", "PROGRAM_MANAGEMENT_PROGRAM_CANT_END_BEFORE_KEY" + " (" + DateUtil.formatDateWithoutTime(activeStateDate) + ")");
                         return;
                     }
 
