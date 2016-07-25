@@ -130,4 +130,50 @@ describe('patient mapper', function () {
         expect(castePatientAttribute.voided).toBeTruthy();
     });
 
+
+    describe("map identifiers", function(){
+        it('should filter out empty new identifier objects', function(){
+            patient.identifiers = [
+                {
+                    uuid: "some-uuid",
+                    identifier: "some-value",
+                    identifierType: {
+                        uuid: "identifier-type1-uuid"
+                    },
+                    preferred: true,
+                    voided: false
+                },
+                {
+                    identifier: "some-other-value",
+                    identifierType: {
+                        uuid: "identifier-type2-uuid"
+                    },
+                    preferred: false,
+                    voided: false
+                },
+                {
+                    identifierType: {
+                        uuid: "identifier-type3-uuid"
+                    }
+                }
+            ];
+
+            var mappedPatientData = updatePatientRequestMapper.mapFromPatient(patientAttributeTypes, openMrsPatient,patient);
+
+            expect(mappedPatientData.patient.identifiers.length).toBe(2);
+
+            var mappedPatientIdentifiers = mappedPatientData.patient.identifiers;
+            expect(mappedPatientIdentifiers[0].uuid).toBe("some-uuid");
+            expect(mappedPatientIdentifiers[0].identifier).toBe("some-value");
+            expect(mappedPatientIdentifiers[0].voided).toBeFalsy();
+            expect(mappedPatientIdentifiers[0].preferred).toBeTruthy();
+            expect(mappedPatientIdentifiers[0].identifierType).toBe("identifier-type1-uuid");
+
+            expect(mappedPatientIdentifiers[1].identifier).toBe("some-other-value");
+            expect(mappedPatientIdentifiers[1].uuid).toBeUndefined();
+            expect(mappedPatientIdentifiers[1].voided).toBeFalsy();
+            expect(mappedPatientIdentifiers[1].preferred).toBeFalsy();
+            expect(mappedPatientIdentifiers[1].identifierType).toBe("identifier-type2-uuid");
+        })
+    })
 });

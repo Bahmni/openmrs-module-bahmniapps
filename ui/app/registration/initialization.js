@@ -4,13 +4,14 @@ angular.module('bahmni.registration').factory('initialization',
     ['$rootScope', '$q', 'configurations', 'authenticator', 'appService', 'spinner', 'Preferences', 'locationService','offlineService','offlineDbService','androidDbService','mergeService',
     function ($rootScope, $q, configurations, authenticator, appService, spinner, preferences, locationService, offlineService, offlineDbService, androidDbService, mergeService) {
         var getConfigs = function() {
-            var configNames = ['encounterConfig', 'patientAttributesConfig', 'identifierSourceConfig', 'addressLevels', 'genderMap', 'relationshipTypeConfig','relationshipTypeMap', 'loginLocationToVisitTypeMapping'];
+            var configNames = ['encounterConfig', 'patientAttributesConfig', 'identifierTypesConfig', 'addressLevels', 'genderMap', 'relationshipTypeConfig','relationshipTypeMap', 'loginLocationToVisitTypeMapping'];
             return configurations.load(configNames).then(function () {
                 var mandatoryPersonAttributes = appService.getAppDescriptor().getConfigValue("mandatoryPersonAttributes");
                 var patientAttributeTypes = new Bahmni.Common.Domain.AttributeTypeMapper().mapFromOpenmrsAttributeTypes(configurations.patientAttributesConfig(), mandatoryPersonAttributes);
                 $rootScope.regEncounterConfiguration = angular.extend(new Bahmni.Registration.RegistrationEncounterConfig(), configurations.encounterConfig());
                 $rootScope.encounterConfig = angular.extend(new EncounterConfig(), configurations.encounterConfig());
-                $rootScope.patientConfiguration = new Bahmni.Registration.PatientConfig(patientAttributeTypes.attributeTypes, configurations.identifierSourceConfig(), appService.getAppDescriptor().getConfigValue("patientInformation"));
+                $rootScope.patientConfiguration = new Bahmni.Registration.PatientConfig(patientAttributeTypes.attributeTypes,
+                    configurations.identifierTypesConfig(), appService.getAppDescriptor().getConfigValue("patientInformation"));
                 $rootScope.regEncounterConfiguration.loginLocationToVisitTypeMap = configurations.loginLocationToVisitTypeMapping();
 
                 $rootScope.addressLevels = configurations.addressLevels();

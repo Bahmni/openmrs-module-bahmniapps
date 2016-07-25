@@ -10,10 +10,10 @@
                     <section>
                         <div class="form-field fl">
                             <div class="field-attribute">
-                                <label for="patientId">{{ ::'REGISTRATION_LABEL_PATIENT_IDENTIFIER' | translate}} : </label>
+                                <label for="patientId">{{ ::patient.primaryIdentifier.identifierType.name }} : </label>
                             </div>
                             <div class="field-value">
-                                <label class="control-label"><strong>{{::patient.identifier}}</strong></label>
+                                <label class="control-label"><strong>{{::patient.primaryIdentifier.identifier}}</strong></label>
                             </div>
                         </div>
                         <div class="form-field photocontainer-spacing clearfix">

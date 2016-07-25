@@ -102,8 +102,8 @@ describe('configurationService', function () {
         expect(_$http.get.calls.mostRecent().args[1].params.v).toEqual("custom:(uuid,name:(uuid,name),setMembers:(uuid,name:(uuid,name)))");
     });
 
-    it('should fetch identifierSourceConfig from backend', function () {
-        configurationservice.getConfigurations(['identifierSourceConfig'])
+    it('should fetch identifierTypesConfig from backend', function () {
+        configurationservice.getConfigurations(['identifierTypesConfig'])
         expect(_$http.get.calls.mostRecent().args[0]).toEqual(Bahmni.Common.Constants.idgenConfigurationURL);
     });
 

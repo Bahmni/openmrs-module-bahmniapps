@@ -61,7 +61,7 @@ angular.module('bahmni.common.domain')
                 return androidDbService.getReferenceData('AllTestsAndPanelsConcept');
             };
 
-            configurationFunctions.identifierSourceConfig = function () {
+            configurationFunctions.identifierTypesConfig = function () {
                 return androidDbService.getReferenceData('IdentifierSources');
             };
 

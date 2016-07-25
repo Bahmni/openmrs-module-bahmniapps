@@ -2,7 +2,7 @@
 
 angular.module('bahmni.registration')
     .factory('patient', ['age', function (age) {
-        var create = function () {
+        var create = function (identifierTypes) {
             var calculateAge = function () {
                 if (this.birthdate) {
                     this.age = age.fromBirthDate(this.birthdate);
@@ -16,16 +16,17 @@ angular.module('bahmni.registration')
                 this.birthdate = age.calculateBirthDate(this.age);
             };
 
-            var generateIdentifier = function () {
-                if (this.registrationNumber && this.registrationNumber.length > 0) {
-                    this.identifier = this.identifierPrefix ? this.identifierPrefix.prefix + this.registrationNumber : this.registrationNumber;
+            var generateIdentifier = function (identifier) {
+                if (identifier.registrationNumber && identifier.registrationNumber.length > 0) {
+                    identifier.identifier = identifier.selectedIdentifierSource ? identifier.selectedIdentifierSource.prefix + identifier.registrationNumber : identifier.registrationNumber;
+                }else if(identifier.uuid){
+                    identifier.voided = true;
                 }
-                return this.identifier
             };
 
-            var clearRegistrationNumber = function () {
-                this.registrationNumber = null;
-                this.identifier = null;
+            var clearRegistrationNumber = function (identifier) {
+                identifier.registrationNumber = null;
+                identifier.identifier = null;
             };
 
             var fullNameLocal = function () {
@@ -39,12 +40,24 @@ angular.module('bahmni.registration')
                 return this.image && this.image.indexOf('data') === 0 ? this.image.replace("data:image/jpeg;base64,", "") : null;
             };
 
+            var buildIdentifiers = function(){
+                var identifiers = [];
+                _.each(identifierTypes, function(identifierType){
+                   var identifier = {
+                       identifierType: identifierType,
+                       "preferred": identifierType.primary,
+                       "voided": false
+                   };
+                    identifiers.push(identifier);
+                });
+                return identifiers;
+            }
             return {
                 address: {},
                 age: age.create(),
                 birthdate: null,
                 calculateAge: calculateAge,
-                identifierPrefix: {},
+                identifiers: buildIdentifiers(),
                 generateIdentifier: generateIdentifier,
                 clearRegistrationNumber: clearRegistrationNumber,
                 image: '../images/blank-user.gif',

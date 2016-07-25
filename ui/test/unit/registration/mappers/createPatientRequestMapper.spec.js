@@ -14,15 +14,48 @@ describe('patient mapper', function () {
         }]);
 
         patientAttributeTypes = [
-            {"uuid": "class-uuid", "sortWeight": 2.0, "name": "class", "description": "Caste", "format": "java.lang.String", "answers": []},
-            {"uuid": "caste-uuid", "sortWeight": 2.0, "name": "caste", "description": "Class", "format": "org.openmrs.Concept",
+            {
+                "uuid": "class-uuid",
+                "sortWeight": 2.0,
+                "name": "class",
+                "description": "Caste",
+                "format": "java.lang.String",
+                "answers": []
+            },
+            {
+                "uuid": "caste-uuid",
+                "sortWeight": 2.0,
+                "name": "caste",
+                "description": "Class",
+                "format": "org.openmrs.Concept",
                 "answers": [
                     {"description": "OBC", "conceptId": "10"}
                 ]
             },
-            {"uuid": "education-uuid", "sortWeight": 2.0, "name": "education", "description": "Caste", "format": "java.lang.String", "answers": []},
-            {"uuid": "isUrban-uuid", "sortWeight": 2.0, "name": "isUrban", "description": "isUrban", "format": "java.lang.Boolean", "answers": []},
-            {"uuid": "testDate-uuid", "sortWeight": 2.0, "name": "testDate", "description": "Test Date", "format": "org.openmrs.util.AttributableDate", "answers": []}
+            {
+                "uuid": "education-uuid",
+                "sortWeight": 2.0,
+                "name": "education",
+                "description": "Caste",
+                "format": "java.lang.String",
+                "answers": []
+            },
+            {
+                "uuid": "isUrban-uuid",
+                "sortWeight": 2.0,
+                "name": "isUrban",
+                "description": "isUrban",
+                "format": "java.lang.Boolean",
+                "answers": []
+            },
+            {
+                "uuid": "testDate-uuid",
+                "sortWeight": 2.0,
+                "name": "testDate",
+                "description": "Test Date",
+                "format": "org.openmrs.util.AttributableDate",
+                "answers": []
+            }
         ];
 
     });
@@ -47,8 +80,21 @@ describe('patient mapper', function () {
                 "days": 17
             },
             "gender": "M",
-            "identifierPrefix": {"prefix" : "GAN", "uuid" : "dead-cafe"},
-            "identifier": "GAN200011",
+            "identifiers": [
+                {
+                    "selectedIdentifierSource": {"prefix": "GAN", "uuid": "dead-cafe"},
+                    "identifier": "GAN200011",
+                    "identifierType": {"uuid": "someUuid"},
+                    "preferred":true,
+                    "voided":false
+                },
+                {
+                    "identifier": "GAN200012",
+                    "identifierType": {"uuid": "otherUuid"},
+                    "preferred":false,
+                    "voided":false
+
+                }],
             "registrationDate": moment(date).format(),
             "caste": "10",
             "education": "16",
@@ -63,7 +109,7 @@ describe('patient mapper', function () {
             "familyNameLocal": "lhindi",
             "secondaryIdentifier": "sec id",
             "isNew": "true",
-            "isUrban":false,
+            "isUrban": false,
             "dead": true,
             "testDate": "Fri Jan 01 1999 00:00:00"
         });
@@ -100,10 +146,18 @@ describe('patient mapper', function () {
 
         expect(openmrsPatient.patient.identifiers).toEqual([
             {
-                "identifierPrefix": "GAN",
                 "identifier": "GAN200011",
                 "identifierSourceUuid" : "dead-cafe",
+                "identifierPrefix": "GAN",
+                "identifierType": "someUuid",
                 "preferred": true,
+                "voided": false
+            },{
+                "identifier": "GAN200012",
+                "identifierSourceUuid": undefined,
+                "identifierPrefix": undefined,
+                "identifierType": "otherUuid",
+                "preferred": false,
                 "voided": false
             }
         ]);

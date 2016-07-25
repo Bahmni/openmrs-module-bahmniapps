@@ -2,9 +2,9 @@
 
 Bahmni.Registration.PatientConfig = (function () {
 
-    function PatientConfig(patientAttributeTypes, identifierSources, patientInformation ) {
+    function PatientConfig(patientAttributeTypes, identifierTypes, patientInformation ) {
         this.attributeTypes = patientAttributeTypes;
-        this.identifierSources = identifierSources;
+        this.identifierTypes = identifierTypes;
         var patientAttributesSections = {};
         //Avoiding multiple calls from angular code. Side effect of the way angular does dirty check. [Shruti/ Sush]
         if ( !this.attributeRows && this.attributeTypes) {

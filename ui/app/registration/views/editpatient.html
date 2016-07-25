@@ -2,8 +2,8 @@
 <div class="edit-patient simple-form-ui">
     <form name="myForm"  single-submit="update()">
         <div class="box-container box-container-default">
-            <legend class="registraion_legend first-registraion_legend" ng-class="{'removeLegend': patient.identifier == null}">
-                <span class="mylegend"><strong>Patient ID : <span>{{patient.identifier}}</span></strong></span>
+            <legend class="registraion_legend first-registraion_legend" ng-class="{'removeLegend': patient.primaryIdentifier == undefined}">
+                <span class="mylegend"><strong>{{patient.primaryIdentifier.identifierType.display}}: <span>{{patient.primaryIdentifier.identifier}}</span></strong></span>
                 <span ng-show= "isDigitized" class="right"><strong>{{::'REGISTRATION_LABEL_SCANNED' | translate}}</strong></span>
             </legend>
             <div class="photo-container-wrapper" ng-if="!disablePhotoCapture">
@@ -12,6 +12,26 @@
                         <div ng-model="patient.image" capture-photo class="capture-photo-btn"></div>
                  </span>
             </div>
+            <article ng-repeat="identifier in patient.identifiers" class="form-field existing-patient">
+                <div class="field-attribute">
+                    <label class="control-label" for="patientID">{{:: identifier.identifierType.name}}
+                        <span ng-show=":: identifier.identifierType.required && !hasIdentifierSources(identifier.identifierType)" class="asterick">*</span>
+                    </label>
+                </div>
+                <div class="field-value showOn-desktop-registration">
+                    <input type="text" ng-model="identifier.identifier" disabled ng-if="hasIdentifierSources(identifier.identifierType)"/>
+
+                    <input type="text" id="registrationNumber" ng-model="identifier.registrationNumber" ng-if="!hasIdentifierSources(identifier.identifierType)"
+                           placeholder="{{:: identifier.identifierType.description}}" non-blank="identifier.identifierType.required && !hasIdentifierSources(identifier.identifierType)"
+                           pattern-validate ng-change="patient.generateIdentifier(identifier)" >
+                </div>
+                <div class="field-value showOn-small-screen-registration">
+                    <input ng-class="hasIdentifierSources(identifier.identifierType)? 'registrationNumber-Mobile' : ''" type="text" id="registrationNumber"
+                           ng-model="identifier.registrationNumber"  non-blank="identifier.identifierType.required && !hasIdentifierSources(identifier.identifierType)"
+                           placeholder="{{:: identifier.identifierType.description}}"  pattern-validate
+                           ng-change="patient.generateIdentifier(identifier)" ng-show="!hasIdentifierSources(identifier.identifierType)" >
+                </div>
+            </article>
             <article class="form-field">
                     <div class="field-attribute">
                     <label class="control-label">{{::'REGISTRATION_LABEL_REGISTRATION_DATE' | translate}}</label>

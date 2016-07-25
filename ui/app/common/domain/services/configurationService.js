@@ -119,7 +119,7 @@ angular.module('bahmni.common.domain')
             return allTestsAndPanelsConcept;
         };
 
-        configurationFunctions.identifierSourceConfig = function () {
+        configurationFunctions.identifierTypesConfig = function () {
             return $http.get(Bahmni.Common.Constants.idgenConfigurationURL, {
                 withCredentials: true
             });
