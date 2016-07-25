@@ -325,7 +325,9 @@ angular.module('bahmni.common.conceptSet')
                         obs.value = undefined;
                     } else if (obs.isMultiSelect) {
                         for (var key in obs.selectedObs) {
-                            obs.toggleSelection(obs.selectedObs[key].value);
+                            if (!obs.selectedObs[key].voided) {
+                                obs.toggleSelection(obs.selectedObs[key].value);
+                            }
                         }
                     }
                 }
