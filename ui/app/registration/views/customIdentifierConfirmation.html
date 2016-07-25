@@ -1,6 +1,9 @@
 <div class="revise-refill-modal-wrapper" aria-labelledby="dialog-label">
     <div class="drug-details">
-        <p ng-bind-html="::'REGISTRATION_CONTENT_ENTERING_ID' | translate:'{sizeOfTheJump : ngDialogData.sizeOfTheJump}'"></p>
+        <p ng-bind-html="::'REGISTRATION_CONTENT_ENTERING_ID' | translate "></p>
+        <p ng-repeat="identifier in ::ngDialogData">
+            {{:: identifier.identifierName}} - skipping <strong>{{:: identifier.sizeOfTheJump | number}}</strong> IDs
+        </p>
     </div>
 
     <div class="dialog-button-group">

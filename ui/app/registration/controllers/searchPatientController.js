@@ -5,7 +5,8 @@ angular.module('bahmni.registration')
         'messagingService', '$translate', '$filter',
         function ($rootScope, $scope, $location, $window, spinner, patientService, appService, preferences, messagingService, $translate,$filter) {
 
-            $scope.identifierSources = $rootScope.patientConfiguration.identifierSources;
+            $scope.identifierTypes = $rootScope.patientConfiguration.identifierTypes;
+            $scope.identifierSources = _.flatten(_.map($scope.identifierTypes,"identifierSources"));
             $scope.results = [];
             var searching = false;
             var maxAttributesFromConfig = 5;
@@ -54,7 +55,7 @@ angular.module('bahmni.registration')
                         $scope.searchParameters.identifierPrefix = identifierSource;
                     }
                 });
-                $scope.searchParameters.identifierPrefix = $scope.searchParameters.identifierPrefix || $scope.identifierSources[0];
+                $scope.searchParameters.identifierPrefix = $scope.searchParameters.identifierPrefix || $scope.identifierTypes[0];
 
                 $scope.searchParameters.registrationNumber = searchParameters.registrationNumber || "";
                 if (hasSearchParameters()) {

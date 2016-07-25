@@ -54,8 +54,8 @@ angular.module('bahmni.common.config')
             return this.configs.patientAttributesConfig.results;
         };
 
-        this.identifierSourceConfig = function() {
-            return this.configs.identifierSourceConfig;
+        this.identifierTypesConfig = function() {
+            return this.configs.identifierTypesConfig;
         };
 
         this.genderMap = function() {

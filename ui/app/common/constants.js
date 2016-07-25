@@ -114,7 +114,7 @@ Bahmni.Common = Bahmni.Common || {};
         encounterModifierUrl: BAHMNI_CORE + "/bahmniencountermodifier",
         openmrsUrl: hostUrl + "/openmrs",
         loggingUrl: hostUrl + "/log/",
-        idgenConfigurationURL: RESTWS_V1 + "/idgen/identifiersources",
+        idgenConfigurationURL: RESTWS_V1 + "/idgen/identifiertype",
         bahmniRESTBaseURL: BAHMNI_CORE + "",
         observationsUrl: BAHMNI_CORE + "/observations",
         obsRelationshipUrl: BAHMNI_CORE + "/obsrelationships",

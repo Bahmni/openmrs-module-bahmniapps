@@ -34,6 +34,23 @@ angular.module('bahmni.registration').factory('openmrsPatientMapper', ['patient'
                 patient.relationships = relationships || [];
                 patient.newlyAddedRelationships = [{}];
             },
+
+            mapIdentifiers = function (patient, identifiers) {
+                patient.identifiers = [];
+                _.each($rootScope.patientConfiguration.identifierTypes, function (identifierType) {
+                   var identifier = _.find(identifiers, {identifierType: {uuid: identifierType.uuid}})
+                    if(identifier){
+                        _.assign(identifier.identifierType, identifierType);
+                        identifier.registrationNumber = identifier.identifier;
+                    }else{
+                        identifier = {
+                            identifierType: identifierType
+                        }
+                    }
+                    patient.identifiers.push(identifier);
+                });
+            },
+
             map = function (openmrsPatient) {
                 var relationships = openmrsPatient.relationships;
                 openmrsPatient = openmrsPatient.patient;
@@ -49,9 +66,6 @@ angular.module('bahmni.registration').factory('openmrsPatientMapper', ['patient'
                 patient.gender = openmrsPerson.gender;
                 patient.address = mapAddress(openmrsPerson.preferredAddress);
                 patient.birthtime = parseDate(openmrsPerson.birthtime);
-                patient.identifier = openmrsPatient.identifiers[0].identifier;
-                patient.registrationNumber = openmrsPatient.identifiers[0].registrationNumber;
-                patient.identifierPrefix.prefix = openmrsPatient.identifiers[0].identifierPrefix;
                 patient.image = Bahmni.Registration.Constants.patientImageUrlByPatientUuid + openmrsPatient.uuid + "&q=" + new Date().toISOString();
                 patient.registrationDate =  Bahmni.Common.Util.DateUtil.parse(openmrsPerson.auditInfo.dateCreated);
                 patient.dead = openmrsPerson.dead;
@@ -61,6 +75,11 @@ angular.module('bahmni.registration').factory('openmrsPatientMapper', ['patient'
                 patient.bloodGroup = openmrsPerson.bloodGroup;
                 mapAttributes(patient, openmrsPerson.attributes);
                 mapRelationships(patient, relationships);
+                mapIdentifiers(patient, openmrsPatient.identifiers);
+                
+                var primaryIdentifierTypeUuid = _.find($rootScope.patientConfiguration.identifierTypes, { primary: true}).uuid;
+                patient.primaryIdentifier = _.find(patient.identifiers, {identifierType: {uuid: primaryIdentifierTypeUuid}});
+
                 return patient;
             };
 

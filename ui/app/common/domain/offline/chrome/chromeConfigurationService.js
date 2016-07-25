@@ -61,7 +61,7 @@ angular.module('bahmni.common.domain')
                 return offlineDbService.getReferenceData('AllTestsAndPanelsConcept');
             };
 
-            configurationFunctions.identifierSourceConfig = function () {
+            configurationFunctions.identifierTypesConfig = function () {
                 return offlineDbService.getReferenceData('IdentifierSources');
             };
 

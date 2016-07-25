@@ -270,10 +270,10 @@ describe('configurationService', function () {
                     }]}
         };
 
-        offlineDbService.getReferenceData.and.returnValue(specUtil.respondWithPromise($q, identifierSourceConfig));
+        offlineDbService.getReferenceData.and.returnValue(specUtil.respondWithPromise($q, identifierTypesConfig));
         configurationservice.getConfigurations(['identifierSourceConfig']).then(function (result) {
-            expect(result.identifierSourceConfig.results.length).toBe(1);
-            expect(result.identifierSourceConfig.results[0].name).toBe("Identifier Source Config");
+            expect(result.identifierTypesConfig.results.length).toBe(1);
+            expect(result.identifierTypesConfig.results[0].name).toBe("Identifier Source Config");
             done();
         });
     });

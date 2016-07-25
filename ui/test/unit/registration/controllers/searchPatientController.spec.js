@@ -22,17 +22,29 @@ describe('SearchPatientController', function () {
         $controller = $injector.get('$controller');
         rootScope = $injector.get('$rootScope');
         location = $injector.get('$location');
-        $window = {history: {pushState: function () {
-        }}};
+        $window = {
+            history: {
+                pushState: function () {
+                }
+            }
+        };
         preferences = $injector.get('Preferences');
         rootScope.patientConfiguration = {};
-        rootScope.currentUser = { privileges: [{name: 'View Patients'}] };
-        rootScope.addressLevels = [{ "addressField" : "stateProvince" ,name: "State"}];
-        rootScope.patientConfiguration.identifierSources = [
-            {name: 'GAN', prefix: 'GAN'},
-            {name: 'SEM', prefix: 'SEM'},
-            {name: 'SIV', prefix: 'SIV'},
-            {name: 'BAM', prefix: 'BAM'}
+        rootScope.currentUser = {privileges: [{name: 'View Patients'}]};
+        rootScope.addressLevels = [{"addressField": "stateProvince", name: "State"}];
+        rootScope.patientConfiguration.identifierTypes = [{
+            uuid: "identifier-type-uuid",
+            identifierSources: [
+                {name: 'GAN', prefix: 'GAN'},
+                {name: 'SEM', prefix: 'SEM'}]
+        },
+            {
+                uuid: "other-identifier-type-uuid",
+                identifierSources: [
+                    {name: 'SIV', prefix: 'SIV'},
+                    {name: 'BAM', prefix: 'BAM'}
+                ]
+            }
         ];
     }));
 
@@ -90,9 +102,26 @@ describe('SearchPatientController', function () {
             expect(scope.searchParameters.identifierPrefix.prefix).toBe(preferences.identifierPrefix);
         });
 
+        it("should initialise identifierSource Collection", function () {
+
+            $controller('SearchPatientController', {
+                $scope: scope,
+                patientService: patientResource,
+                $location: location,
+                spinner: spinner,
+                appService: appService,
+                Preferences: preferences
+            });
+
+            expect(scope.identifierSources.length).toBe(4);
+            expect(scope.identifierSources).toEqual([{name: 'GAN', prefix: 'GAN'},
+                {name: 'SEM', prefix: 'SEM'}, {name: 'SIV', prefix: 'SIV'},
+                {name: 'BAM', prefix: 'BAM'}])
+        });
+
         it('should initialize scope with name search params from url and load the patients if a name search parameter is provided', function () {
             var searchParams = {"name": 'john', addressFieldValue: 'Kanpur'};
-            scope.addressSearchConfig = {field: 'city_village', name:'village'}
+            scope.addressSearchConfig = {field: 'city_village', name: 'village'}
             spyOn(location, 'search').and.returnValue(searchParams);
 
             urlSearchChangeCallback();
@@ -202,7 +231,10 @@ describe('SearchPatientController', function () {
 
             scope.searchPatients();
 
-            expect(location.search).toHaveBeenCalledWith({'programAttributeFieldName': "programAttributeFieldName", programAttributeFieldValue: "programAttributeFieldValue"});
+            expect(location.search).toHaveBeenCalledWith({
+                'programAttributeFieldName': "programAttributeFieldName",
+                programAttributeFieldValue: "programAttributeFieldValue"
+            });
         });
 
         it("should not go to search page with programAttribute if programAttributesSearchConfig has not been set", function () {
@@ -247,7 +279,15 @@ describe('SearchPatientController', function () {
 
             scope.searchById();
 
-            expect(location.search).toHaveBeenCalledWith({identifierPrefix: "GAN", registrationNumber: "20001",  programAttributeFieldName: undefined, patientAttributes : ["education", "firstNameLocal"], programAttributeFieldValue: undefined, addressSearchResultsConfig : ["address3"], personSearchResultsConfig : ["middleNameLocal"]});
+            expect(location.search).toHaveBeenCalledWith({
+                identifierPrefix: "GAN",
+                registrationNumber: "20001",
+                programAttributeFieldName: undefined,
+                patientAttributes: ["education", "firstNameLocal"],
+                programAttributeFieldValue: undefined,
+                addressSearchResultsConfig: ["address3"],
+                personSearchResultsConfig: ["middleNameLocal"]
+            });
         });
 
         it('should change the search parameter to patient identifier with programAttributesSearchConfig', function () {
@@ -260,7 +300,15 @@ describe('SearchPatientController', function () {
 
             scope.searchById();
 
-            expect(location.search).toHaveBeenCalledWith({identifierPrefix: "GAN", registrationNumber: "20001", programAttributeFieldName: "Facility", patientAttributes : ["education", "firstNameLocal"], programAttributeFieldValue: undefined, addressSearchResultsConfig : {  }, personSearchResultsConfig : {  }});
+            expect(location.search).toHaveBeenCalledWith({
+                identifierPrefix: "GAN",
+                registrationNumber: "20001",
+                programAttributeFieldName: "Facility",
+                patientAttributes: ["education", "firstNameLocal"],
+                programAttributeFieldValue: undefined,
+                addressSearchResultsConfig: {},
+                personSearchResultsConfig: {}
+            });
         });
 
         it('should not search if registrationNumber is not present', function () {
@@ -318,9 +366,11 @@ describe('SearchPatientController', function () {
                 appDescriptor.getConfigValue.and.returnValue("/patient/patientUuid");
                 appDescriptor.formatUrl.and.returnValue("/patient/8989-90909");
 
-                searchPromise.callThenCallBack({pageOfResults: [
-                    {uuid: "8989-90909"}
-                ]});
+                searchPromise.callThenCallBack({
+                    pageOfResults: [
+                        {uuid: "8989-90909"}
+                    ]
+                });
 
                 expect(location.url).toHaveBeenCalledWith("/patient/8989-90909");
                 expect(appDescriptor.formatUrl).toHaveBeenCalledWith("/patient/patientUuid", {patientUuid: '8989-90909'});

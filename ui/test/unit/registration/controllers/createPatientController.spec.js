@@ -32,10 +32,15 @@ describe('CreatePatientController', function() {
         spinnerMock.forPromise.and.returnValue(specUtil.createFakePromise({}));
 
         rootScopeMock.patientConfiguration = {
-            identifierSources: [{
-                prefix: "SEM"
-            }, {
-                prefix: "GAN"
+            identifierTypes: [{
+                uuid: "identifier-type-uuid",
+                name: "Bahmni Id",
+                primary: true,
+                identifierSources: [{
+                    prefix: "SEM"
+                }, {
+                    prefix: "GAN"
+                }]
             }]
         };
 
@@ -254,10 +259,14 @@ describe('CreatePatientController', function() {
     });
 
     it("should set patient identifierPrefix details with the matching one", function() {
-        rootScopeMock.patientConfiguration.identifierSources = [{
-            prefix: "GAN"
-        }, {
-            prefix: "SEM"
+        rootScopeMock.patientConfiguration.identifierTypes = [{
+            primary: true,
+            uuid: "identifier-type-uuid",
+            identifierSources: [{
+                prefix: "GAN"
+            }, {
+                prefix: "SEM"
+            }]
         }];
         preferencesMock.identifierPrefix = "GAN";
         $aController('CreatePatientController', {
@@ -273,14 +282,19 @@ describe('CreatePatientController', function() {
             offlineService: {}
         });
 
-        expect(scopeMock.patient.identifierPrefix.prefix).toBe("GAN");
+        expect(scopeMock.patient.identifiers[0].selectedIdentifierSource.prefix).toBe("GAN");
     });
 
     it("should set patient identifierPrefix details with the first source details when it doesn't match", function() {
-        rootScopeMock.patientConfiguration.identifierSources = [{
-            prefix: "SEM"
-        }, {
-            prefix: "BAN"
+        rootScopeMock.patientConfiguration.identifierTypes = [{
+            primary: true,
+            name: "Bahmni Id",
+            uuid: "identifier-type-uuid",
+            identifierSources: [{
+                prefix: "SEM"
+            }, {
+                prefix: "BAN"
+            }]
         }];
         preferencesMock.identifierPrefix = "GAN";
         $aController('CreatePatientController', {
@@ -296,7 +310,7 @@ describe('CreatePatientController', function() {
             offlineService: {}
         });
 
-        expect(scopeMock.patient.identifierPrefix.prefix).toBe("SEM");
+        expect(scopeMock.patient.identifiers[0].selectedIdentifierSource.prefix).toBe("SEM");
     });
 
     it("should create a patient and go to edit page", function() {
@@ -359,7 +373,7 @@ describe('CreatePatientController', function() {
         scopeMock.patient.registrationNumber = "1050";
         scopeMock.patient.hasOldIdentifier = true;
 
-        httpBackend.expectPOST("/openmrs/ws/rest/v1/bahmnicore/patientprofile").respond(412,"{\"sizeOfJump\":50}");
+        httpBackend.expectPOST("/openmrs/ws/rest/v1/bahmnicore/patientprofile").respond(412,"[{\"sizeOfJump\":50, \"identifierType\": \"identifier-type-uuid\"}]");
         patientServiceMock.create.and.callFake(function() {
             return http.post("/openmrs/ws/rest/v1/bahmnicore/patientprofile");
         });
@@ -371,9 +385,7 @@ describe('CreatePatientController', function() {
 
         expect(ngDialogMock.open).toHaveBeenCalledWith({
             template: 'views/customIdentifierConfirmation.html',
-            data: {
-                sizeOfTheJump: 50
-            },
+            data: [{"sizeOfTheJump":50, "identifierName": "Bahmni Id"}],
             scope: ngDialogLocalScopeMock
         });
     });
@@ -413,7 +425,7 @@ describe('CreatePatientController', function() {
 
         scopeMock.patient.hasOldIdentifier = true;
 
-        httpBackend.expectPOST("/openmrs/ws/rest/v1/bahmnicore/patientprofile").respond(412,"{\"sizeOfJump\":50}");
+        httpBackend.expectPOST("/openmrs/ws/rest/v1/bahmnicore/patientprofile").respond(412,"[{\"sizeOfJump\":50, \"identifierType\": \"identifier-type-uuid\"}]");
         patientServiceMock.create.and.callFake(function() {
             return http.post("/openmrs/ws/rest/v1/bahmnicore/patientprofile");
         });
@@ -424,9 +436,7 @@ describe('CreatePatientController', function() {
 
         expect(ngDialogMock.open).toHaveBeenCalledWith({
             template: 'views/customIdentifierConfirmation.html',
-            data: {
-                sizeOfTheJump: 50
-            },
+            data: [{"sizeOfTheJump":50, "identifierName": "Bahmni Id"}],
             scope: ngDialogLocalScopeMock
         });
 
@@ -456,7 +466,7 @@ describe('CreatePatientController', function() {
 
         scopeMock.patient.hasOldIdentifier = true;
 
-        httpBackend.expectPOST("/openmrs/ws/rest/v1/bahmnicore/patientprofile").respond(412,"{\"sizeOfJump\":50}");
+        httpBackend.expectPOST("/openmrs/ws/rest/v1/bahmnicore/patientprofile").respond(412,"[{\"sizeOfJump\":50, \"identifierType\": \"identifier-type-uuid\"}]");
         patientServiceMock.create.and.callFake(function() {
             return http.post("/openmrs/ws/rest/v1/bahmnicore/patientprofile");
         });
@@ -467,9 +477,7 @@ describe('CreatePatientController', function() {
 
         expect(ngDialogMock.open).toHaveBeenCalledWith({
             template: 'views/customIdentifierConfirmation.html',
-            data: {
-                sizeOfTheJump: 50
-            },
+            data: [{"sizeOfTheJump":50, "identifierName": "Bahmni Id"}],
             scope: ngDialogLocalScopeMock
         });
 
@@ -479,19 +487,19 @@ describe('CreatePatientController', function() {
     });
 
     it("hasIdentifierSources, should return false if identifier sources are not present", function() {
-        scopeMock.identifierSources = [];
-        expect(scopeMock.hasIdentifierSources()).toBeFalsy();
+        var identifierType ={identifierSources: []};
+        expect(scopeMock.hasIdentifierSources(identifierType)).toBeFalsy();
     });
 
     it("should return true if there is only one identifier source with blank prefix", function () {
-        scopeMock.identifierSources = [{name : "ABC", prefix: ""}];
-        expect(scopeMock.hasIdentifierSourceWithEmptyPrefix()).toBeTruthy();
+        var identifierType = {identifierSources: [{name : "ABC", prefix: ""}]};
+        expect(scopeMock.hasIdentifierSourceWithEmptyPrefix(identifierType)).toBeTruthy();
     });
 
 
     it("should return false if there is only one identifier source without a blank prefix", function () {
-        scopeMock.identifierSources = [{name : "ABC", prefix: "prefix"}];
-        expect(scopeMock.hasIdentifierSourceWithEmptyPrefix()).toBeFalsy();
+        var identifierType = {identifierSources: [{name : "ABC", prefix: "prefix"}]};
+        expect(scopeMock.hasIdentifierSourceWithEmptyPrefix(identifierType)).toBeFalsy();
     });
 
     it("should return true if there is disablePhotoCapture config defined to be true", function () {

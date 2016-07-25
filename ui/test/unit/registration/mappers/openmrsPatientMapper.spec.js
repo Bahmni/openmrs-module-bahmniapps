@@ -16,7 +16,7 @@ describe('patientMapper', function () {
                 "answers": [
                     {"description": "OBC", "uuid": "4da8141e-65d6-452e-9cfe-ce813bd11d52"}
                 ]}
-        ]);
+        ], [{"uuid": "identifier-type-uuid", "primary": true}, {"uuid": "extra-identifier-type-uuid"}]);
 
         inject(['openmrsPatientMapper', '$rootScope', 'age', function (openmrsPatientMapper, $rootScope, age) {
             mapper = openmrsPatientMapper;
@@ -32,7 +32,10 @@ describe('patientMapper', function () {
             },
             "identifiers": [
                 {
-                    "identifier": "GAN200003"
+                    "identifier": "GAN200003",
+                    "identifierType": {
+                        "uuid": "identifier-type-uuid"
+                    }
                 }
             ],
             "person": {
@@ -104,7 +107,6 @@ describe('patientMapper', function () {
         expect(patient.gender).toBe(openmrsPatient.patient.person.gender);
         expect(patient.bloodGroup).toBe(openmrsPatient.patient.person.bloodGroup);
         expect(patient.age).toBe(age);
-        expect(patient.identifier).toBe(openmrsPatient.patient.identifiers[0].identifier);
         expect(patient.address.address1).toBe(openmrsPatient.patient.person.preferredAddress.address1);
         expect(patient.address.address2).toBe(openmrsPatient.patient.person.preferredAddress.address2);
         expect(patient.address.address3).toBe(openmrsPatient.patient.person.preferredAddress.address3);
@@ -175,4 +177,19 @@ describe('patientMapper', function () {
         });
         mapper.map(openmrsPatient);
     });
+    
+    it('should map identifiers for all identifier types and initialise empty identifier if it does not exit for an identifier type', function(){
+        var patient = mapper.map(openmrsPatient);
+        expect(patient.identifiers).toEqual([{
+            identifier: 'GAN200003',
+            identifierType: {uuid: 'identifier-type-uuid', primary: true},
+            registrationNumber: 'GAN200003'
+        },
+            {
+                identifierType: {uuid: 'extra-identifier-type-uuid'}
+            }
+        ]);
+        expect(patient.primaryIdentifier).toEqual(openmrsPatient.patient.identifiers[0]);
+
+    })
 });
