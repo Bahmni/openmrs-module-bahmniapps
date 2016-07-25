@@ -68,9 +68,9 @@ Bahmni.ConceptSet.ObservationMapper = function () {
             obs = newObservationNode(concept, savedObs, conceptSetConfig, mappedGroupMembers);
         } else {
             obs = newObservation(concept, savedObs, conceptSetConfig, mappedGroupMembers);
+            new Bahmni.ConceptSet.MultiSelectObservations(conceptSetConfig).map(mappedGroupMembers);
         }
 
-          new Bahmni.ConceptSet.MultiSelectObservations(conceptSetConfig).map(mappedGroupMembers);
         mapTabularObs(mappedGroupMembers, concept, obs, conceptSetConfig);
         return obs;
     };
