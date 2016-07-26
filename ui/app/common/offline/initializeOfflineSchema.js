@@ -2,6 +2,10 @@
 
 angular.module('bahmni.common.offline').service('initializeOfflineSchema', [function () {
 
+    var DB_NAME = 'Bahmni';
+    var DB_VERSION = 2;
+    var DB_VERSION_OLD;
+
     var dataTypes = {
         "INTEGER": lf.Type.INTEGER,
         "STRING": lf.Type.STRING,
@@ -10,53 +14,76 @@ angular.module('bahmni.common.offline').service('initializeOfflineSchema', [func
         "ARRAY_BUFFER": lf.Type.ARRAY_BUFFER
     };
 
-    var onUpgrade = function (rawDb) {
-        switch (rawDb.getVersion()) {
-            case 2:
-                console.log("Upgrade logic from 2 goes here.");
-                break;
-            default:
-                console.log('Existing DB version', rawDb.getVersion());
+    var upgradeExistingSchemaFn = function(migrations, rawDb) {
+        if (migrations.Queries) {
+            migrations.Queries.forEach(function (query) {
+                query(rawDb);
+            });
         }
+    };
+
+    var createSchemaFn = function (migrations, schemaBuilder) {
+        if (migrations.SchemaDefinitions) {
+            var tablesFromMigrations = _.values(migrations.SchemaDefinitions);
+            tablesFromMigrations.forEach(function (table) {
+                createTable(schemaBuilder, table);
+            });
+        }
+    };
+
+    var migrateDataUsingCustomLoveFieldQueries = function (migrations, db) {
+        if (migrations.CopyOver) {
+            var tablesFromMigrations = _.values(migrations.CopyOver);
+            tablesFromMigrations.forEach(function (query) {
+                query(db);
+            });
+        }
+    };
+
+    var runMigration = function(oldVersion, db, applyOn) {
+        while (oldVersion < DB_VERSION) {
+            var migrations = Bahmni.Common.Offline["Migration" + oldVersion] || {};
+            applyOn(migrations, db);
+            oldVersion = oldVersion + 1;
+        }
+    };
+
+    var onUpgrade = function (rawDb) {
+        DB_VERSION_OLD = rawDb.getVersion();
+        var oldVersion = DB_VERSION_OLD;
+        runMigration(oldVersion, rawDb, upgradeExistingSchemaFn);
         return rawDb.dump();
     };
 
     var LOVEFIELD_DB_CONFIG = {
         storeType : lf.schema.DataStoreType.INDEXED_DB,
         onUpgrade: onUpgrade
-    }, DB_NAME = 'Bahmni';
+    };
 
     this.databasePromise = null;
 
-    var baseSchema = function(schemaBuilder) {
-        createTable(schemaBuilder, Bahmni.Common.Offline.SchemaDefinitions.Patient);
-        createTable(schemaBuilder, Bahmni.Common.Offline.SchemaDefinitions.PatientAttribute);
-        createTable(schemaBuilder, Bahmni.Common.Offline.SchemaDefinitions.PatientAttributeType);
-        createTable(schemaBuilder, Bahmni.Common.Offline.SchemaDefinitions.EventLogMarker);
-        createTable(schemaBuilder, Bahmni.Common.Offline.SchemaDefinitions.AddressHierarchyEntry);
-        createTable(schemaBuilder, Bahmni.Common.Offline.SchemaDefinitions.AddressHierarchyLevel);
-        createTable(schemaBuilder, Bahmni.Common.Offline.SchemaDefinitions.PatientAddress);
-        createTable(schemaBuilder, Bahmni.Common.Offline.SchemaDefinitions.Configs);
-        createTable(schemaBuilder, Bahmni.Common.Offline.SchemaDefinitions.ReferenceData);
-        createTable(schemaBuilder, Bahmni.Common.Offline.SchemaDefinitions.Concept);
-        createTable(schemaBuilder, Bahmni.Common.Offline.SchemaDefinitions.LoginLocations);
-        createTable(schemaBuilder, Bahmni.Common.Offline.SchemaDefinitions.Encounter);
-        createTable(schemaBuilder, Bahmni.Common.Offline.SchemaDefinitions.Visit);
-        createTable(schemaBuilder, Bahmni.Common.Offline.SchemaDefinitions.Observation);
-        createTable(schemaBuilder, Bahmni.Common.Offline.SchemaDefinitions.ErrorLog);
+    var initDbSchema = function(schemaBuilder) {
+        var tables = _.values(Bahmni.Common.Offline.SchemaDefinitions);
+        var initalMigrationVersion = 2;
+        tables.forEach(function (table) {
+            createTable(schemaBuilder, table)
+        });
+
+        runMigration(initalMigrationVersion, schemaBuilder, createSchemaFn);
     };
 
     this.initSchema = function () {
         if(this.databasePromise === null ) {
-            var schemaBuilder = lf.schema.create(DB_NAME, 2);
-            baseSchema(schemaBuilder);
-            // Add migrations like this
-            // schemaBuilder = lf.schema.create(DB_NAME, 3);
-            // createTable(schemaBuilder, Bahmni.Common.Offline.SchemaDefinitions.Dummy);
+            var schemaBuilder = lf.schema.create(DB_NAME, DB_VERSION);
+            initDbSchema(schemaBuilder);
 
             this.databasePromise = schemaBuilder.connect(LOVEFIELD_DB_CONFIG);
         }
 
+        this.databasePromise.then(function (db) {
+            var initalMigrationVersion = DB_VERSION_OLD || 2;
+            runMigration(initalMigrationVersion, db, migrateDataUsingCustomLoveFieldQueries);
+        });
         return this.databasePromise;
     };
 
@@ -65,7 +92,7 @@ angular.module('bahmni.common.offline').service('initializeOfflineSchema', [func
         return this.initSchema();
     };
 
-    var createTable = function (schemaBuilder, tableDefinition, autoIncrement) {
+    var createTable = function (schemaBuilder, tableDefinition) {
         var table = schemaBuilder.createTable(tableDefinition.tableName);
 
         _.map(tableDefinition.columns, function (column) {
@@ -73,7 +100,7 @@ angular.module('bahmni.common.offline').service('initializeOfflineSchema', [func
         });
 
         table.addNullable(tableDefinition.nullableColumns);
-        if(autoIncrement) {
+        if(tableDefinition.autoIncrement) {
             table.addPrimaryKey(tableDefinition.primaryKeyColumns, true);
         }
         else {

@@ -26,6 +26,7 @@ describe('InitializeOfflineSchema Tests', function () {
             expect(db.getSchema().table(Bahmni.Common.Offline.SchemaDefinitions.EventLogMarker.tableName)).not.toBe(null);
             expect(db.getSchema().table(Bahmni.Common.Offline.SchemaDefinitions.AddressHierarchyEntry.tableName)).not.toBe(null);
             expect(db.getSchema().table(Bahmni.Common.Offline.SchemaDefinitions.AddressHierarchyLevel.tableName)).not.toBe(null);
+            expect(db.getSchema().table(Bahmni.Common.Offline.SchemaDefinitions.ErrorLog.tableName)).not.toBe(null);
             done();
         });
 
