@@ -34,6 +34,9 @@ Bahmni.Common.Obs.ObservationUtil = (function () {
         if(observation.value && observation.value.name && observation.value.name.name){
             obsValue = observation.value.name.name;
         }
+        else if(observation.value && observation.value.name && !observation.value.name.name){
+            obsValue = observation.value.name;
+        }
         else{
             obsValue = observation.value;
         }
