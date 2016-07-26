@@ -1,5 +1,5 @@
 <select ng-options="answer as answer.name for answer in ::answers"
-        ng-change="onChange()"
+        ng-change="onChange(selectedAnswer)"
         ng-disabled="ngDisabled"
         ng-class="{{
         '{' + onInvalidClass + ' : ' + '!isValid' + '}'

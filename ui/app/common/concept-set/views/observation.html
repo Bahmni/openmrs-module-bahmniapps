@@ -43,7 +43,7 @@
 
                     <div ng-switch-when="dropdown" class="field-value info fa fa-info-sign">
                         <concept-dropdown
-                                on-change="handleUpdate"
+                                on-change="update"
                                 ng-disabled="observation.disabled"
                                 model="observation.primaryObs.value"
                                 answers-concept-name="::observation.conceptUIConfig.answersConceptName"
@@ -229,7 +229,7 @@
 
                     <div ng-switch-when="dropdown" class="field-value info fa fa-info-sign">
                         <concept-dropdown
-                                on-change="handleUpdate"
+                                on-change="update"
                                 ng-disabled="observation.disabled"
                                 model="observation.value"
                                 answers-concept-name="::observation.conceptUIConfig.answersConceptName"
