@@ -799,6 +799,7 @@ table.pivot-table {
     color: $text;
     border-radius: 0px 5px 5px 5px;
     box-shadow: 2px 2px 20px rgba(0, 0, 0, .50);
+    padding-bottom: 5px;
     &::-webkit-scrollbar {
       -webkit-appearance: none;
       width: 2px;
