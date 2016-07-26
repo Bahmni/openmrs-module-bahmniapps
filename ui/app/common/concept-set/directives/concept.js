@@ -69,6 +69,16 @@ angular.module('bahmni.common.conceptSet')
                 scope.$root.$broadcast("event:observationUpdated-" + scope.conceptSetName, scope.observation.concept.name, scope.rootObservation);
             };
 
+            scope.update = function (value) {
+                if(scope.getBooleanResult(scope.observation.isObservationNode)) {
+                    scope.observation.primaryObs.value = value;
+                }
+                else if(scope.getBooleanResult(scope.observation.isFormElement())) {
+                    scope.observation.value = value;
+                }
+                scope.handleUpdate();
+            };
+
             scope.getBooleanResult = function(value){
                 return !!value;
             }
