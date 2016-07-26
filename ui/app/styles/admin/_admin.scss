@@ -34,11 +34,13 @@
 	}
 
 	.upload-selected-file {
-		width: 20%; min-width: 20%;
+		width: 20%;
+		min-width: 20%;
 		box-sizing: border-box;
 		float: left;
 		margin: 0;
 		display: flex;
+		padding: 10px;
 	}
 
 
