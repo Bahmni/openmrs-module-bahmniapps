@@ -289,6 +289,12 @@ concept-set {
       margin-right: 10px;
       margin-bottom: 5px;
     }
+    &.consultation-image-disabled{
+      pointer-events: none;
+      .placeholder.btn {
+        opacity:0.4;
+      }
+    }
   }
 }
 
