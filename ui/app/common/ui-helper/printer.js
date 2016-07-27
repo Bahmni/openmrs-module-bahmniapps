@@ -8,6 +8,7 @@ angular.module('bahmni.common.uiHelper')
             hiddenFrame.contentWindow.printAndRemove = function() {
                 hiddenFrame.contentWindow.print();
                 $(hiddenFrame).remove();
+                deferred.resolve();
             };
             var htmlContent = "<!doctype html>"+
                         "<html>"+
@@ -17,7 +18,6 @@ angular.module('bahmni.common.uiHelper')
                         "</html>";
             var doc = hiddenFrame.contentWindow.document.open("text/html", "replace");
             doc.write(htmlContent);
-            deferred.resolve();
             doc.close();
             return deferred.promise;
         };
@@ -48,9 +48,10 @@ angular.module('bahmni.common.uiHelper')
             });
         };
 
-        var printFromScope = function (templateUrl, scope) {
+        var printFromScope = function (templateUrl, scope, afterPrint) {
             $rootScope.isBeingPrinted = true;
-            $http.get(templateUrl).success(function(template){
+            $http.get(templateUrl).then(function(response){
+                var template = response.data;
                 var printScope = scope;
                 var element = $compile($('<div>' + template + '</div>'))(printScope);
                 var waitForRenderAndPrint = function() {
@@ -58,9 +59,11 @@ angular.module('bahmni.common.uiHelper')
                         $timeout(waitForRenderAndPrint);
                     } else {
                         printHtml(element.html()).then(function() {
-                           $rootScope.isBeingPrinted = false;
-                       });
-
+                            $rootScope.isBeingPrinted = false;
+                            if (afterPrint) {
+                                afterPrint();
+                            }
+                        });
                     }
                 };
                 waitForRenderAndPrint();

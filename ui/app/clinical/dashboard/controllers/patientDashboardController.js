@@ -13,6 +13,7 @@ angular.module('bahmni.clinical')
             $scope.clinicalDashboardConfig = clinicalDashboardConfig;
             $scope.visitSummary = visitSummary;
             $scope.enrollment = $stateParams.enrollment;
+            $scope.isDashboardPrinting = false;
             var programConfig = appService.getAppDescriptor().getConfigValue("program") || {};
 
             $scope.stateChange = function () {
@@ -23,8 +24,21 @@ angular.module('bahmni.clinical')
                 $scope.init(dashboard);
             });
 
-            var cleanUpListenerPrintDashboard = $scope.$on("event:printDashboard", function () {
-                printer.printFromScope("dashboard/views/dashboardPrint.html", $scope);
+            var cleanUpListenerPrintDashboard = $scope.$on("event:printDashboard", function (event,tab) {
+                var printScope = $scope.$new();
+                printScope.isDashboardPrinting = true;
+                printScope.tabBeingPrinted = tab || clinicalDashboardConfig.currentTab;
+                var dashboardModel = Bahmni.Common.DisplayControl.Dashboard.create(printScope.tabBeingPrinted);
+                spinner.forPromise(diseaseTemplateService.getLatestDiseaseTemplates(
+                    $stateParams.patientUuid,
+                    clinicalDashboardConfig.getDiseaseTemplateSections(printScope.tabBeingPrinted),
+                    null,
+                    null
+                ).then(function (diseaseTemplate) {
+                    printScope.diseaseTemplates = diseaseTemplate;
+                    printScope.sectionGroups = dashboardModel.getSections(printScope.diseaseTemplates);
+                    printer.printFromScope('dashboard/views/dashboardPrint.html', printScope);
+                }));
             });
 
             $scope.$on("$destroy", function () {

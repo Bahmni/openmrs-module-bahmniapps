@@ -140,6 +140,9 @@ angular.module('consultation')
                     },
                     visitSummary: function (visitSummaryInitialization, initialization, visitHistory) {
                         return visitHistory.activeVisit ? visitSummaryInitialization(visitHistory.activeVisit.uuid) : null;
+                    },
+                    visitConfig: function (initialization, visitTabConfig) {
+                        return visitTabConfig.load();
                     }
                 }
             })
@@ -341,9 +344,23 @@ angular.module('consultation')
                 resolve: {
                     visitSummary: function (visitSummaryInitialization, $stateParams) {
                         return visitSummaryInitialization($stateParams.visitUuid);
+                    }
+                }
+            })
+            .state('patient.dashboard.visitPrint', {
+                url: '/dashboard/visit/:visitUuid/:tab/:print',
+                views: {
+                    'dashboard-content': {
+                        template: '<div>Print is getting ready</div>',
+                        controller: 'VisitController'
                     },
-                    visitConfig: function (initialization, visitTabConfig) {
-                        return visitTabConfig.load();
+                    'print-content': {
+                        templateUrl: 'common/views/visit.html'
+                    }
+                },
+                resolve: {
+                    visitSummary: function (visitSummaryInitialization, $stateParams) {
+                        return visitSummaryInitialization($stateParams.visitUuid);
                     }
                 }
             })

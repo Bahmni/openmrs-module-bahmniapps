@@ -3,17 +3,20 @@
 angular.module('bahmni.clinical').controller('ConsultationController',
     ['$scope', '$rootScope', '$state','$location', 'clinicalAppConfigService', 'diagnosisService', 'urlHelper', 'contextChangeHandler',
         'spinner', 'encounterService', 'messagingService', 'sessionService', 'retrospectiveEntryService', 'patientContext', '$q',
-        'patientVisitHistoryService', '$stateParams', '$window', 'visitHistory', 'clinicalDashboardConfig','appService','ngDialog','$filter', 'configurations','offlineService',
+        'patientVisitHistoryService', '$stateParams', '$window', 'visitHistory', 'clinicalDashboardConfig','appService',
+        'ngDialog','$filter', 'configurations','offlineService','visitConfig',
         function ($scope, $rootScope, $state, $location, clinicalAppConfigService, diagnosisService, urlHelper, contextChangeHandler,
                   spinner, encounterService, messagingService, sessionService, retrospectiveEntryService, patientContext, $q,
-                  patientVisitHistoryService, $stateParams, $window, visitHistory, clinicalDashboardConfig, appService, ngDialog, $filter, configurations, offlineService) {
+                  patientVisitHistoryService, $stateParams, $window, visitHistory, clinicalDashboardConfig, appService,
+                  ngDialog, $filter, configurations, offlineService, visitConfig
+        ) {
             $scope.patient = patientContext.patient;
             $scope.stateChange = function(){
                 return $state.current.name === 'patient.dashboard.show'
             };
             $scope.showComment=true;
 
-                $scope.visitHistory = visitHistory;
+            $scope.visitHistory = visitHistory;
             $scope.consultationBoardLink = clinicalAppConfigService.getConsultationBoardLink();
             $scope.showControlPanel = false;
             $scope.clinicalDashboardConfig = clinicalDashboardConfig;
@@ -28,8 +31,34 @@ angular.module('bahmni.clinical').controller('ConsultationController',
                 }
             };
 
-            $scope.printDashboard = function () {
-                $scope.$parent.$parent.$broadcast("event:printDashboard", clinicalDashboardConfig.currentTab.printing);
+            var setPrintAction = function(event,tab){
+                tab.print = function(){
+                    $scope.$parent.$parent.$broadcast(event,tab);
+                };
+            };
+            var setDashboardPrintAction = _.partial(setPrintAction,"event:printDashboard",_);
+            var setVisitTabPrintAction = function(tab){
+                tab.print = function(){
+                    var url = $state.href('patient.dashboard.visitPrint',{
+                        visitUuid:visitHistory.activeVisit.uuid,
+                        tab:tab.title,
+                        print:'print'
+                    });
+                    window.open(url,'_blank');
+                }
+            };
+
+            _.each(visitConfig.tabs,setVisitTabPrintAction);
+            _.each(clinicalDashboardConfig.tabs,setDashboardPrintAction);
+            $scope.printList = _.concat(clinicalDashboardConfig.tabs,visitConfig.tabs);
+
+            clinicalDashboardConfig.quickPrints = appService.getAppDescriptor().getConfigValue('quickPrints');
+            $scope.printDashboard = function (tab) {
+                if(tab){
+                    tab.print();
+                } else {
+                    clinicalDashboardConfig.currentTab.print();
+                }
             };
 
             $scope.allowConsultation = function(){
