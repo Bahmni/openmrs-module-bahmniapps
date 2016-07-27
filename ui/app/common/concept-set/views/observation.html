@@ -192,7 +192,7 @@
                         </div>
                     </div>
 
-                    <div ng-switch-when="image" class="consultation-image">
+                    <div ng-switch-when="image" class="consultation-image"  ng-class="{'consultation-image-disabled': observation.disabled}">
                         <div class="file-remove">
                             <button type="button" ng-click="observation.toggleVoidingOfImage()"
                                     ng-if="observation.value" class="row-remover"><span
@@ -202,7 +202,7 @@
 
                         <input id="file-browse-{{observation.uniqueId}}" class="file-browse" type="file" name="image"
                                accept="application/pdf, image/*" capture="camera" ng-model="observation.value" image-upload
-                               patient-uuid="::patient.uuid" ng-disabled="observation.disabled">
+                               patient-uuid="::patient.uuid">
                         <label class="placeholder btn" for="file-browse-{{observation.uniqueId}}"
                                ng-hide="observation.value || observation.voided"><i
                                 class="fa fa-plus needsclick"></i></label>
