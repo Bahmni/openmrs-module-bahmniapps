@@ -82,6 +82,20 @@ angular.module('bahmni.common.conceptSet')
             };
 
             contextChangeHandler.add($scope.validationHandler.validate);
+
+            var collapseExistingActiveSection = function(section){
+                if (section) {
+                    section.klass = "";
+                }
+            };
+
+            $scope.showLeftPanelConceptSet = function(selectedConceptSet) {
+                collapseExistingActiveSection($scope.leftPanelConceptSet);
+                $scope.leftPanelConceptSet = selectedConceptSet;
+                $scope.leftPanelConceptSet.isOpen = true;
+                $scope.leftPanelConceptSet.isLoaded = true;
+                $scope.leftPanelConceptSet.klass = "active";
+            };
         }])
     .directive('conceptSetGroup', function () {
         return {
