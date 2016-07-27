@@ -105,7 +105,11 @@
                     accesskey="{{'CONSULTATION_SHORTCUT_KEY' | translate}}"
                     ng-bind-html="'CONSULTATION_TAB_KEY' | translate">
                  </a>
+
                 <div class="fl offlin-sync-wrap" ng-controller="PatientListHeaderController">
+                     <div ng-if="isOfflineApp" class="offline-sync fl" ng-controller="AppUpdateController">
+                        <button class="btn" ng-if="isUpdateAvailable()" ng-click="update()">Update</button>
+                     </div>
                     <button class="btn fl  offline-sync" ng-click="sync()" ng-show="isOfflineApp && !isSyncing">
                       {{::'HEADER_LABEL_SYNC_KEY' | translate}}
                     </button>
