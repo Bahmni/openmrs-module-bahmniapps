@@ -1,37 +1,30 @@
 <div ng-repeat="conceptSet in allTemplates track by $index" id="concept-set-{{$index}}"
-     ng-if="conceptSet.isAvailable(context) && (conceptSet.isAdded || conceptSet.alwaysShow)"
+     ng-if="conceptSet.isAvailable(context) && (conceptSet.isAdded || conceptSet.alwaysShow) && !context.showPanelView"
      class="concept-set-group section-grid"
      auto-scroll="{{::getNormalized(conceptSet.conceptName)}}" auto-scroll-enabled="::autoScrollEnabled">
-    <div class="concept-set-title">
-        <div id="{{getNormalized(conceptSet.conceptName)}}" ng-click="conceptSet.toggleDisplay()" >
-            <h2 class="section-title" ng-class="{'section-title-add-more' : conceptSet.canAddMore()}">
-                <i class="fa fa-caret-right" ng-hide="conceptSet.isOpen"></i>
-                <i class="fa fa-caret-down" ng-show="conceptSet.isOpen"></i>
-                <span class="section-label">{{conceptSet.label}}</span>
-                <button type="button" ng-if="::conceptSet.showComputeButton() && conceptSet.isOpen" ng-click="computeField(conceptSet, $event)"
-                        class="fr btn-small">Compute
-                </button>
-                <button type="button" ng-if="showPreviousButton(conceptSet.conceptName) && conceptSet.isOpen" ng-click="showPrevious(conceptSet.conceptName, $event)"
-                        class="fr btn-small">Previous
-                </button>
-                <button type="button" ng-if="conceptSet.isOpen" ng-click="conceptSet.toggleInnerSections($event)"
-                        class="fr btn-small">
-                     <span ng-show="conceptSet.collapseInnerSections">{{::'CONCEPT_SET_GROUP_EXPAND_ALL_KEY' | translate}}</span>
-                     <span ng-hide="conceptSet.collapseInnerSections">{{::'CONCEPT_SET_GROUP_COLLAPSE_ALL_KEY' | translate}}</span>
-                </button>
-            </h2>
-        </div>
-        <button class="add-more-concept-set add-more-btn btn-small" type="button" ng-click="clone($index)" ng-if="conceptSet.canAddMore()"> <i class="fa fa-plus"></i> {{::'ADD_FORM_KEY' | translate}}</button>
-        <span class="favourite-concept-set">
-            <label class="add-fav">
-              <input type="checkbox" id="hasOldIdentifier" ng-model="conceptSet.alwaysShow" ng-change="togglePref(conceptSet, conceptSet.conceptName)" />
-              <i class="fa fa-thumb-tack"></i>
-            </label>
-        </span>
+    <ng-include src="'../common/concept-set/views/conceptSetGroupSection.html'"></ng-include>
+</div>
+<div class="order-list concept-set-panel" ng-if="context.showPanelView">
+    <div class="dashboard-section-wrapper clearfix">
+        <section class="orders-section-left" xmlns="http://www.w3.org/1999/html">
+            <div class="order-section-container">
+                <div class="multi-select-lab-tests">
+                    <ul>
+                        <li ng-repeat="conceptSet in allTemplates track by $index"
+                            ng-if="conceptSet.isAvailable(context) && (conceptSet.isAdded || conceptSet.alwaysShow)">
+                            <a ng-click="showLeftPanelConceptSet(conceptSet)" ng-class='conceptSet.klass'>{{conceptSet.label}}
+                                <span ng-if="conceptSet.observations[0].observationDateTime"> ( {{conceptSet.observations[0].observationDateTime|bahmniDate}} )</span>
+                                <button class="add-more-concept-set add-more-btn btn-small" type="button" ng-click="clone($index)" ng-if="conceptSet.canAddMore()"> <i class="fa fa-plus"></i></button>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+        <section class="orders-section-right">
+            <section class="order-section-container" ng-repeat="conceptSet in allTemplates track by $index" ng-if="leftPanelConceptSet==conceptSet">
+                <ng-include src="'../common/concept-set/views/conceptSetGroupSection.html'"></ng-include>
+            </section>
+        </section>
     </div>
-
-    <concept-set ng-if="conceptSet.isLoaded" patient="::patient" ng-show="conceptSet.isOpen" collapse-inner-sections="conceptSet.collapseInnerSections"
-                 concept-set-name="::conceptSet.conceptName" required="conceptSet.options.required"
-                 observations="conceptSet.observations" show-title="::false" validation-handler="::validationHandler">
-    </concept-set>
 </div>

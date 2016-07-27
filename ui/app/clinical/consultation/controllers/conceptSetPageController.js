@@ -8,7 +8,7 @@ angular.module('bahmni.clinical')
             var extensions = clinicalAppConfigService.getAllConceptSetExtensions($stateParams.conceptSetGroupName);
             var configs = clinicalAppConfigService.getAllConceptsConfig();
             var visitType = configurations.encounterConfig().getVisitTypeByUuid($scope.consultation.visitTypeUuid);
-            $scope.context = {visitType: visitType, patient: $scope.patient};
+            $scope.context = {visitType: visitType, patient: $scope.patient, showPanelView: configs['All Observation Templates'] ? configs['All Observation Templates'].showPanelView : false};
             var numberOfLevels = 2;
             var fields = ['uuid', 'name:(name,display)', 'names:(uuid,conceptNameType,name)'];
             var customRepresentation = Bahmni.ConceptSet.CustomRepresentationBuilder.build(fields, 'setMembers', numberOfLevels);

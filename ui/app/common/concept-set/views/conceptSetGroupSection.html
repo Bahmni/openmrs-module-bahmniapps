@@ -1,0 +1,31 @@
+<div class="concept-set-title">
+    <div id="{{getNormalized(conceptSet.conceptName)}}" ng-click="conceptSet.toggleDisplay()" >
+        <h2 class="section-title" ng-class="{'section-title-add-more' : conceptSet.canAddMore()}">
+            <i class="fa fa-caret-right" ng-hide="conceptSet.isOpen"></i>
+            <i class="fa fa-caret-down" ng-show="conceptSet.isOpen"></i>
+            <span class="section-label">{{conceptSet.label}}</span>
+            <button type="button" ng-if="::conceptSet.showComputeButton() && conceptSet.isOpen" ng-click="computeField(conceptSet, $event)"
+                    class="fr btn-small">Compute
+            </button>
+            <button type="button" ng-if="showPreviousButton(conceptSet.conceptName) && conceptSet.isOpen" ng-click="showPrevious(conceptSet.conceptName, $event)"
+                    class="fr btn-small">Previous
+            </button>
+            <button type="button" ng-if="conceptSet.isOpen" ng-click="conceptSet.toggleInnerSections($event)"
+                    class="fr btn-small">
+                <span ng-show="conceptSet.collapseInnerSections">{{::'CONCEPT_SET_GROUP_EXPAND_ALL_KEY' | translate}}</span>
+                <span ng-hide="conceptSet.collapseInnerSections">{{::'CONCEPT_SET_GROUP_COLLAPSE_ALL_KEY' | translate}}</span>
+            </button>
+        </h2>
+    </div>
+    <button class="add-more-concept-set add-more-btn btn-small" type="button" ng-click="clone($index)" ng-if="conceptSet.canAddMore() && !context.showPanelView"> <i class="fa fa-plus"></i> {{::'ADD_FORM_KEY' | translate}}</button>
+    <span class="favourite-concept-set" ng-if="!context.showPanelView">
+        <label class="add-fav">
+          <input type="checkbox" id="hasOldIdentifier" ng-model="conceptSet.alwaysShow" ng-change="togglePref(conceptSet, conceptSet.conceptName)" />
+          <i class="fa fa-thumb-tack"></i>
+        </label>
+    </span>
+</div>
+<concept-set ng-if="conceptSet.isLoaded" patient="::patient" ng-show="conceptSet.isOpen" collapse-inner-sections="conceptSet.collapseInnerSections"
+             concept-set-name="::conceptSet.conceptName" required="conceptSet.options.required"
+             observations="conceptSet.observations" show-title="::false" validation-handler="::validationHandler">
+</concept-set>
