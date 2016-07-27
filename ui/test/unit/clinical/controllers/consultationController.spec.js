@@ -2,7 +2,8 @@
 
 describe("ConsultationController", function () {
 
-    var scope, rootScope, state, contextChangeHandler, urlHelper, location, clinicalAppConfigService, stateParams, appService, ngDialog, q, appDescriptor, controller;
+    var scope, rootScope, state, contextChangeHandler, urlHelper, location, clinicalAppConfigService,
+        stateParams, appService, ngDialog, q, appDescriptor, controller, visitConfig, _window_;
     location = {
         path: function () {
         }, url: function (url) {
@@ -36,85 +37,88 @@ describe("ConsultationController", function () {
             url: "treatment"
         }
     ];
+    var createController = function(){
+        return controller('ConsultationController', {
+            $scope: scope,
+            $rootScope: rootScope,
+            $state: state,
+            $location: location,
+            clinicalAppConfigService: clinicalAppConfigService,
+            urlHelper: urlHelper,
+            contextChangeHandler: contextChangeHandler,
+            spinner: {},
+            encounterService: null,
+            messagingService: null,
+            sessionService: null,
+            retrospectiveEntryService: null,
+            patientContext: {patient: {}},
+            $q: q,
+            patientVisitHistoryService: null,
+            $stateParams: stateParams,
+            $window: _window_,
+            visitHistory: null,
+            appService: appService,
+            clinicalDashboardConfig: {},
+            ngDialog: ngDialog,
+            visitConfig : visitConfig
+        });
+    };
+    var setUpServiceMocks = function () {
+        clinicalAppConfigService = {
+            getAllConsultationBoards: function () {
+                return boards
+            }, getConsultationBoardLink: function () {
+                return []
+            }
+        };
 
+        stateParams = {configName: 'default'};
+        state = {
+            name: "patient.dashboard.show",
+            params: {
+                encounterUuid: "someEncounterUuid",
+                programUuid: "someProgramUuid",
+                patientUuid: "somePatientUuid",
+                enrollment: "somePatientProgramUuid"
+            },
+            go: function () {
+            }
+        };
+        contextChangeHandler = {
+            execute: function () {
+                return {allow: true}
+            }, reset: function () {
+            }
+        };
+        urlHelper = {
+            getPatientUrl: function () {
+                return "/patient/somePatientUuid/dashboard"
+            }
+        };
+        ngDialog = jasmine.createSpyObj('ngDialog', ['close', 'closeAll']);
+        rootScope.collapseControlPanel = function () {
+        };
+        scope.lastConsultationTabUrl = {url: {}};
+        appService = jasmine.createSpyObj('appService', ['getAppDescriptor']);
+        appDescriptor = jasmine.createSpyObj('appDescriptor', ['getConfigValue']);
+        appService.getAppDescriptor.and.returnValue(appDescriptor);
+        appDescriptor.getConfigValue.and.returnValue(true);
+
+        q = jasmine.createSpyObj('q', ['all', 'defer']);
+        visitConfig = {};
+    };
     beforeEach(module('bahmni.clinical'));
     beforeEach(module('bahmni.common.offline'));
-
-    var injectConsultationController = function () {
+    beforeEach(function(){
         inject(function ($controller, $rootScope, _$window_) {
+            _window_ = _$window_;
             scope = $rootScope.$new();
             rootScope = $rootScope;
-            clinicalAppConfigService = {
-                getAllConsultationBoards: function () {
-                    return boards
-                }, getConsultationBoardLink: function () {
-                    return []
-                }
-            };
-
-            stateParams = {configName: 'default'};
-            state = {
-                name: "patient.dashboard.show",
-                params: {
-                    encounterUuid: "someEncounterUuid",
-                    programUuid: "someProgramUuid",
-                    patientUuid: "somePatientUuid",
-                    enrollment: "somePatientProgramUuid"
-                },
-                go: function () {
-                }
-            };
-            contextChangeHandler = {
-                execute: function () {
-                    return {allow: true}
-                }, reset: function () {
-                }
-            };
-            urlHelper = {
-                getPatientUrl: function () {
-                    return "/patient/somePatientUuid/dashboard"
-                }
-            };
-            ngDialog = jasmine.createSpyObj('ngDialog', ['close', 'closeAll']);
-            rootScope.collapseControlPanel = function () {
-            };
-            scope.lastConsultationTabUrl = {url: {}};
-            appService = jasmine.createSpyObj('appService', ['getAppDescriptor']);
-            appDescriptor = jasmine.createSpyObj('appDescriptor', ['getConfigValue']);
-            appService.getAppDescriptor.and.returnValue(appDescriptor);
-            appDescriptor.getConfigValue.and.returnValue(true);
-
-            q = jasmine.createSpyObj('q', ['all', 'defer']);
-
             controller = $controller;
-            $controller('ConsultationController', {
-                $scope: scope,
-                $rootScope: rootScope,
-                $state: state,
-                $location: location,
-                clinicalAppConfigService: clinicalAppConfigService,
-                urlHelper: urlHelper,
-                contextChangeHandler: contextChangeHandler,
-                spinner: {},
-                encounterService: null,
-                messagingService: null,
-                sessionService: null,
-                retrospectiveEntryService: null,
-                patientContext: {patient: {}},
-                $q: q,
-                patientVisitHistoryService: null,
-                $stateParams: stateParams,
-                $window: _$window_,
-                visitHistory: null,
-                appService: appService,
-                clinicalDashboardConfig: null,
-                ngDialog: ngDialog
-            });
         });
-
-    };
-
-    beforeEach(injectConsultationController);
+    });
+    beforeEach(setUpServiceMocks);
+    beforeEach(createController);
 
     it("should check if name is longer", function () {
 
@@ -236,31 +240,74 @@ describe("ConsultationController", function () {
         expect(scope.shouldDisplaySaveConfirmDialogForStateChange).not.toHaveBeenCalled();
     });
 
-    var createController = function () {
-        return controller('ConsultationController', {
-            $scope: scope,
-            $rootScope: rootScope,
-            $state: state,
-            $location: location,
-            clinicalAppConfigService: clinicalAppConfigService,
-            urlHelper: urlHelper,
-            contextChangeHandler: contextChangeHandler,
-            spinner: {},
-            encounterService: null,
-            messagingService: null,
-            sessionService: null,
-            retrospectiveEntryService: null,
-            patientContext: {patient: {}},
-            $q: q,
-            patientVisitHistoryService: null,
-            $stateParams: stateParams,
-            $window: null,
-            visitHistory: null,
-            appService: appService,
-            clinicalDashboardConfig: null,
-            ngDialog: ngDialog
-        });
-    };
+    it("current board should not be set if dashboard is clicked", function () {
+        location = {
+            path: function () {
+            }, url: function (url) {
+                return "/default/patient/somePatientUuid/dashboard"
+            }
+        };
+        _window_ = null;
+        createController();
+
+        expect(scope.currentBoard).toBeFalsy();
+    });
+
+    it("should set current tab based on url", function () {
+        location = {
+            path: function () {
+            }, url: function (url) {
+                return "/default/patient/somePatientUuid/dashboard/treatment?programUuid=someProgramUuid&tabConfigName=tbTabConfig"
+            }
+        };
+        createController();
+
+        expect(scope.currentBoard).toEqual({
+                extensionPointId: "org.bahmni.clinical.consultation.board",
+                icon: "icon-user-md",
+                id: "bahmni.clinical.billing.treatment",
+                label: "Treatment",
+                order: 7,
+                extensionParams: {
+                    "tabConfigName": "tbTabConfig"
+                },
+                requiredPrivilege: "app:clinical:consultationTab",
+                translationKey: "Treatment",
+                type: "link",
+                url: "treatment",
+                isSelectedTab: true
+            }
+        )
+    });
+
+    it("should set current tab based on the tab config provided", function () {
+        location = {
+            path: function () {
+            }, url: function (url) {
+                return "/default/patient/somePatientUuid/dashboard/treatment?programUuid=someProgramUuid&tabConfigName=nonTbTabConfig"
+            }
+        };
+        var nonTbTab = {
+            extensionPointId: "org.bahmni.clinical.consultation.board",
+            icon: "icon-user-md",
+            id: "bahmni.clinical.billing.treatment",
+            label: "Treatment",
+            order: 7,
+            extensionParams: {
+                "tabConfigName": "nonTbTabConfig"
+            },
+            requiredPrivilege: "app:clinical:consultationTab",
+            translationKey: "Treatment",
+            type: "link",
+            url: "treatment"
+        };
+
+        boards.push(nonTbTab);
+        createController();
+        var expectedCurrentBoard = nonTbTab;
+        expectedCurrentBoard.isSelectedTab = true;
+        expect(scope.currentBoard).toEqual(expectedCurrentBoard)
+    });
 
     describe("open consultation", function () {
 
@@ -289,73 +336,6 @@ describe("ConsultationController", function () {
             scope.openConsultation();
             expect(rootScope.$broadcast).toHaveBeenCalledWith('event:pageUnload');
         });
-    });
-    it("should set current tab based on url", function () {
-        location = {
-            path: function () {
-            }, url: function (url) {
-                return "/default/patient/somePatientUuid/dashboard/treatment?programUuid=someProgramUuid&tabConfigName=tbTabConfig"
-            }
-        };
-        injectConsultationController();
-
-        expect(scope.currentBoard).toEqual({
-                extensionPointId: "org.bahmni.clinical.consultation.board",
-                icon: "icon-user-md",
-                id: "bahmni.clinical.billing.treatment",
-                label: "Treatment",
-                order: 7,
-                extensionParams: {
-                    "tabConfigName": "tbTabConfig"
-                },
-                requiredPrivilege: "app:clinical:consultationTab",
-                translationKey: "Treatment",
-                type: "link",
-                url: "treatment",
-                isSelectedTab: true
-            }
-        )
-    });
-
-    it("current board should not be set if dashboard is clicked", function () {
-        location = {
-            path: function () {
-            }, url: function (url) {
-                return "/default/patient/somePatientUuid/dashboard"
-            }
-        };
-        injectConsultationController();
-
-        expect(scope.currentBoard).toBeFalsy();
-    });
-
-    it("should set current tab based on the tab config provided", function () {
-        location = {
-            path: function () {
-            }, url: function (url) {
-                return "/default/patient/somePatientUuid/dashboard/treatment?programUuid=someProgramUuid&tabConfigName=nonTbTabConfig"
-            }
-        };
-        var nonTbTab = {
-            extensionPointId: "org.bahmni.clinical.consultation.board",
-            icon: "icon-user-md",
-            id: "bahmni.clinical.billing.treatment",
-            label: "Treatment",
-            order: 7,
-            extensionParams: {
-                "tabConfigName": "nonTbTabConfig"
-            },
-            requiredPrivilege: "app:clinical:consultationTab",
-            translationKey: "Treatment",
-            type: "link",
-            url: "treatment"
-        };
-
-        boards.push(nonTbTab);
-        injectConsultationController();
-        var expectedCurrentBoard = nonTbTab;
-        expectedCurrentBoard.isSelectedTab = true;
-        expect(scope.currentBoard).toEqual(expectedCurrentBoard)
     });
 
     describe("enablePatientSearch", function () {

@@ -162,6 +162,29 @@ category:  Layout - sections
   float: left;
   margin-left: 10px;
 }
+
+.print-list-wrapper{
+  &.active{
+    ul{
+      display: block;
+    }
+  }
+  ul{
+    display: none;
+    background: #fff;
+    position: absolute;
+    top: 46px;
+    width: 220px;
+    padding: 10px 10px 0;
+    right: 385px;
+    li{
+      display: block;
+      padding-bottom: 10px;
+      cursor:pointer;
+    }
+  }
+}
+
 .dashboard-sections-wrapper {
   @include clearfix();
   .dashboard-sections {

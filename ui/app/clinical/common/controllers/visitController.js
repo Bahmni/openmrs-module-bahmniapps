@@ -7,7 +7,8 @@ angular.module('bahmni.clinical')
             $scope.documentsPromise = encounterService.getEncountersForEncounterType($scope.patient.uuid, encounterTypeUuid).then(function (response) {
                 return new Bahmni.Clinical.PatientFileObservationsMapper().map(response.data.results);
             });
-            $scope.currentVisitUrl = $state.current.views['dashboard-content'].templateUrl;
+            $scope.currentVisitUrl = $state.current.views['dashboard-content'].templateUrl ||
+                $state.current.views['print-content'].templateUrl;
             $scope.visitHistory = visitHistory; // required as this visit needs to be overridden when viewing past visits
             $scope.visitSummary = visitSummary;
             $scope.visitTabConfig = visitConfig;
@@ -64,6 +65,14 @@ angular.module('bahmni.clinical')
                 $state.go('patient.dashboard.visit', {visitUuid: visitUuid});
             };
 
+            var printOnPrint = function(){
+                if($stateParams.print){
+                    printer.printFromScope("common/views/visitTabPrint.html",$scope,function(){
+                        window.close();
+                    });
+                }
+            };
+
             var getTab = function() {
                 if(tab) {
                     for(var tabIndex in $scope.visitTabConfig.tabs) {
@@ -79,6 +88,7 @@ angular.module('bahmni.clinical')
                 $scope.visitTabConfig.setVisitUuidsAndPatientUuidToTheSections([$scope.visitUuid], $scope.patientUuid);
                 var tabToOpen = getTab();
                 $scope.visitTabConfig.switchTab(tabToOpen);
+                printOnPrint();
             };
             init();
 
