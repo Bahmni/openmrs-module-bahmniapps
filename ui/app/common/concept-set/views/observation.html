@@ -202,7 +202,7 @@
 
                         <input id="file-browse-{{observation.uniqueId}}" class="file-browse" type="file" name="image"
                                accept="application/pdf, image/*" capture="camera" ng-model="observation.value" image-upload
-                               patient-uuid="::patient.uuid">
+                               patient-uuid="::patient.uuid" ng-disabled="observation.disabled">
                         <label class="placeholder btn" for="file-browse-{{observation.uniqueId}}"
                                ng-hide="observation.value || observation.voided"><i
                                 class="fa fa-plus needsclick"></i></label>
