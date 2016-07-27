@@ -143,4 +143,26 @@ describe('EditPatientController', function () {
         expect(sections["additionalPatientInformation"].expand).toBeTruthy();
     });
 
+    it("should return true if there is disablePhotoCapture config defined to be true", function () {
+        appServiceMock.getAppDescriptor = function () {
+            return {
+                getConfigValue: function (config) {
+                    if (config == "disablePhotoCapture") {
+                        return true;
+                    }
+                }
+            }
+        };
+
+        var controller = $aController('EditPatientController', {
+            $scope: scopeMock,
+            patientService: patientServiceMock,
+            openmrsPatientMapper: openmrsPatientMapperMock,
+            encounterService: encounterServiceMock,
+            spinner: spinnerMock,
+            appService: appServiceMock
+        });
+
+        expect(scopeMock.disablePhotoCapture).toBeTruthy();
+    });
 });

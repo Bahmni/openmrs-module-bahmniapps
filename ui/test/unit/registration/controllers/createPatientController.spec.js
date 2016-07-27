@@ -493,4 +493,31 @@ describe('CreatePatientController', function() {
         scopeMock.identifierSources = [{name : "ABC", prefix: "prefix"}];
         expect(scopeMock.hasIdentifierSourceWithEmptyPrefix()).toBeFalsy();
     });
+
+    it("should return true if there is disablePhotoCapture config defined to be true", function () {
+        appServiceMock.getAppDescriptor = function() {
+            return {
+                getConfigValue: function(config) {
+                    if(config == "disablePhotoCapture"){
+                        return true;
+                    }
+                }
+
+            };
+        };
+
+        $aController('CreatePatientController', {
+            $scope: scopeMock,
+            $rootScope: rootScopeMock,
+            $state: stateMock,
+            patientService: patientServiceMock,
+            preferences: preferencesMock,
+            patientModel: patientModelMock,
+            spinner: spinnerMock,
+            appService: appServiceMock,
+            ngDialog: ngDialogMock,
+            offlineService: {}
+        });
+        expect(scopeMock.disablePhotoCapture).toBeTruthy();
+    });
 });

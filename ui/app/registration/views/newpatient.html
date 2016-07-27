@@ -6,7 +6,7 @@
                     <span class="mylegend"><strong>{{::'REGISTRATION_LABEL_NEW_PATIENT' | translate}}</strong></span>
                 </legend>
                 <section class="clearfix">
-                    <div class="photo-container-wrapper">
+                    <div class="photo-container-wrapper" ng-if="!disablePhotoCapture">
                         <span class="pull-right photo-container">
                             <img ng-src="{{patient.image}}" fallback-src='../images/blank-user.gif'>
                             <div ng-model="patient.image" capture-photo="" class="capture-photo-btn"></div>
