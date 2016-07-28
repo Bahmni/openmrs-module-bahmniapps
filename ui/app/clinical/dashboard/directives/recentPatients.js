@@ -3,7 +3,7 @@
 angular.module('bahmni.clinical')
     .directive('recentPatients', function () {
 
-        var controller = function ($rootScope, $scope, $state, clinicalDashboardConfig, $stateParams, patientService) {
+        var controller = function ($rootScope, $scope, $state, clinicalDashboardConfig, $stateParams, patientService, sessionService) {
             var initialize = function () {
                 $scope.search = new Bahmni.Common.PatientSearch.Search(undefined);
                 $scope.showPatientsList = false;
@@ -48,7 +48,9 @@ angular.module('bahmni.clinical')
                 if ($scope.search.patientsCount() > 0) {
                     return;
                 }
-                patientService.findPatients({q: Bahmni.Clinical.Constants.globalPropertyToFetchActivePatients}).then(function (response) {
+                var params = { q: Bahmni.Clinical.Constants.globalPropertyToFetchActivePatients,
+                    location_uuid: sessionService.getLoginLocationUuid()}
+                patientService.findPatients(params).then(function (response) {
                     $scope.search.updatePatientList(response.data);
                 });
             };
