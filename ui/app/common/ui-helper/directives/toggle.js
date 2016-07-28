@@ -3,13 +3,14 @@
 angular.module('bahmni.common.uiHelper')
     .directive('toggle', function () {
         var link = function ($scope, element) {
-            $scope.toggle && $(element).addClass('active',$scope.toggle);
-
             $(element).click(function () {
                 $scope.$apply(function () {
                     $scope.toggle = !$scope.toggle
-                    $(element).toggleClass('active', $scope.toggle)
                 });
+            });
+
+            $scope.$watch('toggle', function() {
+                $(element).toggleClass('active', $scope.toggle);
             });
 
             $scope.$on("$destroy", function(){
