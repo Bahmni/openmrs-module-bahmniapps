@@ -160,10 +160,10 @@
         </section>
     </div>
 
-    <div ng-repeat="(key, section) in ::patientConfiguration.getOrderedPatientAttributesSections()"
+    <div ng-repeat="section in ::patientConfiguration.getOrderedPatientAttributesSections()"
          class="additional-info-wrapper">
         <div class="box-container form" ng-if="::(section.attributes.length > 0 && section.title)">
-            <legend class="additional-attribute" toggle="sectionVisibilityMap[key]">
+            <legend class="additional-attribute" toggle="section.expand">
               <span>
                   <i class="fa fa-caret-right"></i>
                   <i class="fa fa-caret-down"></i>
@@ -175,7 +175,7 @@
                   </strong>
               </span>
             </legend>
-            <section class="form-field-inline clearfix" ng-show="sectionVisibilityMap[key]">
+            <section class="form-field-inline clearfix" ng-show="section.expand">
                 <article class="form-field" ng-repeat="attribute in ::section.attributes"
                          ng-class="::{'right-form-field' : $index%2 != 0}">
                     <attribute-types target-model="patient" attribute="::attribute" field-validation="::fieldValidation"

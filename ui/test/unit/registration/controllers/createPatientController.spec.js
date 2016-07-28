@@ -1,7 +1,7 @@
 'use strict';
 
 var $aController, q, scopeMock, rootScopeMock, stateMock, patientServiceMock, preferencesMock, patientModelMock, spinnerMock, locationServiceMock,
-    appServiceMock, ngDialogMock, ngDialogLocalScopeMock, httpBackend, http;
+    appServiceMock, ngDialogMock, ngDialogLocalScopeMock, httpBackend, http, sections;
 
 describe('CreatePatientController', function() {
 
@@ -80,16 +80,19 @@ describe('CreatePatientController', function() {
             }]
 
         }];
+
+        sections =  {
+            "additionalPatientInformation": {
+                attributes: [{
+                    name: "education"
+                }, {
+                    foo: "bar"
+                }]
+            }
+        };
+
         rootScopeMock.patientConfiguration.getPatientAttributesSections = function() {
-            return {
-                "additionalPatientInformation": {
-                    attributes: [{
-                        name: "education"
-                    }, {
-                        foo: "bar"
-                    }]
-                }
-            };
+            return sections;
         };
 
         $aController('CreatePatientController', {
@@ -141,6 +144,38 @@ describe('CreatePatientController', function() {
 
     });
 
+    it("should expand the section if configured true via config", function() {
+        sections =  {
+            "additionalPatientInformation": {
+                attributes: [{
+                    name: "caste"
+                }, {
+                    foo: "bar"
+                }],
+                expanded: true
+            }
+        };
+
+        rootScopeMock.patientConfiguration.getPatientAttributesSections = function() {
+            return sections;
+        };
+        
+        $aController('CreatePatientController', {
+            $scope: scopeMock,
+            $rootScope: rootScopeMock,
+            $state: stateMock,
+            patientService: patientServiceMock,
+            preferences: preferencesMock,
+            patientModel: patientModelMock,
+            spinner: spinnerMock,
+            appService: appServiceMock,
+            ngDialog: ngDialogMock,
+            offlineService: {}
+        });
+
+        expect(sections["additionalPatientInformation"].expand).toBeTruthy();
+    });
+
     it("should expand the section when there are any default values specified for an attribute in that section", function() {
 
         $aController('CreatePatientController', {
@@ -156,8 +191,7 @@ describe('CreatePatientController', function() {
             offlineService: {}
         });
 
-        expect(scopeMock.sectionVisibilityMap["additionalPatientInformation"]).toBeTruthy();
-
+        expect(sections["additionalPatientInformation"].expand).toBeTruthy();
     });
 
     it("should do nothing if defaults are not specified", function() {

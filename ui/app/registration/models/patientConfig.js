@@ -40,6 +40,7 @@ Bahmni.Registration.PatientConfig = (function () {
                         sectionObject = {
                             attributes: [],
                             title: section.title,
+                            expanded: section.expanded,
                             translationKey: section.translationKey,
                             shortcutKey: section.shortcutKey,
                             order: section.order
@@ -75,7 +76,7 @@ Bahmni.Registration.PatientConfig = (function () {
         },
 
         getOrderedPatientAttributesSections: function(){
-            return _.sortBy(this.patientAttributesSections,'order');
+            return _.sortBy(this.patientAttributesSections, 'order');
         },
 
         splitAsRows: function (attributes) {
