@@ -1,0 +1,17 @@
+<div class="program-tile" ng-if="patientProgram.deleting">
+    <div class="delete-progam-container">
+        <div class="programName">
+            {{::patientProgram.display}}
+        </div>
+        <form ng-submit="confirmDeletion(patientProgram)">
+            <textarea ng-model="patientProgram.voidReason" class="" required placeholder="Reason to delete the program"></textarea>
+            <div class="button-group">
+                <input type="button" ng-click="toggleDelete(patientProgram)" value="Cancel" class="button"/>
+                <input type="submit" value="Delete" class="button"/>
+            </div>
+        </form>
+    </div>
+</div>
+
+
+

@@ -74,7 +74,7 @@
         </h2>
 
         <div ng-if="hasPatientAnyPastPrograms()">
-            <section ng-repeat="program in endedPrograms" class="inactive-program-tiles program-tiles" ng-show="endedPrograms.showProgramSection">
+            <section ng-repeat="patientProgram in endedPrograms" class="inactive-program-tiles program-tiles" ng-show="endedPrograms.showProgramSection">
                 <ng-include src="'../common/uicontrols/programmanagement/views/pastProgramRow.html'" ng-init="active=false"></ng-include>
             </section>
         </div>

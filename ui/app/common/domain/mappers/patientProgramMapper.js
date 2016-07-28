@@ -10,7 +10,9 @@ Bahmni.Common.Domain.PatientProgramMapper = function(){
             uuid: patientProgram.uuid,
             dateCompleted: dateCompleted ? moment(dateCompleted).format(Bahmni.Common.Constants.ServerDateTimeFormat) : null,
             outcome: patientProgram.outcomeData ? patientProgram.outcomeData.uuid : null,
-            attributes: attributeFormatter.getMrsAttributesForUpdate(patientProgram.patientProgramAttributes, programAttributeTypes, patientProgram.attributes)
+            attributes: attributeFormatter.getMrsAttributesForUpdate(patientProgram.patientProgramAttributes, programAttributeTypes, patientProgram.attributes),
+            voided: !!patientProgram.voided,
+            voidReason: patientProgram.voidReason
         }
     }
 
