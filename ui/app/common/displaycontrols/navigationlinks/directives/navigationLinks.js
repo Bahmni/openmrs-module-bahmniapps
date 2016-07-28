@@ -42,6 +42,10 @@ angular.module('bahmni.common.displaycontrol.navigationlinks')
                 }
 
             ];
+            var inPatientLink = _.find($scope.standardLinks, {"name": "inpatient"});
+            if($scope.linkParams.visitUuid){
+                inPatientLink.url = "../adt/#/patient/{{patientUuid}}/visit/{{visitUuid}}/";
+            }
 
             var filterLinks = function(links, showLinks){
                 var linksSpecifiedInShowLinks = function () {
@@ -54,7 +58,7 @@ angular.module('bahmni.common.displaycontrol.navigationlinks')
             };
 
             $scope.getLinks = function (){
-                return $scope.links = _.union(
+                return _.union(
                     filterLinks($scope.standardLinks, $scope.params.showLinks),
                     $scope.params.customLinks
                 );
