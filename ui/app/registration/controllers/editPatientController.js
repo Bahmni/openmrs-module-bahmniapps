@@ -25,16 +25,15 @@ angular.module('bahmni.registration')
                 $scope.openMRSPatient = openmrsPatient["patient"];
                 $scope.patient = patientMapper.map(openmrsPatient);
                 setReadOnlyFields();
-                buildSectionVisibilityMap();
+                expandDataFilledSections();
             };
 
-            var buildSectionVisibilityMap = function () {
-                $scope.sectionVisibilityMap = {};
-                angular.forEach($rootScope.patientConfiguration && $rootScope.patientConfiguration.getPatientAttributesSections(), function(section, key) {
+            var expandDataFilledSections = function () {
+                angular.forEach($rootScope.patientConfiguration && $rootScope.patientConfiguration.getPatientAttributesSections(), function(section) {
                     var notNullAttribute = _.find(section && section.attributes, function (attribute) {
                         return $scope.patient[attribute.name] !== undefined;
                     });
-                    $scope.sectionVisibilityMap[key] = notNullAttribute ? true : false;
+                    section.expand = section.expanded || (notNullAttribute ? true : false);
                 });
             };
 

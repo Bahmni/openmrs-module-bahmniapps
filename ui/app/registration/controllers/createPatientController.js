@@ -52,24 +52,13 @@ angular.module('bahmni.registration')
                     .each(setDefaultAnswer).filter(isConcept).each(setDefaultConcept).value();
             };
 
-            var getPatientAttributeSections = function(){
-                return $rootScope.patientConfiguration && $rootScope.patientConfiguration.getPatientAttributesSections();
-            };
-
-            var buildSectionVisibilityMap = function() {
-                $scope.sectionVisibilityMap = {};
-                var patientAttributeSections = getPatientAttributeSections();
-                var shouldShowSection = function(key) {
-                    return _.some(patientAttributeSections[key].attributes, function(attribute) {
+            var expandSectionsWithDefaultValue = function () {
+                angular.forEach($rootScope.patientConfiguration && $rootScope.patientConfiguration.getPatientAttributesSections(), function(section) {
+                    var notNullAttribute = _.find(section && section.attributes, function (attribute) {
                         return $scope.patient[attribute.name] !== undefined;
                     });
-                };
-                _.chain(patientAttributeSections)
-                    .keys()
-                    .filter(shouldShowSection)
-                    .each(function(key) {
-                        $scope.sectionVisibilityMap[key] = true;
-                    }).value();
+                    section.expand = section.expanded || (notNullAttribute ? true : false);
+                });
             };
 
             var init = function() {
@@ -81,8 +70,7 @@ angular.module('bahmni.registration')
                 $scope.patient.identifierPrefix = identifierPrefix || $scope.identifierSources[0];
                 $scope.patient.hasOldIdentifier = preferences.hasOldIdentifier;
                 prepopulateDefaultsInFields();
-                buildSectionVisibilityMap();
-
+                expandSectionsWithDefaultValue();
             };
 
             init();

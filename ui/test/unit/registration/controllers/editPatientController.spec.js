@@ -2,10 +2,9 @@
 
 describe('EditPatientController', function () {
 
-    var $aController;
+    var $aController, patient = {};
     var scopeMock = jasmine.createSpyObj('scopeMock', ['actions']);
     var rootScopeMock = jasmine.createSpyObj('rootScopeMock', ['patientConfiguration']);
-    var stateMock = jasmine.createSpyObj('stateMock', ['go']);
     var patientServiceMock = jasmine.createSpyObj('patientServiceMock', ['get', 'update']);
     var preferencesMock = jasmine.createSpyObj('preferencesMock', ['']);
     var patientModelMock = jasmine.createSpyObj('patientModelMock', ['']);
@@ -22,65 +21,126 @@ describe('EditPatientController', function () {
         })
     );
 
+    beforeEach(function () {
+        appServiceMock.getAppDescriptor = function () {
+            return {
+                getConfigValue: function () {
+                    return ["caste", "primaryRelative"];
+                }
+            }
+        };
+
+        patientServiceMock.get = function (uuid) {
+            return {
+                then: function (successFn) {
+                    successFn({data: "uuid"});
+                }
+            }
+        };
+        patientServiceMock.update = function (uuid) {
+            return {
+                then: function (successFn) {
+                    successFn({data: "uuid"});
+                }
+            }
+        };
+        openmrsPatientMapperMock.map = function (openmrsPatient) {
+            return patient;
+        };
+
+        encounterServiceMock.getDigitized = function (uuid) {
+            return {
+                then: function (successFn) {
+                    return ({data: {data: true}});
+                }
+            }
+        };
+        scopeMock.patientConfiguration = {identifierSources: []};
+    });
+
     it("should set read only fields after save", function () {
-            appServiceMock.getAppDescriptor = function () {
-                return {
-                    getConfigValue: function () {
-                        return ["caste", "primaryRelative"];
-                    }
-                }
-            };
+        var controller = $aController('EditPatientController', {
+            $scope: scopeMock,
+            patientService: patientServiceMock,
+            openmrsPatientMapper: openmrsPatientMapperMock,
+            encounterService: encounterServiceMock,
+            spinner: spinnerMock,
+            appService: appServiceMock
+        });
 
-            patientServiceMock.get = function (uuid) {
-                return {
-                    then: function (successFn) {
-                        successFn({data: "uuid"});
-                    }
-                }
-            };
-            patientServiceMock.update = function (uuid) {
-                return {
-                    then: function (successFn) {
-                        successFn({data: "uuid"});
-                    }
-                }
-            };
-            openmrsPatientMapperMock.map = function (openmrsPatient) {
-                return scopeMock.patient;
-            };
+        expect(scopeMock.readOnlyFields["caste"]).toBeFalsy()
+        expect(scopeMock.readOnlyFields["primaryRelative"]).toBeFalsy();
 
-            encounterServiceMock.getDigitized = function (uuid) {
-                return {
-                    then: function (successFn) {
-                        return ({data : {data: true}});
-                    }
-                }
-            };
-            scopeMock.patientConfiguration = {identifierSources: []};
+        patient = {"caste": "someCaste", "relationships": []};
+        scopeMock.actions = {
+            followUpAction: function () {
+                scopeMock.afterSave();
+            }
+        };
 
-            var controller = $aController('EditPatientController', {
-                $scope: scopeMock,
-                patientService: patientServiceMock,
-                openmrsPatientMapper: openmrsPatientMapperMock,
-                encounterService: encounterServiceMock,
-                spinner: spinnerMock,
-                appService: appServiceMock
-            });
+        scopeMock.update();
 
-            expect(scopeMock.readOnlyFields["caste"]).toBeFalsy()
-            expect(scopeMock.readOnlyFields["primaryRelative"]).toBeFalsy();
+        expect(scopeMock.readOnlyFields["caste"]).toBeTruthy()
+        expect(scopeMock.readOnlyFields["primaryRelative"]).toBeFalsy();
+    });
 
-            scopeMock.patient = {"caste": "someCaste", "relationships": []};
-            scopeMock.actions = {
-                followUpAction: function () {
-                    scopeMock.afterSave();
-                }
-            };
+    it("should expand the section when there are any default values specified for an attribute in that section", function () {
+        sections = {
+            "additionalPatientInformation": {
+                attributes: [{
+                    name: "primaryContact"
+                }, {
+                    foo: "bar"
+                }],
+                expanded: true
+            }
+        };
+        patient = {"caste": "someCaste", "relationships": []};
+        rootScopeMock.patientConfiguration.getPatientAttributesSections = function () {
+            return sections;
+        };
 
-            scopeMock.update();
+        $aController('EditPatientController', {
+            $scope: scopeMock,
+            patientService: patientServiceMock,
+            openmrsPatientMapper: openmrsPatientMapperMock,
+            encounterService: encounterServiceMock,
+            spinner: spinnerMock,
+            appService: appServiceMock,
+            $rootScope: rootScopeMock
+        });
 
-            expect(scopeMock.readOnlyFields["caste"]).toBeTruthy()
-            expect(scopeMock.readOnlyFields["primaryRelative"]).toBeFalsy();
-        }
-    );
+        expect(sections["additionalPatientInformation"].expand).toBeTruthy();
+    });
+
+    it("should expand the section when there are saved values in the section", function () {
+        sections = {
+            "additionalPatientInformation": {
+                attributes: [{
+                    name: "caste"
+                }, {
+                    foo: "bar"
+                }]
+            }
+        };
+
+        rootScopeMock.patientConfiguration.getPatientAttributesSections = function () {
+            return sections;
+        };
+
+        patient = {"caste": "someCaste", "relationships": []};
+
+        $aController('EditPatientController', {
+            $scope: scopeMock,
+            patientService: patientServiceMock,
+            openmrsPatientMapper: openmrsPatientMapperMock,
+            encounterService: encounterServiceMock,
+            spinner: spinnerMock,
+            appService: appServiceMock,
+            $rootScope: rootScopeMock
+        });
+
+        expect(sections["additionalPatientInformation"].expand).toBeTruthy();
+    });
+
 });
