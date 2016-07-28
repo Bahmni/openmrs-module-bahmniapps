@@ -606,8 +606,8 @@ describe('programService', function () {
             "outcome": null,
             "dateCompleted": moment("2016-01-12T05:30:00+0530").format('YYYY-MM-DDTHH:mm:ssZZ'),
             "dateEnrolled": moment("2016-01-01T00:00:00").format('YYYY-MM-DDTHH:mm:ssZZ'),
-            "uuid": "Some UUID"
-
+            "uuid": "Some UUID",
+            "voided" : false
         };
 
         mockBackend.whenPOST(Bahmni.Common.Constants.programEnrollPatientUrl + '/Some UUID').respond(function (method, url, data, headers) {
