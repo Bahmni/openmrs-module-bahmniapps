@@ -86,7 +86,7 @@ Bahmni.Common.PatientSearch.Search = function (searchTypes) {
     function mapPatient(patient) {
         patient.name = patient.name || (patient.givenName + ' ' + patient.familyName);
         patient.display = patient.identifier + " - " + patient.name;
-        patient.image = patient.image || Bahmni.Common.Constants.patientImageUrl + patient.uuid + ".jpeg";
+        patient.image = Bahmni.Common.Constants.patientImageUrlByPatientUuid + patient.uuid;
         return patient;
     }
 

@@ -23,7 +23,7 @@ angular.module('bahmni.clinical')
                     }
                 }
 
-                $scope.patientContext.image = Bahmni.Common.Constants.patientImageUrl + $scope.patientContext.uuid + ".jpeg";
+                $scope.patientContext.image = Bahmni.Common.Constants.patientImageUrlByPatientUuid + $scope.patientContext.uuid;
                 $scope.patientContext.gender = $rootScope.genderMap[$scope.patientContext.gender];
             });
         };

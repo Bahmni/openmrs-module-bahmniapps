@@ -1,6 +1,6 @@
 <div class="back-btn-link">
     <a ng-href="../clinical/#/default/patient/{{patient.uuid}}/dashboard" title="Back to {{patient.name}}'s Clinical Dashboard">
-        <img ng-src="{{::patient.image}}" fallback-src='../images/blank-user.gif'>
+        <img class="patient-image" ng-src="{{::patient.image}}" fallback-src="../images/blank-user.gif">
         <span class="patient-info">
             <span class="patient-name" >{{patient.name}} </span>
             <span class="patient-id">{{patient.identifier}}</span>

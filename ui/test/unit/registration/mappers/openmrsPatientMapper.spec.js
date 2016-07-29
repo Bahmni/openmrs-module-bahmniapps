@@ -114,7 +114,8 @@ describe('patientMapper', function () {
         expect(moment(patient.date).zone(0).isSame(moment("1998-12-31T18:30:00.000+0000"))).toBe(true);
         var urlParts = patient.image.split('?');
         expect(urlParts.length).toBe(2);
-        expect(urlParts[0]).toBe("/patient_images/" + openmrsPatient.patient.uuid + ".jpeg");
+        expect(urlParts[0]).toBe("/openmrs/ws/rest/v1/patientImage");
+        expect(urlParts[1].startsWith('patientUuid=' + openmrsPatient.patient.uuid)).toBeTruthy();
     });
 
     it('should map attributes from openmrsPatient to our patient object', function () {

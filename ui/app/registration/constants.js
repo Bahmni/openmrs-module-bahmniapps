@@ -1,11 +1,13 @@
 var Bahmni = Bahmni || {};
 Bahmni.Registration = Bahmni.Registration || {};
 var hostUrl = Bahmni.Common.Constants.hostURL;
+var RESTWS_V1 = hostUrl + "/openmrs/ws/rest/v1";
+
 Bahmni.Registration.Constants = {
     openmrsUrl: hostUrl + "/openmrs",
     registrationEncounterType: "REG",
-    baseOpenMRSRESTURL: hostUrl + "/openmrs/ws/rest/v1",
-    patientImageURL: "/patient_images/",
+    baseOpenMRSRESTURL: RESTWS_V1,
+    patientImageUrlByPatientUuid: RESTWS_V1 + "/patientImage?patientUuid=",
     bahmniRESTBaseURL: hostUrl + "/openmrs/ws/rest/v1/bahmnicore",
     emrApiRESTBaseURL: hostUrl + "/openmrs/ws/rest/emrapi",
     emrApiEncounterUrl: hostUrl + "/openmrs/ws/rest/emrapi/encounter",
