@@ -5,7 +5,7 @@
         <div class="patient-info">
             <div>
                 <a class="patient-img" href="{{getDashboardLink()}}" ng-click="changeContext($event)">
-                    <img ng-src="{{::patient.image}}" fallback-src='../images/blank-user.gif'>
+                    <img class="patient-image" ng-src="{{::patient.image}}" fallback-src="../images/blank-user.gif">
                 </a>
                 <div class="patient-handler">
                     <h4 class="patient-name">

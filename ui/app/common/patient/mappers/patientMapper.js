@@ -37,7 +37,7 @@ Bahmni.PatientMapper = function (patientConfig, $rootScope,$translate) {
             patient.registrationDate = parseDate(openmrsPatient.person.personDateCreated);
         }
 
-        patient.image = Bahmni.Common.Constants.patientImageUrl + openmrsPatient.uuid + ".jpeg";
+        patient.image = Bahmni.Common.Constants.patientImageUrlByPatientUuid + openmrsPatient.uuid;
         return patient;
     };
 
