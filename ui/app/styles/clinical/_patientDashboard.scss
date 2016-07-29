@@ -897,20 +897,21 @@ table.pivot-table {
     font-family: OpenSansSemiBold;
     color: $darkGray;
   }
-  .tabular-obs table tr th.obsTableEdit{
-    width:130px;
+  .tabular-obs table tr th.obsTableHeaderName{
+    width:155px;
   }
+  .tabular-obs table tr th.obsTableEdit{
+    width:170px;
+  }
+
   .tabular-obs table tr td.obsTableEdit{
-      width:130px;
+      width:170px;
       span.obsTableData{
-        width:105px;
+        width:150px;
         @media screen and (max-width: 1024px) {
-          width:97px;
+          width:140px;
         }
       }
-  }
-  .tabular-obs table tr td .obsTableEditContainer{
-    width:130px;
   }
 }
 
