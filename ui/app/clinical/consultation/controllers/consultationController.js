@@ -10,6 +10,7 @@ angular.module('bahmni.clinical').controller('ConsultationController',
                   patientVisitHistoryService, $stateParams, $window, visitHistory, clinicalDashboardConfig, appService,
                   ngDialog, $filter, configurations, offlineService, visitConfig
         ) {
+            $scope.togglePrintList = false;
             $scope.patient = patientContext.patient;
             $scope.stateChange = function(){
                 return $state.current.name === 'patient.dashboard.show'
