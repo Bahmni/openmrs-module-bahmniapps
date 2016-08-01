@@ -58,6 +58,7 @@ angular.module('bahmni.registration')
             var update = function(patient, openMRSPatient, attributeTypes) {
                 var data = new Bahmni.Registration.CreatePatientRequestMapper(moment()).mapFromPatient(attributeTypes, patient);
                 data.patient.person.names[0].uuid = openMRSPatient.person.names[0].uuid;
+                data.patient.identifiers[0].identifierSourceUuid = openMRSPatient.identifiers[0].identifierSourceUuid;
                 return offlinePatientServiceStrategy.deletePatientData(data.patient.uuid).then(function () {
                         return create(data).then(function (result) {
                             var patientData = JSON.parse(JSON.stringify(result.data));
