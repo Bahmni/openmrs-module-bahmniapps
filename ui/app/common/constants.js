@@ -51,7 +51,7 @@ Bahmni.Common = Bahmni.Common || {};
     };
 
     var authenticatedReferenceDataMap = {
-        "/openmrs/ws/rest/v1/idgen/identifiersources": "IdentifierSources",
+        "/openmrs/ws/rest/v1/idgen/identifiertype": "IdentifierTypes",
         "/openmrs/module/addresshierarchy/ajax/getOrderedAddressHierarchyLevels.form": "AddressHierarchyLevels",
         "/openmrs/ws/rest/v1/bahmnicore/sql/globalproperty?property=mrs.genders": "Genders",
         "/openmrs/ws/rest/v1/bahmnicore/sql/globalproperty?property=bahmni.encountersession.duration": "encounterSessionDuration",

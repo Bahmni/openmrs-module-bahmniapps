@@ -62,7 +62,7 @@ angular.module('bahmni.common.domain')
             };
 
             configurationFunctions.identifierTypesConfig = function () {
-                return androidDbService.getReferenceData('IdentifierSources');
+                return androidDbService.getReferenceData('IdentifierTypes');
             };
 
             configurationFunctions.genderMap = function () {

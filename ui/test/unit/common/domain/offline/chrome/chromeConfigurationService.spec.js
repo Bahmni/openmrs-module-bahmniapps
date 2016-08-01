@@ -260,20 +260,25 @@ describe('configurationService', function () {
         });
     });
 
-    it('should fetch identifierSourceConfig from offline db', function (done) {
-        var identifierSourceConfig = {
+    it('should fetch identifierTypesConfig from offline db', function (done) {
+        var identifierTypesConfig = {
             "data": {
                 "results": [
                     {
-                        uuid: "41e09efb-eca2-48b1-9aff-0b34864e0aad",
-                        name: "Identifier Source Config"
-                    }]}
+                        uuid: "52e09efb-eca2-48b1-9aff-0b34864e0aad",
+                        identifierSources: [{
+                            uuid: "41e09efb-eca2-48b1-9aff-0b34864e0aad",
+                            name: "Identifier Source Config"
+                        }
+                        ]
+                    }]
+            }
         };
 
         offlineDbService.getReferenceData.and.returnValue(specUtil.respondWithPromise($q, identifierTypesConfig));
-        configurationservice.getConfigurations(['identifierSourceConfig']).then(function (result) {
+        configurationservice.getConfigurations(['identifierTypesConfig']).then(function (result) {
             expect(result.identifierTypesConfig.results.length).toBe(1);
-            expect(result.identifierTypesConfig.results[0].name).toBe("Identifier Source Config");
+            expect(result.identifierTypesConfig.results[0].identifierSources[0].name).toBe("Identifier Source Config");
             done();
         });
     });
