@@ -3,6 +3,13 @@
 angular.module('bahmni.registration')
     .factory('addressHierarchyService', ['$http', 'offlineService', 'offlineDbService', 'androidDbService',
         function ($http, offlineService, offlineDbService, androidDbService) {
+
+        var parseSearchString = function (searchString) {
+            searchString = searchString.replace(new RegExp("\\(", "g"), "\\(");
+            searchString = searchString.replace(new RegExp("\\)", "g"), "\\)");
+            return searchString;
+        };
+
         var search = function(fieldName, query, parentUuid){
 
             var params =  {searchString: query, addressField: fieldName ,parentUuid: parentUuid, limit: defaults.maxAutocompleteResults};
@@ -10,6 +17,7 @@ angular.module('bahmni.registration')
                 if(offlineService.isAndroidApp()){
                     return androidDbService.searchAddress(params);
                 }else{
+                    params.searchString = parseSearchString(query);
                     return offlineDbService.searchAddress(params);
                 }
 
