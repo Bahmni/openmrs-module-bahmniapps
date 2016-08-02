@@ -206,6 +206,15 @@ angular.module('bahmni.registration')
             $scope.hasIdentifierSourceWithEmptyPrefix = function (identifierType) {
                 var identifierSources = identifierType.identifierSources;
                 return identifierSources.length === 1 && identifierSources[0].prefix === "";
+            };
+
+            $scope.isIdentifierRequired = function (identifier) {
+                if(identifier.hasOldIdentifier){
+                    return true;
+                }else if(identifier.identifierType.required){
+                    return !$scope.hasIdentifierSources(identifier.identifierType);
+                }
+                return false;
             }
         }
     ]);

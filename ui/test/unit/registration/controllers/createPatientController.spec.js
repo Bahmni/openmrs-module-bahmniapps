@@ -528,4 +528,42 @@ describe('CreatePatientController', function() {
         });
         expect(scopeMock.disablePhotoCapture).toBeTruthy();
     });
+
+    describe("isIdentifierRequired", function () {
+        it('should return true if Enter ID is checked irrespective of whether identifier type is configured as required or not', function () {
+            var identifier = {
+                identifierType: {
+                    required: false,
+                    identifierSources: []
+                },
+                hasOldIdentifier: true
+            };
+            expect(scopeMock.isIdentifierRequired(identifier)).toBeTruthy();
+        });
+
+        it('should return true if Enter Id is not checked and identifier type can not be auto generated ', function () {
+            var identifier = {
+                identifierType: {
+                    required: true,
+                    identifierSources: []
+                },
+                hasOldIdentifier: false
+            };
+            expect(scopeMock.isIdentifierRequired(identifier)).toBeTruthy();
+        });
+
+        it('should return false if Enter Id is not checked but identifier type can be auto generated ', function () {
+            var identifier = {
+                identifierType: {
+                    required: true,
+                    identifierSources: [{
+                        name: 'Ganiyari',
+                        prefix: 'GAN'
+                    }]
+                },
+                hasOldIdentifier: false
+            };
+            expect(scopeMock.isIdentifierRequired(identifier)).toBeFalsy();
+        });
+    })
 });
