@@ -22,6 +22,11 @@ form .form-field{
         float: none !important;
         display: block;
       }
+      &.field-value-small-screen{
+        @media (max-width : 990px) {
+
+        }
+      }
     }
     .field-attribute {
       @media (max-width : 580px) {
@@ -264,15 +269,21 @@ section.form-field-inline{
         }
       }
     }
+    .field-value.field-value-small-screen{
+      @media (max-width : 990px) {
+        clear:both;
+        float:none;
+        width: auto;
+        display: table;
+      }
+    }
   }
   #registrationNumber{
     margin-right: 10px;
-    &.registrationNumber-Mobile{
+    @media (max-width : 990px) {
       width: 11em;
-      margin-right: 0;
-      @media (max-width : 990px) {
-        min-width: initial;
-      }
+      float:right;
+      min-width: initial;
     }
   }
 }

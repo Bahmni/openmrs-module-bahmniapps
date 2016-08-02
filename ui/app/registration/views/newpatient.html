@@ -27,7 +27,7 @@
                             </select>
                         </div>
 
-                        <div class="field-value">
+                        <div class="field-value field-value-small-screen">
                             <input type="text" id="registrationNumber" ng-model="identifier.registrationNumber"
                                    placeholder="{{:: identifier.identifierType.description}}" non-blank="isIdentifierRequired(identifier)" pattern-validate
                                    ng-change="patient.generateIdentifier(identifier)" ng-show="identifier.hasOldIdentifier || !hasIdentifierSources(identifier.identifierType)" focus-on="identifier.hasOldIdentifier">
