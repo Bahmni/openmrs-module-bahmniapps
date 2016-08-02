@@ -29,7 +29,7 @@
                         <div class="field-value showOn-desktop-registration">
                             <input type="text" id="registrationNumber" ng-model="identifier.registrationNumber"
                                    placeholder="{{:: identifier.identifierType.description}}" non-blank="identifier.identifierType.required || identifier.hasOldIdentifier" pattern-validate
-                                   ng-change="patient.generateIdentifier(identifier)" ng-show="identifier.hasOldIdentifier || !hasIdentifierSources(identifier.identifierType)" focus-on="hasOldIdentifier">
+                                   ng-change="patient.generateIdentifier(identifier)" ng-show="identifier.hasOldIdentifier || !hasIdentifierSources(identifier.identifierType)" focus-on="identifier.hasOldIdentifier">
                             <div ng-show="::hasIdentifierSources(identifier.identifierType)" class="fl">
                                 <div class="field-attribute hasOldIdentifier-field-attribute">
                                     <label for="hasOldIdentifier" class="control-label">{{::'REGISTRATION_LABEL_ENTER_ID' | translate}}</label>
@@ -52,7 +52,7 @@
                             </div>
                             <input ng-class="hasIdentifierSources(identifier.identifierType)? 'registrationNumber-Mobile' : ''" type="text" id="registrationNumber" ng-model="identifier.registrationNumber"
                                    placeholder="{{:: identifier.identifierType.description}}" non-blank="identifier.identifierType.required || identifier.hasOldIdentifier" pattern-validate
-                                   ng-change="patient.generateIdentifier(identifier)" ng-show="identifier.hasOldIdentifier || !hasIdentifierSources(identifier.identifierType)" focus-on="hasOldIdentifier">
+                                   ng-change="patient.generateIdentifier(identifier)" ng-show="identifier.hasOldIdentifier || !hasIdentifierSources(identifier.identifierType)" focus-on="identifier.hasOldIdentifier">
                         </div>
                     </article>
                 </section>
