@@ -5,7 +5,7 @@ describe('LocationService', function () {
 
     var getReturnValue = function(params, args){
         if(params.contains("bahmnicore/visitLocation")){
-            return "visitLocationUuid"
+            return {uuid: "visitLocationUuid"}
         }
         else{
             return locationUuids;
@@ -58,7 +58,7 @@ describe('LocationService', function () {
         var results = locationService.getVisitLocation('locationUuid');
         expect(mockHttp.get.calls.mostRecent().args[0]).toBe(Bahmni.Common.Constants.bahmniVisitLocationUrl+'/locationUuid');
         expect(mockHttp.get).toHaveBeenCalled();
-        expect(results).toBe("visitLocationUuid");
+        expect(results.uuid).toBe("visitLocationUuid");
 
     }]));
 });
