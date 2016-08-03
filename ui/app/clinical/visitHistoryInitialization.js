@@ -6,7 +6,7 @@ angular.module('bahmni.clinical').factory('visitHistoryInitialization',
             return function (patientUuid) {
                 var loginLocationUuid = sessionService.getLoginLocationUuid();
                 return locationService.getVisitLocation(loginLocationUuid).then(function(response){
-                    var visitLocationUuid = response.data;
+                    var visitLocationUuid = response.data ? response.data.uuid : null;
                     return patientVisitHistoryService.getVisitHistory(patientUuid, visitLocationUuid);
                 });
             }

@@ -99,7 +99,9 @@ angular
 
         var loginLocationUuid = $bahmniCookieStore.get(Bahmni.Common.Constants.locationCookieName).uuid;
         locationService.getVisitLocation(loginLocationUuid).then(function(response){
-            $rootScope.visitLocation = response.data;
+            if(response.data) {
+                $rootScope.visitLocation = response.data.uuid;
+            }
         });
         if (offlineService.isChromeApp() || offlineService.isAndroidApp()) {
             schedulerService.sync();

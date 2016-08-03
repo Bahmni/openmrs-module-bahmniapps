@@ -24,7 +24,7 @@ angular.module('bahmni.common.domain')
 
         var getVisitLocation = function(locationUuid){
             return $http.get(Bahmni.Common.Constants.bahmniVisitLocationUrl + "/" + locationUuid, {
-                headers: {"Accept": "text/plain"}
+                headers: {"Accept": "application/json"}
             });
         };
 
