@@ -173,7 +173,7 @@ describe('OfflineSyncService', function () {
                     getDataForUrl: function (url) {
                         return {
                             then: function (callback) {
-                                if (url.contains("concept")) {
+                                if (_.includes(url,"concept")) {
                                     return callback({data: concept});
                                 }
                                 return callback({data: patient});
@@ -496,7 +496,7 @@ describe('OfflineSyncService', function () {
                     getDataForUrl: function (url) {
                         return {
                             then: function (callback) {
-                                if (url.contains("concept")) {
+                                if (_.includes(url, "concept")) {
                                     return callback({data: concept});
                                 }
                                 return callback({data: patient});
