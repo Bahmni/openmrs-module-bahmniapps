@@ -2,9 +2,9 @@
 
 angular.module('bahmni.common.uicontrols.programmanagment')
     .controller('ManageProgramController', ['$scope', 'retrospectiveEntryService', '$window', 'programService',
-        'spinner', 'messagingService', '$stateParams', '$q', 'confirmBox',
+        'spinner', 'messagingService', '$stateParams', '$q', 'confirmBox', 'appService',
         function ($scope, retrospectiveEntryService, $window, programService,
-                  spinner, messagingService, $stateParams, $q, confirmBox) {
+                  spinner, messagingService, $stateParams, $q, confirmBox, appService) {
             var DateUtil = Bahmni.Common.Util.DateUtil;
             $scope.programSelected = {};
             $scope.workflowStateSelected = {};
@@ -115,8 +115,11 @@ angular.module('bahmni.common.uicontrols.programmanagment')
             $scope.hasPatientAnyPastPrograms = function () {
                 return !_.isEmpty($scope.endedPrograms);
             };
-
-            $scope.enrollPatient = function () {
+            var startProgram = function (preSaveConditionViolation) {
+                if(preSaveConditionViolation) {
+                    messagingService.showMessage("error", "PROGRAM_MANAGEMENT_REGISTRATION_NUMBER_ALREADY_USED");
+                    return $q.when({});
+                }
                 if (!isProgramSelected()) {
                     messagingService.showMessage("error", "PROGRAM_MANAGEMENT_SELECT_PROGRAM_MESSAGE_KEY");
                     return $q.when({});
@@ -126,10 +129,30 @@ angular.module('bahmni.common.uicontrols.programmanagment')
                     return $q.when({});
                 }
                 var stateUuid = $scope.workflowStateSelected && $scope.workflowStateSelected.uuid ? $scope.workflowStateSelected.uuid : null;
-                return spinner.forPromise(
-                    programService.enrollPatientToAProgram($scope.patient.uuid, $scope.programSelected.uuid, $scope.programEnrollmentDate, stateUuid, $scope.patientProgramAttributes, $scope.programAttributeTypes)
-                        .then(successCallback, failureCallback)
-                );
+                return programService.enrollPatientToAProgram($scope.patient.uuid, $scope.programSelected.uuid, $scope.programEnrollmentDate, stateUuid, $scope.patientProgramAttributes, $scope.programAttributeTypes)
+                    .then(successCallback, failureCallback);
+            };
+
+            var preSaveValidation = function() {
+                var programConfig = appService.getAppDescriptor().getConfigValue("program");
+                var responseQueue = [];
+                _.each($scope.patientProgramAttributes, function(value, key){
+                    if(programConfig[key] && programConfig[key].unique) {
+                        responseQueue.push(programService.isBahmniPatientProgramPresentForProgramAttributeNameAndValue(key, value));
+                    }
+                });
+
+                return $q.all(responseQueue).then(function(results) {
+                    var flag = _.find(results, function(result) {
+                        return result;
+                    });
+                    return flag;
+                });
+
+            };
+
+            $scope.enrollPatient = function () {
+                return preSaveValidation().then(startProgram);
             };
 
             var isProgramStateSelected = function () {
