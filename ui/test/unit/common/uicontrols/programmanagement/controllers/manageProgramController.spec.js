@@ -20,7 +20,7 @@ describe("ManageProgramController", function () {
     beforeEach(module(function ($provide) {
         _provide = $provide;
         programService = jasmine.createSpyObj('programService', ['getPatientPrograms', 'getAllPrograms',
-           'deletePatientState', 'getProgramAttributeTypes', 'updatePatientProgram']);
+           'deletePatientState', 'getProgramAttributeTypes', 'updatePatientProgram', 'isBahmniPatientProgramPresentForProgramAttributeNameAndValue']);
 
         programService.getPatientPrograms.and.callFake(function () {
             deferred = q.defer();
@@ -55,14 +55,28 @@ describe("ManageProgramController", function () {
         confirmBox = jasmine.createSpy('confirmBox');
 
         _spinner = jasmine.createSpyObj('spinner', ['forPromise']);
+        _spinner.forPromise.and.callFake(function(argument) {
+            return argument;
+        });
+
         messageService = jasmine.createSpyObj('messageService', ['showMessage']);
         retrospectiveEntryService = jasmine.createSpyObj('retrospectiveEntryService', ['getRetrospectiveDate']);
+
+        var appService = jasmine.createSpyObj('appService', ['getAppDescriptor']);
+        var appDescriptor = jasmine.createSpyObj('appDescriptor', ['getConfigValue']);
+        appDescriptor.getConfigValue.and.returnValue({
+                "Registration Number": {
+                    "unique": true
+                }
+        });
+        appService.getAppDescriptor.and.returnValue(appDescriptor);
 
         $provide.value('programService', programService);
         $provide.value('spinner', _spinner);
         $provide.value('messagingService', messageService);
         $provide.value('retrospectiveEntryService', retrospectiveEntryService);
         $provide.value('$stateParams', {configName: "default"});
+        $provide.value('appService', appService);
     }));
 
     beforeEach(inject(function ($controller, $rootScope, $q) {
@@ -492,4 +506,22 @@ describe("ManageProgramController", function () {
             scope.confirmDeletion(listOfPrograms.activePrograms[0]);
         });
     });
+
+    describe('validate program attributes before creating a new program', function() {
+
+        it('check whether registration number is unique or not', function(done) {
+            scope.$apply(setUp);
+            scope.patientProgramAttributes = {"Registration Number" : "REG11"};
+            programService.isBahmniPatientProgramPresentForProgramAttributeNameAndValue.and.callFake(function(arg){
+                deferred = q.defer();
+                deferred.resolve(true);
+                return deferred.promise;
+            });
+            scope.enrollPatient().then(function() {
+                expect(messageService.showMessage).toHaveBeenCalledWith("error", "PROGRAM_MANAGEMENT_REGISTRATION_NUMBER_ALREADY_USED");
+                done();
+            });
+            scope.$apply();
+        })
+    })
 });
