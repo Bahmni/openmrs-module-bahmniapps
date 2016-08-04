@@ -206,6 +206,7 @@ h3 {
             text-decoration: none;
             font-weight: normal;
         }
+
     }
     .hierarchy ul li {
         .tree-list-item {
@@ -650,6 +651,27 @@ h3 {
     }
     .patient-dashboard.visit {
         margin-top:15px;
+    }
+    .dashboard-sections-wrapper .dashboard-sections.halfpage-container{
+        width: 100% !important;
+        .LAYOUT_25_75{
+            width:100%!important;
+        }
+        &.dashboard-sections-left{
+            .LAYOUT_25_75{
+                width:100%!important;
+            }
+        }
+    }
+    .dashboard-sections-wrapper .dashboard-sections.three-fourth-page-container{
+        .LAYOUT_25_75{
+            width:100% !important;
+            float: left;
+        }
+
+        .LAYOUT_75_25{
+            width: 100% !important;
+        }
     }
 }
 
