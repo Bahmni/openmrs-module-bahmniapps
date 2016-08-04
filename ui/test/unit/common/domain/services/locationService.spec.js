@@ -4,7 +4,7 @@ describe('LocationService', function () {
     var locationUuids = ["location1", "location2"];
 
     var getReturnValue = function(params, args){
-        if(params.contains("bahmnicore/visitLocation")){
+        if(_.includes(params,"bahmnicore/visitLocation")){
             return {uuid: "visitLocationUuid"}
         }
         else{
