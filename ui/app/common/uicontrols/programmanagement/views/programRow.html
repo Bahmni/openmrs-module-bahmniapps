@@ -21,7 +21,8 @@
                         {{::patientProgram.dateEnrolled | bahmniDate}}
                     </span>
                 </div>
-                <div class="field-value" ng-show="patientProgram.editing">
+                <!--keep it as ng-if. Don't change it to ng-show.-->
+                <div class="field-value" ng-if="patientProgram.editing">
                     <input type="date" max="{{getMaxAllowedDate(patientProgram.states)}}"
                            ng-model="patientProgram.dateEnrolled" ng-required="true">
                 </div>
