@@ -49,7 +49,7 @@ describe('patient context', function () {
             scope.$digest();
 
             expect(compiledElementScope).not.toBeUndefined();
-            expect(patientService.getPatientContext).toHaveBeenCalledWith(scope.patient.uuid, 'programUuid', undefined, undefined);
+            expect(patientService.getPatientContext).toHaveBeenCalledWith(scope.patient.uuid, 'programUuid', undefined, undefined, undefined);
             expect(spinner.forPromise).toHaveBeenCalled();
             expect(compiledElementScope.patientContext).toBe(patientContext);
         });
@@ -77,7 +77,7 @@ describe('patient context', function () {
             scope.$digest();
 
             expect(compiledElementScope).not.toBeUndefined();
-            expect(patientService.getPatientContext).toHaveBeenCalledWith(scope.patient.uuid, 'programUuid', patientContextConfig.personAttributes, undefined);
+            expect(patientService.getPatientContext).toHaveBeenCalledWith(scope.patient.uuid, 'programUuid', patientContextConfig.personAttributes, undefined, undefined);
             expect(spinner.forPromise).toHaveBeenCalled();
             expect(mockAppService.getAppDescriptor).toHaveBeenCalled();
             expect(mockAppDescriptor.getConfigValue).toHaveBeenCalledWith('patientContext');
@@ -106,11 +106,40 @@ describe('patient context', function () {
             scope.$digest();
 
             expect(compiledElementScope).not.toBeUndefined();
-            expect(patientService.getPatientContext).toHaveBeenCalledWith(scope.patient.uuid, 'programUuid', patientContextConfig.personAttributes, patientContextConfig.programAttributes);
+            expect(patientService.getPatientContext).toHaveBeenCalledWith(scope.patient.uuid, 'programUuid', patientContextConfig.personAttributes, patientContextConfig.programAttributes, undefined);
             expect(spinner.forPromise).toHaveBeenCalled();
             expect(mockAppService.getAppDescriptor).toHaveBeenCalled();
             expect(mockAppDescriptor.getConfigValue).toHaveBeenCalledWith('patientContext');
-        })
+        });
+
+        it('should fetch patient identifiers if configured.', function () {
+            var patientContextConfig = {
+                additionalPatientIdentifiers: ['National Identifier']
+            };
+            mockAppDescriptor.getConfigValue.and.returnValue(patientContextConfig);
+            mockAppService.getAppDescriptor.and.returnValue(mockAppDescriptor);
+
+            spinner.forPromise.and.callFake(function (param) {
+                return {
+                    then: function (callback) {
+                        return callback({data: {}});
+                    }
+                }
+            });
+
+            var simpleHtml = '<patient-context patient="patient"></patient-context>';
+            var element = $compile(simpleHtml)(scope);
+            scope.$digest();
+            mockBackend.flush();
+            var compiledElementScope = element.isolateScope();
+            scope.$digest();
+
+            expect(compiledElementScope).not.toBeUndefined();
+            expect(patientService.getPatientContext).toHaveBeenCalledWith(scope.patient.uuid, 'programUuid', patientContextConfig.personAttributes, patientContextConfig.programAttributes, patientContextConfig.additionalPatientIdentifiers);
+            expect(spinner.forPromise).toHaveBeenCalled();
+            expect(mockAppService.getAppDescriptor).toHaveBeenCalled();
+            expect(mockAppDescriptor.getConfigValue).toHaveBeenCalledWith('patientContext');
+        });
 
         it('should set preffered identifier to configured program attributes', function () {
             var patientContext = {
@@ -207,7 +236,7 @@ describe('patient context', function () {
             expect(compiledElementScope).not.toBeUndefined();
             expect(compiledElementScope.patientContext.identifier).toEqual("GAN20000");
             expect(Object.keys(compiledElementScope.patientContext.programAttributes).length).toEqual(1);
-        })
+        });
 
         it('program attribute should take precendence while setting preferred identifier', function () {
             var patientContext = {

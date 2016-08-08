@@ -43,13 +43,14 @@ angular.module('bahmni.common.patient')
             });
         };
 
-        this.getPatientContext = function (patientUuid, programUuid, personAttributes, programAttributes) {
+        this.getPatientContext = function (patientUuid, programUuid, personAttributes, programAttributes, patientIdentifiers) {
             return $http.get('/openmrs/ws/rest/v1/bahmnicore/patientcontext', {
                 params: {
                     patientUuid: patientUuid,
                     programUuid: programUuid,
                     personAttributes: personAttributes,
-                    programAttributes: programAttributes
+                    programAttributes: programAttributes,
+                    patientIdentifiers: patientIdentifiers
                 },
                 withCredentials: true
             });
