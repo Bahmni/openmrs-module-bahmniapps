@@ -324,7 +324,7 @@
                     </tr>
                     </thead>
                     <tbody>
-                    <tr ng-repeat="row in ::observation.rows track by $index">
+                    <tr ng-repeat="row in observation.rows track by $index">
                         <td ng-repeat="obs in row.cells track by $index">
                             <concept collapse-inner-sections="collapseInnerSections" observation="obs"
                                      root-observation="row" at-least-one-value-is-set="atLeastOneValueIsSet"
