@@ -9,6 +9,9 @@
             </li>
             <li>{{patientContext.gender}}</li>
             <li>{{patientContext.birthdate | birthDateToAgeText}}</li>
+            <li ng-repeat="(key, value) in patientContext.additionalPatientIdentifiers">
+                {{key}}: {{value}}
+            </li>
             <li ng-repeat="(key, value) in patientContext.personAttributes">
                 {{value.description}}: {{value.value}}
             </li>

@@ -23,10 +23,11 @@ describe('patientService', function () {
             var programUuid = 'programUuid';
             var personAttributes = [];
             var programAttributes = [];
+            var patientIdentifiers = [];
             var results = {};
             mockBackend.expectGET('/openmrs/ws/rest/v1/bahmnicore/patientcontext?patientUuid=patientUuid&programUuid=programUuid').respond({results: results});
 
-            patientService.getPatientContext(patientUuid, programUuid, personAttributes, programAttributes).then(function (response) {
+            patientService.getPatientContext(patientUuid, programUuid, personAttributes, programAttributes, patientIdentifiers).then(function (response) {
                 expect(response.data.results).toEqual(results);
             });
 
