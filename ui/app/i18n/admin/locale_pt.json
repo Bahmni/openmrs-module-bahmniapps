@@ -1,0 +1,10 @@
+{
+    "userName": "Nome de Usuário",
+    "password": "Senha",
+    "location": "Local",
+    "login": "Entrar",
+    "selectLocation": "Selecionar Local",
+    "clinical_key": "Clínico",
+    "MESSAGE_DIALOG_OPTION_COPY": "Erro de Cópia",
+    "MESSAGE_DIALOG_OPTION_OKAY": "OK"
+}
