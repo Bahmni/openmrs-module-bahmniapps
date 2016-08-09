@@ -35,7 +35,9 @@
         "karma-ng-html2js-preprocessor": "^0.1.2",
         "matchdep": "^0.3.0",
         "karma-firefox-launcher": "~0.1.7",
-        "jshint-stylish": "^2.1.0"
+        "jshint-stylish": "^2.1.0",
+        "react": "^15.2.1",
+        "react-dom": "^15.2.1"
     },
     "scripts": {
         "test": "karma start test/config/karma.conf.js"
