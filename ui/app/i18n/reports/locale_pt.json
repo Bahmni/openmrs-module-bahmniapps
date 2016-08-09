@@ -1,0 +1,18 @@
+{
+    "userName": "Nome de Usuário",
+    "password": "Senha",
+    "location": "Local",
+    "login": "Entrar",
+    "selectLocation": "Selecionar Local",
+    "clinical_key": "Clínico",
+    "REPORTS_NAME_HEADER_KEY": "Nome",
+    "REPORTS_START_DATE_HEADER_KEY": "Data Inicial",
+    "REPORTS_END_DATE_HEADER_KEY": "Data Final",
+    "RUN_REPORT_BUTTON_KEY": "Rodar Relatório",
+    "REPORT_FORMAT_KEY": "Formato",
+    "REPORTS_TITLE_KEY": "Relatório",
+    "REPORTS_TITLE_WITHOUT_DATE_RANGE_KEY": "Relatórios sem Período",
+    "REPORTS_MISSING_WARNING_MESSAGE_KEY": "Novos relatórios podem ser configurados em um arquivo JSON dentro de openmrs/apps/reports/reports.json. Consulte a documentação para obter mais informações sobre a configuração de relatórios",
+    "MESSAGE_DIALOG_OPTION_COPY": "Erro de Cópia",
+    "MESSAGE_DIALOG_OPTION_OKAY": "OK"
+}
