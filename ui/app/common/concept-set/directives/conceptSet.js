@@ -294,28 +294,33 @@ angular.module('bahmni.common.conceptSet')
                 });
 
                 var processConditions = function (flattenedObs, fields, disable, error) {
+                    var tempField = fields;
                     _.each(fields, function (field) {
-                        var matchingObs = _.find(flattenedObs, function (obs) {
+                        var matchingObsArray = _.filter(flattenedObs, function (obs) {
                             return obs.concept.name === field;
                         });
-                        if (matchingObs) {
-                            setObservationState(matchingObs, disable, error);
+                        if (!_.isEmpty(matchingObsArray)) {
+                            setObservationState(matchingObsArray, disable, error);
                         } else {
                             messagingService.showMessage("error", "No element found with name : " + field);
                         }
                     });
                 };
 
-                var setObservationState = function (obs, disable, error) {
-                    obs.disabled = disable;
-                    obs.error = error;
-                    if (obs.disabled) {
-                        clearFieldValuesOnDisabling(obs);
-                    }
-                    if (obs.groupMembers) {
-                        _.each(obs.groupMembers, function (groupMember) {
-                            //TODO : Hack to fix issue with formconditions on multiselect - Swathi
-                            groupMember && setObservationState(groupMember, disable, error);
+                var setObservationState = function (obsArray, disable, error) {
+                    if(!_.isEmpty(obsArray)) {
+                        _.each(obsArray, function(obs) {
+                            obs.disabled = disable;
+                            obs.error = error;
+                            if (obs.disabled) {
+                                clearFieldValuesOnDisabling(obs);
+                            }
+                            if (obs.groupMembers) {
+                                _.each(obs.groupMembers, function (groupMember) {
+                                    //TODO : Hack to fix issue with formconditions on multiselect - Swathi
+                                    groupMember && setObservationState([groupMember], disable, error);
+                                });
+                            }
                         });
                     }
                 };

@@ -20,6 +20,7 @@ Bahmni.ConceptSet.TabularObservations = function(obsGroups, parentObs, conceptUI
         clone.rows = _.map(old.rows, function(row){
             return row.cloneNew();
         });
+        clone.disabled = this.disabled;
         return clone;
     };
 
@@ -90,6 +91,8 @@ Bahmni.ConceptSet.ObservationRow = function(obsGroup, conceptUIConfig) {
     this.cloneNew = function() {
         var newObsGroup = this.obsGroup.cloneNew();
         newObsGroup.hidden = true;
-        return new Bahmni.ConceptSet.ObservationRow(newObsGroup, conceptUIConfig);
+        var clone = new Bahmni.ConceptSet.ObservationRow(newObsGroup, conceptUIConfig);
+        clone.disabled = this.disabled;
+        return clone;
     };
 };

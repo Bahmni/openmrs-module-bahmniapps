@@ -64,6 +64,7 @@ Bahmni.ConceptSet.Observation = function (observation, savedObs, conceptUIConfig
         new Bahmni.ConceptSet.MultiSelectObservations(conceptUIConfig).map(oldObs.groupMembers);
         var clone = new Bahmni.ConceptSet.Observation(oldObs, null, conceptUIConfig);
         clone.comment = undefined;
+        clone.disabled = this.disabled;
         return clone;
     };
 };
