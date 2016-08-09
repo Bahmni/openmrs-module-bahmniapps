@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('bahmni.common.conceptSet')
-    .directive('formControls', ['observationFormService', 'contextChangeHandler', 'appService', 'observationsService', 'messagingService', 'conceptSetService', 'conceptSetUiConfigService', 'spinner',
-        function (observationFormService, contextChangeHandler, appService, observationsService, messagingService, conceptSetService, conceptSetUiConfigService, spinner) {
+    .directive('formControls', ['observationFormService', 'spinner',
+        function (observationFormService, spinner) {
             var isLoaded = {};
             var controlByType = {
                 obsControl: function (control) {
@@ -38,8 +38,8 @@ angular.module('bahmni.common.conceptSet')
             return {
                 restrict: 'E',
                 scope: {
-                    formName: "=",
-                    formUuid: "="
+                    formName: "@",
+                    formUuid: "@"
                 },
                 controller: controller
             }
