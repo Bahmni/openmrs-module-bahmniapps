@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('bahmni.clinical')
-    .controller('ObservationFormController', ['$scope', '$rootScope', '$stateParams', 'observationFormService', 'configurations', '$state', 'spinner',
-        function ($scope, $rootScope, $stateParams, observationFormService, configurations, $state, spinner) {
+    .controller('ObservationFormController', ['$scope', 'observationFormService', 'spinner',
+        function ($scope, observationFormService, spinner) {
 
             var init = function () {
                 spinner.forPromise(observationFormService.getFormList({ v: "custom:(uuid,name)" })

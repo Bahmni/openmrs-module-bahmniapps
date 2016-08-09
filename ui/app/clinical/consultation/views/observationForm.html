@@ -1,6 +1,6 @@
 <div ng-repeat="form in forms">
   <div ng-click="form.toggleDisplay()">{{form.formName}}</div>
   <div id={{form.formUuid}} ng-show="form.isOpen"></div>
-  <form-controls ng-if="form.isOpen" form-name="form.formName" form-uuid="form.formUuid"></form-controls>
+  <form-controls ng-if="form.isOpen" form-name={{form.formName}} form-uuid={{form.formUuid}}></form-controls>
 </div>
 
