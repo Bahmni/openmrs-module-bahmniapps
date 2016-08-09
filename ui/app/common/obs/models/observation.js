@@ -17,6 +17,9 @@ Bahmni.Common.Obs.Observation = (function () {
         isImageConcept: function () {
             return this.concept.conceptClass === "Image";
         },
+        isVideoConcept: function () {
+            return this.concept.conceptClass === "Video";
+        },
 
         hasPDFAsValue: function () {
             return (this.value.indexOf(".pdf") > 0);

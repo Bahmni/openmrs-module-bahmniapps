@@ -9,7 +9,7 @@ angular.module('bahmni.common.domain')
     this.saveFile = function (file, patientUuid, encounterTypeName) {
         var searchStr = ";base64";
         var format = file.split(searchStr)[0].split("/")[1];
-        var url = Bahmni.Common.Constants.RESTWS_V1 + "/bahmnicore/visitDocument/uploadImage";
+        var url = Bahmni.Common.Constants.RESTWS_V1 + "/bahmnicore/visitDocument/uploadDocument";
         return $http.post(url, {
             image: file.substring(file.indexOf(searchStr) + searchStr.length, file.length),
             format: format,
