@@ -62,7 +62,9 @@ Bahmni.ConceptSet.MultiSelectObservation = function (concept, memberOfCollection
     };
 
     this.cloneNew = function() {
-        return new Bahmni.ConceptSet.MultiSelectObservation(concept, memberOfCollection, conceptSetConfig);
+        var clone = new Bahmni.ConceptSet.MultiSelectObservation(concept, memberOfCollection, conceptSetConfig);
+        clone.disabled = this.disabled;
+        return clone;
     };
 
     this.add = function(obs){

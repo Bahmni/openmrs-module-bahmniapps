@@ -11,6 +11,7 @@ Bahmni.ConceptSet.BooleanObservation = function(observation, conceptUIConfig) {
         clone.value = undefined;
         clone.comment = undefined;
         clone.uuid = null;
+        clone.disabled = this.disabled;
         return clone;
     };
 
