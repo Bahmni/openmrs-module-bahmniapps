@@ -134,6 +134,10 @@ Bahmni.ConceptSet.Observation.prototype = {
         return this.concept.conceptClass == Bahmni.Common.Constants.imageClassName;
     },
 
+    isVideo: function () {
+        return this.concept.conceptClass == Bahmni.Common.Constants.videoClassName;
+    },
+
     getDataTypeName: function () {
         return this.concept.dataType;
     },
@@ -183,6 +187,9 @@ Bahmni.ConceptSet.Observation.prototype = {
         if (this.isImage()) {
             return "image";
         }
+        if (this.isVideo()) {
+            return "video";
+        }
         if (this.isText()) {
             return "text";
         }
@@ -199,7 +206,7 @@ Bahmni.ConceptSet.Observation.prototype = {
     },
 
     canHaveComment: function() {
-        return this.conceptUIConfig.disableAddNotes ? !this.conceptUIConfig.disableAddNotes : (!this.isText() && !this.isImage());
+        return this.conceptUIConfig.disableAddNotes ? !this.conceptUIConfig.disableAddNotes : (!this.isText() && !this.isImage() && !this.isVideo());
     },
 
     canAddMore: function() {

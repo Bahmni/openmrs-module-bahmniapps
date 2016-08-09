@@ -345,3 +345,13 @@ u, .add-drug-btninput[value]:first-letter {
 .patient-image{
   background-color: #ffffff;
 }
+
+.video{
+  width: 340px;
+  height: 190px;
+  &.disable{
+    opacity: .1;
+    pointer-events: none;
+    border: 3px solid black;
+  }
+}

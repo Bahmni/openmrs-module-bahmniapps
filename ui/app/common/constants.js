@@ -184,6 +184,7 @@ Bahmni.Common = Bahmni.Common || {};
         admissionEncounterTypeName: 'ADMISSION',
         dischargeEncounterTypeName: 'DISCHARGE',
         imageClassName: 'Image',
+        videoClassName: 'Video',
         locationCookieName: 'bahmni.user.location',
         retrospectiveEntryEncounterDateCookieName: 'bahmni.clinical.retrospectiveEncounterDate',
         rootScopeRetrospectiveEntry: 'retrospectiveEntry.encounterDate',

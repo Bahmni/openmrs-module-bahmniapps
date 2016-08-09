@@ -11,7 +11,7 @@
                        'text-only': (observation.concept.dataType ==='Text' && print),
                        'value-text-only': !(observation.concept.dataType ==='Text' && print)
                        }"
-             ng-if="::(observation.isFormElement() && !observation.isImageConcept())">
+              ng-if="::(observation.isFormElement() && !observation.isImageConcept() && !observation.isVideoConcept())">
             <pre class="left">{{::observation.getDisplayValue() | titleTranslate}}</pre>
             <span class="label-add-on">{{::observation.concept.units}}</span>
         </span>
@@ -21,6 +21,10 @@
         <a  ng-if="::(observation.isImageConcept() && observation.hasPDFAsValue() && !print)" ng-href="/document_images/{{observation.value}}" class="pdf-link" target="_blank">
             <i class="fa fa-file-pdf-o"></i>
         </a>
+        <video ng-show="::(observation.isVideoConcept())" class="video" controls class="img-concept" preload="metadata">
+            <source src="{{'/document_images/' + observation.value}}" type="video/mp4">
+            Your browser does not support the video tag.
+        </video>
         <button class="toggle fr" ng-if="observation.isFormElement() && showDetailsButton && !observation.comment" ng-class="{'has-notes': observation.comment}"
                 toggle="observation.showDetails">
             <i class="fa fa-angle-down"></i>
