@@ -3,37 +3,39 @@
 angular.module('bahmni.common.conceptSet')
     .directive('formControls', ['observationFormService', 'spinner',
         function (observationFormService, spinner) {
-            var isLoaded = {};
+            var loadedFormDetails = {};
             var controlByType = {
                 obsControl: function (control) {
                     return React.createElement(FormControls.ObsControl, { obs: control.controls });
                 }
             };
 
-            var controller = function ($scope) {
-                var formName = $scope.formName;
-                if (!isLoaded[formName]) {
-                    spinner.forPromise(observationFormService.getFormDetail($scope.formUuid, { v: "custom:(resources)" })
-                        .then(function (response) {
-                            var formDetails = _.get(response, 'data.resources[0].valueReference');
-                            if (formDetails) {
-                                var controls = createControls(formDetails);
-                                ReactDOM.render(React.createElement(FormControls.FormControlsContainer, { controls: controls }), document.getElementById($scope.formUuid));
-                            }
-                            isLoaded[formName] = true;
-                        })
-                    );
-                }
-            };
-
-            function createControls(formDetails) {
-                var formControls = JSON.parse(formDetails).controls;
-                var controlElements = _.map(formControls, function (formControl) {
+            function renderControls(formUuid, formDetails) {
+                var controls = _.map(formDetails.controls, function (formControl) {
                     var controlFactory = _.get(controlByType, formControl.type, undefined);
                     if (controlFactory) return controlFactory(formControl);
                 });
-                return controlElements
+                ReactDOM.render(React.createElement(FormControls.FormControlsContainer, { controls: controls }), document.getElementById(formUuid));
             }
+
+            var controller = function ($scope) {
+                var formUuid = $scope.formUuid;
+                if (!loadedFormDetails[formUuid]) {
+                    spinner.forPromise(observationFormService.getFormDetail(formUuid, { v: "custom:(resources)" })
+                        .then(function (response) {
+                            var formDetailsAsString = _.get(response, 'data.resources[0].valueReference');
+                            if (formDetailsAsString) {
+                                var formDetails = JSON.parse(formDetailsAsString);
+                                loadedFormDetails[formUuid] = formDetails;
+                                renderControls(formUuid, formDetails);
+                            }
+                        })
+                    );
+                }
+                else {
+                    renderControls(formUuid, loadedFormDetails[formUuid]);
+                }
+            };
 
             return {
                 restrict: 'E',
