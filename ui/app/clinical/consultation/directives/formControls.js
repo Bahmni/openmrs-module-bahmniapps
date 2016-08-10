@@ -19,7 +19,7 @@ angular.module('bahmni.common.conceptSet')
             }
 
             var controller = function ($scope) {
-                var formUuid = $scope.formUuid;
+                var formUuid = $scope.form.formUuid;
                 if (!loadedFormDetails[formUuid]) {
                     spinner.forPromise(observationFormService.getFormDetail(formUuid, { v: "custom:(resources)" })
                         .then(function (response) {
@@ -40,8 +40,7 @@ angular.module('bahmni.common.conceptSet')
             return {
                 restrict: 'E',
                 scope: {
-                    formName: "@",
-                    formUuid: "@"
+                    form: "="
                 },
                 controller: controller
             }

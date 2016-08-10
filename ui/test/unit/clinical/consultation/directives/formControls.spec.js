@@ -44,7 +44,7 @@ describe("Form Controls", function () {
     });
 
     var createElement = function () {
-        element = angular.element('<form-controls form-name="form1" form-uuid="formUuid"></form-controls>');
+        element = angular.element("<form-controls form=\"{ formName: 'form1', formUuid: 'formUuid' }\"></form-controls>");
         $compile(element)(scope);
         scope.$digest();
     };
