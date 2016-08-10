@@ -17,7 +17,6 @@ Bahmni.ObservationForm = function (formUuid, formName ) {
         } else {
             show();
         }
-        console.log(self.isOpen);
     };
 
     function hide() {

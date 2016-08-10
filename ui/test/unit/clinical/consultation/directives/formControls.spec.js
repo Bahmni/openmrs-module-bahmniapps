@@ -1,7 +1,7 @@
 'use strict';
 
 describe("Form Controls", function () {
-    var element, scope, $compile, spinner, provide, observationFormService, react, reactDom;
+    var element, scope, $compile, spinner, provide, observationFormService;
 
     beforeEach(
         function () {
@@ -10,8 +10,6 @@ describe("Form Controls", function () {
                 provide = $provide;
                 observationFormService = jasmine.createSpyObj('observationFormService', ['getFormDetail']);
                 spinner = jasmine.createSpyObj('spinner', ['forPromise']);
-                react = jasmine.createSpyObj('React', ['createElement']);
-                reactDom = jasmine.createSpyObj('ReactDOM', ['render']);
 
                 provide.value('observationFormService', observationFormService);
                 provide.value('spinner', spinner);
