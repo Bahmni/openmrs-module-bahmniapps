@@ -121,4 +121,31 @@ describe("PatientListHeaderController", function () {
         expect(schedulerService.stopSync).not.toHaveBeenCalled();
     });
 
+    it("should scheduler sync", function () {
+        scope.sync();
+        expect(schedulerService.sync).toHaveBeenCalled();
+
+    });
+
+    it("should map providersServer output", function () {
+        var providers = scope.getProviderDataResults({
+            data : {
+                results : [
+                    {
+                        uuid : 'uuid1',
+                        person : { display : 'msf1' }
+                    },
+                    {
+                        uuid : 'uuid2',
+                        person : { display : 'msf2' }
+                    }
+                ]
+            }
+        });
+        expect(providers[0].uuid).toBe('uuid1');
+        expect(providers[0].value).toBe('msf1');
+        expect(providers[1].uuid).toBe('uuid2');
+        expect(providers[1].value).toBe('msf2');
+    });
+
 });
