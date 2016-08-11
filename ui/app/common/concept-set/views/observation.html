@@ -199,7 +199,6 @@
                                     ng-class="{'fa fa-remove': !image.voided, 'fa fa-undo': observation.voided }"></span>
                             </button>
                         </div>
-
                         <input id="file-browse-{{observation.uniqueId}}" class="file-browse" type="file" name="image"
                                accept="application/pdf, image/*" capture="camera" ng-model="observation.value" image-upload
                                patient-uuid="::patient.uuid">
@@ -228,7 +227,6 @@
                     </div>
 
                     <div ng-switch-when="video" class="consultation-image" ng-disabled="observation.voided">
-                        Only mp4 format is supported.
                         <div class="file-remove">
                             <button type="button" toggle="observation.voided"
                                     ng-if="observation.value" class="row-remover"><span
@@ -236,17 +234,20 @@
                             </button>
                         </div>
 
-                        <input id="file-browse-{{observation.uniqueId}}" class="file-browse" type="file" name="image"
-                               accept="video/mp4" capture="camera" ng-model="observation.value" image-upload
+                        <input id="file-browse-{{observation.uniqueId}}" class="file-browse" type="file" name="video"
+                               accept=".mkv,.flv,.ogg,video/*,audio/3gpp" capture="camera" ng-model="observation.value" image-upload file-type="'video'"
                                patient-uuid="::patient.uuid">
                         <label class="placeholder btn" for="file-browse-{{observation.uniqueId}}"
                                ng-hide="observation.value"><i
                                 class="fa fa-plus needsclick"></i></label>
 
-                        <video ng-if="observation.value" class="video" controls preload="metadata" ng-class="{'disable': observation.voided}">
-                            <source src="{{'/document_images/' + observation.value}}" type="video/mp4">
-                            Your browser does not support the video tag.
-                        </video>
+                        <div ng-if="observation.value">
+                            <video class="video" controls preload="metadata" ng-class="{'disable': observation.voided}">
+                                <source src="{{'/document_images/' + observation.value}}">
+                                Your browser does not support the video tag.
+                            </video>
+                            <a href="{{'/document_images/' + observation.value}}" download>download video</a>
+                        </div>
                         <button type="button" toggle="observation.showComment" ng-if="observation.value"
                                 class="comment-toggle fr" tabindex="-1"
                                 ng-class="{'has-notes': observation.comment}">

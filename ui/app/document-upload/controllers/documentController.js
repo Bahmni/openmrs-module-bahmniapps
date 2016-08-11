@@ -197,7 +197,7 @@ angular.module('opd.documentupload')
             $scope.onSelect = function(file, visit){
                 $scope.toggleGallery=false;
                 spinner.forPromise(visitDocumentService.saveFile(file, $rootScope.patient.uuid, $rootScope.appConfig.encounterType).then(function(response) {
-                    var fileUrl = Bahmni.Common.Constants.documentsPath + '/' + response.data;
+                    var fileUrl = Bahmni.Common.Constants.documentsPath + '/' + response.data.url;
                     var savedFile = visit.addFile(fileUrl);
                     $scope.setConceptOnFile(savedFile, $scope.defaultConcept);
                     $scope.toggleGallery=true;
