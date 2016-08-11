@@ -263,7 +263,8 @@ Bahmni.Common = Bahmni.Common || {};
         syncButtonConfiguration:syncButtonConfiguration,
         syncStatusMessages: syncStatusMessages,
         uuidRegex: "[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}",
-        offlineBahmniEncounterUrl: "/openmrs/ws/rest/v1/bahmnicore/bahmniencounter/"
+        offlineBahmniEncounterUrl: "/openmrs/ws/rest/v1/bahmnicore/bahmniencounter/",
+        eventlogFilterUrl:"/openmrs/ws/rest/v1/eventlog/filter"
     };
 })();
 

@@ -10,134 +10,54 @@ angular.module('bahmni.common.offline')
                     if (offlineService.isAndroidApp()) {
                         offlineDbService = androidDbService;
                     }
-                    return $q.all([syncConcepts(),syncParentAddressEntries(),syncAddressHierarchyEntries(),syncTransactionalData()]);
-                };
-
-                var syncConcepts = function() {
-                    return offlineDbService.getMarker("ConceptData").then(function (marker) {
-                        if (marker == undefined) {
-                            marker = {}
-                        }
-                        return syncConceptsForMarker(marker)
+                    var promises = [];
+                    var categories = offlineService.getItem("eventLogCategories");
+                    _.map(categories,function(category){
+                        promises.push(syncForCategory(category))
                     });
+                    return $q.all(promises);
                 };
 
-                var syncTransactionalData = function() {
-                    return offlineDbService.getMarker("TransactionalData").then(function (marker) {
-                        if (marker == undefined) {
-                            marker = {
-                                catchmentNumber: offlineService.getItem('catchmentNumber')
-                            }
-                        }
-                        return syncForMarker(marker)
-                    });
-                };
 
-                var syncAddressHierarchyEntries = function (){
-                    return offlineDbService.getMarker("AddressHierarchyData").then(function (marker) {
-                        if(!marker) {
-                            marker = {
-                                catchmentNumber: offlineService.getItem('addressCatchmentNumber')
-                            }
-                        }
-                        return syncAddressHierarchyForMarker(marker);
+                var syncForCategory = function(category){
+                    return offlineDbService.getMarker(category).then(function(marker){
+                      return syncForMarker(category, marker);
                     });
                 };
 
 
-                var syncParentAddressEntries = function() {
-                    return offlineDbService.getMarker("ParentAddressHierarchyData").then(function (marker) {
-                        if (!marker)
-                            marker = {};
-                        return syncAddressHierarchyForMarker(marker, 'parentAddressHierarchy');
-                    });
-                };
-
-                var syncAddressHierarchyForMarker = function (marker, levels) {
-                    return eventLogService.getAddressEventsFor(marker.catchmentNumber, marker.lastReadEventUuid).then(function (response) {
+                var syncForMarker = function (category, marker) {
+                    return eventLogService.getEventsFor(category, marker).then(function (response) {
                         if (response.data == undefined || response.data.length == 0) {
                             endSync(stages++);
                             return;
                         }
-                        return readEvent(response.data, 0, levels);
+                        return readEvent(response.data, 0, category);
                     }, function () {
                         endSync(-1);
                         var deferrable = $q.defer();
                         deferrable.reject();
                         return deferrable.promise;
                     });
-                };
-
-
-                var syncConceptsForMarker = function (marker) {
-                    return eventLogService.getConceptEventsFor(marker.lastReadEventUuid).then(function (response) {
-                        if (response.data == undefined || response.data.length == 0) {
-                            endSync(stages++);
-                            return;
-                        }
-                        return readEvent(response.data, 0);
-                    }, function () {
-                        endSync(-1);
-                        var deferrable = $q.defer();
-                        deferrable.reject();
-                        return deferrable.promise;
-                    });
-                };
-
-
-                var syncForMarker = function (marker) {
-                    return eventLogService.getEventsFor(marker.catchmentNumber, marker.lastReadEventUuid).then(function (response) {
-                        if (response.data == undefined || response.data.length == 0) {
-                            endSync(stages++);
-                            return;
-                        }
-                        return readEvent(response.data, 0);
-                    }, function () {
-                        endSync(-1);
-                        var deferrable = $q.defer();
-                        deferrable.reject();
-                        return deferrable.promise;
-                    });
-                };
-
-
-                var syncNextEvents = function(category){
-                    switch (category) {
-                        case 'patient':
-                        case 'Encounter':
-                        case 'SHREncounter':
-                                return syncTransactionalData();
-                        case 'addressHierarchy':
-                                return syncAddressHierarchyEntries();
-                        case 'parentAddressHierarchy':
-                                return syncParentAddressEntries();
-                        case 'offline-concepts':
-                                return syncConcepts();
-                        default:
-                            break;
-                    }
-
                 };
 
                 var readEvent = function (events, index, category) {
                     if (events.length == index && events.length > 0) {
-                        var group = category ? category : events[0].category;
-                        return syncNextEvents(group);
+                        return syncForCategory(category);
                     }
                     if (events.length == index) {
                         return;
                     }
                     var event = events[index];
-                    event.category = category ? category : event.category;
                     if(event.category == "SHREncounter") {
                         var uuid = event.object.match(Bahmni.Common.Constants.uuidRegex)[0];
                         event.object = Bahmni.Common.Constants.offlineBahmniEncounterUrl + uuid + "?includeAll=true";
                     }
-
                     return eventLogService.getDataForUrl(Bahmni.Common.Constants.hostURL + event.object)
                         .then(function (response) {
                             return saveData(event, response)
-                                .then(function() { return updateMarker(event)})
+                                .then(function() {
+                                        return updateMarker(event,category)})
                                 .then(
                                     function(lastEvent) {
                                         offlineService.setItem("lastSyncTime", lastEvent.lastReadTime);
@@ -211,22 +131,10 @@ angular.module('bahmni.common.offline')
                     });
                 };
 
-                var updateMarker = function (event) {
-                    var markerName, catchmentNumber;
-                    if (event.category == "parentAddressHierarchy") {
-                        markerName = "ParentAddressHierarchyData";
-                        catchmentNumber = null;
-                    }else if (event.category == "addressHierarchy") {
-                        markerName = "AddressHierarchyData";
-                        catchmentNumber = offlineService.getItem("addressCatchmentNumber");
-                    }else if (event.category == "offline-concepts") {
-                        markerName = "ConceptData";
-                        catchmentNumber = null;
-                    }else{
-                        markerName = "TransactionalData";
-                        catchmentNumber = offlineService.getItem('catchmentNumber');
-                    }
-                    return offlineDbService.insertMarker(markerName, event.uuid, catchmentNumber);
+                var updateMarker = function (event, category) {
+                   return offlineDbService.getMarker(category).then(function(marker) {
+                        return offlineDbService.insertMarker(marker.markerName, event.uuid, marker.catchmentNumber);
+                    });
                 };
 
                 var endSync = function (status) {
@@ -236,11 +144,7 @@ angular.module('bahmni.common.offline')
                 };
 
             return {
-                sync: sync,
-                syncTransactionalData: syncTransactionalData,
-                syncAddressHierarchyEntries: syncAddressHierarchyEntries,
-                syncParentAddressEntries: syncParentAddressEntries,
-                syncConcepts: syncConcepts
+                sync: sync
             };
         }
     ]);
