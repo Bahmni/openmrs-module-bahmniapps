@@ -95,7 +95,7 @@ Bahmni.Common.Offline.SchemaDefinitions = {
                 type: 'DATE_TIME'
             }
         ],
-        nullableColumns: ['catchmentNumber'],
+        nullableColumns: ['catchmentNumber','lastReadEventUuid'],
         primaryKeyColumns: ['markerName']
     },
 
