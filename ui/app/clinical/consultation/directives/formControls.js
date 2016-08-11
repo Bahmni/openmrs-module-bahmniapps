@@ -4,22 +4,25 @@ angular.module('bahmni.common.conceptSet')
     .directive('formControls', ['observationFormService', 'spinner',
         function (observationFormService, spinner) {
             var loadedFormDetails = {};
-            var controlByType = {
-                obsControl: function (control) {
-                    return React.createElement(FormControls.ObsControl, { obs: control.controls });
-                }
-            };
-
-            function renderControls(formUuid, formDetails) {
-                var controls = _.map(formDetails.controls, function (formControl) {
-                    var controlFactory = _.get(controlByType, formControl.type, undefined);
-                    if (controlFactory) return controlFactory(formControl);
-                });
-                ReactDOM.render(React.createElement(FormControls.FormControlsContainer, { controls: controls }), document.getElementById(formUuid));
-            }
 
             var controller = function ($scope) {
+                var controlByType = {
+                    obsControl: function (control) {
+                        return ReactHelper.createReactComponent(FormControls.ObsControl, { obs: control.controls });
+                    }
+                };
+
+                function renderControls(formUuid, formDetails) {
+                    var controls = _.map(formDetails.controls, function (formControl) {
+                        var controlFactory = _.get(controlByType, formControl.type, undefined);
+                        if (controlFactory) return controlFactory(formControl);
+                    });
+                    var containerComponent = ReactHelper.createReactComponent(FormControls.FormControlsContainer, { controls: controls });
+                    ReactHelper.renderReactComponent(containerComponent, formUuid);
+                }
+
                 var formUuid = $scope.form.formUuid;
+
                 if (!loadedFormDetails[formUuid]) {
                     spinner.forPromise(observationFormService.getFormDetail(formUuid, { v: "custom:(resources)" })
                         .then(function (response) {
