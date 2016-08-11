@@ -43,6 +43,7 @@ describe("PatientListHeaderController", function () {
         providerService = jasmine.createSpyObj('providerService', ['search']);
         offlineService = jasmine.createSpyObj('offlineService', ['isOfflineApp']);
         schedulerService = jasmine.createSpyObj('schedulerService', ['sync','stopSync']);
+        ngDialog = jasmine.createSpyObj('ngDialog', ['open','close']);
         $window = {location: { reload: jasmine.createSpy()} };
 
         offlineService.isOfflineApp.and.returnValue(true);
@@ -121,7 +122,7 @@ describe("PatientListHeaderController", function () {
         expect(schedulerService.stopSync).not.toHaveBeenCalled();
     });
 
-    it("should scheduler sync", function () {
+    it("should call scheduler sync", function () {
         scope.sync();
         expect(schedulerService.sync).toHaveBeenCalled();
 
@@ -146,6 +147,18 @@ describe("PatientListHeaderController", function () {
         expect(providers[0].value).toBe('msf1');
         expect(providers[1].uuid).toBe('uuid2');
         expect(providers[1].value).toBe('msf2');
+    });
+
+    it("should close ngDialog on closePopUp", function () {
+        scope.closePopUp();
+        expect(ngDialog.close).toHaveBeenCalled();
+
+    });
+
+    it("should open ngDialog on popUpHandler", function () {
+        scope.popUpHandler();
+        expect(ngDialog.open).toHaveBeenCalled();
+
     });
 
 });
