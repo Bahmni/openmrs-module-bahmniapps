@@ -290,6 +290,7 @@ angular.module('bahmni.registration')
                         $location.url(appService.getAppDescriptor().formatUrl(forwardUrl, {'patientUuid': patient.uuid}));
                     } else if (data.pageOfResults.length > 1) {
                         $scope.results = data.pageOfResults;
+                        $scope.noResultsMessage = null;
                     } else {
                         $scope.patientIdentifier = {'patientIdentifier': patientIdentifier};
                         $scope.noResultsMessage = 'REGISTRATION_LABEL_COULD_NOT_FIND_PATIENT';
