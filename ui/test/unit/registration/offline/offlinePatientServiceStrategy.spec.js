@@ -53,19 +53,18 @@ describe('PatientServiceStrategy test', function () {
         }).catch(notifyError).finally(done);
     });
 
-    it("should update the patient", function (done) {
-        var identifiers = [{
-            identifier:{},
-            identifierType: {uuid: "identifierTypeUuid"},
-            "selectedIdentifierSource": {
-                "prefix": "GAN",
+    iit("should update the patient", function (done) {
+        var primaryIdentifier = new Bahmni.Registration.Identifier({uuid: 'identifierTypeUuid'});
+        primaryIdentifier.selectedIdentifierSource= {
+            "prefix": "GAN",
                 uuid: "selectedIdentifierSourceUuid"
-            }
-        }];
+        };
+
         var patient = {
             "uuid": "e34992ca-894f-4344-b4b3-54a4aa1e5558",
             "age": 42,
-            identifiers:identifiers,
+            primaryIdentifier: primaryIdentifier,
+            extraIdentifiers: [],
             "getImageData": function () {
                 return;
             }

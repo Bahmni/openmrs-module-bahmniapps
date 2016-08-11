@@ -7,7 +7,7 @@ describe('Patient resource', function () {
 
 
     var openmrsUrl = "http://blah";
-    var patientConfiguration;
+    var patientConfiguration, identifiersMock, identifierDetails;
 
     var mockHttp = {
         defaults: {headers: {common: {'X-Requested-With': 'present'}}},
@@ -29,17 +29,40 @@ describe('Patient resource', function () {
             }})
     };
 
-    var mappedPatient = {
-        names: [
-            {givenName: "someGivenName", familyName: "someFamilyName"}
-        ],
-        age: 21,
-        gender: "M"};
 
     beforeEach(function () {
         module('bahmni.common.models');
         module('bahmni.common.offline');
         module('bahmni.registration');
+
+        module(function ($provide) {
+            identifiersMock = jasmine.createSpyObj('identifiers', ['create']);
+            identifierDetails = {
+                primaryIdentifier: {
+                    identifierType: {
+                        primary: true,
+                        uuid: "identifier-type-uuid",
+                        identifierSources: [{
+                            prefix: "GAN",
+                            uuid: 'dead-cafe'
+                        }, {
+                            prefix: "SEM",
+                            uuid: 'new-cafe'
+                        }]
+                    }
+                },
+                extraIdentifiers: [{
+                    identifierType: {
+                        uuid: 'extra-identifier-type-uuid',
+                        primary: false
+                    }
+                }]
+            };
+            identifiersMock.create.and.returnValue(identifierDetails);
+
+            $provide.value('identifiers', identifiersMock);
+
+        });
 
         module(function ($provide) {
             Bahmni.Registration.Constants.openmrsUrl = openmrsUrl;

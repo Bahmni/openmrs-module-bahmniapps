@@ -1,7 +1,7 @@
 'use strict';
 
-angular.module('bahmni.registration').factory('openmrsPatientMapper', ['patient', '$rootScope', 'age',
-    function (patientModel, $rootScope, age) {
+angular.module('bahmni.registration').factory('openmrsPatientMapper', ['patient', '$rootScope', 'age', 'identifiers',
+    function (patientModel, $rootScope, age, identifiers) {
         var whereAttributeTypeExists = function (attribute) {
                 return $rootScope.patientConfiguration.get(attribute.attributeType.uuid);
             },
@@ -35,21 +35,6 @@ angular.module('bahmni.registration').factory('openmrsPatientMapper', ['patient'
                 patient.newlyAddedRelationships = [{}];
             },
 
-            mapIdentifiers = function (patient, identifiers) {
-                patient.identifiers = [];
-                _.each($rootScope.patientConfiguration.identifierTypes, function (identifierType) {
-                   var identifier = _.find(identifiers, {identifierType: {uuid: identifierType.uuid}})
-                    if(identifier){
-                        _.assign(identifier.identifierType, identifierType);
-                        identifier.registrationNumber = identifier.identifier;
-                    }else{
-                        identifier = {
-                            identifierType: identifierType
-                        }
-                    }
-                    patient.identifiers.push(identifier);
-                });
-            },
 
             map = function (openmrsPatient) {
                 var relationships = openmrsPatient.relationships;
@@ -75,10 +60,7 @@ angular.module('bahmni.registration').factory('openmrsPatientMapper', ['patient'
                 patient.bloodGroup = openmrsPerson.bloodGroup;
                 mapAttributes(patient, openmrsPerson.attributes);
                 mapRelationships(patient, relationships);
-                mapIdentifiers(patient, openmrsPatient.identifiers);
-                
-                var primaryIdentifierTypeUuid = _.find($rootScope.patientConfiguration.identifierTypes, { primary: true}).uuid;
-                patient.primaryIdentifier = _.find(patient.identifiers, {identifierType: {uuid: primaryIdentifierTypeUuid}});
+                _.assign(patient, identifiers.mapIdentifiers(openmrsPatient.identifiers));
 
                 return patient;
             };
