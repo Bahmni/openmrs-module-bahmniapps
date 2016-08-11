@@ -6,18 +6,24 @@ angular.module('bahmni.common.domain')
         var url =  Bahmni.Common.Constants.RESTWS_V1 + "/bahmnicore/visitDocument";
           return $http.post(url, visitDocument);
     };
-    this.saveFile = function (file, patientUuid, encounterTypeName) {
+    this.saveFile = function (file, patientUuid, encounterTypeName, fileName, fileType) {
         var searchStr = ";base64";
-        var format = file.split(searchStr)[0].split("/")[1];
+        var format;
+        if (fileType === "video") {
+            format = _.last(_.split(fileName, "."))
+        } else {
+            format = file.split(searchStr)[0].split("/")[1];
+        }
         var url = Bahmni.Common.Constants.RESTWS_V1 + "/bahmnicore/visitDocument/uploadDocument";
         return $http.post(url, {
-            image: file.substring(file.indexOf(searchStr) + searchStr.length, file.length),
+            content: file.substring(file.indexOf(searchStr) + searchStr.length, file.length),
             format: format,
             patientUuid: patientUuid,
-            encounterTypeName: encounterTypeName
+            encounterTypeName: encounterTypeName,
+            fileType: fileType || "file"
         }, {
             withCredentials: true,
-            headers: {"Accept": "text/plain", "Content-Type": "application/json"}
+            headers: {"Accept": "application/json", "Content-Type": "application/json"}
         });
     };
 }]);

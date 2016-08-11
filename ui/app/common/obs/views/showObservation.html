@@ -21,10 +21,13 @@
         <a  ng-if="::(observation.isImageConcept() && observation.hasPDFAsValue() && !print)" ng-href="/document_images/{{observation.value}}" class="pdf-link" target="_blank">
             <i class="fa fa-file-pdf-o"></i>
         </a>
-        <video ng-show="::(observation.isVideoConcept())" class="video" controls class="img-concept" preload="metadata">
-            <source src="{{'/document_images/' + observation.value}}" type="video/mp4">
-            Your browser does not support the video tag.
-        </video>
+        <div ng-show="::(observation.isVideoConcept())">
+            <video class="video" controls class="img-concept" preload="metadata">
+                <source src="{{'/document_images/' + observation.value}}" type="video/mp4">
+                Your browser does not support the video tag.
+            </video>
+            <a href="{{'/document_images/' + observation.value}}" download>Download video</a>
+        </div>
         <button class="toggle fr" ng-if="observation.isFormElement() && showDetailsButton && !observation.comment" ng-class="{'has-notes': observation.comment}"
                 toggle="observation.showDetails">
             <i class="fa fa-angle-down"></i>
