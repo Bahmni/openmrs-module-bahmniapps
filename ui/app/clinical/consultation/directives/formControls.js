@@ -8,7 +8,7 @@ angular.module('bahmni.common.conceptSet')
             var controller = function ($scope) {
                 var controlByType = {
                     obsControl: function (control) {
-                        return ReactHelper.createReactComponent(FormControls.ObsControl, { obs: control.controls });
+                        return ReactHelper.createReactComponent(FormControls.ObsControl, { controls: control.controls });
                     }
                 };
 
