@@ -33,7 +33,8 @@ Bahmni.Registration.UpdatePatientRequestMapper = (function () {
             }
         };
 
-        var nonEmptyIdentifiers = _.filter(patient.identifiers, function (identifier) {
+        var allIdentifiers = _.concat(patient.extraIdentifiers, patient.primaryIdentifier);
+        var nonEmptyIdentifiers = _.filter(allIdentifiers, function (identifier) {
             return identifier.uuid || identifier.identifier;
         });
 

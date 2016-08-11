@@ -4,39 +4,16 @@ describe("Patient", function () {
     var patientFactory, ageFactory, patient;
     beforeEach(module('bahmni.registration'));
     beforeEach(module('bahmni.common.models'));
+    var identifiersFactoryMock = jasmine.createSpyObj('identifiers', ['create']);
+    beforeEach(module(function ($provide) {
+        $provide.value('identifiers', identifiersFactoryMock);
+    }));
     beforeEach(inject(['patient', 'age', function (patient, age) {
         patientFactory = patient;
         ageFactory = age;
     }]));
     beforeEach(function () {
-        var identifierTypes = [{
-            "uuid": "81433852-3f10-11e4-adec-0800271c1b75",
-            "name": "Bahmni Id",
-            "format": null,
-            "required": true,
-            "primary": true,
-            "identifierSources": [{
-                "uuid": "c1e39ece-3f10-11e4-adec-0800271c1b75",
-                "name": "BAM",
-                "prefix": "BAH"
-            }, {
-                "uuid": "c1d8a345-3f10-11e4-adec-0800271c1b75",
-                "name": "GAN",
-                "prefix": "GAN"
-            }, {
-                "uuid": "c1d90956-3f10-11e4-adec-0800271c1b75",
-                "name": "SEM",
-                "prefix": "SEM"
-            }, {"uuid": "c1dbd8bd-3f10-11e4-adec-0800271c1b75", "name": "SIV", "prefix": "SIV"}]
-        }, {
-            "uuid": "8d79403a-c2cc-11de-8d13-0010c6dffd0f",
-            "name": "Old Identification Number",
-            "format": null,
-            "required": false,
-            "primary": false,
-            "identifierSources": []
-        }];
-        patient = patientFactory.create(identifierTypes);
+        patient = patientFactory.create();
     });
 
 
@@ -62,18 +39,6 @@ describe("Patient", function () {
 
             expect(patient.birthdate).toBe(birthdate);
             expect(ageFactory.calculateBirthDate).toHaveBeenCalledWith(patient.age);
-        });
-    });
-
-    describe("clearRegistrationNumber", function () {
-        it("should clear registrationNumber and identifier", function () {
-            patient.identifiers[0].registrationNumber = "1234";
-            patient.identifiers[0].identifier = "GAN1234";
-
-            patient.clearRegistrationNumber(patient.identifiers[0]);
-
-            expect(patient.identifiers[0].registrationNumber).toBe(null);
-            expect(patient.identifiers[0].identifier).toBe(null);
         });
     });
 
@@ -121,17 +86,25 @@ describe("Patient", function () {
         });
     });
 
-    describe("generateIdentifier", function () {
 
-        it("should void the saved identifier when identifier text field is blanked out", function () {
-            var identifier = {
-                uuid: "some-uuid",
-                voided: false,
-                registrationNumber: ""
-            };
-            patient.generateIdentifier(identifier);
+    describe('create identifiers', function () {
+        it('should assign identifiers created by identifiers factory to patient', function(){
+            var primaryIdentifier = new Bahmni.Registration.Identifier({uuid: 'primary-identifier-type-uuid'});
+            var extraIdentifier1 = new Bahmni.Registration.Identifier({uuid: 'extra1-identifier-type-uuid'});
+            var extraIdentifier2 = new Bahmni.Registration.Identifier({uuid: 'extra2-identifier-type-uuid'});
+            identifiersFactoryMock.create.and.returnValue({
+                primaryIdentifier: primaryIdentifier,
+                extraIdentifiers: [extraIdentifier1, extraIdentifier2],
+                identifiers: [primaryIdentifier, extraIdentifier1, extraIdentifier2]
+            });
 
-            expect(identifier.voided).toBeTruthy();
-        })
-    })
+            patient = patientFactory.create();
+
+            expect(patient.identifiers.length).toBe(3);
+            expect(patient.extraIdentifiers.length).toBe(2);
+            expect(patient.extraIdentifiers).toEqual([extraIdentifier1, extraIdentifier2]);
+            expect(patient.primaryIdentifier).toBe(primaryIdentifier);
+
+        });
+    });
 });

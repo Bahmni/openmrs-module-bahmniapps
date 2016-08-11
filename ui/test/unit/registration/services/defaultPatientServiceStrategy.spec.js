@@ -3,43 +3,47 @@
 describe('patientServiceStrategy', function () {
     var $http, patientServiceStrategy, mockHttp;
     var patient = {
-            address : {},
-            age : {},
-            birthdate : "Tue Jan 19 1982 00:00:00 GMT+0530 (IST)",
-            familyName : "Patient",
-            gender : "F",
-            givenName : "Test",
-            registrationDate : "Tue Jan 19 2016 15:01:59 GMT+0530 (IST)",
-            uuid : "dc1e37ac-40ff-48a5-9d09-6a292030d3cd",
-            getImageData : function () { return false;}
+            address: {},
+            age: {},
+            birthdate: "Tue Jan 19 1982 00:00:00 GMT+0530 (IST)",
+            familyName: "Patient",
+            gender: "F",
+            givenName: "Test",
+            registrationDate: "Tue Jan 19 2016 15:01:59 GMT+0530 (IST)",
+            uuid: "dc1e37ac-40ff-48a5-9d09-6a292030d3cd",
+            getImageData: function () {
+                return false;
+            },
+            primaryIdentifier: Bahmni.Registration.Identifier({uuid: 'identifier-type-uuid'}),
+            extraIdentifiers: []
 
         },
         openMRSPatient = {
-            auditInfo : {},
-            display : "GAN200061 - Test Patient",
-            identifiers : [],
-            person : {
-                addresses : [],
-                age : 34,
-                birthdate : "1982-01-19T00:00:00.000+0530",
-                attributes : [],
-                names : [{
-                    display : "Test Patient",
-                    familyName : "Patient",
-                    givenName : "Test",
-                    uuid : "9c993377-cc7d-4d4e-b752-e703bed5d06d",
-                    voided : false
+            auditInfo: {},
+            display: "GAN200061 - Test Patient",
+            identifiers: [],
+            person: {
+                addresses: [],
+                age: 34,
+                birthdate: "1982-01-19T00:00:00.000+0530",
+                attributes: [],
+                names: [{
+                    display: "Test Patient",
+                    familyName: "Patient",
+                    givenName: "Test",
+                    uuid: "9c993377-cc7d-4d4e-b752-e703bed5d06d",
+                    voided: false
                 }],
-                preferredName :{
-                    givenName : "Test",
-                    familyName : "Patient",
-                    display : "Test Patient"
+                preferredName: {
+                    givenName: "Test",
+                    familyName: "Patient",
+                    display: "Test Patient"
                 },
-                uuid : "dc1e37ac-40ff-48a5-9d09-6a292030d3cd"
+                uuid: "dc1e37ac-40ff-48a5-9d09-6a292030d3cd"
             },
-            resourceVersion : "1.8",
-            uuid : "dc1e37ac-40ff-48a5-9d09-6a292030d3cd",
-            voided : false
+            resourceVersion: "1.8",
+            uuid: "dc1e37ac-40ff-48a5-9d09-6a292030d3cd",
+            voided: false
         },
         attributeTypes = [
             {
@@ -63,7 +67,7 @@ describe('patientServiceStrategy', function () {
                 "answers": [],
                 "required": false,
                 "concept": {}
-            },
+            }
         ];
 
     beforeEach(module('bahmni.registration'));
@@ -79,13 +83,13 @@ describe('patientServiceStrategy', function () {
     }]));
 
     describe('test Update()', function () {
-        it("should update the patient name", function(done){
-            mockHttp.post.and.callFake(function(param,data) {
+        it("should update the patient name", function (done) {
+            mockHttp.post.and.callFake(function (param, data) {
                 expect(param).toBe('/openmrs/ws/rest/v1/bahmnicore/patientprofile/dc1e37ac-40ff-48a5-9d09-6a292030d3cd');
                 expect(data.patient.person.names[0].givenName).toBe(patient.givenName);
                 return specUtil.respondWith({"data": openMRSPatient});
             });
-            patientServiceStrategy.update(patient,openMRSPatient,attributeTypes).then(function(results) {
+            patientServiceStrategy.update(patient, openMRSPatient, attributeTypes).then(function (results) {
                 expect(results).not.toBeUndefined();
                 done();
             });

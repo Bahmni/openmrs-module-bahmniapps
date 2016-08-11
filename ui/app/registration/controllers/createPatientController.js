@@ -66,17 +66,7 @@ angular.module('bahmni.registration')
             };
 
             var init = function () {
-                $scope.patient = patientModel.create($rootScope.patientConfiguration.identifierTypes);
-                $scope.identifierTypes = $rootScope.patientConfiguration.identifierTypes;
-                var primaryIdentifier = _.find($scope.patient.identifiers, {identifierType: {primary: true}});
-                primaryIdentifier.selectedIdentifierSource = _.find(primaryIdentifier.identifierType.identifierSources, {
-                    prefix: preferences.identifierPrefix
-                });
-
-                _.each($scope.patient.identifiers, function(identifier){
-                    identifier.selectedIdentifierSource = identifier.selectedIdentifierSource || identifier.identifierType.identifierSources[0];
-                });
-                primaryIdentifier.hasOldIdentifier = preferences.hasOldIdentifier;
+                $scope.patient = patientModel.create();
                 prepopulateDefaultsInFields();
                 expandSectionsWithDefaultValue();
             };
@@ -126,16 +116,11 @@ angular.module('bahmni.registration')
                 });
             };
 
-            var setPreferences = function () {
-                preferences.identifierPrefix = $scope.patient.identifierPrefix ? $scope.patient.identifierPrefix.prefix : "";
-            };
-
             var copyPatientProfileDataToScope = function (response) {
                 var patientProfileData = response.data;
                 $scope.patient.uuid = patientProfileData.patient.uuid;
                 $scope.patient.name = patientProfileData.patient.person.names[0].display;
                 $scope.patient.isNew = true;
-                $scope.patient.identifierPrefix = patientProfileData.patient.identifiers[0].identifierPrefix;
                 $scope.patient.registrationDate = dateUtil.now();
                 $scope.patient.newlyAddedRelationships = [{}];
                 $scope.actions.followUpAction(patientProfileData);
@@ -180,7 +165,6 @@ angular.module('bahmni.registration')
             };
 
             $scope.create = function () {
-                setPreferences();
                 addNewRelationships();
                 var errorMessages = Bahmni.Common.Util.ValidationUtil.validate($scope.patient, $scope.patientConfiguration.attributeTypes);
                 if (errorMessages.length > 0) {
@@ -198,23 +182,6 @@ angular.module('bahmni.registration')
                     patientUuid: $scope.patient.uuid
                 });
             };
-
-            $scope.hasIdentifierSources = function (identifierType) {
-                return identifierType.identifierSources.length > 0;
-            };
-
-            $scope.hasIdentifierSourceWithEmptyPrefix = function (identifierType) {
-                var identifierSources = identifierType.identifierSources;
-                return identifierSources.length === 1 && identifierSources[0].prefix === "";
-            };
-
-            $scope.isIdentifierRequired = function (identifier) {
-                if(identifier.hasOldIdentifier){
-                    return true;
-                }else if(identifier.identifierType.required){
-                    return !$scope.hasIdentifierSources(identifier.identifierType);
-                }
-                return false;
-            }
+            
         }
     ]);

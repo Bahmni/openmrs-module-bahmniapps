@@ -1,22 +1,75 @@
 'use strict';
 
-describe('patientMapper', function () {
+describe('OpenmrsPatientMapper', function () {
 
-    var mapper, openmrsPatient, ageModule, patientConfiguration, date = new Date();
+    var mapper, openmrsPatient, ageModule, patientConfiguration, date = new Date(), identifiersMock,
+        identifierDetails, primaryIdentifier, extraIdentifiers;
     var dateUtil = Bahmni.Common.Util.DateUtil;
 
     beforeEach(function () {
         module('bahmni.registration');
         module('bahmni.common.models');
 
+        module(function ($provide) {
+            identifiersMock = jasmine.createSpyObj('identifiers', ['mapIdentifiers', 'create']);
+            primaryIdentifier = {
+                uuid: 'primary-uuid',
+                identifierType: {
+                    primary: true,
+                    uuid: "identifier-type-uuid",
+                    identifierSources: [{
+                        prefix: "GAN"
+                    }, {
+                        prefix: "SEM"
+                    }]
+                }
+            };
+            extraIdentifiers = [
+                {
+                    uuid: 'extra-uuid',
+                    identifierType: {
+                        primary: false,
+                        uuid: "extra-identifier-type-uuid"
+                    }
+                }
+            ];
+            identifierDetails = {
+                primaryIdentifier: primaryIdentifier,
+                extraIdentifiers: extraIdentifiers
+            };
+            identifiersMock.mapIdentifiers.and.returnValue(identifierDetails);
+            identifiersMock.create.and.returnValue(identifierDetails);
+            $provide.value('identifiers', identifiersMock);
+        });
+
         patientConfiguration = new Bahmni.Registration.PatientConfig([
-            {"uuid": "d3d93ab0-e796-11e2-852f-0800271c1b75", "sortWeight": 2.0, "name": "caste", "description": "Caste", "format": "java.lang.String", "answers": []},
-            {"uuid": "d3d93ab0-e796-11e2-852f-0800271c1999", "sortWeight": 2.0, "name": "date", "description": "Test Date", "format": "org.openmrs.util.AttributableDate"},
-            {"uuid": "d3e6dc74-e796-11e2-852f-0800271c1b75", "sortWeight": 2.0, "name": "class", "description": "Class", "format": "org.openmrs.Concept",
-                "answers": [
-                    {"description": "OBC", "uuid": "4da8141e-65d6-452e-9cfe-ce813bd11d52"}
-                ]}
-        ], [{"uuid": "identifier-type-uuid", "primary": true}, {"uuid": "extra-identifier-type-uuid"}]);
+                {
+                    "uuid": "d3d93ab0-e796-11e2-852f-0800271c1b75",
+                    "sortWeight": 2.0,
+                    "name": "caste",
+                    "description": "Caste",
+                    "format": "java.lang.String",
+                    "answers": []
+                },
+                {
+                    "uuid": "d3d93ab0-e796-11e2-852f-0800271c1999",
+                    "sortWeight": 2.0,
+                    "name": "date",
+                    "description": "Test Date",
+                    "format": "org.openmrs.util.AttributableDate"
+                },
+                {
+                    "uuid": "d3e6dc74-e796-11e2-852f-0800271c1b75",
+                    "sortWeight": 2.0,
+                    "name": "class",
+                    "description": "Class",
+                    "format": "org.openmrs.Concept",
+                    "answers": [
+                        {"description": "OBC", "uuid": "4da8141e-65d6-452e-9cfe-ce813bd11d52"}
+                    ]
+                }
+            ]
+        );
 
         inject(['openmrsPatientMapper', '$rootScope', 'age', function (openmrsPatientMapper, $rootScope, age) {
             mapper = openmrsPatientMapper;
@@ -25,74 +78,75 @@ describe('patientMapper', function () {
         }]);
 
         openmrsPatient = {
-         patient: {
-            "uuid": "1a202b45-ffa3-42a1-9177-c718e6119cfd",
-            "auditInfo": {
-                dateCreated: moment(date).format()
-            },
-            "identifiers": [
-                {
-                    "identifier": "GAN200003",
-                    "identifierType": {
-                        "uuid": "identifier-type-uuid"
-                    }
-                }
-            ],
-            "person": {
-                "gender": "F",
-                "bloodGroup": "AB+",
-                "age": 0,
-                "birthdate": moment(date).format(),
-                "birthdateEstimated": false,
-                "preferredName": {
-                    "uuid": "72573d85-7793-49c1-8c29-7647c0a6a425",
-                    "givenName": "first",
-                    "middleName": "middle",
-                    "familyName": "family"
+            patient: {
+                "uuid": "1a202b45-ffa3-42a1-9177-c718e6119cfd",
+                "auditInfo": {
+                    dateCreated: moment(date).format()
                 },
-
-                "preferredAddress": {
-                    "display": "house1243",
-                    "uuid": "7746b284-82d5-4251-a7ec-6685b0ced206",
-                    "preferred": true,
-                    "address1": "house1243",
-                    "address2": null,
-                    "cityVillage": "village22",
-                    "stateProvince": "state",
-                    "countyDistrict": "dist",
-                    "address3": "tehsilkk"
-                },
-                "attributes": [
+                "identifiers": [
                     {
-                        "uuid": "2a71ee67-3446-4f66-8267-82446bda21a7",
-                        "value": "some-class",
-                        "attributeType": {
-                            "uuid": "d3d93ab0-e796-11e2-852f-0800271c1b75"
-                        }
-                    } ,
-                    {
-                        "uuid": "2a71ee67-3446-4f66-8267-82446bda2999",
-                        "value": "1998-12-31T18:30:00.000+0000",
-                        "attributeType": {
-                            "uuid": "d3d93ab0-e796-11e2-852f-0800271c1999"
-                        }
-                    } ,
-                    {
-                        "uuid": "3da8141e-65d6-452e-9cfe-ce813bd11d52",
-                        "value":  {
-                            uuid : "4da8141e-65d6-452e-9cfe-ce813bd11d52",
-                            display: "some-value"
-                        },
-                        "attributeType": {
-                            "uuid": "d3e6dc74-e796-11e2-852f-0800271c1b75"
+                        "identifier": "GAN200003",
+                        "identifierType": {
+                            "uuid": "identifier-type-uuid"
                         }
                     }
                 ],
-                "auditInfo": {
-                    dateCreated: moment(date).format()
+                "person": {
+                    "gender": "F",
+                    "bloodGroup": "AB+",
+                    "age": 0,
+                    "birthdate": moment(date).format(),
+                    "birthdateEstimated": false,
+                    "preferredName": {
+                        "uuid": "72573d85-7793-49c1-8c29-7647c0a6a425",
+                        "givenName": "first",
+                        "middleName": "middle",
+                        "familyName": "family"
+                    },
+
+                    "preferredAddress": {
+                        "display": "house1243",
+                        "uuid": "7746b284-82d5-4251-a7ec-6685b0ced206",
+                        "preferred": true,
+                        "address1": "house1243",
+                        "address2": null,
+                        "cityVillage": "village22",
+                        "stateProvince": "state",
+                        "countyDistrict": "dist",
+                        "address3": "tehsilkk"
+                    },
+                    "attributes": [
+                        {
+                            "uuid": "2a71ee67-3446-4f66-8267-82446bda21a7",
+                            "value": "some-class",
+                            "attributeType": {
+                                "uuid": "d3d93ab0-e796-11e2-852f-0800271c1b75"
+                            }
+                        },
+                        {
+                            "uuid": "2a71ee67-3446-4f66-8267-82446bda2999",
+                            "value": "1998-12-31T18:30:00.000+0000",
+                            "attributeType": {
+                                "uuid": "d3d93ab0-e796-11e2-852f-0800271c1999"
+                            }
+                        },
+                        {
+                            "uuid": "3da8141e-65d6-452e-9cfe-ce813bd11d52",
+                            "value": {
+                                uuid: "4da8141e-65d6-452e-9cfe-ce813bd11d52",
+                                display: "some-value"
+                            },
+                            "attributeType": {
+                                "uuid": "d3e6dc74-e796-11e2-852f-0800271c1b75"
+                            }
+                        }
+                    ],
+                    "auditInfo": {
+                        dateCreated: moment(date).format()
+                    }
                 }
             }
-        }}
+        }
     });
 
 
@@ -148,9 +202,9 @@ describe('patientMapper', function () {
 
     it("should populate birthdate and age if birthdate is not estimated", function () {
         var dob = date;
-        dob.setFullYear(dob.getFullYear()-2);
-        dob.setMonth(dob.getMonth()-3);
-        dob.setDate(dob.getDate()-25);
+        dob.setFullYear(dob.getFullYear() - 2);
+        dob.setMonth(dob.getMonth() - 3);
+        dob.setDate(dob.getDate() - 25);
         openmrsPatient.patient.person.birthdate = moment(dob).format();
         openmrsPatient.patient.person.birthdateEstimated = false;
         var age = {years: 2, months: 3, days: 25};
@@ -177,19 +231,11 @@ describe('patientMapper', function () {
         });
         mapper.map(openmrsPatient);
     });
-    
-    it('should map identifiers for all identifier types and initialise empty identifier if it does not exit for an identifier type', function(){
-        var patient = mapper.map(openmrsPatient);
-        expect(patient.identifiers).toEqual([{
-            identifier: 'GAN200003',
-            identifierType: {uuid: 'identifier-type-uuid', primary: true},
-            registrationNumber: 'GAN200003'
-        },
-            {
-                identifierType: {uuid: 'extra-identifier-type-uuid'}
-            }
-        ]);
-        expect(patient.primaryIdentifier).toEqual(openmrsPatient.patient.identifiers[0]);
 
+    it('should map identifiers to patient returned by identifiersFactory', function () {
+        var patient = mapper.map(openmrsPatient);
+
+        expect(patient.primaryIdentifier).toBe(primaryIdentifier);
+        expect(patient.extraIdentifiers).toBe(extraIdentifiers);
     })
 });

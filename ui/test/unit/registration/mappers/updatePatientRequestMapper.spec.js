@@ -1,9 +1,9 @@
 'use strict';
 
-describe('patient mapper', function () {
+describe('UpdatePatientRequestMapper', function () {
 
     var patient;
-    var patientAttributeTypes;
+    var patientAttributeTypes, identifiersMock, identifierDetails;
     var date = new Date();
     var updatePatientRequestMapper = new Bahmni.Registration.UpdatePatientRequestMapper();
     var openMrsPatient;
@@ -11,21 +11,82 @@ describe('patient mapper', function () {
     beforeEach(function () {
         module('bahmni.registration');
         module('bahmni.common.models');
+        module(function ($provide) {
+            identifiersMock = jasmine.createSpyObj('identifiers', ['create']);
+            identifierDetails = {
+                primaryIdentifier: {
+                    identifierType: {
+                        primary: true,
+                        uuid: "identifier-type-uuid",
+                        identifierSources: [{
+                            prefix: "GAN",
+                            uuid: 'dead-cafe'
+                        }, {
+                            prefix: "SEM",
+                            uuid: 'new-cafe'
+                        }]
+                    }
+                },
+                extraIdentifiers: [{
+                    identifierType: {
+                        uuid: 'extra-identifier-type-uuid',
+                        primary: false
+                    }
+                }]
+            };
+            identifiersMock.create.and.returnValue(identifierDetails);
+
+            $provide.value('identifiers', identifiersMock);
+
+        });
         inject(['patient', function (patientFactory) {
             patient = patientFactory.create();
         }]);
 
         patientAttributeTypes = [
-            {"uuid": "class-uuid", "sortWeight": 2.0, "name": "class", "description": "Caste", "format": "java.lang.String", "answers": []},
-            {"uuid": "caste-uuid", "sortWeight": 2.0, "name": "caste", "description": "Class", "format": "org.openmrs.Concept",
+            {
+                "uuid": "class-uuid",
+                "sortWeight": 2.0,
+                "name": "class",
+                "description": "Caste",
+                "format": "java.lang.String",
+                "answers": []
+            },
+            {
+                "uuid": "caste-uuid",
+                "sortWeight": 2.0,
+                "name": "caste",
+                "description": "Class",
+                "format": "org.openmrs.Concept",
                 "answers": [
                     {"description": "OBC", "conceptId": "10"},
                     {"description": "General", "conceptId": "11"}
                 ]
             },
-            {"uuid": "education-uuid", "sortWeight": 2.0, "name": "education", "description": "Caste", "format": "java.lang.String", "answers": []},
-            {"uuid": "isUrban-uuid", "sortWeight": 2.0, "name": "isUrban", "description": "isUrban", "format": "java.lang.Boolean", "answers": []},
-            {"uuid": "testDate-uuid", "sortWeight": 2.0, "name": "testDate", "description": "Test Date", "format": "org.openmrs.util.AttributableDate", "answers": []}
+            {
+                "uuid": "education-uuid",
+                "sortWeight": 2.0,
+                "name": "education",
+                "description": "Caste",
+                "format": "java.lang.String",
+                "answers": []
+            },
+            {
+                "uuid": "isUrban-uuid",
+                "sortWeight": 2.0,
+                "name": "isUrban",
+                "description": "isUrban",
+                "format": "java.lang.Boolean",
+                "answers": []
+            },
+            {
+                "uuid": "testDate-uuid",
+                "sortWeight": 2.0,
+                "name": "testDate",
+                "description": "Test Date",
+                "format": "org.openmrs.util.AttributableDate",
+                "answers": []
+            }
         ];
 
         angular.extend(patient, {
@@ -54,38 +115,38 @@ describe('patient mapper', function () {
             "familyNameLocal": "lhindi",
             "secondaryIdentifier": "sec id",
             "isNew": "true",
-            "isUrban":false,
+            "isUrban": false,
             "dead": true,
             "testDate": "Fri Jan 01 1999 00:00:00"
         });
 
         openMrsPatient = {
-                person: {
-                    names: [
-                        {
-                            uuid: "2wft3",
-                            givenName: "gname",
-                            familyName: "fname",
-                            "preferred": true
-                        }
-                    ],
-                    "birthdate": moment(date).format("DD-MM-YYYY"),
-                    gender: "M",
-                    attributes: [ {
-                        attributeType:{
-                            uuid:"caste-uuid",
-                            display :"caste"
+            person: {
+                names: [
+                    {
+                        uuid: "2wft3",
+                        givenName: "gname",
+                        familyName: "fname",
+                        "preferred": true
+                    }
+                ],
+                "birthdate": moment(date).format("DD-MM-YYYY"),
+                gender: "M",
+                attributes: [{
+                    attributeType: {
+                        uuid: "caste-uuid",
+                        display: "caste"
 
-                        },
+                    },
 
-                        uuid: "caste-attribute-uuid",
+                    uuid: "caste-attribute-uuid",
 
-                        value: {
-                            uuid:"11",
-                            display:"General"
-                        }
-                    }]
-                }
+                    value: {
+                        uuid: "11",
+                        display: "General"
+                    }
+                }]
+            }
         };
 
     });
@@ -95,45 +156,45 @@ describe('patient mapper', function () {
 
         var mappedPatientData = updatePatientRequestMapper.mapFromPatient(patientAttributeTypes, openMrsPatient, patient);
 
-        var castePatientAttribute = _.find(mappedPatientData.patient.person.attributes,{uuid : "caste-attribute-uuid"})
+        var castePatientAttribute = _.find(mappedPatientData.patient.person.attributes, {uuid: "caste-attribute-uuid"})
         expect(castePatientAttribute.voided).toBeTruthy();
     });
 
     it('should set voided flag to false when non empty value is selected for concept attribute type', function () {
         angular.extend(patient, {
-            "caste":{
-                conceptUuid:"General-uuid",
+            "caste": {
+                conceptUuid: "General-uuid",
                 value: "General"
             }
         });
 
 
-        var mappedPatientData = updatePatientRequestMapper.mapFromPatient(patientAttributeTypes, openMrsPatient,patient);
+        var mappedPatientData = updatePatientRequestMapper.mapFromPatient(patientAttributeTypes, openMrsPatient, patient);
 
-        var castePatientAttribute = _.find(mappedPatientData.patient.person.attributes ,{uuid : "caste-attribute-uuid"});
+        var castePatientAttribute = _.find(mappedPatientData.patient.person.attributes, {uuid: "caste-attribute-uuid"});
         expect(castePatientAttribute.hydratedObject).toBe("General-uuid");
     });
 
 
     it('should set voided flag to true when blank value is selected for an attribute of concept type', function () {
         angular.extend(patient, {
-            "caste":{
+            "caste": {
                 conceptUuid: null,
                 value: "General"
             }
         });
 
 
-        var mappedPatientData = updatePatientRequestMapper.mapFromPatient(patientAttributeTypes, openMrsPatient,patient);
+        var mappedPatientData = updatePatientRequestMapper.mapFromPatient(patientAttributeTypes, openMrsPatient, patient);
 
-        var castePatientAttribute = _.find(mappedPatientData.patient.person.attributes ,{uuid : "caste-attribute-uuid"});
+        var castePatientAttribute = _.find(mappedPatientData.patient.person.attributes, {uuid: "caste-attribute-uuid"});
         expect(castePatientAttribute.voided).toBeTruthy();
     });
 
 
-    describe("map identifiers", function(){
-        it('should filter out empty new identifier objects', function(){
-            patient.identifiers = [
+    describe("map identifiers", function () {
+        it('should filter out empty new identifier objects', function () {
+            var identifiers = [
                 {
                     uuid: "some-uuid",
                     identifier: "some-value",
@@ -158,22 +219,31 @@ describe('patient mapper', function () {
                 }
             ];
 
-            var mappedPatientData = updatePatientRequestMapper.mapFromPatient(patientAttributeTypes, openMrsPatient,patient);
+            patient.primaryIdentifier = new Bahmni.Registration.Identifier({uuid: 'identifier-type1-uuid'}).map(identifiers);
+            patient.extraIdentifiers = [new Bahmni.Registration.Identifier({uuid: 'identifier-type2-uuid'}).map(identifiers),
+                new Bahmni.Registration.Identifier({uuid: 'identifier-type3-uuid'}).map(identifiers)];
+
+            var mappedPatientData = updatePatientRequestMapper.mapFromPatient(patientAttributeTypes, openMrsPatient, patient);
 
             expect(mappedPatientData.patient.identifiers.length).toBe(2);
 
             var mappedPatientIdentifiers = mappedPatientData.patient.identifiers;
-            expect(mappedPatientIdentifiers[0].uuid).toBe("some-uuid");
-            expect(mappedPatientIdentifiers[0].identifier).toBe("some-value");
-            expect(mappedPatientIdentifiers[0].voided).toBeFalsy();
-            expect(mappedPatientIdentifiers[0].preferred).toBeTruthy();
-            expect(mappedPatientIdentifiers[0].identifierType).toBe("identifier-type1-uuid");
+            expect(mappedPatientIdentifiers).toContain({
+                uuid: "some-uuid",
+                identifier: "some-value",
+                voided: false,
+                preferred: true,
+                identifierType: "identifier-type1-uuid"
+            });
 
-            expect(mappedPatientIdentifiers[1].identifier).toBe("some-other-value");
-            expect(mappedPatientIdentifiers[1].uuid).toBeUndefined();
-            expect(mappedPatientIdentifiers[1].voided).toBeFalsy();
-            expect(mappedPatientIdentifiers[1].preferred).toBeFalsy();
-            expect(mappedPatientIdentifiers[1].identifierType).toBe("identifier-type2-uuid");
-        })
+            expect(mappedPatientIdentifiers).toContain({
+                uuid: undefined,
+                identifier: "some-other-value",
+                voided: false,
+                preferred: false,
+                identifierType: "identifier-type2-uuid"
+            });
+
+            })
     })
 });

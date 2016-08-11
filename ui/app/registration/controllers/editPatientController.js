@@ -25,7 +25,6 @@ angular.module('bahmni.registration')
             var successCallBack = function(openmrsPatient){
                 $scope.openMRSPatient = openmrsPatient["patient"];
                 $scope.patient = patientMapper.map(openmrsPatient);
-                _.remove($scope.patient.identifiers, $scope.patient.primaryIdentifier);
                 setReadOnlyFields();
                 expandDataFilledSections();
             };
@@ -92,15 +91,5 @@ angular.module('bahmni.registration')
             $scope.afterSave = function () {
                 messagingService.showMessage("info", "REGISTRATION_LABEL_SAVED");
             };
-
-            $scope.hasIdentifierSources = function (identifierType) {
-                return identifierType.identifierSources.length > 0;
-            };
-
-            $scope.hasIdentifierSourceWithEmptyPrefix = function (identifierType) {
-                var identifierSources = identifierType.identifierSources;
-                return identifierSources.length === 1 && identifierSources[0].prefix === "";
-            }
-
 
         }]);

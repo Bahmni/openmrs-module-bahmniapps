@@ -85,7 +85,7 @@ describe('EditPatientController', function () {
     });
 
     it("should expand the section when there are any default values specified for an attribute in that section", function () {
-        sections = {
+        var sections = {
             "additionalPatientInformation": {
                 attributes: [{
                     name: "primaryContact"
@@ -114,7 +114,7 @@ describe('EditPatientController', function () {
     });
 
     it("should expand the section when there are saved values in the section", function () {
-        sections = {
+        var sections = {
             "additionalPatientInformation": {
                 attributes: [{
                     name: "caste"

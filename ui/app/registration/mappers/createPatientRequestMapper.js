@@ -7,7 +7,8 @@ Bahmni.Registration.CreatePatientRequestMapper = (function () {
 
     CreatePatientRequestMapper.prototype.mapFromPatient = function (patientAttributeTypes, patient) {
         var constants = Bahmni.Registration.Constants;
-        var identifiers = _.filter(patient.identifiers, function (identifier) {
+        var allIdentifiers = _.concat(patient.extraIdentifiers, patient.primaryIdentifier);
+        var identifiers = _.filter(allIdentifiers, function (identifier) {
             return !_.isEmpty(identifier.selectedIdentifierSource) || (identifier.identifier !== undefined);
         });
         identifiers = _.map(identifiers, function(identifier){

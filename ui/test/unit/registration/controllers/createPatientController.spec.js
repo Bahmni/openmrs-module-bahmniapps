@@ -1,13 +1,31 @@
 'use strict';
 
-var $aController, q, scopeMock, rootScopeMock, stateMock, patientServiceMock, preferencesMock, patientModelMock, spinnerMock, locationServiceMock,
-    appServiceMock, ngDialogMock, ngDialogLocalScopeMock, httpBackend, http, sections;
-
 describe('CreatePatientController', function() {
+    var $aController, q, scopeMock, rootScopeMock, stateMock, patientServiceMock, preferencesMock, spinnerMock,
+        appServiceMock, ngDialogMock, ngDialogLocalScopeMock, httpBackend, http, sections, identifiersMock;
 
     beforeEach(module('bahmni.registration'));
     beforeEach(module('bahmni.common.models'));
 
+    beforeEach(module(function($provide){
+        identifiersMock = jasmine.createSpyObj('identifiers', ['create']);
+        identifiersMock.create.and.returnValue({
+            primaryIdentifier: {
+                identifierType: {
+                    primary: true,
+                    uuid: "identifier-type-uuid",
+                    identifierSources: [{
+                        prefix: "GAN"
+                    }, {
+                        prefix: "SEM"
+                    }]
+                }
+            }
+        });
+
+        $provide.value('identifiers', identifiersMock);
+
+    }));
     beforeEach(
         inject(function($controller, $rootScope, $q, $httpBackend, $http) {
             $aController = $controller;
@@ -23,7 +41,6 @@ describe('CreatePatientController', function() {
         stateMock = jasmine.createSpyObj('stateMock', ['go']);
         patientServiceMock = jasmine.createSpyObj('patientServiceMock', ['create']);
         preferencesMock = jasmine.createSpyObj('preferencesMock', ['']);
-        patientModelMock = jasmine.createSpyObj('patientModelMock', ['']);
         spinnerMock = jasmine.createSpyObj('spinnerMock', ['forPromise']);
         appServiceMock = jasmine.createSpyObj('appServiceMock', ['getAppDescriptor']);
 
@@ -107,7 +124,6 @@ describe('CreatePatientController', function() {
             $state: stateMock,
             patientService: patientServiceMock,
             preferences: preferencesMock,
-            patientModel: patientModelMock,
             spinner: spinnerMock,
             appService: appServiceMock,
             ngDialog: ngDialogMock,
@@ -137,7 +153,6 @@ describe('CreatePatientController', function() {
             $state: stateMock,
             patientService: patientServiceMock,
             preferences: preferencesMock,
-            patientModel: patientModelMock,
             spinner: spinnerMock,
             appService: appServiceMock,
             ngDialog: ngDialogMock,
@@ -171,7 +186,6 @@ describe('CreatePatientController', function() {
             $state: stateMock,
             patientService: patientServiceMock,
             preferences: preferencesMock,
-            patientModel: patientModelMock,
             spinner: spinnerMock,
             appService: appServiceMock,
             ngDialog: ngDialogMock,
@@ -189,7 +203,6 @@ describe('CreatePatientController', function() {
             $state: stateMock,
             patientService: patientServiceMock,
             preferences: preferencesMock,
-            patientModel: patientModelMock,
             spinner: spinnerMock,
             appService: appServiceMock,
             ngDialog: ngDialogMock,
@@ -218,7 +231,6 @@ describe('CreatePatientController', function() {
             $state: stateMock,
             patientService: patientServiceMock,
             preferences: preferencesMock,
-            patientModel: patientModelMock,
             spinner: spinnerMock,
             appService: appServiceMock,
             ngDialog: ngDialogMock,
@@ -248,7 +260,6 @@ describe('CreatePatientController', function() {
                 $state: stateMock,
                 patientService: patientServiceMock,
                 preferences: preferencesMock,
-                patientModel: patientModelMock,
                 spinner: spinnerMock,
                 appService: appServiceMock,
                 ngDialog: ngDialogMock,
@@ -256,61 +267,6 @@ describe('CreatePatientController', function() {
             });
 
         expect(scopeMock.patient.address[scopeMock.addressLevels[0].addressField]).toBe("Dhaka");
-    });
-
-    it("should set patient identifierPrefix details with the matching one", function() {
-        rootScopeMock.patientConfiguration.identifierTypes = [{
-            primary: true,
-            uuid: "identifier-type-uuid",
-            identifierSources: [{
-                prefix: "GAN"
-            }, {
-                prefix: "SEM"
-            }]
-        }];
-        preferencesMock.identifierPrefix = "GAN";
-        $aController('CreatePatientController', {
-            $scope: scopeMock,
-            $rootScope: rootScopeMock,
-            $state: stateMock,
-            patientService: patientServiceMock,
-            preferences: preferencesMock,
-            patientModel: patientModelMock,
-            spinner: spinnerMock,
-            appService: appServiceMock,
-            ngDialog: ngDialogMock,
-            offlineService: {}
-        });
-
-        expect(scopeMock.patient.identifiers[0].selectedIdentifierSource.prefix).toBe("GAN");
-    });
-
-    it("should set patient identifierPrefix details with the first source details when it doesn't match", function() {
-        rootScopeMock.patientConfiguration.identifierTypes = [{
-            primary: true,
-            name: "Bahmni Id",
-            uuid: "identifier-type-uuid",
-            identifierSources: [{
-                prefix: "SEM"
-            }, {
-                prefix: "BAN"
-            }]
-        }];
-        preferencesMock.identifierPrefix = "GAN";
-        $aController('CreatePatientController', {
-            $scope: scopeMock,
-            $rootScope: rootScopeMock,
-            $state: stateMock,
-            patientService: patientServiceMock,
-            preferences: preferencesMock,
-            patientModel: patientModelMock,
-            spinner: spinnerMock,
-            appService: appServiceMock,
-            ngDialog: ngDialogMock,
-            offlineService: {}
-        });
-
-        expect(scopeMock.patient.identifiers[0].selectedIdentifierSource.prefix).toBe("SEM");
     });
 
     it("should create a patient and go to edit page", function() {
@@ -486,22 +442,6 @@ describe('CreatePatientController', function() {
         expect(patientServiceMock.create.calls.count()).toEqual(1);
     });
 
-    it("hasIdentifierSources, should return false if identifier sources are not present", function() {
-        var identifierType ={identifierSources: []};
-        expect(scopeMock.hasIdentifierSources(identifierType)).toBeFalsy();
-    });
-
-    it("should return true if there is only one identifier source with blank prefix", function () {
-        var identifierType = {identifierSources: [{name : "ABC", prefix: ""}]};
-        expect(scopeMock.hasIdentifierSourceWithEmptyPrefix(identifierType)).toBeTruthy();
-    });
-
-
-    it("should return false if there is only one identifier source without a blank prefix", function () {
-        var identifierType = {identifierSources: [{name : "ABC", prefix: "prefix"}]};
-        expect(scopeMock.hasIdentifierSourceWithEmptyPrefix(identifierType)).toBeFalsy();
-    });
-
     it("should return true if there is disablePhotoCapture config defined to be true", function () {
         appServiceMock.getAppDescriptor = function() {
             return {
@@ -520,7 +460,6 @@ describe('CreatePatientController', function() {
             $state: stateMock,
             patientService: patientServiceMock,
             preferences: preferencesMock,
-            patientModel: patientModelMock,
             spinner: spinnerMock,
             appService: appServiceMock,
             ngDialog: ngDialogMock,
@@ -529,41 +468,4 @@ describe('CreatePatientController', function() {
         expect(scopeMock.disablePhotoCapture).toBeTruthy();
     });
 
-    describe("isIdentifierRequired", function () {
-        it('should return true if Enter ID is checked irrespective of whether identifier type is configured as required or not', function () {
-            var identifier = {
-                identifierType: {
-                    required: false,
-                    identifierSources: []
-                },
-                hasOldIdentifier: true
-            };
-            expect(scopeMock.isIdentifierRequired(identifier)).toBeTruthy();
-        });
-
-        it('should return true if Enter Id is not checked and identifier type can not be auto generated ', function () {
-            var identifier = {
-                identifierType: {
-                    required: true,
-                    identifierSources: []
-                },
-                hasOldIdentifier: false
-            };
-            expect(scopeMock.isIdentifierRequired(identifier)).toBeTruthy();
-        });
-
-        it('should return false if Enter Id is not checked but identifier type can be auto generated ', function () {
-            var identifier = {
-                identifierType: {
-                    required: true,
-                    identifierSources: [{
-                        name: 'Ganiyari',
-                        prefix: 'GAN'
-                    }]
-                },
-                hasOldIdentifier: false
-            };
-            expect(scopeMock.isIdentifierRequired(identifier)).toBeFalsy();
-        });
-    })
 });
