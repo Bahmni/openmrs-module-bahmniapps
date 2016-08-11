@@ -15,7 +15,6 @@ angular.module('bahmni.registration')
                 identifiers.push(identifier);
             });
             return {
-                identifiers: identifiers,
                 primaryIdentifier: getPrimaryIdentifier(identifiers),
                 extraIdentifiers: getExtraIdentifiers(identifiers)
             }
@@ -29,7 +28,6 @@ angular.module('bahmni.registration')
             });
 
             return {
-                identifiers: mappedIdentifiers,
                 primaryIdentifier: getPrimaryIdentifier(mappedIdentifiers),
                 extraIdentifiers: getExtraIdentifiers(mappedIdentifiers)
             }
