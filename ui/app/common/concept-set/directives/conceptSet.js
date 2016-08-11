@@ -75,10 +75,15 @@ angular.module('bahmni.common.conceptSet')
                     var conceptSetObsValues = getFlattenedObsValues(flattenedObs);
                     if (Bahmni.ConceptSet.FormConditions.rules) {
                         _.each(Bahmni.ConceptSet.FormConditions.rules, function (conditionFn, conceptName) {
-                            if (_.has(conceptSetObsValues, conceptName)) {
-                                var conditions = conditionFn(observation.concept.name, conceptSetObsValues);
-                                processConditions(flattenedObs, conditions.disable, true);
-                            }
+                            _.each(_.keys(conceptSetObsValues), function(eachObsKey) {
+                                if(eachObsKey.split('|')[0] == conceptName && eachObsKey.split('|')[1] != 'undefined') {
+                                    var valueMap = {};
+                                    valueMap[conceptName] = conceptSetObsValues[eachObsKey];
+                                    var conditions = conditionFn(observation.concept.name, valueMap);
+                                    processConditions(flattenedObs.slice(_.findIndex(flattenedObs, {uniqueId: eachObsKey.split('|')[1]})), conditions.disable, true);
+                                    processConditions(flattenedObs.slice(_.findIndex(flattenedObs, {uniqueId: eachObsKey.split('|')[1]})), conditions.enable, false);
+                                }
+                            });
                         })
                     }
                 };
@@ -145,20 +150,20 @@ angular.module('bahmni.common.conceptSet')
 
                 var getFlattenedObsValues = function (flattenedObs) {
                     return _.reduce(flattenedObs, function (flattenedObsValues, obs) {
-                        if (flattenedObsValues[obs.concept.name] == undefined) {
+                        if (flattenedObsValues[obs.concept.name + '|' + obs.uniqueId] == undefined) {
                             if (obs.isMultiSelect) {
                                 var selectedObsConceptNames = [];
                                 _.each(obs.selectedObs, function (observation) {
                                     if(!observation.voided)
                                       selectedObsConceptNames.push(observation.value.name);
                                 });
-                                flattenedObsValues[obs.concept.name] = selectedObsConceptNames;
+                                flattenedObsValues[obs.concept.name + '|' + obs.uniqueId] = selectedObsConceptNames;
                             }
                             else if (obs.value instanceof Object) {
-                                flattenedObsValues[obs.concept.name] = obs.value.name;
+                                flattenedObsValues[obs.concept.name + '|' + obs.uniqueId] = obs.value.name;
                             }
                             else {
-                                flattenedObsValues[obs.concept.name] = obs.value;
+                                flattenedObsValues[obs.concept.name + '|' + obs.uniqueId] = obs.value;
                             }
                         }
                         return flattenedObsValues;
@@ -294,7 +299,6 @@ angular.module('bahmni.common.conceptSet')
                 });
 
                 var processConditions = function (flattenedObs, fields, disable, error) {
-                    var tempField = fields;
                     _.each(fields, function (field) {
                         var matchingObsArray = _.filter(flattenedObs, function (obs) {
                             return obs.concept.name === field;
