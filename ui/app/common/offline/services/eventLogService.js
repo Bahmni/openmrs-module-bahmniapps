@@ -2,22 +2,8 @@
 
 angular.module('bahmni.common.offline')
     .factory('eventLogService', ['$http', function ($http) {
-        var getEventsFor = function (catchmentNumber, lastReadUuid) {
-            return $http.get(Bahmni.Common.Constants.eventLogServiceUrl, {
-                params: {filterBy: catchmentNumber, uuid: lastReadUuid}
-            })
-        };
-
-        var getAddressEventsFor = function (catchmentNumber, lastReadUuid) {
-            return $http.get(Bahmni.Common.Constants.addressEventLogServiceUrl, {
-                params: {filterBy: catchmentNumber, uuid: lastReadUuid}
-            })
-        };
-
-        var getConceptEventsFor = function (lastReadUuid) {
-            return $http.get(Bahmni.Common.Constants.eventLogServiceConceptUrl, {
-                params: {uuid: lastReadUuid}
-            })
+        var getEvents = function (url, marker) {
+            return $http.get(url, { params: {filterBy: marker.catchmentNumber, uuid: marker.lastReadEventUuid}});
         };
 
         var getDataForUrl = function (url) {
@@ -30,12 +16,35 @@ angular.module('bahmni.common.offline')
             return $http.get(url, { method: "GET", params: params, withCredentials: true});
         };
 
+        var getFilterForCategoryAndLoginLocation = function (providerUuid,locationUuid) {
+            var url = Bahmni.Common.Constants.eventlogFilterUrl + "/markers/"  + providerUuid + "/" + locationUuid;
+            return $http.get(url, { method: "GET", withCredentials: true});
+        };
+
+        var getEventCategoriesToBeSynced = function () {
+            var url = Bahmni.Common.Constants.eventlogFilterUrl + "/category";
+            return $http.get(url, { method: "GET", withCredentials: true});
+        };
+
+        var getEventsFor = function (category, marker) {
+            switch (category) {
+                case 'TransactionalData':
+                    return getEvents(Bahmni.Common.Constants.eventLogServiceUrl, marker);
+                case 'offline-concepts':
+                    return getEvents(Bahmni.Common.Constants.eventLogServiceConceptUrl,marker);
+                case 'AddressHierarchy':
+                case 'ParentAddressHierarchy':
+                    return getEvents(Bahmni.Common.Constants.addressEventLogServiceUrl, marker);
+            }
+
+        };
+
 
         return {
             getEventsFor: getEventsFor,
-            getConceptEventsFor: getConceptEventsFor,
             getDataForUrl: getDataForUrl,
             getAddressForLoginLocation: getAddressForLoginLocation,
-            getAddressEventsFor: getAddressEventsFor
+            getFilterForCategoryAndLoginLocation: getFilterForCategoryAndLoginLocation,
+            getEventCategoriesToBeSynced: getEventCategoriesToBeSynced
         };
     }]);

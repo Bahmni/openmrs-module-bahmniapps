@@ -22,7 +22,7 @@ describe('EventLogService', function () {
             return specUtil.respondWith([newVar]);
         });
 
-        eventLogService.getEventsFor(111).then(function (data) {
+        eventLogService.getEventsFor('TransactionalData',{ catchmentNumber: 111}).then(function (data) {
             expect(data.length).toBe(1);
             expect(data[0]).toBe(newVar);
         });

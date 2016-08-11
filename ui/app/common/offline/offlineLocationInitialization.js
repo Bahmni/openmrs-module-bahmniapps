@@ -26,8 +26,17 @@ angular.module('bahmni.common.offline')
                             for (var addressResults = 0; addressResults < data.length; addressResults++) {
                                 var loginAddress = data[addressResults];
                                 if (checkParents(loginAddress, getParentAddressLevel(addressField))) {
-                                    offlineService.setItem('catchmentNumber', data[addressResults].userGeneratedId);
-                                    getCatchmentNumberForAddressHierarchy(data[addressResults]);
+                                    var provider = offlineService.getItem('providerData').results[0];
+                                    eventLogService.getEventCategoriesToBeSynced().then(function (results)  {
+                                       var categories = results.data;
+                                        offlineService.setItem("eventLogCategories",categories);
+                                    });
+                                    eventLogService.getFilterForCategoryAndLoginLocation(provider.uuid,loginAddress.uuid).then(function(results){
+                                        var categoryFilterMap = results.data;
+                                        Object.keys(categoryFilterMap).forEach(function(category){
+                                            offlineDbService.insertMarker(category,null,categoryFilterMap[category]);
+                                         });
+                                    });
                                     deferred.resolve();
                                     break;
                                 }
@@ -69,18 +78,6 @@ angular.module('bahmni.common.offline')
                         parent = addressLevels[addrLevel];
                     }
                 };
-
-                var getCatchmentNumberForAddressHierarchy = function (addressData){
-                    while(addressData.parent) {
-                        if(addressData.userGeneratedId.length == 6){
-                            offlineService.setItem('addressCatchmentNumber', addressData.userGeneratedId);
-                            deferred.resolve();
-                            break;
-                        }
-                        addressData = addressData.parent;
-                    }
-                };
-
               return deferred.promise;
             };
         }
