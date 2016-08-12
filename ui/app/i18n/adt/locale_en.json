@@ -1,5 +1,5 @@
 {
-    "SEARCH_NAME_PLACEHOLDER_KEY": "Search Name/ID  ...",
+    "SEARCH_NAME_PLACEHOLDER_KEY": "Search Name/{{ primaryIdentifier }}  ...",
     "SEARCH_KEY": "Search",
     "NO_ADMISSION_DETAILS_MESSAGE": "No Admission Details for this patient.",
     "NO_DIAGNOSIS_MESSAGE": "No diagnosis for this patient",
