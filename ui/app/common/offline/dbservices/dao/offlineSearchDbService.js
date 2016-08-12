@@ -35,6 +35,7 @@ angular.module('bahmni.common.offline')
             }
 
             var p = db.getSchema().table('patient');
+            var pi = db.getSchema().table('patient_identifier');
             var pa = db.getSchema().table('patient_attribute');
             var pat = db.getSchema().table('patient_attribute_type');
             var padd = db.getSchema().table('patient_address').as('addressFieldValue');
@@ -46,6 +47,7 @@ angular.module('bahmni.common.offline')
                 .then(function (attributeTypeIds) {
                     var query = db.select(p.uuid.as('uuid'))
                         .from(p)
+                        .innerJoin(pi, p.uuid.eq(pi.patientUuid))
                         .innerJoin(padd, p.uuid.eq(padd.patientUuid))
                         .leftOuterJoin(pa, p.uuid.eq(pa.patientUuid))
                         .leftOuterJoin(encounter, p.uuid.eq(encounter.patientUuid))
@@ -66,15 +68,15 @@ angular.module('bahmni.common.offline')
 
                     if (!_.isEmpty(params.identifier)) {
                         params.identifier = params.identifier.replace('%','.');
-                        predicates.push(p.identifier.match(new RegExp(params.identifier, 'i')));
-                        predicates.push(p.identifier.match(new RegExp(params.identifierPrefix,'i')));
+                        predicates.push(pi.identifier.match(new RegExp(params.identifier, 'i')));
+                        predicates.push(pi.identifier.match(new RegExp(params.identifierPrefix,'i')));
                     }
                     if (!_.isEmpty(nameParts)) {
                         var nameSearchCondition = [];
                         if (!_.isEmpty(nameParts)) {
                             angular.forEach(nameParts, function (namePart) {
                                 nameSearchCondition.push(lf.op.or(p.givenName.match(new RegExp(namePart, 'i')), p.middleName.match(new RegExp(namePart, 'i')),
-                                    p.familyName.match(new RegExp(namePart, 'i')), p.identifier.match(new RegExp(namePart, 'i'))));
+                                    p.familyName.match(new RegExp(namePart, 'i')), pi.identifier.match(new RegExp(namePart, 'i'))));
                             });
                             predicates.push(lf.op.and.apply(null, nameSearchCondition));
                         }
@@ -98,10 +100,11 @@ angular.module('bahmni.common.offline')
 
                      query.limit(50).skip(params.startIndex).orderBy(p.dateCreated, lf.Order.DESC).groupBy(p.uuid).exec()
                         .then(function (tempResults) {
-                            return db.select(p.identifier.as('identifier'), p.givenName.as('givenName'), p.middleName.as('middleName'), p.familyName.as('familyName'),
+                            return db.select(pi.identifier.as('identifier'), p.givenName.as('givenName'), p.middleName.as('middleName'), p.familyName.as('familyName'),
                                 p.dateCreated.as('dateCreated'), p.birthdate.as('birthdate'), p.gender.as('gender'), p.uuid.as('uuid'), padd[addressFieldName],
                                 pat.attributeName.as('attributeName'), pa.attributeValue.as('attributeValue'), pat.format.as('attributeFormat'))
                                 .from(p)
+                                .innerJoin(pi, p.uuid.eq(pi.patientUuid))
                                 .innerJoin(padd, p.uuid.eq(padd.patientUuid))
                                 .leftOuterJoin(pa, p.uuid.eq(pa.patientUuid))
                                 .leftOuterJoin(pat, pa.attributeTypeId.eq(pat.attributeTypeId))
@@ -112,7 +115,7 @@ angular.module('bahmni.common.offline')
                                 .then(function (results) {
 
                                     var groupedResults = _.groupBy(results, function (res) {
-                                        return res.uuid
+                                        return res.uuid+res.identifier;
                                     });
                                     var patient;
 

@@ -253,6 +253,26 @@ angular.module('bahmni.common.offline')
                 response = response != undefined ? JSON.parse(response) : response;
                 return $q.when(response);
             };
+
+            var getPatientByUuidForPost = function (uuid) {
+                var deferred = $q.defer();
+                getPatientByUuid(uuid).then(function (patientData) {
+                    var patient = patientData.patient;
+                    patient.identifiers = _.map(patient.identifiers, function (identifier) {
+                        return {
+                            identifier: identifier.identifier,
+                            identifierPrefix: identifier.selectedIdentifierSource && identifier.selectedIdentifierSource.prefix,
+                            identifierSourceUuid: identifier.selectedIdentifierSource && identifier.selectedIdentifierSource.uuid ,
+                            identifierType: identifier.identifierType && identifier.identifierType.uuid || identifier.identifierType,
+                            uuid: identifier.uuid,
+                            preferred: identifier.preferred,
+                            voided: identifier.voided
+                        }
+                    });
+                    deferred.resolve(patientData);
+                });
+                return deferred.promise;
+            };
             
             return {
                 init: init,
@@ -287,7 +307,8 @@ angular.module('bahmni.common.offline')
                 getAllParentsInHierarchy: getAllParentsInHierarchy,
                 getPrescribedAndActiveDrugOrders: getPrescribedAndActiveDrugOrders,
                 getErrorLogByUuid: getErrorLogByUuid,
-                deleteErrorFromErrorLog: deleteErrorFromErrorLog
+                deleteErrorFromErrorLog: deleteErrorFromErrorLog,
+                getPatientByUuidForPost: getPatientByUuidForPost
             }
         }
     ]);

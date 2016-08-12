@@ -61,17 +61,34 @@ angular.module('bahmni.common.offline')
                         return offlineDbService.getErrorLogByUuid(event.data.uuid);
                     }
                     else {
-                        return offlineDbService.getPatientByUuid(event.data.patientUuid).then(function (response) {
+                        return offlineDbService.getPatientByUuidForPost(event.data.patientUuid).then(function (response) {
                             if(event.data.url.indexOf(event.data.patientUuid) == -1){
                                 if(response && response.patient && response.patient.person){
                                     delete response.patient.person.preferredName;
                                     delete response.patient.person.preferredAddress;
                                 }
                             }
+                            //mapIdentifiersToPostFormat(response.patient);
                             return response;
                         });
                     }
                 };
+
+
+                var mapIdentifiersToPostFormat = function (patient) {
+                    patient.identifiers = _.map(patient.identifiers, function (identifier) {
+                        return {
+                            identifier: identifier.identifier,
+                            identifierPrefix: identifier.identifierPrefix,
+                            identifierSourceUuid: identifier.identifierSourceUuid,
+                            identifierType: identifier.identifierType && identifier.identifierType.uuid || identifier.identifierType,
+                            uuid: identifier.uuid,
+                            preferred: identifier.preferred,
+                            voided: identifier.voided
+                        }
+                    });
+                };
+
 
                 var processEvent = function (event) {
                     return getEventData(event)

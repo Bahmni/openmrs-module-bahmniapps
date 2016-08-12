@@ -145,9 +145,6 @@ Bahmni.Common.Offline.SchemaDefinitions = {
         tableName: 'patient',
         columns: [
             {
-                name: 'identifier',
-                type: 'STRING'
-            }, {
                 name: 'givenName',
                 type: 'STRING'
             }, {
@@ -173,7 +170,7 @@ Bahmni.Common.Offline.SchemaDefinitions = {
                 type: 'STRING'
             }
         ],
-        nullableColumns: ['gender', 'birthdate', 'givenName', 'middleName', 'familyName','identifier'],
+        nullableColumns: ['gender', 'birthdate', 'givenName', 'middleName', 'familyName'],
         primaryKeyColumns: ['uuid'],
         indexes: [
             {
@@ -185,9 +182,6 @@ Bahmni.Common.Offline.SchemaDefinitions = {
             }, {
                 indexName: 'familyNameIndex',
                 columnNames: ['familyName']
-            }, {
-                indexName: 'identifierIndex',
-                columnNames: ['identifier']
             }
         ]
     },
@@ -401,5 +395,33 @@ Bahmni.Common.Offline.SchemaDefinitions = {
         nullableColumns: ['responseStatus'],
         uniqueKeyColumns: ['failedRequestUrl', 'requestPayload'],
         primaryKeyColumns: ['uuid']
+    },
+    PatientIdentifier: {
+        tableName: 'patient_identifier',
+        columns: [
+            {
+                name: 'typeUuid',
+                type: 'STRING'
+            },
+            {
+                name: 'identifier',
+                type: 'STRING'
+            },
+            {
+                name: 'patientUuid',
+                type: 'STRING'
+            }, {
+                name: 'identifierJson',
+                type: 'STRING'
+            }
+        ],
+        nullableColumns: ['identifier'],
+        primaryKeyColumns: ['typeUuid', 'patientUuid'],
+        indexes: [
+            {
+                indexName: 'identifierIndex',
+                columnNames: ['identifier']
+            }
+        ]
     }
 };

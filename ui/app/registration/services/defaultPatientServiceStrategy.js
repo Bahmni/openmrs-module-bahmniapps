@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('bahmni.registration')
-    .service('patientServiceStrategy', ['$http', '$q', function ($http, $q) {
+    .service('patientServiceStrategy', ['$http', '$q', '$rootScope', function ($http, $q, $rootScope) {
         var openmrsUrl = Bahmni.Registration.Constants.openmrsUrl;
         var baseOpenMRSRESTURL = Bahmni.Registration.Constants.baseOpenMRSRESTURL;
 
@@ -29,7 +29,8 @@ angular.module('bahmni.registration')
             return defer.promise;
         };
 
-        var create = function(data, jumpAccepted) {
+        var create = function(patient, jumpAccepted) {
+            var data = new Bahmni.Registration.CreatePatientRequestMapper(moment()).mapFromPatient($rootScope.patientConfiguration.attributeTypes, patient);
             var url = baseOpenMRSRESTURL + "/bahmnicore/patientprofile";
             return $http.post(url, data, {
                 withCredentials: true,

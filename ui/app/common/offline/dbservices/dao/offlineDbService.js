@@ -1,9 +1,9 @@
 'use strict';
 
 angular.module('bahmni.common.offline')
-    .service('offlineDbService', ['$http', '$q', 'patientDbService', 'patientAddressDbService', 'patientAttributeDbService', 'offlineMarkerDbService', 'offlineAddressHierarchyDbService',
+    .service('offlineDbService', ['$http', '$q', 'patientDbService', 'patientAddressDbService', 'patientAttributeDbService', 'patientIdentifierDbService', 'offlineMarkerDbService', 'offlineAddressHierarchyDbService',
         'offlineConfigDbService', 'initializeOfflineSchema', 'referenceDataDbService', 'locationDbService', 'offlineSearchDbService', 'encounterDbService', 'visitDbService', 'observationDbService', 'conceptDbService','errorLogDbService', 'eventLogService','eventQueue',
-        function ($http, $q, patientDbService, patientAddressDbService, patientAttributeDbService, offlineMarkerDbService, offlineAddressHierarchyDbService,
+        function ($http, $q, patientDbService, patientAddressDbService, patientAttributeDbService, patientIdentifierDbService, offlineMarkerDbService, offlineAddressHierarchyDbService,
                   offlineConfigDbService, initializeOfflineSchema, referenceDataDbService, locationDbService, offlineSearchDbService, encounterDbService, visitDbService, observationDbService, conceptDbService, errorLogDbService, eventLogService, eventQueue) {
         var db;
 
@@ -31,11 +31,13 @@ angular.module('bahmni.common.offline')
             var patientTable = db.getSchema().table('patient');
             var patientAddress = db.getSchema().table('patient_address');
             var patientAttributes = db.getSchema().table('patient_attribute');
+            var patientIdentifier = db.getSchema().table('patient_identifier');
 
 
             queries.push(db.delete().from(patientAttributes).where(patientAttributes.patientUuid.eq(uuid)));
             queries.push(db.delete().from(patientAddress).where(patientAddress.patientUuid.eq(uuid)));
             queries.push(db.delete().from(patientTable).where(patientTable.uuid.eq(uuid)));
+            queries.push(db.delete().from(patientIdentifier).where(patientIdentifier.patientUuid.eq(uuid)));
 
             var tx = db.createTransaction();
             tx.exec(queries);
@@ -50,6 +52,7 @@ angular.module('bahmni.common.offline')
             return patientDbService.insertPatientData(db, patientData).then(function (patientUuid) {
                 patientAttributeDbService.insertAttributes(db, patientUuid, person.attributes);
                 patientAddressDbService.insertAddress(db, patientUuid, person.addresses[0]);
+                patientIdentifierDbService.insertPatientIdentifiers(db, patientUuid, patient.identifiers);
                 return patientData;
             });
 
@@ -237,6 +240,26 @@ angular.module('bahmni.common.offline')
             return encounterDbService.getEncountersByVisits(db, params);
         };
 
+        var getPatientByUuidForPost = function (uuid) {
+            var deferred = $q.defer();
+            getPatientByUuid(uuid).then(function (patientData) {
+                var patient = patientData.patient;
+                patient.identifiers = _.map(patient.identifiers, function (identifier) {
+                    return {
+                        identifier: identifier.identifier,
+                        identifierPrefix: identifier.selectedIdentifierSource && identifier.selectedIdentifierSource.prefix,
+                        identifierSourceUuid: identifier.selectedIdentifierSource && identifier.selectedIdentifierSource.uuid ,
+                        identifierType: identifier.identifierType && identifier.identifierType.uuid || identifier.identifierType,
+                        uuid: identifier.uuid,
+                        preferred: identifier.preferred,
+                        voided: identifier.voided
+                    }
+                });
+                deferred.resolve(patientData);
+            });
+            return deferred.promise;
+        };
+
         return {
             init: init,
             initSchema: initSchema,
@@ -273,6 +296,7 @@ angular.module('bahmni.common.offline')
             getAllLogs: getAllLogs,
             getErrorLogByUuid: getErrorLogByUuid,
             getPrescribedAndActiveDrugOrders: getPrescribedAndActiveDrugOrders,
-            deleteErrorFromErrorLog: deleteErrorFromErrorLog
+            deleteErrorFromErrorLog: deleteErrorFromErrorLog,
+            getPatientByUuidForPost: getPatientByUuidForPost
         }
     }]);

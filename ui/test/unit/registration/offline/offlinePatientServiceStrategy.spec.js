@@ -69,6 +69,8 @@ describe('PatientServiceStrategy test', function () {
                 return;
             }
         };
+        rootScope.currentProvider = {};
+
         patientServiceStrategy.update(patient, patientJson.patient, patientAttributeTypes.data.results).then(function(data) {
             var event = {};
             event.url = Bahmni.Registration.Constants.baseOpenMRSRESTURL + "/bahmnicore/patientprofile/e34992ca-894f-4344-b4b3-54a4aa1e5558";
@@ -79,8 +81,21 @@ describe('PatientServiceStrategy test', function () {
     });
 
     it("should create new patient ", function (done) {
+        var primaryIdentifier = new Bahmni.Registration.Identifier({uuid: 'identifierTypeUuid'});
+        primaryIdentifier.selectedIdentifierSource= {
+            "prefix": "GAN",
+            uuid: "selectedIdentifierSourceUuid"
+        };
+        patientJson.patient.primaryIdentifier = primaryIdentifier;
+        rootScope.patientConfiguration = {attributeTypes: patientAttributeTypes.data.results};
+        patientJson.patient.age = 42;
+        patientJson.patient.auditInfo = {};
+        patientJson.patient.getImageData = function () {
+            return;
+        };
+        rootScope.currentProvider = {};
         patientJson.patient.uuid = undefined;
-        patientServiceStrategy.create(patientJson).then(function(data) {
+        patientServiceStrategy.create(patientJson.patient).then(function(data) {
             var url = Bahmni.Registration.Constants.baseOpenMRSRESTURL + "/bahmnicore/patientprofile/";
             expect(eventQueueMock.addToEventQueue).toHaveBeenCalledWith(jasmine.objectContaining({"url": url}));
         }).catch(notifyError).finally(done);
@@ -88,17 +103,27 @@ describe('PatientServiceStrategy test', function () {
     });
 
     it("should create new patient with providerInfo as creator inside auditInfo", function (done) {
-        patientJson.patient.uuid = undefined;
-        var providerInfo = {uuid: 'c1c21e11-3f10-11e4-adec-0800271c1111', display: 'armanvuiyan', links: []};
-        rootScope.currentProvider = providerInfo;
-        patientServiceStrategy.create(patientJson).then(function(data) {
-            var url = Bahmni.Registration.Constants.baseOpenMRSRESTURL + "/bahmnicore/patientprofile/";
+        var primaryIdentifier = new Bahmni.Registration.Identifier({uuid: 'identifierTypeUuid'});
+        primaryIdentifier.selectedIdentifierSource= {
+            "prefix": "GAN",
+            uuid: "selectedIdentifierSourceUuid"
+        };
+
+        patientJson.patient.primaryIdentifier = primaryIdentifier;
+        rootScope.patientConfiguration = {attributeTypes: patientAttributeTypes.data.results};
+        patientJson.patient.age = 42;
+        patientJson.patient.getImageData = function () {
+            return;
+        };
+
+        rootScope.currentProvider = {};
+        offlinePatientServiceStrategyMock.create.and.returnValue(specUtil.respondWith({"data": patientJson}));
+        patientServiceStrategy.create(patientJson.patient).then(function(data) {
+            var url = Bahmni.Registration.Constants.baseOpenMRSRESTURL + "/bahmnicore/patientprofile/"+patientJson.patient.uuid;
             expect(eventQueueMock.addToEventQueue).toHaveBeenCalledWith(jasmine.objectContaining({"url": url}));
-            expect(offlinePatientServiceStrategyMock.create).toHaveBeenCalledWith(patientJson);
             expect(data.data).toBe(patientJson);
-            expect(data.data.patient.auditInfo.creator).toBe(providerInfo);
-            expect(data.data.patient.auditInfo.creator).toBe(providerInfo);
-            expect(data.data.patient.auditInfo.dateCreated).not.toBeUndefined();
+            expect(data.data.patient.auditInfo.creator.uuid).toBe('c1c21e11-3f10-11e4-adec-0800271c1b75');
+            expect(data.data.patient.auditInfo.creator.display).toBe('superman');
         }).catch(notifyError).finally(done);
     });
 });
