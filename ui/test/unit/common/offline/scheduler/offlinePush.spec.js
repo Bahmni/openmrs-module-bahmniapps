@@ -9,7 +9,7 @@ describe('Offline Push Tests', function () {
         module(function ($provide) {
             var offlineServiceMock = jasmine.createSpyObj('offlineService', ['isOfflineApp','isAndroidApp']);
             eventQueueMock = jasmine.createSpyObj('eventQueue', ['consumeFromErrorQueue','consumeFromEventQueue','removeFromQueue','addToErrorQueue','releaseFromQueue']);
-            offlineDbServiceMock = jasmine.createSpyObj('offlineDbService', ['getPatientByUuid','getEncounterByEncounterUuid','insertLog', 'createEncounter','deleteErrorFromErrorLog','getErrorLogByUuid']);
+            offlineDbServiceMock = jasmine.createSpyObj('offlineDbService', ['getPatientByUuidForPost','getEncounterByEncounterUuid','insertLog', 'createEncounter','deleteErrorFromErrorLog','getErrorLogByUuid']);
             loggingServiceMock = jasmine.createSpyObj('loggingService', ['logSyncError']);
 
             offlineServiceMock.isOfflineApp.and.returnValue(true);
@@ -35,7 +35,7 @@ describe('Offline Push Tests', function () {
 
             eventQueueMock.removeFromQueue = jasmine.createSpy('removeFromQueue').and.returnValue($q.when({}));
             var patient = {};
-            offlineDbServiceMock.getPatientByUuid.and.returnValue($q.when(patient));
+            offlineDbServiceMock.getPatientByUuidForPost.and.returnValue($q.when(patient));
             offlineDbServiceMock.getEncounterByEncounterUuid.and.returnValue($q.when({}));
             offlineDbServiceMock.createEncounter.and.returnValue($q.when({}));
             offlineDbServiceMock.deleteErrorFromErrorLog.and.returnValue($q.when({}));

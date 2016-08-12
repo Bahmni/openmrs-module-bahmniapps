@@ -77,7 +77,7 @@ describe("PatientListHeaderController", function () {
             expect($bahmniCookieStore.put).toHaveBeenCalled();
             expect(retrospectiveEntryService.getRetrospectiveDate).toHaveBeenCalled();
             expect($bahmniCookieStore.put.calls.count()).toEqual(2);
-            expect(scope.isOffline).toBeTruthy();
+            expect(scope.isOfflineApp).toBeTruthy();
         });
 
     });

@@ -1,7 +1,7 @@
 'use strict';
 
 describe('offlineSearchDbService', function () {
-    var offlineSearchDbService, patientDbService, age, patientAddressDbService, patientAttributeDbService, encounterDbService, $q = Q;
+    var offlineSearchDbService, patientDbService, patientIdentifierDbService, age, patientAddressDbService, patientAttributeDbService, encounterDbService, $q = Q;
 
     var mockHttp = jasmine.createSpyObj('$http', ['get']);
     jasmine.getFixtures().fixturesPath = 'base/test/data';
@@ -17,10 +17,11 @@ describe('offlineSearchDbService', function () {
         });
     });
 
-    beforeEach(inject(['offlineSearchDbService', 'patientDbService', 'age', 'patientAddressDbService', 'patientAttributeDbService', 'encounterDbService',
-        function (offlineSearchDbServiceInjected, patientDbServiceInjected, ageInjected, patientAddressDbServiceInjected, patientAttributeDbServiceInjected, encounterDbServiceInjected) {
+    beforeEach(inject(['offlineSearchDbService', 'patientDbService', 'patientIdentifierDbService', 'age', 'patientAddressDbService', 'patientAttributeDbService', 'encounterDbService',
+        function (offlineSearchDbServiceInjected, patientDbServiceInjected, patientIdentifierDbServiceInjected, ageInjected, patientAddressDbServiceInjected, patientAttributeDbServiceInjected, encounterDbServiceInjected) {
             offlineSearchDbService = offlineSearchDbServiceInjected;
             patientDbService = patientDbServiceInjected;
+            patientIdentifierDbService = patientIdentifierDbServiceInjected;
             age = ageInjected;
             patientAddressDbService = patientAddressDbServiceInjected;
             patientAttributeDbService = patientAttributeDbServiceInjected;
@@ -31,6 +32,7 @@ describe('offlineSearchDbService', function () {
     var createAndSearch = function (params, done) {
         var schemaBuilder = lf.schema.create('BahmniTest', 2);
         Bahmni.Tests.OfflineDbUtils.createTable(schemaBuilder, Bahmni.Common.Offline.SchemaDefinitions.Patient);
+        Bahmni.Tests.OfflineDbUtils.createTable(schemaBuilder, Bahmni.Common.Offline.SchemaDefinitions.PatientIdentifier);
         Bahmni.Tests.OfflineDbUtils.createTable(schemaBuilder, Bahmni.Common.Offline.SchemaDefinitions.Encounter);
         Bahmni.Tests.OfflineDbUtils.createTable(schemaBuilder, Bahmni.Common.Offline.SchemaDefinitions.PatientAttribute);
         Bahmni.Tests.OfflineDbUtils.createTable(schemaBuilder, Bahmni.Common.Offline.SchemaDefinitions.PatientAttributeType);
@@ -45,12 +47,14 @@ describe('offlineSearchDbService', function () {
                     return patientDbService.insertPatientData(db, patientJson).then(function (uuid) {
                         var patient = patientJson.patient;
                         var person = patient.person;
-                        return patientAddressDbService.insertAddress(db, uuid, person.addresses[0]).then(function () {
-                            return patientAttributeDbService.insertAttributes(db, uuid, person.attributes, attributeTypeMap).then(function () {
-                                return encounterDbService.insertEncounterData(db, encounterJson).then(function () {
-                                    return offlineSearchDbService.search(params).then(function (result) {
-                                        return result;
-                                        done();
+                        return patientIdentifierDbService.insertPatientIdentifiers(db, patient.uuid, patient.identifiers).then(function () {
+                            return patientAddressDbService.insertAddress(db, uuid, person.addresses[0]).then(function () {
+                                return patientAttributeDbService.insertAttributes(db, uuid, person.attributes, attributeTypeMap).then(function () {
+                                    return encounterDbService.insertEncounterData(db, encounterJson).then(function () {
+                                        return offlineSearchDbService.search(params).then(function (result) {
+                                            return result;
+                                            done();
+                                        });
                                     });
                                 });
                             });

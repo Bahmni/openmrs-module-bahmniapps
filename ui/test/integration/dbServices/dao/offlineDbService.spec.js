@@ -2,13 +2,14 @@
 
 describe('OfflineDbService ', function () {
     var offlineDbService, $q = Q;
-    var patientDbService, patientAddressDbService, patientAttributeDbService, offlineMarkerDbService, offlineAddressHierarchyDbService,
+    var patientDbService, patientIdentifierDbService, patientAddressDbService, patientAttributeDbService, offlineMarkerDbService, offlineAddressHierarchyDbService,
         offlineConfigDbService, initializeOfflineSchema, referenceDataDbService, locationDbService, offlineSearchDbService, encounterDbService, visitDbService, observationDbService, conceptDbService, errorLogDbService, eventLogService;
 
     beforeEach(function () {
         module('bahmni.common.offline');
         module(function ($provide) {
             patientDbService = jasmine.createSpyObj('patientDbService', ['getPatientByUuid', 'insertPatientData']);
+            patientIdentifierDbService = jasmine.createSpyObj('patientIdentifierDbService', ['insertPatientIdentifiers']);
             patientAddressDbService = jasmine.createSpyObj('patientAddressDbService', ['insertAddress']);
             patientAttributeDbService = jasmine.createSpyObj('patientAttributeDbService', ['insertAttributes', 'getAttributeTypes']);
             offlineMarkerDbService = jasmine.createSpyObj('offlineMarkerDbService', ['init', 'getMarker', 'insertMarker']);
@@ -26,6 +27,7 @@ describe('OfflineDbService ', function () {
             eventLogService = jasmine.createSpyObj('eventLogService', ['getDataForUrl']);
 
             $provide.value('patientDbService', patientDbService);
+            $provide.value('patientIdentifierDbService', patientIdentifierDbService);
             $provide.value('patientAddressDbService', patientAddressDbService);
             $provide.value('patientAttributeDbService', patientAttributeDbService);
             $provide.value('offlineMarkerDbService', offlineMarkerDbService);
@@ -297,6 +299,44 @@ describe('OfflineDbService ', function () {
                 offlineDbService.getPatientByUuid("patientUuid");
                 expect(patientDbService.getPatientByUuid).toHaveBeenCalledWith(db, "patientUuid");
                 done();
+            });
+        });
+
+        it("should call getPatientByUuid with given uuid and then map the patient data for post request", function (done) {
+            var schemaBuilder = lf.schema.create('BahmniOfflineDb', 1);
+
+            patientDbService.getPatientByUuid.and.callFake(function () {
+                var deferred1 = $q.defer();
+                var patientData = {
+                    patient: {
+                        uuid: "patientUuid",
+                        identifiers: [{
+                            "location": null,
+                            "resourceVersion": "1.8",
+                            "voided": false,
+                            "uuid": "ed2e9b46-dc64-4859-aa5d-dc6ebef2621a",
+                            "preferred": true,
+                            "identifierType": {
+                                "display": "Patient Identifier",
+                                "uuid": "7676e94e-796e-11e5-a6d0-005056b07f03"
+                            },
+                            "identifier": "BDH201934"
+                        }]
+                    }
+                };
+                deferred1.resolve(patientData);
+                return deferred1.promise;
+            });
+
+            schemaBuilder.connect().then(function (db) {
+                offlineDbService.init(db);
+
+                offlineDbService.getPatientByUuidForPost("patientUuid").then(function (mappedPatientDataForPostRequest) {
+                    expect(mappedPatientDataForPostRequest.patient.identifiers[0].identifier).toBe("BDH201934");
+                    expect(mappedPatientDataForPostRequest.patient.identifiers[0].identifierType).toBe("7676e94e-796e-11e5-a6d0-005056b07f03");
+                    expect(patientDbService.getPatientByUuid).toHaveBeenCalledWith(db, "patientUuid");
+                    done();
+                });
             });
         });
 

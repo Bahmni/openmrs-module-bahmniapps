@@ -15,14 +15,12 @@ angular.module('bahmni.common.offline')
 
         var insertPatientData = function (db, patientData) {
             var patient = patientData.patient;
-            var patientTable, patientIdentifier, person;
+            var patientTable, person;
             patientTable = db.getSchema().table('patient');
             person = patient.person;
             var personName = person.names[0];
 
-            patientIdentifier = patient.identifiers[0].identifier;
             var row = patientTable.createRow({
-                'identifier': patientIdentifier,
                 'uuid': patient.uuid,
                 'givenName': personName.givenName,
                 'middleName': personName.middleName,

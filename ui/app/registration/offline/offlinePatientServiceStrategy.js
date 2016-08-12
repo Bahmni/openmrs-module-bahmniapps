@@ -22,7 +22,14 @@ angular.module('bahmni.registration')
                 });
             };
 
-            var create = function (data) {
+            var create = function (patient) {
+                var allIdentifiers = _.concat(patient.extraIdentifiers, patient.primaryIdentifier);
+                var data = new Bahmni.Registration.CreatePatientRequestMapper(moment()).mapFromPatient($rootScope.patientConfiguration.attributeTypes, patient);
+                data.patient.identifiers = allIdentifiers;
+                return createWithOutMapping(data);
+            };
+
+            var createWithOutMapping = function (data) {
                 data.patient.person.birthtime = data.patient.person.birthtime ? moment(data.patient.person.birthtime).format("YYYY-MM-DDTHH:mm:ss.SSSZZ") : null;
                 data.patient.person.auditInfo = {dateCreated: moment(data.patient.person.personDateCreated).format() || moment().format()};
                 if ($rootScope.currentProvider) {
@@ -57,10 +64,10 @@ angular.module('bahmni.registration')
 
             var update = function(patient, openMRSPatient, attributeTypes) {
                 var data = new Bahmni.Registration.CreatePatientRequestMapper(moment()).mapFromPatient(attributeTypes, patient);
+                data.patient.identifiers = openMRSPatient.identifiers;
                 data.patient.person.names[0].uuid = openMRSPatient.person.names[0].uuid;
-                data.patient.identifiers[0].identifierSourceUuid = openMRSPatient.identifiers[0].identifierSourceUuid;
                 return offlinePatientServiceStrategy.deletePatientData(data.patient.uuid).then(function () {
-                        return create(data).then(function (result) {
+                        return createWithOutMapping(data).then(function (result) {
                             var patientData = JSON.parse(JSON.stringify(result.data));
                             patientData.patient.person.preferredName = data.patient.person.names[0];
                             patientData.patient.person.preferredAddress = data.patient.person.addresses[0];

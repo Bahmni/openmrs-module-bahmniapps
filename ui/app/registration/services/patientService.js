@@ -46,8 +46,7 @@ angular.module('bahmni.registration')
         };
 
         var create = function (patient, jumpAccepted) {
-            var data = new Bahmni.Registration.CreatePatientRequestMapper(moment()).mapFromPatient($rootScope.patientConfiguration.attributeTypes, patient);
-            return patientServiceStrategy.create(data, jumpAccepted);
+            return patientServiceStrategy.create(patient, jumpAccepted);
         };
 
         var update = function (patient, openMRSPatient) {
