@@ -33,6 +33,10 @@
             return _.partial(selectDrug, _, orderSetMember);
         };
         $scope.onChange = deleteDrugIfDrugNameIsEmpty;
+        $scope.isRuleMode=function(orderSetMember) {
+            return typeof orderSetMember.orderTemplate.dosingInstructions !== 'undefined' &&
+                orderSetMember.orderTemplate.dosingInstructions.dosingRule!=null;
+        }
     };
 
     OrderTemplateController.$inject = $inject;

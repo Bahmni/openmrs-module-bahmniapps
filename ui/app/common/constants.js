@@ -253,7 +253,7 @@ Bahmni.Common = Bahmni.Common || {};
             SHA3: 'SHA3'
         },
         LoginInformation: 'LoginInformation',
-        orderSetSpecialUnits:["mg/kg","mg/m2"],
+        // orderSetSpecialUnits:["mg/kg","mg/m2"],
         ServerDateTimeFormat: 'YYYY-MM-DDTHH:mm:ssZZ',
         calculateDose: BAHMNI_CORE+ "/calculateDose",
         unAuthenticatedReferenceDataMap: unAuthenticatedReferenceDataMap,
