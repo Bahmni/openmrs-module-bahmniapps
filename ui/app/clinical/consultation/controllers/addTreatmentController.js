@@ -207,7 +207,9 @@ angular.module('bahmni.clinical')
                     if(eachMember.orderTemplate){
                         var doseUnits = eachMember.orderTemplate.dosingInstructions.doseUnits;
                         var baseDose = eachMember.orderTemplate.dosingInstructions.dose;
-                        return orderSetService.getCalculatedDose($scope.patient.uuid, baseDose, doseUnits).then(function(calculatedDosage){
+                        var drugName = eachMember.orderTemplate.concept.name;
+                        return orderSetService.getCalculatedDose($scope.patient.uuid,drugName, baseDose, doseUnits,$scope.newOrderSet.name)
+                                     .then(function(calculatedDosage){
                             refilledOrderGroupOrders[index].uniformDosingType.dose = calculatedDosage.dose;
                             refilledOrderGroupOrders[index].uniformDosingType.doseUnits = calculatedDosage.doseUnit;
                             refilledOrderGroupOrders[index].calculateQuantityAndUnit();
@@ -622,8 +624,11 @@ angular.module('bahmni.clinical')
             var putCalculatedDose = function (orderTemplate) {
                 var calculatedDose = orderSetService.getCalculatedDose(
                     $scope.patient.uuid,
+                    orderTemplate.concept.name,
                     orderTemplate.dosingInstructions.dose,
-                    orderTemplate.dosingInstructions.doseUnits
+                    orderTemplate.dosingInstructions.doseUnits,
+                    $scope.newOrderSet.name,
+                    orderTemplate.dosingInstructions.dosingRule
                 );
                 return calculatedDose.then(function (calculatedDosage) {
                         orderTemplate.dosingInstructions.dose = calculatedDosage.dose;
@@ -648,6 +653,7 @@ angular.module('bahmni.clinical')
                 deleteDrugIfEmpty(orderSetMember.orderTemplate);
             };
             var calculateDoseForTemplatesIn = function(orderSet) {
+                $scope.newOrderSet.name = orderSet.name;
                 var orderSetMemberTemplates = _.map(orderSet.orderSetMembers, 'orderTemplate');
                 var promisesToCalculateDose = _.map(orderSetMemberTemplates, putCalculatedDose);
                 var returnOrderSet = function(){ return orderSet };

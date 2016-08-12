@@ -64,25 +64,24 @@ angular.module('bahmni.common.orders')
                     {name: "Week(s)", factor: 7},
                     {name: "Month(s)", factor: 30}
                 ];
-                _.each(Bahmni.Common.Constants.orderSetSpecialUnits, function (doseUnit) {
-                    config.doseUnits.push({name: doseUnit});
-                });
+
                 return config;
             });
         };
 
-        var hasSpecialDoseUnit = function (doseUnits) {
-            return _.includes(Bahmni.Common.Constants.orderSetSpecialUnits, doseUnits);
-        };
-
-        this.getCalculatedDose = function (patientUuid, baseDose, doseUnit) {
-            if (hasSpecialDoseUnit(doseUnit)) {
+        this.getCalculatedDose = function (patientUuid,drugName, baseDose, doseUnit, orderSetName,dosingRule) {
+           if (typeof dosingRule !== 'undefined' && dosingRule!='') {
+               var requestString=JSON.stringify({
+                   patientUuid: patientUuid,
+                   drugName: drugName,
+                   baseDose: baseDose,
+                   doseUnit: doseUnit,
+                   orderSetName: orderSetName,
+                   dosingRule: dosingRule
+               });
                 return $http.get(Bahmni.Common.Constants.calculateDose, {
-                    params: {
-                        patientUuid: patientUuid,
-                        baseDose: baseDose,
-                        doseUnit: doseUnit
-                    },
+                    params:{
+                        dosageRequest: requestString },
                     withCredentials: true,
                     headers: {"Accept": "application/json", "Content-Type": "application/json"}
                 }).then(function (response) {
@@ -91,7 +90,7 @@ angular.module('bahmni.common.orders')
                         doseUnit: response.data.doseUnit
                     };
                 });
-            }
+           }
             var deferred = $q.defer();
             deferred.resolve({
                 dose: baseDose,
