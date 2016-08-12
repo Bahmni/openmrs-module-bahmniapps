@@ -2,7 +2,7 @@
 
 describe("PatientsListController", function () {
         var _spinner, _patientService, _appService, $bahmniCookieStore, _window, _printer;
-        var controller, scope, findPatientsPromise, searchPatientsPromise, retrospectiveEntryService, offlineService, getRecentPatientsPromise;
+        var controller, scope, findPatientsPromise, searchPatientsPromise, retrospectiveEntryService, offlineService, getRecentPatientsPromise,configurationService;
         var stateParams = { location: "Ganiyari"};
 
         beforeEach(module('bahmni.common.patientSearch'));
@@ -65,7 +65,7 @@ describe("PatientsListController", function () {
                 }
             });
             offlineService = jasmine.createSpyObj('offlineService', ['isOfflineApp']);
-
+            configurationService = jasmine.createSpyObj('configurationService', ['getConfigurations']);
             _spinner = jasmine.createSpyObj('spinner', ['forPromise']);
             _spinner.forPromise.and.callFake(function (promiseParam) {
                 return promiseParam;
@@ -98,6 +98,7 @@ describe("PatientsListController", function () {
             _patientService.getRecentPatients.and.returnValue(getRecentPatientsPromise);
             _printer.printFromScope.and.returnValue(true);
             offlineService.isOfflineApp.and.returnValue(true);
+            configurationService.getConfigurations.and.returnValue(specUtil.simplePromise({identifierTypesConfig:[{primary:true,name:"Bahmni Id"}]}));
         });
 
         beforeEach(inject(function ($rootScope) {
@@ -122,7 +123,8 @@ describe("PatientsListController", function () {
                     retrospectiveEntryService: retrospectiveEntryService,
                     $bahmniCookieStore: $bahmniCookieStore,
                     offlineService: offlineService,
-                    printer: _printer
+                    printer: _printer,
+                    configurationService:configurationService
                 });
             });
         };
