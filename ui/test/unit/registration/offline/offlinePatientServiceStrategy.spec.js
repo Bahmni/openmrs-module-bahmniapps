@@ -53,7 +53,7 @@ describe('PatientServiceStrategy test', function () {
         }).catch(notifyError).finally(done);
     });
 
-    iit("should update the patient", function (done) {
+    it("should update the patient", function (done) {
         var primaryIdentifier = new Bahmni.Registration.Identifier({uuid: 'identifierTypeUuid'});
         primaryIdentifier.selectedIdentifierSource= {
             "prefix": "GAN",
