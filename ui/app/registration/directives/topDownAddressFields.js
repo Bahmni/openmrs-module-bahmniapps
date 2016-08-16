@@ -27,8 +27,9 @@ angular.module('bahmni.registration')
         });
 
         var populateSelectedAddressUuids = function (levelIndex, parentUuid) {
-            if ($scope.addressLevels.length === 0)
+            if ($scope.addressLevels.length === 0){
                 return;
+            }
 
             var fieldName = $scope.addressLevels[levelIndex].addressField;
             var addressValue = $scope.address[fieldName];

@@ -39,17 +39,16 @@ angular.module('bahmni.common.photoCapture')
 
             var closeDialog = function(){
                 dialogElement.dialog('close');
-            }
+            };
 
             var onConfirmationSuccess = function(image){
                 var ngModel = $parse(iAttrs.ngModel);
                 ngModel.assign(scope, image);
                 closeDialog();
-            }    
+            };
 
             scope.confirmImage = function () {
-                var dataURL = canvas.toDataURL("image/jpeg");
-                var image = dataURL;
+                var image = canvas.toDataURL("image/jpeg");
                 if(iAttrs.capturePhoto) {
                     var onConfirmationPromise = scope[iAttrs.capturePhoto](image);
                     onConfirmationPromise.then(function(){
@@ -68,16 +67,16 @@ angular.module('bahmni.common.photoCapture')
                 var sourceY = 0;
                 var destX = 0;
                 var destY = 0;
-
+                var stretchRatio, sourceWidth, sourceHeight;
                 if (canvas.width > canvas.height) {
-                    var stretchRatio = ( video.videoWidth / canvas.width );
-                    var sourceWidth = video.videoWidth;
-                    var sourceHeight = Math.floor(canvas.height * stretchRatio);
+                    stretchRatio = ( video.videoWidth / canvas.width );
+                    sourceWidth = video.videoWidth;
+                    sourceHeight = Math.floor(canvas.height * stretchRatio);
                     sourceY = Math.floor((video.videoHeight - sourceHeight)/2);
                 } else {
-                    var stretchRatio = ( video.videoHeight / canvas.height );
-                    var sourceWidth = Math.floor(canvas.width * stretchRatio);
-                    var sourceHeight = video.videoHeight;
+                    stretchRatio = ( video.videoHeight / canvas.height );
+                    sourceWidth = Math.floor(canvas.width * stretchRatio);
+                    sourceHeight = video.videoHeight;
                     sourceX = Math.floor((video.videoWidth - sourceWidth)/2);
                 }
                 var destWidth = Math.floor(canvas.width / pixelRatio);
@@ -102,14 +101,13 @@ angular.module('bahmni.common.photoCapture')
             iElement.bind("$destroy", function() {
                 dialogElement.dialog("destroy");
             });
-        }
+        };
 
 
-        var directiveDefinitionObject = {
+        return {
             templateUrl: '../common/photo-capture/views/photo.html',
             restrict: 'A',
             scope: true,
             link: link
         };
-        return directiveDefinitionObject;
     }]);

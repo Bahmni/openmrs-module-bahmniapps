@@ -1,3 +1,5 @@
+'use strict';
+
 Bahmni.Common.Offline.BackgroundWorker = function(WorkerService, offlineService, syncButtonConfig) {
 
     var app;
