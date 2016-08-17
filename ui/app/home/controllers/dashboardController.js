@@ -1,11 +1,18 @@
 'use strict';
 
 angular.module('bahmni.home')
-    .controller('DashboardController', ['$scope', '$state', 'appService', 'locationService', 'spinner', '$bahmniCookieStore', '$window', '$q', 'offlineService', 'schedulerService', 'eventQueue', 'offlineDbService','androidDbService',
-        function ($scope, $state, appService, locationService, spinner, $bahmniCookieStore, $window, $q, offlineService, schedulerService, eventQueue, offlineDbService,androidDbService) {
+    .controller('DashboardController', ['$scope', '$state', 'appService', 'locationService', 'spinner', '$bahmniCookieStore', '$window', '$q', 'offlineService', 'schedulerService', 'eventQueue', 'offlineDbService','androidDbService', 'networkStatusService',
+        function ($scope, $state, appService, locationService, spinner, $bahmniCookieStore, $window, $q, offlineService, schedulerService, eventQueue, offlineDbService,androidDbService, networkStatusService) {
             $scope.appExtensions = appService.getAppDescriptor().getExtensions($state.current.data.extensionPointId, "link") || [];
             $scope.selectedLocationUuid = {};
             $scope.isOfflineApp = offlineService.isOfflineApp();
+
+            $scope.isVisibleExtension = function (extension) {
+                if(!$scope.isOfflineApp){
+                    return true;
+                }
+                return extension.exclusiveOnlineModule ? networkStatusService.isOnline() : extension.exclusiveOfflineModule ? !networkStatusService.isOnline() : true;
+            };
 
             var getCurrentLocation = function () {
                 return $bahmniCookieStore.get(Bahmni.Common.Constants.locationCookieName) ? $bahmniCookieStore.get(Bahmni.Common.Constants.locationCookieName) : null;
