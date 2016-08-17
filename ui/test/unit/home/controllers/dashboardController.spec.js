@@ -4,7 +4,7 @@ describe('dashboardController', function () {
 
 
     var $aController, window;
-    var scopeMock, rootScopeMock, _spinner, httpBackend, $q, state, $bahmniCookieStore, locationService, offlineService, appServiceMock, schedulerService, eventQueue, offlineDbService, androidDbService;
+    var scopeMock, rootScopeMock, _spinner, httpBackend, $q, state, $bahmniCookieStore, locationService, offlineService, appServiceMock, schedulerService, eventQueue, offlineDbService, androidDbService, networkStatusService;
 
     beforeEach(module('bahmni.home'));
     beforeEach(module('bahmni.common.offline'));
@@ -31,6 +31,7 @@ describe('dashboardController', function () {
         eventQueue = jasmine.createSpyObj('eventQueue', ['getCount', 'getErrorCount']);
         offlineDbService = jasmine.createSpyObj('offlineDbService',['getAllLogs']);
         androidDbService = jasmine.createSpyObj('androidDbService',['getAllLogs']);
+        networkStatusService = jasmine.createSpyObj('networkStatusService',['isOnline']);
 
         eventQueue.getErrorCount.and.returnValue(specUtil.simplePromise(2));
         eventQueue.getCount.and.returnValue(specUtil.simplePromise(1));
@@ -77,7 +78,8 @@ describe('dashboardController', function () {
             schedulerService: schedulerService,
             eventQueue: eventQueue,
             offlineDbService : offlineDbService,
-            androidDbService : androidDbService
+            androidDbService : androidDbService,
+            networkStatusService: networkStatusService
         });
     });
 
@@ -206,5 +208,146 @@ describe('dashboardController', function () {
         expect(offlineService.getItem.calls.count()).toBe(2);
         expect(offlineService.setItem).not.toHaveBeenCalled();
         expect(scopeMock.syncStatusMessage).toBe("Data Synced Successfully");
+    });
+
+    it("should return true, if the extension doesn't have exclusiveOnlineModule and exclusiveOfflineModule configuration", function () {
+        var extension = {
+            "extensionPointId": "org.bahmni.home.dashboard",
+            "url": "../clinical/index.html",
+            "order": 3,
+            "translationKey": "Clinical",
+            "requiredPrivilege": "app:clinical",
+            "type": "link",
+            "id": "bahmni.clinical",
+            "icon": "fa-stethoscope"
+        };
+        scopeMock.isOfflineApp = true;
+        networkStatusService.isOnline.and.returnValue(false);
+
+        expect(scopeMock.isVisibleExtension(extension)).toBeTruthy();
+    });
+
+    it("should return true, if the extension has exclusiveOnlineModule configuration set to true and Device is in online state", function () {
+        var extension = {
+            "extensionPointId": "org.bahmni.home.dashboard",
+            "url": "../clinical/index.html",
+            "order": 3,
+            "translationKey": "Clinical",
+            "requiredPrivilege": "app:clinical",
+            "type": "link",
+            "id": "bahmni.clinical",
+            "icon": "fa-stethoscope",
+            exclusiveOnlineModule: true
+        };
+        scopeMock.isOfflineApp = true;
+        networkStatusService.isOnline.and.returnValue(true);
+
+        expect(scopeMock.isVisibleExtension(extension)).toBeTruthy();
+    });
+
+    it("should return false, if the extension has exclusiveOnlineModule configuration set to true and Device is in offline state", function () {
+        var extension = {
+            "extensionPointId": "org.bahmni.home.dashboard",
+            "url": "../clinical/index.html",
+            "order": 3,
+            "translationKey": "Clinical",
+            "requiredPrivilege": "app:clinical",
+            "type": "link",
+            "id": "bahmni.clinical",
+            "icon": "fa-stethoscope",
+            exclusiveOnlineModule: true
+        };
+        scopeMock.isOfflineApp = true;
+        networkStatusService.isOnline.and.returnValue(false);
+
+        expect(scopeMock.isVisibleExtension(extension)).toBeFalsy();
+    });
+
+    it("should return true, if the extension has exclusiveOnlineModule configuration set to false and Device is in offline state", function () {
+        var extension = {
+            "extensionPointId": "org.bahmni.home.dashboard",
+            "url": "../clinical/index.html",
+            "order": 3,
+            "translationKey": "Clinical",
+            "requiredPrivilege": "app:clinical",
+            "type": "link",
+            "id": "bahmni.clinical",
+            "icon": "fa-stethoscope",
+            exclusiveOnlineModule: false
+        };
+        scopeMock.isOfflineApp = true;
+        networkStatusService.isOnline.and.returnValue(false);
+
+        expect(scopeMock.isVisibleExtension(extension)).toBeTruthy();
+    });
+
+    it("should return true, if the extension has exclusiveOnlineModule configuration set to false and Device is in online state", function () {
+        var extension = {
+            "extensionPointId": "org.bahmni.home.dashboard",
+            "url": "../clinical/index.html",
+            "order": 3,
+            "translationKey": "Clinical",
+            "requiredPrivilege": "app:clinical",
+            "type": "link",
+            "id": "bahmni.clinical",
+            "icon": "fa-stethoscope",
+            exclusiveOnlineModule: false
+        };
+        scopeMock.isOfflineApp = true;
+        networkStatusService.isOnline.and.returnValue(true);
+
+        expect(scopeMock.isVisibleExtension(extension)).toBeTruthy();
+    });
+
+    it("should return true, if it is not an offlineApp", function () {
+        var extension = {
+            "extensionPointId": "org.bahmni.home.dashboard",
+            "url": "../clinical/index.html",
+            "order": 3,
+            "translationKey": "Clinical",
+            "requiredPrivilege": "app:clinical",
+            "type": "link",
+            "id": "bahmni.clinical",
+            "icon": "fa-stethoscope"
+        };
+        scopeMock.isOfflineApp = false;
+
+        expect(scopeMock.isVisibleExtension(extension)).toBeTruthy();
+    });
+
+    it("should return true, if the extension has exclusiveOfflineModule configuration set to true and Device is in online state", function () {
+        var extension = {
+            "extensionPointId": "org.bahmni.home.dashboard",
+            "url": "../clinical/index.html",
+            "order": 3,
+            "translationKey": "Clinical",
+            "requiredPrivilege": "app:clinical",
+            "type": "link",
+            "id": "bahmni.clinical",
+            "icon": "fa-stethoscope",
+            exclusiveOfflineModule: true
+        };
+        scopeMock.isOfflineApp = true;
+        networkStatusService.isOnline.and.returnValue(false);
+
+        expect(scopeMock.isVisibleExtension(extension)).toBeTruthy();
+    });
+
+    it("should return false, if the extension has exclusiveOfflineModule configuration set to true and Device is in offline state", function () {
+        var extension = {
+            "extensionPointId": "org.bahmni.home.dashboard",
+            "url": "../clinical/index.html",
+            "order": 3,
+            "translationKey": "Clinical",
+            "requiredPrivilege": "app:clinical",
+            "type": "link",
+            "id": "bahmni.clinical",
+            "icon": "fa-stethoscope",
+            exclusiveOfflineModule: true
+        };
+        scopeMock.isOfflineApp = true;
+        networkStatusService.isOnline.and.returnValue(true);
+
+        expect(scopeMock.isVisibleExtension(extension)).toBeFalsy();
     });
 });
