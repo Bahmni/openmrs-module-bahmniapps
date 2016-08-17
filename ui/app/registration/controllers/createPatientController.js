@@ -57,7 +57,7 @@ angular.module('bahmni.registration')
             };
 
             var expandSectionsWithDefaultValue = function () {
-                angular.forEach($rootScope.patientConfiguration && $rootScope.patientConfiguration.getPatientAttributesSections(), function(section) {
+                angular.forEach($rootScope.patientConfiguration && $rootScope.patientConfiguration.getPatientAttributesSections(), function (section) {
                     var notNullAttribute = _.find(section && section.attributes, function (attribute) {
                         return $scope.patient[attribute.name] !== undefined;
                     });
@@ -69,6 +69,7 @@ angular.module('bahmni.registration')
                 $scope.patient = patientModel.create();
                 prepopulateDefaultsInFields();
                 expandSectionsWithDefaultValue();
+                $scope.patientLoaded = true;
             };
 
             init();
@@ -132,7 +133,7 @@ angular.module('bahmni.registration')
                     copyPatientProfileDataToScope(response);
                 }, function (response) {
                     if (response.status === 412) {
-                        var data = _.map(response.data, function(data){
+                        var data = _.map(response.data, function (data) {
                             return {
                                 sizeOfTheJump: data.sizeOfJump,
                                 identifierName: _.find($rootScope.patientConfiguration.identifierTypes, {uuid: data.identifierType}).name
@@ -182,6 +183,6 @@ angular.module('bahmni.registration')
                     patientUuid: $scope.patient.uuid
                 });
             };
-            
+
         }
     ]);

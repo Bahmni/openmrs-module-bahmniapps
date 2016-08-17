@@ -110,7 +110,7 @@
 
                 <div class="field-value">
                     <select id="gender" ng-model="patient.gender" required="required" title="Select Gender"
-                            ng-options="genderMap[genderCode] for genderCode in genderCodes track by genderCode">
+                            ng-options="genderMap[genderCode] for genderCode in genderCodes track by genderCode" ng-change="handleUpdate('gender')">
                         <option value="">{{ ::'REGISTRATION_LABEL_SELECT_GENDER' | translate}}</option>
                     </select>
                     <!--<div class="selectGender">
@@ -221,15 +221,16 @@
                      ng-class="::{'right-form-field' : $index%2 != 0}">
                 <attribute-types target-model="patient" attribute="::attribute" field-validation="::fieldValidation"
                                  is-auto-complete="isAutoComplete" get-auto-complete-list="getAutoCompleteList"
-                                 get-data-results="getDataResults" is-read-only="isReadOnly"></attribute-types>
+                                 get-data-results="getDataResults" is-read-only="isReadOnly" handle-update="handleUpdate"></attribute-types>
             </article>
         </section>
     </div>
 
     <div ng-repeat="section in ::patientConfiguration.getOrderedPatientAttributesSections()"
          class="additional-info-wrapper">
-        <div class="box-container form" ng-if="::(section.attributes.length > 0 && section.title)">
-            <legend class="additional-attribute" toggle="section.expand">
+        <div ng-if="section.canShow">
+            <div class="box-container form" ng-if="::(section.attributes.length > 0 && section.title)">
+                <legend class="additional-attribute" toggle="section.expand">
               <span>
                   <i class="fa fa-caret-right"></i>
                   <i class="fa fa-caret-down"></i>
@@ -240,15 +241,16 @@
                       <a ng-if="::(section.title && !section.translationKey)" href>{{::'REGISTRATION_TITLE_ADDITIONAL_PATIENT' | translate}}</a>
                   </strong>
               </span>
-            </legend>
-            <section class="form-field-inline clearfix" ng-show="section.expand">
-                <article class="form-field" ng-repeat="attribute in ::section.attributes"
-                         ng-class="::{'right-form-field' : $index%2 != 0}">
-                    <attribute-types target-model="patient" attribute="::attribute" field-validation="::fieldValidation"
-                                     is-auto-complete="isAutoComplete" get-auto-complete-list="getAutoCompleteList"
-                                     get-data-results="getDataResults" is-read-only="isReadOnly"></attribute-types>
-                </article>
-            </section>
+                </legend>
+                <section class="form-field-inline clearfix" ng-show="section.expand">
+                    <article class="form-field" ng-repeat="attribute in ::section.attributes"
+                             ng-class="::{'right-form-field' : $index%2 != 0}">
+                        <attribute-types target-model="patient" attribute="::attribute" field-validation="::fieldValidation"
+                                         is-auto-complete="isAutoComplete" get-auto-complete-list="getAutoCompleteList"
+                                         get-data-results="getDataResults" is-read-only="isReadOnly" handle-update="handleUpdate"></attribute-types>
+                    </article>
+                </section>
+            </div>
         </div>
     </div>
     <div class="box-container" ng-if="::(relationshipTypes.length > 0)">
