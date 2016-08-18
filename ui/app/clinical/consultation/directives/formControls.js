@@ -6,21 +6,6 @@ angular.module('bahmni.common.conceptSet')
             var loadedFormDetails = {};
 
             var controller = function ($scope) {
-                var controlByType = {
-                    obsControl: function (control) {
-                        return ReactHelper.createReactComponent(FormControls.ObsControl, { controls: control.controls });
-                    }
-                };
-
-                function renderControls(formUuid, formDetails) {
-                    var controls = _.map(formDetails.controls, function (formControl) {
-                        var controlFactory = _.get(controlByType, formControl.type, undefined);
-                        if (controlFactory) return controlFactory(formControl);
-                    });
-                    var containerComponent = ReactHelper.createReactComponent(FormControls.FormControlsContainer, { controls: controls });
-                    ReactHelper.renderReactComponent(containerComponent, formUuid);
-                }
-
                 var formUuid = $scope.form.formUuid;
 
                 if (!loadedFormDetails[formUuid]) {
@@ -30,13 +15,13 @@ angular.module('bahmni.common.conceptSet')
                             if (formDetailsAsString) {
                                 var formDetails = JSON.parse(formDetailsAsString);
                                 loadedFormDetails[formUuid] = formDetails;
-                                renderControls(formUuid, formDetails);
+                                renderWithControls(formDetails, formUuid);
                             }
                         })
                     );
                 }
                 else {
-                    renderControls(formUuid, loadedFormDetails[formUuid]);
+                    renderWithControls(loadedFormDetails[formUuid], formUuid);
                 }
             };
 

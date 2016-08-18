@@ -25,6 +25,7 @@ module.exports = function (config) {
             'app/components/angular-ui-router/release/angular-ui-router.js',
             'app/components/react/react.js',
             'app/components/react/react-dom.js',
+            'app/components/form-controls/dist/helpers.js',
             'app/components/form-controls/dist/bundle.js',
             'app/components/lodash/dist/lodash.min.js',
             'app/components/lovefield/dist/lovefield.js',
