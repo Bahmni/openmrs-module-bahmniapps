@@ -3,7 +3,7 @@ var ReactHelper = {
         return React.createElement(component, props);
     },
     renderReactComponent: function (component, rootId) {
-        ReactDOM.render(component, document.getElementById(rootId));
+        return ReactDOM.render(component, document.getElementById(rootId));
     }
 
 };

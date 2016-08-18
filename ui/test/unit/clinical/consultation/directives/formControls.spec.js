@@ -1,7 +1,7 @@
 'use strict';
 
 describe("Form Controls", function () {
-    var element, scope, $compile, spinner, provide, observationFormService, reactHelper;
+    var element, scope, $compile, spinner, provide, observationFormService, renderHelper;
 
     beforeEach(
         function () {
@@ -19,12 +19,11 @@ describe("Form Controls", function () {
                 scope = $rootScope.$new();
             });
 
-            reactHelper = {
-                ReactHelperOriginal: window.ReactHelper,
-                createComponentCalledTimes: 0,
-                renderComponentCalledTimes: 0
+            renderHelper = {
+                renderWithControlsOriginal: window.renderWithControls,
+                renderWithControlsCalledTimes: 0
             };
-            fakeReactHelperFunctions();
+            fakeRenderHelperFunctions();
         }
     );
 
@@ -32,19 +31,15 @@ describe("Form Controls", function () {
         resetReactHelperFunctions();
     });
 
-    function fakeReactHelperFunctions() {
-        window.ReactHelper.createReactComponent = function () {
-            reactHelper.createComponentCalledTimes += 1;
-        };
-        window.ReactHelper.renderReactComponent = function () {
-            reactHelper.renderComponentCalledTimes += 1;
+    function fakeRenderHelperFunctions() {
+        window.renderWithControls = function () {
+            renderHelper.renderWithControlsCalledTimes += 1;
         };
     }
 
     function resetReactHelperFunctions() {
-        window.ReactHelper = reactHelper.ReactHelperOriginal;
+        window.renderWithControls = renderHelper.renderWithControlsOriginal;
     }
-
 
     function mockObservationService(data) {
         observationFormService.getFormDetail.and.callFake(function () {
@@ -68,17 +63,10 @@ describe("Form Controls", function () {
         expect(spinner.forPromise).toHaveBeenCalled();
     });
 
-    it('should call createComponent and renderComponent', function () {
+    it('should call renderWithControls', function () {
         mockObservationService({ resources: [{ valueReference: '{"name":"Vitals", "controls": [{"type":"obsControl", "controls":[]}] }' }] });
         createElement();
-        expect(reactHelper.createComponentCalledTimes).toBe(2);
-        expect(reactHelper.renderComponentCalledTimes).toBe(1);
-    });
-
-    it('should not call createComponent if the type is wrong', function () {
-        mockObservationService({ resources: [{ valueReference: '{"name":"Vitals", "controls": [{"type":"someIncorrectType", "controls":[]}] }' }] });
-        createElement();
-        expect(reactHelper.createComponentCalledTimes).toBe(1); // called once for FormControlsContainer
+        expect(renderHelper.renderWithControlsCalledTimes).toBe(1);
     });
 
     var createElement = function () {
