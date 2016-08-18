@@ -10,7 +10,7 @@ angular.module('bahmni.registration')
                 address: '=',
                 addressLevels: '=',
                 fieldValidation: '=',
-                freeTextAddressFields: '='
+                strictEntryAddressFields: '='
             }
         };
     })
@@ -46,19 +46,11 @@ angular.module('bahmni.registration')
             }
         };
 
-        //wait for address to be resolved in edit patient scenario
-        var deregisterAddressWatch = $scope.$watch('address', function (newValue) {
-            if (newValue !== undefined) {
-                populateSelectedAddressUuids(0);
-                deregisterAddressWatch();
-            }
-        });
-
-
         $scope.addressFieldSelected = function (fieldName) {
             return function (addressFieldItem) {
                 selectedAddressUuids[fieldName] = addressFieldItem.addressField.uuid;
                 selectedUserGeneratedIds[fieldName] = addressFieldItem.addressField.userGeneratedId;
+                $scope.selectedValue[fieldName] = addressFieldItem.addressField.name;
                 var parentFields = addressLevelsNamesInDescendingOrder.slice(addressLevelsNamesInDescendingOrder.indexOf(fieldName) + 1);
                 var parent = addressFieldItem.addressField.parent;
                 parentFields.forEach(function (parentField) {
@@ -66,6 +58,7 @@ angular.module('bahmni.registration')
                         return;
                     }
                     $scope.address[parentField] = parent.name;
+                    $scope.selectedValue[parentField] = parent.name;
                     parent = parent.parent;
                 });
                 $scope.$parent.patient.addressCode = selectedUserGeneratedIds[fieldName];
@@ -119,8 +112,9 @@ angular.module('bahmni.registration')
         $scope.clearFields = function (fieldName) {
             var childFields = addressLevelsNamesInDescendingOrder.slice(0, addressLevelsNamesInDescendingOrder.indexOf(fieldName));
             childFields.forEach(function (childField) {
-                if (!$scope.isFreeTextAddressField(childField)) {
+                if ($scope.selectedValue[childField] !== null) {
                     $scope.address[childField] = null;
+                    $scope.selectedValue[childField] = null;
                     selectedAddressUuids[childField] = null;
                     selectedUserGeneratedIds[childField] = null;
                 }
@@ -135,7 +129,29 @@ angular.module('bahmni.registration')
 
         };
 
-        $scope.isFreeTextAddressField = function (field) {
-            return $scope.freeTextAddressFields && _.includes($scope.freeTextAddressFields, field);
+        $scope.removeAutoCompleteEntry = function (fieldName) {
+            return function () {
+                $scope.selectedValue[fieldName] = null;
+            };
         };
+
+        var init = function () {
+            //wait for address to be resolved in edit patient scenario
+            var deregisterAddressWatch = $scope.$watch('address', function (newValue) {
+                if (newValue !== undefined) {
+                    populateSelectedAddressUuids(0);
+                    $scope.selectedValue = angular.copy($scope.address);
+                    deregisterAddressWatch();
+                }
+            });
+
+            $scope.addressLevels.reverse();
+            var isStrictEntry  = false;
+            _.each($scope.addressLevels, function (addressLevel) {
+                addressLevel.isStrictEntry = _.includes($scope.strictEntryAddressFields, addressLevel.addressField) || isStrictEntry;
+                isStrictEntry = addressLevel.isStrictEntry;
+            });
+            $scope.addressLevels.reverse();
+        };
+        init();
     });

@@ -9,7 +9,8 @@ angular.module('bahmni.registration')
             scope: {
                 address: '=',
                 addressLevels: '=',
-                fieldValidation: '='
+                fieldValidation: '=',
+                strictEntryAddressFields: '='
             }
         };
     })
@@ -19,7 +20,8 @@ angular.module('bahmni.registration')
         var addressLevelsNamesInDescendingOrder = addressLevelsCloneInDescendingOrder.map(function (addressLevel) {
             return addressLevel.addressField;
         });
-        var autocompletedFields = [];
+
+        $scope.autocompletedFields = [];
         $scope.addressFieldSelected = function (fieldName) {
             return function (addressFieldItem) {
                 var parentFields = addressLevelsNamesInDescendingOrder.slice(addressLevelsNamesInDescendingOrder.indexOf(fieldName) + 1);
@@ -29,11 +31,18 @@ angular.module('bahmni.registration')
                         return;
                     }
                     $scope.address[parentField] = parent.name;
+                    $scope.selectedValue[parentField] = parent.name;
                     parent = parent.parent;
                 });
-                autocompletedFields = [];
-                autocompletedFields.push(fieldName);
-                autocompletedFields = autocompletedFields.concat(parentFields);
+                $scope.autocompletedFields = [];
+                $scope.autocompletedFields.push(fieldName);
+                $scope.autocompletedFields = $scope.autocompletedFields.concat(parentFields);
+            };
+        };
+
+        $scope.removeAutoCompleteEntry = function (fieldName) {
+            return function () {
+                _.pull($scope.autocompletedFields, fieldName);
             };
         };
 
@@ -46,11 +55,28 @@ angular.module('bahmni.registration')
         $scope.getAddressDataResults = addressHierarchyService.getAddressDataResults;
 
         $scope.clearFields = function (fieldName) {
-            if(_.includes(autocompletedFields, fieldName)) {
-                var childFields = autocompletedFields.slice(0, autocompletedFields.indexOf(fieldName));
+            if (_.includes($scope.autocompletedFields, fieldName)) {
+                var childFields = $scope.autocompletedFields.slice(0, $scope.autocompletedFields.indexOf(fieldName));
                 childFields.forEach(function (childField) {
                     $scope.address[childField] = "";
+                    $scope.selectedValue[childField] = "";
                 });
             }
         };
+        var init = function () {
+            var addressWatch = $scope.$watch('address', function () {
+                $scope.selectedValue = angular.copy($scope.address);
+                if ($scope.address) {
+                    addressWatch();
+                }
+            });
+            $scope.addressLevels.reverse();
+            var isStrictEntry  = false;
+            _.each($scope.addressLevels, function (addressLevel) {
+                    addressLevel.isStrictEntry = _.includes($scope.strictEntryAddressFields, addressLevel.addressField) || isStrictEntry;
+                    isStrictEntry = addressLevel.isStrictEntry;
+            });
+            $scope.addressLevels.reverse();
+        };
+        init();
     });
