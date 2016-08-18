@@ -27,6 +27,7 @@ angular.module('bahmni.registration')
                 $scope.patient = patientMapper.map(openmrsPatient);
                 setReadOnlyFields();
                 expandDataFilledSections();
+                $scope.patientLoaded = true;
             };
 
             var expandDataFilledSections = function () {
