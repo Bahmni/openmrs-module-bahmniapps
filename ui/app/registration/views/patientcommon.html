@@ -139,12 +139,12 @@
 
         <section address-fields data-address-levels="::addressLevels" data-address="patient.address"
                  field-validation="::fieldValidation"
-                 strict-entry-address-fields="::addressHierarchyConfigs.strictEntryAddressFields"
+                 strict-autocomplete-from-level="::addressHierarchyConfigs.strictAutocompleteFromLevel"
                  ng-if="::!addressHierarchyConfigs.showAddressFieldsTopDown"></section>
 
         <section top-down-address-fields data-address-levels="::addressLevels" data-address="patient.address"
                  field-validation="::fieldValidation" ng-if="::addressHierarchyConfigs.showAddressFieldsTopDown"
-                 strict-entry-address-fields="::addressHierarchyConfigs.strictEntryAddressFields"></section>
+                 strict-autocomplete-from-level="::addressHierarchyConfigs.strictAutocompleteFromLevel"></section>
 
         <legend class="registraion_legend">
             <span class="mylegend">Additional Identifiers</span>

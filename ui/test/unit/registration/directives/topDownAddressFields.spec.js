@@ -12,11 +12,12 @@ describe('TopDownAddressFieldsDirectiveController', function () {
         addressHierarchyService = jasmine.createSpyObj('addressHierarchyService', ['search', 'getNextAvailableParentName','getAddressDataResults']);
     }));
 
-    var setupController = function (strictAutoCompleteFields) {
+    var setupController = function (strictAutocompleteFromLevel) {
         inject(function ($controller, $rootScope) {
             scope = $rootScope.$new();
             scope.address = {};
             scope.$parent.patient = {};
+            scope.strictAutocompleteFromLevel = strictAutocompleteFromLevel || [];
             scope.addressLevels = [
                 {"name": "State", "addressField": "stateProvince", "required": false},
                 {"name": "District", "addressField": "countyDistrict", "required": false},
@@ -25,7 +26,6 @@ describe('TopDownAddressFieldsDirectiveController', function () {
                 {"name": "House No., Street", "addressField": "address1", "required": false},
                 {"name": "Address Line", "addressField": "addressLine", "required": true}
             ];
-            scope.strictEntryAddressFields = strictAutoCompleteFields || [];
             controller = $controller('TopDownAddressFieldsDirectiveController', {
                 $scope: scope,
                 addressHierarchyService: addressHierarchyService
@@ -35,7 +35,7 @@ describe('TopDownAddressFieldsDirectiveController', function () {
 
     describe("village selection", function () {
         beforeEach(function(){
-            setupController([]);
+            setupController(undefined);
             scope.$digest();
         });
 
@@ -65,7 +65,7 @@ describe('TopDownAddressFieldsDirectiveController', function () {
 
     describe("Editing any auto complete field", function () {
         beforeEach(function(){
-            setupController([]);
+            setupController(undefined);
             scope.$digest();
         });
         it("should clear all other auto completed fields", function () {
@@ -99,7 +99,7 @@ describe('TopDownAddressFieldsDirectiveController', function () {
 
     describe("getAddressEntryList", function() {
         beforeEach(function(){
-            setupController([]);
+            setupController(undefined);
             scope.$digest();
         });
 
@@ -180,7 +180,7 @@ describe('TopDownAddressFieldsDirectiveController', function () {
 
     describe("It should set location id", function(){
         beforeEach(function(){
-            setupController([]);
+            setupController(undefined);
             scope.$digest();
         });
 
@@ -238,7 +238,7 @@ describe('TopDownAddressFieldsDirectiveController', function () {
 
     describe('populateSelectedAddressUuids',function(){
         beforeEach(function(){
-            setupController([])
+            setupController(undefined)
         });
 
         it("should not throw an error when response is not present",function(done){
@@ -280,8 +280,8 @@ describe('TopDownAddressFieldsDirectiveController', function () {
         });
     });
 
-    describe("should not clear the fields with freetext when parent is cleared", function() {
-        it("should set selectedValue to null on edit", function () {
+    describe("clear fields when parent field is cleared", function() {
+        it("should set selectedValue to null on editing the field", function () {
             scope.selectedValue = {
                 address3: "address",
                 countyDistrict: "district",
@@ -293,19 +293,54 @@ describe('TopDownAddressFieldsDirectiveController', function () {
             expect(scope.selectedValue["cityVillage"]).toBeNull();
 
         });
+
     });
 
-    describe("initialize strict entry flag of address levels", function() {
-        it("should make strict entry as true only if parent fields are configured as strict entry ", function () {
-            setupController(["stateProvince","countyDistrict"]);
+    describe("initialize controller", function() {
+        it("should make all parent levels as strict autocomplete fields starting from configured address level", function () {
+            setupController("countyDistrict");
             expect(scope.addressLevels[0].isStrictEntry).toBe(true);
             expect(scope.addressLevels[1].isStrictEntry).toBe(true);
+            expect(scope.addressLevels[2].isStrictEntry).toBe(false);
+            expect(scope.addressLevels[3].isStrictEntry).toBe(false);
+            expect(scope.addressLevels[4].isStrictEntry).toBe(false);
         });
 
-        it("should not make strict entry as true if parent fields are not configured as strict entry ", function () {
+        it("should make all levels as freetext if 'strictAutoCompleteFromLevel' configuration is not present", function () {
+            setupController(undefined);
+            expect(scope.addressLevels[0].isStrictEntry).toBeFalsy();
+            expect(scope.addressLevels[1].isStrictEntry).toBeFalsy();
+            expect(scope.addressLevels[2].isStrictEntry).toBeFalsy();
+            expect(scope.addressLevels[3].isStrictEntry).toBeFalsy();
+            expect(scope.addressLevels[4].isStrictEntry).toBeFalsy();
+
+        });
+
+        it("should intialize selectedValue only for strict autocomplete fields", function () {
             setupController(["countyDistrict"]);
-            expect(scope.addressLevels[0].isStrictEntry).toBe(true);
-            expect(scope.addressLevels[1].isStrictEntry).toBe(true);
+            scope.address = {
+                address3: "address",
+                countyDistrict: "district",
+                stateProvince: "state",
+                cityVillage: "village"
+            };
+            addressHierarchyService.search.and.returnValue(specUtil.respondWith([
+                {
+                    "name": "Bagerhat",
+                    "uuid": "e12e5566-73b7-476e-8bc1-d6bce6df7fb5",
+                    "parent": {
+                        "name": "Khulna",
+                        "uuid": "76bc03a4-5e7f-486a-b67f-3f36b48b0387",
+                    }
+                }
+            ]));
+
+            scope.$digest();
+
+            expect(scope.selectedValue["countyDistrict"]).toBe("district");
+            expect(scope.selectedValue["stateProvince"]).toBe("state");
+            expect(scope.selectedValue["cityVillage"]).toBe(null);
+            expect(scope.selectedValue["address3"]).toBe(null);
         });
     });
 });
