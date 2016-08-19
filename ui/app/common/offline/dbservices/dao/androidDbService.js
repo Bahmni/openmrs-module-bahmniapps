@@ -261,8 +261,8 @@ angular.module('bahmni.common.offline')
                     patient.identifiers = _.map(patient.identifiers, function (identifier) {
                         return {
                             identifier: identifier.identifier,
-                            identifierPrefix: identifier.selectedIdentifierSource && identifier.selectedIdentifierSource.prefix,
-                            identifierSourceUuid: identifier.selectedIdentifierSource && identifier.selectedIdentifierSource.uuid ,
+                            identifierPrefix: identifier.identifierType && identifier.identifierType.identifierSources && identifier.identifierType.identifierSources[0] && identifier.identifierType.identifierSources[0].prefix,
+                            identifierSourceUuid: identifier.identifierType && identifier.identifierType.identifierSources &&  identifier.identifierType.identifierSources[0] && identifier.identifierType.identifierSources[0].uuid ,
                             identifierType: identifier.identifierType && identifier.identifierType.uuid || identifier.identifierType,
                             uuid: identifier.uuid,
                             preferred: identifier.preferred,

@@ -318,7 +318,8 @@ describe('OfflineDbService ', function () {
                             "preferred": true,
                             "identifierType": {
                                 "display": "Patient Identifier",
-                                "uuid": "7676e94e-796e-11e5-a6d0-005056b07f03"
+                                "uuid": "7676e94e-796e-11e5-a6d0-005056b07f03",
+                                "identifierSources": [{"prefix": "BDH", "uuid": "sourceUuid"}]
                             },
                             "identifier": "BDH201934"
                         }]
@@ -334,6 +335,8 @@ describe('OfflineDbService ', function () {
                 offlineDbService.getPatientByUuidForPost("patientUuid").then(function (mappedPatientDataForPostRequest) {
                     expect(mappedPatientDataForPostRequest.patient.identifiers[0].identifier).toBe("BDH201934");
                     expect(mappedPatientDataForPostRequest.patient.identifiers[0].identifierType).toBe("7676e94e-796e-11e5-a6d0-005056b07f03");
+                    expect(mappedPatientDataForPostRequest.patient.identifiers[0].identifierPrefix).toBe("BDH");
+                    expect(mappedPatientDataForPostRequest.patient.identifiers[0].identifierSourceUuid).toBe("sourceUuid");
                     expect(patientDbService.getPatientByUuid).toHaveBeenCalledWith(db, "patientUuid");
                     done();
                 });
