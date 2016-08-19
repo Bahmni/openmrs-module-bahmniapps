@@ -886,8 +886,10 @@ table.pivot-table {
     .tabular-obs table {
       table-layout: fixed;
     }
-    .tabular-obs table tr td{
-      word-break: break-word;
+    .tabular-obs table tr {
+      td ,th{
+        word-break: break-word;
+      }
     }
   }
   .tabular-obs table tr td:first-child {
