@@ -1,5 +1,6 @@
 'use strict';
 
+
 Bahmni.ConceptSet.Observation = function (observation, savedObs, conceptUIConfig) {
     var self = this;
     angular.extend(this, observation);
@@ -51,15 +52,53 @@ Bahmni.ConceptSet.Observation = function (observation, savedObs, conceptUIConfig
         }
     });
 
+    var cloneNonTabularObs = function(oldObs) {
+        var newGroupMembers = [];
+        oldObs.groupMembers.forEach(function (member) {
+            if (member.isTabularObs === undefined) {
+                var clone = member.cloneNew();
+                clone.hidden = member.hidden;
+                newGroupMembers.push(clone);
+            }
+        });
+        return newGroupMembers;
+    };
+
+    var getTabularObs = function(oldObs) {
+        var tabularObsList = [];
+        oldObs.groupMembers.forEach(function (member) {
+            if (member.isTabularObs !== undefined) {
+                tabularObsList.push(member);
+            }
+        });
+        return tabularObsList;
+    };
+
+    var cloneTabularObs = function(oldObs , tabularObsList){
+        tabularObsList = _.map(tabularObsList, function(tabularObs){
+            var matchingObsList = _.filter(oldObs.groupMembers, function(member){
+                return  member.concept.name == tabularObs.concept.name;
+            });
+            return new Bahmni.ConceptSet.TabularObservations(matchingObsList, oldObs, conceptUIConfig);
+        });
+        tabularObsList.forEach(function(tabularObs){
+            oldObs.groupMembers.push(tabularObs);
+        });
+        return oldObs;
+    };
+
     this.cloneNew = function() {
         var oldObs = angular.copy(observation);
         if(oldObs.groupMembers && oldObs.groupMembers.length > 0) {
             oldObs.groupMembers = _.filter(oldObs.groupMembers, function(member) {
                 return !member.isMultiSelect;
             });
-            oldObs.groupMembers = _.map(oldObs.groupMembers, function(member) {
-                return member.cloneNew();
-            });
+            var newGroupMembers = cloneNonTabularObs(oldObs);
+            var tabularObsList = getTabularObs(oldObs);
+            oldObs.groupMembers = newGroupMembers;
+            if(!_.isEmpty(tabularObsList)) {
+                oldObs = cloneTabularObs(oldObs ,tabularObsList);
+            }
         }
         new Bahmni.ConceptSet.MultiSelectObservations(conceptUIConfig).map(oldObs.groupMembers);
         var clone = new Bahmni.ConceptSet.Observation(oldObs, null, conceptUIConfig);
