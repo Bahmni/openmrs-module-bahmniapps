@@ -305,5 +305,79 @@ describe('patient context', function () {
             expect(compiledElementScope.patientContext.programAttributes.isUrban.value).toEqual("Yes");
             expect(compiledElementScope.patientContext.programAttributes.cool.value).toEqual("No");
         });
+
+        it("should set showNameOnPrint to true by default", function(){
+            var patientContext = {
+
+            };
+            var patientContextConfig = {
+
+            };
+            var clinicalDashBoardConfig = {
+                currentTab: {
+
+                }
+            };
+            scope.showNameAndImage = undefined;
+            mockAppDescriptor.getConfigValue.and.returnValue(patientContextConfig);
+            mockAppService.getAppDescriptor.and.returnValue(mockAppDescriptor);
+
+            spinner.forPromise.and.callFake(function (param) {
+                return {
+                    then: function (callback) {
+                        return callback({data: patientContext});
+                    }
+                }
+            });
+
+            var simpleHtml = '<patient-context patient="patient" show-name-and-image="clinicalDashBoardConfig.currentTab.printing.showNameAndImage"></patient-context>';
+            var element = $compile(simpleHtml)(scope);
+            scope.$digest();
+            mockBackend.flush();
+            var compiledElementScope = element.isolateScope();
+            scope.$digest();
+
+            expect(compiledElementScope.showNameAndImage).toBeTruthy();
+
+        });
+
+        it("should set showNameOnPrint from config", function(){
+            var patientContext = {
+
+            };
+            var patientContextConfig = {
+
+            };
+             scope.clinicalDashBoardConfig = {
+                currentTab: {
+                    "printing": {
+                        "title": "Patient Dashboard",
+                        "header": "Patient Summary",
+                        "logo": "../images/bahmniLogo.png",
+                        "showNameAndImage": false
+                    }
+                }
+            };
+            mockAppDescriptor.getConfigValue.and.returnValue(patientContextConfig);
+            mockAppService.getAppDescriptor.and.returnValue(mockAppDescriptor);
+
+            spinner.forPromise.and.callFake(function (param) {
+                return {
+                    then: function (callback) {
+                        return callback({data: patientContext});
+                    }
+                }
+            });
+
+            var simpleHtml = '<patient-context patient="patient" show-name-and-image="clinicalDashBoardConfig.currentTab.printing.showNameAndImage"></patient-context>';
+            var element = $compile(simpleHtml)(scope);
+            scope.$digest();
+            mockBackend.flush();
+            var compiledElementScope = element.isolateScope();
+            scope.$digest();
+
+            expect(compiledElementScope.showNameAndImage).toBeFalsy();
+
+        });
     })
 });
