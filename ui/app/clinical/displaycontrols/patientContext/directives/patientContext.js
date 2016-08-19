@@ -23,7 +23,10 @@ angular.module('bahmni.clinical')
                     }
                 }
 
-                $scope.patientContext.image = Bahmni.Common.Constants.patientImageUrlByPatientUuid + $scope.patientContext.uuid;
+                $scope.showNameAndImage = $scope.showNameAndImage !== undefined ? $scope.showNameAndImage : true;
+                if($scope.showNameAndImage) {
+                    $scope.patientContext.image = Bahmni.Common.Constants.patientImageUrlByPatientUuid + $scope.patientContext.uuid;
+                }
                 $scope.patientContext.gender = $rootScope.genderMap[$scope.patientContext.gender];
             });
         };
@@ -39,7 +42,8 @@ angular.module('bahmni.clinical')
             restrict: 'E',
             templateUrl: "displaycontrols/patientContext/views/patientContext.html",
             scope: {
-                patient: "="
+                patient: "=",
+                showNameAndImage:"=?"
             },
             controller: controller
         };
