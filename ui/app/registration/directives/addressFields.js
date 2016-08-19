@@ -10,7 +10,7 @@ angular.module('bahmni.registration')
                 address: '=',
                 addressLevels: '=',
                 fieldValidation: '=',
-                strictEntryAddressFields: '='
+                strictAutocompleteFromLevel: '='
             }
         };
     })
@@ -21,10 +21,10 @@ angular.module('bahmni.registration')
             return addressLevel.addressField;
         });
 
-        $scope.autocompletedFields = [];
         $scope.addressFieldSelected = function (fieldName) {
             return function (addressFieldItem) {
                 var parentFields = addressLevelsNamesInDescendingOrder.slice(addressLevelsNamesInDescendingOrder.indexOf(fieldName) + 1);
+                $scope.selectedValue[fieldName] = addressFieldItem.addressField.name;
                 var parent = addressFieldItem.addressField.parent;
                 parentFields.forEach(function (parentField) {
                     if (!parent) {
@@ -34,15 +34,12 @@ angular.module('bahmni.registration')
                     $scope.selectedValue[parentField] = parent.name;
                     parent = parent.parent;
                 });
-                $scope.autocompletedFields = [];
-                $scope.autocompletedFields.push(fieldName);
-                $scope.autocompletedFields = $scope.autocompletedFields.concat(parentFields);
             };
         };
 
         $scope.removeAutoCompleteEntry = function (fieldName) {
             return function () {
-                _.pull($scope.autocompletedFields, fieldName);
+                $scope.selectedValue[fieldName] = null;
             };
         };
 
@@ -55,28 +52,35 @@ angular.module('bahmni.registration')
         $scope.getAddressDataResults = addressHierarchyService.getAddressDataResults;
 
         $scope.clearFields = function (fieldName) {
-            if (_.includes($scope.autocompletedFields, fieldName)) {
-                var childFields = $scope.autocompletedFields.slice(0, $scope.autocompletedFields.indexOf(fieldName));
-                childFields.forEach(function (childField) {
-                    $scope.address[childField] = "";
-                    $scope.selectedValue[childField] = "";
-                });
-            }
-        };
-        var init = function () {
-            var addressWatch = $scope.$watch('address', function () {
-                $scope.selectedValue = angular.copy($scope.address);
-                if ($scope.address) {
-                    addressWatch();
+            var childFields = addressLevelsNamesInDescendingOrder.slice(0, addressLevelsNamesInDescendingOrder.indexOf(fieldName));
+            childFields.forEach(function (childField) {
+                if (!_.isEmpty($scope.selectedValue[childField])) {
+                    $scope.address[childField] = null;
+                    $scope.selectedValue[childField] = null;
                 }
             });
+        };
+        var init = function () {
+
             $scope.addressLevels.reverse();
             var isStrictEntry  = false;
             _.each($scope.addressLevels, function (addressLevel) {
-                    addressLevel.isStrictEntry = _.includes($scope.strictEntryAddressFields, addressLevel.addressField) || isStrictEntry;
-                    isStrictEntry = addressLevel.isStrictEntry;
+                addressLevel.isStrictEntry = $scope.strictAutocompleteFromLevel == addressLevel.addressField || isStrictEntry;
+                isStrictEntry = addressLevel.isStrictEntry;
             });
             $scope.addressLevels.reverse();
+
+            //wait for address to be resolved in edit patient scenario
+            var addressWatch = $scope.$watch('address', function (newValue) {
+                if (newValue !== undefined) {
+                    $scope.selectedValue = _.mapValues($scope.address, function (value, key) {
+                        var addressLevel = _.find($scope.addressLevels, {addressField: key});
+                        return addressLevel && addressLevel.isStrictEntry ? value: null;
+                    });
+                    addressWatch();
+                }
+            });
+
         };
         init();
     });

@@ -10,7 +10,7 @@ angular.module('bahmni.registration')
                 address: '=',
                 addressLevels: '=',
                 fieldValidation: '=',
-                strictEntryAddressFields: '='
+                strictAutocompleteFromLevel: '='
             }
         };
     })
@@ -136,22 +136,26 @@ angular.module('bahmni.registration')
         };
 
         var init = function () {
+            $scope.addressLevels.reverse();
+            var isStrictEntry  = false;
+            _.each($scope.addressLevels, function (addressLevel) {
+                addressLevel.isStrictEntry = $scope.strictAutocompleteFromLevel == addressLevel.addressField || isStrictEntry;
+                isStrictEntry = addressLevel.isStrictEntry;
+            });
+            $scope.addressLevels.reverse();
+
             //wait for address to be resolved in edit patient scenario
             var deregisterAddressWatch = $scope.$watch('address', function (newValue) {
                 if (newValue !== undefined) {
                     populateSelectedAddressUuids(0);
-                    $scope.selectedValue = angular.copy($scope.address);
+                    $scope.selectedValue = _.mapValues($scope.address, function (value, key) {
+                        var addressLevel = _.find($scope.addressLevels, {addressField: key});
+                        return addressLevel && addressLevel.isStrictEntry ? value: null;
+                    });
                     deregisterAddressWatch();
                 }
             });
 
-            $scope.addressLevels.reverse();
-            var isStrictEntry  = false;
-            _.each($scope.addressLevels, function (addressLevel) {
-                addressLevel.isStrictEntry = _.includes($scope.strictEntryAddressFields, addressLevel.addressField) || isStrictEntry;
-                isStrictEntry = addressLevel.isStrictEntry;
-            });
-            $scope.addressLevels.reverse();
         };
         init();
     });
