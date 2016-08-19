@@ -451,3 +451,74 @@ concept-set {
 }
 .illegalValue .multi-select-button-group {display: table;  width: auto; }
 .field-value-buttonSelectType .illegalValue{display: table; width:auto;}
+
+
+//2 Column Layout Styles
+
+.order-list.concept-set-panel{
+  .orders-section-left{
+    border: 1px solid $darkerGrey;
+    width:22% !important;
+    .concept-set-panel-header{
+       font-size: 14px;
+       color: $mediumGray;
+       padding: 8px 20px;
+       margin: 0;
+       border-bottom: 1px solid $darkerGrey;
+    }
+
+    .multi-select-lab-tests{
+      padding: 10px 10px 5px;
+      width: 100% !important;
+      box-sizing: border-box;
+      li {
+        margin-bottom: 5px;
+        position: relative;
+        a {
+          overflow: auto;
+          box-sizing: border-box;
+          font-size: 12px;
+          border: 1px solid $lightGray;
+          border-bottom-color: $lightGray !important;
+          padding: 8px 10px;
+         .concept-set-name {
+            display: block;
+            width: auto;
+            margin-right:33px;
+            color: $lightGray;
+          }
+          .btn-small{
+            padding: 0;
+            font-size: 11px;
+            position: absolute;
+            right:12px;
+            top:50%;
+            margin-top: -10px;
+
+          }
+          &.active{
+            span{
+              color: $white;
+            }
+          }
+        }
+      }
+    }
+  }
+  .orders-section-right{
+    width: 76% !important;
+  }
+  .concept-set-group .concept-set-title h2.section-title{
+    background: #3D7474;
+    padding: 10px;
+  }
+  form .form-field textarea, .form .form-field textarea{
+    width:500px;
+    @media screen and (max-width: 1024px){
+      width:300px;
+    }
+  }
+  table .field-value-buttonSelectType{
+    width:47%;
+  }
+}
