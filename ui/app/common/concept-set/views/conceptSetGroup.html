@@ -8,13 +8,17 @@
     <div class="dashboard-section-wrapper clearfix">
         <section class="orders-section-left" xmlns="http://www.w3.org/1999/html">
             <div class="order-section-container">
+                <h2 class="concept-set-panel-header">Added Observation Forms {{isAvailable.length}}</h2>
                 <div class="multi-select-lab-tests">
                     <ul>
                         <li ng-repeat="conceptSet in allTemplates track by $index"
                             ng-if="conceptSet.isAvailable(context) && (conceptSet.isAdded || conceptSet.alwaysShow)">
-                            <a ng-click="showLeftPanelConceptSet(conceptSet)" ng-class='conceptSet.klass'>{{conceptSet.label}}
-                                <span ng-if="conceptSet.observations[0].observationDateTime"> ( {{conceptSet.observations[0].observationDateTime|bahmniDate}} )</span>
-                                <button class="add-more-concept-set add-more-btn btn-small" type="button" ng-click="clone($index)" ng-if="conceptSet.canAddMore()"> <i class="fa fa-plus"></i></button>
+                            <a ng-click="showLeftPanelConceptSet(conceptSet)" ng-class='conceptSet.klass'>
+                                <span class="concept-set-name">
+                                    {{conceptSet.label}}
+                                    <span ng-if="conceptSet.observations[0].observationDateTime"> ( {{conceptSet.observations[0].observationDateTime|bahmniDate}} )</span>
+                                </span>
+                                <button class="add-more-concept-set add-more-btn btn-small fr" type="button" ng-click="clone($index)" ng-if="conceptSet.canAddMore()" ng-disabled="conceptSet.klass!='active'"> <i class="fa fa-plus"></i></button>
                             </a>
                         </li>
                     </ul>
@@ -22,7 +26,7 @@
             </div>
         </section>
         <section class="orders-section-right">
-            <section class="order-section-container" ng-repeat="conceptSet in allTemplates track by $index" ng-if="leftPanelConceptSet==conceptSet">
+            <section class="order-section-container concept-set-group section-grid" ng-repeat="conceptSet in allTemplates track by $index" ng-if="leftPanelConceptSet==conceptSet">
                 <ng-include src="'../common/concept-set/views/conceptSetGroupSection.html'"></ng-include>
             </section>
         </section>
