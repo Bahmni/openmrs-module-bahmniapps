@@ -7,7 +7,7 @@
     "LOGIN_LABEL_PASSWORD_KEY": "Password",
     "LOGIN_LABEL_LOCATION_KEY": "Location",
     "LOGIN_LABEL_LOGIN_ERROR_MESSAGE_KEY": "You are not authenticated or your session expired. Please login.",
-    "LOGIN_LABEL_WRONG_OTP_MESSAGE_KEY": "Wrong OTP entered. Please enter a correct OTP.",
+    "LOGIN_LABEL_WRONG_OTP_MESSAGE_KEY": "Incorrect OTP. Please enter OTP again.",
     "LOGIN_MESSAGE_ENTER_USERNAME_KEY": "Enter your username",
     "LOGIN_MESSAGE_ENTER_PASSWORD_KEY": "Enter your password",
     "LOGIN_LABEL_SELECT_LOCATION_KEY": "Select Location",
@@ -20,6 +20,6 @@
     "LOGIN_LABEL_MAX_FAILED_ATTEMPTS" : "Number of wrong OTP attempts exceeded. Please login again.",
     "LOGIN_LABEL_OTP_EXPIRED" : "Your OTP is expired. Please login again.",
     "LOGIN_LABEL_RESEND_OTP" : "Resend OTP",
-    "LOGIN_LABEL_RESEND_SUCCESS" : "New OTP has been sent through SMS to your mobile phone.",
+    "LOGIN_LABEL_RESEND_SUCCESS" : "New OTP has been sent to your Registered number.",
     "LOGIN_LABEL_MAX_RESEND_ATTEMPTS" : "Number of OTP resend attempts exceeded. Please login again."
 }
