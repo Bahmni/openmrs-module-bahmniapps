@@ -580,3 +580,26 @@ button.button-Errorlog{
   margin-bottom: 10px;
 }
 
+.login.login-otp .login-body {
+  .form-field .field-attribute label{
+    width:7em;
+  }
+  .form-field .field-value input[type="password"]{
+    min-width: initial;
+  }
+  .otp-button{
+    padding: 6px 14px;
+    margin: 2px 0 0 10px;
+  }
+  .form-footer {
+    padding-left: 9.3em;
+
+    button.confirm{
+      width:220px;
+    }
+  }
+  .error.error_resend{
+    color:green;
+  }
+}
+
