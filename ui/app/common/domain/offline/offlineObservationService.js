@@ -19,6 +19,16 @@ angular.module('bahmni.common.domain')
             });
         };
 
+
+        var fetchAndFilterObservationsForVisit = function(params) {
+            if(params.conceptNames)
+                return fetchAndFilterObservations(params.conceptNames, 0, params, []);
+            else
+                return observationsServiceStrategy.fetchObsForVisit(params).then(function (results) {
+                    return $q.when(results.data);
+                });
+        };
+
         var getObservationByIterateOverGroupMembers = function(obs, conceptName, results) {
             if(obs.concept.name === conceptName && !obs.voided)
                 results.push(obs);
@@ -57,6 +67,10 @@ angular.module('bahmni.common.domain')
             if (visitUuid) {
                 params.visitUuid = visitUuid;
                 params.scope = scope;
+                params.conceptNames = conceptNames;
+                return fetchAndFilterObservationsForVisit(params).then(function (results) {
+                    return {"data": results};
+                });
             } else {
                 params.patientUuid = patientUuid;
                 params.numberOfVisits = numberOfVisits;

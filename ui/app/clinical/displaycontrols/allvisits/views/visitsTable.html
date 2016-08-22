@@ -13,7 +13,7 @@
                         <i class="fa fa-star current-visit-icon" id="currentVisitIcon" ng-if="::visit.isActive()" title="Current Visit"></i>
                     </a>
                 </td>
-                <td class="value" id="visitType">{{::visit.visitType.name}}</td>
+                <td class="value" id="visitType">{{::visit.getVisitType()}} </td>
             </tr>
         </tbody>
     </table>
