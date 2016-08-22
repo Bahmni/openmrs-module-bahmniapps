@@ -17,7 +17,7 @@ describe('TopDownAddressFieldsDirectiveController', function () {
             scope = $rootScope.$new();
             scope.address = {};
             scope.$parent.patient = {};
-            scope.strictAutocompleteFromLevel = strictAutocompleteFromLevel || [];
+            scope.strictAutocompleteFromLevel = strictAutocompleteFromLevel || undefined;
             scope.addressLevels = [
                 {"name": "State", "addressField": "stateProvince", "required": false},
                 {"name": "District", "addressField": "countyDistrict", "required": false},
@@ -317,7 +317,7 @@ describe('TopDownAddressFieldsDirectiveController', function () {
         });
 
         it("should intialize selectedValue only for strict autocomplete fields", function () {
-            setupController(["countyDistrict"]);
+            setupController("countyDistrict");
             scope.address = {
                 address3: "address",
                 countyDistrict: "district",
@@ -342,5 +342,19 @@ describe('TopDownAddressFieldsDirectiveController', function () {
             expect(scope.selectedValue["cityVillage"]).toBe(null);
             expect(scope.selectedValue["address3"]).toBe(null);
         });
+    });
+
+    describe("Enable & disable address fields", function() {
+        it("should enable all free text fields irrespective of parent has value or not", function () {
+            setupController("countyDistrict");
+
+            expect(scope.isReadOnly(scope.addressLevels[0])).toBeFalsy();
+            expect(scope.isReadOnly(scope.addressLevels[1])).toBeTruthy();
+            expect(scope.isReadOnly(scope.addressLevels[2])).toBeFalsy();
+            expect(scope.isReadOnly(scope.addressLevels[3])).toBeFalsy();
+            expect(scope.isReadOnly(scope.addressLevels[4])).toBeFalsy();
+
+        });
+
     });
 });
