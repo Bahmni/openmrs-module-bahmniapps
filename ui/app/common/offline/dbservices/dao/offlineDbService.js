@@ -107,7 +107,7 @@ angular.module('bahmni.common.offline')
             });
             return deferred.promise;
         };
-            
+
         var init = function (offlineDb) {
             db = offlineDb;
             offlineMarkerDbService.init(offlineDb);
@@ -186,7 +186,7 @@ angular.module('bahmni.common.offline')
         var updateParentJson = function (child) {
             return conceptDbService.updateParentJson(child);
         };
-        
+
         var insertVisitData = function (visitData) {
             return visitDbService.insertVisitData(db, visitData);
         };
@@ -203,8 +203,16 @@ angular.module('bahmni.common.offline')
             return observationDbService.getObservationsFor(db, params);
         };
 
+        var getObservationsForVisit = function (visitUuid) {
+                return observationDbService.getObservationsForVisit(db, visitUuid);
+        };
+
         var getVisitsByPatientUuid = function (patientUuid, numberOfVisits) {
             return visitDbService.getVisitsByPatientUuid(db, patientUuid, numberOfVisits);
+        };
+
+        var getVisitDetailsByPatientUuid = function(patientUuid) {
+            return visitDbService.getVisitDetailsByPatientUuid(db, patientUuid);
         };
 
         var insertLog = function (errorUuid,failedRequest, responseStatus, stackTrace, requestPayload) {
@@ -297,6 +305,8 @@ angular.module('bahmni.common.offline')
             getErrorLogByUuid: getErrorLogByUuid,
             getPrescribedAndActiveDrugOrders: getPrescribedAndActiveDrugOrders,
             deleteErrorFromErrorLog: deleteErrorFromErrorLog,
-            getPatientByUuidForPost: getPatientByUuidForPost
+            getPatientByUuidForPost: getPatientByUuidForPost,
+            getVisitDetailsByPatientUuid: getVisitDetailsByPatientUuid,
+            getObservationsForVisit:getObservationsForVisit
         }
     }]);

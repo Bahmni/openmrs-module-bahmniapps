@@ -1,14 +1,15 @@
 'use strict';
 
 describe('visitDbService tests', function () {
-    var visitDbService;
+    var visitDbService,encounterDbService;
 
     beforeEach(function () {
         module('bahmni.common.offline');
     });
 
-    beforeEach(inject(['visitDbService', function (visitDbServiceInjected) {
+    beforeEach(inject(['visitDbService','encounterDbService', function (visitDbServiceInjected,encounterDbServiceInjected) {
         visitDbService = visitDbServiceInjected;
+        encounterDbService = encounterDbServiceInjected;
     }]));
 
     it("insert visit and get visit by uuid from lovefield database", function(done){
@@ -69,5 +70,63 @@ describe('visitDbService tests', function () {
         });
     });
 
+    it("should get visit details by PatientUuid", function (done) {
+        var schemaBuilder = lf.schema.create('visit', 1);
+        Bahmni.Tests.OfflineDbUtils.createTable(schemaBuilder, Bahmni.Common.Offline.SchemaDefinitions.Visit);
+        jasmine.getFixtures().fixturesPath = 'base/test/data';
+        var visitJson = JSON.parse(readFixtures('visit.json'));
 
+        schemaBuilder.connect().then(function(db) {
+            var patientUuid = "d07ddb7e-fd8d-4e06-bc44-3bb17507d955";
+
+            visitDbService.insertVisitData(db, visitJson).then(function () {
+                visitDbService.getVisitDetailsByPatientUuid(db, patientUuid).then(function(results) {
+                    expect(results[0].patient.uuid).toBe(patientUuid);
+                    done();
+                });
+            });
+        });
+    });
+
+    it("should not get visit details by PatientUuid for invalid PatientUuid", function (done) {
+        var schemaBuilder = lf.schema.create('visit', 1);
+        Bahmni.Tests.OfflineDbUtils.createTable(schemaBuilder, Bahmni.Common.Offline.SchemaDefinitions.Visit);
+        jasmine.getFixtures().fixturesPath = 'base/test/data';
+        var visitJson = JSON.parse(readFixtures('visit.json'));
+
+        schemaBuilder.connect().then(function(db) {
+            var patientUuid = "invalid-uuid";
+
+            visitDbService.insertVisitData(db, visitJson).then(function () {
+                visitDbService.getVisitDetailsByPatientUuid(db, patientUuid).then(function(results) {
+                    expect(results.length).toBe(0);
+                    done();
+                });
+            });
+        });
+    });
+
+
+    xit("should  get visit summary by visitUuid", function (done) {
+        var schemaBuilder = lf.schema.create('visit', 1);
+        Bahmni.Tests.OfflineDbUtils.createTable(schemaBuilder, Bahmni.Common.Offline.SchemaDefinitions.Visit);
+        Bahmni.Tests.OfflineDbUtils.createTable(schemaBuilder, Bahmni.Common.Offline.SchemaDefinitions.Encounter);
+
+        jasmine.getFixtures().fixturesPath = 'base/test/data';
+        var visitJson = JSON.parse(readFixtures('visit.json'));
+        var encounterJson = JSON.parse(readFixtures('encounter.json'));
+        var visitUuid = "de5d8f4b-cb75-4eff-8637-fd0efc0fb9ad";
+        encounterJson.visitUuid = visitUuid;
+
+        schemaBuilder.connect().then(function(db) {
+            visitDbService.insertVisitData(db, visitJson).then(function () {
+                encounterDbService.insertEncounterData(db, encounterJson).then(function(){
+                    visitDbService.getVisitSummaryByVisitUuid(db, visitUuid).then(function(results) {
+                        expect(results).toBeDefined();
+                        done();
+                    });
+                });
+            });
+        });
+    });
 });

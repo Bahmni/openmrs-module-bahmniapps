@@ -20,7 +20,7 @@ describe('OfflineDbService ', function () {
             locationDbService = jasmine.createSpyObj('locationDbService', ['getLocationByUuid']);
             offlineSearchDbService = jasmine.createSpyObj('offlineSearchDbService', ['init']);
             encounterDbService = jasmine.createSpyObj('encounterDbService', ['insertEncounterData', 'getEncountersByPatientUuid', 'findActiveEncounter', 'getEncountersByVisits', 'getEncounterByEncounterUuid']);
-            visitDbService = jasmine.createSpyObj('visitDbService', ['insertVisitData', 'getVisitByUuid', 'getVisitsByPatientUuid']);
+            visitDbService = jasmine.createSpyObj('visitDbService', ['insertVisitData', 'getVisitByUuid', 'getVisitsByPatientUuid', 'getVisitDetailsByPatientUuid']);
             observationDbService = jasmine.createSpyObj('observationDbService', ['insertObservationsData', 'getObservationsFor']);
             conceptDbService = jasmine.createSpyObj('conceptDbService', ['init', 'getReferenceData', 'getConceptByName', 'insertConceptAndUpdateHierarchy', 'updateChildren', 'updateParentJson', 'getAllParentsInHierarchy']);
             errorLogDbService = jasmine.createSpyObj('errorLogDbService', ['insertLog', 'getErrorLogByUuid', 'deleteByUuid']);
@@ -47,7 +47,7 @@ describe('OfflineDbService ', function () {
         });
     });
 
-    
+
     beforeEach(inject(['offlineDbService', function (offlineDbServiceInjected) {
         offlineDbService = offlineDbServiceInjected;
     }]));
@@ -590,6 +590,18 @@ describe('OfflineDbService ', function () {
                 done();
             });
         });
+
+        it("should call getVisitDetailsByPatientUuid with given patientUuid", function (done) {
+            var schemaBuilder = lf.schema.create('BahmniOfflineDb', 1);
+            schemaBuilder.connect().then(function (db) {
+                offlineDbService.init(db);
+                offlineDbService.getVisitDetailsByPatientUuid("patientUuid");
+
+                expect(visitDbService.getVisitDetailsByPatientUuid.calls.count()).toBe(1);
+                expect(visitDbService.getVisitDetailsByPatientUuid).toHaveBeenCalledWith(db, "patientUuid");
+                done();
+            });
+        });
     });
 
 
@@ -752,5 +764,4 @@ describe('OfflineDbService ', function () {
             });
         });
     });
-
 });
