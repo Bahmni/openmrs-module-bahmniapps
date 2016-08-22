@@ -33,6 +33,13 @@ describe('offlineObservationService', function () {
                         return callback(observationsWithConceptNamesInHierarchy);
                     }
                 };
+            },
+            fetchObsForVisit: function() {
+                return {
+                    then: function (callback) {
+                        return callback(observationJson);
+                    }
+                };
             }
         });
     }));
@@ -246,4 +253,67 @@ describe('offlineObservationService', function () {
         });
     });
 
+    xit('should get all observations if the given conceptNames is not present', function (done) {
+        var params = {visitUuid: 'fc6ede09-f16f-4877-d2f5-ed8b2182ec11'};
+        params.conceptNames = [];
+
+        spyOn(observationsServiceStrategy, 'fetchObsForVisit').and.callFake(function () {
+            return {
+                then: function (callback) {
+                    return callback({"data": [
+                        {
+                            uuid: "uuid1",
+                            visitUuid: 'fc6ede09-f16f-4877-d2f5-ed8b2182ec11'
+                        },
+                        {
+                            uuid: "uuid2",
+                            visitUuid: 'fc6ede09-f16f-4877-d2f5-ed8b2182ec11'
+                        }
+                    ]});
+                }
+            };
+        });
+
+        observationsService.fetch(undefined, undefined, undefined, 0, params.visitUuid, undefined, undefined, undefined).then(function (results) {
+            expect(results.data.length).toBe(2);
+            expect(observationsServiceStrategy.getAllParentsInHierarchy.calls.count()).toBe(0);
+            expect(observationsServiceStrategy.fetch.calls.count()).toBe(1);
+            expect(observationsServiceStrategy.fetch).toHaveBeenCalledWith(params.patientUuid, params.numberOfVisits, params);
+            done();
+        });
+    });
+
+    xit('should not get observations if the given conceptName is present in the db and no obs filled against it', function (done) {
+        var templateConceptName = "Vitals";
+        var params = {
+            patientUuid: 'fc6ede09-f16f-4877-d2f5-ed8b2182ec11',
+            numberOfVisits: 0,
+            scope: undefined,
+            patientProgramUuid: undefined
+        };
+        params.conceptNames = [templateConceptName];
+
+        spyOn(observationsServiceStrategy, 'getAllParentsInHierarchy').and.callFake(function () {
+            return {
+                then: function (callback) {
+                    return callback({"data": ["Vitals"]});
+                }
+            };
+        });
+        spyOn(observationsServiceStrategy, 'fetch').and.callFake(function () {
+            return {
+                then: function (callback) {
+                    return callback([]);
+                }
+            };
+        });
+        var patientUuid = "fc6ede09-f16f-4877-d2f5-ed8b2182ec11";
+        observationsService.fetch(patientUuid, [templateConceptName], undefined, 0, undefined, undefined, undefined, undefined).then(function (results) {
+            expect(results.data.length).toBe(0);
+            expect(observationsServiceStrategy.getAllParentsInHierarchy.calls.count()).toBe(1);
+            expect(observationsServiceStrategy.fetch.calls.count()).toBe(1);
+            expect(observationsServiceStrategy.fetch).toHaveBeenCalledWith(params.patientUuid, params.numberOfVisits, params);
+            done();
+        });
+    });
 });
