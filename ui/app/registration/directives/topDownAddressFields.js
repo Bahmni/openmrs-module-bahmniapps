@@ -77,10 +77,14 @@ angular.module('bahmni.registration')
             return parentFieldName;
         };
 
-        $scope.isReadOnly = function (fieldName) {
+        $scope.isReadOnly = function (addressLevel) {
             if (!$scope.address) {
                 return false;
             }
+            if(!addressLevel.isStrictEntry){
+                return false;
+            }
+            var fieldName = addressLevel.addressField;
             var parentFieldName = $scope.findParentField(fieldName);
             var parentValue = $scope.address[parentFieldName];
             var parentValueInvalid = isParentValueInvalid(parentFieldName);
