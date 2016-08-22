@@ -66,6 +66,7 @@ angular.module('bahmni.common.domain')
 
             if (visitUuid) {
                 params.visitUuid = visitUuid;
+                params.patientUuid = patientUuid;
                 params.scope = scope;
                 params.conceptNames = conceptNames;
                 return fetchAndFilterObservationsForVisit(params).then(function (results) {

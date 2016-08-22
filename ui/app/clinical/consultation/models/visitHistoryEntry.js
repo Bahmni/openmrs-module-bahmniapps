@@ -30,7 +30,8 @@ Bahmni.Clinical.VisitHistoryEntry = (function(){
 	    },
 
 	    getVisitType: function() {
-	    	return this.visitType.name || this.visitType.display;
+	    	if (this.visitType)
+	    		return this.visitType.name || this.visitType.display;
 		}
 	};
 
