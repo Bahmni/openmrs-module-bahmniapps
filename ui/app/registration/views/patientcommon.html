@@ -146,70 +146,70 @@
                  field-validation="::fieldValidation" ng-if="::addressHierarchyConfigs.showAddressFieldsTopDown"
                  strict-autocomplete-from-level="::addressHierarchyConfigs.strictAutocompleteFromLevel"></section>
 
-        <legend class="registraion_legend">
+        <legend class="registraion_legend" ng-if="patient.extraIdentifiers.length>0">
             <span class="mylegend">Additional Identifiers</span>
         </legend>
 
         <section>
             <!--edit patient flow-->
-            <div ng-if="patient.uuid != undefined">
-                <article ng-repeat="identifier in patient.extraIdentifiers" class="form-field existing-patient">
-                    <div class="field-attribute">
-                        <label class="control-label" for="patientID">{{:: identifier.identifierType.name}}
-                            <span ng-show=":: identifier.identifierType.required && !identifier.hasIdentifierSources()"
+           <section class="form-field-inline" >
+                <div ng-if="patient.uuid != undefined">
+                    <article ng-repeat="identifier in patient.extraIdentifiers" class="form-field existing-patient">
+                        <div class="field-attribute">
+                            <label class="control-label" for="patientID">{{:: identifier.identifierType.name}}
+                                <span ng-show=":: identifier.identifierType.required && !identifier.hasIdentifierSources()"
+                                      class="asterick">*</span>
+                            </label>
+                        </div>
+                        <div class="field-value showOn-desktop-registration">
+                            <input type="text" ng-model="identifier.identifier" disabled
+                                   ng-if="identifier.hasIdentifierSources()"/>
+
+                            <input type="text" id="registrationNumber" ng-model="identifier.registrationNumber"
+                                   ng-if="!identifier.hasIdentifierSources()"
+                                   non-blank="identifier.identifierType.required && !identifier.hasIdentifierSources()"
+                                   pattern-validate ng-change="identifier.generate()">
+                        </div>
+                    </article>
+                </div>
+                <div ng-if="patient.uuid == undefined">
+                    <article ng-repeat="identifier in patient.extraIdentifiers"
+                             class="form-field existing-patient">
+                        <div class="field-attribute">
+                            <label class="control-label" for="patientID">{{:: identifier.identifierType.name}}
+                            <span ng-show="::identifier.identifierType.required && !identifier.hasIdentifierSources()"
                                   class="asterick">*</span>
-                        </label>
-                    </div>
-                    <div class="field-value showOn-desktop-registration">
-                        <input type="text" ng-model="identifier.identifier" disabled
-                               ng-if="identifier.hasIdentifierSources()"/>
+                            </label>
+                        </div>
+                        <div ng-show="::(identifier.hasIdentifierSources() && !identifier.hasIdentifierSourceWithEmptyPrefix())"
+                             class="field-value" id="patientID">
+                            <select id="identifierPrefix" ng-model="identifier.selectedIdentifierSource"
+                                    ng-options="identifierSource.prefix for identifierSource in ::identifier.identifierType.identifierSources"
+                                    ng-change="patient.generateIdentifier(identifier)"
+                                    required>
+                            </select>
+                        </div>
 
-                        <input type="text" id="registrationNumber" ng-model="identifier.registrationNumber"
-                               ng-if="!identifier.hasIdentifierSources()"
-                               placeholder="{{:: identifier.identifierType.description}}"
-                               non-blank="identifier.identifierType.required && !identifier.hasIdentifierSources()"
-                               pattern-validate ng-change="identifier.generate()">
-                    </div>
-                </article>
-            </div>
-            <div ng-if="patient.uuid == undefined">
-                <article ng-repeat="identifier in patient.extraIdentifiers"
-                         class="form-field existing-patient">
-                    <div class="field-attribute">
-                        <label class="control-label" for="patientID">{{:: identifier.identifierType.name}}
-                        <span ng-show="::identifier.identifierType.required && !identifier.hasIdentifierSources()"
-                              class="asterick">*</span>
-                        </label>
-                    </div>
-                    <div ng-show="::(identifier.hasIdentifierSources() && !identifier.hasIdentifierSourceWithEmptyPrefix())"
-                         class="field-value" id="patientID">
-                        <select id="identifierPrefix" ng-model="identifier.selectedIdentifierSource"
-                                ng-options="identifierSource.prefix for identifierSource in ::identifier.identifierType.identifierSources"
-                                ng-change="patient.generateIdentifier(identifier)"
-                                required>
-                        </select>
-                    </div>
-
-                    <div class="field-value field-value-small-screen">
-                        <input type="text" id="registrationNumber" ng-model="identifier.registrationNumber"
-                               placeholder="{{:: identifier.identifierType.description}}"
-                               non-blank="identifier.isIdentifierRequired()" pattern-validate
-                               ng-change="identifier.generate()" focus-on="identifier.hasOldIdentifier"
-                               ng-show="identifier.hasOldIdentifier || !identifier.hasIdentifierSources()">
-                        <div ng-show="::identifier.hasIdentifierSources()" class="fl">
-                            <div class="field-attribute hasOldIdentifier-field-attribute">
-                                <label for="hasOldIdentifier" class="control-label">{{::'REGISTRATION_LABEL_ENTER_ID' |
-                                    translate}}</label>
-                            </div>
-                            <div class="field-value">
-                                <input class="input-label-inline" ng-show="::showEnterID" type="checkbox"
-                                       id="hasOldIdentifier" ng-model="identifier.hasOldIdentifier"
-                                       ng-change="identifier.clearRegistrationNumber()">
+                        <div class="field-value field-value-small-screen">
+                            <input type="text" id="registrationNumber" ng-model="identifier.registrationNumber"
+                                   non-blank="identifier.isIdentifierRequired()" pattern-validate
+                                   ng-change="identifier.generate()" focus-on="identifier.hasOldIdentifier"
+                                   ng-show="identifier.hasOldIdentifier || !identifier.hasIdentifierSources()">
+                            <div ng-show="::identifier.hasIdentifierSources()" class="fl">
+                                <div class="field-attribute hasOldIdentifier-field-attribute">
+                                    <label for="hasOldIdentifier" class="control-label">{{::'REGISTRATION_LABEL_ENTER_ID' |
+                                        translate}}</label>
+                                </div>
+                                <div class="field-value">
+                                    <input class="input-label-inline" ng-show="::showEnterID" type="checkbox"
+                                           id="hasOldIdentifier" ng-model="identifier.hasOldIdentifier"
+                                           ng-change="identifier.clearRegistrationNumber()">
+                                </div>
                             </div>
                         </div>
-                    </div>
-                </article>
-            </div>
+                    </article>
+                </div>
+           </section>
         </section>
 
         <legend class="registraion_legend" ng-if="patientConfiguration.customAttributeRows().length > 0">
