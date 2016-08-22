@@ -58,6 +58,9 @@
     }
   }
   .disableBacteriologyInRetroMode{
+    label{
+      pointer-events: none;
+    }
     button, input, textarea {
       pointer-events: none;
       background: $lightestGray;
