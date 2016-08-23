@@ -157,6 +157,9 @@ Bahmni.Common.Offline.SchemaDefinitions = {
                 name: 'gender',
                 type: 'STRING'
             }, {
+                name: 'voided',
+                type: 'BOOLEAN'
+            }, {
                 name: 'birthdate',
                 type: 'DATE_TIME'
             }, {

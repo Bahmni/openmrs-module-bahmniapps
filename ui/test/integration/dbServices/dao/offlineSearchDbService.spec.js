@@ -177,6 +177,23 @@ describe('offlineSearchDbService', function () {
 
     });
 
+    it('Should not get patient on search, if the patient is voided', function (done) {
+        var searchString = "test";
+        var params = {
+            q: searchString,
+            s: "byIdOrNameOrVillage",
+            startIndex: 0,
+            addressFieldName: 'address2'
+        };
+
+        patientJson.patient.voided = true;
+        createAndSearch(params, done).then(function (result) {
+            expect(result.data.pageOfResults.length).toBe(0);
+            patientJson.patient.voided = false;
+            done();
+        });
+    });
+
     it('Should search for patient by Education(custom attribute)', function (done) {
 
         var searchString = '6th to 9th';

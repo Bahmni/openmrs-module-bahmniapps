@@ -51,7 +51,8 @@ angular.module('bahmni.common.offline')
 
             return patientDbService.insertPatientData(db, patientData).then(function (patientUuid) {
                 patientAttributeDbService.insertAttributes(db, patientUuid, person.attributes);
-                patientAddressDbService.insertAddress(db, patientUuid, person.addresses[0]);
+                var address = person.addresses[0] || person.preferredAddress;
+                patientAddressDbService.insertAddress(db, patientUuid, address);
                 patientIdentifierDbService.insertPatientIdentifiers(db, patientUuid, patient.identifiers);
                 return patientData;
             });
