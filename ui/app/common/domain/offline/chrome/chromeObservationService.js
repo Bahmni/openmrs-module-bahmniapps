@@ -9,7 +9,7 @@ angular.module('bahmni.common.domain')
                 var mappedVisitUuids = _.map(visitUuids, function (visitUuid) {
                     return visitUuid.uuid;
                 });
-                params.visitUuids = params.visitUuid? [params.visitUuid] : (mappedVisitUuids||[]) ;
+                params.visitUuids = params.visitUuid ? [params.visitUuid] : (mappedVisitUuids || []);
                 offlineDbService.getObservationsFor(params).then(function (obs) {
                     var mappedObs = _.map(obs, function (ob) {
                         return ob.observation;
