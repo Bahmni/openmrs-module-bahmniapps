@@ -11,7 +11,8 @@ angular.module('bahmni.common.offline').service('initializeOfflineSchema', [func
         "STRING": lf.Type.STRING,
         "DATE_TIME": lf.Type.DATE_TIME,
         "OBJECT": lf.Type.OBJECT,
-        "ARRAY_BUFFER": lf.Type.ARRAY_BUFFER
+        "ARRAY_BUFFER": lf.Type.ARRAY_BUFFER,
+        "BOOLEAN": lf.Type.BOOLEAN
     };
 
     var upgradeExistingSchemaFn = function(migrations, rawDb) {

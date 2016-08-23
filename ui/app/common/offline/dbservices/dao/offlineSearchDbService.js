@@ -47,8 +47,8 @@ angular.module('bahmni.common.offline')
                 .then(function (attributeTypeIds) {
                     var query = db.select(p.uuid.as('uuid'))
                         .from(p)
-                        .innerJoin(pi, p.uuid.eq(pi.patientUuid))
                         .innerJoin(padd, p.uuid.eq(padd.patientUuid))
+                        .leftOuterJoin(pi, p.uuid.eq(pi.patientUuid))
                         .leftOuterJoin(pa, p.uuid.eq(pa.patientUuid))
                         .leftOuterJoin(encounter, p.uuid.eq(encounter.patientUuid))
                         .leftOuterJoin(pat, pa.attributeTypeId.eq(pat.attributeTypeId));
@@ -91,6 +91,7 @@ angular.module('bahmni.common.offline')
                         predicates.push(pa.attributeValue.match(new RegExp(params.customAttribute, 'i')));
                     }
 
+                    predicates.push(p.voided.eq(false));
                     var whereCondition = lf.op.and.apply(null, predicates);
 
                     if (!_.isEmpty(predicates)) {
@@ -104,8 +105,8 @@ angular.module('bahmni.common.offline')
                                 p.dateCreated.as('dateCreated'), p.birthdate.as('birthdate'), p.gender.as('gender'), p.uuid.as('uuid'), padd[addressFieldName],
                                 pat.attributeName.as('attributeName'), pa.attributeValue.as('attributeValue'), pat.format.as('attributeFormat'))
                                 .from(p)
-                                .innerJoin(pi, p.uuid.eq(pi.patientUuid))
                                 .innerJoin(padd, p.uuid.eq(padd.patientUuid))
+                                .leftOuterJoin(pi, p.uuid.eq(pi.patientUuid))
                                 .leftOuterJoin(pa, p.uuid.eq(pa.patientUuid))
                                 .leftOuterJoin(pat, pa.attributeTypeId.eq(pat.attributeTypeId))
                                 .where(p.uuid.in(_.map(tempResults, function (tempResult) {

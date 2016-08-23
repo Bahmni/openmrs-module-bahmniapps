@@ -7,7 +7,7 @@ angular.module('bahmni.common.offline')
             var p = db.getSchema().table('patient');
             return db.select(p.patientJson.as('patient'))
                 .from(p)
-                .where(p.uuid.eq(uuid)).exec()
+                .where(lf.op.and(p.uuid.eq(uuid), p.voided.eq(false))).exec()
                 .then(function (result) {
                     return result[0];
                 });
@@ -18,14 +18,14 @@ angular.module('bahmni.common.offline')
             var patientTable, person;
             patientTable = db.getSchema().table('patient');
             person = patient.person;
-            var personName = person.names[0];
-
+            var personName = person.names[0] || person.preferredName;
             var row = patientTable.createRow({
                 'uuid': patient.uuid,
                 'givenName': personName.givenName,
                 'middleName': personName.middleName,
                 'familyName': personName.familyName,
                 'gender': person.gender,
+                'voided': patient.voided || false,
                 'birthdate': new Date(person.birthdate),
                 'dateCreated': new Date(patient.person.auditInfo.dateCreated),
                 'patientJson': patient

@@ -79,17 +79,12 @@ angular.module('bahmni.common.offline')
                     var deferrable = $q.defer();
                     switch (event.category) {
                         case 'patient':
-                            if(!response.data.voided) {
-                                offlineDbService.getAttributeTypes().then(function (attributeTypes) {
-                                    mapAttributesToPostFormat(response.data.person.attributes, attributeTypes);
-                                    offlineDbService.createPatient({patient: response.data}).then(function () {
-                                        deferrable.resolve();
-                                    });
+                            offlineDbService.getAttributeTypes().then(function (attributeTypes) {
+                                mapAttributesToPostFormat(response.data.person.attributes, attributeTypes);
+                                offlineDbService.createPatient({patient: response.data}).then(function () {
+                                    deferrable.resolve();
                                 });
-                            }
-                            else {
-                                deferrable.resolve();
-                            }
+                            });
                             break;
                         case 'Encounter':
                         case 'SHREncounter':

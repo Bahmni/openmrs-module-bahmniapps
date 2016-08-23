@@ -10,7 +10,8 @@ Bahmni.Tests.OfflineDbUtils = {
              "STRING": lf.Type.STRING,
              "DATE_TIME": lf.Type.DATE_TIME,
              "OBJECT": lf.Type.OBJECT,
-             "ARRAY_BUFFER": lf.Type.ARRAY_BUFFER
+             "ARRAY_BUFFER": lf.Type.ARRAY_BUFFER,
+             "BOOLEAN": lf.Type.BOOLEAN
          };
 
         var table = schemaBuilder.createTable(tableDefinition.tableName);
