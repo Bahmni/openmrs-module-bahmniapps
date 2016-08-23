@@ -1,13 +1,13 @@
 'use strict';
 
 angular.module('bahmni.registration')
-    .controller('SearchPatientController', ['$rootScope', '$scope', '$location', '$window', 'spinner', 'patientService', 'appService', 'Preferences',
+    .controller('SearchPatientController', ['$rootScope', '$scope', '$location', '$window', 'spinner', 'patientService', 'appService',
         'messagingService', '$translate', '$filter',
-        function ($rootScope, $scope, $location, $window, spinner, patientService, appService, preferences, messagingService, $translate,$filter) {
-
-            $scope.identifierTypes = $rootScope.patientConfiguration.identifierTypes;
-            $scope.identifierSources = _.flatten(_.map($scope.identifierTypes,"identifierSources"));
+        function ($rootScope, $scope, $location, $window, spinner, patientService, appService, messagingService, $translate, $filter) {
             $scope.results = [];
+            $scope.extraIdentifierTypes = _.filter($rootScope.patientConfiguration.identifierTypes, function (identifierType) {
+                return !identifierType.primary
+            });
             var searching = false;
             var maxAttributesFromConfig = 5;
             var allSearchConfigs = appService.getAppDescriptor().getConfigValue("patientSearch") || {};
@@ -46,23 +46,12 @@ angular.module('bahmni.registration')
                 $scope.searchParameters.programAttributeFieldValue = searchParameters.programAttributeFieldValue || '';
                 $scope.searchParameters.addressSearchResultsConfig = searchParameters.addressSearchResultsConfig || '';
                 $scope.searchParameters.personSearchResultsConfig = searchParameters.personSearchResultsConfig || '';
-                var identifierPrefix = searchParameters.identifierPrefix;
-                if (!identifierPrefix || identifierPrefix.length === 0) {
-                    identifierPrefix = preferences.identifierPrefix;
-                }
-                $scope.identifierSources.forEach(function (identifierSource) {
-                    if (identifierPrefix === identifierSource.prefix) {
-                        $scope.searchParameters.identifierPrefix = identifierSource;
-                    }
-                });
-                $scope.searchParameters.identifierPrefix = $scope.searchParameters.identifierPrefix || $scope.identifierTypes[0];
 
                 $scope.searchParameters.registrationNumber = searchParameters.registrationNumber || "";
                 if (hasSearchParameters()) {
                     searching = true;
                     var searchPromise = patientService.search(
                         $scope.searchParameters.name,
-                        undefined,
                         undefined,
                         $scope.addressSearchConfig.field,
                         $scope.searchParameters.addressFieldValue,
@@ -74,6 +63,7 @@ angular.module('bahmni.registration')
                         $scope.addressSearchResultsConfig.fields,
                         $scope.personSearchResultsConfig.fields
                     ).then(function(response) {
+                        mapExtraIdentifiers(response);
                         mapCustomAttributesSearchResults(response);
                         mapAddressAttributesSearchResults(response);
                         mapProgramAttributesSearchResults(response);
@@ -99,6 +89,14 @@ angular.module('bahmni.registration')
                     commaSeparatedAttributeValues = commaSeparatedAttributeValues + attr + ", ";
                 });
                 return commaSeparatedAttributeValues.substring(0, commaSeparatedAttributeValues.length-2);
+            };
+
+            var mapExtraIdentifiers = function (data) {
+                if (data !== "Searching") {
+                    _.each(data.pageOfResults, function (result) {
+                        result.extraIdentifiers = result.extraIdentifiers && JSON.parse(result.extraIdentifiers);
+                    })
+                }
             };
 
             var mapCustomAttributesSearchResults = function(data){
@@ -128,7 +126,7 @@ angular.module('bahmni.registration')
                         _.each(arrayOfStringOfKeysValue, function(keyValueString){
                             var keyValueArray = keyValueString.split('":"');
                             var key = keyValueArray[0];
-                            var value = keyValueArray[1]
+                            var value = keyValueArray[1];
                             if(! _.includes(_.keys(programAttributesObj), key)) {
                                 programAttributesObj[key] = [];
                                 programAttributesObj[key].push(value);
@@ -140,7 +138,7 @@ angular.module('bahmni.registration')
                         result.patientProgramAttributeValue = programAttributesObj;
                     });
                 }
-            }
+            };
 
             var showSearchResults = function (searchPromise) {
                 $scope.noMoreResultsPresent = false;
@@ -259,19 +257,7 @@ angular.module('bahmni.registration')
 
                 var patientIdentifier = $scope.searchParameters.registrationNumber;
 
-                // strip off the identifier prefix from the identifier itself if it exists
-                $scope.identifierSources.forEach(function (identifierSource) {
-                    var regex = new RegExp('^' + identifierSource.prefix, 'i');
-                    if (regex.test(patientIdentifier)) {
-                        patientIdentifier = patientIdentifier.replace(regex, '');
-                        $scope.searchParameters.identifierPrefix = identifierSource;  // make sure that the identifier prefix search parameter is set to the prefix we found
-                    }
-                });
-
-                preferences.identifierPrefix = $scope.searchParameters.identifierPrefix ? $scope.searchParameters.identifierPrefix.prefix : "";
-
                 $location.search({
-                    identifierPrefix: preferences.identifierPrefix,
                     registrationNumber: $scope.searchParameters.registrationNumber,
                     programAttributeFieldName: $scope.programAttributesSearchConfig.field,
                     patientAttributes : $scope.customAttributesSearchConfig.fields,
@@ -280,10 +266,11 @@ angular.module('bahmni.registration')
                     personSearchResultsConfig : $scope.personSearchResultsConfig.fields
                 });
 
-                var searchPromise = patientService.search(undefined, patientIdentifier, preferences.identifierPrefix, $scope.addressSearchConfig.field, undefined, undefined, undefined, $scope.customAttributesSearchConfig.fields, $scope.programAttributesSearchConfig.field, $scope.searchParameters.programAttributeFieldValue, $scope.addressSearchResultsConfig.fields, $scope.personSearchResultsConfig.fields).then(function (data) {
+                var searchPromise = patientService.search(undefined, patientIdentifier, $scope.addressSearchConfig.field, undefined, undefined, undefined, $scope.customAttributesSearchConfig.fields, $scope.programAttributesSearchConfig.field, $scope.searchParameters.programAttributeFieldValue, $scope.addressSearchResultsConfig.fields, $scope.personSearchResultsConfig.fields, $scope.isExtraIdentifierConfigured()).then(function (data) {
+                    mapExtraIdentifiers(data);
                     mapCustomAttributesSearchResults(data);
                     mapAddressAttributesSearchResults(data);
-                    mapProgramAttributesSearchResults(data)
+                    mapProgramAttributesSearchResults(data);
                     if (data.pageOfResults.length === 1) {
                         var patient = data.pageOfResults[0];
                         var forwardUrl = appService.getAppDescriptor().getConfigValue("searchByIdForwardUrl") || "/patient/{{patientUuid}}";
@@ -398,14 +385,9 @@ angular.module('bahmni.registration')
 
             $scope.extensionActionText = function (extension) {
                 return $filter('titleTranslate')(extension);
-            }
-
-            $scope.hasIdentifierSources = function(){
-                return $scope.identifierSources.length > 0;
             };
 
-            $scope.hasIdentifierSourceWithEmptyPrefix = function () {
-                var identifierSources = $scope.identifierSources;
-                return identifierSources.length === 1 && identifierSources[0].prefix === "";
+            $scope.isExtraIdentifierConfigured = function () {
+                return !_.isEmpty($scope.extraIdentifierTypes)
             }
         }]);
