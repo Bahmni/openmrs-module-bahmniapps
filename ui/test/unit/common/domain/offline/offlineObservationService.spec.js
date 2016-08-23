@@ -69,7 +69,7 @@ describe('offlineObservationService', function () {
                 }
             };
         });
-        var result = observationsService.fetch(params.patientUuid, [childConceptNameNotInDb], undefined, 0, undefined, undefined, undefined,undefined).then(function(results){
+        observationsService.fetch(params.patientUuid, [childConceptNameNotInDb], undefined, 0, undefined, undefined, undefined,undefined).then(function(results){
             expect(results.data.length).toBe(0);
             expect(observationsServiceStrategy.getAllParentsInHierarchy.calls.count()).toBe(1);
             expect(observationsServiceStrategy.fetch.calls.count()).toBe(1);
@@ -121,7 +121,7 @@ describe('offlineObservationService', function () {
                 }
             };
         });
-        var result = observationsService.fetch(params.patientUuid, [templatetName], undefined, 0, undefined, undefined, undefined,undefined).then(function(results){
+        observationsService.fetch(params.patientUuid, [templatetName], undefined, 0, undefined, undefined, undefined,undefined).then(function(results){
             expect(results.data.length).toBe(1);
             expect(results.data[0].concept.name).toBe(templatetName);
             expect(observationsServiceStrategy.getAllParentsInHierarchy.calls.count()).toBe(1);
@@ -140,8 +140,7 @@ describe('offlineObservationService', function () {
         spyOn(observationsServiceStrategy, 'getAllParentsInHierarchy').and.callThrough();
         spyOn(observationsServiceStrategy, 'fetch').and.callThrough();
 
-        var patientUuid = "fc6ede09-f16f-4877-d2f5-ed8b2182ec11";
-        var result = observationsService.fetch(params.patientUuid, [firstLevelchildConceptName], undefined, 0, undefined, undefined, undefined,undefined).then(function(results){
+        observationsService.fetch(params.patientUuid, [firstLevelchildConceptName], undefined, 0, undefined, undefined, undefined,undefined).then(function(results){
             expect(results.data.length).toBe(3);
             expect(results.data[0].concept.name).toBe(firstLevelchildConceptName);
             expect(results.data[1].concept.name).toBe(firstLevelchildConceptName);
@@ -169,7 +168,7 @@ describe('offlineObservationService', function () {
         spyOn(observationsServiceStrategy, 'fetch').and.callThrough();
 
         var patientUuid = "fc6ede09-f16f-4877-d2f5-ed8b2182ec11";
-        var result = observationsService.fetch(patientUuid, [secondeLevelchildConceptName], undefined, 0, undefined, undefined, undefined,undefined).then(function(results){
+        observationsService.fetch(patientUuid, [secondeLevelchildConceptName], undefined, 0, undefined, undefined, undefined,undefined).then(function(results){
             expect(results.data.length).toBe(1);
             expect(results.data[0].concept.name).toBe(secondeLevelchildConceptName);
             expect(observationsServiceStrategy.getAllParentsInHierarchy.calls.count()).toBe(1);
@@ -187,7 +186,7 @@ describe('offlineObservationService', function () {
         spyOn(observationsServiceStrategy, 'fetch').and.callThrough();
 
         var patientUuid = "fc6ede09-f16f-4877-d2f5-ed8b2182ec11";
-        var result = observationsService.fetch(patientUuid, [rootConcept, childConcept], undefined, 0, undefined, undefined, undefined,undefined).then(function(results){
+        observationsService.fetch(patientUuid, [rootConcept, childConcept], undefined, 0, undefined, undefined, undefined,undefined).then(function(results){
             expect(results.data.length).toBe(2);
             expect(results.data[0].concept.name).toBe(rootConcept);
             expect(results.data[1].concept.name).toBe(childConcept);
@@ -217,7 +216,7 @@ describe('offlineObservationService', function () {
 
         var childConcept = "Oral antibiotics given";
         var patientUuid = "fc6ede09-f16f-4877-d2f5-ed8b2182ec11";
-        var result = observationsService.fetch(patientUuid, [childConcept], undefined, 0, undefined, undefined, undefined,undefined).then(function(results){
+        observationsService.fetch(patientUuid, [childConcept], undefined, 0, undefined, undefined, undefined,undefined).then(function(results){
             expect(results.data.length).toBe(0);
             expect(observationsServiceStrategy.getAllParentsInHierarchy.calls.count()).toBe(1);
             expect(observationsServiceStrategy.fetch.calls.count()).toBe(1);
@@ -253,9 +252,13 @@ describe('offlineObservationService', function () {
         });
     });
 
-    xit('should get all observations if the given conceptNames is not present', function (done) {
-        var params = {visitUuid: 'fc6ede09-f16f-4877-d2f5-ed8b2182ec11'};
-        params.conceptNames = [];
+    it('should get all observations if the given conceptNames is not present', function (done) {
+        var params = {
+            visitUuid: 'fc6ede09-f16f-4877-d2f5-ed8b2182ec11',
+            patientUuid: undefined,
+            scope: undefined,
+            conceptNames: undefined
+        };
 
         spyOn(observationsServiceStrategy, 'fetchObsForVisit').and.callFake(function () {
             return {
@@ -274,22 +277,22 @@ describe('offlineObservationService', function () {
             };
         });
 
+        spyOn(observationsServiceStrategy, 'getAllParentsInHierarchy').and.returnValue({});
+
         observationsService.fetch(undefined, undefined, undefined, 0, params.visitUuid, undefined, undefined, undefined).then(function (results) {
             expect(results.data.length).toBe(2);
-            expect(observationsServiceStrategy.getAllParentsInHierarchy.calls.count()).toBe(0);
-            expect(observationsServiceStrategy.fetch.calls.count()).toBe(1);
-            expect(observationsServiceStrategy.fetch).toHaveBeenCalledWith(params.patientUuid, params.numberOfVisits, params);
+            expect(observationsServiceStrategy.getAllParentsInHierarchy).not.toHaveBeenCalled();
+            expect(observationsServiceStrategy.fetchObsForVisit).toHaveBeenCalledWith(params);
             done();
         });
     });
 
-    xit('should not get observations if the given conceptName is present in the db and no obs filled against it', function (done) {
+    it('should get specific observations for the given conceptNames and visitUuid', function (done) {
         var templateConceptName = "Vitals";
         var params = {
             patientUuid: 'fc6ede09-f16f-4877-d2f5-ed8b2182ec11',
-            numberOfVisits: 0,
-            scope: undefined,
-            patientProgramUuid: undefined
+            visitUuid: 'fc6ede09-f16f-4877-d2f5-ed8b2182ec12',
+            scope: undefined
         };
         params.conceptNames = [templateConceptName];
 
@@ -308,7 +311,7 @@ describe('offlineObservationService', function () {
             };
         });
         var patientUuid = "fc6ede09-f16f-4877-d2f5-ed8b2182ec11";
-        observationsService.fetch(patientUuid, [templateConceptName], undefined, 0, undefined, undefined, undefined, undefined).then(function (results) {
+        observationsService.fetch(patientUuid, [templateConceptName], undefined, 0, params.visitUuid, undefined, undefined, undefined).then(function (results) {
             expect(results.data.length).toBe(0);
             expect(observationsServiceStrategy.getAllParentsInHierarchy.calls.count()).toBe(1);
             expect(observationsServiceStrategy.fetch.calls.count()).toBe(1);
