@@ -45,14 +45,14 @@ angular.module('bahmni.registration')
         };
 
         var getAddressDataResults = function (data) {
-            return data.data.map(function (addressField) {
+            return data.data ? data.data.map(function (addressField) {
                 var parentName = getNextAvailableParentName(addressField);
                 return {
                     'value': addressField.name,
                     'label': addressField.name + ( parentName ? ", " + parentName : "" ),
                     addressField: addressField
                 };
-            });
+            }) : [];
         };
 
 
