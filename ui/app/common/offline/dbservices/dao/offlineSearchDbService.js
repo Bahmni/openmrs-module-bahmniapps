@@ -109,14 +109,14 @@ angular.module('bahmni.common.offline')
                                 .leftOuterJoin(pi, p.uuid.eq(pi.patientUuid))
                                 .leftOuterJoin(pa, p.uuid.eq(pa.patientUuid))
                                 .leftOuterJoin(pat, pa.attributeTypeId.eq(pat.attributeTypeId))
-                                .where(p.uuid.in(_.map(tempResults, function (tempResult) {
+                                .where(lf.op.and(p.uuid.in(_.map(tempResults, function (tempResult) {
                                     return tempResult.uuid;
-                                }))).
+                                })), pi.primary.eq(true))).
                                 orderBy(p.dateCreated, lf.Order.DESC).exec()
                                 .then(function (results) {
 
                                     var groupedResults = _.groupBy(results, function (res) {
-                                        return res.uuid+res.identifier;
+                                        return res.uuid;
                                     });
                                     var patient;
 

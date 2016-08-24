@@ -36,7 +36,29 @@ describe('OfflineSyncService', function () {
                                 uuid: "attributeValueUuid"
                             }
                         }]
-                    }
+                    },
+                    identifiers: [
+                        {
+                            "display": "Bahmni Id = GAN200076",
+                            "uuid": "9cc96aeb-2877-4340-b9fd-abba016a84a3",
+                            "identifier": "GAN200076",
+                            "identifierSourceUuid": "81f27b48-8792-11e5-ade6-005056b07f03",
+                            "identifierType": {
+                                "uuid": "81433852-3f10-11e4-adec-0800271c1b75"
+                            },
+                            "voided": false
+                        },
+                        {
+                            "uuid": "99996aeb-2877-4340-b9fd-abba016a84a3",
+                            "identifier": "SecodaryIdentifier",
+                            "identifierSourceUuid": "99997b48-8792-11e5-ade6-005056b07f03",
+                            "identifierType": {
+                                "uuid": "99993852-3f10-11e4-adec-0800271c1b75",
+                                "display": "Bahmni Sec Id"
+                            },
+                            "voided": false
+                        }
+                    ]
                 };
                 concept = {
                     uuid: 'dataUuid',
@@ -90,7 +112,25 @@ describe('OfflineSyncService', function () {
                             }
                         };
                     },
-                    insertConceptAndUpdateHierarchy: function () {
+                    getReferenceData: function () {
+                        return {
+                            then: function (callback) {
+                                return callback({
+                                    data: [
+                                        {
+                                            uuid: "81433852-3f10-11e4-adec-0800271c1b75",
+                                            primary: true
+                                        },
+                                        {
+                                            uuid: "99993852-3f10-11e4-adec-0800271c1b75",
+                                            primary: false
+                                        }
+                                    ]
+                                });
+                            }
+                        };
+                    },
+                insertConceptAndUpdateHierarchy: function () {
                         return {
                             then: function (callback) {
                                 return callback({});
@@ -364,7 +404,29 @@ describe('OfflineSyncService', function () {
                                 uuid: "attributeValueUuid"
                             }
                         }]
-                    }
+                    },
+                    identifiers: [
+                        {
+                            "display": "Bahmni Id = GAN200076",
+                            "uuid": "9cc96aeb-2877-4340-b9fd-abba016a84a3",
+                            "identifier": "GAN200076",
+                            "identifierSourceUuid": "81f27b48-8792-11e5-ade6-005056b07f03",
+                            "identifierType": {
+                                "uuid": "81433852-3f10-11e4-adec-0800271c1b75"
+                            },
+                            "voided": false
+                        },
+                        {
+                            "uuid": "99996aeb-2877-4340-b9fd-abba016a84a3",
+                            "identifier": "SecodaryIdentifier",
+                            "identifierSourceUuid": "99997b48-8792-11e5-ade6-005056b07f03",
+                            "identifierType": {
+                                "uuid": "99993852-3f10-11e4-adec-0800271c1b75",
+                                "display": "Bahmni Sec Id"
+                            },
+                            "voided": false
+                        }
+                    ]
                 };
                 concept = {
                     uuid: 'dataUuid',
@@ -416,6 +478,23 @@ describe('OfflineSyncService', function () {
                         return {
                             then: function (callback) {
                                 return callback({});
+                            }
+                        };
+                    },
+                    getReferenceData: function () {
+                        return {
+                            then: function (callback) {
+                                return callback({
+                                    data: [
+                                        {
+                                            uuid: "81433852-3f10-11e4-adec-0800271c1b75",
+                                            primary: true
+                                        }, {
+                                            uuid: "99993852-3f10-11e4-adec-0800271c1b75",
+                                            primary: false
+                                        }
+                                    ]
+                                });
                             }
                         };
                     }
@@ -628,5 +707,47 @@ describe('OfflineSyncService', function () {
             expect(offlineDbService.createPatient).toHaveBeenCalledWith({patient:patient});
             expect(offlineDbService.insertAddressHierarchy.calls.count()).toBe(0);
         });
-    })
+
+        it('should map patient identifiers data to contain identifierType primary', function () {
+            var categories = [
+                'TransactionalData'
+            ];
+            var patientEvent = {
+                object: 'patientUrl',
+                category: 'patient',
+                uuid: 'uuid1'
+            };
+
+            var marker = {markerName: 'TransactionalData', catchmentNumber: 202020};
+
+            spyOn(offlineService, 'getItem').and.returnValue(categories);
+            spyOn(offlineService, 'setItem').and.callThrough();
+            spyOn(offlineDbService, 'getMarker').and.callThrough(function () {
+                return {
+                    then: function () {
+                        return marker;
+                    }
+                }
+            });
+            spyOn(eventLogService, 'getEventsFor').and.callFake(function (category) {
+                return {
+                    then: function (callback) {
+                        if (!marker.lastReadEventUuid)
+                            return callback({
+                                data: [patientEvent]
+                            });
+                    }
+                }
+            });
+            spyOn(offlineDbService, 'createPatient').and.callThrough();
+
+            offlineSyncService.sync();
+            $rootScope.$digest();
+
+            expect(patient.identifiers[0].identifierType.primary).not.toBeUndefined();
+            expect(patient.identifiers[0].identifierType.primary).toBeTruthy();
+            expect(patient.identifiers[1].identifierType.primary).not.toBeUndefined();
+            expect(patient.identifiers[1].identifierType.primary).toBeFalsy();
+        });
+    });
 });

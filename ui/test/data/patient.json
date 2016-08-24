@@ -11,6 +11,7 @@
         "identifierType":{
           "uuid":"81433852-3f10-11e4-adec-0800271c1b75",
           "display":"Bahmni Id",
+          "primary": true,
           "links":[
             {
               "rel":"self",

@@ -18,9 +18,11 @@ angular.module('bahmni.common.offline')
             var queries = [];
             _.each(identifiers, function (identifier) {
                 var identifierTypeUuid = identifier.identifierType && identifier.identifierType.uuid || identifier.identifierType;
+                var isPrimaryIdentifier = identifier.identifierType && identifier.identifierType.primary;
                 var row = patientIdentifierTable.createRow({
                     'typeUuid': identifierTypeUuid,
                     'identifier': identifier.identifier,
+                    'primary': isPrimaryIdentifier,
                     'patientUuid': patientUuid,
                     'identifierJson': identifier
                 });
