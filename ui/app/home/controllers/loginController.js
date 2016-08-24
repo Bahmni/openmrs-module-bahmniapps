@@ -106,6 +106,7 @@ angular.module('bahmni.home')
 
                 $scope.resendOTP = function () {
                     var promise = sessionService.resendOTP($scope.loginInfo.username, $scope.loginInfo.password);
+                    spinner.forPromise(promise);
                     promise.then(function () {
                         $scope.errorMessageTranslateKey = 'LOGIN_LABEL_RESEND_SUCCESS';
                     }, function (response) {
