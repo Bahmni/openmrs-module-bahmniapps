@@ -35,7 +35,7 @@
                 <div class="form-field">
                     <div class="field-value">
                         <select id="dosingrule" class="form-field frequency" ng-model="orderSetMember.orderTemplate.dosingInstructions.dosingRule"
-                                ng-options="item.name as item.name for item in treatmentConfig.dosingRules" placeholder="Please select a rule">
+                                ng-options="item as item for item in treatmentConfig.dosingRules" placeholder="Please select a rule">
                             <option value="">Choose Rule</option>
                         </select>
                     </div>
