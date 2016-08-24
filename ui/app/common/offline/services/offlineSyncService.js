@@ -75,15 +75,30 @@ angular.module('bahmni.common.offline')
                     });
                 };
 
-                var saveData = function (event, response) {
+            var mapIdentifiers = function (identifiers) {
+                var deferred = $q.defer();
+                return offlineDbService.getReferenceData("IdentifierTypes").then(function (identifierTypesData) {
+                    var identifierTypes = identifierTypesData.data;
+                    angular.forEach(identifiers, function (identifier) {
+                        var matchedIdentifierType = _.find(identifierTypes, {'uuid': identifier.identifierType.uuid});
+                        identifier.identifierType.primary = matchedIdentifierType.primary || false;
+                    });
+                    deferred.resolve({data: identifiers});
+                    return deferred.promise;
+                });
+            };
+
+            var saveData = function (event, response) {
                     var deferrable = $q.defer();
                     switch (event.category) {
                         case 'patient':
                             offlineDbService.getAttributeTypes().then(function (attributeTypes) {
                                 mapAttributesToPostFormat(response.data.person.attributes, attributeTypes);
-                                offlineDbService.createPatient({patient: response.data}).then(function () {
-                                    deferrable.resolve();
-                                });
+                                mapIdentifiers(response.data.identifiers).then(function () {
+                                    offlineDbService.createPatient({patient: response.data}).then(function () {
+                                        deferrable.resolve();
+                                    });
+                                })
                             });
                             break;
                         case 'Encounter':

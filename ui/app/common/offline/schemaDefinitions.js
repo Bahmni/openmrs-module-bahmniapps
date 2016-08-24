@@ -411,9 +411,14 @@ Bahmni.Common.Offline.SchemaDefinitions = {
                 type: 'STRING'
             },
             {
+                name: 'primary',
+                type: 'BOOLEAN'
+            },
+            {
                 name: 'patientUuid',
                 type: 'STRING'
-            }, {
+            },
+            {
                 name: 'identifierJson',
                 type: 'STRING'
             }

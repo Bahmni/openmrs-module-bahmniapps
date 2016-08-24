@@ -194,6 +194,38 @@ describe('offlineSearchDbService', function () {
         });
     });
 
+    it('Should fetch patient with primary identifier on search, if the patient has multiple identifiers', function (done) {
+        var searchString = "test";
+        var params = {
+            q: searchString,
+            s: "byIdOrNameOrVillage",
+            startIndex: 0,
+            addressFieldName: 'address2'
+        };
+
+        var extraIdentifier = {
+            "uuid": "99996aeb-2877-4340-b9fd-abba016a84a3",
+            "identifier": "SecodaryIdentifier",
+            "identifierSourceUuid": "99997b48-8792-11e5-ade6-005056b07f03",
+            "identifierType": {
+                "uuid": "99993852-3f10-11e4-adec-0800271c1b75",
+                "display": "Bahmni Sec Id",
+                "primary": false
+            },
+            "location": null,
+            "preferred": true,
+            "voided": false,
+            "resourceVersion": "1.8"
+        };
+
+        patientJson.patient.identifiers.push(extraIdentifier);
+        createAndSearch(params, done).then(function (result) {
+            expect(result.data.pageOfResults.length).toBe(1);
+            expect(result.data.pageOfResults[0].identifier).toBe("GAN200076");
+            done();
+        });
+    });
+
     it('Should search for patient by Education(custom attribute)', function (done) {
 
         var searchString = '6th to 9th';
