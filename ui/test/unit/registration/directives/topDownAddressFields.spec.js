@@ -95,6 +95,18 @@ describe('TopDownAddressFieldsDirectiveController', function () {
 
             expect(scope.address.countyDistrict).toBe(null);
         });
+
+        it("should no update addressCode value on clear of field any field that doesnt have selectedUserGeneratedIds", function () {
+            scope.address = {
+                address1: "",
+                address3: "address",
+            };
+            scope.address.address1 = "addressLine";
+
+            scope.clearFields("address1");
+            scope.$parent.patient.addressCode = "202122";
+            expect(scope.$parent.patient.addressCode).toBe("202122");
+        });
     });
 
     describe("getAddressEntryList", function() {

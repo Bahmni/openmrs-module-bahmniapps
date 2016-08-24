@@ -124,7 +124,7 @@ angular.module('bahmni.registration')
                 }
             });
             if (!_.isEmpty($scope.address[fieldName])) {
-                $scope.$parent.patient.addressCode = selectedUserGeneratedIds[fieldName];
+                $scope.$parent.patient.addressCode = selectedUserGeneratedIds[fieldName]? selectedUserGeneratedIds[fieldName] : $scope.$parent.patient.addressCode;
             } else {
                 $scope.address[fieldName] = null;
                 selectedUserGeneratedIds[fieldName] = null;
