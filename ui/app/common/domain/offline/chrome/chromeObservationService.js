@@ -9,7 +9,7 @@ angular.module('bahmni.common.domain')
                 var mappedVisitUuids = _.map(visitUuids, function (visitUuid) {
                     return visitUuid.uuid;
                 });
-                params.visitUuids = mappedVisitUuids || [];
+                params.visitUuids = params.visitUuid ? [params.visitUuid] : (mappedVisitUuids || []);
                 offlineDbService.getObservationsFor(params).then(function (obs) {
                     var mappedObs = _.map(obs, function (ob) {
                         return ob.observation;
@@ -18,6 +18,19 @@ angular.module('bahmni.common.domain')
                 });
             });
             return deffered.promise;
+        };
+
+
+        this.fetchObsForVisit = function(params){
+            var deferred = $q.defer();
+
+            offlineDbService.getObservationsForVisit(params.visitUuid).then(function (obs) {
+                var mappedObs = _.map(obs, function (ob) {
+                    return ob.observation;
+                });
+                deferred.resolve({data: mappedObs});
+            });
+            return deferred.promise;
         };
 
         this.getByUuid = function (observationUuid) {

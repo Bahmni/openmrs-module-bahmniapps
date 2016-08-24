@@ -30,7 +30,7 @@
                         <div class="field-value field-value-small-screen">
                             <input type="text" id="registrationNumber" ng-model="patient.primaryIdentifier.registrationNumber"
                                    placeholder="{{:: patient.primaryIdentifier.identifierType.description}}" non-blank="patient.primaryIdentifier.isIdentifierRequired()" pattern-validate
-                                   ng-change="patient.generateIdentifier(patient.primaryIdentifier)" focus-on="patient.primaryIdentifier.hasOldIdentifier"
+                                   ng-change="patient.primaryIdentifier.generate()" focus-on="patient.primaryIdentifier.hasOldIdentifier"
                                    ng-show="patient.primaryIdentifier.hasOldIdentifier || !patient.primaryIdentifier.hasIdentifierSources()" >
                             <div ng-show="::patient.primaryIdentifier.hasIdentifierSources()" class="fl">
                                 <div class="field-attribute hasOldIdentifier-field-attribute">

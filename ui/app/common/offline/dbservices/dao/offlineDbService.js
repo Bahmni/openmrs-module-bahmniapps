@@ -107,7 +107,7 @@ angular.module('bahmni.common.offline')
             });
             return deferred.promise;
         };
-            
+
         var init = function (offlineDb) {
             db = offlineDb;
             offlineMarkerDbService.init(offlineDb);
@@ -186,7 +186,7 @@ angular.module('bahmni.common.offline')
         var updateParentJson = function (child) {
             return conceptDbService.updateParentJson(child);
         };
-        
+
         var insertVisitData = function (visitData) {
             return visitDbService.insertVisitData(db, visitData);
         };
@@ -203,8 +203,16 @@ angular.module('bahmni.common.offline')
             return observationDbService.getObservationsFor(db, params);
         };
 
+        var getObservationsForVisit = function (visitUuid) {
+                return observationDbService.getObservationsForVisit(db, visitUuid);
+        };
+
         var getVisitsByPatientUuid = function (patientUuid, numberOfVisits) {
             return visitDbService.getVisitsByPatientUuid(db, patientUuid, numberOfVisits);
+        };
+
+        var getVisitDetailsByPatientUuid = function(patientUuid) {
+            return visitDbService.getVisitDetailsByPatientUuid(db, patientUuid);
         };
 
         var insertLog = function (errorUuid,failedRequest, responseStatus, stackTrace, requestPayload) {
@@ -247,8 +255,8 @@ angular.module('bahmni.common.offline')
                 patient.identifiers = _.map(patient.identifiers, function (identifier) {
                     return {
                         identifier: identifier.identifier,
-                        identifierPrefix: identifier.selectedIdentifierSource && identifier.selectedIdentifierSource.prefix,
-                        identifierSourceUuid: identifier.selectedIdentifierSource && identifier.selectedIdentifierSource.uuid ,
+                        identifierPrefix: identifier.identifierType && identifier.identifierType.identifierSources && identifier.identifierType.identifierSources[0] && identifier.identifierType.identifierSources[0].prefix,
+                        identifierSourceUuid: identifier.identifierType && identifier.identifierType.identifierSources &&  identifier.identifierType.identifierSources[0] && identifier.identifierType.identifierSources[0].uuid ,
                         identifierType: identifier.identifierType && identifier.identifierType.uuid || identifier.identifierType,
                         uuid: identifier.uuid,
                         preferred: identifier.preferred,
@@ -297,6 +305,8 @@ angular.module('bahmni.common.offline')
             getErrorLogByUuid: getErrorLogByUuid,
             getPrescribedAndActiveDrugOrders: getPrescribedAndActiveDrugOrders,
             deleteErrorFromErrorLog: deleteErrorFromErrorLog,
-            getPatientByUuidForPost: getPatientByUuidForPost
+            getPatientByUuidForPost: getPatientByUuidForPost,
+            getVisitDetailsByPatientUuid: getVisitDetailsByPatientUuid,
+            getObservationsForVisit:getObservationsForVisit
         }
     }]);

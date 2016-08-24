@@ -9,7 +9,7 @@ angular.module('bahmni.common.domain')
                 var mappedVisitUuids = _.map(visitUuids, function (visitUuid) {
                     return visitUuid.uuid;
                 });
-                params.visitUuids = mappedVisitUuids || [];
+                params.visitUuids = params.visitUuid? [params.visitUuid] : (mappedVisitUuids||[]) ;
                 androidDbService.getObservationsFor(params).then(function (obs) {
                     var mappedObs = _.map(obs, function (ob) {
                         return ob.observation;
@@ -40,6 +40,18 @@ angular.module('bahmni.common.domain')
                                            numberOfVisits, initialCount, latestCount, groovyExtension,
                                            startDate, endDate, patientProgramUuid) {
             return $q.when({"data": {"results": []}});
+        };
+
+        this.fetchObsForVisit = function (params) {
+            var deferred = $q.defer();
+
+            androidDbService.getObservationsForVisit(params.visitUuid).then(function (obs) {
+                var mappedObs = _.map(obs, function (ob) {
+                    return ob.observation;
+                });
+                deferred.resolve({data: mappedObs});
+            });
+            return deferred.promise;
         };
 
         this.getAllParentsInHierarchy = function(conceptName){

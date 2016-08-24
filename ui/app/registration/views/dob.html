@@ -4,11 +4,12 @@
     </div>
     <div class="field-value">
         <input id="birthdate" type="date" ng-model="patient.birthdate"  max="{{::today}}"
-               ng-change="patient.calculateAge()" ng-required="::dobMandatory">
+               ng-change="patient.calculateAge()" ng-blur="handleUpdate('birthdate')" ng-required="::dobMandatory">
     </div>
     <div class="showOn-desktop-registration">
         <div class="field-value">
-            <input type="checkbox" ng-model="patient.birthdateEstimated" class="estimate-check">
+            <input type="checkbox" ng-model="patient.birthdateEstimated" ng-blur="handleUpdate('birthdateEstimated')"
+                   class="estimate-check">
         </div>
         <div class="field-attribute estimated-label">
             <label for="birthdate">{{ ::'REGISTRATION_LABEL_ESTIMATE' | translate}}</label>
@@ -26,6 +27,6 @@
         <label for="birthtime">{{ ::'REGISTRATION_LABEL_BIRTH_TIME' | translate}}</label>
     </div>
     <div ng-show="::showBirthTime" class="field-value">
-        <input id="birthtime" type="time" ng-model="patient.birthtime">
+        <input id="birthtime" type="time" ng-model="patient.birthtime" ng-blur="handleUpdate('birthtime')">
     </div>
 </article>

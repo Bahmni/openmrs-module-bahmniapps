@@ -31,7 +31,7 @@
             <form name="searchPatientForm" ng-submit="searchPatients()" class="overflow-hidden">
                 <div class="search-patient-id left">
                     <input type="text" id="patientIdentifier" ng-model="::search.searchParameter"
-                           focus-on="search.startPatientSearch" placeholder="{{'SEARCH_NAME_PLACEHOLDER_KEY' | translate }}"/>
+                           focus-on="search.startPatientSearch" placeholder="{{'SEARCH_NAME_PLACEHOLDER_KEY' | translate: {primaryIdentifier : primaryIdentifier} }}"/>
                 </div>
 
                 <div class="reg-srch-btn left">

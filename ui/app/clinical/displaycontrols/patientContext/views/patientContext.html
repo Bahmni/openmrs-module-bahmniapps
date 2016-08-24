@@ -2,9 +2,12 @@
     <div class="patient-info-fixed">
         <ul>
             <li class="patient-name-image-container">
-                <img class="patient-image" ng-src="{{::patientContext.image}}" fallback-src="../images/blank-user.gif">
+                <img class="patient-image" ng-src="{{::patientContext.image}}" fallback-src='../images/blank-user.gif'>
+                <span class="patient-name" ng-if="showNameAndImage" >
+                  {{patientContext.givenName}} {{patientContext.familyName}}
+                </span>
                 <span class="patient-name">
-                  {{patientContext.givenName}} {{patientContext.familyName}} ({{patientContext.identifier}})
+                    ({{patientContext.identifier}})
                 </span>
             </li>
             <li>{{patientContext.gender}}</li>

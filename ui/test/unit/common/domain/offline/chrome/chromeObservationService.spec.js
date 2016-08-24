@@ -124,4 +124,21 @@ describe('chromeObservationService', function () {
         })
     });
 
+    it("should fetch observations for a visit", function (done) {
+        var obsData = [
+            {observation: {"name": "child health", type: "Field", visitUuid: "visitUuid"}},
+            {observation: {"name": "Immunization", visitUuid: "visitUuid"}}
+        ];
+
+        var visitUuid = "visitUuid";
+        var params = {visitUuid: visitUuid};
+
+        spyOn(offlineDbService, 'getObservationsForVisit').and.returnValue(specUtil.respondWithPromise($q, obsData));
+        observationsServiceStrategy.fetchObsForVisit(params).then(function (response) {
+            expect(offlineDbService.getObservationsForVisit).toHaveBeenCalledWith(visitUuid);
+            expect(response.data.length).toBe(2);
+            expect(response.data[0].visitUuid).toEqual(visitUuid);
+            done();
+        });
+    });
 });

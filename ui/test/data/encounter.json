@@ -2,6 +2,7 @@
   "bahmniDiagnoses": [],
   "observations": [
     {
+      "visitUuid": "47a706a2-c0e6-4e40-ae31-4a3535be2ace",
       "encounterDateTime": 1461303380000,
       "visitStartDateTime": null,
       "targetObsRelation": null,

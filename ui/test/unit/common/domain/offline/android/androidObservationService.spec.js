@@ -99,7 +99,7 @@ describe('androidObservationService', function () {
         paramsWithVisitUuids.visitUuids = _.map(visitUuids, function (visitUuid) {
             return visitUuid.uuid;
         });
-        
+
         var obsData = [
             {observation: {"name": "child health", type: "Field"}},
             {observation: {"name": "Immunization"}}
@@ -128,4 +128,21 @@ describe('androidObservationService', function () {
         })
     });
 
+     it("should fetch observations for a visit", function (done) {
+        var obsData = [
+            {observation: {"name": "child health", type: "Field", visitUuid: "visitUuid"}},
+            {observation: {"name": "Immunization", visitUuid: "visitUuid"}}
+        ];
+
+        var visitUuid = "visitUuid";
+        var params = {visitUuid: visitUuid};
+
+        spyOn(androidDbService, 'getObservationsForVisit').and.returnValue(specUtil.respondWithPromise($q, obsData));
+        observationsServiceStrategy.fetchObsForVisit(params).then(function (response) {
+            expect(androidDbService.getObservationsForVisit).toHaveBeenCalledWith(visitUuid);
+            expect(response.data.length).toBe(2);
+            expect(response.data[0].visitUuid).toEqual(visitUuid);
+            done();
+        });
+    });
 });

@@ -25,11 +25,12 @@ Bahmni.Clinical.VisitHistoryEntry = (function(){
 	        return startDateString === stopDateString;
 	    },
 
-	    hasEncounters: function() {
-	    	return this.encounters && this.encounters.length;
-	    }
+	    getVisitType: function() {
+	    	if (this.visitType)
+	    		return this.visitType.name || this.visitType.display;
+		}
 	};
 
-	return VisitHistoryEntry;	
+	return VisitHistoryEntry;
 })();
 

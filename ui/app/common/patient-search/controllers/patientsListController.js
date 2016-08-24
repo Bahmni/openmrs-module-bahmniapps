@@ -2,8 +2,8 @@
 
 angular.module('bahmni.common.patientSearch')
 .controller('PatientsListController', ['$scope', '$window', 'patientService', '$rootScope', 'appService', 'spinner',
-        '$stateParams', '$bahmniCookieStore','offlineService','printer',
-    function ($scope, $window, patientService, $rootScope, appService, spinner, $stateParams, $bahmniCookieStore, offlineService, printer) {
+        '$stateParams', '$bahmniCookieStore','offlineService','printer','configurationService',
+    function ($scope, $window, patientService, $rootScope, appService, spinner, $stateParams, $bahmniCookieStore, offlineService, printer, configurationService) {
         var initialize = function () {
             var searchTypes = appService.getAppDescriptor().getExtensions("org.bahmni.patient.search", "config").map(mapExtensionToSearchType);
             $scope.search = new Bahmni.Common.PatientSearch.Search(_.without(searchTypes, undefined));
@@ -14,6 +14,9 @@ angular.module('bahmni.common.patientSearch')
             if($rootScope.currentSearchType != null ) {
                 $scope.search.switchSearchType($rootScope.currentSearchType);
             }
+            configurationService.getConfigurations(['identifierTypesConfig']).then(function (response) {
+                    $scope.primaryIdentifier = _.find(response.identifierTypesConfig, {primary:true}).name;
+            });
         };
 
         $scope.searchPatients = function () {

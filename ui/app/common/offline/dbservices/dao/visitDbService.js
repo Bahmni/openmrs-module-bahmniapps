@@ -43,10 +43,25 @@ angular.module('bahmni.common.offline')
                 });
         };
 
+        var getVisitDetailsByPatientUuid = function (db, patientUuid) {
+            var visitTable = db.getSchema().table('visit');
+
+            return db.select(visitTable.visitJson.as('visit'))
+                .from(visitTable)
+                .where(visitTable.patientUuid.eq(patientUuid))
+                .orderBy(visitTable.startDatetime, lf.Order.DESC)
+                .exec()
+                .then(function (visits) {
+                    return _.map(visits,function(visit){
+                        return visit.visit
+                    });
+                });
+        };
+
         return {
             insertVisitData: insertVisitData,
             getVisitByUuid: getVisitByUuid,
-            getVisitsByPatientUuid: getVisitsByPatientUuid
+            getVisitsByPatientUuid: getVisitsByPatientUuid,
+            getVisitDetailsByPatientUuid: getVisitDetailsByPatientUuid
         }
-
     }]);

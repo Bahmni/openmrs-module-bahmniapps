@@ -58,7 +58,7 @@
     "ALL_DIAGNOSES_KEY": "All Diagnoses",
     "ALL_KEY": "All",
 
-    "SEARCH_NAME_PLACEHOLDER_KEY": "Search Name/ID  ...",
+    "SEARCH_NAME_PLACEHOLDER_KEY": "Search Name/{{ primaryIdentifier }}  ...",
     "SEARCH_KEY": "Search",
     "CLINICAL_YEARS_TRANSLATION_KEY": "Years",
     "CLINICAL_MONTHS_TRANSLATION_KEY": "months",

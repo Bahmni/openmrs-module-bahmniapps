@@ -53,7 +53,7 @@ angular.module('bahmni.common.offline')
                         delete attribute.hydratedObject;
                         attribute.hydratedObject = temp;
                     }
-                }); 
+                });
                 return $q.when(value);
             };
 
@@ -148,7 +148,7 @@ angular.module('bahmni.common.offline')
                 response = response != undefined ? JSON.parse(response) : response;
                 return $q.when(response);
             };
-            
+
             var getActiveEncounter = function(params){
                 var deferred = $q.defer();
                 getReferenceData("encounterSessionDuration").then(function(encounterSessionDurationData){
@@ -175,8 +175,20 @@ angular.module('bahmni.common.offline')
                 return $q.when(response);
             };
 
+            var getVisitDetailsByPatientUuid = function(patientUuid) {
+                var response = AndroidOfflineService.getVisitDetailsByPatientUuid(patientUuid);
+                response = response != undefined ? JSON.parse(response) : response;
+                return $q.when(response);
+            };
+
             var getObservationsFor = function(params) {
                 var response =  AndroidOfflineService.getObservationsFor(JSON.stringify(params));
+                response = response != undefined ? JSON.parse(response) : response;
+                return $q.when(response);
+            };
+
+            var getObservationsForVisit = function (visitUuid) {
+                var response = AndroidOfflineService.getObservationsForVisit(visitUuid);
                 response = response != undefined ? JSON.parse(response) : response;
                 return $q.when(response);
             };
@@ -261,8 +273,8 @@ angular.module('bahmni.common.offline')
                     patient.identifiers = _.map(patient.identifiers, function (identifier) {
                         return {
                             identifier: identifier.identifier,
-                            identifierPrefix: identifier.selectedIdentifierSource && identifier.selectedIdentifierSource.prefix,
-                            identifierSourceUuid: identifier.selectedIdentifierSource && identifier.selectedIdentifierSource.uuid ,
+                            identifierPrefix: identifier.identifierType && identifier.identifierType.identifierSources && identifier.identifierType.identifierSources[0] && identifier.identifierType.identifierSources[0].prefix,
+                            identifierSourceUuid: identifier.identifierType && identifier.identifierType.identifierSources &&  identifier.identifierType.identifierSources[0] && identifier.identifierType.identifierSources[0].uuid ,
                             identifierType: identifier.identifierType && identifier.identifierType.uuid || identifier.identifierType,
                             uuid: identifier.uuid,
                             preferred: identifier.preferred,
@@ -273,7 +285,7 @@ angular.module('bahmni.common.offline')
                 });
                 return deferred.promise;
             };
-            
+
             return {
                 init: init,
                 initSchema: initSchema,
@@ -308,7 +320,9 @@ angular.module('bahmni.common.offline')
                 getPrescribedAndActiveDrugOrders: getPrescribedAndActiveDrugOrders,
                 getErrorLogByUuid: getErrorLogByUuid,
                 deleteErrorFromErrorLog: deleteErrorFromErrorLog,
-                getPatientByUuidForPost: getPatientByUuidForPost
+                getPatientByUuidForPost: getPatientByUuidForPost,
+                getVisitDetailsByPatientUuid: getVisitDetailsByPatientUuid,
+                getObservationsForVisit:getObservationsForVisit
             }
         }
     ]);

@@ -20,7 +20,7 @@ describe('OfflineDbService ', function () {
             locationDbService = jasmine.createSpyObj('locationDbService', ['getLocationByUuid']);
             offlineSearchDbService = jasmine.createSpyObj('offlineSearchDbService', ['init']);
             encounterDbService = jasmine.createSpyObj('encounterDbService', ['insertEncounterData', 'getEncountersByPatientUuid', 'findActiveEncounter', 'getEncountersByVisits', 'getEncounterByEncounterUuid']);
-            visitDbService = jasmine.createSpyObj('visitDbService', ['insertVisitData', 'getVisitByUuid', 'getVisitsByPatientUuid']);
+            visitDbService = jasmine.createSpyObj('visitDbService', ['insertVisitData', 'getVisitByUuid', 'getVisitsByPatientUuid', 'getVisitDetailsByPatientUuid']);
             observationDbService = jasmine.createSpyObj('observationDbService', ['insertObservationsData', 'getObservationsFor']);
             conceptDbService = jasmine.createSpyObj('conceptDbService', ['init', 'getReferenceData', 'getConceptByName', 'insertConceptAndUpdateHierarchy', 'updateChildren', 'updateParentJson', 'getAllParentsInHierarchy']);
             errorLogDbService = jasmine.createSpyObj('errorLogDbService', ['insertLog', 'getErrorLogByUuid', 'deleteByUuid']);
@@ -47,7 +47,7 @@ describe('OfflineDbService ', function () {
         });
     });
 
-    
+
     beforeEach(inject(['offlineDbService', function (offlineDbServiceInjected) {
         offlineDbService = offlineDbServiceInjected;
     }]));
@@ -318,7 +318,8 @@ describe('OfflineDbService ', function () {
                             "preferred": true,
                             "identifierType": {
                                 "display": "Patient Identifier",
-                                "uuid": "7676e94e-796e-11e5-a6d0-005056b07f03"
+                                "uuid": "7676e94e-796e-11e5-a6d0-005056b07f03",
+                                "identifierSources": [{"prefix": "BDH", "uuid": "sourceUuid"}]
                             },
                             "identifier": "BDH201934"
                         }]
@@ -334,6 +335,8 @@ describe('OfflineDbService ', function () {
                 offlineDbService.getPatientByUuidForPost("patientUuid").then(function (mappedPatientDataForPostRequest) {
                     expect(mappedPatientDataForPostRequest.patient.identifiers[0].identifier).toBe("BDH201934");
                     expect(mappedPatientDataForPostRequest.patient.identifiers[0].identifierType).toBe("7676e94e-796e-11e5-a6d0-005056b07f03");
+                    expect(mappedPatientDataForPostRequest.patient.identifiers[0].identifierPrefix).toBe("BDH");
+                    expect(mappedPatientDataForPostRequest.patient.identifiers[0].identifierSourceUuid).toBe("sourceUuid");
                     expect(patientDbService.getPatientByUuid).toHaveBeenCalledWith(db, "patientUuid");
                     done();
                 });
@@ -587,6 +590,18 @@ describe('OfflineDbService ', function () {
                 done();
             });
         });
+
+        it("should call getVisitDetailsByPatientUuid with given patientUuid", function (done) {
+            var schemaBuilder = lf.schema.create('BahmniOfflineDb', 1);
+            schemaBuilder.connect().then(function (db) {
+                offlineDbService.init(db);
+                offlineDbService.getVisitDetailsByPatientUuid("patientUuid");
+
+                expect(visitDbService.getVisitDetailsByPatientUuid.calls.count()).toBe(1);
+                expect(visitDbService.getVisitDetailsByPatientUuid).toHaveBeenCalledWith(db, "patientUuid");
+                done();
+            });
+        });
     });
 
 
@@ -749,5 +764,4 @@ describe('OfflineDbService ', function () {
             });
         });
     });
-
 });
