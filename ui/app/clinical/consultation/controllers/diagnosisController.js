@@ -107,7 +107,7 @@ angular.module('bahmni.clinical')
                                 'uuid': concept.conceptUuid
                             },
                             lookup: {
-                                'name': concept.conceptName,
+                                'name': concept.matchedName,
                                 'uuid': concept.conceptUuid
                             }
                         }

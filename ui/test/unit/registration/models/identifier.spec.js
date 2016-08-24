@@ -17,6 +17,26 @@ describe("Identifier Model", function () {
             patientIdentifier.generate();
 
             expect(patientIdentifier.voided).toBeTruthy();
+        });
+
+        it('should not void the identifier when identifier field is cleared and filled again', function () {
+            var identifierType = {uuid: 'identifier-type-uuid'};
+            var identifier = {
+                uuid: "some-uuid",
+                voided: false,
+                registrationNumber: "abcdef",
+                identifierType: identifierType
+            };
+            var patientIdentifier = new Bahmni.Registration.Identifier(identifierType).map([identifier]);
+
+            patientIdentifier.registrationNumber = "";
+            patientIdentifier.generate();
+            expect(patientIdentifier.voided).toBeTruthy();
+
+            patientIdentifier.registrationNumber = "abcd";
+            patientIdentifier.generate();
+            expect(patientIdentifier.voided).toBeFalsy();
+
         })
     });
 

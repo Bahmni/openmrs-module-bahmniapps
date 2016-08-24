@@ -1,11 +1,11 @@
 'use strict';
 
 angular.module('bahmni.common.domain')
-    .service('visitService', ['$q', function ($q) {
+    .service('visitService', ['$q', 'offlineDbService', function ($q, offlineDbService) {
         this.getVisit = function (uuid, params) {
             return $q.when({data : {results: {}}});
         };
-        
+
         this.endVisit = function (visitUuid) {
             return $q.when({data : {results: {}}});
         };
@@ -19,15 +19,23 @@ angular.module('bahmni.common.domain')
         };
 
         this.getVisitSummary = function (visitUuid) {
-            return $q.when({data : {results: {}}});
+            return offlineDbService.getVisitByUuid(visitUuid).then(function(visit) {
+                var visitSummary = visit.visitJson;
+
+                if (visitSummary.visitType)
+                    visitSummary.visitType = visitSummary.visitType.display;
+
+                return {data: visitSummary};
+            });
         };
 
         this.search = function (parameters) {
-            return $q.when({data : {results: {}}});
+            return offlineDbService.getVisitDetailsByPatientUuid(parameters.patient).then(function(visits){
+                return {data : {results: visits}};
+            });
         };
 
         this.getVisitType = function () {
             return $q.when({data : {results: {}}});
-
         }
     }]);

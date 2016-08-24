@@ -60,7 +60,7 @@
 
 </div>
 
-<div class="login" ng-show ="showOTP">
+<div class="login login-otp" ng-show ="showOTP">
 
     <header class="reg-header">
         <div class="left">{{'LOGIN_LABEL_LOGIN_KEY' | translate}}</div>
@@ -69,7 +69,7 @@
     <form ng-submit="login()" name="otpForm" bm-form>
         <div class="login-body">
             <div class="note-container">
-                <div class="note error" ng-show="errorMessageTranslateKey">
+                <div class="note error" ng-show="errorMessageTranslateKey" ng-class="{'error_resend' : errorMessageTranslateKey == 'LOGIN_LABEL_RESEND_SUCCESS' }">
                     <div class="text">
                         {{errorMessageTranslateKey | translate}}
                     </div>
@@ -83,12 +83,12 @@
                 </div>
                 <div class="field-value">
                     <input type="password" id="otp" name="password" ng-model="loginInfo.otp"  placeholder="{{'LOGIN_LABEL_ENTER_OTP_KEY' | translate}}" required>
+                    <button type="button" ng-click="resendOTP()" class="fr otp-button">{{'LOGIN_LABEL_RESEND_OTP' | translate}}</button>
                 </div>
             </div>
 
             <div class="form-footer">
                 <button type="submit" class="confirm">{{'LOGIN_LABEL_SUBMIT_KEY' | translate}}</button>
-                <button type="button" ng-click="resendOTP()">{{'LOGIN_LABEL_RESEND_OTP' | translate}}</button>
             </div>
         </div>
     </form>

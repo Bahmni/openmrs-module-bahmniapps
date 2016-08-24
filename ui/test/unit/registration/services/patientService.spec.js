@@ -90,22 +90,20 @@ describe('Patient resource', function () {
 
     it('Should call url for search', function () {
         var query = 'john';
-        var identifier = '20000',
-            identifierPrefix = 'GAN';
+        var identifier = '20000';
         var addressFieldName = 'address2';
         var addressFieldValue = 'kaliganj';
         var customAttributeValue = 'Student';
         var customAttributeFields = ['occupation','education'];
         var programAttributeFieldName = 'REGISTRATION NO';
         var programAttributeFieldValue = '1234';
-        var results = patientService.search(query, identifier, identifierPrefix, addressFieldName, addressFieldValue, customAttributeValue, 0,
+        var results = patientService.search(query, identifier, addressFieldName, addressFieldValue, customAttributeValue, 0,
             customAttributeFields, programAttributeFieldName, programAttributeFieldValue);
 
         expect(mockHttp.get).toHaveBeenCalled();
         expect(mockHttp.get.calls.mostRecent().args[0]).toBe(Bahmni.Common.Constants.bahmniSearchUrl + "/patient");
         expect(mockHttp.get.calls.mostRecent().args[1].params.q).toBe(query);
         expect(mockHttp.get.calls.mostRecent().args[1].params.identifier).toBe(identifier);
-        expect(mockHttp.get.calls.mostRecent().args[1].params.identifierPrefix).toBe(identifierPrefix);
         expect(mockHttp.get.calls.mostRecent().args[1].params.addressFieldName).toBe(addressFieldName);
         expect(mockHttp.get.calls.mostRecent().args[1].params.addressFieldValue).toBe(addressFieldValue);
         expect(mockHttp.get.calls.mostRecent().args[1].params.customAttribute).toBe(customAttributeValue);

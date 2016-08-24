@@ -30,6 +30,10 @@ angular.module('bahmni.registration')
             };
 
             var createWithOutMapping = function (data) {
+                data.patient.identifiers  = _.filter(data.patient.identifiers , function (identifier) {
+                    return !_.isEmpty(identifier.identifierType.identifierSources) || (identifier.identifier !== undefined);
+                });
+
                 data.patient.person.birthtime = data.patient.person.birthtime ? moment(data.patient.person.birthtime).format("YYYY-MM-DDTHH:mm:ss.SSSZZ") : null;
                 data.patient.person.auditInfo = {dateCreated: moment(data.patient.person.personDateCreated).format() || moment().format()};
                 if ($rootScope.currentProvider) {
@@ -64,7 +68,7 @@ angular.module('bahmni.registration')
 
             var update = function(patient, openMRSPatient, attributeTypes) {
                 var data = new Bahmni.Registration.CreatePatientRequestMapper(moment()).mapFromPatient(attributeTypes, patient);
-                data.patient.identifiers = openMRSPatient.identifiers;
+                data.patient.identifiers = _.concat(patient.extraIdentifiers, patient.primaryIdentifier);
                 data.patient.person.names[0].uuid = openMRSPatient.person.names[0].uuid;
                 return offlinePatientServiceStrategy.deletePatientData(data.patient.uuid).then(function () {
                         return createWithOutMapping(data).then(function (result) {
@@ -97,7 +101,7 @@ angular.module('bahmni.registration')
                 });
             };
 
-            var generateIdentifier = function(patient) {
+            var generateIdentifier = function() {
                 return $q.when({});
             };
 

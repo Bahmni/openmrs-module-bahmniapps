@@ -11,7 +11,6 @@ describe('SearchPatientController', function () {
         spinner,
         loader,
         appDescriptor,
-        preferences,
         appService,
         translate;
 
@@ -28,24 +27,10 @@ describe('SearchPatientController', function () {
                 }
             }
         };
-        preferences = $injector.get('Preferences');
         rootScope.patientConfiguration = {};
         rootScope.currentUser = {privileges: [{name: 'View Patients'}]};
         rootScope.addressLevels = [{"addressField": "stateProvince", name: "State"}];
-        rootScope.patientConfiguration.identifierTypes = [{
-            uuid: "identifier-type-uuid",
-            identifierSources: [
-                {name: 'GAN', prefix: 'GAN'},
-                {name: 'SEM', prefix: 'SEM'}]
-        },
-            {
-                uuid: "other-identifier-type-uuid",
-                identifierSources: [
-                    {name: 'SIV', prefix: 'SIV'},
-                    {name: 'BAM', prefix: 'BAM'}
-                ]
-            }
-        ];
+        rootScope.addressLevels = [{"addressField": "stateProvince", name: "State"}];
     }));
 
     beforeEach(function () {
@@ -65,7 +50,6 @@ describe('SearchPatientController', function () {
             $window: $window,
             spinner: spinner,
             appService: appService,
-            preferences: preferences,
             $rootScope: rootScope
         });
     });
@@ -86,42 +70,9 @@ describe('SearchPatientController', function () {
             urlSearchChangeCallback = scope.$watch.calls.mostRecent().args[1];
         });
 
-        it("should default to preferences.identifierPrefix when nothing available on search string", function () {
-            preferences.identifierPrefix = "SEM";
-
-            $controller('SearchPatientController', {
-                $scope: scope,
-                patientService: patientResource,
-                $location: location,
-                spinner: spinner,
-                appService: appService,
-                Preferences: preferences
-            });
-            urlSearchChangeCallback();
-
-            expect(scope.searchParameters.identifierPrefix.prefix).toBe(preferences.identifierPrefix);
-        });
-
-        it("should initialise identifierSource Collection", function () {
-
-            $controller('SearchPatientController', {
-                $scope: scope,
-                patientService: patientResource,
-                $location: location,
-                spinner: spinner,
-                appService: appService,
-                Preferences: preferences
-            });
-
-            expect(scope.identifierSources.length).toBe(4);
-            expect(scope.identifierSources).toEqual([{name: 'GAN', prefix: 'GAN'},
-                {name: 'SEM', prefix: 'SEM'}, {name: 'SIV', prefix: 'SIV'},
-                {name: 'BAM', prefix: 'BAM'}])
-        });
-
         it('should initialize scope with name search params from url and load the patients if a name search parameter is provided', function () {
             var searchParams = {"name": 'john', addressFieldValue: 'Kanpur'};
-            scope.addressSearchConfig = {field: 'city_village', name: 'village'}
+            scope.addressSearchConfig = {field: 'city_village', name: 'village'};
             spyOn(location, 'search').and.returnValue(searchParams);
 
             urlSearchChangeCallback();
@@ -131,19 +82,17 @@ describe('SearchPatientController', function () {
             expect(patientResource.search).toHaveBeenCalled();
             expect(patientResource.search.calls.mostRecent().args[0]).toBe(searchParams.name);
             expect(patientResource.search.calls.mostRecent().args[1]).toBe(undefined);
-            expect(patientResource.search.calls.mostRecent().args[2]).toBe(undefined);
-            expect(patientResource.search.calls.mostRecent().args[3]).toBe(scope.addressSearchConfig.field);
-            expect(patientResource.search.calls.mostRecent().args[4]).toBe(searchParams.addressFieldValue);
+            expect(patientResource.search.calls.mostRecent().args[2]).toBe(scope.addressSearchConfig.field);
+            expect(patientResource.search.calls.mostRecent().args[3]).toBe(searchParams.addressFieldValue);
             expect(searchPromise.then).toHaveBeenCalled();
         });
 
         it('should initialize scope with id search params from url but do not search for patient', function () {
-            var searchParams = {"identifierPrefix": 'GAN', registrationNumber: '200001'};
+            var searchParams = {registrationNumber: '200001'};
             spyOn(location, 'search').and.returnValue(searchParams);
 
             urlSearchChangeCallback();
 
-            expect(scope.searchParameters.identifierPrefix.prefix).toBe(searchParams.identifierPrefix);
             expect(scope.searchParameters.registrationNumber).toBe(searchParams.registrationNumber);
             expect(patientResource.search).not.toHaveBeenCalled();
         });
@@ -249,18 +198,14 @@ describe('SearchPatientController', function () {
 
     describe("searchById", function () {
         it('should search by patient identifier when registrationNumber is present', function () {
-            scope.searchParameters.identifierPrefix = {};
-            scope.searchParameters.identifierPrefix.prefix = "GAN";
             scope.searchParameters.registrationNumber = "20001";
             var defaultSearchAddressField = undefined;
             scope.searchById();
 
-            expect(patientResource.search).toHaveBeenCalledWith(undefined, "20001", "GAN", defaultSearchAddressField, undefined, undefined, undefined, undefined, undefined, undefined, {}, {});
+            expect(patientResource.search).toHaveBeenCalledWith(undefined, "20001", defaultSearchAddressField, undefined, undefined, undefined, undefined, undefined, undefined, {}, {}, false);
         });
 
         it('should show the spinner while searching', function () {
-            scope.searchParameters.identifierPrefix = {};
-            scope.searchParameters.identifierPrefix.prefix = "GAN";
             scope.searchParameters.registrationNumber = "20001";
 
             scope.searchById();
@@ -270,8 +215,6 @@ describe('SearchPatientController', function () {
 
         it('should change the search parameter to patient identifier', function () {
             spyOn(location, 'search');
-            scope.searchParameters.identifierPrefix = {};
-            scope.searchParameters.identifierPrefix.prefix = "GAN";
             scope.searchParameters.registrationNumber = "20001";
             scope.customAttributesSearchConfig.fields = ["education", "firstNameLocal"];
             scope.addressSearchResultsConfig.fields = ["address3"];
@@ -280,7 +223,6 @@ describe('SearchPatientController', function () {
             scope.searchById();
 
             expect(location.search).toHaveBeenCalledWith({
-                identifierPrefix: "GAN",
                 registrationNumber: "20001",
                 programAttributeFieldName: undefined,
                 patientAttributes: ["education", "firstNameLocal"],
@@ -292,8 +234,6 @@ describe('SearchPatientController', function () {
 
         it('should change the search parameter to patient identifier with programAttributesSearchConfig', function () {
             spyOn(location, 'search');
-            scope.searchParameters.identifierPrefix = {};
-            scope.searchParameters.identifierPrefix.prefix = "GAN";
             scope.searchParameters.registrationNumber = "20001";
             scope.programAttributesSearchConfig.field = "Facility";
             scope.customAttributesSearchConfig.fields = ["education", "firstNameLocal"];
@@ -301,7 +241,6 @@ describe('SearchPatientController', function () {
             scope.searchById();
 
             expect(location.search).toHaveBeenCalledWith({
-                identifierPrefix: "GAN",
                 registrationNumber: "20001",
                 programAttributeFieldName: "Facility",
                 patientAttributes: ["education", "firstNameLocal"],
@@ -312,8 +251,6 @@ describe('SearchPatientController', function () {
         });
 
         it('should not search if registrationNumber is not present', function () {
-            scope.identifierPrefix = {};
-            scope.identifierPrefix.prefix = "GAN";
             scope.registrationNumber = "";
 
             scope.searchById();
@@ -321,41 +258,8 @@ describe('SearchPatientController', function () {
             expect(patientResource.search).not.toHaveBeenCalled();
         });
 
-        it('should strip prefix from registrationNumber if present', function () {
-            scope.searchParameters.identifierPrefix = {};
-            scope.searchParameters.identifierPrefix.prefix = "GAN";
-            scope.searchParameters.registrationNumber = "gan20001";  // match should case-insensitive
-            var defaultSearchAddressField = undefined;
-            scope.searchById();
-
-            expect(patientResource.search).toHaveBeenCalledWith(undefined, "20001", "GAN", defaultSearchAddressField, undefined, undefined, undefined, undefined, undefined, undefined, {}, {});
-        });
-
-        it('should strip prefix from registrationNumber even if not selected prefix', function () {
-            scope.searchParameters.identifierPrefix = {};
-            scope.searchParameters.identifierPrefix.prefix = "GAN";
-            scope.searchParameters.registrationNumber = "sem20001";  // match should case-insensitive
-            var defaultSearchAddressField = undefined;
-            scope.searchById();
-
-            expect(patientResource.search).toHaveBeenCalledWith(undefined, "20001", "SEM", defaultSearchAddressField, undefined, undefined, undefined, undefined, undefined, undefined, {}, {});
-        });
-
-        it('should not strip prefix from registrationNumber if found elsewhere than as a prefix', function () {
-            scope.searchParameters.identifierPrefix = {};
-            scope.searchParameters.identifierPrefix.prefix = "GAN";
-            scope.searchParameters.registrationNumber = "20001gan";
-            var defaultSearchAddressField = undefined;
-            scope.searchById();
-
-            expect(patientResource.search).toHaveBeenCalledWith(undefined, "20001gan", "GAN", defaultSearchAddressField, undefined, undefined, undefined, undefined, undefined, undefined, {}, {});
-        });
-
-
         describe("on success", function () {
             beforeEach(function () {
-                scope.searchParameters.identifierPrefix = {};
-                scope.searchParameters.identifierPrefix.prefix = "GAN";
                 scope.searchParameters.registrationNumber = "20001";
                 scope.searchById();
             });

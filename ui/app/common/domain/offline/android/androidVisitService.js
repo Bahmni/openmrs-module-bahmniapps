@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('bahmni.common.domain')
-    .service('visitService', ['$q', function ($q) {
+    .service('visitService', ['$q', 'androidDbService', function ($q, androidDbService) {
         this.getVisit = function (uuid, params) {
             return $q.when({data : {results: {}}});
         };
@@ -19,11 +19,22 @@ angular.module('bahmni.common.domain')
         };
 
         this.getVisitSummary = function (visitUuid) {
-            return $q.when({data : {results: {}}});
+            return androidDbService.getVisitByUuid(visitUuid).then(function(visit) {
+                var visitSummary = visit.visitJson;
+
+                if (visitSummary.visitType)
+                    visitSummary.visitType = visitSummary.visitType.display;
+
+                return {data: visitSummary};
+            });
         };
 
         this.search = function (parameters) {
-            return $q.when({data : {results: {}}});
+            return androidDbService.getVisitDetailsByPatientUuid(parameters.patient).then(function(visits){
+                return {data : {results: _.map(visits, function(visitStr) {
+                    return JSON.parse(visitStr);
+                })}};
+            });
         };
 
         this.getVisitType = function () {

@@ -55,11 +55,11 @@ angular.module('bahmni.clinical')
                 }
                 clinicalDashboardConfig.switchTab(dashboard);
                 var dashboardModel = Bahmni.Common.DisplayControl.Dashboard.create(dashboard);
-                spinner.forPromise(diseaseTemplateService.getLatestDiseaseTemplates(
+                diseaseTemplateService.getLatestDiseaseTemplates(
                     $stateParams.patientUuid, clinicalDashboardConfig.getDiseaseTemplateSections(), dashboard.startDate, dashboard.endDate).then(function (diseaseTemplate) {
                         $scope.diseaseTemplates = diseaseTemplate;
                         $scope.sectionGroups = dashboardModel.getSections($scope.diseaseTemplates);
-                    }));
+                    });
                 $scope.currentDashboardTemplateUrl = $state.current.views['dashboard-content'] ?
                     $state.current.views['dashboard-content'].templateUrl : $state.current.views['dashboard-content'];
             };

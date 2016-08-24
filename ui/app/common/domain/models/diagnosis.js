@@ -22,7 +22,7 @@ Bahmni.Common.Domain.Diagnosis = function (codedAnswer, order, certainty, existi
             return self.freeTextAnswer;
         }
         else {
-            return self.codedAnswer.name;
+            return self.codedAnswer.shortName || self.codedAnswer.name;
         }
     };
 

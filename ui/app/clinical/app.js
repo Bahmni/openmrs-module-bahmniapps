@@ -122,7 +122,10 @@ angular.module('consultation')
                     }
                 },
                 resolve: {
-                    visitHistory: function (visitHistoryInitialization, $stateParams, $rootScope) {
+                    offlineDb: function (offlineDbInitialization) {
+                        return offlineDbInitialization();
+                    },
+                    visitHistory: function (offlineDb, visitHistoryInitialization, $stateParams, $rootScope) {
                         return visitHistoryInitialization($stateParams.patientUuid, $rootScope.visitLocation);
                     },
                     retrospectiveIntialization: function (retrospectiveEntryService) {
@@ -132,7 +135,7 @@ angular.module('consultation')
                         return consultationInitialization(
                             $stateParams.patientUuid, $stateParams.encounterUuid, $stateParams.programUuid, $stateParams.enrollment);
                     },
-                    dashboardInitialization: function ($rootScope, initialization, patientContext, clinicalDashboardConfig, userService) {
+                    dashboardInitialization: function ($rootScope, initialization, patientContext, clinicalDashboardConfig, userService, offlineDb) {
                         return clinicalDashboardConfig.load().then(function () {
                             $rootScope.currentUser.addToRecentlyViewed(patientContext.patient, clinicalDashboardConfig.getMaxRecentlyViewedPatients());
                             return userService.savePreferences();
@@ -313,7 +316,10 @@ angular.module('consultation')
                     }
                 },
                 resolve: {
-                    visitHistory: function (visitHistoryInitialization, $stateParams) {
+                    offlineDb: function (offlineDbInitialization) {
+                        return offlineDbInitialization();
+                    },
+                    visitHistory: function (visitHistoryInitialization, $stateParams,offlineDb) {
                         return visitHistoryInitialization($stateParams.patientUuid);
                     }
                 }
@@ -407,7 +413,10 @@ angular.module('consultation')
                     }
                 },
                 resolve: {
-                    visitSummary: function (visitSummaryInitialization, $stateParams) {
+                    offlineDb: function (offlineDbInitialization) {
+                        return offlineDbInitialization();
+                    },
+                    visitSummary: function (visitSummaryInitialization, $stateParams, offlineDb) {
                         return visitSummaryInitialization($stateParams.visitUuid, $stateParams.tab);
                     },
                     visitConfig: function (initialization, visitTabConfig) {
@@ -444,7 +453,10 @@ angular.module('consultation')
                     }
                 },
                 resolve: {
-                    visitHistory: function (visitHistoryInitialization, $stateParams) {
+                    offlineDb: function (offlineDbInitialization) {
+                        return offlineDbInitialization();
+                    },
+                    visitHistory: function (offlineDb, visitHistoryInitialization, $stateParams) {
                         return visitHistoryInitialization($stateParams.patientUuid);
                     }
                 }

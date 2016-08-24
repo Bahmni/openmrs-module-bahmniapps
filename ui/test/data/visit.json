@@ -37,6 +37,16 @@
       ]
     },
     {
+      "uuid": "1c5c237a-dc6e-4f4f-bcff-c761c1ae5972",
+      "display": "FIELD 04/26/2016",
+      "links": [
+        {
+          "rel": "self",
+          "uri": "NEED-TO-CONFIGURE/ws/rest/v1/encounter/a28e2e96-c90c-4f12-92d3-b1e71ad5a7ea"
+        }
+      ]
+    },
+    {
       "uuid": "fed19763-aa50-41c7-9e16-9a4934c0a215",
       "display": "REG 04/26/2016",
       "links": [

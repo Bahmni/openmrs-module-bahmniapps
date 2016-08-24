@@ -1,7 +1,7 @@
 <div class="program-tile" ng-if="!patientProgram.deleting">
     <form class="form-field clearfix" ng-submit="updatePatientProgram(patientProgram)">
         <div class="button-group">
-            <input type="button" ng-click="toggleDelete(patientProgram)" value="Delete" class="button"/>
+            <input type="button" ng-click="toggleDelete(patientProgram)" value="Delete" class="button" id="delete_btn"/>
             <input type="button" ng-click="toggleEdit(patientProgram)" value="Edit" class="button"/>
             <input type="submit" ng-show="patientProgram.editing" value="Save" class="button"/>
         </div>

@@ -24,6 +24,7 @@ angular.module('bahmni.common.uiHelper')
         scope.$watch('initialValue', function() {
             if(scope.initialValue) {
                 scope.selectedValue = scope.initialValue;
+                scope.isInvalid = false;
             }
         });
 

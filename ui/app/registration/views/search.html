@@ -4,8 +4,6 @@
             <form name="searchByIdForm" ng-submit="searchById()" class="simple-form-ui clearfix" >
                     <label for="registrationNumber"><strong>{{ ::'REGISTRATION_LABEL_PATIENT_ID' | translate}}</strong></label>
                     <div class="search-patient-id fl">
-                        <select tabindex="1" ng-if="::(hasIdentifierSources() && !hasIdentifierSourceWithEmptyPrefix())" class="fl" id="identifierPrefix" ng-model="searchParameters.identifierPrefix"
-                                ng-options="identifierSource.prefix for identifierSource in ::identifierSources"> </select>
                         <input tabindex="2" class="fl" type="text" id="registrationNumber"
                         ng-model="searchParameters.registrationNumber" focus-me="true"
                                placeholder="{{ ::'REGISTRATION_LABEL_ENTER_ID' | translate}}">
@@ -60,6 +58,7 @@
             <thead>
             <tr>
                 <th><strong>{{ ::'REGISTRATION_LABEL_ID' | translate}}</strong></th>
+                <th ng-repeat = "type in ::extraIdentifierTypes track by $index"><strong>{{type.name}}</strong></th>
                 <th><strong>{{ ::'REGISTRATION_LABEL_NAME' | translate}}</strong></th>
                 <th ng-repeat = "field in ::personSearchResultsConfig.fields track by $index"><strong>{{::convertToTableHeader(field)}}</strong></th>
                 <th><strong>{{ ::'REGISTRATION_LABEL_GENDER' | translate}}</strong></th>
@@ -76,6 +75,10 @@
                         {{::result.identifier || 'Not Assigned'}}
                     </a>
                 </td>
+                <td ng-repeat = "type in ::extraIdentifierTypes track by $index">
+                    {{::result.extraIdentifiers[type.name]}}
+                </td>
+
                 <td>{{::result.givenName}} {{::result.middleName}} {{::result.familyName}}</td>
                 <td ng-repeat = "field in ::personSearchResultsConfig.fields track by $index">{{::result.customAttribute[field] || "" | bahmniDateInStrictMode}}</td>
                 <td>{{::result.gender}}</td>

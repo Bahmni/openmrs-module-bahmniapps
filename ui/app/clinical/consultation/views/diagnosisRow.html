@@ -1,7 +1,7 @@
 <div class="view-past row-click" ng-click="toggle(diagnosis)" ng-class="{'edited': diagnosis.isDirty}">
     <div class="col col1">
       <span class="diagnosis-name" ng-class="{'ruled-out': diagnosis.diagnosisStatus}">
-            <span ng-if="diagnosis.codedAnswer.name">{{diagnosis.codedAnswer.name}}</span>
+            <span ng-if="diagnosis.codedAnswer.name">{{diagnosis.getDisplayName()}}</span>
             <span ng-if="diagnosis.freeTextAnswer">{{diagnosis.freeTextAnswer}}</span>
       </span>
     </div>

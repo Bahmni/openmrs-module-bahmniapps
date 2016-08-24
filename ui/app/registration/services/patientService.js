@@ -5,14 +5,13 @@ angular.module('bahmni.registration')
         var openmrsUrl = Bahmni.Registration.Constants.openmrsUrl;
         var baseOpenMRSRESTURL = Bahmni.Registration.Constants.baseOpenMRSRESTURL;
 
-        var search = function (query, identifier, identifierPrefix, addressFieldName, addressFieldValue, customAttributeValue,
+        var search = function (query, identifier, addressFieldName, addressFieldValue, customAttributeValue,
                                offset, customAttributeFields, programAttributeFieldName, programAttributeFieldValue , addressSearchResultsConfig,
-                               patientSearchResultsConfig) {
+                               patientSearchResultsConfig,filterOnAllIdentifiers) {
             var config = {
                 params: {
                     q: query,
                     identifier:identifier,
-                    identifierPrefix: identifierPrefix,
                     s: "byIdOrNameOrVillage",
                     addressFieldName: addressFieldName,
                     addressFieldValue: addressFieldValue,
@@ -23,7 +22,8 @@ angular.module('bahmni.registration')
                     programAttributeFieldValue: programAttributeFieldValue,
                     addressSearchResultsConfig : addressSearchResultsConfig,
                     patientSearchResultsConfig : patientSearchResultsConfig,
-                    loginLocationUuid : sessionService.getLoginLocationUuid()
+                    loginLocationUuid : sessionService.getLoginLocationUuid(),
+                    filterOnAllIdentifiers: filterOnAllIdentifiers
                 },
                 withCredentials: true
             };

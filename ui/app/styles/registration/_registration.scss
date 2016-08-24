@@ -113,6 +113,9 @@ body{
       .testUnderPanel{
         width: 40%;
         display: inline-block;
+        label{
+          margin-top:0;
+        }
       }
     }
   }
