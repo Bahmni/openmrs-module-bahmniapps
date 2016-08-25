@@ -274,5 +274,9 @@ Bahmni.Common.Util.DateUtil = {
     },
     getDateTimeInSpecifiedFormat: function(date, format){
         return date ? moment(date).format(format) : null;
+    },
+    getISOString : function(date) {
+        return date ? moment(date).toDate().toISOString() : null;
+        
     }
 };
