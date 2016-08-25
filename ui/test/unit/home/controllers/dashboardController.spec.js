@@ -138,7 +138,7 @@ describe('dashboardController', function () {
         scopeMock.isSyncing = true;
         scopeMock.$digest();
 
-        expect(scopeMock.lastSyncTime).toBe('Monday, June 13th 2016, 05:30:00');
+        expect(scopeMock.lastSyncTime).toBe(moment("2016-06-13 00:00:00Z").format("dddd, MMMM Do YYYY, HH:mm:ss"));
     });
 
     it("should set the syncStatusMessage to Sync Failed, if there are events in errorQueue and it is chrome or android app", function () {
