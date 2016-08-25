@@ -10,6 +10,7 @@ angular.module('bahmni.clinical').controller('ConsultationController',
                   patientVisitHistoryService, $stateParams, $window, visitHistory, clinicalDashboardConfig, appService,
                   ngDialog, $filter, configurations, offlineService, visitConfig
         ) {
+            var DateUtil = Bahmni.Common.Util.DateUtil;
             $scope.togglePrintList = false;
             $scope.patient = patientContext.patient;
             $scope.stateChange = function(){
@@ -316,14 +317,36 @@ angular.module('bahmni.clinical').controller('ConsultationController',
                 return deferred.promise;
             };
 
+            var discontinuedDrugOrderValidation = function(removableDrugs) {
+                var discontinuedDrugOrderValidationMessage;
+                _.find(removableDrugs, function(drugOrder) {
+                   if(drugOrder.dateStopped == null) {
+                       if(drugOrder._effectiveStartDate < moment()) {
+                           discontinuedDrugOrderValidationMessage = drugOrder.concept.name + " should have stop date in between " + DateUtil.getDateWithoutTime(drugOrder._effectiveStartDate) + " and " + DateUtil.getDateWithoutTime(DateUtil.now());
+                           return true;
+                       } else {
+                           discontinuedDrugOrderValidationMessage = drugOrder.concept.name + " should have stop date as today's date since it is a future drug order";
+                           return true;
+                       }
+                   }
+                    drugOrder.dateStopped = DateUtil.addSeconds(drugOrder.dateStopped, 1);
+                });
+                return discontinuedDrugOrderValidationMessage;
+            };
+
             var isFormValid = function(){
                 var contxChange = contextChange();
                 var shouldAllow = contxChange["allow"];
+                var discontinuedDrugOrderValidationMessage = discontinuedDrugOrderValidation($scope.consultation.discontinuedDrugs);
                 if (!shouldAllow) {
                     var errorMessage = contxChange["errorMessage"] ? contxChange["errorMessage"] : "{{'CLINICAL_FORM_ERRORS_MESSAGE_KEY' | translate }}";
                     messagingService.showMessage('error', errorMessage);
                 }
-                return shouldAllow;
+                else if(discontinuedDrugOrderValidationMessage) {
+                    var errorMessage = discontinuedDrugOrderValidationMessage;
+                    messagingService.showMessage('error', errorMessage);
+                }
+                return shouldAllow && !discontinuedDrugOrderValidationMessage;
             };
 
             $scope.save = function (toStateConfig) {
