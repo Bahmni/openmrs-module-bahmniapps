@@ -7,7 +7,7 @@
 
 <input id="{{::observation.uniqueId}}" obs-constraints obs="::observation"
        ng-if="!observation.isNumeric() && !observation._isDateTimeDataType() && !observation.conceptUIConfig.displayMonthAndYear" ng-disabled="observation.disabled"
-       ng-model="observation.value" ng-blur="handleUpdate()"
+       ng-model="observation.value" ng-change="handleUpdate()"
        ng-class="{'is-abnormal': observation.abnormalObs.value, 'illegalValue': !observation.isValid(atLeastOneValueIsSet,conceptSetRequired), 'computed-field': observation.isComputedAndEditable()}"
        focus-me="::observation.isFocused"/>
 <stepper id="{{::observation.uniqueId}}"
