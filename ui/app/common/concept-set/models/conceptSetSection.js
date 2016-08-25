@@ -127,5 +127,17 @@ Bahmni.ConceptSet.ConceptSetSection = function (extensions, user, config, observ
         }
     });
 
+    Object.defineProperty(self, "isValid", {
+        get: function () {
+            if (self.valid === undefined) {
+                self.valid = true;
+            }
+            return self.valid;
+        },
+        set: function (value) {
+            self.valid = value;
+        }
+    });
+
     init();
 };

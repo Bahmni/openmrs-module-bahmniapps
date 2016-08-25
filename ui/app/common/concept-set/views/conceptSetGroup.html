@@ -18,8 +18,12 @@
                                     {{conceptSet.label}}
                                     <span ng-if="conceptSet.observations[0].observationDateTime"> ( {{conceptSet.observations[0].observationDateTime|bahmniDate}} )</span>
                                 </span>
-                                <button class="add-more-concept-set add-more-btn btn-small fr" type="button" ng-click="clone($index)" ng-if="conceptSet.canAddMore()" ng-disabled="conceptSet.klass!='active'"> <i class="fa fa-plus"></i></button>
                             </a>
+                            <label class="fa fa-exclamation-triangle"  ng-hide="conceptSet.isValid"></label>
+                            <button class="add-more-concept-set add-more-btn btn-small fr" type="button" ng-click="clonePanelConceptSet($index)" ng-if="isLastClonedSection(conceptSet, allTemplates) && conceptSet.canAddMore()" ng-disabled="conceptSet.klass!='active'"> <i class="fa fa-plus"></i></button>
+                            <!--TODO : @Bijayini, Remove one of the below which u think is not good.-->
+                            <button class="remove-concept-set remove-btn btn-small fr" type="button" ng-confirm-click="remove($index)" confirm-message="{{::'REMOVE_CONFIRMATION_KEY' | translate}}" ng-if="isClonedSection(conceptSet, allTemplates) && !conceptSet.observations[0].observationDateTime"> <i class="fa fa-remove"></i></button>
+                            <label class="fa fa-remove" id="removeClonedObs" ng-confirm-click="remove($index)" confirm-message="{{::'REMOVE_CONFIRMATION_KEY' | translate}}" ng-if="isClonedSection(conceptSet, allTemplates) && !conceptSet.observations[0].observationDateTime"></label>
                         </li>
                     </ul>
                 </div>
