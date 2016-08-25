@@ -320,7 +320,7 @@ angular.module('bahmni.clinical').controller('ConsultationController',
             var discontinuedDrugOrderValidation = function(removableDrugs) {
                 var discontinuedDrugOrderValidationMessage;
                 _.find(removableDrugs, function(drugOrder) {
-                   if(drugOrder.dateStopped == null) {
+                   if(!drugOrder.dateStopped) {
                        if(drugOrder._effectiveStartDate < moment()) {
                            discontinuedDrugOrderValidationMessage = drugOrder.concept.name + " should have stop date in between " + DateUtil.getDateWithoutTime(drugOrder._effectiveStartDate) + " and " + DateUtil.getDateWithoutTime(DateUtil.now());
                            return true;
