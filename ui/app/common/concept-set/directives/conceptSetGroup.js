@@ -1,11 +1,11 @@
 'use strict';
 
 angular.module('bahmni.common.conceptSet')
-    .controller('ConceptSetGroupController', ['$scope', 'appService', 'contextChangeHandler', 'spinner',
-        'conceptSetService', '$rootScope', 'sessionService', 'encounterService', 'treatmentConfig', 'messagingService',
+    .controller('ConceptSetGroupController', ['$scope', 'contextChangeHandler', 'spinner',
+        'conceptSetService', '$rootScope', 'sessionService', 'encounterService', 'treatmentConfig',
         'retrospectiveEntryService', 'userService', 'conceptSetUiConfigService', '$timeout', 'clinicalAppConfigService', '$stateParams',
-        function ($scope, appService, contextChangeHandler, spinner, conceptSetService, $rootScope, sessionService,
-                  encounterService, treatmentConfig, messagingService, retrospectiveEntryService, userService,
+        function ($scope, contextChangeHandler, spinner, conceptSetService, $rootScope, sessionService,
+                  encounterService, treatmentConfig, retrospectiveEntryService, userService,
                   conceptSetUiConfigService, $timeout, clinicalAppConfigService, $stateParams) {
             var conceptSetUIConfig = conceptSetUiConfigService.getConfig();
             $scope.togglePref = function (conceptSet, conceptName) {
@@ -71,6 +71,32 @@ angular.module('bahmni.common.conceptSet')
                 $.scrollTo('#concept-set-' + (index + 1), 200, {offset: {top: -400}});
             };
 
+            $scope.clonePanelConceptSet = function(index) {
+                $scope.clone(index);
+                $scope.showLeftPanelConceptSet($scope.allTemplates[index+1]);
+            };
+
+            $scope.isClonedSection = function (conceptSetTemplate, allTemplates) {
+                if (allTemplates) {
+                    var index = allTemplates.indexOf(conceptSetTemplate);
+                    return (index > 0) ? allTemplates[index].label == allTemplates[index - 1].label : false;
+                }
+                return false;
+            };
+
+            $scope.isLastClonedSection = function (conceptSetTemplate, allTemplates) {
+                if (allTemplates) {
+                    var index = allTemplates.indexOf(conceptSetTemplate);
+                    return (index > 0) && (index != allTemplates.length-1) ? allTemplates[index].label != allTemplates[index + 1].label : false;
+                }
+                return false;
+            };
+
+            $scope.remove = function(index) {
+                $scope.allTemplates.splice(index, 1);
+                $.scrollTo('#concept-set-' + (index), 200, {offset: {top: -400}});
+            };
+            
             var copyValues = function (existingObservations, modifiedObservations) {
                 existingObservations.forEach(function (observation, index) {
                     if (observation.groupMembers && observation.groupMembers.length > 0) {
@@ -86,6 +112,8 @@ angular.module('bahmni.common.conceptSet')
             var collapseExistingActiveSection = function(section){
                 if (section) {
                     section.klass = "";
+                    section.isOpen = false;
+                    section.isLoaded = false;
                 }
             };
 
@@ -95,6 +123,7 @@ angular.module('bahmni.common.conceptSet')
                 $scope.leftPanelConceptSet.isOpen = true;
                 $scope.leftPanelConceptSet.isLoaded = true;
                 $scope.leftPanelConceptSet.klass = "active";
+
             };
         }])
     .directive('conceptSetGroup', function () {

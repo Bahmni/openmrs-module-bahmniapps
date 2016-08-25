@@ -174,6 +174,7 @@ angular.module('bahmni.common.conceptSet')
                     $scope.atLeastOneValueIsSet = $scope.rootObservation && $scope.rootObservation.atLeastOneValueSet();
                     $scope.conceptSetRequired = $scope.required ? $scope.required : true;
                     var nodes = findInvalidNodes($scope.rootObservation.groupMembers, $scope.rootObservation);
+                    $scope.isValidSection = !nodes.status;
                     return {allow: !nodes.status, errorMessage: nodes.message};
                 }; //TODO: Write unit test for this function
 
@@ -352,7 +353,8 @@ angular.module('bahmni.common.conceptSet')
                     validationHandler: "&",
                     patient: "=",
                     conceptSetFocused: "=?",
-                    collapseInnerSections: "=?"
+                    collapseInnerSections: "=?",
+                    isValidSection: "=?"
                 },
                 templateUrl: '../common/concept-set/views/conceptSet.html',
                 controller: controller

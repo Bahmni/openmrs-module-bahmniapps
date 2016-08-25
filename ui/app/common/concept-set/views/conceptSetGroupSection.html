@@ -17,7 +17,10 @@
             </button>
         </h2>
     </div>
-    <button class="add-more-concept-set add-more-btn btn-small" type="button" ng-click="clone($index)" ng-if="conceptSet.canAddMore() && !context.showPanelView"> <i class="fa fa-plus"></i> {{::'ADD_FORM_KEY' | translate}}</button>
+    <button class="add-more-concept-set add-more-btn btn-small" type="button" ng-click="clone($index)" ng-if="isLastClonedSection(conceptSet, allTemplates) && conceptSet.canAddMore() && !context.showPanelView"> <i class="fa fa-plus"></i> {{::'ADD_FORM_KEY' | translate}}</button>
+    <!--TODO : @Bijayini, Remove one of the below which u think is not good.-->
+    <button class="remove-concept-set remove-btn btn-small fr" type="button" ng-confirm-click="remove($index)" confirm-message="{{::'REMOVE_CONFIRMATION_KEY' | translate}}" ng-if="isClonedSection(conceptSet, allTemplates) && !conceptSet.observations[0].observationDateTime"> <i class="fa fa-remove"></i></button>
+    <label class="fa fa-remove" id="removeClonedObs" ng-confirm-click="remove($index)" confirm-message="{{::'REMOVE_CONFIRMATION_KEY' | translate}}" ng-if="isClonedSection(conceptSet, allTemplates) && !conceptSet.observations[0].observationDateTime"></label>
     <span class="favourite-concept-set" ng-if="!context.showPanelView">
         <label class="add-fav">
           <input type="checkbox" id="hasOldIdentifier" ng-model="conceptSet.alwaysShow" ng-change="togglePref(conceptSet, conceptSet.conceptName)" />
@@ -27,5 +30,5 @@
 </div>
 <concept-set ng-if="conceptSet.isLoaded" patient="::patient" ng-show="conceptSet.isOpen" collapse-inner-sections="conceptSet.collapseInnerSections"
              concept-set-name="::conceptSet.conceptName" required="conceptSet.options.required"
-             observations="conceptSet.observations" show-title="::false" validation-handler="::validationHandler">
+             observations="conceptSet.observations" show-title="::false" validation-handler="::validationHandler" is-valid-section="conceptSet.isValid">
 </concept-set>

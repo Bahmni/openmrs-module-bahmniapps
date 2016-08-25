@@ -19,7 +19,6 @@ describe("conceptSet", function () {
             $provide.value('contextChangeHandler', contextChangeHandler);
             $provide.value('observationsService', observationsService);
             $provide.value('messagingService', messagingService);
-            $provide.value('messagingService', messagingService);
             $provide.value('conceptSetUiConfigService', conceptSetUiConfigService);
             $provide.value('spinner', spinner);
         });
