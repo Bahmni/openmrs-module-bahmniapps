@@ -296,6 +296,36 @@ concept-set {
       }
     }
   }
+  .form-group.form-group-video{
+    float:none;
+    label.control-label{
+      margin-right:-100%;
+    }
+    .field-value{
+      float: left;
+      width: 100%;
+    }
+  }
+  .consultation-video{
+    width: auto;
+    background: none;
+    margin-left:210px;
+    form .vitals .form-field .field-value input{
+      width:50px;
+    }
+    label.placeholder{
+      width:auto;
+      margin:0 !important;
+      padding: 6px 15px;
+      background: $lightestGray;
+      cursor: pointer;
+      border: 1px solid $lightGray;
+      border-radius: 3px;
+    }
+    .row-remover{
+      margin:0;
+    }
+  }
 }
 
 .leaf-observation-node {
@@ -535,5 +565,10 @@ concept-set {
   }
   table .field-value-buttonSelectType{
     width:47%;
+  }
+}
+.button-wrap-video{
+  .add-more ,.fa-remove{
+    margin:4px 5px 0 0!important;
   }
 }
