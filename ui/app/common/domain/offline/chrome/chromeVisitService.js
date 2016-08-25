@@ -30,9 +30,11 @@ angular.module('bahmni.common.domain')
         };
 
         this.search = function (parameters) {
-            return offlineDbService.getVisitDetailsByPatientUuid(parameters.patient).then(function(visits){
-                return {data : {results: visits}};
+            var deferred = $q.defer();
+            offlineDbService.getVisitDetailsByPatientUuid(parameters.patient).then(function(visits){
+                deferred.resolve({data : {results: visits}});
             });
+            return deferred.promise;
         };
 
         this.getVisitType = function () {
