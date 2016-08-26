@@ -30,7 +30,7 @@ Bahmni.Clinical.SpecimenMapper = function() {
         observation.type = specimen.type;
         observation.voided = specimen.voided;
         observation.typeFreeText = specimen.typeFreeText;
-
+        observation.uuid = specimen.uuid;
 
         var observationFilter = new Bahmni.Common.Domain.ObservationFilter();
         observation.sample.additionalAttributes = Array.isArray(specimen.sample.additionalAttributes) ? specimen.sample.additionalAttributes : [specimen.sample.additionalAttributes];

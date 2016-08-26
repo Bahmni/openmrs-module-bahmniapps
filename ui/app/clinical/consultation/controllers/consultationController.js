@@ -370,7 +370,9 @@ angular.module('bahmni.clinical').controller('ConsultationController',
                             spinner.forPromise(diagnosisService.populateDiagnosisInformation($scope.patient.uuid, savedConsulation)
                                 .then(function (consultationWithDiagnosis) {
                                     consultationWithDiagnosis.preSaveHandler = $scope.consultation.preSaveHandler;
+                                    consultationWithDiagnosis.postSaveHandler = $scope.consultation.postSaveHandler;
                                     $scope.$parent.consultation = consultationWithDiagnosis;
+                                    $scope.$parent.consultation.postSaveHandler.fire();
                                     $scope.dashboardDirty = true;
                                     if($scope.targetUrl) {
                                         return $window.open($scope.targetUrl, "_self");
