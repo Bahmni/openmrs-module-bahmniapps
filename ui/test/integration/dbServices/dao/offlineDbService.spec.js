@@ -316,13 +316,29 @@ describe('OfflineDbService ', function () {
                             "voided": false,
                             "uuid": "ed2e9b46-dc64-4859-aa5d-dc6ebef2621a",
                             "preferred": true,
+                            "identifierPrefix": "BDH",
+                            "identifierSourceUuid": "sourceUuid",
                             "identifierType": {
                                 "display": "Patient Identifier",
                                 "uuid": "7676e94e-796e-11e5-a6d0-005056b07f03",
                                 "identifierSources": [{"prefix": "BDH", "uuid": "sourceUuid"}]
                             },
                             "identifier": "BDH201934"
-                        }]
+                        },
+                            {
+                                "location": null,
+                                "resourceVersion": "1.8",
+                                "voided": false,
+                                "uuid": "dd2e9b46-dc64-4859-aa5d-dc6ebef2621a",
+                                "preferred": true,
+                                "selectedIdentifierSource": {"prefix": "SEC", "uuid": "sourceUuid2"},
+                                "identifierType": {
+                                    "display": "Patient Identifier",
+                                    "uuid": "9999e94e-796e-11e5-a6d0-005056b07f03",
+                                    "identifierSources": [{"prefix": "BDH", "uuid": "sourceUuid1"},{"prefix": "SEC", "uuid": "sourceUuid2"}]
+                                }
+                            }
+                        ]
                     }
                 };
                 deferred1.resolve(patientData);
@@ -337,6 +353,10 @@ describe('OfflineDbService ', function () {
                     expect(mappedPatientDataForPostRequest.patient.identifiers[0].identifierType).toBe("7676e94e-796e-11e5-a6d0-005056b07f03");
                     expect(mappedPatientDataForPostRequest.patient.identifiers[0].identifierPrefix).toBe("BDH");
                     expect(mappedPatientDataForPostRequest.patient.identifiers[0].identifierSourceUuid).toBe("sourceUuid");
+                    expect(mappedPatientDataForPostRequest.patient.identifiers[1].identifier).toBeUndefined();
+                    expect(mappedPatientDataForPostRequest.patient.identifiers[1].identifierType).toBe("9999e94e-796e-11e5-a6d0-005056b07f03");
+                    expect(mappedPatientDataForPostRequest.patient.identifiers[1].identifierPrefix).toBe("SEC");
+                    expect(mappedPatientDataForPostRequest.patient.identifiers[1].identifierSourceUuid).toBe("sourceUuid2");
                     expect(patientDbService.getPatientByUuid).toHaveBeenCalledWith(db, "patientUuid");
                     done();
                 });
