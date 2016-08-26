@@ -134,7 +134,7 @@ describe("PatientsListController", function () {
                 scope.$apply(setUp);
 
                 expect(scope.search.searchType).toEqual({ name : 'All active patients', display : 'All active patients', handler : 'emrapi.sqlSearch.activePatients', forwardUrl : undefined, id : 'bahmni.clinical.patients.allPatients', params : undefined, refreshTime : '10', view : 'tile',
-                    showPrint : false, printHtmlLocation : null, additionalParams : undefined, translationKey : undefined, patientCount : '...' });
+                    showPrint : false, printHtmlLocation : null, searchColumns : undefined, additionalParams : undefined, translationKey : undefined, patientCount : '...' });
                 expect(_patientService.findPatients).toHaveBeenCalled();
 
                 findPatientsPromise.callThenCallBack({data: patients});

@@ -61,6 +61,38 @@ describe("Search", function() {
 
 	});
 
+	describe("filterPatientsBySearchColumns", function(){
+		it("should search the patients by uuid", function(){
+			search.searchColumns = ["uuid"];
+			search.searchParameter = "p-uuid-4";
+			search.updatePatientList(allActivePatients);
+
+			search.filterPatients();
+			expect(search.searchResults.length).toBe(1);
+			expect(search.searchResults[0].identifier).toBe("GAN1235");
+			expect(search.searchResults[0].uuid).toBe("p-uuid-4");
+			expect(search.searchResults[0].display).toBe("p-uuid-4");
+
+		});
+
+		it("should search the patients only by name", function(){
+			search.searchColumns = ["name"];
+			search.searchParameter = "Gan";
+			search.updatePatientList(allActivePatients);
+
+			search.filterPatients();
+			expect(search.searchResults.length).toBe(2);
+		});
+		it("should return empty list when invalid column names are configured", function(){
+			search.searchColumns = ["unknownColumn1","UnknownColumn2"];
+			search.searchParameter = "Krishna";
+			search.updatePatientList(allActivePatients);
+
+			search.filterPatients();
+			expect(search.searchResults.length).toBe(0);
+		});
+	});
+
 	describe("updateSearchResults", function() {
 	    it("should set 'no results' message when there is searchParamenter and results are empty", function () {
             search.searchParameter = "Gan";
