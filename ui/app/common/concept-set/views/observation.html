@@ -13,7 +13,7 @@
                     <span ng-bind="::observation.label"></span>
                     <span ng-if="::getBooleanResult(observation.primaryObs.units)"
                           ng-bind-html="::'(' + observation.primaryObs.units + ')'"></span>
-                    <span ng-if="::observation.isRequired()" class="asterick">*</span>
+                    <span ng-if="::observation.conceptUIConfig.required===true" class="asterick">*</span>
                     <i class="fa fa-question-circle concept-tooltip-trigger"  bm-pop-over-trigger
                        ng-if="::observation.primaryObs.concept.description">
                     </i>
@@ -146,7 +146,7 @@
                 <label class="control-label" ng-if="::showTitle" for="{{::observation.uniqueId}}">
                     <span ng-bind="::observation.label"></span>
                     <span ng-show="::getBooleanResult(observation.units)" ng-bind-html="::'(' + observation.units + ')'"></span>
-                    <span ng-if="::observation.isRequired()" class="asterick">*</span>
+                    <span ng-if="::observation.conceptUIConfig.required===true" class="asterick">*</span>
                     <i class="fa fa-question-circle concept-tooltip-trigger" bm-pop-over-trigger
                        ng-if="::getBooleanResult(observation.concept.description)">
                     </i>
@@ -207,7 +207,7 @@
                                 class="fa fa-plus needsclick"></i></label>
 
                         <div class="file">
-                            <img ng-if="!hasPDFAsValue()" ng-src="{{observation.value|thumbnail}}" width="100"
+                            <img ng-if="observation.value && !hasPDFAsValue()" ng-src="{{observation.value|thumbnail}}" width="100"
                                  ng-class="{'has-image': observation.value, 'voided': observation.voided}">
                             <i ng-if="hasPDFAsValue()" class="fa fa-file-pdf-o"></i>
                             <button type="button" toggle="observation.showComment" ng-if="observation.value"

@@ -311,7 +311,8 @@
         },
 
         isRequired: function () {
-            return !!this.conceptUIConfig.required;
+            this.disabled = this.disabled ? this.disabled : false;
+            return this.conceptUIConfig.required === true && this.disabled === false;
         },
 
         isDurationRequired: function () {
