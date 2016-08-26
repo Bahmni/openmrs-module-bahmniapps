@@ -102,6 +102,7 @@ angular.module('bahmni.common.patientSearch')
                     showPrint: appExtn.extensionParams.showPrint || false,
                     printHtmlLocation : appExtn.extensionParams.printHtmlLocation || null,
                     additionalParams : appExtn.extensionParams.additionalParams,
+                    searchColumns : appExtn.extensionParams.searchColumns,
                     translationKey : appExtn.extensionParams.translationKey
             }
         };
