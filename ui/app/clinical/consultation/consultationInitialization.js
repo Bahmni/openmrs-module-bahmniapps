@@ -66,6 +66,7 @@ angular.module('bahmni.clinical').factory('consultationInitialization',
                 return getEncounter().then(function (consultation) {
                     return diagnosisService.populateDiagnosisInformation(patientUuid, consultation).then(function(diagnosisConsultation) {
                         diagnosisConsultation.preSaveHandler = new Bahmni.Clinical.Notifier();
+                        diagnosisConsultation.postSaveHandler = new Bahmni.Clinical.Notifier();
                         return diagnosisConsultation;
                     });
                 });

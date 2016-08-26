@@ -2,6 +2,7 @@
 
 Bahmni.Clinical.Specimen = function (specimen, allSamples) {
     var self = this;
+    self.uuid = specimen && specimen.uuid;
     self.dateCollected = specimen && Bahmni.Common.Util.DateUtil.getDateWithoutTime(specimen.dateCollected);
     self.type = specimen && specimen.type;
     self.typeFreeText = specimen && specimen.typeFreeText;
@@ -69,6 +70,7 @@ Bahmni.Clinical.Specimen = function (specimen, allSamples) {
         self.type = undefined;
         self.typeFreeText = undefined;
         self.identifier = undefined;
+        self.uuid = undefined;
         clearObservations(self.sample.additionalAttributes)
         clearObservations(self.report.results);
     }
