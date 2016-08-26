@@ -69,6 +69,11 @@ angular.module('bahmni.registration')
             var update = function(patient, openMRSPatient, attributeTypes) {
                 var data = new Bahmni.Registration.CreatePatientRequestMapper(moment()).mapFromPatient(attributeTypes, patient);
                 data.patient.identifiers = _.concat(patient.extraIdentifiers, patient.primaryIdentifier);
+                var openmrsIdentifier = openMRSPatient.identifiers;
+                angular.forEach(data.patient.identifiers, function (identifier) {
+                    var matchedOpenMRSIdentifier = _.find(openmrsIdentifier, {'identifierType': {'uuid': identifier.identifierType.uuid}});
+                    identifier.selectedIdentifierSource = matchedOpenMRSIdentifier && matchedOpenMRSIdentifier.selectedIdentifierSource;
+                });
                 data.patient.person.names[0].uuid = openMRSPatient.person.names[0].uuid;
                 return offlinePatientServiceStrategy.deletePatientData(data.patient.uuid).then(function () {
                         return createWithOutMapping(data).then(function (result) {
