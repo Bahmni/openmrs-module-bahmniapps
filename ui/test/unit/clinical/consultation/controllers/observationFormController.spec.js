@@ -11,6 +11,7 @@ describe('ObservationFormController', function () {
         inject(function ($controller, $rootScope) {
             controller = $controller;
             scope = $rootScope.$new();
+            scope.consultation = {};
         });
 
     });
@@ -35,6 +36,16 @@ describe('ObservationFormController', function () {
 
 
     describe('controller', function () {
+
+        it("should not load observation forms it they are already present", function () {
+            scope.consultation.observationForms = [
+                { name: 'form1', uuid: 'uuid1' },
+                { name: 'form2', uuid: 'uuid2' }
+            ];
+            createController();
+            expect(observationFormService.getFormList).not.toHaveBeenCalled();
+        });
+
         it("should make a call to observationFormService.getFormList", function () {
             mockObservationFormService({ results: [] });
             createController();
@@ -50,17 +61,16 @@ describe('ObservationFormController', function () {
             });
             createController();
 
-            expect(scope.forms.length).toEqual(2);
+            expect(scope.consultation.observationForms.length).toEqual(2);
+            expect(scope.consultation.observationForms[0].formName).toEqual('form1');
+            expect(scope.consultation.observationForms[0].formUuid).toEqual('uuid1');
+            expect(scope.consultation.observationForms[0].isOpen).toEqual(false);
+            expect(scope.consultation.observationForms[0].toggleDisplay).toBeDefined();
 
-            expect(scope.forms[0].formName).toEqual('form1');
-            expect(scope.forms[0].formUuid).toEqual('uuid1');
-            expect(scope.forms[0].isOpen).toEqual(false);
-            expect(scope.forms[0].toggleDisplay).toBeDefined();
-
-            expect(scope.forms[1].formName).toEqual('form2');
-            expect(scope.forms[1].formUuid).toEqual('uuid2');
-            expect(scope.forms[1].isOpen).toEqual(false);
-            expect(scope.forms[1].toggleDisplay).toBeDefined();
+            expect(scope.consultation.observationForms[1].formName).toEqual('form2');
+            expect(scope.consultation.observationForms[1].formUuid).toEqual('uuid2');
+            expect(scope.consultation.observationForms[1].isOpen).toEqual(false);
+            expect(scope.consultation.observationForms[1].toggleDisplay).toBeDefined();
         });
     });
 });

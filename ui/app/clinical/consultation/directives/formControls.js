@@ -7,6 +7,7 @@ angular.module('bahmni.common.conceptSet')
 
             var controller = function ($scope) {
                 var formUuid = $scope.form.formUuid;
+                var formObservations = $scope.form.observations;
 
                 if (!loadedFormDetails[formUuid]) {
                     spinner.forPromise(observationFormService.getFormDetail(formUuid, { v: "custom:(resources)" })
@@ -15,13 +16,13 @@ angular.module('bahmni.common.conceptSet')
                             if (formDetailsAsString) {
                                 var formDetails = JSON.parse(formDetailsAsString);
                                 loadedFormDetails[formUuid] = formDetails;
-                                renderWithControls(formDetails, formUuid);
+                                $scope.form.component = renderWithControls(formDetails, formObservations, formUuid);
                             }
                         })
                     );
                 }
                 else {
-                    renderWithControls(loadedFormDetails[formUuid], formUuid);
+                    $scope.form.component = renderWithControls(loadedFormDetails[formUuid], formObservations, formUuid);
                 }
             };
 
