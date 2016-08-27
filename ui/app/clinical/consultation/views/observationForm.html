@@ -1,4 +1,4 @@
-<div ng-repeat="form in forms">
+<div ng-repeat="form in consultation.observationForms">
   <div ng-click="form.toggleDisplay()">{{form.formName}}</div>
   <div id={{form.formUuid}} ng-show="form.isOpen"></div>
   <form-controls ng-if="form.isOpen" form="form"></form-controls>
