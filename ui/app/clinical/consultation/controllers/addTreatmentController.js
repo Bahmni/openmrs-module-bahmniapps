@@ -630,7 +630,6 @@ angular.module('bahmni.clinical')
                     $scope.newOrderSet.name,
                     orderTemplate.dosingInstructions.dosingRule
                 );
-                if (calculatedDose.$$state.status == 0) $scope.isSearchDisabled = false;
                 return calculatedDose.then(function (calculatedDosage) {
                         orderTemplate.dosingInstructions.dose = calculatedDosage.dose;
                         orderTemplate.dosingInstructions.doseUnits = calculatedDosage.doseUnit;
@@ -653,23 +652,11 @@ angular.module('bahmni.clinical')
                 };
                 deleteDrugIfEmpty(orderSetMember.orderTemplate);
             };
-
-            var getPromiseToCalculateDose = function (orderSetMemberTemplates) {
-                var promisesToCalculateDose = [];
-                for (var counter = 0; counter < orderSetMemberTemplates.length; counter++) {
-                    var dose = putCalculatedDose(orderSetMemberTemplates[counter]);
-                    if (dose.$$state.status == 0) { return [dose]; }
-                    promisesToCalculateDose.push(dose);
-                }
-                return promisesToCalculateDose;
-            };
             var calculateDoseForTemplatesIn = function(orderSet) {
                 $scope.newOrderSet.name = orderSet.name;
                 var orderSetMemberTemplates = _.map(orderSet.orderSetMembers, 'orderTemplate');
-                var promisesToCalculateDose = getPromiseToCalculateDose(orderSetMemberTemplates);
-                var returnOrderSet = function(){
-                    return orderSet
-                };
+                var promisesToCalculateDose = _.map(orderSetMemberTemplates, putCalculatedDose);
+                var returnOrderSet = function(){ return orderSet };
                 return $q.all(promisesToCalculateDose).then(returnOrderSet);
             };
             var createDrugOrderViewModel = function (orderTemplate) {
@@ -734,7 +721,6 @@ angular.module('bahmni.clinical')
                 var setUpNewOrderSet = function () {
                     $scope.newOrderSet.name = orderSet.name;
                     $scope.newOrderSet.uuid = orderSet.uuid;
-                    $scope.isSearchDisabled = true;
                 };
                 calculateDoseForTemplatesIn(orderSet)
                     .then(createDrugOrdersAndGetConflicts)
