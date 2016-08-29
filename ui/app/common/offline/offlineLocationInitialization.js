@@ -31,7 +31,7 @@ angular.module('bahmni.common.offline')
                                        var categories = results.data;
                                         offlineService.setItem("eventLogCategories",categories);
                                     });
-                                    eventLogService.getFilterForCategoryAndLoginLocation(provider.uuid,loginAddress.uuid).then(function(results){
+                                    eventLogService.getFilterForCategoryAndLoginLocation(provider.uuid,loginAddress.uuid,loginLocation.uuid).then(function(results){
                                         var categoryFilterMap = results.data;
                                         Object.keys(categoryFilterMap).forEach(function(category){
                                             offlineDbService.insertMarker(category,null,categoryFilterMap[category]);

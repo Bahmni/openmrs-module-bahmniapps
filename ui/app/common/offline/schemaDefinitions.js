@@ -88,14 +88,14 @@ Bahmni.Common.Offline.SchemaDefinitions = {
                 name: 'lastReadEventUuid',
                 type: 'STRING'
             }, {
-                name: 'catchmentNumber',
+                name: 'filters',
                 type: 'STRING'
             }, {
                 name: 'lastReadTime',
                 type: 'DATE_TIME'
             }
         ],
-        nullableColumns: ['catchmentNumber','lastReadEventUuid'],
+        nullableColumns: ['filters','lastReadEventUuid'],
         primaryKeyColumns: ['markerName']
     },
 

@@ -728,11 +728,18 @@ describe('OfflineDbService ', function () {
             expect(offlineMarkerDbService.getMarker).toHaveBeenCalledWith("markerName");
         });
 
-        it("should call insertMarker with given markerName", function () {
-            var catchmentNumber = 202020;
-            offlineDbService.insertMarker("markerName", "eventUuid", catchmentNumber);
+        it("should call insertMarker with given markerName when filters is not empty", function () {
+            var filters = [202020,20202001];
+            offlineDbService.insertMarker("markerName", "eventUuid", filters);
             expect(offlineMarkerDbService.insertMarker.calls.count()).toBe(1);
-            expect(offlineMarkerDbService.insertMarker).toHaveBeenCalledWith("markerName", "eventUuid", catchmentNumber);
+            expect(offlineMarkerDbService.insertMarker).toHaveBeenCalledWith("markerName", "eventUuid", filters);
+        });
+
+        it("should call insertMarker with given markerName when filters is empty", function () {
+            var filters = [];
+            offlineDbService.insertMarker("markerName", "eventUuid", filters);
+            expect(offlineMarkerDbService.insertMarker.calls.count()).toBe(1);
+            expect(offlineMarkerDbService.insertMarker).toHaveBeenCalledWith("markerName", "eventUuid", filters);
         });
     });
 
