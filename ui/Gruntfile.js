@@ -11,7 +11,8 @@ module.exports = function (grunt) {
         chromeApp: '../../bahmni-offline/chrome/app/',
         androidApp: '../../bahmni-offline/android/www/app/',
         test: 'test',
-        root: '.'
+        root: '.',
+        nodeModules: 'node_modules'
     };
 
     try {
@@ -125,10 +126,10 @@ module.exports = function (grunt) {
         coverage: {
             options: {
                 thresholds: {
-                    statements: 65.9,
-                    branches: 55.2,
-                    functions: 58.4,
-                    lines: 65.9
+                    statements: 65.8,
+                    branches: 54.8,
+                    functions: 58.2,
+                    lines: 65.8
                 },
                 dir: 'coverage',
                 root: '.'
@@ -324,6 +325,19 @@ module.exports = function (grunt) {
                         src: [
                             '*.{ico,txt,html,js}',
                             '*/**/*'
+                        ]
+                    }
+                ]
+            },
+            nodeModules: {
+                files: [
+                    {
+                        expand: true,
+                        dot: true,
+                        cwd: '<%= yeoman.nodeModules %>/bahmni-form-controls/dist',
+                        dest: '<%= yeoman.app %>/components/bahmni-form-controls/',
+                        src: [
+                            '*.*'
                         ]
                     }
                 ]
@@ -526,6 +540,7 @@ module.exports = function (grunt) {
     grunt.registerTask('androidtest', ['karma:android']);
 
     grunt.registerTask('dist', [
+        'copy:nodeModules',
         'clean:dist',
         'compass:dist',
         'useminPrepare',

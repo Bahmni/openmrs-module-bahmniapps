@@ -309,6 +309,7 @@ angular.module('bahmni.clinical').controller('ConsultationController',
                 tempConsultation.observations = observationFilter.filter(tempConsultation.observations);
                 tempConsultation.consultationNote = observationFilter.filter([tempConsultation.consultationNote])[0];
                 tempConsultation.labOrderNote = observationFilter.filter([tempConsultation.labOrderNote])[0];
+                addFormObservations(tempConsultation);
                 var visitTypeForRetrospectiveEntries = clinicalAppConfigService.getVisitTypeForRetrospectiveEntries();
                 var defaultVisitType = clinicalAppConfigService.getDefaultVisitType();
                 var encounterData = new Bahmni.Clinical.EncounterTransactionMapper().map(tempConsultation, $scope.patient, sessionService.getLoginLocationUuid(), retrospectiveEntryService.getRetrospectiveEntry(),
@@ -332,6 +333,22 @@ angular.module('bahmni.clinical').controller('ConsultationController',
                     drugOrder.dateStopped = DateUtil.addSeconds(drugOrder.dateStopped, 1);
                 });
                 return discontinuedDrugOrderValidationMessage;
+            };
+
+            var addFormObservations = function (tempConsultation) {
+                if(tempConsultation.observationForms) {
+                    _.remove(tempConsultation.observations, function (observation) {
+                        return observation.formNamespace;
+                    });
+                    _.each(tempConsultation.observationForms, function (observationForm) {
+                        if (observationForm.component) {
+                            var formObservations = observationForm.component.getValue();
+                            _.each(formObservations, function (obs) {
+                                tempConsultation.observations.push(obs);
+                            });
+                        }
+                    });
+                }
             };
 
             var isFormValid = function(){
