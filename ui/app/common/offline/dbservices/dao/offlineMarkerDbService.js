@@ -18,13 +18,13 @@ angular.module('bahmni.common.offline')
             return db.insertOrReplace().into(markerTable).values([row]).exec();
         };
 
-        var insertMarker = function (markerName, eventUuid, catchmentNumber) {
+        var insertMarker = function (markerName, eventUuid, filters) {
             var markerTable = db.getSchema().table('event_log_marker');
 
             var marker = {
                 markerName: markerName,
                 lastReadEventUuid: eventUuid,
-                catchmentNumber: catchmentNumber,
+                filters: filters,
                 lastReadTime: new Date()
             };
             var row = markerTable.createRow(marker);

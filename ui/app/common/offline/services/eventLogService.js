@@ -3,7 +3,7 @@
 angular.module('bahmni.common.offline')
     .factory('eventLogService', ['$http', function ($http) {
         var getEvents = function (url, marker) {
-            return $http.get(url, { params: {filterBy: marker.catchmentNumber, uuid: marker.lastReadEventUuid}});
+            return $http.get(url, { params: {filterBy: marker.filters, uuid: marker.lastReadEventUuid}});
         };
 
         var getDataForUrl = function (url) {
@@ -16,9 +16,9 @@ angular.module('bahmni.common.offline')
             return $http.get(url, { method: "GET", params: params, withCredentials: true});
         };
 
-        var getFilterForCategoryAndLoginLocation = function (providerUuid,locationUuid) {
-            var url = Bahmni.Common.Constants.eventlogFilterUrl + "/markers/"  + providerUuid + "/" + locationUuid;
-            return $http.get(url, { method: "GET", withCredentials: true});
+        var getFilterForCategoryAndLoginLocation = function (providerUuid, addressUuid, loginlocationUuid) {
+            var url = Bahmni.Common.Constants.eventlogFilterUrl + "/markers/" + providerUuid + "/" + addressUuid + "/" + loginlocationUuid;
+            return $http.get(url, {method: "GET", withCredentials: true});
         };
 
         var getEventCategoriesToBeSynced = function () {

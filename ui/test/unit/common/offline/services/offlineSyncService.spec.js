@@ -140,7 +140,7 @@ describe('OfflineSyncService', function () {
                     getMarker: function (category) {
                         return {
                             then: function (callback) {
-                                return callback({markerName: category, catchmentNumber: 202020});
+                                return callback({markerName: category, filters: [202020]});
                             }
                         }
                     },
@@ -202,7 +202,7 @@ describe('OfflineSyncService', function () {
                         return false;
                     },
                     getItem: function() {
-                        return 202020;
+                        return [202020];
                     },
                     setItem: function() {}
                 });
@@ -263,11 +263,11 @@ describe('OfflineSyncService', function () {
                 expect(offlineDbService.getMarker).toHaveBeenCalledWith(category);
                 expect(eventLogService.getEventsFor).toHaveBeenCalledWith(category, {
                     markerName: category,
-                    catchmentNumber: 202020
+                    filters: [202020]
                 });
                 var url = 'url to get ' + category + ' object';
                 expect(eventLogService.getDataForUrl).toHaveBeenCalledWith(url);
-                expect(offlineDbService.insertMarker).toHaveBeenCalledWith(category, "eventuuid", 202020);
+                expect(offlineDbService.insertMarker).toHaveBeenCalledWith(category, "eventuuid", [202020]);
                 expect(offlineDbService.insertMarker.calls.count()).toBe(3);
             });
 
@@ -293,7 +293,7 @@ describe('OfflineSyncService', function () {
                 uuid: 'uuid2'
             };
 
-            var marker = {markerName: 'TransactionalData', catchmentNumber: 202020};
+            var marker = {markerName: 'TransactionalData', filters: [202020]};
 
             spyOn(offlineService, 'getItem').and.returnValue(categories);
             spyOn(offlineService, 'setItem').and.callThrough();
@@ -320,7 +320,7 @@ describe('OfflineSyncService', function () {
                     }
                 };
             });
-            spyOn(offlineDbService, 'insertMarker').and.callFake(function(name,uuid,catchmentNumber){
+            spyOn(offlineDbService, 'insertMarker').and.callFake(function(name,uuid,filters){
                 marker.lastReadEventUuid = uuid;
                 return {lastReadTime: new Date()}
             });
@@ -337,11 +337,11 @@ describe('OfflineSyncService', function () {
                 expect(offlineDbService.getMarker).toHaveBeenCalledWith(category);
                 expect(eventLogService.getEventsFor).toHaveBeenCalledWith(category, {
                     markerName: category,
-                    catchmentNumber: 202020
+                    filters: [202020]
                 });
 
-                expect(offlineDbService.insertMarker).toHaveBeenCalledWith(category, "uuid1", 202020);
-                expect(offlineDbService.insertMarker).toHaveBeenCalledWith(category, "uuid2", 202020);
+                expect(offlineDbService.insertMarker).toHaveBeenCalledWith(category, "uuid1", [202020]);
+                expect(offlineDbService.insertMarker).toHaveBeenCalledWith(category, "uuid2", [202020]);
                 expect(offlineDbService.insertMarker.calls.count()).toBe(2);
             });
             expect(eventLogService.getDataForUrl).toHaveBeenCalledWith(patientEvent.object);
@@ -376,7 +376,7 @@ describe('OfflineSyncService', function () {
             expect(offlineDbService.getMarker.calls.count()).toBe(1);
             expect(eventLogService.getEventsFor).toHaveBeenCalledWith('offline-concepts',{
                 markerName: 'offline-concepts',
-                catchmentNumber: 202020
+                filters: [202020]
             });
             expect(eventLogService.getEventsFor.calls.count()).toBe(1);
             
@@ -445,7 +445,7 @@ describe('OfflineSyncService', function () {
                     getMarker: function (category) {
                         return {
                             then: function (callback) {
-                                return callback({markerName: category, lastReadEventUuid: 'lastReadUuid', catchmentNumber: 202020});
+                                return callback({markerName: category, lastReadEventUuid: 'lastReadUuid', filters: [202020]});
                             }
                         }
                     },
@@ -554,7 +554,7 @@ describe('OfflineSyncService', function () {
                         return false;
                     },
                     getItem: function() {
-                        return 202020;
+                        return [202020];
                     },
                     setItem: function() {}
 
@@ -615,11 +615,11 @@ describe('OfflineSyncService', function () {
                 expect(eventLogService.getEventsFor).toHaveBeenCalledWith(category, {
                     markerName: category,
                     lastReadEventUuid : 'lastReadUuid',
-                    catchmentNumber: 202020
+                    filters: [202020]
                 });
                 var url = 'url to get ' + category + ' object';
                 expect(eventLogService.getDataForUrl).toHaveBeenCalledWith(url);
-                expect(offlineDbService.insertMarker).toHaveBeenCalledWith(category, "eventuuid", 202020);
+                expect(offlineDbService.insertMarker).toHaveBeenCalledWith(category, "eventuuid", [202020]);
                 expect(offlineDbService.insertMarker.calls.count()).toBe(3);
             });
 
@@ -651,7 +651,7 @@ describe('OfflineSyncService', function () {
                 uuid: 'uuid2'
             };
 
-            var marker = {markerName: 'TransactionalData', catchmentNumber: 202020};
+            var marker = {markerName: 'TransactionalData', filters: [202020]};
 
             spyOn(offlineService, 'getItem').and.returnValue(categories);
             spyOn(offlineService, 'setItem').and.callThrough();
@@ -678,7 +678,7 @@ describe('OfflineSyncService', function () {
                     }
                 };
             });
-            spyOn(offlineDbService, 'insertMarker').and.callFake(function(name,uuid,catchmentNumber){
+            spyOn(offlineDbService, 'insertMarker').and.callFake(function(name,uuid,filters){
                 marker.lastReadEventUuid = uuid;
                 return {lastReadTime: new Date()}
             });
@@ -695,11 +695,11 @@ describe('OfflineSyncService', function () {
                 expect(eventLogService.getEventsFor).toHaveBeenCalledWith(category, {
                     markerName: category,
                     lastReadEventUuid : 'lastReadUuid',
-                    catchmentNumber: 202020
+                    filters: [202020]
                 });
                 expect(eventLogService.getEventsFor.calls.count()).toBe(2);
 
-                expect(offlineDbService.insertMarker).toHaveBeenCalledWith(category, "uuid1", 202020);
+                expect(offlineDbService.insertMarker).toHaveBeenCalledWith(category, "uuid1", [202020]);
                 expect(offlineDbService.insertMarker.calls.count()).toBe(1);
             });
             expect(eventLogService.getDataForUrl).toHaveBeenCalledWith(patientEvent.object);
@@ -718,7 +718,7 @@ describe('OfflineSyncService', function () {
                 uuid: 'uuid1'
             };
 
-            var marker = {markerName: 'TransactionalData', catchmentNumber: 202020};
+            var marker = {markerName: 'TransactionalData', filters: [202020]};
 
             spyOn(offlineService, 'getItem').and.returnValue(categories);
             spyOn(offlineService, 'setItem').and.callThrough();

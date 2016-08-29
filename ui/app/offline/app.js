@@ -42,7 +42,7 @@ angular.module('bahmni.offline', ['ui.router', 'httpErrorInterceptor', 'bahmni.c
                                 offlineDbService = androidDbService;
                             }
                             return offlineDbService.getConfig("home").then(function (result) {
-                                if (result && offlineService.getItem('catchmentNumber')) {
+                                if (result && offlineService.getItem('eventLogCategories')) {
                                     $state.go('initSync');
                                 }
                             });

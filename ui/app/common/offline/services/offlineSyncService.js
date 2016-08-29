@@ -143,7 +143,7 @@ angular.module('bahmni.common.offline')
 
                 var updateMarker = function (event, category) {
                    return offlineDbService.getMarker(category).then(function(marker) {
-                        return offlineDbService.insertMarker(marker.markerName, event.uuid, marker.catchmentNumber);
+                        return offlineDbService.insertMarker(marker.markerName, event.uuid, marker.filters);
                     });
                 };
 

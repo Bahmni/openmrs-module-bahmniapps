@@ -131,8 +131,8 @@ angular.module('bahmni.common.offline')
             return offlineMarkerDbService.getMarker(markerName);
         };
 
-        var insertMarker = function (markerName, eventUuid, catchmentNumber) {
-            return offlineMarkerDbService.insertMarker(markerName, eventUuid, catchmentNumber);
+        var insertMarker = function (markerName, eventUuid, filters) {
+            return offlineMarkerDbService.insertMarker(markerName, eventUuid, filters);
         };
 
         var insertAddressHierarchy = function (data) {
