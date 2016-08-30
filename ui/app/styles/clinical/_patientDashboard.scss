@@ -647,8 +647,51 @@ table.drug-order-table td.drug {
       }
     }
   }
-  li.video-concept .testUnderPanel{
-    width: 28%;
+  li.video-concept{
+    border-top:none;
+    height:287px;
+    margin:5px 15px;
+    border: 1px solid $lightGray;
+    position: relative;
+    overflow: hidden;
+    video{
+      width: 100%    !important;
+      height: auto   !important;
+    }
+    @media screen and(max-width:1150px){
+      height:auto;
+    }
+    @media screen and (max-width: 859px) {
+      height:287px;
+    }
+    .testUnderPanel{
+      width: 100% !important;
+      padding-left: 10px;
+      box-sizing: border-box;
+      padding-bottom: 3px;
+    }
+    .tree-list-item{
+      padding-left: 0;
+    }
+    .toggle{
+      position: absolute;
+      right: 0;
+      padding-top: 6px;
+    }
+    pre{
+      width:92%;
+    }
+    .footer-note{
+      text-align:left;
+      float: none;
+      clear:both;
+      padding-top: 5px;
+      padding-left: 20px;
+      .provider{
+        float: none;
+        clear: both;
+      }
+    }
   }
 }
 
@@ -1034,5 +1077,28 @@ table.treatments-details-table{
     }
   }
 
+}
+.video-concept-show{
+  width:50%;
+  float: left;
+  @media screen and(max-width:1150px){
+    width: 100%;
+  }
+  @media screen and (max-width: 859px) {
+    width:50%;
+  }
+}
+.ng-dialog-all-details-page .concept-set-container-view{
+  @include clearfix;
+   background: $white;
+  .video-concept-show{
+    width:33.333%;
+    li.video-concept{
+      height:310px !important;
+    }
+    @media screen and (max-width: 859px) {
+      width:50%;
+    }
+  }
 }
 
