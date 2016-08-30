@@ -21,10 +21,6 @@ angular.module('bahmni.common.domain')
         this.getVisitSummary = function (visitUuid) {
             return offlineDbService.getVisitByUuid(visitUuid).then(function(visit) {
                 var visitSummary = visit.visitJson;
-
-                if (visitSummary.visitType)
-                    visitSummary.visitType = visitSummary.visitType.display;
-
                 return {data: visitSummary};
             });
         };
