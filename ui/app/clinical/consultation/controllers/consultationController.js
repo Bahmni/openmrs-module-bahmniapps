@@ -318,19 +318,24 @@ angular.module('bahmni.clinical').controller('ConsultationController',
                 return deferred.promise;
             };
 
-            var discontinuedDrugOrderValidation = function(removableDrugs) {
+            var discontinuedDrugOrderValidation = function (removableDrugs) {
                 var discontinuedDrugOrderValidationMessage;
-                _.find(removableDrugs, function(drugOrder) {
-                   if(!drugOrder.dateStopped) {
-                       if(drugOrder._effectiveStartDate < moment()) {
-                           discontinuedDrugOrderValidationMessage = drugOrder.concept.name + " should have stop date in between " + DateUtil.getDateWithoutTime(drugOrder._effectiveStartDate) + " and " + DateUtil.getDateWithoutTime(DateUtil.now());
-                           return true;
-                       } else {
-                           discontinuedDrugOrderValidationMessage = drugOrder.concept.name + " should have stop date as today's date since it is a future drug order";
-                           return true;
-                       }
-                   }
+                _.find(removableDrugs, function (drugOrder) {
+                    if (!drugOrder.dateStopped) {
+                        if (drugOrder._effectiveStartDate < moment()) {
+                            discontinuedDrugOrderValidationMessage = drugOrder.concept.name + " should have stop date in between " + DateUtil.getDateWithoutTime(drugOrder._effectiveStartDate) + " and " + DateUtil.getDateWithoutTime(DateUtil.now());
+                            return true;
+                        } else {
+                            discontinuedDrugOrderValidationMessage = drugOrder.concept.name + " should have stop date as today's date since it is a future drug order";
+                            return true;
+                        }
+                    }
                     drugOrder.dateStopped = DateUtil.addSeconds(drugOrder.dateStopped, 1);
+                    //if(DateUtil.getDateWithoutTime(drugOrder.dateStopped) === DateUtil.getDateWithoutTime(DateUtil.now())) {
+                    //    drugOrder.dateStopped = null;
+                    //} else {
+                    //    drugOrder.dateStopped = DateUtil.getISOString(new Date(new Date(drugOrder.dateStopped).getTime() + DateUtil.now().getTime() - new Date(DateUtil.getDate(DateUtil.now())).getTime()));
+                    //}
                 });
                 return discontinuedDrugOrderValidationMessage;
             };
