@@ -197,7 +197,7 @@
                                    ng-show="identifier.hasOldIdentifier || !identifier.hasIdentifierSources()">
                             <div ng-show="::identifier.hasIdentifierSources()" class="fl">
                                 <div class="field-attribute hasOldIdentifier-field-attribute">
-                                    <label for="hasOldIdentifier" class="control-label">{{::'REGISTRATION_LABEL_ENTER_ID' |
+                                    <label for="hasOldIdentifier" ng-show="::showEnterID" class="control-label">{{::'REGISTRATION_LABEL_ENTER_ID' |
                                         translate}}</label>
                                 </div>
                                 <div class="field-value">
