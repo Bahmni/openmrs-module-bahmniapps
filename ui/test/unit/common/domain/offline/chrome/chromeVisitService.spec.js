@@ -47,7 +47,7 @@ describe('visitService', function () {
         visitService.getVisitSummary("test").then(function (result) {
             expect(offlineDbService.getVisitByUuid).toHaveBeenCalledWith("test");
             expect(result.data.uuid).toBe("test");
-            expect(result.data.visitType).toBe("test_type");
+            expect(result.data.visitType).toBe(visitData.visitJson.visitType);
             done();
         });
     });
