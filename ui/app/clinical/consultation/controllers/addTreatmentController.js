@@ -630,11 +630,12 @@ angular.module('bahmni.clinical')
                     $scope.newOrderSet.name,
                     orderTemplate.dosingInstructions.dosingRule
                 );
+                if (calculatedDose.$$state.status == 0) $scope.isSearchDisabled = false;
                 return calculatedDose.then(function (calculatedDosage) {
-                        orderTemplate.dosingInstructions.dose = calculatedDosage.dose;
-                        orderTemplate.dosingInstructions.doseUnits = calculatedDosage.doseUnit;
-                        return orderTemplate;
-                    });
+                    orderTemplate.dosingInstructions.dose = calculatedDosage.dose;
+                    orderTemplate.dosingInstructions.doseUnits = calculatedDosage.doseUnit;
+                    return orderTemplate;
+                });
             };
 
             var deleteDrugIfEmpty = function (template) {
@@ -721,6 +722,7 @@ angular.module('bahmni.clinical')
                 var setUpNewOrderSet = function () {
                     $scope.newOrderSet.name = orderSet.name;
                     $scope.newOrderSet.uuid = orderSet.uuid;
+                    $scope.isSearchDisabled = true;
                 };
                 calculateDoseForTemplatesIn(orderSet)
                     .then(createDrugOrdersAndGetConflicts)
