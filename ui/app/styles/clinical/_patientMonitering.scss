@@ -1,0 +1,116 @@
+.patient-monitering{
+  .legends{
+    margin:10px;
+    padding: 10px;
+    width:auto;
+    float: right;
+    border: 1px solid $darkerGrey;
+    span{
+      padding:0 5px;
+      font-family: $OpenSansFont;
+      font-size: 12px;
+      &.legends-color{
+        padding-left: 25px;
+        position:relative;
+        &:before{
+          content: "";
+          position: absolute;
+          width: 15px;
+          height: 15px;
+          background: #d6d6d6;
+          left: 5px;
+          top: 1px;
+        }
+        &.legends-yellow:before{
+          background: #f0f078;
+        }
+        &.legends-green:before{
+          background: #9ed016;
+        }
+        &.legends-purple:before{
+          background: #9551b2;
+        }
+      }
+
+    }
+  }
+  .monitoring-table-wrap{
+    width: 100%;
+    position: relative;
+    clear: both;
+    overflow: hidden;
+    border-top: 1px solid $darkerGrey;
+  }
+  .monitoring-table-scroll {
+    width: auto;
+    overflow-x: auto;
+    overflow-y: hidden;
+    margin-left:298px;
+    table {
+      border-spacing: 2px;
+      border-collapse: separate;
+      tr {
+        border-bottom: 0;
+        height:37px;
+        th{
+          text-align: center;
+        }
+        td, th {
+          border: 0;
+          padding: 10px;
+          height: 17px;
+          &.monitoring-fixed-column{
+            position:absolute;
+            left:0;
+            width:300px;
+            height: auto;
+            box-sizing: border-box;
+            height:37px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+          }
+        }
+        th {
+          font-family: $OpenSansFont;
+          background: #d6d6d6;
+          &.current-month {
+            background: #9a9a9a;
+            color: $white;
+          }
+        }
+        td,th {
+          &.monitoring-results {
+            background: #dedede;
+            &--green {
+              background: #9ed016;
+            }
+            &--purple {
+              background: #9551b2;
+            }
+            &--yellow {
+              background: #f0f078;
+            }
+            &--yellowCurrent{
+              background: #d9d966;
+            }
+            &--purpleCurrent{
+              background:#713b88;
+            }
+            &--greenCurrent{
+              background:#7fa80e;
+            }
+            &--greyCurrent{
+              background: #9a9a9a !important;
+            }
+          }
+          &.monitoring-resultsCurrent{
+            background: #9a9a9a !important;
+            color: #fff;
+          }
+
+        }
+      }
+    }
+  }
+}
