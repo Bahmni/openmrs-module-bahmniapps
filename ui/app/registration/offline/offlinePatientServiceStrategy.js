@@ -25,6 +25,15 @@ angular.module('bahmni.registration')
             var create = function (patient) {
                 var allIdentifiers = _.concat(patient.extraIdentifiers, patient.primaryIdentifier);
                 var data = new Bahmni.Registration.CreatePatientRequestMapper(moment()).mapFromPatient($rootScope.patientConfiguration.attributeTypes, patient);
+                var extraIdentifiersForSearch = {};
+                patient.extraIdentifiers.forEach(function (extraIdentifier) {
+                    var name = extraIdentifier.identifierType.name || extraIdentifier.identifierType.display;
+                    extraIdentifiersForSearch[name] = extraIdentifier.identifier;
+                });
+                angular.forEach(data.patient.identifiers, function (identifier) {
+                    identifier.primaryIdentifier = patient.primaryIdentifier.identifier;
+                    identifier.extraIdentifiers = extraIdentifiersForSearch;
+                });
                 data.patient.identifiers = allIdentifiers;
                 return createWithOutMapping(data);
             };
@@ -70,9 +79,16 @@ angular.module('bahmni.registration')
                 var data = new Bahmni.Registration.CreatePatientRequestMapper(moment()).mapFromPatient(attributeTypes, patient);
                 data.patient.identifiers = _.concat(patient.extraIdentifiers, patient.primaryIdentifier);
                 var openmrsIdentifier = openMRSPatient.identifiers;
+                var extraIdentifiersForSearch = {};
+                patient.extraIdentifiers.forEach(function (extraIdentifier) {
+                    var name = extraIdentifier.identifierType.name || extraIdentifier.identifierType.display;
+                    extraIdentifiersForSearch[name] = extraIdentifier.identifier;
+                });
                 angular.forEach(data.patient.identifiers, function (identifier) {
                     var matchedOpenMRSIdentifier = _.find(openmrsIdentifier, {'identifierType': {'uuid': identifier.identifierType.uuid}});
                     identifier.selectedIdentifierSource = matchedOpenMRSIdentifier && matchedOpenMRSIdentifier.selectedIdentifierSource;
+                    identifier.primaryIdentifier = patient.primaryIdentifier.identifier;
+                    identifier.extraIdentifiers = extraIdentifiersForSearch
                 });
                 data.patient.person.names[0].uuid = openMRSPatient.person.names[0].uuid;
                 return offlinePatientServiceStrategy.deletePatientData(data.patient.uuid).then(function () {
