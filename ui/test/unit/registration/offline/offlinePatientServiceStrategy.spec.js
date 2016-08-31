@@ -87,6 +87,7 @@ describe('PatientServiceStrategy test', function () {
             uuid: "selectedIdentifierSourceUuid"
         };
         patientJson.patient.primaryIdentifier = primaryIdentifier;
+        patientJson.patient.extraIdentifiers = [];
         rootScope.patientConfiguration = {attributeTypes: patientAttributeTypes.data.results};
         patientJson.patient.age = 42;
         patientJson.patient.auditInfo = {};
@@ -110,6 +111,7 @@ describe('PatientServiceStrategy test', function () {
         };
 
         patientJson.patient.primaryIdentifier = primaryIdentifier;
+        patientJson.patient.extraIdentifiers = [];
         rootScope.patientConfiguration = {attributeTypes: patientAttributeTypes.data.results};
         patientJson.patient.age = 42;
         patientJson.patient.getImageData = function () {
