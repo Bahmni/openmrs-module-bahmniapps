@@ -330,7 +330,6 @@ angular.module('bahmni.clinical').controller('ConsultationController',
                             return true;
                         }
                     }
-                    drugOrder.dateStopped = DateUtil.addSeconds(drugOrder.dateStopped, 1);
                     //if(DateUtil.getDateWithoutTime(drugOrder.dateStopped) === DateUtil.getDateWithoutTime(DateUtil.now())) {
                     //    drugOrder.dateStopped = null;
                     //} else {
@@ -376,6 +375,9 @@ angular.module('bahmni.clinical').controller('ConsultationController',
                     $scope.$parent.$parent.$broadcast("event:errorsOnForm");
                     return $q.when({});
                 }
+                _.each($scope.consultation.discontinuedDrugs, function(drugOrder) {
+                    drugOrder.dateStopped = DateUtil.addSeconds(drugOrder.dateStopped, 1);
+                });
                 return spinner.forPromise($q.all([preSavePromise(), encounterService.getEncounterType($state.params.programUuid, sessionService.getLoginLocationUuid())]).then(function (results) {
                     var encounterData = results[0];
                     encounterData.encounterTypeUuid = results[1].uuid;
@@ -383,6 +385,7 @@ angular.module('bahmni.clinical').controller('ConsultationController',
                     params.cachebuster = Math.random();
                     return encounterService.create(encounterData)
                         .then(function (saveResponse) {
+
                             var consultationMapper = new Bahmni.ConsultationMapper(configurations.dosageFrequencyConfig(), configurations.dosageInstructionConfig(),
                                 configurations.consultationNoteConcept(), configurations.labOrderNotesConcept(), configurations.stoppedOrderReasonConfig());
                             return consultationMapper.map(saveResponse.data);
