@@ -101,7 +101,7 @@ angular.module('bahmni.common.offline')
 
                      query.limit(50).skip(params.startIndex).orderBy(p.dateCreated, lf.Order.DESC).groupBy(p.uuid).exec()
                         .then(function (tempResults) {
-                            return db.select(pi.identifier.as('identifier'), p.givenName.as('givenName'), p.middleName.as('middleName'), p.familyName.as('familyName'),
+                            return db.select(pi.primaryIdentifier.as('identifier'), pi.extraIdentifiers.as('extraIdentifiers'), p.givenName.as('givenName'), p.middleName.as('middleName'), p.familyName.as('familyName'),
                                 p.dateCreated.as('dateCreated'), p.birthdate.as('birthdate'), p.gender.as('gender'), p.uuid.as('uuid'), padd[addressFieldName],
                                 pat.attributeName.as('attributeName'), pa.attributeValue.as('attributeValue'), pat.format.as('attributeFormat'))
                                 .from(p)
@@ -109,9 +109,9 @@ angular.module('bahmni.common.offline')
                                 .leftOuterJoin(pi, p.uuid.eq(pi.patientUuid))
                                 .leftOuterJoin(pa, p.uuid.eq(pa.patientUuid))
                                 .leftOuterJoin(pat, pa.attributeTypeId.eq(pat.attributeTypeId))
-                                .where(lf.op.and(p.uuid.in(_.map(tempResults, function (tempResult) {
+                                .where(p.uuid.in(_.map(tempResults, function (tempResult) {
                                     return tempResult.uuid;
-                                })), pi.primary.eq(true))).
+                                }))).
                                 orderBy(p.dateCreated, lf.Order.DESC).exec()
                                 .then(function (results) {
 
@@ -133,6 +133,7 @@ angular.module('bahmni.common.offline')
                                             }
                                         });
                                         patient.customAttribute = JSON.stringify(customAttributes);
+                                        patient.extraIdentifiers = JSON.stringify(patient.extraIdentifiers);
                                         response.data.pageOfResults.push(patient);
                                     });
                                     $rootScope.searching = false;

@@ -130,6 +130,7 @@ describe('offlineSearchDbService', function () {
             addressFieldName: 'address2'
         };
 
+        patientJson.patient.identifiers[0].primaryIdentifier = patientJson.patient.identifiers[0].identifier;
         createAndSearch(params).then(function (result) {
             expect(result.data.pageOfResults[0].identifier).toBe(searchString);
             done();
@@ -195,7 +196,7 @@ describe('offlineSearchDbService', function () {
     });
 
     it('Should fetch patient with primary identifier on search, if the patient has multiple identifiers', function (done) {
-        var searchString = "test";
+        var searchString = "GAN200076";
         var params = {
             q: searchString,
             s: "byIdOrNameOrVillage",
@@ -219,9 +220,51 @@ describe('offlineSearchDbService', function () {
         };
 
         patientJson.patient.identifiers.push(extraIdentifier);
+
+        var extraIdentifiers = {Bahmni: "SEC2908216"};
+        patientJson.patient.identifiers[0].primaryIdentifier = "GAN200076";
+        patientJson.patient.identifiers[0].extraIdentifiers = extraIdentifiers;
         createAndSearch(params, done).then(function (result) {
             expect(result.data.pageOfResults.length).toBe(1);
             expect(result.data.pageOfResults[0].identifier).toBe("GAN200076");
+            expect(result.data.pageOfResults[0].extraIdentifiers).toBe(JSON.stringify(extraIdentifiers));
+            done();
+        });
+    });
+
+    it('Should fetch patient with secondary identifier on search, if the patient has multiple identifiers', function (done) {
+        var searchString = "SEC2908216";
+        var params = {
+            q: searchString,
+            s: "byIdOrNameOrVillage",
+            startIndex: 0,
+            addressFieldName: 'address2'
+        };
+
+        var extraIdentifier = {
+            "uuid": "99996aeb-2877-4340-b9fd-abba016a84a3",
+            "identifier": "SEC2908216",
+            "identifierSourceUuid": "99997b48-8792-11e5-ade6-005056b07f03",
+            "identifierType": {
+                "uuid": "99993852-3f10-11e4-adec-0800271c1b75",
+                "display": "Bahmni",
+                "primary": false
+            },
+            "location": null,
+            "preferred": true,
+            "voided": false,
+            "resourceVersion": "1.8"
+        };
+
+        patientJson.patient.identifiers.push(extraIdentifier);
+
+        var extraIdentifiers = {Bahmni: "SEC2908216"};
+        patientJson.patient.identifiers[0].primaryIdentifier = "GAN200076";
+        patientJson.patient.identifiers[0].extraIdentifiers = extraIdentifiers;
+        createAndSearch(params, done).then(function (result) {
+            expect(result.data.pageOfResults.length).toBe(1);
+            expect(result.data.pageOfResults[0].identifier).toBe("GAN200076");
+            expect(result.data.pageOfResults[0].extraIdentifiers).toBe(JSON.stringify(extraIdentifiers));
             done();
         });
     });

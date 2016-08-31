@@ -83,6 +83,17 @@ angular.module('bahmni.common.offline')
                         var matchedIdentifierType = _.find(identifierTypes, {'uuid': identifier.identifierType.uuid});
                         identifier.identifierType.primary = matchedIdentifierType.primary || false;
                     });
+                    var extraIdentifiersForSearch = {};
+                    var extraIdentifiers = _.filter(identifiers, {'identifierType': {'primary': false}});
+                    var primaryIdentifier = _.filter(identifiers, {'identifierType': {'primary': true}})[0];
+                    angular.forEach(extraIdentifiers, function (extraIdentifier) {
+                        var name = extraIdentifier.identifierType.display || extraIdentifier.identifierType.name;
+                        extraIdentifiersForSearch[name] = extraIdentifier.identifier;
+                    });
+                    angular.forEach(identifiers, function (identifier) {
+                        identifier.primaryIdentifier = primaryIdentifier.identifier;
+                        identifier.extraIdentifiers = !_.isEmpty(extraIdentifiersForSearch) ? extraIdentifiersForSearch : undefined;
+                    });
                     deferred.resolve({data: identifiers});
                     return deferred.promise;
                 });
