@@ -557,7 +557,7 @@ concept-set {
     background: #3D7474;
     padding: 10px;
   }
-  form .form-field textarea, .form .form-field textarea{
+  form .form-field textarea, .form .form-field textarea ,.vitals .consultation-image{
     width:500px;
     @media screen and (max-width: 1024px){
       width:300px;
