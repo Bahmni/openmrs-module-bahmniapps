@@ -70,7 +70,7 @@ angular.module('bahmni.common.orders')
         };
 
         this.getCalculatedDose = function (patientUuid,drugName, baseDose, doseUnit, orderSetName,dosingRule) {
-           if (typeof dosingRule !== 'undefined' && dosingRule!='') {
+           if (typeof dosingRule !== 'undefined' && dosingRule!='' && dosingRule!=null) {
                var requestString=JSON.stringify({
                    patientUuid: patientUuid,
                    drugName: drugName,
