@@ -26,18 +26,6 @@ describe('Order Set Service', function () {
     done();
   });
 
-  it('getCalculatedDose should not call to service when rule is null', function (done) {
-    var data = {
-      value: 12.23,
-      doseUnit: 'mg'
-    };
-    mockHttp.get.and.returnValue(specUtil.createFakePromise(data));
-
-    orderSetService.getCalculatedDose('somePatientUuid','drugName', 1, 'mg' ,'orderset', null);
-    expect(mockHttp.get).not.toHaveBeenCalled();
-    done();
-  });
-
   it('getCalculatedDose should round off the dose for special dose unit', function (done) {
     var data = {
       value: 12.23,
