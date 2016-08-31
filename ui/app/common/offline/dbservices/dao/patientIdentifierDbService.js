@@ -22,6 +22,8 @@ angular.module('bahmni.common.offline')
                 var row = patientIdentifierTable.createRow({
                     'typeUuid': identifierTypeUuid,
                     'identifier': identifier.identifier,
+                    'primaryIdentifier': identifier.primaryIdentifier,
+                    'extraIdentifiers': identifier.extraIdentifiers,
                     'primary': isPrimaryIdentifier,
                     'patientUuid': patientUuid,
                     'identifierJson': identifier

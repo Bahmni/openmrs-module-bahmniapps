@@ -23,6 +23,8 @@ describe('patientIdentifierDbService', function () {
         var patientJson = JSON.parse(readFixtures('patient.json'));
         var patientUuid = patientJson.patient.uuid;
         var identifiers = patientJson.patient.identifiers;
+        patientJson.patient.identifiers[0].extraIdentifiers = "extraIdentifiers";
+        patientJson.patient.identifiers[0].primaryIdentifier = "primaryIdentifier";
         schemaBuilder.connect().then(function(db){
             patientDbService.insertPatientData(db, patientJson).then(function () {
                 patientIdentifierDbService.insertPatientIdentifiers(db, patientUuid, identifiers).then(function(){
