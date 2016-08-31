@@ -415,6 +415,14 @@ Bahmni.Common.Offline.SchemaDefinitions = {
                 type: 'BOOLEAN'
             },
             {
+                name: 'primaryIdentifier',
+                type: 'STRING'
+            },
+            {
+                name: 'extraIdentifiers',
+                type: 'STRING'
+            },
+            {
                 name: 'patientUuid',
                 type: 'STRING'
             },
@@ -423,7 +431,7 @@ Bahmni.Common.Offline.SchemaDefinitions = {
                 type: 'STRING'
             }
         ],
-        nullableColumns: ['identifier'],
+        nullableColumns: ['identifier', 'primaryIdentifier', 'extraIdentifiers'],
         primaryKeyColumns: ['typeUuid', 'patientUuid']
     }
 };
