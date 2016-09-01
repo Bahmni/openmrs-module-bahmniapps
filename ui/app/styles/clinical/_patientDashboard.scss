@@ -649,26 +649,24 @@ table.drug-order-table td.drug {
   }
   li.video-concept{
     border-top:none;
-    height:287px;
+    height:300px;
     margin:5px 15px;
     border: 1px solid $lightGray;
     position: relative;
     overflow: hidden;
-    video{
-      width: 100%    !important;
-      height: auto   !important;
-    }
     @media screen and(max-width:1150px){
       height:auto;
     }
     @media screen and (max-width: 859px) {
-      height:287px;
+      height:300px;
     }
     .testUnderPanel{
       width: 100% !important;
-      padding-left: 10px;
+      padding:3px 10px 0;
       box-sizing: border-box;
-      padding-bottom: 3px;
+      .btn-download{
+        padding: 6px 9px 7px;
+      }
     }
     .tree-list-item{
       padding-left: 0;
@@ -678,8 +676,12 @@ table.drug-order-table td.drug {
       right: 0;
       padding-top: 6px;
     }
+
     pre{
       width:92%;
+    }
+    .notes.inline-notes{
+      margin-top:-4px;
     }
     .footer-note{
       text-align:left;
