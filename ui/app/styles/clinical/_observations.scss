@@ -523,15 +523,21 @@ concept-set {
              margin-right:25px;
            }
           }
-          .btn-small{
+          .button-wrap{
             padding: 0;
-            font-size: 11px;
             position: absolute;
             right:10px;
             top:50%;
-            margin-top: -10px;
+            transform: translateY(-50%);
             @media screen and (max-width: 1024px){
               right:5px;
+            }
+            .btn-small{
+              padding:0;
+            }
+            .fa-exclamation-triangle{
+              margin-top: 4px;
+              font-size: 14px;
             }
 
           }
@@ -552,6 +558,12 @@ concept-set {
   }
   .orders-section-right{
     width: 76% !important;
+    .section-title #removeClonedObs.fa-remove{
+      padding: 3px 5px 4px;
+      width: auto;
+      margin: -3px 10px 0;
+      font-size: 14px;
+    }
   }
   .concept-set-group .concept-set-title h2.section-title{
     background: #3D7474;
