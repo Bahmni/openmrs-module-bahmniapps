@@ -29,14 +29,14 @@
                                 <span ng-class="{'referred-out': res.referredOut}">
                                     <span class="referred">R</span>
                                 </span>
-                                <span ng-show="res.result" bm-pop-over-trigger
+                                <span ng-if="res.result" bm-pop-over-trigger
                                       ng-class="{'is-abnormal': res.abnormal, 'one-result': results.length==1}"
                                       class="ipd-test-results" bo-text="res.result">
                                 </span>
-                                <span ng-show="res.uploadedFileName">
+                                <span ng-if="res.uploadedFileName">
                                     <a class="uploaded-file" href="{{getUploadedFileUrl(res.uploadedFileName)}}"
                                        stop-event-propagation="click" target="_blank">
-                                        <i class="fa fa-paper-clip"></i>
+                                        <i class="fa fa-paperclip"></i>
                                     </a>
                                 </span>
                                 <span class="tooltip" bm-pop-over-target>
@@ -78,14 +78,14 @@
                                 <span ng-class="{'referred-out': res.referredOut}">
                                     <span class="referred">R</span>
                                 </span>
-                                <span ng-show="res.result" bm-pop-over-trigger
+                                <span ng-if="res.result" bm-pop-over-trigger
                                       ng-class="{'is-abnormal': res.abnormal, 'one-result': results.length==1}"
                                       class="ipd-test-results" bo-text="res.result">
                                 </span>
-                                <span ng-show="res.uploadedFileName">
+                                <span ng-if="res.uploadedFileName">
                                     <a class="uploaded-file" href="{{getUploadedFileUrl(res.uploadedFileName)}}"
                                        stop-event-propagation="click" target="_blank">
-                                        <i class="fa fa-paper-clip"></i>
+                                        <i class="fa fa-paperclip"></i>
                                     </a>
                                 </span>
                                 <span class="tooltip" bm-pop-over-target>
