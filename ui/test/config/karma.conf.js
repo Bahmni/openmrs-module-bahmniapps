@@ -23,8 +23,6 @@ module.exports = function (config) {
             'app/components/moment/moment.js',
             'app/components/offline/offline.min.js',
             'app/components/angular-ui-router/release/angular-ui-router.js',
-            'app/components/bahmni-form-controls/helpers.js',
-            'app/components/bahmni-form-controls/bundle.js',
             'app/components/lodash/dist/lodash.min.js',
             'app/components/lovefield/dist/lovefield.js',
             'app/components/angular-ui-select2/src/select2.js',
