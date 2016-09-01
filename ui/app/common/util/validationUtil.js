@@ -12,7 +12,7 @@ Bahmni.Common.Util.ValidationUtil = (function () {
             if (!ob.hasOwnProperty(i) || !isAcceptableType(ob[i])) {
                 continue;
             }
-            if ((typeof ob[i]) == 'object') {
+            if ((typeof ob[i]) == 'object' && !(ob[i] instanceof Date)) {
                 var flatObject = flattenObject(ob[i]);
                 for (var x in flatObject) {
                     if (!flatObject.hasOwnProperty(x) || !isAcceptableType(flatObject[x])) {

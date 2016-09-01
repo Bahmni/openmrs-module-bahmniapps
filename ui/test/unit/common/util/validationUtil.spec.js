@@ -1,10 +1,12 @@
 Bahmni.Registration.customValidator = {
     "age.days": {},
     "name": {},
-    "Telephone Number": {}
+    "Telephone Number": {},
+    "date": {}
 };
 
 describe('ValidationUtil', function () {
+    var date = new Date();
 
     var ValidationUtil = Bahmni.Common.Util.ValidationUtil;
     var customValidator = Bahmni.Registration.customValidator;
@@ -18,7 +20,8 @@ describe('ValidationUtil', function () {
                 "addr2": "addr2",
                 "street": "road",
                 "pin": 701
-            }
+            },
+            "date": date
         };
         objectConfiguration = {
             "one": { "name": "name" },
@@ -31,9 +34,12 @@ describe('ValidationUtil', function () {
         customValidator["age.days"].method.and.returnValue(true);
         customValidator["name"] = jasmine.createSpyObj('name', ['method']);
         customValidator["name"].method.and.returnValue(true);
+        customValidator["date"] = jasmine.createSpyObj('date', ['method']);
+        customValidator["date"].method.and.returnValue(true);
         ValidationUtil.validate(complexObject, objectConfiguration);
         expect(customValidator["name"].method).toHaveBeenCalledWith("name", "jack", objectConfiguration.one);
         expect(customValidator["age.days"].method).toHaveBeenCalledWith("age.days", 7, undefined);
+        expect(customValidator["date"].method).toHaveBeenCalledWith("date", date, undefined);
     });
 
     it("should return the error message when the predicate fails", function () {
