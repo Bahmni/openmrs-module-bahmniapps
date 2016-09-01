@@ -489,6 +489,7 @@ concept-set {
   .orders-section-left{
     border: 1px solid $darkerGrey;
     width:22% !important;
+    border-radius: 5px 5px 0 0;
     @media screen and (max-width: 1024px){
       margin: 0% 0 2% 0 !important;
     }
@@ -539,6 +540,9 @@ concept-set {
               margin-top: 4px;
               font-size: 14px;
             }
+            .fa-plus{
+              width:auto;
+            }
 
           }
           &.active{
@@ -561,7 +565,7 @@ concept-set {
     .section-title #removeClonedObs.fa-remove{
       padding: 3px 5px 4px;
       width: auto;
-      margin: -3px 10px 0;
+      margin: -3px 0 0;
       font-size: 14px;
     }
   }
