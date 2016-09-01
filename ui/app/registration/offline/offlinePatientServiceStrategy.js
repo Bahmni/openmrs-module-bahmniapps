@@ -30,11 +30,11 @@ angular.module('bahmni.registration')
                     var name = extraIdentifier.identifierType.name || extraIdentifier.identifierType.display;
                     extraIdentifiersForSearch[name] = extraIdentifier.identifier;
                 });
+                data.patient.identifiers = allIdentifiers;
                 angular.forEach(data.patient.identifiers, function (identifier) {
                     identifier.primaryIdentifier = patient.primaryIdentifier.identifier;
                     identifier.extraIdentifiers = extraIdentifiersForSearch;
                 });
-                data.patient.identifiers = allIdentifiers;
                 return createWithOutMapping(data);
             };
 
