@@ -25,7 +25,7 @@
         <span ng-show="::isValidResultToShow(test.result)" bo-class="{'is-abnormal': test.abnormal}" class="value"
               bo-text="test.result"></span>
         <span ng-if="test.labReportUrl">
-            <a class="uploaded-file" href="{{test.labReportUrl}}" target="_blank"><i class="fa fa-paper-clip"></i></a>
+            <a class="uploaded-file" href="{{test.labReportUrl}}" target="_blank"><i class="fa fa-paperclip"></i></a>
         </span>
     </td>
     <td class="toggle-btn" toggle="test.showDetails" ng-if="test.showDetailsButton && !test.notes">
