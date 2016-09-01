@@ -135,7 +135,7 @@ angular.module('consultation')
                         return consultationInitialization(
                             $stateParams.patientUuid, $stateParams.encounterUuid, $stateParams.programUuid, $stateParams.enrollment);
                     },
-                    dashboardInitialization: function ($rootScope, initialization, patientContext, clinicalDashboardConfig, userService, offlineDb) {
+                    dashboardInitialization: function (offlineDb, $rootScope, initialization, patientContext, clinicalDashboardConfig, userService) {
                         return clinicalDashboardConfig.load().then(function () {
                             $rootScope.currentUser.addToRecentlyViewed(patientContext.patient, clinicalDashboardConfig.getMaxRecentlyViewedPatients());
                             return userService.savePreferences();
@@ -331,7 +331,7 @@ angular.module('consultation')
                     offlineDb: function (offlineDbInitialization) {
                         return offlineDbInitialization();
                     },
-                    visitHistory: function (visitHistoryInitialization, $stateParams,offlineDb) {
+                    visitHistory: function (offlineDb, visitHistoryInitialization, $stateParams) {
                         return visitHistoryInitialization($stateParams.patientUuid);
                     }
                 }
@@ -360,7 +360,10 @@ angular.module('consultation')
                     }
                 },
                 resolve: {
-                    visitSummary: function (visitSummaryInitialization, $stateParams) {
+                    offlineDb: function (offlineDbInitialization) {
+                        return offlineDbInitialization();
+                    },
+                    visitSummary: function (offlineDb, visitSummaryInitialization, $stateParams) {
                         return visitSummaryInitialization($stateParams.visitUuid);
                     }
                 }
@@ -428,7 +431,7 @@ angular.module('consultation')
                     offlineDb: function (offlineDbInitialization) {
                         return offlineDbInitialization();
                     },
-                    visitSummary: function (visitSummaryInitialization, $stateParams, offlineDb) {
+                    visitSummary: function (offlineDb, visitSummaryInitialization, $stateParams) {
                         return visitSummaryInitialization($stateParams.visitUuid, $stateParams.tab);
                     },
                     visitConfig: function (initialization, visitTabConfig) {
