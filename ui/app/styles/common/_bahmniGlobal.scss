@@ -347,8 +347,10 @@ u, .add-drug-btninput[value]:first-letter {
 }
 
 .video{
-  width: 340px;
+  width:280px;
   height: 190px;
+  display: table;
+  margin:0 auto;
   &.disable{
     opacity: .1;
     pointer-events: none;

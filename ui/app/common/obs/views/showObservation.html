@@ -6,6 +6,7 @@
             lowNormal:observation.lowNormal||observation.concept.lowNormal,
             hiNormal:observation.hiNormal||observation.concept.hiNormal,
             }"/>
+            <a href="{{'/document_images/' + observation.value}}" download ng-if="observation.isVideoConcept()" class="button btn fr btn-download"><i class="fa fa-download" aria-hidden="true"></i></a>
         </span>
         <span ng-class="::{
                        'text-only': (observation.concept.dataType ==='Text' && print),
