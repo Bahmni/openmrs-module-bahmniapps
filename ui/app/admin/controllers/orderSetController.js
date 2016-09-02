@@ -42,17 +42,17 @@
                     $scope.orderSet.orderSetMembers.push(buildOrderSetMember());
                 };
 
+                var isOrderSetHavingMinimumOrders = function(){
+                    return _.filter($scope.orderSet.orderSetMembers, function(setMember) { return !setMember.retired; }).length >= 2;
+                };
+
+
                 $scope.remove = function (orderSetMember) {
-                    if (orderSetMember.retired === false) {
-                        if ($scope.orderSet.orderSetMembers.length === 2) {
-                            messagingService.showMessage('error', 'An orderSet should have a minimum of two orderSetMembers');
-                            return;
-                        }
-                        orderSetMember.retired = true;
-                        $scope.save();
-                    } else {
-                        _.remove($scope.orderSet.orderSetMembers, orderSetMember);
+                    if (!isOrderSetHavingMinimumOrders()) {
+                        messagingService.showMessage('error', 'An orderSet should have a minimum of two orderSetMembers');
+                        return;
                     }
+                    orderSetMember.retired = true;
                 };
 
                 $scope.moveUp = function (orderSetMember) {
@@ -115,6 +115,7 @@
 
                 $scope.save = function () {
                     if (validationSuccess()) {
+                        getValidOrderSetMembers();
                         spinner.forPromise(orderSetService.createOrUpdateOrderSet($scope.orderSet).then(function (response) {
                             $state.params.orderSetUuid = response.data.uuid;
                             return $state.transitionTo($state.current, $state.params, {
@@ -128,8 +129,12 @@
                     }
                 };
 
+                var getValidOrderSetMembers = function () {
+                    $scope.orderSet.orderSetMembers = _.filter($scope.orderSet.orderSetMembers, 'concept')
+                };
+
                 var validationSuccess = function () {
-                    if (!$scope.orderSet.orderSetMembers || $scope.orderSet.orderSetMembers.length < 2) {
+                    if (!$scope.orderSet.orderSetMembers || !isOrderSetHavingMinimumOrders()) {
                         messagingService.showMessage('error', 'An orderSet should have a minimum of two orderSetMembers');
                         return false;
                     }
