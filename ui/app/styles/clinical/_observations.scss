@@ -515,44 +515,50 @@ concept-set {
           border: 1px solid $lightGray;
           border-bottom-color: $lightGray !important;
           padding: 8px 10px !important;
-         .concept-set-name {
+          .concept-set-name {
             display: block;
             width: auto;
-            margin-right:30px;
             color: $lightGray;
-           @media screen and (max-width: 1024px){
-             margin-right:25px;
-           }
-          }
-          .button-wrap{
-            padding: 0;
-            position: absolute;
-            right:10px;
-            top:50%;
-            transform: translateY(-50%);
             @media screen and (max-width: 1024px){
-              right:5px;
-            }
-            .btn-small{
-              padding:0;
-            }
-            .fa-exclamation-triangle{
-              margin-top: 4px;
-              font-size: 14px;
-            }
-            .fa-plus{
-              width:auto;
-            }
-
-          }
-          &.active{
-            span{
-              color: $white;
+             margin-right:25px;
             }
           }
           @media screen and (max-width: 1024px){
             padding: 8px 5px;
           }
+        }
+        &.active{
+          a{
+            background: #3D7474;
+            span{
+              color: $white;
+            }
+          }
+
+        }
+        .button-wrap{
+          padding: 0;
+          position: absolute;
+          right:10px;
+          top:50%;
+          transform: translateY(-50%);
+          @media screen and (max-width: 1024px){
+            right:5px;
+          }
+          .btn-small{
+            padding:0;
+            margin-left:5px;
+          }
+          .fa-exclamation-triangle{
+            margin-left: 5px;
+            font-size: 17px;
+            width:auto;
+          }
+          .fa-plus{
+            width: 13px;
+            height: 13px;
+          }
+
         }
       }
       @media screen and (max-width: 1024px){
