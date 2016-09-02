@@ -1,6 +1,6 @@
 <div class="concept-set-title">
     <div id="{{getNormalized(conceptSet.conceptName)}}" ng-click="conceptSet.toggleDisplay()" >
-        <h2 class="section-title" ng-class="{'section-title-add-more' : conceptSet.canAddMore()}">
+        <h2 class="section-title" ng-class="{'section-title-add-more' : isLastClonedSection(conceptSet, allTemplates) && conceptSet.canAddMore() && !context.showPanelView}">
             <i class="fa fa-caret-right" ng-hide="conceptSet.isOpen"></i>
             <i class="fa fa-caret-down" ng-show="conceptSet.isOpen"></i>
             <span class="section-label">{{conceptSet.label}}</span>

@@ -12,18 +12,18 @@
                 <div class="multi-select-lab-tests">
                     <ul>
                         <li ng-repeat="conceptSet in allTemplates track by $index"
-                            ng-if="conceptSet.isAvailable(context) && (conceptSet.isAdded || conceptSet.alwaysShow)">
-                            <a ng-click="showLeftPanelConceptSet(conceptSet)" ng-class='conceptSet.klass'>
+                            ng-if="conceptSet.isAvailable(context) && (conceptSet.isAdded || conceptSet.alwaysShow)"  ng-class='conceptSet.klass'>
+                            <a ng-click="showLeftPanelConceptSet(conceptSet)">
                                 <span class="concept-set-name">
                                     {{conceptSet.label}}
                                     <span ng-if="conceptSet.observations[0].observationDateTime"> ( {{conceptSet.observations[0].observationDateTime|bahmniDate}} )</span>
                                 </span>
-                                <div class="button-wrap">
-                                    <label class="fa fa-exclamation-triangle fa-red"  ng-hide="conceptSet.isValid"></label>
-                                    <button class="add-more-concept-set add-more-btn btn-small fr" type="button" ng-click="clonePanelConceptSet($index)" ng-if="isLastClonedSection(conceptSet, allTemplates) && conceptSet.canAddMore()" ng-disabled="conceptSet.klass!='active'"> <i class="fa fa-plus"></i></button>
-                                    <!--<label class="fa fa-remove" id="removeClonedObs" ng-confirm-click="remove($index)" confirm-message="{{::'REMOVE_CONFIRMATION_KEY' | translate}}" ng-if="isClonedSection(conceptSet, allTemplates) && !conceptSet.observations[0].observationDateTime"></label>-->
-                                </div>
                             </a>
+                            <div class="button-wrap">
+                                <label class="fa fa-exclamation-triangle fa-red"  ng-hide="conceptSet.isValid"></label>
+                                <button class="add-more-concept-set add-more-btn btn-small fr" type="button" ng-click="clonePanelConceptSet($index)" ng-if="isLastClonedSection(conceptSet, allTemplates) && conceptSet.canAddMore()" ng-disabled="conceptSet.klass!='active'"> <i class="fa fa-plus"></i></button>
+                                <!--<label class="fa fa-remove" id="removeClonedObs" ng-confirm-click="remove($index)" confirm-message="{{::'REMOVE_CONFIRMATION_KEY' | translate}}" ng-if="isClonedSection(conceptSet, allTemplates) && !conceptSet.observations[0].observationDateTime"></label>-->
+                            </div>
                         </li>
                     </ul>
                 </div>
