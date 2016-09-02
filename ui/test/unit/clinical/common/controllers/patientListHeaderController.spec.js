@@ -4,7 +4,7 @@ describe("PatientListHeaderController", function () {
 
     var scope, ngDialog,
         $bahmniCookieStore, locationService, $window, retrospectiveEntryService,
-        providerService, rootScope, thisController, locationsPromise, offlineService, schedulerService;
+        providerService, rootScope, thisController, locationsPromise, offlineService, schedulerService, offlineStatusService;
     var date = "2015-01-11";
     var encounterProvider = {value: "Test", uuid: "Test_UUID"};
 
@@ -43,6 +43,7 @@ describe("PatientListHeaderController", function () {
         providerService = jasmine.createSpyObj('providerService', ['search']);
         offlineService = jasmine.createSpyObj('offlineService', ['isOfflineApp']);
         schedulerService = jasmine.createSpyObj('schedulerService', ['sync','stopSync']);
+        offlineStatusService = jasmine.createSpyObj('offlineStatusService', ['setOfflineOptions']);
         ngDialog = jasmine.createSpyObj('ngDialog', ['open','close']);
         $window = {location: { reload: jasmine.createSpy()} };
 
@@ -57,7 +58,8 @@ describe("PatientListHeaderController", function () {
             $window: $window,
             ngDialog: ngDialog,
             offlineService: offlineService,
-            schedulerService: schedulerService
+            schedulerService: schedulerService,
+            offlineStatusService : offlineStatusService
         });
         thisController.windowReload = function () {
         };
@@ -159,6 +161,11 @@ describe("PatientListHeaderController", function () {
         scope.popUpHandler();
         expect(ngDialog.open).toHaveBeenCalled();
 
+    });
+
+    it("should call setOfflineOptions of OfflineStatusService", function () {
+        scope.$digest();
+        expect(offlineStatusService.setOfflineOptions).toHaveBeenCalled();
     });
 
 });

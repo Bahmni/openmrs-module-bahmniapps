@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('bahmni.clinical')
-    .controller('PatientListHeaderController', ['$scope', '$rootScope', '$bahmniCookieStore', 'providerService', 'spinner', 'locationService', '$window', 'ngDialog','retrospectiveEntryService','offlineService','schedulerService',
-        function ($scope, $rootScope, $bahmniCookieStore, providerService, spinner, locationService, $window, ngDialog, retrospectiveEntryService, offlineService, schedulerService) {
+    .controller('PatientListHeaderController', ['$scope', '$rootScope', '$bahmniCookieStore', 'providerService', 'spinner', 'locationService', '$window', 'ngDialog','retrospectiveEntryService','offlineService','schedulerService', 'offlineStatusService',
+        function ($scope, $rootScope, $bahmniCookieStore, providerService, spinner, locationService, $window, ngDialog, retrospectiveEntryService, offlineService, schedulerService, offlineStatusService) {
             var DateUtil = Bahmni.Common.Util.DateUtil;
             $scope.maxStartDate = DateUtil.getDateWithoutTime(DateUtil.today());
             var selectedProvider = {};
@@ -12,7 +12,7 @@ angular.module('bahmni.clinical')
             $scope.selectedLocationUuid = {};
             $rootScope.isOfflineApp = offlineService.isOfflineApp();
 
-
+            offlineStatusService.setOfflineOptions();
             $scope.getProviderList = function() {
                 return function (searchAttrs) {
                     return providerService.search(searchAttrs.term);
