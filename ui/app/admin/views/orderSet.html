@@ -43,7 +43,7 @@
                     <legend class="mylegend">
                         <span> Order Set Members</span>
                     </legend>
-                    <div ng-repeat="orderSetMember in orderSet.orderSetMembers" ng-if="!orderSetMember.voided"  class="primary-section-grid clearfix">
+                    <div ng-repeat="orderSetMember in orderSet.orderSetMembers" ng-if="!(orderSetMember.voided || orderSetMember.retired)"  class="primary-section-grid clearfix">
                         <div class="row">
                             <div class="clearfix order-drug-option" ng-class="{'column-container' : orderSetMember.concept.uuid}">
                                 <div class="col col1 form-field">
