@@ -235,7 +235,7 @@
 
                         <div ng-if="observation.value" class="fl">
                             <video class="video" controls preload="metadata" ng-class="{'disable': observation.voided}">
-                                <source src="{{'/document_images/' + observation.value}}">
+                                <source ng-src="{{'/document_images/' + observation.value}}">
                                 Your browser does not support the video tag.
                             </video>
                             <!--<a href="{{'/document_images/' + observation.value}}" download>download video</a>-->
