@@ -90,6 +90,11 @@
                     var newOrderSetMember;
                     $scope.onSelect = function (oldOrderSetMember) {
                         newOrderSetMember = oldOrderSetMember;
+                        var currentOrderSetMember = _.find($scope.orderSet.orderSetMembers,{'concept' : { 'display': oldOrderSetMember.value}});
+                        if(!_.isUndefined(currentOrderSetMember)) {
+                            currentOrderSetMember.concept.uuid = oldOrderSetMember.concept.uuid;
+                        }
+
                     };
 
                     $scope.onChange = function (oldOrderSetMember) {
