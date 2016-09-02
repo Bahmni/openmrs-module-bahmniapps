@@ -308,6 +308,11 @@
 
 table.ipd-investigation {
   .belongsToPanel {padding-left: 25px; font-family: sans-serif;}
+  .upload-file-url{
+    float:left;
+    width:auto;
+    margin-top: 2px;
+  }
 }
 .ipd-test-results {
   padding: 3px 5px;

@@ -31,9 +31,9 @@
                                 </span>
                                 <span ng-if="res.result" bm-pop-over-trigger
                                       ng-class="{'is-abnormal': res.abnormal, 'one-result': results.length==1}"
-                                      class="ipd-test-results" bo-text="res.result">
+                                      class="ipd-test-results fl" bo-text="res.result">
                                 </span>
-                                <span ng-if="res.uploadedFileName">
+                                <span ng-if="res.uploadedFileName" class="upload-file-url">
                                     <a class="uploaded-file" href="{{getUploadedFileUrl(res.uploadedFileName)}}"
                                        stop-event-propagation="click" target="_blank">
                                         <i class="fa fa-paperclip"></i>
@@ -82,7 +82,7 @@
                                       ng-class="{'is-abnormal': res.abnormal, 'one-result': results.length==1}"
                                       class="ipd-test-results" bo-text="res.result">
                                 </span>
-                                <span ng-if="res.uploadedFileName">
+                                <span ng-if="res.uploadedFileName"  class="upload-file-url">
                                     <a class="uploaded-file" href="{{getUploadedFileUrl(res.uploadedFileName)}}"
                                        stop-event-propagation="click" target="_blank">
                                         <i class="fa fa-paperclip"></i>
