@@ -24,7 +24,7 @@
         </a>
         <div ng-show="::(observation.isVideoConcept())" class="hidden-print">
             <video class="video" controls class="img-concept" preload="metadata">
-                <source src="{{'/document_images/' + observation.value}}" type="video/mp4">
+                <source ng-src="{{'/document_images/' + observation.value}}" type="video/mp4">
                 Your browser does not support the video tag.
             </video>
         </div>
