@@ -119,7 +119,7 @@ describe("OrderSetController", function () {
         expect(scope.orderSet.orderSetMembers.length).toBe(1);
     });
 
-    it("should void already saved orderSetMember", function () {
+    it("should retire already saved orderSetMember", function () {
         scope.$apply(setUp);
         scope.orderSet.orderSetMembers= [orderSetData.data.orderSetMembers[0]];
         scope.remove(scope.orderSet.orderSetMembers[0]);
