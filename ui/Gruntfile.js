@@ -176,7 +176,6 @@ module.exports = function (grunt) {
                 '<%= yeoman.app %>/orders/**/*.html',
                 '<%= yeoman.app %>/home/**/*.html',
                 '<%= yeoman.app %>/admin/**/*.html',
-                '<%= yeoman.app %>/dhis/**/*.html',
                 '<%= yeoman.app %>/registration/**/*.html',
                 '<%= yeoman.app %>/document-upload/**/*.html',
                 '<%= yeoman.app %>/reports/**/*.html'
@@ -204,7 +203,6 @@ module.exports = function (grunt) {
                 '<%= yeoman.dist %>/orders/**/*.html',
                 '<%= yeoman.dist %>/home/**/*.html',
                 '<%= yeoman.dist %>/admin/**/*.html',
-                '<%= yeoman.dist %>/dhis/**/*.html',
                 '<%= yeoman.dist %>/offline/**/*.html',
                 '<%= yeoman.dist %>/reports/**/*.html',
                 '<%= yeoman.dist %>/registration/**/*.html',
@@ -257,7 +255,6 @@ module.exports = function (grunt) {
                             'home/**/*.html',
                             'offline/**/*.html',
                             'admin/**/*.html',
-                            'dhis/**/*.html',
                             'reports/**/*.html',
                             'registration/**/*.html',
                             'document-upload/**/*.html'
@@ -366,7 +363,6 @@ module.exports = function (grunt) {
                         src: ['admin.*.js'],
                         dest: '<%= yeoman.dist %>/admin/'
                     },
-                    {expand: true, cwd: '<%= yeoman.dist %>', src: ['dhis.*.js'], dest: '<%= yeoman.dist %>/dhis/'},
                     {expand: true, cwd: '<%= yeoman.dist %>', src: ['offline.*.js'], dest: '<%= yeoman.dist %>/offline/'},
                     {expand: true, cwd: '<%= yeoman.root %>', src: ['common.*.js'], dest: '<%= yeoman.dist %>/'},
                     {
@@ -417,12 +413,6 @@ module.exports = function (grunt) {
                         cwd: '<%= yeoman.dist %>',
                         src: ['admin.*.css'],
                         dest: '<%= yeoman.dist %>/admin/'
-                    },
-                    {
-                        expand: true,
-                        cwd: '<%= yeoman.dist %>',
-                        src: ['dhis.*.css'],
-                        dest: '<%= yeoman.dist %>/dhis/'
                     },
                     {
                         expand: true,

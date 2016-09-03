@@ -18,6 +18,5 @@
   "MODULE_LABEL_REPORTS_KEY": "rapports",
   "MODULE_LABEL_ORDERS_KEY": "ordres",
   "MODULE_LABEL_PROGRAMS_KEY": "programmes",
-  "MODULE_LABEL_DHIS_KEY": "dhis",
   "LOGIN_LABEL_LOGIN_ERROR_MESSAGE_KEY": "L'authentification a échoué. Veuillez réessayer."
 }

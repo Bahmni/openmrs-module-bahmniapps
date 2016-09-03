@@ -23,7 +23,6 @@ Please visit https://bahmni.atlassian.net/wiki/display/BAH/Working+on+Bahmni+Ope
     |   |-- adt
     |   |-- clinical
     |   |-- common
-    |	|-- dhis
     |   |-- document-upload
     |   |-- home
     |	|-- i18n
@@ -31,7 +30,7 @@ Please visit https://bahmni.atlassian.net/wiki/display/BAH/Working+on+Bahmni+Ope
     |   |-- offline
     |   |-- orders
     |   |-- registration
-    |   `-- reports
+    |   |-- reports
     |
     |-- .jshint.rc
     |-- bower.json
