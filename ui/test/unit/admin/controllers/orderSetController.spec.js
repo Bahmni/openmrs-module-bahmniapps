@@ -36,7 +36,7 @@ describe("OrderSetController", function () {
 
     beforeEach(module(function ($provide) {
         _provider = $provide;
-        orderSetService = jasmine.createSpyObj('orderSetService', ['getOrderSet', 'saveOrderSet', 'getOrderSetMemberAttributeType', 'getDrugConfig']);
+        orderSetService = jasmine.createSpyObj('adminOrderSetService', ['getOrderSet', 'saveOrderSet', 'getOrderSetMemberAttributeType', 'getDrugConfig']);
         orderTypeService = jasmine.createSpyObj('orderTypeService', ['loadAll']);
 
         orderSetService.getOrderSet.and.callFake(function () {
@@ -69,7 +69,7 @@ describe("OrderSetController", function () {
         spinner = jasmine.createSpyObj('spinner', ['forPromise']);
         messagingService = jasmine.createSpyObj('messageService', ['showMessage']);
 
-        $provide.value('orderSetService', orderSetService);
+        $provide.value('adminOrderSetService', orderSetService);
         $provide.value('orderTypeService', orderTypeService);
         $provide.value('spinner', spinner);
         $provide.value('messagingService', messagingService);
