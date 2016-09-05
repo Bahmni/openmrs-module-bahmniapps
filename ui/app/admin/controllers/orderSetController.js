@@ -33,8 +33,8 @@
     };
 
     angular.module('bahmni.common.domain')
-        .controller('OrderSetController', ['$scope', '$state', 'spinner', '$http', '$q', 'orderSetService', 'messagingService', 'orderTypeService',
-            function ($scope, $state, spinner, $http, $q, orderSetService, messagingService, orderTypeService) {
+        .controller('OrderSetController', ['$scope', '$state', 'spinner', '$http', '$q', 'adminOrderSetService', 'messagingService', 'orderTypeService',
+            function ($scope, $state, spinner, $http, $q, adminOrderSetService, messagingService, orderTypeService) {
                 $scope.operators = ['ALL', 'ANY', 'ONE'];
                 $scope.conceptNameInvalid = false;
 
@@ -116,7 +116,7 @@
                 $scope.save = function () {
                     if (validationSuccess()) {
                         getValidOrderSetMembers();
-                        spinner.forPromise(orderSetService.createOrUpdateOrderSet($scope.orderSet).then(function (response) {
+                        spinner.forPromise(adminOrderSetService.createOrUpdateOrderSet($scope.orderSet).then(function (response) {
                             $state.params.orderSetUuid = response.data.uuid;
                             return $state.transitionTo($state.current, $state.params, {
                                 reload: true,
@@ -151,12 +151,12 @@
                 var init = function () {
                     var init = $q.all([
                         orderTypeService.loadAll(),
-                        orderSetService.getDrugConfig()
+                        adminOrderSetService.getDrugConfig()
                     ]).then(function (results) {
                         $scope.orderTypes = results[0];
                         $scope.treatmentConfig = results[1];
                         if ($state.params.orderSetUuid !== "new") {
-                            spinner.forPromise(orderSetService.getOrderSet($state.params.orderSetUuid).then(function (response) {
+                            spinner.forPromise(adminOrderSetService.getOrderSet($state.params.orderSetUuid).then(function (response) {
                                 $scope.orderSet = Bahmni.Common.OrderSet.create(response.data);
                             }));
                         }

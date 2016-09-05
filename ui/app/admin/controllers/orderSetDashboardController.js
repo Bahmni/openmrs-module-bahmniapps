@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('bahmni.common.domain')
-    .controller('OrderSetDashboardController', ['$scope', '$state', 'spinner', 'appService', '$http', 'orderSetService', '$location', function ($scope, $state, spinner, appService, $http, orderSetService, $location) {
+    .controller('OrderSetDashboardController', ['$scope', '$state', 'spinner', 'appService', '$http', 'adminOrderSetService', '$location', function ($scope, $state, spinner, appService, $http, adminOrderSetService, $location) {
         $scope.appExtensions = appService.getAppDescriptor().getExtensions("bahmni.admin.orderSet", "link") || [];
 
         $scope.createOrEditOrderSet = function(uuid){
@@ -15,13 +15,13 @@ angular.module('bahmni.common.domain')
         $scope.removeOrderSet = function(orderSet){
             var orderSetObj = Bahmni.Common.OrderSet.create(orderSet);
             orderSetObj.retired = true;
-            spinner.forPromise(orderSetService.removeOrderSet(orderSetObj)).then(function(response){
+            spinner.forPromise(adminOrderSetService.removeOrderSet(orderSetObj)).then(function(response){
                 init();
             })
         };
 
         var init = function() {
-            spinner.forPromise(orderSetService.getAllOrderSets()).then(function(response) {
+            spinner.forPromise(adminOrderSetService.getAllOrderSets()).then(function(response) {
                 $scope.orderSets = response.data.results;
             });
         };
