@@ -39,10 +39,10 @@ angular.module('bahmni.common.uiHelper')
             },
             select: function (event, ui) {
                 scope.selectedValue = ui.item.value;
+                ngModelCtrl.$setViewValue(ui.item.value);
                 if(onSelect != null) {
                     onSelect(ui.item);
                 }
-                ngModelCtrl.$setViewValue(ui.item.value);
                 validateIfNeeded(ui.item.value);
                 if(scope.blurOnSelect) {
                     element.blur();
