@@ -90,9 +90,12 @@
                     var newOrderSetMember;
                     $scope.onSelect = function (oldOrderSetMember) {
                         newOrderSetMember = oldOrderSetMember;
-                        var currentOrderSetMember = _.find($scope.orderSet.orderSetMembers,{'concept' : { 'display': oldOrderSetMember.value}});
+                        var currentOrderSetMember = _.find($scope.orderSet.orderSetMembers, function (orderSetMember) {
+                            return orderSetMember.concept && (orderSetMember.concept.display === oldOrderSetMember.value && !orderSetMember.concept.uuid);
+                        });
                         if(!_.isUndefined(currentOrderSetMember)) {
                             currentOrderSetMember.concept.uuid = oldOrderSetMember.concept.uuid;
+                            newOrderSetMember = null;
                         }
 
                     };
