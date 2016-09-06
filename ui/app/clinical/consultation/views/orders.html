@@ -2,7 +2,7 @@
     <div ng-class="{'disableOrdersInRetroMode':isRetrospectiveMode()}">
         <div class="infoMsgRetrospectiveModeEnabled" ng-if="isRetrospectiveMode()">
             <i class="fa fa-info-circle"></i>
-            <span> You can not change <strong>Orders</strong> in retrospective mode</span>
+            <span><strong>Order</strong> entry is <strong>NOT allowed</strong> in retrospective mode</span>
         </div>
         <div ng-repeat="tab in tabs" class="{{tab.klass}} clearfix">
             <div class="order-grid"  ng-click="activateTab(tab)">
