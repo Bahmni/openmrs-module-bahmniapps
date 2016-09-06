@@ -25,7 +25,7 @@ angular.module('bahmni.common.displaycontrol.drugOrdersSection')
                 "quantity": (treatmentConfigColumnHeaders && treatmentConfigColumnHeaders.quantity) || "DRUG_DETAILS_QUANTITY_TEXT"
             };
 
-            $scope.scheduledDate = DateUtil.getDateWithoutTime(DateUtil.now());
+            $scope.scheduledDate = DateUtil.getDateWithoutTime(DateUtil.addDays(DateUtil.now(), 1));
 
             var initialiseColumns = function() {
                 var mandatoryColumns = ["drugName", "dosage", "startDate"];

@@ -323,18 +323,13 @@ angular.module('bahmni.clinical').controller('ConsultationController',
                 _.find(removableDrugs, function (drugOrder) {
                     if (!drugOrder.dateStopped) {
                         if (drugOrder._effectiveStartDate < moment()) {
-                            discontinuedDrugOrderValidationMessage = drugOrder.concept.name + " should have stop date in between " + DateUtil.getDateWithoutTime(drugOrder._effectiveStartDate) + " and " + DateUtil.getDateWithoutTime(DateUtil.now());
+                            discontinuedDrugOrderValidationMessage = "Please make sure that " + drugOrder.concept.name + " has a stop date between " + DateUtil.getDateWithoutTime(drugOrder._effectiveStartDate) + " and " + DateUtil.getDateWithoutTime(DateUtil.now());
                             return true;
                         } else {
                             discontinuedDrugOrderValidationMessage = drugOrder.concept.name + " should have stop date as today's date since it is a future drug order";
                             return true;
                         }
                     }
-                    //if(DateUtil.getDateWithoutTime(drugOrder.dateStopped) === DateUtil.getDateWithoutTime(DateUtil.now())) {
-                    //    drugOrder.dateStopped = null;
-                    //} else {
-                    //    drugOrder.dateStopped = DateUtil.getISOString(new Date(new Date(drugOrder.dateStopped).getTime() + DateUtil.now().getTime() - new Date(DateUtil.getDate(DateUtil.now())).getTime()));
-                    //}
                 });
                 return discontinuedDrugOrderValidationMessage;
             };
@@ -375,9 +370,6 @@ angular.module('bahmni.clinical').controller('ConsultationController',
                     $scope.$parent.$parent.$broadcast("event:errorsOnForm");
                     return $q.when({});
                 }
-                _.each($scope.consultation.discontinuedDrugs, function(drugOrder) {
-                    drugOrder.dateStopped = DateUtil.addSeconds(drugOrder.dateStopped, 1);
-                });
                 return spinner.forPromise($q.all([preSavePromise(), encounterService.getEncounterType($state.params.programUuid, sessionService.getLoginLocationUuid())]).then(function (results) {
                     var encounterData = results[0];
                     encounterData.encounterTypeUuid = results[1].uuid;
