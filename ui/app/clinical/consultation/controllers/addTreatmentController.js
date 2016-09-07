@@ -510,7 +510,7 @@ angular.module('bahmni.clinical')
                 var selectedItem;
                 $scope.onSelect = function (item) {
                     selectedItem = item;
-                    //$scope.onChange(); angular will call onChange after onSelect by default if it is bahmni-autocomplete
+                    $scope.onChange();
                 };
                 $scope.onAccept = function () {
                     $scope.treatment.acceptedItem = $scope.treatment.drugNameDisplay;
