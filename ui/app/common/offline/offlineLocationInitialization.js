@@ -28,16 +28,16 @@ angular.module('bahmni.common.offline')
                                 if (checkParents(loginAddress, getParentAddressLevel(addressField))) {
                                     var provider = offlineService.getItem('providerData').results[0];
                                     eventLogService.getEventCategoriesToBeSynced().then(function (results)  {
-                                       var categories = results.data;
-                                        offlineService.setItem("eventLogCategories",categories);
-                                    });
-                                    eventLogService.getFilterForCategoryAndLoginLocation(provider.uuid,loginAddress.uuid,loginLocation.uuid).then(function(results){
-                                        var categoryFilterMap = results.data;
-                                        Object.keys(categoryFilterMap).forEach(function(category){
-                                            offlineDbService.insertMarker(category,null,categoryFilterMap[category]);
+                                           var categories = results.data;
+                                            offlineService.setItem("eventLogCategories",categories);
+                                         eventLogService.getFilterForCategoryAndLoginLocation(provider.uuid,loginAddress.uuid,loginLocation.uuid).then(function(results){
+                                            var categoryFilterMap = results.data;
+                                            Object.keys(categoryFilterMap).forEach(function(category){
+                                                offlineDbService.insertMarker(category,null,categoryFilterMap[category]);
+                                             });
+                                             deferred.resolve();
                                          });
                                     });
-                                    deferred.resolve();
                                     break;
                                 }
                             }
