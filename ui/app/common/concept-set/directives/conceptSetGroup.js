@@ -1,10 +1,10 @@
 'use strict';
 
 angular.module('bahmni.common.conceptSet')
-    .controller('ConceptSetGroupController', ['$scope', 'contextChangeHandler', 'spinner',
+    .controller('ConceptSetGroupController', ['$scope', 'contextChangeHandler', 'spinner', 'messagingService',
         'conceptSetService', '$rootScope', 'sessionService', 'encounterService', 'treatmentConfig',
         'retrospectiveEntryService', 'userService', 'conceptSetUiConfigService', '$timeout', 'clinicalAppConfigService', '$stateParams',
-        function ($scope, contextChangeHandler, spinner, conceptSetService, $rootScope, sessionService,
+        function ($scope, contextChangeHandler, spinner, messagingService, conceptSetService, $rootScope, sessionService,
                   encounterService, treatmentConfig, retrospectiveEntryService, userService,
                   conceptSetUiConfigService, $timeout, clinicalAppConfigService, $stateParams) {
             var conceptSetUIConfig = conceptSetUiConfigService.getConfig();
@@ -13,7 +13,7 @@ angular.module('bahmni.common.conceptSet')
                 spinner.forPromise(userService.savePreferences());
             };
 
-            $scope.validationHandler = new Bahmni.ConceptSet.ConceptSetGroupValidationHandler($scope.conceptSets);
+            $scope.validationHandler = $scope.context.showPanelView ? new Bahmni.ConceptSet.ConceptSetGroupPanelViewValidationHandler($scope.allTemplates) : new Bahmni.ConceptSet.ConceptSetGroupValidationHandler($scope.allTemplates);
 
             $scope.getNormalized = function (conceptName) {
                 return conceptName.replace(/['\.\s\(\)\/,\\]+/g, "_");
@@ -96,7 +96,7 @@ angular.module('bahmni.common.conceptSet')
                 $scope.allTemplates.splice(index, 1);
                 $.scrollTo('#concept-set-' + (index), 200, {offset: {top: -400}});
             };
-            
+
             var copyValues = function (existingObservations, modifiedObservations) {
                 existingObservations.forEach(function (observation, index) {
                     if (observation.groupMembers && observation.groupMembers.length > 0) {
@@ -123,7 +123,13 @@ angular.module('bahmni.common.conceptSet')
                 $scope.leftPanelConceptSet.isOpen = true;
                 $scope.leftPanelConceptSet.isLoaded = true;
                 $scope.leftPanelConceptSet.klass = "active";
+                $scope.leftPanelConceptSet.atLeastOneValueIsSet = selectedConceptSet.hasSomeValue();
+            };
 
+            $scope.focusOnErrors = function () {
+                var errorMessage = $scope.leftPanelConceptSet.errorMessage ? $scope.leftPanelConceptSet.errorMessage : "{{'CLINICAL_FORM_ERRORS_MESSAGE_KEY' | translate }}";
+                messagingService.showMessage('error', errorMessage);
+                $scope.$parent.$parent.$broadcast("event:errorsOnForm");
             };
         }])
     .directive('conceptSetGroup', function () {

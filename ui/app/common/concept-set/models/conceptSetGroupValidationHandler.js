@@ -8,14 +8,20 @@ Bahmni.ConceptSet.ConceptSetGroupValidationHandler = function(conceptSetSections
     };
 
     this.validate = function() {
-        var allconceptSetSectionsValid = true;
+        var errorMessage = "";
+        var allConceptSetSectionsValid = true;
+
         validations.forEach(function(validation){
-            var isValid = validation();
-            allconceptSetSectionsValid = allconceptSetSectionsValid && isValid;
+            var validationReturn = validation();
+            if(_.isEmpty(errorMessage)){
+                errorMessage = validationReturn["errorMessage"];
+            }
+            allConceptSetSectionsValid = allConceptSetSectionsValid && validationReturn["allow"];
         });
-        if(!allconceptSetSectionsValid) {
+        
+        if(!allConceptSetSectionsValid) {
             conceptSetSections.filter(_.property('isLoaded')).forEach(function(conceptSetSection){ conceptSetSection.show(); });
         }
-        return {allow: allconceptSetSectionsValid};
+        return {allow: allConceptSetSectionsValid, errorMessage: errorMessage};
     };
 };
