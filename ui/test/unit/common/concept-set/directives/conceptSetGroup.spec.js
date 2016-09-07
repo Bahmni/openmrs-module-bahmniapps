@@ -1,7 +1,7 @@
 'use strict';
 
 describe("conceptSetGroup", function () {
-    var _provide, scope, contextChangeHandler, spinner, conceptSetService, rootScope, sessionService,
+    var _provide, scope, contextChangeHandler, spinner, messagingService, conceptSetService, rootScope, sessionService,
         encounterService, treatmentConfig, retrospectiveEntryService,
         userService, conceptSetUiConfigService, timeout, clinicalAppConfigService, stateParams, compile, httpBackend;
 
@@ -9,6 +9,7 @@ describe("conceptSetGroup", function () {
         module('bahmni.common.conceptSet');
         module(function ($provide) {
             contextChangeHandler = jasmine.createSpyObj('contextChangeHandler', ['add']);
+            messagingService = jasmine.createSpyObj('messagingService', ['showMessage']);
             conceptSetService = jasmine.createSpyObj('conceptSetService', ['getComputedValue']);
             sessionService = jasmine.createSpyObj('sessionService', ['getLoginLocationUuid']);
             encounterService = jasmine.createSpyObj('encounterService', ['buildEncounter']);
@@ -19,6 +20,7 @@ describe("conceptSetGroup", function () {
             clinicalAppConfigService = jasmine.createSpyObj('clinicalAppConfigService', ['getVisitTypeForRetrospectiveEntries']);
             spinner = jasmine.createSpyObj('spinner', ['forPromise']);
             $provide.value('contextChangeHandler', contextChangeHandler);
+            $provide.value('messagingService', messagingService);
             $provide.value('conceptSetService', conceptSetService);
             $provide.value('sessionService', sessionService);
             $provide.value('encounterService', encounterService);
@@ -84,12 +86,68 @@ describe("conceptSetGroup", function () {
         expect(scope.$broadcast).toHaveBeenCalled;
 
         expect(compiledElementScope.isInEditEncounterMode()).toBeTruthy();
-
-        // compiledElementScope.computeField({}, event);
-        // expect(event.stopPropagation).toHaveBeenCalled();
-
         expect(contextChangeHandler.add).toHaveBeenCalled();
         expect(compiledElementScope.leftPanelConceptSet).toBeUndefined();
+    });
+
+    it("showLeftPanelConceptSet should set the selected conceptset to be loaded, open, klass as active", function () {
+        var compiledElementScope = executeDirective();
+        scope.$digest();
+
+        var selectConceptSetSection = {
+            name : "template",
+            hasSomeValue : function () {
+                return true;
+            }
+        },
+        previousLeftPanel = {
+            name : "previous",
+            isOpen : true,
+            isLoaded : true,
+            klass : "active"
+        };
+        compiledElementScope.leftPanelConceptSet = previousLeftPanel;
+
+        compiledElementScope.showLeftPanelConceptSet(selectConceptSetSection);
+        expect(compiledElementScope.leftPanelConceptSet.name).toBe("template");
+        expect(compiledElementScope.leftPanelConceptSet.isOpen).toBeTruthy();
+        expect(compiledElementScope.leftPanelConceptSet.isLoaded).toBeTruthy();
+        expect(compiledElementScope.leftPanelConceptSet.klass).toBe("active");
+        expect(previousLeftPanel.isOpen).toBeFalsy();
+        expect(previousLeftPanel.isLoaded).toBeFalsy();
+        expect(previousLeftPanel.klass).toBe("");
+    });
+
+    it("focusOnErrors should broadcast, show error message", function () {
+        var compiledElementScope = executeDirective();
+        scope.$digest();
+
+        compiledElementScope.leftPanelConceptSet = {
+            name : "form",
+            isOpen : true,
+            isLoaded : true,
+            klass : "active"
+        };
+        spyOn(scope, '$broadcast');
+        compiledElementScope.focusOnErrors();
+        expect(scope.$broadcast).toHaveBeenCalled;
+        expect(messagingService.showMessage('error',"{{'CLINICAL_FORM_ERRORS_MESSAGE_KEY' | translate }}")).toHaveBeenCalled;
+    });
+
+    it("focusOnErrors should show error message from selected concept set section", function () {
+        var compiledElementScope = executeDirective();
+        scope.$digest();
+
+        spyOn(scope, '$broadcast');
+        compiledElementScope.leftPanelConceptSet = {
+            name : "form",
+            isOpen : true,
+            isLoaded : true,
+            klass : "active",
+            errorMessage : "error message"
+        };
+        compiledElementScope.focusOnErrors();
+        expect(messagingService.showMessage('error',"error message")).toHaveBeenCalled;
     });
 
     var executeDirective  = function () {
