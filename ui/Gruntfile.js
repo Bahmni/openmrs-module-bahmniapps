@@ -74,6 +74,9 @@ module.exports = function (grunt) {
                     }
                 ]
             },
+            coverage: [
+                'coverage'
+            ],
             debug: [
                 '<%= yeoman.app %>/styles/*.css'
             ]
