@@ -27,6 +27,6 @@
     </span>
 </div>
 <concept-set ng-if="conceptSet.isLoaded" patient="::patient" ng-show="conceptSet.isOpen" collapse-inner-sections="conceptSet.collapseInnerSections"
-             concept-set-name="::conceptSet.conceptName" required="conceptSet.options.required"
-             observations="conceptSet.observations" show-title="::false" validation-handler="::validationHandler" is-valid-section="conceptSet.isValid">
+             concept-set-name="::conceptSet.conceptName" required="conceptSet.options.required" at-least-one-value-is-set="conceptSet.atLeastOneValueIsSet"
+             observations="conceptSet.observations" show-title="::false" validation-handler="::validationHandler">
 </concept-set>
