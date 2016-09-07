@@ -307,19 +307,21 @@
             </article>
             <div class="orderSet-order-container clearfix">
                 <div ng-repeat="orderSet in orderSets" class="orderSet-orders clearfix">
-                    <h2 class="section-title order-set-orderAnOrderSet">
+                    <h2 class="section-title orderSet-orderAnOrderSet toggle-container" toggle="showOrderSetDetails" >
+                        <i class="fa fa-caret-right"></i>
+                        <i class="fa fa-caret-down"></i>
                         {{::orderSet.name}}
                         <div class="button-group fr">
                             <button class="add-orderSet-btn secondary-button fl" ng-disabled="newOrderSet.uuid" ng-show="newOrderSet.uuid !== orderSet.uuid" ng-click="addOrderSet(orderSet)">Add</button>
                             <button class="add-orderSet-btn secondary-button remove-orderSet-btn fl" ng-show="newOrderSet.uuid === orderSet.uuid" ng-click="removeOrderSet()">Remove</button>
-                            <div toggle="showOrderSetDetails" class="fr showOrderSet">
-                                <i class="fa fa-plus-square" ng-show="showOrderSetDetails"></i>
-                                <i class="fa fa-minus-square" ng-hide="showOrderSetDetails"></i>
-                            </div>
+                            <!--<div toggle="showOrderSetDetails" class="fr showOrderSet">-->
+                                <!--<i class="fa fa-plus-square" ng-show="showOrderSetDetails"></i>-->
+                                <!--<i class="fa fa-minus-square" ng-hide="showOrderSetDetails"></i>-->
+                            <!--</div>-->
 
                         </div>
                     </h2>
-                    <div class="dashboard-section dashboard-orderSet" ng-class="{'showOrder' : !showOrderSetDetails}">
+                    <div class="dashboard-section dashboard-orderSet" ng-show="showOrderSetDetails">
                         <p>{{::orderSet.description}}</p>
                     </div>
                 </div>
