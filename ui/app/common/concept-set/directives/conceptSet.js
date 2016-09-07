@@ -46,7 +46,7 @@ angular.module('bahmni.common.conceptSet')
                 };
                 spinner.forPromise(init());
 
-                $scope.atLeastOneValueIsSet = false;
+                $scope.atLeastOneValueIsSet = $scope.atLeastOneValueIsSet || false;
                 $scope.conceptSetRequired = false;
                 $scope.showTitleValue = $scope.showTitle();
                 $scope.numberOfVisits = conceptSetUIConfig[conceptSetName] && conceptSetUIConfig[conceptSetName].numberOfVisits ? conceptSetUIConfig[conceptSetName].numberOfVisits : null;
@@ -172,11 +172,10 @@ angular.module('bahmni.common.conceptSet')
                     }, {});
                 };
 
-                var contextChange = function () {
+                var validateObservationTree = function () {
                     $scope.atLeastOneValueIsSet = $scope.rootObservation && $scope.rootObservation.atLeastOneValueSet();
                     $scope.conceptSetRequired = $scope.required ? $scope.required : true;
                     var nodes = findInvalidNodes($scope.rootObservation.groupMembers, $scope.rootObservation);
-                    $scope.isValidSection = !nodes.status;
                     return {allow: !nodes.status, errorMessage: nodes.message};
                 }; //TODO: Write unit test for this function
 
@@ -230,17 +229,6 @@ angular.module('bahmni.common.conceptSet')
                         }
                     }
                     return {status: false};
-                };
-                contextChangeHandler.add(contextChange);
-                var validateObservationTree = function () {
-                    if (!$scope.rootObservation) {
-                        return true;
-                    }
-                    $scope.atLeastOneValueIsSet = $scope.rootObservation.atLeastOneValueSet();
-                    var invalidNodes = $scope.rootObservation.groupMembers.filter(function (childNode) {
-                        return childNode.isObservationNode && !childNode.isValid($scope.atLeastOneValueIsSet);
-                    });
-                    return {allow: (!invalidNodes || invalidNodes.length === 0)};
                 };
 
                 validationHandler.add(validateObservationTree);
@@ -356,7 +344,7 @@ angular.module('bahmni.common.conceptSet')
                     patient: "=",
                     conceptSetFocused: "=?",
                     collapseInnerSections: "=?",
-                    isValidSection: "=?"
+                    atLeastOneValueIsSet: "=?"
                 },
                 templateUrl: '../common/concept-set/views/conceptSet.html',
                 controller: controller

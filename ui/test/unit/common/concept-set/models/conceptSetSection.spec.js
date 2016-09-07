@@ -130,7 +130,6 @@ describe("ConceptSetSection", function () {
         });
     });
 
-
     describe("isOpen", function () {
         it("should be true if conceptSet observations has value", function () {
             var observations = [
