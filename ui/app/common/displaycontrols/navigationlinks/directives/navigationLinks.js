@@ -23,7 +23,7 @@ angular.module('bahmni.common.displaycontrol.navigationlinks')
                 {
                     "name": "inpatient",
                     "translationKey":"PATIENT_ADT_PAGE_KEY",
-                    "url": "../adt/#/patient/{{patientUuid}}/visit//"
+                    "url": "../adt/#/patient/{{patientUuid}}/visit/{{visitUuid}}/"
                 },
                 {
                     "name" :"enrolment",
@@ -42,10 +42,6 @@ angular.module('bahmni.common.displaycontrol.navigationlinks')
                 }
 
             ];
-            var inPatientLink = _.find($scope.standardLinks, {"name": "inpatient"});
-            if($scope.linkParams.visitUuid){
-                inPatientLink.url = "../adt/#/patient/{{patientUuid}}/visit/{{visitUuid}}/";
-            }
 
             var filterLinks = function(links, showLinks){
                 var linksSpecifiedInShowLinks = function () {

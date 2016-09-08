@@ -107,22 +107,4 @@ describe('NavigationalLinks DisplayControl', function () {
         expect(compiledScope.showUrl({url: "../clinical/#/default/patient/{{patientUuid}}/dashboard/visit/{{visitUuid}}/?encounterUuid=active"})).toBeFalsy();
     });
 
-    it('inpatient url should not contain visitUuid params if visitUuid is not in linkParams', function () {
-        var params = {showLinks: showLinks, customLinks: customLinks};
-        var linkParams = {patientUuid: "patientUuid"};
-
-        compileDirective(params, linkParams);
-        var foundElement = _.find(compiledScope.getLinks(), {"name": "inpatient"});
-
-        expect(foundElement.url).toBe("../adt/#/patient/{{patientUuid}}/visit//");
-    });
-
-    it('should add visitUuid to url parmas of inpatient if linkParams contain visitUuid', function () {
-        var params = {showLinks: showLinks, customLinks: customLinks};
-
-        compileDirective(params, linkParams);
-
-        var foundElement = _.find(compiledScope.getLinks(), {"name": "inpatient"});
-        expect(foundElement.url).toBe("../adt/#/patient/{{patientUuid}}/visit/{{visitUuid}}/");
-    });
 });
