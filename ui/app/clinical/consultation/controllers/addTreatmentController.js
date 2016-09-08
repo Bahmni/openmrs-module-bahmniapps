@@ -29,7 +29,7 @@ angular.module('bahmni.clinical')
                 else{
                     $scope.orderSets = {};
                 }
-            }
+            };
 
             $scope.treatmentActionLinks = clinicalAppConfigService.getTreatmentActionLink();
 
@@ -68,7 +68,6 @@ angular.module('bahmni.clinical')
 
             $scope.selectFromDefaultDrugList = function () {
                 $scope.onSelect($scope.treatment.selectedItem);
-                $scope.onChange();
             };
 
             var markVariable = function (variable) {
