@@ -4,8 +4,8 @@ angular.module('bahmni.common.appFramework')
     .config(['$compileProvider', function ($compileProvider) {
         $compileProvider.aHrefSanitizationWhitelist(/^\s*(https?|ftp|mailto|chrome-extension|file):/);
     }])
-    .service('appService', ['$http', '$q', 'sessionService', '$rootScope', 'mergeService','loadConfigService',
-        function ($http, $q, sessionService, $rootScope, mergeService, loadConfigService) {
+    .service('appService', ['$http', '$q', 'sessionService', '$rootScope', 'mergeService','loadConfigService','messagingService',
+        function ($http, $q, sessionService, $rootScope, mergeService, loadConfigService,messagingService) {
         var currentUser = null;
         var baseUrl = Bahmni.Common.Constants.baseUrl;
         var customUrl = Bahmni.Common.Constants.customUrl;
@@ -135,6 +135,7 @@ angular.module('bahmni.common.appFramework')
                     }
                 }, function (error) {
                     if (error.status !== 404) {
+                        messagingService.showMessage('error',"Incorrect Configuration:  "+error.message);
                         deferrable.reject(error);
                     } else {
                         deferrable.resolve(appDescriptor);
