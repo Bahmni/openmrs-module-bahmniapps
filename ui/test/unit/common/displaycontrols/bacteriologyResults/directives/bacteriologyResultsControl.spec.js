@@ -3,7 +3,7 @@
 describe('Bacteriology Results Control', function () {
     var $compile,
         mockBackend, q,messagingService,
-        scope,deferred,
+        scope,deferred,state,
         section,element,_bacteriologyResultsService, appService, _spinner,mockedBacteriologyTabInitialization,patient={uuid:"patientUuid"},
         simpleHtml = '<bacteriology-results-control id="dashboard-drug-order-details" patient="patient" section="section"></bacteriology-results-control>',
         mockDialog,mockConsultationInitialization;
@@ -18,6 +18,10 @@ describe('Bacteriology Results Control', function () {
         var mockAppDescriptor = jasmine.createSpyObj('appDescriptor', ['getConfigValue']);
         appService.getAppDescriptor.and.returnValue(mockAppDescriptor);
         _spinner = jasmine.createSpyObj('spinner',['forPromise','then']);
+        state = jasmine.createSpyObj('$state',['go']);
+        state.go.and.returnValue(true);
+        _spinner.forPromise.and.returnValue(specUtil.createFakePromise({}));
+
 
         mockConsultationInitialization = function(){
             deferred = q.defer();
@@ -32,6 +36,9 @@ describe('Bacteriology Results Control', function () {
             open: function(item){
                 //this is the item passed from the controller
                 console.log(item);
+            },
+            close: function () {
+                return true;
             }
         };
 
@@ -42,6 +49,7 @@ describe('Bacteriology Results Control', function () {
         $provide.value('ngDialog', mockDialog);
         $provide.value('consultationInitialization', mockConsultationInitialization);
         $provide.value('messagingService', messageServiceMock);
+        $provide.value('$state', state);
         $provide.value('$translate', {});
     }));
 
@@ -73,7 +81,7 @@ describe('Bacteriology Results Control', function () {
         });
     });
     describe('save specimens', function() {
-       it("should validate form before saving", function() {
+       it("should validate form before saving and throw error message", function() {
            var specimen = {
                dateCollected: "2016-02-25",
                existingObs: "9a0827e3-de02-4b68-bfc8-3150842d8f7f",
@@ -96,7 +104,34 @@ describe('Bacteriology Results Control', function () {
            compiledElementScope.saveBacteriologySample(savableSpecimen);
            expect(savableSpecimen.hasIllegalType).toBeTruthy();
            expect(savableSpecimen.hasIllegalDateCollected).toBeFalsy();
-           expect(messageServiceMock.showMessage).toHaveBeenCalled();
-       })
+           expect(messageServiceMock.showMessage).toHaveBeenCalledWith('error', "{{'CLINICAL_FORM_ERRORS_MESSAGE_KEY' | translate }}");
+       });
+
+
+        it("should validate form before saving and give save confirmation message", function () {
+            var specimen = {
+                dateCollected: "2016-02-25",
+                existingObs: "9a0827e3-de02-4b68-bfc8-3150842d8f7f",
+                identifier: null,
+                report: {},
+                sample: {},
+                sampleResult: [],
+                showTypeFreeText: false,
+                specimenCollectionDate: "2016-02-25",
+                specimenId: null,
+                specimenSource: "Lymph node",
+                type: {concept: {name: "sputum"}},
+                typeFreeText: null,
+                typeObservation: Bahmni.ConceptSet.SpecimenTypeObservation
+
+            };
+            var savableSpecimen = new Bahmni.Clinical.Specimen(specimen);
+            var compiledElementScope = compileScope();
+
+            compiledElementScope.saveBacteriologySample(savableSpecimen);
+            expect(savableSpecimen.hasIllegalType).toBeFalsy();
+            expect(savableSpecimen.hasIllegalDateCollected).toBeFalsy();
+            expect(messageServiceMock.showMessage).toHaveBeenCalledWith('info', "{{'CLINICAL_SAVE_SUCCESS_MESSAGE_KEY' | translate}}");
+        });
     });
 });

@@ -65,13 +65,24 @@ Bahmni.Clinical.Specimen = function (specimen, allSamples) {
         return false;
     };
 
-    self.clear = function (){
-        self.dateCollected = undefined;
-        self.type = undefined;
-        self.typeFreeText = undefined;
-        self.identifier = undefined;
-        self.uuid = undefined;
-        clearObservations(self.sample.additionalAttributes)
+    self.isExistingSpecimen = function(){
+        return self.uuid;
+    };
+    
+    self.voidIfEmpty = function() {
+        if(self.isEmpty() && self.isExistingSpecimen()){
+            self.setMandatoryFieldsBeforeSavingVoidedSpecimen();
+            return true;
+        }
+        return false;
+    };
+    
+    self.setMandatoryFieldsBeforeSavingVoidedSpecimen  = function() {
+        self.voided = true;
+        self.dateCollected = self.typeObservation.dateCollected;
+        self.type = self.typeObservation.type;
+        clearObservations(self.sample.additionalAttributes);
         clearObservations(self.report.results);
-    }
+    };
+
 };
