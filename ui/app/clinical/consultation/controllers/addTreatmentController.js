@@ -68,7 +68,6 @@ angular.module('bahmni.clinical')
 
             $scope.selectFromDefaultDrugList = function () {
                 $scope.onSelect($scope.treatment.selectedItem);
-                $scope.onChange();
             };
 
             var markVariable = function (variable) {
