@@ -149,11 +149,12 @@ angular.module('bahmni.common.conceptSet')
                     }
                 };
 
-                var setObservationState = function (obsArray, disable, error) {
+                var setObservationState = function (obsArray, disable, error, hide) {
                     if (!_.isEmpty(obsArray)) {
                         _.each(obsArray, function (obs) {
                             obs.disabled = disable;
                             obs.error = error;
+                            obs.hide = hide;
                             if (obs.disabled) {
                                 clearFieldValuesOnDisabling(obs);
                             }
@@ -167,7 +168,7 @@ angular.module('bahmni.common.conceptSet')
                     }
                 };
 
-                var processConditions = function (flattenedObs, fields, disable, error) {
+                var processConditions = function (flattenedObs, fields, disable, error, hide) {
                     _.each(fields, function (field) {
                         var matchingObsArray = [];
                         var clonedObsInSameGroup;
@@ -181,7 +182,7 @@ angular.module('bahmni.common.conceptSet')
                         });
 
                         if (!_.isEmpty(matchingObsArray)) {
-                            setObservationState(matchingObsArray, disable, error);
+                            setObservationState(matchingObsArray, disable, error, hide);
                         } else {
                             messagingService.showMessage("error", "No element found with name : " + field);
                         }
@@ -200,12 +201,14 @@ angular.module('bahmni.common.conceptSet')
                             if (!_.isUndefined(conditions)) {
                                 if (conditions.error && !_.isEmpty(conditions.error)) {
                                     messagingService.showMessage('error', conditions.error);
-                                    processConditions(flattenedObs, [conceptName], false, true);
+                                    processConditions(flattenedObs, [conceptName], false, true, false);
                                 } else {
-                                    enableCase && processConditions(flattenedObs, [conceptName], false, false);
+                                    enableCase && processConditions(flattenedObs, [conceptName], false, false, false);
                                 }
                                 processConditions(flattenedObs, conditions.disable, true);
                                 processConditions(flattenedObs, conditions.enable, false);
+                                processConditions(flattenedObs, conditions.show, false, undefined, false);
+                                processConditions(flattenedObs, conditions.hide, false, undefined, true);
                                 _.each(conditions.enable, function (subConditionConceptName) {
                                     var conditionFn = Bahmni.ConceptSet.FormConditions.rules && Bahmni.ConceptSet.FormConditions.rules[subConditionConceptName];
                                     if (conditionFn != null) {
