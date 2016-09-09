@@ -1,4 +1,4 @@
-<div class="observations-tab">
+<div class="observations-tab" ng-if="!observation.hide">
     <div class="vitals form-horizontal" ng-if="!observation.voided || ((observation.getControlType() == 'image' || observation.getControlType() == 'video') && observation.value)">
         <fieldset class="leaf-observation-node" ng-if="::getBooleanResult(observation.isObservationNode)">
             <div class="form-group" bm-pop-over ng-class="{'add-more-image' :observation.getControlType()== 'image'}">
