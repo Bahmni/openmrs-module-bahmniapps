@@ -165,11 +165,13 @@ describe("Specimen", function () {
         });
     });
 
-    describe("clear specimen", function () {
+    describe("Empty existing specimen should be voided", function () {
         var specimen = new Bahmni.Clinical.Specimen();
-        specimen.type = "Some Type";
-        specimen.dateCollected = "Some Date";
-        specimen.identifier = "Some Identifier";
+        specimen.type = undefined;
+        specimen.dateCollected = undefined;
+        specimen.identifier = undefined;
+        specimen.uuid = "some uuid";
+        specimen.typeObservation = {type : "Some Type", dateCollected : "Some date"};
         specimen.sample = {
             "additionalAttributes": [
                 {
@@ -193,14 +195,20 @@ describe("Specimen", function () {
             ]
 
         };
-        specimen.clear();
-        it("Specimen should be cleared", function () {
-            expect(specimen.dateCollected).toBeUndefined();
-            expect(specimen.type).toBeUndefined();
+        specimen.voidIfEmpty();
+        it("Specimen should be cleared and voided on save with mandatory attributes", function () {
+            expect(specimen.dateCollected).toEqual("Some date");
+            expect(specimen.type).toEqual("Some Type");
             expect(specimen.typeFreeText).toBeUndefined();
             expect(specimen.identifier).toBeUndefined();
             expect(specimen.sample.additionalAttributes[0].groupMembers[0].value).toBeUndefined();
             expect(specimen.report.results[0].groupMembers[0].value).toBeUndefined();
+        });
+
+        it("Specimen should be voided ony if it is empty and existing", function () {
+            specimen.uuid = null;
+            expect(specimen.voidIfEmpty()).toBeFalsy();
+
         });
     });
 });

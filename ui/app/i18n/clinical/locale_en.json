@@ -105,7 +105,6 @@
     "BACTERIOLOGY_BUTTON_ADD_SAMPLE_KEY" : "ADD SAMPLE",
     "BACTERIOLOGY_BUTTON_CLEAR_KEY" : "Clear",
     "BACTERIOLOGY_BUTTON_EDIT_KEY" : "Edit",
-    "BACTERIOLOGY_SAMPLE_BEING_EDITED_KEY": "The specimen is already being edited: ",
     "BACTERIOLOGY_ADDED_ON_KEY": "Added on",
     "BACTERIOLOGY_SAMPLE_TYPE_KEY_NON_CODED": "Other Sample Type",
 
@@ -142,6 +141,7 @@
     "MEDICATION_CHANGE_DURATION_BUTTON" :"Change Duration",
 
     "REMOVE_CONFIRMATION_KEY": "Are you sure you want to remove?",
+    "CLEAR_CONFIRMATION_KEY": "Are you sure you want to clear?",
     "REMOVE_DRUG_ORDER_KEY": "Are you sure you want to remove drug : {{ drugName }} ?",
 
     "DRUG_DETAILS_DRUG_NAME": "Drug",
