@@ -304,60 +304,60 @@ describe("DocumentController", function () {
             newVisit.stopDatetime = "April 22, 2014 23:59:59";
             expect(scope.isNewVisitDateValid()).toBe(false);
 
-            newVisit.startDatetime = "April 21, 2014"
-            newVisit.stopDatetime = "April 21, 2014 23:59:59"
+            newVisit.startDatetime = "April 21, 2014";
+            newVisit.stopDatetime = "April 21, 2014 23:59:59";
             expect(scope.isNewVisitDateValid()).toBe(false);
 
-            newVisit.startDatetime = "April 24, 2014"
-            newVisit.stopDatetime = "April 25, 2014 23:59:59"
+            newVisit.startDatetime = "April 24, 2014";
+            newVisit.stopDatetime = "April 25, 2014 23:59:59";
             expect(scope.isNewVisitDateValid()).toBe(false);
 
-            newVisit.startDatetime = "April 4, 2014"
-            newVisit.stopDatetime = "April 5, 2014 23:59:59"
+            newVisit.startDatetime = "April 4, 2014";
+            newVisit.stopDatetime = "April 5, 2014 23:59:59";
             expect(scope.isNewVisitDateValid()).toBe(true);
 
-            newVisit.startDatetime = "April 29, 2014"
-            newVisit.stopDatetime = "April 30, 2014 23:59:59"
+            newVisit.startDatetime = "April 29, 2014";
+            newVisit.stopDatetime = "April 30, 2014 23:59:59";
             expect(scope.isNewVisitDateValid()).toBe(true);
 
-            newVisit.startDatetime = "April 26, 2014"
-            newVisit.stopDatetime = "April 26, 2014 23:59:59"
+            newVisit.startDatetime = "April 26, 2014";
+            newVisit.stopDatetime = "April 26, 2014 23:59:59";
             expect(scope.isNewVisitDateValid()).toBe(true);
 
-            newVisit.startDatetime = "April 25, 2014"
-            newVisit.stopDatetime = "April 25, 2014 23:59:59"
+            newVisit.startDatetime = "April 25, 2014";
+            newVisit.stopDatetime = "April 25, 2014 23:59:59";
             expect(scope.isNewVisitDateValid()).toBe(false);
 
-            newVisit.startDatetime = "April 21, 2014"
-            newVisit.stopDatetime = "April 26, 2014 23:59:59"
+            newVisit.startDatetime = "April 21, 2014";
+            newVisit.stopDatetime = "April 26, 2014 23:59:59";
             expect(scope.isNewVisitDateValid()).toBe(false);
 
-            newVisit.startDatetime = "April 23, 2014"
-            newVisit.stopDatetime = "April 26, 2014 23:59:59"
+            newVisit.startDatetime = "April 23, 2014";
+            newVisit.stopDatetime = "April 26, 2014 23:59:59";
             expect(scope.isNewVisitDateValid()).toBe(false);
 
-            newVisit.startDatetime = "April 19, 2014"
-            newVisit.stopDatetime = "April 23, 2014 23:59:59"
+            newVisit.startDatetime = "April 19, 2014";
+            newVisit.stopDatetime = "April 23, 2014 23:59:59";
             expect(scope.isNewVisitDateValid()).toBe(false);
 
-            newVisit.startDatetime = "April 20, 2014"
-            newVisit.stopDatetime = "April 24, 2014 23:59:59"
+            newVisit.startDatetime = "April 20, 2014";
+            newVisit.stopDatetime = "April 24, 2014 23:59:59";
             expect(scope.isNewVisitDateValid()).toBe(false);
 
-            newVisit.startDatetime = "April 19, 2014"
-            newVisit.stopDatetime = "April 29, 2014 23:59:59"
+            newVisit.startDatetime = "April 19, 2014";
+            newVisit.stopDatetime = "April 29, 2014 23:59:59";
             expect(scope.isNewVisitDateValid()).toBe(false);
 
-            newVisit.startDatetime = "April 21, 2014"
-            newVisit.stopDatetime = "April 29, 2014 23:59:59"
+            newVisit.startDatetime = "April 21, 2014";
+            newVisit.stopDatetime = "April 29, 2014 23:59:59";
             expect(scope.isNewVisitDateValid()).toBe(false);
 
-            newVisit.startDatetime = "April 21, 2014"
-            newVisit.stopDatetime = "April 24, 2014 23:59:59"
+            newVisit.startDatetime = "April 21, 2014";
+            newVisit.stopDatetime = "April 24, 2014 23:59:59";
             expect(scope.isNewVisitDateValid()).toBe(false);
 
-            newVisit.startDatetime = "April 25, 2014"
-            newVisit.stopDatetime = "April 26, 2014 23:59:59"
+            newVisit.startDatetime = "April 25, 2014";
+            newVisit.stopDatetime = "April 26, 2014 23:59:59";
             expect(scope.isNewVisitDateValid()).toBe(false);
         });
         it('should not be valid date if date overlaps with existing visit when the visit has no end date', function () {
@@ -448,7 +448,25 @@ describe("DocumentController", function () {
 
             expect(visitDocumentService.save).toHaveBeenCalledWith(visitDocument);
 
-        })
+        });
+
+        it('should save the existing visit data even there is invalid date entered under new visit section', function(){
+            setUp();
+            var newVisit = new Bahmni.DocumentUpload.Visit();
+            scope.newVisit = newVisit;
+
+            newVisit.startDatetime = "April 21, 2014";
+            newVisit.stopDatetime = "April 21, 2014 23:59:59";
+
+            var visitDocumentServiceSavePromise = specUtil.createServicePromise('visitDocumentService');
+            visitDocumentService.save.and.returnValue(visitDocumentServiceSavePromise);
+
+            scope.save(visit1);
+
+            expect(visitDocumentService.save).toHaveBeenCalledWith(visitDocument);
+
+        });
+
     });
 
     describe('can delete file ', function () {

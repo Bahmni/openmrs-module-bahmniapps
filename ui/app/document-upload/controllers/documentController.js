@@ -295,20 +295,23 @@ angular.module('opd.documentupload')
                 flashSuccessMessage();
             };
 
-            $scope.save = function (existingVisit) {
+            var isExistingVisit = function (visit) {
+                return !!visit.uuid;
+            };
+            $scope.save = function (visit) {
                 $scope.toggleGallery=false;
                 var visitDocument;
-                if ($scope.isNewVisitDateValid()) {
-                    visitDocument = createVisitDocument(existingVisit);
+                if (isExistingVisit(visit) || $scope.isNewVisitDateValid()) {
+                    visitDocument = createVisitDocument(visit);
                 }
 
                 return spinner.forPromise(visitDocumentService.save(visitDocument).then(function (response) {
                     return encounterService.getEncountersForEncounterType($scope.patient.uuid, encounterTypeUuid).then(function(encounterResponse){
-                        var savedVisit = $scope.visits[$scope.visits.indexOf(existingVisit)];
+                        var savedVisit = $scope.visits[$scope.visits.indexOf(visit)];
                         if(!savedVisit){
                             visitService.getVisit(response.data.visitUuid, customVisitParams).then(function(visitResponse){
                                 var newVisit = createVisit(visitResponse.data);
-                                existingVisit = $scope.visits.push(newVisit);
+                                visit = $scope.visits.push(newVisit);
                                 initNewVisit();
                                 updateVisit(newVisit, encounterResponse.data.results);
                                 $scope.toggleGallery = true;
