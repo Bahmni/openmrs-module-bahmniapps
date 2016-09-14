@@ -30,7 +30,7 @@
                                     </label>
                                 </div>
                                 <div class="field-value">
-                                    <input ng-class="{'illegalValue': newSpecimen.isDateCollectedDirty() ,'illegalvalue' : !observation.isValid(atLeastOneValueIsSet, conceptSetRequired) }" id="sample-date"  date-converter type="date" max="{{::today}}" ng-model="newSpecimen.dateCollected" ng-disabled="isRetrospectiveMode()">
+                                    <input ng-class="{'illegalValue': newSpecimen.isDateCollectedDirty() ,'illegalvalue' : !observation.isValid(atLeastOneValueIsSet, conceptSetRequired) }" id="sample-date"  date-converter type="date" max="{{::today}}" ng-model="newSpecimen.dateCollected" ng-disabled="isRetrospectiveMode()" tabindex="1">
                                 </div>
                             </article>
                         </section>
@@ -68,7 +68,7 @@
                                     <label for="sample-id">{{'BACTERIOLOGY_SAMPLE_ID_KEY' | translate}} </label>
                                 </div>
                                 <div class="field-value">
-                                    <input id="sample-id" type="text" ng-model="newSpecimen.identifier" ng-disabled="isRetrospectiveMode()">
+                                    <input id="sample-id" type="text" ng-model="newSpecimen.identifier" ng-disabled="isRetrospectiveMode()" tabindex="1">
                                 </div>
                             </article>
                         </section>

@@ -10,7 +10,7 @@
            }"
            answers-concept-name="::observation.conceptUIConfig.answersConceptName"
            default-concept="observation.getCodedConcept()"
-           blur-on-select="::false" focus-me="::observation.isFocused" />
+           blur-on-select="::false" focus-me="::observation.isFocused" tabindex="1"/>
     <div ng-if="observation.primaryObs">
         <button type="button" class="small-btn accept-btn grid-row-element"
                 ng-model="observation.markedAsNonCoded"
@@ -18,7 +18,7 @@
                 ng-disabled="observation.disabled"
                 ng-click="observation.markAsNonCoded()"
                 ng-class="{'illegalValue': observation.primaryObs.value.length > 0 && !observation.markedAsNonCoded, active: observation.markedAsNonCoded}"
-                ng-disabled="observation.primaryObs.isCoded() && observation.primaryObs.value">
+                ng-disabled="observation.primaryObs.isCoded() && observation.primaryObs.value" tabindex="1">
             <span></span>
             Accept
         </button>

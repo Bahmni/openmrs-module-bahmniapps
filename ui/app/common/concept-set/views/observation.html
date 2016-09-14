@@ -127,7 +127,7 @@
                     <label class="control-label"></label>
                     <div class="field-value">
                         <textarea class="obs-comment-section" maxlength="255" ng-model="observation.comment"
-                                  placeholder="Notes" msd-elastic>
+                                  placeholder="Notes" tabindex="1" msd-elastic>
                         </textarea>
                     </div>
 
@@ -201,7 +201,7 @@
                         </div>
                         <input id="file-browse-{{observation.uniqueId}}" class="file-browse" type="file" name="image"
                                accept="application/pdf, image/*" capture="camera" ng-model="observation.value" image-upload
-                               patient-uuid="::patient.uuid">
+                               patient-uuid="::patient.uuid" tabindex="1">
                         <label class="placeholder btn" for="file-browse-{{observation.uniqueId}}"
                                ng-hide="observation.value || observation.voided"><i
                                 class="fa fa-plus needsclick"></i></label>
@@ -222,14 +222,14 @@
                         </div>
 
                         <textarea class="consultation-img-comments" ng-if="observation.showComment" maxlength="255"
-                                  ng-model="observation.comment" msd-elastic>
+                                  ng-model="observation.comment" msd-elastic tabindex="1">
                         </textarea>
                     </div>
 
                     <div ng-switch-when="video" class="consultation-image consultation-video" ng-disabled="observation.voided">
                         <input id="file-browse-{{observation.uniqueId}}" class="file-browse" type="file" name="video"
                                accept=".mkv,.flv,.ogg,video/*,audio/3gpp" capture="camera" ng-model="observation.value" image-upload file-type="'video'"
-                               patient-uuid="::patient.uuid">
+                               patient-uuid="::patient.uuid" tabindex="1">
                         <label class="placeholder" for="file-browse-{{observation.uniqueId}}"
                                ng-hide="observation.value">Upload Video</label>
 
