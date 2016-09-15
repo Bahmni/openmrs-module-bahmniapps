@@ -74,7 +74,7 @@ angular.module('bahmni.clinical')
             var saveSpecimens = function () {
 
                 var savableSpecimens = _.filter($scope.newSpecimens, function (specimen) {
-                    return !specimen.isEmpty();
+                    return !specimen.isEmpty() || specimen.voidIfEmpty();
                 });
 
                 savableSpecimens = savableSpecimens.concat($scope.deletedSpecimens);
@@ -90,19 +90,11 @@ angular.module('bahmni.clinical')
                 }
             };
 
-            var isAlreadyBeingEdited = function (specimen) {
-                var specimenBeingEdited = _.find($scope.newSpecimens, function (newSpecimen) {
-                    return newSpecimen.existingObs === specimen.existingObs;
-                });
-                return specimenBeingEdited !== undefined;
-            };
 
             $scope.editSpecimen = function (specimen) {
-                if (!isAlreadyBeingEdited(specimen)) {
+                    $scope.savedSpecimens = _.without($scope.savedSpecimens, specimen);
                     $scope.newSpecimens.push(new Bahmni.Clinical.Specimen(specimen,$scope.allSamples));
-                } else {
-                    messagingService.showMessage("error", "{{ 'BACTERIOLOGY_SAMPLE_BEING_EDITED_KEY' | translate}}" + specimen.type.name + " #" + specimen.identifier);
-                }
+
                 handleSampleTypeOther();
             };
 
@@ -111,13 +103,17 @@ angular.module('bahmni.clinical')
             };
 
             $scope.deleteSpecimen = function (specimen) {
-                if (!isAlreadyBeingEdited(specimen)) {
-                    specimen.voided = true;
+
+                if (specimen.isExistingSpecimen()) {
+                    specimen.setMandatoryFieldsBeforeSavingVoidedSpecimen();
                     $scope.deletedSpecimens.push(specimen);
-                    $scope.savedSpecimens = _.without($scope.savedSpecimens, specimen);
-                } else {
-                    messagingService.showMessage("error", "{{ 'BACTERIOLOGY_SAMPLE_BEING_EDITED_KEY' | translate}}" + specimen.type.name + " #" + specimen.identifier);
                 }
+                    $scope.savedSpecimens = _.without($scope.savedSpecimens, specimen);
+                    $scope.newSpecimens = _.without($scope.newSpecimens, specimen);
+                    if ($scope.newSpecimens.length === 0) {
+                        $scope.createNewSpecimen();
+                    }
+
             };
 
             $scope.getDisplayName = function (specimen){
