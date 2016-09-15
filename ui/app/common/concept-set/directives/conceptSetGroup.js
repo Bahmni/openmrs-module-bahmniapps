@@ -8,12 +8,18 @@ angular.module('bahmni.common.conceptSet')
                   encounterService, treatmentConfig, retrospectiveEntryService, userService,
                   conceptSetUiConfigService, $timeout, clinicalAppConfigService, $stateParams) {
             var conceptSetUIConfig = conceptSetUiConfigService.getConfig();
+            var init = function () {
+                $scope.validationHandler = $scope.context.showPanelView ? new Bahmni.ConceptSet.ConceptSetGroupPanelViewValidationHandler($scope.allTemplates) : new Bahmni.ConceptSet.ConceptSetGroupValidationHandler($scope.allTemplates);
+                contextChangeHandler.add($scope.validationHandler.validate);
+                $scope.leftPanelConceptSet = _.find($scope.allTemplates, function (conceptSet) {
+                    return conceptSet.klass == "active";
+                });
+            };
+
             $scope.togglePref = function (conceptSet, conceptName) {
                 $rootScope.currentUser.toggleFavoriteObsTemplate(conceptName);
                 spinner.forPromise(userService.savePreferences());
             };
-
-            $scope.validationHandler = $scope.context.showPanelView ? new Bahmni.ConceptSet.ConceptSetGroupPanelViewValidationHandler($scope.allTemplates) : new Bahmni.ConceptSet.ConceptSetGroupValidationHandler($scope.allTemplates);
 
             $scope.getNormalized = function (conceptName) {
                 return conceptName.replace(/['\.\s\(\)\/,\\]+/g, "_");
@@ -107,8 +113,6 @@ angular.module('bahmni.common.conceptSet')
                 });
             };
 
-            contextChangeHandler.add($scope.validationHandler.validate);
-
             var collapseExistingActiveSection = function(section){
                 if (section) {
                     section.klass = "";
@@ -131,6 +135,7 @@ angular.module('bahmni.common.conceptSet')
                 messagingService.showMessage('error', errorMessage);
                 $scope.$parent.$parent.$broadcast("event:errorsOnForm");
             };
+            init();
         }])
     .directive('conceptSetGroup', function () {
         return {
