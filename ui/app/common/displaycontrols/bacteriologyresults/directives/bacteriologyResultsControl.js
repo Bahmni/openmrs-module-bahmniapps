@@ -82,6 +82,7 @@ angular.module('bahmni.common.displaycontrol.bacteriologyresults')
                     }else{
                         shouldPromptBeforeClose = false;
                         var specimenMapper = new Bahmni.Clinical.SpecimenMapper();
+                        specimen.voidIfEmpty();
                         var createPromise = bacteriologyResultsService.saveBacteriologyResults(specimenMapper.mapSpecimenToObservation(specimen));
 
                         spinner.forPromise(createPromise).then(function() {
