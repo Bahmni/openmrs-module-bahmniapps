@@ -1,3 +1,20 @@
+.dashboard-monitoring-section{
+  margin-bottom: 10px;
+}
+.patient-monitering-schedule-details{
+  padding: 10px 0;
+  li{
+    width:33%;
+    float: left;
+    padding: 6px 10px;
+    box-sizing: border-box;
+    color: #000;
+    font-size: 13px;
+    span{
+      font-family: $primaryBoldFont;
+    }
+  }
+}
 .patient-monitering{
   .legends{
     margin:10px;
@@ -9,7 +26,7 @@
       padding:0 5px;
       font-family: $OpenSansFont;
       font-size: 12px;
-      &.legends-color{
+      &.monitoring-legends{
         padding-left: 25px;
         position:relative;
         &:before{
@@ -21,13 +38,13 @@
           left: 5px;
           top: 1px;
         }
-        &.legends-yellow:before{
+        &--yellow:before{
           background: #f0f078;
         }
-        &.legends-green:before{
+        &--green:before{
           background: #9ed016;
         }
-        &.legends-purple:before{
+        &--purple:before{
           background: #9551b2;
         }
       }
@@ -103,12 +120,27 @@
             &--greyCurrent{
               background: #9a9a9a !important;
             }
+            &--yellowStop{
+              background: #e0da0d;
+            }
+            &--purpleStop{
+              background:#b30bfb;
+            }
+            &--greenStop{
+              background:#c3f341;
+            }
+            &--greyStop{
+              background: #5f5c5c !important;
+            }
           }
           &.monitoring-resultsCurrent{
             background: #9a9a9a !important;
             color: #fff;
           }
-
+          &.monitoring-resultsStop{
+            background: #5a5959 !important;
+            color: #fff;
+          }
         }
       }
     }
