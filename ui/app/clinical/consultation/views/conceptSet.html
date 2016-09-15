@@ -4,7 +4,7 @@
     </div>
     <div class="template-control-panel primary-section-grid" bm-pop-over-target>
         <ul class="template-icons">
-            <li ng-repeat="template in consultation.selectedObsTemplate track by $index" ng-if="!template.isAdded && !template.alwaysShow">
+            <li ng-repeat="template in consultation.selectedObsTemplate" ng-if="!template.isAdded && !template.alwaysShow">
                 <button id="{{getNormalized(template.label)}}" ng-click="toggleTemplate(template)">
                     <i class="fa fa-square-o" ng-hide="template.isAdded"></i>
                     <i class="fa fa-check" ng-show="template.isAdded"></i>
