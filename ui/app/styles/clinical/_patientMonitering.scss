@@ -2,7 +2,10 @@
   margin-bottom: 10px;
 }
 .patient-monitering-schedule-details{
-  padding: 10px 0;
+  margin: 10px;
+  padding: 10px;
+  box-sizing: border-box;
+  box-shadow: 1px 1px 1px 2px rgba(0, 0, 0, 0.2);
   li{
     width:33%;
     float: left;
@@ -15,9 +18,9 @@
     }
   }
 }
-.patient-monitering{
+.patient-monitering-table{
   .legends{
-    margin:10px;
+    margin:0 10px 10px;
     padding: 10px;
     width:auto;
     float: right;
@@ -52,11 +55,13 @@
     }
   }
   .monitoring-table-wrap{
-    width: 100%;
+    width: auto;
     position: relative;
     clear: both;
     overflow: hidden;
-    border-top: 1px solid $darkerGrey;
+    border: 1px solid $darkerGrey;
+    margin: 0 10px 10px;
+    padding: 2px 2px 2px 4px;
   }
   .monitoring-table-scroll {
     width: auto;
@@ -86,6 +91,7 @@
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
+            left:4px;
           }
         }
         th {
@@ -118,16 +124,16 @@
               background:#7fa80e;
             }
             &--greyCurrent{
-              background: #9a9a9a !important;
+              background: #9a9a9a;
             }
             &--yellowStop{
-              background: #e0da0d;
+              background: #e0da0d !important;
             }
             &--purpleStop{
-              background:#b30bfb;
+              background:#b30bfb  !important;
             }
             &--greenStop{
-              background:#c3f341;
+              background:#c3f341  !important;
             }
             &--greyStop{
               background: #5f5c5c !important;
