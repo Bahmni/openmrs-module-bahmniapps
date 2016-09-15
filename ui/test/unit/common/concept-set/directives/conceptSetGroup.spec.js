@@ -57,7 +57,8 @@ describe("conceptSetGroup", function () {
                     "uuid" : "conceptSet1"
                 },
                 {
-                    "uuid" : "conceptSet2"
+                    "uuid" : "conceptSet2",
+                    "klass" : "active"
                 }
             ]
         };
@@ -87,7 +88,8 @@ describe("conceptSetGroup", function () {
 
         expect(compiledElementScope.isInEditEncounterMode()).toBeTruthy();
         expect(contextChangeHandler.add).toHaveBeenCalled();
-        expect(compiledElementScope.leftPanelConceptSet).toBeUndefined();
+        expect(compiledElementScope.leftPanelConceptSet).toBeDefined();
+        expect(compiledElementScope.leftPanelConceptSet.klass).toBe("active");
     });
 
     it("showLeftPanelConceptSet should set the selected conceptset to be loaded, open, klass as active", function () {
