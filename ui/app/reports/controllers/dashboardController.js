@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('bahmni.reports')
-    .controller('DashboardController', ['$scope', 'appService', 'reportService', 'FileUploader', 'messagingService', function ($scope, appService, reportService, FileUploader, messagingService) {
+    .controller('DashboardController', ['$scope', 'appService', 'reportService', 'FileUploader', 'messagingService', 'spinner', function ($scope, appService, reportService, FileUploader, messagingService, spinner) {
         var availableFormats = {
             "CSV": "text/csv",
             "HTML": "text/html",
@@ -37,15 +37,15 @@ angular.module('bahmni.reports')
 
         };
 
-        $scope.runReport = function (report) {
+        var validateReport = function (report) {
             if(!report.responseType){
                 messagingService.showMessage("error", "Select format for the report: " + report.name);
-                return;
+                return false;
             }
             if (report.responseType === 'application/vnd.ms-excel-custom' && !report.reportTemplateLocation) {
                 if (!report.config.macroTemplatePath) {
                     messagingService.showMessage("error", "Workbook template should be selected for generating report: " + report.name);
-                    return;
+                    return false;
                 }
                 report.reportTemplateLocation = report.config.macroTemplatePath;
             }
@@ -60,14 +60,32 @@ angular.module('bahmni.reports')
                     msg.push("end date");
                 }
                 messagingService.showMessage("error", "Please select the " + msg.join(" and "));
-                return;
+                return false;
             }
             if(report.type == 'concatenated' && report.responseType == availableFormats.CSV) {
                 messagingService.showMessage('error', 'CSV format is not supported for concatenated reports');
-                return;
+                return false;
             }
-            else {
+            return true;
+        };
+
+        $scope.runReport = function (report) {
+            if (validateReport(report)) {
                 reportService.generateReport(report);
+                if (report.responseType === 'application/vnd.ms-excel-custom') {
+                    report.reportTemplateLocation = undefined;
+                    report.responseType = _.values($scope.formats)[0];
+                }
+            }
+        };
+
+        $scope.scheduleReport = function (report) {
+            if (validateReport(report)) {
+                spinner.forPromise(reportService.scheduleReport(report)).then(function(){
+                    messagingService.showMessage("info", report.name + " added to My Reports");
+                }, function() {
+                    messagingService.showMessage("error", "Error in scheduling report");
+                });
                 if (report.responseType === 'application/vnd.ms-excel-custom') {
                     report.reportTemplateLocation = undefined;
                     report.responseType = _.values($scope.formats)[0];

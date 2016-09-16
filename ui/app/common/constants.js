@@ -195,7 +195,7 @@ Bahmni.Common = Bahmni.Common || {};
         messageForNoObservation: "No observations captured for this visit.",
         messageForNoDisposition: "NO_DISPOSTIONS_AVAILABLE_MESSAGE_KEY",
         messageForNoFulfillment: "No observations captured for this order.",
-        reportsUrl: "/bahmnireports/report",
+        reportsUrl: "/bahmnireports",
         uploadReportTemplateUrl: "/bahmnireports/upload",
         ruledOutdiagnosisStatus : "Ruled Out Diagnosis",
         registartionConsultationPrivilege:'app:common:registration_consultation_link',
