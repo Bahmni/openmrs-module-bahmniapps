@@ -501,6 +501,19 @@ describe("DocumentController", function () {
             expect(scope.canDeleteFile(obs)).toBeTruthy();
         })
     })
+
+    describe('Validate Order', function () {
+        beforeEach(function () {
+            setUp();
+        });
+
+
+        it('Should remove the current order when both orders are same', function () {
+            var newVisit = new Bahmni.DocumentUpload.Visit();
+            scope.currentVisit = newVisit;
+            expect(scope.resetCurrentVisit(newVisit)).toBeNull();
+        });
+    })
 });
 
 
