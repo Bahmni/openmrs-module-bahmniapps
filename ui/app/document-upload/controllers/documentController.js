@@ -228,11 +228,16 @@ angular.module('opd.documentupload')
             };
 
             $scope.resetCurrentVisit = function (visit) {
+                if(areVisitsSame($scope.currentVisit, visit)) return $scope.currentVisit = null;
                 $scope.currentVisit = ($scope.isCurrentVisit(visit)) ? $scope.newVisit : visit;
             };
 
             $scope.isCurrentVisit = function (visit) {
                 return $scope.currentVisit && $scope.currentVisit.uuid === visit.uuid;
+            };
+
+            var areVisitsSame = function (currentVisit, newVisit) {
+              return currentVisit == newVisit;
             };
 
             var getEncounterStartDateTime = function (visit) {
