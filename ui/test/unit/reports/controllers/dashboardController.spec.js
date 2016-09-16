@@ -1,7 +1,7 @@
 describe("DashboardController", function () {
     'use strict';
 
-    var scope, controller, reportServiceMock, generateReportPromise, appServiceMock,messagingServiceMock, mockAppDescriptor,
+    var scope, controller, reportServiceMock, generateReportPromise, appServiceMock,messagingServiceMock, mockAppDescriptor, spinnerMock,
         typicalReportConfig = {
             "1": {
                 "name": "Report with config that has dateRangeRequired=true",
@@ -25,10 +25,11 @@ describe("DashboardController", function () {
         };
     beforeEach(module('bahmni.reports'));
 
-    beforeEach(inject(function ($controller, $rootScope) {
+    beforeEach(inject(function ($controller, $rootScope, $q) {
         scope = $rootScope.$new();
 
         messagingServiceMock = jasmine.createSpyObj('messagingService', ['showMessage']);
+        spinnerMock = jasmine.createSpyObj('spinner', ['forPromise']);
 
         mockAppDescriptor = jasmine.createSpyObj('appDescriptor', ['getConfigForPage', 'getConfigValue']);
         appServiceMock= jasmine.createSpyObj('appService', ['getAppDescriptor']);
@@ -36,7 +37,7 @@ describe("DashboardController", function () {
         mockAppDescriptor.getConfigForPage.and.returnValue(typicalReportConfig);
         appServiceMock.getAppDescriptor.and.returnValue(mockAppDescriptor);
 
-        reportServiceMock = jasmine.createSpyObj('reportService', ['generateReport']);
+        reportServiceMock = jasmine.createSpyObj('reportService', ['generateReport', 'scheduleReport']);
         generateReportPromise = specUtil.createServicePromise('generateReport');
         reportServiceMock.generateReport.and.returnValue(generateReportPromise);
         scope.reportsRequiringDateRange = [];
@@ -48,6 +49,7 @@ describe("DashboardController", function () {
             appService: appServiceMock,
             reportService: reportServiceMock,
             messagingService: messagingServiceMock,
+            spinner : spinnerMock,
             FileUploader: function(){}
         });
     }));
@@ -261,4 +263,59 @@ describe("DashboardController", function () {
         expect(messagingServiceMock.showMessage).toHaveBeenCalledWith('error', 'CSV format is not supported for concatenated reports');
         expect(reportServiceMock.generateReport).not.toHaveBeenCalled();
     });
+
+    it("should call scheduleReports if report is scheduled and succeeds", function () {
+        var promise = {
+            then : function (a) {
+                a();
+            }
+        };
+        spinnerMock.forPromise.and.returnValue(promise);
+        reportServiceMock.scheduleReport.and.returnValue({});
+
+        scope.scheduleReport({
+            config: {},
+            name: "Vitals",
+            startDate: new Date(2014, 1, 1),
+            stopDate: new Date(2015, 1, 1),
+            responseType: 'text/html'
+        });
+
+        expect(reportServiceMock.scheduleReport).toHaveBeenCalledWith({
+            config: {},
+            name: "Vitals",
+            startDate: '2014-02-01',
+            stopDate: '2015-02-01',
+            responseType: 'text/html'
+        });
+        expect(messagingServiceMock.showMessage).toHaveBeenCalledWith('info', 'Vitals added to My Reports')
+    });
+
+    it("should call scheduleReports if report is scheduled and show error", function () {
+        var promise = {
+            then : function (a,b) {
+                b();
+            }
+        };
+        spinnerMock.forPromise.and.returnValue(promise);
+        reportServiceMock.scheduleReport.and.returnValue({});
+
+        scope.scheduleReport({
+            config: {},
+            name: "Vitals",
+            startDate: new Date(2014, 1, 1),
+            stopDate: new Date(2015, 1, 1),
+            responseType: 'text/html'
+        });
+
+        expect(reportServiceMock.scheduleReport).toHaveBeenCalledWith({
+            config: {},
+            name: "Vitals",
+            startDate: '2014-02-01',
+            stopDate: '2015-02-01',
+            responseType: 'text/html'
+        });
+        expect(messagingServiceMock.showMessage).toHaveBeenCalledWith('error', 'Error in scheduling report')
+    });
+
 });

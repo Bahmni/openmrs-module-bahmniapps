@@ -9,6 +9,7 @@
     "REPORTS_START_DATE_HEADER_KEY": "Start Date",
     "REPORTS_END_DATE_HEADER_KEY": "End Date",
     "RUN_REPORT_BUTTON_KEY": "Run Report",
+    "SCHEDULE_BUTTON_KEY": "Schedule",
     "REPORT_FORMAT_KEY": "Format",
     "REPORTS_TITLE_KEY":"Reports",
     "REPORTS_TITLE_WITHOUT_DATE_RANGE_KEY":"Reports without Date Range",
