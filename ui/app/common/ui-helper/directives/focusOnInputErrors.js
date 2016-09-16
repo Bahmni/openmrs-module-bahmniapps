@@ -15,6 +15,9 @@ angular.module('bahmni.common.uiHelper')
                         }
                     });
                 }, 10, false);
+                if(isTopElement){
+                    $(window).scrollTop(0);
+                }
             });
 
             scope.$on("$destroy", cleanUpListenerErrorsOnForm);
