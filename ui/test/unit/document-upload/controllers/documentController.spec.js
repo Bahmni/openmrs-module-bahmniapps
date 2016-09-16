@@ -513,6 +513,21 @@ describe("DocumentController", function () {
             scope.currentVisit = newVisit;
             expect(scope.resetCurrentVisit(newVisit)).toBeNull();
         });
+
+        it('Should open a new visit when new visit is not the current one', function () {
+            var newVisit = new Bahmni.DocumentUpload.Visit();
+
+            scope.newVisit = newVisit;
+
+            var visit = createVisit("April 21, 2014", "April 21, 2014 23:59:59", "7d66d8dd-6308-473d-bbed-b4db9ed7809a");
+
+            var visit2 = createVisit("April 22, 2014", "April 22, 2014 23:59:59", "7d66d8dd-6308-473d-bbed-b4db9ed7809a");
+
+            scope.currentVisit = visit;
+            scope.resetCurrentVisit(visit2);
+
+            expect(scope.currentVisit).toBe(newVisit);
+        });
     })
 });
 
