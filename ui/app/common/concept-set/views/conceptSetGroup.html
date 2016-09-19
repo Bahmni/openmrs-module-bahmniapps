@@ -12,7 +12,7 @@
                 <div class="multi-select-lab-tests">
                     <ul>
                         <li ng-repeat="conceptSet in allTemplates track by $index"
-                            ng-if="conceptSet.isAvailable(context) && (conceptSet.isAdded || conceptSet.alwaysShow)"  ng-class='conceptSet.klass'>
+                            ng-if="conceptSet.isAvailable(context) && (conceptSet.isAdded || conceptSet.alwaysShow)"  ng-class="openActiveForm(conceptSet)">
                             <a ng-click="showLeftPanelConceptSet(conceptSet)">
                                 <span class="concept-set-name">
                                     {{conceptSet.label}}
