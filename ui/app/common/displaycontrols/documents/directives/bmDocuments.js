@@ -4,6 +4,7 @@ angular.module('bahmni.common.displaycontrol.documents')
     .directive('bmDocuments', ['encounterService', 'spinner', 'configurations', function (encounterService, spinner, configurations) {
         var controller = function ($scope) {
             var encounterTypeUuid = configurations.encounterConfig().getEncounterTypeUuid($scope.encounterType);
+            var id =  "#"+$scope.config.id;
             spinner.forPromise(encounterService.getEncountersForEncounterType($scope.patient.uuid, encounterTypeUuid).then(function (response) {
                 $scope.records = new Bahmni.Clinical.PatientFileObservationsMapper().map(response.data.results);
                 if ($scope.config.visitUuids) {
@@ -13,7 +14,7 @@ angular.module('bahmni.common.displaycontrol.documents')
                 }
                 $scope.recordGroups = new Bahmni.Clinical.RecordsMapper().map($scope.records);
 
-            }));
+            }),id);
 
             $scope.shouldShowActiveVisitStar = function (records) {
                 if ($scope.config.visitUuids && $scope.config.visitUuids.length === 1) {

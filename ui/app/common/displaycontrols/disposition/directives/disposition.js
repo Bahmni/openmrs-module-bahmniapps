@@ -6,9 +6,9 @@ angular.module('bahmni.common.displaycontrol.disposition')
 
             var controller = function($scope){
 
-
+                var id = "#"+$scope.params.id;
                 var fetchDispositionByPatient = function(patientUuid, numOfVisits){
-                    spinner.forPromise(dispositionService.getDispositionByPatient(patientUuid,numOfVisits))
+                    spinner.forPromise(dispositionService.getDispositionByPatient(patientUuid,numOfVisits),id)
                         .then(handleDispositionResponse);
                 };
 
@@ -21,7 +21,7 @@ angular.module('bahmni.common.displaycontrol.disposition')
                 };
 
                 var fetchDispositionsByVisit = function(visitUuid){
-                    spinner.forPromise(dispositionService.getDispositionByVisit(visitUuid)).then(handleDispositionResponse);
+                    spinner.forPromise(dispositionService.getDispositionByVisit(visitUuid),id).then(handleDispositionResponse);
                 };
 
                 $scope.getNotes = function(disposition){

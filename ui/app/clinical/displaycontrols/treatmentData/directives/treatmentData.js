@@ -64,7 +64,7 @@ angular.module('bahmni.clinical')
                     });
             };
 
-            spinner.forPromise(init());
+            spinner.forPromise(init(),".dashboard-treatment-section");
         };
         return {
             restrict: 'E',

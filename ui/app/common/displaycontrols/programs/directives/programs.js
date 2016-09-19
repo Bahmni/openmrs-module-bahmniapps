@@ -1,12 +1,12 @@
 angular.module('bahmni.common.displaycontrol.programs')
-    .directive('programs', ['programService', '$state',
-        function (programService, $state) {
+    .directive('programs', ['programService', '$state','spinner',
+        function (programService, $state, spinner) {
             'use strict';
             var controller = function ($scope) {
-                programService.getPatientPrograms($scope.patient.uuid, true, $state.params.enrollment).then(function (patientPrograms) {
+                spinner.forPromise(programService.getPatientPrograms($scope.patient.uuid, true, $state.params.enrollment).then(function (patientPrograms) {
                     $scope.activePrograms = patientPrograms.activePrograms;
                     $scope.pastPrograms = patientPrograms.endedPrograms;
-                });
+                }),'.dashboard-program-section');
                 $scope.hasPatientAnyActivePrograms = function () {
                     return !_.isEmpty($scope.activePrograms);
                 };

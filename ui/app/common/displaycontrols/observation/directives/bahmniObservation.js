@@ -39,27 +39,28 @@ angular.module('bahmni.common.displaycontrol.observation')
                 };
 
                 var fetchObservations = function () {
+                    var id = $scope.section ? "#" + $scope.section.id : undefined;
                     if ($scope.observations) {
                         mapObservation($scope.observations, $scope.config);
                         $scope.isFulfilmentDisplayControl = true;
                     }
                     else {
                         if ($scope.config.observationUuid){
-                            spinner.forPromise(observationsService.getByUuid($scope.config.observationUuid)).then(function(response){
+                            spinner.forPromise(observationsService.getByUuid($scope.config.observationUuid),id).then(function(response){
                                 mapObservation([response.data], $scope.config)
                             })
                         } else if ($scope.config.encounterUuid) {
-                            spinner.forPromise(observationsService.fetchForEncounter($scope.config.encounterUuid, $scope.config.conceptNames)).then(function (response) {
+                            spinner.forPromise(observationsService.fetchForEncounter($scope.config.encounterUuid, $scope.config.conceptNames),id).then(function (response) {
                                 mapObservation(response.data, $scope.config)
                             });
                         } else if ($scope.enrollment) {
-                            spinner.forPromise(observationsService.fetchForPatientProgram($scope.enrollment, $scope.config.conceptNames, $scope.config.scope)).then(function (response) {
+                            spinner.forPromise(observationsService.fetchForPatientProgram($scope.enrollment, $scope.config.conceptNames, $scope.config.scope), id).then(function (response) {
                                 mapObservation(response.data, $scope.config)
                             });
                         }else {
                             spinner.forPromise(observationsService.fetch($scope.patient.uuid, $scope.config.conceptNames,
                                 $scope.config.scope, $scope.config.numberOfVisits, $scope.visitUuid,
-                                $scope.config.obsIgnoreList, null)).then(function (response) {
+                                $scope.config.obsIgnoreList, null),id).then(function (response) {
                                 mapObservation(response.data, $scope.config);
                             });
                         }

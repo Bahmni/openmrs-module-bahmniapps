@@ -51,7 +51,7 @@ angular.module('bahmni.common.displaycontrol.pacsOrders')
                         }));
                 };
 
-                spinner.forPromise(init());
+                spinner.forPromise(init(),".pacs-orders");
             };
 
             return {
