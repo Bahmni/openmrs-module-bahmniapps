@@ -21,7 +21,7 @@
                             </a>
                             <div class="button-wrap">
                                 <label class="fa fa-exclamation-triangle fa-red"  ng-show="conceptSet.isValid === false" ng-click="conceptSet.klass =='active' && focusOnErrors()"></label>
-                                <button class="add-more-concept-set add-more-btn btn-small fr" type="button" ng-click="clonePanelConceptSet($index)" ng-if="isLastClonedSection(conceptSet, allTemplates) && conceptSet.canAddMore()" ng-disabled="conceptSet.klass!='active'"> <i class="fa fa-plus"></i></button>
+                                <button class="add-more-concept-set add-more-btn btn-small fr" type="button" ng-click="clonePanelConceptSet($index)" ng-if="isLastClonedSection(conceptSet, allTemplates) && conceptSet.canAddMore()"> <i class="fa fa-plus"></i></button>
                             </div>
                         </li>
                     </ul>
