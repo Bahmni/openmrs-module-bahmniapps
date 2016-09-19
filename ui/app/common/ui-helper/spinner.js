@@ -4,34 +4,32 @@ angular.module('bahmni.common.uiHelper')
     .factory('spinner', ['messagingService', function (messagingService) {
         var tokens = [];
 
-        var show = function () {
+        var show = function (element) {
             messagingService.hideMessages("error");
             var token = Math.random();
             tokens.push(token);
-            if ($('#overlay').length == 0) {
-                $('body').prepend('<div id="overlay"><div></div></div>');
-            }
-            $('#overlay').stop().show();
+            if(element !== undefined)
+                $(element).find(".section-title").append('<div class="dashboard-section-loader"><div></div></div>');
             return token;
         };
 
         var hide = function (token) {
             _.pull(tokens, token);
             if (tokens.length === 0) {
-                $('#overlay').fadeOut(300);
+                $('.dashboard-section-loader').fadeOut(300);
             }
         };
 
-        var forPromise = function (promise) {
-            var token = show();
+        var forPromise = function (promise, element) {
+            var token = show(element);
             promise['finally'](function () {
                 hide(token);
             });
             return promise;
         };
 
-        var forAjaxPromise = function (promise) {
-            var token = show();
+        var forAjaxPromise = function (promise, element) {
+            var token = show(element);
             promise.always(function () {
                 hide(token);
             });
