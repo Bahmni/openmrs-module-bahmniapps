@@ -103,6 +103,13 @@ angular.module('bahmni.common.conceptSet')
                 $.scrollTo('#concept-set-' + (index), 200, {offset: {top: -400}});
             };
 
+            $scope.openActiveForm = function (conceptSet) {
+                if (conceptSet && conceptSet.klass == 'active' && conceptSet != $scope.leftPanelConceptSet) {
+                    $scope.showLeftPanelConceptSet(conceptSet);
+                }
+                return conceptSet.klass;
+            };
+
             var copyValues = function (existingObservations, modifiedObservations) {
                 existingObservations.forEach(function (observation, index) {
                     if (observation.groupMembers && observation.groupMembers.length > 0) {
@@ -128,6 +135,7 @@ angular.module('bahmni.common.conceptSet')
                 $scope.leftPanelConceptSet.isLoaded = true;
                 $scope.leftPanelConceptSet.klass = "active";
                 $scope.leftPanelConceptSet.atLeastOneValueIsSet = selectedConceptSet.hasSomeValue();
+                $(window).scrollTop(0);
             };
 
             $scope.focusOnErrors = function () {

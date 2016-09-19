@@ -94,6 +94,7 @@ angular.module('bahmni.clinical')
                 } else {
                     template.toggle();
                     if (template.isAdded) {
+                        template.klass = "active";
                         messagingService.showMessage("info", template.label + " Added successfully");
                     } else if (!template.isAdded) {
                         messagingService.showMessage("info", template.label + " Removed successfully");
