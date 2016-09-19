@@ -487,11 +487,17 @@ concept-set {
 
 .order-list.concept-set-panel{
   .orders-section-left{
-    border: 1px solid $darkerGrey;
-    width:22% !important;
-    border-radius: 5px 5px 0 0;
+    width:20% !important;
+    position: relative;
     @media screen and (max-width: 1024px){
       margin: 0% 0 2% 0 !important;
+    }
+    .concept-set-panel-wrap{
+      border-radius: 5px 5px 0 0;
+      border: 1px solid $darkerGrey;
+      position: fixed;
+      width:inherit;
+      height:auto;
     }
     .concept-set-panel-header{
        font-size: 14px;
