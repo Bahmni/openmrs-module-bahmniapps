@@ -68,6 +68,16 @@ describe("conceptSetGroup", function () {
         });
     });
 
+    var executeDirective  = function () {
+        httpBackend.expectGET("../common/concept-set/views/conceptSetGroup.html").respond('<div>dummy</div>');
+
+        var html = '<concept-set-group patient="patient" consultation="consultation" observations="consultation.observations" all-templates="consultation.selectedObsTemplate" context="context" auto-scroll-enabled="::scrollingEnabled"></concept-set-group>';
+        var element = compile(html)(scope);
+        scope.$digest();
+        httpBackend.flush();
+        return element.isolateScope();
+    }
+
 
     it("should conceptSetGroup controller be initialized", function () {
         var conceptSetName = "conceptSetName";
@@ -152,13 +162,25 @@ describe("conceptSetGroup", function () {
         expect(messagingService.showMessage('error',"error message")).toHaveBeenCalled;
     });
 
-    var executeDirective  = function () {
-        httpBackend.expectGET("../common/concept-set/views/conceptSetGroup.html").respond('<div>dummy</div>');
-
-        var html = '<concept-set-group patient="patient" consultation="consultation" observations="consultation.observations" all-templates="consultation.selectedObsTemplate" context="context" auto-scroll-enabled="::scrollingEnabled"></concept-set-group>';
-        var element = compile(html)(scope);
+    it("openActiveForm should open the form and scroll to top", function () {
+        var compiledElementScope = executeDirective();
+        var selectConceptSetSection = {
+                name : "activeForm",
+                hasSomeValue : function () {
+                    return true;
+                },
+                klass : 'active'
+            };
         scope.$digest();
-        httpBackend.flush();
-        return element.isolateScope();
-    }
+
+        compiledElementScope.leftPanelConceptSet = {
+            name : "alreadyOpenedForm",
+            isOpen : true,
+            isLoaded : true,
+            klass : "active"
+        };
+        var conceptKlass = compiledElementScope.openActiveForm(selectConceptSetSection);
+        expect(conceptKlass).toEqual("active");
+        expect(compiledElementScope.leftPanelConceptSet.name).toEqual("activeForm");
+    });
 });
