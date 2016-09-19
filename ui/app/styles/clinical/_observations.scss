@@ -498,6 +498,10 @@ concept-set {
       position: fixed;
       width:inherit;
       height:auto;
+      top:105px;
+      bottom: 50px;
+      overflow-y:auto;
+      overflow-x: hidden;
     }
     .concept-set-panel-header{
        font-size: 14px;
