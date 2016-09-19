@@ -228,7 +228,7 @@ angular.module('opd.documentupload')
             };
 
             $scope.resetCurrentVisit = function (visit) {
-                if(areVisitsSame($scope.currentVisit, visit)) return $scope.currentVisit = null;
+                if(areVisitsSame($scope.currentVisit, visit) && areVisitsSame($scope.currentVisit, $scope.newVisit)) return $scope.currentVisit = null;
                 $scope.currentVisit = ($scope.isCurrentVisit(visit)) ? $scope.newVisit : visit;
             };
 
