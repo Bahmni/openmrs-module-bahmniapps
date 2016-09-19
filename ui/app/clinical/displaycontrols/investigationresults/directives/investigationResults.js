@@ -20,7 +20,7 @@ angular.module('bahmni.clinical')
             spinner.forPromise(labOrderResultService.getAllForPatient(params)
                 .then(function (results) {
                     $scope.investigationResults = results;
-                }));
+                }),'.dashboard-laborders-section');
         };
         return {
             restrict: 'E',

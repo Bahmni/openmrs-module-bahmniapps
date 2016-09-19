@@ -2,9 +2,9 @@
 
 angular.module('bahmni.clinical')
     .controller('PatientDashboardController', ['$scope', 'clinicalAppConfigService', 'clinicalDashboardConfig', 'printer',
-        '$state', 'spinner', 'visitSummary', 'appService', '$stateParams', 'diseaseTemplateService', 'patientContext',
+        '$state', 'spinner', 'visitSummary', 'appService', '$stateParams', 'diseaseTemplateService', 'patientContext','$filter',
         function ($scope, clinicalAppConfigService, clinicalDashboardConfig, printer,
-                  $state, spinner, visitSummary, appService, $stateParams, diseaseTemplateService, patientContext) {
+                  $state, spinner, visitSummary, appService, $stateParams, diseaseTemplateService, patientContext, $filter) {
 
             $scope.patient = patientContext.patient;
             $scope.activeVisit = $scope.visitHistory.activeVisit;
@@ -54,7 +54,7 @@ angular.module('bahmni.clinical')
                     dashboard.endDate = $stateParams.dateCompleted;
                 }
                 clinicalDashboardConfig.switchTab(dashboard);
-                var dashboardModel = Bahmni.Common.DisplayControl.Dashboard.create(dashboard);
+                var dashboardModel = Bahmni.Common.DisplayControl.Dashboard.create(dashboard, $filter);
                 diseaseTemplateService.getLatestDiseaseTemplates(
                     $stateParams.patientUuid, clinicalDashboardConfig.getDiseaseTemplateSections(), dashboard.startDate, dashboard.endDate).then(function (diseaseTemplate) {
                         $scope.diseaseTemplates = diseaseTemplate;

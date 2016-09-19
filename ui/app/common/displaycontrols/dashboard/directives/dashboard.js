@@ -3,10 +3,10 @@
 angular.module('bahmni.common.displaycontrol.dashboard')
 
     .directive('dashboard', [function() {
-        var controller = function($scope) {
+        var controller = function($scope, $filter) {
 
             var init = function() {
-                $scope.dashboard = Bahmni.Common.DisplayControl.Dashboard.create($scope.config || {});
+                $scope.dashboard = Bahmni.Common.DisplayControl.Dashboard.create($scope.config || {}, $filter);
             };
 
             var checkDisplayType = function(sections, typeToCheck , index) {
