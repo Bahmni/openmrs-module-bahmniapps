@@ -1,7 +1,7 @@
 <div>
     <div>
         <div ng-repeat="order in orders" class="concept-set-group section-grid order-fullfilment-contianer">
-            <div class="concept-set-title" ng-click="toggleShowOrderForm(order)">
+            <div id="{{order.orderUuid}}" class="concept-set-title" ng-click="toggleShowOrderForm(order)">
                 <h2 class="section-title">
                     <i class="fa fa-caret-right" ng-hide="order.showForm"></i>
                     <i class="fa fa-caret-down" ng-show="order.showForm"></i>
