@@ -67,8 +67,8 @@ angular.module('bahmni.common.displaycontrol.orders')
                 $scope.getSectionTitle = function(){
                     return $filter('titleTranslate')($scope.section);
                 };
-                var id = "#"+$scope.section.id;
-                spinner.forPromise(init(),id);
+                var id = "#"+ ($scope.section ? ($scope.section.id) : $scope.orderUuid);
+                spinner.forPromise(init(), id);
             };
             return {
                 restrict:'E',
