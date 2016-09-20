@@ -28,7 +28,7 @@ angular.module('bahmni.clinical')
                 var printScope = $scope.$new();
                 printScope.isDashboardPrinting = true;
                 printScope.tabBeingPrinted = tab || clinicalDashboardConfig.currentTab;
-                var dashboardModel = Bahmni.Common.DisplayControl.Dashboard.create(printScope.tabBeingPrinted);
+                var dashboardModel = Bahmni.Common.DisplayControl.Dashboard.create(printScope.tabBeingPrinted, $filter);
                 spinner.forPromise(diseaseTemplateService.getLatestDiseaseTemplates(
                     $stateParams.patientUuid,
                     clinicalDashboardConfig.getDiseaseTemplateSections(printScope.tabBeingPrinted),
