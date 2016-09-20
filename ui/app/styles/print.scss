@@ -140,6 +140,10 @@ h3 {
 /** Print Style for dashboard **/
 
 .print-wrapper {
+    .patient-monitering-schedule-details li span{
+        font-family: Arial, sans-serif;
+        font-weight: bold;
+    }
     font-family: Arial, sans-serif;
     font-size: 9pt;
     padding: 10px 20px 0;
