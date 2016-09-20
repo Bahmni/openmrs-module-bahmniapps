@@ -42,18 +42,18 @@
           left: 5px;
           top: 1px;
         }
-      }
-      &.monitoring-legends--stop:before{
-        background: #5a5959;
-      }
-      &.monitoring-legends--yellow:before{
-        background: #f0f078;
-      }
-      &.monitoring-legends--green:before{
-        background: #9ed016;
-      }
-      &.monitoring-legends--purple:before{
-        background: #9551b2;
+        &--stop:before{
+          background: #5a5959;
+        }
+        &--yellow:before{
+          background: #f0f078;
+        }
+        &--green:before{
+          background: #9ed016;
+        }
+        &--purple:before{
+          background: #9551b2;
+        }
       }
 
     }
