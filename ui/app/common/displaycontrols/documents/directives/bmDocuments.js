@@ -2,9 +2,15 @@
 
 angular.module('bahmni.common.displaycontrol.documents')
     .directive('bmDocuments', ['encounterService', 'spinner', 'configurations', function (encounterService, spinner, configurations) {
-        var controller = function ($scope) {
+        var controller = function ($scope, $filter) {
             var encounterTypeUuid = configurations.encounterConfig().getEncounterTypeUuid($scope.encounterType);
-            var id =  "#"+$scope.config.id;
+            var id;
+            if ($scope.config.id) {
+                id = "#" + $scope.config.id;
+            } else {
+                var key = $scope.config.translationKey || $scope.config.title;
+                id = '#' + $filter('titleTranslate')(key).toValidId();
+            }
             spinner.forPromise(encounterService.getEncountersForEncounterType($scope.patient.uuid, encounterTypeUuid).then(function (response) {
                 $scope.records = new Bahmni.Clinical.PatientFileObservationsMapper().map(response.data.results);
                 if ($scope.config.visitUuids) {
