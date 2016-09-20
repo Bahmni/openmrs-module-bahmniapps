@@ -52,13 +52,14 @@ h2.section-title {
 	background: $bahmniSecondaryColor;
 	position: relative;
 	border-radius: 2px 2px 0 0;
-	.dashboard-section-loader {
-		right: 67px;
-		position: absolute;
-		background: url(../images/spinner.gif) no-repeat center center;
-		z-index: 9999;
-		width: 50px;
-		height: 50px;
+	.section-title-loader {
+		width: 25px;
+		height: 25px;
+		margin-top:-6px;
+		float: right;
+		img{
+			max-width:100%;
+		}
 	}
 	.section-title-text{
 		padding-top: 8px;
@@ -73,9 +74,10 @@ h2.section-title {
 	        border-bottom: 1px solid white;
 	    }
 	    .fa-external-link {
-	        position: absolute;
-	        right: 0;
-	        top: 0;
+			position: static;
+			float: right;
+			padding: 0;
+			margin: -6px -4px -7px 10px;
 	        font-size: 26px;
 	        opacity: 0.5;
 	    }

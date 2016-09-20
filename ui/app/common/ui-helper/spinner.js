@@ -9,14 +9,14 @@ angular.module('bahmni.common.uiHelper')
             var token = Math.random();
             tokens.push(token);
             if(element !== undefined)
-                $(element).find(".section-title").append('<div class="dashboard-section-loader"><div></div></div>');
+                $(element).find(".section-title").append('<div class="section-title-loader"><img src="../images/spinner.gif" /></div>');
             return token;
         };
 
         var hide = function (token) {
             _.pull(tokens, token);
             if (tokens.length === 0) {
-                $('.dashboard-section-loader').fadeOut(300);
+                $('.section-title-loader').fadeOut(300);
             }
         };
 
