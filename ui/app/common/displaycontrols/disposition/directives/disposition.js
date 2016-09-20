@@ -5,8 +5,7 @@ angular.module('bahmni.common.displaycontrol.disposition')
         function (dispositionService, $q ,spinner) {
 
             var controller = function($scope){
-
-                var id = "#"+$scope.params.id;
+                var id = $scope.params.id ? "#" + $scope.params.id : "#dispositionSection";
                 var fetchDispositionByPatient = function(patientUuid, numOfVisits){
                     spinner.forPromise(dispositionService.getDispositionByPatient(patientUuid,numOfVisits),id)
                         .then(handleDispositionResponse);

@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('bahmni.common.displaycontrol.diagnosis')
-    .directive('bahmniDiagnosis', ['diagnosisService', '$q', 'spinner', '$rootScope',
-        function (diagnosisService, $q, spinner, $rootScope) {
+    .directive('bahmniDiagnosis', ['diagnosisService', '$q', 'spinner', '$rootScope', '$filter',
+        function (diagnosisService, $q, spinner, $rootScope, $filter) {
             var controller = function ($scope) {
                 var getAllDiagnosis = function () {
                     return diagnosisService.getDiagnoses($scope.patientUuid, $scope.visitUuid).then(function (response) {
@@ -33,7 +33,8 @@ angular.module('bahmni.common.displaycontrol.diagnosis')
                 $scope.isLatestDiagnosis = function (diagnosis) {
                     return diagnosis.latestDiagnosis ? diagnosis.existingObs == diagnosis.latestDiagnosis.existingObs : false;
                 };
-                var id = "#"+$scope.config.id;
+                var id = $scope.config.id ? "#" + $scope.config.id : "#diagnosisSection";
+
                 spinner.forPromise($q.all(getPromises()), id);
             };
             return {

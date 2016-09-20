@@ -37,9 +37,9 @@ angular.module('bahmni.common.displaycontrol.observation')
                         }
                     }
                 };
-
+                $scope.id = ($scope.section ? $scope.section.id : "observationSection");
                 var fetchObservations = function () {
-                    var id = $scope.section ? "#" + $scope.section.id : undefined;
+                    var id = "#" + $scope.id;
                     if ($scope.observations) {
                         mapObservation($scope.observations, $scope.config);
                         $scope.isFulfilmentDisplayControl = true;

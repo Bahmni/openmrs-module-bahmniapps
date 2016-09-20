@@ -17,11 +17,11 @@
             </div>
             <div ng-switch-when="observation">
                 <div ng-if="::section.config" id="observation-section">
-                    <section class="block observation dashboard-section">
+                    <section class="block observation dashboard-section" id="observationSection">
                         <ul bm-gallery access-impression="true">
                             <bahmni-observation patient="::patient" visit-uuid="{{::visitUuid}}"
                                                 config="::section.config"
-                                                section-title="::section | titleTranslate"></bahmni-observation>
+                                                section-title="::section | titleTranslate" class="section-title"></bahmni-observation>
                         </ul>
                     </section>
                 </div>
@@ -45,12 +45,12 @@
                 </div>
             </div>
             <div data-ng-switch-when="radiology">
-                <div ng-if="::section.config" class="dashboard-radiology-section">
+                <div id="Radiology" ng-if="::section.config" class="dashboard-radiology-section">
                     <bm-documents patient="::patient" config="::section.config" encounter-type="'RADIOLOGY'"></bm-documents>
                 </div>
             </div>
             <div data-ng-switch-when="patientFiles">
-                <div ng-if="section.config && !isBeingPrinted">
+                <div id="Patient-Files" ng-if="section.config && !isBeingPrinted">
                     <bm-documents patient="::patient" config="::section.config" encounter-type="'Patient Document'"></bm-documents>
                 </div>
             </div>
