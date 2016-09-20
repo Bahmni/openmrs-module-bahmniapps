@@ -485,13 +485,14 @@ concept-set {
 
 //2 Column Layout Styles
 
-.order-list.concept-set-panel{
-  .orders-section-left{
-    width:20% !important;
+.concept-set-panel{
+  width:100%;
+  margin: 0 auto;
+  .concept-set-panel-left{
+    float: left;
+    width: 275px;
+    margin-right: -100%;
     position: relative;
-    @media screen and (max-width: 1024px){
-      margin: 0% 0 2% 0 !important;
-    }
     .concept-set-panel-wrap{
       border-radius: 5px 5px 0 0;
       border: 1px solid $darkerGrey;
@@ -523,14 +524,16 @@ concept-set {
           box-sizing: border-box;
           font-size: 12px;
           border: 1px solid $lightGray;
-          border-bottom-color: $lightGray !important;
           padding: 8px 10px !important;
+          display: block;
+          background: #699;
+          color: $lightGray;
           .concept-set-name {
             display: block;
             width: auto;
-            color: $lightGray;
-            @media screen and (max-width: 1024px){
-             margin-right:25px;
+            margin-right:25px;
+            &.concept-set-name-extra {
+              margin-right: 52px;
             }
           }
           @media screen and (max-width: 1024px){
@@ -540,9 +543,7 @@ concept-set {
         &.active{
           a{
             background: #3D7474;
-            span{
-              color: $white;
-            }
+            color: $white;
           }
 
         }
@@ -576,8 +577,12 @@ concept-set {
       }
     }
   }
-  .orders-section-right{
-    width: 76% !important;
+  .concept-set-panel-right-wrap{
+    float: right;
+    width: 100%;
+  }
+  .concept-set-panel-right{
+    margin-left: 290px;
     .section-title #removeClonedObs.fa-remove{
       padding: 3px 5px 4px;
       width: auto;
