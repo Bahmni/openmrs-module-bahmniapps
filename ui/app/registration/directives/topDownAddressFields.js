@@ -27,7 +27,7 @@ angular.module('bahmni.registration')
         });
 
         var populateSelectedAddressUuids = function (levelIndex, parentUuid) {
-            if ($scope.addressLevels.length === 0){
+            if ($scope.addressLevels.length === 0 || !$scope.addressLevels[levelIndex]){
                 return;
             }
 
