@@ -74,13 +74,11 @@ angular.module('bahmni.common.conceptSet')
                     var flattenedObs = ObservationUtil.flattenObsToArray(observationsOfCurrentTemplate);
                     var conceptSetObsValues = getFlattenedObsValues(flattenedObs);
                     if (Bahmni.ConceptSet.FormConditions.rules) {
-                        var valueMap=_.reduce(conceptSetObsValues,function(conceptSetValueMap,obsValue,conceptName){
-                           conceptSetValueMap[conceptName.split('|')[0]] = obsValue;
-                            return conceptSetValueMap;
-                        },{});
                         _.each(Bahmni.ConceptSet.FormConditions.rules, function (conditionFn, conceptName) {
                             _.each(_.keys(conceptSetObsValues), function(eachObsKey) {
                                 if(eachObsKey.split('|')[0] == conceptName && eachObsKey.split('|')[1] != 'undefined') {
+                                    var valueMap = {};
+                                    valueMap[conceptName] = conceptSetObsValues[eachObsKey];
                                     var conditions = conditionFn(observation.concept.name, valueMap);
                                     processConditions(flattenedObs.slice(_.findIndex(flattenedObs, {uniqueId: eachObsKey.split('|')[1]})), conditions.disable, true);
                                     processConditions(flattenedObs.slice(_.findIndex(flattenedObs, {uniqueId: eachObsKey.split('|')[1]})), conditions.enable, false);
