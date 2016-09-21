@@ -279,7 +279,7 @@ describe('OfflineSyncService', function () {
 
         it('should read the transactional events from the beginning for each category', function () {
             var categories = [
-                'TransactionalData'
+                'transactionalData'
             ];
             var patientEvent = {
                 object: 'patientUrl',
@@ -293,7 +293,7 @@ describe('OfflineSyncService', function () {
                 uuid: 'uuid2'
             };
 
-            var marker = {markerName: 'TransactionalData', filters: [202020]};
+            var marker = {markerName: 'transactionalData', filters: [202020]};
 
             spyOn(offlineService, 'getItem').and.returnValue(categories);
             spyOn(offlineService, 'setItem').and.callThrough();
@@ -379,7 +379,7 @@ describe('OfflineSyncService', function () {
                 filters: [202020]
             });
             expect(eventLogService.getEventsFor.calls.count()).toBe(1);
-            
+
             expect(loggingService.logSyncError).toHaveBeenCalled();
             expect($rootScope.$broadcast).toHaveBeenCalledWith("schedulerStage", null, true);
         });
@@ -637,7 +637,7 @@ describe('OfflineSyncService', function () {
 
         it('should read patient events from the last read uuid for the catchment', function () {
             var categories = [
-                'TransactionalData'
+                'transactionalData'
             ];
             var patientEvent = {
                 object: 'patientUrl',
@@ -651,7 +651,7 @@ describe('OfflineSyncService', function () {
                 uuid: 'uuid2'
             };
 
-            var marker = {markerName: 'TransactionalData', filters: [202020]};
+            var marker = {markerName: 'transactionalData', filters: [202020]};
 
             spyOn(offlineService, 'getItem').and.returnValue(categories);
             spyOn(offlineService, 'setItem').and.callThrough();
@@ -710,7 +710,7 @@ describe('OfflineSyncService', function () {
 
         it('should map patient identifiers data to contain identifierType primary', function () {
             var categories = [
-                'TransactionalData'
+                'transactionalData'
             ];
             var patientEvent = {
                 object: 'patientUrl',
@@ -718,7 +718,7 @@ describe('OfflineSyncService', function () {
                 uuid: 'uuid1'
             };
 
-            var marker = {markerName: 'TransactionalData', filters: [202020]};
+            var marker = {markerName: 'transactionalData', filters: [202020]};
 
             spyOn(offlineService, 'getItem').and.returnValue(categories);
             spyOn(offlineService, 'setItem').and.callThrough();

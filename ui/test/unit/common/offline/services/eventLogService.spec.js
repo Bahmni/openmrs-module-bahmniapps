@@ -22,7 +22,7 @@ describe('EventLogService', function () {
             return specUtil.respondWith([newVar]);
         });
 
-        eventLogService.getEventsFor('TransactionalData',{ filters: [111]}).then(function (data) {
+        eventLogService.getEventsFor('transactionalData',{ filters: [111]}).then(function (data) {
             expect(data.length).toBe(1);
             expect(data[0]).toBe(newVar);
         });
@@ -54,7 +54,7 @@ describe('EventLogService', function () {
             return specUtil.respondWith([newVar]);
         });
 
-        eventLogService.getEventsFor('AddressHierarchy',{ filters: []}).then(function (data) {
+        eventLogService.getEventsFor('addressHierarchy',{ filters: []}).then(function (data) {
             expect(data.length).toBe(1);
             expect(data[0]).toBe(newVar);
         });
@@ -70,7 +70,7 @@ describe('EventLogService', function () {
             return specUtil.respondWith([newVar]);
         });
 
-        eventLogService.getEventsFor('ParentAddressHierarchy',{ filters: []}).then(function (data) {
+        eventLogService.getEventsFor('parentAddressHierarchy',{ filters: []}).then(function (data) {
             expect(data.length).toBe(1);
             expect(data[0]).toBe(newVar);
         });
@@ -135,7 +135,7 @@ describe('EventLogService', function () {
     });
 
     it('should call event log filter URL to get filters for all categories for the given login  location, address and provider ', function () {
-        var newVar = [{category:"AddressHierarchy" , filters:[]}, {category:"TransactionalData" , filters:["123", "456"]}, {category:"offline-concepts" , filters:[]}];
+        var newVar = [{category:"addressHierarchy" , filters:[]}, {category:"transactionalData" , filters:["123", "456"]}, {category:"offline-concepts" , filters:[]}];
         mockHttp.get.and.callFake(function () {
             return specUtil.respondWith(newVar);
         });

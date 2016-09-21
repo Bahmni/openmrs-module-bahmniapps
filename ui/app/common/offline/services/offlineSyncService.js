@@ -159,9 +159,11 @@ angular.module('bahmni.common.offline')
                 };
 
                 var endSync = function (status) {
-                      if (stages == 4 || status == -1){
-                          $rootScope.$broadcast("schedulerStage", null);
-                      }
+                    var categories = offlineService.getItem("eventLogCategories");
+
+                    if (stages == categories.length || status == -1) {
+                        $rootScope.$broadcast("schedulerStage", null);
+                    }
                 };
 
             return {
