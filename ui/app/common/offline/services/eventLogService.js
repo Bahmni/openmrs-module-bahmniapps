@@ -28,12 +28,12 @@ angular.module('bahmni.common.offline')
 
         var getEventsFor = function (category, marker) {
             switch (category) {
-                case 'TransactionalData':
+                case 'transactionalData':
                     return getEvents(Bahmni.Common.Constants.eventLogServiceUrl, marker);
                 case 'offline-concepts':
                     return getEvents(Bahmni.Common.Constants.eventLogServiceConceptUrl,marker);
-                case 'AddressHierarchy':
-                case 'ParentAddressHierarchy':
+                case 'addressHierarchy':
+                case 'parentAddressHierarchy':
                     return getEvents(Bahmni.Common.Constants.addressEventLogServiceUrl, marker);
             }
 
