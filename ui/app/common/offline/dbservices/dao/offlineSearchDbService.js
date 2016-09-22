@@ -8,19 +8,21 @@ angular.module('bahmni.common.offline')
         var search = function (params) {
             var defer = $q.defer();
             var response = {
-                "data" : {
+                "data": {
                     pageOfResults: []
                 }
             };
+
             if ($rootScope.searching) {
                 response.data.pageOfResults.push({});
                 return defer.resolve(response);
             }
+
             $rootScope.searching = true;
             var nameParts = null;
             if (params.q) {
                 nameParts = params.q.split(" ");
-                for(var i = 0; i < nameParts.length; i++){
+                for (var i = 0; i < nameParts.length; i++) {
                     nameParts[i] = nameParts[i].replace('%', '.');
                 }
             }
@@ -29,9 +31,15 @@ angular.module('bahmni.common.offline')
                 params.patientAttributes = "";
             }
 
+            var snakeCaseToCamelCase = function (snake_str) {
+                return snake_str.replace(/_([a-z])/g, function (g) {
+                    return g[1].toUpperCase();
+                });
+            };
+
             var addressFieldName = null;
             if (params.addressFieldName) {
-                addressFieldName = params.addressFieldName.replace("_", "");
+                addressFieldName = snakeCaseToCamelCase(params.addressFieldName);
             }
 
             var p = db.getSchema().table('patient');
@@ -41,7 +49,7 @@ angular.module('bahmni.common.offline')
             var padd = db.getSchema().table('patient_address').as('addressFieldValue');
             var encounter = db.getSchema().table('encounter');
 
-             db.select(pat.attributeTypeId)
+            db.select(pat.attributeTypeId)
                 .from(pat)
                 .where(pat.attributeName.in(params.patientAttributes)).exec()
                 .then(function (attributeTypeIds) {
@@ -55,21 +63,21 @@ angular.module('bahmni.common.offline')
                     var predicates = [];
 
                     if (!_.isEmpty(params.addressFieldValue)) {
-                        params.addressFieldValue = params.addressFieldValue.replace('%','.');
+                        params.addressFieldValue = params.addressFieldValue.replace('%', '.');
                         predicates.push(padd[addressFieldName].match(new RegExp(params.addressFieldValue, 'i')));
                     }
 
                     if (params.duration) {
-                        var startDate =  Bahmni.Common.Util.DateUtil.subtractDays(new Date(), params.duration);
+                        var startDate = Bahmni.Common.Util.DateUtil.subtractDays(new Date(), params.duration);
                         var encounterPredicate = encounter.encounterDateTime.gte(startDate);
                         var dateCreatedPredicate = p.dateCreated.gte(startDate);
                         predicates.push(lf.op.or(encounterPredicate, dateCreatedPredicate));
                     }
 
                     if (!_.isEmpty(params.identifier)) {
-                        params.identifier = params.identifier.replace('%','.');
+                        params.identifier = params.identifier.replace('%', '.');
                         predicates.push(pi.identifier.match(new RegExp(params.identifier, 'i')));
-                        predicates.push(pi.identifier.match(new RegExp(params.identifierPrefix,'i')));
+                        predicates.push(pi.identifier.match(new RegExp(params.identifierPrefix, 'i')));
                     }
                     if (!_.isEmpty(nameParts)) {
                         var nameSearchCondition = [];
@@ -83,7 +91,7 @@ angular.module('bahmni.common.offline')
                     }
 
                     if (!_.isEmpty(params.customAttribute)) {
-                        params.customAttribute = params.customAttribute.replace('%','.');
+                        params.customAttribute = params.customAttribute.replace('%', '.');
                         predicates.push(pa.attributeTypeId.in(_.map(attributeTypeIds, function (attributeTypeId) {
                             return attributeTypeId.attributeTypeId;
                         })));
@@ -98,10 +106,9 @@ angular.module('bahmni.common.offline')
                         query = query.where(whereCondition);
                     }
 
-
-                     query.limit(50).skip(params.startIndex).orderBy(p.dateCreated, lf.Order.DESC).groupBy(p.uuid).exec()
+                    query.limit(50).skip(params.startIndex).orderBy(p.dateCreated, lf.Order.DESC).groupBy(p.uuid).exec()
                         .then(function (tempResults) {
-                            return db.select(pi.primaryIdentifier.as('identifier'), pi.extraIdentifiers.as('extraIdentifiers'), p.givenName.as('givenName'), p.middleName.as('middleName'), p.familyName.as('familyName'),
+                            var query = db.select(pi.primaryIdentifier.as('identifier'), pi.extraIdentifiers.as('extraIdentifiers'), p.givenName.as('givenName'), p.middleName.as('middleName'), p.familyName.as('familyName'),
                                 p.dateCreated.as('dateCreated'), p.birthdate.as('birthdate'), p.gender.as('gender'), p.uuid.as('uuid'), padd[addressFieldName],
                                 pat.attributeName.as('attributeName'), pa.attributeValue.as('attributeValue'), pat.format.as('attributeFormat'))
                                 .from(p)
@@ -111,8 +118,9 @@ angular.module('bahmni.common.offline')
                                 .leftOuterJoin(pat, pa.attributeTypeId.eq(pat.attributeTypeId))
                                 .where(p.uuid.in(_.map(tempResults, function (tempResult) {
                                     return tempResult.uuid;
-                                }))).
-                                orderBy(p.dateCreated, lf.Order.DESC).exec()
+                                }))).orderBy(p.dateCreated, lf.Order.DESC);
+
+                            return query.exec()
                                 .then(function (results) {
 
                                     var groupedResults = _.groupBy(results, function (res) {
@@ -144,12 +152,13 @@ angular.module('bahmni.common.offline')
 
                         }, function (e) {
                             console.log(e);
+                            defer.reject(e);
                         });
                 });
             return defer.promise;
         };
 
-        var init = function(_db){
+        var init = function (_db) {
             db = _db;
         };
 
