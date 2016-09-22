@@ -4,6 +4,7 @@ angular.module('bahmni.common.displaycontrol.bacteriologyresults')
     .directive('bacteriologyResultsControl', ['bacteriologyResultsService', 'appService', '$q', 'spinner', '$filter',  'ngDialog', 'bacteriologyTabInitialization', '$controller','consultationInitialization', '$state','messagingService','$rootScope','$translate',
         function (bacteriologyResultsService, appService, $q, spinner, $filter,ngDialog, bacteriologyTabInitialization, $controller, consultationInitialization, $state, messagingService,$rootScope, $translate) {
             var controller = function ($scope) {
+                var id = "#" + $scope.section.id;
                 var shouldPromptBeforeClose = true;
                 var init = function () {
                     $scope.title = "bacteriology results";
@@ -61,7 +62,7 @@ angular.module('bahmni.common.displaycontrol.bacteriologyresults')
                                         if(!$rootScope.hasVisitedConsultation) {
                                             window.onbeforeunload = null;
                                         }
-                                        spinner.forPromise(init());
+                                        spinner.forPromise(init(), id);
                                         return true;
                                     }
                                     return false;
@@ -69,7 +70,7 @@ angular.module('bahmni.common.displaycontrol.bacteriologyresults')
                             }
                         })
                     });
-                    spinner.forPromise(promise);
+                    spinner.forPromise(promise, id);
                 };
 
                 $scope.saveBacteriologySample = function(specimen){
@@ -85,7 +86,7 @@ angular.module('bahmni.common.displaycontrol.bacteriologyresults')
                         specimen.voidIfEmpty();
                         var createPromise = bacteriologyResultsService.saveBacteriologyResults(specimenMapper.mapSpecimenToObservation(specimen));
 
-                        spinner.forPromise(createPromise).then(function() {
+                        spinner.forPromise(createPromise, id).then(function() {
                             if(!$rootScope.hasVisitedConsultation) {
                                 window.onbeforeunload = null;
                             }
@@ -109,8 +110,7 @@ angular.module('bahmni.common.displaycontrol.bacteriologyresults')
                 $scope.hasResults = function (test){
                     return test && test.groupMembers;
                 };
-
-                spinner.forPromise(init());
+                spinner.forPromise(init(), id);
             };
             return {
                 restrict: 'E',
