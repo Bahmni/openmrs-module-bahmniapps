@@ -159,6 +159,10 @@ angular.module('bahmni.common.conceptSet')
                                 });
                                 flattenedObsValues[obs.concept.name + '|' + obs.uniqueId] = selectedObsConceptNames;
                             }
+                            else if(obs.conceptUIConfig.multiSelect) {
+                                flattenedObsValues[obs.concept.name + '|' + obs.uniqueId] = flattenedObsValues[obs.concept.name + '|' + undefined];
+                                //Set the individual Observation of Multi Select to be the MultiSelect Obs
+                            }
                             else if (obs.value instanceof Object) {
                                 flattenedObsValues[obs.concept.name + '|' + obs.uniqueId] = obs.value.name;
                             }
@@ -289,9 +293,18 @@ angular.module('bahmni.common.conceptSet')
 
                 var processConditions = function (flattenedObs, fields, disable, error) {
                     _.each(fields, function (field) {
-                        var matchingObsArray = _.filter(flattenedObs, function (obs) {
-                            return obs.concept.name === field;
+                        var matchingObsArray = [];
+                        var clonedObsInSameGroup = undefined;
+                        flattenedObs.forEach(function (obs) {
+                            if(clonedObsInSameGroup != false && obs.concept.name == field) {
+                                matchingObsArray.push(obs);
+                                clonedObsInSameGroup = true;
+                            }
+                            else if(clonedObsInSameGroup && obs.concept.name != field) {
+                                clonedObsInSameGroup = false;
+                            }
                         });
+
                         if (!_.isEmpty(matchingObsArray)) {
                             setObservationState(matchingObsArray, disable, error);
                         } else {
