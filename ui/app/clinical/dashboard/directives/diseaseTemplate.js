@@ -1,10 +1,15 @@
 'use strict';
 
 angular.module('bahmni.clinical')
-    .directive('diseaseTemplate', function () {
+    .directive('diseaseTemplate', ['spinner', '$q', function (spinner, $q) {
+        var defer = $q.defer();
+
+        var init = function() {
+            return defer.promise;
+        };
 
         var controller = function ($scope) {
-
+            spinner.forPromise(init(), "#" + $scope.sectionId);
             $scope.dateTimeDisplayConfig = function (obsTemplate) {
                 var showDate = false;
                 var showTime = false;
@@ -29,6 +34,7 @@ angular.module('bahmni.clinical')
             };
 
             $scope.showGroupDateTime = $scope.config.showGroupDateTime !== false;
+            defer.resolve();
         };
 
         return {
@@ -39,8 +45,9 @@ angular.module('bahmni.clinical')
                 config: "=",
                 patient: "=",
                 showDateTimeForIntake: "=",
-                showTimeForProgress: "="
+                showTimeForProgress: "=",
+                sectionId: "="
             },
             templateUrl: "dashboard/views/diseaseTemplate.html"
         };
-    });
+    }]);
