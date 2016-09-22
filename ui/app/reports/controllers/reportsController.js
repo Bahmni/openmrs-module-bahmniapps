@@ -1,16 +1,7 @@
 'use strict';
 
 angular.module('bahmni.reports')
-    .controller('DashboardController', ['$scope', 'appService', 'reportService', 'FileUploader', 'messagingService', 'spinner', function ($scope, appService, reportService, FileUploader, messagingService, spinner) {
-        var availableFormats = {
-            "CSV": "text/csv",
-            "HTML": "text/html",
-            "EXCEL": "application/vnd.ms-excel",
-            "PDF": "application/pdf",
-            "CUSTOM EXCEL": "application/vnd.ms-excel-custom",
-            "ODS": "application/vnd.oasis.opendocument.spreadsheet"
-        };
-
+    .controller('ReportsController', ['$scope', 'appService', 'reportService', 'FileUploader', 'messagingService', 'spinner', function ($scope, appService, reportService, FileUploader, messagingService, spinner) {
         $scope.uploader = new FileUploader({
             url: Bahmni.Common.Constants.uploadReportTemplateUrl,
             removeAfterUpload: true,
@@ -62,7 +53,7 @@ angular.module('bahmni.reports')
                 messagingService.showMessage("error", "Please select the " + msg.join(" and "));
                 return false;
             }
-            if(report.type == 'concatenated' && report.responseType == availableFormats.CSV) {
+            if(report.type == 'concatenated' && report.responseType == reportService.getMimeTypeForFormat('CSV')) {
                 messagingService.showMessage('error', 'CSV format is not supported for concatenated reports');
                 return false;
             }
@@ -95,11 +86,11 @@ angular.module('bahmni.reports')
 
         var initializeFormats = function(){
 
-            var supportedFormats = appService.getAppDescriptor().getConfigValue("supportedFormats") || _.keys(availableFormats);
+            var supportedFormats = appService.getAppDescriptor().getConfigValue("supportedFormats") || _.keys(reportService.getAvailableFormats());
             supportedFormats = _.map(supportedFormats, function(format){
                 return format.toUpperCase();
             });
-            $scope.formats = _.pick(availableFormats, supportedFormats);
+            $scope.formats = _.pick(reportService.getAvailableFormats(), supportedFormats);
         };
 
         var initialization = function () {

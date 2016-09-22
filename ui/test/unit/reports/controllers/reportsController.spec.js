@@ -1,4 +1,4 @@
-describe("DashboardController", function () {
+describe("ReportsController", function () {
     'use strict';
 
     var scope, controller, reportServiceMock, generateReportPromise, appServiceMock,messagingServiceMock, mockAppDescriptor, spinnerMock,
@@ -37,14 +37,19 @@ describe("DashboardController", function () {
         mockAppDescriptor.getConfigForPage.and.returnValue(typicalReportConfig);
         appServiceMock.getAppDescriptor.and.returnValue(mockAppDescriptor);
 
-        reportServiceMock = jasmine.createSpyObj('reportService', ['generateReport', 'scheduleReport']);
+        reportServiceMock = jasmine.createSpyObj('reportService', ['generateReport', 'scheduleReport', 'getAvailableFormats', 'getMimeTypeForFormat']);
         generateReportPromise = specUtil.createServicePromise('generateReport');
         reportServiceMock.generateReport.and.returnValue(generateReportPromise);
+        reportServiceMock.getAvailableFormats.and.returnValue({
+            "CSV": "text/csv",
+            "HTML": "text/html"
+        });
+
         scope.reportsRequiringDateRange = [];
         scope.reportsNotRequiringDateRange = [];
 
         controller = $controller;
-        controller('DashboardController', {
+        controller('ReportsController', {
             $scope: scope,
             appService: appServiceMock,
             reportService: reportServiceMock,
@@ -62,7 +67,7 @@ describe("DashboardController", function () {
 
     it('should initialise formats based on the supportedFormats config', function(){
         mockAppDescriptor.getConfigValue.and.returnValue(['csv','html']);
-        controller('DashboardController', {
+        controller('ReportsController', {
             $scope: scope,
             appService: appServiceMock,
             reportService: reportServiceMock,
@@ -78,7 +83,7 @@ describe("DashboardController", function () {
     it('should initialise all available formats when supportedFormats config is not specified', function(){
         mockAppDescriptor.getConfigValue.and.returnValue(undefined);
 
-        expect(_.keys(scope.formats).length).toBe(6);
+        expect(_.keys(scope.formats).length).toBe(2);
     });
 
     it('setDefault sets the right defaults based on section', function () {
@@ -257,6 +262,7 @@ describe("DashboardController", function () {
             responseType: 'text/csv'
         };
         scope.reportsRequiringDateRange.push(report);
+        reportServiceMock.getMimeTypeForFormat.and.returnValue('text/csv');
 
         scope.runReport(report);
 

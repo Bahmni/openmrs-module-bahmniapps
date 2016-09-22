@@ -5,6 +5,9 @@
         <title>Reports</title>
         <link rel="stylesheet" href="../lib/jquery/jquery-ui-1.10.4.custom.min.css">
         <link rel="shortcut icon" type="image/x-icon" href="../favicon.ico">
+        <link rel="stylesheet" href="../components/ngDialog/css/ngDialog.min.css"/>
+        <link rel="stylesheet" href="../components/ngDialog/css/ngDialog-theme-default.min.css"/>
+        <link rel="stylesheet" href="../components/ngDialog/css/ngDialog-theme-plain.min.css"/>
         <!-- build:css reports.min.css -->
         <link rel="stylesheet" href="../styles/clinical.css"/>
         <!-- endbuild -->
@@ -13,9 +16,7 @@
         <div ng-app="bahmni.reports" class="bahmni-reports">
             <div ui-view="additional-header"></div>
             <div ng-include src="'../common/ui-helper/messages.html'"></div>
-             <div class="opd-wrapper">
-                <div ui-view="content" class="opd-content-wrapper"></div>
-            </div>
+            <div ui-view="mainContent"></div>
         </div>
         <script src="../components/lodash/dist/lodash.min.js"></script>
         <script src="../components/jquery/jquery.min.js"></script>
@@ -144,8 +145,9 @@
         <script src="init.js"></script>
         <script src="initialization.js"></script>
         <script src="services/reportService.js"></script>
-        <script src="controllers/dashboardController.js"></script>
-        
+        <script src="controllers/reportsController.js"></script>
+        <script src="controllers/myReportsController.js"></script>
+
         <script src="app.js"></script>
 
         <!-- endbuild -->
