@@ -2,7 +2,7 @@
 
 angular.module('bahmni.common.displaycontrol.obsVsObsFlowSheet').directive('obsToObsFlowSheet', ['$translate', 'spinner', 'observationsService', 'conceptSetService', '$q', 'conceptSetUiConfigService',
     function ($translate, spinner, observationsService, conceptSetService, $q, conceptSetUiConfigService) {
-        var link = function ($scope) {
+        var link = function ($scope, element) {
             $scope.config = $scope.isOnDashboard ? $scope.section.dashboardConfig : $scope.section.expandedViewConfig;
             $scope.isEditable = $scope.config.isEditable;
             var patient = $scope.patient;
@@ -122,7 +122,7 @@ angular.module('bahmni.common.displaycontrol.obsVsObsFlowSheet').directive('obsT
                 return $scope.obsTable.rows[0].columns['Month'] != null
             };
 
-            spinner.forPromise(init());
+            spinner.forPromise(init(), element);
         };
         return {
             restrict: 'E',

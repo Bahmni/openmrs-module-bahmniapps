@@ -2,7 +2,7 @@
 
 angular.module('bahmni.common.displaycontrol.chronicTreatmentChart').directive('chronicTreatmentChart', ['$translate','spinner','drugService',
     function ($translate, spinner, DrugService) {
-        var link = function ($scope) {
+        var link = function ($scope, element) {
             $scope.config = $scope.isOnDashboard ? $scope.section.dashboardConfig : $scope.section.expandedViewConfig;
             var patient = $scope.patient;
 
@@ -55,7 +55,7 @@ angular.module('bahmni.common.displaycontrol.chronicTreatmentChart').directive('
                 "enrollment": $scope.enrollment
             };
 
-            spinner.forPromise(init());
+            spinner.forPromise(init(), element);
         };
         return {
             restrict: 'E',
