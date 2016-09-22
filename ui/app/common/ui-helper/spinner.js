@@ -9,7 +9,7 @@ angular.module('bahmni.common.uiHelper')
             var token = Math.random();
             tokens.push(token);
             if(element !== undefined)
-                $(element).prepend('<div class="section-title-loader"><img src="../images/spinner.gif" /></div>');
+                $(element).append('<div class="section-title-loader"><img src="../images/spinner.gif" /></div>');
             return token;
         };
 
