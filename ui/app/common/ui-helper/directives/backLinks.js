@@ -9,8 +9,11 @@ angular.module('bahmni.common.uiHelper')
 					        '<a class="back-btn" ng-class="{\'dashboard-link\':backLink.image}" ng-if="backLink.url" accesskey="{{backLink.accessKey}}" ng-href="{{backLink.url}}" ng-click="closeAllDialogs()" id="{{backLink.id}}"  title="{{backLink.title}}"> ' +
                                 '<img ng-if="backLink.image" ng-src="{{backLink.image}}" onerror="this.onerror=null; this.src=\'../images/blank-user.gif\'"/>' +
                                 '<i ng-if="backLink.icon && !backLink.image" class="fa {{backLink.icon}}"></i></a>' +
-					        '<a class="back-btn" ng-if="backLink.state" accesskey="{{backLink.accessKey}}" ui-sref="{{backLink.state}}" ng-click="closeAllDialogs()" id="{{backLink.id}}">' +
-					        	'<i ng-if="backLink.icon" class="fa {{backLink.icon}}"></i>' +
+					        '<a class="back-btn" ng-if="backLink.state && !backLink.text" accesskey="{{backLink.accessKey}}" ui-sref="{{backLink.state}}" ng-click="closeAllDialogs()" id="{{backLink.id}}">' +
+					        	'<i ng-if="backLink.icon" class="fa {{backLink.icon}}"></i></a>' +
+				'<a ng-if="backLink.text" accesskey="{{backLink.accessKey}}" ui-sref="{{backLink.state}}" id="{{backLink.id}}">' +
+				 '<span>{{backLink.text | translate}}</span>' +
+		'		</a>' +
 					    '</li>' +
 					'</ul>',
 		controller: function ($scope, backlinkService) {

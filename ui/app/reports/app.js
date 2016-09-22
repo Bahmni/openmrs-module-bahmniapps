@@ -16,27 +16,47 @@ angular
         // @endif
         $stateProvider
             .state('dashboard', {
-                url: '/dashboard?appName',
-                views: {
+                url: '/dashboard',
+                abstract: true,
+                views : {
                     'additional-header': {
                         templateUrl: 'views/dashboardHeader.html'
                     },
-                    'content': {
-                        templateUrl: 'views/dashboard.html',
-                        controller: 'DashboardController'
+                    'mainContent' : {
+                        template : '<div class="opd-wrapper">' +
+                        '<div ui-view="content" class="opd-content-wrapper"></div>' +
+                        '</div>'
                     }
                 },
                 data: {
                     backLinks: [
-                        {label: "Home", url: "../home/", accessKey: "h", icon: "fa-home"}
+                        {label: "Home", url: "../home/", accessKey: "h", icon: "fa-home"},
+                        {text: "REPORTS_HEADER_REPORTS", state: "dashboard.reports", accessKey: "d"},
+                        {text: "REPORTS_HEADER_MY_REPORTS", state: "dashboard.myReports", accessKey: "m"}
                     ]
                 },
                 resolve: {
-                    initializeConfig: function(initialization, $stateParams) {
+                    initializeConfig: function (initialization, $stateParams) {
                         return initialization($stateParams.appName);
                     }
                 }
-            });
+            }).state('dashboard.reports', {
+            url: '/reports?appName',
+            views: {
+                'content': {
+                    templateUrl: 'views/reports.html',
+                    controller: 'ReportsController'
+                }
+            }
+        }).state('dashboard.myReports', {
+            url: '/myReports?appName',
+            views: {
+                'content': {
+                    templateUrl: 'views/myReports.html',
+                    controller: 'MyReportsController'
+                }
+            }
+        });
 
             var getAppName = function(){
                 var val = location.hash.indexOf("appName=");
