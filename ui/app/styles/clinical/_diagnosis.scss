@@ -79,11 +79,11 @@
     button:first-child {
       margin-left: 10px;
     }
-    width: 23%;
+    width: 20%;
   }
   .col4 {
     @include column(2);
-    width: 12%;
+    width: 15%;
   }
   .col5 {
     @include column(1);

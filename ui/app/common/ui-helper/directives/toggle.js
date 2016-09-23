@@ -3,6 +3,7 @@
 angular.module('bahmni.common.uiHelper')
     .directive('toggle', function () {
         var link = function ($scope, element) {
+            $(element).addClass('toggle-container');
             $scope.toggle = $scope.toggle === undefined ? false : $scope.toggle;
             $(element).click(function () {
                 $scope.$apply(function () {

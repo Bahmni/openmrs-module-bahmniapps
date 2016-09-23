@@ -20,7 +20,11 @@
                          ng-repeat="diagnosis in consultation.newlyAddedDiagnoses | primaryDiagnosisFirst">
                         <div class="view-past row-click" toggle="diagnosis.showComment">
                             <div class="col col1">
-                                <span class="diagnosis-name" ng-class="{'ruled-out': diagnosis.diagnosisStatus}">{{diagnosis.getDisplayName()}}</span>
+                                <span class="diagnosis-name" ng-class="{
+                                    'strike-text': diagnosis.diagnosisStatus.ruledOut,
+                                    'green-text': diagnosis.diagnosisStatus.cured}">
+                                    {{diagnosis.getDisplayName()}}
+                                </span>
                             </div>
                             <div class="col col2">
                                 <div class="view">
@@ -78,7 +82,11 @@
                          ng-repeat="diagnosis in consultation.savedDiagnosesFromCurrentEncounter | primaryDiagnosisFirst">
                         <div class="view-past row-click">
                             <div class="col col1">
-                                <span class="diagnosis-name" ng-class="{'ruled-out': diagnosis.diagnosisStatus}">{{diagnosis.getDisplayName()}}</span>
+                                <span class="diagnosis-name" ng-class="{
+                                    'strike-text': diagnosis.diagnosisStatus.ruledOut,
+                                    'green-text': diagnosis.diagnosisStatus.cured}">
+                                    {{diagnosis.getDisplayName()}}
+                                </span>
                             </div>
                             <div class="col col2">
                                 <div class="view">
@@ -135,7 +143,12 @@
                          ng-repeat="diagnosis in editedDiagnosesFromPastEncounters | primaryDiagnosisFirst">
                         <div class="view-past row-click" toggle="diagnosis.showComment">
                             <div class="col col1">
-                                <span class="diagnosis-name" ng-class="{'ruled-out': diagnosis.diagnosisStatus}">{{diagnosis.getDisplayName()}}</span>
+                                <span class="diagnosis-name" ng-class="{
+                                    'strike-text': diagnosis.diagnosisStatus.ruledOut,
+                                    'green-text': diagnosis.diagnosisStatus.cured}">
+                                    {{diagnosis.getDisplayName()}}
+                                </span>
+
                             </div>
                             <div class="col col2">
                                 <div class="view">
