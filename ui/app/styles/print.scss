@@ -140,10 +140,6 @@ h3 {
 /** Print Style for dashboard **/
 
 .print-wrapper {
-    .patient-monitering-schedule-details li span{
-        font-family: Arial, sans-serif;
-        font-weight: bold;
-    }
     font-family: Arial, sans-serif;
     font-size: 9pt;
     padding: 10px 20px 0;
@@ -677,6 +673,99 @@ h3 {
             width: 100% !important;
         }
     }
+
+    //Patient Monitoring Print Styles
+    .patient-monitering-schedule-details li{
+        width:auto;
+        padding-right:10px;
+        span{
+            font-family: Arial, sans-serif;
+            font-weight:bold;
+        }
+    }
+    .patient-monitering-table {
+        height: 970px;
+        page-break-before: always;
+        page-break-after: always;
+        position: relative;
+        .rotate{
+            transform: rotate(-90deg);
+            position: absolute;
+            margin-top: -440px;
+            bottom: 0px;
+            width: 880px;
+            top: 50%;
+            left: 50%;
+            margin-left: -310px;
+        }
+        .legends {
+            font-family: Arial, sans-serif;
+            span {
+                padding-bottom: 11px;
+                display: inline-block;
+                &.monitoring-legends{
+                    &--grey:before{
+                       content: "∅";
+                    }
+                    &--green:before{
+                        content: "✓";
+                    }
+                    &--purple:before {
+                        content: "✗";
+                    }
+                }
+            }
+        }
+
+        .monitoring-table-scroll {
+           width: 100%;
+           margin-left:0;
+           overflow: hidden;
+           table tr {
+               td,th{
+                   &.monitoring-fixed-column{
+                       position:static;
+                       width:auto;
+                   }
+                   &.monitoring-results {
+                       position: relative;
+                       &:before{
+                           content:"";
+                           position: absolute;
+                           top: 10px;
+                           left: 9px;
+                           font-size: 15px;
+                           font-weight: bolder;
+                       }
+                       &--green {
+                           &:before{
+                               content:"✓";
+                           }
+                       }
+                       &--purple {
+                           &:before{
+                               content: "✗";
+                           }
+                       }
+                       &--grey{
+                           &:before{
+                               content:"∅";
+                           }
+                       }
+                   }
+                   &.monitoring-resultsCurrent{
+                       background: #9a9a9a !important;
+                       color: #fff;
+                   }
+                   &.monitoring-resultsStop{
+                       background: #5a5959 !important;
+                       color: #fff;
+                   }
+               }
+           }
+        }
+
+    }
 }
 
 .prescription-print {
@@ -892,7 +981,7 @@ h3 {
                     vertical-align: middle;
                 }
                 td{
-                    background: #fff !important;
+                    background: #fff;
                     border: 1px $lightGray solid !important;
                 }
 
@@ -906,6 +995,9 @@ h3 {
             }
         }
 
+    }
+    .dashboard-chronic-treatment-section .chronic-treatment .stopped{
+        background: #fff !important;
     }
     .dashboard-sections-wrapper .dashboard-sections.three-fourth-page-container .LAYOUT_25_75{
         width:auto;
