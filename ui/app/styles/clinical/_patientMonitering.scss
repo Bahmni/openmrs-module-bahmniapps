@@ -26,9 +26,9 @@
     width:auto;
     float: right;
     border: 1px solid $darkerGrey;
+    font-family: $OpenSansFont;
     span{
       padding:0 5px;
-      font-family: $OpenSansFont;
       font-size: 12px;
       &.monitoring-legends{
         padding-left: 25px;
@@ -41,6 +41,8 @@
           background: #9a9a9a;
           left: 5px;
           top: 1px;
+          padding: 1px 3px;
+          box-sizing: border-box;
         }
         &--stop:before{
           background: #5a5959;
@@ -108,7 +110,7 @@
         }
         td,th {
           &.monitoring-results {
-            background: #dedede;
+            background: #efefef;
             &--green {
               background: #9ed016;
             }
@@ -131,16 +133,16 @@
               background: #9a9a9a;
             }
             &--yellowStop{
-              background: #e0da0d !important;
+              background: #c4c45c url(../images/dark-texture.png)!important;
             }
             &--purpleStop{
-              background:#b30bfb  !important;
+              background:#6b3b80 url(../images/light-texture.png)!important;
             }
             &--greenStop{
-              background:#c3f341  !important;
+              background:#7ca310 url(../images/light-texture.png)!important;
             }
             &--greyStop{
-              background: #5f5c5c !important;
+              background: #c4c4c4 url(../images/dark-texture.png)!important;
             }
           }
           &.monitoring-resultsCurrent{
@@ -148,7 +150,7 @@
             color: #fff;
           }
           &.monitoring-resultsStop{
-            background: #5a5959 !important;
+            background: #b26751 url(../images/light-texture.png)!important;
             color: #fff;
           }
         }
