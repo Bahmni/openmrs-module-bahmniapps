@@ -33,7 +33,7 @@
     var getId = function (section, $filter) {
         if (section.type !== "custom") {
             var key = section.translationKey || section.title;
-            return !_.isUndefined($filter) && !key ? $filter('titleTranslate')(key).toValidId() : key;
+            return !_.isUndefined($filter) && key ? $filter('titleTranslate')(key).toValidId() : key;
         }
     };
 
