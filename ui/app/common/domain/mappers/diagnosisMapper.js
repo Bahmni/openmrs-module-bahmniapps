@@ -1,9 +1,6 @@
 'use strict';
 
 Bahmni.DiagnosisMapper = function (diagnosisStatus) {
-
-    var self = this;
-
     var mapDiagnosis = function (diagnosis) {
         if (!diagnosis.codedAnswer) {
             diagnosis.codedAnswer = {
@@ -20,45 +17,36 @@ Bahmni.DiagnosisMapper = function (diagnosisStatus) {
         }
 
         if (diagnosis.diagnosisStatusConcept) {
-            if (Bahmni.Common.Constants.ruledOutdiagnosisStatus === diagnosis.diagnosisStatusConcept.name) {
-                mappedDiagnosis.diagnosisStatus = diagnosisStatus;
-            }
+            mappedDiagnosis.diagnosisStatus = _.find(diagnosisStatus,function(status){
+                return status.concept.name === diagnosis.diagnosisStatusConcept.name;
+            });
         }
         return mappedDiagnosis;
     };
 
-    self.mapDiagnosis = mapDiagnosis;
+    var mapDiagnoses = _.partial(_.map,_,mapDiagnosis);
 
-    self.mapDiagnoses = function (diagnoses) {
-        var mappedDiagnoses = [];
-        _.each(diagnoses, function(diagnosis) {
-            mappedDiagnoses.push(mapDiagnosis(diagnosis));
-        });
-        return mappedDiagnoses;
-    };
+    return {
+        mapDiagnosis:mapDiagnosis,
+        mapDiagnoses:mapDiagnoses
+    }
+};
 
-    self.mapPastDiagnosis = function (diagnoses, currentEncounterUuid) {
-        var pastDiagnosesResponse = [];
-        diagnoses.forEach(function (diagnosis) {
-            if (diagnosis.encounterUuid !== currentEncounterUuid) {
-                diagnosis.previousObs = diagnosis.existingObs;
-                diagnosis.existingObs = null;
-                diagnosis.inCurrentEncounter = undefined;
-                pastDiagnosesResponse.push(diagnosis);
-            }
-        });
-        return pastDiagnosesResponse;
-    };
-
-    self.mapSavedDiagnosesFromCurrentEncounter = function (diagnoses, currentEncounterUuid) {
-        var savedDiagnosesFromCurrentEncounter = [];
-        diagnoses.forEach(function (diagnosis) {
-            if (diagnosis.encounterUuid === currentEncounterUuid) {
-                diagnosis.inCurrentEncounter = true;
-                savedDiagnosesFromCurrentEncounter.push(diagnosis);
-            }
-        });
-        return savedDiagnosesFromCurrentEncounter;
-    };
-
+Bahmni.DiagnosisMapper.update = {
+    pastDiagnoses: function(pastDiagnosis){
+        pastDiagnosis.previousObs = pastDiagnosis.existingObs;
+        pastDiagnosis.existingObs = null;
+        pastDiagnosis.inCurrentEncounter = undefined;
+        return pastDiagnosis;
+    },
+    savedDiagnosesFromCurrentEncounter : function(currentEncounterDiagnosis){
+        currentEncounterDiagnosis.inCurrentEncounter = true;
+        return currentEncounterDiagnosis;
+    },
+    activeDiagnoses:function(pastDiagnosis){
+        pastDiagnosis.previousObs = pastDiagnosis.existingObs;
+        pastDiagnosis.existingObs = null;
+        pastDiagnosis.inCurrentEncounter = undefined;
+        return pastDiagnosis;
+    }
 };

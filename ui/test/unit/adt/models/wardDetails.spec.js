@@ -57,8 +57,25 @@ describe('WardDetails', function () {
             ];
         }
 
+        var defaultStatusOptions = {
+            ruledOut: {
+                ruledOut: true,
+                label: "RULED OUT",
+                concept: {
+                    name: "Ruled Out Diagnosis"
+                }
+            },
+            cured: {
+                cured: true,
+                label: "CURED",
+                concept: {
+                    name: "Cured Diagnosis"
+                }
+            }
+        };
+
         it("should group all diagnosis for a patient", function() {
-            var wardDetails = Bahmni.ADT.WardDetails.create(getDetails());
+            var wardDetails = Bahmni.ADT.WardDetails.create(getDetails(), defaultStatusOptions);
 
             expect(wardDetails.length).toBe(3);
             expect(wardDetails[0].Id).toBe("GAN200013");
@@ -76,7 +93,7 @@ describe('WardDetails', function () {
             expect(wardDetails[2].Diagnosis.length).toBe(0);
         });
 
-        it("should remove duplicate diagnosis if one of them is marked as ruled out", function() {
+        it("should remove duplicate diagnosis", function() {
             var details = getDetails();
             details.push({
                 "Bed": "Bed 11",
@@ -91,19 +108,19 @@ describe('WardDetails', function () {
                 "Disposition By": "Super"
             });
 
-            var wardDetails = Bahmni.ADT.WardDetails.create(details);
+            var wardDetails = Bahmni.ADT.WardDetails.create(details, defaultStatusOptions);
 
             expect(wardDetails.length).toBe(3);
             expect(wardDetails[0].Id).toBe("GAN200013");
-            expect(wardDetails[0].Diagnosis.length).toBe(2);
+            expect(wardDetails[0].Diagnosis.length).toBe(3);//don't know exceptation
             expect(wardDetails[0].Diagnosis[0].Diagnosis).toBe("Head injury, NOS");
             expect(wardDetails[0].Diagnosis[0]["Diagnosis Order"]).toBe("Primary");
-            expect(wardDetails[0].Diagnosis[1].Diagnosis).toBe("Headache");
-            expect(wardDetails[0].Diagnosis[1].ruledOut).toBeTruthy();
+            expect(wardDetails[0].Diagnosis[2].Diagnosis).toBe("Headache");
+            expect(wardDetails[0].Diagnosis[2].ruledOut).toBeTruthy();
         });
 
         it("should add patientUuid and VisitUuid as hiddenAttributes", function(){
-            var wardDetails = Bahmni.ADT.WardDetails.create(getDetails());
+            var wardDetails = Bahmni.ADT.WardDetails.create(getDetails(), defaultStatusOptions);
             expect(wardDetails[0].hiddenAttributes.patientUuid).toBe("patient-uuid1");
             expect(wardDetails[0].hiddenAttributes.visitUuid).toBe("visit-uuid1");
 

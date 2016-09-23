@@ -18,10 +18,15 @@ Bahmni.ADT.WardDetails.create = function(details, diagnosisStatus) {
 
     var removeDuplicateRuledOutDiagnosis = function(rows) {
         rows.forEach(function(row){
-            var ruledOutDiagnoses = _.map(_.filter(row.Diagnosis, {'ruledOut': true}), 'Diagnosis');
-            _.remove(row.Diagnosis, function(diagnosisObj) {
-                return _.includes(ruledOutDiagnoses, diagnosisObj.Diagnosis) && !diagnosisObj.ruledOut
-            });
+            row.Diagnosis = _.reduce(row.Diagnosis,function(selected,diagnosis){
+                var status = _.find(selected,function(dgns){
+                   return _.isEqual(dgns.Diagnosis,diagnosis.Diagnosis) && _.isEqual(dgns.diagnosisStatus, diagnosis.diagnosisStatus);
+                });
+                if(!status){
+                    selected.push(diagnosis);
+                }
+                return selected;
+            },[]);
         });
         return rows;
     };
@@ -31,9 +36,13 @@ Bahmni.ADT.WardDetails.create = function(details, diagnosisStatus) {
         detailsMap[detail.Id].Diagnosis = detailsMap[detail.Id].Diagnosis || [];
         if(detail.Diagnosis !== undefined) {
             var diagnosis = copyProperties({}, detail, diagnosisProperties);
-            diagnosis.ruledOut = diagnosis["Diagnosis Status"] === "Ruled Out Diagnosis";
-            if(diagnosis.ruledOut) {
-                diagnosis.diagnosisStatus = diagnosisStatus;
+            if(diagnosis["Diagnosis Status"] === diagnosisStatus.ruledOut.concept.name) {
+                diagnosis.ruledOut = true;
+                diagnosis.diagnosisStatus = diagnosisStatus.ruledOut;
+            }
+            if(diagnosis["Diagnosis Status"] === diagnosisStatus.cured.concept.name){
+                diagnosis.cured = true;
+                diagnosis.diagnosisStatus = diagnosisStatus.cured;
             }
             detailsMap[detail.Id].Diagnosis.push(diagnosis);
         }
