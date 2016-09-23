@@ -188,12 +188,12 @@ category:  Layout - sections
 .dashboard-sections-wrapper {
   @include clearfix();
   .dashboard-sections {
+    @include clearfix;
     margin: 0;
     box-sizing: border-box;
     float: left;
     width: 100%;
     padding: 0;
-    @include clearfix;
     &.halfpage-container{
       width: 50%;
       .LAYOUT_25_75{
@@ -1102,5 +1102,14 @@ table.treatments-details-table{
       width:50%;
     }
   }
+}
+
+.dashboard-section-loader{
+  position: absolute;
+  bottom:0;
+  width:100%;
+  height: 100%;
+  z-index:9999;
+  background: rgba(0,0,0,0.6) url('../images/spinner-small.gif') no-repeat center center;
 }
 
