@@ -64,13 +64,14 @@ angular.module('bahmni.clinical')
                     });
             };
 
-            spinner.forPromise(init(),".dashboard-treatment-section");
+            spinner.forPromise(init(), "#" + $scope.sectionId);
         };
         return {
             restrict: 'E',
             controller: controller,
             scope: {
                 params: "=",
+                sectionId: "=",
                 visitSummary: "=?"
             },
             templateUrl: "displaycontrols/treatmentData/views/treatmentData.html"
