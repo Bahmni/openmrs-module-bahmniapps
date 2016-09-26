@@ -9,7 +9,7 @@ angular.module('bahmni.common.displaycontrol.admissiondetails')
             $scope.toggle= function(element){
                 element.show = !element.show;
             };
-            spinner.forPromise(init($scope), "#admissionDetails");
+            spinner.forPromise(init($scope), "#" + $scope.params.id);
         };
         var isReady = function ($scope) {
             return !_.isUndefined($scope.patientUuid) && !_.isUndefined($scope.visitSummary);
