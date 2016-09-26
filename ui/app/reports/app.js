@@ -6,7 +6,8 @@ angular
         function ($urlRouterProvider, $stateProvider, $httpProvider, $bahmniTranslateProvider , $compileProvider) {
         $httpProvider.defaults.headers.common['Disable-WWW-Authenticate'] = true;
 
-        $urlRouterProvider.otherwise('/dashboard');
+        $urlRouterProvider.otherwise('/dashboard/reports');
+        $urlRouterProvider.when('/dashboard', '/dashboard/reports');
         // @if DEBUG='production'
         $compileProvider.debugInfoEnabled(false);
         // @endif
