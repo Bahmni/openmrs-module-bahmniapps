@@ -46,7 +46,7 @@ angular.module('bahmni.common.displaycontrol.drugOrderDetails')
                 return _.flatten(sortedDrugOrders);
             };
 
-            spinner.forPromise(init());
+            spinner.forPromise(init(), "#" + $scope.section.id);
         };
         return {
             restrict: 'E',
