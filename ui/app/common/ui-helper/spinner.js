@@ -5,7 +5,8 @@ angular.module('bahmni.common.uiHelper')
 
         var showSpinnerForElement = function (element) {
             $('#overlay').hide();
-            $(element).append('<div class="dashboard-section-loader"></div>');
+            if($(element).find(".dashboard-section-loader").length === 0)
+                $(element).append('<div class="dashboard-section-loader"></div>');
             return element;
         };
 
