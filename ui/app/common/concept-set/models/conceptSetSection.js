@@ -23,6 +23,7 @@ Bahmni.ConceptSet.ConceptSetSection = function (extensions, user, config, observ
         self.uuid = conceptSet.uuid;
         self.alwaysShow = user.isFavouriteObsTemplate(self.conceptName);
         self.allowAddMore = config.allowAddMore;
+        self.id = "concept-set-" + conceptSet.uuid;
     };
 
     var getShowIfFunction = function () {
