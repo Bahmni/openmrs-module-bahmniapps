@@ -1,7 +1,7 @@
 "use strict";
 
 angular.module('bahmni.common.displaycontrol.navigationlinks')
-    .directive('navigationLinks', ['$state', 'appService', function ($state, appService) {
+    .directive('navigationLinks', ['$state', 'appService', 'spinner', '$q', function ($state, appService, spinner, $q) {
         var controller = function ($scope) {
             if ((!$scope.params.showLinks && !$scope.params.customLinks) ||
                 ($scope.params.showLinks && $scope.params.customLinks &&
@@ -43,6 +43,8 @@ angular.module('bahmni.common.displaycontrol.navigationlinks')
 
             ];
 
+            var defer = $q.defer();
+
             var filterLinks = function(links, showLinks){
                 var linksSpecifiedInShowLinks = function () {
                     return _.filter(links, function (link) {
@@ -75,6 +77,7 @@ angular.module('bahmni.common.displaycontrol.navigationlinks')
                         return false;
                     }
                 }
+                defer.resolve();
                 return true;
             };
 
@@ -93,6 +96,12 @@ angular.module('bahmni.common.displaycontrol.navigationlinks')
                 }
                 return params;
             };
+
+            var init = function() {
+                return defer.promise;
+            };
+
+            spinner.forPromise(init(), "#" + $scope.params.id);
 
         };
 

@@ -60,7 +60,8 @@ angular.module('bahmni.common.displaycontrol.forms')
 
                 };
 
-                spinner.forPromise(init());
+                var id = "#" + $scope.section.id;
+                spinner.forPromise(init(), id);
 
                 $scope.getEditObsData = function (observation) {
                     return {
