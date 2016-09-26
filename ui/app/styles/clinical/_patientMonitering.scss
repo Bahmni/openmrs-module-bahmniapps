@@ -44,9 +44,6 @@
           padding: 1px 3px;
           box-sizing: border-box;
         }
-        &--stop:before{
-          background:#b26751 url(../images/light-texture.png);
-        }
         &--yellow:before{
           background: #f0f078;
         }
@@ -55,6 +52,9 @@
         }
         &--purple:before{
           background: #9551b2;
+        }
+        &--stop:before{
+          background:url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAgAAAAICAYAAADED76LAAAAOElEQVQoU2PclBH4nwEH8JuxnpERlwKQJEgOqwKYJMhgDAXIkhgK0CVRFGCThCvAJQlWACLweRUAlpUs7330CvMAAAAASUVORK5CYII=) repeat !important;
         }
       }
 
@@ -133,16 +133,20 @@
               background: #9a9a9a;
             }
             &--yellowStop{
-              background: #c4c45c url(../images/dark-texture.png)!important;
+              background:url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAgAAAAICAYAAADED76LAAAAPUlEQVQoU2M8ciTmPwMO0Nz0moERlwKQZG2dKHYFMEmQwRgmIEtiKECXRFGATRKuAJckWIG7m/t/kGtxAQAp2CsR0sWrOwAAAABJRU5ErkJggg==) repeat !important;
+              color: #fff;
             }
             &--purpleStop{
-              background:#6b3b80 url(../images/light-texture.png)!important;
+              background:url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAgAAAAICAYAAADED76LAAAAOElEQVQoU2PMtm74z4ADTD3awMiISwFIEiSHVQFMEmQwhgJkSQwF6JIoCrBJwhXgkgQrABH4vAoAngYrDAH5sToAAAAASUVORK5CYII=) repeat !important;
+              color: #fff;
             }
             &--greenStop{
-              background:#7ca310 url(../images/light-texture.png)!important;
+              background:url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAgAAAAICAYAAADED76LAAAAOElEQVQoU2OsWSzwnwEHaIn9wMiISwFIEiSHVQFMEmQwhgJkSQwF6JIoCrBJwhXgkgQrABH4vAoAwYsrS3K3BQIAAAAASUVORK5CYII=) repeat !important;
+              color: #fff;
             }
             &--greyStop{
-              background: #c4c4c4 url(../images/dark-texture.png)!important;
+              background:url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAgAAAAICAYAAADED76LAAAAPUlEQVQoU2M8cuTIfwYcoLmpmYERlwKQZG1dLXYFMEmQwRgmIEtiKECXRFGATRKuAJckWIG7m/t/kGtxAQCYvy3pTwtVHgAAAABJRU5ErkJggg==) repeat !important;
+              color: #fff;
             }
           }
           &.monitoring-resultsCurrent{
@@ -150,7 +154,7 @@
             color: #fff;
           }
           &.monitoring-resultsStop{
-            background: #b26751 url(../images/light-texture.png)!important;
+            background:url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAgAAAAICAYAAADED76LAAAAOElEQVQoU2PclBH4nwEH8JuxnpERlwKQJEgOqwKYJMhgDAXIkhgK0CVRFGCThCvAJQlWACLweRUAlpUs7330CvMAAAAASUVORK5CYII=) repeat !important;
             color: #fff;
           }
         }
