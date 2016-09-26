@@ -2,46 +2,36 @@
 
 angular.module('bahmni.common.uiHelper')
     .factory('spinner', ['messagingService', function (messagingService) {
-        var tokens = [];
-        var overlayTokens = [];
 
-        var showSpinnerForElement = function (token, element) {
+        var showSpinnerForElement = function (element) {
             $('#overlay').hide();
-            tokens.push(token);
             $(element).append('<div class="dashboard-section-loader"></div>');
-            return token;
+            return element;
         };
 
-        var showSpinnerForOverlay = function (token) {
-            overlayTokens.push(token);
+        var showSpinnerForOverlay = function () {
             $('body').prepend('<div id="overlay"><div></div></div>');
             $('#overlay').stop().show();
-            return token;
+            return "body";
         };
 
         var show = function (element) {
             messagingService.hideMessages("error");
-            var token = Math.random();
             if (element !== undefined)
-                return showSpinnerForElement(token, element);
+                return showSpinnerForElement(element);
 
             if ($('#overlay').length == 0)
-                return showSpinnerForOverlay(token);
+                return showSpinnerForOverlay();
         };
 
-        var hide = function (token) {
-            _.pull(tokens, token);
-            _.pull(overlayTokens, token);
-            if (tokens.length === 0) {
-                $('.dashboard-section-loader').fadeOut(300);
-            }
-            if (overlayTokens.length === 0) {
-                $('#overlay').fadeOut(300);
-            }
+        var hide = function (reference) {
+            var element = $(reference);
+            var domElement = element.find(".dashboard-section-loader");
+            _.isEmpty(domElement) ? element.find("#overlay").hide() : domElement.hide();
         };
 
         var forPromise = function (promise, element) {
-            var token = show(element);
+            var token = show(element); //Don't inline this element
             promise['finally'](function () {
                 hide(token);
             });
