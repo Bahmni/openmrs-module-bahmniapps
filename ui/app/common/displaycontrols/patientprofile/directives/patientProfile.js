@@ -83,7 +83,8 @@
                     initPromise.then(onDirectiveReady);
                     initPromise.then(setHasBeenAdmittedOnVisitUuidChange);
                     initPromise.then(setDirectiveAsReady);
-                    spinner.forPromise(initPromise);
+                    var id = "#" + $scope.config.id;
+                    spinner.forPromise(initPromise, id);
                 };
                 return {
                     restrict: 'E',
