@@ -69,6 +69,7 @@ angular.module('bahmni.common.uicontrols.programmanagment')
                 $scope.patientProgramAttributes = {};
                 $scope.programEnrollmentDate = null;
                 updateActiveProgramsList();
+                $scope.patientProgram.editing = false;
             };
 
             var failureCallback = function (error) {
@@ -181,6 +182,7 @@ angular.module('bahmni.common.uicontrols.programmanagment')
             };
 
             $scope.updatePatientProgram = function (patientProgram){
+                $scope.patientProgram = patientProgram;
                 var activeState = getActiveState(patientProgram.states);
                 var activeStateDate = activeState ? DateUtil.parse(activeState.startDate) : null;
                 var dateCompleted = null;
@@ -213,7 +215,6 @@ angular.module('bahmni.common.uicontrols.programmanagment')
                     programService.updatePatientProgram(patientProgram, $scope.programAttributeTypes, dateCompleted)
                         .then(successCallback, failureCallback)
                 );
-                patientProgram.editing = false;
             };
 
             var voidPatientProgram = function (patientProgram,closeConfirmBox) {
