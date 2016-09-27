@@ -1,7 +1,7 @@
 describe("ReportsController", function () {
     'use strict';
 
-    var scope, controller, reportServiceMock, generateReportPromise, appServiceMock,messagingServiceMock, mockAppDescriptor, spinnerMock,
+    var scope, controller, reportServiceMock, scheduleReportPromise, appServiceMock,messagingServiceMock, mockAppDescriptor, spinnerMock,
         typicalReportConfig = {
             "1": {
                 "name": "Report with config that has dateRangeRequired=true",
@@ -25,11 +25,17 @@ describe("ReportsController", function () {
         };
     beforeEach(module('bahmni.reports'));
 
-    beforeEach(inject(function ($controller, $rootScope, $q) {
+    beforeEach(inject(function ($controller, $rootScope) {
         scope = $rootScope.$new();
 
         messagingServiceMock = jasmine.createSpyObj('messagingService', ['showMessage']);
         spinnerMock = jasmine.createSpyObj('spinner', ['forPromise']);
+        var promise = {
+            then: function (a) {
+                a();
+            }
+        };
+        spinnerMock.forPromise.and.returnValue(promise);
 
         mockAppDescriptor = jasmine.createSpyObj('appDescriptor', ['getConfigForPage', 'getConfigValue']);
         appServiceMock= jasmine.createSpyObj('appService', ['getAppDescriptor']);
@@ -37,9 +43,9 @@ describe("ReportsController", function () {
         mockAppDescriptor.getConfigForPage.and.returnValue(typicalReportConfig);
         appServiceMock.getAppDescriptor.and.returnValue(mockAppDescriptor);
 
-        reportServiceMock = jasmine.createSpyObj('reportService', ['generateReport', 'scheduleReport', 'getAvailableFormats', 'getMimeTypeForFormat']);
-        generateReportPromise = specUtil.createServicePromise('generateReport');
-        reportServiceMock.generateReport.and.returnValue(generateReportPromise);
+        reportServiceMock = jasmine.createSpyObj('reportService', ['scheduleReport', 'getAvailableFormats', 'getMimeTypeForFormat']);
+        scheduleReportPromise = specUtil.createServicePromise('scheduleReport');
+        reportServiceMock.scheduleReport.and.returnValue(scheduleReportPromise);
         reportServiceMock.getAvailableFormats.and.returnValue({
             "CSV": "text/csv",
             "HTML": "text/html"
@@ -98,7 +104,7 @@ describe("ReportsController", function () {
     });
 
     it("converts dates to string format before sending to reportService", function () {
-        scope.runReport({
+        scope.scheduleReport({
             config: {},
             name: "Vitals",
             startDate: new Date(2014, 1, 1),
@@ -106,7 +112,7 @@ describe("ReportsController", function () {
             responseType: 'text/html'
         });
 
-        expect(reportServiceMock.generateReport).toHaveBeenCalledWith({
+        expect(reportServiceMock.scheduleReport).toHaveBeenCalledWith({
             config: {},
             name: "Vitals",
             startDate: '2014-02-01',
@@ -123,9 +129,9 @@ describe("ReportsController", function () {
         };
         scope.reportsNotRequiringDateRange.push(report);
 
-        scope.runReport(report);
+        scope.scheduleReport(report);
 
-        expect(reportServiceMock.generateReport).toHaveBeenCalledWith({
+        expect(reportServiceMock.scheduleReport).toHaveBeenCalledWith({
             config: {},
             name: "Vitals",
             startDate: null,
@@ -144,10 +150,10 @@ describe("ReportsController", function () {
         };
         scope.reportsRequiringDateRange.push(report);
 
-        scope.runReport(report);
+        scope.scheduleReport(report);
 
         expect(messagingServiceMock.showMessage).toHaveBeenCalledWith("error", "Please select the start date and end date");
-        expect(reportServiceMock.generateReport).not.toHaveBeenCalled();
+        expect(reportServiceMock.scheduleReport).not.toHaveBeenCalled();
     });
 
     it("show an error message when report which requires date range is initialized without start date", function () {
@@ -160,10 +166,10 @@ describe("ReportsController", function () {
         };
         scope.reportsRequiringDateRange.push(report);
 
-        scope.runReport(report);
+        scope.scheduleReport(report);
 
         expect(messagingServiceMock.showMessage).toHaveBeenCalledWith("error", "Please select the start date");
-        expect(reportServiceMock.generateReport).not.toHaveBeenCalled();
+        expect(reportServiceMock.scheduleReport).not.toHaveBeenCalled();
     });
 
     it("show an error message when report which requires date range is initialized without end date", function () {
@@ -176,10 +182,10 @@ describe("ReportsController", function () {
         };
         scope.reportsRequiringDateRange.push(report);
 
-        scope.runReport(report);
+        scope.scheduleReport(report);
 
         expect(messagingServiceMock.showMessage).toHaveBeenCalledWith("error", "Please select the end date");
-        expect(reportServiceMock.generateReport).not.toHaveBeenCalled();
+        expect(reportServiceMock.scheduleReport).not.toHaveBeenCalled();
     });
 
     it("show an error message when format is not selected", function () {
@@ -191,10 +197,10 @@ describe("ReportsController", function () {
         };
         scope.reportsRequiringDateRange.push(report);
 
-        scope.runReport(report);
+        scope.scheduleReport(report);
 
         expect(messagingServiceMock.showMessage).toHaveBeenCalledWith("error", "Select format for the report: Vitals");
-        expect(reportServiceMock.generateReport).not.toHaveBeenCalled();
+        expect(reportServiceMock.scheduleReport).not.toHaveBeenCalled();
     });
 
     it("should not generate report when macro template is not selected for custom excel", function(){
@@ -208,10 +214,10 @@ describe("ReportsController", function () {
         };
         scope.reportsRequiringDateRange.push(report);
 
-        scope.runReport(report);
+        scope.scheduleReport(report);
 
         expect(messagingServiceMock.showMessage).toHaveBeenCalledWith("error", "Workbook template should be selected for generating report: Vitals");
-        expect(reportServiceMock.generateReport).not.toHaveBeenCalled();
+        expect(reportServiceMock.scheduleReport).not.toHaveBeenCalled();
     });
 
     it("should reset report template after generating custom excel", function(){
@@ -225,9 +231,9 @@ describe("ReportsController", function () {
         };
         scope.reportsRequiringDateRange.push(report);
 
-        scope.runReport(report);
+        scope.scheduleReport(report);
 
-        expect(reportServiceMock.generateReport).toHaveBeenCalled();
+        expect(reportServiceMock.scheduleReport).toHaveBeenCalled();
         expect(report.reportTemplateLocation).toBeUndefined();
     });
 
@@ -242,13 +248,13 @@ describe("ReportsController", function () {
             responseType: 'application/vnd.ms-excel-custom',
         };
         scope.reportsRequiringDateRange.push(report);
-        reportServiceMock.generateReport.and.callFake(function(reportSent) {
+        reportServiceMock.scheduleReport.and.callFake(function(reportSent) {
             expect(reportSent.reportTemplateLocation).toBe(report.config.macroTemplatePath);
         });
 
-        scope.runReport(report);
+        scope.scheduleReport(report);
 
-        expect(reportServiceMock.generateReport).toHaveBeenCalled();
+        expect(reportServiceMock.scheduleReport).toHaveBeenCalled();
         expect(report.reportTemplateLocation).toBeUndefined();
     });
 
@@ -264,10 +270,10 @@ describe("ReportsController", function () {
         scope.reportsRequiringDateRange.push(report);
         reportServiceMock.getMimeTypeForFormat.and.returnValue('text/csv');
 
-        scope.runReport(report);
+        scope.scheduleReport(report);
 
         expect(messagingServiceMock.showMessage).toHaveBeenCalledWith('error', 'CSV format is not supported for concatenated reports');
-        expect(reportServiceMock.generateReport).not.toHaveBeenCalled();
+        expect(reportServiceMock.scheduleReport).not.toHaveBeenCalled();
     });
 
     it("should call scheduleReports if report is scheduled and succeeds", function () {
