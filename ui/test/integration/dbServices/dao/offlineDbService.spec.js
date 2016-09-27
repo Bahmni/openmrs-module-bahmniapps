@@ -859,4 +859,35 @@ describe('OfflineDbService ', function () {
             });
         });
     });
+
+
+
+    describe("labOrderResultsDbService", function () {
+        it("should call getLabOrderResultsForPatient with db reference", function (done) {
+            var schemaBuilder = lf.schema.create('BahmniOfflineDb', 1);
+            schemaBuilder.connect().then(function (db) {
+                offlineDbService.init(db);
+
+                offlineDbService.getLabOrderResultsForPatient("patientUuid");
+                expect(labOrderResultsDbService.getLabOrderResultsForPatient.calls.count()).toBe(1);
+                expect(labOrderResultsDbService.getLabOrderResultsForPatient).toHaveBeenCalledWith(db,"patientUuid");
+                done();
+            });
+        });
+    });
+
+
+    describe("labOrderResultsDbService", function () {
+        it("should call insertLabOrderResults with db reference", function (done) {
+            var schemaBuilder = lf.schema.create('BahmniOfflineDb', 1);
+            schemaBuilder.connect().then(function (db) {
+                offlineDbService.init(db);
+
+                offlineDbService.insertLabOrderResults("patientUuid" , {results:[]});
+                expect(labOrderResultsDbService.insertLabOrderResults.calls.count()).toBe(1);
+                expect(labOrderResultsDbService.insertLabOrderResults).toHaveBeenCalledWith(db, "patientUuid", {results:[]});
+                done();
+            });
+        });
+    });
 });

@@ -101,7 +101,8 @@ module.exports = function (config) {
             'app/common/util/androidDateTimeFormatter.js',
             "test/unit/common/util/androidDateTimeFormatter.spec.js",
             'test/unit/registration/controllers/*.js',
-            'test/unit/**/offline/android/*.js'
+            'test/unit/**/offline/android/*.js',
+            'test/unit/clinical/offline/androidLabOrderResultsService.spec.js'
         ],
         reporters: ['junit', 'progress', 'coverage'],
         preprocessors: {
