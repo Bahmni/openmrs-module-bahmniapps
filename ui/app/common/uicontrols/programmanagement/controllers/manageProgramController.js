@@ -228,6 +228,12 @@ angular.module('bahmni.common.uicontrols.programmanagment')
             };
 
             $scope.toggleEdit = function (program) {
+                $scope.tempProgram = angular.copy(program);
+                program.editing = !program.editing;
+            };
+
+            $scope.cancelChange = function (program) {
+                program.patientProgramAttributes = $scope.tempProgram.patientProgramAttributes;
                 program.editing = !program.editing;
             };
 
