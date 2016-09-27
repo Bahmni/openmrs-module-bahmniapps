@@ -101,16 +101,6 @@ angular.module('bahmni.common.domain')
             return config ? config.showProgramStateInTimeline : false;
         };
 
-        var isBahmniPatientProgramPresentForProgramAttributeNameAndValue = function(patientProgramAttributeName, patientProgramAttributeValue) {
-            var params = {
-                conceptName: patientProgramAttributeName,
-                conceptValue: patientProgramAttributeValue
-            };
-            return $http.get(Bahmni.Common.Constants.patientProgramUrl, {params: params}).then(function (response) {
-                return response.data;
-            });
-        };
-
         return {
             getAllPrograms: getAllPrograms,
             enrollPatientToAProgram: enrollPatientToAProgram,
@@ -119,8 +109,7 @@ angular.module('bahmni.common.domain')
             updatePatientProgram: updatePatientProgram,
             deletePatientState: deletePatientState,
             getProgramAttributeTypes: getProgramAttributeTypes,
-            getProgramStateConfig: getProgramStateConfig,
-            isBahmniPatientProgramPresentForProgramAttributeNameAndValue: isBahmniPatientProgramPresentForProgramAttributeNameAndValue
+            getProgramStateConfig: getProgramStateConfig
         };
 
     }]);

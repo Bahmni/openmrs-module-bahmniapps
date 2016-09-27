@@ -131,7 +131,6 @@ Bahmni.Common = Bahmni.Common || {};
         adminImportStatusUrl: BAHMNI_CORE + "/admin/upload/status",
         programUrl: RESTWS_V1 + "/program",
         programEnrollPatientUrl: RESTWS_V1 + "/bahmniprogramenrollment",
-        patientProgramUrl: BAHMNI_CORE + "/patientProgram",
         programStateDeletionUrl: RESTWS_V1 + "/programenrollment",
         programEnrollmentDefaultInformation: "default",
         programEnrollmentFullInformation: "full",
