@@ -13,7 +13,7 @@
         <tr class="view-past"
             ng-class="::{'notes-open': (diagnosis.showDetails == true) || (diagnosis.showLatestDetails == true), 'test-notes-parent': diagnosis.comments}">
             <td class="name">
-                    <span id="diagnosisName" class="diagnosis-name" ng-class="::{'ruled-out': diagnosis.diagnosisStatus}">
+                    <span id="diagnosisName" class="diagnosis-name" ng-class="{'strike-text': diagnosis.diagnosisStatus.ruledOut, 'green-text': diagnosis.diagnosisStatus.cured}">
                         {{::diagnosis.getDisplayName()}}
                     </span>
             </td>

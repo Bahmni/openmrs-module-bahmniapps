@@ -6,7 +6,7 @@ describe('Diagnosis DisplayControl', function () {
         compile, diagnosis,
         mockBackend,
         element,
-        directiveHtml = '<bahmni-diagnosis patient-uuid="patient.uuid" config="section" show-ruled-out-diagnoses="false"></bahmni-diagnosis>';
+        directiveHtml = '<bahmni-diagnosis patient-uuid="patient.uuid" config="section" show-diagnosis-with-state="section.showDiagnosisWithState"></bahmni-diagnosis>';
 
     beforeEach(module('bahmni.common.domain'));
     beforeEach(module('bahmni.common.uiHelper'));
@@ -23,7 +23,7 @@ describe('Diagnosis DisplayControl', function () {
         _spinner.then.and.callThrough({data: {}});
         $provide.value('spinner', _spinner);
 
-        _diagnosisService = jasmine.createSpyObj('diagnosisService', ['getDiagnoses','removeRuledOut']);
+        _diagnosisService = jasmine.createSpyObj('diagnosisService', ['getDiagnoses','filteredDiagnosis']);
         var getDiagnosesPromise = specUtil.createServicePromise('getDiagnoses');
         getDiagnosesPromise.then = function (successFn) {
             successFn({"data": diagnoses});
@@ -63,7 +63,8 @@ describe('Diagnosis DisplayControl', function () {
         scope = rootScope.$new();
         mockBackend.expectGET('../common/displaycontrols/diagnosis/views/diagnosisDisplayControl.html').respond("<div>dummy</div>");
         scope.section = {
-            title: "Diagnosis"
+            title: "Diagnosis",
+            "showDiagnosisWithState":["ruledOut"]
         };
 
         element = compile(directiveHtml)(scope);
@@ -93,24 +94,24 @@ describe('Diagnosis DisplayControl', function () {
         expect(diagnosis.showDetails).toBeTruthy();
     });
 
-    it('should filter all ruled out diagnoses when showRuledOutDiagnoses flag is false', function () {
+    it('should filter only ruled out diagnoses when showRuledOutDiagnoses flag is set to ruledOut', function () {
         _diagnosisService.getDiagnoses.and.returnValue(specUtil.respondWithPromise(q,diagnoses));
-        _diagnosisService.removeRuledOut.and.returnValue([]);
+        _diagnosisService.filteredDiagnosis.and.returnValue([]);
 
         init();
         rootScope.$apply();
         expect(compiledElementScope.allDiagnoses.length).toBe(0);
-        expect(_diagnosisService.removeRuledOut).toHaveBeenCalledWith(diagnoses);
+        expect(_diagnosisService.filteredDiagnosis).toHaveBeenCalledWith(diagnoses,scope.section.showDiagnosisWithState);
     });
 
-    it('should not filter all ruled out diagnoses when showRuledOutDiagnoses flag is true', function () {
-        directiveHtml = '<bahmni-diagnosis patient-uuid="patient.uuid" config="section" show-ruled-out-diagnoses="undefined"></bahmni-diagnosis>';
+    it('should not filter diagnoses when showDiagnosisWithState flag is true', function () {
+        directiveHtml = '<bahmni-diagnosis patient-uuid="patient.uuid" config="section" show-diagnosis-with-state="undefined"></bahmni-diagnosis>';
         _diagnosisService.getDiagnoses.and.returnValue(specUtil.respondWithPromise(q,diagnoses));
 
         init();
         rootScope.$apply();
         expect(compiledElementScope.allDiagnoses.length).toBe(1);
-        expect(_diagnosisService.removeRuledOut).not.toHaveBeenCalled();
+        expect(_diagnosisService.filteredDiagnosis).not.toHaveBeenCalled();
     });
 
 
