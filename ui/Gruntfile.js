@@ -129,7 +129,7 @@ module.exports = function (grunt) {
         coverage: {
             options: {
                 thresholds: {
-                    statements: 66.26,
+                    statements: 66.25,
                     branches: 55.4,
                     functions: 58.9,
                     lines: 66.3

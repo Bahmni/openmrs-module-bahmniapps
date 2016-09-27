@@ -3,6 +3,8 @@
         <span class="title-link"> {{::section | titleTranslate}} </span>
         <i class="fa fa-external-link"></i>
     </h2>
-<bahmni-diagnosis patient-uuid="::patient.uuid" config="::section" show-latest-diagnosis="false" show-ruled-out-diagnoses="::section.showRuledOutDiagnoses" hide-title="true"></bahmni-diagnosis>
+<bahmni-diagnosis patient-uuid="::patient.uuid" config="::section" show-latest-diagnosis="false"
+                  show-diagnosis-with-state="::section.showDiagnosisWithState"
+                  hide-title="true"></bahmni-diagnosis>
 </div>
 
