@@ -82,7 +82,7 @@ module.exports = function (config) {
             "test/unit/common/ui-helper/controllers/androidAppUpdateController.spec.js",
             'test/unit/common/displaycontrols/obsVsObsFlowSheet/directives/obsToObsFlowSheet.spec.js',
             'app/clinical/dashboard/services/diseaseTemplateService.js',
-
+            'app/clinical/displaycontrols/investigationresults/services/labOrderResultService.js',
             'test/unit/orders/services/orderTypeService.spec.js',
             'test/unit/common/patient/services/patientService.spec.js',
             'test/unit/registration/services/patientService.spec.js',
@@ -97,7 +97,7 @@ module.exports = function (config) {
             'test/unit/common/domain/services/visitService.spec.js',
             'test/unit/common/domain/services/observationsService.spec.js',
             'test/unit/clinical/services/diseaseTemplateService.spec.js',
-
+            'test/unit/clinical/services/labOrderResultService.spec.js',
             'app/common/util/androidDateTimeFormatter.js',
             "test/unit/common/util/androidDateTimeFormatter.spec.js",
             'test/unit/registration/controllers/*.js',

@@ -433,5 +433,21 @@ Bahmni.Common.Offline.SchemaDefinitions = {
         ],
         nullableColumns: ['identifier', 'primaryIdentifier', 'extraIdentifiers'],
         primaryKeyColumns: ['typeUuid', 'patientUuid']
+    },
+
+    LabOrderResult : {
+        tableName: 'lab_order_result',
+        columns: [
+            {
+                name: 'patientUuid',
+                type: 'STRING'
+            },
+            {
+                name: 'labOrderResultsJson',
+                type: 'STRING'
+            }
+        ],
+        nullableColumns: [],
+        primaryKeyColumns: ['patientUuid']
     }
 };

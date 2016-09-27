@@ -1,9 +1,9 @@
 'use strict';
 
 angular.module('bahmni.common.offline')
-    .service('offlineDbService', ['$http', '$q', 'patientDbService', 'patientAddressDbService', 'patientAttributeDbService', 'patientIdentifierDbService', 'offlineMarkerDbService', 'offlineAddressHierarchyDbService',
+    .service('offlineDbService', ['$http', '$q', 'patientDbService', 'patientAddressDbService', 'patientAttributeDbService', 'patientIdentifierDbService', 'offlineMarkerDbService', 'offlineAddressHierarchyDbService','labOrderResultsDbService',
         'offlineConfigDbService', 'initializeOfflineSchema', 'referenceDataDbService', 'locationDbService', 'offlineSearchDbService', 'encounterDbService', 'visitDbService', 'observationDbService', 'conceptDbService','errorLogDbService', 'eventLogService','eventQueue',
-        function ($http, $q, patientDbService, patientAddressDbService, patientAttributeDbService, patientIdentifierDbService, offlineMarkerDbService, offlineAddressHierarchyDbService,
+        function ($http, $q, patientDbService, patientAddressDbService, patientAttributeDbService, patientIdentifierDbService, offlineMarkerDbService, offlineAddressHierarchyDbService, labOrderResultsDbService,
                   offlineConfigDbService, initializeOfflineSchema, referenceDataDbService, locationDbService, offlineSearchDbService, encounterDbService, visitDbService, observationDbService, conceptDbService, errorLogDbService, eventLogService, eventQueue) {
         var db;
 
@@ -59,6 +59,13 @@ angular.module('bahmni.common.offline')
 
         };
 
+        var insertLabOrderResults = function (patientUuid, labOrderResults) {
+            return labOrderResultsDbService.insertLabOrderResults(db, patientUuid, labOrderResults);
+        };
+
+        var getLabOrderResultsForPatient = function (params) {
+            return labOrderResultsDbService.getLabOrderResultsForPatient(db, params);
+        };
 
          var createEncounter = function (encounterData) {
                 var deferred = $q.defer();
@@ -279,6 +286,7 @@ angular.module('bahmni.common.offline')
             getMarker: getMarker,
             insertMarker: insertMarker,
             insertAddressHierarchy: insertAddressHierarchy,
+            insertLabOrderResults: insertLabOrderResults,
             searchAddress: searchAddress,
             getConfig : getConfig,
             insertConfig : insertConfig,
@@ -308,6 +316,7 @@ angular.module('bahmni.common.offline')
             deleteErrorFromErrorLog: deleteErrorFromErrorLog,
             getPatientByUuidForPost: getPatientByUuidForPost,
             getVisitDetailsByPatientUuid: getVisitDetailsByPatientUuid,
-            getObservationsForVisit:getObservationsForVisit
+            getObservationsForVisit:getObservationsForVisit,
+            getLabOrderResultsForPatient: getLabOrderResultsForPatient
         }
     }]);

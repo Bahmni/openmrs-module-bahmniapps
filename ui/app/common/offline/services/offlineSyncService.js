@@ -118,6 +118,13 @@ angular.module('bahmni.common.offline')
                                 deferrable.resolve();
                             });
                             break;
+                        case 'LabOrderResults':
+                            var patientUuid = event.object.match(Bahmni.Common.Constants.uuidRegex)[0];
+                            offlineDbService.insertLabOrderResults(patientUuid,response.data).then(function () {
+                                deferrable.resolve();
+                            });
+                            break;
+
                         case 'offline-concepts':
                             offlineDbService.insertConceptAndUpdateHierarchy({"results": [response.data]}).then(function(){
                                 deferrable.resolve();

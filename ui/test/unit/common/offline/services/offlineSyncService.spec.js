@@ -3,7 +3,7 @@
 var $scope, offlineDbService, eventLogService, offlineSyncService, offlineService, configurationService,loggingService;
 
 describe('OfflineSyncService', function () {
-    var patient, mappedPatient, encounter, concept, error_log;
+    var patient, mappedPatient, encounter, concept, error_log, labOrderResults;
     describe('initial sync ', function () {
         var httpBackend, $http, $rootScope;
         beforeEach(function () {
@@ -76,6 +76,7 @@ describe('OfflineSyncService', function () {
                     patientUuid: "patientUuid",
                     visitUuid: "visitUuid"
                 };
+                labOrderResults = { results: {"results":[],"tabularResult":{"dates":[],"orders":[],"values":[]}}};
                 $provide.value('offlineDbService', {
                     insertAddressHierarchy: function () {
                         return {
@@ -92,6 +93,13 @@ describe('OfflineSyncService', function () {
                         };
                     },
                     createEncounter: function () {
+                        return {
+                            then: function (callback) {
+                                return callback({});
+                            }
+                        };
+                    },
+                    insertLabOrderResults: function () {
                         return {
                             then: function (callback) {
                                 return callback({});
@@ -293,6 +301,12 @@ describe('OfflineSyncService', function () {
                 uuid: 'uuid2'
             };
 
+            var labOrderResultsEvent = {
+                object: '/openmrs/ws/rest/v1/bahmnicore/labOrderResults?patientUuid=5e94e7cb-e9fe-4763-e9ea-217bdaa85029',
+                category: 'LabOrderResults',
+                uuid: 'uuid3'
+            };
+
             var marker = {markerName: 'transactionalData', filters: [202020]};
 
             spyOn(offlineService, 'getItem').and.returnValue(categories);
@@ -308,7 +322,7 @@ describe('OfflineSyncService', function () {
                     then: function (callback) {
                         if(!marker.lastReadEventUuid)
                         return callback({
-                            data: [patientEvent, encounterEvent]
+                            data: [patientEvent, encounterEvent, labOrderResultsEvent]
                         });
                     }
                 }
@@ -316,7 +330,7 @@ describe('OfflineSyncService', function () {
             spyOn(eventLogService, 'getDataForUrl').and.callFake(function (url) {
                 return {
                     then: function (callback) {
-                        return callback({data: url === patientEvent.object ? patient : encounter});
+                        return callback({data: url === patientEvent.object ? patient : url === encounterEvent.object ? encounter : labOrderResults});
                     }
                 };
             });
@@ -327,11 +341,12 @@ describe('OfflineSyncService', function () {
             spyOn(offlineDbService, 'insertAddressHierarchy').and.callThrough();
             spyOn(offlineDbService, 'createPatient').and.callThrough();
             spyOn(offlineDbService, 'createEncounter').and.callThrough();
+            spyOn(offlineDbService, 'insertLabOrderResults').and.callThrough();
 
             offlineSyncService.sync();
             $rootScope.$digest();
 
-            expect(offlineDbService.getMarker.calls.count()).toBe(4);
+            expect(offlineDbService.getMarker.calls.count()).toBe(5);
 
             categories.forEach(function (category) {
                 expect(offlineDbService.getMarker).toHaveBeenCalledWith(category);
@@ -342,12 +357,14 @@ describe('OfflineSyncService', function () {
 
                 expect(offlineDbService.insertMarker).toHaveBeenCalledWith(category, "uuid1", [202020]);
                 expect(offlineDbService.insertMarker).toHaveBeenCalledWith(category, "uuid2", [202020]);
-                expect(offlineDbService.insertMarker.calls.count()).toBe(2);
+                expect(offlineDbService.insertMarker).toHaveBeenCalledWith(category, "uuid3", [202020]);
+                expect(offlineDbService.insertMarker.calls.count()).toBe(3);
             });
             expect(eventLogService.getDataForUrl).toHaveBeenCalledWith(patientEvent.object);
             expect(eventLogService.getDataForUrl).toHaveBeenCalledWith(encounterEvent.object);
             expect(offlineDbService.createPatient).toHaveBeenCalledWith({patient:patient});
             expect(offlineDbService.createEncounter).toHaveBeenCalledWith(encounter);
+            expect(offlineDbService.insertLabOrderResults).toHaveBeenCalledWith('5e94e7cb-e9fe-4763-e9ea-217bdaa85029',labOrderResults);
             expect(offlineDbService.insertAddressHierarchy.calls.count()).toBe(0);
         });
 

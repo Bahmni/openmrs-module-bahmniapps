@@ -80,7 +80,7 @@ module.exports = function (config) {
             'app/common/domain/services/observationsService.js',
             'test/unit/common/displaycontrols/obsVsObsFlowSheet/directives/obsToObsFlowSheet.spec.js',
             'app/clinical/dashboard/services/diseaseTemplateService.js',
-
+            'app/clinical/displaycontrols/investigationresults/services/labOrderResultService.js',
             'test/unit/orders/services/orderTypeService.spec.js',
             'test/unit/common/patient/services/patientService.spec.js',
             'test/unit/common/app-framework/service/loadConfigService.spec.js',
@@ -95,7 +95,7 @@ module.exports = function (config) {
             'test/unit/common/domain/services/visitService.spec.js',
             'test/unit/common/domain/services/observationsService.spec.js',
             'test/unit/clinical/services/diseaseTemplateService.spec.js',
-
+            'test/unit/clinical/services/labOrderResultService.spec.js',
             "app/common/util/dateTimeFormatter.js",
             "test/unit/common/util/dateTimeFormatter.spec.js",
             'test/unit/**/offline/chrome/*.js',
