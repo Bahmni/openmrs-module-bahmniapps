@@ -69,7 +69,9 @@ angular.module('bahmni.common.uicontrols.programmanagment')
                 $scope.patientProgramAttributes = {};
                 $scope.programEnrollmentDate = null;
                 updateActiveProgramsList();
-                $scope.patientProgram.editing = false;
+                if($scope.patientProgram) {
+                    $scope.patientProgram.editing = false;
+                }
             };
 
             var failureCallback = function (error) {
