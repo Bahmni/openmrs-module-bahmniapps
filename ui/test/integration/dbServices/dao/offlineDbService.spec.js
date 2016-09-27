@@ -2,7 +2,7 @@
 
 describe('OfflineDbService ', function () {
     var offlineDbService, $q = Q;
-    var patientDbService, patientIdentifierDbService, patientAddressDbService, patientAttributeDbService, offlineMarkerDbService, offlineAddressHierarchyDbService,
+    var patientDbService, patientIdentifierDbService, patientAddressDbService, patientAttributeDbService, offlineMarkerDbService, offlineAddressHierarchyDbService,labOrderResultsDbService,
         offlineConfigDbService, initializeOfflineSchema, referenceDataDbService, locationDbService, offlineSearchDbService, encounterDbService, visitDbService, observationDbService, conceptDbService, errorLogDbService, eventLogService;
 
     beforeEach(function () {
@@ -12,6 +12,7 @@ describe('OfflineDbService ', function () {
             patientIdentifierDbService = jasmine.createSpyObj('patientIdentifierDbService', ['insertPatientIdentifiers']);
             patientAddressDbService = jasmine.createSpyObj('patientAddressDbService', ['insertAddress']);
             patientAttributeDbService = jasmine.createSpyObj('patientAttributeDbService', ['insertAttributes', 'getAttributeTypes']);
+            labOrderResultsDbService = jasmine.createSpyObj('labOrderResultsDbService', ['insertLabOrderResults', 'getLabOrderResultsForPatient']);
             offlineMarkerDbService = jasmine.createSpyObj('offlineMarkerDbService', ['init', 'getMarker', 'insertMarker']);
             offlineAddressHierarchyDbService = jasmine.createSpyObj('offlineAddressHierarchyDbService', ['init', 'insertAddressHierarchy', 'search']);
             offlineConfigDbService = jasmine.createSpyObj('offlineConfigDbService', ['init', 'getConfig', 'insertConfig']);
@@ -30,6 +31,7 @@ describe('OfflineDbService ', function () {
             $provide.value('patientIdentifierDbService', patientIdentifierDbService);
             $provide.value('patientAddressDbService', patientAddressDbService);
             $provide.value('patientAttributeDbService', patientAttributeDbService);
+            $provide.value('labOrderResultsDbService', labOrderResultsDbService);
             $provide.value('offlineMarkerDbService', offlineMarkerDbService);
             $provide.value('offlineAddressHierarchyDbService', offlineAddressHierarchyDbService);
             $provide.value('offlineConfigDbService', offlineConfigDbService);
@@ -822,6 +824,37 @@ describe('OfflineDbService ', function () {
                 offlineDbService.getAttributeTypes();
                 expect(patientAttributeDbService.getAttributeTypes.calls.count()).toBe(1);
                 expect(patientAttributeDbService.getAttributeTypes).toHaveBeenCalledWith(db);
+                done();
+            });
+        });
+    });
+
+
+
+    describe("labOrderResultsDbService", function () {
+        it("should call getLabOrderResultsForPatient with db reference", function (done) {
+            var schemaBuilder = lf.schema.create('BahmniOfflineDb', 1);
+            schemaBuilder.connect().then(function (db) {
+                offlineDbService.init(db);
+
+                offlineDbService.getLabOrderResultsForPatient("patientUuid");
+                expect(labOrderResultsDbService.getLabOrderResultsForPatient.calls.count()).toBe(1);
+                expect(labOrderResultsDbService.getLabOrderResultsForPatient).toHaveBeenCalledWith(db,"patientUuid");
+                done();
+            });
+        });
+    });
+
+
+    describe("labOrderResultsDbService", function () {
+        it("should call insertLabOrderResults with db reference", function (done) {
+            var schemaBuilder = lf.schema.create('BahmniOfflineDb', 1);
+            schemaBuilder.connect().then(function (db) {
+                offlineDbService.init(db);
+
+                offlineDbService.insertLabOrderResults("patientUuid" , {results:[]});
+                expect(labOrderResultsDbService.insertLabOrderResults.calls.count()).toBe(1);
+                expect(labOrderResultsDbService.insertLabOrderResults).toHaveBeenCalledWith(db, "patientUuid", {results:[]});
                 done();
             });
         });

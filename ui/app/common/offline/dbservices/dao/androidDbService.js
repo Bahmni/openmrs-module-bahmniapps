@@ -243,7 +243,7 @@ angular.module('bahmni.common.offline')
                     deferred.reject();
                     return deferred.promise;
                 }
-               return $q.when(response)
+                return $q.when(response)
             };
 
             var getAllLogs = function () {
@@ -289,6 +289,17 @@ angular.module('bahmni.common.offline')
                 return deferred.promise;
             };
 
+            var insertLabOrderResults = function (patientUuid, results) {
+                var response = AndroidOfflineService.insertLabOrderResults(patientUuid, JSON.stringify(results));
+                response = response != undefined ? JSON.parse(response) : response;
+                return $q.when(response);
+            };
+
+            var getLabOrderResultsForPatient = function (patientUuid) {
+                var response = AndroidOfflineService.getLabOrderResultsByPatientUuid(patientUuid);
+                return $q.when(JSON.parse(response));
+            };
+
             return {
                 init: init,
                 initSchema: initSchema,
@@ -325,7 +336,9 @@ angular.module('bahmni.common.offline')
                 deleteErrorFromErrorLog: deleteErrorFromErrorLog,
                 getPatientByUuidForPost: getPatientByUuidForPost,
                 getVisitDetailsByPatientUuid: getVisitDetailsByPatientUuid,
-                getObservationsForVisit:getObservationsForVisit
+                getObservationsForVisit:getObservationsForVisit,
+                insertLabOrderResults: insertLabOrderResults,
+                getLabOrderResultsForPatient: getLabOrderResultsForPatient
             }
         }
     ]);
