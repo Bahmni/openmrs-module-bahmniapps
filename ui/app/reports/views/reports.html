@@ -29,8 +29,6 @@
                 </th>
                 <th class="reports-action">
                 </th>
-                <th class="reports-action">
-                </th>
             </tr>
             </thead>
             <tbody>
@@ -52,13 +50,8 @@
                            type="file" accept=".xls" nv-file-select uploader="uploader" options="{report: report}"/>
                 </td>
                 <td class="reports-action">
-                    <button type="submit" class="run-report confirm" ng-click="runReport(report)">
-                        {{::'RUN_REPORT_BUTTON_KEY' |translate}}
-                    </button>
-                </td>
-                <td class="reports-action">
                     <button type="submit" class="run-report confirm" ng-click="scheduleReport(report)">
-                        {{::'SCHEDULE_BUTTON_KEY' |translate}}
+                        {{::'RUN_REPORT_BUTTON_KEY' |translate}}
                     </button>
                 </td>
             </tr>
@@ -93,13 +86,8 @@
                     </select>
                 </td>
                 <td class="reports-action">
-                    <button type="submit" class="run-report confirm" ng-click="runReport(report)">
-                        {{::'RUN_REPORT_BUTTON_KEY' |translate}}
-                    </button>
-                </td>
-                <td class="reports-action">
                     <button type="submit" class="run-report confirm" ng-click="scheduleReport(report)">
-                        {{::'SCHEDULE_BUTTON_KEY' |translate}}
+                        {{::'RUN_REPORT_BUTTON_KEY' |translate}}
                     </button>
                 </td>
             </tr>

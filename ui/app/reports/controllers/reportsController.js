@@ -22,10 +22,8 @@ angular.module('bahmni.reports')
             });
         };
 
-
         var isDateRangeRequiredFor = function (report) {
             return _.find($scope.reportsRequiringDateRange, {name: report.name});
-
         };
 
         var validateReport = function (report) {
@@ -60,16 +58,6 @@ angular.module('bahmni.reports')
             return true;
         };
 
-        $scope.runReport = function (report) {
-            if (validateReport(report)) {
-                reportService.generateReport(report);
-                if (report.responseType === 'application/vnd.ms-excel-custom') {
-                    report.reportTemplateLocation = undefined;
-                    report.responseType = _.values($scope.formats)[0];
-                }
-            }
-        };
-
         $scope.scheduleReport = function (report) {
             if (validateReport(report)) {
                 spinner.forPromise(reportService.scheduleReport(report)).then(function(){
@@ -85,7 +73,6 @@ angular.module('bahmni.reports')
         };
 
         var initializeFormats = function(){
-
             var supportedFormats = appService.getAppDescriptor().getConfigValue("supportedFormats") || _.keys(reportService.getAvailableFormats());
             supportedFormats = _.map(supportedFormats, function(format){
                 return format.toUpperCase();
