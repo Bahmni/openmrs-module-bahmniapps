@@ -34,7 +34,6 @@
     "PROGRAM_MANAGEMENT_STARTED_ON_KEY": "Started on ",
     "PROGRAM_MANAGEMENT_SELECT_PROGRAM_MESSAGE_KEY": "Please select a Program to Enroll the patient",
     "PROGRAM_MANAGEMENT_ALREADY_ENROLLED_PROGRAM_MESSAGE_KEY": "Patient already enrolled to the Program",
-    "PROGRAM_MANAGEMENT_REGISTRATION_NUMBER_ALREADY_USED": "Registration number is already used for another program",
     "PROGRAM_MANAGEMENT_STATE_CANT_START_BEFORE_KEY": "State cannot be started earlier than current state",
     "PROGRAM_MANAGEMENT_PROGRAM_CANT_END_BEFORE_KEY": "Program cannot be ended earlier than current state",
     "PROGRAM_MANAGEMENT_DO_YOU_WANT_TO_REMOVE_KEY": "Do you want to remove ",
