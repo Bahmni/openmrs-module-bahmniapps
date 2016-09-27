@@ -106,6 +106,13 @@ describe('OfflineSyncService', function () {
                             }
                         };
                     },
+                    insertLabOrderResults: function () {
+                        return {
+                            then: function (callback) {
+                                return callback({});
+                            }
+                        };
+                    },
                     insertVisitData: function () {
                         return {
                             then: function (callback) {
@@ -666,6 +673,12 @@ describe('OfflineSyncService', function () {
                 object: 'encounterUrl',
                 category: 'Encounter',
                 uuid: 'uuid2'
+            };
+
+            var labOrderResultsEvent = {
+                object: '/openmrs/ws/rest/v1/bahmnicore/labOrderResults?patientUuid=5e94e7cb-e9fe-4763-e9ea-217bdaa85029',
+                category: 'LabOrderResults',
+                uuid: 'uuid3'
             };
 
             var marker = {markerName: 'transactionalData', filters: [202020]};
