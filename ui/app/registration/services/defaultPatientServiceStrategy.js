@@ -8,9 +8,11 @@ angular.module('bahmni.registration')
         var search = function(config) {
             var defer = $q.defer();
             var patientSearchUrl = Bahmni.Common.Constants.bahmniSearchUrl + "/patient";
-            $http.get(patientSearchUrl, config).success(function(result) {
+            var onResults = function (result) {
                 defer.resolve(result);
-            });
+            }
+            $http.get(patientSearchUrl, config).success(onResults)
+                .error(onResults);
             return defer.promise;
         };
 
