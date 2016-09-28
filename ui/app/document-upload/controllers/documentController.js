@@ -237,7 +237,7 @@ angular.module('opd.documentupload')
             };
 
             var areVisitsSame = function (currentVisit, newVisit) {
-              return currentVisit == newVisit;
+              return currentVisit == newVisit && newVisit == $scope.newVisit;
             };
 
             var getEncounterStartDateTime = function (visit) {
