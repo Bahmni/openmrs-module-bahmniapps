@@ -511,7 +511,8 @@ describe("DocumentController", function () {
         it('Should remove the current order when both orders are same', function () {
             var newVisit = new Bahmni.DocumentUpload.Visit();
             scope.currentVisit = newVisit;
-            expect(scope.resetCurrentVisit(newVisit)).toBe(undefined);
+            scope.newVisit = newVisit;
+            expect(scope.resetCurrentVisit(newVisit)).toBeNull();
         });
 
         it('Should open a new visit when new visit is not the current one', function () {
