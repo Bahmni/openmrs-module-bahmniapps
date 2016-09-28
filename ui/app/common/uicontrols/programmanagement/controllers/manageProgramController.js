@@ -2,9 +2,9 @@
 
 angular.module('bahmni.common.uicontrols.programmanagment')
     .controller('ManageProgramController', ['$scope', 'retrospectiveEntryService', '$window', 'programService',
-        'spinner', 'messagingService', '$stateParams', '$q', 'confirmBox', 'appService',
+        'spinner', 'messagingService', '$stateParams', '$q', 'confirmBox',
         function ($scope, retrospectiveEntryService, $window, programService,
-                  spinner, messagingService, $stateParams, $q, confirmBox, appService) {
+                  spinner, messagingService, $stateParams, $q, confirmBox) {
             var DateUtil = Bahmni.Common.Util.DateUtil;
             $scope.programSelected = {};
             $scope.workflowStateSelected = {};
@@ -69,6 +69,9 @@ angular.module('bahmni.common.uicontrols.programmanagment')
                 $scope.patientProgramAttributes = {};
                 $scope.programEnrollmentDate = null;
                 updateActiveProgramsList();
+                if($scope.patientProgram) {
+                    $scope.patientProgram.editing = false;
+                }
             };
 
             var failureCallback = function (error) {
@@ -115,11 +118,8 @@ angular.module('bahmni.common.uicontrols.programmanagment')
             $scope.hasPatientAnyPastPrograms = function () {
                 return !_.isEmpty($scope.endedPrograms);
             };
-            var startProgram = function (preSaveConditionViolation) {
-                if(preSaveConditionViolation) {
-                    messagingService.showMessage("error", "PROGRAM_MANAGEMENT_REGISTRATION_NUMBER_ALREADY_USED");
-                    return $q.when({});
-                }
+
+            $scope.enrollPatient = function () {
                 if (!isProgramSelected()) {
                     messagingService.showMessage("error", "PROGRAM_MANAGEMENT_SELECT_PROGRAM_MESSAGE_KEY");
                     return $q.when({});
@@ -129,30 +129,10 @@ angular.module('bahmni.common.uicontrols.programmanagment')
                     return $q.when({});
                 }
                 var stateUuid = $scope.workflowStateSelected && $scope.workflowStateSelected.uuid ? $scope.workflowStateSelected.uuid : null;
-                return programService.enrollPatientToAProgram($scope.patient.uuid, $scope.programSelected.uuid, $scope.programEnrollmentDate, stateUuid, $scope.patientProgramAttributes, $scope.programAttributeTypes)
-                    .then(successCallback, failureCallback);
-            };
-
-            var preSaveValidation = function() {
-                var programConfig = appService.getAppDescriptor().getConfigValue("program");
-                var responseQueue = [];
-                _.each($scope.patientProgramAttributes, function(value, key){
-                    if(programConfig[key] && programConfig[key].unique) {
-                        responseQueue.push(programService.isBahmniPatientProgramPresentForProgramAttributeNameAndValue(key, value));
-                    }
-                });
-
-                return $q.all(responseQueue).then(function(results) {
-                    var flag = _.find(results, function(result) {
-                        return result;
-                    });
-                    return flag;
-                });
-
-            };
-
-            $scope.enrollPatient = function () {
-                return preSaveValidation().then(startProgram);
+                return spinner.forPromise(
+                    programService.enrollPatientToAProgram($scope.patient.uuid, $scope.programSelected.uuid, $scope.programEnrollmentDate, stateUuid, $scope.patientProgramAttributes, $scope.programAttributeTypes)
+                        .then(successCallback, failureCallback)
+                );
             };
 
             var isProgramStateSelected = function () {
@@ -181,6 +161,7 @@ angular.module('bahmni.common.uicontrols.programmanagment')
             };
 
             $scope.updatePatientProgram = function (patientProgram){
+                $scope.patientProgram = patientProgram;
                 var activeState = getActiveState(patientProgram.states);
                 var activeStateDate = activeState ? DateUtil.parse(activeState.startDate) : null;
                 var dateCompleted = null;
@@ -213,7 +194,6 @@ angular.module('bahmni.common.uicontrols.programmanagment')
                     programService.updatePatientProgram(patientProgram, $scope.programAttributeTypes, dateCompleted)
                         .then(successCallback, failureCallback)
                 );
-                patientProgram.editing = false;
             };
 
             var voidPatientProgram = function (patientProgram,closeConfirmBox) {
@@ -248,6 +228,12 @@ angular.module('bahmni.common.uicontrols.programmanagment')
             };
 
             $scope.toggleEdit = function (program) {
+                $scope.tempProgram = angular.copy(program);
+                program.editing = !program.editing;
+            };
+
+            $scope.cancelChange = function (program) {
+                program.patientProgramAttributes = $scope.tempProgram.patientProgramAttributes;
                 program.editing = !program.editing;
             };
 
