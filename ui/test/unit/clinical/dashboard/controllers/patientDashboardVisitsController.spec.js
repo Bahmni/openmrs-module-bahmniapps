@@ -9,20 +9,30 @@ describe("PatientDashboardVisitsController", function () {
         scope.visitHistory = {visits: []};
         scope.dashboard = {
             getSectionByType: function (type) {
-                return {};
+                return {
+                    "translationKey": "DASHBOARD_TITLE_VISITS_KEY",
+                    "type": "visits",
+                    "displayOrder": 17,
+                    "dashboardConfig": {
+                        "title": "visitDashboard",
+                        "maximumNoOfVisits": 8,
+                        "groupByVisits": true
+                    }
+                }
             }
         };
+
         $controller('PatientDashboardVisitsController', {
             $scope: scope,
-            $stateParams: {configName: "default"},
+            $stateParams: {configName: "default", patientUuid: "fc6ede09-f16f-4877-d2f5-ed8b2182ec11"},
             spinner: spinner
         });
     }));
 
-    it("should call the spinner service", function (done) {
-        expect(spinner.forPromise).toHaveBeenCalled();
-        expect(spinner.forPromise).toHaveBeenCalledWith(jasmine.any(Object), "#id");
-        done();
+    it("should call the spinner service", function () {
+        expect(scope.noOfVisits).toBe(0);
+        expect(scope.dashboardConfig.title).toBe("visitDashboard");
+        expect(scope.patientUuid).toBe("fc6ede09-f16f-4877-d2f5-ed8b2182ec11");
     });
 
 });

@@ -87,7 +87,7 @@ angular.module('bahmni.clinical')
                 };
 
 
-                spinner.forPromise(init());
+                spinner.forPromise(init(), "#" + $scope.sectionId);
 
                 $scope.params = angular.extend(
                     {
@@ -103,9 +103,8 @@ angular.module('bahmni.clinical')
                 templateUrl: "displaycontrols/allvisits/views/visitsTable.html",
                 scope: {
                     params: "=",
-                    patientUuid: "="
+                    patientUuid: "=",
+                    sectionId: "="
                 }
             };
         }]);
-
-'use strict';
