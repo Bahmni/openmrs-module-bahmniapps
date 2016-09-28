@@ -64,11 +64,14 @@ module.exports = function (config) {
             "test/unit/common/util/dateTimeFormatter.spec.js"
         ],
         exclude:[
+            'app/clinical/displaycontrols/investigationresults/offline/*',
             'app/registration/offline/**/*.js',
             'app/clinical/common/offline/**/*.js',
             'app/common/domain/offline/*.js',
             'app/common/**/offline/chrome/*.js',
             'app/common/**/offline/android/*.js',
+            'app/common/orders/offline/*.js',
+            'app/common/orders/offline/services/*.js',
             'app/common/domain/offline/*.js',
             'app/clinical/dashboard/services/offline/**/*.js',
             'test/unit/registration/offline/**/*.js',
@@ -77,7 +80,9 @@ module.exports = function (config) {
             'test/unit/**/offline/chrome/*.js',
             'app/common/offline/scheduler/backgroundWorker.js',
             'app/common/util/androidDateTimeFormatter.js',
-            "test/unit/common/util/androidDateTimeFormatter.spec.js"
+            'test/unit/common/util/androidDateTimeFormatter.spec.js',
+            'app/common/offline/dbservices/dao/labOrderResultsDbService.js',
+            'test/integration/dbServices/dao/labOrderResultsDbService.spec.js'
         ],
         reporters: ['junit', 'progress', 'coverage'],
         preprocessors: {

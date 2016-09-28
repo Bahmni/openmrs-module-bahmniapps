@@ -18,6 +18,10 @@ p.caution{
   text-decoration: line-through;
 }
 
+.green-text{
+  color: $bahmniPrimaryBtnColor;
+}
+
 input[file-upload] {
     position:absolute;
     z-index: -999;

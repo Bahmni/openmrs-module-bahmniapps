@@ -13,8 +13,14 @@ describe('Patient resource', function () {
         defaults: {headers: {common: {'X-Requested-With': 'present'}}},
         get: jasmine.createSpy('Http get').and.returnValue({
             'success': function(onSuccess){
-                return onSuccess({name:"john"});
+                onSuccess({name: "john"});
+                return {
+                    'error': function (onError) {
+                        onError();
+                    }
+                }
             }
+
         }),
         post: jasmine.createSpy('Http post').and.returnValue({
             'success': function (onSuccess) {
