@@ -1,10 +1,10 @@
 'use strict';
 
 angular.module('bahmni.common.uiHelper')
-    .factory('spinner', ['messagingService', function (messagingService) {
+    .factory('spinner', ['messagingService', '$timeout', function (messagingService, $timeout) {
 
         var showSpinnerForElement = function (element) {
-            $('#overlay').hide();
+            $('#overlay').remove();
             if($(element).find(".dashboard-section-loader").length === 0)
                 $(element).append('<div class="dashboard-section-loader"></div>');
             return element;
@@ -28,15 +28,18 @@ angular.module('bahmni.common.uiHelper')
         var hide = function (reference) {
             var element = $(reference);
             var domElement = element.find(".dashboard-section-loader");
-            _.isEmpty(domElement) ? element.find("#overlay").hide() : domElement.hide();
+            _.isEmpty(domElement) ? element.find("#overlay").remove() : domElement.remove();
         };
 
         var forPromise = function (promise, element) {
-            var token = show(element); //Don't inline this element
-            promise['finally'](function () {
-                hide(token);
-            });
-            return promise;
+            return $timeout(function() {
+                // Added timeout to push a new event into event queue. So that its callback will be invoked once DOM is completely rendered
+                var token = show(element);                      // Don't inline this element
+                promise['finally'](function () {
+                    hide(token);
+                });
+                return promise;
+            })
         };
 
         var forAjaxPromise = function (promise, element) {
