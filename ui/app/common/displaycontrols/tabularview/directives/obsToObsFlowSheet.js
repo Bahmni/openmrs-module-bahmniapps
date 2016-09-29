@@ -37,7 +37,7 @@ angular.module('bahmni.common.displaycontrol.obsVsObsFlowSheet').directive('obsT
                     obsInFlowSheet.headers.unshift(groupByElement);
                     $scope.obsTable = obsInFlowSheet;
                 })
-            }
+            };
 
             var init = function () {
                 return $q.all([getObsInFlowSheet(), getTemplateDisplayName()]).then(function () {
