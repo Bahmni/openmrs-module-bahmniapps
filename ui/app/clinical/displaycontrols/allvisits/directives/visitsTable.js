@@ -87,7 +87,7 @@ angular.module('bahmni.clinical')
                 };
 
 
-                spinner.forPromise(init(), "#" + $scope.sectionId);
+                $scope.initialization = init();
 
                 $scope.params = angular.extend(
                     {
@@ -97,14 +97,18 @@ angular.module('bahmni.clinical')
 
                 $scope.noVisitsMessage = "No Visits for this patient.";
             };
+            var link = function ($scope, element) {
+                spinner.forPromise($scope.initialization, element);
+            };
+
             return {
                 restrict: 'E',
+                link: link,
                 controller: controller,
                 templateUrl: "displaycontrols/allvisits/views/visitsTable.html",
                 scope: {
                     params: "=",
-                    patientUuid: "=",
-                    sectionId: "="
+                    patientUuid: "="
                 }
             };
         }]);
