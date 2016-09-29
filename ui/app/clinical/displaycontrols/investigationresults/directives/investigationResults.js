@@ -17,17 +17,23 @@ angular.module('bahmni.clinical')
                 initialAccessionCount: $scope.params.initialAccessionCount,
                 latestAccessionCount: $scope.params.latestAccessionCount
             };
-            spinner.forPromise(labOrderResultService.getAllForPatient(params)
+            $scope.initialization = labOrderResultService.getAllForPatient(params)
                 .then(function (results) {
                     $scope.investigationResults = results;
-                }),'.dashboard-laborders-section');
+                });
         };
+
+        var link = function ($scope, element) {
+           spinner.forPromise($scope.initialization, element);
+        };
+
         return {
             restrict: 'E',
             controller: controller,
+            link: link,
+            templateUrl: "displaycontrols/investigationresults/views/investigationResults.html",
             scope: {
                 params: "="
-            },
-            templateUrl: "displaycontrols/investigationresults/views/investigationResults.html"
+            }
         };
     }]);
