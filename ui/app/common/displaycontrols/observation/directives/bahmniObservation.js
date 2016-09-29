@@ -84,7 +84,7 @@ angular.module('bahmni.common.displaycontrol.observation')
             };
 
             var link = function ($scope, element) {
-                spinner.forPromise($scope.initialization, element);
+                $scope.initialization && spinner.forPromise($scope.initialization, element);
             };
 
             return {
