@@ -1,12 +1,13 @@
+'use strict';
+
 angular.module('bahmni.common.displaycontrol.programs')
     .directive('programs', ['programService', '$state','spinner',
         function (programService, $state, spinner) {
-            'use strict';
             var controller = function ($scope) {
-                spinner.forPromise(programService.getPatientPrograms($scope.patient.uuid, true, $state.params.enrollment).then(function (patientPrograms) {
+                $scope.initialization = programService.getPatientPrograms($scope.patient.uuid, true, $state.params.enrollment).then(function (patientPrograms) {
                     $scope.activePrograms = patientPrograms.activePrograms;
                     $scope.pastPrograms = patientPrograms.endedPrograms;
-                }),'.dashboard-program-section');
+                });
                 $scope.hasPatientAnyActivePrograms = function () {
                     return !_.isEmpty($scope.activePrograms);
                 };
@@ -52,8 +53,14 @@ angular.module('bahmni.common.displaycontrol.programs')
                     return format == "org.bahmni.module.bahmnicore.customdatatype.datatype.CodedConceptDatatype";
                 };
             };
+
+            var link = function ($scope, element) {
+                spinner.forPromise($scope.initialization, element);
+            };
+
             return {
                 restrict: 'E',
+                link: link,
                 controller: controller,
                 templateUrl: "../common/displaycontrols/programs/views/programs.html",
                 scope: {
