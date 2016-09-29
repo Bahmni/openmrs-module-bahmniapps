@@ -21,7 +21,7 @@ angular.module('bahmni.common.displaycontrol.chronicTreatmentChart').directive('
                                 $scope.regimen.rows.splice(row, 1);
                             }
                         }
-                    }
+                    };
                     $scope.regimen = data;
                     filterNullRow();
                 });
