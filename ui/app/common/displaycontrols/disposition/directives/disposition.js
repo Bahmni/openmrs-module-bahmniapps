@@ -1,13 +1,12 @@
 "use strict";
 
 angular.module('bahmni.common.displaycontrol.disposition')
-    .directive('disposition', ['dispositionService','$q','spinner',
-        function (dispositionService, $q ,spinner) {
+    .directive('disposition', ['dispositionService','spinner',
+        function (dispositionService, spinner) {
 
             var controller = function($scope){
-                var id = $scope.params.id ? "#" + $scope.params.id : "#dispositionSection";
                 var fetchDispositionByPatient = function(patientUuid, numOfVisits){
-                    spinner.forPromise(dispositionService.getDispositionByPatient(patientUuid,numOfVisits),id)
+                    return dispositionService.getDispositionByPatient(patientUuid,numOfVisits)
                         .then(handleDispositionResponse);
                 };
 
@@ -20,7 +19,7 @@ angular.module('bahmni.common.displaycontrol.disposition')
                 };
 
                 var fetchDispositionsByVisit = function(visitUuid){
-                    spinner.forPromise(dispositionService.getDispositionByVisit(visitUuid),id).then(handleDispositionResponse);
+                    return dispositionService.getDispositionByVisit(visitUuid).then(handleDispositionResponse);
                 };
 
                 $scope.getNotes = function(disposition){
@@ -47,15 +46,20 @@ angular.module('bahmni.common.displaycontrol.disposition')
                 };
 
                 if($scope.visitUuid){
-                    fetchDispositionsByVisit($scope.visitUuid);
+                    $scope.fetchDispositionPromise = fetchDispositionsByVisit($scope.visitUuid);
                 }else if($scope.params.numberOfVisits && $scope.patientUuid){
-                    fetchDispositionByPatient($scope.patientUuid, $scope.params.numberOfVisits);
+                    $scope.fetchDispositionPromise = fetchDispositionByPatient($scope.patientUuid, $scope.params.numberOfVisits);
                 }
-
             };
+
+            var link = function(scope, element) {
+                spinner.forPromise(scope.fetchDispositionPromise, element);
+            };
+
             return {
                 restrict:'E',
                 controller:controller,
+                link: link,
                 templateUrl:"../common/displaycontrols/disposition/views/disposition.html",
                 scope: {
                     params: "=",

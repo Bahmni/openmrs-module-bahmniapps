@@ -28,7 +28,7 @@ angular.module('bahmni.common.uiHelper')
         var hide = function (reference) {
             var element = $(reference);
             var domElement = element.find(".dashboard-section-loader");
-            _.isEmpty(domElement) ? element.find("#overlay").remove() : "";
+            _.isEmpty(domElement) ? element.find("#overlay").remove() : domElement.remove();
         };
 
         var forPromise = function (promise, element) {
