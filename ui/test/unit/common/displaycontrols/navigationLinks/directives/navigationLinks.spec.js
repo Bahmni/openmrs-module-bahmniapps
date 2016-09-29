@@ -108,12 +108,4 @@ describe('NavigationalLinks DisplayControl', function () {
         compileDirective(params, linkParams);
         expect(compiledScope.showUrl({url: "../clinical/#/default/patient/{{patientUuid}}/dashboard/visit/{{visitUuid}}/?encounterUuid=active"})).toBeFalsy();
     });
-
-    it('should call spinner service', function () {
-        var params = {customLinks: customLinks, id: "navigationLink"};
-        compileDirective(params, linkParams);
-        expect(spinner.forPromise).toHaveBeenCalled();
-        expect(spinner.forPromise).toHaveBeenCalledWith(jasmine.any(Object), "#navigationLink")
-    });
-
 });
