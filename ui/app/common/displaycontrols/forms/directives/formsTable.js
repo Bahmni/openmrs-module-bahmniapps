@@ -60,8 +60,7 @@ angular.module('bahmni.common.displaycontrol.forms')
 
                 };
 
-                var id = "#" + $scope.section.id;
-                spinner.forPromise(init(), id);
+                $scope.initialization = init();
 
                 $scope.getEditObsData = function (observation) {
                     return {
@@ -93,9 +92,14 @@ angular.module('bahmni.common.displaycontrol.forms')
                 };
             };
 
+            var link = function ($scope, element) {
+                spinner.forPromise($scope.initialization, element);
+            };
+
             return {
                 restrict: 'E',
                 controller: controller,
+                link: link,
                 templateUrl: "../common/displaycontrols/forms/views/formsTable.html",
                 scope: {
                     section: "=",

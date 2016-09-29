@@ -83,12 +83,17 @@
                     initPromise.then(onDirectiveReady);
                     initPromise.then(setHasBeenAdmittedOnVisitUuidChange);
                     initPromise.then(setDirectiveAsReady);
-                    var id = "#" + $scope.config.id;
-                    spinner.forPromise(initPromise, id);
+                    $scope.initialization = initPromise;
                 };
+
+                var link = function ($scope, element) {
+                    spinner.forPromise($scope.initialization, element);
+                };
+
                 return {
                     restrict: 'E',
                     controller: controller,
+                    link: link,
                     scope: {
                         patientUuid: "@",
                         visitUuid: "@",

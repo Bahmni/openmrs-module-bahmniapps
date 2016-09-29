@@ -30,13 +30,18 @@ angular.module('bahmni.common.displaycontrol.diagnosis')
                 $scope.isLatestDiagnosis = function (diagnosis) {
                     return diagnosis.latestDiagnosis ? diagnosis.existingObs == diagnosis.latestDiagnosis.existingObs : false;
                 };
-                var id = $scope.config.id ? "#" + $scope.config.id : "#diagnosisSection";
 
-                spinner.forPromise($q.all(getPromises()), id);
+                $scope.initialization = $q.all(getPromises());
             };
+
+            var link = function ($scope, element) {
+                spinner.forPromise($scope.initialization, element);
+            };
+
             return {
                 restrict: 'E',
                 controller: controller,
+                link: link,
                 templateUrl: "../common/displaycontrols/diagnosis/views/diagnosisDisplayControl.html",
                 scope: {
                     patientUuid: "=",
