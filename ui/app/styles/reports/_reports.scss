@@ -1,5 +1,6 @@
 .bahmni-reports {
 	.reports-page {
+		@include clearfix();
 		margin-top: 10px;
 	}
 	table {
@@ -8,6 +9,8 @@
 			box-sizing:  border-box;
 			padding: 5px;
 			vertical-align: top;
+			text-align: left;
+			border-right:none;
 		}
 		thead th {
 			font-size: 16px;
@@ -26,10 +29,34 @@
 		.reports-action {
 			width: 125px;
 		}
-		td button {
-			padding: 5px 10px;
-			font-size: 12px;
+		td.report-sort-date{
+			padding: 10px 5px;
+			color: $mediumGray;
+			border: none;
 		}
+		td.reportStatus{
+			&--Queued{
+				color: rgba(255, 152, 0, 0.94);
+			}
+			&--Processing{
+				color: #01BE24;
+			}
+			&--link{
+				color: #0a5580;
+				text-decoration: underline;
+			}
+		}
+		td button.delete-report{
+			font-size: 1.2em;
+			padding: 0 !important;
+			color: #666;
+			line-height: 0;
+		}
+		td button.run-report {
+			font-size: 12px;
+			padding: 5px 6px;
+		}
+
 	}
 	.input-file-upload.custom-file{
 		width: 180px;
@@ -45,5 +72,13 @@ a.button.small.report-download{
 	padding: 8px 10px;
 	i{
 		color:#666;
+	}
+}
+
+.report.ngdialog.ngdialog-theme-default {
+	padding-top:200px;
+	.ngdialog-content{
+		height:auto;
+		padding: 10px;
 	}
 }
