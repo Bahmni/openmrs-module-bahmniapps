@@ -21,6 +21,7 @@
     "REPORT_REQUEST_TIME" : "Request time",
     "REPORT_DELETE_SUCCESSFUL" : "Successfully deleted report",
     "REPORT_DELETE_ERROR" : "Error in deleting report",
+    "REPORT_DELETE_DIALOG" : "Do you want to delete the report?",
     "REPORT_DOWNLOAD" : "Download",
     "REPORT_ERROR": "Error",
     "REPORT_DELETE" : "Delete",

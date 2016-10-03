@@ -82,7 +82,7 @@ angular.module('bahmni.reports')
         $scope.displayErrorPopup = function(report) {
             ngDialog.open({
                 template: 'views/errorMessagePopup.html',
-                className: "ngdialog-theme-default ng-dialog-all-details-page",
+                className: "ngdialog-theme-default report",
                 data: getExceptionMessage(report.errorMessage)
             });
         };

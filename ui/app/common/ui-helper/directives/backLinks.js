@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('bahmni.common.uiHelper')
-.directive('bmBackLinks', function() {
+ .directive('bmBackLinks', function() {
 	return {
 		template: '<ul>' +
 					    '<li ng-repeat="backLink in backLinks">' +
@@ -11,7 +11,7 @@ angular.module('bahmni.common.uiHelper')
                                 '<i ng-if="backLink.icon && !backLink.image" class="fa {{backLink.icon}}"></i></a>' +
 					        '<a class="back-btn" ng-if="backLink.state && !backLink.text" accesskey="{{backLink.accessKey}}" ui-sref="{{backLink.state}}" ng-click="closeAllDialogs()" id="{{backLink.id}}">' +
 					        	'<i ng-if="backLink.icon" class="fa {{backLink.icon}}"></i></a>' +
-				'<a ng-if="backLink.text" accesskey="{{backLink.accessKey}}" ui-sref="{{backLink.state}}" id="{{backLink.id}}">' +
+				'<a ng-if="backLink.text" accesskey="{{backLink.accessKey}}" ui-sref="{{backLink.state}}" id="{{backLink.id}}" class="back-btn-noIcon" ui-sref-active="active">' +
 				 '<span>{{backLink.text | translate}}</span>' +
 		'		</a>' +
 					    '</li>' +

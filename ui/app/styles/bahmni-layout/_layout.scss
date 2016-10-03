@@ -49,7 +49,8 @@
             }
             li{
                 @include font-size(0.9);
-                display: inline-block;
+                display: table;
+                float: left;
                 &.logoff{
                     margin:2px 0px 2px 0px;
                     button{
@@ -71,6 +72,15 @@
                         text-decoration: none;
                         cursor:default;
                     }
+                }
+                &.back-btn-noIcon{
+                  color: #fff;
+                  padding: 0 !important;
+                  margin: 21px 10px 0 !important;
+                  display: block;
+                  &.active{
+                    font-family: $primaryBoldFont;
+                  }
                 }
 
              }
