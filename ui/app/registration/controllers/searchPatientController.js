@@ -63,6 +63,7 @@ angular.module('bahmni.registration')
                         $scope.addressSearchResultsConfig.fields,
                         $scope.personSearchResultsConfig.fields
                     ).then(function(response) {
+
                         mapExtraIdentifiers(response);
                         mapCustomAttributesSearchResults(response);
                         mapAddressAttributesSearchResults(response);
@@ -144,7 +145,7 @@ angular.module('bahmni.registration')
                 $scope.noMoreResultsPresent = false;
                 if (searchPromise) {
                     searchPromise.then(function (data) {
-                        $scope.results = data.pageOfResults;
+                        $scope.results = data.pageOfResults || [];
                         $scope.noResultsMessage = $scope.results.length === 0 ? 'REGISTRATION_NO_RESULTS_FOUND' : null;
                     });
                 }
