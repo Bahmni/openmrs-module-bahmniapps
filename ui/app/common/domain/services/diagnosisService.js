@@ -79,14 +79,6 @@ angular.module('bahmni.common.domain')
                 return _.assign(consultation, groups);
             })
         };
-        self.filteredDiagnosis = function (allDiagnoses, filterCriterias) {
-            return _.filter(allDiagnoses, function (diagnosis) {
-                return _.find(filterCriterias, function (filterCriteria) {
-                    return filterCriteria == 'active' && diagnosis.diagnosisStatus == null ||
-                     _.has(diagnosis.diagnosisStatus, filterCriteria) ? true : false;
-                })
-            })
-        }
 
         var isPastDiagnosis = function (diagnosis) {
             return diagnosis.diagnosisStatus != null;
