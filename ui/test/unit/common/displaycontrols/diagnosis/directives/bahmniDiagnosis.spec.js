@@ -96,12 +96,10 @@ describe('Diagnosis DisplayControl', function () {
 
     it('should filter only ruled out diagnoses when showRuledOutDiagnoses flag is set to ruledOut', function () {
         _diagnosisService.getDiagnoses.and.returnValue(specUtil.respondWithPromise(q,diagnoses));
-        _diagnosisService.filteredDiagnosis.and.returnValue([]);
 
         init();
         rootScope.$apply();
         expect(compiledElementScope.allDiagnoses.length).toBe(0);
-        expect(_diagnosisService.filteredDiagnosis).toHaveBeenCalledWith(diagnoses,scope.section.showDiagnosisWithState);
     });
 
     it('should not filter diagnoses when showDiagnosisWithState flag is true', function () {
@@ -111,7 +109,6 @@ describe('Diagnosis DisplayControl', function () {
         init();
         rootScope.$apply();
         expect(compiledElementScope.allDiagnoses.length).toBe(1);
-        expect(_diagnosisService.filteredDiagnosis).not.toHaveBeenCalled();
     });
 
 

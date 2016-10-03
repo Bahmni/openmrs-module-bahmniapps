@@ -2,7 +2,7 @@
 
 describe('offlineDiagnosisService', function () {
 
-    var diagnosisService, encounterServiceStrategy;
+    var diagnosisService, encounterServiceStrategy, appService;
     var $q = Q;
     var patientUuid = 'fc6ede09-f16f-4877-d2f5-ed8b2182ec10';
 
@@ -10,7 +10,12 @@ describe('offlineDiagnosisService', function () {
     beforeEach(module('bahmni.common.domain'));
 
     beforeEach(module(function ($provide) {
+        var appService = jasmine.createSpyObj('appService', ['getAppDescriptor']);
+        var appDescriptor = jasmine.createSpyObj('appDescriptor', ['getConfig']);
+        appDescriptor.getConfig.and.returnValue({diagnosisStatus: {}});
+        appService.getAppDescriptor.and.returnValue(appDescriptor);
         $provide.value('$q', $q);
+        $provide.value('appService', appService)
     }));
 
     beforeEach(inject(['diagnosisService', 'offlineEncounterServiceStrategy', function (diagnosisServiceInjected, encounterServiceStrategyInjected) {
