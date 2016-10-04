@@ -28,7 +28,7 @@
                 <td ng-if="report.status == 'Completed'" class="reportStatus reportStatus--link">
                     <a target="_blank" ng-href="{{ getDownloadLink(report) }}">{{"REPORT_DOWNLOAD" | translate}}</a>
                 </td>
-                <td ng-if="report.status == 'Error'" class="reportStatus reportStatus--link" >
+                <td ng-if="report.status == 'Error'" class="reportStatus reportStatus--error" >
                     <a ng-click="displayErrorPopup(report)">{{ "REPORT_ERROR" | translate }}</a>
                 </td>
                 <td>
