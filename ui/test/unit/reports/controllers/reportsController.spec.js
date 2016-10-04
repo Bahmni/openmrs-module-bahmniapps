@@ -1,7 +1,7 @@
 describe("ReportsController", function () {
     'use strict';
 
-    var scope, controller, reportServiceMock, scheduleReportPromise, appServiceMock,messagingServiceMock, mockAppDescriptor, spinnerMock,
+    var scope, controller, reportServiceMock, scheduleReportPromise, appServiceMock,messagingServiceMock, mockAppDescriptor, spinnerMock, rootScope,
         typicalReportConfig = {
             "1": {
                 "name": "Report with config that has dateRangeRequired=true",
@@ -27,6 +27,7 @@ describe("ReportsController", function () {
 
     beforeEach(inject(function ($controller, $rootScope) {
         scope = $rootScope.$new();
+        rootScope = $rootScope;
 
         messagingServiceMock = jasmine.createSpyObj('messagingService', ['showMessage']);
         spinnerMock = jasmine.createSpyObj('spinner', ['forPromise']);
@@ -51,8 +52,6 @@ describe("ReportsController", function () {
             "HTML": "text/html"
         });
 
-        scope.reportsRequiringDateRange = [];
-        scope.reportsNotRequiringDateRange = [];
 
         controller = $controller;
         controller('ReportsController', {
@@ -61,14 +60,15 @@ describe("ReportsController", function () {
             reportService: reportServiceMock,
             messagingService: messagingServiceMock,
             spinner : spinnerMock,
+            $rootScope: rootScope,
             FileUploader: function(){}
         });
     }));
 
     it("initializes report sets based on whether date range required or not", function () {
         expect(mockAppDescriptor.getConfigForPage).toHaveBeenCalledWith("reports");
-        expect(scope.reportsRequiringDateRange.length).toBe(2);
-        expect(scope.reportsNotRequiringDateRange.length).toBe(1);
+        expect(rootScope.reportsRequiringDateRange.length).toBe(2);
+        expect(rootScope.reportsNotRequiringDateRange.length).toBe(1);
     });
 
     it('should initialise formats based on the supportedFormats config', function(){
@@ -78,6 +78,7 @@ describe("ReportsController", function () {
             appService: appServiceMock,
             reportService: reportServiceMock,
             messagingService: messagingServiceMock,
+            $rootScope: rootScope,
             FileUploader: function(){}
         });
 
@@ -94,13 +95,13 @@ describe("ReportsController", function () {
 
     it('setDefault sets the right defaults based on section', function () {
 
-        scope.default.reportsRequiringDateRange = {
+        rootScope.default.reportsRequiringDateRange = {
             startDate: new Date()
         };
         scope.setDefault('startDate', 'reportsRequiringDateRange');
 
-        expect(scope.reportsRequiringDateRange[0].startDate).toBe(scope.default.reportsRequiringDateRange.startDate);
-        expect(scope.reportsRequiringDateRange[1].startDate).toBe(scope.default.reportsRequiringDateRange.startDate);
+        expect(rootScope.reportsRequiringDateRange[0].startDate).toBe(rootScope.default.reportsRequiringDateRange.startDate);
+        expect(rootScope.reportsRequiringDateRange[1].startDate).toBe(rootScope.default.reportsRequiringDateRange.startDate);
     });
 
     it("converts dates to string format before sending to reportService", function () {
@@ -127,7 +128,7 @@ describe("ReportsController", function () {
             name: "Vitals",
             responseType: 'text/html'
         };
-        scope.reportsNotRequiringDateRange.push(report);
+        rootScope.reportsNotRequiringDateRange.push(report);
 
         scope.scheduleReport(report);
 
@@ -148,7 +149,7 @@ describe("ReportsController", function () {
             stopDate: null,
             responseType: 'text/html'
         };
-        scope.reportsRequiringDateRange.push(report);
+        rootScope.reportsRequiringDateRange.push(report);
 
         scope.scheduleReport(report);
 
@@ -164,7 +165,7 @@ describe("ReportsController", function () {
             stopDate: '2015-02-01',
             responseType: 'text/html'
         };
-        scope.reportsRequiringDateRange.push(report);
+        rootScope.reportsRequiringDateRange.push(report);
 
         scope.scheduleReport(report);
 
@@ -180,7 +181,7 @@ describe("ReportsController", function () {
             stopDate: null,
             responseType: 'text/html'
         };
-        scope.reportsRequiringDateRange.push(report);
+        rootScope.reportsRequiringDateRange.push(report);
 
         scope.scheduleReport(report);
 
@@ -195,7 +196,7 @@ describe("ReportsController", function () {
             startDate: '2015-02-01',
             stopDate: null
         };
-        scope.reportsRequiringDateRange.push(report);
+        rootScope.reportsRequiringDateRange.push(report);
 
         scope.scheduleReport(report);
 
@@ -212,7 +213,7 @@ describe("ReportsController", function () {
             responseType: 'application/vnd.ms-excel-custom',
             reportTemplateLocation: undefined
         };
-        scope.reportsRequiringDateRange.push(report);
+        rootScope.reportsRequiringDateRange.push(report);
 
         scope.scheduleReport(report);
 
@@ -229,7 +230,7 @@ describe("ReportsController", function () {
             responseType: 'application/vnd.ms-excel-custom',
             reportTemplateLocation: "/tmp/"
         };
-        scope.reportsRequiringDateRange.push(report);
+        rootScope.reportsRequiringDateRange.push(report);
 
         scope.scheduleReport(report);
 
@@ -247,7 +248,7 @@ describe("ReportsController", function () {
             stopDate: '2015-03-01',
             responseType: 'application/vnd.ms-excel-custom',
         };
-        scope.reportsRequiringDateRange.push(report);
+        rootScope.reportsRequiringDateRange.push(report);
         reportServiceMock.scheduleReport.and.callFake(function(reportSent) {
             expect(reportSent.reportTemplateLocation).toBe(report.config.macroTemplatePath);
         });
@@ -267,7 +268,7 @@ describe("ReportsController", function () {
             stopDate: '2015-02-01',
             responseType: 'text/csv'
         };
-        scope.reportsRequiringDateRange.push(report);
+        rootScope.reportsRequiringDateRange.push(report);
         reportServiceMock.getMimeTypeForFormat.and.returnValue('text/csv');
 
         scope.scheduleReport(report);
@@ -329,5 +330,62 @@ describe("ReportsController", function () {
         });
         expect(messagingServiceMock.showMessage).toHaveBeenCalledWith('error', 'Error in scheduling report')
     });
+
+    it("should persist the previously set startDate, stopDate and format when redirecting between MyReports and Reports Tab", function () {
+        expect(rootScope.reportsRequiringDateRange.length).toBe(2);
+        expect(rootScope.reportsNotRequiringDateRange.length).toBe(1);
+
+        beforeEach(inject(function ($controller) {
+
+            rootScope.default.reportsRequiringDateRange = {
+                startDate: '2014-02-01',
+                stopDate: '2015-02-01',
+                responseType: 'text/html'
+            };
+
+            controller = $controller;
+            controller('ReportsController', {
+                $scope: scope,
+                appService: appServiceMock,
+                reportService: reportServiceMock,
+                messagingService: messagingServiceMock,
+                spinner : spinnerMock,
+                $rootScope: rootScope,
+                FileUploader: function(){}
+            });
+        }));
+
+        expect(rootScope.reportsRequiringDateRange.length).toBe(2);
+        expect(rootScope.reportsNotRequiringDateRange.length).toBe(1);
+        expect(rootScope.default.reportsRequiringDateRange['startDate']).toBe('2014-02-01');
+        expect(rootScope.default.reportsRequiringDateRange['stopDate']).toBe('2015-02-01');
+        expect(rootScope.default.reportsRequiringDateRange['responseType']).toBe('text/html');
+    });
+
+    it("should persist the previously set startDate, stopDate and format when redirecting between the MyReports and Reports Tab", function () {
+        expect(rootScope.reportsRequiringDateRange.length).toBe(2);
+        expect(rootScope.reportsNotRequiringDateRange.length).toBe(1);
+
+        beforeEach(inject(function ($controller) {
+            rootScope.reportsNotRequiringDateRange[0].startDate = '2014-02-01';
+            rootScope.reportsNotRequiringDateRange[0].stopDate = '2015-02-01';
+            rootScope.reportsNotRequiringDateRange[0].responseType = 'text';
+
+            controller = $controller;
+            controller('ReportsController', {
+                $scope: scope,
+                appService: appServiceMock,
+                reportService: reportServiceMock,
+                messagingService: messagingServiceMock,
+                spinner : spinnerMock,
+                $rootScope: rootScope,
+                FileUploader: function(){}
+            });
+        }));
+
+        expect(rootScope.reportsNotRequiringDateRange[0].startDate).toBe('2014-02-01');
+        expect(rootScope.reportsNotRequiringDateRange[0].stopDate).toBe('2015-02-01');
+        expect(rootScope.reportsNotRequiringDateRange[0].responseType).toBe('text');
+    })
 
 });
