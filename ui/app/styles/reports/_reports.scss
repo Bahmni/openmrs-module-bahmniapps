@@ -41,9 +41,12 @@
 			&--Processing{
 				color: #01BE24;
 			}
-			&--link{
+			&--link a{
 				color: #0a5580;
 				text-decoration: underline;
+			}
+			&--error a{
+				color: $error;
 			}
 		}
 		td button.delete-report{
