@@ -106,13 +106,6 @@ describe('OfflineSyncService', function () {
                             }
                         };
                     },
-                    insertLabOrderResults: function () {
-                        return {
-                            then: function (callback) {
-                                return callback({});
-                            }
-                        };
-                    },
                     insertVisitData: function () {
                         return {
                             then: function (callback) {
