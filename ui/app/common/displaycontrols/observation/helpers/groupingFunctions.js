@@ -42,5 +42,18 @@ Bahmni.Common.DisplayControl.Observation.GroupingFunctions = function(){
         return _.sortBy(obsArray, 'date').reverse();
     };
 
+    self.persistOrderOfConceptNames = function (bahmniObservations) {
+        var obsArray = [];
+        for (var obsKey in bahmniObservations){
+            var anObs = {
+                "key" : obsKey,
+                "value": [bahmniObservations[obsKey]],
+                "date": bahmniObservations[obsKey].encounterDateTime
+            };
+            obsArray.push(anObs);
+        }
+        return obsArray;
+    };
+
     return self;
 };

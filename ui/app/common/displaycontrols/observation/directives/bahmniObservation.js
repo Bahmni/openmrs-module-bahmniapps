@@ -22,7 +22,12 @@ angular.module('bahmni.common.displaycontrol.observation')
                         });
                     }
 
-                    $scope.bahmniObservations = new Bahmni.Common.DisplayControl.Observation.GroupingFunctions().groupByEncounterDate(observations);
+                    if($scope.config.persistOrderOfConcepts) {
+                        $scope.bahmniObservations = new Bahmni.Common.DisplayControl.Observation.GroupingFunctions().persistOrderOfConceptNames(observations);
+                    } else {
+                        $scope.bahmniObservations = new Bahmni.Common.DisplayControl.Observation.GroupingFunctions().groupByEncounterDate(observations);
+                    }
+
                     if (_.isEmpty($scope.bahmniObservations)) {
                         $scope.noObsMessage = Bahmni.Common.Constants.messageForNoObservation;
                     }
