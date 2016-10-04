@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('bahmni.reports')
-    .controller('ReportsController', ['$scope', 'appService', 'reportService', 'FileUploader', 'messagingService', 'spinner', function ($scope, appService, reportService, FileUploader, messagingService, spinner) {
+    .controller('ReportsController', ['$scope', 'appService', 'reportService', 'FileUploader', 'messagingService', 'spinner', '$rootScope', function ($scope, appService, reportService, FileUploader, messagingService, spinner, $rootScope) {
         $scope.uploader = new FileUploader({
             url: Bahmni.Common.Constants.uploadReportTemplateUrl,
             removeAfterUpload: true,
@@ -12,18 +12,18 @@ angular.module('bahmni.reports')
             fileItem.report.reportTemplateLocation = response;
         };
 
-        $scope.default = {reportsRequiringDateRange: {}, reportsNotRequiringDateRange: {}};
+        $rootScope.default = _.isUndefined($rootScope.default) ? {reportsRequiringDateRange: {}, reportsNotRequiringDateRange: {}} : $rootScope.default;
         $scope.reportsDefined = true;
 
         $scope.setDefault = function (item, header) {
-            var setToChange = header === 'reportsRequiringDateRange' ? $scope.reportsRequiringDateRange : $scope.reportsNotRequiringDateRange;
+            var setToChange = header === 'reportsRequiringDateRange' ? $rootScope.reportsRequiringDateRange : $rootScope.reportsNotRequiringDateRange;
             setToChange.forEach(function (report) {
-                report[item] = $scope.default[header][item];
+                report[item] = $rootScope.default[header][item];
             });
         };
 
         var isDateRangeRequiredFor = function (report) {
-            return _.find($scope.reportsRequiringDateRange, {name: report.name});
+            return _.find($rootScope.reportsRequiringDateRange, {name: report.name});
         };
 
         var validateReport = function (report) {
@@ -82,12 +82,12 @@ angular.module('bahmni.reports')
 
         var initialization = function () {
             var reportList = appService.getAppDescriptor().getConfigForPage("reports");
-            $scope.reportsRequiringDateRange = _.values(reportList).filter(function (report) {
-                return !(report.config && report.config.dateRangeRequired === false);
-            });
-            $scope.reportsNotRequiringDateRange = _.values(reportList).filter(function (report) {
+            $rootScope.reportsRequiringDateRange = _.isUndefined($rootScope.reportsRequiringDateRange) ?  _.values(reportList).filter(function (report) {
+                return !(report.config && report.config.dateRangeRequired === false) ;
+            }) : $rootScope.reportsRequiringDateRange;
+            $rootScope.reportsNotRequiringDateRange = _.isUndefined($rootScope.reportsNotRequiringDateRange) ? _.values(reportList).filter(function (report) {
                 return (report.config && report.config.dateRangeRequired === false);
-            });
+            }) : $rootScope.reportsNotRequiringDateRange;
             $scope.reportsDefined = _.values(reportList).length > 0;
 
             initializeFormats();

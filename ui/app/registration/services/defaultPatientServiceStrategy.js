@@ -12,7 +12,9 @@ angular.module('bahmni.registration')
                 defer.resolve(result);
             }
             $http.get(patientSearchUrl, config).success(onResults)
-                .error(onResults);
+                .error(function (error) {
+                    defer.reject(error)
+                });
             return defer.promise;
         };
 
