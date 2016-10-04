@@ -270,31 +270,33 @@ angular.module('bahmni.common.conceptSet')
                             var valueMap = {};
                             valueMap[conceptName] = conceptSetObsValues[eachObsKey];
                             var conditions = formCondition(formName, valueMap);
-                            if (conditions.error && !_.isEmpty(conditions.error)) {
-                                messagingService.showMessage('error', conditions.error);
-                                processConditions(flattenedObs, [conceptName], false, true);
-                                return
-                            } else {
-                                enableCase && processConditions(flattenedObs, [conceptName], false, false);
+                            if(!_.isUndefined(conditions)){
+                                if (conditions.error && !_.isEmpty(conditions.error)) {
+                                    messagingService.showMessage('error', conditions.error);
+                                    processConditions(flattenedObs, [conceptName], false, true);
+                                    return
+                                } else {
+                                    enableCase && processConditions(flattenedObs, [conceptName], false, false);
+                                }
+                                processConditions(flattenedObs.slice(_.findIndex(flattenedObs, {uniqueId: eachObsKey.split('|')[1]})), conditions.disable, true);
+                                processConditions(flattenedObs.slice(_.findIndex(flattenedObs, {uniqueId: eachObsKey.split('|')[1]})), conditions.enable, false);
+                                _.each(conditions.enable, function (subConditionConceptName) {
+                                    var conditionFn = Bahmni.ConceptSet.FormConditions.rules && Bahmni.ConceptSet.FormConditions.rules[subConditionConceptName];
+                                    if(conditionFn != null) {
+                                        runFormConditionForObs(true,formName, conditionFn, subConditionConceptName, flattenedObs);
+                                    }
+                                });
+                                _.each(conditions.disable, function (subConditionConceptName) {
+                                    var conditionFn = Bahmni.ConceptSet.FormConditions.rules && Bahmni.ConceptSet.FormConditions.rules[subConditionConceptName];
+                                    if(conditionFn != null) {
+                                        _.each(flattenedObs, function (obs) {
+                                            if (obs.concept.name == subConditionConceptName) {
+                                                runFormConditionForObs(false, formName, conditionFn, subConditionConceptName, flattenedObs);
+                                            }
+                                        });
+                                    }
+                                });
                             }
-                            processConditions(flattenedObs.slice(_.findIndex(flattenedObs, {uniqueId: eachObsKey.split('|')[1]})), conditions.disable, true);
-                            processConditions(flattenedObs.slice(_.findIndex(flattenedObs, {uniqueId: eachObsKey.split('|')[1]})), conditions.enable, false);
-                            _.each(conditions.enable, function (subConditionConceptName) {
-                                var conditionFn = Bahmni.ConceptSet.FormConditions.rules && Bahmni.ConceptSet.FormConditions.rules[subConditionConceptName];
-                                if(conditionFn != null) {
-                                    runFormConditionForObs(true,formName, conditionFn, subConditionConceptName, flattenedObs);
-                                }
-                            });
-                            _.each(conditions.disable, function (subConditionConceptName) {
-                                var conditionFn = Bahmni.ConceptSet.FormConditions.rules && Bahmni.ConceptSet.FormConditions.rules[subConditionConceptName];
-                                if(conditionFn != null) {
-                                    _.each(flattenedObs, function (obs) {
-                                        if (obs.concept.name == subConditionConceptName) {
-                                            runFormConditionForObs(false, formName, conditionFn, subConditionConceptName, flattenedObs);
-                                        }
-                                    });
-                                }
-                            });
                         }
                     });
                 };
