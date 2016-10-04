@@ -5,8 +5,17 @@ describe("patient dashboard controller", function () {
     beforeEach(module('bahmni.clinical'));
 
     var scope, spinner, _clinicalDashboardConfig, _clinicalAppConfigService, _state, _appService, _diseaseTemplateService,
-        _stateParams, _controller, _appConfig;
+        _stateParams, _controller, _appConfig,location;
     var diseaseTemplates;
+    location = {
+        path: function () {
+        }, url: function (url) {
+            return url
+        },
+        search : function(){
+            return {currentTab:"DASHBOARD_TAB_PATIENT_SUMMARY_KEY"};
+        }
+    };
 
     var patientDashboardSections = [
         {
@@ -39,7 +48,8 @@ describe("patient dashboard controller", function () {
         _diseaseTemplateService = jasmine.createSpyObj('diseaseTemplateService', ['getLatestDiseaseTemplates']);
 
         _clinicalDashboardConfig = new Bahmni.Clinical.ClinicalDashboardConfig([
-            {dashboardName: "General", displayByDefault: true, sections: patientDashboardSections}
+            {dashboardName: "General", displayByDefault: true, sections: patientDashboardSections,
+                translationKey : "DASHBOARD_TAB_GENERAL_KEY"}
         ]);
 
         _state = {
@@ -140,6 +150,48 @@ describe("patient dashboard controller", function () {
             patientContext: {patient: {}}
 
         });
+    });
+
+    it("should init dashboard tabs based on default tab", function (){
+        expect(_clinicalDashboardConfig.currentTab.translationKey).toBe("DASHBOARD_TAB_GENERAL_KEY");
+    });
+
+    it("should init dashboard tabs based on current tab", function (){
+        _clinicalDashboardConfig = new Bahmni.Clinical.ClinicalDashboardConfig([
+            {dashboardName: "General", displayByDefault: true, sections: patientDashboardSections,
+                translationKey : "DASHBOARD_TAB_GENERAL_KEY"},
+            {dashboardName: "General", displayByDefault: true, sections: patientDashboardSections,
+                translationKey : "DASHBOARD_TAB_PATIENT_SUMMARY_KEY"}
+        ]);
+
+        _appConfig.getConfigValue.and.returnValue({showDetailsWithinDateRange: true});
+
+        diseaseTemplates = [
+            new Bahmni.Clinical.DiseaseTemplate({name: "Breast Cancer"}, breastCancerDiseaseTemplate.observationTemplates),
+            new Bahmni.Clinical.DiseaseTemplate({name: "Diabetes"}, diabetesDiseaseTemplate.observationTemplates)
+        ];
+
+        _diseaseTemplateService.getLatestDiseaseTemplates.and.returnValue(specUtil.respondWith(diseaseTemplates)
+        );
+
+        _controller('PatientDashboardController', {
+            $scope: scope,
+            encounterService: jasmine.createSpy(),
+            clinicalAppConfigService: _clinicalAppConfigService,
+            clinicalDashboardConfig: _clinicalDashboardConfig,
+            visitSummary: {},
+            printer: {},
+            $state: _state,
+            spinner: spinner,
+            appService: _appService,
+            $stateParams: _stateParams,
+            diseaseTemplateService: _diseaseTemplateService,
+            patientContext: {patient: {}},
+            $location : location
+
+        });
+        expect(_clinicalDashboardConfig.currentTab.translationKey).toBe("DASHBOARD_TAB_PATIENT_SUMMARY_KEY");
+
     });
 
     var breastCancerDiseaseTemplate =
