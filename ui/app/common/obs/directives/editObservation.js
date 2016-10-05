@@ -55,19 +55,16 @@ angular.module('bahmni.common.obs')
                 }
               $scope.$parent.shouldPromptBeforeClose = false;
                 $scope.$parent.shouldPromptBrowserReload = false;
-                var updateEditedObservation =   function(observations) {
+                var getEditedObservation = function (observations) {
                     return _.map(observations, function (obs) {
                         if (obs.uuid == $scope.editableObservations[0].uuid) {
                             return $scope.editableObservations[0];
-                        }else{
-                            obs.groupMembers = updateEditedObservation(obs.groupMembers);
-                            return obs;
                         }
                     })
                 };
 
                 if (shouldEditSpecificObservation()) {
-                    $scope.encounter.observations = updateEditedObservation($scope.encounter.observations);
+                    $scope.encounter.observations = getEditedObservation($scope.encounter.observations);
                 }
                 $scope.encounter.observations = new Bahmni.Common.Domain.ObservationFilter().filter($scope.encounter.observations);
                 $scope.encounter.orders = addOrdersToEncounter();
