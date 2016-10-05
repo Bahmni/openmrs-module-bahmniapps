@@ -14,7 +14,7 @@ angular.module('bahmni.clinical')
                     $scope.consultation.observationForms = getObservationForms($scope.consultation.observationForms);
                 }
             };
-
+            
             var getObservationForms = function (observationsForms) {
                 var forms = [];
                 var observations = $scope.consultation.observations || [];
@@ -41,5 +41,10 @@ angular.module('bahmni.clinical')
                     });
                 }
             });
+
+            $scope.toggle = function(item) {
+                item.show = !item.show
+            };
+
             init();
         }]);
