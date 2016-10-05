@@ -273,7 +273,6 @@ form, .form {
 form, .form {
   input, select, textarea, ul.select {
     color: $text;
-    width: 198px;
     padding: 2px 10px;
     @media (max-width: 1024px) {
       padding: 5px 10px;
