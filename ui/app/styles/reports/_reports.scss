@@ -3,6 +3,9 @@
 		@include clearfix();
 		margin-top: 10px;
 	}
+	input[type="text"]{
+		width:12.5em;
+	}
 	table {
 		th, td {
 			font-size: 14px;
