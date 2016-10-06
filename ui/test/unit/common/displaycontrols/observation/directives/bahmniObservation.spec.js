@@ -52,7 +52,7 @@ describe("BahmniObservation", function () {
             scope.patient = {uuid: '123'};
             scope.config = {showGroupDateTime: false, encounterUuid: "encounterUuid", conceptNames: ["Concept Name"]};
             scope.section = {};
-            observationsService.fetchForEncounter.and.returnValue({});
+            observationsService.fetchForEncounter.and.returnValue(specUtil.respondWithPromise(q, {data: {}}));
 
             mockBackend.expectGET('../common/displaycontrols/observation/views/observationDisplayControl.html').respond("<div>dummy</div>");
 
@@ -73,7 +73,7 @@ describe("BahmniObservation", function () {
             scope.patient = {uuid: '123'};
             scope.config = {showGroupDateTime: false, conceptNames: ["Concept Name"], scope: "latest", numberOfVisits: 1};
             scope.section = {};
-            observationsService.fetch.and.returnValue({});
+            observationsService.fetch.and.returnValue(specUtil.respondWithPromise(q, {data: {}}));
 
             mockBackend.expectGET('../common/displaycontrols/observation/views/observationDisplayControl.html').respond("<div>dummy</div>");
 
@@ -95,7 +95,7 @@ describe("BahmniObservation", function () {
             scope.patient = {uuid: '123'};
             scope.config = {showGroupDateTime: false, conceptNames: ["Concept Name"], scope: "latest", numberOfVisits: 1};
             scope.section = {};
-            observationsService.fetch.and.returnValue({});
+            observationsService.fetch.and.returnValue(specUtil.respondWithPromise(q, {data: {}}));
             appService.getAppDescriptor.and.returnValue({
                 getConfigValue: function () {
                     return {
@@ -125,14 +125,14 @@ describe("BahmniObservation", function () {
             expect(observationsService.fetch.calls.count()).toEqual(1);
             expect(observationsService.fetchForEncounter.calls.count()).toEqual(0);
             expect(observationsService.fetchForPatientProgram.calls.count()).toEqual(0);
-        })
+        });
 
         it("should fetch the only the specific observation if observation uuid is specified in config", function () {
             scope.patient = {uuid: '123'};
             scope.config = {observationUuid : "observationUuid"};
             scope.section = {};
             scope.enrollment = "uuid";
-            observationsService.getByUuid.and.returnValue({});
+            observationsService.getByUuid.and.returnValue(specUtil.respondWithPromise(q, {data: {concept: {name: "obsConcept"}}}));
             mockBackend.expectGET('../common/displaycontrols/observation/views/observationDisplayControl.html').respond("<div>dummy</div>");
 
             var element = $compile(simpleHtml)(scope);
@@ -149,7 +149,7 @@ describe("BahmniObservation", function () {
             scope.config = {conceptNames: ["Concept Name"], scope: "latest"};
             scope.section = {};
             scope.enrollment = 'patientProgramUuid';
-            observationsService.fetch.and.returnValue({});
+            observationsService.fetchForPatientProgram.and.returnValue(specUtil.respondWithPromise(q, {data: {}}));
 
             mockBackend.expectGET('../common/displaycontrols/observation/views/observationDisplayControl.html').respond("<div>dummy</div>");
 

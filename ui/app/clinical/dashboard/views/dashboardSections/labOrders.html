@@ -1,10 +1,12 @@
 <div ng-controller="PatientDashboardLabOrdersController" class="dashboard-laborders-section">
-    <h2 ng-dialog="dashboard/views/dashboardSections/labSummary.html"
-        ng-dialog-data="{{dialogData}}"
-        ng-dialog-class="ngdialog-theme-default ng-dialog-all-details-page"
-        ng-dialog-controller="PatientDashboardLabSummaryController" class="section-title has-link">
-		<span class="title-link"> {{section | titleTranslate}} </span>
-	    <i class="fa fa-external-link"></i>
-    </h2>
-    <investigation-results params="dashboardConfig"></investigation-results>
+    <div>
+        <h2 ng-dialog="dashboard/views/dashboardSections/labSummary.html"
+            ng-dialog-data="{{dialogData}}"
+            ng-dialog-class="ngdialog-theme-default ng-dialog-all-details-page"
+            ng-dialog-controller="PatientDashboardLabSummaryController" class="section-title has-link">
+            <span class="title-link"> {{section | titleTranslate}} </span>
+            <i class="fa fa-external-link"></i>
+        </h2>
+        <investigation-results params="dashboardConfig"></investigation-results>
+    </div>
 </div>

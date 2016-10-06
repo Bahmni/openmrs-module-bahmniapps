@@ -9,6 +9,7 @@ angular.module('bahmni.common.conceptSet')
                 var conceptSetUIConfig = conceptSetUiConfigService.getConfig();
                 var observationMapper = new Bahmni.ConceptSet.ObservationMapper();
                 var validationHandler = $scope.validationHandler() || contextChangeHandler;
+                var id = "#" + $scope.sectionId;
 
                 var focusFirstObs = function () {
                     if ($scope.conceptSetFocused && $scope.rootObservation.groupMembers && $scope.rootObservation.groupMembers.length > 0) {
@@ -44,7 +45,7 @@ angular.module('bahmni.common.conceptSet')
                         messagingService.showMessage('error',error.message);
                     });
                 };
-                spinner.forPromise(init());
+                spinner.forPromise(init(), id);
 
                 $scope.atLeastOneValueIsSet = $scope.atLeastOneValueIsSet || false;
                 $scope.conceptSetRequired = false;
@@ -235,7 +236,7 @@ angular.module('bahmni.common.conceptSet')
 
                 var cleanUpListenerShowPrevious = $scope.$on('event:showPrevious' + conceptSetName, function () {
 
-                    return spinner.forPromise(observationsService.fetch($scope.patient.uuid, $scope.conceptSetName, null, $scope.numberOfVisits, null, true)).then(function (response) {
+                    return spinner.forPromise(observationsService.fetch($scope.patient.uuid, $scope.conceptSetName, null, $scope.numberOfVisits, null, true), id).then(function (response) {
                         var recentObservations = ObservationUtil.flattenObsToArray(response.data);
                         var conceptSetObservation = $scope.observations.filter(function (observation) {
                             return observation.conceptSetName === $scope.conceptSetName;
@@ -380,7 +381,8 @@ angular.module('bahmni.common.conceptSet')
                     patient: "=",
                     conceptSetFocused: "=?",
                     collapseInnerSections: "=?",
-                    atLeastOneValueIsSet: "=?"
+                    atLeastOneValueIsSet: "=?",
+                    sectionId: "="
                 },
                 templateUrl: '../common/concept-set/views/conceptSet.html',
                 controller: controller
