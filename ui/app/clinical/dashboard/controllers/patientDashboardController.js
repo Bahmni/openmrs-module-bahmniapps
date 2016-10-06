@@ -4,7 +4,7 @@ angular.module('bahmni.clinical')
     .controller('PatientDashboardController', ['$scope', 'clinicalAppConfigService', 'clinicalDashboardConfig', 'printer',
         '$state', 'spinner', 'visitSummary', 'appService', '$stateParams', 'diseaseTemplateService', 'patientContext','$location',
         function ($scope, clinicalAppConfigService, clinicalDashboardConfig, printer,
-                  $state, spinner, visitSummary, appService, $stateParams, diseaseTemplateService, patientContext ,$location) {
+                  $state, spinner, visitSummary, appService, $stateParams, diseaseTemplateService, patientContext , $location, $filter) {
 
             $scope.patient = patientContext.patient;
             $scope.activeVisit = $scope.visitHistory.activeVisit;
@@ -28,7 +28,7 @@ angular.module('bahmni.clinical')
                 var printScope = $scope.$new();
                 printScope.isDashboardPrinting = true;
                 printScope.tabBeingPrinted = tab || clinicalDashboardConfig.currentTab;
-                var dashboardModel = Bahmni.Common.DisplayControl.Dashboard.create(printScope.tabBeingPrinted);
+                var dashboardModel = Bahmni.Common.DisplayControl.Dashboard.create(printScope.tabBeingPrinted, $filter);
                 spinner.forPromise(diseaseTemplateService.getLatestDiseaseTemplates(
                     $stateParams.patientUuid,
                     clinicalDashboardConfig.getDiseaseTemplateSections(printScope.tabBeingPrinted),
@@ -70,7 +70,7 @@ angular.module('bahmni.clinical')
                 }
                 clinicalDashboardConfig.switchTab(dashboard);
                 addTabNameToParams(dashboard);
-                var dashboardModel = Bahmni.Common.DisplayControl.Dashboard.create(dashboard);
+                var dashboardModel = Bahmni.Common.DisplayControl.Dashboard.create(dashboard, $filter);
                 diseaseTemplateService.getLatestDiseaseTemplates(
                     $stateParams.patientUuid, clinicalDashboardConfig.getDiseaseTemplateSections(), dashboard.startDate, dashboard.endDate).then(function (diseaseTemplate) {
                         $scope.diseaseTemplates = diseaseTemplate;

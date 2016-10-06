@@ -11,7 +11,7 @@ angular.module('bahmni.common.displaycontrol.pivottable').directive('pivotTable'
                 visitUuid:"=",
                 status:"=?"
             },
-            link: function (scope) {
+            link: function (scope, element) {
 
                 if(!scope.config) {
                     return;
@@ -49,7 +49,7 @@ angular.module('bahmni.common.displaycontrol.pivottable').directive('pivotTable'
                 }
 
                 var pivotDataPromise = pivotTableService.getPivotTableFor(scope.patientUuid, scope.config, scope.visitUuid, startDate, endDate);
-                spinner.forPromise(pivotDataPromise);
+                spinner.forPromise(pivotDataPromise, element);
                 pivotDataPromise.then(function(response){
                     var concepts = _.map(response.data.conceptDetails,function(conceptDetail){
                         return {

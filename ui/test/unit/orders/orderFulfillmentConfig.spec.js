@@ -2,17 +2,12 @@
 
 describe('OrderFulfillmentConfig Factory', function () {
 
-    var spinnerMock, conceptSetServiceMock, orderFulfillmentConfig;
+    var conceptSetServiceMock, orderFulfillmentConfig;
 
     beforeEach(function () {
         module('bahmni.orders');
 
         module(function ($provide) {
-            spinnerMock = jasmine.createSpyObj('spinner', ['forPromise']);
-            $provide.value('spinner', spinnerMock);
-
-            spinnerMock.forPromise.and.callFake(function(promise){return promise;});
-
             conceptSetServiceMock = jasmine.createSpyObj('conceptSetService',['getConcept']);
             $provide.value('conceptSetService',conceptSetServiceMock);
 
@@ -32,11 +27,6 @@ describe('OrderFulfillmentConfig Factory', function () {
 
     it("Should not return null", function () {
         expect(orderFulfillmentConfig("Viral Fever")).not.toBeUndefined();
-    });
-
-    it("Should initiate spinner on call", function () {
-        orderFulfillmentConfig("Viral Fever");
-        expect(spinnerMock.forPromise).toHaveBeenCalled();
     });
 
     it("Should fetch concept set members", function () {
@@ -79,8 +69,4 @@ describe('OrderFulfillmentConfig Factory', function () {
         });
     });
 
-    it("The whole process should happen with a spinner loaded",function(){
-        var resultantPromise = orderFulfillmentConfig("Viral Fever");
-        expect(spinnerMock.forPromise).toHaveBeenCalledWith(resultantPromise);
-    });
 });

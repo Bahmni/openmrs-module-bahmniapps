@@ -7,9 +7,10 @@ describe('Disposition DisplayControl', function () {
         mockBackend,
         rootScope,
         deferred,
+        timeout,
         simpleHtml = '<disposition id="disposition" params="section" patient-uuid="patientUuid" visit-uuid="visitUuid"></disposition>';
 
-    var dispositions = [
+    dispositions = [
         {
             "code": "ABSCONDING",
             "voided": false,
@@ -63,11 +64,12 @@ describe('Disposition DisplayControl', function () {
         $provide.value('spinner', _spinner);
     });
 
-    beforeEach(inject(function ($compile, $httpBackend, $rootScope,$q) {
+    beforeEach(inject(function ($compile, $httpBackend, $rootScope,$q, $timeout) {
         compile = $compile;
         mockBackend = $httpBackend;
         rootScope = $rootScope;
         q = $q;
+        timeout = $timeout;
     }));
 
     it('should call dispositons by visit when visitUuid is passed', function () {
@@ -85,6 +87,7 @@ describe('Disposition DisplayControl', function () {
 
         scope.$digest();
         mockBackend.flush();
+        timeout.flush();
 
         var compiledElementScope = element.isolateScope();
         scope.$digest();
@@ -108,6 +111,7 @@ describe('Disposition DisplayControl', function () {
 
         scope.$digest();
         mockBackend.flush();
+        timeout.flush();
 
         var compiledElementScope = element.isolateScope();
         scope.$digest();
@@ -133,6 +137,7 @@ describe('Disposition DisplayControl', function () {
 
         scope.$digest();
         mockBackend.flush();
+        timeout.flush();
 
         var compiledElementScope = element.isolateScope();
         scope.$digest();
@@ -205,6 +210,7 @@ describe('Disposition DisplayControl', function () {
 
         scope.$digest();
         mockBackend.flush();
+        timeout.flush();
 
         var compiledElementScope = element.isolateScope();
         scope.$digest();
@@ -213,29 +219,4 @@ describe('Disposition DisplayControl', function () {
         expect(compiledElementScope.noDispositionsMessage).toEqual(Bahmni.Common.Constants.messageForNoDisposition);
 
     });
-
-    it('should return noDispositions message when dispositions are not available', function () {
-        var scope = rootScope.$new();
-
-        scope.section = {
-            numberOfVisits: 4
-        };
-        scope.patientUuid="123456"
-
-        mockBackend.expectGET('../common/displaycontrols/disposition/views/disposition.html').respond("<div>dummy</div>");
-        mockBackend.expectGET('/openmrs/ws/rest/v1/bahmnicore/disposition/patient?numberOfVisits=4&patientUuid=123456').respond([]);
-
-        var element = compile(simpleHtml)(scope);
-
-        scope.$digest();
-        mockBackend.flush();
-
-        var compiledElementScope = element.isolateScope();
-        scope.$digest();
-
-        expect(compiledElementScope.dispositions).not.toBeUndefined();
-        expect(compiledElementScope.noDispositionsMessage).toEqual(Bahmni.Common.Constants.messageForNoDisposition);
-
-    });
-
 });

@@ -1,5 +1,6 @@
 <section class="visits-navbar-section">
-    <div visit-paginator next-fn="::loadVisit" previous-fn="::loadVisit" current-visit-uuid="::visitUuid" visits="::visitHistory.visits"
+    <div visit-paginator next-fn="::loadVisit" previous-fn="::loadVisit" current-visit-uuid="::visitUuid"
+         visits="::visitHistory.visits"
          visit-summary="::visitSummary">
     </div>
 </section>
@@ -17,11 +18,12 @@
             </div>
             <div ng-switch-when="observation">
                 <div ng-if="::section.config" id="observation-section">
-                    <section class="block observation dashboard-section">
+                    <section class="block observation dashboard-section" id="observationSection">
                         <ul bm-gallery access-impression="true">
                             <bahmni-observation patient="::patient" visit-uuid="{{::visitUuid}}"
                                                 config="::section.config"
-                                                section-title="::section | titleTranslate"></bahmni-observation>
+                                                section-title="::section | titleTranslate"
+                                                class="section-title"></bahmni-observation>
                         </ul>
                     </section>
                 </div>
@@ -30,12 +32,13 @@
                 <section ng-if="::section.config" class="block dashboard-section">
                     <bahmni-diagnosis patient-uuid="::section.config.patientUuid"
                                       config="::section.config" visit-uuid="::visitUuid" show-latest-diagnosis=
-                                      "true"></bahmni-diagnosis>
+                                              "true"></bahmni-diagnosis>
                 </section>
             </div>
             <div ng-switch-when="pivotTable">
                 <div ng-if="::section.config">
-                    <section pivot-table visit-uuid="::visitUuid" config="::section.config" patient-uuid="::patient.uuid" display-name="::section | titleTranslate"></section>
+                    <section pivot-table visit-uuid="::visitUuid" config="::section.config"
+                             patient-uuid="::patient.uuid" display-name="::section | titleTranslate"></section>
                 </div>
             </div>
             <div data-ng-switch-when="investigationResult">
@@ -45,13 +48,16 @@
                 </div>
             </div>
             <div data-ng-switch-when="radiology">
-                <div ng-if="::section.config" class="dashboard-radiology-section">
-                    <bm-documents patient="::patient" config="::section.config" encounter-type="'RADIOLOGY'"></bm-documents>
+                <div id="Radiology" ng-if="::section.config"
+                         class="dashboard-radiology-section">
+                    <bm-documents patient="::patient" config="::section.config"
+                                  encounter-type="'RADIOLOGY'"></bm-documents>
                 </div>
             </div>
             <div data-ng-switch-when="patientFiles">
-                <div ng-if="section.config && !isBeingPrinted">
-                    <bm-documents patient="::patient" config="::section.config" encounter-type="'Patient Document'"></bm-documents>
+                <div id="Patient-Files" ng-if="section.config && !isBeingPrinted">
+                    <bm-documents patient="::patient" config="::section.config"
+                                  encounter-type="'Patient Document'"></bm-documents>
                 </div>
             </div>
             <div data-ng-switch-when="treatment">
@@ -68,38 +74,45 @@
             </div>
             <div data-ng-switch-when="admissionDetails">
                 <div ng-if="::section.config">
-                    <admission-details patient-uuid="patient.uuid" params="::section.config" visit-summary="visitSummary"></admission-details>
+                    <admission-details patient-uuid="patient.uuid" params="::section.config"
+                                       visit-summary="visitSummary"></admission-details>
                 </div>
             </div>
             <div data-ng-switch-when="observationGraph">
-                <section class="dashboard-section">
+                <section class="block dashboard-section">
                     <div ng-if="::section.config">
-                        <observation-graph visit-uuid="visitUuid" params="section" patient-uuid="patient.uuid"></observation-graph>
+                        <observation-graph visit-uuid="visitUuid" params="section"
+                                           patient-uuid="patient.uuid"></observation-graph>
                     </div>
                 </section>
             </div>
             <div data-ng-switch-when="order">
-                <section class="order dashboard-section">
+                <section class="block order dashboard-section">
                     <div ng-if="::section.config">
-                        <orders-control visit-uuid="::visitUuid" patient="patient" section="::section.config" order-type="section.config.orderType" config="section.config" show-title="true" section-title="section | titleTranslate"></orders-control>
+                        <orders-control visit-uuid="::visitUuid" patient="patient" section="::section.config"
+                                        order-type="section.config.orderType" config="section.config"
+                                        show-title="true" section-title="section | titleTranslate"></orders-control>
                     </div>
                 </section>
             </div>
             <div data-ng-switch-when="custom">
-                <div ng-if="::section.config">
-                    <custom-display-control patient="patient" visit-uuid="::visitUuid"
-                            config="::section.config" visit-summary="visitSummary"></custom-display-control>
-                </div>
+                <section class="block dashboard-section">
+                    <div ng-if="::section.config">
+                        <custom-display-control patient="patient" visit-uuid="::visitUuid"
+                                                config="::section.config"
+                                                visit-summary="visitSummary"></custom-display-control>
+                    </div>
+                </section>
             </div>
             <div data-ng-switch-when="pacsOrders">
-                <div ng-if="::section.config">
+                <section ng-if="::section.config" class="block dashboard-section">
                     <pacs-orders patient="patient"
                                  order-type="section.config.orderType"
                                  visit-uuid="::visitUuid"
                                  section="section"
                                  config="::section.config">
                     </pacs-orders>
-                </div>
+                </section>
             </div>
         </div>
     </div>

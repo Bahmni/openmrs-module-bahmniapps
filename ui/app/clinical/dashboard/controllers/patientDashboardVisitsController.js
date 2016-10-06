@@ -12,5 +12,4 @@ angular.module('bahmni.clinical')
 
             $scope.dashboardConfig = $scope.dashboard.getSectionByType("visits").dashboardConfig || {};
             $scope.patientUuid = $stateParams.patientUuid;
-
         }]);

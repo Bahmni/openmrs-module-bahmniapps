@@ -51,12 +51,17 @@ angular.module('bahmni.common.displaycontrol.pacsOrders')
                         }));
                 };
 
-                spinner.forPromise(init());
+                $scope.initialization = init();
+            };
+
+            var link = function ($scope, element) {
+                spinner.forPromise($scope.initialization, element);
             };
 
             return {
                 restrict:'E',
                 controller: controller,
+                link: link,
                 templateUrl:"../common/displaycontrols/pacsOrders/views/pacsOrders.html",
                 scope:{
                     patient:"=",

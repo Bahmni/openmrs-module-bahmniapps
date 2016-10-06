@@ -1,6 +1,6 @@
 'use strict';
 
-Bahmni.Common.DisplayControl.Dashboard = function (config) {
+Bahmni.Common.DisplayControl.Dashboard = function (config, $filter) {
 
     if (config.startDate || config.endDate) {
         _.each(config.sections, function (section) {
@@ -9,7 +9,7 @@ Bahmni.Common.DisplayControl.Dashboard = function (config) {
         });
     }
 
-    var _sections = _.sortBy(_.map(config.sections, Bahmni.Common.DisplayControl.Dashboard.Section.create), function (section) {
+    var _sections = _.sortBy(_.map(config.sections, function (section) { return Bahmni.Common.DisplayControl.Dashboard.Section.create(section, $filter)}), function (section) {
         return section.displayOrder;
     });
 
@@ -133,6 +133,6 @@ Bahmni.Common.DisplayControl.Dashboard = function (config) {
     }
 };
 
-Bahmni.Common.DisplayControl.Dashboard.create = function (config) {
-    return new Bahmni.Common.DisplayControl.Dashboard(config);
+Bahmni.Common.DisplayControl.Dashboard.create = function (config, $filter) {
+    return new Bahmni.Common.DisplayControl.Dashboard(config, $filter);
 };
