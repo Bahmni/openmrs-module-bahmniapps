@@ -5,7 +5,7 @@ describe("patient dashboard controller", function () {
     beforeEach(module('bahmni.clinical'));
 
     var scope, spinner, _clinicalDashboardConfig, _clinicalAppConfigService, _state, _appService, _diseaseTemplateService,
-        _stateParams, _controller, _appConfig,location;
+        _stateParams, _controller, _appConfig, location, filter;
     var diseaseTemplates;
     location = {
         path: function () {
@@ -70,12 +70,18 @@ describe("patient dashboard controller", function () {
     }));
 
     beforeEach(function () {
-        inject(function ($controller, $rootScope) {
+        module(function($provide) {
+            $provide.value('titleTranslateFilter', function (value) {
+                return value;
+            });
+        });
+        inject(function ($controller, $rootScope, $filter) {
             scope = $rootScope.$new();
             scope.patient = {};
             scope.visitHistory = {};
 
             spinner = jasmine.createSpyObj('spinner', ['forPromise']);
+            filter = $filter;
             _controller = $controller;
 
         });
@@ -109,7 +115,8 @@ describe("patient dashboard controller", function () {
             appService: _appService,
             $stateParams: _stateParams,
             diseaseTemplateService: _diseaseTemplateService,
-            patientContext: {patient: {}}
+            patientContext: {patient: {}},
+            $filter: filter
 
         });
     });

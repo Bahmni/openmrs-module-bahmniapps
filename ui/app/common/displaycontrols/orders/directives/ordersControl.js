@@ -67,12 +67,17 @@ angular.module('bahmni.common.displaycontrol.orders')
                 $scope.getSectionTitle = function(){
                     return $filter('titleTranslate')($scope.section);
                 };
-
-                spinner.forPromise(init());
+                $scope.initialization = init();
             };
+
+            var link = function ($scope, element) {
+                spinner.forPromise($scope.initialization, element);
+            };
+
             return {
                 restrict:'E',
                 controller: controller,
+                link: link,
                 templateUrl:"../common/displaycontrols/orders/views/ordersControl.html",
                 scope:{
                     patient:"=",

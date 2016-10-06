@@ -1,10 +1,10 @@
 'use strict';
 
 angular.module('bahmni.orders')
-    .factory('orderFulfillmentConfig', ['conceptSetService', 'spinner',
-        function (conceptSetService, spinner) {
+    .factory('orderFulfillmentConfig', ['conceptSetService',
+        function (conceptSetService) {
             return function (formName) {
-                return spinner.forPromise(conceptSetService.getConcept({
+                return conceptSetService.getConcept({
                     name: formName,
                     v: Bahmni.Common.Constants.conceptSetRepresentationForOrderFulfillmentConfig
                 }).then(function (response) {
@@ -19,7 +19,7 @@ angular.module('bahmni.orders')
                     config.showHeader = false;
                     config.scope = "latest";
                     return config;
-                }));
+                });
             }
         }
     ]
