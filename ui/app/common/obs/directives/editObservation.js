@@ -66,8 +66,15 @@ angular.module('bahmni.common.obs')
                     })
                 };
 
+                var getEditedObservation = function (observations) {
+                    return _.find(observations, function(obs) {
+                        return obs.uuid == $scope.editableObservations[0].uuid || getEditedObservation(obs.groupMembers);
+                    });
+                };
+
                 if (shouldEditSpecificObservation()) {
-                    $scope.encounter.observations = updateEditedObservation($scope.encounter.observations);
+                    var allObservations = updateEditedObservation($scope.encounter.observations);
+                    $scope.encounter.observations = [getEditedObservation(allObservations)];
                 }
                 $scope.encounter.observations = new Bahmni.Common.Domain.ObservationFilter().filter($scope.encounter.observations);
                 $scope.encounter.orders = addOrdersToEncounter();
