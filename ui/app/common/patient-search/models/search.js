@@ -10,6 +10,7 @@ Bahmni.Common.PatientSearch.Search = function (searchTypes) {
     self.activePatients = [];
     self.navigated = false;
     self.searchColumns = self.searchType && self.searchType.searchColumns ? self.searchType.searchColumns : ["identifier", "name"];
+    
     angular.forEach(searchTypes, function (searchType) {
         searchType.patientCount = "..."
     });
