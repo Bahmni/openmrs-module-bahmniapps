@@ -34,8 +34,9 @@
 		}
 		td.report-sort-date{
 			padding: 10px 5px;
-			color: $mediumGray;
+			color: #009384;
 			border: none;
+			font-family:$primaryBoldFont;
 		}
 		td.reportStatus{
 			&--Queued{
@@ -49,7 +50,8 @@
 				text-decoration: underline;
 			}
 			&--error a{
-				color: $error;
+				color: red;
+				text-decoration: underline;
 			}
 		}
 		td button.delete-report{
