@@ -1,8 +1,10 @@
 'use strict';
 
 angular.module('bahmni.common.displaycontrol.bacteriologyresults')
-    .directive('bacteriologyResultsControl', ['bacteriologyResultsService', 'appService', '$q', 'spinner', '$filter',  'ngDialog', 'bacteriologyTabInitialization', '$controller','consultationInitialization', '$state','messagingService','$rootScope','$translate',
-        function (bacteriologyResultsService, appService, $q, spinner, $filter,ngDialog, bacteriologyTabInitialization, $controller, consultationInitialization, $state, messagingService,$rootScope, $translate) {
+    .directive('bacteriologyResultsControl', ['bacteriologyResultsService', 'appService', '$q', 'spinner', '$filter',  'ngDialog',
+        'bacteriologyTabInitialization', '$controller','consultationInitialization', 'messagingService','$rootScope','$translate',
+        function (bacteriologyResultsService, appService, $q, spinner, $filter,ngDialog, bacteriologyTabInitialization, $controller,
+                  consultationInitialization, messagingService,$rootScope, $translate) {
             var controller = function ($scope) {
                 var shouldPromptBeforeClose = true;
                 var init = function () {
@@ -11,12 +13,13 @@ angular.module('bahmni.common.displaycontrol.bacteriologyresults')
                         patientUuid: $scope.patient.uuid,
                         patientProgramUuid: $scope.enrollment
                     };
-                    return bacteriologyTabInitialization().then(function (data) {
+                    $scope.initializationPromise = bacteriologyTabInitialization().then(function (data) {
                         $scope.bacteriologyTabData  = data;
                         bacteriologyResultsService.getBacteriologyResults(params).then(function (response) {
                             handleResponse(response);
                         });
                     });
+                    return $scope.initializationPromise;
                 };
 
                 var handleResponse = function (response) {
@@ -41,13 +44,13 @@ angular.module('bahmni.common.displaycontrol.bacteriologyresults')
                 $scope.editBacteriologySample = function(specimen){
 
                     var configForPrompt = appService.getAppDescriptor().getConfigValue('showSaveConfirmDialog');
-                    var promise = consultationInitialization($scope.patient.uuid, null, null).then(function(consultationContext) {
+                    $scope.editDialogInitializationPromise = consultationInitialization($scope.patient.uuid, null, null).then(function(consultationContext) {
                         $scope.consultation = consultationContext;
                         $scope.consultation.newlyAddedSpecimens = [];
 
                         $scope.isOnDashboard = true;
                         $scope.consultation.newlyAddedSpecimens.push(specimen);
-                        ngDialog.open({
+                        $scope.dialogElement = ngDialog.open({
                             template: '../common/displaycontrols/bacteriologyresults/views/editBacteriologySample.html',
                             scope: $scope,
                             className: "ngdialog-theme-default ng-dialog-all-details-page ng-dialog-edit",
@@ -61,15 +64,18 @@ angular.module('bahmni.common.displaycontrol.bacteriologyresults')
                                         if(!$rootScope.hasVisitedConsultation) {
                                             window.onbeforeunload = null;
                                         }
-                                        spinner.forPromise(init());
+
+                                        init();
                                         return true;
                                     }
                                     return false;
+                                } else {
+                                    init();
                                 }
                             }
-                        })
+                        });
+                        console.log(JSON.stringify($scope.dialogElement));
                     });
-                    spinner.forPromise(promise);
                 };
 
                 $scope.saveBacteriologySample = function(specimen){
@@ -83,14 +89,13 @@ angular.module('bahmni.common.displaycontrol.bacteriologyresults')
                         shouldPromptBeforeClose = false;
                         var specimenMapper = new Bahmni.Clinical.SpecimenMapper();
                         specimen.voidIfEmpty();
-                        var createPromise = bacteriologyResultsService.saveBacteriologyResults(specimenMapper.mapSpecimenToObservation(specimen));
+                        $scope.saveBacteriologyResultsPromise = bacteriologyResultsService.saveBacteriologyResults(specimenMapper.mapSpecimenToObservation(specimen));
 
-                        spinner.forPromise(createPromise).then(function() {
+                        $scope.saveBacteriologyResultsPromise.then(function() {
                             if(!$rootScope.hasVisitedConsultation) {
                                 window.onbeforeunload = null;
                             }
                             $rootScope.hasVisitedConsultation = false;
-                            $state.go($state.current, {}, {reload: true});
                             ngDialog.close();
                             messagingService.showMessage('info', "{{'CLINICAL_SAVE_SUCCESS_MESSAGE_KEY' | translate}}");
                         });
@@ -110,8 +115,21 @@ angular.module('bahmni.common.displaycontrol.bacteriologyresults')
                     return test && test.groupMembers;
                 };
 
-                spinner.forPromise(init());
+                init();
             };
+
+            var link = function($scope, element) {
+                $scope.$watch('initializationPromise', function() {
+                    $scope.initializationPromise && spinner.forPromise($scope.initializationPromise, element);
+                });
+                $scope.$watch('editDialogInitializationPromise', function() {
+                    $scope.editDialogInitializationPromise && spinner.forPromise($scope.editDialogInitializationPromise, element);
+                });
+                $scope.$watch('saveBacteriologyResultsPromise', function() {
+                    $scope.saveBacteriologyResultsPromise && spinner.forPromise($scope.saveBacteriologyResultsPromise, $('#' + $scope.dialogElement.id));
+                });
+            };
+
             return {
                 restrict: 'E',
                 controller: controller,
@@ -123,6 +141,7 @@ angular.module('bahmni.common.displaycontrol.bacteriologyresults')
                     config: "=",
                     visitUuid: "=",
                     enrollment: "@"
-                }
+                },
+                link: link
             }
         }]);

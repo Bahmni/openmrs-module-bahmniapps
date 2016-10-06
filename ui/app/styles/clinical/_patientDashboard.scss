@@ -188,12 +188,12 @@ category:  Layout - sections
 .dashboard-sections-wrapper {
   @include clearfix();
   .dashboard-sections {
+    @include clearfix;
     margin: 0;
     box-sizing: border-box;
     float: left;
     width: 100%;
     padding: 0;
-    @include clearfix;
     &.halfpage-container{
       width: 50%;
       .LAYOUT_25_75{
@@ -1103,4 +1103,5 @@ table.treatments-details-table{
     }
   }
 }
+
 

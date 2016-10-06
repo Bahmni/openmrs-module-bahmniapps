@@ -58,7 +58,7 @@ angular.module('bahmni.clinical')
             }
         };
 
-        spinner.forPromise(loadDispositionActions());
+        spinner.forPromise(loadDispositionActions(),'#disposition');
 
 
         var saveDispositions = function() {

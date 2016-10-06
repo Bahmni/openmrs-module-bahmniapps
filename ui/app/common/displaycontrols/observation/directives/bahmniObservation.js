@@ -42,7 +42,6 @@ angular.module('bahmni.common.displaycontrol.observation')
                         }
                     }
                 };
-
                 var fetchObservations = function () {
                     if ($scope.observations) {
                         mapObservation($scope.observations, $scope.config);
@@ -50,21 +49,22 @@ angular.module('bahmni.common.displaycontrol.observation')
                     }
                     else {
                         if ($scope.config.observationUuid){
-                            spinner.forPromise(observationsService.getByUuid($scope.config.observationUuid)).then(function(response){
+                            $scope.initialization = observationsService.getByUuid($scope.config.observationUuid).then(function(response){
                                 mapObservation([response.data], $scope.config)
                             })
                         } else if ($scope.config.encounterUuid) {
-                            spinner.forPromise(observationsService.fetchForEncounter($scope.config.encounterUuid, $scope.config.conceptNames)).then(function (response) {
+                          var fetchForEncounter = observationsService.fetchForEncounter($scope.config.encounterUuid, $scope.config.conceptNames);
+                            $scope.initialization = fetchForEncounter.then(function (response) {
                                 mapObservation(response.data, $scope.config)
                             });
                         } else if ($scope.enrollment) {
-                            spinner.forPromise(observationsService.fetchForPatientProgram($scope.enrollment, $scope.config.conceptNames, $scope.config.scope)).then(function (response) {
+                            $scope.initialization = observationsService.fetchForPatientProgram($scope.enrollment, $scope.config.conceptNames, $scope.config.scope).then(function (response) {
                                 mapObservation(response.data, $scope.config)
                             });
                         }else {
-                            spinner.forPromise(observationsService.fetch($scope.patient.uuid, $scope.config.conceptNames,
+                            $scope.initialization = observationsService.fetch($scope.patient.uuid, $scope.config.conceptNames,
                                 $scope.config.scope, $scope.config.numberOfVisits, $scope.visitUuid,
-                                $scope.config.obsIgnoreList, null)).then(function (response) {
+                                $scope.config.obsIgnoreList, null).then(function (response) {
                                 mapObservation(response.data, $scope.config);
                             });
                         }
@@ -86,12 +86,16 @@ angular.module('bahmni.common.displaycontrol.observation')
                     "patient": $scope.patient,
                     "section": $scope.section
                 };
-
-
             };
+
+            var link = function ($scope, element) {
+                $scope.initialization && spinner.forPromise($scope.initialization, element);
+            };
+
             return {
                 restrict: 'E',
                 controller: controller,
+                link: link,
                 templateUrl: "../common/displaycontrols/observation/views/observationDisplayControl.html",
                 scope: {
                     patient: "=",

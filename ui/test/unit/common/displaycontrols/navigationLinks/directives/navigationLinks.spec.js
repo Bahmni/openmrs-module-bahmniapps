@@ -5,6 +5,7 @@ describe('NavigationalLinks DisplayControl', function () {
     var html = '<navigation-links params="section" link-params="linkParams"></navigation-links>';
     var mandatoryConfig = { sections: [{type: "General"}, {type: "Discharge Summary"}] };
     var linkParams = {patientUuid: "patientUuid", visitUuid: "visitUuid"};
+    var spinner = jasmine.createSpyObj('spinner', ['show', 'hide', 'forPromise']);
 
     var showLinks = ["home", "visit", "inpatient"];
     var customLinks = [
@@ -22,6 +23,7 @@ describe('NavigationalLinks DisplayControl', function () {
 
     beforeEach(module(function ($provide) {
         $provide.value('appService', appService);
+        $provide.value('spinner', spinner);
     }));
 
     beforeEach(inject(function($filter, $compile, $httpBackend, $rootScope, $q){
@@ -106,5 +108,4 @@ describe('NavigationalLinks DisplayControl', function () {
         compileDirective(params, linkParams);
         expect(compiledScope.showUrl({url: "../clinical/#/default/patient/{{patientUuid}}/dashboard/visit/{{visitUuid}}/?encounterUuid=active"})).toBeFalsy();
     });
-
 });

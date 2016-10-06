@@ -30,17 +30,25 @@
         return CLINICAL_DISPLAY_CONTROL_URL.replace('SECTION_NAME', section.type);
     };
 
-    Bahmni.Common.DisplayControl.Dashboard.Section = function (section) {
+    var getId = function (section, $filter) {
+        if (section.type !== "custom") {
+            var key = section.translationKey || section.title;
+            return !_.isUndefined($filter) && key ? $filter('titleTranslate')(key).toValidId() : key;
+        }
+    };
+
+    Bahmni.Common.DisplayControl.Dashboard.Section = function (section, $filter) {
         angular.extend(this, section);
         this.displayOrder = section.displayOrder;
         this.data = section.data || {};
         this.isObservation = !!section.isObservation;
         this.patientAttributes = section.patientAttributes || [];
         this.viewName = getViewUrl(this);
+        this.id = getId(this, $filter);
     };
 
-    Bahmni.Common.DisplayControl.Dashboard.Section.create = function (section) {
-        return new Bahmni.Common.DisplayControl.Dashboard.Section(section);
+    Bahmni.Common.DisplayControl.Dashboard.Section.create = function (section, $filter) {
+        return new Bahmni.Common.DisplayControl.Dashboard.Section(section, $filter);
     };
 
 })();

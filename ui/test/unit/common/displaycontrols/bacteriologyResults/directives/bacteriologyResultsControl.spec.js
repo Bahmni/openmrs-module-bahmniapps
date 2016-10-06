@@ -3,7 +3,7 @@
 describe('Bacteriology Results Control', function () {
     var $compile,
         mockBackend, q,messagingService,
-        scope,deferred,state,
+        scope,deferred,
         section,element,_bacteriologyResultsService, appService, _spinner,mockedBacteriologyTabInitialization,patient={uuid:"patientUuid"},
         simpleHtml = '<bacteriology-results-control id="dashboard-drug-order-details" patient="patient" section="section"></bacteriology-results-control>',
         mockDialog,mockConsultationInitialization;
@@ -14,12 +14,11 @@ describe('Bacteriology Results Control', function () {
     beforeEach(module('bahmni.common.displaycontrol.bacteriologyresults'));
     beforeEach(module(function ($provide) {
         _bacteriologyResultsService = jasmine.createSpyObj('bacteriologyResultsService', ['getBacteriologyResults', 'saveBacteriologyResults']);
+        _bacteriologyResultsService.saveBacteriologyResults.and.returnValue(specUtil.createFakePromise({}));
         appService = jasmine.createSpyObj('appService', ['getAppDescriptor']);
         var mockAppDescriptor = jasmine.createSpyObj('appDescriptor', ['getConfigValue']);
         appService.getAppDescriptor.and.returnValue(mockAppDescriptor);
         _spinner = jasmine.createSpyObj('spinner',['forPromise','then']);
-        state = jasmine.createSpyObj('$state',['go']);
-        state.go.and.returnValue(true);
         _spinner.forPromise.and.returnValue(specUtil.createFakePromise({}));
 
 
@@ -49,7 +48,6 @@ describe('Bacteriology Results Control', function () {
         $provide.value('ngDialog', mockDialog);
         $provide.value('consultationInitialization', mockConsultationInitialization);
         $provide.value('messagingService', messageServiceMock);
-        $provide.value('$state', state);
         $provide.value('$translate', {});
     }));
 
