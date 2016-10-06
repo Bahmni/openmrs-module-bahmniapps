@@ -15,6 +15,7 @@ angular.module('bahmni.common.uicontrols.programmanagment')
             $scope.outComesForProgram = [];
             $scope.configName = $stateParams.configName;
             $scope.today = DateUtil.getDateWithoutTime(DateUtil.now());
+            var id = "#programEnrollmentContainer";
 
             var updateActiveProgramsList = function () {
                 spinner.forPromise(programService.getPatientPrograms($scope.patient.uuid).then(function (programs) {
@@ -25,7 +26,7 @@ angular.module('bahmni.common.uicontrols.programmanagment')
                     $scope.endedPrograms.showProgramSection = true;
                 }).then(function() {
                     formatProgramDates();
-                }));
+                }), id);
             };
 
             var formatProgramDates = function() {
@@ -48,12 +49,10 @@ angular.module('bahmni.common.uicontrols.programmanagment')
                 spinner.forPromise(programService.getAllPrograms().then(function(programs) {
                     $scope.allPrograms = programs;
                     $scope.allPrograms.showProgramSection = true;
-                }));
-
+                }), id);
                 spinner.forPromise(programService.getProgramAttributeTypes().then(function (programAttributeTypes) {
                     $scope.programAttributeTypes = programAttributeTypes;
-                }));
-
+                }), id);
                 $scope.programSelected = null;
                 $scope.patientProgramAttributes = {};
                 $scope.programEnrollmentDate = null;
