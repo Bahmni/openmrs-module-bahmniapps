@@ -6,7 +6,7 @@ angular.module('bahmni.common.uiHelper')
         var showSpinnerForElement = function (element) {
             $('#overlay').remove();
             if($(element).find(".dashboard-section-loader").length === 0) {
-              var topLevelDiv = $(element).find("div").first();
+              var topLevelDiv = $(element).find("div,section").eq(0);
               topLevelDiv.css('position', 'relative');
               topLevelDiv.append('<div class="dashboard-section-loader"></div>');
             }

@@ -1,3 +1,6 @@
-<treatment-table ng-if="::params.showListView"
-                 drug-order-sections="::treatmentSections" params="::params"></treatment-table>
-<treatment-chart ng-if="::params.showFlowSheet" ipd-drug-orders="::ipdDrugOrders" params="::params" visit-summary="::visitSummary"></treatment-chart>
+<div>
+    <treatment-table ng-if="::params.showListView"
+                     drug-order-sections="::treatmentSections" params="::params"></treatment-table>
+    <treatment-chart ng-if="::params.showFlowSheet" ipd-drug-orders="::ipdDrugOrders" params="::params"
+                     visit-summary="::visitSummary"></treatment-chart>
+</div>
