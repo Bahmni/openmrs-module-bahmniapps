@@ -392,7 +392,7 @@ describe("MyReportsController", function () {
         expect(ngDialog.open).toHaveBeenCalledWith({
             template: 'views/errorMessagePopup.html',
             className: "ngdialog-theme-default report",
-            data: "errorMessage first line"
+            data: "errorMessage first line\nsecond line"
         });
     });
 
