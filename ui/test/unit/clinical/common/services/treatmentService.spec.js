@@ -2,8 +2,6 @@
 
 describe("TreamentService", function () {
     var _$http;
-    var treatmentService;
-    var appService;
 
     beforeEach(module('bahmni.clinical'));
     

@@ -5,7 +5,6 @@ describe("PatientDashboardTreatmentController", function () {
     beforeEach(module('bahmni.clinical'));
 
     var scope, ngDialog;
-    var dashboard;
 
     var treatmentConfigParams = {
         title: "Treatments",

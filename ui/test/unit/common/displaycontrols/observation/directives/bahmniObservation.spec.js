@@ -1,7 +1,7 @@
 'use strict';
 
 describe("BahmniObservation", function () {
-    var appService, scope, $compile, mockBackend, observationsService, visitFormService, q, spinner;
+    var appService, scope, $compile, mockBackend, observationsService, q, spinner;
     var simpleHtml = '<bahmni-observation section="section" patient="patient" is-on-dashboard="true" config="config" enrollment="enrollment" observations="observations"></bahmni-observation>';
 
     beforeEach(module('ngHtml2JsPreprocessor'));

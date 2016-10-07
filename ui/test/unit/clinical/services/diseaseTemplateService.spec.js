@@ -2,7 +2,6 @@
 
 describe("DiseaseTemplateService", function () {
     var _clinicalAppConfigService, _$http;
-    var diseaseTemplateService;
 
     var mockHttp = function(method,data){
         _$http[method].and.returnValue(specUtil.createFakePromise(data));

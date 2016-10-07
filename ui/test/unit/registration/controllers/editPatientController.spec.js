@@ -6,7 +6,6 @@ describe('EditPatientController', function () {
     var scopeMock = jasmine.createSpyObj('scopeMock', ['actions']);
     var rootScopeMock = jasmine.createSpyObj('rootScopeMock', ['patientConfiguration']);
     var patientServiceMock = jasmine.createSpyObj('patientServiceMock', ['get', 'update']);
-    var preferencesMock = jasmine.createSpyObj('preferencesMock', ['']);
     var patientModelMock = jasmine.createSpyObj('patientModelMock', ['']);
     var spinnerMock = jasmine.createSpyObj('spinnerMock', ['forPromise']);
     var appServiceMock = jasmine.createSpyObj('appServiceMock', ['getAppDescriptor']);

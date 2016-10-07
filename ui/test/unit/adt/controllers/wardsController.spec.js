@@ -2,15 +2,6 @@
 
 describe("WardsController", function () {
     var wardService, createController, scope, bedService, userService, rootScope;
-    var wardsList = [{
-        occupiedBeds: 3,
-        totalBeds: 5,
-        ward: {name: "first ward", childLocations: [{display: "Physical space for  first ward"}]}
-    }, {
-        occupiedBeds: 4,
-        totalBeds: 15,
-        ward: {name: "second ward", childLocations: [{display: "Physical space for second ward"}]}
-    }];
 
     beforeEach(function () {
         module('bahmni.adt');

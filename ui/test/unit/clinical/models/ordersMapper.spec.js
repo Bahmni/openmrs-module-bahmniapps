@@ -149,7 +149,6 @@ describe('OrdersMapper', function () {
     it("should sort tests", function () {
         var firstTestOrder = createOrder("Test1", "2014-03-24T14:38:13.000+0530");
         var secondTestOrder = createOrder("Test2", "2014-03-24T14:38:13.000+0530");
-        var thirdTestOrder = createOrder("Test3", "2014-03-25T14:38:13.000+0530");
         var allTestsAndPanelsConcept = {setMembers:[{name:{name:"Test2"}}, {name:{name:"Test1"}}]};
         var encounterTransactions = [
             {providers: [sampleProvider()], orders: [firstTestOrder, secondTestOrder], observations: []}

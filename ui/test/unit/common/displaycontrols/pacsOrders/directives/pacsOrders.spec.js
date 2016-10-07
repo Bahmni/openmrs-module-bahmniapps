@@ -60,7 +60,7 @@ describe("PacsOrdersDisplayControl", function () {
         scope.orderUuid = "someOrderUuid";
 
         orderService.getOrders.and.returnValue(specUtil.createFakePromise(orders));
-        var element = generateElement();
+        generateElement();
 
         expect(orderService.getOrders.calls.mostRecent().args[0].orderUuid).toBe("someOrderUuid");
     });
@@ -164,7 +164,7 @@ describe("PacsOrdersDisplayControl", function () {
                 deferred.resolve({data: orders});
                 return deferred.promise;
             });
-            var element = generateElement();
+            generateElement();
 
             scope.$digest();
 

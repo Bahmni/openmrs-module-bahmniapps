@@ -77,10 +77,6 @@ describe("OrderSetController", function () {
 
     }));
 
-    var orderTypeInitialization =[{uuid:"something"}];
-
-    var orderSetResult = {};
-
 
     beforeEach(inject(function ($controller, $rootScope, $q) {
         scope = $rootScope.$new();
