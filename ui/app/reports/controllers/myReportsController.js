@@ -83,13 +83,10 @@ angular.module('bahmni.reports')
             ngDialog.open({
                 template: 'views/errorMessagePopup.html',
                 className: "ngdialog-theme-default report",
-                data: getExceptionMessage(report.errorMessage)
+                data: report.errorMessage
             });
         };
 
-        var getExceptionMessage = function (stackTrace) {
-            return stackTrace.split('\n')[0];
-        };
 
         init();
     }]);
