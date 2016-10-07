@@ -46,7 +46,7 @@ describe('Treatment Table DisplayControl', function () {
         scope.$digest();
 
         expect(compiledElementScope.isOtherActiveSection(otherActiveDrugOrderSection.visitDate)).toBe(true)
-    })
+    });
 
     it("should return false if the section is not other active drug orders", function () {
         var scope = rootScope.$new();

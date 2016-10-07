@@ -79,11 +79,11 @@ describe('dispositionService', function () {
     });
 
     it('should return disposition note concept', function () {
-        var actualDispositions = dispositionService.getDispositionNoteConcept();
+        dispositionService.getDispositionNoteConcept();
         expect(_$http.get).toHaveBeenCalled();
     });
     it('should return disposition actions', function () {
-        var actualDispositions = dispositionService.getDispositionActions();
+        dispositionService.getDispositionActions();
         expect(_$http.get).toHaveBeenCalled();
     });
 

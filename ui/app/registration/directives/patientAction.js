@@ -7,8 +7,6 @@ angular.module('bahmni.registration')
         function ($window, $location, $state, spinner, $rootScope, $stateParams,
                   $bahmniCookieStore, appService, visitService, sessionService, encounterService,
                   messagingService, $translate, offlineService) {
-            var global =1;
-            
             
             var controller = function ($scope) {
                 var self = this;
