@@ -8,7 +8,7 @@ describe('VisitSummary', function () {
             };
 
             var visitSummary = new Bahmni.Common.VisitSummary(visit);
-            expect(visitSummary.isAdmitted()).toEqual(true)
+            expect(visitSummary.isAdmitted()).toEqual(true);
         });
 
         it("should return false if the visit has no admission details", function () {
@@ -16,7 +16,7 @@ describe('VisitSummary', function () {
             };
 
             var visitSummary = new Bahmni.Common.VisitSummary(visit);
-            expect(visitSummary.isAdmitted()).toEqual(false)
+            expect(visitSummary.isAdmitted()).toEqual(false);
         });
     });
 
@@ -29,7 +29,7 @@ describe('VisitSummary', function () {
             };
 
             var visitSummary = new Bahmni.Common.VisitSummary(visit);
-            expect(visitSummary.isDischarged()).toEqual(true)
+            expect(visitSummary.isDischarged()).toEqual(true);
         });
 
         it("should return false if the visit has no discharge details", function () {
@@ -37,7 +37,7 @@ describe('VisitSummary', function () {
             };
 
             var visitSummary = new Bahmni.Common.VisitSummary(visit);
-            expect(visitSummary.isDischarged()).toEqual(false)
+            expect(visitSummary.isDischarged()).toEqual(false);
         });
     });
 
@@ -50,7 +50,7 @@ describe('VisitSummary', function () {
             };
 
             var visitSummary = new Bahmni.Common.VisitSummary(visit);
-            expect(visitSummary.getAdmissionEncounterUuid()).toEqual("admissionUuid")
+            expect(visitSummary.getAdmissionEncounterUuid()).toEqual("admissionUuid");
         });
 
         it("should return undefined if the visit has no admission details", function () {
@@ -58,7 +58,7 @@ describe('VisitSummary', function () {
             };
 
             var visitSummary = new Bahmni.Common.VisitSummary(visit);
-            expect(visitSummary.getAdmissionEncounterUuid()).toEqual(undefined)
+            expect(visitSummary.getAdmissionEncounterUuid()).toEqual(undefined);
         });
     });
 
@@ -71,7 +71,7 @@ describe('VisitSummary', function () {
             };
 
             var visitSummary = new Bahmni.Common.VisitSummary(visit);
-            expect(visitSummary.getDischargeEncounterUuid()).toEqual("dischargeUuid")
+            expect(visitSummary.getDischargeEncounterUuid()).toEqual("dischargeUuid");
         });
 
         it("should return undefined if the visit has no discharge details", function () {
@@ -79,7 +79,7 @@ describe('VisitSummary', function () {
             };
 
             var visitSummary = new Bahmni.Common.VisitSummary(visit);
-            expect(visitSummary.getDischargeEncounterUuid()).toEqual(undefined)
+            expect(visitSummary.getDischargeEncounterUuid()).toEqual(undefined);
         });
     });
 });

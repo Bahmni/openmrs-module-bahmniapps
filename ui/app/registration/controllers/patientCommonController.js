@@ -98,7 +98,7 @@ angular.module('bahmni.registration')
 
             var executeShowOrHideRules = function () {
                 _.each(Bahmni.Registration.AttributesConditions.rules, function (rule) {
-                    executeRule(rule)
+                    executeRule(rule);
                 });
             };
 

@@ -26,7 +26,7 @@ angular.module('bahmni.home')
             var getLastLoggedinLocation = function () {
                 return _.find(initialData.locations,function(location){
                     return location.uuid === getLoginLocationUuid();
-                })
+                });
             };
 
             $scope.loginInfo.currentLocation = getLastLoggedinLocation();
