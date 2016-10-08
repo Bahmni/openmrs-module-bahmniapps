@@ -16,7 +16,7 @@ angular.module('httpErrorInterceptor',[])
 
             function stringAfter(value, searchString) {
                 var indexOfFirstColon = value.indexOf(searchString);
-                return value.substr(indexOfFirstColon + 1).trim()
+                return value.substr(indexOfFirstColon + 1).trim();
             }
 
             function getServerError(message) {

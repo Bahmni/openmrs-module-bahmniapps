@@ -60,7 +60,7 @@ describe("Radiology Display Control", function () {
             visitStopDate: "2014-10-02T16:10:11.000+0530"
         }];
 
-        var radiologyRecords = [records_group1, records_group2]
+        var radiologyRecords = [records_group1, records_group2];
 
         scope.config = {translationKey: "translationKey"};
         encounterService.getEncountersForEncounterType.and.callFake(function(param1, param2){

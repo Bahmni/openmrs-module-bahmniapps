@@ -394,6 +394,6 @@ angular.module('bahmni.registration')
             };
 
             $scope.isExtraIdentifierConfigured = function () {
-                return !_.isEmpty($scope.extraIdentifierTypes)
+                return !_.isEmpty($scope.extraIdentifierTypes);
             }
         }]);

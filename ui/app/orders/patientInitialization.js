@@ -10,7 +10,7 @@ angular.module('bahmni.orders').factory('patientInitialization',
                     return patientService.getPatient(patientUuid).then(function (openMRSPatientResponse) {
                         var patient = patientMapper.map(openMRSPatientResponse.data);
                         return {"patient": patient};
-                    })
+                    });
                 };
 
                 return getPatient();

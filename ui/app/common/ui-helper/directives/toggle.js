@@ -7,7 +7,7 @@ angular.module('bahmni.common.uiHelper')
             $scope.toggle = $scope.toggle === undefined ? false : $scope.toggle;
             $(element).click(function () {
                 $scope.$apply(function () {
-                    $scope.toggle = !$scope.toggle
+                    $scope.toggle = !$scope.toggle;
                 });
             });
 
