@@ -258,12 +258,12 @@
         <section class="block disposition section-grid" ng-if="disposition.code && !disposition.voided">
             <h2 class="section-title">Disposition</h2>
             <ul class="block-content">
-                <li ng-click="toggle(disposition)">
+                <li>
                     <div class="expander-row row-click">
                         <span class="disposition-state">{{disposition.conceptName}} <span>on</span> {{disposition.dispositionDateTime | bahmniDateTime }}</span>
-                        <button class="toggle fr" ng-class="{'has-notes': disposition.additionalObs[0].value}">
-                            <i class="fa fa-plus-circle" ng-hide="disposition.show"></i>
-                            <i class="fa fa-minus-circle" ng-show="disposition.show"></i>
+                        <button class="toggle fr" ng-class="{'has-notes': disposition.additionalObs[0].value}" toggle="disposition.show">
+                            <i class="fa fa-plus-circle"></i>
+                            <i class="fa fa-minus-circle"></i>
                         </button>
                     </div>
                     <div>
