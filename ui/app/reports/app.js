@@ -21,7 +21,8 @@ angular
                 abstract: true,
                 views : {
                     'additional-header': {
-                        templateUrl: 'views/dashboardHeader.html'
+                        templateUrl: 'views/dashboardHeader.html',
+                        controller: 'DashboardHeaderController'
                     },
                     'mainContent' : {
                         template : '<div class="opd-wrapper">' +
