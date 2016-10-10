@@ -110,9 +110,9 @@ angular.module('bahmni.registration')
                         } else {
                             goToVisitPage(patientProfileData);
                         }
-                    }), function () {
+                    }, function () {
                         $state.go('patient.edit', {patientUuid: $scope.patient.uuid});
-                    });
+                    }));
                 };
 
                 init();
