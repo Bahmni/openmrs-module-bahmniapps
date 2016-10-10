@@ -55,7 +55,7 @@ angular.module('bahmni.common.displaycontrol.programs')
             };
 
             var link = function ($scope, element) {
-                spinner.forPromise($scope.initialization, element);
+                spinner.forPromise($scope.initialization,  $scope.sectionId !== undefined ? "#"+$scope.sectionId : element);
             };
 
             return {
@@ -64,7 +64,8 @@ angular.module('bahmni.common.displaycontrol.programs')
                 controller: controller,
                 templateUrl: "../common/displaycontrols/programs/views/programs.html",
                 scope: {
-                    patient: "="
+                    patient: "=",
+                    sectionId: "="
                 }
             }
         }]);
