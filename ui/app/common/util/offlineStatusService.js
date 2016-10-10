@@ -8,8 +8,9 @@ angular.module('bahmni.common.util')
             }
         };
         this.setOfflineOptions = function () {
-            var showNetworkStatusIndicator = appService.getAppDescriptor().getConfigValue("showNetworkStatusMessage");
-            var intervalFrequency = appService.getAppDescriptor().getConfigValue("networkStatusCheckInterval");
+            var networkConnectivity =  appService.getAppDescriptor().getConfigValue("networkConnectivity");
+            var showNetworkStatusIndicator = networkConnectivity != null ? networkConnectivity.showNetworkStatusMessage : null;
+            var intervalFrequency = networkConnectivity != null ? networkConnectivity.networkStatusCheckInterval : null;
             intervalFrequency = intervalFrequency ? intervalFrequency : 5000;
             if (showNetworkStatusIndicator === true) {
                 Offline.options = {

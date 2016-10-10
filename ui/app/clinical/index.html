@@ -16,7 +16,6 @@
         <link rel="stylesheet" href="../components/ngDialog/css/ngDialog-theme-plain.min.css"/>
         <link rel="stylesheet" href="../components/ng-tags-input/ng-tags-input.bootstrap.min.css"/>
         <link rel="stylesheet" href="../components/ng-tags-input/ng-tags-input.min.css"/>
-        <link rel="stylesheet" href="../components/offline/themes/offline-language-english.css">
         <link rel="stylesheet" href="../components/offline/themes/offline-theme-dark.css">
 
         <!-- build:css clinical.min.css -->
@@ -31,6 +30,7 @@
                 <div ui-view="content" id="view-content" class="opd-content-wrapper"></div>
             </div>
         </div>
+        <link rel="stylesheet" href="../components/offline/themes/{{getLocaleCSS()}}.css">
         <script src="../components/jquery/jquery.min.js"></script>
         <script src="../lib/jquery/jquery-ui-1.10.4.custom.min.js"></script>
         <script src="../lib/modernizr.custom.80690.js"></script>
