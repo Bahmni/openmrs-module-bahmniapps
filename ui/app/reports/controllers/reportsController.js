@@ -58,6 +58,25 @@ angular.module('bahmni.reports')
             return true;
         };
 
+        $scope.run = function (report) {
+            if(appService.getAppDescriptor().getConfigValue("scheduledReports")) {
+                $scope.scheduleReport(report);
+            } else {
+                $scope.downloadReport(report);
+            }
+        };
+
+        $scope.downloadReport = function (report) {
+            console.log($scope.config);
+            if (validateReport(report)) {
+                reportService.generateReport(report);
+                if (report.responseType === 'application/vnd.ms-excel-custom') {
+                    report.reportTemplateLocation = undefined;
+                    report.responseType = _.values($scope.formats)[0];
+                }
+            }
+        };
+
         $scope.scheduleReport = function (report) {
             if (validateReport(report)) {
                 spinner.forPromise(reportService.scheduleReport(report)).then(function(){
