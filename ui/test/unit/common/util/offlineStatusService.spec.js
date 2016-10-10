@@ -9,11 +9,11 @@ describe("offlineStatusService", function () {
     beforeEach(function () {
         appService.getAppDescriptor.and.returnValue({
             getConfigValue: function (input) {
-                if (input === "showNetworkStatusMessage") {
-                    return true;
-                }
-                if (input === "networkStatusCheckInterval") {
-                    return 9000;
+                if (input === "networkConnectivity") {
+                    return {
+                        "showNetworkStatusMessage": true,
+                        "networkStatusCheckInterval": 9000
+                    }
                 }
             }
         });
