@@ -24,7 +24,7 @@ angular.module('bahmni.clinical')
         };
 
         var link = function ($scope, element) {
-           spinner.forPromise($scope.initialization, element);
+           spinner.forPromise($scope.initialization, $scope.sectionId !== undefined ? "#"+$scope.sectionId : element);
         };
 
         return {
@@ -33,7 +33,8 @@ angular.module('bahmni.clinical')
             link: link,
             templateUrl: "displaycontrols/investigationresults/views/investigationResults.html",
             scope: {
-                params: "="
+                params: "=",
+                sectionId: "="
             }
         };
     }]);

@@ -98,7 +98,7 @@ angular.module('bahmni.clinical')
                 $scope.noVisitsMessage = "No Visits for this patient.";
             };
             var link = function ($scope, element) {
-                spinner.forPromise($scope.initialization, element);
+                spinner.forPromise($scope.initialization, $scope.sectionId !== undefined ? "#"+$scope.sectionId : element);
             };
 
             return {
@@ -108,7 +108,8 @@ angular.module('bahmni.clinical')
                 templateUrl: "displaycontrols/allvisits/views/visitsTable.html",
                 scope: {
                     params: "=",
-                    patientUuid: "="
+                    patientUuid: "=",
+                    sectionId: "="
                 }
             };
         }]);
