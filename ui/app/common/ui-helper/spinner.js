@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('bahmni.common.uiHelper')
-    .factory('spinner', ['messagingService', '$timeout', function (messagingService, $timeout) {
+    .factory('spinner', ['messagingService', '$timeout', '$rootScope', function (messagingService, $timeout, $rootScope) {
 
         var showSpinnerForElement = function (element) {
             $('#overlay').remove();
@@ -52,6 +52,10 @@ angular.module('bahmni.common.uiHelper')
             });
             return promise;
         };
+
+        $rootScope.$on('$stateChangeStart', function() {
+            hide("body");
+        });
 
         return {
             forPromise: forPromise,
