@@ -10,21 +10,22 @@
         width: auto;
         overflow-x: auto;
         overflow-y: hidden;
-        margin-left:180px;
-        th,td{
-            width:100px;
-            max-width:300px !important;
-            box-sizing: border-box;
-            &:first-child, &:first-child{
-                width: 180px !important;
-                text-align: left;
-                position: absolute;
-                top:auto;
-                left:0;
+        margin-left:185px;
+        table{
+            table-layout: auto !important;
+            th,td{
+                min-width:100px;
+                word-break: normal !important;
                 box-sizing: border-box;
-                border-right: none;
-                padding-left: 10px;
-                height: inherit;
+                &:first-child, &:first-child{
+                    width: 185px !important;
+                    text-align: left;
+                    position: absolute;
+                    top:auto;
+                    left:0;
+                    padding-left: 10px;
+                    height: inherit;
+                }
             }
         }
     }
