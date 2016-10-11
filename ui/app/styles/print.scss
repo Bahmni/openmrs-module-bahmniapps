@@ -704,7 +704,7 @@ h3 {
                 padding-bottom: 11px;
                 display: inline-block;
                 &.monitoring-legends{
-                    &--grey:before{
+                    &--yellow:before{
                        content: "∅";
                     }
                     &--green:before{
@@ -747,7 +747,7 @@ h3 {
                                content: "✗";
                            }
                        }
-                       &--grey{
+                       &--yellow{
                            &:before{
                                content:"∅";
                            }
