@@ -4,7 +4,7 @@ angular.module('bahmni.common.uiHelper')
  .directive("fixedFirstColumn", [function () {
     return {
         restrict: "A",
-        template: "<div class='table-responsive'><div ng-transclude  class='table-responsive-fixedColumn'></div></div>",
+        template: "<div class='table-responsive'><div ng-transclude  class='table-responsive-fixedColumn' ></div></div>",
         transclude: true,
         link: function ($scope, $element) {
             var interval = setTimeout(function () {
@@ -18,7 +18,7 @@ angular.module('bahmni.common.uiHelper')
                         return;
                     }
 
-                    var column0 = angular.element(columns[0]).children()[0] || columns[0];
+                    var column0 = columns[0];
                     var column1 = columns[1];
 
                     // Calculate heights of each <td>.
@@ -41,7 +41,7 @@ angular.module('bahmni.common.uiHelper')
                         clearInterval(interval);
                     }
                 });
-            }, 1000);
+            }, 5000);
 
         }
     };
