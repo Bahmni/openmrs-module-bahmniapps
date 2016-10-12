@@ -39,7 +39,6 @@ angular.module('bahmni.registration')
                     if (address) {
                         selectedAddressUuids[fieldName] = address.uuid;
                         selectedUserGeneratedIds[fieldName] = address.userGeneratedId;
-                        $scope.$parent.patient.addressCode = selectedUserGeneratedIds[fieldName];
                         populateSelectedAddressUuids(levelIndex + 1, address.uuid);
                     }
                 });
@@ -61,7 +60,6 @@ angular.module('bahmni.registration')
                     $scope.selectedValue[parentField] = parent.name;
                     parent = parent.parent;
                 });
-                $scope.$parent.patient.addressCode = selectedUserGeneratedIds[fieldName];
             };
         };
 
@@ -123,12 +121,10 @@ angular.module('bahmni.registration')
                     selectedUserGeneratedIds[childField] = null;
                 }
             });
-            if (!_.isEmpty($scope.address[fieldName])) {
-                $scope.$parent.patient.addressCode = selectedUserGeneratedIds[fieldName]? selectedUserGeneratedIds[fieldName] : $scope.$parent.patient.addressCode;
-            } else {
+
+            if (_.isEmpty($scope.address[fieldName])) {
                 $scope.address[fieldName] = null;
                 selectedUserGeneratedIds[fieldName] = null;
-                $scope.$parent.patient.addressCode = selectedUserGeneratedIds[$scope.findParentField(fieldName)];
             }
 
         };
