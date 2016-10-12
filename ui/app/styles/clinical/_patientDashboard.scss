@@ -198,10 +198,18 @@ category:  Layout - sections
       width: 50%;
       .LAYOUT_25_75{
         width: 49.7%;
+        @media screen and (max-width: 760px) {
+          width:100%;
+          float:none;
+        }
       }
       &.dashboard-sections-left{
         .LAYOUT_25_75{
           width:48.3%;
+          @media screen and (max-width: 760px) {
+            width:100%;
+            float:none;
+          }
         }
       }
       @media screen and (max-width: 859px) {
@@ -236,11 +244,19 @@ category:  Layout - sections
       .LAYOUT_25_75{
         width: 24.5%;
         float: left;
+        @media screen and (max-width: 760px) {
+          width:100%;
+          float:none;
+        }
       }
 
       .LAYOUT_75_25{
         width: 75.5%;
         float: left;
+        @media screen and (max-width: 760px) {
+          width:100%;
+          float:none;
+        }
       }
     }
     .disease-date{
@@ -291,7 +307,7 @@ category:  Layout - sections
     padding: 0!important;
     border: 0;
     background: $white;
-    //overflow: auto !important;
+    //overflow-x: auto !important;
   }
   table {
     margin: 0;
@@ -304,6 +320,11 @@ category:  Layout - sections
     td.toggle-btn {
       padding: 5px;
       width: 30px;
+    }
+    th{
+      @media screen and (max-width: 1024px) {
+        font-size: 12px;
+      }
     }
   }
   section {
@@ -616,8 +637,18 @@ table.drug-order-table td.drug {
 .dashboard-section section.block.hierarchy {
   .field-attribute {vertical-align: top;}
   .testUnderPanel, .value-text-only, .date-text-only {display: inline-block; vertical-align: top;}
-  .testUnderPanel, .value-text-only {width: 35%;}
-  .testUnderPanel {padding:0;}
+  .testUnderPanel, .value-text-only {
+    width: 35%;
+    @media screen and (max-width: 700px) {
+      width:45%;
+    }
+  }
+  .testUnderPanel {
+    padding:0;
+    @media screen and (max-width: 700px) {
+      padding-right: 10px;
+    }
+  }
   .date-text-only {width: 15%;}
   .toggle i {padding: 0};
   .img-concept {
@@ -933,10 +964,8 @@ table.pivot-table {
   &.dst-results {
     .tabular-obs table {
       table-layout: fixed;
-    }
-    .tabular-obs table tr {
-      td ,th{
-        word-break: break-word;
+      @media screen and (max-width: 1024px) {
+        table-layout:auto;
       }
     }
   }
@@ -960,9 +989,9 @@ table.pivot-table {
   .tabular-obs table tr td.obsTableEdit{
       width:170px;
       span.obsTableData{
-        width:150px;
+        width:143px;
         @media screen and (max-width: 1024px) {
-          width:140px;
+          width:135px;
         }
       }
   }
