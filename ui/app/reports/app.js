@@ -31,7 +31,11 @@ angular
                     }
                 },
                 data: {
-                    backLinks: []
+                    backLinks: [
+                        {label: "Home", url: "../home/", accessKey: "h", icon: "fa-home"},
+                        {text: "REPORTS_HEADER_REPORTS", state: "dashboard.reports", accessKey: "d"},
+                        {text: "REPORTS_HEADER_MY_REPORTS", state: "dashboard.myReports", accessKey: "m"}
+                    ]
                 },
                 resolve: {
                     initializeConfig: function (initialization, $stateParams) {

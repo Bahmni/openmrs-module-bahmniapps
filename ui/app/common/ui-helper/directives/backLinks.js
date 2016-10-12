@@ -20,7 +20,8 @@ angular.module('bahmni.common.uiHelper')
 	        $scope.backLinks = backlinkService.getAllUrls();
 			$scope.$on('$stateChangeSuccess', function (event, state) {
 	            if (state.data && state.data.backLinks) {
-					backlinkService.setUrls(state.data.backLinks);
+					var backLinks = $scope.links || state.data.backLinks;
+					backlinkService.setUrls(backLinks);
 	                $scope.backLinks = backlinkService.getAllUrls();
 	            }
 	        });
@@ -29,6 +30,9 @@ angular.module('bahmni.common.uiHelper')
 				delete window.onbeforeunload;
 			});
 		},
-	    restrict: 'E'
+	    restrict: 'E',
+		scope: {
+			links: '=?'
+		}
 	}
 });
