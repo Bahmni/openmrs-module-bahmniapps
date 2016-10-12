@@ -14,7 +14,6 @@ angular.module('bahmni.reports')
 
         $rootScope.default = _.isUndefined($rootScope.default) ? {reportsRequiringDateRange: {}, reportsNotRequiringDateRange: {}} : $rootScope.default;
         $scope.reportsDefined = true;
-        $scope.enableReportQueue = appService.getAppDescriptor().getConfigValue("enableReportQueue");
 
         $scope.setDefault = function (item, header) {
             var setToChange = header === 'reportsRequiringDateRange' ? $rootScope.reportsRequiringDateRange : $rootScope.reportsNotRequiringDateRange;
@@ -57,6 +56,14 @@ angular.module('bahmni.reports')
                 return false;
             }
             return true;
+        };
+
+        $scope.run = function (report) {
+            if(appService.getAppDescriptor().getConfigValue("scheduledReports")) {
+                $scope.scheduleReport(report);
+            } else {
+                $scope.downloadReport(report);
+            }
         };
 
         $scope.downloadReport = function (report) {
