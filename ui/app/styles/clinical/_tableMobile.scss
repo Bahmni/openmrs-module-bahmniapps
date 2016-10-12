@@ -1,0 +1,34 @@
+@media only screen and (max-width: 700px) {
+    .table-responsive {
+        width: 100%;
+        position: relative !important;
+        clear: both;
+        overflow: hidden;
+        font-size: 11px;
+    }
+    .table-responsive-fixedColumn{
+        width: auto;
+        overflow-x: auto;
+        overflow-y: hidden;
+        margin-left:185px;
+        table{
+            table-layout: auto !important;
+            th,td{
+                min-width:100px;
+                word-break: normal !important;
+                box-sizing: border-box;
+                &:first-child, &:first-child{
+                    width: 185px !important;
+                    text-align: left;
+                    position: absolute;
+                    top:auto;
+                    left:0;
+                    padding-left: 10px;
+                    height: inherit;
+                }
+            }
+        }
+    }
+}
+
+
