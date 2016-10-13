@@ -2,7 +2,7 @@
 
 angular.module('bahmni.clinical')
     .controller('PatientDashboardController', ['$scope', 'clinicalAppConfigService', 'clinicalDashboardConfig', 'printer',
-        '$state', 'spinner', 'visitSummary', 'appService', '$stateParams', 'diseaseTemplateService', 'patientContext','$location', '$filter',
+        '$state', 'spinner', 'visitSummary', 'appService', '$stateParams', 'diseaseTemplateService', 'patientContext','$location',
         function ($scope, clinicalAppConfigService, clinicalDashboardConfig, printer,
                   $state, spinner, visitSummary, appService, $stateParams, diseaseTemplateService, patientContext , $location, $filter) {
 

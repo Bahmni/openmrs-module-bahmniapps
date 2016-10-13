@@ -67,7 +67,7 @@ angular.module('bahmni.clinical')
             $scope.initialization = init();
         };
         var link = function ($scope, element) {
-            spinner.forPromise($scope.initialization,  $scope.sectionId !== undefined ? "#"+$scope.sectionId : element);
+            spinner.forPromise($scope.initialization, element);
         };
 
         return {
@@ -76,8 +76,7 @@ angular.module('bahmni.clinical')
             link: link,
             scope: {
                 params: "=",
-                visitSummary: "=?",
-                sectionId: "="
+                visitSummary: "=?"
             },
             templateUrl: "displaycontrols/treatmentData/views/treatmentData.html"
         };
