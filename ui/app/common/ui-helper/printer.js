@@ -32,7 +32,7 @@ angular.module('bahmni.common.uiHelper')
         var print = function (templateUrl, data) {
             $rootScope.isBeingPrinted = true;
             $http.get(templateUrl).success(function(template){
-                var printScope = $rootScope.$new()
+                var printScope = $rootScope.$new();
                 angular.extend(printScope, data);
                 var element = $compile($('<div>' + template + '</div>'))(printScope);
                 var waitForRenderAndPrint = function() {
@@ -40,7 +40,9 @@ angular.module('bahmni.common.uiHelper')
                         $timeout(waitForRenderAndPrint, 1000);
                     } else {
                         // Replace printHtml with openNewWindow for debugging
-                        printHtml(element.html());
+                        printHtml(element.html()).then(function () {
+                            $rootScope.isBeingPrinted = false;
+                        });
                         printScope.$destroy();
                     }
                 };
