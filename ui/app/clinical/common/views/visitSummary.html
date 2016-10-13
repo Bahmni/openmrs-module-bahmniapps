@@ -55,7 +55,7 @@
                 </div>
             </div>
             <div data-ng-switch-when="patientFiles">
-                <div id="Patient-Files" ng-if="section.config && !isBeingPrinted">
+                <div id="Patient-Files" ng-if="section.config && !isBeingPrinted" class="dashboard-radiology-section">
                     <bm-documents patient="::patient" config="::section.config"
                                   encounter-type="'Patient Document'"></bm-documents>
                 </div>
