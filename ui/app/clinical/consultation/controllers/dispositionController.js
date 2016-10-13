@@ -76,5 +76,4 @@ angular.module('bahmni.clinical')
 
         $scope.consultation.preSaveHandler.register("dispositionSaveHandlerKey", saveDispositions);
 
-        $scope.$on('$destroy', saveDispositions);
     }]);
