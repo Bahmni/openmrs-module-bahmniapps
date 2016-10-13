@@ -14,7 +14,6 @@ angular.module('bahmni.reports')
 
         $rootScope.default = _.isUndefined($rootScope.default) ? {reportsRequiringDateRange: {}, reportsNotRequiringDateRange: {}} : $rootScope.default;
         $scope.reportsDefined = true;
-        $scope.enableReportQueue = appService.getAppDescriptor().getConfigValue("enableReportQueue");
 
         $scope.setDefault = function (item, header) {
             var setToChange = header === 'reportsRequiringDateRange' ? $rootScope.reportsRequiringDateRange : $rootScope.reportsNotRequiringDateRange;
@@ -57,17 +56,6 @@ angular.module('bahmni.reports')
                 return false;
             }
             return true;
-        };
-
-        $scope.downloadReport = function (report) {
-            console.log($scope.config);
-            if (validateReport(report)) {
-                reportService.generateReport(report);
-                if (report.responseType === 'application/vnd.ms-excel-custom') {
-                    report.reportTemplateLocation = undefined;
-                    report.responseType = _.values($scope.formats)[0];
-                }
-            }
         };
 
         $scope.scheduleReport = function (report) {
