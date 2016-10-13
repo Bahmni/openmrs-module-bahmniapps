@@ -4,19 +4,19 @@ angular.module('bahmni.common.uiHelper')
     .factory('spinner', ['messagingService', '$timeout', '$rootScope', function (messagingService, $timeout, $rootScope) {
 
         var showSpinnerForElement = function (element) {
-            $('#overlay').remove();
             if($(element).find(".dashboard-section-loader").length === 0) {
-              var topLevelDiv = $(element).find("div").eq(0);
-              topLevelDiv.addClass('spinnable');
-              topLevelDiv.append('<div class="dashboard-section-loader"></div>');
+                var topLevelDiv = $(element).find("div").eq(0);
+                topLevelDiv.addClass('spinnable');
+                topLevelDiv.append('<div class="dashboard-section-loader"></div>');
             }
-            return element;
+            return element.find(".dashboard-section-loader");
         };
 
         var showSpinnerForOverlay = function () {
             $('body').prepend('<div id="overlay"><div></div></div>');
-            $('#overlay').stop().show();
-            return "body";
+            var spinnerElement = $('#overlay');
+            spinnerElement.stop().show();
+            return spinnerElement;
         };
 
         var show = function (element) {
@@ -29,17 +29,15 @@ angular.module('bahmni.common.uiHelper')
         };
 
         var hide = function (reference) {
-            var element = $(reference);
-            var domElement = element.find(".dashboard-section-loader");
-            _.isEmpty(domElement) ? element.find("#overlay").remove() : domElement.remove();
+            reference.remove();
         };
 
         var forPromise = function (promise, element) {
             return $timeout(function() {
                 // Added timeout to push a new event into event queue. So that its callback will be invoked once DOM is completely rendered
-                var token = show(element);                      // Don't inline this element
+                var spinnerElement = show(element);                      // Don't inline this element
                 promise['finally'](function () {
-                    hide(token);
+                    hide(spinnerElement);
                 });
                 return promise;
             })
@@ -52,10 +50,6 @@ angular.module('bahmni.common.uiHelper')
             });
             return promise;
         };
-
-        $rootScope.$on('$stateChangeStart', function() {
-            hide("body");
-        });
 
         return {
             forPromise: forPromise,
