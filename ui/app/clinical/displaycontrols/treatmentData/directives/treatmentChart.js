@@ -20,7 +20,6 @@ angular.module('bahmni.clinical')
             };
         };
 
-
         return {
             templateUrl: "displaycontrols/treatmentData/views/treatmentChart.html",
             scope: {

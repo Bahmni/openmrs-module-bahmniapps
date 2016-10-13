@@ -1,36 +1,38 @@
 <section class="dashboard-section" ng-if="::hasData">
     <h2 ng-if="::(displayName || diseaseName)" class="section-title">{{::displayName || diseaseName}}</h2>
-    <table ng-class="::{'h-scroll':showOnPrint, 'pivot-table':showOnPrint, 'h-scroll-print': !showOnPrint}">
-        <thead>
-        <tr>
-            <th class="row-header-group">{{::groupBy}}</th>
-            <th ng-repeat="concept in ::result.concepts track by $index">
-                <span>{{::concept.shortName}}</span>
-                <hint concept-details="concept"/>
-                <span class="units">{{::concept.units}}</span>
-            </th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr ng-repeat="(startDate,values) in ::result.tabularData track by $index">
-            <th class="row-header-group">
-                <span class="date">{{::getOnlyDate(startDate)}}</span>
-                <span ng-if="::(!groupByVisits)" class="time">{{::getOnlyTime(startDate)}}</span>
-            </th>
-            <td ng-init="columnResult = result.tabularData[startDate][concept.name]"  bm-pop-over autoclose="true" ng-repeat="concept in ::result.concepts track by $index"
-                ng-class="::{'is-abnormal': (columnResult.abnormal == true)}">
-                <div ng-if="::isLonger(columnResult.value)">
-                    <span ng-class="::{'is-abnormal': (columnResult.abnormal == true)}" class="popover-trigger" bm-pop-over-trigger title="{{::columnResult.value}}">{{::getColumnValue(columnResult.value, concept.name)}}</span>
+    <div>
+        <table ng-class="::{'h-scroll':showOnPrint, 'pivot-table':showOnPrint, 'h-scroll-print': !showOnPrint}">
+            <thead>
+            <tr>
+                <th class="row-header-group">{{::groupBy}}</th>
+                <th ng-repeat="concept in ::result.concepts track by $index">
+                    <span>{{::concept.shortName}}</span>
+                    <hint concept-details="concept"/>
+                    <span class="units">{{::concept.units}}</span>
+                </th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr ng-repeat="(startDate,values) in ::result.tabularData track by $index">
+                <th class="row-header-group">
+                    <span class="date">{{::getOnlyDate(startDate)}}</span>
+                    <span ng-if="::(!groupByVisits)" class="time">{{::getOnlyTime(startDate)}}</span>
+                </th>
+                <td ng-init="columnResult = result.tabularData[startDate][concept.name]"  bm-pop-over autoclose="true" ng-repeat="concept in ::result.concepts track by $index"
+                    ng-class="::{'is-abnormal': (columnResult.abnormal == true)}">
+                    <div ng-if="::isLonger(columnResult.value)">
+                        <span ng-class="::{'is-abnormal': (columnResult.abnormal == true)}" class="popover-trigger" bm-pop-over-trigger title="{{::columnResult.value}}">{{::getColumnValue(columnResult.value, concept.name)}}</span>
                      <span class="tooltip" bm-pop-over-target>
                          <i class="fa fa-caret-down"></i>
                          <span class="details">{{::columnResult.value}}</span>
                     </span>
-                </div>
-                <div ng-if="::!isLonger(columnResult.value)">
-                    <span ng-class="::{'is-abnormal': (columnResult.abnormal == true)}">{{::getColumnValue(columnResult.value, concept.name)}}</span>
-                </div>
-            </td>
-        </tr>
-        </tbody>
-    </table>
+                    </div>
+                    <div ng-if="::!isLonger(columnResult.value)">
+                        <span ng-class="::{'is-abnormal': (columnResult.abnormal == true)}">{{::getColumnValue(columnResult.value, concept.name)}}</span>
+                    </div>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
 </section>

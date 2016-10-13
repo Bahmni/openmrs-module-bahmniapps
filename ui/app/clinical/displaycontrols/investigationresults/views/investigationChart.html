@@ -4,26 +4,27 @@
         <i class="fa fa-caret-down" ng-show="showChart"></i>
         {{'INVESTIGATION_CHART_KEY' | translate }}
     </h2>
-    <div class="hidden-print">
-    <!-- Always hide this table on print -->
-        <table class="ipd-investigation h-scroll" bindonce="accessions" bm-show="showChart">
-            <thead>
-            <tr>
-                <th>&nbsp;</th>
-                <td class="normal" ng-repeat="testOrderLabel in accessions.getTestOrderLabels()">
-                    <span bo-text="testOrderLabel.testName"></span>
+    <div>
+        <div class="hidden-print">
+            <!-- Always hide this table on print -->
+            <table class="ipd-investigation h-scroll" bindonce="accessions" bm-show="showChart">
+                <thead>
+                <tr>
+                    <th>&nbsp;</th>
+                    <td class="normal" ng-repeat="testOrderLabel in accessions.getTestOrderLabels()">
+                        <span bo-text="testOrderLabel.testName"></span>
                                 <span ng-show="accessions.hasRange(testOrderLabel)" class="range">
                                     <span bo-text="'(' + testOrderLabel.minNormal + ' - ' + testOrderLabel.maxNormal + ')'"></span>
                                     <span bo-text="testOrderLabel.testUnitOfMeasurement"></span>
                                 </span>
-                </td>
-            </tr>
-            </thead>
-            <tbody>
+                    </td>
+                </tr>
+                </thead>
+                <tbody>
                 <tr ng-repeat="dateLabel in accessions.getDateLabels()">
                     <td>{{dateLabel.date | bahmniDate}}</td>
                     <td ng-repeat="testOrderLabel in accessions.getTestOrderLabels()"
-                    ng-class="{'has-uploaded-file': accessions.hasUploadedFiles(dateLabel, testOrderLabel)}">
+                        ng-class="{'has-uploaded-file': accessions.hasUploadedFiles(dateLabel, testOrderLabel)}">
                         <span ng-init="results = accessions.getResult(dateLabel, testOrderLabel)">
                             <span bm-pop-over autoclose="true" class="test-result" ng-repeat="res in results">
                                 <span ng-class="{'referred-out': res.referredOut}">
@@ -47,22 +48,21 @@
                         </span>
                     </td>
                 </tr>
-            </tbody>
-        </table>
-    </div>
-
-    <div class="visible-print">
-        <!-- show this table ONLY on print -->
-        <table class="ipd-investigation-print" bindonce="accessions" >
-            <thead>
-            <tr>
-                <th>&nbsp;</th>
-                <th class="normal" ng-repeat="dateLabel in accessions.getDateLabels()">
-                    <span>{{dateLabel.date | bahmniDate}}</span>
-                </th>
-            </tr>
-            </thead>
-            <tbody>
+                </tbody>
+            </table>
+        </div>
+        <div class="visible-print">
+            <!-- show this table ONLY on print -->
+            <table class="ipd-investigation-print" bindonce="accessions" >
+                <thead>
+                <tr>
+                    <th>&nbsp;</th>
+                    <th class="normal" ng-repeat="dateLabel in accessions.getDateLabels()">
+                        <span>{{dateLabel.date | bahmniDate}}</span>
+                    </th>
+                </tr>
+                </thead>
+                <tbody>
                 <tr ng-repeat="testOrderLabel in accessions.getTestOrderLabels()">
                     <th>
                         <span bo-text="testOrderLabel.testName"></span>
@@ -96,7 +96,8 @@
                         </span>
                     </td>
                 </tr>
-            </tbody>
-        </table>
+                </tbody>
+            </table>
+        </div>
     </div>
 </section>

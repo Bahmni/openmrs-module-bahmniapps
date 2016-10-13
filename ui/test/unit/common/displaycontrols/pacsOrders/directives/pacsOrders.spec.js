@@ -83,10 +83,10 @@ describe("PacsOrdersDisplayControl", function () {
         var section = $(element.children()[0]);
 
         expect(section.children()[0].localName).toBe('h2');
-        expect(section.children()[1].localName).toBe('section');
+        expect(section.children()[1].localName).toBe('div');
     });
 
-    it('1 section child should have children 1 h2, 1 section and 1 div', function () {
+    it('1 section child should have children 1 h2 and 1 div', function () {
         scope.section.title = "testTitle";
 
         orderService.getOrders.and.returnValue(specUtil.createFakePromise(orders));
@@ -96,8 +96,7 @@ describe("PacsOrdersDisplayControl", function () {
         var section = $(element.children()[0]);
 
         expect(section.children()[0].localName).toBe('h2');
-        expect(section.children()[1].localName).toBe('section');
-        expect(section.children()[2].localName).toBe('div');
+        expect(section.children()[1].localName).toBe('div');
     });
 
     describe("noOrdersMessage", function () {
@@ -126,7 +125,7 @@ describe("PacsOrdersDisplayControl", function () {
 
             var section = $(element.children()[0]);
 
-            expect(section.children()[2].localName).toBe('div');
+            expect($(section.children()[1]).children()[1].localName).toBeDefined();
         });
 
         it('should not show the noOrdersMessage when there are orders', function () {
@@ -138,8 +137,8 @@ describe("PacsOrdersDisplayControl", function () {
 
             var section = $(element.children()[0]);
 
-            expect(section.children()[2].localName).toBe('div');
-            expect($(section.children()[2]).text()).not.toContain("No testOrder for this patient.");
+            expect($(section.children()[1]).children()[1].localName).toBeDefined();
+            expect($($(section.children()[1]).children()[1]).text()).not.toContain("No testOrder for this patient.");
         });
     });
     describe("Pacs Image Link",function(){
