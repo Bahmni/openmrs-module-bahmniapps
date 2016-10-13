@@ -12,25 +12,28 @@ angular.module('bahmni.common.util')
             var showNetworkStatusIndicator = networkConnectivity != null ? networkConnectivity.showNetworkStatusMessage : null;
             var intervalFrequency = networkConnectivity != null ? networkConnectivity.networkStatusCheckInterval : null;
             intervalFrequency = intervalFrequency ? intervalFrequency : 5000;
-            if (showNetworkStatusIndicator === true) {
-                Offline.options = {
-                    game: true,
-                    checkOnLoad: true,
-                    checks: {xhr: {url: Bahmni.Common.Constants.faviconUrl}}
-                };
 
-                this.checkOfflineStatus();
-                if ($rootScope.offlineStatusCheckIntervalPromise === undefined) {
-                    $rootScope.offlineStatusCheckIntervalPromise = $interval(this.checkOfflineStatus, intervalFrequency);
-                }
+            Offline.options = {
+                game: true,
+                checkOnLoad: true,
+                checks: {xhr: {url: Bahmni.Common.Constants.faviconUrl}}
+            };
 
-                var clearCheckOfflineStatusInterval = function (offlineStatusCheckIntervalPromise) {
-                    $interval.cancel(offlineStatusCheckIntervalPromise);
-                };
+            this.checkOfflineStatus();
+            if ($rootScope.offlineStatusCheckIntervalPromise === undefined) {
+                $rootScope.offlineStatusCheckIntervalPromise = $interval(this.checkOfflineStatus, intervalFrequency);
+            }
 
-                $rootScope.$on("$destroy", function () {
-                    clearCheckOfflineStatusInterval($rootScope.offlineStatusCheckIntervalPromise);
-                });
+            var clearCheckOfflineStatusInterval = function (offlineStatusCheckIntervalPromise) {
+                $interval.cancel(offlineStatusCheckIntervalPromise);
+            };
+
+            $rootScope.$on("$destroy", function () {
+                clearCheckOfflineStatusInterval($rootScope.offlineStatusCheckIntervalPromise);
+            });
+
+            if (showNetworkStatusIndicator === false) {
+                $('.offline-ui').css('display','none');
             }
 
         };
