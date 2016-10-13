@@ -6,7 +6,7 @@ angular.module('bahmni.common.displaycontrol.documents')
             var encounterTypeUuid = configurations.encounterConfig().getEncounterTypeUuid($scope.encounterType);
             
             $scope.initialization = function() {
-                encounterService.getEncountersForEncounterType($scope.patient.uuid, encounterTypeUuid).then(function (response) {
+                return encounterService.getEncountersForEncounterType($scope.patient.uuid, encounterTypeUuid).then(function (response) {
                     $scope.records = new Bahmni.Clinical.PatientFileObservationsMapper().map(response.data.results);
                     if ($scope.config.visitUuids) {
                         $scope.records = _.filter($scope.records, function(record) {
@@ -30,7 +30,7 @@ angular.module('bahmni.common.displaycontrol.documents')
         };
         
         var link = function($scope, element) {
-            spinner.forPromise($scope.initialization, element);
+            spinner.forPromise($scope.initialization(), element);
         };
 
         return {
