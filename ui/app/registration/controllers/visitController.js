@@ -167,7 +167,7 @@ angular.module('bahmni.registration')
             };
             var isValid = function (mandatoryConcepts){
                 var concept = mandatoryConcepts.filter(function(mandatoryConcept){
-                    return (mandatoryConcept.value).toString().length === 0;
+                    return !mandatoryConcept.value;
                 });
                 return _.isEmpty(concept);
             };
