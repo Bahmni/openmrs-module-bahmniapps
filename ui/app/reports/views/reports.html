@@ -51,14 +51,8 @@
                            type="file" accept=".xls" nv-file-select uploader="uploader" options="{report: report}"/>
                 </td>
                 <td class="reports-action">
-                    <button ng-if="!enableReportQueue" type="submit" class="run-report confirm" ng-click="downloadReport(report)">
+                    <button type="submit" class="run-report confirm" ng-click="scheduleReport(report)">
                         {{::'RUN_REPORT_BUTTON_KEY' |translate}}
-                    </button>
-                    <button ng-if="enableReportQueue" type="submit" class="run-report confirm" ng-click="downloadReport(report)">
-                        {{::'RUN_NOW_BUTTON_KEY' |translate}}
-                    </button>
-                    <button ng-if="enableReportQueue" type="submit" class="run-report confirm" ng-click="scheduleReport(report)">
-                        {{::'QUEUE_BUTTON_KEY' |translate}}
                     </button>
                 </td>
             </tr>

@@ -20,7 +20,7 @@ angular.module('bahmni.common.uiHelper')
 	        $scope.backLinks = backlinkService.getAllUrls();
 			$scope.$on('$stateChangeSuccess', function (event, state) {
 	            if (state.data && state.data.backLinks) {
-					backlinkService.setUrls(state.data.backLinks);
+	                backlinkService.setUrls(state.data.backLinks);
 	                $scope.backLinks = backlinkService.getAllUrls();
 	            }
 	        });
