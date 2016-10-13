@@ -1,29 +1,30 @@
 <section id="diagnosisSection" class="block diagnosis"
          ng-class="::{'more': (allDiagnoses.show == true)}">
     <h2 ng-hide="::hideTitle" class="section-title" ng-class="::{'hidden-print': (allDiagnoses && allDiagnoses.length == 0)}">{{::config | titleTranslate}}</h2>
-    <table class="dashboard-table history-diagnosis">
-        <tr ng-if="showLatestDiagnosis == 'true'" class="table-header">
-            <th>&nbsp;</th>
-            <th><span>Initial</span></th>
-            <th><span>Current</span></th>
-        </tr>
+    <div>
+        <table class="dashboard-table history-diagnosis">
+            <tr ng-if="showLatestDiagnosis == 'true'" class="table-header">
+                <th>&nbsp;</th>
+                <th><span>Initial</span></th>
+                <th><span>Current</span></th>
+            </tr>
 
-        <tbody ng-repeat="diagnosis in allDiagnoses | primaryDiagnosisFirst" class="row"
-               ng-class="::{'hidden-print': diagnosis.diagnosisStatus}">
-        <tr class="view-past"
-            ng-class="::{'notes-open': (diagnosis.showDetails == true) || (diagnosis.showLatestDetails == true), 'test-notes-parent': diagnosis.comments}">
-            <td class="name">
+            <tbody ng-repeat="diagnosis in allDiagnoses | primaryDiagnosisFirst" class="row"
+                   ng-class="::{'hidden-print': diagnosis.diagnosisStatus}">
+            <tr class="view-past"
+                ng-class="::{'notes-open': (diagnosis.showDetails == true) || (diagnosis.showLatestDetails == true), 'test-notes-parent': diagnosis.comments}">
+                <td class="name">
                     <span id="diagnosisName" class="diagnosis-name" ng-class="{'strike-text': diagnosis.diagnosisStatus.ruledOut, 'green-text': diagnosis.diagnosisStatus.cured}">
                         {{::diagnosis.getDisplayName()}}
                     </span>
-            </td>
+                </td>
 
-            <td ng-if="::!isLatestDiagnosis(diagnosis)" class="view">
+                <td ng-if="::!isLatestDiagnosis(diagnosis)" class="view">
                 <span id="certainty" ng-hide="::(config.showCertainty == false)"
                       class="certainty">{{::diagnosis.certainty}}</span>
                              <span id="order" ng-hide="::(config.showOrder == false)"
                                    class="order">{{::diagnosis.order}}</span>
-                <span id="status" class="status">{{::diagnosis.diagnosisStatus.label}}</span>
+                    <span id="status" class="status">{{::diagnosis.diagnosisStatus.label}}</span>
                 <span class="toggle-btn-date-wrapper">
                 <span id="diagnosisDate" class="date">{{::diagnosis.diagnosisDateTime | bahmniDate}}</span>
                 <span class="toggle-btn" toggle="diagnosis.showDetails"
@@ -34,14 +35,14 @@
                     </button>
                 </span>
                     </span>
-            </td>
-            <td ng-if="::isLatestDiagnosis(diagnosis)" class="view"></td>
-            <td class="view" ng-if="::(showLatestDiagnosis == 'true')">
+                </td>
+                <td ng-if="::isLatestDiagnosis(diagnosis)" class="view"></td>
+                <td class="view" ng-if="::(showLatestDiagnosis == 'true')">
                         <span id="certainty" ng-hide="::(config.showCertainty == false)" class="certainty">
                             {{::diagnosis.latestDiagnosis.certainty}}</span>
                 <span id="order" ng-hide="::(config.showOrder == false)"
                       class="order">{{::diagnosis.latestDiagnosis.order}}</span>
-                <span id="status" class="status">{{::diagnosis.latestDiagnosis.diagnosisStatus.label}}</span>
+                    <span id="status" class="status">{{::diagnosis.latestDiagnosis.diagnosisStatus.label}}</span>
                 <span class="toggle-btn-date-wrapper">
                     <span id="diagnosisDate"
                           class="date">{{::diagnosis.latestDiagnosis.diagnosisDateTime | bahmniDate}}</span>
@@ -53,42 +54,43 @@
                     </button>
                 </span>
                 </span>
-            </td>
-        </tr>
-        {{diagnosis.comments}}
-        <tr ng-show=":: diagnosis.comments" ng-class="::{'has-test-notes': diagnosis.comments}">
-            <td class="notes test-notes" colspan="{{showLatestDiagnosis ==  'true' ? 3 : 2}}">
-                <i class="fa fa-comments left"></i>
-                <pre id="diagnosisComments" class="left">{{::diagnosis.comments}}</pre>
-                <div class="footer-note right">
+                </td>
+            </tr>
+            {{diagnosis.comments}}
+            <tr ng-show=":: diagnosis.comments" ng-class="::{'has-test-notes': diagnosis.comments}">
+                <td class="notes test-notes" colspan="{{showLatestDiagnosis ==  'true' ? 3 : 2}}">
+                    <i class="fa fa-comments left"></i>
+                    <pre id="diagnosisComments" class="left">{{::diagnosis.comments}}</pre>
+                    <div class="footer-note right">
                         <span class="provider">
                             <provider-directive creator-name="{{::diagnosis.creatorName}}" provider-name="{{::diagnosis.providers[0].name}}" provider-date="::diagnosis.diagnosisDateTime"></provider-directive>
                         </span>
-                </div>
-            </td>
-        </tr>
+                    </div>
+                </td>
+            </tr>
 
-        <tr ng-show="diagnosis.showDetails">
-            <td colspan="{{showLatestDiagnosis ==  'true' ? 3 : 2}}" class="notes inline-notes">
-                <div class="footer-note right">
+            <tr ng-show="diagnosis.showDetails">
+                <td colspan="{{showLatestDiagnosis ==  'true' ? 3 : 2}}" class="notes inline-notes">
+                    <div class="footer-note right">
                         <span class="provider">
                             <provider-directive creator-name="{{::diagnosis.creatorName}}" provider-name="{{::diagnosis.providers[0].name}}" provider-date="::diagnosis.diagnosisDateTime"></provider-directive>
                         </span>
-                </div>
-            </td>
-        </tr>
-        <tr ng-show="(diagnosis.showLatestDetails == true)" ng-if="::(showLatestDiagnosis ==  'true')">
-            <td colspan="3" class="notes inline-notes">
-                <div class="footer-note right">
+                    </div>
+                </td>
+            </tr>
+            <tr ng-show="(diagnosis.showLatestDetails == true)" ng-if="::(showLatestDiagnosis ==  'true')">
+                <td colspan="3" class="notes inline-notes">
+                    <div class="footer-note right">
                         <span class="provider">
                             <provider-directive creator-name="{{::diagnosis.creatorName}}" provider-name="{{::diagnosis.latestDiagnosis.providers[0].name}}" provider-date="::diagnosis.latestDiagnosis.diagnosisDateTime"></provider-directive>
                         </span>
-                </div>
-            </td>
-        </tr>
-        </tbody>
-    </table>
-    <div ng-show="::(allDiagnoses && allDiagnoses.length == 0)" ng-class="::{'hidden-print': (allDiagnoses && allDiagnoses.length == 0)}">
-        <div class="placeholder-text">{{::'NO_DIAGNOSIS_MESSAGE' | translate}}</div>
+                    </div>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+        <div ng-show="::(allDiagnoses && allDiagnoses.length == 0)" ng-class="::{'hidden-print': (allDiagnoses && allDiagnoses.length == 0)}">
+            <div class="placeholder-text">{{::'NO_DIAGNOSIS_MESSAGE' | translate}}</div>
+        </div>
     </div>
 </section>

@@ -1,29 +1,31 @@
 <section class="block ipd-treatment-section" ng-if="::visitSummary.isAdmitted() && !print">
     <h2 class="section-title">Treatment Chart</h2>
-    <table class="h-scroll">
-        <thead>
-        <tr>
-            <th>
-                <span>{{::(visitSummary.startDateTime | bahmniDate) + ' - '+ (getVisitStopDateTime() | bahmniDate)}}</span>
-            </th>
-            <th ng-repeat="drug in ::ipdDrugOrders.getIPDDrugs()" class="drug"
-                ng-class="{active: drug.isActive()}">{{drug.orders[0].getDisplayName()}}</th>
+    <div>
+        <table class="h-scroll">
+            <thead>
+            <tr>
+                <th>
+                    <span>{{::(visitSummary.startDateTime | bahmniDate) + ' - '+ (getVisitStopDateTime() | bahmniDate)}}</span>
+                </th>
+                <th ng-repeat="drug in ::ipdDrugOrders.getIPDDrugs()" class="drug"
+                    ng-class="{active: drug.isActive()}">{{drug.orders[0].getDisplayName()}}</th>
 
-        </tr>
-        </thead>
-        <tbody>
-        <tr ng-repeat="day in ::ipdDrugOrders.ipdDrugSchedule.days" ng-if="atLeastOneDrugForDay(day)">
-            <td>
+            </tr>
+            </thead>
+            <tbody>
+            <tr ng-repeat="day in ::ipdDrugOrders.ipdDrugSchedule.days" ng-if="atLeastOneDrugForDay(day)">
+                <td>
                 <span>
                     <!-- D{{day.dayNumber}} ({{day.date | bahmniDate}}) -->
                     {{day.date | bahmniDate}}
                 </span>
-            </td>
-            <td ng-switch="drug.getStatusOnDate(day.date)" ng-repeat="drug in ::ipdDrugOrders.ipdDrugSchedule.drugs">
-                <span class="fa fa-ok" ng-switch-when="active"></span>
-                <span class="fa fa-stop" ng-switch-when="stopped"></span>
-            </td>
-        </tr>
-        </tbody>
-    </table>
+                </td>
+                <td ng-switch="drug.getStatusOnDate(day.date)" ng-repeat="drug in ::ipdDrugOrders.ipdDrugSchedule.drugs">
+                    <span class="fa fa-ok" ng-switch-when="active"></span>
+                    <span class="fa fa-stop" ng-switch-when="stopped"></span>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
 </section>

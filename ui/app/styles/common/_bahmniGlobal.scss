@@ -370,3 +370,8 @@ u, .add-drug-btninput[value]:first-letter {
   z-index:9999;
   background: rgba(0,0,0,0.6) url('../images/spinner-small.gif') no-repeat center center;
 }
+
+.spinnable{
+  position: relative;
+  min-height: 2em;
+}

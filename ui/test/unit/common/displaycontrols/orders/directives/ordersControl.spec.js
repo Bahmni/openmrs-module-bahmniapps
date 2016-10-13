@@ -142,7 +142,7 @@ describe("OrdersDisplayControl", function () {
     });
 
 
-    it('1 section child should have children 1 h2, 1 section and 1 div', function () {
+    it('1 section child should have children 1 h2 and 1 div', function () {
         scope.section.title = "testTitle";
 
         orderService.getOrders.and.returnValue(specUtil.createFakePromise(orders));
@@ -152,8 +152,7 @@ describe("OrdersDisplayControl", function () {
         var section = $(element.children()[0]);
 
         expect(section.children()[0]).toEqual('h2');
-        expect(section.children()[1]).toEqual('section');
-        expect(section.children()[2]).toEqual('div');
+        expect(section.children()[1]).toEqual('div');
     });
 
     it('should open the first and close the rest', function () {
@@ -221,12 +220,11 @@ describe("OrdersDisplayControl", function () {
             orderService.getOrders.and.returnValue(specUtil.createFakePromise([]));
             var element = generateElement();
 
-            expect(element.children()[0]).toEqual('section');
+          var topLevelSection = element.children()[0];
+            expect(topLevelSection).toEqual('section');
 
-            var section = $(element.children()[0]);
-            var innerDiv = $($($(section.children()[2]))[0]);
-
-            expect(section.children()[2]).toEqual('div');
+            var noMessageSecion = $(topLevelSection).find('>div>div');
+            expect(noMessageSecion).toBeDefined();
         });
 
         it('should not show the noOrdersMessage when there are orders', function () {

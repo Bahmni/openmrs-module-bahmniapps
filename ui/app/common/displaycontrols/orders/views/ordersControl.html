@@ -1,52 +1,51 @@
 <section class="dashboard-section ng-scope">
     <h2 ng-if="::hasTitleToBeShown()" class="section-title">{{::section | titleTranslate}}</h2>
 
-    <div ng-if="::isClickable()" class="dashboard-observations-section">
-        <h2 ng-dialog="../common/displaycontrols/orders/views/allOrdersDetails.html"
-            ng-dialog-controller="AllOrdersDetailsController"
-            ng-dialog-data="{{dialogData}}"
-            ng-dialog-class="ngdialog-theme-default ng-dialog-all-details-page"
-            class="section-title has-link">
-            <span class="title-link">{{::section | titleTranslate}}</span>
-            <i class="fa fa-external-link"></i>
-        </h2>
-    </div>
-
-    <section class="block hierarchy"  ng-if="::config.showHeader" ng-hide="::noOrdersMessage">
-        <ul class="form-field">
-            <li ng-repeat="bahmniOrder in ::bahmniOrders">
-                <span class="tree-list-item row-click toggle-container" toggle="bahmniOrder.isOpen">
-                    <i class="fa fa-caret-right"></i>
-                    <i class="fa fa-caret-down"></i>
-                    <span class="obs-date">{{::bahmniOrder.concept.name}}</span>
-                    <span class="fr order-sub-heading-container">
-                        <span class="order-sub-heading fl">
-                            <span class="provider-name fl">{{ ::bahmniOrder.provider}} </span>
-                            <span class="provider-date fr">{{ ::bahmniOrder.orderDate | bahmniDateTime }}</span>
-                          </span>
-                        <i ng-class="::{'visible-true':bahmniOrder.hasObservations}" class="fa fa-tasks"></i>
+    <h2 ng-if="::isClickable()" ng-dialog="../common/displaycontrols/orders/views/allOrdersDetails.html"
+        ng-dialog-controller="AllOrdersDetailsController"
+        ng-dialog-data="{{dialogData}}"
+        ng-dialog-class="ngdialog-theme-default ng-dialog-all-details-page"
+        class="section-title has-link">
+        <span class="title-link">{{::section | titleTranslate}}</span>
+        <i class="fa fa-external-link"></i>
+    </h2>
+    <div>
+        <section class="block hierarchy"  ng-if="::config.showHeader" ng-hide="::noOrdersMessage">
+            <ul class="form-field">
+                <li ng-repeat="bahmniOrder in ::bahmniOrders">
+                    <span class="tree-list-item row-click toggle-container" toggle="bahmniOrder.isOpen">
+                        <i class="fa fa-caret-right"></i>
+                        <i class="fa fa-caret-down"></i>
+                        <span class="obs-date">{{::bahmniOrder.concept.name}}</span>
+                        <span class="fr order-sub-heading-container">
+                            <span class="order-sub-heading fl">
+                                <span class="provider-name fl">{{ ::bahmniOrder.provider}} </span>
+                                <span class="provider-date fr">{{ ::bahmniOrder.orderDate | bahmniDateTime }}</span>
+                              </span>
+                            <i ng-class="::{'visible-true':bahmniOrder.hasObservations}" class="fa fa-tasks"></i>
+                        </span>
                     </span>
-                </span>
-                <ul bm-show="bahmniOrder.isOpen">
-                    <bahmni-observation patient="::patient" visitUuid="::visitUuid" section="::section" config="::config"
-                                        section-title=""
-                                        observations="::bahmniOrder.bahmniObservations" message="::message"></bahmni-observation>
-                </ul>
-            </li>
-        </ul>
-    </section>
-    <section class="block hierarchy"  ng-if="::!config.showHeader" ng-hide="noOrdersMessage">
-        <ul class="form-field">
-            <li ng-repeat="bahmniOrder in ::bahmniOrders">
-                <ul ng-if="!bahmniOrder.hideIfEmpty">
-                    <bahmni-observation patient="::patient" visitUuid="::visitUuid" section="::section" config="::config"
-                                        section-title=""
-                                        observations="::bahmniOrder.bahmniObservations" message="::message"></bahmni-observation>
-                </ul>
-            </li>
-        </ul>
-    </section>
-    <div ng-show="::noOrdersMessage">
-        <div class="placeholder-text" ><p translate="DISPLAY_CONTROL_ERROR_MESSAGE_KEY" translate-values="{displayControl : '{{::noOrdersMessage}}'}"></p></div>
+                    <ul bm-show="bahmniOrder.isOpen">
+                        <bahmni-observation patient="::patient" visitUuid="::visitUuid" section="::section" config="::config"
+                                            section-title=""
+                                            observations="::bahmniOrder.bahmniObservations" message="::message"></bahmni-observation>
+                    </ul>
+                </li>
+            </ul>
+        </section>
+        <section class="block hierarchy"  ng-if="::!config.showHeader" ng-hide="noOrdersMessage">
+            <ul class="form-field">
+                <li ng-repeat="bahmniOrder in ::bahmniOrders">
+                    <ul ng-if="!bahmniOrder.hideIfEmpty">
+                        <bahmni-observation patient="::patient" visitUuid="::visitUuid" section="::section" config="::config"
+                                            section-title=""
+                                            observations="::bahmniOrder.bahmniObservations" message="::message"></bahmni-observation>
+                    </ul>
+                </li>
+            </ul>
+        </section>
+        <div ng-show="::noOrdersMessage">
+            <div class="placeholder-text" ><p translate="DISPLAY_CONTROL_ERROR_MESSAGE_KEY" translate-values="{displayControl : '{{::noOrdersMessage}}'}"></p></div>
+        </div>
     </div>
 </section>
