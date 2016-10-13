@@ -167,7 +167,10 @@ angular.module('bahmni.registration')
             };
             var isValid = function (mandatoryConcepts){
                 var concept = mandatoryConcepts.filter(function(mandatoryConcept){
-                    return (mandatoryConcept.value).toString().length === 0;
+                    if (mandatoryConcept.isNumeric() && mandatoryConcept.value === 0) {
+                        return false;
+                    }
+                    return !mandatoryConcept.value;
                 });
                 return _.isEmpty(concept);
             };

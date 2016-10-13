@@ -264,7 +264,7 @@ angular.module('bahmni.adt')
             };
 
             $scope.undoDischarge = function () {
-                return spinner.forPromise(encounterService.delete($scope.visitSummary.getDischargeEncounterUuid(), "Undo Discharge")).success(function () {
+                return spinner.forPromise(encounterService.delete($scope.visitSummary.getDischargeEncounterUuid(), "Undo Discharge")).then(function () {
                     var params = {
                         'encounterUuid': $scope.visitSummary.getAdmissionEncounterUuid(),
                         'visitUuid': $scope.visitSummary.uuid
