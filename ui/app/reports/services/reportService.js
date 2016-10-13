@@ -50,22 +50,12 @@ angular.module('bahmni.reports')
             return $http.get(url);
         };
 
-        var generateReport = function (report) {
-            var url = Bahmni.Common.Constants.reportsUrl + "/report";
-            url = (url + "?name={0}&startDate={1}&endDate={2}&responseType={3}&paperSize={4}&appName={5}").format(report.name, report.startDate, report.stopDate, report.responseType, paperSize, appName);
-            if (report.reportTemplateLocation && report.responseType == 'application/vnd.ms-excel-custom') {
-                url = (url + "&macroTemplateLocation=" + report.reportTemplateLocation);
-            }
-            window.open(url);
-        };
-
         return {
             getFormatForMimeType: getFormatForMimeType,
             getMimeTypeForFormat: getMimeTypeForFormat,
             getAvailableFormats: getAvailableFormats,
             scheduleReport: scheduleReport,
             getScheduledReports: getScheduledReports,
-            deleteReport : deleteReport,
-            generateReport: generateReport
+            deleteReport : deleteReport
         };
     }]);
