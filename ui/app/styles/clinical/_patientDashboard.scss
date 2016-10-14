@@ -183,6 +183,9 @@ category:  Layout - sections
       cursor:pointer;
     }
   }
+  @media screen and (max-width: 700px){
+    diplay:none;
+  }
 }
 
 .dashboard-sections-wrapper {

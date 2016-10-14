@@ -140,3 +140,79 @@
         font-size: 14px;
     }
 }
+
+.desktop-menu{
+  @media screen and (max-width: 700px) {
+    display: none;
+  }
+}
+
+.mobile-menu {
+  display: none;
+  position: relative;
+  padding-top: 14px;
+  @media screen and (max-width: 700px) {
+    display: block;
+  }
+}
+@media only screen and (max-width: 700px) {
+  .clinical-header {
+    a.mobile-menu-icon{
+      background: #669999;
+      border: 1px solid #527a7a;
+      padding: 9px 10px;
+      color:$white;
+      i{
+        font-size: 18px;
+        margin-right:5px;
+      }
+    }
+    .header-tabs {
+      position: absolute;
+      width: 220px;
+      top: 52px;
+      margin: 0 !important;
+      padding: 10px 0;
+      background: darken($bahmniSecondaryColor, 10%);
+      border: 1px solid darken($bahmniSecondaryColor, 10%);
+      border-radius: 0px 0px 5px 5px;
+      li.tab-item {
+        float: none;
+        a {
+          display: block;
+          border-radius: 0;
+          margin: 0;
+        }
+        &.tab-selected a, &.tab-selected button {
+          border-bottom: 1px solid $lightGray;
+        }
+      }
+    }
+  }
+  .opd-header-wrapper a.btn--success{
+    font-size: 14px;
+  }
+}
+
+@media only screen and (max-width: 470px) {
+  .opd-header-wrapper a.btn--success{
+    font-size: 12px;
+    padding: 9px 5px !important;
+    margin-right: 5px !important;
+  }
+  .clinical-header {
+    a.mobile-menu-icon{
+      padding: 7px 5px;
+      font-size: 12px;
+      i{
+        font-size: 15px;
+      }
+    }
+  }
+  .mobile-menu {
+    padding-top: 12px;
+  }
+}
+
+
+

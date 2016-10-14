@@ -171,6 +171,9 @@
             padding-right: 10px;
             margin-right: 10px;
           }
+          @media screen and(max-width:470px){
+            margin: 0;
+          }
         }
         .dialog-button-group {
           margin-top: 6px;
