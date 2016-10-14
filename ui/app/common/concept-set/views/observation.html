@@ -382,7 +382,7 @@
 
 
         <fieldset ng-if="(!observation.isObservationNode && !observation.isFormElement() && observation.getControlType()!='tabular')" class="hasLegend"
-                  ng-class="{'collapsible-set': isCollapsibleSet(), 'collapsed': collapse}">
+                  ng-class="{'collapsible-set': isCollapsibleSet(), 'collapsed': collapse}" scroll-to-element="{{ observation.scrollToElement }}">
             <legend ng-if="::(showTitle && !observation.isComputed())" class="mylegend" ng-click="toggleSection()">
                 <i ng-if="isCollapsibleSet() && collapse" class="fa fa-caret-right"></i>
                 <i ng-if="!(isCollapsibleSet() && collapse)" class="fa fa-caret-down"></i>
@@ -390,7 +390,7 @@
                 <span class="fl" ng-include src="'../common/concept-set/views/observationDataTypes/removeClone.html'"></span>
 
             <span ng-if="::(observation.canAddMore && observation.canAddMore())" class="add-more" ng-if="observation.getControlType() != 'video'">
-                <button id="{{observation.assignAddMoreButtonID()}}" type="button" class="add-more-btn btn-small" ng-click="cloneNew(observation, rootObservation)">
+                <button id="{{observation.assignAddMoreButtonID()}}" type="button" class="add-more-btn btn-small" ng-click="$event.stopPropagation(cloneNew(observation, rootObservation))">
                     <i class="fa fa-plus"></i> {{::'ADD_SECTION_KEY' | translate}}
                 </button>
             </span>
