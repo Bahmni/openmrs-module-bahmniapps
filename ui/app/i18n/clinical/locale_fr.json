@@ -82,6 +82,9 @@
   "PATIENT_NOT_ENROLLED_TO_PROGRAMS_MESSAGE_KEY":"Le patient n'a pas inscrit à tous les programmes",
   "PROGRAM_MANAGEMENT_PAST_PROGRAM_KEY":"Programmes passées",
   "PATIENT_DOESNT_HAVE_PREVIOUS_PROGRAMS_MESSAGE_KEY":"Le patient n'a pas de précédents programmes",
-  "PROGRAM_MANAGEMENT_GENERAL_CONSULTATION_KEY":"Consultation générale"
+  "PROGRAM_MANAGEMENT_GENERAL_CONSULTATION_KEY":"Consultation générale",
+
+  "OBS_BOOLEAN_YES_KEY":"Oui",
+  "OBS_BOOLEAN_NO_KEY":"Non"
 
 }

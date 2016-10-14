@@ -4,7 +4,7 @@ angular.module('bahmni.common.uiHelper')
     .directive('singleSubmit', function () {
         var ignoreSubmit = false;
         var link = function (scope, element) {
-            element.on('submit', function () {
+            var submitHandler = function () {
                 if (ignoreSubmit) {
                     return;
                 }
@@ -12,6 +12,12 @@ angular.module('bahmni.common.uiHelper')
                 scope.singleSubmit().finally(function () {
                     ignoreSubmit = false;
                 });
+            };
+
+            element.on('submit', submitHandler);
+
+            scope.$on("$destroy", function() {
+                element.off('submit', submitHandler);
             });
         };
         return {

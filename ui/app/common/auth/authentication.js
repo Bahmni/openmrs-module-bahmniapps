@@ -177,8 +177,8 @@ angular.module('authentication')
         this.loadProviders = function(userInfo) {
             if (offlineApp) {
                 var data  = offlineService.getItem('providerData');
-                var providerUuid = (data.results.length > 0) ? data.results[0].uuid : undefined;
-                $rootScope.currentProvider = { uuid: providerUuid };
+                var provider = (data.results.length > 0) ? data.results[0] : undefined;
+                $rootScope.currentProvider = provider;
                 return $q.when(data);
             }
             return $http.get(Bahmni.Common.Constants.providerUrl, {
@@ -211,13 +211,16 @@ angular.module('authentication')
             authenticateUser: authenticateUser
         }
 
-    }]).directive('logOut',['sessionService', '$window', function(sessionService, $window) {
+    }]).directive('logOut',['sessionService', 'offlineService', '$window', function(sessionService, offlineService, $window) {
         return {
             link: function(scope, element) {
                 element.bind('click', function() {
                     scope.$apply(function() {
                         sessionService.destroy().then(
                             function () {
+                                if (offlineService.isOfflineApp()) {
+                                    $window.location.reload();
+                                }
                                 $window.location = "../home/index.html#/login";
                             }
                         );

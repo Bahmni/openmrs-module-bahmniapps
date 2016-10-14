@@ -24,9 +24,10 @@ angular.module('bahmni.common.offline')
                      .from(loginLocationTable)
                      .where(loginLocationTable.uuid.eq(uuid))
                      .exec()
-                .then(function (loginLocation) {
-                     return loginLocation[0].value;
+                     .then(function (loginLocation) {
+                    return loginLocation[0].value;
                 });
+
 
         };
 

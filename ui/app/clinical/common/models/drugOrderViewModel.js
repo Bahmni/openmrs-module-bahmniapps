@@ -751,6 +751,7 @@ Bahmni.Clinical.DrugOrderViewModel.createFromContract = function (drugOrderRespo
     viewModel.visit = drugOrderResponse.visit;
     viewModel.voided = drugOrderResponse.voided;
     viewModel.dosage = viewModel.getDoseAndUnits();
+    viewModel.isDrugRetired = drugOrderResponse.retired;
     if(drugOrderResponse.orderGroup){
         viewModel.orderGroupUuid = drugOrderResponse.orderGroup.uuid;
         viewModel.orderSetUuid = drugOrderResponse.orderGroup.orderSet.uuid;

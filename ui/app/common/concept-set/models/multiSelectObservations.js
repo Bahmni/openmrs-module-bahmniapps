@@ -155,7 +155,7 @@ Bahmni.ConceptSet.MultiSelectObservation = function (concept, memberOfCollection
     };
 
     this.isRequired = function () {
-        return this.getConceptUIConfig().required;
+        return this.getConceptUIConfig().required == true;
     };
 
     var createObsFrom = function(answer) {

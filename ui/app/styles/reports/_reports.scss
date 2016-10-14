@@ -1,40 +1,49 @@
 .bahmni-reports {
-		.reports-page {
-			margin-top: 10px;
+	.reports-page {
+		margin-top: 10px;
+	}
+	table {
+		th, td {
+			font-size: 14px;
+			box-sizing:  border-box;
+			padding: 5px;
+			vertical-align: top;
 		}
-	  	table {
-		  	th, td {
-		  		font-size: 14px;
-		  		box-sizing:  border-box;
-		  		padding: 5px;
-		  		vertical-align: top;
-		  	}
-		  	thead th {
-		  		font-size: 16px;
-		  		border-bottom: 1px solid $lightGray;
-		  		input, select, button {
-		  			font-size: 14px;
-		  		}
-		  	}
-		  	.reports-start-date,
-		  	.reports-stop-date {
-				width: 170px;
-		  	}
-		  	.reports-format {
-				width: 200px;
-		  	}
-		  	.reports-action {
-				width: 125px;
-		  	}
-		  	td button {
-		  		padding: 5px 10px;
-		  		font-size: 12px;
-		  	}
-	  }
-  .input-file-upload.custom-file{
-	width: 180px;
-	padding: 0;
-	margin-top: 3px;
-	border:none;
-  }
+		thead th {
+			font-size: 16px;
+			border-bottom: 1px solid $lightGray;
+			input, select, button {
+				font-size: 14px;
+			}
+		}
+		.reports-start-date,
+		.reports-stop-date {
+			width: 170px;
+		}
+		.reports-format {
+			width: 200px;
+		}
+		.reports-action {
+			width: 125px;
+		}
+		td button {
+			padding: 5px 10px;
+			font-size: 12px;
+		}
+	}
+	.input-file-upload.custom-file{
+		width: 180px;
+		padding: 0;
+		margin-top: 3px;
+		border:none;
+	}
+}
+
+// implementation Specific Export Reports
+
+a.button.small.report-download{
+	padding: 8px 10px;
+	i{
+		color:#666;
+	}
 }

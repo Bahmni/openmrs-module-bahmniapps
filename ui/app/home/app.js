@@ -2,7 +2,7 @@
 
 angular.module('bahmni.home', ['ui.router', 'httpErrorInterceptor', 'bahmni.common.domain', 'bahmni.common.i18n', 'bahmni.common.uiHelper', 'bahmni.common.util',
         'bahmni.common.appFramework', 'bahmni.common.logging', 'bahmni.common.routeErrorHandler', 'pascalprecht.translate', 'ngCookies', 'bahmni.common.offline',
-          'bahmni.common.models', 'FredrikSandell.worker-pool'])
+          'bahmni.common.models'])
     .config(['$urlRouterProvider', '$stateProvider', '$httpProvider', '$bahmniTranslateProvider', '$compileProvider',
         function ($urlRouterProvider, $stateProvider, $httpProvider, $bahmniTranslateProvider, $compileProvider) {
         $urlRouterProvider.otherwise('/dashboard');
@@ -29,6 +29,9 @@ angular.module('bahmni.home', ['ui.router', 'httpErrorInterceptor', 'bahmni.comm
                         },
                         initialize: function (initialization, offlineDb) {
                             return initialization(offlineDb);
+                        },
+                        webWorker: function(schedulerService, initialize) {
+                            return schedulerService.sync();
                         }
                     }
                 }).state('login',
@@ -42,23 +45,18 @@ angular.module('bahmni.home', ['ui.router', 'httpErrorInterceptor', 'bahmni.comm
                     },
                     initialData: function(loginInitialization, offlineDb){
                         return loginInitialization()
+                    },
+                    webWorker: function(schedulerService, initialData) {
+                        return schedulerService.stopSync();
                     }
                 }
             });
         $httpProvider.defaults.headers.common['Disable-WWW-Authenticate'] = true;
         $bahmniTranslateProvider.init({app: 'home', shouldMerge: true});
 
-    }]).run(function ($rootScope, $templateCache, WorkerService, offlineService, scheduledSync) {
+    }]).run(function ($rootScope, $templateCache) {
         //Disable caching view template partials
         $rootScope.$on('$viewContentLoaded', function () {
             $templateCache.removeAll();
         });
-
-        if(offlineService.isChromeApp()) {
-            if (Bahmni.Common.Offline && Bahmni.Common.Offline.BackgroundWorker) {
-                new Bahmni.Common.Offline.BackgroundWorker(WorkerService, offlineService);
-            }
-        }else if(offlineService.isAndroidApp()){
-                scheduledSync();
-        }
 });

@@ -17,13 +17,13 @@
 		font-size: 14px;
 		border-color: darken($success, 12%);
 		box-shadow: 0 0 0 2px $white;
-;		i {
+        i {
 			font-size: 1em;
 			lone-height: 1;
 		}
 	}
 	.patient-details {
-		color: #000;
+		color: $black;
 		text-shadow: 1px 1px 1px rgba($lightGray, 0.9);
 	}
 }
@@ -74,6 +74,9 @@
             margin: 0 auto;
             vertical-align: middle;
           }
+           @media screen and (max-width: 768px) {
+             min-height: 57px;
+           }
         }
       }
     }

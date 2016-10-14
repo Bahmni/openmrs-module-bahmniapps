@@ -1,3 +1,190 @@
+
+/*doc
+---
+title: Colors
+name: Colors
+category: Variables - colors
+---
+Color patterns used in the whole Bahmni application are listed below... For using any particular color , you should call the variable used for the color.
+
+```html_example
+    <div class="row">
+
+    <div class="col-sm-3 col-xs-6">
+      <div style="background:#00463f;"><br><br><br><br><br></div>
+      <pre class="text-center">$bahmniPrimaryColor</pre>
+    </div>
+
+    <div class="col-sm-3 col-xs-6">
+      <div style="background:#669999;"><br><br><br><br><br></div>
+      <pre class="text-center">$bahmniSecondaryColor</pre>
+    </div>
+
+    <div class="col-sm-3 col-xs-6">
+      <div style="background: #457FAC;"><br><br><br><br><br></div>
+      <pre class="text-center">$bahmniTertiaryColor</pre>
+    </div>
+
+    <div class="col-sm-3 col-xs-6">
+      <div style="background:#2b95ff;"><br><br><br><br><br></div>
+      <pre class="text-center">$bahmniLinkColor</pre>
+    </div>
+
+    <div class="col-sm-3 col-xs-6">
+      <div style="background:#a1d030;"><br><br><br><br><br></div>
+      <pre class="text-center">$bahmniPrimaryBtnColor</pre>
+    </div>
+
+    <div class="col-sm-3 col-xs-6">
+      <div style="background:#88af28;"><br><br><br><br><br></div>
+      <pre class="text-center">$bahmniPrimaryBtnColorHover</pre>
+    </div>
+
+    <div class="col-sm-3 col-xs-6">
+      <div style="background:#66b298;"><br><br><br><br><br></div>
+      <pre class="text-center">$bahmniSectionHeaderColor</pre>
+    </div>
+
+    <div class="col-sm-3 col-xs-6">
+      <div style="background: #EFF8FF;"><br><br><br><br><br></div>
+      <pre class="text-center">$clinicalNotesColor</pre>
+    </div>
+
+    <div class="col-sm-3 col-xs-6">
+      <div style="background:#E8A000;"><br><br><br><br><br></div>
+      <pre class="text-center">$clinicalCurrentVist</pre>
+    </div>
+
+     <div class="col-sm-3 col-xs-6">
+      <div style="background:#e8edf3;"><br><br><br><br><br></div>
+      <pre class="text-center">$clinicalInfoMessageBg</pre>
+    </div>
+
+     <div class="col-sm-3 col-xs-6">
+      <div style="background: #660000;"><br><br><br><br><br></div>
+      <pre class="text-center">$clinicalRemoveBtn</pre>
+    </div>
+
+     <div class="col-sm-3 col-xs-6">
+      <div style="background:#cceffc;"><br><br><br><br><br></div>
+      <pre class="text-center">$clinicalHighlight</pre>
+    </div>
+
+     <div class="col-sm-3 col-xs-6">
+      <div style="background: #ffcdcd;"><br><br><br><br><br></div>
+      <pre class="text-center">$clinicalFormInvalid</pre>
+    </div>
+
+    <div class="col-sm-3 col-xs-6">
+      <div style="background: #007fff;"><br><br><br><br><br></div>
+      <pre class="text-center">$clinicalFormFocus</pre>
+    </div>
+
+    <div class="col-sm-3 col-xs-6">
+      <div style="background: #fffdf7;"><br><br><br><br><br></div>
+      <pre class="text-center">$clinicalFormFocusBg</pre>
+    </div>
+
+    <div class="col-sm-3 col-xs-6">
+      <div style="background: #FFFAD8;"><br><br><br><br><br></div>
+      <pre class="text-center">$clinicalFormWarning</pre>
+    </div>
+
+    <div class="col-sm-3 col-xs-6">
+      <div style="background:#333;"><br><br><br><br><br></div>
+      <pre class="text-center">$darkGray</pre>
+    </div>
+
+    <div class="col-sm-3 col-xs-6">
+      <div style="background: #666;"><br><br><br><br><br></div>
+      <pre class="text-center">$mediumGray</pre>
+    </div>
+    <div class="col-sm-3 col-xs-6">
+        <div style="background:#ccc;"><br><br><br><br><br></div>
+        <pre class="text-center">$lightGray</pre>
+    </div>
+
+     <div class="col-sm-3 col-xs-6">
+        <div style="background: #ddd;"><br><br><br><br><br></div>
+        <pre class="text-center">$lighterGray</pre>
+     </div>
+
+      <div class="col-sm-3 col-xs-6">
+          <div style="background: #eee;"><br><br><br><br><br></div>
+          <pre class="text-center">$lightestGray</pre>
+      </div>
+
+      <div class="col-sm-3 col-xs-6">
+            <div style="background: #bbb;"><br><br><br><br><br></div>
+            <pre class="text-center">$primarySectionGridBorder</pre>
+      </div>
+
+      <div class="col-sm-3 col-xs-6">
+        <div style="background: #f1f1f1;"><br><br><br><br><br></div>
+        <pre class="text-center">$bahmniTableHeaderBg</pre>
+      </div>
+
+      <div class="col-sm-3 col-xs-6">
+        <div style="background: #fafafa;"><br><br><br><br><br></div>
+        <pre class="text-center">$bahmniPageBg</pre>
+      </div>
+
+      <div class="col-sm-3 col-xs-6">
+        <div style="background: #FFFDF0;"><br><br><br><br><br></div>
+        <pre class="text-center">$alertBackground</pre>
+      </div>
+
+      <div class="col-sm-3 col-xs-6">
+        <div style="background: #FFFFFF;"><br><br><br><br><br></div>
+        <pre class="text-center">$white</pre>
+      </div>
+
+      <div class="col-sm-3 col-xs-6">
+        <div style="background: #000000;"><br><br><br><br><br></div>
+        <pre class="text-center">$black</pre>
+      </div>
+
+      <div class="col-sm-3 col-xs-6">
+        <div style="background: #BBB;"><br><br><br><br><br></div>
+        <pre class="text-center">$darkerGrey</pre>
+      </div>
+
+      <div class="col-sm-3 col-xs-6">
+        <div style="background: #f3f3f3;"><br><br><br><br><br></div>
+        <pre class="text-center">$lighterGrey</pre>
+      </div>
+
+  </div>
+```
+
+*/
+
+
+
+
+/*doc
+---
+title: Fonts
+name: Fonts
+category: Variables - fonts
+---
+Below listed fonts are used in the whole Bahmni application.
+
+```html_example
+  <div>
+   <span style="font-family: OpenSansBold;">font-family: $OpenSansBoldFont;</span><br/>
+   <span>font-family: $OpenSansFont;</span><br/>
+   <span style="font-family: OpenSansLight;">font-family: $primaryLightFont;</span><br/>
+   <span style="font-family: OpenSansItalic;"> font-family: $primaryItalicFont;</span><br/>
+  </div>
+```
+
+*/
+
+
+
+
+
 /* settings */
 $max-page-width: 1300px;
 
@@ -17,11 +204,7 @@ $bahmniSectionHeaderColor: #66b298;
 /*  _components - bahmniTheme: */
 $clinicalNotesColor: #EFF8FF;
 $clinicalCurrentVist: #E8A000;
-
-$clinicalSuccessMessageBg: #f9edbe;
 $clinicalInfoMessageBg: #e8edf3;
-$clinicalWarningMessageBg: #fffdf0;
-
 $clinicalRemoveBtn: #660000;
 $clinicalHighlight: #cceffc;
 

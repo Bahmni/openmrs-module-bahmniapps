@@ -15,12 +15,12 @@ angular.module('bahmni.clinical')
             var allConceptSections = [];
 
             var init = function () {
-                if (!($scope.consultation.selectedObsTemplate != undefined && $scope.consultation.selectedObsTemplate.length > 0)) {
+                if (!($scope.consultation.selectedObsTemplate !== undefined && $scope.consultation.selectedObsTemplate.length > 0)) {
                     spinner.forPromise(conceptSetService.getConcept({
                         name: "All Observation Templates",
                         v: "custom:" + customRepresentation
-                    }).success(function (response) {
-                        var allTemplates = response.results[0].setMembers;
+                    }).then(function (response) {
+                        var allTemplates = response.data.results[0].setMembers;
                         createConceptSections(allTemplates);
                         $scope.consultation.selectedObsTemplate = getSelectedObsTemplate(allConceptSections);
                         if (!!$state.params.programUuid) {
@@ -60,7 +60,7 @@ angular.module('bahmni.clinical')
                             allConceptSections.push(new Bahmni.ConceptSet.ConceptSetSection(conceptSetExtension, $rootScope.currentUser, conceptSetConfig, [observation], template));
                         });
                     } else {
-                        allConceptSections.push(new Bahmni.ConceptSet.ConceptSetSection(conceptSetExtension, $rootScope.currentUser, conceptSetConfig, [], template))
+                        allConceptSections.push(new Bahmni.ConceptSet.ConceptSetSection(conceptSetExtension, $rootScope.currentUser, conceptSetConfig, [], template));
                     }
                 });
             };
@@ -75,7 +75,7 @@ angular.module('bahmni.clinical')
             var getObservationsForTemplate = function (template) {
                 return _.filter($scope.consultation.observations, function (observation) {
                     return observation.concept.uuid === template.uuid;
-                })
+                });
             };
 
             var getSelectedObsTemplate = function (allConceptSections) {

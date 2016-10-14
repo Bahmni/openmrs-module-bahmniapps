@@ -5,7 +5,7 @@
             <tr class="patient-info">
                 <td colspan="2">
                     <span class="patient-img">
-                        <img ng-src="{{::patient.image}}" onerror="this.onerror=null;this.src='../images/blank-user.gif';">
+                        <img ng-src="{{::patient.image}}" fallback-src='../images/blank-user.gif'>
                     </span>
                     <div class="patient-value">
                          <span class="patient-name">
@@ -26,7 +26,7 @@
             <tr ng-if="showBirthDate" >
                 <td class="name">Date of Birth</td>
                 <td class="value">{{::patient.birthdate | bahmniDate}}
-                    <span ng-if="patient.birthdateEstimated" class="patient-estimated-text"> (est.)</span>
+                    <span ng-if="::patient.birthdateEstimated" class="patient-estimated-text"> (est.)</span>
                 </td>
             </tr>
             <tr ng-repeat="attribute in config.patientAttributes" ng-if="::patient[attribute]"

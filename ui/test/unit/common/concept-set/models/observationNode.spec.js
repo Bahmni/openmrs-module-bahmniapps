@@ -155,12 +155,73 @@ describe("ObservationNode", function () {
             });
     });
 
+    describe("Numeric allowDecimal", function () {
+        var pulse = buildConcept("Pulse", [], [], "Misc", "Numeric");
+        pulse.hiAbsolute = 100;
+        pulse.lowAbsolute =30;
+        var abnormal = buildConcept("Pulse Abnormal", [], [], "Abnormal", "Boolean");
+        var unknown = buildConcept("Pulse Unknown", [], [], "Unknown", "Boolean");
+
+        var pulseData = buildConcept("Pulse Data", [pulse, abnormal, unknown], [], "Concept Details");
+
+        var observations = [{
+            concept: pulseData,
+            label: "Pulse",
+            groupMembers: [
+                {
+                    "concept": pulse,
+                    "label": "Pulse",
+                    "groupMembers": [],
+                    "value": 72.6,
+                    "voided": false
+                },
+                {
+                    "concept": abnormal,
+                    "label": "Abnormal",
+                    "groupMembers": [],
+                    "value": true,
+                    "voided": false
+                }
+            ],
+            "voided": false
+        }];
+
+        it ("should be a valid observation if value is integer and allow decimal is false and value is within absolute range", function () {
+            pulse.allowDecimal = false;
+            var observation = mapper.map(observations, pulseData, {});
+            observation.primaryObs.value = 70;
+            expect(observation.isValid()).toBeTruthy();
+        });
+
+        it ("should be a valid observation if value is integer and allow decimal is true and value is within absolute range", function () {
+            pulse.allowDecimal = true;
+            var observation = mapper.map(observations, pulseData, {});
+            observation.primaryObs.value = 74;
+            expect(observation.isValid()).toBeTruthy();
+        });
+
+        it ("should be a valid observation if value is decimal and allow decimal is true and value is within absolute range", function () {
+            pulse.allowDecimal = true;
+            var observation = mapper.map(observations, pulseData, {});
+            observation.primaryObs.value = 74.6;
+            expect(observation.isValid()).toBeTruthy();
+        });
+
+        it ("should be an invalid observation if value is decimal and allow decimal is false", function () {
+            pulse.allowDecimal = false;
+            var observation = mapper.map(observations, pulseData, {});
+            observation.primaryObs.value = 74.6;
+            expect(observation.isValid()).toBeFalsy();
+        });
+
+    });
+
     function buildConcept(name, setMembers, answers, classname, datatype) {
         return {
             "name": {name: name},
             "set": setMembers && setMembers.length > 0,
             conceptClass: {name: classname || "N/A"},
-            dataType: datatype || "Text",
+            datatype: {name: datatype || "Text"},
             setMembers: setMembers,
             answers: answers,
             "uuid": name + "_uuid"

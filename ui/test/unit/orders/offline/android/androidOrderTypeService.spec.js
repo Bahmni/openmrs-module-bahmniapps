@@ -9,7 +9,7 @@ describe('Order Type Service', function () {
 
     beforeEach(module(function ($provide) {
         var orderType = {
-            "value": [
+            "data": [
                 {display: 'Drug Order', uuid: 'DrugOrderUuid'},
                 {display: 'Test Order', uuid: 'TestOrderUuid'}
             ]

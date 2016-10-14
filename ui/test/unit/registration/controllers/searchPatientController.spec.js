@@ -27,6 +27,7 @@ describe('SearchPatientController', function () {
         preferences = $injector.get('Preferences');
         rootScope.patientConfiguration = {};
         rootScope.currentUser = { privileges: [{name: 'View Patients'}] };
+        rootScope.addressLevels = [{ "addressField" : "stateProvince" ,name: "State"}];
         rootScope.patientConfiguration.identifierSources = [
             {name: 'GAN', prefix: 'GAN'},
             {name: 'SEM', prefix: 'SEM'},
@@ -222,7 +223,7 @@ describe('SearchPatientController', function () {
             var defaultSearchAddressField = undefined;
             scope.searchById();
 
-            expect(patientResource.search).toHaveBeenCalledWith(undefined, "20001", "GAN", defaultSearchAddressField, undefined, undefined, undefined, undefined, undefined, undefined);
+            expect(patientResource.search).toHaveBeenCalledWith(undefined, "20001", "GAN", defaultSearchAddressField, undefined, undefined, undefined, undefined, undefined, undefined, {}, {});
         });
 
         it('should show the spinner while searching', function () {
@@ -240,10 +241,13 @@ describe('SearchPatientController', function () {
             scope.searchParameters.identifierPrefix = {};
             scope.searchParameters.identifierPrefix.prefix = "GAN";
             scope.searchParameters.registrationNumber = "20001";
+            scope.customAttributesSearchConfig.fields = ["education", "firstNameLocal"];
+            scope.addressSearchResultsConfig.fields = ["address3"];
+            scope.personSearchResultsConfig.fields = ["middleNameLocal"];
 
             scope.searchById();
 
-            expect(location.search).toHaveBeenCalledWith({identifierPrefix: "GAN", registrationNumber: "20001", programAttributeFieldName: undefined, programAttributeFieldValue: undefined});
+            expect(location.search).toHaveBeenCalledWith({identifierPrefix: "GAN", registrationNumber: "20001",  programAttributeFieldName: undefined, patientAttributes : ["education", "firstNameLocal"], programAttributeFieldValue: undefined, addressSearchResultsConfig : ["address3"], personSearchResultsConfig : ["middleNameLocal"]});
         });
 
         it('should change the search parameter to patient identifier with programAttributesSearchConfig', function () {
@@ -252,10 +256,11 @@ describe('SearchPatientController', function () {
             scope.searchParameters.identifierPrefix.prefix = "GAN";
             scope.searchParameters.registrationNumber = "20001";
             scope.programAttributesSearchConfig.field = "Facility";
+            scope.customAttributesSearchConfig.fields = ["education", "firstNameLocal"];
 
             scope.searchById();
 
-            expect(location.search).toHaveBeenCalledWith({identifierPrefix: "GAN", registrationNumber: "20001", programAttributeFieldName: "Facility", programAttributeFieldValue: undefined});
+            expect(location.search).toHaveBeenCalledWith({identifierPrefix: "GAN", registrationNumber: "20001", programAttributeFieldName: "Facility", patientAttributes : ["education", "firstNameLocal"], programAttributeFieldValue: undefined, addressSearchResultsConfig : {  }, personSearchResultsConfig : {  }});
         });
 
         it('should not search if registrationNumber is not present', function () {
@@ -327,6 +332,10 @@ describe('SearchPatientController', function () {
             var programAttributeValue = scope.getProgramAttributeValues(result);
 
             expect(programAttributeValue).toBe("Facility1, Facility2, Facility3");
+        });
+
+        it("should check if the address fields are valid", function () {
+            expect(scope.getAddressColumnName("stateProvince")).toBe("State");
         });
     });
 });

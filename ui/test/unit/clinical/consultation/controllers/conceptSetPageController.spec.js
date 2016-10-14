@@ -60,8 +60,8 @@ describe('ConceptSetPageController', function () {
     var mockConceptSetService = function (conceptResponseData, entityMappingResponseData) {
         conceptSetService.getConcept.and.callFake(function () {
             return {
-                success: function (callback) {
-                    return callback(conceptResponseData);
+                then: function (callback) {
+                    return callback({"data" :conceptResponseData});
                 }
             }
         });

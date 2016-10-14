@@ -91,7 +91,7 @@ angular.module('bahmni.common.displaycontrol.obsVsObsFlowSheet').directive('obsT
             $scope.commafy = function (observations) {
                 var list = [];
                 var unBoolean = function (boolValue) {
-                    return boolValue ? "Yes" : "No";
+                    return boolValue ? $translate.instant("OBS_BOOLEAN_YES_KEY") : $translate.instant("OBS_BOOLEAN_NO_KEY");
                 };
 
                 for (var index in observations) {

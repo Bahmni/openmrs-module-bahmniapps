@@ -56,10 +56,34 @@ Bahmni.Common.Offline.SchemaDefinitions = {
         nullableColumns: ['name', 'parentId', 'userGeneratedId'],
         primaryKeyColumns: ['uuid']
     },
+    Concept: {
+        tableName: 'concept',
+        columns: [
+            {
+                name: 'data',
+                type: 'STRING'
+            }, {
+                name: 'uuid',
+                type: 'STRING'
+            }, {
+                name: 'name',
+                type: 'STRING'
+            }, {
+                name: 'parents',
+                type: 'OBJECT'
+            }
+        ],
+        nullableColumns: [],
+        primaryKeyColumns: ['uuid']
+    },
 
     EventLogMarker: {
         tableName: 'event_log_marker',
         columns: [
+            {
+                name: 'markerName',
+                type: 'STRING'
+            },
             {
                 name: 'lastReadEventUuid',
                 type: 'STRING'
@@ -71,8 +95,8 @@ Bahmni.Common.Offline.SchemaDefinitions = {
                 type: 'DATE_TIME'
             }
         ],
-        nullableColumns: [],
-        primaryKeyColumns: ['catchmentNumber']
+        nullableColumns: ['catchmentNumber'],
+        primaryKeyColumns: ['markerName']
     },
 
     PatientAttributeType: {
@@ -235,7 +259,7 @@ Bahmni.Common.Offline.SchemaDefinitions = {
                 name: 'key',
                 type: 'STRING'
             }, {
-                name: 'value',
+                name: 'data',
                 type: 'STRING'
             },{
                 name: 'etag',
@@ -258,5 +282,117 @@ Bahmni.Common.Offline.SchemaDefinitions = {
         ],
         nullableColumns: [],
         primaryKeyColumns: ['uuid']
+    },
+    Visit: {
+        tableName: 'visit',
+        columns: [
+            {
+                name: 'uuid',
+                type: 'STRING'
+            },
+            {
+                name: 'patientUuid',
+                type: 'STRING'
+            },
+            {
+                name: 'startDatetime',
+                type: 'DATE_TIME'
+            },
+            {
+                name: 'visitJson',
+                type: 'OBJECT'
+            }
+        ],
+        nullableColumns: [],
+        primaryKeyColumns: ['uuid']
+    },
+    Encounter: {
+        tableName: 'encounter',
+        columns: [
+            {
+                name: 'uuid',
+                type: 'STRING'
+            },
+            {
+                name: 'patientUuid',
+                type: 'STRING'
+            },
+            {
+                name: 'encounterDateTime',
+                type: 'DATE_TIME'
+            },
+            {
+                name: 'encounterType',
+                type: 'STRING'
+            },
+            {
+                name: 'providerUuid',
+                type: 'STRING'
+            },
+            {
+                name: 'visitUuid',
+                type: 'STRING'
+            },
+            {
+                name: 'encounterJson',
+                type: 'OBJECT'
+            }
+        ],
+        nullableColumns: ['visitUuid'],
+        primaryKeyColumns: ['uuid']
+    },
+    Observation: {
+        tableName: 'observation',
+        columns: [
+            {
+                name: 'uuid',
+                type: 'STRING'
+            },
+            {
+                name: 'encounterUuid',
+                type: 'STRING'
+            },
+            {
+                name: 'visitUuid',
+                type: 'STRING'
+            },
+            {
+                name: 'patientUuid',
+                type: 'STRING'
+            },
+            {
+                name: 'conceptName',
+                type: 'STRING'
+            },
+            {
+                name: 'observationJson',
+                type: 'OBJECT'
+            }
+        ],
+        nullableColumns: ['visitUuid'],
+        primaryKeyColumns: ['uuid']
+    },
+    ErrorLog: {
+        tableName: 'error_log',
+        columns: [
+            {
+                name: 'id',
+                type: 'INTEGER'
+            }, {
+                name: 'failedRequestUrl',
+                type: 'STRING'
+            }, {
+                name: 'logDateTime',
+                type: 'DATE_TIME'
+            }, {
+                name: 'responseStatus',
+                type: 'INTEGER'
+            }, {
+                name: 'stackTrace',
+                type: 'STRING'
+            }
+        ],
+        nullableColumns: [],
+        primaryKeyColumns: ['id']
     }
 };

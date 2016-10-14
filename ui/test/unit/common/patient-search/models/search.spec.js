@@ -60,14 +60,14 @@ describe("Search", function() {
 			expect(search.showPatientCountOnSearchParameter(searchType)).toBeTruthy();
 	    });
 
-	    it('should be false when searchType is not selected', function () {
+	    it('should be true when searchType is selected', function () {
 	    	var searchType = {handler: "emrapi.sqlSearch.patientsToAdmit"};
 	    	var selectedSearchType = {handler: "emrapi.sqlSearch.patientsToDischarge"};
 	    	search.switchSearchType(selectedSearchType);
 	    	search.updatePatientList(allActivePatients);
 			search.searchParameter = "Gan";
             
-            expect(search.showPatientCountOnSearchParameter(searchType)).toBeFalsy();
+            expect(search.showPatientCountOnSearchParameter(searchType)).toBeTruthy();
 	    });
 
 	    it('should be false when searchType is a look up', function () {

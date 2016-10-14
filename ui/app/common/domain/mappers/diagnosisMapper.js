@@ -31,7 +31,7 @@ Bahmni.DiagnosisMapper = function (diagnosisStatus) {
 
     self.mapDiagnoses = function (diagnoses) {
         var mappedDiagnoses = [];
-        diagnoses.forEach(function (diagnosis) {
+        _.each(diagnoses, function(diagnosis) {
             mappedDiagnoses.push(mapDiagnosis(diagnosis));
         });
         return mappedDiagnoses;

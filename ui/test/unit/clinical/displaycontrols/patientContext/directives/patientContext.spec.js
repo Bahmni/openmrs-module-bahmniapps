@@ -178,7 +178,7 @@ describe('patient context', function () {
 
         it('should set preffered identifier to patient identifier if the configure attribute does not exists', function () {
             var patientContext = {
-                programAttributes: {'Aadhar Number': '1234'},
+                programAttributes: {'Aadhar Number': {description: 'Aadhar Number', value: '1234'}},
                 identifier: 'GAN20000',
                 personAttributes: []
             };

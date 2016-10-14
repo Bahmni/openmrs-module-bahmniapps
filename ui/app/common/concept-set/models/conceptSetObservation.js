@@ -99,8 +99,8 @@ Bahmni.ConceptSet.Observation.prototype = {
         return this.getDataTypeName() === "Numeric";
     },
 
-    isAllowDecimal : function (){
-        if(this.getAllowDecimal() === false){
+    isValidNumeric : function (){
+        if(!this.isDecimalAllowed()){
             if(this.value && this.value.toString().indexOf('.') > 0){
                 return false;
             }
@@ -128,7 +128,7 @@ Bahmni.ConceptSet.Observation.prototype = {
         return this.concept.dataType;
     },
 
-    getAllowDecimal: function () {
+    isDecimalAllowed: function () {
         return this.concept.allowDecimal;
     },
 
@@ -310,8 +310,8 @@ Bahmni.ConceptSet.Observation.prototype = {
     },
 
     isValid: function (checkRequiredFields, conceptSetRequired) {
-        if (this.isNumeric() && this.getAllowDecimal() === false){
-            return this.isAllowDecimal();
+        if (this.isNumeric() && !this.isValidNumeric()) {
+            return false;
         }
         if (this.error) {
             return false;

@@ -1,10 +1,11 @@
 'use strict';
 
 angular.module('bahmni.home')
-    .controller('DashboardController', ['$rootScope', '$scope', '$state', 'appService', 'locationService', 'spinner', '$bahmniCookieStore', '$window', '$q',
-        function ($rootScope, $scope, $state, appService, locationService, spinner, $bahmniCookieStore, $window, $q) {
+    .controller('DashboardController', ['$scope', '$state', 'appService', 'locationService', 'spinner', '$bahmniCookieStore', '$window', '$q', 'offlineService', 'schedulerService',
+        function ($scope, $state, appService, locationService, spinner, $bahmniCookieStore, $window, $q, offlineService, schedulerService) {
             $scope.appExtensions = appService.getAppDescriptor().getExtensions($state.current.data.extensionPointId, "link") || [];
             $scope.selectedLocationUuid = {};
+            $scope.isOfflineApp = offlineService.isOfflineApp();
 
             var getCurrentLocation = function () {
                 return $bahmniCookieStore.get(Bahmni.Common.Constants.locationCookieName) ? $bahmniCookieStore.get(Bahmni.Common.Constants.locationCookieName) : null;
@@ -38,5 +39,19 @@ angular.module('bahmni.home')
                 $window.location.reload();
             };
 
+            $scope.sync = function() {
+                schedulerService.sync(Bahmni.Common.Constants.syncButtonConfiguration);
+            };
+
+            var cleanUpListenerSchedulerStage = $scope.$on("schedulerStage", function (event, stage, restartSync) {
+                $scope.isSyncing = (stage !== null);
+                if (restartSync) {
+                    schedulerService.stopSync();
+                    schedulerService.sync();
+                }
+            });
+
+            $scope.$on("$destroy", cleanUpListenerSchedulerStage);
+            
             return spinner.forPromise($q.all(init()));
         }]);

@@ -141,18 +141,6 @@ describe("OrdersDisplayControl", function () {
         expect(element.children()[0]).toEqual('section');
     });
 
-    it('1 section child should have children 1 section and 1 div', function () {
-
-        orderService.getOrders.and.returnValue(specUtil.createFakePromise(orders));
-        var element = generateElement();
-
-        expect(element.children()[0]).toEqual('section');
-
-        var section = $(element.children()[0]);
-
-            expect(section.children()[0]).toEqual('section');
-        expect(section.children()[1]).toEqual('div');
-    });
 
     it('1 section child should have children 1 h2, 1 section and 1 div', function () {
         scope.section.title = "testTitle";

@@ -7,7 +7,7 @@ angular
         'bahmni.common.routeErrorHandler', 'bahmni.common.displaycontrol.pivottable', 'RecursionHelper', 'ngSanitize',
         'bahmni.common.uiHelper', 'bahmni.common.domain', 'ngDialog', 'pascalprecht.translate', 'ngCookies',
         'monospaced.elastic', 'bahmni.common.offline', 'bahmni.common.displaycontrol.hint', 'bahmni.common.attributeTypes',
-        'bahmni.common.models', 'FredrikSandell.worker-pool', 'bahmni.common.uicontrols'])
+        'bahmni.common.models', 'bahmni.common.uicontrols'])
     .config(['$urlRouterProvider', '$stateProvider', '$httpProvider', '$bahmniTranslateProvider','$compileProvider', function ($urlRouterProvider, $stateProvider, $httpProvider, $bahmniTranslateProvider, $compileProvider) {
         $httpProvider.defaults.headers.common['Disable-WWW-Authenticate'] = true;
         $urlRouterProvider.otherwise('/search');
@@ -93,17 +93,13 @@ angular
                 }
             });
         $bahmniTranslateProvider.init({app: 'registration', shouldMerge: true});
-    }]).run(function ($rootScope, $templateCache, WorkerService, offlineService, scheduledSync) {
+    }]).run(function ($rootScope, $templateCache, offlineService, schedulerService) {
         //Disable caching view template partials
         $rootScope.$on('$viewContentLoaded', function () {
             $templateCache.removeAll();
         });
 
-        if(offlineService.isChromeApp()) {
-            if (Bahmni.Common.Offline && Bahmni.Common.Offline.BackgroundWorker) {
-                new Bahmni.Common.Offline.BackgroundWorker(WorkerService, offlineService);
-            }
-        }else if(offlineService.isAndroidApp()){
-                scheduledSync();
+        if (offlineService.isChromeApp() || offlineService.isAndroidApp()) {
+            schedulerService.sync();
         }
 });

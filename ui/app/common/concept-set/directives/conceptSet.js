@@ -180,7 +180,7 @@ angular.module('bahmni.common.conceptSet')
                             }
 
                             if (childNode.isNumeric()){
-                                if(!childNode.isAllowDecimal()){
+                                if(!childNode.isValidNumeric()){
                                     errorMessage = "Please enter Integer value, decimal value is not allowed";
                                     return true;
                                 }
@@ -204,7 +204,7 @@ angular.module('bahmni.common.conceptSet')
                 validationHandler.add(validateObservationTree);
 
 
-                $scope.$on('event:showPrevious' + conceptSetName, function () {
+                var cleanUpListenerShowPrevious = $scope.$on('event:showPrevious' + conceptSetName, function () {
 
                     return spinner.forPromise(observationsService.fetch($scope.patient.uuid, $scope.conceptSetName, null, $scope.numberOfVisits, null, true)).then(function (response) {
                         var recentObservations = ObservationUtil.flattenObsToArray(response.data);
@@ -256,6 +256,7 @@ angular.module('bahmni.common.conceptSet')
                 $scope.$on('$destroy', function() {
                     deregisterObservationUpdated();
                     deregisterAddMore();
+                    cleanUpListenerShowPrevious();
                 });
 
                 var processConditions = function (flattenedObs, fields, disable, error) {
@@ -299,12 +300,12 @@ angular.module('bahmni.common.conceptSet')
                 restrict: 'E',
                 scope: {
                     conceptSetName: "=",
-                    observations: "=",
-                    required: "=",
+                    observations: "=?",
+                    required: "=?",
                     showTitle: "&",
                     validationHandler: "&",
                     patient: "=",
-                    conceptSetFocused: "=",
+                    conceptSetFocused: "=?",
                     collapseInnerSections: "=?"
                 },
                 templateUrl: '../common/concept-set/views/conceptSet.html',

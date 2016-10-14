@@ -38,7 +38,7 @@ Bahmni.Common.Domain.AttributeFormatter = (function () {
     };
 
     var setAttributeValue = function setAttributeValue(attributeType, attr, value) {
-        if (value === "" || value === null || value === undefined) {
+        if (value === "" || value === null || value === undefined || value.conceptUuid === null) {
             attr.voided = true;
         }
         else if (attributeType.format === "org.openmrs.Concept") {

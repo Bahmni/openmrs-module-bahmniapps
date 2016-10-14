@@ -2,6 +2,7 @@ describe("Diagnosis Controller", function () {
     var $scope, rootScope, contextChangeHandler,mockDiagnosisService, spinner, appService, mockAppDescriptor, q, deferred, mockDiagnosisData;
 
     beforeEach(module('bahmni.clinical'));
+    beforeEach(module('bahmni.common.offline'));
 
     beforeEach(inject(function ($controller, $rootScope, $q, diagnosisService) {
         $scope = $rootScope.$new();
