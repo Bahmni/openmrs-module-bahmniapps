@@ -32,10 +32,12 @@ angular.module('bahmni.registration')
             if (addressValue) {
                 addressHierarchyService.search(fieldName, addressValue).then(function(response) {
                     var address = response.data[0];
-                    selectedAddressUuids[fieldName] = address.uuid;
-                    selectedUserGeneratedIds[fieldName] = address.userGeneratedId;
-                    $scope.$parent.patient.addressCode =  selectedUserGeneratedIds[fieldName];
-                    populateSelectedAddressUuids(levelIndex + 1);
+                    if (address) {    // need to check, because if this was free-text entry, a match won't be found
+                        selectedAddressUuids[fieldName] = address.uuid;
+                        selectedUserGeneratedIds[fieldName] = address.userGeneratedId;
+                        $scope.$parent.patient.addressCode = selectedUserGeneratedIds[fieldName];
+                        populateSelectedAddressUuids(levelIndex + 1);
+                    }
                 });
             }
         };
