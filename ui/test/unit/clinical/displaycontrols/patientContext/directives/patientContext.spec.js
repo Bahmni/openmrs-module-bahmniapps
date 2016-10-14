@@ -3,15 +3,18 @@
 describe('patient context', function () {
     var scope, $compile, mockBackend, patientService, spinner, mockAppDescriptor, mockAppService, provide;
 
-    beforeEach(module('bahmni.clinical', function ($provide) {
+    beforeEach(module('bahmni.common.patient', function ($provide) {
         patientService = jasmine.createSpyObj('patientService', ['getPatientContext']);
+        $provide.value('patientService', patientService);
+    }));
+
+    beforeEach(module('bahmni.clinical', function ($provide) {
         spinner = jasmine.createSpyObj('spinner', ['forPromise']);
         mockAppDescriptor = jasmine.createSpyObj('appDescriptor', ['getConfigValue']);
         mockAppService = jasmine.createSpyObj('appService', ['getAppDescriptor']);
         provide = $provide;
 
         $provide.value('spinner', spinner);
-        $provide.value('patientService', patientService);
         $provide.value('appService', mockAppService);
         $provide.value('$state', {params: {enrollment: 'programUuid'}});
         $provide.value('$translate', {});
@@ -29,7 +32,7 @@ describe('patient context', function () {
 
     describe('initialization', function () {
         it('should fetch core patient information if there is no configuration', function () {
-            var patientContext = {};
+            var patientContext = specUtil.createFakePromise({});
             patientService.getPatientContext.and.returnValue(patientContext);
             mockAppService.getAppDescriptor.and.returnValue(mockAppDescriptor);
 
@@ -51,10 +54,11 @@ describe('patient context', function () {
             expect(compiledElementScope).not.toBeUndefined();
             expect(patientService.getPatientContext).toHaveBeenCalledWith(scope.patient.uuid, 'programUuid', undefined, undefined, undefined);
             expect(spinner.forPromise).toHaveBeenCalled();
-            expect(compiledElementScope.patientContext).toBe(patientContext);
+            expect(compiledElementScope.patientContext).toBe(patientContext.data);
         });
 
         it('should fetch person attributes if configured.', function () {
+            patientService.getPatientContext.and.returnValue(specUtil.createFakePromise({}));
             var patientContextConfig = {
                 personAttributes: ['caste']
             };
@@ -84,6 +88,7 @@ describe('patient context', function () {
         });
 
         it('should fetch program attributes if configured.', function () {
+            patientService.getPatientContext.and.returnValue(specUtil.createFakePromise({}));
             var patientContextConfig = {
                 programAttributes: ['Aadhar Number']
             };
@@ -113,6 +118,7 @@ describe('patient context', function () {
         });
 
         it('should fetch patient identifiers if configured.', function () {
+            patientService.getPatientContext.and.returnValue(specUtil.createFakePromise({}));
             var patientContextConfig = {
                 additionalPatientIdentifiers: ['National Identifier']
             };
@@ -146,6 +152,8 @@ describe('patient context', function () {
                 programAttributes: {'Aadhar Number': {description: 'Aadhar Number', value: '1234'}},
                 personAttributes: {}
             };
+            patientService.getPatientContext.and.returnValue(specUtil.createFakePromise(patientContext));
+
             var patientContextConfig = {
                 programAttributes: ['Aadhar Number'],
                 preferredIdentifier: 'Aadhar Number'
@@ -178,6 +186,7 @@ describe('patient context', function () {
                 personAttributes: {'Aadhar Number': {description: 'Aadhar Number', value: '1234'}},
                 programAttributes: {}
             };
+            patientService.getPatientContext.and.returnValue(specUtil.createFakePromise(patientContext));
             var patientContextConfig = {
                 personAttributes: ['Aadhar Number'],
                 preferredIdentifier: 'Aadhar Number'
@@ -211,6 +220,7 @@ describe('patient context', function () {
                 identifier: 'GAN20000',
                 personAttributes: []
             };
+            patientService.getPatientContext.and.returnValue(specUtil.createFakePromise(patientContext));
             var patientContextConfig = {
                 programAttributes: ['Aadhar Number'],
                 preferredIdentifier: 'Aadhar Card Number'
@@ -243,6 +253,7 @@ describe('patient context', function () {
                 personAttributes: {'Aadhar Number': {description: 'Aadhar Number', value: '1234'}},
                 programAttributes: {'Aadhar Number': {description: 'Aadhar Number', value: '2345'}}
             };
+            patientService.getPatientContext.and.returnValue(specUtil.createFakePromise(patientContext));
             var patientContextConfig = {
                 personAttributes: ['Aadhar Number'],
                 programAttributes: ['Aadhar Number'],
@@ -277,6 +288,7 @@ describe('patient context', function () {
                 personAttributes: {'isUrban': {description: 'Urban', value: 'true'}, 'cool': {description: 'Cool', value: 'false'}},
                 programAttributes: {'isUrban': {description: 'Urban', value: 'true'}, 'cool': {description: 'Cool', value: 'false'}}
             };
+            patientService.getPatientContext.and.returnValue(specUtil.createFakePromise(patientContext));
             var patientContextConfig = {
                 personAttributes: ['isUrban', 'cool']
             };
@@ -310,6 +322,7 @@ describe('patient context', function () {
             var patientContext = {
 
             };
+            patientService.getPatientContext.and.returnValue(specUtil.createFakePromise(patientContext));
             var patientContextConfig = {
 
             };
@@ -345,6 +358,7 @@ describe('patient context', function () {
             var patientContext = {
 
             };
+            patientService.getPatientContext.and.returnValue(specUtil.createFakePromise(patientContext));
             var patientContextConfig = {
 
             };

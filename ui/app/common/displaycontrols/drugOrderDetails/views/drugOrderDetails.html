@@ -1,10 +1,10 @@
-<div>
+<section>
     <h2 class="has-toggle section-title" ng-if="::section | titleTranslate">
         <span class="section-label">{{:: section | titleTranslate}}</span>
     </h2>
-    <p class="placeholder-text" ng-if="::drugOrders && drugOrders.length == 0">{{::'NO_DRUG_DETAILS_MESSAGE' |
-        translate}} </p>
     <div class="drug-order-table-container clearfix overflowAuto">
+        <p class="placeholder-text" ng-if="::drugOrders && drugOrders.length == 0">{{::'NO_DRUG_DETAILS_MESSAGE' |
+            translate}} </p>
         <table class="drug-order-table treatments-details-table">
             <tr>
                 <th ng-if="drugOrders.length > 0" ng-repeat="columnName in ::columnHeaders">{{::columnName |
@@ -56,4 +56,4 @@
             </tbody>
         </table>
     </div>
-</div>
+</section>
