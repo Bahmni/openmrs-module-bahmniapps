@@ -26,7 +26,7 @@ angular.module('bahmni.common.uiHelper')
 	        });
 
 			$scope.$on("$destroy", function() {
-				delete window.onbeforeunload;
+				window.onbeforeunload = undefined;
 			});
 		},
 	    restrict: 'E'
