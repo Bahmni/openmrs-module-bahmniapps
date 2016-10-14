@@ -165,7 +165,8 @@ module.exports = function (grunt) {
                     '!<%= yeoman.dist %>/initWorker.js',
                     '!<%= yeoman.dist %>/components/sw-toolbox/sw-toolbox.js',
                     '!<%= yeoman.dist %>/components/offline/*.js',
-                    '!<%= yeoman.dist %>/worker.js'
+                    '!<%= yeoman.dist %>/worker.js',
+                    '!<%= yeoman.dist %>/components/offline/themes/*.css'
                 ]
             }
         },
