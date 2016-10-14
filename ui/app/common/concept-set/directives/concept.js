@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('bahmni.common.conceptSet')
-    .directive('concept', ['RecursionHelper', 'spinner', '$filter',
-        function (RecursionHelper, spinner, $filter) {
+    .directive('concept', ['RecursionHelper', 'spinner', '$filter', 'messagingService',
+        function (RecursionHelper, spinner, $filter, messagingService) {
         var link = function (scope) {
             var hideAbnormalbuttonConfig = scope.observation && scope.observation.conceptUIConfig &&  scope.observation.conceptUIConfig['hideAbnormalButton'];
 
@@ -11,10 +11,14 @@ angular.module('bahmni.common.conceptSet')
             scope.hideAbnormalButton = hideAbnormalbuttonConfig == undefined ? scope.hideAbnormalButton : hideAbnormalbuttonConfig;
 
             scope.cloneNew = function (observation, parentObservation) {
-                observation.showAddMoreButton = function(){return false;};
+                observation.showAddMoreButton = function () {
+                    return false;
+                };
                 var newObs = observation.cloneNew();
+                newObs.scrollToElement = true;
                 var index = parentObservation.groupMembers.indexOf(observation);
                 parentObservation.groupMembers.splice(index + 1, 0, newObs);
+                messagingService.showMessage("info", "A new " + observation.label + " section has been added");
                 scope.$root.$broadcast("event:addMore", newObs);
             };
 
