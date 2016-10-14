@@ -33,7 +33,7 @@ angular.module('bahmni.common.uiHelper')
         };
 
         var hide = function (spinnerElement, parentElement) {
-            spinnerElement.remove();
+            spinnerElement && spinnerElement.remove();
             topLevelDiv(parentElement).removeClass('spinnable');
         };
 
