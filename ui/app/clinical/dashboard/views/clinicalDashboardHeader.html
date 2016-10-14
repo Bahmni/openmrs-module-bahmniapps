@@ -60,30 +60,42 @@
                title="Go to IPD Dashboard">
                 <i class="fa fa-bed fa-white"></i>
             </a>
+            <div class="desktop-menu fl">
+                <ul class="header-tabs" ng-if="clinicalDashboardConfig.showTabs()">
+                    <li class="tab-item dashboard" ng-repeat="dashboard in clinicalDashboardConfig.visibleTabs"
+                        ng-class="{'tab-selected' : clinicalDashboardConfig.isCurrentTab(dashboard), 'tab-removable': clinicalDashboardConfig.isCurrentTab(dashboard) && !dashboard.displayByDefault}">
+                    <span class="close" ng-click="closeDashboard(dashboard)">
+                       <span class="close-icon">x</span>
+                    </span>
+                        <a ng-click="showDashboard(dashboard)" ng-click="closeAllDialogs()">{{dashboard | titleTranslate}} </a>
 
-            <ul class="header-tabs" ng-if="clinicalDashboardConfig.showTabs()">
-                <li class="tab-item dashboard" ng-repeat="dashboard in clinicalDashboardConfig.visibleTabs"
-                    ng-class="{'tab-selected' : clinicalDashboardConfig.isCurrentTab(dashboard), 'tab-removable': clinicalDashboardConfig.isCurrentTab(dashboard) && !dashboard.displayByDefault}">
-                <span class="close" ng-click="closeDashboard(dashboard)">
-                   <span class="close-icon">x</span>
-                </span>
-                    <a ng-click="showDashboard(dashboard)" ng-click="closeAllDialogs()">{{dashboard | titleTranslate}} </a>
+                    </li>
+                    <li class="tab-item new-tab tab-active" bm-pop-over autoclose="true"
+                        ng-show="clinicalDashboardConfig.getUnOpenedTabs().length > 0">
+                        <a id="addDashboardButton" bm-pop-over-trigger>+</a>
 
-                </li>
-                <li class="tab-item new-tab tab-active" bm-pop-over autoclose="true"
-                    ng-show="clinicalDashboardConfig.getUnOpenedTabs().length > 0">
-                    <a id="addDashboardButton" bm-pop-over-trigger>+</a>
-
-                    <div class="tab-submenu" bm-pop-over-target>
-                        <ul>
-                            <li ng-repeat="dashboard in clinicalDashboardConfig.getUnOpenedTabs()">
-                                <a class="submenu-item unOpenedDashboard" ng-click="closeAllDialogs();showDashboard(dashboard);">{{dashboard | titleTranslate}} </a>
-                            </li>
-                        </ul>
-                    </div>
-                </li>
-            </ul>
-
+                        <div class="tab-submenu" bm-pop-over-target>
+                            <ul>
+                                <li ng-repeat="dashboard in clinicalDashboardConfig.getUnOpenedTabs()">
+                                    <a class="submenu-item unOpenedDashboard" ng-click="closeAllDialogs();showDashboard(dashboard);">{{dashboard | titleTranslate}} </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+            <div class="clinical-header mobile-menu fl">
+                <a id="MobileDashboardButton" class="mobile-menu-icon" ng-click="toggleDashboardMenu()">
+                    <i class="fa fa-bars fa-white fa-small"></i>
+                    <span>Dashboard</span>
+                </a>
+                <ul class="header-tabs" ng-if="clinicalDashboardConfig.showTabs()" ng-show="showDashboardMenu">
+                    <li class="tab-item dashboard" ng-repeat="dashboard in clinicalDashboardConfig.tabs"
+                        ng-class="{'tab-selected' : clinicalDashboardConfig.isCurrentTab(dashboard), 'tab-removable': clinicalDashboardConfig.isCurrentTab(dashboard) && !dashboard.displayByDefault}">
+                        <a ng-click="showDashboard(dashboard)">{{dashboard | titleTranslate}} </a>
+                    </li>
+                </ul>
+            </div>
             <div class="dashboard-header-right-wrapper">
                 <div ng-if="::clinicalDashboardConfig.quickPrints" class="fl print-list-wrapper" toggle="togglePrintList">
                     <button ng-if="clinicalDashboardConfig.showPrint()" class="dialog-button-group"
@@ -96,7 +108,7 @@
                         </li>
                     </ul>
                 </div>
-                <button ng-if="::!clinicalDashboardConfig.quickPrints" class="dialog-button-group" ng-click="printDashboard()"
+                <button ng-if="::!clinicalDashboardConfig.quickPrints" class="dialog-button-group print" ng-click="printDashboard()"
                         accesskey="{{'CLINICAL_PRINT_ACCESS_KEY'| translate}}" ng-bind-html="'CLINICAL_PRINT_TRANSLATION_KEY'|translate">
                     <i class="fa fa-print"></i>
 

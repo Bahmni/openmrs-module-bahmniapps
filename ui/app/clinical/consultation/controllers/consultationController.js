@@ -13,6 +13,7 @@ angular.module('bahmni.clinical').controller('ConsultationController',
             var DateUtil = Bahmni.Common.Util.DateUtil;
             $scope.togglePrintList = false;
             $scope.patient = patientContext.patient;
+            $scope.showDashboardMenu = false;
             $scope.stateChange = function(){
                 return $state.current.name === 'patient.dashboard.show'
             };
@@ -27,11 +28,18 @@ angular.module('bahmni.clinical').controller('ConsultationController',
                 $window.open('#' + $scope.consultationBoardLink, '_blank');
             };
 
+            $scope.toggleDashboardMenu = function () {
+                $scope.showDashboardMenu = !$scope.showDashboardMenu;
+            };
+
             $scope.showDashboard = function (dashboard) {
                 if (!clinicalDashboardConfig.isCurrentTab(dashboard)) {
                     $scope.$parent.$parent.$broadcast("event:switchDashboard", dashboard);
                 }
+                $scope.showDashboardMenu = false;
+
             };
+
 
             var setPrintAction = function(event,tab){
                 tab.print = function(){

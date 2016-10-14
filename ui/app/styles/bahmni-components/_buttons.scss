@@ -377,6 +377,9 @@ ul li a.back-btn, ul li a.back-btn:hover, button.back-btn, a.back-btn {
       line-height: 1;
       margin: 0;
       padding: 0;
+      @media screen and(max-width:470px){
+        font-size: 22px;
+      }
     }
     &.dashboard-link {
       padding:6px 8px 5px;
@@ -396,6 +399,9 @@ ul li a.back-btn, ul li a.back-btn:hover, button.back-btn, a.back-btn {
           }
       }
     }
+  @media screen and(max-width:470px){
+    padding: 4px 5px 5px;
+  }
 }
 button.back-btn {
     box-shadow: none;
