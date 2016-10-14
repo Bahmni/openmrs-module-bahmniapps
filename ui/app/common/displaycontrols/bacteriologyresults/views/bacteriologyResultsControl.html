@@ -1,10 +1,10 @@
 <section class="bacteriology-dashboard" confirm-on-exit>
-    <div ng-include src="'../common/ui-helper/messages.html'"></div>
     <h2 class="section-title">{{section | titleTranslate}}</h2>
-
-    <section class="block hierarchy">
-        <ul class="form-field">
-            <li ng-repeat="specimen in specimens" >
+    <div>
+        <div ng-include src="'../common/ui-helper/messages.html'"></div>
+        <section class="block hierarchy">
+            <ul class="form-field">
+                <li ng-repeat="specimen in specimens" >
                 <span class="tree-list-item">
                     <span class="specimen-info">
                         <span class="specimenSource toggle-container"   toggle="specimen.isOpen">
@@ -22,16 +22,17 @@
 
                 </span>
 
-                <ul ng-show="specimen.isOpen">
-                    <show-observation patient="patient" observation="specimen.sampleResult"></show-observation>
-                </ul>
-                <div ng-show="!hasResults(specimen.sampleResult) && specimen.isOpen">
-                    <div class="placeholder-text"><p translate="NO_SPECIMEN_RESULT_FOUND_MESSAGE"></p></div>
-                </div>
-            </li>
-            <li ng-show="!specimens">
-                <div class="placeholder-text"><p translate="NO_SPECIMEN_FOUND_MESSAGE"></p></div>
-            </li>
-        </ul>
-    </section>
+                    <ul ng-show="specimen.isOpen">
+                        <show-observation patient="patient" observation="specimen.sampleResult"></show-observation>
+                    </ul>
+                    <div ng-show="!hasResults(specimen.sampleResult) && specimen.isOpen">
+                        <div class="placeholder-text"><p translate="NO_SPECIMEN_RESULT_FOUND_MESSAGE"></p></div>
+                    </div>
+                </li>
+                <li ng-show="!specimens">
+                    <div class="placeholder-text"><p translate="NO_SPECIMEN_FOUND_MESSAGE"></p></div>
+                </li>
+            </ul>
+        </section>
+    </div>
 </section>

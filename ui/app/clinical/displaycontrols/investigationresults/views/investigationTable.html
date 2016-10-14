@@ -1,33 +1,35 @@
 <section class="block section-grid">
     <h2 ng-if="params.title" class="section-title">{{::params | titleTranslate}} </h2>
-    <p class="placeholder-text" ng-if="!hasLabOrders()">{{ ::params.noLabOrdersMessage  | translate }}</p>
-    <ul ng-if="hasLabOrders()">
-        <li ng-repeat="labOrderResults in accessions" bindonce="accessions" >
-            <div class="laborder-sub-heading toggle-container" toggle="labOrderResults.isOpen">
-                <i class="fa fa-caret-right"></i>
-                <i class="fa fa-caret-down"></i>
-                <span class="hidden-print">Accession at </span>
-                <span class="visible-print">Sample at </span>
-                <span bo-text="getAccessionDetailsFrom(labOrderResults).accessionDateTime | bahmniDateTime"></span>
-                <button class="toggle-btn fr" ng-if="showAccessionNotes(labOrderResults)" ng-click="toggle(labOrderResults)">
-                    <i class="fa fa-envelope" ng-hide="!labOrders.show"></i>
-                    <i class="fa fa-envelope-alt" ng-show="!labOrders.show"></i>
-                    Notes
-                </button>
-            </div>
-            <div  bm-show="labOrderResults.show">
-                <div class="notes inline-notes" ng-if="getAccessionDetailsFrom(labOrderResults).accessionNotes">
-                    <div  ng-repeat="accessionNote in getAccessionDetailsFrom(labOrderResults).accessionNotes" class="accession">
-                        <pre class="left">{{::accessionNote.text}}</pre>
-                        <div class="footer-note fr">
-                            <span class="provider" bo-text="accessionNote.providerName"></span>
+    <div>
+        <p class="placeholder-text" ng-if="!hasLabOrders()">{{ ::params.noLabOrdersMessage  | translate }}</p>
+        <ul ng-if="hasLabOrders()">
+            <li ng-repeat="labOrderResults in accessions" bindonce="accessions" >
+                <div class="laborder-sub-heading toggle-container" toggle="labOrderResults.isOpen">
+                    <i class="fa fa-caret-right"></i>
+                    <i class="fa fa-caret-down"></i>
+                    <span class="hidden-print">Accession at </span>
+                    <span class="visible-print">Sample at </span>
+                    <span bo-text="getAccessionDetailsFrom(labOrderResults).accessionDateTime | bahmniDateTime"></span>
+                    <button class="toggle-btn fr" ng-if="showAccessionNotes(labOrderResults)" ng-click="toggle(labOrderResults)">
+                        <i class="fa fa-envelope" ng-hide="!labOrders.show"></i>
+                        <i class="fa fa-envelope-alt" ng-show="!labOrders.show"></i>
+                        Notes
+                    </button>
+                </div>
+                <div  bm-show="labOrderResults.show">
+                    <div class="notes inline-notes" ng-if="getAccessionDetailsFrom(labOrderResults).accessionNotes">
+                        <div  ng-repeat="accessionNote in getAccessionDetailsFrom(labOrderResults).accessionNotes" class="accession">
+                            <pre class="left">{{::accessionNote.text}}</pre>
+                            <div class="footer-note fr">
+                                <span class="provider" bo-text="accessionNote.providerName"></span>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
-            <table bm-show="labOrderResults.isOpen" >
-                <tbody investigation-table-row test="::labOrderResult" params="::params" ng-repeat="labOrderResult in labOrderResults" ng-show="::shouldShowResults(labOrderResult)"></tbody>
-            </table>
-        </li>
-    </ul>
+                <table bm-show="labOrderResults.isOpen" >
+                    <tbody investigation-table-row test="::labOrderResult" params="::params" ng-repeat="labOrderResult in labOrderResults" ng-show="::shouldShowResults(labOrderResult)"></tbody>
+                </table>
+            </li>
+        </ul>
+    </div>
 </section>

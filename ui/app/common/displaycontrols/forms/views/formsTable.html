@@ -7,12 +7,13 @@
         <span class="title-link"> {{section | titleTranslate}}</span>
         <i class="fa fa-external-link"></i>
     </h2>
-    <ul class="form-field" class="ng-isolate-scope" id="visitDisplayTable">
-        <li>
-            <div>
-                <ul>
-                    <li ng-repeat="data in formData" class="clearfix">
-                        <span>{{getDisplayName(data)}}</span>
+    <div>
+        <ul class="form-field" class="ng-isolate-scope" id="visitDisplayTable">
+            <li>
+                <div>
+                    <ul>
+                        <li ng-repeat="data in formData" class="clearfix">
+                            <span>{{getDisplayName(data)}}</span>
                        <span class="fr formDataTime" ng-class="{'formDataDate': showFormsDate }">
                             <span ng-hide="::showFormsDate">{{data.obsDatetime | bahmniDateTime}}</span>
                             <span ng-show="::showFormsDate">{{data.obsDatetime | bahmniDate}}</span>
@@ -32,10 +33,11 @@
                                 <i class="fa fa-pencil"></i>
                             </span>
                         </span>
-                    </li>
-                </ul>
-            </div>
-        </li>
-    </ul>
+                        </li>
+                    </ul>
+                </div>
+            </li>
+        </ul>
+    </div>
 </section>
 

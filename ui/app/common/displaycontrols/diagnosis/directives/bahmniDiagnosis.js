@@ -44,7 +44,7 @@ angular.module('bahmni.common.displaycontrol.diagnosis')
             };
 
             var link = function ($scope, element) {
-                spinner.forPromise($scope.initialization,  $scope.sectionId !== undefined ? "#"+$scope.sectionId : element);
+                spinner.forPromise($scope.initialization, element);
             };
 
             return {
@@ -60,8 +60,7 @@ angular.module('bahmni.common.displaycontrol.diagnosis')
                     showCuredDiagnoses :"=?",
                     showDiagnosisWithState:"=?",
                     hideTitle: "=?",
-                    showLatestDiagnosis: "@showLatestDiagnosis",
-                    sectionId: "="
+                    showLatestDiagnosis: "@showLatestDiagnosis"
                 }
             }
         }]);

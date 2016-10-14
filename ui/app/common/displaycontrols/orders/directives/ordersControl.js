@@ -71,7 +71,7 @@ angular.module('bahmni.common.displaycontrol.orders')
             };
 
             var link = function ($scope, element) {
-                spinner.forPromise($scope.initialization, _.isUndefined($scope.section) ? undefined : element);
+                spinner.forPromise($scope.initialization, element);
             };
 
             return {

@@ -1,18 +1,17 @@
-<div class="block " ng-class="::{'hidden-print': noObsMessage}">
+<section class="block " ng-class="::{'hidden-print': noObsMessage}">
     <h2 ng-if="::(!isClickable() && title)"
         ng-class="::{'section-title': !isFulfilmentDisplayControl, 'form-field': isFulfilmentDisplayControl}">{{::title |
         translate}}</h2>
 
-    <div ng-if="::isClickable()" class="dashboard-observations-section">
-        <h2 ng-dialog="../common/displaycontrols/observation/views/allObservationDetails.html"
-            ng-dialog-controller="AllObservationDetailsController"
-            ng-dialog-data="{{dialogData}}"
-            ng-dialog-class="ngdialog-theme-default ng-dialog-all-details-page"
-            class="section-title has-link">
-            <span class="title-link"> {{::section | titleTranslate}} </span>
-            <i class="fa fa-external-link"></i>
-        </h2>
-    </div>
+    <h2 ng-if="::isClickable()"
+         ng-dialog="../common/displaycontrols/observation/views/allObservationDetails.html"
+        ng-dialog-controller="AllObservationDetailsController"
+        ng-dialog-data="{{dialogData}}"
+        ng-dialog-class="ngdialog-theme-default ng-dialog-all-details-page"
+        class="section-title has-link">
+        <span class="title-link"> {{::section | titleTranslate}} </span>
+        <i class="fa fa-external-link"></i>
+    </h2>
     <div class="concept-set-container-view">
         <section class="block hierarchy">
             <ul class="form-field" ng-if="bahmniObservations.length > 0">
@@ -49,4 +48,4 @@
             </div>
         </section>
     </div>
-</div>
+</section>
