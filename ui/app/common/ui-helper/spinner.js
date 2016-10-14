@@ -1,15 +1,19 @@
 'use strict';
 
 angular.module('bahmni.common.uiHelper')
-    .factory('spinner', ['messagingService', '$timeout', '$rootScope', function (messagingService, $timeout, $rootScope) {
+    .factory('spinner', ['messagingService', '$timeout', function (messagingService, $timeout) {
+
+        var topLevelDiv = function(element) {
+            return $(element).find("div").eq(0);
+        };
 
         var showSpinnerForElement = function (element) {
             if($(element).find(".dashboard-section-loader").length === 0) {
-                var topLevelDiv = $(element).find("div").eq(0);
-                topLevelDiv.addClass('spinnable');
-                topLevelDiv.append('<div class="dashboard-section-loader"></div>');
+                topLevelDiv(element)
+                    .addClass('spinnable')
+                    .append('<div class="dashboard-section-loader"></div>');
             }
-            return element.find(".dashboard-section-loader");
+            return $(element).find(".dashboard-section-loader");
         };
 
         var showSpinnerForOverlay = function () {
@@ -28,8 +32,9 @@ angular.module('bahmni.common.uiHelper')
                 return showSpinnerForOverlay();
         };
 
-        var hide = function (reference) {
-            reference.remove();
+        var hide = function (spinnerElement, parentElement) {
+            spinnerElement.remove();
+            topLevelDiv(parentElement).removeClass('spinnable');
         };
 
         var forPromise = function (promise, element) {
@@ -37,7 +42,7 @@ angular.module('bahmni.common.uiHelper')
                 // Added timeout to push a new event into event queue. So that its callback will be invoked once DOM is completely rendered
                 var spinnerElement = show(element);                      // Don't inline this element
                 promise['finally'](function () {
-                    hide(spinnerElement);
+                    hide(spinnerElement, element);
                 });
                 return promise;
             })
