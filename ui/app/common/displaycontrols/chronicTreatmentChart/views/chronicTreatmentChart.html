@@ -2,7 +2,6 @@
      ng-class="{'noTable' :(regimen.rows.length == 0),'hasTable' :(regimen.rows.length > 0 && section.rotateInPrint)}">
     <section ng-class="{'rotate':section.rotateInPrint}">
         <h2 ng-if="!isClickable()" class="section-title">{{section | titleTranslate}}</h2>
-
         <h2 ng-if="isClickable()"
             ng-dialog="../common/displaycontrols/chronicTreatmentChart/views/allChronicTreatmentChart.html"
             ng-dialog-controller="AllChronicTreatmentChartController"
@@ -12,12 +11,11 @@
             <span class="title-link"> {{section | titleTranslate}} </span>
             <i class="fa fa-external-link"></i>
         </h2>
-
         <div>
-            <section bindonce="regimen" class="chronic-treatment dashboard-section">
-                <div class="placeholder-text" ng-if="regimen.rows.length == 0">
-                    <p>{{'NO_DATA_MESSAGE' | translate}}</p>
-                </div>
+            <div class="placeholder-text" ng-if="regimen.rows.length == 0">
+                <p>{{'NO_DATA_MESSAGE' | translate}}</p>
+            </div>
+            <section bindonce="regimen" class="chronic-treatment dashboard-section" fixed-first-column>
                 <table ng-if="regimen.rows.length > 0">
                     <th ng-if="isMonthNumberRequired()">Month</th>
                     <th>Date</th>
