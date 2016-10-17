@@ -2,6 +2,7 @@
 
 angular.module('bahmni.common.uiHelper')
     .factory('spinner', ['messagingService', '$timeout', function (messagingService, $timeout) {
+        var tokens = [];
 
         var topLevelDiv = function(element) {
             return $(element).find("div").eq(0);
@@ -13,14 +14,26 @@ angular.module('bahmni.common.uiHelper')
                     .addClass('spinnable')
                     .append('<div class="dashboard-section-loader"></div>');
             }
-            return $(element).find(".dashboard-section-loader");
+            return {
+                element: $(element).find(".dashboard-section-loader")
+            };
         };
 
         var showSpinnerForOverlay = function () {
-            $('body').prepend('<div id="overlay"><div></div></div>');
+            var token = Math.random();
+            tokens.push(token);
+
+            if ($('#overlay').length === 0) {
+                $('body').prepend('<div id="overlay"><div></div></div>');
+            }
+
             var spinnerElement = $('#overlay');
             spinnerElement.stop().show();
-            return spinnerElement;
+
+            return {
+                element: spinnerElement,
+                token: token
+            };
         };
 
         var show = function (element) {
@@ -28,30 +41,37 @@ angular.module('bahmni.common.uiHelper')
             if (element !== undefined)
                 return showSpinnerForElement(element);
 
-            if ($('#overlay').length == 0)
-                return showSpinnerForOverlay();
+            return showSpinnerForOverlay();
         };
 
-        var hide = function (spinnerElement, parentElement) {
-            spinnerElement && spinnerElement.remove();
-            topLevelDiv(parentElement).removeClass('spinnable');
+        var hide = function (spinner, parentElement) {
+            var spinnerElement = spinner.element;
+            if (spinner.token) {
+                _.pull(tokens, spinner.token);
+                if (tokens.length === 0) {
+                    spinnerElement.fadeOut(300);
+                }
+            } else {
+                topLevelDiv(parentElement).removeClass('spinnable');
+                spinnerElement && spinnerElement.fadeOut(300);
+            }
         };
 
         var forPromise = function (promise, element) {
             return $timeout(function() {
                 // Added timeout to push a new event into event queue. So that its callback will be invoked once DOM is completely rendered
-                var spinnerElement = show(element);                      // Don't inline this element
+                var spinner = show(element);                      // Don't inline this element
                 promise['finally'](function () {
-                    hide(spinnerElement, element);
+                    hide(spinner, element);
                 });
                 return promise;
             })
         };
 
         var forAjaxPromise = function (promise, element) {
-            var token = show(element);
+            var spinner = show(element);
             promise.always(function () {
-                hide(token);
+                hide(spinner, element);
             });
             return promise;
         };
