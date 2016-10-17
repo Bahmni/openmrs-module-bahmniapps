@@ -1,34 +1,13 @@
 describe("Diagnosis Mapper", function () {
-    var diagnosisStatus = [
-        {
-            label: "RULED OUT",
-            concept: {
-                name: "Ruled Out Diagnosis"
-            }
-        },
-        {
-            label:  "CURED",
-            concept:{
-                name: "Cured Diagnosis"
-            }
-        }
-    ];
-
     it("should map simple diagnosis", function() {
         var mappedDiagnosis = new Bahmni.DiagnosisMapper().mapDiagnosis({});
         expect(mappedDiagnosis).toEqual(jasmine.any(Bahmni.Common.Domain.Diagnosis));
         expect(mappedDiagnosis.codedAnswer).toEqual({name: undefined, uuid: undefined});
     });
 
-    it("should find the exact diagnosis status", function() {
-        var mappedDiagnosis = new Bahmni.DiagnosisMapper(diagnosisStatus).mapDiagnosis({diagnosisStatusConcept: {name: "Ruled Out Diagnosis"}});
-        expect(mappedDiagnosis.diagnosisStatus).toBe(diagnosisStatus[0]);//object equality
-        expect(mappedDiagnosis.diagnosisStatus).toEqual({
-            label: "RULED OUT",
-            concept: {
-                name: "Ruled Out Diagnosis"
-            }
-        });//content equality
+    it("should map diagnosis status", function() {
+        var mappedDiagnosis = new Bahmni.DiagnosisMapper("RULED OUT").mapDiagnosis({diagnosisStatusConcept: {name: "Ruled Out Diagnosis"}});
+        expect(mappedDiagnosis.diagnosisStatus).toEqual("RULED OUT");
     });
 
     it("should map first diagnosis", function() {

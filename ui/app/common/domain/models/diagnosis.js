@@ -34,6 +34,10 @@ Bahmni.Common.Domain.Diagnosis = function (codedAnswer, order, certainty, existi
         return self.order == "SECONDARY";
     };
 
+    self.isRuledOut = function(){
+        return self.diagnosisStatus == $rootScope.diagnosisStatus;
+    };
+
     self.answerNotFilled = function () {
         return !self.codedAnswer.name;
     };
@@ -55,18 +59,18 @@ Bahmni.Common.Domain.Diagnosis = function (codedAnswer, order, certainty, existi
         return  self.getDisplayName() === undefined || self.getDisplayName().length === 0;
     };
 
-    var diagnosisStatusValue = null;
+    self.diagnosisStatusValue = null;
     self.diagnosisStatusConcept = null;
     Object.defineProperty(this, 'diagnosisStatus', {
         get: function () {
-            return diagnosisStatusValue;
+            return this.diagnosisStatusValue;
         },
         set: function (newStatus) {
             if (newStatus) {
-                diagnosisStatusValue = newStatus;
-                this.diagnosisStatusConcept = newStatus.concept;
+                this.diagnosisStatusValue = newStatus;
+                this.diagnosisStatusConcept = { name: Bahmni.Common.Constants.ruledOutdiagnosisStatus};
             } else {
-                diagnosisStatusValue = null;
+                this.diagnosisStatusValue = null;
                 this.diagnosisStatusConcept = null;
             }
         }

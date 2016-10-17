@@ -10,7 +10,7 @@ angular.module('bahmni.adt').factory('initialization', ['$rootScope', '$q', 'app
                 $rootScope.patientConfig = configurations.patientConfig();
                 $rootScope.genderMap = configurations.genderMap();
                 $rootScope.relationshipTypeMap = configurations.relationshipTypeMap();
-
+                $rootScope.diagnosisStatus = (appService.getAppDescriptor().getConfig("diagnosisStatus") && appService.getAppDescriptor().getConfig("diagnosisStatus").value || "RULED OUT");
                 config.resolve();
             });
             return config.promise;
