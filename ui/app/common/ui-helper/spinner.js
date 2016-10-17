@@ -53,7 +53,7 @@ angular.module('bahmni.common.uiHelper')
                 }
             } else {
                 topLevelDiv(parentElement).removeClass('spinnable');
-                spinnerElement && spinnerElement.fadeOut(300);
+                spinnerElement && spinnerElement.remove();
             }
         };
 
