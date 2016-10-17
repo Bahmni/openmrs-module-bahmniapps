@@ -5,10 +5,13 @@ angular.module('bahmni.common.displaycontrol.diagnosis')
         function (diagnosisService, $q, spinner, $rootScope, $filter) {
             var controller = function ($scope) {
                 var getAllDiagnosis = function () {
-                    return diagnosisService.getDiagnoses($scope.patientUuid, $scope.visitUuid).then(function (diagnoses) {
-                        $scope.allDiagnoses = diagnoses;
-                        if($scope.showDiagnosisWithState && $scope.showDiagnosisWithState.length > 0){
-                            $scope.allDiagnoses = filteredDiagnosis($scope.allDiagnoses, $scope.showDiagnosisWithState);
+                    return diagnosisService.getDiagnoses($scope.patientUuid, $scope.visitUuid).then(function (response) {
+                        var diagnosisMapper = new Bahmni.DiagnosisMapper($rootScope.diagnosisStatus);
+                        $scope.allDiagnoses = diagnosisMapper.mapDiagnoses(response.data);
+                            if ($scope.showRuledOutDiagnoses == false) {
+                                $scope.allDiagnoses = _.filter($scope.allDiagnoses, function (diagnoses) {
+                                    return diagnoses.diagnosisStatus !== $rootScope.diagnosisStatus;
+                                });
                         }
                     });
                 };
@@ -21,15 +24,6 @@ angular.module('bahmni.common.displaycontrol.diagnosis')
                         diagnosis.showLatestDetails = false;
                         diagnosis.showDetails = !diagnosis.showDetails;
                     }
-                };
-
-                var filteredDiagnosis = function (allDiagnoses, filterCriterias) {
-                    return _.filter(allDiagnoses, function (diagnosis) {
-                        return _.find(filterCriterias, function (filterCriteria) {
-                            return filterCriteria == 'active' && diagnosis.diagnosisStatus == null ||
-                            _.has(diagnosis.diagnosisStatus, filterCriteria) ? true : false;
-                        })
-                    })
                 };
 
                 var getPromises = function () {
@@ -57,8 +51,6 @@ angular.module('bahmni.common.displaycontrol.diagnosis')
                     config: "=",
                     visitUuid: "=?",
                     showRuledOutDiagnoses: "=?",
-                    showCuredDiagnoses :"=?",
-                    showDiagnosisWithState:"=?",
                     hideTitle: "=?",
                     showLatestDiagnosis: "@showLatestDiagnosis"
                 }

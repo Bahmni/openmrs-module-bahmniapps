@@ -16,11 +16,11 @@
                         {{row[heading]}}
                     </a>
                     <div ng-if="heading == 'Diagnosis'">
-                        <div ng-repeat="diagnosis in row[heading]">
-                            <span ng-class="{'strike-text': diagnosis.ruledOut, 'green-text': diagnosis.cured}">{{diagnosis.Diagnosis}}</span>
+                        <div ng-repeat="diagnosis in row[heading]" ng-class="{'strike-text': diagnosis.ruledOut}">
+                            <span>{{diagnosis.Diagnosis}}</span>
                             <span>{{diagnosis["Diagnosis Certainty"]}}</span>
                             <span>{{diagnosis["Diagnosis Order"]}}</span>
-                            <span ng-if="diagnosis.diagnosisStatus">{{diagnosis.diagnosisStatus.label}}</span>
+                            <span ng-if="diagnosis.diagnosisStatus">{{diagnosis.diagnosisStatus}}</span>
                         </div>
                     </div>
                 </td>

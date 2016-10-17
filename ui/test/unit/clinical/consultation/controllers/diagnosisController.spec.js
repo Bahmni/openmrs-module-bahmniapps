@@ -1,14 +1,13 @@
 describe("Diagnosis Controller", function () {
-    var $scope, rootScope, contextChangeHandler,diagnosisService, spinner, appService,
-        mockAppDescriptor, q, deferred, mockDiagnosisData;
+    var $scope, rootScope, contextChangeHandler,mockDiagnosisService, spinner, appService, mockAppDescriptor, q, deferred, mockDiagnosisData;
 
     beforeEach(module('bahmni.clinical'));
     beforeEach(module('bahmni.common.offline'));
 
-    beforeEach(inject(function ($controller, $rootScope, $q) {
+    beforeEach(inject(function ($controller, $rootScope, $q, diagnosisService) {
         $scope = $rootScope.$new();
         rootScope = $rootScope;
-
+        mockDiagnosisService = diagnosisService
         q = $q;
         deferred = $q.defer();
         $scope.consultation = {
@@ -23,11 +22,8 @@ describe("Diagnosis Controller", function () {
         appService.getAppDescriptor.and.returnValue(mockAppDescriptor);
 
         contextChangeHandler = jasmine.createSpyObj('contextChangeHandler', ['add']);
-
-        diagnosisService = jasmine.createSpyObj('diagnosisService', ['getDiagnosisConceptSet','getAllFor', 'getDiagnosisStatuses']);
-        diagnosisService.getDiagnosisConceptSet.and.returnValue(deferred.promise);
-        diagnosisService.getAllFor.and.returnValue({});
-        diagnosisService.getDiagnosisStatuses.and.returnValue({});
+        spyOn(diagnosisService, 'getDiagnosisConceptSet').and.returnValue(deferred.promise);
+        spyOn(diagnosisService, 'getAllFor').and.returnValue({});
 
         spinner = jasmine.createSpyObj('spinner', ['forPromise']);
         spinner.forPromise.and.callFake(function (param) {
@@ -44,7 +40,7 @@ describe("Diagnosis Controller", function () {
             contextChangeHandler: contextChangeHandler,
             spinner: spinner,
             appService: appService,
-            diagnosisService: diagnosisService
+            diagnosisService: mockDiagnosisService
         });
     }));
 
@@ -60,7 +56,7 @@ describe("Diagnosis Controller", function () {
         });
 
         it("should get diagnosis meta data and set isStatusConfigured", function () {
-            expect(diagnosisService.getDiagnosisConceptSet).toHaveBeenCalled();
+            expect(mockDiagnosisService.getDiagnosisConceptSet).toHaveBeenCalled();
             var diagnosisMetaData = {
                 "data": {
                     "results": [{
@@ -78,7 +74,7 @@ describe("Diagnosis Controller", function () {
     describe("getDiagnosis()", function () {
         it("should make a call to diagnosis service getAllFor", function () {
             $scope.getDiagnosis({term:"primary"});
-            expect(diagnosisService.getAllFor).toHaveBeenCalledWith("primary");
+            expect(mockDiagnosisService.getAllFor).toHaveBeenCalledWith("primary");
         });
     });
 
