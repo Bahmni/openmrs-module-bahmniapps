@@ -5,7 +5,7 @@ describe('WardListController', function () {
     var controller;
     var rootScope;
     var scope;
-    var queryService, appService, window, diagnosisService;
+    var queryService, appService, window;
 
 
     beforeEach(function () {
@@ -13,11 +13,9 @@ describe('WardListController', function () {
 
         module(function ($provide) {
             appService = jasmine.createSpyObj('appService', ['getAppDescriptor']);
-            diagnosisService = jasmine.createSpyObj('diagnosisService', ['getDiagnosisStatuses']);
             appService.getAppDescriptor.and.returnValue(new Bahmni.Common.AppFramework.AppDescriptor());
 
             $provide.value('appService', {});
-            $provide.value('diagnosisService', diagnosisService);
             queryService = jasmine.createSpyObj('queryService', ['getResponseFromQuery']);
             queryService.getResponseFromQuery.and.returnValue(specUtil.createServicePromise('queryService'));
             $provide.value('queryService', queryService);
@@ -40,8 +38,7 @@ describe('WardListController', function () {
         controller('WardListController', {
             $scope: scope,
             QueryService: queryService,
-            appService: appService,
-            diagnosisService : diagnosisService
+            appService: appService
         });
 
         scope.gotoPatientDashboard('patient1', 'visit2');

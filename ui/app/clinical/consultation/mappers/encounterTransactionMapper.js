@@ -1,19 +1,24 @@
 'use strict';
 
 Bahmni.Clinical.EncounterTransactionMapper = function () {
-    var setDateTimeNull = function (diagnosis) {
-        diagnosis.diagnosisDateTime = null;
-        return diagnosis;
-    };
 
     var addEditedDiagnoses = function (consultation, diagnosisList) {
-        var diagnoses = _(consultation.pastDiagnoses)
-            .concat(consultation.savedDiagnosesFromCurrentEncounter)
-            .concat(consultation.activeDiagnoses)
-            .filter('isDirty')
-            .map(setDateTimeNull)
-            .value();
-        _.assign(diagnosisList,diagnoses);
+        if (consultation.pastDiagnoses) {
+            consultation.pastDiagnoses.forEach(function (diagnosis) {
+                if (diagnosis.isDirty) {
+                    diagnosis.diagnosisDateTime = null;
+                    diagnosisList.push(diagnosis);
+                }
+            });
+        }
+        if (consultation.savedDiagnosesFromCurrentEncounter) {
+            consultation.savedDiagnosesFromCurrentEncounter.forEach(function (diagnosis) {
+                if (diagnosis.isDirty) {
+                    diagnosis.diagnosisDateTime = null;
+                    diagnosisList.push(diagnosis);
+                }
+            });
+        }
     };
 
     this.map = function (consultation, patient, locationUuid, retrospectiveEntry, defaultRetrospectiveVisitType, defaultVisitType, isInEditEncounterMode, patientProgramUuid) {

@@ -60,8 +60,7 @@ describe("ConsultationController", function () {
             appService: appService,
             clinicalDashboardConfig: {},
             ngDialog: ngDialog,
-            visitConfig : visitConfig,
-            diagnosisService: {}
+            visitConfig : visitConfig
         });
     };
     var setUpServiceMocks = function () {
