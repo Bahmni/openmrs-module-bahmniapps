@@ -21,5 +21,6 @@
     "LOGIN_LABEL_OTP_EXPIRED" : "Your OTP is expired. Please login again.",
     "LOGIN_LABEL_RESEND_OTP" : "Resend OTP",
     "LOGIN_LABEL_RESEND_SUCCESS" : "New OTP has been sent to your Registered number.",
-    "LOGIN_LABEL_MAX_RESEND_ATTEMPTS" : "Number of OTP resend attempts exceeded. Please login again."
+    "LOGIN_LABEL_MAX_RESEND_ATTEMPTS" : "Number of OTP resend attempts exceeded. Please login again.",
+    "LOGIN_UNSUPPORTED_BROWSER_KEY" : "Chrome is the Supported Browser"
 }
