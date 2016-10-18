@@ -6,7 +6,7 @@
                 <span class="text" ng-bind-html="'CLINICAL_SAVE_TRANSLATION_KEY'| translate"></span>
             </button>
         </div>
-        <div class="concept-set-container">
+        <div class="concept-set-container" id="editObs">
             <concept-set  patient="::patient"
                           concept-set-name="::conceptSetName"
                           observations="editableObservations" show-title="::false" ng-if="encounter">

@@ -382,7 +382,7 @@
 
 
         <fieldset ng-if="(!observation.isObservationNode && !observation.isFormElement() && observation.getControlType()!='tabular')" class="hasLegend"
-                  ng-class="{'collapsible-set': isCollapsibleSet(), 'collapsed': collapse}" scroll-to-element="{{ observation.scrollToElement }}">
+                  ng-class="{'collapsible-set': isCollapsibleSet(), 'collapsed': collapse}" scroll-to-obs-element="{{ observation.scrollToElement }}">
             <legend ng-if="::(showTitle && !observation.isComputed())" class="mylegend" ng-click="toggleSection()">
                 <i ng-if="isCollapsibleSet() && collapse" class="fa fa-caret-right"></i>
                 <i ng-if="!(isCollapsibleSet() && collapse)" class="fa fa-caret-down"></i>
