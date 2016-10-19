@@ -10,6 +10,9 @@
     <div>
         <ul class="form-field" class="ng-isolate-scope" id="visitDisplayTable">
             <li>
+                <div class="placeholder-text" ng-if="formData.length == 0">
+                    <p>{{'NO_DATA_MESSAGE' | translate}}</p>
+                </div>
                 <div>
                     <ul>
                         <li ng-repeat="data in formData" class="clearfix">
