@@ -175,7 +175,7 @@ angular.module('bahmni.common.conceptSet')
                 var validateObservationTree = function () {
                     $scope.atLeastOneValueIsSet = $scope.rootObservation && $scope.rootObservation.atLeastOneValueSet();
                     $scope.conceptSetRequired = $scope.required ? $scope.required : true;
-                    var nodes = findInvalidNodes($scope.rootObservation.groupMembers, $scope.rootObservation);
+                    var nodes = $scope.rootObservation && findInvalidNodes($scope.rootObservation.groupMembers, $scope.rootObservation);
                     return {allow: !nodes.status, errorMessage: nodes.message};
                 }; //TODO: Write unit test for this function
 
