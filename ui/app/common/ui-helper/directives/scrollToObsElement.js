@@ -1,9 +1,9 @@
 'use strict';
 
 angular.module('bahmni.common.uiHelper')
-    .directive('scrollToObsElement', function ($timeout) {
+    .directive('scrollToObsElement', function () {
         return function (scope, elem, attrs) {
-            if (attrs.scrollToObsElement) {
+            if (attrs.scrollToObsElement && scope.observation.scrollToElement) {
                 $(elem).focus();
                 var scrollPosition = $(elem).offset().top - window.innerHeight / 2;
                 if($('#editObs')[0]) {
@@ -14,6 +14,7 @@ angular.module('bahmni.common.uiHelper')
                 } else {
                     $(window).animate({scrollTop: scrollPosition}, 900);
                 }
+                scope.observation.scrollToElement = false;
             }
         };
     });
