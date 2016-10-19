@@ -146,6 +146,20 @@ describe("OrderController", function () {
         });
     });
 
+    describe("appendPrintNotes",function (){
+        it("should append needs print text in start of notes", function (){
+            var order = {uuid: "uuid",previousNote:"comment" };
+            scope.appendPrintNotes(order);
+            expect(scope.orderNoteText).toBe("Need Print.comment");
+        });
+        it("should not append needs print text in start of notes if its already there", function (){
+            var order = {uuid: "uuid",previousNote:"Need Print.comment" };
+            scope.orderNoteText = "Need Print.comment";
+            scope.appendPrintNotes(order);
+            expect(scope.orderNoteText).toBe("Need Print.comment");
+        });
+    });
+
     describe("setEditedFlag", function () {
         it("should set edited flag when the commentToFulfiller is not same as previous note and close the popup", function () {
             var order = {uuid: "uuid", previousNote: "older comment"};
