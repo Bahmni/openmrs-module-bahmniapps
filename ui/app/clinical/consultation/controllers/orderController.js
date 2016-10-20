@@ -205,10 +205,10 @@ angular.module('bahmni.clinical')
             });
 
             $scope.appendPrintNotes = function(order){
-                if(order.previousNote && !order.previousNote.includes("Need Print.")) {
+                if(order.previousNote && order.previousNote.indexOf("Need Print.") == -1) {
                     $scope.orderNoteText = "Need Print." + (order.previousNote || '');
                 }
-                else if(!($scope.orderNoteText || '').includes("Need Print.")){
+                else if(($scope.orderNoteText || '').indexOf("Need Print.") == -1){
                     $scope.orderNoteText = "Need Print." + ($scope.orderNoteText || '');
                 }
             };
