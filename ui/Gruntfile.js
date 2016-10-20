@@ -548,7 +548,6 @@ module.exports = function (grunt) {
 
     grunt.registerTask('bundle', [
         'npm-install',
-        'bower-install',
         'eslint',
         'clean:dist',
         'compass:dist',
@@ -570,8 +569,15 @@ module.exports = function (grunt) {
 
     grunt.registerTask('build', [
         'npm-install',
+<<<<<<< 3be2f681483155d3690aecce0c56bfe7c04bf56d
         'bower-install',
         'eslint',
+||||||| merged common ancestors
+        'bower-install',
+        'jshint',
+=======
+        'jshint',
+>>>>>>> EP: remove calls to bower which are no unnecissary. task 'bower-install' is now unused within this project
         'dist'
     ]);
 

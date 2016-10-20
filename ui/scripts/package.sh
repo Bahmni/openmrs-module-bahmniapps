@@ -11,7 +11,6 @@ mkdir -p $ROOT_DIR/target
 rm -rf $ROOT_DIR/target/${ZIP_FILE_NAME}*.zip
 
 npm install
-bower install
 
 if [ $(pgrep Xvfb) ]; then
     XVFB_PID=$(pgrep Xvfb)
