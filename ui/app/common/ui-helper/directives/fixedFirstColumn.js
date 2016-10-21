@@ -37,7 +37,7 @@ angular.module('bahmni.common.uiHelper')
 
                         // If <td> heights have stabilized.
                         if (height0 !== 0 && height0 === height1) {
-                            clearInterval(interval);
+                            clearInterval(checkIfTableLoaded);
                         }
                     });
                     clearInterval(checkIfTableLoaded);
