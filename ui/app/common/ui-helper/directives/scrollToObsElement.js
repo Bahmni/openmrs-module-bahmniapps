@@ -6,8 +6,8 @@ angular.module('bahmni.common.uiHelper')
             if (attrs.scrollToObsElement && scope.observation.scrollToElement) {
                 $(elem).focus();
                 var scrollPosition = $(elem).offset().top - window.innerHeight / 2;
-                if($('#editObs')[0]) {
-                    var container = $('#editObs');
+                if($('#scrollOnEdit')[0]) {
+                    var container = $('#scrollOnEdit');
                     var scrollTo = elem;
                     scrollPosition = scrollTo.offset().top + container.scrollTop() - (container.offset().top + container.offset().top/2)
                     container.animate({scrollTop : scrollPosition}, 900);

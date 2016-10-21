@@ -74,7 +74,7 @@ angular.module('bahmni.common.displaycontrol.bacteriologyresults')
                                 }
                             }
                         });
-                        console.log(JSON.stringify($scope.dialogElement));
+                        $scope.scrollOnEdit = "scrollOnEdit";
                     });
                 };
 
