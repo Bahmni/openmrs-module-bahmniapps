@@ -84,7 +84,7 @@ module.exports = function (config) {
             'app/common/offline/dbservices/dao/labOrderResultsDbService.js',
             'test/integration/dbServices/dao/labOrderResultsDbService.spec.js'
         ],
-        reporters: ['junit', 'progress', 'coverage'],
+        reporters: ['junit', (process.env.CI === 'true' ? 'dots' : 'progress'), 'coverage'],
         preprocessors: {
             'app/admin/**/*.js': ['coverage'],
             'app/adt/**/*.js': ['coverage'],
