@@ -47,7 +47,7 @@ Bahmni.Common.Domain.AttributeFormatter = (function () {
                     return true;
                 }
             });
-            attr.value = attrDescription !== undefined ? attrDescription.description : null;
+            attr.value = attrDescription != undefined ? attrDescription.description : null;
             attr.hydratedObject = value.conceptUuid;
         }
         else if (attributeType.format == "org.openmrs.util.AttributableDate" || attributeType.format == "org.openmrs.customdatatype.datatype.DateDatatype") {

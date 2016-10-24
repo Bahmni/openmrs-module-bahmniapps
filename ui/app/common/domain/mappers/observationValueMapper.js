@@ -7,7 +7,7 @@
         },
         "Datetime": function (obs) {
             var date = Bahmni.Common.Util.DateUtil.parseDatetime(obs.value);
-            return date !== null ? Bahmni.Common.Util.DateUtil.formatDateWithTime(date) : "";
+            return date != null ? Bahmni.Common.Util.DateUtil.formatDateWithTime(date) : "";
         },
         "Boolean": function (obs) {
             return obs.value === true ? "Yes" : obs.value === false ? "No" : obs.value;

@@ -152,7 +152,7 @@ angular.module('bahmni.clinical').controller('ConsultationController',
 
             $scope.shouldDisplaySaveConfirmDialogForStateChange = function(toState, toParams, fromState, fromParams) {
                 if (toState.name.match(/patient.dashboard.show.*/)) {
-                    return fromParams.patientUuid !== toParams.patientUuid;
+                    return fromParams.patientUuid != toParams.patientUuid;
                 }
                 return true;
             };

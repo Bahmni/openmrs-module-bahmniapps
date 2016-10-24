@@ -75,7 +75,7 @@ angular.module('bahmni.common.displaycontrol.drugOrdersSection')
 
             var clearOtherDrugOrderActions = function(revisedDrugOrder) {
                 $scope.drugOrders.forEach(function (drugOrder) {
-                    if(drugOrder !== revisedDrugOrder) {
+                    if(drugOrder != revisedDrugOrder) {
                         drugOrder.isDiscontinuedAllowed = true;
                         drugOrder.isBeingEdited = false;
                     }

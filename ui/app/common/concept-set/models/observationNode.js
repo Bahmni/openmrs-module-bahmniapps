@@ -226,7 +226,7 @@
         },
 
         isHtml5InputDataType: function () {
-            return ['Date', 'Numeric', 'Datetime'].indexOf(this.primaryObs.getDataTypeName()) !== -1;
+            return ['Date', 'Numeric', 'Datetime'].indexOf(this.primaryObs.getDataTypeName()) != -1;
         },
 
         _isDateTimeDataType: function () {

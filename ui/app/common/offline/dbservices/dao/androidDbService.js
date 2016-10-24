@@ -5,7 +5,7 @@ angular.module('bahmni.common.offline')
         function ($q, eventLogService) {
             var getMarker = function (markerName) {
                 var value = AndroidOfflineService.getMarker(markerName);
-                value = value !== undefined ? JSON.parse(value) : value;
+                value = value != undefined ? JSON.parse(value) : value;
                 if(value && value.filters){
                     value.filters = JSON.parse(value.filters);
                 }
@@ -14,7 +14,7 @@ angular.module('bahmni.common.offline')
 
             var insertMarker = function (markerName, uuid, filters) {
                 var value = AndroidOfflineService.insertMarker(markerName, uuid, JSON.stringify(filters));
-                value = value !== undefined ? JSON.parse(value) : value;
+                value = value != undefined ? JSON.parse(value) : value;
                 return $q.when(value);
 
             };
@@ -22,14 +22,14 @@ angular.module('bahmni.common.offline')
             var createPatient = function (patient) {
                 var patientString = JSON.stringify(patient);
                 var value = AndroidOfflineService.createPatient(patientString);
-                value = value !== undefined ? JSON.parse(value) : value;
+                value = value != undefined ? JSON.parse(value) : value;
                 return $q.when(value);
             };
 
             var insertAddressHierarchy = function (addressHierarchy) {
                 var addressHierarchyString = JSON.stringify(addressHierarchy);
                 var value = AndroidOfflineService.insertAddressHierarchy(addressHierarchyString);
-                value = value !== undefined ? JSON.parse(value) : value;
+                value = value != undefined ? JSON.parse(value) : value;
                 return $q.when(value);
             };
 
@@ -49,7 +49,7 @@ angular.module('bahmni.common.offline')
 
             var getPatientByUuid = function (uuid) {
                 var value = AndroidOfflineService.getPatientByUuid(uuid);
-                value = value !== undefined ? JSON.parse(value) : value;
+                value = value != undefined ? JSON.parse(value) : value;
                 angular.forEach(value.patient.person.attributes, function(attribute){
                     if(attribute.hydratedObject){
                         var temp = attribute.hydratedObject;
@@ -63,13 +63,13 @@ angular.module('bahmni.common.offline')
             var searchAddress = function(requestParams){
                 var addressParams = JSON.stringify(requestParams);
                 var value = AndroidOfflineService.searchAddress(addressParams);
-                value = value !== undefined ? JSON.parse(value) : value;
+                value = value != undefined ? JSON.parse(value) : value;
                 return $q.when({data:value});
             };
 
             var getConfig = function(module){
                 var value = AndroidConfigDbService.getConfig(module);
-                value = value !== undefined ? JSON.parse(value) : value;
+                value = value != undefined ? JSON.parse(value) : value;
                 return $q.when(value);
             };
 
@@ -79,7 +79,7 @@ angular.module('bahmni.common.offline')
 
             var getReferenceData = function(referenceDataKey){
                 var value = AndroidReferenceDataDbService.getReferenceData(referenceDataKey);
-                value = value !== undefined ? JSON.parse(value) : value;
+                value = value != undefined ? JSON.parse(value) : value;
                 return $q.when(value);
             };
 
@@ -97,13 +97,13 @@ angular.module('bahmni.common.offline')
 
             var getLocationByUuid = function(uuid){
                 var value = AndroidLocationDbService.getLocationByUuid(uuid);
-                value = value !== undefined ? JSON.parse(value).value : value;
+                value = value != undefined ? JSON.parse(value).value : value;
                 return $q.when(value);
             };
 
             var getAttributeTypes = function(){
                 var value = AndroidOfflineService.getAttributeTypes();
-                value = value !== undefined ? JSON.parse(value): value;
+                value = value != undefined ? JSON.parse(value): value;
                 return $q.when(value);
             };
 
@@ -129,26 +129,26 @@ angular.module('bahmni.common.offline')
             var insertEncounterData = function (encounterData) {
                 var encounter = AndroidOfflineService.insertEncounterData(JSON.stringify(encounterData));
                 return insertObservationData(encounterData.patientUuid, encounterData.visitUuid, encounterData.observations).then(function () {
-                    encounter = encounter !== undefined ? JSON.parse(encounter) : encounter;
+                    encounter = encounter != undefined ? JSON.parse(encounter) : encounter;
                     return encounter;
                 });
             };
 
             var getEncountersByPatientUuid = function (patientUuid) {
                 var response = AndroidOfflineService.getEncountersByPatientUuid(patientUuid);
-                response = response !== undefined ? JSON.parse(response) : response;
+                response = response != undefined ? JSON.parse(response) : response;
                 return $q.when(response);
             };
 
             var insertVisitData = function (visitData) {
                 var response = AndroidOfflineService.insertVisitData(JSON.stringify(visitData));
-                response = response !== undefined ? JSON.parse(response) : response;
+                response = response != undefined ? JSON.parse(response) : response;
                 return $q.when(response);
             };
 
             var getVisitByUuid = function (visitUuid) {
                 var response = AndroidOfflineService.getVisitByUuid(visitUuid);
-                response = response !== undefined ? JSON.parse(response) : response;
+                response = response != undefined ? JSON.parse(response) : response;
                 return $q.when(response);
             };
 
@@ -159,7 +159,7 @@ angular.module('bahmni.common.offline')
                     getReferenceData("DefaultEncounterType").then(function(defaultEncounterType) {
                         var encounterType = defaultEncounterType ? defaultEncounterType.data : null;
                         var response = AndroidOfflineService.findActiveEncounter(JSON.stringify({patientUuid: params.patientUuid, providerUuid: params.providerUuids[0], encounterType: encounterType}), encounterSessionDuration);
-                        response = response !== undefined ? JSON.parse(response) : response;
+                        response = response != undefined ? JSON.parse(response) : response;
                         deferred.resolve(response);
                     });
                 });
@@ -168,31 +168,31 @@ angular.module('bahmni.common.offline')
 
             var insertObservationData = function (patientUuid, visitUuid, observationData) {
                 var response = AndroidOfflineService.insertObservationData(patientUuid, visitUuid, JSON.stringify(observationData));
-                response = response !== undefined ? JSON.parse(response) : response;
+                response = response != undefined ? JSON.parse(response) : response;
                 return $q.when(response);
             };
 
             var getVisitsByPatientUuid = function (patientUuid, numberOfVisits) {
                 var response = AndroidOfflineService.getVisitsByPatientUuid(patientUuid, numberOfVisits);
-                response = response !== undefined ? JSON.parse(response) : response;
+                response = response != undefined ? JSON.parse(response) : response;
                 return $q.when(response);
             };
 
             var getVisitDetailsByPatientUuid = function(patientUuid) {
                 var response = AndroidOfflineService.getVisitDetailsByPatientUuid(patientUuid);
-                response = response !== undefined ? JSON.parse(response) : response;
+                response = response != undefined ? JSON.parse(response) : response;
                 return $q.when(response);
             };
 
             var getObservationsFor = function(params) {
                 var response =  AndroidOfflineService.getObservationsFor(JSON.stringify(params));
-                response = response !== undefined ? JSON.parse(response) : response;
+                response = response != undefined ? JSON.parse(response) : response;
                 return $q.when(response);
             };
 
             var getObservationsForVisit = function (visitUuid) {
                 var response = AndroidOfflineService.getObservationsForVisit(visitUuid);
-                response = response !== undefined ? JSON.parse(response) : response;
+                response = response != undefined ? JSON.parse(response) : response;
                 return $q.when(response);
             };
 
@@ -209,26 +209,26 @@ angular.module('bahmni.common.offline')
 
             var getConcept = function(conceptUuid){
                 var value = AndroidConceptDbService.getConcept(conceptUuid);
-                value = value !== undefined ? JSON.parse(value) : value;
+                value = value != undefined ? JSON.parse(value) : value;
                 return $q.when(value);
             };
 
             var getConceptByName = function(conceptName){
                 var value = AndroidConceptDbService.getConceptByName(conceptName);
-                value = value !== undefined ? JSON.parse(value) : value;
+                value = value != undefined ? JSON.parse(value) : value;
                 return $q.when(value);
             };
 
             var getEncounterByEncounterUuid = function(encounterUuid){
                 var response = AndroidOfflineService.findEncounterByEncounterUuid(encounterUuid);
-                response = response !== undefined ? JSON.parse(response) : response;
+                response = response != undefined ? JSON.parse(response) : response;
                 return $q.when(response);
             };
 
             var getAllParentsInHierarchy = function(conceptName){
                 var conceptNamesInHierarchy = [];
                 var response = AndroidConceptDbService.getAllParentsInHierarchy(conceptName);
-                response = response !== undefined ? JSON.parse(response) : response;
+                response = response != undefined ? JSON.parse(response) : response;
                 return $q.when(response);
             };
 
@@ -265,7 +265,7 @@ angular.module('bahmni.common.offline')
 
             var getPrescribedAndActiveDrugOrders = function (params) {
                 var response = AndroidOfflineService.getEncountersByVisits(JSON.stringify(params));
-                response = response !== undefined ? JSON.parse(response) : response;
+                response = response != undefined ? JSON.parse(response) : response;
                 return $q.when(response);
             };
 
@@ -291,7 +291,7 @@ angular.module('bahmni.common.offline')
 
             var insertLabOrderResults = function (patientUuid, results) {
                 var response = AndroidOfflineService.insertLabOrderResults(patientUuid, JSON.stringify(results));
-                response = response !== undefined ? JSON.parse(response) : response;
+                response = response != undefined ? JSON.parse(response) : response;
                 return $q.when(response);
             };
 

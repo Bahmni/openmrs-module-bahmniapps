@@ -99,7 +99,7 @@ describe('TopDownAddressFieldsDirectiveController', function () {
         it("should no update addressCode value on clear of field any field that doesnt have selectedUserGeneratedIds", function () {
             scope.address = {
                 address1: "",
-                address3: "address"
+                address3: "address",
             };
             scope.address.address1 = "addressLine";
 

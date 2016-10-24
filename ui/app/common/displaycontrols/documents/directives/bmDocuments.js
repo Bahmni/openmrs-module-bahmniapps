@@ -10,7 +10,7 @@ angular.module('bahmni.common.displaycontrol.documents')
                     $scope.records = new Bahmni.Clinical.PatientFileObservationsMapper().map(response.data.results);
                     if ($scope.config.visitUuids) {
                         $scope.records = _.filter($scope.records, function(record) {
-                            return $scope.config.visitUuids.indexOf(record.visitUuid) !== -1;
+                            return $scope.config.visitUuids.indexOf(record.visitUuid) != -1;
                         });
                     }
                     $scope.recordGroups = new Bahmni.Clinical.RecordsMapper().map($scope.records);

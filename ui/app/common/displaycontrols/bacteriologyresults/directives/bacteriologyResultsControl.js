@@ -29,7 +29,7 @@ angular.module('bahmni.common.displaycontrol.bacteriologyresults')
                         var sampleSource = _.find($scope.bacteriologyTabData.setMembers, function (member) {
                             return member.name.name === Bahmni.Clinical.Constants.bacteriologyConstants.specimenSampleSourceConceptName;
                         });
-                        $scope.allSamples = sampleSource !== undefined && _.map(sampleSource.answers, function (answer) {
+                        $scope.allSamples = sampleSource != undefined && _.map(sampleSource.answers, function (answer) {
                             return new Bahmni.Common.Domain.ConceptMapper().map(answer);
                         });
                         var specimenMapper = new Bahmni.Clinical.SpecimenMapper();

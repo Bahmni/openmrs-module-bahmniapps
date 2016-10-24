@@ -4,7 +4,7 @@
     var getAddress = function ($scope) {
         var patient = $scope.patient;
         var address = [];
-        if ($scope.config.addressFields !== undefined && $scope.config.addressFields.length !== 0) {
+        if ($scope.config.addressFields != undefined && $scope.config.addressFields.length != 0) {
             $scope.config.addressFields.forEach(function (addressField) {
                 if (patient.address[addressField]) {
                     address.push(patient.address[addressField]);

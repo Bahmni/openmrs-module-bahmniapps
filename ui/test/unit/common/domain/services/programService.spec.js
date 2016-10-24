@@ -578,14 +578,14 @@ describe('programService', function () {
             {
                 "uuid": "6ccf5c9c-9f8c-4e46-b40b-c203b033f6d7",
                 "attributeType": {
-                    "uuid": "079b73c6-b854-11e5-9584-0800274a5156"
+                    "uuid": "079b73c6-b854-11e5-9584-0800274a5156",
                 },
                 "value": "123"
             },
             {
                 "uuid": "12cac096-ac84-419f-88c3-f140a3c13d98",
                 "attributeType": {
-                    "uuid": "07ae82e4-b854-11e5-9584-0800274a5156"
+                    "uuid": "07ae82e4-b854-11e5-9584-0800274a5156",
                 },
                 "value": "2016-01-12T00:00:00.000+0000"
             }

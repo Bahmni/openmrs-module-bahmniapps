@@ -40,7 +40,7 @@ angular.module('bahmni.common.uiHelper')
             select: function (event, ui) {
                 scope.selectedValue = ui.item.value;
                 ngModelCtrl.$setViewValue(ui.item.value);
-                if(onSelect !== null) {
+                if(onSelect != null) {
                     onSelect(ui.item);
                 }
                 validateIfNeeded(ui.item.value);
@@ -53,7 +53,7 @@ angular.module('bahmni.common.uiHelper')
                 return true;
             },
             search: function (event, ui) {
-                if(onEdit !== null){
+                if(onEdit != null){
                     onEdit(ui.item);
                 }
                 var searchTerm = $.trim(element.val());

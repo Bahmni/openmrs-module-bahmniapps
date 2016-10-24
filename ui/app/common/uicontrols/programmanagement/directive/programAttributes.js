@@ -8,7 +8,7 @@ angular.module('bahmni.common.uicontrols.programmanagment')
             _.forEach($scope.programAttributeTypes, function (programAttributeType) {
                 var programAttribute = getProgramAttributeByType(programAttributes, programAttributeType);
 
-                if(programAttribute !== undefined && !programAttribute.voided) {
+                if(programAttribute != undefined && !programAttribute.voided) {
                     programAttributesMap[programAttributeType.name] = programAttribute.value;
                     if(isCodedConceptFormat(programAttributeType.format)) {
                         programAttributesMap[programAttributeType.name] = programAttribute.value && programAttribute.value.uuid;

@@ -47,10 +47,10 @@ angular.module('bahmni.common.displaycontrol.programs')
                     }
                 };
                 var isDateFormat = function (format) {
-                    return format === "org.openmrs.customdatatype.datatype.DateDatatype";
+                    return format == "org.openmrs.customdatatype.datatype.DateDatatype";
                 };
                 var isCodedConceptFormat = function (format) {
-                    return format === "org.bahmni.module.bahmnicore.customdatatype.datatype.CodedConceptDatatype";
+                    return format == "org.bahmni.module.bahmnicore.customdatatype.datatype.CodedConceptDatatype";
                 };
             };
 
