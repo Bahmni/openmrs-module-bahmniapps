@@ -58,7 +58,7 @@ angular.module('bahmni.clinical')
                        return  tab.translationKey === currentTabKey;
                     });
                 }
-                return (currentTab != undefined ? currentTab : clinicalDashboardConfig.currentTab);
+                return (currentTab !== undefined ? currentTab : clinicalDashboardConfig.currentTab);
             };
 
             $scope.init = function (dashboard) {

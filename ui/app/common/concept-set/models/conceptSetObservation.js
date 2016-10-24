@@ -21,7 +21,7 @@ Bahmni.ConceptSet.Observation = function (observation, savedObs, conceptUIConfig
     Object.defineProperty(this, 'autocompleteValue', {
         enumerable: true,
         get: function () {
-            return (this.value != null && (typeof this.value === "object")) ? this.value.name : this.value;
+            return (this.value !== null && (typeof this.value === "object")) ? this.value.name : this.value;
         },
         set: function (newValue) {
             this.__prevValue = this.value;
@@ -32,7 +32,7 @@ Bahmni.ConceptSet.Observation = function (observation, savedObs, conceptUIConfig
     Object.defineProperty(this, 'value', {
         enumerable: true,
         get: function () {
-            if (self._value != null) {
+            if (self._value !== null) {
                 return self._value;
             }
             if (savedObs) {
@@ -186,7 +186,7 @@ Bahmni.ConceptSet.Observation.prototype = {
     },
 
     isDateDataType: function () {
-        return 'Date'.indexOf(this.getDataTypeName()) != -1;
+        return 'Date'.indexOf(this.getDataTypeName()) !== -1;
     },
 
     getPossibleAnswers: function() {
@@ -202,7 +202,7 @@ Bahmni.ConceptSet.Observation.prototype = {
     },
 
     isHtml5InputDataType: function () {
-        return ['Date', 'Numeric'].indexOf(this.getDataTypeName()) != -1;
+        return ['Date', 'Numeric'].indexOf(this.getDataTypeName()) !== -1;
     },
 
     isGrid: function () {

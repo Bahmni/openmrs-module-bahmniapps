@@ -65,7 +65,7 @@ angular.module('bahmni.common.uiHelper')
                     scope.$apply(function (scope) {
                         ngModelCtrl.$setViewValue(ui.item.value);
                         scope.$eval(attrs.ngChange);
-                        if (onSelect != null) {
+                        if (onSelect !== null) {
                             onSelect(ui.item);
                         }
                     });

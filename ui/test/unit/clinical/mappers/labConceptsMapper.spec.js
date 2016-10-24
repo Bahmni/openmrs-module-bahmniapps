@@ -42,7 +42,7 @@ describe("LabConceptsMapper", function () {
                 {
                     name: { name: "Clinical Pathology"},
                     setMembers: [ {uuid: "3-3-3"}]
-                },
+                }
             ]
         };
     });

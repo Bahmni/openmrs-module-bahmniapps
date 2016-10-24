@@ -4,7 +4,7 @@ angular.module('bahmni.common.domain')
     .factory('locationService', ['$bahmniCookieStore', 'offlineService', 'androidDbService', '$q',
         function ($bahmniCookieStore, offlineService, androidDbService, $q) {
             var getAllByTag = function (tags) {
-                if (offlineService.getItem('LoginInformation') != null) {
+                if (offlineService.getItem('LoginInformation') !== null) {
                     var obj = {"data": {"results": [offlineService.getItem('LoginInformation').currentLocation]}};
                     return $q.when(obj);
                 }

@@ -53,7 +53,7 @@ Bahmni.ConceptSet.BooleanObservation = function(observation, conceptUIConfig) {
     };
 
     this.atLeastOneValueSet = function() {
-        return (this.value != undefined);
+        return (this.value !== undefined);
     };
     this.isValid = function(checkRequiredFields, conceptSetRequired) {
         if(this.error) {

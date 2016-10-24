@@ -4,7 +4,7 @@ angular.module('bahmni.common.conceptSet')
     .factory('conceptSetUiConfigService', ['$http', '$q', 'appService', function ($http, $q, appService) {
         var setConceptUuidInsteadOfName = function(config, conceptNameField, uuidField) {
             var conceptName = config[conceptNameField];
-            if(conceptName != null ) {
+            if(conceptName !== null ) {
                 return $http.get(Bahmni.Common.Constants.conceptSearchByFullNameUrl, {
                     params: {name: conceptName, v: "custom:(uuid,name)"}
                 }).then(function(response) {

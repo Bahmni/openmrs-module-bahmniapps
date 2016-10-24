@@ -44,7 +44,7 @@ Bahmni.Common.PatientSearch.Search = function (searchTypes) {
 
     self.updateSearchResults = function (patientList) {
         self.updatePatientList(patientList);
-        if (self.activePatients.length === 0 && self.searchParameter != '') {
+        if (self.activePatients.length === 0 && self.searchParameter !== '') {
             self.noResultsMessage = "No results found";
         } else {
             self.noResultsMessage = null;

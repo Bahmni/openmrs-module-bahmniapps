@@ -19,7 +19,7 @@ describe("offlineLabOrderResultService", function() {
             {"accessionUuid": "uuid2", "accessionDateTime":1401437956000, "testName": "ZN Stain(Sputum)"},
         ], "tabularResult": {
             "values":[
-                {"testOrderIndex":0,"dateIndex":0,"abnormal":false,"result":"25.0"},
+                {"testOrderIndex":0,"dateIndex":0,"abnormal":false,"result":"25.0"}
             ], "orders":[
                 {"minNormal":0.0,"maxNormal":6.0,"testName":"ZN Stain(Sputum)","testUnitOfMeasurement":"%","index":0}
             ], "dates":[
