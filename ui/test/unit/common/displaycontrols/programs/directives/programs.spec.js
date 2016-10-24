@@ -53,9 +53,9 @@ describe("Program display control", function () {
                 "dateEnrolled": tenDaysAgo.toString(),
                 "dateCompleted": yesterday.toString(),
                 "outcome": null
-            }
+            },
         ]
-    };
+    }
 
     var compileAndDigest = function () {
         element = angular.element('<programs patient="patient"></programs>');

@@ -32,7 +32,7 @@ describe('Dashboard', function () {
             [{"displayType": "Full-Page"}],
             [{"displayType": "Half-Page"}],
             [{"displayType": "LAYOUT_25_75"}],
-            [{"displayType": "LAYOUT_75_25"}]
+            [{"displayType": "LAYOUT_75_25"}],
         ];
 
         expect(compiledElementScope.isFullPageSection(section[0])).toBeTruthy();
@@ -46,7 +46,7 @@ describe('Dashboard', function () {
 
         init();
         var section = [
-            [{"displayType": "abcd"}]
+            [{"displayType": "abcd"}],
         ];
         expect(compiledElementScope.isHalfPageSection(section[0])).toBeTruthy();
     });

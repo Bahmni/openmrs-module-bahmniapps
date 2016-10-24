@@ -81,7 +81,7 @@ describe("conceptSetGroup", function () {
 
     it("should conceptSetGroup controller be initialized", function () {
         var conceptSetName = "conceptSetName";
-        var event = jasmine.createSpyObj("event",["stopPropagation"]);
+        var event = jasmine.createSpyObj("event",["stopPropagation"])
         var compiledElementScope = executeDirective();
         scope.$digest();
 

@@ -24,7 +24,7 @@ describe('mergeLocaleFilesService', function () {
 
     it('merge when both base, custom configs are there', function(done){
         _$http.get.and.callFake(function(param) {
-            if(param.indexOf('bahmni_config') !== -1)
+            if(param.indexOf('bahmni_config') != -1)
                 return specUtil.createFakePromise(customFile);
             else
                 return specUtil.createFakePromise(baseFile);

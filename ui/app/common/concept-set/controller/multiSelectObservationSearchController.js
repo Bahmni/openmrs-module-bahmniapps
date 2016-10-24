@@ -31,7 +31,7 @@ angular.module('bahmni.common.conceptSet').controller('multiSelectObservationSea
     $scope.search = function (query) {
         var matchingAnswers = new Array();
         _.forEach(unselectedValues, function (answer) {
-            if (typeof answer.name !== "object" && answer.name.toLowerCase().indexOf(query.toLowerCase()) !== -1) {
+            if (typeof answer.name != "object" && answer.name.toLowerCase().indexOf(query.toLowerCase()) !== -1) {
                 answer.label = answer.name;
                 matchingAnswers.push(answer);
             } else if (typeof answer.name == "object") {

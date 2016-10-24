@@ -19,7 +19,7 @@ angular.module('bahmni.common.uiHelper')
 
 
             var valueCompletelyFilled = function () {
-                return ($scope.selectedMonth !== null && $scope.selectedYear !== null);
+                return ($scope.selectedMonth != null && $scope.selectedYear != null);
             };
             var valueNotFilled = function () {
                 return $scope.selectedMonth == null && $scope.selectedYear == null;

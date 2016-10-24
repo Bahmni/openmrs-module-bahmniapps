@@ -35,7 +35,7 @@ angular.module('bahmni.common.conceptSet')
             });
 
             scope.increment = function(){
-                if (scope.obs.concept.hiNormal !== null){
+                if (scope.obs.concept.hiNormal != null){
                     var currValue = (isNaN(ngModelController.$viewValue)? 0 : ngModelController.$viewValue);
                      if(currValue<scope.obs.concept.hiNormal) {
                         updateModel(+1);
@@ -45,7 +45,7 @@ angular.module('bahmni.common.conceptSet')
                 }
             }
             scope.decrement = function(){
-                if (scope.obs.concept.lowNormal !== null){
+                if (scope.obs.concept.lowNormal != null){
                 var currValue = (isNaN(ngModelController.$viewValue)? 0 : ngModelController.$viewValue);
                  if(currValue>scope.obs.concept.lowNormal) {
                     updateModel(-1);
@@ -57,7 +57,7 @@ angular.module('bahmni.common.conceptSet')
             function updateModel(offset) {
                     var currValue = 0;
                     if(isNaN(ngModelController.$viewValue)){
-                        if (scope.obs.concept.lowNormal !== null) {
+                        if (scope.obs.concept.lowNormal != null) {
                             currValue = scope.obs.concept.lowNormal - offset; //To mention the start point for Plus And Minus
                             // if - or + is pressed on empty field, set them with low value or 0
                         }

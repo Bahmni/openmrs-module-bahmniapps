@@ -33,11 +33,11 @@ Bahmni.Common.Obs.Observation = (function () {
             if (this.type === "Datetime" || this.concept && this.concept.dataType === "Datetime") {
 
                 var date = Bahmni.Common.Util.DateUtil.parseDatetime(this.value);
-                return date !== null ? Bahmni.Common.Util.DateUtil.formatDateWithTime(date) : "";
+                return date != null ? Bahmni.Common.Util.DateUtil.formatDateWithTime(date) : "";
             }
             if (this.conceptConfig && this.conceptConfig.displayMonthAndYear) {
                 value = Bahmni.Common.Util.DateUtil.getDateInMonthsAndYears(this.value);
-                if (value !== null) {
+                if (value != null) {
                     return value;
                 }
             }

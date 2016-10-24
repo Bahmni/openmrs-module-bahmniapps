@@ -134,7 +134,7 @@ angular.module('authentication')
             createSession(username,password, otp).then(function(data) {
                 if (data.authenticated) {
                     $bahmniCookieStore.put(Bahmni.Common.Constants.currentUser, username, {path: '/', expires: 7});
-                    if(location !== undefined) {
+                    if(location != undefined) {
                         $bahmniCookieStore.remove(Bahmni.Common.Constants.locationCookieName);
                         $bahmniCookieStore.put(Bahmni.Common.Constants.locationCookieName, {name: location.display, uuid: location.uuid}, {path: '/', expires: 7});
                     }
