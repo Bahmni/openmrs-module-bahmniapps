@@ -1004,6 +1004,9 @@ table.pivot-table {
   .chronic-treatment {
     overflow: auto;
     .stopped {
+      background-color: lightsalmon;
+    }
+    .error {
       background-color: red;
     }
   }
