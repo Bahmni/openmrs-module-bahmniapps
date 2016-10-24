@@ -2,7 +2,9 @@ language: node_js
 node_js: "6"
 
 before_install:
-  - "npm config set spin false"
+  - if [[ `npm -v` == 3.10.8 ]]; then npm i -g npm@3.10.7; fi
+  - npm --version
+  - npm config set spin false
 
   # https://docs.travis-ci.com/user/gui-and-headless-browsers/#Using-xvfb-to-Run-Tests-That-Require-a-GUI
   - export DISPLAY=:99.0
@@ -14,6 +16,15 @@ install:
   - npm install -g grunt-cli
   - gem install compass
   - cd ui && npm install
+  - cat npm-debug.log || true
   - bower install
 
 script: grunt
+
+cache:
+  directories:
+  - ui/node_modules
+  - ui/app/components
+
+notifications:
+  email: false
