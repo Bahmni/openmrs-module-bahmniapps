@@ -52,12 +52,11 @@ rules:
   dot-notation: 0
   eqeqeq: 2
   guard-for-in: 2
-  no-alert: 2
+  no-alert: 1
   no-caller: 2
   no-case-declarations: 2
   no-div-regex: 2
   no-else-return: 0
-  no-empty-label: 2
   no-empty-pattern: 2
   no-eq-null: 2
   no-eval: 2
@@ -96,7 +95,7 @@ rules:
   no-with: 2
   radix: 2
   vars-on-top: 0
-  wrap-iife: 2
+  wrap-iife: [2, "inside"]
   yoda: 0
 
   # Strict
