@@ -14,7 +14,7 @@ angular.module('bahmni.common.displaycontrol.obsVsObsFlowSheet').directive('obsT
                 }).then(function (result) {
                     var templateConcept = result && result.data && result.data.results && result.data.results[0];
                     var displayName = templateConcept && templateConcept.displayString;
-                    if (templateConcept && templateConcept.names && templateConcept.names.length === 1 && templateConcept.names[0].name != "") {
+                    if (templateConcept && templateConcept.names && templateConcept.names.length === 1 && templateConcept.names[0].name !== "") {
                         displayName = templateConcept.names[0].name;
                     }
                     else if (templateConcept && templateConcept.names && templateConcept.names.length === 2) {
@@ -119,7 +119,7 @@ angular.module('bahmni.common.displaycontrol.obsVsObsFlowSheet').directive('obsT
             };
 
             $scope.isMonthAvailable = function () {
-                return $scope.obsTable.rows[0].columns['Month'] != null
+                return $scope.obsTable.rows[0].columns['Month'] !== null
             };
 
             spinner.forPromise(init(), element);

@@ -355,7 +355,7 @@ describe("ConsultationController", function () {
         it("should return false if configured", function () {
             appService.getAppDescriptor.and.returnValue({
                 getConfigValue: function (configName) {
-                    return configName != 'allowPatientSwitchOnConsultation';
+                    return configName !== 'allowPatientSwitchOnConsultation';
                 }
             });
 

@@ -5,5 +5,5 @@ Modernizr.addTest('ios', function(){
 });
 
 Modernizr.addTest('windowOS', function(){
-    return navigator.appVersion.indexOf("Win") != -1
+    return navigator.appVersion.indexOf("Win") !== -1
 });

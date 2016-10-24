@@ -66,14 +66,14 @@ angular.module('bahmni.common.offline')
                 .where(addressHierarchyLevelTable.addressField.eq(addressHierarchyField)).exec()
                 .then(function (result) {
                     level =  result[0];
-                    if(params.parentUuid != null) {
+                    if(params.parentUuid !== null) {
                         return db.select()
                             .from(addressHierarchyEntryTable)
                             .where(addressHierarchyEntryTable.uuid.eq(params.parentUuid))
                             .exec()
                             .then(function(result){
-                                var parent = result[0] != null ? result[0] : null;
-                                if(parent != null){
+                                var parent = result[0] !== null ? result[0] : null;
+                                if(parent !== null){
                                     return db.select()
                                         .from(addressHierarchyEntryTable)
                                         .where(lf.op.and(
@@ -122,7 +122,7 @@ angular.module('bahmni.common.offline')
             modelMap.name = entry.name;
             modelMap.uuid = entry.uuid;
             modelMap.userGeneratedId = entry.userGeneratedId;
-            if(entry.parentId != null){
+            if(entry.parentId !== null){
                 return getParentAddressById(entry.parentId).then(function(result){
                     modelMap.parent = result;
                     return modelMap;
@@ -141,8 +141,8 @@ angular.module('bahmni.common.offline')
                 .where(addressHierarchyEntryTable.id.eq(id))
                 .exec()
                 .then(function(result){
-                    var parent = result[0] != null ? result[0] : null;
-                    if(parent != null) {
+                    var parent = result[0] !== null ? result[0] : null;
+                    if(parent !== null) {
                         return getAddressesAndParents(parent);
                     }
                 });

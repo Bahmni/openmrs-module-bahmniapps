@@ -22,7 +22,7 @@ angular.module('bahmni.clinical').controller('ClinicalController',
                 if(appService.getAppDescriptor()) {
                     networkConnectivity = appService.getAppDescriptor().getConfigValue("networkConnectivity");
                 }
-                var locales = networkConnectivity != undefined ? networkConnectivity.locales : null;
+                var locales = networkConnectivity !== undefined ? networkConnectivity.locales : null;
                 var currentUser = $rootScope.currentUser;
                 if(currentUser && currentUser.userProperties && locales) {
                     _.each(locales, function (localeObj) {

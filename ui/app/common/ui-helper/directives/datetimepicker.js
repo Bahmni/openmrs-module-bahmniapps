@@ -7,11 +7,11 @@ angular.module('bahmni.common.uiHelper')
                 $scope.maxDate = Bahmni.Common.Util.DateTimeFormatter.getDateWithoutTime();
             }
             var getSelectedDateStr = function() {
-                return $scope.selectedDate != null ? moment($scope.selectedDate).format("YYYY-MM-DD"): "";
+                return $scope.selectedDate !== null ? moment($scope.selectedDate).format("YYYY-MM-DD"): "";
             };
 
             var getSelectedTimeStr = function() {
-                return $scope.selectedTime != null ? moment($scope.selectedTime).format("HH:mm") : "";
+                return $scope.selectedTime !== null ? moment($scope.selectedTime).format("HH:mm") : "";
             };
 
             var valueNotFilled = function() {
@@ -19,7 +19,7 @@ angular.module('bahmni.common.uiHelper')
             };
 
             var valueCompletelyFilled = function() {
-                return ($scope.selectedDate != null && $scope.selectedTime != null);
+                return ($scope.selectedDate !== null && $scope.selectedTime !== null);
             };
 
             $scope.updateModel = function() {

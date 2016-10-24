@@ -93,7 +93,7 @@ angular.module('bahmni.common.conceptSet')
             $scope.isLastClonedSection = function (conceptSetTemplate, allTemplates) {
                 if (allTemplates) {
                     var index = allTemplates.indexOf(conceptSetTemplate);
-                    return (index > 0) && (index != allTemplates.length-1) ? allTemplates[index].label != allTemplates[index + 1].label : false;
+                    return (index > 0) && (index !== allTemplates.length-1) ? allTemplates[index].label !== allTemplates[index + 1].label : false;
                 }
                 return false;
             };
@@ -104,7 +104,7 @@ angular.module('bahmni.common.conceptSet')
             };
 
             $scope.openActiveForm = function (conceptSet) {
-                if (conceptSet && conceptSet.klass == 'active' && conceptSet != $scope.leftPanelConceptSet) {
+                if (conceptSet && conceptSet.klass == 'active' && conceptSet !== $scope.leftPanelConceptSet) {
                     $scope.showLeftPanelConceptSet(conceptSet);
                 }
                 return conceptSet.klass;

@@ -195,7 +195,7 @@ Bahmni.Common.Util.DateUtil = {
             y: 0
         };
 
-        var daysFebruary = to.y % 4 != 0 || (to.y % 100 == 0 && to.y % 400 != 0)? 28 : 29;
+        var daysFebruary = to.y % 4 !== 0 || (to.y % 100 == 0 && to.y % 400 !== 0)? 28 : 29;
         var daysInMonths = [31, daysFebruary, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
         age.y = to.y - from.y;
         age.m = to.m - from.m;

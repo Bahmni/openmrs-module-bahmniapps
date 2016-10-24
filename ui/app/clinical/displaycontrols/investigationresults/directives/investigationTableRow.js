@@ -27,7 +27,7 @@ angular.module('bahmni.clinical')
             };
 
             $scope.isValidResultToShow = function(result) {
-                if(result != undefined && result != null && result.toLowerCase(result)!='undefined' && result.toLowerCase(result)!= 'null')
+                if(result !== undefined && result !== null && result.toLowerCase(result) !== 'undefined' && result.toLowerCase(result) !== 'null')
                         return true;
                 return false;
             };

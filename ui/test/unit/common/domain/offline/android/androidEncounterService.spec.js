@@ -12,13 +12,6 @@ describe('EncounterService', function () {
 
     beforeEach(module(function ($provide) {
         $bahmniCookieStore = jasmine.createSpyObj('$bahmniCookieStore', ['get']);
-        var loginLocationToEncounterTypeMapping = {
-            "value" :{
-                "results": [
-                    {   "entity": {"uuid": "locationUuid", "name": "login location"},
-                        "mappings": [ {"uuid":"encounterUuid"}]}
-                ]}};
-
         $provide.value('$q', $q);
         $provide.value('$bahmniCookieStore', $bahmniCookieStore);
         $provide.value('$rootScope', rootScope);

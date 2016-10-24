@@ -232,7 +232,7 @@ Bahmni.Clinical.DrugOrderViewModel = function (config, proto, encounterDate) {
             otherDescription = addDelimiter(blankIfFalsy(otherDescription), " - ");
         }
         if(withDuration){
-            if(self.duration && self.duration != 0) {
+            if(self.duration && self.duration !== 0) {
                 otherDescription = otherDescription + addDelimiter(blankIfFalsy(self.duration), " ") + addDelimiter(blankIfFalsy(self.durationUnit), ", ")
             }
         }
@@ -332,7 +332,7 @@ Bahmni.Clinical.DrugOrderViewModel = function (config, proto, encounterDate) {
     };
 
     this.calculateDurationUnit = function () {
-        if (self.frequencyType === Bahmni.Clinical.Constants.dosingTypes.uniform && self.uniformDosingType.frequency != null) {
+        if (self.frequencyType === Bahmni.Clinical.Constants.dosingTypes.uniform && self.uniformDosingType.frequency !== null) {
             var defaultDurationUnitMap = inputOptionsConfig.frequencyDefaultDurationUnitsMap || [];
 
             defaultDurationUnitMap.forEach(function(range) {

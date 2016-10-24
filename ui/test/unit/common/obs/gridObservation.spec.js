@@ -17,7 +17,7 @@ describe("Observation", function () {
                     {isBoolean: true, value: false},
                     {isBoolean: true, value: true}
                 ]
-            }
+            };
             var observation = new GridObservation(obs, {});
             expect(observation.getDisplayValue()).toBe("OBS_BOOLEAN_YES_KEY, OBS_BOOLEAN_NO_KEY, OBS_BOOLEAN_YES_KEY");
         });
@@ -27,9 +27,9 @@ describe("Observation", function () {
                 groupMembers: [
                     {value: {name: {name: "Concept One"}, names: [{name: "C1", conceptNameType: "SHORT"}]}},
                     {value: {name: {name: "Concept Two"}, names: []}},
-                    {isBoolean: true, value: false},
+                    {isBoolean: true, value: false}
                 ]
-            }
+            };
             var observation = new GridObservation(obs, {});
             expect(observation.getDisplayValue()).toBe("C1, Concept Two, OBS_BOOLEAN_NO_KEY");
         });
@@ -39,9 +39,9 @@ describe("Observation", function () {
                 groupMembers: [
                     {value: {name: "Concept One", shortName: "C1"}},
                     {value: 10},
-                    {isBoolean: true, value: false},
+                    {isBoolean: true, value: false}
                 ]
-            }
+            };
             var observation = new GridObservation(obs, {});
             expect(observation.getDisplayValue()).toBe("C1, 10, OBS_BOOLEAN_NO_KEY");
         });
@@ -51,9 +51,9 @@ describe("Observation", function () {
                 groupMembers: [
                     {},
                     {value: 10},
-                    {isBoolean: true, value: false},
+                    {isBoolean: true, value: false}
                 ]
-            }
+            };
             var observation = new GridObservation(obs, {});
             expect(observation.getDisplayValue()).toBe("10, OBS_BOOLEAN_NO_KEY");
         });

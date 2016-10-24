@@ -23,7 +23,7 @@ angular.module('bahmni.common.offline')
             attributeTable = db.getSchema().table('patient_attribute');
             var queries = [];
             return getAttributeTypes(db).then(function (attributeTypes) {
-                if (attributes != null && attributes.length > 0) {
+                if (attributes !== null && attributes.length > 0) {
                     for (var j = 0; j < attributes.length; j++) {
                         if (!attributes[j].voided) {
                             var personAttribute = attributes[j];
@@ -36,7 +36,7 @@ angular.module('bahmni.common.offline')
                             var foundAttribute = _.find(attributeTypes, function (attributeType) {
                                 return attributeType.uuid === personAttribute.attributeType.uuid
                             });
-                            if (foundAttribute != undefined) {
+                            if (foundAttribute !== undefined) {
                                 var row = attributeTable.createRow({
                                     'attributeTypeId': foundAttribute.attributeTypeId,
                                     'attributeValue': value,

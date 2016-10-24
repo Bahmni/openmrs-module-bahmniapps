@@ -20,7 +20,7 @@ angular.module('bahmni.common.offline')
                     var addressField = getLoginLocationAddress();
                     _.reverse(addressLevels);
                     var params = { searchString: loginLocation[addressField], addressField: addressField, limit: 5000};
-                    if(params.searchString != undefined && params.addressField != undefined) {
+                    if(params.searchString !== undefined && params.addressField !== undefined) {
                         eventLogService.getAddressForLoginLocation(params).then(function (results) {
                             var data = results.data;
                             for (var addressResults = 0; addressResults < data.length; addressResults++) {
@@ -51,7 +51,7 @@ angular.module('bahmni.common.offline')
 
                 var getLoginLocationAddress = function(){
                     for(var addressLevel=0; addressLevel < addressLevels.length; addressLevel++){
-                        if (loginLocation[addressLevels[addressLevel].addressField] != null) {
+                        if (loginLocation[addressLevels[addressLevel].addressField] !== null) {
                             return addressLevels[addressLevel].addressField;
                         }
                     }
@@ -61,7 +61,7 @@ angular.module('bahmni.common.offline')
                     if(!result.parent) {
                         return true;
                     }
-                    if(result.parent.name != loginLocation[addressLevel.addressField]) {
+                    if(result.parent.name !== loginLocation[addressLevel.addressField]) {
                         return false;
                     }
                     if(result.parent.name == loginLocation[addressLevel.addressField]) {

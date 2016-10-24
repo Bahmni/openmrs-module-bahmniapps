@@ -1081,7 +1081,7 @@ describe("drugOrderViewModel", function () {
                 expect(treatment.isDoseMandatory()).toBeTruthy();
 
                 treatmentConfig.inputOptionsConfig.routesToMakeDoseSectionNonMandatory = ["Topical", "Inhalation"];
-                var treatment = sampleTreatment(treatmentConfig, null, Bahmni.Common.Util.DateUtil.now());
+                treatment = sampleTreatment(treatmentConfig, null, Bahmni.Common.Util.DateUtil.now());
                 treatment.uniformDosingType.doseUnits = "ml";
                 treatment.uniformDosingType.dose = undefined;
                 treatment.route = 'Topical';
@@ -1098,7 +1098,7 @@ describe("drugOrderViewModel", function () {
                 expect(treatment.isMantissaRequired()).toBeTruthy();
 
                 treatmentConfig.inputOptionsConfig.routesToMakeDoseSectionNonMandatory = ["Topical", "Inhalation"];
-                var treatment = sampleTreatment(treatmentConfig, null, Bahmni.Common.Util.DateUtil.now());
+                treatment = sampleTreatment(treatmentConfig, null, Bahmni.Common.Util.DateUtil.now());
                 treatment.uniformDosingType.dose = undefined;
                 treatment.uniformDosingType.doseUnits = "ml";
                 treatment.route = 'Topical';
@@ -1113,7 +1113,7 @@ describe("drugOrderViewModel", function () {
                 expect(treatment.isUniformDoseUnitRequired()).toBeTruthy();
 
                 treatmentConfig.inputOptionsConfig.routesToMakeDoseSectionNonMandatory = ["Topical", "Inhalation"];
-                var treatment = sampleTreatment(treatmentConfig, null, Bahmni.Common.Util.DateUtil.now());
+                treatment = sampleTreatment(treatmentConfig, null, Bahmni.Common.Util.DateUtil.now());
                 treatment.route = 'Topical';
 
                 expect(treatment.isUniformDoseUnitRequired()).toBeFalsy();
