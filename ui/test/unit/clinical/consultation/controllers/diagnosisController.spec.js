@@ -7,7 +7,7 @@ describe("Diagnosis Controller", function () {
     beforeEach(inject(function ($controller, $rootScope, $q, diagnosisService) {
         $scope = $rootScope.$new();
         rootScope = $rootScope;
-        mockDiagnosisService = diagnosisService
+        mockDiagnosisService = diagnosisService;
         q = $q;
         deferred = $q.defer();
         $scope.consultation = {
@@ -76,6 +76,24 @@ describe("Diagnosis Controller", function () {
             $scope.getDiagnosis({term:"primary"});
             expect(mockDiagnosisService.getAllFor).toHaveBeenCalledWith("primary");
         });
+    });
+
+    describe("should validate the diagnosis", function(){
+        it("should throw error message for duplicate diagnosis", function(){
+            $scope.consultation.newlyAddedDiagnoses = [{codedAnswer:{name:"abc"}},{codedAnswer:{name:"abc"}}];
+            $scope.checkInvalidDiagnoses();
+
+            expect($scope.errorMessage).toBe("{{'CLINICAL_DUPLICATE_DIAGNOSIS_ERROR_MESSAGE' | translate }}");
+
+        });
+
+        it("should throw error message for duplicate diagnosis based on case insensitivity", function(){
+            $scope.consultation.newlyAddedDiagnoses = [{codedAnswer:{name:"abc"}},{codedAnswer:{name:"AbC"}}];
+            $scope.checkInvalidDiagnoses();
+
+            expect($scope.errorMessage).toBe("{{'CLINICAL_DUPLICATE_DIAGNOSIS_ERROR_MESSAGE' | translate }}");
+
+        })
     });
 
     describe("removing blank diagnosis", function() {
