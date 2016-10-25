@@ -29,7 +29,8 @@ Bahmni.Clinical.Order = (function () {
           action: Bahmni.Clinical.Constants.orderActions.revise,
           previousOrderUuid: order.uuid,
           isDiscontinued: false,
-          commentToFulfiller: order.commentToFulfiller
+          commentToFulfiller: order.commentToFulfiller,
+          urgency: order.urgency
       });
         return revisedOrder;
     };
@@ -39,7 +40,8 @@ Bahmni.Clinical.Order = (function () {
             concept: order.concept,
             action: Bahmni.Clinical.Constants.orderActions.discontinue,
             previousOrderUuid: order.uuid,
-            commentToFulfiller: order.commentToFulfiller
+            commentToFulfiller: order.commentToFulfiller,
+            urgency: order.urgency
         });
         return discontinuedOrder;
     };

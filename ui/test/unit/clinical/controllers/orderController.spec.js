@@ -17,14 +17,25 @@ describe("OrderController", function () {
         var retrospectiveEntryService = jasmine.createSpyObj('retrospectiveEntryService', ['getRetrospectiveEntry']);
         retrospectiveEntryService.getRetrospectiveEntry.and.returnValue(retrospectiveEntry);
 
+        var appDescriptor = jasmine.createSpyObj('appDescriptor', ['getConfig']);
+        var appServiceMock = jasmine.createSpyObj('appService', ['getAppDescriptor']);
+        appDescriptor.getConfig = function() {
+            return {};
+        };
+        appServiceMock.getAppDescriptor = function() { return appDescriptor };
+
+        var translate = jasmine.createSpyObj('$translate',['instant']);
+        translate.instant.and.returnValue("Need Print for this order.");
+
 
         $controller('OrderController', {
             $scope: scope,
             $rootScope: rootScope,
             allOrderables: allOrderables,
             ngDialog: ngDialog,
-            retrospectiveEntryService: retrospectiveEntryService
-
+            retrospectiveEntryService: retrospectiveEntryService,
+            appService: appServiceMock,
+            $translate: translate
         });
     }));
 
@@ -150,13 +161,13 @@ describe("OrderController", function () {
         it("should append needs print text in start of notes", function (){
             var order = {uuid: "uuid",previousNote:"comment" };
             scope.appendPrintNotes(order);
-            expect(scope.orderNoteText).toBe("Need Print.comment");
+            expect(scope.orderNoteText).toBe("Need Print for this order.comment");
         });
         it("should not append needs print text in start of notes if its already there", function (){
-            var order = {uuid: "uuid",previousNote:"Need Print.comment" };
-            scope.orderNoteText = "Need Print.comment";
+            var order = {uuid: "uuid",previousNote:"Need Print for this order.comment" };
+            scope.orderNoteText = "Need Print for this order.comment";
             scope.appendPrintNotes(order);
-            expect(scope.orderNoteText).toBe("Need Print.comment");
+            expect(scope.orderNoteText).toBe("Need Print for this order.comment");
         });
     });
 

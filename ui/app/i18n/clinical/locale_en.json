@@ -83,6 +83,8 @@
     "CLINICAL_SAVE_SUCCESS_MESSAGE_KEY": "Saved",
     "CLINICAL_SAVE_FAILURE_MESSAGE_KEY": "An error has occurred on the server. Information not saved.",
     "CLINICAL_FORM_ERRORS_MESSAGE_KEY": "Please enter a value in the mandatory fields or correct the value in the highlighted fields to proceed",
+    "CLINICAL_ORDER_RADIOLOGY_NEED_PRINT": "Need Print for this order.",
+    "CLINICAL_ORDER_RADIOLOGY_NEED_PRINT_BUTTON": "Needs Print",
     "CLINICAL_DECIMAL_FAILURE_MESSAGE_KEY" : "Please enter Integer value, decimal value is not allowed",
     "SAVE_ACCESS_KEY": "s",
     "CLINICAL_PRINT_TRANSLATION_KEY": "P<u>r</u>int",

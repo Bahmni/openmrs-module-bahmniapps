@@ -81,6 +81,35 @@ describe("EncounterTransactionMapper", function () {
             expect(encounterData.context.patientProgramUuid).toBe(patientProgramUuid);
 
         });
+
+        it("should set urgency value to order if the urgency button is clicked", function() {
+            var obs = {uuid: "obsUuid"};
+            var defaultRetrospectiveVisitType = "IPD";
+            var order = [{ concept: {uuid: "orders-uuid"}, isUrgent: true, uuid: undefined }];
+            var consulation = { observations: obs, providers: [{uuid: "provider-uuid"}], locationUuid: "original-location-uuid", orders: order };
+            var patient = { uuid:"patientUuid"};
+            var patientProgramUuid = "someNiceUuid";
+
+            var encounterData = mapper.map(consulation, patient, "logged-in-location-uuid", {encounterDate : "2015-04-01"}, defaultRetrospectiveVisitType, null, false, patientProgramUuid);
+
+            expect(encounterData.context.patientProgramUuid).toBe(patientProgramUuid);
+            expect(encounterData.orders[0].urgency).toBe("STAT");
+        });
+
+
+        it("should not set urgency value to order if the urgency button is not clicked", function() {
+            var obs = {uuid: "obsUuid"};
+            var defaultRetrospectiveVisitType = "IPD";
+            var order = [{ concept: {uuid: "orders-uuid"}, isUrgent: false, uuid: undefined }];
+            var consulation = { observations: obs, providers: [{uuid: "provider-uuid"}], locationUuid: "original-location-uuid", orders: order };
+            var patient = { uuid:"patientUuid"};
+            var patientProgramUuid = "someNiceUuid";
+
+            var encounterData = mapper.map(consulation, patient, "logged-in-location-uuid", {encounterDate : "2015-04-01"}, defaultRetrospectiveVisitType, null, false, patientProgramUuid);
+
+            expect(encounterData.context.patientProgramUuid).toBe(patientProgramUuid);
+            expect(encounterData.orders[0].urgency).toBe(undefined);
+        });
     });
 });
 

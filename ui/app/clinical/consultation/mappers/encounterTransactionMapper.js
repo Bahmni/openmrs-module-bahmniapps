@@ -65,6 +65,8 @@ Bahmni.Clinical.EncounterTransactionMapper = function () {
                 return order.hasBeenModified || order.isDiscontinued || !order.uuid;
             });
             var tempOrders = modifiedOrders.map(function (order) {
+                order.urgency = order.isUrgent ? "STAT" : undefined;
+                
                 if(order.hasBeenModified && !order.isDiscontinued){
                     return Bahmni.Clinical.Order.revise(order);
                 }
@@ -72,7 +74,7 @@ Bahmni.Clinical.EncounterTransactionMapper = function () {
                     return Bahmni.Clinical.Order.discontinue(order);
                 }
                 return { uuid: order.uuid, concept: {name: order.concept.name, uuid: order.concept.uuid },
-                    commentToFulfiller: order.commentToFulfiller};
+                    commentToFulfiller: order.commentToFulfiller, urgency: order.urgency};
             });
             encounterData.orders = encounterData.orders.concat(tempOrders);
         };

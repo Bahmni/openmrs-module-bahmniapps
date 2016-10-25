@@ -615,22 +615,6 @@ input[type="submit"].secondary-button:hover  {
   }
 }
 
-
-button.toggle{
-  .fa-angle-up{
-    display: none;
-  }
-  &.active{
-    background: none !important;
-    .fa-angle-up{
-      display: block;
-    }
-    .fa-angle-down{
-      display: none;
-    }
-  }
-}
-
 .toggle-btn{
   button.toggle{
     .fa-angle-up{
@@ -646,6 +630,21 @@ button.toggle{
       .fa-angle-down{
         display: none;
       }
+    }
+  }
+}
+
+
+.toggle-buttons{
+  .show-after-active{
+    display: none;
+  }
+  &.active {
+    .show-before-active {
+      display: none;
+    }
+    .show-after-active {
+      display: block;
     }
   }
 }
