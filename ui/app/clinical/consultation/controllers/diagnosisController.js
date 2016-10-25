@@ -66,10 +66,27 @@ angular.module('bahmni.clinical')
                     };
                 });
             };
+            
+            $scope.checkInvalidDiagnoses = function(){
+                $scope.errorMessage = "";
+                $scope.consultation.newlyAddedDiagnoses.forEach(function(diagnosis) {
+                    if(isInvalidDiagnosis(diagnosis))
+                        $scope.errorMessage = "{{'CLINICAL_DUPLICATE_DIAGNOSIS_ERROR_MESSAGE' | translate }}";
+                })
+            };
 
+            var isInvalidDiagnosis = function (diagnosis) {
+                var codedAnswers = _.map(_.remove(_.map($scope.consultation.newlyAddedDiagnoses, 'codedAnswer'),undefined),function(answer){
+                    return answer.name.toLowerCase();
+                });
+                var codedAnswersCount = _.countBy(codedAnswers);
+                diagnosis.invalid = !!(diagnosis.codedAnswer.name && codedAnswersCount[diagnosis.codedAnswer.name.toLowerCase()] > 1);
+                return diagnosis.invalid;
+            };
+            
             var contextChange = function() {
                 var invalidnewlyAddedDiagnoses = $scope.consultation.newlyAddedDiagnoses.filter(function(diagnosis) {
-                    return !$scope.isValid(diagnosis);
+                    return isInvalidDiagnosis(diagnosis) || !$scope.isValid(diagnosis);
                 });
                 var invalidSavedDiagnosesFromCurrentEncounter = $scope.consultation.savedDiagnosesFromCurrentEncounter.filter(function(diagnosis) {
                     return !$scope.isValid(diagnosis);
@@ -78,7 +95,7 @@ angular.module('bahmni.clinical')
                     return !$scope.isValid(diagnosis);
                 });
                 return {
-                    allow: invalidnewlyAddedDiagnoses.length === 0 && invalidPastDiagnoses.length === 0 && invalidSavedDiagnosesFromCurrentEncounter.length === 0
+                    allow: invalidnewlyAddedDiagnoses.length === 0 && invalidPastDiagnoses.length === 0 && invalidSavedDiagnosesFromCurrentEncounter.length === 0, errorMessage : $scope.errorMessage
                 };
             };
             contextChangeHandler.add(contextChange);
