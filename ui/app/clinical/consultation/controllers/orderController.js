@@ -1,11 +1,13 @@
 'use strict';
 
 angular.module('bahmni.clinical')
-    .controller('OrderController', ['$scope', 'allOrderables','ngDialog','retrospectiveEntryService',
-        function ($scope, allOrderables, ngDialog,retrospectiveEntryService) {
+    .controller('OrderController', ['$scope', 'allOrderables','ngDialog','retrospectiveEntryService','appService','$translate',
+        function ($scope, allOrderables, ngDialog,retrospectiveEntryService,appService,$translate) {
             $scope.consultation.orders = $scope.consultation.orders || [];
             $scope.consultation.childOrders = $scope.consultation.childOrders || [];
             $scope.allOrdersTemplates = allOrderables;
+            var pacsOptionsConfig = appService.getAppDescriptor().getConfig("enablePACSOptions");
+            $scope.enablePACSOptions = pacsOptionsConfig ? pacsOptionsConfig.value : false;
 
             var testConceptToParentsMapping = {}; //A child concept could be part of multiple parent panels
 
@@ -115,6 +117,10 @@ angular.module('bahmni.clinical')
                 $scope.selectedOrders =  _.filter($scope.consultation.orders,function(testOrder){
                     return _.indexOf(activeTabTestConcepts, testOrder.concept.uuid) !== -1;
                 });
+
+                _.each($scope.selectedOrders, function(order){
+                    order.isUrgent = order.urgency == "STAT" ? true : order.isUrgent;
+                });
             };
 
             $scope.getOrderTemplate = function(templateName) {
@@ -205,12 +211,17 @@ angular.module('bahmni.clinical')
             });
 
             $scope.appendPrintNotes = function(order){
-                if(order.previousNote && order.previousNote.indexOf("Need Print.") == -1) {
-                    $scope.orderNoteText = "Need Print." + (order.previousNote || '');
+                var printNotes =  $translate.instant("CLINICAL_ORDER_RADIOLOGY_NEED_PRINT");
+                if(order.previousNote && order.previousNote.indexOf(printNotes) == -1) {
+                    $scope.orderNoteText =  printNotes + (order.previousNote || '');
                 }
-                else if(($scope.orderNoteText || '').indexOf("Need Print.") == -1){
-                    $scope.orderNoteText = "Need Print." + ($scope.orderNoteText || '');
+                else if(($scope.orderNoteText || '').indexOf(printNotes) == -1){
+                    $scope.orderNoteText = $translate.instant(printNotes) + ($scope.orderNoteText || '');
                 }
+            };
+
+            $scope.isPrintShown = function(isOrderSaved) {
+                return $scope.enablePACSOptions && $scope.activeTab.name == 'Radiology' && !isOrderSaved;
             };
 
             $scope.setEditedFlag = function(order, orderNoteText){

@@ -30,7 +30,7 @@
                 @include button;
                 width: 100%;
                 display: inline-block;
-                float: left;
+                display: table;
                 margin: 0;
                 font-size: 12px;
                 padding: 0;
@@ -48,14 +48,12 @@
                         border-color: #d0d0d0;
                     }
                 }
-                span {
-                    display: inline-block;
-                    padding: 8px 10px;
-                    float: left;
-                    width: 179px;
-                    white-space: nowrap;
-                    overflow: hidden;
-                    text-overflow: ellipsis;
+                div {
+                    display: table-cell;
+                    padding: 10px;
+                    vertical-align: middle;
+                    border:none;
+                    line-height: 1.2;
                     @media (max-width: 1024px) {
                         width: 133px;
                     }
@@ -67,18 +65,20 @@
                       text-decoration: line-through;
                     }
                 }
-                i {
-                    font-size: 1.5em;
-                    margin: 0 auto;
+                span{
+                    display: table-cell;
+                    width: 26px;
+                    display: table-cell;
+                    padding: 0 2px;
+                    border-left: 1px #d0d0d0 solid;
                     vertical-align: middle;
-                    padding: 9px 3px 0;
-                    border-left: 1px #D3CFCF solid;
-                    width: 29px;
-                   &.fa-remove{
-                    color: #9D0101;
-                   }
-                    cursor: pointer;
-                    height: 17px;
+                    i {
+                        font-size: 1.5em;
+                        &.fa-remove{
+                            color: #9D0101;
+                        }
+                        cursor: pointer;
+                    }
                 }
             }
         }
@@ -378,4 +378,12 @@
     .order-sub-heading-container{
         padding-top: 7px;
     }
+}
+
+.urgent-button {
+    height: 100%;
+    padding: 0 5px 0;
+    border-radius: 0;
+    border: 0;
+    border-left: #DDD 1px solid;
 }
