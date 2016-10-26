@@ -350,12 +350,26 @@ angular.module('bahmni.clinical').controller('ConsultationController',
                     _.each(tempConsultation.observationForms, function (observationForm) {
                         if (observationForm.component) {
                             var formObservations = observationForm.component.getValue();
-                            _.each(formObservations, function (obs) {
+                            _.each(formObservations.observations, function (obs) {
                                 tempConsultation.observations.push(obs);
                             });
                         }
                     });
                 }
+            };
+
+            var isObservationFormValid = function() {
+                var valid = true;
+                _.each($scope.consultation.observationForms, function(observationForm) {
+                    if (valid && observationForm.component) {
+                        var value = observationForm.component.getValue();
+                        if(value.errors) {
+                            messagingService.showMessage('error', "{{'CLINICAL_FORM_ERRORS_MESSAGE_KEY' | translate }}");
+                            valid = false;
+                        }
+                    }
+                });
+                return valid;
             };
 
             var isFormValid = function(){
@@ -370,7 +384,7 @@ angular.module('bahmni.clinical').controller('ConsultationController',
                     var errorMessage = discontinuedDrugOrderValidationMessage;
                     messagingService.showMessage('error', errorMessage);
                 }
-                return shouldAllow && !discontinuedDrugOrderValidationMessage;
+                return shouldAllow && !discontinuedDrugOrderValidationMessage && isObservationFormValid();
             };
 
             $scope.save = function (toStateConfig) {

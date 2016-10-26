@@ -34,7 +34,7 @@ angular.module('bahmni.clinical')
                     _.each($scope.consultation.observationForms, function (observationForm) {
                         if (observationForm.component) {
                             var formObservations = observationForm.component.getValue();
-                            _.each(formObservations, function (obs) {
+                            _.each(formObservations.observations, function (obs) {
                                 $scope.consultation.observations.push(obs);
                             });
                         }
