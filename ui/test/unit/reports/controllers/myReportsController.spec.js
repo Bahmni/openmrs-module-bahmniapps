@@ -75,9 +75,11 @@ describe("MyReportsController", function () {
             "errorMessage": null
         }
     ];
-    var days = [{unixTimeStamp: 1474482600000, hidden: false}, {unixTimeStamp: 1474309800000, hidden: false}];
-    var reports = {
-        1474482600000: [{
+    var dateFormat = "MMM D YYYY";
+    var days = [{unixTimeStamp: moment(moment(1474529795000).format(dateFormat), dateFormat).unix()*1000, hidden: false}, {unixTimeStamp: moment(moment(1474383789000).format(dateFormat), dateFormat).unix()*1000, hidden: false}];
+    var reports= {};
+    reports[moment(moment(1474529795000).format(dateFormat), dateFormat).unix()*1000] =
+        [{
             id: '6da64b5bd2ee-b90d13d1-8a52-4349-8dc2-62a92b637f01',
             name: 'test report 2',
             user: 'superman',
@@ -89,7 +91,8 @@ describe("MyReportsController", function () {
             requestDatetime: 1474534464000,
             errorMessage: null,
             hidden: false
-        }, {
+        },
+        {
             id: '6da64b5bd2ee-011602df-4d11-464d-a58c-3b731ff997bb',
             name: 'test report 1',
             user: 'superman',
@@ -101,8 +104,9 @@ describe("MyReportsController", function () {
             requestDatetime: 1474529795000,
             errorMessage: null,
             hidden: false
-        }],
-        1474309800000: [{
+        }];
+    reports[moment(moment(1474383789000).format(dateFormat), dateFormat).unix()*1000] =
+        [{
             id: '6da64b5bd2ee-a340290b-07a6-4b80-9cf5-d0920a72bfb1',
             name: 'obs report 1',
             user: 'superman',
@@ -115,44 +119,45 @@ describe("MyReportsController", function () {
             errorMessage: null,
             hidden: false
         },
-            {
-                id: '6da64b5bd2ee-043b4c8a-a5fc-4dc7-9d54-9d6a72f707ca',
-                name: 'visit report 1',
-                user: 'superman',
-                fileName: 'Test_Observation_Report-2016-09-20_15:03:09.044_UTC.html',
-                startDate: 1454025600000,
-                endDate: 1453248000000,
-                status: 'Finished',
-                format: 'text/html',
-                requestDatetime: 1474383789000,
-                errorMessage: null,
-                hidden: false
-            }, {
-                id: '6da64b5bd2ee-bee177a0-c54d-4d7b-9c66-ec2d93a29501',
-                name: 'visit report 2',
-                user: 'superman',
-                fileName: 'Laboratory_Services-2016-09-20_15:02:25.210_UTC.html',
-                startDate: 1454025600000,
-                endDate: 1453248000000,
-                status: 'Finished',
-                format: 'text/html',
-                requestDatetime: 1474383745000,
-                errorMessage: null,
-                hidden: false
-            }, {
-                id: '6da64b5bd2ee-09cf4369-196e-4f49-b8ff-eed0976be905',
-                name: 'obs report 2',
-                user: 'superman',
-                fileName: 'Test_Observation_Report-2016-09-20_14:59:09.087_UTC.html',
-                startDate: 1454025600000,
-                endDate: 1453248000000,
-                status: 'Error',
-                format: 'text/html',
-                requestDatetime: 1474383549000,
-                errorMessage: 'Error',
-                hidden: false
-            }]
-    };
+        {
+            id: '6da64b5bd2ee-043b4c8a-a5fc-4dc7-9d54-9d6a72f707ca',
+            name: 'visit report 1',
+            user: 'superman',
+            fileName: 'Test_Observation_Report-2016-09-20_15:03:09.044_UTC.html',
+            startDate: 1454025600000,
+            endDate: 1453248000000,
+            status: 'Finished',
+            format: 'text/html',
+            requestDatetime: 1474383789000,
+            errorMessage: null,
+            hidden: false
+        },
+        {
+            id: '6da64b5bd2ee-bee177a0-c54d-4d7b-9c66-ec2d93a29501',
+            name: 'visit report 2',
+            user: 'superman',
+            fileName: 'Laboratory_Services-2016-09-20_15:02:25.210_UTC.html',
+            startDate: 1454025600000,
+            endDate: 1453248000000,
+            status: 'Finished',
+            format: 'text/html',
+            requestDatetime: 1474383745000,
+            errorMessage: null,
+            hidden: false
+        },
+        {
+            id: '6da64b5bd2ee-09cf4369-196e-4f49-b8ff-eed0976be905',
+            name: 'obs report 2',
+            user: 'superman',
+            fileName: 'Test_Observation_Report-2016-09-20_14:59:09.087_UTC.html',
+            startDate: 1454025600000,
+            endDate: 1453248000000,
+            status: 'Error',
+            format: 'text/html',
+            requestDatetime: 1474383549000,
+            errorMessage: 'Error',
+            hidden: false
+        }];
     var scope, controller, reportServiceMock, messagingServiceMock, spinnerMock, ngDialog;
 
     beforeEach(module('bahmni.reports'));
@@ -195,9 +200,9 @@ describe("MyReportsController", function () {
     });
 
     it("should convert unixTimeStamps to given format", function () {
-        expect(scope.convertToDate(1474529795000, 'hh:mm A')).toEqual("01:06 PM");
-        expect(scope.convertToDate(1474529795000, "DD MMM YY")).toEqual("22 Sep 16");
-        expect(scope.convertToDate(1474529795000, "MMMM Do YYYY, dddd")).toEqual("September 22nd 2016, Thursday");
+        expect(scope.convertToDate(1474529795000, 'hh:mm A')).toEqual(moment(1474529795000).format('hh:mm A'));
+        expect(scope.convertToDate(1474529795000, "DD MMM YY")).toEqual(moment(1474529795000).format('DD MMM YY'));
+        expect(scope.convertToDate(1474529795000, "MMMM Do YYYY, dddd")).toEqual(moment(1474529795000).format('MMMM Do YYYY, dddd'));
     });
 
     it("should get corresponding format for mimeType", function () {
@@ -211,8 +216,9 @@ describe("MyReportsController", function () {
     it("should search reports by name", function () {
         scope.searchString = "obs report";
         scope.search();
-        var expectedReports = {
-            1474482600000: [{
+        var expectedReports = {};
+        expectedReports[moment(moment(1474529795000).format(dateFormat), dateFormat).unix()*1000] = [
+            {
                 id: '6da64b5bd2ee-b90d13d1-8a52-4349-8dc2-62a92b637f01',
                 name: 'test report 2',
                 user: 'superman',
@@ -224,7 +230,8 @@ describe("MyReportsController", function () {
                 requestDatetime: 1474534464000,
                 errorMessage: null,
                 hidden: true
-            }, {
+            },
+            {
                 id: '6da64b5bd2ee-011602df-4d11-464d-a58c-3b731ff997bb',
                 name: 'test report 1',
                 user: 'superman',
@@ -237,7 +244,8 @@ describe("MyReportsController", function () {
                 errorMessage: null,
                 hidden: true
             }],
-            1474309800000: [{
+            expectedReports[moment(moment(1474383789000).format(dateFormat), dateFormat).unix()*1000] = [
+            {
                 id: '6da64b5bd2ee-a340290b-07a6-4b80-9cf5-d0920a72bfb1',
                 name: 'obs report 1',
                 user: 'superman',
@@ -249,7 +257,8 @@ describe("MyReportsController", function () {
                 requestDatetime: 1474383794000,
                 errorMessage: null,
                 hidden: false
-            }, {
+            },
+            {
                 id: '6da64b5bd2ee-043b4c8a-a5fc-4dc7-9d54-9d6a72f707ca',
                 name: 'visit report 1',
                 user: 'superman',
@@ -261,7 +270,8 @@ describe("MyReportsController", function () {
                 requestDatetime: 1474383789000,
                 errorMessage: null,
                 hidden: true
-            }, {
+            },
+            {
                 id: '6da64b5bd2ee-bee177a0-c54d-4d7b-9c66-ec2d93a29501',
                 name: 'visit report 2',
                 user: 'superman',
@@ -273,7 +283,8 @@ describe("MyReportsController", function () {
                 requestDatetime: 1474383745000,
                 errorMessage: null,
                 hidden: true
-            }, {
+            },
+            {
                 id: '6da64b5bd2ee-09cf4369-196e-4f49-b8ff-eed0976be905',
                 name: 'obs report 2',
                 user: 'superman',
@@ -285,8 +296,7 @@ describe("MyReportsController", function () {
                 requestDatetime: 1474383549000,
                 errorMessage: 'Error',
                 hidden: false
-            }]
-        };
+            }];
 
         expect(scope.reports).toEqual(expectedReports);
     });
@@ -294,8 +304,9 @@ describe("MyReportsController", function () {
     it("should hide days if all reports are hidden for that day", function () {
         scope.searchString = "obs";
         scope.search();
-        var expectedReports = {
-            1474482600000: [{
+        var expectedReports = {};
+        expectedReports[moment(moment(1474529795000).format(dateFormat), dateFormat).unix()*1000] =
+            [{
                 id: '6da64b5bd2ee-b90d13d1-8a52-4349-8dc2-62a92b637f01',
                 name: 'test report 2',
                 user: 'superman',
@@ -307,7 +318,8 @@ describe("MyReportsController", function () {
                 requestDatetime: 1474534464000,
                 errorMessage: null,
                 hidden: true
-            }, {
+            },
+            {
                 id: '6da64b5bd2ee-011602df-4d11-464d-a58c-3b731ff997bb',
                 name: 'test report 1',
                 user: 'superman',
@@ -320,7 +332,7 @@ describe("MyReportsController", function () {
                 errorMessage: null,
                 hidden: true
             }],
-            1474309800000: [{
+            expectedReports[moment(moment(1474383789000).format(dateFormat), dateFormat).unix()*1000] = [{
                 id: '6da64b5bd2ee-a340290b-07a6-4b80-9cf5-d0920a72bfb1',
                 name: 'obs report 1',
                 user: 'superman',
@@ -332,7 +344,8 @@ describe("MyReportsController", function () {
                 requestDatetime: 1474383794000,
                 errorMessage: null,
                 hidden: false
-            }, {
+            },
+            {
                 id: '6da64b5bd2ee-043b4c8a-a5fc-4dc7-9d54-9d6a72f707ca',
                 name: 'visit report 1',
                 user: 'superman',
@@ -344,7 +357,8 @@ describe("MyReportsController", function () {
                 requestDatetime: 1474383789000,
                 errorMessage: null,
                 hidden: true
-            }, {
+            },
+            {
                 id: '6da64b5bd2ee-bee177a0-c54d-4d7b-9c66-ec2d93a29501',
                 name: 'visit report 2',
                 user: 'superman',
@@ -356,7 +370,8 @@ describe("MyReportsController", function () {
                 requestDatetime: 1474383745000,
                 errorMessage: null,
                 hidden: true
-            }, {
+            },
+            {
                 id: '6da64b5bd2ee-09cf4369-196e-4f49-b8ff-eed0976be905',
                 name: 'obs report 2',
                 user: 'superman',
@@ -368,12 +383,15 @@ describe("MyReportsController", function () {
                 requestDatetime: 1474383549000,
                 errorMessage: 'Error',
                 hidden: false
-            }]
-        };
-        var expectedDays = [{unixTimeStamp: 1474482600000, hidden: true}, {
-            unixTimeStamp: 1474309800000,
-            hidden: false
-        }];
+            }];
+        var expectedDays = [
+            {
+                unixTimeStamp: moment(moment(1474529795000).format(dateFormat), dateFormat).unix()*1000,
+                hidden: true},
+            {
+                unixTimeStamp: moment(moment(1474383789000).format(dateFormat), dateFormat).unix()*1000,
+                hidden: false
+            }];
 
         expect(scope.reports).toEqual(expectedReports);
         expect(scope.days).toEqual(expectedDays);
@@ -391,8 +409,8 @@ describe("MyReportsController", function () {
 
         expect(ngDialog.open).toHaveBeenCalledWith({
             template: 'views/errorMessagePopup.html',
-            className: "ngdialog-theme-default report",
-            data: "errorMessage first line\nsecond line"
+            className: "ngdialog-theme-default ng-dialog-all-details-page",
+            data: "errorMessage first line"
         });
     });
 
@@ -405,8 +423,9 @@ describe("MyReportsController", function () {
         spinnerMock.forPromise.and.returnValue(promise);
 
         var report = {id: '6da64b5bd2ee-011602df-4d11-464d-a58c-3b731ff997bb'};
-        var expectedReports = {
-            1474482600000: [{
+        var expectedReports = {};
+        expectedReports[moment(moment(1474529795000).format(dateFormat), dateFormat).unix()*1000] = [
+            {
                 id: '6da64b5bd2ee-b90d13d1-8a52-4349-8dc2-62a92b637f01',
                 name: 'test report 2',
                 user: 'superman',
@@ -419,7 +438,8 @@ describe("MyReportsController", function () {
                 errorMessage: null,
                 hidden: false
             }],
-            1474309800000: [{
+        expectedReports[moment(moment(1474383789000).format(dateFormat), dateFormat).unix()*1000] = [
+            {
                 id: '6da64b5bd2ee-a340290b-07a6-4b80-9cf5-d0920a72bfb1',
                 name: 'obs report 1',
                 user: 'superman',
@@ -432,46 +452,47 @@ describe("MyReportsController", function () {
                 errorMessage: null,
                 hidden: false
             },
-                {
-                    id: '6da64b5bd2ee-043b4c8a-a5fc-4dc7-9d54-9d6a72f707ca',
-                    name: 'visit report 1',
-                    user: 'superman',
-                    fileName: 'Test_Observation_Report-2016-09-20_15:03:09.044_UTC.html',
-                    startDate: 1454025600000,
-                    endDate: 1453248000000,
-                    status: 'Finished',
-                    format: 'text/html',
-                    requestDatetime: 1474383789000,
-                    errorMessage: null,
-                    hidden: false
-                }, {
-                    id: '6da64b5bd2ee-bee177a0-c54d-4d7b-9c66-ec2d93a29501',
-                    name: 'visit report 2',
-                    user: 'superman',
-                    fileName: 'Laboratory_Services-2016-09-20_15:02:25.210_UTC.html',
-                    startDate: 1454025600000,
-                    endDate: 1453248000000,
-                    status: 'Finished',
-                    format: 'text/html',
-                    requestDatetime: 1474383745000,
-                    errorMessage: null,
-                    hidden: false
-                }, {
-                    id: '6da64b5bd2ee-09cf4369-196e-4f49-b8ff-eed0976be905',
-                    name: 'obs report 2',
-                    user: 'superman',
-                    fileName: 'Test_Observation_Report-2016-09-20_14:59:09.087_UTC.html',
-                    startDate: 1454025600000,
-                    endDate: 1453248000000,
-                    status: 'Error',
-                    format: 'text/html',
-                    requestDatetime: 1474383549000,
-                    errorMessage: 'Error',
-                    hidden: false
-                }]
-        };
+            {
+                id: '6da64b5bd2ee-043b4c8a-a5fc-4dc7-9d54-9d6a72f707ca',
+                name: 'visit report 1',
+                user: 'superman',
+                fileName: 'Test_Observation_Report-2016-09-20_15:03:09.044_UTC.html',
+                startDate: 1454025600000,
+                endDate: 1453248000000,
+                status: 'Finished',
+                format: 'text/html',
+                requestDatetime: 1474383789000,
+                errorMessage: null,
+                hidden: false
+            },
+            {
+                id: '6da64b5bd2ee-bee177a0-c54d-4d7b-9c66-ec2d93a29501',
+                name: 'visit report 2',
+                user: 'superman',
+                fileName: 'Laboratory_Services-2016-09-20_15:02:25.210_UTC.html',
+                startDate: 1454025600000,
+                endDate: 1453248000000,
+                status: 'Finished',
+                format: 'text/html',
+                requestDatetime: 1474383745000,
+                errorMessage: null,
+                hidden: false
+            },
+            {
+                id: '6da64b5bd2ee-09cf4369-196e-4f49-b8ff-eed0976be905',
+                name: 'obs report 2',
+                user: 'superman',
+                fileName: 'Test_Observation_Report-2016-09-20_14:59:09.087_UTC.html',
+                startDate: 1454025600000,
+                endDate: 1453248000000,
+                status: 'Error',
+                format: 'text/html',
+                requestDatetime: 1474383549000,
+                errorMessage: 'Error',
+                hidden: false
+            }];
 
-        scope.delete(report, {unixTimeStamp: 1474482600000});
+        scope.delete(report, {unixTimeStamp: moment(moment(1474529795000).format(dateFormat), dateFormat).unix()*1000});
 
         expect(scope.reports).toEqual(expectedReports);
         expect(messagingServiceMock.showMessage).toHaveBeenCalledWith("info", "REPORT_DELETE_SUCCESSFUL");
