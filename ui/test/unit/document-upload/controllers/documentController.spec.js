@@ -31,7 +31,8 @@ describe("DocumentController", function () {
                     "editableName": "LEG Foot AP",
                     "uuid": "concept uuid"
                 },
-                "changed": true
+                "changed": true,
+                "comment": "abnormal LEG Foot AP"
             }
             ,
             {
@@ -47,7 +48,8 @@ describe("DocumentController", function () {
                     "editableName": "Foot - Left, 2 views (X-ray)",
                     "name": "Foot - Left, 2 views (X-ray)"
                 },
-                "title": "Foot - Left, 2 views (X-ray)"
+                "title": "Foot - Left, 2 views (X-ray)",
+                "comment": "abnormal Foot - Left, 2 views (X-ray)"
             },
             {
                 "id": 642122,
@@ -61,7 +63,8 @@ describe("DocumentController", function () {
                     "editableName": "HEAD Skull PA",
                     "name": "HEAD Skull PA"
                 },
-                "title": "HEAD Skull PA"
+                "title": "HEAD Skull PA",
+                "comment": "abnormal HEAD Skull PA"
             }
         ];
 
@@ -429,13 +432,15 @@ describe("DocumentController", function () {
             {
                 testUuid: "concept uuid",
                 image: "157100/157051-RADIOLOGY-5f5e8a60-eecf-40f9-b760-ed7c89f54f3e.jpeg",
-                obsDateTime: startDate
+                obsDateTime: startDate,
+                comment: "abnormal LEG Foot AP"
             },
             {
                 testUuid: "4553bd77-9bcd-11e3-b8ce-43d3573b23fb",
                 image: "157100/157051-RADIOLOGY-e9d1f0cc-9af9-431b-a178-a5d05d7f16b2.jpeg",
                 obsUuid: "dd24732d-a4f9-49be-af7f-6fc2c2c39f0c",
-                voided: undefined
+                voided: undefined,
+                comment: "abnormal Foot - Left, 2 views (X-ray)"
             }
         ];
 

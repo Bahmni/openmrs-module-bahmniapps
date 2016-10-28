@@ -23,7 +23,8 @@ describe("PatientFileObservationsMapper", function () {
                                 "id": 4,
                                 "uuid": "ac5a972b-d3d1-4857-8c03-0da3f702ac36",
                                 "obsDatetime": obsDatetimeForDoc4,
-                                "value": "document-4.jpeg"
+                                "value": "document-4.jpeg",
+                                "comment": "something went wrong"
                             }
                         ]
                     }
@@ -50,7 +51,9 @@ describe("PatientFileObservationsMapper", function () {
                                 "id": 3,
                                 "uuid": "16c2c346-6330-43df-a9a9-1e28aba4dd66",
                                 "obsDatetime": obsDatetimeForDoc3,
-                                "value": "document-3.jpeg"
+                                "value": "document-3.jpeg",
+                                "comment": "something went wrong again"
+
                             }
                         ]
                     }
@@ -70,5 +73,7 @@ describe("PatientFileObservationsMapper", function () {
         expect(patientFileRecords[1].imageObservation.value).toBe("document-4.jpeg");
         expect(patientFileRecords[0].concept.name).toBe(observationConceptName);
         expect(patientFileRecords[1].concept.name).toBe(observationConceptName);
+        expect(patientFileRecords[0].comment).toBe("something went wrong again");
+        expect(patientFileRecords[1].comment).toBe("something went wrong");
     })
 });
