@@ -322,7 +322,7 @@ describe('DateUtil', function () {
        });
 
        it("should return date in dd MMM yy format when date with yyyy-MM-ddTHH:mm:ss.SSSZ is passed", function(){
-           expect(dateUtil.formatDateInStrictMode('2016-03-01T10:30:00.000+0530')).toBe('01 Mar 16');
+           expect(dateUtil.formatDateInStrictMode('2016-03-01T10:30:00.000+0530')).toBe(moment('2016-03-01T10:30:00.000+0530').format('DD MMM YY'));
        });
 
        it("should return the string if the format does not match yyyy-MM-dd or yyyy-MM-ddTHH:mm:ss.SSSZ", function(){
