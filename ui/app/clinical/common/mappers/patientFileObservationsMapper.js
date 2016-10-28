@@ -19,7 +19,8 @@ Bahmni.Clinical.PatientFileObservationsMapper = function () {
                         visitUuid: visitUuid,
                         provider: providerMapper.map(encounter.provider),
                         visitStartDate: encounter.visit.startDatetime,
-                        visitStopDate: encounter.visit.stopDatetime
+                        visitStopDate: encounter.visit.stopDatetime,
+                        comment: member.comment
                     });
                 });
             });

@@ -13,7 +13,7 @@ angular.module('bahmni.common.uiHelper')
                 return {
                     src: Bahmni.Common.Constants.documentsPath + '/' + record.imageObservation.value,
                     title: record.concept.name,
-                    desc: record.imageObservation.comment,
+                    desc: record.imageObservation.comment || record.comment,
                     date: record.imageObservation.observationDateTime,
                     uuid: record.imageObservation.uuid,
                     providerName: provider ? provider.name : null
@@ -32,7 +32,7 @@ angular.module('bahmni.common.uiHelper')
                     newAlbum.images = [image];
                     $scope.albums.splice(tagOrder, 0, newAlbum);
                 } else {
-                    matchedAlbum.images.push(image);
+                    matchedAlbum.images.splice(image.imageIndex, 0, image);
                 }
                 return $scope.albums[0].images.length - 1;
             };
@@ -78,7 +78,9 @@ angular.module('bahmni.common.uiHelper')
                 title: $scope.image.concept ? $scope.image.concept.name : "",
                 date: $scope.image.obsDatetime,
                 uuid: $scope.image.obsUuid,
-                providerName: $scope.image.provider ? $scope.image.provider.name : ""
+                providerName: $scope.image.provider ? $scope.image.provider.name : "",
+                imageIndex: $scope.image.imageIndex,
+                desc: $scope.image.comment
             };
             imageGalleryController.addImage(image, $scope.visitUuid, $scope.visitOrder);
 
