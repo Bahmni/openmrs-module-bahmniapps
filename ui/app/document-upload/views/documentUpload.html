@@ -66,7 +66,7 @@
                         </div>
                     </div>
                     <div class="upload-inline-buttons">
-                        <input id="file-browse" type="file" name="image" accept="application/pdf, image/*"
+                        <input id="file-browse" type="file" multiple name="image" accept="application/pdf, image/*"
                                capture="camera" file-upload visit="newVisit" on-select="onSelect">
                         <label for="file-browse" class="btn btn-primary"><i
                                 class="fa fa-camera fa fa-white"></i> SCAN</label>
@@ -81,8 +81,12 @@
                     <ul class="files">
                         <li class="clear" ng-repeat="file in newVisit.files | reverse">
                             <div class="file">
-                                <img bm-gallery-item index="{{file.imageIndex}}" visit-uuid="'new'" visit-order="0"
-                                     image="file"
+                                <a class="pdf-link fl" ng-if="isPdf(file)" ng-href="{{file.encodedValue}}"
+                                   target="_blank">
+                                    <i class="fa fa-file-pdf-o"></i>
+                                </a>
+                                <img ng-if="!isPdf(file)" bm-gallery-item visit-uuid="'new'" visit-order="0"
+                                     image="file" index="{{file.imageIndex}}"
                                      ng-src="{{file.thumbnail}}" width="100">
                                 <input name="{{'file'+$index}}" class="concept-name" ng-readonly="!canDeleteFile(file)"
                                        ng-model="file.concept.editableName" bahmni-autocomplete source="getConcepts"
@@ -90,6 +94,23 @@
                                        is-invalid="conceptNameInvalid" on-edit="onEditConcept(file)" required
                                        placeholder="Enter a value" strict-select="true"
                                        blur-on-select="true"/>
+                                <button type="button" toggle="show"
+                                        class="comment-toggle fr" tabindex="-1" ng-class="{'has-notes': file.comment}">
+                                    <i class="fa fa-file-o">
+                                        <i class="fa fa-plus-circle"></i>
+                                        <i class="fa fa-minus-circle"></i>
+                                    </i>
+                                    <i class="fa fa-file-text-o"></i>
+                                </button>
+
+                                <div ng-if="show" class="obs-comment-section" >
+                                    <label class="control-label"></label>
+                                    <div class="field-value" ng-if="show">
+                                            <textarea class="obs-comment-section" maxlength="255" ng-model="file.comment" ng-change="enableSaveButtonOnCommentChange(file, visit)"
+                                                      placeholder="Notes" msd-elastic>
+                                            </textarea>
+                                    </div>
+                                </div>
                             </div>
                             <div>
                                 <button type="button" ng-click="newVisit.removeNewAddedFile(file)"
@@ -132,7 +153,7 @@
                                 </li>
 
                                 <li>
-                                    <input id="file-browse-{{visit.uuid}}" type="file" name="image-document-upload"
+                                    <input id="file-browse-{{visit.uuid}}" type="file" multiple name="image-document-upload"
                                            accept="application/pdf,image/*" capture="camera" file-upload visit="visit"
                                            on-select="onSelect">
                                     <label class="placeholder btn" for="file-browse-{{visit.uuid}}"><i
@@ -157,6 +178,23 @@
                                                required placeholder="Enter a value"
                                                blur-on-select="true" ng-blur="visit.markAsUpdated()"
                                                ng-disabled="file.voided"/>
+                                        <button type="button" toggle="show"
+                                                class="comment-toggle fr" tabindex="-1" ng-class="{'has-notes': file.comment}">
+                                            <i class="fa fa-file-o">
+                                                <i class="fa fa-plus-circle"></i>
+                                                <i class="fa fa-minus-circle"></i>
+                                            </i>
+                                            <i class="fa fa-file-text-o"></i>
+                                        </button>
+
+                                        <div ng-if="show" class="obs-comment-section" >
+                                            <label class="control-label"></label>
+                                            <div class="field-value" ng-if="show">
+                                            <textarea class="obs-comment-section" maxlength="255" ng-model="file.comment" ng-change="enableSaveButtonOnCommentChange(file, visit)" ng-readonly="!canDeleteFile(file)"
+                                                placeholder="Notes" msd-elastic>
+                                            </textarea>
+                                            </div>
+                                        </div>
                                     </div>
                                     <div class="file-remove">
                                         <button type="button" id="remove-image{{$index}}"
