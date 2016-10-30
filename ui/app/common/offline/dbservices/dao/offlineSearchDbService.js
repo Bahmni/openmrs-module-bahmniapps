@@ -2,7 +2,6 @@
 
 angular.module('bahmni.common.offline')
     .service('offlineSearchDbService', ['$http', '$q', '$rootScope', 'age', function ($http, $q, $rootScope, age) {
-
         var db;
 
         var search = function (params) {
@@ -122,7 +121,6 @@ angular.module('bahmni.common.offline')
 
                             return query.exec()
                                 .then(function (results) {
-
                                     var groupedResults = _.groupBy(results, function (res) {
                                         return res.uuid;
                                     });
@@ -131,7 +129,7 @@ angular.module('bahmni.common.offline')
                                     angular.forEach(groupedResults, function (groupedResult) {
                                         var customAttributes = {};
                                         patient = groupedResult[0];
-                                        //ToDo:: Dependency of age factory in Admin page
+                                        // ToDo:: Dependency of age factory in Admin page
                                         patient.age = age.fromBirthDate(patient.birthdate).years;
                                         patient.image = "../images/blank-user.png";
 
@@ -147,9 +145,7 @@ angular.module('bahmni.common.offline')
                                     $rootScope.searching = false;
 
                                     defer.resolve(response);
-
                                 });
-
                         }, function (e) {
                             console.log(e);
                             defer.reject(e);
@@ -165,5 +161,5 @@ angular.module('bahmni.common.offline')
         return {
             search: search,
             init: init
-        }
+        };
     }]);

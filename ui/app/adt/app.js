@@ -1,27 +1,25 @@
 'use strict';
 
-
 angular.module('adt', ['bahmni.common.patient', 'bahmni.common.patientSearch', 'bahmni.common.uiHelper', 'bahmni.common.conceptSet', 'authentication', 'bahmni.common.appFramework',
     'httpErrorInterceptor', 'bahmni.adt', 'bahmni.common.domain', 'bahmni.common.config', 'ui.router', 'bahmni.common.util', 'bahmni.common.routeErrorHandler', 'bahmni.common.i18n',
     'bahmni.common.displaycontrol.dashboard', 'bahmni.common.displaycontrol.observation', 'bahmni.common.displaycontrol.disposition', 'bahmni.common.displaycontrol.admissiondetails', 'bahmni.common.displaycontrol.custom',
     'bahmni.common.obs', 'bahmni.common.displaycontrol.patientprofile', 'bahmni.common.displaycontrol.diagnosis', 'RecursionHelper', 'ngSanitize', 'bahmni.common.uiHelper', 'bahmni.common.displaycontrol.navigationlinks', 'pascalprecht.translate',
-    'bahmni.common.displaycontrol.dashboard', 'ngCookies','ngDialog', 'angularFileUpload', 'bahmni.common.offline']);
+    'bahmni.common.displaycontrol.dashboard', 'ngCookies', 'ngDialog', 'angularFileUpload', 'bahmni.common.offline']);
 angular.module('adt').config(['$stateProvider', '$httpProvider', '$urlRouterProvider', '$bahmniTranslateProvider', '$compileProvider',
     function ($stateProvider, $httpProvider, $urlRouterProvider, $bahmniTranslateProvider, $compileProvider) {
-
-    $urlRouterProvider.otherwise('/home');
-    var homeBackLink = {label: "", url: "../home/", accessKey: "h", icon: "fa-home", id: "homeBackLink"};
-    var adtHomeBackLink = {label: "", url: "#/home", accessKey: "p", icon: "fa-users", id: "adtHomeBackLink" };
+        $urlRouterProvider.otherwise('/home');
+        var homeBackLink = {label: "", url: "../home/", accessKey: "h", icon: "fa-home", id: "homeBackLink"};
+        var adtHomeBackLink = {label: "", url: "#/home", accessKey: "p", icon: "fa-users", id: "adtHomeBackLink" };
 
     // @if DEBUG='production'
-    $compileProvider.debugInfoEnabled(false);
+        $compileProvider.debugInfoEnabled(false);
     // @endif
 
     // @if DEBUG='development'
-    $compileProvider.debugInfoEnabled(true);
+        $compileProvider.debugInfoEnabled(true);
     // @endif
 
-    $stateProvider
+        $stateProvider
         .state('home', {
             url: '/home',
             data: {
@@ -55,7 +53,7 @@ angular.module('adt').config(['$stateProvider', '$httpProvider', '$urlRouterProv
             views: {
                 'header': {
                     templateUrl: 'views/headerAdt.html',
-                    controller: function ($scope){
+                    controller: function ($scope) {
                         $scope.showClinicalDashboardLink = true;
                     }
                 },
@@ -94,5 +92,5 @@ angular.module('adt').config(['$stateProvider', '$httpProvider', '$urlRouterProv
             controller: 'BedManagementController'
         });
 
-    $bahmniTranslateProvider.init({app: 'adt', shouldMerge: true});
-}]);
+        $bahmniTranslateProvider.init({app: 'adt', shouldMerge: true});
+    }]);

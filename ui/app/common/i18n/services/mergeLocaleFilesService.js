@@ -2,7 +2,7 @@
 
 angular.module('bahmni.common.i18n')
     .service('mergeLocaleFilesService', ['$http', '$q', 'mergeService', function ($http, $q, mergeService) {
-        return function(options) {
+        return function (options) {
             var baseLocaleUrl = '../i18n/';
             var customLocaleUrl = Bahmni.Common.Constants.offlineRootDir + '/bahmni_config/openmrs/i18n/';
 
@@ -12,7 +12,6 @@ angular.module('bahmni.common.i18n')
 
             var mergeLocaleFile = function (options) {
                 var fileURL = options.app + "/locale_" + options.key + ".json";
-
 
                 var loadBahmniTranslations = function () {
                     return loadFile(baseLocaleUrl + fileURL).then(function (result) {
@@ -29,7 +28,7 @@ angular.module('bahmni.common.i18n')
                     });
                 };
 
-                var mergeTranslations = function(result){
+                var mergeTranslations = function (result) {
                     var baseFileData = result[0] ? result[0].data : undefined;
                     var customFileData = result[1] ? result[1].data : undefined;
                     if (options.shouldMerge || options.shouldMerge === undefined) {
@@ -38,10 +37,9 @@ angular.module('bahmni.common.i18n')
                     return [baseFileData, customFileData];
                 };
 
-
-                return $q.all([loadBahmniTranslations(),loadCustomTranslations()])
+                return $q.all([loadBahmniTranslations(), loadCustomTranslations()])
                     .then(mergeTranslations);
             };
             return mergeLocaleFile(options);
-        }
+        };
     }]);

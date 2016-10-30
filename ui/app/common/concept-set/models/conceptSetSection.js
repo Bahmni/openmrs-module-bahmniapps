@@ -1,8 +1,6 @@
 'use strict';
 
-
 Bahmni.ConceptSet.ConceptSetSection = function (extensions, user, config, observations, conceptSet) {
-    
     var self = this;
 
     self.clone = function () {
@@ -38,12 +36,12 @@ Bahmni.ConceptSet.ConceptSetSection = function (extensions, user, config, observ
         if (observation.groupMembers && observation.groupMembers.length > 0) {
             return observation.groupMembers.some(function (groupMember) {
                 return atLeastOneValueSet(groupMember);
-            })
+            });
         } else {
-            return !(_.isUndefined(observation.value) ||  observation.value === "");
+            return !(_.isUndefined(observation.value) || observation.value === "");
         }
     };
-    
+
     self.isAvailable = function (context) {
         return getShowIfFunction()(context || {});
     };
@@ -66,10 +64,10 @@ Bahmni.ConceptSet.ConceptSetSection = function (extensions, user, config, observ
         var observations = self.getObservationsForConceptSection();
         return _.some(observations, function (observation) {
             return atLeastOneValueSet(observation);
-        })
+        });
     };
 
-    self.showComputeButton = function (){
+    self.showComputeButton = function () {
         return config.computeDrugs === true;
     };
 
@@ -79,13 +77,13 @@ Bahmni.ConceptSet.ConceptSetSection = function (extensions, user, config, observ
             self.show();
         }
     };
-    self.toggleInnerSections = function(event){
+    self.toggleInnerSections = function (event) {
         event.stopPropagation();
         self.collapseInnerSections = !self.collapseInnerSections;
     };
 
-    self.toggleDisplay = function() {
-        if(self.isOpen) {
+    self.toggleDisplay = function () {
+        if (self.isOpen) {
             self.hide();
         } else {
             self.show();
@@ -96,7 +94,7 @@ Bahmni.ConceptSet.ConceptSetSection = function (extensions, user, config, observ
         return !self.hasSomeValue();
     };
 
-    self.canAddMore = function(){
+    self.canAddMore = function () {
         return self.allowAddMore == true;
     };
 

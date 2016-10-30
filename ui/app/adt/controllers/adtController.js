@@ -24,7 +24,7 @@ angular.module('bahmni.adt')
 
             var defaultVisitTypeUuid = getVisitTypeUuid($scope.defaultVisitTypeName);
 
-            var getCurrentVisitTypeUuid = function() {
+            var getCurrentVisitTypeUuid = function () {
                 if ($scope.visitSummary && $scope.visitSummary.dateCompleted === null) {
                     return getVisitTypeUuid($scope.visitSummary.visitType);
                 }
@@ -107,7 +107,7 @@ angular.module('bahmni.adt')
                 var visitTypes = encounterConfig.getVisitTypes();
                 $scope.visitControl = new Bahmni.Common.VisitControl(visitTypes, defaultVisitType, visitService);
                 $scope.dashboard = Bahmni.Common.DisplayControl.Dashboard.create($scope.dashboardConfig || {}, $filter);
-                $scope.sectionGroups =  $scope.dashboard.getSections($scope.diseaseTemplates);
+                $scope.sectionGroups = $scope.dashboard.getSections($scope.diseaseTemplates);
 
                 return getVisit().then(dispositionService.getDispositionActions).then(function (response) {
                     if (response.data && response.data.results && response.data.results.length) {
@@ -208,7 +208,7 @@ angular.module('bahmni.adt')
                 } else if ($scope.defaultVisitTypeName === null) {
                     messagingService.showMessage("error", "MESSAGE_DEFAULT_VISIT_TYPE_NOT_FOUND_KEY");
                 } else {
-                    messagingService.showMessage("error", "MESSAGE_DEFAULT_VISIT_TYPE_INVALID_KEY")
+                    messagingService.showMessage("error", "MESSAGE_DEFAULT_VISIT_TYPE_INVALID_KEY");
                 }
                 return $q.when({});
             };
@@ -222,7 +222,7 @@ angular.module('bahmni.adt')
                 return $q.when({});
             };
 
-            $scope.cancelConfirmationDialog = function() {
+            $scope.cancelConfirmationDialog = function () {
                 ngDialog.close();
             };
 
@@ -238,13 +238,13 @@ angular.module('bahmni.adt')
                 } else if ($scope.defaultVisitTypeName === null) {
                     messagingService.showMessage("error", "MESSAGE_DEFAULT_VISIT_TYPE_NOT_FOUND_KEY");
                 } else {
-                    messagingService.showMessage("error", "MESSAGE_DEFAULT_VISIT_TYPE_INVALID_KEY")
+                    messagingService.showMessage("error", "MESSAGE_DEFAULT_VISIT_TYPE_INVALID_KEY");
                 }
                 ngDialog.close();
                 return $q.when({});
             };
 
-            $scope.continueWithCurrentVisit = function() {
+            $scope.continueWithCurrentVisit = function () {
                 createEncounterAndContinue();
                 ngDialog.close();
             };

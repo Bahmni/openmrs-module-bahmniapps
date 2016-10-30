@@ -3,7 +3,6 @@
 angular.module('bahmni.common.displaycontrol.drugOrderDetails')
     .directive('drugOrderDetails', ['TreatmentService', 'spinner', 'treatmentConfig', '$q', function (treatmentService, spinner, treatmentConfig, $q) {
         var controller = function ($scope) {
-
             var init = function () {
                 return $q.all([treatmentService.getAllDrugOrdersFor($scope.patient.uuid, $scope.section.dashboardConfig.drugConceptSet, undefined, undefined, $scope.enrollment),
                     treatmentConfig()])
@@ -32,22 +31,21 @@ angular.module('bahmni.common.displaycontrol.drugOrderDetails')
                 drugOrder.showDetails = !drugOrder.showDetails;
             };
 
-            var sortOrders = function(response){
+            var sortOrders = function (response) {
                 var drugOrderUtil = Bahmni.Clinical.DrugOrder.Util;
                 var sortedDrugOrders = [];
-                if($scope.section.dashboardConfig.showOnlyActive) {
+                if ($scope.section.dashboardConfig.showOnlyActive) {
                     var activeAndScheduled = _.filter(response, function (order) {
                         return order.isActive() || order.isScheduled();
                     });
                     sortedDrugOrders.push(drugOrderUtil.sortDrugOrdersInChronologicalOrder(activeAndScheduled));
-                }else{
+                } else {
                     sortedDrugOrders.push(drugOrderUtil.sortDrugOrdersInChronologicalOrder(response));
                 }
                 return _.flatten(sortedDrugOrders);
             };
 
             $scope.initialization = init();
-
         };
 
         var link = function ($scope, element) {

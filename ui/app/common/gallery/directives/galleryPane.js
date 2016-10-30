@@ -3,7 +3,6 @@
 angular.module('bahmni.common.gallery')
     .directive('bmGalleryPane', ['$rootScope', '$document', 'observationsService', 'encounterService', 'spinner', 'configurations',
         function ($rootScope, $document, observationsService, encounterService, spinner, configurations) {
-
             var $body = $document.find('body');
 
             $rootScope.$on('$stateChangeStart', function () {
@@ -26,7 +25,7 @@ angular.module('bahmni.common.gallery')
                 });
             };
 
-            function close() {
+            function close () {
                 $('body #gallery-pane').remove();
                 $body.removeClass('gallery-open');
                 keyboardJS.releaseKey('right');
@@ -52,8 +51,7 @@ angular.module('bahmni.common.gallery')
                     var albumIndex = getAlbumIndex();
                     if ($scope.imageIndex > 0) {
                         --$scope.imageIndex;
-                    }
-                    else {
+                    } else {
                         if (albumIndex == 0) {
                             albumIndex = $scope.albums.length;
                         }
@@ -83,7 +81,7 @@ angular.module('bahmni.common.gallery')
                     }
                 };
                 $scope.isPdf = function (image) {
-                    return image.src && (image.src.indexOf(".pdf")>0);
+                    return image.src && (image.src.indexOf(".pdf") > 0);
                 };
 
                 $scope.getTotalLength = function () {
@@ -128,8 +126,8 @@ angular.module('bahmni.common.gallery')
                             album.images.forEach(function (image) {
                                 fetchObsRelationship(image);
                                 constructNewSourceObs(image);
-                            })
-                        })
+                            });
+                        });
                     }
                 };
 
@@ -169,5 +167,5 @@ angular.module('bahmni.common.gallery')
                 link: link,
                 controller: controller,
                 templateUrl: '../common/gallery/views/gallery.html'
-            }
+            };
         }]);

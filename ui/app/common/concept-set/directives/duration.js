@@ -1,7 +1,6 @@
 'use strict';
 angular.module('bahmni.common.conceptSet')
-    .directive('duration',['contextChangeHandler', function (contextChangeHandler) {
-
+    .directive('duration', ['contextChangeHandler', function (contextChangeHandler) {
         var link = function ($scope, element, attrs, ngModelController) {
             var setValue = function () {
                 if ($scope.unitValue && $scope.measureValue) {
@@ -10,7 +9,6 @@ angular.module('bahmni.common.conceptSet')
                 } else {
                     ngModelController.$setViewValue(undefined);
                 }
-
             };
 
             $scope.$watch('measureValue', setValue);
@@ -27,12 +25,12 @@ angular.module('bahmni.common.conceptSet')
             var illegalValueChecker = $scope.$watch('illegalValue', function (value) {
                 $scope.illegalDurationValue = value;
                 var contextChange = function () {
-                        return {allow: !$scope.illegalDurationValue};
+                    return {allow: !$scope.illegalDurationValue};
                 };
                 contextChangeHandler.add(contextChange);
             });
 
-            $scope.$on('$destroy', function() {
+            $scope.$on('$destroy', function () {
                 $scope.illegalDurationValue = false;
                 illegalValueChecker();
             });
@@ -44,10 +42,9 @@ angular.module('bahmni.common.conceptSet')
             $scope.measureValue = valueAndUnit["value"];
             $scope.unitValue = valueAndUnit["unitValueInMinutes"];
             var durations = Object.keys($scope.units).reverse();
-            $scope.displayUnits = durations.map(function(duration){
+            $scope.displayUnits = durations.map(function (duration) {
                 return {"name": duration, "value": $scope.units[duration]};
             });
-
         };
 
         return {
@@ -63,5 +60,5 @@ angular.module('bahmni.common.conceptSet')
             template: '<span><input style="float: left;" type="number" min="0" class="duration-value" ng-class="{\'illegalValue\': illegalValue}" ng-model=\'measureValue\' ng-disabled="disabled"/></span>' +
                 '<span><select ng-model=\'unitValue\' class="duration-unit" ng-class="{\'illegalValue\': illegalValue}" ng-options="displayUnit.value as displayUnit.name for displayUnit in displayUnits" ng-disabled="disabled"><option value=""></option>>' +
                 '</select></span>'
-        }
+        };
     }]);

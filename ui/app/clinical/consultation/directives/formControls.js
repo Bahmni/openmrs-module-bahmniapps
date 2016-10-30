@@ -20,8 +20,7 @@ angular.module('bahmni.common.conceptSet')
                             }
                         })
                     );
-                }
-                else {
+                } else {
                     $scope.form.component = renderWithControls(loadedFormDetails[formUuid], formObservations, formUuid);
                 }
             };
@@ -32,5 +31,5 @@ angular.module('bahmni.common.conceptSet')
                     form: "="
                 },
                 controller: controller
-            }
+            };
         }]);

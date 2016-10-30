@@ -3,7 +3,7 @@
 angular.module('bahmni.common.uiHelper')
 .directive('focusOn', function ($timeout) {
     return function (scope, elem, attrs) {
-        if(Modernizr.ios) {
+        if (Modernizr.ios) {
             return;
         }
         scope.$watch(attrs.focusOn, function (value) {

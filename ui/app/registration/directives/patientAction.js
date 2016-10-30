@@ -7,7 +7,6 @@ angular.module('bahmni.registration')
         function ($window, $location, $state, spinner, $rootScope, $stateParams,
                   $bahmniCookieStore, appService, visitService, sessionService, encounterService,
                   messagingService, $translate, offlineService) {
-            
             var controller = function ($scope) {
                 var self = this;
                 var uuid = $stateParams.patientUuid;
@@ -20,7 +19,7 @@ angular.module('bahmni.registration')
                 var isOfflineApp = offlineService.isOfflineApp();
                 var visitLocationUuid = $rootScope.visitLocation;
 
-                function setForwardActionKey() {
+                function setForwardActionKey () {
                     if (editActionsConfig.length === 0 && isOfflineApp) {
                         $scope.forwardActionKey = undefined;
                     } else if (editActionsConfig.length === 0) {
@@ -45,9 +44,9 @@ angular.module('bahmni.registration')
                     spinner.forPromise(visitService.search(searchParams).then(function (response) {
                         var results = response.data.results;
                         var activeVisitForCurrentLoginLocation;
-                        if(results) {
-                            activeVisitForCurrentLoginLocation = _.filter(results, function(result) {
-                                return result.location.uuid === visitLocationUuid
+                        if (results) {
+                            activeVisitForCurrentLoginLocation = _.filter(results, function (result) {
+                                return result.location.uuid === visitLocationUuid;
                             });
                         }
                         self.hasActiveVisit = activeVisitForCurrentLoginLocation && (activeVisitForCurrentLoginLocation.length > 0);
@@ -55,7 +54,6 @@ angular.module('bahmni.registration')
                         setForwardActionKey();
                     }));
                 };
-
 
                 $scope.visitControl = new Bahmni.Common.VisitControl(
                     $rootScope.regEncounterConfiguration.getVisitTypesAsArray(),
@@ -76,14 +74,14 @@ angular.module('bahmni.registration')
 
                 $scope.actions.followUpAction = function (patientProfileData) {
                     switch ($scope.actions.submitSource) {
-                        case 'startVisit':
-                            return createVisit(patientProfileData);
-                        case 'enterVisitDetails':
-                            return goToVisitPage(patientProfileData);
-                        case 'configAction':
-                            return handleConfigAction(patientProfileData);
-                        case 'save':
-                            $scope.afterSave();
+                    case 'startVisit':
+                        return createVisit(patientProfileData);
+                    case 'enterVisitDetails':
+                        return goToVisitPage(patientProfileData);
+                    case 'configAction':
+                        return handleConfigAction(patientProfileData);
+                    case 'save':
+                        $scope.afterSave();
                     }
                 };
 
@@ -101,7 +99,6 @@ angular.module('bahmni.registration')
                     $scope.patient.name = patientData.patient.person.names[0].display;
                     $location.path("/patient/" + patientData.patient.uuid + "/visit");
                 };
-
 
                 var createVisit = function (patientProfileData, forwardUrl) {
                     spinner.forPromise($scope.visitControl.createVisitOnly(patientProfileData.patient.uuid, $rootScope.visitLocation).then(function () {
@@ -121,6 +118,6 @@ angular.module('bahmni.registration')
                 restrict: 'E',
                 templateUrl: 'views/patientAction.html',
                 controller: controller
-            }
+            };
         }
     ]);

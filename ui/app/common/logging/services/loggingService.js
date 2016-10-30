@@ -2,7 +2,6 @@
 
 angular.module('bahmni.common.logging')
     .service('loggingService', function () {
-
         var log = function (errorDetails) {
             $.ajax({
                 type: "POST",
@@ -14,6 +13,5 @@ angular.module('bahmni.common.logging')
 
         return {
             log: log
-        }
-
+        };
     });

@@ -2,7 +2,6 @@
 
 angular.module('bahmni.common.domain')
     .factory('configurationService', ['$http', '$q', function ($http, $q) {
-
         var configurationFunctions = {};
 
         configurationFunctions.encounterConfig = function () {
@@ -62,9 +61,9 @@ angular.module('bahmni.common.domain')
             return consultationNoteConfig;
         };
 
-        configurationFunctions.radiologyObservationConfig = function(){
-            var radiologyObservationConfig =  $http.get(Bahmni.Common.Constants.conceptSearchByFullNameUrl, {
-                method:"GET",
+        configurationFunctions.radiologyObservationConfig = function () {
+            var radiologyObservationConfig = $http.get(Bahmni.Common.Constants.conceptSearchByFullNameUrl, {
+                method: "GET",
                 params: { v: 'custom:(uuid,name)', name: Bahmni.Common.Constants.radiologyResultConceptName },
                 withCredentials: true
             });
@@ -86,8 +85,9 @@ angular.module('bahmni.common.domain')
                     property: 'bahmni.encounterType.default'
                 },
                 withCredentials: true,
-                transformResponse: [function(data){
-                    return data;}]
+                transformResponse: [function (data) {
+                    return data;
+                }]
             });
         };
 
@@ -99,7 +99,6 @@ angular.module('bahmni.common.domain')
             });
             return radiologyImpressionConfig;
         };
-
 
         configurationFunctions.addressLevels = function () {
             return $http.get(Bahmni.Common.Constants.openmrsUrl + "/module/addresshierarchy/ajax/getOrderedAddressHierarchyLevels.form", {
@@ -125,7 +124,7 @@ angular.module('bahmni.common.domain')
             });
         };
 
-        configurationFunctions.genderMap = function() {
+        configurationFunctions.genderMap = function () {
             return $http.get(Bahmni.Common.Constants.globalPropertyUrl, {
                 method: "GET",
                 params: {
@@ -135,7 +134,7 @@ angular.module('bahmni.common.domain')
             });
         };
 
-        configurationFunctions.relationshipTypeMap = function() {
+        configurationFunctions.relationshipTypeMap = function () {
             return $http.get(Bahmni.Common.Constants.globalPropertyUrl, {
                 method: "GET",
                 params: {
@@ -145,7 +144,7 @@ angular.module('bahmni.common.domain')
             });
         };
 
-        configurationFunctions.relationshipTypeConfig = function() {
+        configurationFunctions.relationshipTypeConfig = function () {
             return $http.get(Bahmni.Common.Constants.relationshipTypesUrl, {
                 withCredentials: true,
                 params: {v: "custom:(aIsToB,bIsToA,uuid)"}
@@ -154,10 +153,10 @@ angular.module('bahmni.common.domain')
 
         configurationFunctions.loginLocationToVisitTypeMapping = function () {
             var url = Bahmni.Common.Constants.entityMappingUrl;
-            return $http.get(url,{
-                params:{
-                    mappingType:'loginlocation_visittype',
-                    s:'byEntityAndMappingType'
+            return $http.get(url, {
+                params: {
+                    mappingType: 'loginlocation_visittype',
+                    s: 'byEntityAndMappingType'
                 }
             });
         };

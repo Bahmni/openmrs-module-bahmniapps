@@ -2,7 +2,6 @@
 
 angular.module('bahmni.common.orders')
     .service('orderSetService', ['$http', '$q', function ($http, $q) {
-
         this.getOrderSetsByQuery = function (name) {
             return $http.get(Bahmni.Common.Constants.orderSetUrl, {
                 params: {
@@ -13,18 +12,18 @@ angular.module('bahmni.common.orders')
             });
         };
 
-        this.getCalculatedDose = function (patientUuid,drugName, baseDose, doseUnit, orderSetName,dosingRule) {
-           if (typeof dosingRule !== 'undefined' && dosingRule!='' && dosingRule!=null) {
-               var requestString=JSON.stringify({
-                   patientUuid: patientUuid,
-                   drugName: drugName,
-                   baseDose: baseDose,
-                   doseUnit: doseUnit,
-                   orderSetName: orderSetName,
-                   dosingRule: dosingRule
-               });
+        this.getCalculatedDose = function (patientUuid, drugName, baseDose, doseUnit, orderSetName, dosingRule) {
+            if (typeof dosingRule !== 'undefined' && dosingRule != '' && dosingRule != null) {
+                var requestString = JSON.stringify({
+                    patientUuid: patientUuid,
+                    drugName: drugName,
+                    baseDose: baseDose,
+                    doseUnit: doseUnit,
+                    orderSetName: orderSetName,
+                    dosingRule: dosingRule
+                });
                 return $http.get(Bahmni.Common.Constants.calculateDose, {
-                    params:{
+                    params: {
                         dosageRequest: requestString },
                     withCredentials: true,
                     headers: {"Accept": "application/json", "Content-Type": "application/json"}
@@ -34,7 +33,7 @@ angular.module('bahmni.common.orders')
                         doseUnit: response.data.doseUnit
                     };
                 });
-           }
+            }
             var deferred = $q.defer();
             deferred.resolve({
                 dose: baseDose,

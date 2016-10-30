@@ -13,15 +13,15 @@ angular.module('bahmni.common.uiHelper')
                 return string;
             };
 
-            $scope.hideMessage = function(level) {
+            $scope.hideMessage = function (level) {
                 messagingService.hideMessages(level);
             };
 
-            $scope.isErrorMessagePresent = function(){
+            $scope.isErrorMessagePresent = function () {
                 return $scope.messages.error.length > 0;
             };
 
-            $scope.isInfoMessagePresent = function(){
+            $scope.isInfoMessagePresent = function () {
                 return $scope.messages.info.length > 0;
-            }
+            };
         }]);

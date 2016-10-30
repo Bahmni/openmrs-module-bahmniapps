@@ -1,3 +1,3 @@
 'use strict';
 
-angular.module('bahmni.common.services',[]);
+angular.module('bahmni.common.services', []);

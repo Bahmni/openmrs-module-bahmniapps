@@ -6,7 +6,7 @@ angular.module('bahmni.common.appFramework')
             this.loadConfig = function (url, contextPath) {
                 var configFile = url.substring(url.lastIndexOf("/") + 1);
                 return offlineDbService.getConfig(contextPath).then(function (config) {
-                    if(config) {
+                    if (config) {
                         return {"data": config.value[configFile]};
                     }
                     return {"data": {}};

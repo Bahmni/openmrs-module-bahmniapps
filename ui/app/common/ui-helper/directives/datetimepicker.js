@@ -3,28 +3,28 @@
 angular.module('bahmni.common.uiHelper')
     .directive('datetimepicker', function () {
         var link = function ($scope) {
-            if(!$scope.allowFutureDates) {
+            if (!$scope.allowFutureDates) {
                 $scope.maxDate = Bahmni.Common.Util.DateTimeFormatter.getDateWithoutTime();
             }
-            var getSelectedDateStr = function() {
-                return $scope.selectedDate != null ? moment($scope.selectedDate).format("YYYY-MM-DD"): "";
+            var getSelectedDateStr = function () {
+                return $scope.selectedDate != null ? moment($scope.selectedDate).format("YYYY-MM-DD") : "";
             };
 
-            var getSelectedTimeStr = function() {
+            var getSelectedTimeStr = function () {
                 return $scope.selectedTime != null ? moment($scope.selectedTime).format("HH:mm") : "";
             };
 
-            var valueNotFilled = function() {
+            var valueNotFilled = function () {
                 return $scope.selectedDate == null && $scope.selectedTime == null;
             };
 
-            var valueCompletelyFilled = function() {
+            var valueCompletelyFilled = function () {
                 return ($scope.selectedDate != null && $scope.selectedTime != null);
             };
 
-            $scope.updateModel = function() {
+            $scope.updateModel = function () {
                 if (valueCompletelyFilled()) {
-                    $scope.model =  getSelectedDateStr() + " " + getSelectedTimeStr();
+                    $scope.model = getSelectedDateStr() + " " + getSelectedTimeStr();
                 } else if (!$scope.isValid()) {
                     $scope.model = "Invalid Datetime";
                 } else {
@@ -32,11 +32,11 @@ angular.module('bahmni.common.uiHelper')
                 }
             };
 
-            $scope.isValid = function() {
+            $scope.isValid = function () {
                 return valueNotFilled() || valueCompletelyFilled();
             };
 
-            if($scope.model) {
+            if ($scope.model) {
                 var date = moment($scope.model).toDate();
                 $scope.selectedDate = date;
                 $scope.selectedTime = date;
@@ -61,5 +61,5 @@ angular.module('bahmni.common.uiHelper')
                 "<div>" +
                     "<input type='time' ng-change='updateModel()' ng-class= \"{'illegalValue': !isValid()}\" ng-model='selectedTime' ng-disabled='observation.disabled' />" +
                 "</div>"
-        }
+        };
     });

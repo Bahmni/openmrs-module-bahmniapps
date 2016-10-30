@@ -2,7 +2,6 @@
 
 angular.module('bahmni.common.offline')
     .service('patientIdentifierDbService', function () {
-
         var getPatientIdentifiersByPatientUuid = function (db, patientUuid) {
             var pi = db.getSchema().table('patient_identifier');
             return db.select(pi.identifierJson)
@@ -38,5 +37,5 @@ angular.module('bahmni.common.offline')
         return {
             insertPatientIdentifiers: insertPatientIdentifiers,
             getPatientIdentifiersByPatientUuid: getPatientIdentifiersByPatientUuid
-        }
+        };
     });

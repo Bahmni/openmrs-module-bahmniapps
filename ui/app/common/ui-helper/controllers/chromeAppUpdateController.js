@@ -17,6 +17,5 @@ angular.module('bahmni.common.uiHelper')
                     data: offlineService.getItem("appUpdateInfo") || {},
                     showClose: true
                 });
-            }
-
+            };
         }]);

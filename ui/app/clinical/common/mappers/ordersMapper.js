@@ -1,16 +1,16 @@
 'use strict';
 
-Bahmni.Clinical.OrdersMapper = function(nameToSort){
+Bahmni.Clinical.OrdersMapper = function (nameToSort) {
     this.nameToSort = nameToSort;
 };
 
-Bahmni.Clinical.OrdersMapper.prototype.group = function(orders, groupingParameter) {
+Bahmni.Clinical.OrdersMapper.prototype.group = function (orders, groupingParameter) {
     var getGroupingFunction = function (groupingParameter) {
         if (groupingParameter === 'date') {
             return function (order) {
-                if(order.startDate){
+                if (order.startDate) {
                     return Bahmni.Common.Util.DateUtil.getDate(order.startDate);
-                }else{
+                } else {
                     return Bahmni.Common.Util.DateUtil.getDate(order.effectiveStartDate);
                 }
             };
@@ -23,13 +23,13 @@ Bahmni.Clinical.OrdersMapper.prototype.group = function(orders, groupingParamete
     groupingParameter = groupingParameter || 'date';
     var groupingFunction = getGroupingFunction(groupingParameter);
     var groupedOrders = new Bahmni.Clinical.ResultGrouper().group(orders, groupingFunction, 'orders', groupingParameter);
-    if(groupingParameter === 'date'){
-        return groupedOrders.map(function(order) {
+    if (groupingParameter === 'date') {
+        return groupedOrders.map(function (order) {
             return {
                 date: Bahmni.Common.Util.DateUtil.parse(order.date),
                 orders: _.sortBy(order.orders, 'orderNumber')
             };
-        }).sort(function(first, second) { return first.date < second.date ? 1: -1; });
+        }).sort(function (first, second) { return first.date < second.date ? 1 : -1; });
     }
     return groupedOrders.map(function (order) {
         var returnObj = {};
@@ -40,7 +40,7 @@ Bahmni.Clinical.OrdersMapper.prototype.group = function(orders, groupingParamete
 };
 
 Bahmni.Clinical.OrdersMapper.prototype.create = function (encounterTransactions, ordersName, filterFunction, groupingParameter, allTestAndPanels) {
-    filterFunction = filterFunction || function() {return true; };
+    filterFunction = filterFunction || function () { return true; };
     var filteredOrders = this.map(encounterTransactions, ordersName, allTestAndPanels).filter(filterFunction);
     return this.group(filteredOrders, groupingParameter);
 };
@@ -49,7 +49,7 @@ Bahmni.Clinical.OrdersMapper.prototype.map = function (encounterTransactions, or
     var allTestsPanelsConcept = new Bahmni.Clinical.ConceptWeightBasedSorter(allTestAndPanels);
     var orderObservationsMapper = new Bahmni.Clinical.OrderObservationsMapper();
     var setOrderProvider = function (encounter) {
-        encounter[ordersName].forEach(function(order) {
+        encounter[ordersName].forEach(function (order) {
             order.provider = encounter.providers[0];
             order.accessionUuid = encounter.encounterUuid;
             order.encounterUuid = encounter.encounterUuid;
@@ -58,7 +58,7 @@ Bahmni.Clinical.OrdersMapper.prototype.map = function (encounterTransactions, or
     };
     encounterTransactions.forEach(setOrderProvider);
     var flattenedOrders = _(encounterTransactions).map(ordersName).flatten().value();
-    var ordersWithoutVoidedOrders = flattenedOrders.filter(function(order){
+    var ordersWithoutVoidedOrders = flattenedOrders.filter(function (order) {
         return !order.voided;
     });
 
@@ -66,10 +66,10 @@ Bahmni.Clinical.OrdersMapper.prototype.map = function (encounterTransactions, or
 
     orderObservationsMapper.map(allObservations, ordersWithoutVoidedOrders);
     var sortedOrders = allTestsPanelsConcept.sort(ordersWithoutVoidedOrders, this.nameToSort);
-    sortedOrders.forEach(function(order) {
-        order.observations.forEach(function(obs){
+    sortedOrders.forEach(function (order) {
+        order.observations.forEach(function (obs) {
             obs.groupMembers = allTestsPanelsConcept.sort(obs.groupMembers);
         });
     });
-    return  sortedOrders;
+    return sortedOrders;
 };

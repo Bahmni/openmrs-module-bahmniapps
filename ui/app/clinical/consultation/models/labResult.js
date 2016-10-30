@@ -1,6 +1,6 @@
 'use strict';
 
-Bahmni.Clinical.LabResult = function(name, value, alert, lowNormal, highNormal, unit, notes, members) {
+Bahmni.Clinical.LabResult = function (name, value, alert, lowNormal, highNormal, unit, notes, members) {
     this.name = name;
     this.value = value;
     this.alert = alert;
@@ -12,19 +12,19 @@ Bahmni.Clinical.LabResult = function(name, value, alert, lowNormal, highNormal, 
 };
 
 Bahmni.Clinical.LabResult.prototype = {
-    isPanel: function() {
+    isPanel: function () {
         return this.members.length > 0;
     },
 
-    hasNotes: function() {
+    hasNotes: function () {
         return this.notes.length > 0;
     },
 
-    isAbnormal: function() {
+    isAbnormal: function () {
         return this.alert === "A" || this.alert === "B";
     },
 
-    range: function() {
-        return (this.lowNormal && this.highNormal) ? "" + this.lowNormal + " - " + this.highNormal : null
+    range: function () {
+        return (this.lowNormal && this.highNormal) ? "" + this.lowNormal + " - " + this.highNormal : null;
     }
 };

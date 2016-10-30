@@ -1,14 +1,13 @@
 'use strict';
 
 angular.module('opd.documentupload').factory('initialization',
-    ['$rootScope', '$q', '$window', '$location', 'configurationService', 'configurations', 'authenticator', 'appService','spinner',
+    ['$rootScope', '$q', '$window', '$location', 'configurationService', 'configurations', 'authenticator', 'appService', 'spinner',
         function ($rootScope, $q, $window, $location, configurationService, configurations, authenticator, appService, spinner) {
-
             var initializationPromise = $q.defer();
             var url = purl(decodeURIComponent($window.location));
             $rootScope.appConfig = url.param();
 
-            var getConfigs = function() {
+            var getConfigs = function () {
                 var configNames = ['genderMap'];
                 return configurations.load(configNames).then(function () {
                     $rootScope.genderMap = configurations.genderMap();
@@ -22,17 +21,17 @@ angular.module('opd.documentupload').factory('initialization',
                 });
             };
 
-            var validate = function() {
+            var validate = function () {
                 var deferrable = $q.defer();
-                var throwValidationError = function(errorMessage) {
+                var throwValidationError = function (errorMessage) {
                     $rootScope.error = errorMessage;
                     initializationPromise.reject();
                     deferrable.reject();
                 };
 
-                if($rootScope.appConfig.encounterType === null) {
+                if ($rootScope.appConfig.encounterType === null) {
                     throwValidationError("encounterType should be configured in config");
-                } else if($rootScope.encounterConfig.getEncounterTypeUuid($rootScope.appConfig.encounterType) === null) {
+                } else if ($rootScope.encounterConfig.getEncounterTypeUuid($rootScope.appConfig.encounterType) === null) {
                     throwValidationError("Configured encounterType does not exist");
                 }
 
@@ -40,11 +39,11 @@ angular.module('opd.documentupload').factory('initialization',
                 return deferrable;
             };
 
-            var initApp = function() {
-                return appService.initApp('documentUpload', {'app': true, 'extension' : true}, $rootScope.appConfig.encounterType);
+            var initApp = function () {
+                return appService.initApp('documentUpload', {'app': true, 'extension': true}, $rootScope.appConfig.encounterType);
             };
 
-            $rootScope.$on("$stateChangeError", function() {
+            $rootScope.$on("$stateChangeError", function () {
                 $location.path("/error");
             });
 
@@ -52,7 +51,6 @@ angular.module('opd.documentupload').factory('initialization',
                 initializationPromise.resolve();
             });
 
-
             return spinner.forPromise(initializationPromise.promise).then(getConfigs);
-        }] 
+        }]
 );

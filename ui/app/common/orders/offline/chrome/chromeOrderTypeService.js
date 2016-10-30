@@ -3,7 +3,6 @@
 angular.module('bahmni.common.orders')
     .service('orderTypeService', ['offlineDbService',
         function (offlineDbService) {
-
             var self = this;
             self.orderTypes = [];
             self.loadAll = function () {
@@ -15,5 +14,5 @@ angular.module('bahmni.common.orders')
 
             self.getOrderTypeUuid = function (orderTypeName) {
                 return _.result(_.find(self.orderTypes, {display: orderTypeName}), 'uuid');
-            }
+            };
         }]);

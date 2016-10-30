@@ -3,7 +3,6 @@
 angular.module('bahmni.clinical')
     .directive('investigationTable', function () {
         var controller = function ($scope) {
-
             var defaultParams = {
                     noLabOrdersMessage: "NO_LAB_ORDERS_FOR_PATIENT_MESSAGE_KEY",
                     showNormalLabResults: true,
@@ -31,7 +30,7 @@ angular.module('bahmni.clinical')
             };
 
             $scope.shouldShowResults = function (labOrderResult) {
-                return $scope.params.showNormalLabResults || hasAbnormalTests(labOrderResult)
+                return $scope.params.showNormalLabResults || hasAbnormalTests(labOrderResult);
             };
 
             $scope.toggle = function (item) {
@@ -39,26 +38,26 @@ angular.module('bahmni.clinical')
                 item.show = !item.show;
             };
 
-            $scope.getAccessionDetailsFrom = function(labOrderResults){
-                var labResultLine = labOrderResults[0].isPanel?labOrderResults[0].tests[0]:labOrderResults[0];
+            $scope.getAccessionDetailsFrom = function (labOrderResults) {
+                var labResultLine = labOrderResults[0].isPanel ? labOrderResults[0].tests[0] : labOrderResults[0];
                 return {
-                    accessionUuid:labResultLine.accessionUuid,
-                    accessionDateTime : labResultLine.accessionDateTime,
-                    accessionNotes:labResultLine.accessionNotes
-                }
+                    accessionUuid: labResultLine.accessionUuid,
+                    accessionDateTime: labResultLine.accessionDateTime,
+                    accessionNotes: labResultLine.accessionNotes
+                };
             };
 
-            $scope.toggleAccession = function(labOrderResults) {
+            $scope.toggleAccession = function (labOrderResults) {
                 labOrderResults.isOpen = !labOrderResults.isOpen;
             };
 
-            $scope.showAccessionNotes = function(labOrderResults) {
+            $scope.showAccessionNotes = function (labOrderResults) {
                 return $scope.getAccessionDetailsFrom(labOrderResults).accessionNotes && $scope.params.showAccessionNotes;
             };
 
-            $scope.$watch('accessions', function(){
-                if($scope.accessions && $scope.accessions[0]) {
-                    $scope.accessions[0].isOpen = true
+            $scope.$watch('accessions', function () {
+                if ($scope.accessions && $scope.accessions[0]) {
+                    $scope.accessions[0].isOpen = true;
                 }
             });
         };

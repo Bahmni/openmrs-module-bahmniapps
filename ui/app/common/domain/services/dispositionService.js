@@ -4,23 +4,23 @@ angular.module('bahmni.common.domain')
     .factory('dispositionService', ['$http', function ($http) {
         var getDispositionActions = function () {
             return $http.get(Bahmni.Common.Constants.conceptSearchByFullNameUrl +
-                "&name="+Bahmni.Common.Constants.dispositionConcept +
+                "&name=" + Bahmni.Common.Constants.dispositionConcept +
                 "&v=custom:(uuid,name,answers:(uuid,name,mappings))", {cache: true});
         };
 
-        var getDispositionNoteConcept = function(){
+        var getDispositionNoteConcept = function () {
             return $http.get(Bahmni.Common.Constants.conceptSearchByFullNameUrl +
-                "&name="+Bahmni.Common.Constants.dispositionNoteConcept +
+                "&name=" + Bahmni.Common.Constants.dispositionNoteConcept +
                 "&v=custom:(uuid,name:(name))", {cache: true});
         };
 
-        var getDispositionByVisit = function(visitUuid){
+        var getDispositionByVisit = function (visitUuid) {
             return $http.get(Bahmni.Common.Constants.bahmniDispositionByVisitUrl, {
                 params: {visitUuid: visitUuid}
             });
         };
 
-        var getDispositionByPatient = function(patientUuid, numberOfVisits){
+        var getDispositionByPatient = function (patientUuid, numberOfVisits) {
             return $http.get(Bahmni.Common.Constants.bahmniDispositionByPatientUrl, {
                 params: {
                     patientUuid: patientUuid,
@@ -31,9 +31,8 @@ angular.module('bahmni.common.domain')
 
         return {
             getDispositionActions: getDispositionActions,
-            getDispositionNoteConcept:getDispositionNoteConcept,
+            getDispositionNoteConcept: getDispositionNoteConcept,
             getDispositionByVisit: getDispositionByVisit,
             getDispositionByPatient: getDispositionByPatient
         };
-
     }]);

@@ -1,17 +1,17 @@
 'use strict';
 
-angular.module('bahmni.common.patient').directive('patientSummary', function() {
-    var link = function($scope) {
+angular.module('bahmni.common.patient').directive('patientSummary', function () {
+    var link = function ($scope) {
         $scope.showPatientDetails = false;
-        $scope.togglePatientDetails = function() {
+        $scope.togglePatientDetails = function () {
             $scope.showPatientDetails = !$scope.showPatientDetails;
         };
 
-        $scope.onImageClick = function() {
-            if($scope.onImageClickHandler) {
+        $scope.onImageClick = function () {
+            if ($scope.onImageClickHandler) {
                 $scope.onImageClickHandler();
             }
-        }
+        };
     };
 
     return {
@@ -24,5 +24,5 @@ angular.module('bahmni.common.patient').directive('patientSummary', function() {
             bedDetails: "=",
             onImageClickHandler: "&"
         }
-    }
+    };
 });

@@ -12,8 +12,7 @@ Bahmni.Clinical.OrderObservationsMapper.prototype.map = function (observations, 
                 angular.forEach(observation.groupMembers, function (obs) {
                     if (obs.concept.name === Bahmni.Clinical.Constants.commentConceptName) {
                         additionalObs.push(obs);
-                    }
-                    else {
+                    } else {
                         testObservation.push(obs);
                     }
                 });

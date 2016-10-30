@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('bahmni.clinical')
-    .controller('VisitController', ['$scope', '$state', 'encounterService', 'clinicalAppConfigService', 'configurations', 'visitSummary','$timeout', 'printer','visitConfig', 'visitHistory', '$stateParams',
+    .controller('VisitController', ['$scope', '$state', 'encounterService', 'clinicalAppConfigService', 'configurations', 'visitSummary', '$timeout', 'printer', 'visitConfig', 'visitHistory', '$stateParams',
         function ($scope, $state, encounterService, clinicalAppConfigService, configurations, visitSummary, $timeout, printer, visitConfig, visitHistory, $stateParams) {
             var encounterTypeUuid = configurations.encounterConfig().getPatientDocumentEncounterTypeUuid();
             $scope.documentsPromise = encounterService.getEncountersForEncounterType($scope.patient.uuid, encounterTypeUuid).then(function (response) {
@@ -22,7 +22,7 @@ angular.module('bahmni.clinical')
             };
 
             $scope.toggle = function (item) {
-                item.show = !item.show
+                item.show = !item.show;
             };
             $scope.isEmpty = function (notes) {
                 if (notes) {
@@ -51,12 +51,12 @@ angular.module('bahmni.clinical')
             };
 
             $scope.$on("event:printVisitTab", function () {
-                printer.printFromScope("common/views/visitTabPrint.html",$scope);
+                printer.printFromScope("common/views/visitTabPrint.html", $scope);
             });
 
             $scope.$on("event:clearVisitBoard", function () {
                 $scope.clearBoard = true;
-                $timeout(function(){
+                $timeout(function () {
                     $scope.clearBoard = false;
                 });
             });
@@ -65,32 +65,30 @@ angular.module('bahmni.clinical')
                 $state.go('patient.dashboard.visit', {visitUuid: visitUuid});
             };
 
-            var printOnPrint = function(){
-                if($stateParams.print){
-                    printer.printFromScope("common/views/visitTabPrint.html",$scope,function(){
+            var printOnPrint = function () {
+                if ($stateParams.print) {
+                    printer.printFromScope("common/views/visitTabPrint.html", $scope, function () {
                         window.close();
                     });
                 }
             };
 
-            var getTab = function() {
-                if(tab) {
-                    for(var tabIndex in $scope.visitTabConfig.tabs) {
-                        if($scope.visitTabConfig.tabs[tabIndex].title === tab) {
+            var getTab = function () {
+                if (tab) {
+                    for (var tabIndex in $scope.visitTabConfig.tabs) {
+                        if ($scope.visitTabConfig.tabs[tabIndex].title === tab) {
                             return $scope.visitTabConfig.tabs[tabIndex];
                         }
                     }
                 }
                 return $scope.visitTabConfig.getFirstTab();
             };
-            
-            var init = function(){
+
+            var init = function () {
                 $scope.visitTabConfig.setVisitUuidsAndPatientUuidToTheSections([$scope.visitUuid], $scope.patientUuid);
                 var tabToOpen = getTab();
                 $scope.visitTabConfig.switchTab(tabToOpen);
                 printOnPrint();
             };
             init();
-
-
         }]);

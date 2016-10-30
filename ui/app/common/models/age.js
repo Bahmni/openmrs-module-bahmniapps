@@ -35,6 +35,6 @@ angular.module('bahmni.common.models')
             fromBirthDate: fromBirthDate,
             create: create,
             calculateBirthDate: calculateBirthDate
-        }
+        };
     }]
 );

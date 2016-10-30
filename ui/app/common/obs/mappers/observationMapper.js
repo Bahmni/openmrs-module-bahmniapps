@@ -10,10 +10,9 @@ Bahmni.Common.Obs.ObservationMapper = function () {
 
     var mapObservations = function (bahmniObservations, allConceptsConfig, dontSortByObsDateTime) {
         var mappedObservations = [];
-        if(dontSortByObsDateTime) {
+        if (dontSortByObsDateTime) {
             bahmniObservations = _.flatten(bahmniObservations);
-        }
-        else {
+        } else {
             bahmniObservations = Bahmni.Common.Obs.ObservationUtil.sortSameConceptsWithObsDateTime(bahmniObservations);
         }
         $.each(bahmniObservations, function (i, bahmniObservation) {
@@ -67,7 +66,5 @@ Bahmni.Common.Obs.ObservationMapper = function () {
             return valueConcept.shortName || valueConcept.name;
         }
         return observation.value.shortName || observation.value.name || observation.value;
-    }
-
-
+    };
 };

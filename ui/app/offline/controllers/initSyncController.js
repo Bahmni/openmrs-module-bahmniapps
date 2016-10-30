@@ -1,15 +1,14 @@
 "use strict";
 
 angular.module('bahmni.common.offline')
-    .controller('InitSyncController', ['$scope', 'ngDialog', '$state', 'offlineService', 'offlinePush', 'offlinePull','spinner','sessionService','$q',
-        function ($scope, ngDialog, $state, offlineService,  offlinePush, offlinePull, spinner, sessionService, $q) {
-
+    .controller('InitSyncController', ['$scope', 'ngDialog', '$state', 'offlineService', 'offlinePush', 'offlinePull', 'spinner', 'sessionService', '$q',
+        function ($scope, ngDialog, $state, offlineService, offlinePush, offlinePull, spinner, sessionService, $q) {
             var init = function () {
                 var deferred = $q.defer();
-                 offlinePull().then(function () {
-                        offlineService.setItem("initialSyncStatus", "complete");
-                     deferred.resolve();
-                    },
+                offlinePull().then(function () {
+                    offlineService.setItem("initialSyncStatus", "complete");
+                    deferred.resolve();
+                },
                     function () {
                         offlineService.setItem("initialSyncStatus", "notComplete");
                         deferred.reject();
@@ -19,10 +18,10 @@ angular.module('bahmni.common.offline')
 
             var syncSuccessCallBack = function () {
                 ngDialog.open({
-                    template:'views/offlineSyncConfirm.html' ,
+                    template: 'views/offlineSyncConfirm.html',
                     class: 'ngdialog-theme-default',
-                    closeByEscape:false,
-                    showClose:false,
+                    closeByEscape: false,
+                    showClose: false,
                     scope: $scope
 
                 });
@@ -30,10 +29,10 @@ angular.module('bahmni.common.offline')
 
             var syncFailureCallBack = function () {
                 ngDialog.open({
-                    template:'views/offlineSyncFailure.html' ,
+                    template: 'views/offlineSyncFailure.html',
                     class: 'ngdialog-theme-default',
-                    closeByEscape:false,
-                    showClose:false,
+                    closeByEscape: false,
+                    showClose: false,
                     scope: $scope
 
                 });
@@ -51,9 +50,9 @@ angular.module('bahmni.common.offline')
                 );
             };
 
-            if(offlineService.getItem("initialSyncStatus") == "complete")
+            if (offlineService.getItem("initialSyncStatus") == "complete") {
                 $state.go('dashboard');
-            else
-                spinner.forPromise(init()).then(syncSuccessCallBack,syncFailureCallBack);
-
+            } else {
+                spinner.forPromise(init()).then(syncSuccessCallBack, syncFailureCallBack);
+            }
         }]);

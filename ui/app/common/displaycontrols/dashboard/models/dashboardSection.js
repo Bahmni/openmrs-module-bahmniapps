@@ -50,5 +50,4 @@
     Bahmni.Common.DisplayControl.Dashboard.Section.create = function (section, $filter) {
         return new Bahmni.Common.DisplayControl.Dashboard.Section(section, $filter);
     };
-
 })();

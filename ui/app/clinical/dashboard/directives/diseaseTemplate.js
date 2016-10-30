@@ -19,7 +19,7 @@ angular.module('bahmni.clinical')
                 return {
                     showDate: showDate,
                     showTime: showTime
-                }
+                };
             };
 
             $scope.isIntakeTemplate = function (obsTemplate) {

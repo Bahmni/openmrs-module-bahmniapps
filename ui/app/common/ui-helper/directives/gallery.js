@@ -2,7 +2,6 @@
 
 angular.module('bahmni.common.uiHelper')
     .directive('bmGallery', ['$location', '$rootScope', '$compile', function ($location, $rootScope, $compile) {
-
         var controller = function ($scope) {
             $scope.albums = [];
             $scope.imagePosition = {
@@ -32,13 +31,13 @@ angular.module('bahmni.common.uiHelper')
                     newAlbum.tag = tag;
                     newAlbum.images = [image];
                     $scope.albums.splice(tagOrder, 0, newAlbum);
-                }else{
+                } else {
                     matchedAlbum.images.push(image);
                 }
                 return $scope.albums[0].images.length - 1;
             };
 
-            var getMatchingAlbum = function(tag) {
+            var getMatchingAlbum = function (tag) {
                 return _.find($scope.albums, function (album) {
                     return album.tag == tag;
                 });
@@ -47,7 +46,7 @@ angular.module('bahmni.common.uiHelper')
             this.removeImage = function (image, tag, index) {
                 var matchedAlbum = getMatchingAlbum(tag);
 
-                if(matchedAlbum)  {
+                if (matchedAlbum) {
                     if (matchedAlbum.images) {
                         matchedAlbum.images.splice(index, 1);
                     }
@@ -70,7 +69,7 @@ angular.module('bahmni.common.uiHelper')
                 patient: "=",
                 accessImpression: "=?"
             }
-        }
+        };
     }])
     .directive('bmGalleryItem', function () {
         var link = function ($scope, element, attrs, imageGalleryController) {
@@ -155,7 +154,7 @@ angular.module('bahmni.common.uiHelper')
                 list: "="
             },
             require: '^bmGallery'
-        }
+        };
     })
     .directive("bmLazyImageObservationGalleryItems", function () {
         var link = function (scope, elem, attrs, imageGalleryController) {
@@ -179,5 +178,5 @@ angular.module('bahmni.common.uiHelper')
                 currentObservation: "=?index"
             },
             require: '^bmGallery'
-        }
+        };
     });
