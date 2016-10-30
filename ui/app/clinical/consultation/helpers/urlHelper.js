@@ -3,7 +3,7 @@
 angular.module('bahmni.clinical')
   .service('urlHelper', ['$stateParams', function ($stateParams) {
       this.getPatientUrl = function () {
-    	return '/patient/' + $stateParams.patientUuid + '/dashboard';
+          return '/patient/' + $stateParams.patientUuid + '/dashboard';
       };
 
       this.getConsultationUrl = function () {
@@ -11,6 +11,6 @@ angular.module('bahmni.clinical')
       };
 
       this.getVisitUrl = function (visitUuid) {
-    	return this.getPatientUrl() + '/visit/' + visitUuid;
+          return this.getPatientUrl() + '/visit/' + visitUuid;
       };
   }]);

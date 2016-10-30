@@ -10,11 +10,11 @@ angular.module('bahmni.common.uiHelper')
      });
 
      this.reset = function () {
-	    callbacks = [];
+         callbacks = [];
      };
 
      this.add = function (callback) {
-	    callbacks.push(callback);
+         callbacks.push(callback);
      };
 
      this.execute = function () {
