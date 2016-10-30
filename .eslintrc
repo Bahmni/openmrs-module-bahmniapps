@@ -45,7 +45,6 @@ rules:
   # The following are set to 'warn' level until they can be fixed
   # They're sorted in ascending order of the number of issues, as at
   # this commit
-  brace-style: warn
   new-cap: warn
   no-array-constructor: warn
   no-cond-assign: warn
