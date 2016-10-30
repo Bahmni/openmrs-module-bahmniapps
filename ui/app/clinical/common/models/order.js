@@ -13,11 +13,11 @@ Bahmni.Clinical.Order = (function () {
 
     Order.create = function (test) {
         var order = new Order({
-        		uuid: undefined,
-			    concept: {
-        uuid: test.uuid,
-        displayName: getName(test)
-    }
+            uuid: undefined,
+            concept: {
+                uuid: test.uuid,
+                displayName: getName(test)
+            }
         }
         );
         return order;

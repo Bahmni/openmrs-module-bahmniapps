@@ -2,7 +2,7 @@
 
 Bahmni.Admin.ImportedItem = function (data) {
     angular.extend(this, data);
-	// TODO: Make this configurable
+    // TODO: Make this configurable
     this.baseUrl = '/uploaded-files/mrs';
 };
 
