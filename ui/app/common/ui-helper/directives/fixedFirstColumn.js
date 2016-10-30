@@ -1,13 +1,13 @@
 'use strict';
 
 angular.module('bahmni.common.uiHelper')
- .directive("fixedFirstColumn", [function () {
+ .directive("fixedFirstColumn", ["$interval", function ($interval) {
      return {
          restrict: "A",
          template: "<div class='table-responsive'><div ng-transclude  class='table-responsive-fixedColumn' ></div></div>",
          transclude: true,
          link: function ($scope, $element) {
-             var checkIfTableLoaded = setInterval(function () {
+             var checkIfTableLoaded = $interval(function () {
                  if ($element.find("table").length > 0) {
                      var tr = $element.find("tr");
                      angular.forEach(tr, function (i) {
