@@ -48,7 +48,6 @@ rules:
   no-cond-assign: warn
   no-extra-boolean-cast: warn
   no-new-func: warn
-  standard/computed-property-even-spacing: warn
   angular/timeout-service: warn
   camelcase: warn
   no-eval: warn
