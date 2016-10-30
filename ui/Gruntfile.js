@@ -95,7 +95,8 @@ module.exports = function (grunt) {
         },
         eslint: {
             options: {
-                fix: true
+                fix: true,
+                quiet: true
             },
             target: [
                 'Gruntfile.js',
