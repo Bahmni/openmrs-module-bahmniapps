@@ -2,7 +2,7 @@
 
 $(function () {
     if (Modernizr.ios) {
-		// This fix is needed when we use fastclick.js on ipad
+        // This fix is needed when we use fastclick.js on ipad
         $(document).on("click", "label[for]", function () {
             var $inputElement = $('input#' + $(this).attr('for'));
             var elementType = $inputElement.attr('type');

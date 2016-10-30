@@ -110,11 +110,11 @@ angular.module('bahmni.common.domain')
                 }
 
                 return $http.get(Bahmni.Common.Constants.emrEncounterUrl, {
-        	params: {
-        		visitUuid: visitUuid,
-            encounterDate: encounterDate,
-            includeAll: Bahmni.Common.Constants.includeAllObservations
-        	},
+                    params: {
+                        visitUuid: visitUuid,
+                        encounterDate: encounterDate,
+                        includeAll: Bahmni.Common.Constants.includeAllObservations
+                    },
                     withCredentials: true
                 });
             };
