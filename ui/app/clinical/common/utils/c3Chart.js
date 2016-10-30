@@ -176,5 +176,5 @@ Bahmni.Graph.c3Chart = function () {
 };
 
 Bahmni.Graph.c3Chart.create = function () {
-    return new Bahmni.Graph.c3Chart();
+    return new Bahmni.Graph.c3Chart(); // eslint-disable-line new-cap
 };
