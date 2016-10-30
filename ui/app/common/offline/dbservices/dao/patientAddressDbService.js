@@ -19,10 +19,10 @@ angular.module('bahmni.common.offline')
                 patientUuid: patientUuid
             });
 
-            return db.insertOrReplace().into(patientAddressTable).values([row]).exec()
+            return db.insertOrReplace().into(patientAddressTable).values([row]).exec();
         };
 
         return {
             insertAddress: insertAddress
-        }
+        };
     }]);

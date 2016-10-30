@@ -2,7 +2,6 @@
 
 angular.module('bahmni.common.offline')
     .service('labOrderResultsDbService', function () {
-
         var insertLabOrderResults = function (db, patientUuid, labOrderResults) {
             var labOrderResultsJson = JSON.parse(JSON.stringify(labOrderResults));
             var labOrderResultTable = db.getSchema().table('lab_order_result');
@@ -26,12 +25,12 @@ angular.module('bahmni.common.offline')
                 .where(labOrderResultTable.patientUuid.eq(params.patientUuid))
                 .exec()
                 .then(function (results) {
-                    return results[0]? results[0]: { results: {"results":[],"tabularResult":{"dates":[],"orders":[],"values":[]}}};
+                    return results[0] ? results[0] : { results: {"results": [], "tabularResult": {"dates": [], "orders": [], "values": []}}};
                 });
         };
 
-  return {
+        return {
             getLabOrderResultsForPatient: getLabOrderResultsForPatient,
             insertLabOrderResults: insertLabOrderResults
-        }
+        };
     });

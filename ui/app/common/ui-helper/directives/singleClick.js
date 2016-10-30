@@ -16,7 +16,7 @@ angular.module('bahmni.common.uiHelper')
 
             element.on('click', clickHandler);
 
-            scope.$on("$destroy", function() {
+            scope.$on("$destroy", function () {
                 element.off('click', clickHandler);
             });
         };
@@ -26,5 +26,5 @@ angular.module('bahmni.common.uiHelper')
             },
             restrict: 'A',
             link: link
-        }
+        };
     });

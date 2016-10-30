@@ -8,12 +8,11 @@ angular.module('bahmni.common.uicontrols.programmanagment')
             _.forEach($scope.programAttributeTypes, function (programAttributeType) {
                 var programAttribute = getProgramAttributeByType(programAttributes, programAttributeType);
 
-                if(programAttribute != undefined && !programAttribute.voided) {
+                if (programAttribute != undefined && !programAttribute.voided) {
                     programAttributesMap[programAttributeType.name] = programAttribute.value;
-                    if(isCodedConceptFormat(programAttributeType.format)) {
+                    if (isCodedConceptFormat(programAttributeType.format)) {
                         programAttributesMap[programAttributeType.name] = programAttribute.value && programAttribute.value.uuid;
-                    }
-                    else if (isDateFormat(programAttributeType.format)) {
+                    } else if (isDateFormat(programAttributeType.format)) {
                         programAttributesMap[programAttributeType.name] = Bahmni.Common.Util.DateUtil.parseServerDateToDate(programAttributesMap[programAttributeType.name]);
                     }
                 }
@@ -21,49 +20,45 @@ angular.module('bahmni.common.uicontrols.programmanagment')
             return programAttributesMap;
         };
 
-        $scope.getValueForAttributeType = function(attributeType){
+        $scope.getValueForAttributeType = function (attributeType) {
             var programAttributesMap = $scope.patientProgram.patientProgramAttributes;
 
-            if(isDateFormat(attributeType.format)){
+            if (isDateFormat(attributeType.format)) {
                 return programAttributesMap[attributeType.name] ? Bahmni.Common.Util.DateUtil.formatDateWithoutTime(programAttributesMap[attributeType.name]) : "";
-            }
-            else if(isCodedConceptFormat(attributeType.format)) {
-                var mrsAnswer = _.find(attributeType.answers, function(answer){
+            } else if (isCodedConceptFormat(attributeType.format)) {
+                var mrsAnswer = _.find(attributeType.answers, function (answer) {
                     return answer.conceptId == programAttributesMap[attributeType.name];
                 });
                 return mrsAnswer ? mrsAnswer.description : "";
-            }
-            else {
+            } else {
                 return programAttributesMap[attributeType.name];
             }
-
         };
 
-        var getProgramAttributeByType = function(programAttributes, attributeType) {
+        var getProgramAttributeByType = function (programAttributes, attributeType) {
             return _.find(programAttributes, function (programAttribute) {
                 return programAttribute.attributeType.uuid == attributeType.uuid;
             });
         };
 
-        var isDateFormat = function(format){
+        var isDateFormat = function (format) {
             return format == "org.openmrs.util.AttributableDate" || format == "org.openmrs.customdatatype.datatype.DateDatatype";
         };
 
-        var isCodedConceptFormat = function(format){
+        var isCodedConceptFormat = function (format) {
             return format == "org.bahmni.module.bahmnicore.customdatatype.datatype.CodedConceptDatatype";
         };
 
         $scope.patientProgram.patientProgramAttributes = $scope.getProgramAttributesMap();
     }])
-    .directive('programAttributes', function(){
+    .directive('programAttributes', function () {
         return {
             controller: 'ProgramAttributesController',
             templateUrl: "../common/uicontrols/programmanagement/views/programAttributes.html",
-            scope:{
+            scope: {
                 patientProgram: "=",
                 programAttributeTypes: "="
             }
-        }
-
+        };
     });
 

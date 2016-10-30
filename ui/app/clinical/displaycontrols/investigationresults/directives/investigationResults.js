@@ -24,7 +24,7 @@ angular.module('bahmni.clinical')
         };
 
         var link = function ($scope, element) {
-           spinner.forPromise($scope.initialization, element);
+            spinner.forPromise($scope.initialization, element);
         };
 
         return {

@@ -1,16 +1,14 @@
 'use strict';
 
 Bahmni.Common.Util.DynamicResourceLoader = (function () {
-
     return {
         includeJs: function (script, isOfflineApp) {
             var element = document.createElement('script');
-            if(isOfflineApp) {
+            if (isOfflineApp) {
                 var file = new Blob([script], {type: 'text/javascript'});
                 var url = URL.createObjectURL(file);
                 element.setAttribute('src', url);
-            }
-            else {
+            } else {
                 element.setAttribute('src', script);
             }
             document.body.appendChild(element);

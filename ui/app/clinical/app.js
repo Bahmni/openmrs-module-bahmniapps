@@ -11,36 +11,36 @@ angular.module('consultation', ['ui.router', 'bahmni.clinical', 'bahmni.common.c
     'bahmni.common.displaycontrol.patientprofile', 'bahmni.common.displaycontrol.diagnosis', 'RecursionHelper', 'ngSanitize',
     'bahmni.common.orders', 'bahmni.common.displaycontrol.orders', 'bahmni.common.displaycontrol.prescription',
     'bahmni.common.displaycontrol.navigationlinks', 'bahmni.common.displaycontrol.programs',
-    'bahmni.common.displaycontrol.pacsOrders','bahmni.common.uicontrols', 'bahmni.common.uicontrols.programmanagment', 'pascalprecht.translate',
-    'ngCookies','monospaced.elastic','bahmni.common.bacteriologyresults','bahmni.common.displaycontrol.bacteriologyresults',
+    'bahmni.common.displaycontrol.pacsOrders', 'bahmni.common.uicontrols', 'bahmni.common.uicontrols.programmanagment', 'pascalprecht.translate',
+    'ngCookies', 'monospaced.elastic', 'bahmni.common.bacteriologyresults', 'bahmni.common.displaycontrol.bacteriologyresults',
     'bahmni.common.displaycontrol.obsVsObsFlowSheet', 'bahmni.common.displaycontrol.chronicTreatmentChart',
     'bahmni.common.displaycontrol.forms', 'bahmni.common.displaycontrol.drugOrderDetails', 'bahmni.common.offline',
     'bahmni.common.displaycontrol.hint', 'bahmni.common.displaycontrol.drugOrdersSection', 'bahmni.common.attributeTypes',
-    'bahmni.common.services','bahmni.common.models']);
+    'bahmni.common.services', 'bahmni.common.models']);
 angular.module('consultation')
     .config(['$stateProvider', '$httpProvider', '$urlRouterProvider', '$bahmniTranslateProvider', '$compileProvider',
         function ($stateProvider, $httpProvider, $urlRouterProvider, $bahmniTranslateProvider, $compileProvider) {
-        $urlRouterProvider.otherwise('/' + Bahmni.Clinical.Constants.defaultExtensionName + '/patient/search');
-        $compileProvider.aHrefSanitizationWhitelist(/^\s*(https?|ftp|mailto|chrome-extension|file):/);
-        $compileProvider.imgSrcSanitizationWhitelist(/^\s*(https?|local|data|blob|chrome-extension):/);
-        var patientSearchBackLink = {
-            label: "",
-            state: "search.patientsearch",
-            accessKey: "p",
-            id: "patients-link",
-            icon: "fa-users"
-        };
-        var homeBackLink = {label: "", url: "../home/index.html", accessKey: "h", icon: "fa-home"};
+            $urlRouterProvider.otherwise('/' + Bahmni.Clinical.Constants.defaultExtensionName + '/patient/search');
+            $compileProvider.aHrefSanitizationWhitelist(/^\s*(https?|ftp|mailto|chrome-extension|file):/);
+            $compileProvider.imgSrcSanitizationWhitelist(/^\s*(https?|local|data|blob|chrome-extension):/);
+            var patientSearchBackLink = {
+                label: "",
+                state: "search.patientsearch",
+                accessKey: "p",
+                id: "patients-link",
+                icon: "fa-users"
+            };
+            var homeBackLink = {label: "", url: "../home/index.html", accessKey: "h", icon: "fa-home"};
 
         // @if DEBUG='production'
-        $compileProvider.debugInfoEnabled(false);
+            $compileProvider.debugInfoEnabled(false);
         // @endif
 
         // @if DEBUG='development'
-        $compileProvider.debugInfoEnabled(true);
+            $compileProvider.debugInfoEnabled(true);
         // @endif
 
-        $stateProvider
+            $stateProvider
             .state('search', {
                 abstract: true,
                 views: {
@@ -385,14 +385,14 @@ angular.module('consultation')
                     }
                 }
             })
-            .state('patient.dashboard.observation',{
+            .state('patient.dashboard.observation', {
                 url: '/dashboard/observation/:observationUuid',
                 data: {
                     backLinks: [homeBackLink]
                 },
                 resolve: {
                     observation: function (observationsService, $stateParams) {
-                        return observationsService.getByUuid($stateParams.observationUuid).then(function(results){
+                        return observationsService.getByUuid($stateParams.observationUuid).then(function (results) {
                             return results.data;
                         });
                     }
@@ -407,7 +407,7 @@ angular.module('consultation')
                             $scope.observation = observation;
                             $scope.patient = patientContext.patient;
                         },
-                        template: '<patient-context patient="patient"></patient-context>'+
+                        template: '<patient-context patient="patient"></patient-context>' +
                         '<edit-observation  observation="observation" concept-set-name="{{observation.concept.name}}" concept-display-name="{{observation.conceptNameToDisplay}}"></edit-observation>'
                     }
                 }
@@ -477,32 +477,31 @@ angular.module('consultation')
                 }
             });
 
-        $httpProvider.defaults.headers.common['Disable-WWW-Authenticate'] = true;
+            $httpProvider.defaults.headers.common['Disable-WWW-Authenticate'] = true;
 
-        $bahmniTranslateProvider.init({app: 'clinical', shouldMerge: true});
-    }]).run(['stateChangeSpinner', '$rootScope', 'offlineService', 'schedulerService',
-        function (stateChangeSpinner, $rootScope, offlineService, schedulerService) {
-        FastClick.attach(document.body);
-        stateChangeSpinner.activate();
-        var cleanUpStateChangeSuccess = $rootScope.$on('$stateChangeSuccess', function () {
-            window.scrollTo(0, 0);
-        });
-        var cleanUpNgDialogOpened = $rootScope.$on('ngDialog.opened', function () {
-           $('html').addClass('ngdialog-open');
-        });
-        var cleanUpNgDialogClosing = $rootScope.$on('ngDialog.closing', function () {
-            $('html').removeClass('ngdialog-open');
-        });
+            $bahmniTranslateProvider.init({app: 'clinical', shouldMerge: true});
+        }]).run(['stateChangeSpinner', '$rootScope', 'offlineService', 'schedulerService',
+            function (stateChangeSpinner, $rootScope, offlineService, schedulerService) {
+                FastClick.attach(document.body);
+                stateChangeSpinner.activate();
+                var cleanUpStateChangeSuccess = $rootScope.$on('$stateChangeSuccess', function () {
+                    window.scrollTo(0, 0);
+                });
+                var cleanUpNgDialogOpened = $rootScope.$on('ngDialog.opened', function () {
+                    $('html').addClass('ngdialog-open');
+                });
+                var cleanUpNgDialogClosing = $rootScope.$on('ngDialog.closing', function () {
+                    $('html').removeClass('ngdialog-open');
+                });
 
-        $rootScope.$on("$destroy", function() {
-            cleanUpStateChangeSuccess();
-            cleanUpNgDialogOpened();
-            cleanUpNgDialogClosing();
-        });
+                $rootScope.$on("$destroy", function () {
+                    cleanUpStateChangeSuccess();
+                    cleanUpNgDialogOpened();
+                    cleanUpNgDialogClosing();
+                });
 
-        if (offlineService.isChromeApp() || offlineService.isAndroidApp()) {
-            schedulerService.sync();
-        }
-    }]);
-
+                if (offlineService.isChromeApp() || offlineService.isAndroidApp()) {
+                    schedulerService.sync();
+                }
+            }]);
 

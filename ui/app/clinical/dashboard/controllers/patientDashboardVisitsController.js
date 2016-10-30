@@ -2,7 +2,6 @@
 angular.module('bahmni.clinical')
     .controller('PatientDashboardVisitsController', ['$scope', '$stateParams',
         function ($scope, $stateParams) {
-
             $scope.noOfVisits = $scope.visitHistory.visits.length;
             $scope.dialogData = {
                 "noOfVisits": $scope.noOfVisits,

@@ -4,7 +4,7 @@ angular.module('authentication')
     .service('userService', ['$rootScope', '$http', '$q', 'offlineService', function ($rootScope, $http, $q, offlineService) {
         var offlineApp = offlineService.isOfflineApp();
 
-        var getUserFromServer = function(userName) {
+        var getUserFromServer = function (userName) {
             return $http.get(Bahmni.Common.Constants.userUrl, {
                 method: "GET",
                 params: {
@@ -17,14 +17,14 @@ angular.module('authentication')
 
         this.getUser = function (userName) {
             var deferrable = $q.defer(), cachedUserData = offlineService.getItem('userData');
-            if(offlineApp && _.get(cachedUserData, 'results[0].username') == userName){
+            if (offlineApp && _.get(cachedUserData, 'results[0].username') == userName) {
                 deferrable.resolve(cachedUserData);
-            } else{
-                getUserFromServer(userName).success(function(data){
+            } else {
+                getUserFromServer(userName).success(function (data) {
                     deferrable.resolve(data);
                     offlineService.setItem('userData', data);
                     offlineService.setItem('providerData', null);
-                }).error(function(){
+                }).error(function () {
                     deferrable.reject('Unable to get user data');
                 });
             }
@@ -33,7 +33,7 @@ angular.module('authentication')
 
         this.savePreferences = function () {
             var deferrable = $q.defer(), cachedUserProperties = offlineService.getItem('userProperties');
-            if(offlineApp && cachedUserProperties){
+            if (offlineApp && cachedUserProperties) {
                 $rootScope.currentUser.userProperties = cachedUserProperties;
                 deferrable.resolve();
                 return deferrable.promise;
@@ -49,7 +49,7 @@ angular.module('authentication')
             return deferrable.promise;
         };
 
-        var getProviderFromServer = function(uuid) {
+        var getProviderFromServer = function (uuid) {
             return $http.get(Bahmni.Common.Constants.providerUrl, {
                 method: "GET",
                 params: {
@@ -61,19 +61,18 @@ angular.module('authentication')
 
         this.getProviderForUser = function (uuid) {
             var deferrable = $q.defer(), cachedProviderData = offlineService.getItem('providerData');
-            if(offlineApp && cachedProviderData){
+            if (offlineApp && cachedProviderData) {
                 deferrable.resolve(cachedProviderData);
-            } else{
-                getProviderFromServer(uuid).success(function(data){
+            } else {
+                getProviderFromServer(uuid).success(function (data) {
                     var providerName = data.results[0].display.split("-")[1];
-                    data.results[0].name = providerName ? providerName.trim(): providerName;
+                    data.results[0].name = providerName ? providerName.trim() : providerName;
                     offlineService.setItem('providerData', data);
                     deferrable.resolve(data);
-                }).error(function(){
+                }).error(function () {
                     deferrable.reject('Unable to get provider data');
                 });
             }
             return deferrable.promise;
         };
-
     }]);

@@ -1,20 +1,17 @@
 'use strict';
 
-angular.module('bahmni.admin').service('adminOrderSetService',['$http', '$q', function ($http, $q){
-
+angular.module('bahmni.admin').service('adminOrderSetService', ['$http', '$q', function ($http, $q) {
     this.getAllOrderSets = function () {
         return $http.get(Bahmni.Common.Constants.orderSetUrl, {
             params: {v: "full"}
         });
     };
 
-
     this.getOrderSet = function (uuid) {
         return $http.get(Bahmni.Common.Constants.orderSetUrl + "/" + uuid, {
             params: {v: "full"}
         });
     };
-
 
     this.createOrUpdateOrderSet = function (orderSet) {
         var url;
@@ -23,7 +20,7 @@ angular.module('bahmni.admin').service('adminOrderSetService',['$http', '$q', fu
                 orderSetMember.orderTemplate = JSON.stringify(orderSetMember.orderTemplate);
             }
         });
-        if(orderSet.uuid) {
+        if (orderSet.uuid) {
             url = Bahmni.Common.Constants.orderSetUrl + "/" + orderSet.uuid;
         } else {
             url = Bahmni.Common.Constants.orderSetUrl;
@@ -33,9 +30,8 @@ angular.module('bahmni.admin').service('adminOrderSetService',['$http', '$q', fu
             headers: {"Accept": "application/json", "Content-Type": "application/json"}
         });
     };
-    
 
-    this.removeOrderSet = function(orderSet) {
+    this.removeOrderSet = function (orderSet) {
         var req = {
             url: Bahmni.Common.Constants.orderSetUrl + "/" + orderSet.uuid,
             content: {
@@ -61,6 +57,4 @@ angular.module('bahmni.admin').service('adminOrderSetService',['$http', '$q', fu
             return config;
         });
     };
-
-
 }]);

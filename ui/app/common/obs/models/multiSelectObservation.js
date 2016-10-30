@@ -1,7 +1,6 @@
 'use strict';
 
 Bahmni.Common.Obs.MultiSelectObservation = (function () {
-
     var MultiSelectObservation = function (groupMembers, conceptConfig) {
         this.type = "multiSelect";
         this.concept = groupMembers[0].concept;
@@ -12,9 +11,9 @@ Bahmni.Common.Obs.MultiSelectObservation = (function () {
         this.providers = groupMembers[0].providers;
         this.creatorName = groupMembers[0].creatorName;
     };
-    var getLatestObservationDateTime = function(groupMembers){
+    var getLatestObservationDateTime = function (groupMembers) {
         var latestObservationDateTime = groupMembers[0].observationDateTime;
-        groupMembers.forEach(function(member){
+        groupMembers.forEach(function (member) {
             latestObservationDateTime = latestObservationDateTime < member.observationDateTime ? member.observationDateTime : latestObservationDateTime;
         });
         return latestObservationDateTime;
@@ -33,5 +32,4 @@ Bahmni.Common.Obs.MultiSelectObservation = (function () {
     };
 
     return MultiSelectObservation;
-
 })();

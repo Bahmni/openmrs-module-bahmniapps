@@ -35,7 +35,7 @@ angular.module('bahmni.common.conceptSet')
                     $scope.$broadcast('event:showPrevious' + conceptSetName);
                 });
             };
-            $scope.isInEditEncounterMode = function(){
+            $scope.isInEditEncounterMode = function () {
                 return $stateParams.encounterUuid !== undefined && $stateParams.encounterUuid !== 'active';
             };
 
@@ -71,15 +71,15 @@ angular.module('bahmni.common.conceptSet')
                 }));
             };
 
-            $scope.clone = function(index) {
+            $scope.clone = function (index) {
                 var clonedObj = $scope.allTemplates[index].clone();
                 $scope.allTemplates.splice(index + 1, 0, clonedObj);
                 $.scrollTo('#concept-set-' + (index + 1), 200, {offset: {top: -400}});
             };
 
-            $scope.clonePanelConceptSet = function(index) {
+            $scope.clonePanelConceptSet = function (index) {
                 $scope.clone(index);
-                $scope.showLeftPanelConceptSet($scope.allTemplates[index+1]);
+                $scope.showLeftPanelConceptSet($scope.allTemplates[index + 1]);
             };
 
             $scope.isClonedSection = function (conceptSetTemplate, allTemplates) {
@@ -93,12 +93,12 @@ angular.module('bahmni.common.conceptSet')
             $scope.isLastClonedSection = function (conceptSetTemplate, allTemplates) {
                 if (allTemplates) {
                     var index = allTemplates.indexOf(conceptSetTemplate);
-                    return (index > 0) && (index != allTemplates.length-1) ? allTemplates[index].label != allTemplates[index + 1].label : false;
+                    return (index > 0) && (index != allTemplates.length - 1) ? allTemplates[index].label != allTemplates[index + 1].label : false;
                 }
                 return false;
             };
 
-            $scope.remove = function(index) {
+            $scope.remove = function (index) {
                 $scope.allTemplates.splice(index, 1);
                 $.scrollTo('#concept-set-' + (index), 200, {offset: {top: -400}});
             };
@@ -120,7 +120,7 @@ angular.module('bahmni.common.conceptSet')
                 });
             };
 
-            var collapseExistingActiveSection = function(section){
+            var collapseExistingActiveSection = function (section) {
                 if (section) {
                     section.klass = "";
                     section.isOpen = false;
@@ -128,7 +128,7 @@ angular.module('bahmni.common.conceptSet')
                 }
             };
 
-            $scope.showLeftPanelConceptSet = function(selectedConceptSet) {
+            $scope.showLeftPanelConceptSet = function (selectedConceptSet) {
                 collapseExistingActiveSection($scope.leftPanelConceptSet);
                 $scope.leftPanelConceptSet = selectedConceptSet;
                 $scope.leftPanelConceptSet.isOpen = true;

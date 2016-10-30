@@ -2,7 +2,6 @@
 
 angular.module('bahmni.common.offline')
     .service('patientDbService', function () {
-
         var getPatientByUuid = function (db, uuid) {
             var p = db.getSchema().table('patient');
             return db.select(p.patientJson.as('patient'))
@@ -38,5 +37,5 @@ angular.module('bahmni.common.offline')
         return {
             getPatientByUuid: getPatientByUuid,
             insertPatientData: insertPatientData
-        }
+        };
     });

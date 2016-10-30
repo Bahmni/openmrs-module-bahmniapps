@@ -1,13 +1,13 @@
 'use strict';
 
 angular.module('bahmni.adt')
-    .directive('wardLayout',[ function () {
+    .directive('wardLayout', [ function () {
         return {
             restrict: 'E',
             controller: "WardLayoutController",
             scope: {
-                ward:"=",
-                readOnly:"=",
+                ward: "=",
+                readOnly: "=",
                 encounterUuid: "=",
                 patientUuid: "=",
                 visitUuid: "="

@@ -2,14 +2,13 @@
 
 angular.module('bahmni.common.offline')
     .service('appUpdateService', ['$http', 'appInfoStrategy', '$q', function ($http, appInfoStrategy, $q) {
-
         var isForcedUpdateRequired = function (metadataInfo) {
             var installedVersion = appInfoStrategy.getVersion();
             var forcedUpdateRequired = false;
             var latestVersion = _.max(metadataInfo.compatibleVersions);
 
             if (latestVersion > installedVersion) {
-                metadataInfo.compatibleVersions.map(function(version){
+                metadataInfo.compatibleVersions.map(function (version) {
                     return Number(version);
                 });
                 forcedUpdateRequired = metadataInfo.compatibleVersions.indexOf(Number(installedVersion)) === -1;
@@ -20,7 +19,7 @@ angular.module('bahmni.common.offline')
         var getUpdateInfo = function () {
             var appUpdateInfo = localStorage.getItem("appUpdateInfo");
             appUpdateInfo = appUpdateInfo ? JSON.parse(appUpdateInfo) : appUpdateInfo;
-            if(appUpdateInfo){
+            if (appUpdateInfo) {
                 appUpdateInfo.forcedUpdateRequired = isForcedUpdateRequired(appUpdateInfo);
             }
 
@@ -52,15 +51,12 @@ angular.module('bahmni.common.offline')
                     deferred.resolve({});
                 } else {
                     deferred.reject(response);
-
                 }
             });
             return deferred.promise;
-
         };
-
 
         return {
             getUpdateInfo: getUpdateInfo
-        }
+        };
     }]);

@@ -2,7 +2,6 @@
 
 angular.module('bahmni.common.offline')
     .service('errorLogDbService', function () {
-
         var insertLog = function (db, uuid, failedRequest, responseStatus, stacktrace, requestPayload, provider) {
             var errorLogTable = db.getSchema().table('error_log');
             var row = errorLogTable.createRow({
@@ -14,12 +13,12 @@ angular.module('bahmni.common.offline')
                 requestPayload: requestPayload,
                 provider: provider
             });
-           return db.insertOrReplace().into(errorLogTable).values([row]).exec();
+            return db.insertOrReplace().into(errorLogTable).values([row]).exec();
         };
 
         var getLog = function (db) {
             var p = db.getSchema().table('error_log');
-            
+
             return db.select()
                 .from(p).exec()
                 .then(function (results) {
@@ -27,7 +26,7 @@ angular.module('bahmni.common.offline')
                 });
         };
 
-        var getErrorLogByUuid = function(db, errorUuid){
+        var getErrorLogByUuid = function (db, errorUuid) {
             var error = db.getSchema().table('error_log');
             return db.select()
                 .from(error)
@@ -37,7 +36,7 @@ angular.module('bahmni.common.offline')
                 });
         };
 
-        var deleteByUuid =   function(db,uuid){
+        var deleteByUuid = function (db, uuid) {
             var error = db.getSchema().table('error_log');
             return db.delete()
                 .from(error)
@@ -49,5 +48,5 @@ angular.module('bahmni.common.offline')
             getLog: getLog,
             getErrorLogByUuid: getErrorLogByUuid,
             deleteByUuid: deleteByUuid
-        }
+        };
     });

@@ -2,115 +2,109 @@
 
 angular.module('bahmni.common.domain')
         .factory('configurationService', ['$q', 'offlineDbService',
-        function ($q, offlineDbService) {
+            function ($q, offlineDbService) {
+                var configurationFunctions = {};
 
-            var configurationFunctions = {};
+                configurationFunctions.encounterConfig = function () {
+                    return offlineDbService.getReferenceData('RegistrationConcepts');
+                };
 
-            configurationFunctions.encounterConfig = function () {
-                return offlineDbService.getReferenceData('RegistrationConcepts');
-            };
+                configurationFunctions.patientConfig = function () {
+                    return offlineDbService.getReferenceData('PatientConfig');
+                };
 
-            configurationFunctions.patientConfig = function () {
-                return offlineDbService.getReferenceData('PatientConfig');
-            };
+                configurationFunctions.patientAttributesConfig = function () {
+                    return offlineDbService.getReferenceData('PersonAttributeType');
+                };
 
-            configurationFunctions.patientAttributesConfig = function () {
-                return offlineDbService.getReferenceData('PersonAttributeType');
-            };
+                configurationFunctions.dosageFrequencyConfig = function () {
+                    return offlineDbService.getReferenceData('DosageFrequencyConfig');
+                };
 
-            configurationFunctions.dosageFrequencyConfig = function () {
+                configurationFunctions.dosageInstructionConfig = function () {
+                    return offlineDbService.getReferenceData('DosageInstructionConfig');
+                };
 
-                return offlineDbService.getReferenceData('DosageFrequencyConfig');
-            };
+                configurationFunctions.stoppedOrderReasonConfig = function () {
+                    return offlineDbService.getReferenceData('StoppedOrderReasonConfig');
+                };
 
-            configurationFunctions.dosageInstructionConfig = function () {
+                configurationFunctions.consultationNoteConfig = function () {
+                    return offlineDbService.getReferenceData('ConsultationNote');
+                };
 
-                return offlineDbService.getReferenceData('DosageInstructionConfig');
-            };
+                configurationFunctions.radiologyObservationConfig = function () {
+                    return $q.when({});
+                };
 
-            configurationFunctions.stoppedOrderReasonConfig = function () {
-                return offlineDbService.getReferenceData('StoppedOrderReasonConfig');
-            };
+                configurationFunctions.labOrderNotesConfig = function () {
+                    return offlineDbService.getReferenceData('LabOrderNotes');
+                };
 
-            configurationFunctions.consultationNoteConfig = function () {
-                return offlineDbService.getReferenceData('ConsultationNote');
-            };
+                configurationFunctions.defaultEncounterType = function () {
+                    return offlineDbService.getReferenceData('DefaultEncounterType');
+                };
 
-            configurationFunctions.radiologyObservationConfig = function () {
-                return $q.when({});
-            };
+                configurationFunctions.radiologyImpressionConfig = function () {
+                    return offlineDbService.getReferenceData('RadiologyImpressionConfig');
+                };
 
-            configurationFunctions.labOrderNotesConfig = function () {
-                return offlineDbService.getReferenceData('LabOrderNotes');
-            };
+                configurationFunctions.addressLevels = function () {
+                    return offlineDbService.getReferenceData('AddressHierarchyLevels');
+                };
 
-            configurationFunctions.defaultEncounterType = function () {
-                return offlineDbService.getReferenceData('DefaultEncounterType');
-            };
+                configurationFunctions.allTestsAndPanelsConcept = function () {
+                    return offlineDbService.getReferenceData('AllTestsAndPanelsConcept');
+                };
 
-            configurationFunctions.radiologyImpressionConfig = function () {
-                return offlineDbService.getReferenceData('RadiologyImpressionConfig');
-            };
+                configurationFunctions.identifierTypesConfig = function () {
+                    return offlineDbService.getReferenceData('IdentifierTypes');
+                };
 
+                configurationFunctions.genderMap = function () {
+                    return offlineDbService.getReferenceData('Genders');
+                };
 
-            configurationFunctions.addressLevels = function () {
-                return offlineDbService.getReferenceData('AddressHierarchyLevels');
-            };
+                configurationFunctions.relationshipTypeMap = function () {
+                    return offlineDbService.getReferenceData('RelationshipTypeMap');
+                };
 
-            configurationFunctions.allTestsAndPanelsConcept = function () {
-                return offlineDbService.getReferenceData('AllTestsAndPanelsConcept');
-            };
+                configurationFunctions.relationshipTypeConfig = function () {
+                    return offlineDbService.getReferenceData('RelationshipType');
+                };
 
-            configurationFunctions.identifierTypesConfig = function () {
-                return offlineDbService.getReferenceData('IdentifierTypes');
-            };
+                configurationFunctions.loginLocationToVisitTypeMapping = function () {
+                    return offlineDbService.getReferenceData('LoginLocationToVisitTypeMapping');
+                };
 
-            configurationFunctions.genderMap = function () {
-                return offlineDbService.getReferenceData('Genders');
-            };
+                configurationFunctions.loginLocationToEncounterTypeMapping = function () {
+                    return offlineDbService.getReferenceData('LoginLocationToEncounterTypeMapping');
+                };
 
+                var existingPromises = {};
+                var configurations = {};
 
-            configurationFunctions.relationshipTypeMap = function () {
-                return offlineDbService.getReferenceData('RelationshipTypeMap');
-            };
+                var getConfigurations = function (configurationNames) {
+                    var configurationsPromiseDefer = $q.defer();
+                    var promises = [];
 
-            configurationFunctions.relationshipTypeConfig = function () {
-                return offlineDbService.getReferenceData('RelationshipType');
-            };
+                    configurationNames.forEach(function (configurationName) {
+                        if (!existingPromises[configurationName]) {
+                            existingPromises[configurationName] = configurationFunctions[configurationName]().then(function (response) {
+                                configurations[configurationName] = response.data;
+                            });
+                            promises.push(existingPromises[configurationName]);
+                        }
+                    });
 
-            configurationFunctions.loginLocationToVisitTypeMapping = function () {
-                return offlineDbService.getReferenceData('LoginLocationToVisitTypeMapping');
-            };
+                    $q.all(promises).then(function () {
+                        configurationsPromiseDefer.resolve(configurations);
+                    });
 
-            configurationFunctions.loginLocationToEncounterTypeMapping =  function () {
-                return offlineDbService.getReferenceData('LoginLocationToEncounterTypeMapping')
-            };
+                    return configurationsPromiseDefer.promise;
+                };
 
-
-            var existingPromises = {};
-            var configurations = {};
-
-            var getConfigurations = function (configurationNames) {
-                var configurationsPromiseDefer = $q.defer();
-                var promises = [];
-
-                configurationNames.forEach(function (configurationName) {
-                    if (!existingPromises[configurationName]) {
-                        existingPromises[configurationName] = configurationFunctions[configurationName]().then(function (response) {
-                            configurations[configurationName] = response.data;
-                        });
-                        promises.push(existingPromises[configurationName]);
-                    }
-                });
-
-                $q.all(promises).then(function () {
-                    configurationsPromiseDefer.resolve(configurations);
-                });
-
-                return configurationsPromiseDefer.promise;
-            };
-
-            return {
-                getConfigurations: getConfigurations
-            };
-        }]);
+                return {
+                    getConfigurations: getConfigurations
+                };
+            }]);

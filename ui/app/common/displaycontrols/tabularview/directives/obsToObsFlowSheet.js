@@ -16,12 +16,11 @@ angular.module('bahmni.common.displaycontrol.obsVsObsFlowSheet').directive('obsT
                     var displayName = templateConcept && templateConcept.displayString;
                     if (templateConcept && templateConcept.names && templateConcept.names.length === 1 && templateConcept.names[0].name != "") {
                         displayName = templateConcept.names[0].name;
-                    }
-                    else if (templateConcept && templateConcept.names && templateConcept.names.length === 2) {
+                    } else if (templateConcept && templateConcept.names && templateConcept.names.length === 2) {
                         displayName = _.find(templateConcept.names, {conceptNameType: "SHORT"}).name;
                     }
                     $scope.conceptDisplayName = displayName;
-                })
+                });
             };
 
             var getObsInFlowSheet = function () {
@@ -29,14 +28,14 @@ angular.module('bahmni.common.displaycontrol.obsVsObsFlowSheet').directive('obsT
                     $scope.config.groupByConcept, $scope.config.conceptNames, $scope.config.numberOfVisits,
                     $scope.config.initialCount, $scope.config.latestCount, $scope.config.type, $scope.section.startDate,
                     $scope.section.endDate, $scope.enrollment).success(function (data) {
-                    var obsInFlowSheet = data;
-                    var groupByElement = _.find(obsInFlowSheet.headers, function (header) {
-                        return header.name === $scope.config.groupByConcept;
+                        var obsInFlowSheet = data;
+                        var groupByElement = _.find(obsInFlowSheet.headers, function (header) {
+                            return header.name === $scope.config.groupByConcept;
+                        });
+                        obsInFlowSheet.headers = _.without(obsInFlowSheet.headers, groupByElement);
+                        obsInFlowSheet.headers.unshift(groupByElement);
+                        $scope.obsTable = obsInFlowSheet;
                     });
-                    obsInFlowSheet.headers = _.without(obsInFlowSheet.headers, groupByElement);
-                    obsInFlowSheet.headers.unshift(groupByElement);
-                    $scope.obsTable = obsInFlowSheet;
-                })
             };
 
             var init = function () {
@@ -58,7 +57,7 @@ angular.module('bahmni.common.displaycontrol.obsVsObsFlowSheet').directive('obsT
                     observation: {encounterUuid: observation.encounterUuid, uuid: observation.obsGroupUuid},
                     conceptSetName: $scope.config.templateName,
                     conceptDisplayName: $scope.conceptDisplayName
-                }
+                };
             };
 
             $scope.getPivotOn = function () {
@@ -69,7 +68,7 @@ angular.module('bahmni.common.displaycontrol.obsVsObsFlowSheet').directive('obsT
                 var abbreviation = getSourceCode(header, $scope.section.headingConceptSource);
                 var headerName = abbreviation || header.shortName || header.name;
                 if (header.units) {
-                    headerName = headerName +  " (" + header.units + ")";
+                    headerName = headerName + " (" + header.units + ")";
                 }
                 return headerName;
             };
@@ -105,11 +104,9 @@ angular.module('bahmni.common.displaycontrol.obsVsObsFlowSheet').directive('obsT
                         var conceptName = observations[index].concept.name;
                         if (conceptName && conceptSetUiConfigService.getConfig()[conceptName] && conceptSetUiConfigService.getConfig()[conceptName].displayMonthAndYear == true) {
                             name = Bahmni.Common.Util.DateUtil.getDateInMonthsAndYears(name);
-                        }
-                        else {
+                        } else {
                             name = Bahmni.Common.Util.DateUtil.formatDateWithoutTime(name);
                         }
-
                     }
 
                     list.push(name);
@@ -119,7 +116,7 @@ angular.module('bahmni.common.displaycontrol.obsVsObsFlowSheet').directive('obsT
             };
 
             $scope.isMonthAvailable = function () {
-                return $scope.obsTable.rows[0].columns['Month'] != null
+                return $scope.obsTable.rows[0].columns['Month'] != null;
             };
 
             spinner.forPromise(init(), element);

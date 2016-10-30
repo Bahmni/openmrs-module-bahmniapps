@@ -3,7 +3,6 @@
 angular.module('bahmni.common.domain')
     .factory('configurationService', ['$q', 'androidDbService',
         function ($q, androidDbService) {
-
             var configurationFunctions = {};
 
             configurationFunctions.encounterConfig = function () {
@@ -19,12 +18,10 @@ angular.module('bahmni.common.domain')
             };
 
             configurationFunctions.dosageFrequencyConfig = function () {
-
                 return androidDbService.getReferenceData('DosageFrequencyConfig');
             };
 
             configurationFunctions.dosageInstructionConfig = function () {
-
                 return androidDbService.getReferenceData('DosageInstructionConfig');
             };
 
@@ -52,7 +49,6 @@ angular.module('bahmni.common.domain')
                 return androidDbService.getReferenceData('RadiologyImpressionConfig');
             };
 
-
             configurationFunctions.addressLevels = function () {
                 return androidDbService.getReferenceData('AddressHierarchyLevels');
             };
@@ -69,7 +65,6 @@ angular.module('bahmni.common.domain')
                 return androidDbService.getReferenceData('Genders');
             };
 
-
             configurationFunctions.relationshipTypeMap = function () {
                 return androidDbService.getReferenceData('RelationshipTypeMap');
             };
@@ -82,7 +77,7 @@ angular.module('bahmni.common.domain')
                 return androidDbService.getReferenceData('LoginLocationToVisitTypeMapping');
             };
 
-            configurationFunctions.loginLocationToEncounterTypeMapping =  function () {
+            configurationFunctions.loginLocationToEncounterTypeMapping = function () {
                 return androidDbService.getReferenceData('LoginLocationToEncounterTypeMapping');
             };
 

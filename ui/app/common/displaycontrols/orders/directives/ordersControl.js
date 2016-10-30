@@ -1,10 +1,9 @@
 'use strict';
 
 angular.module('bahmni.common.displaycontrol.orders')
-    .directive('ordersControl', ['orderService', 'orderTypeService', '$q','spinner', '$filter',
+    .directive('ordersControl', ['orderService', 'orderTypeService', '$q', 'spinner', '$filter',
         function (orderService, orderTypeService, $q, spinner, $filter) {
-            var controller = function($scope){
-
+            var controller = function ($scope) {
                 $scope.orderTypeUuid = orderTypeService.getOrderTypeUuid($scope.orderType);
                 if ($scope.config.showHeader === null || $scope.config.showHeader === undefined) {
                     $scope.config.showHeader = true;
@@ -13,39 +12,38 @@ angular.module('bahmni.common.displaycontrol.orders')
                 var includeAllObs = true;
                 var getOrders = function () {
                     var params = {
-                        patientUuid:$scope.patient.uuid,
-                        orderTypeUuid:$scope.orderTypeUuid,
-                        conceptNames:$scope.config.conceptNames,
-                        includeObs:includeAllObs,
-                        numberOfVisits:$scope.config.numberOfVisits,
-                        obsIgnoreList:$scope.config.obsIgnoreList,
-                        visitUuid:$scope.visitUuid,
-                        orderUuid:$scope.orderUuid
+                        patientUuid: $scope.patient.uuid,
+                        orderTypeUuid: $scope.orderTypeUuid,
+                        conceptNames: $scope.config.conceptNames,
+                        includeObs: includeAllObs,
+                        numberOfVisits: $scope.config.numberOfVisits,
+                        obsIgnoreList: $scope.config.obsIgnoreList,
+                        visitUuid: $scope.visitUuid,
+                        orderUuid: $scope.orderUuid
                     };
                     return orderService.getOrders(params).then(function (response) {
-                            $scope.bahmniOrders = response.data;
-                        });
+                        $scope.bahmniOrders = response.data;
+                    });
                 };
-                var init = function() {
-                    return getOrders().then(function(){
-                        _.forEach($scope.bahmniOrders, function(order){
-                            if(order.bahmniObservations.length === 0){
-                                order.hideIfEmpty = true
+                var init = function () {
+                    return getOrders().then(function () {
+                        _.forEach($scope.bahmniOrders, function (order) {
+                            if (order.bahmniObservations.length === 0) {
+                                order.hideIfEmpty = true;
                             }
                         });
                         if (_.isEmpty($scope.bahmniOrders)) {
                             $scope.noOrdersMessage = $scope.getSectionTitle();
-                        }
-                        else{
+                        } else {
                             $scope.bahmniOrders[0].isOpen = true;
                         }
                     });
                 };
-                $scope.getTitle = function(order){
-                        return order.conceptName + " on " + $filter('bahmniDateTime')(order.orderDate) + " by " + order.provider;
+                $scope.getTitle = function (order) {
+                    return order.conceptName + " on " + $filter('bahmniDateTime')(order.orderDate) + " by " + order.provider;
                 };
 
-                $scope.toggle= function(element){
+                $scope.toggle = function (element) {
                     element.isOpen = !element.isOpen;
                 };
 
@@ -54,17 +52,17 @@ angular.module('bahmni.common.displaycontrol.orders')
                     "section": $scope.section
                 };
 
-                $scope.isClickable= function(){
+                $scope.isClickable = function () {
                     return $scope.isOnDashboard && $scope.section.expandedViewConfig;
                 };
 
-                $scope.hasTitleToBeShown = function() {
+                $scope.hasTitleToBeShown = function () {
                     return !$scope.isClickable() && $scope.getSectionTitle();
                 };
 
                 $scope.message = Bahmni.Common.Constants.messageForNoFulfillment;
 
-                $scope.getSectionTitle = function(){
+                $scope.getSectionTitle = function () {
                     return $filter('titleTranslate')($scope.section);
                 };
                 $scope.initialization = init();
@@ -75,18 +73,18 @@ angular.module('bahmni.common.displaycontrol.orders')
             };
 
             return {
-                restrict:'E',
+                restrict: 'E',
                 controller: controller,
                 link: link,
-                templateUrl:"../common/displaycontrols/orders/views/ordersControl.html",
-                scope:{
-                    patient:"=",
-                    section:"=",
-                    orderType:"=",
-                    orderUuid:"=",
-                    config:"=",
-                    isOnDashboard:"=",
-                    visitUuid:"="
+                templateUrl: "../common/displaycontrols/orders/views/ordersControl.html",
+                scope: {
+                    patient: "=",
+                    section: "=",
+                    orderType: "=",
+                    orderUuid: "=",
+                    config: "=",
+                    isOnDashboard: "=",
+                    visitUuid: "="
                 }
-            }
+            };
         }]);

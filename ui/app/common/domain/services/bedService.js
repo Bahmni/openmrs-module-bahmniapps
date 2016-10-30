@@ -1,18 +1,17 @@
 'use strict';
 
 angular.module('bahmni.common.domain')
-    .service('bedService', ['$http', '$rootScope', function ( $http, $rootScope) {
-        
-        var mapBedDetails = function(response) {
+    .service('bedService', ['$http', '$rootScope', function ($http, $rootScope) {
+        var mapBedDetails = function (response) {
             var results = response.data.results;
             if (!_.isEmpty(results)) {
                 var bed = _.first(results);
                 return {
-                   'wardName': bed.physicalLocation.parentLocation.display,
-                   'wardUuid': bed.physicalLocation.parentLocation.uuid,
-                   'physicalLocationName' : bed.physicalLocation.name,
-                   'bedNumber' : bed.bedNumber,
-                   'bedId' : bed.bedId
+                    'wardName': bed.physicalLocation.parentLocation.display,
+                    'wardUuid': bed.physicalLocation.parentLocation.uuid,
+                    'physicalLocationName': bed.physicalLocation.name,
+                    'bedNumber': bed.bedNumber,
+                    'bedId': bed.bedId
                 };
             }
         };
@@ -25,12 +24,12 @@ angular.module('bahmni.common.domain')
             return promise;
         };
 
-        this.getAssignedBedForPatient = function(patientUuid, visitUuid) {
+        this.getAssignedBedForPatient = function (patientUuid, visitUuid) {
             var params = {
                 patientUuid: patientUuid,
                 v: "full"
             };
-            if(visitUuid){
+            if (visitUuid) {
                 params.visitUuid = visitUuid;
                 params.s = 'bedDetailsFromVisit';
             }
@@ -41,7 +40,7 @@ angular.module('bahmni.common.domain')
             }).then(mapBedDetails);
         };
         this.assignBed = function (bedId, patientUuid, encounterUuid) {
-            var patientJson = {"patientUuid": patientUuid, "encounterUuid" : encounterUuid};
+            var patientJson = {"patientUuid": patientUuid, "encounterUuid": encounterUuid};
             return $http.post(Bahmni.Common.Constants.bedFromVisit + "/" + bedId, patientJson, {
                 withCredentials: true,
                 headers: {"Accept": "application/json", "Content-Type": "application/json"}

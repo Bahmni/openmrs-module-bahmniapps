@@ -1,7 +1,7 @@
 'use strict';
 
 function getWatchers (element) {
-    var elementToWatch = element? angular.element(element) : angular.element(document.getElementsByTagName('body'));
+    var elementToWatch = element ? angular.element(element) : angular.element(document.getElementsByTagName('body'));
 
     var watchers = [];
 
@@ -23,8 +23,8 @@ function getWatchers (element) {
 
     // Remove duplicate watchers
     var watchersWithoutDuplicates = [];
-    angular.forEach(watchers, function(item) {
-        if(watchersWithoutDuplicates.indexOf(item) < 0) {
+    angular.forEach(watchers, function (item) {
+        if (watchersWithoutDuplicates.indexOf(item) < 0) {
             watchersWithoutDuplicates.push(item);
         }
     });

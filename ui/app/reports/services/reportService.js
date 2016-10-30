@@ -44,9 +44,9 @@ angular.module('bahmni.reports')
                 }
             });
         };
-        var deleteReport = function(id){
+        var deleteReport = function (id) {
             var url = Bahmni.Common.Constants.reportsUrl + "/delete/{0}";
-            url=url.format(id);
+            url = url.format(id);
             return $http.get(url);
         };
 
@@ -65,7 +65,7 @@ angular.module('bahmni.reports')
             getAvailableFormats: getAvailableFormats,
             scheduleReport: scheduleReport,
             getScheduledReports: getScheduledReports,
-            deleteReport : deleteReport,
+            deleteReport: deleteReport,
             generateReport: generateReport
         };
     }]);

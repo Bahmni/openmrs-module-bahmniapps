@@ -10,7 +10,7 @@ angular.module('bahmni.common.conceptSet')
             });
         };
 
-        var getComputedValue = function(encounterData){
+        var getComputedValue = function (encounterData) {
             var url = Bahmni.Common.Constants.encounterModifierUrl;
             return $http.post(url, encounterData, {
                 withCredentials: true,
@@ -20,11 +20,11 @@ angular.module('bahmni.common.conceptSet')
 
         var getObsTemplatesForProgram = function (programUuid) {
             var url = Bahmni.Common.Constants.entityMappingUrl;
-            return $http.get(url,{
-                params:{
-                    entityUuid:programUuid,
-                    mappingType:'program_obstemplate',
-                    s:'byEntityAndMappingType'
+            return $http.get(url, {
+                params: {
+                    entityUuid: programUuid,
+                    mappingType: 'program_obstemplate',
+                    s: 'byEntityAndMappingType'
                 }
             });
         };
@@ -32,8 +32,7 @@ angular.module('bahmni.common.conceptSet')
         return {
             getConcept: getConcept,
             getComputedValue: getComputedValue,
-            getObsTemplatesForProgram:getObsTemplatesForProgram
+            getObsTemplatesForProgram: getObsTemplatesForProgram
         };
-
     }]);
 

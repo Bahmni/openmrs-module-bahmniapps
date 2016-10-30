@@ -10,7 +10,7 @@ angular.module('bahmni.common.displaycontrol.forms')
                     return conceptSetService.getConcept({
                         name: "All Observation Templates",
                         v: "custom:(setMembers:(display))"
-                    })
+                    });
                 };
 
                 var obsFormData = function () {
@@ -51,13 +51,11 @@ angular.module('bahmni.common.displaycontrol.forms')
                     var displayName = data.concept.displayString;
                     if (concept.names && concept.names.length === 1 && concept.names[0].name != "") {
                         displayName = concept.names[0].name;
-                    }
-                    else if (concept.names && concept.names.length === 2) {
+                    } else if (concept.names && concept.names.length === 2) {
                         var shortName = _.find(concept.names, {conceptNameType: "SHORT"});
                         displayName = shortName && shortName.name ? shortName.name : displayName;
                     }
                     return displayName;
-
                 };
 
                 $scope.initialization = init();
@@ -67,7 +65,7 @@ angular.module('bahmni.common.displaycontrol.forms')
                         observation: observation,
                         conceptSetName: observation.concept.displayString,
                         conceptDisplayName: $scope.getDisplayName(observation)
-                    }
+                    };
                 };
                 $scope.shouldPromptBeforeClose = true;
 

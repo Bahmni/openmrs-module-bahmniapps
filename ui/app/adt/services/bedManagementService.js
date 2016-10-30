@@ -6,7 +6,7 @@ angular.module('bahmni.adt')
         var maxY = 1;
         var minX = 1;
         var minY = 1;
-        
+
         this.createLayoutGrid = function (bedLayouts) {
             self.layout = [];
             findMaxYMaxX(bedLayouts);
@@ -24,16 +24,16 @@ angular.module('bahmni.adt')
                             bedNumber: bedLayout !== null && bedLayout.bedNumber,
                             bedType: bedLayout !== null && bedLayout.bedType !== null && bedLayout.bedType.displayName
                         }
-                    })
+                    });
                 }
                 self.layout.push(rowLayout);
             }
-            return self.layout;  
+            return self.layout;
         };
 
         var findMaxYMaxX = function (bedLayouts) {
-            for (var i = 0; i <  bedLayouts.length; i++) {
-                var bedLayout =  bedLayouts[i];
+            for (var i = 0; i < bedLayouts.length; i++) {
+                var bedLayout = bedLayouts[i];
                 if (bedLayout.rowNumber > maxX) {
                     maxX = bedLayout.rowNumber;
                 }
@@ -56,11 +56,10 @@ angular.module('bahmni.adt')
             return bedLayout === null || bedLayout.bedId === null;
         };
 
-         var isAvailable = function (bedLayout) {
+        var isAvailable = function (bedLayout) {
             if (bedLayout === null) {
                 return false;
             }
             return bedLayout.status === "AVAILABLE";
         };
-
-}]);
+    }]);

@@ -21,6 +21,6 @@ Bahmni.Common.VisitSummary = function (visitSummary) {
 
     this.hasBeenAdmitted = function () {
         return this.isAdmitted() && !this.isDischarged();
-    }
+    };
 };
 

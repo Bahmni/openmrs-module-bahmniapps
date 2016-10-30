@@ -1,9 +1,8 @@
 'use strict';
 
 angular.module('bahmni.common.domain')
-    .service('encounterService', ['$q', '$rootScope', '$bahmniCookieStore', 'offlineEncounterServiceStrategy','eventQueue',
-        function ($q, $rootScope,  $bahmniCookieStore, offlineEncounterService, eventQueue) {
-
+    .service('encounterService', ['$q', '$rootScope', '$bahmniCookieStore', 'offlineEncounterServiceStrategy', 'eventQueue',
+        function ($q, $rootScope, $bahmniCookieStore, offlineEncounterService, eventQueue) {
             this.buildEncounter = function (encounter) {
                 encounter.observations = encounter.observations || [];
                 encounter.providers = encounter.providers || [];
@@ -46,7 +45,6 @@ angular.module('bahmni.common.domain')
                     encounterType = getDefaultEncounterType();
                 }
                 return encounterType;
-
             };
 
             this.getEncounterType = function (programUuid, loginLocationUuid) {
@@ -54,17 +52,14 @@ angular.module('bahmni.common.domain')
                     return getEncounterTypeBasedOnProgramUuid(programUuid).then(function (response) {
                         return getDefaultEncounterTypeIfMappingNotFound(response);
                     });
-                }
-                else if (loginLocationUuid) {
+                } else if (loginLocationUuid) {
                     return getEncounterTypeBasedOnLoginLocation().then(function (response) {
                         return getDefaultEncounterTypeIfMappingNotFound(response.data);
                     });
                 } else {
                     return getDefaultEncounterType();
                 }
-
             };
-
 
             this.create = function (encounterData) {
                 encounterData.encounterUuid = encounterData.encounterUuid || Bahmni.Common.Offline.UUID.generateUuid();
@@ -75,9 +70,9 @@ angular.module('bahmni.common.domain')
                 return getDefaultEncounterType().then(function (encounterType) {
                     encounterData.encounterType = encounterData.encounterType || encounterType.data;
                     return encounterData;
-                }).then(function(encounterData) {
+                }).then(function (encounterData) {
                     return offlineEncounterService.create(encounterData);
-                }).then(function(result) {
+                }).then(function (result) {
                     var event = {type: "encounter", encounterUuid: result.data.encounterUuid };
                     eventQueue.addToEventQueue(event);
                     return $q.when({data: encounterData});
@@ -104,7 +99,7 @@ angular.module('bahmni.common.domain')
             };
 
             var searchWithoutEncounterDate = function (visitUuid) {
-                return $q.when({"data": {"results": []}})
+                return $q.when({"data": {"results": []}});
             };
 
             this.search = function (visitUuid, encounterDate) {
@@ -112,11 +107,11 @@ angular.module('bahmni.common.domain')
             };
 
             this.find = function (params) {
-                return offlineEncounterService.find(params).then(function(results) {
-                    if(results  && results.encounter)
+                return offlineEncounterService.find(params).then(function (results) {
+                    if (results && results.encounter) {
                         return {data: results.encounter};
-                    else
-                        return {"data":{
+                    } else {
+                        return {"data": {
                             "bahmniDiagnoses": [],
                             "observations": [],
                             "accessionNotes": [],
@@ -140,16 +135,16 @@ angular.module('bahmni.common.domain')
                             "locationName": null,
                             "context": {},
                             "extensions": {}
-                        }};
+                        }}; }
                 });
             };
 
             this.findByEncounterUuid = function (encounterUuid) {
-                return $q.when({"data": {"results": []}})
+                return $q.when({"data": {"results": []}});
             };
 
             this.getEncountersForEncounterType = function (patientUuid, encounterTypeUuid) {
-                return $q.when({"data": {"results": []}})
+                return $q.when({"data": {"results": []}});
             };
 
             this.getDigitized = function (patientUuid) {

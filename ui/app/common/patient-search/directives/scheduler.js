@@ -2,26 +2,24 @@
 
 angular.module('bahmni.common.patientSearch')
     .directive('scheduler', function ($interval) {
-
-        var link = function($scope){
-
+        var link = function ($scope) {
             var promise;
 
-            var cancelSchedule = function(){
-                if(promise){
+            var cancelSchedule = function () {
+                if (promise) {
                     $interval.cancel(promise);
-                    promise=null;
+                    promise = null;
                 }
             };
 
-            var startSchedule = function(){
-                if(!promise){
+            var startSchedule = function () {
+                if (!promise) {
                     promise = $interval($scope.triggerFunction, $scope.refreshTime * 1000);
                 }
             };
 
-            $scope.$watch(function(){return $scope.watchOn}, function(value) {
-                if($scope.refreshTime > 0){
+            $scope.$watch(function () { return $scope.watchOn; }, function (value) {
+                if ($scope.refreshTime > 0) {
                     if (value) {
                         cancelSchedule();
                     } else {
@@ -32,7 +30,7 @@ angular.module('bahmni.common.patientSearch')
 
             $scope.triggerFunction();
 
-            $scope.$on('$destroy', function() {
+            $scope.$on('$destroy', function () {
                 cancelSchedule();
             });
         };

@@ -3,7 +3,6 @@
 angular.module('bahmni.clinical')
     .controller('PatientDashboardTreatmentController', ['$scope', 'ngDialog',
         function ($scope, ngDialog) {
-
             var treatmentConfigParams = $scope.dashboard.getSectionByType("treatment") || {};
             var patientUuidparams = {"patientUuid": $scope.patient.uuid};
 

@@ -1,12 +1,12 @@
 'use strict';
-(function() {
+(function () {
     var DateUtil = Bahmni.Common.Util.DateUtil;
-    var Drug = function(name, orders) {
+    var Drug = function (name, orders) {
         this.name = name;
         this.orders = orders || [];
     };
 
-    Bahmni.Clinical.DrugSchedule = function(fromDate, toDate, drugOrders) {
+    Bahmni.Clinical.DrugSchedule = function (fromDate, toDate, drugOrders) {
         this.fromDate = fromDate;
         this.toDate = toDate;
         this.drugOrders = drugOrders;
@@ -15,14 +15,14 @@
     };
 
     Bahmni.Clinical.DrugSchedule.prototype = {
-        getDays: function() {
+        getDays: function () {
             return DateUtil.createDays(this.fromDate, this.toDate);
         },
 
-        getDrugs: function() {
+        getDrugs: function () {
             var drugOrders = this.drugOrders.map(Bahmni.Clinical.DrugOrder.create);
             var allOrderedDrugs = [];
-            _.each(drugOrders, function(order) {
+            _.each(drugOrders, function (order) {
                 var drugAlreadyOrdered = _.find(allOrderedDrugs, order.drugNonCoded ? {
                     name: order.drugNonCoded
                 } : {
@@ -38,14 +38,13 @@
             return allOrderedDrugs;
         },
 
-        hasDrugOrders: function() {
+        hasDrugOrders: function () {
             return this.drugOrders.length > 0;
         }
     };
 
-
-    Bahmni.Clinical.DrugSchedule.create = function(fromDate, toDate, drugOrders) {
-        var drugOrdersDuringIpd = drugOrders.filter(function(drugOrder) {
+    Bahmni.Clinical.DrugSchedule.create = function (fromDate, toDate, drugOrders) {
+        var drugOrdersDuringIpd = drugOrders.filter(function (drugOrder) {
             var orderStartDate = DateUtil.parse(drugOrder.effectiveStartDate);
             var orderStopDate = DateUtil.parse(drugOrder.effectiveStopDate);
             return orderStartDate < toDate && orderStopDate >= fromDate;
@@ -54,29 +53,29 @@
     };
 
     Drug.prototype = {
-        isActiveOnDate: function(date) {
-            return this.orders.some(function(order) {
+        isActiveOnDate: function (date) {
+            return this.orders.some(function (order) {
                 return order.isActiveOnDate(date);
             });
         },
 
-        getStatusOnDate: function(date) {
-            var activeDrugOrders = _.filter(this.orders, function(order) {
+        getStatusOnDate: function (date) {
+            var activeDrugOrders = _.filter(this.orders, function (order) {
                 return order.isActiveOnDate(date);
             });
             if (activeDrugOrders.length === 0) {
                 return 'inactive';
             }
-            if (_.every(activeDrugOrders, function(order) {
+            if (_.every(activeDrugOrders, function (order) {
                 return order.getStatusOnDate(date) === 'stopped';
-            })){
+            })) {
                 return 'stopped';
             }
             return 'active';
         },
 
-        isActive: function() {
-            return this.orders.some(function(order) {
+        isActive: function () {
+            return this.orders.some(function (order) {
                 return order.isActive();
             });
         }

@@ -44,5 +44,5 @@ angular.module('bahmni.clinical')
                 onSelect: '&',
                 index: '='
             }
-        }
+        };
     });

@@ -18,5 +18,5 @@ Bahmni.Registration.Constants = {
 };
 
 Bahmni.Registration.Constants.Errors = {
-    manageIdentifierSequencePrivilege:"You don't have the privilege to create a patient with the given ID."
+    manageIdentifierSequencePrivilege: "You don't have the privilege to create a patient with the given ID."
 };

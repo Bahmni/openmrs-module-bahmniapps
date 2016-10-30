@@ -1,8 +1,6 @@
 'use strict';
 
-
 Bahmni.ObservationForm = function (formUuid, formName, observations) {
-    
     var self = this;
 
     var init = function () {
@@ -11,25 +9,26 @@ Bahmni.ObservationForm = function (formUuid, formName, observations) {
         self.observations = [];
         _.each(observations, function (observation) {
             var observationFormUuid = observation.formNamespace ? observation.formNamespace.split("/")[0] : null;
-            if(observationFormUuid && observationFormUuid === formUuid)
+            if (observationFormUuid && observationFormUuid === formUuid) {
                 self.observations.push(observation);
+            }
         });
         self.isOpen = self.observations.length > 0 ? true : false;
     };
 
-    self.toggleDisplay = function() {
-        if(self.isOpen) {
+    self.toggleDisplay = function () {
+        if (self.isOpen) {
             hide();
         } else {
             show();
         }
     };
 
-    function hide() {
+    function hide () {
         self.isOpen = false;
     }
 
-    function show() {
+    function show () {
         self.isOpen = true;
     }
 

@@ -1,7 +1,6 @@
 'use strict';
 
 (function () {
-
     var findObservationByClassName = function (groupMembers, conceptClassName) {
         return _.find(groupMembers, function (member) {
             return (member.concept.conceptClass.name === conceptClassName) || (member.concept.conceptClass === conceptClassName);
@@ -31,7 +30,6 @@
         return conceptUIConfig.autocomplete && conceptUIConfig.nonCodedConceptName && conceptUIConfig.codedConceptName;
     };
 
-
     Bahmni.ConceptSet.ObservationNode = function (observation, savedObs, conceptUIConfig, concept) {
         angular.extend(this, observation);
 
@@ -58,8 +56,7 @@
                 setNewObservation(codedObservation, newValue);
                 voidObservation(nonCodedObservation);
                 this.markedAsNonCoded = false;
-            }
-            else {
+            } else {
                 setNewObservation(nonCodedObservation, newValue);
                 voidObservation(codedObservation);
             }
@@ -85,18 +82,18 @@
             if (isAlreadySavedObservation(nonCodedConceptObservation)) {
                 return nonCodedConceptObservation;
             }
-            if(!codedConceptObservation){
-                throw new Error("Configuration Error: Concept '"+this.conceptUIConfig.codedConceptName+"' is not a set member of '"+concept.name.name+"'.");
+            if (!codedConceptObservation) {
+                throw new Error("Configuration Error: Concept '" + this.conceptUIConfig.codedConceptName + "' is not a set member of '" + concept.name.name + "'.");
             }
             return codedConceptObservation;
         };
-        var getGroupMembersWithoutClass = function(groupMembers,classNames){
-            return _.filter(groupMembers,function (member) {
+        var getGroupMembersWithoutClass = function (groupMembers, classNames) {
+            return _.filter(groupMembers, function (member) {
                 return !(_.includes(classNames, member.concept.conceptClass.name) || _.includes(classNames, member.concept.conceptClass));
             });
         };
         var getFirstObservation = function () {
-            var observations = getGroupMembersWithoutClass(this.groupMembers,[Bahmni.Common.Constants.abnormalConceptClassName,
+            var observations = getGroupMembersWithoutClass(this.groupMembers, [Bahmni.Common.Constants.abnormalConceptClassName,
                 Bahmni.Common.Constants.unknownConceptClassName,
                 Bahmni.Common.Constants.durationConceptClassName]);
 
@@ -107,14 +104,14 @@
             if (observations[0].isMultiSelect) {
                 return observations[0];
             }
-            if(primaryObs.uuid && !primaryObs.voided) {
+            if (primaryObs.uuid && !primaryObs.voided) {
                 return primaryObs;
             }
             return observations[1] && (observations[1].value || observations[1].value === "") && !observations[1].voided ? observations[1] : observations[0];
         };
         Object.defineProperty(this, 'primaryObs', {
             enumerable: true,
-            get: isFreeTextAutocompleteType(this.conceptUIConfig) ? getFreeTextPrimaryObservation: getFirstObservation
+            get: isFreeTextAutocompleteType(this.conceptUIConfig) ? getFreeTextPrimaryObservation : getFirstObservation
         });
 
         this.isObservationNode = true;
@@ -196,8 +193,7 @@
                         return this.possibleAnswers[i].display;
                     }
                 }
-            }
-            else {
+            } else {
                 return this.value;
             }
         },
@@ -230,14 +226,14 @@
         },
 
         _isDateTimeDataType: function () {
-            return "Datetime" === this.primaryObs.getDataTypeName();
+            return this.primaryObs.getDataTypeName() === "Datetime";
         },
 
         isComputed: function () {
             return this.primaryObs.isComputed();
         },
 
-        isConciseText: function(){
+        isConciseText: function () {
             return this.conceptUIConfig.conciseText === true;
         },
 
@@ -252,15 +248,12 @@
         doesNotHaveDuration: function () {
             if (!this.durationObs || !this.conceptUIConfig.durationRequired) {
                 return false;
-            }
-            else {
+            } else {
                 if (!this.durationObs.value) {
                     return true;
                 }
                 return this.durationObs.value < 0;
-
             }
-
         },
 
         isValid: function (checkRequiredFields, conceptSetRequired) {
@@ -278,10 +271,10 @@
                     return false;
                 }
                 if (this.getControlType() === "freeTextAutocomplete") {
-                    return this.isValidFreeTextAutocomplete()
+                    return this.isValidFreeTextAutocomplete();
                 }
             }
-            if ("Date" === this.primaryObs.getDataTypeName()) {
+            if (this.primaryObs.getDataTypeName() === "Date") {
                 return this.primaryObs.isValidDate();
             }
             if (this.primaryObs.hasValue() && this.doesNotHaveDuration()) {
@@ -296,7 +289,7 @@
             if (this.getControlType() === 'autocomplete') {
                 return _.isEmpty(this.primaryObs.value) || _.isObject(this.primaryObs.value);
             }
-            if(this.primaryObs.hasValue() && this.primaryObs.erroneousValue){
+            if (this.primaryObs.hasValue() && this.primaryObs.erroneousValue) {
                 return false;
             }
             return true;
@@ -345,7 +338,7 @@
 
         _hasValidChildren: function (checkRequiredFields, conceptSetRequired) {
             return this.groupMembers.every(function (member) {
-                return member.isValid(checkRequiredFields, conceptSetRequired)
+                return member.isValid(checkRequiredFields, conceptSetRequired);
             });
         },
 

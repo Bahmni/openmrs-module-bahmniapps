@@ -8,12 +8,12 @@ angular.module('bahmni.adt')
             $scope.encounterUuid = $stateParams.encounterUuid;
             $scope.visitUuid = $stateParams.visitUuid;
 
-            var init = function(){
+            var init = function () {
                 loadAllWards();
                 $scope.$watch(function () {
                     return $rootScope.bedDetails;
                 }, function (newValue, oldValue) {
-                    if(newValue !== oldValue) {
+                    if (newValue !== oldValue) {
                         loadAllWards();
                     }
                 });
@@ -34,5 +34,4 @@ angular.module('bahmni.adt')
             });
 
             init();
-
         }]);

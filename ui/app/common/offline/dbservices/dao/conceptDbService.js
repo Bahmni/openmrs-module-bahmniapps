@@ -3,7 +3,6 @@
 angular.module('bahmni.common.offline')
     .service('conceptDbService', ['$q',
         function ($q) {
-
             var db;
 
             var getConcept = function (conceptUuid) {
@@ -34,10 +33,8 @@ angular.module('bahmni.common.offline')
                 return insertConcept(data, parent).then(function () {
                     return updateChildren(data.results[0]).then(function () {
                         return updateParentJson(data.results[0]);
-                    })
-                })
-
-
+                    });
+                });
             };
 
             var insertConcept = function (data, parent) {
@@ -51,13 +48,13 @@ angular.module('bahmni.common.offline')
                         parents = response[0].parents;
                     }
 
-                     if(parent && parent.length > 0 ){
-                         _.each(parent, function(member){
-                             if(!_.find(parents.parentConcepts, member)){
-                                 parents.parentConcepts.push(member);
-                             }
-                         })
-                     }
+                    if (parent && parent.length > 0) {
+                        _.each(parent, function (member) {
+                            if (!_.find(parents.parentConcepts, member)) {
+                                parents.parentConcepts.push(member);
+                            }
+                        });
+                    }
 
                     var row = concept.createRow({
                         data: data,
@@ -70,7 +67,6 @@ angular.module('bahmni.common.offline')
                 });
             };
 
-
             var getParents = function (childUuid) {
                 var concept = db.getSchema().table('concept');
                 return db.select(concept.parents)
@@ -81,11 +77,12 @@ angular.module('bahmni.common.offline')
             var updateChildren = function (concept) {
                 var deferred = $q.defer();
                 var length = concept.setMembers.length;
-                if (length == 0)
+                if (length == 0) {
                     deferred.resolve();
+                }
                 var count = 0;
                 _.each(concept.setMembers, function (child) {
-                    insertConcept({"results": [child]}, [{conceptName : concept.name.name, uuid: concept.uuid}]).then(function () {
+                    insertConcept({"results": [child]}, [{conceptName: concept.name.name, uuid: concept.uuid}]).then(function () {
                         count++;
                         if (count == length) {
                             deferred.resolve();
@@ -97,8 +94,9 @@ angular.module('bahmni.common.offline')
 
             var updateParentJson = function (child) {
                 return getParents(child.uuid).then(function (response) {
-                    if (response[0].parents == undefined)
+                    if (response[0].parents == undefined) {
                         return;
+                    }
                     _.each(response[0].parents.parentConcepts, function (eachParent) {
                         return getConcept(eachParent.uuid).then(function (parent) {
                             for (var i = 0; i < parent.data.results[0].setMembers.length; i++) {
@@ -110,7 +108,6 @@ angular.module('bahmni.common.offline')
                             updateParentJson(parent.data.results[0]);
                         });
                     });
-
                 });
             };
 
@@ -118,11 +115,11 @@ angular.module('bahmni.common.offline')
                 db = _db;
             };
 
-
             var getAllParentsInHierarchy = function (conceptName, conceptNamesInHierarchy) {
                 return getConceptByName(conceptName).then(function (result) {
-                    if(!result)
+                    if (!result) {
                         return [];
+                    }
                     conceptNamesInHierarchy.push(conceptName);
                     var parentConcepts = result.parents.parentConcepts;
                     // TODO not considering all the parents
@@ -141,5 +138,5 @@ angular.module('bahmni.common.offline')
                 updateChildren: updateChildren,
                 updateParentJson: updateParentJson,
                 getAllParentsInHierarchy: getAllParentsInHierarchy
-            }
+            };
         }]);

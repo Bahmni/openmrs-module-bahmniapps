@@ -3,7 +3,7 @@
 angular.module('bahmni.reports').factory('initialization',
     ['authenticator', 'appService', 'spinner', 'configurations',
         function (authenticator, appService, spinner, configurations) {
-            return function(appName) {
+            return function (appName) {
                 var loadConfigPromise = function () {
                     return configurations.load([]);
                 };
@@ -14,7 +14,7 @@ angular.module('bahmni.reports').factory('initialization',
                 return spinner.forPromise(authenticator.authenticateUser()
                     .then(initApp)
                     .then(loadConfigPromise));
-            }
+            };
         }
     ]
 );

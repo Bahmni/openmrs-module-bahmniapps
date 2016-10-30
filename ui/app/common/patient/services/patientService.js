@@ -2,7 +2,6 @@
 
 angular.module('bahmni.common.patient')
     .service('patientService', ['$http', 'sessionService', function ($http, sessionService) {
-
         this.getPatient = function (uuid) {
             var patient = $http.get(Bahmni.Common.Constants.openmrsUrl + "/ws/rest/v1/patient/" + uuid, {
                 method: "GET",
@@ -21,8 +20,7 @@ angular.module('bahmni.common.patient')
         };
 
         this.findPatients = function (params) {
-
-            return $http.get( Bahmni.Common.Constants.sqlUrl  , {
+            return $http.get(Bahmni.Common.Constants.sqlUrl, {
                 method: "GET",
                 params: params,
                 withCredentials: true
@@ -54,5 +52,5 @@ angular.module('bahmni.common.patient')
                 },
                 withCredentials: true
             });
-        }
+        };
     }]);

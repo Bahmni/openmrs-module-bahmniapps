@@ -1,6 +1,6 @@
 'use strict';
 angular.module('bahmni.common.domain')
-    .factory('programService', ['$http','programHelper', 'appService',function ($http, programHelper, appService) {
+    .factory('programService', ['$http', 'programHelper', 'appService', function ($http, programHelper, appService) {
         var PatientProgramMapper = new Bahmni.Common.Domain.PatientProgramMapper();
 
         var getAllPrograms = function () {
@@ -34,7 +34,7 @@ angular.module('bahmni.common.domain')
                         state: stateUuid,
                         startDate: moment(dateEnrolled).format(Bahmni.Common.Constants.ServerDateTimeFormat)
                     }
-                ]
+                ];
             }
             return $http.post(req.url, req.content, req.headers);
         };
@@ -66,7 +66,7 @@ angular.module('bahmni.common.domain')
             return $http.post(req.url, req.content, req.headers);
         };
 
-        var deletePatientState = function(patientProgramUuid, patientStateUuid) {
+        var deletePatientState = function (patientProgramUuid, patientStateUuid) {
             var req = {
                 url: Bahmni.Common.Constants.programStateDeletionUrl + "/" + patientProgramUuid + "/state/" + patientStateUuid,
                 content: {
@@ -93,7 +93,7 @@ angular.module('bahmni.common.domain')
         };
 
         var updatePatientProgram = function (patientProgram, programAttributeTypes, dateCompleted) {
-            return savePatientProgram(patientProgram.uuid, PatientProgramMapper.map(patientProgram,programAttributeTypes, dateCompleted));
+            return savePatientProgram(patientProgram.uuid, PatientProgramMapper.map(patientProgram, programAttributeTypes, dateCompleted));
         };
 
         var getProgramStateConfig = function () {
@@ -111,5 +111,4 @@ angular.module('bahmni.common.domain')
             getProgramAttributeTypes: getProgramAttributeTypes,
             getProgramStateConfig: getProgramStateConfig
         };
-
     }]);

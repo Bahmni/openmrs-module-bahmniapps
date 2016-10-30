@@ -15,8 +15,8 @@ angular.module('bahmni.clinical')
             };
 
             $scope.gotoPatientDashboard = function () {
-                if(contextChangeHandler.execute()["allow"]) {
-                    $location.path($stateParams.configName+"/patient/" + patientContext.patient.uuid + "/dashboard");
+                if (contextChangeHandler.execute()["allow"]) {
+                    $location.path($stateParams.configName + "/patient/" + patientContext.patient.uuid + "/dashboard");
                 }
             };
 
@@ -29,7 +29,7 @@ angular.module('bahmni.clinical')
                 $rootScope.$broadcast("event:printVisitTab", $scope.visitTabConfig.currentTab);
             };
 
-            $scope.showPrint = function(){
+            $scope.showPrint = function () {
                 return $scope.visitTabConfig.showPrint();
-            }
+            };
         }]);

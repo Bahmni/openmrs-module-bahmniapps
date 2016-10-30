@@ -10,12 +10,12 @@ angular.module('bahmni.common.uiHelper')
                 });
             });
 
-            $scope.$watch('toggle', function() {
+            $scope.$watch('toggle', function () {
                 $(element).toggleClass('active', $scope.toggle);
             });
 
-            $scope.$on("$destroy", function(){
-               element.off('click');
+            $scope.$on("$destroy", function () {
+                element.off('click');
             });
         };
 
@@ -24,5 +24,5 @@ angular.module('bahmni.common.uiHelper')
                 toggle: "="
             },
             link: link
-        }
+        };
     });

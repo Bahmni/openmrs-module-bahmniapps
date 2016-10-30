@@ -9,7 +9,6 @@ Bahmni.ADT.DispositionDisplayUtil = {
         rankActions[encounterConfig.getTransferEncounterTypeUuid()] = 2;
         rankActions[encounterConfig.getDischargeEncounterTypeUuid()] = 3;
 
-
         if (visit.isDischarged()) {
             return encounterConfig.getDischargeEncounterTypeUuid();
         } else if (visit.isAdmitted() && !visit.isDischarged()) {

@@ -4,18 +4,17 @@ angular.module('bahmni.common.displaycontrol.documents')
     .directive('bmDocuments', ['encounterService', 'spinner', 'configurations', function (encounterService, spinner, configurations) {
         var controller = function ($scope, $filter) {
             var encounterTypeUuid = configurations.encounterConfig().getEncounterTypeUuid($scope.encounterType);
-            
-            $scope.initialization = function() {
+
+            $scope.initialization = function () {
                 return encounterService.getEncountersForEncounterType($scope.patient.uuid, encounterTypeUuid).then(function (response) {
                     $scope.records = new Bahmni.Clinical.PatientFileObservationsMapper().map(response.data.results);
                     if ($scope.config.visitUuids) {
-                        $scope.records = _.filter($scope.records, function(record) {
+                        $scope.records = _.filter($scope.records, function (record) {
                             return $scope.config.visitUuids.indexOf(record.visitUuid) != -1;
                         });
                     }
                     $scope.recordGroups = new Bahmni.Clinical.RecordsMapper().map($scope.records);
-
-                });                
+                });
             };
 
             $scope.shouldShowActiveVisitStar = function (records) {
@@ -28,8 +27,8 @@ angular.module('bahmni.common.displaycontrol.documents')
                 });
             };
         };
-        
-        var link = function($scope, element) {
+
+        var link = function ($scope, element) {
             spinner.forPromise($scope.initialization(), element);
         };
 

@@ -1,9 +1,9 @@
 'use strict';
 
 angular.module('bahmni.common.uiHelper')
- .directive('bmBackLinks', function() {
-	return {
-		template: '<ul>' +
+ .directive('bmBackLinks', function () {
+     return {
+         template: '<ul>' +
 					    '<li ng-repeat="backLink in backLinks">' +
 					        '<a class="back-btn" ng-if="backLink.action" accesskey="{{backLink.accessKey}}" ng-click="closeAllDialogs();backLink.action()" id="{{backLink.id}}"> <span ng-bind-html="backLink.label"></span> </a>' +
 					        '<a class="back-btn" ng-class="{\'dashboard-link\':backLink.image}" ng-if="backLink.url" accesskey="{{backLink.accessKey}}" ng-href="{{backLink.url}}" ng-click="closeAllDialogs()" id="{{backLink.id}}"  title="{{backLink.title}}"> ' +
@@ -16,19 +16,19 @@ angular.module('bahmni.common.uiHelper')
 		'		</a>' +
 					    '</li>' +
 					'</ul>',
-		controller: function ($scope, backlinkService) {
+         controller: function ($scope, backlinkService) {
 	        $scope.backLinks = backlinkService.getAllUrls();
-			$scope.$on('$stateChangeSuccess', function (event, state) {
+             $scope.$on('$stateChangeSuccess', function (event, state) {
 	            if (state.data && state.data.backLinks) {
-					backlinkService.setUrls(state.data.backLinks);
+                backlinkService.setUrls(state.data.backLinks);
 	                $scope.backLinks = backlinkService.getAllUrls();
 	            }
 	        });
 
-			$scope.$on("$destroy", function() {
-				window.onbeforeunload = undefined;
-			});
-		},
+             $scope.$on("$destroy", function () {
+                 window.onbeforeunload = undefined;
+             });
+         },
 	    restrict: 'E'
-	}
-});
+     };
+ });

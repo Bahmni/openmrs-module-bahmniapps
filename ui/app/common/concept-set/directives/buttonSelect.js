@@ -29,7 +29,7 @@ angular.module('bahmni.common.conceptSet')
 
                 $scope.getAnswerDisplayName = function (answer) {
                     var shortName = answer.names ? _.first(answer.names.filter(function (name) {
-                        return name.conceptNameType === 'SHORT'
+                        return name.conceptNameType === 'SHORT';
                     })) : null;
                     return shortName ? shortName.name : answer.displayString;
                 };

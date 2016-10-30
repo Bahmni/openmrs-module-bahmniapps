@@ -9,7 +9,7 @@
             concept: concept,
             uuid: concept.uuid,
             name: conceptName
-        }
+        };
     };
 
     var find = function (allAnswers, savedAnswer) {
@@ -51,10 +51,10 @@
                 onChange: '&',
                 onInvalidClass: '@',
                 isValid: '=',
-                ngDisabled:'='
+                ngDisabled: '='
             },
             templateUrl: '../common/uicontrols/concept-dropdown/views/conceptDropdown.html'
-        }
+        };
     };
 
     conceptDropdown.$inject = toBeInjected;

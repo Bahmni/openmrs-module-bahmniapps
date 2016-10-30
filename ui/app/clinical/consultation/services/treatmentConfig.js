@@ -3,7 +3,6 @@
 angular.module('bahmni.clinical').factory('treatmentConfig',
     ['TreatmentService', 'spinner', 'configurationService', 'appService', '$q', '$translate',
         function (treatmentService, spinner, configurationService, appService, $q, $translate) {
-
             var getConfigFromServer = function (baseTreatmentConfig) {
                 return treatmentService.getConfig().then(function (result) {
                     var config = angular.extend(baseTreatmentConfig, result.data);
@@ -14,8 +13,8 @@ angular.module('bahmni.clinical').factory('treatmentConfig',
                     ];
                     config.frequencies = _(config.frequencies)
                         .reverse()
-                        .sortBy({'name':'Immediately'})
-                        .sortBy({'name':'SOS'})
+                        .sortBy({'name': 'Immediately'})
+                        .sortBy({'name': 'SOS'})
                         .reverse()
                         .value();
                     return config;
@@ -46,25 +45,25 @@ angular.module('bahmni.clinical').factory('treatmentConfig',
                         return drugOrderOptions.allowNonCodedDrugs;
                     },
                     getDoseUnits: function () {
-                        return drugOrderOptions.doseUnits
+                        return drugOrderOptions.doseUnits;
                     },
                     getRoutes: function () {
-                        return drugOrderOptions.routes
+                        return drugOrderOptions.routes;
                     },
                     getDurationUnits: function () {
-                        return drugOrderOptions.durationUnits
+                        return drugOrderOptions.durationUnits;
                     },
                     getDosingInstructions: function () {
-                        return drugOrderOptions.dosingInstructions
+                        return drugOrderOptions.dosingInstructions;
                     },
                     getDispensingUnits: function () {
-                        return drugOrderOptions.dispensingUnits
+                        return drugOrderOptions.dispensingUnits;
                     },
                     getFrequencies: function () {
-                        return drugOrderOptions.frequencies
+                        return drugOrderOptions.frequencies;
                     },
                     getDosePlaceHolder: function () {
-                        return drugOrderOptions.dosePlaceHolder
+                        return drugOrderOptions.dosePlaceHolder;
                     },
                     getDoseFractions: function () {
                         return drugOrderOptions.doseFractions;

@@ -2,9 +2,9 @@
 
 angular.module('bahmni.common.appFramework')
     .service('mergeService', [function () {
-         this.merge = function(base,custom) {
-             var mergeResult = $.extend(true, {}, base, custom);
-             return deleteNullValuedKeys(mergeResult);
+        this.merge = function (base, custom) {
+            var mergeResult = $.extend(true, {}, base, custom);
+            return deleteNullValuedKeys(mergeResult);
         };
         var deleteNullValuedKeys = function (currentObject) {
             _.forOwn(currentObject, function (value, key) {
@@ -14,5 +14,5 @@ angular.module('bahmni.common.appFramework')
                 }
             });
             return currentObject;
-        }
+        };
     }]);

@@ -17,15 +17,15 @@ angular.module('bahmni.adt').factory('initialization', ['$rootScope', '$q', 'app
         };
 
         var initApp = function () {
-            return appService.initApp('adt', {'app': true, 'extension': true}).then(function(data){
+            return appService.initApp('adt', {'app': true, 'extension': true}).then(function (data) {
                 var config = data.getConfig("onAdmissionForwardTo", false);
                 data.baseConfigs.dashboard.value.sections = _.sortBy(data.baseConfigs.dashboard.value.sections, function (section) {
-                        return section.displayOrder;
-                    }
+                    return section.displayOrder;
+                }
                 );
                 data.baseConfigs.isBedManagementEnabled = {name: 'isBedManagementEnabled', value: _.includes(config[0].value, 'bed')};
-                if(config[1]){
-                    data.customConfigs.isBedManagementEnabled={name: 'isBedManagementEnabled', value: _.includes(config[1].value, 'bed')};
+                if (config[1]) {
+                    data.customConfigs.isBedManagementEnabled = {name: 'isBedManagementEnabled', value: _.includes(config[1].value, 'bed')};
                 }
             });
         };

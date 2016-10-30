@@ -1,11 +1,10 @@
 'use strict';
 
 angular.module('bahmni.clinical')
-    .controller('BacteriologyController', ['$scope', '$rootScope', 'contextChangeHandler', 'spinner', 'conceptSetService', 
-        'messagingService', 'bacteriologyConceptSet','appService',  'retrospectiveEntryService',
-        function ($scope, $rootScope, contextChangeHandler, spinner, conceptSetService, messagingService, bacteriologyConceptSet, 
-                  appService,retrospectiveEntryService) {
-
+    .controller('BacteriologyController', ['$scope', '$rootScope', 'contextChangeHandler', 'spinner', 'conceptSetService',
+        'messagingService', 'bacteriologyConceptSet', 'appService', 'retrospectiveEntryService',
+        function ($scope, $rootScope, contextChangeHandler, spinner, conceptSetService, messagingService, bacteriologyConceptSet,
+                  appService, retrospectiveEntryService) {
             $scope.consultation.extensions = $scope.consultation.extensions ? $scope.consultation.extensions : {mdrtbSpecimen: []};
             var initializeBacteriologyScope = function () {
                 $scope.savedSpecimens = $scope.consultation.savedSpecimens || $scope.consultation.extensions.mdrtbSpecimen;
@@ -17,13 +16,12 @@ angular.module('bahmni.clinical')
 
             $scope.today = Bahmni.Common.Util.DateUtil.getDateWithoutTime(Bahmni.Common.Util.DateUtil.now());
 
-            $scope.isRetrospectiveMode = function(){
+            $scope.isRetrospectiveMode = function () {
                 return !_.isEmpty(retrospectiveEntryService.getRetrospectiveEntry());
             };
 
-
             var init = function () {
-                if( appService.getAppDescriptor().getConfigValue("showSaveConfirmDialog")){
+                if (appService.getAppDescriptor().getConfigValue("showSaveConfirmDialog")) {
                     $scope.$broadcast("event:pageUnload");
                 }
                 var additionalAttributes = _.find(bacteriologyConceptSet.setMembers, function (member) {
@@ -40,9 +38,9 @@ angular.module('bahmni.clinical')
                     return member.name.name === "Specimen Sample Source";
                 });
                 $scope.allSamples = sampleSource !== undefined && _.map(sampleSource.answers, function (answer) {
-                        return new Bahmni.Common.Domain.ConceptMapper().map(answer);
-                    });
-                if($scope.savedSpecimens) {
+                    return new Bahmni.Common.Domain.ConceptMapper().map(answer);
+                });
+                if ($scope.savedSpecimens) {
                     $scope.savedSpecimens = _.sortBy($scope.savedSpecimens, 'dateCollected').reverse();
                 }
                 if ($scope.newSpecimens.length === 0) {
@@ -63,7 +61,7 @@ angular.module('bahmni.clinical')
                 var dirtySpecimens = _.filter($scope.newSpecimens, function (specimen) {
                     return (specimen.isDirty());
                 });
-                _.each(dirtySpecimens, function(dirtySpecimen) {
+                _.each(dirtySpecimens, function (dirtySpecimen) {
                     dirtySpecimen.hasIllegalDateCollected = !dirtySpecimen.dateCollected;
                     dirtySpecimen.hasIllegalType = !dirtySpecimen.type;
                     dirtySpecimen.hasIllegalTypeFreeText = !dirtySpecimen.typeFreeText;
@@ -72,7 +70,6 @@ angular.module('bahmni.clinical')
             };
 
             var saveSpecimens = function () {
-
                 var savableSpecimens = _.filter($scope.newSpecimens, function (specimen) {
                     return !specimen.isEmpty() || specimen.voidIfEmpty();
                 });
@@ -90,36 +87,33 @@ angular.module('bahmni.clinical')
                 }
             };
 
-
             $scope.editSpecimen = function (specimen) {
-                    $scope.savedSpecimens = _.without($scope.savedSpecimens, specimen);
-                    $scope.newSpecimens.push(new Bahmni.Clinical.Specimen(specimen,$scope.allSamples));
+                $scope.savedSpecimens = _.without($scope.savedSpecimens, specimen);
+                $scope.newSpecimens.push(new Bahmni.Clinical.Specimen(specimen, $scope.allSamples));
 
                 handleSampleTypeOther();
             };
 
-            $scope.handleUpdate = function() {
+            $scope.handleUpdate = function () {
                 handleSampleTypeOther();
             };
 
             $scope.deleteSpecimen = function (specimen) {
-
                 if (specimen.isExistingSpecimen()) {
                     specimen.setMandatoryFieldsBeforeSavingVoidedSpecimen();
                     $scope.deletedSpecimens.push(specimen);
                 }
-                    $scope.savedSpecimens = _.without($scope.savedSpecimens, specimen);
-                    $scope.newSpecimens = _.without($scope.newSpecimens, specimen);
-                    if ($scope.newSpecimens.length === 0) {
-                        $scope.createNewSpecimen();
-                    }
-
+                $scope.savedSpecimens = _.without($scope.savedSpecimens, specimen);
+                $scope.newSpecimens = _.without($scope.newSpecimens, specimen);
+                if ($scope.newSpecimens.length === 0) {
+                    $scope.createNewSpecimen();
+                }
             };
 
-            $scope.getDisplayName = function (specimen){
+            $scope.getDisplayName = function (specimen) {
                 var type = specimen.type;
                 var displayName = type && (type.shortName ? type.shortName : type.name);
-                if(displayName ===  Bahmni.Clinical.Constants.bacteriologyConstants.otherSampleType){
+                if (displayName === Bahmni.Clinical.Constants.bacteriologyConstants.otherSampleType) {
                     displayName = specimen.typeFreeText;
                 }
                 return displayName;
@@ -128,16 +122,16 @@ angular.module('bahmni.clinical')
             $scope.consultation.preSaveHandler.register("bacteriologySaveHandlerKey", saveSpecimens);
             $scope.consultation.postSaveHandler.register("bacteriologyPostSaveHandlerKey", initializeBacteriologyScope);
 
-            var handleSampleTypeOther = function(){
-                for(var specimen in $scope.newSpecimens){
-                    if($scope.newSpecimens[specimen].type && $scope.newSpecimens[specimen].type.name === Bahmni.Clinical.Constants.bacteriologyConstants.otherSampleType){
+            var handleSampleTypeOther = function () {
+                for (var specimen in $scope.newSpecimens) {
+                    if ($scope.newSpecimens[specimen].type && $scope.newSpecimens[specimen].type.name === Bahmni.Clinical.Constants.bacteriologyConstants.otherSampleType) {
                         $scope.newSpecimens[specimen].showTypeFreeText = true;
-                        if($scope.freeText) {
+                        if ($scope.freeText) {
                             $scope.newSpecimens[specimen].typeFreeText = $scope.freeText;
                         }
-                    }else{
+                    } else {
                         $scope.newSpecimens[specimen].showTypeFreeText = false;
-                        if($scope.newSpecimens[specimen].type) {
+                        if ($scope.newSpecimens[specimen].type) {
                             $scope.freeText = $scope.newSpecimens[specimen].typeFreeText;
                             $scope.newSpecimens[specimen].typeFreeText = null;
                         }
