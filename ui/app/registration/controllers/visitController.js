@@ -3,7 +3,7 @@
 angular.module('bahmni.registration')
     .controller('VisitController', ['$window', '$scope', '$rootScope', '$state', '$bahmniCookieStore', 'patientService', 'encounterService', '$stateParams', 'spinner', '$timeout', '$q', 'appService', 'openmrsPatientMapper', 'contextChangeHandler', 'messagingService', 'sessionService', 'visitService', '$location', '$translate',
         function ($window, $scope, $rootScope, $state, $bahmniCookieStore, patientService, encounterService, $stateParams, spinner, $timeout, $q, appService, patientMapper, contextChangeHandler, messagingService, sessionService, visitService, $location, $translate) {
-            var self = this;
+            var vm = this;
             var patientUuid = $stateParams.patientUuid;
             var extensions = appService.getAppDescriptor().getExtensions("org.bahmni.registration.conceptSetGroup.observations", "config");
             var locationUuid = sessionService.getLoginLocationUuid();
@@ -91,13 +91,13 @@ angular.module('bahmni.registration')
                     }
 
                     var hasActiveVisit = activeVisitForCurrentLoginLocation.length > 0;
-                    self.visitUuid = hasActiveVisit ? activeVisitForCurrentLoginLocation[0].uuid : "";
+                    vm.visitUuid = hasActiveVisit ? activeVisitForCurrentLoginLocation[0].uuid : "";
                     $scope.canCloseVisit = isUserPrivilegedToCloseVisit() && hasActiveVisit;
                 });
             };
 
             $scope.closeVisitIfDischarged = function () {
-                visitService.getVisitSummary(self.visitUuid).then(function (response) {
+                visitService.getVisitSummary(vm.visitUuid).then(function (response) {
                     var visitSummary = response.data;
                     if (visitSummary.admissionDetails && !visitSummary.dischargeDetails) {
                         messagingService.showMessage("error", 'REGISTRATION_VISIT_CANNOT_BE_CLOSED');
