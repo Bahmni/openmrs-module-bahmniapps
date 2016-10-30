@@ -41,3 +41,52 @@ rules:
     - 4
   quotes:
     - off
+
+  # The following are set to 'warn' level until they can be fixed
+  # They're sorted in ascending order of the number of issues, as at
+  # this commit
+  angular/controller-as-vm: warn
+  angular/interval-service: warn
+  angular/module-getter: warn
+  brace-style: warn
+  new-cap: warn
+  no-array-constructor: warn
+  no-cond-assign: warn
+  no-extra-boolean-cast: warn
+  no-irregular-whitespace: warn
+  no-new-func: warn
+  standard/computed-property-even-spacing: warn
+  angular/timeout-service: warn
+  camelcase: warn
+  no-eval: warn
+  no-extend-native: warn
+  no-return-assign: warn
+  no-throw-literal: warn
+  angular/typecheck-array: warn
+  handle-callback-err: warn
+  angular/no-private-call: warn
+  angular/no-services: warn
+  angular/typecheck-object: warn
+  angular/document-service: warn
+  no-redeclare: warn
+  operator-linebreak: warn
+  angular/controller-as-route: warn
+  object-property-newline: warn
+  no-useless-escape: warn
+  angular/on-watch: warn
+  no-unused-vars: warn
+  no-undef: warn
+  one-var: warn
+  angular/log: warn
+  angular/window-service: warn
+  standard/object-curly-even-spacing: warn
+  no-unneeded-ternary: warn
+  angular/angularelement: warn
+  no-mixed-spaces-and-tabs: warn
+  no-tabs: warn
+  angular/json-functions: warn
+  angular/no-service-method: warn
+  angular/definedundefined: warn
+  eqeqeq: warn
+  angular/di: warn
+  angular/controller-as: warn
