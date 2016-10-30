@@ -202,7 +202,7 @@ Bahmni.Common.AppFramework.AppDescriptor = function (context, inheritContext, re
             queryString = locationSearchString || window.location.search.substring(1);
 
         urlParams = {};
-        while (match = search.exec(queryString)) {
+        while (match = search.exec(queryString)) {  // eslint-disable-line no-cond-assign
             urlParams[decode(match[1])] = decode(match[2]);
         }
         return urlParams;
