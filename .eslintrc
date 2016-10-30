@@ -87,5 +87,7 @@ rules:
   angular/no-service-method: warn
   angular/definedundefined: warn
   eqeqeq: warn
-  angular/di: warn
+  angular/di:
+    - warn
+    - array
   angular/controller-as: warn
