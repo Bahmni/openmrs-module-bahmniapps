@@ -47,7 +47,6 @@ rules:
   # this commit
   no-cond-assign: warn
   no-extra-boolean-cast: warn
-  no-irregular-whitespace: warn
   no-new-func: warn
   standard/computed-property-even-spacing: warn
   angular/timeout-service: warn
@@ -77,7 +76,6 @@ rules:
   no-unneeded-ternary: warn
   angular/angularelement: warn
   no-mixed-spaces-and-tabs: warn
-  no-tabs: warn
   angular/json-functions: warn
   angular/no-service-method: warn
   angular/definedundefined: warn

@@ -11,6 +11,6 @@ angular.module('bahmni.clinical')
       };
 
       this.getVisitUrl = function (visitUuid) {
-          return this.getPatientUrl() + '/visit/' + visitUuid;
+          return this.getPatientUrl() + '/visit/' + visitUuid;
       };
   }]);
