@@ -23,7 +23,7 @@ angular.module('bahmni.clinical')
                         var allTemplates = response.data.results[0].setMembers;
                         createConceptSections(allTemplates);
                         $scope.consultation.selectedObsTemplate = getSelectedObsTemplate(allConceptSections);
-                        if (!!$state.params.programUuid) {
+                        if ($state.params.programUuid) {
                             showOnlyTemplatesFilledInProgram();
                         }
                     }));
