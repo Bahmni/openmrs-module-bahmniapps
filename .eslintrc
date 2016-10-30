@@ -72,7 +72,6 @@ rules:
   standard/object-curly-even-spacing: warn
   no-unneeded-ternary: warn
   angular/angularelement: warn
-  no-mixed-spaces-and-tabs: warn
   angular/json-functions: warn
   angular/no-service-method: warn
   angular/definedundefined: warn
