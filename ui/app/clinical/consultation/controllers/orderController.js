@@ -27,7 +27,7 @@ angular.module('bahmni.clinical')
             };
 
             var findTest = function(testUuid) {
-                var test = undefined;
+                var test;
                 var allLeftCategories = $scope.getOrderTemplate($scope.activeTab.name).setMembers;
                 _.each(allLeftCategories, function(leftCategory) {
                     var foundTest = _.find(leftCategory.setMembers, function(test) {

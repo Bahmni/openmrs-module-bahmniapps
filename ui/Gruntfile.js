@@ -93,15 +93,11 @@ module.exports = function (grunt) {
                     "dist/home/index.html" : "dist/home/index.html"}
             }
         },
-        jshint: {
-            options:{
-                force: true,
-                jshintrc: '.jshintrc',
-                verbose: true,
-                reporter: require('jshint-stylish')
-
+        eslint: {
+            options: {
+                // fix: true
             },
-            all: [
+            target: [
                 'Gruntfile.js',
                 '<%= yeoman.app %>/**/*.js',
                 '!<%= yeoman.app %>/**/*.min.js',
@@ -552,7 +548,7 @@ module.exports = function (grunt) {
     grunt.registerTask('bundle', [
         'npm-install',
         'bower-install',
-        'jshint',
+        'eslint',
         'clean:dist',
         'compass:dist',
         'useminPrepare',
@@ -574,7 +570,7 @@ module.exports = function (grunt) {
     grunt.registerTask('build', [
         'npm-install',
         'bower-install',
-        'jshint',
+        'eslint',
         'dist'
     ]);
 

@@ -320,7 +320,7 @@ angular.module('bahmni.common.conceptSet')
                 var processConditions = function (flattenedObs, fields, disable, error) {
                     _.each(fields, function (field) {
                         var matchingObsArray = [];
-                        var clonedObsInSameGroup = undefined;
+                        var clonedObsInSameGroup;
                         flattenedObs.forEach(function (obs) {
                             if(clonedObsInSameGroup != false && obs.concept.name == field) {
                                 matchingObsArray.push(obs);
