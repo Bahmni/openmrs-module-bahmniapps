@@ -4,16 +4,16 @@ Bahmni.Clinical.ConceptWeightBasedSorter = function (allTestAndPanelsConcept) {
     var sortedConcepts = allTestAndPanelsConcept ? allTestAndPanelsConcept.setMembers : [];
     var sortedNames = sortedConcepts.map(function (concept) { return concept.name.name; });
 
-	  this.sort = function (conceptHolders, nameToSort) {
-      if (!conceptHolders) {
-          return [];
-      }
-      conceptHolders.forEach(function (conceptHolder) {
-          var index = sortedNames.indexOf(nameToSort ? nameToSort(conceptHolder) : conceptHolder.concept.name);
-          conceptHolder.sortWeight = index === -1 ? 999 : index;
-      });
-      return _.sortBy(conceptHolders, 'sortWeight');
-  };
+    this.sort = function (conceptHolders, nameToSort) {
+        if (!conceptHolders) {
+            return [];
+        }
+        conceptHolders.forEach(function (conceptHolder) {
+            var index = sortedNames.indexOf(nameToSort ? nameToSort(conceptHolder) : conceptHolder.concept.name);
+            conceptHolder.sortWeight = index === -1 ? 999 : index;
+        });
+        return _.sortBy(conceptHolders, 'sortWeight');
+    };
 
     this.sortTestResults = function (labOrderResults) {
         if (!labOrderResults) {

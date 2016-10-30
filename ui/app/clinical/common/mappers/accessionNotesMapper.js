@@ -7,10 +7,10 @@ Bahmni.Clinical.AccessionNotesMapper = function (encounterConfig) {
 
     var addAccessionNote = function (accessions, accessionNote) {
         var accession = _.find(accessions, {accessionUuid: accessionNote.accessionUuid});
-	    if (accession) {
-	        accession.accessionNotes = accession.accessionNotes || [];
-	        accession.accessionNotes.push(accessionNote);
-	    }
+        if (accession) {
+            accession.accessionNotes = accession.accessionNotes || [];
+            accession.accessionNotes.push(accessionNote);
+        }
     };
 
     this.map = function (encounters, accessions) {
