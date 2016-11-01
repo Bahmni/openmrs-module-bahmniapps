@@ -16,6 +16,13 @@ angular.module('bahmni.home')
                 $scope.selectedLocale = $translate.use()? $translate.use() : $scope.locales[0];
             });
 
+             $scope.isChrome = function(){
+                if($window.navigator.userAgent.indexOf("Chrome") != -1 ) {
+                    return true;
+                }
+                return false;
+            };
+
             $scope.$watch('selectedLocale', function(){
                 $translate.use($scope.selectedLocale);
             });
