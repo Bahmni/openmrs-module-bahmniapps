@@ -117,7 +117,7 @@
                 $scope.save = function () {
                     if (validationSuccess()) {
                         getValidOrderSetMembers();
-                        spinner.forPromise(adminOrderSetService.createOrUpdateOrderSet($scope.orderSet).then(function (response) {
+                        return spinner.forPromise(adminOrderSetService.createOrUpdateOrderSet($scope.orderSet).then(function (response) {
                             $state.params.orderSetUuid = response.data.uuid;
                             return $state.transitionTo($state.current, $state.params, {
                                 reload: true,
@@ -128,6 +128,7 @@
                             });
                         }));
                     }
+                    return $q.when({});
                 };
 
                 var getValidOrderSetMembers = function () {
