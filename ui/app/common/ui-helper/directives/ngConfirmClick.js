@@ -13,6 +13,6 @@ angular.module('bahmni.common.uiHelper')
         };
         return {
             restrict: 'A',
-            link:link
+            link: link
         };
     });

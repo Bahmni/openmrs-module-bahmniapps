@@ -1,7 +1,6 @@
 'use strict';
 
 Bahmni.DiagnosisMapper = function (diagnosisStatus) {
-
     var self = this;
 
     var mapDiagnosis = function (diagnosis) {
@@ -9,7 +8,7 @@ Bahmni.DiagnosisMapper = function (diagnosisStatus) {
             diagnosis.codedAnswer = {
                 name: undefined,
                 uuid: undefined
-            }
+            };
         }
         var mappedDiagnosis = angular.extend(new Bahmni.Common.Domain.Diagnosis(), diagnosis);
         if (mappedDiagnosis.firstDiagnosis) {
@@ -31,7 +30,7 @@ Bahmni.DiagnosisMapper = function (diagnosisStatus) {
 
     self.mapDiagnoses = function (diagnoses) {
         var mappedDiagnoses = [];
-        _.each(diagnoses, function(diagnosis) {
+        _.each(diagnoses, function (diagnosis) {
             mappedDiagnoses.push(mapDiagnosis(diagnosis));
         });
         return mappedDiagnoses;
@@ -60,5 +59,4 @@ Bahmni.DiagnosisMapper = function (diagnosisStatus) {
         });
         return savedDiagnosesFromCurrentEncounter;
     };
-
 };

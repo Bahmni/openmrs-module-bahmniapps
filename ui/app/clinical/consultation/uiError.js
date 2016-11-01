@@ -1,12 +1,11 @@
 'use strict';
 
 Bahmni.Clinical.Error = (function () {
-
     var messages = Bahmni.Common.Constants.serverErrorMessages;
 
-    var findClientMessage = function(message) {
+    var findClientMessage = function (message) {
         var result = _.find(messages, function (listItem) {
-            return listItem.serverMessage === message
+            return listItem.serverMessage === message;
         });
         return result && result.clientMessage || message;
     };
@@ -20,5 +19,5 @@ Bahmni.Clinical.Error = (function () {
 
     return {
         translate: translate
-    }
+    };
 })();

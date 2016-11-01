@@ -2,7 +2,6 @@
 
 angular.module('bahmni.registration')
     .factory('identifiers', ['$rootScope', 'Preferences', function ($rootScope, preferences) {
-
         var create = function () {
             var identifiers = [];
             _.each($rootScope.patientConfiguration.identifierTypes, function (identifierType) {
@@ -17,7 +16,7 @@ angular.module('bahmni.registration')
             return {
                 primaryIdentifier: getPrimaryIdentifier(identifiers),
                 extraIdentifiers: getExtraIdentifiers(identifiers)
-            }
+            };
         };
 
         var mapIdentifiers = function (identifiers) {
@@ -30,7 +29,7 @@ angular.module('bahmni.registration')
             return {
                 primaryIdentifier: getPrimaryIdentifier(mappedIdentifiers),
                 extraIdentifiers: getExtraIdentifiers(mappedIdentifiers)
-            }
+            };
         };
 
         var getPrimaryIdentifier = function (identifiers) {
@@ -44,5 +43,5 @@ angular.module('bahmni.registration')
         return {
             create: create,
             mapIdentifiers: mapIdentifiers
-        }
+        };
     }]);

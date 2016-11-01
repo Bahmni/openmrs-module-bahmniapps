@@ -25,7 +25,7 @@ Bahmni.Common.OrderSet = (function () {
         });
     };
 
-    var OrderTemplate = function(member){
+    var OrderTemplate = function (member) {
         var orderTemplate = member.orderTemplate ? JSON.parse(member.orderTemplate) : {
             drug: member.drug,
             dosingInstructions: member.dosingInstructions
@@ -48,7 +48,7 @@ Bahmni.Common.OrderSet = (function () {
     };
 
     return {
-        create : create,
-        createOrderSetMember : createOrderSetMember
+        create: create,
+        createOrderSetMember: createOrderSetMember
     };
 })();

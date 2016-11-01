@@ -2,7 +2,6 @@
 
 angular.module('opd.documentupload')
     .directive('fileUpload', [function () {
-
         var link = function (scope, element) {
             element.bind("change", function () {
                 var file = element[0].files[0];
@@ -18,8 +17,8 @@ angular.module('opd.documentupload')
             restrict: 'A',
             scope: {
                 'visit': '=',
-                'onSelect':'&'
+                'onSelect': '&'
             },
             link: link
-        }
+        };
     }]);

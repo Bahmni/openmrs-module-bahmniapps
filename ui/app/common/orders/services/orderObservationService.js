@@ -2,14 +2,13 @@
 
 angular.module('bahmni.common.orders')
     .factory('orderObservationService', ['encounterService', function (encounterService) {
-
-        var save = function(orders, patient, locationUuid) {
+        var save = function (orders, patient, locationUuid) {
             var observationFilter = new Bahmni.Common.Domain.ObservationFilter();
             var observations = [];
 
-            orders.forEach(function(order){
-                if(order.bahmniObservations) {
-                    order.bahmniObservations.forEach(function(obs){
+            orders.forEach(function (order) {
+                if (order.bahmniObservations) {
+                    order.bahmniObservations.forEach(function (obs) {
                         addOrderUuidToObservation(obs, order.orderUuid);
                     });
 
@@ -17,7 +16,6 @@ angular.module('bahmni.common.orders')
                     observations.push.apply(observations, observationFilter.filter(orderObs));
                 }
             });
-
 
             var encounterData = {
                 locationUuid: locationUuid,
@@ -30,11 +28,11 @@ angular.module('bahmni.common.orders')
             return encounterService.create(encounterData);
         };
 
-        var addOrderUuidToObservation = function(observation, orderUuid){
+        var addOrderUuidToObservation = function (observation, orderUuid) {
             observation.orderUuid = orderUuid;
-            if(observation.groupMembers && observation.groupMembers.length > 0){
-                observation.groupMembers.forEach(function(member){
-                    addOrderUuidToObservation(member, orderUuid)
+            if (observation.groupMembers && observation.groupMembers.length > 0) {
+                observation.groupMembers.forEach(function (member) {
+                    addOrderUuidToObservation(member, orderUuid);
                 });
             }
         };

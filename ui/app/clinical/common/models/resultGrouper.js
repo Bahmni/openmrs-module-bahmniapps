@@ -1,8 +1,8 @@
 'use strict';
 
-Bahmni.Clinical.ResultGrouper = function(){};
+Bahmni.Clinical.ResultGrouper = function () {};
 
-Bahmni.Clinical.ResultGrouper.prototype.group = function(inputArray, groupKeyFunction, nameForGroupedValue, nameForKey) {
+Bahmni.Clinical.ResultGrouper.prototype.group = function (inputArray, groupKeyFunction, nameForGroupedValue, nameForKey) {
     var result = [];
     var arrayInObjectForm = {};
     nameForKey = nameForKey || 'key';

@@ -1,10 +1,10 @@
 'use strict';
 
 angular.module('bahmni.common.uiHelper')
-    .service('confirmBox', ['$rootScope','ngDialog',function ($rootScope,ngDialog) {
-        var confirmBox = function(config){
+    .service('confirmBox', ['$rootScope', 'ngDialog', function ($rootScope, ngDialog) {
+        var confirmBox = function (config) {
             var confirmBoxScope = $rootScope.$new();
-            confirmBoxScope.close = function(){
+            confirmBoxScope.close = function () {
                 ngDialog.close();
                 confirmBoxScope.$destroy();
             };
@@ -13,7 +13,7 @@ angular.module('bahmni.common.uiHelper')
             ngDialog.open({
                 template: '../common/ui-helper/views/confirmBox.html',
                 scope: confirmBoxScope,
-                className: config.className||'ngdialog-theme-default'
+                className: config.className || 'ngdialog-theme-default'
             });
         };
         return confirmBox;

@@ -2,7 +2,6 @@
 
 angular.module('bahmni.clinical')
     .directive('orderSelector', [function () {
-
         var link = function ($scope) {
             $scope.hasTests = function () {
                 var rootConcept = $scope.tab.leftCategory;

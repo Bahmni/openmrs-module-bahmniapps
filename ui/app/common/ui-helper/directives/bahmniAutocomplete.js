@@ -11,18 +11,18 @@ angular.module('bahmni.common.uiHelper')
         var formElement = element[0];
         var validationMessage = scope.validationMessage || 'Please select a value from auto complete';
 
-        var validateIfNeeded = function(value){
-           if(!scope.strictSelect) {
-               return;
-           }
+        var validateIfNeeded = function (value) {
+            if (!scope.strictSelect) {
+                return;
+            }
             scope.isInvalid = (value !== scope.selectedValue);
-            if (_.isEmpty(value)){
+            if (_.isEmpty(value)) {
                 scope.isInvalid = false;
             }
         };
 
-        scope.$watch('initialValue', function() {
-            if(scope.initialValue) {
+        scope.$watch('initialValue', function () {
+            if (scope.initialValue) {
                 scope.selectedValue = scope.initialValue;
                 scope.isInvalid = false;
             }
@@ -33,18 +33,18 @@ angular.module('bahmni.common.uiHelper')
             minLength: minLength,
             source: function (request, response) {
                 source({elementId: attrs.id, term: request.term, elementType: attrs.type}).then(function (data) {
-                    var results = responseMap ? responseMap(data) : data ;
+                    var results = responseMap ? responseMap(data) : data;
                     response(results);
                 });
             },
             select: function (event, ui) {
                 scope.selectedValue = ui.item.value;
                 ngModelCtrl.$setViewValue(ui.item.value);
-                if(onSelect != null) {
+                if (onSelect != null) {
                     onSelect(ui.item);
                 }
                 validateIfNeeded(ui.item.value);
-                if(scope.blurOnSelect) {
+                if (scope.blurOnSelect) {
                     element.blur();
                 }
                 scope.$apply();
@@ -53,7 +53,7 @@ angular.module('bahmni.common.uiHelper')
                 return true;
             },
             search: function (event, ui) {
-                if(onEdit != null){
+                if (onEdit != null) {
                     onEdit(ui.item);
                 }
                 var searchTerm = $.trim(element.val());
@@ -63,11 +63,11 @@ angular.module('bahmni.common.uiHelper')
                 }
             }
         });
-        var changeHanlder = function(e) {
+        var changeHanlder = function (e) {
             validateIfNeeded(element.val());
         };
 
-        var keyUpHandler = function(e) {
+        var keyUpHandler = function (e) {
             validateIfNeeded(element.val());
             scope.$apply();
         };
@@ -75,7 +75,7 @@ angular.module('bahmni.common.uiHelper')
         element.on('change', changeHanlder);
         element.on('keyup', keyUpHandler);
 
-        scope.$watch('isInvalid', function(){
+        scope.$watch('isInvalid', function () {
             ngModelCtrl.$setValidity('selection', !scope.isInvalid);
             formElement.setCustomValidity(scope.isInvalid ? validationMessage : '');
         });
@@ -83,7 +83,7 @@ angular.module('bahmni.common.uiHelper')
         scope.$on("$destroy", function () {
             element.off('change', changeHanlder);
             element.off('keyup', keyUpHandler);
-        })
+        });
     };
 
     return {

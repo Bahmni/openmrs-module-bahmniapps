@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('bahmni.clinical')
-    .controller('PatientListHeaderController', ['$scope', '$rootScope', '$bahmniCookieStore', 'providerService', 'spinner', 'locationService', '$window', 'ngDialog','retrospectiveEntryService','offlineService','schedulerService', 'offlineStatusService',
+    .controller('PatientListHeaderController', ['$scope', '$rootScope', '$bahmniCookieStore', 'providerService', 'spinner', 'locationService', '$window', 'ngDialog', 'retrospectiveEntryService', 'offlineService', 'schedulerService', 'offlineStatusService',
         function ($scope, $rootScope, $bahmniCookieStore, providerService, spinner, locationService, $window, ngDialog, retrospectiveEntryService, offlineService, schedulerService, offlineStatusService) {
             var DateUtil = Bahmni.Common.Util.DateUtil;
             $scope.maxStartDate = DateUtil.getDateWithoutTime(DateUtil.today());
@@ -13,35 +13,35 @@ angular.module('bahmni.clinical')
             $rootScope.isOfflineApp = offlineService.isOfflineApp();
 
             offlineStatusService.setOfflineOptions();
-            $scope.getProviderList = function() {
+            $scope.getProviderList = function () {
                 return function (searchAttrs) {
                     return providerService.search(searchAttrs.term);
                 };
             };
 
-            $scope.getProviderDataResults = function(data) {
+            $scope.getProviderDataResults = function (data) {
                 return data.data.results.map(function (providerDetails) {
                     return {
                         'value': providerDetails.person ? providerDetails.person.display : providerDetails.display,
                         'uuid': providerDetails.uuid
-                    }
+                    };
                 });
             };
 
-            $scope.providerSelected = function() {
-                return function(providerData){
+            $scope.providerSelected = function () {
+                return function (providerData) {
                     selectedProvider = providerData;
-                }
+                };
             };
 
-            $scope.clearProvider = function(data) {
-                if(!_.isEmpty(selectedProvider) && data !== selectedProvider.value){
+            $scope.clearProvider = function (data) {
+                if (!_.isEmpty(selectedProvider) && data !== selectedProvider.value) {
                     $scope.encounterProvider = '';
                     selectedProvider = {};
                 }
             };
 
-            $scope.windowReload = function() {
+            $scope.windowReload = function () {
                 changeCookieData();
                 $window.location.reload(false);
             };
@@ -50,36 +50,35 @@ angular.module('bahmni.clinical')
                 return getCurrentCookieLocation().uuid === location.uuid;
             };
 
-            $scope.popUpHandler = function() {
+            $scope.popUpHandler = function () {
                 $scope.dialog = ngDialog.open({ template: 'consultation/views/defaultDataPopUp.html', className: 'test ngdialog-theme-default',
                     controller: 'PatientListHeaderController'});
                 $('body').addClass('show-controller-back');
             };
 
-
             $scope.$on('ngDialog.closed', function () {
                 $('body').removeClass('show-controller-back');
             });
 
-            $scope.closePopUp = function() {
+            $scope.closePopUp = function () {
                 ngDialog.close();
             };
 
-            $scope.getTitle = function(){
+            $scope.getTitle = function () {
                 var title = [];
-                if(getCurrentCookieLocation()) {
+                if (getCurrentCookieLocation()) {
                     title.push(getCurrentCookieLocation().name);
                 }
-                if(getCurrentProvider() && getCurrentProvider().value) {
+                if (getCurrentProvider() && getCurrentProvider().value) {
                     title.push(getCurrentProvider().value);
                 }
-                if(retrospectiveEntryService.getRetrospectiveDate()) {
+                if (retrospectiveEntryService.getRetrospectiveDate()) {
                     title.push(DateUtil.formatDateWithoutTime(retrospectiveEntryService.getRetrospectiveDate()));
                 }
                 return title.join(',');
             };
 
-            $scope.sync = function() {
+            $scope.sync = function () {
                 schedulerService.sync(Bahmni.Common.Constants.syncButtonConfiguration);
             };
 
@@ -99,20 +98,20 @@ angular.module('bahmni.clinical')
                 return $bahmniCookieStore.get(Bahmni.Common.Constants.grantProviderAccessDataCookieName);
             };
 
-            var getLocationFor = function(uuid){
-                return _.find($scope.locations, function(location){
+            var getLocationFor = function (uuid) {
+                return _.find($scope.locations, function (location) {
                     return location.uuid === uuid;
-                })
+                });
             };
 
-            var changeCookieData = function() {
+            var changeCookieData = function () {
                 retrospectiveEntryService.resetRetrospectiveEntry($scope.date);
                 $bahmniCookieStore.remove(Bahmni.Common.Constants.grantProviderAccessDataCookieName);
                 $bahmniCookieStore.put(Bahmni.Common.Constants.grantProviderAccessDataCookieName, selectedProvider, {path: '/', expires: 1});
 
                 var selectedLocation = getLocationFor($scope.selectedLocationUuid);
                 $bahmniCookieStore.remove(Bahmni.Common.Constants.locationCookieName);
-                $bahmniCookieStore.put(Bahmni.Common.Constants.locationCookieName, {name: selectedLocation.display, uuid: selectedLocation.uuid},{path: '/', expires: 7});
+                $bahmniCookieStore.put(Bahmni.Common.Constants.locationCookieName, {name: selectedLocation.display, uuid: selectedLocation.uuid}, {path: '/', expires: 7});
             };
 
             var init = function () {
@@ -122,11 +121,11 @@ angular.module('bahmni.clinical')
                 selectedProvider = getCurrentProvider();
 
                 return locationService.getAllByTag("Login Location").then(function (response) {
-                        $scope.locations = response.data.results;
-                        $scope.selectedLocationUuid = getCurrentCookieLocation().uuid;
-                    }
+                    $scope.locations = response.data.results;
+                    $scope.selectedLocationUuid = getCurrentCookieLocation().uuid;
+                }
                 );
             };
 
-            return  init();
+            return init();
         }]);

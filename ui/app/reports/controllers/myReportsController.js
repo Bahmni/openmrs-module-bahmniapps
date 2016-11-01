@@ -28,7 +28,7 @@ angular.module('bahmni.reports')
                 var dateFormat = "MMM D YYYY";
                 var date = moment(report.requestDatetime).format(dateFormat);
                 return moment(date, dateFormat).unix() * 1000;
-            })
+            });
         };
 
         var getDaysInSortedOrder = function (reports) {
@@ -50,7 +50,7 @@ angular.module('bahmni.reports')
         };
 
         $scope.getFormat = function (mimeType) {
-            return reportService.getFormatForMimeType(mimeType)
+            return reportService.getFormatForMimeType(mimeType);
         };
 
         $scope.search = function () {
@@ -65,7 +65,7 @@ angular.module('bahmni.reports')
                     }
                 });
                 day.hidden = hiddenReports === $scope.reports[day.unixTimeStamp].length;
-            })
+            });
         };
 
         $scope.delete = function (reportToDelete, day) {
@@ -79,14 +79,13 @@ angular.module('bahmni.reports')
             });
         };
 
-        $scope.displayErrorPopup = function(report) {
+        $scope.displayErrorPopup = function (report) {
             ngDialog.open({
                 template: 'views/errorMessagePopup.html',
                 className: "ngdialog-theme-default report",
                 data: report.errorMessage
             });
         };
-
 
         init();
     }]);

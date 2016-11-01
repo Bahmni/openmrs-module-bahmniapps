@@ -2,11 +2,11 @@
 
 angular.module('bahmni.common.offline')
     .service('appInfoStrategy', function () {
-        var getVersion = function(){
+        var getVersion = function () {
             var manifest = chrome.app.getDetails();
-             return manifest.version;
+            return manifest.version;
         };
         return {
             getVersion: getVersion
-        }
+        };
     });

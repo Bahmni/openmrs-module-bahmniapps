@@ -4,8 +4,8 @@ angular.module('bahmni.clinical')
     .directive('visitPaginator', ['$state', function ($state) {
         var link = function ($scope) {
             var visits = _.clone($scope.visits).reverse();
-            
-            var visitIndex = _.findIndex(visits, function(visitHistoryEntry) {
+
+            var visitIndex = _.findIndex(visits, function (visitHistoryEntry) {
                 return $scope.currentVisitUuid !== null && visitHistoryEntry.uuid === $scope.currentVisitUuid;
             });
 
@@ -25,13 +25,13 @@ angular.module('bahmni.clinical')
 
             $scope.next = function () {
                 if ($scope.hasNext() && $scope.nextFn) {
-                    $scope.nextFn()(visits[visitIndex+1].uuid);
+                    $scope.nextFn()(visits[visitIndex + 1].uuid);
                 }
             };
 
             $scope.previous = function () {
                 if ($scope.hasPrevious() && $scope.previousFn) {
-                    $scope.previousFn()(visits[visitIndex-1].uuid);
+                    $scope.previousFn()(visits[visitIndex - 1].uuid);
                 }
             };
         };
@@ -47,6 +47,6 @@ angular.module('bahmni.clinical')
             },
             link: link,
             templateUrl: 'common/views/visitPagination.html'
-        }
+        };
     }])
 ;

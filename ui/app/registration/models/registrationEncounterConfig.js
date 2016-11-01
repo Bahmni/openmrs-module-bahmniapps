@@ -1,7 +1,7 @@
 'use strict';
 
 Bahmni.Registration.RegistrationEncounterConfig = (function () {
-    function RegistrationEncounterConfig(conceptData, encounterTypes, visitTypes) {
+    function RegistrationEncounterConfig (conceptData, encounterTypes, visitTypes) {
         this.conceptData = conceptData;
         this.encounterTypes = encounterTypes;
         this.visitTypes = visitTypes;
@@ -24,6 +24,6 @@ Bahmni.Registration.RegistrationEncounterConfig = (function () {
             });
             return visitType;
         }
-    }
+    };
     return RegistrationEncounterConfig;
 })();

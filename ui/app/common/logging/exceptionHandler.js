@@ -1,9 +1,9 @@
 'use strict';
 
 angular.module('bahmni.common.logging')
-.config(function($provide){
-    $provide.decorator("$exceptionHandler", function($delegate, $injector, $window, $log){
-        var logError = function(exception, cause) {
+.config(function ($provide) {
+    $provide.decorator("$exceptionHandler", function ($delegate, $injector, $window, $log) {
+        var logError = function (exception, cause) {
             try {
                 var messagingService = $injector.get('messagingService');
                 var loggingService = $injector.get('loggingService');
@@ -15,7 +15,7 @@ angular.module('bahmni.common.logging')
                     errorUrl: $window.location.href,
                     errorMessage: errorMessage,
                     stackTrace: stackTrace,
-                    cause: ( cause || "" )
+                    cause: (cause || "")
                 };
                 loggingService.log(errorDetails);
                 messagingService.showMessage('error', errorMessage);
@@ -26,12 +26,12 @@ angular.module('bahmni.common.logging')
             }
         };
 
-        var exposeException = function(exceptionDetails) {
+        var exposeException = function (exceptionDetails) {
             window.angular_exception = window.angular_exception || [];
             window.angular_exception.push(exceptionDetails);
         };
 
-        return function(exception, cause){
+        return function (exception, cause) {
             $delegate(exception, cause);
             logError(exception, cause);
         };

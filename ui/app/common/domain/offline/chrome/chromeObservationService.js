@@ -2,7 +2,6 @@
 
 angular.module('bahmni.common.domain')
     .service('observationsServiceStrategy', ['$q', 'offlineDbService', function ($q, offlineDbService) {
-
         this.fetch = function (patientUuid, numberOfVisits, params) {
             var deffered = $q.defer();
             offlineDbService.getVisitsByPatientUuid(patientUuid, numberOfVisits).then(function (visitUuids) {
@@ -20,8 +19,7 @@ angular.module('bahmni.common.domain')
             return deffered.promise;
         };
 
-
-        this.fetchObsForVisit = function(params){
+        this.fetchObsForVisit = function (params) {
             var deferred = $q.defer();
 
             offlineDbService.getObservationsForVisit(params.visitUuid).then(function (obs) {
@@ -55,12 +53,11 @@ angular.module('bahmni.common.domain')
             return $q.when({"data": {"results": []}});
         };
 
-        this.getAllParentsInHierarchy = function(conceptName){
+        this.getAllParentsInHierarchy = function (conceptName) {
             var deferred = $q.defer();
-            offlineDbService.getAllParentsInHierarchy(conceptName).then(function(rootConcept){
+            offlineDbService.getAllParentsInHierarchy(conceptName).then(function (rootConcept) {
                 deferred.resolve({data: rootConcept});
             });
             return deferred.promise;
         };
-
     }]);

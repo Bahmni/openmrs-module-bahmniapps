@@ -2,8 +2,7 @@
 
 angular.module('bahmni.common.domain')
     .service('observationsService', ['$q', 'observationsServiceStrategy', function ($q, observationsServiceStrategy) {
-
-        var fetchAndFilterObservations = function(conceptNames, index, params, listOfObservations) {
+        var fetchAndFilterObservations = function (conceptNames, index, params, listOfObservations) {
             return observationsServiceStrategy.getAllParentsInHierarchy(conceptNames[index]).then(function (result) {
                 params.conceptNames = result.data;
                 return observationsServiceStrategy.fetch(params.patientUuid, params.numberOfVisits, params).then(function (results) {
@@ -19,26 +18,25 @@ angular.module('bahmni.common.domain')
             });
         };
 
-
-        var fetchAndFilterObservationsForVisit = function(params) {
-            if(params.conceptNames)
+        var fetchAndFilterObservationsForVisit = function (params) {
+            if (params.conceptNames) {
                 return fetchAndFilterObservations(params.conceptNames, 0, params, []);
-            else
+            } else {
                 return observationsServiceStrategy.fetchObsForVisit(params).then(function (results) {
                     return $q.when(results.data);
-                });
+                }); }
         };
 
-        var getObservationByIterateOverGroupMembers = function(obs, conceptName, results) {
-            if(obs.concept.name === conceptName && !obs.voided)
+        var getObservationByIterateOverGroupMembers = function (obs, conceptName, results) {
+            if (obs.concept.name === conceptName && !obs.voided) {
                 results.push(obs);
-            _.each(obs.groupMembers, function (groupMember,index) {
-                if(groupMember.voided)
+            }
+            _.each(obs.groupMembers, function (groupMember, index) {
+                if (groupMember.voided) {
                     delete obs.groupMembers[index];
-                else if (groupMember.concept.name === conceptName){
+                } else if (groupMember.concept.name === conceptName) {
                     results.push(groupMember);
-                }
-                else{
+                } else {
                     getObservationByIterateOverGroupMembers(groupMember, conceptName, results);
                 }
             });
@@ -47,7 +45,7 @@ angular.module('bahmni.common.domain')
             });
         };
 
-        var filterObservation = function(obsArray, conceptName){
+        var filterObservation = function (obsArray, conceptName) {
             var actualObs = [];
             _.each(obsArray, function (obs) {
                 getObservationByIterateOverGroupMembers(obs, conceptName, actualObs);
@@ -58,7 +56,7 @@ angular.module('bahmni.common.domain')
         this.fetch = function (patientUuid, conceptNames, scope, numberOfVisits, visitUuid, obsIgnoreList, filterObsWithOrders, patientProgramUuid) {
             var params = {};
             if (obsIgnoreList) {
-                params.obsIgnoreList = obsIgnoreList
+                params.obsIgnoreList = obsIgnoreList;
             }
             if (filterObsWithOrders != null) {
                 params.filterObsWithOrders = filterObsWithOrders;
@@ -78,7 +76,6 @@ angular.module('bahmni.common.domain')
                 params.scope = scope;
                 params.patientProgramUuid = patientProgramUuid;
             }
-
 
             var listOfObservations = [];
             var index = 0;
@@ -107,6 +104,5 @@ angular.module('bahmni.common.domain')
                                            numberOfVisits, initialCount, latestCount, groovyExtension,
                                            startDate, endDate, patientProgramUuid) {
             return $q.when({"data": {"results": []}});
-        }
-
+        };
     }]);

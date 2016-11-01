@@ -2,7 +2,6 @@
 
 angular.module('bahmni.common.domain')
     .service('localeService', ['$http', function ($http) {
-
         this.allowedLocalesList = function () {
             return $http.get(Bahmni.Common.Constants.globalPropertyUrl, {
                 method: "GET",

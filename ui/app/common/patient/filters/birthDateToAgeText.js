@@ -18,7 +18,7 @@ angular.module('bahmni.common.patient')
                 }
                 return ageInString;
             } else {
-                return ""
+                return "";
             }
         };
     });

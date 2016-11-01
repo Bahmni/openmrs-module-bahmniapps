@@ -9,7 +9,7 @@ angular.module('bahmni.common.domain')
                     return $q.when(obj);
                 }
                 return offlineDbService.getReferenceData('LoginLocations').then(function (loginLocations) {
-                    if(!loginLocations){
+                    if (!loginLocations) {
                         var msg = offlineService.getItem("networkError") || "Offline data not set up";
                         return $q.reject(msg);
                     }
@@ -28,15 +28,14 @@ angular.module('bahmni.common.domain')
                 return getByUuid(cookie.uuid);
             };
 
-            var getVisitLocation = function(locationUuid){
-                return $q.when({})
+            var getVisitLocation = function (locationUuid) {
+                return $q.when({});
             };
 
             return {
                 getAllByTag: getAllByTag,
                 getLoggedInLocation: getLoggedInLocation,
                 getByUuid: getByUuid,
-                getVisitLocation : getVisitLocation
+                getVisitLocation: getVisitLocation
             };
-
         }]);

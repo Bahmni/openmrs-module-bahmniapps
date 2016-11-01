@@ -1,10 +1,10 @@
 'use strict';
 
 angular.module('bahmni.common.displaycontrol.prescription')
-    .directive('prescription', ['TreatmentService','treatmentConfig', '$q',
+    .directive('prescription', ['TreatmentService', 'treatmentConfig', '$q',
         function (treatmentService, treatmentConfig, $q) {
             var controller = function ($scope) {
-                $q.all([treatmentConfig(), treatmentService.getPrescribedAndActiveDrugOrders($scope.patient.uuid, 1, false, [$scope.visitUuid],"","","")]).then(function (results) {
+                $q.all([treatmentConfig(), treatmentService.getPrescribedAndActiveDrugOrders($scope.patient.uuid, 1, false, [$scope.visitUuid], "", "", "")]).then(function (results) {
                     var treatmentConfig = results[0];
                     var drugOrderResponse = results[1].data;
                     var createDrugOrderViewModel = function (drugOrder) {
@@ -14,19 +14,18 @@ angular.module('bahmni.common.displaycontrol.prescription')
                         drugOrderResponse[key] = drugOrderResponse[key].map(createDrugOrderViewModel);
                     }
                     var drugUtil = Bahmni.Clinical.DrugOrder.Util;
-                    var orderGroupOrders = _.groupBy(drugOrderResponse.visitDrugOrders, function(drugOrder){
-                        if(drugOrder.orderGroupUuid){
+                    var orderGroupOrders = _.groupBy(drugOrderResponse.visitDrugOrders, function (drugOrder) {
+                        if (drugOrder.orderGroupUuid) {
                             return 'orderGroupOrders';
                         }
                         return 'drugOrders';
                     });
                     var drugOrdersSorted = drugUtil.sortDrugOrders(orderGroupOrders.drugOrders);
-                    $scope.drugOrders =  _(orderGroupOrders.orderGroupOrders)
+                    $scope.drugOrders = _(orderGroupOrders.orderGroupOrders)
                         .concat(drugOrdersSorted)
                         .uniqBy('uuid')
                         .value();
                 });
-
             };
             return {
                 restrict: 'EA',
@@ -37,5 +36,5 @@ angular.module('bahmni.common.displaycontrol.prescription')
                     visitDate: "=",
                     visitUuid: "="
                 }
-            }
+            };
         }]);

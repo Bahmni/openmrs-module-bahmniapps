@@ -2,17 +2,16 @@
 
 angular.module('bahmni.clinical')
     .service('visitTabConfig', ['$q', 'appService', function ($q, appService) {
-
-        var mandatoryConfigPromise = function() {
+        var mandatoryConfigPromise = function () {
             return appService.loadMandatoryConfig(Bahmni.Clinical.Constants.mandatoryVisitConfigUrl);
         };
 
-        var configPromise = function() {
+        var configPromise = function () {
             return appService.loadConfig('visit.json');
         };
 
         this.load = function () {
-            return $q.all([mandatoryConfigPromise(), configPromise()]).then(function(results) {
+            return $q.all([mandatoryConfigPromise(), configPromise()]).then(function (results) {
                 results[0].data.sections = _.sortBy(results[0].data.sections, function (section) {
                     return section.displayOrder;
                 });
@@ -29,21 +28,21 @@ angular.module('bahmni.clinical')
 
                 var mandatoryConfig = results[0].data;
                 var tabs = _.values(results[1]);
-                var firstTabWithDefaultSection = _.find(tabs, function(tab) {return tab.defaultSections});
+                var firstTabWithDefaultSection = _.find(tabs, function (tab) { return tab.defaultSections; });
 
                 // TODO: Patch for #1461 lokbiradari-config: It's bad. But to err is Human, to forgive is Divine!
                 if (_.find(mandatoryConfig.sections, {title: "Treatments"}) && _.find(firstTabWithDefaultSection.sections, {title: "Treatments"})) {
-                    mandatoryConfig.sections = _.filter(mandatoryConfig.sections, function(section) {
+                    mandatoryConfig.sections = _.filter(mandatoryConfig.sections, function (section) {
                         return section.title !== "Treatments";
                     });
                 }
 
                 firstTabWithDefaultSection.sections = _.union(_.values(mandatoryConfig.sections), _.values(firstTabWithDefaultSection.sections));
-                firstTabWithDefaultSection.sections = _.sortBy( firstTabWithDefaultSection.sections, function(section) {
+                firstTabWithDefaultSection.sections = _.sortBy(firstTabWithDefaultSection.sections, function (section) {
                     return section.displayOrder;
                 });
 
                 return new Bahmni.Clinical.VisitTabConfig(tabs);
             });
-        }
+        };
     }]);

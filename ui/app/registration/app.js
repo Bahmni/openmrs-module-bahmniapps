@@ -9,18 +9,18 @@ angular
         'monospaced.elastic', 'bahmni.common.offline', 'bahmni.common.displaycontrol.hint', 'bahmni.common.attributeTypes',
         'bahmni.common.models', 'bahmni.common.uicontrols',
         'bahmni.common.displaycontrol.diagnosis'])
-    .config(['$urlRouterProvider', '$stateProvider', '$httpProvider', '$bahmniTranslateProvider','$compileProvider', function ($urlRouterProvider, $stateProvider, $httpProvider, $bahmniTranslateProvider, $compileProvider) {
+    .config(['$urlRouterProvider', '$stateProvider', '$httpProvider', '$bahmniTranslateProvider', '$compileProvider', function ($urlRouterProvider, $stateProvider, $httpProvider, $bahmniTranslateProvider, $compileProvider) {
         $httpProvider.defaults.headers.common['Disable-WWW-Authenticate'] = true;
         $urlRouterProvider.otherwise('/search');
         $compileProvider.aHrefSanitizationWhitelist(/^\s*(https?|ftp|mailto|chrome-extension|file):/);
         $compileProvider.imgSrcSanitizationWhitelist(/^\s*(https?|local|data|blob|chrome-extension):/);
 
         // @if DEBUG='production'
-                $compileProvider.debugInfoEnabled(false);
+        $compileProvider.debugInfoEnabled(false);
         // @endif
 
         // @if DEBUG='development'
-                $compileProvider.debugInfoEnabled(true);
+        $compileProvider.debugInfoEnabled(true);
         // @endif
 
         $stateProvider
@@ -95,15 +95,15 @@ angular
             });
         $bahmniTranslateProvider.init({app: 'registration', shouldMerge: true});
     }]).run(function ($rootScope, $templateCache, offlineService, schedulerService, $bahmniCookieStore, locationService) {
-        //Disable caching view template partials
+        // Disable caching view template partials
 
         var loginLocationUuid = $bahmniCookieStore.get(Bahmni.Common.Constants.locationCookieName).uuid;
-        locationService.getVisitLocation(loginLocationUuid).then(function(response){
-            if(response.data) {
+        locationService.getVisitLocation(loginLocationUuid).then(function (response) {
+            if (response.data) {
                 $rootScope.visitLocation = response.data.uuid;
             }
         });
         if (offlineService.isChromeApp() || offlineService.isAndroidApp()) {
             schedulerService.sync();
         }
-});
+    });

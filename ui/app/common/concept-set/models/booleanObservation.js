@@ -1,12 +1,12 @@
 'use strict';
 
-Bahmni.ConceptSet.BooleanObservation = function(observation, conceptUIConfig) {
+Bahmni.ConceptSet.BooleanObservation = function (observation, conceptUIConfig) {
     angular.extend(this, observation);
 
     this.isBoolean = true;
     this.conceptUIConfig = conceptUIConfig || {};
 
-    this.cloneNew = function() {
+    this.cloneNew = function () {
         var clone = new Bahmni.ConceptSet.BooleanObservation(angular.copy(observation), conceptUIConfig);
         clone.value = undefined;
         clone.comment = undefined;
@@ -20,7 +20,7 @@ Bahmni.ConceptSet.BooleanObservation = function(observation, conceptUIConfig) {
         {displayString: "OBS_BOOLEAN_NO_KEY", value: false}
     ];
 
-    this.getPossibleAnswers = function() {
+    this.getPossibleAnswers = function () {
         return possibleAnswers;
     };
 
@@ -28,19 +28,19 @@ Bahmni.ConceptSet.BooleanObservation = function(observation, conceptUIConfig) {
         return this.value === answer.value;
     };
 
-    this.toggleSelection = function(answer) {
-        if(this.value === answer.value){
+    this.toggleSelection = function (answer) {
+        if (this.value === answer.value) {
             this.value = null;
-        } else{
+        } else {
             this.value = answer.value;
         }
     };
 
-    this.isFormElement = function(){
+    this.isFormElement = function () {
         return true;
     };
 
-    this.getControlType = function(){
+    this.getControlType = function () {
         return "buttonselect";
     };
 
@@ -48,21 +48,21 @@ Bahmni.ConceptSet.BooleanObservation = function(observation, conceptUIConfig) {
         return this.getConceptUIConfig().required == true;
     };
 
-    this.isComputedAndEditable = function() {
+    this.isComputedAndEditable = function () {
         return this.concept.conceptClass === "Computed/Editable";
     };
 
-    this.atLeastOneValueSet = function() {
+    this.atLeastOneValueSet = function () {
         return (this.value != undefined);
     };
-    this.isValid = function(checkRequiredFields, conceptSetRequired) {
-        if(this.error) {
+    this.isValid = function (checkRequiredFields, conceptSetRequired) {
+        if (this.error) {
             return false;
         }
-        var notYetSet = function(value) {
-            return (typeof value == 'undefined'  || value == null);
+        var notYetSet = function (value) {
+            return (typeof value == 'undefined' || value == null);
         };
-        if(checkRequiredFields){
+        if (checkRequiredFields) {
             if (conceptSetRequired && this.isRequired() && notYetSet(this.value)) {
                 return false;
             }
@@ -73,34 +73,34 @@ Bahmni.ConceptSet.BooleanObservation = function(observation, conceptUIConfig) {
         return true;
     };
 
-    this.canHaveComment = function() {
-        return this.getConceptUIConfig().disableAddNotes ?  !this.getConceptUIConfig().disableAddNotes : true;
+    this.canHaveComment = function () {
+        return this.getConceptUIConfig().disableAddNotes ? !this.getConceptUIConfig().disableAddNotes : true;
     };
 
-    this.getConceptUIConfig = function() {
+    this.getConceptUIConfig = function () {
         return this.conceptUIConfig[this.concept.name] || {};
     };
 
-    this.canAddMore = function() {
+    this.canAddMore = function () {
         return this.getConceptUIConfig().allowAddMore == true;
     };
 
-    this.isComputed = function() {
+    this.isComputed = function () {
         return this.concept.conceptClass === "Computed";
     };
 
-    this.getDataTypeName = function() {
+    this.getDataTypeName = function () {
         return this.concept.dataType;
     };
 
-    this.hasValue = function() {
+    this.hasValue = function () {
         var value = this.value;
         if (value === false) {
             return true;
         }
         if (value === 0) {
             return true;
-        } //!value ignores 0
+        } //! value ignores 0
         if (value === '' || !value) {
             return false;
         }
@@ -110,19 +110,19 @@ Bahmni.ConceptSet.BooleanObservation = function(observation, conceptUIConfig) {
         return true;
     };
 
-    this.isNumeric = function() {
+    this.isNumeric = function () {
         return this.getDataTypeName() === "Numeric";
     };
 
-    this.isText = function() {
+    this.isText = function () {
         return this.getDataTypeName() === "Text";
     };
 
-    this.isCoded = function() {
+    this.isCoded = function () {
         return this.getDataTypeName() === "Coded";
     };
 
     this._isDateTimeDataType = function () {
-        return "Datetime" === this.getDataTypeName();
+        return this.getDataTypeName() === "Datetime";
     };
 };

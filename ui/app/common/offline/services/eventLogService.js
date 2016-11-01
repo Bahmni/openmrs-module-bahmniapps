@@ -10,7 +10,7 @@ angular.module('bahmni.common.offline')
             return $http.get(url);
         };
 
-        var getAddressForLoginLocation = function(params){
+        var getAddressForLoginLocation = function (params) {
             var url = Bahmni.Common.Constants.openmrsUrl +
                 "/module/addresshierarchy/ajax/getPossibleAddressHierarchyEntriesWithParents.form";
             return $http.get(url, { method: "GET", params: params, withCredentials: true});
@@ -28,17 +28,15 @@ angular.module('bahmni.common.offline')
 
         var getEventsFor = function (category, marker) {
             switch (category) {
-                case 'transactionalData':
-                    return getEvents(Bahmni.Common.Constants.eventLogServiceUrl, marker);
-                case 'offline-concepts':
-                    return getEvents(Bahmni.Common.Constants.eventLogServiceConceptUrl,marker);
-                case 'addressHierarchy':
-                case 'parentAddressHierarchy':
-                    return getEvents(Bahmni.Common.Constants.addressEventLogServiceUrl, marker);
+            case 'transactionalData':
+                return getEvents(Bahmni.Common.Constants.eventLogServiceUrl, marker);
+            case 'offline-concepts':
+                return getEvents(Bahmni.Common.Constants.eventLogServiceConceptUrl, marker);
+            case 'addressHierarchy':
+            case 'parentAddressHierarchy':
+                return getEvents(Bahmni.Common.Constants.addressEventLogServiceUrl, marker);
             }
-
         };
-
 
         return {
             getEventsFor: getEventsFor,

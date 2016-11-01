@@ -1,7 +1,6 @@
 'use strict';
 
 Bahmni.Clinical.VisitDrugOrder = (function () {
-
     var VisitDrugOrder = function (orders, ipdOrders, orderGroup) {
         this.orders = orders;
         this.ipdDrugSchedule = ipdOrders;
@@ -20,7 +19,6 @@ Bahmni.Clinical.VisitDrugOrder = (function () {
         }
     };
 
-
     VisitDrugOrder.create = function (encounterTransactions, admissionDate, dischargeDate) {
         var nameToSort = function (drugOrder) {
             return drugOrder.drugNonCoded ? drugOrder.drugNonCoded : drugOrder.drug.name;
@@ -28,7 +26,7 @@ Bahmni.Clinical.VisitDrugOrder = (function () {
 
         var drugOrders = new Bahmni.Clinical.OrdersMapper(nameToSort).map(encounterTransactions, 'drugOrders');
 
-        var prescribedDrugOrders = _.map(drugOrders,Bahmni.Clinical.DrugOrderViewModel.createFromContract);
+        var prescribedDrugOrders = _.map(drugOrders, Bahmni.Clinical.DrugOrderViewModel.createFromContract);
 
         return this.createFromDrugOrders(prescribedDrugOrders, admissionDate, dischargeDate);
     };
@@ -40,7 +38,7 @@ Bahmni.Clinical.VisitDrugOrder = (function () {
 
         drugOrders = _.filter(drugOrders, function (drugOrder) {
             return !_.some(drugOrders, function (otherDrugOrder) {
-                return otherDrugOrder.action === Bahmni.Clinical.Constants.orderActions.revise && otherDrugOrder.encounterUuid === drugOrder.encounterUuid && otherDrugOrder.previousOrderUuid === drugOrder.uuid
+                return otherDrugOrder.action === Bahmni.Clinical.Constants.orderActions.revise && otherDrugOrder.encounterUuid === drugOrder.encounterUuid && otherDrugOrder.previousOrderUuid === drugOrder.uuid;
             });
         });
 

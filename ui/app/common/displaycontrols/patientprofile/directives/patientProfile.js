@@ -10,8 +10,7 @@
                     address.push(patient.address[addressField]);
                 }
             });
-        }
-        else if (!_.includes($scope.config, "cityVillage")) {
+        } else if (!_.includes($scope.config, "cityVillage")) {
             address.push(patient.address["cityVillage"]);
         }
         return address.join(", ");
@@ -28,7 +27,7 @@
         return patientAttributeTypes.join(", ");
     };
     var isAdmitted = function (admissionStatus) {
-        return "Admitted" === _.get(admissionStatus, 'value');
+        return _.get(admissionStatus, 'value') === "Admitted";
     };
     angular.module('bahmni.common.displaycontrol.patientprofile')
         .directive('patientProfile', ['patientService', 'spinner', '$sce', '$rootScope', '$stateParams', '$window', '$translate',

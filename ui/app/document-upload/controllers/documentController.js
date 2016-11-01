@@ -1,13 +1,13 @@
 'use strict';
 
 angular.module('opd.documentupload')
-    .controller('DocumentController', ['$scope', '$stateParams', 'visitService', 'patientService', 'encounterService', 'spinner', 'visitDocumentService', '$rootScope', '$http', '$q', '$timeout', 'sessionService', '$anchorScroll','$translate',
-        function ($scope, $stateParams, visitService, patientService, encounterService, spinner, visitDocumentService, $rootScope, $http, $q, $timeout, sessionService, $anchorScroll,$translate) {
+    .controller('DocumentController', ['$scope', '$stateParams', 'visitService', 'patientService', 'encounterService', 'spinner', 'visitDocumentService', '$rootScope', '$http', '$q', '$timeout', 'sessionService', '$anchorScroll', '$translate',
+        function ($scope, $stateParams, visitService, patientService, encounterService, spinner, visitDocumentService, $rootScope, $http, $q, $timeout, sessionService, $anchorScroll, $translate) {
             var encounterTypeUuid;
             var topLevelConceptUuid;
             var customVisitParams = Bahmni.DocumentUpload.Constants.visitRepresentation;
             var DateUtil = Bahmni.Common.Util.DateUtil;
-            var patientMapper = new Bahmni.PatientMapper($rootScope.patientConfig, $rootScope,$translate);
+            var patientMapper = new Bahmni.PatientMapper($rootScope.patientConfig, $rootScope, $translate);
             var activeEncounter = {};
             var locationUuid = sessionService.getLoginLocationUuid();
 
@@ -15,15 +15,15 @@ angular.module('opd.documentupload')
             $scope.toggleGallery = true;
             $scope.conceptNameInvalid = false;
 
-            var setOrientationWarning = function() {
+            var setOrientationWarning = function () {
                 $scope.orientation_warning = (window.orientation && (window.orientation < 0 || window.orientation > 90));
             };
             setOrientationWarning();
-            var onOrientationChange = function() {
+            var onOrientationChange = function () {
                 $scope.$apply(setOrientationWarning);
             };
             window.addEventListener('orientationchange', onOrientationChange);
-            $scope.$on('$destroy', function(){
+            $scope.$on('$destroy', function () {
                 window.removeEventListener('orientationchange', onOrientationChange);
             });
 
@@ -40,7 +40,7 @@ angular.module('opd.documentupload')
             var getVisitTypes = function () {
                 return visitService.getVisitType().then(function (response) {
                     $scope.visitTypes = response.data.results;
-                })
+                });
             };
 
             var getPatient = function () {
@@ -50,11 +50,11 @@ angular.module('opd.documentupload')
             };
 
             var getVisitStartStopDateTime = function (visit) {
-                return { "startDatetime": DateUtil.getDate(visit.startDatetime), "stopDatetime": DateUtil.getDate(visit.stopDatetime)}
+                return { "startDatetime": DateUtil.getDate(visit.startDatetime), "stopDatetime": DateUtil.getDate(visit.stopDatetime)};
             };
 
             var compareVisitStartWithExistingStop = function (newVisitStart, existingVisit) {
-                if(newVisitStart >= existingVisit.startDatetime && DateUtil.isInvalid(existingVisit.stopDatetime)) {
+                if (newVisitStart >= existingVisit.startDatetime && DateUtil.isInvalid(existingVisit.stopDatetime)) {
                     return true;
                 }
                 return (newVisitStart <= existingVisit.stopDatetime || DateUtil.isSameDate(newVisitStart, existingVisit.stopDatetime));
@@ -68,16 +68,13 @@ angular.module('opd.documentupload')
                 if (DateUtil.isInvalid(existingVisit.stopDatetime)) {
                     return (compareVisitStartWithExistingStop(newVisitWithoutTime.startDatetime, existingVisit) ||
                         compareVisitStopWithExistingStart(newVisitWithoutTime.stopDatetime, existingVisit.startDatetime));
-                }
-                else {
+                } else {
                     return (compareVisitStartWithExistingStop(newVisitWithoutTime.startDatetime, existingVisit) &&
                         compareVisitStopWithExistingStart(newVisitWithoutTime.stopDatetime, existingVisit.startDatetime));
                 }
-
-
             };
 
-            $scope.isNewVisitDateValid = function(){
+            $scope.isNewVisitDateValid = function () {
                 var filterExistingVisitsInSameDateRange = function (existingVisit) {
                     return isVisitInSameRange(newVisitWithoutTime, existingVisit);
                 };
@@ -94,7 +91,7 @@ angular.module('opd.documentupload')
                 return visitService.search({patient: $rootScope.patient.uuid, v: customVisitParams, includeInactive: true}).then(function (response) {
                     var visits = response.data.results;
                     if (visits.length > 0) {
-                        if (!visits[0].stopDatetime){
+                        if (!visits[0].stopDatetime) {
                             $scope.currentVisit = visits[0];
                         } else {
                             $scope.currentVisit = null;
@@ -109,58 +106,58 @@ angular.module('opd.documentupload')
             var getEncountersForVisits = function () {
                 return encounterService.getEncountersForEncounterType($rootScope.patient.uuid, encounterTypeUuid).success(function (encounters) {
                     $scope.visits.forEach(function (visit) {
-                        var visitEncounters = encounters.results.filter(function(a) {return(a.visit.uuid==visit.uuid)});
+                        var visitEncounters = encounters.results.filter(function (a) { return (a.visit.uuid == visit.uuid); });
                         visit.initSavedFiles(visitEncounters);
                     });
                 });
             };
 
-            var setDefaultConcept = function(topLevelConcept) {
+            var setDefaultConcept = function (topLevelConcept) {
                 if (topLevelConcept.setMembers.length === 1) {
                     var concept = topLevelConcept.setMembers[0];
-                    $scope.defaultConcept = {'concept':{uuid:concept.uuid, name:concept.name.name, editableName:concept.name.name}, 'value':concept.name.name};
-                }else if($rootScope.appConfig.defaultOption){
-                    var concept = topLevelConcept.setMembers.filter(function(member){
+                    $scope.defaultConcept = {'concept': {uuid: concept.uuid, name: concept.name.name, editableName: concept.name.name}, 'value': concept.name.name};
+                } else if ($rootScope.appConfig.defaultOption) {
+                    var concept = topLevelConcept.setMembers.filter(function (member) {
                         return member.name.name === $rootScope.appConfig.defaultOption;
                     })[0];
-                    $scope.defaultConcept = {'concept':{uuid:concept.uuid, name:concept.name.name, editableName:concept.name.name}, 'value':concept.name.name};
+                    $scope.defaultConcept = {'concept': {uuid: concept.uuid, name: concept.name.name, editableName: concept.name.name}, 'value': concept.name.name};
                 }
             };
 
             var getTopLevelConcept = function () {
-                if($rootScope.appConfig.topLevelConcept === null ) {
+                if ($rootScope.appConfig.topLevelConcept === null) {
                     topLevelConceptUuid = null;
                     return $q.when({});
                 }
                 return $http.get(Bahmni.Common.Constants.conceptSearchByFullNameUrl,
                     {
-                        params:{
-                            name:$rootScope.appConfig.topLevelConcept,
-                            v:"custom:(uuid,setMembers:(uuid,name:(name)))"
+                        params: {
+                            name: $rootScope.appConfig.topLevelConcept,
+                            v: "custom:(uuid,setMembers:(uuid,name:(name)))"
                         }
-                }).then(function (response) {
+                    }).then(function (response) {
                         var topLevelConcept = response.data.results[0];
                         topLevelConceptUuid = topLevelConcept ? topLevelConcept.uuid : null;
                         setDefaultConcept(topLevelConcept);
                     });
             };
 
-            var sortVisits = function() {
-                $scope.visits.sort(function(a, b) {
-                        var date1 = DateUtil.parse(a.startDatetime);
-                        var date2 = DateUtil.parse(b.startDatetime);
-                        return date2.getTime() - date1.getTime();
-                    });
+            var sortVisits = function () {
+                $scope.visits.sort(function (a, b) {
+                    var date1 = DateUtil.parse(a.startDatetime);
+                    var date2 = DateUtil.parse(b.startDatetime);
+                    return date2.getTime() - date1.getTime();
+                });
             };
 
-            var getActiveEncounter = function() {
+            var getActiveEncounter = function () {
                 var currentProviderUuid = $rootScope.currentProvider ? $rootScope.currentProvider.uuid : null;
                 return encounterService.find({
-                    patientUuid : $stateParams.patientUuid,
-                    encounterTypeUuids : [encounterTypeUuid],
+                    patientUuid: $stateParams.patientUuid,
+                    encounterTypeUuids: [encounterTypeUuid],
                     providerUuids: !_.isEmpty(currentProviderUuid) ? [currentProviderUuid] : null,
-                    includeAll :  Bahmni.Common.Constants.includeAllObservations,
-                    locationUuid : locationUuid
+                    includeAll: Bahmni.Common.Constants.includeAllObservations,
+                    locationUuid: locationUuid
                 }).then(function (encounterTransactionResponse) {
                     activeEncounter = encounterTransactionResponse.data;
                 });
@@ -182,25 +179,25 @@ angular.module('opd.documentupload')
             };
             spinner.forPromise(init());
 
-            $scope.getConcepts = function(request){
-                return $http.get(Bahmni.Common.Constants.conceptUrl, { params: {q: request.term, memberOf: topLevelConceptUuid, v: "custom:(uuid,name)"}}).then(function(result) {
+            $scope.getConcepts = function (request) {
+                return $http.get(Bahmni.Common.Constants.conceptUrl, { params: {q: request.term, memberOf: topLevelConceptUuid, v: "custom:(uuid,name)"}}).then(function (result) {
                     return result.data.results;
                 });
             };
 
-            $scope.getDataResults = function(results){
+            $scope.getDataResults = function (results) {
                 return results.map(function (concept) {
-                    return {'concept': {uuid: concept.uuid, name: concept.name.name, editableName: concept.name.name}, 'value': concept.name.name}
+                    return {'concept': {uuid: concept.uuid, name: concept.name.name, editableName: concept.name.name}, 'value': concept.name.name};
                 });
             };
 
-            $scope.onSelect = function(file, visit){
-                $scope.toggleGallery=false;
-                spinner.forPromise(visitDocumentService.saveFile(file, $rootScope.patient.uuid, $rootScope.appConfig.encounterType).then(function(response) {
+            $scope.onSelect = function (file, visit) {
+                $scope.toggleGallery = false;
+                spinner.forPromise(visitDocumentService.saveFile(file, $rootScope.patient.uuid, $rootScope.appConfig.encounterType).then(function (response) {
                     var fileUrl = Bahmni.Common.Constants.documentsPath + '/' + response.data.url;
                     var savedFile = visit.addFile(fileUrl);
                     $scope.setConceptOnFile(savedFile, $scope.defaultConcept);
-                    $scope.toggleGallery=true;
+                    $scope.toggleGallery = true;
                 }));
             };
 
@@ -214,21 +211,21 @@ angular.module('opd.documentupload')
                 }
             };
 
-            $scope.onEditConcept = function(file){
-                return function(){
+            $scope.onEditConcept = function (file) {
+                return function () {
                     file.concept.name = undefined;
                     file.concept.uuid = undefined;
-                }
+                };
             };
 
-            $scope.onConceptSelected = function(file){
-                return function(selectedItem){
+            $scope.onConceptSelected = function (file) {
+                return function (selectedItem) {
                     $scope.setConceptOnFile(file, selectedItem);
-                }
+                };
             };
 
             $scope.resetCurrentVisit = function (visit) {
-                if(areVisitsSame($scope.currentVisit, visit) && areVisitsSame($scope.currentVisit, $scope.newVisit)) return $scope.currentVisit = null;
+                if (areVisitsSame($scope.currentVisit, visit) && areVisitsSame($scope.currentVisit, $scope.newVisit)) return $scope.currentVisit = null;
                 $scope.currentVisit = ($scope.isCurrentVisit(visit)) ? $scope.newVisit : visit;
             };
 
@@ -237,7 +234,7 @@ angular.module('opd.documentupload')
             };
 
             var areVisitsSame = function (currentVisit, newVisit) {
-              return currentVisit == newVisit && newVisit == $scope.newVisit;
+                return currentVisit == newVisit && newVisit == $scope.newVisit;
             };
 
             var getEncounterStartDateTime = function (visit) {
@@ -259,8 +256,8 @@ angular.module('opd.documentupload')
 
                 visit.files.forEach(function (file) {
                     var fileUrl = file.encodedValue.replace(Bahmni.Common.Constants.documentsPath + "/", "");
-                    if(!visit.isSaved(file)) {
-                        visitDocument.documents.push({testUuid: file.concept.uuid, image: fileUrl, obsDateTime: getEncounterStartDateTime(visit)})
+                    if (!visit.isSaved(file)) {
+                        visitDocument.documents.push({testUuid: file.concept.uuid, image: fileUrl, obsDateTime: getEncounterStartDateTime(visit)});
                     } else if (file.changed === true || file.voided === true) {
                         visitDocument.documents.push({testUuid: file.concept.uuid, image: fileUrl, voided: file.voided, obsUuid: file.obsUuid});
                     }
@@ -269,15 +266,15 @@ angular.module('opd.documentupload')
                 return visitDocument;
             };
 
-            function flashSuccessMessage() {
+            function flashSuccessMessage () {
                 $scope.success = true;
                 $timeout(function () {
                     $scope.success = false;
                 }, 2000);
             }
 
-            $scope.setDefaultEndDate = function(newVisit) {
-                if(!newVisit.stopDatetime){
+            $scope.setDefaultEndDate = function (newVisit) {
+                if (!newVisit.stopDatetime) {
                     var date = newVisit.endDate() ? DateUtil.parse(newVisit.endDate()) : new Date();
                     $scope.newVisit.stopDatetime = date;
                 }
@@ -287,12 +284,12 @@ angular.module('opd.documentupload')
                 return obs.provider && $rootScope.currentUser.person.uuid === obs.provider.uuid;
             };
 
-            $scope.canDeleteFile = function(obs){
+            $scope.canDeleteFile = function (obs) {
                 return isObsByCurrentProvider(obs) || obs.new;
             };
 
-            var updateVisit = function(visit, encounters){
-                var visitEncounters = encounters.filter(function(encounter){ return visit.uuid === encounter.visit.uuid; });
+            var updateVisit = function (visit, encounters) {
+                var visitEncounters = encounters.filter(function (encounter) { return visit.uuid === encounter.visit.uuid; });
                 visit.initSavedFiles(visitEncounters);
                 visit.changed = false;
                 $scope.currentVisit = visit;
@@ -304,25 +301,25 @@ angular.module('opd.documentupload')
                 return !!visit.uuid;
             };
             $scope.save = function (visit) {
-                $scope.toggleGallery=false;
+                $scope.toggleGallery = false;
                 var visitDocument;
                 if (isExistingVisit(visit) || $scope.isNewVisitDateValid()) {
                     visitDocument = createVisitDocument(visit);
                 }
 
                 return spinner.forPromise(visitDocumentService.save(visitDocument).then(function (response) {
-                    return encounterService.getEncountersForEncounterType($scope.patient.uuid, encounterTypeUuid).then(function(encounterResponse){
+                    return encounterService.getEncountersForEncounterType($scope.patient.uuid, encounterTypeUuid).then(function (encounterResponse) {
                         var savedVisit = $scope.visits[$scope.visits.indexOf(visit)];
-                        if(!savedVisit){
-                            visitService.getVisit(response.data.visitUuid, customVisitParams).then(function(visitResponse){
+                        if (!savedVisit) {
+                            visitService.getVisit(response.data.visitUuid, customVisitParams).then(function (visitResponse) {
                                 var newVisit = createVisit(visitResponse.data);
                                 visit = $scope.visits.push(newVisit);
                                 initNewVisit();
                                 updateVisit(newVisit, encounterResponse.data.results);
                                 $scope.toggleGallery = true;
                             });
-                        }else{
-                            updateVisit(savedVisit, encounterResponse.data.results)
+                        } else {
+                            updateVisit(savedVisit, encounterResponse.data.results);
                             $scope.toggleGallery = true;
                         }
                         getActiveEncounter();
@@ -330,7 +327,7 @@ angular.module('opd.documentupload')
                 }));
             };
 
-            $scope.isPdf = function(file){
+            $scope.isPdf = function (file) {
                 return (file.encodedValue.indexOf(".pdf") > 0);
             };
 

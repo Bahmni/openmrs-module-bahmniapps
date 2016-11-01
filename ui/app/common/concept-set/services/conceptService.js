@@ -16,7 +16,7 @@ angular.module('bahmni.common.conceptSet')
             };
             return $http.get(Bahmni.Common.Constants.bahmniConceptAnswerUrl, {params: params})
                 .then(_.partial(_.get, _, 'data.results'))
-                .then(function(conceptAnswers){
+                .then(function (conceptAnswers) {
                     return _(conceptAnswers)
                         .map(mapConceptOrGetDrug)
                         .uniqBy('uuid')
@@ -37,5 +37,5 @@ angular.module('bahmni.common.conceptSet')
         return {
             getAnswersForConceptName: getAnswersForConceptName,
             getAnswers: getAnswers
-        }
+        };
     }]);

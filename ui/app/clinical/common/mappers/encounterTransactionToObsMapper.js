@@ -1,8 +1,7 @@
 'use strict';
 
 Bahmni.Clinical.EncounterTransactionToObsMapper = function () {
-
-    this.map = function (encounterTransactions, invalidEncounterTypes,conceptSetUIConfig) {
+    this.map = function (encounterTransactions, invalidEncounterTypes, conceptSetUIConfig) {
         var allObs,
             validObservation = function (observation) {
                 if (observation.voided) {
@@ -26,9 +25,9 @@ Bahmni.Clinical.EncounterTransactionToObsMapper = function () {
                     setProviderFunction(observation);
                 });
             },
-            createMultiSelectObs = function(obsList){
-                if(conceptSetUIConfig){
-                    obsList.forEach(function(obs){
+            createMultiSelectObs = function (obsList) {
+                if (conceptSetUIConfig) {
+                    obsList.forEach(function (obs) {
                         createMultiSelectObs(obs.groupMembers);
                     });
                     new Bahmni.ConceptSet.MultiSelectObservations(conceptSetUIConfig).map(obsList);
@@ -58,6 +57,5 @@ Bahmni.Clinical.EncounterTransactionToObsMapper = function () {
         allObs = flatten(encounterTransactions, 'observations').filter(validObservation);
         allObs.forEach(removeInvalidGroupMembers);
         return allObs;
-
     };
 };

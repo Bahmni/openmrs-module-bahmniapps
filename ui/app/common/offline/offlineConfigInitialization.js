@@ -1,10 +1,10 @@
 'use strict';
 
 angular.module('bahmni.common.offline')
-    .factory('offlineConfigInitialization', ['offlineService','$http', 'offlineDbService', 'androidDbService', '$q','$rootScope','loggingService',
+    .factory('offlineConfigInitialization', ['offlineService', '$http', 'offlineDbService', 'androidDbService', '$q', '$rootScope', 'loggingService',
         function (offlineService, $http, offlineDbService, androidDbService, $q, $rootScope, loggingService) {
             return function () {
-                if(offlineService.isOfflineApp()) {
+                if (offlineService.isOfflineApp()) {
                     if (offlineService.isAndroidApp()) {
                         offlineDbService = androidDbService;
                     }
@@ -12,8 +12,8 @@ angular.module('bahmni.common.offline')
                     var length = modules.length;
                     var deferred = $q.defer();
 
-                    var readConfigData = function(modules, index) {
-                        if(length == index) {
+                    var readConfigData = function (modules, index) {
+                        if (length == index) {
                             deferred.resolve(1);
                             return deferred.promise;
                         }
@@ -45,7 +45,7 @@ angular.module('bahmni.common.offline')
                                 if (parseInt(response.status / 100) == 4 || parseInt(response.status / 100) == 5) {
                                     loggingService.logSyncError(response.config.url, response.status, response.data);
                                     return readConfigData(modules, ++index);
-                                } else if(response.status == -1) {
+                                } else if (response.status == -1) {
                                     $rootScope.$broadcast("schedulerStage", null, true);
                                     deferred.reject(response);
                                 } else {
@@ -54,7 +54,7 @@ angular.module('bahmni.common.offline')
                                 return deferred.promise;
                             });
                         });
-                    }
+                    };
                     return readConfigData(modules, 0);
                 }
             };

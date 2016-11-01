@@ -6,8 +6,7 @@ angular.module('bahmni.registration')
             var calculateAge = function () {
                 if (this.birthdate) {
                     this.age = age.fromBirthDate(this.birthdate);
-                }
-                else {
+                } else {
                     this.age = age.create(null, null, null);
                 }
             };
@@ -15,12 +14,12 @@ angular.module('bahmni.registration')
             var calculateBirthDate = function () {
                 this.birthdate = age.calculateBirthDate(this.age);
             };
-            
+
             var fullNameLocal = function () {
                 var givenNameLocal = this.givenNameLocal || this.givenName || "";
                 var middleNameLocal = this.middleNameLocal || this.middleName || "";
                 var familyNameLocal = this.familyNameLocal || this.familyName || "";
-                return (givenNameLocal.trim() + " " + (middleNameLocal ? middleNameLocal + " " : "" ) + familyNameLocal.trim()).trim();
+                return (givenNameLocal.trim() + " " + (middleNameLocal ? middleNameLocal + " " : "") + familyNameLocal.trim()).trim();
             };
 
             var getImageData = function () {
@@ -28,7 +27,7 @@ angular.module('bahmni.registration')
             };
 
             var identifierDetails = identifiers.create();
-            
+
             var patient = {
                 address: {},
                 age: age.create(),
@@ -47,5 +46,5 @@ angular.module('bahmni.registration')
 
         return {
             create: create
-        }
+        };
     }]);

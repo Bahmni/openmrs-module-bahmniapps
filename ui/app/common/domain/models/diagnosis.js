@@ -20,8 +20,7 @@ Bahmni.Common.Domain.Diagnosis = function (codedAnswer, order, certainty, existi
     self.getDisplayName = function () {
         if (self.freeTextAnswer) {
             return self.freeTextAnswer;
-        }
-        else {
+        } else {
             return self.codedAnswer.shortName || self.codedAnswer.name;
         }
     };
@@ -34,7 +33,7 @@ Bahmni.Common.Domain.Diagnosis = function (codedAnswer, order, certainty, existi
         return self.order == "SECONDARY";
     };
 
-    self.isRuledOut = function(){
+    self.isRuledOut = function () {
         return self.diagnosisStatus == $rootScope.diagnosisStatus;
     };
 
@@ -56,7 +55,7 @@ Bahmni.Common.Domain.Diagnosis = function (codedAnswer, order, certainty, existi
     };
 
     self.isEmpty = function () {
-        return  self.getDisplayName() === undefined || self.getDisplayName().length === 0;
+        return self.getDisplayName() === undefined || self.getDisplayName().length === 0;
     };
 
     self.diagnosisStatusValue = null;
@@ -76,12 +75,11 @@ Bahmni.Common.Domain.Diagnosis = function (codedAnswer, order, certainty, existi
         }
     });
 
-
-    self.clearCodedAnswerUuid = function(){
+    self.clearCodedAnswerUuid = function () {
         self.codedAnswer.uuid = undefined;
     };
 
-    self.setAsNonCodedAnswer =  function() {
+    self.setAsNonCodedAnswer = function () {
         self.isNonCodedAnswer = !self.isNonCodedAnswer;
     };
 };

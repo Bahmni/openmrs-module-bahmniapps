@@ -10,7 +10,7 @@ angular.module('bahmni.orders')
                 }).then(function (response) {
                     var config = {};
                     var formMembers = response.data.results[0].setMembers;
-                    config.conceptNames = _.map(formMembers,function(concept){
+                    config.conceptNames = _.map(formMembers, function (concept) {
                         return concept.name.name;
                     });
                     config.isObservation = true;
@@ -20,7 +20,7 @@ angular.module('bahmni.orders')
                     config.scope = "latest";
                     return config;
                 });
-            }
+            };
         }
     ]
 );

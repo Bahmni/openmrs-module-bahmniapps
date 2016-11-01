@@ -1,6 +1,6 @@
 'use strict';
 
-Bahmni.Common.Domain.RetrospectiveEntry = function() {
+Bahmni.Common.Domain.RetrospectiveEntry = function () {
     var self = this;
 
     Object.defineProperty(this, 'encounterDate', {
@@ -20,5 +20,4 @@ Bahmni.Common.Domain.RetrospectiveEntry.createFrom = function (retrospectiveEnco
     obj.encounterDate = retrospectiveEncounterDateCookie;
     return obj;
 };
-
 

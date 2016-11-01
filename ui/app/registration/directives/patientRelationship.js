@@ -13,9 +13,8 @@ angular.module('bahmni.registration')
     })
     .controller('PatientRelationshipController', ['$window', '$scope', '$rootScope', 'spinner', 'patientService', 'providerService',
         function ($window, $scope, $rootScope, spinner, patientService, providerService) {
-
-            $scope.addPlaceholderRelationship  = function(){
-              $scope.patient.newlyAddedRelationships.push({});
+            $scope.addPlaceholderRelationship = function () {
+                $scope.patient.newlyAddedRelationships.push({});
             };
 
             $scope.removeRelationship = function (relationship, index) {
@@ -32,18 +31,18 @@ angular.module('bahmni.registration')
                 return relationshipType && (_.isUndefined(relationshipType.searchType) || relationshipType.searchType === "patient");
             };
 
-            var getRelationshipType = function(relationship){
+            var getRelationshipType = function (relationship) {
                 if (angular.isUndefined(relationship['relationshipType'])) {
                     return false;
                 }
                 return $scope.getRelationshipType(relationship.relationshipType.uuid);
             };
 
-            $scope.getChosenRelationshipType= function(relation){
-                if($scope.isPatientRelationship(relation)){
-                    return "patient"
-                }else if($scope.isProviderRelationship(relation)){
-                    return "provider"
+            $scope.getChosenRelationshipType = function (relation) {
+                if ($scope.isPatientRelationship(relation)) {
+                    return "patient";
+                } else if ($scope.isProviderRelationship(relation)) {
+                    return "provider";
                 }
             };
 
@@ -56,22 +55,22 @@ angular.module('bahmni.registration')
                 return _.find($scope.relationshipTypes, {uuid: uuid});
             };
 
-            $scope.getRelationshipTypeForDisplay = function(relationship){
+            $scope.getRelationshipTypeForDisplay = function (relationship) {
                 var personUuid = $scope.patient.uuid;
                 var relationshipType = $scope.getRelationshipType(relationship.relationshipType.uuid);
-                if(!relationship.personA) {
+                if (!relationship.personA) {
                     return "";
                 }
-                if(relationship.personA.uuid === personUuid){
+                if (relationship.personA.uuid === personUuid) {
                     return relationshipType.aIsToB;
-                }else{
+                } else {
                     return relationshipType.bIsToA;
                 }
             };
 
-            $scope.getRelatedToPersonForDisplay = function(relationship){
+            $scope.getRelatedToPersonForDisplay = function (relationship) {
                 var personRelatedTo = getPersonRelatedTo(relationship);
-                return personRelatedTo?personRelatedTo.display: "";
+                return personRelatedTo ? personRelatedTo.display : "";
             };
 
             $scope.searchByPatientIdentifier = function (relationship) {
@@ -97,16 +96,15 @@ angular.module('bahmni.registration')
                     var personName = patients[0]['givenName'] + " " + patients[0]['familyName'];
 
                     relationship.personB = {'display': personName, 'uuid': personUuid};
-
                 });
             };
 
             $scope.showPersonNotFound = function (relationship) {
-                return relationship.patientIdentifier  && !relationship.personB;
+                return relationship.patientIdentifier && !relationship.personB;
             };
 
-            var getPersonRelatedTo = function(relationship){
-               return relationship.personA && relationship.personA.uuid === $scope.patient.uuid ? relationship.personB : relationship.personA
+            var getPersonRelatedTo = function (relationship) {
+                return relationship.personA && relationship.personA.uuid === $scope.patient.uuid ? relationship.personB : relationship.personA;
             };
 
             $scope.openPatientDashboardInNewTab = function (relationship) {
@@ -128,29 +126,29 @@ angular.module('bahmni.registration')
                 return function (providerData) {
                     relationship.providerName = providerData.identifier;
                     relationship.personB = {'display': providerData.identifier, 'uuid': providerData.uuid};
-                }
+                };
             };
 
-            $scope.clearProvider = function(relationship){
-                if(!relationship.providerName){
+            $scope.clearProvider = function (relationship) {
+                if (!relationship.providerName) {
                     delete relationship.personB;
                 }
             };
 
             $scope.getProviderDataResults = function (data) {
                 return data.data.results.filter(function (provider) {
-                    return provider.person
+                    return provider.person;
                 })
                 .map(function (providerDetails) {
-                        return {
-                            'value': providerDetails.display || providerDetails.person.display,
-                            'uuid': providerDetails.person.uuid,
-                            'identifier': providerDetails.identifier || providerDetails.person.display
-                        }
-                    });
+                    return {
+                        'value': providerDetails.display || providerDetails.person.display,
+                        'uuid': providerDetails.person.uuid,
+                        'identifier': providerDetails.identifier || providerDetails.person.display
+                    };
+                });
             };
 
-            $scope.onEditProviderName = function(relationship){
+            $scope.onEditProviderName = function (relationship) {
                 delete relationship.personB;
             };
 
@@ -163,11 +161,11 @@ angular.module('bahmni.registration')
                 managePlaceholderRelationshipRows(index);
             };
 
-            var managePlaceholderRelationshipRows = function(index){
+            var managePlaceholderRelationshipRows = function (index) {
                 var iter;
                 for (iter = 0; iter < $scope.patient.newlyAddedRelationships.length; iter++) {
                     if ($scope.isEmpty($scope.patient.newlyAddedRelationships[iter]) && iter !== index) {
-                        $scope.patient.newlyAddedRelationships.splice(iter, 1)
+                        $scope.patient.newlyAddedRelationships.splice(iter, 1);
                     }
                 }
 
@@ -177,7 +175,7 @@ angular.module('bahmni.registration')
                 }
             };
 
-            $scope.isEmpty  = function(relationship){
+            $scope.isEmpty = function (relationship) {
                 return !relationship.relationshipType || !relationship.relationshipType.uuid;
             };
 
@@ -186,10 +184,10 @@ angular.module('bahmni.registration')
                 return patientGenderAndAge.join(", ");
             };
 
-           var init = function(){
-               $scope.relationshipTypes = $rootScope.relationshipTypes;
-               $scope.patient.relationships = $scope.patient.relationships || [];
-           };
+            var init = function () {
+                $scope.relationshipTypes = $rootScope.relationshipTypes;
+                $scope.patient.relationships = $scope.patient.relationships || [];
+            };
 
             init();
         }

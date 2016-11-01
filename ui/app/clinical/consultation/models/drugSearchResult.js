@@ -8,17 +8,17 @@ Bahmni.Clinical.DrugSearchResult = (function () {
             label: label,
             value: value,
             drug: drug
-        }
+        };
     };
 
-    var create = function(drug){
+    var create = function (drug) {
         return createSynonym(drug);
     };
 
     var getMatcher = function (searchString) {
         return function (value) {
-            //return value.search(new RegExp(searchString, "i")) !== -1
-            return _.includes(value.toLowerCase(),searchString.toLowerCase());
+            // return value.search(new RegExp(searchString, "i")) !== -1
+            return _.includes(value.toLowerCase(), searchString.toLowerCase());
         };
     };
     var getSynonymCreator = function (drug) {
@@ -46,5 +46,5 @@ Bahmni.Clinical.DrugSearchResult = (function () {
         create: create,
         createSynonym: createSynonym,
         getAllMatchingSynonyms: getAllMatchingSynonyms
-    }
+    };
 })();

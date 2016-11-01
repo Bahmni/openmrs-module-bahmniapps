@@ -4,7 +4,7 @@ angular.module('bahmni.clinical')
     .directive('treatmentTableRow', function () {
         var controller = function ($scope) {
             $scope.showDetails = false;
-            if($scope.params.showProvider === undefined){
+            if ($scope.params.showProvider === undefined) {
                 $scope.params.showProvider = true;
             }
             $scope.toggle = function () {

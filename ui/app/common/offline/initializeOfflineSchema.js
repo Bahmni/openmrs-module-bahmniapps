@@ -1,7 +1,6 @@
 'use strict';
 
 angular.module('bahmni.common.offline').service('initializeOfflineSchema', [function () {
-
     var DB_NAME = 'Bahmni';
     var DB_VERSION = 2;
     var DB_VERSION_OLD;
@@ -15,7 +14,7 @@ angular.module('bahmni.common.offline').service('initializeOfflineSchema', [func
         "BOOLEAN": lf.Type.BOOLEAN
     };
 
-    var upgradeExistingSchemaFn = function(migrations, rawDb) {
+    var upgradeExistingSchemaFn = function (migrations, rawDb) {
         if (migrations.Queries) {
             migrations.Queries.forEach(function (query) {
                 query(rawDb);
@@ -41,7 +40,7 @@ angular.module('bahmni.common.offline').service('initializeOfflineSchema', [func
         }
     };
 
-    var runMigration = function(oldVersion, db, applyOn) {
+    var runMigration = function (oldVersion, db, applyOn) {
         while (oldVersion < DB_VERSION) {
             var migrations = Bahmni.Common.Offline["Migration" + oldVersion] || {};
             applyOn(migrations, db);
@@ -57,24 +56,24 @@ angular.module('bahmni.common.offline').service('initializeOfflineSchema', [func
     };
 
     var LOVEFIELD_DB_CONFIG = {
-        storeType : lf.schema.DataStoreType.INDEXED_DB,
+        storeType: lf.schema.DataStoreType.INDEXED_DB,
         onUpgrade: onUpgrade
     };
 
     this.databasePromise = null;
 
-    var initDbSchema = function(schemaBuilder) {
+    var initDbSchema = function (schemaBuilder) {
         var tables = _.values(Bahmni.Common.Offline.SchemaDefinitions);
         var initalMigrationVersion = 2;
         tables.forEach(function (table) {
-            createTable(schemaBuilder, table)
+            createTable(schemaBuilder, table);
         });
 
         runMigration(initalMigrationVersion, schemaBuilder, createSchemaFn);
     };
 
     this.initSchema = function () {
-        if(this.databasePromise === null ) {
+        if (this.databasePromise === null) {
             var schemaBuilder = lf.schema.create(DB_NAME, DB_VERSION);
             initDbSchema(schemaBuilder);
 
@@ -88,7 +87,7 @@ angular.module('bahmni.common.offline').service('initializeOfflineSchema', [func
         return this.databasePromise;
     };
 
-    this.reinitSchema = function() {
+    this.reinitSchema = function () {
         this.databasePromise = null;
         return this.initSchema();
     };
@@ -101,17 +100,16 @@ angular.module('bahmni.common.offline').service('initializeOfflineSchema', [func
         });
 
         table.addNullable(tableDefinition.nullableColumns);
-        if(tableDefinition.autoIncrement) {
+        if (tableDefinition.autoIncrement) {
             table.addPrimaryKey(tableDefinition.primaryKeyColumns, true);
-        }
-        else {
+        } else {
             table.addPrimaryKey(tableDefinition.primaryKeyColumns);
         }
-        if(tableDefinition.uniqueKeyColumns) {
+        if (tableDefinition.uniqueKeyColumns) {
             table.addUnique("uKey" + tableDefinition.uniqueKeyColumns.join(""), tableDefinition.uniqueKeyColumns);
         }
         _.each(tableDefinition.indexes, function (index) {
             table.addIndex(index.indexName, index.columnNames);
-        })
+        });
     };
 }]);

@@ -2,10 +2,9 @@
 
 angular.module('bahmni.clinical')
     .controller('PatientDashboardController', ['$scope', 'clinicalAppConfigService', 'clinicalDashboardConfig', 'printer',
-        '$state', 'spinner', 'visitSummary', 'appService', '$stateParams', 'diseaseTemplateService', 'patientContext','$location','$filter',
+        '$state', 'spinner', 'visitSummary', 'appService', '$stateParams', 'diseaseTemplateService', 'patientContext', '$location', '$filter',
         function ($scope, clinicalAppConfigService, clinicalDashboardConfig, printer,
-                  $state, spinner, visitSummary, appService, $stateParams, diseaseTemplateService, patientContext , $location, $filter) {
-
+                  $state, spinner, visitSummary, appService, $stateParams, diseaseTemplateService, patientContext, $location, $filter) {
             $scope.patient = patientContext.patient;
             $scope.activeVisit = $scope.visitHistory.activeVisit;
             $scope.activeVisitData = {};
@@ -17,14 +16,14 @@ angular.module('bahmni.clinical')
             var programConfig = appService.getAppDescriptor().getConfigValue("program") || {};
 
             $scope.stateChange = function () {
-                return $state.current.name === 'patient.dashboard.show'
+                return $state.current.name === 'patient.dashboard.show';
             };
 
             var cleanUpListenerSwitchDashboard = $scope.$on("event:switchDashboard", function (event, dashboard) {
                 $scope.init(dashboard);
             });
 
-            var cleanUpListenerPrintDashboard = $scope.$on("event:printDashboard", function (event,tab) {
+            var cleanUpListenerPrintDashboard = $scope.$on("event:printDashboard", function (event, tab) {
                 var printScope = $scope.$new();
                 printScope.isDashboardPrinting = true;
                 printScope.tabBeingPrinted = tab || clinicalDashboardConfig.currentTab;
@@ -47,15 +46,15 @@ angular.module('bahmni.clinical')
             });
 
             var addTabNameToParams = function (board) {
-                    $location.search('currentTab',board.translationKey);
+                $location.search('currentTab', board.translationKey);
             };
 
-            var getCurrentTab = function(){
-                var currentTabKey =  $location.search().currentTab;
+            var getCurrentTab = function () {
+                var currentTabKey = $location.search().currentTab;
                 var currentTab;
-                if(currentTabKey) {
+                if (currentTabKey) {
                     currentTab = _.find(clinicalDashboardConfig.visibleTabs, function (tab) {
-                       return  tab.translationKey === currentTabKey;
+                        return tab.translationKey === currentTabKey;
                     });
                 }
                 return (currentTab != undefined ? currentTab : clinicalDashboardConfig.currentTab);

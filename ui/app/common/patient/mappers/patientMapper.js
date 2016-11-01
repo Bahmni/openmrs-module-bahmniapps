@@ -1,7 +1,6 @@
 'use strict';
 
-Bahmni.PatientMapper = function (patientConfig, $rootScope,$translate) {
-
+Bahmni.PatientMapper = function (patientConfig, $rootScope, $translate) {
     this.patientConfig = patientConfig;
 
     this.map = function (openmrsPatient) {
@@ -25,7 +24,7 @@ Bahmni.PatientMapper = function (patientConfig, $rootScope,$translate) {
         patient.birthtime = Bahmni.Common.Util.DateUtil.parseServerDateToDate(openmrsPatient.person.birthtime);
         patient.bloodGroupText = getPatientBloodGroupText(openmrsPatient);
 
-        if(openmrsPatient.identifiers) {
+        if (openmrsPatient.identifiers) {
             patient.identifier = openmrsPatient.identifiers[0].identifier;
         }
 
@@ -44,7 +43,7 @@ Bahmni.PatientMapper = function (patientConfig, $rootScope,$translate) {
     this.getPatientConfigByUuid = function (patientConfig, attributeUuid) {
         if (this.patientConfig.personAttributeTypes) {
             return patientConfig.personAttributeTypes.filter(function (item) {
-                return item.uuid === attributeUuid
+                return item.uuid === attributeUuid;
             })[0];
         }
         return {};
@@ -60,17 +59,17 @@ Bahmni.PatientMapper = function (patientConfig, $rootScope,$translate) {
         }
     };
 
-    var calculateAge = function(birthDate) {
+    var calculateAge = function (birthDate) {
         var DateUtil = Bahmni.Common.Util.DateUtil;
         var age = DateUtil.diffInYearsMonthsDays(birthDate, DateUtil.now());
         var ageInString = "";
-        if(age.years) {
+        if (age.years) {
             ageInString += age.years + " <span> " + $translate.instant("CLINICAL_YEARS_TRANSLATION_KEY") + " </span>";
         }
-        if(age.months) {
+        if (age.months) {
             ageInString += age.months + "<span>  " + $translate.instant("CLINICAL_MONTHS_TRANSLATION_KEY") + " </span>";
         }
-        if(age.days) {
+        if (age.days) {
             ageInString += age.days + "<span>  " + $translate.instant("CLINICAL_DAYS_TRANSLATION_KEY") + " </span>";
         }
         return ageInString;
@@ -98,7 +97,7 @@ Bahmni.PatientMapper = function (patientConfig, $rootScope,$translate) {
         if (genderChar == null) {
             return null;
         }
-        return "<span>"+ $rootScope.genderMap[angular.uppercase(genderChar)]+ "</span>";
+        return "<span>" + $rootScope.genderMap[angular.uppercase(genderChar)] + "</span>";
     };
 
     var getPatientBloodGroupText = function (openmrsPatient) {
@@ -107,10 +106,10 @@ Bahmni.PatientMapper = function (patientConfig, $rootScope,$translate) {
         }
         if (openmrsPatient.person.attributes && openmrsPatient.person.attributes.length > 0) {
             var bloodGroup;
-             _.forEach(openmrsPatient.person.attributes, function(attribute) {
-                    if(attribute.attributeType.display == "bloodGroup") {
-                       bloodGroup = attribute.display;
-                    }
+            _.forEach(openmrsPatient.person.attributes, function (attribute) {
+                if (attribute.attributeType.display == "bloodGroup") {
+                    bloodGroup = attribute.display;
+                }
             });
             if (bloodGroup) {
                 return "<span>" + bloodGroup + "</span>";
@@ -118,7 +117,7 @@ Bahmni.PatientMapper = function (patientConfig, $rootScope,$translate) {
         }
     };
 
-    var checkIfDateField = function(x){
-        return x.format === Bahmni.Common.Constants.patientAttributeDateFieldFormat
-    }
+    var checkIfDateField = function (x) {
+        return x.format === Bahmni.Common.Constants.patientAttributeDateFieldFormat;
+    };
 };
