@@ -2,7 +2,6 @@
 
 angular.module('bahmni.common.offline')
     .service('offlineConfigDbService', function () {
-
         var db;
 
         var getConfig = function (module) {
@@ -15,7 +14,7 @@ angular.module('bahmni.common.offline')
                 });
         };
 
-        var insertConfig = function(module, data, eTag){
+        var insertConfig = function (module, data, eTag) {
             var config = db.getSchema().table('configs');
 
             var row = config.createRow({
@@ -24,7 +23,7 @@ angular.module('bahmni.common.offline')
                 etag: eTag
             });
 
-            return db.insertOrReplace().into(config).values([row]).exec().then(function(result){
+            return db.insertOrReplace().into(config).values([row]).exec().then(function (result) {
                 return result[0];
             });
         };
@@ -33,10 +32,9 @@ angular.module('bahmni.common.offline')
             db = _db;
         };
 
-
         return {
             init: init,
             getConfig: getConfig,
             insertConfig: insertConfig
-        }
+        };
     });

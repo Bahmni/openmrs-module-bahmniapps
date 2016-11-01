@@ -87,21 +87,18 @@ module.exports = function (grunt) {
                     padding: 4,
                     removeCommands: true
                 },
-                files: {"dist/offline/index.html" : "dist/offline/index.html",
-                    "dist/registration/index.html" : "dist/registration/index.html",
-                    "dist/clinical/index.html" : "dist/clinical/index.html",
-                    "dist/home/index.html" : "dist/home/index.html"}
+                files: {"dist/offline/index.html": "dist/offline/index.html",
+                    "dist/registration/index.html": "dist/registration/index.html",
+                    "dist/clinical/index.html": "dist/clinical/index.html",
+                    "dist/home/index.html": "dist/home/index.html"}
             }
         },
-        jshint: {
-            options:{
-                force: true,
-                jshintrc: '.jshintrc',
-                verbose: true,
-                reporter: require('jshint-stylish')
-
+        eslint: {
+            options: {
+                fix: true,
+                quiet: true
             },
-            all: [
+            target: [
                 'Gruntfile.js',
                 '<%= yeoman.app %>/**/*.js',
                 '!<%= yeoman.app %>/**/*.min.js',
@@ -464,33 +461,33 @@ module.exports = function (grunt) {
                 dest: '<%= yeoman.dist %>'
             }
         },
-        uglify:{
+        uglify: {
             options: {
                 mangle: false
             },
-            files:{
+            files: {
                 expand: true,
                 cwd: '<%= yeoman.dist %>',
                 src: ['**/*.min.*.js'],
                 dest: '<%= yeoman.dist %>'
             }
         },
-        preprocess : {
+        preprocess: {
             options: {
-                context : {
+                context: {
                     DEBUG: 'production'
                 }
             },
-            multifile : {
-                files : {
-                    '<%= yeoman.dist %>/registration.min.js' : '<%= yeoman.dist %>/registration.min.js',
-                    '<%= yeoman.dist %>/admin.min.js' : '<%= yeoman.dist %>/admin.min.js',
-                    '<%= yeoman.dist %>/adt.min.js' : '<%= yeoman.dist %>/adt.min.js',
-                    '<%= yeoman.dist %>/document-upload.min.js' : '<%= yeoman.dist %>/document-upload.min.js',
-                    '<%= yeoman.dist %>/home.min.js' : '<%= yeoman.dist %>/home.min.js',
-                    '<%= yeoman.dist %>/orders.min.js' : '<%= yeoman.dist %>/orders.min.js',
-                    '<%= yeoman.dist %>/reports.min.js' : '<%= yeoman.dist %>/reports.min.js',
-                    '<%= yeoman.dist %>/clinical.min.js' : '<%= yeoman.dist %>/clinical.min.js'
+            multifile: {
+                files: {
+                    '<%= yeoman.dist %>/registration.min.js': '<%= yeoman.dist %>/registration.min.js',
+                    '<%= yeoman.dist %>/admin.min.js': '<%= yeoman.dist %>/admin.min.js',
+                    '<%= yeoman.dist %>/adt.min.js': '<%= yeoman.dist %>/adt.min.js',
+                    '<%= yeoman.dist %>/document-upload.min.js': '<%= yeoman.dist %>/document-upload.min.js',
+                    '<%= yeoman.dist %>/home.min.js': '<%= yeoman.dist %>/home.min.js',
+                    '<%= yeoman.dist %>/orders.min.js': '<%= yeoman.dist %>/orders.min.js',
+                    '<%= yeoman.dist %>/reports.min.js': '<%= yeoman.dist %>/reports.min.js',
+                    '<%= yeoman.dist %>/clinical.min.js': '<%= yeoman.dist %>/clinical.min.js'
                 }
             },
             web: {
@@ -552,7 +549,7 @@ module.exports = function (grunt) {
     grunt.registerTask('bundle', [
         'npm-install',
         'bower-install',
-        'jshint',
+        'eslint',
         'clean:dist',
         'compass:dist',
         'useminPrepare',
@@ -574,11 +571,11 @@ module.exports = function (grunt) {
     grunt.registerTask('build', [
         'npm-install',
         'bower-install',
-        'jshint',
+        'eslint',
         'dist'
     ]);
 
-    grunt.registerTask('tests', function(app){
+    grunt.registerTask('tests', function (app) {
         grunt.task.run((app || '') + 'test');
     });
 

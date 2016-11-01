@@ -15,5 +15,4 @@ angular.module('bahmni.adt')
                 });
             };
             spinner.forPromise(init());
-
         }]);

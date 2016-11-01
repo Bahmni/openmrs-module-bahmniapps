@@ -12,48 +12,48 @@ angular.module('bahmni.common.displaycontrol.navigationlinks')
             $scope.standardLinks = [
                 {
                     "name": "home",
-                    "translationKey":"HOME_DASHBOARD_KEY",
+                    "translationKey": "HOME_DASHBOARD_KEY",
                     "url": "../home/#/dashboard"
                 },
                 {
                     "name": "visit",
                     "url": "../clinical/#/default/patient/{{patientUuid}}/dashboard/visit/{{visitUuid}}/?encounterUuid=active",
-                    "translationKey":"PATIENT_VISIT_PAGE_KEY"
+                    "translationKey": "PATIENT_VISIT_PAGE_KEY"
                 },
                 {
                     "name": "inpatient",
-                    "translationKey":"PATIENT_ADT_PAGE_KEY",
+                    "translationKey": "PATIENT_ADT_PAGE_KEY",
                     "url": "../adt/#/patient/{{patientUuid}}/visit/{{visitUuid}}/"
                 },
                 {
-                    "name" :"enrolment",
-                    "translationKey":"PROGRAM_MANAGEMENT_PAGE_KEY",
+                    "name": "enrolment",
+                    "translationKey": "PROGRAM_MANAGEMENT_PAGE_KEY",
                     "url": "../clinical/#/programs/patient/{{patientUuid}}/consultationContext"
                 },
                 {
-                    "name" :"visitAttribute",
-                    "translationKey":"PATIENT_VISIT_ATTRIBUTES_PAGE_KEY",
+                    "name": "visitAttribute",
+                    "translationKey": "PATIENT_VISIT_ATTRIBUTES_PAGE_KEY",
                     "url": "../registration/#/patient/{{patientUuid}}/visit"
                 },
                 {
-                    "name" :"registration",
-                    "translationKey":"PATIENT_REGISTRATION_PAGE_KEY",
+                    "name": "registration",
+                    "translationKey": "PATIENT_REGISTRATION_PAGE_KEY",
                     "url": "../registration/#/patient/{{patientUuid}}"
                 }
 
             ];
 
-            var filterLinks = function(links, showLinks){
+            var filterLinks = function (links, showLinks) {
                 var linksSpecifiedInShowLinks = function () {
                     return _.filter(links, function (link) {
                         return showLinks.indexOf(link.name) > -1;
                     });
                 };
 
-                return showLinks  && linksSpecifiedInShowLinks();
+                return showLinks && linksSpecifiedInShowLinks();
             };
 
-            $scope.getLinks = function (){
+            $scope.getLinks = function () {
                 return _.union(
                     filterLinks($scope.standardLinks, $scope.params.showLinks),
                     $scope.params.customLinks
@@ -93,7 +93,6 @@ angular.module('bahmni.common.displaycontrol.navigationlinks')
                 }
                 return params;
             };
-
         };
 
         return {

@@ -13,7 +13,7 @@ Bahmni.Clinical.DrugOrder = (function () {
 
     DrugOrder.createFromUIObject = function (drugOrderData) {
         var dateUtil = Bahmni.Common.Util.DateUtil;
-        var getDosingInstructions = function(drugOrderData) {
+        var getDosingInstructions = function (drugOrderData) {
             var dosingInstructions = {};
             dosingInstructions.instructions = drugOrderData.instructions && drugOrderData.instructions;
             dosingInstructions.additionalInstructions = drugOrderData.additionalInstructions;
@@ -30,40 +30,40 @@ Bahmni.Clinical.DrugOrder = (function () {
         var route = drugOrderData.route;
 
         var drugOrder = new DrugOrder({
-                careSetting: "OUTPATIENT",
-                drug: drugOrderData.drug,
-                drugNonCoded: drugOrderData.drugNonCoded,
-                orderType: "Drug Order",
-                dosingInstructionType: Bahmni.Clinical.Constants.flexibleDosingInstructionsClass,
-                dosingInstructions: {
-                    dose: drugOrderData.uniformDosingType.dose,
-                    doseUnits: drugOrderData.doseUnits,
-                    route: route,
-                    frequency: frequency,
-                    asNeeded: drugOrderData.asNeeded,
-                    administrationInstructions: getDosingInstructions(drugOrderData),
-                    quantity: drugOrderData.quantity,
-                    quantityUnits: drugOrderData.quantityUnit,
-                    numberOfRefills: 0
-                },
-                duration: drugOrderData.duration,
-                durationUnits: drugOrderData.durationUnit,
-                scheduledDate: dateUtil.parse(drugOrderData.scheduledDate),
-                autoExpireDate: dateUtil.parse(drugOrderData.autoExpireDate),
-                previousOrderUuid: drugOrderData.previousOrderUuid,
-                action: drugOrderData.action,
-                orderReasonConcept: drugOrderData.orderReasonConcept,
-                orderReasonText: drugOrderData.orderReasonText,
-                dateStopped: dateUtil.parse(drugOrderData.dateStopped),
-                concept: drugOrderData.concept,
-                sortWeight: drugOrderData.sortWeight,
-                orderGroup: {
-                    uuid: drugOrderData.orderGroupUuid,
-                    orderSet: {
-                        uuid: drugOrderData.orderSetUuid
-                    }
+            careSetting: "OUTPATIENT",
+            drug: drugOrderData.drug,
+            drugNonCoded: drugOrderData.drugNonCoded,
+            orderType: "Drug Order",
+            dosingInstructionType: Bahmni.Clinical.Constants.flexibleDosingInstructionsClass,
+            dosingInstructions: {
+                dose: drugOrderData.uniformDosingType.dose,
+                doseUnits: drugOrderData.doseUnits,
+                route: route,
+                frequency: frequency,
+                asNeeded: drugOrderData.asNeeded,
+                administrationInstructions: getDosingInstructions(drugOrderData),
+                quantity: drugOrderData.quantity,
+                quantityUnits: drugOrderData.quantityUnit,
+                numberOfRefills: 0
+            },
+            duration: drugOrderData.duration,
+            durationUnits: drugOrderData.durationUnit,
+            scheduledDate: dateUtil.parse(drugOrderData.scheduledDate),
+            autoExpireDate: dateUtil.parse(drugOrderData.autoExpireDate),
+            previousOrderUuid: drugOrderData.previousOrderUuid,
+            action: drugOrderData.action,
+            orderReasonConcept: drugOrderData.orderReasonConcept,
+            orderReasonText: drugOrderData.orderReasonText,
+            dateStopped: dateUtil.parse(drugOrderData.dateStopped),
+            concept: drugOrderData.concept,
+            sortWeight: drugOrderData.sortWeight,
+            orderGroup: {
+                uuid: drugOrderData.orderGroupUuid,
+                orderSet: {
+                    uuid: drugOrderData.orderSetUuid
                 }
             }
+        }
         );
         if (!drugOrder.dosingInstructions.quantityUnits) {
             drugOrder.dosingInstructions.quantityUnits = "Unit(s)";
@@ -77,7 +77,7 @@ Bahmni.Clinical.DrugOrder = (function () {
         },
 
         getStatusOnDate: function (date) {
-            if(DateUtil.isSameDate(this.dateStopped, date)) {
+            if (DateUtil.isSameDate(this.dateStopped, date)) {
                 return 'stopped';
             }
             return this.isActiveOnDate(date) ? 'active' : 'inactive';

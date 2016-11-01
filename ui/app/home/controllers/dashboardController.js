@@ -1,14 +1,14 @@
 'use strict';
 
 angular.module('bahmni.home')
-    .controller('DashboardController', ['$scope', '$state', 'appService', 'locationService', 'spinner', '$bahmniCookieStore', '$window', '$q', 'offlineService', 'schedulerService', 'eventQueue', 'offlineDbService','androidDbService', 'networkStatusService',
-        function ($scope, $state, appService, locationService, spinner, $bahmniCookieStore, $window, $q, offlineService, schedulerService, eventQueue, offlineDbService,androidDbService, networkStatusService) {
+    .controller('DashboardController', ['$scope', '$state', 'appService', 'locationService', 'spinner', '$bahmniCookieStore', '$window', '$q', 'offlineService', 'schedulerService', 'eventQueue', 'offlineDbService', 'androidDbService', 'networkStatusService',
+        function ($scope, $state, appService, locationService, spinner, $bahmniCookieStore, $window, $q, offlineService, schedulerService, eventQueue, offlineDbService, androidDbService, networkStatusService) {
             $scope.appExtensions = appService.getAppDescriptor().getExtensions($state.current.data.extensionPointId, "link") || [];
             $scope.selectedLocationUuid = {};
             $scope.isOfflineApp = offlineService.isOfflineApp();
 
             $scope.isVisibleExtension = function (extension) {
-                if(!$scope.isOfflineApp){
+                if (!$scope.isOfflineApp) {
                     return true;
                 }
                 return extension.exclusiveOnlineModule ? networkStatusService.isOnline() : extension.exclusiveOfflineModule ? !networkStatusService.isOnline() : true;
@@ -19,23 +19,23 @@ angular.module('bahmni.home')
             };
 
             var init = function () {
-                if($scope.isOfflineApp){
+                if ($scope.isOfflineApp) {
                     setWatchersForErrorStatus();
                 }
-                if(offlineService.isAndroidApp()){
+                if (offlineService.isAndroidApp()) {
                     offlineDbService = androidDbService;
                 }
                 return locationService.getAllByTag("Login Location").then(function (response) {
-                        $scope.locations = response.data.results;
-                        $scope.selectedLocationUuid = getCurrentLocation().uuid;
-                    }
+                    $scope.locations = response.data.results;
+                    $scope.selectedLocationUuid = getCurrentLocation().uuid;
+                }
                 );
             };
 
             var getLocationFor = function (uuid) {
                 return _.find($scope.locations, function (location) {
                     return location.uuid === uuid;
-                })
+                });
             };
 
             $scope.isCurrentLocation = function (location) {
@@ -84,12 +84,11 @@ angular.module('bahmni.home')
                 });
             };
 
-            var updateSyncStatusMessageBasedOnQueuesCount = function() {
-                 getErrorCount().then(function (errorCount) {
+            var updateSyncStatusMessageBasedOnQueuesCount = function () {
+                getErrorCount().then(function (errorCount) {
                     if (errorCount) {
                         $scope.syncStatusMessage = Bahmni.Common.Constants.syncStatusMessages.syncFailed;
-                    }
-                    else {
+                    } else {
                         getEventCount().then(function (eventCount) {
                             $scope.syncStatusMessage = eventCount ? Bahmni.Common.Constants.syncStatusMessages.syncPending : updateLastSyncTimeOnSuccessfullSyncAnReturnSuccessMessage();
                         });
@@ -102,14 +101,14 @@ angular.module('bahmni.home')
                 $scope.isSyncing ? $scope.syncStatusMessage = "Sync in Progress..." : updateSyncStatusMessageBasedOnQueuesCount();
             };
 
-            var setErrorStatusOnErrorsInSync = function(){
-                 offlineDbService.getAllLogs().then(function(errors){
+            var setErrorStatusOnErrorsInSync = function () {
+                offlineDbService.getAllLogs().then(function (errors) {
                     $scope.errorsInSync = !!errors.length;
                 });
             };
 
             getSyncStatusInfo();
-            var setWatchersForErrorStatus = function(){
+            var setWatchersForErrorStatus = function () {
                 $scope.$watch('isSyncing', function () {
                     getSyncStatusInfo();
                     setErrorStatusOnErrorsInSync();
@@ -125,7 +124,7 @@ angular.module('bahmni.home')
             };
 
             $scope.getStatusStyleCode = function () {
-                return $scope.syncStatusMessage && ($scope.syncStatusMessage.match(/.*Success.*/i)? 'success' : $scope.syncStatusMessage.match(/.*Pending.*/i) ? 'pending' : $scope.syncStatusMessage.match(/.*Failed.*/i) ? 'fail' : 'inProgress');
+                return $scope.syncStatusMessage && ($scope.syncStatusMessage.match(/.*Success.*/i) ? 'success' : $scope.syncStatusMessage.match(/.*Pending.*/i) ? 'pending' : $scope.syncStatusMessage.match(/.*Failed.*/i) ? 'fail' : 'inProgress');
             };
 
             return spinner.forPromise($q.all(init()));

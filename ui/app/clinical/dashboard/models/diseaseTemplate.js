@@ -1,7 +1,6 @@
 'use strict';
 
 Bahmni.Clinical.DiseaseTemplate = function (concept, obsTemplates) {
-
     var diseaseTemplate = {
         name: concept.name,
         label: concept.shortName || concept.name,

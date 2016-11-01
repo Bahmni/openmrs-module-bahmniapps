@@ -21,9 +21,8 @@ Bahmni.ConceptSet.ObservationMapper = function () {
                 if (savedObs.concept.set) {
                     if (conceptSetConfig[savedObs.concept.name] && conceptSetConfig[savedObs.concept.name].grid) {
                         savedObs.value = self.getGridObservationDisplayValue(savedObs);
-                        observationsForDisplay = observationsForDisplay.concat(createObservationForDisplay(savedObs, savedObs.concept))
-                    }
-                    else {
+                        observationsForDisplay = observationsForDisplay.concat(createObservationForDisplay(savedObs, savedObs.concept));
+                    } else {
                         var groupMemberObservationsForDisplay = internalMapForDisplay(savedObs.groupMembers, conceptSetConfig);
                         observationsForDisplay = observationsForDisplay.concat(groupMemberObservationsForDisplay);
                     }
@@ -31,8 +30,7 @@ Bahmni.ConceptSet.ObservationMapper = function () {
                     var obsToDisplay = null;
                     if (savedObs.isMultiSelect) {
                         obsToDisplay = savedObs;
-                    }
-                    else if (!savedObs.hidden) {
+                    } else if (!savedObs.hidden) {
                         var observation = newObservation(savedObs.concept, savedObs, []);
                         obsToDisplay = createObservationForDisplay(observation, observation.concept);
                     }
@@ -44,7 +42,6 @@ Bahmni.ConceptSet.ObservationMapper = function () {
         });
         return observationsForDisplay;
     };
-
 
     this.map = function (observations, rootConcept, conceptSetConfig) {
         var savedObs = findInSavedObservation(rootConcept, observations)[0];
@@ -75,15 +72,14 @@ Bahmni.ConceptSet.ObservationMapper = function () {
         return obs;
     };
 
-
-    function mapTabularObs(mappedGroupMembers, concept, obs, conceptSetConfig) {
+    function mapTabularObs (mappedGroupMembers, concept, obs, conceptSetConfig) {
         var tabularObsGroups = _.filter(mappedGroupMembers, function (member) {
-            return conceptSetConfig[member.concept.name] && conceptSetConfig[member.concept.name]['isTabular']
+            return conceptSetConfig[member.concept.name] && conceptSetConfig[member.concept.name]['isTabular'];
         });
 
         if (tabularObsGroups.length > 0) {
             var array = _.map(concept.setMembers, function (member) {
-                return member.name.name
+                return member.name.name;
             });
             tabularObsGroups.forEach(function (group) {
                 group.hidden = true;
@@ -111,15 +107,14 @@ Bahmni.ConceptSet.ObservationMapper = function () {
             var configForConcept = conceptSetConfig[memberConcept.name.name] || {};
             var numberOfNodes = configForConcept.multiple || 1;
             for (var i = savedObservations.length - 1; i >= 0; i--) {
-                observationGroupMembers.push(mapObservation(memberConcept, savedObservations[i], conceptSetConfig, parentConcept))
+                observationGroupMembers.push(mapObservation(memberConcept, savedObservations[i], conceptSetConfig, parentConcept));
             }
             for (var i = 0; i < numberOfNodes - savedObservations.length; i++) {
-                observationGroupMembers.push(mapObservation(memberConcept, null, conceptSetConfig, parentConcept))
+                observationGroupMembers.push(mapObservation(memberConcept, null, conceptSetConfig, parentConcept));
             }
         });
         return observationGroupMembers;
     };
-
 
     var getDatatype = function (concept) {
         if (concept.dataType) {
@@ -144,14 +139,13 @@ Bahmni.ConceptSet.ObservationMapper = function () {
         return new Bahmni.ConceptSet.ObservationNode(observation, savedObsNode, conceptSetConfig, concept);
     };
 
-
     var showAddMoreButton = function (rootObservation) {
         var observation = this;
-        var lastObservationByLabel = _.findLast(rootObservation.groupMembers,{label: observation.label});
+        var lastObservationByLabel = _.findLast(rootObservation.groupMembers, {label: observation.label});
         return lastObservationByLabel.uuid === observation.uuid;
     };
 
-    function buildObservation(concept, savedObs, mappedGroupMembers) {
+    function buildObservation (concept, savedObs, mappedGroupMembers) {
         var comment = savedObs ? savedObs.comment : null;
         return {
             concept: conceptMapper.map(concept),
@@ -160,7 +154,7 @@ Bahmni.ConceptSet.ObservationMapper = function () {
             possibleAnswers: concept.answers,
             groupMembers: mappedGroupMembers,
             comment: comment,
-            showAddMoreButton : showAddMoreButton
+            showAddMoreButton: showAddMoreButton
         };
     }
 
@@ -210,5 +204,5 @@ Bahmni.ConceptSet.ObservationMapper = function () {
     var getLabel = function (concept) {
         var mappedConcept = conceptMapper.map(concept);
         return mappedConcept.shortName || mappedConcept.name;
-    }
+    };
 };

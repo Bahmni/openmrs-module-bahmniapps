@@ -2,7 +2,6 @@
 
 angular.module('bahmni.clinical').directive('observationGraph', ['appService', 'observationsService', 'patientService', 'conceptSetService', '$q', 'spinner',
     function (appService, observationsService, patientService, conceptSetService, $q, spinner) {
-
         var generateGraph = function ($scope, element, config, observationGraphModel) {
             var bindToElement = document.getElementById($scope.graphId);
             var graphWidth = $(element).parent().width();
@@ -46,8 +45,8 @@ angular.module('bahmni.clinical').directive('observationGraph', ['appService', '
             var checkWhetherYAxisIsNumericDataType = function (yAxisConceptDetails) {
                 if (yAxisConceptDetails.datatype.name !== "Numeric") {
                     var errorMsg = Bahmni.Clinical.Constants.errorMessages.conceptNotNumeric
-                        .replace(":conceptName",yAxisConceptDetails.name.name)
-                        .replace(":placeErrorAccurred",$scope.params.title+" config in growthChartReference.csv");
+                        .replace(":conceptName", yAxisConceptDetails.name.name)
+                        .replace(":placeErrorAccurred", $scope.params.title + " config in growthChartReference.csv");
                     throw new Error(errorMsg);
                 }
             };

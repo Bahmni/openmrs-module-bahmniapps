@@ -1,16 +1,15 @@
 'use strict';
 
 angular.module('bahmni.common.conceptSet').controller('multiSelectObservationSearchController', ['$scope', 'conceptSetService', function ($scope, conceptSetService) {
-
     var possibleAnswers = [];
     var unselectedValues = [];
     $scope.values = [];
 
     var init = function () {
-        var selectedValues = _.map(_.values($scope.observation.selectedObs),'value');
-        _.remove(selectedValues,_.isUndefined);
+        var selectedValues = _.map(_.values($scope.observation.selectedObs), 'value');
+        _.remove(selectedValues, _.isUndefined);
         selectedValues.forEach(function (observation) {
-            $scope.values.push({"label": observation.name,"name" : observation.name});
+            $scope.values.push({"label": observation.name, "name": observation.name});
         });
 
         var configuredConceptSetName = $scope.observation.getConceptUIConfig().answersConceptName;
@@ -29,7 +28,7 @@ angular.module('bahmni.common.conceptSet').controller('multiSelectObservationSea
     };
 
     $scope.search = function (query) {
-        var matchingAnswers = new Array();
+        var matchingAnswers = [];
         _.forEach(unselectedValues, function (answer) {
             if (typeof answer.name != "object" && answer.name.toLowerCase().indexOf(query.toLowerCase()) !== -1) {
                 answer.label = answer.name;
@@ -38,18 +37,15 @@ angular.module('bahmni.common.conceptSet').controller('multiSelectObservationSea
                 answer.name = answer.name.name;
                 answer.label = answer.name;
                 matchingAnswers.push(answer);
-            }
-            else {
+            } else {
                 var synonyms = _.map(answer.names, 'name');
                 _.find(synonyms, function (name) {
                     if (name.toLowerCase().indexOf(query.toLowerCase()) !== -1) {
                         answer.label = name + " => " + answer.name;
                         matchingAnswers.push(answer);
                     }
-
                 });
             }
-
         });
         return _.uniqBy(matchingAnswers, 'uuid');
     };
@@ -79,9 +75,8 @@ angular.module('bahmni.common.conceptSet').controller('multiSelectObservationSea
     };
 
     init();
-
-}]).config(function(tagsInputConfigProvider) {
+}]).config(function (tagsInputConfigProvider) {
     tagsInputConfigProvider.setDefaults('tagsInput', {
         placeholder: ''
-    })});
+    }); });
 

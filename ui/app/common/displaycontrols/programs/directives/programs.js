@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('bahmni.common.displaycontrol.programs')
-    .directive('programs', ['programService', '$state','spinner',
+    .directive('programs', ['programService', '$state', 'spinner',
         function (programService, $state, spinner) {
             var controller = function ($scope) {
                 $scope.initialization = programService.getPatientPrograms($scope.patient.uuid, true, $state.params.enrollment).then(function (patientPrograms) {
@@ -26,23 +26,20 @@ angular.module('bahmni.common.displaycontrol.programs')
                 $scope.getAttributeValue = function (attribute) {
                     if (isDateFormat(attribute.attributeType.format)) {
                         return Bahmni.Common.Util.DateUtil.formatDateWithoutTime(attribute.value);
-                    }
-                    else if (isCodedConceptFormat(attribute.attributeType.format)) {
+                    } else if (isCodedConceptFormat(attribute.attributeType.format)) {
                         var mrsAnswer = attribute.value;
                         var displayName = mrsAnswer.display;
                         if (mrsAnswer.names && mrsAnswer.names.length == 2) {
                             if (mrsAnswer.name.conceptNameType == 'FULLY_SPECIFIED') {
                                 if (mrsAnswer.names[0].display == displayName) {
                                     displayName = mrsAnswer.names[1].display;
-                                }
-                                else {
+                                } else {
                                     displayName = mrsAnswer.names[0].display;
                                 }
                             }
                         }
                         return displayName;
-                    }
-                    else {
+                    } else {
                         return attribute.value;
                     }
                 };
@@ -66,5 +63,5 @@ angular.module('bahmni.common.displaycontrol.programs')
                 scope: {
                     patient: "="
                 }
-            }
+            };
         }]);

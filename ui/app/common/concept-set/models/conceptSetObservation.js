@@ -1,6 +1,5 @@
 'use strict';
 
-
 Bahmni.ConceptSet.Observation = function (observation, savedObs, conceptUIConfig) {
     var self = this;
     angular.extend(this, observation);
@@ -36,8 +35,8 @@ Bahmni.ConceptSet.Observation = function (observation, savedObs, conceptUIConfig
                 return self._value;
             }
             if (savedObs) {
-                if (typeof(savedObs.value) === "object" && savedObs.value) {
-                    savedObs.value['displayString'] = (savedObs.value.shortName ? savedObs.value.shortName : savedObs.value.name)
+                if (typeof (savedObs.value) === "object" && savedObs.value) {
+                    savedObs.value['displayString'] = (savedObs.value.shortName ? savedObs.value.shortName : savedObs.value.name);
                 }
             }
             return savedObs ? savedObs.value : undefined;
@@ -52,7 +51,7 @@ Bahmni.ConceptSet.Observation = function (observation, savedObs, conceptUIConfig
         }
     });
 
-    var cloneNonTabularObs = function(oldObs) {
+    var cloneNonTabularObs = function (oldObs) {
         var newGroupMembers = [];
         oldObs.groupMembers.forEach(function (member) {
             if (member.isTabularObs === undefined) {
@@ -64,7 +63,7 @@ Bahmni.ConceptSet.Observation = function (observation, savedObs, conceptUIConfig
         return newGroupMembers;
     };
 
-    var getTabularObs = function(oldObs) {
+    var getTabularObs = function (oldObs) {
         var tabularObsList = [];
         oldObs.groupMembers.forEach(function (member) {
             if (member.isTabularObs !== undefined) {
@@ -74,30 +73,30 @@ Bahmni.ConceptSet.Observation = function (observation, savedObs, conceptUIConfig
         return tabularObsList;
     };
 
-    var cloneTabularObs = function(oldObs , tabularObsList){
-        tabularObsList = _.map(tabularObsList, function(tabularObs){
-            var matchingObsList = _.filter(oldObs.groupMembers, function(member){
-                return  member.concept.name == tabularObs.concept.name;
+    var cloneTabularObs = function (oldObs, tabularObsList) {
+        tabularObsList = _.map(tabularObsList, function (tabularObs) {
+            var matchingObsList = _.filter(oldObs.groupMembers, function (member) {
+                return member.concept.name == tabularObs.concept.name;
             });
             return new Bahmni.ConceptSet.TabularObservations(matchingObsList, oldObs, conceptUIConfig);
         });
-        tabularObsList.forEach(function(tabularObs){
+        tabularObsList.forEach(function (tabularObs) {
             oldObs.groupMembers.push(tabularObs);
         });
         return oldObs;
     };
 
-    this.cloneNew = function() {
+    this.cloneNew = function () {
         var oldObs = angular.copy(observation);
-        if(oldObs.groupMembers && oldObs.groupMembers.length > 0) {
-            oldObs.groupMembers = _.filter(oldObs.groupMembers, function(member) {
+        if (oldObs.groupMembers && oldObs.groupMembers.length > 0) {
+            oldObs.groupMembers = _.filter(oldObs.groupMembers, function (member) {
                 return !member.isMultiSelect;
             });
             var newGroupMembers = cloneNonTabularObs(oldObs);
             var tabularObsList = getTabularObs(oldObs);
             oldObs.groupMembers = newGroupMembers;
-            if(!_.isEmpty(tabularObsList)) {
-                oldObs = cloneTabularObs(oldObs ,tabularObsList);
+            if (!_.isEmpty(tabularObsList)) {
+                oldObs = cloneTabularObs(oldObs, tabularObsList);
             }
         }
         new Bahmni.ConceptSet.MultiSelectObservations(conceptUIConfig).map(oldObs.groupMembers);
@@ -116,8 +115,7 @@ Bahmni.ConceptSet.Observation.prototype = {
                     return this.possibleAnswers[i].display;
                 }
             }
-        }
-        else {
+        } else {
             return this.value;
         }
     },
@@ -129,11 +127,11 @@ Bahmni.ConceptSet.Observation.prototype = {
         return false;
     },
 
-    isComputed: function() {
+    isComputed: function () {
         return this.concept.conceptClass === "Computed";
     },
 
-    isComputedAndEditable: function() {
+    isComputedAndEditable: function () {
         return this.concept.conceptClass === "Computed/Editable";
     },
 
@@ -141,9 +139,9 @@ Bahmni.ConceptSet.Observation.prototype = {
         return this.getDataTypeName() === "Numeric";
     },
 
-    isValidNumeric : function (){
-        if(!this.isDecimalAllowed()){
-            if(this.value && this.value.toString().indexOf('.') >= 0){
+    isValidNumeric: function () {
+        if (!this.isDecimalAllowed()) {
+            if (this.value && this.value.toString().indexOf('.') >= 0) {
                 return false;
             }
         }
@@ -165,7 +163,7 @@ Bahmni.ConceptSet.Observation.prototype = {
         return this.getDataTypeName() === "Coded";
     },
 
-    isDatetime: function() {
+    isDatetime: function () {
         return this.getDataTypeName() === "Datetime";
     },
 
@@ -189,7 +187,7 @@ Bahmni.ConceptSet.Observation.prototype = {
         return 'Date'.indexOf(this.getDataTypeName()) != -1;
     },
 
-    getPossibleAnswers: function() {
+    getPossibleAnswers: function () {
         return this.possibleAnswers;
     },
 
@@ -244,21 +242,21 @@ Bahmni.ConceptSet.Observation.prototype = {
         return "unknown";
     },
 
-    canHaveComment: function() {
+    canHaveComment: function () {
         return this.conceptUIConfig.disableAddNotes ? !this.conceptUIConfig.disableAddNotes : (!this.isText() && !this.isImage() && !this.isVideo());
     },
 
-    canAddMore: function() {
+    canAddMore: function () {
         return this.conceptUIConfig.allowAddMore == true;
     },
 
-    isStepperControl: function() {
-        if(this.isNumeric()){
+    isStepperControl: function () {
+        if (this.isNumeric()) {
             return this.conceptUIConfig.stepper == true;
         }
     },
 
-    isConciseText: function(){
+    isConciseText: function () {
         return this.conceptUIConfig.conciseText == true;
     },
 
@@ -271,7 +269,6 @@ Bahmni.ConceptSet.Observation.prototype = {
             return "dropdown";
         }
         return "buttonselect";
-
     },
 
     onValueChanged: function () {
@@ -281,13 +278,13 @@ Bahmni.ConceptSet.Observation.prototype = {
     },
 
     setErroneousValue: function () {
-            if (this.hasValue()) {
-                var erroneousValue = this.value > (this.concept.hiAbsolute || Infinity) || this.value < (this.concept.lowAbsolute || 0);
-                this.erroneousValue = erroneousValue;
-            } else {
-                this.erroneousValue = undefined;
-            }
-        },
+        if (this.hasValue()) {
+            var erroneousValue = this.value > (this.concept.hiAbsolute || Infinity) || this.value < (this.concept.lowAbsolute || 0);
+            this.erroneousValue = erroneousValue;
+        } else {
+            this.erroneousValue = undefined;
+        }
+    },
 
     getInputType: function () {
         return this.getDataTypeName();
@@ -297,7 +294,7 @@ Bahmni.ConceptSet.Observation.prototype = {
         if (this.isGroup()) {
             return this.groupMembers.some(function (childNode) {
                 return childNode.atLeastOneValueSet();
-            })
+            });
         } else {
             return this.hasValue();
         }
@@ -310,7 +307,7 @@ Bahmni.ConceptSet.Observation.prototype = {
         }
         if (value === 0) {
             return true;
-        } //!value ignores 0
+        } //! value ignores 0
         if (value === '' || !value) {
             return false;
         }
@@ -320,14 +317,14 @@ Bahmni.ConceptSet.Observation.prototype = {
         return true;
     },
 
-    hasValueOf: function(value) {
-        if(!this.value || !value) {
+    hasValueOf: function (value) {
+        if (!this.value || !value) {
             return false;
         }
         return this.value == value || this.value.uuid == value.uuid;
     },
 
-    toggleSelection: function(answer) {
+    toggleSelection: function (answer) {
         if (this.value && this.value.uuid === answer.uuid) {
             this.value = null;
         } else {
@@ -389,7 +386,7 @@ Bahmni.ConceptSet.Observation.prototype = {
         if (this._isDateDataType()) {
             return this.isValidDate();
         }
-        if (this._isDateTimeDataType()) {   return !this.hasInvalidDateTime();}
+        if (this._isDateTimeDataType()) { return !this.hasInvalidDateTime(); }
         if (this.erroneousValue) {
             return false;
         }
@@ -410,11 +407,11 @@ Bahmni.ConceptSet.Observation.prototype = {
     },
 
     _isDateDataType: function () {
-        return 'Date' === this.getDataTypeName();
+        return this.getDataTypeName() === 'Date';
     },
 
     _isDateTimeDataType: function () {
-        return "Datetime" === this.getDataTypeName();
+        return this.getDataTypeName() === "Datetime";
     },
 
     isRequired: function () {
@@ -422,32 +419,32 @@ Bahmni.ConceptSet.Observation.prototype = {
         return this.conceptUIConfig.required === true && this.disabled === false;
     },
 
-    isFormElement: function() {
+    isFormElement: function () {
         return (!this.concept.set || this.isGrid()) && !this.isComputed();
     },
 
     _hasValidChildren: function (checkRequiredFields, conceptSetRequired) {
         return this.groupMembers.every(function (member) {
-            return member.isValid(checkRequiredFields, conceptSetRequired)
+            return member.isValid(checkRequiredFields, conceptSetRequired);
         });
     },
 
     _areChildNodesInAbsoluteRange: function () {
         return this.groupMembers.every(function (member) {
-            //Other than Bahmni.ConceptSet.Observation  and Bahmni.ConceptSet.ObservationNode, other concepts does not have isValueInAbsoluteRange fn
-            return (typeof member.isValueInAbsoluteRange == 'function')? member.isValueInAbsoluteRange():true;
+            // Other than Bahmni.ConceptSet.Observation  and Bahmni.ConceptSet.ObservationNode, other concepts does not have isValueInAbsoluteRange fn
+            return (typeof member.isValueInAbsoluteRange == 'function') ? member.isValueInAbsoluteRange() : true;
         });
     },
 
-    markAsNonCoded: function() {
-      this.markedAsNonCoded = !this.markedAsNonCoded;
+    markAsNonCoded: function () {
+        this.markedAsNonCoded = !this.markedAsNonCoded;
     },
 
-    toggleVoidingOfImage: function() {
+    toggleVoidingOfImage: function () {
         this.voided = !this.voided;
     },
 
-    assignAddMoreButtonID : function(){
+    assignAddMoreButtonID: function () {
         return this.concept.name.split(' ').join('_').toLowerCase() + '_addmore_' + this.uniqueId;
     }
 };

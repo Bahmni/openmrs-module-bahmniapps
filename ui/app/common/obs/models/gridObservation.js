@@ -1,7 +1,6 @@
 'use strict';
 
 Bahmni.Common.Obs.GridObservation = (function () {
-
     var conceptMapper = new Bahmni.Common.Domain.ConceptMapper();
 
     var GridObservation = function (obs, conceptConfig) {
@@ -14,14 +13,14 @@ Bahmni.Common.Obs.GridObservation = (function () {
         if (observation.isBoolean || observation.type === "Boolean") {
             return observation.value === true ? "OBS_BOOLEAN_YES_KEY" : "OBS_BOOLEAN_NO_KEY";
         }
-        if(!observation.value) {
+        if (!observation.value) {
             return "";
         }
-        if(typeof observation.value.name === 'object') {
+        if (typeof observation.value.name === 'object') {
             var valueConcept = conceptMapper.map(observation.value);
             return valueConcept.shortName || valueConcept.name;
         }
-        return observation.value.shortName || observation.value.name || observation.value ;
+        return observation.value.shortName || observation.value.name || observation.value;
     };
 
     GridObservation.prototype = {
@@ -38,8 +37,5 @@ Bahmni.Common.Obs.GridObservation = (function () {
         }
     };
 
-
-
     return GridObservation;
-
 })();

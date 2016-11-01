@@ -7,23 +7,22 @@ Bahmni.Clinical.TabConfig = function (tabs) {
     });
     this.identifierKey = null;
 
-    var initDisplayByDefaultTabs = function(){
+    var initDisplayByDefaultTabs = function () {
         self.visibleTabs = _.filter(self.tabs, function (tab) {
             return tab.displayByDefault;
         });
     };
 
-    var init = function(){
+    var init = function () {
         initDisplayByDefaultTabs();
         self.currentTab = self.getFirstTab();
-        if(self.currentTab && self.currentTab.translationKey){
+        if (self.currentTab && self.currentTab.translationKey) {
             self.identifierKey = "translationKey";
         }
     };
 
-
     var isTabClosed = function (tab) {
-        return !_.find(self.visibleTabs, function(visibleTab) {
+        return !_.find(self.visibleTabs, function (visibleTab) {
             return visibleTab[self.identifierKey] === tab[self.identifierKey];
         });
     };
@@ -34,7 +33,7 @@ Bahmni.Clinical.TabConfig = function (tabs) {
         });
     };
 
-    this.getFirstTab = function() {
+    this.getFirstTab = function () {
         return self.visibleTabs[0];
     };
 
@@ -44,7 +43,6 @@ Bahmni.Clinical.TabConfig = function (tabs) {
         if (isTabClosed(tab)) {
             this.visibleTabs.push(tab);
         }
-
     };
 
     this.showTabs = function () {
@@ -55,7 +53,7 @@ Bahmni.Clinical.TabConfig = function (tabs) {
         if (tab.displayByDefault) {
             return;
         }
-        _.remove(self.visibleTabs, function(visibleTab) {
+        _.remove(self.visibleTabs, function (visibleTab) {
             return tab[self.identifierKey] === visibleTab[self.identifierKey];
         });
         this.switchTab(this.getFirstTab());
@@ -73,7 +71,7 @@ Bahmni.Clinical.TabConfig = function (tabs) {
         return !_.isEmpty(this.currentTab.printing);
     };
 
-    this.getPrintConfigForCurrentTab = function() {
+    this.getPrintConfigForCurrentTab = function () {
         return this.currentTab.printing;
     };
 

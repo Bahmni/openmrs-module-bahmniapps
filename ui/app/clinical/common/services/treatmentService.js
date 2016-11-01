@@ -2,7 +2,6 @@
 
 angular.module('bahmni.clinical')
     .factory('TreatmentService', ['$http', '$q', 'appService', function ($http, $q, appService) {
-
         var createDrugOrder = function (drugOrder) {
             return Bahmni.Clinical.DrugOrder.create(drugOrder);
         };
@@ -45,7 +44,7 @@ angular.module('bahmni.clinical')
         var getProgramConfig = function () {
             var programConfig = appService.getAppDescriptor() ? appService.getAppDescriptor().getConfigValue("program") || {} : {};
             return programConfig;
-        }
+        };
 
         var getActiveDrugOrders = function (patientUuid, fromDate, toDate) {
             var programConfig = getProgramConfig();
@@ -53,14 +52,14 @@ angular.module('bahmni.clinical')
             var endDate = programConfig.showDetailsWithinDateRange ? toDate : null;
 
             var deferred = $q.defer();
-            getActiveDrugOrdersFromServer(patientUuid,startDate,endDate).success(function (response) {
+            getActiveDrugOrdersFromServer(patientUuid, startDate, endDate).success(function (response) {
                 var activeDrugOrders = response.map(createDrugOrder);
                 deferred.resolve(activeDrugOrders);
             });
             return deferred.promise;
         };
 
-        var getPrescribedDrugOrders = function(patientUuid, includeActiveVisit, numberOfVisits, fromDate, toDate) {
+        var getPrescribedDrugOrders = function (patientUuid, includeActiveVisit, numberOfVisits, fromDate, toDate) {
             var programConfig = getProgramConfig();
             var startDate = programConfig.showDetailsWithinDateRange ? fromDate : null;
             var endDate = programConfig.showDetailsWithinDateRange ? toDate : null;
@@ -100,19 +99,19 @@ angular.module('bahmni.clinical')
             return deferred.promise;
         };
 
-        var getAllDrugOrdersFor = function (patientUuid, conceptSetToBeIncluded, conceptSetToBeExcluded, isActive, patientProgramUuid   ) {
+        var getAllDrugOrdersFor = function (patientUuid, conceptSetToBeIncluded, conceptSetToBeExcluded, isActive, patientProgramUuid) {
             var deferred = $q.defer();
-            var params= {patientUuid: patientUuid};
-            if(conceptSetToBeIncluded){
+            var params = {patientUuid: patientUuid};
+            if (conceptSetToBeIncluded) {
                 params.includeConceptSet = conceptSetToBeIncluded;
             }
-            if(conceptSetToBeExcluded){
+            if (conceptSetToBeExcluded) {
                 params.excludeConceptSet = conceptSetToBeExcluded;
             }
-            if(isActive !== undefined){
-                params.isActive=isActive;
+            if (isActive !== undefined) {
+                params.isActive = isActive;
             }
-            if(patientProgramUuid){
+            if (patientProgramUuid) {
                 params.patientProgramUuid = patientProgramUuid;
             }
 

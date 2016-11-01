@@ -8,6 +8,6 @@ angular.module('bahmni.home')
             };
             return function () {
                 return spinner.forPromise(initApp());
-            }
+            };
         }
     ]);

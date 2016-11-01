@@ -13,8 +13,8 @@
         _.each(observations, function (obs) {
             obs.concept.name = _.find(conceptNamesFromConfig, function (configConceptName) {
                 return configConceptName.toLowerCase() === obs.concept.name.toLowerCase();
-            })
-        })
+            });
+        });
     };
 
     var createObservationPoint = function (config, obs, xAxisValues) {
@@ -75,7 +75,7 @@
 
         if (referenceLines !== undefined) {
             lines = lines.concat(referenceLines);
-            var referenceLinesYAxisConcepts = _.map(referenceLines,'name');
+            var referenceLinesYAxisConcepts = _.map(referenceLines, 'name');
             config.yAxisConcepts = config.yAxisConcepts.concat(referenceLinesYAxisConcepts);
         }
 

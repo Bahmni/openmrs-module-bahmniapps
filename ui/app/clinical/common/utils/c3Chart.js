@@ -16,16 +16,15 @@ Bahmni.Graph.c3Chart = function () {
         return classes;
     };
 
-    var formatValueForDisplay= function(value, config){
-        if(config.displayForAge()){
+    var formatValueForDisplay = function (value, config) {
+        if (config.displayForAge()) {
             return Bahmni.Common.Util.AgeUtil.monthsToAgeString(value);
-        } else if(config.displayForObservationDateTime()) {
+        } else if (config.displayForObservationDateTime()) {
             return dateUtil.formatDateWithoutTime(value);
         } else {
             return d3.round(value, 2);
         }
     };
-
 
     var createXAxisConfig = function (config) {
         return {
@@ -39,7 +38,7 @@ Bahmni.Graph.c3Chart = function () {
                     max: 3
                 },
                 count: 10,
-                format: function(xAxisValue){
+                format: function (xAxisValue) {
                     return formatValueForDisplay(xAxisValue, config);
                 }
             }
@@ -64,18 +63,18 @@ Bahmni.Graph.c3Chart = function () {
         };
     };
 
-    var createAxisConfig = function(config, units) {
+    var createAxisConfig = function (config, units) {
         var axis = {
             x: createXAxisConfig(config),
             y: createYAxisConfig(units[0])
         };
-        if(units[1] !== undefined) {
+        if (units[1] !== undefined) {
             axis['y2'] = createYAxisConfig(units[1]);
         }
         return axis;
     };
 
-    var createGridConfig = function(config) {
+    var createGridConfig = function (config) {
         var grid = {
             y: {
                 lines: []
@@ -92,7 +91,7 @@ Bahmni.Graph.c3Chart = function () {
         return grid;
     };
 
-    var createConfigForToolTipGroupingFix = function(config) {
+    var createConfigForToolTipGroupingFix = function (config) {
         var xs = {};
         config.yAxisConcepts.forEach(function (yAxisConcept) {
             xs[yAxisConcept] = config.xAxisConcept;
@@ -100,9 +99,8 @@ Bahmni.Graph.c3Chart = function () {
         return xs;
     };
 
-
     var createAxisAndPopulateAxes = function (axes, data, axisY, unit) {
-        if (!unit) {return;}
+        if (!unit) { return; }
         _.each(data, function (item) {
             if (item.units === unit) {
                 axes[item.name] = axisY;
@@ -161,7 +159,7 @@ Bahmni.Graph.c3Chart = function () {
             tooltip: {
                 grouped: true,
                 format: {
-                    title: function(xAxisValue) {
+                    title: function (xAxisValue) {
                         return formatValueForDisplay(xAxisValue, config);
                     }
                 }
@@ -177,6 +175,6 @@ Bahmni.Graph.c3Chart = function () {
     };
 };
 
-Bahmni.Graph.c3Chart.create = function() {
-    return new Bahmni.Graph.c3Chart();
-}
+Bahmni.Graph.c3Chart.create = function () {
+    return new Bahmni.Graph.c3Chart(); // eslint-disable-line new-cap
+};

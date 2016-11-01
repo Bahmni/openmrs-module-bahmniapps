@@ -37,13 +37,13 @@ angular.module('bahmni.common.offline')
         var getMarker = function (markerName) {
             var markerTable = db.getSchema().table('event_log_marker');
             return getMarkers(markerTable, markerName).then(function (markers) {
-                return markers[0]
-            })
+                return markers[0];
+            });
         };
 
         return {
             init: init,
             insertMarker: insertMarker,
             getMarker: getMarker
-        }
+        };
     }]);

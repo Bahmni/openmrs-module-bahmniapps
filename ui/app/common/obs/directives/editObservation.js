@@ -1,38 +1,37 @@
 'use strict';
 
 angular.module('bahmni.common.obs')
-    .directive('editObservation', ['$q', 'spinner', '$state','$rootScope', 'ngDialog', 'messagingService', 'encounterService', 'configurations','contextChangeHandler', function ($q, spinner, $state, $rootScope, ngDialog, messagingService, encounterService,configurations, contextChangeHandler) {
+    .directive('editObservation', ['$q', 'spinner', '$state', '$rootScope', 'ngDialog', 'messagingService', 'encounterService', 'configurations', 'contextChangeHandler', function ($q, spinner, $state, $rootScope, ngDialog, messagingService, encounterService, configurations, contextChangeHandler) {
         var controller = function ($scope) {
-
             var ObservationUtil = Bahmni.Common.Obs.ObservationUtil;
             var findEditableObs = function (observations) {
-                return _.find(observations, function(obs){
+                return _.find(observations, function (obs) {
                     return obs.uuid === $scope.observation.uuid;
-                })
+                });
             };
 
-            var shouldEditSpecificObservation = function(){
+            var shouldEditSpecificObservation = function () {
                 return $scope.observation.uuid ? true : false;
             };
             var contextChange = function () {
                 return contextChangeHandler.execute();
             };
 
-            var init = function() {
+            var init = function () {
                 var consultationMapper = new Bahmni.ConsultationMapper(configurations.dosageFrequencyConfig(), configurations.dosageInstructionConfig(),
-                    configurations.consultationNoteConcept(), configurations.labOrderNotesConcept(),configurations.stoppedOrderReasonConfig());
+                    configurations.consultationNoteConcept(), configurations.labOrderNotesConcept(), configurations.stoppedOrderReasonConfig());
 
-                return encounterService.findByEncounterUuid($scope.observation.encounterUuid).then(function(reponse) {
+                return encounterService.findByEncounterUuid($scope.observation.encounterUuid).then(function (reponse) {
                     var encounterTransaction = reponse.data;
                     $scope.encounter = consultationMapper.map(encounterTransaction);
-                    $scope.editableObservations = shouldEditSpecificObservation() ? [findEditableObs(ObservationUtil.flattenObsToArray($scope.encounter.observations))]: $scope.encounter.observations;
+                    $scope.editableObservations = shouldEditSpecificObservation() ? [findEditableObs(ObservationUtil.flattenObsToArray($scope.encounter.observations))] : $scope.encounter.observations;
                     $scope.patient = {uuid: $scope.encounter.patientUuid};
                 });
             };
 
             spinner.forPromise(init());
 
-            var isFormValid = function(){
+            var isFormValid = function () {
                 var contxChange = contextChange();
                 var shouldAllow = contxChange["allow"];
                 if (!shouldAllow) {
@@ -43,31 +42,29 @@ angular.module('bahmni.common.obs')
             };
 
             $scope.$parent.resetContextChangeHandler = function () {
-
                 contextChangeHandler.reset();
             };
 
-
-            $scope.save = function(){
+            $scope.save = function () {
                 if (!isFormValid()) {
                     $scope.$parent.$parent.$broadcast("event:errorsOnForm");
                     return;
                 }
-              $scope.$parent.shouldPromptBeforeClose = false;
+                $scope.$parent.shouldPromptBeforeClose = false;
                 $scope.$parent.shouldPromptBrowserReload = false;
-                var updateEditedObservation =   function(observations) {
+                var updateEditedObservation = function (observations) {
                     return _.map(observations, function (obs) {
                         if (obs.uuid == $scope.editableObservations[0].uuid) {
                             return $scope.editableObservations[0];
-                        }else{
+                        } else {
                             obs.groupMembers = updateEditedObservation(obs.groupMembers);
                             return obs;
                         }
-                    })
+                    });
                 };
 
                 var getEditedObservation = function (observations) {
-                    return _.find(observations, function(obs) {
+                    return _.find(observations, function (obs) {
                         return obs.uuid == $scope.editableObservations[0].uuid || getEditedObservation(obs.groupMembers);
                     });
                 };
@@ -78,9 +75,9 @@ angular.module('bahmni.common.obs')
                 }
                 $scope.encounter.observations = new Bahmni.Common.Domain.ObservationFilter().filter($scope.encounter.observations);
                 $scope.encounter.orders = addOrdersToEncounter();
-                $scope.encounter.extensions={};
+                $scope.encounter.extensions = {};
                 var createPromise = encounterService.create($scope.encounter);
-                spinner.forPromise(createPromise).then(function() {
+                spinner.forPromise(createPromise).then(function () {
                     $rootScope.hasVisitedConsultation = false;
                     $state.go($state.current, {}, {reload: true});
                     ngDialog.close();
@@ -89,14 +86,13 @@ angular.module('bahmni.common.obs')
             };
 
             var addOrdersToEncounter = function () {
-                var modifiedOrders = _.filter($scope.encounter.orders, function(order){
-                    return order.hasBeenModified || order.isDiscontinued || !order.uuid
+                var modifiedOrders = _.filter($scope.encounter.orders, function (order) {
+                    return order.hasBeenModified || order.isDiscontinued || !order.uuid;
                 });
                 var tempOrders = modifiedOrders.map(function (order) {
-                    if(order.hasBeenModified && !order.isDiscontinued){
+                    if (order.hasBeenModified && !order.isDiscontinued) {
                         return Bahmni.Clinical.Order.revise(order);
-                    }
-                    else if(order.isDiscontinued){
+                    } else if (order.isDiscontinued) {
                         return Bahmni.Clinical.Order.discontinue(order);
                     }
                     return { uuid: order.uuid, concept: {name: order.concept.name, uuid: order.concept.uuid },
@@ -111,7 +107,7 @@ angular.module('bahmni.common.obs')
             scope: {
                 observation: "=",
                 conceptSetName: "@",
-                conceptDisplayName:"@"
+                conceptDisplayName: "@"
             },
             controller: controller,
             template: '<ng-include src="\'../common/obs/views/editObservation.html\'" />'

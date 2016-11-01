@@ -10,48 +10,47 @@ Bahmni.Clinical.Specimen = function (specimen, allSamples) {
     self.sample = specimen && specimen.sample && specimen.sample.additionalAttributes ? specimen.sample : {additionalAttributes: []};
     self.report = specimen && specimen.report && specimen.report.results ? specimen.report : {results: []};
     self.existingObs = specimen && specimen.existingObs;
-    self.typeObservation =  new Bahmni.ConceptSet.SpecimenTypeObservation(self, allSamples);
+    self.typeObservation = new Bahmni.ConceptSet.SpecimenTypeObservation(self, allSamples);
 
-    var isDirtyRuleForFreeText = function(){
-        return (self.type && self.type.name==="Other" && !self.typeFreeText);
+    var isDirtyRuleForFreeText = function () {
+        return (self.type && self.type.name === "Other" && !self.typeFreeText);
     };
 
     var clearObservations = function (obs) {
-        angular.forEach(obs, function(ob) {
+        angular.forEach(obs, function (ob) {
             ob.value = undefined;
             clearObservations(ob.groupMembers);
         });
-    }
+    };
 
     self.isDirty = function () {
         return (self.dateCollected && !self.type) ||
         (!self.dateCollected && !self.type && self.isAdditionalAttriburtesFilled()) ||
         (!self.dateCollected && self.type) ||
-        (!self.dateCollected && !self.type && self.identifier) || isDirtyRuleForFreeText() ? true : false
+        (!self.dateCollected && !self.type && self.identifier) || isDirtyRuleForFreeText() ? true : false;
     };
 
     self.isEmpty = function () {
         return !self.dateCollected && !self.identifier && !self.type && !self.typeFreeText;
     };
 
-
-    function hasResults() {
+    function hasResults () {
         return self && self.report && self.report.results && self.report.results.length > 0;
     }
 
     self.atLeastOneResult = function () {
-        return hasResults() && !!self.report.results[0].value ;
+        return hasResults() && !!self.report.results[0].value;
     };
 
-    self.isDateCollectedDirty = function(){
+    self.isDateCollectedDirty = function () {
         return !self.dateCollected && self.hasIllegalDateCollected;
     };
 
-    self.isTypeDirty = function(){
+    self.isTypeDirty = function () {
         return !self.type && self.hasIllegalType;
     };
 
-    self.isTypeFreeTextDirty = function(){
+    self.isTypeFreeTextDirty = function () {
         return !self.typeFreeText && self.hasIllegalTypeFreeText;
     };
 
@@ -65,24 +64,23 @@ Bahmni.Clinical.Specimen = function (specimen, allSamples) {
         return false;
     };
 
-    self.isExistingSpecimen = function(){
+    self.isExistingSpecimen = function () {
         return self.uuid;
     };
-    
-    self.voidIfEmpty = function() {
-        if(self.isEmpty() && self.isExistingSpecimen()){
+
+    self.voidIfEmpty = function () {
+        if (self.isEmpty() && self.isExistingSpecimen()) {
             self.setMandatoryFieldsBeforeSavingVoidedSpecimen();
             return true;
         }
         return false;
     };
-    
-    self.setMandatoryFieldsBeforeSavingVoidedSpecimen  = function() {
+
+    self.setMandatoryFieldsBeforeSavingVoidedSpecimen = function () {
         self.voided = true;
         self.dateCollected = self.typeObservation.dateCollected;
         self.type = self.typeObservation.type;
         clearObservations(self.sample.additionalAttributes);
         clearObservations(self.report.results);
     };
-
 };

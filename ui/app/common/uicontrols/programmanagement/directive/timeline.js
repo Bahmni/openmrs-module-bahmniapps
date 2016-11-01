@@ -1,9 +1,9 @@
 'use strict';
 
 angular.module('bahmni.common.uicontrols.programmanagment')
-    .directive('timeline', ['$timeout',function ($timeout) {
+    .directive('timeline', ['$timeout', function ($timeout) {
         var link = function ($scope, $element) {
-            $timeout(function() {
+            $timeout(function () {
                 var dateUtil = Bahmni.Common.Util.DateUtil;
                 var data = getDataModel($scope.program);
                 var svg = d3.select($element[0]).select('.timeline-view').append("svg");
@@ -41,7 +41,6 @@ angular.module('bahmni.common.uicontrols.programmanagment')
                 stateGroup.append("line").classed("date-line", true);
                 stateGroup.append("text").classed("date", true);
 
-
                 var stateBar = {y: 5, height: 23, textPaddingX: 6};
                 var dateBar = {y: 30, height: 30, xPadding: -4, textPaddingY: 53};
                 var dateTick = {y: 0, height: 40};
@@ -52,7 +51,7 @@ angular.module('bahmni.common.uicontrols.programmanagment')
                     .attr('y', stateBar.y)
                     .attr('height', stateBar.height)
                     .attr('width', function (d) {
-                        return xMax - timeScale(d.date)
+                        return xMax - timeScale(d.date);
                     });
                 states.select(".label")
                     .attr('x', function (d) {
@@ -80,7 +79,7 @@ angular.module('bahmni.common.uicontrols.programmanagment')
                     .attr('y2', dateTick.y + dateTick.height);
                 states.select(".date")
                     .attr('x', function (d) {
-                        return timeScale(d.date)
+                        return timeScale(d.date);
                     })
                     .attr('y', dateBar.textPaddingY)
                     .text(function (d) {
@@ -93,29 +92,28 @@ angular.module('bahmni.common.uicontrols.programmanagment')
                     tooltipEl.style("visibility", "hidden");
                 });
 
-                //Draw completed state
+                // Draw completed state
                 if (!data.completed && !_.isEmpty(data.states)) {
                     svg.append("polygon")
                         .attr("points", (xMax + "," + stateBar.y + " " + (xMax + 12) + "," +
                         (stateBar.y + stateBar.height / 2) + " " + (xMax - 1) + "," + (stateBar.y + stateBar.height)));
                 }
-            },0 );
+            }, 0);
         };
 
-        var getActiveProgramStates = function(patientProgram){
-            return _.reject(patientProgram.states, function(st) {return st.voided});
+        var getActiveProgramStates = function (patientProgram) {
+            return _.reject(patientProgram.states, function (st) { return st.voided; });
         };
 
-
-        var getDataModel = function(program) {
-            var states = _.sortBy(_.map(getActiveProgramStates(program), function(stateObject) {
-                return {state: stateObject.state.concept.display, date: moment(stateObject.startDate).toDate()}
-            }),'date');
+        var getDataModel = function (program) {
+            var states = _.sortBy(_.map(getActiveProgramStates(program), function (stateObject) {
+                return {state: stateObject.state.concept.display, date: moment(stateObject.startDate).toDate()};
+            }), 'date');
             var completed = isProgramCompleted(program);
             return {states: states, completed: completed};
         };
 
-        var isProgramCompleted = function(program){
+        var isProgramCompleted = function (program) {
             return !_.isEmpty(program.dateCompleted);
         };
 

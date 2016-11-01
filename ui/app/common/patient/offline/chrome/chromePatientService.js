@@ -1,19 +1,17 @@
 'use strict';
 
 angular.module('bahmni.common.patient')
-    .service('patientService', ['offlineSearchDbService', '$q','offlineDbService', function (offlineSearchDbService, $q, offlineDbService) {
-
+    .service('patientService', ['offlineSearchDbService', '$q', 'offlineDbService', function (offlineSearchDbService, $q, offlineDbService) {
         this.getPatient = function (uuid) {
-            return offlineDbService.getPatientByUuid(uuid).then(function(response){
+            return offlineDbService.getPatientByUuid(uuid).then(function (response) {
                 response.patient.person.preferredName = response.patient.person.names[0];
                 response.patient.person.preferredAddress = response.patient.person.addresses[0];
-                return {"data" : response.patient}
+                return {"data": response.patient};
             });
-
         };
 
         this.getRelationships = function (patientUuid) {
-            return $q.when({data : {}});
+            return $q.when({data: {}});
         };
 
         this.findPatients = function (params) {
@@ -21,9 +19,9 @@ angular.module('bahmni.common.patient')
         };
 
         this.search = function (query, offset, identifier) {
-            var params ={
+            var params = {
                 q: query,
-                identifier:identifier,
+                identifier: identifier,
                 startIndex: offset || 0,
                 addressFieldName: Bahmni.Common.Offline.AddressFields.CITY_VILLAGE
             };
@@ -33,14 +31,14 @@ angular.module('bahmni.common.patient')
         this.getPatientContext = function (uuid) {
             var deferrable = $q.defer();
             var patientContextMapper = new Bahmni.PatientContextMapper();
-            offlineDbService.getPatientByUuid(uuid).then(function(response){
+            offlineDbService.getPatientByUuid(uuid).then(function (response) {
                 var patientContext = patientContextMapper.map(response.patient);
-                deferrable.resolve({"data" : patientContext});
+                deferrable.resolve({"data": patientContext});
             });
             return deferrable.promise;
         };
 
-            this.getRecentPatients = function (duration) {
+        this.getRecentPatients = function (duration) {
             var params = {
                 q: '',
                 startIndex: 0,
@@ -48,5 +46,5 @@ angular.module('bahmni.common.patient')
                 duration: duration || 14
             };
             return offlineSearchDbService.search(params);
-        }
+        };
     }]);

@@ -36,7 +36,7 @@ Bahmni.Common.Offline.SchemaDefinitions = {
             {
                 name: 'id',
                 type: 'INTEGER'
-            },{
+            }, {
                 name: 'name',
                 type: 'STRING'
             }, {
@@ -95,7 +95,7 @@ Bahmni.Common.Offline.SchemaDefinitions = {
                 type: 'DATE_TIME'
             }
         ],
-        nullableColumns: ['filters','lastReadEventUuid'],
+        nullableColumns: ['filters', 'lastReadEventUuid'],
         primaryKeyColumns: ['markerName']
     },
 
@@ -258,7 +258,7 @@ Bahmni.Common.Offline.SchemaDefinitions = {
             }, {
                 name: 'data',
                 type: 'STRING'
-            },{
+            }, {
                 name: 'etag',
                 type: 'STRING'
             }
@@ -435,7 +435,7 @@ Bahmni.Common.Offline.SchemaDefinitions = {
         primaryKeyColumns: ['typeUuid', 'patientUuid']
     },
 
-    LabOrderResult : {
+    LabOrderResult: {
         tableName: 'lab_order_result',
         columns: [
             {

@@ -3,8 +3,8 @@
 angular.module('bahmni.common.uiHelper')
     .directive('monthyearpicker', function ($translate) {
         var link = function ($scope) {
-                var monthNames = $translate.instant('MONTHS');
-                $scope.monthNames = monthNames.split(",");
+            var monthNames = $translate.instant('MONTHS');
+            $scope.monthNames = monthNames.split(",");
 
             var getYearList = function () {
                 var minYear = $scope.minYear ? $scope.minYear : moment().toDate().getFullYear() - 15;
@@ -17,14 +17,12 @@ angular.module('bahmni.common.uiHelper')
             };
             $scope.years = getYearList();
 
-
             var valueCompletelyFilled = function () {
                 return ($scope.selectedMonth != null && $scope.selectedYear != null);
             };
             var valueNotFilled = function () {
                 return $scope.selectedMonth == null && $scope.selectedYear == null;
             };
-
 
             var getCompleteDate = function () {
                 var month = $scope.selectedMonth + 1;
@@ -39,29 +37,24 @@ angular.module('bahmni.common.uiHelper')
                 } else {
                     $scope.model = "";
                 }
-
-
             };
             $scope.isValid = function () {
                 return valueNotFilled() || valueCompletelyFilled();
             };
 
-            $scope.illegalMonth = function() {
+            $scope.illegalMonth = function () {
                 return ($scope.selectedMonth === undefined || $scope.selectedMonth === null) && ($scope.selectedYear !== null && $scope.selectedYear !== undefined);
             };
 
-            $scope.illegalYear = function(){
+            $scope.illegalYear = function () {
                 return ($scope.selectedMonth !== null && $scope.selectedMonth !== undefined) && ($scope.selectedYear === undefined || $scope.selectedYear === null);
             };
-
 
             if ($scope.model) {
                 var date = moment($scope.model).toDate();
                 $scope.selectedMonth = date.getMonth();
                 $scope.selectedYear = date.getFullYear();
             }
-
-
         };
 
         return {
@@ -78,5 +71,5 @@ angular.module('bahmni.common.uiHelper')
             '</select></span>' +
             '<span><select ng-model=\'selectedYear\'   ng-class=\"{\'illegalValue\': illegalYear() || illegalValue}\" ng-change="updateModel()" ng-options="year as year for year in years"><option value="">{{\'CHOOSE_YEAR_KEY\' | translate}}</option>>' +
             '</select></span>'
-        }
+        };
     });

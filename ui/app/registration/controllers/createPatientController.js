@@ -16,7 +16,6 @@ angular.module('bahmni.registration')
             };
 
             var prepopulateDefaultsInFields = function () {
-
                 var personAttributeTypes = getPersonAttributeTypes();
                 var patientInformation = appService.getAppDescriptor().getConfigValue("patientInformation");
                 if (!patientInformation || !patientInformation.defaults) {
@@ -127,7 +126,6 @@ angular.module('bahmni.registration')
                 $scope.actions.followUpAction(patientProfileData);
             };
 
-
             var createPatient = function (jumpAccepted) {
                 return patientService.create($scope.patient, jumpAccepted).then(function (response) {
                     copyPatientProfileDataToScope(response);
@@ -146,10 +144,9 @@ angular.module('bahmni.registration')
                             yesCallback: function () {
                                 return createPatient(true);
                             }
-                        })
+                        });
                     }
-
-                })
+                });
             };
 
             var createPromise = function () {
@@ -159,7 +156,6 @@ angular.module('bahmni.registration')
                 });
                 return deferred.promise;
             };
-
 
             $scope.isOffline = function () {
                 return offlineService.isOfflineApp();
@@ -183,6 +179,5 @@ angular.module('bahmni.registration')
                     patientUuid: $scope.patient.uuid
                 });
             };
-
         }
     ]);

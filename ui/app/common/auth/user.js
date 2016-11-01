@@ -1,7 +1,6 @@
 'use strict';
 
 Bahmni.Auth.User = function (user) {
-
     angular.extend(this, user);
 
     this.userProperties = user.userProperties || {};
@@ -20,7 +19,7 @@ Bahmni.Auth.User = function (user) {
         return user;
     };
 
-    this.addDefaultLocale = function(locale) {
+    this.addDefaultLocale = function (locale) {
         this.userProperties['defaultLocale'] = locale;
     };
 
@@ -55,10 +54,10 @@ Bahmni.Auth.User = function (user) {
 
     this.toggleFavoriteWard = function (wardName) {
         if (this.isFavouriteWard(wardName)) {
-            this.favouriteWards = _.without(this.favouriteWards, wardName)
+            this.favouriteWards = _.without(this.favouriteWards, wardName);
         } else {
             this.favouriteWards.push(wardName);
         }
-    }
+    };
 };
 

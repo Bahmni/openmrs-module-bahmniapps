@@ -1,7 +1,6 @@
 'use strict';
 
 Bahmni.PatientContextMapper = function () {
-
     this.map = function (patient) {
         var patientContext = {};
         patientContext.uuid = patient.uuid;
@@ -18,7 +17,6 @@ Bahmni.PatientContextMapper = function () {
         }
 
         return patientContext;
-
     };
 
     var parseDate = function (dateStr) {

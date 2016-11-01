@@ -2,7 +2,6 @@
 
 angular.module('bahmni.clinical')
     .directive('recentPatients', function () {
-
         var controller = function ($rootScope, $scope, $state, clinicalDashboardConfig, $stateParams, patientService, sessionService) {
             var initialize = function () {
                 $scope.search = new Bahmni.Common.PatientSearch.Search(undefined);
@@ -49,7 +48,7 @@ angular.module('bahmni.clinical')
                     return;
                 }
                 var params = { q: Bahmni.Clinical.Constants.globalPropertyToFetchActivePatients,
-                    location_uuid: sessionService.getLoginLocationUuid()}
+                    location_uuid: sessionService.getLoginLocationUuid()};
                 patientService.findPatients(params).then(function (response) {
                     $scope.search.updatePatientList(response.data);
                 });

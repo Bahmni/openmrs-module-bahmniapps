@@ -2,7 +2,6 @@
 
 angular.module('bahmni.clinical')
     .directive('treatmentTable', function () {
-
         var controller = function ($scope) {
             $scope.isOtherActiveSection = function (dateString) {
                 return dateString === Bahmni.Clinical.Constants.otherActiveDrugOrders;

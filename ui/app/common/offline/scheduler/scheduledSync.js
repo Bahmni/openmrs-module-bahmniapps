@@ -26,7 +26,7 @@ angular.module("bahmni.common.offline")
                             try {
                                 $rootScope.$broadcast("schedulerStage", STAGES.STAGE0);
                                 console.log(STAGES.STAGE0);
-                                
+
                                 return appUpdateService.getUpdateInfo().then(function (appUpdateInfo) {
                                     if (appUpdateInfo && appUpdateInfo.forcedUpdateRequired) {
                                         console.log(STAGES.STAGE0 + ' Stopping other stages, app needs an update');
@@ -47,8 +47,7 @@ angular.module("bahmni.common.offline")
                                         $rootScope.$broadcast("schedulerStage", null, true);
                                     }
                                 });
-                            }
-                            catch (e) {
+                            } catch (e) {
                                 console.log('Error at ' + STAGES.STAGE0, e);
                             }
                         }
@@ -63,8 +62,7 @@ angular.module("bahmni.common.offline")
                                 }, function (error) {
                                     console.log("Error " + STAGES.STAGE1 + "\n" + error.config.url + " " + error.statusText);
                                 });
-                            }
-                            catch (e) {
+                            } catch (e) {
                                 console.log('Error at ' + STAGES.STAGE1, e);
                             }
                         }
@@ -95,6 +93,5 @@ angular.module("bahmni.common.offline")
                 }
                 return job;
             };
-
         }
     ]);

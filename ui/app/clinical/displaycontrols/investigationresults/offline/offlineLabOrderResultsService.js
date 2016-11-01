@@ -1,39 +1,39 @@
 'use strict';
 
 angular.module('bahmni.clinical')
-    .service('LabOrderResultService', ['offlineLabOrderResultsService', '$q', 'configurationService',function(labOrderResultsService, $q, configurationService) {
+    .service('LabOrderResultService', ['offlineLabOrderResultsService', '$q', 'configurationService', function (labOrderResultsService, $q, configurationService) {
         var allTestsAndPanelsConcept = {};
-        configurationService.getConfigurations(['allTestsAndPanelsConcept']).then(function(configurations) {
+        configurationService.getConfigurations(['allTestsAndPanelsConcept']).then(function (configurations) {
             allTestsAndPanelsConcept = configurations.allTestsAndPanelsConcept.results[0];
         });
-        var sanitizeData = function(labOrderResults) {
-            labOrderResults.forEach(function(result) {
+        var sanitizeData = function (labOrderResults) {
+            labOrderResults.forEach(function (result) {
                 result.accessionDateTime = Bahmni.Common.Util.DateUtil.parse(result.accessionDateTime);
                 result.hasRange = result.minNormal && result.maxNormal;
             });
         };
 
-        var groupByPanel = function(accessions) {
+        var groupByPanel = function (accessions) {
             var grouped = [];
-            accessions.forEach(function(labOrders) {
+            accessions.forEach(function (labOrders) {
                 var panels = {};
                 var accessionGroup = [];
-                labOrders.forEach(function(labOrder) {
+                labOrders.forEach(function (labOrder) {
                     if (!labOrder.panelName) {
                         labOrder.isPanel = false;
                         labOrder.orderName = labOrder.testName;
                         accessionGroup.push(labOrder);
                     } else {
                         panels[labOrder.panelName] = panels[labOrder.panelName] || {
-                                accessionDateTime: labOrder.accessionDateTime,
-                                orderName: labOrder.panelName,
-                                tests: [],
-                                isPanel: true
-                            };
+                            accessionDateTime: labOrder.accessionDateTime,
+                            orderName: labOrder.panelName,
+                            tests: [],
+                            isPanel: true
+                        };
                         panels[labOrder.panelName].tests.push(labOrder);
                     }
                 });
-                _.values(panels).forEach(function(val) {
+                _.values(panels).forEach(function (val) {
                     accessionGroup.push(val);
                 });
                 grouped.push(accessionGroup);
@@ -41,11 +41,11 @@ angular.module('bahmni.clinical')
             return grouped;
         };
 
-        var flattened = function(accessions) {
+        var flattened = function (accessions) {
             return accessions.map(
-                function(results) {
+                function (results) {
                     var flattenedResults = _(results).map(
-                        function(result) {
+                        function (result) {
                             return result.isPanel === true ? [result, result.tests] : result;
                         }).flattenDeep().value();
                     return flattenedResults;
@@ -53,8 +53,7 @@ angular.module('bahmni.clinical')
             );
         };
 
-
-        var transformGroupSort = function(results, initialAccessionCount, latestAccessionCount) {
+        var transformGroupSort = function (results, initialAccessionCount, latestAccessionCount) {
             var labOrderResults = results.results;
             sanitizeData(labOrderResults);
 
@@ -64,10 +63,10 @@ angular.module('bahmni.clinical')
             };
 
             var tabularResult = new Bahmni.Clinical.TabularLabOrderResults(results.tabularResult, accessionConfig);
-            var accessions = _.groupBy(labOrderResults, function(labOrderResult) {
+            var accessions = _.groupBy(labOrderResults, function (labOrderResult) {
                 return labOrderResult.accessionUuid;
             });
-            accessions = _.sortBy(accessions, function(accession) {
+            accessions = _.sortBy(accessions, function (accession) {
                 return accession[0].accessionDateTime;
             });
 
@@ -83,13 +82,13 @@ angular.module('bahmni.clinical')
                 tabularResult: tabularResult
             };
         };
-        var getAllForPatient = function(params) {
+        var getAllForPatient = function (params) {
             var deferred = $q.defer();
             var paramsToBeSent = {};
             if (!params.patientUuid) {
                 deferred.reject('patient uuid is mandatory');
             }
-            labOrderResultsService.getLabOrderResultsForPatient(params).then(function(response) {
+            labOrderResultsService.getLabOrderResultsForPatient(params).then(function (response) {
                 var results = transformGroupSort(response.data, params.initialAccessionCount, params.latestAccessionCount);
                 var sortedConceptSet = new Bahmni.Clinical.ConceptWeightBasedSorter(allTestsAndPanelsConcept);
                 var resultObject = {

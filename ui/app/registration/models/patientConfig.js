@@ -1,14 +1,13 @@
 'use strict';
 
 Bahmni.Registration.PatientConfig = (function () {
-
-    function PatientConfig(patientAttributeTypes, identifierTypes, patientInformation ) {
+    function PatientConfig (patientAttributeTypes, identifierTypes, patientInformation) {
         this.attributeTypes = patientAttributeTypes;
         this.identifierTypes = identifierTypes;
         var patientAttributesSections = {};
-        //Avoiding multiple calls from angular code. Side effect of the way angular does dirty check. [Shruti/ Sush]
-        if ( !this.attributeRows && this.attributeTypes) {
-            if(!patientInformation) {
+        // Avoiding multiple calls from angular code. Side effect of the way angular does dirty check. [Shruti/ Sush]
+        if (!this.attributeRows && this.attributeTypes) {
+            if (!patientInformation) {
                 this.attributeRows = this.splitAsRows(this.attributeTypes);
                 return;
             }
@@ -27,16 +26,16 @@ Bahmni.Registration.PatientConfig = (function () {
         }
     }
 
-    function isHiddenPatientAttribute(hiddenAttributes, item){ //Ignore hidden fields from patientInformation configuration
+    function isHiddenPatientAttribute (hiddenAttributes, item) { // Ignore hidden fields from patientInformation configuration
         return hiddenAttributes && hiddenAttributes.indexOf(item.name) > -1;
     }
 
-    function isAttributeInOtherSection(patientInformation, patientAttributesSections, item) {
+    function isAttributeInOtherSection (patientInformation, patientAttributesSections, item) {
         return _.find(patientInformation, function (section, key) {
             return _.find(section.attributes, function (attribute) {
-                if (attribute === item.name ) {
+                if (attribute === item.name) {
                     var sectionObject = patientAttributesSections[key];
-                    if(!sectionObject) {
+                    if (!sectionObject) {
                         sectionObject = {
                             attributes: [],
                             title: section.title,
@@ -56,7 +55,7 @@ Bahmni.Registration.PatientConfig = (function () {
         });
     }
 
-    function isItemAMandatoryField(item) {
+    function isItemAMandatoryField (item) {
         var mandatoryPatientAttributes = ["healthCenter", "givenNameLocal", "middleNameLocal", "familyNameLocal"];
         return mandatoryPatientAttributes.indexOf(item.name) > -1;
     }
@@ -72,11 +71,11 @@ Bahmni.Registration.PatientConfig = (function () {
             return this.attributeRows;
         },
 
-        getPatientAttributesSections: function(){
+        getPatientAttributesSections: function () {
             return this.patientAttributesSections;
         },
 
-        getOrderedPatientAttributesSections: function(){
+        getOrderedPatientAttributesSections: function () {
             return _.sortBy(this.patientAttributesSections, 'order');
         },
 
@@ -117,10 +116,9 @@ Bahmni.Registration.PatientConfig = (function () {
             if (givenName && middleName && familyName) {
                 return { "showNameField": true, "labelForNameField": givenName.description, "placeholderForGivenName": givenName.description, "placeholderForMiddleName": middleName.description, "placeholderForFamilyName": familyName.description};
             }
-            return {"showNameField": false}
+            return {"showNameField": false};
         }
 
     };
     return PatientConfig;
-
 })();

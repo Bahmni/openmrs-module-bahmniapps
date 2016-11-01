@@ -3,7 +3,7 @@
 angular.module('bahmni.registration')
     .controller('VisitController', ['$window', '$scope', '$rootScope', '$state', '$bahmniCookieStore', 'patientService', 'encounterService', '$stateParams', 'spinner', '$timeout', '$q', 'appService', 'openmrsPatientMapper', 'contextChangeHandler', 'messagingService', 'sessionService', 'visitService', '$location', '$translate',
         function ($window, $scope, $rootScope, $state, $bahmniCookieStore, patientService, encounterService, $stateParams, spinner, $timeout, $q, appService, patientMapper, contextChangeHandler, messagingService, sessionService, visitService, $location, $translate) {
-            var self = this;
+            var vm = this;
             var patientUuid = $stateParams.patientUuid;
             var extensions = appService.getAppDescriptor().getExtensions("org.bahmni.registration.conceptSetGroup.observations", "config");
             var locationUuid = sessionService.getLoginLocationUuid();
@@ -22,7 +22,7 @@ angular.module('bahmni.registration')
                     $scope.patient = patientMapper.map(openMRSPatient);
                     $scope.patient.name = openMRSPatient.patient.person.names[0].display;
                     $scope.patient.uuid = openMRSPatient.patient.uuid;
-                })
+                });
             };
 
             var getActiveEncounter = function () {
@@ -67,12 +67,12 @@ angular.module('bahmni.registration')
                 return createPromise;
             };
 
-            var isUserPrivilegedToCloseVisit = function() {
+            var isUserPrivilegedToCloseVisit = function () {
                 var applicablePrivs = [Bahmni.Common.Constants.closeVisitPrivilege, Bahmni.Common.Constants.deleteVisitsPrivilege];
-                var userPrivs = _.map($rootScope.currentUser.privileges, function(privilege) {
+                var userPrivs = _.map($rootScope.currentUser.privileges, function (privilege) {
                     return privilege.name;
                 });
-                var result = _.some(userPrivs, function(privName){
+                var result = _.some(userPrivs, function (privName) {
                     return _.includes(applicablePrivs, privName);
                 });
                 return result;
@@ -84,21 +84,20 @@ angular.module('bahmni.registration')
                 }).then(function (response) {
                     var results = response.data.results;
                     var activeVisitForCurrentLoginLocation;
-                    if(results) {
-                        activeVisitForCurrentLoginLocation = _.filter(results, function(result) {
-                            return result.location.uuid === visitLocationUuid
+                    if (results) {
+                        activeVisitForCurrentLoginLocation = _.filter(results, function (result) {
+                            return result.location.uuid === visitLocationUuid;
                         });
                     }
 
                     var hasActiveVisit = activeVisitForCurrentLoginLocation.length > 0;
-                    self.visitUuid = hasActiveVisit ? activeVisitForCurrentLoginLocation[0].uuid : "";
+                    vm.visitUuid = hasActiveVisit ? activeVisitForCurrentLoginLocation[0].uuid : "";
                     $scope.canCloseVisit = isUserPrivilegedToCloseVisit() && hasActiveVisit;
                 });
             };
 
-
             $scope.closeVisitIfDischarged = function () {
-                visitService.getVisitSummary(self.visitUuid).then(function (response) {
+                visitService.getVisitSummary(vm.visitUuid).then(function (response) {
                     var visitSummary = response.data;
                     if (visitSummary.admissionDetails && !visitSummary.dischargeDetails) {
                         messagingService.showMessage("error", 'REGISTRATION_VISIT_CANNOT_BE_CLOSED');
@@ -131,8 +130,8 @@ angular.module('bahmni.registration')
                     messagingService.showMessage('error', errorMessage);
                     deferred.reject("Some fields are not valid");
                     return deferred.promise;
-                }else if(!mandatoryValidate()){ // This ELSE IF condition is to be deleted later.
-                    errorMessage =  "REGISTRATION_LABEL_ENTER_MANDATORY_FIELDS";
+                } else if (!mandatoryValidate()) { // This ELSE IF condition is to be deleted later.
+                    errorMessage = "REGISTRATION_LABEL_ENTER_MANDATORY_FIELDS";
                     messagingService.showMessage('error', errorMessage);
                     deferred.reject("Some fields are not valid");
                     return deferred.promise;
@@ -142,19 +141,19 @@ angular.module('bahmni.registration')
                 }
             };
 
-            //Start :: Registration Page validation
-            //To be deleted later - Hacky fix only for Registration Page
+            // Start :: Registration Page validation
+            // To be deleted later - Hacky fix only for Registration Page
             var mandatoryConceptGroup = [];
             var mandatoryValidate = function () {
                 conceptGroupValidation($scope.observations);
                 return isValid(mandatoryConceptGroup);
             };
 
-            var conceptGroupValidation = function(observations){
-                var concepts = _.filter(observations, function(observationNode){
+            var conceptGroupValidation = function (observations) {
+                var concepts = _.filter(observations, function (observationNode) {
                     return isMandatoryConcept(observationNode);
                 });
-                if(!_.isEmpty(concepts)){
+                if (!_.isEmpty(concepts)) {
                     mandatoryConceptGroup = _.union(mandatoryConceptGroup, concepts);
                 }
             };
@@ -165,8 +164,8 @@ angular.module('bahmni.registration')
                     return observation.conceptUIConfig && observation.conceptUIConfig.required;
                 }
             };
-            var isValid = function (mandatoryConcepts){
-                var concept = mandatoryConcepts.filter(function(mandatoryConcept){
+            var isValid = function (mandatoryConcepts) {
+                var concept = mandatoryConcepts.filter(function (mandatoryConcept) {
                     if (mandatoryConcept.isNumeric() && mandatoryConcept.value === 0) {
                         return false;
                     }
@@ -174,14 +173,13 @@ angular.module('bahmni.registration')
                 });
                 return _.isEmpty(concept);
             };
-            //End :: Registration Page validation
+            // End :: Registration Page validation
 
             var afterSave = function () {
                 var forwardUrl = appService.getAppDescriptor().getConfigValue("afterVisitSaveForwardUrl");
                 if (forwardUrl != null) {
                     $window.location.href = appService.getAppDescriptor().formatUrl(forwardUrl, {'patientUuid': patientUuid});
-                }
-                else {
+                } else {
                     $state.transitionTo($state.current, $state.params, {
                         reload: true,
                         inherit: false,
@@ -201,8 +199,7 @@ angular.module('bahmni.registration')
 
             $scope.disableFormSubmitOnEnter = function () {
                 $('.visit-patient').find('input').keypress(function (e) {
-                    if (e.which === 13) // Enter key = keycode 13
-                    {
+                    if (e.which === 13) { // Enter key = keycode 13
                         return false;
                     }
                 });

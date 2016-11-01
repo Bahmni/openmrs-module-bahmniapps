@@ -4,10 +4,10 @@
     var constructSearchResult = function (concept, searchString) {
         var matchingName = null;
         var conceptName = concept.name;
-        if (!_.includes(_.toLower(conceptName),_.toLower(searchString))) {
+        if (!_.includes(_.toLower(conceptName), _.toLower(searchString))) {
             var synonyms = _.map(concept.names, 'name');
             matchingName = _.find(synonyms, function (name) {
-                return (name !== conceptName) && name.search(new RegExp(searchString, "i")) !== -1
+                return (name !== conceptName) && name.search(new RegExp(searchString, "i")) !== -1;
             });
         }
         return {
@@ -16,7 +16,7 @@
             concept: concept,
             uuid: concept.uuid,
             name: conceptName
-        }
+        };
     };
 
     var searchWithDefaultConcept = function (searchMethod, request, response) {
@@ -105,7 +105,7 @@
 
             element.on('blur', blurHandler);
 
-            scope.$on("$destroy", function() {
+            scope.$on("$destroy", function () {
                 element.off('blur', blurHandler);
             });
         };
@@ -122,7 +122,7 @@
                 strictSelect: '=?',
                 previousValue: '='
             }
-        }
+        };
     };
 
     conceptAutocomplete.$inject = toBeInjected;

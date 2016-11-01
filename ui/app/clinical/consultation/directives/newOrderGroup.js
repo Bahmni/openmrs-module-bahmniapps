@@ -11,8 +11,8 @@ angular.module('bahmni.clinical')
                     drugName: 'MEDICATION_DRUG_NAME_TITLE'
                 }
             };
-            var setOrderSetName = function(orderSetNewName) {
-                if(!_.isUndefined(orderSetNewName)){
+            var setOrderSetName = function (orderSetNewName) {
+                if (!_.isUndefined(orderSetNewName)) {
                     $scope.config.title = orderSetNewName;
                 }
             };
@@ -25,5 +25,5 @@ angular.module('bahmni.clinical')
                 orderSetName: "="
             },
             controller: controller
-        }
+        };
     }]);

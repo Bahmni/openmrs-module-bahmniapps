@@ -27,7 +27,7 @@ angular.module('bahmni.registration')
         });
 
         var populateSelectedAddressUuids = function (levelIndex, parentUuid) {
-            if ($scope.addressLevels.length === 0 || !$scope.addressLevels[levelIndex]){
+            if ($scope.addressLevels.length === 0 || !$scope.addressLevels[levelIndex]) {
                 return;
             }
 
@@ -79,7 +79,7 @@ angular.module('bahmni.registration')
             if (!$scope.address) {
                 return false;
             }
-            if(!addressLevel.isStrictEntry){
+            if (!addressLevel.isStrictEntry) {
                 return false;
             }
             var fieldName = addressLevel.addressField;
@@ -126,7 +126,6 @@ angular.module('bahmni.registration')
                 $scope.address[fieldName] = null;
                 selectedUserGeneratedIds[fieldName] = null;
             }
-
         };
 
         $scope.removeAutoCompleteEntry = function (fieldName) {
@@ -137,25 +136,24 @@ angular.module('bahmni.registration')
 
         var init = function () {
             $scope.addressLevels.reverse();
-            var isStrictEntry  = false;
+            var isStrictEntry = false;
             _.each($scope.addressLevels, function (addressLevel) {
                 addressLevel.isStrictEntry = $scope.strictAutocompleteFromLevel == addressLevel.addressField || isStrictEntry;
                 isStrictEntry = addressLevel.isStrictEntry;
             });
             $scope.addressLevels.reverse();
 
-            //wait for address to be resolved in edit patient scenario
+            // wait for address to be resolved in edit patient scenario
             var deregisterAddressWatch = $scope.$watch('address', function (newValue) {
                 if (newValue !== undefined) {
                     populateSelectedAddressUuids(0);
                     $scope.selectedValue = _.mapValues($scope.address, function (value, key) {
                         var addressLevel = _.find($scope.addressLevels, {addressField: key});
-                        return addressLevel && addressLevel.isStrictEntry ? value: null;
+                        return addressLevel && addressLevel.isStrictEntry ? value : null;
                     });
                     deregisterAddressWatch();
                 }
             });
-
         };
         init();
     });

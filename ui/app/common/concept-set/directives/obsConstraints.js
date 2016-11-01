@@ -19,8 +19,8 @@ angular.module('bahmni.common.conceptSet')
             if (obsConcept.lowNormal) {
                 attributes['min'] = obsConcept.lowNormal;
             }
-            if(attributes['type'] == 'date') {
-                if($scope.obs.conceptUIConfig == null || !$scope.obs.conceptUIConfig['allowFutureDates']) {
+            if (attributes['type'] == 'date') {
+                if ($scope.obs.conceptUIConfig == null || !$scope.obs.conceptUIConfig['allowFutureDates']) {
                     attributes['max'] = Bahmni.Common.Util.DateTimeFormatter.getDateWithoutTime();
                 }
             }
@@ -33,5 +33,5 @@ angular.module('bahmni.common.conceptSet')
                 obs: '='
             },
             require: 'ngModel'
-        }
+        };
     });

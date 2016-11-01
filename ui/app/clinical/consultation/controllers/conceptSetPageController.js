@@ -23,7 +23,7 @@ angular.module('bahmni.clinical')
                         var allTemplates = response.data.results[0].setMembers;
                         createConceptSections(allTemplates);
                         $scope.consultation.selectedObsTemplate = getSelectedObsTemplate(allConceptSections);
-                        if (!!$state.params.programUuid) {
+                        if ($state.params.programUuid) {
                             showOnlyTemplatesFilledInProgram();
                         }
                     }));
@@ -51,8 +51,8 @@ angular.module('bahmni.clinical')
             var createConceptSections = function (allTemplates) {
                 _.map(allTemplates, function (template) {
                     var conceptSetExtension = _.find(extensions, function (extension) {
-                            return extension.extensionParams.conceptName === template.name.name;
-                        }) || {};
+                        return extension.extensionParams.conceptName === template.name.name;
+                    }) || {};
                     var conceptSetConfig = configs[template.name.name] || {};
                     var observationsForTemplate = getObservationsForTemplate(template);
                     if (observationsForTemplate && observationsForTemplate.length > 0) {

@@ -9,4 +9,3 @@ Bahmni.DocumentUpload.Constants = (function () {
     };
 })();
 
-

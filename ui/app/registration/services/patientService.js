@@ -1,17 +1,17 @@
 'use strict';
 
 angular.module('bahmni.registration')
-    .factory('patientService', ['$http', '$rootScope','$bahmniCookieStore','$q', 'patientServiceStrategy','sessionService', function ($http, $rootScope, $bahmniCookieStore, $q, patientServiceStrategy, sessionService) {
+    .factory('patientService', ['$http', '$rootScope', '$bahmniCookieStore', '$q', 'patientServiceStrategy', 'sessionService', function ($http, $rootScope, $bahmniCookieStore, $q, patientServiceStrategy, sessionService) {
         var openmrsUrl = Bahmni.Registration.Constants.openmrsUrl;
         var baseOpenMRSRESTURL = Bahmni.Registration.Constants.baseOpenMRSRESTURL;
 
         var search = function (query, identifier, addressFieldName, addressFieldValue, customAttributeValue,
-                               offset, customAttributeFields, programAttributeFieldName, programAttributeFieldValue , addressSearchResultsConfig,
-                               patientSearchResultsConfig,filterOnAllIdentifiers) {
+                               offset, customAttributeFields, programAttributeFieldName, programAttributeFieldValue, addressSearchResultsConfig,
+                               patientSearchResultsConfig, filterOnAllIdentifiers) {
             var config = {
                 params: {
                     q: query,
-                    identifier:identifier,
+                    identifier: identifier,
                     s: "byIdOrNameOrVillage",
                     addressFieldName: addressFieldName,
                     addressFieldValue: addressFieldValue,
@@ -20,9 +20,9 @@ angular.module('bahmni.registration')
                     patientAttributes: customAttributeFields,
                     programAttributeFieldName: programAttributeFieldName,
                     programAttributeFieldValue: programAttributeFieldValue,
-                    addressSearchResultsConfig : addressSearchResultsConfig,
-                    patientSearchResultsConfig : patientSearchResultsConfig,
-                    loginLocationUuid : sessionService.getLoginLocationUuid(),
+                    addressSearchResultsConfig: addressSearchResultsConfig,
+                    patientSearchResultsConfig: patientSearchResultsConfig,
+                    loginLocationUuid: sessionService.getLoginLocationUuid(),
                     filterOnAllIdentifiers: filterOnAllIdentifiers
                 },
                 withCredentials: true
@@ -30,7 +30,7 @@ angular.module('bahmni.registration')
             return patientServiceStrategy.search(config);
         };
 
-        var searchByIdentifier = function(identifier){
+        var searchByIdentifier = function (identifier) {
             return $http.get(Bahmni.Common.Constants.bahmniSearchUrl + "/patient", {
                 method: "GET",
                 params: {

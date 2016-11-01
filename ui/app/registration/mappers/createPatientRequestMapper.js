@@ -1,7 +1,7 @@
 'use strict';
 
 Bahmni.Registration.CreatePatientRequestMapper = (function () {
-    function CreatePatientRequestMapper(currentDate) {
+    function CreatePatientRequestMapper (currentDate) {
         this.currentDate = currentDate;
     }
 
@@ -11,15 +11,15 @@ Bahmni.Registration.CreatePatientRequestMapper = (function () {
         var identifiers = _.filter(allIdentifiers, function (identifier) {
             return !_.isEmpty(identifier.selectedIdentifierSource) || (identifier.identifier !== undefined);
         });
-        identifiers = _.map(identifiers, function(identifier){
+        identifiers = _.map(identifiers, function (identifier) {
             return {
                 identifier: identifier.identifier,
-                identifierSourceUuid: identifier.selectedIdentifierSource? identifier.selectedIdentifierSource.uuid : undefined,
-                identifierPrefix: identifier.selectedIdentifierSource? identifier.selectedIdentifierSource.prefix : undefined,
+                identifierSourceUuid: identifier.selectedIdentifierSource ? identifier.selectedIdentifierSource.uuid : undefined,
+                identifierPrefix: identifier.selectedIdentifierSource ? identifier.selectedIdentifierSource.prefix : undefined,
                 identifierType: identifier.identifierType.uuid,
                 preferred: identifier.preferred,
                 voided: identifier.voided
-            }
+            };
         });
         var openMRSPatient = {
             patient: {
@@ -34,12 +34,12 @@ Bahmni.Registration.CreatePatientRequestMapper = (function () {
                     ],
                     addresses: [_.pick(patient.address, constants.allAddressFileds)],
                     birthdate: this.getBirthdate(patient.birthdate, patient.age),
-                    birthdateEstimated: patient.birthdateEstimated ,
+                    birthdateEstimated: patient.birthdateEstimated,
                     gender: patient.gender,
                     birthtime: Bahmni.Common.Util.DateUtil.parseLongDateToServerFormat(patient.birthtime),
                     personDateCreated: patient.registrationDate,
                     attributes: new Bahmni.Common.Domain.AttributeFormatter().getMrsAttributes(patient, patientAttributeTypes),
-                    dead:patient.dead,
+                    dead: patient.dead,
                     deathDate: Bahmni.Common.Util.DateUtil.getDateWithoutTime(patient.deathDate),
                     causeOfDeath: patient.causeOfDeath ? patient.causeOfDeath.uuid : '',
                     uuid: patient.uuid
@@ -56,7 +56,7 @@ Bahmni.Registration.CreatePatientRequestMapper = (function () {
 
     CreatePatientRequestMapper.prototype.setImage = function (patient, openMRSPatient) {
         if (patient.getImageData()) {
-            openMRSPatient.image = patient.getImageData()
+            openMRSPatient.image = patient.getImageData();
         }
     };
 

@@ -3,8 +3,8 @@
 var Bahmni = Bahmni || {};
 Bahmni.Common = Bahmni.Common || {};
 
-(function(){
-    var hostUrl = localStorage.getItem('host') ? ("https://" + localStorage.getItem('host'))  : "";
+(function () {
+    var hostUrl = localStorage.getItem('host') ? ("https://" + localStorage.getItem('host')) : "";
     var offlineRootDir = localStorage.getItem('offlineRootDir') || "";
     var RESTWS = hostUrl + "/openmrs/ws/rest";
     var RESTWS_V1 = hostUrl + "/openmrs/ws/rest/v1";
@@ -14,7 +14,7 @@ Bahmni.Common = Bahmni.Common || {};
     var BASE_URL = hostUrl + "/bahmni_config/openmrs/apps/";
     var CUSTOM_URL = hostUrl + "/implementation_config/openmrs/apps/";
     var CUSTOM_LOCALE_URL = hostUrl + "/bahmni_config/openmrs/i18n/";
-    var syncButtonConfiguration =  {
+    var syncButtonConfiguration = {
         delay: 1000,
         repeat: 1
     };
@@ -27,9 +27,9 @@ Bahmni.Common = Bahmni.Common || {};
     ];
 
     var offlineErrorMessages = {
-        networkError:"The network connectivity is bad and not able to connect to the server. Please ensure minimum network condition to sync the device",
-        openmrsServerError:"OpenMRS is down and the device not able to communicate to the server. Please make sure the server is up before Syncing the device",
-        openmrsServerDownError:"OpenMRS is down and the device not able to communicate to the server. Please ensure the server is up for the first time login and setup.",
+        networkError: "The network connectivity is bad and not able to connect to the server. Please ensure minimum network condition to sync the device",
+        openmrsServerError: "OpenMRS is down and the device not able to communicate to the server. Please make sure the server is up before Syncing the device",
+        openmrsServerDownError: "OpenMRS is down and the device not able to communicate to the server. Please ensure the server is up for the first time login and setup.",
         networkErrorForFirstTimeLogin: "The device is not connected to the internet. Please ensure minimal connectivity for the first time login and setup."
     };
 
@@ -38,7 +38,6 @@ Bahmni.Common = Bahmni.Common || {};
         syncSuccess: "Data Synced Successfully",
         syncPending: "Sync Pending, Press Sync button to Sync"
     };
-
 
     var representation = "custom:(uuid,name,names,conceptClass," +
         "setMembers:(uuid,name,names,conceptClass," +
@@ -58,38 +57,38 @@ Bahmni.Common = Bahmni.Common || {};
         "/openmrs/ws/rest/v1/bahmnicore/sql/globalproperty?property=bahmni.relationshipTypeMap": "RelationshipTypeMap",
         "/openmrs/ws/rest/v1/bahmnicore/config/bahmniencounter?callerContext=REGISTRATION_CONCEPTS": "RegistrationConcepts",
         "/openmrs/ws/rest/v1/relationshiptype?v=custom:(aIsToB,bIsToA,uuid)": "RelationshipType",
-        "/openmrs/ws/rest/v1/personattributetype?v=custom:(uuid,name,sortWeight,description,format,concept)" : "PersonAttributeType",
+        "/openmrs/ws/rest/v1/personattributetype?v=custom:(uuid,name,sortWeight,description,format,concept)": "PersonAttributeType",
         "/openmrs/ws/rest/v1/entitymapping?mappingType=loginlocation_visittype&s=byEntityAndMappingType": "LoginLocationToVisitTypeMapping",
         "/openmrs/ws/rest/v1/bahmnicore/config/patient": "PatientConfig",
         "/openmrs/ws/rest/v1/concept?s=byFullySpecifiedName&name=Consultation+Note&v=custom:(uuid,name,answers)": "ConsultationNote",
         "/openmrs/ws/rest/v1/concept?s=byFullySpecifiedName&name=Lab+Order+Notes&v=custom:(uuid,name)": "LabOrderNotes",
-        "/openmrs/ws/rest/v1/concept?s=byFullySpecifiedName&name=Impression&v=custom:(uuid,name)":"RadiologyImpressionConfig",
-        "/openmrs/ws/rest/v1/concept?s=byFullySpecifiedName&name=All_Tests_and_Panels&v=custom:(uuid,name:(uuid,name),setMembers:(uuid,name:(uuid,name)))":"AllTestsAndPanelsConcept",
+        "/openmrs/ws/rest/v1/concept?s=byFullySpecifiedName&name=Impression&v=custom:(uuid,name)": "RadiologyImpressionConfig",
+        "/openmrs/ws/rest/v1/concept?s=byFullySpecifiedName&name=All_Tests_and_Panels&v=custom:(uuid,name:(uuid,name),setMembers:(uuid,name:(uuid,name)))": "AllTestsAndPanelsConcept",
         "/openmrs/ws/rest/v1/concept?s=byFullySpecifiedName&name=Dosage+Frequency&v=custom:(uuid,name,answers)": "DosageFrequencyConfig",
         "/openmrs/ws/rest/v1/concept?s=byFullySpecifiedName&name=Dosage+Instructions&v=custom:(uuid,name,answers)": "DosageInstructionConfig",
-        "/openmrs/ws/rest/v1/bahmnicore/sql/globalproperty?property=bahmni.encounterType.default":"DefaultEncounterType",
-        "/openmrs/ws/rest/v1/concept?s=byFullySpecifiedName&name=Stopped+Order+Reason&v=custom:(uuid,name,answers)":"StoppedOrderReasonConfig",
+        "/openmrs/ws/rest/v1/bahmnicore/sql/globalproperty?property=bahmni.encounterType.default": "DefaultEncounterType",
+        "/openmrs/ws/rest/v1/concept?s=byFullySpecifiedName&name=Stopped+Order+Reason&v=custom:(uuid,name,answers)": "StoppedOrderReasonConfig",
         "/openmrs/ws/rest/v1/ordertype": "OrderType",
         "/openmrs/ws/rest/v1/bahmnicore/config/drugOrders": "DrugOrderConfig",
         "/openmrs/ws/rest/v1/bahmnicore/sql/globalproperty?property=drugOrder.drugOther": "NonCodedDrugConcept"
     };
 
-    authenticatedReferenceDataMap["/openmrs/ws/rest/v1/entitymapping?mappingType=location_encountertype&s=byEntityAndMappingType&entityUuid=" +(localStorage.getItem("LoginInformation") ? JSON.parse(localStorage.getItem("LoginInformation")).currentLocation.uuid : "") ] = "LoginLocationToEncounterTypeMapping";
+    authenticatedReferenceDataMap["/openmrs/ws/rest/v1/entitymapping?mappingType=location_encountertype&s=byEntityAndMappingType&entityUuid=" + (localStorage.getItem("LoginInformation") ? JSON.parse(localStorage.getItem("LoginInformation")).currentLocation.uuid : "")] = "LoginLocationToEncounterTypeMapping";
 
     Bahmni.Common.Constants = {
         hostURL: hostUrl,
         dateFormat: "dd/mm/yyyy",
         dateDisplayFormat: "DD-MMM-YYYY",
         timeDisplayFormat: "hh:mm",
-        emrapiDiagnosisUrl : EMRAPI + "/diagnosis",
-        bahmniDiagnosisUrl :BAHMNI_CORE + "/diagnosis/search",
-        bahmniDeleteDiagnosisUrl :BAHMNI_CORE + "/diagnosis/delete",
-        diseaseTemplateUrl :BAHMNI_CORE + "/diseaseTemplates",
-        AllDiseaseTemplateUrl : BAHMNI_CORE + "/diseaseTemplate",
-        emrapiConceptUrl :EMRAPI + "/concept",
+        emrapiDiagnosisUrl: EMRAPI + "/diagnosis",
+        bahmniDiagnosisUrl: BAHMNI_CORE + "/diagnosis/search",
+        bahmniDeleteDiagnosisUrl: BAHMNI_CORE + "/diagnosis/delete",
+        diseaseTemplateUrl: BAHMNI_CORE + "/diseaseTemplates",
+        AllDiseaseTemplateUrl: BAHMNI_CORE + "/diseaseTemplate",
+        emrapiConceptUrl: EMRAPI + "/concept",
         encounterConfigurationUrl: BAHMNI_CORE + "/config/bahmniencounter",
-        patientConfigurationUrl:BAHMNI_CORE + "/config/patient",
-        drugOrderConfigurationUrl:BAHMNI_CORE + "/config/drugOrders",
+        patientConfigurationUrl: BAHMNI_CORE + "/config/patient",
+        drugOrderConfigurationUrl: BAHMNI_CORE + "/config/drugOrders",
         emrEncounterUrl: EMRAPI + "/encounter",
         encounterUrl: RESTWS_V1 + "/encounter",
         locationUrl: RESTWS_V1 + "/location",
@@ -98,7 +97,7 @@ Bahmni.Common = Bahmni.Common || {};
         bahmniDrugOrderUrl: BAHMNI_CORE + "/drugOrders",
         bahmniDispositionByVisitUrl: BAHMNI_CORE + "/disposition/visit",
         bahmniDispositionByPatientUrl: BAHMNI_CORE + "/disposition/patient",
-        bahmniSearchUrl:BAHMNI_CORE + "/search",
+        bahmniSearchUrl: BAHMNI_CORE + "/search",
         bahmniLabOrderResultsUrl: BAHMNI_CORE + "/labOrderResults",
         bahmniEncounterUrl: BAHMNI_CORE + "/bahmniencounter",
         conceptUrl: RESTWS_V1 + "/concept",
@@ -138,28 +137,28 @@ Bahmni.Common = Bahmni.Common || {};
         relationshipTypesUrl: RESTWS_V1 + "/relationshiptype",
         personAttributeTypeUrl: RESTWS_V1 + "/personattributetype",
         diseaseSummaryPivotUrl: BAHMNI_CORE + "/diseaseSummaryData",
-        allTestsAndPanelsConceptName : 'All_Tests_and_Panels',
-        dosageFrequencyConceptName : 'Dosage Frequency',
-        dosageInstructionConceptName : 'Dosage Instructions',
-        stoppedOrderReasonConceptName :'Stopped Order Reason',
-        consultationNoteConceptName : 'Consultation Note',
-        diagnosisConceptSet : 'Diagnosis Concept Set',
-        radiologyOrderType : 'Radiology Order',
-        radiologyResultConceptName :"Radiology Result",
-        investigationEncounterType:"INVESTIGATION",
+        allTestsAndPanelsConceptName: 'All_Tests_and_Panels',
+        dosageFrequencyConceptName: 'Dosage Frequency',
+        dosageInstructionConceptName: 'Dosage Instructions',
+        stoppedOrderReasonConceptName: 'Stopped Order Reason',
+        consultationNoteConceptName: 'Consultation Note',
+        diagnosisConceptSet: 'Diagnosis Concept Set',
+        radiologyOrderType: 'Radiology Order',
+        radiologyResultConceptName: "Radiology Result",
+        investigationEncounterType: "INVESTIGATION",
         validationNotesEncounterType: "VALIDATION NOTES",
         labOrderNotesConcept: "Lab Order Notes",
         impressionConcept: "Impression",
         qualifiedByRelationshipType: "qualified-by",
-        dispositionConcept : "Disposition",
-        dispositionGroupConcept : "Disposition Set",
-        dispositionNoteConcept : "Disposition Note",
-        ruledOutDiagnosisConceptName : 'Ruled Out Diagnosis',
-        emrapiConceptMappingSource :"org.openmrs.module.emrapi",
+        dispositionConcept: "Disposition",
+        dispositionGroupConcept: "Disposition Set",
+        dispositionNoteConcept: "Disposition Note",
+        ruledOutDiagnosisConceptName: 'Ruled Out Diagnosis',
+        emrapiConceptMappingSource: "org.openmrs.module.emrapi",
         abbreviationConceptMappingSource: "Abbreviation",
         includeAllObservations: false,
-        openmrsObsUrl :RESTWS_V1 + "/obs",
-        openmrsObsRepresentation :"custom:(uuid,obsDatetime,value:(uuid,name:(uuid,name)))" ,
+        openmrsObsUrl: RESTWS_V1 + "/obs",
+        openmrsObsRepresentation: "custom:(uuid,obsDatetime,value:(uuid,name:(uuid,name)))",
         admissionCode: 'ADMIT',
         dischargeCode: 'DISCHARGE',
         transferCode: 'TRANSFER',
@@ -186,21 +185,21 @@ Bahmni.Common = Bahmni.Common || {};
         rootScopeRetrospectiveEntry: 'retrospectiveEntry.encounterDate',
         patientFileConceptName: 'Patient file',
         serverErrorMessages: serverErrorMessages,
-        currentUser:'bahmni.user',
-        retrospectivePrivilege:'app:clinical:retrospective',
-        locationPickerPrivilege:'app:clinical:locationpicker',
-        onBehalfOfPrivilege:'app:clinical:onbehalf',
-        nutritionalConceptName:'Nutritional Values',
+        currentUser: 'bahmni.user',
+        retrospectivePrivilege: 'app:clinical:retrospective',
+        locationPickerPrivilege: 'app:clinical:locationpicker',
+        onBehalfOfPrivilege: 'app:clinical:onbehalf',
+        nutritionalConceptName: 'Nutritional Values',
         messageForNoObservation: "No observations captured for this visit.",
         messageForNoDisposition: "NO_DISPOSTIONS_AVAILABLE_MESSAGE_KEY",
         messageForNoFulfillment: "No observations captured for this order.",
         reportsUrl: "/bahmnireports",
         uploadReportTemplateUrl: "/bahmnireports/upload",
-        ruledOutdiagnosisStatus : "Ruled Out Diagnosis",
-        registartionConsultationPrivilege:'app:common:registration_consultation_link',
-        manageIdentifierSequencePrivilege:"Manage Identifier Sequence",
-        closeVisitPrivilege:'app:common:closeVisit',
-        deleteDiagnosisPrivilege:'app:clinical:deleteDiagnosis',
+        ruledOutdiagnosisStatus: "Ruled Out Diagnosis",
+        registartionConsultationPrivilege: 'app:common:registration_consultation_link',
+        manageIdentifierSequencePrivilege: "Manage Identifier Sequence",
+        closeVisitPrivilege: 'app:common:closeVisit',
+        deleteDiagnosisPrivilege: 'app:clinical:deleteDiagnosis',
         viewPatientsPrivilege: 'View Patients',
         editPatientsPrivilege: 'Edit Patients',
         addVisitsPrivilege: 'Add Visits',
@@ -209,61 +208,61 @@ Bahmni.Common = Bahmni.Common || {};
         grantProviderAccessDataCookieName: "app:clinical:grantProviderAccessData",
         globalPropertyUrl: BAHMNI_CORE + "/sql/globalproperty",
         fulfillmentConfiguration: "fulfillment",
-        fulfillmentFormSuffix:" Fulfillment Form",
+        fulfillmentFormSuffix: " Fulfillment Form",
         noNavigationLinksMessage: "No navigation links available.",
         conceptSetRepresentationForOrderFulfillmentConfig: representation,
         entityMappingUrl: RESTWS_V1 + "/entitymapping",
-        encounterTypeUrl: RESTWS_V1+"/encountertype",
+        encounterTypeUrl: RESTWS_V1 + "/encountertype",
         defaultExtensionName: "default",
         orderSetMemberAttributeTypeUrl: RESTWS_V1 + "/ordersetmemberattributetype",
         orderSetUrl: RESTWS_V1 + "/bahmniorderset",
         primaryOrderSetMemberAttributeTypeName: "Primary",
         bahmniBacteriologyResultsUrl: BACTERIOLOGY + "/specimen",
-        bedFromVisit: RESTWS_V1+ "/beds",
-        ordersUrl: RESTWS_V1+ "/order",
+        bedFromVisit: RESTWS_V1 + "/beds",
+        ordersUrl: RESTWS_V1 + "/order",
         formDataUrl: RESTWS_V1 + "/obs",
         providerUrl: RESTWS_V1 + "/provider",
-        drugUrl : RESTWS_V1 + "/drug",
-        orderTypeUrl : RESTWS_V1 +  "/ordertype",
-        userUrl : RESTWS_V1 + "/user",
-        formUrl : RESTWS_V1 + "/form",
-        sqlUrl : BAHMNI_CORE + "/sql",
+        drugUrl: RESTWS_V1 + "/drug",
+        orderTypeUrl: RESTWS_V1 + "/ordertype",
+        userUrl: RESTWS_V1 + "/user",
+        formUrl: RESTWS_V1 + "/form",
+        sqlUrl: BAHMNI_CORE + "/sql",
         patientAttributeDateFieldFormat: "org.openmrs.util.AttributableDate",
-        platform:"user.platform",
-        RESTWS_V1 : RESTWS_V1,
-        baseUrl :  BASE_URL,
-        customUrl : CUSTOM_URL,
-        customLocaleUrl : CUSTOM_LOCALE_URL,
-        addressEventLogServiceUrl : hostUrl + "/event-log-service/rest/eventlog/getAddressHierarchyEvents",
-        eventLogServiceUrl : hostUrl + "/event-log-service/rest/eventlog/events",
-        eventLogServiceConceptUrl : hostUrl + "/event-log-service/rest/eventlog/concepts",
-        offlineMetadataUrl: hostUrl+"/offlineMetadata.json",
-        faviconUrl : hostUrl + "/bahmni/favicon.ico",
+        platform: "user.platform",
+        RESTWS_V1: RESTWS_V1,
+        baseUrl: BASE_URL,
+        customUrl: CUSTOM_URL,
+        customLocaleUrl: CUSTOM_LOCALE_URL,
+        addressEventLogServiceUrl: hostUrl + "/event-log-service/rest/eventlog/getAddressHierarchyEvents",
+        eventLogServiceUrl: hostUrl + "/event-log-service/rest/eventlog/events",
+        eventLogServiceConceptUrl: hostUrl + "/event-log-service/rest/eventlog/concepts",
+        offlineMetadataUrl: hostUrl + "/offlineMetadata.json",
+        faviconUrl: hostUrl + "/bahmni/favicon.ico",
         platformType: {
             chrome: 'chrome',
             android: 'android',
             chromeApp: 'chrome-app',
             other: 'other'
         },
-        numericDataType:"Numeric",
+        numericDataType: "Numeric",
         encryptionType: {
             SHA3: 'SHA3'
         },
         LoginInformation: 'LoginInformation',
         // orderSetSpecialUnits:["mg/kg","mg/m2"],
         ServerDateTimeFormat: 'YYYY-MM-DDTHH:mm:ssZZ',
-        calculateDose: BAHMNI_CORE+ "/calculateDose",
+        calculateDose: BAHMNI_CORE + "/calculateDose",
         unAuthenticatedReferenceDataMap: unAuthenticatedReferenceDataMap,
         authenticatedReferenceDataMap: authenticatedReferenceDataMap,
         offlineRootDir: offlineRootDir,
         dischargeUrl: BAHMNI_CORE + "/discharge",
         newOfflineVisitUuid: "newOfflineVisitUuid",
         offlineErrorMessages: offlineErrorMessages,
-        syncButtonConfiguration:syncButtonConfiguration,
+        syncButtonConfiguration: syncButtonConfiguration,
         syncStatusMessages: syncStatusMessages,
         uuidRegex: "[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}",
         offlineBahmniEncounterUrl: "/openmrs/ws/rest/v1/bahmnicore/bahmniencounter/",
-        eventlogFilterUrl:hostUrl + "/openmrs/ws/rest/v1/eventlog/filter"
+        eventlogFilterUrl: hostUrl + "/openmrs/ws/rest/v1/eventlog/filter"
     };
 })();
 

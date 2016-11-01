@@ -28,7 +28,7 @@ angular.module('bahmni.reports')
         };
 
         var validateReport = function (report) {
-            if(!report.responseType){
+            if (!report.responseType) {
                 messagingService.showMessage("error", "Select format for the report: " + report.name);
                 return false;
             }
@@ -52,7 +52,7 @@ angular.module('bahmni.reports')
                 messagingService.showMessage("error", "Please select the " + msg.join(" and "));
                 return false;
             }
-            if(report.type == 'concatenated' && report.responseType == reportService.getMimeTypeForFormat('CSV')) {
+            if (report.type == 'concatenated' && report.responseType == reportService.getMimeTypeForFormat('CSV')) {
                 messagingService.showMessage('error', 'CSV format is not supported for concatenated reports');
                 return false;
             }
@@ -72,9 +72,9 @@ angular.module('bahmni.reports')
 
         $scope.scheduleReport = function (report) {
             if (validateReport(report)) {
-                spinner.forPromise(reportService.scheduleReport(report)).then(function(){
+                spinner.forPromise(reportService.scheduleReport(report)).then(function () {
                     messagingService.showMessage("info", report.name + " added to My Reports");
-                }, function() {
+                }, function () {
                     messagingService.showMessage("error", "Error in scheduling report");
                 });
                 if (report.responseType === 'application/vnd.ms-excel-custom') {
@@ -84,9 +84,9 @@ angular.module('bahmni.reports')
             }
         };
 
-        var initializeFormats = function(){
+        var initializeFormats = function () {
             var supportedFormats = appService.getAppDescriptor().getConfigValue("supportedFormats") || _.keys(reportService.getAvailableFormats());
-            supportedFormats = _.map(supportedFormats, function(format){
+            supportedFormats = _.map(supportedFormats, function (format) {
                 return format.toUpperCase();
             });
             $scope.formats = _.pick(reportService.getAvailableFormats(), supportedFormats);
@@ -94,8 +94,8 @@ angular.module('bahmni.reports')
 
         var initialization = function () {
             var reportList = appService.getAppDescriptor().getConfigForPage("reports");
-            $rootScope.reportsRequiringDateRange = _.isUndefined($rootScope.reportsRequiringDateRange) ?  _.values(reportList).filter(function (report) {
-                return !(report.config && report.config.dateRangeRequired === false) ;
+            $rootScope.reportsRequiringDateRange = _.isUndefined($rootScope.reportsRequiringDateRange) ? _.values(reportList).filter(function (report) {
+                return !(report.config && report.config.dateRangeRequired === false);
             }) : $rootScope.reportsRequiringDateRange;
             $rootScope.reportsNotRequiringDateRange = _.isUndefined($rootScope.reportsNotRequiringDateRange) ? _.values(reportList).filter(function (report) {
                 return (report.config && report.config.dateRangeRequired === false);

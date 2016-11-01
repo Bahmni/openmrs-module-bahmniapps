@@ -37,7 +37,7 @@ angular.module('bahmni.clinical')
                     var obsArrayFiltered = [];
                     for (var ob in observation) {
                         if (_.includes(observationTemplateArray, observation[ob].concept.display)) {
-                            obsArrayFiltered.push(observation[ob])
+                            obsArrayFiltered.push(observation[ob]);
                         }
                     }
                     return obsArrayFiltered;
@@ -54,17 +54,15 @@ angular.module('bahmni.clinical')
                     });
                 };
 
-                $scope.getDisplayName = function(data){
+                $scope.getDisplayName = function (data) {
                     var concept = data.concept;
                     var displayName = data.concept.displayString;
-                    if(concept.names && concept.names.length === 1 && concept.names[0].name !== ""){
+                    if (concept.names && concept.names.length === 1 && concept.names[0].name !== "") {
                         displayName = concept.names[0].name;
-                    }
-                    else if(concept.names && concept.names.length === 2){
+                    } else if (concept.names && concept.names.length === 2) {
                         displayName = _.find(concept.names, {conceptNameType: "SHORT"}).name;
                     }
-                    return displayName ;
-
+                    return displayName;
                 };
 
                 $scope.getProviderDisplayName = function (encounter) {
@@ -85,7 +83,6 @@ angular.module('bahmni.clinical')
                         $scope.patient = {uuid: $scope.patientUuid};
                     });
                 };
-
 
                 $scope.initialization = init();
 

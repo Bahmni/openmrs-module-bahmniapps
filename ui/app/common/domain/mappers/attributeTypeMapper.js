@@ -1,17 +1,15 @@
 'use strict';
 
 Bahmni.Common.Domain.AttributeTypeMapper = (function () {
-
-    function AttributeTypeMapper() {
+    function AttributeTypeMapper () {
     }
 
     AttributeTypeMapper.prototype.mapFromOpenmrsAttributeTypes = function (mrsAttributeTypes, mandatoryAttributes) {
         var attributeTypes = [];
-        angular.forEach(mrsAttributeTypes, function(mrsAttributeType) {
-
-            var isRequired = function(){
+        angular.forEach(mrsAttributeTypes, function (mrsAttributeType) {
+            var isRequired = function () {
                 var element = _.find(mandatoryAttributes, function (mandatoryAttribute) {
-                    return mandatoryAttribute == mrsAttributeType.name
+                    return mandatoryAttribute == mrsAttributeType.name;
                 });
                 return element ? true : false;
             };
@@ -25,12 +23,12 @@ Bahmni.Common.Domain.AttributeTypeMapper = (function () {
                 format: mrsAttributeType.format || mrsAttributeType.datatypeClassname,
                 answers: [],
                 required: isRequired(),
-                concept:mrsAttributeType.concept||{}
+                concept: mrsAttributeType.concept || {}
             };
             attributeType.concept.dataType = attributeType.concept.datatype && attributeType.concept.datatype.name;
 
             if (mrsAttributeType.concept && mrsAttributeType.concept.answers) {
-                angular.forEach(mrsAttributeType.concept.answers, function(mrsAnswer) {
+                angular.forEach(mrsAttributeType.concept.answers, function (mrsAnswer) {
                     var displayName = mrsAnswer.display;
                     var fullySpecifiedName = mrsAnswer.display;
                     if (mrsAnswer.names && mrsAnswer.names.length == 2) {
@@ -38,8 +36,7 @@ Bahmni.Common.Domain.AttributeTypeMapper = (function () {
                             if (mrsAnswer.names[0].display == displayName) {
                                 displayName = mrsAnswer.names[1].display;
                                 fullySpecifiedName = mrsAnswer.names[0].display;
-                            }
-                            else {
+                            } else {
                                 displayName = mrsAnswer.names[0].display;
                                 fullySpecifiedName = mrsAnswer.names[1].display;
                             }
@@ -52,14 +49,14 @@ Bahmni.Common.Domain.AttributeTypeMapper = (function () {
                     });
                 });
             }
-            if (attributeType.format == "org.openmrs.customdatatype.datatype.RegexValidatedTextDatatype"){
+            if (attributeType.format == "org.openmrs.customdatatype.datatype.RegexValidatedTextDatatype") {
                 attributeType.pattern = mrsAttributeType.datatypeConfig;
             }
 
             attributeTypes.push(attributeType);
         });
         return {
-            attributeTypes : attributeTypes
+            attributeTypes: attributeTypes
         };
     };
 

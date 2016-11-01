@@ -9,9 +9,8 @@ angular.module('bahmni.registration').factory('openmrsPatientMapper', ['patient'
                 var attributeType = $rootScope.patientConfiguration.get(attribute.attributeType.uuid);
                 if (attributeType) {
                     if (attributeType.format === "org.openmrs.Concept" && attribute.value) {
-                        patient[attributeType.name] = {conceptUuid : attribute.value.uuid, value :attribute.value.display};
-                    }
-                    else if (attributeType.format === "org.openmrs.util.AttributableDate") {
+                        patient[attributeType.name] = {conceptUuid: attribute.value.uuid, value: attribute.value.display};
+                    } else if (attributeType.format === "org.openmrs.util.AttributableDate") {
                         patient[attributeType.name] = parseDate(attribute.value);
                     } else {
                         patient[attributeType.name] = attribute.value;
@@ -21,7 +20,6 @@ angular.module('bahmni.registration').factory('openmrsPatientMapper', ['patient'
             mapAttributes = function (patient, attributes) {
                 attributes.filter(whereAttributeTypeExists).forEach(function (attribute) {
                     addAttributeToPatient(patient, attribute);
-
                 });
             },
             parseDate = function (dateStr) {
@@ -30,11 +28,10 @@ angular.module('bahmni.registration').factory('openmrsPatientMapper', ['patient'
             mapAddress = function (preferredAddress) {
                 return preferredAddress || {};
             },
-            mapRelationships = function(patient, relationships){
+            mapRelationships = function (patient, relationships) {
                 patient.relationships = relationships || [];
                 patient.newlyAddedRelationships = [{}];
             },
-
 
             map = function (openmrsPatient) {
                 var relationships = openmrsPatient.relationships;
@@ -52,7 +49,7 @@ angular.module('bahmni.registration').factory('openmrsPatientMapper', ['patient'
                 patient.address = mapAddress(openmrsPerson.preferredAddress);
                 patient.birthtime = parseDate(openmrsPerson.birthtime);
                 patient.image = Bahmni.Registration.Constants.patientImageUrlByPatientUuid + openmrsPatient.uuid + "&q=" + new Date().toISOString();
-                patient.registrationDate =  Bahmni.Common.Util.DateUtil.parse(openmrsPerson.auditInfo.dateCreated);
+                patient.registrationDate = Bahmni.Common.Util.DateUtil.parse(openmrsPerson.auditInfo.dateCreated);
                 patient.dead = openmrsPerson.dead;
                 patient.deathDate = parseDate(openmrsPerson.deathDate);
                 patient.causeOfDeath = openmrsPerson.causeOfDeath;

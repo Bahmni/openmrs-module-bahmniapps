@@ -2,15 +2,15 @@
 
 angular.module('bahmni.clinical')
   .service('urlHelper', ['$stateParams', function ($stateParams) {
-    this.getPatientUrl = function () {
-    	return '/patient/' + $stateParams.patientUuid + '/dashboard';
-    };
+      this.getPatientUrl = function () {
+          return '/patient/' + $stateParams.patientUuid + '/dashboard';
+      };
 
-	this.getConsultationUrl = function() {
-		return this.getPatientUrl() + '/consultation';
-	};
+      this.getConsultationUrl = function () {
+          return this.getPatientUrl() + '/consultation';
+      };
 
-    this.getVisitUrl = function(visitUuid) {
-    	return this.getPatientUrl() + '/visit/' + visitUuid;
-    }
-}]);
+      this.getVisitUrl = function (visitUuid) {
+          return this.getPatientUrl() + '/visit/' + visitUuid;
+      };
+  }]);

@@ -2,14 +2,13 @@
 
 angular.module('bahmni.common.bacteriologyresults')
     .factory('bacteriologyResultsService', ['$http', function ($http) {
-
         var getBacteriologyResults = function (data) {
             var params = {
                 patientUuid: data.patientUuid,
                 name: "BACTERIOLOGY CONCEPT SET",
                 v: "full"
             };
-            if(data.patientProgramUuid){
+            if (data.patientProgramUuid) {
                 params = {
                     patientProgramUuid: data.patientProgramUuid,
                     s: "byPatientProgram",
@@ -23,11 +22,10 @@ angular.module('bahmni.common.bacteriologyresults')
             });
         };
 
-
         var saveBacteriologyResults = function (specimen) {
             return $http.post(Bahmni.Common.Constants.bahmniBacteriologyResultsUrl, specimen, {
                 withCredentials: true
-            })
+            });
         };
 
         return {

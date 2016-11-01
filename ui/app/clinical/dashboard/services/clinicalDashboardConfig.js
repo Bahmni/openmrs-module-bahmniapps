@@ -8,5 +8,5 @@ angular.module('bahmni.clinical')
             return appService.loadConfig('dashboard.json').then(function (response) {
                 angular.extend(self, new Bahmni.Clinical.ClinicalDashboardConfig(_.values(response)));
             });
-        }
+        };
     }]);

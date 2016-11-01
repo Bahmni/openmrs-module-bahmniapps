@@ -2,7 +2,6 @@
 
 angular.module('bahmni.common.uicontrols.programmanagment')
     .service('programHelper', ['appService', function (appService) {
-
         var self = this;
         var programConfiguration = appService.getAppDescriptor().getConfig("program") && appService.getAppDescriptor().getConfig("program").value;
 
@@ -23,8 +22,8 @@ angular.module('bahmni.common.uicontrols.programmanagment')
             });
             _.forEach(allWorkflows, function (workflow) {
                 workflow.states = _.filter(workflow.states, function (state) {
-                    return !state.retired
-                })
+                    return !state.retired;
+                });
             });
             return allWorkflows;
         };
@@ -32,14 +31,13 @@ angular.module('bahmni.common.uicontrols.programmanagment')
         this.filterRetiredOutcomes = function (outcomes) {
             return _.filter(outcomes, function (outcome) {
                 return !outcome.retired;
-            })
+            });
         };
 
         var mapAttributes = function (attribute) {
             attribute.name = attribute.attributeType.description ? attribute.attributeType.description : attribute.name;
             attribute.value = attribute.value;
             attribute.required = isAttributeRequired(attribute);
-
         };
         var mapPrograms = function (program) {
             program.dateEnrolled = Bahmni.Common.Util.DateUtil.parseServerDateToDate(program.dateEnrolled);
@@ -50,7 +48,7 @@ angular.module('bahmni.common.uicontrols.programmanagment')
             });
         };
 
-        function shouldDisplayAllAttributes(programDisplayControlConfig) {
+        function shouldDisplayAllAttributes (programDisplayControlConfig) {
             return (programDisplayControlConfig && programDisplayControlConfig['programAttributes'] == undefined) || programDisplayControlConfig == undefined;
         }
 
@@ -60,8 +58,7 @@ angular.module('bahmni.common.uicontrols.programmanagment')
             var configAttrList = [];
             if (shouldDisplayAllAttributes(programDisplayControlConfig)) {
                 configAttrList = programAttributeTypes;
-            }
-            else {
+            } else {
                 configAttrList = programAttributeTypes.filter(function (each) {
                     return config && config.indexOf(each.name) !== -1;
                 });
@@ -110,10 +107,10 @@ angular.module('bahmni.common.uicontrols.programmanagment')
                     }
                 });
                 groupedPrograms.activePrograms = _.sortBy(activePrograms, function (program) {
-                    return moment(program.dateEnrolled).toDate()
+                    return moment(program.dateEnrolled).toDate();
                 }).reverse();
                 groupedPrograms.endedPrograms = _.sortBy(endedPrograms, function (program) {
-                    return moment(program.dateCompleted).toDate()
+                    return moment(program.dateCompleted).toDate();
                 }).reverse();
             }
             return groupedPrograms;

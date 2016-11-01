@@ -3,11 +3,11 @@
 angular.module('authentication')
     .config(function ($httpProvider) {
         var interceptor = ['$rootScope', '$q', function ($rootScope, $q) {
-            function success(response) {
+            function success (response) {
                 return response;
             }
 
-            function error(response) {
+            function error (response) {
                 if (response.status === 401) {
                     $rootScope.$broadcast('event:auth-loginRequired');
                 }
@@ -22,7 +22,7 @@ angular.module('authentication')
         $httpProvider.interceptors.push(interceptor);
     }).run(['$rootScope', '$window', '$timeout', function ($rootScope, $window, $timeout) {
         $rootScope.$on('event:auth-loginRequired', function () {
-            $timeout(function(){
+            $timeout(function () {
                 $window.location = "../home/index.html#/login";
             });
         });
@@ -33,8 +33,8 @@ angular.module('authentication')
         var previousUser = 'previousUser';
         var previousUserInfo = 'previousUserInfo';
 
-        var getAuthFromServer = function(username, password, otp) {
-            var btoa = otp ? username + ':' + password + ':' + otp : username + ':' + password ;
+        var getAuthFromServer = function (username, password, otp) {
+            var btoa = otp ? username + ':' + password + ':' + otp : username + ':' + password;
             return $http.get(sessionResourcePath, {
                 headers: {'Authorization': 'Basic ' + window.btoa(btoa)},
                 cache: false
@@ -49,46 +49,45 @@ angular.module('authentication')
             });
         };
 
-        var createSession = function(username, password, otp){
+        var createSession = function (username, password, otp) {
             var deferrable = $q.defer();
 
-            destroySessionFromServer().success(function(){
-                getAuthFromServer(username, password, otp).then(function(response) {
-                    if (response.status == 204){
+            destroySessionFromServer().success(function () {
+                getAuthFromServer(username, password, otp).then(function (response) {
+                    if (response.status == 204) {
                         deferrable.resolve({"firstFactAuthorization": true});
                     }
                     var data = response.data;
-                    if(offlineApp) {
-                        if(data.authenticated == true) {
+                    if (offlineApp) {
+                        if (data.authenticated == true) {
                             offlineService.setItem(authenticationResponse, data);
                         }
                     }
                     deferrable.resolve(data);
-                }, function(response){
-                    if(response.status == 401){
+                }, function (response) {
+                    if (response.status == 401) {
                         deferrable.reject('LOGIN_LABEL_WRONG_OTP_MESSAGE_KEY');
                     } else if (response.status == 410) {
-                        deferrable.reject('LOGIN_LABEL_OTP_EXPIRED')
-                    }
-                    else if (response.status == 429) { // Too many requests
+                        deferrable.reject('LOGIN_LABEL_OTP_EXPIRED');
+                    } else if (response.status == 429) { // Too many requests
                         deferrable.reject('LOGIN_LABEL_MAX_FAILED_ATTEMPTS');
                     }
-                    if(offlineApp && offlineService.getItem(authenticationResponse)){
+                    if (offlineApp && offlineService.getItem(authenticationResponse)) {
                         deferrable.resolve(offlineService.getItem(authenticationResponse));
-                    }else {
+                    } else {
                         deferrable.reject('LOGIN_LABEL_LOGIN_ERROR_MESSAGE_KEY');
                     }
                 });
-            }).error(function(data, status){
-                if(offlineApp && offlineService.getItem(authenticationResponse) &&
+            }).error(function (data, status) {
+                if (offlineApp && offlineService.getItem(authenticationResponse) &&
                     offlineService.getItem(Bahmni.Common.Constants.LoginInformation) &&
-                    offlineService.validateLoginInfo({username: username, password: password})){
+                    offlineService.validateLoginInfo({username: username, password: password})) {
                     deferrable.resolve(offlineService.getItem(authenticationResponse));
-                }else if(offlineApp && parseInt(status / 100) == 5){
+                } else if (offlineApp && parseInt(status / 100) == 5) {
                     var errorInfo = {forOffline: true};
                     errorInfo.openmrsServerDownError = Bahmni.Common.Constants.offlineErrorMessages.openmrsServerDownError;
                     deferrable.reject(errorInfo);
-                }else {
+                } else {
                     deferrable.reject('LOGIN_LABEL_LOGIN_ERROR_MESSAGE_KEY');
                 }
             });
@@ -97,17 +96,17 @@ angular.module('authentication')
 
         var hasAnyActiveProvider = function (providers) {
             return _.filter(providers, function (provider) {
-                    return (provider.retired == undefined || provider.retired == "false")
-                }).length > 0;
+                return (provider.retired == undefined || provider.retired == "false");
+            }).length > 0;
         };
 
         var self = this;
 
-        var destroySessionFromServer = function() {
+        var destroySessionFromServer = function () {
             return $http.delete(sessionResourcePath);
         };
 
-        var sessionCleanup = function() {
+        var sessionCleanup = function () {
             delete $.cookie(Bahmni.Common.Constants.currentUser, null, {path: "/"});
             delete $.cookie(Bahmni.Common.Constants.currentUser, null, {path: "/"});
             delete $.cookie(Bahmni.Common.Constants.retrospectiveEntryEncounterDateCookieName, null, {path: "/"});
@@ -115,13 +114,13 @@ angular.module('authentication')
             $rootScope.currentUser = undefined;
         };
 
-        this.destroy = function(){
+        this.destroy = function () {
             var deferrable = $q.defer();
-            if(offlineApp) {
+            if (offlineApp) {
                 sessionCleanup();
                 deferrable.resolve();
             } else {
-                destroySessionFromServer().then(function(){
+                destroySessionFromServer().then(function () {
                     sessionCleanup();
                     deferrable.resolve();
                 });
@@ -129,25 +128,25 @@ angular.module('authentication')
             return deferrable.promise;
         };
 
-        this.loginUser = function(username, password, location, otp) {
+        this.loginUser = function (username, password, location, otp) {
             var deferrable = $q.defer();
-            createSession(username,password, otp).then(function(data) {
+            createSession(username, password, otp).then(function (data) {
                 if (data.authenticated) {
                     $bahmniCookieStore.put(Bahmni.Common.Constants.currentUser, username, {path: '/', expires: 7});
-                    if(location != undefined) {
+                    if (location != undefined) {
                         $bahmniCookieStore.remove(Bahmni.Common.Constants.locationCookieName);
                         $bahmniCookieStore.put(Bahmni.Common.Constants.locationCookieName, {name: location.display, uuid: location.uuid}, {path: '/', expires: 7});
                     }
                     deferrable.resolve(data);
-                } else if(data.firstFactAuthorization) {
+                } else if (data.firstFactAuthorization) {
                     deferrable.resolve(data);
                 } else {
-                   deferrable.reject('LOGIN_LABEL_LOGIN_ERROR_MESSAGE_KEY');
+                    deferrable.reject('LOGIN_LABEL_LOGIN_ERROR_MESSAGE_KEY');
                 }
-            }, function(errorInfo){
-                if(offlineApp && !offlineService.getItem(authenticationResponse)){
+            }, function (errorInfo) {
+                if (offlineApp && !offlineService.getItem(authenticationResponse)) {
                     errorInfo.forOffline ? deferrable.reject(errorInfo.openmrsServerDownError) : deferrable.reject(Bahmni.Common.Constants.offlineErrorMessages.networkErrorForFirstTimeLogin);
-                }else {
+                } else {
                     deferrable.reject(errorInfo);
                 }
             });
@@ -155,8 +154,8 @@ angular.module('authentication')
         };
 
         this.get = function () {
-            if(offlineApp) {
-                return $q.when({data:offlineService.getItem('authenticationResponse')});
+            if (offlineApp) {
+                return $q.when({data: offlineService.getItem('authenticationResponse')});
             }
             return $http.get(sessionResourcePath, { cache: false });
         };
@@ -164,40 +163,39 @@ angular.module('authentication')
         this.loadCredentials = function () {
             var deferrable = $q.defer();
             var currentUser = $bahmniCookieStore.get(Bahmni.Common.Constants.currentUser);
-            if(!currentUser) {
-                this.destroy().finally(function() {
+            if (!currentUser) {
+                this.destroy().finally(function () {
                     $rootScope.$broadcast('event:auth-loginRequired');
                     deferrable.reject("No User in session. Please login again.");
                 });
                 return deferrable.promise;
             }
-            userService.getUser(currentUser).then(function(data) {
-                userService.getProviderForUser(data.results[0].uuid).then(function(providers){
-                        if(!_.isEmpty(providers.results) && hasAnyActiveProvider(providers.results)){
-                            $rootScope.currentUser = new Bahmni.Auth.User(data.results[0]);
-                            $rootScope.currentUser.currentLocation = $bahmniCookieStore.get(Bahmni.Common.Constants.locationCookieName).name;
-                            if(offlineApp){
-                                offlineService.setItem(previousUser, $rootScope.currentUser);
-                                offlineService.setItem(previousUserInfo, data.results[0]);
-                            }
-                            $rootScope.$broadcast('event:user-credentialsLoaded', data.results[0])
-                            deferrable.resolve(data.results[0]);
-                        }else{
-                            self.destroy();
-                            deferrable.reject('You have not been setup as a Provider, please contact administrator.');
+            userService.getUser(currentUser).then(function (data) {
+                userService.getProviderForUser(data.results[0].uuid).then(function (providers) {
+                    if (!_.isEmpty(providers.results) && hasAnyActiveProvider(providers.results)) {
+                        $rootScope.currentUser = new Bahmni.Auth.User(data.results[0]);
+                        $rootScope.currentUser.currentLocation = $bahmniCookieStore.get(Bahmni.Common.Constants.locationCookieName).name;
+                        if (offlineApp) {
+                            offlineService.setItem(previousUser, $rootScope.currentUser);
+                            offlineService.setItem(previousUserInfo, data.results[0]);
                         }
-                    },
-               function(){
+                        $rootScope.$broadcast('event:user-credentialsLoaded', data.results[0]);
+                        deferrable.resolve(data.results[0]);
+                    } else {
                         self.destroy();
-                        deferrable.reject('Could not get provider for the current user.');
-                    });
+                        deferrable.reject('You have not been setup as a Provider, please contact administrator.');
+                    }
+                },
+               function () {
+                   self.destroy();
+                   deferrable.reject('Could not get provider for the current user.');
+               });
             }, function () {
                 if (offlineApp) {
                     $rootScope.currentUser = offlineService.getItem(previousUser);
                     $rootScope.$broadcast('event:user-credentialsLoaded', offlineService.getItem(previousUserInfo));
                     deferrable.resolve();
-                }
-                else{
+                } else {
                     self.destroy();
                     deferrable.reject('Could not get roles for the current user.');
                 }
@@ -205,27 +203,27 @@ angular.module('authentication')
             return deferrable.promise;
         };
 
-        this.getLoginLocationUuid = function(){
+        this.getLoginLocationUuid = function () {
             return $bahmniCookieStore.get(Bahmni.Common.Constants.locationCookieName) ? $bahmniCookieStore.get(Bahmni.Common.Constants.locationCookieName).uuid : null;
         };
 
-        this.loadProviders = function(userInfo) {
+        this.loadProviders = function (userInfo) {
             if (offlineApp) {
-                var data  = offlineService.getItem('providerData');
+                var data = offlineService.getItem('providerData');
                 var provider = (data.results.length > 0) ? data.results[0] : undefined;
                 $rootScope.currentProvider = provider;
                 return $q.when(data);
             }
             return $http.get(Bahmni.Common.Constants.providerUrl, {
-                 method: "GET",
-                 params: {
-                     user: userInfo.uuid
-                 },
-                 cache: false
-             }).success(function (data) {
+                method: "GET",
+                params: {
+                    user: userInfo.uuid
+                },
+                cache: false
+            }).success(function (data) {
                 var providerUuid = (data.results.length > 0) ? data.results[0].uuid : undefined;
                 $rootScope.currentProvider = { uuid: providerUuid };
-             });
+            });
         };
     }]).factory('authenticator', ['$rootScope', '$q', '$window', 'sessionService', function ($rootScope, $q, $window, sessionService) {
         var authenticateUser = function () {
@@ -244,13 +242,12 @@ angular.module('authentication')
 
         return {
             authenticateUser: authenticateUser
-        }
-
-    }]).directive('logOut',['sessionService', 'offlineService', '$window', function(sessionService, offlineService, $window) {
+        };
+    }]).directive('logOut', ['sessionService', 'offlineService', '$window', function (sessionService, offlineService, $window) {
         return {
-            link: function(scope, element) {
-                element.bind('click', function() {
-                    scope.$apply(function() {
+            link: function (scope, element) {
+                element.bind('click', function () {
+                    scope.$apply(function () {
                         sessionService.destroy().then(
                             function () {
                                 if (offlineService.isOfflineApp()) {
@@ -264,18 +261,18 @@ angular.module('authentication')
             }
         };
     }])
-    .directive('btnUserInfo', ['$rootScope', '$window', function() {
+    .directive('btnUserInfo', ['$rootScope', '$window', function () {
         return {
             restrict: 'CA',
-            link: function(scope, elem) {
-                elem.bind('click', function(event) {
+            link: function (scope, elem) {
+                elem.bind('click', function (event) {
                     $(this).next().toggleClass('active');
                     event.stopPropagation();
                 });
-                $(document).find('body').bind('click', function() {
+                $(document).find('body').bind('click', function () {
                     $(elem).next().removeClass('active');
                 });
             }
         };
     }
-]);
+    ]);

@@ -3,31 +3,30 @@
 angular.module('bahmni.clinical')
     .controller('ObservationFormController', ['$scope', 'observationFormService', 'spinner',
         function ($scope, observationFormService, spinner) {
-
             var init = function () {
-                if(!($scope.consultation.observationForms !== undefined && $scope.consultation.observationForms.length > 0)){
+                if (!($scope.consultation.observationForms !== undefined && $scope.consultation.observationForms.length > 0)) {
                     spinner.forPromise(observationFormService.getFormList({v: "custom:(uuid,name)"})
                         .then(function (response) {
                             $scope.consultation.observationForms = getObservationForms(response.data.results);
                         }));
-                }else{
+                } else {
                     $scope.consultation.observationForms = getObservationForms($scope.consultation.observationForms);
                 }
             };
-            
+
             var getObservationForms = function (observationsForms) {
                 var forms = [];
                 var observations = $scope.consultation.observations || [];
-                _.each(observationsForms, function(observationForm){
+                _.each(observationsForms, function (observationForm) {
                     var formUuid = observationForm.formUuid || observationForm.uuid;
                     var formName = observationForm.name || observationForm.formName;
-                    forms.push(new Bahmni.ObservationForm(formUuid, formName, observations))
+                    forms.push(new Bahmni.ObservationForm(formUuid, formName, observations));
                 });
                 return forms;
             };
 
-            $scope.$on('$stateChangeStart', function(){
-                if($scope.consultation.observationForms) {
+            $scope.$on('$stateChangeStart', function () {
+                if ($scope.consultation.observationForms) {
                     _.remove($scope.consultation.observations, function (observation) {
                         return observation.formNamespace;
                     });
@@ -42,8 +41,8 @@ angular.module('bahmni.clinical')
                 }
             });
 
-            $scope.toggle = function(item) {
-                item.show = !item.show
+            $scope.toggle = function (item) {
+                item.show = !item.show;
             };
 
             init();

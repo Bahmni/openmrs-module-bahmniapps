@@ -59,5 +59,5 @@ angular.module('bahmni.common.domain')
             return $http.get(Bahmni.Common.Constants.visitTypeUrl, {
                 withCredentials: true
             });
-        }
+        };
     }]);

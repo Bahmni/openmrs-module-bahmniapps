@@ -16,5 +16,5 @@ angular.module('bahmni.clinical')
 
         return {
             formData: formData
-        }
+        };
     }]);

@@ -25,17 +25,17 @@ Bahmni.Clinical.Constants = (function () {
         conceptNotNumeric: "Concept ':conceptName''s datatype is not Numeric. At :placeErrorAccurred."
     };
     var bacteriologyConstants = {
-        otherSampleType :"Other",
+        otherSampleType: "Other",
         specimenSampleSourceConceptName: "Specimen Sample Source"
 
     };
     return {
         patientsListUrl: "/patient/search",
         diagnosisObservationConceptName: "Visit Diagnoses",
-        orderConceptName: "Diagnosis order",                   //TODO : should be fetched from a config
-        certaintyConceptName: "Diagnosis Certainty",           //TODO : should be fetched from a config
-        nonCodedDiagnosisConceptName: "Non-coded Diagnosis",       //TODO : should be fetched from a config
-        codedDiagnosisConceptName: "Coded Diagnosis",      //TODO : should be fetched from a config
+        orderConceptName: "Diagnosis order",                   // TODO : should be fetched from a config
+        certaintyConceptName: "Diagnosis Certainty",           // TODO : should be fetched from a config
+        nonCodedDiagnosisConceptName: "Non-coded Diagnosis",       // TODO : should be fetched from a config
+        codedDiagnosisConceptName: "Coded Diagnosis",      // TODO : should be fetched from a config
         orderTypes: orderTypes,
         labOrderType: "Lab Order",
         drugOrderType: "Drug Order",
@@ -56,10 +56,10 @@ Bahmni.Clinical.Constants = (function () {
         dosingTypes: dosingTypes,
         orderActions: orderActions,
         errorMessages: errorMessages,
-        caseIntakeConceptClass:'Case Intake',
-        dialog:'DIALOG',
-        dashboard:'DASHBOARD',
-        default:'DEFAULT',
+        caseIntakeConceptClass: 'Case Intake',
+        dialog: 'DIALOG',
+        dashboard: 'DASHBOARD',
+        default: 'DEFAULT',
         gender: 'Gender',
         concepts: concepts,
         otherActiveDrugOrders: "Other Active DrugOrders",
@@ -71,5 +71,4 @@ Bahmni.Clinical.Constants = (function () {
 
     };
 })();
-
 

@@ -2,7 +2,6 @@
 
 angular.module('bahmni.adt')
     .service('WardService', ['$http', function ($http) {
-
         this.bedsForWard = function (uuid) {
             return $http.get(Bahmni.ADT.Constants.admissionLocationUrl + uuid, {
                 method: "GET",

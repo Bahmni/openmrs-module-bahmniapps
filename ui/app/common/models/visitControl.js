@@ -6,7 +6,7 @@ Bahmni.Common.VisitControl = function (visitTypes, defaultVisitTypeName, encount
     self.visitTypes = visitTypes;
     self.defaultVisitTypeName = defaultVisitTypeName;
     self.defaultVisitType = visitTypes.filter(function (visitType) {
-        return visitType.name === defaultVisitTypeName
+        return visitType.name === defaultVisitTypeName;
     })[0];
 
     self.startButtonText = function (visitType) {
@@ -18,13 +18,10 @@ Bahmni.Common.VisitControl = function (visitTypes, defaultVisitTypeName, encount
         self.selectedVisitType = visitType;
     };
 
-
-
     self.createVisitOnly = function (patientUuid, visitLocationUuid) {
         var visitType = self.selectedVisitType || self.defaultVisitType;
         var visitDetails = {patient: patientUuid, visitType: visitType.uuid, location: visitLocationUuid};
         return visitService.createVisit(visitDetails);
-
-    }
+    };
 };
 

@@ -7,28 +7,28 @@ angular.module('bahmni.clinical')
                 $rootScope.$broadcast("event:editDrugOrder", drugOrder, index);
             };
 
-            $scope.remove = function(index) {
+            $scope.remove = function (index) {
                 $rootScope.$broadcast("event:removeDrugOrder", index);
             };
 
-            var defaultBulkDuration = function() {
+            var defaultBulkDuration = function () {
                 return {
-                    bulkDurationUnit : $scope.treatmentConfig.durationUnits ? $scope.treatmentConfig.durationUnits[0].name : ""
+                    bulkDurationUnit: $scope.treatmentConfig.durationUnits ? $scope.treatmentConfig.durationUnits[0].name : ""
                 };
             };
 
             $scope.bulkDurationData = defaultBulkDuration();
 
-            var clearBulkDurationChange = function() {
+            var clearBulkDurationChange = function () {
                 $scope.bulkDurationData = defaultBulkDuration();
                 $scope.bulkSelectCheckbox = false;
             };
 
-            $scope.bulkDurationChangeDone = function() {
-                if($scope.bulkDurationData.bulkDuration && $scope.bulkDurationData.bulkDurationUnit){
+            $scope.bulkDurationChangeDone = function () {
+                if ($scope.bulkDurationData.bulkDuration && $scope.bulkDurationData.bulkDurationUnit) {
                     $scope.treatments.forEach(function (treatment) {
-                        if(treatment.durationUpdateFlag){
-                            if(!treatment.duration) {
+                        if (treatment.durationUpdateFlag) {
+                            if (!treatment.duration) {
                                 treatment.quantityEnteredManually = false;
                             }
                             treatment.duration = $scope.bulkDurationData.bulkDuration;
@@ -45,20 +45,20 @@ angular.module('bahmni.clinical')
             var isDurationNullForAnyTreatment = function (treatments) {
                 var isDurationNull = false;
                 treatments.forEach(function (treatment) {
-                    if(!treatment.duration) {
+                    if (!treatment.duration) {
                         isDurationNull = true;
                     }
                 });
                 return isDurationNull;
             };
 
-            var setNonCodedDrugConcept = function(treatment) {
+            var setNonCodedDrugConcept = function (treatment) {
                 if (treatment.drugNonCoded) {
                     treatment.concept = $scope.treatmentConfig.nonCodedDrugconcept;
                 }
             };
 
-            $scope.selectAllCheckbox = function(){
+            $scope.selectAllCheckbox = function () {
                 $scope.bulkSelectCheckbox = !$scope.bulkSelectCheckbox;
                 $scope.treatments.forEach(function (treatment) {
                     setNonCodedDrugConcept(treatment);
@@ -66,13 +66,12 @@ angular.module('bahmni.clinical')
                 });
             };
 
-
-            $scope.bulkChangeDuration = function() {
+            $scope.bulkChangeDuration = function () {
                 $scope.showBulkChangeToggle = !$scope.showBulkChangeToggle;
                 clearBulkDurationChange();
                 $scope.selectAllCheckbox();
-                if($scope.showBulkChangeToggle){
-                    if(isDurationNullForAnyTreatment($scope.treatments)) {
+                if ($scope.showBulkChangeToggle) {
+                    if (isDurationNullForAnyTreatment($scope.treatments)) {
                         messagingService.showMessage("info", "There are drugs that do no have a duration specified." +
                             "Updating duration will update for those drugs as well");
                     }
@@ -81,14 +80,12 @@ angular.module('bahmni.clinical')
 
             $scope.showBulkChangeDuration = $scope.treatmentConfig.showBulkChangeDuration();
 
-
-            $scope.updateDuration = function(stepperValue) {
-                if(!$scope.bulkDurationData.bulkDuration && isNaN($scope.bulkDurationData.bulkDuration)){
-                    $scope.bulkDurationData.bulkDuration = 0
+            $scope.updateDuration = function (stepperValue) {
+                if (!$scope.bulkDurationData.bulkDuration && isNaN($scope.bulkDurationData.bulkDuration)) {
+                    $scope.bulkDurationData.bulkDuration = 0;
                 }
                 $scope.bulkDurationData.bulkDuration += stepperValue;
             };
-
         };
         return {
             templateUrl: 'consultation/views/newDrugOrders.html',
@@ -98,5 +95,5 @@ angular.module('bahmni.clinical')
 
             },
             controller: controller
-        }
+        };
     }]);

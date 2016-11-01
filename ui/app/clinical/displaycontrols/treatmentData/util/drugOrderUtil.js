@@ -1,14 +1,14 @@
 'use strict';
 
 Bahmni.Clinical.DrugOrder.Util = {
-    mergeContinuousTreatments: function(continuousDrugOrders){
+    mergeContinuousTreatments: function (continuousDrugOrders) {
         var sortedDrugOrders = _.sortBy(continuousDrugOrders, 'effectiveStartDate');
         var drugOrders = [];
         sortedDrugOrders.forEach(function (drugOrder) {
             drugOrder.span = {};
 
-            var areValuesEqual = function(value1, value2){
-                if(typeof value1 === "boolean" && typeof value2 === "boolean"){
+            var areValuesEqual = function (value1, value2) {
+                if (typeof value1 === "boolean" && typeof value2 === "boolean") {
                     return value1 === value2;
                 }
                 return value1 === value2 || (_.isEmpty(value1) && _.isEmpty(value2));
@@ -21,10 +21,10 @@ Bahmni.Clinical.DrugOrder.Util = {
                     areValuesEqual(existingOrder.instructions, drugOrder.instructions) &&
                     areValuesEqual(existingOrder.getDoseInformation(), drugOrder.getDoseInformation()) &&
                     areValuesEqual(existingOrder.route, drugOrder.route) &&
-                    areValuesEqual(existingOrder.additionalInstructions,drugOrder.additionalInstructions) &&
+                    areValuesEqual(existingOrder.additionalInstructions, drugOrder.additionalInstructions) &&
                     areValuesEqual(existingOrder.asNeeded, drugOrder.asNeeded) &&
                     areValuesEqual(existingOrder.isDiscontinuedOrStopped(), drugOrder.isDiscontinuedOrStopped()) &&
-                    Bahmni.Common.Util.DateUtil.diffInDaysRegardlessOfTime(new Date(existingOrder.lastStopDate), new Date(drugOrder.scheduledDate)) <= 1
+                    Bahmni.Common.Util.DateUtil.diffInDaysRegardlessOfTime(new Date(existingOrder.lastStopDate), new Date(drugOrder.scheduledDate)) <= 1;
             });
 
             if (foundDrugOrder) {
@@ -58,7 +58,7 @@ Bahmni.Clinical.DrugOrder.Util = {
         return drugOrders.sort(function (drug1, drug2) {
             var timeDifference = DateUtil.diffInSeconds(drug1.effectiveStartDate, drug2.effectiveStartDate);
             if (DateUtil.isSameDate(drug1.effectiveStartDate, drug2.effectiveStartDate)) {
-                return (timeDifference === 0) ? (drug1.orderNumber - drug2.orderNumber) : timeDifference; //Ascending order
+                return (timeDifference === 0) ? (drug1.orderNumber - drug2.orderNumber) : timeDifference; // Ascending order
             } else {
                 return timeDifference * sortOrderFactor;
             }

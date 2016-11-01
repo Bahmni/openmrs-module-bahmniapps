@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('bahmni.home')
-    .controller('LoginController', ['$rootScope', '$scope', '$window', '$location', 'sessionService', 'initialData', 'spinner', '$q', '$stateParams','$bahmniCookieStore', 'localeService', '$translate', 'userService', 'offlineService',
+    .controller('LoginController', ['$rootScope', '$scope', '$window', '$location', 'sessionService', 'initialData', 'spinner', '$q', '$stateParams', '$bahmniCookieStore', 'localeService', '$translate', 'userService', 'offlineService',
         function ($rootScope, $scope, $window, $location, sessionService, initialData, spinner, $q, $stateParams, $bahmniCookieStore, localeService, $translate, userService, offlineService) {
             var redirectUrl = $location.search()['from'];
             var landingPagePath = "/dashboard";
@@ -13,18 +13,18 @@ angular.module('bahmni.home')
             var promise = localeService.allowedLocalesList();
             promise.then(function (response) {
                 $scope.locales = response.data.replace(/\s+/g, '').split(',');
-                $scope.selectedLocale = $translate.use()? $translate.use() : $scope.locales[0];
+                $scope.selectedLocale = $translate.use() ? $translate.use() : $scope.locales[0];
             });
 
-            $scope.$watch('selectedLocale', function(){
+            $scope.$watch('selectedLocale', function () {
                 $translate.use($scope.selectedLocale);
             });
 
-            var getLoginLocationUuid = function(){
+            var getLoginLocationUuid = function () {
                 return $bahmniCookieStore.get(Bahmni.Common.Constants.locationCookieName) ? $bahmniCookieStore.get(Bahmni.Common.Constants.locationCookieName).uuid : null;
             };
             var getLastLoggedinLocation = function () {
-                return _.find(initialData.locations,function(location){
+                return _.find(initialData.locations, function (location) {
                     return location.uuid === getLoginLocationUuid();
                 });
             };
@@ -69,7 +69,7 @@ angular.module('bahmni.home')
                         if (data && data.firstFactAuthorization) {
                             $scope.showOTP = true;
                             deferrable.resolve(data);
-                            return; 
+                            return;
                         }
                         sessionService.loadCredentials().then(
                             onSuccessfulAuthentication,
@@ -77,13 +77,13 @@ angular.module('bahmni.home')
                                 $scope.errorMessageTranslateKey = error;
                                 deferrable.reject(error);
                             }
-                        ).then(function() {
+                        ).then(function () {
                             $rootScope.currentUser.addDefaultLocale($scope.selectedLocale);
                             userService.savePreferences().then(
-                                function() {deferrable.resolve()},
-                                function(error) {deferrable.reject(error)}
+                                function () { deferrable.resolve(); },
+                                function (error) { deferrable.reject(error); }
                             );
-                        },function(error) {deferrable.reject(error)}
+                        }, function (error) { deferrable.reject(error); }
                         );
                     },
                     function (error) {
@@ -97,7 +97,7 @@ angular.module('bahmni.home')
                     }
                 );
 
-                var deleteUserCredentialsAndShowLoginPage = function() {
+                var deleteUserCredentialsAndShowLoginPage = function () {
                     $scope.showOTP = false;
                     delete $scope.loginInfo.otp;
                     delete $scope.loginInfo.username;
@@ -127,7 +127,6 @@ angular.module('bahmni.home')
                             $location.path(landingPagePath);
                         }
                     }
-                )
-            }
-
+                );
+            };
         }]);

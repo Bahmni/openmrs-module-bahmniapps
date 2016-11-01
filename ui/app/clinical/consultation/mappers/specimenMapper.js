@@ -1,11 +1,10 @@
 'use strict';
 
-Bahmni.Clinical.SpecimenMapper = function() {
-
-    this.mapObservationToSpecimen = function(observation, allSamples, conceptsConfig, dontSortByObsDateTime) {
+Bahmni.Clinical.SpecimenMapper = function () {
+    this.mapObservationToSpecimen = function (observation, allSamples, conceptsConfig, dontSortByObsDateTime) {
         var specimen = new Bahmni.Clinical.Specimen(observation, allSamples);
         specimen.specimenId = specimen.identifier;
-        specimen.specimenSource = specimen.type.shortName? specimen.type.shortName: specimen.type.name;
+        specimen.specimenSource = specimen.type.shortName ? specimen.type.shortName : specimen.type.name;
         specimen.specimenCollectionDate = specimen.dateCollected;
 
         if (specimen.report && specimen.report.results) {
@@ -20,9 +19,9 @@ Bahmni.Clinical.SpecimenMapper = function() {
         return specimen;
     };
 
-    this.mapSpecimenToObservation = function(specimen){
-        var observation= {};
-        observation.dateCollected =moment(specimen.dateCollected).format("YYYY-MM-DDTHH:mm:ss.SSSZ");
+    this.mapSpecimenToObservation = function (specimen) {
+        var observation = {};
+        observation.dateCollected = moment(specimen.dateCollected).format("YYYY-MM-DDTHH:mm:ss.SSSZ");
         observation.existingObs = specimen.existingObs;
         observation.identifier = specimen.identifier;
         observation.sample = {};
@@ -34,7 +33,7 @@ Bahmni.Clinical.SpecimenMapper = function() {
 
         var observationFilter = new Bahmni.Common.Domain.ObservationFilter();
         observation.sample.additionalAttributes = Array.isArray(specimen.sample.additionalAttributes) ? specimen.sample.additionalAttributes : [specimen.sample.additionalAttributes];
-        observation.sample.additionalAttributes=observationFilter.filter(specimen.sample.additionalAttributes)[0];
+        observation.sample.additionalAttributes = observationFilter.filter(specimen.sample.additionalAttributes)[0];
         observation.report.results = Array.isArray(specimen.report.results) ? specimen.report.results : [specimen.report.results];
         observation.report.results = observationFilter.filter(specimen.report.results)[0];
         return observation;

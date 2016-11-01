@@ -14,5 +14,5 @@ angular.module('bahmni.common.displaycontrol.custom')
                 params: "=",
                 visitSummary: '='
             }
-        }
+        };
     }]);

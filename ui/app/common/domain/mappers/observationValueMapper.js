@@ -27,8 +27,8 @@
     };
 
     Bahmni.Common.Domain.ObservationValueMapper = {
-        getNameFor : nameFor,
-        map : function (obs) {
+        getNameFor: nameFor,
+        map: function (obs) {
             var type = (obs.concept && obs.concept.dataType) || obs.type;
             if (!(type in nameFor)) {
                 type = (typeof obs.value === "object" && "Object") || (obs.isMultiSelect && "MultiSelect") || "Default";

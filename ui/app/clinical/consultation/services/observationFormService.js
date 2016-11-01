@@ -2,7 +2,6 @@
 
 angular.module('bahmni.common.conceptSet')
     .factory('observationFormService', ['$http', function ($http) {
-
         var getFormList = function (params) {
             return $http.get(Bahmni.Common.Constants.formUrl, { params: params });
         };

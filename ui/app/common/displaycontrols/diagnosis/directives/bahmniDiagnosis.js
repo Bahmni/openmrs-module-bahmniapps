@@ -8,10 +8,10 @@ angular.module('bahmni.common.displaycontrol.diagnosis')
                     return diagnosisService.getDiagnoses($scope.patientUuid, $scope.visitUuid).then(function (response) {
                         var diagnosisMapper = new Bahmni.DiagnosisMapper($rootScope.diagnosisStatus);
                         $scope.allDiagnoses = diagnosisMapper.mapDiagnoses(response.data);
-                            if ($scope.showRuledOutDiagnoses == false) {
-                                $scope.allDiagnoses = _.filter($scope.allDiagnoses, function (diagnoses) {
-                                    return diagnoses.diagnosisStatus !== $rootScope.diagnosisStatus;
-                                });
+                        if ($scope.showRuledOutDiagnoses == false) {
+                            $scope.allDiagnoses = _.filter($scope.allDiagnoses, function (diagnoses) {
+                                return diagnoses.diagnosisStatus !== $rootScope.diagnosisStatus;
+                            });
                         }
                     });
                 };
@@ -54,5 +54,5 @@ angular.module('bahmni.common.displaycontrol.diagnosis')
                     hideTitle: "=?",
                     showLatestDiagnosis: "@showLatestDiagnosis"
                 }
-            }
+            };
         }]);
