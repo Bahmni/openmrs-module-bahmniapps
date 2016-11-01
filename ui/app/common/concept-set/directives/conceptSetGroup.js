@@ -91,9 +91,11 @@ angular.module('bahmni.common.conceptSet')
             };
 
             $scope.isLastClonedSection = function (conceptSetTemplate, allTemplates) {
+                var index = allTemplates.indexOf(conceptSetTemplate);
                 if (allTemplates) {
-                    var index = allTemplates.indexOf(conceptSetTemplate);
-                    return (index > 0) && (index != allTemplates.length - 1) ? allTemplates[index].label != allTemplates[index + 1].label : false;
+                    if (index == allTemplates.length - 1 || allTemplates[index].label != allTemplates[index + 1].label) {
+                        return true;
+                    }
                 }
                 return false;
             };

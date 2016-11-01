@@ -318,6 +318,10 @@ body{
     font-size: 24px;
     line-height: 52px;
     padding: 0px 20px;
+    .left {
+      max-width: 150px;
+      overflow: hidden;
+    }
     .locale-wrapper{
       font-size: 14px;
       .locale-text{
