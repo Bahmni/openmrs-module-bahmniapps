@@ -2,8 +2,13 @@
 
 describe('visitHeaderController', function () {
     var scope, controller, rootScope,visitTabConfig;
-    var mockClinicalAppConfigService= jasmine.createSpyObj('clinicalAppConfigService', ['getConsultationBoardLink']);
-    var mockLocation= jasmine.createSpyObj('$location', ['path']);
+    var mockClinicalAppConfigService= jasmine.createSpyObj('clinicalAppConfigService', ['getConsultationBoardLink', 'getAllConsultationBoards']);
+    var mockLocation= jasmine.createSpyObj('$location', ['path', 'url']);
+    var mockUrlHelper = {
+        getPatientUrl: function () {
+            return "/patient/somePatientUuid/dashboard";
+        }
+    };
     var config = [
         {
             dashboardName: "visit",
@@ -39,6 +44,19 @@ describe('visitHeaderController', function () {
     beforeEach(function() {
         mockClinicalAppConfigService.getConsultationBoardLink.and.returnValue("/patient/patient_uuid/dashboard/consultation");
         visitTabConfig = new Bahmni.Clinical.TabConfig(config);
+        var boards = [{
+            url: "bacteriology",
+            extensionParams: {
+                "tabConfigName": "allMedicationTabConfig",
+                "priority": "high"
+            }
+        }, {
+            url: "observations",
+            extensionParams: {
+                "tabConfigName": "obsTabConfig"
+            }
+        }];
+        mockClinicalAppConfigService.getAllConsultationBoards.and.returnValue(boards);
     });
 
     function createController() {
@@ -52,7 +70,8 @@ describe('visitHeaderController', function () {
             visitConfig:visitTabConfig,
             $stateParams:{configName:"default"},
             contextChangeHandler:contextChangeHandler,
-            $location:mockLocation
+            $location:mockLocation,
+            urlHelper:mockUrlHelper
         });
     }
 
@@ -104,4 +123,16 @@ describe('visitHeaderController', function () {
         });
     });
 
+    describe('gotoConsultation', function () {
+        it("should goto consultation from Visit page", function () {
+            createController();
+            scope.collapseControlPanel = jasmine.createSpy('collapseControlPanel');
+
+            scope.openConsultation();
+
+            expect(rootScope.hasVisitedConsultation).toBeTruthy();
+            expect(scope.collapseControlPanel).toHaveBeenCalled();
+            expect(mockLocation.url).toHaveBeenCalledWith('/default/patient/somePatientUuid/dashboard/bacteriology?tabConfigName=allMedicationTabConfig&priority=high');
+        });
+    });
 });
