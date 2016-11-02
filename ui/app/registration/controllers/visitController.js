@@ -32,10 +32,9 @@ angular.module('bahmni.registration')
                     "includeAll": false,
                     locationUuid: locationUuid,
                     encounterTypeUuids: [regEncounterTypeUuid]
-                })
-                    .success(function (data) {
-                        $scope.observations = data.observations;
-                    });
+                }).success(function (data) {
+                    $scope.observations = data.observations;
+                });
             };
 
             $scope.hideFields = appService.getAppDescriptor().getConfigValue("hideFields");
@@ -57,7 +56,10 @@ angular.module('bahmni.registration')
                     encounterTypeUuid: regEncounterTypeUuid
                 };
 
-                $bahmniCookieStore.put(Bahmni.Common.Constants.grantProviderAccessDataCookieName, selectedProvider, {path: '/', expires: 1});
+                $bahmniCookieStore.put(Bahmni.Common.Constants.grantProviderAccessDataCookieName, selectedProvider, {
+                    path: '/',
+                    expires: 1
+                });
 
                 $scope.encounter.observations = $scope.observations;
                 $scope.encounter.observations = new Bahmni.Common.Domain.ObservationFilter().filter($scope.encounter.observations);
@@ -72,10 +74,9 @@ angular.module('bahmni.registration')
                 var userPrivs = _.map($rootScope.currentUser.privileges, function (privilege) {
                     return privilege.name;
                 });
-                var result = _.some(userPrivs, function (privName) {
+                return _.some(userPrivs, function (privName) {
                     return _.includes(applicablePrivs, privName);
                 });
-                return result;
             };
 
             var searchActiveVisitsPromise = function () {
@@ -110,7 +111,7 @@ angular.module('bahmni.registration')
             var closeVisit = function () {
                 var confirmed = $window.confirm($translate.instant("REGISTRATION_CONFIRM_CLOSE_VISIT"));
                 if (confirmed) {
-                    visitService.endVisit(self.visitUuid).then(function () {
+                    visitService.endVisit(vm.visitUuid).then(function () {
                         $location.url(Bahmni.Registration.Constants.patientSearchURL);
                     });
                 }
