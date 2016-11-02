@@ -42,7 +42,7 @@ angular.module('bahmni.common.uiHelper')
                      });
                      clearInterval(checkIfTableLoaded);
                  }
-             }, 100);
+             }, 100, 1);
          }
      };
  }]);
