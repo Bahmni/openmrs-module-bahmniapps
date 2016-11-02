@@ -456,7 +456,7 @@ angular.module('bahmni.clinical')
                 var anyValuesFilled = $scope.treatment.drug || $scope.treatment.uniformDosingType.dose ||
                     $scope.treatment.uniformDosingType.frequency || $scope.treatment.variableDosingType.morningDose ||
                     $scope.treatment.variableDosingType.afternoonDose || $scope.treatment.variableDosingType.eveningDose ||
-                    $scope.treatment.duration || $scope.treatment.quantity || $scope.treatment.isNonCodedDrug;
+                    $scope.treatment.duration || $scope.treatment.quantity || $scope.treatment.isNonCodedDrug || $scope.treatment.drugNameDisplay;
                 return (anyValuesFilled && $scope.addForm.$invalid);
             };
             $scope.unaddedDrugOrders = function () {
