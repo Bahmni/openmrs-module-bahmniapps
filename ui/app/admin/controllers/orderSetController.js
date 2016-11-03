@@ -33,8 +33,8 @@
     };
 
     angular.module('bahmni.common.domain')
-        .controller('OrderSetController', ['$scope', '$state', 'spinner', '$http', '$q', 'adminOrderSetService', 'messagingService', 'orderTypeService',
-            function ($scope, $state, spinner, $http, $q, adminOrderSetService, messagingService, orderTypeService) {
+        .controller('OrderSetController', ['$scope', '$state', 'spinner', '$http', '$q', 'adminOrderSetService', 'messagingService', 'orderTypeService', '$window',
+            function ($scope, $state, spinner, $http, $q, adminOrderSetService, messagingService, orderTypeService, $window) {
                 $scope.operators = ['ALL', 'ANY', 'ONE'];
                 $scope.conceptNameInvalid = false;
 
@@ -136,6 +136,10 @@
                 };
 
                 var validationSuccess = function () {
+                    if(!validateForm()){
+                        return false;
+                    }
+
                     if (!$scope.orderSet.orderSetMembers || !isOrderSetHavingMinimumOrders()) {
                         messagingService.showMessage('error', 'An orderSet should have a minimum of two orderSetMembers');
                         return false;
@@ -148,6 +152,17 @@
                     return {
                         orderType: {uuid: $scope.orderTypes[0].uuid}
                     };
+                };
+
+                var validateForm = function() {
+                    var requiredFields = angular.element($("[required]"));
+                    for (var i = 0; i < requiredFields.length; i++) {
+                        if (!requiredFields[i].value) {
+                            messagingService.showMessage('error', 'Please fill all mandatory fields');
+                            return false;
+                        }
+                    }
+                    return true;
                 };
 
                 var init = function () {
