@@ -64,7 +64,7 @@ specUtil.createFakePromise = function (data) {
         callback();
     };
     FakePromise.prototype.catch=function(errorCallBack){
-        errorCallBack(this.data);
+        errorCallBack(data);
     };
     return new FakePromise(data);
 };
