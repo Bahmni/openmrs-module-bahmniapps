@@ -67,4 +67,4 @@ rules:
   angular/json-functions: warn
   angular/no-service-method: warn
   angular/definedundefined: warn
-  eqeqeq: warn
+  eqeqeq: [warn, smart]
