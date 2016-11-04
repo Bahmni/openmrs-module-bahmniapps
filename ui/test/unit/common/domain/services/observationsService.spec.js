@@ -42,10 +42,10 @@ describe("observationsService", function () {
             mockBackend.expectGET('/openmrs/ws/rest/v1/bahmnicore/observations/flowSheet?' +
             'conceptNames=conceptNames&conceptSet=conceptSet&enrollment=patientProgramUuid' +
             '&groupByConcept=groupByConcept&initialCount=initialCount&latestCount=latestCount' +
-            '&name=groovyExtension&numberOfVisits=numberOfVisits&patientUuid=patientUuid')
+            '&name=groovyExtension&numberOfVisits=numberOfVisits&orderByConcept=orderByConcept&patientUuid=patientUuid')
                 .respond({results: ["Some data"]});
 
-            observationsService.getObsInFlowSheet("patientUuid", "conceptSet", "groupByConcept", "conceptNames",
+            observationsService.getObsInFlowSheet("patientUuid", "conceptSet", "groupByConcept", "orderByConcept", "conceptNames",
                 "numberOfVisits", "initialCount", "latestCount", "groovyExtension",
                 null, null, "patientProgramUuid");
 
