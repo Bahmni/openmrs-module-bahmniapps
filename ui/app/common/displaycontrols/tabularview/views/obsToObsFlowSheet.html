@@ -30,7 +30,16 @@
                         <td ng-if="isMonthAvailable()">{{row.columns['Month'][0].valueAsString}}</td>
                         <td ng-repeat="header in obsTable.headers" ng-if="header.name != 'Month'"
                             ng-class="{'is-abnormal-bold': row.columns[header.name][0].abnormal , 'obsTableEdit' : header.name === config.groupByConcept && isEditable }">
+                            <span ng-if="row.columns[header.name][0].concept.conceptClass == 'Image'">
+                                <span class="has-link fl"
+                                      ng-dialog="dashboard/views/dashboardSections/imageDisplay.html"
+                                      ng-dialog-class="ngdialog-theme-default ng-dialog-all-details-page ng-dialog-edit"
+                                      ng-dialog-data="{{ row.columns }}">
+                                     <img src="{{ row.columns[header.name][0].value|thumbnail }}">
+                                </span>
+                            </span>
                             <span class="fl"
+                                  ng-if="row.columns[header.name][0].concept.conceptClass != 'Image'"
                                   ng-class="{ 'obsTableData' : header.name === config.groupByConcept && isEditable }">{{commafy(row.columns[header.name])}}</span>
                             <span class="fl" ng-if="header.name === config.groupByConcept && isEditable" >
                                 <span class="has-link fl"
@@ -40,7 +49,7 @@
                                      <i class="fl fa fa-pencil"></i>
                                 </span>
                             </span>
-                            </td>
+                        </td>
                     </tr>
                 </table>
 
