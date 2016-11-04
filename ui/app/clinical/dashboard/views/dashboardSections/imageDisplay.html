@@ -1,0 +1,24 @@
+<div class="template-container">
+    <section class="block dashboard-section">
+        <section class="block" style="overflow: scroll">
+            <h2 class="ng-binding ng-scope section-title">Image</h2>
+            <div class="concept-set-container-view">
+                <section class="block hierarchy">
+                    <ul class="form-field">
+                        <li ng-repeat="(key, value) in ngDialogData">
+                            <span class="tree-list-item row-click toggle-container concept-set-container-view" ng-if="value[0].concept.conceptClass != 'Image'">
+                                {{key}} :  {{value[0].value | bahmniDate}}
+                            </span>
+                        </li>
+                        <li ng-repeat="(key, value) in ngDialogData" style="overflow:scroll;">
+                            <span class="tree-list-item row-click toggle-container concept-set-container-view" ng-if="value[0].concept.conceptClass == 'Image'">
+                                <img ng-src="/document_images/{{value[0].value}}"/>
+                            </span>
+                        </li>
+                    </ul>
+                </section>
+            </div>
+
+        </section>
+    </section>
+</div>
