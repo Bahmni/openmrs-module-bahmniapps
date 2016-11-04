@@ -33,7 +33,7 @@
     Bahmni.ConceptSet.ObservationNode = function (observation, savedObs, conceptUIConfig, concept) {
         angular.extend(this, observation);
 
-        this.conceptUIConfig = conceptUIConfig[concept.name.name] || (concept.setMembers && conceptUIConfig[concept.setMembers[0].name.name]) || {};
+        this.conceptUIConfig = conceptUIConfig[concept.name.name] || (!_.isEmpty(concept.setMembers) && conceptUIConfig[concept.setMembers[0].name.name]) || {};
 
         this.cloneNew = function () {
             var oldObs = angular.copy(observation);

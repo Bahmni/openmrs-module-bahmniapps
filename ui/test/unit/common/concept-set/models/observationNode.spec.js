@@ -73,6 +73,27 @@ describe("ObservationNode", function () {
             }});
             expect(obsNode.getControlType()).toBe("autocomplete");
         });
+
+        it("should return html5data type if primaryObs datatype is Date,Numeric or Datetime",function(){
+            var obsNode = mapper.map(savedObs, rootConcept);
+            obsNode.primaryObs.concept.dataType = "Date";
+
+            expect(obsNode.getControlType()).toBe("html5InputDataType");
+        });
+        
+        it("should return text datatype if primaryObs is of text datatype", function(){
+            var obsNode = mapper.map(savedObs, rootConcept);
+            obsNode.primaryObs.concept.dataType = "Text";
+
+            expect(obsNode.getControlType()).toBe("text");
+        });
+
+        it("should return buttonselect if nothing is configured",function(){
+            var obsNode = mapper.map(savedObs, rootConcept);
+            obsNode.primaryObs.concept.dataType = "N/A";
+
+            expect(obsNode.getControlType()).toBe("buttonselect");
+        })
     });
 
     describe("PrimaryObs", function () {
@@ -152,7 +173,7 @@ describe("ObservationNode", function () {
             expect(obsNode.abnormalObs.value).toBeTruthy();
             expect(obsNode.abnormalObs.erroneousValue).toBeFalsy();
             expect(obsNode.unknownObs.value).toBeUndefined()
-            });
+        });
     });
 
     describe("Numeric allowDecimal", function () {
@@ -226,6 +247,130 @@ describe("ObservationNode", function () {
 
 
     });
+
+    describe("observationNode", function () {
+
+        it("should clone the  new observation", function () {
+            var observation = mapper.map(savedObs, rootConcept, {"Chief Complaint Data": {autocomplete: true}});
+
+            var clonedObservation = observation.cloneNew();
+
+            expect(clonedObservation.concept.uuid).toBe(observation.concept.uuid);
+            expect(clonedObservation.concept.name).toBe(observation.concept.name);
+        });
+        it("should set free text value", function () {
+            var observation = mapper.map(savedObs, rootConcept, {"Chief Complaint Data": {autocomplete: true}});
+            observation.value = "free text";
+
+            expect(observation.value).toBe("free text");
+        });
+        it("should set the duration, abnormal and unknown obs",function(){
+            var observation = mapper.map(savedObs, rootConcept, {"Chief Complaint Data": {autocomplete: true}});
+
+            expect(observation.durationObs.value).toBe(30);
+            expect(observation.abnormalObs.value).toBe(true);
+            expect(observation.unknownObs.value).toBe(false);
+        });
+
+        it("should get the display value for coded concept",function(){
+            var observation = mapper.map(savedObs, rootConcept, {"Chief Complaint Data": {autocomplete: true}});
+
+            expect(observation.displayValue().name).toBe("Headache");
+        });
+
+        it("should update the observation with its first group member, if observation is not freetext autocomplete",function(){
+            var observation = mapper.map(savedObs, rootConcept);
+
+            expect(observation.primaryObs.concept.name).toBe("Chief Complaint");
+        });
+    });
+
+    describe("validate ObservationNode",function () {
+
+        it("should validate the required observations",function(){
+            savedObs[0].groupMembers[0].value = undefined;
+            var observation = mapper.map(savedObs, rootConcept, {"Chief Complaint Data": {autocomplete: true,required:true}});
+
+            expect(observation.isValid(true,true)).toBeFalsy();
+
+            savedObs[0].groupMembers[0].value = headache;
+            expect(observation.isValid(true,true)).toBeTruthy();
+        });
+
+        it("should validate the free text auto complete",function () {
+            var observation = mapper.map(savedObs, rootConcept, {"Chief Complaint Data": {autocomplete: true}});
+
+            expect(observation.isValid(true,true)).toBeTruthy();
+        });
+
+        it("should validate the observation date field",function () {
+            savedObs[0].groupMembers[0].concept.conceptClass.name = "Not computed";
+
+            var observation = mapper.map(savedObs, rootConcept, {"Chief Complaint Data": {autocomplete: true}});
+            observation.primaryObs.concept.dataType = "Date";
+            observation.primaryObs.value = Bahmni.Common.Util.DateUtil.addDays(Bahmni.Common.Util.DateUtil.today(),2);
+
+            expect(observation.isValid(false,true)).toBeFalsy();
+        });
+
+        it("should not throw exception if date field of type class computed",function(){
+            var observation = mapper.map(savedObs, rootConcept, {"Chief Complaint Data": {autocomplete: true}});
+            observation.primaryObs.concept.dataType = "Date";
+
+            expect(observation.isValid(false,true)).toBeTruthy();
+        });
+
+        it("Should validate durationObs",function () {
+            savedObs[0].groupMembers[1].value = -30;
+            var observation = mapper.map(savedObs, rootConcept, {"Chief Complaint Data": {durationRequired:true}});
+
+            expect(observation.isValid(false,true)).toBeFalsy();
+        });
+
+    });
+
+    describe("Observation node config",function () {
+        it("should text the comment config",function(){
+            var observation = mapper.map(savedObs, rootConcept);
+
+            expect(observation.canHaveComment()).toBeTruthy();
+
+            observation = mapper.map(savedObs, rootConcept,{"Chief Complaint Data":{disableAddNotes:true}});
+            expect(observation.canHaveComment()).toBeFalsy();
+
+        });
+
+        it("should test allow addmore configuration",function(){
+            var observation = mapper.map(savedObs, rootConcept,{"Chief Complaint Data":{allowAddMore:true}});
+
+            expect(observation.canAddMore()).toBeTruthy();
+
+            observation = mapper.map(savedObs, rootConcept);
+            expect(observation.canAddMore()).toBeFalsy();
+        });
+
+        it("should test stepper config for numeric observation",function(){
+            var observation = mapper.map(savedObs, rootConcept,{"Chief Complaint Data":{stepper:true}});
+            observation.primaryObs.concept.dataType = "Numeric";
+
+            expect(observation.isStepperControl()).toBeTruthy();
+            observation = mapper.map(savedObs, rootConcept);
+            expect(observation.isStepperControl()).toBeFalsy();
+
+        });
+        it("should test conciseText config",function(){
+            var observation = mapper.map(savedObs, rootConcept,{"Chief Complaint Data":{conciseText:true}});
+
+            expect(observation.isConciseText()).toBeTruthy();
+            observation = mapper.map(savedObs, rootConcept);
+
+            expect(observation.isConciseText()).toBeFalsy();
+
+        })
+
+    });
+
+
 
     function buildConcept(name, setMembers, answers, classname, datatype) {
         return {
