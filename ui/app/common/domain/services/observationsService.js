@@ -56,13 +56,14 @@ angular.module('bahmni.common.domain')
             });
         };
 
-        this.getObsInFlowSheet = function (patientUuid, conceptSet, groupByConcept, conceptNames,
+        this.getObsInFlowSheet = function (patientUuid, conceptSet, groupByConcept, orderByConcept, conceptNames,
                                            numberOfVisits, initialCount, latestCount, groovyExtension,
                                            startDate, endDate, patientProgramUuid) {
             var params = {
                 patientUuid: patientUuid,
                 conceptSet: conceptSet,
                 groupByConcept: groupByConcept,
+                orderByConcept: orderByConcept,
                 conceptNames: conceptNames,
                 numberOfVisits: numberOfVisits,
                 initialCount: initialCount,
