@@ -25,7 +25,7 @@ angular.module('bahmni.common.displaycontrol.obsVsObsFlowSheet').directive('obsT
 
             var getObsInFlowSheet = function () {
                 return observationsService.getObsInFlowSheet(patient.uuid, $scope.config.templateName,
-                    $scope.config.groupByConcept, $scope.config.conceptNames, $scope.config.numberOfVisits,
+                    $scope.config.groupByConcept, $scope.config.orderByConcept, $scope.config.conceptNames, $scope.config.numberOfVisits,
                     $scope.config.initialCount, $scope.config.latestCount, $scope.config.type, $scope.section.startDate,
                     $scope.section.endDate, $scope.enrollment).success(function (data) {
                         var obsInFlowSheet = data;
