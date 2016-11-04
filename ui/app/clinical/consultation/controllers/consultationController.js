@@ -34,7 +34,7 @@ angular.module('bahmni.clinical').controller('ConsultationController',
 
             $scope.showDashboard = function (dashboard) {
                 if (!clinicalDashboardConfig.isCurrentTab(dashboard)) {
-                    $scope.$parent.$parent.$broadcast("event:switchDashboard", dashboard);
+                    $scope.$parent.$broadcast("event:switchDashboard", dashboard);
                 }
                 $scope.showDashboardMenu = false;
             };
@@ -111,12 +111,12 @@ angular.module('bahmni.clinical').controller('ConsultationController',
                 }
             };
 
-            $scope.isLongerName = function (value) {
+            var isLongerName = function (value) {
                 return value ? value.length > 18 : false;
             };
 
             $scope.getShorterName = function (value) {
-                return $scope.isLongerName(value) ? value.substring(0, 15) + "..." : value;
+                return isLongerName(value) ? value.substring(0, 15) + "..." : value;
             };
 
             $scope.isInEditEncounterMode = function () {
@@ -290,13 +290,13 @@ angular.module('bahmni.clinical').controller('ConsultationController',
                     return;
                 }
                 if (!isFormValid()) {
-                    $scope.$parent.$parent.$broadcast("event:errorsOnForm");
+                    $scope.$parent.$broadcast("event:errorsOnForm");
                     return;
                 }
 
                 contextChangeHandler.reset();
-                _.map($scope.availableBoards, function (board) {
-                    board.isSelectedTab = false;
+                _.map($scope.availableBoards, function (availableBoard) {
+                    availableBoard.isSelectedTab = false;
                 });
 
                 $scope.currentBoard = board;
