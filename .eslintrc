@@ -42,7 +42,6 @@ rules:
 
   # The following are set to 'warn' level until they can be fixed
   # They're sorted in ascending order of the number of issues
-  no-throw-literal: warn
   angular/typecheck-array: warn
   handle-callback-err: warn
   angular/no-private-call: warn
