@@ -32,8 +32,10 @@ Bahmni.Clinical.SpecimenMapper = function () {
         observation.uuid = specimen.uuid;
 
         var observationFilter = new Bahmni.Common.Domain.ObservationFilter();
+        // eslint-disable-next-line angular/typecheck-array
         observation.sample.additionalAttributes = Array.isArray(specimen.sample.additionalAttributes) ? specimen.sample.additionalAttributes : [specimen.sample.additionalAttributes];
         observation.sample.additionalAttributes = observationFilter.filter(specimen.sample.additionalAttributes)[0];
+        // eslint-disable-next-line angular/typecheck-array
         observation.report.results = Array.isArray(specimen.report.results) ? specimen.report.results : [specimen.report.results];
         observation.report.results = observationFilter.filter(specimen.report.results)[0];
         return observation;
