@@ -1,7 +1,8 @@
 'use strict';
 
 angular.module('bahmni.clinical')
-    .service('labOrderResultService', ['offlineLabOrderResultsService', '$q', 'configurationService', function (labOrderResultsService, $q, configurationService) {
+    .service('labOrderResultService', ['offlineLabOrderResultsService', '$q', 'configurationService', function (offlineLabOrderResultsService, $q, configurationService) {
+        var labOrderResultsService = offlineLabOrderResultsService;
         var allTestsAndPanelsConcept = {};
         configurationService.getConfigurations(['allTestsAndPanelsConcept']).then(function (configurations) {
             allTestsAndPanelsConcept = configurations.allTestsAndPanelsConcept.results[0];
@@ -84,7 +85,6 @@ angular.module('bahmni.clinical')
         };
         var getAllForPatient = function (params) {
             var deferred = $q.defer();
-            var paramsToBeSent = {};
             if (!params.patientUuid) {
                 deferred.reject('patient uuid is mandatory');
             }
