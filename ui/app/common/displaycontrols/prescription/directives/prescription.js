@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('bahmni.common.displaycontrol.prescription')
-    .directive('prescription', ['TreatmentService', 'treatmentConfig', '$q',
+    .directive('prescription', ['treatmentService', 'treatmentConfig', '$q',
         function (treatmentService, treatmentConfig, $q) {
             var controller = function ($scope) {
                 $q.all([treatmentConfig(), treatmentService.getPrescribedAndActiveDrugOrders($scope.patient.uuid, 1, false, [$scope.visitUuid], "", "", "")]).then(function (results) {

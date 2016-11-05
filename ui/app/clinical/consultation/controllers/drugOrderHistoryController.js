@@ -2,7 +2,7 @@
 
 angular.module('bahmni.clinical')
     .controller('DrugOrderHistoryController', ['$scope', '$filter', '$stateParams', 'activeDrugOrders',
-        'treatmentConfig', 'TreatmentService', 'spinner', 'drugOrderHistoryHelper', 'visitHistory', '$translate', '$rootScope',
+        'treatmentConfig', 'treatmentService', 'spinner', 'drugOrderHistoryHelper', 'visitHistory', '$translate', '$rootScope',
         function ($scope, $filter, $stateParams, activeDrugOrders, treatmentConfig, treatmentService, spinner,
                    drugOrderHistoryHelper, visitHistory, $translate, $rootScope) {
             var DrugOrderViewModel = Bahmni.Clinical.DrugOrderViewModel;
