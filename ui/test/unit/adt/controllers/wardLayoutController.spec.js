@@ -3,7 +3,7 @@
 describe('WardLayoutController', function () {
 
     var bedService = jasmine.createSpyObj('bedService', ['assignBed', 'setBedDetailsForPatientOnRootScope']);
-    var wardService = jasmine.createSpyObj('WardService', ['bedsForWard']);
+    var wardService = jasmine.createSpyObj('wardService', ['bedsForWard']);
     var appService = jasmine.createSpyObj('appService', ['getAppDescriptor']);
     var messagingService = jasmine.createSpyObj('messagingService', ['showMessage']);
     var controller;
@@ -37,7 +37,7 @@ describe('WardLayoutController', function () {
     function createController() {
         return controller('WardLayoutController', {
             $scope: scope,
-            WardService: wardService,
+            wardService: wardService,
             bedManagementService: {},
             bedService: bedService,
             messagingService: messagingService,

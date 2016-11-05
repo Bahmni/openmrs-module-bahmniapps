@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('bahmni.adt')
-    .controller('WardController', ['$scope', '$rootScope', '$window', 'spinner', 'WardService', 'bedManagementService', 'userService',
+    .controller('WardController', ['$scope', '$rootScope', '$window', 'spinner', 'wardService', 'bedManagementService', 'userService',
         function ($scope, $rootScope, $window, spinner, wardService, bedManagementService, userService) {
             var init = function () {
                 if ($scope.readOnly) {
