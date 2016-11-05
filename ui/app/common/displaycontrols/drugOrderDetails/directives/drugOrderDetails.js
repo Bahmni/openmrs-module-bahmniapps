@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('bahmni.common.displaycontrol.drugOrderDetails')
-    .directive('drugOrderDetails', ['TreatmentService', 'spinner', 'treatmentConfig', '$q', function (treatmentService, spinner, treatmentConfig, $q) {
+    .directive('drugOrderDetails', ['treatmentService', 'spinner', 'treatmentConfig', '$q', function (treatmentService, spinner, treatmentConfig, $q) {
         var controller = function ($scope) {
             var init = function () {
                 return $q.all([treatmentService.getAllDrugOrdersFor($scope.patient.uuid, $scope.section.dashboardConfig.drugConceptSet, undefined, undefined, $scope.enrollment),
