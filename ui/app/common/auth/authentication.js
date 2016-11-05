@@ -261,7 +261,7 @@ angular.module('authentication')
             }
         };
     }])
-    .directive('btnUserInfo', ['$rootScope', '$window', function () {
+    .directive('btnUserInfo', [function () {
         return {
             restrict: 'CA',
             link: function (scope, elem) {
