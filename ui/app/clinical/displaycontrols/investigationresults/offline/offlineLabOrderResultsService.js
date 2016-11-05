@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('bahmni.clinical')
-    .service('LabOrderResultService', ['offlineLabOrderResultsService', '$q', 'configurationService', function (labOrderResultsService, $q, configurationService) {
+    .service('labOrderResultService', ['offlineLabOrderResultsService', '$q', 'configurationService', function (labOrderResultsService, $q, configurationService) {
         var allTestsAndPanelsConcept = {};
         configurationService.getConfigurations(['allTestsAndPanelsConcept']).then(function (configurations) {
             allTestsAndPanelsConcept = configurations.allTestsAndPanelsConcept.results[0];
