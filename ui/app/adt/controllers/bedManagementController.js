@@ -2,7 +2,7 @@
 
 angular.module('bahmni.adt')
     .controller('BedManagementController', [
-        '$scope', '$rootScope', '$stateParams', 'spinner', 'WardService', 'backlinkService',
+        '$scope', '$rootScope', '$stateParams', 'spinner', 'wardService', 'backlinkService',
         function ($scope, $rootScope, $stateParams, spinner, wardService, backlinkService) {
             $scope.wards = null;
             $scope.encounterUuid = $stateParams.encounterUuid;

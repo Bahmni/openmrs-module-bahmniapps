@@ -21,7 +21,7 @@ describe("BedManagementController", function () {
             $scope: scope,
             $rootScope: rootScope,
             $stateParams: {encounterUuid: "encounter uuid"},
-            WardService: wardService,
+            wardService: wardService,
             backlinkService: backlinkService
         });
     }
