@@ -2,7 +2,8 @@
 
 angular.module('bahmni.common.domain')
     .factory('orderService', ['$q', 'offlineEncounterServiceStrategy',
-        function ($q, offlineEncounterService) {
+        function ($q, offlineEncounterServiceStrategy) {
+            var offlineEncounterService = offlineEncounterServiceStrategy;
             var getOrders = function (data) {
                 var orders = [];
                 var deferred = $q.defer();
