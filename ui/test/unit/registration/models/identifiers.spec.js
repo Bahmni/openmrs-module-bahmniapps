@@ -3,7 +3,7 @@ describe("Identifiers", function () {
     var identifiersFactory, preferencesMock, rootScope;
     beforeEach(module('bahmni.registration'));
     beforeEach(module('bahmni.common.models'));
-    beforeEach(inject(['identifiers', 'Preferences', '$rootScope', function (identifiers, preferences, $rootScope) {
+    beforeEach(inject(['identifiers', 'preferences', '$rootScope', function (identifiers, preferences, $rootScope) {
         identifiersFactory = identifiers;
         preferencesMock = preferences;
         rootScope = $rootScope;
