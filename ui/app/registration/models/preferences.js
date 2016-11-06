@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('bahmni.registration')
-    .factory('Preferences', [function () {
+    .factory('preferences', [function () {
         return {
             hasOldIdentifier: false
         };
