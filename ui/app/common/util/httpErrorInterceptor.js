@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('httpErrorInterceptor', [])
-    .config(function ($httpProvider) {
+    .config(['$httpProvider', function ($httpProvider) {
         var interceptor = ['$rootScope', '$q', function ($rootScope, $q) {
             var serverErrorMessages = Bahmni.Common.Constants.serverErrorMessages;
 
@@ -72,4 +72,4 @@ angular.module('httpErrorInterceptor', [])
             };
         }];
         $httpProvider.interceptors.push(interceptor);
-    });
+    }]);

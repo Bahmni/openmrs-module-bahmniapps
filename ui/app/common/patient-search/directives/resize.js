@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('bahmni.common.patientSearch')
-.directive('resize', function ($window) {
+.directive('resize', ['$window', function ($window) {
     var controller = function ($scope) {
         $scope.storeWindowDimensions = function () {
             var windowWidth = window.innerWidth;
@@ -52,4 +52,4 @@ angular.module('bahmni.common.patientSearch')
         template: '<div ng-transclude infinite-scroll="loadMore()">' +
                   '</div>'
     };
-});
+}]);

@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('bahmni.clinical')
-.controller('InvestigationsSelectorController', function ($scope, spinner, configurations) {
+.controller('InvestigationsSelectorController', ['$scope', 'spinner', 'configurations', function ($scope, spinner, configurations) {
     var Selectable = Bahmni.Clinical.Selectable;
     var Category = Bahmni.Clinical.Category;
     $scope.selectablePanels = [];
@@ -144,7 +144,7 @@ angular.module('bahmni.clinical')
     $scope.selctedSelectables = function () {
         return $scope.allSelectables().filter(function (selectable) { return selectable.isSelectedFromSelf(); });
     };
-})
+}])
 .directive('investigationsSelector', function () {
     return {
         restrict: 'EA',
