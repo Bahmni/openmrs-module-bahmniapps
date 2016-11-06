@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('bahmni.common.uiHelper')
-    .directive('monthyearpicker', function ($translate) {
+    .directive('monthyearpicker', ['$translate', function ($translate) {
         var link = function ($scope) {
             var monthNames = $translate.instant('MONTHS');
             $scope.monthNames = monthNames.split(",");
@@ -72,4 +72,4 @@ angular.module('bahmni.common.uiHelper')
             '<span><select ng-model=\'selectedYear\'   ng-class=\"{\'illegalValue\': illegalYear() || illegalValue}\" ng-change="updateModel()" ng-options="year as year for year in years"><option value="">{{\'CHOOSE_YEAR_KEY\' | translate}}</option>>' +
             '</select></span>'
         };
-    });
+    }]);

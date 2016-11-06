@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('bahmni.common.patientSearch')
-    .directive('scheduler', function ($interval) {
+    .directive('scheduler', ['$interval', function ($interval) {
         var link = function ($scope) {
             var promise;
 
@@ -44,4 +44,4 @@ angular.module('bahmni.common.patientSearch')
                 triggerFunction: "&"
             }
         };
-    });
+    }]);

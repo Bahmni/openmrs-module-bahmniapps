@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('authentication')
-    .config(function ($httpProvider) {
+    .config(['$httpProvider', function ($httpProvider) {
         var interceptor = ['$rootScope', '$q', function ($rootScope, $q) {
             function success (response) {
                 return response;
@@ -20,7 +20,7 @@ angular.module('authentication')
             };
         }];
         $httpProvider.interceptors.push(interceptor);
-    }).run(['$rootScope', '$window', '$timeout', function ($rootScope, $window, $timeout) {
+    }]).run(['$rootScope', '$window', '$timeout', function ($rootScope, $window, $timeout) {
         $rootScope.$on('event:auth-loginRequired', function () {
             $timeout(function () {
                 $window.location = "../home/index.html#/login";

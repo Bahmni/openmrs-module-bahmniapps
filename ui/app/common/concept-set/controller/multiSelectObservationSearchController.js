@@ -75,8 +75,9 @@ angular.module('bahmni.common.conceptSet').controller('multiSelectObservationSea
     };
 
     init();
-}]).config(function (tagsInputConfigProvider) {
+}]).config(['tagsInputConfigProvider', function (tagsInputConfigProvider) {
     tagsInputConfigProvider.setDefaults('tagsInput', {
         placeholder: ''
-    }); });
+    });
+}]);
 
