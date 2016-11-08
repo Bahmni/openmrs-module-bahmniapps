@@ -615,21 +615,17 @@ input[type="submit"].secondary-button:hover  {
   }
 }
 
-.toggle-btn{
-  button.toggle{
-    .fa-angle-up{
-      display: none;
-    }
+button.toggle{
+  .fa-angle-up{
+    display: none;
   }
   &.active{
-    button.toggle{
-      background: none !important;
-      .fa-angle-up{
-        display: block;
-      }
-      .fa-angle-down{
-        display: none;
-      }
+    background: none !important;
+    .fa-angle-up{
+      display: block;
+    }
+    .fa-angle-down{
+      display: none;
     }
   }
 }
