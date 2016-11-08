@@ -6,6 +6,7 @@ describe('focusOnInputErrors', function () {
         rootScope,
         scope,
         element,
+        timeout,
         simpleHtml = '<concept-set-group patient="patient" consultation="consultation" observations="consultation.observations" focus-on-input-errors>' +
                         '<input value="" >' +
                         '<input value="1" class="illegalValue">' +
@@ -15,9 +16,10 @@ describe('focusOnInputErrors', function () {
     beforeEach(module('bahmni.common.uiHelper'), function () {
     });
 
-    beforeEach(inject(function ($compile, $rootScope) {
+    beforeEach(inject(function ($compile, $rootScope, $timeout) {
         compile = $compile;
         rootScope = $rootScope;
+        timeout = $timeout;
         scope = rootScope.$new();
         element = compile(simpleHtml)(scope);
         scope.$digest();
@@ -27,6 +29,7 @@ describe('focusOnInputErrors', function () {
     it('should focus only on the first errored element', function () {
         spyOn($.fn, 'focus');
         scope.$parent.$broadcast("event:errorsOnForm");
+        timeout.flush();
         expect($.fn.focus).toHaveBeenCalled();
     });
 });
