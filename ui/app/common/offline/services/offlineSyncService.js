@@ -3,14 +3,27 @@
 angular.module('bahmni.common.offline')
     .service('offlineSyncService', ['eventLogService', 'offlineDbService', '$q', 'offlineService', 'androidDbService', '$rootScope', 'loggingService',
         function (eventLogService, offlineDbService, $q, offlineService, androidDbService, $rootScope, loggingService) {
-            var stages;
+            var stages, categories;
+
+            var initializeInitSyncInfo = function initializeCounters (categories) {
+                $rootScope.initSyncInfo = {};
+                $rootScope.showSyncInfo = true;
+                _.map(categories, function (category) {
+                    $rootScope.initSyncInfo[category] = {};
+                    $rootScope.initSyncInfo[category].pendingEventsCount = 0;
+                    $rootScope.initSyncInfo[category].savedEventsCount = 0;
+                });
+                $rootScope.initSyncInfo.savedEvents = 0;
+            };
+
             var sync = function () {
                 stages = 0;
                 if (offlineService.isAndroidApp()) {
                     offlineDbService = androidDbService;
                 }
                 var promises = [];
-                var categories = offlineService.getItem("eventLogCategories");
+                categories = offlineService.getItem("eventLogCategories");
+                initializeInitSyncInfo(categories);
                 _.map(categories, function (category) {
                     promises.push(syncForCategory(category));
                 });
@@ -23,13 +36,22 @@ angular.module('bahmni.common.offline')
                 });
             };
 
+            var updatePendingEventsCount = function updatePendingEventsCount (category, pendingEventsCount) {
+                $rootScope.initSyncInfo[category].pendingEventsCount = pendingEventsCount;
+                $rootScope.initSyncInfo.totalEvents = categories.reduce(function (count, category) {
+                    return count + $rootScope.initSyncInfo[category].savedEventsCount + $rootScope.initSyncInfo[category].pendingEventsCount;
+                }, 0);
+            };
+
             var syncForMarker = function (category, marker) {
                 return eventLogService.getEventsFor(category, marker).then(function (response) {
-                    if (response.data == undefined || response.data.length == 0) {
+                    var events = response.data ? response.data["events"] : undefined;
+                    updatePendingEventsCount(category, response.data.pendingEventsCount);
+                    if (events == undefined || events.length == 0) {
                         endSync(stages++);
                         return;
                     }
-                    return readEvent(response.data, 0, category);
+                    return readEvent(events, 0, category);
                 }, function () {
                     endSync(-1);
                     var deferrable = $q.defer();
@@ -54,6 +76,7 @@ angular.module('bahmni.common.offline')
                         .then(function (response) {
                             return saveData(event, response)
                                 .then(function () {
+                                    updateSavedEventsCount(category);
                                     return updateMarker(event, category);
                                 })
                                 .then(
@@ -163,9 +186,13 @@ angular.module('bahmni.common.offline')
                 });
             };
 
-            var endSync = function (status) {
-                var categories = offlineService.getItem("eventLogCategories");
+            var updateSavedEventsCount = function (category) {
+                $rootScope.initSyncInfo[category].savedEventsCount++;
+                $rootScope.initSyncInfo[category].pendingEventsCount--;
+                $rootScope.initSyncInfo.savedEvents++;
+            };
 
+            var endSync = function (status) {
                 if (stages == categories.length || status == -1) {
                     $rootScope.$broadcast("schedulerStage", null);
                 }
