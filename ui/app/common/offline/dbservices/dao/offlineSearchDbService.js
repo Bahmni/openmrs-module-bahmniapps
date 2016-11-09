@@ -30,7 +30,7 @@ angular.module('bahmni.common.offline')
                 params.patientAttributes = "";
             }
 
-            var snakeCaseToCamelCase = function (snake_str) {
+            var snakeCaseToCamelCase = function (snake_str) { // eslint-disable-line camelcase
                 return snake_str.replace(/_([a-z])/g, function (g) {
                     return g[1].toUpperCase();
                 });

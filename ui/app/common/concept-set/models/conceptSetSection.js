@@ -27,7 +27,7 @@ Bahmni.ConceptSet.ConceptSetSection = function (extensions, user, config, observ
     var getShowIfFunction = function () {
         if (!self.showIfFunction) {
             var showIfFunctionStrings = self.options.showIf || ["return true;"];
-            self.showIfFunction = new Function("context", showIfFunctionStrings.join('\n'));
+            self.showIfFunction = new Function("context", showIfFunctionStrings.join('\n')); // eslint-disable-line no-new-func
         }
         return self.showIfFunction;
     };

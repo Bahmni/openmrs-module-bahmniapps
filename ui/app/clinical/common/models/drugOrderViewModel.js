@@ -329,8 +329,8 @@ Bahmni.Clinical.DrugOrderViewModel = function (config, proto, encounterDate) {
             var defaultDurationUnitMap = inputOptionsConfig.frequencyDefaultDurationUnitsMap || [];
 
             defaultDurationUnitMap.forEach(function (range) {
-                var minFrequency = eval(range.minFrequency);
-                var maxFrequency = eval(range.maxFrequency);
+                var minFrequency = eval(range.minFrequency); // eslint-disable-line no-eval
+                var maxFrequency = eval(range.maxFrequency); // eslint-disable-line no-eval
                 if ((!minFrequency || minFrequency < getFrequencyPerDay()) &&
                     (!maxFrequency || getFrequencyPerDay() <= maxFrequency)) {
                     self.durationUnit = range.defaultDurationUnit;

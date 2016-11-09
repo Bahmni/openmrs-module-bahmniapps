@@ -89,9 +89,9 @@ angular.module('bahmni.common.uiHelper')
             }
         };
     })
-    .directive('bmForm', function () {
+    .directive('bmForm', ['$timeout', function ($timeout) {
         var link = function (scope, elem, attrs) {
-            setTimeout(function () {
+            $timeout(function () {
                 $(elem).unbind('submit').submit(function (e) {
                     var formScope = scope.$parent;
                     var formName = attrs.name;
@@ -115,8 +115,8 @@ angular.module('bahmni.common.uiHelper')
                 autofillable: "="
             }
         };
-    })
-    .directive('patternValidate', function ($timeout) {
+    }])
+    .directive('patternValidate', ['$timeout', function ($timeout) {
         return function ($scope, element, attrs) {
             var addPatternToElement = function () {
                 if ($scope.fieldValidation && $scope.fieldValidation[attrs.id]) {
@@ -126,7 +126,7 @@ angular.module('bahmni.common.uiHelper')
 
             $timeout(addPatternToElement);
         };
-    })
+    }])
     .directive('validateOn', function () {
         var link = function (scope, element, attrs, ngModelCtrl) {
             var validationMessage = attrs.validationMessage || 'Please enter a valid detail';

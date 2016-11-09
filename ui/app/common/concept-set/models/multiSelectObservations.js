@@ -27,9 +27,9 @@ Bahmni.ConceptSet.MultiSelectObservations = function (conceptSetConfig) {
     };
 
     var add = function (concept, obs, memberOfCollection) {
-        var concept_name = concept.name.name || concept.name;
-        self.multiSelectObservationsMap[concept_name] = self.multiSelectObservationsMap[concept_name] || new Bahmni.ConceptSet.MultiSelectObservation(concept, memberOfCollection, conceptSetConfig);
-        self.multiSelectObservationsMap[concept_name].add(obs);
+        var conceptName = concept.name.name || concept.name;
+        self.multiSelectObservationsMap[conceptName] = self.multiSelectObservationsMap[conceptName] || new Bahmni.ConceptSet.MultiSelectObservation(concept, memberOfCollection, conceptSetConfig);
+        self.multiSelectObservationsMap[conceptName].add(obs);
     };
 
     var getAll = function () {
