@@ -110,7 +110,8 @@ describe("conceptSetGroup", function () {
             name : "template",
             hasSomeValue : function () {
                 return true;
-            }
+            },
+            label : "formName"
         },
         previousLeftPanel = {
             name : "previous",
@@ -120,6 +121,8 @@ describe("conceptSetGroup", function () {
         };
         compiledElementScope.leftPanelConceptSet = previousLeftPanel;
 
+        messagingService.showMessage.and.returnValue();
+
         compiledElementScope.showLeftPanelConceptSet(selectConceptSetSection);
         expect(compiledElementScope.leftPanelConceptSet.name).toBe("template");
         expect(compiledElementScope.leftPanelConceptSet.isOpen).toBeTruthy();
@@ -128,6 +131,8 @@ describe("conceptSetGroup", function () {
         expect(previousLeftPanel.isOpen).toBeFalsy();
         expect(previousLeftPanel.isLoaded).toBeFalsy();
         expect(previousLeftPanel.klass).toBe("");
+
+        expect(messagingService.showMessage).toHaveBeenCalledWith('info',compiledElementScope.leftPanelConceptSet.label +" Added successfully");
     });
 
     it("focusOnErrors should broadcast, show error message", function () {
