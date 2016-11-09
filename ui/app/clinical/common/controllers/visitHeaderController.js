@@ -28,10 +28,10 @@ angular.module('bahmni.clinical')
                 var url = "/" + $stateParams.configName + (board.url ? urlPrefix + "/" + board.url : urlPrefix);
                 var extensionParams = board.extensionParams;
                 var queryParams = [];
-                angular.forEach(extensionParams, function(extensionParamValue, extensionParamKey){
+                angular.forEach(extensionParams, function (extensionParamValue, extensionParamKey) {
                     queryParams.push(extensionParamKey + "=" + extensionParamValue);
                 });
-                if(!_.isEmpty(queryParams)) {
+                if (!_.isEmpty(queryParams)) {
                     url = url + "?" + queryParams.join("&");
                 }
 

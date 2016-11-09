@@ -596,7 +596,7 @@ module.exports = function (grunt) {
         var cb = this.async();
         exec('bower install', function (err, stdout) {
             console.log(stdout);
-            cb();
+            cb(!err);
         });
     });
 
@@ -605,7 +605,7 @@ module.exports = function (grunt) {
         var cb = this.async();
         exec('npm install', function (err, stdout) {
             console.log(stdout);
-            cb();
+            cb(!err);
         });
     });
 };

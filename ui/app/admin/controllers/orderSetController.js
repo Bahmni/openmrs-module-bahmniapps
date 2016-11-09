@@ -136,7 +136,7 @@
                 };
 
                 var validationSuccess = function () {
-                    if(!validateForm()){
+                    if (!validateForm()) {
                         return false;
                     }
 
@@ -154,7 +154,7 @@
                     };
                 };
 
-                var validateForm = function() {
+                var validateForm = function () {
                     var requiredFields = angular.element($("[required]"));
                     for (var i = 0; i < requiredFields.length; i++) {
                         if (!requiredFields[i].value) {

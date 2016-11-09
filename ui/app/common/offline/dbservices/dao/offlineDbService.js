@@ -72,7 +72,7 @@ angular.module('bahmni.common.offline')
                             insertVisitData(response.data).then(function () {
                                 deferred.resolve({data: encounterData});
                             });
-                        }, function (error) {
+                        }, function () {
                             deferred.resolve({data: encounterData});
                         });
                     } else {
