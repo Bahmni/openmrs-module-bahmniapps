@@ -17,6 +17,7 @@ angular.module('bahmni.common.offline')
             };
 
             var syncSuccessCallBack = function () {
+                $scope.showSyncInfo = false;
                 ngDialog.open({
                     template: 'views/offlineSyncConfirm.html',
                     class: 'ngdialog-theme-default',
@@ -28,6 +29,7 @@ angular.module('bahmni.common.offline')
             };
 
             var syncFailureCallBack = function () {
+                $scope.showSyncInfo = false;
                 ngDialog.open({
                     template: 'views/offlineSyncFailure.html',
                     class: 'ngdialog-theme-default',
@@ -53,6 +55,6 @@ angular.module('bahmni.common.offline')
             if (offlineService.getItem("initialSyncStatus") == "complete") {
                 $state.go('dashboard');
             } else {
-                spinner.forPromise(init()).then(syncSuccessCallBack, syncFailureCallBack);
+                init().then(syncSuccessCallBack, syncFailureCallBack);
             }
         }]);

@@ -182,12 +182,14 @@ describe('OfflineSyncService', function () {
                     getEventsFor: function (category) {
                         return {
                             then: function (callback) {
+                                var event = {
+                                    object: 'url to get ' + category + ' object',
+                                    category: category,
+                                    uuid: 'eventuuid'
+                                };
                                 return callback({
-                                    data: [{
-                                        object: 'url to get ' + category + ' object',
-                                        category: category,
-                                        uuid: 'eventuuid'
-                                    }]
+
+                                    data: { events:[event] , pendingEventsCount:2 }
                                 });
                             }
                         };
@@ -277,6 +279,7 @@ describe('OfflineSyncService', function () {
                 expect(eventLogService.getDataForUrl).toHaveBeenCalledWith(url);
                 expect(offlineDbService.insertMarker).toHaveBeenCalledWith(category, "eventuuid", [202020]);
                 expect(offlineDbService.insertMarker.calls.count()).toBe(3);
+                expect($rootScope.initSyncInfo[category].savedEventsCount).toBe(1);
             });
 
             expect(offlineDbService.insertAddressHierarchy).toHaveBeenCalledWith({uuid: 'url to get addressHierarchy object'});
@@ -322,7 +325,7 @@ describe('OfflineSyncService', function () {
                     then: function (callback) {
                         if(!marker.lastReadEventUuid)
                         return callback({
-                            data: [patientEvent, encounterEvent, labOrderResultsEvent]
+                            data: { events:[patientEvent, encounterEvent, labOrderResultsEvent], pendingEventsCount: 3}
                         });
                     }
                 }
@@ -520,24 +523,26 @@ describe('OfflineSyncService', function () {
                     getEventsFor: function (category) {
                         return {
                             then: function (callback) {
+                                var event = {
+                                    object: 'url to get ' + category + ' object',
+                                    category: category,
+                                    uuid: 'eventuuid'
+                                };
                                 return callback({
-                                    data: [{
-                                        object: 'url to get ' + category + ' object',
-                                        category: category,
-                                        uuid: 'eventuuid'
-                                    }]
+                                    data: { events:[event] , pendingEventsCount:1 }
                                 });
                             }
                         };
                     },getAddressEventsFor: function () {
                         return {
                             then: function (callback) {
+                                var event = {
+                                    object: 'url to get address object',
+                                    category: 'addressHierarchy',
+                                    uuid: 'eventuuid'
+                                };
                                 return callback({
-                                    data: [{
-                                        object: 'url to get address object',
-                                        category: 'addressHierarchy',
-                                        uuid: 'eventuuid'
-                                    }]
+                                    data: { events:[event] , pendingEventsCount:1 }
                                 });
                             }
                         };
@@ -545,12 +550,13 @@ describe('OfflineSyncService', function () {
                     getConceptEventsFor: function () {
                         return {
                             then: function (callback) {
+                                var conceptEvent = {
+                                    object: 'url to get concept object',
+                                    category: 'offline-concepts',
+                                    uuid: 'eventuuid'
+                                };
                                 return callback({
-                                    data: [{
-                                        object: 'url to get concept object',
-                                        category: 'offline-concepts',
-                                        uuid: 'eventuuid'
-                                    }]
+                                    data: { events:[conceptEvent] , pendingEventsCount:1 }
                                 });
                             }
                         };
@@ -689,7 +695,7 @@ describe('OfflineSyncService', function () {
                     then: function (callback) {
                         if(!marker.lastReadEventUuid)
                             return callback({
-                                data: [patientEvent]
+                                data: { events:[patientEvent] , pendingEventsCount:1 }
                             });
                     }
                 }
@@ -757,7 +763,7 @@ describe('OfflineSyncService', function () {
                     then: function (callback) {
                         if (!marker.lastReadEventUuid)
                             return callback({
-                                data: [patientEvent]
+                                data: { events:[patientEvent] , pendingEventsCount:1 }
                             });
                     }
                 }
