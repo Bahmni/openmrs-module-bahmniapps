@@ -138,6 +138,7 @@ angular.module('bahmni.common.conceptSet')
                 $scope.leftPanelConceptSet.klass = "active";
                 $scope.leftPanelConceptSet.atLeastOneValueIsSet = selectedConceptSet.hasSomeValue();
                 $(window).scrollTop(0);
+                messagingService.showMessage("info", $scope.leftPanelConceptSet.label + " Added successfully");
             };
 
             $scope.focusOnErrors = function () {
