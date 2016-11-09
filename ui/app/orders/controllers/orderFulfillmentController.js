@@ -19,7 +19,8 @@ angular.module('bahmni.orders').controller('OrderFulfillmentController', ['$scop
                 includeAll: Bahmni.Common.Constants.includeAllObservations,
                 locationUuid: sessionService.getLoginLocationUuid()
             }).then(function (encounterTransactionResponse) {
-                return $scope.encounter = encounterTransactionResponse.data;
+                $scope.encounter = encounterTransactionResponse.data;
+                return $scope.encounter;
             });
         };
 
