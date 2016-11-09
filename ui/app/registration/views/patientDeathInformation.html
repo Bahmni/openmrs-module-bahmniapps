@@ -10,8 +10,10 @@
         </div>
         <div class="col col2">
             <div class="field-attribute">
-                <label class="till-text">{{ ::'REGISTRATION_LABEL_REASON_FOR_DEATH' | translate}}</label>
-                <span class="asterick" ng-show="patient.dead">*</span>
+                <label class="till-text">
+                    {{ ::'REGISTRATION_LABEL_REASON_FOR_DEATH' | translate}}
+                    <span class="asterick" ng-show="patient.dead">*</span>
+                </label>
             </div>
             <div class="field-value">
                 <select ng-model="patient.causeOfDeath"
