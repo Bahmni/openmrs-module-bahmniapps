@@ -61,6 +61,7 @@ angular.module('bahmni.offline', ['ui.router', 'httpErrorInterceptor', 'bahmni.c
                         }
                     }
                 }).state('initSync', {
+                    templateUrl: 'views/initSync.html',
                     controller: 'InitSyncController',
                     url: '/initSync'
 
