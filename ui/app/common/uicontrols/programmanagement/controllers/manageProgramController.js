@@ -6,6 +6,7 @@ angular.module('bahmni.common.uicontrols.programmanagment')
         function ($scope, retrospectiveEntryService, $window, programService,
                   spinner, messagingService, $stateParams, $q, confirmBox) {
             var DateUtil = Bahmni.Common.Util.DateUtil;
+            var tempPatientProgramAttributes;
             $scope.programSelected = {};
             $scope.workflowStateSelected = {};
             $scope.allPrograms = [];
@@ -65,6 +66,7 @@ angular.module('bahmni.common.uicontrols.programmanagment')
                 $scope.programEdited.selectedState = null;
                 $scope.programSelected = null;
                 $scope.workflowStateSelected = null;
+                tempPatientProgramAttributes=$scope.patientProgramAttributes;
                 $scope.patientProgramAttributes = {};
                 $scope.programEnrollmentDate = null;
                 updateActiveProgramsList();
@@ -196,6 +198,9 @@ angular.module('bahmni.common.uicontrols.programmanagment')
 
             var voidPatientProgram = function (patientProgram, closeConfirmBox) {
                 patientProgram.voided = true;
+                if(_.isEmpty(patientProgram.patientProgramAttributes)){
+                    patientProgram.patientProgramAttributes=tempPatientProgramAttributes;
+                }
                 var promise = programService.updatePatientProgram(patientProgram, $scope.programAttributeTypes)
                     .then(successCallback, failureCallback)
                     .then(closeConfirmBox);
