@@ -11,7 +11,9 @@ Bahmni.Common.Domain.AttributeFormatter = (function () {
                     uuid: result.uuid
                 }
             };
-            setAttributeValue(result, attribute, model[result.name]);
+            if(!_.isEmpty(model)) {
+                setAttributeValue(result, attribute, model[result.name]);
+            }
             return attribute;
         });
     };
