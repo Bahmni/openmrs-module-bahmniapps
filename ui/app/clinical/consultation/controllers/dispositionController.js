@@ -71,5 +71,14 @@ angular.module('bahmni.clinical')
             }
         };
 
+        $scope.save = function () {
+            consultation.disposition = {
+                dispositionDateTime: null,
+                additionalObs: [$scope.dispositionNote],
+                code: $scope.dispositionCode,
+                conceptName: getSelectedConceptName($scope.dispositionCode)
+            };
+        };
+
         $scope.consultation.preSaveHandler.register("dispositionSaveHandlerKey", saveDispositions);
     }]);
