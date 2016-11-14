@@ -95,7 +95,7 @@ module.exports = function (grunt) {
         },
         eslint: {
             options: {
-                fix: true,
+                fix: false,
                 quiet: true
             },
             target: [

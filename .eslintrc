@@ -57,6 +57,7 @@ rules:
   angular/no-private-call: warn
   angular/no-services: warn
   angular/typecheck-object: warn
+  angular/typecheck-function: warn
   angular/document-service: warn
   no-redeclare: warn
   operator-linebreak: warn
