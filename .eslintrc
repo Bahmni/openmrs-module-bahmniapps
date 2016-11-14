@@ -45,6 +45,7 @@ rules:
   # The following are set to 'warn' level until they can be fixed
   # They're sorted in ascending order of the number of issues, as at
   # this commit
+  brace-style: warn
   no-new-func: warn
   angular/timeout-service: warn
   camelcase: warn
