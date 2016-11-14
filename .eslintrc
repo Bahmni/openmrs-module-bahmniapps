@@ -42,6 +42,7 @@ rules:
 
   # The following are set to 'warn' level until they can be fixed
   # They're sorted in ascending order of the number of issues
+  brace-style: warn
   angular/no-private-call: warn
   angular/no-services: warn
   angular/typecheck-object: warn
