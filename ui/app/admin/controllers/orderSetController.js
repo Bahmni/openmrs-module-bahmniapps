@@ -157,7 +157,7 @@
                 var validateForm = function () {
                     var requiredFields = angular.element($("[required]"));
                     for (var i = 0; i < requiredFields.length; i++) {
-                        if (!requiredFields[i].disabled && !requiredFields[i].value ) {
+                        if (!requiredFields[i].disabled && !requiredFields[i].value) {
                             messagingService.showMessage('error', 'Please fill all mandatory fields');
                             return false;
                         }
