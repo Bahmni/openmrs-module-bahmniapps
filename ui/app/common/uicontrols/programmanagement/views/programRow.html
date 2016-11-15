@@ -34,8 +34,7 @@
         </div>
 
         <div class="program-action-container clearfix">
-            <div ng-if="::hasProgramWorkflowStates(patientProgram)"
-                 ng-init="workflowStatesWithoutCurrentState = getWorkflowStatesWithoutCurrent(patientProgram)">
+            <div ng-if="::hasProgramWorkflowStates(patientProgram)">
                 <div class="form-field program-state-container">
                     <div class="field-attribute">
                         <label>
@@ -47,8 +46,8 @@
                     </div>
 
                     <div class="field-value" ng-show="patientProgram.editing">
-                        <select ng-model="programEdited.selectedState"
-                                ng-options="state.concept.display for state in workflowStatesWithoutCurrentState track by state.uuid">
+                        <select ng-model="patientProgram.selectedState"
+                                ng-options="state.concept.display for state in ::getStates(patientProgram.program) track by state.uuid">
                             <option value="">{{::'PROGRAM_MANAGEMENT_CHOOSE_STATE_KEY' | translate}}</option>
                         </select>
                     </div>
