@@ -63,6 +63,11 @@
             <span class="image-title">{{image.title}}</span>
         </div>
         <section ng-show="isActive($index,album.tag)">
+            <div ng-if="image.commentOnUpload">
+                <pre class="notes inline-notes"><strong>{{image.providerName}} ({{image.date |
+                    bahmniDate}}):</strong>{{image.commentOnUpload}}</pre>
+            </div>
+
             <ul class="impression">
                 <li ng-repeat="obs in image.sourceObs">
                     <pre class="notes inline-notes"><strong>{{obs.providers[0].name}} ({{obs.observationDateTime |
