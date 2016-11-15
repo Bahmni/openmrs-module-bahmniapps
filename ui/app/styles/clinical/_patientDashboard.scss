@@ -948,6 +948,7 @@ table.pivot-table {
         overflow: hidden;
         padding-right: 5px;
         float: left;
+        height:20px !important;
       }
     }
     .currentPatient {
@@ -1032,7 +1033,7 @@ table.pivot-table {
 }
 
 table.treatments-details-table{
-  font-size: 12px;
+  font-size: 12px;      
   td{
     border: none;
     width: 18%;
