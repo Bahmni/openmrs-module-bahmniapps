@@ -155,7 +155,7 @@ angular.module('bahmni.common.conceptSet')
                             obs.disabled = disable;
                             obs.error = error;
                             obs.hide = hide;
-                            if (obs.disabled) {
+                            if (hide || obs.disabled) {
                                 clearFieldValuesOnDisabling(obs);
                             }
                             if (obs.groupMembers) {
