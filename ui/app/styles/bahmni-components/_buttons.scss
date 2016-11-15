@@ -359,7 +359,7 @@ a.back-btn, button.back-btn {
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
-            display: inline-block;
+            display: block;
             @media screen and (max-width: 1024px) {
               width: 75px;
             }
@@ -409,7 +409,7 @@ button.back-btn {
 }
 .back-btn-link {
     @include clearfix();
-    padding: 6px 8px 5px;
+    padding: 5px 8px 5px;
     border: 1px solid darken($bahmniSecondaryColor, 15%);
     background: linear-gradient(to bottom, $bahmniSecondaryColor, darken($bahmniSecondaryColor, 10%));
     margin-top: 6px;
@@ -446,6 +446,7 @@ button.back-btn {
             overflow: hidden;
             text-overflow: ellipsis;
             display: inline-block;
+            height:15px;
             @media screen and (max-width: 1024px) {
               width: 75px;
             }
