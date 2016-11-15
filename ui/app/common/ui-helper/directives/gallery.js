@@ -13,7 +13,7 @@ angular.module('bahmni.common.uiHelper')
                 return {
                     src: Bahmni.Common.Constants.documentsPath + '/' + record.imageObservation.value,
                     title: record.concept.name,
-                    desc: record.imageObservation.comment || record.comment,
+                    commentOnUpload: record.comment,
                     date: record.imageObservation.observationDateTime,
                     uuid: record.imageObservation.uuid,
                     providerName: provider ? provider.name : null
@@ -80,7 +80,7 @@ angular.module('bahmni.common.uiHelper')
                 uuid: $scope.image.obsUuid,
                 providerName: $scope.image.provider ? $scope.image.provider.name : "",
                 imageIndex: $scope.image.imageIndex,
-                desc: $scope.image.comment
+                commentOnUpload: $scope.image.comment
             };
             imageGalleryController.addImage(image, $scope.visitUuid, $scope.visitOrder);
 
