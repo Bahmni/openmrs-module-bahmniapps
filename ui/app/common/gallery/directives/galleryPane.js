@@ -109,7 +109,7 @@ angular.module('bahmni.common.gallery')
                 };
 
                 $scope.hasObsRelationship = function (image) {
-                    return image.sourceObs && image.sourceObs.length > 0;
+                    return image.commentOnUpload || (image.sourceObs && image.sourceObs.length > 0);
                 };
 
                 $scope.saveImpression = function (image) {
