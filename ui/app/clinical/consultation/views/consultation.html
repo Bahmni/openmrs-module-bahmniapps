@@ -247,7 +247,7 @@
             <ul class="block-content">
                 <li>
                     <div class="expander-row row-click">
-                        <span class="disposition-state">{{disposition.conceptName}} <span>on</span> {{disposition.dispositionDateTime | bahmniDateTime }}</span>
+                        <span class="disposition-state">{{disposition.conceptName}} <span ng-if="disposition.dispositionDateTime">on</span> {{disposition.dispositionDateTime | bahmniDateTime }}</span>
                         <button class="toggle fr" ng-class="{'has-notes': disposition.additionalObs[0].value}" toggle="disposition.show">
                             <i class="fa fa-plus-circle"></i>
                             <i class="fa fa-minus-circle"></i>
