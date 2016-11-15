@@ -10,7 +10,7 @@
                 <td class="value">{{::bedDetails.wardName}}</td>
                 <td class="value">{{::bedDetails.bedNumber}}</td>
             </tr>
-            <tr class="view-past" ng-class="{'notes-open': visitSummary.admissionDetails.show}">
+            <tr class="view-past">
                 <td class="name">
                     <span class="disposition-state">Admission Date</span>
                 </td>
@@ -33,7 +33,7 @@
                     </div>
                 </td>
             </tr>
-            <tr class="view-past" ng-if="::visitSummary.dischargeDetails" ng-class="{'notes-open': visitSummary.dischargeDetails.show}">
+            <tr class="view-past" ng-if="::visitSummary.dischargeDetails">
                 <td class="name">
                     <span class="disposition-state">Discharge Date</span>
                 </td>
@@ -48,7 +48,7 @@
                     </button>
                 </td>
             </tr>
-            <tr ng-show="visitSummary.dischargeDetails.show || visitSummary.dischargeDetails.notes">
+            <tr ng-show="visitSummary.dischargeDetails.show || visitSummary.dischargeDetails.notes"  ng-class="{'notes-open': visitSummary.admissionDetails.show}">
                 <td colspan="3" class="notes inline-notes">
                     <pre class="left ng-binding">{{::visitSummary.dischargeDetails.notes}}</pre>
                     <div class="footer-note right">
