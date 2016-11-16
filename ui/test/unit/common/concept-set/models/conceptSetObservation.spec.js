@@ -148,6 +148,15 @@ describe("ConceptSetObservation", function() {
 
     });
 
+    it("should set atleastOneValueSet to true for observations with non voided values only", function () {
+       var observation = new Bahmni.ConceptSet.Observation({
+           concept: {name: "Documents, Image", dataType: "Image"}, value: "300/223-Consultation-4a945e65-f950-40e0-9c67-7b166706fcef.jpeg", voided: true
+       }, {}, {});
+
+        expect(observation.atLeastOneValueSet()).toBeFalsy();
+        expect(observation.voided).toBeTruthy();
+    });
+
     describe("autocomplete",function(){
         var conceptUIConfig = {
             "some autocomplete": {
