@@ -187,6 +187,10 @@ Bahmni.ConceptSet.Observation.prototype = {
         return 'Date'.indexOf(this.getDataTypeName()) != -1;
     },
 
+    isVoided: function () {
+        return this.voided === undefined ? false : this.voided;
+    },
+
     getPossibleAnswers: function () {
         return this.possibleAnswers;
     },
@@ -296,7 +300,7 @@ Bahmni.ConceptSet.Observation.prototype = {
                 return childNode.atLeastOneValueSet();
             });
         } else {
-            return this.hasValue();
+            return this.hasValue() && !this.isVoided();
         }
     },
 
