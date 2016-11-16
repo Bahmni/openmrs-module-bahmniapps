@@ -33,7 +33,7 @@ angular.module('bahmni.common.uicontrols.programmanagment')
 
             var populateDefaultSelectedState = function (patientProgram) {
                 var activePatientProgramState = getActivePatientProgramState(patientProgram.states);
-                patientProgram.selectedState = activePatientProgramState? activePatientProgramState.state : null;
+                patientProgram.selectedState = activePatientProgramState ? activePatientProgramState.state : null;
             };
 
             var formatProgramDates = function () {
@@ -141,11 +141,11 @@ angular.module('bahmni.common.uicontrols.programmanagment')
             };
 
             var isProgramStateChanged = function (patientProgram, activePatientProgramState) {
-                if(_.isEmpty(activePatientProgramState) && patientProgram.selectedState != undefined){
+                if (_.isEmpty(activePatientProgramState) && patientProgram.selectedState != undefined) {
                     return true;
                 }
                 return patientProgram.selectedState
-                    && (patientProgram.selectedState.uuid != activePatientProgramState.state.uuid)
+                    && (patientProgram.selectedState.uuid != activePatientProgramState.state.uuid);
             };
 
             var isOutcomeSelected = function (patientProgram) {
