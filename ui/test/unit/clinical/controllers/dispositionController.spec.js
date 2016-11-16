@@ -28,4 +28,11 @@ describe("DispositionController", function () {
     it("should return true if it is in retrospective mode", function () {
         expect(scope.isRetrospectiveMode()).toBeTruthy();
     });
+    it("should reset date if dispositionis changed", function () {
+        scope.consultation.disposition = {'code':'ADMIT' ,'dispositionDateTime':Date()};
+        scope.dispositionCode ='DISCHARGED';
+        scope.dispositionNote ={};
+        scope.$destroy();
+        expect(scope.consultation.disposition.dispositionDateTime).toBeUndefined();
+    });
 });
