@@ -7,12 +7,12 @@ angular.module('bahmni.clinical')
         var getDispositionActionsPromise = function () {
             return dispositionService.getDispositionActions().then(function (response) {
                 $scope.dispositionActions = new Bahmni.Clinical.DispostionActionMapper().map(response.data.results[0].answers);
-                var previousDispositionNote = consultation.disposition &&
+                var previousDispositionNote = consultation.disposition && (!consultation.disposition.voided) &&
                     _.find(consultation.disposition.additionalObs, function (obs) {
                         return !obs.voided && obs.concept.uuid === $scope.dispositionNoteConceptUuid;
                     });
-                $scope.dispositionNote = previousDispositionNote || {concept: {uuid: $scope.dispositionNoteConceptUuid }};
-                $scope.dispositionCode = consultation.disposition ? consultation.disposition.code : null;
+                $scope.dispositionNote = _.cloneDeep(previousDispositionNote) || {concept: {uuid: $scope.dispositionNoteConceptUuid }};
+                $scope.dispositionCode = consultation.disposition && (!consultation.disposition.voided) ? consultation.disposition.code : null;
             });
         };
 
@@ -43,17 +43,30 @@ angular.module('bahmni.clinical')
             return selectedDispositionConceptName.name;
         };
 
+        var hasDispositionChanged = function () {
+            var disposition = consultation.disposition;
+            var previousDispositionNote = consultation.disposition &&
+                _.find(consultation.disposition.additionalObs, function (obs) {
+                    return !obs.voided && obs.concept.uuid === $scope.dispositionNoteConceptUuid;
+                });
+            var previousValue = previousDispositionNote && previousDispositionNote.value;
+            return !disposition || $scope.dispositionCode != disposition.code || $scope.dispositionNote.value != previousValue;
+        };
+
         var getSelectedDisposition = function () {
             if ($scope.dispositionCode) {
                 if (!$scope.dispositionNote.value) {
                     $scope.dispositionNote.voided = true;
                 }
-                return {
-                    dispositionDateTime: null,
-                    additionalObs: [$scope.dispositionNote],
+                var disposition = {
+                    additionalObs: [_.cloneDeep($scope.dispositionNote)],
                     code: $scope.dispositionCode,
                     conceptName: getSelectedConceptName($scope.dispositionCode)
                 };
+                if (!hasDispositionChanged()) {
+                    disposition.dispositionDateTime = consultation.disposition.dispositionDateTime;
+                }
+                return disposition;
             }
         };
 
@@ -71,14 +84,6 @@ angular.module('bahmni.clinical')
             }
         };
 
-        $scope.save = function () {
-            consultation.disposition = {
-                dispositionDateTime: null,
-                additionalObs: [$scope.dispositionNote],
-                code: $scope.dispositionCode,
-                conceptName: getSelectedConceptName($scope.dispositionCode)
-            };
-        };
-
         $scope.consultation.preSaveHandler.register("dispositionSaveHandlerKey", saveDispositions);
+        $scope.$on('$destroy', saveDispositions);
     }]);
