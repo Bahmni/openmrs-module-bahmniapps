@@ -152,7 +152,7 @@ angular.module('bahmni.common.conceptSet')
                 var setObservationState = function (obsArray, disable, error, hide) {
                     if (!_.isEmpty(obsArray)) {
                         _.each(obsArray, function (obs) {
-                            obs.disabled = disable;
+                            obs.disabled = disable || hide;
                             obs.error = error;
                             obs.hide = hide;
                             if (hide || obs.disabled) {
@@ -161,7 +161,7 @@ angular.module('bahmni.common.conceptSet')
                             if (obs.groupMembers) {
                                 _.each(obs.groupMembers, function (groupMember) {
                                     // TODO : Hack to fix issue with formconditions on multiselect - Swathi
-                                    groupMember && setObservationState([groupMember], disable, error);
+                                    groupMember && setObservationState([groupMember], disable, error, hide);
                                 });
                             }
                         });
