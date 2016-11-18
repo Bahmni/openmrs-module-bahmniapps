@@ -51,7 +51,7 @@ angular.module('admin')
             });
             $httpProvider.defaults.headers.common['Disable-WWW-Authenticate'] = true;
         }
-    ]).run(function ($rootScope, $templateCache) {
+    ]).run(['$rootScope', '$templateCache', function ($rootScope, $templateCache) {
         // Disable caching view template partials
         $rootScope.$on('$viewContentLoaded', $templateCache.removeAll);
-    });
+    }]);

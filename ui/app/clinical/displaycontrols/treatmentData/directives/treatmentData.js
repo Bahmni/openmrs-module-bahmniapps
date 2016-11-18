@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('bahmni.clinical')
-    .directive('treatmentData', ['TreatmentService', 'appService', 'spinner', '$stateParams', '$q', 'treatmentConfig', function (treatmentService, appService, spinner, $stateParams, $q, treatmentConfig) {
+    .directive('treatmentData', ['treatmentService', 'appService', 'spinner', '$stateParams', '$q', 'treatmentConfig', function (treatmentService, appService, spinner, $stateParams, $q, treatmentConfig) {
         var controller = function ($scope) {
             var Constants = Bahmni.Clinical.Constants;
             var defaultParams = {

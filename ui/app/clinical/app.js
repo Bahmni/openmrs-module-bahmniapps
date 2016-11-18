@@ -224,8 +224,8 @@ angular.module('consultation')
                     cachebuster: null
                 },
                 resolve: {
-                    activeDrugOrders: function (TreatmentService, $stateParams) {
-                        return TreatmentService.getActiveDrugOrders($stateParams.patientUuid, $stateParams.dateEnrolled, $stateParams.dateCompleted);
+                    activeDrugOrders: function (treatmentService, $stateParams) {
+                        return treatmentService.getActiveDrugOrders($stateParams.patientUuid, $stateParams.dateEnrolled, $stateParams.dateCompleted);
                     }
                 },
                 views: {

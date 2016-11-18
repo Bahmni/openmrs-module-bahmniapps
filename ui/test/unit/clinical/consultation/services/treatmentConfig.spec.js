@@ -71,7 +71,7 @@ describe('treatmentConfig', function () {
             }));
             translate = jasmine.createSpyObj('$translate', ['instant']);
 
-            $provide.value('TreatmentService', treatmentService);
+            $provide.value('treatmentService', treatmentService);
             $provide.value('configurationService', configurationService);
             $provide.value('appService', appService);
             $provide.value('spinner', spinner);

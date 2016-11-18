@@ -37,7 +37,7 @@ describe('WardListController', function () {
 
         controller('WardListController', {
             $scope: scope,
-            QueryService: queryService,
+            queryService: queryService,
             appService: appService
         });
 

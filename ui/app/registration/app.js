@@ -94,7 +94,7 @@ angular
                 }
             });
         $bahmniTranslateProvider.init({app: 'registration', shouldMerge: true});
-    }]).run(function ($rootScope, $templateCache, offlineService, schedulerService, $bahmniCookieStore, locationService) {
+    }]).run(['$rootScope', '$templateCache', 'offlineService', 'schedulerService', '$bahmniCookieStore', 'locationService', function ($rootScope, $templateCache, offlineService, schedulerService, $bahmniCookieStore, locationService) {
         // Disable caching view template partials
 
         var loginLocationUuid = $bahmniCookieStore.get(Bahmni.Common.Constants.locationCookieName).uuid;
@@ -106,4 +106,4 @@ angular
         if (offlineService.isChromeApp() || offlineService.isAndroidApp()) {
             schedulerService.sync();
         }
-    });
+    }]);

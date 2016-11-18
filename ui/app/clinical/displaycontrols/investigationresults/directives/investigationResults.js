@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('bahmni.clinical')
-    .directive('investigationResults', ['LabOrderResultService', 'spinner', function (labOrderResultService, spinner) {
+    .directive('investigationResults', ['labOrderResultService', 'spinner', function (labOrderResultService, spinner) {
         var controller = function ($scope) {
             var defaultParams = {
                 showTable: true,

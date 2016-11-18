@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('bahmni.common.logging')
-.config(function ($provide) {
+.config(['$provide', function ($provide) {
     $provide.decorator("$exceptionHandler", function ($delegate, $injector, $window, $log) {
         var logError = function (exception, cause) {
             try {
@@ -36,4 +36,4 @@ angular.module('bahmni.common.logging')
             logError(exception, cause);
         };
     });
-});
+}]);

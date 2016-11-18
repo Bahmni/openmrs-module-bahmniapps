@@ -2,7 +2,7 @@
 
 angular.module('bahmni.registration')
     .controller('VisitController', ['$window', '$scope', '$rootScope', '$state', '$bahmniCookieStore', 'patientService', 'encounterService', '$stateParams', 'spinner', '$timeout', '$q', 'appService', 'openmrsPatientMapper', 'contextChangeHandler', 'messagingService', 'sessionService', 'visitService', '$location', '$translate',
-        function ($window, $scope, $rootScope, $state, $bahmniCookieStore, patientService, encounterService, $stateParams, spinner, $timeout, $q, appService, patientMapper, contextChangeHandler, messagingService, sessionService, visitService, $location, $translate) {
+        function ($window, $scope, $rootScope, $state, $bahmniCookieStore, patientService, encounterService, $stateParams, spinner, $timeout, $q, appService, openmrsPatientMapper, contextChangeHandler, messagingService, sessionService, visitService, $location, $translate) {
             var vm = this;
             var patientUuid = $stateParams.patientUuid;
             var extensions = appService.getAppDescriptor().getExtensions("org.bahmni.registration.conceptSetGroup.observations", "config");
@@ -19,7 +19,7 @@ angular.module('bahmni.registration')
 
             var getPatient = function () {
                 return patientService.get(patientUuid).then(function (openMRSPatient) {
-                    $scope.patient = patientMapper.map(openMRSPatient);
+                    $scope.patient = openmrsPatientMapper.map(openMRSPatient);
                     $scope.patient.name = openMRSPatient.patient.person.names[0].display;
                     $scope.patient.uuid = openMRSPatient.patient.uuid;
                 });
