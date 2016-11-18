@@ -1,13 +1,13 @@
 'use strict';
 
 angular.module('bahmni.common.displaycontrol.chronicTreatmentChart').directive('chronicTreatmentChart', ['$translate', 'spinner', 'drugService',
-    function ($translate, spinner, DrugService) {
+    function ($translate, spinner, drugService) {
         var link = function ($scope, element) {
             $scope.config = $scope.isOnDashboard ? $scope.section.dashboardConfig : $scope.section.expandedViewConfig;
             var patient = $scope.patient;
 
             var init = function () {
-                return DrugService.getRegimen(patient.uuid, $scope.enrollment, $scope.config.drugs).success(function (data) {
+                return drugService.getRegimen(patient.uuid, $scope.enrollment, $scope.config.drugs).success(function (data) {
                     var filterNullRow = function () {
                         for (var row in $scope.regimen.rows) {
                             var nullFlag = true;

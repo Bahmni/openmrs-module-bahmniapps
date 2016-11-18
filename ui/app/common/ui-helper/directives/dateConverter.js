@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('bahmni.common.uiHelper').directive('dateConverter', ['$filter', function () {
+angular.module('bahmni.common.uiHelper').directive('dateConverter', [function () {
     return {
         require: 'ngModel',
         link: function (scope, element, attrs, ngModelController) {

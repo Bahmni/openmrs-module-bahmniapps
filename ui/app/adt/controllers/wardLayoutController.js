@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('bahmni.adt')
-    .controller('WardLayoutController', ['$scope', '$rootScope', '$window', 'spinner', 'WardService', 'BedManagementService', 'bedService', 'messagingService', 'appService', '$document', '$element',
+    .controller('WardLayoutController', ['$scope', '$rootScope', '$window', 'spinner', 'wardService', 'bedManagementService', 'bedService', 'messagingService', 'appService', '$document', '$element',
         function ($scope, $rootScope, $window, spinner, wardService, bedManagementService, bedService, messagingService, appService, $document, $element) {
             $scope.selectedBed = null;
             var maxPatientsConfig = appService.getAppDescriptor().getConfig("maxPatientsPerBed");

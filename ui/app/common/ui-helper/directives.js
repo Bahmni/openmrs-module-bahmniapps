@@ -45,7 +45,7 @@ angular.module('bahmni.common.uiHelper')
             link: link
         };
     })
-    .directive('myAutocomplete', function ($parse) {
+    .directive('myAutocomplete', ['$parse', function ($parse) {
         var link = function (scope, element, attrs, ngModelCtrl) {
             var ngModel = $parse(attrs.ngModel);
             var source = scope.source();
@@ -88,7 +88,7 @@ angular.module('bahmni.common.uiHelper')
                 onSelect: '&'
             }
         };
-    })
+    }])
     .directive('bmForm', ['$timeout', function ($timeout) {
         var link = function (scope, elem, attrs) {
             $timeout(function () {

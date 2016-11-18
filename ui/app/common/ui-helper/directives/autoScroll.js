@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('bahmni.common.uiHelper').directive('autoScroll', function ($location, $anchorScroll, $timeout) {
+angular.module('bahmni.common.uiHelper').directive('autoScroll', ['$location', '$anchorScroll', '$timeout', function ($location, $anchorScroll, $timeout) {
     var heightOfNavigationBar = 55;
     return {
         scope: {
@@ -22,4 +22,4 @@ angular.module('bahmni.common.uiHelper').directive('autoScroll', function ($loca
             });
         }
     };
-});
+}]);

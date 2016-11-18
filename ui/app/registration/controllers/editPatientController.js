@@ -2,7 +2,7 @@
 
 angular.module('bahmni.registration')
     .controller('EditPatientController', ['$scope', 'patientService', 'encounterService', '$stateParams', 'openmrsPatientMapper', '$window', '$q', 'spinner', 'appService', 'messagingService', '$rootScope',
-        function ($scope, patientService, encounterService, $stateParams, patientMapper, $window, $q, spinner, appService, messagingService, $rootScope) {
+        function ($scope, patientService, encounterService, $stateParams, openmrsPatientMapper, $window, $q, spinner, appService, messagingService, $rootScope) {
             var dateUtil = Bahmni.Common.Util.DateUtil;
             var uuid = $stateParams.patientUuid;
             $scope.patient = {};
@@ -24,7 +24,7 @@ angular.module('bahmni.registration')
 
             var successCallBack = function (openmrsPatient) {
                 $scope.openMRSPatient = openmrsPatient["patient"];
-                $scope.patient = patientMapper.map(openmrsPatient);
+                $scope.patient = openmrsPatientMapper.map(openmrsPatient);
                 setReadOnlyFields();
                 expandDataFilledSections();
                 $scope.patientLoaded = true;

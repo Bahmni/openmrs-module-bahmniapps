@@ -42,7 +42,7 @@ describe("WardsController", function () {
     });
 
     beforeEach(function () {
-        inject(function ($controller, $rootScope, _WardService_, bedService, userService) {
+        inject(function ($controller, $rootScope, _wardService_, bedService, userService) {
             scope = $rootScope.$new();
             rootScope = {
                 currentUser: {
@@ -51,7 +51,7 @@ describe("WardsController", function () {
                     }
                 }
             };
-            wardService = _WardService_;
+            wardService = _wardService_;
             bedService = bedService;
             userService = userService;
             createController = function () {

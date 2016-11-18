@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('bahmni.clinical')
-    .factory('TreatmentService', ['$q', 'appService', 'offlineDbService', 'offlineService', 'androidDbService',
+    .factory('treatmentService', ['$q', 'appService', 'offlineDbService', 'offlineService', 'androidDbService',
         function ($q, appService, offlineDbService, offlineService, androidDbService) {
             if (offlineService.isAndroidApp()) {
                 offlineDbService = androidDbService;

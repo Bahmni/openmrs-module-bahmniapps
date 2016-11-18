@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('bahmni.common.config')
-    .directive('showIfPrivilege', function ($rootScope) {
+    .directive('showIfPrivilege', ['$rootScope', function ($rootScope) {
         return {
             scope: {
                 showIfPrivilege: "@"
@@ -19,5 +19,5 @@ angular.module('bahmni.common.config')
                 }
             }
         };
-    });
+    }]);
 
