@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('bahmni.common.uiHelper')
-    .directive('splitButton', ['$timeout', '$parse', function ($timeout) {
+    .directive('splitButton', ['$timeout', function ($timeout) {
         var controller = function ($scope) {
             $scope.primaryOption = $scope.primaryOption || $scope.options[0];
             $scope.secondaryOptions = _.without($scope.options, $scope.primaryOption);

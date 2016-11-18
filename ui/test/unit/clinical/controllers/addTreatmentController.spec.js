@@ -219,7 +219,7 @@ describe("AddTreatmentController", function () {
                 ngDialog: ngDialog,
                 appService: appService,
                 locationService :locationService,
-                DrugService: drugService,
+                drugService: drugService,
                 treatmentConfig: treatmentConfig,
                 orderSetService: orderSetService
             });

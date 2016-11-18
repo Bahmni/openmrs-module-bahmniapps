@@ -1,7 +1,7 @@
 'use strict';
 
-describe("LabOrderResultService", function() {
-    var mockHttp, configurationService, LabOrderResultService;
+describe("labOrderResultService", function() {
+    var mockHttp, configurationService, labOrderResultService;
 
     beforeEach(module('bahmni.clinical'));
 
@@ -42,8 +42,8 @@ describe("LabOrderResultService", function() {
         $provide.value('configurationService', configurationService);
     }));
 
-    beforeEach(inject(['LabOrderResultService', function (LabOrderResultServiceInjected) {
-        LabOrderResultService = LabOrderResultServiceInjected;
+    beforeEach(inject(['labOrderResultService', function (LabOrderResultServiceInjected) {
+        labOrderResultService = LabOrderResultServiceInjected;
     }]));
 
     describe("getAllForPatient", function(){
@@ -53,7 +53,7 @@ describe("LabOrderResultService", function() {
         };
 
         it("should fetch all Lab orders & results and group by accessions", function(done){
-            LabOrderResultService.getAllForPatient(params).then(function(results) {
+            labOrderResultService.getAllForPatient(params).then(function(results) {
                 expect(mockHttp.get.calls.mostRecent().args[1].params.patientUuid).toBe("123");
                 expect(results.labAccessions.length).toBe(2);
                 expect(results.labAccessions[0].length).toBe(1);
@@ -62,7 +62,7 @@ describe("LabOrderResultService", function() {
             });
         });
         it("should sort by accession date and group by panel", function(done){
-            LabOrderResultService.getAllForPatient(params).then(function(results) {
+            labOrderResultService.getAllForPatient(params).then(function(results) {
                 expect(mockHttp.get.calls.mostRecent().args[1].params.patientUuid).toBe("123");
                 expect(results.labAccessions[0][0].accessionUuid).toBe("uuid2");
                 expect(results.labAccessions[1][0].accessionUuid).toBe("uuid1");
@@ -71,7 +71,7 @@ describe("LabOrderResultService", function() {
         });
 
         it("should group accessions by panel", function(done){
-            LabOrderResultService.getAllForPatient(params).then(function(results) {
+            labOrderResultService.getAllForPatient(params).then(function(results) {
                 expect(mockHttp.get.calls.mostRecent().args[1].params.patientUuid).toBe("123");
 
                 expect(results.labAccessions[1][0].isPanel).toBeFalsy();

@@ -1,7 +1,8 @@
 'use strict';
 
 angular.module('bahmni.registration').factory('openmrsPatientMapper', ['patient', '$rootScope', 'age', 'identifiers',
-    function (patientModel, $rootScope, age, identifiers) {
+    function (patient, $rootScope, age, identifiers) {
+        var patientModel = patient;
         var whereAttributeTypeExists = function (attribute) {
                 return $rootScope.patientConfiguration.get(attribute.attributeType.uuid);
             },

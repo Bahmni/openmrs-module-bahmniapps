@@ -2,7 +2,8 @@
 
 angular.module('bahmni.common.domain')
     .service('encounterService', ['$q', '$rootScope', '$bahmniCookieStore', 'offlineEncounterServiceStrategy', 'eventQueue',
-        function ($q, $rootScope, $bahmniCookieStore, offlineEncounterService, eventQueue) {
+        function ($q, $rootScope, $bahmniCookieStore, offlineEncounterServiceStrategy, eventQueue) {
+            var offlineEncounterService = offlineEncounterServiceStrategy;
             this.buildEncounter = function (encounter) {
                 encounter.observations = encounter.observations || [];
                 encounter.providers = encounter.providers || [];

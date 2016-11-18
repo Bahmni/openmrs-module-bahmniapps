@@ -106,7 +106,7 @@ describe('DrugOrdersSection DisplayControl', function () {
 
     beforeEach(module(function ($provide) {
         treatmentService = jasmine.createSpyObj('treatmentService', ['getAllDrugOrdersFor', 'voidDrugOrder']);
-        $provide.value('TreatmentService', treatmentService);
+        $provide.value('treatmentService', treatmentService);
 
     }));
 

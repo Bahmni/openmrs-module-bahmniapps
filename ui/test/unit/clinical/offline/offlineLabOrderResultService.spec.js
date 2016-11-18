@@ -1,7 +1,7 @@
 'use strict';
 
 describe("offlineLabOrderResultService", function() {
-    var configurationService, LabOrderResultService, offlineLabOrderResultsService;
+    var configurationService, labOrderResultService, offlineLabOrderResultsService;
 
     beforeEach(module('bahmni.common.offline'));
     beforeEach(module('bahmni.clinical'));
@@ -43,8 +43,8 @@ describe("offlineLabOrderResultService", function() {
         $provide.value('configurationService', configurationService);
     }));
 
-    beforeEach(inject(['LabOrderResultService', 'offlineLabOrderResultsService', function (LabOrderResultServiceInjected, offlineLabOrderResultsService) {
-        LabOrderResultService = LabOrderResultServiceInjected;
+    beforeEach(inject(['labOrderResultService', 'offlineLabOrderResultsService', function (LabOrderResultServiceInjected, offlineLabOrderResultsService) {
+        labOrderResultService = LabOrderResultServiceInjected;
     }]));
 
     describe("getAllForPatient", function(){
@@ -55,7 +55,7 @@ describe("offlineLabOrderResultService", function() {
 
 
         it("should fetch all Lab orders & results and group by accessions", function(done){
-            LabOrderResultService.getAllForPatient(params).then(function(results) {
+            labOrderResultService.getAllForPatient(params).then(function(results) {
                 expect(offlineLabOrderResultsService.getLabOrderResultsForPatient).toHaveBeenCalled();
                 expect(results.labAccessions.length).toBe(2);
                 expect(results.labAccessions[0].length).toBe(1);
@@ -64,7 +64,7 @@ describe("offlineLabOrderResultService", function() {
             });
         });
         it("should sort by accession date and group by panel", function(done){
-            LabOrderResultService.getAllForPatient(params).then(function(results) {
+            labOrderResultService.getAllForPatient(params).then(function(results) {
                 expect(offlineLabOrderResultsService.getLabOrderResultsForPatient).toHaveBeenCalled();
                 expect(results.labAccessions[0][0].accessionUuid).toBe("uuid2");
                 expect(results.labAccessions[1][0].accessionUuid).toBe("uuid1");
@@ -73,7 +73,7 @@ describe("offlineLabOrderResultService", function() {
         });
 
         it("should group accessions by panel", function(done){
-            LabOrderResultService.getAllForPatient(params).then(function(results) {
+            labOrderResultService.getAllForPatient(params).then(function(results) {
                 expect(offlineLabOrderResultsService.getLabOrderResultsForPatient).toHaveBeenCalled();
                 expect(results.labAccessions[1][0].isPanel).toBeFalsy();
                 expect(results.labAccessions[1][0].orderName).toBe("ZN Stain(Sputum)");
