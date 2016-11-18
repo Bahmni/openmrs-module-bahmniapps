@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('bahmni.common.displaycontrol.hint')
-    .directive('hint', ['conceptSetService', 'spinner',
+    .directive('hint', [
         function () {
             var link = function ($scope) {
                 $scope.hintForNumericConcept = Bahmni.Common.Domain.Helper.getHintForNumericConcept($scope.conceptDetails);

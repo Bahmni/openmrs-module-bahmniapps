@@ -1,9 +1,7 @@
 'use strict';
 
 angular.module('bahmni.common.uiHelper')
-    .directive('focusMe',
-
-    function ($timeout, $parse) {
+    .directive('focusMe', ['$timeout', '$parse', function ($timeout, $parse) {
         return {
             link: function (scope, element, attrs) {
                 var model = $parse(attrs.focusMe);
@@ -16,5 +14,4 @@ angular.module('bahmni.common.uiHelper')
                 });
             }
         };
-    }
-);
+    }]);

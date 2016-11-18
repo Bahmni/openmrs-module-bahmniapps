@@ -13,8 +13,8 @@ describe('Ward Service', function () {
             $provide.value('$http', mockHttp);
         });
 
-        inject(['WardService', function (WardServiceInjected) {
-            wardService = WardServiceInjected;
+        inject(['wardService', function (wardServiceInjected) {
+            wardService = wardServiceInjected;
         }]);
     });
 

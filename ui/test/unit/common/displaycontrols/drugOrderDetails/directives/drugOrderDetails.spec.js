@@ -49,7 +49,7 @@ describe('Drug Order Details DisplayControl', function () {
     beforeEach(module('bahmni.common.displaycontrol.drugOrderDetails'));
     beforeEach(module(function ($provide) {
         treatmentService = jasmine.createSpyObj('treatmentService', ['getAllDrugOrdersFor']);
-        $provide.value('TreatmentService', treatmentService);
+        $provide.value('treatmentService', treatmentService);
         $provide.value('treatmentConfig', function () {
             return {};
         });
