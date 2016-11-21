@@ -31,8 +31,6 @@ Bahmni.ConsultationMapper = function (dosageFrequencies, dosageInstructions, con
             return !observation.voided && specialObservationConceptUuids.indexOf(observation.concept.uuid) === -1;
         });
 
-        addUrgencyToOrders(encounterTransaction);
-
         var orders = encounterTransaction.orders.filter(function (order) {
             return order.action !== Bahmni.Clinical.Constants.orderActions.discontinue && !order.dateStopped;
         });
@@ -86,12 +84,5 @@ Bahmni.ConsultationMapper = function (dosageFrequencies, dosageInstructions, con
             observation.observationDateTime = obsFromEncounter.observationDateTime;
         }
         return observation;
-    };
-
-    var addUrgencyToOrders = function (encounterTransaction) {
-        _.each(encounterTransaction.orders, function (order) {
-            var orderWithUrgency = _.find(encounterTransaction.ordersWithUrgency, {uuid: order.uuid});
-            order.urgency = orderWithUrgency ? orderWithUrgency.urgency : undefined;
-        });
     };
 };
