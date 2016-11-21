@@ -78,6 +78,7 @@ angular.module('bahmni.common.conceptSet')
             };
 
             $scope.clonePanelConceptSet = function (index) {
+                messagingService.showMessage("info", $scope.allTemplates[index].label + " Added successfully");
                 $scope.clone(index);
                 $scope.showLeftPanelConceptSet($scope.allTemplates[index + 1]);
             };
@@ -138,7 +139,6 @@ angular.module('bahmni.common.conceptSet')
                 $scope.leftPanelConceptSet.klass = "active";
                 $scope.leftPanelConceptSet.atLeastOneValueIsSet = selectedConceptSet.hasSomeValue();
                 $(window).scrollTop(0);
-                messagingService.showMessage("info", $scope.leftPanelConceptSet.label + " Added successfully");
             };
 
             $scope.focusOnErrors = function () {
