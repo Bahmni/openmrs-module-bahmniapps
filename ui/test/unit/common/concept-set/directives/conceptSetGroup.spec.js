@@ -131,8 +131,6 @@ describe("conceptSetGroup", function () {
         expect(previousLeftPanel.isOpen).toBeFalsy();
         expect(previousLeftPanel.isLoaded).toBeFalsy();
         expect(previousLeftPanel.klass).toBe("");
-
-        expect(messagingService.showMessage).toHaveBeenCalledWith('info',compiledElementScope.leftPanelConceptSet.label +" Added successfully");
     });
 
     it("focusOnErrors should broadcast, show error message", function () {
