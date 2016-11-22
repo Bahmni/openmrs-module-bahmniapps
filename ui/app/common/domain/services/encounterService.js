@@ -16,7 +16,7 @@ angular.module('bahmni.common.domain')
                     if (providerData && providerData.uuid) {
                         encounter.providers.push({"uuid": providerData.uuid});
                     } else if ($rootScope.currentProvider && $rootScope.currentProvider.uuid) {
-                        encounter.providers.push({"uuid": $rootScope.currentProvider.uuid });
+                        encounter.providers.push({"uuid": $rootScope.currentProvider.uuid});
                     }
                 }
                 return encounter;
@@ -88,7 +88,7 @@ angular.module('bahmni.common.domain')
             };
 
             var stripExtraConceptInfo = function (obs) {
-                obs.concept = {uuid: obs.concept.uuid, name: obs.concept.name, dataType: obs.concept.dataType };
+                obs.concept = {uuid: obs.concept.uuid, name: obs.concept.name, dataType: obs.concept.dataType};
                 obs.groupMembers = obs.groupMembers || [];
                 obs.groupMembers.forEach(function (groupMember) {
                     stripExtraConceptInfo(groupMember);
@@ -157,20 +157,20 @@ angular.module('bahmni.common.domain')
                 });
             };
 
-            this.buildEncounter = function(encounter){
+            this.buildEncounter = function (encounter) {
                 encounter.observations = encounter.observations || [];
-                encounter.observations.forEach(function(obs) {
+                encounter.observations.forEach(function (obs) {
                     stripExtraConceptInfo(obs);
                 });
 
                 encounter.providers = encounter.providers || [];
 
                 var providerData = $bahmniCookieStore.get(Bahmni.Common.Constants.grantProviderAccessDataCookieName);
-                if(_.isEmpty(encounter.providers)) {
+                if (_.isEmpty(encounter.providers)) {
                     if (providerData && providerData.uuid) {
                         encounter.providers.push({"uuid": providerData.uuid});
                     } else if ($rootScope.currentProvider && $rootScope.currentProvider.uuid) {
-                        encounter.providers.push({"uuid": $rootScope.currentProvider.uuid });
+                        encounter.providers.push({"uuid": $rootScope.currentProvider.uuid});
                     }
                 }
                 return encounter;
@@ -178,7 +178,7 @@ angular.module('bahmni.common.domain')
 
             var getDefaultEncounterType = function () {
                 var url = Bahmni.Common.Constants.encounterTypeUrl;
-                return  $http.get(url + '/' + configurations.defaultEncounterType()).then(function (response) {
+                return $http.get(url + '/' + configurations.defaultEncounterType()).then(function (response) {
                     return response.data;
                 });
             };
@@ -205,13 +205,12 @@ angular.module('bahmni.common.domain')
                 });
             };
 
-            var  getDefaultEncounterTypeIfMappingNotFound = function(entityMappings){
+            var getDefaultEncounterTypeIfMappingNotFound = function (entityMappings) {
                 var encounterType = entityMappings.data.results[0] && entityMappings.data.results[0].mappings[0];
                 if (!encounterType) {
                     encounterType = getDefaultEncounterType();
                 }
                 return encounterType;
-
             };
 
             this.getEncounterType = function (programUuid, loginLocationUuid) {
@@ -227,28 +226,25 @@ angular.module('bahmni.common.domain')
                 } else {
                     return getDefaultEncounterType();
                 }
-
             };
-
 
             this.create = function (encounter) {
                 encounter = this.buildEncounter(encounter);
-
                 return $http.post(Bahmni.Common.Constants.bahmniEncounterUrl, encounter, {
-                    withCredentials:true
+                    withCredentials: true
                 });
             };
 
-            this.delete = function(encounterUuid, reason) {
+            this.delete = function (encounterUuid, reason) {
                 return $http.delete(Bahmni.Common.Constants.bahmniEncounterUrl + "/" + encounterUuid, {
-                    params: {reason : reason}
+                    params: {reason: reason}
                 });
             };
 
-            var stripExtraConceptInfo = function(obs) {
-                obs.concept = {uuid: obs.concept.uuid, name: obs.concept.name, dataType: obs.concept.dataType };
+            var stripExtraConceptInfo = function (obs) {
+                obs.concept = {uuid: obs.concept.uuid, name: obs.concept.name, dataType: obs.concept.dataType};
                 obs.groupMembers = obs.groupMembers || [];
-                obs.groupMembers.forEach(function(groupMember) {
+                obs.groupMembers.forEach(function (groupMember) {
                     stripExtraConceptInfo(groupMember);
                 });
             };
@@ -262,18 +258,18 @@ angular.module('bahmni.common.domain')
                 });
             };
 
-            this.search = function (visitUuid,encounterDate) {
+            this.search = function (visitUuid, encounterDate) {
                 if (!encounterDate) {
                     return searchWithoutEncounterDate(visitUuid);
                 }
 
                 return $http.get(Bahmni.Common.Constants.emrEncounterUrl, {
-                    params:{
-                        visitUuid : visitUuid,
-                        encounterDate : encounterDate,
-                        includeAll : Bahmni.Common.Constants.includeAllObservations
+                    params: {
+                        visitUuid: visitUuid,
+                        encounterDate: encounterDate,
+                        includeAll: Bahmni.Common.Constants.includeAllObservations
                     },
-                  withCredentials : true
+                    withCredentials: true
                 });
             };
 
@@ -284,34 +280,34 @@ angular.module('bahmni.common.domain')
             };
             this.findByEncounterUuid = function (encounterUuid) {
                 return $http.get(Bahmni.Common.Constants.bahmniEncounterUrl + '/' + encounterUuid, {
-                    params: {includeAll : true},
+                    params: {includeAll: true},
                     withCredentials: true
                 });
             };
 
-            this.getEncountersForEncounterType = function(patientUuid, encounterTypeUuid) {
+            this.getEncountersForEncounterType = function (patientUuid, encounterTypeUuid) {
                 return $http.get(Bahmni.Common.Constants.encounterUrl, {
-                    params:{
+                    params: {
                         patient: patientUuid,
                         encounterType: encounterTypeUuid,
                         v: "custom:(uuid,provider,visit:(uuid,startDatetime,stopDatetime),obs:(uuid,concept:(uuid,name),groupMembers:(id,uuid,obsDatetime,value,comment)))"
                     },
-                    withCredentials : true
+                    withCredentials: true
                 });
             };
 
-            this.getDigitized = function(patientUuid) {
-                if(offlineService.isOfflineApp()){
-                    return $q.when({"data" : {"results" : []}});
+            this.getDigitized = function (patientUuid) {
+                if (offlineService.isOfflineApp()) {
+                    return $q.when({"data": {"results": []}});
                 }
-            var patientDocumentEncounterTypeUuid = configurations.encounterConfig().getPatientDocumentEncounterTypeUuid();
+                var patientDocumentEncounterTypeUuid = configurations.encounterConfig().getPatientDocumentEncounterTypeUuid();
                 return $http.get(Bahmni.Common.Constants.encounterUrl, {
-                    params:{
+                    params: {
                         patient: patientUuid,
                         encounterType: patientDocumentEncounterTypeUuid,
                         v: "custom:(uuid,obs:(uuid))"
                     },
-                    withCredentials : true
+                    withCredentials: true
                 });
             };
 
