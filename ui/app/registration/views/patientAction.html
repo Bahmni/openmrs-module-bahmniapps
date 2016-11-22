@@ -7,6 +7,13 @@
                 ng-bind-html="::'REGISTRATION_LABEL_ENTER_VISIT' | translate">
             </button>
         </span>
+        <span data-ng-switch-when="forwardAction">
+                <button type="submit" class="right confirm"
+                        ng-click="setSubmitSource('forwardAction')"
+                        accesskey="{{ ::activeVisitConfig.shortcutKey | translate }}"
+                        ng-bind-html="::activeVisitConfig.translationKey | translate">
+                </button>
+        </span>
         <span ng-if="::showStartVisitButton()" data-ng-switch-when="startVisit">
             <div split-button options="::visitControl.visitTypes"
                  primary-option="::visitControl.defaultVisitType"
