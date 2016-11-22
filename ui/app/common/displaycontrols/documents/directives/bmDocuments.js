@@ -14,8 +14,12 @@ angular.module('bahmni.common.displaycontrol.documents')
                         });
                     }
                     $scope.recordGroups = new Bahmni.Clinical.RecordsMapper().map($scope.records);
+                    if($scope.recordGroups.length == 0) {
+                        $scope.$emit("no-data-present-event");
+                    }
                 });
             };
+
 
             $scope.shouldShowActiveVisitStar = function (records) {
                 if ($scope.config.visitUuids && $scope.config.visitUuids.length === 1) {
