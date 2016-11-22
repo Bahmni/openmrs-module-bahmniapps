@@ -11,7 +11,6 @@ angular.module('opd.documentupload')
                         scope.onSelect()(event.target.result, scope.visit);
                     };
                     reader.readAsDataURL(file);
-
                 });
             });
         };

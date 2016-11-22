@@ -223,7 +223,7 @@ angular.module('opd.documentupload')
                 };
             };
 
-            $scope.enableSaveButtonOnCommentChange = function(file, visit) {
+            $scope.enableSaveButtonOnCommentChange = function (file, visit) {
                 _.set(file, 'changed', true);
                 _.set(visit, 'changed', true);
             };
@@ -265,7 +265,7 @@ angular.module('opd.documentupload')
                     var fileUrl = file.encodedValue.replace(Bahmni.Common.Constants.documentsPath + "/", "");
                     var comment = _.isEmpty(file.comment) ? undefined : file.comment;
                     if (!visit.isSaved(file)) {
-                        visitDocument.documents.push({testUuid: file.concept.uuid, image: fileUrl, obsDateTime: getEncounterStartDateTime(visit), comment: comment})
+                        visitDocument.documents.push({testUuid: file.concept.uuid, image: fileUrl, obsDateTime: getEncounterStartDateTime(visit), comment: comment});
                     } else if (file.changed === true || file.voided === true) {
                         visitDocument.documents.push({testUuid: file.concept.uuid, image: fileUrl, voided: file.voided, obsUuid: file.obsUuid, comment: comment});
                     }
