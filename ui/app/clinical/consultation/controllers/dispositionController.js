@@ -4,13 +4,17 @@ angular.module('bahmni.clinical')
     .controller('DispositionController', ['$scope', '$q', 'dispositionService', 'retrospectiveEntryService', 'spinner', function ($scope, $q, dispositionService, retrospectiveEntryService, spinner) {
         var consultation = $scope.consultation;
 
+        var getPreviousDispositionNote = function () {
+            if (consultation.disposition && (!consultation.disposition.voided)) {
+                return _.find(consultation.disposition.additionalObs, function (obs) {
+                    return obs.concept.uuid === $scope.dispositionNoteConceptUuid;
+                });
+            }
+        };
         var getDispositionActionsPromise = function () {
             return dispositionService.getDispositionActions().then(function (response) {
                 $scope.dispositionActions = new Bahmni.Clinical.DispostionActionMapper().map(response.data.results[0].answers);
-                var previousDispositionNote = consultation.disposition && (!consultation.disposition.voided) &&
-                    _.find(consultation.disposition.additionalObs, function (obs) {
-                        return !obs.voided && obs.concept.uuid === $scope.dispositionNoteConceptUuid;
-                    });
+                var previousDispositionNote = getPreviousDispositionNote();
                 $scope.dispositionNote = _.cloneDeep(previousDispositionNote) || {concept: {uuid: $scope.dispositionNoteConceptUuid }};
                 $scope.dispositionCode = consultation.disposition && (!consultation.disposition.voided) ? consultation.disposition.code : null;
             });
@@ -35,7 +39,7 @@ angular.module('bahmni.clinical')
         };
 
         $scope.clearDispositionNote = function () {
-            $scope.dispositionNote = {concept: {uuid: $scope.dispositionNoteConceptUuid }};
+            $scope.dispositionNote.value = null;
         };
 
         var getSelectedConceptName = function (dispositionCode) {
@@ -43,28 +47,17 @@ angular.module('bahmni.clinical')
             return selectedDispositionConceptName.name;
         };
 
-        var hasDispositionChanged = function () {
-            var disposition = consultation.disposition;
-            var previousDispositionNote = consultation.disposition &&
-                _.find(consultation.disposition.additionalObs, function (obs) {
-                    return !obs.voided && obs.concept.uuid === $scope.dispositionNoteConceptUuid;
-                });
-            var previousValue = previousDispositionNote && previousDispositionNote.value;
-            return !disposition || $scope.dispositionCode != disposition.code || $scope.dispositionNote.value != previousValue;
-        };
-
         var getSelectedDisposition = function () {
             if ($scope.dispositionCode) {
-                if (!$scope.dispositionNote.value) {
-                    $scope.dispositionNote.voided = true;
-                }
+                $scope.dispositionNote.voided = !$scope.dispositionNote.value;
                 var disposition = {
-                    additionalObs: [_.cloneDeep($scope.dispositionNote)],
+                    additionalObs: [],
+                    dispositionDateTime: consultation.disposition.dispositionDateTime,
                     code: $scope.dispositionCode,
                     conceptName: getSelectedConceptName($scope.dispositionCode)
                 };
-                if (!hasDispositionChanged()) {
-                    disposition.dispositionDateTime = consultation.disposition.dispositionDateTime;
+                if ($scope.dispositionNote.value || $scope.dispositionNote.uuid) {
+                    disposition.additionalObs = [_.clone($scope.dispositionNote)];
                 }
                 return disposition;
             }
