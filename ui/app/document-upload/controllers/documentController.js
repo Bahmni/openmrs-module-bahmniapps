@@ -263,8 +263,8 @@ angular.module('opd.documentupload')
 
                 visit.files.forEach(function (file) {
                     var fileUrl = file.encodedValue.replace(Bahmni.Common.Constants.documentsPath + "/", "");
+                    var comment = _.isEmpty(file.comment) ? undefined : file.comment;
                     if (!visit.isSaved(file)) {
-                        var comment = _.isEmpty(file.comment) ? undefined : file.comment;
                         visitDocument.documents.push({testUuid: file.concept.uuid, image: fileUrl, obsDateTime: getEncounterStartDateTime(visit), comment: comment})
                     } else if (file.changed === true || file.voided === true) {
                         visitDocument.documents.push({testUuid: file.concept.uuid, image: fileUrl, voided: file.voided, obsUuid: file.obsUuid, comment: comment});
