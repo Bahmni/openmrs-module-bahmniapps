@@ -29,7 +29,6 @@ angular.module('bahmni.common.displaycontrol.observation')
                     if (_.isEmpty($scope.bahmniObservations)) {
                         $scope.noObsMessage = Bahmni.Common.Constants.messageForNoObservation;
                         $scope.$emit("no-data-present-event");
-
                     } else {
                         if (!$scope.showGroupDateTime) {
                             _.forEach($scope.bahmniObservations, function (bahmniObs) {
