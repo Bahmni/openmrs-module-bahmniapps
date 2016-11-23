@@ -29,7 +29,7 @@ angular.module('bahmni.common.displaycontrol.admissiondetails')
             });
 
             $scope.isDataPresent = function () {
-                if (!$scope.visitSummary.admissionDetails && !$scope.visitSummary.dischargeDetails) {
+                if (!$scope.visitSummary || (!$scope.visitSummary.admissionDetails && !$scope.visitSummary.dischargeDetails)) {
                     return $scope.$emit("no-data-present-event") && false;
                 }
 

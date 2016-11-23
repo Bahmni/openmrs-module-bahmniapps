@@ -12,7 +12,8 @@ angular.module('bahmni.clinical')
                 };
 
                 $scope.hasVisits = function () {
-                    return $scope.visits && $scope.visits.length > 0;
+                    if ($scope.visits && $scope.visits.length > 0) return true;
+                    return $scope.$emit("no-data-present-event") && false;
                 };
 
                 $scope.params = angular.extend(
@@ -67,10 +68,6 @@ angular.module('bahmni.clinical')
 
                 $scope.getProviderDisplayName = function (encounter) {
                     return encounter.encounterProviders.length > 0 ? encounter.encounterProviders[0].provider.display : null;
-                };
-
-                $scope.hasVisits = function () {
-                    return $scope.visits && $scope.visits.length > 0;
                 };
 
                 var getVisits = function () {
