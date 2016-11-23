@@ -26,7 +26,8 @@ angular.module('bahmni.clinical')
             $scope.params = angular.extend(defaultParams, $scope.params);
 
             $scope.hasLabOrders = function () {
-                return $scope.accessions && $scope.accessions.length > 0;
+                if ($scope.accessions && $scope.accessions.length > 0) return true;
+                return $scope.$emit("no-data-present-event") && false;
             };
 
             $scope.shouldShowResults = function (labOrderResult) {
