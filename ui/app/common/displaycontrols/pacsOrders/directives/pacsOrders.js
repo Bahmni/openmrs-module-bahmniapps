@@ -29,6 +29,7 @@ angular.module('bahmni.common.displaycontrol.pacsOrders')
                     return getOrders().then(function () {
                         if (_.isEmpty($scope.bahmniOrders)) {
                             $scope.noOrdersMessage = $scope.orderType;
+                            $scope.$emit("no-data-present-event");
                         }
                     });
                 };
