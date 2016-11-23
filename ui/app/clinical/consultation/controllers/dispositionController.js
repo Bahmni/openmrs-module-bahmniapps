@@ -52,7 +52,7 @@ angular.module('bahmni.clinical')
                 $scope.dispositionNote.voided = !$scope.dispositionNote.value;
                 var disposition = {
                     additionalObs: [],
-                    dispositionDateTime: consultation.disposition.dispositionDateTime,
+                    dispositionDateTime: consultation.disposition && consultation.disposition.dispositionDateTime,
                     code: $scope.dispositionCode,
                     conceptName: getSelectedConceptName($scope.dispositionCode)
                 };
