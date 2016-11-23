@@ -43,6 +43,10 @@ angular.module('bahmni.common.displaycontrol.forms')
                         } else {
                             $scope.formData = sortedFormDataByDate;
                         }
+
+                        if ($scope.formData.length == 0) {
+                            $scope.$emit("no-data-present-event");
+                        }
                     });
                 };
 
