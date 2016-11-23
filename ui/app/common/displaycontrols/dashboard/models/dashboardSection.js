@@ -45,7 +45,7 @@
         this.patientAttributes = section.patientAttributes || [];
         this.viewName = getViewUrl(this);
         this.hideEmptyDisplayControl = section.hideEmptyDisplayControl != undefined ? section.hideEmptyDisplayControl : true;
-        this.isDataPresent = true;
+        this.isDataAvailable = true;
 
         this.id = getId(this, $filter);
     };
