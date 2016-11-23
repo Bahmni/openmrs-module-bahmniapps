@@ -14,7 +14,7 @@ angular.module('bahmni.common.displaycontrol.diagnosis')
                             });
                         }
                         $scope.isDataPresent = function () {
-                            if ($scope.allDiagnoses && $scope.allDiagnoses.length == 0){
+                            if ($scope.allDiagnoses && $scope.allDiagnoses.length == 0) {
                                 $scope.$emit("no-data-present-event");
                                 return false;
                             }
