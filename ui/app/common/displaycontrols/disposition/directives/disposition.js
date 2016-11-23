@@ -14,6 +14,7 @@ angular.module('bahmni.common.displaycontrol.disposition')
 
                     if (_.isEmpty($scope.dispositions)) {
                         $scope.noDispositionsMessage = Bahmni.Common.Constants.messageForNoDisposition;
+                        $scope.$emit("no-data-present-event");
                     }
                 };
 
