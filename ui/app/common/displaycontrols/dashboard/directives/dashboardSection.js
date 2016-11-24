@@ -2,9 +2,9 @@
 
 angular.module('bahmni.common.displaycontrol.dashboard')
 
-    .directive('dashboardSection', ["$rootScope", function ($rootScope) {
+    .directive('dashboardSection', function () {
         var controller = function ($scope) {
-            $scope.$on("no-data-present-event", function (event, data) {
+            $scope.$on("no-data-present-event", function () {
                 $scope.section.isDataAvailable = !$scope.section.hideEmptyDisplayControl;
             });
         };
@@ -14,4 +14,4 @@ angular.module('bahmni.common.displaycontrol.dashboard')
             controller: controller,
             templateUrl: "../common/displaycontrols/dashboard/views/dashboardSection.html"
         };
-    }]);
+    });
