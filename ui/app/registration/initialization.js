@@ -75,19 +75,6 @@ angular.module('bahmni.registration').factory('initialization',
                 }
             };
 
-            var loadFormConditionsIfOffline = function () {
-                var isOfflineApp = offlineService.isOfflineApp();
-                if (isOfflineApp) {
-                    if (offlineService.isAndroidApp()) {
-                        offlineDbService = androidDbService;
-                    }
-                    return offlineDbService.getConfig("clinical").then(function (config) {
-                        var script = config.value['formConditions.js'];
-                        eval(script);
-                    });
-                }
-            };
-
             return function () {
                 return spinner.forPromise(authenticator.authenticateUser()
                 .then(initApp)
@@ -96,7 +83,6 @@ angular.module('bahmni.registration').factory('initialization',
                 .then(mapRelationsTypeWithSearch)
                 .then(loggedInLocation)
                 .then(loadValidators(appService.configBaseUrl(), "registration"))
-                .then(loadFormConditionsIfOffline)
                 .then(mergeFormConditions)
             );
             };
