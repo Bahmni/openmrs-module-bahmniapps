@@ -279,7 +279,8 @@ module.exports = function (grunt) {
                             'components/**/*',
                             'images/**/*.{gif,webp}',
                             'styles/**/*.css',
-                            '**/*/*.json',
+                            'clinical/config/*.json',
+                            'i18n/**/*.json',
                             'lib/**/*'
                         ]
                     }
