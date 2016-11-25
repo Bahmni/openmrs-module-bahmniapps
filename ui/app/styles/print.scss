@@ -684,20 +684,20 @@ h3 {
         }
     }
     .patient-monitering-table {
-        height: 970px;
-        page-break-before: always;
-        page-break-after: always;
-        position: relative;
-        .rotate{
-            transform: rotate(-90deg);
-            position: absolute;
-            margin-top: -440px;
-            bottom: 0px;
-            width: 880px;
-            top: 50%;
-            left: 50%;
-            margin-left: -310px;
-        }
+        //height: 970px;
+        //page-break-before: always;
+        //page-break-after: always;
+        //position: relative;
+        //.rotate{
+        //    transform: rotate(-90deg);
+        //    position: absolute;
+        //    margin-top: -440px;
+        //    bottom: 0px;
+        //    width: 880px;
+        //    top: 50%;
+        //    left: 50%;
+        //    margin-left: -310px;
+        //}
         .legends {
             font-family: Arial, sans-serif;
             span {
@@ -721,40 +721,41 @@ h3 {
            width: 100%;
            margin-left:0;
            overflow: hidden;
+           tr, td, th{
+             page-break-inside: avoid !important;
+             height:auto !important;
+           }
            table tr {
                td,th{
                    font-size: 7pt;
                    padding: 5px;
+                   border: 1px solid $black !important;
                    &.monitoring-fixed-column{
                        position:static;
-                       width:130px;
+                       width:100px;
                        white-space: normal;
                        height:auto;
                    }
                    &.monitoring-results {
-                       position: relative;
-                       &:before{
-                           content:"";
-                           position: absolute;
-                           top:50%;
-                           transform: translate(-50%);
-                           left:50%;
+                       span{
+                           margin-top: 50%;
+                           transform: translateY(-50%);
+                           text-align: center;
                            font-size: 12px;
-                           font-weight: bolder;
                        }
                        &--green {
-                           &:before{
-                               content:"✓";
+                           span.monitoring-results-print--green{
+                               display: block;
                            }
                        }
                        &--purple {
-                           &:before{
-                               content: "✗";
+                           span.monitoring-results-print--purple{
+                               display: block;
                            }
                        }
-                       &--yellow{
-                           &:before{
-                               content:"∅";
+                       &--yellow {
+                           span.monitoring-results-print--yellow{
+                               display: block;
                            }
                        }
                    }
