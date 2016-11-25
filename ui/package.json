@@ -14,6 +14,7 @@
         "eslint-plugin-angular": "^1.4.1",
         "eslint-plugin-promise": "^3.3.0",
         "eslint-plugin-standard": "^2.0.1",
+        "bower": "^1.7.9",
         "grunt": "~0.4.5",
         "grunt-contrib-clean": "^0.5.0",
         "grunt-comment-toggler": "^0.2.2",
@@ -46,7 +47,8 @@
         "react-dom": "^15.2.1"
     },
     "scripts": {
-        "test": "karma start test/config/karma.conf.js"
+        "test": "karma start test/config/karma.conf.js",
+        "postinstall": "./node_modules/.bin/bower --allow-root install"
     },
     "repository": {
         "type": "git",
