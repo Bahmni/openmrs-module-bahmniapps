@@ -29,11 +29,7 @@ angular.module('bahmni.common.domain')
             };
 
             var getDefaultEncounterType = function () {
-                var deferred = $q.defer();
-                offlineEncounterService.getDefaultEncounterType().then(function(response) {
-                    deferred.resolve(response);
-                });
-                return deferred.promise;
+                return offlineEncounterService.getDefaultEncounterType();
             };
 
             var getEncounterTypeBasedOnLoginLocation = function () {
@@ -71,7 +67,6 @@ angular.module('bahmni.common.domain')
                 encounterData.visitUuid = encounterData.visitUuid || null;
                 encounterData.encounterDateTime = encounterData.encounterDateTime || Bahmni.Common.Util.DateUtil.now();
                 encounterData.visitType = encounterData.visitType || 'Field';
-                encounterData.encounterTypeUuid = null;
                 this.buildEncounter(encounterData);
                 return getDefaultEncounterType().then(function (encounterType) {
                     encounterData.encounterType = encounterData.encounterType || encounterType.data;

@@ -140,8 +140,7 @@ describe('CreatePatientRequestMapper', function () {
                 givenName: "gname",
                 familyName: "fname",
                 middleName: undefined,
-                "preferred": false,
-                display: "gname fname"
+                "preferred": false
             }
         ]);
 
