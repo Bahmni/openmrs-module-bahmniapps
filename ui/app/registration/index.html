@@ -116,6 +116,8 @@
         <script src="../common/domain/observationFilter.js"></script>
         <script src="../common/domain/helpers/domainHelpers.js"></script>
         <script src="../common/domain/mappers/conceptMapper.js"></script>
+        <script src="../common/domain/services/encounterService.js"></script>
+        <script src="../common/domain/services/observationsService.js"></script>
         <script src="../common/domain/services/providerService.js"></script>
         <script src="../common/domain/encounterConfig.js"></script>
         <script src="../common/domain/mappers/observationValueMapper.js"></script>
@@ -179,6 +181,7 @@
         <script src="../common/concept-set/models/customRepresentationBuilder.js"></script>
         <script src="../common/concept-set/models/conceptSetSection.js"></script>
         <script src="../common/concept-set/mappers/observationMapper.js"></script>
+        <script src="../common/concept-set/services/conceptSetServices.js"></script>
         <script src="../common/concept-set/services/conceptService.js"></script>
         <script src="../common/concept-set/services/conceptSetUiConfigService.js"></script>
         <script src="../common/ui-helper/filters/thumbnail.js"></script>
@@ -281,10 +284,6 @@
         <script src="../common/domain/services/visitService.js"></script>
         <script src="../common/util/dateTimeFormatter.js"></script>
         <script src="../common/logging/services/loggingService.js"></script>
-        <script src="../common/domain/services/observationsService.js"></script>
-        <script src="../common/domain/services/encounterService.js"></script>
-        <script src="../common/concept-set/services/conceptSetServices.js"></script>
-
         <!-- endbuild -->
         <!-- @endif -->
 
@@ -313,18 +312,11 @@
         <!-- build:js registration.min.chrome.js -->
         <!-- comments:toggle html -->
             <!--<script src="offline/offlinePatientServiceStrategy.js"></script>-->
-            <!--<script src="../common/domain/offline/offlineObservationService.js"></script>-->
-            <!--<script src="../common/domain/offline/offlineEncounterService.js"></script>-->
-            <!--<script src="../common/concept-set/offline/chrome/offlineConceptSetService.js"></script>-->
-
             <!--<script src="offline/chrome/chromePatientServiceStrategy.js"></script>-->
             <!--<script src="../common/domain/offline/chrome/chromeLocationService.js"></script>-->
             <!--<script src="../common/domain/offline/chrome/chromeConfigurationService.js"></script>-->
             <!--<script src="../common/app-framework/offline/chrome/chromeLoadConfigService.js"></script>-->
             <!--<script src="../common/domain/offline/chrome/chromeVisitService.js"></script>-->
-            <!--<script src="../common/domain/offline/chrome/chromeEncounterService.js"></script>-->
-            <!--<script src="../common/domain/offline/chrome/chromeObservationService.js"></script>-->
-
             <!--<script src="../common/util/dateTimeFormatter.js"></script>-->
             <!--<script src="../common/logging/offline/chromeLoggingService.js"></script>-->
             <!--<script src="../common/offline/services/chrome/chromeAppInfoStrategy.js"></script>-->
@@ -339,10 +331,6 @@
             <!-- build:js registration.min.android.js -->
         <!-- comments:toggle html -->
             <!--<script src="offline/offlinePatientServiceStrategy.js"></script>-->
-            <!--<script src="../common/domain/offline/offlineObservationService.js"></script>-->
-            <!--<script src="../common/domain/offline/offlineEncounterService.js"></script>-->
-            <!--<script src="../common/concept-set/offline/chrome/offlineConceptSetService.js"></script>-->
-
             <!--<script src="offline/android/androidPatientServiceStrategy.js"></script>-->
             <!--<script src="../common/domain/offline/android/androidLocationService.js"></script>-->
             <!--<script src="../common/domain/offline/android/androidConfigurationService.js"></script>-->
@@ -350,8 +338,6 @@
             <!--<script src="../common/domain/offline/android/androidVisitService.js"></script>-->
             <!--<script src="../common/util/androidDateTimeFormatter.js"></script>-->
             <!--<script src="../common/logging/offline/androidLoggingService.js"></script>-->
-            <!--<script src="../common/domain/offline/android/androidEncounterService.js"></script>-->
-            <!--<script src="../common/domain/offline/android/androidObservationService.js"></script>-->
             <!--<script src="../common/offline/services/android/androidAppInfoStrategy.js"></script>-->
             <!--<script src="../common/ui-helper/controllers/androidAppUpdateController.js"></script>-->
         <!-- endcomments -->
