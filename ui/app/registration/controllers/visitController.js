@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('bahmni.registration')
-    .controller('VisitController', ['$window', '$scope', '$rootScope', '$state', '$bahmniCookieStore', 'patientService', 'encounterService', '$stateParams', 'spinner', '$timeout', '$q', 'appService', 'openmrsPatientMapper', 'contextChangeHandler', 'messagingService', 'sessionService', 'visitService', '$location', '$translate',
-        function ($window, $scope, $rootScope, $state, $bahmniCookieStore, patientService, encounterService, $stateParams, spinner, $timeout, $q, appService, openmrsPatientMapper, contextChangeHandler, messagingService, sessionService, visitService, $location, $translate) {
+    .controller('VisitController', ['$window', '$scope', '$rootScope', '$state', '$bahmniCookieStore', 'patientService', 'encounterService', '$stateParams', 'spinner', '$timeout', '$q', 'appService', 'openmrsPatientMapper', 'contextChangeHandler', 'messagingService', 'sessionService', 'visitService', '$location', '$translate','offlineService',
+        function ($window, $scope, $rootScope, $state, $bahmniCookieStore, patientService, encounterService, $stateParams, spinner, $timeout, $q, appService, openmrsPatientMapper, contextChangeHandler, messagingService, sessionService, visitService, $location, $translate,offlineService) {
             var vm = this;
             var patientUuid = $stateParams.patientUuid;
             var extensions = appService.getAppDescriptor().getExtensions("org.bahmni.registration.conceptSetGroup.observations", "config");
@@ -18,23 +18,29 @@ angular.module('bahmni.registration')
             var visitLocationUuid = $rootScope.visitLocation;
 
             var getPatient = function () {
-                return patientService.get(patientUuid).then(function (openMRSPatient) {
+                var deferred = $q.defer();
+                patientService.get(patientUuid).then(function (openMRSPatient) {
+                    deferred.resolve(openMRSPatient);
                     $scope.patient = openmrsPatientMapper.map(openMRSPatient);
                     $scope.patient.name = openMRSPatient.patient.person.names[0].display;
                     $scope.patient.uuid = openMRSPatient.patient.uuid;
                 });
+                return deferred.promise;
             };
 
             var getActiveEncounter = function () {
-                return encounterService.find({
+                var deferred = $q.defer();
+                encounterService.find({
                     "patientUuid": patientUuid,
                     "providerUuids": !_.isEmpty($scope.currentProvider.uuid) ? [$scope.currentProvider.uuid] : null,
                     "includeAll": false,
                     locationUuid: locationUuid,
                     encounterTypeUuids: [regEncounterTypeUuid]
-                }).success(function (data) {
-                    $scope.observations = data.observations;
+                }).then(function (response) {
+                    deferred.resolve(response);
+                    $scope.observations = response.data.observations;
                 });
+                return deferred.promise;
             };
 
             $scope.hideFields = appService.getAppDescriptor().getConfigValue("hideFields");
@@ -53,7 +59,10 @@ angular.module('bahmni.registration')
                 $scope.encounter = {
                     patientUuid: $scope.patient.uuid,
                     locationUuid: locationUuid,
-                    encounterTypeUuid: regEncounterTypeUuid
+                    encounterTypeUuid: regEncounterTypeUuid,
+                    orders: [],
+                    drugOrders: [],
+                    extensions: {}
                 };
 
                 $bahmniCookieStore.put(Bahmni.Common.Constants.grantProviderAccessDataCookieName, selectedProvider, {
@@ -64,9 +73,18 @@ angular.module('bahmni.registration')
                 $scope.encounter.observations = $scope.observations;
                 $scope.encounter.observations = new Bahmni.Common.Domain.ObservationFilter().filter($scope.encounter.observations);
 
-                var createPromise = encounterService.create($scope.encounter);
+                var createPromise = offlineService.isOfflineApp() ? encounterPromise() : encounterService.create($scope.encounter);
                 spinner.forPromise(createPromise);
                 return createPromise;
+            };
+
+            var encounterPromise = function() {
+                return getActiveEncounter().then(function(response) {
+                     $scope.encounter.encounterUuid = response.data.encounterUuid;
+                     $scope.encounter.encounterDateTime = response.data.encounterDateTime;
+                }).then(function() {
+                    return encounterService.create($scope.encounter);
+                });
             };
 
             var isUserPrivilegedToCloseVisit = function () {
