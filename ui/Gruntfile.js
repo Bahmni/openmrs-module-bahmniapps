@@ -15,6 +15,60 @@ module.exports = function (grunt) {
         nodeModules: 'node_modules'
     };
 
+    var libraryCSSFiles = [
+        'components/select2/select2.css',
+        'components/ngDialog/css/ngDialog.min.css',
+        'components/ngDialog/css/ngDialog-theme-default.min.css',
+        'components/ngDialog/css/ngDialog-theme-plain.min.css',
+        'components/ng-tags-input/ng-tags-input.bootstrap.min.css',
+        'components/ng-tags-input/ng-tags-input.min.css',
+        'components/offline/themes/*.css',
+        'components/jquery-ui/themes/smoothness/jquery-ui.min.css'
+    ];
+
+    var libraryJSFiles = [
+        'components/jquery/jquery.min.js',
+        'components/lodash/dist/lodash.min.js',
+        'components/jquery.cookie/jquery.cookie.js',
+        'components/keyboardjs/dist/keyboard.min.js',
+        'components/angular/angular.min.js',
+        'components/ng-tags-input/ng-tags-input.min.js',
+        'components/angular-sanitize/angular-sanitize.min.js',
+        'components/angular-animate/angular-animate.min.js',
+        'components/angular-bindonce/bindonce.min.js',
+        'components/angular-recursion/angular-recursion.min.js',
+        'components/ngInfiniteScroll/build/ng-infinite-scroll.min.js',
+        'components/moment/min/moment.min.js',
+        'components/select2/select2.min.js',
+        'components/angular-ui-select2/src/select2.js',
+        'components/angular-ui-router/release/angular-ui-router.min.js',
+        'components/fastclick/lib/fastclick.js',
+        'components/ngDialog/js/ngDialog.min.js',
+        'components/stacktrace-js/dist/stacktrace.min.js',
+        'components/ng-clip/dest/ng-clip.min.js',
+        'components/zeroclipboard/dist/ZeroClipboard.min.js',
+        'components/jquery.scrollTo/jquery.scrollTo.min.js',
+        'components/angular-translate/angular-translate.min.js',
+        'components/angular-cookies/angular-cookies.min.js',
+        'components/angular-translate-loader-static-files/angular-translate-loader-static-files.min.js',
+        'components/angular-translate-storage-cookie/angular-translate-storage-cookie.min.js',
+        'components/angular-translate-storage-local/angular-translate-storage-local.min.js',
+        'components/angular-translate-handler-log/angular-translate-handler-log.min.js',
+        'components/angular-file-upload/dist/angular-file-upload.min.js',
+        'components/angular-elastic/elastic.js',
+        'components/hustle/hustle.js',
+        'components/offline/offline.min.js',
+        'components/react/react.min.js',
+        'components/react/react-dom.min.js',
+        'components/bahmni-form-controls/helpers.js',
+        'components/bahmni-form-controls/bundle.js',
+        'components/lovefield/dist/lovefield.min.js',
+        'components/purl/purl.js',
+        'components/angular-route/angular-route.min.js',
+        'components/crypto-js/crypto-js.js',
+        'components/jquery-ui/ui/minified/jquery-ui.custom.min.js'
+    ];
+
     try {
         yeomanConfig.app = require('./package.json').appPath || yeomanConfig.app;
     } catch (e) {
@@ -274,9 +328,10 @@ module.exports = function (grunt) {
                         cwd: '<%= yeoman.app %>',
                         dest: '<%= yeoman.dist %>',
                         src: [
+                            libraryCSSFiles,
+                            libraryJSFiles,
                             '*.{ico,txt,html,js}',
                             '.htaccess',
-                            'components/**/*',
                             'images/**/*.{gif,webp}',
                             'styles/**/*.css',
                             'clinical/config/*.json',
