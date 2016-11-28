@@ -12,6 +12,14 @@ rm -rf $ROOT_DIR/target/${ZIP_FILE_NAME}*.zip
 
 npm install
 bower install
+grunt bundle
+grunt uglify-and-rename
+
+cd $ROOT_DIR
+
+rm -rf cacheChromeDist cacheAndroidDist
+cp -r dist cacheChromeDist
+cp -r dist cacheAndroidDist
 
 if [ $(pgrep Xvfb) ]; then
     XVFB_PID=$(pgrep Xvfb)
@@ -23,16 +31,20 @@ Xvfb :99 &
 XVFB_PID=$!
 echo "Starting Xvfb process $XVFB_PID"
 
-grunt
-cd $ROOT_DIR/dist && zip -r ../target/${ZIP_FILE_NAME}.zip *
+grunt web
+cd dist && zip -r ../target/${ZIP_FILE_NAME}.zip *
 
 cd ..
+rm -rf dist
+cp -r cacheChromeDist dist
 grunt chrome
-cd $ROOT_DIR/dist && zip -r ../target/${ZIP_FILE_NAME}_chrome.zip *
+cd dist && zip -r ../target/${ZIP_FILE_NAME}_chrome.zip *
 
 cd ..
+rm -rf dist
+cp -r cacheAndroidDist dist
 grunt android
-cd $ROOT_DIR/dist && zip -r ../target/${ZIP_FILE_NAME}_android.zip *
+cd dist && zip -r ../target/${ZIP_FILE_NAME}_android.zip *
 
 echo "Killing Xvfb process $XVFB_PID"
 kill $XVFB_PID
