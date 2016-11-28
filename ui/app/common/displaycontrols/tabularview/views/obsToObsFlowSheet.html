@@ -20,7 +20,7 @@
                     <thead>
                         <tr>
                             <th ng-if="isMonthAvailable()"  ng-class="{'obsTableEdit' : header.name === config.groupByConcept && isEditable }"> Month</th>
-                            <th ng-repeat="header in obsTable.headers" ng-if="header.name != 'Month'"  ng-class="{'obsTableEdit' : header.name === config.groupByConcept && isEditable,'obsTableHeaderName': getHeaderName(header).indexOf('term') > -1}">
+                            <th ng-repeat="header in obsTable.headers" ng-if="header.name != 'Month'"  ng-class="{'obsTableEdit' : header.name === config.groupByConcept && isEditable,'obsTableHeaderName': getHeaderName(header).indexOf('term') > -1 , 'obsTableDate' : header.name.toLowerCase().indexOf('date') > -1}">
                                 {{getHeaderName(header)}}
                                 <hint concept-details="header"/>
                             </th>
