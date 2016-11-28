@@ -141,10 +141,12 @@ module.exports = function (grunt) {
                     padding: 4,
                     removeCommands: true
                 },
-                files: {"dist/offline/index.html": "dist/offline/index.html",
+                files: {
+                    "dist/offline/index.html": "dist/offline/index.html",
                     "dist/registration/index.html": "dist/registration/index.html",
                     "dist/clinical/index.html": "dist/clinical/index.html",
-                    "dist/home/index.html": "dist/home/index.html"}
+                    "dist/home/index.html": "dist/home/index.html"
+                }
             }
         },
         eslint: {
@@ -415,7 +417,12 @@ module.exports = function (grunt) {
                         src: ['admin.*.js'],
                         dest: '<%= yeoman.dist %>/admin/'
                     },
-                    {expand: true, cwd: '<%= yeoman.dist %>', src: ['offline.*.js'], dest: '<%= yeoman.dist %>/offline/'},
+                    {
+                        expand: true,
+                        cwd: '<%= yeoman.dist %>',
+                        src: ['offline.*.js'],
+                        dest: '<%= yeoman.dist %>/offline/'
+                    },
                     {expand: true, cwd: '<%= yeoman.root %>', src: ['common.*.js'], dest: '<%= yeoman.dist %>/'},
                     {
                         expand: true,
@@ -577,11 +584,8 @@ module.exports = function (grunt) {
 
     grunt.registerTask('test', ['karma:unit', 'coverage']);
 
-    grunt.registerTask('chrometest', ['karma:chrome']);
-
-    grunt.registerTask('androidtest', ['karma:android']);
-
-    grunt.registerTask('dist', [
+    grunt.registerTask('bundle', [
+        'eslint',
         'copy:nodeModules',
         'clean:dist',
         'compass:dist',
@@ -597,23 +601,6 @@ module.exports = function (grunt) {
         'usemin'
     ]);
 
-    grunt.registerTask('bundle', [
-        'npm-install',
-        'bower-install',
-        'eslint',
-        'clean:dist',
-        'compass:dist',
-        'useminPrepare',
-        'ngAnnotate',
-        'concat',
-        'preprocess',
-        'imagemin',
-        'htmlmin',
-        'cssmin',
-        'copy:dist',
-        'usemin'
-    ]);
-
     grunt.registerTask('devbundle', [
         'clean:offlineDist',
         'copy:offlineDist'
@@ -622,25 +609,23 @@ module.exports = function (grunt) {
     grunt.registerTask('build', [
         'npm-install',
         'bower-install',
-        'eslint',
-        'dist'
+        'bundle'
     ]);
-
-    grunt.registerTask('tests', function (app) {
-        grunt.task.run((app || '') + 'test');
-    });
 
     grunt.registerTask('uglify-and-rename', [
         'uglify',
         'rename:minified'
     ]);
 
-    grunt.registerTask('default', ['build', 'tests', 'uglify-and-rename', 'preprocess:web']);
-    grunt.registerTask('dev', ['build', 'tests', 'rename', 'preprocess:web']);
-    grunt.registerTask('chrome', ['bundle', 'tests:chrome', 'uglify-and-rename', 'preprocess:chrome']);
+    grunt.registerTask('dev', ['build', 'test']);
     grunt.registerTask('devchrome', ['devbundle', 'preprocess:chrome', 'toggleComments', 'clean:chromeApp', 'copy:chromeApp']);
-    grunt.registerTask('android', ['bundle', 'tests:android', 'uglify-and-rename', 'preprocess:android']);
     grunt.registerTask('devandroid', ['devbundle', 'preprocess:android', 'toggleComments', 'clean:androidApp', 'copy:androidApp']);
+
+    grunt.registerTask('default', ['bundle', 'uglify-and-rename', 'test', 'preprocess:web']);
+
+    grunt.registerTask('web', ['test', 'preprocess:web']);
+    grunt.registerTask('chrome', ['karma:chrome', 'preprocess:chrome']);
+    grunt.registerTask('android', ['karma:android', 'preprocess:android']);
 
     grunt.registerTask('bower-install', 'install dependencies using bower', function () {
         var exec = require('child_process').exec;
