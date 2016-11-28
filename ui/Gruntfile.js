@@ -251,17 +251,10 @@ module.exports = function (grunt) {
         },
         usemin: {
             html: [
-                '<%= yeoman.dist %>/patients/**/*.html',
-                '<%= yeoman.dist %>/clinical/**/*.html',
-                '<%= yeoman.dist %>/adt/**/*.html',
-                '<%= yeoman.dist %>/common/**/*.html',
-                '<%= yeoman.dist %>/orders/**/*.html',
-                '<%= yeoman.dist %>/home/**/*.html',
-                '<%= yeoman.dist %>/admin/**/*.html',
-                '<%= yeoman.dist %>/offline/**/*.html',
-                '<%= yeoman.dist %>/reports/**/*.html',
-                '<%= yeoman.dist %>/registration/**/*.html',
-                '<%= yeoman.dist %>/document-upload/**/*.html'
+                '<%= yeoman.dist %>/**/index.html',
+                '<%= yeoman.dist %>/clinical/common/views/visitTabPrint.html',
+                '<%= yeoman.dist %>/clinical/dashboard/views/dashboardPrint.html',
+                '<%= yeoman.dist %>/common/displaycontrols/prescription/views/prescription.html'
             ],
             css: '<%= yeoman.dist %>/styles/**/*.css',
             options: {
