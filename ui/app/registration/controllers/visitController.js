@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('bahmni.registration')
-    .controller('VisitController', ['$window', '$scope', '$rootScope', '$state', '$bahmniCookieStore', 'patientService', 'encounterService', '$stateParams', 'spinner', '$timeout', '$q', 'appService', 'openmrsPatientMapper', 'contextChangeHandler', 'messagingService', 'sessionService', 'visitService', '$location', '$translate','offlineService',
-        function ($window, $scope, $rootScope, $state, $bahmniCookieStore, patientService, encounterService, $stateParams, spinner, $timeout, $q, appService, openmrsPatientMapper, contextChangeHandler, messagingService, sessionService, visitService, $location, $translate,offlineService) {
+    .controller('VisitController', ['$window', '$scope', '$rootScope', '$state', '$bahmniCookieStore', 'patientService', 'encounterService', '$stateParams', 'spinner', '$timeout', '$q', 'appService', 'openmrsPatientMapper', 'contextChangeHandler', 'messagingService', 'sessionService', 'visitService', '$location', '$translate', 'offlineService',
+        function ($window, $scope, $rootScope, $state, $bahmniCookieStore, patientService, encounterService, $stateParams, spinner, $timeout, $q, appService, openmrsPatientMapper, contextChangeHandler, messagingService, sessionService, visitService, $location, $translate, offlineService) {
             var vm = this;
             var patientUuid = $stateParams.patientUuid;
             var extensions = appService.getAppDescriptor().getExtensions("org.bahmni.registration.conceptSetGroup.observations", "config");
@@ -78,11 +78,11 @@ angular.module('bahmni.registration')
                 return createPromise;
             };
 
-            var encounterPromise = function() {
-                return getActiveEncounter().then(function(response) {
-                     $scope.encounter.encounterUuid = response.data.encounterUuid;
-                     $scope.encounter.encounterDateTime = response.data.encounterDateTime;
-                }).then(function() {
+            var encounterPromise = function () {
+                return getActiveEncounter().then(function (response) {
+                    $scope.encounter.encounterUuid = response.data.encounterUuid;
+                    $scope.encounter.encounterDateTime = response.data.encounterDateTime;
+                }).then(function () {
                     return encounterService.create($scope.encounter);
                 });
             };

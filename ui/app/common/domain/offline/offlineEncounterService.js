@@ -30,7 +30,7 @@ angular.module('bahmni.common.domain')
 
             var getDefaultEncounterType = function () {
                 var deferred = $q.defer();
-                offlineEncounterService.getDefaultEncounterType().then(function(response) {
+                offlineEncounterService.getDefaultEncounterType().then(function (response) {
                     deferred.resolve(response);
                 });
                 return deferred.promise;
