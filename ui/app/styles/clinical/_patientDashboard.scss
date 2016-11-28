@@ -971,6 +971,9 @@ table.pivot-table {
       @media screen and (max-width: 1024px) {
         table-layout:auto;
       }
+      td,th{
+        word-break: break-word;
+      }
     }
   }
   .tabular-obs table tr td:first-child {
@@ -984,10 +987,14 @@ table.pivot-table {
     color: $darkGray;
   }
   .tabular-obs table tr th.obsTableHeaderName{
-    width:155px;
-  }
+     width:155px;
+   }
   .tabular-obs table tr th.obsTableEdit{
     width:170px;
+  }
+  .tabular-obs table tr th.obsTableDate{
+    width:75px;
+    word-break: normal;
   }
 
   .tabular-obs table tr td.obsTableEdit{
