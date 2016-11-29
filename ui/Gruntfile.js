@@ -1,6 +1,10 @@
 'use strict';
 
 module.exports = function (grunt) {
+
+    // Fix for 'Warning: Possible EventEmitter memory leak detected.' Fails only on go-agents.
+    require('events').defaultMaxListeners = 100;
+
     // load all grunt tasks
     require('matchdep').filterDev('grunt-*').forEach(grunt.loadNpmTasks);
 
