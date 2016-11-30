@@ -138,6 +138,7 @@ angular.module('bahmni.common.conceptSet')
                 };
 
                 var clearFieldValuesOnDisabling = function (obs) {
+                    obs.comment = undefined;
                     if (obs.value || obs.isBoolean) {
                         obs.value = undefined;
                     } else if (obs.isMultiSelect) {
