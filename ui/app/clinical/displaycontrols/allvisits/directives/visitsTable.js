@@ -13,7 +13,7 @@ angular.module('bahmni.clinical')
 
                 $scope.hasVisits = function () {
                     if ($scope.visits && $scope.visits.length > 0) return true;
-                    return $scope.$emit("no-data-present-event") && false;
+                    return $scope.$emit("no-data-present-event") && undefined;
                 };
 
                 $scope.params = angular.extend(
