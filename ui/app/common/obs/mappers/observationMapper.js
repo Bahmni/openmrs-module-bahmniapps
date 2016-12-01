@@ -35,8 +35,8 @@ Bahmni.Common.Obs.ObservationMapper = function () {
             var conceptConfig = allConceptsConfig[obsGroup[0].concept.name] || [];
             if (conceptConfig.multiSelect) {
                 var multiSelectObservations = {};
-                $.each(obsGroup, function(i, observation) {
-                    if(multiSelectObservations[observation.encounterDateTime]) {
+                $.each(obsGroup, function (i, observation) {
+                    if (multiSelectObservations[observation.encounterDateTime]) {
                         multiSelectObservations[observation.encounterDateTime].push(observation);
                     } else {
                         var observations = [];
