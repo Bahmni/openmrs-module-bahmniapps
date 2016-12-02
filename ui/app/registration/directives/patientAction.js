@@ -37,6 +37,7 @@ angular.module('bahmni.registration')
                         $scope.activeVisitConfig = matchedEntry;
                         if (_.isEmpty(_.get($scope.activeVisitConfig, 'translationKey'))) {
                             $scope.activeVisitConfig.translationKey = "REGISTRATION_LABEL_ENTER_VISIT";
+                            $scope.activeVisitConfig.shortcutKey = "REGISTRATION_ENTER_VISIT_DETAILS_ACCESS_KEY";
                         }
                         return 'forwardAction';
                     }
