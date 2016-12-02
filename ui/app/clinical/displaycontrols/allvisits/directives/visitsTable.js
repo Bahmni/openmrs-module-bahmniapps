@@ -4,6 +4,9 @@ angular.module('bahmni.clinical')
     .directive('visitsTable', ['patientVisitHistoryService', 'conceptSetService', 'spinner', '$state', '$q',
         function (patientVisitHistoryService, conceptSetService, spinner, $state, $q) {
             var controller = function ($scope) {
+                var emitNoDataPresentEvent = function () {
+                    $scope.$emit("no-data-present-event");
+                };
                 $scope.openVisit = function (visit) {
                     if ($scope.$parent.closeThisDialog) {
                         $scope.$parent.closeThisDialog("closing modal");
@@ -12,8 +15,7 @@ angular.module('bahmni.clinical')
                 };
 
                 $scope.hasVisits = function () {
-                    if ($scope.visits && $scope.visits.length > 0) return true;
-                    return $scope.$emit("no-data-present-event") && undefined;
+                    return $scope.visits && $scope.visits.length > 0;
                 };
 
                 $scope.params = angular.extend(
@@ -78,6 +80,7 @@ angular.module('bahmni.clinical')
                     return $q.all([getVisits()]).then(function (results) {
                         $scope.visits = results[0].visits;
                         $scope.patient = {uuid: $scope.patientUuid};
+                        if (!$scope.hasVisits()) emitNoDataPresentEvent();
                     });
                 };
 
