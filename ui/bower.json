@@ -45,6 +45,7 @@
     "hustle": "https://github.com/DWB-eHealth/hustle.git#v0.2.0.cleanup_abandoned_items_patch",
     "crypto-js": "3.1.5",
     "ng-tags-input": "^3.1.1",
+    "ngreact":"^0.3.0",
     "offline": "0.7.14",
     "react": "^15.3.2"
   },

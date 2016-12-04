@@ -12,6 +12,11 @@ angular.module('bahmni.clinical')
                 } else {
                     $scope.consultation.observationForms = getObservationForms($scope.consultation.observationForms);
                 }
+                $scope.numericBoxProps = { id: 'numericbox', onChange: callBackOnNumericBox, validate: true, validations: [] };
+            };
+
+            var callBackOnNumericBox = function(){
+                console.log("Inside the onChange method!!!!");
             };
 
             var getObservationForms = function (observationsForms) {

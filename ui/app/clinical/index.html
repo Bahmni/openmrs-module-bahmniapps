@@ -30,7 +30,7 @@
                 <div ui-view="content" id="view-content" class="opd-content-wrapper"></div>
             </div>
         </div>
-        <link rel="stylesheet" href="../components/offline/themes/{{getLocaleCSS()}}.css">
+        <link rel="stylesheet" href="../components/offline/themes/offline-language-english.css">
         <script src="../components/jquery/jquery.min.js"></script>
         <script src="../lib/jquery/jquery-ui-1.10.4.custom.min.js"></script>
         <script src="../lib/modernizr.custom.80690.js"></script>
@@ -73,6 +73,7 @@
 
         <script src="../components/bahmni-form-controls/helpers.js"></script>
         <script src="../components/bahmni-form-controls/bundle.js"></script>
+        <script src="../components/ngReact/ngReact.js"/>
 
         <!-- build:js ../common.offline.min.js -->
         <script src="../common/constants.js"></script>
@@ -439,7 +440,6 @@
         <script src="consultation/directives/newDrugOrders.js"></script>
         <script src="consultation/directives/newOrderGroup.js"></script>
         <script src="consultation/directives/investigationsSelector.js"></script>
-        <script src="consultation/directives/observationForm.js"></script>
         <script src="consultation/directives/formControls.js"></script>
         <script src="consultation/controllers/clinicalController.js"></script>
         <script src="consultation/controllers/consultationSummaryController.js"></script>
