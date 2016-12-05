@@ -32,7 +32,7 @@ angular.module('bahmni.common.uiHelper')
                     newAlbum.images = [image];
                     $scope.albums.splice(tagOrder, 0, newAlbum);
                 } else {
-                    var index = image.imageIndex ? image.imageIndex: matchedAlbum.images.length;
+                    var index = image.imageIndex ? image.imageIndex : matchedAlbum.images.length;
                     matchedAlbum.images.splice(index, 0, image);
                 }
                 return $scope.albums[0].images.length - 1;
