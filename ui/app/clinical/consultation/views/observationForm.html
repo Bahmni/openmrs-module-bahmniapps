@@ -5,8 +5,7 @@
     <span class="section-label">{{form.formName}}</span>
   </h2>
   <div id={{form.formUuid}} ng-show="form.isOpen" class="vitals form-horizontal">
-    <!--<form-controls ng-if="form.isOpen" form="form"></form-controls>-->
-      <react-component name="numeric" props="numericBoxProps" watch-depth="reference"/>
+    <form-controls ng-if="form.isOpen" form="form"></form-controls>
   </div>
 </div>
 
