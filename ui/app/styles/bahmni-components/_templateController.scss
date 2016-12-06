@@ -1,27 +1,43 @@
-.template-control-header {
+.template-control {
 	width: 100%;
 	height: 50px;
 	position: fixed;
-	bottom: 0;
-	left: 0; right: 0;
-	text-align: center;
+	top: 94px;
+	left: 0;
+    right: 0;
 	z-index: 3;
-	padding: 5px;
   	box-sizing: border-box;
-	button {
-		@include button($success, darken($success, 8%), $white);
-		width: 40px;
-		height: 40px;
-		border-radius: 50%;
-		padding: 0;
-		font-size: 14px;
-		border-color: darken($success, 12%);
-		box-shadow: 0 0 0 2px $white;
-        i {
-			font-size: 1em;
-			lone-height: 1;
-		}
-	}
+    text-align: right;
+    .template-control-wrapper{
+      margin: 0 auto;
+      max-width: $max-page-width;
+    }
+    .template-control-panel-right-wrap{
+      float: right;
+      width: 100%;
+    }
+    .template-control-panel-right{
+      margin-left: 290px;
+      @media screen and (max-width: 1300px){
+        padding-right: 10px;
+      }
+      @media screen and (max-width: 1024px){
+        margin-left: 265px;
+      }
+      @media screen and (max-width: 850px){
+        margin-left: 240px;
+      }
+    }
+    .template-control-panel-button {
+      @include clearfix();
+      background: #fafafa;
+      padding:12px 0 10px;
+      button {
+        @include button($success, darken($success, 8%), $white);
+        font-size: 14px;
+        border-color: darken($success, 12%);
+      }
+    }
 	.patient-details {
 		color: $black;
 		text-shadow: 1px 1px 1px rgba($lightGray, 0.9);
@@ -29,21 +45,11 @@
 }
 
 .template-control-panel {
-	background: $white;
-	border: 1px solid $lightGray;
 	@include clearfix();
-	position: fixed;
-	bottom: 52px;
-	left: 50%;
-	z-index: 4;
-	padding: 5px;
-    -webkit-transform: translateX(-50%);
-    -moz-transform: translateX(-50%);
-    transform: translateX(-50%);
-    width: 100%;
-    max-width: $max-page-width;
-    @media screen and (max-width: 1200px) {
-      width: 96%;
+    .primary-section-grid{
+      border: 1px solid $lightGray;
+      background: $white;
+      padding: 10px;
     }
 	ul.template-icons {
       max-height: 334px;
@@ -53,9 +59,8 @@
       li {
         padding: 2px;
         float: left;
-        width: 25%;
+        width: 33.3%;
         box-sizing: border-box;
-
          button {
           width: 100%;
           display: inline-block;
@@ -63,12 +68,12 @@
           margin: 1px 3px;
           font-size: 12px;
           border: 1px solid $lightGray;
-          padding: 5px;
+          padding: 5px 10px;
           color: $darkGray;
           text-align: left;
-          line-height: .9;
+          line-height: 1;
           box-sizing: border-box;
-          min-height: 50px;
+          min-height: 40px;
           i {
             font-size: 1.5em;
             margin: 0 auto;

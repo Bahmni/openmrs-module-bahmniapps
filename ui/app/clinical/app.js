@@ -168,7 +168,8 @@ angular.module('consultation')
             .state('patient.dashboard.show.observations', {
                 url: '/concept-set-group/:conceptSetGroupName',
                 params: {
-                    cachebuster: null
+                    cachebuster: null,
+                    lastOpenedTemplate: null
                 },
                 views: {
                     'consultation-content': {

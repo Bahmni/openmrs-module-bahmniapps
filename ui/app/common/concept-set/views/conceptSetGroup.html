@@ -1,11 +1,5 @@
-<div ng-repeat="conceptSet in allTemplates track by $index" id="concept-set-{{$index}}"
-     ng-if="conceptSet.isAvailable(context) && (conceptSet.isAdded || conceptSet.alwaysShow) && !context.showPanelView"
-     class="concept-set-group section-grid"
-     auto-scroll="{{::getNormalized(conceptSet.conceptName)}}" auto-scroll-enabled="::autoScrollEnabled">
-    <ng-include src="'../common/concept-set/views/conceptSetGroupSection.html'"></ng-include>
-</div>
-<div class="concept-set-panel clearfix" ng-if="context.showPanelView">
-    <section class="concept-set-panel-left" xmlns="http://www.w3.org/1999/html">
+<div class="concept-set-panel clearfix">
+    <section class="concept-set-panel-left">
         <div class="concept-set-panel-wrap">
             <h2 class="concept-set-panel-header">Added Observation Forms {{isAvailable.length}}</h2>
             <div class="multi-select-lab-tests">

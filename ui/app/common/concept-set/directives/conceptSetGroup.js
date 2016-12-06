@@ -12,8 +12,9 @@ angular.module('bahmni.common.conceptSet')
                 $scope.validationHandler = $scope.context.showPanelView ? new Bahmni.ConceptSet.ConceptSetGroupPanelViewValidationHandler($scope.allTemplates) : new Bahmni.ConceptSet.ConceptSetGroupValidationHandler($scope.allTemplates);
                 contextChangeHandler.add($scope.validationHandler.validate);
                 $scope.leftPanelConceptSet = _.find($scope.allTemplates, function (conceptSet) {
-                    return conceptSet.klass == "active";
+                    return conceptSet.klass == "active" || $stateParams.lastOpenedTemplate == conceptSet.uuid;
                 });
+                $scope.leftPanelConceptSet && $scope.leftPanelConceptSet.show();
             };
 
             $scope.togglePref = function (conceptSet, conceptName) {
@@ -69,6 +70,14 @@ angular.module('bahmni.common.conceptSet')
                         $scope.consultation.newlyAddedTreatments.push(Bahmni.Clinical.DrugOrderViewModel.createFromContract(drugOrder, $scope.treatmentConfiguration));
                     });
                 }));
+            };
+
+            $scope.canDelete = function (index) {
+                var uuid = $scope.allTemplates[index].uuid;
+                var savedObs = _.filter($scope.consultation.observations, function (obs) {
+                    return obs && obs.concept && uuid === obs.concept.uuid;
+                });
+                return 0 == savedObs.length;
             };
 
             $scope.clone = function (index) {
@@ -138,6 +147,7 @@ angular.module('bahmni.common.conceptSet')
                 $scope.leftPanelConceptSet.isLoaded = true;
                 $scope.leftPanelConceptSet.klass = "active";
                 $scope.leftPanelConceptSet.atLeastOneValueIsSet = selectedConceptSet.hasSomeValue();
+                $scope.consultation.lastvisited = selectedConceptSet.uuid;
                 $(window).scrollTop(0);
             };
 

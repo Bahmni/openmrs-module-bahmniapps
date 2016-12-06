@@ -77,9 +77,13 @@ Bahmni.ConceptSet.ConceptSetSection = function (extensions, user, config, observ
             self.show();
         }
     };
-    self.toggleInnerSections = function (event) {
+    self.maximizeInnerSections = function (event) {
         event.stopPropagation();
-        self.collapseInnerSections = !self.collapseInnerSections;
+        self.collapseInnerSections = false;
+    };
+    self.minimizeInnerSections = function (event) {
+        event.stopPropagation();
+        self.collapseInnerSections = true;
     };
 
     self.toggleDisplay = function () {
