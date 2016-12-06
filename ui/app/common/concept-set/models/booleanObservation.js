@@ -45,7 +45,8 @@ Bahmni.ConceptSet.BooleanObservation = function (observation, conceptUIConfig) {
     };
 
     this.isRequired = function () {
-        return this.getConceptUIConfig().required == true;
+        this.disabled = this.disabled ? this.disabled : false;
+        return this.getConceptUIConfig().required === true && this.disabled === false;
     };
 
     this.isComputedAndEditable = function () {
