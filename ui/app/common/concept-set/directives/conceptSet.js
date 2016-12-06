@@ -261,7 +261,7 @@ angular.module('bahmni.common.conceptSet')
                 spinner.forPromise(init(), id);
 
                 var validateObservationTree = function () {
-                    if(typeof $scope.rootObservation ==="undefined" || $scope.rootObservation === null){
+                    if (typeof $scope.rootObservation === "undefined" || $scope.rootObservation === null) {
                         return {allow: true, errorMessage: null };
                     }
                     $scope.atLeastOneValueIsSet = $scope.rootObservation && $scope.rootObservation.atLeastOneValueSet();
