@@ -23,6 +23,7 @@ angular.module('bahmni.clinical').controller('ConsultationController',
             $scope.consultationBoardLink = clinicalAppConfigService.getConsultationBoardLink();
             $scope.showControlPanel = false;
             $scope.clinicalDashboardConfig = clinicalDashboardConfig;
+            $scope.lastvisited = null;
 
             $scope.openConsultationInNewTab = function () {
                 $window.open('#' + $scope.consultationBoardLink, '_blank');
@@ -309,6 +310,7 @@ angular.module('bahmni.clinical').controller('ConsultationController',
 
                 var observationFilter = new Bahmni.Common.Domain.ObservationFilter();
                 $scope.consultation.preSaveHandler.fire();
+                $scope.lastvisited = $scope.consultation.lastvisited;
                 var tempConsultation = angular.copy($scope.consultation);
                 tempConsultation.observations = observationFilter.filter(tempConsultation.observations);
                 tempConsultation.consultationNote = observationFilter.filter([tempConsultation.consultationNote])[0];
@@ -392,6 +394,7 @@ angular.module('bahmni.clinical').controller('ConsultationController',
                     encounterData.encounterTypeUuid = results[1].uuid;
                     var params = angular.copy($state.params);
                     params.cachebuster = Math.random();
+                    params.lastOpenedTemplate = $scope.lastvisited;
                     return encounterService.create(encounterData)
                         .then(function (saveResponse) {
                             var consultationMapper = new Bahmni.ConsultationMapper(configurations.dosageFrequencyConfig(), configurations.dosageInstructionConfig(),

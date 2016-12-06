@@ -90,6 +90,12 @@
     float: left;
     padding: 10px 10px 0;
     width: 100px;
+    @media screen and (max-width: 850px) {
+      width: 175px;
+      padding-right: 20px;
+      box-sizing: border-box;
+      text-align: right;
+    }
     @media screen and (max-width: 595px) {
       padding: 4px 10px;
     }
@@ -196,34 +202,50 @@ concept-set {
 
 .concept-set-group {
   .concept-set-title {
+    @include clearfix();
     cursor: pointer;
     position: relative;
+    background: #3D7474;
+    padding: 0 100px 0 10px;
     h2.section-title {
-      padding: 10px 32px 10px 10px;
+      padding: 0;
+      background: #3D7474;
+      padding: 10px 0;
+      font-size: 14px;
       button {
         font-size: 12px;
         font-family: Opensans, Arial, sans-serif;
-        padding: 4px 10px;
-        margin: -4px 5px 0 0;
-      }
-      &.section-title-add-more{
-        padding: 10px 150px 10px 10px;
       }
     }
-    .favourite-concept-set {
+    .form-actions {
+      width: auto;
+      top: 0;
       position: absolute;
-      right: 4px;
-      top: 4px;
-    }
-    .add-more-concept-set{
-      position: absolute;
-      top: 5px;
-      right: 37px;
-      padding: 3px 5px;
-      color: $black;
-      i {
-        color: green;
-        padding: 0.2em 0.1em;
+      right: 0;
+      bottom: 0;
+      padding: 10px 10px;
+      button {
+        display: table;
+        float: left;
+        width: auto;
+        margin-left: 12px;
+        background: none;
+        padding: 0;
+        border: none;
+        color: #fff;
+        @media screen and (max-width: 1024px){
+          margin-left: 17px;
+        }
+        .fa {
+          padding: 0;
+        }
+        [class^="icon-"]:before,
+        [class*=" icon-"]:before {
+          font-size: 16px;
+        }
+        .fa-trash {
+          font-size: 18px;
+        }
       }
     }
   }
@@ -234,17 +256,17 @@ concept-set {
     padding: 5px;
   }
   .consultation-image {
-    width: 807px;
+    width: 500px;
     background: $lightestGray;
     padding: 5px;
     overflow: auto;
     clear: both;
     box-sizing: border-box;
-    @media screen and (max-width: 1130px) {
-      width:600px;
+    @media screen and (max-width: 1150px){
+      width:300px;
     }
-    @media screen and (max-width: 768px){
-      width:275px;
+    @media screen and (max-width: 850px){
+      width:150px;
     }
     .file{
       .comment-toggle {
@@ -472,8 +494,11 @@ concept-set {
       width:185px;
     }
   }
+  @media screen and (max-width: 1200px) {
+    max-width: 62%;
+  }
   @media screen and (max-width: 850px){
-    max-width:52%;
+    max-width:50%;
   }
 }
 .add-more-wrapper{
@@ -493,6 +518,12 @@ concept-set {
     width: 275px;
     margin-right: -100%;
     position: relative;
+    @media screen and (max-width: 1024px){
+      width: 250px;
+    }
+    @media screen and (max-width: 850px){
+      width: 225px;
+    }
     .concept-set-panel-wrap{
       border-radius: 5px 5px 0 0;
       border: 1px solid $darkerGrey;
@@ -538,6 +569,7 @@ concept-set {
           }
           @media screen and (max-width: 1024px){
             padding: 8px 5px;
+            font-size: 14px;
           }
         }
         &.active{
@@ -583,21 +615,58 @@ concept-set {
   }
   .concept-set-panel-right{
     margin-left: 290px;
+    padding-top:42px;
+    @media screen and (max-width: 1024px){
+      margin-left: 265px;
+    }
+    @media screen and (max-width: 850px){
+      margin-left: 240px;
+    }
     .section-title #removeClonedObs.fa-remove{
       padding: 3px 5px 4px;
       width: auto;
       margin: -3px 0 0;
       font-size: 14px;
     }
+    .concept-set-title {
+      cursor: initial;
+      .section-title{
+        cursor: pointer;
+      }
+    }
+    div.duration.checkbox-inline {
+      @media screen and (max-width: 1200px){
+        margin-top: 0;
+        margin-left: 193px;
+      }
+      @media screen and (max-width: 1024px){
+        margin-left: 163px;
+      }
+      @media screen and (max-width: 850px){
+        margin-left: 150px;
+      }
+      .input.duration-value{
+        @media screen and (max-width: 1200px) {
+          padding: 2px 10px;
+        }
+      }
+    }
+    #chief_complaint_data_addmore_observation_4{
+      @media screen and (max-width: 1200px) {
+        margin-top: 9px;
+      }
+      @media screen and (max-width: 850px){
+        margin-top:0;
+      }
+    }
   }
-  .concept-set-group .concept-set-title h2.section-title{
-    background: #3D7474;
-    padding: 10px;
-  }
-  form .form-field textarea, .form .form-field textarea ,.vitals .consultation-image{
+  form .form-field textarea, .form .form-field textarea{
     width:500px;
-    @media screen and (max-width: 1024px){
+    @media screen and (max-width: 1200px){
       width:300px;
+    }
+    @media screen and (max-width: 850px){
+      width:250px;
     }
   }
   table .field-value-buttonSelectType{
