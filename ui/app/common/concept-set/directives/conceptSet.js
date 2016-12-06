@@ -199,7 +199,6 @@ angular.module('bahmni.common.conceptSet')
                                 if (conditions.error && !_.isEmpty(conditions.error)) {
                                     messagingService.showMessage('error', conditions.error);
                                     processConditions(flattenedObs, [conceptName], false, true);
-                                    return;
                                 } else {
                                     enableCase && processConditions(flattenedObs, [conceptName], false, false);
                                 }
