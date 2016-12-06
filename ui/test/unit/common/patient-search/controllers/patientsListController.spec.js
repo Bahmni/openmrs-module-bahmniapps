@@ -134,7 +134,7 @@ describe("PatientsListController", function () {
                 scope.$apply(setUp);
 
                 expect(scope.search.searchType).toEqual({ name : 'All active patients', display : 'All active patients', handler : 'emrapi.sqlSearch.activePatients', forwardUrl : undefined, id : 'bahmni.clinical.patients.allPatients', params : undefined, refreshTime : '10', view : 'tile',
-                    showPrint : false, printHtmlLocation : null, searchColumns : undefined, additionalParams : undefined, translationKey : undefined, patientCount : '...' });
+                    showPrint : false, printHtmlLocation : null, searchColumns : undefined, additionalParams : undefined, translationKey : undefined, linkColumn: undefined, patientCount : '...' });
                 expect(_patientService.findPatients).toHaveBeenCalled();
 
                 findPatientsPromise.callThenCallBack({data: patients});
@@ -268,6 +268,34 @@ describe("PatientsListController", function () {
             expect(scope.search.searchTypes.length).toBe(2);
         });
 
+    });
+
+
+    describe("LinkColumn", function () {
+        beforeEach(function () {
+            scope.$apply(setUp);
+        });
+
+        it("should accept the link column form the config, when respective config present", function () {
+            var search = {searchType: {linkColumn: "Status"}};
+            var heading = "Status";
+            var headingOfLinkColumn = scope.isHeadingOfLinkColumn(search, heading);
+            expect(headingOfLinkColumn).toBeTruthy()
+        });
+
+        it("should accept the default link column, when nothing specified in the config", function () {
+            var search = {searchType: {}};
+            var heading = "identifier";
+            var headingOfLinkColumn = scope.isHeadingOfLinkColumn(search, heading);
+            expect(headingOfLinkColumn).toBeTruthy()
+        });
+
+        it("should not have a link on the column, when no match for heading found in config and default column list", function () {
+            var search = {searchType: {}};
+            var heading = "RandomColumn";
+            var headingOfLinkColumn = scope.isHeadingOfLinkColumn(search, heading);
+            expect(headingOfLinkColumn).toBeFalsy()
+        });
     });
     }
 ); 

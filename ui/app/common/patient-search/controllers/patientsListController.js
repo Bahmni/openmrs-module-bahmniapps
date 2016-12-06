@@ -63,7 +63,10 @@ angular.module('bahmni.common.patientSearch')
             return [];
         };
 
-        $scope.isHeadingOfIdentifier = function (heading) {
+        $scope.isHeadingOfLinkColumn = function (search, heading) {
+            if (search.searchType && search.searchType.linkColumn) {
+                return _.includes([search.searchType.linkColumn], heading);
+            }
             return _.includes(Bahmni.Common.PatientSearch.Constants.identifierHeading, heading);
         };
 
@@ -102,7 +105,8 @@ angular.module('bahmni.common.patientSearch')
                 printHtmlLocation: appExtn.extensionParams.printHtmlLocation || null,
                 additionalParams: appExtn.extensionParams.additionalParams,
                 searchColumns: appExtn.extensionParams.searchColumns,
-                translationKey: appExtn.extensionParams.translationKey
+                translationKey: appExtn.extensionParams.translationKey,
+                linkColumn: appExtn.extensionParams.linkColumn
             };
         };
 
