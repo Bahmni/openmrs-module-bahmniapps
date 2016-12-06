@@ -47,6 +47,7 @@ Bahmni.ConceptSet.MultiSelectObservation = function (concept, memberOfCollection
     this.groupMembers = [];
     this.provider = null;
     this.observationDateTime = "";
+    this.conceptUIConfig = conceptSetConfig[this.concept.name] || {};
 
     this.possibleAnswers = self.concept.answers.map(function (answer) {
         var cloned = _.cloneDeep(answer);

@@ -4,7 +4,7 @@ Bahmni.ConceptSet.BooleanObservation = function (observation, conceptUIConfig) {
     angular.extend(this, observation);
 
     this.isBoolean = true;
-    this.conceptUIConfig = conceptUIConfig || {};
+    this.conceptUIConfig = conceptUIConfig[this.concept.name] || {};
 
     this.cloneNew = function () {
         var clone = new Bahmni.ConceptSet.BooleanObservation(angular.copy(observation), conceptUIConfig);
@@ -78,7 +78,7 @@ Bahmni.ConceptSet.BooleanObservation = function (observation, conceptUIConfig) {
     };
 
     this.getConceptUIConfig = function () {
-        return this.conceptUIConfig[this.concept.name] || {};
+        return this.conceptUIConfig;
     };
 
     this.canAddMore = function () {
