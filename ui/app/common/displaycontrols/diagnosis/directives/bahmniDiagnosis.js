@@ -18,7 +18,7 @@ angular.module('bahmni.common.displaycontrol.diagnosis')
                                 $scope.$emit("no-data-present-event");
                                 return false;
                             }
-                            return false;
+                            return true;
                         };
                     });
                 };
