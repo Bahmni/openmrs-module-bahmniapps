@@ -261,6 +261,9 @@ angular.module('bahmni.common.conceptSet')
                 spinner.forPromise(init(), id);
 
                 var validateObservationTree = function () {
+                    if(typeof $scope.rootObservation ==="undefined" || $scope.rootObservation === null){
+                        return {allow: true, errorMessage: null };
+                    }
                     $scope.atLeastOneValueIsSet = $scope.rootObservation && $scope.rootObservation.atLeastOneValueSet();
                     $scope.conceptSetRequired = $scope.required ? $scope.required : true;
                     var nodes = $scope.rootObservation && findInvalidNodes($scope.rootObservation.groupMembers, $scope.rootObservation);
