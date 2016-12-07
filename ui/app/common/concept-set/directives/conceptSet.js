@@ -192,8 +192,10 @@ angular.module('bahmni.common.conceptSet')
                     var conceptSetObsValues = getFlattenedObsValues(flattenedObs);
                     _.each(_.keys(conceptSetObsValues), function (eachObsKey) {
                         if (eachObsKey.split('|')[0] == conceptName && eachObsKey.split('|')[1] != 'undefined') {
-                            var valueMap = {};
-                            valueMap[conceptName] = conceptSetObsValues[eachObsKey];
+                            var valueMap = _.reduce(conceptSetObsValues,function(conceptSetValueMap,obsValue,conceptName){
+                                conceptSetValueMap[conceptName.split('|')[0]] = obsValue;
+                                return conceptSetValueMap;
+                            },{});
                             var conditions = formCondition(formName, valueMap);
                             if (!_.isUndefined(conditions)) {
                                 if (conditions.error && !_.isEmpty(conditions.error)) {
@@ -202,8 +204,8 @@ angular.module('bahmni.common.conceptSet')
                                 } else {
                                     enableCase && processConditions(flattenedObs, [conceptName], false, false);
                                 }
-                                processConditions(flattenedObs.slice(_.findIndex(flattenedObs, {uniqueId: eachObsKey.split('|')[1]})), conditions.disable, true);
-                                processConditions(flattenedObs.slice(_.findIndex(flattenedObs, {uniqueId: eachObsKey.split('|')[1]})), conditions.enable, false);
+                                processConditions(flattenedObs, conditions.disable, true);
+                                processConditions(flattenedObs, conditions.enable, false);
                                 _.each(conditions.enable, function (subConditionConceptName) {
                                     var conditionFn = Bahmni.ConceptSet.FormConditions.rules && Bahmni.ConceptSet.FormConditions.rules[subConditionConceptName];
                                     if (conditionFn != null) {
@@ -225,13 +227,23 @@ angular.module('bahmni.common.conceptSet')
                     });
                 };
 
-                var updateFormConditions = function (observationsOfCurrentTemplate, observation) {
-                    var flattenedObs = ObservationUtil.flattenObsToArray(observationsOfCurrentTemplate);
+                var updateFormConditions = function (observationsOfCurrentTemplate, rootObservation) {
                     if (Bahmni.ConceptSet.FormConditions.rules) {
-                        _.each(Bahmni.ConceptSet.FormConditions.rules, function (conditionFn, conceptName) {
-                            runFormConditionForObs(false, observation.concept.name, conditionFn, conceptName, flattenedObs);
-                        });
+                        runFormConditionForAllObsRecursively(rootObservation.concept.name, rootObservation);
                     }
+                };
+
+                var runFormConditionForAllObsRecursively = function (formName, rootObservation) {
+                    _.each(rootObservation.groupMembers, function (observation) {
+                        var conditionFn = Bahmni.ConceptSet.FormConditions.rules && Bahmni.ConceptSet.FormConditions.rules[observation.concept.name];
+                        if (conditionFn != null) {
+                            var flattenedObs = ObservationUtil.flattenObsToArray([rootObservation]);
+                            runFormConditionForObs(false, formName, conditionFn, observation.concept.name, flattenedObs);
+                        }
+                        if(observation.groupMembers && observation.groupMembers.length > 0) {
+                            runFormConditionForAllObsRecursively(formName, observation);
+                        }
+                    })
                 };
 
                 var init = function () {
