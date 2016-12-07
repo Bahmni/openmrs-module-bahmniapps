@@ -192,10 +192,10 @@ angular.module('bahmni.common.conceptSet')
                     var conceptSetObsValues = getFlattenedObsValues(flattenedObs);
                     _.each(_.keys(conceptSetObsValues), function (eachObsKey) {
                         if (eachObsKey.split('|')[0] == conceptName && eachObsKey.split('|')[1] != 'undefined') {
-                            var valueMap = _.reduce(conceptSetObsValues,function(conceptSetValueMap,obsValue,conceptName){
+                            var valueMap = _.reduce(conceptSetObsValues, function (conceptSetValueMap, obsValue, conceptName) {
                                 conceptSetValueMap[conceptName.split('|')[0]] = obsValue;
                                 return conceptSetValueMap;
-                            },{});
+                            }, {});
                             var conditions = formCondition(formName, valueMap);
                             if (!_.isUndefined(conditions)) {
                                 if (conditions.error && !_.isEmpty(conditions.error)) {
@@ -240,10 +240,10 @@ angular.module('bahmni.common.conceptSet')
                             var flattenedObs = ObservationUtil.flattenObsToArray([rootObservation]);
                             runFormConditionForObs(false, formName, conditionFn, observation.concept.name, flattenedObs);
                         }
-                        if(observation.groupMembers && observation.groupMembers.length > 0) {
+                        if (observation.groupMembers && observation.groupMembers.length > 0) {
                             runFormConditionForAllObsRecursively(formName, observation);
                         }
-                    })
+                    });
                 };
 
                 var init = function () {
