@@ -66,7 +66,7 @@ angular.module('bahmni.common.offline')
                 .where(addressHierarchyLevelTable.addressField.eq(addressHierarchyField)).exec()
                 .then(function (result) {
                     level = result[0];
-                    if(level != null) {
+                    if (level != null) {
                         if (params.parentUuid != null) {
                             return db.select()
                                 .from(addressHierarchyEntryTable)
