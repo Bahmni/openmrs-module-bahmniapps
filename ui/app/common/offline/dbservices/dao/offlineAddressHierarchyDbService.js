@@ -66,44 +66,47 @@ angular.module('bahmni.common.offline')
                 .where(addressHierarchyLevelTable.addressField.eq(addressHierarchyField)).exec()
                 .then(function (result) {
                     level = result[0];
-                    if (params.parentUuid != null) {
+                    if(level != null) {
+                        if (params.parentUuid != null) {
+                            return db.select()
+                                .from(addressHierarchyEntryTable)
+                                .where(addressHierarchyEntryTable.uuid.eq(params.parentUuid))
+                                .exec()
+                                .then(function (result) {
+                                    var parent = result[0] != null ? result[0] : null;
+                                    if (parent != null) {
+                                        return db.select()
+                                            .from(addressHierarchyEntryTable)
+                                            .where(lf.op.and(
+                                                addressHierarchyEntryTable.levelId.eq(level.addressHierarchyLevelId),
+                                                addressHierarchyEntryTable.parentId.eq(parent.id),
+                                                addressHierarchyEntryTable.name.match(new RegExp(params.searchString, 'i')
+                                                )))
+                                            .limit(params.limit).exec()
+                                            .then(
+                                                function (result) {
+                                                    return getAddresses(result).then(function (response) {
+                                                        return {data: response};
+                                                    });
+                                                });
+                                    }
+                                });
+                        }
                         return db.select()
                             .from(addressHierarchyEntryTable)
-                            .where(addressHierarchyEntryTable.uuid.eq(params.parentUuid))
-                            .exec()
-                            .then(function (result) {
-                                var parent = result[0] != null ? result[0] : null;
-                                if (parent != null) {
-                                    return db.select()
-                                        .from(addressHierarchyEntryTable)
-                                        .where(lf.op.and(
-                                            addressHierarchyEntryTable.levelId.eq(level.addressHierarchyLevelId),
-                                            addressHierarchyEntryTable.parentId.eq(parent.id),
-                                            addressHierarchyEntryTable.name.match(new RegExp(params.searchString, 'i')
-                                            )))
-                                        .limit(params.limit).exec()
-                                        .then(
-                                        function (result) {
-                                            return getAddresses(result).then(function (response) {
-                                                return {data: response};
-                                            });
-                                        });
-                                }
-                            });
+                            .where(lf.op.and(
+                                addressHierarchyEntryTable.levelId.eq(level.addressHierarchyLevelId),
+                                addressHierarchyEntryTable.name.match(new RegExp(params.searchString, 'i')
+                                )))
+                            .limit(params.limit).exec()
+                            .then(
+                                function (result) {
+                                    return getAddresses(result).then(function (response) {
+                                        return {data: response};
+                                    });
+                                });
                     }
-                    return db.select()
-                        .from(addressHierarchyEntryTable)
-                        .where(lf.op.and(
-                            addressHierarchyEntryTable.levelId.eq(level.addressHierarchyLevelId),
-                            addressHierarchyEntryTable.name.match(new RegExp(params.searchString, 'i')
-                            )))
-                        .limit(params.limit).exec()
-                        .then(
-                        function (result) {
-                            return getAddresses(result).then(function (response) {
-                                return {data: response};
-                            });
-                        });
+                    return {data: []};
                 });
         };
 
