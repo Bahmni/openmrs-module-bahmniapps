@@ -8,7 +8,8 @@ angular.module('bahmni.common.offline')
                     if (offlineService.isAndroidApp()) {
                         offlineDbService = androidDbService;
                     }
-                    return offlineDbService.initSchema().then(function (db) {
+                    var location = offlineService.getItem('LoginInformation') ? offlineService.getItem('LoginInformation').currentLocation.display : null;
+                    return offlineDbService.initSchema(location).then(function (db) {
                         offlineDbService.init(db);
                         return db;
                     });

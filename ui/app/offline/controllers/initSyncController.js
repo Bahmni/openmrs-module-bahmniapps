@@ -3,17 +3,28 @@
 angular.module('bahmni.common.offline')
     .controller('InitSyncController', ['$scope', 'ngDialog', '$state', 'offlineService', 'offlinePush', 'offlinePull', 'spinner', 'sessionService', '$q',
         function ($scope, ngDialog, $state, offlineService, offlinePush, offlinePull, spinner, sessionService, $q) {
+            var loginLocationUuid = offlineService.getItem('LoginInformation') ? offlineService.getItem('LoginInformation').currentLocation.uuid : undefined;
             var init = function () {
                 var deferred = $q.defer();
                 offlinePull().then(function () {
-                    offlineService.setItem("initialSyncStatus", "complete");
-                    deferred.resolve();
-                },
-                    function () {
-                        offlineService.setItem("initialSyncStatus", "notComplete");
-                        deferred.reject();
-                    });
+                      setIntialStatus("complete")
+                      deferred.resolve();
+                  },
+                  function () {
+                      setIntialStatus("notComplete");
+                      deferred.reject();
+                  });
                 return deferred.promise;
+            };
+
+            var setIntialStatus = function (status) {
+                var locationSyncStatus = {};
+                if (loginLocationUuid) {
+                    var initialSyncStatus = offlineService.getItem("initialSyncStatus");
+                    locationSyncStatus[loginLocationUuid] = status;
+                    initialSyncStatus = initialSyncStatus ? _.extend(initialSyncStatus, locationSyncStatus) : locationSyncStatus;
+                    offlineService.setItem("initialSyncStatus", initialSyncStatus)
+                }
             };
 
             var syncSuccessCallBack = function () {
@@ -46,15 +57,17 @@ angular.module('bahmni.common.offline')
 
             $scope.logout = function () {
                 sessionService.destroy().then(
-                    function () {
-                        $state.go('login');
-                    }
+                  function () {
+                      $state.go('login');
+                  }
                 );
             };
 
-            if (offlineService.getItem("initialSyncStatus") == "complete") {
+            var syncStatus = offlineService.getItem("initialSyncStatus");
+            if (syncStatus && syncStatus[loginLocationUuid] == "complete") {
                 $state.go('dashboard');
             } else {
                 init().then(syncSuccessCallBack, syncFailureCallBack);
             }
-        }]);
+        }]
+    );

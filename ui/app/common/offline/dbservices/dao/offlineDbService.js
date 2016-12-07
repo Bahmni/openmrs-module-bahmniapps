@@ -121,8 +121,8 @@ angular.module('bahmni.common.offline')
                 conceptDbService.init(offlineDb);
             };
 
-            var initSchema = function () {
-                return initializeOfflineSchema.initSchema();
+            var initSchema = function (dbName) {
+                return initializeOfflineSchema.initSchema(dbName);
             };
 
             var reinitSchema = function () {

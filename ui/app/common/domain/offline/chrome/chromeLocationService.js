@@ -4,10 +4,6 @@ angular.module('bahmni.common.domain')
     .factory('locationService', ['$bahmniCookieStore', 'offlineService', 'offlineDbService', '$q',
         function ($bahmniCookieStore, offlineService, offlineDbService, $q) {
             var getAllByTag = function (tags) {
-                if (offlineService.getItem('LoginInformation') != null) {
-                    var obj = {"data": {"results": [offlineService.getItem('LoginInformation').currentLocation]}};
-                    return $q.when(obj);
-                }
                 return offlineDbService.getReferenceData('LoginLocations').then(function (loginLocations) {
                     if (!loginLocations) {
                         var msg = offlineService.getItem("networkError") || "Offline data not set up";

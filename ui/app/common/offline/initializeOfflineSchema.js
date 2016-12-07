@@ -72,9 +72,9 @@ angular.module('bahmni.common.offline').service('initializeOfflineSchema', [func
         runMigration(initalMigrationVersion, schemaBuilder, createSchemaFn);
     };
 
-    this.initSchema = function () {
+    this.initSchema = function (dbName) {
         if (this.databasePromise === null) {
-            var schemaBuilder = lf.schema.create(DB_NAME, DB_VERSION);
+            var schemaBuilder = lf.schema.create(dbName, DB_VERSION);
             initDbSchema(schemaBuilder);
 
             this.databasePromise = schemaBuilder.connect(LOVEFIELD_DB_CONFIG);
