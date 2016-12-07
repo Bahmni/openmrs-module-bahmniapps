@@ -4,7 +4,7 @@
             <li class="patient-name-image-container">
                 <img class="patient-image" ng-src="{{::patientContext.image}}" fallback-src='../images/blank-user.gif'>
                 <span class="patient-name" ng-if="showNameAndImage" >
-                  {{patientContext.givenName}} {{patientContext.familyName}}
+                  {{patientContext.name}}
                 </span>
                 <span class="patient-name">
                     ({{patientContext.identifier}})
