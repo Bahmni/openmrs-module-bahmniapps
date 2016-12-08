@@ -11,11 +11,11 @@ angular.module('bahmni.common.offline')
                 var deferred = $q.defer();
                 var uuid = postRequest.patient.uuid;
                 insertPatientData(postRequest)
-                .then(function () {
-                    getPatientByUuid(uuid).then(function (result) {
-                        deferred.resolve({data: result});
+                    .then(function () {
+                        getPatientByUuid(uuid).then(function (result) {
+                            deferred.resolve({data: result});
+                        });
                     });
-                });
                 return deferred.promise;
             };
 
@@ -49,11 +49,15 @@ angular.module('bahmni.common.offline')
 
                 return patientDbService.insertPatientData(db, patientData).then(function (patientUuid) {
                     patientAttributeDbService.insertAttributes(db, patientUuid, person.attributes);
-                    var address = person.addresses[0] || person.preferredAddress;
+                    var address = getAddress(person);
                     patientAddressDbService.insertAddress(db, patientUuid, address);
                     patientIdentifierDbService.insertPatientIdentifiers(db, patientUuid, patient.identifiers);
                     return patientData;
                 });
+            };
+
+            var getAddress = function (person) {
+                return person.addresses[0] || person.preferredAddress || {};
             };
 
             var insertLabOrderResults = function (patientUuid, labOrderResults) {
@@ -103,7 +107,11 @@ angular.module('bahmni.common.offline')
                     var encounterSessionDuration = encounterSessionDurationData.data;
                     getReferenceData("DefaultEncounterType").then(function (defaultEncounterType) {
                         var encounterType = defaultEncounterType ? defaultEncounterType.data : null;
-                        encounterDbService.findActiveEncounter(db, {patientUuid: params.patientUuid, providerUuid: params.providerUuids[0], encounterType: encounterType}, encounterSessionDuration).then(function (encounter) {
+                        encounterDbService.findActiveEncounter(db, {
+                            patientUuid: params.patientUuid,
+                            providerUuid: params.providerUuids[0],
+                            encounterType: encounterType
+                        }, encounterSessionDuration).then(function (encounter) {
                             deferred.resolve(encounter);
                         });
                     });
@@ -219,7 +227,7 @@ angular.module('bahmni.common.offline')
 
             var insertLog = function (errorUuid, failedRequest, responseStatus, stackTrace, requestPayload) {
                 var provider = _.has(requestPayload, 'providers') ? requestPayload.providers[0] :
-                (_.has(requestPayload, 'auditInfo.creator') ? requestPayload.auditInfo.creator : "");
+                    (_.has(requestPayload, 'auditInfo.creator') ? requestPayload.auditInfo.creator : "");
                 requestPayload = requestPayload ? requestPayload : "";
                 return errorLogDbService.insertLog(db, errorUuid, failedRequest, responseStatus, stackTrace, requestPayload, provider);
             };

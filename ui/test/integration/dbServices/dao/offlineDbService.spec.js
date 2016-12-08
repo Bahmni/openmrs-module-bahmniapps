@@ -434,12 +434,47 @@ describe('OfflineDbService ', function () {
                 });
             });
         });
+
+        it("should call createPatient with given patientData, it should take empty object if address and preferredAddress is empty", function (done) {
+            var schemaBuilder = lf.schema.create('BahmniOfflineDb', 1);
+            schemaBuilder.connect().then(function (db) {
+                offlineDbService.init(db);
+
+                var patientData = {
+                    name: "patient",
+                    patient: {
+                        uuid: "personUuid",
+                        person: {attributes: "attributes", addresses: [], preferredAddress: undefined}
+                    }
+                };
+
+                patientDbService.insertPatientData.and.callFake(function () {
+                    var deferred1 = $q.defer();
+                    deferred1.resolve("patientUuid");
+                    return deferred1.promise;
+                });
+
+                patientDbService.getPatientByUuid.and.callFake(function () {
+                    var deferred1 = $q.defer();
+                    deferred1.resolve({patient: "patientInfo"});
+                    return deferred1.promise;
+                });
+
+                offlineDbService.createPatient(patientData).then(function (patientInfoResponse) {
+                    expect(patientInfoResponse).not.toBeUndefined();
+                    expect(patientInfoResponse).toEqual({data: {patient: "patientInfo"}});
+                    expect(patientAttributeDbService.insertAttributes).toHaveBeenCalledWith(db, "patientUuid", "attributes");
+                    expect(patientAddressDbService.insertAddress).toHaveBeenCalledWith(db, "patientUuid", {});
+                    done();
+                });
+            });
+        });
     });
 
 
     describe("errorLogDbService ", function () {
 
-        beforeEach( function(){
+        beforeEach(function () {
 
             errorLogDbService.insertLog.and.callFake(function () {
                 var deferred1 = $q.defer();
