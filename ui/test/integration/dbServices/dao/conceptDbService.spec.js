@@ -17,8 +17,8 @@ describe('conceptDbService tests', function () {
     }]));
 
     it("should update children of concept if there are setmembers", function(done){
-        var schemaBuilder = lf.schema.create('BahmniConcept', 1);
-        Bahmni.Tests.OfflineDbUtils.createTable(schemaBuilder, Bahmni.Common.Offline.SchemaDefinitions.Concept);
+        var schemaBuilder = lf.schema.create('conceptMetadata', 1);
+        Bahmni.Tests.OfflineDbUtils.createTable(schemaBuilder, Bahmni.Common.Offline.MetaDataSchemaDefinitions.Concept);
         jasmine.getFixtures().fixturesPath = 'base/test/data';
         var conceptJson = JSON.parse(readFixtures('concept.json'));
         var uuid = "c36a7537-3f10-11e4-adec-0800271c1b75";
@@ -41,8 +41,8 @@ describe('conceptDbService tests', function () {
     });
 
     it("should return the root concept for any given child concept", function(done){
-        var schemaBuilder = lf.schema.create('BahmniConcept', 1);
-        Bahmni.Tests.OfflineDbUtils.createTable(schemaBuilder, Bahmni.Common.Offline.SchemaDefinitions.Concept);
+        var schemaBuilder = lf.schema.create('conceptMetadata', 1);
+        Bahmni.Tests.OfflineDbUtils.createTable(schemaBuilder, Bahmni.Common.Offline.MetaDataSchemaDefinitions.Concept);
         jasmine.getFixtures().fixturesPath = 'base/test/data';
         var conceptJson = JSON.parse(readFixtures('concept.json'));
         var childConceptName = "RR Data";
@@ -62,8 +62,8 @@ describe('conceptDbService tests', function () {
     });
 
     it("should return the empty array if the given concept is not in db", function(done){
-        var schemaBuilder = lf.schema.create('BahmniConcept', 1);
-        Bahmni.Tests.OfflineDbUtils.createTable(schemaBuilder, Bahmni.Common.Offline.SchemaDefinitions.Concept);
+        var schemaBuilder = lf.schema.create('conceptMetadata', 1);
+        Bahmni.Tests.OfflineDbUtils.createTable(schemaBuilder, Bahmni.Common.Offline.MetaDataSchemaDefinitions.Concept);
         jasmine.getFixtures().fixturesPath = 'base/test/data';
         var conceptJson = JSON.parse(readFixtures('concept.json'));
         var conceptName = "dummyConcept";

@@ -1,9 +1,9 @@
 'use strict';
 
 angular.module('bahmni.common.offline').service('initializeOfflineSchema', [function () {
-    var DB_NAME = 'Bahmni';
     var DB_VERSION = 2;
     var DB_VERSION_OLD;
+    var dbPromises = {};
 
     var dataTypes = {
         "INTEGER": lf.Type.INTEGER,
@@ -62,8 +62,8 @@ angular.module('bahmni.common.offline').service('initializeOfflineSchema', [func
 
     this.databasePromise = null;
 
-    var initDbSchema = function (schemaBuilder) {
-        var tables = _.values(Bahmni.Common.Offline.SchemaDefinitions);
+    var initDbSchema = function (schemaBuilder,definitions) {
+        var tables = _.values(definitions);
         var initalMigrationVersion = 2;
         tables.forEach(function (table) {
             createTable(schemaBuilder, table);
@@ -73,23 +73,29 @@ angular.module('bahmni.common.offline').service('initializeOfflineSchema', [func
     };
 
     this.initSchema = function (dbName) {
-        if (this.databasePromise === null) {
-            var schemaBuilder = lf.schema.create(dbName, DB_VERSION);
-            initDbSchema(schemaBuilder);
-
-            this.databasePromise = schemaBuilder.connect(LOVEFIELD_DB_CONFIG);
+        if (dbPromises[dbName] != null) {
+          return this.databasePromise;
         }
-
-        this.databasePromise.then(function (db) {
-            var initalMigrationVersion = DB_VERSION_OLD || 2;
-            runMigration(initalMigrationVersion, db, migrateDataUsingCustomLoveFieldQueries);
-        });
-        return this.databasePromise;
+        var schemaBuilder = lf.schema.create(dbName, DB_VERSION);
+        if (dbName === "metadata") {
+            initDbSchema(schemaBuilder, Bahmni.Common.Offline.MetaDataSchemaDefinitions);
+            this.databasePromise = schemaBuilder.connect(LOVEFIELD_DB_CONFIG);
+            dbPromises[dbName] = this.databasePromise;
+        } else {
+            initDbSchema(schemaBuilder, Bahmni.Common.Offline.SchemaDefinitions);
+            this.databasePromise = schemaBuilder.connect(LOVEFIELD_DB_CONFIG);
+            dbPromises[dbName] = this.databasePromise;
+            this.databasePromise.then(function (db) {
+                var initalMigrationVersion = DB_VERSION_OLD || 2;
+                runMigration(initalMigrationVersion, db, migrateDataUsingCustomLoveFieldQueries);
+            });
+        }
+      return this.databasePromise;
     };
 
-    this.reinitSchema = function () {
+    this.reinitSchema = function (dbName) {
         this.databasePromise = null;
-        return this.initSchema();
+        return this.initSchema(dbName);
     };
 
     var createTable = function (schemaBuilder, tableDefinition) {
