@@ -63,7 +63,12 @@ angular.module('bahmni.offline', ['ui.router', 'httpErrorInterceptor', 'bahmni.c
                 }).state('initSync', {
                     templateUrl: 'views/initSync.html',
                     controller: 'InitSyncController',
-                    url: '/initSync'
+                    url: '/initSync',
+                    resolve: {
+                        offlineDb: function (offlineDbInitialization) {
+                            return offlineDbInitialization();
+                        }
+                    }
 
                 }).state('device',
                 {
