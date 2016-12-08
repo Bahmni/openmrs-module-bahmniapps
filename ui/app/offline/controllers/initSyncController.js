@@ -7,17 +7,17 @@ angular.module('bahmni.common.offline')
             var init = function () {
                 var deferred = $q.defer();
                 offlinePull().then(function () {
-                      setIntialStatus("complete")
+                      setInitialStatus("complete");
                       deferred.resolve();
                   },
                   function () {
-                      setIntialStatus("notComplete");
+                      setInitialStatus("notComplete");
                       deferred.reject();
                   });
                 return deferred.promise;
             };
 
-            var setIntialStatus = function (status) {
+            var setInitialStatus = function (status) {
                 var locationSyncStatus = {};
                 if (loginLocationUuid) {
                     var initialSyncStatus = offlineService.getItem("initialSyncStatus");

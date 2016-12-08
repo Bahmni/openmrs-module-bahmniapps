@@ -58,15 +58,28 @@ describe('OfflineDbService ', function () {
         var schemaBuilder = lf.schema.create('BahmniOfflineDb', 1);
         schemaBuilder.connect().then(function (db) {
             offlineDbService.init(db);
-
             expect(offlineMarkerDbService.init).toHaveBeenCalledWith(db);
             expect(offlineAddressHierarchyDbService.init).toHaveBeenCalledWith(db);
-            expect(offlineConfigDbService.init).toHaveBeenCalledWith(db);
-            expect(referenceDataDbService.init).toHaveBeenCalledWith(db);
             expect(offlineSearchDbService.init).toHaveBeenCalledWith(db);
-            expect(conceptDbService.init).toHaveBeenCalledWith(db);
             done();
         });
+    });
+
+    it("should init offlineDbService with metadata db reference", function (done) {
+        var metaDataSchemaBuilder = lf.schema.create('metadata', 1);
+        var schemaBuilder = lf.schema.create('BahmniOfflineDb', 1);
+        schemaBuilder.connect().then(function (db) {
+            offlineDbService.init(db);
+            metaDataSchemaBuilder.connect().then(function (metaDataDb) {
+                offlineDbService.init(metaDataDb);
+                expect(offlineConfigDbService.init).toHaveBeenCalledWith(metaDataDb);
+                expect(referenceDataDbService.init).toHaveBeenCalledWith(metaDataDb, db);
+                expect(conceptDbService.init).toHaveBeenCalledWith(metaDataDb);
+                metaDataDb.close();
+                done();
+            });
+        });
+
     });
 
 
@@ -438,7 +451,6 @@ describe('OfflineDbService ', function () {
 
 
     describe("errorLogDbService ", function () {
-
         beforeEach( function(){
 
             errorLogDbService.insertLog.and.callFake(function () {
@@ -537,73 +549,79 @@ describe('OfflineDbService ', function () {
 
     describe("conceptDbService", function () {
         it("should call getConcept with given conceptUuid", function (done) {
-            var schemaBuilder = lf.schema.create('BahmniOfflineDb', 1);
+            var schemaBuilder = lf.schema.create('metadata', 1);
             schemaBuilder.connect().then(function (db) {
                 offlineDbService.init(db);
 
                 offlineDbService.getConcept("conceptUuid");
                 expect(conceptDbService.getReferenceData.calls.count()).toBe(1);
                 expect(conceptDbService.getReferenceData).toHaveBeenCalledWith("conceptUuid");
+                db.close();
                 done();
             });
         });
 
         it("should call getConceptByName with given conceptName", function (done) {
-            var schemaBuilder = lf.schema.create('BahmniOfflineDb', 1);
+            var schemaBuilder = lf.schema.create('metadata', 1);
             schemaBuilder.connect().then(function (db) {
                 offlineDbService.init(db);
 
                 offlineDbService.getConceptByName("paracetamol");
                 expect(conceptDbService.getConceptByName.calls.count()).toBe(1);
                 expect(conceptDbService.getConceptByName).toHaveBeenCalledWith("paracetamol");
+                db.close();
                 done();
             });
         });
 
         it("should call insertConceptAndUpdateHierarchy with given concept data and parentConcept", function (done) {
-            var schemaBuilder = lf.schema.create('BahmniOfflineDb', 1);
+            var schemaBuilder = lf.schema.create('metadata', 1);
             schemaBuilder.connect().then(function (db) {
                 offlineDbService.init(db);
 
                 offlineDbService.insertConceptAndUpdateHierarchy("data", "parent");
                 expect(conceptDbService.insertConceptAndUpdateHierarchy.calls.count()).toBe(1);
                 expect(conceptDbService.insertConceptAndUpdateHierarchy).toHaveBeenCalledWith("data", "parent");
+                db.close();
                 done();
             });
         });
 
         it("should call updateChildren with given concept", function (done) {
-            var schemaBuilder = lf.schema.create('BahmniOfflineDb', 1);
+            var schemaBuilder = lf.schema.create('metadata', 1);
             schemaBuilder.connect().then(function (db) {
                 offlineDbService.init(db);
 
                 offlineDbService.updateChildren("concept");
                 expect(conceptDbService.updateChildren.calls.count()).toBe(1);
                 expect(conceptDbService.updateChildren).toHaveBeenCalledWith("concept");
+                db.close();
                 done();
             });
         });
 
         it("should call updateParentJson with given childConcept", function (done) {
-            var schemaBuilder = lf.schema.create('BahmniOfflineDb', 1);
+            var schemaBuilder = lf.schema.create('metadata', 1);
             schemaBuilder.connect().then(function (db) {
                 offlineDbService.init(db);
 
                 offlineDbService.updateParentJson("childConcept");
                 expect(conceptDbService.updateParentJson.calls.count()).toBe(1);
                 expect(conceptDbService.updateParentJson).toHaveBeenCalledWith("childConcept");
+                db.close();
                 done();
             });
         });
 
         it("should call getAllParentsInHierarchy with given concept name and empty array", function (done) {
-            var schemaBuilder = lf.schema.create('BahmniOfflineDb', 1);
+            var schemaBuilder = lf.schema.create('metadata', 1);
             schemaBuilder.connect().then(function (db) {
                 offlineDbService.init(db);
 
                 offlineDbService.getAllParentsInHierarchy("conceptName");
                 expect(conceptDbService.getAllParentsInHierarchy.calls.count()).toBe(1);
                 expect(conceptDbService.getAllParentsInHierarchy).toHaveBeenCalledWith("conceptName", []);
+                db.close();
                 done();
             });
         });
@@ -664,13 +682,14 @@ describe('OfflineDbService ', function () {
 
     describe("locationDbService", function () {
         it("should call getLocationByUuid with given locationUuid", function (done) {
-            var schemaBuilder = lf.schema.create('BahmniOfflineDb', 1);
+            var schemaBuilder = lf.schema.create('metadata', 1);
             schemaBuilder.connect().then(function (db) {
                 offlineDbService.init(db);
 
                 offlineDbService.getLocationByUuid("locationUuid");
                 expect(locationDbService.getLocationByUuid.calls.count()).toBe(1);
                 expect(locationDbService.getLocationByUuid).toHaveBeenCalledWith(db, "locationUuid");
+                db.close();
                 done();
             });
         });

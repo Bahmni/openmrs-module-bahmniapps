@@ -56,26 +56,6 @@ Bahmni.Common.Offline.SchemaDefinitions = {
         nullableColumns: ['name', 'parentId', 'userGeneratedId'],
         primaryKeyColumns: ['uuid']
     },
-    Concept: {
-        tableName: 'concept',
-        columns: [
-            {
-                name: 'data',
-                type: 'STRING'
-            }, {
-                name: 'uuid',
-                type: 'STRING'
-            }, {
-                name: 'name',
-                type: 'STRING'
-            }, {
-                name: 'parents',
-                type: 'OBJECT'
-            }
-        ],
-        nullableColumns: [],
-        primaryKeyColumns: ['uuid']
-    },
 
     EventLogMarker: {
         tableName: 'event_log_marker',
@@ -98,7 +78,6 @@ Bahmni.Common.Offline.SchemaDefinitions = {
         nullableColumns: ['filters', 'lastReadEventUuid'],
         primaryKeyColumns: ['markerName']
     },
-
     PatientAttributeType: {
         tableName: 'patient_attribute_type',
         columns: [
@@ -119,7 +98,6 @@ Bahmni.Common.Offline.SchemaDefinitions = {
         nullableColumns: ['format'],
         primaryKeyColumns: ['uuid']
     },
-
     PatientAttribute: {
         tableName: 'patient_attribute',
         columns: [
@@ -231,54 +209,6 @@ Bahmni.Common.Offline.SchemaDefinitions = {
         ],
         nullableColumns: ['address1', 'address2', 'cityVillage', 'stateProvince', 'postalCode', 'country', 'countyDistrict', 'address3', 'address4', 'address5', 'address6'],
         primaryKeyColumns: ['patientUuid']
-    },
-    Configs: {
-        tableName: 'configs',
-        columns: [
-            {
-                name: 'key',
-                type: 'STRING'
-            }, {
-                name: 'value',
-                type: 'STRING'
-            }, {
-                name: 'etag',
-                type: 'STRING'
-            }
-        ],
-        nullableColumns: ['etag'],
-        primaryKeyColumns: ['key']
-    },
-    ReferenceData: {
-        tableName: 'reference_data',
-        columns: [
-            {
-                name: 'key',
-                type: 'STRING'
-            }, {
-                name: 'data',
-                type: 'STRING'
-            }, {
-                name: 'etag',
-                type: 'STRING'
-            }
-        ],
-        nullableColumns: ['etag'],
-        primaryKeyColumns: ['key']
-    },
-    LoginLocations: {
-        tableName: 'login_locations',
-        columns: [
-            {
-                name: 'uuid',
-                type: 'STRING'
-            }, {
-                name: 'value',
-                type: 'STRING'
-            }
-        ],
-        nullableColumns: [],
-        primaryKeyColumns: ['uuid']
     },
     Visit: {
         tableName: 'visit',
@@ -449,5 +379,79 @@ Bahmni.Common.Offline.SchemaDefinitions = {
         ],
         nullableColumns: [],
         primaryKeyColumns: ['patientUuid']
+    }
+};
+
+Bahmni.Common.Offline.MetaDataSchemaDefinitions = {
+    Concept: {
+        tableName: 'concept',
+        columns: [
+            {
+                name: 'data',
+                type: 'STRING'
+            }, {
+                name: 'uuid',
+                type: 'STRING'
+            }, {
+                name: 'name',
+                type: 'STRING'
+            }, {
+                name: 'parents',
+                type: 'OBJECT'
+            }
+        ],
+        nullableColumns: [],
+        primaryKeyColumns: ['uuid']
+    },
+
+    Configs: {
+        tableName: 'configs',
+        columns: [
+            {
+                name: 'key',
+                type: 'STRING'
+            }, {
+                name: 'value',
+                type: 'STRING'
+            }, {
+                name: 'etag',
+                type: 'STRING'
+            }
+        ],
+        nullableColumns: ['etag'],
+        primaryKeyColumns: ['key']
+    },
+
+    ReferenceData: {
+        tableName: 'reference_data',
+        columns: [
+            {
+                name: 'key',
+                type: 'STRING'
+            }, {
+                name: 'data',
+                type: 'STRING'
+            }, {
+                name: 'etag',
+                type: 'STRING'
+            }
+        ],
+        nullableColumns: ['etag'],
+        primaryKeyColumns: ['key']
+    },
+
+    LoginLocations: {
+        tableName: 'login_locations',
+        columns: [
+            {
+                name: 'uuid',
+                type: 'STRING'
+            }, {
+                name: 'value',
+                type: 'STRING'
+            }
+        ],
+        nullableColumns: [],
+        primaryKeyColumns: ['uuid']
     }
 };

@@ -5,7 +5,7 @@ angular.module('bahmni.common.offline')
         'offlineConfigDbService', 'initializeOfflineSchema', 'referenceDataDbService', 'locationDbService', 'offlineSearchDbService', 'encounterDbService', 'visitDbService', 'observationDbService', 'conceptDbService', 'errorLogDbService', 'eventLogService', 'eventQueue',
         function ($http, $q, patientDbService, patientAddressDbService, patientAttributeDbService, patientIdentifierDbService, offlineMarkerDbService, offlineAddressHierarchyDbService, labOrderResultsDbService,
                   offlineConfigDbService, initializeOfflineSchema, referenceDataDbService, locationDbService, offlineSearchDbService, encounterDbService, visitDbService, observationDbService, conceptDbService, errorLogDbService, eventLogService, eventQueue) {
-            var db;
+            var db,metaDataDb;
 
             var createPatient = function (postRequest) {
                 var deferred = $q.defer();
@@ -112,21 +112,28 @@ angular.module('bahmni.common.offline')
             };
 
             var init = function (offlineDb) {
-                db = offlineDb;
-                offlineMarkerDbService.init(offlineDb);
-                offlineAddressHierarchyDbService.init(offlineDb);
-                offlineConfigDbService.init(offlineDb);
-                referenceDataDbService.init(offlineDb);
-                offlineSearchDbService.init(offlineDb);
-                conceptDbService.init(offlineDb);
+                if(offlineDb.getSchema().name() == "metadata") {
+                    metaDataDb = offlineDb;
+                    offlineConfigDbService.init(metaDataDb);
+                    conceptDbService.init(metaDataDb);
+                    referenceDataDbService.init(metaDataDb);
+                } else {
+                    db = offlineDb;
+                    offlineMarkerDbService.init(offlineDb);
+                    offlineAddressHierarchyDbService.init(offlineDb);
+                    offlineSearchDbService.init(offlineDb);
+                }
+                if(metaDataDb && db) {
+                    referenceDataDbService.init(metaDataDb,db);
+                }
             };
 
             var initSchema = function (dbName) {
                 return initializeOfflineSchema.initSchema(dbName);
             };
 
-            var reinitSchema = function () {
-                return initializeOfflineSchema.reinitSchema();
+            var reinitSchema = function (dbName) {
+                return initializeOfflineSchema.reinitSchema(dbName);
             };
 
             var getMarker = function (markerName) {
@@ -162,7 +169,7 @@ angular.module('bahmni.common.offline')
             };
 
             var getLocationByUuid = function (uuid) {
-                return locationDbService.getLocationByUuid(db, uuid);
+                return locationDbService.getLocationByUuid(metaDataDb, uuid);
             };
 
             var getAttributeTypes = function () {

@@ -3,11 +3,11 @@
 angular.module('bahmni.common.offline')
     .service('referenceDataDbService', ['patientAttributeDbService', 'locationDbService',
         function (patientAttributeDbService, locationDbService) {
-            var db;
+            var db, metaDataDb;
 
             var getReferenceData = function (referenceDataKey) {
-                var referenceData = db.getSchema().table('reference_data');
-                return db.select()
+                var referenceData = metaDataDb.getSchema().table('reference_data');
+                return metaDataDb.select()
                 .from(referenceData)
                 .where(referenceData.key.eq(referenceDataKey)).exec()
                 .then(function (result) {
@@ -16,7 +16,7 @@ angular.module('bahmni.common.offline')
             };
 
             var insertReferenceData = function (referenceDataKey, data, eTag) {
-                var referenceData = db.getSchema().table('reference_data');
+                var referenceData = metaDataDb.getSchema().table('reference_data');
 
                 var row = referenceData.createRow({
                     key: referenceDataKey,
@@ -24,19 +24,20 @@ angular.module('bahmni.common.offline')
                     etag: eTag
                 });
 
-                return db.insertOrReplace().into(referenceData).values([row]).exec().then(function () {
+                return metaDataDb.insertOrReplace().into(referenceData).values([row]).exec().then(function () {
                     switch (referenceDataKey) {
                     case 'PersonAttributeType':
                         return patientAttributeDbService.insertAttributeTypes(db, data.results);
                     case 'LoginLocations':
-                        return locationDbService.insertLocations(db, data.results);
+                        return locationDbService.insertLocations(metaDataDb, data.results);
                     default :
                         return;
                     }
                 });
             };
 
-            var init = function (_db) {
+            var init = function (_metadatadb, _db) {
+                metaDataDb = _metadatadb;
                 db = _db;
             };
 

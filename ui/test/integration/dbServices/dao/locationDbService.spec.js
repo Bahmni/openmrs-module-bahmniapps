@@ -13,7 +13,7 @@ describe('locationDbService tests', function () {
 
     it("insert locations and get location by uuid from lovefield database", function(done){
         var schemaBuilder = lf.schema.create('BahmniLocations', 1);
-        Bahmni.Tests.OfflineDbUtils.createTable(schemaBuilder, Bahmni.Common.Offline.SchemaDefinitions.LoginLocations);
+        Bahmni.Tests.OfflineDbUtils.createTable(schemaBuilder, Bahmni.Common.Offline.MetaDataSchemaDefinitions.LoginLocations);
         jasmine.getFixtures().fixturesPath = 'base/test/data';
         var locationsJson = JSON.parse(readFixtures('loginLocations.json'));
         schemaBuilder.connect().then(function(db){
