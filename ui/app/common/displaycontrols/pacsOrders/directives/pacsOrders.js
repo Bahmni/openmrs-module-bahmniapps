@@ -50,7 +50,7 @@ angular.module('bahmni.common.displaycontrol.pacsOrders')
                         function () {
                             $window.open(url, "_blank");
                         }, function () {
-                            messagingService.showMessage("info", "No image available yet for order: " + $scope.getLabel(bahmniOrder));
+                        messagingService.showMessage("info", "No image available yet for order: " + $scope.getLabel(bahmniOrder));
                     }));
                 };
 
