@@ -49,7 +49,9 @@ describe("PacsOrdersDisplayControl", function () {
         scope.config = {};
         scope.patient = {uuid: "patientUuid"};
         orders = [{
-            "conceptName": "Absconding",
+            "concept": {
+                "shortName": "Absconding"
+            },
             "orderDate": "2014-12-16T16:06:49.000+0530",
             "provider": "Surajkumar Surajkumar Surajkumar",
             "bahmniObservations": []
@@ -109,7 +111,9 @@ describe("PacsOrdersDisplayControl", function () {
             };
             scope.orderType = "testOrder";
             orders = [{
-                "conceptName": "Absconding",
+                "concept": {
+                    "shortName": "Absconding"
+                },
                 "orderDate": "2014-12-16T16:06:49.000+0530",
                 "provider": "someProvider",
                 "bahmniObservations": []
@@ -148,7 +152,9 @@ describe("PacsOrdersDisplayControl", function () {
             scope.section = {title: "PACS Orders Summary"};
             scope.orderType = "pacsOrder";
             orders = [{
-                "conceptName": "Absconding",
+                "concept": {
+                  "shortName": "Absconding"
+                },
                 "orderDate": "2014-12-16T16:06:49.000+0530",
                 "provider": "someProvider",
                 orderNumber: "ORD-2003",

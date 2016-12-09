@@ -40,13 +40,17 @@ angular.module('bahmni.common.displaycontrol.pacsOrders')
                         .replace('{{orderNumber}}', orderNumber);
                 };
 
+                $scope.getLabel = function (bahmniOrder) {
+                    return bahmniOrder.concept.shortName || bahmniOrder.concept.name;
+                };
+
                 $scope.openImage = function (bahmniOrder) {
                     var url = bahmniOrder.pacsImageUrl;
                     spinner.forAjaxPromise($.ajax({type: 'HEAD', url: url, async: false}).then(
                         function () {
                             $window.open(url, "_blank");
                         }, function () {
-                        messagingService.showMessage("info", "No image available yet for order: " + bahmniOrder.conceptName);
+                            messagingService.showMessage("info", "No image available yet for order: " + $scope.getLabel(bahmniOrder));
                     }));
                 };
 
