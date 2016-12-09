@@ -1,7 +1,7 @@
 'use strict';
 
 describe('ConceptSetPageController', function () {
-    var scope, controller, rootScope, conceptSetService, configurations, clinicalAppConfigService, state, encounterConfig, spinner;
+    var scope, controller, rootScope, conceptSetService, configurations, clinicalAppConfigService, state, encounterConfig, spinner, messagingService;
 
     beforeEach(module('bahmni.common.uiHelper'));
     beforeEach(module('bahmni.clinical'));
@@ -39,6 +39,8 @@ describe('ConceptSetPageController', function () {
         configurations.encounterConfig.and.returnValue(encounterConfig);
         conceptSetService = jasmine.createSpyObj("conceptSetService", ["getConcept", "getObsTemplatesForProgram"]);
         spinner = jasmine.createSpyObj("spinner", ["forPromise"]);
+        messagingService = jasmine.createSpyObj('messagingService', ['showMessage']);
+        
     };
 
     beforeEach(initController);
@@ -50,7 +52,7 @@ describe('ConceptSetPageController', function () {
             $stateParams: {conceptSetGroupName: "concept set group name"},
             conceptSetService: conceptSetService,
             clinicalAppConfigService: clinicalAppConfigService,
-            messagingService: null,
+            messagingService: messagingService,
             configurations: configurations,
             $state: state,
             spinner: spinner
@@ -155,6 +157,41 @@ describe('ConceptSetPageController', function () {
             expect(scope.consultation.selectedObsTemplate[1].conceptName).toEqual("efgh");
             expect(scope.consultation.selectedObsTemplate[1].isAdded).toBeFalsy();
             expect(scope.consultation.selectedObsTemplate[1].alwaysShow).toBeTruthy();
+        });
+
+        it("should add template to the list when clicked", function () {
+            var conceptResponseData = {
+                results: [
+                    {
+                        setMembers: [{name: {name: "abcd"}, uuid: 123}]
+                    }
+                ]
+            };
+            mockConceptSetService(conceptResponseData);
+            scope.consultation.observations = [{
+                concept: {
+                    uuid: 123
+                },
+                uuid: "cafedead"
+            }, {
+                concept: {
+                    uuid: 123
+                },
+                uuid: "deadcafe"
+            }];
+            createController();
+            scope.consultation.selectedObsTemplate[0].label = "Followup Assessment";
+            scope.consultation.selectedObsTemplate[0].isAdded = true;
+            scope.consultation.selectedObsTemplate[1].label = "Baseline";
+            scope.consultation.selectedObsTemplate[1].isAdded = false;
+
+            scope.addTemplate({label : "Followup Assessment", clone : function () {return {label : "Followup Assessment"}}});
+            expect(scope.consultation.selectedObsTemplate.length).toEqual(3);
+            expect(scope.consultation.selectedObsTemplate[0].isAdded).toBeTruthy();
+
+            scope.addTemplate({label : "Baseline", toggle : function () {}});
+            expect(scope.consultation.selectedObsTemplate.length).toEqual(3);
+            expect(messagingService.showMessage).toHaveBeenCalled();
         });
     })
 });

@@ -10,8 +10,8 @@
                             </div>
                             <div class="primary-section-grid" bm-pop-over-target>
                                 <ul class="template-icons">
-                                    <li ng-repeat="template in consultation.selectedObsTemplate" ng-if="!template.isAdded && !template.alwaysShow">
-                                        <button id="{{getNormalized(template.label)}}" ng-click="toggleTemplate(template)">
+                                    <li ng-repeat="template in getUniqueTemplates()">
+                                        <button id="{{getNormalized(template.label)}}" ng-disabled = "template.isAdded && !template.allowAddMore" ng-click="addTemplate(template)">
                                             {{::template.label}}
                                         </button>
                                     </li>
