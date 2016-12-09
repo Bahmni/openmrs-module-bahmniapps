@@ -7,19 +7,21 @@
                 <span class="section-label">{{conceptSet.label}}</span>
             </h2>
             <div class="form-actions fr">
-                <button type="button" ng-if="::conceptSet.showComputeButton() && conceptSet.isOpen"
-                      ng-click="computeField(conceptSet, $event)" class="">Compute
-                </button>
-                <button type="button"  ng-if="showPreviousButton(conceptSet.conceptName) && conceptSet.isOpen"
-                      ng-click="showPrevious(conceptSet.conceptName, $event)">Previous
-                </button>
-                <button type="button"  ng-if="conceptSet.isOpen" ng-click="conceptSet.maximizeInnerSections($event)">
+                <!--<button type="button" ng-if="::conceptSet.showComputeButton() && conceptSet.isOpen"-->
+                      <!--ng-click="computeField(conceptSet, $event)" class="">Compute-->
+                <!--</button>-->
+                <!--<button type="button"  ng-if="showPreviousButton(conceptSet.conceptName) && conceptSet.isOpen"-->
+                      <!--ng-click="showPrevious(conceptSet.conceptName, $event)">Previous-->
+                <!--</button>-->
+                <button type="button"  ng-if="conceptSet.isOpen" ng-click="conceptSet.maximizeInnerSections($event)"
+                        title="{{ ::'CONCEPT_SET_GROUP_EXPAND_ALL_KEY' | translate}}">
                        <i class="fa icon-bahmni-expand"></i>
                 </button>
-                <button type="button" ng-if="conceptSet.isOpen" ng-click="conceptSet.minimizeInnerSections($event)">
+                <button type="button" ng-if="conceptSet.isOpen" ng-click="conceptSet.minimizeInnerSections($event)"
+                        title="{{ ::'CONCEPT_SET_GROUP_COLLAPSE_ALL_KEY' | translate}}">
                     <i class="fa icon-bahmni-collapse"></i>
                 </button>
-                <label class="add-fav">
+                <label class="add-fav" title="">
                     <input type="checkbox" id="hasOldIdentifier" ng-model="conceptSet.alwaysShow"
                            ng-change="togglePref(conceptSet, conceptSet.conceptName)"/>
                     <i class="fa fa-thumb-tack"></i>
