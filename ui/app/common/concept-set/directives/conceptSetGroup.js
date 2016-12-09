@@ -12,9 +12,8 @@ angular.module('bahmni.common.conceptSet')
                 $scope.validationHandler = $scope.context.showPanelView ? new Bahmni.ConceptSet.ConceptSetGroupPanelViewValidationHandler($scope.allTemplates) : new Bahmni.ConceptSet.ConceptSetGroupValidationHandler($scope.allTemplates);
                 contextChangeHandler.add($scope.validationHandler.validate);
                 $scope.leftPanelConceptSet = _.find($scope.allTemplates, function (conceptSet) {
-                    return conceptSet.klass == "active" || $stateParams.lastOpenedTemplate == conceptSet.uuid;
+                    return conceptSet.klass == "active";
                 });
-                $scope.leftPanelConceptSet && $scope.leftPanelConceptSet.show();
             };
 
             $scope.togglePref = function (conceptSet, conceptName) {
@@ -72,12 +71,12 @@ angular.module('bahmni.common.conceptSet')
                 }));
             };
 
-            $scope.canDelete = function (index) {
-                var uuid = $scope.allTemplates[index].uuid;
-                var savedObs = _.filter($scope.consultation.observations, function (obs) {
-                    return obs && obs.concept && uuid === obs.concept.uuid;
-                });
-                return 0 == savedObs.length;
+            $scope.canRemove = function (index) {
+                var observations = $scope.allTemplates[index].observations;
+                if(observations === undefined ||  _.isEmpty(observations)) {
+                    return true;
+                }
+                return observations[0].uuid === undefined;
             };
 
             $scope.clone = function (index) {
@@ -111,8 +110,24 @@ angular.module('bahmni.common.conceptSet')
             };
 
             $scope.remove = function (index) {
-                $scope.allTemplates.splice(index, 1);
-                $.scrollTo('#concept-set-' + (index), 200, {offset: {top: -400}});
+                var label = $scope.allTemplates[index].label;
+                var currentTemplate = $scope.allTemplates[index];
+                var anotherTemplate = _.find($scope.allTemplates, function (template) {
+                    return template.label == currentTemplate.label && template !== currentTemplate;
+                });
+                if (anotherTemplate) {
+                    $scope.allTemplates.splice(index, 1);
+                }
+                else {
+                    var clonedObj = $scope.allTemplates[index].clone();
+                    $scope.allTemplates[index] = clonedObj;
+                    $scope.allTemplates[index].isAdded = false;
+                    $scope.allTemplates[index].isOpen = false;
+                    $scope.allTemplates[index].klass = "";
+                    $scope.allTemplates[index].isLoaded = false;
+                }
+                $scope.leftPanelConceptSet = "";
+                messagingService.showMessage("info", label + " removed successfully");
             };
 
             $scope.openActiveForm = function (conceptSet) {
@@ -147,6 +162,7 @@ angular.module('bahmni.common.conceptSet')
                 $scope.leftPanelConceptSet.isLoaded = true;
                 $scope.leftPanelConceptSet.klass = "active";
                 $scope.leftPanelConceptSet.atLeastOneValueIsSet = selectedConceptSet.hasSomeValue();
+                $scope.leftPanelConceptSet.isAdded = true;
                 $scope.consultation.lastvisited = selectedConceptSet.uuid;
                 $(window).scrollTop(0);
             };

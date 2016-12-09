@@ -21,12 +21,13 @@
                         title="{{ ::'CONCEPT_SET_GROUP_COLLAPSE_ALL_KEY' | translate}}">
                     <i class="fa icon-bahmni-collapse"></i>
                 </button>
-                <label class="add-fav" title="">
+                <label class="add-fav" title="{{ ::'CONCEPT_SET_GROUP_PIN_UNPIN_KEY' | translate}}">
                     <input type="checkbox" id="hasOldIdentifier" ng-model="conceptSet.alwaysShow"
                            ng-change="togglePref(conceptSet, conceptSet.conceptName)"/>
                     <i class="fa fa-thumb-tack"></i>
                 </label>
-                <button type="button" ng-confirm-click="remove($index)" ng-disabled="!canDelete($index)"
+                <button type="button" ng-confirm-click="remove($index)" ng-disabled="!canRemove($index)"
+                        title="{{ ::'CONCEPT_SET_GROUP_REMOVE_KEY' | translate}}"
                     confirm-message="{{::'REMOVE_CONFIRMATION_KEY' | translate}}">
                         <i class="fa fa-trash"></i>
                 </button>

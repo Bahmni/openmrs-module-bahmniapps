@@ -30,6 +30,10 @@ angular.module('bahmni.clinical')
                 }
             };
 
+            $scope.getUniqueTemplates = function() {
+                return  _.uniqBy($scope.consultation.selectedObsTemplate, 'label');
+            };
+
             var showOnlyTemplatesFilledInProgram = function () {
                 spinner.forPromise(conceptSetService.getObsTemplatesForProgram($state.params.programUuid).success(function (data) {
                     if (data.results.length > 0 && data.results[0].mappings.length > 0) {
@@ -86,20 +90,22 @@ angular.module('bahmni.clinical')
                 });
             };
 
-            $scope.toggleTemplate = function (template) {
+            $scope.addTemplate = function (template) {
                 $scope.scrollingEnabled = true;
+                var index = _.findLastIndex($scope.consultation.selectedObsTemplate, function (consultationTemplate) {
+                    return consultationTemplate.label == template.label;
+                });
 
-                if (!template.canToggle()) {
-                    messagingService.showMessage("error", "Templates having data cannot be unselected. Please Clear the data and try again");
+                if ($scope.consultation.selectedObsTemplate[index].isAdded) {
+                    var clonedObj = template.clone();
+                    clonedObj.klass = "active";
+                    $scope.consultation.selectedObsTemplate.splice(index + 1, 0, clonedObj);
+
                 } else {
                     template.toggle();
-                    if (template.isAdded) {
-                        template.klass = "active";
-                        messagingService.showMessage("info", template.label + " Added successfully");
-                    } else if (!template.isAdded) {
-                        messagingService.showMessage("info", template.label + " Removed successfully");
-                    }
+                    template.klass = "active";
                 }
+                messagingService.showMessage("info", template.label + " Added successfully");
             };
 
             $scope.getNormalized = function (conceptName) {

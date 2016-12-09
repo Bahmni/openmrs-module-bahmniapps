@@ -54,11 +54,27 @@ describe("conceptSetGroup", function () {
             },
             selectedObsTemplate : [
                 {
-                    "uuid" : "conceptSet1"
+                    "uuid": "conceptSet1",
+                    "label": "Followup",
+                    clone: function () {
+                        return {
+                            "uuid": "conceptSet1",
+                            "label": "Followup"
+                        }
+                    }
                 },
                 {
                     "uuid" : "conceptSet2",
-                    "klass" : "active"
+                    "klass": "active",
+                    "label": "Followup",
+                    clone: function () {
+                        return {
+                            "uuid": "conceptSet2",
+                            "klass": "active",
+                            "label": "Followup"
+                        }
+                    },
+                    "observations": [{uuid : "uuid"}]
                 }
             ]
         };
@@ -185,5 +201,38 @@ describe("conceptSetGroup", function () {
         var conceptKlass = compiledElementScope.openActiveForm(selectConceptSetSection);
         expect(conceptKlass).toEqual("active");
         expect(compiledElementScope.leftPanelConceptSet.name).toEqual("activeForm");
+    });
+
+    it("should delete the template only if other template with the same label is available", function () {
+        var compiledElementScope = executeDirective();
+        var selectConceptSetSection = {
+            name: "activeForm",
+            hasSomeValue: function () {
+                return true;
+            },
+            klass: 'active'
+        };
+        scope.$digest();
+
+        compiledElementScope.leftPanelConceptSet = {
+            name: "alreadyOpenedForm",
+            isOpen: true,
+            isLoaded: true,
+            klass: "active"
+        };
+        expect(compiledElementScope.allTemplates.length).toEqual(2);
+        compiledElementScope.remove(0);
+        expect(compiledElementScope.allTemplates.length).toEqual(1);
+        compiledElementScope.remove(0);
+        expect(compiledElementScope.allTemplates.length).toEqual(1);
+    });
+
+    it("canRemove should return true only if it is unsaved template", function(){
+        var compiledElementScope = executeDirective();
+
+        compiledElementScope.$digest();
+        expect(compiledElementScope.canRemove(0)).toBeTruthy();
+        expect(compiledElementScope.canRemove(1)).toBeFalsy();
+
     });
 });
