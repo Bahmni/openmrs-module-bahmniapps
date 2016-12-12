@@ -1,0 +1,153 @@
+.adt {
+
+    .adt-disposition-action {
+        margin: 5px 5px 0 0;
+    }
+    select.disposition-action {
+        color: #363463;
+        display: block;
+        padding: 5px 10px;
+        margin-bottom: 5px;
+        margin-top: 5px;
+        background-color: #FFF;
+        border: 1px solid $lighterGray;
+    }
+    .patient-disposition-status {
+        color: green;
+        padding-top: 10px;
+    }
+    .form-horizontal fieldset label {
+        text-align: left;
+        margin-left: 0;
+        padding-bottom: 5px;
+    }
+    .form-group .field-value textarea {
+        width: 98%;
+        margin:0 0 5px 0;
+    }
+    .submit-btn-container{
+        .admit_btn{
+            margin:0 5px; 
+        }
+    }
+}
+
+div[ng-app="adt"] {
+    .patient-details {
+        position: relative;
+        z-index: 1111;
+        top: 17px;
+        left: 50%;
+        transform: translateX(-50%);
+        -webkit-transform: translateX(-50%);
+        color: $lightestGray;
+    }
+    .ward-list {
+        .section-grid {
+            margin-bottom: 10px;
+        }
+        .section-title {
+            cursor: pointer;
+            padding: 0;
+            small {
+                color: beige;
+            }
+            span.ward-header{
+              display: inline-block;
+              width:90%;
+              height: 37px;
+              padding: 10px;
+            }
+        }
+      .quick-links{
+        padding: 10px 0;
+      }
+    }
+    .ward-details-cell {
+        padding: 0;
+    }
+    .ward-details-container {
+        width: 100%;
+        max-width: $max-page-width;
+        overflow-x: auto;
+        table {
+            font-size: 14px;
+            thead tr th{
+                border: 1px solid #bebebe;
+                color:$black;
+                background: rgba(232, 232, 232, 1);
+                padding: 7px 10px;
+                &.bed-detail-column{
+                    width: 60px;
+                }
+            }
+            tbody tr:nth-child(even) {
+              background: $clinicalFormFocusBg;
+            }
+        }
+        .no-data-info{
+            font-family: openSansBold;
+            padding: 10px 0;
+            display: inline-block;
+            text-align: center;
+            width: 100%;
+        }
+    }
+    .box {
+        @media screen and (max-width: 859px) {
+            margin-bottom: 15px;
+        }
+    }
+}
+.drug-details{
+    margin-top:15px;
+}
+
+
+
+
+#left-pane {
+    float: left;
+    margin-right: 20px;
+    width: 200px;
+    border: 1px solid black;
+    padding: 20px;
+}
+
+#right-pane {
+    float: left;
+    border: 1px solid black;
+    padding: 20px;
+    width: 60%;
+}
+
+#rooms {
+    display: block;
+}
+
+#bedLayout {
+    display: block;
+    margin-top: 30px;
+}
+
+#room {
+    float: left;
+    margin-right: 10px;
+}
+
+#beds {
+    display: block;
+}
+
+#bed {
+    display: inline-block;
+    padding: 20px;
+
+}
+
+#roomDetails {
+    padding: 20px;
+    box-shadow: 0px 0px 0px 1px;
+    font-size: 12px;
+    margin-right: 20px;
+}

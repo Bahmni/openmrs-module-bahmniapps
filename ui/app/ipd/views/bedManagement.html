@@ -1,0 +1,81 @@
+<div id="bedManagement">
+    <div id="left-pane">
+        <div id="patient-info">
+            <div id="patient-details">
+                <div class="clearfix">
+                    <label>Patient ID : </label>
+                    <a href="/bahmni/clinical/#/programs/patient/{{ patientUuid }}/consultationContext">
+                        <span>{{ patient.identifier }}</span>
+                    </a>
+                </div>
+                <div class="clearfix">
+                    <label>Patient Name : </label>
+                    <span>{{ patient.name }}</span>
+                </div>
+                <div class="clearfix">
+                    <label>Age : </label>
+                    <span>{{ patient.age }}</span>
+                </div>
+                <div class="clearfix">
+                    <label>Gender : </label>
+                    <span>{{ patient.gender }}</span>
+                </div>
+
+            </div>
+        </div>
+        <div id="ipd-action">
+            <form>
+                <div id="observations">
+                    <div>
+                        <label>Provisional Diagnosis</label>
+                        <textarea></textarea>
+                    </div>
+                    <div>
+                        <label>Admitted By</label>
+                        <input type="text" readonly/>
+                    </div>
+                    <div>
+                        <label>Admitted On</label>
+                        <input type="date" readonly/>
+                    </div>
+                    <div>
+                        <label>Expected Date Of Discharge</label>
+                        <input type="date" readonly/>
+                    </div>
+
+                </div>
+                <div class="clearfix">
+                    <input class="secondary-button" id="adtButton" type="submit" name="admit" value="Admit"/>
+                    <input class="secondary-button" id="adtButton" type="submit" name="transfer" value="Transfer"/>
+                    <input class="secondary-button" id="adtButton" type="submit" name="discharge" value="Discharge"/>
+                </div>
+            </form>
+        </div>
+        <div id="bedDetails">
+            <div>
+                <label>Department</label>
+                <input type="text" value="{{ ward.name }}" readonly/>
+            </div>
+            <div>
+                <label>Room# </label>
+                <input type="text" value="{{ roomName }}" readonly/>
+            </div>
+            <div>
+                <label>Bed# </label>
+                <input type="text" value="{{ bed.bedNumber }}" readonly/>
+            </div>
+            <div>
+                <label>Status</label>
+                <input type="text" value="{{ bed.status }}" readonly/>
+            </div>
+
+        </div>
+    </div>
+    <div id="right-pane">
+        <div class="clearfix">
+            <label>Admission Master</label>
+            <button ng-repeat="option in wards" ng-click="onSelectDepartment(option.ward)">{{ option.ward.name }}</button>
+        </div>
+        <ward ward="ward" ng-if="isDepartmentSelected()"></ward>
+    </div>
+</div>

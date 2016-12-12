@@ -1,0 +1,184 @@
+$bed-available-color: #94e594;
+$bed-occupied-color: beige;
+$bed-empty-color: $lightestGray;
+$bed-current-patient: #20C0C0;
+$bed-info-bgcolor:  $mediumGray;
+
+.back-btn-wrapper{
+  button{
+    padding-left:10px;
+    span{
+      margin-right:10px;
+    }
+  }
+}
+
+.bed-assignment {
+  position: relative;
+  width: 100%;
+  margin: 0px auto;
+  min-height: 200px;
+  padding: 10px;
+  text-align: center;
+  background: $white;
+  box-sizing: border-box;
+  
+  .bed-assignment-inner-wrapper{
+    display: inline-block;
+    li{
+      background: $white;
+      border:none;
+    }
+  }
+   .bed-type, .bed-number {
+      position: absolute;
+      
+      font-size: 10px;
+      display: inline-block;
+      text-align: center;
+      width: 100%;
+      left: 0;
+      transition: all .3s ease;
+  }
+  .bed-type {
+    bottom: -18px;
+    text-transform: capitalize;
+    color: $darkGray;
+  }
+  .bed-number {
+    bottom: 1px;
+    color: $black;
+  }
+  .row {
+    overflow: hidden;
+    ul {
+      overflow: hidden;
+      .col {
+        float: left;
+        width: 90px;
+        height: 60px;
+        margin: 15px;
+        padding: 0 10px;
+        border-radius: 3px;
+        transition: all .3s ease-in-out;
+        position: relative;
+        border: 1px solid $lightGray;
+        box-sizing: border-box;
+
+        &:hover {
+          box-shadow: 0 0 5px 2px $lightGray;
+        }
+        &.occupied {
+          background: url("../images/bed-occupied.png") no-repeat center 10px $bed-occupied-color;
+          box-shadow: inset 0 0 10px 5px darken($bed-occupied-color, 15%);
+          &:hover {
+            background-color: darken($bed-occupied-color, 10%);
+            cursor: pointer;
+            box-shadow: 0 0 5px 2px $lightGray;
+          }
+        }
+        &.available {
+          background: url("../images/bed-available.png") no-repeat center 10px $bed-available-color;
+          box-shadow: inset 0 0 10px 5px darken($bed-available-color, 15%);
+          &:hover {
+            background-color: darken($bed-available-color, 10%);
+            cursor: pointer;
+            box-shadow: 0 0 5px 2px $lightGray;
+          }
+        }
+        &.empty {
+          background: $bed-empty-color;
+          &, &:hover {
+            box-shadow: none;
+          }
+          // margin: 0px;
+          // padding: 16px 25px;
+        }
+        &.currentPatient {
+          &, &:hover {
+            box-shadow: 0 0 0 5px  $bed-current-patient;
+          }
+        }
+      }
+    }
+  }
+}
+
+.bedDetails {
+  width: 200px;
+  height: 60px;
+  border: 1px solid $black;
+  display: block;
+}
+
+
+.bed-info {
+  padding: 6px;
+  background: $bed-info-bgcolor;
+  position: absolute;
+  display: none;
+  border: 1px solid $darkGray;
+  opacity: 0.95;
+  z-index: 9999;
+  width: 125px;
+  box-sizing: border-box;
+  border-radius: 3px;
+
+  &:before, &:after {
+    content: "";
+    height: 0;
+    width: 0;
+    display: block;
+    border: 8px solid transparent;
+    border-left-color: $bed-info-bgcolor;
+    border-right-width: 0;
+    position: absolute;
+    right: -8px;
+    top: 10px;
+    z-index: 2;
+  }
+  &:after {
+    border-left-color:  $darkGray;
+    right: -9px;
+    z-index: 1;
+  }
+  .patient-info {
+      border-top: 1px solid $lightGray;
+    padding-top: 3px;
+    padding-bottom: 3px;
+  }
+
+  li {
+    padding: 0;
+    color: #fff;
+    text-align: center;
+    font-size: 12px;
+    border: none;
+    background: none;
+    cursor: default;
+    &:hover {
+      border: none;
+      background: none;
+    }
+    &:first-child {
+      margin-bottom: 2px;
+      font-weight: bold;
+      font-family: Arial;
+    }
+    a {
+      background: linear-gradient(to bottom, $bahmniSecondaryColor, darken($bahmniSecondaryColor, 10%));
+      padding: 8px 10px;
+      margin-top: 5px;
+      color: #fff;
+      text-transform: capitalize ;
+      display: inline-block;
+      border:  1px solid darken($bahmniSecondaryColor, 15%);;
+      border-radius: 3px;
+      &:hover {
+        cursor: pointer;
+        opacity: 0.8;
+        text-decoration: none;
+      }
+    }
+  }
+}

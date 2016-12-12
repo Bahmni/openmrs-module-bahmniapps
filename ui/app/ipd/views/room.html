@@ -1,0 +1,4 @@
+<div id="bed" ng-repeat="bed in room.beds">
+    <img ng-if="isBedOccupied(bed)" src="../images/bed_occupied.png" ng-click="onSelectOccupiedBed(bed)" style="height: 40px;">
+    <img ng-if="!isBedOccupied(bed)" src="../images/bed_available.png" ng-click="onSelectAvailableBed(bed)" style="height: 40px;">
+</div>

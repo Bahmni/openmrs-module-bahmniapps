@@ -1,0 +1,36 @@
+<div class="adt">
+    <div class="box">
+        <div>
+            <label>
+                <span class="fl adt-disposition-action">Patient Movement:</span>
+                <select id="dispositionAction" ng-model="dispositionAction"
+                        ng-options="d.name.name for d in dispositionActions" class="disposition-action">
+                    <option value="">Select</option>
+                </select>
+            </label>
+        </div>
+        <div id="adtNotes" ng-if="getAdtConceptConfig && dispositionAction">
+            <concept-set concept-set-name="getAdtConceptConfig" observations="adtObservations"></concept-set>
+        </div>
+
+
+        <div class="submit-btn-container" ng-if="dispositionAction">
+            <div class="right">
+                <span ng-repeat="extn in actions">
+                    <span ng-switch="extn.extensionParams.action">
+                        <div ng-switch-when="startVisit" split-button options="visitControl.visitTypes"
+                             primary-option="visitControl.defaultVisitType" option-text="visitControl.startButtonText"
+                             option-click="startNewVisit" class="right">
+                        </div>
+                        <button ng-switch-default="" type="submit" class="right admit_btn"
+                                single-click="call(extn.extensionParams.action)">
+                            {{getDisplay(extn.extensionParams.displayFunction, extn.extensionParams.display)}}
+                        </button>
+                    </span>
+                </span>
+            </div>
+        </div>
+    </div>
+    <dashboard patient="patient" config="dashboardConfig" section-groups="sectionGroups" active-visit-uuid="visitSummary.uuid" visit-summary="visitSummary"></dashboard>
+</div>
+

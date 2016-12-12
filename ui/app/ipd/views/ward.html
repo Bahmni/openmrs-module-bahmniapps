@@ -1,0 +1,44 @@
+
+<!--
+<div class="section-grid ward">
+    <h2 class="section-title">
+        <span ng-click="toggleExpandState()" class="ward-header">
+            <i class="fa fa-caret-right" ng-show="!expanded"></i>
+            <i class="fa fa-caret-down" ng-show="expanded"></i>
+            <span class="section-title-text">
+                <span>{{ward.ward.name}} -  </span>
+                <small>(Total Beds: {{ward.totalBeds}} | Available Beds: {{ward.totalBeds-ward.occupiedBeds}})</small>
+            </span>
+        </span>
+        <span class="quick-links" ng-if="readOnly">
+            <button ng-click="toggleWardView()" class="confirm"><span
+                    class="fa {{currentView == 'wardList' ? 'fa-th' : 'fa-list'}}"></span></button>
+        </span>
+    </h2>
+    <div class="section-content" ng-if="expanded">
+        <ward-list ward="ward" ng-if="currentView === 'wardList'"></ward-list>
+        <ward-layout ng-if="currentView === 'wardLayout'" ward="ward" read-only="readOnly"
+                     encounter-uuid="encounterUuid" visit-uuid="visitUuid"
+                     patient-uuid="patientUuid"></ward-layout>
+    </div>
+</div>
+-->
+<div id="rooms" class="clearfix">
+    <div id="room">
+        <div id="roomDetails" class="clearfix">
+            <span>Total Beds : {{ ward.totalBeds }}</span>
+            <br/>
+            <span>Available Beds : {{ ward.totalBeds - ward.occupiedBeds }}</span>
+        </div>
+    </div>
+    <div id="room" ng-repeat="room in ward.rooms">
+        <div id="roomDetails" class="clearfix" ng-click="onSelectRoom(room.name)">
+            <span>{{ room.name }} ( Total Beds : {{ room.totalBeds }} )</span><br/>
+            <span>Available Beds : {{ room.availableBeds }}</span>
+        </div>
+    </div>
+</div>
+
+<div id="bedLayout" ng-if="isRoomSelected()">
+    <room room="room"></room>
+</div>
