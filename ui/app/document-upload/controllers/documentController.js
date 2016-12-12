@@ -129,17 +129,16 @@ angular.module('opd.documentupload')
                     topLevelConceptUuid = null;
                     return $q.when({});
                 }
-                return $http.get(Bahmni.Common.Constants.conceptSearchByFullNameUrl,
-                    {
-                        params: {
-                            name: $rootScope.appConfig.topLevelConcept,
-                            v: "custom:(uuid,setMembers:(uuid,name:(name)))"
-                        }
-                    }).then(function (response) {
-                        var topLevelConcept = response.data.results[0];
-                        topLevelConceptUuid = topLevelConcept ? topLevelConcept.uuid : null;
-                        setDefaultConcept(topLevelConcept);
-                    });
+                return $http.get(Bahmni.Common.Constants.conceptSearchByFullNameUrl, {
+                    params: {
+                        name: $rootScope.appConfig.topLevelConcept,
+                        v: "custom:(uuid,setMembers:(uuid,name:(name)))"
+                    }
+                }).then(function (response) {
+                    var topLevelConcept = response.data.results[0];
+                    topLevelConceptUuid = topLevelConcept ? topLevelConcept.uuid : null;
+                    setDefaultConcept(topLevelConcept);
+                });
             };
 
             var sortVisits = function () {
