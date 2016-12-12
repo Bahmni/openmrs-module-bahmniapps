@@ -123,6 +123,19 @@ describe("Diagnosis Controller", function () {
 
             expect($scope.consultation.newlyAddedDiagnoses.length).toBe(1);
         });
+        it("should happens when empty rows has been reset to one ", function() {
+            expect($scope.consultation.newlyAddedDiagnoses.length).toBe(1);
+
+            $scope.consultation.preSaveHandler.fire();
+            expect($scope.consultation.newlyAddedDiagnoses.length).toBe(0);
+
+            $scope.consultation.newlyAddedDiagnoses.push(new Bahmni.Common.Domain.Diagnosis(''));
+            $scope.restEmptyRowsToOne(0)
+            expect($scope.consultation.newlyAddedDiagnoses.length).toBe(1);
+            $scope.consultation.preSaveHandler.fire();
+
+            expect($scope.consultation.newlyAddedDiagnoses.length).toBe(0);
+        });
     });
 
 });
