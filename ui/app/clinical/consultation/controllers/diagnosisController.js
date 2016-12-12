@@ -179,15 +179,14 @@ angular.module('bahmni.clinical')
                         }))
                     .then(function () {});
             };
-
-            var initial = true;
+            var clearBankDiagnosis = true;
             var removeBlankDiagnosis = function () {
-                if (initial) {
+                if (clearBankDiagnosis) {
                     $scope.consultation.newlyAddedDiagnoses = $scope.consultation.newlyAddedDiagnoses
                         .filter(function (diagnosis) {
                             return !diagnosis.isEmpty();
                         });
-                    initial = false;
+                    clearBankDiagnosis = false;
                 }
             };
 
@@ -210,7 +209,7 @@ angular.module('bahmni.clinical')
                     }
                 );
             };
-            $scope.clearEmptyRows = function (index) {
+            $scope.restEmptyRowsToOne = function (index) {
                 var iter;
                 for (iter = 0; iter < $scope.consultation.newlyAddedDiagnoses.length; iter++) {
                     if ($scope.consultation.newlyAddedDiagnoses[iter].isEmpty() && iter !== index) {
@@ -223,6 +222,7 @@ angular.module('bahmni.clinical')
                 if (emptyRows.length === 0) {
                     addPlaceHolderDiagnosis();
                 }
+                clearBankDiagnosis = true;
             };
 
             $scope.toggle = function (item) {

@@ -21,12 +21,12 @@
                                                 !diagnosis.isNonCodedAnswer && allowOnlyCodedDiagnosis) || diagnosis.invalid,
                                             active: diagnosis.isNonCodedAnswer
                                        }"
-                                       ng-change="clearEmptyRows($index); diagnosis.clearCodedAnswerUuid(); checkInvalidDiagnoses()">
+                                       ng-change="restEmptyRowsToOne($index); diagnosis.clearCodedAnswerUuid(); checkInvalidDiagnoses()">
 
                                 <span ng-if="!allowOnlyCodedDiagnosis">
                                     <button type="button" ng-model="diagnosis.isNonCodedAnswer"
                                             class="small-btn accept-btn" id="accept-button-{{$index}}"
-                                            ng-click="diagnosis.setAsNonCodedAnswer() && clearEmptyRows($index)"
+                                            ng-click="diagnosis.setAsNonCodedAnswer() && restEmptyRowsToOne($index)"
                                             ng-class="{
                                                 illegalValue: diagnosis.codedAnswer.name && !diagnosis.codedAnswer.uuid && !diagnosis.isNonCodedAnswer,
                                                 active: diagnosis.isNonCodedAnswer
