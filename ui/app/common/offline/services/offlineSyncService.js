@@ -85,15 +85,19 @@ angular.module('bahmni.common.offline')
                                         return readEvent(events, ++index, category);
                                     });
                         }).catch(function (response) {
-                            if (parseInt(response.status / 100) == 4 || parseInt(response.status / 100) == 5) {
-                                loggingService.logSyncError(response.config.url, response.status, response.data);
-                            }
+                            logSyncError(response);
                             $rootScope.$broadcast("schedulerStage", null, true);
                             endSync(-1);
                             var deferrable = $q.defer();
                             deferrable.reject();
                             return deferrable.promise;
                         });
+            };
+
+            var logSyncError = function (response) {
+                if (response && (parseInt(response.status / 100) == 4 || parseInt(response.status / 100) == 5)) {
+                    loggingService.logSyncError(response.config.url, response.status, response.data);
+                }
             };
 
             var mapIdentifiers = function (identifiers) {
