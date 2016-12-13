@@ -51,6 +51,17 @@
       background: $white;
       padding: 10px;
     }
+    .template-search-wrapper{
+      @include clearfix();
+      margin-bottom: 11px;
+     .search_field{
+      width:197px;
+      padding: 5px 10px;
+      font-size: 12px;
+    }
+
+
+    }
 	ul.template-icons {
       max-height: 334px;
       width: 100%;
