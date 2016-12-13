@@ -64,6 +64,10 @@
     "CLINICAL_DAYS_TRANSLATION_KEY": "days",
     "CONCEPT_SET_GROUP_EXPAND_ALL_KEY":"Expand All",
     "CONCEPT_SET_GROUP_COLLAPSE_ALL_KEY":"Collapse All",
+    "CONCEPT_SET_GROUP_PIN_UNPIN_KEY":"Pin/Unpin",
+    "CONCEPT_SET_GROUP_REMOVE_KEY": "Remove",
+    "CONCEPT_SET_GROUP_SEARCH_LABEL": "Search Obs Form",
+    "EMPTY_TEMPLATE_MESSAGE": "Click on 'Add New Obs Form' button to add new forms here",
 
 
     "VISIT_TITLE_PATIENT_INFORMATION":"PatientInformation",
@@ -179,5 +183,7 @@
 
     "OBS_BOOLEAN_YES_KEY":"Yes",
     "OBS_BOOLEAN_NO_KEY":"No",
-    "CLINICAL_DUPLICATE_DIAGNOSIS_ERROR_MESSAGE" : "Please correct the duplicate diagnosis entered."
+    "CLINICAL_DUPLICATE_DIAGNOSIS_ERROR_MESSAGE" : "Please correct the duplicate diagnosis entered.",
+    "CLINICAL_TEMPLATE_ADDED_SUCCESS_KEY": "{{label}} added successfully",
+    "CLINICAL_TEMPLATE_REMOVED_SUCCESS_KEY": "{{label}} removed successfully"
 }

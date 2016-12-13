@@ -66,7 +66,7 @@ angular.module('bahmni.common.conceptSet')
                 };
 
                 scope.$watch('collapseInnerSections', function () {
-                    scope.collapse = scope.collapseInnerSections;
+                    scope.collapse = scope.collapseInnerSections && scope.collapseInnerSections.value;
                 });
 
                 scope.handleUpdate = function () {
