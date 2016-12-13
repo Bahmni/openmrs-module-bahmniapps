@@ -35,10 +35,9 @@ angular.module('bahmni.clinical')
                 $scope.showTemplatesList = !$scope.showTemplatesList;
             };
 
-            $scope.getUniqueTemplates = function() {
-                return  _.uniqBy($scope.consultation.selectedObsTemplate, 'label');
+            $scope.getUniqueTemplates = function () {
+                return _.uniqBy($scope.consultation.selectedObsTemplate, 'label');
             };
-
 
             var showOnlyTemplatesFilledInProgram = function () {
                 spinner.forPromise(conceptSetService.getObsTemplatesForProgram($state.params.programUuid).success(function (data) {
@@ -107,7 +106,6 @@ angular.module('bahmni.clinical')
                     var clonedObj = template.clone();
                     clonedObj.klass = "active";
                     $scope.consultation.selectedObsTemplate.splice(index + 1, 0, clonedObj);
-
                 } else {
                     template.toggle();
                     template.klass = "active";

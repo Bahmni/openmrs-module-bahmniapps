@@ -238,6 +238,12 @@ concept-set {
         @media screen and (max-width: 1024px){
           margin-left: 21px;
         }
+        &:focus{
+          outline: none;
+        }
+        &:hover{
+          opacity: 0.5;
+        }
         .fa {
           padding: 0;
         }

@@ -73,7 +73,7 @@ angular.module('bahmni.common.conceptSet')
 
             $scope.canRemove = function (index) {
                 var observations = $scope.allTemplates[index].observations;
-                if(observations === undefined ||  _.isEmpty(observations)) {
+                if (observations === undefined || _.isEmpty(observations)) {
                     return true;
                 }
                 return observations[0].uuid === undefined;
