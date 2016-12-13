@@ -587,6 +587,9 @@ input[type="submit"].secondary-button:hover  {
     & + .fa-thumb-tack {
       //color: $mediumGray;
       cursor: pointer;
+      &:hover{
+        opacity:0.5;
+      }
     }
     &:checked + .fa-thumb-tack {
       color: orange;
