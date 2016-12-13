@@ -1,18 +1,10 @@
 <div id="{{conceptSet.id}}" style="position: relative;">
     <div class="concept-set-title">
         <div id="{{getNormalized(conceptSet.conceptName)}}">
-            <h2 class="section-title"  ng-click="conceptSet.toggleDisplay()">
-                <i class="fa fa-caret-right" ng-hide="conceptSet.isOpen"></i>
-                <i class="fa fa-caret-down" ng-show="conceptSet.isOpen"></i>
+            <h2 class="section-title">
                 <span class="section-label">{{conceptSet.label}}</span>
             </h2>
             <div class="form-actions fr">
-                <!--<button type="button" ng-if="::conceptSet.showComputeButton() && conceptSet.isOpen"-->
-                      <!--ng-click="computeField(conceptSet, $event)" class="">Compute-->
-                <!--</button>-->
-                <!--<button type="button"  ng-if="showPreviousButton(conceptSet.conceptName) && conceptSet.isOpen"-->
-                      <!--ng-click="showPrevious(conceptSet.conceptName, $event)">Previous-->
-                <!--</button>-->
                 <button type="button"  ng-if="conceptSet.isOpen" ng-click="conceptSet.maximizeInnerSections($event)"
                         title="{{ ::'CONCEPT_SET_GROUP_EXPAND_ALL_KEY' | translate}}">
                        <i class="fa icon-bahmni-expand"></i>

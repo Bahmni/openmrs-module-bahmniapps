@@ -32,8 +32,6 @@
       @include clearfix();
       background: #fafafa;
       padding:12px 0 5px;
-      border-bottom: 1px solid $lightGray;
-      margin-bottom: 7px;
       button {
         @include button($success, darken($success, 8%), $white);
         font-size: 14px;

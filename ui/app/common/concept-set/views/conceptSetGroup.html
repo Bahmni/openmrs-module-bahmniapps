@@ -1,7 +1,6 @@
 <div class="concept-set-panel clearfix">
     <section class="concept-set-panel-left">
         <div class="concept-set-panel-wrap">
-            <h2 class="concept-set-panel-header">Added Observation Forms {{isAvailable.length}}</h2>
             <div class="multi-select-lab-tests">
                 <ul>
                     <li ng-repeat="conceptSet in allTemplates track by $index"
@@ -14,17 +13,20 @@
                         </a>
                         <div class="button-wrap">
                             <label class="fa fa-exclamation-triangle fa-red"  ng-show="conceptSet.isValid === false" ng-click="conceptSet.klass =='active' && focusOnErrors()"></label>
-                            <button class="add-more-concept-set add-more-btn btn-small fr" type="button" ng-click="clonePanelConceptSet($index)" ng-if="isLastClonedSection(conceptSet, allTemplates) && conceptSet.canAddMore()"> <i class="fa fa-plus"></i></button>
+                            <label class="fr" ng-click="clonePanelConceptSet($index)" ng-if="isLastClonedSection(conceptSet, allTemplates) && conceptSet.canAddMore()"> <i class="fa fa-plus"></i></label>
                         </div>
                     </li>
+                    <li class="emptymsg">{{::'EMPTY_TEMPLATE_MESSAGE' | translate}}</li>
                 </ul>
             </div>
         </div>
     </section>
     <div class="concept-set-panel-right-wrap">
         <section class="concept-set-panel-right">
-            <section class="concept-set-group section-grid" ng-repeat="conceptSet in allTemplates track by $index" ng-if="leftPanelConceptSet==conceptSet">
-                <ng-include src="'../common/concept-set/views/conceptSetGroupSection.html'"></ng-include>
+            <section  ng-class="{'concept-set-panel-no-template': leftPanelConceptSet==conceptSet}">
+                <section class="concept-set-group section-grid" ng-repeat="conceptSet in allTemplates track by $index" ng-if="leftPanelConceptSet==conceptSet">
+                    <ng-include src="'../common/concept-set/views/conceptSetGroupSection.html'"></ng-include>
+                </section>
             </section>
         </section>
     </div>

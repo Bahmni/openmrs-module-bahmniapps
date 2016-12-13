@@ -205,13 +205,15 @@ concept-set {
     @include clearfix();
     cursor: pointer;
     position: relative;
-    background: #3D7474;
-    padding: 0 100px 0 10px;
+    background: darken($bahmniSecondaryColor, 10%);
+    padding: 0 100px 0 0;
+    border-radius: 3px 3px 0 0;
     h2.section-title {
       padding: 0;
-      background: #3D7474;
-      padding: 10px 0;
+      background: darken($bahmniSecondaryColor, 10%);
+      padding: 10px 0 10px 10px;
       font-size: 14px;
+      border-radius: 3px 3px 0 0;
       button {
         font-size: 12px;
         font-family: Opensans, Arial, sans-serif;
@@ -234,7 +236,7 @@ concept-set {
         border: none;
         color: #fff;
         @media screen and (max-width: 1024px){
-          margin-left: 17px;
+          margin-left: 21px;
         }
         .fa {
           padding: 0;
@@ -530,35 +532,33 @@ concept-set {
       position: fixed;
       width:inherit;
       height:auto;
-      top:105px;
+      top:138px;
       bottom: 50px;
       overflow-y:auto;
       overflow-x: hidden;
     }
-    .concept-set-panel-header{
-       font-size: 14px;
-       color: $mediumGray;
-       padding: 8px 20px;
-       margin: 0;
-       border-bottom: 1px solid $darkerGrey;
-    }
-
     .multi-select-lab-tests{
-      padding: 10px 10px 5px;
       width: 100% !important;
       box-sizing: border-box;
       li {
-        margin-bottom: 5px;
         position: relative;
+        .emptymsg {
+          display: list-item;
+        }
+        +.emptymsg {
+          display: none;
+          padding: 10px;
+          color: $darkerGrey;
+          font-size: 12px;
+        }
         a {
           overflow: auto;
           box-sizing: border-box;
           font-size: 12px;
-          border: 1px solid $lightGray;
+          border-bottom: 1px solid $lightGray;
           padding: 8px 10px !important;
           display: block;
-          background: #699;
-          color: $lightGray;
+          color:darken($bahmniSecondaryColor, 10%);
           .concept-set-name {
             display: block;
             width: auto;
@@ -571,13 +571,9 @@ concept-set {
             padding: 8px 5px;
             font-size: 14px;
           }
-        }
-        &.active{
-          a{
-            background: #3D7474;
-            color: $white;
+          &:hover{
+            background: $observationTitleHover;
           }
-
         }
         .button-wrap{
           padding: 0;
@@ -588,24 +584,28 @@ concept-set {
           @media screen and (max-width: 1024px){
             right:5px;
           }
-          .btn-small{
-            padding:0;
-            margin-left:5px;
-          }
           .fa-exclamation-triangle{
             margin-left: 5px;
             font-size: 17px;
             width:auto;
           }
           .fa-plus{
-            width: 13px;
-            height: 13px;
+            color: $mediumGray;
+            font-size: 18px;
+            width: auto;
+            font-weight: 100;
+          }
+        }
+        &.active{
+          a{
+            background: darken($bahmniSecondaryColor, 10%);
+            color: $white;
+          }
+          .fa-plus{
+            color: $white;
           }
 
         }
-      }
-      @media screen and (max-width: 1024px){
-        padding: 10px 5px 5px;
       }
     }
   }
@@ -615,12 +615,27 @@ concept-set {
   }
   .concept-set-panel-right{
     margin-left: 290px;
-    padding-top:42px;
+    margin-top:34px;
+    position: relative;
     @media screen and (max-width: 1024px){
       margin-left: 265px;
     }
     @media screen and (max-width: 850px){
       margin-left: 240px;
+    }
+    .concept-set-panel-no-template{
+      position: absolute;
+      width:100%;
+      height: 612px;
+      border: 1px solid $darkerGrey;
+      border-radius: 5px 5px 0 0;
+      background: $white;
+      @media screen and (max-width: 760px){
+        height:auto;
+        position: static;
+        border: none;
+        background: none;
+      }
     }
     .section-title #removeClonedObs.fa-remove{
       padding: 3px 5px 4px;
