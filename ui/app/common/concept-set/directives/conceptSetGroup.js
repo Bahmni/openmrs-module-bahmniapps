@@ -9,7 +9,7 @@ angular.module('bahmni.common.conceptSet')
                   conceptSetUiConfigService, $timeout, clinicalAppConfigService, $stateParams, $translate) {
             var conceptSetUIConfig = conceptSetUiConfigService.getConfig();
             var init = function () {
-                $scope.validationHandler =new Bahmni.ConceptSet.ConceptSetGroupPanelViewValidationHandler($scope.allTemplates);
+                $scope.validationHandler = new Bahmni.ConceptSet.ConceptSetGroupPanelViewValidationHandler($scope.allTemplates);
                 contextChangeHandler.add($scope.validationHandler.validate);
                 $scope.leftPanelConceptSet = _.find($scope.allTemplates, function (conceptSet) {
                     return conceptSet.klass == "active";
@@ -86,7 +86,7 @@ angular.module('bahmni.common.conceptSet')
             };
 
             $scope.clonePanelConceptSet = function (index) {
-                messagingService.showMessage("info", $translate.instant("CLINICAL_TEMPLATE_ADDED_SUCCESS_KEY", {label : $scope.allTemplates[index].label}) );
+                messagingService.showMessage("info", $translate.instant("CLINICAL_TEMPLATE_ADDED_SUCCESS_KEY", {label: $scope.allTemplates[index].label}));
                 $scope.clone(index);
                 $scope.showLeftPanelConceptSet($scope.allTemplates[index + 1]);
             };
@@ -127,7 +127,7 @@ angular.module('bahmni.common.conceptSet')
                     $scope.allTemplates[index].isLoaded = false;
                 }
                 $scope.leftPanelConceptSet = "";
-                messagingService.showMessage("info", $translate.instant("CLINICAL_TEMPLATE_REMOVED_SUCCESS_KEY", {label : label}));
+                messagingService.showMessage("info", $translate.instant("CLINICAL_TEMPLATE_REMOVED_SUCCESS_KEY", {label: label}));
             };
 
             $scope.openActiveForm = function (conceptSet) {

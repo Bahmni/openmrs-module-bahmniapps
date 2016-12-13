@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('bahmni.clinical')
-    .controller('ConceptSetPageController', ['$scope', '$rootScope', '$stateParams', 'conceptSetService', 'clinicalAppConfigService', 'messagingService', 'configurations', '$state', 'spinner', 'contextChangeHandler', '$q','$translate',
+    .controller('ConceptSetPageController', ['$scope', '$rootScope', '$stateParams', 'conceptSetService', 'clinicalAppConfigService', 'messagingService', 'configurations', '$state', 'spinner', 'contextChangeHandler', '$q', '$translate',
         function ($scope, $rootScope, $stateParams, conceptSetService, clinicalAppConfigService, messagingService, configurations, $state, spinner, contextChangeHandler, $q, $translate) {
             $scope.consultation.selectedObsTemplate = $scope.consultation.selectedObsTemplate || [];
             $scope.scrollingEnabled = false;
@@ -31,13 +31,13 @@ angular.module('bahmni.clinical')
                 }
             };
 
-            $scope.filterTemplates = function() {
+            $scope.filterTemplates = function () {
                 $scope.uniqueTemplates = _.uniqBy($scope.consultation.selectedObsTemplate, 'label');
-                if($scope.consultation.searchParameter) {
+                if ($scope.consultation.searchParameter) {
                     $scope.uniqueTemplates = _.filter($scope.uniqueTemplates, function (template) {
                         return _.includes(template.label.toLowerCase(), $scope.consultation.searchParameter.toLowerCase());
-                    })
-                };
+                    });
+                }
                 return $scope.uniqueTemplates;
             };
 
@@ -113,7 +113,7 @@ angular.module('bahmni.clinical')
                     template.klass = "active";
                 }
                 $scope.consultation.searchParameter = "";
-                messagingService.showMessage("info", $translate.instant("CLINICAL_TEMPLATE_ADDED_SUCCESS_KEY", {label : template.label}));
+                messagingService.showMessage("info", $translate.instant("CLINICAL_TEMPLATE_ADDED_SUCCESS_KEY", {label: template.label}));
             };
 
             $scope.getNormalized = function (conceptName) {
