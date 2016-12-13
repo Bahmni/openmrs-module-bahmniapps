@@ -6,10 +6,10 @@
                     <div class="template-control-panel-right">
                         <div class="template-control-panel" >
                             <div  class="template-control-panel-button">
-                                <button id="template-control-panel-button" class="fr" ng-click="toggleTemplateList()">Add New Obs Form</button>
+                                <button id="template-control-panel-button" class="fr" bm-pop-over-trigger>Add New Obs Form</button>
                             </div>
-                            <div class="primary-section-grid" ng-if="showTemplatesList">
-                                <div class="form template-search-wrapper">
+                            <div class="primary-section-grid" bm-pop-over-target>
+                                <div class="form template-search-wrapper popOverTargetWrapNoClose">
                                     <input type="text" id="templateSearch" ng-model="::consultation.searchParameter"
                                            ng-change="filterTemplates()" class="search_field fr" placeholder="{{:: 'CONCEPT_SET_GROUP_SEARCH_LABEL' | translate}}"/>
                                 </div>
