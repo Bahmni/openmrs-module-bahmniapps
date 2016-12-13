@@ -9,6 +9,10 @@
                                 <button id="template-control-panel-button" class="fr" ng-click="toggleTemplateList()">Add New Obs Form</button>
                             </div>
                             <div class="primary-section-grid" ng-if="showTemplatesList">
+                                <div class="form template-search-wrapper">
+                                    <input type="text" id="templateSearch" ng-model="::consultation.searchParameter"
+                                           ng-change="filterTemplates()" class="search_field fr" placeholder="{{:: 'CONCEPT_SET_GROUP_SEARCH_LABEL' | translate}}"/>
+                                </div>
                                 <ul class="template-icons">
                                     <li ng-repeat="template in getUniqueTemplates()">
                                         <button id="{{getNormalized(template.label)}}" ng-disabled = "template.isAdded && !template.allowAddMore" ng-click="addTemplate(template)">
