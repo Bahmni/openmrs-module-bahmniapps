@@ -90,6 +90,12 @@
     float: left;
     padding: 10px 10px 0;
     width: 100px;
+    @media screen and (max-width: 850px) {
+      width: 175px;
+      padding-right: 20px;
+      box-sizing: border-box;
+      text-align: right;
+    }
     @media screen and (max-width: 595px) {
       padding: 4px 10px;
     }
@@ -196,34 +202,58 @@ concept-set {
 
 .concept-set-group {
   .concept-set-title {
+    @include clearfix();
     cursor: pointer;
     position: relative;
+    background: darken($bahmniSecondaryColor, 10%);
+    padding: 0 100px 0 0;
+    border-radius: 3px 3px 0 0;
     h2.section-title {
-      padding: 10px 32px 10px 10px;
+      padding: 0;
+      background: darken($bahmniSecondaryColor, 10%);
+      padding: 10px 0 10px 10px;
+      font-size: 14px;
+      border-radius: 3px 3px 0 0;
       button {
         font-size: 12px;
         font-family: Opensans, Arial, sans-serif;
-        padding: 4px 10px;
-        margin: -4px 5px 0 0;
-      }
-      &.section-title-add-more{
-        padding: 10px 150px 10px 10px;
       }
     }
-    .favourite-concept-set {
+    .form-actions {
+      width: auto;
+      top: 0;
       position: absolute;
-      right: 4px;
-      top: 4px;
-    }
-    .add-more-concept-set{
-      position: absolute;
-      top: 5px;
-      right: 37px;
-      padding: 3px 5px;
-      color: $black;
-      i {
-        color: green;
-        padding: 0.2em 0.1em;
+      right: 0;
+      bottom: 0;
+      padding: 10px 10px;
+      button {
+        display: table;
+        float: left;
+        width: auto;
+        margin-left: 12px;
+        background: none;
+        padding: 0;
+        border: none;
+        color: #fff;
+        @media screen and (max-width: 1024px){
+          margin-left: 21px;
+        }
+        &:focus{
+          outline: none;
+        }
+        &:hover{
+          opacity: 0.5;
+        }
+        .fa {
+          padding: 0;
+        }
+        [class^="icon-"]:before,
+        [class*=" icon-"]:before {
+          font-size: 16px;
+        }
+        .fa-trash {
+          font-size: 18px;
+        }
       }
     }
   }
@@ -234,17 +264,17 @@ concept-set {
     padding: 5px;
   }
   .consultation-image {
-    width: 807px;
+    width: 500px;
     background: $lightestGray;
     padding: 5px;
     overflow: auto;
     clear: both;
     box-sizing: border-box;
-    @media screen and (max-width: 1130px) {
-      width:600px;
+    @media screen and (max-width: 1150px){
+      width:300px;
     }
-    @media screen and (max-width: 768px){
-      width:275px;
+    @media screen and (max-width: 850px){
+      width:150px;
     }
     .file{
       .comment-toggle {
@@ -472,8 +502,11 @@ concept-set {
       width:185px;
     }
   }
+  @media screen and (max-width: 1200px) {
+    max-width: 62%;
+  }
   @media screen and (max-width: 850px){
-    max-width:52%;
+    max-width:50%;
   }
 }
 .add-more-wrapper{
@@ -493,41 +526,46 @@ concept-set {
     width: 275px;
     margin-right: -100%;
     position: relative;
+    @media screen and (max-width: 1024px){
+      width: 250px;
+    }
+    @media screen and (max-width: 850px){
+      width: 225px;
+    }
     .concept-set-panel-wrap{
       border-radius: 5px 5px 0 0;
       border: 1px solid $darkerGrey;
       position: fixed;
       width:inherit;
       height:auto;
-      top:105px;
+      top:138px;
       bottom: 50px;
       overflow-y:auto;
       overflow-x: hidden;
+      z-index: 99999;
     }
-    .concept-set-panel-header{
-       font-size: 14px;
-       color: $mediumGray;
-       padding: 8px 20px;
-       margin: 0;
-       border-bottom: 1px solid $darkerGrey;
-    }
-
     .multi-select-lab-tests{
-      padding: 10px 10px 5px;
       width: 100% !important;
       box-sizing: border-box;
       li {
-        margin-bottom: 5px;
         position: relative;
+        &.emptymsg {
+          display: list-item;
+          padding: 10px;
+          color: $darkerGrey;
+          font-size: 12px;
+        }
+        + .emptymsg {
+          display: none;
+        }
         a {
           overflow: auto;
           box-sizing: border-box;
           font-size: 12px;
-          border: 1px solid $lightGray;
+          border-bottom: 1px solid $lightGray;
           padding: 8px 10px !important;
           display: block;
-          background: #699;
-          color: $lightGray;
+          color:darken($bahmniSecondaryColor, 10%);
           .concept-set-name {
             display: block;
             width: auto;
@@ -538,14 +576,11 @@ concept-set {
           }
           @media screen and (max-width: 1024px){
             padding: 8px 5px;
+            font-size: 14px;
           }
-        }
-        &.active{
-          a{
-            background: #3D7474;
-            color: $white;
+          &:hover{
+            background: $observationTitleHover;
           }
-
         }
         .button-wrap{
           padding: 0;
@@ -556,24 +591,28 @@ concept-set {
           @media screen and (max-width: 1024px){
             right:5px;
           }
-          .btn-small{
-            padding:0;
-            margin-left:5px;
-          }
           .fa-exclamation-triangle{
             margin-left: 5px;
             font-size: 17px;
             width:auto;
           }
           .fa-plus{
-            width: 13px;
-            height: 13px;
+            color: $mediumGray;
+            font-size: 18px;
+            width: auto;
+            font-weight: 100;
+          }
+        }
+        &.active{
+          a{
+            background: darken($bahmniSecondaryColor, 10%);
+            color: $white;
+          }
+          .fa-plus{
+            color: $white;
           }
 
         }
-      }
-      @media screen and (max-width: 1024px){
-        padding: 10px 5px 5px;
       }
     }
   }
@@ -583,21 +622,73 @@ concept-set {
   }
   .concept-set-panel-right{
     margin-left: 290px;
+    margin-top:34px;
+    position: relative;
+    @media screen and (max-width: 1024px){
+      margin-left: 265px;
+    }
+    @media screen and (max-width: 850px){
+      margin-left: 240px;
+    }
+    .concept-set-panel-no-template{
+      position: absolute;
+      width:100%;
+      height: 612px;
+      border: 1px solid $darkerGrey;
+      border-radius: 5px 5px 0 0;
+      background: $white;
+      @media screen and (max-width: 760px){
+        height:auto;
+        position: static;
+        border: none;
+        background: none;
+      }
+    }
     .section-title #removeClonedObs.fa-remove{
       padding: 3px 5px 4px;
       width: auto;
       margin: -3px 0 0;
       font-size: 14px;
     }
+    .concept-set-title {
+      cursor: initial;
+      .section-title{
+        cursor: pointer;
+      }
+    }
+    div.duration.checkbox-inline {
+      @media screen and (max-width: 1200px){
+        margin-top: 0;
+        margin-left: 193px;
+      }
+      @media screen and (max-width: 1024px){
+        margin-left: 163px;
+      }
+      @media screen and (max-width: 850px){
+        margin-left: 150px;
+      }
+      .input.duration-value{
+        @media screen and (max-width: 1200px) {
+          padding: 2px 10px;
+        }
+      }
+    }
+    #chief_complaint_data_addmore_observation_4{
+      @media screen and (max-width: 1200px) {
+        margin-top: 9px;
+      }
+      @media screen and (max-width: 850px){
+        margin-top:0;
+      }
+    }
   }
-  .concept-set-group .concept-set-title h2.section-title{
-    background: #3D7474;
-    padding: 10px;
-  }
-  form .form-field textarea, .form .form-field textarea ,.vitals .consultation-image{
+  form .form-field textarea, .form .form-field textarea{
     width:500px;
-    @media screen and (max-width: 1024px){
+    @media screen and (max-width: 1200px){
       width:300px;
+    }
+    @media screen and (max-width: 850px){
+      width:250px;
     }
   }
   table .field-value-buttonSelectType{

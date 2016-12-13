@@ -1,14 +1,14 @@
 'use strict';
 
 angular.module('bahmni.clinical')
-    .controller('ConceptSetPageController', ['$scope', '$rootScope', '$stateParams', 'conceptSetService', 'clinicalAppConfigService', 'messagingService', 'configurations', '$state', 'spinner', 'contextChangeHandler', '$q',
-        function ($scope, $rootScope, $stateParams, conceptSetService, clinicalAppConfigService, messagingService, configurations, $state, spinner, contextChangeHandler, $q) {
+    .controller('ConceptSetPageController', ['$scope', '$rootScope', '$stateParams', 'conceptSetService', 'clinicalAppConfigService', 'messagingService', 'configurations', '$state', 'spinner', 'contextChangeHandler', '$q', '$translate',
+        function ($scope, $rootScope, $stateParams, conceptSetService, clinicalAppConfigService, messagingService, configurations, $state, spinner, contextChangeHandler, $q, $translate) {
             $scope.consultation.selectedObsTemplate = $scope.consultation.selectedObsTemplate || [];
             $scope.scrollingEnabled = false;
             var extensions = clinicalAppConfigService.getAllConceptSetExtensions($stateParams.conceptSetGroupName);
             var configs = clinicalAppConfigService.getAllConceptsConfig();
             var visitType = configurations.encounterConfig().getVisitTypeByUuid($scope.consultation.visitTypeUuid);
-            $scope.context = {visitType: visitType, patient: $scope.patient, showPanelView: configs['All Observation Templates'] ? configs['All Observation Templates'].showPanelView : false};
+            $scope.context = {visitType: visitType, patient: $scope.patient};
             var numberOfLevels = 2;
             var fields = ['uuid', 'name:(name,display)', 'names:(uuid,conceptNameType,name)'];
             var customRepresentation = Bahmni.ConceptSet.CustomRepresentationBuilder.build(fields, 'setMembers', numberOfLevels);
@@ -23,11 +23,22 @@ angular.module('bahmni.clinical')
                         var allTemplates = response.data.results[0].setMembers;
                         createConceptSections(allTemplates);
                         $scope.consultation.selectedObsTemplate = getSelectedObsTemplate(allConceptSections);
+                        $scope.uniqueTemplates = _.uniqBy($scope.consultation.selectedObsTemplate, 'label');
                         if ($state.params.programUuid) {
                             showOnlyTemplatesFilledInProgram();
                         }
                     }));
                 }
+            };
+
+            $scope.filterTemplates = function () {
+                $scope.uniqueTemplates = _.uniqBy($scope.consultation.selectedObsTemplate, 'label');
+                if ($scope.consultation.searchParameter) {
+                    $scope.uniqueTemplates = _.filter($scope.uniqueTemplates, function (template) {
+                        return _.includes(template.label.toLowerCase(), $scope.consultation.searchParameter.toLowerCase());
+                    });
+                }
+                return $scope.uniqueTemplates;
             };
 
             var showOnlyTemplatesFilledInProgram = function () {
@@ -86,20 +97,23 @@ angular.module('bahmni.clinical')
                 });
             };
 
-            $scope.toggleTemplate = function (template) {
+            $scope.addTemplate = function (template) {
                 $scope.scrollingEnabled = true;
+                $scope.showTemplatesList = false;
+                var index = _.findLastIndex($scope.consultation.selectedObsTemplate, function (consultationTemplate) {
+                    return consultationTemplate.label == template.label;
+                });
 
-                if (!template.canToggle()) {
-                    messagingService.showMessage("error", "Templates having data cannot be unselected. Please Clear the data and try again");
+                if ($scope.consultation.selectedObsTemplate[index].isAdded) {
+                    var clonedObj = template.clone();
+                    clonedObj.klass = "active";
+                    $scope.consultation.selectedObsTemplate.splice(index + 1, 0, clonedObj);
                 } else {
                     template.toggle();
-                    if (template.isAdded) {
-                        template.klass = "active";
-                        messagingService.showMessage("info", template.label + " Added successfully");
-                    } else if (!template.isAdded) {
-                        messagingService.showMessage("info", template.label + " Removed successfully");
-                    }
+                    template.klass = "active";
                 }
+                $scope.consultation.searchParameter = "";
+                messagingService.showMessage("info", $translate.instant("CLINICAL_TEMPLATE_ADDED_SUCCESS_KEY", {label: template.label}));
             };
 
             $scope.getNormalized = function (conceptName) {
