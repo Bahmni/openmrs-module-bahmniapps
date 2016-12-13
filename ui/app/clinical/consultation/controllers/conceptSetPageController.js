@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('bahmni.clinical')
-    .controller('ConceptSetPageController', ['$scope', '$rootScope', '$stateParams', 'conceptSetService', 'clinicalAppConfigService', 'messagingService', 'configurations', '$state', 'spinner', 'contextChangeHandler', '$q',
-        function ($scope, $rootScope, $stateParams, conceptSetService, clinicalAppConfigService, messagingService, configurations, $state, spinner, contextChangeHandler, $q) {
+    .controller('ConceptSetPageController', ['$scope', '$rootScope', '$stateParams', 'conceptSetService', 'clinicalAppConfigService', 'messagingService', 'configurations', '$state', 'spinner', 'contextChangeHandler', '$q','$translate',
+        function ($scope, $rootScope, $stateParams, conceptSetService, clinicalAppConfigService, messagingService, configurations, $state, spinner, contextChangeHandler, $q, $translate) {
             $scope.consultation.selectedObsTemplate = $scope.consultation.selectedObsTemplate || [];
             $scope.scrollingEnabled = false;
             var extensions = clinicalAppConfigService.getAllConceptSetExtensions($stateParams.conceptSetGroupName);
@@ -23,6 +23,7 @@ angular.module('bahmni.clinical')
                         var allTemplates = response.data.results[0].setMembers;
                         createConceptSections(allTemplates);
                         $scope.consultation.selectedObsTemplate = getSelectedObsTemplate(allConceptSections);
+                        $scope.uniqueTemplates = _.uniqBy($scope.consultation.selectedObsTemplate, 'label');
                         if ($state.params.programUuid) {
                             showOnlyTemplatesFilledInProgram();
                         }
@@ -30,8 +31,14 @@ angular.module('bahmni.clinical')
                 }
             };
 
-            $scope.getUniqueTemplates = function () {
-                return _.uniqBy($scope.consultation.selectedObsTemplate, 'label');
+            $scope.filterTemplates = function() {
+                $scope.uniqueTemplates = _.uniqBy($scope.consultation.selectedObsTemplate, 'label');
+                if($scope.consultation.searchParameter) {
+                    $scope.uniqueTemplates = _.filter($scope.uniqueTemplates, function (template) {
+                        return _.includes(template.label.toLowerCase(), $scope.consultation.searchParameter.toLowerCase());
+                    })
+                };
+                return $scope.uniqueTemplates;
             };
 
             var showOnlyTemplatesFilledInProgram = function () {
@@ -105,7 +112,8 @@ angular.module('bahmni.clinical')
                     template.toggle();
                     template.klass = "active";
                 }
-                messagingService.showMessage("info", template.label + " Added successfully");
+                $scope.consultation.searchParameter = "";
+                messagingService.showMessage("info", $translate.instant("CLINICAL_TEMPLATE_ADDED_SUCCESS_KEY", {label : template.label}));
             };
 
             $scope.getNormalized = function (conceptName) {

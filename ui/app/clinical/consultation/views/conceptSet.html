@@ -14,8 +14,8 @@
                                            ng-change="filterTemplates()" class="search_field fr" placeholder="{{:: 'CONCEPT_SET_GROUP_SEARCH_LABEL' | translate}}"/>
                                 </div>
                                 <ul class="template-icons">
-                                    <li ng-repeat="template in getUniqueTemplates()">
-                                        <button id="{{getNormalized(template.label)}}" ng-disabled = "template.isAdded && !template.allowAddMore" ng-click="addTemplate(template)">
+                                    <li ng-repeat="template in filterTemplates()">
+                                        <button id="{{getNormalized(template.label)}}" ng-disabled = "((template.isAdded || template.alwaysShow) && !template.allowAddMore)" ng-click="addTemplate(template)">
                                             {{::template.label}}
                                         </button>
                                     </li>

@@ -1,7 +1,7 @@
 'use strict';
 
 describe('ConceptSetPageController', function () {
-    var scope, controller, rootScope, conceptSetService, configurations, clinicalAppConfigService, state, encounterConfig, spinner, messagingService;
+    var scope, controller, rootScope, conceptSetService, configurations, clinicalAppConfigService, state, encounterConfig, spinner, messagingService, translate;
 
     beforeEach(module('bahmni.common.uiHelper'));
     beforeEach(module('bahmni.clinical'));
@@ -40,7 +40,7 @@ describe('ConceptSetPageController', function () {
         conceptSetService = jasmine.createSpyObj("conceptSetService", ["getConcept", "getObsTemplatesForProgram"]);
         spinner = jasmine.createSpyObj("spinner", ["forPromise"]);
         messagingService = jasmine.createSpyObj('messagingService', ['showMessage']);
-        
+        translate = jasmine.createSpyObj('$translate',['instant']);
     };
 
     beforeEach(initController);
@@ -55,7 +55,8 @@ describe('ConceptSetPageController', function () {
             messagingService: messagingService,
             configurations: configurations,
             $state: state,
-            spinner: spinner
+            spinner: spinner,
+            $translate : translate
         });
     };
 

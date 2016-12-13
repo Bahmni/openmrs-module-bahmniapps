@@ -3,10 +3,10 @@
 angular.module('bahmni.common.conceptSet')
     .controller('ConceptSetGroupController', ['$scope', 'contextChangeHandler', 'spinner', 'messagingService',
         'conceptSetService', '$rootScope', 'sessionService', 'encounterService', 'treatmentConfig',
-        'retrospectiveEntryService', 'userService', 'conceptSetUiConfigService', '$timeout', 'clinicalAppConfigService', '$stateParams',
+        'retrospectiveEntryService', 'userService', 'conceptSetUiConfigService', '$timeout', 'clinicalAppConfigService', '$stateParams', '$translate',
         function ($scope, contextChangeHandler, spinner, messagingService, conceptSetService, $rootScope, sessionService,
                   encounterService, treatmentConfig, retrospectiveEntryService, userService,
-                  conceptSetUiConfigService, $timeout, clinicalAppConfigService, $stateParams) {
+                  conceptSetUiConfigService, $timeout, clinicalAppConfigService, $stateParams, $translate) {
             var conceptSetUIConfig = conceptSetUiConfigService.getConfig();
             var init = function () {
                 $scope.validationHandler = $scope.context.showPanelView ? new Bahmni.ConceptSet.ConceptSetGroupPanelViewValidationHandler($scope.allTemplates) : new Bahmni.ConceptSet.ConceptSetGroupValidationHandler($scope.allTemplates);
@@ -86,7 +86,7 @@ angular.module('bahmni.common.conceptSet')
             };
 
             $scope.clonePanelConceptSet = function (index) {
-                messagingService.showMessage("info", $scope.allTemplates[index].label + " Added successfully");
+                messagingService.showMessage("info", $translate.instant("CLINICAL_TEMPLATE_ADDED_SUCCESS_KEY", {label : $scope.allTemplates[index].label}) );
                 $scope.clone(index);
                 $scope.showLeftPanelConceptSet($scope.allTemplates[index + 1]);
             };
@@ -127,7 +127,7 @@ angular.module('bahmni.common.conceptSet')
                     $scope.allTemplates[index].isLoaded = false;
                 }
                 $scope.leftPanelConceptSet = "";
-                messagingService.showMessage("info", label + " removed successfully");
+                messagingService.showMessage("info", $translate.instant("CLINICAL_TEMPLATE_REMOVED_SUCCESS_KEY", {label : label}));
             };
 
             $scope.openActiveForm = function (conceptSet) {
