@@ -3,7 +3,7 @@
 describe("conceptSetGroup", function () {
     var _provide, scope, contextChangeHandler, spinner, messagingService, conceptSetService, rootScope, sessionService,
         encounterService, treatmentConfig, retrospectiveEntryService,
-        userService, conceptSetUiConfigService, timeout, clinicalAppConfigService, stateParams, compile, httpBackend;
+        userService, conceptSetUiConfigService, timeout, clinicalAppConfigService, stateParams, compile, httpBackend, translate;
 
     beforeEach(function () {
         module('bahmni.common.conceptSet');
@@ -19,6 +19,7 @@ describe("conceptSetGroup", function () {
             conceptSetUiConfigService = jasmine.createSpyObj('conceptSetUiConfigService', ['getConfig']);
             clinicalAppConfigService = jasmine.createSpyObj('clinicalAppConfigService', ['getVisitTypeForRetrospectiveEntries']);
             spinner = jasmine.createSpyObj('spinner', ['forPromise']);
+            translate = jasmine.createSpyObj('$translate',['instant']);
             $provide.value('contextChangeHandler', contextChangeHandler);
             $provide.value('messagingService', messagingService);
             $provide.value('conceptSetService', conceptSetService);
@@ -30,6 +31,7 @@ describe("conceptSetGroup", function () {
             $provide.value('conceptSetUiConfigService', conceptSetUiConfigService);
             $provide.value('clinicalAppConfigService', clinicalAppConfigService);
             $provide.value('spinner', spinner);
+            $provide.value('$translate', translate);
             _provide = $provide;
         });
         inject(function ($compile, $rootScope, $httpBackend) {
