@@ -542,14 +542,14 @@ concept-set {
       box-sizing: border-box;
       li {
         position: relative;
-        .emptymsg {
+        &.emptymsg {
           display: list-item;
-        }
-        +.emptymsg {
-          display: none;
           padding: 10px;
           color: $darkerGrey;
           font-size: 12px;
+        }
+        + .emptymsg {
+          display: none;
         }
         a {
           overflow: auto;
