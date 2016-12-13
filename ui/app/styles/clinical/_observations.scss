@@ -542,6 +542,7 @@ concept-set {
       bottom: 50px;
       overflow-y:auto;
       overflow-x: hidden;
+      z-index: 99999;
     }
     .multi-select-lab-tests{
       width: 100% !important;

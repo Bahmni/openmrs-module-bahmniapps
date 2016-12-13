@@ -13,7 +13,6 @@ angular.module('bahmni.clinical')
             var fields = ['uuid', 'name:(name,display)', 'names:(uuid,conceptNameType,name)'];
             var customRepresentation = Bahmni.ConceptSet.CustomRepresentationBuilder.build(fields, 'setMembers', numberOfLevels);
             var allConceptSections = [];
-            $scope.showTemplatesList = false;
 
             var init = function () {
                 if (!($scope.consultation.selectedObsTemplate !== undefined && $scope.consultation.selectedObsTemplate.length > 0)) {
@@ -29,10 +28,6 @@ angular.module('bahmni.clinical')
                         }
                     }));
                 }
-            };
-
-            $scope.toggleTemplateList = function () {
-                $scope.showTemplatesList = !$scope.showTemplatesList;
             };
 
             $scope.getUniqueTemplates = function () {

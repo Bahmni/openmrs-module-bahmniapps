@@ -49,11 +49,11 @@
     .primary-section-grid{
       border: 1px solid $lightGray;
       background: $white;
-      padding: 10px;
+      padding: 0 10px 10px;
     }
     .template-search-wrapper{
       @include clearfix();
-      margin-bottom: 11px;
+      padding: 10px;
      .search_field{
       width:197px;
       padding: 5px 10px;
