@@ -9,7 +9,7 @@ angular.module('bahmni.common.conceptSet')
                   conceptSetUiConfigService, $timeout, clinicalAppConfigService, $stateParams, $translate) {
             var conceptSetUIConfig = conceptSetUiConfigService.getConfig();
             var init = function () {
-                $scope.validationHandler = $scope.context.showPanelView ? new Bahmni.ConceptSet.ConceptSetGroupPanelViewValidationHandler($scope.allTemplates) : new Bahmni.ConceptSet.ConceptSetGroupValidationHandler($scope.allTemplates);
+                $scope.validationHandler =new Bahmni.ConceptSet.ConceptSetGroupPanelViewValidationHandler($scope.allTemplates);
                 contextChangeHandler.add($scope.validationHandler.validate);
                 $scope.leftPanelConceptSet = _.find($scope.allTemplates, function (conceptSet) {
                     return conceptSet.klass == "active";
