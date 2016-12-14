@@ -469,6 +469,43 @@ describe('OfflineDbService ', function () {
                 });
             });
         });
+
+        it("should not call insertPatientIdentifiers if patient is voided", function (done) {
+            var schemaBuilder = lf.schema.create('BahmniOfflineDb', 1);
+            schemaBuilder.connect().then(function (db) {
+                offlineDbService.init(db);
+
+                var patientData = {
+                    name: "patient",
+                    patient: {
+                        voided: true,
+                        uuid: "personUuid",
+                        person: {attributes: "attributes", addresses: [], preferredAddress: undefined}
+                    }
+                };
+
+                patientDbService.insertPatientData.and.callFake(function () {
+                    var deferred1 = $q.defer();
+                    deferred1.resolve("patientUuid");
+                    return deferred1.promise;
+                });
+
+                patientDbService.getPatientByUuid.and.callFake(function () {
+                    var deferred1 = $q.defer();
+                    deferred1.resolve({patient: "patientInfo"});
+                    return deferred1.promise;
+                });
+
+                offlineDbService.createPatient(patientData).then(function (patientInfoResponse) {
+                    expect(patientInfoResponse).not.toBeUndefined();
+                    expect(patientInfoResponse).toEqual({data: {patient: "patientInfo"}});
+                    expect(patientAttributeDbService.insertAttributes).not.toHaveBeenCalled();
+                    expect(patientAddressDbService.insertAddress).not.toHaveBeenCalled();
+                    expect(patientIdentifierDbService.insertPatientIdentifiers).not.toHaveBeenCalled();
+                    done();
+                });
+            });
+        });
     });
 
 
