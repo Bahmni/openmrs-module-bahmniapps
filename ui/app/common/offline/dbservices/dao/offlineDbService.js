@@ -48,10 +48,11 @@ angular.module('bahmni.common.offline')
                 var person = patient.person;
 
                 return patientDbService.insertPatientData(db, patientData).then(function (patientUuid) {
-                    patientAttributeDbService.insertAttributes(db, patientUuid, person.attributes);
-                    var address = getAddress(person);
-                    patientAddressDbService.insertAddress(db, patientUuid, address);
-                    patientIdentifierDbService.insertPatientIdentifiers(db, patientUuid, patient.identifiers);
+                    if (!patient.voided) {
+                        patientAttributeDbService.insertAttributes(db, patientUuid, person.attributes);
+                        patientAddressDbService.insertAddress(db, patientUuid, getAddress(person));
+                        patientIdentifierDbService.insertPatientIdentifiers(db, patientUuid, patient.identifiers);
+                    }
                     return patientData;
                 });
             };
