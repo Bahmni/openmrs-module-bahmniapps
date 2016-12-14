@@ -7,11 +7,11 @@ angular.module('bahmni.ipd')
                 return bed.status == "OCCUPIED";
             };
 
-            $scope.onSelectAvailableBed = function(bed) {
+            $scope.onSelectAvailableBed = function (bed) {
                 $scope.$emit("event:bedSelected", bed);
             };
 
-            $scope.onSelectOccupiedBed = function(bed) {
+            $scope.onSelectOccupiedBed = function (bed) {
                 $scope.$emit("event:bedSelected", bed);
             };
         }]);

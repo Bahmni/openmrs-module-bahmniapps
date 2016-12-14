@@ -35,10 +35,6 @@ angular.module('ipd').config(['$stateProvider', '$httpProvider', '$urlRouterProv
                         $scope.isBedManagementEnabled = appService.getAppDescriptor().getConfig("isBedManagementEnabled").value;
                     }
                 },
-                //'wards@home': {
-                //    templateUrl: 'views/wards.html',
-                //    controller: 'WardsController'
-                //},
                 'additional-header': {
                     templateUrl: 'views/headerAdt.html'
                 }
@@ -47,20 +43,19 @@ angular.module('ipd').config(['$stateProvider', '$httpProvider', '$urlRouterProv
                 initialization: 'initialization'
             }
         }).state('bedManagement', {
-                url: '/bedManagement',
-                data: {
-                    backLinks: backLinks
+            url: '/bedManagement',
+            data: {
+                backLinks: backLinks
+            },
+            views: {
+                'content': {
+                    templateUrl: 'views/bedManagement.html',
+                    controller: 'BedManagementController'
                 },
-                views: {
-                    'content': {
-                        templateUrl: 'views/bedManagement.html',
-                        controller: 'BedManagementController'
-                    },
-                    'additional-header': {
-                        templateUrl: 'views/headerAdt.html'
-                    }
+                'additional-header': {
+                    templateUrl: 'views/headerAdt.html'
                 }
-
+            }
         }).state('bedManagement.patient', {
             url: '/patient/:patientUuid/visit/:visitUuid',
             templateUrl: 'views/bedManagement.html',

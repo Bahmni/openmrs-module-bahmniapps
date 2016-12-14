@@ -41,13 +41,13 @@ angular.module('bahmni.ipd')
 
             $scope.onSelectDepartment = function (department) {
                 spinner.forPromise(wardService.bedsForWard(department.uuid).success(function (response) {
-                    var wardDetails = _.filter($scope.wards, function(entry) {
+                    var wardDetails = _.filter($scope.wards, function (entry) {
                         return entry.ward.uuid == department.uuid;
                     });
 
                     var rooms = mapRoomInfo(_.groupBy(response.bedLayouts, 'location'));
                     $scope.ward = {
-                        rooms:  rooms,
+                        rooms: rooms,
                         uuid: department.uuid,
                         name: department.name,
                         totalBeds: wardDetails[0].totalBeds,
@@ -63,12 +63,12 @@ angular.module('bahmni.ipd')
                 return $scope.departmentSelected;
             };
 
-            $scope.$on("event:bedSelected", function(event, bed) {
-                $scope.bed = bed
+            $scope.$on("event:bedSelected", function (event, bed) {
+                $scope.bed = bed;
             });
-            
-            $scope.$on("event:roomSelected", function(event, roomName) {
-                $scope.roomName = roomName
+
+            $scope.$on("event:roomSelected", function (event, roomName) {
+                $scope.roomName = roomName;
             });
 
             init();

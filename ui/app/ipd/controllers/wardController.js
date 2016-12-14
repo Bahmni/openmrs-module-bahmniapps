@@ -4,7 +4,7 @@ angular.module('bahmni.ipd')
     .controller('WardController', ['$scope',
         function ($scope) {
             $scope.onSelectRoom = function (roomName) {
-                var admissionRoom = _.filter($scope.ward.rooms, function(room) {
+                var admissionRoom = _.filter($scope.ward.rooms, function (room) {
                     return room.name == roomName;
                 });
                 $scope.room = admissionRoom[0];
@@ -20,5 +20,3 @@ angular.module('bahmni.ipd')
                 return $scope.roomSelected;
             };
         }]);
-
-
