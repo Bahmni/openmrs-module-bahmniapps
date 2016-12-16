@@ -186,6 +186,7 @@ Bahmni.Common = Bahmni.Common || {};
         videoClassName: 'Video',
         locationCookieName: 'bahmni.user.location',
         retrospectiveEntryEncounterDateCookieName: 'bahmni.clinical.retrospectiveEncounterDate',
+        JSESSIONID: "JSESSIONID",
         rootScopeRetrospectiveEntry: 'retrospectiveEntry.encounterDate',
         patientFileConceptName: 'Patient file',
         serverErrorMessages: serverErrorMessages,
