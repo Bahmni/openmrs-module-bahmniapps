@@ -1,6 +1,6 @@
 <div class="concept-set-panel clearfix">
     <section class="concept-set-panel-left">
-        <div class="concept-set-panel-wrap">
+        <div class="concept-set-panel-wrap" assign-height key="contentHeight">
             <div class="multi-select-lab-tests">
                 <ul>
                     <li ng-repeat="conceptSet in allTemplates track by $index"
@@ -23,11 +23,14 @@
     </section>
     <div class="concept-set-panel-right-wrap">
         <section class="concept-set-panel-right">
-            <section  ng-class="{'concept-set-panel-no-template': leftPanelConceptSet==conceptSet}">
-                <section class="concept-set-group section-grid" ng-repeat="conceptSet in allTemplates track by $index" ng-if="leftPanelConceptSet==conceptSet">
-                    <ng-include src="'../common/concept-set/views/conceptSetGroupSection.html'"></ng-include>
-                </section>
-            </section>
+            <ul>
+                <li ng-repeat="conceptSet in allTemplates track by $index" ng-if="leftPanelConceptSet==conceptSet">
+                    <section class="concept-set-group section-grid" >
+                        <ng-include src="'../common/concept-set/views/conceptSetGroupSection.html'"></ng-include>
+                    </section>
+                </li>
+                <li class="concept-set-panel-no-template"  ng-style="{'height': contentHeight.height + 'px'}"> </li>
+            </ul>
         </section>
     </div>
 </div>

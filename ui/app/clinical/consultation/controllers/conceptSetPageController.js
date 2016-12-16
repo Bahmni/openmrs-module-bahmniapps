@@ -97,6 +97,10 @@ angular.module('bahmni.clinical')
                 });
             };
 
+            $scope.stopAutoClose = function ($event) {
+                $event.stopPropagation();
+            };
+
             $scope.addTemplate = function (template) {
                 $scope.scrollingEnabled = true;
                 $scope.showTemplatesList = false;
