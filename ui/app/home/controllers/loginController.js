@@ -64,10 +64,10 @@ angular.module('bahmni.home')
                 $scope.errorMessageTranslateKey = null;
                 var deferrable = $q.defer();
 
-                var ensureNoSessionIdInRoot = function() {
-                    //See https://bahmni.mingle.thoughtworks.com/projects/bahmni_emr/cards/2934
-                    //The cookie should ideally not be set at root, and is interfering with
-                    //authentication for reporting. This seems to be one of the best places to remove it.
+                var ensureNoSessionIdInRoot = function () {
+                    // See https://bahmni.mingle.thoughtworks.com/projects/bahmni_emr/cards/2934
+                    // The cookie should ideally not be set at root, and is interfering with
+                    // authentication for reporting. This seems to be one of the best places to remove it.
                     $bahmniCookieStore.remove(Bahmni.Common.Constants.JSESSIONID, {
                         path: '/',
                         expires: 1
