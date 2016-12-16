@@ -571,6 +571,8 @@ input[type="submit"].secondary-button:hover  {
   }
   .fa-thumb-tack{
     font-size: 18px;
+    padding: 0;
+    width:auto;
   }
 
   .fa-star-empty {
@@ -594,7 +596,6 @@ input[type="submit"].secondary-button:hover  {
     &:checked + .fa-thumb-tack {
       color: orange;
       display: block;
-      margin-top: -4px;
       -webkit-transform: rotate(45deg);
       -moz-transform: rotate(45deg);
       -ms-transform: rotate(45deg);

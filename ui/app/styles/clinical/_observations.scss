@@ -246,6 +246,7 @@ concept-set {
         }
         .fa {
           padding: 0;
+          width:auto;
         }
         [class^="icon-"]:before,
         [class*=" icon-"]:before {
@@ -540,9 +541,10 @@ concept-set {
       height:auto;
       top:138px;
       bottom: 50px;
+      background:$white;
       overflow-y:auto;
       overflow-x: hidden;
-      z-index: 99999;
+      z-index: 9999999999;
     }
     .multi-select-lab-tests{
       width: 100% !important;
@@ -565,7 +567,7 @@ concept-set {
           border-bottom: 1px solid $lightGray;
           padding: 8px 10px !important;
           display: block;
-          color:darken($bahmniSecondaryColor, 10%);
+          color:darken($bahmniSecondaryColor, 20%);
           .concept-set-name {
             display: block;
             width: auto;
@@ -607,6 +609,7 @@ concept-set {
           a{
             background: darken($bahmniSecondaryColor, 10%);
             color: $white;
+            font-family: $OpenSansSemiBoldFont;
           }
           .fa-plus{
             color: $white;
@@ -630,20 +633,26 @@ concept-set {
     @media screen and (max-width: 850px){
       margin-left: 240px;
     }
-    .concept-set-panel-no-template{
-      position: absolute;
-      width:100%;
-      height: 612px;
-      border: 1px solid $darkerGrey;
-      border-radius: 5px 5px 0 0;
-      background: $white;
-      @media screen and (max-width: 760px){
-        height:auto;
-        position: static;
-        border: none;
-        background: none;
+    ul li {
+      &.concept-set-panel-no-template{
+        width:100%;
+        border: 1px solid $darkerGrey;
+        border-radius: 5px 5px 0 0;
+        background: $white;
+        box-sizing: border-box;
+        display: list-item;
+        @media screen and (max-width: 760px){
+          height:auto;
+          position: static;
+          border: none;
+          background: none;
+        }
+      }
+      + .concept-set-panel-no-template {
+        display: none;
       }
     }
+
     .section-title #removeClonedObs.fa-remove{
       padding: 3px 5px 4px;
       width: auto;

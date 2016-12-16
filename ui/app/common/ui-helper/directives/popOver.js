@@ -20,10 +20,6 @@ angular.module('bahmni.common.uiHelper')
                     if (!$scope.autoclose) {
                         return;
                     }
-                    $(".popOverTargetWrapNoClose").click(function (e) {
-                        e.stopPropagation();
-                    });
-
                     hideTargetElements();
                     $scope.isTargetOpen = false;
                     $(document).off('click', docClickHandler);
