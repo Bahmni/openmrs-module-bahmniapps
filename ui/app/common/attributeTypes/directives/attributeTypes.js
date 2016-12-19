@@ -25,9 +25,10 @@ angular.module('bahmni.common.attributeTypes', []).directive('attributeTypes', [
 
             $scope.appendConceptNameToModel = function (attribute) {
                 var attributeValueConceptType = $scope.targetModel[attribute.name];
-                attributeValueConceptType.value = _.find(attribute.answers, function (answer) {
+                var concept = _.find(attribute.answers, function (answer) {
                     return answer.conceptId === attributeValueConceptType.conceptUuid;
                 });
+                attributeValueConceptType.value = concept && concept.fullySpecifiedName;
             };
         }
     };
