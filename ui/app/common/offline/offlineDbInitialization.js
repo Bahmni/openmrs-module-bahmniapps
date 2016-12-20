@@ -9,9 +9,9 @@ angular.module('bahmni.common.offline')
                         offlineDbService = androidDbService;
                     }
                     var location = offlineService.getItem('LoginInformation') ? offlineService.getItem('LoginInformation').currentLocation.display : null;
-                    return offlineDbService.initSchema("metadata").then(function (metaDataDb) {
+                    return offlineDbService.initSchema(Bahmni.Common.Constants.bahmniConnectMetaDataDb).then(function (metaDataDb) {
                         offlineDbService.init(metaDataDb);
-                        if(location === null) {
+                        if (location === null) {
                             return metaDataDb;
                         }
                         return offlineDbService.initSchema(location).then(function (db) {
@@ -19,7 +19,6 @@ angular.module('bahmni.common.offline')
                             return db;
                         });
                     });
-
                 }
             };
         }

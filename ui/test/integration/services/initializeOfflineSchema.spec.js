@@ -34,7 +34,7 @@ describe('InitializeOfflineSchema Tests', function () {
 
     it('should initialize metadata schema', function (done) {
         mockofflineService.isChromeApp.and.returnValue("true");
-        initializeOfflineSchema.initSchema("metadata").then(function(db){
+        initializeOfflineSchema.initSchema(Bahmni.Common.Constants.bahmniConnectMetaDataDb).then(function(db){
             expect(db).not.toBe(null);
             expect(db.getSchema().table(Bahmni.Common.Offline.MetaDataSchemaDefinitions.Concept.tableName)).not.toBe(null);
             expect(db.getSchema().table(Bahmni.Common.Offline.MetaDataSchemaDefinitions.Configs.tableName)).not.toBe(null);

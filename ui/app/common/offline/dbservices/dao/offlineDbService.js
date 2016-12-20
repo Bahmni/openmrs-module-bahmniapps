@@ -5,7 +5,7 @@ angular.module('bahmni.common.offline')
         'offlineConfigDbService', 'initializeOfflineSchema', 'referenceDataDbService', 'locationDbService', 'offlineSearchDbService', 'encounterDbService', 'visitDbService', 'observationDbService', 'conceptDbService', 'errorLogDbService', 'eventLogService', 'eventQueue',
         function ($http, $q, patientDbService, patientAddressDbService, patientAttributeDbService, patientIdentifierDbService, offlineMarkerDbService, offlineAddressHierarchyDbService, labOrderResultsDbService,
                   offlineConfigDbService, initializeOfflineSchema, referenceDataDbService, locationDbService, offlineSearchDbService, encounterDbService, visitDbService, observationDbService, conceptDbService, errorLogDbService, eventLogService, eventQueue) {
-            var db,metaDataDb;
+            var db, metaDataDb;
 
             var createPatient = function (postRequest) {
                 var deferred = $q.defer();
@@ -112,7 +112,7 @@ angular.module('bahmni.common.offline')
             };
 
             var init = function (offlineDb) {
-                if(offlineDb.getSchema().name() == "metadata") {
+                if (offlineDb.getSchema().name() == Bahmni.Common.Constants.bahmniConnectMetaDataDb) {
                     metaDataDb = offlineDb;
                     offlineConfigDbService.init(metaDataDb);
                     conceptDbService.init(metaDataDb);
@@ -123,8 +123,8 @@ angular.module('bahmni.common.offline')
                     offlineAddressHierarchyDbService.init(offlineDb);
                     offlineSearchDbService.init(offlineDb);
                 }
-                if(metaDataDb && db) {
-                    referenceDataDbService.init(metaDataDb,db);
+                if (metaDataDb && db) {
+                    referenceDataDbService.init(metaDataDb, db);
                 }
             };
 

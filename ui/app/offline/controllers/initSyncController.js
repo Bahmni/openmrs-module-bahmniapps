@@ -7,13 +7,12 @@ angular.module('bahmni.common.offline')
             var init = function () {
                 var deferred = $q.defer();
                 offlinePull().then(function () {
-                      setInitialStatus("complete");
-                      deferred.resolve();
-                  },
-                  function () {
-                      setInitialStatus("notComplete");
-                      deferred.reject();
-                  });
+                    setInitialStatus("complete");
+                    deferred.resolve();
+                }, function () {
+                    setInitialStatus("notComplete");
+                    deferred.reject();
+                });
                 return deferred.promise;
             };
 
@@ -23,7 +22,7 @@ angular.module('bahmni.common.offline')
                     var initialSyncStatus = offlineService.getItem("initialSyncStatus");
                     locationSyncStatus[loginLocationUuid] = status;
                     initialSyncStatus = initialSyncStatus ? _.extend(initialSyncStatus, locationSyncStatus) : locationSyncStatus;
-                    offlineService.setItem("initialSyncStatus", initialSyncStatus)
+                    offlineService.setItem("initialSyncStatus", initialSyncStatus);
                 }
             };
 
@@ -64,9 +63,9 @@ angular.module('bahmni.common.offline')
             };
 
             var syncStatus = offlineService.getItem("initialSyncStatus");
-            if (syncStatus && syncStatus[loginLocationUuid] == "complete") {
+            if (syncStatus && syncStatus[loginLocationUuid] === "complete") {
                 $state.go('dashboard');
-            } else if(syncStatus && !syncStatus[loginLocationUuid]) {
+            } else if (syncStatus && !syncStatus[loginLocationUuid]) {
                 offlineLocationInitialization().then(function () {
                     init().then(syncSuccessCallBack, syncFailureCallBack);
                 });
