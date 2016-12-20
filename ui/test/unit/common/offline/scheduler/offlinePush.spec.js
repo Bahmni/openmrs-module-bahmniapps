@@ -1,7 +1,7 @@
 'use strict';
 
 describe('Offline Push Tests', function () {
-    var offlinePush, eventQueueMock, httpBackend, androidDbService, $q=Q, eventQueue, errorQueue, event, offlineDbServiceMock, loggingServiceMock;
+    var offlinePush, window, eventQueueMock, httpBackend, androidDbService, $q=Q, eventQueue, errorQueue, event, offlineDbServiceMock, loggingServiceMock, mockBahmniCookieStore;
 
 
     beforeEach(function () {
@@ -11,7 +11,16 @@ describe('Offline Push Tests', function () {
             eventQueueMock = jasmine.createSpyObj('eventQueue', ['consumeFromErrorQueue','consumeFromEventQueue','removeFromQueue','addToErrorQueue','releaseFromQueue']);
             offlineDbServiceMock = jasmine.createSpyObj('offlineDbService', ['getPatientByUuidForPost','getEncounterByEncounterUuid','insertLog', 'createEncounter','deleteErrorFromErrorLog','getErrorLogByUuid']);
             loggingServiceMock = jasmine.createSpyObj('loggingService', ['logSyncError']);
+            mockBahmniCookieStore = jasmine.createSpyObj('bahmniCookieStore', ["get"]);
+            $provide.value('$bahmniCookieStore', mockBahmniCookieStore);
+            window = jasmine.createSpyObj('$window',['webkitIndexedDB']);
 
+
+            mockBahmniCookieStore.get.and.callFake(function (cookie) {
+                if (cookie == Bahmni.Common.Constants.locationCookieName) {
+                    return {name: "location-name"};
+                }
+            });
             offlineServiceMock.isOfflineApp.and.returnValue(true);
             offlineServiceMock.isAndroidApp.and.returnValue(false);
             event = {
@@ -19,9 +28,9 @@ describe('Offline Push Tests', function () {
                     url: "someUrl",
                     patientUuid: "someUuid"
                 },
-                tube: "event_queue"
+                tube: "event_queue",
+                dbName: "location-name"
             };
-
             eventQueue = [event];
             errorQueue = [event];
 
@@ -46,6 +55,7 @@ describe('Offline Push Tests', function () {
             $provide.value('androidDbService', androidDbService);
             $provide.value('loggingService', loggingServiceMock);
             $provide.value('$q', $q);
+            $provide.value('$window', window);
         });
     });
 
@@ -54,7 +64,18 @@ describe('Offline Push Tests', function () {
         httpBackend = _$httpBackend_;
     }]));
 
-    it("should push data from event queue", function(done) {
+    iit("should push data from event queue", function(done) {
+        window.webkitIndexedDB = {
+            webkitGetDatabaseNames: function() {
+                return {
+                    onsuccess: function() {
+                        return [];
+                    }
+                }
+            }
+        };
+        dump("a", window.webkitIndexedDB.webkitGetDatabaseNames());
+        dump("b", window.webkitIndexedDB.webkitGetDatabaseNames().onsuccess);
         httpBackend.expectPOST("someUrl").respond(200, {});
         offlinePush().then(function(){
             expect(eventQueueMock.removeFromQueue).toHaveBeenCalled();

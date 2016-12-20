@@ -74,7 +74,7 @@ angular.module('bahmni.common.offline').service('initializeOfflineSchema', [func
 
     this.initSchema = function (dbName) {
         if (dbPromises[dbName] != null) {
-          return this.databasePromise;
+          return dbPromises[dbName];
         }
         var schemaBuilder = lf.schema.create(dbName, DB_VERSION);
         if (dbName === "metadata") {

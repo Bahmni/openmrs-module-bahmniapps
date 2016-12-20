@@ -2,11 +2,11 @@
 
 describe('PatientServiceStrategy test', function () {
     var patientServiceStrategy, patientJson, patientAttributeTypes;
-    var offlinePatientServiceStrategyMock, $q = Q, eventQueueMock, rootScope;
+    var offlinePatientServiceStrategyMock, $q = Q, eventQueueMock, rootScope, mockBahmniCookieStore;
 
     eventQueueMock = jasmine.createSpyObj('eventQueue', ['addToEventQueue']);
     offlinePatientServiceStrategyMock = jasmine.createSpyObj(' offlinePatientServiceStrategy', ['search', 'get', 'create', 'deletePatientData','getAttributeTypes']);
-
+    mockBahmniCookieStore = jasmine.createSpyObj('bahmniCookieStore', ["get"]);
     beforeEach(function () {
         module('bahmni.common.offline');
         module('bahmni.registration');
@@ -14,6 +14,7 @@ describe('PatientServiceStrategy test', function () {
             $provide.value('$q', $q);
             $provide.value('eventQueue', eventQueueMock);
             $provide.value('offlinePatientServiceStrategy', offlinePatientServiceStrategyMock);
+            $provide.value('$bahmniCookieStore', mockBahmniCookieStore);
         });
         jasmine.getFixtures().fixturesPath = 'base/test/data';
         patientJson = JSON.parse(readFixtures('patient.json'));
@@ -23,6 +24,11 @@ describe('PatientServiceStrategy test', function () {
         offlinePatientServiceStrategyMock.create.and.returnValue(specUtil.respondWith({"data": patientJson}));
         offlinePatientServiceStrategyMock.deletePatientData.and.returnValue(specUtil.respondWith({}));
         eventQueueMock.addToEventQueue.and.returnValue(specUtil.respondWith({}));
+        mockBahmniCookieStore.get.and.callFake(function (cookie) {
+            if (cookie == Bahmni.Common.Constants.locationCookieName) {
+                return {name: "location-name"};
+            }
+        });
     });
 
     beforeEach(inject(['patientServiceStrategy', "$rootScope", function (patientServiceStrategyInjected, rootScopeInjected) {
@@ -75,6 +81,7 @@ describe('PatientServiceStrategy test', function () {
             var event = {};
             event.url = Bahmni.Registration.Constants.baseOpenMRSRESTURL + "/bahmnicore/patientprofile/e34992ca-894f-4344-b4b3-54a4aa1e5558";
             event.patientUuid = "e34992ca-894f-4344-b4b3-54a4aa1e5558";
+            event.dbName = "location-name";
             expect(data.data.patient.identifiers[0].identifierSourceUuid).toBe("81f27b48-8792-11e5-ade6-005056b07f03");
             expect(eventQueueMock.addToEventQueue).toHaveBeenCalledWith(event);
         }).catch(notifyError).finally(done);
