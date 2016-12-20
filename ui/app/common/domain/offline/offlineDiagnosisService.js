@@ -16,7 +16,9 @@ angular.module('bahmni.common.domain')
                 var diagnoses = [];
                 offlineEncounterServiceStrategy.getEncountersByPatientUuid(patientUuid).then(function (results) {
                     _.each(results, function (result) {
-                        diagnoses = diagnoses.concat(result.encounter.bahmniDiagnoses);
+                        if(result.encounter.bahmniDiagnoses) {
+                            diagnoses = diagnoses.concat(result.encounter.bahmniDiagnoses);    
+                        }
                     });
                     diagnoses = filterAndSortDiagnosis(diagnoses);
                     deferred.resolve({"data": diagnoses});
