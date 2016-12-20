@@ -1,8 +1,8 @@
 "use strict";
 
 angular.module('bahmni.common.offline')
-    .controller('InitSyncController', ['$scope', 'ngDialog', '$state', 'offlineService', 'offlinePush', 'offlinePull', 'spinner', 'sessionService', '$q',
-        function ($scope, ngDialog, $state, offlineService, offlinePush, offlinePull, spinner, sessionService, $q) {
+    .controller('InitSyncController', ['$scope', 'ngDialog', '$state', 'offlineService', 'offlinePush', 'offlinePull', 'spinner', 'sessionService', '$q', 'offlineLocationInitialization',
+        function ($scope, ngDialog, $state, offlineService, offlinePush, offlinePull, spinner, sessionService, $q, offlineLocationInitialization) {
             var loginLocationUuid = offlineService.getItem('LoginInformation') ? offlineService.getItem('LoginInformation').currentLocation.uuid : undefined;
             var init = function () {
                 var deferred = $q.defer();
@@ -66,6 +66,10 @@ angular.module('bahmni.common.offline')
             var syncStatus = offlineService.getItem("initialSyncStatus");
             if (syncStatus && syncStatus[loginLocationUuid] == "complete") {
                 $state.go('dashboard');
+            } else if(syncStatus && !syncStatus[loginLocationUuid]) {
+                offlineLocationInitialization().then(function () {
+                    init().then(syncSuccessCallBack, syncFailureCallBack);
+                });
             } else {
                 init().then(syncSuccessCallBack, syncFailureCallBack);
             }

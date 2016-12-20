@@ -67,7 +67,7 @@ angular.module('bahmni.common.domain')
             };
 
             this.create = function (encounterData) {
-                var loginLocation = $bahmniCookieStore.get(Bahmni.Common.Constants.locationCookieName).name;
+                var loginLocationName = $bahmniCookieStore.get(Bahmni.Common.Constants.locationCookieName).name;
                 encounterData.encounterUuid = encounterData.encounterUuid || Bahmni.Common.Offline.UUID.generateUuid();
                 encounterData.visitUuid = encounterData.visitUuid || null;
                 encounterData.encounterDateTime = encounterData.encounterDateTime || Bahmni.Common.Util.DateUtil.now();
@@ -80,7 +80,7 @@ angular.module('bahmni.common.domain')
                 }).then(function (encounterData) {
                     return offlineEncounterService.create(encounterData);
                 }).then(function (result) {
-                    var event = {type: "encounter", encounterUuid: result.data.encounterUuid, loginLocation: loginLocation };
+                    var event = {type: "encounter", encounterUuid: result.data.encounterUuid, dbName: loginLocationName };
                     eventQueue.addToEventQueue(event);
                     return $q.when({data: encounterData});
                 });
