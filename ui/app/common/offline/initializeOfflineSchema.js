@@ -62,7 +62,7 @@ angular.module('bahmni.common.offline').service('initializeOfflineSchema', [func
 
     this.databasePromise = null;
 
-    var initDbSchema = function (schemaBuilder,definitions) {
+    var initDbSchema = function (schemaBuilder, definitions) {
         var tables = _.values(definitions);
         var initalMigrationVersion = 2;
         tables.forEach(function (table) {
@@ -74,10 +74,10 @@ angular.module('bahmni.common.offline').service('initializeOfflineSchema', [func
 
     this.initSchema = function (dbName) {
         if (dbPromises[dbName] != null) {
-          return dbPromises[dbName];
+            return dbPromises[dbName];
         }
         var schemaBuilder = lf.schema.create(dbName, DB_VERSION);
-        if (dbName === "metadata") {
+        if (dbName === Bahmni.Common.Constants.bahmniConnectMetaDataDb) {
             initDbSchema(schemaBuilder, Bahmni.Common.Offline.MetaDataSchemaDefinitions);
             this.databasePromise = schemaBuilder.connect(LOVEFIELD_DB_CONFIG);
             dbPromises[dbName] = this.databasePromise;
@@ -90,7 +90,7 @@ angular.module('bahmni.common.offline').service('initializeOfflineSchema', [func
                 runMigration(initalMigrationVersion, db, migrateDataUsingCustomLoveFieldQueries);
             });
         }
-      return this.databasePromise;
+        return this.databasePromise;
     };
 
     this.reinitSchema = function (dbName) {

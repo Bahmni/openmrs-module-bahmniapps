@@ -66,7 +66,7 @@ describe('OfflineDbService ', function () {
     });
 
     it("should init offlineDbService with metadata db reference", function (done) {
-        var metaDataSchemaBuilder = lf.schema.create('metadata', 1);
+        var metaDataSchemaBuilder = lf.schema.create(Bahmni.Common.Constants.bahmniConnectMetaDataDb, 1);
         var schemaBuilder = lf.schema.create('BahmniOfflineDb', 1);
         schemaBuilder.connect().then(function (db) {
             offlineDbService.init(db);
@@ -549,7 +549,7 @@ describe('OfflineDbService ', function () {
 
     describe("conceptDbService", function () {
         it("should call getConcept with given conceptUuid", function (done) {
-            var schemaBuilder = lf.schema.create('metadata', 1);
+            var schemaBuilder = lf.schema.create(Bahmni.Common.Constants.bahmniConnectMetaDataDb, 1);
             schemaBuilder.connect().then(function (db) {
                 offlineDbService.init(db);
 
@@ -562,7 +562,7 @@ describe('OfflineDbService ', function () {
         });
 
         it("should call getConceptByName with given conceptName", function (done) {
-            var schemaBuilder = lf.schema.create('metadata', 1);
+            var schemaBuilder = lf.schema.create(Bahmni.Common.Constants.bahmniConnectMetaDataDb, 1);
             schemaBuilder.connect().then(function (db) {
                 offlineDbService.init(db);
 
@@ -575,7 +575,7 @@ describe('OfflineDbService ', function () {
         });
 
         it("should call insertConceptAndUpdateHierarchy with given concept data and parentConcept", function (done) {
-            var schemaBuilder = lf.schema.create('metadata', 1);
+            var schemaBuilder = lf.schema.create(Bahmni.Common.Constants.bahmniConnectMetaDataDb, 1);
             schemaBuilder.connect().then(function (db) {
                 offlineDbService.init(db);
 
@@ -588,7 +588,7 @@ describe('OfflineDbService ', function () {
         });
 
         it("should call updateChildren with given concept", function (done) {
-            var schemaBuilder = lf.schema.create('metadata', 1);
+            var schemaBuilder = lf.schema.create(Bahmni.Common.Constants.bahmniConnectMetaDataDb, 1);
             schemaBuilder.connect().then(function (db) {
                 offlineDbService.init(db);
 
@@ -601,7 +601,7 @@ describe('OfflineDbService ', function () {
         });
 
         it("should call updateParentJson with given childConcept", function (done) {
-            var schemaBuilder = lf.schema.create('metadata', 1);
+            var schemaBuilder = lf.schema.create(Bahmni.Common.Constants.bahmniConnectMetaDataDb, 1);
             schemaBuilder.connect().then(function (db) {
                 offlineDbService.init(db);
 
@@ -614,7 +614,7 @@ describe('OfflineDbService ', function () {
         });
 
         it("should call getAllParentsInHierarchy with given concept name and empty array", function (done) {
-            var schemaBuilder = lf.schema.create('metadata', 1);
+            var schemaBuilder = lf.schema.create(Bahmni.Common.Constants.bahmniConnectMetaDataDb, 1);
             schemaBuilder.connect().then(function (db) {
                 offlineDbService.init(db);
 
@@ -682,7 +682,7 @@ describe('OfflineDbService ', function () {
 
     describe("locationDbService", function () {
         it("should call getLocationByUuid with given locationUuid", function (done) {
-            var schemaBuilder = lf.schema.create('metadata', 1);
+            var schemaBuilder = lf.schema.create(Bahmni.Common.Constants.bahmniConnectMetaDataDb, 1);
             schemaBuilder.connect().then(function (db) {
                 offlineDbService.init(db);
 
