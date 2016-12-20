@@ -42,7 +42,7 @@ angular.module('bahmni.clinical').controller('ConsultationController',
 
             var setPrintAction = function (event, tab) {
                 tab.print = function () {
-                    $scope.$parent.$parent.$broadcast(event, tab);
+                    $rootScope.$broadcast(event, tab);
                 };
             };
             var setDashboardPrintAction = _.partial(setPrintAction, "event:printDashboard", _);
