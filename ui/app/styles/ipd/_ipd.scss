@@ -139,10 +139,50 @@ div[ng-app="adt"] {
     display: block;
 }
 
-#bed {
-    display: inline-block;
-    padding: 20px;
 
+
+.bed {
+    display: inline-block;
+    padding: 10px 0;
+    width: 15%;
+    margin: 0 10px 10px 0;
+    border: 1px solid #fafafa;
+    min-height: 120px;
+    float: left;
+    .bed-number{
+        background: #12ab16;
+        color: #fff;
+        text-align: center;
+        width: auto;
+        display: table;
+        margin:0 auto;
+        padding: 5px;
+        border-radius:3px;
+    }
+    .patient-info{
+        color: $black;
+        display: block;
+        margin:10px;
+        font-size: 12px;
+        .patient-name{
+            color: #12ab16;
+            display: block;
+            text-transform: uppercase;
+        }
+
+    }
+    .tagging{
+        margin:8px;
+        ul li{
+            width: auto;
+            display: inline-block;
+            padding: 4px;
+            color: $white;
+            background: #12ab16;
+            margin:2px;
+            border-radius: 7px;
+        }
+    }
 }
 
 #roomDetails {
@@ -150,4 +190,13 @@ div[ng-app="adt"] {
     box-shadow: 0px 0px 0px 1px;
     font-size: 12px;
     margin-right: 20px;
+}
+
+.cell {
+    background: white;
+    border: 1px solid blue;
+}
+
+.highlight-bed {
+    border: 1px solid;
 }

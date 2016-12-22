@@ -2,21 +2,31 @@
 
 angular.module('bahmni.ipd')
     .controller('BedManagementController', [
-        '$scope', '$rootScope', '$stateParams', 'spinner', 'WardService', 'backlinkService', 'patientService', 'configurations', '$translate',
-        function ($scope, $rootScope, $stateParams, spinner, wardService, backlinkService, patientService, configurations, $translate) {
+        '$scope', '$rootScope', '$stateParams', '$state', 'spinner', 'WardService', 'backlinkService', 'patientService', 'configurations', '$translate',
+        function ($scope, $rootScope, $stateParams, $state, spinner, wardService, backlinkService, patientService, configurations, $translate) {
             $scope.wards = null;
             $scope.patientUuid = $stateParams.patientUuid;
             $scope.visitUuid = $stateParams.visitUuid;
+            $scope.state = $state.current.name;
 
             var init = function () {
-                if ($scope.patientUuid) {
+                if ($scope.state == "bedManagement") {
+                    $scope.patient = undefined;
+                } else if ($scope.patientUuid) {
                     assignPatientDetails();
                 }
-                loadAllWards();
+                loadAllWards().then(function () {
+                    if ($rootScope.bedDetails) {
+                        $scope.onSelectDepartment({
+                            uuid: $rootScope.bedDetails.wardUuid,
+                            name: $rootScope.bedDetails.wardName
+                        });
+                    }
+                });
             };
 
             var loadAllWards = function () {
-                spinner.forPromise(wardService.getWardsList().success(function (wardsList) {
+                return spinner.forPromise(wardService.getWardsList().success(function (wardsList) {
                     $scope.wards = wardsList.results;
                 }));
             };

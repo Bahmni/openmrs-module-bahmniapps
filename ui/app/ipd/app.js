@@ -65,6 +65,15 @@ angular.module('ipd').config(['$stateProvider', '$httpProvider', '$urlRouterProv
                     return patientInitialization($stateParams.patientUuid);
                 }
             }
+        }).state('bedManagement.patientTransfer', {
+            url: '/patient/:patientUuid/visit/:visitUuid/transfer',
+            templateUrl: 'views/bedManagement.html',
+            controller: 'BedManagementController',
+            resolve: {
+                patientResolution: function ($stateParams, patientInitialization) {
+                    return patientInitialization($stateParams.patientUuid);
+                }
+            }
         })
         .state('patient', {
             url: '/patient/:patientUuid',

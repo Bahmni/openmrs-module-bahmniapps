@@ -1,4 +1,34 @@
-<div id="bed" ng-repeat="bed in room.beds">
-    <img ng-if="isBedOccupied(bed)" src="../images/bed_occupied.png" ng-click="onSelectOccupiedBed(bed)" style="height: 40px;">
-    <img ng-if="!isBedOccupied(bed)" src="../images/bed_available.png" ng-click="onSelectAvailableBed(bed)" style="height: 40px;">
+<!--
+<div class="bed" ng-class="{'highlight-bed': bed.bedNumber===selectedBed.bedNumber}" ng-repeat="bed in room.beds">
+    <div class="bed-number">{{ bed.bedNumber }}</div>
+    <div class="patient-info" ng-if="bed.status == 'OCCUPIED'">
+        <span class="patient-name">Patient Name</span>
+        32Yrs Id:12345
+    </div>
+    <div class="tagging">
+        <ul>
+            <li ng-repeat="tag in bed.tags">{{ tag }}</li>
+        </ul>
+    </div>
 </div>
+-->
+
+
+<div ng-repeat="row in room.beds" class="clearfix">
+    <div ng-repeat="cell in row">
+        <div ng-if="!cell.bed.bedId" class="bed"></div>
+        <div ng-if="cell.bed.bedId" class="bed cell" ng-class="{'highlight-bed': cell.bed.bedNumber===selectedBed.bedNumber}" ng-click="onSelectAvailableBed(cell.bed)">
+            <div class="bed-number">{{ cell.bed.bedNumber }}</div>
+            <div class="patient-info" ng-if="cell.bed.status == 'OCCUPIED'">
+                <span class="patient-name">Patient Name</span>
+                32Yrs Id:12345
+            </div>
+            <div class="tagging">
+                <ul>
+                    <li ng-repeat="tag in cell.bed.bedTags">{{ tag }}</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+

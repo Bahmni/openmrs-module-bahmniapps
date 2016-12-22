@@ -3,6 +3,7 @@
 angular.module('bahmni.common.domain')
     .service('bedService', ['$http', '$rootScope', function ($http, $rootScope) {
         var mapBedDetails = function (response) {
+            console.log("mappedBedDetails", response);
             var results = response.data.results;
             if (!_.isEmpty(results)) {
                 var bed = _.first(results);
@@ -20,6 +21,7 @@ angular.module('bahmni.common.domain')
             var promise = this.getAssignedBedForPatient(uuid);
             promise.then(function (bedDetails) {
                 $rootScope.bedDetails = bedDetails;
+                console.log($rootScope.bedDetails);
             });
             return promise;
         };
