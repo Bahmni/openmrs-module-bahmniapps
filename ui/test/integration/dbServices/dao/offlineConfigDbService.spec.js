@@ -12,8 +12,8 @@ describe('offlineConfigDbService tests', function () {
     }]));
 
     it("insert patient and get from lovefield database", function(done){
-        var schemaBuilder = lf.schema.create('BahmniConfig', 1);
-        Bahmni.Tests.OfflineDbUtils.createTable(schemaBuilder, Bahmni.Common.Offline.SchemaDefinitions.Configs);
+        var schemaBuilder = lf.schema.create('configMetadata', 1);
+        Bahmni.Tests.OfflineDbUtils.createTable(schemaBuilder, Bahmni.Common.Offline.MetaDataSchemaDefinitions.Configs);
         jasmine.getFixtures().fixturesPath = 'base/test/data';
         var configJson = JSON.parse(readFixtures('config.json'));
         var module = "test";
