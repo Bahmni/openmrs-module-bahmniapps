@@ -10,6 +10,8 @@ angular.module('bahmni.common.offline')
                     }
                     var loginLocation = offlineService.getItem('LoginInformation').currentLocation;
                     var deferred = $q.defer();
+                    var initalSyncStatus = offlineService.getItem('initialSyncStatus');
+                    var isConceptSyncCompleted = initalSyncStatus && (_.values(initalSyncStatus).indexOf("complete") != -1);
 
                     offlineDbService.getReferenceData('AddressHierarchyLevels').then(function (addressHierarchyLevel) {
                         if (addressHierarchyLevel && addressHierarchyLevel.data ? false : true) {
@@ -33,7 +35,9 @@ angular.module('bahmni.common.offline')
                                             eventLogService.getFilterForCategoryAndLoginLocation(provider.uuid, loginAddress.uuid, loginLocation.uuid).then(function (results) {
                                                 var categoryFilterMap = results.data;
                                                 Object.keys(categoryFilterMap).forEach(function (category) {
-                                                    offlineDbService.insertMarker(category, null, categoryFilterMap[category]);
+                                                    if (!(category == "offline-concepts" && isConceptSyncCompleted)) {
+                                                        offlineDbService.insertMarker(category, null, categoryFilterMap[category]);
+                                                    }
                                                 });
                                                 deferred.resolve();
                                             });

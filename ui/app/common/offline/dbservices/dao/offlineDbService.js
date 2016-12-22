@@ -128,7 +128,6 @@ angular.module('bahmni.common.offline')
                     referenceDataDbService.init(metaDataDb);
                 } else {
                     db = offlineDb;
-                    offlineMarkerDbService.init(offlineDb);
                     offlineAddressHierarchyDbService.init(offlineDb);
                     offlineSearchDbService.init(offlineDb);
                 }
@@ -146,11 +145,13 @@ angular.module('bahmni.common.offline')
             };
 
             var getMarker = function (markerName) {
-                return offlineMarkerDbService.getMarker(markerName);
+                var database = markerName == "offline-concepts" ? metaDataDb : db;
+                return offlineMarkerDbService.getMarker(database, markerName);
             };
 
             var insertMarker = function (markerName, eventUuid, filters) {
-                return offlineMarkerDbService.insertMarker(markerName, eventUuid, filters);
+                var database = markerName == "offline-concepts" ? metaDataDb : db;
+                return offlineMarkerDbService.insertMarker(database, markerName, eventUuid, filters);
             };
 
             var insertAddressHierarchy = function (data) {
