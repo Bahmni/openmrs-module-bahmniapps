@@ -62,7 +62,6 @@ describe('offlineSearchDbService', function () {
                     });
                 });
             });
-
         });
     };
 

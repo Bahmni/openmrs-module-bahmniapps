@@ -36,6 +36,9 @@ angular.module('bahmni.common.offline')
                         var referenceData = requests[index][1];
                         return offlineDbService.getReferenceData(referenceData).then(function (result) {
                             var requestUrl = Bahmni.Common.Constants.hostURL + url;
+                            if (result && Bahmni.Common.Constants.authenticatedReferenceDataMap[url] == "PersonAttributeType") {
+                                result.etag = undefined;
+                            }
                             var req = {
                                 method: 'GET',
                                 url: requestUrl,
