@@ -453,5 +453,26 @@ Bahmni.Common.Offline.MetaDataSchemaDefinitions = {
         ],
         nullableColumns: [],
         primaryKeyColumns: ['uuid']
+    },
+    EventLogMarker: {
+        tableName: 'event_log_marker',
+        columns: [
+            {
+                name: 'markerName',
+                type: 'STRING'
+            },
+            {
+                name: 'lastReadEventUuid',
+                type: 'STRING'
+            }, {
+                name: 'filters',
+                type: 'STRING'
+            }, {
+                name: 'lastReadTime',
+                type: 'DATE_TIME'
+            }
+        ],
+        nullableColumns: ['filters', 'lastReadEventUuid'],
+        primaryKeyColumns: ['markerName']
     }
 };

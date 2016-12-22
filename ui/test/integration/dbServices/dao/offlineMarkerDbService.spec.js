@@ -18,9 +18,8 @@ describe('offlineMarkerDbService tests', function () {
 
         var markerName = "Transactional";
         schemaBuilder.connect().then(function(db){
-            offlineMarkerDbService.init(db);
-            offlineMarkerDbService.insertMarker(markerName, "lastReadEventUuid", [20202020]).then(function(){
-                offlineMarkerDbService.getMarker(markerName).then(function(result) {
+            offlineMarkerDbService.insertMarker(db,markerName, "lastReadEventUuid", [20202020]).then(function(){
+                offlineMarkerDbService.getMarker(db,markerName).then(function(result) {
                     expect(result.markerName).toBe(markerName);
                     expect(result.lastReadEventUuid).toBe("lastReadEventUuid");
                     expect(result.filters.length).toBe(1);
@@ -39,8 +38,7 @@ describe('offlineMarkerDbService tests', function () {
 
         var markerName = "Transactional";
         schemaBuilder.connect().then(function(db){
-            offlineMarkerDbService.init(db);
-            offlineMarkerDbService.insertMarker(markerName, "lastReadEventUuid", [20202020]).then(function(result){
+            offlineMarkerDbService.insertMarker(db,markerName, "lastReadEventUuid", [20202020]).then(function(result){
                 expect(result).not.toBeUndefined();
                 expect(result.markerName).toBe(markerName);
                 expect(result.lastReadEventUuid).toBe("lastReadEventUuid");
@@ -59,9 +57,8 @@ describe('offlineMarkerDbService tests', function () {
 
         var markerName = "Transactional";
         schemaBuilder.connect().then(function(db){
-            offlineMarkerDbService.init(db);
-            offlineMarkerDbService.insertMarker(markerName, "lastReadEventUuid", []).then(function(){
-                offlineMarkerDbService.getMarker(markerName).then(function(result) {
+            offlineMarkerDbService.insertMarker(db,markerName, "lastReadEventUuid", []).then(function(){
+                offlineMarkerDbService.getMarker(db,markerName).then(function(result) {
                     expect(result.markerName).toBe(markerName);
                     expect(result.lastReadEventUuid).toBe("lastReadEventUuid");
                     expect(result.filters.length).toBe(0);

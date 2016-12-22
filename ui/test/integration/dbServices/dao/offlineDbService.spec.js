@@ -58,7 +58,6 @@ describe('OfflineDbService ', function () {
         var schemaBuilder = lf.schema.create('BahmniOfflineDb', 1);
         schemaBuilder.connect().then(function (db) {
             offlineDbService.init(db);
-            expect(offlineMarkerDbService.init).toHaveBeenCalledWith(db);
             expect(offlineAddressHierarchyDbService.init).toHaveBeenCalledWith(db);
             expect(offlineSearchDbService.init).toHaveBeenCalledWith(db);
             done();
@@ -815,24 +814,76 @@ describe('OfflineDbService ', function () {
 
 
     describe("offlineMarkerDbService", function () {
-        it("should call getMarker with given markerName", function () {
-            offlineDbService.getMarker("markerName");
-            expect(offlineMarkerDbService.getMarker.calls.count()).toBe(1);
-            expect(offlineMarkerDbService.getMarker).toHaveBeenCalledWith("markerName");
+        it("should call getMarker with location specific db when markerName is not offline-concepts", function (done) {
+            var metaDataSchemaBuilder = lf.schema.create(Bahmni.Common.Constants.bahmniConnectMetaDataDb, 1);
+            var schemaBuilder = lf.schema.create('BahmniOfflineDb', 1);
+            var locationDb;
+            schemaBuilder.connect().then(function (db) {
+                locationDb = db;
+                offlineDbService.init(db);
+                metaDataSchemaBuilder.connect().then(function (metaDataDb) {
+                    offlineDbService.init(metaDataDb);
+                    offlineDbService.getMarker("markerName");
+                    expect(offlineMarkerDbService.getMarker.calls.count()).toBe(1);
+                    expect(offlineMarkerDbService.getMarker).toHaveBeenCalledWith(locationDb,"markerName");
+                    metaDataDb.close();
+                    locationDb.close();
+                    done();
+                });
+            });
         });
 
-        it("should call insertMarker with given markerName when filters is not empty", function () {
+        it("should call getMarker with metadata db when markerName is offline-concepts ", function (done) {
+            var metaDataSchemaBuilder = lf.schema.create(Bahmni.Common.Constants.bahmniConnectMetaDataDb, 1);
+            var schemaBuilder = lf.schema.create('BahmniOfflineDb', 1);
+            schemaBuilder.connect().then(function (db) {
+                offlineDbService.init(db);
+                metaDataSchemaBuilder.connect().then(function (metaDataDb) {
+                    offlineDbService.init(metaDataDb);
+                    offlineDbService.getMarker("offline-concepts");
+                    expect(offlineMarkerDbService.getMarker.calls.count()).toBe(1);
+                    expect(offlineMarkerDbService.getMarker).toHaveBeenCalledWith(metaDataDb,"offline-concepts");
+                    metaDataDb.close();
+                    done();
+                });
+            });
+        });
+
+        it("should call insertMarker with location specific db when markerName is not offline-concepts", function (done) {
+            var metaDataSchemaBuilder = lf.schema.create(Bahmni.Common.Constants.bahmniConnectMetaDataDb, 1);
+            var schemaBuilder = lf.schema.create('BahmniOfflineDb', 1);
             var filters = [202020,20202001];
-            offlineDbService.insertMarker("markerName", "eventUuid", filters);
-            expect(offlineMarkerDbService.insertMarker.calls.count()).toBe(1);
-            expect(offlineMarkerDbService.insertMarker).toHaveBeenCalledWith("markerName", "eventUuid", filters);
+            var locationDb;
+            schemaBuilder.connect().then(function (db) {
+                locationDb = db;
+                offlineDbService.init(db);
+                metaDataSchemaBuilder.connect().then(function (metaDataDb) {
+                    offlineDbService.init(metaDataDb);
+                    offlineDbService.insertMarker("markerName", "eventUuid", filters);
+                    expect(offlineMarkerDbService.insertMarker.calls.count()).toBe(1);
+                    expect(offlineMarkerDbService.insertMarker).toHaveBeenCalledWith(locationDb,"markerName", "eventUuid", filters);
+                    metaDataDb.close();
+                    done();
+                });
+            });
+
         });
 
-        it("should call insertMarker with given markerName when filters is empty", function () {
+        it("should call insertMarker with metadata db when markerName is offline-concepts", function (done) {
             var filters = [];
-            offlineDbService.insertMarker("markerName", "eventUuid", filters);
-            expect(offlineMarkerDbService.insertMarker.calls.count()).toBe(1);
-            expect(offlineMarkerDbService.insertMarker).toHaveBeenCalledWith("markerName", "eventUuid", filters);
+            var metaDataSchemaBuilder = lf.schema.create(Bahmni.Common.Constants.bahmniConnectMetaDataDb, 1);
+            var schemaBuilder = lf.schema.create('BahmniOfflineDb', 1);
+            schemaBuilder.connect().then(function (db) {
+                offlineDbService.init(db);
+                metaDataSchemaBuilder.connect().then(function (metaDataDb) {
+                    offlineDbService.init(metaDataDb);
+                    offlineDbService.insertMarker("offline-concepts", "eventUuid", filters);
+                    expect(offlineMarkerDbService.insertMarker.calls.count()).toBe(1);
+                    expect(offlineMarkerDbService.insertMarker).toHaveBeenCalledWith(metaDataDb, "offline-concepts", "eventUuid", filters);
+                    metaDataDb.close();
+                    done();
+                });
+            });
         });
     });
 
