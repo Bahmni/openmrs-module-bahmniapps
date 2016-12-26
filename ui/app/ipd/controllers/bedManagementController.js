@@ -1,19 +1,16 @@
 'use strict';
 
 angular.module('bahmni.ipd')
-    .controller('BedManagementController', [
-        '$scope', '$rootScope', '$stateParams', '$state', 'spinner', 'WardService', 'backlinkService', 'patientService', 'configurations', '$translate',
-        function ($scope, $rootScope, $stateParams, $state, spinner, wardService, backlinkService, patientService, configurations, $translate) {
+    .controller('BedManagementController', ['$scope', '$rootScope', '$stateParams', '$state', 'spinner', 'WardService', 'BedManagementService',
+        function ($scope, $rootScope, $stateParams, $state, spinner, wardService, bedManagementService) {
             $scope.wards = null;
             $scope.patientUuid = $stateParams.patientUuid;
             $scope.visitUuid = $stateParams.visitUuid;
-            $scope.state = $state.current.name;
+            $scope.encounterConfig = $rootScope.encounterConfig;
 
             var init = function () {
-                if ($scope.state == "bedManagement") {
+                if ($state.current.name == "bedManagement") {
                     $scope.patient = undefined;
-                } else if ($scope.patientUuid) {
-                    assignPatientDetails();
                 }
                 loadAllWards().then(function () {
                     if ($rootScope.bedDetails) {
@@ -31,14 +28,6 @@ angular.module('bahmni.ipd')
                 }));
             };
 
-            var assignPatientDetails = function () {
-                var patientMapper = new Bahmni.PatientMapper(configurations.patientConfig(), $rootScope, $translate);
-                return patientService.getPatient($scope.patientUuid).then(function (response) {
-                    var openMrsPatient = response.data;
-                    $scope.patient = patientMapper.map(openMrsPatient);
-                });
-            };
-
             var mapRoomInfo = function (roomsInfo) {
                 var mappedRooms = [];
                 _.forIn(roomsInfo, function (value, key) {
@@ -54,8 +43,10 @@ angular.module('bahmni.ipd')
                     var wardDetails = _.filter($scope.wards, function (entry) {
                         return entry.ward.uuid == department.uuid;
                     });
-
                     var rooms = mapRoomInfo(_.groupBy(response.bedLayouts, 'location'));
+                    _.each(rooms, function (room) {
+                        room.beds = bedManagementService.createLayoutGrid(room.beds);
+                    });
                     $scope.ward = {
                         rooms: rooms,
                         uuid: department.uuid,
@@ -69,11 +60,11 @@ angular.module('bahmni.ipd')
                 }));
             };
 
-            $scope.isDepartmentSelected = function () {
-                return $scope.departmentSelected;
-            };
-
             $scope.$on("event:bedSelected", function (event, bed) {
+                $scope.bed = bed;
+            });
+
+            $scope.$on("event:availableBedSelected", function (event, bed) {
                 $scope.bed = bed;
             });
 

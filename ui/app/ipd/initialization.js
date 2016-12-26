@@ -21,11 +21,16 @@ angular.module('bahmni.ipd').factory('initialization', ['$rootScope', '$q', 'app
                 var config = data.getConfig("onAdmissionForwardTo", false);
                 data.baseConfigs.dashboard.value.sections = _.sortBy(data.baseConfigs.dashboard.value.sections, function (section) {
                     return section.displayOrder;
-                }
-                );
-                data.baseConfigs.isBedManagementEnabled = {name: 'isBedManagementEnabled', value: _.includes(config[0].value, 'bed')};
+                });
+                data.baseConfigs.isBedManagementEnabled = {
+                    name: 'isBedManagementEnabled',
+                    value: _.includes(config[0].value, 'bed')
+                };
                 if (config[1]) {
-                    data.customConfigs.isBedManagementEnabled = {name: 'isBedManagementEnabled', value: _.includes(config[1].value, 'bed')};
+                    data.customConfigs.isBedManagementEnabled = {
+                        name: 'isBedManagementEnabled',
+                        value: _.includes(config[1].value, 'bed')
+                    };
                 }
             });
         };

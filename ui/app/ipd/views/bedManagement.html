@@ -23,30 +23,7 @@
 
             </div>
         </div>
-        <div id="ipd-action">
-            <form>
-                <div id="observations">
-                    <div>
-                        <label>Admitted By</label>
-                        <input type="text" readonly/>
-                    </div>
-                    <div>
-                        <label>Admitted On</label>
-                        <input type="date" readonly/>
-                    </div>
-                    <div>
-                        <label>Expected Date Of Discharge</label>
-                        <input type="date" readonly/>
-                    </div>
-
-                </div>
-                <div class="clearfix">
-                    <input class="secondary-button" id="adtButton" type="submit" name="admit" value="Admit"/>
-                    <input class="secondary-button" id="adtButton" type="submit" name="transfer" value="Transfer"/>
-                    <input class="secondary-button" id="adtButton" type="submit" name="discharge" value="Discharge"/>
-                </div>
-            </form>
-        </div>
+        <adt patient="patient" encounterConfig="encounterConfig" bed="bed"></adt>
         <div id="bedDetails">
             <div>
                 <label>Department</label>
@@ -70,8 +47,9 @@
     <div id="right-pane">
         <div class="clearfix">
             <label>Admission Master</label>
-            <button ng-repeat="option in wards" ng-click="onSelectDepartment(option.ward)">{{ option.ward.name }}</button>
+            <button ng-repeat="option in wards"
+                    ng-click="onSelectDepartment(option.ward)">{{ option.ward.name }}</button>
         </div>
-        <ward ward="ward" ng-if="isDepartmentSelected()"></ward>
+        <ward ward="ward" ng-if="departmentSelected"></ward>
     </div>
 </div>

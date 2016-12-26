@@ -24,13 +24,14 @@
                         </div>
                         <button ng-switch-default="" type="submit" class="right admit_btn"
                                 single-click="call(extn.extensionParams.action)">
-                            {{getDisplay(extn.extensionParams.displayFunction, extn.extensionParams.display)}}
+                            {{ getDisplay(extn.extensionParams.displayFunction, extn.extensionParams.display) }}
                         </button>
                     </span>
                 </span>
             </div>
         </div>
     </div>
-    <dashboard patient="patient" config="dashboardConfig" section-groups="sectionGroups" active-visit-uuid="visitSummary.uuid" visit-summary="visitSummary"></dashboard>
+    <dashboard patient="patient" config="dashboardConfig" section-groups="sectionGroups"
+               active-visit-uuid="visitSummary.uuid" visit-summary="visitSummary"></dashboard>
 </div>
 

@@ -51,6 +51,7 @@ module.exports = function (config) {
             'app/common/**/*.html',
             'app/admin/**/*.js',
             'app/adt/**/*.js',
+            'app/ipd/**/*.js',
             'app/clinical/**/*.js',
             'app/document-upload/**/*.js',
             'app/home/**/*.js',

@@ -1,0 +1,24 @@
+<div id="ipd-action">
+    <form>
+        <div id="observations">
+            <div>
+                <label>Admitted By</label>
+                <input type="text" readonly/>
+            </div>
+            <div>
+                <label>Admitted On</label>
+                <input type="date" readonly/>
+            </div>
+            <div>
+                <label>Expected Date Of Discharge</label>
+                <input type="date" readonly/>
+            </div>
+
+        </div>
+        <div class="clearfix">
+            <button ng-click="admit()">Admit</button>
+            <button ng-click="transfer()">Transfer</button>
+            <button ng-click="discharge()">Discharge</button>
+        </div>
+    </form>
+</div>

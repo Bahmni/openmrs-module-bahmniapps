@@ -1,32 +1,12 @@
-<!--
-<div class="bed" ng-class="{'highlight-bed': bed.bedNumber===selectedBed.bedNumber}" ng-repeat="bed in room.beds">
-    <div class="bed-number">{{ bed.bedNumber }}</div>
-    <div class="patient-info" ng-if="bed.status == 'OCCUPIED'">
-        <span class="patient-name">Patient Name</span>
-        32Yrs Id:12345
-    </div>
-    <div class="tagging">
-        <ul>
-            <li ng-repeat="tag in bed.tags">{{ tag }}</li>
-        </ul>
-    </div>
-</div>
--->
-
-
 <div ng-repeat="row in room.beds" class="clearfix">
     <div ng-repeat="cell in row">
-        <div ng-if="!cell.bed.bedId" class="bed"></div>
-        <div ng-if="cell.bed.bedId" class="bed cell" ng-class="{'highlight-bed': cell.bed.bedNumber===selectedBed.bedNumber}" ng-click="onSelectAvailableBed(cell.bed)">
-            <div class="bed-number">{{ cell.bed.bedNumber }}</div>
-            <div class="patient-info" ng-if="cell.bed.status == 'OCCUPIED'">
-                <span class="patient-name">Patient Name</span>
-                32Yrs Id:12345
+        <div class="bed {{ cell.bed.status }}" ng-class="{'highlight-bed': cell.bed.bedNumber===selectedBed.bedNumber}"
+             ng-click="onSelectBed(cell.bed)">
+            <div class="bed-space">
+
             </div>
-            <div class="tagging">
-                <ul>
-                    <li ng-repeat="tag in cell.bed.bedTags">{{ tag }}</li>
-                </ul>
+            <div class="bed-details" ng-if="cell.bed.bedId">
+                {{ cell.bed.bedNumber }}
             </div>
         </div>
     </div>

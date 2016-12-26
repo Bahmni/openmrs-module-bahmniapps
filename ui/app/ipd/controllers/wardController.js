@@ -14,8 +14,6 @@ angular.module('bahmni.ipd')
                     return room.name == roomName;
                 });
                 $scope.room = admissionRoom[0];
-                var layoutGridBeds = bedManagementService.createLayoutGrid($scope.room.beds);
-                $scope.room.beds = layoutGridBeds;
                 $scope.$emit("event:roomSelected", roomName);
                 $scope.roomSelected = true;
             };
@@ -24,8 +22,5 @@ angular.module('bahmni.ipd')
                 $scope.roomSelected = false;
             });
 
-            $scope.isRoomSelected = function () {
-                return $scope.roomSelected;
-            };
             init();
         }]);
