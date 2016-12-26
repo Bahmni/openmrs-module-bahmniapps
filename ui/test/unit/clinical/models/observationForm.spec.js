@@ -6,7 +6,7 @@ describe("ObservationForm", function () {
     describe('init', function () {
 
         it("should have isOpen set to false if there are no obs recorded", function () {
-            var observationForm = new ObservationForm('uuid', 'name', []);
+            var observationForm = new ObservationForm('uuid', 'formName', '1', []);
             expect(observationForm.isOpen).toBe(false);
         });
 
@@ -17,29 +17,30 @@ describe("ObservationForm", function () {
                     concept:{
                         name:"Pulse"
                     },
-                    formNamespace: "uuid/101"
+                    formFieldPath: "formName.1/101"
                 }];
-            var observationForm = new ObservationForm('uuid', 'name', observations);
+            var observationForm = new ObservationForm('uuid', 'formName', '1', observations);
             expect(observationForm.isOpen).toBe(true);
         });
 
-        it("should have set formUuid and formName", function () {
-            var observationForm = new ObservationForm('uuid', 'name');
+        it("should have set formUuid and formName and version", function () {
+            var observationForm = new ObservationForm('uuid', 'name', '1');
             expect(observationForm.formName).toBe('name');
             expect(observationForm.formUuid).toBe('uuid');
+            expect(observationForm.formVersion).toBe('1');
         });
     });
 
     describe('toggleDisplay', function () {
         it("should set isOpen as true first time", function () {
-            var observationForm = new ObservationForm('uuid', 'name');
+            var observationForm = new ObservationForm('uuid', 'name', '1');
             expect(observationForm.isOpen).toBe(false);
             observationForm.toggleDisplay();
             expect(observationForm.isOpen).toBe(true);
         });
 
         it("set isOpen as false when it was previously open", function () {
-            var observationForm = new ObservationForm('uuid', 'name');
+            var observationForm = new ObservationForm('uuid', 'name', '1');
             observationForm.toggleDisplay();
             expect(observationForm.isOpen).toBe(true);
             observationForm.toggleDisplay();

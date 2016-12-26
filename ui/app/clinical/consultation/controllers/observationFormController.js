@@ -5,7 +5,7 @@ angular.module('bahmni.clinical')
         function ($scope, observationFormService, spinner) {
             var init = function () {
                 if (!($scope.consultation.observationForms !== undefined && $scope.consultation.observationForms.length > 0)) {
-                    spinner.forPromise(observationFormService.getFormList({v: "custom:(uuid,name)"})
+                    spinner.forPromise(observationFormService.getFormList({v: "custom:(uuid,name,version)"})
                         .then(function (response) {
                             $scope.consultation.observationForms = getObservationForms(response.data.results);
                         }));
@@ -20,7 +20,8 @@ angular.module('bahmni.clinical')
                 _.each(observationsForms, function (observationForm) {
                     var formUuid = observationForm.formUuid || observationForm.uuid;
                     var formName = observationForm.name || observationForm.formName;
-                    forms.push(new Bahmni.ObservationForm(formUuid, formName, observations));
+                    var formVersion = observationForm.version || observationForm.formVersion;
+                    forms.push(new Bahmni.ObservationForm(formUuid, formName, formVersion, observations));
                 });
                 return forms;
             };
