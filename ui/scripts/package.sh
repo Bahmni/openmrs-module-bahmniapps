@@ -26,13 +26,5 @@ echo "Starting Xvfb process $XVFB_PID"
 grunt
 cd $ROOT_DIR/dist && zip -r ../target/${ZIP_FILE_NAME}.zip *
 
-cd ..
-grunt chrome
-cd $ROOT_DIR/dist && zip -r ../target/${ZIP_FILE_NAME}_chrome.zip *
-
-cd ..
-grunt android
-cd $ROOT_DIR/dist && zip -r ../target/${ZIP_FILE_NAME}_android.zip *
-
 echo "Killing Xvfb process $XVFB_PID"
 kill $XVFB_PID
