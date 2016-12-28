@@ -33,24 +33,24 @@ angular.module('bahmni.home')
             _.forEach(policies, function (value, key) {
                 switch (key) {
                 case "security.passwordCannotMatchUsername" :
-                    value == "true" ? $scope.passwordPolicies.splice(0,0,'PASSWORD_SHOULD_NOT_MATCH_USER_NAME') : '';
+                    value == "true" ? $scope.passwordPolicies.splice(0, 0, 'PASSWORD_SHOULD_NOT_MATCH_USER_NAME') : '';
                     break;
                 case "security.passwordMinimumLength" :
                     $scope.passwordLength = value;
-                    $scope.passwordPolicies.splice(1,0,'PASSWORD_SHOULD_BE_MINIMUM_CHARACTERS');
+                    $scope.passwordPolicies.splice(1, 0, 'PASSWORD_SHOULD_BE_MINIMUM_CHARACTERS');
                     break;
                 case "security.passwordRequiresUpperAndLowerCase":
                     value == "true" ? $scope.passwordPolicies.splice(2, 0, 'PASSWORD_SHOULD_BE_A_MIX_OF_BOTH_UPPER_CASE_AND_LOWER_CASE') : '';
                     break;
                 case "security.passwordRequiresDigit" :
-                    value == "true" ? $scope.passwordPolicies.splice(3,0,'PASSWORD_SHOULD_CONTAIN_DIGITS') : '';
+                    value == "true" ? $scope.passwordPolicies.splice(3, 0, 'PASSWORD_SHOULD_CONTAIN_DIGITS') : '';
                     break;
                 case "security.passwordRequiresNonDigit" :
-                    value == "true" ? $scope.passwordPolicies.splice(4,0,'PASSWORD_SHOULD_HAVE_ATLEAST_ONE_NON_DIGIT') : '';
+                    value == "true" ? $scope.passwordPolicies.splice(4, 0, 'PASSWORD_SHOULD_HAVE_ATLEAST_ONE_NON_DIGIT') : '';
                     break;
                 case "security.passwordCustomRegex":
                     if (!_.isEmpty(value)) {
-                        $scope.passwordPolicies.splice(5,0,'PASSWORD_SHOULD_MATCH_THE_REGEX');
+                        $scope.passwordPolicies.splice(5, 0, 'PASSWORD_SHOULD_MATCH_THE_REGEX');
                         $scope.passwordRegex = value;
                     }
                 }
