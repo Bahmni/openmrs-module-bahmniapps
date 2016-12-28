@@ -36,16 +36,21 @@ angular.module('ipd').config(['$stateProvider', '$httpProvider', '$urlRouterProv
                         }
                     },
                     'additional-header': {
-                        templateUrl: 'views/headerAdt.html'
+                        templateUrl: ' views/header.html',
+                        controller: 'HeaderController'
                     }
                 },
                 resolve: {
                     initialization: 'initialization'
                 }
-            }).state('bedManagement', {
+            })
+            .state('bedManagement', {
                 url: '/bedManagement',
                 data: {
                     backLinks: backLinks
+                },
+                params: {
+                    dashboardCachebuster: null
                 },
                 views: {
                     'content': {
@@ -53,22 +58,48 @@ angular.module('ipd').config(['$stateProvider', '$httpProvider', '$urlRouterProv
                         controller: 'BedManagementController'
                     },
                     'additional-header': {
-                        templateUrl: 'views/headerAdt.html'
+                        templateUrl: 'views/header.html',
+                        controller: 'HeaderController'
                     }
                 },
                 resolve: {
-                    initialization: 'initialization'
+                    initialization: 'initialization',
+                    init: function ($rootScope) {
+                        $rootScope.patient = undefined;
+                        $rootScope.bedDetails = undefined;
+                    }
                 }
-            }).state('bedManagement.patientAdmit', {
+            })
+            .state('bedManagement.bed', {
+                url: '/bed/:bedId',
+                templateUrl: 'views/bedManagement.html',
+                controller: 'BedManagementController',
+                params: {
+                    dashboardCachebuster: null
+                },
+                resolve: {
+                    bedResolution: function ($stateParams, bedInitialization, patientInitialization) {
+                        return bedInitialization($stateParams.bedId).then(function (response) {
+                            if (response.patients.length) {
+                                return patientInitialization(response.patients[0].uuid);
+                            }
+                        });
+                    }
+                }
+            })
+            .state('bedManagement.patientAdmit', {
                 url: '/patient/:patientUuid/visit/:visitUuid/admit',
                 templateUrl: 'views/bedManagement.html',
                 controller: 'BedManagementController',
                 resolve: {
-                    patientResolution: function ($stateParams, patientInitialization) {
-                        return patientInitialization($stateParams.patientUuid);
+                    patientResolution: function ($stateParams, bedInitialization, patientInitialization) {
+                        return patientInitialization($stateParams.patientUuid).then(function () {
+                            return bedInitialization(undefined, $stateParams.patientUuid);
+                        });
                     }
                 }
-            }).state('bedManagement.patientTransfer', {
+            })
+            .state('bedManagement.patientTransfer', {
                 url: '/patient/:patientUuid/visit/:visitUuid/transfer',
                 templateUrl: 'views/bedManagement.html',
                 controller: 'BedManagementController',
@@ -78,7 +109,8 @@ angular.module('ipd').config(['$stateProvider', '$httpProvider', '$urlRouterProv
                     },
                     initialization: 'initialization'
                 }
-            }).state('patient', {
+            })
+            .state('patient', {
                 url: '/patient/:patientUuid',
                 data: {
                     backLinks: [homeBackLink, adtHomeBackLink]
@@ -86,7 +118,7 @@ angular.module('ipd').config(['$stateProvider', '$httpProvider', '$urlRouterProv
                 abstract: true,
                 views: {
                     'header': {
-                        templateUrl: 'views/headerAdt.html',
+                        templateUrl: 'views/header.html',
                         controller: function ($scope) {
                             $scope.showClinicalDashboardLink = true;
                         }

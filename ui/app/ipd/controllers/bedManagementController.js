@@ -9,9 +9,6 @@ angular.module('bahmni.ipd')
             $scope.encounterConfig = $rootScope.encounterConfig;
 
             var init = function () {
-                if ($state.current.name == "bedManagement") {
-                    $scope.patient = undefined;
-                }
                 loadAllWards().then(function () {
                     if ($rootScope.bedDetails) {
                         $scope.onSelectDepartment({
@@ -56,20 +53,28 @@ angular.module('bahmni.ipd')
                     };
                     $scope.departmentSelected = true;
                     $scope.$broadcast("event:departmentChanged");
-                    $scope.roomName = undefined;
+                    resetPatientAndBedInfo();
                 }));
+            };
+
+            var resetPatientAndBedInfo = function () {
+                if ($state.current.name == "bedManagement.bed") {
+                    $rootScope.patient = undefined;
+                }
+                $scope.roomName = undefined;
+                $scope.bed = undefined;
             };
 
             $scope.$on("event:bedSelected", function (event, bed) {
                 $scope.bed = bed;
             });
 
-            $scope.$on("event:availableBedSelected", function (event, bed) {
-                $scope.bed = bed;
-            });
-
             $scope.$on("event:roomSelected", function (event, roomName) {
                 $scope.roomName = roomName;
+                $scope.bed = undefined;
+                if ($state.current.name == "bedManagement.bed") {
+                    $rootScope.patient = undefined;
+                }
             });
 
             init();

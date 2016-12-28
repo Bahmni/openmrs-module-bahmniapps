@@ -13,11 +13,7 @@ angular.module('bahmni.ipd').factory('patientInitialization', ['$rootScope', '$q
                 return patientPromise.promise;
             };
 
-            var bedDetailsForPatient = function () {
-                return bedService.setBedDetailsForPatientOnRootScope(patientUuid);
-            };
-
-            return spinner.forPromise(initialization.then(getPatient).then(bedDetailsForPatient));
+            return spinner.forPromise(initialization.then(getPatient));
         };
     }
 ]);

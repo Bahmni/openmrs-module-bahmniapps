@@ -16,9 +16,9 @@
 
         </div>
         <div class="clearfix">
-            <button ng-click="admit()">Admit</button>
-            <button ng-click="transfer()">Transfer</button>
-            <button ng-click="discharge()">Discharge</button>
+            <button ng-click="admit()" ng-disabled="disableAdmitButton()">Admit</button>
+            <button ng-click="transfer()" ng-disabled="disableTransferAndDischargeButton()">Transfer</button>
+            <button ng-click="discharge()" ng-disabled="disableTransferAndDischargeButton()">Discharge</button>
         </div>
     </form>
 </div>

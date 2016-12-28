@@ -5,8 +5,9 @@ describe('RoomController', function () {
     var controller;
     var rootScope;
     var scope;
-    var state = {};
     var messagingService = jasmine.createSpyObj('messagingService', ['showMessage']);
+    var appService = jasmine.createSpyObj('appService', ['getAppDescriptor']);
+    var state = jasmine.createSpyObj('$state',['go']);
     var room = {
         "name": "ROOM1",
         "beds": [
@@ -63,6 +64,10 @@ describe('RoomController', function () {
         "availableBeds": 1
     };
 
+    appService.getAppDescriptor.and.returnValue({
+        formatUrl: function(){
+        }
+    });
     beforeEach(function () {
         module('bahmni.ipd');
     });
@@ -85,7 +90,8 @@ describe('RoomController', function () {
             $scope: scope,
             $rootScope: rootScope,
             $state: state,
-            messagingService: messagingService
+            messagingService: messagingService,
+            appService: appService
         });
 
     });
@@ -123,9 +129,39 @@ describe('RoomController', function () {
             bedTags: [],
             status: "AVAILABLE"
         };
-        state.current = {name: "bedManagement"};
+        state.current = {name: "bedManagement.patientAdmit"};
         scope.onSelectBed(bed);
         expect(scope.$emit).toHaveBeenCalledWith("event:bedSelected", bed);
+    });
+
+    it('Should reset patient on rootScope on selecting AVAILABLE bed and go to bedManagement.bed state ', function () {
+        var bed = {
+            bedId: 9,
+            bedNumber: "404-i",
+            bedType: "normal bed",
+            bedTags: [],
+            status: "AVAILABLE"
+        };
+        rootScope.patient = {name: "patientName", uuid: "patientUuid"};
+        state.current = {name: "bedManagement"};
+        scope.onSelectBed(bed);
+        expect(rootScope.patient).toBeUndefined();
+        expect(state.go).toHaveBeenCalledWith("bedManagement.bed", jasmine.any(Object));
+    });
+
+    it('Should not reset patient on rootScope on selecting AVAILABLE bed and go to bedManagement.bed state ', function () {
+        var bed = {
+            bedId: 9,
+            bedNumber: "404-i",
+            bedType: "normal bed",
+            bedTags: [],
+            status: "OCCUPIED"
+        };
+        rootScope.patient = {name: "patientName", uuid: "patientUuid"}
+        state.current = {name: "bedManagement"};
+        scope.onSelectBed(bed);
+        expect(rootScope.patient).not.toBeUndefined();
+        expect(state.go).toHaveBeenCalledWith("bedManagement.bed", jasmine.any(Object));
     });
 
 });

@@ -18,26 +18,20 @@ angular.module('bahmni.ipd')
                 }
             };
 
-            // $scope.isBedOccupied = function (bed) {
-            //     return bed.status == "OCCUPIED";
-            // };
-
-            // $scope.onSelectAvailableBed = function (bed) {
-            //     $scope.$emit("event:availableBedSelected", bed);
-            // };
-            //
-            // $scope.onSelectOccupiedBed = function (bed) {
-            //     if ($state.current.name == "bedManagement.patientAdmit") {
-            //         messagingService.showMessage("error", "Please select an available bed");
-            //     } else {
-            //         $scope.$emit("event:bedSelected", bed);
-            //     }
-            // };
-
             $scope.onSelectBed = function (bed) {
+                if ($state.current.name == "bedManagement.bed" || $state.current.name == "bedManagement") {
+                    if (bed.status == "AVAILABLE") {
+                        $rootScope.patient = undefined;
+                    }
+                    var options = {bedId: bed.bedId};
+                    $state.go("bedManagement.bed", options);
+                }
                 if ($state.current.name == "bedManagement.patientAdmit" && bed.status == "OCCUPIED") {
+                    $scope.selectedBed = undefined;
+                    $scope.$emit("event:bedSelected", undefined);
                     messagingService.showMessage("error", "Please select an available bed");
                 } else {
+                    $scope.selectedBed = bed;
                     $scope.$emit("event:bedSelected", bed);
                 }
             };

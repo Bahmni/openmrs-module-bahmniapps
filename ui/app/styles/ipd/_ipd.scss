@@ -154,18 +154,18 @@ div[ng-app="adt"] {
 
 .bed {
     width: 110px;
-    height: 60px;
+    height: 50px;
     border-radius: 7px;
     float: left;
-    margin: 20px;
+    margin: 10px;
     box-sizing: border-box;
     position: relative;
 }
 
 .bed-space {
     width: 10px;
-    height: 40px;
-    margin: 10px;
+    height: 36px;
+    margin: 7px;
     border-radius: 10px;
     display: inline-block;
     float: left;
@@ -174,7 +174,7 @@ div[ng-app="adt"] {
 
 .bed-details {
     display: inline-block;
-    margin: 20px 10px;
+    margin: 16px 10px;
 }
 
 .OCCUPIED {
