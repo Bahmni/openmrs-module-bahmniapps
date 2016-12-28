@@ -5,9 +5,9 @@ angular.module('bahmni.clinical')
         function ($scope, observationFormService, spinner) {
             var init = function () {
                 if (!($scope.consultation.observationForms !== undefined && $scope.consultation.observationForms.length > 0)) {
-                    spinner.forPromise(observationFormService.getFormList({v: "custom:(uuid,name,version)"})
+                    spinner.forPromise(observationFormService.getFormList($scope.consultation.encounterUuid)
                         .then(function (response) {
-                            $scope.consultation.observationForms = getObservationForms(response.data.results);
+                            $scope.consultation.observationForms = getObservationForms(response.data);
                         }));
                 } else {
                     $scope.consultation.observationForms = getObservationForms($scope.consultation.observationForms);

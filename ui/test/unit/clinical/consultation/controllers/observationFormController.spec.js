@@ -53,12 +53,10 @@ describe('ObservationFormController', function () {
         });
 
         it("should load the forms", function () {
-            mockObservationFormService({
-                results: [
+            mockObservationFormService([
                     { name: 'form1', uuid: 'uuid1' },
                     { name: 'form2', uuid: 'uuid2' }
-                ]
-            });
+                ]);
             createController();
 
             expect(scope.consultation.observationForms.length).toEqual(2);

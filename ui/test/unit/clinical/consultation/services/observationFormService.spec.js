@@ -19,11 +19,11 @@ describe('observationFormService', function () {
         var response = { data: { results: [{ name: 'form1' }] } };
         http.get.and.returnValue(response);
 
-        var httpPromise = this.observationFormService.getFormList({ v: "custom:(uuid,name)" });
+        var httpPromise = this.observationFormService.getFormList("encounterUuid");
 
         expect(httpPromise).toEqual(response);
-        expect(http.get).toHaveBeenCalledWith("/openmrs/ws/rest/v1/form", {
-            params: { v: "custom:(uuid,name)" }
+        expect(http.get).toHaveBeenCalledWith("/openmrs/ws/rest/v1/bahmniIE/latestPublishedForms", {
+            params: { encounterUuid: "encounterUuid" }
         });
     });
 
