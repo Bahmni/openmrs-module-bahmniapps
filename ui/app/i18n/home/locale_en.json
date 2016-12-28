@@ -21,5 +21,18 @@
     "LOGIN_LABEL_OTP_EXPIRED" : "Your OTP is expired. Please login again.",
     "LOGIN_LABEL_RESEND_OTP" : "Resend OTP",
     "LOGIN_LABEL_RESEND_SUCCESS" : "New OTP has been sent to your Registered number.",
-    "LOGIN_LABEL_MAX_RESEND_ATTEMPTS" : "Number of OTP resend attempts exceeded. Please login again."
+    "LOGIN_LABEL_MAX_RESEND_ATTEMPTS" : "Number of OTP resend attempts exceeded. Please login again.",
+    "CHANGE_PASSWORD": "Change Password",
+    "CANCEL": "Cancel",
+    "NEW_PASSWORD": "New Password",
+    "CONFIRM_PASSWORD": "Confirm Password",
+    "PASSWORD_DOESNOT_MATCH_WITH_NEW_PASSWORD": "Confirm Password doesn't match with new password.",
+    "ENTER_NEW_PASSWORD": "Enter new password",
+    "PASSWORD_SHOULD_BE_MINIMUM_CHARACTERS": "Password should be minimum characters of length ",
+    "PASSWORD_SHOULD_CONTAIN_DIGITS": "Password should contain at least one number",
+    "PASSWORD_SHOULD_HAVE_ATLEAST_ONE_NON_DIGIT": "Password should contain at least one letter",
+    "PASSWORD_SHOULD_NOT_MATCH_USER_NAME":"Password should not match username",
+    "PASSWORD_SHOULD_BE_A_MIX_OF_BOTH_UPPER_CASE_AND_LOWER_CASE":"Password should be a mix of both upper and lower-case letters",
+    "PASSWORD_SHOULD_MATCH_THE_REGEX": "Password should match the given regex ",
+    "CHANGE_PASSWORD_DOES_NOT_SUPPORT":"We don’t support this feature for now, please contact administrator."
 }

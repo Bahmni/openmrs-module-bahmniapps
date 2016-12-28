@@ -207,6 +207,17 @@ angular.module('authentication')
             return $bahmniCookieStore.get(Bahmni.Common.Constants.locationCookieName) ? $bahmniCookieStore.get(Bahmni.Common.Constants.locationCookieName).uuid : null;
         };
 
+        this.changePassword = function (currentUserUuid, newPassword) {
+            return $http({
+                method: 'POST',
+                url: Bahmni.Common.Constants.userUrl + "/" + currentUserUuid,
+                data: {
+                    "password": newPassword
+                },
+                headers: {'Content-Type': 'application/json'}
+            });
+        };
+
         this.loadProviders = function (userInfo) {
             if (offlineApp) {
                 var data = offlineService.getItem('providerData');

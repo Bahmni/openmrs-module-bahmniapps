@@ -75,4 +75,11 @@ angular.module('authentication')
             }
             return deferrable.promise;
         };
+
+        this.getPasswordPolicies = function () {
+            return $http.get(Bahmni.Common.Constants.passwordPolicyUrl, {
+                method: "GET",
+                withCredentials: true
+            });
+        };
     }]);
