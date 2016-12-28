@@ -52,10 +52,10 @@ describe('ChangePasswordController', function () {
     expect(scopeMock.passwordPolicies.length).toBe(5);
     expect(scopeMock.passwordLength).toEqual("8");
     expect(scopeMock.passwordRegex).toEqual("[0-9]");
-    expect(scopeMock.passwordPolicies[0]).toEqual('PASSWORD_SHOULD_BE_MINIMUM_CHARACTERS');
-    expect(scopeMock.passwordPolicies[1]).toEqual('PASSWORD_SHOULD_CONTAIN_DIGITS');
-    expect(scopeMock.passwordPolicies[2]).toEqual('PASSWORD_SHOULD_NOT_MATCH_USER_NAME');
-    expect(scopeMock.passwordPolicies[3]).toEqual('PASSWORD_SHOULD_BE_A_MIX_OF_BOTH_UPPER_CASE_AND_LOWER_CASE');
+    expect(scopeMock.passwordPolicies[0]).toEqual('PASSWORD_SHOULD_NOT_MATCH_USER_NAME');
+    expect(scopeMock.passwordPolicies[1]).toEqual('PASSWORD_SHOULD_BE_MINIMUM_CHARACTERS');
+    expect(scopeMock.passwordPolicies[2]).toEqual('PASSWORD_SHOULD_BE_A_MIX_OF_BOTH_UPPER_CASE_AND_LOWER_CASE');
+    expect(scopeMock.passwordPolicies[3]).toEqual('PASSWORD_SHOULD_CONTAIN_DIGITS');
     expect(scopeMock.passwordPolicies[4]).toEqual('PASSWORD_SHOULD_MATCH_THE_REGEX');
   });
 
