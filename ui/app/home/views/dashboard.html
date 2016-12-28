@@ -32,6 +32,10 @@
                         <span ng-bind="currentUser.username"></span>
                     </a>
                 </li>
+                <li>
+                    <i class="fa fa-key"></i>
+                    <a ng-click="changePassword()"><span>{{'CHANGE_PASSWORD' | translate}}</span></a>
+                </li>
                 <li ng-show=currentUser.currentLocation>
                     <a class="disabled">
                         <i class="fa fa-map-marker fa-white small"></i>

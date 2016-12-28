@@ -34,6 +34,10 @@ angular.module('bahmni.home', ['ui.router', 'httpErrorInterceptor', 'bahmni.comm
                             return schedulerService.sync();
                         }
                     }
+                }).state('changePassword', {
+                    url: '/changePassword',
+                    templateUrl: 'views/changePassword.html',
+                    controller: 'ChangePasswordController'
                 }).state('login',
                 {
                     url: '/login?showLoginMessage',
