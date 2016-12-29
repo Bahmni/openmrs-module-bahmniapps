@@ -443,6 +443,65 @@ body{
   }
 }
 
+/*** Change Password Page Styles ***/
+/******************************************************************************/
+.login.change-password-wrap{
+  width:auto;
+  max-width: 765px;
+  .change-password{
+    width:450px;
+    .field-value-buttons{
+      padding-left: 2px;
+      button{
+        padding: 7px 13px !important;
+        &.confirm{
+          margin-right: 0;
+        }
+      }
+    }
+    @media screen and (max-width: 830px) {
+      width:385px;
+    }
+    @media screen and (max-width: 720px){
+      float: none !important;
+      clear: both;
+    }
+  }
+  @media screen and (max-width: 830px) {
+    max-width:695px;
+  }
+  @media screen and (max-width: 720px) {
+    max-width: 400px;
+    height:auto;
+  }
+  .info{
+    width: 295px;
+    border-radius: 10px;
+    padding: 10px;
+    background: $white;
+    border:1px solid $lightGray;
+    @include box-shadow-for-section();
+    box-sizing: border-box;
+    h3{
+      margin: 0 0 15px;
+    }
+    ol{
+      line-height: 1.5;
+      padding-left: 15px;
+      li{
+        padding-bottom: 4px;
+      }
+    }
+    @media screen and (max-width: 720px) {
+      float: none !important;
+      clear: both;
+      width:385px;
+      margin-top: 20px;
+    }
+
+  }
+}
+
 /*** Dashboard Styles ***/
 /******************************************************************************/
 
