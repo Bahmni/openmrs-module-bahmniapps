@@ -46,7 +46,7 @@ angular.module('bahmni.common.offline')
                     p.patientUuid.eq(params.patientUuid), p.providerUuid.eq(params.providerUuid), p.encounterType.match(encounterType), p.encounterDateTime.gte(DateUtil.addMinutes(new Date(), -1 * encounterSessionDurationInMinutes))))
                 .exec()
                 .then(function (result) {
-                    return result[0];
+                    return angular.copy(result[0]);
                 });
         };
 
@@ -56,7 +56,7 @@ angular.module('bahmni.common.offline')
                 .from(en)
                 .where(en.uuid.eq(encounterUuid)).exec()
                 .then(function (result) {
-                    return result[0];
+                    return angular.copy(result[0]);
                 });
         };
 
