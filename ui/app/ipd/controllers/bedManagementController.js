@@ -4,17 +4,16 @@ angular.module('bahmni.ipd')
     .controller('BedManagementController', ['$scope', '$rootScope', '$stateParams', '$state', 'spinner', 'WardService', 'BedManagementService',
         function ($scope, $rootScope, $stateParams, $state, spinner, wardService, bedManagementService) {
             $scope.wards = null;
-            $scope.patientUuid = $stateParams.patientUuid;
-            $scope.visitUuid = $stateParams.visitUuid;
-            $scope.encounterConfig = $rootScope.encounterConfig;
 
             var init = function () {
                 loadAllWards().then(function () {
                     if ($rootScope.bedDetails) {
-                        $scope.onSelectDepartment({
+                        expandAdmissionMasterForDepartment({
                             uuid: $rootScope.bedDetails.wardUuid,
                             name: $rootScope.bedDetails.wardName
                         });
+                    } else if ($stateParams.context && $stateParams.context.department) {
+                        expandAdmissionMasterForDepartment($stateParams.context.department);
                     }
                 });
             };
@@ -35,15 +34,24 @@ angular.module('bahmni.ipd')
                 return mappedRooms;
             };
 
-            $scope.onSelectDepartment = function (department) {
-                spinner.forPromise(wardService.bedsForWard(department.uuid).success(function (response) {
-                    var wardDetails = _.filter($scope.wards, function (entry) {
-                        return entry.ward.uuid == department.uuid;
-                    });
-                    var rooms = mapRoomInfo(_.groupBy(response.bedLayouts, 'location'));
-                    _.each(rooms, function (room) {
-                        room.beds = bedManagementService.createLayoutGrid(room.beds);
-                    });
+            var getRoomsForWard = function (bedLayouts) {
+                var rooms = mapRoomInfo(_.groupBy(bedLayouts, 'location'));
+                _.each(rooms, function (room) {
+                    room.beds = bedManagementService.createLayoutGrid(room.beds);
+                });
+                return rooms;
+            };
+
+            var getWardDetails = function (department) {
+                return _.filter($scope.wards, function (entry) {
+                    return entry.ward.uuid == department.uuid;
+                });
+            };
+
+            var loadBedsInfoForWard = function (department) {
+                return wardService.bedsForWard(department.uuid).then(function (response) {
+                    var wardDetails = getWardDetails(department);
+                    var rooms = getRoomsForWard(response.data.bedLayouts);
                     $scope.ward = {
                         rooms: rooms,
                         uuid: department.uuid,
@@ -53,17 +61,33 @@ angular.module('bahmni.ipd')
                     };
                     $scope.departmentSelected = true;
                     $scope.$broadcast("event:departmentChanged");
+                });
+            };
+
+            var expandAdmissionMasterForDepartment = function (department) {
+                spinner.forPromise(loadBedsInfoForWard(department));
+            };
+
+            $scope.onSelectDepartment = function (department) {
+                spinner.forPromise(loadBedsInfoForWard(department).then(function () {
                     resetPatientAndBedInfo();
                 }));
             };
 
             var resetPatientAndBedInfo = function () {
-                if ($state.current.name == "bedManagement.bed") {
-                    $rootScope.patient = undefined;
-                }
                 $scope.roomName = undefined;
                 $scope.bed = undefined;
+                goToBedManagement();
             };
+
+            $scope.$on("event:patientAssignedToBed", function (event, bed) {
+                $scope.ward.occupiedBeds = $scope.ward.occupiedBeds + 1;
+                _.map($scope.ward.rooms, function (room) {
+                    if (room.name === $scope.roomName) {
+                        room.availableBeds = room.availableBeds - 1;
+                    }
+                });
+            });
 
             $scope.$on("event:bedSelected", function (event, bed) {
                 $scope.bed = bed;
@@ -72,10 +96,28 @@ angular.module('bahmni.ipd')
             $scope.$on("event:roomSelected", function (event, roomName) {
                 $scope.roomName = roomName;
                 $scope.bed = undefined;
-                if ($state.current.name == "bedManagement.bed") {
-                    $rootScope.patient = undefined;
-                }
+                goToBedManagement();
             });
+
+            $scope.$on("event:roomSelectedAuto", function (event, roomName) {
+                $scope.roomName = roomName;
+                $scope.bed = undefined;
+            });
+
+            var goToBedManagement = function () {
+                if ($state.current.name == "bedManagement.bed") {
+                    var options = {};
+                    options['context'] = {
+                        department: {
+                            uuid: $scope.ward.uuid,
+                            name: $scope.ward.name
+                        },
+                        roomName: $scope.roomName
+                    };
+                    options['dashboardCachebuster'] = Math.random();
+                    $state.go("bedManagement", options);
+                }
+            };
 
             init();
         }]);

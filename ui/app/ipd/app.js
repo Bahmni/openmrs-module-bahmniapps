@@ -50,7 +50,8 @@ angular.module('ipd').config(['$stateProvider', '$httpProvider', '$urlRouterProv
                     backLinks: backLinks
                 },
                 params: {
-                    dashboardCachebuster: null
+                    dashboardCachebuster: null,
+                    context: null
                 },
                 views: {
                     'content': {
@@ -75,7 +76,8 @@ angular.module('ipd').config(['$stateProvider', '$httpProvider', '$urlRouterProv
                 templateUrl: 'views/bedManagement.html',
                 controller: 'BedManagementController',
                 params: {
-                    dashboardCachebuster: null
+                    dashboardCachebuster: null,
+                    context: null
                 },
                 resolve: {
                     bedResolution: function ($stateParams, bedInitialization, patientInitialization) {
@@ -104,10 +106,11 @@ angular.module('ipd').config(['$stateProvider', '$httpProvider', '$urlRouterProv
                 templateUrl: 'views/bedManagement.html',
                 controller: 'BedManagementController',
                 resolve: {
-                    patientResolution: function ($stateParams, patientInitialization) {
-                        return patientInitialization($stateParams.patientUuid);
-                    },
-                    initialization: 'initialization'
+                    patientResolution: function ($stateParams, bedInitialization, patientInitialization) {
+                        return patientInitialization($stateParams.patientUuid).then(function () {
+                            return bedInitialization(undefined, $stateParams.patientUuid);
+                        });
+                    }
                 }
             })
             .state('patient', {

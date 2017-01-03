@@ -160,13 +160,14 @@ angular.module('bahmni.ipd')
             var assignBedToPatient = function (bed, patientUuid, encounterUuid) {
                 spinner.forPromise(bedService.assignBed(bed.bedId, patientUuid, encounterUuid).then(function () {
                     bed.status = "OCCUPIED";
+                    $scope.$emit("event:patientAssignedToBed", $scope.bed);
                     messagingService.showMessage('info', "Bed " + bed.bedNumber + " is assigned successfully");
                 }));
             };
 
             $scope.admit = function () {
                 if ($scope.bed == undefined) {
-                    messagingService.showMessage("error", "Please select an available bed to admit patient");
+                    messagingService.showMessage("error", "Please select a bed to admit patient");
                 } else if ($scope.visitSummary && $scope.visitSummary.visitType !== $scope.defaultVisitTypeName) {
                     ngDialog.openConfirm({
                         template: 'views/visitChangeConfirmation.html',
@@ -208,7 +209,7 @@ angular.module('bahmni.ipd')
             };
 
             spinner.forPromise(init());
-            
+
             $scope.disableAdmitButton = function () {
                 return !($rootScope.patient && !$rootScope.bedDetails);
             };
