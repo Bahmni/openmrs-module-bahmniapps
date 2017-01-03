@@ -20,7 +20,7 @@
                                     <div ng-class="{'voided': order.isDiscontinued}">
                                         {{::order.concept.displayName || order.concept.shortName || order.concept.name}}
                                     </div>
-                                    <button class="toggle-buttons urgent-button" ng-class="{active: order.isUrgent}" toggle="order.isUrgent" ng-if="enablePACSOptions && activeTab.name == 'Radiology'"  title="Urgent" ng-disabled="order.uuid">
+                                    <button class="toggle-buttons urgent-button" ng-class="{active: order.isUrgent}" toggle="order.isUrgent" ng-if="isUrgent()"  title="Urgent" ng-disabled="order.uuid">
                                         <i class="fa fa-exclamation-triangle fa-grey show-before-active"></i>
                                         <i class="fa fa-exclamation-triangle fa-orange show-after-active"></i>
                                     </button>
