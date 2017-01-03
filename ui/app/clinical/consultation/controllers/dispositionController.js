@@ -13,11 +13,36 @@ angular.module('bahmni.clinical')
         };
         var getDispositionActionsPromise = function () {
             return dispositionService.getDispositionActions().then(function (response) {
-                $scope.dispositionActions = new Bahmni.Clinical.DispostionActionMapper().map(response.data.results[0].answers);
+                $scope.dispositionActions = filterDispositionActions(new Bahmni.Clinical.DispostionActionMapper().map(response.data.results[0].answers), $scope.$parent.visitSummary);
                 var previousDispositionNote = getPreviousDispositionNote();
-                $scope.dispositionNote = _.cloneDeep(previousDispositionNote) || {concept: {uuid: $scope.dispositionNoteConceptUuid }};
+                $scope.dispositionNote = _.cloneDeep(previousDispositionNote) || {concept: {uuid: $scope.dispositionNoteConceptUuid}};
                 $scope.dispositionCode = consultation.disposition && (!consultation.disposition.voided) ? consultation.disposition.code : null;
             });
+        };
+
+        function findAction (dispositions, action) {
+            var undoDischarge = _.find(dispositions, action);
+            return undoDischarge || {'name': ''};
+        }
+
+        var filterDispositionActions = function (dispositions, visitSummary) {
+            var defaultDispositions = ["Undo Discharge", "Admit Patient", "Transfer Patient", "Discharge Patient"];
+            var finalDispositionActions = _.filter(dispositions, function (disposition) {
+                return defaultDispositions.indexOf(disposition.name) < 0;
+            });
+            var isVisitOpen = visitSummary ? _.isEmpty(visitSummary.stopDateTime) : false;
+
+            if (visitSummary && visitSummary.isDischarged() && isVisitOpen) {
+                finalDispositionActions.push(findAction(dispositions, {name: "Undo Discharge"}));
+            }
+            else if (visitSummary && visitSummary.isAdmitted() && isVisitOpen) {
+                finalDispositionActions.push(findAction(dispositions, { name: "Transfer Patient"}));
+                finalDispositionActions.push(findAction(dispositions, { name: "Discharge Patient"}));
+            }
+            else {
+                finalDispositionActions.push(findAction(dispositions, { name: "Admit Patient"}));
+            }
+            return finalDispositionActions;
         };
 
         $scope.isRetrospectiveMode = function () {
