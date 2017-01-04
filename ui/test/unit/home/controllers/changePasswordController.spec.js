@@ -92,7 +92,7 @@ describe('ChangePasswordController', function () {
 
       expect(scopeMock.passwordDoesNotMatch).toBeFalsy();
       expect(mockSessionService.changePassword).toHaveBeenCalled();
-      expect(mockMessagingService.showMessage).toHaveBeenCalledWith("info","Password changed successfully");
+      expect(mockMessagingService.showMessage).toHaveBeenCalledWith("info","CHANGE_PASSWORD_SUCCESSFUL_MESSAGE");
 
     });
 
