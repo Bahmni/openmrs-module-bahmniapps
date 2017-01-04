@@ -454,7 +454,7 @@ body{
   .change-password{
     width:450px;
     .field-value-buttons{
-      padding-left: 2px;
+      padding: 2px 0 2px 2px;
       button{
         padding: 7px 13px !important;
         &.confirm{
