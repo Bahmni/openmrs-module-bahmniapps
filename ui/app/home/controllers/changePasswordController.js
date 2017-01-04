@@ -17,7 +17,7 @@ angular.module('bahmni.home')
             if (checkPasswordMatches()) {
                 $scope.passwordDoesNotMatch = false;
                 sessionService.changePassword($rootScope.currentUser.uuid, $scope.loginInfo.newPassword).then(function (data) {
-                    messagingService.showMessage("info", "Password changed successfully");
+                    messagingService.showMessage("info", 'CHANGE_PASSWORD_SUCCESSFUL_MESSAGE');
                     clearPasswordFields();
                 });
             }
@@ -44,9 +44,6 @@ angular.module('bahmni.home')
                     break;
                 case "security.passwordRequiresDigit" :
                     value == "true" ? $scope.passwordPolicies.splice(3, 0, 'PASSWORD_SHOULD_CONTAIN_DIGITS') : '';
-                    break;
-                case "security.passwordRequiresNonDigit" :
-                    value == "true" ? $scope.passwordPolicies.splice(4, 0, 'PASSWORD_SHOULD_HAVE_ATLEAST_ONE_NON_DIGIT') : '';
                     break;
                 case "security.passwordCustomRegex":
                     if (!_.isEmpty(value)) {
