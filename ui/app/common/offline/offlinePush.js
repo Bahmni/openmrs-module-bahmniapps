@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('bahmni.common.offline')
-    .factory('offlinePush', ['offlineService', 'eventQueue', '$http', 'offlineDbService', 'androidDbService', '$q', 'loggingService', '$bahmniCookieStore', '$window',
-        function (offlineService, eventQueue, $http, offlineDbService, androidDbService, $q, loggingService, $bahmniCookieStore, $window) {
+    .factory('offlinePush', ['offlineService', 'eventQueue', '$http', 'offlineDbService', 'androidDbService', '$q', 'loggingService', '$bahmniCookieStore',
+        function (offlineService, eventQueue, $http, offlineDbService, androidDbService, $q, loggingService, $bahmniCookieStore) {
             return function () {
                 var reservedPromises = [];
                 var releaseReservedEvents = function (reservedEvents) {
@@ -12,8 +12,9 @@ angular.module('bahmni.common.offline')
                 };
                 var loginLocationName = $bahmniCookieStore.get(Bahmni.Common.Constants.locationCookieName).name;
                 var reservedEventsOfOtherDb = [];
-                var tempDbNames = ["Bahmni_hustle", 'metadata'];
-                var db, dbName;
+                var tempDbNames = [];
+                var db;
+                var dbNames = offlineDbService.getDbNames();
 
                 var initializeDb = function (dbName) {
                     return offlineDbService.initSchema(dbName).then(function (newDb) {
@@ -23,27 +24,16 @@ angular.module('bahmni.common.offline')
                     });
                 };
 
-                var getTargetDatabase = function () {
-                    var dbNames = [];
-                    var dbPromise;
-                    var deferred = $q.defer();
-                    $window.indexedDB.webkitGetDatabaseNames().onsuccess = function (result) {
-                        dbNames = result.target.result;
-                        dbNames = _.difference(dbNames, tempDbNames);
-                        dbName = dbNames[0];
-                        dbPromise = initializeDb(dbName);
-                        deferred.resolve(dbPromise);
-                    };
-                    return deferred.promise;
-                };
-
                 var consumeFromEventQueue = function () {
                     return eventQueue.consumeFromEventQueue().then(function (event) {
                         if (!event && (reservedEventsOfOtherDb.length == 0)) {
                             deferred.resolve();
-                            return initializeDb(loginLocationName).then(function () {
-                                return;
-                            });
+                            if (offlineDbService.getCurrentDbName() != loginLocationName) {
+                                return initializeDb(loginLocationName).then(function () {
+                                    return;
+                                });
+                            }
+                            return;
                         }
                         else {
                             return process("event_queue", event);
@@ -64,16 +54,16 @@ angular.module('bahmni.common.offline')
 
                 var process = function (queue, event) {
                     if (!event) {
-                        tempDbNames.push(db.getSchema().name());
+                        tempDbNames.push(offlineDbService.getCurrentDbName());
                         releaseReservedEvents(reservedEventsOfOtherDb);
                         Promise.all(reservedPromises).then(function () {
                             reservedEventsOfOtherDb = [];
-                            getTargetDatabase().then(function () {
+                            initializeDb(_.difference(dbNames, tempDbNames)[0]).then(function () {
                                 queue == "event_queue" ? consumeFromEventQueue() : consumeFromErrorQueue();
                             });
                         });
                     }
-                    else if (event && event.data.dbName == db.getSchema().name()) {
+                    else if (event && event.data.dbName == offlineDbService.getCurrentDbName()) {
                         return processEvent(event);
                     }
                     else {
@@ -193,17 +183,14 @@ angular.module('bahmni.common.offline')
                     offlineDbService = androidDbService;
                 }
 
-                getTargetDatabase().then(function () {
-                    consumeFromErrorQueue().then(function (response) {
-                        releaseReservedEvents(reservedEvents);
-                        if (response == "4xx error") {
-                            return;
-                        }
-                        tempDbNames = ["Bahmni_hustle", 'metadata'];
-                        return consumeFromEventQueue();
-                    });
+                consumeFromErrorQueue().then(function (response) {
+                    releaseReservedEvents(reservedEvents);
+                    if (response == "4xx error") {
+                        return;
+                    }
+                    tempDbNames = [];
+                    return consumeFromEventQueue();
                 });
-
                 return deferred.promise;
             };
         }

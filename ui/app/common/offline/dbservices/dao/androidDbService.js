@@ -1,8 +1,9 @@
 'use strict';
 
 angular.module('bahmni.common.offline')
-    .service('androidDbService', ['$q', 'eventLogService',
-        function ($q, eventLogService) {
+    .service('androidDbService', ['$q', 'eventLogService', 'offlineService',
+        function ($q, eventLogService, offlineService) {
+            var currentDbName;
             var getMarker = function (markerName) {
                 var value = AndroidOfflineService.getMarker(markerName);
                 value = value != undefined ? JSON.parse(value) : value;
@@ -33,11 +34,12 @@ angular.module('bahmni.common.offline')
             };
 
             var init = function () {
-                // Hemanth: This method is not required for android app.
+                return $q.when(AndroidOfflineService.init());
             };
 
-            var initSchema = function () {
-                return $q.when(AndroidOfflineService.initSchema());
+            var initSchema = function (dbName) {
+                currentDbName = dbName;
+                return $q.when(AndroidOfflineService.initSchema(dbName));
             };
 
             var deletePatientData = function (identifier) {
@@ -76,7 +78,7 @@ angular.module('bahmni.common.offline')
             };
 
             var getReferenceData = function (referenceDataKey) {
-                var value = AndroidReferenceDataDbService.getReferenceData(referenceDataKey);
+                var value = AndroidOfflineService.getReferenceData(referenceDataKey);
                 value = value != undefined ? JSON.parse(value) : value;
                 return $q.when(value);
             };
@@ -88,7 +90,7 @@ angular.module('bahmni.common.offline')
                 } else {
                     referenceData = JSON.stringify(data);
                 }
-                AndroidReferenceDataDbService.insertReferenceData(key, referenceData, eTag);
+                AndroidOfflineService.insertReferenceData(key, referenceData, eTag);
                 return $q.when({});
             };
 
@@ -295,6 +297,14 @@ angular.module('bahmni.common.offline')
                 return $q.when(JSON.parse(response));
             };
 
+            var getDbNames = function () {
+                return offlineService.getItem("dbNames");
+            };
+
+            var getCurrentDbName = function () {
+                return currentDbName;
+            };
+
             return {
                 init: init,
                 initSchema: initSchema,
@@ -333,7 +343,9 @@ angular.module('bahmni.common.offline')
                 getVisitDetailsByPatientUuid: getVisitDetailsByPatientUuid,
                 getObservationsForVisit: getObservationsForVisit,
                 insertLabOrderResults: insertLabOrderResults,
-                getLabOrderResultsForPatient: getLabOrderResultsForPatient
+                getLabOrderResultsForPatient: getLabOrderResultsForPatient,
+                getDbNames: getDbNames,
+                getCurrentDbName: getCurrentDbName
             };
         }
     ]);
