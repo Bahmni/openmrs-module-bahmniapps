@@ -14,6 +14,9 @@ angular.module('bahmni.common.offline')
                         if (location === null) {
                             return metaDataDb;
                         }
+                        var dbNames = offlineService.getItem("dbNames") || [];
+                        dbNames.push(location);
+                        offlineService.setItem("dbNames", _.uniq(dbNames));
                         return offlineDbService.initSchema(location).then(function (db) {
                             offlineDbService.init(db);
                             return db;

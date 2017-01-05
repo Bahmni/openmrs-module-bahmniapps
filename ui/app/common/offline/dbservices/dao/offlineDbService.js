@@ -1,10 +1,10 @@
 'use strict';
 
 angular.module('bahmni.common.offline')
-    .service('offlineDbService', ['$http', '$q', 'patientDbService', 'patientAddressDbService', 'patientAttributeDbService', 'patientIdentifierDbService', 'offlineMarkerDbService', 'offlineAddressHierarchyDbService', 'labOrderResultsDbService',
-        'offlineConfigDbService', 'initializeOfflineSchema', 'referenceDataDbService', 'locationDbService', 'offlineSearchDbService', 'encounterDbService', 'visitDbService', 'observationDbService', 'conceptDbService', 'errorLogDbService', 'eventLogService', 'eventQueue',
-        function ($http, $q, patientDbService, patientAddressDbService, patientAttributeDbService, patientIdentifierDbService, offlineMarkerDbService, offlineAddressHierarchyDbService, labOrderResultsDbService,
-                  offlineConfigDbService, initializeOfflineSchema, referenceDataDbService, locationDbService, offlineSearchDbService, encounterDbService, visitDbService, observationDbService, conceptDbService, errorLogDbService, eventLogService, eventQueue) {
+    .service('offlineDbService', ['offlineService', '$http', '$q', 'patientDbService', 'patientAddressDbService', 'patientAttributeDbService', 'patientIdentifierDbService', 'offlineMarkerDbService', 'offlineAddressHierarchyDbService', 'labOrderResultsDbService',
+        'offlineConfigDbService', 'initializeOfflineSchema', 'referenceDataDbService', 'locationDbService', 'offlineSearchDbService', 'encounterDbService', 'visitDbService', 'observationDbService', 'conceptDbService', 'errorLogDbService', 'eventLogService',
+        function (offlineService, $http, $q, patientDbService, patientAddressDbService, patientAttributeDbService, patientIdentifierDbService, offlineMarkerDbService, offlineAddressHierarchyDbService, labOrderResultsDbService,
+                  offlineConfigDbService, initializeOfflineSchema, referenceDataDbService, locationDbService, offlineSearchDbService, encounterDbService, visitDbService, observationDbService, conceptDbService, errorLogDbService, eventLogService) {
             var db, metaDataDb;
 
             var createPatient = function (postRequest) {
@@ -286,6 +286,14 @@ angular.module('bahmni.common.offline')
                 return deferred.promise;
             };
 
+            var getDbNames = function () {
+                return offlineService.getItem("dbNames");
+            };
+
+            var getCurrentDbName = function () {
+                return db.getSchema().name();
+            };
+
             return {
                 init: init,
                 initSchema: initSchema,
@@ -327,6 +335,8 @@ angular.module('bahmni.common.offline')
                 getPatientByUuidForPost: getPatientByUuidForPost,
                 getVisitDetailsByPatientUuid: getVisitDetailsByPatientUuid,
                 getObservationsForVisit: getObservationsForVisit,
-                getLabOrderResultsForPatient: getLabOrderResultsForPatient
+                getLabOrderResultsForPatient: getLabOrderResultsForPatient,
+                getDbNames: getDbNames,
+                getCurrentDbName: getCurrentDbName
             };
         }]);
