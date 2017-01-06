@@ -19,6 +19,9 @@ angular.module('bahmni.common.offline')
         };
 
         var getDbName = function (provider, loginLocation) {
+            if (!offlineService.getItem("allowMultipleLoginLocation")) {
+                return $q.when("Bahmni Connect");
+            }
             return loadDbNameService().then(function () {
                 return Bahmni.Common.Offline.dbNameCondition.get(provider, loginLocation);
             });

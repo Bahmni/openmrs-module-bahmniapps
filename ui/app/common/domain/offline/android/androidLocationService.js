@@ -4,6 +4,10 @@ angular.module('bahmni.common.domain')
     .factory('locationService', ['$bahmniCookieStore', 'offlineService', 'androidDbService', '$q',
         function ($bahmniCookieStore, offlineService, androidDbService, $q) {
             var getAllByTag = function (tags) {
+                if (offlineService.getItem('LoginInformation') != null && !offlineService.getItem("allowMultipleLoginLocation")) {
+                    var obj = {"data": {"results": [offlineService.getItem('LoginInformation').currentLocation]}};
+                    return $q.when(obj);
+                }
                 return androidDbService.getReferenceData('LoginLocations').then(function (loginLocations) {
                     if (!loginLocations) {
                         var msg = offlineService.getItem("networkError") || "Offline data not set up";
