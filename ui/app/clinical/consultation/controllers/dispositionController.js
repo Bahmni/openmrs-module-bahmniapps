@@ -3,6 +3,7 @@
 angular.module('bahmni.clinical')
     .controller('DispositionController', ['$scope', '$q', 'dispositionService', 'retrospectiveEntryService', 'spinner', function ($scope, $q, dispositionService, retrospectiveEntryService, spinner) {
         var consultation = $scope.consultation;
+        var allDispositions = [];
 
         var getPreviousDispositionNote = function () {
             if (consultation.disposition && (!consultation.disposition.voided)) {
@@ -13,7 +14,8 @@ angular.module('bahmni.clinical')
         };
         var getDispositionActionsPromise = function () {
             return dispositionService.getDispositionActions().then(function (response) {
-                $scope.dispositionActions = filterDispositionActions(new Bahmni.Clinical.DispostionActionMapper().map(response.data.results[0].answers), $scope.$parent.visitSummary);
+                allDispositions = new Bahmni.Clinical.DispostionActionMapper().map(response.data.results[0].answers);
+                $scope.dispositionActions = filterDispositionActions(allDispositions, $scope.$parent.visitSummary);
                 var previousDispositionNote = getPreviousDispositionNote();
                 $scope.dispositionNote = _.cloneDeep(previousDispositionNote) || {concept: {uuid: $scope.dispositionNoteConceptUuid}};
                 $scope.dispositionCode = consultation.disposition && (!consultation.disposition.voided) ? consultation.disposition.code : null;
@@ -68,7 +70,7 @@ angular.module('bahmni.clinical')
         };
 
         var getSelectedConceptName = function (dispositionCode) {
-            var selectedDispositionConceptName = _.findLast($scope.dispositionActions, {code: dispositionCode}) || {};
+            var selectedDispositionConceptName = _.findLast(allDispositions, {code: dispositionCode}) || {};
             return selectedDispositionConceptName.name;
         };
 
