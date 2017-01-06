@@ -8,11 +8,11 @@ angular.module('ipd', ['bahmni.common.patient', 'bahmni.common.patientSearch', '
 angular.module('ipd').config(['$stateProvider', '$httpProvider', '$urlRouterProvider', '$bahmniTranslateProvider', '$compileProvider',
     function ($stateProvider, $httpProvider, $urlRouterProvider, $bahmniTranslateProvider, $compileProvider) {
         $urlRouterProvider.otherwise('/admit');
-        var homeBackLink = {label: "", url: "../home/", accessKey: "h", icon: "fa-home", id: "homeBackLink"};
-        var adtHomeBackLink = {label: "", url: "#/admit", accessKey: "p", icon: "fa-users", id: "adtHomeBackLink"};
-        var admitBackLink = {text: "New Admission", state: "admit", accessKey: "a"};
-        var bedManagementBackLink = {text: "Bed Management", state: "bedManagement", accessKey: "b"};
-        var backLinks = [homeBackLink, admitBackLink, bedManagementBackLink];
+
+        var homeBackLink = {type: "link", name: "Home", value: "../home/", accessKey: "h", icon: "fa-home"};
+        var admitLink = {type: "state", name: "Admit", value: "admit", accessKey: "a"};
+        var bedManagementLink = {type: "state", name: "Bed Management", value: "bedManagement", accessKey: "b"};
+        var navigationLinks = [homeBackLink, admitLink, bedManagementLink];
 
         // @if DEBUG='production'
         $compileProvider.debugInfoEnabled(false);
@@ -26,7 +26,7 @@ angular.module('ipd').config(['$stateProvider', '$httpProvider', '$urlRouterProv
             .state('admit', {
                 url: '/admit',
                 data: {
-                    backLinks: backLinks
+                    navigationLinks: navigationLinks
                 },
                 views: {
                     'content': {
@@ -47,7 +47,7 @@ angular.module('ipd').config(['$stateProvider', '$httpProvider', '$urlRouterProv
             .state('bedManagement', {
                 url: '/bedManagement',
                 data: {
-                    backLinks: backLinks
+                    navigationLinks: navigationLinks
                 },
                 params: {
                     dashboardCachebuster: null,
@@ -89,8 +89,8 @@ angular.module('ipd').config(['$stateProvider', '$httpProvider', '$urlRouterProv
                     }
                 }
             })
-            .state('bedManagement.patientAdmit', {
-                url: '/patient/:patientUuid/visit/:visitUuid/admit',
+            .state('bedManagement.patient', {
+                url: '/patient/:patientUuid/visit/:visitUuid',
                 templateUrl: 'views/bedManagement.html',
                 controller: 'BedManagementController',
                 resolve: {
@@ -98,45 +98,6 @@ angular.module('ipd').config(['$stateProvider', '$httpProvider', '$urlRouterProv
                         return patientInitialization($stateParams.patientUuid).then(function () {
                             return bedInitialization(undefined, $stateParams.patientUuid);
                         });
-                    }
-                }
-            })
-            .state('bedManagement.patientTransfer', {
-                url: '/patient/:patientUuid/visit/:visitUuid/transfer',
-                templateUrl: 'views/bedManagement.html',
-                controller: 'BedManagementController',
-                resolve: {
-                    patientResolution: function ($stateParams, bedInitialization, patientInitialization) {
-                        return patientInitialization($stateParams.patientUuid).then(function () {
-                            return bedInitialization(undefined, $stateParams.patientUuid);
-                        });
-                    }
-                }
-            })
-            .state('patient', {
-                url: '/patient/:patientUuid',
-                data: {
-                    backLinks: [homeBackLink, adtHomeBackLink]
-                },
-                abstract: true,
-                views: {
-                    'header': {
-                        templateUrl: 'views/header.html',
-                        controller: function ($scope) {
-                            $scope.showClinicalDashboardLink = true;
-                        }
-                    },
-                    'content': {
-                        template: '<ui-view/>'
-                    },
-                    'additional-header': {
-                        templateUrl: '../common/patient/header/views/header.html'
-                    }
-                },
-
-                resolve: {
-                    patientResolution: function ($stateParams, patientInitialization) {
-                        return patientInitialization($stateParams.patientUuid);
                     }
                 }
             });

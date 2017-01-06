@@ -1,0 +1,6 @@
+<div ng-repeat="link in navigationLinks" style="display: inline-block">
+    <a class="back-btn" accesskey="{{link.accessKey}}" ng-click="linkAction(link.type, link.value, link.params)">
+        <i ng-if="link.icon" class="fa {{link.icon}}"></i>
+        <span ng-if="!link.icon">{{ link.name }}</span>
+    </a>
+</div>
