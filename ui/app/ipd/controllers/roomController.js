@@ -5,6 +5,7 @@ angular.module('bahmni.ipd')
         function ($scope, $rootScope, $state, messagingService) {
             var init = function () {
                 if ($rootScope.bedDetails) {
+                    $scope.oldBedNumber = $rootScope.bedDetails.bedNumber;
                     _.some($scope.room.beds, function (row) {
                         var selectedBed = _.filter(row, function (bed) {
                             return bed.bed.bedNumber == $rootScope.bedDetails.bedNumber;
@@ -15,6 +16,9 @@ angular.module('bahmni.ipd')
                         }
                     });
                     $scope.$emit("event:bedSelected", $scope.selectedBed);
+                    if ($state.current.name != "bedManagement.patient") {
+                        $scope.oldBedNumber = undefined;
+                    }
                 }
             };
 
@@ -23,16 +27,19 @@ angular.module('bahmni.ipd')
                     if (bed.status == "AVAILABLE") {
                         $rootScope.patient = undefined;
                     }
+                    $scope.selectedBed = bed;
                     var options = {bedId: bed.bedId};
                     $state.go("bedManagement.bed", options);
                 }
-                if ($state.current.name == "bedManagement.patientAdmit" && bed.status == "OCCUPIED") {
-                    $scope.selectedBed = undefined;
-                    $scope.$emit("event:bedSelected", undefined);
-                    messagingService.showMessage("error", "Please select an available bed");
-                } else {
-                    $scope.selectedBed = bed;
-                    $scope.$emit("event:bedSelected", bed);
+                else if ($state.current.name == "bedManagement.patient") {
+                    if (bed.status == "OCCUPIED") {
+                        $scope.selectedBed = undefined;
+                        $scope.$emit("event:bedSelected", undefined);
+                        messagingService.showMessage("error", "Please select an available bed");
+                    } else {
+                        $scope.selectedBed = bed;
+                        $scope.$emit("event:bedSelected", bed);
+                    }
                 }
             };
 

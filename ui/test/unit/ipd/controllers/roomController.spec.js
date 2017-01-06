@@ -72,6 +72,16 @@ describe('RoomController', function () {
         module('bahmni.ipd');
     });
 
+    var initController = function (rootScope, state) {
+        controller('RoomController', {
+            $scope: scope,
+            $rootScope: rootScope,
+            $state: state,
+            messagingService: messagingService,
+            appService: appService
+        });
+    };
+
     beforeEach(function () {
         inject(function ($controller, $rootScope) {
             controller = $controller;
@@ -86,14 +96,6 @@ describe('RoomController', function () {
             spyOn(scope, '$emit');
             scope.room = room;
         });
-        controller('RoomController', {
-            $scope: scope,
-            $rootScope: rootScope,
-            $state: state,
-            messagingService: messagingService,
-            appService: appService
-        });
-
     });
 
     it('should initialize bed info based on Admitted Patient Details', function () {
@@ -104,11 +106,13 @@ describe('RoomController', function () {
             bedTags: [],
             status: "OCCUPIED"
         };
+        state.current = {name: "bedManagement.bed"};
+        initController(rootScope, state);
         expect(scope.selectedBed).toEqual(expectedBed);
         expect(scope.$emit).toHaveBeenCalledWith("event:bedSelected", scope.selectedBed);
     });
 
-    it('should show a error message, when state is patientAdmit and trying to select an occupied bed', function () {
+    it('should show a error message, when state is bedManagement.patient and trying to select an occupied bed', function () {
         var bed = {
             bedId: 9,
             bedNumber: "404-i",
@@ -116,12 +120,13 @@ describe('RoomController', function () {
             bedTags: [],
             status: "OCCUPIED"
         };
-        state.current = {name: "bedManagement.patientAdmit"};
+        state.current = {name: "bedManagement.patient"};
+        initController(rootScope, state);
         scope.onSelectBed(bed);
         expect(messagingService.showMessage).toHaveBeenCalledWith("error", "Please select an available bed");
     });
 
-    it('should emit an event with name event:bedSelected and bed info, when select a bed on the state other than patientAdmit', function () {
+    it('should emit an event with name event:bedSelected and bed info, when selectedbed is not OCCUPIED and the state is bedManagement.patient', function () {
         var bed = {
             bedId: 9,
             bedNumber: "404-i",
@@ -129,7 +134,8 @@ describe('RoomController', function () {
             bedTags: [],
             status: "AVAILABLE"
         };
-        state.current = {name: "bedManagement.patientAdmit"};
+        state.current = {name: "bedManagement.patient"};
+        initController(rootScope, state);
         scope.onSelectBed(bed);
         expect(scope.$emit).toHaveBeenCalledWith("event:bedSelected", bed);
     });
@@ -144,6 +150,7 @@ describe('RoomController', function () {
         };
         rootScope.patient = {name: "patientName", uuid: "patientUuid"};
         state.current = {name: "bedManagement"};
+        initController(rootScope, state);
         scope.onSelectBed(bed);
         expect(rootScope.patient).toBeUndefined();
         expect(state.go).toHaveBeenCalledWith("bedManagement.bed", jasmine.any(Object));
@@ -159,6 +166,7 @@ describe('RoomController', function () {
         };
         rootScope.patient = {name: "patientName", uuid: "patientUuid"}
         state.current = {name: "bedManagement"};
+        initController(rootScope, state);
         scope.onSelectBed(bed);
         expect(rootScope.patient).not.toBeUndefined();
         expect(state.go).toHaveBeenCalledWith("bedManagement.bed", jasmine.any(Object));

@@ -3,10 +3,10 @@
 angular.module('bahmni.ipd')
     .controller('AdtController', ['$scope', '$q', '$rootScope', 'spinner', 'dispositionService',
         'encounterService', 'bedService', 'appService', 'visitService', '$location', '$window', 'sessionService',
-        'messagingService', '$anchorScroll', '$stateParams', 'ngDialog', '$filter',
+        'messagingService', '$anchorScroll', '$stateParams', 'ngDialog', '$filter', '$state',
         function ($scope, $q, $rootScope, spinner, dispositionService, encounterService, bedService,
                   appService, visitService, $location, $window, sessionService, messagingService, $anchorScroll,
-                  $stateParams, ngDialog, $filter) {
+                  $stateParams, ngDialog, $filter, $state) {
             var actionConfigs = {};
             var encounterConfig = $rootScope.encounterConfig;
             var locationUuid = sessionService.getLoginLocationUuid();
@@ -86,6 +86,10 @@ angular.module('bahmni.ipd')
                     $scope.visitSummary = null;
                     return $q.when({id: 1, status: "Returned from service.", promiseComplete: true});
                 }
+            };
+
+            $scope.showAdtButtons = function () {
+                return $state.current.name == "bedManagement.patient";
             };
 
             var init = function () {
@@ -216,6 +220,17 @@ angular.module('bahmni.ipd')
 
             $scope.disableTransferAndDischargeButton = function () {
                 return !($rootScope.patient && $rootScope.bedDetails);
+            };
+
+            $scope.transfer = function () {
+                if ($scope.bed == undefined) {
+                    messagingService.showMessage("error", "Please select a bed to transfer the patient");
+                }
+                var encounterData = getEncounterData($scope.encounterConfig.getTransferEncounterTypeUuid(), getCurrentVisitTypeUuid());
+                return encounterService.create(encounterData).then(function (response) {
+                    assignBedToPatient($scope.bed, response.data.patientUuid, response.data.encounterUuid);
+                    forwardUrl(response.data, "onTransferForwardTo");
+                });
             };
         }
     ]);

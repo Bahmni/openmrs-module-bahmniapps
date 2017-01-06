@@ -1,7 +1,7 @@
 <div ng-repeat="row in room.beds" class="clearfix">
     <div ng-repeat="cell in row">
         <div class="bed" ng-if="!cell.bed.bedId"></div>
-        <div class="bed {{ cell.bed.status }}" ng-class="{'highlight-bed': cell.bed.bedNumber===selectedBed.bedNumber}"
+        <div class="bed {{ cell.bed.status }}" ng-class="{'highlight-bed': cell.bed.bedNumber===selectedBed.bedNumber, 'highlight-old-bed': cell.bed.bedNumber===oldBedNumber}"
             ng-if="cell.bed.bedId" ng-click="onSelectBed(cell.bed)">
             <div class="bed-space">
 

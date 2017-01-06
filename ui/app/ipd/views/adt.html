@@ -15,7 +15,7 @@
             </div>
 
         </div>
-        <div class="clearfix">
+        <div class="clearfix" ng-if="showAdtButtons()">
             <button ng-click="admit()" ng-disabled="disableAdmitButton()">Admit</button>
             <button ng-click="transfer()" ng-disabled="disableTransferAndDischargeButton()">Transfer</button>
             <button ng-click="discharge()" ng-disabled="disableTransferAndDischargeButton()">Discharge</button>

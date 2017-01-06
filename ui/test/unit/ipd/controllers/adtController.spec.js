@@ -1,7 +1,7 @@
 'use strict';
 
 describe("AdtController", function () {
-    var scope, rootScope, controller, bedService, appService, sessionService, dispositionService, visitService, encounterService, ngDialog, window, messagingService, spinnerService;
+    var scope, state, rootScope, controller, bedService, appService, sessionService, dispositionService, visitService, encounterService, ngDialog, window, messagingService, spinnerService;
 
     beforeEach(function () {
         module('bahmni.ipd');
@@ -21,6 +21,7 @@ describe("AdtController", function () {
         ngDialog = jasmine.createSpyObj('ngDialog', ['openConfirm', 'close']);
         messagingService = jasmine.createSpyObj('messagingService', ['showMessage']);
         spinnerService = jasmine.createSpyObj('spinnerService', ['forPromise']);
+        state = {current: {name: "some state"}};
         window = {};
 
         appService.getAppDescriptor.and.returnValue({
@@ -75,6 +76,7 @@ describe("AdtController", function () {
         controller('AdtController', {
             $scope: scope,
             $rootScope: rootScope,
+            $state: state,
             $stateParams: {patientUuid: "patientUuid", visitUuid: "visitUuid"},
             sessionService: sessionService,
             dispositionService: dispositionService,
@@ -399,21 +401,5 @@ describe("AdtController", function () {
 
         createController();
         expect(scope.dispositionActions).toEqual([{"name": {"name": "Admit Patient", "uuid": "avb231rt"}}]);
-    });
-
-    xdescribe('Discharge', function () {
-        it('should discharge patient', function () {
-            scope.patient = {uuid: "patient Uuid"};
-            encounterService.discharge.and.callFake(function () {
-                return {
-                    then: function (callback) {
-                        return callback({data: {}})
-                    }
-                }
-            });
-            createController();
-
-            scope.discharge();
-        })
     });
 });
