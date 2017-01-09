@@ -35,6 +35,9 @@ angular.module('bahmni.common.displaycontrol.obsVsObsFlowSheet').directive('obsT
                         obsInFlowSheet.headers = _.without(obsInFlowSheet.headers, groupByElement);
                         obsInFlowSheet.headers.unshift(groupByElement);
                         $scope.obsTable = obsInFlowSheet;
+                        if (_.isEmpty($scope.obsTable.rows)) {
+                            $scope.$emit("no-data-present-event");
+                        }
                     });
             };
 

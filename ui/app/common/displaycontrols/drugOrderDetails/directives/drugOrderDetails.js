@@ -14,6 +14,9 @@ angular.module('bahmni.common.displaycontrol.drugOrderDetails')
                         var drugOrderResponse = results[0];
                         var drugOrders = drugOrderResponse.map(createDrugOrder);
                         $scope.drugOrders = sortOrders(drugOrders);
+                        if (_.isEmpty($scope.drugOrders)) {
+                            $scope.$emit("no-data-present-event");
+                        }
                     });
             };
 
