@@ -34,7 +34,6 @@ angular.module('bahmni.common.displaycontrol.orders')
                         });
                         if (_.isEmpty($scope.bahmniOrders)) {
                             $scope.noOrdersMessage = $scope.getSectionTitle();
-                            $scope.$emit("no-data-present-event");
                         } else {
                             $scope.bahmniOrders[0].isOpen = true;
                         }
