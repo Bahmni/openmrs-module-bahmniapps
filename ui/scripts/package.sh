@@ -47,4 +47,4 @@ grunt android
 cd dist && zip -r ../target/${ZIP_FILE_NAME}_android.zip *
 
 echo "Killing Xvfb process $XVFB_PID"
-sudo kill $XVFB_PID
+/usr/bin/sudo kill $XVFB_PID
