@@ -33,12 +33,12 @@ angular.module('bahmni.common.offline')
                 return $q.when(value);
             };
 
-            var init = function () {
-                return $q.when(AndroidOfflineService.init());
+            var init = function (dbName) {
+                currentDbName = dbName;
+                return $q.when(AndroidOfflineService.init(dbName));
             };
 
             var initSchema = function (dbName) {
-                currentDbName = dbName;
                 return $q.when(AndroidOfflineService.initSchema(dbName));
             };
 
@@ -47,8 +47,9 @@ angular.module('bahmni.common.offline')
                 return $q.when({});
             };
 
-            var getPatientByUuid = function (uuid) {
-                var value = AndroidOfflineService.getPatientByUuid(uuid);
+            var getPatientByUuid = function (uuid, dbName) {
+                dbName = dbName || null;
+                var value = AndroidOfflineService.getPatientByUuid(uuid, dbName);
                 value = value != undefined ? JSON.parse(value) : value;
                 angular.forEach(value.patient.person.attributes, function (attribute) {
                     if (attribute.hydratedObject) {
@@ -216,8 +217,9 @@ angular.module('bahmni.common.offline')
                 return $q.when(value);
             };
 
-            var getEncounterByEncounterUuid = function (encounterUuid) {
-                var response = AndroidOfflineService.findEncounterByEncounterUuid(encounterUuid);
+            var getEncounterByEncounterUuid = function (encounterUuid, dbName) {
+                dbName = dbName || null;
+                var response = AndroidOfflineService.findEncounterByEncounterUuid(encounterUuid, dbName);
                 response = response != undefined ? JSON.parse(response) : response;
                 return $q.when(response);
             };
@@ -249,8 +251,9 @@ angular.module('bahmni.common.offline')
                 return $q.when(value);
             };
 
-            var getErrorLogByUuid = function (uuid) {
-                var value = AndroidOfflineService.getErrorLogByUuid(uuid);
+            var getErrorLogByUuid = function (uuid, dbName) {
+                dbName = dbName || null;
+                var value = AndroidOfflineService.getErrorLogByUuid(uuid, dbName);
                 value = value !== undefined ? JSON.parse(value) : value;
                 return $q.when(value);
             };
@@ -266,9 +269,9 @@ angular.module('bahmni.common.offline')
                 return $q.when(response);
             };
 
-            var getPatientByUuidForPost = function (uuid) {
+            var getPatientByUuidForPost = function (uuid, dbName) {
                 var deferred = $q.defer();
-                getPatientByUuid(uuid).then(function (patientData) {
+                getPatientByUuid(uuid, dbName).then(function (patientData) {
                     var patient = patientData.patient;
                     patient.identifiers = _.map(patient.identifiers, function (identifier) {
                         return {
