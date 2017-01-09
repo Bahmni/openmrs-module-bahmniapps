@@ -19,8 +19,9 @@ angular.module('bahmni.common.offline')
                 return deferred.promise;
             };
 
-            var getPatientByUuid = function (uuid) {
-                return patientDbService.getPatientByUuid(db, uuid);
+            var getPatientByUuid = function (uuid, preferredDb) {
+                preferredDb = preferredDb ? preferredDb : db;
+                return patientDbService.getPatientByUuid(preferredDb, uuid);
             };
 
             var deletePatientData = function (uuid) {
@@ -214,8 +215,9 @@ angular.module('bahmni.common.offline')
                 return visitDbService.getVisitByUuid(db, visitUuid);
             };
 
-            var getEncounterByEncounterUuid = function (encounterUuid) {
-                return encounterDbService.getEncounterByEncounterUuid(db, encounterUuid);
+            var getEncounterByEncounterUuid = function (encounterUuid, preferredDb) {
+                preferredDb = preferredDb ? preferredDb : db;
+                return encounterDbService.getEncounterByEncounterUuid(preferredDb, encounterUuid);
             };
 
             var getObservationsFor = function (params) {
@@ -241,8 +243,9 @@ angular.module('bahmni.common.offline')
                 return errorLogDbService.insertLog(db, errorUuid, failedRequest, responseStatus, stackTrace, requestPayload, provider);
             };
 
-            var getErrorLogByUuid = function (uuid) {
-                return errorLogDbService.getErrorLogByUuid(db, uuid);
+            var getErrorLogByUuid = function (uuid, preferredDb) {
+                preferredDb = preferredDb ? preferredDb : db;
+                return errorLogDbService.getErrorLogByUuid(preferredDb, uuid);
             };
 
             var deleteErrorFromErrorLog = function (uuid) {
@@ -266,9 +269,9 @@ angular.module('bahmni.common.offline')
                 return encounterDbService.getEncountersByVisits(db, params);
             };
 
-            var getPatientByUuidForPost = function (uuid) {
+            var getPatientByUuidForPost = function (uuid, preferredDb) {
                 var deferred = $q.defer();
-                getPatientByUuid(uuid).then(function (patientData) {
+                getPatientByUuid(uuid, preferredDb).then(function (patientData) {
                     var patient = patientData.patient;
                     patient.identifiers = _.map(patient.identifiers, function (identifier) {
                         return {

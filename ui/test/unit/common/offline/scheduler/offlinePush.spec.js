@@ -6,17 +6,42 @@ describe('Offline Push Tests', function () {
     beforeEach(function () {
         module('bahmni.common.offline');
         module(function ($provide) {
+            var mockofflineService = jasmine.createSpyObj('offlineService', ['isAndroidApp']);
+            mockofflineService.isAndroidApp.and.returnValue(false);
+
             var offlineServiceMock = jasmine.createSpyObj('offlineService', ['isOfflineApp','isAndroidApp']);
             eventQueueMock = jasmine.createSpyObj('eventQueue', ['consumeFromErrorQueue','consumeFromEventQueue','removeFromQueue','addToErrorQueue','releaseFromQueue']);
             offlineDbServiceMock = jasmine.createSpyObj('offlineDbService', ['getPatientByUuidForPost','getEncounterByEncounterUuid',
                 'insertLog', 'createEncounter','deleteErrorFromErrorLog','getErrorLogByUuid',
-                'initSchema','init','getDbNames', 'getCurrentDbName']);
+                'initSchema','init','getDbNames']);
             loggingServiceMock = jasmine.createSpyObj('loggingService', ['logSyncError']);
             mockBahmniCookieStore = jasmine.createSpyObj('bahmniCookieStore', ["get"]);
             $provide.value('$bahmniCookieStore', mockBahmniCookieStore);
 
+            var getDb = function (dbName) {
+                return {
+                    getSchema: function () {
+                        return {
+                            name: function () {
+                                return dbName;
+                            }
+                        };
+                    }
+                }
+            };
 
-            offlineDbServiceMock.initSchema.and.returnValue(specUtil.createFakePromise());
+            offlineDbServiceMock.initSchema.and.callFake(function (dbName) {
+                return specUtil.simplePromise(
+                    {
+                        getSchema: function () {
+                            return {
+                                name: function () {
+                                    return dbName;
+                                }
+                            };
+                        }
+                    });
+            });
 
             mockBahmniCookieStore.get.and.callFake(function (cookie) {
                 if (cookie == Bahmni.Common.Constants.locationCookieName) {
@@ -71,7 +96,6 @@ describe('Offline Push Tests', function () {
     describe("push events when single db is present", function () {
         beforeEach(function() {
             offlineDbServiceMock.getDbNames.and.returnValue(["dbOne"]);
-            offlineDbServiceMock.getCurrentDbName.and.returnValue(["dbOne"]);
         });
 
         it("should push data from event queue", function (done) {
@@ -134,7 +158,7 @@ describe('Offline Push Tests', function () {
         });
 
         it("should push encounter data from event queue", function (done) {
-            event.data = {type: "encounter", dbName: "dbOne"};
+            event.data = {type: "encounter", dbName: "dbOne", encounterUuid: 'encounterUuid'};
             httpBackend.expectPOST(Bahmni.Common.Constants.bahmniEncounterUrl).respond(200, {});
             offlinePush().then(function () {
                 expect(offlineDbServiceMock.createEncounter).toHaveBeenCalled();
@@ -153,7 +177,7 @@ describe('Offline Push Tests', function () {
             offlinePush().then(function () {
                 expect(eventQueueMock.removeFromQueue).toHaveBeenCalled();
                 expect(eventQueueMock.consumeFromEventQueue).toHaveBeenCalled();
-                expect(offlineDbServiceMock.getErrorLogByUuid).toHaveBeenCalledWith("someUuid");
+                expect(offlineDbServiceMock.getErrorLogByUuid).toHaveBeenCalledWith("someUuid", jasmine.any(Object));
                 expect(offlineDbServiceMock.deleteErrorFromErrorLog).toHaveBeenCalledWith("someUuid");
                 done();
             });
@@ -171,82 +195,13 @@ describe('Offline Push Tests', function () {
                 expect(eventQueueMock.addToErrorQueue).not.toHaveBeenCalled();
                 expect(eventQueueMock.consumeFromEventQueue).not.toHaveBeenCalled();
                 expect(eventQueueMock.releaseFromQueue).toHaveBeenCalled();
-                expect(offlineDbServiceMock.getErrorLogByUuid).toHaveBeenCalledWith("someUuid");
+                expect(offlineDbServiceMock.getErrorLogByUuid).toHaveBeenCalledWith("someUuid", jasmine.any(Object));
                 expect(offlineDbServiceMock.deleteErrorFromErrorLog).not.toHaveBeenCalled();
                 done();
             });
             setTimeout(function () {
                 httpBackend.flush();
             }, 1000);
-        });
-    });
-
-    describe("Push events from multiple database",function(){
-        var eventOne, errorEvent, _eventQueue, _errorQueue;
-
-        beforeEach(function() {
-            eventOne = {
-                "data": {
-                    url: "someUrl",
-                    patientUuid: "someUuid",
-                    dbName: "dbOne"
-                },
-                tube: "event_queue"
-            };
-            offlineDbServiceMock.getDbNames.and.returnValue(["dbOne","dbTwo"]);
-            eventQueueMock.consumeFromEventQueue = function() {
-              return $q.when(_eventQueue.shift());
-            };
-            eventQueueMock.consumeFromErrorQueue = function() {
-                return $q.when(_errorQueue.shift());
-            }
-        });
-
-
-        it("should process the  event if the event is in current database", function(done) {
-            offlineDbServiceMock.getCurrentDbName.and.returnValue("dbOne");
-            _errorQueue = [];
-            _eventQueue = [eventOne];
-            httpBackend.expectPOST("someUrl").respond(200, {});
-            offlinePush().then(function(){
-                expect(eventQueueMock.removeFromQueue).toHaveBeenCalled();
-                done();
-            });
-            setTimeout(function(){
-                httpBackend.flush();
-            }, 100);
-        });
-
-
-        it("should reserve event if event is not in current database", function(done) {
-            offlineDbServiceMock.getCurrentDbName.and.returnValue("dbTwo");
-            _errorQueue = [];
-            _eventQueue = [eventOne];
-            offlinePush().then(function(){
-                expect(eventQueueMock.releaseFromQueue).toHaveBeenCalledWith(eventOne);
-                done();
-            });
-        });
-
-        it("should initialise new db if queue does not have events and there are events in reserve queue", function(done) {
-            var dbNames = ["dbTwo", "dbTwo", "dbOne"];
-            offlineDbServiceMock.getCurrentDbName.and.returnValue(dbNames.shift());
-            _errorQueue = [];
-            _eventQueue = [eventOne];
-            offlinePush().then(function(){
-                expect(offlineDbServiceMock.initSchema).toHaveBeenCalledWith("dbOne");
-                done();
-            });
-        });
-
-        it("should return if there is no event in eventQueue and errorQueue", function(done) {
-            _eventQueue = [];
-            _errorQueue = [];
-            offlinePush().then(function(){
-                expect(eventQueueMock.removeFromQueue).not.toHaveBeenCalled();
-                expect(offlineDbServiceMock.getPatientByUuidForPost).not.toHaveBeenCalled();
-                done();
-            });
         });
     });
 });

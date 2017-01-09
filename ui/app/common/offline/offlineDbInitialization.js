@@ -18,6 +18,7 @@ angular.module('bahmni.common.offline')
                         dbNames.push(location);
                         offlineService.setItem("dbNames", _.uniq(dbNames));
                         return offlineDbService.initSchema(location).then(function (db) {
+                            db = offlineService.isAndroidApp() ? location : db;
                             offlineDbService.init(db);
                             return db;
                         });
