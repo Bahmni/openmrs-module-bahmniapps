@@ -37,5 +37,6 @@
     "PASSWORD_SHOULD_NOT_MATCH_USER_NAME":"Should not match username",
     "PASSWORD_SHOULD_BE_A_MIX_OF_BOTH_UPPER_CASE_AND_LOWER_CASE":"Should be a mix of both upper and lower-case letters",
     "PASSWORD_SHOULD_MATCH_THE_REGEX": "Should match the given regex {{regex}}",
+    "PASSWORD_SHOULD_HAVE_ATLEAST_ONE_NON_DIGIT": "Should contain at least one non digit character",
     "CHANGE_PASSWORD_DOES_NOT_SUPPORT":"We don’t support this feature for now, please contact administrator."
 }
