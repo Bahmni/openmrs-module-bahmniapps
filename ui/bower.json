@@ -45,7 +45,7 @@
     "hustle": "https://github.com/DWB-eHealth/hustle.git#4e7e3bd",
     "crypto-js": "3.1.5",
     "ng-tags-input": "^3.1.1",
-    "ngreact":"^0.3.0",
+    "ngReact":"^0.3.0",
     "offline": "0.7.14",
     "react": "^15.3.2"
   },
