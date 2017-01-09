@@ -390,6 +390,15 @@ module.exports = function (grunt) {
                         src: [
                             '*.*'
                         ]
+                    },
+                    {
+                        expand: true,
+                        dot: true,
+                        cwd: '<%= yeoman.nodeModules %>/bahmni-clinical-components/dist',
+                        dest: '<%= yeoman.app %>/components/bahmni-clinical-components/',
+                        src: [
+                            '*.*'
+                        ]
                     }
                 ]
             }
