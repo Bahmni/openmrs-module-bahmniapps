@@ -3,9 +3,9 @@
 angular.module('bahmni.common.offline')
         .factory('offlineSyncInitialization', ['offlineSyncService', 'offlineService',
             function (offlineSyncService, offlineService) {
-                return function () {
+                return function (isInitSync) {
                     if (offlineService.isOfflineApp()) {
-                        return offlineSyncService.sync();
+                        return offlineSyncService.sync(isInitSync);
                     }
                 };
             }

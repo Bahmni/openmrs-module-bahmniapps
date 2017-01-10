@@ -1034,16 +1034,4 @@ describe('OfflineDbService ', function () {
             });
         });
     });
-
-    describe("getCurrentDbName", function () {
-        it("should give the current DB name", function (done) {
-            var schemaBuilder = lf.schema.create('BahmniOfflineDb', 1);
-            schemaBuilder.connect().then(function (db) {
-                offlineDbService.init(db);
-                offlineDbService.getCurrentDbName();
-                expect(offlineService.getItem).toHaveBeenCalledWith("currentDbName");
-                done();
-            });
-        });
-    });
 });

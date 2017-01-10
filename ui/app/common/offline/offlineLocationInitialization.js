@@ -35,11 +35,18 @@ angular.module('bahmni.common.offline')
                                             eventLogService.getFilterForCategoryAndLoginLocation(provider.uuid, loginAddress.uuid, loginLocation.uuid).then(function (results) {
                                                 var categoryFilterMap = results.data;
                                                 Object.keys(categoryFilterMap).forEach(function (category) {
-                                                    if (!(category == "offline-concepts" && isConceptSyncCompleted)) {
+                                                    if (category !== "transactionalData" && (!(category == "offline-concepts" && isConceptSyncCompleted))) {
                                                         offlineDbService.insertMarker(category, null, categoryFilterMap[category]);
                                                     }
                                                 });
-                                                deferred.resolve();
+
+                                                offlineDbService.getMarker("transactionalData").then(function (marker) {
+                                                    offlineService.setItem("initSyncFilter", categoryFilterMap["transactionalData"]);
+                                                    var filters = (marker && marker.filters) || [];
+                                                    filters = filters.concat(categoryFilterMap["transactionalData"]);
+                                                    offlineDbService.insertMarker("transactionalData", null, _.uniq(filters));
+                                                    deferred.resolve();
+                                                });
                                             });
                                         });
                                         break;

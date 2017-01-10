@@ -16,7 +16,7 @@ angular.module('bahmni.common.offline')
                 $rootScope.initSyncInfo.savedEvents = 0;
             };
 
-            var sync = function () {
+            var sync = function (isInitSync) {
                 stages = 0;
                 if (offlineService.isAndroidApp()) {
                     offlineDbService = androidDbService;
@@ -25,14 +25,18 @@ angular.module('bahmni.common.offline')
                 categories = offlineService.getItem("eventLogCategories");
                 initializeInitSyncInfo(categories);
                 _.map(categories, function (category) {
-                    promises.push(syncForCategory(category));
+                    promises.push(syncForCategory(category, isInitSync));
                 });
                 return $q.all(promises);
             };
 
-            var syncForCategory = function (category) {
+            var syncForCategory = function (category, isInitSync) {
                 return offlineDbService.getMarker(category).then(function (marker) {
-                    return syncForMarker(category, marker);
+                    if (category == "transactionalData" && isInitSync) {
+                        marker = angular.copy(marker);
+                        marker.filters = offlineService.getItem("initSyncFilter");
+                    }
+                    return syncForMarker(category, marker, isInitSync);
                 });
             };
 
@@ -43,7 +47,7 @@ angular.module('bahmni.common.offline')
                 }, 0);
             };
 
-            var syncForMarker = function (category, marker) {
+            var syncForMarker = function (category, marker, isInitSync) {
                 return eventLogService.getEventsFor(category, marker).then(function (response) {
                     var events = response.data ? response.data["events"] : undefined;
                     updatePendingEventsCount(category, response.data.pendingEventsCount);
@@ -51,7 +55,7 @@ angular.module('bahmni.common.offline')
                         endSync(stages++);
                         return;
                     }
-                    return readEvent(events, 0, category);
+                    return readEvent(events, 0, category, isInitSync);
                 }, function () {
                     endSync(-1);
                     var deferrable = $q.defer();
@@ -60,9 +64,9 @@ angular.module('bahmni.common.offline')
                 });
             };
 
-            var readEvent = function (events, index, category) {
+            var readEvent = function (events, index, category, isInitSync) {
                 if (events.length == index && events.length > 0) {
-                    return syncForCategory(category);
+                    return syncForCategory(category, isInitSync);
                 }
                 if (events.length == index) {
                     return;
@@ -82,7 +86,7 @@ angular.module('bahmni.common.offline')
                                 .then(
                                     function (lastEvent) {
                                         offlineService.setItem("lastSyncTime", lastEvent.lastReadTime);
-                                        return readEvent(events, ++index, category);
+                                        return readEvent(events, ++index, category, isInitSync);
                                     });
                         }).catch(function (response) {
                             logSyncError(response);
