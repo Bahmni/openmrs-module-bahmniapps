@@ -12,20 +12,30 @@ angular.module('bahmni.clinical')
                 });
             }
         };
+
+        var getDispositionNotes = function () {
+            var previousDispositionNotes = getPreviousDispositionNote();
+            if (getSelectedConceptName($scope.dispositionCode, $scope.dispositionActions)) {
+                return _.cloneDeep(previousDispositionNotes) || {concept: {uuid: $scope.dispositionNoteConceptUuid}};
+            }
+            else {
+                return {concept: {uuid: $scope.dispositionNoteConceptUuid}};
+            }
+        };
+
         var getDispositionActionsPromise = function () {
             return dispositionService.getDispositionActions().then(function (response) {
                 allDispositions = new Bahmni.Clinical.DispostionActionMapper().map(response.data.results[0].answers);
                 $scope.dispositionActions = filterDispositionActions(allDispositions, $scope.$parent.visitSummary);
-                var previousDispositionNote = getPreviousDispositionNote();
-                $scope.dispositionNote = _.cloneDeep(previousDispositionNote) || {concept: {uuid: $scope.dispositionNoteConceptUuid}};
                 $scope.dispositionCode = consultation.disposition && (!consultation.disposition.voided) ? consultation.disposition.code : null;
+                $scope.dispositionNote = getDispositionNotes();
             });
         };
 
-        function findAction (dispositions, action) {
+        var findAction = function (dispositions, action) {
             var undoDischarge = _.find(dispositions, action);
             return undoDischarge || {'name': ''};
-        }
+        };
 
         var filterDispositionActions = function (dispositions, visitSummary) {
             var defaultDispositions = ["Undo Discharge", "Admit Patient", "Transfer Patient", "Discharge Patient"];
@@ -69,8 +79,8 @@ angular.module('bahmni.clinical')
             $scope.dispositionNote.value = null;
         };
 
-        var getSelectedConceptName = function (dispositionCode) {
-            var selectedDispositionConceptName = _.findLast(allDispositions, {code: dispositionCode}) || {};
+        var getSelectedConceptName = function (dispositionCode, dispositions) {
+            var selectedDispositionConceptName = _.findLast(dispositions, {code: dispositionCode}) || {};
             return selectedDispositionConceptName.name;
         };
 
@@ -81,7 +91,7 @@ angular.module('bahmni.clinical')
                     additionalObs: [],
                     dispositionDateTime: consultation.disposition && consultation.disposition.dispositionDateTime,
                     code: $scope.dispositionCode,
-                    conceptName: getSelectedConceptName($scope.dispositionCode)
+                    conceptName: getSelectedConceptName($scope.dispositionCode, allDispositions)
                 };
                 if ($scope.dispositionNote.value || $scope.dispositionNote.uuid) {
                     disposition.additionalObs = [_.clone($scope.dispositionNote)];

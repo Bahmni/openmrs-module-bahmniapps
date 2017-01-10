@@ -248,7 +248,7 @@
                 <li>
                     <div class="expander-row row-click">
                         <span class="disposition-state">{{consultation.disposition.conceptName}} <span ng-if="consultation.disposition.dispositionDateTime">on</span> {{consultation.disposition.dispositionDateTime | bahmniDateTime }}</span>
-                        <button class="toggle fr" ng-class="{'has-notes': disposition.additionalObs[0].value}" toggle="disposition.show">
+                        <button class="toggle fr" ng-class="{'has-notes': consultation.disposition.additionalObs[0].value}" toggle="disposition.show">
                             <i class="fa fa-plus-circle"></i>
                             <i class="fa fa-minus-circle"></i>
                         </button>
@@ -256,7 +256,7 @@
                     <div>
                         <div ng-if="disposition.show" class="inline-notes notes" ng-class="{'print-notes': note.value}">
                             <p class="left">
-                                <strong>Disposition Notes: </strong>{{disposition.additionalObs[0].value}}
+                                <strong>Disposition Notes: </strong>{{consultation.disposition.additionalObs[0].value}}
                             </p>
                         </div>
                     </div>
