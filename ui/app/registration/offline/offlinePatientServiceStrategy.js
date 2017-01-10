@@ -1,8 +1,13 @@
 'use strict';
 
 angular.module('bahmni.registration')
-    .factory('patientServiceStrategy', ['$q', 'offlinePatientServiceStrategy', 'eventQueue', '$rootScope', 'offlineDbService',
-        function ($q, offlinePatientServiceStrategy, eventQueue, $rootScope, offlineDbService) {
+    .factory('patientServiceStrategy', ['$q', 'offlinePatientServiceStrategy', 'eventQueue', '$rootScope', 'offlineService', 'offlineDbService', 'androidDbService',
+        function ($q, offlinePatientServiceStrategy, eventQueue, $rootScope, offlineService, offlineDbService, androidDbService) {
+            if (offlineService.isOfflineApp()) {
+                if (offlineService.isAndroidApp()) {
+                    offlineDbService = androidDbService;
+                }
+            }
             var search = function (config) {
                 return offlinePatientServiceStrategy.search(config).then(function (results) {
                     return results.data;
