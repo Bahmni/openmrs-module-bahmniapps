@@ -107,12 +107,12 @@ angular.module('bahmni.common.offline')
                 return $q.when(value);
             };
 
-            var createEncounter = function (encounterData) {
+            var createEncounter = function (encounterData, dbName) {
                 var deferred = $q.defer();
-                insertEncounterData(encounterData).then(function () {
+                insertEncounterData(encounterData, dbName).then(function () {
                     if (encounterData.visitUuid) {
                         eventLogService.getDataForUrl(Bahmni.Common.Constants.visitUrl + "/" + encounterData.visitUuid).then(function (response) {
-                            insertVisitData(response.data).then(function () {
+                            insertVisitData(response.data, dbName).then(function () {
                                 deferred.resolve({data: encounterData});
                             });
                         }, function () {
@@ -125,9 +125,10 @@ angular.module('bahmni.common.offline')
                 return deferred.promise;
             };
 
-            var insertEncounterData = function (encounterData) {
-                var encounter = AndroidOfflineService.insertEncounterData(JSON.stringify(encounterData));
-                return insertObservationData(encounterData.patientUuid, encounterData.visitUuid, encounterData.observations).then(function () {
+            var insertEncounterData = function (encounterData, dbName) {
+                dbName = dbName || null;
+                var encounter = AndroidOfflineService.insertEncounterData(JSON.stringify(encounterData), dbName);
+                return insertObservationData(encounterData.patientUuid, encounterData.visitUuid, encounterData.observations, dbName).then(function () {
                     encounter = encounter != undefined ? JSON.parse(encounter) : encounter;
                     return encounter;
                 });
@@ -139,8 +140,9 @@ angular.module('bahmni.common.offline')
                 return $q.when(response);
             };
 
-            var insertVisitData = function (visitData) {
-                var response = AndroidOfflineService.insertVisitData(JSON.stringify(visitData));
+            var insertVisitData = function (visitData, dbName) {
+                dbName = dbName || null;
+                var response = AndroidOfflineService.insertVisitData(JSON.stringify(visitData), dbName);
                 response = response != undefined ? JSON.parse(response) : response;
                 return $q.when(response);
             };
@@ -165,8 +167,9 @@ angular.module('bahmni.common.offline')
                 return deferred.promise;
             };
 
-            var insertObservationData = function (patientUuid, visitUuid, observationData) {
-                var response = AndroidOfflineService.insertObservationData(patientUuid, visitUuid, JSON.stringify(observationData));
+            var insertObservationData = function (patientUuid, visitUuid, observationData, dbName) {
+                dbName = dbName || null;
+                var response = AndroidOfflineService.insertObservationData(patientUuid, visitUuid, JSON.stringify(observationData), dbName);
                 response = response != undefined ? JSON.parse(response) : response;
                 return $q.when(response);
             };
