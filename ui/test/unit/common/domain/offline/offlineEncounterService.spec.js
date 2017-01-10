@@ -26,6 +26,19 @@ describe('offlineEncounterService', function () {
         });
         $provide.value('$q', $q);
         $provide.value('$bahmniCookieStore', $bahmniCookieStore);
+        $provide.value("offlineDbService", {
+            getCurrentDbName: function () {
+                return "location-name";
+            }
+        });
+        $provide.value('offlineService', {
+            isAndroidApp: function () {
+                return false;
+            },
+            isOfflineApp: function () {
+                return true;
+            }
+        })
     }));
 
     beforeEach(inject(['encounterService','offlineEncounterServiceStrategy', 'eventQueue', '$rootScope', function (encounterServiceInjected, offlineEncounterServiceStrategyInjected, eventQueueInjected, $rootScope) {

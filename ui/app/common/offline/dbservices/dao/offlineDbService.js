@@ -290,13 +290,11 @@ angular.module('bahmni.common.offline')
                 });
                 return deferred.promise;
             };
-
             var getDbNames = function () {
                 return offlineService.getItem("dbNames");
             };
-
             var getCurrentDbName = function () {
-                return db.getSchema().name();
+                return offlineService.getItem("currentDbName");
             };
 
             return {

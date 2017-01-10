@@ -65,6 +65,11 @@ describe('Offline Push Tests', function () {
 
             offlineServiceMock.isOfflineApp.and.returnValue(true);
             offlineServiceMock.isAndroidApp.and.returnValue(false);
+            offlineServiceMock.getItem = function (key) {
+                if(key == 'LoginInformation')
+                    return {currentLocation:{display:"location"}};
+                return {results:[{username: "provider"}]};
+            };
 
             eventQueueMock.removeFromQueue.and.returnValue($q.when(undefined));
             eventQueueMock.addToErrorQueue.and.returnValue($q.when(undefined));

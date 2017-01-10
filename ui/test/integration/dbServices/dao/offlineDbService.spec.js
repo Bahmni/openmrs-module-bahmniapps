@@ -2,7 +2,7 @@
 
 describe('OfflineDbService ', function () {
     var offlineDbService, $q = Q;
-    var patientDbService, patientIdentifierDbService, patientAddressDbService, patientAttributeDbService, offlineMarkerDbService, offlineAddressHierarchyDbService,labOrderResultsDbService,
+    var patientDbService, patientIdentifierDbService, patientAddressDbService, patientAttributeDbService, offlineMarkerDbService, offlineAddressHierarchyDbService,labOrderResultsDbService, offlineService,
         offlineConfigDbService, initializeOfflineSchema, referenceDataDbService, locationDbService, offlineSearchDbService, encounterDbService, visitDbService, observationDbService, conceptDbService, errorLogDbService, eventLogService;
 
     beforeEach(function () {
@@ -26,6 +26,7 @@ describe('OfflineDbService ', function () {
             conceptDbService = jasmine.createSpyObj('conceptDbService', ['init', 'getReferenceData', 'getConceptByName', 'insertConceptAndUpdateHierarchy', 'updateChildren', 'updateParentJson', 'getAllParentsInHierarchy']);
             errorLogDbService = jasmine.createSpyObj('errorLogDbService', ['insertLog', 'getErrorLogByUuid', 'deleteByUuid']);
             eventLogService = jasmine.createSpyObj('eventLogService', ['getDataForUrl']);
+            offlineService = jasmine.createSpyObj('offlineService', ['getItem']);
 
             $provide.value('patientDbService', patientDbService);
             $provide.value('patientIdentifierDbService', patientIdentifierDbService);
@@ -45,6 +46,7 @@ describe('OfflineDbService ', function () {
             $provide.value('conceptDbService', conceptDbService);
             $provide.value('errorLogDbService', errorLogDbService);
             $provide.value('eventLogService', eventLogService);
+            $provide.value('offlineService', offlineService);
             $provide.value('$q', $q);
         });
     });
@@ -1028,6 +1030,18 @@ describe('OfflineDbService ', function () {
                 offlineDbService.insertLabOrderResults("patientUuid" , {results:[]});
                 expect(labOrderResultsDbService.insertLabOrderResults.calls.count()).toBe(1);
                 expect(labOrderResultsDbService.insertLabOrderResults).toHaveBeenCalledWith(db, "patientUuid", {results:[]});
+                done();
+            });
+        });
+    });
+
+    describe("getCurrentDbName", function () {
+        it("should give the current DB name", function (done) {
+            var schemaBuilder = lf.schema.create('BahmniOfflineDb', 1);
+            schemaBuilder.connect().then(function (db) {
+                offlineDbService.init(db);
+                offlineDbService.getCurrentDbName();
+                expect(offlineService.getItem).toHaveBeenCalledWith("currentDbName");
                 done();
             });
         });

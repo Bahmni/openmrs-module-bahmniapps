@@ -1,9 +1,14 @@
 'use strict';
 
 angular.module('bahmni.common.domain')
-    .service('encounterService', ['$q', '$rootScope', '$bahmniCookieStore', 'offlineEncounterServiceStrategy', 'eventQueue',
-        function ($q, $rootScope, $bahmniCookieStore, offlineEncounterServiceStrategy, eventQueue) {
+    .service('encounterService', ['$q', '$rootScope', '$bahmniCookieStore', 'offlineEncounterServiceStrategy', 'eventQueue', 'offlineService', 'offlineDbService', 'androidDbService',
+        function ($q, $rootScope, $bahmniCookieStore, offlineEncounterServiceStrategy, eventQueue, offlineService, offlineDbService, androidDbService) {
             var offlineEncounterService = offlineEncounterServiceStrategy;
+            if (offlineService.isOfflineApp()) {
+                if (offlineService.isAndroidApp()) {
+                    offlineDbService = androidDbService;
+                }
+            }
             this.buildEncounter = function (encounter) {
                 encounter.observations = encounter.observations || [];
                 encounter.providers = encounter.providers || [];
@@ -67,7 +72,6 @@ angular.module('bahmni.common.domain')
             };
 
             this.create = function (encounterData) {
-                var loginLocationName = $bahmniCookieStore.get(Bahmni.Common.Constants.locationCookieName).name;
                 encounterData.encounterUuid = encounterData.encounterUuid || Bahmni.Common.Offline.UUID.generateUuid();
                 encounterData.visitUuid = encounterData.visitUuid || null;
                 encounterData.encounterDateTime = encounterData.encounterDateTime || Bahmni.Common.Util.DateUtil.now();
@@ -80,7 +84,7 @@ angular.module('bahmni.common.domain')
                 }).then(function (encounterData) {
                     return offlineEncounterService.create(encounterData);
                 }).then(function (result) {
-                    var event = {type: "encounter", encounterUuid: result.data.encounterUuid, dbName: loginLocationName };
+                    var event = {type: "encounter", encounterUuid: result.data.encounterUuid, dbName: offlineDbService.getCurrentDbName() };
                     eventQueue.addToEventQueue(event);
                     return $q.when({data: encounterData});
                 });

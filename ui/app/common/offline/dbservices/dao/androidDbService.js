@@ -3,7 +3,6 @@
 angular.module('bahmni.common.offline')
     .service('androidDbService', ['$q', 'eventLogService', 'offlineService',
         function ($q, eventLogService, offlineService) {
-            var currentDbName;
             var getMarker = function (markerName) {
                 var value = AndroidOfflineService.getMarker(markerName);
                 value = value != undefined ? JSON.parse(value) : value;
@@ -308,7 +307,7 @@ angular.module('bahmni.common.offline')
             };
 
             var getCurrentDbName = function () {
-                return currentDbName;
+                return offlineService.getItem("currentDbName");
             };
 
             return {
