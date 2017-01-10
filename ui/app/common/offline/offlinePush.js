@@ -104,7 +104,7 @@ angular.module('bahmni.common.offline')
                             return postData(event, response)
                                 .success(function (data) {
                                     if (event.data.type && event.data.type == "encounter") {
-                                        return offlineDbService.createEncounter(data).then(function () {
+                                        return offlineDbService.createEncounter(data, db).then(function () {
                                             return successCallBack(event);
                                         });
                                     }

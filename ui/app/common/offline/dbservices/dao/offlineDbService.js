@@ -70,12 +70,12 @@ angular.module('bahmni.common.offline')
                 return labOrderResultsDbService.getLabOrderResultsForPatient(db, params);
             };
 
-            var createEncounter = function (encounterData) {
+            var createEncounter = function (encounterData, preferredDb) {
                 var deferred = $q.defer();
-                insertEncounterData(encounterData).then(function () {
+                insertEncounterData(encounterData, preferredDb).then(function () {
                     if (encounterData.visitUuid) {
                         eventLogService.getDataForUrl(Bahmni.Common.Constants.visitUrl + "/" + encounterData.visitUuid).then(function (response) {
-                            insertVisitData(response.data).then(function () {
+                            insertVisitData(response.data, preferredDb).then(function () {
                                 deferred.resolve({data: encounterData});
                             });
                         }, function () {
@@ -88,10 +88,11 @@ angular.module('bahmni.common.offline')
                 return deferred.promise;
             };
 
-            var insertEncounterData = function (encounterData) {
-                return encounterDbService.insertEncounterData(db, encounterData).then(function () {
+            var insertEncounterData = function (encounterData, preferredDb) {
+                preferredDb = preferredDb ? preferredDb : db;
+                return encounterDbService.insertEncounterData(preferredDb, encounterData).then(function () {
                     if (encounterData && encounterData.observations && encounterData.observations.length > 0) {
-                        return observationDbService.insertObservationsData(db, encounterData.patientUuid, encounterData.visitUuid, encounterData.observations).then(function () {
+                        return observationDbService.insertObservationsData(preferredDb, encounterData.patientUuid, encounterData.visitUuid, encounterData.observations).then(function () {
                             return encounterData;
                         });
                     }
@@ -207,8 +208,9 @@ angular.module('bahmni.common.offline')
                 return conceptDbService.updateParentJson(child);
             };
 
-            var insertVisitData = function (visitData) {
-                return visitDbService.insertVisitData(db, visitData);
+            var insertVisitData = function (visitData, preferredDb) {
+                preferredDb = preferredDb ? preferredDb : db;
+                return visitDbService.insertVisitData(preferredDb, visitData);
             };
 
             var getVisitByUuid = function (visitUuid) {
