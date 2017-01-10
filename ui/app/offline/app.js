@@ -13,7 +13,10 @@ angular.module('bahmni.offline', ['ui.router', 'httpErrorInterceptor', 'bahmni.c
                         offlineDb: function (offlineDbInitialization) {
                             return offlineDbInitialization();
                         },
-                        offlineReferenceDataInitialization: function (offlineReferenceDataInitialization, offlineDb, offlineDbService, offlineService, androidDbService, $state) {
+                        offlineConfigInitialization: function (offlineConfigInitialization, offlineDb) {
+                            return offlineConfigInitialization();
+                        },
+                        offlineReferenceDataInitialization: function (offlineReferenceDataInitialization, offlineConfigInitialization, offlineDbService, offlineService, androidDbService, $state) {
                             if (offlineService.isAndroidApp()) {
                                 offlineDbService = androidDbService;
                             }

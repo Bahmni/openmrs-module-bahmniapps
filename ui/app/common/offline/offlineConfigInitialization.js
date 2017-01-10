@@ -8,7 +8,7 @@ angular.module('bahmni.common.offline')
                     if (offlineService.isAndroidApp()) {
                         offlineDbService = androidDbService;
                     }
-                    var modules = ['home', 'registration', 'clinical'];
+                    var modules = ['home', 'registration', 'clinical', "offline"];
                     var length = modules.length;
                     var deferred = $q.defer();
 

@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('bahmni.registration')
-    .factory('patientServiceStrategy', ['$q', 'offlinePatientServiceStrategy', 'eventQueue', '$bahmniCookieStore', '$rootScope',
-        function ($q, offlinePatientServiceStrategy, eventQueue, $bahmniCookieStore, $rootScope) {
+    .factory('patientServiceStrategy', ['$q', 'offlinePatientServiceStrategy', 'eventQueue', '$rootScope', 'offlineDbService',
+        function ($q, offlinePatientServiceStrategy, eventQueue, $rootScope, offlineDbService) {
             var search = function (config) {
                 return offlinePatientServiceStrategy.search(config).then(function (results) {
                     return results.data;
@@ -38,7 +38,6 @@ angular.module('bahmni.registration')
             };
 
             var createWithOutMapping = function (data) {
-                var loginLocationName = $bahmniCookieStore.get(Bahmni.Common.Constants.locationCookieName).name;
                 data.patient.identifiers = _.filter(data.patient.identifiers, function (identifier) {
                     return !_.isEmpty(identifier.identifierType.identifierSources) || (identifier.identifier !== undefined);
                 });
@@ -68,7 +67,7 @@ angular.module('bahmni.registration')
                 } else {
                     event.url = Bahmni.Registration.Constants.baseOpenMRSRESTURL + "/bahmnicore/patientprofile/" + data.patient.uuid;
                 }
-                event.dbName = loginLocationName;
+                event.dbName = offlineDbService.getCurrentDbName();
                 event.patientUuid = data.patient.uuid;
                 return eventQueue.addToEventQueue(event).then(function () {
                     return offlinePatientServiceStrategy.create(data);

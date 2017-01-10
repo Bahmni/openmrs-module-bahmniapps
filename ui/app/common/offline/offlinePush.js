@@ -1,14 +1,22 @@
 'use strict';
 
 angular.module('bahmni.common.offline')
-    .factory('offlinePush', ['offlineService', 'eventQueue', '$http', 'offlineDbService', 'androidDbService', '$q', 'loggingService', '$bahmniCookieStore',
-        function (offlineService, eventQueue, $http, offlineDbService, androidDbService, $q, loggingService, $bahmniCookieStore) {
+    .factory('offlinePush', ['offlineService', 'eventQueue', '$http', 'offlineDbService', 'androidDbService', '$q', 'loggingService', '$bahmniCookieStore', 'dbNameService',
+        function (offlineService, eventQueue, $http, offlineDbService, androidDbService, $q, loggingService, $bahmniCookieStore, dbNameService) {
             return function () {
+                var reservedPromises = [];
+                var loginInformation = offlineService.getItem('LoginInformation');
+                var location = loginInformation ? loginInformation.currentLocation.display : null;
+                var username = offlineService.getItem("userData").results[0].username;
                 var releaseReservedEvents = function (reservedEvents) {
                     angular.forEach(reservedEvents, function (reservedEvent) {
                         eventQueue.releaseFromQueue(reservedEvent);
                     });
                 };
+                var reservedEventsOfOtherDb = [];
+                var tempDbNames = [];
+                var db;
+                var dbNames = offlineDbService.getDbNames();
 
                 var getAllDbPromises = function () {
                     var dbPromises = [];
