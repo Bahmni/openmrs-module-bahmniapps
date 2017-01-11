@@ -29,6 +29,7 @@ describe('ObservationFormController', function () {
     function createController() {
         return controller('ObservationFormController', {
             $scope: scope,
+            $rootScope: {currentUser: {isFavouriteObsTemplate: function() {return null;}}},
             observationFormService: observationFormService,
             spinner: spinner
         });
