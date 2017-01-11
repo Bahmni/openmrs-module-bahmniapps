@@ -26,11 +26,17 @@
             </div>
         </div>
     </div>
-    <concept-set ng-if="conceptSet.isLoaded" patient="::patient" ng-show="conceptSet.isOpen"
-                 collapse-inner-sections="conceptSet.collapseInnerSections"
-                 concept-set-name="::conceptSet.conceptName" required="conceptSet.options.required"
-                 at-least-one-value-is-set="conceptSet.atLeastOneValueIsSet"
-                 observations="conceptSet.observations" show-title="::false" validation-handler="::validationHandler"
-                 section-id="conceptSet.id">
-    </concept-set>
+    <div ng-if="!isFormTemplate(conceptSet)">
+        <concept-set ng-if="conceptSet.isLoaded" patient="::patient" ng-show="conceptSet.isOpen"
+                     collapse-inner-sections="conceptSet.collapseInnerSections"
+                     concept-set-name="::conceptSet.conceptName" required="conceptSet.options.required"
+                     at-least-one-value-is-set="conceptSet.atLeastOneValueIsSet"
+                     observations="conceptSet.observations" show-title="::false"
+                     validation-handler="::validationHandler"
+                     section-id="conceptSet.id">
+        </concept-set>
+    </div>
+    <div ng-if="isFormTemplate(conceptSet)" id={{::conceptSet.formUuid}} class="vitals form-horizontal">
+        <form-controls form="conceptSet"></form-controls>
+    </div>
 </div>

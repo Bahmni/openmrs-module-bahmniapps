@@ -163,7 +163,7 @@ angular.module('bahmni.common.conceptSet')
                 $scope.leftPanelConceptSet.klass = "active";
                 $scope.leftPanelConceptSet.atLeastOneValueIsSet = selectedConceptSet.hasSomeValue();
                 $scope.leftPanelConceptSet.isAdded = true;
-                $scope.consultation.lastvisited = selectedConceptSet.uuid;
+                $scope.consultation.lastvisited = selectedConceptSet.uuid || selectedConceptSet.formUuid;
                 $(window).scrollTop(0);
             };
 
@@ -172,6 +172,11 @@ angular.module('bahmni.common.conceptSet')
                 messagingService.showMessage('error', errorMessage);
                 $scope.$parent.$parent.$broadcast("event:errorsOnForm");
             };
+
+            $scope.isFormTemplate = function(data) {
+                return data.formUuid;
+            };
+
             init();
         }])
     .directive('conceptSetGroup', function () {
