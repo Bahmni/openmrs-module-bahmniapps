@@ -139,10 +139,7 @@ angular.module('bahmni.clinical')
             };
 
             $scope.consultation.preSaveHandler.register("collectObservationsFromConceptSets", collectObservationsFromConceptSets);
-
-
             // Form Code :: Start
-
             var getObservationForms = function (observationsForms) {
                 var forms = [];
                 var observations = $scope.consultation.observations || [];
@@ -154,9 +151,6 @@ angular.module('bahmni.clinical')
                 });
                 return forms;
             };
-
             // Form Code :: End
-
-
             init();
         }]);

@@ -173,7 +173,7 @@ angular.module('bahmni.common.conceptSet')
                 $scope.$parent.$parent.$broadcast("event:errorsOnForm");
             };
 
-            $scope.isFormTemplate = function(data) {
+            $scope.isFormTemplate = function (data) {
                 return data.formUuid;
             };
 
