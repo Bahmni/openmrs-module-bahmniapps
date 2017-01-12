@@ -40,18 +40,8 @@ angular.module('bahmni.offline', ['ui.router', 'httpErrorInterceptor', 'bahmni.c
                         offlineDb: function (offlineDbInitialization) {
                             return offlineDbInitialization();
                         },
-                        test: function (offlineDb, offlineService, offlineDbService, androidDbService, $state) {
-                            if (offlineService.isAndroidApp()) {
-                                offlineDbService = androidDbService;
-                            }
-                            return offlineDbService.getConfig("home").then(function (result) {
-                                if (result && offlineService.getItem('eventLogCategories')) {
-                                    $state.go('initSync');
-                                }
-                            });
-                        },
-                        offlineReferenceDataInitialization: function (offlineReferenceDataInitialization, offlineDb, test) {
-                            return offlineReferenceDataInitialization(true, offlineDb, test);
+                        offlineReferenceDataInitialization: function (offlineReferenceDataInitialization, offlineDb) {
+                            return offlineReferenceDataInitialization(true, offlineDb);
                         },
                         offlineLocationInitialization: function (offlineLocationInitialization, offlineReferenceDataInitialization) {
                             return offlineLocationInitialization(offlineReferenceDataInitialization);

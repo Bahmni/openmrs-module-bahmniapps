@@ -10,8 +10,27 @@ angular.module('bahmni.common.offline')
                     }
                     var loginLocation = offlineService.getItem('LoginInformation').currentLocation;
                     var deferred = $q.defer();
-                    var initalSyncStatus = offlineService.getItem('initialSyncStatus');
-                    var isConceptSyncCompleted = initalSyncStatus && (_.values(initalSyncStatus).indexOf("complete") != -1);
+
+                    var insertMarkers = function (categoryFilterMap) {
+                        var promises = [];
+                        Object.keys(categoryFilterMap).forEach(function (category) {
+                            if (category == "offline-concepts") {
+                                offlineDbService.insertMarker(category, null, categoryFilterMap[category]);
+                            } else {
+                                var promise = offlineDbService.getMarker(category).then(function (marker) {
+                                    if (category === "transactionalData") {
+                                        offlineService.setItem("initSyncFilter", categoryFilterMap[category]);
+                                    }
+                                    var filters = (marker && marker.filters) || [];
+                                    var lastReadEventUuid = (marker && marker.lastReadEventUuid) || null;
+                                    filters = filters.concat(categoryFilterMap[category]);
+                                    offlineDbService.insertMarker(category, lastReadEventUuid, _.uniq(filters));
+                                });
+                                promises.push(promise);
+                            }
+                        });
+                        return promises;
+                    };
 
                     offlineDbService.getReferenceData('AddressHierarchyLevels').then(function (addressHierarchyLevel) {
                         if (addressHierarchyLevel && addressHierarchyLevel.data ? false : true) {
@@ -33,20 +52,8 @@ angular.module('bahmni.common.offline')
                                             var categories = results.data;
                                             offlineService.setItem("eventLogCategories", categories);
                                             eventLogService.getFilterForCategoryAndLoginLocation(provider.uuid, loginAddress.uuid, loginLocation.uuid).then(function (results) {
-                                                var categoryFilterMap = results.data;
-                                                Object.keys(categoryFilterMap).forEach(function (category) {
-                                                    if (category !== "transactionalData" && (!(category == "offline-concepts" && isConceptSyncCompleted))) {
-                                                        offlineDbService.insertMarker(category, null, categoryFilterMap[category]);
-                                                    }
-                                                });
-
-                                                offlineDbService.getMarker("transactionalData").then(function (marker) {
-                                                    offlineService.setItem("initSyncFilter", categoryFilterMap["transactionalData"]);
-                                                    var filters = (marker && marker.filters) || [];
-                                                    filters = filters.concat(categoryFilterMap["transactionalData"]);
-                                                    offlineDbService.insertMarker("transactionalData", null, _.uniq(filters));
-                                                    deferred.resolve();
-                                                });
+                                                var promises = insertMarkers(angular.copy(results.data));
+                                                $q.all(promises).then(deferred.resolve);
                                             });
                                         });
                                         break;
