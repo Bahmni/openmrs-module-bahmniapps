@@ -43,7 +43,7 @@ Bahmni.ObservationForm = function (formUuid, user, formName, formVersion, observ
         return clonedObservationFormSection;
     };
 
-    self.isAvailable = function(context) {
+    self.isAvailable = function (context) {
         return true;
     };
 
@@ -59,7 +59,7 @@ Bahmni.ObservationForm = function (formUuid, user, formName, formVersion, observ
         }
     };
 
-    self.hasSomeValue = function() {
+    self.hasSomeValue = function () {
         var observations = self.getObservationsForConceptSection();
         return _.some(observations, function (observation) {
             return atLeastOneValueSet(observation);
