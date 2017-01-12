@@ -22,7 +22,7 @@ describe('observationFormService', function () {
         var httpPromise = this.observationFormService.getFormList("encounterUuid");
 
         expect(httpPromise).toEqual(response);
-        expect(http.get).toHaveBeenCalledWith("/openmrs/ws/rest/v1/bahmniIE/latestPublishedForms", {
+        expect(http.get).toHaveBeenCalledWith("/openmrs/ws/rest/v1/bahmniie/form/latestPublishedForms", {
             params: { encounterUuid: "encounterUuid" }
         });
     });
