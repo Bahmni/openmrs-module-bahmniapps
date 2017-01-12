@@ -10,9 +10,9 @@ angular.module('bahmni.common.conceptSet')
                 var formObservations = $scope.form.observations;
 
                 if (!loadedFormDetails[formUuid]) {
-                    spinner.forPromise(observationFormService.getFormDetail(formUuid, { v: "custom:(resources)" })
+                    spinner.forPromise(observationFormService.getFormDetail(formUuid, { v: "custom:(resources:(value))" })
                         .then(function (response) {
-                            var formDetailsAsString = _.get(response, 'data.resources[0].valueReference');
+                            var formDetailsAsString = _.get(response, 'data.resources[0].value');
                             if (formDetailsAsString) {
                                 var formDetails = JSON.parse(formDetailsAsString);
                                 formDetails.version = $scope.form.formVersion;
