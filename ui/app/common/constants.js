@@ -232,7 +232,7 @@ Bahmni.Common = Bahmni.Common || {};
         orderTypeUrl: RESTWS_V1 + "/ordertype",
         userUrl: RESTWS_V1 + "/user",
         formUrl: RESTWS_V1 + "/form",
-        latestPublishedForms: RESTWS_V1 + "/bahmniIE/latestPublishedForms",
+        latestPublishedForms: RESTWS_V1 + "/bahmniie/form/latestPublishedForms",
         sqlUrl: BAHMNI_CORE + "/sql",
         patientAttributeDateFieldFormat: "org.openmrs.util.AttributableDate",
         platform: "user.platform",
