@@ -28,7 +28,7 @@ describe('observationFormService', function () {
     });
 
     it('should call http service to return the form detail', function () {
-        var response = { data: { resources: [{ valueReference: 'form1' }] } };
+        var response = { data: { resources: [{ value: 'form1' }] } };
         http.get.and.returnValue(response);
 
         var httpPromise = this.observationFormService.getFormDetail('someFormUuid', { v: "custom:(uuid,name)" });
