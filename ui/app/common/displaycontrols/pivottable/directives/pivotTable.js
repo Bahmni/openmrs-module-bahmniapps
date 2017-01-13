@@ -58,7 +58,8 @@ angular.module('bahmni.common.displaycontrol.pivottable').directive('pivotTable'
                             units: conceptDetail.units
                         };
                     });
-                    scope.result = {concepts: concepts, tabularData: response.data.tabularData};
+                    var tabluarDataInAscOrderByDate = _(response.data.tabularData).toPairs().sortBy(0).fromPairs().value();
+                    scope.result = {concepts: concepts, tabularData: tabluarDataInAscOrderByDate};
                     scope.hasData = !_.isEmpty(scope.result.tabularData);
                     scope.status = scope.status || {};
                     scope.status.data = scope.hasData;
