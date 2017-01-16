@@ -9,6 +9,7 @@ Bahmni.ObservationForm = function (formUuid, user, formName, formVersion, observ
         self.formName = formName;
         self.label = formName;
         self.conceptName = formName;
+        self.collapseInnerSections = {value: false};
         self.alwaysShow = user.isFavouriteObsTemplate(self.conceptName);
         self.observations = [];
         _.each(observations, function (observation) {
@@ -93,6 +94,16 @@ Bahmni.ObservationForm = function (formUuid, user, formName, formVersion, observ
             self.added = value;
         }
     });
+
+    self.maximizeInnerSections = function (event) {
+        event.stopPropagation();
+        self.collapseInnerSections = {value: false};
+    };
+
+    self.minimizeInnerSections = function (event) {
+        event.stopPropagation();
+        self.collapseInnerSections = {value: true};
+    };
 
     // parameters added to show in observation page :: END
 

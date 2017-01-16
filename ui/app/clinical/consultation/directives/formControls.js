@@ -8,6 +8,7 @@ angular.module('bahmni.common.conceptSet')
             var controller = function ($scope) {
                 var formUuid = $scope.form.formUuid;
                 var formObservations = $scope.form.observations;
+                var collapse = $scope.form.collapseInnerSections && $scope.form.collapseInnerSections.value;
 
                 if (!loadedFormDetails[formUuid]) {
                     spinner.forPromise(observationFormService.getFormDetail(formUuid, { v: "custom:(resources:(value))" })
@@ -17,15 +18,22 @@ angular.module('bahmni.common.conceptSet')
                                 var formDetails = JSON.parse(formDetailsAsString);
                                 formDetails.version = $scope.form.formVersion;
                                 loadedFormDetails[formUuid] = formDetails;
-                                $scope.form.component = renderWithControls(formDetails, formObservations, formUuid);
+                                $scope.form.component = renderWithControls(formDetails, formObservations, formUuid, collapse);
                             }
                         })
                     );
                 } else {
                     $timeout(function () {
-                        $scope.form.component = renderWithControls(loadedFormDetails[formUuid], formObservations, formUuid);
+                        $scope.form.component = renderWithControls(loadedFormDetails[formUuid], formObservations, formUuid, collapse);
                     }, 0, false);
                 }
+
+                $scope.$watch('form.collapseInnerSections', function () {
+                    var collapse = $scope.form.collapseInnerSections && $scope.form.collapseInnerSections.value;
+                    if (loadedFormDetails[formUuid]) {
+                        $scope.form.component = renderWithControls(loadedFormDetails[formUuid], formObservations, formUuid, collapse);
+                    }
+                });
 
                 $scope.$on('$destroy', function () {
                     if ($scope.$parent.consultation.observationForms) {
