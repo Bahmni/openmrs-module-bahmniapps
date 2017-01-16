@@ -11,8 +11,7 @@
                     <span>{{::searchType | titleTranslate}} </span>
                     <span ng-if="search.showPatientCountOnSearchParameter(searchType)">({{search.searchResults.length}})</span>
                     <span ng-if="(searchType.handler && !search.showPatientCountOnSearchParameter(searchType))" scheduler
-                          watch-on="search.searchParameter" refresh-time="searchType.refreshTime"
-                          trigger-function="getPatientCount(searchType)">({{searchType.patientCount}})</span>
+                          watch-on="search.searchParameter" refresh-time="searchType.refreshTime">({{searchType.patientCount}})</span>
                 </a>
             </li>
         </ul>

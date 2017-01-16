@@ -187,7 +187,9 @@ describe("PatientsListController", function () {
             it('should return the patient count for the provided tab', function(){
                 var searchType = { name: 'All active patients', display: 'All active patients', handler: 'emrapi.sqlSearch.activePatients', forwardUrl: undefined, id: 'bahmni.clinical.patients.allPatients', params: undefined , refreshTime: '10'};
 
-                scope.getPatientCount(searchType);
+                scope.search.searchType = searchType;
+                scope.$digest();
+
                 expect(_patientService.findPatients).toHaveBeenCalled();
                 findPatientsPromise.callThenCallBack({data: patients});
 
