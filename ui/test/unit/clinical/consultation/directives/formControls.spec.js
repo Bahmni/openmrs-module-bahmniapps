@@ -66,7 +66,7 @@ describe("Form Controls", function () {
     it('should call renderWithControls', function () {
         mockObservationService({ resources: [{ value: '{"name":"Vitals", "controls": [{"type":"obsControl", "controls":[]}] }' }] });
         createElement();
-        expect(renderHelper.renderWithControlsCalledTimes).toBe(1);
+        expect(renderHelper.renderWithControlsCalledTimes).toBe(2);
     });
 
     var createElement = function () {

@@ -3,6 +3,9 @@
 describe("ObservationForm", function () {
     var ObservationForm = Bahmni.ObservationForm;
     var dummyUser = {isFavouriteObsTemplate: function(){}};
+    var event = { stopPropagation: function () {
+        return;
+    }};
 
     describe('init', function () {
 
@@ -29,6 +32,27 @@ describe("ObservationForm", function () {
             expect(observationForm.formName).toBe('name');
             expect(observationForm.formUuid).toBe('uuid');
             expect(observationForm.formVersion).toBe('1');
+        });
+
+        it("should have collapseInerSections to be false by default", function(){
+            var observationForm = new ObservationForm('uuid', dummyUser, 'form', '1', []);
+            expect(observationForm.collapseInnerSections.value).toBe(false);
+        });
+
+        it("should set collapseInerSections to true on call of minimizeInnerSections", function() {
+            var observationForm = new ObservationForm('uuid', dummyUser, 'form', '1', []);
+            expect(observationForm.collapseInnerSections.value).toBe(false);
+
+            observationForm.minimizeInnerSections(event);
+            expect(observationForm.collapseInnerSections.value).toBe(true);
+        });
+
+        it("should set collapseInerSections to false on call of maximizeInnerSections", function() {
+            var observationForm = new ObservationForm('uuid', dummyUser, 'form', '1', []);
+            expect(observationForm.collapseInnerSections.value).toBe(false);
+
+            observationForm.maximizeInnerSections(event);
+            expect(observationForm.collapseInnerSections.value).toBe(false);
         });
     });
 
