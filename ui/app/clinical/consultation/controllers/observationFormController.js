@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('bahmni.clinical')
-    .controller('ObservationFormController', ['$scope', '$rootScope', 'observationFormService', 'spinner',
-        function ($scope, $rootScope, observationFormService, spinner) {
+    .controller('ObservationFormController', ['$scope', '$rootScope', 'observationFormService', 'spinner', 'ngRedux',
+        function ($scope, $rootScope, observationFormService, spinner, ngRedux) {
             var init = function () {
                 if (!($scope.consultation.observationForms !== undefined && $scope.consultation.observationForms.length > 0)) {
                     spinner.forPromise(observationFormService.getFormList($scope.consultation.encounterUuid)
