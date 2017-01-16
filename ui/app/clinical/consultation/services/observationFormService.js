@@ -3,7 +3,8 @@
 angular.module('bahmni.common.conceptSet')
     .factory('observationFormService', ['$http', function ($http) {
         var getFormList = function (encounterUuid) {
-            return $http.get(Bahmni.Common.Constants.latestPublishedForms, { params: { encounterUuid: encounterUuid }});
+            return $http.get(Bahmni.Common.Constants.latestPublishedForms,
+                { params: { encounterUuid: encounterUuid }, etagCache: 'persistentCache' });
         };
 
         var getFormDetail = function (formUuid, params) {

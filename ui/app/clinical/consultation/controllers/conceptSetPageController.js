@@ -39,6 +39,10 @@ angular.module('bahmni.clinical')
                                     $scope.consultation.observationForms = getObservationForms(response.data);
                                     $scope.consultation.selectedObsTemplate = $scope.consultation.selectedObsTemplate.concat($scope.consultation.observationForms);
                                 })
+                                .cached(function (data) {
+                                    $scope.consultation.observationForms = getObservationForms(data);
+                                    $scope.consultation.selectedObsTemplate = $scope.consultation.selectedObsTemplate.concat($scope.consultation.observationForms);
+                                })
                             );
                         }
                     }));
