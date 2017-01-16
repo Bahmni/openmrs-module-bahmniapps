@@ -48,6 +48,7 @@ angular.module('bahmni.common.conceptSet')
                             $scope.form.observations = formObservations.observations;
                         }
                     }
+                    unMountForm(document.getElementById($scope.form.formUuid));
                 });
             };
 
