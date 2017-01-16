@@ -1,0 +1,36 @@
+<div class="revise-refill-modal-wrapper" aria-labelledby="dialog-label">
+    <style type="text/css">
+        .opd-header-wrapper {
+            z-index: 10000 !important;
+        }
+    </style>
+    <div class="ngdialog-close clearfix"></div>
+    <div>
+        <div> Tranfer Patient </div>
+        {{$root.patient.name}}
+    </div>
+    <div class="fl">
+        <div>Transfer From</div>
+        <div>{{$root.bedDetails.wardName}}</div>
+        <div>{{$root.bedDetails.physicalLocationName}}</div>
+        <div>{{$root.bedDetails.bedNumber}}</div>
+    </div>
+
+    <div class="fr">
+        <div>Transfer To</div>
+        <div>{{$root.selectedBedInfo.wardName}}</div>
+        <div>{{$root.selectedBedInfo.roomName}}</div>
+        <div>{{$root.selectedBedInfo.bed.bedNumber}}</div>
+    </div>
+    <div id="adtNotes" ng-if="getAdtConceptConfig">
+        <concept-set concept-set-name="getAdtConceptConfig" observations="adtObservations"></concept-set>
+    </div>
+    <div class="dialog-button-group">
+        <button id="modal-revise-button1" class="secondary-button" ng-click="transferConfirmation()">Tranfer</button>
+        <button id="modal-revise-button3" class="secondary-button" ng-click="cancelConfirmationDialog()">Cancel</button>
+    </div>
+
+    <span class="ngdialog-end"></span>
+</div>
+
+

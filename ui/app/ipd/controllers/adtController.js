@@ -133,10 +133,11 @@ angular.module('bahmni.ipd')
                     'patientUuid': $scope.patient.uuid,
                     'encounterUuid': response.encounterUuid,
                     'visitUuid': response.visitUuid,
-                    'bedId': $scope.bed.bedId
+                    'bedId': $rootScope.selectedBedInfo.bed.bedId
                 };
                 if (forwardLink) {
                     $window.location = appDescriptor.formatUrl(forwardLink, options);
+                    $window.location.reload();
                 }
             };
 
@@ -150,7 +151,7 @@ angular.module('bahmni.ipd')
                                 $scope.visitSummary = new Bahmni.Common.VisitSummary(response.data);
                             });
                         }
-                        assignBedToPatient($scope.bed, response.data.patientUuid, response.data.encounterUuid);
+                        assignBedToPatient($rootScope.selectedBedInfo.bed, response.data.patientUuid, response.data.encounterUuid);
                         forwardUrl(response, "onAdmissionForwardTo");
                     });
                 } else if ($scope.defaultVisitTypeName === null) {
@@ -164,13 +165,13 @@ angular.module('bahmni.ipd')
             var assignBedToPatient = function (bed, patientUuid, encounterUuid) {
                 spinner.forPromise(bedService.assignBed(bed.bedId, patientUuid, encounterUuid).then(function () {
                     bed.status = "OCCUPIED";
-                    $scope.$emit("event:patientAssignedToBed", $scope.bed);
+                    $scope.$emit("event:patientAssignedToBed", $rootScope.selectedBedInfo.bed);
                     messagingService.showMessage('info', "Bed " + bed.bedNumber + " is assigned successfully");
                 }));
             };
 
             $scope.admit = function () {
-                if ($scope.bed == undefined) {
+                if ($rootScope.selectedBedInfo.bed == undefined) {
                     messagingService.showMessage("error", "Please select a bed to admit patient");
                 } else if ($scope.visitSummary && $scope.visitSummary.visitType !== $scope.defaultVisitTypeName) {
                     ngDialog.openConfirm({
@@ -195,7 +196,7 @@ angular.module('bahmni.ipd')
                         visitService.getVisitSummary(response.data.visitUuid).then(function (response) {
                             $scope.visitSummary = new Bahmni.Common.VisitSummary(response.data);
                         });
-                        assignBedToPatient($scope.bed, response.data.patientUuid, response.data.encounterUuid);
+                        assignBedToPatient($rootScope.selectedBedInfo.bed, response.data.patientUuid, response.data.encounterUuid);
                         forwardUrl(response, "onAdmissionForwardTo");
                     });
                 } else if ($scope.defaultVisitTypeName === null) {
@@ -223,12 +224,23 @@ angular.module('bahmni.ipd')
             };
 
             $scope.transfer = function () {
-                if ($scope.bed == undefined) {
+                if ($rootScope.selectedBedInfo.bed == undefined || $rootScope.selectedBedInfo.bed.bedNumber === $rootScope.bedDetails.bedNumber) {
                     messagingService.showMessage("error", "Please select a bed to transfer the patient");
+                } else {
+                    ngDialog.openConfirm({
+                        template: 'views/transferConfirmation.html',
+                        scope: $scope,
+                        closeByEscape: true
+                    });
                 }
+            };
+
+            $scope.transferConfirmation = function () {
                 var encounterData = getEncounterData($scope.encounterConfig.getTransferEncounterTypeUuid(), getCurrentVisitTypeUuid());
                 return encounterService.create(encounterData).then(function (response) {
-                    assignBedToPatient($scope.bed, response.data.patientUuid, response.data.encounterUuid);
+                    assignBedToPatient($rootScope.selectedBedInfo.bed, response.data.patientUuid, response.data.encounterUuid);
+                    // $scope.$emit("event:onSuccessfulTransfer");
+                    ngDialog.close();
                     forwardUrl(response.data, "onTransferForwardTo");
                 });
             };

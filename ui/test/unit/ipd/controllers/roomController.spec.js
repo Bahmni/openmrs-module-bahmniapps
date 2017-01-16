@@ -87,6 +87,7 @@ describe('RoomController', function () {
             controller = $controller;
             rootScope = $rootScope;
             scope = $rootScope.$new();
+            rootScope.selectedBedInfo ={};
             rootScope.bedDetails =
             {
                 bedId: 9,
@@ -109,7 +110,8 @@ describe('RoomController', function () {
         state.current = {name: "bedManagement.bed"};
         initController(rootScope, state);
         expect(scope.selectedBed).toEqual(expectedBed);
-        expect(scope.$emit).toHaveBeenCalledWith("event:bedSelected", scope.selectedBed);
+        expect(scope.oldBedNumber).toBeUndefined();
+        expect(rootScope.selectedBedInfo.bed).toEqual(expectedBed);
     });
 
     it('should show a error message, when state is bedManagement.patient and trying to select an occupied bed', function () {
@@ -123,10 +125,11 @@ describe('RoomController', function () {
         state.current = {name: "bedManagement.patient"};
         initController(rootScope, state);
         scope.onSelectBed(bed);
+        expect(rootScope.selectedBedInfo.bed).toBeUndefined();
         expect(messagingService.showMessage).toHaveBeenCalledWith("error", "Please select an available bed");
     });
 
-    it('should emit an event with name event:bedSelected and bed info, when selectedbed is not OCCUPIED and the state is bedManagement.patient', function () {
+    it('should assign selected bed info on rootScope, when selectedbed is not OCCUPIED and the state is bedManagement.patient', function () {
         var bed = {
             bedId: 9,
             bedNumber: "404-i",
@@ -137,10 +140,11 @@ describe('RoomController', function () {
         state.current = {name: "bedManagement.patient"};
         initController(rootScope, state);
         scope.onSelectBed(bed);
-        expect(scope.$emit).toHaveBeenCalledWith("event:bedSelected", bed);
+        expect(scope.oldBedNumber).toEqual("404-i");
+        expect(rootScope.selectedBedInfo.bed).toEqual(bed);
     });
 
-    it('Should reset patient on rootScope on selecting AVAILABLE bed and go to bedManagement.bed state ', function () {
+    it('Should reset patient on rootScope on selecting AVAILABLE bed and go to bedManagement.bed state', function () {
         var bed = {
             bedId: 9,
             bedNumber: "404-i",
@@ -153,10 +157,11 @@ describe('RoomController', function () {
         initController(rootScope, state);
         scope.onSelectBed(bed);
         expect(rootScope.patient).toBeUndefined();
+        expect(rootScope.selectedBedInfo.bed).toEqual(bed);
         expect(state.go).toHaveBeenCalledWith("bedManagement.bed", jasmine.any(Object));
     });
 
-    it('Should not reset patient on rootScope on selecting AVAILABLE bed and go to bedManagement.bed state ', function () {
+    it('Should not reset patient on rootScope on selecting Occupied bed and go to bedManagement.bed state ', function () {
         var bed = {
             bedId: 9,
             bedNumber: "404-i",
@@ -164,11 +169,12 @@ describe('RoomController', function () {
             bedTags: [],
             status: "OCCUPIED"
         };
-        rootScope.patient = {name: "patientName", uuid: "patientUuid"}
+        rootScope.patient = {name: "patientName", uuid: "patientUuid"};
         state.current = {name: "bedManagement"};
         initController(rootScope, state);
         scope.onSelectBed(bed);
         expect(rootScope.patient).not.toBeUndefined();
+        expect(rootScope.selectedBedInfo.bed).toEqual(bed);
         expect(state.go).toHaveBeenCalledWith("bedManagement.bed", jasmine.any(Object));
     });
 

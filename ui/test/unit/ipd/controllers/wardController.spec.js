@@ -5,6 +5,7 @@ describe('WardController', function() {
     var controller;
     var rootScope;
     var scope;
+    var state;
     var stateParams = {patientUuid: "patientUuid", visitUuid: "visitUuid"};
     var beds = [
         {bedId: 1,
@@ -30,15 +31,17 @@ describe('WardController', function() {
 
     var room1 = {name: "room1", beds: beds};
 
+    state = jasmine.createSpyObj('$state',['go']);
     beforeEach(function() {
         module('bahmni.ipd');
     });
 
-    var initController = function (rootScope, stateParams) {
+    var initController = function (rootScope, stateParams, state) {
         controller('WardController', {
             $scope: scope,
             $rootScope: rootScope,
-            $stateParams: stateParams
+            $stateParams: stateParams,
+            $state: state
         });
     };
 
@@ -49,32 +52,50 @@ describe('WardController', function() {
             scope = $rootScope.$new();
             scope.ward = {rooms: [room1]};
             rootScope.bedDetails = {physicalLocationName: "room1"};
-            spyOn(scope, '$emit');
         });
     });
 
-    it('should initialize room info based the selected room', function() {
-        initController(rootScope, stateParams);
+    it('should initialize room info based the selected room and not go to bedManagement state, when the state is other than bedManagement.bed', function() {
+        state.current = {name: "bedManagement"};
+        rootScope.selectedBedInfo = {};
+        initController(rootScope, stateParams, state);
         scope.onSelectRoom("room1");
         expect(scope.room).toBe(room1);
         expect(scope.roomSelected).toBeTruthy();
-        expect(scope.$emit).toHaveBeenCalledWith("event:roomSelected", "room1");
+        expect(rootScope.selectedBedInfo.roomName).toBe("room1");
+        expect(rootScope.selectedBedInfo.bed).toBeUndefined();
+    });
+
+    it('should initialize room info based the selected room and go to bedManagement state, when the state is bedManagement.bed', function() {
+        state.current = {name: "bedManagement.bed"};
+        rootScope.selectedBedInfo = {};
+        initController(rootScope, stateParams, state);
+        scope.onSelectRoom("room1");
+        expect(scope.room).toBe(room1);
+        expect(scope.roomSelected).toBeTruthy();
+        expect(rootScope.selectedBedInfo.roomName).toBe("room1");
+        expect(rootScope.selectedBedInfo.bed).toBeUndefined();
+        expect(state.go).toHaveBeenCalledWith("bedManagement", jasmine.any(Object));
     });
 
     it('should initialize room info, if the patient is already admitted having bedDetails on the rootScope', function() {
         rootScope.bedDetails = {physicalLocationName: "room1"};
-        initController(rootScope, stateParams);
+        rootScope.selectedBedInfo = {};
+        initController(rootScope, stateParams, state);
         expect(scope.room).toBe(room1);
         expect(scope.roomSelected).toBeTruthy();
-        expect(scope.$emit).toHaveBeenCalledWith("event:roomSelectedAuto", "room1");
+        expect(rootScope.selectedBedInfo.roomName).toBe("room1");
+        expect(rootScope.selectedBedInfo.bed).toBeUndefined();
     });
 
-    it('should initialize room info, if the patient is already admitted having bedDetails on the rootScope', function() {
+    it('should initialize room info, on admitting the patient', function() {
         stateParams.context = {roomName: "room1"};
-        initController(rootScope, stateParams);
+        rootScope.selectedBedInfo = {};
+        initController(rootScope, stateParams, state);
         expect(scope.room).toBe(room1);
         expect(scope.roomSelected).toBeTruthy();
-        expect(scope.$emit).toHaveBeenCalledWith("event:roomSelectedAuto", "room1");
+        expect(rootScope.selectedBedInfo.roomName).toBe("room1");
+        expect(rootScope.selectedBedInfo.bed).toBeUndefined();
     });
 
     it('should set roomSelected to be false when department is changed', function () {

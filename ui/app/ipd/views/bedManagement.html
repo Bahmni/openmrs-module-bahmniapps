@@ -31,15 +31,15 @@
             </div>
             <div>
                 <label>Room# </label>
-                <input type="text" value="{{ roomName }}" readonly/>
+                <input type="text" value="{{ $root.selectedBedInfo.roomName }}" readonly/>
             </div>
             <div>
                 <label>Bed# </label>
-                <input type="text" value="{{ bed.bedNumber }}" readonly/>
+                <input type="text" value="{{ $root.selectedBedInfo.bed.bedNumber }}" readonly/>
             </div>
             <div>
                 <label>Status</label>
-                <input type="text" value="{{ bed.status }}" readonly/>
+                <input type="text" value="{{ $root.selectedBedInfo.bed.status }}" readonly/>
             </div>
 
         </div>
