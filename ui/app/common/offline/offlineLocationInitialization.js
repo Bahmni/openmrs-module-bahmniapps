@@ -14,20 +14,16 @@ angular.module('bahmni.common.offline')
                     var insertMarkers = function (categoryFilterMap) {
                         var promises = [];
                         Object.keys(categoryFilterMap).forEach(function (category) {
-                            if (category == "offline-concepts") {
-                                offlineDbService.insertMarker(category, null, categoryFilterMap[category]);
-                            } else {
-                                var promise = offlineDbService.getMarker(category).then(function (marker) {
-                                    if (category === "transactionalData") {
-                                        offlineService.setItem("initSyncFilter", categoryFilterMap[category]);
-                                    }
-                                    var filters = (marker && marker.filters) || [];
-                                    var lastReadEventUuid = (marker && marker.lastReadEventUuid) || null;
-                                    filters = filters.concat(categoryFilterMap[category]);
-                                    offlineDbService.insertMarker(category, lastReadEventUuid, _.uniq(filters));
-                                });
-                                promises.push(promise);
-                            }
+                            var promise = offlineDbService.getMarker(category).then(function (marker) {
+                                if (category === "transactionalData") {
+                                    offlineService.setItem("initSyncFilter", categoryFilterMap[category]);
+                                }
+                                var filters = (marker && marker.filters) || [];
+                                var lastReadEventUuid = (marker && marker.lastReadEventUuid) || null;
+                                filters = filters.concat(categoryFilterMap[category]);
+                                offlineDbService.insertMarker(category, lastReadEventUuid, _.uniq(filters));
+                            });
+                            promises.push(promise);
                         });
                         return promises;
                     };
