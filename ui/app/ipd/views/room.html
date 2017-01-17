@@ -1,3 +1,17 @@
+<div class="clearfix">
+    <div class="fl" style="padding-top: 5px;">
+        <strong>{{room.name}} - {{room.availableBeds}} Available</strong>
+    </div>
+    <div class="fr">
+        <div class="fl" ng-repeat="tag in ['AVAILABLE', 'OCCUPIED']" style="margin-right: 5px;">
+            <div class="bed-tag fl {{tag}}">
+                <div class="bed-space"></div>
+            </div>
+            <div class="fl" style="margin-top: 5px; padding: 0 5px;">{{tag | titleCase}}</div>
+        </div>
+    </div>
+</div>
+
 <div ng-repeat="row in room.beds" class="clearfix">
     <div ng-repeat="cell in row">
         <div class="bed" ng-if="!cell.bed.bedId"></div>

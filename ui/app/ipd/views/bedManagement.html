@@ -1,54 +1,53 @@
 <div id="bedManagement">
-    <div id="left-pane">
-        <div id="patient-info">
-            <div id="patient-details">
-                <div class="clearfix">
-                    <label>Patient ID : </label>
-                    <a href="/bahmni/clinical/#/programs/patient/{{ patientUuid }}/consultationContext">
-                        <span>{{ patient.identifier }}</span>
-                    </a>
-                </div>
-                <div class="clearfix">
-                    <label>Patient Name : </label>
-                    <span>{{ patient.name }}</span>
-                </div>
-                <div class="clearfix">
-                    <label>Age : </label>
-                    <span>{{ patient.age }}</span>
-                </div>
-                <div class="clearfix">
-                    <label>Gender : </label>
-                    <span>{{ patient.gender }}</span>
-                </div>
-
+    <div class="left-pane">
+        <div class="clearfix">
+            <div class="patient-attributes">
+                <label>Patient ID: </label>
+                <a href="/bahmni/clinical/#/programs/patient/{{ patientUuid }}/consultationContext">
+                    <span>{{ patient.identifier }}</span>
+                </a>
+            </div>
+            <div class="patient-attributes">
+                <label>Patient Name: </label>
+                <span>{{ patient.name }}</span>
+            </div>
+            <div class="patient-attributes">
+                <label>Age: </label>
+                <span>{{ patient.age }}</span>
+            </div>
+            <div class="patient-attributes">
+                <label>Gender: </label>
+                <span>{{ patient.gender }}</span>
             </div>
         </div>
         <adt patient="patient" encounterConfig="encounterConfig" bed="bed"></adt>
-        <div id="bedDetails">
-            <div>
-                <label>Department</label>
-                <input type="text" value="{{ ward.name }}" readonly/>
-            </div>
-            <div>
-                <label>Room# </label>
-                <input type="text" value="{{ roomName }}" readonly/>
-            </div>
-            <div>
-                <label>Bed# </label>
-                <input type="text" value="{{ bed.bedNumber }}" readonly/>
-            </div>
-            <div>
-                <label>Status</label>
-                <input type="text" value="{{ bed.status }}" readonly/>
-            </div>
-
-        </div>
-    </div>
-    <div id="right-pane">
         <div class="clearfix">
-            <label>Admission Master</label>
+            <div class="patient-attributes">
+                <label>Department: </label>
+                <span>{{ward.name}}</span>
+            </div>
+            <div class="patient-attributes">
+                <label>Room: </label>
+                <span>{{roomName}}</span>
+            </div>
+            <div class="patient-attributes">
+                <label>Bed# </label>
+                <span>{{bed.bedNumber}}</span>
+            </div>
+            <div class="patient-attributes">
+                <label>Status: </label>
+                <span>{{bed.status}}</span>
+            </div>
+        </div>
+
+    </div>
+    <div class="right-pane">
+        <div class="clearfix">
+            <h6>Admission Master</h6>
             <button ng-repeat="option in wards"
-                    ng-click="onSelectDepartment(option.ward)">{{ option.ward.name }}</button>
+                    ng-click="onSelectDepartment(option.ward)"
+                    ng-class="{'selected': option.ward.isSelected}"
+            >{{ option.ward.name }}</button>
         </div>
         <ward ward="ward" ng-if="departmentSelected"></ward>
     </div>

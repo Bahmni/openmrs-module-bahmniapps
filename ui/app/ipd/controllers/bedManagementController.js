@@ -71,7 +71,16 @@ angular.module('bahmni.ipd')
             $scope.onSelectDepartment = function (department) {
                 spinner.forPromise(loadBedsInfoForWard(department).then(function () {
                     resetPatientAndBedInfo();
+                    resetDepartments();
+                    $scope.$broadcast("event:deselectWards");
+                    department.isSelected = true;
                 }));
+            };
+
+            var resetDepartments = function () {
+                _.each($scope.wards, function (option) {
+                   option.ward.isSelected = false;
+                });
             };
 
             var resetPatientAndBedInfo = function () {

@@ -1,21 +1,21 @@
-<div id="ipd-action">
+<div>
     <form>
         <div id="observations">
-            <div>
-                <label>Admitted By</label>
-                <input type="text" readonly/>
+            <div class="patient-attributes">
+                <label>Admitted By: </label>
+                <span>John Smith</span>
             </div>
-            <div>
-                <label>Admitted On</label>
-                <input type="date" readonly/>
+            <div class="patient-attributes">
+                <label>Admitted On: </label>
+                <span>20/10/2016</span>
             </div>
-            <div>
-                <label>Expected Date Of Discharge</label>
-                <input type="date" readonly/>
+            <div class="patient-attributes">
+                <label>Expected Date Of Discharge: </label>
+                <span>20/11/2016</span>
             </div>
 
         </div>
-        <div class="clearfix" ng-if="showAdtButtons()">
+        <div class="clearfix action-button" ng-if="showAdtButtons()">
             <button ng-click="admit()" ng-disabled="disableAdmitButton()">Admit</button>
             <button ng-click="transfer()" ng-disabled="disableTransferAndDischargeButton()">Transfer</button>
             <button ng-click="discharge()" ng-disabled="disableTransferAndDischargeButton()">Discharge</button>

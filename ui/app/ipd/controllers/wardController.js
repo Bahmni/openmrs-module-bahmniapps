@@ -19,9 +19,14 @@ angular.module('bahmni.ipd')
                 $scope.roomSelected = true;
             };
 
+            $scope.$on("event:deselectWards", function (event, ward) {
+                $scope.activeRoom = null;
+            });
+
             $scope.onSelectRoom = function (roomName) {
                 getSelectedRoom(roomName);
                 $scope.$emit("event:roomSelected", roomName);
+                $scope.activeRoom = roomName;
             };
 
             var expandAdmissionMasterForRoom = function (roomName) {

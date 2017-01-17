@@ -1,15 +1,20 @@
-<div id="rooms" class="clearfix">
-    <div id="room">
-        <div id="roomDetails" class="clearfix">
-            <span>Total Beds : {{ ward.totalBeds }}</span>
-            <br/>
-            <span>Available Beds : {{ ward.totalBeds - ward.occupiedBeds }}</span>
+<div class="clearfix">
+    <div class="room">
+        <div class="clearfix total-details room-details">
+            <div class="floor-header">Total Beds ( {{ ward.totalBeds }} )</div>
+            <div class="bed-status">
+                <span class="available">{{ ward.totalBeds - ward.occupiedBeds }} Available</span>
+                <span class="occupied">{{ ward.occupiedBeds }} Occupied</span>
+            </div>
         </div>
     </div>
-    <div id="room" ng-repeat="room in ward.rooms">
-        <div id="roomDetails" class="clearfix" ng-click="onSelectRoom(room.name)">
-            <span>{{ room.name }} ( Total Beds : {{ room.totalBeds }} )</span><br/>
-            <span>Available Beds : {{ room.availableBeds }}</span>
+    <div class="room" ng-repeat="room in ward.rooms" >
+        <div class="clearfix room-details" ng-click="onSelectRoom(room.name)" ng-class="{'room-selected': activeRoom == room.name}">
+            <div class="floor-header">{{ room.name }} ( {{ room.totalBeds }} )</div>
+            <div class="bed-status">
+                <span class="available">{{ room.availableBeds }} Available</span>
+                <span class="occupied">{{ room.totalBeds - room.availableBeds }} Occupied</span>
+            </div>
         </div>
     </div>
 </div>

@@ -32,16 +32,21 @@
     }
 }
 
-div[ng-app="adt"] {
-    .patient-details {
-        position: relative;
-        z-index: 1111;
-        top: 17px;
-        left: 50%;
-        transform: translateX(-50%);
-        -webkit-transform: translateX(-50%);
-        color: $lightestGray;
+.patient-attributes {
+    label {
+        color: #65645F;
+        font-weight: 600;
     }
+    padding-bottom: 5px;
+}
+
+div[ng-app="ipd"] {
+    .non-icon-back-btn {
+        padding: 12px 10px;
+    }
+}
+
+div[ng-app="adt"] {
     .ward-list {
         .section-grid {
             margin-bottom: 10px;
@@ -103,53 +108,127 @@ div[ng-app="adt"] {
     margin-top:15px;
 }
 
-
-
-
-#left-pane {
+.left-pane {
+    position: fixed;
     float: left;
+    left: 66px;
     margin-right: 20px;
-    width: 200px;
-    border: 1px solid black;
+    width: 295px;
+    border: 1px solid #ddd;
     padding: 20px;
+
+    .photo-container-wrapper {
+        display: inline-block;
+        float: right;
+    }
 }
 
-#right-pane {
-    float: left;
-    border: 1px solid black;
-    padding: 20px;
-    width: 60%;
+.action-button {
+    padding: 10px 0;
+
 }
 
-#rooms {
-    display: block;
-    margin-top: 20px;
+.right-pane {
+    float: right;
+    border: 1px solid #ddd;
+    width: calc(100% - 335px);
+
+    .clearfix {
+        padding: 10px 20px;
+    }
+
+    ward {
+        padding: 10px 20px;
+    }
+}
+
+.selected {
+    font-weight: 600;
 }
 
 #bedLayout {
     display: block;
     margin-top: 30px;
+    border: 1px solid #ddd;
+    overflow-x: auto;
 }
 
-#room {
+.room {
+    display: inline-block;
     float: left;
     margin-right: 10px;
+}
+
+.total-details {
+    &:hover {
+        cursor: default !important;
+        background-color: #fafafa !important;
+    }
 }
 
 #beds {
     display: block;
 }
 
-#roomDetails {
+.room-details {
     padding: 20px;
-    box-shadow: 0px 0px 0px 1px;
     font-size: 12px;
     margin-right: 20px;
+    &:hover {
+        cursor: pointer;
+        background-color: #ddd;
+    }
+}
+
+.room-selected {
+    background-color: #ddd !important;
+}
+
+.floor-header {
+    color: #1223A1;
+    font-weight: 600;
+    text-align: center;
+}
+
+.bed-status {
+    margin-top: 5px;
+    color: #fff;
+    text-align: center;
+
+    span {
+        padding: 3px;
+    }
+}
+
+.available {
+    background: #0cbc3d;
+
+}
+
+.occupied {
+    background: #DFB831;
 }
 
 .cell {
     background: white;
     border: 1px solid blue;
+}
+
+.bed-tag {
+    width: 40px;
+    height: 25px;
+    border-radius: 7px;
+    display: inline-block;
+    float: left;
+    margin: 2px;
+    box-sizing: border-box;
+    position: relative;
+
+    .bed-space {
+        width: 5px;
+        height: 12px;
+        box-sizing: border-box;
+    }
 }
 
 .bed {
