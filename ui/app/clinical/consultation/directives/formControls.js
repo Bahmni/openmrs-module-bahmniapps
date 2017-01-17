@@ -21,8 +21,8 @@ angular.module('bahmni.common.conceptSet')
                                 $scope.form.component = renderWithControls(formDetails, formObservations, formUuid, collapse);
                             }
                             var reactContainerElement = angular.element(document.getElementById($scope.form.formUuid));
-                            reactContainerElement.on('$destroy', function() {
-                                unMountForm(document.getElementById($scope.form.formUuid))
+                            reactContainerElement.on('$destroy', function () {
+                                unMountForm(document.getElementById($scope.form.formUuid));
                             });
                         })
                     );
