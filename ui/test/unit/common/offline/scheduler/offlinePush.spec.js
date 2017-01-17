@@ -18,17 +18,6 @@ describe('Offline Push Tests', function () {
             mockBahmniCookieStore = jasmine.createSpyObj('bahmniCookieStore', ["get"]);
             $provide.value('$bahmniCookieStore', mockBahmniCookieStore);
 
-            var getDb = function (dbName) {
-                return {
-                    getSchema: function () {
-                        return {
-                            name: function () {
-                                return dbName;
-                            }
-                        };
-                    }
-                }
-            };
 
             offlineDbServiceMock.initSchema.and.callFake(function (dbName) {
                 return specUtil.simplePromise(
