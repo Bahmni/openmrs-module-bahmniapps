@@ -150,12 +150,10 @@ describe('OfflineDbService ', function () {
             });
         });
 
-        it("should insertEncounterData with given encounterData", function (done) {
-            var schemaBuilder = lf.schema.create('BahmniOfflineDb', 1);
-            schemaBuilder.connect().then(function (db) {
-                offlineDbService.init(db);
-
-                var encounterData = {
+        describe("insert encounter Data when there are multiple dbs", function () {
+            var encounterData;
+            beforeEach(function () {
+               encounterData = {
                     patientUuid: "patientUuid",
                     visitUuid: "visitUuid",
                     observations: ["obs1", "obs2"]
@@ -171,13 +169,33 @@ describe('OfflineDbService ', function () {
                     deferred1.resolve(encounterData);
                     return deferred1.promise;
                 });
+            });
 
-                offlineDbService.insertEncounterData(encounterData).then(function (encounterDataResponse) {
-                    expect(encounterDataResponse).not.toBeUndefined();
-                    expect(encounterDataResponse).toBe(encounterData);
-                    expect(encounterDbService.insertEncounterData).toHaveBeenCalledWith(db, encounterData);
-                    expect(observationDbService.insertObservationsData).toHaveBeenCalledWith(db, encounterData.patientUuid, encounterData.visitUuid, encounterData.observations);
-                    done();
+            it("should insertEncounterData with given encounterData in the db used by application on normal save", function (done) {
+                var schemaBuilder = lf.schema.create('BahmniOfflineDb', 1);
+                schemaBuilder.connect().then(function (db) {
+                    offlineDbService.init(db);
+                    offlineDbService.insertEncounterData(encounterData).then(function (encounterDataResponse) {
+                        expect(encounterDataResponse).not.toBeUndefined();
+                        expect(encounterDataResponse).toBe(encounterData);
+                        expect(encounterDbService.insertEncounterData).toHaveBeenCalledWith(db, encounterData);
+                        expect(observationDbService.insertObservationsData).toHaveBeenCalledWith(db, encounterData.patientUuid, encounterData.visitUuid, encounterData.observations);
+                        done();
+                    });
+                });
+            });
+
+            it("should insertEncounterData with given encounterData in the db that is passed to insertEncounter during sync", function (done) {
+                var schemaBuilder = lf.schema.create('OtherBahmniOfflineDb', 1);
+                schemaBuilder.connect().then(function (db) {
+                    offlineDbService.init(db);
+                    offlineDbService.insertEncounterData(encounterData, {"otherDb": 'otherdb'}).then(function (encounterDataResponse) {
+                        expect(encounterDataResponse).not.toBeUndefined();
+                        expect(encounterDataResponse).toBe(encounterData);
+                        expect(encounterDbService.insertEncounterData).toHaveBeenCalledWith({"otherDb": 'otherdb'}, encounterData);
+                        expect(observationDbService.insertObservationsData).toHaveBeenCalledWith({"otherDb": 'otherdb'}, encounterData.patientUuid, encounterData.visitUuid, encounterData.observations);
+                        done();
+                    });
                 });
             });
         });
@@ -710,6 +728,17 @@ describe('OfflineDbService ', function () {
                 offlineDbService.insertVisitData("visitData");
                 expect(visitDbService.insertVisitData.calls.count()).toBe(1);
                 expect(visitDbService.insertVisitData).toHaveBeenCalledWith(db, "visitData");
+                done();
+            });
+        });
+
+        it("should insert visit data during sync(push) in the db in which the encounter event is created", function (done) {
+            var schemaBuilder = lf.schema.create('BahmniOfflineDb', 1);
+            schemaBuilder.connect().then(function (db) {
+                offlineDbService.init(db);
+                offlineDbService.insertVisitData("visitData", {"db": 'otherDb'});
+                expect(visitDbService.insertVisitData.calls.count()).toBe(1);
+                expect(visitDbService.insertVisitData).toHaveBeenCalledWith({"db": 'otherDb'}, "visitData");
                 done();
             });
         });
