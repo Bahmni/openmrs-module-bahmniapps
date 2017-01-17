@@ -107,6 +107,7 @@ angular.module('bahmni.clinical')
                     $scope.activeTab = tab;
                     $scope.activeTab.klass = "active";
                     $scope.updateSelectedOrdersForActiveTab();
+                    initTestConceptToParentsMapping();
                     showFirstLeftCategoryByDefault();
                 }
             };
