@@ -20,6 +20,10 @@ angular.module('bahmni.common.conceptSet')
                                 loadedFormDetails[formUuid] = formDetails;
                                 $scope.form.component = renderWithControls(formDetails, formObservations, formUuid, collapse);
                             }
+                            var reactContainerElement = angular.element(document.getElementById($scope.form.formUuid));
+                            reactContainerElement.on('$destroy', function() {
+                                unMountForm(document.getElementById($scope.form.formUuid))
+                            });
                         })
                     );
                 } else {
@@ -48,7 +52,6 @@ angular.module('bahmni.common.conceptSet')
                             $scope.form.observations = formObservations.observations;
                         }
                     }
-                    unMountForm(document.getElementById($scope.form.formUuid));
                 });
             };
 
