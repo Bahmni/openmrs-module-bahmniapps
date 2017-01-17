@@ -89,7 +89,7 @@ describe('Offline Push Tests', function () {
 
     describe("push events when single db is present", function () {
         beforeEach(function() {
-            offlineDbServiceMock.getDbNames.and.returnValue(["dbOne"]);
+            offlineDbServiceMock.getDbNames.and.returnValue(["dbOne", "dbTwo"]);
         });
 
         it("should push data from event queue", function (done) {
@@ -155,6 +155,8 @@ describe('Offline Push Tests', function () {
             event.data = {type: "encounter", dbName: "dbOne", encounterUuid: 'encounterUuid'};
             httpBackend.expectPOST(Bahmni.Common.Constants.bahmniEncounterUrl).respond(200, {});
             offlinePush().then(function () {
+                expect(offlineDbServiceMock.getEncounterByEncounterUuid.calls.mostRecent().args[1].getSchema().name()).toEqual("dbOne");
+                expect(offlineDbServiceMock.createEncounter.calls.mostRecent().args[1].getSchema().name()).toEqual("dbOne");
                 expect(offlineDbServiceMock.createEncounter).toHaveBeenCalled();
                 expect(eventQueueMock.removeFromQueue).toHaveBeenCalled();
                 expect(eventQueueMock.consumeFromEventQueue).toHaveBeenCalled();
@@ -166,11 +168,12 @@ describe('Offline Push Tests', function () {
         });
 
         it("should push error log from event queue", function (done) {
-            event.data = {type: "Error", uuid: "someUuid", dbName: "dbOne"};
+            event.data = {type: "Error", uuid: "someUuid", dbName: "dbTwo"};
             httpBackend.expectPOST(Bahmni.Common.Constants.loggingUrl).respond(201, {});
             offlinePush().then(function () {
                 expect(eventQueueMock.removeFromQueue).toHaveBeenCalled();
                 expect(eventQueueMock.consumeFromEventQueue).toHaveBeenCalled();
+                expect(offlineDbServiceMock.getErrorLogByUuid.calls.mostRecent().args[1].getSchema().name()).toEqual("dbTwo");
                 expect(offlineDbServiceMock.getErrorLogByUuid).toHaveBeenCalledWith("someUuid", jasmine.any(Object));
                 expect(offlineDbServiceMock.deleteErrorFromErrorLog).toHaveBeenCalledWith("someUuid");
                 done();
@@ -189,6 +192,7 @@ describe('Offline Push Tests', function () {
                 expect(eventQueueMock.addToErrorQueue).not.toHaveBeenCalled();
                 expect(eventQueueMock.consumeFromEventQueue).not.toHaveBeenCalled();
                 expect(eventQueueMock.releaseFromQueue).toHaveBeenCalled();
+                expect(offlineDbServiceMock.getErrorLogByUuid.calls.mostRecent().args[1].getSchema().name()).toEqual("dbOne");
                 expect(offlineDbServiceMock.getErrorLogByUuid).toHaveBeenCalledWith("someUuid", jasmine.any(Object));
                 expect(offlineDbServiceMock.deleteErrorFromErrorLog).not.toHaveBeenCalled();
                 done();
