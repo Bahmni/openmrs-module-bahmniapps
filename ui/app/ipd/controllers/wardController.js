@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('bahmni.ipd')
-    .controller('WardController', ['$scope', '$rootScope', '$stateParams',
-        function ($scope, $rootScope, $stateParams) {
+    .controller('WardController', ['$scope', '$rootScope', '$stateParams', '$state',
+        function ($scope, $rootScope, $stateParams, $state) {
             var init = function () {
                 if ($rootScope.bedDetails) {
                     expandAdmissionMasterForRoom($rootScope.bedDetails.physicalLocationName);
@@ -23,20 +23,42 @@ angular.module('bahmni.ipd')
                 $scope.activeRoom = null;
             });
 
+            var updateSelectedBedInfo = function (roomName) {
+                $rootScope.selectedBedInfo.roomName = roomName;
+                $rootScope.selectedBedInfo.bed = undefined;
+            };
+
             $scope.onSelectRoom = function (roomName) {
+                updateSelectedBedInfo(roomName);
                 getSelectedRoom(roomName);
                 $scope.$emit("event:roomSelected", roomName);
                 $scope.activeRoom = roomName;
+                goToBedManagement();
             };
 
             var expandAdmissionMasterForRoom = function (roomName) {
+                updateSelectedBedInfo(roomName);
                 getSelectedRoom(roomName);
-                $scope.$emit("event:roomSelectedAuto", roomName);
             };
 
             $scope.$on("event:departmentChanged", function (event) {
                 $scope.roomSelected = false;
             });
+
+            var goToBedManagement = function () {
+                if ($state.current.name == "bedManagement.bed") {
+                    var options = {};
+                    options['context'] = {
+                        department: {
+                            uuid: $scope.ward.uuid,
+                            name: $scope.ward.name
+                        },
+                        roomName: $rootScope.selectedBedInfo.roomName
+                    };
+                    options['dashboardCachebuster'] = Math.random();
+                    $state.go("bedManagement", options);
+                }
+            };
 
             init();
         }]);

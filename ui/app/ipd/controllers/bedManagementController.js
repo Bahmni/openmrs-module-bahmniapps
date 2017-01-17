@@ -6,6 +6,7 @@ angular.module('bahmni.ipd')
             $scope.wards = null;
 
             var init = function () {
+                $rootScope.selectedBedInfo = $rootScope.selectedBedInfo || {};
                 loadAllWards().then(function () {
                     if ($rootScope.bedDetails) {
                         expandAdmissionMasterForDepartment({
@@ -60,6 +61,7 @@ angular.module('bahmni.ipd')
                         occupiedBeds: wardDetails[0].occupiedBeds
                     };
                     $scope.departmentSelected = true;
+                    $rootScope.selectedBedInfo.wardName = department.name;
                     $scope.$broadcast("event:departmentChanged");
                 });
             };
@@ -84,8 +86,8 @@ angular.module('bahmni.ipd')
             };
 
             var resetPatientAndBedInfo = function () {
-                $scope.roomName = undefined;
-                $scope.bed = undefined;
+                $rootScope.selectedBedInfo.roomName = undefined;
+                $rootScope.selectedBedInfo.bed = undefined;
                 goToBedManagement();
             };
 
@@ -96,21 +98,6 @@ angular.module('bahmni.ipd')
                         room.availableBeds = room.availableBeds - 1;
                     }
                 });
-            });
-
-            $scope.$on("event:bedSelected", function (event, bed) {
-                $scope.bed = bed;
-            });
-
-            $scope.$on("event:roomSelected", function (event, roomName) {
-                $scope.roomName = roomName;
-                $scope.bed = undefined;
-                goToBedManagement();
-            });
-
-            $scope.$on("event:roomSelectedAuto", function (event, roomName) {
-                $scope.roomName = roomName;
-                $scope.bed = undefined;
             });
 
             var goToBedManagement = function () {

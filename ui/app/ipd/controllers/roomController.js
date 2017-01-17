@@ -15,7 +15,7 @@ angular.module('bahmni.ipd')
                             return true;
                         }
                     });
-                    $scope.$emit("event:bedSelected", $scope.selectedBed);
+                    $rootScope.selectedBedInfo.bed = $scope.selectedBed;
                     if ($state.current.name != "bedManagement.patient") {
                         $scope.oldBedNumber = undefined;
                     }
@@ -27,18 +27,16 @@ angular.module('bahmni.ipd')
                     if (bed.status == "AVAILABLE") {
                         $rootScope.patient = undefined;
                     }
-                    $scope.selectedBed = bed;
+                    $rootScope.selectedBedInfo.bed = bed;
                     var options = {bedId: bed.bedId};
                     $state.go("bedManagement.bed", options);
                 }
                 else if ($state.current.name == "bedManagement.patient") {
                     if (bed.status == "OCCUPIED") {
-                        $scope.selectedBed = undefined;
-                        $scope.$emit("event:bedSelected", undefined);
+                        $rootScope.selectedBedInfo.bed = undefined;
                         messagingService.showMessage("error", "Please select an available bed");
                     } else {
-                        $scope.selectedBed = bed;
-                        $scope.$emit("event:bedSelected", bed);
+                        $rootScope.selectedBedInfo.bed = bed;
                     }
                 }
             };
