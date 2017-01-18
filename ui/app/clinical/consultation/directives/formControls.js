@@ -4,6 +4,12 @@ angular.module('bahmni.common.conceptSet')
     .directive('formControls', ['observationFormService', 'spinner', '$timeout',
         function (observationFormService, spinner, $timeout) {
             var loadedFormDetails = {};
+            var unMountReactContainer = function (formUuid) {
+                var reactContainerElement = angular.element(document.getElementById(formUuid));
+                reactContainerElement.on('$destroy', function () {
+                    unMountForm(document.getElementById(formUuid));
+                });
+            };
 
             var controller = function ($scope) {
                 var formUuid = $scope.form.formUuid;
@@ -20,15 +26,13 @@ angular.module('bahmni.common.conceptSet')
                                 loadedFormDetails[formUuid] = formDetails;
                                 $scope.form.component = renderWithControls(formDetails, formObservations, formUuid, collapse);
                             }
-                            var reactContainerElement = angular.element(document.getElementById($scope.form.formUuid));
-                            reactContainerElement.on('$destroy', function () {
-                                unMountForm(document.getElementById($scope.form.formUuid));
-                            });
+                            unMountReactContainer($scope.form.formUuid);
                         })
                     );
                 } else {
                     $timeout(function () {
                         $scope.form.component = renderWithControls(loadedFormDetails[formUuid], formObservations, formUuid, collapse);
+                        unMountReactContainer($scope.form.formUuid);
                     }, 0, false);
                 }
 
