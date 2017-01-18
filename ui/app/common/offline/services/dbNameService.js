@@ -9,7 +9,7 @@ angular.module('bahmni.common.offline')
                 if (offlineService.isAndroidApp()) {
                     offlineDbService = androidDbService;
                 }
-                offlineDbService.getConfig("offline").then(function (config) {
+                offlineDbService.getConfig("dbNameCondition").then(function (config) {
                     var script = config.value['dbNameCondition.js'];
                     eval(script); // eslint-disable-line no-eval
                     defer.resolve();
