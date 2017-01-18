@@ -231,8 +231,7 @@ angular.module('bahmni.ipd')
                         template: 'views/transferConfirmation.html',
                         scope: $scope,
                         closeByEscape: true,
-                        className: "ngdialog-theme-default ng-dialog-adt-popUp",
-
+                        className: "ngdialog-theme-default ng-dialog-adt-popUp"
                     });
                 }
             };

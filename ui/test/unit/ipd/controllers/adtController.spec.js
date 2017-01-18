@@ -430,7 +430,7 @@ describe("AdtController", function () {
 
         scope.transfer();
         expect(ngDialog.openConfirm).toHaveBeenCalled();
-        expect(ngDialog.openConfirm).toHaveBeenCalledWith({template: 'views/transferConfirmation.html', scope: scope, closeByEscape: true});
+        expect(ngDialog.openConfirm).toHaveBeenCalledWith({template: 'views/transferConfirmation.html', scope: scope, closeByEscape: true, className: "ngdialog-theme-default ng-dialog-adt-popUp"});
     });
 
     it("Should create an encounter of type Transfer and assign patient to new bed, When clicking on transferConfirmation", function () {

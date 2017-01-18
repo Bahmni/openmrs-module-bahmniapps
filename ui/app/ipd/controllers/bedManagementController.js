@@ -81,7 +81,7 @@ angular.module('bahmni.ipd')
 
             var resetDepartments = function () {
                 _.each($scope.wards, function (option) {
-                   option.ward.isSelected = false;
+                    option.ward.isSelected = false;
                 });
             };
 
