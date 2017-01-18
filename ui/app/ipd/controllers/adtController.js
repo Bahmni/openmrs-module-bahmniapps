@@ -152,7 +152,7 @@ angular.module('bahmni.ipd')
                             });
                         }
                         assignBedToPatient($rootScope.selectedBedInfo.bed, response.data.patientUuid, response.data.encounterUuid);
-                        forwardUrl(response, "onAdmissionForwardTo");
+                        forwardUrl(response.data, "onAdmissionForwardTo");
                     });
                 } else if ($scope.defaultVisitTypeName === null) {
                     messagingService.showMessage("error", "MESSAGE_DEFAULT_VISIT_TYPE_NOT_FOUND_KEY");
@@ -197,7 +197,7 @@ angular.module('bahmni.ipd')
                             $scope.visitSummary = new Bahmni.Common.VisitSummary(response.data);
                         });
                         assignBedToPatient($rootScope.selectedBedInfo.bed, response.data.patientUuid, response.data.encounterUuid);
-                        forwardUrl(response, "onAdmissionForwardTo");
+                        forwardUrl(response.data, "onAdmissionForwardTo");
                     });
                 } else if ($scope.defaultVisitTypeName === null) {
                     messagingService.showMessage("error", "MESSAGE_DEFAULT_VISIT_TYPE_NOT_FOUND_KEY");
