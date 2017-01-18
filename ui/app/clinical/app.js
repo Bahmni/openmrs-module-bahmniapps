@@ -16,10 +16,10 @@ angular.module('consultation', ['ui.router', 'bahmni.clinical', 'bahmni.common.c
     'bahmni.common.displaycontrol.obsVsObsFlowSheet', 'bahmni.common.displaycontrol.chronicTreatmentChart',
     'bahmni.common.displaycontrol.forms', 'bahmni.common.displaycontrol.drugOrderDetails', 'bahmni.common.offline',
     'bahmni.common.displaycontrol.hint', 'bahmni.common.displaycontrol.drugOrdersSection', 'bahmni.common.attributeTypes',
-    'bahmni.common.services', 'bahmni.common.models']);
+    'bahmni.common.services', 'bahmni.common.models', 'ngRedux' ]);
 angular.module('consultation')
-    .config(['$stateProvider', '$httpProvider', '$urlRouterProvider', '$bahmniTranslateProvider', '$compileProvider',
-        function ($stateProvider, $httpProvider, $urlRouterProvider, $bahmniTranslateProvider, $compileProvider) {
+    .config(['$stateProvider', '$httpProvider', '$urlRouterProvider', '$bahmniTranslateProvider', '$compileProvider', '$ngReduxProvider',
+        function ($stateProvider, $httpProvider, $urlRouterProvider, $bahmniTranslateProvider, $compileProvider, $ngReduxProvider) {
             $urlRouterProvider.otherwise('/' + Bahmni.Clinical.Constants.defaultExtensionName + '/patient/search');
             $compileProvider.aHrefSanitizationWhitelist(/^\s*(https?|ftp|mailto|chrome-extension|file):/);
             $compileProvider.imgSrcSanitizationWhitelist(/^\s*(https?|local|data|blob|chrome-extension):/);
@@ -31,6 +31,24 @@ angular.module('consultation')
                 icon: "fa-users"
             };
             var homeBackLink = {label: "", url: "../home/index.html", accessKey: "h", icon: "fa-home"};
+
+            var reducer = function(state, action){
+                if (!action || !action.type) {
+                    return state;
+                }
+                console.log('action', action);
+                switch (action.type) {
+                    case 'PARTY_JOINED':
+                        return R.append(action.payload)(state);
+                    case 'PARTY_SEATED':
+                        return R.reject(n => n.partyId === action.payload.partyId)(state);
+                    case 'PARTY_LEFT':
+                        return R.reject(n => n.partyId === action.payload.partyId)(state);
+                    default:
+                        return state;
+                }
+            };
+            $ngReduxProvider.createStoreWith(reducer);
 
         // @if DEBUG='production'
             $compileProvider.debugInfoEnabled(false);

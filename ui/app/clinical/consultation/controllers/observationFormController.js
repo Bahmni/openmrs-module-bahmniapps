@@ -1,12 +1,16 @@
 'use strict';
 
 angular.module('bahmni.clinical')
-    .controller('ObservationFormController', ['$scope', '$rootScope', 'observationFormService', 'spinner', 'ngRedux',
-        function ($scope, $rootScope, observationFormService, spinner, ngRedux) {
+    .controller('ObservationFormController', ['$scope', '$rootScope', 'observationFormService', 'spinner', '$ngRedux',
+        function ($scope, $rootScope, observationFormService, spinner, $ngRedux) {
+            var self = this;
             var init = function () {
+                var unsubscribe = $ngRedux.connect(function(state) {return state})(self);
+                $scope.$on('$destroy', unsubscribe);
                 if (!($scope.consultation.observationForms !== undefined && $scope.consultation.observationForms.length > 0)) {
                     spinner.forPromise(observationFormService.getFormList($scope.consultation.encounterUuid)
                         .then(function (response) {
+                            self.dispatch({type:'RANDOM', data: '123'});
                             $scope.consultation.observationForms = getObservationForms(response.data);
                         })
                     );
