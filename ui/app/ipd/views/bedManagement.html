@@ -28,15 +28,15 @@
             </div>
             <div class="patient-attributes">
                 <label>Room: </label>
-                <span>{{roomName}}</span>
+                <span>{{$root.selectedBedInfo.roomName}}</span>
             </div>
             <div class="patient-attributes">
                 <label>Bed# </label>
-                <span>{{bed.bedNumber}}</span>
+                <span>{{$root.selectedBedInfo.bed.bedNumber}}</span>
             </div>
             <div class="patient-attributes">
                 <label>Status: </label>
-                <span>{{bed.status}}</span>
+                <span>{{$root.selectedBedInfo.bed.status}}</span>
             </div>
         </div>
 

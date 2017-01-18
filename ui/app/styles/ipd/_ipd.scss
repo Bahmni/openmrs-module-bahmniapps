@@ -125,7 +125,36 @@ div[ng-app="adt"] {
 
 .action-button {
     padding: 10px 0;
+}
 
+.ipd-button-group {
+    text-align: center;
+    margin-top: 15px;
+}
+
+.transfer-container {
+    text-align: center;
+
+    span {
+        font-weight: 600;
+    }
+}
+
+.ipd-transfer-container {
+    margin: 30px 20px 0;
+
+    i {
+        font-size: 3em;
+        color: #65645F;
+    }
+}
+
+.transfer-wrapper {
+    width: auto;
+}
+
+.transfer-section {
+    margin: 20px;
 }
 
 .right-pane {
@@ -289,4 +318,19 @@ div[ng-app="adt"] {
     right: -5px;
     bottom: -5px;
     border: 2px solid grey;
+}
+
+.ngdialog.ngdialog-theme-default.ng-dialog-adt-popUp{
+    .ngdialog-content{
+        width:auto;
+        display: table;
+        .form-horizontal {
+            fieldset label {
+                width: auto;
+            }
+            textarea{
+                min-width:66%;
+            }
+        }
+    }
 }

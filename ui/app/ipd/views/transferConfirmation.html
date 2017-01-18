@@ -1,31 +1,43 @@
-<div class="revise-refill-modal-wrapper" aria-labelledby="dialog-label">
+<div class="revise-refill-modal-wrapper transfer-wrapper" aria-labelledby="dialog-label">
     <style type="text/css">
         .opd-header-wrapper {
             z-index: 10000 !important;
         }
     </style>
     <div class="ngdialog-close clearfix"></div>
-    <div>
-        <div> Tranfer Patient </div>
-        {{$root.patient.name}}
+    <div class="clearfix">
+        <h4> Tranfer Patient </h4>
     </div>
-    <div class="fl">
-        <div>Transfer From</div>
-        <div>{{$root.bedDetails.wardName}}</div>
-        <div>{{$root.bedDetails.physicalLocationName}}</div>
-        <div>{{$root.bedDetails.bedNumber}}</div>
+    <div class="clearfix">
+        <div class="patient-attributes">
+            <label for="patient-name">Patient name: </label>
+            <span id="patient-name">{{$root.patient.name}}</span>
+        </div>
     </div>
+    <div class="transfer-section">
+        <div class="fl">
+            <div class="transfer-container">
+                <span>Transfer From</span>
+                <h5>{{$root.bedDetails.wardName}}</h5>
+                <h5>{{$root.bedDetails.physicalLocationName}}</h5>
+                <h5>{{$root.bedDetails.bedNumber}}</h5>
+            </div>
+        </div>
+        <div class="fl ipd-transfer-container"><i class="fa fa-long-arrow-right"></i></div>
 
-    <div class="fr">
-        <div>Transfer To</div>
-        <div>{{$root.selectedBedInfo.wardName}}</div>
-        <div>{{$root.selectedBedInfo.roomName}}</div>
-        <div>{{$root.selectedBedInfo.bed.bedNumber}}</div>
+        <div class="fr">
+            <div class="transfer-container">
+                <span>Transfer To</span>
+                <h5>{{$root.selectedBedInfo.wardName}}</h5>
+                <h5>{{$root.selectedBedInfo.roomName}}</h5>
+                <h5>{{$root.selectedBedInfo.bed.bedNumber}}</h5>
+            </div>
+        </div>
     </div>
-    <div id="adtNotes" ng-if="getAdtConceptConfig">
+    <div id="adtNotes" ng-if="getAdtConceptConfig" class="concept-set-container">
         <concept-set concept-set-name="getAdtConceptConfig" observations="adtObservations"></concept-set>
     </div>
-    <div class="dialog-button-group">
+    <div class="dialog-button-group ipd-button-group">
         <button id="modal-revise-button1" class="secondary-button" ng-click="transferConfirmation()">Tranfer</button>
         <button id="modal-revise-button3" class="secondary-button" ng-click="cancelConfirmationDialog()">Cancel</button>
     </div>
