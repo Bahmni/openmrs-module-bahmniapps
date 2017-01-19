@@ -178,18 +178,6 @@ angular.module('consultation')
                     }
                 }
             })
-            .state('patient.dashboard.show.formObservations', {
-                url: '/form-observations',
-                params: {
-                    cachebuster: null
-                },
-                views: {
-                    'consultation-content': {
-                        templateUrl: 'consultation/views/observationForm.html',
-                        controller: 'ObservationFormController'
-                    }
-                }
-            })
             .state('patient.dashboard.show.diagnosis', {
                 url: '/diagnosis',
                 params: {
