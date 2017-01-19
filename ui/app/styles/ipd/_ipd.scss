@@ -116,11 +116,7 @@ div[ng-app="adt"] {
     width: 295px;
     border: 1px solid #ddd;
     padding: 20px;
-
-    .photo-container-wrapper {
-        display: inline-block;
-        float: right;
-    }
+    word-wrap: break-word;
 }
 
 .action-button {
