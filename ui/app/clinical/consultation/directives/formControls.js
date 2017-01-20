@@ -1,11 +1,17 @@
 'use strict';
 
-angular.module('bahmni.common.conceptSet')
-    .directive('formControls', ['observationFormService', 'spinner', '$timeout',
-        function (observationFormService, spinner, $timeout) {
-            var loadedFormDetails = {};
+function stateToObservationsMap(state) {
+    return {
+        observations: state.observations
+    }
+}
 
+angular.module('bahmni.common.conceptSet')
+    .directive('formControls', ['observationFormService', 'spinner', '$timeout', '$ngRedux', 'reduxService',
+        function (observationFormService, spinner, $timeout, $ngRedux, reduxService) {
+            var loadedFormDetails = {};
             var controller = function ($scope) {
+            var self = this;
                 var formUuid = $scope.form.formUuid;
                 var formObservations = $scope.form.observations;
                 var collapse = $scope.form.collapseInnerSections && $scope.form.collapseInnerSections.value;
@@ -19,6 +25,8 @@ angular.module('bahmni.common.conceptSet')
                                 formDetails.version = $scope.form.formVersion;
                                 loadedFormDetails[formUuid] = formDetails;
                                 $scope.form.component = renderWithControls(formDetails, formObservations, formUuid, collapse);
+                                self.dispatch({type:'RANDOM', data: '123'});
+
                             }
                         })
                     );
@@ -31,7 +39,7 @@ angular.module('bahmni.common.conceptSet')
                 $scope.$watch('form.collapseInnerSections', function () {
                     var collapse = $scope.form.collapseInnerSections && $scope.form.collapseInnerSections.value;
                     if (loadedFormDetails[formUuid]) {
-                        $scope.form.component = renderWithControls(loadedFormDetails[formUuid], formObservations, formUuid, collapse);
+                        $scope.form.component = renderWithControls(loadedFormDetails[formUuid], formObservations, formUuid, collapse, myListener);
                     }
                 });
 
@@ -51,6 +59,11 @@ angular.module('bahmni.common.conceptSet')
                     unMountForm(document.getElementById($scope.form.formUuid));
                 });
             };
+
+            var myListner = function (state) {
+                $scope.skdjf=  sldfkj;
+            };
+            reduxService.register(stateToObservationsMap, myListner);
 
             return {
                 restrict: 'E',

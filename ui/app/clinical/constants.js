@@ -29,6 +29,10 @@ Bahmni.Clinical.Constants = (function () {
         specimenSampleSourceConceptName: "Specimen Sample Source"
 
     };
+
+    var actionTypes = {
+        observationAdded: "OBSERVATION_ADDED",
+    }
     return {
         patientsListUrl: "/patient/search",
         diagnosisObservationConceptName: "Visit Diagnoses",
@@ -67,8 +71,8 @@ Bahmni.Clinical.Constants = (function () {
         mandatoryVisitConfigUrl: "config/visitMandatoryTab.json",
         defaultExtensionName: "default",
         bacteriologyConstants: bacteriologyConstants,
-        globalPropertyToFetchActivePatients: 'emrapi.sqlSearch.activePatients'
-
+        globalPropertyToFetchActivePatients: 'emrapi.sqlSearch.activePatients',
+        actionTypes: actionTypes
     };
 })();
 
