@@ -11,9 +11,6 @@ angular.module('bahmni.common.conceptSet')
             var init = function () {
                 $scope.validationHandler = new Bahmni.ConceptSet.ConceptSetGroupPanelViewValidationHandler($scope.allTemplates);
                 contextChangeHandler.add($scope.validationHandler.validate);
-                $scope.leftPanelConceptSet = _.find($scope.allTemplates, function (conceptSet) {
-                    return conceptSet.klass == "active";
-                });
             };
 
             $scope.togglePref = function (conceptSet, conceptName) {
@@ -85,7 +82,8 @@ angular.module('bahmni.common.conceptSet')
                 $.scrollTo('#concept-set-' + (index + 1), 200, {offset: {top: -400}});
             };
 
-            $scope.clonePanelConceptSet = function (index) {
+            $scope.clonePanelConceptSet = function (conceptSet) {
+                var index = _.findIndex($scope.allTemplates, conceptSet);
                 messagingService.showMessage("info", $translate.instant("CLINICAL_TEMPLATE_ADDED_SUCCESS_KEY", {label: $scope.allTemplates[index].label}));
                 $scope.clone(index);
                 $scope.showLeftPanelConceptSet($scope.allTemplates[index + 1]);
@@ -99,10 +97,10 @@ angular.module('bahmni.common.conceptSet')
                 return false;
             };
 
-            $scope.isLastClonedSection = function (conceptSetTemplate, allTemplates) {
-                var index = allTemplates.indexOf(conceptSetTemplate);
-                if (allTemplates) {
-                    if (index == allTemplates.length - 1 || allTemplates[index].label != allTemplates[index + 1].label) {
+            $scope.isLastClonedSection = function (conceptSetTemplate) {
+                var index = _.findIndex($scope.allTemplates, conceptSetTemplate);
+                if ($scope.allTemplates) {
+                    if (index == $scope.allTemplates.length - 1 || $scope.allTemplates[index].label != $scope.allTemplates[index + 1].label) {
                         return true;
                     }
                 }
@@ -163,7 +161,7 @@ angular.module('bahmni.common.conceptSet')
                 $scope.leftPanelConceptSet.klass = "active";
                 $scope.leftPanelConceptSet.atLeastOneValueIsSet = selectedConceptSet.hasSomeValue();
                 $scope.leftPanelConceptSet.isAdded = true;
-                $scope.consultation.lastvisited = selectedConceptSet.uuid || selectedConceptSet.formUuid;
+                $scope.consultation.lastvisited = selectedConceptSet.id || selectedConceptSet.formUuid;
                 $(window).scrollTop(0);
             };
 
@@ -177,7 +175,7 @@ angular.module('bahmni.common.conceptSet')
                 return data.formUuid;
             };
 
-            init();
+            $timeout(init);
         }])
     .directive('conceptSetGroup', function () {
         return {
