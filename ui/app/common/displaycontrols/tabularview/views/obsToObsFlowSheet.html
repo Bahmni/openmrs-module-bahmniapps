@@ -35,7 +35,7 @@
                                       ng-dialog="dashboard/views/dashboardSections/imageDisplay.html"
                                       ng-dialog-class="ngdialog-theme-default ng-dialog-all-details-page ng-dialog-edit"
                                       ng-dialog-data="{{ row.columns }}">
-                                     <img src="{{ row.columns[header.name][0].value|thumbnail }}">
+                                     <img ng-src="{{ row.columns[header.name][0].value|thumbnail }}">
                                 </span>
                             </span>
                             <span class="fl"
