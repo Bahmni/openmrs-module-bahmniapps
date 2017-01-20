@@ -315,6 +315,9 @@ angular.module('bahmni.clinical').controller('ConsultationController',
                 tempConsultation.observations = observationFilter.filter(tempConsultation.observations);
                 tempConsultation.consultationNote = observationFilter.filter([tempConsultation.consultationNote])[0];
                 tempConsultation.labOrderNote = observationFilter.filter([tempConsultation.labOrderNote])[0];
+
+                storeTemplatePreference();
+
                 addFormObservations(tempConsultation);
                 var visitTypeForRetrospectiveEntries = clinicalAppConfigService.getVisitTypeForRetrospectiveEntries();
                 var defaultVisitType = clinicalAppConfigService.getDefaultVisitType();
@@ -322,6 +325,22 @@ angular.module('bahmni.clinical').controller('ConsultationController',
                     visitTypeForRetrospectiveEntries, defaultVisitType, $scope.isInEditEncounterMode(), $state.params.enrollment);
                 deferred.resolve(encounterData);
                 return deferred.promise;
+            };
+
+            var storeTemplatePreference = function () {
+                var templateNames = [];
+                _.each($scope.consultation.observations, function (observation) {
+                    if (!_.includes(templateNames, observation.concept.name)) {
+                        templateNames.push(observation.concept.name);
+                    }
+                });
+
+                var data = {
+                    "patientUuid" : $scope.patient.uuid,
+                    "templateNames": templateNames
+                };
+
+                localStorage.setItem("templatePreference", JSON.stringify(data));
             };
 
             var discontinuedDrugOrderValidation = function (removableDrugs) {
@@ -394,12 +413,13 @@ angular.module('bahmni.clinical').controller('ConsultationController',
                     encounterData.encounterTypeUuid = results[1].uuid;
                     var params = angular.copy($state.params);
                     params.cachebuster = Math.random();
-                    params.lastOpenedTemplate = $scope.lastvisited;
                     return encounterService.create(encounterData)
                         .then(function (saveResponse) {
                             var consultationMapper = new Bahmni.ConsultationMapper(configurations.dosageFrequencyConfig(), configurations.dosageInstructionConfig(),
                                 configurations.consultationNoteConcept(), configurations.labOrderNotesConcept(), configurations.stoppedOrderReasonConfig());
-                            return consultationMapper.map(saveResponse.data);
+                            var consultation = consultationMapper.map(saveResponse.data);
+                            consultation.lastvisited = $scope.lastvisited;
+                            return consultation;
                         })
                         .then(function (savedConsulation) {
                             messagingService.showMessage('info', "{{'CLINICAL_SAVE_SUCCESS_MESSAGE_KEY' | translate}}");

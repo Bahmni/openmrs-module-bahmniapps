@@ -18,6 +18,9 @@ describe("conceptSetGroup", function () {
             userService = jasmine.createSpyObj('userService', ['savePreferences']);
             conceptSetUiConfigService = jasmine.createSpyObj('conceptSetUiConfigService', ['getConfig']);
             clinicalAppConfigService = jasmine.createSpyObj('clinicalAppConfigService', ['getVisitTypeForRetrospectiveEntries']);
+            timeout = function(init) {
+                init()
+            };
             spinner = jasmine.createSpyObj('spinner', ['forPromise']);
             translate = jasmine.createSpyObj('$translate',['instant']);
             $provide.value('contextChangeHandler', contextChangeHandler);
@@ -32,6 +35,7 @@ describe("conceptSetGroup", function () {
             $provide.value('clinicalAppConfigService', clinicalAppConfigService);
             $provide.value('spinner', spinner);
             $provide.value('$translate', translate);
+            $provide.value('$timeout', timeout);
             _provide = $provide;
         });
         inject(function ($compile, $rootScope, $httpBackend) {
@@ -94,7 +98,7 @@ describe("conceptSetGroup", function () {
         scope.$digest();
         httpBackend.flush();
         return element.isolateScope();
-    }
+    };
 
 
     it("should conceptSetGroup controller be initialized", function () {
@@ -116,8 +120,6 @@ describe("conceptSetGroup", function () {
 
         expect(compiledElementScope.isInEditEncounterMode()).toBeTruthy();
         expect(contextChangeHandler.add).toHaveBeenCalled();
-        expect(compiledElementScope.leftPanelConceptSet).toBeDefined();
-        expect(compiledElementScope.leftPanelConceptSet.klass).toBe("active");
     });
 
     it("showLeftPanelConceptSet should set the selected conceptset to be loaded, open, klass as active", function () {

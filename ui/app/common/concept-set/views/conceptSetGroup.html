@@ -12,8 +12,8 @@
                             </span>
                         </a>
                         <div class="button-wrap">
-                            <label class="fa fa-exclamation-triangle fa-red"  ng-show="conceptSet.isValid === false" ng-click="conceptSet.klass =='active' && focusOnErrors()"></label>
-                            <label class="fr" ng-click="clonePanelConceptSet($index)" ng-if="isLastClonedSection(conceptSet, allTemplates) && conceptSet.canAddMore()"> <i class="fa fa-plus"></i></label>
+                            <label class="fa fa-exclamation-triangle fa-red" ng-show="conceptSet.isValid === false" ng-click="conceptSet.klass =='active' && focusOnErrors()"></label>
+                            <label class="fr" ng-click="clonePanelConceptSet(conceptSet)" ng-if="isLastClonedSection(conceptSet) && conceptSet.canAddMore()"> <i class="fa fa-plus"></i></label>
                         </div>
                     </li>
                     <li class="emptymsg">{{::'EMPTY_TEMPLATE_MESSAGE' | translate}}</li>
@@ -24,7 +24,7 @@
     <div class="concept-set-panel-right-wrap">
         <section class="concept-set-panel-right">
             <ul>
-                <li ng-repeat="conceptSet in allTemplates track by $index" ng-if="leftPanelConceptSet==conceptSet">
+                <li ng-repeat="conceptSet in allTemplates" ng-if="leftPanelConceptSet==conceptSet">
                     <section class="concept-set-group section-grid" >
                         <ng-include src="'../common/concept-set/views/conceptSetGroupSection.html'"></ng-include>
                     </section>
