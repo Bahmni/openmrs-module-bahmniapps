@@ -1,5 +1,11 @@
 <section class="dashboard-section" ng-if="::hasData">
-    <h2 ng-if="::(displayName || diseaseName)" class="section-title">{{::displayName || diseaseName}}</h2>
+    <h2 ng-if="::(displayName || diseaseName)" class="section-title">
+        {{::displayName || diseaseName}}
+        <div class="fr btn-scrolling">
+            <button ng-click="scrollLeft()" class="fl btn-small btn-scroll-left">{{::'SCROLL_LEFT' | translate }}</button>
+            <button ng-click="scrollRight()" class="fl btn-small btn-scroll-right">{{::'SCROLL_RIGHT' | translate }}</button>
+        </div>
+    </h2>
     <div>
         <table ng-class="::{'h-scroll':showOnPrint, 'pivot-table':showOnPrint, 'h-scroll-print': !showOnPrint}">
             <thead>
