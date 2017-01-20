@@ -54,6 +54,11 @@ angular.module('bahmni.common.conceptSet')
                                 $scope.$parent.consultation.observations.push(obs);
                             });
                             $scope.form.observations = formObservations.observations;
+
+                            var hasError = formObservations.errors;
+                            if (!_.isEmpty(hasError)) {
+                                $scope.form.isValid = false;
+                            }
                         }
                     }
                 });
