@@ -16,9 +16,8 @@ angular.module('consultation', ['ui.router', 'bahmni.clinical', 'bahmni.common.c
     'bahmni.common.displaycontrol.obsVsObsFlowSheet', 'bahmni.common.displaycontrol.chronicTreatmentChart',
     'bahmni.common.displaycontrol.forms', 'bahmni.common.displaycontrol.drugOrderDetails', 'bahmni.common.offline',
     'bahmni.common.displaycontrol.hint', 'bahmni.common.displaycontrol.drugOrdersSection', 'bahmni.common.attributeTypes',
-    'bahmni.common.services', 'bahmni.common.models', 'react']);
+    'bahmni.common.services', 'bahmni.common.models']);
 angular.module('consultation')
-    .value('MedicationContainer', window.componentStore.getRegisteredComponent('MedicationContainer'))
     .config(['$stateProvider', '$httpProvider', '$urlRouterProvider', '$bahmniTranslateProvider', '$compileProvider',
         function ($stateProvider, $httpProvider, $urlRouterProvider, $bahmniTranslateProvider, $compileProvider) {
             $urlRouterProvider.otherwise('/' + Bahmni.Clinical.Constants.defaultExtensionName + '/patient/search');
@@ -236,22 +235,6 @@ angular.module('consultation')
                     }
                 }
             })
-            .state('patient.dashboard.show.treatment.medicationTab', {
-                url: '/medication-tab?tabConfigName',
-                params: {
-                    cachebuster: null
-                },
-                views: {
-                    "addTreatment": {
-                        templateUrl: 'consultation/views/medication.html',
-                        controller: 'MedicationController',
-                        resolve: {
-                            treatmentConfig: 'treatmentConfig'
-                        }
-                    }
-                }
-            })
-
             .state('patient.dashboard.show.disposition', {
                 url: '/disposition',
                 params: {
@@ -311,7 +294,6 @@ angular.module('consultation')
                     }
                 }
             })
-
             .state('patient.dashboard.show.investigation', {
                 url: '/investigation',
                 params: {
