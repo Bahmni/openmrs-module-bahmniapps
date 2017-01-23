@@ -97,15 +97,32 @@ describe('Offline Push Tests', function () {
         }, 100);
     });
 
-    it("should halt queue processing if push response is 400", function(done) {
+    it("should add to error queue if push response is 4xx and status code is other than 401, 403 and 404", function(done) {
+        errorQueue = [];
         httpBackend.expectPOST("someUrl").respond(400, {});
+        offlinePush().then(function(){
+            expect(eventQueueMock.removeFromQueue).toHaveBeenCalled();
+            expect(eventQueueMock.addToErrorQueue).toHaveBeenCalled();
+            expect(eventQueueMock.consumeFromEventQueue).toHaveBeenCalled();
+            expect(loggingServiceMock.logSyncError).toHaveBeenCalled();
+            expect(loggingServiceMock.logSyncError).toHaveBeenCalledWith("someUrl", 400, {}, {relationships : []});
+            done();
+        });
+        setTimeout(function(){
+            httpBackend.flush();
+        }, 100);
+    });
+
+
+    it("should halt queue processing if push response 401 or 403 or 404 ", function(done) {
+        httpBackend.expectPOST("someUrl").respond(401, {});
         offlinePush().then(function(){
             expect(eventQueueMock.removeFromQueue).not.toHaveBeenCalled();
             expect(eventQueueMock.addToErrorQueue).not.toHaveBeenCalled();
             expect(eventQueueMock.consumeFromEventQueue).not.toHaveBeenCalled();
             expect(eventQueueMock.releaseFromQueue).toHaveBeenCalled();
             expect(loggingServiceMock.logSyncError).toHaveBeenCalled();
-            expect(loggingServiceMock.logSyncError).toHaveBeenCalledWith("someUrl", 400, {}, {relationships : []});
+            expect(loggingServiceMock.logSyncError).toHaveBeenCalledWith("someUrl", 401, {}, {relationships : []});
             done();
         });
         setTimeout(function(){
