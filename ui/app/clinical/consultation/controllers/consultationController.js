@@ -311,14 +311,14 @@ angular.module('bahmni.clinical').controller('ConsultationController',
                 var observationFilter = new Bahmni.Common.Domain.ObservationFilter();
                 $scope.consultation.preSaveHandler.fire();
                 $scope.lastvisited = $scope.consultation.lastvisited;
+                var selectedObsTemplate = $scope.consultation.selectedObsTemplate;
                 var tempConsultation = angular.copy($scope.consultation);
                 tempConsultation.observations = observationFilter.filter(tempConsultation.observations);
                 tempConsultation.consultationNote = observationFilter.filter([tempConsultation.consultationNote])[0];
                 tempConsultation.labOrderNote = observationFilter.filter([tempConsultation.labOrderNote])[0];
 
-                storeTemplatePreference();
-
                 addFormObservations(tempConsultation);
+                storeTemplatePreference(selectedObsTemplate);
                 var visitTypeForRetrospectiveEntries = clinicalAppConfigService.getVisitTypeForRetrospectiveEntries();
                 var defaultVisitType = clinicalAppConfigService.getDefaultVisitType();
                 var encounterData = new Bahmni.Clinical.EncounterTransactionMapper().map(tempConsultation, $scope.patient, sessionService.getLoginLocationUuid(), retrospectiveEntryService.getRetrospectiveEntry(),
@@ -327,11 +327,11 @@ angular.module('bahmni.clinical').controller('ConsultationController',
                 return deferred.promise;
             };
 
-            var storeTemplatePreference = function () {
+            var storeTemplatePreference = function (selectedObsTemplate) {
                 var templateNames = [];
-                _.each($scope.consultation.observations, function (observation) {
-                    if (!_.includes(templateNames, observation.concept.name)) {
-                        templateNames.push(observation.concept.name);
+                _.each(selectedObsTemplate, function (template) {
+                    if (!_.includes(templateNames, template.conceptName)) {
+                        templateNames.push(template.conceptName);
                     }
                 });
 
@@ -368,6 +368,7 @@ angular.module('bahmni.clinical').controller('ConsultationController',
                         if (observationForm.component) {
                             var formObservations = observationForm.component.getValue();
                             _.each(formObservations.observations, function (obs) {
+                                obs.formName = observationForm.formName;
                                 tempConsultation.observations.push(obs);
                             });
                         }

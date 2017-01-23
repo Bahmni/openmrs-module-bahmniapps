@@ -27,31 +27,31 @@ angular.module('bahmni.clinical')
                     }).then(function (response) {
                         var allTemplates = response.data.results[0].setMembers;
                         createConceptSections(allTemplates);
+                        $scope.allTemplates = getSelectedObsTemplate(allConceptSections);
+                        $scope.uniqueTemplates = _.uniqBy($scope.allTemplates, 'label');
                         if ($state.params.programUuid) {
                             showOnlyTemplatesFilledInProgram();
                         }
 
-                        $scope.allTemplates = getSelectedObsTemplate(allConceptSections);
-                        $scope.uniqueTemplates = _.uniqBy($scope.allTemplates, 'label');
-                        if ($scope.consultation.selectedObsTemplate.length == 0) {
-                            initializeDefaultTemplates();
-                            if ($scope.consultation.observations && $scope.consultation.observations.length > 0) {
-                                sortObservationsInSavedOrder();
-                                identifyTemplatesForObservations();
-                            }
-                            var templateToBeOpened = getLastVisitedTemplate() ||
-                                _.first($scope.consultation.selectedObsTemplate);
-
-                            if (templateToBeOpened) {
-                                openTemplate(templateToBeOpened);
-                            }
-                        }
                         // Retrieve Form Details
                         if (!($scope.consultation.observationForms !== undefined && $scope.consultation.observationForms.length > 0)) {
                             spinner.forPromise(observationFormService.getFormList($scope.consultation.encounterUuid)
                                 .then(function (response) {
                                     $scope.consultation.observationForms = getObservationForms(response.data);
-                                    $scope.consultation.selectedObsTemplate = $scope.consultation.selectedObsTemplate.concat($scope.consultation.observationForms);
+                                    $scope.allTemplates = $scope.allTemplates.concat($scope.consultation.observationForms);
+                                    if ($scope.consultation.selectedObsTemplate.length == 0) {
+                                        initializeDefaultTemplates();
+                                        if ($scope.consultation.observations && $scope.consultation.observations.length > 0) {
+                                            sortObservationsInSavedOrder();
+                                            identifyTemplatesForObservations();
+                                        }
+                                        var templateToBeOpened = getLastVisitedTemplate() ||
+                                            _.first($scope.consultation.selectedObsTemplate);
+
+                                        if (templateToBeOpened) {
+                                            openTemplate(templateToBeOpened);
+                                        }
+                                    }
                                 })
                             );
                         }
@@ -73,6 +73,12 @@ angular.module('bahmni.clinical')
                     var sortedObs = [];
                     _.forEach(templateNames, function (templateName) {
                         var filteredObservations = _.filter(observations, function(observation) {
+                            var isObservationForm = _.find($scope.consultation.observationForms, function(obsForm){
+                                return obsForm.observations[0] == observation;
+                            });
+                            if (isObservationForm) {
+                                return isObservationForm.formName === templateName;
+                            }
                             return observation.concept.name === templateName;
                         });
                         sortedObs = _.concat(sortedObs, filteredObservations);
