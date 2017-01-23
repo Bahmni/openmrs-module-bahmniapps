@@ -16,7 +16,7 @@ angular.module('consultation', ['ui.router', 'bahmni.clinical', 'bahmni.common.c
     'bahmni.common.displaycontrol.obsVsObsFlowSheet', 'bahmni.common.displaycontrol.chronicTreatmentChart',
     'bahmni.common.displaycontrol.forms', 'bahmni.common.displaycontrol.drugOrderDetails', 'bahmni.common.offline',
     'bahmni.common.displaycontrol.hint', 'bahmni.common.displaycontrol.drugOrdersSection', 'bahmni.common.attributeTypes',
-    'bahmni.common.services', 'bahmni.common.models']);
+    'bahmni.common.services', 'bahmni.common.models','react']);
 angular.module('consultation')
     .config(['$stateProvider', '$httpProvider', '$urlRouterProvider', '$bahmniTranslateProvider', '$compileProvider',
         function ($stateProvider, $httpProvider, $urlRouterProvider, $bahmniTranslateProvider, $compileProvider) {
@@ -175,6 +175,23 @@ angular.module('consultation')
                     'consultation-content': {
                         templateUrl: 'consultation/views/conceptSet.html',
                         controller: 'ConceptSetPageController'
+                    }
+                }
+            })
+            .state('patient.dashboard.show.clinicalcomponents',{
+                url: '/clinical-component/:componentName',
+                params: {
+                    cachebuster: null
+                },
+                views: {
+                    'consultation-content': {
+                        templateUrl: 'consultation/views/componentRenderer.html',
+                        controller: 'ComponentRendererController'
+                    }
+                },
+                resolve: {
+                    'componentContext': function(initialization,componentInitialization,$stateParams){
+                        return componentInitialization($stateParams);
                     }
                 }
             })
