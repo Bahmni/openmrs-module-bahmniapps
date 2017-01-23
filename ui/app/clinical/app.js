@@ -16,7 +16,7 @@ angular.module('consultation', ['ui.router', 'bahmni.clinical', 'bahmni.common.c
     'bahmni.common.displaycontrol.obsVsObsFlowSheet', 'bahmni.common.displaycontrol.chronicTreatmentChart',
     'bahmni.common.displaycontrol.forms', 'bahmni.common.displaycontrol.drugOrderDetails', 'bahmni.common.offline',
     'bahmni.common.displaycontrol.hint', 'bahmni.common.displaycontrol.drugOrdersSection', 'bahmni.common.attributeTypes',
-    'bahmni.common.services', 'bahmni.common.models', 'ngRedux' ]);
+    'bahmni.common.services', 'bahmni.common.models', 'ngRedux', 'react' ]);
 angular.module('consultation')
     .config(['$stateProvider', '$httpProvider', '$urlRouterProvider', '$bahmniTranslateProvider', '$compileProvider', '$ngReduxProvider',
         function ($stateProvider, $httpProvider, $urlRouterProvider, $bahmniTranslateProvider, $compileProvider, $ngReduxProvider) {
@@ -38,12 +38,12 @@ angular.module('consultation')
                 }
                 switch (action.type) {
                     case "RANDOM":
+                        console.log("Dude we are done!!", state, action);
                         return Object.assign(state, { random: action.data});
                     default:
                         return state;
                 }
             };
-            $ngReduxProvider.createStoreWith(reducer);
 
         // @if DEBUG='production'
             $compileProvider.debugInfoEnabled(false);
@@ -131,6 +131,7 @@ angular.module('consultation')
                             $scope.visitHistory = visitHistory;
                             $scope.consultation = consultationContext;
                             $scope.lastConsultationTabUrl = {url: undefined};
+                            $ngReduxProvider.createStoreWith(reducer);
                         }
                     }
                 },

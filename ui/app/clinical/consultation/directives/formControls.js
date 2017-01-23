@@ -7,16 +7,20 @@ function stateToObservationsMap(state) {
 }
 
 angular.module('bahmni.common.conceptSet')
-    .directive('formControls', ['observationFormService', 'spinner', '$timeout', '$ngRedux', 'reduxService',
-        function (observationFormService, spinner, $timeout, $ngRedux, reduxService) {
+    .directive('formControls', ['observationFormService', 'spinner', '$timeout', '$ngRedux',
+        function (observationFormService, spinner, $timeout, $ngRedux) {
             var loadedFormDetails = {};
+
             var controller = function ($scope) {
-            var self = this;
+                console.log("Directive");
+                var self = this;
                 var formUuid = $scope.form.formUuid;
                 var formObservations = $scope.form.observations;
                 var collapse = $scope.form.collapseInnerSections && $scope.form.collapseInnerSections.value;
 
                 if (!loadedFormDetails[formUuid]) {
+                    var unsubscribe = $ngRedux.connect(stateToObservationsMap)(self);
+                    $scope.$on('$destroy', unsubscribe);
                     spinner.forPromise(observationFormService.getFormDetail(formUuid, { v: "custom:(resources:(value))" })
                         .then(function (response) {
                             var formDetailsAsString = _.get(response, 'data.resources[0].value');
@@ -24,8 +28,13 @@ angular.module('bahmni.common.conceptSet')
                                 var formDetails = JSON.parse(formDetailsAsString);
                                 formDetails.version = $scope.form.formVersion;
                                 loadedFormDetails[formUuid] = formDetails;
-                                $scope.form.component = renderWithControls(formDetails, formObservations, formUuid, collapse);
-                                self.dispatch({type:'RANDOM', data: '123'});
+
+                                $scope.form.component = renderWithControls(formDetails, formObservations, formUuid, collapse, function(){
+                                    if($scope.form.component) {
+                                        self.dispatch({type:'RANDOM', data: $scope.form.component.getValue()});
+                                    }
+                                });
+
 
                             }
                         })
@@ -61,9 +70,9 @@ angular.module('bahmni.common.conceptSet')
             };
 
             var myListner = function (state) {
-                $scope.skdjf=  sldfkj;
+                //$scope.skdjf=  sldfkj;
             };
-            reduxService.register(stateToObservationsMap, myListner);
+            //reduxService.register(stateToObservationsMap, myListner);
 
             return {
                 restrict: 'E',
