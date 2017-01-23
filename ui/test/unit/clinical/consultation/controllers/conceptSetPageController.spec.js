@@ -1,7 +1,7 @@
 'use strict';
 
 describe('ConceptSetPageController', function () {
-    var scope, controller, rootScope, conceptSetService, configurations, clinicalAppConfigService, state, encounterConfig, spinner, messagingService, translate, stateParams;
+    var scope, controller, rootScope, conceptSetService, configurations, clinicalAppConfigService, state, encounterConfig, spinner, messagingService, translate, stateParams, observationFormService;
     stateParams = {conceptSetGroupName: "concept set group name"};
     var extension = {"extension": {
         extensionParams: {}
@@ -50,6 +50,7 @@ describe('ConceptSetPageController', function () {
         configurations = jasmine.createSpyObj("configurations", ["encounterConfig"]);
         configurations.encounterConfig.and.returnValue(encounterConfig);
         conceptSetService = jasmine.createSpyObj("conceptSetService", ["getConcept", "getObsTemplatesForProgram"]);
+        observationFormService = jasmine.createSpyObj("observationFormService", ["getFormList"]);
         spinner = jasmine.createSpyObj("spinner", ["forPromise"]);
         messagingService = jasmine.createSpyObj('messagingService', ['showMessage']);
         translate = jasmine.createSpyObj('$translate',['instant']);
@@ -64,6 +65,7 @@ describe('ConceptSetPageController', function () {
             $rootScope: rootScope,
             $stateParams: stateParams,
             conceptSetService: conceptSetService,
+            observationFormService: observationFormService,
             clinicalAppConfigService: clinicalAppConfigService,
             messagingService: messagingService,
             configurations: configurations,
@@ -91,6 +93,16 @@ describe('ConceptSetPageController', function () {
         });
     };
 
+    var mockObservationFormService = function (data) {
+        observationFormService.getFormList.and.callFake(function () {
+            return {
+                then: function (callback) {
+                    return callback({"data" :data});
+                }
+            }
+        });
+    };
+
     describe('init', function () {
         it("should load all obs templates", function () {
             var conceptResponseData = {
@@ -101,6 +113,7 @@ describe('ConceptSetPageController', function () {
                 ]
             };
             mockConceptSetService(conceptResponseData);
+            mockObservationFormService({});
             rootScope.currentUser = {
                 isFavouriteObsTemplate: function () {
                     return false;
@@ -115,7 +128,7 @@ describe('ConceptSetPageController', function () {
             expect(scope.consultation.selectedObsTemplate.length).toBe(0);
         });
 
-        it("should push template to selected obs template when template is pinned as favorite", function () {
+        it("should load all obs templates along with forms from implementers interface", function () {
             var conceptResponseData = {
                 results: [
                     {
@@ -124,13 +137,55 @@ describe('ConceptSetPageController', function () {
                 ]
             };
             mockConceptSetService(conceptResponseData);
+            var data = [
+                {
+                    name: "my form",
+                    version: 1,
+                    uuid: "my-form-uuid"
+                }
+            ];
+            mockObservationFormService(data);
+            rootScope.currentUser = {
+                isFavouriteObsTemplate: function () {
+                    return false;
+                }
+            };
             createController();
 
             expect(scope.allTemplates).toBeTruthy();
-            expect(scope.allTemplates.length).toEqual(1);
+            expect(scope.allTemplates.length).toEqual(2);
             expect(scope.allTemplates[0].conceptName).toEqual("abcd");
-            expect(scope.consultation.selectedObsTemplate.length).toBe(1);
+            expect(scope.allTemplates[1].formName).toEqual("my form");
+
+            expect(scope.consultation.selectedObsTemplate.length).toBe(0);
+        });
+
+        it("should push template to selected obs template when template is pinned as favorite", function () {
+            var conceptResponseData = {
+                results: [
+                    {
+                        setMembers: [{name: {name: "abcd"}, uuid: 123}]
+                    }
+                ]
+            };
+            var data = [
+                {
+                    name: "my form",
+                    version: 1,
+                    uuid: "my-form-uuid"
+                }
+            ];
+            mockConceptSetService(conceptResponseData);
+            mockObservationFormService(data);
+            createController();
+
+            expect(scope.allTemplates).toBeTruthy();
+            expect(scope.allTemplates.length).toEqual(2);
+            expect(scope.allTemplates[0].conceptName).toEqual("abcd");
+            expect(scope.allTemplates[1].conceptName).toEqual("my form");
+            expect(scope.consultation.selectedObsTemplate.length).toBe(2);
             expect(scope.consultation.selectedObsTemplate[0].label).toBe("abcd");
+            expect(scope.consultation.selectedObsTemplate[1].label).toBe("my form");
         });
 
         it("should push template to selected obs template when template is added as default in extensions", function () {
@@ -142,6 +197,7 @@ describe('ConceptSetPageController', function () {
                 ]
             };
             mockConceptSetService(conceptResponseData);
+            mockObservationFormService({});
             rootScope.currentUser = {
                 isFavouriteObsTemplate: function () {
                     return false;
@@ -172,7 +228,15 @@ describe('ConceptSetPageController', function () {
                     }
                 ]
             };
+            var data = [
+                {
+                    name: "my form",
+                    version: '1',
+                    uuid: "my-form-uuid"
+                }
+            ];
             mockConceptSetService(conceptResponseData);
+            mockObservationFormService(data);
             scope.consultation.observations = [{
                 concept: {
                     name: "abcd",
@@ -185,14 +249,21 @@ describe('ConceptSetPageController', function () {
                     uuid: 123
                 },
                 uuid: "deadcafe"
+            }, {
+                concept: {
+                    name: "random",
+                    uuid: 124
+                },
+                formFieldPath: "my form.1/101",
+                uuid: "random-uuid"
             }];
             createController();
 
             expect(scope.allTemplates).toBeTruthy();
-            expect(scope.allTemplates.length).toEqual(2);
+            expect(scope.allTemplates.length).toEqual(3);
 
             expect(scope.consultation.selectedObsTemplate).toBeTruthy();
-            expect(scope.consultation.selectedObsTemplate.length).toEqual(2);
+            expect(scope.consultation.selectedObsTemplate.length).toEqual(3);
 
             expect(scope.consultation.selectedObsTemplate[0].conceptName).toEqual("abcd");
             expect(scope.consultation.selectedObsTemplate[0].observations[0].uuid).toEqual("cafedead");
@@ -201,6 +272,10 @@ describe('ConceptSetPageController', function () {
             expect(scope.consultation.selectedObsTemplate[1].conceptName).toEqual("abcd");
             expect(scope.consultation.selectedObsTemplate[1].observations[0].uuid).toEqual("deadcafe");
             expect(scope.consultation.selectedObsTemplate[1].uuid).toEqual(123);
+
+            expect(scope.consultation.selectedObsTemplate[2].formName).toEqual("my form");
+            expect(scope.consultation.selectedObsTemplate[2].observations[0].uuid).toEqual("random-uuid");
+            expect(scope.consultation.selectedObsTemplate[2].formUuid).toEqual("my-form-uuid");
         });
 
         it("should load all templates specific to program when program uuid is present", function () {
@@ -215,6 +290,7 @@ describe('ConceptSetPageController', function () {
                 results: [{mappings: [{uuid: 456}]}]
             };
             mockConceptSetService(conceptResponseData, entityMappingResponseData);
+            mockObservationFormService({});
             state = {
                 params: {
                     programUuid: "programUuid"
@@ -247,6 +323,7 @@ describe('ConceptSetPageController', function () {
                 ]
             };
             mockConceptSetService(conceptResponseData);
+            mockObservationFormService({});
             scope.consultation.observations = [{
                 concept: {
                     name: "abcd",
@@ -302,6 +379,7 @@ describe('ConceptSetPageController', function () {
             };
 
             mockConceptSetService(conceptResponseData);
+            mockObservationFormService({});
             var observations = [{
                 concept: {
                     name: "Baseline",

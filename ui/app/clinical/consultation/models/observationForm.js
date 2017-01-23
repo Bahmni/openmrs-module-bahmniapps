@@ -19,6 +19,7 @@ Bahmni.ObservationForm = function (formUuid, user, formName, formVersion, observ
             }
         });
         self.isOpen = self.observations.length > 0;
+        self.id = "concept-set-" + formUuid;
     };
 
     self.toggleDisplay = function () {
@@ -81,6 +82,10 @@ Bahmni.ObservationForm = function (formUuid, user, formName, formVersion, observ
         } else {
             return !(_.isUndefined(observation.value) || observation.value === "");
         }
+    };
+
+    self.isDefault = function() {
+        return false;
     };
 
     Object.defineProperty(self, "isAdded", {
