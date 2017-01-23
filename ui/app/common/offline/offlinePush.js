@@ -161,7 +161,7 @@ angular.module('bahmni.common.offline')
                     });
                     consumeFromErrorQueue().then(function (response) {
                         releaseReservedEvents(reservedEvents);
-                        if (response.indexOf("4xx error") != -1) {
+                        if (response && response.indexOf("4xx error") != -1) {
                             return;
                         }
                         return consumeFromEventQueue();
