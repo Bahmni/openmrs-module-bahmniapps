@@ -113,7 +113,8 @@ angular.module('bahmni.common.offline')
                                     if (event.data.type !== "Error" && (parseInt(response.status / 100) === 5 || parseInt(response.status / 100) === 4)) {
                                         loggingService.logSyncError(response.config.url, response.status, response.data, response.config.data);
                                     }
-                                    if (parseInt(response.status / 100) === 5) {
+                                    if (parseInt(response.status / 100) === 5 ||
+                                        (parseInt(response.status / 100) === 4 && _.indexOf([401, 403, 404], response.status) == -1)) {
                                         if (event.tube === "event_queue") {
                                             eventQueue.removeFromQueue(event);
                                             eventQueue.addToErrorQueue(event.data);
@@ -125,7 +126,7 @@ angular.module('bahmni.common.offline')
                                     } else {
                                         eventQueue.releaseFromQueue(event);
                                         deferred.resolve();
-                                        return "4xx error";
+                                        return "4xx error " + response.status;
                                     }
                                 });
                         });
@@ -160,7 +161,7 @@ angular.module('bahmni.common.offline')
                     });
                     consumeFromErrorQueue().then(function (response) {
                         releaseReservedEvents(reservedEvents);
-                        if (response == "4xx error") {
+                        if (response.indexOf("4xx error") != -1) {
                             return;
                         }
                         return consumeFromEventQueue();
