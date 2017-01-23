@@ -129,14 +129,15 @@ angular.module('bahmni.ipd')
                 var forwardLink = appDescriptor.getConfig(option);
                 forwardLink = forwardLink && forwardLink.value;
 
+                var bedId = _.get($rootScope.bedDetails, 'bedId') || _.get($rootScope.selectedBedInfo, 'bed.bedId');
                 var options = {
                     'patientUuid': $scope.patient.uuid,
                     'encounterUuid': response.encounterUuid,
                     'visitUuid': response.visitUuid,
-                    'bedId': $rootScope.selectedBedInfo.bed.bedId
+                    'bedId': bedId
                 };
                 if (forwardLink) {
-                    $window.location = appDescriptor.formatUrl(forwardLink, options);
+                    $window.location.href = appDescriptor.formatUrl(forwardLink, options);
                     $window.location.reload();
                 }
             };
@@ -240,10 +241,29 @@ angular.module('bahmni.ipd')
                 var encounterData = getEncounterData($scope.encounterConfig.getTransferEncounterTypeUuid(), getCurrentVisitTypeUuid());
                 return encounterService.create(encounterData).then(function (response) {
                     assignBedToPatient($rootScope.selectedBedInfo.bed, response.data.patientUuid, response.data.encounterUuid);
-                    // $scope.$emit("event:onSuccessfulTransfer");
                     ngDialog.close();
                     forwardUrl(response.data, "onTransferForwardTo");
                 });
+            };
+
+            $scope.discharge = function () {
+                if (!$rootScope.bedDetails.bedNumber) {
+                    messagingService.showMessage("error", "Please select a bed to discharge the patient");
+                } else {
+                    ngDialog.openConfirm({
+                        template: 'views/dischargeConfirmation.html',
+                        scope: $scope,
+                        closeByEscape: true
+                    });
+                }
+            };
+
+            $scope.dischargeConfirmation = function () {
+                var encounterData = getEncounterData($scope.encounterConfig.getDischargeEncounterTypeUuid());
+                return spinner.forPromise(encounterService.discharge(encounterData).then(function (response) {
+                    ngDialog.close();
+                    forwardUrl(response.data, "onDischargeForwardTo");
+                }));
             };
         }
     ]);

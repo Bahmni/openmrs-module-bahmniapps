@@ -12,7 +12,7 @@ describe("AdtController", function () {
             scope = $rootScope.$new();
         });
 
-        bedService = jasmine.createSpyObj('bedService', ['assignBed', 'setBedDetailsForPatientOnRootScope']);
+        bedService = jasmine.createSpyObj('bedService', ['assignBed']);
         appService = jasmine.createSpyObj('appService', ['getAppDescriptor']);
         sessionService = jasmine.createSpyObj('sessionService', ['getLoginLocationUuid']);
         dispositionService = jasmine.createSpyObj('dispositionService', ['getDispositionActions']);
@@ -22,7 +22,7 @@ describe("AdtController", function () {
         messagingService = jasmine.createSpyObj('messagingService', ['showMessage']);
         spinnerService = jasmine.createSpyObj('spinnerService', ['forPromise']);
         state = {current: {name: "some state"}};
-        window = {};
+        window = {location: { reload: jasmine.createSpy()} };
 
         appService.getAppDescriptor.and.returnValue({
             getConfigValue: function () {
@@ -33,8 +33,10 @@ describe("AdtController", function () {
                 }
             },
             getConfig: function(){
+                return {value: "#/bedManagement/bed/{{bedId}}"};
             },
-            formatUrl: function () {
+            formatUrl: function (url, options) {
+                return "#/bedManagement/bed/12";
             }
         });
 
@@ -43,11 +45,13 @@ describe("AdtController", function () {
             getVisitTypes: function () {
                 return [{name : "Current Visit", uuid : "visitUuid"}, {name : "IPD", uuid : "visitUuid"}];
             }, getAdmissionEncounterTypeUuid: function () {
+                return "admitEncounterTypeUuid";
 
             }, getDischargeEncounterTypeUuid: function () {
+                return "dischargeEncounterTypeUuid";
 
             }, getTransferEncounterTypeUuid: function () {
-
+                return "transferEncounterTypeUuid";
             }
         };
 
@@ -116,7 +120,7 @@ describe("AdtController", function () {
     });
     
     it("should close the visit and create a new encounter if dialog is confirmed", function () {
-        scope.visitSummary = {"visitType": "Current Visit", "uuid": "visitUuid"};
+        var visitSummary = {"visitType": "Current Visit", "uuid": "visitUuid", "stopDateTime": null};
         scope.patient = {uuid: "123"};
         scope.adtObservations = [];
 
@@ -127,6 +131,7 @@ describe("AdtController", function () {
                 }
             };
         };
+        visitService.getVisitSummary.and.returnValue(specUtil.createFakePromise(visitSummary));
         visitService.endVisitAndCreateEncounter.and.callFake(stubPromise);
         encounterService.buildEncounter.and.returnValue({encounterUuid: 'uuid'});
         createController();
@@ -135,13 +140,17 @@ describe("AdtController", function () {
 
         expect(encounterService.buildEncounter).toHaveBeenCalledWith({
             patientUuid: '123',
-            encounterTypeUuid: undefined,
+            encounterTypeUuid: 'admitEncounterTypeUuid',
             visitTypeUuid: 'visitUuid',
             observations: [],
             locationUuid: 'someLocationUuid'
         });
+        expect(scope.visitSummary.visitType).toBe(visitSummary.visitType);
+        expect(scope.visitSummary.uuid).toBe(visitSummary.uuid);
         expect(visitService.endVisitAndCreateEncounter).toHaveBeenCalledWith("visitUuid", {encounterUuid: 'uuid'});
         expect(ngDialog.close).toHaveBeenCalled();
+        expect(window.location.href).toBe("#/bedManagement/bed/12");
+        expect(window.location.reload).toHaveBeenCalled();
     });
 
     it("Should close the confirmation dialog if cancelled", function () {
@@ -173,20 +182,24 @@ describe("AdtController", function () {
                 }
             };
         };
+
+        var encounterResponse = {
+            patientUuid: '123',
+            encounterTypeUuid: "admitEncounterTypeUuid",
+            visitTypeUuid: "visitUuid",
+            observations: [],
+            locationUuid: 'someLocationUuid'
+        };
         visitService.endVisit.and.callFake(stubTwoPromise);
-        encounterService.create.and.returnValue(specUtil.createServicePromise("create"));
+        encounterService.create.and.returnValue(specUtil.simplePromise({data: encounterResponse}));
         createController();
 
         scope.continueWithCurrentVisit();
 
-        expect(encounterService.create).toHaveBeenCalledWith({
-            patientUuid: '123',
-            encounterTypeUuid: undefined,
-            visitTypeUuid: "visitUuid",
-            observations: [],
-            locationUuid: 'someLocationUuid'
-        });
+        expect(encounterService.create).toHaveBeenCalledWith(encounterResponse);
         expect(ngDialog.close).toHaveBeenCalled();
+        expect(window.location.href).toBe("#/bedManagement/bed/12");
+        expect(window.location.reload).toHaveBeenCalled();
     });
 
     it("Should not create encounter with in the current visit if closed", function () {
@@ -433,17 +446,9 @@ describe("AdtController", function () {
         expect(ngDialog.openConfirm).toHaveBeenCalledWith({template: 'views/transferConfirmation.html', scope: scope, closeByEscape: true, className: "ngdialog-theme-default ng-dialog-adt-popUp"});
     });
 
-    it("Should create an encounter of type Transfer and assign patient to new bed, When clicking on transferConfirmation", function () {
+    it("Should create an encounter of type Transfer and assign patient to new bed, On transferConfirmation", function () {
         scope.patient = {uuid: "123"};
         scope.adtObservations = [];
-
-        var stubTwoPromise = function(data) {
-            return {
-                then: function (successFn) {
-                    successFn({results: data});
-                }
-            };
-        };
         var encounterCreateResponse = {data: {patientUuid: '123', encounterUuid: "encounterUuid"}};
         encounterService.create.and.returnValue(specUtil.simplePromise(encounterCreateResponse));
         bedService.assignBed.and.returnValue(specUtil.simplePromise({data:{}}));
@@ -454,7 +459,7 @@ describe("AdtController", function () {
 
         var mappedEncounterData = {
             patientUuid: '123',
-            encounterTypeUuid: undefined,
+            encounterTypeUuid: "transferEncounterTypeUuid",
             visitTypeUuid: "visitUuid",
             observations: [],
             locationUuid: 'someLocationUuid'
@@ -464,5 +469,46 @@ describe("AdtController", function () {
         expect(scope.$emit).toHaveBeenCalledWith("event:patientAssignedToBed", rootScope.selectedBedInfo.bed);
         expect(messagingService.showMessage).toHaveBeenCalledWith('info', "Bed " + rootScope.selectedBedInfo.bed.bedNumber + " is assigned successfully");
         expect(ngDialog.close).toHaveBeenCalled();
+        expect(window.location.href).toBe("#/bedManagement/bed/12");
+        expect(window.location.reload).toHaveBeenCalled();
+    });
+
+    it("Should throw an error message, when the bed is not selected and trying to discharge the patient", function () {
+        rootScope.bedDetails = {};
+        createController();
+
+        scope.discharge();
+        expect(messagingService.showMessage).toHaveBeenCalledWith("error", "Please select a bed to discharge the patient");
+    });
+
+    it("Should show confirmation dialog, when a bed is selected and trying to discharge the patient", function () {
+        rootScope.bedDetails = {bedNumber: "202-a"};
+        createController();
+
+        scope.discharge();
+        expect(ngDialog.openConfirm).toHaveBeenCalledWith({template: 'views/dischargeConfirmation.html', scope: scope, closeByEscape: true});
+    });
+
+    it("Should create an encounter of type Discharge and discharge the patient from the bed, On dischargeConfirmation", function () {
+        scope.patient = {uuid: "123"};
+        scope.adtObservations = [];
+        var encounterCreateResponse = {data: {patientUuid: '123', encounterUuid: "encounterUuid"}, encounterTypeUuid: "dischargeEncounterTypeUuid"};
+        encounterService.discharge.and.returnValue(specUtil.simplePromise(encounterCreateResponse));
+
+        createController();
+
+        scope.dischargeConfirmation();
+
+        var mappedEncounterData = {
+            patientUuid: '123',
+            encounterTypeUuid: "dischargeEncounterTypeUuid",
+            visitTypeUuid: undefined,
+            observations: [],
+            locationUuid: 'someLocationUuid'
+        };
+        expect(encounterService.discharge).toHaveBeenCalledWith(mappedEncounterData);
+        expect(ngDialog.close).toHaveBeenCalled();
+        expect(window.location.href).toBe("#/bedManagement/bed/12");
+        expect(window.location.reload).toHaveBeenCalled();
     });
 });
