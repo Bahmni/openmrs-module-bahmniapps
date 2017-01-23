@@ -84,7 +84,7 @@ Bahmni.ObservationForm = function (formUuid, user, formName, formVersion, observ
         }
     };
 
-    self.isDefault = function() {
+    self.isDefault = function () {
         return false;
     };
 
