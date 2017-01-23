@@ -24,14 +24,28 @@ describe("MedicationController", function () {
 
 
     it('should set isDropDown to true from the config', function () {
-        var treatmentConfig = {drugConceptSet: "All TB Drugs", isDropDown: true};
+        var treatmentConfig = {
+            getDrugConceptSet: function () {
+                return "All TB Drugs";
+            },
+            isDropDownForGivenConceptSet: function () {
+                return true;
+            }
+        };
         createController(treatmentConfig);
         expect(scope.props.isDropDown).toBeTruthy();
         expect(scope.props.drugConceptSet).toEqual("All TB Drugs");
     });
 
     it('should set isDropDown to false from the config', function () {
-        var treatmentConfig = {drugConceptSet: "All Other Drugs", isDropDown: false};
+        var treatmentConfig = {
+            getDrugConceptSet: function () {
+                return "All Other Drugs";
+            },
+            isDropDownForGivenConceptSet: function () {
+                return false;
+            }
+        };
         createController(treatmentConfig);
         expect(scope.props.isDropDown).toBeFalsy();
         expect(scope.props.drugConceptSet).toEqual("All Other Drugs");
