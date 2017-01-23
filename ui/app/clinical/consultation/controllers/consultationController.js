@@ -8,8 +8,7 @@ angular.module('bahmni.clinical').controller('ConsultationController',
         function ($scope, $rootScope, $state, $location, clinicalAppConfigService, diagnosisService, urlHelper, contextChangeHandler,
                   spinner, encounterService, messagingService, sessionService, retrospectiveEntryService, patientContext, $q,
                   patientVisitHistoryService, $stateParams, $window, visitHistory, clinicalDashboardConfig, appService,
-                  ngDialog, $filter, configurations, offlineService, visitConfig
-        ) {
+                  ngDialog, $filter, configurations, offlineService, visitConfig) {
             var DateUtil = Bahmni.Common.Util.DateUtil;
             $scope.togglePrintList = false;
             $scope.patient = patientContext.patient;
@@ -104,7 +103,11 @@ angular.module('bahmni.clinical').controller('ConsultationController',
                     return $q.when({});
                 }
                 if (contextChangeHandler.execute()["allow"]) {
-                    var params = {configName: $scope.configName, patientUuid: patientContext.patient.uuid, encounterUuid: undefined};
+                    var params = {
+                        configName: $scope.configName,
+                        patientUuid: patientContext.patient.uuid,
+                        encounterUuid: undefined
+                    };
                     if ($scope.dashboardDirty) {
                         params['dashboardCachebuster'] = Math.random();
                     }
@@ -336,7 +339,7 @@ angular.module('bahmni.clinical').controller('ConsultationController',
                 });
 
                 var data = {
-                    "patientUuid" : $scope.patient.uuid,
+                    "patientUuid": $scope.patient.uuid,
                     "templateNames": templateNames
                 };
 

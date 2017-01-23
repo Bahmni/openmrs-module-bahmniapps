@@ -114,7 +114,7 @@ Bahmni.ConceptSet.ConceptSetSection = function (extensions, user, config, observ
         }
     });
 
-    self.isDefault = function() {
+    self.isDefault = function () {
         return self.options.default;
     };
 
