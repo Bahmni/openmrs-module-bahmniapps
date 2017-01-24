@@ -1,8 +1,10 @@
 'use strict';
 
 angular.module('bahmni.clinical')
-    .controller('DiagnosisController', ['$scope', '$rootScope', 'diagnosisService', 'messagingService', 'contextChangeHandler', 'spinner', 'appService',
-        function ($scope, $rootScope, diagnosisService, messagingService, contextChangeHandler, spinner, appService) {
+    .controller('DiagnosisController', ['$scope', '$rootScope', 'diagnosisService', 'messagingService', 'contextChangeHandler', 'spinner', 'appService', '$ngRedux',
+        function ($scope, $rootScope, diagnosisService, messagingService, contextChangeHandler, spinner, appService, $ngRedux) {
+
+            console.log('$ngRedux', $ngRedux.getState());
             $scope.placeholder = "Add Diagnosis";
             $scope.hasAnswers = false;
 

@@ -29,13 +29,11 @@ angular.module('bahmni.common.conceptSet')
                                 formDetails.version = $scope.form.formVersion;
                                 loadedFormDetails[formUuid] = formDetails;
 
-                                $scope.form.component = renderWithControls(formDetails, formObservations, formUuid, collapse, function(){
+                                $scope.form.component = renderWithControls(formDetails, formObservations, formUuid, collapse, function(data){
                                     if($scope.form.component) {
-                                        self.dispatch({type:'RANDOM', data: $scope.form.component.getValue()});
+                                        self.dispatch({ type:'RANDOM', data: data });
                                     }
                                 });
-
-
                             }
                         })
                     );
@@ -48,7 +46,7 @@ angular.module('bahmni.common.conceptSet')
                 $scope.$watch('form.collapseInnerSections', function () {
                     var collapse = $scope.form.collapseInnerSections && $scope.form.collapseInnerSections.value;
                     if (loadedFormDetails[formUuid]) {
-                        $scope.form.component = renderWithControls(loadedFormDetails[formUuid], formObservations, formUuid, collapse, myListener);
+                        $scope.form.component = renderWithControls(loadedFormDetails[formUuid], formObservations, formUuid, collapse);
                     }
                 });
 
@@ -68,12 +66,6 @@ angular.module('bahmni.common.conceptSet')
                     unMountForm(document.getElementById($scope.form.formUuid));
                 });
             };
-
-            var myListner = function (state) {
-                //$scope.skdjf=  sldfkj;
-            };
-            //reduxService.register(stateToObservationsMap, myListner);
-
             return {
                 restrict: 'E',
                 scope: {
