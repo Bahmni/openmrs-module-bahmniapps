@@ -331,16 +331,20 @@ angular.module('bahmni.clinical').controller('ConsultationController',
             };
 
             var storeTemplatePreference = function (selectedObsTemplate) {
-                var templateNames = [];
+                var templates = [];
                 _.each(selectedObsTemplate, function (template) {
-                    if (!_.includes(templateNames, template.conceptName)) {
-                        templateNames.push(template.conceptName);
+                    var templateName = template.formName || template.conceptName;
+                    var isTemplateAlreadyPresent = _.find(templates, function (template) {
+                        return template.name === templateName;
+                    });
+                    if (!isTemplateAlreadyPresent) {
+                        templates.push(templateName);
                     }
                 });
 
                 var data = {
                     "patientUuid": $scope.patient.uuid,
-                    "templateNames": templateNames
+                    "templates": templates
                 };
 
                 localStorage.setItem("templatePreference", JSON.stringify(data));
@@ -371,7 +375,6 @@ angular.module('bahmni.clinical').controller('ConsultationController',
                         if (observationForm.component) {
                             var formObservations = observationForm.component.getValue();
                             _.each(formObservations.observations, function (obs) {
-                                obs.formName = observationForm.formName;
                                 tempConsultation.observations.push(obs);
                             });
                         }
