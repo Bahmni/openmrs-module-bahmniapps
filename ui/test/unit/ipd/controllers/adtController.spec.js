@@ -486,7 +486,7 @@ describe("AdtController", function () {
         createController();
 
         scope.discharge();
-        expect(ngDialog.openConfirm).toHaveBeenCalledWith({template: 'views/dischargeConfirmation.html', scope: scope, closeByEscape: true});
+        expect(ngDialog.openConfirm).toHaveBeenCalledWith({template: 'views/dischargeConfirmation.html', scope: scope, closeByEscape: true,  className: "ngdialog-theme-default ng-dialog-adt-popUp"});
     });
 
     it("Should create an encounter of type Discharge and discharge the patient from the bed, On dischargeConfirmation", function () {
