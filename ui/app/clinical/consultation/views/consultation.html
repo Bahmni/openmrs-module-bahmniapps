@@ -190,7 +190,7 @@
                     </thead>
 
                     <tbody>
-                    <tr class="row-click" toggle="observation.showComment"
+                    <tr class="row-click"
                         ng-repeat-start="observation in observationGroup.groupMembers"
                         ng-class="{true: 'is-abnormal'}[observation.abnormalObs.value]">
                         <td class="name">
@@ -212,7 +212,7 @@
                             </div>
                         </td>
                         <td class="toggle-btn">
-                            <button class="toggle fr" ng-if="observation.comment"
+                            <button class="toggle fr" ng-if="observation.comment" toggle="observation.showComment"
                                     ng-class="{'has-notes': observation.comment}">
                                 <i class="fa fa-plus-circle" ng-hide="observation.showComment"></i>
                                 <i class="fa fa-minus-circle" ng-show="observation.showComment"></i>
