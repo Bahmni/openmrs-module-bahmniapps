@@ -38,5 +38,8 @@
     "PASSWORD_SHOULD_BE_A_MIX_OF_BOTH_UPPER_CASE_AND_LOWER_CASE":"Should be a mix of both upper and lower-case letters",
     "PASSWORD_SHOULD_MATCH_THE_REGEX": "Should match the given regex {{regex}}",
     "PASSWORD_SHOULD_HAVE_ATLEAST_ONE_NON_DIGIT": "Should contain at least one non digit character",
-    "CHANGE_PASSWORD_DOES_NOT_SUPPORT":"We don’t support this feature for now, please contact administrator."
+    "CHANGE_PASSWORD_DOES_NOT_SUPPORT":"We don’t support this feature for now, please contact administrator.",
+    "UNABLE_TO_GET_PROVIDER_DATA": "Unable to get provider data",
+    "YOU_HAVE_NOT_BEEN_SETUP_PROVIDER": "You have not been setup as a Provider, please contact administrator.",
+    "COULD_NOT_GET_PROVIDER": "Could not get provider for the current user."
 }

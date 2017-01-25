@@ -183,12 +183,12 @@ angular.module('authentication')
                         deferrable.resolve(data.results[0]);
                     } else {
                         self.destroy();
-                        deferrable.reject('You have not been setup as a Provider, please contact administrator.');
+                        deferrable.reject("YOU_HAVE_NOT_BEEN_SETUP_PROVIDER");
                     }
                 },
                function () {
                    self.destroy();
-                   deferrable.reject('Could not get provider for the current user.');
+                   deferrable.reject("COULD_NOT_GET_PROVIDER");
                });
             }, function () {
                 if (offlineApp) {

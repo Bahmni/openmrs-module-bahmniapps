@@ -82,19 +82,17 @@ angular.module('bahmni.home')
                             deferrable.resolve(data);
                             return;
                         }
-                        sessionService.loadCredentials().then(
-                            onSuccessfulAuthentication,
-                            function (error) {
-                                $scope.errorMessageTranslateKey = error;
-                                deferrable.reject(error);
-                            }
-                        ).then(function () {
+                        sessionService.loadCredentials().then(function () {
+                            onSuccessfulAuthentication;
                             $rootScope.currentUser.addDefaultLocale($scope.selectedLocale);
                             userService.savePreferences().then(
                                 function () { deferrable.resolve(); },
                                 function (error) { deferrable.reject(error); }
                             );
-                        }, function (error) { deferrable.reject(error); }
+                        }, function (error) {
+                            $scope.errorMessageTranslateKey = error;
+                            deferrable.reject(error);
+                        }
                         );
                     },
                     function (error) {
