@@ -65,12 +65,16 @@ angular.module('authentication')
                 deferrable.resolve(cachedProviderData);
             } else {
                 getProviderFromServer(uuid).success(function (data) {
-                    var providerName = data.results[0].display.split("-")[1];
-                    data.results[0].name = providerName ? providerName.trim() : providerName;
-                    offlineService.setItem('providerData', data);
-                    deferrable.resolve(data);
+                    if (data.results.length > 0) {
+                        var providerName = data.results[0].display.split("-")[1];
+                        data.results[0].name = providerName ? providerName.trim() : providerName;
+                        offlineService.setItem('providerData', data);
+                        deferrable.resolve(data);
+                    } else {
+                        deferrable.reject("UNABLE_TO_GET_PROVIDER_DATA");
+                    }
                 }).error(function () {
-                    deferrable.reject('Unable to get provider data');
+                    deferrable.reject("UNABLE_TO_GET_PROVIDER_DATA");
                 });
             }
             return deferrable.promise;
