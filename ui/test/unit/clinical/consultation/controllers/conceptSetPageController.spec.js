@@ -400,7 +400,7 @@ describe('ConceptSetPageController', function () {
 
             var templatePreference = {
                 "patientUuid": "patientUuid",
-                "templateNames": ["Followup Assessment", "Baseline"]
+                "templates": ["Followup Assessment", "Baseline"]
             };
 
             localStorage.setItem("templatePreference", JSON.stringify(templatePreference));
@@ -414,8 +414,6 @@ describe('ConceptSetPageController', function () {
             createController();
 
             expect(scope.consultation.observations.length).toBe(2);
-            expect(scope.consultation.observations[0]).toBe(observations[1]);
-            expect(scope.consultation.observations[1]).toBe(observations[0]);
             expect(scope.consultation.selectedObsTemplate[0].label).toBe("Followup Assessment");
             expect(scope.consultation.selectedObsTemplate[1].label).toBe("Baseline");
             expect(scope.consultation.selectedObsTemplate[1].isOpen).toBeTruthy();
