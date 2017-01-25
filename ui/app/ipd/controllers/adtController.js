@@ -253,7 +253,8 @@ angular.module('bahmni.ipd')
                     ngDialog.openConfirm({
                         template: 'views/dischargeConfirmation.html',
                         scope: $scope,
-                        closeByEscape: true
+                        closeByEscape: true,
+                        className: "ngdialog-theme-default ng-dialog-adt-popUp"
                     });
                 }
             };
