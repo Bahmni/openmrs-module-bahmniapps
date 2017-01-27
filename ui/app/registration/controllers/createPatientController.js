@@ -146,6 +146,9 @@ angular.module('bahmni.registration')
                             }
                         });
                     }
+                    if (response.isOfflineApp && response.code == 201) {
+                        messagingService.showMessage("error", response.message);
+                    }
                 });
             };
 

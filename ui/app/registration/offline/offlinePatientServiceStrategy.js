@@ -68,8 +68,11 @@ angular.module('bahmni.registration')
                     event.url = Bahmni.Registration.Constants.baseOpenMRSRESTURL + "/bahmnicore/patientprofile/" + data.patient.uuid;
                 }
                 event.patientUuid = data.patient.uuid;
-                return eventQueue.addToEventQueue(event).then(function () {
-                    return offlinePatientServiceStrategy.create(data);
+                return offlinePatientServiceStrategy.create(data).then(function (response) {
+                    eventQueue.addToEventQueue(event);
+                    return response;
+                }, function (response) {
+                    return $q.reject(response);
                 });
             };
 
