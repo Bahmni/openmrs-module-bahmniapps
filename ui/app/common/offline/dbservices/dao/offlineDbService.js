@@ -15,6 +15,8 @@ angular.module('bahmni.common.offline')
                         getPatientByUuid(uuid).then(function (result) {
                             deferred.resolve({data: result});
                         });
+                    }, function (response) {
+                        deferred.reject(response);
                     });
                 return deferred.promise;
             };
@@ -47,15 +49,22 @@ angular.module('bahmni.common.offline')
             var insertPatientData = function (patientData) {
                 var patient = patientData.patient;
                 var person = patient.person;
-
-                return patientDbService.insertPatientData(db, patientData).then(function (patientUuid) {
-                    if (!patient.voided) {
-                        patientAttributeDbService.insertAttributes(db, patientUuid, person.attributes);
-                        patientAddressDbService.insertAddress(db, patientUuid, getAddress(person));
-                        patientIdentifierDbService.insertPatientIdentifiers(db, patientUuid, patient.identifiers);
-                    }
-                    return patientData;
-                });
+                if (!patient.voided) {
+                    return patientIdentifierDbService.insertPatientIdentifiers(db, person.uuid, patient.identifiers).then(function () {
+                        return patientDbService.insertPatientData(db, patientData).then(function (patientUuid) {
+                            patientAttributeDbService.insertAttributes(db, patientUuid, person.attributes);
+                            patientAddressDbService.insertAddress(db, patientUuid, getAddress(person));
+                            return patientData;
+                        });
+                    }, function (response) {
+                        if (response && response.code == 201) {
+                            response.message = "Patient failed to validate with reason: Identifier " + patient.identifiers[0].identifier + " is already in use by another patient";
+                            response.isOfflineApp = true;
+                        }
+                        return $q.reject(response);
+                    });
+                }
+                return $q.when(patientData);
             };
 
             var getAddress = function (person) {
@@ -240,7 +249,7 @@ angular.module('bahmni.common.offline')
 
             var insertLog = function (errorUuid, failedRequest, responseStatus, stackTrace, requestPayload) {
                 var provider = _.has(requestPayload, 'providers') ? requestPayload.providers[0] :
-                    (_.has(requestPayload, 'auditInfo.creator') ? requestPayload.auditInfo.creator : "");
+                (_.has(requestPayload, 'auditInfo.creator') ? requestPayload.auditInfo.creator : "");
                 requestPayload = requestPayload ? requestPayload : "";
                 return errorLogDbService.insertLog(db, errorUuid, failedRequest, responseStatus, stackTrace, requestPayload, provider);
             };

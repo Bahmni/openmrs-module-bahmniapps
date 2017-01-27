@@ -74,8 +74,11 @@ angular.module('bahmni.registration')
                 }
                 event.dbName = offlineDbService.getCurrentDbName();
                 event.patientUuid = data.patient.uuid;
-                return eventQueue.addToEventQueue(event).then(function () {
-                    return offlinePatientServiceStrategy.create(data);
+                return offlinePatientServiceStrategy.create(data).then(function (response) {
+                    eventQueue.addToEventQueue(event);
+                    return response;
+                }, function (response) {
+                    return $q.reject(response);
                 });
             };
 
