@@ -2,7 +2,7 @@
 
 describe('CreatePatientController', function() {
     var $aController, q, scopeMock, rootScopeMock, stateMock, patientServiceMock, preferencesMock, spinnerMock,
-        appServiceMock, ngDialogMock, ngDialogLocalScopeMock, httpBackend, http, sections, identifiersMock;
+        appServiceMock, ngDialogMock, ngDialogLocalScopeMock, httpBackend, http, sections, identifiersMock, messagingService;
 
     beforeEach(module('bahmni.registration'));
     beforeEach(module('bahmni.common.models'));
@@ -43,6 +43,7 @@ describe('CreatePatientController', function() {
         preferencesMock = jasmine.createSpyObj('preferencesMock', ['']);
         spinnerMock = jasmine.createSpyObj('spinnerMock', ['forPromise']);
         appServiceMock = jasmine.createSpyObj('appServiceMock', ['getAppDescriptor']);
+        messagingService = jasmine.createSpyObj('messagingService', ['showMessage']);
 
         ngDialogMock = jasmine.createSpyObj('ngDialogMock', ['open', 'close']);
         ngDialogLocalScopeMock = scopeMock;
@@ -127,8 +128,9 @@ describe('CreatePatientController', function() {
             spinner: spinnerMock,
             appService: appServiceMock,
             ngDialog: ngDialogMock,
-            offlineService: {}
-        });
+            offlineService: {},
+            messagingService: messagingService
+    });
 
         scopeMock.actions = {
             followUpAction: function() {
@@ -440,6 +442,25 @@ describe('CreatePatientController', function() {
         ngDialogLocalScopeMock.no();
 
         expect(patientServiceMock.create.calls.count()).toEqual(1);
+    });
+
+    it("should validate duplicate identifier entry in connect app and display error message", function() {
+        scopeMock.patient.identifierPrefix.prefix = "GAN";
+        scopeMock.patient.registrationNumber = "1050";
+
+        scopeMock.patient.hasOldIdentifier = true;
+
+        patientServiceMock.create.and.callFake(function() {
+            var deferred1 = q.defer();
+            deferred1.reject({code: 201, isOfflineApp: true});
+            return deferred1.promise;
+        });
+
+        scopeMock.create();
+        scopeMock.$apply();
+
+        expect(patientServiceMock.create.calls.count()).toEqual(1);
+        expect(messagingService.showMessage).toHaveBeenCalled();
     });
 
     it("should return true if there is disablePhotoCapture config defined to be true", function () {

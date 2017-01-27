@@ -41,5 +41,5 @@ angular.module('bahmni.common.uiHelper')
         this.clearAll = function () {
             self.messages["error"] = [];
             self.messages["info"] = [];
-        }
+        };
     }]);

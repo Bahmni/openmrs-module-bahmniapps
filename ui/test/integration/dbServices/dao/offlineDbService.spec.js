@@ -369,7 +369,10 @@ describe('OfflineDbService ', function () {
                                 "identifierType": {
                                     "display": "Patient Identifier",
                                     "uuid": "9999e94e-796e-11e5-a6d0-005056b07f03",
-                                    "identifierSources": [{"prefix": "BDH", "uuid": "sourceUuid1"},{"prefix": "SEC", "uuid": "sourceUuid2"}]
+                                    "identifierSources": [{"prefix": "BDH", "uuid": "sourceUuid1"}, {
+                                        "prefix": "SEC",
+                                        "uuid": "sourceUuid2"
+                                    }]
                                 }
                             }
                         ]
@@ -410,6 +413,12 @@ describe('OfflineDbService ', function () {
                     }
                 };
 
+                patientIdentifierDbService.insertPatientIdentifiers.and.callFake(function () {
+                    var deferred1 = $q.defer();
+                    deferred1.resolve("patientUuid");
+                    return deferred1.promise;
+                });
+
                 patientDbService.insertPatientData.and.callFake(function () {
                     var deferred1 = $q.defer();
                     deferred1.resolve("patientUuid");
@@ -441,9 +450,19 @@ describe('OfflineDbService ', function () {
                     name: "patient",
                     patient: {
                         uuid: "personUuid",
-                        person: {attributes: "attributes", addresses: [], preferredAddress:["preferredAddress1", "preferredAddress2"]}
+                        person: {
+                            attributes: "attributes",
+                            addresses: [],
+                            preferredAddress: ["preferredAddress1", "preferredAddress2"]
+                        }
                     }
                 };
+
+                patientIdentifierDbService.insertPatientIdentifiers.and.callFake(function () {
+                    var deferred1 = $q.defer();
+                    deferred1.resolve("patientUuid");
+                    return deferred1.promise;
+                });
 
                 patientDbService.insertPatientData.and.callFake(function () {
                     var deferred1 = $q.defer();
@@ -480,6 +499,12 @@ describe('OfflineDbService ', function () {
                     }
                 };
 
+                patientIdentifierDbService.insertPatientIdentifiers.and.callFake(function () {
+                    var deferred1 = $q.defer();
+                    deferred1.resolve("patientUuid");
+                    return deferred1.promise;
+                });
+
                 patientDbService.insertPatientData.and.callFake(function () {
                     var deferred1 = $q.defer();
                     deferred1.resolve("patientUuid");
@@ -502,6 +527,38 @@ describe('OfflineDbService ', function () {
             });
         });
 
+        it("should return error message if there is unique constraint violation while saving identifiers", function (done) {
+            var schemaBuilder = lf.schema.create('BahmniOfflineDb', 1);
+
+            schemaBuilder.connect().then(function (db) {
+                offlineDbService.init(db);
+
+                var patientData = {
+                    name: "patient",
+                    patient: {
+                        uuid: "personUuid",
+                        person: {attributes: "attributes", addresses: [], preferredAddress: undefined},
+                        identifiers: [{identifier: "01"}]
+                    }
+                };
+
+                patientIdentifierDbService.insertPatientIdentifiers.and.callFake(function () {
+                    var deferred1 = $q.defer();
+                    deferred1.reject({code: 201});
+                    return deferred1.promise;
+                });
+
+
+                offlineDbService.createPatient(patientData).then(function () {},function(response) {
+                    expect(response.code).toEqual(201);
+                    expect(response.message).not.toBeNull();
+                    expect(patientAttributeDbService.insertAttributes).not.toHaveBeenCalled();
+                    expect(patientAddressDbService.insertAddress).not.toHaveBeenCalled();
+                    done();
+                });
+            });
+        });
+
         it("should not call insertPatientIdentifiers if patient is voided", function (done) {
             var schemaBuilder = lf.schema.create('BahmniOfflineDb', 1);
             schemaBuilder.connect().then(function (db) {
@@ -515,6 +572,12 @@ describe('OfflineDbService ', function () {
                         person: {attributes: "attributes", addresses: [], preferredAddress: undefined}
                     }
                 };
+
+                patientIdentifierDbService.insertPatientIdentifiers.and.callFake(function () {
+                    var deferred1 = $q.defer();
+                    deferred1.resolve("patientUuid");
+                    return deferred1.promise;
+                });
 
                 patientDbService.insertPatientData.and.callFake(function () {
                     var deferred1 = $q.defer();
@@ -571,9 +634,9 @@ describe('OfflineDbService ', function () {
 
                 var auditInfo = {creator: {display: 'armanvuiyan', uuid: 'providerUuid'}};
                 var requestPayload = {patient: "patientPostData", auditInfo: auditInfo};
-                offlineDbService.insertLog('someUuid','failedRequestUrl', 500, 'stackTrace', requestPayload);
+                offlineDbService.insertLog('someUuid', 'failedRequestUrl', 500, 'stackTrace', requestPayload);
                 expect(errorLogDbService.insertLog.calls.count()).toBe(1);
-                expect(errorLogDbService.insertLog).toHaveBeenCalledWith(db, 'someUuid','failedRequestUrl', 500, 'stackTrace', requestPayload, auditInfo.creator);
+                expect(errorLogDbService.insertLog).toHaveBeenCalledWith(db, 'someUuid', 'failedRequestUrl', 500, 'stackTrace', requestPayload, auditInfo.creator);
                 done()
             });
         });
@@ -614,7 +677,7 @@ describe('OfflineDbService ', function () {
                 expect(errorLogDbService.insertLog).toHaveBeenCalledWith(db, 'someUuid', 'failedRequestUrl', 500, 'stackTrace', requestPayload, providers[0]);
                 offlineDbService.getErrorLogByUuid("someUuid");
                 expect(errorLogDbService.getErrorLogByUuid.calls.count()).toBe(1);
-                expect(errorLogDbService.getErrorLogByUuid).toHaveBeenCalledWith(db,"someUuid");
+                expect(errorLogDbService.getErrorLogByUuid).toHaveBeenCalledWith(db, "someUuid");
                 done();
             });
         });
@@ -1012,7 +1075,7 @@ describe('OfflineDbService ', function () {
 
                 offlineDbService.getLabOrderResultsForPatient("patientUuid");
                 expect(labOrderResultsDbService.getLabOrderResultsForPatient.calls.count()).toBe(1);
-                expect(labOrderResultsDbService.getLabOrderResultsForPatient).toHaveBeenCalledWith(db,"patientUuid");
+                expect(labOrderResultsDbService.getLabOrderResultsForPatient).toHaveBeenCalledWith(db, "patientUuid");
                 done();
             });
         });
@@ -1025,14 +1088,13 @@ describe('OfflineDbService ', function () {
             schemaBuilder.connect().then(function (db) {
                 offlineDbService.init(db);
 
-                offlineDbService.insertLabOrderResults("patientUuid" , {results:[]});
+                offlineDbService.insertLabOrderResults("patientUuid", {results: []});
                 expect(labOrderResultsDbService.insertLabOrderResults.calls.count()).toBe(1);
-                expect(labOrderResultsDbService.insertLabOrderResults).toHaveBeenCalledWith(db, "patientUuid", {results:[]});
+                expect(labOrderResultsDbService.insertLabOrderResults).toHaveBeenCalledWith(db, "patientUuid", {results: []});
                 done();
             });
         });
     });
-
 
 
     describe("labOrderResultsDbService", function () {
@@ -1043,7 +1105,7 @@ describe('OfflineDbService ', function () {
 
                 offlineDbService.getLabOrderResultsForPatient("patientUuid");
                 expect(labOrderResultsDbService.getLabOrderResultsForPatient.calls.count()).toBe(1);
-                expect(labOrderResultsDbService.getLabOrderResultsForPatient).toHaveBeenCalledWith(db,"patientUuid");
+                expect(labOrderResultsDbService.getLabOrderResultsForPatient).toHaveBeenCalledWith(db, "patientUuid");
                 done();
             });
         });
@@ -1056,9 +1118,9 @@ describe('OfflineDbService ', function () {
             schemaBuilder.connect().then(function (db) {
                 offlineDbService.init(db);
 
-                offlineDbService.insertLabOrderResults("patientUuid" , {results:[]});
+                offlineDbService.insertLabOrderResults("patientUuid", {results: []});
                 expect(labOrderResultsDbService.insertLabOrderResults.calls.count()).toBe(1);
-                expect(labOrderResultsDbService.insertLabOrderResults).toHaveBeenCalledWith(db, "patientUuid", {results:[]});
+                expect(labOrderResultsDbService.insertLabOrderResults).toHaveBeenCalledWith(db, "patientUuid", {results: []});
                 done();
             });
         });
