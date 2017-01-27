@@ -25,7 +25,6 @@ angular.module('bahmni.clinical')
                         name: "All Observation Templates",
                         v: "custom:" + customRepresentation
                     }).then(function (response) {
-
                         var allTemplates = response.data.results[0].setMembers;
                         createConceptSections(allTemplates);
                         $scope.allTemplates = getSelectedObsTemplate(allConceptSections);
@@ -72,10 +71,10 @@ angular.module('bahmni.clinical')
                 var templateNames = templatePreference.templates;
                 _.each(templateNames, function (templateName) {
                     var foundTemplate = _.find($scope.allTemplates, function (allTemplate) {
-                        return allTemplate.conceptName === templateName
+                        return allTemplate.conceptName === templateName;
                     });
                     insertTemplate(foundTemplate);
-                })
+                });
             };
 
             var insertInDefaultOrder = function () {
@@ -83,10 +82,10 @@ angular.module('bahmni.clinical')
                     if (template.observations.length > 0) {
                         insertTemplate(template);
                     }
-                })
+                });
             };
 
-            var insertTemplate = function(template) {
+            var insertTemplate = function (template) {
                 if (template && !(template.isDefault() || template.alwaysShow)) {
                     $scope.consultation.selectedObsTemplate.push(template);
                 }
