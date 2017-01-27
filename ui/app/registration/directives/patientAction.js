@@ -74,6 +74,7 @@ angular.module('bahmni.registration')
                 };
 
                 $scope.actions.followUpAction = function (patientProfileData) {
+                    messagingService.clearAll();
                     switch ($scope.actions.submitSource) {
                     case 'startVisit':
                         return createVisit(patientProfileData);
@@ -101,7 +102,17 @@ angular.module('bahmni.registration')
                     $location.path("/patient/" + patientData.patient.uuid + "/visit");
                 };
 
+                var isEmptyVisitLocation = function () {
+                    return _.isEmpty($rootScope.visitLocation);
+                };
+
                 var createVisit = function (patientProfileData, forwardUrl) {
+                    if (isEmptyVisitLocation()) {
+                        $state.go('patient.edit', {patientUuid: $scope.patient.uuid}).then(function () {
+                            messagingService.showMessage("error", "NO_LOCATION_TAGGED_TO_VISIT_LOCATION");
+                        });
+                        return;
+                    }
                     spinner.forPromise($scope.visitControl.createVisitOnly(patientProfileData.patient.uuid, $rootScope.visitLocation).then(function () {
                         if (forwardUrl) {
                             $window.location.href = forwardUrl;
