@@ -16,7 +16,7 @@ angular.module('bahmni.home')
             }
             if (checkPasswordMatches()) {
                 $scope.passwordDoesNotMatch = false;
-                sessionService.changePassword($rootScope.currentUser.uuid, $scope.loginInfo.newPassword).then(function (data) {
+                sessionService.changePassword($rootScope.currentUser.uuid, $scope.loginInfo.oldPassword, $scope.loginInfo.newPassword).then(function (data) {
                     messagingService.showMessage("info", 'CHANGE_PASSWORD_SUCCESSFUL_MESSAGE');
                     clearPasswordFields();
                 });
@@ -27,6 +27,7 @@ angular.module('bahmni.home')
         };
         var clearPasswordFields = function () {
             $scope.loginInfo.newPassword = undefined;
+            $scope.loginInfo.oldPassword = undefined;
             $scope.loginInfo.confirmPassword = undefined;
         };
         var convertPasswordPolicies = function (policies) {
