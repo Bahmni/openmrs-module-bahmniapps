@@ -18,22 +18,12 @@ angular.module('bahmni.clinical')
             $scope.consultation.consultationNote.observationDateTime = null;
         };
 
-        var groupedObservations = function () {
-            var groupedObservationsArray = [];
-            $scope.consultation.observations.forEach(function (observation) {
-                var temp = [];
-                temp[0] = observation;
-                var observationsByGroup = {
-                    "conceptSetName": observation.concept.shortName || observation.concept.name,
-                    "groupMembers": new Bahmni.ConceptSet.ObservationMapper().getObservationsForView(temp, conceptSetUiConfigService.getConfig())
-                };
-                if (observationsByGroup.groupMembers.length) {
-                    groupedObservationsArray.push(observationsByGroup);
-                }
-            });
-            return groupedObservationsArray;
+        var groupObservations = function(){
+            var allObservations = $scope.consultation.observations;
+            return new Bahmni.Clinical.ObsGroupingHelper(conceptSetUiConfigService).groupObservations(allObservations);
         };
-        $scope.groupedObservations = groupedObservations();
+
+        $scope.groupedObservations = groupObservations();
         $scope.disposition = $scope.consultation.disposition;
         $scope.toggle = function (item) {
             item.show = !item.show;

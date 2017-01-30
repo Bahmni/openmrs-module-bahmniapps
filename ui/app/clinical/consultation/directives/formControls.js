@@ -45,14 +45,8 @@ angular.module('bahmni.common.conceptSet')
 
                 $scope.$on('$destroy', function () {
                     if ($scope.$parent.consultation.observationForms) {
-                        _.remove($scope.$parent.consultation.observations, function (observation) {
-                            return _.get(observation, 'formNamespace') === $scope.form.formName;
-                        });
                         if ($scope.form.component) {
                             var formObservations = $scope.form.component.getValue();
-                            _.each(formObservations.observations, function (obs) {
-                                $scope.$parent.consultation.observations.push(obs);
-                            });
                             $scope.form.observations = formObservations.observations;
 
                             var hasError = formObservations.errors;
