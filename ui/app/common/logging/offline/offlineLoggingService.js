@@ -7,6 +7,8 @@ angular.module('bahmni.common.logging')
             return offlineLoggingService.log(errorLogUuid, errorDetails.errorUrl, null, angular.toJson(errorDetails)).then(function () {
                 var event = { type: "Error", uuid: errorLogUuid };
                 eventQueue.addToEventQueue(event);
+            }).catch(function (error) {
+                console.log(error);
             });
         };
 
