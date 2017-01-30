@@ -40,12 +40,12 @@ angular.module('bahmni.common.displaycontrol.pivottable').directive('pivotTable'
 
                 scope.scrollLeft = function () {
                     $('table.pivot-table tbody').animate({
-                        scrollLeft: 0}, 800);
+                        scrollLeft: 0});
                     return false;
                 };
                 scope.scrollRight = function () {
                     $('table.pivot-table tbody').animate({
-                        scrollLeft: '2000px' }, 1200);
+                        scrollLeft: '2000px' });
                     return false;
                 };
 
@@ -67,7 +67,7 @@ angular.module('bahmni.common.displaycontrol.pivottable').directive('pivotTable'
                         $('.btn-scroll-right, .btn-scroll-left').attr("disabled", true);
                         clearInterval(checkIfPivotTableLoaded);
                     }
-                }, 100, 2);
+                }, 1000, 2);
 
                 var pivotDataPromise = pivotTableService.getPivotTableFor(scope.patientUuid, scope.config, scope.visitUuid, startDate, endDate);
                 spinner.forPromise(pivotDataPromise, element);
