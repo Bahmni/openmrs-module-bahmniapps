@@ -11,7 +11,7 @@ angular.module('bahmni.home')
             return $scope.loginInfo.newPassword == $scope.loginInfo.confirmPassword;
         };
         $scope.changePassword = function () {
-            if (_.isEmpty($scope.loginInfo.newPassword) || _.isEmpty($scope.loginInfo.confirmPassword)) {
+            if (_.isEmpty($scope.loginInfo.oldPassword) || _.isEmpty($scope.loginInfo.newPassword) || _.isEmpty($scope.loginInfo.confirmPassword)) {
                 return;
             }
             if (checkPasswordMatches()) {
