@@ -1147,13 +1147,18 @@ table.treatments-details-table{
   }
 }
 
-.ngdialog-theme-default {
+
+h2.section-title.section-title-pivot{
+  overflow: hidden;
+  padding: 8px 10px 5px;
+
   .btn-scrolling {
-    margin-top: -5px;
+    margin-top: -3px;
     button {
       margin-left: 10px;
     }
   }
+
 }
 
 

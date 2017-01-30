@@ -1,9 +1,9 @@
 <section class="dashboard-section" ng-if="::hasData">
-    <h2 ng-if="::(displayName || diseaseName)" class="section-title">
+    <h2 ng-if="::(displayName || diseaseName)" class="section-title section-title-pivot">
         {{::displayName || diseaseName}}
         <div class="fr btn-scrolling">
-            <button ng-click="scrollLeft()" class="fl btn-small btn-scroll-left">{{::'SCROLL_LEFT' | translate }}</button>
-            <button ng-click="scrollRight()" class="fl btn-small btn-scroll-right">{{::'SCROLL_RIGHT' | translate }}</button>
+            <button ng-click="scrollLeft()" class="fl btn-small btn-scroll-left" title="{{::'SCROLL_LEFT' | translate }}"><i class="fa fa-arrow-left"></i> </button>
+            <button ng-click="scrollRight()" class="fl btn-small btn-scroll-right" title="{{::'SCROLL_RIGHT' | translate }}"><i class="fa fa fa-arrow-right"></i></button>
         </div>
     </h2>
     <div>
