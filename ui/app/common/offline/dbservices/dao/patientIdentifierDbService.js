@@ -20,7 +20,7 @@ angular.module('bahmni.common.offline')
                 var isPrimaryIdentifier = identifier.identifierType && identifier.identifierType.primary;
                 var row = patientIdentifierTable.createRow({
                     'typeUuid': identifierTypeUuid,
-                    'identifier': identifier.identifier,
+                    'identifier': identifier.identifier || null,
                     'primaryIdentifier': identifier.primaryIdentifier,
                     'extraIdentifiers': identifier.extraIdentifiers,
                     'primary': isPrimaryIdentifier,
