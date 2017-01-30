@@ -82,7 +82,7 @@ describe('ChangePasswordController', function () {
   describe("change password", function(){
 
     beforeEach(function () {
-      scopeMock.loginInfo = {newPassword : "abc", confirmPassword: "abc"};
+      scopeMock.loginInfo = {oldPassword:"123", newPassword : "abc", confirmPassword: "abc"};
       rootScopeMock.currentUser = {uuid: "someUuid"};
       mockSessionService.changePassword.and.returnValue(specUtil.simplePromise({}));
     });
