@@ -60,13 +60,13 @@ describe('ChangePasswordController', function () {
   });
 
   it("should check if new password and confirm password matches or not", function () {
-    scopeMock.loginInfo = {newPassword : "abc", confirmPassword: "xyz"};
+    scopeMock.loginInfo = {oldPassword : "abc", newPassword : "abc", confirmPassword: "xyz"};
     scopeMock.changePassword();
 
     expect(scopeMock.passwordDoesNotMatch).toBeTruthy();
   });
 
-  it("should not call change password if new password or confirm password are empty", function () {
+  it("should not call change password if old password or new password or confirm password are empty", function () {
     scopeMock.loginInfo = {};
     scopeMock.changePassword();
 
@@ -99,6 +99,7 @@ describe('ChangePasswordController', function () {
     it("should clear the password fields", function () {
       scopeMock.changePassword();
 
+      expect(scopeMock.loginInfo.oldPassword).toBeUndefined();
       expect(scopeMock.loginInfo.newPassword).toBeUndefined();
       expect(scopeMock.loginInfo.confirmPassword).toBeUndefined();
 
