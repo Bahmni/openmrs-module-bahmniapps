@@ -1,6 +1,6 @@
 'use strict';
 
-ddescribe("ObsGropingHelper", function () {
+describe("ObsGropingHelper", function () {
     var conceptSetUiConfigService;
 
     var allObservations = [

@@ -18,7 +18,7 @@ angular.module('bahmni.clinical')
             $scope.consultation.consultationNote.observationDateTime = null;
         };
 
-        var groupObservations = function(){
+        var groupObservations = function () {
             var allObservations = $scope.consultation.observations;
             return new Bahmni.Clinical.ObsGroupingHelper(conceptSetUiConfigService).groupObservations(allObservations);
         };
