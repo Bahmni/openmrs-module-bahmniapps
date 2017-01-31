@@ -3,11 +3,11 @@
 Bahmni.Clinical.ObsGroupingHelper = function (conceptSetUiConfigService) {
     var conceptSetUiConfigSvc = conceptSetUiConfigService;
 
-    this.groupObservations = function(observations){
+    this.groupObservations = function (observations) {
         var groupedObservationsArray = [];
-        var obsWithoutFieldPath = _.filter(observations, function(obs) { return !obs.formFieldPath });
-        var obsWithFieldPath = _.filter(observations, function(obs) { return obs.formFieldPath });
-        var groupedObsByFieldPath = _.groupBy(obsWithFieldPath, function(obs) { return obs.formFieldPath.split('.')[0]; });
+        var obsWithoutFieldPath = _.filter(observations, function (obs) { return !obs.formFieldPath; });
+        var obsWithFieldPath = _.filter(observations, function (obs) { return obs.formFieldPath; });
+        var groupedObsByFieldPath = _.groupBy(obsWithFieldPath, function (obs) { return obs.formFieldPath.split('.')[0]; });
 
         obsWithoutFieldPath.forEach(function (observation) {
             var temp = [observation];
@@ -19,23 +19,22 @@ Bahmni.Clinical.ObsGroupingHelper = function (conceptSetUiConfigService) {
             }
         });
 
-        _.each( groupedObsByFieldPath, function(observations, formName) {
+        _.each(groupedObsByFieldPath, function (observations, formName) {
             var observationsByGroup = groupObservations(formName, observations);
 
             if (observationsByGroup.groupMembers.length) {
                 groupedObservationsArray.push(observationsByGroup);
             }
-
-        } );
+        });
         return groupedObservationsArray;
     };
 
-    var groupObservations = function(conceptSetName, obs) {
+    var groupObservations = function (conceptSetName, obs) {
         var observationsByGroup = {
             "conceptSetName": conceptSetName,
             "groupMembers": new Bahmni.ConceptSet.ObservationMapper()
                 .getObservationsForView(obs, conceptSetUiConfigSvc.getConfig())
         };
         return observationsByGroup;
-    }
+    };
 };
