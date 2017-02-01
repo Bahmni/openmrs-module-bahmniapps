@@ -236,19 +236,21 @@ angular.module('consultation')
                     }
                 }
             })
-            .state('patient.dashboard.show.treatment.medicationTab', {
+            .state('patient.dashboard.show.newTreatment', {
                 url: '/medication-tab?tabConfigName',
                 params: {
                     cachebuster: null
                 },
-                views: {
-                    "addTreatment": {
-                        templateUrl: 'consultation/views/medication.html',
-                        controller: 'MedicationController',
-                        resolve: {
-                            treatmentConfig: 'treatmentConfig'
+                resolve: {
+                    treatmentConfig: function (initialization, treatmentConfig, $stateParams) {
+                            return treatmentConfig($stateParams.tabConfigName);
                         }
-                    }
+                    },
+                    views: {
+                        'consultation-content': {
+                            controller: 'MedicationController',
+                            templateUrl: 'consultation/views/medication.html'
+                        }
                 }
             })
 
