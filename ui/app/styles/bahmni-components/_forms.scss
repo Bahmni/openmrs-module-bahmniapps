@@ -516,6 +516,9 @@ buttons-radio.illegalValue { border: 0 !important; background: none !important;}
 input[type="time"]{
   padding: 1px 10px;
   margin-left: 2px;
+  @media (max-width: 768px) {
+    padding: 7px 10px;
+  }
 }
 
 @media screen and (-webkit-min-device-pixel-ratio:0) {

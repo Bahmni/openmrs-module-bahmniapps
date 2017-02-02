@@ -161,7 +161,7 @@
                                       class="asterick">*</span>
                             </label>
                         </div>
-                        <div class="field-value showOn-desktop-registration">
+                        <div class="field-value">
                             <input type="text" ng-model="identifier.identifier" disabled
                                    ng-if="identifier.hasIdentifierSources()"/>
 
@@ -189,13 +189,19 @@
                                     required>
                             </select>
                         </div>
-
-                        <div class="field-value field-value-small-screen">
+                        <div class="field-value" ng-if="!identifier.hasIdentifierSources()">
                             <input type="text" id="registrationNumber" ng-model="identifier.registrationNumber"
                                    non-blank="identifier.isIdentifierRequired()" pattern-validate
                                    ng-change="identifier.generate()" focus-on="identifier.hasOldIdentifier"
                                    ng-show="identifier.hasOldIdentifier || !identifier.hasIdentifierSources()">
-                            <div ng-show="::identifier.hasIdentifierSources()" class="fl">
+                        </div>
+
+                        <div class="field-value field-value-has-identifier"  ng-show="::identifier.hasIdentifierSources()">
+                            <input type="text" id="registrationNumber" ng-model="identifier.registrationNumber"
+                                   non-blank="identifier.isIdentifierRequired()" pattern-validate
+                                   ng-change="identifier.generate()" focus-on="identifier.hasOldIdentifier"
+                                   ng-show="identifier.hasOldIdentifier || !identifier.hasIdentifierSources()">
+                            <div class="fl">
                                 <div class="field-attribute hasOldIdentifier-field-attribute">
                                     <label for="hasOldIdentifier" ng-show="::showEnterID" class="control-label">{{::'REGISTRATION_LABEL_ENTER_ID' |
                                         translate}}</label>

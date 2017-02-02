@@ -22,10 +22,8 @@ form .form-field{
         float: none !important;
         display: block;
       }
-      &.field-value-small-screen{
-        @media (max-width : 990px) {
-
-        }
+      input[type="checkbox"]{
+        float: left !important;
       }
     }
     .field-attribute {
@@ -49,9 +47,6 @@ form .form-field{
   label[for = "smokingHistory"]{
     @media (max-width : 990px) {
       width: auto !important;
-    }
-    @media (max-width : 768px){
-      width:17em !important;
     }
   }
 }
@@ -269,22 +264,34 @@ section.form-field-inline{
         }
       }
     }
-    .field-value.field-value-small-screen{
+  }
+  .field-value.field-value-has-identifier{
+    @media (max-width : 990px) {
+      clear:both;
+      float:none;
+      width: auto;
+      display: table;
+    }
+    #registrationNumber{
       @media (max-width : 990px) {
-        clear:both;
-        float:none;
-        width: auto;
-        display: table;
+        width: 10.8em;
+        float:right !important;
+        min-width: initial;
+      }
+      @media (max-width : 800px) {
+        width:9.8em;
+      }
+      @media (max-width : 768px) {
+        width: 10.8em;
+      }
+      @media screen and (max-width: 580px) {
+        float:none !important;
+        width: 12.5em;
       }
     }
   }
   #registrationNumber{
     margin-right: 10px;
-    @media (max-width : 990px) {
-      width: 11em;
-      float:right;
-      min-width: initial;
-    }
   }
 }
 
