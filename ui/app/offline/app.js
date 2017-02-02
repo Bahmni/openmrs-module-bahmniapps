@@ -37,6 +37,11 @@ angular.module('bahmni.offline', ['ui.router', 'httpErrorInterceptor', 'bahmni.c
                         offlineDb: function (offlineDbInitialization) {
                             return offlineDbInitialization();
                         },
+                        initialSyncAlreadyCompleted: function ($state, offlineDb, offlineService) {
+                            if (offlineService.getItem("initialSyncStatus") === "complete") {
+                                $state.go('dashboard');
+                            }
+                        },
                         offlineReferenceDataInitialization: function (offlineReferenceDataInitialization, offlineDb) {
                             return offlineReferenceDataInitialization(true, offlineDb);
                         },
