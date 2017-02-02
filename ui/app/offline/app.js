@@ -62,7 +62,6 @@ angular.module('bahmni.offline', ['ui.router', 'httpErrorInterceptor', 'bahmni.c
                             return offlineDbInitialization();
                         }
                     }
-
                 }).state('device',
                 {
                     url: "/device/:deviceType",
