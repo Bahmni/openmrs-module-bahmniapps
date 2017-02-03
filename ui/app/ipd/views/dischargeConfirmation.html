@@ -7,11 +7,15 @@
     <div class="ngdialog-close clearfix"></div>
     <div class="clearfix">
         <h4> Discharge Summary </h4>
-        <label for="patient-name">Patient name: </label>
-        <span id="patient-name">{{$root.patient.name}}</span>
+    </div>
+    <div class="clearfix">
+        <div class="patient-attributes">
+            <label for="patient-name">Patient name: </label>
+            <span id="patient-name">{{$root.patient.name}}</span>
+        </div>
     </div>
     <div class="transfer-section cleanfix">
-        <div class="fl transfer-container " >
+        <div class="transfer-container">
             <span>Discharge From</span>
             <h5>{{$root.bedDetails.wardName}}</h5>
             <h5>{{$root.bedDetails.physicalLocationName}}</h5>
