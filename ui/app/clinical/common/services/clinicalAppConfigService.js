@@ -72,4 +72,7 @@ angular.module('bahmni.clinical')
         this.getVisitTypeForRetrospectiveEntries = function () {
             return appService.getAppDescriptor().getConfigValue("visitTypeForRetrospectiveEntries");
         };
+        this.onValueChanged = function(obs,err){
+            console.log("Triggered onValueChanged",obs,err)
+        }
     }]);

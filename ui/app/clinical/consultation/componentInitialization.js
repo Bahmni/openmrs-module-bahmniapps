@@ -13,6 +13,7 @@ angular.module('bahmni.clinical').factory('componentInitialization',
                     props = componentExtn.extensionParams.props || {};
                 }
                 props.encounterTransaction = consultation;
+                props.observations = consultation && consultation.observations || [];
 
                 return new Bahmni.Clinical.ComponentContext($stateParams.componentName,props);
             };
