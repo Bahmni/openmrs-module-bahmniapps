@@ -24,7 +24,8 @@ angular.module('bahmni.ipd')
                             bedNumber: bedLayout !== null && bedLayout.bedNumber,
                             bedType: bedLayout !== null && bedLayout.bedType !== null && bedLayout.bedType.displayName,
                             bedTags: bedLayout !== null && bedLayout.tags,
-                            status: bedLayout !== null && bedLayout.status
+                            status: bedLayout !== null && bedLayout.status,
+                            patient: bedLayout !== null && bedLayout.patient
                         }
                     });
                 }

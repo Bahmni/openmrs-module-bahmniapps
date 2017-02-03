@@ -20,8 +20,11 @@
             <div class="bed-space">
 
             </div>
-            <div class="bed-details" ng-if="cell.bed.bedId">
-                {{ cell.bed.bedNumber }}
+            <div class="bed-details">
+                <span>{{ cell.bed.bedNumber }}</span>
+                <div ng-if="cell.bed.status === 'OCCUPIED'">
+                    <span> {{ cell.bed.patient.identifiers[0].identifier }}</span>
+                </div>
             </div>
         </div>
     </div>

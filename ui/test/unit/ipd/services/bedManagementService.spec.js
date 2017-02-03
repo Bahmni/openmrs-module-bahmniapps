@@ -8,7 +8,8 @@ describe("BedManagementService", function() {
                        name: "ICU Bed"},
              columnNumber: 1, 
              rowNumber: 1, 
-             status: "OCCUPIED"
+             status: "OCCUPIED",
+             patient: {uuid: "patientUuid"}
             },
             {bedId: 2,
              bedNumber: "I2",
@@ -18,7 +19,8 @@ describe("BedManagementService", function() {
                        name: "ICU Bed"},
              columnNumber: 2, 
              rowNumber: 2, 
-             status: "AVAILABLE"
+             status: "AVAILABLE",
+             patient: undefined
             }];
 
     beforeEach(module('bahmni.ipd'));
@@ -39,7 +41,8 @@ describe("BedManagementService", function() {
                             bedNumber: 'I1',
                             bedType: 'ICU Bed',
                             bedTags: undefined,
-                            status: 'OCCUPIED'
+                            status: 'OCCUPIED',
+                            patient: {uuid: "patientUuid"}
                         }
                     },
                     {
@@ -50,7 +53,8 @@ describe("BedManagementService", function() {
                             bedNumber: false,
                             bedType: false,
                             bedTags: false,
-                            status: false
+                            status: false,
+                            patient: false
                         }
                     }
                 ],
@@ -63,7 +67,8 @@ describe("BedManagementService", function() {
                             bedNumber: false,
                             bedType: false,
                             bedTags: false,
-                            status: false
+                            status: false,
+                            patient: false
                         }
                     },
                     {
@@ -74,7 +79,8 @@ describe("BedManagementService", function() {
                             bedNumber: 'I2',
                             bedType: 'ICU Bed',
                             bedTags: undefined,
-                            status: 'AVAILABLE'
+                            status: 'AVAILABLE',
+                            patient: undefined
                         }
                     }
                 ]
