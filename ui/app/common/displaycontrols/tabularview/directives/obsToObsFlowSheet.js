@@ -89,6 +89,7 @@ angular.module('bahmni.common.displaycontrol.obsVsObsFlowSheet').directive('obsT
 
             $scope.commafy = function (observations) {
                 var list = [];
+                var config = conceptSetUiConfigService.getConfig();
                 var unBoolean = function (boolValue) {
                     return boolValue ? $translate.instant("OBS_BOOLEAN_YES_KEY") : $translate.instant("OBS_BOOLEAN_NO_KEY");
                 };
@@ -102,7 +103,7 @@ angular.module('bahmni.common.displaycontrol.obsVsObsFlowSheet').directive('obsT
 
                     if (observations[index].concept.dataType === "Date") {
                         var conceptName = observations[index].concept.name;
-                        if (conceptName && conceptSetUiConfigService.getConfig()[conceptName] && conceptSetUiConfigService.getConfig()[conceptName].displayMonthAndYear == true) {
+                        if (conceptName && config[conceptName] && config[conceptName].displayMonthAndYear == true) {
                             name = Bahmni.Common.Util.DateUtil.getDateInMonthsAndYears(name);
                         } else {
                             name = Bahmni.Common.Util.DateUtil.formatDateWithoutTime(name);

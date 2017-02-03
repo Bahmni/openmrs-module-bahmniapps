@@ -21,7 +21,7 @@
                         <tr>
                             <th ng-if="isMonthAvailable()"  ng-class="{'obsTableEdit' : header.name === config.groupByConcept && isEditable }"> Month</th>
                             <th ng-repeat="header in obsTable.headers" ng-if="header.name != 'Month'"  ng-class="{'obsTableEdit' : header.name === config.groupByConcept && isEditable,'obsTableHeaderName': getHeaderName(header).indexOf('term') > -1 , 'obsTableDate' : header.name.toLowerCase().indexOf('date') > -1}">
-                                {{getHeaderName(header)}}
+                                {{::getHeaderName(header)}}
                                 <hint concept-details="header"/>
                             </th>
                         </tr>
@@ -40,7 +40,7 @@
                             </span>
                             <span class="fl"
                                   ng-if="row.columns[header.name][0].concept.conceptClass != 'Image'"
-                                  ng-class="{ 'obsTableData' : header.name === config.groupByConcept && isEditable }">{{commafy(row.columns[header.name])}}</span>
+                                  ng-class="{ 'obsTableData' : header.name === config.groupByConcept && isEditable }">{{::commafy(row.columns[header.name])}}</span>
                             <span class="fl" ng-if="header.name === config.groupByConcept && isEditable" >
                                 <span class="has-link fl"
                                       ng-dialog="dashboard/views/dashboardSections/editObservationForm.html"
@@ -56,16 +56,16 @@
                 <table ng-if="obsTable.rows.length > 0 && getPivotOn() == 'column'" class="tableAsColumn">
                     <tr ng-if="isMonthAvailable()">
                         <th> Month</th>
-                        <th ng-repeat="row in obsTable.rows">{{commafy(row.columns['Month'])}}
+                        <th ng-repeat="row in obsTable.rows">{{::commafy(row.columns['Month'])}}
                         </th>
                     </tr>
                     <tr ng-repeat="header in obsTable.headers" ng-if="header.name != 'Month'">
                         <td>
-                            {{getHeaderName(header)}}
+                            {{::getHeaderName(header)}}
                             <hint concept-details="header"/>
                         </td>
                         <td ng-repeat="row in obsTable.rows" ng-class="{'is-abnormal-bold': row.columns[header.name][0].abnormal , 'obsTableEdit' : header.name === config.groupByConcept && isEditable }">
-                        <span class="fl" ng-class="{ 'obsTableData' : header.name === config.groupByConcept && isEditable }">{{commafy(row.columns[header.name])}}</span>
+                        <span class="fl" ng-class="{ 'obsTableData' : header.name === config.groupByConcept && isEditable }">{{::commafy(row.columns[header.name])}}</span>
                         <span class="fl" ng-if="header.name === config.groupByConcept && isEditable" >
                                 <span class="has-link fl"
                                       ng-dialog="dashboard/views/dashboardSections/editObservationForm.html"
