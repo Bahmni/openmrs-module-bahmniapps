@@ -40,10 +40,20 @@ angular.module('bahmni.offline', ['ui.router', 'httpErrorInterceptor', 'bahmni.c
                         offlineDb: function (offlineDbInitialization) {
                             return offlineDbInitialization();
                         },
-                        initialSyncAlreadyCompleted: function ($state, offlineDb, offlineService) {
-                            if (offlineService.getItem("initialSyncStatus") === "complete") {
-                                $state.go('dashboard');
-                            }
+                        initialSyncAlreadyCompleted: function ($state, offlineDb, offlineService, dbNameService) {
+                            var loginInformation = offlineService.getItem('LoginInformation');
+                            var currentLocation = (loginInformation && loginInformation.currentLocation) || {};
+                            var loginLocationUuid = currentLocation.uuid;
+                            var locationName = currentLocation.display;
+                            var syncStatus = offlineService.getItem("initialSyncStatus");
+                            var username = offlineService.getItem("userData").results[0].username;
+                            dbNameService.getDbName(username, locationName).then(function (name) {
+                                return name;
+                            }).then(function (dbName) {
+                                if (syncStatus && syncStatus[dbName] && syncStatus[dbName][loginLocationUuid] === "complete") {
+                                    $state.go('dashboard');
+                                }
+                            });
                         },
                         offlineReferenceDataInitialization: function (offlineReferenceDataInitialization, offlineDb) {
                             return offlineReferenceDataInitialization(true, offlineDb);
