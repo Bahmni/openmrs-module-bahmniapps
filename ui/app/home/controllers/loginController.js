@@ -83,7 +83,7 @@ angular.module('bahmni.home')
                             return;
                         }
                         sessionService.loadCredentials().then(function () {
-                            onSuccessfulAuthentication;
+                            onSuccessfulAuthentication();
                             $rootScope.currentUser.addDefaultLocale($scope.selectedLocale);
                             userService.savePreferences().then(
                                 function () { deferrable.resolve(); },
