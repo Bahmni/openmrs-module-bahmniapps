@@ -1,7 +1,7 @@
 'use strict';
 
-angular.module('bahmni.ipd').factory('initialization', ['$rootScope', '$q', 'appService', 'configurations', 'authenticator', 'spinner',
-    function ($rootScope, $q, appService, configurations, authenticator, spinner) {
+angular.module('bahmni.ipd').factory('initialization', ['$rootScope', '$q', '$bahmniCookieStore', 'appService', 'configurations', 'authenticator', 'spinner', 'locationService',
+    function ($rootScope, $q, $bahmniCookieStore, appService, configurations, authenticator, spinner, locationService) {
         var getConfigs = function () {
             var config = $q.defer();
             var configNames = ['encounterConfig', 'patientConfig', 'genderMap', 'relationshipTypeMap'];
@@ -31,6 +31,16 @@ angular.module('bahmni.ipd').factory('initialization', ['$rootScope', '$q', 'app
                         name: 'isBedManagementEnabled',
                         value: _.includes(config[1].value, 'bed')
                     };
+                }
+                initVisitLocation();
+            });
+        };
+
+        var initVisitLocation = function () {
+            var loginLocationUuid = $bahmniCookieStore.get(Bahmni.Common.Constants.locationCookieName).uuid;
+            locationService.getVisitLocation(loginLocationUuid).then(function (response) {
+                if (response.data) {
+                    $rootScope.visitLocationUuid = response.data.uuid;
                 }
             });
         };

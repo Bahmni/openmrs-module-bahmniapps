@@ -1,11 +1,10 @@
+<!--<ui-view/>-->
 <div id="bedManagement">
     <div class="left-pane">
         <div class="clearfix">
             <div class="patient-attributes">
                 <label>Patient ID: </label>
-                <a href="/bahmni/clinical/#/programs/patient/{{ patientUuid }}/consultationContext">
-                    <span>{{ patient.identifier }}</span>
-                </a>
+                <a ng-click="goToAdtPatientDashboard()">{{ patient.identifier }}</a>
             </div>
             <div class="patient-attributes">
                 <label>Patient Name: </label>

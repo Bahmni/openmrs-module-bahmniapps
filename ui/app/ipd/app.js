@@ -100,6 +100,29 @@ angular.module('ipd').config(['$stateProvider', '$httpProvider', '$urlRouterProv
                         });
                     }
                 }
+            }).state('dashboard', {
+                url: '/patient/:patientUuid/visit/:visitUuid/dashboard',
+                data: {
+                    navigationLinks: navigationLinks
+                },
+                views: {
+                    'content': {
+                        templateUrl: 'views/dashboard.html',
+                        controller: 'AdtController'
+                    },
+                    'additional-header': {
+                        templateUrl: ' views/header.html',
+                        controller: 'HeaderController'
+                    }
+                },
+                resolve: {
+                    initialization: 'initialization',
+                    patientResolution: function ($stateParams, bedInitialization, patientInitialization) {
+                        return patientInitialization($stateParams.patientUuid).then(function () {
+                            return bedInitialization(undefined, $stateParams.patientUuid);
+                        });
+                    }
+                }
             });
 
         $bahmniTranslateProvider.init({app: 'ipd', shouldMerge: true});

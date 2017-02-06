@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('bahmni.ipd')
-    .controller('BedManagementController', ['$scope', '$rootScope', '$stateParams', '$state', 'spinner', 'WardService', 'BedManagementService',
-        function ($scope, $rootScope, $stateParams, $state, spinner, wardService, bedManagementService) {
+    .controller('BedManagementController', ['$scope', '$rootScope', '$stateParams', '$state', 'spinner', 'WardService', 'BedManagementService', 'visitService',
+        function ($scope, $rootScope, $stateParams, $state, spinner, wardService, bedManagementService, visitService) {
             $scope.wards = null;
 
             var init = function () {
@@ -113,6 +113,29 @@ angular.module('bahmni.ipd')
                     options['dashboardCachebuster'] = Math.random();
                     $state.go("bedManagement", options);
                 }
+            };
+
+            var getVisitInfoByPatientUuid = function (patientUuid) {
+                return visitService.search({
+                    patient: patientUuid, includeInactive: false, v: "custom:(uuid,location:(uuid))"
+                }).then(function (response) {
+                    var results = response.data.results;
+                    var activeVisitForCurrentLoginLocation;
+                    if (results) {
+                        activeVisitForCurrentLoginLocation = _.filter(results, function (result) {
+                            return result.location.uuid === $rootScope.visitLocationUuid;
+                        });
+                    }
+                    var hasActiveVisit = activeVisitForCurrentLoginLocation.length > 0;
+                    return hasActiveVisit ? activeVisitForCurrentLoginLocation[0].uuid : "";
+                });
+            };
+
+            $scope.goToAdtPatientDashboard = function () {
+                getVisitInfoByPatientUuid($scope.patient.uuid).then(function (visitUuid) {
+                    var options = {patientUuid: $scope.patient.uuid, visitUuid: visitUuid};
+                    $state.go("dashboard", options);
+                });
             };
 
             init();

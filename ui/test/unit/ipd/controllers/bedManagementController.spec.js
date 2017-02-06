@@ -6,6 +6,7 @@ describe('BedManagementController', function () {
     var rootScope, scope;
     var stateParams = {patientUuid: "patientUuid", visitUuid: "visitUuid"};
     var wardService = jasmine.createSpyObj('WardService', ['getWardsList', 'bedsForWard']);
+    var visitService = jasmine.createSpyObj('visitService', ['search']);
     var bedManagementService = jasmine.createSpyObj('BedManagementService', ['createLayoutGrid']);
     var spinner = jasmine.createSpyObj('spinner', ['forPromise']);
     var state = jasmine.createSpyObj('$state',['go']);
@@ -76,8 +77,21 @@ describe('BedManagementController', function () {
             }
         ]
     };
+    var visitInfo = {
+        "data": {
+            "results": [{
+                "uuid": "557848e4-1297-4b57-8a58-b88e2a9edf07",
+                "location": {"uuid": "8f3b2b2d-e387-4e0e-aecf-f894a94f9306"}
+            }, {
+                "uuid": "3e554375-68d0-45e8-ac73-b75559429676",
+                "location": {"uuid": "9244ce69-4e6b-4431-8ae0-49c8cbf1bd72"}
+            }]
+        }
+    };
+
     wardService.getWardsList.and.returnValue(specUtil.simplePromise(wardList));
     wardService.bedsForWard.and.returnValue(specUtil.simplePromise(bedsForWard));
+    visitService.search.and.returnValue(specUtil.simplePromise(visitInfo));
     bedManagementService.createLayoutGrid.and.returnValue({});
 
     beforeEach(function () {
@@ -104,7 +118,8 @@ describe('BedManagementController', function () {
             $stateParams: stateParams,
             $state: state,
             spinner: spinner,
-            WardService: wardService
+            WardService: wardService,
+            visitService: visitService
         });
     };
 
@@ -195,5 +210,16 @@ describe('BedManagementController', function () {
         expect(scope.wards).toBe(wardList.results);
         expect(scope.ward.occupiedBeds).toBe(expectedOccupiedBedsOfWardAfterBedAssignment);
         expect(scope.ward.rooms[0].availableBeds).toBe(expectedAvailableBedsOfRoomAfterAssignment);
+    });
+
+    it('Should get the visitInfo using patientUuid and goto dashboard state with patientUuid and visitUuid', function () {
+        rootScope.visitLocationUuid = "8f3b2b2d-e387-4e0e-aecf-f894a94f9306";
+        scope.patient = {uuid: "patientUuid"};
+        state.current.name = "bedManagement.bed";
+
+        initController(rootScope, stateParams);
+        scope.goToAdtPatientDashboard();
+
+        expect(state.go).toHaveBeenCalledWith("dashboard", jasmine.any(Object));
     });
 });
