@@ -24,7 +24,7 @@
                     <span class="date">{{::getOnlyDate(startDate)}}</span>
                     <span ng-if="::(!groupByVisits)" class="time">{{::getOnlyTime(startDate)}}</span>
                 </th>
-                <td ng-init="columnResult = result.tabularData[startDate][concept.name]"  bm-pop-over autoclose="true" ng-repeat="concept in ::result.concepts track by $index"
+                <td ng-init="columnResult = result.tabularData[startDate][concept.shortName] || result.tabularData[startDate][concept.name]"  bm-pop-over autoclose="true" ng-repeat="concept in ::result.concepts track by $index"
                     ng-class="::{'is-abnormal': (columnResult.abnormal == true)}">
                     <div ng-if="::isLonger(columnResult.value)">
                         <span ng-class="::{'is-abnormal': (columnResult.abnormal == true)}" class="popover-trigger" bm-pop-over-trigger title="{{::columnResult.value}}">{{::getColumnValue(columnResult.value, concept.name)}}</span>
