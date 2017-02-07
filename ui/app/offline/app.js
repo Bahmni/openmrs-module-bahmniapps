@@ -13,10 +13,7 @@ angular.module('bahmni.offline', ['ui.router', 'httpErrorInterceptor', 'bahmni.c
                         offlineDb: function (offlineDbInitialization) {
                             return offlineDbInitialization();
                         },
-                        offlineConfigInitialization: function (offlineConfigInitialization, offlineDb) {
-                            return offlineConfigInitialization();
-                        },
-                        offlineReferenceDataInitialization: function (offlineReferenceDataInitialization, offlineConfigInitialization, offlineDbService, offlineService, androidDbService, $state) {
+                        offlineReferenceDataInitialization: function (offlineReferenceDataInitialization, offlineDbService, offlineService, androidDbService, $state, offlineDb) {
                             if (offlineService.isAndroidApp()) {
                                 offlineDbService = androidDbService;
                             }
@@ -40,23 +37,18 @@ angular.module('bahmni.offline', ['ui.router', 'httpErrorInterceptor', 'bahmni.c
                         offlineDb: function (offlineDbInitialization) {
                             return offlineDbInitialization();
                         },
-                        initialSyncAlreadyCompleted: function ($state, offlineDb, offlineService, dbNameService) {
-                            var loginInformation = offlineService.getItem('LoginInformation');
-                            var currentLocation = (loginInformation && loginInformation.currentLocation) || {};
-                            var loginLocationUuid = currentLocation.uuid;
-                            var locationName = currentLocation.display;
-                            var syncStatus = offlineService.getItem("initialSyncStatus");
-                            var username = offlineService.getItem("userData").results[0].username;
-                            dbNameService.getDbName(username, locationName).then(function (name) {
-                                return name;
-                            }).then(function (dbName) {
-                                if (syncStatus && syncStatus[dbName] && syncStatus[dbName][loginLocationUuid] === "complete") {
-                                    $state.go('dashboard');
+                        testConfig: function (offlineDb, offlineService, offlineDbService, androidDbService, $state) {
+                            if (offlineService.isAndroidApp()) {
+                                offlineDbService = androidDbService;
+                            }
+                            return offlineDbService.getConfig("home").then(function (result) {
+                                if (result && offlineService.getItem('eventLogCategories')) {
+                                    $state.go('initSync');
                                 }
                             });
                         },
-                        offlineReferenceDataInitialization: function (offlineReferenceDataInitialization, offlineDb) {
-                            return offlineReferenceDataInitialization(true, offlineDb);
+                        offlineReferenceDataInitialization: function (offlineReferenceDataInitialization, offlineDb, testConfig) {
+                            return offlineReferenceDataInitialization(true, offlineDb, testConfig);
                         },
                         offlineLocationInitialization: function (offlineLocationInitialization, offlineReferenceDataInitialization) {
                             return offlineLocationInitialization(offlineReferenceDataInitialization);
@@ -83,10 +75,13 @@ angular.module('bahmni.offline', ['ui.router', 'httpErrorInterceptor', 'bahmni.c
                     controller: function ($stateParams, $rootScope, $state, offlineService, $http) {
                         if ($stateParams.deviceType === 'chrome-app' || $stateParams.deviceType === 'android') {
                             offlineService.setAppPlatform($stateParams.deviceType);
-                            var url = Bahmni.Common.Constants.globalPropertyUrl + "?property=allowMultipleLoginLocation";
-                            $http.get(url).then(function (res) {
-                                offlineService.setItem("allowMultipleLoginLocation", res.data);
-                            });
+                            var syncStatus = offlineService.getItem("initialSyncStatus");
+                            if (!(syncStatus instanceof Object)) {
+                                var url = Bahmni.Common.Constants.globalPropertyUrl + "?property=allowMultipleLoginLocation";
+                                $http.get(url).then(function (res) {
+                                    offlineService.setItem("allowMultipleLoginLocation", res.data);
+                                });
+                            }
                             $state.go('initScheduler');
                         }
                     }
