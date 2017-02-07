@@ -344,10 +344,13 @@ angular.module('bahmni.clinical').controller('ConsultationController',
 
                 var data = {
                     "patientUuid": $scope.patient.uuid,
+                    "providerUuid": $rootScope.currentProvider.uuid,
                     "templates": templates
                 };
 
-                localStorage.setItem("templatePreference", JSON.stringify(data));
+                if (!_.isEmpty(templates)) {
+                    localStorage.setItem("templatePreference", JSON.stringify(data));
+                }
             };
 
             var discontinuedDrugOrderValidation = function (removableDrugs) {
