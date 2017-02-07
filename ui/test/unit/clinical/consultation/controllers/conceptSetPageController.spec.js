@@ -400,6 +400,7 @@ describe('ConceptSetPageController', function () {
 
             var templatePreference = {
                 "patientUuid": "patientUuid",
+                "providerUuid": 'providerUuid',
                 "templates": ["Followup Assessment", "Baseline"]
             };
 
@@ -409,6 +410,7 @@ describe('ConceptSetPageController', function () {
                     return false;
                 }
             };
+            rootScope.currentProvider = { uuid: "providerUuid" };
             scope.consultation.lastvisited = 'concept-set-123';
 
             createController();
