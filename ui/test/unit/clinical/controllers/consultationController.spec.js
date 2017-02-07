@@ -108,6 +108,7 @@ describe("ConsultationController", function () {
         ngDialog = jasmine.createSpyObj('ngDialog', ['close', 'closeAll']);
         rootScope.collapseControlPanel = function () {
         };
+        rootScope.currentProvider = { uuid: 'providerUuid' };
         scope.lastConsultationTabUrl = {url: {}};
         appService = jasmine.createSpyObj('appService', ['getAppDescriptor']);
         appDescriptor = jasmine.createSpyObj('appDescriptor', ['getConfigValue']);
