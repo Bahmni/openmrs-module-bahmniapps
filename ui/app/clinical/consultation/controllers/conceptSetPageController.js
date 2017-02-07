@@ -66,7 +66,8 @@ angular.module('bahmni.clinical')
 
             var addTemplatesInSavedOrder = function () {
                 var templatePreference = JSON.parse(localStorage.getItem("templatePreference"));
-                if (templatePreference && templatePreference.patientUuid == $scope.patient.uuid) {
+                if (templatePreference && templatePreference.patientUuid === $scope.patient.uuid &&
+                    !_.isEmpty(templatePreference.templates) && $rootScope.currentProvider.uuid === templatePreference.providerUuid) {
                     insertInSavedOrder(templatePreference);
                 } else {
                     insertInDefaultOrder();
