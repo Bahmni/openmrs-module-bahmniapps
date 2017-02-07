@@ -24,7 +24,7 @@ describe('HeaderController', function() {
 
     it('should change the state to admit', function() {
         scope.goToAdmitState();
-        expect(state.go).toHaveBeenCalledWith('admit', jasmine.any(Object));
+        expect(state.go).toHaveBeenCalledWith('home', jasmine.any(Object));
     });
 
     it('should change the state to bedManagement', function() {

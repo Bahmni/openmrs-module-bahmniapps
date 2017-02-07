@@ -7,10 +7,10 @@ angular.module('ipd', ['bahmni.common.patient', 'bahmni.common.patientSearch', '
     'bahmni.common.displaycontrol.dashboard', 'ngCookies', 'ngDialog', 'angularFileUpload', 'bahmni.common.offline']);
 angular.module('ipd').config(['$stateProvider', '$httpProvider', '$urlRouterProvider', '$bahmniTranslateProvider', '$compileProvider',
     function ($stateProvider, $httpProvider, $urlRouterProvider, $bahmniTranslateProvider, $compileProvider) {
-        $urlRouterProvider.otherwise('/admit');
+        $urlRouterProvider.otherwise('/home');
 
         var homeBackLink = {type: "link", name: "Home", value: "../home/", accessKey: "h", icon: "fa-home"};
-        var admitLink = {type: "state", name: "Admit", value: "admit", accessKey: "a"};
+        var admitLink = {type: "state", name: "Admit", value: "home", accessKey: "a"};
         var bedManagementLink = {type: "state", name: "Bed Management", value: "bedManagement", accessKey: "b"};
         var navigationLinks = [homeBackLink, admitLink, bedManagementLink];
 
@@ -23,8 +23,8 @@ angular.module('ipd').config(['$stateProvider', '$httpProvider', '$urlRouterProv
         // @endif
 
         $stateProvider
-            .state('admit', {
-                url: '/admit',
+            .state('home', {
+                url: '/home',
                 data: {
                     navigationLinks: navigationLinks
                 },

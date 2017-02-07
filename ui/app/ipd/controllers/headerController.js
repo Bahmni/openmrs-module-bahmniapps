@@ -6,7 +6,7 @@ angular.module('bahmni.ipd')
             $scope.goToAdmitState = function () {
                 var options = {};
                 options['dashboardCachebuster'] = Math.random();
-                $state.go("admit", options);
+                $state.go("home", options);
             };
 
             $scope.goToBedManagementState = function () {
