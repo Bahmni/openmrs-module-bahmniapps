@@ -181,7 +181,7 @@ describe('CreatePatientController', function() {
         rootScopeMock.patientConfiguration.getPatientAttributesSections = function() {
             return sections;
         };
-        
+
         $aController('CreatePatientController', {
             $scope: scopeMock,
             $rootScope: rootScopeMock,
@@ -444,23 +444,28 @@ describe('CreatePatientController', function() {
         expect(patientServiceMock.create.calls.count()).toEqual(1);
     });
 
-    it("should validate duplicate identifier entry in connect app and display error message", function() {
+    it("should validate duplicate identifier entry in connect app and display error message", function(done) {
         scopeMock.patient.identifierPrefix.prefix = "GAN";
         scopeMock.patient.registrationNumber = "1050";
 
         scopeMock.patient.hasOldIdentifier = true;
-
+        var defer = q.defer();
         patientServiceMock.create.and.callFake(function() {
             var deferred1 = q.defer();
-            deferred1.reject({code: 201, isOfflineApp: true});
+            deferred1.reject({isIdentifierDuplicate : true, message: "duplicate identifier"});
+            defer.resolve({data:"ds"});
             return deferred1.promise;
         });
 
+        spinnerMock.forPromise.and.returnValue(defer.promise);
         scopeMock.create();
         scopeMock.$apply();
+            expect(patientServiceMock.create.calls.count()).toEqual(1);
+            expect(messagingService.showMessage).toHaveBeenCalled();
+            done();
 
-        expect(patientServiceMock.create.calls.count()).toEqual(1);
-        expect(messagingService.showMessage).toHaveBeenCalled();
+
+
     });
 
     it("should return true if there is disablePhotoCapture config defined to be true", function () {
