@@ -23,7 +23,7 @@ angular.module('bahmni.common.offline')
                 var patientString = JSON.stringify(patient);
                 var value = AndroidOfflineService.createPatient(patientString);
                 value = value != undefined ? JSON.parse(value) : value;
-                return $q.when(value);
+                return value && value.isIdentifierDuplicate ? $q.reject(value) : $q.when(value);
             };
 
             var insertAddressHierarchy = function (addressHierarchy) {
