@@ -45,7 +45,6 @@ angular.module('bahmni.common.displaycontrol.pivottable').directive('pivotTable'
                     return false;
                 };
                 scope.scrollRight = function () {
-                    console.log(tablescroll);
                     $('table.pivot-table tbody').animate({
                         scrollLeft: tablescroll});
                     return false;
