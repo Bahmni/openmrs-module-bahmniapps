@@ -110,7 +110,7 @@ angular.module('bahmni.registration')
                             if (foundAttribute.format === "java.lang.Integer" || foundAttribute.format === "java.lang.Float") {
                                 attribute.value = parseFloat(attribute.value);
                             } else if (foundAttribute.format === "java.lang.Boolean") {
-                                attribute.value = (attribute.value === true);
+                                attribute.value = (attribute.value == "true" || attribute.value == true);
                             } else if (foundAttribute.format === "org.openmrs.Concept") {
                                 var value = attribute.value;
                                 attribute.value = {display: value, uuid: attribute.hydratedObject};
