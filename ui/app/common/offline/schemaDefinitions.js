@@ -361,7 +361,6 @@ Bahmni.Common.Offline.SchemaDefinitions = {
                 type: 'STRING'
             }
         ],
-        uniqueKeyColumns: ['identifier'],
         nullableColumns: ['identifier', 'primaryIdentifier', 'extraIdentifiers'],
         primaryKeyColumns: ['typeUuid', 'patientUuid']
     },
