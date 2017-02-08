@@ -11,6 +11,7 @@ angular.module('bahmni.common.displaycontrol.pivottable').directive('pivotTable'
                 status: "=?"
             },
             link: function (scope, element) {
+                var tablescroll;
                 if (!scope.config) {
                     return;
                 }
@@ -45,7 +46,7 @@ angular.module('bahmni.common.displaycontrol.pivottable').directive('pivotTable'
                 };
                 scope.scrollRight = function () {
                     $('table.pivot-table tbody').animate({
-                        scrollLeft: '2000px' });
+                        scrollLeft: tablescroll});
                     return false;
                 };
 
@@ -60,7 +61,8 @@ angular.module('bahmni.common.displaycontrol.pivottable').directive('pivotTable'
                 var checkIfPivotTableLoaded = $interval(function () {
                     if ($('table.pivot-table tbody tr').length > 11) {
                         $('table.pivot-table tbody').animate({
-                            scrollLeft: '2000px' }, 1200);
+                            scrollLeft: '20000px' }, 500);
+                        tablescroll = $('table.pivot-table tbody').scrollLeft();
                         clearInterval(checkIfPivotTableLoaded);
                     }
                     else if ($('table.pivot-table tbody tr').length < 12) {
