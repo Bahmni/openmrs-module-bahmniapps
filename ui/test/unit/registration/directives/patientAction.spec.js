@@ -50,7 +50,7 @@ describe('PatientAction', function () {
                     return input.isOfflineApp;
                 });
                 sessionService = jasmine.createSpyObj('sessionService', ['']);
-                messagingService = jasmine.createSpyObj('messagingService', ['']);
+                messagingService = jasmine.createSpyObj('messagingService', ['showMessage', 'clearAll']);
                 provide.value('$state', state);
                 provide.value('$window', $window);
                 provide.value('spinner', spinner);
@@ -227,6 +227,7 @@ describe('PatientAction', function () {
             scope.visitControl.startVisit(selectedVisitType);
             var patientProfileData = {patient: {uuid: patientUuid}};
             scope.actions.followUpAction(patientProfileData);
+            expect(messagingService.clearAll).toHaveBeenCalled();
             expect(scope.actions.submitSource).toBe("startVisit");
             expect($window.location.href).toBe("../clinical/#/programs/patient/patientUuid/consultationContext");
         });
@@ -252,6 +253,7 @@ describe('PatientAction', function () {
             scope.visitControl.startVisit(selectedVisitType);
             var patientProfileData = {patient: {uuid: patientUuid, person:{names:[{display: "Test Patient"}]}}};
             scope.actions.followUpAction(patientProfileData);
+            expect(messagingService.clearAll).toHaveBeenCalled();
             expect(scope.actions.submitSource).toBe("startVisit");
             expect(scope.patient.uuid).toBe(patientUuid);
             expect(scope.patient.name).toBe("Test Patient");
@@ -278,6 +280,7 @@ describe('PatientAction', function () {
             scope.setSubmitSource("forwardAction");
             var patientProfileData = {patient: {uuid: patientUuid, person:{names:[{display: "Test Patient"}]}}};
             scope.actions.followUpAction(patientProfileData);
+            expect(messagingService.clearAll).toHaveBeenCalled();
             expect(scope.actions.submitSource).toBe("forwardAction");
             expect($window.location.href).toBe("../clinical/#/programs/patient/patientUuid/consultationContext");
         });
@@ -303,6 +306,7 @@ describe('PatientAction', function () {
             scope.setSubmitSource("enterVisitDetails");
             var patientProfileData = {patient: {uuid: patientUuid, person:{names:[{display: "Test Patient"}]}}};
             scope.actions.followUpAction(patientProfileData);
+            expect(messagingService.clearAll).toHaveBeenCalled();
             expect(scope.actions.submitSource).toBe("enterVisitDetails");
             expect(scope.patient.uuid).toBe(patientUuid);
             expect(scope.patient.name).toBe("Test Patient");
@@ -332,6 +336,7 @@ describe('PatientAction', function () {
             scope.setSubmitSource("configAction");
             var patientProfileData = {patient: {uuid: patientUuid, person:{names:[{display: "Test Patient"}]}}};
             scope.actions.followUpAction(patientProfileData);
+            expect(messagingService.clearAll).toHaveBeenCalled();
             expect(scope.actions.submitSource).toBe("configAction");
             expect($window.location.href).toBe("../clinical/#/programs/patient/patientUuid/consultationContext");
         });
@@ -361,6 +366,7 @@ describe('PatientAction', function () {
             scope.setSubmitSource("configAction");
             var patientProfileData = {patient: {uuid: patientUuid, person:{names:[{display: "Test Patient"}]}}};
             scope.actions.followUpAction(patientProfileData);
+            expect(messagingService.clearAll).toHaveBeenCalled();
             expect(scope.actions.submitSource).toBe("configAction");
             expect($window.location.href).toBe("../clinical/#/programs/patient/patientUuid/consultationContext");
         });
@@ -389,6 +395,7 @@ describe('PatientAction', function () {
             scope.setSubmitSource("configAction");
             var patientProfileData = {patient: {uuid: patientUuid, person:{names:[{display: "Test Patient"}]}}};
             scope.actions.followUpAction(patientProfileData);
+            expect(messagingService.clearAll).toHaveBeenCalled();
             expect(scope.actions.submitSource).toBe("configAction");
             expect(scope.patient.uuid).toBe(patientUuid);
             expect(scope.patient.name).toBe("Test Patient");
@@ -420,6 +427,7 @@ describe('PatientAction', function () {
             scope.setSubmitSource("configAction");
             var patientProfileData = {patient: {uuid: patientUuid, person:{names:[{display: "Test Patient"}]}}};
             scope.actions.followUpAction(patientProfileData);
+            expect(messagingService.clearAll).toHaveBeenCalled();
             expect(scope.actions.submitSource).toBe("configAction");
             expect(scope.patient.uuid).toBe(patientUuid);
             expect(scope.patient.name).toBe("Test Patient");
