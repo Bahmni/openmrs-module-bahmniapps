@@ -19,7 +19,7 @@ angular.module('bahmni.common.obs')
 
             var init = function () {
                 var consultationMapper = new Bahmni.ConsultationMapper(configurations.dosageFrequencyConfig(), configurations.dosageInstructionConfig(),
-                    configurations.consultationNoteConcept(), configurations.labOrderNotesConcept(), configurations.stoppedOrderReasonConfig());
+                    configurations.consultationNoteConcept(), configurations.labOrderNotesConcept());
 
                 return encounterService.findByEncounterUuid($scope.observation.encounterUuid).then(function (reponse) {
                     var encounterTransaction = reponse.data;
