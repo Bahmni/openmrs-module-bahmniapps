@@ -4,9 +4,12 @@ angular.module('bahmni.ipd')
     .controller('BedManagementController', ['$scope', '$rootScope', '$stateParams', '$state', 'spinner', 'WardService', 'BedManagementService', 'visitService',
         function ($scope, $rootScope, $stateParams, $state, spinner, wardService, bedManagementService, visitService) {
             $scope.wards = null;
+            $scope.ward = {};
 
             var init = function () {
                 $rootScope.selectedBedInfo = $rootScope.selectedBedInfo || {};
+                resetPatientAndBedInfo();
+                resetDepartments();
                 loadAllWards().then(function () {
                     if ($rootScope.bedDetails) {
                         expandAdmissionMasterForDepartment({
