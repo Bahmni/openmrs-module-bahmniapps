@@ -9,9 +9,15 @@
         width: 320px;
         height: 100%;
         border-right: 1px solid #ddd;
-        padding: 20px 10px;
+        padding: 10px;
         word-wrap: break-word;
         box-sizing: border-box;
+        h6 {
+            color: #393939;
+            font-size: 16px;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
     }
     .right-pane {
         margin-left: 320px;
@@ -22,7 +28,7 @@
             background: #e8e8e8;
             h6 {
                 color: #393939;
-                font-size: 14px;
+                font-size: 16px;
                 font-weight: bold;
                 margin-bottom: 10px;
             }
