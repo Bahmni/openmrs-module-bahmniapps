@@ -3,21 +3,27 @@
 angular.module('bahmni.ipd')
     .controller('BedManagementController', ['$scope', '$rootScope', '$stateParams', '$state', 'spinner', 'WardService', 'BedManagementService', 'visitService',
         function ($scope, $rootScope, $stateParams, $state, spinner, wardService, bedManagementService, visitService) {
-            $scope.wards = null;
+            $scope.wards = [];
             $scope.ward = {};
+
+            var isDepartmentPresent = function (department) {
+                if (!department) return false;
+                return _.values(department).indexOf() == -1;
+            };
 
             var init = function () {
                 $rootScope.selectedBedInfo = $rootScope.selectedBedInfo || {};
                 resetPatientAndBedInfo();
                 resetDepartments();
                 loadAllWards().then(function () {
+                    var context = $stateParams.context || {};
                     if ($rootScope.bedDetails) {
                         expandAdmissionMasterForDepartment({
                             uuid: $rootScope.bedDetails.wardUuid,
                             name: $rootScope.bedDetails.wardName
                         });
-                    } else if ($stateParams.context && $stateParams.context.department) {
-                        expandAdmissionMasterForDepartment($stateParams.context.department);
+                    } else if (context && isDepartmentPresent(context.department)) {
+                        expandAdmissionMasterForDepartment(context.department);
                     }
                 });
             };
