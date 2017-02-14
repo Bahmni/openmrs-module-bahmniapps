@@ -48,11 +48,10 @@ angular.module('bahmni.ipd').factory('initialization', ['$rootScope', '$q', '$ba
             var element = document.getElementsByClassName('bed-legends');
             if (window.scrollY >= 140) {
                 element[0].className = 'bed-legends scrolled';
-            }else {
+            } else {
                 element[0].className = 'bed-legends';
             }
         };
         return spinner.forPromise(authenticator.authenticateUser().then(initApp).then(getConfigs));
-
     }
 ]);
