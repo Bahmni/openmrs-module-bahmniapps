@@ -1,3 +1,179 @@
+.idp-section {
+    padding-top: 52px;
+    .opd-content-wrapper {
+        max-width: 100%;
+    }
+    .left-pane {
+        position: fixed;
+        left: 0;
+        width: 320px;
+        height: 100%;
+        border-right: 1px solid #ddd;
+        padding: 20px 10px;
+        word-wrap: break-word;
+        box-sizing: border-box;
+    }
+    .right-pane {
+        margin-left: 320px;
+        width: calc(100% - 320px);
+        min-width: 930px;
+        .bedManagementHeader {
+            padding: 10px 20px;
+            background: #e8e8e8;
+            h6 {
+                color: #393939;
+                font-size: 14px;
+                font-weight: bold;
+                margin-bottom: 10px;
+            }
+            .bedTypeSelection {
+                border: 1px solid #d3d4d5;
+                border-radius: 3px;
+                display: inline-block;
+                button {
+                    background: #fff;
+                    outline: none;
+                    border: none;
+                    font-size: 14px;
+                    color: #393939;
+                    border-right: 1px solid #d3d4d5;
+                    border-radius: 0;
+                    &:first-child {
+                        border-radius: 3px 0 0 3px;
+                    }
+                    &:last-child {
+                        border-radius: 0 3px 3px 0;
+                        border: none;
+                    }
+                    &.selected {
+                        background: #a7a7a7;
+                        color: #fff;
+                    }
+                }
+            }
+        }
+        #bedLayout {
+            overflow-x: auto;
+            .bed-tag {
+                width: 40px;
+                height: 25px;
+                border-radius: 7px;
+                display: inline-block;
+                float: left;
+                margin: 2px;
+                box-sizing: border-box;
+                position: relative;
+
+                .bed-space {
+                    width: 5px;
+                    height: 12px;
+                    box-sizing: border-box;
+                }
+            }
+        }
+    }
+    .roomInfoWrapper {
+        background: #e8e8e8;
+        .room {
+            display: inline-block;
+            .room-details {
+                padding: 10px 20px;
+                font-size: 10px;
+                .floor-header {
+                    color: #298dd5;
+                    font-weight: 500;
+                    font-size: 14px;
+                    text-align: center;
+                    margin-bottom: 5px;
+                }
+                &:hover {
+                    cursor: pointer;
+                    .floor-header {
+                        font-weight: bold;
+                    }
+                }
+                &.room-selected {
+                    background: #a7a7a7;
+                    border-radius: 3px 3px 0 0 ;
+                    .floor-header {
+                        font-weight: 600;
+                        color: #fff;
+                    }
+                }
+                &.total-details:hover {
+                    cursor: default;
+                    background: transparent;
+                    .floor-header {
+                        font-weight: 500;
+                    }
+
+                }
+            }
+        }
+    }
+    .bedLegends {
+        padding: 10px;
+        background: #fff;
+        border-bottom: 1px solid #d3d4d5;
+        border-top: 1px solid #d3d4d5;
+        margin-bottom: 10px;
+        overflow: hidden;
+        box-sizing: border-box;
+        &.scrolled {
+            position: fixed;
+            width: calc(100% - 320px);
+            top: 52px;
+            z-index: 10;
+            background: #fff;
+            @media all and (max-width: 1299px) {
+                width: calc(100% - 310px);
+            }
+            + .bedLayoutWrapper {
+                margin-top: 60px;
+            }
+        }
+        h4 {
+            font-size: 14px;
+            margin: 0;
+            color: #393939;
+            float: left;
+        }
+    }
+    .bedLayoutWrapper {
+        overflow: hidden;
+        text-align: center;
+        .bedLayoutRow {
+            display: inline-block;
+            .bedLayoutCells {
+                float: left;
+                .bed {
+                    width: 110px;
+                    height: 50px;
+                    border-radius: 7px;
+                    margin: 10px;
+                    box-sizing: border-box;
+                    position: relative;
+                }
+
+            }
+        }
+    }
+    .bed-space {
+        width: 10px;
+        height: 36px;
+        margin: 7px;
+        border-radius: 10px;
+        display: inline-block;
+        box-sizing: border-box;
+        float: left;
+    }
+    .bed-details {
+        display: inline-block;
+        font-size: 10px;
+        line-height: 49px;
+    }
+}
+
 .adt {
 
     .adt-disposition-action {
@@ -108,16 +284,7 @@ div[ng-app="adt"] {
     margin-top:15px;
 }
 
-.left-pane {
-    position: fixed;
-    float: left;
-    left: 66px;
-    margin-right: 20px;
-    width: 295px;
-    border: 1px solid #ddd;
-    padding: 20px;
-    word-wrap: break-word;
-}
+
 
 .action-button {
     padding: 10px 0;
@@ -157,67 +324,26 @@ div[ng-app="adt"] {
     margin: 20px;
 }
 
-.right-pane {
-    float: right;
-    border: 1px solid #ddd;
-    width: calc(100% - 335px);
 
-    .clearfix {
-        padding: 10px 20px;
-    }
-
-    ward {
-        padding: 10px 20px;
-    }
-}
 
 .selected {
     font-weight: 600;
 }
 
-#bedLayout {
-    display: block;
-    margin-top: 30px;
-    border: 1px solid #ddd;
-    overflow-x: auto;
-}
 
-.room {
-    display: inline-block;
-    float: left;
-    margin-right: 10px;
-}
 
-.total-details {
-    &:hover {
-        cursor: default !important;
-        background-color: #fafafa !important;
-    }
-}
+
+
+
 
 #beds {
     display: block;
 }
 
-.room-details {
-    padding: 20px;
-    font-size: 12px;
-    margin-right: 20px;
-    &:hover {
-        cursor: pointer;
-        background-color: #ddd;
-    }
-}
 
-.room-selected {
-    background-color: #ddd !important;
-}
 
-.floor-header {
-    color: #1223A1;
-    font-weight: 600;
-    text-align: center;
-}
+
+
 
 .bed-status {
     margin-top: 5px;
@@ -243,48 +369,9 @@ div[ng-app="adt"] {
     border: 1px solid blue;
 }
 
-.bed-tag {
-    width: 40px;
-    height: 25px;
-    border-radius: 7px;
-    display: inline-block;
-    float: left;
-    margin: 2px;
-    box-sizing: border-box;
-    position: relative;
 
-    .bed-space {
-        width: 5px;
-        height: 12px;
-        box-sizing: border-box;
-    }
-}
 
-.bed {
-    width: 110px;
-    height: 50px;
-    border-radius: 7px;
-    float: left;
-    margin: 10px;
-    box-sizing: border-box;
-    position: relative;
-}
 
-.bed-space {
-    width: 10px;
-    height: 36px;
-    margin: 7px;
-    border-radius: 10px;
-    display: inline-block;
-    float: left;
-    box-sizing: border-box;
-}
-
-.bed-details {
-    display: inline-block;
-    margin: 10px 10px;
-    font-size: 10px;
-}
 
 .OCCUPIED {
     background: #0cbc3d;
@@ -336,6 +423,12 @@ div[ng-app="adt"] {
     }
 }
 
-.ipd-dashborad{
+.ipd-dashborad {
     margin-top: -40px;
+}
+@media all and (max-width: 1299px){
+    .idp-section .right-pane {
+        margin-left: 310px;
+        width: calc(100% - 310px);
+    }
 }

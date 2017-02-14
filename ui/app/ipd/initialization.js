@@ -44,7 +44,15 @@ angular.module('bahmni.ipd').factory('initialization', ['$rootScope', '$q', '$ba
                 }
             });
         };
-
+        window.onscroll = function () {
+            var element = document.getElementsByClassName('bedLegends');
+            if (window.scrollY >= 140) {
+                element[0].className = 'bedLegends scrolled';
+            }else {
+                element[0].className = 'bedLegends';
+            }
+        };
         return spinner.forPromise(authenticator.authenticateUser().then(initApp).then(getConfigs));
+
     }
 ]);

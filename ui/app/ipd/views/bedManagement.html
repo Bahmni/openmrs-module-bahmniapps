@@ -1,7 +1,7 @@
 <!--<ui-view/>-->
-<div id="bedManagement">
+<div id="bedManagement" class="bedManagement">
     <div class="left-pane">
-        <div class="clearfix">
+        <div class="admittedPatientInfo clearfix">
             <div class="patient-attributes">
                 <label>Patient ID: </label>
                 <a ng-click="goToAdtPatientDashboard()">{{ patient.identifier }}</a>
@@ -41,12 +41,14 @@
 
     </div>
     <div class="right-pane">
-        <div class="clearfix">
+        <div class="bedManagementHeader clearfix">
             <h6>Admission Master</h6>
+            <div class="bedTypeSelection">
             <button ng-repeat="option in wards"
                     ng-click="onSelectDepartment(option.ward)"
                     ng-class="{'selected': option.ward.isSelected}"
             >{{ option.ward.name }}</button>
+        </div>
         </div>
         <ward ward="ward" ng-if="departmentSelected"></ward>
     </div>
