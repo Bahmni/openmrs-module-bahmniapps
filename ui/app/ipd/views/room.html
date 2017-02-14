@@ -1,5 +1,5 @@
-<div class="bedLegends clearfix">
-    <h4 class="bedLegendsHead">{{room.name}} - {{room.availableBeds}} Available</h4>
+<div class="bed-legends clearfix">
+    <h4 class="bed-legends-head">{{room.name}} - {{room.availableBeds}} Available</h4>
     <div class="fr">
         <div class="fl" ng-repeat="tag in ['AVAILABLE', 'OCCUPIED']" style="margin-right: 5px;">
             <div class="bed-tag fl {{tag}}">
@@ -9,9 +9,9 @@
         </div>
     </div>
 </div>
-<ul class="bedLayoutWrapper">
-<li ng-repeat="row in room.beds" class="bedLayoutRow clearfix">
-    <div ng-repeat="cell in row" class="bedLayoutCells">
+<ul class="bed-layout-wrapper">
+<li ng-repeat="row in room.beds" class="bed-layout-row clearfix">
+    <div ng-repeat="cell in row" class="bed-layout-cells">
         <div class="bed" ng-if="!cell.bed.bedId"></div>
         <div class="bed {{ cell.bed.status }}" ng-class="{'highlight-bed': cell.bed.bedNumber===$root.selectedBedInfo.bed.bedNumber, 'highlight-old-bed': cell.bed.bedNumber===$root.bedDetails.bedNumber}"
             ng-if="cell.bed.bedId" ng-click="onSelectBed(cell.bed)">
