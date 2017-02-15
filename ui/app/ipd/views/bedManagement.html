@@ -3,41 +3,43 @@
     <div class="left-pane">
         <h6>Patient Details</h6>
         <div class="admittedPatientInfo clearfix">
-            <div class="patient-attributes">
+            <p class="patient-attributes">
                 <label>Patient ID: </label>
                 <a ng-click="goToAdtPatientDashboard()">{{ patient.identifier }}</a>
-            </div>
-            <div class="patient-attributes">
+            </p>
+            <p class="patient-attributes">
                 <label>Patient Name: </label>
-                <span>{{ patient.name }}</span>
-            </div>
-            <div class="patient-attributes">
+                <a ng-click="goToAdtPatientDashboard()">{{ patient.name }}</a>
+            </p>
+            <p class="patient-attributes">
                 <label>Age: </label>
                 <span>{{ patient.age }}</span>
-            </div>
-            <div class="patient-attributes">
+            </p>
+            <p class="patient-attributes">
                 <label>Gender: </label>
-                <span>{{ patient.gender }}</span>
-            </div>
+                <span ng-show="patient.gender == 'M'">Male</span>
+                <span ng-show="patient.gender == 'F'">Female</span>
+            </p>
         </div>
         <adt patient="patient" encounterConfig="encounterConfig" bed="bed"></adt>
-        <div class="clearfix">
-            <div class="patient-attributes">
+        <div class="patient-bed-details clearfix">
+            <h6>Bed Details</h6>
+            <p class="patient-attributes">
                 <label>Department: </label>
                 <span>{{ward.name}}</span>
-            </div>
-            <div class="patient-attributes">
+            </p>
+            <p class="patient-attributes">
                 <label>Room: </label>
                 <span>{{$root.selectedBedInfo.roomName}}</span>
-            </div>
-            <div class="patient-attributes">
+            </p>
+            <p class="patient-attributes">
                 <label>Bed# </label>
                 <span>{{$root.selectedBedInfo.bed.bedNumber}}</span>
-            </div>
-            <div class="patient-attributes">
+            </p>
+            <p class="patient-attributes">
                 <label>Status: </label>
                 <span>{{$root.selectedBedInfo.bed.status}}</span>
-            </div>
+            </p>
         </div>
 
     </div>

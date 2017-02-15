@@ -18,6 +18,9 @@
       font-weight: bold;
       margin-bottom: 10px;
     }
+    .admittedPatientInfo {
+      font-size: 13px;
+    }
   }
   .right-pane {
     margin-left: 320px;
@@ -26,6 +29,13 @@
     .bed-management-header {
       padding: 10px 20px;
       background: #e8e8e8;
+      position: fixed;
+      box-sizing: border-box;
+      z-index: 10;
+      width: calc(100% - 320px);
+      @media all and (max-width: 1299px) {
+        width: calc(100% - 310px);
+      }
       h6 {
         color: #393939;
         font-size: 16px;
@@ -64,6 +74,14 @@
   }
   .room-info-wrapper {
     background: #e8e8e8;
+    position: fixed;
+    top: 138px;
+    z-index: 10;
+    box-sizing: border-box;
+    width: calc(100% - 320px);
+    @media all and (max-width: 1299px) {
+      width: calc(100% - 310px);
+    }
     .room {
       display: inline-block;
       .room-details {
@@ -78,6 +96,8 @@
         }
         &:hover {
           cursor: pointer;
+          background: #d8d8d8;
+          border-radius: 3px 3px 0 0;
           .floor-header {
             font-weight: bold;
           }
@@ -118,18 +138,12 @@
     margin-bottom: 10px;
     overflow: hidden;
     box-sizing: border-box;
-    &.scrolled {
-      position: fixed;
-      width: calc(100% - 320px);
-      top: 52px;
-      z-index: 10;
-      background: #fff;
-      @media all and (max-width: 1299px) {
-        width: calc(100% - 310px);
-      }
-      + .bed-layout-wrapper {
-        margin-top: 60px;
-      }
+    position: fixed;
+    width: calc(100% - 320px);
+    z-index: 10;
+    top: 193px;
+    @media all and (max-width: 1299px) {
+      width: calc(100% - 310px);
     }
     h4 {
       font-size: 14px;
@@ -159,6 +173,7 @@
   .bed-layout-wrapper {
     overflow: hidden;
     text-align: center;
+    margin-top: 195px;
     .bed-layout-row {
       display: inline-block;
       .bed-layout-cells {
@@ -369,14 +384,14 @@ div[ng-app="adt"] {
   display: block;
 }
 
-
-
 .available {
-  background: #0cbc3d;
+  background: #fff;
+  color: #0cbc3d;
 }
 
 .occupied {
-  background: #DFB831;
+  background: #0cbc3d;
+  color: #fff;
 }
 
 .cell {
