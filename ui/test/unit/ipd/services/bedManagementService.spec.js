@@ -6,6 +6,7 @@ describe("BedManagementService", function() {
                        displayName: "ICU Bed",
                        id: 102,
                        name: "ICU Bed"},
+             bedTagMaps: {uuid: "tagMapUuuid", bed: {id: 2}, bedTag: {id: 1, name: "lost"}},
              columnNumber: 1, 
              rowNumber: 1, 
              status: "OCCUPIED",
@@ -17,6 +18,7 @@ describe("BedManagementService", function() {
                        displayName: "ICU Bed",
                        id: 103,
                        name: "ICU Bed"},
+             bedTagMaps: {uuid: "tagMapUuuid", bed: {id: 2}, bedTag: {id: 1, name: "lost"}},
              columnNumber: 2, 
              rowNumber: 2, 
              status: "AVAILABLE",
@@ -40,7 +42,7 @@ describe("BedManagementService", function() {
                             bedId: 1,
                             bedNumber: 'I1',
                             bedType: 'ICU Bed',
-                            bedTags: undefined,
+                            bedTagMaps: {uuid: "tagMapUuuid", bed: {id: 2}, bedTag: {id: 1, name: "lost"}},
                             status: 'OCCUPIED',
                             patient: {uuid: "patientUuid"}
                         }
@@ -52,7 +54,7 @@ describe("BedManagementService", function() {
                             bedId: false,
                             bedNumber: false,
                             bedType: false,
-                            bedTags: false,
+                            bedTagMaps: false,
                             status: false,
                             patient: false
                         }
@@ -66,7 +68,7 @@ describe("BedManagementService", function() {
                             bedId: false,
                             bedNumber: false,
                             bedType: false,
-                            bedTags: false,
+                            bedTagMaps: false,
                             status: false,
                             patient: false
                         }
@@ -78,7 +80,7 @@ describe("BedManagementService", function() {
                             bedId: 2,
                             bedNumber: 'I2',
                             bedType: 'ICU Bed',
-                            bedTags: undefined,
+                            bedTagMaps: {uuid: "tagMapUuuid", bed: {id: 2}, bedTag: {id: 1, name: "lost"}},
                             status: 'AVAILABLE',
                             patient: undefined
                         }

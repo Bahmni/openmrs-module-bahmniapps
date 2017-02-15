@@ -23,7 +23,7 @@ angular.module('bahmni.ipd')
                             bedId: bedLayout !== null && bedLayout.bedId,
                             bedNumber: bedLayout !== null && bedLayout.bedNumber,
                             bedType: bedLayout !== null && bedLayout.bedType !== null && bedLayout.bedType.displayName,
-                            bedTags: bedLayout !== null && bedLayout.tags,
+                            bedTagMaps: bedLayout !== null && bedLayout.bedTagMaps,
                             status: bedLayout !== null && bedLayout.status,
                             patient: bedLayout !== null && bedLayout.patient
                         }

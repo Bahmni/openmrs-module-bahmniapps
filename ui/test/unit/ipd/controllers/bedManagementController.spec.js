@@ -9,6 +9,8 @@ describe('BedManagementController', function () {
     var visitService = jasmine.createSpyObj('visitService', ['search']);
     var bedManagementService = jasmine.createSpyObj('BedManagementService', ['createLayoutGrid']);
     var spinner = jasmine.createSpyObj('spinner', ['forPromise']);
+    var ngDialog = jasmine.createSpyObj('ngDialog', ['openConfirm', 'close']);
+    var messagingService = jasmine.createSpyObj('messagingService', ['showMessage']);
     var state = jasmine.createSpyObj('$state',['go']);
     state.current =  {name: "bedManagement"};
     var wardList = {
@@ -64,19 +66,6 @@ describe('BedManagementController', function () {
             ]
         }
     };
-    var patient = {};
-    var patientConfig = {
-        personAttributeTypes: [
-            {
-                answers: [],
-                desciption: "name in some language",
-                format: "java.lang.String",
-                name: "givenNameLocal",
-                sortWeight: 3,
-                uuid: "7e6db4ea-e42f-11e5-8c3e-08002715d519"
-            }
-        ]
-    };
     var visitInfo = {
         "data": {
             "results": [{
@@ -119,7 +108,9 @@ describe('BedManagementController', function () {
             $state: state,
             spinner: spinner,
             WardService: wardService,
-            visitService: visitService
+            visitService: visitService,
+            messagingService: messagingService,
+            ngDialog: ngDialog
         });
     };
 
@@ -221,5 +212,16 @@ describe('BedManagementController', function () {
         scope.goToAdtPatientDashboard();
 
         expect(state.go).toHaveBeenCalledWith("dashboard", jasmine.any(Object));
+    });
+
+    it('Should open ngDialog for updating tags for the selected bed', function () {
+        initController(rootScope, stateParams);
+        scope.editTagsOntheBed();
+        expect(ngDialog.openConfirm).toHaveBeenCalledWith({
+            template: 'views/addTags.html',
+            scope: scope,
+            closeByEscape: true,
+            className: "ngdialog-theme-default ng-dialog-adt-popUp"
+        });
     });
 });

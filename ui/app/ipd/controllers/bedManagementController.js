@@ -1,9 +1,9 @@
 'use strict';
 
 angular.module('bahmni.ipd')
-    .controller('BedManagementController', ['$scope', '$rootScope', '$stateParams', '$state', 'spinner', 'WardService', 'BedManagementService', 'visitService',
-        function ($scope, $rootScope, $stateParams, $state, spinner, wardService, bedManagementService, visitService) {
-            $scope.wards = [];
+    .controller('BedManagementController', ['$scope', '$rootScope', '$stateParams', '$state', 'spinner', 'WardService', 'BedManagementService', 'visitService', 'messagingService', 'ngDialog',
+        function ($scope, $rootScope, $stateParams, $state, spinner, wardService, bedManagementService, visitService, messagingService, ngDialog) {
+            $scope.wards = null;
             $scope.ward = {};
 
             var isDepartmentPresent = function (department) {
@@ -144,6 +144,19 @@ angular.module('bahmni.ipd')
                 getVisitInfoByPatientUuid($scope.patient.uuid).then(function (visitUuid) {
                     var options = {patientUuid: $scope.patient.uuid, visitUuid: visitUuid};
                     $state.go("dashboard", options);
+                });
+            };
+
+            $scope.hasBedSelected = function () {
+                return $rootScope.selectedBedInfo.bed;
+            };
+
+            $scope.editTagsOntheBed = function () {
+                ngDialog.openConfirm({
+                    template: 'views/addTags.html',
+                    scope: $scope,
+                    closeByEscape: true,
+                    className: "ngdialog-theme-default ng-dialog-adt-popUp"
                 });
             };
 
