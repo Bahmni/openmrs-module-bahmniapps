@@ -104,13 +104,16 @@ angular.module('bahmni.common.offline')
                 }
             };
 
+            var isPrimary = function (identifier, identifierTypes) {
+                return identifier.identifierType.retired ? false : !!(_.find(identifierTypes, {'uuid': identifier.identifierType.uuid})).primary;
+            };
+
             var mapIdentifiers = function (identifiers) {
                 var deferred = $q.defer();
                 return offlineDbService.getReferenceData("IdentifierTypes").then(function (identifierTypesData) {
                     var identifierTypes = identifierTypesData.data;
                     angular.forEach(identifiers, function (identifier) {
-                        var matchedIdentifierType = _.find(identifierTypes, {'uuid': identifier.identifierType.uuid});
-                        identifier.identifierType.primary = matchedIdentifierType.primary || false;
+                        identifier.identifierType.primary = isPrimary(identifier, identifierTypes);
                     });
                     var extraIdentifiersForSearch = {};
                     var extraIdentifiers = _.filter(identifiers, {'identifierType': {'primary': false}});
