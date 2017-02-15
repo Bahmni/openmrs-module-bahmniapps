@@ -174,7 +174,7 @@ angular.module('bahmni.common.offline')
 
             var mapAttributesToPostFormat = function (attributes, attributeTypes) {
                 angular.forEach(attributes, function (attribute) {
-                    if (!attribute.voided) {
+                    if (!attribute.voided && !attribute.attributeType.retired) {
                         var foundAttribute = _.find(attributeTypes, function (attributeType) {
                             return attributeType.uuid === attribute.attributeType.uuid;
                         });
