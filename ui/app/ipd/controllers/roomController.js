@@ -24,18 +24,13 @@ angular.module('bahmni.ipd')
                 }
                 $scope.bedTagsColorConfig = tagsColorConfig;
             };
-
-
             $scope.getColorForTheTag = function (tag) {
-                _.forEach($scope.bedTagsColorConfig, function(tagConfig) {
-                    if(tag !== undefined && tagConfig.name === tag.name){
+                _.forEach($scope.bedTagsColorConfig, function (tagConfig) {
+                    if (tag !== undefined && tagConfig.name === tag.name) {
                         tag.color = tagConfig.color;
                     }
                 });
-            } ;
-
-
-
+            };
             $scope.onSelectBed = function (bed) {
                 if ($state.current.name == "bedManagement.bed" || $state.current.name == "bedManagement") {
                     if (bed.status == "AVAILABLE") {
