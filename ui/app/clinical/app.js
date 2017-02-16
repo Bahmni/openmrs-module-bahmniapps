@@ -16,11 +16,11 @@ angular.module('consultation', ['ui.router', 'bahmni.clinical', 'bahmni.common.c
     'bahmni.common.displaycontrol.obsVsObsFlowSheet', 'bahmni.common.displaycontrol.chronicTreatmentChart',
     'bahmni.common.displaycontrol.forms', 'bahmni.common.displaycontrol.drugOrderDetails', 'bahmni.common.offline',
     'bahmni.common.displaycontrol.hint', 'bahmni.common.displaycontrol.drugOrdersSection', 'bahmni.common.attributeTypes',
-    'bahmni.common.services', 'bahmni.common.models', 'react']);
+    'bahmni.common.services', 'bahmni.common.models', 'react', 'ngRedux']);
 angular.module('consultation')
     .value('MedicationContainer', window.componentStore.getRegisteredComponent('MedicationContainer'))
-    .config(['$stateProvider', '$httpProvider', '$urlRouterProvider', '$bahmniTranslateProvider', '$compileProvider',
-        function ($stateProvider, $httpProvider, $urlRouterProvider, $bahmniTranslateProvider, $compileProvider) {
+    .config(['$stateProvider', '$httpProvider', '$urlRouterProvider', '$bahmniTranslateProvider', '$compileProvider', '$ngReduxProvider',
+        function ($stateProvider, $httpProvider, $urlRouterProvider, $bahmniTranslateProvider, $compileProvider, $ngReduxProvider) {
             $urlRouterProvider.otherwise('/' + Bahmni.Clinical.Constants.defaultExtensionName + '/patient/search');
             $compileProvider.aHrefSanitizationWhitelist(/^\s*(https?|ftp|mailto|chrome-extension|file):/);
             $compileProvider.imgSrcSanitizationWhitelist(/^\s*(https?|local|data|blob|chrome-extension):/);
@@ -119,6 +119,8 @@ angular.module('consultation')
                             $scope.visitHistory = visitHistory;
                             $scope.consultation = consultationContext;
                             $scope.lastConsultationTabUrl = {url: undefined};
+                            var reducers = Redux.combineReducers({prescription: Bahmni.Reducers.Medication.prescription});
+                            $ngReduxProvider.createStoreWith(reducers);
                         }
                     }
                 },
