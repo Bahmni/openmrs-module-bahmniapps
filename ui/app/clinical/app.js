@@ -245,14 +245,14 @@ angular.module('consultation')
                 },
                 resolve: {
                     treatmentConfig: function (initialization, treatmentConfig, $stateParams) {
-                            return treatmentConfig($stateParams.tabConfigName);
-                        }
-                    },
-                    views: {
-                        'consultation-content': {
-                            controller: 'MedicationController',
-                            templateUrl: 'consultation/views/medication.html'
-                        }
+                        return treatmentConfig($stateParams.tabConfigName);
+                    }
+                },
+                views: {
+                    'consultation-content': {
+                        controller: 'MedicationController',
+                        templateUrl: 'consultation/views/medication.html'
+                    }
                 }
             })
 

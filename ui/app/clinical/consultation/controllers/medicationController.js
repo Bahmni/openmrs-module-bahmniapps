@@ -5,7 +5,6 @@ angular.module('bahmni.clinical')
         function ($scope, treatmentConfig, $stateParams, $ngRedux) {
             $scope.$parent.medicationFlag = $scope.$parent.medicationFlag || false;
             var init = function () {
-
                 if (!$scope.$parent.medicationFlag) {
                     $ngRedux.connect(function (state) {
                         $scope.consultation.medication = state;
@@ -14,7 +13,7 @@ angular.module('bahmni.clinical')
                     $scope.$parent.medicationFlag = true;
                 }
             };
-            $scope.$parent.$on('$destroy', function() {
+            $scope.$parent.$on('$destroy', function () {
                 $ngRedux.dispatch({type: 'CLEAR_MEDICATION'});
             });
             $scope.props = {

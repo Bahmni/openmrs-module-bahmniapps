@@ -399,6 +399,15 @@ module.exports = function (grunt) {
                         src: [
                             '*.*'
                         ]
+                    },
+                    {
+                        expand: true,
+                        dot: true,
+                        cwd: '<%= yeoman.nodeModules %>/redux/dist',
+                        dest: '<%= yeoman.app %>/components/redux/',
+                        src: [
+                            '*', '*/*'
+                        ]
                     }
                 ]
             }
