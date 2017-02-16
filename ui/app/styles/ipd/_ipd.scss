@@ -12,6 +12,7 @@
     padding: 10px 0;
     word-wrap: break-word;
     box-sizing: border-box;
+    background: #fff;
     h6 {
       color: #393939;
       font-size: 16px;
@@ -19,15 +20,22 @@
       margin-bottom: 10px;
       padding: 0 10px;
     }
-    .admitted-patient-info, .patient-bed-details {
+    .admitted-patient-info, .patient-bed-details, .ADT-container {
       font-size: 13px;
       padding: 0 15px;
+    }
+    .ADT-container {
+      border-bottom: 1px solid #ddd;
+    }
+    .patient-bed-details {
+      border-bottom: 1px solid #ddd;
     }
   }
   .right-pane {
     margin-left: 320px;
     width: calc(100% - 320px);
     min-width: 930px;
+    background: #fff;
     .bed-management-header {
       padding: 10px 20px;
       background: #e8e8e8;
