@@ -7,6 +7,11 @@ describe('RoomController', function () {
     var scope;
     var messagingService = jasmine.createSpyObj('messagingService', ['showMessage']);
     var appService = jasmine.createSpyObj('appService', ['getAppDescriptor']);
+    appService.getAppDescriptor.and.returnValue({
+        getConfigValue: function (value) {
+            return [{"tagName":"Lost","color":"#E1FF00"},{"tagName":"Isolation","color":"#00FBFF"},{"tagName":"Strict Isolation","color":"#4D00FF"}];
+        }
+    });
     var state = jasmine.createSpyObj('$state',['go']);
     var room = {
         "name": "ROOM1",
@@ -63,11 +68,6 @@ describe('RoomController', function () {
         "totalBeds": 9,
         "availableBeds": 1
     };
-
-    appService.getAppDescriptor.and.returnValue({
-        formatUrl: function(){
-        }
-    });
     beforeEach(function () {
         module('bahmni.ipd');
     });

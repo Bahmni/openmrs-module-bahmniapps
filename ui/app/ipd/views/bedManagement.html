@@ -2,7 +2,7 @@
 <div id="bedManagement" class="bed-management">
     <div class="left-pane">
         <h6>Patient Details</h6>
-        <div class="admittedPatientInfo clearfix">
+        <div class="admitted-patient-info clearfix">
             <p class="patient-attributes">
                 <label>Patient ID: </label>
                 <a ng-click="goToAdtPatientDashboard()">{{ patient.identifier }}</a>
@@ -22,45 +22,46 @@
             </p>
         </div>
         <adt patient="patient" encounterConfig="encounterConfig" bed="bed"></adt>
+        <h6>Bed Details</h6>
         <div class="patient-bed-details clearfix">
-            <h6>Bed Details</h6>
             <p class="patient-attributes">
                 <label>Department: </label>
                 <span>{{ward.name}}</span>
             </p>
             <p class="patient-attributes">
-                <label>Room: </label>
+                <label>Location: </label>
                 <span>{{$root.selectedBedInfo.roomName}}</span>
             </p>
             <p class="patient-attributes">
-                <label>Bed# </label>
+                <label>Room / Bed# </label>
                 <span>{{$root.selectedBedInfo.bed.bedNumber}}</span>
             </p>
             <p class="patient-attributes">
                 <label>Status: </label>
                 <span>{{$root.selectedBedInfo.bed.status}}</span>
             </p>
-            </div>
-            <div class="patient-attributes" ng-if="hasBedSelected()">
+            <p class="patient-attributes" ng-if="hasBedSelected()">
                 <label>Tags: </label>
                 <span ng-repeat="tag in $root.selectedBedInfo.bed.bedTagMaps">
                     <button>{{tag.bedTag.name}}</button>
                 </span>
                 <a ng-click="editTagsOntheBed()">Edit</a>
-            </div>
+            </p>
         </div>
-
     </div>
-    <div class="right-pane">
-        <div class="bed-management-header clearfix">
-            <h6>Admission Master</h6>
-            <div class="bed-type-selection">
+
+</div>
+<div class="right-pane">
+    <div class="bed-management-header clearfix">
+        <h6>Admission Master</h6>
+        <div class="bed-type-selection">
             <button ng-repeat="option in wards"
                     ng-click="onSelectDepartment(option.ward)"
                     ng-class="{'selected': option.ward.isSelected}"
-            >{{ option.ward.name }}</button>
+            >{{ option.ward.name }}
+            </button>
         </div>
-        </div>
-        <ward ward="ward" ng-if="departmentSelected"></ward>
     </div>
+    <ward ward="ward" ng-if="departmentSelected"></ward>
+</div>
 </div>

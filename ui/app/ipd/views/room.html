@@ -6,6 +6,12 @@
             </div>
             <div class="fl" style="margin-top: 5px; padding: 0 5px;">{{tag | titleCase}}</div>
         </div>
+        <div class="fl" ng-repeat="tag in bedTagConfig" style="margin-right: 5px;">
+            <div class="bed-tag fl {{tag.tagName}}" style="border: 1px solid {{tag.color}}; background: {{tag.color}};">
+                <div class="bed-space" style="background: #fff;"></div>
+            </div>
+            <div class="fl" style="margin-top: 5px; padding: 0 5px;">{{tag.tagName | titleCase}}</div>
+        </div>
     </div>
 </div>
 <ul class="bed-layout-wrapper">

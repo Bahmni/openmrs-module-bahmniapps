@@ -1,9 +1,11 @@
 'use strict';
 
 angular.module('bahmni.ipd')
-    .controller('RoomController', ['$scope', '$rootScope', '$state', 'messagingService',
-        function ($scope, $rootScope, $state, messagingService) {
+    .controller('RoomController', ['$scope', '$rootScope', '$state', 'messagingService', 'appService',
+        function ($scope, $rootScope, $state, messagingService, appService) {
             var init = function () {
+                var appDescriptor = appService.getAppDescriptor();
+                var tagsColorConfig = appDescriptor.getConfigValue("colorForTags");
                 if ($rootScope.bedDetails) {
                     $scope.oldBedNumber = $rootScope.bedDetails.bedNumber;
                     _.some($scope.room.beds, function (row) {
@@ -20,6 +22,7 @@ angular.module('bahmni.ipd')
                         $scope.oldBedNumber = undefined;
                     }
                 }
+                $scope.bedTagConfig = tagsColorConfig;
             };
 
             $scope.onSelectBed = function (bed) {

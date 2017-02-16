@@ -9,7 +9,7 @@
     width: 320px;
     height: 100%;
     border-right: 1px solid #ddd;
-    padding: 10px;
+    padding: 10px 0;
     word-wrap: break-word;
     box-sizing: border-box;
     h6 {
@@ -17,9 +17,11 @@
       font-size: 16px;
       font-weight: bold;
       margin-bottom: 10px;
+      padding: 0 10px;
     }
-    .admittedPatientInfo {
+    .admitted-patient-info, .patient-bed-details {
       font-size: 13px;
+      padding: 0 15px;
     }
   }
   .right-pane {
