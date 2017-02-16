@@ -64,6 +64,12 @@ angular.module('bahmni.common.offline')
                 });
             };
 
+            var createRejectedPromise = function () {
+                var deferrable = $q.defer();
+                deferrable.reject();
+                return deferrable.promise;
+            };
+
             var readEvent = function (events, index, category, isInitSync) {
                 if (events.length == index && events.length > 0) {
                     return syncForCategory(category, isInitSync);
@@ -77,25 +83,23 @@ angular.module('bahmni.common.offline')
                     event.object = Bahmni.Common.Constants.offlineBahmniEncounterUrl + uuid + "?includeAll=true";
                 }
                 return eventLogService.getDataForUrl(Bahmni.Common.Constants.hostURL + event.object)
-                        .then(function (response) {
-                            return saveData(event, response)
-                                .then(function () {
-                                    updateSavedEventsCount(category);
-                                    return updateMarker(event, category);
-                                })
-                                .then(
-                                    function (lastEvent) {
-                                        offlineService.setItem("lastSyncTime", lastEvent.lastReadTime);
-                                        return readEvent(events, ++index, category, isInitSync);
-                                    });
-                        }).catch(function (response) {
-                            logSyncError(response);
-                            $rootScope.$broadcast("schedulerStage", null, true);
-                            endSync(-1);
-                            var deferrable = $q.defer();
-                            deferrable.reject();
-                            return deferrable.promise;
-                        });
+                    .then(function (response) {
+                        return saveData(event, response)
+                            .then(function () {
+                                updateSavedEventsCount(category);
+                                return updateMarker(event, category);
+                            }, createRejectedPromise)
+                            .then(
+                                function (lastEvent) {
+                                    offlineService.setItem("lastSyncTime", lastEvent.lastReadTime);
+                                    return readEvent(events, ++index, category, isInitSync);
+                                });
+                    }).catch(function (response) {
+                        logSyncError(response);
+                        $rootScope.$broadcast("schedulerStage", null, true);
+                        endSync(-1);
+                        return createRejectedPromise();
+                    });
             };
 
             var logSyncError = function (response) {
@@ -140,6 +144,8 @@ angular.module('bahmni.common.offline')
                         mapIdentifiers(response.data.identifiers).then(function () {
                             offlineDbService.createPatient({patient: response.data}).then(function () {
                                 deferrable.resolve();
+                            }, function (response) {
+                                deferrable.reject(response);
                             });
                         });
                     });
