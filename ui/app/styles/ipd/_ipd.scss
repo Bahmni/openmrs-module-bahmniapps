@@ -408,7 +408,12 @@ div[ng-app="adt"] {
     background: white;
   }
 }
-
+.tagged {
+  color: #fff;
+  .bed-space {
+    background: white;
+  }
+}
 .AVAILABLE {
   border: 1px solid #0cbc3d;
   .bed-space {
