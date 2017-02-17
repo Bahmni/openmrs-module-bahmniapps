@@ -43,7 +43,7 @@
             border-color: #99c915;
             color: #fff;
           }
-          &.adt-transfer:hover,  &.adt-discharge:hover {
+          &.adt-transfer:hover, &.adt-discharge:hover {
             background: #a7a7a7;
             color: #fff;
           }
@@ -400,14 +400,6 @@ div[ng-app="adt"] {
   margin-top: 15px;
 }
 
-.transfer-container {
-  text-align: center;
-
-  span {
-    font-weight: 600;
-  }
-}
-
 .ipd-transfer-container {
   margin: 30px 20px 0;
 
@@ -477,9 +469,77 @@ div[ng-app="adt"] {
 }
 
 .ngdialog.ngdialog-theme-default.ng-dialog-adt-popUp {
+  .ngdialog-overlay{
+    background: transparent;
+  }
   .ngdialog-content {
-    width: auto;
-    display: table;
+    background: #fff;
+    padding: 10px;
+    border: 1px solid rgba(0,0,0,0.24);
+    border-radius: 0;
+    box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
+    h4 {
+      font-size: 14px;
+      font-weight: bold;
+      color: #484848;
+      margin: 0 0 10px;
+    }
+    .transfer-section {
+      margin: 0 0 10px 0;
+      .transfer-container {
+        span {
+          padding: 0 5px;
+          display: inline-block;
+        }
+      }
+    }
+    .all-tags-button {
+      margin-bottom: 5px;
+      button {
+        padding: 5px 8px;
+        outline: none;
+        background: #e5e5e5;
+        color: #666;
+        margin-right: 5px;
+        border-radius: 7px;
+        font-size: 12px;
+        &:hover {
+          background: #a7a7a7;
+          color: #fff;
+        }
+      }
+    }
+    .bed-tag-selector {
+      margin-bottom: 10px;
+      .tags {
+        box-shadow: none;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        .tag-list li {
+          background: #e5e5e5;
+          color: #666;
+          font-size: 10px;
+          border-radius: 3px;
+        }
+      }
+    }
+    .ipd-button-group {
+      margin: 0;
+      button {
+        width: 90px;
+        padding: 5px 0;
+        outline: none;
+        background: #e5e5e5;
+        border: 1px solid #b0b2b4;
+        color: #666;
+        margin-right: 5px;
+        font-size: 12px;
+        &:hover {
+          background: #a7a7a7;
+          color: #fff;
+        }
+      }
+    }
     .form-horizontal {
       fieldset label {
         width: auto;
