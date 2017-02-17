@@ -26,15 +26,52 @@
     }
     .ADT-container {
       border-bottom: 1px solid #ddd;
+      .action-button {
+        button {
+          width: 90px;
+          padding: 8px 0;
+          outline: none;
+          background: #e5e5e5;
+          border: 1px solid #b0b2b4;
+          color: #666;
+          margin-right: 5px;
+          &:last-child {
+            margin: 0;
+          }
+          &.adt-admit {
+            background: #99c915;
+            border-color: #99c915;
+            color: #fff;
+          }
+          &.adt-transfer:hover,  &.adt-discharge:hover {
+            background: #a7a7a7;
+            color: #fff;
+          }
+        }
+      }
     }
     .patient-bed-details {
       border-bottom: 1px solid #ddd;
+      padding-bottom: 10px;
+      .bed-tags-wrapper {
+        display: inline-block;
+        width: 225px;
+        .bed-tags-preview {
+          padding: 5px;
+          border-radius: 50px;
+          display: inline-block;
+          background: #e6e6e6;
+          border: 1px solid #bfc0c2;
+          color: #6c6c6c;
+          margin-right: 5px;
+        }
+      }
     }
   }
   .right-pane {
     margin-left: 320px;
     width: calc(100% - 320px);
-    min-width: 930px;
+    min-width: 840px;
     background: #fff;
     .bed-management-header {
       padding: 10px 20px;
@@ -120,13 +157,18 @@
             color: #fff;
           }
         }
-        &.total-details:hover {
-          cursor: default;
-          background: transparent;
+        &.total-details {
+          border-right: 1px solid #ddd;
           .floor-header {
-            font-weight: 500;
+            color: #000;
           }
-
+          &:hover {
+            cursor: default;
+            background: transparent;
+            .floor-header {
+              font-weight: 500;
+            }
+          }
         }
         .bed-status {
           margin-top: 5px;
@@ -226,6 +268,7 @@
     width: 8px;
     height: 30px;
     margin: 7px;
+    margin-right: 0;
     border-radius: 10px;
     display: inline-block;
     box-sizing: border-box;
@@ -416,12 +459,14 @@ div[ng-app="adt"] {
     background: white;
   }
 }
+
 .AVAILABLE {
   border: 1px solid #0cbc3d;
   .bed-space {
     border: 1px solid #0cbc3d;
   }
 }
+
 .tagged {
   color: #fff;
   border: none;
@@ -430,6 +475,7 @@ div[ng-app="adt"] {
     border: none;
   }
 }
+
 .ngdialog.ngdialog-theme-default.ng-dialog-adt-popUp {
   .ngdialog-content {
     width: auto;

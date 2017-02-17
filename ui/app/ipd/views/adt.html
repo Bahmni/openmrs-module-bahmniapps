@@ -16,9 +16,9 @@
 
         </div>
         <div class="clearfix action-button" ng-if="showAdtButtons()">
-            <button ng-click="admit()" ng-disabled="disableAdmitButton()">Admit</button>
-            <button ng-click="transfer()" ng-disabled="disableTransferAndDischargeButton()">Transfer</button>
-            <button ng-click="discharge()" ng-disabled="disableTransferAndDischargeButton()">Discharge</button>
+            <button class="adt-admit" ng-click="admit()" ng-disabled="disableAdmitButton()">Admit</button>
+            <button class="adt-transfer" ng-click="transfer()" ng-disabled="disableTransferAndDischargeButton()">Transfer</button>
+            <button class="adt-discharge" ng-click="discharge()" ng-disabled="disableTransferAndDischargeButton()">Discharge</button>
         </div>
     </form>
 </div>

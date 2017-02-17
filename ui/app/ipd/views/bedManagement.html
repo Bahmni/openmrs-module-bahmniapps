@@ -42,8 +42,10 @@
             </p>
             <p class="patient-attributes" ng-if="hasBedSelected()">
                 <label>Tags: </label>
-                <span ng-repeat="tag in $root.selectedBedInfo.bed.bedTagMaps">
-                    <button>{{tag.bedTag.name}}</button>
+                <span class="bed-tags-wrapper">
+                    <span class="bed-tags-preview" ng-repeat="tag in $root.selectedBedInfo.bed.bedTagMaps">
+                        {{tag.bedTag.name}}
+                    </span>
                 </span>
                 <a ng-click="editTagsOntheBed()">Edit</a>
             </p>
