@@ -147,13 +147,13 @@ angular.module('bahmni.ipd')
                 });
             };
 
-            $scope.hasBedSelected = function () {
-                return $rootScope.selectedBedInfo.bed;
+            $scope.canEditTags = function () {
+                return $rootScope.selectedBedInfo.bed && $state.current.name == "bedManagement.bed";
             };
 
             $scope.editTagsOntheBed = function () {
                 ngDialog.openConfirm({
-                    template: 'views/addTags.html',
+                    template: 'views/editTags.html',
                     scope: $scope,
                     closeByEscape: true,
                     className: "ngdialog-theme-default ng-dialog-adt-popUp"

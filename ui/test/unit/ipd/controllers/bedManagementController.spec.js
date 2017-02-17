@@ -218,7 +218,7 @@ describe('BedManagementController', function () {
         initController(rootScope, stateParams);
         scope.editTagsOntheBed();
         expect(ngDialog.openConfirm).toHaveBeenCalledWith({
-            template: 'views/addTags.html',
+            template: 'views/editTags.html',
             scope: scope,
             closeByEscape: true,
             className: "ngdialog-theme-default ng-dialog-adt-popUp"

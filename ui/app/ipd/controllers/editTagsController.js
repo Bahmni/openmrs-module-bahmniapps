@@ -1,9 +1,10 @@
 'use strict';
 
-angular.module('bahmni.ipd').controller('multiSelectSearchController', ['$scope', '$rootScope', '$q', '$http', 'ngDialog', 'messagingService', 'spinner',
-    function ($scope, $rootScope, $q, $http, ngDialog, messagingService, spinner) {
+angular.module('bahmni.ipd').controller('editTagsController', ['$scope', '$rootScope', '$q', 'ngDialog', 'spinner', 'messagingService', 'bedTagMapService',
+    function ($scope, $rootScope, $q, ngDialog, spinner, messagingService, bedTagMapService) {
         $scope.allTags = [];
-        var unselectedValues = [];
+        var assignedTags = [];
+        var unAssignedTags = [];
         var deltaDeSelected = [];
         var selectedValues = [];
         var deltaSelected = [];
@@ -22,16 +23,18 @@ angular.module('bahmni.ipd').controller('multiSelectSearchController', ['$scope'
         };
 
         var init = function () {
-            $http.get("/openmrs/ws/rest/v1/bedTag").then(function (response) {
+            assignedTags = getTagsInfo();
+            bedTagMapService.getAllBedTags().then(function (response) {
                 $scope.allTags = response.data.results;
                 selectedValues = getTagsInfo();
-                unselectedValues = _.xorBy($scope.allTags, selectedValues, 'uuid');
+                unAssignedTags = _.xorBy($scope.allTags, assignedTags, 'uuid');
                 $scope.values = selectedValues;
             });
         };
 
         $scope.search = function (query) {
             var matchingAnswers = [];
+            var unselectedValues = _.xorBy($scope.allTags, selectedValues, 'uuid');
             _.forEach(unselectedValues, function (answer) {
                 if (typeof answer.name != "object" && answer.name.toLowerCase().indexOf(query.toLowerCase()) !== -1) {
                     matchingAnswers.push(answer);
@@ -41,16 +44,26 @@ angular.module('bahmni.ipd').controller('multiSelectSearchController', ['$scope'
         };
 
         $scope.addItem = function (item) {
-            deltaSelected = _.xorBy(deltaSelected, [item], 'uuid');
-            selectedValues = _.xorBy(selectedValues, [item], 'uuid');
-            unselectedValues = _.remove(unselectedValues, function (value) {
+            var find = _.find(unAssignedTags, {uuid: item.uuid});
+            var itemList = find ? [find] : [];
+            deltaSelected = _.xorBy(deltaSelected, itemList, 'uuid');
+            selectedValues = _.union(assignedTags, deltaSelected, 'uuid');
+            deltaDeSelected = _.remove(deltaDeSelected, function (value) {
                 return value.uuid !== item.uuid;
             });
+            selectedValues = _.xorBy(selectedValues, deltaDeSelected, 'uuid');
         };
 
         $scope.removeItem = function (item) {
-            deltaDeSelected = _.xorBy(deltaDeSelected, [item], 'uuid');
-            unselectedValues = _.xorBy(unselectedValues, [item], 'uuid');
+            var find = _.find(assignedTags, {uuid: item.uuid});
+            var itemList = find ? [find] : [];
+            deltaDeSelected = _.xorBy(deltaDeSelected, itemList, 'uuid');
+            deltaSelected = _.filter(deltaSelected, function (value) {
+                return value.uuid !== item.uuid;
+            });
+            selectedValues = _.filter(selectedValues, function (value) {
+                return value.uuid !== item.uuid;
+            });
         };
 
         $scope.removeFreeTextItem = function () {
@@ -62,12 +75,7 @@ angular.module('bahmni.ipd').controller('multiSelectSearchController', ['$scope'
 
         var assignTagsToBed = function () {
             _.each(deltaSelected, function (bedTag) {
-                var requestPayload = {
-                    "bedTag": {"id": bedTag.id},
-                    "bed": {"id": $rootScope.selectedBedInfo.bed.bedId}
-                };
-                var headers = {"Content-Type": "application/json", "Accept": "application/json"};
-                $http.post("/openmrs/ws/rest/v1/bedTagMap", requestPayload, headers).then(function (response) {
+                bedTagMapService.assignTagToABed(bedTag.id, $rootScope.selectedBedInfo.bed.bedId).then(function (response) {
                     var bedTags = $rootScope.selectedBedInfo.bed.bedTagMaps || [];
                     var bedTagMapEntry = {uuid: response.data.uuid, bedTag: bedTag};
                     bedTags.push(bedTagMapEntry);
@@ -77,11 +85,7 @@ angular.module('bahmni.ipd').controller('multiSelectSearchController', ['$scope'
         };
         var unAssignTagsFromBed = function () {
             _.each(deltaDeSelected, function (bedTag) {
-                $http.delete("/openmrs/ws/rest/v1/bedTagMap/" + bedTag.tagMapUuid).then(function (response) {
-                    var voidedItem = _.xorBy($rootScope.selectedBedInfo.bed.bedTagMaps, [bedTag], 'uuid');
-                    var find = _.find($rootScope.selectedBedInfo.bed.bedTagMaps, function (bedTagMap) {
-                        return bedTagMap.bedTag.uuid == bedTag.uuid;
-                    });
+                bedTagMapService.unAssignTagFromTheBed(bedTag.tagMapUuid).then(function () {
                     $rootScope.selectedBedInfo.bed.bedTagMaps = _.filter($rootScope.selectedBedInfo.bed.bedTagMaps, function (bedTagMap) {
                         return bedTagMap.bedTag.uuid != bedTag.uuid;
                     });
@@ -89,18 +93,25 @@ angular.module('bahmni.ipd').controller('multiSelectSearchController', ['$scope'
             });
         };
         $scope.updateTagsForTheSelectedBed = function () {
-            var deltaDeSelectedCopy = _.filter(deltaDeSelected, function (item) {
-                return !_.find(deltaSelected, {uuid: item.uuid});
-            });
-            deltaSelected = _.filter(deltaSelected, function (item) {
-                return !_.find(deltaDeSelected, {uuid: item.uuid});
-            });
-            deltaDeSelected = deltaDeSelectedCopy;
-            spinner.forPromise($q.all(unAssignTagsFromBed(), assignTagsToBed(), messagingService.showMessage('info', "Tags added successfully")));
+            spinner.forPromise($q.all(unAssignTagsFromBed(), assignTagsToBed()).then(function () {
+                messagingService.showMessage('info', "Tags Updated Successfully");
+            }));
         };
 
         $scope.cancelConfirmationDialog = function () {
             ngDialog.close();
+        };
+
+        $scope.disableTagButton = function (tag) {
+            var selectedTag = _.filter($scope.values, function (tagEntry) {
+                return _.isMatch(tagEntry, {uuid: tag.uuid});
+            });
+            return selectedTag.length > 0;
+        };
+
+        $scope.onClickingTheTag = function (tag) {
+            $scope.addItem(tag);
+            $scope.values = selectedValues;
         };
 
         init();

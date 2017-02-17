@@ -40,7 +40,7 @@
                 <label>Status: </label>
                 <span>{{$root.selectedBedInfo.bed.status}}</span>
             </p>
-            <p class="patient-attributes" ng-if="hasBedSelected()">
+            <div class="patient-attributes" ng-if="canEditTags()">
                 <label>Tags: </label>
                 <span class="bed-tags-wrapper">
                     <span class="bed-tags-preview" ng-repeat="tag in $root.selectedBedInfo.bed.bedTagMaps">
@@ -48,7 +48,7 @@
                     </span>
                 </span>
                 <a ng-click="editTagsOntheBed()">Edit</a>
-            </p>
+            </div>
         </div>
     </div>
 

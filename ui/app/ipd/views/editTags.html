@@ -1,5 +1,4 @@
-<div data-ng-controller="multiSelectSearchController" class="revise-refill-modal-wrapper transfer-wrapper"
-     aria-labelledby="dialog-label">
+<div data-ng-controller="editTagsController" class="revise-refill-modal-wrapper transfer-wrapper" aria-labelledby="dialog-label">
     <style type="text/css">
         .opd-header-wrapper {
             z-index: 10000 !important;
@@ -15,8 +14,9 @@
         </p>
     </div>
     <div class="all-tags-button clearfix">
-        <button ng-repeat="tag in allTags">{{tag.name}}</button>
+        <button ng-repeat="tag in allTags" ng-click="onClickingTheTag(tag)" ng-disabled="disableTagButton(tag)">{{tag.name}}</button>
     </div>
+    <div class="clearfix">
         <div class="autocompleteMultiSelect bed-tag-selector">
             <tags-input ng-model="values" display-property="name"
                         ng-blur="removeFreeTextItem()"
@@ -24,7 +24,8 @@
                         on-tag-added="addItem($tag)"
                         on-tag-removed="removeItem($tag)"
                         add-from-autocomplete-only="true"
-            >
+                        replace-spaces-with-dashes="false"
+                        >
                 <auto-complete source="search($query)" min-length="2"></auto-complete>
             </tags-input>
         </div>

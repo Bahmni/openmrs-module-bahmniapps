@@ -7,7 +7,9 @@ Bahmni.ADT.Constants = (function () {
     return {
         patientsListUrl: "/patient/search",
         ipdDashboard: "#/patient/{{patientUuid}}/visit/{{visitUuid}}/",
-        admissionLocationUrl: "/openmrs/ws/rest/v1/admissionLocation/"
+        admissionLocationUrl: "/openmrs/ws/rest/v1/admissionLocation/",
+        getAllBedTags: "/openmrs/ws/rest/v1/bedTag",
+        bedTagMapUrl: "/openmrs/ws/rest/v1/bedTagMap/"
     };
 })();
 
