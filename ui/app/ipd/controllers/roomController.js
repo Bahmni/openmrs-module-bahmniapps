@@ -27,7 +27,9 @@ angular.module('bahmni.ipd')
             $scope.getColorForTheTag = function (tag) {
                 _.forEach($scope.bedTagsColorConfig, function (tagConfig) {
                     if (tag.bedTagMaps.length >= 2) {
-                        tag.bedTagMaps[0].bedTag.color = "#000";
+                        if (tagConfig.name === "MultiTag") {
+                            tag.bedTagMaps[0].bedTag.color = tagConfig.color;
+                        }
                     } else if (tag.bedTagMaps[0] !== undefined && tagConfig.name === tag.bedTagMaps[0].bedTag.name) {
                         tag.bedTagMaps[0].bedTag.color = tagConfig.color;
                     }

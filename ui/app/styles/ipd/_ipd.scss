@@ -400,15 +400,6 @@ div[ng-app="adt"] {
   margin-top: 15px;
 }
 
-.ipd-transfer-container {
-  margin: 30px 20px 0;
-
-  i {
-    font-size: 3em;
-    color: #65645F;
-  }
-}
-
 .transfer-wrapper {
   width: auto;
 }
@@ -486,11 +477,42 @@ div[ng-app="adt"] {
     }
     .transfer-section {
       margin: 0 0 10px 0;
+      overflow: hidden;
       .transfer-container {
         span {
           padding: 0 5px;
           display: inline-block;
         }
+      }
+      &.transfer-bed-section {
+        p {
+          display: inline-block;
+          float: left;
+          text-align: center;
+          width: 40%;
+          b {
+            display: block;
+            margin-bottom: 12px;
+            font-size: 13px;
+            font-weight: 500;
+          }
+          span {
+            display: block;
+            color: #42cb66;
+            font-size: 14px;
+          }
+          &.ipd-transfer-container {
+            width: 85px;
+            margin-top: 43px;
+            i {
+              font-size: 3em;
+              color: #848284;
+            }
+          }
+        }
+      }
+      #adtNotes {
+        margin-bottom: 10px;
       }
     }
     .all-tags-button {
