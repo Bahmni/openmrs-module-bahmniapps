@@ -335,9 +335,9 @@ angular.module('bahmni.clinical').controller('ConsultationController',
                 _.each(selectedObsTemplate, function (template) {
                     var templateName = template.formName || template.conceptName;
                     var isTemplateAlreadyPresent = _.find(templates, function (template) {
-                        return template.name === templateName;
+                        return template === templateName;
                     });
-                    if (!isTemplateAlreadyPresent) {
+                    if (_.isUndefined(isTemplateAlreadyPresent)) {
                         templates.push(templateName);
                     }
                 });
