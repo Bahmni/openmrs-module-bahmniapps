@@ -77,11 +77,15 @@ angular.module('bahmni.clinical')
             var insertInSavedOrder = function (templatePreference) {
                 var templateNames = templatePreference.templates;
                 _.each(templateNames, function (templateName) {
-                    var foundTemplate = _.find($scope.allTemplates, function (allTemplate) {
+                    var foundTemplates = _.filter($scope.allTemplates, function (allTemplate) {
                         return allTemplate.conceptName === templateName;
                     });
-                    if (!_.isEmpty(foundTemplate.observations)) {
-                        insertTemplate(foundTemplate);
+                    if (foundTemplates.length > 0) {
+                        _.each(foundTemplates, function (template) {
+                            if (!_.isEmpty(template.observations)) {
+                                insertTemplate(template);
+                            }
+                        });
                     }
                 });
             };
