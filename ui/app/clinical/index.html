@@ -433,7 +433,6 @@
         <script src="consultation/services/labTestsProvider.js"></script>
         <script src="consultation/services/otherTestsProvider.js"></script>
         <script src="consultation/services/Notifier.js"></script>
-        <script src="consultation/services/observationFormService.js"></script>
 
         <script src="consultation/services/treatmentConfig.js"></script>
         <script src="consultation/filters/observationValue.js"></script>
@@ -555,6 +554,7 @@
 
         <!-- @ifdef ONLINE -->
         <!-- build:js clinical.min.web.js -->
+        <script src="consultation/services/observationFormService.js"></script>
         <script src="../common/domain/services/visitService.js"></script>
         <script src="../common/domain/services/diagnosisService.js"></script>
         <script src="../common/orders/services/orderTypeService.js"></script>
@@ -589,6 +589,7 @@
         <!--<script src="../common/offline/scheduler/scheduledSync.js"></script>-->
         <!--<script src="../common/offline/scheduler/backgroundWorker.js"></script>-->
         <!--<script src="../common/logging/offline/offlineLoggingService.js"></script>-->
+        <!--<script src="consultation/offline/offlineObservationFormService.js"></script>-->
         <!-- endcomments -->
         <!-- endbuild -->
         <!-- @endif -->
