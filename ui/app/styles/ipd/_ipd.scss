@@ -195,7 +195,7 @@
           margin: 10px;
           box-sizing: border-box;
           position: relative;
-          text-align: left;
+          text-align: center;
         }
 
       }
@@ -207,7 +207,7 @@
       left: -5px;
       right: -5px;
       bottom: -5px;
-      border: 1px solid #298dd5;
+      border: 2px solid #2e96e0;
       border-radius: 5px;
     }
 
@@ -218,7 +218,7 @@
       left: -5px;
       right: -5px;
       bottom: -5px;
-      border: 2px solid grey;
+      border: 2px solid #999;
       border-radius: 5px;
     }
   }
@@ -234,7 +234,7 @@
   .bed-details {
     display: inline-block;
     font-size: 10px;
-    padding: 7px 0 0 10px;
+    padding: 7px 0 0 0;
   }
 }
 
@@ -416,19 +416,20 @@ div[ng-app="adt"] {
     background: white;
   }
 }
-.tagged {
-  color: #fff;
-  .bed-space {
-    background: white;
-  }
-}
 .AVAILABLE {
   border: 1px solid #0cbc3d;
   .bed-space {
     border: 1px solid #0cbc3d;
   }
 }
-
+.tagged {
+  color: #fff;
+  border: none;
+  .bed-space {
+    background: white;
+    border: none;
+  }
+}
 .ngdialog.ngdialog-theme-default.ng-dialog-adt-popUp {
   .ngdialog-content {
     width: auto;

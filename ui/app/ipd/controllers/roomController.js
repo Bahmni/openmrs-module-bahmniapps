@@ -26,8 +26,10 @@ angular.module('bahmni.ipd')
             };
             $scope.getColorForTheTag = function (tag) {
                 _.forEach($scope.bedTagsColorConfig, function (tagConfig) {
-                    if (tag !== undefined && tagConfig.name === tag.name) {
-                        tag.color = tagConfig.color;
+                    if (tag.bedTagMaps.length >= 2) {
+                        tag.bedTagMaps[0].bedTag.color = "#000";
+                    } else if (tag.bedTagMaps[0] !== undefined && tagConfig.name === tag.bedTagMaps[0].bedTag.name) {
+                        tag.bedTagMaps[0].bedTag.color = tagConfig.color;
                     }
                 });
             };

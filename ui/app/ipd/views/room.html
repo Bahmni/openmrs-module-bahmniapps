@@ -17,7 +17,7 @@
 <ul class="bed-layout-wrapper">
 <li ng-repeat="row in room.beds" class="bed-layout-row clearfix">
     <div ng-repeat="cell in row" class="bed-layout-cells">
-        {{getColorForTheTag(cell.bed.bedTagMaps[0].bedTag)}}
+        {{getColorForTheTag(cell.bed)}}
         <div class="bed" ng-if="!cell.bed.bedId"></div>
         <div class="bed {{ cell.bed.status }}" ng-class="{'highlight-bed': cell.bed.bedNumber===$root.selectedBedInfo.bed.bedNumber, 'highlight-old-bed': cell.bed.bedNumber===$root.bedDetails.bedNumber, 'tagged': cell.bed.bedTagMaps[0] !== undefined}"
             ng-if="cell.bed.bedId" ng-click="onSelectBed(cell.bed)" style="background:{{cell.bed.bedTagMaps[0].bedTag.color}};">
