@@ -9,18 +9,18 @@
         <h4> Discharge Summary </h4>
     </div>
     <div class="clearfix">
-        <div class="patient-attributes">
+        <div class="patient-attributes dialog-patient-name">
             <label for="patient-name">Patient name: </label>
             <span id="patient-name">{{$root.patient.name}}</span>
         </div>
     </div>
-    <div class="transfer-section cleanfix">
-        <div class="transfer-container">
-            <span>Discharge From</span>
-            <h5>{{$root.bedDetails.wardName}}</h5>
-            <h5>{{$root.bedDetails.physicalLocationName}}</h5>
-            <h5>{{$root.bedDetails.bedNumber}}</h5>
-        </div>
+    <div class="transfer-section  discharge-bed-section">
+        <p class="transfer-container">
+            <b>Discharge From:</b>
+            <span>{{$root.bedDetails.wardName}},</span>
+            <span>{{$root.bedDetails.physicalLocationName}},</span>
+            <span>#{{$root.bedDetails.bedNumber}}</span>
+        </p>
     </div>
     <div id="adtNotes" ng-if="getAdtConceptConfig" class="concept-set-container">
         <concept-set concept-set-name="getAdtConceptConfig" observations="adtObservations"></concept-set>
