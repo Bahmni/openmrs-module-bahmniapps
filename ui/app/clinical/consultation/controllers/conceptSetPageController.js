@@ -27,8 +27,6 @@ angular.module('bahmni.clinical')
                     }).then(function (response) {
                         var allTemplates = response.data.results[0].setMembers;
                         createConceptSections(allTemplates);
-                        $scope.allTemplates = getSelectedObsTemplate(allConceptSections);
-                        $scope.uniqueTemplates = _.uniqBy($scope.allTemplates, 'label');
                         if ($state.params.programUuid) {
                             showOnlyTemplatesFilledInProgram();
                         }
@@ -49,6 +47,8 @@ angular.module('bahmni.clinical')
             };
 
             var concatObservationForms = function () {
+                $scope.allTemplates = getSelectedObsTemplate(allConceptSections);
+                $scope.uniqueTemplates = _.uniqBy($scope.allTemplates, 'label');
                 $scope.allTemplates = $scope.allTemplates.concat($scope.consultation.observationForms);
                 if ($scope.consultation.selectedObsTemplate.length == 0) {
                     initializeDefaultTemplates();
