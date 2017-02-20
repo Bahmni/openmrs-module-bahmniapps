@@ -13,8 +13,6 @@ angular.module('bahmni.ipd')
 
             var init = function () {
                 $rootScope.selectedBedInfo = $rootScope.selectedBedInfo || {};
-                resetPatientAndBedInfo();
-                resetDepartments();
                 loadAllWards().then(function () {
                     var context = $stateParams.context || {};
                     if ($rootScope.bedDetails) {
@@ -25,6 +23,8 @@ angular.module('bahmni.ipd')
                     } else if (context && isDepartmentPresent(context.department)) {
                         expandAdmissionMasterForDepartment(context.department);
                     }
+                    resetDepartments();
+                    resetBedInfo();
                 });
             };
 
@@ -58,6 +58,14 @@ angular.module('bahmni.ipd')
                 });
             };
 
+            var selectCurrentDepartment = function (department) {
+                _.each($scope.wards, function (wardElement) {
+                    if (wardElement.ward.uuid == department.uuid) {
+                        wardElement.ward.selected = true;
+                    }
+                });
+            };
+
             var loadBedsInfoForWard = function (department) {
                 return wardService.bedsForWard(department.uuid).then(function (response) {
                     var wardDetails = getWardDetails(department);
@@ -71,6 +79,7 @@ angular.module('bahmni.ipd')
                     };
                     $scope.departmentSelected = true;
                     $rootScope.selectedBedInfo.wardName = department.name;
+                    selectCurrentDepartment(department);
                     $scope.$broadcast("event:departmentChanged");
                 });
             };
@@ -94,9 +103,13 @@ angular.module('bahmni.ipd')
                 });
             };
 
-            var resetPatientAndBedInfo = function () {
+            var resetBedInfo = function () {
                 $rootScope.selectedBedInfo.roomName = undefined;
                 $rootScope.selectedBedInfo.bed = undefined;
+            };
+
+            var resetPatientAndBedInfo = function () {
+                resetBedInfo();
                 goToBedManagement();
             };
 

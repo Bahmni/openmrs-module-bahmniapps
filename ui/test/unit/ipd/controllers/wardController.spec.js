@@ -64,6 +64,7 @@ describe('WardController', function() {
         expect(scope.roomSelected).toBeTruthy();
         expect(rootScope.selectedBedInfo.roomName).toBe("room1");
         expect(rootScope.selectedBedInfo.bed).toBeUndefined();
+        expect(scope.activeRoom).toBe("room1");
     });
 
     it('should initialize room info based the selected room and go to bedManagement state, when the state is bedManagement.bed', function() {
@@ -75,6 +76,7 @@ describe('WardController', function() {
         expect(scope.roomSelected).toBeTruthy();
         expect(rootScope.selectedBedInfo.roomName).toBe("room1");
         expect(rootScope.selectedBedInfo.bed).toBeUndefined();
+        expect(rootScope.activeRoom).toBeUndefined();
         expect(state.go).toHaveBeenCalledWith("bedManagement", jasmine.any(Object));
     });
 
