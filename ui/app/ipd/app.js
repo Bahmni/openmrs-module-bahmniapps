@@ -12,7 +12,7 @@ angular.module('ipd').config(['$stateProvider', '$httpProvider', '$urlRouterProv
         var homeBackLink = {type: "link", name: "Home", value: "../home/", accessKey: "h", icon: "fa-home"};
         var admitLink = {type: "state", name: "Admit", value: "home", accessKey: "a"};
         var bedManagementLink = {type: "state", name: "Bed Management", value: "bedManagement", accessKey: "b"};
-        var navigationLinks = [homeBackLink, admitLink, bedManagementLink];
+        var navigationLinks = [admitLink, bedManagementLink];
 
         // @if DEBUG='production'
         $compileProvider.debugInfoEnabled(false);
@@ -26,6 +26,7 @@ angular.module('ipd').config(['$stateProvider', '$httpProvider', '$urlRouterProv
             .state('home', {
                 url: '/home',
                 data: {
+                    homeBackLink: homeBackLink,
                     navigationLinks: navigationLinks
                 },
                 views: {
@@ -47,6 +48,7 @@ angular.module('ipd').config(['$stateProvider', '$httpProvider', '$urlRouterProv
             .state('bedManagement', {
                 url: '/bedManagement',
                 data: {
+                    homeBackLink: homeBackLink,
                     navigationLinks: navigationLinks
                 },
                 params: {
@@ -103,6 +105,7 @@ angular.module('ipd').config(['$stateProvider', '$httpProvider', '$urlRouterProv
             }).state('dashboard', {
                 url: '/patient/:patientUuid/visit/:visitUuid/dashboard',
                 data: {
+                    homeBackLink: homeBackLink,
                     navigationLinks: navigationLinks
                 },
                 views: {

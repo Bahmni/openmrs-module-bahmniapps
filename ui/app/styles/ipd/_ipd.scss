@@ -13,6 +13,7 @@
     width: 320px;
     height: 100%;
     border-right: 1px solid #ddd;
+    border-top: 1px solid #ddd;
     padding: 10px 0;
     word-wrap: break-word;
     box-sizing: border-box;
@@ -264,7 +265,7 @@
       left: -5px;
       right: -5px;
       bottom: -5px;
-      border: 2px solid #999;
+      border: 1px solid #999;
       border-radius: 5px;
     }
   }
