@@ -6,15 +6,13 @@
         <span ng-if="!homeBackLink.icon">{{ homeBackLink.name }}</span>
     </a>
 </div>
-<div class="opd-header-bottom tabs">
-    <ul class="header-tabs">
-        <li class="tab-item " ng-repeat="link in navigationLinks" style="display: inline-block;"
-            ng-class="{'tab-selected' : isCurrentState(link), 'tab-removable': false}">
-            <a  accesskey="{{link.accessKey}}" ng-click="linkAction(link.type, link.value, link.params)"
-               ng-class="{'non-icon-back-btn': !link.icon}">
-                <i ng-if="link.icon" class="fa {{link.icon}}"></i>
-                <span ng-if="!link.icon">{{ link.name }}</span>
-            </a>
-        </li>
-    </ul>
-</div>
+<ul class="bed-management-nav">
+    <li ng-repeat="link in navigationLinks"
+        ng-class="{'active' : isCurrentState(link), 'tab-removable': false}">
+        <a accesskey="{{link.accessKey}}" ng-click="linkAction(link.type, link.value, link.params)"
+           ng-class="{'non-icon-back-btn': !link.icon}">
+            <i ng-if="link.icon" class="fa {{link.icon}}"></i>
+            <span ng-if="!link.icon">{{ link.name }}</span>
+        </a>
+    </li>
+</ul>

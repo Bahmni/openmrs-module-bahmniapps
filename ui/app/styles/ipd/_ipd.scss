@@ -1,3 +1,23 @@
+.bed-management-nav {
+  overflow: hidden;
+  margin: 7px 0 0 10px;
+  li {
+    overflow: hidden;
+    border-radius: 5px;
+    margin-right: 10px;
+    display: inline-block;
+    &:last-child {
+      margin: 0;
+    }
+    a {
+      display: inline-block;
+      color: #fff;
+    }
+    &.active {
+      background: rgba(0,0,0,0.2);
+    }
+  }
+}
 .idp-section {
   padding-top: 52px;
   .opd-content-wrapper {
