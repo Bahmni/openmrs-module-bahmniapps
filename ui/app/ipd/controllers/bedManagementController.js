@@ -158,6 +158,9 @@ angular.module('bahmni.ipd')
                     var options = {patientUuid: $scope.patient.uuid, visitUuid: visitUuid};
                     $state.go("dashboard", options);
                 });
+                if (window.scrollY > 0) {
+                    window.scrollTo(0, 0);
+                }
             };
 
             $scope.canEditTags = function () {

@@ -35,6 +35,9 @@ angular.module('bahmni.ipd')
                 $scope.$emit("event:roomSelected", roomName);
                 $scope.activeRoom = roomName;
                 goToBedManagement();
+                if (window.scrollY > 0) {
+                    window.scrollTo(0, 0);
+                }
             };
 
             var expandAdmissionMasterForRoom = function (roomName) {

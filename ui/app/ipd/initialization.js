@@ -44,16 +44,6 @@ angular.module('bahmni.ipd').factory('initialization', ['$rootScope', '$q', '$ba
                 }
             });
         };
-        window.onscroll = function () {
-            var element = document.getElementsByClassName('bed-legends');
-            if (element.length === 1) {
-                if (window.scrollY >= 140) {
-                    element[0].className = 'bed-legends scrolled';
-                } else {
-                    element[0].className = 'bed-legends';
-                }
-            }
-        };
         return spinner.forPromise(authenticator.authenticateUser().then(initApp).then(getConfigs));
     }
 ]);

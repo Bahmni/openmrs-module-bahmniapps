@@ -81,6 +81,7 @@
       .bed-tags-wrapper {
         display: inline-block;
         width: 225px;
+        vertical-align: top;
         .bed-tags-preview {
           padding: 5px;
           border-radius: 50px;
@@ -88,7 +89,7 @@
           background: #e6e6e6;
           border: 1px solid #bfc0c2;
           color: #6c6c6c;
-          margin-right: 5px;
+          margin: 0 5px 5px 0;
         }
       }
     }
@@ -343,6 +344,8 @@
   label {
     color: #65645F;
     font-weight: 600;
+    display: inline-block;
+    vertical-align: top;
   }
   padding-bottom: 5px;
 }
@@ -558,7 +561,6 @@ div[ng-app="adt"] {
       margin-bottom: 5px;
       button {
         padding: 5px 8px;
-        outline: none;
         background: #e5e5e5;
         color: #666;
         margin-right: 5px;
@@ -589,7 +591,6 @@ div[ng-app="adt"] {
       button {
         width: 90px;
         padding: 5px 0;
-        outline: none;
         background: #e5e5e5;
         border: 1px solid #b0b2b4;
         color: #666;
@@ -598,6 +599,9 @@ div[ng-app="adt"] {
         &:hover {
           background: #a7a7a7;
           color: #fff;
+        }
+        &:active {
+          outline: none;
         }
       }
     }
