@@ -1,11 +1,14 @@
 'use strict';
 
 angular.module('bahmni.ipd')
-    .controller('RoomController', ['$scope', '$rootScope', '$state', 'messagingService', 'appService',
-        function ($scope, $rootScope, $state, messagingService, appService) {
+    .controller('RoomController', ['$scope', '$rootScope', '$state', 'appService',
+        function ($scope, $rootScope, $state, appService) {
             var init = function () {
                 var appDescriptor = appService.getAppDescriptor();
                 var tagsColorConfig = appDescriptor.getConfigValue("colorForTags");
+                $rootScope.bedTagsColorConfig = tagsColorConfig;
+                $scope.currentView = "Grid";
+
                 if ($rootScope.bedDetails) {
                     $scope.oldBedNumber = $rootScope.bedDetails.bedNumber;
                     _.some($scope.room.beds, function (row) {
@@ -22,36 +25,10 @@ angular.module('bahmni.ipd')
                         $scope.oldBedNumber = undefined;
                     }
                 }
-                $scope.bedTagsColorConfig = tagsColorConfig;
             };
-            $scope.getColorForTheTag = function (tag) {
-                _.forEach($scope.bedTagsColorConfig, function (tagConfig) {
-                    if (tag.bedTagMaps.length >= 2) {
-                        if (tagConfig.name === "MultiTag") {
-                            tag.bedTagMaps[0].bedTag.color = tagConfig.color;
-                        }
-                    } else if (tag.bedTagMaps[0] !== undefined && tagConfig.name === tag.bedTagMaps[0].bedTag.name) {
-                        tag.bedTagMaps[0].bedTag.color = tagConfig.color;
-                    }
-                });
-            };
-            $scope.onSelectBed = function (bed) {
-                if ($state.current.name == "bedManagement.bed" || $state.current.name == "bedManagement") {
-                    if (bed.status == "AVAILABLE") {
-                        $rootScope.patient = undefined;
-                    }
-                    $rootScope.selectedBedInfo.bed = bed;
-                    var options = {bedId: bed.bedId};
-                    $state.go("bedManagement.bed", options);
-                }
-                else if ($state.current.name == "bedManagement.patient") {
-                    if (bed.status == "OCCUPIED") {
-                        $rootScope.selectedBedInfo.bed = undefined;
-                        messagingService.showMessage("error", "Please select an available bed");
-                    } else {
-                        $rootScope.selectedBedInfo.bed = bed;
-                    }
-                }
+
+            $scope.toggleWardView = function () {
+                $scope.currentView = ($scope.currentView == "Grid") ? "List" : "Grid";
             };
 
             init();

@@ -3,7 +3,7 @@
 angular.module('bahmni.ipd')
     .service('WardService', ['$http', function ($http) {
         this.bedsForWard = function (uuid) {
-            return $http.get(Bahmni.ADT.Constants.admissionLocationUrl + uuid, {
+            return $http.get(Bahmni.IPD.Constants.admissionLocationUrl + uuid, {
                 method: "GET",
                 params: {v: "full"},
                 withCredentials: true
@@ -11,6 +11,6 @@ angular.module('bahmni.ipd')
         };
 
         this.getWardsList = function () {
-            return $http.get(Bahmni.ADT.Constants.admissionLocationUrl);
+            return $http.get(Bahmni.IPD.Constants.admissionLocationUrl);
         };
     }]);

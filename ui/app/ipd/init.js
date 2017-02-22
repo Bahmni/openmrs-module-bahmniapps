@@ -1,7 +1,7 @@
 'use strict';
 
 var Bahmni = Bahmni || {};
-Bahmni.ADT = Bahmni.ADT || {};
+Bahmni.IPD = Bahmni.IPD || {};
 
 angular.module('bahmni.ipd', ['bahmni.common.conceptSet', 'bahmni.common.logging']);
 

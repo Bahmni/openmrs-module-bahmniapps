@@ -6,29 +6,19 @@
             </div>
             <div class="fl" style="margin-top: 5px; padding: 0 5px;">{{tag | titleCase}}</div>
         </div>
-        <div class="fl" ng-repeat="tag in bedTagsColorConfig" style="margin-right: 5px;">
-            <div class="bed-tag fl {{tag.name}}" style="background: {{tag.color}};">
+        <div class="fl" ng-repeat="tag in $root.bedTagsColorConfig" style="margin-right: 5px;">
+            <div class="bed-tag fl {{tag.name}}" style="border: 1px solid {{tag.color}}; background: {{tag.color}};">
                 <div class="bed-space" style="background: #fff;"></div>
             </div>
             <div class="fl" style="margin-top: 5px; padding: 0 5px;">{{tag.name}}</div>
         </div>
+        <span class="quick-links">
+            <button class="confirm" ng-click="toggleWardView()"><span
+                    class="fa {{currentView == 'List' ? 'fa-th' : 'fa-list'}}"></span></button>
+        </span>
     </div>
 </div>
-<ul class="bed-layout-wrapper">
-<li ng-repeat="row in room.beds" class="bed-layout-row clearfix">
-    <div ng-repeat="cell in row" class="bed-layout-cells">
-        {{getColorForTheTag(cell.bed)}}
-        <div class="bed" ng-if="!cell.bed.bedId"></div>
-        <div class="bed {{ cell.bed.status }}" ng-class="{'highlight-bed': cell.bed.bedNumber===$root.selectedBedInfo.bed.bedNumber, 'highlight-old-bed': cell.bed.bedNumber===$root.bedDetails.bedNumber, 'tagged': cell.bed.bedTagMaps[0] !== undefined}"
-            ng-if="cell.bed.bedId" ng-click="onSelectBed(cell.bed)" style="background:{{cell.bed.bedTagMaps[0].bedTag.color}};">
-            <div class="bed-space"></div>
-            <div class="bed-details">
-                <span>{{ cell.bed.bedNumber }}</span>
-                <div ng-if="cell.bed.status === 'OCCUPIED'">
-                    <span> {{ cell.bed.patient.identifiers[0].identifier }}</span>
-                </div>
-            </div>
-        </div>
-    </div>
-</li>
-</ul>
+<div>
+    <room-grid room="room" bedTagsColorConfig="bedTagsColorConfig" ng-if="currentView == 'Grid'"></room-grid>
+    <room-list room="room" bedTagsColorConfig="bedTagsColorConfig" ng-if="currentView == 'List'"></room-list>
+</div>

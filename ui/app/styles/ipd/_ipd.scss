@@ -691,3 +691,10 @@ div[ng-app="adt"] {
     width: calc(100% - 310px);
   }
 }
+
+.ipd-ward-list-view {
+  th {
+    text-align: center;
+    font-weight: 900;
+  }
+}

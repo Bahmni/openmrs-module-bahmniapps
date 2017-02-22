@@ -1,9 +1,9 @@
 'use strict';
 
 var Bahmni = Bahmni || {};
-Bahmni.ADT = Bahmni.ADT || {};
+Bahmni.IPD = Bahmni.IPD || {};
 
-Bahmni.ADT.Constants = (function () {
+Bahmni.IPD.Constants = (function () {
     return {
         patientsListUrl: "/patient/search",
         ipdDashboard: "#/patient/{{patientUuid}}/visit/{{visitUuid}}/",

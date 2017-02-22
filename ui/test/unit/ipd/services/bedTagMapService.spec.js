@@ -32,7 +32,7 @@ describe('bedTagMapService', function () {
             done();
         });
         expect(mockHttp.get).toHaveBeenCalled();
-        expect(mockHttp.get.calls.mostRecent().args[0]).toBe(Bahmni.ADT.Constants.getAllBedTags);
+        expect(mockHttp.get.calls.mostRecent().args[0]).toBe(Bahmni.IPD.Constants.getAllBedTags);
     });
 
 
@@ -50,7 +50,7 @@ describe('bedTagMapService', function () {
             done();
         });
         expect(mockHttp.post).toHaveBeenCalled();
-        expect(mockHttp.post.calls.mostRecent().args[0]).toBe(Bahmni.ADT.Constants.bedTagMapUrl);
+        expect(mockHttp.post.calls.mostRecent().args[0]).toBe(Bahmni.IPD.Constants.bedTagMapUrl);
         expect(mockHttp.post.calls.mostRecent().args[1]).toEqual(requestPayload);
         expect(mockHttp.post.calls.mostRecent().args[2]).toEqual(headers);
     });
@@ -58,6 +58,6 @@ describe('bedTagMapService', function () {
     it('should void the bedTagMap using given tagMapUuid', function () {
         bedTagMapService.unAssignTagFromTheBed(bedTagMapUuid);
         expect(mockHttp.delete).toHaveBeenCalled();
-        expect(mockHttp.delete.calls.mostRecent().args[0]).toBe(Bahmni.ADT.Constants.bedTagMapUrl+bedTagMapUuid);
+        expect(mockHttp.delete.calls.mostRecent().args[0]).toBe(Bahmni.IPD.Constants.bedTagMapUrl+bedTagMapUuid);
     });
 });

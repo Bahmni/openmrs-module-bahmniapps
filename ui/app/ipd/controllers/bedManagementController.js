@@ -61,6 +61,7 @@ angular.module('bahmni.ipd')
             var selectCurrentDepartment = function (department) {
                 _.each($scope.wards, function (wardElement) {
                     if (wardElement.ward.uuid == department.uuid) {
+                        wardElement.ward.isSelected = true;
                         wardElement.ward.selected = true;
                     }
                 });

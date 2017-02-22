@@ -4,6 +4,7 @@ angular.module('bahmni.ipd')
     .controller('WardController', ['$scope', '$rootScope', '$stateParams', '$state',
         function ($scope, $rootScope, $stateParams, $state) {
             var init = function () {
+                $rootScope.currentView = "Grid";
                 if ($rootScope.bedDetails) {
                     expandAdmissionMasterForRoom($rootScope.bedDetails.physicalLocationName);
                 } else if ($stateParams.context && $stateParams.context.roomName) {
@@ -33,6 +34,7 @@ angular.module('bahmni.ipd')
                 updateSelectedBedInfo(roomName);
                 getSelectedRoom(roomName);
                 $scope.$emit("event:roomSelected", roomName);
+                $scope.$broadcast("event:changeBedList", roomName);
                 $scope.activeRoom = roomName;
                 goToBedManagement();
                 if (window.scrollY > 0) {
