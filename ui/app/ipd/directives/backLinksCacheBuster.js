@@ -7,7 +7,6 @@ angular.module('bahmni.ipd')
             $scope.homeBackLink = $state.current.data.homeBackLink;
             $scope.isCurrentState = function (link) {
                 return _.includes($state.current.name, link.value);
-
             };
             $scope.linkAction = function (type, value, params) {
                 if (type === 'state') {
