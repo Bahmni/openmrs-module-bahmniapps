@@ -6,7 +6,11 @@ angular.module('bahmni.ipd')
             $scope.navigationLinks = $state.current.data.navigationLinks;
             $scope.homeBackLink = $state.current.data.homeBackLink;
             $scope.isCurrentState = function (link) {
-                return _.includes($state.current.name, link.value);
+                if (($state.current.name === "home" || $state.current.name === "bedManagement.patient") && link.name === "Admit") {
+                    return true;
+                } else if (($state.current.name === "bedManagement" || $state.current.name === "bedManagement.bed") && link.name === "Bed Management") {
+                    return true;
+                }
             };
             $scope.linkAction = function (type, value, params) {
                 if (type === 'state') {
