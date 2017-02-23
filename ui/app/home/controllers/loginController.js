@@ -11,6 +11,28 @@ angular.module('bahmni.home')
             $scope.loginInfo = {};
 
             var promise = localeService.allowedLocalesList();
+            localeService.serverDateTime().then(function (response) {
+                var serverTime = response.data.date;
+                var list = serverTime.split(" ");
+                var serverTimeZone = list[list.length - 1];
+                var localTime = new Date().toLocaleString();
+                var localtimeZone = getLocalTimeZone();
+                var localeTimeZone = localTime + " " + localtimeZone;
+                $scope.timeZoneObject = { serverTime: serverTime, localeTimeZone: localeTimeZone};
+                if (localtimeZone !== serverTimeZone) {
+                    $scope.warning = "Warning";
+                    $scope.warningMessage = "WARNING_SERVER_TIME_ZONE_MISMATCH";
+                }
+            });
+
+            var getLocalTimeZone = function () {
+                var currentLocalTime = new Date().toString();
+                var localTimeZoneList = currentLocalTime.split(" ");
+                var localTimeZone = localTimeZoneList[localTimeZoneList.length - 1];
+                localTimeZone = localTimeZone.substring(1, localTimeZone.length - 1);
+                return localTimeZone;
+            };
+
             promise.then(function (response) {
                 $scope.locales = response.data.replace(/\s+/g, '').split(',');
                 $scope.selectedLocale = $translate.use() ? $translate.use() : $scope.locales[0];
