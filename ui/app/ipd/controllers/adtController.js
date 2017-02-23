@@ -11,18 +11,19 @@ angular.module('bahmni.ipd')
             var encounterConfig = $rootScope.encounterConfig;
             var locationUuid = sessionService.getLoginLocationUuid();
             var visitTypes = encounterConfig.getVisitTypes();
-
-            $scope.defaultVisitTypeName = appService.getAppDescriptor().getConfigValue('defaultVisitType');
+            var defaultVisitTypeName = appService.getAppDescriptor().getConfigValue('defaultVisitType');
             $scope.adtObservations = [];
             $scope.dashboardConfig = appService.getAppDescriptor().getConfigValue('dashboard');
+            $scope.expectedDateOfDischargeConceptName = appService.getAppDescriptor().getConfigValue('expectedDateOfDischarge');
             $scope.getAdtConceptConfig = $scope.dashboardConfig.conceptName;
+            $scope.editMode = false;
 
             var getVisitTypeUuid = function (visitTypeName) {
                 var visitType = _.find(visitTypes, {name: visitTypeName});
                 return visitType && visitType.uuid || null;
             };
 
-            var defaultVisitTypeUuid = getVisitTypeUuid($scope.defaultVisitTypeName);
+            var defaultVisitTypeUuid = getVisitTypeUuid(defaultVisitTypeName);
 
             var getCurrentVisitTypeUuid = function () {
                 if ($scope.visitSummary && $scope.visitSummary.dateCompleted === null) {
@@ -89,18 +90,18 @@ angular.module('bahmni.ipd')
             };
 
             $scope.showAdtButtons = function () {
-                return $state.current.name == "bedManagement.patient";
+                return $state.current.name == "bedManagement.patient" && !$scope.editMode;
             };
 
             var init = function () {
                 initializeActionConfig();
                 $scope.encounterConfig = $scope.$parent.encounterConfig;
+                $scope.currentVisitTypeUuid = getCurrentVisitTypeUuid();
                 var defaultVisitType = appService.getAppDescriptor().getConfigValue('defaultVisitType');
                 var visitTypes = encounterConfig.getVisitTypes();
                 $scope.visitControl = new Bahmni.Common.VisitControl(visitTypes, defaultVisitType, visitService);
                 $scope.dashboard = Bahmni.Common.DisplayControl.Dashboard.create($scope.dashboardConfig || {}, $filter);
                 $scope.sectionGroups = $scope.dashboard.getSections($scope.diseaseTemplates);
-
                 return getVisit().then(dispositionService.getDispositionActions).then(function (response) {
                     if (response.data && response.data.results && response.data.results.length) {
                         $scope.dispositionActions = getDispositionActions(response.data.results[0].answers);
@@ -155,7 +156,7 @@ angular.module('bahmni.ipd')
                         assignBedToPatient($rootScope.selectedBedInfo.bed, response.data.patientUuid, response.data.encounterUuid);
                         forwardUrl(response.data, "onAdmissionForwardTo");
                     });
-                } else if ($scope.defaultVisitTypeName === null) {
+                } else if (defaultVisitTypeName === null) {
                     messagingService.showMessage("error", "MESSAGE_DEFAULT_VISIT_TYPE_NOT_FOUND_KEY");
                 } else {
                     messagingService.showMessage("error", "MESSAGE_DEFAULT_VISIT_TYPE_INVALID_KEY");
@@ -174,7 +175,7 @@ angular.module('bahmni.ipd')
             $scope.admit = function () {
                 if ($rootScope.selectedBedInfo.bed == undefined) {
                     messagingService.showMessage("error", "Please select a bed to admit patient");
-                } else if ($scope.visitSummary && $scope.visitSummary.visitType !== $scope.defaultVisitTypeName) {
+                } else if ($scope.visitSummary && $scope.visitSummary.visitType !== defaultVisitTypeName) {
                     ngDialog.openConfirm({
                         template: 'views/visitChangeConfirmation.html',
                         scope: $scope,
@@ -200,7 +201,7 @@ angular.module('bahmni.ipd')
                         assignBedToPatient($rootScope.selectedBedInfo.bed, response.data.patientUuid, response.data.encounterUuid);
                         forwardUrl(response.data, "onAdmissionForwardTo");
                     });
-                } else if ($scope.defaultVisitTypeName === null) {
+                } else if (defaultVisitTypeName === null) {
                     messagingService.showMessage("error", "MESSAGE_DEFAULT_VISIT_TYPE_NOT_FOUND_KEY");
                 } else {
                     messagingService.showMessage("error", "MESSAGE_DEFAULT_VISIT_TYPE_INVALID_KEY");

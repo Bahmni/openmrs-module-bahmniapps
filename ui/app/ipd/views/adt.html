@@ -1,19 +1,7 @@
 <div class="ADT-container">
     <form>
-        <div id="observations">
-            <div class="patient-attributes">
-                <label>Admitted By: </label>
-                <span></span>
-            </div>
-            <div class="patient-attributes">
-                <label>Admitted On: </label>
-                <span></span>
-            </div>
-            <div class="patient-attributes">
-                <label>Expected Date Of Discharge: </label>
-                <span></span>
-            </div>
-
+        <div id="observations" ng-if="patient">
+            <edit-adt-observations patient="patient" concept-set-name="expectedDateOfDischargeConceptName" edit-mode="$parent.editMode" visit-type-uuid="currentVisitTypeUuid"></edit-adt-observations>
         </div>
         <div class="clearfix action-button" ng-if="showAdtButtons()">
             <button class="adt-admit" ng-click="admit()" ng-disabled="disableAdmitButton()">Admit</button>
