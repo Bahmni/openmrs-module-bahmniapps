@@ -7,7 +7,8 @@ angular.module('bahmni.ipd')
                 var appDescriptor = appService.getAppDescriptor();
                 var tagsColorConfig = appDescriptor.getConfigValue("colorForTags");
                 $rootScope.bedTagsColorConfig = tagsColorConfig;
-                $scope.currentView = "Grid";
+                $rootScope.currentView = $rootScope.currentView || "Grid";
+                $scope.currentView = $rootScope.currentView;
 
                 if ($rootScope.bedDetails) {
                     $scope.oldBedNumber = $rootScope.bedDetails.bedNumber;
@@ -28,7 +29,8 @@ angular.module('bahmni.ipd')
             };
 
             $scope.toggleWardView = function () {
-                $scope.currentView = ($scope.currentView == "Grid") ? "List" : "Grid";
+                $rootScope.currentView = ($rootScope.currentView == "Grid") ? "List" : "Grid";
+                $scope.currentView = $rootScope.currentView;
             };
 
             init();

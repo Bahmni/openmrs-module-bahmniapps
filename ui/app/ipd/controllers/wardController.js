@@ -4,7 +4,6 @@ angular.module('bahmni.ipd')
     .controller('WardController', ['$scope', '$rootScope', '$stateParams', '$state',
         function ($scope, $rootScope, $stateParams, $state) {
             var init = function () {
-                $rootScope.currentView = "Grid";
                 if ($rootScope.bedDetails) {
                     expandAdmissionMasterForRoom($rootScope.bedDetails.physicalLocationName);
                 } else if ($stateParams.context && $stateParams.context.roomName) {
