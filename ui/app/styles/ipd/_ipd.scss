@@ -51,7 +51,62 @@
     }
     .ADT-container {
       border-bottom: 1px solid #ddd;
+      padding-bottom: 10px;
+      #observations {
+        position: relative;
+        legend {
+          display: none;
+        }
+        .form-horizontal {
+          padding: 0;
+        }
+        .form-group {
+          padding: 0;
+          border: none;
+          margin: 0;
+          .form-field {
+            padding: 0;
+          }
+          .control-label {
+            margin: 0 0 5px 0;
+            text-align: left;
+          }
+          .field-value {
+            width: 100%;
+            textarea, input {
+              width: 100%;
+              margin: 0;
+              border-radius: 3px;
+              border-bottom: 1px solid #ddd;
+              box-sizing: border-box;
+            }
+            textarea {
+              resize: vertical;
+              margin-bottom: 10px;
+            }
+            input {
+              margin-bottom: 5px;
+            }
+          }
+        }
+        .patient-details-edit {
+          position: absolute;
+          top: -6px;
+          right: 0;
+          padding: 5px 10px;
+          font-size: 13px;
+          color: #2b95ff;
+          background: transparent;
+          border: navajowhite;
+          border-radius: 3px;
+          &:hover {
+            background: #a7a7a7;
+            color: #fff;
+          }
+        }
+      }
       .action-button {
+        padding: 0;
         button {
           width: 90px;
           padding: 8px 0;
@@ -63,14 +118,22 @@
           &:last-child {
             margin: 0;
           }
+          &:hover {
+            background: #a7a7a7;
+            color: #fff;
+          }
           &.adt-admit {
             background: #99c915;
             border-color: #99c915;
             color: #fff;
-          }
-          &.adt-transfer:hover, &.adt-discharge:hover {
-            background: #a7a7a7;
             color: #fff;
+            color: #fff;
+            &:hover {
+              opacity: 0.8;
+            }
+          }
+          &[disabled]:hover {
+            opacity: 0.4;
           }
         }
       }
