@@ -25,12 +25,7 @@ angular.module('bahmni.ipd')
                     $state.go("bedManagement.bed", options);
                 }
                 else if ($state.current.name == "bedManagement.patient") {
-                    if (bed.status == "OCCUPIED") {
-                        $rootScope.selectedBedInfo.bed = undefined;
-                        messagingService.showMessage("error", "Please select an available bed");
-                    } else {
-                        $rootScope.selectedBedInfo.bed = bed;
-                    }
+                    $rootScope.selectedBedInfo.bed = bed;
                 }
             };
         }]);

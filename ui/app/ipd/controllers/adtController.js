@@ -221,8 +221,18 @@ angular.module('bahmni.ipd')
                 return !($rootScope.patient && !$rootScope.bedDetails);
             };
 
-            $scope.disableTransferAndDischargeButton = function () {
-                return !($rootScope.patient && $rootScope.bedDetails);
+            $scope.disableTransfer = function () {
+                return !($rootScope.patient && $rootScope.bedDetails && !isCurrentPatientPresentOnSelectedBed());
+            };
+
+            var isCurrentPatientPresentOnSelectedBed = function () {
+                if($rootScope.selectedBedInfo.bed) {
+                    return $rootScope.selectedBedInfo.bed.bedId == $rootScope.bedDetails.bedId;
+                }
+                return false;
+            };
+            $scope.disableDischargeButton = function () {
+                return !($rootScope.patient && $rootScope.bedDetails && isCurrentPatientPresentOnSelectedBed());
             };
 
             $scope.transfer = function () {
