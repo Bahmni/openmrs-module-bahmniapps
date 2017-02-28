@@ -26,6 +26,9 @@ angular.module('bahmni.ipd')
                 }
                 else if ($state.current.name == "bedManagement.patient") {
                     $rootScope.selectedBedInfo.bed = bed;
+                    if (bed.patient) {
+                        $scope.$emit("event:updateSelectedBedInfoForCurrentPatientVisit", bed.patient.uuid);
+                    }
                 }
             };
         }]);

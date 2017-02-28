@@ -123,6 +123,13 @@ angular.module('bahmni.ipd')
                 });
             });
 
+            $scope.$on("event:updateSelectedBedInfoForCurrentPatientVisit", function (event, patientUuid) {
+                getVisitInfoByPatientUuid(patientUuid).then(function (visitUuid) {
+                    var options = { patientUuid: patientUuid, visitUuid: visitUuid };
+                    $state.go("bedManagement.patient", options);
+                });
+            });
+
             var goToBedManagement = function () {
                 if ($state.current.name == "bedManagement.bed") {
                     var options = {};
