@@ -309,6 +309,19 @@
         box-sizing: border-box;
       }
     }
+    .switch-bed-views {
+      background: transparent;
+      color: #999;
+      border: 1px solid #999;
+      padding: 0;
+      width: 25px;
+      display: inline-block;
+      height: 25px;
+      outline: none;
+      border-radius: 3px;
+      font-size: 14px;
+      margin: 0 0 0 10px;
+    }
   }
   .bed-layout-wrapper {
     overflow: hidden;
@@ -337,7 +350,7 @@
       left: -5px;
       right: -5px;
       bottom: -5px;
-      border: 2px solid #2e96e0;
+      border: 3px solid #2e96e0;
       border-radius: 5px;
     }
 
@@ -348,7 +361,7 @@
       left: -5px;
       right: -5px;
       bottom: -5px;
-      border: 1px solid #999;
+      border: 3px solid #777;
       border-radius: 5px;
     }
   }
@@ -682,7 +695,8 @@ div[ng-app="adt"] {
 }
 
 .ipd-dashborad {
-  margin-top: -40px;
+  margin: -40px auto 0px auto;
+  width: 1300px;
 }
 
 @media all and (max-width: 1299px) {
