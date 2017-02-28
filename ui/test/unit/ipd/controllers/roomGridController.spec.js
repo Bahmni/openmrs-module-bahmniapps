@@ -101,21 +101,6 @@ describe('RoomGridController', function () {
         });
     });
 
-    it('should show a error message, when state is bedManagement.patient and trying to select an occupied bed', function () {
-        var bed = {
-            bedId: 9,
-            bedNumber: "404-i",
-            bedType: "normal bed",
-            bedTags: [],
-            status: "OCCUPIED"
-        };
-        state.current = {name: "bedManagement.patient"};
-        initController(rootScope, state);
-        scope.onSelectBed(bed);
-        expect(rootScope.selectedBedInfo.bed).toBeUndefined();
-        expect(messagingService.showMessage).toHaveBeenCalledWith("error", "Please select an available bed");
-    });
-
     it('should assign selected bed info on rootScope, when selectedbed is not OCCUPIED and the state is bedManagement.patient', function () {
         var bed = {
             bedId: 9,
