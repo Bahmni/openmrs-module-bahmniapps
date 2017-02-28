@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('bahmni.ipd')
-    .directive('editAdtObservations', ['spinner', '$rootScope', 'encounterService', 'observationsService', 'sessionService', 'conceptSetService', 'conceptSetUiConfigService',
-        function (spinner, $rootScope, encounterService, observationsService, sessionService, conceptSetService, conceptSetUiConfigService) {
+    .directive('editAdtObservations', ['$rootScope', '$state', 'spinner', 'encounterService', 'observationsService', 'sessionService', 'conceptSetService', 'conceptSetUiConfigService',
+        function ($rootScope, $state, spinner, encounterService, observationsService, sessionService, conceptSetService, conceptSetUiConfigService) {
             var controller = function ($scope) {
                 var getEncounterDataFor = function (obs, encounterTypeUuid, visitTypeUuid) {
                     var encounterData = {};
@@ -21,6 +21,14 @@ angular.module('bahmni.ipd')
                     });
                 };
 
+                var getNonEmptyObservations = function () {
+                    var observations = angular.copy($scope.observations[0]);
+                    observations.groupMembers = _.filter(observations.groupMembers, function (member) {
+                        return !_.isEmpty(member.value);
+                    });
+                    return [observations];
+                };
+
                 $scope.edit = function () {
                     $scope.savedObservations = angular.copy($scope.observations[0]);
                     toggleDisabledObservation(true);
@@ -29,7 +37,7 @@ angular.module('bahmni.ipd')
                 $scope.save = function () {
                     toggleDisabledObservation(false);
                     if ($scope.visitTypeUuid !== null) {
-                        var encounterData = getEncounterDataFor($scope.observations, $rootScope.encounterConfig.getConsultationEncounterTypeUuid(), $scope.visitTypeUuid);
+                        var encounterData = getEncounterDataFor(getNonEmptyObservations(), $rootScope.encounterConfig.getConsultationEncounterTypeUuid(), $scope.visitTypeUuid);
                         return encounterService.create(encounterData).then(function () {
                             toggleDisabledObservation(false);
                         });
@@ -92,6 +100,7 @@ angular.module('bahmni.ipd')
                     $scope.promiseResolved = false;
                     $scope.observations = [];
                     $scope.editMode = false;
+                    $scope.onBedManagement = ($state.current && $state.current.name == "bedManagement.bed");
                     return constructObservationTemplate($scope.conceptSetName).then(function (observation) {
                         $scope.observations[0] = observation;
                         toggleDisabledObservation(false);

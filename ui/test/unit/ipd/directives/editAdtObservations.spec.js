@@ -4,7 +4,7 @@ describe('editAdtObservations', function () {
     var scope, rootScope, httpBackend, compile, q, compiledScope;
     var spinner, encounterService, observationsService, sessionService, conceptSetService, conceptSetUiConfigService;
     var window = {location: {href: "some url"}};
-
+    var state = {};
     var html = '<edit-adt-observations patient="patient" concept-set-name="conceptSetName" edit-mode="$parent.editMode" visit-type-uuid="visitTypeUuid"></edit-adt-observations>';
 
     var conceptSet = {
@@ -122,6 +122,7 @@ describe('editAdtObservations', function () {
 
     beforeEach(module(function ($provide) {
         $provide.value('spinner', spinner);
+        $provide.value('$state', state);
         $provide.value('encounterService', encounterService);
         $provide.value('observationsService', observationsService);
         $provide.value('sessionService', sessionService);
@@ -245,5 +246,19 @@ describe('editAdtObservations', function () {
 
         expect(scope.editMode).toBeFalsy();
         expect(scope.observations[0].groupMembers[0].value).toBeUndefined();
+    });
+
+    it('Should set onBedManagement to true when current state is bedmanagement', function () {
+        state = {current : {name : "bedManagement.bed"}};
+        injectFn();
+
+        expect(scope.onBedManagement).toBeTruthy();
+    });
+
+    it('Should set onBedManagement to false when current state is not bedmanagement', function () {
+        state = {current : {name : ""}};
+        injectFn();
+
+        expect(scope.onBedManagement).toBeFalsy();
     });
 });

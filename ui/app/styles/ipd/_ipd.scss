@@ -83,6 +83,7 @@
             textarea {
               resize: vertical;
               margin-bottom: 10px;
+              min-height: 75px;
             }
             input {
               margin-bottom: 5px;
@@ -125,8 +126,6 @@
           &.adt-admit {
             background: #99c915;
             border-color: #99c915;
-            color: #fff;
-            color: #fff;
             color: #fff;
             &:hover {
               opacity: 0.8;
