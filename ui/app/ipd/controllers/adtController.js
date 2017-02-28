@@ -226,7 +226,7 @@ angular.module('bahmni.ipd')
             };
 
             var isCurrentPatientPresentOnSelectedBed = function () {
-                if($rootScope.selectedBedInfo.bed) {
+                if ($rootScope.selectedBedInfo.bed) {
                     return $rootScope.selectedBedInfo.bed.bedId == $rootScope.bedDetails.bedId;
                 }
                 return false;
