@@ -11,6 +11,13 @@ describe('BedManagementController', function () {
     var spinner = jasmine.createSpyObj('spinner', ['forPromise']);
     var ngDialog = jasmine.createSpyObj('ngDialog', ['openConfirm', 'close']);
     var messagingService = jasmine.createSpyObj('messagingService', ['showMessage']);
+    var appService = jasmine.createSpyObj('appService', ['getAppDescriptor']);
+    var appDescriptor = {
+        formatUrl: function (url, options) {
+            return "../ipd/#/patient/PATIENT_UUID/visit/VISIT_UUID/dashboard";
+        }
+    };
+    appService.getAppDescriptor.and.returnValue(appDescriptor);
     var state = jasmine.createSpyObj('$state',['go']);
     state.current =  {name: "bedManagement"};
     var wardList = {
@@ -110,6 +117,7 @@ describe('BedManagementController', function () {
             WardService: wardService,
             visitService: visitService,
             messagingService: messagingService,
+            appService: appService,
             ngDialog: ngDialog
         });
     };
@@ -207,11 +215,11 @@ describe('BedManagementController', function () {
         rootScope.visitLocationUuid = "8f3b2b2d-e387-4e0e-aecf-f894a94f9306";
         scope.patient = {uuid: "patientUuid"};
         state.current.name = "bedManagement.bed";
-
+        spyOn(window, "open").and.callThrough();
         initController(rootScope, stateParams);
         scope.goToAdtPatientDashboard();
 
-        expect(state.go).toHaveBeenCalledWith("dashboard", jasmine.any(Object));
+        expect(window.open).toHaveBeenCalled();
     });
 
     it('Should open ngDialog for updating tags for the selected bed', function () {

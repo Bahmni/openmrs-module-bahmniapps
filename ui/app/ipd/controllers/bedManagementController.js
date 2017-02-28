@@ -1,10 +1,18 @@
 'use strict';
 
 angular.module('bahmni.ipd')
-    .controller('BedManagementController', ['$scope', '$rootScope', '$stateParams', '$state', 'spinner', 'WardService', 'BedManagementService', 'visitService', 'messagingService', 'ngDialog',
-        function ($scope, $rootScope, $stateParams, $state, spinner, wardService, bedManagementService, visitService, messagingService, ngDialog) {
+    .controller('BedManagementController', ['$scope', '$rootScope', '$stateParams', '$state', 'spinner', 'WardService', 'BedManagementService', 'visitService', 'messagingService', 'appService', 'ngDialog',
+        function ($scope, $rootScope, $stateParams, $state, spinner, wardService, bedManagementService, visitService, messagingService, appService, ngDialog) {
             $scope.wards = null;
             $scope.ward = {};
+
+            var links = {
+                "dashboard": {
+                    "name": "inpatient",
+                    "translationKey": "PATIENT_ADT_PAGE_KEY",
+                    "url": "../ipd/#/patient/{{patientUuid}}/visit/{{visitUuid}}/dashboard"
+                }
+            };
 
             var isDepartmentPresent = function (department) {
                 if (!department) return false;
@@ -164,7 +172,8 @@ angular.module('bahmni.ipd')
             $scope.goToAdtPatientDashboard = function () {
                 getVisitInfoByPatientUuid($scope.patient.uuid).then(function (visitUuid) {
                     var options = {patientUuid: $scope.patient.uuid, visitUuid: visitUuid};
-                    $state.go("dashboard", options);
+                    var url = appService.getAppDescriptor().formatUrl(links.dashboard.url, options);
+                    window.open(url);
                 });
                 if (window.scrollY > 0) {
                     window.scrollTo(0, 0);
