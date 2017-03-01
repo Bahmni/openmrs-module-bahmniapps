@@ -22,6 +22,7 @@ Bahmni.Common.PatientSearch.Search = function (searchTypes) {
             self.searchType = searchType;
             self.activePatients = [];
             self.searchResults = [];
+            self.searchColumns = self.searchType && self.searchType.searchColumns ? self.searchType.searchColumns : ["identifier", "name"];
         }
         self.markPatientEntry();
     };

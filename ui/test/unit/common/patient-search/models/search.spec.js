@@ -156,5 +156,23 @@ describe("Search", function() {
 			expect(search.showPatientCountOnSearchParameter(searchType)).toBeFalsy();
 		});
 
+		it('should update the searchColumns on switchSearchType', function () {
+			var searchColumns = ["identifier", "name", "gender", "age"];
+            var searchType = {handler: "emrapi.sqlSearch.patientsToAdmit", searchColumns: searchColumns};
+			search.switchSearchType(searchType);
+			search.updatePatientList(allActivePatients);
+
+			expect(search.searchColumns).toBe(searchColumns);
+		});
+
+		it('should update the searchColumns on switchSearchType, default to identifier and name if no searchColumns are configured', function () {
+			var searchColumns = ["identifier", "name"];
+			var searchType = {handler: "emrapi.sqlSearch.patientsToAdmit"};
+			search.switchSearchType(searchType);
+			search.updatePatientList(allActivePatients);
+
+			expect(search.searchColumns).toEqual(searchColumns);
+		});
+
 	});
 });
