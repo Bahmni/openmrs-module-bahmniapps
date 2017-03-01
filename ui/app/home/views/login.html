@@ -1,5 +1,11 @@
 <div class="login" ng-hide="showOTP">
-
+    <dev class="clint_logo">
+        <img class="implementor-logo" src={{logo}} height="4%" width="4%" align="middle">
+        <div class="client_text">{{'CLIENT_LOGO_TEXT' | translate }}</div>
+    </dev>
+    <div class="emr-login-text">
+        <b>{{'LOGIN_LOGO_TEXT' | translate}} </b>
+    </div>
     <header class="reg-header">
         <div class="left">{{'LOGIN_LABEL_LOGIN_KEY' | translate}}</div>
         <div class="right locale-wrapper">
@@ -97,4 +103,10 @@
             </div>
         </div>
     </form>
+</div>
+
+<div class="power-by">
+    Power by <b>Thought</b>Works <img src="./../images/bahmniLogo.png" height="1%" width="1%"> Bahmni
+    <br>
+    <a href={{helpLink}}> Bahmni Help</a>
 </div>

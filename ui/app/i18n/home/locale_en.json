@@ -44,5 +44,7 @@
     "UNABLE_TO_GET_PROVIDER_DATA": "Unable to get provider data",
     "YOU_HAVE_NOT_BEEN_SETUP_PROVIDER": "You have not been setup as a Provider, please contact administrator.",
     "COULD_NOT_GET_PROVIDER": "Could not get provider for the current user.",
-    "WARNING_SERVER_TIME_ZONE_MISMATCH": "The server timezone ({{serverTime}}) and your timezone ({{localeTimeZone}}) don't seem to match. This will result in unpredictable data / reporting issues. Please contact Administrator to get this issue fixed."
+    "WARNING_SERVER_TIME_ZONE_MISMATCH": "The server timezone ({{serverTime}}) and your timezone ({{localeTimeZone}}) don't seem to match. This will result in unpredictable data / reporting issues. Please contact Administrator to get this issue fixed.",
+    "LOGIN_LOGO_TEXT": "BAHMNI EMR LOGIN",
+    "CLIENT_LOGO_TEXT": "CLIENT LOGO"
 }
