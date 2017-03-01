@@ -11,7 +11,7 @@ angular.module('bahmni.ipd')
                 };
 
                 return queryService.getResponseFromQuery(params).then(function (response) {
-                    $scope.tableDetails = Bahmni.IPD.WardDetails.create(response.data);
+                    $scope.tableDetails = response.data;
                     $scope.tableHeadings = $scope.tableDetails.length > 0 ? Object.keys($scope.tableDetails[0]) : [];
                 });
             };
