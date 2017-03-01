@@ -24,6 +24,39 @@ angular.module('bahmni.home')
                     $scope.warningMessage = "WARNING_SERVER_TIME_ZONE_MISMATCH";
                 }
             });
+            var callAjax = function (url, callback) {
+                var xmlhttp = new XMLHttpRequest();
+                xmlhttp.onreadystatechange = function () {
+                    if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+                        try {
+                            callback(JSON.parse(xmlhttp.responseText));
+                        } catch (ex) {
+                            callback(undefined);
+                        }
+                    }
+                };
+                xmlhttp.open("GET", url, true);
+                xmlhttp.send();
+            }
+            function getwhiteLavelHeaderText() {
+                callAjax("/bahmni_config/openmrs/apps/home/whiteLabel.json", function(data) {
+                    if(data) {
+                        if (data.loginPage.header_text) {
+                            var headerTextElement = document.getElementsByClassName("emr-login-text")[0];
+                            headerTextElement.innerHTML = data.loginPage.header_text
+                        }
+                        if (data.loginPage.client_logo_text) {
+                            var headerTextElement = document.getElementsByClassName("client_text")[0];
+                            headerTextElement.innerHTML = data.loginPage.client_logo_text
+                        }
+                    }
+                });
+            }
+            localeService.getLoginText().then(function (response) {
+                getwhiteLavelHeaderText();
+                $scope.logo = response.data.homePage.logo;
+                $scope.helpLink = response.data.helpLink.url;
+            });
 
             var getLocalTimeZone = function () {
                 var currentLocalTime = new Date().toString();

@@ -6,6 +6,7 @@ describe('localeService', function () {
     var _$http;
     var localesList = "en, es, fr";
     var defaultLocale = "en";
+    var loginText = "BAHMNI EMR LOGIN";
 
     beforeEach(function(){
         module('bahmni.common.domain');
@@ -37,6 +38,17 @@ describe('localeService', function () {
 
         localeService.defaultLocale().then(function (response) {
             expect(response.data).toEqual(defaultLocale);
+            done();
+        });
+    });
+
+    iit('should fetch default login page text', function(done){
+        _$http.get.and.callFake(function(param) {
+            return specUtil.respondWith({"data": loginText});
+        });
+
+        localeService.getLoginText().then(function (response) {
+            expect(response.data).toEqual(loginText);
             done();
         });
     });

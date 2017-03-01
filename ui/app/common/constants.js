@@ -272,7 +272,8 @@ Bahmni.Common = Bahmni.Common || {};
         offlineBahmniEncounterUrl: "/openmrs/ws/rest/v1/bahmnicore/bahmniencounter/",
         eventlogFilterUrl: hostUrl + "/openmrs/ws/rest/v1/eventlog/filter",
         bahmniConnectMetaDataDb: "metaData",
-        serverDateTimeUrl: "/cgi-bin/systemdate"
+        serverDateTimeUrl: "/cgi-bin/systemdate",
+        loginText: "/bahmni_config/openmrs/apps/home/whiteLabel.json"
     };
 })();
 
