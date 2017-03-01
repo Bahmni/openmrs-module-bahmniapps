@@ -478,7 +478,10 @@ body {
   font-size: 22px;
   font-weight: 900;
   color: $bahmniSecondaryColor;
-  margin-bottom: 12px;
+  position: absolute;
+  top: -25px;
+  left: 0;
+  width: 100%;
 }
 .power-by {
   position: absolute;
@@ -487,16 +490,25 @@ body {
   text-align: center;
   background: #fafafa;
   padding-bottom: 5px;
+  font-size: 10px;
+  img {
+    width: 65px;
+    vertical-align: middle;
+    margin: 0 1px;
+  }
 }
 .clint-logo-wrapper {
   display: block;
   text-align: center;
   padding-top: 10px;
+  img {
+    max-width: 200px;
+    vertical-align: middle;
+  }
   span {
     vertical-align: middle;
-    vertical-align: -webkit-baseline-middle;
     color: #888;
-    font-size: 16px;
+    font-size: 20px;
   }
 }
 
