@@ -6,7 +6,7 @@
     </style>
     <div class="ngdialog-close clearfix"></div>
     <div class="clearfix">
-        <h4>Transfer Patient</h4>
+        <h4>Patient Movement</h4>
     </div>
     <p class="patient-attributes dialog-patient-name">
         <label for="patient-name">Patient name: </label>
@@ -14,14 +14,14 @@
     </p>
     <div class="transfer-section transfer-bed-section">
         <p class="transfer-container">
-            <b>Transfer From</b>
+            <b>Movement From</b>
             <span>{{$root.bedDetails.wardName}}</span>
             <span>{{$root.bedDetails.physicalLocationName}}</span>
             <span>{{$root.bedDetails.bedNumber}}</span>
         </p>
         <p class="ipd-transfer-container"><i class="fa fa-long-arrow-right"></i></p>
         <p class="transfer-container">
-            <b>Transfer To</b>
+            <b>Movement To</b>
             <span>{{$root.selectedBedInfo.wardName}}</span>
             <span>{{$root.selectedBedInfo.roomName}}</span>
             <span>{{$root.selectedBedInfo.bed.bedNumber}}</span>
@@ -31,7 +31,7 @@
         <concept-set concept-set-name="getAdtConceptConfig" observations="adtObservations"></concept-set>
     </div>
     <div class="dialog-button-group ipd-button-group">
-        <button id="modal-revise-button1" class="secondary-button" ng-click="transferConfirmation()">Transfer</button>
+        <button id="modal-revise-button1" class="secondary-button" ng-click="transferConfirmation()">Move</button>
         <button id="modal-revise-button3" class="secondary-button" ng-click="cancelConfirmationDialog()">Cancel</button>
     </div>
 
