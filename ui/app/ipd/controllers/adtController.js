@@ -183,7 +183,11 @@ angular.module('bahmni.ipd')
                         closeByEscape: true
                     });
                 } else {
-                    return createEncounterAndContinue();
+                    ngDialog.openConfirm({
+                        template: 'views/admitConfirmation.html',
+                        scope: $scope,
+                        closeByEscape: true
+                    });
                 }
                 return $q.when({});
             };
@@ -279,6 +283,11 @@ angular.module('bahmni.ipd')
                     var bedNumber = _.get($rootScope.bedDetails, 'bedNumber') || _.get($rootScope.selectedBedInfo, 'bed.bedNumber');
                     messagingService.showMessage('info', "Successfully discharged from " + bedNumber);
                 }));
+            };
+
+            $scope.admitConfirmation = function () {
+                createEncounterAndContinue();
+                $scope.cancelConfirmationDialog();
             };
         }
     ]);

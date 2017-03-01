@@ -109,18 +109,6 @@ describe("AdtController", function () {
         expect(ngDialog.openConfirm).toHaveBeenCalledWith({template: 'views/visitChangeConfirmation.html', scope: scope, closeByEscape: true});
     });
 
-    it("Should not show confirmation dialog if patient's visit type is defaultVisitType", function () {
-
-        scope.visitSummary = {"visitType": "IPD"};
-        scope.patient = {uuid : '123'};
-        encounterService.create.and.returnValue(specUtil.createServicePromise("create"));
-        createController();
-
-        scope.admit();
-
-        expect(ngDialog.openConfirm).not.toHaveBeenCalled();
-    });
-    
     it("should close the visit and create a new encounter if dialog is confirmed", function () {
         var visitSummary = {"visitType": "Current Visit", "uuid": "visitUuid", "stopDateTime": null};
         scope.patient = {uuid: "123"};
@@ -263,6 +251,7 @@ describe("AdtController", function () {
         scope.visitSummary = null;
         scope.patient = {uuid: "123"};
         scope.adtObservations = [];
+        rootScope.selectedBedInfo.bed = undefined;
 
         appService.getAppDescriptor.and.returnValue({
             getConfigValue: function () {
