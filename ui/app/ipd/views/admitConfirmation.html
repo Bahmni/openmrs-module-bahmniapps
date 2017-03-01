@@ -9,6 +9,13 @@
         <h4> Admit Summary </h4>
     </div>
     <div class="transfer-section  discharge-bed-section">
+        <p class="patient-attributes dialog-patient-name">
+            <label for="patient-name">Patient name: </label>
+            <span id="patient-name">{{$root.patient.name}}</span>
+            <label for="patient-id">Patient ID: </label>
+            <span id="patient-id">{{$root.patient.identifier}}</span>
+        </p>
+
         <p class="transfer-container">
             <b>Admit To:</b>
             <span>{{$root.selectedBedInfo.wardName}},</span>
