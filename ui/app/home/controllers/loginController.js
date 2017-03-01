@@ -37,17 +37,17 @@ angular.module('bahmni.home')
                 };
                 xmlhttp.open("GET", url, true);
                 xmlhttp.send();
-            }
-            function getwhiteLavelHeaderText() {
-                callAjax("/bahmni_config/openmrs/apps/home/whiteLabel.json", function(data) {
-                    if(data) {
+            };
+            function getwhiteLavelHeaderText () {
+                callAjax("/bahmni_config/openmrs/apps/home/whiteLabel.json", function (data) {
+                    if (data) {
                         if (data.loginPage.header_text) {
                             var headerTextElement = document.getElementsByClassName("emr-login-text")[0];
-                            headerTextElement.innerHTML = data.loginPage.header_text
+                            headerTextElement.innerHTML = data.loginPage.header_text;
                         }
                         if (data.loginPage.client_logo_text) {
                             var headerTextElement = document.getElementsByClassName("client_text")[0];
-                            headerTextElement.innerHTML = data.loginPage.client_logo_text
+                            headerTextElement.innerHTML = data.loginPage.client_logo_text;
                         }
                     }
                 });
