@@ -2,7 +2,7 @@
 
 describe('editAdtObservations', function () {
     var scope, rootScope, httpBackend, compile, q, compiledScope;
-    var spinner, encounterService, observationsService, sessionService, conceptSetService, conceptSetUiConfigService;
+    var spinner, encounterService, observationsService, sessionService, conceptSetService, conceptSetUiConfigService, messagingService;
     var window = {location: {href: "some url"}};
     var state = {};
     var html = '<edit-adt-observations patient="patient" concept-set-name="conceptSetName" edit-mode="$parent.editMode" visit-type-uuid="visitTypeUuid"></edit-adt-observations>';
@@ -109,6 +109,7 @@ describe('editAdtObservations', function () {
     sessionService = jasmine.createSpyObj('sessionService',['getLoginLocationUuid']);
     conceptSetService = jasmine.createSpyObj('conceptSetService',['getConcept']);
     conceptSetUiConfigService = jasmine.createSpyObj('conceptSetUiConfigService',['getConfig']);
+    messagingService = jasmine.createSpyObj('messagingService', ['showMessage']);
 
     spinner.forPromise.and.returnValue(specUtil.createFakePromise({}));
     encounterService.create.and.returnValue(specUtil.createServicePromise("create"));
@@ -128,6 +129,7 @@ describe('editAdtObservations', function () {
         $provide.value('sessionService', sessionService);
         $provide.value('conceptSetService', conceptSetService);
         $provide.value('conceptSetUiConfigService', conceptSetUiConfigService);
+        $provide.value('messagingService', messagingService);
     }));
 
     var injectFn = function () {
@@ -260,5 +262,15 @@ describe('editAdtObservations', function () {
         injectFn();
 
         expect(scope.onBedManagement).toBeFalsy();
+    });
+
+    it('Should throw a message when trying to save empty fields', function () {
+        observationsService.fetch.and.returnValue(specUtil.simplePromise({"data": []}));
+        injectFn();
+        scope.observations = [{concept : {name : "IPD Expected DD"}, groupMembers : [{value : ""} ,{value : ""}]}];
+        scope.savedObservations = [{concept : {name : "IPD Expected DD"}, groupMembers : [{value : ""} ,{value : ""}]}];
+        scope.$digest();
+        scope.save();
+        expect(messagingService.showMessage).toHaveBeenCalled();
     });
 });

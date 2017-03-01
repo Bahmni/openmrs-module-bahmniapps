@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('bahmni.ipd')
-    .directive('editAdtObservations', ['$rootScope', '$state', 'spinner', 'encounterService', 'observationsService', 'sessionService', 'conceptSetService', 'conceptSetUiConfigService',
-        function ($rootScope, $state, spinner, encounterService, observationsService, sessionService, conceptSetService, conceptSetUiConfigService) {
+    .directive('editAdtObservations', ['$rootScope', '$state', 'spinner', 'encounterService', 'observationsService', 'sessionService', 'conceptSetService', 'conceptSetUiConfigService', 'messagingService',
+        function ($rootScope, $state, spinner, encounterService, observationsService, sessionService, conceptSetService, conceptSetUiConfigService, messagingService) {
             var controller = function ($scope) {
                 var getEncounterDataFor = function (obs, encounterTypeUuid, visitTypeUuid) {
                     var encounterData = {};
@@ -26,6 +26,11 @@ angular.module('bahmni.ipd')
                     observations.groupMembers = _.filter(observations.groupMembers, function (member) {
                         return !_.isEmpty(member.value);
                     });
+                    if (_.isEmpty(observations.groupMembers)) {
+                        messagingService.showMessage("error", "Date of Discharge and Reason for discharge cannot be empty.");
+                        setValuesForObservations($scope.savedObservations);
+                        return [];
+                    }
                     return [observations];
                 };
 
@@ -36,8 +41,9 @@ angular.module('bahmni.ipd')
 
                 $scope.save = function () {
                     toggleDisabledObservation(false);
-                    if ($scope.visitTypeUuid !== null) {
-                        var encounterData = getEncounterDataFor(getNonEmptyObservations(), $rootScope.encounterConfig.getConsultationEncounterTypeUuid(), $scope.visitTypeUuid);
+                    var observations = getNonEmptyObservations();
+                    if ($scope.visitTypeUuid !== null && !_.isEmpty(observations)) {
+                        var encounterData = getEncounterDataFor(observations, $rootScope.encounterConfig.getConsultationEncounterTypeUuid(), $scope.visitTypeUuid);
                         return encounterService.create(encounterData).then(function () {
                             toggleDisabledObservation(false);
                         });
