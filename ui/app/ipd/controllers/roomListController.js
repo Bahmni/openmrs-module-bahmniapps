@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('bahmni.ipd')
-    .controller('RoomListController', ['$scope', 'QueryService', 'appService',
-        function ($scope, queryService, appService) {
+    .controller('RoomListController', ['$scope', 'QueryService',
+        function ($scope, queryService) {
             var getRoomListDetails = function (roomName) {
                 var params = {
                     q: "emrapi.sqlGet.wardsListDetails",
@@ -11,8 +11,7 @@ angular.module('bahmni.ipd')
                 };
 
                 return queryService.getResponseFromQuery(params).then(function (response) {
-                    var listViewBedLayoutConfig = appService.getAppDescriptor().getConfigValue("ListViewBedLayout");
-                    $scope.tableDetails = Bahmni.IPD.WardDetails.create(response.data, listViewBedLayoutConfig);
+                    $scope.tableDetails = Bahmni.IPD.WardDetails.create(response.data);
                     $scope.tableHeadings = $scope.tableDetails.length > 0 ? Object.keys($scope.tableDetails[0]) : [];
                 });
             };
