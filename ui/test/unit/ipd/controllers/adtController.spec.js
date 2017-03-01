@@ -21,7 +21,9 @@ describe("AdtController", function () {
         ngDialog = jasmine.createSpyObj('ngDialog', ['openConfirm', 'close']);
         messagingService = jasmine.createSpyObj('messagingService', ['showMessage']);
         spinnerService = jasmine.createSpyObj('spinnerService', ['forPromise']);
-        state = {current: {name: "some state"}};
+        state = {current: {name: "some state"}, transitionTo: function () {
+            return true;
+        }};
         window = {location: { reload: jasmine.createSpy()} };
 
         appService.getAppDescriptor.and.returnValue({
@@ -149,8 +151,6 @@ describe("AdtController", function () {
         expect(scope.visitSummary.uuid).toBe(visitSummary.uuid);
         expect(visitService.endVisitAndCreateEncounter).toHaveBeenCalledWith("visitUuid", {encounterUuid: 'uuid'});
         expect(ngDialog.close).toHaveBeenCalled();
-        expect(window.location.href).toBe("#/bedManagement/bed/12");
-        expect(window.location.reload).toHaveBeenCalled();
     });
 
     it("Should close the confirmation dialog if cancelled", function () {
@@ -198,8 +198,6 @@ describe("AdtController", function () {
 
         expect(encounterService.create).toHaveBeenCalledWith(encounterResponse);
         expect(ngDialog.close).toHaveBeenCalled();
-        expect(window.location.href).toBe("#/bedManagement/bed/12");
-        expect(window.location.reload).toHaveBeenCalled();
     });
 
     it("Should not create encounter with in the current visit if closed", function () {
@@ -469,8 +467,6 @@ describe("AdtController", function () {
         expect(scope.$emit).toHaveBeenCalledWith("event:patientAssignedToBed", rootScope.selectedBedInfo.bed);
         expect(messagingService.showMessage).toHaveBeenCalledWith('info', "Bed " + rootScope.selectedBedInfo.bed.bedNumber + " is assigned successfully");
         expect(ngDialog.close).toHaveBeenCalled();
-        expect(window.location.href).toBe("#/bedManagement/bed/12");
-        expect(window.location.reload).toHaveBeenCalled();
     });
 
     it("Should throw an error message, when the bed is not selected and trying to discharge the patient", function () {
@@ -508,7 +504,5 @@ describe("AdtController", function () {
         };
         expect(encounterService.discharge).toHaveBeenCalledWith(mappedEncounterData);
         expect(ngDialog.close).toHaveBeenCalled();
-        expect(window.location.href).toBe("#/bedManagement/bed/12");
-        expect(window.location.reload).toHaveBeenCalled();
     });
 });

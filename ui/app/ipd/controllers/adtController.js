@@ -138,8 +138,9 @@ angular.module('bahmni.ipd')
                     'bedId': bedId
                 };
                 if (forwardLink) {
-                    $window.location.href = appDescriptor.formatUrl(forwardLink, options);
-                    $window.location.reload();
+                    $state.transitionTo("bedManagement.patient", options, {
+                        reload: true, inherit: false, notify: true
+                    });
                 }
             };
 
@@ -275,6 +276,8 @@ angular.module('bahmni.ipd')
                 return spinner.forPromise(encounterService.discharge(encounterData).then(function (response) {
                     ngDialog.close();
                     forwardUrl(response.data, "onDischargeForwardTo");
+                    var bedNumber = _.get($rootScope.bedDetails, 'bedNumber') || _.get($rootScope.selectedBedInfo, 'bed.bedNumber');
+                    messagingService.showMessage('info', "Successfully discharged from " + bedNumber);
                 }));
             };
         }
