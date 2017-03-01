@@ -1,5 +1,5 @@
 <dev class="clint-logo-wrapper">
-    <img class="implementor-logo" src={{logo}} height="6%" width="6%" align="middle">
+    <img class="implementor-logo" src={{logo}} >
     <span class="client_text">{{'CLIENT_LOGO_TEXT' | translate }}</span>
 </dev>
 <div class="login" ng-hide="showOTP">
@@ -68,6 +68,7 @@
     </form>
 
     <div class="warning-message">
+        <span ng-if="warning"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> {{warning}}</span>
         <p>{{warningMessage | translate :timeZoneObject}} </p>
     </div>
 
@@ -112,8 +113,9 @@
 </div>
 
 <div class="power-by">
-    Power by <img src="./../images/twlogo.png" >
-    <img src="./../images/bahmniLogo.png" > Bahmni
+    Power by
+        <img src="./../images/twlogo.png" alt="ThoughtWorks">
+        <img src="./../images/bahmniLogoFull.png" alt="Bahmni" >
     <br>
     <a href={{helpLink}}> Bahmni Help</a>
 </div>
