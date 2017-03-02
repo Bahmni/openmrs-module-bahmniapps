@@ -11,6 +11,9 @@ angular.module('bahmni.ipd').factory('bedInitialization', ['$rootScope', '$q', '
                         bedInfo.wardUuid = response.data.physicalLocation.parentLocation.uuid;
                         bedInfo.physicalLocationName = response.data.physicalLocation.name;
                         $rootScope.bedDetails = bedInfo;
+                        if ($rootScope.selectedBedInfo) {
+                            $rootScope.selectedBedInfo.bed = $rootScope.bedDetails;
+                        }
                         return bedInfo;
                     });
                 }
