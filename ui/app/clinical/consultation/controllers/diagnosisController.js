@@ -6,8 +6,14 @@ angular.module('bahmni.clinical')
             $scope.placeholder = "Add Diagnosis";
             $scope.hasAnswers = false;
 
-            $scope.orderOptions = ['PRIMARY', 'SECONDARY'];
-            $scope.certaintyOptions = ['CONFIRMED', 'PRESUMED'];
+            $scope.orderOptions = {
+                'CLINICAL_DIAGNOSIS_ORDER_PRIMARY': 'PRIMARY',
+                'CLINICAL_DIAGNOSIS_ORDER_SECONDARY': 'SECONDARY'
+            };
+            $scope.certaintyOptions = {
+                'CLINICAL_DIAGNOSIS_CERTAINTY_CONFIRMED': 'CONFIRMED',
+                'CLINICAL_DIAGNOSIS_CERTAINTY_PRESUMED': 'PRESUMED'
+            };
 
             $scope.getDiagnosis = function (params) {
                 return diagnosisService.getAllFor(params.term);
