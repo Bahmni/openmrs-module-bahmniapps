@@ -38,6 +38,9 @@ angular.module('bahmni.common.displaycontrol.observation')
                             $scope.bahmniObservations[0].isOpen = true;
                         }
                     }
+
+                    $scope.bahmniObservations =
+                        new Bahmni.Common.DisplayControl.Observation.ConstructFunctions().createDummyObsGroupForObservationsForForm($scope.bahmniObservations);
                 };
                 var fetchObservations = function () {
                     if ($scope.observations) {
