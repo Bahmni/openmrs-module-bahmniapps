@@ -63,6 +63,34 @@ describe('RoomListController', function () {
         "availableBeds": 1
     };
 
+    var queryResponse = {
+        data: [
+            {
+                "Bed Id": "409/2",
+                "Name": "CUYCTOEPHJDP OCECDYHMGPSO",
+                "Id": "IQ100074F",
+                "Gender": "F"
+            },
+            {
+                "Bed Id": "410/1",
+                "Name": "IDRMRRBZYHCI SRUJZMNPJKLW",
+                "Id": "IQ100114F",
+                "Gender": "F"
+            },
+            {
+                "Bed Id": "411/1",
+                "Name": "JPRIFLCMIUQJ IQRMDEXHJXZH",
+                "Id": "IQ100112F",
+                "Gender": "F"
+            },
+            {
+                "Bed Id": "404",
+                "Name": "SUOTONGDTIUV URBKUHNRFXKS",
+                "Id": "IQ100113F",
+                "Gender": "F"
+            }
+        ]
+    };
     beforeEach(function () {
         module('bahmni.ipd');
 
@@ -79,7 +107,7 @@ describe('RoomListController', function () {
 
             $provide.value('appService', {});
             queryService = jasmine.createSpyObj('queryService', ['getResponseFromQuery']);
-            queryService.getResponseFromQuery.and.returnValue(specUtil.createServicePromise('queryService'));
+            queryService.getResponseFromQuery.and.returnValue(specUtil.simplePromise(queryResponse));
             $provide.value('queryService', queryService);
             $provide.value('room', room);
             $provide.value('$stateParams', {});
@@ -105,6 +133,21 @@ describe('RoomListController', function () {
 
     it('Should set table details', function () {
         initController();
+        expect(scope.tableDetails).toBe(queryResponse.data);
+        expect(scope.tableHeadings).toEqual(["Bed Id","Name", "Id", "Gender"]);
     });
 
+    it('Should sort the tableData with columnName passed and clicking twice should inverse the results', function () {
+        initController();
+        scope.sortTableDataBy("Id");
+        expect(scope.tableDetails[0]).toBe(queryResponse.data[0]);
+        expect(scope.tableDetails[1]).toBe(queryResponse.data[2]);
+        expect(scope.tableDetails[2]).toBe(queryResponse.data[3]);
+        expect(scope.tableDetails[3]).toBe(queryResponse.data[1]);
+        scope.sortTableDataBy("Id");
+        expect(scope.tableDetails[0]).toBe(queryResponse.data[1]);
+        expect(scope.tableDetails[1]).toBe(queryResponse.data[3]);
+        expect(scope.tableDetails[2]).toBe(queryResponse.data[2]);
+        expect(scope.tableDetails[3]).toBe(queryResponse.data[0]);
+    });
 });

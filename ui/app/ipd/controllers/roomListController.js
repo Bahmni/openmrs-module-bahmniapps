@@ -20,7 +20,22 @@ angular.module('bahmni.ipd')
                 getRoomListDetails(roomName);
             });
 
+            $scope.sortTableDataBy = function (sortColumn) {
+                var nonEmptyObjects = _.filter($scope.tableDetails, function (entry) {
+                    return entry[sortColumn];
+                });
+                var emptyObjects = _.difference($scope.tableDetails, nonEmptyObjects);
+                var sortedNonEmptyObjects = _.sortBy(nonEmptyObjects, sortColumn);
+                if ($scope.reverseSort) {
+                    sortedNonEmptyObjects.reverse();
+                }
+                $scope.tableDetails = sortedNonEmptyObjects.concat(emptyObjects);
+                $scope.sortColumn = sortColumn;
+                $scope.reverseSort = !$scope.reverseSort;
+            };
+
             var init = function () {
+                $scope.reverseSort = false;
                 return getRoomListDetails($scope.room.name);
             };
             init();

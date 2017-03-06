@@ -324,7 +324,7 @@
     }
   }
   .bed-layout-wrapper {
-    overflow: hidden;
+    overflow: auto;
     text-align: center;
     margin-top: 195px;
     .bed-layout-row {
@@ -707,8 +707,17 @@ div[ng-app="adt"] {
 }
 
 .ipd-ward-list-view {
+  th, td {
+    white-space: nowrap;
+    font-size: 14px;
+    padding: 10px;
+    border: 1px solid #bab8b8;
+  }
   th {
     text-align: center;
     font-weight: 900;
+    color: #4c4c4c;
+    background: #c7c4c4;
+    border-color: #949191;
   }
 }

@@ -5,12 +5,18 @@
     <table class="table ward-details-content ipd-ward-list-view" ng-if="tableDetails.length > 0">
         <thead>
             <tr>
-                <th ng-repeat="heading in tableHeadings" ng-if="heading != 'hiddenAttributes'" ng-class="{'bed-detail-column' : $index == 0}">{{heading}}</th>
+                <th ng-repeat="heading in tableHeadings" ng-class="{'bed-detail-column' : $index == 0}" ng-click="sortTableDataBy(heading)">
+                    {{heading}}
+                    <span ng-if="sortColumn == heading">
+                        <i class="fa fa-caret-up" ng-show="reverseSort"></i>
+                        <i class="fa fa-caret-down" ng-show="!reverseSort"></i>
+                    </span>
+                </th>
             </tr>
         </thead>
         <tbody>
             <tr ng-repeat="row in tableDetails">
-                <td ng-repeat="heading in tableHeadings" ng-if="heading != 'hiddenAttributes'">
+                <td ng-repeat="heading in tableHeadings">
                     <span>{{row[heading]}}</span>
                 </td>
             </tr>
