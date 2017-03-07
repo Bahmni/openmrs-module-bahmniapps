@@ -27,7 +27,7 @@ angular.module('bahmni.common.obs')
                     $scope.editableObservations = [];
                     if (shouldEditSpecificObservation()) {
                         var editableObs = findEditableObs(ObservationUtil.flattenObsToArray($scope.encounter.observations));
-                        if(editableObs) {
+                        if (editableObs) {
                             $scope.editableObservations.push(editableObs);
                         } else {
                             messagingService.showMessage('error', "{{'CLINICAL_FORM_EDIT_ERROR_MESSAGE_KEY' | translate}}");
