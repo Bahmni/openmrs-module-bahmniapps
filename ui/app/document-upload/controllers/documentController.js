@@ -190,9 +190,19 @@ angular.module('opd.documentupload')
                 });
             };
 
-            $scope.onSelect = function (file, visit) {
+            $scope.onSelect = function (file, visit, fileName) {
                 $scope.toggleGallery = false;
-                spinner.forPromise(visitDocumentService.saveFile(file, $rootScope.patient.uuid, $rootScope.appConfig.encounterType).then(function (response) {
+                var searchStr = ";base64";
+                var format = file.split(searchStr)[0];
+                var fileType;
+                var videoType = "video";
+                var imageType = "image";
+                if (format.indexOf(videoType) != -1) {
+                    fileType = videoType;
+                } else if (format.indexOf(imageType) != -1) {
+                    fileType = imageType;
+                }
+                spinner.forPromise(visitDocumentService.saveFile(file, $rootScope.patient.uuid, $rootScope.appConfig.encounterType, fileName, fileType).then(function (response) {
                     var fileUrl = Bahmni.Common.Constants.documentsPath + '/' + response.data.url;
                     var savedFile = visit.addFile(fileUrl);
                     $scope.setConceptOnFile(savedFile, $scope.defaultConcept);

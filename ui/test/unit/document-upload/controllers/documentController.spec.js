@@ -198,7 +198,7 @@ describe("DocumentController", function () {
         spinner = jasmine.createSpyObj('spinner', ['forPromise']);
         encounterConfig = jasmine.createSpyObj('encounterConfig', ['getEncounterTypeUuid']);
         appConfig = jasmine.createSpyObj('encounterConfig', ['encounterType']);
-        visitDocumentService = jasmine.createSpyObj('visitDocumentService', ['save']);
+        visitDocumentService = jasmine.createSpyObj('visitDocumentService', ['save', 'saveFile']);
         sessionService = jasmine.createSpyObj('sessionService', ['getLoginLocationUuid']);
         patientService = jasmine.createSpyObj('patientService', ['getPatient']);
         encounterService = jasmine.createSpyObj('encounterService',['find', 'getEncountersForEncounterType']);
@@ -534,7 +534,41 @@ describe("DocumentController", function () {
 
             expect(scope.currentVisit).toBe(newVisit);
         });
-    })
+    });
+    
+    describe("OnSelect", function() {
+        it("should save the image file", function () {
+            setUp();
+            visitDocumentService.saveFile.and.returnValue(specUtil.simplePromise({data: { url : "tes-file.jpeg" }}));
+            var newVisit = new Bahmni.DocumentUpload.Visit();
+            appConfig.encounterType.and.returnValue("Radiology");
+
+            var file = "image/jpeg;base64asdlkjfklasjdfalsjdfkl";
+            var fileName = "test-file.jpeg";
+            var fileType = "image";
+
+            scope.onSelect(file, newVisit, fileName);
+
+            expect(visitDocumentService.saveFile).toHaveBeenCalledWith(file, "patient uuid" , appConfig.encounterType, fileName, fileType);
+
+        });
+
+        it("should save the image file", function () {
+            setUp();
+            visitDocumentService.saveFile.and.returnValue(specUtil.simplePromise({data: { url : "tes-file.jpeg" }}));
+            var newVisit = new Bahmni.DocumentUpload.Visit();
+            appConfig.encounterType.and.returnValue("Radiology");
+
+            var file = "video/mp4;base64asdlkjfklasjdfalsjdfkl";
+            var fileName = "test-file.image";
+            var fileType = "video";
+
+            scope.onSelect(file, newVisit, fileName);
+
+            expect(visitDocumentService.saveFile).toHaveBeenCalledWith(file, "patient uuid" , appConfig.encounterType, fileName, fileType);
+
+        });
+    });
 });
 
 
