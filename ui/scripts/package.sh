@@ -24,7 +24,7 @@ cp -r dist cacheAndroidDist
 if [ $(pgrep Xvfb) ]; then
     XVFB_PID=$(pgrep Xvfb)
     echo "Killing Xvfb process $XVFB_PID"
-    kill $XVFB_PID
+    /usr/bin/sudo kill $XVFB_PID
 fi
 export DISPLAY=:99
 Xvfb :99 &
