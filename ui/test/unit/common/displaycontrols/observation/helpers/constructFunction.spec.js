@@ -190,4 +190,55 @@ describe("Construct Functions", function () {
         expect(firstValue.groupMembers[2].concept.shortName).toBe("WEIGHT");
 
     });
+
+    it('should construct dummy obs group for multiple observations from different form', function () {
+        var observations = [{
+            "key": "1488790440000",
+            "value": [{
+                "groupMembers": [],
+                "formNamespace": "Bahmni",
+                "formFieldPath": "test.2/2-0",
+                "concept": {
+                    "shortName": "HEIGHT"
+                }
+            }, {
+                "groupMembers": [],
+                "formNamespace": "Bahmni",
+                "formFieldPath": "test1.2/2-0",
+                "concept": {
+                    "shortName": "HEIGHT"
+                }
+            }, {
+                "groupMembers": [],
+                "formNamespace": "Bahmni",
+                "formFieldPath": "test.2/1-0",
+                "concept": {
+                    "shortName": "head nose lateral"
+                },
+            }, {
+                "groupMembers": [],
+                "formNamespace": "Bahmni",
+                "formFieldPath": "test1.2/1-0",
+                "concept": {
+                    "shortName": "head nose lateral"
+                },
+            }]
+        }]
+
+        var dummyObsGroup = new Bahmni.Common.DisplayControl.Observation.ConstructFunctions().createDummyObsGroupForObservationsForForm(observations);
+
+        expect(dummyObsGroup[0].value.length).toBe(2);
+
+        var firstValue = dummyObsGroup[0].value[0];
+        expect(firstValue.concept.shortName).toBe('test');
+        expect(firstValue.groupMembers.length).toBe(2);
+        expect(firstValue.groupMembers[0].concept.shortName).toBe("HEIGHT");
+        expect(firstValue.groupMembers[1].concept.shortName).toBe("head nose lateral");
+
+        var secondValue = dummyObsGroup[0].value[1];
+        expect(secondValue.concept.shortName).toBe('test1');
+        expect(secondValue.groupMembers.length).toBe(2);
+        expect(secondValue.groupMembers[0].concept.shortName).toBe("HEIGHT");
+        expect(secondValue.groupMembers[1].concept.shortName).toBe("head nose lateral");
+    });
 });

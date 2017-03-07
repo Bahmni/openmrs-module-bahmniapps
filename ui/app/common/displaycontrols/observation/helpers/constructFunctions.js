@@ -21,17 +21,18 @@ Bahmni.Common.DisplayControl.Observation.ConstructFunctions = function () {
 
                 dummyObsGroup.concept.shortName = value.formFieldPath.split('.')[0];
 
-                var flag;
+                var previousDummyObsGroupFound;
                 _.forEach(newValues, function (newValue) {
-                    flag = (dummyObsGroup.concept.shortName == newValue.concept.shortName);
-                    if (flag) {
+                    if (dummyObsGroup.concept.shortName == newValue.concept.shortName) {
                         newValue.groupMembers.push(value);
-                        return;
+                        previousDummyObsGroupFound = true;
                     }
                 });
-                if (flag) {
+
+                if (previousDummyObsGroupFound) {
                     return;
                 }
+
                 dummyObsGroup.groupMembers.push(value);
                 newValues.push(dummyObsGroup);
             });
