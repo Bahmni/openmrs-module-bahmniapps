@@ -42,7 +42,7 @@ describe('localeService', function () {
         });
     });
 
-    iit('should fetch default login page text', function(done){
+    it('should fetch default login page text', function(done){
         _$http.get.and.callFake(function(param) {
             return specUtil.respondWith({"data": loginText});
         });
