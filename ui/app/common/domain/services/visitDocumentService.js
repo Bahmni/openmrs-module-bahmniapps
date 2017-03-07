@@ -8,11 +8,9 @@ angular.module('bahmni.common.domain')
       };
       this.saveFile = function (file, patientUuid, encounterTypeName, fileName, fileType) {
           var searchStr = ";base64";
-          var format;
+          var format = file.split(searchStr)[0].split("/")[1];
           if (fileType === "video") {
               format = _.last(_.split(fileName, "."));
-          } else {
-              format = file.split(searchStr)[0].split("/")[1];
           }
           var url = Bahmni.Common.Constants.RESTWS_V1 + "/bahmnicore/visitDocument/uploadDocument";
           return $http.post(url, {
