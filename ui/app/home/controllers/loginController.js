@@ -10,6 +10,14 @@ angular.module('bahmni.home')
             $scope.locations = initialData.locations;
             $scope.loginInfo = {};
 
+            var getLocalTimeZone = function () {
+                var currentLocalTime = new Date().toString();
+                var localTimeZoneList = currentLocalTime.split(" ");
+                var localTimeZone = localTimeZoneList[localTimeZoneList.length - 1];
+                localTimeZone = localTimeZone.substring(1, localTimeZone.length - 1);
+                return localTimeZone;
+            };
+
             var promise = localeService.allowedLocalesList();
             localeService.serverDateTime().then(function (response) {
                 var serverTime = response.data.date;
@@ -24,14 +32,12 @@ angular.module('bahmni.home')
                     $scope.warningMessage = "WARNING_SERVER_TIME_ZONE_MISMATCH";
                 }
             });
-
-            var getLocalTimeZone = function () {
-                var currentLocalTime = new Date().toString();
-                var localTimeZoneList = currentLocalTime.split(" ");
-                var localTimeZone = localTimeZoneList[localTimeZoneList.length - 1];
-                localTimeZone = localTimeZone.substring(1, localTimeZone.length - 1);
-                return localTimeZone;
-            };
+            localeService.getLoginText().then(function (response) {
+                $scope.logo = response.data.loginPage.logo;
+                $scope.HEADER_TEXT = response.data.loginPage.LOGIN_PAGE_HEADER_TEXT;
+                $scope.CLIENT_TEXT = response.data.loginPage.LOGIN_PAGE_CLIENT_TEXT;
+                $scope.helpLink = response.data.helpLink.url;
+            });
 
             promise.then(function (response) {
                 $scope.locales = response.data.replace(/\s+/g, '').split(',');

@@ -1,10 +1,16 @@
+<dev class="clint-logo-wrapper">
+    <img class="implementor-logo" src={{logo}} >
+    <span ng-if="CLIENT_TEXT" class="client_text"> {{'LOGIN_PAGE_CLIENT_TEXT' | translate }} </span>
+</dev>
 <div class="login" ng-hide="showOTP">
-
+    <div ng-if="HEADER_TEXT" class="emr-login-text">
+        <b>{{'LOGIN_PAGE_HEADER_TEXT'| translate}} </b>
+    </div>
     <header class="reg-header">
         <div class="left">{{'LOGIN_LABEL_LOGIN_KEY' | translate}}</div>
         <div class="right locale-wrapper">
             <span class="locale-text">{{'LOGIN_LABEL_SELECT_LOCALE_KEY' | translate}} </span>
-             <select id="locale" ng-model="selectedLocale" ng-options="item as item for item in locales" required/>
+            <select id="locale" ng-model="selectedLocale" ng-options="item as item for item in locales" required/>
         </div>
     </header>
 
@@ -25,7 +31,8 @@
                 </div>
 
                 <div class="field-value">
-                    <input type="text" name="username" id="username" ng-model="loginInfo.username" autofocus="autofocus"  placeholder="{{'LOGIN_MESSAGE_ENTER_USERNAME_KEY' | translate}}">
+                    <input type="text" name="username" id="username" ng-model="loginInfo.username" autofocus="autofocus"
+                           placeholder="{{'LOGIN_MESSAGE_ENTER_USERNAME_KEY' | translate}}">
                 </div>
             </div>
             <div class="form-field">
@@ -35,7 +42,8 @@
                     </label>
                 </div>
                 <div class="field-value">
-                    <input type="password" id="password" name="password" ng-model="loginInfo.password"  placeholder="{{'LOGIN_MESSAGE_ENTER_PASSWORD_KEY' | translate}}">
+                    <input type="password" id="password" name="password" ng-model="loginInfo.password"
+                           placeholder="{{'LOGIN_MESSAGE_ENTER_PASSWORD_KEY' | translate}}">
                 </div>
             </div>
 
@@ -46,7 +54,8 @@
                     </label>
                 </div>
                 <div class="field-value">
-                    <select id="location" ng-model="loginInfo.currentLocation" ng-options="item as item.display for item in locations" required>
+                    <select id="location" ng-model="loginInfo.currentLocation"
+                            ng-options="item as item.display for item in locations" required>
                         <option value="">{{'LOGIN_LABEL_SELECT_LOCATION_KEY' | translate}}</option>
                     </select>
                 </div>
@@ -59,13 +68,13 @@
     </form>
 
     <div class="warning-message">
-        <span><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> {{warning}}</span>
+        <span ng-if="warning"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> {{warning}}</span>
         <p>{{warningMessage | translate :timeZoneObject}} </p>
     </div>
 
 </div>
 
-<div class="login login-otp" ng-show ="showOTP">
+<div class="login login-otp" ng-show="showOTP">
 
     <header class="reg-header">
         <div class="left">{{'LOGIN_LABEL_LOGIN_KEY' | translate}}</div>
@@ -74,7 +83,8 @@
     <form ng-submit="login()" name="otpForm" bm-form>
         <div class="login-body">
             <div class="note-container">
-                <div class="note error" ng-show="errorMessageTranslateKey" ng-class="{'error_resend' : errorMessageTranslateKey == 'LOGIN_LABEL_RESEND_SUCCESS' }">
+                <div class="note error" ng-show="errorMessageTranslateKey"
+                     ng-class="{'error_resend' : errorMessageTranslateKey == 'LOGIN_LABEL_RESEND_SUCCESS' }">
                     <div class="text">
                         {{errorMessageTranslateKey | translate}}
                     </div>
@@ -87,8 +97,11 @@
                     </label>
                 </div>
                 <div class="field-value">
-                    <input type="password" id="otp" name="password" ng-model="loginInfo.otp"  placeholder="{{'LOGIN_LABEL_ENTER_OTP_KEY' | translate}}" required>
-                    <button type="button" ng-click="resendOTP()" class="fr otp-button">{{'LOGIN_LABEL_RESEND_OTP' | translate}}</button>
+                    <input type="password" id="otp" name="password" ng-model="loginInfo.otp"
+                           placeholder="{{'LOGIN_LABEL_ENTER_OTP_KEY' | translate}}" required>
+                    <button type="button" ng-click="resendOTP()" class="fr otp-button">{{'LOGIN_LABEL_RESEND_OTP' |
+                        translate}}
+                    </button>
                 </div>
             </div>
 
@@ -97,4 +110,12 @@
             </div>
         </div>
     </form>
+</div>
+
+<div class="power-by">
+    Power by
+        <img src="./../images/twlogo.png" alt="ThoughtWorks">
+        <img src="./../images/bahmniLogoFull.png" alt="Bahmni" >
+    <br>
+    <a href={{helpLink}}> Bahmni Help</a>
 </div>
