@@ -17,14 +17,10 @@ grunt uglify-and-rename
 
 cd $ROOT_DIR
 
-rm -rf cacheChromeDist cacheAndroidDist
-cp -r dist cacheChromeDist
-cp -r dist cacheAndroidDist
-
 if [ $(pgrep Xvfb) ]; then
     XVFB_PID=$(pgrep Xvfb)
     echo "Killing Xvfb process $XVFB_PID"
-    kill $XVFB_PID
+    /usr/bin/sudo kill $XVFB_PID
 fi
 export DISPLAY=:99
 Xvfb :99 &
@@ -34,17 +30,6 @@ echo "Starting Xvfb process $XVFB_PID"
 grunt web
 cd dist && zip -r ../target/${ZIP_FILE_NAME}.zip *
 
-cd ..
-rm -rf dist
-cp -r cacheChromeDist dist
-grunt chrome
-cd dist && zip -r ../target/${ZIP_FILE_NAME}_chrome.zip *
-
-cd ..
-rm -rf dist
-cp -r cacheAndroidDist dist
-grunt android
-cd dist && zip -r ../target/${ZIP_FILE_NAME}_android.zip *
 
 echo "Killing Xvfb process $XVFB_PID"
 /usr/bin/sudo kill $XVFB_PID
