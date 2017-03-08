@@ -36,4 +36,13 @@ angular.module('bahmni.common.domain')
                 }
             });
         };
+
+        this.getLoginText = function () {
+            return $http.get(Bahmni.Common.Constants.loginText, {
+                method: "GET",
+                headers: {
+                    Accept: 'text/plain'
+                }
+            });
+        };
     }]);
