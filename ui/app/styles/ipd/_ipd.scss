@@ -20,6 +20,8 @@
 }
 .idp-section {
   padding-top: 52px;
+  padding-bottom: 0;
+  min-height: 300px;
   .opd-content-wrapper {
     max-width: 100%;
     .patient-search-wrapper {
@@ -327,6 +329,7 @@
     overflow: auto;
     text-align: center;
     margin-top: 195px;
+    position: relative;
     .bed-layout-row {
       display: inline-block;
       .bed-layout-cells {
@@ -708,16 +711,35 @@ div[ng-app="adt"] {
 
 .ipd-ward-list-view {
   th, td {
-    white-space: nowrap;
     font-size: 14px;
     padding: 10px;
     border: 1px solid #bab8b8;
+    width: 130px;
+    min-width: 140px;
+    overflow: hidden;
   }
-  th {
-    text-align: center;
-    font-weight: 900;
-    color: #4c4c4c;
-    background: #c7c4c4;
-    border-color: #949191;
+  thead {
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 1;
+    th {
+      text-align: center;
+      font-weight: 900;
+      color: #4c4c4c;
+      background: #e2e1e1;
+      border-color: #949191;
+    }
   }
+  tbody {
+    position: absolute;
+    height: calc(100% - 51px);
+    overflow-y: auto;
+    top: 51px
+  }
+}
+.table-wrapper {
+  height: calc(100vh - 240px);
+  overflow-x: hidden;
+  overflow-y: auto;
 }

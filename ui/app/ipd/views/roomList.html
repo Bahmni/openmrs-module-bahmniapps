@@ -2,7 +2,9 @@
     <span ng-if="tableDetails.length == 0" class="no-data-info">
         There are no patient.
     </span>
+    <div class="table-wrapper">
     <table class="table ward-details-content ipd-ward-list-view" ng-if="tableDetails.length > 0">
+        <col width='130px' />
         <thead>
             <tr>
                 <th ng-repeat="heading in tableHeadings" ng-class="{'bed-detail-column' : $index == 0}" ng-click="sortTableDataBy(heading)">
@@ -14,6 +16,9 @@
                 </th>
             </tr>
         </thead>
+        </table>
+    <table class="table ward-details-content ipd-ward-list-view" ng-if="tableDetails.length > 0">
+        <col width='130px' />
         <tbody>
             <tr ng-repeat="row in tableDetails">
                 <td ng-repeat="heading in tableHeadings">
@@ -22,4 +27,5 @@
             </tr>
         </tbody>
     </table>
+    </div>
 </div>
