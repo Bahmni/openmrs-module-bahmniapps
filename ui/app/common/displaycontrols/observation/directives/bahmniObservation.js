@@ -41,6 +41,8 @@ angular.module('bahmni.common.displaycontrol.observation')
 
                     $scope.bahmniObservations =
                         new Bahmni.Common.DisplayControl.Observation.ConstructFunctions().createDummyObsGroupForObservationsForForm($scope.bahmniObservations);
+                    $scope.bahmniObservations =
+                        new Bahmni.Common.DisplayControl.Observation.ConstructSectionIntoFormFunctions().createSectionForForm($scope.bahmniObservations);
                 };
                 var fetchObservations = function () {
                     if ($scope.observations) {
