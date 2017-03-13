@@ -717,6 +717,7 @@ div[ng-app="adt"] {
     width: 130px;
     min-width: 140px;
     overflow: hidden;
+    word-break: break-all;
   }
   thead {
     position: absolute;
