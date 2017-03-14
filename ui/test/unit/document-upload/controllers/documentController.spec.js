@@ -15,6 +15,7 @@ describe("DocumentController", function () {
     var sessionService;
     var visitService;
     var patientService;
+    var messagingService;
 
     var createVisit = function (startDateTime, stopDateTime, uuid) {
         var visit = new Bahmni.DocumentUpload.Visit();
@@ -203,6 +204,7 @@ describe("DocumentController", function () {
         patientService = jasmine.createSpyObj('patientService', ['getPatient']);
         encounterService = jasmine.createSpyObj('encounterService',['find', 'getEncountersForEncounterType']);
         visitService = jasmine.createSpyObj('visitService',['getVisitType','search']);
+        messagingService = jasmine.createSpyObj('messagingService',['showMessage']);
     }));
 
     /*Mock of constructor Bahmni.PatientMapper*/
@@ -290,7 +292,8 @@ describe("DocumentController", function () {
                 sessionService: sessionService,
                 patientService: patientService,
                 $translate: translate,
-                visitService: visitService
+                visitService: visitService,
+                messagingService: messagingService
             });
             scope.visits = [visit1, visit2];
 
@@ -505,7 +508,7 @@ describe("DocumentController", function () {
             scope.canDeleteFile(obs);
             expect(scope.canDeleteFile(obs)).toBeTruthy();
         })
-    })
+    });
 
     describe('Validate Order', function () {
         beforeEach(function () {
@@ -553,19 +556,51 @@ describe("DocumentController", function () {
 
         });
 
-        it("should save the image file", function () {
+        it("should save the pdf file", function () {
             setUp();
             visitDocumentService.saveFile.and.returnValue(specUtil.simplePromise({data: { url : "tes-file.jpeg" }}));
             var newVisit = new Bahmni.DocumentUpload.Visit();
             appConfig.encounterType.and.returnValue("Radiology");
 
-            var file = "video/mp4;base64asdlkjfklasjdfalsjdfkl";
-            var fileName = "test-file.image";
-            var fileType = "video";
+            var file = "application/pdf;base64asdlkjfklasjdfalsjdfkl";
+            var fileName = "test-file.pdf";
+            var fileType = "pdf";
 
             scope.onSelect(file, newVisit, fileName);
 
             expect(visitDocumentService.saveFile).toHaveBeenCalledWith(file, "patient uuid" , appConfig.encounterType, fileName, fileType);
+
+        });
+
+        it("should show error message dialog box when user uploads a video", function () {
+            setUp();
+            spyOn(scope, 'reloadVisits');
+            messagingService.showMessage.and.returnValue(specUtil.simplePromise("something"));
+            var newVisit = new Bahmni.DocumentUpload.Visit();
+            appConfig.encounterType.and.returnValue("Radiology");
+
+            var file = "video/mp4;base64asdlkjfklasjdfalsjdfkl";
+            var fileName = "test-file.image";
+
+            scope.onSelect(file, newVisit, fileName);
+
+            expect(messagingService.showMessage).toHaveBeenCalledWith('error', "File type is not supported");
+
+        });
+
+        it("should show error message dialog box when user uploads a file which is not image and pdf", function () {
+            setUp();
+            spyOn(scope, 'reloadVisits');
+            messagingService.showMessage.and.returnValue(specUtil.simplePromise("something"));
+            var newVisit = new Bahmni.DocumentUpload.Visit();
+            appConfig.encounterType.and.returnValue("Radiology");
+
+            var file = "data/csv;base64asdlkjfklasjdfalsjdfkl";
+            var fileName = "test-file.csv";
+
+            scope.onSelect(file, newVisit, fileName);
+
+            expect(messagingService.showMessage).toHaveBeenCalledWith('error', "File type is not supported");
 
         });
     });
