@@ -9,7 +9,7 @@
                 </div>
 
 
-                <label class="control-label" ng-if="::showTitle" for="{{::observation.uniqueId}}">
+                <label class="control-label" ng-hide="observation.getControlType()== 'image'" ng-if="::showTitle" for="{{::observation.uniqueId}}">
                     <span ng-bind="::observation.label"></span>
                     <span ng-if="::getBooleanResult(observation.primaryObs.units)"
                           ng-bind-html="::'(' + observation.primaryObs.units + ')'"></span>
@@ -143,7 +143,7 @@
                     <span class="details" ng-bind-html="::observation.concept.description"></span>
                 </div>
 
-                <label class="control-label" ng-if="::showTitle" for="{{::observation.uniqueId}}">
+                <label class="control-label" ng-hide="observation.getControlType()== 'image'"  ng-if="::showTitle" for="{{::observation.uniqueId}}">
                     <span ng-bind="::observation.label"></span>
                     <span ng-show="::getBooleanResult(observation.units)" ng-bind-html="::'(' + observation.units + ')'"></span>
                     <span ng-if="::observation.conceptUIConfig.required===true" class="asterick">*</span>
@@ -202,7 +202,7 @@
                         <input id="file-browse-{{observation.uniqueId}}" class="file-browse" type="file" name="image"
                                accept="application/pdf, image/*" capture="camera" ng-model="observation.value" image-upload
                                patient-uuid="::patient.uuid" tabindex="1">
-                        <label class="placeholder btn" for="file-browse-{{observation.uniqueId}}"
+                        <label class="placeholder" for="file-browse-{{observation.uniqueId}}"
                                ng-hide="observation.value || observation.voided"><i
                                 class="fa fa-plus needsclick"></i></label>
 
