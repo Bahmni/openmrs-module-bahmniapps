@@ -2,13 +2,16 @@
 
 Bahmni.Common.DisplayControl.Observation.ConstructSectionIntoFormFunctions = function () {
     var self = this;
-
-    self.createSectionForForm = function (observations) {
-        _.forEach(observations, function (obs) {
-            _.forEach(obs.value, function (value) {
-                if (value.concept.conceptClass) {
-                    return;
-                }
+    self.createSectionForForm = function (value, formDetails) {
+        var members = value.groupMembers.slice();
+        value.groupMembers.splice(0, value.groupMembers.length);
+        var getMemberFromValueByFormFieldPath = function (members, id) {
+            return _.find(members, function (member) {
+                return member.formFieldPath.split('.')[1].split('/')[1].split('-')[0] == id;
+            });
+        };
+        var newValue = function parseSection(controls, value) {
+            _.forEach(controls, function (control) {
                 var dummyObsGroup = {
                     "groupMembers": [],
                     "concept": {
@@ -16,39 +19,19 @@ Bahmni.Common.DisplayControl.Observation.ConstructSectionIntoFormFunctions = fun
                         "conceptClass": null
                     }
                 };
+                if (control.type == "section") {
+                    dummyObsGroup.concept.shortName = control.label.value;
+                    value.groupMembers.push(dummyObsGroup);
+                    parseSection(control.controls, dummyObsGroup)
 
-                var formDetails = {
-                    "name": "test section with an obs",
-                    "id": 81,
-                    "uuid": "7defedec-d983-4b59-a1a7-cb40cf6b0cf1",
-                    "controls": [{
-                        "type": "section",
-                        "label": {"type": "label", "value": "Name Changed"},
-                        "id": "2",
-                        "controls": [{
-                            "type": "obsControl",
-                            "label": {"type": "label", "value": "WEIGHT"},
-                            "id": "3",
-                            "concept": {
-                                "name": "WEIGHT",
-                                "properties": {"allowDecimal": false}}}]}]};
-
-                _.forEach(formDetails.controls, function (control) {
-                    if (control.type == "section"){
-                        dummyObsGroup.concept.shortName = control.label.value;
-                    }
-                });
-
-                var nonSectionGroupMembers = value.groupMembers.slice();
-
-                value.groupMembers.splice(0,value.groupMembers.length);
-                dummyObsGroup.groupMembers = nonSectionGroupMembers;
-                value.groupMembers.push(dummyObsGroup);
+                } else {
+                    value.groupMembers.push(getMemberFromValueByFormFieldPath(members, control.id));
+                    return;
+                }
             });
-        });
-
-        return observations;
+            return value;
+        };
+        return newValue(formDetails.controls, value);
     };
-
     return self;
 };
