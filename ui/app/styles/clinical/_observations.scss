@@ -265,39 +265,49 @@ concept-set {
     padding: 5px;
   }
   .consultation-image {
-    width: 500px;
-    background: $lightestGray;
     padding: 5px;
     overflow: auto;
     clear: both;
     box-sizing: border-box;
-    @media screen and (max-width: 1150px){
-      width:300px;
-    }
-    @media screen and (max-width: 850px){
-      width:150px;
+    border-radius: 3px;
+    position: relative;
+    button {
+      position: absolute;
+      top: 0;
+      right: 0;
     }
     .file{
+      width: 160px;
+      height: 160px;
+      overflow: hidden;
+      position: relative;
+      border: 1px solid $lightGray;
       .comment-toggle {
-        margin-right: 10px;
-        margin-bottom: 5px;
-        margin-top: 9px;
+        margin: 9px 10px 5px 0;
       }
     }
-    .placeholder.btn {
-      width: 30px;
-      height: 30px;
+    .placeholder {
+      width: 160px;
+      height: 160px;
       float: left;
       margin: 0;
       text-align: center;
       border: 1px solid $lightGray;
-      @include button;
       padding: 0;
+      position: relative;
+      cursor: pointer;
       i {
         color: green;
         font-size: 18px;
         line-height: 30px;
         width: 30px;
+        height: 30px;
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        margin: auto;
       }
     }
     .file-browse {
@@ -308,9 +318,8 @@ concept-set {
     }
 
     .file img.has-image {
-      width: 50px;
-      height: 50px;
-      border: 3px solid $lightGray;
+      width: 100%;
+      vertical-align: middle;
       &.voided {
         opacity: 0.1;
       }
