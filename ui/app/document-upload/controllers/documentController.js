@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('opd.documentupload')
-    .controller('DocumentController', ['$scope', '$stateParams', 'visitService', 'patientService', 'encounterService', 'spinner', 'visitDocumentService', '$rootScope', '$http', '$q', '$timeout', 'sessionService', '$anchorScroll', '$translate',
-        function ($scope, $stateParams, visitService, patientService, encounterService, spinner, visitDocumentService, $rootScope, $http, $q, $timeout, sessionService, $anchorScroll, $translate) {
+    .controller('DocumentController', ['$scope', '$stateParams', 'visitService', 'patientService', 'encounterService', 'spinner', 'visitDocumentService', '$rootScope', '$http', '$q', '$timeout', 'sessionService', '$anchorScroll', '$translate', 'messagingService',
+        function ($scope, $stateParams, visitService, patientService, encounterService, spinner, visitDocumentService, $rootScope, $http, $q, $timeout, sessionService, $anchorScroll, $translate, messagingService) {
             var encounterTypeUuid;
             var topLevelConceptUuid;
             var customVisitParams = Bahmni.DocumentUpload.Constants.visitRepresentation;
@@ -196,12 +196,15 @@ angular.module('opd.documentupload')
                 var searchStr = ";base64";
                 var format = file.split(searchStr)[0];
                 var fileType;
-                var videoType = "video";
+                var pdfType = "pdf";
                 var imageType = "image";
-                if (format.indexOf(videoType) != -1) {
-                    fileType = videoType;
+                if (format.indexOf(pdfType) != -1) {
+                    fileType = pdfType;
                 } else if (format.indexOf(imageType) != -1) {
                     fileType = imageType;
+                } else {
+                    messagingService.showMessage("error", "File type is not supported");
+                    return $scope.reloadVisits();
                 }
                 spinner.forPromise(visitDocumentService.saveFile(file, $rootScope.patient.uuid, $rootScope.appConfig.encounterType, fileName, fileType).then(function (response) {
                     var fileUrl = Bahmni.Common.Constants.documentsPath + '/' + response.data.url;
@@ -221,6 +224,13 @@ angular.module('opd.documentupload')
                 }
             };
 
+            $scope.reloadVisits = function () {
+                if (!$scope.$$phase) {
+                    $scope.$apply();
+                }
+                $scope.toggleGallery = true;
+                return;
+            };
             $scope.onEditConcept = function (file) {
                 return function () {
                     file.concept.name = undefined;
