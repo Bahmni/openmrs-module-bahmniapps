@@ -206,7 +206,7 @@
                                ng-hide="observation.value || observation.voided"><i
                                 class="fa fa-plus needsclick"></i></label>
 
-                        <div class="file">
+                        <div ng-show="observation.value && !hasPDFAsValue()" class="file">
                             <img ng-if="observation.value && !hasPDFAsValue()" ng-src="{{observation.value|thumbnail}}" width="100"
                                  ng-class="{'has-image': observation.value, 'voided': observation.voided}">
                             <i ng-if="hasPDFAsValue()" class="fa fa-file-pdf-o"></i>
