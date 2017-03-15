@@ -174,5 +174,12 @@ describe("Search", function() {
 			expect(search.searchColumns).toEqual(searchColumns);
 		});
 
+		it('should update the search links on switchSearchType', function () {
+			var links = [{url : "#/programs/patient/{{patientUuid}}/consultationContext", linkColumn : "status"}];
+			var searchType = {handler: "emrapi.sqlSearch.patientsToAdmit", links: links};
+			search.switchSearchType(searchType);
+
+			expect(search.links).toBe(links);
+		});
 	});
 });
