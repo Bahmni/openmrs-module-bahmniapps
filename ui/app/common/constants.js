@@ -247,9 +247,9 @@ Bahmni.Common = Bahmni.Common || {};
         offlineMetadataUrl: hostUrl + "/offlineMetadata.json",
         faviconUrl: hostUrl + "/bahmni/favicon.ico",
         platformType: {
-            chrome: 'chrome',
-            android: 'android',
-            chromeApp: 'chrome-app',
+            chrome: 'other',
+            android: 'other',
+            chromeApp: 'other',
             other: 'other'
         },
         numericDataType: "Numeric",
