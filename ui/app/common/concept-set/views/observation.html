@@ -193,12 +193,7 @@
                     </div>
 
                     <div ng-switch-when="image" class="consultation-image"  ng-class="{'consultation-image-disabled': observation.disabled}">
-                        <div class="file-remove">
-                            <button type="button" ng-click="observation.toggleVoidingOfImage()"
-                                    ng-if="observation.value" class="row-remover"><span
-                                    ng-class="{'fa fa-remove': !image.voided, 'fa fa-undo': observation.voided }"></span>
-                            </button>
-                        </div>
+                        <input type="text" placeholder="Add title" ng-if="observation.value">
                         <input id="file-browse-{{observation.uniqueId}}" class="file-browse" type="file" name="image"
                                accept="application/pdf, image/*" capture="camera" ng-model="observation.value" image-upload
                                patient-uuid="::patient.uuid" tabindex="1">
@@ -210,18 +205,16 @@
                             <img ng-if="observation.value && !hasPDFAsValue()" ng-src="{{observation.value|thumbnail}}" width="100"
                                  ng-class="{'has-image': observation.value, 'voided': observation.voided}">
                             <i ng-if="hasPDFAsValue()" class="fa fa-file-pdf-o"></i>
-                            <button type="button" toggle="observation.showComment" ng-if="observation.value"
-                                    class="comment-toggle fr" tabindex="-1"
-                                    ng-class="{'has-notes': observation.comment}">
-                                <i class="fa fa-file-o">
-                                    <i class="fa fa-plus-circle"></i>
-                                    <i class="fa fa-minus-circle"></i>
-                                </i>
-                                <i class="fa fa-file-text-o"></i>
+                            <button type="button" ng-click="observation.toggleVoidingOfImage()"
+                                    ng-if="observation.value" class="row-remover">
+                                <span class="fa fa-remove"></span>
+                            </button>
+                            <button type="button" ng-if="observation.voided" ng-click="observation.toggleVoidingOfImage()">
+                                <span class="fa fa-undo"></span>
                             </button>
                         </div>
 
-                        <textarea class="consultation-img-comments" ng-if="observation.showComment" maxlength="255"
+                        <textarea class="consultation-img-comments" ng-if="observation.value" maxlength="255"
                                   ng-model="observation.comment" msd-elastic tabindex="1">
                         </textarea>
                     </div>
