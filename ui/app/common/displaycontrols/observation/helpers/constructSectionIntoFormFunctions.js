@@ -6,9 +6,9 @@ Bahmni.Common.DisplayControl.Observation.ConstructSectionIntoFormFunctions = fun
     self.getFormVersion = function (members) {
         var formVersion;
         _.forEach(members, function (member) {
-            if(member.formFieldPath){
-               formVersion = member.formFieldPath.split('.')[1].split('/')[0];
-               return false;
+            if (member.formFieldPath) {
+                formVersion = member.formFieldPath.split('.')[1].split('/')[0];
+                return false;
             }
         })
         return formVersion;
@@ -20,7 +20,7 @@ Bahmni.Common.DisplayControl.Observation.ConstructSectionIntoFormFunctions = fun
         });
     };
     self.getFormByFormName = function (formList, formName, formVersion) {
-        return _.find(formList,function (form) {
+        return _.find(formList, function (form) {
             return form.name == formName && form.version == formVersion;
         })
     }
@@ -39,19 +39,19 @@ Bahmni.Common.DisplayControl.Observation.ConstructSectionIntoFormFunctions = fun
                 dummyObsGroup.concept.shortName = control.label.value;
                 value.groupMembers.push(dummyObsGroup);
                 sectionIsEmpty = false;
-                if (!self.parseSection(members,control.controls, dummyObsGroup)){
+                if (!self.parseSection(members, control.controls, dummyObsGroup)) {
                     value.groupMembers.pop();
                 }
             } else {
                 var member = self.getMemberFromFormByFormFieldPath(members, control.id)
-                if(member){
+                if (member) {
                     value.groupMembers.push(member);
                     sectionIsEmpty = false;
                     return;
                 }
             }
         });
-        if (sectionIsEmpty){
+        if (sectionIsEmpty) {
             return null;
         }
         return value;
@@ -64,7 +64,7 @@ Bahmni.Common.DisplayControl.Observation.ConstructSectionIntoFormFunctions = fun
         return self.parseSection(members, formDetails.controls, obsFromSameForm);
     };
 
-    self.createDummyObsGroupForSectionsForForm = function (bahmniObservations, observationFormService){
+    self.createDummyObsGroupForSectionsForForm = function (bahmniObservations, observationFormService, $scope) {
         _.forEach(bahmniObservations, function (observation) {
             var forms = [];
             _.forEach(observation.value, function (form) {
@@ -74,18 +74,19 @@ Bahmni.Common.DisplayControl.Observation.ConstructSectionIntoFormFunctions = fun
                     return;
                 }
                 observationFormService.getAllForms().then(function (response) {
-                    return observationFormService.getFormDetail(self.getFormByFormName(response.data.results,form.concept.shortName,self.getFormVersion(form.groupMembers)).uuid, {
+                    return observationFormService.getFormDetail(self.getFormByFormName(response.data.results, form.concept.shortName, self.getFormVersion(form.groupMembers)).uuid, {
                         v: "custom:(resources:(value))"
                     })
                 }).then(function (response) {
-                        var formDetailsAsString = _.get(response, 'data.resources[0].value');
-                        if (formDetailsAsString) {
-                            var formDetails = JSON.parse(formDetailsAsString);
-                            forms.push(self.createSectionForSingleForm(form, formDetails));
-                        }
-                        observation.value = forms;
-                    })
+                    var formDetailsAsString = _.get(response, 'data.resources[0].value');
+                    if (formDetailsAsString) {
+                        var formDetails = JSON.parse(formDetailsAsString);
+                        forms.push(self.createSectionForSingleForm(form, formDetails));
+                    }
+                    observation.value = forms;
 
+                    console.log(bahmniObservations);
+                })
             });
         });
     };
