@@ -20,7 +20,10 @@ angular.module('consultation', ['ui.router', 'bahmni.clinical', 'bahmni.common.c
 angular.module('consultation')
     .config(['$stateProvider', '$httpProvider', '$urlRouterProvider', '$bahmniTranslateProvider', '$compileProvider',
         function ($stateProvider, $httpProvider, $urlRouterProvider, $bahmniTranslateProvider, $compileProvider) {
-            $urlRouterProvider.otherwise('/' + Bahmni.Clinical.Constants.defaultExtensionName + '/patient/search');
+            $urlRouterProvider.otherwise(function ($injector) {
+                var $state = $injector.get('$state');
+                $state.go('search.patientsearch', $state.params);
+            });
             $compileProvider.aHrefSanitizationWhitelist(/^\s*(https?|ftp|mailto|chrome-extension|file):/);
             $compileProvider.imgSrcSanitizationWhitelist(/^\s*(https?|local|data|blob|chrome-extension):/);
             var patientSearchBackLink = {
