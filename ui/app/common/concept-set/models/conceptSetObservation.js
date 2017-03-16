@@ -446,7 +446,6 @@ Bahmni.ConceptSet.Observation.prototype = {
 
     toggleVoidingOfImage: function () {
         this.voided = !this.voided;
-        return this.voided;
     },
 
     assignAddMoreButtonID: function () {
