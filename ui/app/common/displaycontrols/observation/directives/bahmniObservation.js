@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('bahmni.common.displaycontrol.observation')
-    .directive('bahmniObservation', ['observationsService', 'appService', '$q', 'spinner', '$rootScope',
-        function (observationsService, appService, $q, spinner, $rootScope) {
+    .directive('bahmniObservation', ['observationsService', 'appService', '$q', 'spinner', '$rootScope', 'observationFormService',
+        function (observationsService, appService, $q, spinner, $rootScope, observationFormService) {
             var controller = function ($scope) {
                 $scope.print = $rootScope.isBeingPrinted || false;
 
@@ -40,10 +40,13 @@ angular.module('bahmni.common.displaycontrol.observation')
                     }
 
                     $scope.bahmniObservations =
-                        new Bahmni.Common.DisplayControl.Observation.ConstructFunctions().createDummyObsGroupForObservationsForForm($scope.bahmniObservations);
+                        new Bahmni.Common.DisplayControl.Observation.ConstructFunctions().preProcessMultipleSelectObsToObs($scope.bahmniObservations);
                     $scope.bahmniObservations =
-                        new Bahmni.Common.DisplayControl.Observation.ConstructSectionIntoFormFunctions().createSectionForForm($scope.bahmniObservations);
+                        new Bahmni.Common.DisplayControl.Observation.ConstructFunctions().createDummyObsGroupForObservationsForForm($scope.bahmniObservations);
+
+                    new Bahmni.Common.DisplayControl.Observation.ConstructSectionIntoFormFunctions().createDummyObsGroupForSectionsForForm($scope.bahmniObservations, observationFormService);
                 };
+
                 var fetchObservations = function () {
                     if ($scope.observations) {
                         mapObservation($scope.observations, $scope.config);
