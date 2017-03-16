@@ -266,7 +266,6 @@ concept-set {
   }
   .consultation-image {
     padding: 5px;
-    overflow: hidden;
     clear: both;
     box-sizing: border-box;
     border-radius: 3px;
@@ -281,7 +280,14 @@ concept-set {
       height: 160px;
       overflow: hidden;
       position: relative;
-      border: 1px solid $lightGray;
+      border: 1px solid transparent;
+      border-radius: 3px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+      transition: all 0.3s cubic-bezier(.25,.8,.25,1);
+      &:hover {
+        box-shadow: 0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22);
+        border-color: $lightestGray;
+      }
       .comment-toggle {
         margin: 9px 10px 5px 0;
       }
@@ -292,10 +298,17 @@ concept-set {
       float: left;
       margin: 0;
       text-align: center;
-      border: 1px solid $lightGray;
+      border: 1px solid transparent;
+      border-radius: 3px;
       padding: 0;
       position: relative;
       cursor: pointer;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+      transition: all 0.3s cubic-bezier(.25,.8,.25,1);
+      &:hover {
+        box-shadow: 0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22);
+        border-color: $lightestGray;
+      }
       i {
         color: green;
         font-size: 18px;
