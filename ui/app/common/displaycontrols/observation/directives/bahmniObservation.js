@@ -39,8 +39,6 @@ angular.module('bahmni.common.displaycontrol.observation')
                         }
                     }
 
-                    $scope.bahmniObservations =
-                        new Bahmni.Common.DisplayControl.Observation.ConstructFunctions().preProcessMultipleSelectObsToObs($scope.bahmniObservations);
                     formHierarchyService.build($scope.bahmniObservations)
 
                 };
