@@ -1,6 +1,6 @@
 'use strict';
 
-ddescribe("FormHierarchyService", function () {
+describe("FormHierarchyService", function () {
     var formHierarchyService;
     var $q;
     var $scope;

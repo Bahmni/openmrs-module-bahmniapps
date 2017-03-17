@@ -60,7 +60,7 @@
         </ul>
     </div>
     <ul ng-if="::(!observation.isFormElement() && print)" class="visible-print">
-        <li ng-repeat="member in ::observation.groupMembers">
+        <li ng-repeat="member in observation.groupMembers">
             <ul>
                 <show-observation show-details-button="showDetailsButton" ng-if="::!observation.isFormElement()"
                                    observation="::member" patient="::patient" show-date="::showDate" show-time="::showTime"></show-observation>
