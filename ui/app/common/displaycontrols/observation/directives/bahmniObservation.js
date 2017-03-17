@@ -40,7 +40,6 @@ angular.module('bahmni.common.displaycontrol.observation')
                     }
 
                     formHierarchyService.build($scope.bahmniObservations)
-
                 };
 
                 var fetchObservations = function () {
