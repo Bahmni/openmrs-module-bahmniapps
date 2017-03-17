@@ -1,14 +1,19 @@
 'use strict';
 
-ddescribe("Construct Section Into Form Functions", function () {
+ddescribe("FormHierarchyService", function () {
+    var formHierarchyService;
     var $q;
     var $scope;
     var observations;
-    var allforms;
-    beforeEach(inject(function (_$q_, _$rootScope_) {
+    var allForms;
+    var observationFormService;
+    beforeEach(module('bahmni.common.displaycontrol.observation'));
+    beforeEach(inject(function (_formHierarchyService_, _$q_, _$rootScope_, _observationFormService_) {
+        formHierarchyService = _formHierarchyService_;
+        observationFormService = _observationFormService_;
         $q = _$q_;
         $scope = _$rootScope_;
-        allforms = {
+        allForms = {
             "data": {
                 "results": [
                     {
@@ -63,9 +68,284 @@ ddescribe("Construct Section Into Form Functions", function () {
                     }
                 ]
             }
-        }
-
+        };
     }));
+
+    it("should process multiple select type to observation", function () {
+        var observations = [{
+            "key": "1488782460000",
+            "value": [{
+                "type": "multiSelect",
+                "concept": {
+                    "uuid": "c4517f49-3f10-11e4-adec-0800271c1b75",
+                    "shortName":"P/A Presenting Part"
+                },
+                "groupMembers": [{
+                    "groupMembers": [],
+                    "concept": {
+                        "uuid": "c4517f49-3f10-11e4-adec-0800271c1b75",
+                        "shortName":"P/A Presenting Part"
+                    },
+                    "formFieldPath":"test single.5/2-0",
+                    "valueAsString": "Breech",
+                    "value": {
+                        "uuid": "c45329de-3f10-11e4-adec-0800271c1b75",
+                        "shortName":"Breech"
+                    },
+                    "conceptConfig": {"multiSelect": true}
+                }],
+                "conceptConfig": {"multiSelect": true}
+            }]
+        }];
+
+        formHierarchyService.build(observations);
+
+        var value = observations[0].value[0];
+        expect(value.concept.shortName).toBe("test single");
+        expect(value.groupMembers.length).toBe(1);
+        expect(value.groupMembers[0].concept.shortName).toBe("P/A Presenting Part");
+    });
+
+    it("should construct dummy obs group for single observation from form", function () {
+        var observations = [{
+            "key": "1488782460000",
+            "value": [{
+                "groupMembers": [],
+                "formNamespace": "Bahmni",
+                "formFieldPath": "myForm.1/1-0",
+                "concept": {
+                    "uuid": "72ae28f1-4be4-499a-a8f5-aff54a11c9e3",
+                    "name": "Sickling Test",
+                    "dataType": "Text",
+                    "shortName": "Sickling Test",
+                    "conceptClass": "LabTest",
+                    "hiNormal": null,
+                    "lowNormal": null,
+                    "set": false,
+                    "mappings": []
+                },
+                "valueAsString": "1",
+                "conceptNameToDisplay": "Sickling Test",
+                "value": "1",
+                "conceptConfig": []
+            }],
+            "date": "1488782460000",
+            "isOpen": true
+        }];
+
+        formHierarchyService.build(observations);
+
+        var value = observations[0].value[0];
+        expect(value.concept.shortName).toBe("myForm");
+        expect(value.groupMembers.length).toBe(1);
+        expect(value.groupMembers[0].concept.shortName).toBe("Sickling Test");
+    });
+
+    it('should construct dummy obs group for single observation from form within multiple observations', function () {
+        var observations = [{
+            "value": [{
+                "targetObsRelation": null,
+                "groupMembers": [{
+                    "formNamespace": null,
+                    "formFieldPath": null,
+                    "concept": {
+                        "name": "SPO2 Data",
+                        "shortName": "SPO2",
+                    },
+                    "valueAsString": "100.0",
+                    "conceptNameToDisplay": "SPO2",
+                }],
+                "formNamespace": null,
+                "formFieldPath": null,
+                "concept": {
+                    "name": "Vitals",
+                    "shortName": "Vitals",
+                },
+            }, {
+                "groupMembers": [],
+                "formNamespace": "Bahmni",
+                "formFieldPath": "test.1/1-0",
+                "concept": {
+                    "name": "HEAD Nose lateral",
+                    "shortName": "head nose lateral",
+                }
+            }]
+        }]
+
+        formHierarchyService.build(observations);
+
+        var firstValue = observations[0].value[0];
+        expect(firstValue.concept.shortName).toBe('Vitals');
+        expect(firstValue.groupMembers.length).toBe(1);
+        expect(firstValue.groupMembers[0].concept.shortName).toBe("SPO2");
+
+        var secondValue = observations[0].value[1];
+        expect(secondValue.concept.shortName).toBe('test');
+        expect(secondValue.groupMembers.length).toBe(1);
+        expect(secondValue.groupMembers[0].concept.shortName).toBe("head nose lateral");
+    });
+
+    it('should construct dummy obs group for multiple observations from one form', function () {
+        var observations = [{
+            "key": "1488790440000",
+            "value": [{
+                "groupMembers": [],
+                "formNamespace": "Bahmni",
+                "formFieldPath": "test.2/2-0",
+                "concept": {
+                    "shortName": "HEIGHT"
+                }
+            }, {
+                "groupMembers": [],
+                "formNamespace": "Bahmni",
+                "formFieldPath": "test.2/1-0",
+                "concept": {
+                    "shortName": "head nose lateral"
+                }
+
+            }]
+        }]
+
+        formHierarchyService.build(observations);
+
+        expect(observations[0].value.length).toBe(1);
+
+        var firstValue = observations[0].value[0];
+        expect(firstValue.concept.shortName).toBe('test');
+        expect(firstValue.groupMembers.length).toBe(2);
+        expect(firstValue.groupMembers[0].concept.shortName).toBe("HEIGHT");
+        expect(firstValue.groupMembers[1].concept.shortName).toBe("head nose lateral");
+    });
+
+    it('should construct dummy obs group for obsGroup observations from one form', function () {
+        var observations = [{
+            "value": [{
+                "groupMembers": [{
+                    "groupMembers": [{
+                        "groupMembers": [],
+                        "formFieldPath": "hello.1/14-0",
+                        "concept": {
+                            "shortName": "Temperature"
+                        }
+                    }, {
+                        "groupMembers": [],
+                        "formFieldPath": "hello.1/13-0",
+                        "concept": {
+                            "shortName": "Temperature Abnormal"
+                        }
+                    }],
+                    "formFieldPath": "hello.1/26-0",
+                    "concept": {
+                        "shortName": "Blood Pressure"
+                    }
+                }, {
+                    "groupMembers": [],
+                    "formNamespace": "Bahmni",
+                    "formFieldPath": "hello.1/15-0",
+                    "concept": {
+                        "shortName": "Temperature"
+                    }
+                }, {
+                    "groupMembers": [],
+                    "formFieldPath": "hello.1/12-0",
+                    "concept": {
+                        "shortName": "RR"
+                    }
+                }, {
+                    "groupMembers": [],
+                    "formFieldPath": "hello.1/9-0",
+                    "concept": {
+                        "shortName": "SPO2"
+                    }
+                }],
+                "formFieldPath": "hello.1/3-0",
+                "concept": {
+                    "shortName": "Vitals"
+                }
+            }, {
+                "groupMembers": [],
+                "formFieldPath": "hello.1/1-0",
+                "concept": {
+                    "shortName": "HEIGHT"
+                }
+            }, {
+                "groupMembers": [],
+                "formFieldPath": "hello.1/2-0",
+
+                "concept": {
+                    "shortName": "WEIGHT"
+                }
+            }]
+        }];
+
+
+        formHierarchyService.build(observations);
+
+        expect(observations[0].value.length).toBe(1);
+        var firstValue = observations[0].value[0];
+        expect(firstValue.concept.shortName).toBe('hello');
+
+        expect(firstValue.groupMembers.length).toBe(3);
+        expect(firstValue.groupMembers[0].concept.shortName).toBe("Vitals");
+        expect(firstValue.groupMembers[0].groupMembers.length).toBe(4);
+        expect(firstValue.groupMembers[0].groupMembers[0].concept.shortName)
+            .toBe("Blood Pressure");
+
+        expect(firstValue.groupMembers[1].concept.shortName).toBe("HEIGHT");
+        expect(firstValue.groupMembers[2].concept.shortName).toBe("WEIGHT");
+
+    });
+
+    it('should construct dummy obs group for multiple observations from different form', function () {
+        var observations = [{
+            "key": "1488790440000",
+            "value": [{
+                "groupMembers": [],
+                "formNamespace": "Bahmni",
+                "formFieldPath": "test.2/2-0",
+                "concept": {
+                    "shortName": "HEIGHT"
+                }
+            }, {
+                "groupMembers": [],
+                "formNamespace": "Bahmni",
+                "formFieldPath": "test1.2/2-0",
+                "concept": {
+                    "shortName": "HEIGHT"
+                }
+            }, {
+                "groupMembers": [],
+                "formNamespace": "Bahmni",
+                "formFieldPath": "test.2/1-0",
+                "concept": {
+                    "shortName": "head nose lateral"
+                },
+            }, {
+                "groupMembers": [],
+                "formNamespace": "Bahmni",
+                "formFieldPath": "test1.2/1-0",
+                "concept": {
+                    "shortName": "head nose lateral"
+                },
+            }]
+        }]
+
+        formHierarchyService.build(observations);
+
+        expect(observations[0].value.length).toBe(2);
+
+        var firstValue = observations[0].value[0];
+        expect(firstValue.concept.shortName).toBe('test');
+        expect(firstValue.groupMembers.length).toBe(2);
+        expect(firstValue.groupMembers[0].concept.shortName).toBe("HEIGHT");
+        expect(firstValue.groupMembers[1].concept.shortName).toBe("head nose lateral");
+
+        var secondValue = observations[0].value[1];
+        expect(secondValue.concept.shortName).toBe('test1');
+        expect(secondValue.groupMembers.length).toBe(2);
+        expect(secondValue.groupMembers[0].concept.shortName).toBe("HEIGHT");
+        expect(secondValue.groupMembers[1].concept.shortName).toBe("head nose lateral");
+    });
 
     it("should construct dummy obs group for single observation in section from form", function () {
         observations = [{
@@ -104,19 +384,15 @@ ddescribe("Construct Section Into Form Functions", function () {
             }
 
         };
-        var service = {
-            getAllForms: angular.noop,
-            getFormDetail: angular.noop
-        };
 
         var formDetailDeferred = $q.defer();
         var allFormsDeferred = $q.defer();
 
-        spyOn(service, "getAllForms").and.returnValue(allFormsDeferred.promise);
-        spyOn(service, "getFormDetail").and.returnValue(formDetailDeferred.promise);
+        spyOn(observationFormService, "getAllForms").and.returnValue(allFormsDeferred.promise);
+        spyOn(observationFormService, "getFormDetail").and.returnValue(formDetailDeferred.promise);
 
-        new Bahmni.Common.DisplayControl.Observation.ConstructSectionIntoFormFunctions().createDummyObsGroupForSectionsForForm(observations, service);
-        allFormsDeferred.resolve(allforms)
+        formHierarchyService.build(observations);
+        allFormsDeferred.resolve(allForms)
         formDetailDeferred.resolve(formDetails);
         $scope.$apply();
 
@@ -131,6 +407,7 @@ ddescribe("Construct Section Into Form Functions", function () {
         expect(layer2FirstGroupMember.concept.shortName).toBe("WEIGHT");
         expect(layer2FirstGroupMember.valueAsString).toBe("50.0");
     });
+
 
     it("should construct dummy obs group for section and non-inside section obs from form", function () {
         //given
@@ -183,19 +460,15 @@ ddescribe("Construct Section Into Form Functions", function () {
                 }]
             }
         };
-        var service = {
-            getAllForms: angular.noop,
-            getFormDetail: angular.noop
-        };
 
         var formDetailDeferred = $q.defer();
         var allFormsDeferred = $q.defer();
 
-        spyOn(service, "getAllForms").and.returnValue(allFormsDeferred.promise);
-        spyOn(service, "getFormDetail").and.returnValue(formDetailDeferred.promise);
+        spyOn(observationFormService, "getAllForms").and.returnValue(allFormsDeferred.promise);
+        spyOn(observationFormService, "getFormDetail").and.returnValue(formDetailDeferred.promise);
 
-        new Bahmni.Common.DisplayControl.Observation.ConstructSectionIntoFormFunctions().createDummyObsGroupForSectionsForForm(observations, service);
-        allFormsDeferred.resolve(allforms)
+        formHierarchyService.build(observations);
+        allFormsDeferred.resolve(allForms)
         formDetailDeferred.resolve(formDetails);
         $scope.$apply();
 
@@ -216,7 +489,6 @@ ddescribe("Construct Section Into Form Functions", function () {
         expect(layer2FirstGroupMember.valueAsString).toBe("30.0");
 
     });
-
 
     it("should construct dummy obs group for section inside section with obs from form", function () {
         //given
@@ -275,19 +547,15 @@ ddescribe("Construct Section Into Form Functions", function () {
                 }]
             }
         };
-        var service = {
-            getAllForms: angular.noop,
-            getFormDetail: angular.noop
-        };
 
         var formDetailDeferred = $q.defer();
         var allFormsDeferred = $q.defer();
 
-        spyOn(service, "getAllForms").and.returnValue(allFormsDeferred.promise);
-        spyOn(service, "getFormDetail").and.returnValue(formDetailDeferred.promise);
+        spyOn(observationFormService, "getAllForms").and.returnValue(allFormsDeferred.promise);
+        spyOn(observationFormService, "getFormDetail").and.returnValue(formDetailDeferred.promise);
 
-        new Bahmni.Common.DisplayControl.Observation.ConstructSectionIntoFormFunctions().createDummyObsGroupForSectionsForForm(observations, service);
-        allFormsDeferred.resolve(allforms)
+        formHierarchyService.build(observations);
+        allFormsDeferred.resolve(allForms)
         formDetailDeferred.resolve(formDetails);
         $scope.$apply();
 
@@ -411,19 +679,14 @@ ddescribe("Construct Section Into Form Functions", function () {
             }
         };
 
-        var service = {
-            getAllForms: angular.noop,
-            getFormDetail: angular.noop
-        };
-
         var formDetailDeferred = $q.defer();
         var allFormsDeferred = $q.defer();
 
-        spyOn(service, "getAllForms").and.returnValue(allFormsDeferred.promise);
-        spyOn(service, "getFormDetail").and.returnValue(formDetailDeferred.promise);
+        spyOn(observationFormService, "getAllForms").and.returnValue(allFormsDeferred.promise);
+        spyOn(observationFormService, "getFormDetail").and.returnValue(formDetailDeferred.promise);
 
-        new Bahmni.Common.DisplayControl.Observation.ConstructSectionIntoFormFunctions().createDummyObsGroupForSectionsForForm(observations, service);
-        allFormsDeferred.resolve(allforms)
+        formHierarchyService.build(observations);
+        allFormsDeferred.resolve(allForms)
         formDetailDeferred.resolve(formDetails);
         $scope.$apply();
 
@@ -444,9 +707,9 @@ ddescribe("Construct Section Into Form Functions", function () {
         expect(layer3FirstGroupMemberInLayer2FirstMember.concept.shortName).toBe("HEIGHT");
         expect(layer3FirstGroupMemberInLayer2FirstMember.valueAsString).toBe("160.0");
 
-        var layer3SecondGroupMemberInLayer2FisrtMember = layer2FirstGroupMember.groupMembers[1];
-        expect(layer3SecondGroupMemberInLayer2FisrtMember.concept.shortName).toBe("HEIGHT Abnormal");
-        expect(layer3SecondGroupMemberInLayer2FisrtMember.valueAsString).toBe("No");
+        var layer3SecondGroupMemberInLayer2FirstMember = layer2FirstGroupMember.groupMembers[1];
+        expect(layer3SecondGroupMemberInLayer2FirstMember.concept.shortName).toBe("HEIGHT Abnormal");
+        expect(layer3SecondGroupMemberInLayer2FirstMember.valueAsString).toBe("No");
 
         var layer2SecondGroupMember = layer1FirstGroupMember.groupMembers[1];
         expect(layer2SecondGroupMember.concept.shortName).toBe("Inner Section");
@@ -502,26 +765,20 @@ ddescribe("Construct Section Into Form Functions", function () {
             }
 
         };
-        var service = {
-            getAllForms: angular.noop,
-            getFormDetail: angular.noop
-        };
 
         var formDetailDeferred = $q.defer();
         var allFormsDeferred = $q.defer();
 
-        spyOn(service, "getAllForms").and.returnValue(allFormsDeferred.promise);
-        spyOn(service, "getFormDetail").and.returnValue(formDetailDeferred.promise);
+        spyOn(observationFormService, "getAllForms").and.returnValue(allFormsDeferred.promise);
+        spyOn(observationFormService, "getFormDetail").and.returnValue(formDetailDeferred.promise);
 
-        new Bahmni.Common.DisplayControl.Observation.ConstructSectionIntoFormFunctions().createDummyObsGroupForSectionsForForm(observations, service);
-        allFormsDeferred.resolve(allforms)
+        formHierarchyService.build(observations);
+        allFormsDeferred.resolve(allForms)
         formDetailDeferred.resolve(formDetails);
         $scope.$apply();
 
-        expect(service.getFormDetail).toHaveBeenCalledWith("version2",
+        expect(observationFormService.getFormDetail).toHaveBeenCalledWith("version2",
             {v: "custom:(resources:(value))"});
     });
 
 });
-
-
