@@ -270,26 +270,47 @@ concept-set {
     box-sizing: border-box;
     border-radius: 3px;
     position: relative;
+    width: 200px;
+    text-align: center;
     button {
       position: absolute;
       top: 0;
-      right: 0;
     }
     .file{
       width: 160px;
       height: 160px;
+      display: inline-block;
       overflow: hidden;
       position: relative;
-      border: 1px solid transparent;
+      border: 1px solid $lightestGray;
       border-radius: 3px;
-      box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
-      transition: all 0.3s cubic-bezier(.25,.8,.25,1);
-      &:hover {
-        box-shadow: 0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22);
-        border-color: $lightestGray;
-      }
       .comment-toggle {
         margin: 9px 10px 5px 0;
+      }
+      .row-remover{
+        margin:0;
+        right: 0;
+        padding: 0;
+        background: transparent;
+        border: none;
+        outline: 0;
+        span {
+          color: #F40428;
+          text-shadow:1px 1px 1px #8E0010 ;
+        }
+      }
+      .undo-img-delete {
+        width: 100%;
+        left: 0;
+        height: 100%;
+        background: rgba(255, 255, 255, 0.9);
+        span {
+          color: #88af28;
+          font-size: 30px;
+        }
+        &:hover {
+          opacity: 1;
+        }
       }
     }
     .placeholder {
@@ -333,9 +354,6 @@ concept-set {
     .file img.has-image {
       width: 100%;
       vertical-align: middle;
-      &.voided {
-        opacity: 0.1;
-      }
     }
 
     .comment-toggle {
@@ -347,6 +365,11 @@ concept-set {
       .placeholder.btn {
         opacity:0.4;
       }
+    }
+    input, textarea {
+      width: 100% !important;
+      display: inline-block;
+      box-sizing: border-box;
     }
   }
   .form-group.form-group-video{
@@ -374,9 +397,6 @@ concept-set {
       cursor: pointer;
       border: 1px solid $lightGray;
       border-radius: 3px;
-    }
-    .row-remover{
-      margin:0;
     }
   }
 }

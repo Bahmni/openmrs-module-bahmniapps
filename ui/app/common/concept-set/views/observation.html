@@ -202,14 +202,14 @@
                                 class="fa fa-plus needsclick"></i></label>
 
                         <div ng-show="observation.value && !hasPDFAsValue()" class="file">
-                            <img ng-if="observation.value && !hasPDFAsValue()" ng-src="{{observation.value|thumbnail}}" width="100"
+                            <img ng-if="observation.value && !hasPDFAsValue()" ng-src="{{observation.value|thumbnail}}"
                                  ng-class="{'has-image': observation.value, 'voided': observation.voided}">
                             <i ng-if="hasPDFAsValue()" class="fa fa-file-pdf-o"></i>
                             <button type="button" ng-click="observation.toggleVoidingOfImage()"
                                     ng-if="observation.value" class="row-remover">
                                 <span class="fa fa-remove"></span>
                             </button>
-                            <button type="button" ng-if="observation.voided" ng-click="observation.toggleVoidingOfImage()">
+                            <button type="button" title="Undo Delete" class="undo-img-delete" ng-if="observation.voided" ng-click="observation.toggleVoidingOfImage()">
                                 <span class="fa fa-undo"></span>
                             </button>
                         </div>
