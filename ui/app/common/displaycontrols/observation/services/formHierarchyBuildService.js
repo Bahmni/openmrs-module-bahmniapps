@@ -1,7 +1,68 @@
 'use strict';
 
-Bahmni.Common.DisplayControl.Observation.ConstructSectionIntoFormFunctions = function () {
+angular.module('bahmni.common.displaycontrol.observation').
+service('formHierarchyService', ['observationFormService', function (observationFormService) {
     var self = this;
+
+    self.build = function (observations) {
+        var obs = self.preProcessMultipleSelectObsToObs(observations);
+        obs = self.createDummyObsGroupForObservationsForForm(obs);
+        self.createDummyObsGroupForSectionsForForm(obs)
+    };
+
+    self.preProcessMultipleSelectObsToObs = function (observations) {
+        _.forEach(observations, function (obs) {
+            _.forEach(obs.value, function (value, index) {
+                if (value.type == "multiSelect") {
+                    obs.value.push(value.groupMembers[0]);
+                    obs.value.splice(index,1);
+                }
+            })
+        });
+        return observations;
+    };
+
+    self.createDummyObsGroupForObservationsForForm = function (observations) {
+        _.forEach(observations, function (obs) {
+            var newValues = [];
+            _.forEach(obs.value, function (value) {
+                if (!value.formFieldPath) {
+                    newValues.push(value);
+                    return;
+                }
+
+                var dummyObsGroup = {
+                    "groupMembers": [],
+                    "concept": {
+                        "shortName": "",
+                        "conceptClass": null
+                    },
+                    "encounterUuid": ""
+                };
+
+                dummyObsGroup.concept.shortName = value.formFieldPath.split('.')[0];
+                dummyObsGroup.encounterUuid = value.encounterUuid;
+                var previousDummyObsGroupFound;
+                _.forEach(newValues, function (newValue) {
+                    if (dummyObsGroup.concept.shortName == newValue.concept.shortName) {
+                        newValue.groupMembers.push(value);
+                        previousDummyObsGroupFound = true;
+                    }
+                });
+
+                if (previousDummyObsGroupFound) {
+                    return;
+                }
+
+                dummyObsGroup.groupMembers.push(value);
+                newValues.push(dummyObsGroup);
+            });
+
+            obs.value = newValues;
+        });
+
+        return observations;
+    }
 
     self.getFormVersion = function (members) {
         var formVersion;
@@ -64,7 +125,7 @@ Bahmni.Common.DisplayControl.Observation.ConstructSectionIntoFormFunctions = fun
         return self.parseSection(members, formDetails.controls, obsFromSameForm);
     };
 
-    self.createDummyObsGroupForSectionsForForm = function (bahmniObservations, observationFormService, $scope) {
+    self.createDummyObsGroupForSectionsForForm = function (bahmniObservations) {
         _.forEach(bahmniObservations, function (observation) {
             var forms = [];
             _.forEach(observation.value, function (form) {
@@ -88,6 +149,5 @@ Bahmni.Common.DisplayControl.Observation.ConstructSectionIntoFormFunctions = fun
             });
         });
     };
-
-    return self;
-};
+}
+]);
