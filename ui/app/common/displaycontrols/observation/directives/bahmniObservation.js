@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('bahmni.common.displaycontrol.observation')
-    .directive('bahmniObservation', ['observationsService', 'appService', '$q', 'spinner', '$rootScope', 'observationFormService',
-        function (observationsService, appService, $q, spinner, $rootScope, observationFormService) {
+    .directive('bahmniObservation', ['observationsService', 'appService', '$q', 'spinner', '$rootScope', 'formHierarchyService',
+        function (observationsService, appService, $q, spinner, $rootScope, formHierarchyService) {
             var controller = function ($scope) {
                 $scope.print = $rootScope.isBeingPrinted || false;
 
@@ -41,10 +41,8 @@ angular.module('bahmni.common.displaycontrol.observation')
 
                     $scope.bahmniObservations =
                         new Bahmni.Common.DisplayControl.Observation.ConstructFunctions().preProcessMultipleSelectObsToObs($scope.bahmniObservations);
-                    $scope.bahmniObservations =
-                        new Bahmni.Common.DisplayControl.Observation.ConstructFunctions().createDummyObsGroupForObservationsForForm($scope.bahmniObservations);
+                    formHierarchyService.build($scope.bahmniObservations)
 
-                    new Bahmni.Common.DisplayControl.Observation.ConstructSectionIntoFormFunctions().createDummyObsGroupForSectionsForForm($scope.bahmniObservations, observationFormService);
                 };
 
                 var fetchObservations = function () {
