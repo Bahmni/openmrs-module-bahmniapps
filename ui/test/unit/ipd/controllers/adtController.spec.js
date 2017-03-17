@@ -479,6 +479,12 @@ describe("AdtController", function () {
         scope.adtObservations = [];
         var encounterCreateResponse = {data: {patientUuid: '123', encounterUuid: "encounterUuid"}, encounterTypeUuid: "dischargeEncounterTypeUuid"};
         encounterService.discharge.and.returnValue(specUtil.simplePromise(encounterCreateResponse));
+        visitService.endVisit.and.returnValue({
+            then: function (successFn) {
+                return;
+            }
+        });
+
 
         createController();
 
@@ -492,6 +498,5 @@ describe("AdtController", function () {
             locationUuid: 'someLocationUuid'
         };
         expect(encounterService.discharge).toHaveBeenCalledWith(mappedEncounterData);
-        expect(ngDialog.close).toHaveBeenCalled();
     });
 });
