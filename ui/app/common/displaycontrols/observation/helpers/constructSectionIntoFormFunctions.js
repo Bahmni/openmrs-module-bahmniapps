@@ -84,8 +84,6 @@ Bahmni.Common.DisplayControl.Observation.ConstructSectionIntoFormFunctions = fun
                         forms.push(self.createSectionForSingleForm(form, formDetails));
                     }
                     observation.value = forms;
-
-                    console.log(bahmniObservations);
                 })
             });
         });
