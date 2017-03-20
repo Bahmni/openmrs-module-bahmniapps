@@ -99,9 +99,10 @@ service('formHierarchyService', ['observationFormService', function (observation
             if (control.type == "section") {
                 dummyObsGroup.concept.shortName = control.label.value;
                 value.groupMembers.push(dummyObsGroup);
-                sectionIsEmpty = false;
                 if (!self.parseSection(members, control.controls, dummyObsGroup)) {
                     value.groupMembers.pop();
+                }else {
+                    sectionIsEmpty = false;
                 }
             } else {
                 var member = self.getMemberFromFormByFormFieldPath(members, control.id)
@@ -116,7 +117,7 @@ service('formHierarchyService', ['observationFormService', function (observation
             return null;
         }
         return value;
-    }
+    };
 
     self.createSectionForSingleForm = function (obsFromSameForm, formDetails) {
         var members = obsFromSameForm.groupMembers.slice();

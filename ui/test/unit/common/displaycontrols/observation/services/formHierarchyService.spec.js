@@ -78,19 +78,19 @@ describe("FormHierarchyService", function () {
                 "type": "multiSelect",
                 "concept": {
                     "uuid": "c4517f49-3f10-11e4-adec-0800271c1b75",
-                    "shortName":"P/A Presenting Part"
+                    "shortName": "P/A Presenting Part"
                 },
                 "groupMembers": [{
                     "groupMembers": [],
                     "concept": {
                         "uuid": "c4517f49-3f10-11e4-adec-0800271c1b75",
-                        "shortName":"P/A Presenting Part"
+                        "shortName": "P/A Presenting Part"
                     },
-                    "formFieldPath":"test single.5/2-0",
+                    "formFieldPath": "test single.5/2-0",
                     "valueAsString": "Breech",
                     "value": {
                         "uuid": "c45329de-3f10-11e4-adec-0800271c1b75",
-                        "shortName":"Breech"
+                        "shortName": "Breech"
                     },
                     "conceptConfig": {"multiSelect": true}
                 }],
@@ -911,5 +911,72 @@ describe("FormHierarchyService", function () {
         expect(layer2FirstGroupMember.concept.shortName).toBe("HEIGHT");
         expect(layer2FirstGroupMember.valueAsString).toBe("160.0");
     });
+    iit("should hide section information when there is no input in the section inside the section and input in outside obs", function () {
+        //given
+        observations = [{
+            "value": [{
+                "groupMembers": [{
+                    "groupMembers": [],
+                    "formFieldPath": "test section with an obs and outside obs.1/3-0",
+                    "concept": {
+                        "uuid": "5089AAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+                        "name": "WEIGHT",
+                        "dataType": "Numeric",
+                        "shortName": "WEIGHT"
+                    },
+                    "valueAsString": "50.0"
+                }], "concept": {"shortName": "test section with an obs and outside obs", "conceptClass": null}
+            }]
+        }];
 
+        var formDetails = {
+            "data": {
+                "resources": [{
+                    "value": JSON.stringify({
+                        "name": "test inside section with obs",
+                        "controls": [{
+                            "type": "obsControl",
+                            "label": {"type": "label", "value": "WEIGHT"},
+                            "id": "3"
+                        },
+                            {
+                                "type": "section",
+                                "label": {"type": "label", "value": "Outer Section"},
+                                "id": "1",
+                                "controls": [{
+                                    "type": "section",
+                                    "label": {"type": "label", "value": "Inner Section"},
+                                    "id": "4",
+                                    "controls": [{
+                                        "type": "obsControl",
+                                        "label": {"type": "label", "value": "HEIGHT"},
+                                        "id": "2"
+                                    }]
+                                }]
+
+                            }]
+                    })
+                }]
+            }
+        };
+        var formDetailDeferred = $q.defer();
+        var allFormsDeferred = $q.defer();
+
+        spyOn(observationFormService, "getAllForms").and.returnValue(allFormsDeferred.promise);
+        spyOn(observationFormService, "getFormDetail").and.returnValue(formDetailDeferred.promise);
+
+        formHierarchyService.build(observations);
+        allFormsDeferred.resolve(allForms)
+        formDetailDeferred.resolve(formDetails);
+        $scope.$apply();
+
+        //then
+        var dummyObsGroup = observations[0].value[0];
+        expect(dummyObsGroup.concept.shortName).toBe("test section with an obs and outside obs");
+        expect(dummyObsGroup.groupMembers.length).toBe(1);
+
+        var layer1FirstGroupMember = dummyObsGroup.groupMembers[0];
+        expect(layer1FirstGroupMember.concept.shortName).toBe("WEIGHT");
+        expect(layer1FirstGroupMember.valueAsString).toBe("50.0");
+    });
 });
