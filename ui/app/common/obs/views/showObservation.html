@@ -55,7 +55,7 @@
     </div>
     <div>
         <ul ng-if="::(!observation.isFormElement() && !print)" class="hidden-print">
-            <show-observation  show-details-button="::showDetailsButton" ng-if="::!observation.isFormElement()" ng-repeat="member in ::observation.groupMembers"
+            <show-observation  show-details-button="::showDetailsButton" ng-if="::!observation.isFormElement()" ng-repeat="member in observation.groupMembers"
                               observation="::member" patient="::patient" show-date="::showDate" show-time="::showTime" ng-class="{'video-concept-show': member.isVideoConcept()}"></show-observation>
         </ul>
     </div>
