@@ -781,7 +781,7 @@ describe("FormHierarchyService", function () {
             {v: "custom:(resources:(value))"});
     });
 
-    iit("should hide section information when there is no input in the section", function () {
+    it("should hide section information when there is no input in the section", function () {
         //given
         observations = [{
             "value": [{
@@ -845,7 +845,7 @@ describe("FormHierarchyService", function () {
 
 
     });
-    iit("should show section information when there is input in the section and no input in the outside obs", function () {
+    it("should show section information when there is input in the section and no input in the outside obs", function () {
         //given
         observations = [{
             "value": [{
@@ -911,7 +911,7 @@ describe("FormHierarchyService", function () {
         expect(layer2FirstGroupMember.concept.shortName).toBe("HEIGHT");
         expect(layer2FirstGroupMember.valueAsString).toBe("160.0");
     });
-    iit("should hide section information when there is no input in the section inside the section and input in outside obs", function () {
+    it("should hide section information when there is no input in the section inside the section and input in outside obs", function () {
         //given
         observations = [{
             "value": [{
