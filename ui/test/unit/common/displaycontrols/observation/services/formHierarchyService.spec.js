@@ -781,4 +781,69 @@ describe("FormHierarchyService", function () {
             {v: "custom:(resources:(value))"});
     });
 
+    iit("should hide section information when there is no input in the section", function () {
+        //given
+        observations = [{
+            "value": [{
+                "groupMembers": [{
+                    "groupMembers": [],
+                    "formFieldPath": "test section with an obs and outside obs.1/3-0",
+                    "concept": {
+                        "uuid": "5089AAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+                        "name": "WEIGHT",
+                        "dataType": "Numeric",
+                        "shortName": "WEIGHT"
+                    },
+                    "valueAsString": "50.0"
+                }], "concept": {"shortName": "test section with an obs and outside obs", "conceptClass": null}
+            }]
+        }];
+
+        var formDetails = {
+            "data": {
+                "resources": [{
+                    "value": JSON.stringify({
+                        "name": "test section with an obs and outside obs",
+                        "controls": [{
+                            "type": "section",
+                            "label": {"type": "label", "value": "Outer Section"},
+                            "id": "1",
+                            "controls": [{
+                                "type": "obsControl",
+                                "label": {"type": "label", "value": "HEIGHT"},
+                                "id": "2"
+                            }]
+                        }, {
+                            "type": "obsControl",
+                            "label": {"type": "label", "value": "WEIGHT"},
+                            "id": "3"
+                        }]
+                    })
+                }]
+            }
+        };
+
+        var formDetailDeferred = $q.defer();
+        var allFormsDeferred = $q.defer();
+
+        spyOn(observationFormService, "getAllForms").and.returnValue(allFormsDeferred.promise);
+        spyOn(observationFormService, "getFormDetail").and.returnValue(formDetailDeferred.promise);
+
+        formHierarchyService.build(observations);
+        allFormsDeferred.resolve(allForms)
+        formDetailDeferred.resolve(formDetails);
+        $scope.$apply();
+
+        //then
+        var dummyObsGroup = observations[0].value[0];
+        expect(dummyObsGroup.concept.shortName).toBe("test section with an obs and outside obs");
+        expect(dummyObsGroup.groupMembers.length).toBe(1);
+
+        var layer1SecondGroupMember = dummyObsGroup.groupMembers[0];
+        expect(layer1SecondGroupMember.concept.shortName).toBe("WEIGHT");
+        expect(layer1SecondGroupMember.valueAsString).toBe("50.0");
+
+
+    });
+
 });
