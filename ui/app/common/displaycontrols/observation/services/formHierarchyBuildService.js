@@ -1,7 +1,7 @@
 'use strict';
 
-angular.module('bahmni.common.displaycontrol.observation').
-service('formHierarchyService', ['observationFormService', function (observationFormService) {
+angular.module('bahmni.common.displaycontrol.observation')
+    .service('formHierarchyService', ['observationFormService', 'spinner', function (observationFormService) {
     var self = this;
 
     self.build = function (observations) {
@@ -15,7 +15,7 @@ service('formHierarchyService', ['observationFormService', function (observation
             _.forEach(obs.value, function (value, index) {
                 if (value.type == "multiSelect") {
                     obs.value.push(value.groupMembers[0]);
-                    obs.value.splice(index,1);
+                    obs.value.splice(index, 1);
                 }
             })
         });
@@ -101,7 +101,7 @@ service('formHierarchyService', ['observationFormService', function (observation
                 value.groupMembers.push(dummyObsGroup);
                 if (!self.parseSection(members, control.controls, dummyObsGroup)) {
                     value.groupMembers.pop();
-                }else {
+                } else {
                     sectionIsEmpty = false;
                 }
             } else {
@@ -127,26 +127,26 @@ service('formHierarchyService', ['observationFormService', function (observation
     };
 
     self.createDummyObsGroupForSectionsForForm = function (bahmniObservations) {
-        _.forEach(bahmniObservations, function (observation) {
-            var forms = [];
-            _.forEach(observation.value, function (form) {
-
-                if (form.concept.conceptClass) {
-                    forms.push(form);
-                    return;
-                }
-                observationFormService.getAllForms().then(function (response) {
-                    return observationFormService.getFormDetail(self.getFormByFormName(response.data.results, form.concept.shortName, self.getFormVersion(form.groupMembers)).uuid, {
-                        v: "custom:(resources:(value))"
-                    })
-                }).then(function (response) {
-                    var formDetailsAsString = _.get(response, 'data.resources[0].value');
-                    if (formDetailsAsString) {
-                        var formDetails = JSON.parse(formDetailsAsString);
-                        forms.push(self.createSectionForSingleForm(form, formDetails));
+        observationFormService.getAllFormsgetAllForms().then(function (response) {
+            var allForms = response.data.results;
+            _.forEach(bahmniObservations, function (observation) {
+                var forms = [];
+                _.forEach(observation.value, function (form) {
+                    if (form.concept.conceptClass) {
+                        forms.push(form);
+                        return;
                     }
-                    observation.value = forms;
-                })
+                    observationFormService.getFormDetail(self.getFormByFormName(allForms, form.concept.shortName, self.getFormVersion(form.groupMembers)).uuid, {
+                        v: "custom:(resources:(value))"
+                    }).then(function (response) {
+                            var formDetailsAsString = _.get(response, 'data.resources[0].value');
+                            if (formDetailsAsString) {
+                                var formDetails = JSON.parse(formDetailsAsString);
+                                forms.push(self.createSectionForSingleForm(form, formDetails));
+                            }
+                            observation.value = forms;
+                        });
+                });
             });
         });
     };
