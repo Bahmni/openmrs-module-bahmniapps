@@ -845,5 +845,71 @@ describe("FormHierarchyService", function () {
 
 
     });
+    iit("should show section information when there is input in the section and no input in the outside obs", function () {
+        //given
+        observations = [{
+            "value": [{
+                "groupMembers": [{
+                    "groupMembers": [],
+                    "formFieldPath": "test section with an obs and outside obs.1/2-0",
+                    "concept": {
+                        "uuid": "5089AAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+                        "name": "HEIGHT",
+                        "dataType": "Numeric",
+                        "shortName": "HEIGHT"
+                    },
+                    "valueAsString": "160.0"
+                }], "concept": {"shortName": "test section with an obs and outside obs", "conceptClass": null}
+            }]
+        }];
+
+        var formDetails = {
+            "data": {
+                "resources": [{
+                    "value": JSON.stringify({
+                        "name": "test section with an obs and outside obs",
+                        "controls": [{
+                            "type": "section",
+                            "label": {"type": "label", "value": "Outer Section"},
+                            "id": "1",
+                            "controls": [{
+                                "type": "obsControl",
+                                "label": {"type": "label", "value": "HEIGHT"},
+                                "id": "2"
+                            }]
+                        }, {
+                            "type": "obsControl",
+                            "label": {"type": "label", "value": "WEIGHT"},
+                            "id": "3"
+                        }]
+                    })
+                }]
+            }
+        };
+
+        var formDetailDeferred = $q.defer();
+        var allFormsDeferred = $q.defer();
+
+        spyOn(observationFormService, "getAllForms").and.returnValue(allFormsDeferred.promise);
+        spyOn(observationFormService, "getFormDetail").and.returnValue(formDetailDeferred.promise);
+
+        formHierarchyService.build(observations);
+        allFormsDeferred.resolve(allForms);
+        formDetailDeferred.resolve(formDetails);
+        $scope.$apply();
+
+        //then
+        var dummyObsGroup = observations[0].value[0];
+        expect(dummyObsGroup.concept.shortName).toBe("test section with an obs and outside obs");
+        expect(dummyObsGroup.groupMembers.length).toBe(1);
+
+        var layer1FirstGroupMember = dummyObsGroup.groupMembers[0];
+        expect(layer1FirstGroupMember.concept.shortName).toBe("Outer Section");
+        expect(layer1FirstGroupMember.groupMembers.length).toBe(1);
+
+        var layer2FirstGroupMember = layer1FirstGroupMember.groupMembers[0];
+        expect(layer2FirstGroupMember.concept.shortName).toBe("HEIGHT");
+        expect(layer2FirstGroupMember.valueAsString).toBe("160.0");
+    });
 
 });
