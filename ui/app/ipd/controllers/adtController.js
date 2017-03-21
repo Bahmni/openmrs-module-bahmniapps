@@ -11,6 +11,7 @@ angular.module('bahmni.ipd')
             var encounterConfig = $rootScope.encounterConfig;
             var locationUuid = sessionService.getLoginLocationUuid();
             var visitTypes = encounterConfig.getVisitTypes();
+            var customVisitParams = Bahmni.IPD.Constants.visitRepresentation;
             $scope.defaultVisitTypeName = appService.getAppDescriptor().getConfigValue('defaultVisitType');
             $scope.adtObservations = [];
             $scope.dashboardConfig = appService.getAppDescriptor().getConfigValue('dashboard');
@@ -77,16 +78,23 @@ angular.module('bahmni.ipd')
                 }
             };
 
+            var getPatientSpecificActiveVisits = function (response) {
+                var currentActiveVisit = _.last(response.data.results);
+                return currentActiveVisit ? currentActiveVisit.uuid : null;
+            };
+
             var getVisit = function () {
-                var visitUuid = $stateParams.visitUuid;
-                if (visitUuid) {
-                    return visitService.getVisitSummary(visitUuid).then(function (response) {
-                        $scope.visitSummary = new Bahmni.Common.VisitSummary(response.data);
-                    });
-                } else {
-                    $scope.visitSummary = null;
-                    return $q.when({id: 1, status: "Returned from service.", promiseComplete: true});
-                }
+                return visitService.search({patient: $scope.patient.uuid, v: customVisitParams, includeInactive: false}).then(function (visitsResponse) {
+                    var visitUuid = getPatientSpecificActiveVisits(visitsResponse);
+                    if (visitUuid) {
+                        return visitService.getVisitSummary(visitUuid).then(function (response) {
+                            $scope.visitSummary = new Bahmni.Common.VisitSummary(response.data);
+                        });
+                    } else {
+                        $scope.visitSummary = null;
+                        return $q.when({id: 1, status: "Returned from service.", promiseComplete: true});
+                    }
+                });
             };
 
             $scope.showAdtButtons = function () {
@@ -266,28 +274,30 @@ angular.module('bahmni.ipd')
             $scope.discharge = function () {
                 if (!$rootScope.bedDetails.bedNumber) {
                     messagingService.showMessage("error", "Please select a bed to discharge the patient");
-                } else if (!$stateParams.visitUuid) {
-                    messagingService.showMessage("error", "No active visit found for this patient");
                 } else {
-                    ngDialog.openConfirm({
-                        template: 'views/dischargeConfirmation.html',
-                        scope: $scope,
-                        closeByEscape: true,
-                        className: "ngdialog-theme-default ng-dialog-adt-popUp"
+                    visitService.search({patient: $scope.patient.uuid, v: customVisitParams, includeInactive: false}).then(function (visitResponse) {
+                        var visitUuid = getPatientSpecificActiveVisits(visitResponse);
+                        if (!visitUuid) {
+                            messagingService.showMessage("error", "No active visit found for this patient");
+                        } else {
+                            ngDialog.openConfirm({
+                                template: 'views/dischargeConfirmation.html',
+                                scope: $scope,
+                                closeByEscape: true,
+                                className: "ngdialog-theme-default ng-dialog-adt-popUp"
+                            });
+                        }
                     });
                 }
             };
 
             $scope.dischargeConfirmation = function () {
-                var visitUuid = $stateParams.visitUuid;
                 var encounterData = getEncounterData($scope.encounterConfig.getDischargeEncounterTypeUuid());
-                return spinner.forPromise(encounterService.discharge(encounterData).then(function () {
-                    visitService.endVisit(visitUuid).then(function (response) {
-                        ngDialog.close();
-                        forwardUrl(response.data, "onDischargeForwardTo");
-                        var bedNumber = _.get($rootScope.bedDetails, 'bedNumber') || _.get($rootScope.selectedBedInfo, 'bed.bedNumber');
-                        messagingService.showMessage('info', "Successfully discharged from " + bedNumber);
-                    });
+                return spinner.forPromise(encounterService.discharge(encounterData).then(function (response) {
+                    ngDialog.close();
+                    forwardUrl(response.data, "onDischargeForwardTo");
+                    var bedNumber = _.get($rootScope.bedDetails, 'bedNumber') || _.get($rootScope.selectedBedInfo, 'bed.bedNumber');
+                    messagingService.showMessage('info', "Successfully discharged from " + bedNumber);
                 }));
             };
 

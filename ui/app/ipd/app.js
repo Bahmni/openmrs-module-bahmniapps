@@ -92,7 +92,7 @@ angular.module('ipd').config(['$stateProvider', '$httpProvider', '$urlRouterProv
                 }
             })
             .state('bedManagement.patient', {
-                url: '/patient/:patientUuid/visit/:visitUuid',
+                url: '/patient/:patientUuid',
                 templateUrl: 'views/bedManagement.html',
                 controller: 'BedManagementController',
                 resolve: {

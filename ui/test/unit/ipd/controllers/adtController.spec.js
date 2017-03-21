@@ -10,13 +10,14 @@ describe("AdtController", function () {
             controller = $controller;
             rootScope = $rootScope;
             scope = $rootScope.$new();
+            scope.patient = { uuid: "patientUuid" };
         });
 
         bedService = jasmine.createSpyObj('bedService', ['assignBed']);
         appService = jasmine.createSpyObj('appService', ['getAppDescriptor']);
         sessionService = jasmine.createSpyObj('sessionService', ['getLoginLocationUuid']);
         dispositionService = jasmine.createSpyObj('dispositionService', ['getDispositionActions']);
-        visitService = jasmine.createSpyObj('visitService', ['getVisitSummary','endVisit', 'endVisitAndCreateEncounter']);
+        visitService = jasmine.createSpyObj('visitService', ['getVisitSummary','endVisit', 'endVisitAndCreateEncounter', 'search']);
         encounterService = jasmine.createSpyObj('encounterService', ['create', 'discharge', 'buildEncounter']);
         ngDialog = jasmine.createSpyObj('ngDialog', ['openConfirm', 'close']);
         messagingService = jasmine.createSpyObj('messagingService', ['showMessage']);
@@ -66,6 +67,8 @@ describe("AdtController", function () {
         };
         var visitServicePromise = specUtil.createServicePromise('getVisitSummary');
         visitService.getVisitSummary.and.returnValue(visitServicePromise);
+        var searchPromise = specUtil.createServicePromise('search');
+        visitService.search.and.returnValue(searchPromise);
         dispositionService.getDispositionActions.and.returnValue({});
         sessionService.getLoginLocationUuid.and.returnValue("someLocationUuid");
         bedService.assignBed.and.returnValue(specUtil.createServicePromise("assignBed"));
@@ -113,6 +116,7 @@ describe("AdtController", function () {
         var visitSummary = {"visitType": "Current Visit", "uuid": "visitUuid", "stopDateTime": null};
         scope.patient = {uuid: "123"};
         scope.adtObservations = [];
+        scope.visitSummary = {uuid: "visitUuid"};
 
         var stubPromise = function (data) {
             return {
@@ -305,8 +309,20 @@ describe("AdtController", function () {
                 }
             };
         };
+
+        var stubSearchPromise = function (data) {
+            return {
+                then: function (successFunction) {
+                    var searchResponse = {
+                        results: [{uuid: "visitUuid"}]
+                    };
+                    return successFunction({data: searchResponse})
+                }
+            };
+        };
         visitService.endVisit.and.callFake(stubTwoPromise);
         encounterService.create.and.callFake(stubOnePromise);
+        visitService.search.and.callFake(stubSearchPromise);
 
         createController();
         expect(scope.dispositionActions).toEqual([{"name": {"name": "Admit Patient", "uuid": "avb231rt"}}]);
@@ -329,6 +345,17 @@ describe("AdtController", function () {
                     {"name": {"name": "Transfer Patient", "uuid": "81d1cf4e"}}]
             }]
         };
+        var stubSearchPromise = function (data) {
+            return {
+                then: function (successFunction) {
+                    var searchResponse = {
+                        results: [{uuid: "visitUuid"}]
+                    };
+                    return successFunction({data: searchResponse})
+                }
+            };
+        };
+        visitService.search.and.callFake(stubSearchPromise);
         dispositionService.getDispositionActions.and.returnValue(response);
         encounterService.create.and.returnValue(specUtil.createServicePromise("create"));
 
@@ -362,7 +389,17 @@ describe("AdtController", function () {
                 }
             };
         };
-
+        var stubSearchPromise = function (data) {
+            return {
+                then: function (successFunction) {
+                    var searchResponse = {
+                        results: [{uuid: "visitUuid"}]
+                    };
+                    return successFunction({data: searchResponse})
+                }
+            };
+        };
+        visitService.search.and.callFake(stubSearchPromise);
         encounterService.create.and.callFake(stubOnePromise);
 
         createController();
@@ -399,6 +436,17 @@ describe("AdtController", function () {
                 }
             };
         };
+        var stubSearchPromise = function (data) {
+            return {
+                then: function (successFunction) {
+                    var searchResponse = {
+                        results: [{uuid: "visitUuid"}]
+                    };
+                    return successFunction({data: searchResponse})
+                }
+            };
+        };
+        visitService.search.and.callFake(stubSearchPromise);
         visitService.endVisit.and.callFake(stubTwoPromise);
         encounterService.create.and.callFake(stubOnePromise);
 
@@ -469,7 +517,17 @@ describe("AdtController", function () {
     it("Should show confirmation dialog, when a bed is selected and trying to discharge the patient", function () {
         rootScope.bedDetails = {bedNumber: "202-a"};
         createController();
-
+        var stubSearchPromise = function (data) {
+            return {
+                then: function (successFunction) {
+                    var searchResponse = {
+                        results: [{uuid: "visitUuid"}]
+                    };
+                    return successFunction({data: searchResponse})
+                }
+            };
+        };
+        visitService.search.and.callFake(stubSearchPromise);
         scope.discharge();
         expect(ngDialog.openConfirm).toHaveBeenCalledWith({template: 'views/dischargeConfirmation.html', scope: scope, closeByEscape: true,  className: "ngdialog-theme-default ng-dialog-adt-popUp"});
     });
