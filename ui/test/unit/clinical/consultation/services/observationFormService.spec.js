@@ -34,9 +34,9 @@ describe('observationFormService', function () {
         var httpPromise = this.observationFormService.getAllForms();
 
         expect(httpPromise).toEqual(response);
-        expect(http.get).toHaveBeenCalledWith("/openmrs/ws/rest/v1/form", { v: "custom:(version,name,uuid)" });
+        expect(http.get).toHaveBeenCalledWith("/openmrs/ws/rest/v1/form", { params : { v : 'custom:(version,name,uuid)' } });
 
-    })
+    });
 
     it('should call http service to return the form detail', function () {
         var response = { data: { resources: [{ value: 'form1' }] } };
