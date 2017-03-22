@@ -84,17 +84,24 @@ angular.module('bahmni.ipd')
             };
 
             var getVisit = function () {
-                return visitService.search({patient: $scope.patient.uuid, v: customVisitParams, includeInactive: false}).then(function (visitsResponse) {
-                    var visitUuid = getPatientSpecificActiveVisits(visitsResponse);
-                    if (visitUuid) {
-                        return visitService.getVisitSummary(visitUuid).then(function (response) {
-                            $scope.visitSummary = new Bahmni.Common.VisitSummary(response.data);
-                        });
-                    } else {
-                        $scope.visitSummary = null;
-                        return $q.when({id: 1, status: "Returned from service.", promiseComplete: true});
-                    }
-                });
+                var getNoVisitPromise = function () {
+                    $scope.visitSummary = null;
+                    return $q.when({id: 1, status: "Returned from service.", promiseComplete: true});
+                };
+                if ($scope.patient) {
+                    return visitService.search({patient: $scope.patient.uuid, v: customVisitParams, includeInactive: false}).then(function (visitsResponse) {
+                        var visitUuid = getPatientSpecificActiveVisits(visitsResponse);
+                        if (visitUuid) {
+                            return visitService.getVisitSummary(visitUuid).then(function (response) {
+                                $scope.visitSummary = new Bahmni.Common.VisitSummary(response.data);
+                            });
+                        } else {
+                            return getNoVisitPromise();
+                        }
+                    });
+                } else {
+                    return getNoVisitPromise();
+                }
             };
 
             $scope.showAdtButtons = function () {
