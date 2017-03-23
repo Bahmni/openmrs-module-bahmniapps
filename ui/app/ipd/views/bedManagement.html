@@ -47,7 +47,7 @@
                         {{tag.bedTag.name}}
                     </span>
                 </span>
-                <a ng-click="editTagsOntheBed()" ng-if="canEditTags()">Edit</a>
+                <a ng-click="editTagsOntheBed()" show-if-privilege="{{editTagsPrivilege}}" ng-if="canEditTags()">Edit</a>
             </div>
         </div>
     </div>

@@ -12,6 +12,7 @@ angular.module('bahmni.ipd')
             var locationUuid = sessionService.getLoginLocationUuid();
             var visitTypes = encounterConfig.getVisitTypes();
             var customVisitParams = Bahmni.IPD.Constants.visitRepresentation;
+            $scope.assignBedsPrivilege = Bahmni.IPD.Constants.assignBedsPrivilege;
             $scope.defaultVisitTypeName = appService.getAppDescriptor().getConfigValue('defaultVisitType');
             $scope.adtObservations = [];
             $scope.dashboardConfig = appService.getAppDescriptor().getConfigValue('dashboard');

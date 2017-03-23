@@ -4,6 +4,8 @@ angular.module('bahmni.ipd')
     .directive('editAdtObservations', ['$rootScope', '$state', 'spinner', 'encounterService', 'observationsService', 'sessionService', 'conceptSetService', 'conceptSetUiConfigService', 'messagingService',
         function ($rootScope, $state, spinner, encounterService, observationsService, sessionService, conceptSetService, conceptSetUiConfigService, messagingService) {
             var controller = function ($scope) {
+                $scope.assignBedsPrivilege = Bahmni.IPD.Constants.assignBedsPrivilege;
+
                 var getEncounterDataFor = function (obs, encounterTypeUuid, visitTypeUuid) {
                     var encounterData = {};
                     encounterData.patientUuid = $scope.patient.uuid;

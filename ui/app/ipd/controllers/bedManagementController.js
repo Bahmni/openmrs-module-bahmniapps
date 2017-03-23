@@ -5,6 +5,7 @@ angular.module('bahmni.ipd')
         function ($scope, $rootScope, $stateParams, $state, spinner, wardService, bedManagementService, visitService, messagingService, appService, ngDialog) {
             $scope.wards = null;
             $scope.ward = {};
+            $scope.editTagsPrivilege = Bahmni.IPD.Constants.editTagsPrivilege;
 
             var links = {
                 "dashboard": {
