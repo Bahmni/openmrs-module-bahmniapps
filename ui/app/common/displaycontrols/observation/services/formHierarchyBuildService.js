@@ -76,10 +76,11 @@ angular.module('bahmni.common.displaycontrol.observation')
         };
 
         self.getMemberFromFormByFormFieldPath = function (members, id) {
-            return _.find(members, function (member) {
+            return _.filter(members, function (member) {
                 return member.formFieldPath.split('.')[1].split('/')[1].split('-')[0] == id;
             });
         };
+
         self.getFormByFormName = function (formList, formName, formVersion) {
             return _.find(formList, function (form) {
                 return form.name == formName && form.version == formVersion;
@@ -106,10 +107,11 @@ angular.module('bahmni.common.displaycontrol.observation')
                     }
                 } else {
                     var member = self.getMemberFromFormByFormFieldPath(members, control.id);
-                    if (member) {
-                        value.groupMembers.push(member);
+                    if (member.length != 0) {
+                        _.map(member, function (m) {
+                            value.groupMembers.push(m);
+                        });
                         sectionIsEmpty = false;
-                        return;
                     }
                 }
             });
