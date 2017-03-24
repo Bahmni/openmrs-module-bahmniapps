@@ -271,7 +271,8 @@ Bahmni.Common = Bahmni.Common || {};
         uuidRegex: "[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}",
         offlineBahmniEncounterUrl: "/openmrs/ws/rest/v1/bahmnicore/bahmniencounter/",
         eventlogFilterUrl: hostUrl + "/openmrs/ws/rest/v1/eventlog/filter",
-        bahmniConnectMetaDataDb: "metaData"
+        bahmniConnectMetaDataDb: "metaData",
+        defaultBahmniConnectDb: "Bahmni"
     };
 })();
 
