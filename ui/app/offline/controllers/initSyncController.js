@@ -72,10 +72,20 @@ angular.module('bahmni.common.offline')
             };
 
             var syncStatus = offlineService.getItem("initialSyncStatus");
+
+            var changeSyncStatusFormatOnUpgrade = function (dbName) {
+                if (syncStatus && _.isString(syncStatus) && dbName === Bahmni.Common.Constants.defaultBahmniConnectDb) {
+                    offlineService.setItem("initialSyncStatus", {});
+                    setInitialStatus(syncStatus, dbName);
+                }
+                return offlineService.getItem("initialSyncStatus");
+            };
+
             dbNameService.getDbName(username, location).then(function (name) {
                 dbName = name;
                 return dbName;
             }).then(function (dbName) {
+                syncStatus = changeSyncStatusFormatOnUpgrade(dbName);
                 if (syncStatus && syncStatus[dbName] && syncStatus[dbName][loginLocationUuid] === "complete") {
                     $state.go('dashboard');
                 } else if (syncStatus && syncStatus[dbName] && !syncStatus[dbName][loginLocationUuid]) {
