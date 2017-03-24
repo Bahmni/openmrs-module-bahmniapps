@@ -108,6 +108,9 @@ angular.module('bahmni.common.displaycontrol.observation')
                 } else {
                     var member = self.getMemberFromFormByFormFieldPath(members, control.id);
                     if (member.length != 0) {
+                        if (member[0].formFieldPath.split('-')[1] != 0) {
+                            _.reverse(member);
+                        }
                         _.map(member, function (m) {
                             value.groupMembers.push(m);
                         });
