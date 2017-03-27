@@ -1,9 +1,9 @@
 <dev class="clint-logo-wrapper">
     <img class="implementor-logo" src={{logo}} >
-    <span ng-if="CLIENT_TEXT" class="client_text"> {{'LOGIN_PAGE_CLIENT_TEXT' | translate }} </span>
+    <span ng-if="titleText" class="title_text"> {{'LOGIN_PAGE_TITLE_TEXT' | translate }} </span>
 </dev>
 <div class="login" ng-hide="showOTP">
-    <div ng-if="HEADER_TEXT" class="emr-login-text">
+    <div ng-if="headerText" class="emr-login-text">
         <b>{{'LOGIN_PAGE_HEADER_TEXT'| translate}} </b>
     </div>
     <header class="reg-header">
