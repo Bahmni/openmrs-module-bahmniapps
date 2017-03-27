@@ -141,6 +141,9 @@ angular.module('bahmni.common.displaycontrol.observation')
                             forms.push(form);
                             return;
                         }
+                        if (!self.getFormByFormName(allForms, form.concept.shortName, self.getFormVersion(form.groupMembers))) {
+                            return;
+                        }
                         observationFormService.getFormDetail(self.getFormByFormName(allForms, form.concept.shortName, self.getFormVersion(form.groupMembers)).uuid, {
                             v: "custom:(resources:(value))"
                         }).then(function (response) {
