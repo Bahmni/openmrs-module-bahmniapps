@@ -19,13 +19,11 @@ describe ('loginController', function () {
         currentUser.toContract.and.returnValue(specUtil.simplePromise({data: ""}));
         localeService.allowedLocalesList.and.returnValue(specUtil.simplePromise({data: ""}));
         localeService.serverDateTime.and.returnValue(specUtil.simplePromise({data:{ date: "today" }}));
-        localeService.getLoginText.and.returnValue(specUtil.simplePromise({data:{homePage:{logo:"bahmni logo"}, loginPage:{LOGIN_PAGE_HEADER_TEXT:"bahmni emr", logo:"bahmni logo"}, helpLink:{url:"192.168.33.10/homepage"}}}));
+        localeService.getLoginText.and.returnValue(specUtil.simplePromise({data:{homePage:{logo:"bahmni logo"}, loginPage:{showHeaderText:"bahmni emr", logo:"bahmni logo"}, helpLink:{url:"192.168.33.10/homepage"}}}));
         $bahmniCookieStore = jasmine.createSpyObj('$bahmniCookieStore', ['get','remove','put']);
         $bahmniCookieStore.get.and.callFake(function() { return  {}; });
         initialData = {location:" "};
         _spinner.forPromise.and.returnValue(specUtil.simplePromise({}));
-
-
     }));
 
     beforeEach(
@@ -74,7 +72,7 @@ describe ('loginController', function () {
 
     it("getLoginText should give proper value", function () {
         expect(scopeMock.logo).toBe("bahmni logo");
-        expect(scopeMock.HEADER_TEXT).toBe("bahmni emr");
+        expect(scopeMock.headerText).toBe("bahmni emr");
         expect(scopeMock.helpLink).toBe("192.168.33.10/homepage")
     });
 
