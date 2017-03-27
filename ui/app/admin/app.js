@@ -48,13 +48,6 @@ angular.module('admin')
                 data: {
                     backLinks: [{label: "Home", state: "admin.orderSetDashboard", icon: "fa-users"}]
                 }
-            }).state('admin.auditLog', {
-                url: '/auditLog',
-                templateUrl: 'views/auditLog.html',
-                controller: 'auditLogController',
-                data: {
-                    backLinks: [{label: "Home", state: "admin.dashboard", icon: "fa-home"}]
-                }
             });
             $httpProvider.defaults.headers.common['Disable-WWW-Authenticate'] = true;
         }
