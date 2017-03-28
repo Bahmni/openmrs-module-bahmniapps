@@ -219,7 +219,7 @@
                         </textarea>
                     </div>
 
-                    <div ng-switch-when="video" class="consultation-image consultation-video" ng-disabled="observation.voided">
+                    <div ng-switch-when="video" class="consultation-video" ng-disabled="observation.voided">
                         <input id="file-browse-{{observation.uniqueId}}" class="file-browse" type="file" name="video"
                                accept=".mkv,.flv,.ogg,video/*,audio/3gpp" capture="camera" ng-model="observation.value" image-upload file-type="'video'"
                                patient-uuid="::patient.uuid" tabindex="1">

@@ -398,6 +398,12 @@ concept-set {
       border: 1px solid $lightGray;
       border-radius: 3px;
     }
+    .file-browse {
+      position: absolute;
+      z-index: -999;
+      min-width: 1px;
+      width: 1px;
+    }
   }
 }
 
