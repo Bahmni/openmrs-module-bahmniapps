@@ -21,6 +21,7 @@ if [ $(pgrep Xvfb) ]; then
     XVFB_PID=$(pgrep Xvfb)
     echo "Killing Xvfb process $XVFB_PID"
     /usr/bin/sudo kill $XVFB_PID
+    rm -rf /tmp/.X99-lock
 fi
 export DISPLAY=:99
 Xvfb :99 &

@@ -1,5 +1,5 @@
 describe("Diagnosis Controller", function () {
-    var $scope, rootScope, contextChangeHandler,mockDiagnosisService, spinner, appService, mockAppDescriptor, q, deferred, mockDiagnosisData;
+    var $scope, rootScope, contextChangeHandler,mockDiagnosisService, spinner, appService, mockAppDescriptor, q, deferred, mockDiagnosisData, translate;
 
     beforeEach(module('bahmni.clinical'));
     beforeEach(module('bahmni.common.offline'));
@@ -23,7 +23,7 @@ describe("Diagnosis Controller", function () {
 
         contextChangeHandler = jasmine.createSpyObj('contextChangeHandler', ['add']);
         spyOn(diagnosisService, 'getDiagnosisConceptSet').and.returnValue(deferred.promise);
-        spyOn(diagnosisService, 'getAllFor').and.returnValue({});
+        spyOn(diagnosisService, 'getAllFor').and.returnValue(specUtil.createFakePromise({}));
 
         spinner = jasmine.createSpyObj('spinner', ['forPromise']);
         spinner.forPromise.and.callFake(function (param) {
@@ -33,6 +33,7 @@ describe("Diagnosis Controller", function () {
                 }
             }
         });
+        translate = jasmine.createSpyObj('translate',['']);
 
         $controller('DiagnosisController', {
             $scope: $scope,
@@ -40,7 +41,8 @@ describe("Diagnosis Controller", function () {
             contextChangeHandler: contextChangeHandler,
             spinner: spinner,
             appService: appService,
-            diagnosisService: mockDiagnosisService
+            diagnosisService: mockDiagnosisService,
+            $translate: translate
         });
     }));
 
