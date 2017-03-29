@@ -65,6 +65,11 @@ describe("FormHierarchyService", function () {
                         "version": "1",
                         "name": "test single option id",
                         "uuid": "f63f4dc6-c591-4d8f-8f33-d6435ebefeca"
+                    },
+                    {
+                        "version": "1",
+                        "name": "test add more",
+                        "uuid": "f63f4dc6-c591-4d8f-8f33-d6435ebea"
                     }
                 ]
             }
@@ -170,7 +175,7 @@ describe("FormHierarchyService", function () {
                     "shortName": "head nose lateral",
                 }
             }]
-        }]
+        }];
 
         formHierarchyService.build(observations);
 
@@ -347,6 +352,162 @@ describe("FormHierarchyService", function () {
         expect(secondValue.groupMembers[1].concept.shortName).toBe("head nose lateral");
     });
 
+    it("should display information when add more obs controls exist", function () {
+        var observations = [{
+            "value": [{
+                "groupMembers": [{
+                    "groupMembers": [],
+                    "formNamespace": "Bahmni",
+                    "formFieldPath": "test section with an obs.1/1-0",
+                    "concept": {
+                        "shortName": "WEIGHT",
+                        "name": "WEIGHT",
+                        "conceptClass": "weight"
+                    },
+                    "valueAsString": "50.0"
+                },{
+                    "groupMembers": [],
+                    "formNamespace": "Bahmni",
+                    "formFieldPath": "test section with an obs.1/1-1",
+                    "concept": {
+                        "shortName": "WEIGHT",
+                        "name": "WEIGHT",
+                        "conceptClass": "weight"
+                    },
+                    "valueAsString": "100.0"
+                },{
+                    "groupMembers": [],
+                    "formNamespace": "Bahmni",
+                    "formFieldPath": "test section with an obs.1/1-2",
+                    "concept": {
+                        "shortName": "WEIGHT",
+                        "name": "WEIGHT",
+                        "conceptClass": "weight"
+                    },
+                    "valueAsString": "150.0"
+                }], "concept": {"shortName": "test add more", "conceptClass": null},
+                "encounterUuid": "123"
+            }]
+        }];
+        var formDetails = {
+            "data": {
+                "resources": [{
+                    "value": JSON.stringify({
+                        "name": "test add more",
+                        "controls": [{
+                            "type": "obsControl",
+                            "label": {"type": "label", "value": "WEIGHT"},
+                            "id": "1"
+                        }]
+                    })
+                }]
+            }
+
+        };
+
+        var formDetailDeferred = $q.defer();
+        var allFormsDeferred = $q.defer();
+
+        spyOn(observationFormService, "getAllForms").and.returnValue(allFormsDeferred.promise);
+        spyOn(observationFormService, "getFormDetail").and.returnValue(formDetailDeferred.promise);
+
+        formHierarchyService.build(observations);
+        allFormsDeferred.resolve(allForms);
+        formDetailDeferred.resolve(formDetails);
+        $scope.$apply();
+
+        var value = observations[0].value[0];
+        expect(value.concept.shortName).toBe("test add more");
+        expect(value.groupMembers.length).toBe(3);
+
+        expect(value.groupMembers[0].concept.shortName).toBe("WEIGHT");
+        expect(value.groupMembers[1].concept.shortName).toBe("WEIGHT");
+        expect(value.groupMembers[2].concept.shortName).toBe("WEIGHT");
+
+        expect(value.groupMembers[0].valueAsString).toBe("50.0");
+        expect(value.groupMembers[1].valueAsString).toBe("100.0");
+        expect(value.groupMembers[2].valueAsString).toBe("150.0");
+
+    });
+
+    it("should display information in sequence as input for add more obs controls", function () {
+        var observations = [{
+            "value": [{
+                "groupMembers": [{
+                    "groupMembers": [],
+                    "formNamespace": "Bahmni",
+                    "formFieldPath": "test section with an obs.1/1-2",
+                    "concept": {
+                        "shortName": "WEIGHT",
+                        "name": "WEIGHT",
+                        "conceptClass": "weight"
+                    },
+                    "valueAsString": "150.0"
+                },{
+                    "groupMembers": [],
+                    "formNamespace": "Bahmni",
+                    "formFieldPath": "test section with an obs.1/1-1",
+                    "concept": {
+                        "shortName": "WEIGHT",
+                        "name": "WEIGHT",
+                        "conceptClass": "weight"
+                    },
+                    "valueAsString": "100.0"
+                },{
+                    "groupMembers": [],
+                    "formNamespace": "Bahmni",
+                    "formFieldPath": "test section with an obs.1/1-0",
+                    "concept": {
+                        "shortName": "WEIGHT",
+                        "name": "WEIGHT",
+                        "conceptClass": "weight"
+                    },
+                    "valueAsString": "50.0"
+                }], "concept": {"shortName": "test add more", "conceptClass": null},
+                "encounterUuid": "123"
+            }]
+        }];
+        var formDetails = {
+            "data": {
+                "resources": [{
+                    "value": JSON.stringify({
+                        "name": "test add more",
+                        "controls": [{
+                            "type": "obsControl",
+                            "label": {"type": "label", "value": "WEIGHT"},
+                            "id": "1"
+                        }]
+                    })
+                }]
+            }
+
+        };
+
+        var formDetailDeferred = $q.defer();
+        var allFormsDeferred = $q.defer();
+
+        spyOn(observationFormService, "getAllForms").and.returnValue(allFormsDeferred.promise);
+        spyOn(observationFormService, "getFormDetail").and.returnValue(formDetailDeferred.promise);
+
+        formHierarchyService.build(observations);
+        allFormsDeferred.resolve(allForms);
+        formDetailDeferred.resolve(formDetails);
+        $scope.$apply();
+
+        var value = observations[0].value[0];
+        expect(value.concept.shortName).toBe("test add more");
+        expect(value.groupMembers.length).toBe(3);
+
+        expect(value.groupMembers[0].concept.shortName).toBe("WEIGHT");
+        expect(value.groupMembers[1].concept.shortName).toBe("WEIGHT");
+        expect(value.groupMembers[2].concept.shortName).toBe("WEIGHT");
+
+        expect(value.groupMembers[0].valueAsString).toBe("50.0");
+        expect(value.groupMembers[1].valueAsString).toBe("100.0");
+        expect(value.groupMembers[2].valueAsString).toBe("150.0");
+
+    });
+
     it("should construct dummy obs group for single observation in section from form", function () {
         observations = [{
             "value": [{
@@ -407,7 +568,6 @@ describe("FormHierarchyService", function () {
         expect(layer2FirstGroupMember.concept.shortName).toBe("WEIGHT");
         expect(layer2FirstGroupMember.valueAsString).toBe("50.0");
     });
-
 
     it("should construct dummy obs group for section and non-inside section obs from form", function () {
         //given
