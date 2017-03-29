@@ -96,7 +96,7 @@ describe("auditLogController", function () {
         scope.$apply(setUp);
 
         httpBackend.flush();
-        expect(scope.errorMessage).toBe("No records to display");
+        expect(scope.errorMessage).toBe("No records to display !!");
         expect(scope.logs.length).toBe(0);
         expect(scope.lastIndex).toBe(0);
         expect(scope.firstIndex).toBe(0);
@@ -224,7 +224,7 @@ describe("auditLogController", function () {
         expect(scope.logs.length).toBe(0);
         expect(scope.lastIndex).toBe(0);
         expect(scope.firstIndex).toBe(0);
-        expect(scope.errorMessage).toBe("No records to display");
+        expect(scope.errorMessage).toBe("No records to display !!");
         expect(_spinner.forPromise).toHaveBeenCalled();
     });
 
@@ -273,7 +273,7 @@ describe("auditLogController", function () {
         expect(scope.logs.length).toBe(0);
         expect(scope.lastIndex).toBe(0);
         expect(scope.firstIndex).toBe(0);
-        expect(scope.errorMessage).toBe("No records to display");
+        expect(scope.errorMessage).toBe("No records to display !!");
 
         scope.prev();
         httpBackend.flush();
@@ -290,6 +290,7 @@ describe("auditLogController", function () {
         expect(log.auditLogId).toBe(9);
         expect(log.dateCreated).toBe(DateUtil.getDateTimeInSpecifiedFormat(
             DateUtil.parseLongDateToServerFormat(1490267210000), 'MMMM Do, YYYY [at] h:mm:ss A'));
+        expect(scope.errorMessage).toBe("");
         expect(_spinner.forPromise).toHaveBeenCalled();
     });
 
@@ -339,11 +340,20 @@ describe("auditLogController", function () {
         scope.prev();
         httpBackend.flush();
 
-        expect(scope.logs.length).toBe(0);
-        expect(scope.lastIndex).toBe(0);
-        expect(scope.firstIndex).toBe(-1);
-        expect(scope.errorMessage).toBe("No records to display");
+        log = scope.logs[0];
+
+        expect(scope.logs.length).toBe(1);
+        expect(scope.lastIndex).toBe(9);
+        expect(scope.firstIndex).toBe(9);
+
+        expect(log.eventType).toBe("VIEWED_DASHBOARD");
+        expect(log.message).toBe("VIEWED_DASHBOARD message");
+        expect(log.patientId).toBe(4);
+        expect(log.auditLogId).toBe(9);
+        expect(log.dateCreated).toBe(DateUtil.getDateTimeInSpecifiedFormat(
+            DateUtil.parseLongDateToServerFormat(1490267210000), 'MMMM Do, YYYY [at] h:mm:ss A'));
         expect(_spinner.forPromise).toHaveBeenCalled();
+        expect(scope.errorMessage).toBe("No records to display !!");
     });
 
     it("should display warning if there is no event found after pressed next button again and again", function () {
@@ -390,53 +400,118 @@ describe("auditLogController", function () {
         scope.next();
         httpBackend.flush();
 
-        expect(scope.logs.length).toBe(0);
+        log = scope.logs[0];
+        expect(scope.logs.length).toBe(1);
         expect(scope.lastIndex).toBe(10);
-        expect(scope.firstIndex).toBe(11);
-        expect(scope.errorMessage).toBe("No records to display");
+        expect(scope.firstIndex).toBe(10);
+
+        expect(log.eventType).toBe("VIEWED_CLINICAL_DASHBOARD");
+        expect(log.message).toBe("VIEWED_CLINICAL_DASHBOARD message");
+        expect(log.patientId).toBe(8);
+        expect(log.auditLogId).toBe(10);
+        expect(log.dateCreated).toBe(DateUtil.getDateTimeInSpecifiedFormat(
+            DateUtil.parseLongDateToServerFormat(1490267220000), 'MMMM Do, YYYY [at] h:mm:ss A'));
+        expect(scope.errorMessage).toBe("No records to display !!");
         expect(_spinner.forPromise).toHaveBeenCalled();
     });
 
-    it("should set time to date if time is provided by user", function () {
-        var utcTime = Date.UTC(2018, 4, 23, 0, 0);
-        var currentDate = new Date(utcTime);
-        httpBackend.whenGET(Bahmni.Common.Constants.adminUrl + "/auditLog?startFrom=" + currentDate.toISOString())
-            .respond([]);
-        httpBackend.whenGET(new RegExp(Bahmni.Common.Constants.adminUrl + "/auditLog\\?startFrom=.*"))
-            .respond([logs[0]]);
-
+    it("should not update present logs if no logs found", function () {
+        var currentDate = new Date("2017-03-23T18:30:00.548Z");
         scope.startDate = currentDate;
+        httpBackend.whenGET(Bahmni.Common.Constants.adminUrl + "/auditLog?startFrom=" + currentDate.toISOString())
+            .respond(logs);
+        httpBackend.whenGET(Bahmni.Common.Constants.adminUrl + "/auditLog?lastAuditLogId=10")
+            .respond([]);
+
         scope.$apply(setUp);
         httpBackend.flush();
 
-        expect(scope.logs.length).toBe(0);
-        expect(scope.lastIndex).toBe(0);
-        expect(scope.firstIndex).toBe(0);
-        expect(scope.errorMessage).toBe("No records to display");
+        var log1 = scope.logs[0];
+        var log2 = scope.logs[1];
+
+        expect(scope.logs.length).toBe(2);
+        expect(scope.lastIndex).toBe(10);
+        expect(scope.firstIndex).toBe(9);
+        expect(log1.patientId).toBe(4);
+        expect(log1.auditLogId).toBe(9);
+        expect(log2.patientId).toBe(8);
+        expect(log2.auditLogId).toBe(10);
         expect(_spinner.forPromise).toHaveBeenCalled();
-        expect(scope.startDate.getFullYear()).toBe(2018);
-        expect(scope.startDate.getTime()).toBe(utcTime);
 
-        var startForm = new Date(Date.UTC(2017, 5, 23, 15, 31));
-        var expectedTime = Date.UTC(2018, 4, 23, 15, 31);
-
-        scope.startTime = startForm;
-        scope.runReport();
+        scope.next();
         httpBackend.flush();
 
-        expect(scope.startDate.getTime()).toBe(expectedTime);
+        expect(scope.logs.length).toBe(2);
+        expect(scope.lastIndex).toBe(10);
+        expect(scope.firstIndex).toBe(9);
+        expect(log1.patientId).toBe(4);
+        expect(log1.auditLogId).toBe(9);
+        expect(log2.patientId).toBe(8);
+        expect(log2.auditLogId).toBe(10);
+        expect(_spinner.forPromise).toHaveBeenCalled();
+        expect(scope.errorMessage).toBe("No records to display !!");
+    });
+
+    it("should replace logs when user use run report to show logs", function () {
+        var currentDate = new Date("2017-03-23T18:30:00.548Z");
+        var startForm1 = new Date("2017-02-24T18:30:00.548Z");
+        var startForm2 = new Date("2017-02-25T18:30:00.548Z");
+        scope.startDate = currentDate;
+        httpBackend.whenGET(Bahmni.Common.Constants.adminUrl + "/auditLog?startFrom=" + currentDate.toISOString())
+            .respond([logs[0]]);
+        httpBackend.whenGET(Bahmni.Common.Constants.adminUrl + "/auditLog?startFrom=" + startForm1.toISOString())
+            .respond([]);
+        httpBackend.whenGET(Bahmni.Common.Constants.adminUrl + "/auditLog?startFrom=" + startForm2.toISOString())
+            .respond(logs);
+
+        scope.$apply(setUp);
+        httpBackend.flush();
+
         var log = scope.logs[0];
 
         expect(scope.logs.length).toBe(1);
         expect(scope.lastIndex).toBe(9);
         expect(scope.firstIndex).toBe(9);
-
         expect(log.eventType).toBe("VIEWED_DASHBOARD");
         expect(log.message).toBe("VIEWED_DASHBOARD message");
         expect(log.patientId).toBe(4);
         expect(log.auditLogId).toBe(9);
         expect(log.dateCreated).toBe(DateUtil.getDateTimeInSpecifiedFormat(
             DateUtil.parseLongDateToServerFormat(1490267210000), 'MMMM Do, YYYY [at] h:mm:ss A'));
+        expect(_spinner.forPromise).toHaveBeenCalled();
+
+        scope.startDate = startForm1;
+        scope.runReport();
+        httpBackend.flush();
+        expect(scope.errorMessage).toBe("No records found for given criteria !!");
+        expect(scope.logs.length).toBe(0);
+        expect(scope.lastIndex).toBe(0);
+        expect(scope.firstIndex).toBe(0);
+        expect(_spinner.forPromise).toHaveBeenCalled();
+
+        scope.startDate = startForm2;
+        scope.runReport();
+        httpBackend.flush();
+        var log1 = scope.logs[0];
+        var log2 = scope.logs[1];
+
+        expect(scope.logs.length).toBe(2);
+        expect(scope.lastIndex).toBe(10);
+        expect(scope.firstIndex).toBe(9);
+
+        expect(log1.eventType).toBe("VIEWED_DASHBOARD");
+        expect(log1.message).toBe("VIEWED_DASHBOARD message");
+        expect(log1.patientId).toBe(4);
+        expect(log1.auditLogId).toBe(9);
+        expect(log1.dateCreated).toBe(DateUtil.getDateTimeInSpecifiedFormat(
+            DateUtil.parseLongDateToServerFormat(1490267210000), 'MMMM Do, YYYY [at] h:mm:ss A'));
+
+        expect(log2.eventType).toBe("VIEWED_CLINICAL_DASHBOARD");
+        expect(log2.message).toBe("VIEWED_CLINICAL_DASHBOARD message");
+        expect(log2.patientId).toBe(8);
+        expect(log2.auditLogId).toBe(10);
+        expect(log2.dateCreated).toBe(DateUtil.getDateTimeInSpecifiedFormat(
+            DateUtil.parseLongDateToServerFormat(1490267220000), 'MMMM Do, YYYY [at] h:mm:ss A'));
         expect(_spinner.forPromise).toHaveBeenCalled();
     });
 

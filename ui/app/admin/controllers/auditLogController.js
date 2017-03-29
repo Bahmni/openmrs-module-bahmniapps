@@ -5,18 +5,27 @@ angular.module('bahmni.admin')
         function ($scope, spinner, $http) {
             var auditLogUrl = Bahmni.Common.Constants.adminUrl + "/auditLog";
             var DateUtil = Bahmni.Common.Util.DateUtil;
+            var defaultMessage = "";
 
-            var updateIndex = function (defaultFirstIndex, defaultLastIndex) {
-                $scope.firstIndex = $scope.logs.length ? _.first($scope.logs).auditLogId : defaultFirstIndex;
-                $scope.lastIndex = $scope.logs.length ? _.last($scope.logs).auditLogId : defaultLastIndex;
+            var updateIndex = function (logs, defaultFirstIndex, defaultLastIndex) {
+                $scope.firstIndex = logs.length ? _.first(logs).auditLogId : defaultFirstIndex;
+                $scope.lastIndex = logs.length ? _.last(logs).auditLogId : defaultLastIndex;
+            };
+
+            var setMessage = function (logsLength, message) {
+                $scope.errorMessage = logsLength ? defaultMessage : message;
+            };
+
+            var updatePage = function (logs, defaultFirstIndex, defaultLastIndex) {
+                if (logs.length) {
+                    $scope.logs = logs;
+                }
+                setMessage(logs.length, "No records to display !!");
+                updateIndex(logs, defaultFirstIndex, defaultLastIndex);
             };
 
             var getDate = function () {
                 var date = $scope.startDate || $scope.today;
-                if ($scope.startTime) {
-                    date.setHours($scope.startTime.getHours());
-                    date.setMinutes($scope.startTime.getMinutes());
-                }
                 $scope.startDate = date;
                 return date;
             };
@@ -29,29 +38,23 @@ angular.module('bahmni.admin')
             var getLogs = function (params) {
                 params = params || {};
                 return $http.get(auditLogUrl, {params: params}).then(function (response) {
-                    var data = response.data;
-                    if (data.length === 0) {
-                        $scope.errorMessage = "No records to display";
-                    } else {
-                        $scope.errorMessage = "";
-                        data.forEach(function (log) {
-                            log.dateCreated = convertToLocalDate(log.dateCreated);
-                        });
-                    }
-                    $scope.logs = data;
+                    return response.data.map(function (log) {
+                        log.dateCreated = convertToLocalDate(log.dateCreated);
+                        return log;
+                    });
                 });
             };
 
             var defaultView = function (params) {
-                var promise = getLogs(params).then(function () {
-                    updateIndex(0, 0);
+                var promise = getLogs(params).then(function (logs) {
+                    updatePage(logs, 0, 0);
                 });
                 spinner.forPromise(promise);
             };
 
             $scope.next = function () {
-                var promise = getLogs({lastAuditLogId: $scope.lastIndex}).then(function () {
-                    updateIndex($scope.lastIndex + 1, $scope.lastIndex);
+                var promise = getLogs({lastAuditLogId: $scope.lastIndex}).then(function (logs) {
+                    updatePage(logs, $scope.firstIndex, $scope.lastIndex);
                 });
                 spinner.forPromise(promise);
             };
@@ -60,27 +63,30 @@ angular.module('bahmni.admin')
                 if (!$scope.firstIndex && !$scope.lastIndex) {
                     defaultView();
                 } else {
-                    var promise = getLogs({lastAuditLogId: $scope.firstIndex, prev: true}).then(function () {
-                        updateIndex(-1, 0);
+                    var promise = getLogs({lastAuditLogId: $scope.firstIndex, prev: true}).then(function (logs) {
+                        updatePage(logs, $scope.firstIndex, $scope.lastIndex);
                     });
                     spinner.forPromise(promise);
                 }
             };
 
-            $scope.today = new Date(DateUtil.getDateWithoutHours());
-
+            $scope.today = DateUtil.today();
+            $scope.maxDate = DateUtil.getDateWithoutTime($scope.today);
             $scope.runReport = function () {
                 var startDateTime = getDate();
                 var promise = getLogs({
                     username: $scope.username, patientId: $scope.patientId,
                     startFrom: startDateTime
-                }).then(function () {
-                    updateIndex($scope.firstIndex, $scope.lastIndex);
+                }).then(function (logs) {
+                    $scope.logs = logs;
+                    setMessage(logs.length, "No records found for given criteria !!");
+                    updateIndex(logs, 0, 0);
                 });
                 spinner.forPromise(promise);
             };
 
             var init = function () {
+                $scope.logs = [];
                 defaultView({startFrom: getDate()});
             };
 
