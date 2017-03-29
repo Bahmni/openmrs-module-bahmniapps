@@ -55,7 +55,7 @@ describe("auditLogController", function () {
         var currentDate = new Date("2017-03-23T18:30:00.548Z");
         scope.startDate = currentDate;
         httpBackend.whenGET(Bahmni.Common.Constants.adminUrl + "/auditLog?startFrom=" + currentDate.toISOString())
-            .respond(logs);
+            .respond(angular.copy(logs).reverse());
 
         scope.$apply(setUp);
         httpBackend.flush();
@@ -419,7 +419,7 @@ describe("auditLogController", function () {
         var currentDate = new Date("2017-03-23T18:30:00.548Z");
         scope.startDate = currentDate;
         httpBackend.whenGET(Bahmni.Common.Constants.adminUrl + "/auditLog?startFrom=" + currentDate.toISOString())
-            .respond(logs);
+            .respond(angular.copy(logs).reverse());
         httpBackend.whenGET(Bahmni.Common.Constants.adminUrl + "/auditLog?lastAuditLogId=10")
             .respond([]);
 

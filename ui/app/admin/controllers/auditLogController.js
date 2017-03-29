@@ -47,6 +47,7 @@ angular.module('bahmni.admin')
 
             var defaultView = function (params) {
                 var promise = getLogs(params).then(function (logs) {
+                    logs.reverse();
                     updatePage(logs, 0, 0);
                 });
                 spinner.forPromise(promise);
