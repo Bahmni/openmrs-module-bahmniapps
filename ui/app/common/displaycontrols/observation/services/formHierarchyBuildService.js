@@ -76,10 +76,11 @@ angular.module('bahmni.common.displaycontrol.observation')
         };
 
         self.getMemberFromFormByFormFieldPath = function (members, id) {
-            return _.find(members, function (member) {
+            return _.filter(members, function (member) {
                 return member.formFieldPath.split('.')[1].split('/')[1].split('-')[0] == id;
             });
         };
+
         self.getFormByFormName = function (formList, formName, formVersion) {
             return _.find(formList, function (form) {
                 return form.name == formName && form.version == formVersion;
@@ -106,10 +107,14 @@ angular.module('bahmni.common.displaycontrol.observation')
                     }
                 } else {
                     var member = self.getMemberFromFormByFormFieldPath(members, control.id);
-                    if (member) {
-                        value.groupMembers.push(member);
+                    if (member.length != 0) {
+                        if (member[0].formFieldPath.split('-')[1] != 0) {
+                            _.reverse(member);
+                        }
+                        _.map(member, function (m) {
+                            value.groupMembers.push(m);
+                        });
                         sectionIsEmpty = false;
-                        return;
                     }
                 }
             });
@@ -134,6 +139,9 @@ angular.module('bahmni.common.displaycontrol.observation')
                     _.forEach(observation.value, function (form) {
                         if (form.concept.conceptClass) {
                             forms.push(form);
+                            return;
+                        }
+                        if (!self.getFormByFormName(allForms, form.concept.shortName, self.getFormVersion(form.groupMembers))) {
                             return;
                         }
                         observationFormService.getFormDetail(self.getFormByFormName(allForms, form.concept.shortName, self.getFormVersion(form.groupMembers)).uuid, {

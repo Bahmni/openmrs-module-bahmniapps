@@ -1,0 +1,52 @@
+<div>
+    <div>
+        <div>
+            <label for="startFrom">From</label>
+            <article class="form-field " id="startFrom">
+                <div class="field-value">
+                    <input id="startDate" type="date" ng-model="startDate" max="{{::maxDate}}">
+                </div>
+                <div class="field-value">
+                    <input id="startTime" type="time" ng-model="startDate">
+                </div>
+            </article>
+        </div>
+        <div>
+            <label for="username">UserName</label>
+            <input type="text" id="username" ng-model="username">
+        </div>
+        <div>
+            <label for="patientId">Patient Id</label>
+            <input type="text" id="patientId" ng-model="patientId">
+        </div>
+        <button type="button" ng-click="runReport()">RUN REPORT</button>
+    </div>
+    <div>
+        <table id="auditLogTable">
+            <caption>AUDIT LOG EVENTS</caption>
+            <tr>
+                <th>Event ID</th>
+                <th>Created At</th>
+                <th>{{'EVENT_TYPE' | translate}}</th>
+                <th>UserName</th>
+                <th>Patient ID</th>
+                <th>{{'Message' | translate}}</th>
+            </tr>
+            <tbody ng-repeat="log in logs">
+            <tr>
+                <td>{{:: log.auditLogId}}</td>
+                <td>{{:: log.dateCreated }}</td>
+                <td>{{:: log.eventType | translate}}</td>
+                <td>{{:: log.userId}}</td>
+                <td>{{:: log.patientId}}</td>
+                <td>{{:: log.message}}</td>
+            </tr>
+            </tbody>
+        </table>
+        <button type="button" ng-click="prev()">&#x3c;&#x3c; PREV</button>
+        <button type="button" ng-click="next()">NEXT &#x3e;&#x3e; </button>
+    </div>
+    <div id="messageContainer">
+        <p style="text-align: center; color: red; font-weight: bold;">{{ errorMessage}}</p>
+    </div>
+</div>

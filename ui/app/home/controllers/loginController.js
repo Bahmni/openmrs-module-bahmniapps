@@ -34,8 +34,8 @@ angular.module('bahmni.home')
             });
             localeService.getLoginText().then(function (response) {
                 $scope.logo = response.data.loginPage.logo;
-                $scope.HEADER_TEXT = response.data.loginPage.LOGIN_PAGE_HEADER_TEXT;
-                $scope.CLIENT_TEXT = response.data.loginPage.LOGIN_PAGE_CLIENT_TEXT;
+                $scope.headerText = response.data.loginPage.showHeaderText;
+                $scope.titleText = response.data.loginPage.showTitleText;
                 $scope.helpLink = response.data.helpLink.url;
             });
 
