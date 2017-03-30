@@ -13,10 +13,11 @@
                    ng-hide="observation.value || observation.voided"><i
                     class="fa fa-plus needsclick"></i></label>
 
-            <div ng-show="observation.value && !hasPDFAsValue()" class="file">
+            <div ng-show="observation.value" class="file">
                 <img ng-if="observation.value && !hasPDFAsValue()" ng-src="{{observation.value|thumbnail}}"
                      ng-class="{'has-image': observation.value, 'voided': observation.voided}">
-                <i ng-if="hasPDFAsValue()" class="fa fa-file-pdf-o"></i>
+                <img ng-if="hasPDFAsValue()" ng-src="../../../../bahmni/images/pdfIcon.png"
+                     ng-class="{'has-image': observation.value, 'voided': observation.voided}">
                 <button type="button" ng-click="observation.toggleVoidingOfImage()"
                         ng-if="observation.value" class="row-remover">
                     <span class="fa fa-remove"></span>
@@ -26,7 +27,7 @@
                 </button>
             </div>
 
-            <textarea class="consultation-img-comments" ng-if="observation.value" maxlength="255"
+            <textarea class="consultation-img-comments" placeholder="Add notes" ng-if="observation.value" maxlength="255"
                       ng-model="observation.comment" msd-elastic tabindex="1">
                         </textarea>
         </div>
@@ -409,7 +410,7 @@
                         <span class="description" ng-bind-html="observation.concept.description"></span>
                     </div>
                     <div class="form-field form-field-group" ng-repeat="member in observation.groupMembers"
-                         ng-if="!(member.hidden || member.hide)" ng-class="{'image-upload-wrapper': observation.getControlType() == 'image'}">
+                         ng-if="!(member.hidden || member.hide)" ng-class="{'image-upload-wrapper': member.concept.name == 'Image'}">
                         <concept collapse-inner-sections="collapseInnerSections" observation="member"
                                  root-observation="observation" at-least-one-value-is-set="atLeastOneValueIsSet"
                                  patient="::patient" show-title="::true"
