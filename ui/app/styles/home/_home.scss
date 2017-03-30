@@ -489,11 +489,15 @@ body {
   text-align: center;
   background: #fafafa;
   padding-bottom: 5px;
-  font-size: 10px;
+  font-size: 12px;
+  color: #898989;
   img {
-    width: 65px;
+    width: 55px;
     vertical-align: middle;
     margin: 0 1px;
+  }
+  a {
+    color: #000;
   }
 }
 .clint-logo-wrapper {
