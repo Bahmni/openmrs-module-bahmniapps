@@ -82,21 +82,30 @@
                         </div>
                     </div>
                 </div>
-                
-                <div class="table history-diagnosis past-diagnosis section-grid" ng-if="consultation.pastDiagnoses.length > 0">
-                    <div class="row table-header">
-                      <div class="col col1"><span>Past Diagnosis</span></div>
-                      <div class="col col2"><span>Initial</span></div>
-                      <div class="col col3"><span>Current</span></div>
-                    </div>
-                    <div ng-repeat="diagnosis in consultation.pastDiagnoses | primaryDiagnosisFirst" class="table-body">
 
-                        <div class="row diagnosis-row" ng-if="!diagnosis.voided" >
-                            <ng-include src="'consultation/views/diagnosisRow.html'" />
+                <div class="table history-diagnosis past-diagnosis section-grid"
+                     ng-if="consultation.pastDiagnoses.length > 0">
+                    <div class="row table-header" toggle="toggles.expandPastDiagnoses">
+                        <div class="col col1">
+                          <span>
+                              <i class="fa fa-caret-down" ng-show="toggles.expandPastDiagnoses"></i>
+                              <i class="fa fa-caret-right" ng-hide="toggles.expandPastDiagnoses"></i>
+                              Past Diagnosis
+                          </span>
+                        </div>
+                        <div class="col col2"><span>Initial</span></div>
+                        <div class="col col3"><span>Current</span></div>
+                    </div>
+                    <div ng-show="toggles.expandPastDiagnoses"
+                         ng-repeat="diagnosis in consultation.pastDiagnoses | primaryDiagnosisFirst"
+                         class="table-body">
+                        <div class="row diagnosis-row" ng-if="!diagnosis.voided">
+                            <ng-include src="'consultation/views/diagnosisRow.html'"/>
                         </div>
                     </div>
                 </div>
 
+                <ng-include src="'consultation/views/conditions.html'"/>
             </div>
         </div>
     </fieldset>

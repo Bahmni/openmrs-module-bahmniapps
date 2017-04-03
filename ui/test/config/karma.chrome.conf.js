@@ -41,6 +41,8 @@ module.exports = function (config) {
             'app/lib/modernizr.custom.80690.js',
             'app/lib/angular-workers/dist/angular-workers.js',
             'app/common/constants.js',
+            'app/common/util/init.js',
+            'app/common/util/**.js',
             'app/common/domain/init.js',
             'app/common/domain/**/*.js',
             'app/**/init.js',
