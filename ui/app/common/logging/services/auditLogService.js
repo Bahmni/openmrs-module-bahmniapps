@@ -1,6 +1,6 @@
 'use strict';
-angular.module('bahmni.admin')
-    .service('auditLogService', ['$http', function ($http) {
+angular.module('bahmni.common.logging')
+    .service('auditLogService', ['$http', '$translate', function ($http, $translate) {
         var DateUtil = Bahmni.Common.Util.DateUtil;
 
         var convertToLocalDate = function (date) {
@@ -13,8 +13,16 @@ angular.module('bahmni.admin')
             return $http.get(Bahmni.Common.Constants.auditLogUrl, {params: params}).then(function (response) {
                 return response.data.map(function (log) {
                     log.dateCreated = convertToLocalDate(log.dateCreated);
+                    log.displayMessage = $translate.instant(log.message, log);
                     return log;
                 });
             });
+        };
+
+        this.auditLog = function (params) {
+            return $http.post(Bahmni.Common.Constants.auditLogUrl,
+                       params,
+                       {withCredentials: true}
+            );
         };
     }]);

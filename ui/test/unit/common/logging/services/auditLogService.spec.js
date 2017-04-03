@@ -21,15 +21,21 @@ describe('auditLogService', function () {
             "uuid": "0c2b665e-0fe7-11e7-a6f7-0800270d80ce"
         }
     ];
-    var mockHttp = jasmine.createSpyObj('$http', ['get']);
+    var mockHttp = jasmine.createSpyObj('$http', ['get', 'post']);
     mockHttp.get.and.callFake(function (params) {
         return specUtil.respondWith({data: logs});
     });
+    mockHttp.post.and.callFake(function (params) {
+        return specUtil.respondWith({data: {}});
+    });
+
+    var translate = jasmine.createSpyObj('$translate', ['instant']);
 
     beforeEach(function () {
-        module('bahmni.admin');
+        module('bahmni.common.logging');
         module(function ($provide) {
             $provide.value('$http', mockHttp);
+            $provide.value('$translate', translate);
         });
 
         inject(['auditLogService', function (auditLogServiceInjected) {
@@ -61,7 +67,16 @@ describe('auditLogService', function () {
             done();
         });
         expect(mockHttp.get).toHaveBeenCalled();
-        expect(mockHttp.get.calls.mostRecent().args[0]).toBe("/openmrs/ws/rest/v1/bahmnicore/auditLog");
+        expect(mockHttp.get.calls.mostRecent().args[0]).toBe("/openmrs/ws/rest/v1/bahmnicore/auditlog");
         expect(mockHttp.get.calls.mostRecent().args[1].params).toEqual(params);
+    });
+
+    it("should post logs", function (done) {
+        var params = {patientUuid:"patient Uuid", message:'message', eventType:"eventType"};
+        auditLogService.auditLog(params).then(function (response) {
+            done();
+        });
+        expect(mockHttp.post).toHaveBeenCalled();
+        expect(mockHttp.post.calls.mostRecent().args[1]).toEqual(params);
     });
 });

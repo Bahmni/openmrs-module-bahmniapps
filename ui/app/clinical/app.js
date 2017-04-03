@@ -475,11 +475,26 @@ angular.module('consultation')
             $httpProvider.defaults.headers.common['Disable-WWW-Authenticate'] = true;
 
             $bahmniTranslateProvider.init({app: 'clinical', shouldMerge: true});
-        }]).run(['stateChangeSpinner', '$rootScope', 'offlineService', 'schedulerService',
-            function (stateChangeSpinner, $rootScope, offlineService, schedulerService) {
+        }]).run(['stateChangeSpinner', '$rootScope', 'offlineService', 'schedulerService', 'auditLogService', 'configurationService',
+            function (stateChangeSpinner, $rootScope, offlineService, schedulerService, auditLogService, configurationService) {
                 FastClick.attach(document.body);
                 stateChangeSpinner.activate();
-                var cleanUpStateChangeSuccess = $rootScope.$on('$stateChangeSuccess', function () {
+                var log = function (toState, toParams) {
+                    var params = {};
+                    params.eventType = Bahmni.Clinical.AuditLogEventDetails[toState.name].eventType;
+                    params.message = Bahmni.Clinical.AuditLogEventDetails[toState.name].message;
+                    params.patientUuid = toParams.patientUuid;
+                    params.programUuid = toParams.programUuid;
+                    params.module = "clinical";
+                    auditLogService.auditLog(params);
+                };
+                var cleanUpStateChangeSuccess = $rootScope.$on('$stateChangeSuccess', function (event, toState, toParams) {
+                    configurationService.getConfigurations(['enableAuditLog']).then(function (result) {
+                        if (result.enableAuditLog) {
+                            log(toState, toParams);
+                        }
+                    });
+
                     window.scrollTo(0, 0);
                 });
                 var cleanUpNgDialogOpened = $rootScope.$on('ngDialog.opened', function () {
