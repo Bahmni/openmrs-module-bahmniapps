@@ -1,0 +1,128 @@
+<div ng-class="{'disable-conditions-in-retro-mode':isRetrospectiveMode()}">
+    <div class="infoMsgRetrospectiveModeEnabled" ng-if="isRetrospectiveMode()">
+        <i class="fa fa-info-circle"></i>
+        <span ng-bind-html="'CONDITION_LIST_NO_RETRO_MODE' | translate"></span>
+    </div>
+
+    <div class="table new-diagnosis primary-section-grid">
+        <div class="row table-header">
+            <div class="col col1"><span>{{'CONDITION_LIST_CONDITION'|translate}}</span></div>
+            <div class="col col2"><span>{{'CONDITION_LIST_STATUS'|translate}}</span></div>
+            <div class="col col3"><span>{{'CONDITION_LIST_DATE' | translate}}</span></div>
+            <div class="col col4"><span>{{'CLINICAL_ACTION'|translate}}</span></div>
+        </div>
+        <div class="row">
+            <div class="col col1">
+                <input ng-model="consultation.condition.concept.name" type="text" name="name" id="name"
+                       bahmni-autocomplete source="getDiagnosis"
+                       on-select="getAddConditionMethod()"
+                       ng-change="consultation.condition.clearConcept()"
+                       ng-class="{illegalValue: !(consultation.condition.concept.name || consultation.condition.isEmpty())}">
+                <button type="button" ng-model="consultation.condition.isNonCoded"
+                        class="small-btn accept-btn" id="accept-button"
+                        ng-click="consultation.condition.toggleNonCoded()"
+                        ng-class="{
+                                                illegalValue: !consultation.condition.isValidConcept(),
+                                                active: consultation.condition.isNonCoded
+                                            }"
+                        ng-disabled="consultation.condition.concept.uuid">
+                    <span>{{'CLINICAL_ACCEPT'|translate}}</span>
+                </button>
+            </div>
+            <div class="col col2">
+                <buttons-radio class="btn-group" model='consultation.condition.status'
+                               options='conditionsStatuses'
+                               ng-class="{'illegalValue': !(consultation.condition.status || consultation.condition.isEmpty())}"/>
+            </div>
+            <div class="col col3">
+                <input date-converter class="form-field" type="date"
+                       max="{{todayWithoutTime}}"
+                       ng-model="consultation.condition.onSetDate">
+                <button type="button" toggle="consultation.condition.showNotes" class="comment-toggle fr"
+                        ng-class="{'has-notes': consultation.condition.additionalDetail}">
+                    <i class="fa fa-file-o" ng-hide="consultation.condition.additionalDetail">
+                        <i class="fa fa-plus-circle" ng-hide="consultation.condition.showNotes"></i>
+                        <i class="fa fa-minus-circle" ng-show="consultation.condition.showNotes"></i>
+                    </i>
+                    <i class="fa fa-file-text-o" ng-show="consultation.condition.additionalDetail"></i>
+                </button>
+            </div>
+            <div class="col col4">
+                <button ng-click="addCondition(consultation.condition)"
+                        ng-disabled="!consultation.condition.isValid()" class="btn--add">
+                    <i class="fa fa-plus"></i>
+                    <span>{{'CONDITION_LIST_ADD'|translate}}</span>
+                </button>
+            </div>
+            <div class="" ng-show="consultation.condition.showNotes">
+                                <textarea class="comment-section" maxlength="255"
+                                          ng-model="consultation.condition.additionalDetail">
+                          </textarea>
+            </div>
+        </div>
+
+    </div>
+
+
+    <div ng-if="consultation.conditions.length > 0" class="">
+        <div class="table new-diagnosis primary-section-grid">
+            <h2 class="section-title">
+                <span class="condition-header">{{'CONDITION_LIST_CONDITIONS_ACTIVE'|translate}}</span>
+                <span>{{'CONDITION_LIST_NOTES'|translate}}</span>
+            </h2>
+            <div class="row" ng-if="filterConditions('ACTIVE').length == 0">
+                <div class="col col1">
+                    <div class="diagnosis-name">
+                        {{'CONDITION_LIST_NO_CONDITIONS' | translate}}
+                    </div>
+                </div>
+            </div>
+            <div ng-repeat="condition in filterConditions('ACTIVE')" class="table-body">
+                <ng-include src="'consultation/views/conditionRow.html'"/>
+            </div>
+        </div>
+        <div class="table new-diagnosis primary-section-grid">
+            <h2 class="section-title">
+                <span class="condition-header">{{'CONDITION_LIST_CONDITIONS_HISTORY_OF'|translate}}</span>
+                <span>{{'CONDITION_LIST_NOTES'|translate}}</span>
+            </h2>
+            <div class="row" ng-if="filterConditions('HISTORY_OF').length == 0">
+                <div class="col col1">
+                    <div class="diagnosis-name">
+                        {{'CONDITION_LIST_NO_CONDITIONS' | translate}}
+                    </div>
+                </div>
+            </div>
+            <div ng-repeat="condition in filterConditions('HISTORY_OF')" class="table-body">
+                <ng-include src="'consultation/views/conditionRow.html'"/>
+            </div>
+        </div>
+        <div class="table new-diagnosis section-grid">
+            <div class="row table-header" toggle="toggles.expandInactive">
+                <div class="col col1">
+                <span>
+                    <i class="fa fa-caret-down" ng-show="toggles.expandInactive"></i>
+                    <i class="fa fa-caret-right" ng-hide="toggles.expandInactive"></i>
+                    {{'CONDITION_LIST_CONDITIONS_INACTIVE'|translate}}
+                </span>
+                </div>
+                <div class="col col2 notes-subscriber">
+                    <span class="subscriber-name"></span>
+                    <span>{{'CONDITION_LIST_NOTES'|translate}}</span>
+                </div>
+            </div>
+            <div ng-show="toggles.expandInactive">
+                <div class="row" ng-if="filterConditions('INACTIVE').length == 0">
+                    <div class="col col1">
+                        <div class="diagnosis-name">
+                            {{'CONDITION_LIST_NO_CONDITIONS' | translate}}
+                        </div>
+                    </div>
+                </div>
+                <div ng-repeat="condition in filterConditions('INACTIVE')" class="table-body">
+                    <ng-include src="'consultation/views/conditionRow.html'"/>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -110,6 +110,17 @@ describe("EncounterTransactionMapper", function () {
             expect(encounterData.context.patientProgramUuid).toBe(patientProgramUuid);
             expect(encounterData.orders[0].urgency).toBe(undefined);
         });
+
+        it("should put followup conditions in consultation observations", function(){
+            var consultation  = {observations:[], followUpConditions: [{},{}]};
+            var patient = { uuid:"patientUuid"};
+
+            var encounterData = mapper.map(consultation, patient, "logged-in-location-uuid", {encounterDate : "2015-04-01"});
+
+            expect(encounterData.observations.length).toBe(2);
+            expect(encounterData.observations[0]).toBe(consultation.followUpConditions[0]);
+            expect(encounterData.observations[1]).toBe(consultation.followUpConditions[1]);
+        });
     });
 });
 

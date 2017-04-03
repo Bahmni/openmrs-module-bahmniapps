@@ -1,0 +1,54 @@
+<div ng-class="{'template-container':hideTitle}">
+    <div class="conditions-display-contorl-overflow">
+        <div class="block hierarchy dashboard-section">
+            <h2 ng-click="openSummaryDialog()"
+                class="section-title"
+                ng-class="{'has-link':!hideTitle}">
+                <span class="title-link"> {{'CONDITION_LIST_DISPLAY_CONTROL_TITLE' | translate}} </span>
+                <i class="fa fa-external-link" ng-if="!hideTitle"></i>
+            </h2>
+            <div ng-if="conditions.length == 0">
+                <p class="placeholder-text">{{'CONDITION_LIST_NO_CONDITIONS' | translate}}</p>
+            </div>
+            <div ng-if="conditions.length > 0">
+                <ul class="form-field">
+                    <li ng-repeat="status in statuses">
+                        <span class="tree-list-item">{{'CONDITION_LIST_CONDITIONS_' + status|translate}}</span>
+                        <ul>
+                            <li ng-if="(conditions | filter:{status:status}:true).length == 0">
+                                <p class="placeholder-text">{{'CONDITION_LIST_NO_CONDITIONS' | translate}}</p>
+                            </li>
+                            <li class="table-body" ng-repeat="condition in conditions | filter:{status:status}:true">
+                                <div class="tree-list-item clearfix">
+                                    <span class="testUnderPanel left"><label>{{ condition.displayString() }}</label></span>
+                                    <div class="activeSince">
+
+                                    <span class="value-text-only" ng-if="condition.activeSince">
+                                        {{'CONDITION_LIST_ACTIVE_SINCE'|translate}} {{condition.activeSince | bahmniDate}}
+                                    </span>
+                                        <button class="toggle fr" ng-if="::!condition.additionalDetail"
+                                                ng-class="{'has-notes': condition.additionalDetail}"
+                                                toggle="condition.showAdditionalDetail">
+                                            <i class="fa fa-angle-down"></i>
+                                            <i class="fa fa-angle-up"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="notes inline-comments"
+                                     ng-if="condition.showAdditionalDetail || condition.additionalDetail">
+                                    <i class="fa fa-comments left" ng-if="condition.additionalDetail"></i>
+                                    <pre class="left">{{condition.additionalDetail}}</pre>
+                                    <div class="footer-note fr">
+                                        <span class="provider">
+                                            {{'CONDITION_LIST_CREATED_BY'|translate}} {{condition.creator}}
+                                        </span>
+                                    </div>
+                                </div>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
