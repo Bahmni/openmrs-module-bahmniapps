@@ -4,6 +4,7 @@ angular.module('bahmni.admin')
     .controller('auditLogController', ['$scope', 'spinner', 'auditLogService', 'messagingService',
         function ($scope, spinner, auditLogService, messagingService) {
             var DateUtil = Bahmni.Common.Util.DateUtil;
+            var defaultMessage = "";
             var isNotEmpty = function (value) {
                 return value !== undefined && value !== "";
             };
@@ -17,15 +18,15 @@ angular.module('bahmni.admin')
                 $scope.lastIndex = logs.length ? _.last(logs).auditLogId : defaultLastIndex;
             };
 
-            var showMessage = function (logsLength, message) {
-                !logsLength && messagingService.showMessage("error", message);
+            var setMessage = function (logsLength, message) {
+                $scope.errorMessage = logsLength ? defaultMessage : message;
             };
 
             var updatePage = function (logs, defaultFirstIndex, defaultLastIndex, message) {
                 if (logs.length) {
                     $scope.logs = logs;
                 }
-                showMessage(logs.length, message);
+                setMessage(logs.length, message);
                 updateIndex(logs, defaultFirstIndex, defaultLastIndex);
             };
 
@@ -35,10 +36,10 @@ angular.module('bahmni.admin')
                 return date;
             };
 
-            var defaultView = function (params) {
+            var defaultView = function (params, message) {
                 return auditLogService.getLogs(params).then(function (logs) {
                     logs.reverse();
-                    updatePage(logs, 0, 0, "No events to display !!");
+                    updatePage(logs, 0, 0, message);
                 });
             };
 
@@ -56,9 +57,13 @@ angular.module('bahmni.admin')
             };
 
             $scope.prev = function () {
+                var message = "No more events to be displayed !!";
                 var promise;
                 if (!$scope.firstIndex && !$scope.lastIndex) {
-                    promise = defaultView(mapParamsForRequest({defaultView: true, startFrom: $scope.startDate}));
+                    promise = defaultView(mapParamsForRequest({
+                        defaultView: true,
+                        startFrom: $scope.startDate
+                    }), message);
                 } else {
                     var params = {
                         lastAuditLogId: $scope.firstIndex,
@@ -68,7 +73,7 @@ angular.module('bahmni.admin')
                         startFrom: $scope.startDate
                     };
                     promise = auditLogService.getLogs(mapParamsForRequest(params)).then(function (logs) {
-                        updatePage(logs, $scope.firstIndex, $scope.lastIndex, "No more events to be displayed !!");
+                        updatePage(logs, $scope.firstIndex, $scope.lastIndex, message);
                     });
                 }
                 spinner.forPromise(promise);
@@ -77,13 +82,17 @@ angular.module('bahmni.admin')
             $scope.today = DateUtil.today();
             $scope.maxDate = DateUtil.getDateWithoutTime($scope.today);
             $scope.runReport = function () {
+                if ($("#startDate").hasClass("ng-invalid-max")) {
+                    messagingService.showMessage("error", "Please enter valid date !!");
+                    return;
+                }
                 var params = {
                     username: $scope.username, patientId: $scope.patientId,
                     startFrom: $scope.startDate
                 };
                 var promise = auditLogService.getLogs(mapParamsForRequest(params)).then(function (logs) {
                     $scope.logs = logs;
-                    showMessage(logs.length, "No matching events found for given criteria !!");
+                    setMessage(logs.length, "No matching events found for given criteria !!");
                     updateIndex(logs, 0, 0);
                 });
                 spinner.forPromise(promise);
@@ -91,7 +100,7 @@ angular.module('bahmni.admin')
 
             var init = function () {
                 $scope.logs = [];
-                var promise = defaultView({startFrom: getDate(), defaultView: true});
+                var promise = defaultView({startFrom: getDate(), defaultView: true}, "No events to display !!");
                 spinner.forPromise(promise);
             };
 

@@ -27,10 +27,10 @@
             <tr>
                 <th>Event ID</th>
                 <th>Created At</th>
-                <th>{{'EVENT_TYPE' | translate}}</th>
+                <th>{{ 'EVENT_TYPE' | translate }}</th>
                 <th>UserName</th>
                 <th>Patient ID</th>
-                <th>{{'Message' | translate}}</th>
+                <th>{{ 'Message' | translate }}</th>
             </tr>
             <tbody ng-repeat="log in logs">
             <tr>
@@ -44,6 +44,9 @@
             </tbody>
         </table>
         <button type="button" ng-click="prev()">&#x3c;&#x3c; PREV</button>
-        <button type="button" ng-click="next()">NEXT &#x3e;&#x3e; </button>
+        <button type="button" ng-click="next()">NEXT &#x3e;&#x3e;</button>
+    </div>
+    <div id="messageContainer">
+        <p style="text-align: center; color: red; font-weight: bold;">{{ errorMessage}}</p>
     </div>
 </div>

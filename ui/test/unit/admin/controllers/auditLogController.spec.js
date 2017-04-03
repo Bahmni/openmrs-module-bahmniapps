@@ -99,7 +99,7 @@ describe("auditLogController", function () {
         scope.startDate = currentDate;
         scope.$apply(setUp);
 
-        expect(messagingService.showMessage).toHaveBeenCalledWith("error", "No events to display !!");
+        expect(scope.errorMessage).toBe("No events to display !!");;
         expect(scope.logs.length).toBe(0);
         expect(scope.lastIndex).toBe(0);
         expect(scope.firstIndex).toBe(0);
@@ -119,9 +119,9 @@ describe("auditLogController", function () {
         expect(log2.patientId).toBe(8);
         expect(log2.auditLogId).toBe(10);
         expect(_spinner.forPromise).toHaveBeenCalled();
+        expect(scope.errorMessage).toBe("");
         expect(mockAuditLogService.getLogs.calls.count()).toBe(2);
         expect(mockAuditLogService.getLogs).toHaveBeenCalledWith({startFrom: startForm});
-        expect(messagingService.showMessage.calls.count()).toBe(1);
     });
 
     it("should provide previous logs from given index", function () {
@@ -162,6 +162,24 @@ describe("auditLogController", function () {
         });
     });
 
+    it("should display warning message when there is no event after initialization", function () {
+        mockResponses = [specUtil.simplePromise([]), specUtil.simplePromise([])];
+        scope.$apply(setUp);
+        expect(scope.logs.length).toBe(0);
+        expect(scope.lastIndex).toBe(0);
+        expect(scope.firstIndex).toBe(0);
+        expect(scope.errorMessage).toBe("No events to display !!");
+        expect(_spinner.forPromise).toHaveBeenCalled();
+        expect(mockAuditLogService.getLogs).toHaveBeenCalled();
+
+        scope.prev();
+        expect(scope.logs.length).toBe(0);
+        expect(scope.lastIndex).toBe(0);
+        expect(scope.firstIndex).toBe(0);
+        expect(scope.errorMessage).toBe("No more events to be displayed !!");
+        expect(mockAuditLogService.getLogs.calls.count()).toBe(2);
+    });
+
     it("should provide next logs from given index", function () {
         var currentDate = new Date("2018-04-23T18:30:00.548Z");
         mockResponses = [specUtil.simplePromise([logs[0]]), specUtil.simplePromise([logs[1]])];
@@ -194,14 +212,14 @@ describe("auditLogController", function () {
 
     it("should display warning if not event found", function () {
         var currentDate = new Date("2018-04-23T18:30:00.548Z");
-        mockResponses = [specUtil.simplePromise([])]
+        mockResponses = [specUtil.simplePromise([])];
         scope.startDate = currentDate;
         scope.$apply(setUp);
 
         expect(scope.logs.length).toBe(0);
         expect(scope.lastIndex).toBe(0);
         expect(scope.firstIndex).toBe(0);
-        expect(messagingService.showMessage).toHaveBeenCalledWith("error", "No events to display !!");
+        expect(scope.errorMessage).toBe("No events to display !!");
         expect(_spinner.forPromise).toHaveBeenCalled();
         expect(mockAuditLogService.getLogs.calls.count()).toBe(1);
         expect(mockAuditLogService.getLogs).toHaveBeenCalledWith({startFrom: currentDate, defaultView: true});
@@ -282,7 +300,7 @@ describe("auditLogController", function () {
         });
         expect(mockAuditLogService.getLogs.calls.count()).toBe(3);
         expect(_spinner.forPromise).toHaveBeenCalled();
-        expect(messagingService.showMessage).toHaveBeenCalledWith("error", "No more events to be displayed !!");
+        expect(scope.errorMessage).toBe( "No more events to be displayed !!");
     });
 
     it("should display warning if there is no event found after pressed next button again and again", function () {
@@ -325,7 +343,7 @@ describe("auditLogController", function () {
         expect(log.patientId).toBe(8);
         expect(log.auditLogId).toBe(10);
         expect(mockAuditLogService.getLogs).toHaveBeenCalledWith({startFrom: currentDate, lastAuditLogId: 10});
-        expect(messagingService.showMessage).toHaveBeenCalledWith("error", "No more events to be displayed !!");
+        expect(scope.errorMessage).toBe("No more events to be displayed !!");
         expect(_spinner.forPromise).toHaveBeenCalled();
         expect(mockAuditLogService.getLogs.calls.count()).toBe(3);
     });
@@ -358,7 +376,7 @@ describe("auditLogController", function () {
         expect(log2.auditLogId).toBe(10);
         expect(_spinner.forPromise).toHaveBeenCalled();
         expect(mockAuditLogService.getLogs).toHaveBeenCalledWith({startFrom: currentDate, lastAuditLogId: 10});
-        expect(messagingService.showMessage).toHaveBeenCalledWith("error", "No more events to be displayed !!");
+        expect(scope.errorMessage).toBe("No more events to be displayed !!");
     });
 
     it("should replace logs when user use run report to show logs", function () {
@@ -383,7 +401,7 @@ describe("auditLogController", function () {
         scope.startDate = startForm1;
         scope.runReport();
 
-        expect(messagingService.showMessage).toHaveBeenCalledWith("error", "No matching events found for given criteria !!");
+        expect(scope.errorMessage).toBe("No matching events found for given criteria !!");
         expect(scope.logs.length).toBe(0);
         expect(scope.lastIndex).toBe(0);
         expect(scope.firstIndex).toBe(0);
@@ -578,5 +596,24 @@ describe("auditLogController", function () {
             patientId: 4,
             username: "superman"
         });
+    });
+
+    it("should not run report if given date field has future date", function () {
+        spyOn($.fn, "hasClass").and.returnValue(true);
+        mockResponses = [specUtil.simplePromise([])];
+        scope.$apply(setUp);
+        expect(scope.logs.length).toBe(0);
+        expect(scope.lastIndex).toBe(0);
+        expect(scope.firstIndex).toBe(0);
+
+        expect(_spinner.forPromise).toHaveBeenCalled();
+        expect(mockAuditLogService.getLogs).toHaveBeenCalled();
+
+        scope.runReport();
+        expect(scope.logs.length).toBe(0);
+        expect(scope.lastIndex).toBe(0);
+        expect(scope.firstIndex).toBe(0);
+        expect(mockAuditLogService.getLogs.calls.count()).toBe(1);
+        expect(messagingService.showMessage).toHaveBeenCalledWith("error", "Please enter valid date !!");
     });
 });
