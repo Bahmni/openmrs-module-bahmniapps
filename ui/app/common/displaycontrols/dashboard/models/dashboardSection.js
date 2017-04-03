@@ -16,7 +16,8 @@
         "observationGraph",
         "obsToObsFlowSheet",
         "pacsOrders",
-        "patientInformation"
+        "patientInformation",
+        "conditionsList"
     ];
 
     var getViewUrl = function (section) {

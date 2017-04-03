@@ -671,3 +671,19 @@ button.toggle{
     }
   }
 }
+button.btn--add{
+  background: linear-gradient(to bottom, #A1D030, #88af28);
+  background-color: #88af28;
+  border: #88af28 1px solid;
+  color: $white;
+  font-size: 13px !important;
+  padding: 7px !important;
+  margin-left:20px;
+  .fa-plus{
+    color: $white;
+    padding: 0;
+    font-size: 16px;
+    display: inline-block;
+    padding-right: 5px;
+  }
+}

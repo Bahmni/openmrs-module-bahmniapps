@@ -8,7 +8,7 @@ angular.module('consultation', ['ui.router', 'bahmni.clinical', 'bahmni.common.c
     'bahmni.common.displaycontrol.disposition', 'bahmni.common.displaycontrol.custom', 'bahmni.common.displaycontrol.admissiondetails',
     'bahmni.common.routeErrorHandler', 'bahmni.common.displaycontrol.disposition',
     'httpErrorInterceptor', 'pasvaz.bindonce', 'infinite-scroll', 'bahmni.common.util', 'ngAnimate', 'ngDialog',
-    'bahmni.common.displaycontrol.patientprofile', 'bahmni.common.displaycontrol.diagnosis', 'RecursionHelper', 'ngSanitize',
+    'bahmni.common.displaycontrol.patientprofile', 'bahmni.common.displaycontrol.diagnosis', 'bahmni.common.displaycontrol.conditionsList', 'RecursionHelper', 'ngSanitize',
     'bahmni.common.orders', 'bahmni.common.displaycontrol.orders', 'bahmni.common.displaycontrol.prescription',
     'bahmni.common.displaycontrol.navigationlinks', 'bahmni.common.displaycontrol.programs',
     'bahmni.common.displaycontrol.pacsOrders', 'bahmni.common.uicontrols', 'bahmni.common.uicontrols.programmanagment', 'pascalprecht.translate',
@@ -114,9 +114,10 @@ angular.module('consultation')
                     'content': {
                         template: '<div ui-view="dashboard-header"></div> <div ui-view="dashboard-content"></div>' +
                         '<patient-control-panel patient="patient" visit-history="visitHistory" visit="visit" show="showControlPanel" consultation="consultation"/>',
-                        controller: function ($scope, visitHistory, consultationContext) {
+                        controller: function ($scope, visitHistory, consultationContext, followUpConditionConcept) {
                             $scope.visitHistory = visitHistory;
                             $scope.consultation = consultationContext;
+                            $scope.followUpConditionConcept = followUpConditionConcept;
                             $scope.lastConsultationTabUrl = {url: undefined};
                         }
                     }
@@ -131,9 +132,14 @@ angular.module('consultation')
                     retrospectiveIntialization: function (retrospectiveEntryService) {
                         return retrospectiveEntryService.initializeRetrospectiveEntry();
                     },
-                    consultationContext: function (consultationInitialization, initialization, $stateParams) {
+                    followUpConditionConcept: function (conditionsService) {
+                        return conditionsService.getFollowUpConditionConcept().then(function (response) {
+                            return response.data.results[0];
+                        });
+                    },
+                    consultationContext: function (consultationInitialization, initialization, $stateParams, followUpConditionConcept) {
                         return consultationInitialization(
-                            $stateParams.patientUuid, $stateParams.encounterUuid, $stateParams.programUuid, $stateParams.enrollment);
+                            $stateParams.patientUuid, $stateParams.encounterUuid, $stateParams.programUuid, $stateParams.enrollment, followUpConditionConcept);
                     },
                     dashboardInitialization: function (offlineDb, $rootScope, initialization, patientContext, clinicalDashboardConfig, userService) {
                         return clinicalDashboardConfig.load().then(function () {
