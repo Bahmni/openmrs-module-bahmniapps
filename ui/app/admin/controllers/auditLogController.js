@@ -1,26 +1,31 @@
 'use strict';
 
 angular.module('bahmni.admin')
-    .controller('auditLogController', ['$scope', 'spinner', '$http',
-        function ($scope, spinner, $http) {
-            var auditLogUrl = Bahmni.Common.Constants.adminUrl + "/auditLog";
+    .controller('auditLogController', ['$scope', 'spinner', 'auditLogService', 'messagingService',
+        function ($scope, spinner, auditLogService, messagingService) {
             var DateUtil = Bahmni.Common.Util.DateUtil;
-            var defaultMessage = "";
+            var isNotEmpty = function (value) {
+                return value !== undefined && value !== "";
+            };
+
+            var mapParamsForRequest = function (params) {
+                return _.pickBy(params, isNotEmpty);
+            };
 
             var updateIndex = function (logs, defaultFirstIndex, defaultLastIndex) {
                 $scope.firstIndex = logs.length ? _.first(logs).auditLogId : defaultFirstIndex;
                 $scope.lastIndex = logs.length ? _.last(logs).auditLogId : defaultLastIndex;
             };
 
-            var setMessage = function (logsLength, message) {
-                $scope.errorMessage = logsLength ? defaultMessage : message;
+            var showMessage = function (logsLength, message) {
+                !logsLength && messagingService.showMessage("error", message);
             };
 
-            var updatePage = function (logs, defaultFirstIndex, defaultLastIndex) {
+            var updatePage = function (logs, defaultFirstIndex, defaultLastIndex, message) {
                 if (logs.length) {
                     $scope.logs = logs;
                 }
-                setMessage(logs.length, "No records to display !!");
+                showMessage(logs.length, message);
                 updateIndex(logs, defaultFirstIndex, defaultLastIndex);
             };
 
@@ -30,57 +35,55 @@ angular.module('bahmni.admin')
                 return date;
             };
 
-            var convertToLocalDate = function (date) {
-                var localDate = DateUtil.parseLongDateToServerFormat(date);
-                return DateUtil.getDateTimeInSpecifiedFormat(localDate, 'MMMM Do, YYYY [at] h:mm:ss A');
-            };
-
-            var getLogs = function (params) {
-                params = params || {};
-                return $http.get(auditLogUrl, {params: params}).then(function (response) {
-                    return response.data.map(function (log) {
-                        log.dateCreated = convertToLocalDate(log.dateCreated);
-                        return log;
-                    });
-                });
-            };
-
             var defaultView = function (params) {
-                var promise = getLogs(params).then(function (logs) {
+                return auditLogService.getLogs(params).then(function (logs) {
                     logs.reverse();
-                    updatePage(logs, 0, 0);
+                    updatePage(logs, 0, 0, "No events to display !!");
                 });
-                spinner.forPromise(promise);
             };
 
             $scope.next = function () {
-                var promise = getLogs({lastAuditLogId: $scope.lastIndex}).then(function (logs) {
-                    updatePage(logs, $scope.firstIndex, $scope.lastIndex);
+                var params = {
+                    lastAuditLogId: $scope.lastIndex,
+                    username: $scope.username,
+                    patientId: $scope.patientId,
+                    startFrom: $scope.startDate
+                };
+                var promise = auditLogService.getLogs(mapParamsForRequest(params)).then(function (logs) {
+                    updatePage(logs, $scope.firstIndex, $scope.lastIndex, "No more events to be displayed !!");
                 });
                 spinner.forPromise(promise);
             };
 
             $scope.prev = function () {
+                var promise;
                 if (!$scope.firstIndex && !$scope.lastIndex) {
-                    defaultView();
+                    promise = defaultView(mapParamsForRequest({defaultView: true, startFrom: $scope.startDate}));
                 } else {
-                    var promise = getLogs({lastAuditLogId: $scope.firstIndex, prev: true}).then(function (logs) {
-                        updatePage(logs, $scope.firstIndex, $scope.lastIndex);
+                    var params = {
+                        lastAuditLogId: $scope.firstIndex,
+                        username: $scope.username,
+                        patientId: $scope.patientId,
+                        prev: true,
+                        startFrom: $scope.startDate
+                    };
+                    promise = auditLogService.getLogs(mapParamsForRequest(params)).then(function (logs) {
+                        updatePage(logs, $scope.firstIndex, $scope.lastIndex, "No more events to be displayed !!");
                     });
-                    spinner.forPromise(promise);
                 }
+                spinner.forPromise(promise);
             };
 
             $scope.today = DateUtil.today();
             $scope.maxDate = DateUtil.getDateWithoutTime($scope.today);
             $scope.runReport = function () {
-                var startDateTime = getDate();
-                var promise = getLogs({
+                var params = {
                     username: $scope.username, patientId: $scope.patientId,
-                    startFrom: startDateTime
-                }).then(function (logs) {
+                    startFrom: $scope.startDate
+                };
+                var promise = auditLogService.getLogs(mapParamsForRequest(params)).then(function (logs) {
                     $scope.logs = logs;
-                    setMessage(logs.length, "No records found for given criteria !!");
+                    showMessage(logs.length, "No matching events found for given criteria !!");
                     updateIndex(logs, 0, 0);
                 });
                 spinner.forPromise(promise);
@@ -88,7 +91,8 @@ angular.module('bahmni.admin')
 
             var init = function () {
                 $scope.logs = [];
-                defaultView({startFrom: getDate()});
+                var promise = defaultView({startFrom: getDate(), defaultView: true});
+                spinner.forPromise(promise);
             };
 
             init();

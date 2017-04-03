@@ -274,7 +274,7 @@ Bahmni.Common = Bahmni.Common || {};
         bahmniConnectMetaDataDb: "metaData",
         serverDateTimeUrl: "/cgi-bin/systemdate",
         loginText: "/bahmni_config/openmrs/apps/home/whiteLabel.json",
-        adminUrl: BAHMNI_CORE + "/admin"
+        auditLogUrl: BAHMNI_CORE + "/auditLog"
     };
 })();
 
