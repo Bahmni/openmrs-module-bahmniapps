@@ -4,8 +4,8 @@ angular.module('admin', ['httpErrorInterceptor', 'bahmni.admin', 'bahmni.common.
     'bahmni.common.uiHelper', 'bahmni.common.config', 'bahmni.common.orders', 'bahmni.common.i18n', 'pascalprecht.translate',
     'ngCookies', 'angularFileUpload', 'bahmni.common.offline', 'bahmni.common.services']);
 angular.module('admin')
-    .config(['$stateProvider', '$httpProvider', '$urlRouterProvider', '$compileProvider',
-        function ($stateProvider, $httpProvider, $urlRouterProvider, $compileProvider) {
+    .config(['$stateProvider', '$httpProvider', '$urlRouterProvider', '$compileProvider', '$bahmniTranslateProvider',
+        function ($stateProvider, $httpProvider, $urlRouterProvider, $compileProvider, $bahmniTranslateProvider) {
             $urlRouterProvider.otherwise('/dashboard');
             $stateProvider.state('admin', {
                 abstract: true,
@@ -57,6 +57,7 @@ angular.module('admin')
                 }
             });
             $httpProvider.defaults.headers.common['Disable-WWW-Authenticate'] = true;
+            $bahmniTranslateProvider.init({app: 'admin', shouldMerge: true});
         }
     ]).run(['$rootScope', '$templateCache', function ($rootScope, $templateCache) {
         // Disable caching view template partials
