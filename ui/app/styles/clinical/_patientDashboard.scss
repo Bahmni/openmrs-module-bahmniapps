@@ -731,6 +731,13 @@ table.drug-order-table td.drug {
   }
 }
 
+.dashboard-section {
+  .activeSince {
+    width:35%;
+    display:inline-block;
+    float: right;
+  }
+}
 .template-container .dashboard-section section.block.hierarchy{
   .testUnderPanel,.value-text-only {
     width: 34.5% !important;
