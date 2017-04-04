@@ -3,7 +3,7 @@
         <div class="reg-header-right fr">
             <form class="change-location fl" ng-class="{'change-location-offline': isOfflineApp}">
                 <select  ng-model="selectedLocationUuid" ng-change="onLocationChange()">
-                    <option ng-repeat="location in locations" ng-selected="isCurrentLocation(location)" value="{{location.uuid}}">
+                    <option ng-repeat="location in locations | orderBy:'display'" ng-selected="isCurrentLocation(location)" value="{{location.uuid}}">
                         {{location.display}}
                     </option>
                 </select>
