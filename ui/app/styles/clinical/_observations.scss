@@ -600,16 +600,44 @@ concept-set {
 .concept-set-panel {
   width: 100%;
   margin: 0 auto;
+  position: relative;
+  .left-panel-toggle {
+    display: none;
+    @media screen and (max-width: 1024px){
+      display: inline-block;
+      color: #669999;
+      border: 1px solid;
+      position: fixed;
+      left: 10px;
+      z-index: 1000000;
+      width: 25px;
+      height: 25px;
+      text-align: center;
+      font-size: 19px;
+      border-radius: 3px;
+    }
+  }
   .concept-set-panel-left {
     float: left;
     width: 275px;
     margin-right: -100%;
     position: relative;
     @media screen and (max-width: 1024px) {
-      width: 250px;
+      right: 100%;
+      -webkit-transition:all .5s ease-in-out;
+      -moz-transition:all .5s ease-in-out;
+      -o-transition:all .5s ease-in-out;
+      transition:all .5s ease-in-out;
+      .concept-set-panel-wrap {
+        webkit-box-shadow: 17px 4px 29px -16px rgba(0, 0, 0, 0.75);
+        -moz-box-shadow: 17px 4px 29px -16px rgba(0, 0, 0, 0.75);
+        box-shadow: 17px 4px 29px -16px rgba(0, 0, 0, 0.75);
+      }
+      &.form-menu-toggeled {
+        right: 0;
+      }
     }
     @media screen and (max-width: 850px) {
-      width: 225px;
     }
     .concept-set-panel-wrap {
       border-radius: 5px 5px 0 0;
@@ -706,10 +734,10 @@ concept-set {
     margin-top: 34px;
     position: relative;
     @media screen and (max-width: 1024px) {
-      margin-left: 265px;
+      margin-left: 0;
     }
     @media screen and (max-width: 850px) {
-      margin-left: 240px;
+      margin-left: 0;
     }
     ul li {
       &.concept-set-panel-no-template {
