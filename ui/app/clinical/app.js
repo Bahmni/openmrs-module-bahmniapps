@@ -387,7 +387,7 @@ angular.module('consultation')
                 },
                 resolve: {
                     observation: function (observationsService, $stateParams) {
-                        return observationsService.getRevisedObsByUuid($stateParams.observationUuid).then(function (results) {
+                        return observationsService.getByUuid($stateParams.observationUuid).then(function (results) {
                             return results.data;
                         });
                     }
