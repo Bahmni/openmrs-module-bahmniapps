@@ -278,7 +278,7 @@ Bahmni.Common = Bahmni.Common || {};
         conditionUrl: EMRAPI + '/condition',
         conditionHistoryUrl: EMRAPI + '/conditionhistory',
         followUpConditionConcept: 'Follow-up Condition',
-        localeLangs: "/bahmni_config/openmrs/apps/home/localeLanguages.json"
+        localeLangs: "/bahmni_config/openmrs/apps/home/locale_languages.json"
     };
 })();
 

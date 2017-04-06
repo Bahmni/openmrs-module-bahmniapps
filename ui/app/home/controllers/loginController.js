@@ -48,21 +48,21 @@ angular.module('bahmni.home')
 
             localeService.getLocalesLangs().then(function (response) {
                 localeLanguages = response.data.locales;
-            });
-
-            promise.then(function (response) {
-                var localeList = response.data.replace(/\s+/g, '').split(',');
-                $scope.locales = [];
-                _.forEach(localeList, function (locale) {
-                    var localeLanguage = findLanguageByLocale(locale);
-                    if (_.isUndefined(localeLanguage)) {
-                        $scope.locales.push({"code": locale, "nativeName": locale});
-                    }
-                    else {
-                        $scope.locales.push(localeLanguage);
-                    }
+            }).finally(function () {
+                promise.then(function (response) {
+                    var localeList = response.data.replace(/\s+/g, '').split(',');
+                    $scope.locales = [];
+                    _.forEach(localeList, function (locale) {
+                        var localeLanguage = findLanguageByLocale(locale);
+                        if (_.isUndefined(localeLanguage)) {
+                            $scope.locales.push({"code": locale, "nativeName": locale});
+                        }
+                        else {
+                            $scope.locales.push(localeLanguage);
+                        }
+                    });
+                    $scope.selectedLocale = $translate.use() ? $translate.use() : $scope.locales[0].code;
                 });
-                $scope.selectedLocale = $translate.use() ? $translate.use() : $scope.locales[0];
             });
 
             $scope.$watch('selectedLocale', function () {
