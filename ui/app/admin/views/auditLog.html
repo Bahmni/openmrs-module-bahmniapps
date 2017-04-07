@@ -11,11 +11,11 @@
             </p>
             <p>
                 <label for="username">Username </label>
-                <input type="text" id="username" ng-model="username">
+                <input type="text" id="username" ng-model="username" placeholder="Enter Username">
             </p>
             <p>
-                <label for="patientId">Patient Id </label>
-                <input type="text" id="patientId" ng-model="patientId">
+                <label for="patientId">Patient ID </label>
+                <input type="text" id="patientId" ng-model="patientId" placeholder="Enter Patient ID">
             </p>
             <button class="button" type="button" ng-click="runReport()"><i class="fa fa-filter" aria-hidden="true"></i>
                 Filter
@@ -30,21 +30,21 @@
         <table id="auditLogTable" border="0">
             <thead>
             <tr>
-                <th>Event ID</th>
-                <th>Created At</th>
+                <th>{{ 'EVENT_ID' | translate }}</th>
+                <th>{{ 'CREATED_AT' | translate }}</th>
                 <th>{{ 'EVENT_TYPE' | translate }}</th>
-                <th>UserName</th>
-                <th>Patient ID</th>
-                <th>{{ 'Message' | translate }}</th>
+                <th>{{ 'USERNAME' | translate }}</th>
+                <th>{{ 'PATIENT_ID' | translate }}</th>
+                <th>{{ 'MESSAGE' | translate }}</th>
             </tr>
             </thead>
             <tbody ng-repeat="log in logs">
             <tr>
-                <td>{{:: log.auditLogId}}</td>
-                <td>{{:: log.dateCreated }}</td>
-                <td>{{:: log.eventType | translate}}</td>
-                <td>{{:: log.userId}}</td>
-                <td>{{:: log.patientId}}</td>
+                <td>{{:: log.auditLogId | translate }}</td>
+                <td>{{:: log.dateCreated | translate }}</td>
+                <td>{{:: log.eventType | translate }}</td>
+                <td>{{:: log.userId | translate }}</td>
+                <td>{{:: log.patientId | translate }}</td>
                 <td>{{:: log.displayMessage}}</td>
             </tr>
             </tbody>
@@ -59,6 +59,6 @@
         </p>
     </div>
     <div id="messageContainer">
-        <p style="text-align: center; color: red; font-weight: bold;">{{ errorMessage}}</p>
+        <p style="text-align: center; color: red; font-weight: bold;">{{ errorMessage }}</p>
     </div>
 </div>
