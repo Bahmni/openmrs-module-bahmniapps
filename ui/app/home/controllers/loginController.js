@@ -65,7 +65,14 @@ angular.module('bahmni.home')
                 });
             });
 
-            $scope.$watch('selectedLocale', function () {
+            $scope.isChrome = function () {
+                if ($window.navigator.userAgent.indexOf("Chrome") != -1) {
+                    return true;
+                }
+                return false;
+            };
+
+            $scope.$watch('selectedLocale', function(){
                 $translate.use($scope.selectedLocale);
             });
 
