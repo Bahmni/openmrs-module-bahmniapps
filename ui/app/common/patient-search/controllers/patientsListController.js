@@ -158,7 +158,7 @@ angular.module('bahmni.common.patientSearch')
             if ($scope.search.searchType.links) {
                 link = _.find($scope.search.searchType.links, {linkColumn: heading}) || link;
             }
-            if(link.url && link.url !== null) {
+            if (link.url && link.url !== null) {
                 $window.open(appService.getAppDescriptor().formatUrl(link.url, options, true), link.newTab ? "_blank" : "_self");
             }
         };

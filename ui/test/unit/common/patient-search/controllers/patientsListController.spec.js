@@ -191,14 +191,13 @@ describe("PatientsListController", function () {
                 expect(_window.open).toHaveBeenCalled();
             });
 
-            it('should call window location when forward url is not given', function(){
+            it('should not call window location when forward url is not given', function(){
                 _window.location.and.returnValue(true);
                 var patient = { patientUuid : "patientUuid"};
                 scope.forwardPatient(patient);
-                expect(getAppDescriptor.formatUrl).toHaveBeenCalledWith(undefined, jasmine.any(Object), true);
+                expect(getAppDescriptor.formatUrl).not.toHaveBeenCalledWith(undefined, jasmine.any(Object), true);
             });
-
-
+            
         });
 
         describe("patientListHeadings", function(){
