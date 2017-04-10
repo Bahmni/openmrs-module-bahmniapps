@@ -346,11 +346,12 @@ concept-set {
         border-color: $lightestGray;
       }
       i {
-        color: green;
+        color: #888;
         font-size: 18px;
-        line-height: 30px;
-        width: 30px;
-        height: 30px;
+        line-height: 60px;
+        width: 60px;
+        height: 60px;
+        font-size: 30px;
         position: absolute;
         top: 0;
         left: 0;
@@ -609,7 +610,7 @@ concept-set {
       border: 1px solid;
       position: fixed;
       left: 10px;
-      z-index: 1000000;
+      z-index: 999;
       width: 25px;
       height: 25px;
       text-align: center;
