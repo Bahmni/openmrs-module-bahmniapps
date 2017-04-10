@@ -9,9 +9,10 @@
             <input id="file-browse-{{observation.uniqueId}}" class="file-browse" type="file" name="image"
                    accept="application/pdf, image/*" capture="camera" ng-model="observation.value" image-upload
                    patient-uuid="::patient.uuid" tabindex="1" observation="observation" root-observation="rootObservation">
-            <label class="placeholder" for="file-browse-{{observation.uniqueId}}"
-                   ng-hide="observation.value || observation.voided"><i
-                    class="fa fa-plus needsclick"></i></label>
+            <label class="placeholder" title="Upload your file" for="file-browse-{{observation.uniqueId}}"
+                   ng-hide="observation.value || observation.voided">
+                <i class="fa fa-upload" aria-hidden="true"></i>
+            </label>
 
             <div ng-show="observation.value" class="file">
                 <img ng-if="observation.value && !hasPDFAsValue()" ng-src="{{observation.value|thumbnail}}"

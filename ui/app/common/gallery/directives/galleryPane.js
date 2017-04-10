@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('bahmni.common.gallery')
-    .directive('bmGalleryPane', ['$rootScope', '$document', 'observationsService', 'encounterService', 'spinner', 'configurations',
-        function ($rootScope, $document, observationsService, encounterService, spinner, configurations) {
+    .directive('bmGalleryPane', ['$rootScope', '$document', 'observationsService', 'encounterService', 'spinner', 'configurations', 'ngDialog',
+        function ($rootScope, $document, observationsService, encounterService, spinner, configurations, ngDialog) {
             var $body = $document.find('body');
 
             $rootScope.$on('$stateChangeStart', function () {
@@ -129,6 +129,7 @@ angular.module('bahmni.common.gallery')
                             });
                         });
                     }
+                    ngDialog.openConfirm({template: '../common/gallery/views/gallery.html', scope: $scope, closeByEscape: true});
                 };
 
                 var fetchObsRelationship = function (image) {
@@ -165,7 +166,6 @@ angular.module('bahmni.common.gallery')
 
             return {
                 link: link,
-                controller: controller,
-                templateUrl: '../common/gallery/views/gallery.html'
+                controller: controller
             };
         }]);
