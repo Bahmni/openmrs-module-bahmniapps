@@ -550,7 +550,7 @@ describe("DocumentController", function () {
             var fileName = "test-file.jpeg";
             var fileType = "image";
 
-            scope.onSelect(file, newVisit, fileName);
+            scope.onSelect(file, newVisit, fileName, "image/jpeg");
 
             expect(visitDocumentService.saveFile).toHaveBeenCalledWith(file, "patient uuid" , appConfig.encounterType, fileName, fileType);
 
@@ -566,7 +566,7 @@ describe("DocumentController", function () {
             var fileName = "test-file.pdf";
             var fileType = "pdf";
 
-            scope.onSelect(file, newVisit, fileName);
+            scope.onSelect(file, newVisit, fileName, "application/pdf");
 
             expect(visitDocumentService.saveFile).toHaveBeenCalledWith(file, "patient uuid" , appConfig.encounterType, fileName, fileType);
 
@@ -574,15 +574,14 @@ describe("DocumentController", function () {
 
         it("should show error message dialog box when user uploads a video", function () {
             setUp();
-            spyOn(scope, 'reloadVisits');
             messagingService.showMessage.and.returnValue(specUtil.simplePromise("something"));
             var newVisit = new Bahmni.DocumentUpload.Visit();
             appConfig.encounterType.and.returnValue("Radiology");
 
             var file = "video/mp4;base64asdlkjfklasjdfalsjdfkl";
-            var fileName = "test-file.image";
-
-            scope.onSelect(file, newVisit, fileName);
+            var fileName = "test-file.mp4";
+            scope.$$phase = true;
+            scope.onSelect(file, newVisit, fileName, "video/mp4");
 
             expect(messagingService.showMessage).toHaveBeenCalledWith('error', "File type is not supported");
 
@@ -590,7 +589,6 @@ describe("DocumentController", function () {
 
         it("should show error message dialog box when user uploads a file which is not image and pdf", function () {
             setUp();
-            spyOn(scope, 'reloadVisits');
             messagingService.showMessage.and.returnValue(specUtil.simplePromise("something"));
             var newVisit = new Bahmni.DocumentUpload.Visit();
             appConfig.encounterType.and.returnValue("Radiology");
@@ -598,7 +596,8 @@ describe("DocumentController", function () {
             var file = "data/csv;base64asdlkjfklasjdfalsjdfkl";
             var fileName = "test-file.csv";
 
-            scope.onSelect(file, newVisit, fileName);
+            scope.$$phase = true;
+            scope.onSelect(file, newVisit, fileName, "document/csv");
 
             expect(messagingService.showMessage).toHaveBeenCalledWith('error', "File type is not supported");
 
