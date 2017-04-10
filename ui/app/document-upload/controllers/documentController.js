@@ -162,6 +162,19 @@ angular.module('opd.documentupload')
                 });
             };
 
+            var getFileType = function (fileType) {
+                var pdfType = "pdf";
+                var imageType = "image";
+                if (fileType.indexOf(pdfType) != -1) {
+                    fileType = pdfType;
+                } else if (fileType.indexOf(imageType) != -1) {
+                    fileType = imageType;
+                } else {
+                    fileType = "not_supported";
+                }
+                return fileType;
+            };
+
             var init = function () {
                 encounterTypeUuid = $scope.encounterConfig.getEncounterTypeUuid($rootScope.appConfig.encounterType);
                 initNewVisit();
@@ -190,27 +203,26 @@ angular.module('opd.documentupload')
                 });
             };
 
-            $scope.onSelect = function (file, visit, fileName) {
+            $scope.onSelect = function (file, visit, fileName, fileType) {
                 $scope.toggleGallery = false;
-                var searchStr = ";base64";
-                var format = file.split(searchStr)[0];
-                var fileType;
-                var pdfType = "pdf";
-                var imageType = "image";
-                if (format.indexOf(pdfType) != -1) {
-                    fileType = pdfType;
-                } else if (format.indexOf(imageType) != -1) {
-                    fileType = imageType;
+                fileType = getFileType(fileType);
+                if (fileType !== "not_supported") {
+                    spinner.forPromise(visitDocumentService.saveFile(file, $rootScope.patient.uuid, $rootScope.appConfig.encounterType, fileName, fileType).then(function (response) {
+                        var fileUrl = Bahmni.Common.Constants.documentsPath + '/' + response.data.url;
+                        var savedFile = visit.addFile(fileUrl);
+                        $scope.setConceptOnFile(savedFile, $scope.defaultConcept);
+                        $scope.toggleGallery = true;
+                    }, function (error) {
+                        messagingService.showMessage("error");
+                        $scope.toggleGallery = true;
+                    }));
                 } else {
                     messagingService.showMessage("error", "File type is not supported");
-                    return $scope.reloadVisits();
-                }
-                spinner.forPromise(visitDocumentService.saveFile(file, $rootScope.patient.uuid, $rootScope.appConfig.encounterType, fileName, fileType).then(function (response) {
-                    var fileUrl = Bahmni.Common.Constants.documentsPath + '/' + response.data.url;
-                    var savedFile = visit.addFile(fileUrl);
-                    $scope.setConceptOnFile(savedFile, $scope.defaultConcept);
                     $scope.toggleGallery = true;
-                }));
+                    if (!$scope.$$phase) {
+                        $scope.$apply();
+                    }
+                }
             };
 
             $scope.setConceptOnFile = function (file, selectedItem) {
@@ -223,13 +235,6 @@ angular.module('opd.documentupload')
                 }
             };
 
-            $scope.reloadVisits = function () {
-                if (!$scope.$$phase) {
-                    $scope.$apply();
-                }
-                $scope.toggleGallery = true;
-                return;
-            };
             $scope.onEditConcept = function (file) {
                 return function () {
                     file.concept.name = undefined;
