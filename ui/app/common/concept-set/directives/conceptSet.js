@@ -249,7 +249,20 @@ angular.module('bahmni.common.conceptSet')
                         }
                     });
                 };
-
+                var addDummyImage = function () {
+                    _.each($scope.rootObservation.groupMembers, function (observation) {
+                        addDummyImageObservationForSavedObs(observation, $scope.rootObservation);
+                    });
+                };
+                var addDummyImageObservationForSavedObs = function (observation, rootObservation) {
+                    _.each(observation.groupMembers, function (childObservation) {
+                        addDummyImageObservationForSavedObs(childObservation, observation);
+                    });
+                    if (observation.getControlType() === 'image' && observation.value && rootObservation.groupMembers.indexOf(observation) === rootObservation.groupMembers.length - 1) {
+                        rootObservation.groupMembers.push(observation.cloneNew());
+                        return;
+                    }
+                };
                 var init = function () {
                     return conceptSetService.getConcept({
                         name: conceptSetName,
@@ -263,6 +276,7 @@ angular.module('bahmni.common.conceptSet')
                             updateObservationsOnRootScope();
                             var groupMembers = getObservationsOfCurrentTemplate()[0].groupMembers;
                             var defaults = getDefaults();
+                            addDummyImage();
                             setDefaultsForGroupMembers(groupMembers, defaults);
                             var observationsOfCurrentTemplate = getObservationsOfCurrentTemplate();
                             updateFormConditions(observationsOfCurrentTemplate, $scope.rootObservation);

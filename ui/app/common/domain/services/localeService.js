@@ -45,4 +45,13 @@ angular.module('bahmni.common.domain')
                 }
             });
         };
+
+        this.getLocalesLangs = function () {
+            return $http.get(Bahmni.Common.Constants.localeLangs, {
+                method: "GET",
+                headers: {
+                    Accept: 'text/plain'
+                }
+            });
+        };
     }]);

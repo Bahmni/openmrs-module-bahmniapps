@@ -1,6 +1,6 @@
 'use strict';
 
-Bahmni.ConsultationMapper = function (dosageFrequencies, dosageInstructions, consultationNoteConcept, labOrderNoteConcept) {
+Bahmni.ConsultationMapper = function (dosageFrequencies, dosageInstructions, consultationNoteConcept, labOrderNoteConcept, followUpConditionConcept) {
     var filterPreviousOrderOfRevisedOrders = function (orders) {
         return _.filter(orders, function (drugOrder) {
             return !_.some(orders, function (otherDrugOrder) {
@@ -46,6 +46,10 @@ Bahmni.ConsultationMapper = function (dosageFrequencies, dosageInstructions, con
             return new Bahmni.Clinical.Specimen(specimen);
         });
 
+        var followUpConditions = _.filter(encounterTransaction.observations, function (observation) {
+            return _.get(followUpConditionConcept, 'uuid') == _.get(observation, 'concept.uuid');
+        });
+
         return {
             visitUuid: encounterTransaction.visitUuid,
             visitTypeUuid: encounterTransaction.visitTypeUuid,
@@ -65,7 +69,8 @@ Bahmni.ConsultationMapper = function (dosageFrequencies, dosageInstructions, con
             visitType: encounterTransaction.visitType,
             providers: encounterTransaction.providers,
             locationUuid: encounterTransaction.locationUuid,
-            extensions: {mdrtbSpecimen: mdrtbSpecimen}
+            extensions: {mdrtbSpecimen: mdrtbSpecimen},
+            followUpConditions: followUpConditions
         };
     };
 

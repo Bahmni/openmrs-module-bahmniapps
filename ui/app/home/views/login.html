@@ -10,13 +10,18 @@
         <div class="left">{{'LOGIN_LABEL_LOGIN_KEY' | translate}}</div>
         <div class="right locale-wrapper">
             <span class="locale-text">{{'LOGIN_LABEL_SELECT_LOCALE_KEY' | translate}} </span>
-            <select id="locale" ng-model="selectedLocale" ng-options="item as item for item in locales" required/>
+            <select id="locale" ng-model="selectedLocale" ng-options="item.code as item.nativeName for item in locales" required/>
         </div>
     </header>
 
     <form ng-submit="login()" name="loginForm" bm-form autofillable="true">
         <div class="login-body">
             <div class="note-container">
+                <div class="note error" ng-if="!isChrome()">
+                    <div class="text">
+                    {{ 'LOGIN_UNSUPPORTED_BROWSER_KEY'  | translate }}
+                    </div>
+                </div>
                 <div class="note error" ng-show="errorMessageTranslateKey">
                     <div class="text">
                         {{errorMessageTranslateKey | translate}}
@@ -55,7 +60,7 @@
                 </div>
                 <div class="field-value">
                     <select id="location" ng-model="loginInfo.currentLocation"
-                            ng-options="item as item.display for item in locations" required>
+                            ng-options="item as item.display for item in locations | orderBy:'display'" required>
                         <option value="">{{'LOGIN_LABEL_SELECT_LOCATION_KEY' | translate}}</option>
                     </select>
                 </div>
@@ -116,6 +121,5 @@
     Powered by
         <img src="./../images/twlogo.png" alt="ThoughtWorks">
         <img src="./../images/bahmniLogoFull.png" alt="Bahmni" >
-    <br>
     <a href={{helpLink}}> Bahmni Help</a>
 </div>
