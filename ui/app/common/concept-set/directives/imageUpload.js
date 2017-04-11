@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('bahmni.common.conceptSet')
-    .directive('imageUpload', ['$rootScope', 'visitDocumentService', 'spinner', function ($rootScope, visitDocumentService, spinner) {
+    .directive('imageUpload', ['visitDocumentService', 'messagingService', 'spinner', function (visitDocumentService, messagingService, spinner) {
         var link = function (scope, element) {
             element.bind("change", function () {
                 var file = element[0].files[0];
@@ -11,19 +11,30 @@ angular.module('bahmni.common.conceptSet')
                     spinner.forPromise(visitDocumentService.saveFile(image, scope.patientUuid, undefined, file.name, scope.fileType).then(function (response) {
                         scope.url = response.data.url;
                         element.val(null);
+                        cloneNew(scope.observation, scope.rootObservation);
                     }));
                 };
                 reader.readAsDataURL(file);
             });
-        };
 
+            var cloneNew = function (observation, parentObservation) {
+                var newObs = observation.cloneNew();
+                newObs.scrollToElement = true;
+                var index = parentObservation.groupMembers.indexOf(observation);
+                parentObservation.groupMembers.splice(index + 1, 0, newObs);
+                messagingService.showMessage("info", "A new " + observation.label + " section has been added");
+                scope.$root.$broadcast("event:addMore", newObs);
+            };
+        };
         return {
             restrict: 'A',
             require: 'ngModel',
             scope: {
                 url: "=ngModel",
                 patientUuid: "=",
-                fileType: "="
+                fileType: "=",
+                observation: "=",
+                rootObservation: "="
             },
             link: link
         };

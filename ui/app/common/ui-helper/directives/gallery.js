@@ -13,7 +13,7 @@ angular.module('bahmni.common.uiHelper')
                 return {
                     src: Bahmni.Common.Constants.documentsPath + '/' + record.imageObservation.value,
                     title: record.concept.name,
-                    commentOnUpload: record.comment,
+                    commentOnUpload: record.comment || record.imageObservation.comment,
                     date: record.imageObservation.observationDateTime,
                     uuid: record.imageObservation.uuid,
                     providerName: provider ? provider.name : null
