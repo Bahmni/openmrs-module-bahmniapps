@@ -14,6 +14,7 @@ angular.module('bahmni.ipd')
             var customVisitParams = Bahmni.IPD.Constants.visitRepresentation;
             $scope.assignBedsPrivilege = Bahmni.IPD.Constants.assignBedsPrivilege;
             $scope.defaultVisitTypeName = appService.getAppDescriptor().getConfigValue('defaultVisitType');
+            var hideStartNewVisitPopUp = appService.getAppDescriptor().getConfigValue('hideStartNewVisitPopUp');
             $scope.adtObservations = [];
             $scope.dashboardConfig = appService.getAppDescriptor().getConfigValue('dashboard');
             $scope.expectedDateOfDischargeConceptName = appService.getAppDescriptor().getConfigValue('expectedDateOfDischarge');
@@ -192,7 +193,7 @@ angular.module('bahmni.ipd')
             $scope.admit = function () {
                 if ($rootScope.selectedBedInfo.bed == undefined) {
                     messagingService.showMessage("error", "Please select a bed to admit patient");
-                } else if ($scope.visitSummary && $scope.visitSummary.visitType !== $scope.defaultVisitTypeName) {
+                } else if ($scope.visitSummary && $scope.visitSummary.visitType !== $scope.defaultVisitTypeName && !hideStartNewVisitPopUp) {
                     ngDialog.openConfirm({
                         template: 'views/visitChangeConfirmation.html',
                         scope: $scope,
@@ -310,8 +311,13 @@ angular.module('bahmni.ipd')
             };
 
             $scope.admitConfirmation = function () {
-                createEncounterAndContinue();
-                $scope.cancelConfirmationDialog();
+                if (hideStartNewVisitPopUp) {
+                    $scope.closeCurrentVisitAndStartNewVisit();
+                }
+                else {
+                    createEncounterAndContinue();
+                    $scope.cancelConfirmationDialog();
+                }
             };
         }
     ]);

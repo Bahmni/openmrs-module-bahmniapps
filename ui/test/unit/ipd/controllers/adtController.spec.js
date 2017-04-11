@@ -103,13 +103,47 @@ describe("AdtController", function () {
         });
     };
 
-    it("Should show confirmation dialog if patient's visit type is not defaultVisitType", function () {
+    it("Should show confirmation dialog if patient's visit type is not defaultVisitType and hideStartNewVisitPopUp is not present", function () {
         scope.visitSummary = {"visitType": "OPD"};
+        appService.getAppDescriptor.and.returnValue({
+            getConfigValue: function (key) {
+                var configs = {hideStartNewVisitPopUp: false, dashboard: ''};
+                return configs[key];
+            }, getExtensions: function () {
+                return {
+                    maxPatientsPerBed: 2
+                }
+            },
+            getConfig: function(){
+            }
+        });
+
         createController();
 
         scope.admit();
         expect(ngDialog.openConfirm).toHaveBeenCalled();
         expect(ngDialog.openConfirm).toHaveBeenCalledWith({template: 'views/visitChangeConfirmation.html', scope: scope, closeByEscape: true});
+    });
+    it("Should show confirmation dialog if patient's visit type is not defaultVisitType and hideStartNewVisitPopUp is present", function () {
+        scope.visitSummary = {"visitType": "OPD"};
+        appService.getAppDescriptor.and.returnValue({
+            getConfigValue: function (key) {
+                var configs = {hideStartNewVisitPopUp: true, dashboard: ''};
+                return configs[key];
+            }, getExtensions: function () {
+                return {
+                    maxPatientsPerBed: 2
+                }
+            },
+            getConfig: function(){
+            }
+        });
+
+        createController();
+
+        scope.admit();
+        expect(ngDialog.openConfirm).toHaveBeenCalled();
+        expect(ngDialog.openConfirm).toHaveBeenCalledWith({template: 'views/admitConfirmation.html', scope: scope, closeByEscape: true, className: "ngdialog-theme-default ng-dialog-adt-popUp"});
     });
 
     it("should close the visit and create a new encounter if dialog is confirmed", function () {
