@@ -212,7 +212,7 @@ angular.module('opd.documentupload')
                         var savedFile = visit.addFile(fileUrl);
                         $scope.setConceptOnFile(savedFile, $scope.defaultConcept);
                         $scope.toggleGallery = true;
-                    }, function (error) {
+                    }, function () {
                         messagingService.showMessage("error");
                         $scope.toggleGallery = true;
                     }));
