@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('opd.documentupload')
-    .controller('DocumentController', ['$scope', '$stateParams', 'visitService', 'patientService', 'encounterService', 'spinner', 'visitDocumentService', '$rootScope', '$http', '$q', '$timeout', 'sessionService', '$anchorScroll', '$translate',
-        function ($scope, $stateParams, visitService, patientService, encounterService, spinner, visitDocumentService, $rootScope, $http, $q, $timeout, sessionService, $anchorScroll, $translate) {
+    .controller('DocumentController', ['$scope', '$stateParams', 'visitService', 'patientService', 'encounterService', 'spinner', 'visitDocumentService', '$rootScope', '$http', '$q', '$timeout', 'sessionService', '$anchorScroll', '$translate', 'messagingService',
+        function ($scope, $stateParams, visitService, patientService, encounterService, spinner, visitDocumentService, $rootScope, $http, $q, $timeout, sessionService, $anchorScroll, $translate, messagingService) {
             var encounterTypeUuid;
             var topLevelConceptUuid;
             var customVisitParams = Bahmni.DocumentUpload.Constants.visitRepresentation;
@@ -162,6 +162,19 @@ angular.module('opd.documentupload')
                 });
             };
 
+            var getFileType = function (fileType) {
+                var pdfType = "pdf";
+                var imageType = "image";
+                if (fileType.indexOf(pdfType) != -1) {
+                    fileType = pdfType;
+                } else if (fileType.indexOf(imageType) != -1) {
+                    fileType = imageType;
+                } else {
+                    fileType = "not_supported";
+                }
+                return fileType;
+            };
+
             var init = function () {
                 encounterTypeUuid = $scope.encounterConfig.getEncounterTypeUuid($rootScope.appConfig.encounterType);
                 initNewVisit();
@@ -190,14 +203,26 @@ angular.module('opd.documentupload')
                 });
             };
 
-            $scope.onSelect = function (file, visit) {
+            $scope.onSelect = function (file, visit, fileName, fileType) {
                 $scope.toggleGallery = false;
-                spinner.forPromise(visitDocumentService.saveFile(file, $rootScope.patient.uuid, $rootScope.appConfig.encounterType).then(function (response) {
-                    var fileUrl = Bahmni.Common.Constants.documentsPath + '/' + response.data.url;
-                    var savedFile = visit.addFile(fileUrl);
-                    $scope.setConceptOnFile(savedFile, $scope.defaultConcept);
+                fileType = getFileType(fileType);
+                if (fileType !== "not_supported") {
+                    spinner.forPromise(visitDocumentService.saveFile(file, $rootScope.patient.uuid, $rootScope.appConfig.encounterType, fileName, fileType).then(function (response) {
+                        var fileUrl = Bahmni.Common.Constants.documentsPath + '/' + response.data.url;
+                        var savedFile = visit.addFile(fileUrl);
+                        $scope.setConceptOnFile(savedFile, $scope.defaultConcept);
+                        $scope.toggleGallery = true;
+                    }, function () {
+                        messagingService.showMessage("error");
+                        $scope.toggleGallery = true;
+                    }));
+                } else {
+                    messagingService.showMessage("error", "File type is not supported");
                     $scope.toggleGallery = true;
-                }));
+                    if (!$scope.$$phase) {
+                        $scope.$apply();
+                    }
+                }
             };
 
             $scope.setConceptOnFile = function (file, selectedItem) {
