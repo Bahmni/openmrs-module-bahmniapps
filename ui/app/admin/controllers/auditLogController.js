@@ -1,10 +1,15 @@
 'use strict';
 
 angular.module('bahmni.admin')
-    .controller('auditLogController', ['$scope', 'spinner', 'auditLogService', 'messagingService',
-        function ($scope, spinner, auditLogService, messagingService) {
+    .controller('auditLogController', ['$scope', 'spinner', 'auditLogService', 'messagingService', '$translate',
+        function ($scope, spinner, auditLogService, messagingService, $translate) {
             var DateUtil = Bahmni.Common.Util.DateUtil;
             var defaultMessage = "";
+
+            var getTranslatedMessage = function (key) {
+                return $translate.instant(key);
+            };
+
             var isNotEmpty = function (value) {
                 return value !== undefined && value !== "";
             };
@@ -51,13 +56,13 @@ angular.module('bahmni.admin')
                     startFrom: $scope.startDate
                 };
                 var promise = auditLogService.getLogs(mapParamsForRequest(params)).then(function (logs) {
-                    updatePage(logs, $scope.firstIndex, $scope.lastIndex, "No more events to be displayed !!");
+                    updatePage(logs, $scope.firstIndex, $scope.lastIndex, getTranslatedMessage("NO_MORE_EVENTS_FOUND"));
                 });
                 spinner.forPromise(promise);
             };
 
             $scope.prev = function () {
-                var message = "No more events to be displayed !!";
+                var message = getTranslatedMessage("NO_MORE_EVENTS_FOUND");
                 var promise;
                 if (!$scope.firstIndex && !$scope.lastIndex) {
                     promise = defaultView(mapParamsForRequest({
@@ -83,7 +88,7 @@ angular.module('bahmni.admin')
             $scope.maxDate = DateUtil.getDateWithoutTime($scope.today);
             $scope.runReport = function () {
                 if ($("#startDate").hasClass("ng-invalid-max")) {
-                    messagingService.showMessage("error", "Please enter valid date !!");
+                    messagingService.showMessage("error", getTranslatedMessage("INVALID_DATE"));
                     return;
                 }
                 var params = {
@@ -92,7 +97,7 @@ angular.module('bahmni.admin')
                 };
                 var promise = auditLogService.getLogs(mapParamsForRequest(params)).then(function (logs) {
                     $scope.logs = logs;
-                    setMessage(logs.length, "No matching events found for given criteria !!");
+                    setMessage(logs.length, getTranslatedMessage("MATCHING_EVENTS_NOT_FOUND"));
                     updateIndex(logs, 0, 0);
                 });
                 spinner.forPromise(promise);
@@ -100,7 +105,7 @@ angular.module('bahmni.admin')
 
             var init = function () {
                 $scope.logs = [];
-                var promise = defaultView({startFrom: getDate(), defaultView: true}, "No events to display !!");
+                var promise = defaultView({startFrom: getDate(), defaultView: true}, getTranslatedMessage("NO_EVENTS_FOUND"));
                 spinner.forPromise(promise);
             };
 

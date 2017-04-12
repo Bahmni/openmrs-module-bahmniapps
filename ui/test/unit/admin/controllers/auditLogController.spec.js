@@ -1,8 +1,15 @@
 'use strict';
 
 describe("auditLogController", function () {
-    var scope, httpBackend, _spinner, mockAuditLogService, counter, mockResponses, messagingService;
+    var scope, httpBackend, _spinner, mockAuditLogService, counter, mockResponses, messagingService, translate;
     var DateUtil = Bahmni.Common.Util.DateUtil;
+
+    var translatedMessages = {
+        "MATCHING_EVENTS_NOT_FOUND": "No matching events found for given criteria !!",
+        "INVALID_DATE": "Please enter valid date !!",
+        "NO_EVENTS_FOUND": "No events to display !!",
+        "NO_MORE_EVENTS_FOUND": "No more events to be displayed !!"
+    };
 
     var logs = [
         {
@@ -41,6 +48,10 @@ describe("auditLogController", function () {
         mockAuditLogService.getLogs.and.callFake(function () {
             return mockResponses[counter++];
         });
+        translate = jasmine.createSpyObj('$translate', ['instant']);
+        translate.instant.and.callFake(function (key) {
+            return translatedMessages[key];
+        })
 
     });
 
@@ -56,7 +67,8 @@ describe("auditLogController", function () {
                 $scope: scope,
                 spinner: _spinner,
                 auditLogService: mockAuditLogService,
-                messagingService: messagingService
+                messagingService: messagingService,
+                $translate: translate
             });
         });
     };
@@ -99,7 +111,8 @@ describe("auditLogController", function () {
         scope.startDate = currentDate;
         scope.$apply(setUp);
 
-        expect(scope.errorMessage).toBe("No events to display !!");;
+        expect(translate.instant).toHaveBeenCalledWith("NO_EVENTS_FOUND");
+        expect(scope.errorMessage).toBe("No events to display !!");
         expect(scope.logs.length).toBe(0);
         expect(scope.lastIndex).toBe(0);
         expect(scope.firstIndex).toBe(0);
@@ -168,6 +181,7 @@ describe("auditLogController", function () {
         expect(scope.logs.length).toBe(0);
         expect(scope.lastIndex).toBe(0);
         expect(scope.firstIndex).toBe(0);
+        expect(translate.instant).toHaveBeenCalledWith("NO_EVENTS_FOUND");
         expect(scope.errorMessage).toBe("No events to display !!");
         expect(_spinner.forPromise).toHaveBeenCalled();
         expect(mockAuditLogService.getLogs).toHaveBeenCalled();
@@ -176,6 +190,7 @@ describe("auditLogController", function () {
         expect(scope.logs.length).toBe(0);
         expect(scope.lastIndex).toBe(0);
         expect(scope.firstIndex).toBe(0);
+        expect(translate.instant).toHaveBeenCalledWith("NO_MORE_EVENTS_FOUND");
         expect(scope.errorMessage).toBe("No more events to be displayed !!");
         expect(mockAuditLogService.getLogs.calls.count()).toBe(2);
     });
@@ -219,6 +234,7 @@ describe("auditLogController", function () {
         expect(scope.logs.length).toBe(0);
         expect(scope.lastIndex).toBe(0);
         expect(scope.firstIndex).toBe(0);
+        expect(translate.instant).toHaveBeenCalledWith("NO_EVENTS_FOUND");
         expect(scope.errorMessage).toBe("No events to display !!");
         expect(_spinner.forPromise).toHaveBeenCalled();
         expect(mockAuditLogService.getLogs.calls.count()).toBe(1);
@@ -300,7 +316,8 @@ describe("auditLogController", function () {
         });
         expect(mockAuditLogService.getLogs.calls.count()).toBe(3);
         expect(_spinner.forPromise).toHaveBeenCalled();
-        expect(scope.errorMessage).toBe( "No more events to be displayed !!");
+        expect(translate.instant).toHaveBeenCalledWith("NO_MORE_EVENTS_FOUND");
+        expect(scope.errorMessage).toBe("No more events to be displayed !!");
     });
 
     it("should display warning if there is no event found after pressed next button again and again", function () {
@@ -343,6 +360,7 @@ describe("auditLogController", function () {
         expect(log.patientId).toBe(8);
         expect(log.auditLogId).toBe(10);
         expect(mockAuditLogService.getLogs).toHaveBeenCalledWith({startFrom: currentDate, lastAuditLogId: 10});
+        expect(translate.instant).toHaveBeenCalledWith("NO_MORE_EVENTS_FOUND");
         expect(scope.errorMessage).toBe("No more events to be displayed !!");
         expect(_spinner.forPromise).toHaveBeenCalled();
         expect(mockAuditLogService.getLogs.calls.count()).toBe(3);
@@ -376,6 +394,7 @@ describe("auditLogController", function () {
         expect(log2.auditLogId).toBe(10);
         expect(_spinner.forPromise).toHaveBeenCalled();
         expect(mockAuditLogService.getLogs).toHaveBeenCalledWith({startFrom: currentDate, lastAuditLogId: 10});
+        expect(translate.instant).toHaveBeenCalledWith("NO_MORE_EVENTS_FOUND");
         expect(scope.errorMessage).toBe("No more events to be displayed !!");
     });
 
@@ -401,6 +420,7 @@ describe("auditLogController", function () {
         scope.startDate = startForm1;
         scope.runReport();
 
+        expect(translate.instant).toHaveBeenCalledWith("MATCHING_EVENTS_NOT_FOUND");
         expect(scope.errorMessage).toBe("No matching events found for given criteria !!");
         expect(scope.logs.length).toBe(0);
         expect(scope.lastIndex).toBe(0);
@@ -614,6 +634,7 @@ describe("auditLogController", function () {
         expect(scope.lastIndex).toBe(0);
         expect(scope.firstIndex).toBe(0);
         expect(mockAuditLogService.getLogs.calls.count()).toBe(1);
+        expect(translate.instant).toHaveBeenCalledWith("INVALID_DATE");
         expect(messagingService.showMessage).toHaveBeenCalledWith("error", "Please enter valid date !!");
     });
 });
