@@ -137,7 +137,7 @@ module.exports = function (grunt) {
                 configFile: 'test/config/karma.conf.js',
                 singleRun: false,
                 autoWatch: true,
-                reporters: ['junit'],
+                reporters: ['junit', 'progress'],
                 preprocessors: {
                     'app/common/displaycontrols/**/views/*.html': ['ng-html2js'],
                     'app/common/concept-set/views/*.html': ['ng-html2js'],
