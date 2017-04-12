@@ -8,11 +8,19 @@ angular.module('bahmni.common.conceptSet')
                 var reader = new FileReader();
                 reader.onload = function (event) {
                     var image = event.target.result;
-                    spinner.forPromise(visitDocumentService.saveFile(image, scope.patientUuid, undefined, file.name, scope.fileType).then(function (response) {
-                        scope.url = response.data.url;
-                        element.val(null);
-                        cloneNew(scope.observation, scope.rootObservation);
-                    }));
+                    var fileType = scope.fileType || visitDocumentService.getFileType(file.type);
+                    if (fileType !== "not_supported") {
+                        spinner.forPromise(visitDocumentService.saveFile(image, scope.patientUuid, undefined, file.name, fileType).then(function (response) {
+                            scope.url = response.data.url;
+                            element.val(null);
+                            cloneNew(scope.observation, scope.rootObservation);
+                        }));
+                    } else {
+                        messagingService.showMessage("error", "File type is not supported");
+                        if (!scope.$$phase) {
+                            scope.$apply();
+                        }
+                    }
                 };
                 reader.readAsDataURL(file);
             });
