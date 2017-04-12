@@ -41,7 +41,7 @@
         <div ng-repeat="image in album.images">
 
             <div class="image-bottom-bar" ng-if="isActive($index,album.tag)">
-                <p ng-if="image.commentOnUpload" class="image-preview-notes">{{image.commentOnUpload}}</p>
+                <p ng-if="image.commentOnUpload" class="image-preview-notes" ng-class="{'hide': accessImpression}">{{image.commentOnUpload}}</p>
                 <p>
                     <span class="image-provider">{{image.providerName}}</span>
                     <span class="image-date">{{image.date | bahmniDateTime}}</span>
