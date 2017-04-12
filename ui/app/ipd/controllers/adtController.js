@@ -311,7 +311,7 @@ angular.module('bahmni.ipd')
             };
 
             $scope.admitConfirmation = function () {
-                if (hideStartNewVisitPopUp && $scope.visitSummary) {
+                if (hideStartNewVisitPopUp && $scope.visitSummary && getVisitTypeUuid($scope.visitSummary.visitType) != defaultVisitTypeUuid) {
                     $scope.closeCurrentVisitAndStartNewVisit();
                 }
                 else {
