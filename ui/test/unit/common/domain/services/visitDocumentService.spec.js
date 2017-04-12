@@ -57,4 +57,19 @@ describe("visitDocumentService", function () {
             expect(response.data.error.message).toEqual(data.error.message);
         }).catch(notifyError).finally(done);
     });
+
+    describe("getFileType", function () {
+        it("should give file type as pdf for pdf mime type", function () {
+            expect(visitDocumentService.getFileType("image/jpeg")).toBe("image");
+        });
+
+        it("should give file type as pdf for image mime type", function () {
+            expect(visitDocumentService.getFileType("application/pdf")).toBe("pdf");
+        });
+
+        it("should give file type as not_supported for any other mime type except image and pdf", function () {
+            expect(visitDocumentService.getFileType("video/mp4")).toBe("not_supported");
+        });
+
+    });
 });
