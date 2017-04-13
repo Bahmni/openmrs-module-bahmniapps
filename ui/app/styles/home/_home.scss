@@ -338,8 +338,15 @@ body {
     }
     .locale-wrapper {
       font-size: 14px;
+      max-width: 300px;
+      overflow: hidden;
       .locale-text {
         padding-right: 10px;
+        max-width: 130px;
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        float: left;
       }
       select {
         background-color: #FFF;
