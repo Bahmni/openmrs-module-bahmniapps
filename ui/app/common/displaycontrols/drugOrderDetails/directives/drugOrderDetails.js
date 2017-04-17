@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('bahmni.common.displaycontrol.drugOrderDetails')
-    .directive('drugOrderDetails', ['TreatmentService', 'spinner', 'treatmentConfig', '$q', function (treatmentService, spinner, treatmentConfig, $q) {
+    .directive('drugOrderDetails', ['treatmentService', 'spinner', 'treatmentConfig', '$q', function (treatmentService, spinner, treatmentConfig, $q) {
         var controller = function ($scope) {
             var init = function () {
                 return $q.all([treatmentService.getAllDrugOrdersFor($scope.patient.uuid, $scope.section.dashboardConfig.drugConceptSet, undefined, undefined, $scope.enrollment),
@@ -14,6 +14,9 @@ angular.module('bahmni.common.displaycontrol.drugOrderDetails')
                         var drugOrderResponse = results[0];
                         var drugOrders = drugOrderResponse.map(createDrugOrder);
                         $scope.drugOrders = sortOrders(drugOrders);
+                        if (_.isEmpty($scope.drugOrders)) {
+                            $scope.$emit("no-data-present-event");
+                        }
                     });
             };
 

@@ -32,6 +32,19 @@ angular.module('bahmni.clinical').factory('initialization',
                     }, config, ["dashboard", "visit", "medication"]);
                 };
 
+                var loadFormConditionsIfOffline = function () {
+                    var isOfflineApp = offlineService.isOfflineApp();
+                    if (isOfflineApp) {
+                        if (offlineService.isAndroidApp()) {
+                            offlineDbService = androidDbService;
+                        }
+                        return offlineDbService.getConfig("clinical").then(function (config) {
+                            var script = config.value['formConditions.js'];
+                            eval(script); // eslint-disable-line no-eval
+                        });
+                    }
+                };
+
                 var mergeFormConditions = function () {
                     var formConditions = Bahmni.ConceptSet.FormConditions;
                     if (formConditions) {
@@ -42,6 +55,7 @@ angular.module('bahmni.clinical').factory('initialization',
                 return spinner.forPromise(authenticator.authenticateUser()
                     .then(initApp)
                     .then(loadConfigPromise)
+                    .then(loadFormConditionsIfOffline)
                     .then(mergeFormConditions)
                     .then(orderTypeService.loadAll));
             };

@@ -1,8 +1,13 @@
 'use strict';
 
 angular.module('bahmni.registration')
-    .factory('patientServiceStrategy', ['$q', 'offlinePatientServiceStrategy', 'eventQueue', '$bahmniCookieStore', '$rootScope',
-        function ($q, offlinePatientServiceStrategy, eventQueue, $bahmniCookieStore, $rootScope) {
+    .factory('patientServiceStrategy', ['$q', 'offlinePatientServiceStrategy', 'eventQueue', '$rootScope', 'offlineService', 'offlineDbService', 'androidDbService',
+        function ($q, offlinePatientServiceStrategy, eventQueue, $rootScope, offlineService, offlineDbService, androidDbService) {
+            if (offlineService.isOfflineApp()) {
+                if (offlineService.isAndroidApp()) {
+                    offlineDbService = androidDbService;
+                }
+            }
             var search = function (config) {
                 return offlinePatientServiceStrategy.search(config).then(function (results) {
                     return results.data;
@@ -67,9 +72,13 @@ angular.module('bahmni.registration')
                 } else {
                     event.url = Bahmni.Registration.Constants.baseOpenMRSRESTURL + "/bahmnicore/patientprofile/" + data.patient.uuid;
                 }
+                event.dbName = offlineDbService.getCurrentDbName();
                 event.patientUuid = data.patient.uuid;
-                return eventQueue.addToEventQueue(event).then(function () {
-                    return offlinePatientServiceStrategy.create(data);
+                return offlinePatientServiceStrategy.create(data).then(function (response) {
+                    eventQueue.addToEventQueue(event);
+                    return response;
+                }, function (response) {
+                    return $q.reject(response);
                 });
             };
 
@@ -110,7 +119,7 @@ angular.module('bahmni.registration')
                             if (foundAttribute.format === "java.lang.Integer" || foundAttribute.format === "java.lang.Float") {
                                 attribute.value = parseFloat(attribute.value);
                             } else if (foundAttribute.format === "java.lang.Boolean") {
-                                attribute.value = (attribute.value === 'true');
+                                attribute.value = (attribute.value == "true" || attribute.value == true);
                             } else if (foundAttribute.format === "org.openmrs.Concept") {
                                 var value = attribute.value;
                                 attribute.value = {display: value, uuid: attribute.hydratedObject};

@@ -19,16 +19,27 @@ describe('observationFormService', function () {
         var response = { data: { results: [{ name: 'form1' }] } };
         http.get.and.returnValue(response);
 
-        var httpPromise = this.observationFormService.getFormList({ v: "custom:(uuid,name)" });
+        var httpPromise = this.observationFormService.getFormList("encounterUuid");
 
         expect(httpPromise).toEqual(response);
-        expect(http.get).toHaveBeenCalledWith("/openmrs/ws/rest/v1/form", {
-            params: { v: "custom:(uuid,name)" }
+        expect(http.get).toHaveBeenCalledWith("/openmrs/ws/rest/v1/bahmniie/form/latestPublishedForms", {
+            params: { encounterUuid: "encounterUuid" }
         });
     });
 
+    it('should call http service to return all the forms with name, version and uuid', function () {
+        var response = { data: { resources: [{ value: 'form1' }] } };
+        http.get.and.returnValue(response);
+
+        var httpPromise = this.observationFormService.getAllForms();
+
+        expect(httpPromise).toEqual(response);
+        expect(http.get).toHaveBeenCalledWith("/openmrs/ws/rest/v1/form", { params : { v : 'custom:(version,name,uuid)' } });
+
+    });
+
     it('should call http service to return the form detail', function () {
-        var response = { data: { resources: [{ valueReference: 'form1' }] } };
+        var response = { data: { resources: [{ value: 'form1' }] } };
         http.get.and.returnValue(response);
 
         var httpPromise = this.observationFormService.getFormDetail('someFormUuid', { v: "custom:(uuid,name)" });
@@ -38,4 +49,5 @@ describe('observationFormService', function () {
             params: { v: "custom:(uuid,name)" }
         });
     });
+
 });

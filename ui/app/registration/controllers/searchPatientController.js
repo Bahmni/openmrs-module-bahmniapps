@@ -155,10 +155,10 @@ angular.module('bahmni.registration')
                 $scope.addressSearchConfig = allSearchConfigs.address || {};
                 $scope.addressSearchConfig.show = !_.isEmpty($scope.addressSearchConfig) && !_.isEmpty($scope.addressSearchConfig.field);
                 if ($scope.addressSearchConfig.label && !$scope.addressSearchConfig.label) {
-                    throw "Search Config label is not present!";
+                    throw new Error("Search Config label is not present!");
                 }
                 if ($scope.addressSearchConfig.field && !$scope.addressSearchConfig.field) {
-                    throw "Search Config field is not present!";
+                    throw new Error("Search Config field is not present!");
                 }
             };
 

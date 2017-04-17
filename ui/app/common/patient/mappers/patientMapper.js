@@ -25,7 +25,8 @@ Bahmni.PatientMapper = function (patientConfig, $rootScope, $translate) {
         patient.bloodGroupText = getPatientBloodGroupText(openmrsPatient);
 
         if (openmrsPatient.identifiers) {
-            patient.identifier = openmrsPatient.identifiers[0].identifier;
+            var primaryIdentifier = openmrsPatient.identifiers[0].primaryIdentifier;
+            patient.identifier = primaryIdentifier ? primaryIdentifier : openmrsPatient.identifiers[0].identifier;
         }
 
         if (openmrsPatient.person.birthdate) {

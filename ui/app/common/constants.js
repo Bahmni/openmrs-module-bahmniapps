@@ -23,6 +23,10 @@ Bahmni.Common = Bahmni.Common || {};
         {
             serverMessage: "Cannot have more than one active order for the same orderable and care setting at same time",
             clientMessage: "One or more drugs you are trying to order are already active. Please change the start date of the conflicting drug or remove them from the new prescription."
+        },
+        {
+            serverMessage: "[Order.cannot.have.more.than.one]",
+            clientMessage: "One or more drugs you are trying to order are already active. Please change the start date of the conflicting drug or remove them from the new prescription."
         }
     ];
 
@@ -182,6 +186,7 @@ Bahmni.Common = Bahmni.Common || {};
         videoClassName: 'Video',
         locationCookieName: 'bahmni.user.location',
         retrospectiveEntryEncounterDateCookieName: 'bahmni.clinical.retrospectiveEncounterDate',
+        JSESSIONID: "JSESSIONID",
         rootScopeRetrospectiveEntry: 'retrospectiveEntry.encounterDate',
         patientFileConceptName: 'Patient file',
         serverErrorMessages: serverErrorMessages,
@@ -207,6 +212,7 @@ Bahmni.Common = Bahmni.Common || {};
         grantProviderAccess: "app:clinical:grantProviderAccess",
         grantProviderAccessDataCookieName: "app:clinical:grantProviderAccessData",
         globalPropertyUrl: BAHMNI_CORE + "/sql/globalproperty",
+        passwordPolicyUrl: BAHMNI_CORE + "/globalProperty/passwordPolicyProperties",
         fulfillmentConfiguration: "fulfillment",
         fulfillmentFormSuffix: " Fulfillment Form",
         noNavigationLinksMessage: "No navigation links available.",
@@ -225,7 +231,9 @@ Bahmni.Common = Bahmni.Common || {};
         drugUrl: RESTWS_V1 + "/drug",
         orderTypeUrl: RESTWS_V1 + "/ordertype",
         userUrl: RESTWS_V1 + "/user",
+        passwordUrl: RESTWS_V1 + "/password",
         formUrl: RESTWS_V1 + "/form",
+        latestPublishedForms: RESTWS_V1 + "/bahmniie/form/latestPublishedForms",
         sqlUrl: BAHMNI_CORE + "/sql",
         patientAttributeDateFieldFormat: "org.openmrs.util.AttributableDate",
         platform: "user.platform",
@@ -239,9 +247,9 @@ Bahmni.Common = Bahmni.Common || {};
         offlineMetadataUrl: hostUrl + "/offlineMetadata.json",
         faviconUrl: hostUrl + "/bahmni/favicon.ico",
         platformType: {
-            chrome: 'chrome',
-            android: 'android',
-            chromeApp: 'chrome-app',
+            chrome: 'other',
+            android: 'other',
+            chromeApp: 'other',
             other: 'other'
         },
         numericDataType: "Numeric",
@@ -262,7 +270,15 @@ Bahmni.Common = Bahmni.Common || {};
         syncStatusMessages: syncStatusMessages,
         uuidRegex: "[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}",
         offlineBahmniEncounterUrl: "/openmrs/ws/rest/v1/bahmnicore/bahmniencounter/",
-        eventlogFilterUrl: hostUrl + "/openmrs/ws/rest/v1/eventlog/filter"
+        eventlogFilterUrl: hostUrl + "/openmrs/ws/rest/v1/eventlog/filter",
+        bahmniConnectMetaDataDb: "metaData",
+        serverDateTimeUrl: "/cgi-bin/systemdate",
+        loginText: "/bahmni_config/openmrs/apps/home/whiteLabel.json",
+        auditLogUrl: BAHMNI_CORE + "/auditlog",
+        conditionUrl: EMRAPI + '/condition',
+        conditionHistoryUrl: EMRAPI + '/conditionhistory',
+        followUpConditionConcept: 'Follow-up Condition',
+        localeLangs: "/bahmni_config/openmrs/apps/home/locale_languages.json"
     };
 })();
 

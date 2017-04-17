@@ -54,7 +54,7 @@ describe("Form Controls", function () {
     it('should call observationFormService.getFormDetail', function () {
         mockObservationService({});
         createElement();
-        expect(observationFormService.getFormDetail).toHaveBeenCalledWith('formUuid', { v: 'custom:(resources)' });
+        expect(observationFormService.getFormDetail).toHaveBeenCalledWith('formUuid', { v: 'custom:(resources:(value))' });
     });
 
     it('should call spinner.forPromise', function () {
@@ -64,9 +64,9 @@ describe("Form Controls", function () {
     });
 
     it('should call renderWithControls', function () {
-        mockObservationService({ resources: [{ valueReference: '{"name":"Vitals", "controls": [{"type":"obsControl", "controls":[]}] }' }] });
+        mockObservationService({ resources: [{ value: '{"name":"Vitals", "controls": [{"type":"obsControl", "controls":[]}] }' }] });
         createElement();
-        expect(renderHelper.renderWithControlsCalledTimes).toBe(1);
+        expect(renderHelper.renderWithControlsCalledTimes).toBe(2);
     });
 
     var createElement = function () {

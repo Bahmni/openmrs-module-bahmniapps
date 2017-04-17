@@ -190,7 +190,7 @@
                     </thead>
 
                     <tbody>
-                    <tr class="row-click" toggle="observation.showComment"
+                    <tr class="row-click"
                         ng-repeat-start="observation in observationGroup.groupMembers"
                         ng-class="{true: 'is-abnormal'}[observation.abnormalObs.value]">
                         <td class="name">
@@ -212,7 +212,7 @@
                             </div>
                         </td>
                         <td class="toggle-btn">
-                            <button class="toggle fr" ng-if="observation.comment"
+                            <button class="toggle fr" ng-if="observation.comment" toggle="observation.showComment"
                                     ng-class="{'has-notes': observation.comment}">
                                 <i class="fa fa-plus-circle" ng-hide="observation.showComment"></i>
                                 <i class="fa fa-minus-circle" ng-show="observation.showComment"></i>
@@ -248,7 +248,7 @@
                 <li>
                     <div class="expander-row row-click">
                         <span class="disposition-state">{{consultation.disposition.conceptName}} <span ng-if="consultation.disposition.dispositionDateTime">on</span> {{consultation.disposition.dispositionDateTime | bahmniDateTime }}</span>
-                        <button class="toggle fr" ng-class="{'has-notes': disposition.additionalObs[0].value}" toggle="disposition.show">
+                        <button class="toggle fr" ng-class="{'has-notes': consultation.disposition.additionalObs[0].value}" toggle="disposition.show">
                             <i class="fa fa-plus-circle"></i>
                             <i class="fa fa-minus-circle"></i>
                         </button>
@@ -256,7 +256,7 @@
                     <div>
                         <div ng-if="disposition.show" class="inline-notes notes" ng-class="{'print-notes': note.value}">
                             <p class="left">
-                                <strong>Disposition Notes: </strong>{{disposition.additionalObs[0].value}}
+                                <strong>Disposition Notes: </strong>{{consultation.disposition.additionalObs[0].value}}
                             </p>
                         </div>
                     </div>

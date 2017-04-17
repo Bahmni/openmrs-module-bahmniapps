@@ -109,9 +109,15 @@
     .row{
       &:nth-child(odd) {
         background-color: #EFEFEF;
+        .col{
+          border: 1px solid #EFEFEF;
+        }
       }
       &:nth-child(even) {
         background-color: #fff;
+        .col{
+          border: 1px solid #fff;
+        }
       }
       &:last-child{
         margin-bottom: 15px;

@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('bahmni.ipd')
-    .service('BedManagementService', [function () {
+    .service('bedManagementService', [function () {
         var maxX = 1;
         var maxY = 1;
         var minX = 1;

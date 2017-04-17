@@ -26,6 +26,7 @@ describe('VisitController', function () {
     var location;
     var window;
     var bahmniCookieStore;
+    var offlineService;
 
     var stubAllPromise = function () {
         return {
@@ -84,6 +85,7 @@ describe('VisitController', function () {
     };
 
     beforeEach(module('bahmni.registration'));
+    beforeEach(module('bahmni.common.offline'));
     beforeEach(module('stateMock'));
     beforeEach(module('pascalprecht.translate'));
     beforeEach(inject(['$injector', '$timeout', '$q', '$rootScope', '$state', '$translate', function ($injector, timeout, $q, $rootScope, $state) {
@@ -110,6 +112,8 @@ describe('VisitController', function () {
         visitService = jasmine.createSpyObj('visitService', ['search', 'endVisit', 'getVisitSummary']);
         appService = jasmine.createSpyObj('appService', ['getDescription', 'getAppDescriptor']);
         appDescriptor = jasmine.createSpyObj('appDescriptor', ['getConfigValue', 'getExtensions', 'formatUrl']);
+        offlineService = jasmine.createSpyObj('offlineService', ['isOfflineApp']);
+        offlineService.isOfflineApp.and.returnValue(false);
         appService.getAppDescriptor.and.returnValue(appDescriptor);
         appDescriptor.getExtensions.and.returnValue([]);
         patientMapper = jasmine.createSpyObj('patientMapper', ['map']);
@@ -155,7 +159,8 @@ describe('VisitController', function () {
             sessionService: sessionService,
             messagingService: messagingService,
             visitService: visitService,
-            $location: location
+            $location: location,
+            offlineService: offlineService
         });
     }
 
@@ -163,7 +168,7 @@ describe('VisitController', function () {
         it('should set the patient from patient data', function () {
             createController();
             getPatientPromise.callThenCallBack(patient);
-            getEncounterPromise.callSuccessCallBack(sampleEncounter);
+            getEncounterPromise.callThenCallBack({data: sampleEncounter });
 
             expect(scope.patient).toBe(patient);
         });
@@ -174,7 +179,7 @@ describe('VisitController', function () {
         beforeEach(function () {
             createController();
             getPatientPromise.callThenCallBack(patient);
-            getEncounterPromise.callSuccessCallBack(sampleEncounter);
+            getEncounterPromise.callThenCallBack({data : sampleEncounter});
 
             encounterService.create.and.callFake(stubOnePromise);
             scope.patient = {uuid: "21308498-2502-4495-b604-7b704a55522d"};

@@ -52,7 +52,7 @@ describe("Authentication", function () {
 
             sessionService.loadCredentials();
 
-            expect(deferrable.reject).toHaveBeenCalledWith('You have not been setup as a Provider, please contact administrator.');
+            expect(deferrable.reject).toHaveBeenCalledWith("YOU_HAVE_NOT_BEEN_SETUP_PROVIDER");
         }]));
     });
 

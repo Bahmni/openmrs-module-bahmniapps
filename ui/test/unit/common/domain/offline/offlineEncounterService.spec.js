@@ -20,9 +20,25 @@ describe('offlineEncounterService', function () {
             if (cookie == Bahmni.Common.Constants.grantProviderAccessDataCookieName) {
                 return encounterProvider;
             }
+            if (cookie == Bahmni.Common.Constants.locationCookieName) {
+                return {name: "location-name"};
+            }
         });
         $provide.value('$q', $q);
         $provide.value('$bahmniCookieStore', $bahmniCookieStore);
+        $provide.value("offlineDbService", {
+            getCurrentDbName: function () {
+                return "location-name";
+            }
+        });
+        $provide.value('offlineService', {
+            isAndroidApp: function () {
+                return false;
+            },
+            isOfflineApp: function () {
+                return true;
+            }
+        })
     }));
 
     beforeEach(inject(['encounterService','offlineEncounterServiceStrategy', 'eventQueue', '$rootScope', function (encounterServiceInjected, offlineEncounterServiceStrategyInjected, eventQueueInjected, $rootScope) {
@@ -116,7 +132,7 @@ describe('offlineEncounterService', function () {
             expect(offlineEncounterServiceStrategy.create.calls.count()).toBe(1);
             expect(offlineEncounterServiceStrategy.create).toHaveBeenCalledWith(encounterData);
             expect(eventQueue.addToEventQueue.calls.count()).toBe(1);
-            expect(eventQueue.addToEventQueue).toHaveBeenCalledWith({type: "encounter", encounterUuid: results.data.encounterUuid});
+            expect(eventQueue.addToEventQueue).toHaveBeenCalledWith({type: "encounter", encounterUuid: results.data.encounterUuid, dbName: "location-name"});
 
             expect(results.data).not.toBeUndefined();
             expect(results.data.encounterUuid).not.toBeUndefined();
@@ -150,6 +166,9 @@ describe('offlineEncounterService', function () {
             if (cookie == Bahmni.Common.Constants.grantProviderAccessDataCookieName) {
                 return {};
             }
+            if (cookie == Bahmni.Common.Constants.locationCookieName) {
+                return {name: "location-name"};
+            }
         });
 
         var result = encounterService.create(encounterData).then(function(results){
@@ -158,7 +177,7 @@ describe('offlineEncounterService', function () {
             expect(offlineEncounterServiceStrategy.create.calls.count()).toBe(1);
             expect(offlineEncounterServiceStrategy.create).toHaveBeenCalledWith(encounterData);
             expect(eventQueue.addToEventQueue.calls.count()).toBe(1);
-            expect(eventQueue.addToEventQueue).toHaveBeenCalledWith({type: "encounter", encounterUuid: results.data.encounterUuid});
+            expect(eventQueue.addToEventQueue).toHaveBeenCalledWith({type: "encounter", encounterUuid: results.data.encounterUuid, dbName: "location-name"});
 
             expect(results.data).not.toBeUndefined();
             expect(results.data.providers).toEqual([{uuid:'currentProviderUuid', name: 'Arman Vuiyan'}]);
@@ -189,7 +208,7 @@ describe('offlineEncounterService', function () {
             expect(offlineEncounterServiceStrategy.create.calls.count()).toBe(1);
             expect(offlineEncounterServiceStrategy.create).toHaveBeenCalledWith(encounterData);
             expect(eventQueue.addToEventQueue.calls.count()).toBe(1);
-            expect(eventQueue.addToEventQueue).toHaveBeenCalledWith({type: "encounter", encounterUuid: results.data.encounterUuid});
+            expect(eventQueue.addToEventQueue).toHaveBeenCalledWith({type: "encounter", encounterUuid: results.data.encounterUuid, dbName: "location-name"});
 
             expect(results.data.observations[0].uuid).not.toBeUndefined();
             expect(results.data.observations[0].encounterUuid).not.toBeUndefined();
@@ -221,7 +240,7 @@ describe('offlineEncounterService', function () {
             expect(offlineEncounterServiceStrategy.create.calls.count()).toBe(1);
             expect(offlineEncounterServiceStrategy.create).toHaveBeenCalledWith(encounterData);
             expect(eventQueue.addToEventQueue.calls.count()).toBe(1);
-            expect(eventQueue.addToEventQueue).toHaveBeenCalledWith({type: "encounter", encounterUuid: results.data.encounterUuid});
+            expect(eventQueue.addToEventQueue).toHaveBeenCalledWith({type: "encounter", encounterUuid: results.data.encounterUuid, dbName: "location-name"});
 
             expect(results.data.observations[0].isObservation).toBeUndefined();
             expect(results.data.observations[0].isObservationNode).toBeUndefined();
@@ -251,7 +270,7 @@ describe('offlineEncounterService', function () {
             expect(offlineEncounterServiceStrategy.create.calls.count()).toBe(1);
             expect(offlineEncounterServiceStrategy.create).toHaveBeenCalledWith(encounterData);
             expect(eventQueue.addToEventQueue.calls.count()).toBe(1);
-            expect(eventQueue.addToEventQueue).toHaveBeenCalledWith({type: "encounter", encounterUuid: results.data.encounterUuid});
+            expect(eventQueue.addToEventQueue).toHaveBeenCalledWith({type: "encounter", encounterUuid: results.data.encounterUuid, dbName: "location-name"});
 
             expect(results.data.observations[0].uuid).not.toBeUndefined();
             expect(results.data.observations[0].groupMembers[5].uuid).not.toBeUndefined();

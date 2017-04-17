@@ -2,7 +2,7 @@
 
 describe('OfflineDbService ', function () {
     var offlineDbService, $q = Q;
-    var patientDbService, patientIdentifierDbService, patientAddressDbService, patientAttributeDbService, offlineMarkerDbService, offlineAddressHierarchyDbService,labOrderResultsDbService,
+    var patientDbService, patientIdentifierDbService, patientAddressDbService, patientAttributeDbService, offlineMarkerDbService, offlineAddressHierarchyDbService,labOrderResultsDbService, offlineService,
         offlineConfigDbService, initializeOfflineSchema, referenceDataDbService, locationDbService, offlineSearchDbService, encounterDbService, visitDbService, observationDbService, conceptDbService, errorLogDbService, eventLogService;
 
     beforeEach(function () {
@@ -26,6 +26,7 @@ describe('OfflineDbService ', function () {
             conceptDbService = jasmine.createSpyObj('conceptDbService', ['init', 'getReferenceData', 'getConceptByName', 'insertConceptAndUpdateHierarchy', 'updateChildren', 'updateParentJson', 'getAllParentsInHierarchy']);
             errorLogDbService = jasmine.createSpyObj('errorLogDbService', ['insertLog', 'getErrorLogByUuid', 'deleteByUuid']);
             eventLogService = jasmine.createSpyObj('eventLogService', ['getDataForUrl']);
+            offlineService = jasmine.createSpyObj('offlineService', ['getItem']);
 
             $provide.value('patientDbService', patientDbService);
             $provide.value('patientIdentifierDbService', patientIdentifierDbService);
@@ -45,6 +46,7 @@ describe('OfflineDbService ', function () {
             $provide.value('conceptDbService', conceptDbService);
             $provide.value('errorLogDbService', errorLogDbService);
             $provide.value('eventLogService', eventLogService);
+            $provide.value('offlineService', offlineService);
             $provide.value('$q', $q);
         });
     });
@@ -58,15 +60,27 @@ describe('OfflineDbService ', function () {
         var schemaBuilder = lf.schema.create('BahmniOfflineDb', 1);
         schemaBuilder.connect().then(function (db) {
             offlineDbService.init(db);
-
-            expect(offlineMarkerDbService.init).toHaveBeenCalledWith(db);
             expect(offlineAddressHierarchyDbService.init).toHaveBeenCalledWith(db);
-            expect(offlineConfigDbService.init).toHaveBeenCalledWith(db);
-            expect(referenceDataDbService.init).toHaveBeenCalledWith(db);
             expect(offlineSearchDbService.init).toHaveBeenCalledWith(db);
-            expect(conceptDbService.init).toHaveBeenCalledWith(db);
             done();
         });
+    });
+
+    it("should init offlineDbService with metadata db reference", function (done) {
+        var metaDataSchemaBuilder = lf.schema.create(Bahmni.Common.Constants.bahmniConnectMetaDataDb, 1);
+        var schemaBuilder = lf.schema.create('BahmniOfflineDb', 1);
+        schemaBuilder.connect().then(function (db) {
+            offlineDbService.init(db);
+            metaDataSchemaBuilder.connect().then(function (metaDataDb) {
+                offlineDbService.init(metaDataDb);
+                expect(offlineConfigDbService.init).toHaveBeenCalledWith(metaDataDb);
+                expect(referenceDataDbService.init).toHaveBeenCalledWith(metaDataDb, db);
+                expect(conceptDbService.init).toHaveBeenCalledWith(metaDataDb);
+                metaDataDb.close();
+                done();
+            });
+        });
+
     });
 
 
@@ -136,12 +150,10 @@ describe('OfflineDbService ', function () {
             });
         });
 
-        it("should insertEncounterData with given encounterData", function (done) {
-            var schemaBuilder = lf.schema.create('BahmniOfflineDb', 1);
-            schemaBuilder.connect().then(function (db) {
-                offlineDbService.init(db);
-
-                var encounterData = {
+        describe("insert encounter Data when there are multiple dbs", function () {
+            var encounterData;
+            beforeEach(function () {
+               encounterData = {
                     patientUuid: "patientUuid",
                     visitUuid: "visitUuid",
                     observations: ["obs1", "obs2"]
@@ -157,13 +169,33 @@ describe('OfflineDbService ', function () {
                     deferred1.resolve(encounterData);
                     return deferred1.promise;
                 });
+            });
 
-                offlineDbService.insertEncounterData(encounterData).then(function (encounterDataResponse) {
-                    expect(encounterDataResponse).not.toBeUndefined();
-                    expect(encounterDataResponse).toBe(encounterData);
-                    expect(encounterDbService.insertEncounterData).toHaveBeenCalledWith(db, encounterData);
-                    expect(observationDbService.insertObservationsData).toHaveBeenCalledWith(db, encounterData.patientUuid, encounterData.visitUuid, encounterData.observations);
-                    done();
+            it("should insertEncounterData with given encounterData in the db used by application on normal save", function (done) {
+                var schemaBuilder = lf.schema.create('BahmniOfflineDb', 1);
+                schemaBuilder.connect().then(function (db) {
+                    offlineDbService.init(db);
+                    offlineDbService.insertEncounterData(encounterData).then(function (encounterDataResponse) {
+                        expect(encounterDataResponse).not.toBeUndefined();
+                        expect(encounterDataResponse).toBe(encounterData);
+                        expect(encounterDbService.insertEncounterData).toHaveBeenCalledWith(db, encounterData);
+                        expect(observationDbService.insertObservationsData).toHaveBeenCalledWith(db, encounterData.patientUuid, encounterData.visitUuid, encounterData.observations);
+                        done();
+                    });
+                });
+            });
+
+            it("should insertEncounterData with given encounterData in the db that is passed to insertEncounter during sync", function (done) {
+                var schemaBuilder = lf.schema.create('OtherBahmniOfflineDb', 1);
+                schemaBuilder.connect().then(function (db) {
+                    offlineDbService.init(db);
+                    offlineDbService.insertEncounterData(encounterData, {"otherDb": 'otherdb'}).then(function (encounterDataResponse) {
+                        expect(encounterDataResponse).not.toBeUndefined();
+                        expect(encounterDataResponse).toBe(encounterData);
+                        expect(encounterDbService.insertEncounterData).toHaveBeenCalledWith({"otherDb": 'otherdb'}, encounterData);
+                        expect(observationDbService.insertObservationsData).toHaveBeenCalledWith({"otherDb": 'otherdb'}, encounterData.patientUuid, encounterData.visitUuid, encounterData.observations);
+                        done();
+                    });
                 });
             });
         });
@@ -337,7 +369,10 @@ describe('OfflineDbService ', function () {
                                 "identifierType": {
                                     "display": "Patient Identifier",
                                     "uuid": "9999e94e-796e-11e5-a6d0-005056b07f03",
-                                    "identifierSources": [{"prefix": "BDH", "uuid": "sourceUuid1"},{"prefix": "SEC", "uuid": "sourceUuid2"}]
+                                    "identifierSources": [{"prefix": "BDH", "uuid": "sourceUuid1"}, {
+                                        "prefix": "SEC",
+                                        "uuid": "sourceUuid2"
+                                    }]
                                 }
                             }
                         ]
@@ -378,6 +413,12 @@ describe('OfflineDbService ', function () {
                     }
                 };
 
+                patientIdentifierDbService.insertPatientIdentifiers.and.callFake(function () {
+                    var deferred1 = $q.defer();
+                    deferred1.resolve("patientUuid");
+                    return deferred1.promise;
+                });
+
                 patientDbService.insertPatientData.and.callFake(function () {
                     var deferred1 = $q.defer();
                     deferred1.resolve("patientUuid");
@@ -409,9 +450,19 @@ describe('OfflineDbService ', function () {
                     name: "patient",
                     patient: {
                         uuid: "personUuid",
-                        person: {attributes: "attributes", addresses: [], preferredAddress:["preferredAddress1", "preferredAddress2"]}
+                        person: {
+                            attributes: "attributes",
+                            addresses: [],
+                            preferredAddress: ["preferredAddress1", "preferredAddress2"]
+                        }
                     }
                 };
+
+                patientIdentifierDbService.insertPatientIdentifiers.and.callFake(function () {
+                    var deferred1 = $q.defer();
+                    deferred1.resolve("patientUuid");
+                    return deferred1.promise;
+                });
 
                 patientDbService.insertPatientData.and.callFake(function () {
                     var deferred1 = $q.defer();
@@ -434,11 +485,126 @@ describe('OfflineDbService ', function () {
                 });
             });
         });
+
+        it("should call createPatient with given patientData, it should take empty object if address and preferredAddress is empty", function (done) {
+            var schemaBuilder = lf.schema.create('BahmniOfflineDb', 1);
+            schemaBuilder.connect().then(function (db) {
+                offlineDbService.init(db);
+
+                var patientData = {
+                    name: "patient",
+                    patient: {
+                        uuid: "personUuid",
+                        person: {attributes: "attributes", addresses: [], preferredAddress: undefined}
+                    }
+                };
+
+                patientIdentifierDbService.insertPatientIdentifiers.and.callFake(function () {
+                    var deferred1 = $q.defer();
+                    deferred1.resolve("patientUuid");
+                    return deferred1.promise;
+                });
+
+                patientDbService.insertPatientData.and.callFake(function () {
+                    var deferred1 = $q.defer();
+                    deferred1.resolve("patientUuid");
+                    return deferred1.promise;
+                });
+
+                patientDbService.getPatientByUuid.and.callFake(function () {
+                    var deferred1 = $q.defer();
+                    deferred1.resolve({patient: "patientInfo"});
+                    return deferred1.promise;
+                });
+
+                offlineDbService.createPatient(patientData).then(function (patientInfoResponse) {
+                    expect(patientInfoResponse).not.toBeUndefined();
+                    expect(patientInfoResponse).toEqual({data: {patient: "patientInfo"}});
+                    expect(patientAttributeDbService.insertAttributes).toHaveBeenCalledWith(db, "patientUuid", "attributes");
+                    expect(patientAddressDbService.insertAddress).toHaveBeenCalledWith(db, "patientUuid", {});
+                    done();
+                });
+            });
+        });
+
+        it("should return error message if there is unique constraint violation while saving identifiers", function (done) {
+            var schemaBuilder = lf.schema.create('BahmniOfflineDb', 1);
+
+            schemaBuilder.connect().then(function (db) {
+                offlineDbService.init(db);
+
+                var patientData = {
+                    name: "patient",
+                    patient: {
+                        uuid: "personUuid",
+                        person: {attributes: "attributes", addresses: [], preferredAddress: undefined},
+                        identifiers: [{identifier: "01"}]
+                    }
+                };
+
+                patientIdentifierDbService.insertPatientIdentifiers.and.callFake(function () {
+                    var deferred1 = $q.defer();
+                    deferred1.reject({code: 201});
+                    return deferred1.promise;
+                });
+
+
+                offlineDbService.createPatient(patientData).then(function () {},function(response) {
+                    expect(response.code).toEqual(201);
+                    expect(response.message).not.toBeNull();
+                    expect(patientAttributeDbService.insertAttributes).not.toHaveBeenCalled();
+                    expect(patientAddressDbService.insertAddress).not.toHaveBeenCalled();
+                    done();
+                });
+            });
+        });
+
+        it("should not call insertPatientIdentifiers if patient is voided", function (done) {
+            var schemaBuilder = lf.schema.create('BahmniOfflineDb', 1);
+            schemaBuilder.connect().then(function (db) {
+                offlineDbService.init(db);
+
+                var patientData = {
+                    name: "patient",
+                    patient: {
+                        voided: true,
+                        uuid: "personUuid",
+                        person: {attributes: "attributes", addresses: [], preferredAddress: undefined}
+                    }
+                };
+
+                patientIdentifierDbService.insertPatientIdentifiers.and.callFake(function () {
+                    var deferred1 = $q.defer();
+                    deferred1.resolve("patientUuid");
+                    return deferred1.promise;
+                });
+
+                patientDbService.insertPatientData.and.callFake(function () {
+                    var deferred1 = $q.defer();
+                    deferred1.resolve("patientUuid");
+                    return deferred1.promise;
+                });
+
+                patientDbService.getPatientByUuid.and.callFake(function () {
+                    var deferred1 = $q.defer();
+                    deferred1.resolve({patient: "patientInfo"});
+                    return deferred1.promise;
+                });
+
+                offlineDbService.createPatient(patientData).then(function (patientInfoResponse) {
+                    expect(patientInfoResponse).not.toBeUndefined();
+                    expect(patientInfoResponse).toEqual({data: {patient: "patientInfo"}});
+                    expect(patientAttributeDbService.insertAttributes).not.toHaveBeenCalled();
+                    expect(patientAddressDbService.insertAddress).not.toHaveBeenCalled();
+                    expect(patientIdentifierDbService.insertPatientIdentifiers).not.toHaveBeenCalled();
+                    done();
+                });
+            });
+        });
     });
 
 
     describe("errorLogDbService ", function () {
-
         beforeEach( function(){
 
             errorLogDbService.insertLog.and.callFake(function () {
@@ -468,9 +634,9 @@ describe('OfflineDbService ', function () {
 
                 var auditInfo = {creator: {display: 'armanvuiyan', uuid: 'providerUuid'}};
                 var requestPayload = {patient: "patientPostData", auditInfo: auditInfo};
-                offlineDbService.insertLog('someUuid','failedRequestUrl', 500, 'stackTrace', requestPayload);
+                offlineDbService.insertLog('someUuid', 'failedRequestUrl', 500, 'stackTrace', requestPayload);
                 expect(errorLogDbService.insertLog.calls.count()).toBe(1);
-                expect(errorLogDbService.insertLog).toHaveBeenCalledWith(db, 'someUuid','failedRequestUrl', 500, 'stackTrace', requestPayload, auditInfo.creator);
+                expect(errorLogDbService.insertLog).toHaveBeenCalledWith(db, 'someUuid', 'failedRequestUrl', 500, 'stackTrace', requestPayload, auditInfo.creator);
                 done()
             });
         });
@@ -511,7 +677,7 @@ describe('OfflineDbService ', function () {
                 expect(errorLogDbService.insertLog).toHaveBeenCalledWith(db, 'someUuid', 'failedRequestUrl', 500, 'stackTrace', requestPayload, providers[0]);
                 offlineDbService.getErrorLogByUuid("someUuid");
                 expect(errorLogDbService.getErrorLogByUuid.calls.count()).toBe(1);
-                expect(errorLogDbService.getErrorLogByUuid).toHaveBeenCalledWith(db,"someUuid");
+                expect(errorLogDbService.getErrorLogByUuid).toHaveBeenCalledWith(db, "someUuid");
                 done();
             });
         });
@@ -537,13 +703,14 @@ describe('OfflineDbService ', function () {
 
     describe("conceptDbService", function () {
         it("should call getConcept with given conceptUuid", function (done) {
-            var schemaBuilder = lf.schema.create('BahmniOfflineDb', 1);
+            var schemaBuilder = lf.schema.create(Bahmni.Common.Constants.bahmniConnectMetaDataDb, 1);
             schemaBuilder.connect().then(function (db) {
                 offlineDbService.init(db);
 
                 offlineDbService.getConcept("conceptUuid");
                 expect(conceptDbService.getReferenceData.calls.count()).toBe(1);
                 expect(conceptDbService.getReferenceData).toHaveBeenCalledWith("conceptUuid");
+                db.close();
                 done();
             });
         });
@@ -556,54 +723,59 @@ describe('OfflineDbService ', function () {
                 offlineDbService.getConceptByName("paracetamol");
                 expect(conceptDbService.getConceptByName.calls.count()).toBe(1);
                 expect(conceptDbService.getConceptByName).toHaveBeenCalledWith("paracetamol");
+                db.close();
                 done();
             });
         });
 
         it("should call insertConceptAndUpdateHierarchy with given concept data and parentConcept", function (done) {
-            var schemaBuilder = lf.schema.create('BahmniOfflineDb', 1);
+            var schemaBuilder = lf.schema.create(Bahmni.Common.Constants.bahmniConnectMetaDataDb, 1);
             schemaBuilder.connect().then(function (db) {
                 offlineDbService.init(db);
 
                 offlineDbService.insertConceptAndUpdateHierarchy("data", "parent");
                 expect(conceptDbService.insertConceptAndUpdateHierarchy.calls.count()).toBe(1);
                 expect(conceptDbService.insertConceptAndUpdateHierarchy).toHaveBeenCalledWith("data", "parent");
+                db.close();
                 done();
             });
         });
 
         it("should call updateChildren with given concept", function (done) {
-            var schemaBuilder = lf.schema.create('BahmniOfflineDb', 1);
+            var schemaBuilder = lf.schema.create(Bahmni.Common.Constants.bahmniConnectMetaDataDb, 1);
             schemaBuilder.connect().then(function (db) {
                 offlineDbService.init(db);
 
                 offlineDbService.updateChildren("concept");
                 expect(conceptDbService.updateChildren.calls.count()).toBe(1);
                 expect(conceptDbService.updateChildren).toHaveBeenCalledWith("concept");
+                db.close();
                 done();
             });
         });
 
         it("should call updateParentJson with given childConcept", function (done) {
-            var schemaBuilder = lf.schema.create('BahmniOfflineDb', 1);
+            var schemaBuilder = lf.schema.create(Bahmni.Common.Constants.bahmniConnectMetaDataDb, 1);
             schemaBuilder.connect().then(function (db) {
                 offlineDbService.init(db);
 
                 offlineDbService.updateParentJson("childConcept");
                 expect(conceptDbService.updateParentJson.calls.count()).toBe(1);
                 expect(conceptDbService.updateParentJson).toHaveBeenCalledWith("childConcept");
+                db.close();
                 done();
             });
         });
 
         it("should call getAllParentsInHierarchy with given concept name and empty array", function (done) {
-            var schemaBuilder = lf.schema.create('BahmniOfflineDb', 1);
+            var schemaBuilder = lf.schema.create(Bahmni.Common.Constants.bahmniConnectMetaDataDb, 1);
             schemaBuilder.connect().then(function (db) {
                 offlineDbService.init(db);
 
                 offlineDbService.getAllParentsInHierarchy("conceptName");
                 expect(conceptDbService.getAllParentsInHierarchy.calls.count()).toBe(1);
                 expect(conceptDbService.getAllParentsInHierarchy).toHaveBeenCalledWith("conceptName", []);
+                db.close();
                 done();
             });
         });
@@ -619,6 +791,17 @@ describe('OfflineDbService ', function () {
                 offlineDbService.insertVisitData("visitData");
                 expect(visitDbService.insertVisitData.calls.count()).toBe(1);
                 expect(visitDbService.insertVisitData).toHaveBeenCalledWith(db, "visitData");
+                done();
+            });
+        });
+
+        it("should insert visit data during sync(push) in the db in which the encounter event is created", function (done) {
+            var schemaBuilder = lf.schema.create('BahmniOfflineDb', 1);
+            schemaBuilder.connect().then(function (db) {
+                offlineDbService.init(db);
+                offlineDbService.insertVisitData("visitData", {"db": 'otherDb'});
+                expect(visitDbService.insertVisitData.calls.count()).toBe(1);
+                expect(visitDbService.insertVisitData).toHaveBeenCalledWith({"db": 'otherDb'}, "visitData");
                 done();
             });
         });
@@ -664,13 +847,14 @@ describe('OfflineDbService ', function () {
 
     describe("locationDbService", function () {
         it("should call getLocationByUuid with given locationUuid", function (done) {
-            var schemaBuilder = lf.schema.create('BahmniOfflineDb', 1);
+            var schemaBuilder = lf.schema.create(Bahmni.Common.Constants.bahmniConnectMetaDataDb, 1);
             schemaBuilder.connect().then(function (db) {
                 offlineDbService.init(db);
 
                 offlineDbService.getLocationByUuid("locationUuid");
                 expect(locationDbService.getLocationByUuid.calls.count()).toBe(1);
                 expect(locationDbService.getLocationByUuid).toHaveBeenCalledWith(db, "locationUuid");
+                db.close();
                 done();
             });
         });
@@ -724,24 +908,76 @@ describe('OfflineDbService ', function () {
 
 
     describe("offlineMarkerDbService", function () {
-        it("should call getMarker with given markerName", function () {
-            offlineDbService.getMarker("markerName");
-            expect(offlineMarkerDbService.getMarker.calls.count()).toBe(1);
-            expect(offlineMarkerDbService.getMarker).toHaveBeenCalledWith("markerName");
+        it("should call getMarker with location specific db when markerName is not offline-concepts", function (done) {
+            var metaDataSchemaBuilder = lf.schema.create(Bahmni.Common.Constants.bahmniConnectMetaDataDb, 1);
+            var schemaBuilder = lf.schema.create('BahmniOfflineDb', 1);
+            var locationDb;
+            schemaBuilder.connect().then(function (db) {
+                locationDb = db;
+                offlineDbService.init(db);
+                metaDataSchemaBuilder.connect().then(function (metaDataDb) {
+                    offlineDbService.init(metaDataDb);
+                    offlineDbService.getMarker("markerName");
+                    expect(offlineMarkerDbService.getMarker.calls.count()).toBe(1);
+                    expect(offlineMarkerDbService.getMarker).toHaveBeenCalledWith(locationDb,"markerName");
+                    metaDataDb.close();
+                    locationDb.close();
+                    done();
+                });
+            });
         });
 
-        it("should call insertMarker with given markerName when filters is not empty", function () {
+        it("should call getMarker with metadata db when markerName is offline-concepts ", function (done) {
+            var metaDataSchemaBuilder = lf.schema.create(Bahmni.Common.Constants.bahmniConnectMetaDataDb, 1);
+            var schemaBuilder = lf.schema.create('BahmniOfflineDb', 1);
+            schemaBuilder.connect().then(function (db) {
+                offlineDbService.init(db);
+                metaDataSchemaBuilder.connect().then(function (metaDataDb) {
+                    offlineDbService.init(metaDataDb);
+                    offlineDbService.getMarker("offline-concepts");
+                    expect(offlineMarkerDbService.getMarker.calls.count()).toBe(1);
+                    expect(offlineMarkerDbService.getMarker).toHaveBeenCalledWith(metaDataDb,"offline-concepts");
+                    metaDataDb.close();
+                    done();
+                });
+            });
+        });
+
+        it("should call insertMarker with location specific db when markerName is not offline-concepts", function (done) {
+            var metaDataSchemaBuilder = lf.schema.create(Bahmni.Common.Constants.bahmniConnectMetaDataDb, 1);
+            var schemaBuilder = lf.schema.create('BahmniOfflineDb', 1);
             var filters = [202020,20202001];
-            offlineDbService.insertMarker("markerName", "eventUuid", filters);
-            expect(offlineMarkerDbService.insertMarker.calls.count()).toBe(1);
-            expect(offlineMarkerDbService.insertMarker).toHaveBeenCalledWith("markerName", "eventUuid", filters);
+            var locationDb;
+            schemaBuilder.connect().then(function (db) {
+                locationDb = db;
+                offlineDbService.init(db);
+                metaDataSchemaBuilder.connect().then(function (metaDataDb) {
+                    offlineDbService.init(metaDataDb);
+                    offlineDbService.insertMarker("markerName", "eventUuid", filters);
+                    expect(offlineMarkerDbService.insertMarker.calls.count()).toBe(1);
+                    expect(offlineMarkerDbService.insertMarker).toHaveBeenCalledWith(locationDb,"markerName", "eventUuid", filters);
+                    metaDataDb.close();
+                    done();
+                });
+            });
+
         });
 
-        it("should call insertMarker with given markerName when filters is empty", function () {
+        it("should call insertMarker with metadata db when markerName is offline-concepts", function (done) {
             var filters = [];
-            offlineDbService.insertMarker("markerName", "eventUuid", filters);
-            expect(offlineMarkerDbService.insertMarker.calls.count()).toBe(1);
-            expect(offlineMarkerDbService.insertMarker).toHaveBeenCalledWith("markerName", "eventUuid", filters);
+            var metaDataSchemaBuilder = lf.schema.create(Bahmni.Common.Constants.bahmniConnectMetaDataDb, 1);
+            var schemaBuilder = lf.schema.create('BahmniOfflineDb', 1);
+            schemaBuilder.connect().then(function (db) {
+                offlineDbService.init(db);
+                metaDataSchemaBuilder.connect().then(function (metaDataDb) {
+                    offlineDbService.init(metaDataDb);
+                    offlineDbService.insertMarker("offline-concepts", "eventUuid", filters);
+                    expect(offlineMarkerDbService.insertMarker.calls.count()).toBe(1);
+                    expect(offlineMarkerDbService.insertMarker).toHaveBeenCalledWith(metaDataDb, "offline-concepts", "eventUuid", filters);
+                    metaDataDb.close();
+                    done();
+                });
+            });
         });
     });
 
@@ -839,7 +1075,7 @@ describe('OfflineDbService ', function () {
 
                 offlineDbService.getLabOrderResultsForPatient("patientUuid");
                 expect(labOrderResultsDbService.getLabOrderResultsForPatient.calls.count()).toBe(1);
-                expect(labOrderResultsDbService.getLabOrderResultsForPatient).toHaveBeenCalledWith(db,"patientUuid");
+                expect(labOrderResultsDbService.getLabOrderResultsForPatient).toHaveBeenCalledWith(db, "patientUuid");
                 done();
             });
         });
@@ -852,14 +1088,13 @@ describe('OfflineDbService ', function () {
             schemaBuilder.connect().then(function (db) {
                 offlineDbService.init(db);
 
-                offlineDbService.insertLabOrderResults("patientUuid" , {results:[]});
+                offlineDbService.insertLabOrderResults("patientUuid", {results: []});
                 expect(labOrderResultsDbService.insertLabOrderResults.calls.count()).toBe(1);
-                expect(labOrderResultsDbService.insertLabOrderResults).toHaveBeenCalledWith(db, "patientUuid", {results:[]});
+                expect(labOrderResultsDbService.insertLabOrderResults).toHaveBeenCalledWith(db, "patientUuid", {results: []});
                 done();
             });
         });
     });
-
 
 
     describe("labOrderResultsDbService", function () {
@@ -870,7 +1105,7 @@ describe('OfflineDbService ', function () {
 
                 offlineDbService.getLabOrderResultsForPatient("patientUuid");
                 expect(labOrderResultsDbService.getLabOrderResultsForPatient.calls.count()).toBe(1);
-                expect(labOrderResultsDbService.getLabOrderResultsForPatient).toHaveBeenCalledWith(db,"patientUuid");
+                expect(labOrderResultsDbService.getLabOrderResultsForPatient).toHaveBeenCalledWith(db, "patientUuid");
                 done();
             });
         });
@@ -883,9 +1118,9 @@ describe('OfflineDbService ', function () {
             schemaBuilder.connect().then(function (db) {
                 offlineDbService.init(db);
 
-                offlineDbService.insertLabOrderResults("patientUuid" , {results:[]});
+                offlineDbService.insertLabOrderResults("patientUuid", {results: []});
                 expect(labOrderResultsDbService.insertLabOrderResults.calls.count()).toBe(1);
-                expect(labOrderResultsDbService.insertLabOrderResults).toHaveBeenCalledWith(db, "patientUuid", {results:[]});
+                expect(labOrderResultsDbService.insertLabOrderResults).toHaveBeenCalledWith(db, "patientUuid", {results: []});
                 done();
             });
         });

@@ -82,6 +82,7 @@
         <script src="../common/models/age.js"></script>
         <script src="../common/offline/init.js"></script>
         <script src="../common/offline/offlineService.js"></script>
+        <script src="../common/offline/services/dbNameService.js"></script>
         <script src="../common/offline/initializeOfflineSchema.js"></script>
         <script src="../common/offline/offlineDbInitialization.js"></script>
         <script src="../common/offline/offlineConfigInitialization.js"></script>
@@ -114,6 +115,7 @@
         <script src="../common/offline/dbservices/dao/visitDbService.js"></script>
         <script src="../common/offline/dbservices/dao/observationDbService.js"></script>
         <script src="../common/offline/dbservices/dao/conceptDbService.js"></script>
+        <script src="../common/offline/services/dbNameService.js"></script>
         <script src="../common/offline/offlineDbInitialization.js"></script>
         <script src="../common/offline/scheduler/scheduledSync.js"></script>
         <script src="../common/offline/scheduler/scheduledJob.js"></script>
@@ -185,6 +187,7 @@
         <script src="../common/domain/init.js"></script>
         <script src="../common/domain/models/retrospectiveEntry.js"></script>
         <script src="../common/domain/models/diagnosis.js"></script>
+        <script src="../common/domain/models/condition.js"></script>
 
         <script src="../common/domain/services/retrospectiveEntryService.js"></script>
 
@@ -241,6 +244,7 @@
         <script src="../common/ui-helper/services/confirmBoxService.js"></script>
         <script src="../common/ui-helper/directives/focusOnInputErrors.js"></script>
         <script src="../common/ui-helper/directives/fixedFirstColumn.js"></script>
+        <script src="../common/ui-helper/directives/assignHeight.js"></script>
 
         <script src="../common/attributeTypes/directives/attributeTypes.js"></script>
         <script src="../common/domain/mappers/attributeTypeMapper.js"></script>
@@ -294,6 +298,7 @@
 
         <script src="../common/displaycontrols/observation/init.js"></script>
         <script src="../common/displaycontrols/observation/helpers/groupingFunctions.js"></script>
+        <script src="../common/displaycontrols/observation/services/formHierarchyBuildService.js"></script>
         <script src="../common/displaycontrols/observation/directives/bahmniObservation.js"></script>
         <script src="../common/displaycontrols/observation/controllers/allObservationDetailsController.js"></script>
         <script src="../common/displaycontrols/prescription/init.js"></script>
@@ -305,6 +310,9 @@
 
         <script src="../common/displaycontrols/disposition/init.js"></script>
         <script src="../common/displaycontrols/disposition/directives/disposition.js"></script>
+
+        <script src="../common/displaycontrols/conditionsList/directives/conditionsList.js"></script>
+
         <script src="../common/displaycontrols/dashboard/init.js"></script>
         <script src="../common/displaycontrols/dashboard/directives/dashboardSection.js"></script>
         <script src="../common/displaycontrols/dashboard/directives/dashboard.js"></script>
@@ -356,6 +364,7 @@
         <script src="common/models/visitTabConfig.js"></script>
         <script src="common/models/visitDrugOrders.js"></script>
         <script src="common/utils/sortedConceptSet.js"></script>
+        <script src="common/utils/obsGroupingHelper.js"></script>
 
         <script src="common/mappers/accessionNotesMapper.js"></script>
         <script src="common/mappers/encounterTransactionToObsMapper.js"></script>
@@ -425,7 +434,6 @@
         <script src="consultation/services/labTestsProvider.js"></script>
         <script src="consultation/services/otherTestsProvider.js"></script>
         <script src="consultation/services/Notifier.js"></script>
-        <script src="consultation/services/observationFormService.js"></script>
 
         <script src="consultation/services/treatmentConfig.js"></script>
         <script src="consultation/filters/observationValue.js"></script>
@@ -447,7 +455,6 @@
         <script src="consultation/controllers/dispositionController.js"></script>
         <script src="consultation/controllers/consultationController.js"></script>
         <script src="consultation/controllers/conceptSetPageController.js"></script>
-        <script src="consultation/controllers/observationFormController.js"></script>
         <script src="consultation/controllers/drugOrderHistoryController.js"></script>
         <script src="consultation/controllers/customDrugOrderHistoryController.js"></script>
         <script src="consultation/controllers/latestPrescriptionPrintController.js"></script>
@@ -548,8 +555,10 @@
 
         <!-- @ifdef ONLINE -->
         <!-- build:js clinical.min.web.js -->
+        <script src="consultation/services/observationFormService.js"></script>
         <script src="../common/domain/services/visitService.js"></script>
         <script src="../common/domain/services/diagnosisService.js"></script>
+        <script src="../common/domain/services/conditionsService.js"></script>
         <script src="../common/orders/services/orderTypeService.js"></script>
         <script src="../common/patient/services/patientService.js"></script>
         <script src="../common/domain/services/locationService.js"></script>
@@ -562,7 +571,10 @@
         <script src="../common/concept-set/services/conceptSetServices.js"></script>
         <script src="../common/util/dateTimeFormatter.js"></script>
         <script src="../common/logging/services/loggingService.js"></script>
+        <script src="../common/logging/services/auditLogService.js"></script>
         <script src="common/services/treatmentService.js"></script>
+        <script src="common/models/auditLogEventDetails.js"></script>
+
 
         <!-- endbuild -->
         <!-- @endif -->
@@ -590,6 +602,7 @@
         <!-- @ifdef CHROME -->
         <!-- build:js clinical.min.chrome.js -->
         <!-- comments:toggle html -->
+        <!--<script src="consultation/offline/offlineObservationFormService.js"></script>-->
         <!--<script src="../common/domain/offline/chrome/chromeVisitService.js"></script>-->
         <!--<script src="../common/domain/offline/chrome/chromeEncounterService.js"></script>-->
         <!--<script src="../common/patient/offline/chrome/chromePatientService.js"></script>-->
@@ -618,6 +631,7 @@
         <!-- @ifdef ANDROID -->
         <!-- build:js clinical.min.android.js -->
         <!-- comments:toggle html -->
+        <!--<script src="consultation/offline/offlineObservationFormService.js"></script>-->
         <!--<script src="../common/domain/offline/android/androidVisitService.js"></script>-->
         <!--<script src="../common/domain/offline/android/androidEncounterService.js"></script>-->
         <!--<script src="../common/patient/offline/android/androidPatientService.js"></script>-->

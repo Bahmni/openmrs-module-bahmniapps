@@ -28,7 +28,8 @@
                 observation.groupMembers = removeNewObservationsWithoutValue(observation.groupMembers);
             });
             return observations.filter(function (observation) {
-                return observation.isExisting() || observation.hasValue() || observation.hasMemberWithValue();
+                var validObs = observation.isExisting() || observation.hasValue() || observation.hasMemberWithValue();
+                return (validObs && !observation.voided) || (observation.isExisting() && observation.voided);
             });
         };
 

@@ -24,7 +24,7 @@ describe("DrugOrderHistoryController", function () {
     beforeEach(inject(function (_$controller_, $rootScope, _$q_) {
         $q = _$q_;
         $controller = _$controller_;
-        _treatmentService = jasmine.createSpyObj('TreatmentService', ['getPrescribedDrugOrders']);
+        _treatmentService = jasmine.createSpyObj('treatmentService', ['getPrescribedDrugOrders']);
         _treatmentService.getPrescribedDrugOrders.and.callFake(function () {
             return specUtil.respondWithPromise($q, prescribedDrugOrders);
         });
@@ -51,7 +51,7 @@ describe("DrugOrderHistoryController", function () {
             $scope: scope,
             $translate: translate,
             activeDrugOrders: [activeDrugOrder, scheduledOrder],
-            TreatmentService: _treatmentService,
+            treatmentService: _treatmentService,
             retrospectiveEntryService: retrospectiveEntryService,
             $stateParams: {patientUuid: "patientUuid"},
             visitContext: {},

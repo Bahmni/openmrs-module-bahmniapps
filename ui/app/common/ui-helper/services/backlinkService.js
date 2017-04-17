@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('bahmni.common.uiHelper')
-    .service('backlinkService', function ($window) {
+    .service('backlinkService', ['$window', function ($window) {
         var self = this;
 
         var urls = [];
@@ -34,4 +34,4 @@ angular.module('bahmni.common.uiHelper')
         self.getAllUrls = function () {
             return urls;
         };
-    });
+    }]);

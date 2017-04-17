@@ -9,12 +9,68 @@ angular.module('bahmni.home')
             var isOfflineApp = offlineService.isOfflineApp();
             $scope.locations = initialData.locations;
             $scope.loginInfo = {};
+            var localeLanguages = [];
+
+            var getLocalTimeZone = function () {
+                var currentLocalTime = new Date().toString();
+                var localTimeZoneList = currentLocalTime.split(" ");
+                var localTimeZone = localTimeZoneList[localTimeZoneList.length - 1];
+                localTimeZone = localTimeZone.substring(1, localTimeZone.length - 1);
+                return localTimeZone;
+            };
+
+            var findLanguageByLocale = function (localeCode) {
+                return _.find(localeLanguages, function (localeLanguage) {
+                    return localeLanguage.code == localeCode; });
+            };
 
             var promise = localeService.allowedLocalesList();
-            promise.then(function (response) {
-                $scope.locales = response.data.replace(/\s+/g, '').split(',');
-                $scope.selectedLocale = $translate.use() ? $translate.use() : $scope.locales[0];
+            localeService.serverDateTime().then(function (response) {
+                var serverTime = response.data.date;
+                var list = serverTime.split(" ");
+                var serverTimeZone = list[list.length - 1];
+                var localTime = new Date().toLocaleString();
+                var localtimeZone = getLocalTimeZone();
+                var localeTimeZone = localTime + " " + localtimeZone;
+                $scope.timeZoneObject = { serverTime: serverTime, localeTimeZone: localeTimeZone};
+                if (localtimeZone !== serverTimeZone) {
+                    $scope.warning = "Warning";
+                    $scope.warningMessage = "WARNING_SERVER_TIME_ZONE_MISMATCH";
+                }
             });
+
+            localeService.getLoginText().then(function (response) {
+                $scope.logo = response.data.loginPage.logo;
+                $scope.headerText = response.data.loginPage.showHeaderText;
+                $scope.titleText = response.data.loginPage.showTitleText;
+                $scope.helpLink = response.data.helpLink.url;
+            });
+
+            localeService.getLocalesLangs().then(function (response) {
+                localeLanguages = response.data.locales;
+            }).finally(function () {
+                promise.then(function (response) {
+                    var localeList = response.data.replace(/\s+/g, '').split(',');
+                    $scope.locales = [];
+                    _.forEach(localeList, function (locale) {
+                        var localeLanguage = findLanguageByLocale(locale);
+                        if (_.isUndefined(localeLanguage)) {
+                            $scope.locales.push({"code": locale, "nativeName": locale});
+                        }
+                        else {
+                            $scope.locales.push(localeLanguage);
+                        }
+                    });
+                    $scope.selectedLocale = $translate.use() ? $translate.use() : $scope.locales[0].code;
+                });
+            });
+
+            $scope.isChrome = function () {
+                if ($window.navigator.userAgent.indexOf("Chrome") != -1) {
+                    return true;
+                }
+                return false;
+            };
 
             $scope.$watch('selectedLocale', function () {
                 $translate.use($scope.selectedLocale);
@@ -64,26 +120,35 @@ angular.module('bahmni.home')
                 $scope.errorMessageTranslateKey = null;
                 var deferrable = $q.defer();
 
+                var ensureNoSessionIdInRoot = function () {
+                    // See https://bahmni.mingle.thoughtworks.com/projects/bahmni_emr/cards/2934
+                    // The cookie should ideally not be set at root, and is interfering with
+                    // authentication for reporting. This seems to be one of the best places to remove it.
+                    $bahmniCookieStore.remove(Bahmni.Common.Constants.JSESSIONID, {
+                        path: '/',
+                        expires: 1
+                    });
+                };
+
                 sessionService.loginUser($scope.loginInfo.username, $scope.loginInfo.password, $scope.loginInfo.currentLocation, $scope.loginInfo.otp).then(
                     function (data) {
+                        ensureNoSessionIdInRoot();
                         if (data && data.firstFactAuthorization) {
                             $scope.showOTP = true;
                             deferrable.resolve(data);
                             return;
                         }
-                        sessionService.loadCredentials().then(
-                            onSuccessfulAuthentication,
-                            function (error) {
-                                $scope.errorMessageTranslateKey = error;
-                                deferrable.reject(error);
-                            }
-                        ).then(function () {
+                        sessionService.loadCredentials().then(function () {
+                            onSuccessfulAuthentication();
                             $rootScope.currentUser.addDefaultLocale($scope.selectedLocale);
                             userService.savePreferences().then(
                                 function () { deferrable.resolve(); },
                                 function (error) { deferrable.reject(error); }
                             );
-                        }, function (error) { deferrable.reject(error); }
+                        }, function (error) {
+                            $scope.errorMessageTranslateKey = error;
+                            deferrable.reject(error);
+                        }
                         );
                     },
                     function (error) {

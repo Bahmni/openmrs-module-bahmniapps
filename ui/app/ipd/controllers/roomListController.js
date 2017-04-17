@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('bahmni.ipd')
-    .controller('RoomListController', ['$scope', 'QueryService',
+    .controller('RoomListController', ['$scope', 'queryService',
         function ($scope, queryService) {
             var getRoomListDetails = function (roomName) {
                 var params = {

@@ -30,9 +30,15 @@ angular.module('bahmni.common.offline')
                 params.patientAttributes = "";
             }
 
-            var snakeCaseToCamelCase = function (snake_str) {
+            var snakeCaseToCamelCase = function (snake_str) { // eslint-disable-line camelcase
                 return snake_str.replace(/_([a-z])/g, function (g) {
                     return g[1].toUpperCase();
+                });
+            };
+
+            var camelCaseToSnakeCase = function (camelCaseSting) {
+                return camelCaseSting.replace(/([A-Z])/g, function ($1) {
+                    return "_" + $1.toLowerCase();
                 });
             };
 
@@ -140,6 +146,7 @@ angular.module('bahmni.common.offline')
                                         });
                                         patient.customAttribute = JSON.stringify(customAttributes);
                                         patient.extraIdentifiers = JSON.stringify(patient.extraIdentifiers);
+                                        patient.addressFieldValue[camelCaseToSnakeCase(addressFieldName)] = patient.addressFieldValue[addressFieldName];
                                         response.data.pageOfResults.push(patient);
                                     });
                                     $rootScope.searching = false;

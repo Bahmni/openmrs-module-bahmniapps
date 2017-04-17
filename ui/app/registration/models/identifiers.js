@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('bahmni.registration')
-    .factory('identifiers', ['$rootScope', 'Preferences', function ($rootScope, preferences) {
+    .factory('identifiers', ['$rootScope', 'preferences', function ($rootScope, preferences) {
         var create = function () {
             var identifiers = [];
             _.each($rootScope.patientConfiguration.identifierTypes, function (identifierType) {

@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('bahmni.ipd')
-    .service('WardService', ['$http', function ($http) {
+    .service('wardService', ['$http', function ($http) {
         this.bedsForWard = function (uuid) {
             return $http.get(Bahmni.IPD.Constants.admissionLocationUrl + uuid, {
                 method: "GET",

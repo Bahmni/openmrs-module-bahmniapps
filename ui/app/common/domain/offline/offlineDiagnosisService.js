@@ -2,7 +2,7 @@
 
 angular.module('bahmni.common.domain')
     .service('diagnosisService', ['$q', 'offlineEncounterServiceStrategy',
-        function ($q, offlineEncounterService) {
+        function ($q, offlineEncounterServiceStrategy) {
             var filterAndSortDiagnosis = function (diagnoses) {
                 diagnoses = _.filter(diagnoses, function (singleDiagnosis) {
                     return singleDiagnosis.revised == false;
@@ -14,9 +14,11 @@ angular.module('bahmni.common.domain')
             this.getDiagnoses = function (patientUuid, visitUuid) {
                 var deferred = $q.defer();
                 var diagnoses = [];
-                offlineEncounterService.getEncountersByPatientUuid(patientUuid).then(function (results) {
+                offlineEncounterServiceStrategy.getEncountersByPatientUuid(patientUuid).then(function (results) {
                     _.each(results, function (result) {
-                        diagnoses = diagnoses.concat(result.encounter.bahmniDiagnoses);
+                        if (result.encounter.bahmniDiagnoses) {
+                            diagnoses = diagnoses.concat(result.encounter.bahmniDiagnoses);
+                        }
                     });
                     diagnoses = filterAndSortDiagnosis(diagnoses);
                     deferred.resolve({"data": diagnoses});

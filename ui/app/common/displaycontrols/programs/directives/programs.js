@@ -5,6 +5,9 @@ angular.module('bahmni.common.displaycontrol.programs')
         function (programService, $state, spinner) {
             var controller = function ($scope) {
                 $scope.initialization = programService.getPatientPrograms($scope.patient.uuid, true, $state.params.enrollment).then(function (patientPrograms) {
+                    if (_.isEmpty(patientPrograms.activePrograms) && _.isEmpty(patientPrograms.endedPrograms)) {
+                        $scope.$emit("no-data-present-event");
+                    }
                     $scope.activePrograms = patientPrograms.activePrograms;
                     $scope.pastPrograms = patientPrograms.endedPrograms;
                 });

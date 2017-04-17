@@ -1,7 +1,7 @@
 "use strict";
 
 angular.module('bahmni.common.displaycontrol.admissiondetails')
-    .directive('admissionDetails', ['bedService', 'visitService', function (bedService) {
+    .directive('admissionDetails', ['bedService', function (bedService) {
         var controller = function ($scope) {
             $scope.showDetailsButton = function (encounter) {
                 return $scope.params && $scope.params.showDetailsButton && !encounter.notes;

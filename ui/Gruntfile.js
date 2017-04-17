@@ -8,12 +8,64 @@ module.exports = function (grunt) {
     var yeomanConfig = {
         app: 'app',
         dist: 'dist',
-        chromeApp: '../../bahmni-offline/chrome/app/',
-        androidApp: '../../bahmni-offline/android/www/app/',
         test: 'test',
         root: '.',
         nodeModules: 'node_modules'
     };
+
+    var libraryCSSFiles = [
+        'components/select2/select2.css',
+        'components/ngDialog/css/ngDialog.min.css',
+        'components/ngDialog/css/ngDialog-theme-default.min.css',
+        'components/ngDialog/css/ngDialog-theme-plain.min.css',
+        'components/ng-tags-input/ng-tags-input.bootstrap.min.css',
+        'components/ng-tags-input/ng-tags-input.min.css',
+        'components/offline/themes/*.css',
+        'components/jquery-ui/themes/smoothness/jquery-ui.min.css'
+    ];
+
+    var libraryJSFiles = [
+        'components/jquery/jquery.min.js',
+        'components/lodash/dist/lodash.min.js',
+        'components/jquery.cookie/jquery.cookie.js',
+        'components/keyboardjs/dist/keyboard.min.js',
+        'components/angular/angular.min.js',
+        'components/ng-tags-input/ng-tags-input.min.js',
+        'components/angular-sanitize/angular-sanitize.min.js',
+        'components/angular-animate/angular-animate.min.js',
+        'components/angular-bindonce/bindonce.min.js',
+        'components/angular-recursion/angular-recursion.min.js',
+        'components/ngInfiniteScroll/build/ng-infinite-scroll.min.js',
+        'components/moment/min/moment.min.js',
+        'components/select2/select2.min.js',
+        'components/angular-ui-select2/src/select2.js',
+        'components/angular-ui-router/release/angular-ui-router.min.js',
+        'components/fastclick/lib/fastclick.js',
+        'components/ngDialog/js/ngDialog.min.js',
+        'components/stacktrace-js/dist/stacktrace.min.js',
+        'components/ng-clip/dest/ng-clip.min.js',
+        'components/zeroclipboard/dist/ZeroClipboard.min.js',
+        'components/jquery.scrollTo/jquery.scrollTo.min.js',
+        'components/angular-translate/angular-translate.min.js',
+        'components/angular-cookies/angular-cookies.min.js',
+        'components/angular-translate-loader-static-files/angular-translate-loader-static-files.min.js',
+        'components/angular-translate-storage-cookie/angular-translate-storage-cookie.min.js',
+        'components/angular-translate-storage-local/angular-translate-storage-local.min.js',
+        'components/angular-translate-handler-log/angular-translate-handler-log.min.js',
+        'components/angular-file-upload/dist/angular-file-upload.min.js',
+        'components/angular-elastic/elastic.js',
+        'components/hustle/hustle.js',
+        'components/offline/offline.min.js',
+        'components/react/react.min.js',
+        'components/react/react-dom.min.js',
+        'components/bahmni-form-controls/helpers.js',
+        'components/bahmni-form-controls/bundle.js',
+        'components/lovefield/dist/lovefield.min.js',
+        'components/purl/purl.js',
+        'components/angular-route/angular-route.min.js',
+        'components/crypto-js/crypto-js.js',
+        'components/jquery-ui/ui/minified/jquery-ui.custom.min.js'
+    ];
 
     try {
         yeomanConfig.app = require('./package.json').appPath || yeomanConfig.app;
@@ -42,38 +94,6 @@ module.exports = function (grunt) {
                     }
                 ]
             },
-            offlineDist: {
-                files: [
-                    {
-                        dot: true,
-                        src: [
-                            '.tmp',
-                            '<%= yeoman.dist %>/*',
-                            '!<%= yeoman.dist %>/.git*'
-                        ]
-                    }
-                ]
-            },
-            chromeApp: {
-                files: [
-                    {
-                        dot: true,
-                        src: [
-                            '<%= yeoman.chromeApp %>/*'
-                        ]
-                    }
-                ]
-            },
-            androidApp: {
-                files: [
-                    {
-                        dot: true,
-                        src: [
-                            '<%= yeoman.androidApp %>/*'
-                        ]
-                    }
-                ]
-            },
             coverage: [
                 'coverage'
             ],
@@ -87,10 +107,12 @@ module.exports = function (grunt) {
                     padding: 4,
                     removeCommands: true
                 },
-                files: {"dist/offline/index.html": "dist/offline/index.html",
+                files: {
+                    "dist/offline/index.html": "dist/offline/index.html",
                     "dist/registration/index.html": "dist/registration/index.html",
                     "dist/clinical/index.html": "dist/clinical/index.html",
-                    "dist/home/index.html": "dist/home/index.html"}
+                    "dist/home/index.html": "dist/home/index.html"
+                }
             }
         },
         eslint: {
@@ -111,25 +133,26 @@ module.exports = function (grunt) {
             unit: {
                 configFile: 'test/config/karma.conf.js'
             },
-            chrome: {
-                configFile: 'test/config/karma.chrome.conf.js'
-            },
-            android: {
-                configFile: 'test/config/karma.android.conf.js'
-            },
             auto: {
                 configFile: 'test/config/karma.conf.js',
                 singleRun: false,
-                autoWatch: true
+                autoWatch: true,
+                reporters: ['junit', 'progress'],
+                preprocessors: {
+                    'app/common/displaycontrols/**/views/*.html': ['ng-html2js'],
+                    'app/common/concept-set/views/*.html': ['ng-html2js'],
+                    'app/common/uicontrols/**/views/*.html': ['ng-html2js'],
+                    'app/clinical/**/**/*.html': ['ng-html2js']
+                }
             }
         },
         coverage: {
             options: {
                 thresholds: {
-                    statements: 67.3,
-                    branches: 57.1,
-                    functions: 60.04,
-                    lines: 67.3
+                    statements: 68.9,
+                    branches: 58.2,
+                    functions: 61.3,
+                    lines: 68.9
                 },
                 dir: 'coverage',
                 root: '.'
@@ -198,18 +221,10 @@ module.exports = function (grunt) {
         },
         usemin: {
             html: [
-                '<%= yeoman.dist %>/patients/**/*.html',
-                '<%= yeoman.dist %>/clinical/**/*.html',
-                '<%= yeoman.dist %>/adt/**/*.html',
-                '<%= yeoman.dist %>/ipd/**/*.html',
-                '<%= yeoman.dist %>/common/**/*.html',
-                '<%= yeoman.dist %>/orders/**/*.html',
-                '<%= yeoman.dist %>/home/**/*.html',
-                '<%= yeoman.dist %>/admin/**/*.html',
-                '<%= yeoman.dist %>/offline/**/*.html',
-                '<%= yeoman.dist %>/reports/**/*.html',
-                '<%= yeoman.dist %>/registration/**/*.html',
-                '<%= yeoman.dist %>/document-upload/**/*.html'
+                '<%= yeoman.dist %>/**/index.html',
+                '<%= yeoman.dist %>/clinical/common/views/visitTabPrint.html',
+                '<%= yeoman.dist %>/clinical/dashboard/views/dashboardPrint.html',
+                '<%= yeoman.dist %>/common/displaycontrols/prescription/views/prescription.html'
             ],
             css: '<%= yeoman.dist %>/styles/**/*.css',
             options: {
@@ -277,55 +292,17 @@ module.exports = function (grunt) {
                         cwd: '<%= yeoman.app %>',
                         dest: '<%= yeoman.dist %>',
                         src: [
+                            libraryCSSFiles,
+                            libraryJSFiles,
+                            'components/openmrs-uicommons/**/*',
                             '*.{ico,txt,html,js}',
                             '.htaccess',
-                            'components/**/*',
                             'images/**/*.{gif,webp}',
-                            'styles/**/*',
-                            '**/*/*.json',
+                            'styles/**/*.css',
+                            'styles/fonts/**/*',
+                            'clinical/config/*.json',
+                            'i18n/**/*.json',
                             'lib/**/*'
-                        ]
-                    }
-                ]
-            },
-            offlineDist: {
-                files: [
-                    {
-                        expand: true,
-                        dot: true,
-                        cwd: '<%= yeoman.app %>',
-                        dest: '<%= yeoman.dist %>',
-                        src: [
-                            '*.{ico,txt,html,js}',
-                            '*/**/*'
-                        ]
-                    }
-                ]
-            },
-            chromeApp: {
-                files: [
-                    {
-                        expand: true,
-                        dot: true,
-                        cwd: '<%= yeoman.dist %>',
-                        dest: '<%= yeoman.chromeApp %>',
-                        src: [
-                            '*.{ico,txt,html,js}',
-                            '*/**/*'
-                        ]
-                    }
-                ]
-            },
-            androidApp: {
-                files: [
-                    {
-                        expand: true,
-                        dot: true,
-                        cwd: '<%= yeoman.dist %>',
-                        dest: '<%= yeoman.androidApp %>',
-                        src: [
-                            '*.{ico,txt,html,js}',
-                            '*/**/*'
                         ]
                     }
                 ]
@@ -337,6 +314,15 @@ module.exports = function (grunt) {
                         dot: true,
                         cwd: '<%= yeoman.nodeModules %>/bahmni-form-controls/dist',
                         dest: '<%= yeoman.app %>/components/bahmni-form-controls/',
+                        src: [
+                            '*.*'
+                        ]
+                    },
+                    {
+                        expand: true,
+                        dot: true,
+                        cwd: '<%= yeoman.nodeModules %>/bahmni-clinical-components/dist',
+                        dest: '<%= yeoman.app %>/components/bahmni-clinical-components/',
                         src: [
                             '*.*'
                         ]
@@ -368,7 +354,12 @@ module.exports = function (grunt) {
                         src: ['admin.*.js'],
                         dest: '<%= yeoman.dist %>/admin/'
                     },
-                    {expand: true, cwd: '<%= yeoman.dist %>', src: ['offline.*.js'], dest: '<%= yeoman.dist %>/offline/'},
+                    {
+                        expand: true,
+                        cwd: '<%= yeoman.dist %>',
+                        src: ['offline.*.js'],
+                        dest: '<%= yeoman.dist %>/offline/'
+                    },
                     {expand: true, cwd: '<%= yeoman.root %>', src: ['common.*.js'], dest: '<%= yeoman.dist %>/'},
                     {
                         expand: true,
@@ -504,26 +495,6 @@ module.exports = function (grunt) {
                         ONLINE: true
                     }
                 }
-            },
-            chrome: {
-                src: ['<%= yeoman.dist %>/**/index.html'],
-                options: {
-                    inline: true,
-                    context: {
-                        CHROME: true,
-                        OFFLINE: true
-                    }
-                }
-            },
-            android: {
-                src: '<%= yeoman.dist %>/**/index.html',
-                options: {
-                    inline: true,
-                    context: {
-                        ANDROID: true,
-                        OFFLINE: true
-                    }
-                }
             }
         }
     });
@@ -532,11 +503,8 @@ module.exports = function (grunt) {
 
     grunt.registerTask('test', ['karma:unit', 'coverage']);
 
-    grunt.registerTask('chrometest', ['karma:chrome']);
-
-    grunt.registerTask('androidtest', ['karma:android']);
-
-    grunt.registerTask('dist', [
+    grunt.registerTask('bundle', [
+        'eslint',
         'copy:nodeModules',
         'clean:dist',
         'compass:dist',
@@ -552,57 +520,26 @@ module.exports = function (grunt) {
         'usemin'
     ]);
 
-    grunt.registerTask('bundle', [
-        'npm-install',
-        'bower-install',
-        'eslint',
-        'clean:dist',
-        'compass:dist',
-        'useminPrepare',
-        'ngAnnotate',
-        'concat',
-        'preprocess',
-        'imagemin',
-        'htmlmin',
-        'cssmin',
-        'copy:dist',
-        'usemin'
-    ]);
-
-    grunt.registerTask('devbundle', [
-        'clean:offlineDist',
-        'copy:offlineDist'
-    ]);
-
     grunt.registerTask('build', [
         'npm-install',
         'bower-install',
-        'eslint',
-        'dist'
+        'bundle'
     ]);
-
-    grunt.registerTask('tests', function (app) {
-        grunt.task.run((app || '') + 'test');
-    });
 
     grunt.registerTask('uglify-and-rename', [
         'uglify',
         'rename:minified'
     ]);
 
-    grunt.registerTask('default', ['build', 'tests', 'uglify-and-rename', 'preprocess:web']);
-    grunt.registerTask('dev', ['build', 'tests', 'rename', 'preprocess:web']);
-    grunt.registerTask('chrome', ['bundle', 'tests:chrome', 'uglify-and-rename', 'preprocess:chrome']);
-    grunt.registerTask('devchrome', ['devbundle', 'preprocess:chrome', 'toggleComments', 'clean:chromeApp', 'copy:chromeApp']);
-    grunt.registerTask('android', ['bundle', 'tests:android', 'uglify-and-rename', 'preprocess:android']);
-    grunt.registerTask('devandroid', ['devbundle', 'preprocess:android', 'toggleComments', 'clean:androidApp', 'copy:androidApp']);
-
+    grunt.registerTask('dev', ['build', 'test']);
+    grunt.registerTask('default', ['bundle', 'uglify-and-rename', 'test', 'preprocess:web']);
+    grunt.registerTask('web', ['test', 'preprocess:web']);
     grunt.registerTask('bower-install', 'install dependencies using bower', function () {
         var exec = require('child_process').exec;
         var cb = this.async();
         exec('bower install', function (err, stdout) {
             console.log(stdout);
-            cb();
+            cb(!err);
         });
     });
 
@@ -611,7 +548,7 @@ module.exports = function (grunt) {
         var cb = this.async();
         exec('npm install', function (err, stdout) {
             console.log(stdout);
-            cb();
+            cb(!err);
         });
     });
 };

@@ -13,7 +13,22 @@ angular.module('bahmni.offline', ['ui.router', 'httpErrorInterceptor', 'bahmni.c
                         offlineDb: function (offlineDbInitialization) {
                             return offlineDbInitialization();
                         },
-                        offlineReferenceDataInitialization: function (offlineReferenceDataInitialization, offlineDb, offlineDbService, offlineService, androidDbService, $state) {
+                        offlineConfigInitialization: function (offlineConfigInitialization, offlineDb, offlineService, offlineDbService, androidDbService, $q) {
+                            var checkConfig = function () {
+                                var allowMultipleLoginLocation = offlineService.getItem("allowMultipleLoginLocation");
+                                return allowMultipleLoginLocation !== null && !allowMultipleLoginLocation;
+                            };
+                            if (offlineService.isAndroidApp()) {
+                                offlineDbService = androidDbService;
+                            }
+                            return offlineDbService.getConfig("dbNameCondition").then(function (result) {
+                                if (result || checkConfig()) {
+                                    return $q.when();
+                                }
+                                else return offlineConfigInitialization();
+                            });
+                        },
+                        offlineReferenceDataInitialization: function (offlineReferenceDataInitialization, offlineDbService, offlineService, androidDbService, $state, offlineConfigInitialization) {
                             if (offlineService.isAndroidApp()) {
                                 offlineDbService = androidDbService;
                             }
@@ -37,7 +52,7 @@ angular.module('bahmni.offline', ['ui.router', 'httpErrorInterceptor', 'bahmni.c
                         offlineDb: function (offlineDbInitialization) {
                             return offlineDbInitialization();
                         },
-                        test: function (offlineDb, offlineService, offlineDbService, androidDbService, $state) {
+                        testConfig: function (offlineDb, offlineService, offlineDbService, androidDbService, $state) {
                             if (offlineService.isAndroidApp()) {
                                 offlineDbService = androidDbService;
                             }
@@ -47,8 +62,8 @@ angular.module('bahmni.offline', ['ui.router', 'httpErrorInterceptor', 'bahmni.c
                                 }
                             });
                         },
-                        offlineReferenceDataInitialization: function (offlineReferenceDataInitialization, offlineDb, test) {
-                            return offlineReferenceDataInitialization(true, offlineDb, test);
+                        offlineReferenceDataInitialization: function (offlineReferenceDataInitialization, offlineDb, testConfig) {
+                            return offlineReferenceDataInitialization(true, offlineDb, testConfig);
                         },
                         offlineLocationInitialization: function (offlineLocationInitialization, offlineReferenceDataInitialization) {
                             return offlineLocationInitialization(offlineReferenceDataInitialization);
@@ -63,14 +78,25 @@ angular.module('bahmni.offline', ['ui.router', 'httpErrorInterceptor', 'bahmni.c
                 }).state('initSync', {
                     templateUrl: 'views/initSync.html',
                     controller: 'InitSyncController',
-                    url: '/initSync'
-
+                    url: '/initSync',
+                    resolve: {
+                        offlineDb: function (offlineDbInitialization) {
+                            return offlineDbInitialization();
+                        }
+                    }
                 }).state('device',
                 {
                     url: "/device/:deviceType",
-                    controller: function ($stateParams, $rootScope, $state, offlineService) {
+                    controller: function ($stateParams, $rootScope, $state, offlineService, $http) {
                         if ($stateParams.deviceType === 'chrome-app' || $stateParams.deviceType === 'android') {
                             offlineService.setAppPlatform($stateParams.deviceType);
+                            var syncStatus = offlineService.getItem("initialSyncStatus");
+                            if (!(syncStatus instanceof Object)) {
+                                var url = Bahmni.Common.Constants.globalPropertyUrl + "?property=allowMultipleLoginLocation";
+                                $http.get(url).then(function (res) {
+                                    offlineService.setItem("allowMultipleLoginLocation", res.data);
+                                });
+                            }
                             $state.go('initScheduler');
                         }
                     }
@@ -86,9 +112,9 @@ angular.module('bahmni.offline', ['ui.router', 'httpErrorInterceptor', 'bahmni.c
                     }
                 });
             $bahmniTranslateProvider.init({app: 'offline', shouldMerge: true});
-        }]).run(function ($rootScope, $templateCache) {
+        }]).run(['$rootScope', '$templateCache', function ($rootScope, $templateCache) {
     // Disable caching view template partials
             $rootScope.$on('$viewContentLoaded', function () {
                 $templateCache.removeAll();
             });
-        });
+        }]);

@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('bahmni.common.uiHelper')
-    .directive('focusOnInputErrors', function ($timeout) {
+    .directive('focusOnInputErrors', ['$timeout', function ($timeout) {
         return function (scope) {
             var cleanUpListenerErrorsOnForm = scope.$on("event:errorsOnForm", function () {
                 $timeout(function () {
@@ -12,4 +12,4 @@ angular.module('bahmni.common.uiHelper')
 
             scope.$on("$destroy", cleanUpListenerErrorsOnForm);
         };
-    });
+    }]);

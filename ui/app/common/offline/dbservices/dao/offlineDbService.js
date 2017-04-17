@@ -1,26 +1,29 @@
 'use strict';
 
 angular.module('bahmni.common.offline')
-    .service('offlineDbService', ['$http', '$q', 'patientDbService', 'patientAddressDbService', 'patientAttributeDbService', 'patientIdentifierDbService', 'offlineMarkerDbService', 'offlineAddressHierarchyDbService', 'labOrderResultsDbService',
-        'offlineConfigDbService', 'initializeOfflineSchema', 'referenceDataDbService', 'locationDbService', 'offlineSearchDbService', 'encounterDbService', 'visitDbService', 'observationDbService', 'conceptDbService', 'errorLogDbService', 'eventLogService', 'eventQueue',
-        function ($http, $q, patientDbService, patientAddressDbService, patientAttributeDbService, patientIdentifierDbService, offlineMarkerDbService, offlineAddressHierarchyDbService, labOrderResultsDbService,
-                  offlineConfigDbService, initializeOfflineSchema, referenceDataDbService, locationDbService, offlineSearchDbService, encounterDbService, visitDbService, observationDbService, conceptDbService, errorLogDbService, eventLogService, eventQueue) {
-            var db;
+    .service('offlineDbService', ['offlineService', '$http', '$q', 'patientDbService', 'patientAddressDbService', 'patientAttributeDbService', 'patientIdentifierDbService', 'offlineMarkerDbService', 'offlineAddressHierarchyDbService', 'labOrderResultsDbService',
+        'offlineConfigDbService', 'initializeOfflineSchema', 'referenceDataDbService', 'locationDbService', 'offlineSearchDbService', 'encounterDbService', 'visitDbService', 'observationDbService', 'conceptDbService', 'errorLogDbService', 'eventLogService',
+        function (offlineService, $http, $q, patientDbService, patientAddressDbService, patientAttributeDbService, patientIdentifierDbService, offlineMarkerDbService, offlineAddressHierarchyDbService, labOrderResultsDbService,
+                  offlineConfigDbService, initializeOfflineSchema, referenceDataDbService, locationDbService, offlineSearchDbService, encounterDbService, visitDbService, observationDbService, conceptDbService, errorLogDbService, eventLogService) {
+            var db, metaDataDb;
 
             var createPatient = function (postRequest) {
                 var deferred = $q.defer();
                 var uuid = postRequest.patient.uuid;
                 insertPatientData(postRequest)
-                .then(function () {
-                    getPatientByUuid(uuid).then(function (result) {
-                        deferred.resolve({data: result});
+                    .then(function () {
+                        getPatientByUuid(uuid).then(function (result) {
+                            deferred.resolve({data: result});
+                        });
+                    }, function (response) {
+                        deferred.reject(response);
                     });
-                });
                 return deferred.promise;
             };
 
-            var getPatientByUuid = function (uuid) {
-                return patientDbService.getPatientByUuid(db, uuid);
+            var getPatientByUuid = function (uuid, preferredDb) {
+                preferredDb = preferredDb ? preferredDb : db;
+                return patientDbService.getPatientByUuid(preferredDb, uuid);
             };
 
             var deletePatientData = function (uuid) {
@@ -46,14 +49,26 @@ angular.module('bahmni.common.offline')
             var insertPatientData = function (patientData) {
                 var patient = patientData.patient;
                 var person = patient.person;
+                if (!patient.voided) {
+                    return patientIdentifierDbService.insertPatientIdentifiers(db, person.uuid, patient.identifiers).then(function () {
+                        return patientDbService.insertPatientData(db, patientData).then(function (patientUuid) {
+                            patientAttributeDbService.insertAttributes(db, patientUuid, person.attributes);
+                            patientAddressDbService.insertAddress(db, patientUuid, getAddress(person));
+                            return patientData;
+                        });
+                    }, function (response) {
+                        if (response && response.code == 201) {
+                            response.message = "Patient failed to validate with reason: Identifier " + patient.identifiers[0].primaryIdentifier + " is already in use by another patient";
+                            response.isIdentifierDuplicate = true;
+                        }
+                        return $q.reject(response);
+                    });
+                }
+                return $q.when(patientData);
+            };
 
-                return patientDbService.insertPatientData(db, patientData).then(function (patientUuid) {
-                    patientAttributeDbService.insertAttributes(db, patientUuid, person.attributes);
-                    var address = person.addresses[0] || person.preferredAddress;
-                    patientAddressDbService.insertAddress(db, patientUuid, address);
-                    patientIdentifierDbService.insertPatientIdentifiers(db, patientUuid, patient.identifiers);
-                    return patientData;
-                });
+            var getAddress = function (person) {
+                return person.addresses[0] || person.preferredAddress || {};
             };
 
             var insertLabOrderResults = function (patientUuid, labOrderResults) {
@@ -64,15 +79,15 @@ angular.module('bahmni.common.offline')
                 return labOrderResultsDbService.getLabOrderResultsForPatient(db, params);
             };
 
-            var createEncounter = function (encounterData) {
+            var createEncounter = function (encounterData, preferredDb) {
                 var deferred = $q.defer();
-                insertEncounterData(encounterData).then(function () {
+                insertEncounterData(encounterData, preferredDb).then(function () {
                     if (encounterData.visitUuid) {
                         eventLogService.getDataForUrl(Bahmni.Common.Constants.visitUrl + "/" + encounterData.visitUuid).then(function (response) {
-                            insertVisitData(response.data).then(function () {
+                            insertVisitData(response.data, preferredDb).then(function () {
                                 deferred.resolve({data: encounterData});
                             });
-                        }, function (error) {
+                        }, function () {
                             deferred.resolve({data: encounterData});
                         });
                     } else {
@@ -82,10 +97,11 @@ angular.module('bahmni.common.offline')
                 return deferred.promise;
             };
 
-            var insertEncounterData = function (encounterData) {
-                return encounterDbService.insertEncounterData(db, encounterData).then(function () {
+            var insertEncounterData = function (encounterData, preferredDb) {
+                preferredDb = preferredDb ? preferredDb : db;
+                return encounterDbService.insertEncounterData(preferredDb, encounterData).then(function () {
                     if (encounterData && encounterData.observations && encounterData.observations.length > 0) {
-                        return observationDbService.insertObservationsData(db, encounterData.patientUuid, encounterData.visitUuid, encounterData.observations).then(function () {
+                        return observationDbService.insertObservationsData(preferredDb, encounterData.patientUuid, encounterData.visitUuid, encounterData.observations).then(function () {
                             return encounterData;
                         });
                     }
@@ -103,7 +119,11 @@ angular.module('bahmni.common.offline')
                     var encounterSessionDuration = encounterSessionDurationData.data;
                     getReferenceData("DefaultEncounterType").then(function (defaultEncounterType) {
                         var encounterType = defaultEncounterType ? defaultEncounterType.data : null;
-                        encounterDbService.findActiveEncounter(db, {patientUuid: params.patientUuid, providerUuid: params.providerUuids[0], encounterType: encounterType}, encounterSessionDuration).then(function (encounter) {
+                        encounterDbService.findActiveEncounter(db, {
+                            patientUuid: params.patientUuid,
+                            providerUuid: params.providerUuids[0],
+                            encounterType: encounterType
+                        }, encounterSessionDuration).then(function (encounter) {
                             deferred.resolve(encounter);
                         });
                     });
@@ -112,29 +132,37 @@ angular.module('bahmni.common.offline')
             };
 
             var init = function (offlineDb) {
-                db = offlineDb;
-                offlineMarkerDbService.init(offlineDb);
-                offlineAddressHierarchyDbService.init(offlineDb);
-                offlineConfigDbService.init(offlineDb);
-                referenceDataDbService.init(offlineDb);
-                offlineSearchDbService.init(offlineDb);
-                conceptDbService.init(offlineDb);
+                if (offlineDb.getSchema().name() == Bahmni.Common.Constants.bahmniConnectMetaDataDb) {
+                    metaDataDb = offlineDb;
+                    offlineConfigDbService.init(metaDataDb);
+                    conceptDbService.init(metaDataDb);
+                    referenceDataDbService.init(metaDataDb);
+                } else {
+                    db = offlineDb;
+                    offlineAddressHierarchyDbService.init(offlineDb);
+                    offlineSearchDbService.init(offlineDb);
+                }
+                if (metaDataDb && db) {
+                    referenceDataDbService.init(metaDataDb, db);
+                }
             };
 
-            var initSchema = function () {
-                return initializeOfflineSchema.initSchema();
+            var initSchema = function (dbName) {
+                return initializeOfflineSchema.initSchema(dbName);
             };
 
-            var reinitSchema = function () {
-                return initializeOfflineSchema.reinitSchema();
+            var reinitSchema = function (dbName) {
+                return initializeOfflineSchema.reinitSchema(dbName);
             };
 
             var getMarker = function (markerName) {
-                return offlineMarkerDbService.getMarker(markerName);
+                var database = markerName == "offline-concepts" ? metaDataDb : db;
+                return offlineMarkerDbService.getMarker(database, markerName);
             };
 
             var insertMarker = function (markerName, eventUuid, filters) {
-                return offlineMarkerDbService.insertMarker(markerName, eventUuid, filters);
+                var database = markerName == "offline-concepts" ? metaDataDb : db;
+                return offlineMarkerDbService.insertMarker(database, markerName, eventUuid, filters);
             };
 
             var insertAddressHierarchy = function (data) {
@@ -162,7 +190,7 @@ angular.module('bahmni.common.offline')
             };
 
             var getLocationByUuid = function (uuid) {
-                return locationDbService.getLocationByUuid(db, uuid);
+                return locationDbService.getLocationByUuid(metaDataDb, uuid);
             };
 
             var getAttributeTypes = function () {
@@ -189,16 +217,18 @@ angular.module('bahmni.common.offline')
                 return conceptDbService.updateParentJson(child);
             };
 
-            var insertVisitData = function (visitData) {
-                return visitDbService.insertVisitData(db, visitData);
+            var insertVisitData = function (visitData, preferredDb) {
+                preferredDb = preferredDb ? preferredDb : db;
+                return visitDbService.insertVisitData(preferredDb, visitData);
             };
 
             var getVisitByUuid = function (visitUuid) {
                 return visitDbService.getVisitByUuid(db, visitUuid);
             };
 
-            var getEncounterByEncounterUuid = function (encounterUuid) {
-                return encounterDbService.getEncounterByEncounterUuid(db, encounterUuid);
+            var getEncounterByEncounterUuid = function (encounterUuid, preferredDb) {
+                preferredDb = preferredDb ? preferredDb : db;
+                return encounterDbService.getEncounterByEncounterUuid(preferredDb, encounterUuid);
             };
 
             var getObservationsFor = function (params) {
@@ -224,8 +254,9 @@ angular.module('bahmni.common.offline')
                 return errorLogDbService.insertLog(db, errorUuid, failedRequest, responseStatus, stackTrace, requestPayload, provider);
             };
 
-            var getErrorLogByUuid = function (uuid) {
-                return errorLogDbService.getErrorLogByUuid(db, uuid);
+            var getErrorLogByUuid = function (uuid, preferredDb) {
+                preferredDb = preferredDb ? preferredDb : db;
+                return errorLogDbService.getErrorLogByUuid(preferredDb, uuid);
             };
 
             var deleteErrorFromErrorLog = function (uuid) {
@@ -249,9 +280,9 @@ angular.module('bahmni.common.offline')
                 return encounterDbService.getEncountersByVisits(db, params);
             };
 
-            var getPatientByUuidForPost = function (uuid) {
+            var getPatientByUuidForPost = function (uuid, preferredDb) {
                 var deferred = $q.defer();
-                getPatientByUuid(uuid).then(function (patientData) {
+                getPatientByUuid(uuid, preferredDb).then(function (patientData) {
                     var patient = patientData.patient;
                     patient.identifiers = _.map(patient.identifiers, function (identifier) {
                         return {
@@ -267,6 +298,12 @@ angular.module('bahmni.common.offline')
                     deferred.resolve(patientData);
                 });
                 return deferred.promise;
+            };
+            var getDbNames = function () {
+                return offlineService.getItem("dbNames");
+            };
+            var getCurrentDbName = function () {
+                return offlineService.getItem("currentDbName");
             };
 
             return {
@@ -310,6 +347,8 @@ angular.module('bahmni.common.offline')
                 getPatientByUuidForPost: getPatientByUuidForPost,
                 getVisitDetailsByPatientUuid: getVisitDetailsByPatientUuid,
                 getObservationsForVisit: getObservationsForVisit,
-                getLabOrderResultsForPatient: getLabOrderResultsForPatient
+                getLabOrderResultsForPatient: getLabOrderResultsForPatient,
+                getDbNames: getDbNames,
+                getCurrentDbName: getCurrentDbName
             };
         }]);

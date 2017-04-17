@@ -62,9 +62,9 @@ angular
             };
 
             $bahmniTranslateProvider.init({app: getAppName(), shouldMerge: true});
-        }]).run(function ($rootScope, $templateCache) {
+        }]).run(['$rootScope', '$templateCache', function ($rootScope, $templateCache) {
             $rootScope.$on('$viewContentLoaded', function () {
                 $templateCache.removeAll();
             }
         );
-        });
+        }]);

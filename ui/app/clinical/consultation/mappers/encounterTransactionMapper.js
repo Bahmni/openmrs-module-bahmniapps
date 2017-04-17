@@ -64,6 +64,7 @@ Bahmni.Clinical.EncounterTransactionMapper = function () {
             });
             var tempOrders = modifiedOrders.map(function (order) {
                 order.urgency = order.isUrgent ? "STAT" : undefined;
+
                 if (order.hasBeenModified && !order.isDiscontinued) {
                     return Bahmni.Clinical.Order.revise(order);
                 } else if (order.isDiscontinued) {
@@ -110,6 +111,10 @@ Bahmni.Clinical.EncounterTransactionMapper = function () {
         };
 
         addObservationsToEncounter();
+
+        if (consultation.followUpConditions) {
+            [].push.apply(consultation.observations, consultation.followUpConditions);
+        }
 
         return encounterData;
     };

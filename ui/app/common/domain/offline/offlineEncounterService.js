@@ -1,8 +1,14 @@
 'use strict';
 
 angular.module('bahmni.common.domain')
-    .service('encounterService', ['$q', '$rootScope', '$bahmniCookieStore', 'offlineEncounterServiceStrategy', 'eventQueue',
-        function ($q, $rootScope, $bahmniCookieStore, offlineEncounterService, eventQueue) {
+    .service('encounterService', ['$q', '$rootScope', '$bahmniCookieStore', 'offlineEncounterServiceStrategy', 'eventQueue', 'offlineService', 'offlineDbService', 'androidDbService',
+        function ($q, $rootScope, $bahmniCookieStore, offlineEncounterServiceStrategy, eventQueue, offlineService, offlineDbService, androidDbService) {
+            var offlineEncounterService = offlineEncounterServiceStrategy;
+            if (offlineService.isOfflineApp()) {
+                if (offlineService.isAndroidApp()) {
+                    offlineDbService = androidDbService;
+                }
+            }
             this.buildEncounter = function (encounter) {
                 encounter.observations = encounter.observations || [];
                 encounter.providers = encounter.providers || [];
@@ -28,7 +34,11 @@ angular.module('bahmni.common.domain')
             };
 
             var getDefaultEncounterType = function () {
-                return offlineEncounterService.getDefaultEncounterType();
+                var deferred = $q.defer();
+                offlineEncounterService.getDefaultEncounterType().then(function (response) {
+                    deferred.resolve(response);
+                });
+                return deferred.promise;
             };
 
             var getEncounterTypeBasedOnLoginLocation = function () {
@@ -66,6 +76,7 @@ angular.module('bahmni.common.domain')
                 encounterData.visitUuid = encounterData.visitUuid || null;
                 encounterData.encounterDateTime = encounterData.encounterDateTime || Bahmni.Common.Util.DateUtil.now();
                 encounterData.visitType = encounterData.visitType || 'Field';
+                encounterData.encounterTypeUuid = null;
                 this.buildEncounter(encounterData);
                 return getDefaultEncounterType().then(function (encounterType) {
                     encounterData.encounterType = encounterData.encounterType || encounterType.data;
@@ -73,7 +84,7 @@ angular.module('bahmni.common.domain')
                 }).then(function (encounterData) {
                     return offlineEncounterService.create(encounterData);
                 }).then(function (result) {
-                    var event = {type: "encounter", encounterUuid: result.data.encounterUuid };
+                    var event = {type: "encounter", encounterUuid: result.data.encounterUuid, dbName: offlineDbService.getCurrentDbName() };
                     eventQueue.addToEventQueue(event);
                     return $q.when({data: encounterData});
                 });

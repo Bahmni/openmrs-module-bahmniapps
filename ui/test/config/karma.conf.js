@@ -8,12 +8,14 @@ module.exports = function (config) {
         singleRun: true,
         files: [
             {pattern: 'test/data/*.json', watched: true, served: true, included: false},
+            {pattern: 'app/images/*', included: false, served: true },
             'app/components/q/q.js',
             'app/components/angular/angular.js',
             'app/components/ngDialog/js/ngDialog.js',
             'app/components/angular-route/angular-route.js',
             'app/components/angular-sanitize/angular-sanitize.js',
             'app/components/jquery/jquery.js',
+            'app/components/jquery.cookie/jquery.cookie.js',
             'app/components/jasmine-jquery/lib/jasmine-jquery.js',
             'app/components/angular-mocks/angular-mocks.js',
             'app/components/ngInfiniteScroll/build/ng-infinite-scroll.js',
@@ -41,6 +43,8 @@ module.exports = function (config) {
             'app/lib/modernizr.custom.80690.js',
             'app/lib/angular-workers/dist/angular-workers.js',
             'app/common/constants.js',
+            'app/common/util/init.js',
+            'app/common/util/**.js',
             'app/common/domain/init.js',
             'app/common/domain/**/*.js',
             'app/**/init.js',
@@ -80,6 +84,8 @@ module.exports = function (config) {
             'test/unit/**/offline/android/*.js',
             'test/unit/**/offline/chrome/*.js',
             'app/common/offline/scheduler/backgroundWorker.js',
+            'app/common/offline/scheduler/*.js',
+            'test/unit/common/offline/scheduler/*.js',
             'app/common/util/androidDateTimeFormatter.js',
             'test/unit/common/util/androidDateTimeFormatter.spec.js',
             'app/common/offline/dbservices/dao/labOrderResultsDbService.js',
@@ -118,7 +124,7 @@ module.exports = function (config) {
             moduleName: 'ngHtml2JsPreprocessor'
         },
         proxies:{
-            '/images/blank-user.gif' :'app/images/blank-user.gif'
+            '/images/blank-user.gif' :'/base/app/images/blank-user.gif'
         }
     });
 };

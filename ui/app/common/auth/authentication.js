@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('authentication')
-    .config(function ($httpProvider) {
+    .config(['$httpProvider', function ($httpProvider) {
         var interceptor = ['$rootScope', '$q', function ($rootScope, $q) {
             function success (response) {
                 return response;
@@ -20,7 +20,7 @@ angular.module('authentication')
             };
         }];
         $httpProvider.interceptors.push(interceptor);
-    }).run(['$rootScope', '$window', '$timeout', function ($rootScope, $window, $timeout) {
+    }]).run(['$rootScope', '$window', '$timeout', function ($rootScope, $window, $timeout) {
         $rootScope.$on('event:auth-loginRequired', function () {
             $timeout(function () {
                 $window.location = "../home/index.html#/login";
@@ -183,12 +183,12 @@ angular.module('authentication')
                         deferrable.resolve(data.results[0]);
                     } else {
                         self.destroy();
-                        deferrable.reject('You have not been setup as a Provider, please contact administrator.');
+                        deferrable.reject("YOU_HAVE_NOT_BEEN_SETUP_PROVIDER");
                     }
                 },
                function () {
                    self.destroy();
-                   deferrable.reject('Could not get provider for the current user.');
+                   deferrable.reject("COULD_NOT_GET_PROVIDER");
                });
             }, function () {
                 if (offlineApp) {
@@ -205,6 +205,18 @@ angular.module('authentication')
 
         this.getLoginLocationUuid = function () {
             return $bahmniCookieStore.get(Bahmni.Common.Constants.locationCookieName) ? $bahmniCookieStore.get(Bahmni.Common.Constants.locationCookieName).uuid : null;
+        };
+
+        this.changePassword = function (currentUserUuid, oldPassword, newPassword) {
+            return $http({
+                method: 'POST',
+                url: Bahmni.Common.Constants.passwordUrl,
+                data: {
+                    "oldPassword": oldPassword,
+                    "newPassword": newPassword
+                },
+                headers: {'Content-Type': 'application/json'}
+            });
         };
 
         this.loadProviders = function (userInfo) {
@@ -261,7 +273,7 @@ angular.module('authentication')
             }
         };
     }])
-    .directive('btnUserInfo', ['$rootScope', '$window', function () {
+    .directive('btnUserInfo', [function () {
         return {
             restrict: 'CA',
             link: function (scope, elem) {

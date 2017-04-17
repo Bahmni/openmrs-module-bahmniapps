@@ -3,7 +3,8 @@
 describe("ConsultationController", function () {
 
     var scope, rootScope, state, contextChangeHandler, urlHelper, location, clinicalAppConfigService,
-        stateParams, appService, ngDialog, q, appDescriptor, controller, visitConfig, _window_, clinicalDashboardConfig, sessionService;
+        stateParams, appService, ngDialog, q, appDescriptor, controller, visitConfig, _window_, clinicalDashboardConfig,
+        sessionService, conditionsService;
 
     clinicalDashboardConfig = jasmine.createSpyObj('clinicalDashboardConfig',['isCurrentTab']);
     var boards = [
@@ -51,7 +52,8 @@ describe("ConsultationController", function () {
             appService: appService,
             clinicalDashboardConfig: clinicalDashboardConfig,
             ngDialog: ngDialog,
-            visitConfig : visitConfig
+            visitConfig : visitConfig,
+            conditionsService: conditionsService
         });
     };
     var setUpServiceMocks = function () {
@@ -108,6 +110,7 @@ describe("ConsultationController", function () {
         ngDialog = jasmine.createSpyObj('ngDialog', ['close', 'closeAll']);
         rootScope.collapseControlPanel = function () {
         };
+        rootScope.currentProvider = { uuid: 'providerUuid' };
         scope.lastConsultationTabUrl = {url: {}};
         appService = jasmine.createSpyObj('appService', ['getAppDescriptor']);
         appDescriptor = jasmine.createSpyObj('appDescriptor', ['getConfigValue']);

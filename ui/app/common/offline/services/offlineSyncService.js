@@ -16,7 +16,7 @@ angular.module('bahmni.common.offline')
                 $rootScope.initSyncInfo.savedEvents = 0;
             };
 
-            var sync = function () {
+            var sync = function (isInitSync) {
                 stages = 0;
                 if (offlineService.isAndroidApp()) {
                     offlineDbService = androidDbService;
@@ -25,14 +25,18 @@ angular.module('bahmni.common.offline')
                 categories = offlineService.getItem("eventLogCategories");
                 initializeInitSyncInfo(categories);
                 _.map(categories, function (category) {
-                    promises.push(syncForCategory(category));
+                    promises.push(syncForCategory(category, isInitSync));
                 });
                 return $q.all(promises);
             };
 
-            var syncForCategory = function (category) {
+            var syncForCategory = function (category, isInitSync) {
                 return offlineDbService.getMarker(category).then(function (marker) {
-                    return syncForMarker(category, marker);
+                    if (category == "transactionalData" && isInitSync) {
+                        marker = angular.copy(marker);
+                        marker.filters = offlineService.getItem("initSyncFilter");
+                    }
+                    return syncForMarker(category, marker, isInitSync);
                 });
             };
 
@@ -43,7 +47,7 @@ angular.module('bahmni.common.offline')
                 }, 0);
             };
 
-            var syncForMarker = function (category, marker) {
+            var syncForMarker = function (category, marker, isInitSync) {
                 return eventLogService.getEventsFor(category, marker).then(function (response) {
                     var events = response.data ? response.data["events"] : undefined;
                     updatePendingEventsCount(category, response.data.pendingEventsCount);
@@ -51,7 +55,7 @@ angular.module('bahmni.common.offline')
                         endSync(stages++);
                         return;
                     }
-                    return readEvent(events, 0, category);
+                    return readEvent(events, 0, category, isInitSync);
                 }, function () {
                     endSync(-1);
                     var deferrable = $q.defer();
@@ -60,9 +64,15 @@ angular.module('bahmni.common.offline')
                 });
             };
 
-            var readEvent = function (events, index, category) {
+            var createRejectedPromise = function () {
+                var deferrable = $q.defer();
+                deferrable.reject();
+                return deferrable.promise;
+            };
+
+            var readEvent = function (events, index, category, isInitSync) {
                 if (events.length == index && events.length > 0) {
-                    return syncForCategory(category);
+                    return syncForCategory(category, isInitSync);
                 }
                 if (events.length == index) {
                     return;
@@ -73,27 +83,33 @@ angular.module('bahmni.common.offline')
                     event.object = Bahmni.Common.Constants.offlineBahmniEncounterUrl + uuid + "?includeAll=true";
                 }
                 return eventLogService.getDataForUrl(Bahmni.Common.Constants.hostURL + event.object)
-                        .then(function (response) {
-                            return saveData(event, response)
-                                .then(function () {
-                                    updateSavedEventsCount(category);
-                                    return updateMarker(event, category);
-                                })
-                                .then(
-                                    function (lastEvent) {
-                                        offlineService.setItem("lastSyncTime", lastEvent.lastReadTime);
-                                        return readEvent(events, ++index, category);
-                                    });
-                        }).catch(function (response) {
-                            if (parseInt(response.status / 100) == 4 || parseInt(response.status / 100) == 5) {
-                                loggingService.logSyncError(response.config.url, response.status, response.data);
-                            }
-                            $rootScope.$broadcast("schedulerStage", null, true);
-                            endSync(-1);
-                            var deferrable = $q.defer();
-                            deferrable.reject();
-                            return deferrable.promise;
-                        });
+                    .then(function (response) {
+                        return saveData(event, response)
+                            .then(function () {
+                                updateSavedEventsCount(category);
+                                return updateMarker(event, category);
+                            }, createRejectedPromise)
+                            .then(
+                                function (lastEvent) {
+                                    offlineService.setItem("lastSyncTime", lastEvent.lastReadTime);
+                                    return readEvent(events, ++index, category, isInitSync);
+                                });
+                    }).catch(function (response) {
+                        logSyncError(response);
+                        $rootScope.$broadcast("schedulerStage", null, true);
+                        endSync(-1);
+                        return createRejectedPromise();
+                    });
+            };
+
+            var logSyncError = function (response) {
+                if (response && (parseInt(response.status / 100) == 4 || parseInt(response.status / 100) == 5)) {
+                    loggingService.logSyncError(response.config.url, response.status, response.data);
+                }
+            };
+
+            var isPrimary = function (identifier, identifierTypes) {
+                return identifier.identifierType.retired ? false : !!(_.find(identifierTypes, {'uuid': identifier.identifierType.uuid})).primary;
             };
 
             var mapIdentifiers = function (identifiers) {
@@ -101,8 +117,7 @@ angular.module('bahmni.common.offline')
                 return offlineDbService.getReferenceData("IdentifierTypes").then(function (identifierTypesData) {
                     var identifierTypes = identifierTypesData.data;
                     angular.forEach(identifiers, function (identifier) {
-                        var matchedIdentifierType = _.find(identifierTypes, {'uuid': identifier.identifierType.uuid});
-                        identifier.identifierType.primary = matchedIdentifierType.primary || false;
+                        identifier.identifierType.primary = isPrimary(identifier, identifierTypes);
                     });
                     var extraIdentifiersForSearch = {};
                     var extraIdentifiers = _.filter(identifiers, {'identifierType': {'primary': false}});
@@ -129,6 +144,8 @@ angular.module('bahmni.common.offline')
                         mapIdentifiers(response.data.identifiers).then(function () {
                             offlineDbService.createPatient({patient: response.data}).then(function () {
                                 deferrable.resolve();
+                            }, function (response) {
+                                deferrable.reject(response);
                             });
                         });
                     });
@@ -166,7 +183,7 @@ angular.module('bahmni.common.offline')
 
             var mapAttributesToPostFormat = function (attributes, attributeTypes) {
                 angular.forEach(attributes, function (attribute) {
-                    if (!attribute.voided) {
+                    if (!attribute.voided && !attribute.attributeType.retired) {
                         var foundAttribute = _.find(attributeTypes, function (attributeType) {
                             return attributeType.uuid === attribute.attributeType.uuid;
                         });

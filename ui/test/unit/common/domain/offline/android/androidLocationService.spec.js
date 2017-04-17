@@ -36,23 +36,4 @@ describe('LocationService', function () {
             done();
         });
     });
-
-    it('should get selected location for subsequent logins for the offline app', function(done){
-
-        var loginInformation = {
-            "currentLocation" : {
-                "value": {
-                    "results": ["location2"]
-                }
-            }
-        };
-
-        offlineService.getItem.and.returnValue(loginInformation);
-
-        locationService.getAllByTag().then(function (response) {
-            expect(response.data.results.length).toEqual(1);
-            expect(response.data.results[0]).toEqual(loginInformation.currentLocation);
-            done();
-        });
-    });
 });

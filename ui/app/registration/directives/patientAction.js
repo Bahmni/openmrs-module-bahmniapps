@@ -10,7 +10,8 @@ angular.module('bahmni.registration')
             var controller = function ($scope) {
                 var self = this;
                 var uuid = $stateParams.patientUuid;
-                var editActionsConfig = appService.getAppDescriptor().getExtensions(Bahmni.Registration.Constants.nextStepConfigId, "config");
+                var editActionsConfig = appService.getAppDescriptor().getExtensions(Bahmni.Registration.Constants.nextStepConfigId, "config") || [];
+                var conceptSetExtensions = appService.getAppDescriptor().getExtensions("org.bahmni.registration.conceptSetGroup.observations", "config");
                 var loginLocationUuid = $bahmniCookieStore.get(Bahmni.Common.Constants.locationCookieName).uuid;
                 var defaultVisitType = $rootScope.regEncounterConfiguration.getDefaultVisitType(loginLocationUuid);
                 defaultVisitType = defaultVisitType ? defaultVisitType : appService.getAppDescriptor().getConfigValue('defaultVisitType');
@@ -45,7 +46,7 @@ angular.module('bahmni.registration')
 
                 function setForwardActionKey () {
                     if (editActionsConfig.length === 0 && isOfflineApp) {
-                        $scope.forwardActionKey = undefined;
+                        $scope.forwardActionKey = conceptSetExtensions.length === 0 ? undefined : 'enterVisitDetails';
                     } else if (editActionsConfig.length === 0) {
                         $scope.forwardActionKey = self.hasActiveVisit ? (getForwardUrlEntryForVisitFromTheConfig() ? keyForActiveVisitEntry() : 'enterVisitDetails') : 'startVisit';
                     } else {
@@ -105,6 +106,7 @@ angular.module('bahmni.registration')
                 };
 
                 $scope.actions.followUpAction = function (patientProfileData) {
+                    messagingService.clearAll();
                     switch ($scope.actions.submitSource) {
                     case 'startVisit':
                         var entry = getForwardUrlEntryForVisitFromTheConfig();
@@ -136,7 +138,17 @@ angular.module('bahmni.registration')
                     $location.path("/patient/" + patientData.patient.uuid + "/visit");
                 };
 
+                var isEmptyVisitLocation = function () {
+                    return _.isEmpty($rootScope.visitLocation);
+                };
+
                 var createVisit = function (patientProfileData, forwardUrl) {
+                    if (isEmptyVisitLocation()) {
+                        $state.go('patient.edit', {patientUuid: $scope.patient.uuid}).then(function () {
+                            messagingService.showMessage("error", "NO_LOCATION_TAGGED_TO_VISIT_LOCATION");
+                        });
+                        return;
+                    }
                     spinner.forPromise($scope.visitControl.createVisitOnly(patientProfileData.patient.uuid, $rootScope.visitLocation).then(function () {
                         if (forwardUrl) {
                             var updatedForwardUrl = appService.getAppDescriptor().formatUrl(forwardUrl, {'patientUuid': patientProfileData.patient.uuid});

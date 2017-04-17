@@ -36,25 +36,14 @@ globals:
   window: false
 
 rules:
-  indent:
-    - error
-    - 4
-  quotes:
-    - off
+  angular/controller-as: off
+  angular/di: [error, array]
+  indent: [error, 4]
+  quotes: off
 
   # The following are set to 'warn' level until they can be fixed
-  # They're sorted in ascending order of the number of issues, as at
-  # this commit
+  # They're sorted in ascending order of the number of issues
   brace-style: warn
-  no-new-func: warn
-  angular/timeout-service: warn
-  camelcase: warn
-  no-eval: warn
-  no-extend-native: warn
-  no-return-assign: warn
-  no-throw-literal: warn
-  angular/typecheck-array: warn
-  handle-callback-err: warn
   angular/no-private-call: warn
   angular/no-services: warn
   angular/typecheck-object: warn
@@ -77,8 +66,4 @@ rules:
   angular/json-functions: warn
   angular/no-service-method: warn
   angular/definedundefined: warn
-  eqeqeq: warn
-  angular/di:
-    - warn
-    - array
-  angular/controller-as: warn
+  eqeqeq: [warn, smart]

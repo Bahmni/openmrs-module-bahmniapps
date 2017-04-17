@@ -27,9 +27,9 @@ Bahmni.ConceptSet.MultiSelectObservations = function (conceptSetConfig) {
     };
 
     var add = function (concept, obs, memberOfCollection) {
-        var concept_name = concept.name.name || concept.name;
-        self.multiSelectObservationsMap[concept_name] = self.multiSelectObservationsMap[concept_name] || new Bahmni.ConceptSet.MultiSelectObservation(concept, memberOfCollection, conceptSetConfig);
-        self.multiSelectObservationsMap[concept_name].add(obs);
+        var conceptName = concept.name.name || concept.name;
+        self.multiSelectObservationsMap[conceptName] = self.multiSelectObservationsMap[conceptName] || new Bahmni.ConceptSet.MultiSelectObservation(concept, memberOfCollection, conceptSetConfig);
+        self.multiSelectObservationsMap[conceptName].add(obs);
     };
 
     var getAll = function () {
@@ -47,6 +47,7 @@ Bahmni.ConceptSet.MultiSelectObservation = function (concept, memberOfCollection
     this.groupMembers = [];
     this.provider = null;
     this.observationDateTime = "";
+    this.conceptUIConfig = conceptSetConfig[this.concept.name] || {};
 
     this.possibleAnswers = self.concept.answers.map(function (answer) {
         var cloned = _.cloneDeep(answer);
@@ -152,7 +153,7 @@ Bahmni.ConceptSet.MultiSelectObservation = function (concept, memberOfCollection
     };
 
     this.getConceptUIConfig = function () {
-        return conceptSetConfig[this.concept.name] || {};
+        return this.conceptUIConfig || {};
     };
 
     this.canAddMore = function () {
@@ -160,7 +161,8 @@ Bahmni.ConceptSet.MultiSelectObservation = function (concept, memberOfCollection
     };
 
     this.isRequired = function () {
-        return this.getConceptUIConfig().required == true;
+        this.disabled = this.disabled ? this.disabled : false;
+        return this.getConceptUIConfig().required === true && this.disabled === false;
     };
 
     var createObsFrom = function (answer) {

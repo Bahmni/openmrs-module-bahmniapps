@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('bahmni.common.displaycontrol.observation')
-    .directive('bahmniObservation', ['observationsService', 'appService', '$q', 'spinner', '$rootScope',
-        function (observationsService, appService, $q, spinner, $rootScope) {
+    .directive('bahmniObservation', ['observationsService', 'appService', '$q', 'spinner', '$rootScope', 'formHierarchyService',
+        function (observationsService, appService, $q, spinner, $rootScope, formHierarchyService) {
             var controller = function ($scope) {
                 $scope.print = $rootScope.isBeingPrinted || false;
 
@@ -38,7 +38,9 @@ angular.module('bahmni.common.displaycontrol.observation')
                             $scope.bahmniObservations[0].isOpen = true;
                         }
                     }
+                    formHierarchyService.build($scope.bahmniObservations);
                 };
+
                 var fetchObservations = function () {
                     if ($scope.observations) {
                         mapObservation($scope.observations, $scope.config);

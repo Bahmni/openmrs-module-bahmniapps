@@ -1,6 +1,6 @@
 'use strict';
 
-Bahmni.ConsultationMapper = function (dosageFrequencies, dosageInstructions, consultationNoteConcept, labOrderNoteConcept) {
+Bahmni.ConsultationMapper = function (dosageFrequencies, dosageInstructions, consultationNoteConcept, labOrderNoteConcept, followUpConditionConcept) {
     var filterPreviousOrderOfRevisedOrders = function (orders) {
         return _.filter(orders, function (drugOrder) {
             return !_.some(orders, function (otherDrugOrder) {
@@ -31,8 +31,6 @@ Bahmni.ConsultationMapper = function (dosageFrequencies, dosageInstructions, con
             return !observation.voided && specialObservationConceptUuids.indexOf(observation.concept.uuid) === -1;
         });
 
-        addUrgencyToOrders(encounterTransaction);
-
         var orders = encounterTransaction.orders.filter(function (order) {
             return order.action !== Bahmni.Clinical.Constants.orderActions.discontinue && !order.dateStopped;
         });
@@ -46,6 +44,10 @@ Bahmni.ConsultationMapper = function (dosageFrequencies, dosageInstructions, con
             }
 
             return new Bahmni.Clinical.Specimen(specimen);
+        });
+
+        var followUpConditions = _.filter(encounterTransaction.observations, function (observation) {
+            return _.get(followUpConditionConcept, 'uuid') == _.get(observation, 'concept.uuid');
         });
 
         return {
@@ -67,7 +69,8 @@ Bahmni.ConsultationMapper = function (dosageFrequencies, dosageInstructions, con
             visitType: encounterTransaction.visitType,
             providers: encounterTransaction.providers,
             locationUuid: encounterTransaction.locationUuid,
-            extensions: {mdrtbSpecimen: mdrtbSpecimen}
+            extensions: {mdrtbSpecimen: mdrtbSpecimen},
+            followUpConditions: followUpConditions
         };
     };
 
@@ -86,12 +89,5 @@ Bahmni.ConsultationMapper = function (dosageFrequencies, dosageInstructions, con
             observation.observationDateTime = obsFromEncounter.observationDateTime;
         }
         return observation;
-    };
-
-    var addUrgencyToOrders = function (encounterTransaction) {
-        _.each(encounterTransaction.orders, function (order) {
-            var orderWithUrgency = _.find(encounterTransaction.ordersWithUrgency, {uuid: order.uuid});
-            order.urgency = orderWithUrgency ? orderWithUrgency.urgency : undefined;
-        });
     };
 };

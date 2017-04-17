@@ -1,8 +1,9 @@
 'use strict';
 
 angular.module('bahmni.common.offline')
-    .service('androidDbService', ['$q', 'eventLogService',
-        function ($q, eventLogService) {
+    .service('androidDbService', ['$q', 'eventLogService', 'offlineService',
+        function ($q, eventLogService, offlineService) {
+            var currentDbName = null;
             var getMarker = function (markerName) {
                 var value = AndroidOfflineService.getMarker(markerName);
                 value = value != undefined ? JSON.parse(value) : value;
@@ -22,7 +23,7 @@ angular.module('bahmni.common.offline')
                 var patientString = JSON.stringify(patient);
                 var value = AndroidOfflineService.createPatient(patientString);
                 value = value != undefined ? JSON.parse(value) : value;
-                return $q.when(value);
+                return value && value.isIdentifierDuplicate ? $q.reject(value) : $q.when(value);
             };
 
             var insertAddressHierarchy = function (addressHierarchy) {
@@ -32,12 +33,13 @@ angular.module('bahmni.common.offline')
                 return $q.when(value);
             };
 
-            var init = function () {
-                // Hemanth: This method is not required for android app.
+            var init = function (dbName) {
+                currentDbName = dbName;
+                return $q.when(AndroidOfflineService.init(dbName));
             };
 
-            var initSchema = function () {
-                return $q.when(AndroidOfflineService.initSchema());
+            var initSchema = function (dbName) {
+                return $q.when(AndroidOfflineService.initSchema(dbName));
             };
 
             var deletePatientData = function (identifier) {
@@ -45,8 +47,9 @@ angular.module('bahmni.common.offline')
                 return $q.when({});
             };
 
-            var getPatientByUuid = function (uuid) {
-                var value = AndroidOfflineService.getPatientByUuid(uuid);
+            var getPatientByUuid = function (uuid, dbName) {
+                dbName = dbName || null;
+                var value = AndroidOfflineService.getPatientByUuid(uuid, dbName);
                 value = value != undefined ? JSON.parse(value) : value;
                 angular.forEach(value.patient.person.attributes, function (attribute) {
                     if (attribute.hydratedObject) {
@@ -76,7 +79,7 @@ angular.module('bahmni.common.offline')
             };
 
             var getReferenceData = function (referenceDataKey) {
-                var value = AndroidReferenceDataDbService.getReferenceData(referenceDataKey);
+                var value = AndroidOfflineService.getReferenceData(referenceDataKey);
                 value = value != undefined ? JSON.parse(value) : value;
                 return $q.when(value);
             };
@@ -88,7 +91,7 @@ angular.module('bahmni.common.offline')
                 } else {
                     referenceData = JSON.stringify(data);
                 }
-                AndroidReferenceDataDbService.insertReferenceData(key, referenceData, eTag);
+                AndroidOfflineService.insertReferenceData(key, referenceData, eTag);
                 return $q.when({});
             };
 
@@ -104,15 +107,15 @@ angular.module('bahmni.common.offline')
                 return $q.when(value);
             };
 
-            var createEncounter = function (encounterData) {
+            var createEncounter = function (encounterData, dbName) {
                 var deferred = $q.defer();
-                insertEncounterData(encounterData).then(function () {
+                insertEncounterData(encounterData, dbName).then(function () {
                     if (encounterData.visitUuid) {
                         eventLogService.getDataForUrl(Bahmni.Common.Constants.visitUrl + "/" + encounterData.visitUuid).then(function (response) {
-                            insertVisitData(response.data).then(function () {
+                            insertVisitData(response.data, dbName).then(function () {
                                 deferred.resolve({data: encounterData});
                             });
-                        }, function (error) {
+                        }, function () {
                             deferred.resolve({data: encounterData});
                         });
                     } else {
@@ -122,9 +125,10 @@ angular.module('bahmni.common.offline')
                 return deferred.promise;
             };
 
-            var insertEncounterData = function (encounterData) {
-                var encounter = AndroidOfflineService.insertEncounterData(JSON.stringify(encounterData));
-                return insertObservationData(encounterData.patientUuid, encounterData.visitUuid, encounterData.observations).then(function () {
+            var insertEncounterData = function (encounterData, dbName) {
+                dbName = dbName || null;
+                var encounter = AndroidOfflineService.insertEncounterData(JSON.stringify(encounterData), dbName);
+                return insertObservationData(encounterData.patientUuid, encounterData.visitUuid, encounterData.observations, dbName).then(function () {
                     encounter = encounter != undefined ? JSON.parse(encounter) : encounter;
                     return encounter;
                 });
@@ -136,8 +140,9 @@ angular.module('bahmni.common.offline')
                 return $q.when(response);
             };
 
-            var insertVisitData = function (visitData) {
-                var response = AndroidOfflineService.insertVisitData(JSON.stringify(visitData));
+            var insertVisitData = function (visitData, dbName) {
+                dbName = dbName || null;
+                var response = AndroidOfflineService.insertVisitData(JSON.stringify(visitData), dbName);
                 response = response != undefined ? JSON.parse(response) : response;
                 return $q.when(response);
             };
@@ -162,8 +167,9 @@ angular.module('bahmni.common.offline')
                 return deferred.promise;
             };
 
-            var insertObservationData = function (patientUuid, visitUuid, observationData) {
-                var response = AndroidOfflineService.insertObservationData(patientUuid, visitUuid, JSON.stringify(observationData));
+            var insertObservationData = function (patientUuid, visitUuid, observationData, dbName) {
+                dbName = dbName || null;
+                var response = AndroidOfflineService.insertObservationData(patientUuid, visitUuid, JSON.stringify(observationData), dbName);
                 response = response != undefined ? JSON.parse(response) : response;
                 return $q.when(response);
             };
@@ -214,8 +220,9 @@ angular.module('bahmni.common.offline')
                 return $q.when(value);
             };
 
-            var getEncounterByEncounterUuid = function (encounterUuid) {
-                var response = AndroidOfflineService.findEncounterByEncounterUuid(encounterUuid);
+            var getEncounterByEncounterUuid = function (encounterUuid, dbName) {
+                dbName = dbName || null;
+                var response = AndroidOfflineService.findEncounterByEncounterUuid(encounterUuid, dbName);
                 response = response != undefined ? JSON.parse(response) : response;
                 return $q.when(response);
             };
@@ -247,8 +254,9 @@ angular.module('bahmni.common.offline')
                 return $q.when(value);
             };
 
-            var getErrorLogByUuid = function (uuid) {
-                var value = AndroidOfflineService.getErrorLogByUuid(uuid);
+            var getErrorLogByUuid = function (uuid, dbName) {
+                dbName = dbName || null;
+                var value = AndroidOfflineService.getErrorLogByUuid(uuid, dbName);
                 value = value !== undefined ? JSON.parse(value) : value;
                 return $q.when(value);
             };
@@ -264,9 +272,9 @@ angular.module('bahmni.common.offline')
                 return $q.when(response);
             };
 
-            var getPatientByUuidForPost = function (uuid) {
+            var getPatientByUuidForPost = function (uuid, dbName) {
                 var deferred = $q.defer();
-                getPatientByUuid(uuid).then(function (patientData) {
+                getPatientByUuid(uuid, dbName).then(function (patientData) {
                     var patient = patientData.patient;
                     patient.identifiers = _.map(patient.identifiers, function (identifier) {
                         return {
@@ -293,6 +301,14 @@ angular.module('bahmni.common.offline')
             var getLabOrderResultsForPatient = function (patientUuid) {
                 var response = AndroidOfflineService.getLabOrderResultsByPatientUuid(patientUuid);
                 return $q.when(JSON.parse(response));
+            };
+
+            var getDbNames = function () {
+                return offlineService.getItem("dbNames");
+            };
+
+            var getCurrentDbName = function () {
+                return currentDbName;
             };
 
             return {
@@ -333,7 +349,9 @@ angular.module('bahmni.common.offline')
                 getVisitDetailsByPatientUuid: getVisitDetailsByPatientUuid,
                 getObservationsForVisit: getObservationsForVisit,
                 insertLabOrderResults: insertLabOrderResults,
-                getLabOrderResultsForPatient: getLabOrderResultsForPatient
+                getLabOrderResultsForPatient: getLabOrderResultsForPatient,
+                getDbNames: getDbNames,
+                getCurrentDbName: getCurrentDbName
             };
         }
     ]);

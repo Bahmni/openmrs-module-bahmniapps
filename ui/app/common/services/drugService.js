@@ -1,7 +1,7 @@
 'use strict';
 angular.module('bahmni.common.services')
     .factory('drugService', ['$http', function ($http) {
-        var v = 'custom:(uuid,name,doseStrength,units,dosageForm,concept:(uuid,name,names:(name)))';
+        var v = 'custom:(uuid,strength,name,dosageForm,concept:(uuid,name,names:(name)))';
         var search = function (drugName, conceptUuid) {
             var params = {
                 v: v,

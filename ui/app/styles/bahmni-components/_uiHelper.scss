@@ -128,7 +128,7 @@ table {
 	}
 	&.test-notes, &.inline-comments {
 		font-size: 12px;
-		background: #fff;
+		//background: #fff;
 		color: $darkGray;
 		margin: 0;
 
@@ -216,6 +216,7 @@ table {
     &.box-container-default{
       margin-bottom: 0;
 	  padding: 0 15px;
+		clear: both;
     }
     section.section-padding{
       padding-top: 14px;

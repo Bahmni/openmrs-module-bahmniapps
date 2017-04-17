@@ -31,7 +31,7 @@ Bahmni.Common.PatientSearch.Search = function (searchTypes) {
 
     self.markPatientEntry = function () {
         self.startPatientSearch = true;
-        window.setTimeout(function () {
+        window.setTimeout(function () { // eslint-disable-line angular/timeout-service
             self.startPatientSearch = false;
         });
     };

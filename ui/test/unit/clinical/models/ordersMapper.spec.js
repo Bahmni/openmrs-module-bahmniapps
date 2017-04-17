@@ -25,7 +25,6 @@ describe('OrdersMapper', function () {
                 "dateCreated": "2014-03-24T14:38:13.000+0530",
                 "endDate": "2014-04-04T14:38:15.000+0530",
                 "uuid": "2e107fbb-a6f2-4320-bb6d-c62a7928bd11",
-                "doseStrength": null,
                 "dosageForm": "Tablet",
                 "dateChanged": null,
                 "notes": "notes for asprin. Spelling is wrong.",

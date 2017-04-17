@@ -18,7 +18,7 @@ describe('InitializeOfflineSchema Tests', function () {
 
     it('should initialize offline schema', function (done) {
         mockofflineService.isChromeApp.and.returnValue("true");
-        initializeOfflineSchema.initSchema().then(function(db){
+        initializeOfflineSchema.initSchema("locationName").then(function(db){
             expect(db).not.toBe(null);
             expect(db.getSchema().table(Bahmni.Common.Offline.SchemaDefinitions.Patient.tableName)).not.toBe(null);
             expect(db.getSchema().table(Bahmni.Common.Offline.SchemaDefinitions.PatientAttribute.tableName)).not.toBe(null);
@@ -30,7 +30,20 @@ describe('InitializeOfflineSchema Tests', function () {
             done();
         });
 
+    });
+
+    it('should initialize metadata schema', function (done) {
+        mockofflineService.isChromeApp.and.returnValue("true");
+        initializeOfflineSchema.initSchema(Bahmni.Common.Constants.bahmniConnectMetaDataDb).then(function(db){
+            expect(db).not.toBe(null);
+            expect(db.getSchema().table(Bahmni.Common.Offline.MetaDataSchemaDefinitions.Concept.tableName)).not.toBe(null);
+            expect(db.getSchema().table(Bahmni.Common.Offline.MetaDataSchemaDefinitions.Configs.tableName)).not.toBe(null);
+            expect(db.getSchema().table(Bahmni.Common.Offline.MetaDataSchemaDefinitions.ReferenceData.tableName)).not.toBe(null);
+            db.close();
+            done();
+        });
 
     });
+
 
 });
