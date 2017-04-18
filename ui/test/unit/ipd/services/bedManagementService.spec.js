@@ -27,7 +27,7 @@ describe("BedManagementService", function() {
 
     beforeEach(module('bahmni.ipd'));
 
-    beforeEach(inject(['BedManagementService', function (bedManagementServiceInjected) {
+    beforeEach(inject(['bedManagementService', function (bedManagementServiceInjected) {
     	BedManagementService = bedManagementServiceInjected
     }]));
 

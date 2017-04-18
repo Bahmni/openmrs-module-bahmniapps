@@ -114,7 +114,7 @@ describe('BedManagementController', function () {
             $stateParams: stateParams,
             $state: state,
             spinner: spinner,
-            WardService: wardService,
+            wardService: wardService,
             visitService: visitService,
             messagingService: messagingService,
             appService: appService,

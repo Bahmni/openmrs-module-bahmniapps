@@ -13,7 +13,7 @@ describe('Query Service', function () {
             $provide.value('$http', mockHttp);
         });
 
-        inject(['QueryService', function (QueryServiceInjected) {
+        inject(['queryService', function (QueryServiceInjected) {
             queryService = QueryServiceInjected;
         }]);
     });
