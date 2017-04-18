@@ -647,7 +647,7 @@ concept-set {
       background: $white;
       overflow-y: auto;
       overflow-x: hidden;
-      z-index: 9999999;
+      z-index: 10000;
     }
     .multi-select-lab-tests {
       width: 100% !important;
