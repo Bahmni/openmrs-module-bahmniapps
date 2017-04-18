@@ -15,12 +15,16 @@ angular.module('bahmni.common.gallery')
 
                 keyboardJS.on('right', function () {
                     $scope.$apply(function () {
-                        $scope.showNext();
+                        if ($scope.getTotalLength() > 1) {
+                            $scope.showNext();
+                        }
                     });
                 });
                 keyboardJS.on('left', function () {
                     $scope.$apply(function () {
-                        $scope.showPrev();
+                        if ($scope.getTotalLength() > 1) {
+                            $scope.showPrev();
+                        }
                     });
                 });
             };
