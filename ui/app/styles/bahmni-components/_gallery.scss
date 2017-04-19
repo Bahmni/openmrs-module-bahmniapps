@@ -288,7 +288,6 @@
   padding: 0;
   .ngdialog-content {
     width: 70%;
-    padding: 0;
     background: #fff;
     .template-header {
       h5 {
@@ -358,6 +357,12 @@
           font-size: 12px;
         }
       }
+      .null-data-message {
+        padding: 10px 10px 0;
+      }
     }
   }
+}
+.gallery-open .ngdialog.ngdialog-theme-default .ngdialog-content {
+  padding: 0;
 }
