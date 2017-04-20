@@ -147,7 +147,7 @@
                  strict-autocomplete-from-level="::addressHierarchyConfigs.strictAutocompleteFromLevel"></section>
 
         <legend class="registraion_legend" ng-if="patient.extraIdentifiers.length>0">
-            <span class="mylegend">Additional Identifiers</span>
+            <span class="mylegend">{{ ::'REGISTRATION_ADDTIONAL_IDENTIFIERS' | translate}}</span>
         </legend>
 
         <section>
@@ -156,7 +156,7 @@
                 <div ng-if="patient.uuid != undefined">
                     <article ng-repeat="identifier in patient.extraIdentifiers" class="form-field existing-patient">
                         <div class="field-attribute">
-                            <label class="control-label" for="patientID">{{:: identifier.identifierType.name}}
+                            <label class="control-label" for="patientID">{{:: identifier.identifierType.name  | translate }}
                                 <span ng-show=":: identifier.identifierType.required && !identifier.hasIdentifierSources()"
                                       class="asterick">*</span>
                             </label>
@@ -177,7 +177,7 @@
                     <article ng-repeat="identifier in patient.extraIdentifiers"
                              class="form-field existing-patient">
                         <div class="field-attribute">
-                            <label class="control-label" for="patientID">{{:: identifier.identifierType.name}}
+                            <label class="control-label" for="patientID">{{:: identifier.identifierType.name | translate}}
                             <span ng-show="::identifier.identifierType.required && !identifier.hasIdentifierSources()"
                                   class="asterick">*</span>
                             </label>
