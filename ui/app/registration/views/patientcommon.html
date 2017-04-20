@@ -3,17 +3,17 @@
         <section>
             <article class="form-field patient-name-wrapper" ng-if="::patientConfiguration.local()['showNameField']">
                 <div class="field-attribute">
-                    <label for="patientName">{{::patientConfiguration.local()['labelForNameField']}}</label>
+                    <label for="patientName">{{::patientConfiguration.local()['labelForNameField'] | translate}}</label>
                 </div>
                 <div class="field-value" id="patientNameLocal">
                     <input type="text" id="givenNameLocal" ng-model="patient.givenNameLocal" pattern-validate
-                           placeholder="{{::patientConfiguration.local()['placeholderForGivenName']}}" focus-me="true">
+                           placeholder="{{::patientConfiguration.local()['placeholderForGivenName'] | translate}}" focus-me="true">
                     <input ng-show="::showMiddleName" type="text" id="middleNameLocal"
                            ng-model="patient.middleNameLocal"
                            pattern-validate
-                           placeholder="{{::patientConfiguration.local()['placeholderForMiddleName']}}">
+                           placeholder="{{::patientConfiguration.local()['placeholderForMiddleName'] | translate}}">
                     <input type="text" id="familyNameLocal" ng-model="patient.familyNameLocal" pattern-validate
-                           placeholder="{{::patientConfiguration.local()['placeholderForFamilyName']}}">
+                           placeholder="{{::patientConfiguration.local()['placeholderForFamilyName'] | translate}}">
                 </div>
             </article>
             <article class="form-field patient-name-wrapper">
