@@ -12,7 +12,7 @@ angular.module('bahmni.common.conceptSet')
 
         var getFormDetail = function (formUuid, params) {
             return $http.get(Bahmni.Common.Constants.formUrl + '/' + formUuid, {params: params});
-      };
+        };
 
         return {
             getFormList: getFormList,
