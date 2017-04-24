@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('bahmni.common.displaycontrol.observation')
-    .service('formHierarchyService', ['formService', function (formService) {
+    .service('formHierarchyService', ['observationFormService', function (observationFormService) {
         var self = this;
 
         self.build = function (observations) {
@@ -132,7 +132,7 @@ angular.module('bahmni.common.displaycontrol.observation')
         };
 
         self.createDummyObsGroupForSectionsForForm = function (bahmniObservations) {
-            formService.getAllForms().then(function (response) {
+            observationFormService.getAllForms().then(function (response) {
                 var allForms = response.data.results;
                 _.forEach(bahmniObservations, function (observation) {
                     var forms = [];
@@ -144,7 +144,7 @@ angular.module('bahmni.common.displaycontrol.observation')
                         if (!self.getFormByFormName(allForms, form.concept.shortName, self.getFormVersion(form.groupMembers))) {
                             return;
                         }
-                        formService.getFormDetail(self.getFormByFormName(allForms, form.concept.shortName, self.getFormVersion(form.groupMembers)).uuid, {
+                        observationFormService.getFormDetail(self.getFormByFormName(allForms, form.concept.shortName, self.getFormVersion(form.groupMembers)).uuid, {
                             v: "custom:(resources:(value))"
                         }).then(function (response) {
                             var formDetailsAsString = _.get(response, 'data.resources[0].value');

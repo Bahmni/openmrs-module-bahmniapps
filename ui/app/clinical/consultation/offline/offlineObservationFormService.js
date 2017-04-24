@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('bahmni.common.conceptSet')
-    .factory('formService', ['$q', function ($q) {
+    .factory('observationFormService', ['$q', function ($q) {
         var getFormList = function (encounterUuid) {
             return $q.when([]);
         };

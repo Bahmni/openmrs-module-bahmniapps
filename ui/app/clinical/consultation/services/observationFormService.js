@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('bahmni.common.conceptSet')
-    .factory('formService', ['$http', function ($http) {
+    .factory('observationFormService', ['$http', function ($http) {
         var getFormList = function (encounterUuid) {
             return $http.get(Bahmni.Common.Constants.latestPublishedForms, {params: {encounterUuid: encounterUuid}});
         };
