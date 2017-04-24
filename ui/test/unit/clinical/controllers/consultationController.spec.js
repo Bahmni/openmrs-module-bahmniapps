@@ -594,7 +594,6 @@ describe("ConsultationController", function () {
     });
 
     describe("save",function(){
-
         it("should save encounter data",function(done){
             scope.consultation = {discontinuedDrugs: [{dateStopped: new Date()}],preSaveHandler: new Bahmni.Clinical.Notifier(),postSaveHandler: new Bahmni.Clinical.Notifier(),observations:[], conditions: [{condition: {}}]};
             scope.patient = {
@@ -636,16 +635,17 @@ describe("ConsultationController", function () {
                 discontinuedDrugs: [{dateStopped: new Date()}],
                 preSaveHandler: new Bahmni.Clinical.Notifier(),
                 postSaveHandler: new Bahmni.Clinical.Notifier(),
-                observations: [],
-                conditions: [ {uuid:undefined, conditionNonCoded : "fever"}]
+                observations: []
             };
+            var conditions = [ {uuid:undefined, conditionNonCoded : "fever"}];
+            scope.consultation["conditions"] = conditions;
             scope.patient = {
                 uuid: "patient-uuid"
             };
-            diagnosisService.populateDiagnosisInformation.and.returnValue(specUtil.createFakePromise(scope.consultation));
+            diagnosisService.populateDiagnosisInformation.and.returnValue(specUtil.simplePromise(scope.consultation));
             scope.save({toState:{}}).then(function() {
                 expect(encounterService.create).toHaveBeenCalled();
-                expect(conditionsService.save).toHaveBeenCalledWith(scope.consultation.conditions, "patient-uuid");
+                expect(conditionsService.save).toHaveBeenCalledWith(conditions, "patient-uuid");
                 expect(messagingService.showMessage).toHaveBeenCalledWith('info',"{{'CLINICAL_SAVE_SUCCESS_MESSAGE_KEY' | translate}}");
                 expect(scope.$parent.consultation.conditions[0].uuid).toEqual("condition-uuid");
                 done();
@@ -663,7 +663,7 @@ describe("ConsultationController", function () {
             scope.patient = {
                 uuid: "patient-uuid"
             };
-            diagnosisService.populateDiagnosisInformation.and.returnValue(specUtil.createFakePromise(scope.consultation));
+            diagnosisService.populateDiagnosisInformation.and.returnValue(specUtil.simplePromise(scope.consultation));
             conditionsService.save.and.callFake(function() {
                 var deferred1 = Q.defer();
                 deferred1.reject("error");
@@ -676,6 +676,5 @@ describe("ConsultationController", function () {
                 done();
             });
         })
-
     })
 });
