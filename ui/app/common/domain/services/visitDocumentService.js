@@ -4,11 +4,11 @@ angular.module('bahmni.common.domain')
     .service('visitDocumentService', ['$http', function ($http) {
         var removeVoidedDocuments = function (documents) {
             documents.forEach(function (document) {
-                if(document.voided){
+                if (document.voided) {
                     var url = Bahmni.Common.Constants.RESTWS_V1 + "/bahmnicore/visitDocument?filename=" + document.image;
                     $http.delete(url, {withCredentials: true});
                 }
-            })
+            });
         };
 
         this.save = function (visitDocument) {
