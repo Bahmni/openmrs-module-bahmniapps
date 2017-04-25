@@ -1,7 +1,7 @@
 'use strict';
 
 var Bahmni = Bahmni || {};
-Bahmni.IPD = Bahmni.IPD || {};
+Bahmni.OT = Bahmni.OT || {};
 
-angular.module('bahmni.ipd', ['bahmni.common.conceptSet', 'bahmni.common.logging']);
+angular.module('bahmni.ot', ['bahmni.common.conceptSet', 'bahmni.common.logging']);
 
