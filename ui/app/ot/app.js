@@ -10,7 +10,8 @@ angular.module('ot').config(['$stateProvider', '$httpProvider', '$urlRouterProvi
         $urlRouterProvider.otherwise('/home');
 
         var homeBackLink = {type: "link", name: "Home", value: "../home/", accessKey: "h", icon: "fa-home"};
-        var navigationLinks = [];
+        var otSchedulingLink = {type: "state", name: "OT Scheduling", value: "home", accessKey: "b"};
+        var navigationLinks = [otSchedulingLink];
 
 
         // @if DEBUG='production'
@@ -32,18 +33,47 @@ angular.module('ot').config(['$stateProvider', '$httpProvider', '$urlRouterProvi
                     'content': {
                         templateUrl: 'views/home.html',
                         controller: function ($scope) {
-                            console.log("yayyy");
                         }
                     },
                     'additional-header': {
-                        templateUrl: ' views/header.html',
+                        templateUrl: 'views/header.html',
                         controller: 'HeaderController'
                     }
                 },
                 resolve: {
-                    initialization:"initialization"
+                    initialization:"initialization",
+                    init: function ($rootScope) {
+                        $rootScope.isHome = true;
+                    }
                 }
-            });
+            })
+            .state('newSurgicalAppointment', {
+                url: '/appointment/new',
+            data: {
+                homeBackLink: homeBackLink,
+                navigationLinks: navigationLinks
+            },
+            params: {
+                dashboardCachebuster: null,
+                context: null
+            },
+            views: {
+                'content': {
+                    templateUrl: 'views/newSurgicalAppointment.html',
+                    controller: 'SurgicalAppointmentController'
+                },
+                'additional-header': {
+                    templateUrl: 'views/header.html',
+                    controller: 'HeaderController'
+                }
+            },
+            resolve: {
+                initialization:"initialization",
+                init: function ($rootScope) {
+                    $rootScope.isHome = false;
+                }
+            }
+        });
 
         $bahmniTranslateProvider.init({app: 'ot', shouldMerge: true});
     }]);

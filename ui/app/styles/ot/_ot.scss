@@ -1,0 +1,36 @@
+.ot-secondary-header {
+  height: 55px;
+
+  button {
+    float: right;
+    margin-right: 100px;
+    margin-top: 11px;
+  }
+}
+
+.ot-scheduling-nav {
+  overflow: hidden;
+  margin: 7px 0 0 10px;
+  li {
+    overflow: hidden;
+    border-radius: 5px;
+    margin-right: 10px;
+    display: inline-block;
+    &:last-child {
+      margin: 0;
+    }
+    a {
+      display: inline-block;
+      color: #fff !important;
+    }
+    &.active {
+      background: rgba(0,0,0,0.2);
+    }
+  }
+}
+
+div[ng-app="ot"] {
+  .non-icon-back-btn {
+    padding: 12px 10px;
+  }
+}
