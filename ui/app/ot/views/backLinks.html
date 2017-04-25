@@ -1,0 +1,8 @@
+<div style="display: inline-block;" class="fl">
+    <a class="back-btn" accesskey="{{homeBackLink.accessKey}}"
+       ng-click="linkAction(homeBackLink.type, homeBackLink.value, homeBackLink.params)"
+       ng-class="{'non-icon-back-btn': !homeBackLink.icon}">
+        <i ng-if="homeBackLink.icon" class="fa {{homeBackLink.icon}}"></i>
+        <span ng-if="!homeBackLink.icon">{{ homeBackLink.name }}</span>
+    </a>
+</div>

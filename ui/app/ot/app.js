@@ -9,6 +9,10 @@ angular.module('ot').config(['$stateProvider', '$httpProvider', '$urlRouterProvi
     function ($stateProvider, $httpProvider, $urlRouterProvider, $bahmniTranslateProvider, $compileProvider) {
         $urlRouterProvider.otherwise('/home');
 
+        var homeBackLink = {type: "link", name: "Home", value: "../home/", accessKey: "h", icon: "fa-home"};
+        var navigationLinks = [];
+
+
         // @if DEBUG='production'
         $compileProvider.debugInfoEnabled(false);
         // @endif
@@ -20,6 +24,10 @@ angular.module('ot').config(['$stateProvider', '$httpProvider', '$urlRouterProvi
         $stateProvider
             .state('home', {
                 url: '/home',
+                data: {
+                    homeBackLink: homeBackLink,
+                    navigationLinks: navigationLinks
+                },
                 views: {
                     'content': {
                         templateUrl: 'views/home.html',
