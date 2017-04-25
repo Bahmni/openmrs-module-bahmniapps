@@ -8,7 +8,7 @@ describe("visitDocumentService", function () {
     beforeEach(function() {
         module('bahmni.common.domain');
         module(function($provide) {
-            _$http = jasmine.createSpyObj("$http", ['post']);
+            _$http = jasmine.createSpyObj("$http", ['post', 'delete']);
             _provide = $provide;
         });
         inject(function(){
@@ -58,6 +58,27 @@ describe("visitDocumentService", function () {
         }).catch(notifyError).finally(done);
     });
 
+    it("should make request to delete voided documents from disk", function () {
+        var url = Bahmni.Common.Constants.RESTWS_V1 + "/bahmnicore/visitDocument?" +
+            "filename=200/196-Patient Document-00870da2-7ee3-4a53-9eeb-abd2f686afab.jpeg";
+        var visitDocuments = {
+            documents: [{
+                testUuid: "c4694ad6-3f10-11e4-adec-0800271c1b75",
+                image: "200/196-Patient Document-00870da2-7ee3-4a53-9eeb-abd2f686afab.jpeg",
+                voided: true,
+                obsUuid: "a42ebc4b-d90a-4e46-8286-5a62650d658e"
+            }, {
+                testUuid: "c4694ad6-3f13-11e4-adec-0800271c1b95",
+                image: "200/196-Patient Document-00870da2-7ee3-4a53-9eeb-abd2f686aaab.jpeg",
+                obsUuid: "a42ebc4b-d90a-4e46-8286-5a62650d658e"
+            }]
+        };
+        visitDocumentService.save(visitDocuments);
+        expect(_$http.delete).toHaveBeenCalledWith(url, {withCredentials: true});
+        expect(_$http.delete.calls.count()).toBe(1);
+        expect(_$http.post).toHaveBeenCalledWith(Bahmni.Common.Constants.RESTWS_V1 + "/bahmnicore/visitDocument", visitDocuments);
+    });
+
     describe("getFileType", function () {
         it("should give file type as pdf for pdf mime type", function () {
             expect(visitDocumentService.getFileType("image/jpeg")).toBe("image");
@@ -70,6 +91,5 @@ describe("visitDocumentService", function () {
         it("should give file type as not_supported for any other mime type except image and pdf", function () {
             expect(visitDocumentService.getFileType("video/mp4")).toBe("not_supported");
         });
-
     });
 });
