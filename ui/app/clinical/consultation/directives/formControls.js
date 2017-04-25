@@ -24,14 +24,14 @@ angular.module('bahmni.common.conceptSet')
                                 var formDetails = JSON.parse(formDetailsAsString);
                                 formDetails.version = $scope.form.formVersion;
                                 loadedFormDetails[formUuid] = formDetails;
-                                $scope.form.component = renderWithControls(formDetails, formObservations, formUuid, collapse);
+                                $scope.form.component = renderWithControls(formDetails, formObservations, formUuid, collapse, $scope.patient.uuid);
                             }
                             unMountReactContainer($scope.form.formUuid);
                         })
                     );
                 } else {
                     $timeout(function () {
-                        $scope.form.component = renderWithControls(loadedFormDetails[formUuid], formObservations, formUuid, collapse);
+                        $scope.form.component = renderWithControls(loadedFormDetails[formUuid], formObservations, formUuid, collapse, $scope.patient.uuid);
                         unMountReactContainer($scope.form.formUuid);
                     }, 0, false);
                 }
@@ -39,7 +39,7 @@ angular.module('bahmni.common.conceptSet')
                 $scope.$watch('form.collapseInnerSections', function () {
                     var collapse = $scope.form.collapseInnerSections && $scope.form.collapseInnerSections.value;
                     if (loadedFormDetails[formUuid]) {
-                        $scope.form.component = renderWithControls(loadedFormDetails[formUuid], formObservations, formUuid, collapse);
+                        $scope.form.component = renderWithControls(loadedFormDetails[formUuid], formObservations, formUuid, collapse, $scope.patient.uuid);
                     }
                 });
 
@@ -61,7 +61,8 @@ angular.module('bahmni.common.conceptSet')
             return {
                 restrict: 'E',
                 scope: {
-                    form: "="
+                    form: "=",
+                    patient: "="
                 },
                 controller: controller
             };
