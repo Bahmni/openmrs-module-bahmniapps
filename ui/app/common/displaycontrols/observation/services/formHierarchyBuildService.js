@@ -132,6 +132,10 @@ angular.module('bahmni.common.displaycontrol.observation')
         };
 
         self.createDummyObsGroupForSectionsForForm = function (bahmniObservations) {
+            if (_.isEmpty(bahmniObservations)) {
+                return;
+            }
+
             formService.getAllForms().then(function (response) {
                 var allForms = response.data.results;
                 _.forEach(bahmniObservations, function (observation) {
