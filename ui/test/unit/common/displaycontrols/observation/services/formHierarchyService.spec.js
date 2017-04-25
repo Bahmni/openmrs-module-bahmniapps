@@ -1071,6 +1071,7 @@ describe("FormHierarchyService", function () {
         expect(layer2FirstGroupMember.concept.shortName).toBe("HEIGHT");
         expect(layer2FirstGroupMember.valueAsString).toBe("160.0");
     });
+
     it("should hide section information when there is no input in the section inside the section and input in outside obs", function () {
         //given
         observations = [{
@@ -1139,4 +1140,19 @@ describe("FormHierarchyService", function () {
         expect(layer1FirstGroupMember.concept.shortName).toBe("WEIGHT");
         expect(layer1FirstGroupMember.valueAsString).toBe("50.0");
     });
+
+  it("should not fetch form details when observation is empty", function () {
+    //given
+    observations = [];
+
+    spyOn(formService, "getAllForms");
+    spyOn(formService, "getFormDetail");
+
+    formHierarchyService.build(observations);
+    $scope.$apply();
+
+    //then
+    expect(formService.getAllForms.calls.any()).toEqual(false);
+    expect(formService.getFormDetail.calls.any()).toEqual(false);
+  });
 });
