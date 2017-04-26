@@ -94,20 +94,53 @@ angular
                 }
             });
         $bahmniTranslateProvider.init({app: 'registration', shouldMerge: true});
-    }]).run(['$rootScope', '$templateCache', 'offlineService', 'schedulerService', '$bahmniCookieStore', 'locationService', 'messagingService', function ($rootScope, $templateCache, offlineService, schedulerService, $bahmniCookieStore, locationService, messagingService) {
-        // Disable caching view template partials
+    }]).run(['$rootScope', '$templateCache', 'offlineService', 'schedulerService', '$bahmniCookieStore',
+        'locationService', 'messagingService', 'auditLogService', 'configurationService',
+        function ($rootScope, $templateCache, offlineService, schedulerService, $bahmniCookieStore, locationService,
+              messagingService, auditLogService, configurationService) {
+            var getStates = function (toState, fromState) {
+                var states = [];
+                if (fromState === "newpatient" && (toState === "patient.edit" || toState === "patient.visit")) {
+                    states.push("newpatient.save");
+                }
+                states.push(toState);
+                return states;
+            };
 
-        var loginLocationUuid = $bahmniCookieStore.get(Bahmni.Common.Constants.locationCookieName).uuid;
-        locationService.getVisitLocation(loginLocationUuid).then(function (response) {
-            if (response.data) {
-                $rootScope.visitLocation = response.data.uuid;
+            var log = function (state, toParams) {
+                var params = {};
+                params.eventType = Bahmni.Registration.AuditLogEventDetails[state].eventType;
+                params.message = Bahmni.Registration.AuditLogEventDetails[state].message;
+                params.patientUuid = toParams.patientUuid;
+                params.module = "registration";
+                auditLogService.auditLog(params);
+            };
+
+            var loginLocationUuid = $bahmniCookieStore.get(Bahmni.Common.Constants.locationCookieName).uuid;
+            locationService.getVisitLocation(loginLocationUuid).then(function (response) {
+                if (response.data) {
+                    $rootScope.visitLocation = response.data.uuid;
+                }
+            });
+            if (offlineService.isChromeApp() || offlineService.isAndroidApp()) {
+                schedulerService.sync();
             }
-        });
-        if (offlineService.isChromeApp() || offlineService.isAndroidApp()) {
-            schedulerService.sync();
-        }
 
-        $rootScope.$on('$stateChangeStart', function () {
-            messagingService.hideMessages("error");
-        });
-    }]);
+            $rootScope.$on('$stateChangeStart', function () {
+                messagingService.hideMessages("error");
+            });
+
+            $rootScope.createAuditLog = function (event, toState, toParams, fromState) {
+                configurationService.getConfigurations(['enableAuditLog']).then(function (result) {
+                    if (result.enableAuditLog) {
+                        var states = getStates(toState.name, fromState.name);
+                        states.forEach(function (state) {
+                            log(state, toParams);
+                        });
+                    }
+                });
+            };
+
+            $rootScope.$on('$stateChangeSuccess', $rootScope.createAuditLog);
+        }
+    ]);

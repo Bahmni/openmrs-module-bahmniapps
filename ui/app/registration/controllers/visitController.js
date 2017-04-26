@@ -75,7 +75,9 @@ angular.module('bahmni.registration')
 
                 var createPromise = offlineService.isOfflineApp() ? encounterPromise() : encounterService.create($scope.encounter);
                 spinner.forPromise(createPromise);
-                return createPromise;
+                return createPromise.then(function () {
+                    $rootScope.createAuditLog("edit_visit", {name: "patient.editvisit"}, {patientUuid: patientUuid}, {});
+                });
             };
 
             var encounterPromise = function () {
@@ -120,6 +122,7 @@ angular.module('bahmni.registration')
                     var visitSummary = response.data;
                     if (visitSummary.admissionDetails && !visitSummary.dischargeDetails) {
                         messagingService.showMessage("error", 'REGISTRATION_VISIT_CANNOT_BE_CLOSED');
+                        $rootScope.createAuditLog("close_visit_failed", {name: "patient.closevisit.failed"}, {patientUuid: patientUuid}, {});
                     } else {
                         closeVisit();
                     }
@@ -131,6 +134,7 @@ angular.module('bahmni.registration')
                 if (confirmed) {
                     visitService.endVisit(vm.visitUuid).then(function () {
                         $location.url(Bahmni.Registration.Constants.patientSearchURL);
+                        $rootScope.createAuditLog("close_visit", {name: "patient.closevisit"}, {patientUuid: patientUuid}, {});
                     });
                 }
             };
