@@ -6,5 +6,13 @@
     </div>
 </div>
 <div class="patient-info-fixed-postion-container ot-secondary-header">
-    <button class="back-btn dashboard-link" ng-click="goToNewSurgicalAppointment()" ng-if="$root.isHome">{{'NEW_SURGICAL_APPOINTMENT' | translate}}</button>
+    <button class="back-btn dashboard-link ot-surgical-button" ng-click="goToNewSurgicalAppointment()" ng-if="$root.isHome">{{'NEW_SURGICAL_APPOINTMENT' | translate}}</button>
+    <div ng-if="!$root.isHome">
+        <div class="add-new-appointment">{{'ADD_NEW_APPOINTMENT' | translate}}</div>
+        <div class="navigation-links-buttons">
+            <button>Back</button>
+            <button>Save</button>
+            <button>Discard</button>
+        </div>
+    </div>
 </div>

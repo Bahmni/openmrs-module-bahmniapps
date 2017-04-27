@@ -1,7 +1,9 @@
 .ot-secondary-header {
   height: 55px;
-
-  button {
+  background-color: white;
+  box-shadow: 0px 0px 0px;
+  border-bottom: 1px #55545d solid;
+  .ot-surgical-button {
     float: right;
     margin-right: 100px;
     margin-top: 11px;
@@ -10,7 +12,7 @@
 
 .ot-scheduling-nav {
   overflow: hidden;
-  margin: 7px 0 0 10px;
+  margin: 20px 0 0 10px;
   li {
     overflow: hidden;
     border-radius: 5px;
@@ -24,7 +26,7 @@
       color: #fff !important;
     }
     &.active {
-      background: rgba(0,0,0,0.2);
+      background: rgba(0, 0, 0, 0.2);
     }
   }
 }
@@ -33,4 +35,43 @@ div[ng-app="ot"] {
   .non-icon-back-btn {
     padding: 12px 10px;
   }
+}
+
+.new-surgical-appointment {
+  display: block;
+  margin-top: 70px;
+  .right-pane {
+    float: right;
+    width: 60%;
+  }
+  .left-pane {
+    float: left;
+    position: fixed;
+    width: 40%;
+  }
+}
+
+.add-new-appointment {
+  display: inline;
+  float: left;
+  margin-left: 75px;
+  margin-top: 17px;
+  height: 20px;
+  font-size: 20px !important;
+  width: 250px;
+}
+
+.navigation-links-buttons {
+  height: 35px;
+  float: right;
+  padding-top: 10px;
+  margin-right: 10px;
+  button {
+    height: 35px;
+    margin-right: 15px;
+  }
+}
+.create-surgical-block {
+  font-size: 18px;
+  text-align: center;
 }

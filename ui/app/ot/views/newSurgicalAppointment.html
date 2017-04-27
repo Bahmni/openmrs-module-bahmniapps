@@ -1,1 +1,55 @@
-<div>Hello</div>
+<div class="new-surgical-appointment">
+    <div class="new-surgical-appointment left-pane">
+        <form>
+            <div class="create-surgical-block">{{'CREATE_SURGICAL_Block' | translate}}</div>
+            <div class="appointment-block">
+                <div class="surgeon-block">
+                    <div class="surgeon-block surgeon-text">Surgeon*</div>
+                    <select ng-options="surgeon as surgeon.displayString for surgeon in ::surgeonNames"
+                            ng-change="onChange(selectedAnswer)"
+                            ng-disabled="ngDisabled"
+                            ng-model="selectedAnswer">
+                        <option value="">Choose Answer</option>
+                    </select>
+                </div>
+                <div class="location-block">
+                    <span>Location*</span>
+                    <button>OT1</button>
+                    <button>OT2</button>
+                    <button>OT2</button>
+                </div>
+                <div>
+                    <span>Date*</span>
+                    <input type="date">
+                </div>
+                <div>
+                    <div class="start-time">
+                        <span>Start Time*</span>
+                        <input type="number" max="23" min="0">
+                        <span>:</span>
+                        <input type="number" max="59" min="00">
+                    </div>
+                    <div class="end-date">
+                        <span>End Time*</span>
+                        <input type="number" max="23" min="0">
+                        <span>:</span>
+                        <input type="number" max="59" min="00">
+
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+
+
+    <div class="new-surgical-appointment right-pane">
+       <div>
+           <span>{{'ADD_SURGERY' | translate}}</span>
+           <button>{{'ADD_SURGERY_TO_THIS_BLOCK' | translate}}</button>
+       </div>
+        <div>
+            <span>{{'SURGERY_DETAILS' | translate}}</span>
+            <span>{{'ACTION' | translate}}</span>
+        </div>
+    </div>
+</div>
