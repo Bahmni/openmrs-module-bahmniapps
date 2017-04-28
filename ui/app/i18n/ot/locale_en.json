@@ -1,9 +1,8 @@
 {
     "NEW_SURGICAL_APPOINTMENT": "New Surgical Appointment",
-    "ADD_NEW_APPOINTMENT": "Add New Appointment",
+    "ADD_NEW_APPOINTMENT": "Add new appointment",
     "CREATE_SURGICAL_Block": "Create surgical block",
     "ADD_SURGERY": "Add surgery",
-    "ADD_SURGERY_TO_THIS_BLOCK": "Add surgery to this block",
     "SURGERY_DETAILS": "Surgery details",
     "ACTION": "Action"
 }

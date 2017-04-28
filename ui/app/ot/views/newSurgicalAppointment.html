@@ -1,55 +1,50 @@
 <div class="new-surgical-appointment">
-    <div class="new-surgical-appointment left-pane">
-        <form>
-            <div class="create-surgical-block">{{'CREATE_SURGICAL_Block' | translate}}</div>
+    <section class="new-surgical-appointment-step1">
+        <form class="create-surgical-form">
+            <h4 class="create-surgical-title">{{'CREATE_SURGICAL_Block' | translate}}</h4>
             <div class="appointment-block">
-                <div class="surgeon-block">
-                    <div class="surgeon-block surgeon-text">Surgeon*</div>
+                <p class="surgeon-block">
+                    <label class="surgeon-block surgeon-text">Surgeon<sup>*</sup></label>
                     <select ng-options="surgeon as surgeon.displayString for surgeon in ::surgeonNames"
                             ng-change="onChange(selectedAnswer)"
                             ng-disabled="ngDisabled"
                             ng-model="selectedAnswer">
                         <option value="">Choose Answer</option>
                     </select>
-                </div>
-                <div class="location-block">
-                    <span>Location*</span>
-                    <button>OT1</button>
-                    <button>OT2</button>
-                    <button>OT2</button>
-                </div>
-                <div>
-                    <span>Date*</span>
+                </p>
+                <p class="location-block">
+                    <label>Location<sup>*</sup></label>
+                    <button class="ot1">OT1</button>
+                    <button class="ot2">OT2</button>
+                    <button class="ot3">OT3</button>
+                </p>
+                <p>
+                    <label>Date<sup>*</sup></label>
                     <input type="date">
-                </div>
-                <div>
-                    <div class="start-time">
-                        <span>Start Time*</span>
-                        <input type="number" max="23" min="0">
-                        <span>:</span>
-                        <input type="number" max="59" min="00">
-                    </div>
-                    <div class="end-date">
-                        <span>End Time*</span>
-                        <input type="number" max="23" min="0">
-                        <span>:</span>
-                        <input type="number" max="59" min="00">
-
-                    </div>
-                </div>
+                </p>
+                <p>
+                <span class="start-time">
+                    <label>Start Time<sup>*</sup></label>
+                    <input type="number" max="23" min="0"> : <input type="number" max="59" min="00">
+                </span>
+                <span class="end-date">
+                    <label>End Time<sup>*</sup></label>
+                    <input type="number" max="23" min="0"> : <input type="number" max="59" min="00">
+                </span>
+                </p>
             </div>
         </form>
-    </div>
+    </section>
 
-
-    <div class="new-surgical-appointment right-pane">
-       <div>
-           <span>{{'ADD_SURGERY' | translate}}</span>
-           <button>{{'ADD_SURGERY_TO_THIS_BLOCK' | translate}}</button>
-       </div>
-        <div>
-            <span>{{'SURGERY_DETAILS' | translate}}</span>
-            <span>{{'ACTION' | translate}}</span>
-        </div>
-    </div>
+    <section class="new-surgical-appointment-step2">
+        <h4 class="create-surgical-title">{{'ADD_SURGERY' | translate}} <button>{{'ADD_SURGERY' | translate}}</button></h4>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>{{'SURGERY_DETAILS' | translate}}</th>
+                    <th>{{'ACTION' | translate}}</th>
+                </tr>
+            </thead>
+        </table>
+    </section>
 </div>
