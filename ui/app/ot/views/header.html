@@ -11,7 +11,7 @@
     </button>
     <p ng-if="!$root.isHome" class="navigation-links-buttons">
         <span class="add-new-appointment">{{'ADD_NEW_APPOINTMENT' | translate}}</span>
-        <button class="ot-nav-back">Back</button>
-        <button class="ot-nav-save">Save</button>
+        <button class="ot-nav-back">{{'CANCEL' | translate}}</button>
+        <button class="ot-nav-save" ng-click="save()">{{'SAVE' | translate}}</button>
     </p>
 </div>

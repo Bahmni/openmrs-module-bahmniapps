@@ -8,4 +8,9 @@ angular.module('bahmni.ot')
                 options['dashboardCachebuster'] = Math.random();
                 $state.go("newSurgicalAppointment", options);
             };
+
+            $scope.save = function() {
+                console.log($rootScope.surgicalForm);
+            }
+            
         }]);

@@ -1,8 +1,17 @@
 {
     "NEW_SURGICAL_APPOINTMENT": "New Surgical Appointment",
     "ADD_NEW_APPOINTMENT": "Add new appointment",
-    "CREATE_SURGICAL_Block": "Create surgical block",
-    "ADD_SURGERY": "Add surgery",
+    "CREATE_SURGICAL_BLOCK": "Step 1 - Create surgical block",
+    "ADD_SURGERY": "Step 2 - Add surgery",
     "SURGERY_DETAILS": "Surgery details",
-    "ACTION": "Action"
+    "ACTION": "Action",
+    "SURGEON": "Surgeon",
+    "LOCATION": "Location",
+    "START_TIME": "Start Time",
+    "END_TIME": "End Time",
+    "DATE": "Date",
+    "CANCEL": "Cancel",
+    "SAVE": "Save",
+    "ADD_SURGICAL_APPOINTMENT": "Add surgical appointment"
+
 }
