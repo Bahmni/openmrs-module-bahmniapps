@@ -1,32 +1,10 @@
 'use strict';
 
 describe('VisitController', function () {
-    var scope;
-    var $controller;
-    var success;
-    var encounterService;
-    var patientService;
-    var patient;
-    var dateUtil;
-    var $timeout;
-    var spinner;
-    var getEncounterPromise;
-    var getPatientPromise;
-    var stateParams;
-    var patientMapper;
-    var q;
-    var state;
-    var appService;
-    var appDescriptor;
-    var sessionService;
-    var messagingService;
-    var rootScope;
-    var visitService;
-    var visitController;
-    var location;
-    var window;
-    var bahmniCookieStore;
-    var offlineService;
+    var scope, $controller, success, encounterService, patientService, patient, dateUtil, $timeout, spinner,
+        getEncounterPromise, getPatientPromise, stateParams, patientMapper, q, state, appService, appDescriptor,
+        sessionService, messagingService, rootScope, visitService, visitController, location, window, bahmniCookieStore,
+        offlineService;
 
     var stubAllPromise = function () {
         return {
@@ -139,6 +117,8 @@ describe('VisitController', function () {
         patientMapper.map.and.returnValue(patient);
 
         rootScope.currentUser = {privileges: []};
+        $rootScope.createAuditLog = function () {};
+        spyOn(rootScope, 'createAuditLog').and.callThrough();
         visitService.search.and.returnValue(searchActiveVisits([]));
 
     }]));
@@ -192,6 +172,8 @@ describe('VisitController', function () {
                 expect(encounterService.create).toHaveBeenCalled();
                 expect(messagingService.showMessage).toHaveBeenCalledWith('info', 'REGISTRATION_LABEL_SAVED');
                 state.ensureAllTransitionsHappened();
+                expect(rootScope.createAuditLog).toHaveBeenCalledWith('edit_visit',
+                    {name: 'patient.editvisit'}, {patientUuid: '21308498-2502-4495-b604-7b704a55522d'}, {});
                 done();
             });
         });
@@ -220,6 +202,8 @@ describe('VisitController', function () {
                 expect(encounterService.create).toHaveBeenCalled();
                 expect(messagingService.showMessage).toHaveBeenCalledWith('info', 'REGISTRATION_LABEL_SAVED');
                 expect(window.location.href).toBe('#/search');
+                expect(rootScope.createAuditLog).toHaveBeenCalledWith('edit_visit',
+                    {name: 'patient.editvisit'}, {patientUuid: '21308498-2502-4495-b604-7b704a55522d'}, {});
                 done();
             });
         });
@@ -229,6 +213,8 @@ describe('VisitController', function () {
             var submit = scope.submit();
             submit.then(function (response) {
                 expect(bahmniCookieStore.put).toHaveBeenCalled();
+                expect(rootScope.createAuditLog).toHaveBeenCalledWith('edit_visit',
+                    {name: 'patient.editvisit'}, {patientUuid: '21308498-2502-4495-b604-7b704a55522d'}, {});
                 done();
             })
         })
@@ -287,16 +273,15 @@ describe('VisitController', function () {
             var visitSummary = {admissionDetails: null, dischargeDetails: null};
             visitService.getVisitSummary.and.returnValue(getVisitSummaryForUuid(visitSummary));
             window.confirm.and.returnValue(true);
-            visitService.endVisit.and.returnValue({
-                then: function (successFn) {
-                }
-            });
+            visitService.endVisit.and.returnValue(specUtil.createFakePromise());
             createController();
             visitController.visitUuid = 'visitUuid';
 
             scope.closeVisitIfDischarged();
 
             expect(visitService.endVisit).toHaveBeenCalledWith('visitUuid');
+            expect(rootScope.createAuditLog).toHaveBeenCalledWith('close_visit',
+                {name: 'patient.closevisit'}, {patientUuid: '21308498-2502-4495-b604-7b704a55522d'}, {});
         });
 
         it("should not close visit when cancelled", function () {
@@ -308,6 +293,7 @@ describe('VisitController', function () {
             scope.closeVisitIfDischarged();
 
             expect(visitService.endVisit).not.toHaveBeenCalled();
+            expect(rootScope.createAuditLog).not.toHaveBeenCalled();
         });
 
         it('should show error message when the patient is not discharged', function () {
@@ -318,6 +304,8 @@ describe('VisitController', function () {
             scope.closeVisitIfDischarged();
 
             expect(messagingService.showMessage).toHaveBeenCalled();
+            expect(rootScope.createAuditLog).toHaveBeenCalledWith('close_visit_failed',
+                {name: 'patient.closevisit.failed'}, {patientUuid: '21308498-2502-4495-b604-7b704a55522d'}, {});
         });
 
     });

@@ -282,6 +282,7 @@ body {
 
 /*** search page css end ***/
 .apps {
+  text-align: center;
   li {
     display: inline-block;
     a {
@@ -338,8 +339,15 @@ body {
     }
     .locale-wrapper {
       font-size: 14px;
+      max-width: 300px;
+      overflow: hidden;
       .locale-text {
         padding-right: 10px;
+        max-width: 130px;
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        float: left;
       }
       select {
         background-color: #FFF;
@@ -507,6 +515,7 @@ body {
   img {
     max-width: 200px;
     vertical-align: middle;
+    max-height: 120px;
   }
   span {
     vertical-align: middle;

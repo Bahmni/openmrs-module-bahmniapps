@@ -8,7 +8,7 @@ angular.module('opd.documentupload')
                 angular.forEach(files, function (file, index) {
                     var reader = new FileReader();
                     reader.onload = function (event) {
-                        scope.onSelect()(event.target.result, scope.visit);
+                        scope.onSelect()(event.target.result, scope.visit, file.name, file.type);
                     };
                     reader.readAsDataURL(file);
                 });
