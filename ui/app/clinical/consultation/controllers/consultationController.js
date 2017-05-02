@@ -331,13 +331,12 @@ angular.module('bahmni.clinical').controller('ConsultationController',
                 return deferred.promise;
             };
 
-            var saveConditions = function (savedConsultation) {
+            var saveConditions = function () {
                 return conditionsService.save($scope.consultation.conditions, $scope.patient.uuid)
                     .then(function () {
                         return conditionsService.getConditions($scope.patient.uuid);
-                    }).then(function (conditions) {
-                        savedConsultation.conditions = conditions;
-                        return savedConsultation;
+                    }).then(function (savedConditions) {
+                        return savedConditions;
                     });
             };
 
@@ -424,6 +423,14 @@ angular.module('bahmni.clinical').controller('ConsultationController',
                 return shouldAllow && !discontinuedDrugOrderValidationMessage && isObservationFormValid();
             };
 
+            var copyConsultationToScope = function (consultationWithDiagnosis) {
+                consultationWithDiagnosis.preSaveHandler = $scope.consultation.preSaveHandler;
+                consultationWithDiagnosis.postSaveHandler = $scope.consultation.postSaveHandler;
+                $scope.$parent.consultation = consultationWithDiagnosis;
+                $scope.$parent.consultation.postSaveHandler.fire();
+                $scope.dashboardDirty = true;
+            };
+
             $scope.save = function (toStateConfig) {
                 if (!isFormValid()) {
                     $scope.$parent.$parent.$broadcast("event:errorsOnForm");
@@ -441,22 +448,24 @@ angular.module('bahmni.clinical').controller('ConsultationController',
                             var consultation = consultationMapper.map(saveResponse.data);
                             consultation.lastvisited = $scope.lastvisited;
                             return consultation;
-                        }).then(saveConditions).then(function (savedConsulation) {
-                            messagingService.showMessage('info', "{{'CLINICAL_SAVE_SUCCESS_MESSAGE_KEY' | translate}}");
-                            return spinner.forPromise(diagnosisService.populateDiagnosisInformation($scope.patient.uuid, savedConsulation)
+                        }).then(function (savedConsultation) {
+                            return spinner.forPromise(diagnosisService.populateDiagnosisInformation($scope.patient.uuid, savedConsultation)
                                                           .then(function (consultationWithDiagnosis) {
-                                                              consultationWithDiagnosis.preSaveHandler = $scope.consultation.preSaveHandler;
-                                                              consultationWithDiagnosis.postSaveHandler = $scope.consultation.postSaveHandler;
-                                                              $scope.$parent.consultation = consultationWithDiagnosis;
-                                                              $scope.$parent.consultation.postSaveHandler.fire();
-                                                              $scope.dashboardDirty = true;
-                                                              if ($scope.targetUrl) {
-                                                                  return $window.open($scope.targetUrl, "_self");
-                                                              }
-                                                              return $state.transitionTo(toStateConfig ? toStateConfig.toState : $state.current, toStateConfig ? toStateConfig.toParams : params, {
-                                                                  inherit: false,
-                                                                  notify: true,
-                                                                  reload: (toStateConfig !== undefined)
+                                                              return saveConditions().then(function (savedConditions) {
+                                                                  consultationWithDiagnosis.conditions = savedConditions;
+                                                                  messagingService.showMessage('info', "{{'CLINICAL_SAVE_SUCCESS_MESSAGE_KEY' | translate}}");
+                                                              }, function () {
+                                                                  consultationWithDiagnosis.conditions = $scope.consultation.conditions;
+                                                              }).then(function () {
+                                                                  copyConsultationToScope(consultationWithDiagnosis);
+                                                                  if ($scope.targetUrl) {
+                                                                      return $window.open($scope.targetUrl, "_self");
+                                                                  }
+                                                                  return $state.transitionTo(toStateConfig ? toStateConfig.toState : $state.current, toStateConfig ? toStateConfig.toParams : params, {
+                                                                      inherit: false,
+                                                                      notify: true,
+                                                                      reload: (toStateConfig !== undefined)
+                                                                  });
                                                               });
                                                           }));
                         }).catch(function (error) {

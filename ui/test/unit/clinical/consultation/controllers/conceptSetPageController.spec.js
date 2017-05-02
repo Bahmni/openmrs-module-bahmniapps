@@ -1,7 +1,7 @@
 'use strict';
 
 describe('ConceptSetPageController', function () {
-    var scope, controller, rootScope, conceptSetService, configurations, clinicalAppConfigService, state, encounterConfig, spinner, messagingService, translate, stateParams, observationFormService;
+    var scope, controller, rootScope, conceptSetService, configurations, clinicalAppConfigService, state, encounterConfig, spinner, messagingService, translate, stateParams, formService;
     stateParams = {conceptSetGroupName: "concept set group name"};
     var extension = {"extension": {
         extensionParams: {}
@@ -50,7 +50,7 @@ describe('ConceptSetPageController', function () {
         configurations = jasmine.createSpyObj("configurations", ["encounterConfig"]);
         configurations.encounterConfig.and.returnValue(encounterConfig);
         conceptSetService = jasmine.createSpyObj("conceptSetService", ["getConcept", "getObsTemplatesForProgram"]);
-        observationFormService = jasmine.createSpyObj("observationFormService", ["getFormList"]);
+        formService = jasmine.createSpyObj("formService", ["getFormList"]);
         spinner = jasmine.createSpyObj("spinner", ["forPromise"]);
         messagingService = jasmine.createSpyObj('messagingService', ['showMessage']);
         translate = jasmine.createSpyObj('$translate',['instant']);
@@ -65,7 +65,7 @@ describe('ConceptSetPageController', function () {
             $rootScope: rootScope,
             $stateParams: stateParams,
             conceptSetService: conceptSetService,
-            observationFormService: observationFormService,
+            formService: formService,
             clinicalAppConfigService: clinicalAppConfigService,
             messagingService: messagingService,
             configurations: configurations,
@@ -93,8 +93,8 @@ describe('ConceptSetPageController', function () {
         });
     };
 
-    var mockObservationFormService = function (data) {
-        observationFormService.getFormList.and.callFake(function () {
+    var mockformService = function (data) {
+        formService.getFormList.and.callFake(function () {
             return {
                 then: function (callback) {
                     return callback({"data" :data});
@@ -113,7 +113,7 @@ describe('ConceptSetPageController', function () {
                 ]
             };
             mockConceptSetService(conceptResponseData);
-            mockObservationFormService({});
+            mockformService({});
             rootScope.currentUser = {
                 isFavouriteObsTemplate: function () {
                     return false;
@@ -144,7 +144,7 @@ describe('ConceptSetPageController', function () {
                     uuid: "my-form-uuid"
                 }
             ];
-            mockObservationFormService(data);
+            mockformService(data);
             rootScope.currentUser = {
                 isFavouriteObsTemplate: function () {
                     return false;
@@ -176,7 +176,7 @@ describe('ConceptSetPageController', function () {
                 }
             ];
             mockConceptSetService(conceptResponseData);
-            mockObservationFormService(data);
+            mockformService(data);
             createController();
 
             expect(scope.allTemplates).toBeTruthy();
@@ -197,7 +197,7 @@ describe('ConceptSetPageController', function () {
                 ]
             };
             mockConceptSetService(conceptResponseData);
-            mockObservationFormService({});
+            mockformService({});
             rootScope.currentUser = {
                 isFavouriteObsTemplate: function () {
                     return false;
@@ -236,7 +236,9 @@ describe('ConceptSetPageController', function () {
                 }
             ];
             mockConceptSetService(conceptResponseData);
-            mockObservationFormService(data);
+            mockformService(data);
+
+            scope.patient = {}
             scope.consultation.observations = [{
                 concept: {
                     name: "abcd",
@@ -290,7 +292,7 @@ describe('ConceptSetPageController', function () {
                 results: [{mappings: [{uuid: 456}]}]
             };
             mockConceptSetService(conceptResponseData, entityMappingResponseData);
-            mockObservationFormService({});
+            mockformService({});
             state = {
                 params: {
                     programUuid: "programUuid"
@@ -323,7 +325,8 @@ describe('ConceptSetPageController', function () {
                 ]
             };
             mockConceptSetService(conceptResponseData);
-            mockObservationFormService({});
+            mockformService({});
+            scope.patient = {}
             scope.consultation.observations = [{
                 concept: {
                     name: "abcd",
@@ -379,7 +382,7 @@ describe('ConceptSetPageController', function () {
             };
 
             mockConceptSetService(conceptResponseData);
-            mockObservationFormService({});
+            mockformService({});
             var observations = [{
                 concept: {
                     name: "Baseline",

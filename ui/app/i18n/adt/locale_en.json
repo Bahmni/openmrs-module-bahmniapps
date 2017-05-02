@@ -21,5 +21,15 @@
     "MESSAGE_DEFAULT_VISIT_TYPE_INVALID_KEY" : "Please configure a valid default visit type",
     "MESSAGE_DEFAULT_VISIT_TYPE_NOT_FOUND_KEY" : "Please configure a default visit type",
     "PATIENT_VISIT_ATTRIBUTES_PAGE_KEY":"Visit Attributes",
-    "PATIENT_REGISTRATION_PAGE_KEY" : "Registration"
+    "PATIENT_REGISTRATION_PAGE_KEY" : "Registration",
+
+    "CONDITION_LIST_DISPLAY_CONTROL_TITLE": "Conditions",
+    "CONDITION_LIST_STATUS": "Status",
+    "CONDITION_LIST_NOTES": "Notes",
+    "CONDITION_LIST_CONDITIONS_ACTIVE": "Active Conditions",
+    "CONDITION_LIST_CONDITIONS_HISTORY_OF": "History of Conditions",
+    "CONDITION_LIST_CONDITIONS_INACTIVE": "Inactive Conditions",
+    "CONDITION_LIST_CREATED_BY": "by",
+    "CONDITION_LIST_ACTIVE_SINCE": "condition from",
+    "CONDITION_LIST_NO_CONDITIONS": "No Conditions available"
 }

@@ -150,6 +150,7 @@ angular.module('bahmni.registration')
                         return;
                     }
                     spinner.forPromise($scope.visitControl.createVisitOnly(patientProfileData.patient.uuid, $rootScope.visitLocation).then(function () {
+                        $rootScope.createAuditLog("open_visit", {name: "patient.openvisit"}, {patientUuid: patientProfileData.patient.uuid}, {});
                         if (forwardUrl) {
                             var updatedForwardUrl = appService.getAppDescriptor().formatUrl(forwardUrl, {'patientUuid': patientProfileData.patient.uuid});
                             $window.location.href = updatedForwardUrl;

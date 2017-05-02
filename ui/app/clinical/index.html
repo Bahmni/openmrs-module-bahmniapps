@@ -519,6 +519,7 @@
         <script src="../common/displaycontrols/forms/init.js"></script>
         <script src="../common/displaycontrols/forms/controllers/patientDashboardAllFormsController.js"></script>
         <script src="../common/displaycontrols/forms/directives/formsTable.js"></script>
+        <script src="../clinical/consultation/services/visitFormService.js"></script>
 
         <script src="../common/displaycontrols/hint/init.js"></script>
         <script src="../common/displaycontrols/hint/directives/hint.js"></script>
@@ -554,7 +555,7 @@
 
         <!-- @ifdef ONLINE -->
         <!-- build:js clinical.min.web.js -->
-        <script src="consultation/services/observationFormService.js"></script>
+        <script src="../common/services/formService.js"></script>
         <script src="../common/domain/services/visitService.js"></script>
         <script src="../common/domain/services/diagnosisService.js"></script>
         <script src="../common/domain/services/conditionsService.js"></script>
@@ -601,7 +602,7 @@
         <!-- @ifdef CHROME -->
         <!-- build:js clinical.min.chrome.js -->
         <!-- comments:toggle html -->
-        <!--<script src="consultation/offline/offlineObservationFormService.js"></script>-->
+        <!--<script src="consultation/offline/offlineFormService.js"></script>-->
         <!--<script src="../common/domain/offline/chrome/chromeVisitService.js"></script>-->
         <!--<script src="../common/domain/offline/chrome/chromeEncounterService.js"></script>-->
         <!--<script src="../common/patient/offline/chrome/chromePatientService.js"></script>-->
@@ -630,7 +631,7 @@
         <!-- @ifdef ANDROID -->
         <!-- build:js clinical.min.android.js -->
         <!-- comments:toggle html -->
-        <!--<script src="consultation/offline/offlineObservationFormService.js"></script>-->
+        <!--<script src="consultation/offline/offlineFormService.js"></script>-->
         <!--<script src="../common/domain/offline/android/androidVisitService.js"></script>-->
         <!--<script src="../common/domain/offline/android/androidEncounterService.js"></script>-->
         <!--<script src="../common/patient/offline/android/androidPatientService.js"></script>-->

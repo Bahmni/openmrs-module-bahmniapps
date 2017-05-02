@@ -6,11 +6,11 @@ describe("FormHierarchyService", function () {
     var $scope;
     var observations;
     var allForms;
-    var observationFormService;
+    var formService;
     beforeEach(module('bahmni.common.displaycontrol.observation'));
-    beforeEach(inject(function (_formHierarchyService_, _$q_, _$rootScope_, _observationFormService_) {
+    beforeEach(inject(function (_formHierarchyService_, _$q_, _$rootScope_, _formService_) {
         formHierarchyService = _formHierarchyService_;
-        observationFormService = _observationFormService_;
+        formService = _formService_;
         $q = _$q_;
         $scope = _$rootScope_;
         allForms = {
@@ -408,8 +408,8 @@ describe("FormHierarchyService", function () {
         var formDetailDeferred = $q.defer();
         var allFormsDeferred = $q.defer();
 
-        spyOn(observationFormService, "getAllForms").and.returnValue(allFormsDeferred.promise);
-        spyOn(observationFormService, "getFormDetail").and.returnValue(formDetailDeferred.promise);
+        spyOn(formService, "getAllForms").and.returnValue(allFormsDeferred.promise);
+        spyOn(formService, "getFormDetail").and.returnValue(formDetailDeferred.promise);
 
         formHierarchyService.build(observations);
         allFormsDeferred.resolve(allForms);
@@ -486,8 +486,8 @@ describe("FormHierarchyService", function () {
         var formDetailDeferred = $q.defer();
         var allFormsDeferred = $q.defer();
 
-        spyOn(observationFormService, "getAllForms").and.returnValue(allFormsDeferred.promise);
-        spyOn(observationFormService, "getFormDetail").and.returnValue(formDetailDeferred.promise);
+        spyOn(formService, "getAllForms").and.returnValue(allFormsDeferred.promise);
+        spyOn(formService, "getFormDetail").and.returnValue(formDetailDeferred.promise);
 
         formHierarchyService.build(observations);
         allFormsDeferred.resolve(allForms);
@@ -549,8 +549,8 @@ describe("FormHierarchyService", function () {
         var formDetailDeferred = $q.defer();
         var allFormsDeferred = $q.defer();
 
-        spyOn(observationFormService, "getAllForms").and.returnValue(allFormsDeferred.promise);
-        spyOn(observationFormService, "getFormDetail").and.returnValue(formDetailDeferred.promise);
+        spyOn(formService, "getAllForms").and.returnValue(allFormsDeferred.promise);
+        spyOn(formService, "getFormDetail").and.returnValue(formDetailDeferred.promise);
 
         formHierarchyService.build(observations);
         allFormsDeferred.resolve(allForms)
@@ -624,8 +624,8 @@ describe("FormHierarchyService", function () {
         var formDetailDeferred = $q.defer();
         var allFormsDeferred = $q.defer();
 
-        spyOn(observationFormService, "getAllForms").and.returnValue(allFormsDeferred.promise);
-        spyOn(observationFormService, "getFormDetail").and.returnValue(formDetailDeferred.promise);
+        spyOn(formService, "getAllForms").and.returnValue(allFormsDeferred.promise);
+        spyOn(formService, "getFormDetail").and.returnValue(formDetailDeferred.promise);
 
         formHierarchyService.build(observations);
         allFormsDeferred.resolve(allForms)
@@ -711,8 +711,8 @@ describe("FormHierarchyService", function () {
         var formDetailDeferred = $q.defer();
         var allFormsDeferred = $q.defer();
 
-        spyOn(observationFormService, "getAllForms").and.returnValue(allFormsDeferred.promise);
-        spyOn(observationFormService, "getFormDetail").and.returnValue(formDetailDeferred.promise);
+        spyOn(formService, "getAllForms").and.returnValue(allFormsDeferred.promise);
+        spyOn(formService, "getFormDetail").and.returnValue(formDetailDeferred.promise);
 
         formHierarchyService.build(observations);
         allFormsDeferred.resolve(allForms)
@@ -842,8 +842,8 @@ describe("FormHierarchyService", function () {
         var formDetailDeferred = $q.defer();
         var allFormsDeferred = $q.defer();
 
-        spyOn(observationFormService, "getAllForms").and.returnValue(allFormsDeferred.promise);
-        spyOn(observationFormService, "getFormDetail").and.returnValue(formDetailDeferred.promise);
+        spyOn(formService, "getAllForms").and.returnValue(allFormsDeferred.promise);
+        spyOn(formService, "getFormDetail").and.returnValue(formDetailDeferred.promise);
 
         formHierarchyService.build(observations);
         allFormsDeferred.resolve(allForms)
@@ -929,15 +929,15 @@ describe("FormHierarchyService", function () {
         var formDetailDeferred = $q.defer();
         var allFormsDeferred = $q.defer();
 
-        spyOn(observationFormService, "getAllForms").and.returnValue(allFormsDeferred.promise);
-        spyOn(observationFormService, "getFormDetail").and.returnValue(formDetailDeferred.promise);
+        spyOn(formService, "getAllForms").and.returnValue(allFormsDeferred.promise);
+        spyOn(formService, "getFormDetail").and.returnValue(formDetailDeferred.promise);
 
         formHierarchyService.build(observations);
         allFormsDeferred.resolve(allForms)
         formDetailDeferred.resolve(formDetails);
         $scope.$apply();
 
-        expect(observationFormService.getFormDetail).toHaveBeenCalledWith("version2",
+        expect(formService.getFormDetail).toHaveBeenCalledWith("version2",
             {v: "custom:(resources:(value))"});
     });
 
@@ -986,8 +986,8 @@ describe("FormHierarchyService", function () {
         var formDetailDeferred = $q.defer();
         var allFormsDeferred = $q.defer();
 
-        spyOn(observationFormService, "getAllForms").and.returnValue(allFormsDeferred.promise);
-        spyOn(observationFormService, "getFormDetail").and.returnValue(formDetailDeferred.promise);
+        spyOn(formService, "getAllForms").and.returnValue(allFormsDeferred.promise);
+        spyOn(formService, "getFormDetail").and.returnValue(formDetailDeferred.promise);
 
         formHierarchyService.build(observations);
         allFormsDeferred.resolve(allForms)
@@ -1050,8 +1050,8 @@ describe("FormHierarchyService", function () {
         var formDetailDeferred = $q.defer();
         var allFormsDeferred = $q.defer();
 
-        spyOn(observationFormService, "getAllForms").and.returnValue(allFormsDeferred.promise);
-        spyOn(observationFormService, "getFormDetail").and.returnValue(formDetailDeferred.promise);
+        spyOn(formService, "getAllForms").and.returnValue(allFormsDeferred.promise);
+        spyOn(formService, "getFormDetail").and.returnValue(formDetailDeferred.promise);
 
         formHierarchyService.build(observations);
         allFormsDeferred.resolve(allForms);
@@ -1071,6 +1071,7 @@ describe("FormHierarchyService", function () {
         expect(layer2FirstGroupMember.concept.shortName).toBe("HEIGHT");
         expect(layer2FirstGroupMember.valueAsString).toBe("160.0");
     });
+
     it("should hide section information when there is no input in the section inside the section and input in outside obs", function () {
         //given
         observations = [{
@@ -1122,8 +1123,8 @@ describe("FormHierarchyService", function () {
         var formDetailDeferred = $q.defer();
         var allFormsDeferred = $q.defer();
 
-        spyOn(observationFormService, "getAllForms").and.returnValue(allFormsDeferred.promise);
-        spyOn(observationFormService, "getFormDetail").and.returnValue(formDetailDeferred.promise);
+        spyOn(formService, "getAllForms").and.returnValue(allFormsDeferred.promise);
+        spyOn(formService, "getFormDetail").and.returnValue(formDetailDeferred.promise);
 
         formHierarchyService.build(observations);
         allFormsDeferred.resolve(allForms)
@@ -1139,4 +1140,19 @@ describe("FormHierarchyService", function () {
         expect(layer1FirstGroupMember.concept.shortName).toBe("WEIGHT");
         expect(layer1FirstGroupMember.valueAsString).toBe("50.0");
     });
+
+  it("should not fetch form details when observation is empty", function () {
+    //given
+    observations = [];
+
+    spyOn(formService, "getAllForms");
+    spyOn(formService, "getFormDetail");
+
+    formHierarchyService.build(observations);
+    $scope.$apply();
+
+    //then
+    expect(formService.getAllForms.calls.any()).toEqual(false);
+    expect(formService.getFormDetail.calls.any()).toEqual(false);
+  });
 });
