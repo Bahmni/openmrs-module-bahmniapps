@@ -21,15 +21,15 @@ rm -rf cacheChromeDist cacheAndroidDist
 cp -r dist cacheChromeDist
 cp -r dist cacheAndroidDist
 
-if [ $(pgrep Xvfb) ]; then
-    XVFB_PID=$(pgrep Xvfb)
-    echo "Killing Xvfb process $XVFB_PID"
-    kill $XVFB_PID
+if [ -z $(pgrep Xvfb) ]; then
+    export DISPLAY=:99
+    Xvfb :99 &
+    XVFB_PID=$!
+    echo "Starting Xvfb process $XVFB_PID"
+else
+    echo "Xvfb already running"
 fi
-export DISPLAY=:99
-Xvfb :99 &
-XVFB_PID=$!
-echo "Starting Xvfb process $XVFB_PID"
+
 
 grunt web
 cd dist && zip -r ../target/${ZIP_FILE_NAME}.zip *
@@ -46,5 +46,7 @@ cp -r cacheAndroidDist dist
 grunt android
 cd dist && zip -r ../target/${ZIP_FILE_NAME}_android.zip *
 
-echo "Killing Xvfb process $XVFB_PID"
-/usr/bin/sudo kill $XVFB_PID
+if [ -n $XVFB_PID ]; then
+    echo "Killing Xvfb process $XVFB_PID"
+    kill $XVFB_PID
+fi
