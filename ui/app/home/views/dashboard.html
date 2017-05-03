@@ -51,7 +51,13 @@
     <div class="apps">
         <ul>
             <li ng-repeat="extn in appExtensions">
-                <a id="{{extn.id}}" ng-href="{{extn.url}}" class="button app big" target="{{extn.target?extn.target:'_self'}}" ng-if="isVisibleExtension(extn)"><i class="{{extn.icon}}"></i>{{extn | titleTranslate}}</a>
+                <a id="{{extn.id}}" ng-href="{{extn.url}}"
+                   class="button app big" target="{{extn.target?extn.target:'_self'}}"
+                   ng-if="isVisibleExtension(extn)">
+                    <i ng-if="extn.icon" class="{{extn.icon}}"></i>
+                    <i ng-if="extn.iconUrl"><img src="{{extn.iconUrl}}" class="extn-ico-url"/></i>
+                    {{extn | titleTranslate}}
+                </a>
             </li>
         </ul>
     </div>
