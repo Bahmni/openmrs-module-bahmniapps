@@ -1,43 +1,39 @@
 <div class="new-surgical-appointment">
     <section class="new-surgical-appointment-step1">
-        <form class="create-surgical-form">
+        <form class="create-surgical-form" name="createSurgicalBlockForm">
             <h4 class="create-surgical-title">{{'CREATE_SURGICAL_BLOCK' | translate}}</h4>
             <div class="appointment-block">
                 <p class="surgeon-block">
                     <label class="surgeon-block surgeon-text">Surgeon<sup>*</sup></label>
-                    <select ng-options="surgeon as surgeon.displayString for surgeon in ::surgeonNames"
-                            ng-change="onChange(selectedAnswer)"
-                            ng-disabled="ngDisabled"
-                            ng-model="selectedAnswer">
-                        <option value="">Choose Answer</option>
+                    <select ng-options="surgeon as surgeon.displayString for surgeon in ::surgeons"
+                            ng-model="surgicalForm.surgeon"
+                            required>
                     </select>
                 </p>
                 <p class="location-block">
                     <label>Location<sup>*</sup></label>
-                    <button class="ot1">OT1</button>
-                    <button class="ot2">OT2</button>
-                    <button class="ot3">OT3</button>
+                    <div ng-repeat="location in locations" style="display: inline-block;">
+                        {{ location.display }}
+                        <input type="radio" name="location" ng-value="location" ng-model="surgicalForm.location" required>
+                    </div>
                 </p>
                 <p>
-                    <label>Date<sup>*</sup></label>
-                    <input type="date">
-                </p>
-                <p>
-                <span class="start-time">
-                    <label>Start Time<sup>*</sup></label>
-                    <input type="number" max="23" min="0"> : <input type="number" max="59" min="00">
-                </span>
-                <span class="end-date">
-                    <label>End Time<sup>*</sup></label>
-                    <input type="number" max="23" min="0"> : <input type="number" max="59" min="00">
-                </span>
+                    <span class="start-time">
+                        <label>Start Date-time<sup>*</sup></label>
+                        <input type="datetime-local" ng-model="surgicalForm.startDatetime" required ng-class="{'illegalValue' : !isStartDatetimeBeforeEndDatetime(surgicalForm.startDatetime,                             surgicalForm.endDatetime)}" required>
+                    </span>
+                    <span class="start-time">
+                        <label>End Date-time<sup>*</sup></label>
+                        <input type="datetime-local" ng-model="surgicalForm.endDatetime" ng-class="{'illegalValue' : !isStartDatetimeBeforeEndDatetime(surgicalForm.startDatetime,
+                         surgicalForm.endDatetime)}" required>
+                    </span>
                 </p>
             </div>
         </form>
     </section>
 
     <section class="new-surgical-appointment-step2">
-        <h4 class="create-surgical-title">{{'ADD_SURGERY' | translate}} <button>{{'ADD_SURGERY' | translate}}</button></h4>
+        <h4 class="create-surgical-title">{{'ADD_SURGERY' | translate}} <button ng-disabled="!isFormValid()">{{'ADD_SURGERY' | translate}}</button></h4>
         <table class="table">
             <thead>
                 <tr>

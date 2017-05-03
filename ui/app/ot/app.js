@@ -36,7 +36,7 @@ angular.module('ot').config(['$stateProvider', '$httpProvider', '$urlRouterProvi
                     },
                     'additional-header': {
                         templateUrl: 'views/header.html',
-                        controller: 'HeaderController'
+                        controller: 'OTHeaderController'
                     }
                 },
                 resolve: {
@@ -63,7 +63,7 @@ angular.module('ot').config(['$stateProvider', '$httpProvider', '$urlRouterProvi
                     },
                     'additional-header': {
                         templateUrl: 'views/header.html',
-                        controller: 'HeaderController'
+                        controller: 'OTHeaderController'
                     }
                 },
                 resolve: {

@@ -20,7 +20,7 @@ describe('surgicalAppointmentService', function () {
 
         mockHttp.get.and.returnValue(specUtil.respondWith(data));
 
-        surgicalAppointmentService.getSurgeonNames().then(function(response) {
+        surgicalAppointmentService.getSurgeons().then(function(response) {
             expect(response).toEqual(data);
             done();
         });

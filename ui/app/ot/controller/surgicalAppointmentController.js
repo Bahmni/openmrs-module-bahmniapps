@@ -1,28 +1,26 @@
 'use strict';
 
 angular.module('bahmni.ot')
-    .controller('surgicalAppointmentController', ['$scope', 'spinner', 'surgicalAppointmentService', "$rootScope",
-        function ($scope, spinner, surgicalAppointmentService, $rootScope) {
+    .controller('surgicalAppointmentController', ['$scope', '$q', 'spinner', 'surgicalAppointmentService', 'locationService',
+        function ($scope, $q, spinner, surgicalAppointmentService, locationService) {
             var init = function () {
-                return surgicalAppointmentService.getSurgeonNames().then(function (response) {
-                    $scope.surgeonNames = response.data.results[0].answers;
-                    var locations = [{"title": "OT1"},{"title": "OT2"},{"title": "OT3"}];
-                    $scope.locations = locations;
-                    $scope.surgicalForm = {};
-                    $rootScope.surgicalForm = $scope.surgicalForm;
+                $scope.surgicalForm = {};
+                return $q.all([surgicalAppointmentService.getSurgeons(), locationService.getAllByTag("Operation Theater")]).then(function (response) {
+                    $scope.surgeons = response[0].data.results[0].answers;
+                    $scope.locations = response[1].data.results;
                     return response;
                 });
             };
-            var areAllFieldsFilled = function () {
-              return true;
+
+            $scope.isFormValid = function () {
+                return $scope.createSurgicalBlockForm.$valid && $scope.isStartDatetimeBeforeEndDatetime($scope.surgicalForm.startDatetime, $scope.surgicalForm.endDatetime);
             };
 
-            $scope.updateOTLocation = function(location) {
-                $scope.surgicalForm.location = location;
-            };
-
-            $scope.setDate = function (date) {
-              $scope.surgicalForm.surgicalDate = date;
+            $scope.isStartDatetimeBeforeEndDatetime = function (startDate, endDate) {
+                if (startDate && endDate) {
+                    return startDate < endDate;
+                }
+                return true;
             };
 
             spinner.forPromise(init());
