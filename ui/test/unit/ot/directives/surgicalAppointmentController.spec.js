@@ -5,8 +5,17 @@ describe("surgicalAppointmentController", function () {
     var spinner = jasmine.createSpyObj('spinner', ['forPromise']);
     var surgicalAppointmentService = jasmine.createSpyObj('surgicalAppointmentService', ['getSurgeons']);
     var locationService = jasmine.createSpyObj('locationService', ['getAllByTag']);
+    var appService = jasmine.createSpyObj('appService', ['getAppDescriptor']);
+    var appDescriptor = jasmine.createSpyObj('appDescriptor', ['getConfigValue']);
+    appService.getAppDescriptor.and.returnValue(appDescriptor);
     spinner.forPromise.and.callFake(function () {
         return specUtil.simplePromise({});
+    });
+    appDescriptor.getConfigValue.and.callFake(function(value) {
+        if (value == 'primarySurgeonsForOT') {
+            return "FSTG, Name (s) of Surgeon 1";
+        }
+        return value;
     });
 
 
@@ -25,7 +34,8 @@ describe("surgicalAppointmentController", function () {
             $q: q,
             spinner: spinner,
             surgicalAppointmentService: surgicalAppointmentService,
-            locationService: locationService
+            locationService: locationService,
+            appService: appService
         });
     };
 

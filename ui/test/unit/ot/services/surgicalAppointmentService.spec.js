@@ -15,17 +15,22 @@ describe('surgicalAppointmentService', function () {
         }]);
     });
 
-    it('service should retrieve surgeon names', function (done) {
-        var data = {results: [{answers: [{ displayString: "sample name" }, { displayString: "sample name2" }, { displayString: "sample name3" }]}]};
+    iit('service should retrieve surgeon names', function (done) {
+        var data = {results: [{answers: [{displayString: "sample name"}, {displayString: "sample name2"}, {displayString: "sample name3"}]}]};
+        var surgeonsConcept = "FSTG, Name (s) of Surgeon 1";
+        var params = {name : surgeonsConcept, v: 'bahmni', locale: 'en'};
 
         mockHttp.get.and.returnValue(specUtil.respondWith(data));
 
-        surgicalAppointmentService.getSurgeons().then(function(response) {
+        surgicalAppointmentService.getSurgeons(surgeonsConcept).then(function (response) {
             expect(response).toEqual(data);
             done();
         });
         expect(mockHttp.get).toHaveBeenCalled();
-        expect(mockHttp.get.calls.mostRecent().args[0]).toBe("/openmrs/ws/rest/v1/concept?s=byFullySpecifiedName&locale=en&name=FSTG,+Name+(s)+of+Surgeon+1&v=bahmni");
+        expect(mockHttp.get.calls.mostRecent().args[0]).toBe("/openmrs/ws/rest/v1/concept?s=byFullySpecifiedName");
+        expect(mockHttp.get.calls.mostRecent().args[1].params).toEqual(params);
+        expect(mockHttp.get.calls.mostRecent().args[1].method).toEqual("GET");
+        expect(mockHttp.get.calls.mostRecent().args[1].withCredentials).toBeTruthy();
     });
 
 });

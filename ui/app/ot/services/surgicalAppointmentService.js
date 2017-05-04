@@ -2,10 +2,10 @@
 
 angular.module('bahmni.ot')
     .service('surgicalAppointmentService', ['$http', function ($http) {
-        this.getSurgeons = function () {
+        this.getSurgeons = function (conceptName) {
             return $http.get(Bahmni.Common.Constants.conceptSearchByFullNameUrl, {
                 params: {
-                    name: "FSTG, Name (s) of Surgeon 1",
+                    name: conceptName,
                     v: "bahmni",
                     locale: "en"
                 },
