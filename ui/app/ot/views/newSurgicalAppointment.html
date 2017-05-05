@@ -1,3 +1,10 @@
+<div class="patient-info-fixed-postion-container ot-secondary-header">
+    <p class="navigation-links-buttons">
+        <span class="add-new-appointment">{{'ADD_NEW_APPOINTMENT' | translate}}</span>
+        <button class="ot-nav-back" ng-confirm-click="goToHome()">{{'CANCEL' | translate}} </button>
+        <button class="ot-nav-save" ng-click="save(surgicalForm)">{{'SAVE' | translate}}</button>
+    </p>
+</div>
 <div class="new-surgical-appointment">
     <section class="new-surgical-appointment-step1">
         <form class="create-surgical-form" name="createSurgicalBlockForm">
@@ -5,8 +12,8 @@
             <div class="appointment-block">
                 <p class="surgeon-block">
                     <label class="surgeon-block surgeon-text">Surgeon<sup>*</sup></label>
-                    <select ng-options="surgeon as surgeon.displayString for surgeon in ::surgeons"
-                            ng-model="surgicalForm.surgeon"
+                    <select ng-options="surgeon as surgeon.person.display for surgeon in ::surgeons"
+                            ng-model="surgicalForm.provider"
                             required>
                     </select>
                 </p>
@@ -20,7 +27,7 @@
                 <p>
                     <span class="start-time">
                         <label>Start Date-time<sup>*</sup></label>
-                        <input type="datetime-local" ng-model="surgicalForm.startDatetime" required ng-class="{'illegalValue' : !isStartDatetimeBeforeEndDatetime(surgicalForm.startDatetime,                             surgicalForm.endDatetime)}" required>
+                        <input type="datetime-local" ng-model="surgicalForm.startDatetime" required ng-class="{'illegalValue' : !isStartDatetimeBeforeEndDatetime(surgicalForm.startDatetime, surgicalForm.endDatetime)}" required>
                     </span>
                     <span class="start-time">
                         <label>End Date-time<sup>*</sup></label>

@@ -1,10 +1,12 @@
 <!doctype html>
 <html lang="en">
 <head>
+    <title>OT</title>
+
     <meta charset="utf-8">
     <link rel="stylesheet" href="../lib/jquery/jquery-ui-1.10.4.custom.min.css">
     <link rel="shortcut icon" type="image/x-icon" href="../favicon.ico">
-    <!-- build:css ipd.min.css -->
+    <!-- build:css ot.min.css -->
 
     <link rel="stylesheet" href="../components/ngDialog/css/ngDialog.min.css"/>
     <link rel="stylesheet" href="../components/ngDialog/css/ngDialog-theme-default.min.css"/>
@@ -13,6 +15,11 @@
     <link rel="stylesheet" href="../components/ng-tags-input/ng-tags-input.min.css"/>
     <link rel="stylesheet" href="../styles/clinical.css"/>
     <!-- endbuild -->
+</head>
+<body ng-app="ot">
+    <div ui-view="additional-header" class="ot-header-wrapper"></div>
+    <div ui-view="content"></div>
+    <div ng-include src="'../common/ui-helper/messages.html'"></div>
 
 
     <script src="../components/lodash/dist/lodash.min.js"></script>
@@ -45,7 +52,7 @@
     <script src="../lib/angular-workers/dist/angular-workers.js"></script>
 
 
-    <!-- build:js ipd.min.js -->
+    <!-- build:js ot.min.js -->
     <script src="../common/route-errorhandler/init.js"></script>
 
     <script src="../common/util/httpErrorInterceptor.js"></script>
@@ -152,6 +159,7 @@
     <script src="../common/ui-helper/filters/dateFilters.js"></script>
     <script src="../common/ui-helper/controllers/messageController.js"></script>
     <script src="../common/ui-helper/services/messagingService.js"></script>
+    <script src="../common/ui-helper/directives/ngConfirmClick.js"></script>
     <script src="../common/ui-helper/directives/monthyearpicker.js"></script>
     <script src="../common/ui-helper/directives/providerDirective.js"></script>
 
@@ -213,12 +221,8 @@
     <script src="initialization.js"></script>
     <script src="controller/headerController.js"></script>
     <script src="controller/backLinksCacheBuster.js"></script>
+    <script src="helpers/surgicalAppointmentHelper.js"></script>
     <script src="controller/surgicalAppointmentController.js"></script>
     <script src="services/surgicalAppointmentService.js"></script>
-    <title>OT</title>
-</head>
-<body ng-app="ot">
-    <div ui-view="additional-header" class="ot-header-wrapper"></div>
-    <div ui-view="content"></div>
 </body>
 </html>

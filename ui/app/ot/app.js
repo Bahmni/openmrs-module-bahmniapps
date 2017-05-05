@@ -31,7 +31,12 @@ angular.module('ot').config(['$stateProvider', '$httpProvider', '$urlRouterProvi
                 views: {
                     'content': {
                         templateUrl: 'views/home.html',
-                        controller: function ($scope) {
+                        controller: function ($scope, $state) {
+                            $scope.goToNewSurgicalAppointment = function () {
+                                var options = {};
+                                options['dashboardCachebuster'] = Math.random();
+                                $state.go("newSurgicalAppointment", options);
+                            };
                         }
                     },
                     'additional-header': {
@@ -40,10 +45,7 @@ angular.module('ot').config(['$stateProvider', '$httpProvider', '$urlRouterProvi
                     }
                 },
                 resolve: {
-                    initialization: "initialization",
-                    init: function ($rootScope) {
-                        $rootScope.isHome = true;
-                    }
+                    initialization: "initialization"
                 }
             })
             .state('newSurgicalAppointment', {
@@ -67,10 +69,7 @@ angular.module('ot').config(['$stateProvider', '$httpProvider', '$urlRouterProvi
                     }
                 },
                 resolve: {
-                    initialization: "initialization",
-                    init: function ($rootScope) {
-                        $rootScope.isHome = false;
-                    }
+                    initialization: "initialization"
                 }
             });
 
