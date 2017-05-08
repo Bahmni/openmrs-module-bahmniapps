@@ -2,6 +2,7 @@
 
 describe("surgicalAppointmentController", function () {
     var scope, controller, q, surgicalAppointmentHelper;
+    var state = jasmine.createSpyObj('$state', ['go']);
     var spinner = jasmine.createSpyObj('spinner', ['forPromise', 'then', 'catch']);
     var surgicalAppointmentService = jasmine.createSpyObj('surgicalAppointmentService', ['getSurgeons', 'saveSurgicalBlock']);
     var locationService = jasmine.createSpyObj('locationService', ['getAllByTag']);
@@ -42,6 +43,7 @@ describe("surgicalAppointmentController", function () {
         controller('surgicalAppointmentController', {
             $scope: scope,
             $q: q,
+            $state: state,
             spinner: spinner,
             surgicalAppointmentService: surgicalAppointmentService,
             locationService: locationService,
