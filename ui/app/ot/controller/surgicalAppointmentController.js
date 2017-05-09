@@ -43,7 +43,8 @@ angular.module('bahmni.ot')
                 spinner.forPromise(surgicalAppointmentService.saveSurgicalBlock(surgicalBlock)).then(function (response) {
                     surgicalForm = response.data;
                     messagingService.showMessage('info', "{{'OT_SAVE_SUCCESS_MESSAGE_KEY' | translate}}");
-                }).catch(function (error) {
+                }).catch(function () {
+
                 });
             };
 
