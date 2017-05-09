@@ -1,7 +1,7 @@
 <div class="patient-info-fixed-postion-container ot-secondary-header">
     <p class="navigation-links-buttons">
         <span class="add-new-appointment">{{'ADD_NEW_APPOINTMENT' | translate}}</span>
-        <button class="ot-nav-back" ng-confirm-click="goToHome()">{{'CANCEL' | translate}} </button>
+        <button class="ot-nav-back" ng-confirm-click="goToHome()">{{'CANCEL' | translate}}</button>
         <button class="ot-nav-save" ng-click="save(surgicalForm)">{{'SAVE' | translate}}</button>
     </p>
 </div>
@@ -19,15 +19,21 @@
                 </p>
                 <p class="location-block">
                     <label>Location<sup>*</sup></label>
-                    <div ng-repeat="location in locations" style="display: inline-block;">
-                        {{ location.display }}
-                        <input type="radio" name="location" ng-value="location" ng-model="surgicalForm.location" required>
-                    </div>
+                    <span ng-repeat="location in locations">
+                        <label class="location-buttons" for="{{location.display}}">
+                            <i ng-if="location === surgicalForm.location" class="fa fa-check" aria-hidden="true"></i>
+                            {{ location.display }}
+                            <input type="radio" id="{{location.display}}" name="location" ng-value="location"
+                                   ng-model="surgicalForm.location" required/>
+                        </label>
+                    </span>
                 </p>
                 <p>
                     <span class="start-time">
                         <label>Start Date-time<sup>*</sup></label>
-                        <input type="datetime-local" ng-model="surgicalForm.startDatetime" required ng-class="{'illegalValue' : !isStartDatetimeBeforeEndDatetime(surgicalForm.startDatetime, surgicalForm.endDatetime)}" required>
+                        <input type="datetime-local" ng-model="surgicalForm.startDatetime" required
+                               ng-class="{'illegalValue' : !isStartDatetimeBeforeEndDatetime(surgicalForm.startDatetime, surgicalForm.endDatetime)}"
+                               required>
                     </span>
                     <span class="start-time">
                         <label>End Date-time<sup>*</sup></label>
@@ -40,13 +46,15 @@
     </section>
 
     <section class="new-surgical-appointment-step2">
-        <h4 class="create-surgical-title">{{'ADD_SURGERY' | translate}} <button ng-disabled="!isFormValid()">{{'ADD_SURGERY' | translate}}</button></h4>
+        <h4 class="create-surgical-title">{{'ADD_SURGERY' | translate}}
+            <button ng-disabled="!isFormValid()">{{'ADD_SURGERY' | translate}}</button>
+        </h4>
         <table class="table">
             <thead>
-                <tr>
-                    <th>{{'SURGERY_DETAILS' | translate}}</th>
-                    <th>{{'ACTION' | translate}}</th>
-                </tr>
+            <tr>
+                <th>{{'SURGERY_DETAILS' | translate}}</th>
+                <th>{{'ACTION' | translate}}</th>
+            </tr>
             </thead>
         </table>
     </section>

@@ -23,13 +23,6 @@ angular.module('bahmni.ot')
                 return surgicalForm;
             };
 
-            var translate = function (error) {
-                if (error && error.data && error.data.error && error.data.error.message) {
-                    return error.data.error.message;
-                }
-                return null;
-            };
-
             $scope.isFormValid = function () {
                 return $scope.createSurgicalBlockForm.$valid && $scope.isStartDatetimeBeforeEndDatetime($scope.surgicalForm.startDatetime, $scope.surgicalForm.endDatetime);
             };
@@ -51,8 +44,6 @@ angular.module('bahmni.ot')
                     surgicalForm = response.data;
                     messagingService.showMessage('info', "{{'OT_SAVE_SUCCESS_MESSAGE_KEY' | translate}}");
                 }).catch(function (error) {
-                    var message = translate(error) || "{{'OT_SAVE_FAILURE_MESSAGE_KEY' | translate}}";
-                    messagingService.showMessage('error', message);
                 });
             };
 

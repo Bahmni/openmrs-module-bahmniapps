@@ -1,10 +1,11 @@
 .ot-header-wrapper {
   margin-bottom: 140px;
+}
   .ot-secondary-header {
     height: 55px;
     background-color: white;
     box-shadow: 0px 0px 0px;
-    border-bottom: 1px #55545d solid;
+    border-bottom: 1px #cccecf solid;
     .ot-surgical-button {
       float: right;
       margin-right: 100px;
@@ -13,7 +14,7 @@
   }
   .ot-scheduling-nav {
     overflow: hidden;
-    margin: 20px 0 0 10px;
+    margin: 10px 0 0 10px;
     li {
       overflow: hidden;
       border-radius: 5px;
@@ -25,6 +26,7 @@
       a {
         display: inline-block;
         color: #fff !important;
+        padding: 10px;
       }
       &.active {
         background: rgba(0, 0, 0, 0.2);
@@ -72,7 +74,6 @@
       color: #000;
     }
   }
-}
 .create-surgical-title {
   font-size: 15px;
   text-align: center;
@@ -130,43 +131,45 @@
             border-color: #929699;
 
           }
-          input[type=date] {
-            padding: 5px 10px !important;
-            border-radius: 5px;
-            border-color: #929699;
-          }
-          .start-time, .end-date {
-            float: left;
-            overflow: hidden;
-            display: inline-block;
+          .start-time {
+            display: block;
+            margin-bottom: 10px;
             input {
+              width: calc(100% - 120px);
+              height: 35px;
+              display: inline-block;
               border-color: #929699;
+              box-sizing: border-box;
               border-radius: 3px;
             }
           }
         }
-        .location-block button {
-          border-radius: 10px;
-          background: transparent;
-          box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
-          transition: all 0.3s cubic-bezier(.25,.8,.25,1);
+        .location-block span label{
+          border-radius: 11px;
+          background: #78909C;
+          color: #fff;
+          box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
+          transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
           border: none;
-          margin-left: 10px;
+          text-align: center;
+          line-height: 1;
+          width: auto;
+          padding: 5px 10px 5px 28px;
+          margin: 5px 10px 5px 0;
+          position: relative;
+          i {
+            position: absolute;
+            left: 5px;
+            top: 2px;
+          }
           &:hover, &.active {
             box-shadow: none;
             opacity: 1;
           }
-          &.OT1 {
-            background: #e6e6e6;
-            color: #6c6c6c;
-          }
-          &.OT2 {
-            background: #e6e6e6;
-            color: #6c6c6c;
-          }
-          &.OT3 {
-            background: #e6e6e6;
-            color: #6c6c6c;
+          input {
+            visibility: hidden;
+            position: absolute;
+            left: -999999999px;
           }
         }
       }

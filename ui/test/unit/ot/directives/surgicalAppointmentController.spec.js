@@ -117,21 +117,4 @@ describe("surgicalAppointmentController", function () {
         done();
     });
 
-    it("should throw an error when we save an invalid surgical form", function (done) {
-        createController();
-        scope.createSurgicalBlockForm = {};
-        scope.createSurgicalBlockForm.$valid = true;
-        scope.surgicalForm.startDatetime = new Date(2017, 1, 30, 2, 11);
-        scope.surgicalForm.endDatetime = new Date(2017, 1, 30, 3, 11);
-        scope.surgicalForm.provider = {uuid: "Some uuid"};
-
-        var deferred = q.defer();
-        deferred.reject({});
-        scope.$apply();
-        surgicalAppointmentService.saveSurgicalBlock.and.returnValue(deferred.promise);
-
-        scope.save(scope.surgicalForm);
-        expect(messagingService.showMessage).toHaveBeenCalledWith('error', "{{'OT_SAVE_FAILURE_MESSAGE_KEY' | translate}}");
-        done();
-    });
 });
