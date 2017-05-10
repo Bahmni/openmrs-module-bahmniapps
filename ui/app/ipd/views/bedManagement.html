@@ -57,10 +57,7 @@
     <div class="bed-management-header clearfix">
         <h6>Admission Master</h6>
         <div class="bed-type-selection">
-            <input type="button" value="{{'CANCEL' | translate}}"
-                   ng-confirm-click="goToHome()" confirm-message="{{ 'CLEAR_CONFIRMATION_KEY' | translate }}"/>
-
-            <button ng-repeat="option in wards"
+           <button ng-repeat="option in wards"
                     ng-click="onSelectDepartment(option.ward)"
                     ng-class="{'selected': option.ward.isSelected}"
             >{{ option.ward.name }}
