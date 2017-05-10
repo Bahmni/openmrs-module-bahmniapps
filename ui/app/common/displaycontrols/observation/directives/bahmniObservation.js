@@ -38,7 +38,14 @@ angular.module('bahmni.common.displaycontrol.observation')
                             $scope.bahmniObservations[0].isOpen = true;
                         }
                     }
-                    formHierarchyService.build($scope.bahmniObservations);
+
+                    var formObservations = _.filter(observations, function (obs) {
+                        return obs.formFieldPath;
+                    });
+
+                    if (formObservations.length > 0) {
+                        formHierarchyService.build($scope.bahmniObservations);
+                    }
                 };
 
                 var fetchObservations = function () {

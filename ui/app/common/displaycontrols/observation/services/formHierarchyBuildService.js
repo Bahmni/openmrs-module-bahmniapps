@@ -137,7 +137,7 @@ angular.module('bahmni.common.displaycontrol.observation')
             }
 
             formService.getAllForms().then(function (response) {
-                var allForms = response.data.results;
+                var allForms = response.data;
                 _.forEach(bahmniObservations, function (observation) {
                     var forms = [];
                     _.forEach(observation.value, function (form) {
@@ -145,12 +145,11 @@ angular.module('bahmni.common.displaycontrol.observation')
                             forms.push(form);
                             return;
                         }
-                        if (!self.getFormByFormName(allForms, form.concept.shortName, self.getFormVersion(form.groupMembers))) {
+                        var observationForm = self.getFormByFormName(allForms, form.concept.shortName, self.getFormVersion(form.groupMembers));
+                        if (!observationForm) {
                             return;
                         }
-                        formService.getFormDetail(self.getFormByFormName(allForms, form.concept.shortName, self.getFormVersion(form.groupMembers)).uuid, {
-                            v: "custom:(resources:(value))"
-                        }).then(function (response) {
+                        formService.getFormDetail(observationForm.uuid, { v: "custom:(resources:(value))"}).then(function (response) {
                             var formDetailsAsString = _.get(response, 'data.resources[0].value');
                             if (formDetailsAsString) {
                                 var formDetails = JSON.parse(formDetailsAsString);

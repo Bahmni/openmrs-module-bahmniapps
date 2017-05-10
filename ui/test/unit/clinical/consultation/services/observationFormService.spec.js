@@ -34,7 +34,7 @@ describe('formService', function () {
         var httpPromise = this.formService.getAllForms();
 
         expect(httpPromise).toEqual(response);
-        expect(http.get).toHaveBeenCalledWith("/openmrs/ws/rest/v1/form", { params : { v : 'custom:(version,name,uuid)' } });
+        expect(http.get).toHaveBeenCalledWith("/openmrs/ws/rest/v1/bahmniie/form/allForms", { params : { v : 'custom:(version,name,uuid)' } });
 
     });
 
