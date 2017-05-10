@@ -14,8 +14,7 @@ describe("FormHierarchyService", function () {
         $q = _$q_;
         $scope = _$rootScope_;
         allForms = {
-            "data": {
-                "results": [
+                "data": [
                     {
                         "version": "1",
                         "name": "test section inside section",
@@ -72,7 +71,6 @@ describe("FormHierarchyService", function () {
                         "uuid": "f63f4dc6-c591-4d8f-8f33-d6435ebea"
                     }
                 ]
-            }
         };
     }));
 
