@@ -2,7 +2,7 @@
     "NEW_SURGICAL_APPOINTMENT": "New Surgical Appointment",
     "ADD_NEW_APPOINTMENT": "Add new appointment",
     "CREATE_SURGICAL_BLOCK": "Step 1 - Create surgical block",
-    "ADD_SURGERY": "Step 2 - Add surgery",
+    "ADD_SURGERY_STEP": "Step 2 - Add surgery",
     "SURGERY_DETAILS": "Surgery details",
     "ACTION": "Action",
     "SURGEON": "Surgeon",
@@ -17,6 +17,7 @@
     "MESSAGE_DIALOG_OPTION_OKAY": "OK",
     "OT_SAVE_FAILURE_MESSAGE_KEY": "An error occured with the server. Information not saved",
     "OT_ENTER_MANDATORY_FIELDS": "Please enter all mandatory fields",
-    "OT_SAVE_SUCCESS_MESSAGE_KEY" : "Saved"
+    "OT_SAVE_SUCCESS_MESSAGE_KEY" : "Saved",
+    "OT_ADD_SURGERY_KEY" : "Add Surgery"
 
 }
