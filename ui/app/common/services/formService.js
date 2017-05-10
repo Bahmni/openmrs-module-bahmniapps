@@ -6,8 +6,8 @@ angular.module('bahmni.common.conceptSet')
             return $http.get(Bahmni.Common.Constants.latestPublishedForms, {params: {encounterUuid: encounterUuid}});
         };
 
-        var getAllForms = function (params) {
-            return $http.get(Bahmni.Common.Constants.formUrl, {params: {v: "custom:(version,name,uuid)"}});
+        var getAllForms = function () {
+            return $http.get(Bahmni.Common.Constants.allFormsUrl, {params: {v: "custom:(version,name,uuid)"}});
         };
 
         var getFormDetail = function (formUuid, params) {
