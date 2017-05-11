@@ -282,6 +282,7 @@ body {
 
 /*** search page css end ***/
 .apps {
+  text-align: center;
   li {
     display: inline-block;
     a {
@@ -514,6 +515,7 @@ body {
   img {
     max-width: 200px;
     vertical-align: middle;
+    max-height: 120px;
   }
   span {
     vertical-align: middle;
