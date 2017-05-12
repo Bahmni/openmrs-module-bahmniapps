@@ -287,7 +287,6 @@
 .ngdialog.ngdialog-theme-default {
   padding: 0;
   .ngdialog-content {
-    width: 70%;
     background: #fff;
     .template-header {
       h5 {
@@ -365,4 +364,5 @@
 }
 .gallery-open .ngdialog.ngdialog-theme-default .ngdialog-content {
   padding: 0;
+  width: 70%;
 }
