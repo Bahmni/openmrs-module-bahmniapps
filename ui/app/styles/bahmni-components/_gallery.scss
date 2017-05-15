@@ -303,7 +303,7 @@
         line-height: 50px;
         padding: 0;
         margin: 0;
-        margin-right: 5px;
+        margin-right: 20px;
         &:hover, &:focus {
           outline: none;
           border: none;
@@ -365,4 +365,9 @@
 }
 .gallery-open .ngdialog.ngdialog-theme-default .ngdialog-content {
   padding: 0;
+}
+.dialog-close-btn {
+  position: absolute;
+  right: 0;
+  margin-right: 5px !important;
 }
