@@ -1,11 +1,12 @@
 'use strict';
 
 angular.module('bahmni.ipd')
-    .controller('RoomListController', ['$scope', 'queryService',
-        function ($scope, queryService) {
+    .controller('RoomListController', ['$scope', 'queryService', 'appService',
+        function ($scope, queryService, appService) {
             var getRoomListDetails = function (roomName) {
+                var wardListSqlSearchHandler = appService.getAppDescriptor().getConfigValue("wardListSqlSearchHandler");
                 var params = {
-                    q: "emrapi.sqlGet.wardsListDetails",
+                    q: wardListSqlSearchHandler,
                     v: "full",
                     location_name: roomName
                 };
