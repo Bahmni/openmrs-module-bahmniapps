@@ -136,7 +136,7 @@ angular.module('bahmni.common.displaycontrol.observation')
                 return;
             }
 
-            formService.getAllForms().then(function (response) {
+            observationFormService.getAllForms().then(function (response) {
                 var allForms = response.data;
                 _.forEach(bahmniObservations, function (observation) {
                     var forms = [];
@@ -149,7 +149,7 @@ angular.module('bahmni.common.displaycontrol.observation')
                         if (!observationForm) {
                             return;
                         }
-                        formService.getFormDetail(observationForm.uuid, { v: "custom:(resources:(value))"}).then(function (response) {
+                        observationFormService.getFormDetail(observationForm.uuid, { v: "custom:(resources:(value))"}).then(function (response) {
                             var formDetailsAsString = _.get(response, 'data.resources[0].value');
                             if (formDetailsAsString) {
                                 var formDetails = JSON.parse(formDetailsAsString);
