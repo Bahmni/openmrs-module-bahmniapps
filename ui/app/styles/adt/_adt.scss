@@ -103,7 +103,9 @@ div[ng-app="adt"] {
     margin-top:15px;
 }
 
-
 .highlight-bed {
     border: 1px solid;
+}
+.ngdialog.ngdialog-theme-default .ngdialog-content {
+    width: 500px;
 }
