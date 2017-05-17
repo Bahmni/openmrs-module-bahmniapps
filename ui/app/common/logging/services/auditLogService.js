@@ -13,6 +13,8 @@ angular.module('bahmni.common.logging')
             return $http.get(Bahmni.Common.Constants.auditLogUrl, {params: params}).then(function (response) {
                 return response.data.map(function (log) {
                     log.dateCreated = convertToLocalDate(log.dateCreated);
+                    log.entityName = log.message ? log.message.split("~")[1] : undefined;
+                    log.message = log.message.split("~")[0];
                     log.displayMessage = $translate.instant(log.message, log);
                     return log;
                 });
