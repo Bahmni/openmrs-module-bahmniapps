@@ -106,11 +106,17 @@ div[ng-app="adt"] {
 .highlight-bed {
     border: 1px solid;
 }
-.ngdialog.ngdialog-theme-default .ngdialog-content {
+.ngdialog.ngdialog-theme-default.ng-dialog-adt-popUp .ngdialog-content {
     width: 500px;
     position: relative;
 }
 .ngdialog.ngdialog-theme-default {
     padding-bottom: 160px;
     padding-top: 160px;
+}
+.ngdialog.ngdialog-theme-default.ng-dialog-all-details-page {
+    padding: 0;
+    .ngdialog-content {
+        width: 80%;
+    }
 }

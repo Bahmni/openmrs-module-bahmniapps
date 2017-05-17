@@ -294,7 +294,7 @@
         font-weight: normal;
       }
       .dialog-close-btn, .toggle-patient {
-        background: transparent;
+        background: #527A7A;
         border: none;
         outline: none;
         color: #fff;
@@ -307,7 +307,11 @@
         &:hover, &:focus {
           outline: none;
           border: none;
-          background: transparent;
+          background: #527A7A;
+          opacity: 1;
+          i {
+            opacity: 0.8;
+          }
         }
       }
     }
@@ -371,4 +375,9 @@
   right: 0;
   top: 0;
   margin-right: 5px !important;
+}
+.toggle-patient {
+  position: absolute;
+  top: 0;
+  right: 10px;
 }
