@@ -108,4 +108,9 @@ div[ng-app="adt"] {
 }
 .ngdialog.ngdialog-theme-default .ngdialog-content {
     width: 500px;
+    position: relative;
+}
+.ngdialog.ngdialog-theme-default {
+    padding-bottom: 160px;
+    padding-top: 160px;
 }
