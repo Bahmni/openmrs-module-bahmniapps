@@ -5,7 +5,7 @@ angular.module('bahmni.ot')
         this.getSurgeons = function () {
             return $http.get(Bahmni.Common.Constants.providerUrl, {
                 method: "GET",
-                params: { v: "full"},
+                params: { v: "custom:(id,uuid,person:(uuid,display))"},
                 withCredentials: true
             });
         };
@@ -16,5 +16,13 @@ angular.module('bahmni.ot')
                 withCredentials: true,
                 headers: {"Accept": "application/json", "Content-Type": "application/json"}
             });
+        };
+
+        this.getSurgicalAppointmentAttributeTypes = function () {
+          return $http.get(Bahmni.OT.Constants.surgicalAppointmentAttributeTypeUrl, {
+             method: "GET",
+             params: { v: "custom:(uuid,name)"},
+             withCredentials: true
+          });
         };
     }]);

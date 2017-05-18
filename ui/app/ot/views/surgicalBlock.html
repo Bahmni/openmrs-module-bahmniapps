@@ -1,7 +1,7 @@
 <div class="patient-info-fixed-postion-container ot-secondary-header">
     <p class="navigation-links-buttons">
         <span class="add-new-appointment">{{'ADD_NEW_APPOINTMENT' | translate}}</span>
-        <button class="ot-nav-back" ng-confirm-click="goToHome()">{{'CANCEL' | translate}}</button>
+        <button class="ot-nav-back" ng-confirm-click="goToHome()">{{'DISCARD' | translate}}</button>
         <button class="ot-nav-save" ng-click="save(surgicalForm)">{{'SAVE' | translate}}</button>
     </p>
 </div>
@@ -46,16 +46,36 @@
     </section>
 
     <section class="new-surgical-appointment-step2">
-        <h4 class="create-surgical-title">{{'ADD_SURGERY_STEP' | translate}}
-            <button ng-disabled="!isFormValid()">{{'OT_ADD_SURGERY_KEY' | translate}}</button>
-        </h4>
-        <table class="table">
-            <thead>
-            <tr>
-                <th>{{'SURGERY_DETAILS' | translate}}</th>
-                <th>{{'ACTION' | translate}}</th>
-            </tr>
-            </thead>
-        </table>
-    </section>
-</div>
+                <h4 class="create-surgical-title">{{'ADD_SURGERY_STEP' | translate}}
+                    <button ng-click="addNewSurgicalAppointment()">
+                        {{'OT_ADD_SURGERY_KEY' | translate}}
+                    </button>
+                </h4>
+                <table class="table">
+                    <thead>
+                    <tr>
+                        <th>{{'SURGERY_DETAILS' | translate}}</th>
+                        <th>{{'ACTION' | translate}}</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr ng-repeat="surgicalAppointment in surgicalForm.surgicalAppointments">
+                        <td>
+                            <h4>{{surgicalAppointment.patient.value}}</h4>
+                            <ul>
+                                <li><b>Procedure</b> - {{surgicalAppointment.surgicalAppointmentAttributes.procedure.value}},</li>
+                                <li><b>Est.time</b> - {{surgicalAppointment.surgicalAppointmentAttributes.estTimeHours.value}} hr(s) : {{surgicalAppointment.surgicalAppointmentAttributes.estTimeMinutes.value}} min(s)</li>
+                                <li><b>Cleaning Time</b> - {{surgicalAppointment.surgicalAppointmentAttributes.cleaningTime.value}} min(s)</li>
+                                <li><b>Other Surgeon</b> - {{surgicalAppointment.otherSurgeon}}</li>
+                                <li><b>Anaesthetist</b> - {{surgicalAppointment.surgicalAppointmentAttributes.anaesthetist.value}} </li>
+                                <li><b>Scrub Nurse</b> - {{surgicalAppointment.surgicalAppointmentAttributes.scrubNurse.value}}</li>
+                                <li><b>Circulating Nurse</b> - {{surgicalAppointment.surgicalAppointmentAttributes.circulatingNurse.value}}</li>
+                                <li><b>Notes</b> - {{surgicalAppointment.notes}}</li>
+                            </ul>
+                        </td>
+                        <td class="appointment-edit">Edit            Cancel</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </section>
+        </div>

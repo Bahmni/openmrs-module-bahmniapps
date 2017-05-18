@@ -1,6 +1,6 @@
 'use strict';
 
-describe("surgicalAppointmentController", function () {
+describe("surgicalBlockController", function () {
     var scope, controller, q, surgicalAppointmentHelper;
     var state = jasmine.createSpyObj('$state', ['go']);
     var spinner = jasmine.createSpyObj('spinner', ['forPromise', 'then', 'catch']);
@@ -10,6 +10,7 @@ describe("surgicalAppointmentController", function () {
     var appService = jasmine.createSpyObj('appService', ['getAppDescriptor']);
     var appDescriptor = jasmine.createSpyObj('appDescriptor', ['getConfigValue']);
     var messagingService = jasmine.createSpyObj('messagingService', ['showMessage']);
+    var ngDialog = jasmine.createSpyObj('ngDialog', ['open']);
     appService.getAppDescriptor.and.returnValue(appDescriptor);
     spinner.forPromise.and.returnValue(specUtil.createFakePromise({}));
 
@@ -40,7 +41,7 @@ describe("surgicalAppointmentController", function () {
     });
 
     var createController = function () {
-        controller('surgicalAppointmentController', {
+        controller('surgicalBlockController', {
             $scope: scope,
             $q: q,
             $state: state,
@@ -49,7 +50,8 @@ describe("surgicalAppointmentController", function () {
             locationService: locationService,
             appService: appService,
             messagingService: messagingService,
-            surgicalAppointmentHelper : surgicalAppointmentHelper
+            surgicalAppointmentHelper : surgicalAppointmentHelper,
+            ngDialog: ngDialog
         });
     };
 

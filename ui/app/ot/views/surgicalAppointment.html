@@ -1,0 +1,69 @@
+<form class="add-surgical-appointment-dialog-form" name="surgicalAppointmentForm">
+    <h4 class="appointment-title">Add Appointment</h4>
+    <div class="appointment-block">
+        <p class="surgeon-block">
+            <label class="surgeon-block surgeon-text">Patient<sup>*</sup></label>
+
+            <input type="text"
+                   id="patientID"
+                   min-length=2
+                   bahmni-autocomplete
+                   ng-model="patient"
+                   source="search"
+                   response-map="responseMap"
+                   on-select="onSelectPatient"
+                   strict-select="true"
+                   blur-on-select="true"
+                   ng-class="{'illegalValue': isInvalid}"
+                   placeholder="{{'OT_ENTER_PATIENT_KEY' | translate }}"
+
+            />
+            <i class="fa fa-search" aria-hidden="true"></i>
+        </p>
+        <p>
+            <label class="surgeon-block surgeon-text">Procedure(s)</label>
+            <input type="text" id="procedureID" ng-model="attributes.procedure.value">
+        </p>
+
+        <p>
+            <label class="surgeon-block surgeon-text">Estimated Time</label>
+            <input type="number" id="estTimeHoursID" ng-model="attributes.estTimeHours.value" min="0" max="23" step="1">
+            Hours(s) : <input type="number" id="estTimeMinutesID" ng-model="attributes.estTimeMinutes.value"
+                              min="0"
+                              max="59"> min(s)
+        </p>
+
+        <p>
+            <label class="surgeon-block surgeon-text">Cleaning Time</label>
+            <input type="number" id="cleaningTimeID" ng-model="attributes.cleaningTime.value" min="0" max="59"> min(s)
+        </p>
+        <p>
+            <label class="surgeon-block surgeon-text">Other Surgeon Dr.</label>
+            <select ng-options="otherSurgeon as otherSurgeon.person.display for otherSurgeon in ::surgeons"
+                       ng-model="attributes.otherSurgeon.value"
+                       required>
+            </select>
+        </p>
+
+        <p>
+            <label class="surgeon-block surgeon-text">Anaesthetist</label>
+            <input type="text" id="anaesthetistID" ng-model="attributes.anaesthetist.value">
+        </p>
+        <p>
+            <label class="surgeon-block surgeon-text">Scrub Nurse</label>
+            <input type="text" id="scrubNurseID" ng-model="attributes.scrubNurse.value">
+        </p>
+        <p>
+            <label class="surgeon-block surgeon-text">Circulating Nurse</label>
+            <input type="text" id="circulatingNurseID" ng-model="attributes.circulatingNurse.value">
+        </p>
+        <p>
+            <label class="surgeon-block surgeon-text">Notes</label>
+            <textarea placeholder="enter your notes" id="notesID" ng-model="notes" msd-elastic></textarea>
+        </p>
+        <p style="text-align:center;">
+            <input type="button" class="add" value="Add" ng-click="createAppointmentAndAdd()"/>
+            <input type="button" class="cancel" value="Cancel" ng-click="close()"/>
+        </p>
+    </div>
+</form>

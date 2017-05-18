@@ -107,7 +107,7 @@
     box-sizing: border-box;
     &.new-surgical-appointment-step1 {
       float: left;
-      width: 600px;
+      width: 500px;
       border-right: 1px solid #cccecf;
       .create-surgical-form {
         P {
@@ -125,7 +125,7 @@
             }
           }
           select {
-            width: calc(100% - 300px);
+            width: calc(100% - 232px);
             height: 35px;
             display: inline-block;
             border-color: #929699;
@@ -135,7 +135,7 @@
             display: block;
             margin-bottom: 10px;
             input {
-              width: calc(100% - 350px);
+              width: calc(100% - 236px);
               height: 35px;
               display: inline-block;
               border-color: #929699;
@@ -176,16 +176,43 @@
     }
     &.new-surgical-appointment-step2 {
       float: left;
-      width: calc(100% - 601px);
+      width: calc(100% - 501px);
       .create-surgical-title {
         margin-bottom: 35px;
       }
       .table {
         th {
           padding: 10px;
-          border-color: #D0D0D1;
           background: #DEDEDE;
           color: #484848;
+          text-align: center;
+          border: 0;
+        }
+        td{
+          border: 0;
+          h4 {
+            color: #000;
+            font-weight: 900;
+            font-size: 14px;
+            margin-bottom: 5px;
+          }
+          ul {
+            li {
+              color: #444;
+              font-size: 12px;
+              b {
+                color: #000;
+                font-size: 13px;
+              }
+            }
+          }
+          &.appointment-edit {
+            min-width: 150px;
+            text-align: center;
+          }
+        }
+        tr {
+          border: 1px solid #D0D0D1;
         }
       }
     }
@@ -204,4 +231,73 @@
     font-size: 18px;
     text-align: center;
   }
+}
+
+.ngdialog.surgical-appointment-dialog {
+    .ngdialog-overlay {
+      background: transparent;
+    }
+    .ngdialog-content {
+      width: 500px;
+      top: 42px;
+      margin: 10px;
+      left: calc(100% - 510px);
+      height: calc(100% - 53px);
+      margin-bottom: 0;
+      border-radius: 0;
+      background: #eee;
+      box-shadow: -4px 5px 21px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
+     .appointment-title {
+       font-size: 14px;
+       font-weight: bold;
+       color: #484848;
+       margin: 0 0 10px;
+     }
+      .appointment-block {
+        p {
+          overflow: hidden;
+          margin-bottom: 10px;
+          label {
+            width: 125px;
+            float: left;
+            text-align: right;
+            margin-right: 10px;
+          }
+          input[type=text] {
+            width: calc(100% - 200px);
+            padding: 10px;
+            border-radius: 3px;
+            position: relative;
+          }
+          > i {
+            right: 85px;
+            position: absolute;
+            top: 57px;
+            color: #cac9c9;
+          }
+        }
+
+        input.add {
+          background: #99c915;
+          border: 1px solid #99c915;
+          color: #fff;
+          font-size: 15px;
+          margin-left: -20px;
+        }
+        input.cancel {
+          background: #fff;
+          border: 1px solid #cccecf;
+          color: #000;
+          font-size: 15px;
+          margin-left: 10px;
+        }
+        textarea {
+          width: calc(100% - 200px);
+          padding: 10px;
+          box-sizing: border-box;
+          min-height: 80px;
+        }
+      }
+
+    }
 }

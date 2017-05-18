@@ -10,7 +10,7 @@
     "START_TIME": "Start Time",
     "END_TIME": "End Time",
     "DATE": "Date",
-    "CANCEL": "Cancel",
+    "DISCARD": "Discard",
     "SAVE": "Save",
     "ADD_SURGICAL_APPOINTMENT": "Add surgical appointment",
     "MESSAGE_DIALOG_OPTION_COPY" : "Copy Error",
@@ -18,6 +18,7 @@
     "OT_SAVE_FAILURE_MESSAGE_KEY": "An error occured with the server. Information not saved",
     "OT_ENTER_MANDATORY_FIELDS": "Please enter all mandatory fields",
     "OT_SAVE_SUCCESS_MESSAGE_KEY" : "Saved",
-    "OT_ADD_SURGERY_KEY" : "Add Surgery"
-
+    "OT_ADD_SURGERY_KEY": "Add Surgery",
+    "OT_ENTER_PATIENT_KEY": "Enter Patient ID/ Name",
+    "OT_SURGICAL_APPOINTMENT_EXCEEDS_BLOCK_DURATION": "Surgical Appointment exceeds available block duration"
 }
