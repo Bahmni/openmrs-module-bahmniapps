@@ -675,6 +675,7 @@ concept-set {
             display: block;
             width: auto;
             margin-right: 25px;
+            word-break: break-all;
             &.concept-set-name-extra {
               margin-right: 52px;
             }
