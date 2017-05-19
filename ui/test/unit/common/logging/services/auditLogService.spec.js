@@ -87,7 +87,7 @@ describe('auditLogService', function () {
             done();
         });
         expect(mockHttp.get).toHaveBeenCalled();
-        expect(mockHttp.get.calls.mostRecent().args[0]).toBe("/openmrs/ws/rest/v1/bahmnicore/auditlog");
+        expect(mockHttp.get.calls.mostRecent().args[0]).toBe("/openmrs/ws/rest/v1/auditlog");
         expect(mockHttp.get.calls.mostRecent().args[1].params).toEqual(params);
     });
 
