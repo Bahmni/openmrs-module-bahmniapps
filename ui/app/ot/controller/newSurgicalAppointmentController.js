@@ -1,12 +1,18 @@
 'use strict';
 
 angular.module('bahmni.ot')
-    .controller('NewSurgicalAppointmentController', ['$scope','$q', 'patientService', 'surgicalAppointmentService', 'messagingService', 'ngDialog', 'spinner',
+    .controller('NewSurgicalAppointmentController', ['$scope', '$q', 'patientService', 'surgicalAppointmentService', 'messagingService', 'ngDialog', 'spinner',
         function ($scope, $q, patientService, surgicalAppointmentService, messagingService, ngDialog, spinner) {
+
+            var getAttributeTypeByName = function (name) {
+                return _.find($scope.attributeTypes, function (attributeType) {
+                    return attributeType.name === name;
+                });
+            };
+
             var init = function () {
                 $scope.selectedPatient = $scope.ngDialogData && $scope.ngDialogData.patient;
                 $scope.notes = $scope.ngDialogData && $scope.ngDialogData.notes;
-
                 return $q.all([surgicalAppointmentService.getSurgicalAppointmentAttributeTypes()]).then(function (response) {
                     $scope.attributeTypes = response[0].data.results;
                     $scope.attributes = $scope.ngDialogData && $scope.ngDialogData.attributes || {
@@ -46,14 +52,6 @@ angular.module('bahmni.ot')
                 });
             };
 
-
-            var getAttributeTypeByName = function(name){
-              return _.find($scope.attributeTypes, function (attributeType) {
-                  return attributeType.name === name;
-              });
-
-            };
-
             var getAppointmentDuration = function () {
                 return $scope.attributes.cleaningTime.value +
                     $scope.attributes.estTimeMinutes.value +
@@ -78,28 +76,19 @@ angular.module('bahmni.ot')
                 });
             };
 
-            var isValidAppointment = function () {
-              return $scope.selectedPatient != null;
-            };
-
-
             $scope.createAppointmentAndAdd = function () {
-                if (!isValidAppointment()) {
-                    messagingService.showMessage('error', "{{'OT_ENTER_MANDATORY_FIELDS' | translate}}");
-                    return;
-                }
+                if ($scope.surgicalAppointmentForm.$valid) {
 
-                var otherSurgeonName = $scope.attributes.otherSurgeon.value &&  $scope.attributes.otherSurgeon.value.person.display;
-                $scope.attributes.otherSurgeon.value = $scope.attributes.otherSurgeon.value.id;
-                var appointment = {
-                    patient: $scope.selectedPatient,
-                    notes: $scope.notes,
-                    surgicalAppointmentAttributes: $scope.attributes,
-                    otherSurgeon:  otherSurgeonName,
-                    duration: getAppointmentDuration()
-                };
-
+                    var otherSurgeonName = $scope.attributes.otherSurgeon.value && $scope.attributes.otherSurgeon.value.person.display;
+                    var appointment = {
+                        patient: $scope.selectedPatient,
+                        notes: $scope.notes,
+                        surgicalAppointmentAttributes: $scope.attributes,
+                        otherSurgeon: otherSurgeonName,
+                        duration: getAppointmentDuration()
+                    };
                     $scope.addSurgicalAppointment(appointment);
+                }
 
             };
 

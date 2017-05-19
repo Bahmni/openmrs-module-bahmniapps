@@ -46,7 +46,7 @@
     overflow: hidden;
     width: 100%;
     box-sizing: border-box;
-    button {
+    input {
       font-size: 15px;
       border: none;
       outline: none;
@@ -234,6 +234,7 @@
 }
 
 .ngdialog.surgical-appointment-dialog {
+  padding: 0;
     .ngdialog-overlay {
       background: transparent;
     }
@@ -274,6 +275,11 @@
             position: absolute;
             top: 57px;
             color: #cac9c9;
+          }
+          select {
+            height: 35px;
+            padding: 10px;
+            width: 253px;
           }
         }
 

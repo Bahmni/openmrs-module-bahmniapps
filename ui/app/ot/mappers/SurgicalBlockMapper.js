@@ -38,15 +38,21 @@ Bahmni.OT.SurgicalBlockMapper = function () {
         }
     };
 
+    var mapSurgicalAppointmentAttributesUIToDomain = function (attributes) {
+        _.values(attributes).filter(function (attribute) {
+            return attribute.value;
+        }).map(function (attribute) {
+            attribute.value = attribute.value.toString();
+            return attribute;
+        })
+    };
+
     var mapSurgicalAppointmentUIToDomain = function (surgicalAppointmentUI) {
         return {
             id: surgicalAppointmentUI.id,
             patient: {uuid: surgicalAppointmentUI.patient.uuid},
             notes: surgicalAppointmentUI.notes,
-            surgicalAppointmentAttributes: _.values(surgicalAppointmentUI.surgicalAppointmentAttributes).map(function (attribute) {
-                attribute.value = attribute.value.toString();
-                return attribute;
-            })
+            surgicalAppointmentAttributes: mapSurgicalAppointmentAttributesUIToDomain(surgicalAppointmentUI.surgicalAppointmentAttributes)
         }
     };
 
@@ -64,6 +70,4 @@ Bahmni.OT.SurgicalBlockMapper = function () {
             })
         }
     }
-
-
 };

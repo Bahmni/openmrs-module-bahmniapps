@@ -17,7 +17,7 @@ angular.module('bahmni.ot')
 
             var getAvailableBlockDuration = function () {
                 var blockDuration = Bahmni.Common.Util.DateUtil.diffInMinutes($scope.surgicalForm.startDatetime, $scope.surgicalForm.endDatetime);
-                var appointmentsDuration=  _.sumBy($scope.surgicalForm.surgicalAppointments, function (appointment) {
+                var appointmentsDuration = _.sumBy($scope.surgicalForm.surgicalAppointments, function (appointment) {
 
                     return appointment.duration;
                 });
@@ -40,7 +40,7 @@ angular.module('bahmni.ot')
                     messagingService.showMessage('error', "{{'OT_ENTER_MANDATORY_FIELDS' | translate}}");
                     return;
                 }
-                if(getAvailableBlockDuration() < 0) {
+                if (getAvailableBlockDuration() < 0) {
                     messagingService.showMessage('error', "{{'OT_SURGICAL_APPOINTMENT_EXCEEDS_BLOCK_DURATION' | translate}}");
                 }
 
@@ -54,8 +54,8 @@ angular.module('bahmni.ot')
                 });
             };
 
-            $scope.addSurgicalAppointment = function(surgicalAppointment) {
-                if(getAvailableBlockDuration() >= surgicalAppointment.duration) {
+            $scope.addSurgicalAppointment = function (surgicalAppointment) {
+                if (getAvailableBlockDuration() >= surgicalAppointment.duration) {
                     surgicalAppointment.surgicalAppointmentAttributes.otherSurgeon.value =
                         surgicalAppointment.surgicalAppointmentAttributes.otherSurgeon.value.id;
                     $scope.surgicalForm.surgicalAppointments.push(surgicalAppointment);
@@ -73,10 +73,10 @@ angular.module('bahmni.ot')
                 $state.go("home", options);
             };
 
-            $scope.addNewSurgicalAppointment = function(surgicalAppointment) {
+            $scope.addNewSurgicalAppointment = function (surgicalAppointment) {
                 ngDialog.open({
-                    template : "views/surgicalAppointment.html",
-                    controller : "NewSurgicalAppointmentController",
+                    template: "views/surgicalAppointment.html",
+                    controller: "NewSurgicalAppointmentController",
                     closeByDocument: false,
                     className: 'ngdialog-theme-default surgical-appointment-dialog',
                     showClose: true,

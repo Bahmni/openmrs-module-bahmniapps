@@ -12,7 +12,8 @@
     "DATE": "Date",
     "DISCARD": "Discard",
     "SAVE": "Save",
-    "ADD_SURGICAL_APPOINTMENT": "Add surgical appointment",
+
+    "ADD_SURGICAL_APPOINTMENT": "Add Appointment",
     "MESSAGE_DIALOG_OPTION_COPY" : "Copy Error",
     "MESSAGE_DIALOG_OPTION_OKAY": "OK",
     "OT_SAVE_FAILURE_MESSAGE_KEY": "An error occured with the server. Information not saved",
@@ -20,5 +21,17 @@
     "OT_SAVE_SUCCESS_MESSAGE_KEY" : "Saved",
     "OT_ADD_SURGERY_KEY": "Add Surgery",
     "OT_ENTER_PATIENT_KEY": "Enter Patient ID/ Name",
-    "OT_SURGICAL_APPOINTMENT_EXCEEDS_BLOCK_DURATION": "Surgical Appointment exceeds available block duration"
+    "OT_PATIENT": "Patient",
+    "OT_SURGICAL_APPOINTMENT_EXCEEDS_BLOCK_DURATION": "Surgical Appointment exceeds available block duration",
+    "OT_SURGICAL_APPOINTMENT_PROCEDURE": "Procedure(s)",
+    "OT_SURGICAL_APPOINTMENT_ESTIMATED_TIME": "Estimated time",
+    "OT_SURGICAL_APPOINTMENT_HOURS": "hr(s)",
+    "OT_SURGICAL_APPOINTMENT_MINUTES": "min(s)",
+    "OT_SURGICAL_APPOINTMENT_CLEANING_TIME": "Cleaning time",
+    "OT_SURGICAL_APPOINTMENT_OTHER_SURGEON": "Other Surgeon  Dr.",
+    "OT_SURGICAL_APPOINTMENT_ANAESTHETIST": "Anaesthetist",
+    "OT_SURGICAL_APPOINTMENT_SCRUB_NURSE": "Scrub Nurse",
+    "OT_SURGICAL_APPOINTMENT_CIRCULATING_NURSE": "Circulating Nurse",
+    "OT_SURGICAL_APPOINTMENT_NOTES": "Notes"
+
 }

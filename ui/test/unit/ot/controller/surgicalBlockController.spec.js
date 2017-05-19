@@ -22,11 +22,11 @@ describe("surgicalBlockController", function () {
     });
 
     surgicalAppointmentService.getSurgeons.and.callFake(function () {
-       return  {data : {results : [{uuid: "uuid1", name : "provider1"}, {uuid: "uuid2", name : "provider2"}]}};
+        return {data: {results: [{uuid: "uuid1", name: "provider1"}, {uuid: "uuid2", name: "provider2"}]}};
     });
 
     locationService.getAllByTag.and.callFake(function () {
-       return {data : {results : [{uuid: "uuid1", name : "location1"}, {uuid: "uuid2", name : "location2"}]}};
+        return {data: {results: [{uuid: "uuid1", name: "location1"}, {uuid: "uuid2", name: "location2"}]}};
     });
 
 
@@ -50,7 +50,7 @@ describe("surgicalBlockController", function () {
             locationService: locationService,
             appService: appService,
             messagingService: messagingService,
-            surgicalAppointmentHelper : surgicalAppointmentHelper,
+            surgicalAppointmentHelper: surgicalAppointmentHelper,
             ngDialog: ngDialog
         });
     };

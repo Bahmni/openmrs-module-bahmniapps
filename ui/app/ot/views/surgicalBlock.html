@@ -1,13 +1,14 @@
+<form name="createSurgicalBlockForm">
 <div class="patient-info-fixed-postion-container ot-secondary-header">
     <p class="navigation-links-buttons">
         <span class="add-new-appointment">{{'ADD_NEW_APPOINTMENT' | translate}}</span>
-        <button class="ot-nav-back" ng-confirm-click="goToHome()">{{'DISCARD' | translate}}</button>
-        <button class="ot-nav-save" ng-click="save(surgicalForm)">{{'SAVE' | translate}}</button>
+        <input type="button" value="{{'DISCARD' | translate}}" class="ot-nav-back" ng-confirm-click="goToHome()"/>
+        <input type="submit" value="{{'SAVE' | translate}}" ng-click="save(surgicalForm)" class="ot-nav-save"/>
     </p>
 </div>
-<div class="new-surgical-appointment">
+<div class="new-surgical-appointment" >
     <section class="new-surgical-appointment-step1">
-        <form class="create-surgical-form" name="createSurgicalBlockForm">
+        <div class="create-surgical-form">
             <h4 class="create-surgical-title">{{'CREATE_SURGICAL_BLOCK' | translate}}</h4>
             <div class="appointment-block">
                 <p class="surgeon-block">
@@ -32,8 +33,7 @@
                     <span class="start-time">
                         <label>Start Date-time<sup>*</sup></label>
                         <input type="datetime-local" ng-model="surgicalForm.startDatetime" required
-                               ng-class="{'illegalValue' : !isStartDatetimeBeforeEndDatetime(surgicalForm.startDatetime, surgicalForm.endDatetime)}"
-                               required>
+                               ng-class="{'illegalValue' : !isStartDatetimeBeforeEndDatetime(surgicalForm.startDatetime, surgicalForm.endDatetime)}">
                     </span>
                     <span class="start-time">
                         <label>End Date-time<sup>*</sup></label>
@@ -42,12 +42,12 @@
                     </span>
                 </p>
             </div>
-        </form>
+        </div>
     </section>
 
     <section class="new-surgical-appointment-step2">
                 <h4 class="create-surgical-title">{{'ADD_SURGERY_STEP' | translate}}
-                    <button ng-click="addNewSurgicalAppointment()">
+                    <button ng-disabled="!isFormValid()" ng-click="addNewSurgicalAppointment()">
                         {{'OT_ADD_SURGERY_KEY' | translate}}
                     </button>
                 </h4>
@@ -63,14 +63,14 @@
                         <td>
                             <h4>{{surgicalAppointment.patient.value}}</h4>
                             <ul>
-                                <li><b>Procedure</b> - {{surgicalAppointment.surgicalAppointmentAttributes.procedure.value}},</li>
-                                <li><b>Est.time</b> - {{surgicalAppointment.surgicalAppointmentAttributes.estTimeHours.value}} hr(s) : {{surgicalAppointment.surgicalAppointmentAttributes.estTimeMinutes.value}} min(s)</li>
-                                <li><b>Cleaning Time</b> - {{surgicalAppointment.surgicalAppointmentAttributes.cleaningTime.value}} min(s)</li>
-                                <li><b>Other Surgeon</b> - {{surgicalAppointment.otherSurgeon}}</li>
-                                <li><b>Anaesthetist</b> - {{surgicalAppointment.surgicalAppointmentAttributes.anaesthetist.value}} </li>
-                                <li><b>Scrub Nurse</b> - {{surgicalAppointment.surgicalAppointmentAttributes.scrubNurse.value}}</li>
-                                <li><b>Circulating Nurse</b> - {{surgicalAppointment.surgicalAppointmentAttributes.circulatingNurse.value}}</li>
-                                <li><b>Notes</b> - {{surgicalAppointment.notes}}</li>
+                                <li><b>{{'OT_SURGICAL_APPOINTMENT_PROCEDURE' | translate}}</b> - {{surgicalAppointment.surgicalAppointmentAttributes.procedure.value}},</li>
+                                <li><b>{{'OT_SURGICAL_APPOINTMENT_ESTIMATED_TIME' | translate}}</b> - {{surgicalAppointment.surgicalAppointmentAttributes.estTimeHours.value}} {{'OT_SURGICAL_APPOINTMENT_HOURS' | translate}} : {{surgicalAppointment.surgicalAppointmentAttributes.estTimeMinutes.value}} {{'OT_SURGICAL_APPOINTMENT_MINUTES' | translate}}</li>
+                                <li><b>{{'OT_SURGICAL_APPOINTMENT_CLEANING_TIME' | translate}}</b> - {{surgicalAppointment.surgicalAppointmentAttributes.cleaningTime.value}} {{'OT_SURGICAL_APPOINTMENT_MINUTES' | translate}}</li>
+                                <li><b>{{'OT_SURGICAL_APPOINTMENT_OTHER_SURGEON' | translate}}</b> - {{surgicalAppointment.otherSurgeon}}</li>
+                                <li><b>{{'OT_SURGICAL_APPOINTMENT_ANAESTHETIST' | translate}}</b> - {{surgicalAppointment.surgicalAppointmentAttributes.anaesthetist.value}} </li>
+                                <li><b>{{'OT_SURGICAL_APPOINTMENT_SCRUB_NURSE' | translate}}</b> - {{surgicalAppointment.surgicalAppointmentAttributes.scrubNurse.value}}</li>
+                                <li><b>{{'OT_SURGICAL_APPOINTMENT_CIRCULATING_NURSE' | translate}}</b> - {{surgicalAppointment.surgicalAppointmentAttributes.circulatingNurse.value}}</li>
+                                <li><b>{{'OT_SURGICAL_APPOINTMENT_NOTES' | translate}}</b> - {{surgicalAppointment.notes}}</li>
                             </ul>
                         </td>
                         <td class="appointment-edit">Edit            Cancel</td>
@@ -79,3 +79,4 @@
                 </table>
             </section>
         </div>
+        </form>
