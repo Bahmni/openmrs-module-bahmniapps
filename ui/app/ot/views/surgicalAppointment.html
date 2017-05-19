@@ -1,4 +1,4 @@
-<form class="add-surgical-appointment-dialog-form" name="surgicalAppointmentForm">
+<form class="add-surgical-appointment-dialog-form" name="surgicalAppointmentForm" single-submit="createAppointmentAndAdd()">
     <h4 class="appointment-title">{{'ADD_SURGICAL_APPOINTMENT' | translate}}</h4>
     <div class="appointment-block">
         <p class="surgeon-block">
@@ -40,8 +40,13 @@
         <p>
             <label class="surgeon-block surgeon-text">{{'OT_SURGICAL_APPOINTMENT_OTHER_SURGEON' | translate}}</label>
             <select ng-options="otherSurgeon as otherSurgeon.person.display for otherSurgeon in ::surgeons"
-                       ng-model="attributes.otherSurgeon.value" non-blank>
+                       ng-model="attributes.otherSurgeon.value">
             </select>
+        </p>
+
+        <p>
+            <label class="surgeon-block surgeon-text">{{'OT_SURGICAL_APPOINTMENT_SURGICAL_ASSISTANT' | translate}}</label>
+            <input type="text" id="surgicalAssistant" ng-model="attributes.surgicalAssistant.value">
         </p>
 
         <p>
@@ -61,7 +66,7 @@
             <textarea placeholder="enter your notes" id="notesID" ng-model="notes" msd-elastic></textarea>
         </p>
         <p style="text-align:center;">
-            <input type="submit" class="add" value="Add" ng-click="createAppointmentAndAdd()"/>
+            <input type="submit" class="add" value="Add"/>
             <input type="button" class="cancel" value="Cancel" ng-click="close()"/>
         </p>
     </div>

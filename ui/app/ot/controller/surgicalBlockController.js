@@ -7,6 +7,7 @@ angular.module('bahmni.ot')
                 $scope.surgicalForm = {
                     surgicalAppointments: []
                 };
+                $scope.availableBlockDuration = getAvailableBlockDuration();
                 var providerUuids = appService.getAppDescriptor().getConfigValue("primarySurgeonsForOT");
                 return $q.all([surgicalAppointmentService.getSurgeons(), locationService.getAllByTag("Operation Theater")]).then(function (response) {
                     $scope.surgeons = surgicalAppointmentHelper.filterProvidersByUuid(providerUuids, response[0].data.results);
@@ -42,6 +43,7 @@ angular.module('bahmni.ot')
                 }
                 if (getAvailableBlockDuration() < 0) {
                     messagingService.showMessage('error', "{{'OT_SURGICAL_APPOINTMENT_EXCEEDS_BLOCK_DURATION' | translate}}");
+                    return;
                 }
 
                 var surgicalBlock = new Bahmni.OT.SurgicalBlockMapper().mapSurgicalBlockUIToDomain(surgicalForm);
@@ -57,7 +59,7 @@ angular.module('bahmni.ot')
             $scope.addSurgicalAppointment = function (surgicalAppointment) {
                 if (getAvailableBlockDuration() >= surgicalAppointment.duration) {
                     surgicalAppointment.surgicalAppointmentAttributes.otherSurgeon.value =
-                        surgicalAppointment.surgicalAppointmentAttributes.otherSurgeon.value.id;
+                        surgicalAppointment.surgicalAppointmentAttributes.otherSurgeon.value && surgicalAppointment.surgicalAppointmentAttributes.otherSurgeon.value.id;
                     $scope.surgicalForm.surgicalAppointments.push(surgicalAppointment);
                     ngDialog.close();
                 }

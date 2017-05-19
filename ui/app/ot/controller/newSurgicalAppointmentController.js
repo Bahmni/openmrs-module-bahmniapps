@@ -36,6 +36,10 @@ angular.module('bahmni.ot')
                                 surgicalAppointmentAttributeType: getAttributeTypeByName("otherSurgeon"),
                                 value: null
                             },
+                            surgicalAssistant: {
+                                surgicalAppointmentAttributeType: getAttributeTypeByName("surgicalAssistant"),
+                                value: null
+                            },
                             anaesthetist: {
                                 surgicalAppointmentAttributeType: getAttributeTypeByName("anaesthetist"),
                                 value: null
@@ -89,6 +93,7 @@ angular.module('bahmni.ot')
                     };
                     $scope.addSurgicalAppointment(appointment);
                 }
+                return $q.when({});
 
             };
 

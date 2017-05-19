@@ -2,7 +2,7 @@
 
 describe("newSurgicalAppointmentController", function () {
     var scope, controller, q, surgicalAppointmentHelper;
-    var q = jasmine.createSpyObj('$q', ['all']);
+    var q = jasmine.createSpyObj('$q', ['all', 'when']);
     var patientService = jasmine.createSpyObj('patientService', ['search']);
     var spinner = jasmine.createSpyObj('spinner', ['forPromise', 'then', 'catch']);
     var messagingService = jasmine.createSpyObj('messagingService', ['showMessage']);
@@ -135,6 +135,12 @@ describe("newSurgicalAppointmentController", function () {
                         name: 'otherSurgeon'
                     }, value: null
                 },
+                surgicalAssistant: {
+                    surgicalAppointmentAttributeType: {
+                        uuid: '25efdf1b-3a1f-11e7-83f8-0800274a5156',
+                        name: 'surgicalAssistant'
+                    }, value: null
+                },
                 anaesthetist: {
                     surgicalAppointmentAttributeType: {
                         uuid: '25efec33-3a1f-11e7-83f8-0800274a5156',
@@ -158,6 +164,7 @@ describe("newSurgicalAppointmentController", function () {
             duration: 15
         };
         expect(scope.addSurgicalAppointment).toHaveBeenCalledWith(appointment);
+        expect(q.when).toHaveBeenCalled();
     });
 
     it("should search the patient, when patientinfo passed to it", function () {

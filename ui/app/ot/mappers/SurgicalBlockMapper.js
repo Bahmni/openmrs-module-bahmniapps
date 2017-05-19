@@ -39,7 +39,7 @@ Bahmni.OT.SurgicalBlockMapper = function () {
     };
 
     var mapSurgicalAppointmentAttributesUIToDomain = function (attributes) {
-        _.values(attributes).filter(function (attribute) {
+        return _.values(attributes).filter(function (attribute) {
             return attribute.value;
         }).map(function (attribute) {
             attribute.value = attribute.value.toString();
