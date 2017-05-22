@@ -6,8 +6,7 @@ Bahmni.OT.SurgicalBlockMapper = function () {
             id: openMrsSurgicalAppointmentAttribute.id,
             value: openMrsSurgicalAppointmentAttribute.value,
             name: openMrsSurgicalAppointmentAttribute.surgicalAppointmentAttributeType.name
-        }
-
+        };
     };
 
     this.mapSurgicalAppointment = function (openMrsSurgicalAppointment) {
@@ -20,7 +19,7 @@ Bahmni.OT.SurgicalBlockMapper = function () {
             surgicalAppointmentAttributes: _map(openMrsSurgicalAppointment.surgicalAppointmentAttributes, function (surgicalAppointment) {
                 return mapOpenMrsSurgicalAppointmentAttribute(surgicalAppointment);
             })
-        }
+        };
     };
 
     this.map = function (openMrsSurgicalBlock) {
@@ -33,9 +32,9 @@ Bahmni.OT.SurgicalBlockMapper = function () {
             provider: openMrsSurgicalBlock.provider,
             location: openMrsSurgicalBlock.location,
             surgicalAppointments: _.map(openMrsSurgicalBlock.surgicalAppointments, function (surgicalAppointment) {
-                return this.mapSurgicalAppointment(surgicalAppointment)
+                return this.mapSurgicalAppointment(surgicalAppointment);
             })
-        }
+        };
     };
 
     var mapSurgicalAppointmentAttributesUIToDomain = function (attributes) {
@@ -44,7 +43,7 @@ Bahmni.OT.SurgicalBlockMapper = function () {
         }).map(function (attribute) {
             attribute.value = attribute.value.toString();
             return attribute;
-        })
+        });
     };
 
     var mapSurgicalAppointmentUIToDomain = function (surgicalAppointmentUI) {
@@ -53,7 +52,7 @@ Bahmni.OT.SurgicalBlockMapper = function () {
             patient: {uuid: surgicalAppointmentUI.patient.uuid},
             notes: surgicalAppointmentUI.notes,
             surgicalAppointmentAttributes: mapSurgicalAppointmentAttributesUIToDomain(surgicalAppointmentUI.surgicalAppointmentAttributes)
-        }
+        };
     };
 
     this.mapSurgicalBlockUIToDomain = function (surgicalBlockUI) {
@@ -66,8 +65,8 @@ Bahmni.OT.SurgicalBlockMapper = function () {
             provider: surgicalBlockUI.provider,
             location: surgicalBlockUI.location,
             surgicalAppointments: _.map(surgicalBlockUI.surgicalAppointments, function (surgicalAppointment) {
-                return mapSurgicalAppointmentUIToDomain(surgicalAppointment)
+                return mapSurgicalAppointmentUIToDomain(surgicalAppointment);
             })
-        }
-    }
+        };
+    };
 };

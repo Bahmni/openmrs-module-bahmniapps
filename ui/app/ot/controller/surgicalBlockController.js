@@ -19,7 +19,6 @@ angular.module('bahmni.ot')
             var getAvailableBlockDuration = function () {
                 var blockDuration = Bahmni.Common.Util.DateUtil.diffInMinutes($scope.surgicalForm.startDatetime, $scope.surgicalForm.endDatetime);
                 var appointmentsDuration = _.sumBy($scope.surgicalForm.surgicalAppointments, function (appointment) {
-
                     return appointment.duration;
                 });
                 return blockDuration - appointmentsDuration;
@@ -71,7 +70,6 @@ angular.module('bahmni.ot')
             $scope.goToHome = function () {
                 var options = {};
                 options['dashboardCachebuster'] = Math.random();
-
                 $state.go("home", options);
             };
 
@@ -85,8 +83,6 @@ angular.module('bahmni.ot')
                     scope: $scope,
                     data: surgicalAppointment
                 });
-
             };
-
             spinner.forPromise(init());
         }]);
