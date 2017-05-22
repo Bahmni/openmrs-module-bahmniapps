@@ -1,11 +1,11 @@
 {
     "NEW_SURGICAL_APPOINTMENT": "New Surgical Appointment",
-    "ADD_NEW_APPOINTMENT": "Add new appointment",
+    "ADD_NEW_SURGICAL_BLOCK": "Add new surgical block",
     "CREATE_SURGICAL_BLOCK": "Step 1 - Create surgical block",
     "ADD_SURGERY_STEP": "Step 2 - Add surgery",
     "SURGERY_DETAILS": "Surgery details",
     "ACTION": "Action",
-    "SURGEON": "Surgeon",
+    "SURGEON": "Surgeon Dr.",
     "LOCATION": "Location",
     "START_TIME": "Start Time",
     "END_TIME": "End Time",
@@ -13,7 +13,7 @@
     "DISCARD": "Discard",
     "SAVE": "Save",
 
-    "ADD_SURGICAL_APPOINTMENT": "Add Appointment",
+    "ADD_SURGICAL_APPOINTMENT": "Add Surgery",
     "MESSAGE_DIALOG_OPTION_COPY" : "Copy Error",
     "MESSAGE_DIALOG_OPTION_OKAY": "OK",
     "OT_SAVE_FAILURE_MESSAGE_KEY": "An error occured with the server. Information not saved",

@@ -1,7 +1,7 @@
 <form name="createSurgicalBlockForm">
 <div class="patient-info-fixed-postion-container ot-secondary-header">
     <p class="navigation-links-buttons">
-        <span class="add-new-appointment">{{'ADD_NEW_APPOINTMENT' | translate}}</span>
+        <span class="add-new-appointment">{{'ADD_NEW_SURGICAL_BLOCK' | translate}}</span>
         <input type="button" value="{{'DISCARD' | translate}}" class="ot-nav-back" ng-confirm-click="goToHome()"/>
         <input type="submit" value="{{'SAVE' | translate}}" ng-click="save(surgicalForm)" class="ot-nav-save"/>
     </p>
@@ -12,7 +12,7 @@
             <h4 class="create-surgical-title">{{'CREATE_SURGICAL_BLOCK' | translate}}</h4>
             <div class="appointment-block">
                 <p class="surgeon-block">
-                    <label class="surgeon-block surgeon-text">Surgeon<sup>*</sup></label>
+                    <label class="surgeon-block surgeon-text">{{'SURGEON' | translate}}<sup>*</sup></label>
                     <select ng-options="surgeon as surgeon.person.display for surgeon in ::surgeons"
                             ng-model="surgicalForm.provider"
                             required>
