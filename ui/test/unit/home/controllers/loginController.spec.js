@@ -2,13 +2,15 @@
 
 describe ('loginController', function () {
 
-    var localeService, $aController, rootScopeMock, window, $q, state, _spinner, initialData, scopeMock, sessionService, $bahmniCookieStore, currentUser;
+    var localeService, $aController, rootScopeMock, window, $q, state, _spinner, initialData, scopeMock, sessionService, $bahmniCookieStore, currentUser, configurationService, auditLogService;
 
     beforeEach(module('bahmni.home'));
 
     beforeEach(function () {
         localeService = jasmine.createSpyObj('localeService', ['getLoginText', 'allowedLocalesList', 'serverDateTime', 'getLocalesLangs']);
         sessionService = jasmine.createSpyObj('sessionService', ['loginUser', 'loadCredentials']);
+        configurationService = jasmine.createSpyObj('configurationService', ['getConfigurations']);
+        auditLogService = jasmine.createSpyObj('auditLogService', ['auditLog']);
         currentUser = jasmine.createSpyObj('currentUser', ['addDefaultLocale', 'toContract']);
         _spinner = jasmine.createSpyObj('spinner', ['forPromise']);
 
@@ -27,6 +29,7 @@ describe ('loginController', function () {
         $bahmniCookieStore.get.and.callFake(function() { return  {}; });
         initialData = {location:" "};
         _spinner.forPromise.and.returnValue(specUtil.simplePromise({}));
+        configurationService.getConfigurations.and.returnValue(specUtil.simplePromise({'enableAuditLog': true}));
     });
 
     beforeEach(
@@ -52,6 +55,8 @@ describe ('loginController', function () {
             spinner: _spinner,
             localeService: localeService,
             sessionService: sessionService,
+            configurationService: configurationService,
+            auditLogService: auditLogService,
             $bahmniCookieStore: $bahmniCookieStore
         });
     };
@@ -94,6 +99,51 @@ describe ('loginController', function () {
                 path: '/',
                 expires: 1
             });
+        });
+
+        it('audit log the successful login attempt', function () {
+            var params = {};
+            params.eventType = Bahmni.Common.AuditLogEventDetails['USER_LOGIN_SUCCESS'].eventType;
+            params.message = Bahmni.Common.AuditLogEventDetails['USER_LOGIN_SUCCESS'].message;
+
+            scopeMock.loginInfo = { username : 'superman' };
+            scopeMock.login();
+            expect(sessionService.loginUser.calls.count()).toBe(2);
+            expect(sessionService.loadCredentials.calls.count()).toBe(1);
+            expect(auditLogService.auditLog.calls.count()).toBe(1);
+            expect(auditLogService.auditLog).toHaveBeenCalledWith(params);
+        });
+
+        it('audit log the failed login attempt with username', function () {
+            var fakeHttpGetPromise = {
+                then: function(success, failure) {
+                    failure();
+                }
+            };
+
+            scopeMock.loginInfo = { username : 'superman' };
+            var params = {};
+            params.eventType = Bahmni.Common.AuditLogEventDetails['USER_LOGIN_FAILED'].eventType;
+            params.message = Bahmni.Common.AuditLogEventDetails['USER_LOGIN_FAILED'].message + "~" + scopeMock.loginInfo.username;
+
+            sessionService.loginUser.and.returnValue(fakeHttpGetPromise);
+            scopeMock.login();
+            expect(auditLogService.auditLog.calls.count()).toBe(1);
+            expect(auditLogService.auditLog).toHaveBeenCalledWith(params);
+        });
+
+        it('should not audit log the login attempt if logging is disabled', function () {
+            configurationService.getConfigurations.and.returnValue(specUtil.simplePromise({'enableAuditLog': false}));
+            scopeMock.loginInfo = { username : undefined };
+
+            scopeMock.login();
+            expect(auditLogService.auditLog.calls.count()).toBe(0);
+        });
+
+        it('should not audit log the login attempt if username is undefined', function () {
+
+            scopeMock.login();
+            expect(auditLogService.auditLog.calls.count()).toBe(0);
         });
     });
 
