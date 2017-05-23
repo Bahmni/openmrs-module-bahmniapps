@@ -22,7 +22,7 @@
     "OT_ADD_SURGERY_KEY": "Add Surgery",
     "OT_ENTER_PATIENT_KEY": "Enter Patient ID/ Name",
     "OT_PATIENT": "Patient",
-    "OT_SURGICAL_APPOINTMENT_EXCEEDS_BLOCK_DURATION": "Surgical Appointment exceeds available block duration",
+    "OT_SURGICAL_APPOINTMENT_EXCEEDS_BLOCK_DURATION": "Total time of surgeries exceeds blocked time",
     "OT_SURGICAL_APPOINTMENT_PROCEDURE": "Procedure(s)",
     "OT_SURGICAL_APPOINTMENT_ESTIMATED_TIME": "Estimated time",
     "OT_SURGICAL_APPOINTMENT_HOURS": "hr(s)",
