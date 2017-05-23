@@ -255,19 +255,36 @@ angular.module('authentication')
         return {
             authenticateUser: authenticateUser
         };
-    }]).directive('logOut', ['sessionService', 'offlineService', '$window', function (sessionService, offlineService, $window) {
+    }]).directive('logOut', ['sessionService', 'offlineService', '$window', 'configurationService', 'auditLogService', function (sessionService, offlineService, $window, configurationService, auditLogService) {
         return {
             link: function (scope, element) {
                 element.bind('click', function () {
                     scope.$apply(function () {
-                        sessionService.destroy().then(
-                            function () {
-                                if (offlineService.isOfflineApp()) {
-                                    $window.location.reload();
-                                }
-                                $window.location = "../home/index.html#/login";
+                        configurationService.getConfigurations(['enableAuditLog']).then(function (result) {
+                            if (result.enableAuditLog) {
+                                var params = {};
+                                params.eventType = Bahmni.Common.AuditLogEventDetails["USER_LOGOUT_SUCCESS"].eventType;
+                                params.message = Bahmni.Common.AuditLogEventDetails["USER_LOGOUT_SUCCESS"].message;
+                                return auditLogService.auditLog(params).then(function () {
+                                    sessionService.destroy().then(
+                                        function () {
+                                            if (offlineService.isOfflineApp()) {
+                                                $window.location.reload();
+                                            }
+                                            $window.location = "../home/index.html#/login";
+                                        }
+                                    );
+                                });
                             }
-                        );
+                            sessionService.destroy().then(
+                                function () {
+                                    if (offlineService.isOfflineApp()) {
+                                        $window.location.reload();
+                                    }
+                                    $window.location = "../home/index.html#/login";
+                                }
+                            );
+                        });
                     });
                 });
             }
