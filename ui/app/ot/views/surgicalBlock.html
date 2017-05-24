@@ -62,17 +62,17 @@
                     <tr ng-repeat="surgicalAppointment in surgicalForm.surgicalAppointments">
                         <td>
                             <h4>{{surgicalAppointment.patient.value}}</h4>
-                            <ul>
-                                <li ng-if="surgicalAppointment.surgicalAppointmentAttributes.procedure.value"><b>{{'OT_SURGICAL_APPOINTMENT_PROCEDURE' | translate}}</b> - {{surgicalAppointment.surgicalAppointmentAttributes.procedure.value}}</li>
-                                <li ng-if="surgicalAppointment.surgicalAppointmentAttributes.estTimeHours.value"><b>{{'OT_SURGICAL_APPOINTMENT_ESTIMATED_TIME' | translate}}</b> - {{surgicalAppointment.surgicalAppointmentAttributes.estTimeHours.value}} {{'OT_SURGICAL_APPOINTMENT_HOURS' | translate}} : {{surgicalAppointment.surgicalAppointmentAttributes.estTimeMinutes.value}} {{'OT_SURGICAL_APPOINTMENT_MINUTES' | translate}}</li>
-                                <li ng-if="surgicalAppointment.surgicalAppointmentAttributes.cleaningTime.value"><b>{{'OT_SURGICAL_APPOINTMENT_CLEANING_TIME' | translate}}</b> - {{surgicalAppointment.surgicalAppointmentAttributes.cleaningTime.value}} {{'OT_SURGICAL_APPOINTMENT_MINUTES' | translate}}</li>
-                                <li ng-if="surgicalAppointment.otherSurgeon"><b>{{'OT_SURGICAL_APPOINTMENT_OTHER_SURGEON' | translate}}</b> {{surgicalAppointment.otherSurgeon}}</li>
-                                <li ng-if="surgicalAppointment.surgicalAppointmentAttributes.surgicalAssistant.value"><b>{{'OT_SURGICAL_APPOINTMENT_SURGICAL_ASSISTANT' | translate}}</b> - {{surgicalAppointment.surgicalAppointmentAttributes.surgicalAssistant.value}} </li>
-                                <li ng-if="surgicalAppointment.surgicalAppointmentAttributes.anaesthetist.value"><b>{{'OT_SURGICAL_APPOINTMENT_ANAESTHETIST' | translate}}</b> - {{surgicalAppointment.surgicalAppointmentAttributes.anaesthetist.value}} </li>
-                                <li ng-if="surgicalAppointment.surgicalAppointmentAttributes.scrubNurse.value"><b>{{'OT_SURGICAL_APPOINTMENT_SCRUB_NURSE' | translate}}</b> - {{surgicalAppointment.surgicalAppointmentAttributes.scrubNurse.value}}</li>
-                                <li ng-if="surgicalAppointment.surgicalAppointmentAttributes.circulatingNurse.value"><b>{{'OT_SURGICAL_APPOINTMENT_CIRCULATING_NURSE' | translate}}</b> - {{surgicalAppointment.surgicalAppointmentAttributes.circulatingNurse.value}}</li>
-                                <li ng-if="surgicalAppointment.notes"><b>{{'OT_SURGICAL_APPOINTMENT_NOTES' | translate}}</b> - {{surgicalAppointment.notes}}</li>
-                            </ul>
+                            <p>
+                                <span><b>{{'OT_SURGICAL_APPOINTMENT_PROCEDURE' | translate}}</b> - {{surgicalAppointment.surgicalAppointmentAttributes.procedure.value}}, </span>
+                                <span><b>{{'OT_SURGICAL_APPOINTMENT_ESTIMATED_TIME' | translate}}</b> - {{surgicalAppointment.surgicalAppointmentAttributes.estTimeHours.value}} {{'OT_SURGICAL_APPOINTMENT_HOURS' | translate}} : {{surgicalAppointment.surgicalAppointmentAttributes.estTimeMinutes.value}} {{'OT_SURGICAL_APPOINTMENT_MINUTES' | translate}}, </span>
+                                <span><b>{{'OT_SURGICAL_APPOINTMENT_CLEANING_TIME' | translate}}</b> - {{surgicalAppointment.surgicalAppointmentAttributes.cleaningTime.value}} {{'OT_SURGICAL_APPOINTMENT_MINUTES' | translate}}, </span>
+                                <span><b>{{'OT_SURGICAL_APPOINTMENT_OTHER_SURGEON' | translate}}</b> - {{surgicalAppointment.surgicalAppointmentAttributes.otherSurgeon.value.person.display}}, </span>
+                                <span><b>{{'OT_SURGICAL_APPOINTMENT_SURGICAL_ASSISTANT' | translate}}</b> - {{surgicalAppointment.surgicalAppointmentAttributes.surgicalAssistant.value}}, </span>
+                                <span><b>{{'OT_SURGICAL_APPOINTMENT_ANAESTHETIST' | translate}}</b> - {{surgicalAppointment.surgicalAppointmentAttributes.anaesthetist.value}}, </span>
+                                <span><b>{{'OT_SURGICAL_APPOINTMENT_SCRUB_NURSE' | translate}}</b> - {{surgicalAppointment.surgicalAppointmentAttributes.scrubNurse.value}}, </span>
+                                <span><b>{{'OT_SURGICAL_APPOINTMENT_CIRCULATING_NURSE' | translate}}</b> - {{surgicalAppointment.surgicalAppointmentAttributes.circulatingNurse.value}}, </span>
+                                <span><b>{{'OT_SURGICAL_APPOINTMENT_NOTES' | translate}}</b> - {{surgicalAppointment.notes}}</span>
+                            </p>
                         </td>
                         <td class="appointment-edit">Edit            Cancel</td>
                     </tr>

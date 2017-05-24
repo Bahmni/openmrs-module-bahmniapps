@@ -197,8 +197,9 @@
             font-size: 14px;
             margin-bottom: 5px;
           }
-          ul {
-            li {
+          p {
+            width: 590px;
+            span {
               color: #444;
               font-size: 12px;
               b {
@@ -206,10 +207,6 @@
                 font-size: 13px;
               }
             }
-          }
-          &.appointment-edit {
-            min-width: 150px;
-            text-align: center;
           }
         }
         tr {
