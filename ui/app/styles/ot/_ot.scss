@@ -102,6 +102,13 @@
 .new-surgical-appointment {
   display: block;
   overflow: hidden;
+  p.new-surgical-appointment-note{
+    font-size: 13px;
+    padding-left: 35px;
+    padding-bottom: 10px;
+    color: #CCC;
+    font-family: sans-serif;
+  }
   > section {
     padding: 10px;
     box-sizing: border-box;
