@@ -145,7 +145,8 @@ describe('editAdtObservations', function () {
                     return "consultationEncounterTypeUuid";
                 }
             };
-
+            rootScope.bedDetails = {};
+            rootScope.patient = {};
             scope.promiseResolved = false;
             scope.patient = {uuid: "patientUuid"};
             scope.conceptSetName = "Expected Date of Discharge Set";

@@ -113,12 +113,13 @@ angular.module('bahmni.ipd')
                         $scope.observations[0] = observation;
                         toggleDisabledObservation(false);
                         $scope.promiseResolved = true;
-                        if ($rootScope.patient && $rootScope.bedDetails)
+                        if ($rootScope.patient && $rootScope.bedDetails) {
                             return observationsService.fetch($scope.patient.uuid, [$scope.conceptSetName], "latest", 1, null, null, null, null).then(function (response) {
                                 if (response.data.length) {
                                     setValuesForObservations(response.data[0]);
                                 }
                             });
+                        }
                     });
                 };
 
