@@ -71,6 +71,29 @@ angular.module('ot').config(['$stateProvider', '$httpProvider', '$urlRouterProvi
                 resolve: {
                     initialization: "initialization"
                 }
+            })
+            .state('editSurgicalAppointment', {
+                url: '/appointment/:surgicalBlockUuid/edit',
+                data: {
+                    homeBackLink: homeBackLink,
+                    navigationLinks: navigationLinks
+                },
+                params: {
+                    dashboardCachebuster: null
+                },
+                views: {
+                    'content': {
+                        templateUrl: 'views/surgicalBlock.html',
+                        controller: 'surgicalBlockController'
+                    },
+                    'additional-header': {
+                        templateUrl: 'views/header.html',
+                        controller: 'OTHeaderController'
+                    }
+                },
+                resolve: {
+                    initialization: "initialization"
+                }
             });
 
         $bahmniTranslateProvider.init({app: 'ot', shouldMerge: true});

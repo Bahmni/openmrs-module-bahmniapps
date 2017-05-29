@@ -25,4 +25,12 @@ angular.module('bahmni.ot')
                 withCredentials: true
             });
         };
+
+        this.getSurgicalBlockFor = function (surgicalBlockUui) {
+            return $http.get(Bahmni.OT.Constants.addSurgicalBlockUrl + "/" + surgicalBlockUui, {
+                params: {v: "full"},
+                withCredentials: true,
+                headers: {"Accept": "application/json", "Content-Type": "application/json"}
+            });
+        };
     }]);

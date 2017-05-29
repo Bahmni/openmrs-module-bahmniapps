@@ -14,6 +14,7 @@
     "SAVE": "Save",
 
     "ADD_SURGICAL_APPOINTMENT": "Add Surgery",
+    "EDIT_SURGICAL_APPOINTMENT": "Edit Surgery",
     "MESSAGE_DIALOG_OPTION_COPY" : "Copy Error",
     "MESSAGE_DIALOG_OPTION_OKAY": "OK",
     "OT_SAVE_FAILURE_MESSAGE_KEY": "An error occured with the server. Information not saved",

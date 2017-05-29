@@ -1,27 +1,48 @@
 'use strict';
 
 angular.module('bahmni.ot')
-    .controller('surgicalBlockController', ['$scope', '$q', '$state', 'spinner', 'surgicalAppointmentService', 'locationService', 'appService', 'messagingService', 'surgicalAppointmentHelper', 'ngDialog',
-        function ($scope, $q, $state, spinner, surgicalAppointmentService, locationService, appService, messagingService, surgicalAppointmentHelper, ngDialog) {
+    .controller('surgicalBlockController', ['$scope', '$q', '$state', '$stateParams', 'spinner', 'surgicalAppointmentService', 'locationService', 'appService', 'messagingService', 'surgicalAppointmentHelper', 'ngDialog',
+        function ($scope, $q, $state, $stateParams, spinner, surgicalAppointmentService, locationService, appService, messagingService, surgicalAppointmentHelper, ngDialog) {
             var init = function () {
                 $scope.surgicalForm = {
                     surgicalAppointments: []
                 };
-                $scope.availableBlockDuration = getAvailableBlockDuration();
                 var providerUuids = appService.getAppDescriptor().getConfigValue("primarySurgeonsForOT");
-                return $q.all([surgicalAppointmentService.getSurgeons(), locationService.getAllByTag("Operation Theater")]).then(function (response) {
+                return $q.all([surgicalAppointmentService.getSurgeons(), locationService.getAllByTag("Operation Theater"), surgicalAppointmentService.getSurgicalAppointmentAttributeTypes()]).then(function (response) {
                     $scope.surgeons = surgicalAppointmentHelper.filterProvidersByUuid(providerUuids, response[0].data.results);
                     $scope.locations = response[1].data.results;
+                    $scope.attributeTypes = response[2].data.results;
+                    if ($stateParams.surgicalBlockUuid) {
+                        return surgicalAppointmentService.getSurgicalBlockFor($stateParams.surgicalBlockUuid).then(function (response) {
+                            $scope.surgicalForm = new Bahmni.OT.SurgicalBlockMapper().map(response.data, $scope.attributeTypes, $scope.surgeons);
+                            return response;
+                        });
+                    }
                     return response;
                 });
+            };
+
+            var getAppointmentDuration = function (surgicalAppointment) {
+                return parseInt(surgicalAppointment.surgicalAppointmentAttributes.cleaningTime.value) +
+                    parseInt(surgicalAppointment.surgicalAppointmentAttributes.estTimeMinutes.value) +
+                    parseInt(surgicalAppointment.surgicalAppointmentAttributes.estTimeHours.value) * 60;
             };
 
             var getAvailableBlockDuration = function () {
                 var blockDuration = Bahmni.Common.Util.DateUtil.diffInMinutes($scope.surgicalForm.startDatetime, $scope.surgicalForm.endDatetime);
                 var appointmentsDuration = _.sumBy($scope.surgicalForm.surgicalAppointments, function (appointment) {
-                    return appointment.duration;
+                    return getAppointmentDuration(appointment);
                 });
                 return blockDuration - appointmentsDuration;
+            };
+
+            $scope.getPatientName = function (surgicalAppointment) {
+                return surgicalAppointment.patient.value || surgicalAppointment.patient.display;
+            };
+
+            $scope.editAppointment = function (surgicalAppointment) {
+                var clone = _.cloneDeep(surgicalAppointment);
+                $scope.addNewSurgicalAppointment(clone);
             };
 
             $scope.isFormValid = function () {
@@ -47,19 +68,39 @@ angular.module('bahmni.ot')
 
                 var surgicalBlock = new Bahmni.OT.SurgicalBlockMapper().mapSurgicalBlockUIToDomain(surgicalForm);
                 spinner.forPromise(surgicalAppointmentService.saveSurgicalBlock(surgicalBlock)).then(function (response) {
-                    $scope.surgicalForm.id = response.data.id;
+                    $scope.surgicalForm = new Bahmni.OT.SurgicalBlockMapper().map(response.data, $scope.attributeTypes, $scope.surgeons);
                     messagingService.showMessage('info', "{{'OT_SAVE_SUCCESS_MESSAGE_KEY' | translate}}");
-                    $scope.goToHome();
-                }).catch(function () {
-
+                    $state.go('editSurgicalAppointment', {surgicalBlockUuid: response.data.uuid});
                 });
             };
 
-            $scope.addSurgicalAppointment = function (surgicalAppointment) {
-                if (getAvailableBlockDuration() >= surgicalAppointment.duration) {
-                    surgicalAppointment.surgicalAppointmentAttributes.otherSurgeon.value =
-                        surgicalAppointment.surgicalAppointmentAttributes.otherSurgeon.value && surgicalAppointment.surgicalAppointmentAttributes.otherSurgeon.value.id;
+            var addOrUpdateTheSurgicalAppointment = function (surgicalAppointment) {
+                if (surgicalAppointment.sortWeight >= 0) {
+                    var existingAppointment = _.find($scope.surgicalForm.surgicalAppointments, function (appointment) {
+                        return appointment.sortWeight === surgicalAppointment.sortWeight;
+                    });
+                    existingAppointment.notes = surgicalAppointment.notes;
+                    existingAppointment.patient = surgicalAppointment.patient;
+                    existingAppointment.surgicalAppointmentAttributes = surgicalAppointment.surgicalAppointmentAttributes;
+                } else {
+                    surgicalAppointment.sortWeight = $scope.surgicalForm.surgicalAppointments.length;
                     $scope.surgicalForm.surgicalAppointments.push(surgicalAppointment);
+                }
+            };
+
+            var canBeFittedInTheSurgicalBlock = function (surgicalAppointment) {
+                if (surgicalAppointment.sortWeight >= 0) {
+                    var existingAppointment = _.find($scope.surgicalForm.surgicalAppointments, function (appointment) {
+                        return appointment.sortWeight === surgicalAppointment.sortWeight;
+                    });
+                    var increasedDeltaTime = getAppointmentDuration(surgicalAppointment) - getAppointmentDuration(existingAppointment);
+                    return getAvailableBlockDuration() >= increasedDeltaTime;
+                }
+                return getAvailableBlockDuration() >= getAppointmentDuration(surgicalAppointment);
+            };
+            $scope.addSurgicalAppointment = function (surgicalAppointment) {
+                if (canBeFittedInTheSurgicalBlock(surgicalAppointment)) {
+                    addOrUpdateTheSurgicalAppointment(surgicalAppointment);
                     ngDialog.close();
                 }
                 else {

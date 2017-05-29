@@ -1,5 +1,6 @@
 <form class="add-surgical-appointment-dialog-form" name="surgicalAppointmentForm" single-submit="createAppointmentAndAdd()">
-    <h4 class="appointment-title">{{'ADD_SURGICAL_APPOINTMENT' | translate}}</h4>
+        <h4 class="appointment-title" ng-hide="ngDialogData.sortWeight >= 0">{{'ADD_SURGICAL_APPOINTMENT' | translate}}</h4>
+    <h4 class="appointment-title" ng-show="ngDialogData.sortWeight >= 0 ">{{'EDIT_SURGICAL_APPOINTMENT' | translate}}</h4>
     <div class="appointment-block">
         <p class="surgeon-block">
             <label class="surgeon-block surgeon-text">{{'OT_PATIENT' | translate}}<sup>*</sup></label>
@@ -16,6 +17,7 @@
                    ng-class="{'illegalValue': isInvalid}"
                    placeholder="{{'OT_ENTER_PATIENT_KEY' | translate }}"
                    non-blank
+                   ng-disabled="shouldBeDisabled()"
             />
             <i class="fa fa-search" aria-hidden="true"></i>
         </p>
@@ -26,20 +28,22 @@
 
         <p>
             <label class="surgeon-block surgeon-text">{{'OT_SURGICAL_APPOINTMENT_ESTIMATED_TIME' | translate}}</label>
-            <input type="number" id="estTimeHoursID" ng-model="attributes.estTimeHours.value" min="0" max="23" step="1">
-           {{'OT_SURGICAL_APPOINTMENT_HOURS' | translate}} : <input type="number" id="estTimeMinutesID" ng-model="attributes.estTimeMinutes.value"
+            <input type="number" id="estTimeHoursID" ng-model="attributes.estTimeHours.value" string-to-number min="0" max="23" step="1">
+           {{'OT_SURGICAL_APPOINTMENT_HOURS' | translate}} :
+            <input type="number" id="estTimeMinutesID" ng-model="attributes.estTimeMinutes.value" string-to-number
                               min="0"
                               max="59">{{'OT_SURGICAL_APPOINTMENT_MINUTES' | translate}}
         </p>
 
         <p>
             <label class="surgeon-block surgeon-text">{{'OT_SURGICAL_APPOINTMENT_CLEANING_TIME' | translate}}</label>
-            <input type="number" id="cleaningTimeID" ng-model="attributes.cleaningTime.value" min="0" max="59"> min(s)
+            <input type="number" id="cleaningTimeID" ng-model="attributes.cleaningTime.value" string-to-number min="0" max="59"> min(s)
         </p>
         <p>
             <label class="surgeon-block surgeon-text">{{'OT_SURGICAL_APPOINTMENT_OTHER_SURGEON' | translate}}</label>
-            <select ng-options="otherSurgeon as otherSurgeon.person.display for otherSurgeon in ::surgeons"
+            <select ng-options="otherSurgeon as otherSurgeon.person.display for otherSurgeon in otherSurgeons track by otherSurgeon.uuid"
                        ng-model="attributes.otherSurgeon.value">
+                <option value=""> Select Surgeon </option>
             </select>
         </p>
 

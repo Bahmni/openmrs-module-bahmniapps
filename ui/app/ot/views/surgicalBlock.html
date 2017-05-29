@@ -14,16 +14,17 @@
             <div class="appointment-block">
                 <p class="surgeon-block">
                     <label class="surgeon-block surgeon-text">{{'SURGEON' | translate}}<sup>*</sup></label>
-                    <select ng-options="surgeon as surgeon.person.display for surgeon in ::surgeons"
+                    <select ng-options="surgeon as surgeon.person.display for surgeon in ::surgeons track by surgeon.uuid"
                             ng-model="surgicalForm.provider"
                             required>
+                        <option value=""> Select Surgeon </option>
                     </select>
                 </p>
                 <p class="location-block">
                     <label>Location<sup>*</sup></label>
-                    <span ng-repeat="location in locations">
+                    <span ng-repeat="location in locations track by location.uuid">
                         <label class="location-buttons" for="{{location.display}}">
-                            <i ng-if="location === surgicalForm.location" class="fa fa-check" aria-hidden="true"></i>
+                            <i ng-if="location.name == surgicalForm.location.name" class="fa fa-check" aria-hidden="true"></i>
                             {{ location.display }}
                             <input type="radio" id="{{location.display}}" name="location" ng-value="location"
                                    ng-model="surgicalForm.location" required/>
@@ -62,7 +63,7 @@
                     <tbody>
                     <tr ng-repeat="surgicalAppointment in surgicalForm.surgicalAppointments">
                         <td>
-                            <h4>{{surgicalAppointment.patient.value}}</h4>
+                            <h4>{{getPatientName(surgicalAppointment)}}</h4>
                             <p>
                                 <span ng-if="surgicalAppointment.surgicalAppointmentAttributes.procedure.value" ><b>{{'OT_SURGICAL_APPOINTMENT_PROCEDURE' | translate}}</b> - {{surgicalAppointment.surgicalAppointmentAttributes.procedure.value}}, </span>
                                 <span ng-if="surgicalAppointment.surgicalAppointmentAttributes.estTimeHours.value || surgicalAppointment.surgicalAppointmentAttributes.estTimeMinutes.value"><b> {{'OT_SURGICAL_APPOINTMENT_ESTIMATED_TIME' | translate}}</b> - {{surgicalAppointment.surgicalAppointmentAttributes.estTimeHours.value}} {{'OT_SURGICAL_APPOINTMENT_HOURS' | translate}} : {{surgicalAppointment.surgicalAppointmentAttributes.estTimeMinutes.value}} {{'OT_SURGICAL_APPOINTMENT_MINUTES' | translate}}, </span>
@@ -75,7 +76,10 @@
                                 <span ng-if="surgicalAppointment.notes"><b> {{'OT_SURGICAL_APPOINTMENT_NOTES' | translate}}</b> - {{surgicalAppointment.notes}}</span>
                             </p>
                         </td>
-                        <td class="appointment-edit">Edit            Cancel</td>
+                        <td class="appointment-edit">
+                            <a id="edit-appointment" href ng-click="editAppointment(surgicalAppointment)">Edit</a>
+                            <a id="cancel-appointment" href ng-click="">Cancel</a>
+                        </td>
                     </tr>
                     </tbody>
                 </table>

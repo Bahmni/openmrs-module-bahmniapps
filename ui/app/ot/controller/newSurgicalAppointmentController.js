@@ -3,62 +3,21 @@
 angular.module('bahmni.ot')
     .controller('NewSurgicalAppointmentController', ['$scope', '$q', 'patientService', 'surgicalAppointmentService', 'messagingService', 'ngDialog', 'spinner',
         function ($scope, $q, patientService, surgicalAppointmentService, messagingService, ngDialog, spinner) {
-            var getAttributeTypeByName = function (name) {
-                return _.find($scope.attributeTypes, function (attributeType) {
-                    return attributeType.name === name;
-                });
-            };
-
             var init = function () {
                 $scope.selectedPatient = $scope.ngDialogData && $scope.ngDialogData.patient;
+                $scope.patient = $scope.ngDialogData && $scope.ngDialogData.patient && ($scope.ngDialogData.patient.value || $scope.ngDialogData.patient.display);
                 $scope.notes = $scope.ngDialogData && $scope.ngDialogData.notes;
+                $scope.otherSurgeons = _.cloneDeep($scope.surgeons);
                 return $q.all([surgicalAppointmentService.getSurgicalAppointmentAttributeTypes()]).then(function (response) {
                     $scope.attributeTypes = response[0].data.results;
-                    $scope.attributes = $scope.ngDialogData && $scope.ngDialogData.attributes || {
-                        procedure: {
-                            surgicalAppointmentAttributeType: getAttributeTypeByName("procedure")
-                        },
-
-                        cleaningTime: {
-                            surgicalAppointmentAttributeType: getAttributeTypeByName("cleaningTime"),
-                            value: 15
-                        },
-                        estTimeMinutes: {
-                            surgicalAppointmentAttributeType: getAttributeTypeByName("estTimeMinutes"),
-                            value: 0
-                        },
-                        estTimeHours: {
-                            surgicalAppointmentAttributeType: getAttributeTypeByName("estTimeHours"),
-                            value: 0
-                        },
-                        otherSurgeon: {
-                            surgicalAppointmentAttributeType: getAttributeTypeByName("otherSurgeon"),
-                            value: null
-                        },
-                        surgicalAssistant: {
-                            surgicalAppointmentAttributeType: getAttributeTypeByName("surgicalAssistant"),
-                            value: null
-                        },
-                        anaesthetist: {
-                            surgicalAppointmentAttributeType: getAttributeTypeByName("anaesthetist"),
-                            value: null
-                        },
-                        scrubNurse: {
-                            surgicalAppointmentAttributeType: getAttributeTypeByName("scrubNurse"),
-                            value: null
-                        },
-                        circulatingNurse: {
-                            surgicalAppointmentAttributeType: getAttributeTypeByName("circulatingNurse"),
-                            value: null
-                        }
-                    };
+                    var attributes = {};
+                    var mapAttributes = new Bahmni.OT.SurgicalBlockMapper().mapAttributes(attributes, $scope.attributeTypes);
+                    $scope.attributes = $scope.ngDialogData && $scope.ngDialogData.surgicalAppointmentAttributes || mapAttributes;
                 });
             };
 
-            var getAppointmentDuration = function () {
-                return $scope.attributes.cleaningTime.value +
-                    $scope.attributes.estTimeMinutes.value +
-                    $scope.attributes.estTimeHours.value * 60;
+            $scope.shouldBeDisabled = function () {
+                return $scope.patient && $scope.ngDialogData && $scope.ngDialogData.id;
             };
 
             $scope.search = function () {
@@ -80,13 +39,12 @@ angular.module('bahmni.ot')
 
             $scope.createAppointmentAndAdd = function () {
                 if ($scope.surgicalAppointmentForm.$valid) {
-                    var otherSurgeonName = $scope.attributes.otherSurgeon.value && $scope.attributes.otherSurgeon.value.person.display;
                     var appointment = {
+                        id: $scope.ngDialogData && $scope.ngDialogData.id,
                         patient: $scope.selectedPatient,
                         notes: $scope.notes,
-                        surgicalAppointmentAttributes: $scope.attributes,
-                        otherSurgeon: otherSurgeonName,
-                        duration: getAppointmentDuration()
+                        sortWeight: $scope.ngDialogData && $scope.ngDialogData.sortWeight,
+                        surgicalAppointmentAttributes: $scope.attributes
                     };
                     $scope.addSurgicalAppointment(appointment);
                 }

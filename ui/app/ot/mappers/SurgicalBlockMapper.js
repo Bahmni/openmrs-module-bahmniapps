@@ -1,43 +1,65 @@
 'use strict';
 
 Bahmni.OT.SurgicalBlockMapper = function () {
-    var mapOpenMrsSurgicalAppointmentAttribute = function (openMrsSurgicalAppointmentAttribute) {
-        return {
-            id: openMrsSurgicalAppointmentAttribute.id,
-            value: openMrsSurgicalAppointmentAttribute.value,
-            name: openMrsSurgicalAppointmentAttribute.surgicalAppointmentAttributeType.name
-        };
+    var mapSelectedOtherSurgeon = function (otherSurgeonAttribute, surgeonList) {
+        var selectedOtherSurgeon = _.filter(surgeonList, function (surgeon) {
+            return surgeon.id === parseInt(otherSurgeonAttribute.value);
+        });
+        otherSurgeonAttribute.value = _.isEmpty(selectedOtherSurgeon) ? null : selectedOtherSurgeon[0];
     };
 
-    this.mapSurgicalAppointment = function (openMrsSurgicalAppointment) {
+    var mapOpenMrsSurgicalAppointmentAttributes = function (openMrsSurgicalAppointmentAttributes, surgeonsList) {
+        var mappedAttributes = {};
+        _.each(openMrsSurgicalAppointmentAttributes, function (attribute) {
+            var attributeName = attribute.surgicalAppointmentAttributeType.name;
+            mappedAttributes[attributeName] = {
+                id: attribute.id,
+                value: attribute.value,
+                surgicalAppointmentAttributeType: {
+                    uuid: attribute.surgicalAppointmentAttributeType.uuid,
+                    name: attribute.surgicalAppointmentAttributeType.name
+                }
+            };
+        });
+        var otherSurgeonnAttribute = mappedAttributes['otherSurgeon'];
+        if (otherSurgeonnAttribute) {
+            mapSelectedOtherSurgeon(otherSurgeonnAttribute, surgeonsList);
+        }
+        return mappedAttributes;
+    };
+
+    var mapSurgicalAppointment = function (openMrsSurgicalAppointment, attributeTypes, surgeonsList) {
+        var surgicalAppointmentAttributes = mapOpenMrsSurgicalAppointmentAttributes(openMrsSurgicalAppointment.surgicalAppointmentAttributes, surgeonsList);
         return {
             id: openMrsSurgicalAppointment.id,
             uuid: openMrsSurgicalAppointment.uuid,
-            voided: openMrsSurgicalAppointment.voided,
+            voided: openMrsSurgicalAppointment.voided || false,
             patient: openMrsSurgicalAppointment.patient,
             notes: openMrsSurgicalAppointment.notes,
-            surgicalAppointmentAttributes: _map(openMrsSurgicalAppointment.surgicalAppointmentAttributes, function (surgicalAppointment) {
-                return mapOpenMrsSurgicalAppointmentAttribute(surgicalAppointment);
-            })
+            sortWeight: openMrsSurgicalAppointment.sortWeight,
+            surgicalAppointmentAttributes: new Bahmni.OT.SurgicalBlockMapper().mapAttributes(surgicalAppointmentAttributes, attributeTypes)
         };
     };
 
-    this.map = function (openMrsSurgicalBlock) {
+    this.map = function (openMrsSurgicalBlock, attributeTypes, surgeonsList) {
         return {
             id: openMrsSurgicalBlock.id,
             uuid: openMrsSurgicalBlock.uuid,
-            voided: openMrsSurgicalBlock.voided,
-            startDatetime: openMrsSurgicalBlock.startDatetime,
-            endDatetime: openMrsSurgicalBlock.endDatetime,
+            voided: openMrsSurgicalBlock.voided || false,
+            startDatetime: Bahmni.Common.Util.DateUtil.parseServerDateToDate(openMrsSurgicalBlock.startDatetime),
+            endDatetime: Bahmni.Common.Util.DateUtil.parseServerDateToDate(openMrsSurgicalBlock.endDatetime),
             provider: openMrsSurgicalBlock.provider,
             location: openMrsSurgicalBlock.location,
             surgicalAppointments: _.map(openMrsSurgicalBlock.surgicalAppointments, function (surgicalAppointment) {
-                return this.mapSurgicalAppointment(surgicalAppointment);
+                return mapSurgicalAppointment(surgicalAppointment, attributeTypes, surgeonsList);
             })
         };
     };
 
-    var mapSurgicalAppointmentAttributesUIToDomain = function (attributes) {
+    var mapSurgicalAppointmentAttributesUIToDomain = function (appointmentAttributes) {
+        var attributes = _.cloneDeep(appointmentAttributes);
+        var otherSurgeon = attributes['otherSurgeon'];
+        otherSurgeon.value = otherSurgeon.value && otherSurgeon.value.id;
         return _.values(attributes).filter(function (attribute) {
             return attribute.value;
         }).map(function (attribute) {
@@ -49,8 +71,11 @@ Bahmni.OT.SurgicalBlockMapper = function () {
     var mapSurgicalAppointmentUIToDomain = function (surgicalAppointmentUI) {
         return {
             id: surgicalAppointmentUI.id,
+            uuid: surgicalAppointmentUI.uuid,
+            voided: surgicalAppointmentUI.voided || false,
             patient: {uuid: surgicalAppointmentUI.patient.uuid},
             notes: surgicalAppointmentUI.notes,
+            sortWeight: surgicalAppointmentUI.sortWeight,
             surgicalAppointmentAttributes: mapSurgicalAppointmentAttributesUIToDomain(surgicalAppointmentUI.surgicalAppointmentAttributes)
         };
     };
@@ -59,14 +84,39 @@ Bahmni.OT.SurgicalBlockMapper = function () {
         return {
             id: surgicalBlockUI.id,
             uuid: surgicalBlockUI.uuid,
-            voided: surgicalBlockUI.voided,
+            voided: surgicalBlockUI.voided || false,
             startDatetime: surgicalBlockUI.startDatetime,
             endDatetime: surgicalBlockUI.endDatetime,
-            provider: surgicalBlockUI.provider,
-            location: surgicalBlockUI.location,
+            provider: {uuid: surgicalBlockUI.provider.uuid},
+            location: {uuid: surgicalBlockUI.location.uuid},
             surgicalAppointments: _.map(surgicalBlockUI.surgicalAppointments, function (surgicalAppointment) {
                 return mapSurgicalAppointmentUIToDomain(surgicalAppointment);
             })
         };
+    };
+
+    var getAttributeTypeByName = function (attributeTypes, name) {
+        return _.find(attributeTypes, function (attributeType) {
+            return attributeType.name === name;
+        });
+    };
+
+    this.mapAttributes = function (attributes, attributeTypes) {
+        _.each(attributeTypes, function (attributeType) {
+            var existingAttribute = attributes[attributeType.name];
+            if (!existingAttribute) {
+                attributes[attributeType.name] = {
+                    surgicalAppointmentAttributeType: getAttributeTypeByName(attributeTypes, attributeType.name)
+                };
+                if (attributeType.name === "cleaningTime") {
+                    attributes[attributeType.name].value = 15;
+                } else if (attributeType.name === "estTimeMinutes") {
+                    attributes[attributeType.name].value = 0;
+                } else if (attributeType.name === "estTimeHours") {
+                    attributes[attributeType.name].value = 0;
+                }
+            }
+        });
+        return attributes;
     };
 };
