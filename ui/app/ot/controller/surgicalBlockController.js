@@ -108,6 +108,13 @@ angular.module('bahmni.ot')
                 }
             };
 
+            $scope.updateSortWeight = function (){
+                _.map($scope.surgicalForm.surgicalAppointments, function (appointment, index) {
+                    appointment.sortWeight = index;
+                    return appointment;
+                });
+            };
+
             $scope.goToHome = function () {
                 var options = {};
                 options['dashboardCachebuster'] = Math.random();

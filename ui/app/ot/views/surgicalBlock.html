@@ -60,8 +60,13 @@
                         <th>{{'ACTION' | translate}}</th>
                     </tr>
                     </thead>
-                    <tbody>
-                    <tr ng-repeat="surgicalAppointment in surgicalForm.surgicalAppointments">
+                    <tbody dnd-list="surgicalForm.surgicalAppointments">
+                    <tr ng-repeat="surgicalAppointment in surgicalForm.surgicalAppointments"
+                        dnd-draggable="surgicalAppointment"
+                        dnd-moved="surgicalForm.surgicalAppointments.splice($index, 1)"
+                        dnd-effect-allowed="move"
+                        dnd-dragend="updateSortWeight()"
+                    >
                         <td>
                             <h4>{{getPatientName(surgicalAppointment)}}</h4>
                             <p>

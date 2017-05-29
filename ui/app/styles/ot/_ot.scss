@@ -216,9 +216,14 @@
             }
           }
         }
-        tr {
-          border: 1px solid #D0D0D1;
+        tr.dndDraggingSource {
+          display: none;
         }
+        .dndPlaceholder {
+           background-color: rgba(146, 221, 81, 0.11);
+           display: block;
+           min-height: 100px;
+         }
       }
     }
   }

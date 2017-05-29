@@ -42,6 +42,9 @@ Bahmni.OT.SurgicalBlockMapper = function () {
     };
 
     this.map = function (openMrsSurgicalBlock, attributeTypes, surgeonsList) {
+        var surgicalAppointments = _.map(openMrsSurgicalBlock.surgicalAppointments, function (surgicalAppointment) {
+            return mapSurgicalAppointment(surgicalAppointment, attributeTypes, surgeonsList);
+        });
         return {
             id: openMrsSurgicalBlock.id,
             uuid: openMrsSurgicalBlock.uuid,
@@ -50,9 +53,7 @@ Bahmni.OT.SurgicalBlockMapper = function () {
             endDatetime: Bahmni.Common.Util.DateUtil.parseServerDateToDate(openMrsSurgicalBlock.endDatetime),
             provider: openMrsSurgicalBlock.provider,
             location: openMrsSurgicalBlock.location,
-            surgicalAppointments: _.map(openMrsSurgicalBlock.surgicalAppointments, function (surgicalAppointment) {
-                return mapSurgicalAppointment(surgicalAppointment, attributeTypes, surgeonsList);
-            })
+            surgicalAppointments: _.sortBy(surgicalAppointments, 'sortWeight')
         };
     };
 

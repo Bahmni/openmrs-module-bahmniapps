@@ -577,4 +577,18 @@ describe("surgicalBlockController", function () {
         expect(scope.surgicalForm.surgicalAppointments[0].surgicalAppointmentAttributes.procedure.value).toBe("surgery on left leg");
     });
 
+    it("should update the sort weight of surgical appointments with the index of the appointment", function () {
+        createController();
+        scope.surgicalForm = {};
+        scope.surgicalForm.surgicalAppointments = [{id:3, sortWeight:1},{id:1, sortWeight:0}, {id:2, sortWeight:2}];
+
+        scope.updateSortWeight();
+
+        expect(scope.surgicalForm.surgicalAppointments[0].id).toBe(3);
+        expect(scope.surgicalForm.surgicalAppointments[0].sortWeight).toBe(0);
+        expect(scope.surgicalForm.surgicalAppointments[1].id).toBe(1);
+        expect(scope.surgicalForm.surgicalAppointments[1].sortWeight).toBe(1);
+        expect(scope.surgicalForm.surgicalAppointments[2].id).toBe(2);
+        expect(scope.surgicalForm.surgicalAppointments[2].sortWeight).toBe(2);
+    });
 });
