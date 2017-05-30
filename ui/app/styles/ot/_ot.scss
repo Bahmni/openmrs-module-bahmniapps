@@ -1,5 +1,5 @@
 .ot-header-wrapper {
-  margin-bottom: 140px;
+  margin-bottom: 120px;
 }
 
 .ot-secondary-header {
@@ -9,7 +9,7 @@
   border-bottom: 1px #cccecf solid;
   .ot-surgical-button {
     float: right;
-    margin-right: 100px;
+    margin-right: 10px;
     margin-top: 11px;
   }
 }
@@ -338,6 +338,8 @@ div[ng-app="ot"] {
   .calendar-location {
     margin-left: 80px;
     overflow: hidden;
+    float: left;
+    display: flex;
     .heading-cell {
       width: 300px;
       box-sizing: border-box;
@@ -387,6 +389,7 @@ div[ng-app="ot"] {
         position: relative;
         .surgical-block {
           width: calc(100% - 10px);
+          border: 0.5px solid #1976D2;
         }
       }
     }
@@ -396,13 +399,13 @@ div[ng-app="ot"] {
   position: absolute;
   margin: 0 5px;
   border-radius: 3px;
-  border-color: #1976D2;
   .surgical-block-appointment {
     border: 1px solid #1976D2;
     padding: 5px;
     box-sizing: border-box;
     position: relative;
     overflow: hidden;
+    border-radius: 3px;
     &.expanded {
       z-index: 1;
     }
@@ -418,9 +421,83 @@ div[ng-app="ot"] {
         opacity: 1;
       }
     }
+    p {
+      font-size: 12px;
+    }
     .surgicalblock-patientname {
       font-weight: 600;
       color: #000;
+      font-size: 14px;
     }
+  }
+  .surgicalBlock-surgenName {
+    position: absolute;
+    bottom: 3px;
+    left: 3px;
+  }
+}
+.ot-top-button-wrapper {
+  overflow: hidden;
+  position: relative;
+  margin-bottom: 15px;
+  p {
+    display: inline-block;
+  }
+  .calendar-day-navigation {
+    float: left;
+    margin-left: 10px;
+    button {
+      background: #f8f8f8;
+      -webkit-box-shadow: 0 0 3px 0 rgba(0,0,0,0.3);
+      box-shadow: 0 0 3px 0 rgba(0,0,0,0.3);
+      padding: 5px 10px;
+      color: #95989a;
+      border: 1px solid #95989a;
+      margin-right: 2px;
+    }
+  }
+  .calender-current-day {
+    margin: auto;
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    width: 175px;
+    text-align: center;
+    bottom: 0;
+    height: 20px;
+    font-weight: 600;
+  }
+  .view-switch {
+    float: right;
+  }
+  button {
+    -webkit-box-shadow: 0 0 3px 0 rgba(0,0,0,0.3);
+    box-shadow: 0 0 3px 0 rgba(0,0,0,0.3);
+    padding: 5px 10px;
+    color: #000;
+    border: 1px solid #95989a;
+    margin-right: 10px;
+    background: #fff;
+    &:hover {
+      background: #ececec;
+      opacity: 1;
+    }
+    &.active {
+      background: #d6d6d6;
+    }
+  }
+}
+.surgical-action-wrapper {
+  text-align: right;
+  padding-top: 15px;
+  button {
+    -webkit-box-shadow: 0 0 3px 0 rgba(0,0,0,0.3);
+    box-shadow: 0 0 3px 0 rgba(0,0,0,0.3);
+    padding: 5px 10px;
+    color: #000;
+    border: 1px solid #95989a;
+    margin-right: 10px;
+    background: #fff;
   }
 }
