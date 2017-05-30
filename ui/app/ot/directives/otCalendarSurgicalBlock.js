@@ -3,40 +3,33 @@
 angular.module('bahmni.ot')
     .directive('otCalendarSurgicalBlock', [function () {
         var link = function ($scope) {
-            $scope.gridOffset = {
-                height: 100
-            };
+            var gridCellHeight = 120;
+            var heightForSurgeonName = 21;
+            var surgicalBlockHeightPerMin = gridCellHeight / $scope.dayViewSplit;
 
-            $scope.heightPerMin = $scope.gridOffset.height / $scope.dayViewSplit;
-
-            var calculateDimensionsForSurgicalBlock = function () {
+            var getViewPropertiesForSurgicalBlock = function () {
+                var surgicalBlockHeight = getHeightForSurgicalBlock();
                 $scope.blockDimensions = {
-                    height: getHeightForSurgicalBlock(),
+                    height: surgicalBlockHeight,
                     top: getTopForSurgicalBlock(),
-                    color: getColorForSurgicalBlock(),
-                    appointmentHeightPerMin: (getHeightForSurgicalBlock() - 20) / Bahmni.Common.Util.DateUtil.diffInMinutes(
+                    color: getColorForProvider(),
+                    appointmentHeightPerMin: (surgicalBlockHeight - heightForSurgeonName) / Bahmni.Common.Util.DateUtil.diffInMinutes(
                         $scope.surgicalBlock.startDatetime, $scope.surgicalBlock.endDatetime)
-
                 };
             };
 
-            var getColorForSurgicalBlock = function () {
-                return $scope.surgicalBlock.provider.attributes[0].display ? $scope.surgicalBlock.provider.attributes[0].display.split(":")[1] : "#FFF";
+            var getColorForProvider = function () {
+                return $scope.surgicalBlock.provider.attributes[0] ? $scope.surgicalBlock.provider.attributes[0].display.split(":")[1] : "#FFF";
             };
 
             var getHeightForSurgicalBlock = function () {
                 return Bahmni.Common.Util.DateUtil.diffInMinutes(
-                        $scope.surgicalBlock.startDatetime, $scope.surgicalBlock.endDatetime) * $scope.heightPerMin;
+                        $scope.surgicalBlock.startDatetime, $scope.surgicalBlock.endDatetime) * surgicalBlockHeightPerMin;
             };
 
             var getTopForSurgicalBlock = function () {
                 return Bahmni.Common.Util.DateUtil.diffInMinutes(
-                        $scope.calendarStartDatetime, $scope.surgicalBlock.startDatetime) * $scope.heightPerMin;
-            };
-
-            $scope.selectedSurgicalBlock = function (event) {
-                console.log(event);
-                $(event.target).focus();
+                        $scope.calendarStartDatetime, $scope.surgicalBlock.startDatetime) * surgicalBlockHeightPerMin;
             };
 
             $scope.selectSurgicalBlock = function ($event) {
@@ -44,14 +37,13 @@ angular.module('bahmni.ot')
                 $event.stopPropagation();
             };
 
-            calculateDimensionsForSurgicalBlock();
+            getViewPropertiesForSurgicalBlock();
         };
         return {
             restrict: 'E',
             link: link,
             scope: {
                 surgicalBlock: "=",
-                gridOffset: "=?",
                 calendarStartDatetime: "=",
                 calendarEndDatetime: "=",
                 dayViewSplit: "="

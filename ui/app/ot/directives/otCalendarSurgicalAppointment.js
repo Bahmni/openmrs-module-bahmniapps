@@ -3,26 +3,20 @@
 angular.module('bahmni.ot')
     .directive('otCalendarSurgicalAppointment', [function () {
         var link = function ($scope) {
+            $scope.attributes = _.reduce($scope.surgicalAppointment.surgicalAppointmentAttributes, function (attributes, attribute) {
+                attributes[attribute.surgicalAppointmentAttributeType.name] = attribute.value;
+                return attributes;
+            }, {});
+
             var getDataForSurgicalAppointment = function () {
                 $scope.height = getHeightForSurgicalAppointment();
                 $scope.patient = $scope.surgicalAppointment.patient.display.split('-')[1] + " ( " + $scope.surgicalAppointment.patient.display.split('-')[0] + " )";
-                $scope.procedure = getSurgicalAppointmentAttributeByName("procedure") && getSurgicalAppointmentAttributeByName("procedure").value;
-                $scope.otherSurgeon = getSurgicalAppointmentAttributeByName("otherSurgeon") && getSurgicalAppointmentAttributeByName("otherSurgeon").value;
-                $scope.anaesthetist = getSurgicalAppointmentAttributeByName("anaesthetist") && getSurgicalAppointmentAttributeByName("anaesthetist").value;
-                $scope.notes = $scope.surgicalAppointment.notes;
-            };
-
-            var getSurgicalAppointmentAttributeByName = function (name) {
-                return _.find($scope.surgicalAppointment.surgicalAppointmentAttributes, function (attribute) {
-                    return attribute.surgicalAppointmentAttributeType.name === name;
-                });
             };
 
             var getHeightForSurgicalAppointment = function () {
-                var estTimeHours = (getSurgicalAppointmentAttributeByName("estTimeHours") &&
-                    getSurgicalAppointmentAttributeByName("estTimeHours").value) || 0;
-                var estTimeMinutes = (getSurgicalAppointmentAttributeByName("estTimeMinutes") && getSurgicalAppointmentAttributeByName("estTimeMinutes").value) || 0;
-                var cleaningTime = (getSurgicalAppointmentAttributeByName("cleaningTime") && getSurgicalAppointmentAttributeByName("cleaningTime").value) || 0;
+                var estTimeHours = $scope.attributes["estTimeHours"] || 0;
+                var estTimeMinutes = $scope.attributes["estTimeMinutes"] || 0;
+                var cleaningTime = $scope.attributes["cleaningTime"] || 0;
                 return (
                     estTimeHours * 60 +
                     parseInt(estTimeMinutes) +
@@ -30,8 +24,9 @@ angular.module('bahmni.ot')
                     * $scope.heightPerMin;
             };
 
-            $scope.selectSurgicalAppointment = function () {
+            $scope.selectSurgicalAppointment = function ($event) {
                 $scope.$emit("event:surgicalAppointmentSelect", $scope.surgicalAppointment);
+                $event.stopPropagation();
             };
             getDataForSurgicalAppointment();
         };
