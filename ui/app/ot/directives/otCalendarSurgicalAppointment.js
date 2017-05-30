@@ -3,7 +3,6 @@
 angular.module('bahmni.ot')
     .directive('otCalendarSurgicalAppointment', [function () {
         var link = function ($scope) {
-
             var getDataForSurgicalAppointment = function () {
                 $scope.height = getHeightForSurgicalAppointment();
                 $scope.patient = $scope.surgicalAppointment.patient.display.split('-')[1] + " ( " +
@@ -15,18 +14,15 @@ angular.module('bahmni.ot')
                 $scope.cleaningTimeHeight = getSurgicalAppointmentAttributeByName("cleaningTime") && parseInt(getSurgicalAppointmentAttributeByName("cleaningTime").value) * $scope.heightPerMin;
             };
 
-             var getSurgicalAppointmentAttributeByName = function (name) {
+            var getSurgicalAppointmentAttributeByName = function (name) {
                 return _.find($scope.surgicalAppointment.surgicalAppointmentAttributes, function (attribute) {
                     return attribute.surgicalAppointmentAttributeType.name === name;
                 });
             };
 
-
             var getHeightForSurgicalAppointment = function () {
-
                 var estTimeHours = (getSurgicalAppointmentAttributeByName("estTimeHours") &&
                     getSurgicalAppointmentAttributeByName("estTimeHours").value) || 0;
-
                 var estTimeMinutes = (getSurgicalAppointmentAttributeByName("estTimeMinutes") && getSurgicalAppointmentAttributeByName("estTimeMinutes").value) || 0;
                 var cleaningTime = (getSurgicalAppointmentAttributeByName("cleaningTime") && getSurgicalAppointmentAttributeByName("cleaningTime").value) || 0;
                 return (
@@ -39,12 +35,9 @@ angular.module('bahmni.ot')
             $scope.selectSurgicalAppointment = function ($event) {
                 console.log("Inside select");
                 $(event.target).focus();
-            }
+            };
 
-
-           getDataForSurgicalAppointment();
-
-
+            getDataForSurgicalAppointment();
         };
         return {
             restrict: 'E',

@@ -4,6 +4,17 @@ describe("calendarViewController", function () {
 
     var controller,scope;
     var state = jasmine.createSpyObj('$state', ['go']);
+    var appService = jasmine.createSpyObj('appService', ['getAppDescriptor']);
+    var appDescriptor = jasmine.createSpyObj('appDescriptor', ['getConfigValue']);
+    appService.getAppDescriptor.and.returnValue(appDescriptor);
+
+    appDescriptor.getConfigValue.and.callFake(function (value) {
+        if (value == 'calendarView') {
+            return {dayViewStart: "09:00",
+                dayViewEnd: "17:00",
+                dayViewSplit: "60"};
+        }
+    });
 
     beforeEach(function () {
         module('bahmni.ot');
@@ -16,7 +27,8 @@ describe("calendarViewController", function () {
     var createController = function () {
         controller('calendarViewController', {
             $scope: scope,
-            $state: state
+            $state: state,
+            appService: appService
         });
     };
 

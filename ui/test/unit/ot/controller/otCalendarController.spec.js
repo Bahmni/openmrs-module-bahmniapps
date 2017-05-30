@@ -50,6 +50,10 @@ describe("otCalendarController", function () {
     spinner.forPromise.and.returnValue(specUtil.createFakePromise({}));
 
     var createController = function () {
+        scope.dayViewStart = '09:00';
+        scope.dayViewEnd = '16:30';
+        scope.dayViewSplit = '60';
+        scope.viewDate = moment('2017-02-19').toDate();
         controller('otCalendarController', {
             $scope: scope,
             locationService: locationService,
@@ -61,9 +65,6 @@ describe("otCalendarController", function () {
     };
 
     it("should calculate the no. of intervals for the calendar", function () {
-        scope.dayViewStart = '09:00';
-        scope.dayViewEnd = '16:30';
-        scope.dayViewSplit = '60';
         createController();
 
         var intervals = scope.intervals();
@@ -71,10 +72,6 @@ describe("otCalendarController", function () {
     });
 
     it('should give the rows for the calendar', function () {
-        scope.dayViewStart = '09:00';
-        scope.dayViewEnd = '16:30';
-        scope.dayViewSplit = '60';
-        scope.viewDate = moment('2017-02-19').toDate();
         createController();
 
         var rows = scope.getRowsForCalendar();
@@ -87,7 +84,6 @@ describe("otCalendarController", function () {
     });
 
     it('should fetch the locations with operation theater tag', function () {
-
         createController();
 
         expect(locationService.getAllByTag).toHaveBeenCalledWith('Operation Theater');
@@ -97,7 +93,6 @@ describe("otCalendarController", function () {
     });
 
     it('should group the surgical blocks by the location', function () {
-
         createController();
         // expect(surgicalAppointmentService.getSurgicalBlocksInDateRange).toHaveBeenCalled();
         // expect(scope.surgicalBlocksByLocation.length).toEqual(2);

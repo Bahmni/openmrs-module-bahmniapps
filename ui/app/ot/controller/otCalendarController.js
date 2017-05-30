@@ -4,7 +4,7 @@ angular.module('bahmni.ot')
             var init = function () {
                 var dayStart = ($scope.dayViewStart || '00:00').split(':');
                 var dayEnd = ($scope.dayViewEnd || '23:59').split(':');
-                $scope.dayViewSplit = parseInt($scope.dayViewSplit) >  0 ? parseInt($scope.dayViewSplit) : 60;
+                $scope.dayViewSplit = parseInt($scope.dayViewSplit) > 0 ? parseInt($scope.dayViewSplit) : 60;
                 $scope.calendarStartDatetime = Bahmni.Common.Util.DateUtil.addMinutes($scope.viewDate, (dayStart[0] * 60 + parseInt(dayStart[1])));
                 $scope.calendarEndDatetime = Bahmni.Common.Util.DateUtil.addMinutes($scope.viewDate, (dayEnd[0] * 60 + parseInt(dayEnd[1])));
                 $scope.rows = $scope.getRowsForCalendar();
@@ -19,9 +19,8 @@ angular.module('bahmni.ot')
                     });
             };
 
-
             $scope.remove = function () {
-              console.log("dfdfd");
+                console.log("dfdfd");
             };
 
             $scope.intervals = function () {
@@ -43,7 +42,7 @@ angular.module('bahmni.ot')
             };
 
             $scope.$watch("viewDate", function (oldValue, newValue) {
-                if (oldValue.getTime()  !== newValue.getTime()) {
+                if (oldValue.getTime() !== newValue.getTime()) {
                     spinner.forPromise(init());
                 }
             });

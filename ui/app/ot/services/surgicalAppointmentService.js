@@ -32,7 +32,5 @@ angular.module('bahmni.ot')
                 params: {startDatetime: Bahmni.Common.Util.DateUtil.parseLongDateToServerFormat(startDatetime), endDatetime: Bahmni.Common.Util.DateUtil.parseLongDateToServerFormat(endDatetime)},
                 withCredentials: true
             });
-
-
         };
     }]);
