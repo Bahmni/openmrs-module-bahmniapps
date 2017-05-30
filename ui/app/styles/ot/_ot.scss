@@ -316,12 +316,14 @@ div[ng-app="ot"] {
 .calendar {
   .calendar-location {
     margin-left: 80px;
+    overflow: hidden;
     .heading-cell {
       width: 300px;
       box-sizing: border-box;
       text-align: center;
-      border-bottom: 0.5px solid lightgrey;
       float: left;
+      border-bottom: 0.5px solid lightgrey;
+      padding: 10px 0;
     }
   }
   .table-block {
@@ -355,64 +357,42 @@ div[ng-app="ot"] {
         width: 300px;
         float: left;
         position: relative;
-        .cleaning-time {
-            color: white;
-            background: repeating-linear-gradient(
-                            -45deg,
-                            transparent,
-                            #000 2px,
-                            transparent 1px,
-                            transparent 10px
-            );
-          width: 100%;
+        .surgical-block {
+          width: calc(100% - 10px);
         }
       }
     }
   }
 }
-//  .table-block {
-//    display: flex;
-//    flex-direction: row;
-//
-//    .calendar-time-container {
-//      .calendar-time {
-//        border: 0.5px solid lightgrey;
-//        width: 80px;
-//        flex-basis: 80px;
-//        height: 100px;
-//        box-sizing: border-box;
-//      }
-//    }
-//    .ot-block-container {
-//      float: left;
-//      flex: 1;
-//
-//      .calendar-cell {
-//        border: 0.5px solid lightgrey;
-//        width: 300px;
-//        flex-basis: 80px;
-//        height: 100px;
-//        box-sizing: border-box;
-//      }
-//
-//      &:after {
-//        display: table;
-//        clear: both;
-//        content: "";
-//      }
-//
-//      .ot-block {
-//        width: 300px;
-//        float: left;
-//        position: relative;
-//        .cleaning-time-wrapper {
-//          box
-//        }
-//      }
-//    }
-//    &:after {
-//      display: table;
-//      clear: both;
-//      content: "";
-//    }
-//  }
+.surgical-block {
+  position: absolute;
+  margin: 0 5px;
+  border-radius: 3px;
+  border-color: #1976D2;
+  .surgical-block-appointment {
+    border: 1px solid #1976D2;
+    padding: 5px;
+    box-sizing: border-box;
+    position: relative;
+    overflow: hidden;
+    &.expanded {
+      z-index: 1;
+    }
+    button {
+      position: absolute;
+      right: 5px;
+      top: 5px;
+      background: transparent;
+      border: none;
+      outline: none;
+      padding: 0;
+      &:hover {
+        opacity: 1;
+      }
+    }
+    .surgicalblock-patientname {
+      font-weight: 600;
+      color: #000;
+    }
+  }
+}

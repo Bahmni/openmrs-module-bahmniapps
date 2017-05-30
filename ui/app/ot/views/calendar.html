@@ -1,8 +1,8 @@
 <div class="calendar" ng-click="remove()">
     <div class="calendar-location">
-<p class="heading-cell" ng-repeat="location in locations">
-{{location.name}}
-</p>
+        <p class="heading-cell" ng-repeat="location in locations">
+            {{location.name}}
+        </p>
 
     </div>
     <div class="table-block">
@@ -26,9 +26,9 @@
             </div>
         </div>
     </div>
-
-    <div>
-        <input type="button" value="Edit"/>
-    </div>
-
+</div>
+<div>
+    <button>Add Actual Time</button>
+    <button ng-disabled="editDisabled">Edit</button>
+    <input type="button" value="Delete"/>
 </div>

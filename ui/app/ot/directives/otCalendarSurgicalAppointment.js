@@ -5,13 +5,11 @@ angular.module('bahmni.ot')
         var link = function ($scope) {
             var getDataForSurgicalAppointment = function () {
                 $scope.height = getHeightForSurgicalAppointment();
-                $scope.patient = $scope.surgicalAppointment.patient.display.split('-')[1] + " ( " +
-                    $scope.surgicalAppointment.patient.display.split('-')[0] + " )";
+                $scope.patient = $scope.surgicalAppointment.patient.display.split('-')[1] + " ( " + $scope.surgicalAppointment.patient.display.split('-')[0] + " )";
                 $scope.procedure = getSurgicalAppointmentAttributeByName("procedure") && getSurgicalAppointmentAttributeByName("procedure").value;
                 $scope.otherSurgeon = getSurgicalAppointmentAttributeByName("otherSurgeon") && getSurgicalAppointmentAttributeByName("otherSurgeon").value;
                 $scope.anaesthetist = getSurgicalAppointmentAttributeByName("anaesthetist") && getSurgicalAppointmentAttributeByName("anaesthetist").value;
                 $scope.notes = $scope.surgicalAppointment.notes;
-                $scope.cleaningTimeHeight = getSurgicalAppointmentAttributeByName("cleaningTime") && parseInt(getSurgicalAppointmentAttributeByName("cleaningTime").value) * $scope.heightPerMin;
             };
 
             var getSurgicalAppointmentAttributeByName = function (name) {
@@ -32,11 +30,9 @@ angular.module('bahmni.ot')
                     * $scope.heightPerMin;
             };
 
-            $scope.selectSurgicalAppointment = function ($event) {
-                console.log("Inside select");
-                $(event.target).focus();
+            $scope.selectSurgicalAppointment = function () {
+                $scope.$emit("event:surgicalAppointmentSelect", $scope.surgicalAppointment);
             };
-
             getDataForSurgicalAppointment();
         };
         return {
@@ -44,7 +40,8 @@ angular.module('bahmni.ot')
             link: link,
             scope: {
                 surgicalAppointment: "=",
-                heightPerMin: "="
+                heightPerMin: "=",
+                backgroundColor: "="
 
             },
             templateUrl: "../ot/views/calendarSurgicalAppointment.html"

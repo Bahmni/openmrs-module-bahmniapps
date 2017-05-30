@@ -3,7 +3,7 @@
 angular.module('bahmni.ot')
     .directive('otCalendarSurgicalBlock', [function () {
         var link = function ($scope) {
-            $scope.gridOffset = $scope.gridOffset || {
+            $scope.gridOffset = {
                 height: 100
             };
 
@@ -26,7 +26,7 @@ angular.module('bahmni.ot')
 
             var getHeightForSurgicalBlock = function () {
                 return Bahmni.Common.Util.DateUtil.diffInMinutes(
-                   $scope.surgicalBlock.startDatetime, $scope.surgicalBlock.endDatetime) * $scope.heightPerMin;
+                        $scope.surgicalBlock.startDatetime, $scope.surgicalBlock.endDatetime) * $scope.heightPerMin;
             };
 
             var getTopForSurgicalBlock = function () {
@@ -34,12 +34,17 @@ angular.module('bahmni.ot')
                         $scope.calendarStartDatetime, $scope.surgicalBlock.startDatetime) * $scope.heightPerMin;
             };
 
-            calculateDimensionsForSurgicalBlock();
-
             $scope.selectedSurgicalBlock = function (event) {
                 console.log(event);
                 $(event.target).focus();
             };
+
+            $scope.selectSurgicalBlock = function ($event) {
+                $scope.$emit("event:surgicalBlockSelect", $scope.surgicalBlock);
+                $event.stopPropagation();
+            };
+
+            calculateDimensionsForSurgicalBlock();
         };
         return {
             restrict: 'E',
