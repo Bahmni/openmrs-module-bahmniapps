@@ -1,0 +1,13 @@
+<div ng-class="{'cleaning-time-wrapper': cleaningTimeHeight !== 0}" ng-style="{ border : '1px solid black', height: height + 'px', position: 'relative'}" ng-hide="" ng-click="selectSurgicalAppointment($event);$event.stopPropagation()">
+    <p> {{patient}} </p>
+    <p> Procedure - {{procedure}} </p>
+    <p> Other Surgeon - {{otherSurgeon}} </p>
+    <p> Anaesthetist - {{anaesthetist}} </p>
+    <p> Notes - {{notes}} </p>
+
+    <div class="cleaning-time"
+
+         ng-style="{ border : '1px solid black', height: cleaningTimeHeight + 'px', bottom: '0', position: 'absolute'}">
+
+    </div>
+</div>

@@ -1,3 +1,24 @@
 <div class="patient-info-fixed-postion-container ot-secondary-header">
     <button class="back-btn dashboard-link ot-surgical-button" ng-click="goToNewSurgicalAppointment()">{{'NEW_SURGICAL_APPOINTMENT' | translate}}</button>
 </div>
+
+
+
+
+<div>
+    <button ng-click="goToPreviousDate(viewDate)" ><i class="fa fa-angle-left"></i></button>
+    <button ng-click="goToCurrentDate()" >Today</button>
+    <button type="button" ng-click="goToNextDate(viewDate)"><i class="fa fa-angle-right"></i></button>
+    {{viewDate | date : 'dd MMM yyyy, EEE'}}
+    <button>Calendar</button>
+    <button>List View</button>
+</div>
+
+<div class="calander-container">
+    <ot-calendar
+            view-date="viewDate"
+            day-view-start="calendarConfig.dayViewStart"
+            day-view-end="calendarConfig.dayViewEnd"
+            day-view-split="calendarConfig.dayViewSplit">
+    </ot-calendar>
+</div>
