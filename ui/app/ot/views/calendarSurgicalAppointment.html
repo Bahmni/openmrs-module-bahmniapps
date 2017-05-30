@@ -4,5 +4,5 @@
     <p class="surgicalblock-patientname"> {{patient}} </p>
     <p ng-if="attributes.procedure"> Procedure - {{attributes.procedure}} </p>
     <p ng-if="attributes.anaesthetist"> Anaesthetist - {{attributes.anaesthetist}} </p>
-    <p> Notes - {{notes}} </p>
+    <p ng-if="surgicalAppointment.notes"> Notes - {{surgicalAppointment.notes}} </p>
 </div>
