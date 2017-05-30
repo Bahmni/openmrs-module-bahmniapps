@@ -108,7 +108,7 @@ angular.module('bahmni.ot')
                 }
             };
 
-            $scope.updateSortWeight = function (){
+            $scope.updateSortWeight = function () {
                 _.map($scope.surgicalForm.surgicalAppointments, function (appointment, index) {
                     appointment.sortWeight = index;
                     return appointment;
