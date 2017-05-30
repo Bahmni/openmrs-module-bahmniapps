@@ -2,7 +2,8 @@
 
 angular.module('bahmni.registration')
     .controller('VisitController', ['$window', '$scope', '$rootScope', '$state', '$bahmniCookieStore', 'patientService', 'encounterService', '$stateParams', 'spinner', '$timeout', '$q', 'appService', 'openmrsPatientMapper', 'contextChangeHandler', 'messagingService', 'sessionService', 'visitService', '$location', '$translate', 'offlineService',
-        function ($window, $scope, $rootScope, $state, $bahmniCookieStore, patientService, encounterService, $stateParams, spinner, $timeout, $q, appService, openmrsPatientMapper, contextChangeHandler, messagingService, sessionService, visitService, $location, $translate, offlineService) {
+        'configurationService', 'auditLogService',
+        function ($window, $scope, $rootScope, $state, $bahmniCookieStore, patientService, encounterService, $stateParams, spinner, $timeout, $q, appService, openmrsPatientMapper, contextChangeHandler, messagingService, sessionService, visitService, $location, $translate, offlineService, configurationService, auditLogService) {
             var vm = this;
             var patientUuid = $stateParams.patientUuid;
             var extensions = appService.getAppDescriptor().getExtensions("org.bahmni.registration.conceptSetGroup.observations", "config");
@@ -76,7 +77,7 @@ angular.module('bahmni.registration')
                 var createPromise = offlineService.isOfflineApp() ? encounterPromise() : encounterService.create($scope.encounter);
                 spinner.forPromise(createPromise);
                 return createPromise.then(function () {
-                    $rootScope.createAuditLog("edit_visit", {name: "patient.editvisit"}, {patientUuid: patientUuid}, {});
+                    logVisit(patientUuid, vm.visitUuid, "EDIT_VISIT");
                 });
             };
 
@@ -117,12 +118,25 @@ angular.module('bahmni.registration')
                 });
             };
 
+            var logVisit = function (patientUuid, visitUuid, visitStatus) {
+                configurationService.getConfigurations(['enableAuditLog']).then(function (result) {
+                    if (result.enableAuditLog) {
+                        var params = {};
+                        params.patientUuid = patientUuid;
+                        params.eventType = Bahmni.Common.AuditLogEventDetails[visitStatus].eventType;
+                        params.message = Bahmni.Common.AuditLogEventDetails[visitStatus].message + '~' + visitUuid;
+                        params.module = "registration";
+                        auditLogService.auditLog(params);
+                    }
+                });
+            };
+
             $scope.closeVisitIfDischarged = function () {
                 visitService.getVisitSummary(vm.visitUuid).then(function (response) {
                     var visitSummary = response.data;
                     if (visitSummary.admissionDetails && !visitSummary.dischargeDetails) {
                         messagingService.showMessage("error", 'REGISTRATION_VISIT_CANNOT_BE_CLOSED');
-                        $rootScope.createAuditLog("close_visit_failed", {name: "patient.closevisit.failed"}, {patientUuid: patientUuid}, {});
+                        logVisit(patientUuid, vm.visitUuid, "CLOSE_VISIT_FAILED");
                     } else {
                         closeVisit();
                     }
@@ -134,7 +148,7 @@ angular.module('bahmni.registration')
                 if (confirmed) {
                     visitService.endVisit(vm.visitUuid).then(function () {
                         $location.url(Bahmni.Registration.Constants.patientSearchURL);
-                        $rootScope.createAuditLog("close_visit", {name: "patient.closevisit"}, {patientUuid: patientUuid}, {});
+                        logVisit(patientUuid, vm.visitUuid, "CLOSE_VISIT");
                     });
                 }
             };
