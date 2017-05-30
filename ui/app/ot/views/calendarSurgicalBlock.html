@@ -1,0 +1,16 @@
+<div ng-style="{top : blockDimensions.top + 'px', background : blockDimensions.color, height: blockDimensions.height + 'px'}"
+     class="calendar-cell surgical-block"
+     ng-click="selectSurgicalBlock($event)"
+     tabindex="1">
+
+<div ng-repeat="surgicalAppointment in surgicalBlock.surgicalAppointments">
+    <ot-calendar-surgical-appointment surgical-appointment="surgicalAppointment"
+                                      background-color="blockDimensions.color"
+                                      height-per-min="blockDimensions.appointmentHeightPerMin"></ot-calendar-surgical-appointment>
+
+</div>
+
+<div ng-style="{bottom:0 + 'px'}">
+    {{'SURGEON' | translate }} {{surgicalBlock.provider.person.display}}
+</div>
+</div>

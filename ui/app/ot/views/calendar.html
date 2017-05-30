@@ -1,0 +1,34 @@
+<div class="calendar" ng-click="remove()">
+    <div class="calendar-location">
+        <p class="heading-cell" ng-repeat="location in locations">
+            {{location.name}}
+        </p>
+
+    </div>
+    <div class="table-block">
+        <div class="calendar-time-container">
+            <div ng-repeat="row in rows" class="calendar-time">
+                {{row.date | bahmniTime}}
+            </div>
+        </div>
+        <div class="ot-block-container">
+            <div class="ot-block" ng-repeat="(blockIndex, blocks) in surgicalBlocksByLocation">
+                <div ng-repeat="row in rows" class="calendar-cell">
+                </div>
+                <div ng-repeat="block in blocks">
+                    <ot-calendar-surgical-block
+                            surgical-block="block"
+                            calendar-start-datetime="calendarStartDatetime"
+                            calendar-end-datetime="calendarEndDatetime"
+                            day-view-split="dayViewSplit"
+                    ></ot-calendar-surgical-block>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div>
+    <button>Add Actual Time</button>
+    <button ng-disabled="editDisabled">Edit</button>
+    <input type="button" value="Delete"/>
+</div>

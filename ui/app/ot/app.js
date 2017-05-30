@@ -31,13 +31,7 @@ angular.module('ot').config(['$stateProvider', '$httpProvider', '$urlRouterProvi
                 views: {
                     'content': {
                         templateUrl: 'views/home.html',
-                        controller: function ($scope, $state) {
-                            $scope.goToNewSurgicalAppointment = function () {
-                                var options = {};
-                                options['dashboardCachebuster'] = Math.random();
-                                $state.go("newSurgicalAppointment", options);
-                            };
-                        }
+                        controller: 'calendarViewController'
                     },
                     'additional-header': {
                         templateUrl: 'views/header.html',
