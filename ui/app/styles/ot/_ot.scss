@@ -333,6 +333,8 @@ div[ng-app="ot"] {
 }
 
 .calendar {
+  overflow: auto;
+  height: calc(100vh - 225px);
   .calendar-location {
     margin-left: 80px;
     overflow: hidden;
@@ -346,7 +348,6 @@ div[ng-app="ot"] {
     }
   }
   .table-block {
-    overflow: auto;
     clear: left;
 
     .calendar-time-container {
@@ -364,6 +365,14 @@ div[ng-app="ot"] {
 
     .ot-block-container {
       float: left;
+      position: relative;
+      width: calc(100% - 80px);
+    .ot-block-wrapper {
+      position: absolute;
+      display: flex;
+      left: 0;
+      overflow: auto;
+    }
       .calendar-cell {
         border-bottom: 0.5px solid lightgrey;
         border-right: 0.5px solid lightgrey;
