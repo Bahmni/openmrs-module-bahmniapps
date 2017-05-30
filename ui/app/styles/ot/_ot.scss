@@ -198,6 +198,22 @@
         }
         td{
           border: 0;
+          position: relative;
+          > i {
+            width: 10px;
+            display: inline-block;
+            line-height: 0.3;
+            float: left;
+            color: #ddd;
+            position: absolute;
+            top: 33%;
+          }
+          .surgery-details-wrapper {
+            float: left;
+            padding-left: 10px;
+            margin-left: 20px;
+            border-left: 1px solid #dddddd;
+          }
           h4 {
             color: #000;
             font-weight: 900;
